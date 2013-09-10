@@ -15,23 +15,23 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   integer  $user      User id
-     * @param   integer  $status    Message status
+     * @param   integer  $read      Message read flag
      * @return  mixed    Inbox content  or Jaws_Error on failure
      */
-    function GetInbox($user, $status = null)
+    function GetInbox($user, $read = null)
     {
         $table = Jaws_ORM::getInstance()->table('pm_messages');
         $table->select(
             'pm_messages.id:integer','pm_messages.subject', 'pm_messages.body', 'pm_messages.insert_time',
-            'users.nickname as from_nickname', 'pm_recipients.status:integer', 'users.username as from_username',
+            'users.nickname as from_nickname', 'pm_recipients.read:boolean', 'users.username as from_username',
             'pm_recipients.id as message_recipient_id:integer'
         );
-        $table->join('users', 'pm_messages.from', 'users.id');
-        $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message_id');
+        $table->join('users', 'pm_messages.user', 'users.id');
+        $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message');
         $table->where('pm_recipients.recipient', $user);
 
-        if ($status !== null) {
-            $table->and()->where('pm_recipients.status', $status);
+        if ($read !== null) {
+            $table->and()->where('pm_recipients.read', $read);
         }
 
         $result = $table->fetchAll();
@@ -47,16 +47,16 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   integer  $user      User id
-     * @param   integer  $status    Message status
+     * @param   integer  $read      Message read flag
      * @return  mixed    Inbox count or Jaws_Error on failure
      */
-    function GetInboxStatistics($user, $status = null)
+    function GetInboxStatistics($user, $read = null)
     {
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
-        $table->select('count(message_id):integer')->where('recipient', $user);
+        $table->select('count(message):integer')->where('recipient', $user);
 
-        if ($status !== null) {
-            $table->and()->where('status', $status);
+        if ($read !== null) {
+            $table->and()->where('read', $read);
         }
 
         $result = $table->fetchOne();

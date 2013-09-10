@@ -45,17 +45,15 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
                 $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
                 foreach ($message['attachments'] as $file) {
                     $tpl->SetBlock('send/file');
-                    $tpl->SetVariable('lbl_hints_count', _t('PRIVATEMESSAGE_FILE_HINTS_COUNT'));
                     $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
-                    $tpl->SetVariable('file_name', $file['user_filename']);
-                    $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['file_size']));
-                    $tpl->SetVariable('hints_count', $file['hints_count']);
+                    $tpl->SetVariable('file_name', $file['title']);
+                    $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['filesize']));
                     $tpl->SetVariable('file_id', $file['id']);
 
-                    $tpl->SetVariable('file_download_link', $file['user_filename']);
+                    $tpl->SetVariable('file_download_link', $file['title']);
                     $file_url = $this->gadget->urlMap('Attachment',
                         array(
-                            'uid' => $message['from'],
+                            'uid' => $message['user'],
                             'mid' => $id,
                             'aid' => $file['id'],
                         ));
@@ -148,9 +146,9 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
                     $host_filename = $files['file'.$i][0]['host_filename'];
                     if (!empty($host_filename)) {
                         $attachments[] = array(
-                            'user_filename'=> $user_filename,
-                            'host_filename'=> $host_filename,
-                            'file_size'=> $_FILES['file'.$i]['size'],
+                            'title'=> $user_filename,
+                            'filename'=> $host_filename,
+                            'filesize'=> $_FILES['file'.$i]['size'],
                         );
                     }
                 }
@@ -167,9 +165,9 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
                     continue;
                 }
                 $attachment_info = $aModel->GetMessageAttachment($attachment_id);
-                $message_info = $model->GetMessage($attachment_info['message_id']);
-                $filepath = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $message_info['from'] . DIRECTORY_SEPARATOR .
-                    $attachment_info['host_filename'];
+                $message_info = $model->GetMessage($attachment_info['message']);
+                $filepath = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $message_info['user'] . DIRECTORY_SEPARATOR .
+                    $attachment_info['filename'];
                 $filepath_info = pathinfo($filepath);
 
                 $host_filename = Jaws_Utils::RandomText(15, true, false, true) . '.' . $filepath_info['extension'];
@@ -178,9 +176,9 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
                 $cres = Jaws_Utils::copy($filepath, $new_filepath);
                 if ($cres) {
                     $attachments[] = array(
-                        'user_filename' => $attachment_info['user_filename'],
-                        'host_filename' => $host_filename,
-                        'file_size' => $attachment_info['file_size'],
+                        'title' => $attachment_info['title'],
+                        'filename' => $host_filename,
+                        'filesize' => $attachment_info['filesize'],
                     );
                 }
             }

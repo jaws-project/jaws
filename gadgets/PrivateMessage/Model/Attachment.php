@@ -19,9 +19,9 @@ class PrivateMessage_Model_Attachment extends Jaws_Gadget_Model
      */
     function GetMessageAttachments($id)
     {
-        $table = Jaws_ORM::getInstance()->table('pm_message_attachments');
-        $table->select('id:integer', 'host_filename', 'user_filename', 'file_size', 'hints_count:integer');
-        $result = $table->where('message_id', $id)->fetchAll();
+        $table = Jaws_ORM::getInstance()->table('pm_attachments');
+        $table->select('id:integer', 'filename', 'title', 'filesize', 'filetype');
+        $result = $table->where('message', $id)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return array();
         }
@@ -37,8 +37,8 @@ class PrivateMessage_Model_Attachment extends Jaws_Gadget_Model
      */
     function GetMessageAttachment($id)
     {
-        $table = Jaws_ORM::getInstance()->table('pm_message_attachments');
-        $table->select('message_id:integer', 'host_filename', 'user_filename', 'file_size', 'hints_count:integer');
+        $table = Jaws_ORM::getInstance()->table('pm_attachments');
+        $table->select('message:integer', 'filename', 'title', 'filesize', 'file_type');
         $result = $table->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return array();
@@ -46,25 +46,4 @@ class PrivateMessage_Model_Attachment extends Jaws_Gadget_Model
         return $result;
     }
 
-    /**
-     * Increment attachment download hits
-     *
-     * @access  public
-     * @param   integer  $id   Attachment id
-     * @return  mixed   True or Jaws_Error
-     */
-    function HitAttachmentDownload($id)
-    {
-        $table = Jaws_ORM::getInstance()->table('pm_message_attachments');
-        $res = $table->update(
-            array(
-                'hints_count' => $table->expr('hints_count + ?', 1)
-            )
-        )->where('id', $id)->exec();
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
-        }
-
-        return true;
-    }
 }

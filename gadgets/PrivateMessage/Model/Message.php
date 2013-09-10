@@ -21,16 +21,16 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
     function GetMessage($id, $fetchAttachment = false)
     {
         $messageTable = Jaws_ORM::getInstance()->table('pm_messages');
-        $messageTable->select('id:integer')->where('parent_id', $id)->alias('child_id');
+        $messageTable->select('id:integer')->where('parent', $id)->alias('child_id');
 
         $table = Jaws_ORM::getInstance()->table('pm_messages');
         $table->select(
-            'pm_messages.id:integer', 'parent_id:integer', 'pm_messages.subject', 'pm_messages.body',
+            'pm_messages.id:integer', 'parent:integer', 'pm_messages.subject', 'pm_messages.body',
             'users.nickname as from_nickname', 'users.username as from_username', 'users.avatar', 'users.email',
-            'pm_recipients.status:integer', 'from:integer', 'pm_messages.insert_time', $messageTable
+            'pm_recipients.read:boolean', 'user:integer', 'pm_messages.insert_time', $messageTable
         );
-        $table->join('users', 'pm_messages.from', 'users.id');
-        $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message_id');
+        $table->join('users', 'pm_messages.user', 'users.id');
+        $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message');
         $table->where('pm_recipients.id', $id);
 
         $result = $table->fetchRow();
@@ -58,12 +58,12 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('pm_messages');
         $table->select(
-            'pm_messages.id:integer', 'parent_id:integer', 'pm_messages.subject', 'pm_messages.body',
+            'pm_messages.id:integer', 'parent:integer', 'pm_messages.subject', 'pm_messages.body',
             'users.nickname as from_nickname', 'users.username as from_username', 'users.avatar', 'users.email',
-            'pm_recipients.status:integer', 'from:integer', 'pm_messages.insert_time'
+            'pm_recipients.read:boolean', 'user:integer', 'pm_messages.insert_time'
         );
-        $table->join('users', 'pm_messages.from', 'users.id');
-        $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message_id');
+        $table->join('users', 'pm_messages.user', 'users.id');
+        $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message');
         $table->where('pm_recipients.id', $id);
 
         $message = $table->fetchRow();
@@ -77,8 +77,8 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }
 
         $result[] = $message;
-        if(!empty($message['parent_id'])) {
-            $this->GetParentMessages($message['parent_id'], $fetchAttachment, $result);
+        if(!empty($message['parent'])) {
+            $this->GetParentMessages($message['parent'], $fetchAttachment, $result);
         }
 
         return true;
@@ -95,27 +95,27 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
     function DeleteMessage($id, $user)
     {
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
-        $result = $table->delete()->where('message_id', $id)->and()->where('recipient', $user)->exec();
+        $result = $table->delete()->where('message', $id)->and()->where('recipient', $user)->exec();
         return $result;
     }
 
     /**
-     * Mark messages status
+     * Mark messages read
      *
      * @access  public
      * @param   array    $ids      Message id(s)
-     * @param   integer  $status   New message status
+     * @param   integer  $read     Message read flag
      * @param   integer  $user     User id
      * @return  bool    True or False
      */
-    function MarkMessages($ids, $status, $user)
+    function MarkMessages($ids, $read, $user)
     {
         if(!is_array($ids) && is_numeric($ids)) {
             $ids = array($ids);
         }
 
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
-        $table->update(array('status' => $status, 'update_time' => time()));
+        $table->update(array('read' => $read, 'update_time' => time()));
         $res = $table->where('id', $ids, 'in')->and()->where('recipient', $user)->exec();
         if (Jaws_Error::IsError($res)) {
             return false;
@@ -141,8 +141,8 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $table->beginTransaction();
 
         $data = array();
-        $data['parent_id']   = $message['id'];
-        $data['from']        = $user;
+        $data['parent']      = $message['id'];
+        $data['user']        = $user;
         $data['subject']     = _t('PRIVATEMESSAGE_REPLY_ON', $message['subject']);
         $data['body']        = $reply;
         $data['insert_time'] = time();
@@ -150,8 +150,8 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
         $data = array();
-        $data['message_id'] = $message_id;
-        $data['recipient'] = $message['from'];
+        $data['message']    = $message_id;
+        $data['recipient']  = $message['user'];
 
         $res = $table->insert($data)->exec();
         if (Jaws_Error::IsError($res)) {
@@ -179,7 +179,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $mTable->beginTransaction();
 
         $data = array();
-        $data['from']        = $user;
+        $data['user']        = $user;
         $data['subject']     = $message['subject'];
         $data['body']        = $message['body'];
         $data['insert_time'] = time();
@@ -189,7 +189,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }
 
         if (!empty($attachments) && count($attachments) > 0) {
-            $table = Jaws_ORM::getInstance()->table('pm_message_attachments');
+            $table = Jaws_ORM::getInstance()->table('pm_attachments');
 //            $aData = array();
 //            foreach ($attachments as $attachment) {
 //                $attachment['message_id'] = $message_id;
@@ -199,7 +199,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             foreach ($attachments as $attachment) {
                 $aData = array();
                 $aData = $attachment;
-                $aData['message_id'] = $message_id;
+                $aData['message'] = $message_id;
                 $res = $table->insert($aData)->exec();
                 if (Jaws_Error::IsError($res)) {
                     return false;
@@ -234,7 +234,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         if (!empty($recipient_users) && count($recipient_users) > 0) {
             foreach ($recipient_users as $recipient_user) {
                 $data = array(
-                    'message_id' => $message_id,
+                    'message' => $message_id,
                     'recipient' => $recipient_user,
                 );
                 $res = $table->insert($data)->exec();

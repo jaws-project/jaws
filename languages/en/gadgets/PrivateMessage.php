@@ -21,8 +21,8 @@ define('_EN_PRIVATEMESSAGE_ACL_REPLYMESSAGE', "Reply message");
 define('_EN_PRIVATEMESSAGE_ACL_SENDMESSAGE', "Send message");
 
 /* Layout Actions */
-define('_EN_PRIVATEMESSAGE_ACTIONS_REGIONWEATHER', "Region");
-define('_EN_PRIVATEMESSAGE_ACTIONS_REGIONWEATHER_DESC', "Display region weather");
+define('_EN_PRIVATEMESSAGE_ACTIONS_NAVIGATIONAREA', "Navigation Area");
+define('_EN_PRIVATEMESSAGE_ACTIONS_NAVIGATIONAREA_DESC', "Display navigation bar");
 
 /* Navigation Area */
 define('_EN_PRIVATEMESSAGE_NAVIGATION_AREA_INBOX', "Inbox {0}");

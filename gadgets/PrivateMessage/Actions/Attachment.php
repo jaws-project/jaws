@@ -33,19 +33,19 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(500);
         }
 
-        if ($message['from'] != $rqst['uid']) {
+        if ($message['user'] != $rqst['uid']) {
             return Jaws_HTTPError::Get(500);
         }
 
         $attachment = $aModel->GetMessageAttachment($rqst['aid']);
-        if (!empty($attachment) && ($attachment['message_id'] == $rqst['mid'])) {
+        if (!empty($attachment) && ($attachment['message'] == $rqst['mid'])) {
             $filepath = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $rqst['uid'] . DIRECTORY_SEPARATOR .
-                $attachment['host_filename'];
+                $attachment['filename'];
             if (file_exists($filepath)) {
                 // increase download hits
                 $aModel->HitAttachmentDownload($rqst['aid']);
 
-                if (Jaws_Utils::Download($filepath, $attachment['user_filename'])) {
+                if (Jaws_Utils::Download($filepath, $attachment['title'])) {
                     return;
                 }
 

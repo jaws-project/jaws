@@ -29,9 +29,9 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
         $usrModel = new Jaws_User;
         $message = $model->GetMessage($id, true);
 
-        if ($message['status'] != PrivateMessage_Info::PM_STATUS_READ) {
+        if ($message['read'] == false) {
             $user = $GLOBALS['app']->Session->GetAttribute('user');
-            $model->MarkMessages($id, PrivateMessage_Info::PM_STATUS_READ, $user);
+            $model->MarkMessages($id, true, $user);
         }
 
         $tpl = $this->gadget->loadTemplate('Message.html');
@@ -77,16 +77,14 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
             foreach($message['attachments'] as $file) {
                 $tpl->SetBlock('message/attachment/file');
-                $tpl->SetVariable('lbl_hints_count', _t('PRIVATEMESSAGE_FILE_HINTS_COUNT'));
                 $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
-                $tpl->SetVariable('file_name', $file['user_filename']);
-                $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['file_size']));
-                $tpl->SetVariable('hints_count', $file['hints_count']);
+                $tpl->SetVariable('file_name', $file['title']);
+                $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['filesize']));
 
-                $tpl->SetVariable('file_download_link', $file['user_filename']);
+                $tpl->SetVariable('file_download_link', $file['title']);
                 $file_url = $this->gadget->urlMap('Attachment',
                                                   array(
-                                                      'uid' => $message['from'],
+                                                      'uid' => $message['user'],
                                                       'mid' => $id,
                                                       'aid' => $file['id'],
                                                   ));
@@ -97,7 +95,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             $tpl->ParseBlock('message/attachment');
         }
 
-        if(!empty($message['parent_id'])) {
+        if(!empty($message['parent'])) {
             $tpl->SetBlock('message/history');
             $tpl->SetVariable('history_url',    $this->gadget->urlMap('MessageHistory', array('id' => $id)));
             $tpl->SetVariable('icon_history',   STOCK_UNDO);
@@ -106,7 +104,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
 
             $tpl->SetBlock('message/message_nav');
             $tpl->SetVariable('message_nav_url', $this->gadget->urlMap('ViewMessage',
-                                                 array('id' => $message['parent_id'])));
+                                                 array('id' => $message['parent'])));
             $tpl->SetVariable('message_nav', _t('PRIVATEMESSAGE_PREVIOUS_MESSAGE'));
             $tpl->ParseBlock('message/message_nav');
         }
@@ -212,16 +210,14 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
                 $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
                 foreach ($message['attachments'] as $file) {
                     $tpl->SetBlock('history/message/attachment/file');
-                    $tpl->SetVariable('lbl_hints_count', _t('PRIVATEMESSAGE_FILE_HINTS_COUNT'));
                     $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
-                    $tpl->SetVariable('file_name', $file['user_filename']);
-                    $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['file_size']));
-                    $tpl->SetVariable('hints_count', $file['hints_count']);
+                    $tpl->SetVariable('file_name', $file['title']);
+                    $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['filesize']));
 
-                    $tpl->SetVariable('file_download_link', $file['user_filename']);
+                    $tpl->SetVariable('file_download_link', $file['title']);
                     $file_url = $this->gadget->urlMap('Attachment',
                         array(
-                            'uid' => $message['from'],
+                            'uid' => $message['user'],
                             'mid' => $id,
                             'aid' => $file['id'],
                         ));
