@@ -20,23 +20,36 @@ define('_EN_DIRECTORY_ACTIONS_DISPLAY', "Display");
 define('_EN_DIRECTORY_ACTIONS_DISPLAY_DESC', "Displays directory");
 
 // Terms
+define('_EN_DIRECTORY_BYTES', "bytes");
 
-// Directories
-define('_EN_DIRECTORY_DIR_TITLE', "Title");
-define('_EN_DIRECTORY_DIR_DESC', "Description");
-define('_EN_DIRECTORY_DIR_PARENT', "Parent");
-
-// Files
+// Files/Directories
+define('_EN_DIRECTORY_NEW_DIR', "New Folder");
+define('_EN_DIRECTORY_NEW_FILE', "New File");
+define('_EN_DIRECTORY_PROPERTIES', "Properties");
+define('_EN_DIRECTORY_FILE', "File");
+define('_EN_DIRECTORY_DIR', "Directory");
+define('_EN_DIRECTORY_FILE_TYPE', "Type");
 define('_EN_DIRECTORY_FILE_TITLE', "Title");
+define('_EN_DIRECTORY_FILE_DESC', "Description");
 define('_EN_DIRECTORY_FILE_PARENT', "Parent");
+define('_EN_DIRECTORY_FILE_DIR', "Directory");
+define('_EN_DIRECTORY_FILE_URL', "URL");
+define('_EN_DIRECTORY_FILE_FILENAME', "File name");
+define('_EN_DIRECTORY_FILE_FILETYPE', "File type");
+define('_EN_DIRECTORY_FILE_FILESIZE', "File size");
+define('_EN_DIRECTORY_FILE_CREATED', "Created");
+define('_EN_DIRECTORY_FILE_MODIFIED', "Modified");
 
 // Sharing
 define('_EN_DIRECTORY_SHARE', "Share");
+define('_EN_DIRECTORY_SHARE_STATUS', "Share Status");
+define('_EN_DIRECTORY_IS_SHARED', "Shared");
+define('_EN_DIRECTORY_NOT_SHARED', "Not shared");
 
 // Messages
 define('_EN_DIRECTORY_ERROR_INCOMPLETE_DATA', "Some fields are necessary to be filled.");
-define('_EN_DIRECTORY_NOTICE_SHARE_UPDATED', "Shared file users have been updated.");
-define('_EN_DIRECTORY_ERROR_UPDATING_SHARE', "Could not update shared file users.");
+define('_EN_DIRECTORY_NOTICE_SHARE_UPDATED', "Shared file has been updated.");
+define('_EN_DIRECTORY_ERROR_UPDATING_SHARE', "Could not update shared file.");
 
 define('_EN_DIRECTORY_NOTICE_DIR_CREATED', "A new directory has been created.");
 define('_EN_DIRECTORY_NOTICE_DIR_UPDATED', "Directory has been updated.");
