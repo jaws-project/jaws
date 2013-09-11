@@ -1,15 +1,15 @@
 <!-- BEGIN view -->
-<div id="inf_dir">
+<div class="file-info">
   <fieldset>
     <table>
       <tr><th>{lbl_title}:</th><td>{title}</td></tr>
       <tr><th>{lbl_desc}:</th><td>{desc}</td></tr>
+      <tr><th>{lbl_shared}:</th><td>{is_shared}</td></tr>
+      <tr><th>{lbl_created}:</th><td title="{createtime}">{created}</td></tr>
+      <tr><th>{lbl_modified}:</th><td title="{updatetime}">{modified}</td></tr>
     </table>
   </fieldset>
   <div class="actions">
-    <button type="button" id="btn_share" onclick="share()">Share</button>
-    <button type="button" id="btn_edit" onclick="editDirectory()">{lbl_edit}</button>
-    <button type="button" id="btn_delete" onclick="_delete()">{lbl_delete}</button>
     <button type="button" onclick="cancel()">{lbl_cancel}</button>
   </div>
 </div>

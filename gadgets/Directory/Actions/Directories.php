@@ -18,21 +18,28 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
      */
     function DirectoryForm()
     {
-        $type = jaws()->request->fetch('type', 'post');
+        $mode = jaws()->request->fetch('mode', 'post');
         $tpl = $this->gadget->loadTemplate('Directory.html');
-        $tpl->SetBlock($type);
-        $tpl->SetVariable('lbl_title', _t('DIRECTORY_DIR_TITLE'));
-        $tpl->SetVariable('lbl_desc', _t('DIRECTORY_DIR_DESC'));
-        $tpl->SetVariable('lbl_share', _t('DIRECTORY_SHARE'));
-        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
-        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetBlock($mode);
+        $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
+        $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
         $tpl->SetVariable('lbl_submit', _t('GLOBAL_SUBMIT'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        if ($type === 'view') {
+        if ($mode === 'view') {
+            $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
+            $tpl->SetVariable('lbl_shared', _t('DIRECTORY_SHARE_STATUS'));
+            $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
+            $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
             $tpl->SetVariable('title', '{title}');
             $tpl->SetVariable('desc', '{description}');
+            $tpl->SetVariable('type', '{type}');
+            $tpl->SetVariable('is_shared', '{is_shared}');
+            $tpl->SetVariable('createtime', '{createtime}');
+            $tpl->SetVariable('updatetime', '{updatetime}');
+            $tpl->SetVariable('created', '{created}');
+            $tpl->SetVariable('modified', '{modified}');
         }
-        $tpl->ParseBlock($type);
+        $tpl->ParseBlock($mode);
         return $tpl->Get();
     }
 

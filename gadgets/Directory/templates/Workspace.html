@@ -2,21 +2,26 @@
 <div class="gadget directory">
   <h2>{title}</h2>
   <div id="simple_response" class="{response_type}">{response}</div>
-  <div class="actions" style="float:right">
-    <span id="file_actions">
-      <button type="button" id="btn_share" onclick="share()">{lbl_share}</button>
-      <button type="button" id="btn_edit" onclick="edit()">{lbl_edit}</button>
-      <button type="button" id="btn_delete" onclick="_delete()">{lbl_delete}</button>
-      <!--button type="button" id="btn_cancel" onclick="cancel()">{lbl_cancel}</button-->
-    </span>
-    <button type="button" id="btn_new_dir" onclick="newDirectory()">New Directory</button>
-    <button type="button" id="btn_new_file" onclick="newFile()">New File</button>
+  <div class="toolbar">
+    <img src="{new_file}" alt="{lbl_new_file}" title="{lbl_new_file}" onclick="newFile()" />
+    <img src="{new_dir}" alt="{lbl_new_dir}" title="{lbl_new_dir}" onclick="newDirectory()" />
   </div>
   <div><span id="path"></span></div>
+  <select id="file_filter" onchange="displayFiles()">
+    <option value="all">All files & folders</option>
+    <option value="shared">Shared files & folders only</option>
+    <option value="others">Shares from other users only</option>
+  </select>
+  <div id="file_actions">
+    <button type="button" id="btn_share" onclick="share()">{lbl_share}</button>
+    <button type="button" id="btn_edit" onclick="edit()">{lbl_edit}</button>
+    <button type="button" id="btn_delete" onclick="del()">{lbl_delete}</button>
+    <button type="button" id="btn_props" onclick="properties()">{lbl_props}</button>
+  </div>
   <div id="workspace">
     <!-- BEGIN fileTemplate -->
-    <div id="file_{id}" class="file-box">
-      <div class="file-icon {type}"></div>
+    <div id="file_{id}" title="{description}" class="file-box">
+      <div class="file-icon {type} {shared} {is_dir}"></div>
       <div class="file-title">{title}</div>
     </div>
     <!-- END fileTemplate -->
@@ -24,15 +29,16 @@
   <div id="statusbar" style="display:none;">
     <!-- BEGIN statusbar -->
     <strong>{title}</strong>
-    <span>Size: </span>{filesize}
-    <span>Date created: </span>{createtime}
-    <span>Date modified: </span>{updatetime}
+    <span>Size: </span>{size}
+    <span>Date created: </span>{created}
+    <span>Date modified: </span>{modified}
     <!-- END statusbar -->
   </div><br/>
   <div id="form"></div>
 </div>
 <script>
-  var data_url = "{data_url}",
+  var UID = "{UID}",
+      data_url = "{data_url}",
       imgDeleteFile = "{imgDeleteFile}";
   initDirectory();
 </script>

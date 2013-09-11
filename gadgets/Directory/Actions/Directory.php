@@ -24,29 +24,36 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetBlock('workspace');
 
         $tpl->SetVariable('title', _t('DIRECTORY_NAME'));
-        $tpl->SetVariable('lbl_new', _t('GLOBAL_NEW'));
+        $tpl->SetVariable('lbl_new_dir', _t('DIRECTORY_NEW_DIR'));
+        $tpl->SetVariable('lbl_new_file', _t('DIRECTORY_NEW_FILE'));
+        $tpl->SetVariable('new_dir', 'gadgets/Directory/images/new-dir.png');
+        $tpl->SetVariable('new_file', 'gadgets/Directory/images/new-file.png');
+
         $tpl->SetVariable('lbl_share', _t('DIRECTORY_SHARE'));
         $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
-        $tpl->SetVariable('lbl_submit', _t('GLOBAL_SUBMIT'));
-        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_props', _t('DIRECTORY_PROPERTIES'));
         $tpl->SetVariable('imgDeleteFile', STOCK_DELETE);
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $tpl->SetVariable('data_url', $GLOBALS['app']->getDataURL('directory/' . $user));
+        $tpl->SetVariable('UID', $user);
+        $tpl->SetVariable('data_url', $GLOBALS['app']->getDataURL('directory/'));
 
         // File template
         $tpl->SetBlock('workspace/fileTemplate');
         $tpl->SetVariable('id', '{id}');
         $tpl->SetVariable('title', '{title}');
+        $tpl->SetVariable('description', '{description}');
         $tpl->SetVariable('type', '{type}');
+        $tpl->SetVariable('size', '{size}');
+        $tpl->SetVariable('shared', '{shared}');
         $tpl->ParseBlock('workspace/fileTemplate');
 
         // Status bar
         $tpl->SetBlock('workspace/statusbar');
         $tpl->SetVariable('title', '{title}');
-        $tpl->SetVariable('filesize', '{filesize}');
-        $tpl->SetVariable('createtime', '{createtime}');
-        $tpl->SetVariable('updatetime', '{updatetime}');
+        $tpl->SetVariable('size', '{size}');
+        $tpl->SetVariable('created', '{created}');
+        $tpl->SetVariable('modified', '{modified}');
         $tpl->ParseBlock('workspace/statusbar');
 
         // Display probabley responses
@@ -68,14 +75,22 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      */
     function GetFiles()
     {
-        $parent = jaws()->request->fetch('parent', 'post');
+        $flags = jaws()->request->fetch(array('parent', 'shared', 'shared_for_me'), 'post');
+        _log_var_dump($flags);
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-        $res = $model->GetFiles($user, $parent);
-        if (Jaws_Error::IsError($res)){
+        $files = $model->GetFiles($user, $flags['parent'], $flags['shared'], $flags['shared_for_me']);
+        if (Jaws_Error::IsError($files)){
             return array();
         }
-        return $res;
+        $objDate = $GLOBALS['app']->loadDate();
+        foreach ($files as &$file) {
+            $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
+            $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
+            $file['size'] = Jaws_Utils::FormatSize($file['filesize']);
+            $file['is_shared'] = $file['shared']? _t('DIRECTORY_IS_SHARED') : _t('DIRECTORY_NOT_SHARED');
+        }
+        return $files;
     }
 
     /**

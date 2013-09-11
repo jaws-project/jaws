@@ -37,14 +37,40 @@ class Directory_Model_Share extends Jaws_Gadget_Model
     function UpdateFileUsers($id, $users)
     {
         $table = Jaws_ORM::getInstance()->table('directory');
+
+        // Fetch file info
         $table->select('is_dir:boolean', 'title', 'description', 
             'user', 'owner', 'reference', 'shared:boolean');
-        $file = $table->fetchRow();
+        $file = $table->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($file)) {
             return $file;
         }
 
-        if (!empty($users)) {
+        // Fetch file users
+        $table->reset();
+        $table->select('user');
+        $table->where('reference', $id);
+        $current_users = $table->fetchColumn();
+        if (Jaws_Error::IsError($current_users)) {
+            return $current_users;
+        }
+        $old_ids = array_diff($current_users, $users);
+        $new_ids = array_diff($users, $current_users);
+
+        // Delete old shortcuts
+        if (!empty($old_ids)) {
+            $table->reset();
+            $table->delete();
+            $table->where('reference', $id)->and();
+            $table->where('user', $old_ids, 'in');
+            $res = $table->exec();
+            if (Jaws_Error::IsError($res)) {
+                return $res;
+            }
+        }
+
+        // Create new shortcuts
+        if (!empty($new_ids)) {
             $shortcut = array(
                 'parent' => 0,
                 'shared' => false,
@@ -53,8 +79,10 @@ class Directory_Model_Share extends Jaws_Gadget_Model
                 'description' => $file['description'],
                 'owner' => $file['owner'],
                 'reference' => !empty($file['reference'])? $file['reference'] : $id,
+                'createtime' => time(),
+                'updatetime' => time()
             );
-            foreach ($users as $uid) {
+            foreach ($new_ids as $uid) {
                 $shortcut['user'] = $uid;
                 $table->reset();
                 $res = $table->insert($shortcut)->exec();
@@ -64,10 +92,12 @@ class Directory_Model_Share extends Jaws_Gadget_Model
             }
         }
 
+        // Update `shared` status
         $shared = !empty($users);
         if ($file['shared'] !== $shared) {
             $table->reset();
-            $res = $table->update(array('shared' => $shared))->exec();
+            $table->update(array('shared' => $shared));
+            $res = $table->where('id', $id)->exec();
             if (Jaws_Error::IsError($res)) {
                 return $res;
             }

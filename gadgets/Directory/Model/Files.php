@@ -17,17 +17,28 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      * @param   int     $parent     Restrict result to a specified node
      * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($user = null, $parent = null)
+    function GetFiles($user = null, $parent = null, $shared = null, $shared_for_me = null)
     {
         $table = Jaws_ORM::getInstance()->table('directory');
-        $table->select('id', 'title', 'is_dir:boolean');
-
-        if ($parent !== null){
-            $table->where('parent', $parent);
-        }
+        $table->select('id', 'parent', 'user', 'is_dir:boolean', 'title',
+            'description', 'filename', 'filetype', 'filesize', 'url',
+            'shared:boolean', 'owner', 'reference', 'createtime', 'updatetime');
 
         if ($user !== null){
-            $table->and()->where('user', $user);
+            $table->where('user', $user);
+        }
+
+        if ($parent !== null){
+            $table->and()->where('parent', $parent);
+        }
+
+        if ($shared !== null){
+            $table->and()->where('shared', $shared);
+        }
+
+        if ($shared_for_me !== null){
+            $flag = $shared_for_me? '<>' : '=';
+            $table->and()->where('user', $table->expr('owner'), $flag);
         }
 
         return $table->orderBy('is_dir desc', 'title asc')->fetchAll();
@@ -43,9 +54,9 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     function GetFile($id)
     {
         $table = Jaws_ORM::getInstance()->table('directory');
-        $table->select('id', 'user', 'parent', 'is_dir:boolean', 'title',
-            'description', 'filename', 'url', 'filetype', 'filesize',
-            'createtime', 'updatetime');
+        $table->select('id', 'parent', 'user', 'is_dir:boolean', 'title',
+            'description', 'filename', 'filetype', 'filesize', 'url',
+            'shared:boolean', 'owner', 'reference', 'createtime', 'updatetime');
         return $table->where('id', $id)->fetchRow();
     }
 

@@ -1,10 +1,17 @@
-fieldset {width:320px; border:1px solid silver; margin:0; padding:10px;}
+fieldset {border:1px solid silver; margin:0; padding:10px;}
 fieldset input:not([type=checkbox]) {width:100%;}
 fieldset table {width:100%}
 fieldset th {width:1%; text-align:left;}
 .response_notice {color:#0a0;}
 .response_error {color:#a00;}
 
+.directory .toolbar{
+float:right;
+}
+.directory .toolbar img{
+cursor:pointer;
+vertical-align:middle;
+}
 .file-box{
 display:inline-block;
 width:50px;
@@ -19,7 +26,8 @@ vertical-align:top;
 }
 .file-title{
 cursor:default;
-word-break:break-all
+word-break:break-all;
+overflow:hidden;
 }
 .file-box:hover{
 box-shadow:0 0 1px #3a41af;
@@ -40,10 +48,30 @@ background-image:url(../images/mimetypes/folder.png);
 .file-icon.file{
 background-image:url(../images/mimetypes/file.png);
 }
+.file-icon.folder.shared{
+background-image:url(../images/shared.png), url(../images/mimetypes/folder.png);
+}
+.file-icon.file.shared{
+background-image:url(../images/shared.png), url(../images/mimetypes/file.png);
+}
 
+.file-info table{
+width:100%;
+}
+.file-info th{
+white-space:nowrap;
+}
+#file_actions{
+height:24px;
+}
+#file_filter{
+float:right;
+}
 #workspace{
-min-height:300px;
-border:1px solid #ddd;
+min-height:200px;
+max-height:300px;
+overflow-y:auto;
+border-top:1px solid #ddd;
 margin-top:5px;
 }
 
@@ -51,9 +79,8 @@ margin-top:5px;
 #path span:hover {text-decoration:underline;}
 
 #statusbar{
-background-color:#f8f8f8;
-border:1px solid #ddd;
-border-top:none;
+border-top:1px solid #ddd;
+border-bottom:1px solid #ddd;
 font:11px tahoma;
 padding:2px 3px;
 }

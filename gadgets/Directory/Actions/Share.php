@@ -121,8 +121,10 @@ class Directory_Actions_Share extends Jaws_Gadget_HTML
             }
 
             $users = jaws()->request->fetch('users');
+            $users = empty($users)? array() : explode(',', $users);
+            //_log_var_dump(explode(',', $users));
             $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Share');
-            $res = $model->UpdateFileUsers($id, explode(',', $users));
+            $res = $model->UpdateFileUsers($id, $users);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception($res->getMessage());
             }

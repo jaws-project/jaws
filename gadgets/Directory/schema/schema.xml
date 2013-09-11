@@ -106,6 +106,20 @@
         <length>8</length>
       </field>
 
+      <index>
+        <name><variable>table_prefix</variable>directory_title_idx</name>
+        <unique>true</unique>
+        <field>
+          <name>title</name>
+        </field>
+        <field>
+          <name>parent</name>
+        </field>
+        <field>
+          <name>user</name>
+        </field>
+      </index>
+
     </declaration>
   </table>
 
