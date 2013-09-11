@@ -232,11 +232,9 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
              * like rest of the param stuff.
              */
             foreach ($searchdata as $v) {
-                $v = trim($v);
-                $likeStr = '%'.$v.'%';
-
+                $v = '%'.trim($v).'%';
                 $spgTable->and()->openWhere();
-                $spgTable->where('spt.title', $likeStr, 'like')->or()->where('spt.content', $likeStr, 'like');
+                $spgTable->where('spt.title', $v, 'like')->or()->where('spt.content', $v, 'like');
                 $spgTable->closeWhere();
             }
         }
