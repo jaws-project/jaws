@@ -10,6 +10,7 @@
  */
 $maps[] = array('Inbox', 'pm/inbox');
 $maps[] = array('Outbox', 'pm/outbox');
+$maps[] = array('Draft', 'pm/draft');
 $maps[] = array(
     'Send',
     'pm/send[/forward/{id}]',

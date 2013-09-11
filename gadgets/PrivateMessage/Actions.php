@@ -19,6 +19,10 @@ $actions['Inbox'] = array(
     'normal' => true,
     'file' => 'Inbox',
 );
+$actions['Draft'] = array(
+    'normal' => true,
+    'file' => 'Draft',
+);
 $actions['ViewMessage'] = array(
     'normal' => true,
     'file' => 'Message',

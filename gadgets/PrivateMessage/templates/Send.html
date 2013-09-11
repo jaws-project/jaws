@@ -55,6 +55,14 @@
 
         </div>
 
+        <div>
+            <label for="status">{lbl_status}:</label>
+            <select id="status" name="status">
+                <option value="published" selected>{lbl_published}</option>
+                <option value="draft">{lbl_draft}</option>
+            </select>
+        </div>
+
         <div class="actions">
             <a href="{back_url}" class="button">{lbl_back}</a>
             <button type="submit">{lbl_send}</button>

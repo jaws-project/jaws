@@ -25,6 +25,7 @@ class PrivateMessage_Actions_Outbox extends Jaws_Gadget_HTML
 
         $tpl = $this->gadget->loadTemplate('Outbox.html');
         $tpl->SetBlock('outbox');
+        $tpl->SetVariable('title', _t('PRIVATEMESSAGE_NAVIGATION_AREA_OUTBOX'));
 
         $date = $GLOBALS['app']->loadDate();
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');

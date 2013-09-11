@@ -192,6 +192,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $data['user']        = $user;
         $data['subject']     = $message['subject'];
         $data['body']        = $message['body'];
+        $data['published']   = $message['published'];
         $data['insert_time'] = time();
         $message_id = $mTable->insert($data)->exec();
         if (Jaws_Error::IsError($message_id)) {

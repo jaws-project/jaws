@@ -27,7 +27,8 @@ define('_EN_PRIVATEMESSAGE_ACTIONS_NAVIGATIONAREA_DESC', "Display navigation bar
 /* Navigation Area */
 define('_EN_PRIVATEMESSAGE_NAVIGATION_AREA_INBOX', "Inbox {0}");
 define('_EN_PRIVATEMESSAGE_NAVIGATION_AREA_OUTBOX', "Outbox");
-define('_EN_PRIVATEMESSAGE_NAVIGATION_AREA_SEND_MESSAGE', "Send Message");
+define('_EN_PRIVATEMESSAGE_NAVIGATION_AREA_DRAFT', "Draft {0}");
+define('_EN_PRIVATEMESSAGE_NAVIGATION_AREA_SEND_MESSAGE', "Send a message");
 
 /* Message */
 define('_EN_PRIVATEMESSAGE_MESSAGE_FROM', "From");
@@ -47,6 +48,7 @@ define('_EN_PRIVATEMESSAGE_REPLY_ON', "Reply on {0}");
 define('_EN_PRIVATEMESSAGE_SEND', "Send");
 define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS', "Recipient users");
 define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS', "Recipient groups");
+define('_EN_PRIVATEMESSAGE_FORWARD_MESSAGE', "Forward a message");
 
 /* Common */
 define('_EN_PRIVATEMESSAGE_BACK', "Back");

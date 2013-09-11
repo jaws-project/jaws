@@ -14,10 +14,11 @@ class PrivateMessage_Model_Outbox extends Jaws_Gadget_Model
      * Get Outbox
      *
      * @access  public
-     * @param   integer  $user      User id
+     * @param   integer  $user          User id
+     * @param   boolean  $published
      * @return  mixed    Inbox content  or Jaws_Error on failure
      */
-    function GetOutbox($user)
+    function GetOutbox($user, $published = true)
     {
         $table = Jaws_ORM::getInstance()->table('pm_messages');
         $table->select(
@@ -25,9 +26,7 @@ class PrivateMessage_Model_Outbox extends Jaws_Gadget_Model
             'users.nickname as from_nickname'
         );
         $table->join('users', 'pm_messages.user', 'users.id');
-        $table->where('pm_messages.user', $user);
-
-        $result = $table->fetchAll();
+        $result = $table->where('pm_messages.user', $user)->and()->where('published', $published)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }

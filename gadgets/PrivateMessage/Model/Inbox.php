@@ -28,7 +28,7 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
         );
         $table->join('users', 'pm_messages.user', 'users.id');
         $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message');
-        $table->where('pm_recipients.recipient', $user);
+        $table->where('pm_recipients.recipient', $user)->and()->where('pm_messages.published', true);
 
         if ($read !== null) {
             $table->and()->where('pm_recipients.read', $read);
@@ -54,7 +54,8 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
         $table->select('count(message):integer')->where('recipient', $user);
-
+        $table->join('pm_messages', 'pm_messages.id', 'pm_recipients.message');
+        $table->and()->where('pm_messages.published', true);
         if ($read !== null) {
             $table->and()->where('read', $read);
         }

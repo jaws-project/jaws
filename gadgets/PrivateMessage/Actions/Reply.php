@@ -26,6 +26,7 @@ class PrivateMessage_Actions_Reply extends Jaws_Gadget_HTML
 
         $tpl = $this->gadget->loadTemplate('Reply.html');
         $tpl->SetBlock('reply');
+        $tpl->SetVariable('title', _t('PRIVATEMESSAGE_REPLY'));
 
         $tpl->SetVariable('id', $id);
 

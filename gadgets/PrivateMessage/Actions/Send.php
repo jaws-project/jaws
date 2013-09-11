@@ -36,6 +36,7 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
 
         // forward a message?
         if (!empty($id) && $id > 0) {
+            $tpl->SetVariable('title', _t('PRIVATEMESSAGE_FORWARD_MESSAGE'));
             $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
             $message = $model->GetMessage($id, true, false);
             $tpl->SetVariable('body', $message['body']);
@@ -62,6 +63,8 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
                     $tpl->ParseBlock('send/file');
                 }
             }
+        } else {
+            $tpl->SetVariable('title', _t('PRIVATEMESSAGE_NAVIGATION_AREA_SEND_MESSAGE'));
         }
 
 
@@ -74,6 +77,10 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_back', _t('PRIVATEMESSAGE_BACK'));
         $tpl->SetVariable('lbl_file', _t('PRIVATEMESSAGE_FILE'));
         $tpl->SetVariable('lbl_add_file', _t('PRIVATEMESSAGE_ADD_ANOTHER_FILE'));
+        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('lbl_draft', _t('GLOBAL_DRAFT'));
+
         $tpl->SetVariable('back_url', $this->gadget->urlMap('Inbox'));
 
         $tpl->SetVariable('icon_add', STOCK_ADD);
@@ -97,8 +104,8 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('SendMessage');
 
         $attachments = array();
-        $post = jaws()->request->fetch(
-            array('recipient_users', 'recipient_groups', 'subject', 'body', 'selected_files:array'), 'post');
+        $post = jaws()->request->fetch(array('recipient_users', 'recipient_groups', 'subject',
+                                             'body', 'selected_files:array', 'status'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
 
@@ -184,6 +191,12 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
             }
         }
 
+        if($post['status']=='published') {
+            $post['published'] = true;
+        } else {
+            $post['published'] = false;
+        }
+        unset($post['status']);
         $res = $model->SendMessage($user, $post, $attachments);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
