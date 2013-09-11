@@ -294,6 +294,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             $catAux[] = $cat['id'];
         }
 
+        $feedModel = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Feeds');
         foreach ($categories as $category) {
             if (!in_array($category, $catAux)) {
                 $this->AddCategoryToEntry($post_id, $category);
@@ -301,8 +302,8 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
                 if ($this->gadget->registry->fetch('generate_category_xml') == 'true') {
                     $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Feeds');
                     $catAtom = $model->GetCategoryAtomStruct($category);
-                    $this->MakeCategoryAtom($category, $catAtom, true);
-                    $this->MakeCategoryRSS($category, $catAtom, true);
+                    $feedModel->MakeCategoryAtom($category, $catAtom, true);
+                    $feedModel->MakeCategoryRSS($category, $catAtom, true);
                 }
             }
         }
