@@ -124,7 +124,6 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
                 $tpl->ParseBlock('message/message_nav');
             }
 
-
             if (empty($message['child_id'])) {
                 $tpl->SetBlock('message/reply');
                 $tpl->SetVariable('reply_url', $this->gadget->urlMap('Reply', array('id' => $id)));
@@ -132,13 +131,20 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
                 $tpl->SetVariable('reply', _t('PRIVATEMESSAGE_REPLY'));
                 $tpl->ParseBlock('message/reply');
             }
-        }
 
-        if($view!='reference') {
             $tpl->SetBlock('message/delete');
-            $tpl->SetVariable('delete_url', $this->gadget->urlMap('DeleteMessage', array('id' => $id)));
             $tpl->SetVariable('icon_delete', STOCK_DELETE);
             $tpl->ParseBlock('message/delete');
+            $tpl->SetVariable('delete_url', $this->gadget->urlMap('DeleteMessage', array('id' => $id)));
+
+        } else {
+            if (!$message['published']) {
+                $tpl->SetBlock('message/publish');
+                $tpl->SetVariable('icon_publish', STOCK_OK);
+                $tpl->SetVariable('publish', _t('PRIVATEMESSAGE_PUBLISH'));
+                $tpl->ParseBlock('message/publish');
+                $tpl->SetVariable('publish_url', $this->gadget->urlMap('PublishMessage', array('id' => $id)));
+            }
         }
 
         $tpl->SetVariable('forward_url',    $this->gadget->urlMap('Send', array('id' => $message['id'])));
@@ -299,6 +305,44 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             );
         }
         Jaws_Header::Location($this->gadget->urlMap('Inbox'));
+    }
+
+    /**
+     * Publish a message
+     *
+     * @access  public
+     * @return  void
+     */
+    function PublishMessage()
+    {
+        $this->gadget->CheckPermission('SendMessage');
+
+        $id = jaws()->request->fetch('id', 'get');
+
+        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
+        $res = $model->PublishMessage($id);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushResponse(
+                $res->getMessage(),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        }
+
+        if ($res == true) {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_MESSAGE_PUBLISHED'),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        } else {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_PUBLISHED'),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        }
+        Jaws_Header::Location($this->gadget->urlMap('Draft'));
     }
 
 }

@@ -58,6 +58,7 @@ define('_EN_PRIVATEMESSAGE_FILE', "File");
 define('_EN_PRIVATEMESSAGE_FILE_HINTS_COUNT', "Hints");
 define('_EN_PRIVATEMESSAGE_MESSAGE_FILE_SIZE', "File size");
 define('_EN_PRIVATEMESSAGE_ADD_ANOTHER_FILE', "Add another file");
+define('_EN_PRIVATEMESSAGE_PUBLISH', "Publish");
 
 /* Responses */
 define('_EN_PRIVATEMESSAGE_PROPERTIES_UPDATED', "The properties have been updated");

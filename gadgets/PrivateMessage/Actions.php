@@ -27,6 +27,10 @@ $actions['ViewMessage'] = array(
     'normal' => true,
     'file' => 'Message',
 );
+$actions['PublishMessage'] = array(
+    'normal' => true,
+    'file' => 'Message',
+);
 $actions['MessageHistory'] = array(
     'normal' => true,
     'file' => 'Message',

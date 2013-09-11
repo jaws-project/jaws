@@ -26,7 +26,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         $table = Jaws_ORM::getInstance()->table('pm_messages');
         $columns = array(
-            'pm_messages.id:integer', 'parent:integer', 'pm_messages.subject', 'pm_messages.body',
+            'pm_messages.id:integer', 'parent:integer', 'pm_messages.subject', 'pm_messages.body', 'published:boolean',
             'users.nickname as from_nickname', 'users.username as from_username', 'users.avatar', 'users.email',
             'user:integer', 'pm_messages.insert_time', $messageTable);
         if($getRecipients) {
@@ -106,6 +106,20 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
         $result = $table->delete()->where('message', $id)->and()->where('recipient', $user)->exec();
+        return $result;
+    }
+
+    /**
+     * Publish a message
+     *
+     * @access  public
+     * @param   integer  $id     Message id
+     * @return  mixed    True or Jaws_Error on failure
+     */
+    function PublishMessage($id)
+    {
+        $table = Jaws_ORM::getInstance()->table('pm_messages');
+        $result = $table->update(array('published'=>true))->where('id', $id)->exec();
         return $result;
     }
 

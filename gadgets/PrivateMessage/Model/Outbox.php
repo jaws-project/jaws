@@ -34,4 +34,24 @@ class PrivateMessage_Model_Outbox extends Jaws_Gadget_Model
         return $result;
     }
 
- }
+    /**
+     * Get Outbox Statistics
+     *
+     * @access  public
+     * @param   integer  $user          User id
+     * @param   integer  $published
+     * @return  mixed    Inbox count or Jaws_Error on failure
+     */
+    function GetOutboxStatistics($user, $published)
+    {
+        $table = Jaws_ORM::getInstance()->table('pm_messages');
+        $table->select('count(id):integer')->where('user', $user);
+        $result = $table->and()->where('pm_messages.published', $published)->fetchOne();
+        if (Jaws_Error::IsError($result)) {
+            return new Jaws_Error($result->getMessage(), 'SQL');
+        }
+
+        return $result;
+    }
+
+}
