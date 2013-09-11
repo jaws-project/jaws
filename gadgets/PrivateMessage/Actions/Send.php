@@ -37,7 +37,7 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
         // forward a message?
         if (!empty($id) && $id > 0) {
             $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
-            $message = $model->GetMessage($id, true);
+            $message = $model->GetMessage($id, true, false);
             $tpl->SetVariable('body', $message['body']);
             $tpl->SetVariable('subject', $message['subject']);
 

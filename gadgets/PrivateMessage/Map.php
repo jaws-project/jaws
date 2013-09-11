@@ -22,8 +22,11 @@ $maps[] = array(
 );
 $maps[] = array(
     'ViewMessage',
-    'pm/message/{id}',
-    array('id' => '[\p{L}[:digit:]-_\.]+',)
+    'pm/message/{id}[/view/{view}]',
+    array(
+        'id' => '[\p{L}[:digit:]-_\.]+',
+        'view' => '[[:lower:]-]+',
+    )
 );
 $maps[] = array(
     'MessageHistory',

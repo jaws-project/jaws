@@ -23,15 +23,20 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $id = jaws()->request->fetch('id', 'get');
+        $get = jaws()->request->fetch(array('id', 'view'), 'get');
+        $id = $get['id'];
+        $view = $get['view'];
         $date = $GLOBALS['app']->loadDate();
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $usrModel = new Jaws_User;
-        $message = $model->GetMessage($id, true);
-
-        if ($message['read'] == false) {
-            $user = $GLOBALS['app']->Session->GetAttribute('user');
-            $model->MarkMessages($id, true, $user);
+        if ($view != 'reference') {
+            $message = $model->GetMessage($id, true);
+            if ($message['read'] == false) {
+                $user = $GLOBALS['app']->Session->GetAttribute('user');
+                $model->MarkMessages($id, true, $user);
+            }
+        } else {
+            $message = $model->GetMessage($id, true, false);
         }
 
         $tpl = $this->gadget->loadTemplate('Message.html');
@@ -109,32 +114,40 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             $tpl->ParseBlock('message/message_nav');
         }
 
-        if(!empty($message['child_id'])) {
-            $tpl->SetBlock('message/message_nav');
-            $tpl->SetVariable('message_nav_url', $this->gadget->urlMap(
-                'ViewMessage',
-                array('id' => $message['child_id'])));
-            $tpl->SetVariable('message_nav', _t('PRIVATEMESSAGE_NEXT_MESSAGE'));
-            $tpl->ParseBlock('message/message_nav');
-        }
+        if ($view != 'reference') {
+            if (!empty($message['child_id'])) {
+                $tpl->SetBlock('message/message_nav');
+                $tpl->SetVariable('message_nav_url', $this->gadget->urlMap(
+                    'ViewMessage',
+                    array('id' => $message['child_id'])));
+                $tpl->SetVariable('message_nav', _t('PRIVATEMESSAGE_NEXT_MESSAGE'));
+                $tpl->ParseBlock('message/message_nav');
+            }
 
 
-        if(empty($message['child_id'])) {
-            $tpl->SetBlock('message/reply');
-            $tpl->SetVariable('reply_url',      $this->gadget->urlMap('Reply', array('id' => $id)));
-            $tpl->SetVariable('icon_reply',     STOCK_JUMP_TO);
-            $tpl->ParseBlock('message/reply');
+            if (empty($message['child_id'])) {
+                $tpl->SetBlock('message/reply');
+                $tpl->SetVariable('reply_url', $this->gadget->urlMap('Reply', array('id' => $id)));
+                $tpl->SetVariable('icon_reply', STOCK_JUMP_TO);
+                $tpl->SetVariable('reply', _t('PRIVATEMESSAGE_REPLY'));
+                $tpl->ParseBlock('message/reply');
+            }
         }
-        $tpl->SetVariable('forward_url',    $this->gadget->urlMap('Send', array('id' => $id)));
-        $tpl->SetVariable('delete_url',     $this->gadget->urlMap('DeleteMessage', array('id' => $id)));
+
+        if($view!='reference') {
+            $tpl->SetBlock('message/delete');
+            $tpl->SetVariable('delete_url', $this->gadget->urlMap('DeleteMessage', array('id' => $id)));
+            $tpl->SetVariable('icon_delete', STOCK_DELETE);
+            $tpl->ParseBlock('message/delete');
+        }
+
+        $tpl->SetVariable('forward_url',    $this->gadget->urlMap('Send', array('id' => $message['id'])));
         $tpl->SetVariable('back_url',       $this->gadget->urlMap('Inbox'));
 
         $tpl->SetVariable('icon_back',      STOCK_LEFT);
         $tpl->SetVariable('icon_forward',   STOCK_RIGHT);
-        $tpl->SetVariable('icon_delete',    STOCK_DELETE);
 
         $tpl->SetVariable('back', _t('PRIVATEMESSAGE_BACK'));
-        $tpl->SetVariable('reply', _t('PRIVATEMESSAGE_REPLY'));
         $tpl->SetVariable('forward', _t('PRIVATEMESSAGE_FORWARD'));
 
         $tpl->ParseBlock('message');

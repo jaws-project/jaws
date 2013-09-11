@@ -16,22 +16,32 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      * @access  public
      * @param   integer $id                 Message id
      * @param   bool    $fetchAttachment    Fetch message's attachment info?
-     * @return  mixed    Inbox count or Jaws_Error on failure
+     * @param   bool    $getRecipients       Get recipient info?
+     * @return  mixed   Inbox count or Jaws_Error on failure
      */
-    function GetMessage($id, $fetchAttachment = false)
+    function GetMessage($id, $fetchAttachment = false, $getRecipients = true)
     {
         $messageTable = Jaws_ORM::getInstance()->table('pm_messages');
         $messageTable->select('id:integer')->where('parent', $id)->alias('child_id');
 
         $table = Jaws_ORM::getInstance()->table('pm_messages');
-        $table->select(
+        $columns = array(
             'pm_messages.id:integer', 'parent:integer', 'pm_messages.subject', 'pm_messages.body',
             'users.nickname as from_nickname', 'users.username as from_username', 'users.avatar', 'users.email',
-            'pm_recipients.read:boolean', 'user:integer', 'pm_messages.insert_time', $messageTable
-        );
+            'user:integer', 'pm_messages.insert_time', $messageTable);
+        if($getRecipients) {
+            $columns[] = 'pm_recipients.read:boolean';
+        }
+
+        $table->select($columns);
         $table->join('users', 'pm_messages.user', 'users.id');
-        $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message');
-        $table->where('pm_recipients.id', $id);
+        if($getRecipients) {
+            $columns[] = 'pm_recipients.read:boolean';
+            $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message');
+            $table->where('pm_recipients.id', $id);
+        } else {
+            $table->where('pm_messages.id', $id);
+        }
 
         $result = $table->fetchRow();
         if (Jaws_Error::IsError($result)) {
