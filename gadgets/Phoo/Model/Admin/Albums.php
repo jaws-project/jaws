@@ -32,7 +32,7 @@ class Phoo_Model_Admin_Albums extends Jaws_Gadget_Model
         $data['published'] = (bool)$published;
 
         $table = Jaws_ORM::getInstance()->table('phoo_album');
-        $result = $table->update($data)->where('idd', (int)$id)->exec();
+        $result = $table->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_UPDATED'), _t('PHOO_NAME'));
