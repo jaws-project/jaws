@@ -9,25 +9,33 @@
         <input type="hidden" name="action" value="SendMessage"/>
 
         <div class="content">
-                <div>
-                    <label for="recipient_users">{lbl_recipient_users}:</label>
-                    <input name="recipient_users" id="recipient_users" type="text"/>
-                </div>
+            <div>
+                <label for="recipient_users">{lbl_recipient_users}:</label>
+                <input name="recipient_users" id="recipient_users" type="text"/>
+            </div>
 
-                <div>
-                    <label for="recipient_groups">{lbl_recipient_groups}:</label>
-                    <input name="recipient_groups" id="recipient_groups" type="text"/>
-                </div>
+            <div>
+                <label for="recipient_groups">{lbl_recipient_groups}:</label>
+                <input name="recipient_groups" id="recipient_groups" type="text"/>
+            </div>
 
-                <div>
-                    <label for="subject">{lbl_subject}:</label>
-                    <input name="subject" id="subject" type="text" value="{subject}"/>
-                </div>
+            <div>
+                <label for="subject">{lbl_subject}:</label>
+                <input name="subject" id="subject" type="text" value="{subject}"/>
+            </div>
 
-                <div>
-                    <label for="body">{lbl_body}:</label>
-                    <textarea name="body" id="body" rows="6">{body}</textarea>
-                </div>
+            <div>
+                <label for="body">{lbl_body}:</label>
+                <textarea name="body" id="body" rows="6">{body}</textarea>
+            </div>
+
+            <div>
+                <label for="status">{lbl_status}:</label>
+                <select id="status" name="status">
+                    <option value="published" selected>{lbl_published}</option>
+                    <option value="draft">{lbl_draft}</option>
+                </select>
+            </div>
 
             <fieldset>
                 <legend><span>{lbl_attachments}</span></legend>
@@ -41,7 +49,9 @@
 
                 <div>
                     <label for="file1" id="file1_label">{lbl_file} 1:&nbsp;</label>
-                    <input type="file" title="{lbl_file}1" id="file1" name="file1"> </div><br>
+                    <input type="file" title="{lbl_file}1" id="file1" name="file1"></div>
+                <br>
+
                 <div>
 
   <span id="file_addentry2">
@@ -53,14 +63,6 @@
             </fieldset>
 
 
-        </div>
-
-        <div>
-            <label for="status">{lbl_status}:</label>
-            <select id="status" name="status">
-                <option value="published" selected>{lbl_published}</option>
-                <option value="draft">{lbl_draft}</option>
-            </select>
         </div>
 
         <div class="actions">

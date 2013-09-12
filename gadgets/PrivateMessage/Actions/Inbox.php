@@ -45,7 +45,14 @@ class PrivateMessage_Actions_Inbox extends Jaws_Gadget_HTML
                 $tpl->SetBlock('inbox/message');
                 $tpl->SetVariable('rownum', $i);
                 $tpl->SetVariable('from', $message['from_nickname']);
-                $tpl->SetVariable('subject', $message['subject']);
+                if($message['read']) {
+                    $subject = $message['subject'];
+                    $tpl->SetVariable('status', 'read');
+                } else {
+                    $subject = '<strong>' . $message['subject'] . '</strong>';
+                    $tpl->SetVariable('status', 'unread');
+                }
+                $tpl->SetVariable('subject', $subject);
                 $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
 
                 $tpl->SetVariable('message_url', $this->gadget->urlMap(

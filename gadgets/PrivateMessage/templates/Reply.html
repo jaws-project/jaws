@@ -3,31 +3,87 @@
 <div class="gadget privateMessage message">
     <h2>{title}</h2>
 
-    <form name="contacts" action="{base_script}" method="post">
+    <form name="contacts" action="{base_script}" method="post" enctype="multipart/form-data">
+        <input type="hidden" value="15000000" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE">
         <input type="hidden" name="gadget" value="PrivateMessage"/>
         <input type="hidden" name="action" value="ReplyMessage"/>
         <input type="hidden" name="id" id="id" value="{id}"/>
 
         <div class="content">
-                <div class="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></div>
-                <div>{lbl_from}: <a href="{user_url}">{from}</a></div>
-                <div>{lbl_send_time}: {send_time}</div>
-                <div>{lbl_subject}: {subject}</div>
+            <div class="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></div>
+            <div>{lbl_from}: <a href="{user_url}">{from}</a></div>
+            <div>{lbl_send_time}: {send_time}</div>
+            <div>{lbl_subject}: {subject}</div>
+            <div>
+                <div>{lbl_body}:</div>
+                <div>{body}</div>
+            </div>
+
+            <div>
+                <label for="subject">{lbl_subject}:</label>
+                <input name="subject" id="subject" type="text" value="{reply_subject}"/>
+            </div>
+
+            <div>
+                <label for="body">{lbl_body}:</label>
+                <textarea name="body" id="body" rows="6"></textarea>
+            </div>
+
+
+            <div>
+                <label for="status">{lbl_status}:</label>
+                <select id="status" name="status">
+                    <option value="published" selected>{lbl_published}</option>
+                    <option value="draft">{lbl_draft}</option>
+                </select>
+            </div>
+
+            <fieldset>
+                <legend><span>{lbl_attachments}</span></legend>
+
+                <!-- BEGIN file -->
                 <div>
-                    <div>{lbl_body}:</div>
-                    <div>{body}</div>
+                    <input type="checkbox" name="selected_files[]" id="chk_file_{file_id}" value="{file_id}" checked>
+                    <a href="{file_download_link}">{file_name}</a> ({lbl_file_size}: {file_size})
                 </div>
+                <!-- END file -->
 
                 <div>
-                    <label for="body">{lbl_body}:</label>
-                    <textarea name="body" id="body" rows="6"></textarea>
-                </div>
+                    <label for="file1" id="file1_label">{lbl_file} 1:&nbsp;</label>
+                    <input type="file" title="{lbl_file}1" id="file1" name="file1"></div>
+                <br>
 
-                <div class="actions">
-                    <button type="submit">{lbl_send}</button>
-                </div>
+                <div>
+
+  <span id="file_addentry2">
+      <div>
+          <button onclick="addEntry('{lbl_file}');" value="{lbl_add_file}" id="addEntryButton" name="addEntryButton"
+                  type="button"><img id="addEntryButton_stockimage" alt="" src="{icon_add}">&nbsp;{lbl_add_file}
+          </button>
+      </div></span></div>
+            </fieldset>
+
+            <div class="actions">
+                <button type="submit">{lbl_send}</button>
+            </div>
 
         </div>
     </form>
 </div>
+
+<script type="text/javascript">
+
+    /**
+     * add a file entry
+     */
+    function addEntry(title) {
+        num_entries++;
+        var id = num_entries;
+        entry = '<label id="file' + id + '_label" for="file' + id + '">' + title + ' ' + id + ':&nbsp;</label>';
+        entry += '<input type="file" name="file' + id + '" id="file' + id + '" title="' + title + id + '" /><br />';
+        $('file_addentry' + id).innerHTML = entry + '<span id="file_addentry' + (id + 1) + '">' + $('file_addentry' + id).innerHTML + '</span>';
+    }
+    var num_entries = 1;
+</script>
+
 <!-- END reply -->

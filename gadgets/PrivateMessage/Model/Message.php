@@ -21,14 +21,11 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      */
     function GetMessage($id, $fetchAttachment = false, $getRecipients = true)
     {
-        $messageTable = Jaws_ORM::getInstance()->table('pm_messages');
-        $messageTable->select('id:integer')->where('parent', $id)->alias('child_id');
-
         $table = Jaws_ORM::getInstance()->table('pm_messages');
         $columns = array(
             'pm_messages.id:integer', 'parent:integer', 'pm_messages.subject', 'pm_messages.body', 'published:boolean',
             'users.nickname as from_nickname', 'users.username as from_username', 'users.avatar', 'users.email',
-            'user:integer', 'pm_messages.insert_time', $messageTable);
+            'user:integer', 'pm_messages.insert_time');
         if($getRecipients) {
             $columns[] = 'pm_recipients.read:boolean';
         }
@@ -50,7 +47,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         if($fetchAttachment) {
             $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');
-            $result['attachments'] = $model->GetMessageAttachments($id);
+            $result['attachments'] = $model->GetMessageAttachments($result['id']);
         }
         return $result;
     }
@@ -148,46 +145,6 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
     }
 
     /**
-     * Reply message
-     *
-     * @access  public
-     * @param   integer  $id     Message id
-     * @param   integer  $user   User id
-     * @param   string   $reply  Reply message
-     * @return  mixed    True or Jaws_Error on failure
-     */
-    function ReplyMessage($id, $user, $reply)
-    {
-        $message = $this->GetMessage($id);
-
-        $table = Jaws_ORM::getInstance()->table('pm_messages');
-        //Start Transaction
-        $table->beginTransaction();
-
-        $data = array();
-        $data['parent']      = $message['id'];
-        $data['user']        = $user;
-        $data['subject']     = _t('PRIVATEMESSAGE_REPLY_ON', $message['subject']);
-        $data['body']        = $reply;
-        $data['insert_time'] = time();
-        $message_id = $table->insert($data)->exec();
-
-        $table = Jaws_ORM::getInstance()->table('pm_recipients');
-        $data = array();
-        $data['message']    = $message_id;
-        $data['recipient']  = $message['user'];
-
-        $res = $table->insert($data)->exec();
-        if (Jaws_Error::IsError($res)) {
-            return false;
-        }
-
-        //Commit Transaction
-        $table->commit();
-        return true;
-    }
-
-    /**
      * Send message
      *
      * @access  public
@@ -204,6 +161,9 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         $data = array();
         $data['user']        = $user;
+        if(!empty($message['parent'])) {
+            $data['parent']  = $message['parent'];
+        }
         $data['subject']     = $message['subject'];
         $data['body']        = $message['body'];
         $data['published']   = $message['published'];

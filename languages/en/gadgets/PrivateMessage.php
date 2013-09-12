@@ -64,8 +64,10 @@ define('_EN_PRIVATEMESSAGE_PUBLISH', "Publish");
 define('_EN_PRIVATEMESSAGE_PROPERTIES_UPDATED', "The properties have been updated");
 define('_EN_PRIVATEMESSAGE_ERROR_NO_FILE_UPLOADED', "No image has been uploaded.");
 define('_EN_PRIVATEMESSAGE_MESSAGE_DELETED', "Message has been deleted.");
+define('_EN_PRIVATEMESSAGE_MESSAGE_PUBLISHED', "Message has been published.");
 
 /* Errors */
 define('_EN_PRIVATEMESSAGE_ERROR_PROPERTIES_NOT_UPDATED', "Updating the properties failed");
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_DELETED', "There was a problem deleting message.");
+define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_PUBLISHED', "There was a problem publishing message.");
 

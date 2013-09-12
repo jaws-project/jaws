@@ -90,7 +90,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
                 $file_url = $this->gadget->urlMap('Attachment',
                                                   array(
                                                       'uid' => $message['user'],
-                                                      'mid' => $id,
+                                                      'mid' => $message['id'],
                                                       'aid' => $file['id'],
                                                   ));
                 $tpl->SetVariable('file_download_link', $file_url);
@@ -147,14 +147,19 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             }
         }
 
-        $tpl->SetVariable('forward_url',    $this->gadget->urlMap('Send', array('id' => $message['id'])));
+        if ($message['published']) {
+            $tpl->SetBlock('message/forward');
+            $tpl->SetVariable('forward_url', $this->gadget->urlMap('Send', array('id' => $message['id'])));
+            $tpl->SetVariable('icon_forward', STOCK_RIGHT);
+            $tpl->SetVariable('forward', _t('PRIVATEMESSAGE_FORWARD'));
+            $tpl->ParseBlock('message/forward');
+        }
+
         $tpl->SetVariable('back_url',       $this->gadget->urlMap('Inbox'));
 
-        $tpl->SetVariable('icon_back',      STOCK_LEFT);
-        $tpl->SetVariable('icon_forward',   STOCK_RIGHT);
+        $tpl->SetVariable('icon_back', STOCK_LEFT);
 
         $tpl->SetVariable('back', _t('PRIVATEMESSAGE_BACK'));
-        $tpl->SetVariable('forward', _t('PRIVATEMESSAGE_FORWARD'));
 
         $tpl->ParseBlock('message');
         return $tpl->Get();

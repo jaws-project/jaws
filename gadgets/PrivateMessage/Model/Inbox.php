@@ -34,7 +34,7 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
             $table->and()->where('pm_recipients.read', $read);
         }
 
-        $result = $table->fetchAll();
+        $result = $table->orderBy('insert_time desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
