@@ -89,7 +89,7 @@ class Jaws_Translate
 
         if (strpos($string, '{') !== false) {
             $originalString = $string;
-            $string = preg_replace('/[\s\{[0-9]+\}]*/', '', $string);
+            $string = preg_replace('/\s*{[0-9]+\}/u', '', $string);
             if ($originalString != $string) {
                 $GLOBALS['log']->Log(JAWS_LOG_DEBUG,
                                      'A placeholder was not replaced while trying to translate ' . $string);
