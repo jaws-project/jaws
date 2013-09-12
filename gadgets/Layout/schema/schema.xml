@@ -65,6 +65,13 @@
             <default>true</default>
         </field>
 
+        <index>
+            <name><variable>table_prefix</variable>layout_user</name>
+            <field>
+                <name>user</name>
+            </field>
+        </index>
+
     </declaration>
   </table>
 </database>
