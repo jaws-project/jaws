@@ -58,6 +58,7 @@ define('_EN_ADDRESSBOOK_WORK_ADR', "Work Address");
 define('_EN_ADDRESSBOOK_OTHER_ADR', "Other Address");
 define('_EN_ADDRESSBOOK_ITEMS_FIRSTNAME', "First Name");
 define('_EN_ADDRESSBOOK_ITEMS_LASTNAME', "Last Name");
+define('_EN_ADDRESSBOOK_ITEMS_USER_LINK', "Linked To");
 
 /* Groups */
 define('_EN_ADDRESSBOOK_GROUP_TITLE', "Address Book Groups");
