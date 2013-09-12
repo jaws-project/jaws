@@ -166,7 +166,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js');
+        $this->AjaxMe('site_script.js');
         $this->SetTitle(_t('ADDRESSBOOK_ITEMS_ADD_NEW_TITLE'));
         $tpl = $this->gadget->loadTemplate('EditAddress.html');
 
@@ -181,6 +181,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $tpl->SetVariable('id', 0);
         $tpl->SetVariable('lastID', 1);
         $tpl->SetVariable('action', 'InsertItem');
+        $tpl->SetVariable('lbl_user_link',  _t('ADDRESSBOOK_ITEMS_USER_LINK'));
         $tpl->SetVariable('lbl_firstname',    _t('ADDRESSBOOK_ITEMS_FIRSTNAME'));
         $tpl->SetVariable('lbl_lastname',     _t('ADDRESSBOOK_ITEMS_LASTNAME'));
         $tpl->SetVariable('lbl_title',        _t('ADDRESSBOOK_ITEMS_TITLE'));
@@ -196,9 +197,22 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $tpl->SetVariable('other_details',    _t('ADDRESSBOOK_OTHER_DETAILS'));
 
         $current_image = $GLOBALS['app']->getSiteURL('/gadgets/AddressBook/images/photo128px.png');
-        $personImage =& Piwi::CreateWidget('Image', $current_image);
-        $personImage->SetID('personImage');
-        $tpl->SetVariable('image', $personImage->Get());
+        $tpl->SetVariable('image_src', $current_image);
+
+        require_once JAWS_PATH . 'include/Jaws/User.php';
+        $uModel = new Jaws_User();
+        $users = $uModel->GetUsers();
+        $tpl->SetBlock('address/user_item');
+        $tpl->SetVariable('user_id', 0);
+        $tpl->SetVariable('user_name', '');
+        $tpl->ParseBlock('address/user_item');
+        foreach ($users as $user) {
+            $tpl->SetBlock('address/user_item');
+            $tpl->SetVariable('user_id', $user['id']);
+            $tpl->SetVariable('user_name', $user['username']);
+            $tpl->ParseBlock('address/user_item');
+        }
+        $tpl->SetVariable('icon_load', STOCK_REFRESH);
 
         $tels = array(':');
         $iIndex = 1;
@@ -264,7 +278,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js');
+        $this->AjaxMe('site_script.js');
         $this->SetTitle(_t('ADDRESSBOOK_ITEMS_EDIT_TITLE'));
         $tpl = $this->gadget->loadTemplate('EditAddress.html');
         $tpl->SetBlock("address");
@@ -277,6 +291,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('id', $info['id']);
         $tpl->SetVariable('action', 'UpdateItem');
+        $tpl->SetVariable('lbl_user_link',  _t('ADDRESSBOOK_ITEMS_USER_LINK'));
         $tpl->SetVariable('lbl_firstname',  _t('ADDRESSBOOK_ITEMS_FIRSTNAME'));
         $tpl->SetVariable('lbl_lastname',   _t('ADDRESSBOOK_ITEMS_LASTNAME'));
         $tpl->SetVariable('lbl_title',      _t('ADDRESSBOOK_ITEMS_TITLE'));
@@ -298,6 +313,22 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             $tpl->ParseBlock('address/selected');
         }
 
+        require_once JAWS_PATH . 'include/Jaws/User.php';
+        $uModel = new Jaws_User();
+        $users = $uModel->GetUsers();
+        $tpl->SetBlock('address/user_item');
+        $tpl->SetVariable('user_id', 0);
+        $tpl->SetVariable('user_name', '');
+        $tpl->ParseBlock('address/user_item');
+        foreach ($users as $user) {
+            $tpl->SetBlock('address/user_item');
+            $tpl->SetVariable('user_id', $user['id']);
+            $tpl->SetVariable('user_name', $user['username']);
+            $tpl->SetVariable('selected', ($user['id'] == $info['user_link'])? 'selected="selected"': '');
+            $tpl->ParseBlock('address/user_item');
+        }
+        $tpl->SetVariable('icon_load', STOCK_REFRESH);
+
         $names = explode(';', $info['name']);
         if (count($names) > 1) {
             $tpl->SetVariable('lastname', $names[0]);
@@ -310,9 +341,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             $current_image = $GLOBALS['app']->getDataURL() . "addressbook/image/" . $info['image'];
             $current_image .= !empty($info['updatetime']) ? "?" . $info['updatetime'] . "" : '';
         }
-        $personImage =& Piwi::CreateWidget('Image', $current_image);
-        $personImage->SetID('personImage');
-        $tpl->SetVariable('image', $personImage->Get());
+        $tpl->SetVariable('image_src', $current_image);
 
         // upload/delete image
         $tpl->SetVariable('lbl_upload_image', _t('ADDRESSBOOK_PERSON_IMAGE_UPLOAD'));
@@ -444,7 +473,8 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(array('firstname', 'lastname', 'title', 'delete_image', 'url', 'notes', 'public'), 'post');
+        $post = jaws()->request->fetch(array('firstname', 'lastname', 'nickname', 'title', 
+                                             'delete_image', 'url', 'notes', 'public', 'user_link:int'), 'post');
         $post['name'] = $post['lastname'] . ';' . $post['firstname'] . ';;;';
         unset($post['firstname'], $post['lastname']);
 
@@ -541,6 +571,16 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), 'gif,jpg,jpeg,png');
             if (!empty($res) && !Jaws_Error::IsError($res)) {
                 $post['image'] = $res['image'][0]['host_filename'];
+            } elseif (!Jaws_Error::IsError($res)) {
+                $uid = (int) $post['user_link'];
+                require_once JAWS_PATH . 'include/Jaws/User.php';
+                $uModel = new Jaws_User();
+                $userInfo = $uModel->GetUser($uid);
+                if (!empty($userInfo['avatar'])) {
+                    $userAvatar = $GLOBALS['app']->getDataURL(). 'avatar/'. $userInfo['avatar'];
+                    copy($userAvatar, Jaws_Utils::upload_tmp_dir() . '/' . $userInfo['avatar']);
+                    $post['image'] = $userInfo['avatar'];
+                }
             }
         } else {
             $post['image'] = '';
@@ -579,9 +619,9 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(array('firstname', 'lastname', 'title', 'nickname', 'delete_image',
-                                    'url', 'notes', 'public', 'id'),
-                              'post');
+        $post = jaws()->request->fetch(array('firstname', 'lastname', 'nickname', 'title', 'user_link:int',
+                                             'delete_image', 'url', 'notes', 'public', 'id'),
+                                    'post');
 
         $post['name'] = $post['lastname'] . ';' . $post['firstname'] . ';;;';
         unset($post['firstname'], $post['lastname']);
@@ -687,8 +727,20 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
 
         if (empty($post['delete_image'])) {
             $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), 'gif,jpg,jpeg,png');
+            $uid = (int) jaws()->request->fetch('last_refreh_user_link', 'post');
             if (!empty($res) && !Jaws_Error::IsError($res)) {
                 $post['image'] = $res['image'][0]['host_filename'];
+            } elseif (!Jaws_Error::IsError($res) && $uid != -1) {
+                require_once JAWS_PATH . 'include/Jaws/User.php';
+                $uModel = new Jaws_User();
+                $userInfo = $uModel->GetUser($uid);
+                if (empty($userInfo['avatar'])) {
+                    $post['image'] = '';
+                } else {
+                    $userAvatar = $GLOBALS['app']->getDataURL(). 'avatar/'. $userInfo['avatar'];
+                    copy($userAvatar, Jaws_Utils::upload_tmp_dir() . '/' . $userInfo['avatar']);
+                    $post['image'] = $userInfo['avatar'];
+                }
             }
         } else {
             $post['image'] = '';

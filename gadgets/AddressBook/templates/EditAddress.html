@@ -6,9 +6,21 @@
   <input type="hidden" name="gadget" value="AddressBook" />
   <input type="hidden" name="action" value="{action}" />
   <input type="hidden" name="id" value="{id}" />
+  <input type="hidden" name="last_refreh_user_link" id="last_refreh_user_link" value="-1" />
   <div class="content">
     <fieldset>
-      <div class="addressbook_image">{image}</div>
+      <div class="addressbook_image"><img id="person_image" src="{image_src}" alt="person image" width="128px" /></div>
+      <div>
+        <label for="addressbook_user_link" >{lbl_user_link}:</label>
+        <select id="addressbook_user_link" name="user_link" style="width: 150px; display: inline;" >
+          <!-- BEGIN user_item -->
+          <option value="{user_id}" {selected}>{user_name}</option>
+          <!-- END user_item -->
+        </select>
+        <button onclick="GetUserInfo();" value="" id="LoadUserInfo" name="LoadUserInfo"type="button">
+          <img alt="" src="{icon_load}">
+        </button>
+      </div>
       <div>
         <label for="addressbook_firstname" >{lbl_firstname}:</label>
         <input id="addressbook_firstname" name="firstname" type="text" value="{firstname}" />
@@ -164,70 +176,6 @@
     remain = $('removeUrlButton').parentNode.parentNode.getElementsByTagName('div').length;
     if (remain == 1) {
         $('removeUrlButton').style.display = 'none';
-    }
-
-    function AddTellItem()
-    {
-        lastID = lastID + 1;
-        $('removeTelButton').style.display = 'inline'
-        var div = $('tel_p').getElementsByTagName('div')[0].cloneNode(true);
-        div.className = 'tel';
-        div.id = "tel_" + lastID;
-        div.getElementsByTagName('select')[0].name = 'tel_type['+lastID+']';
-        div.getElementsByTagName('input')[0].name  = 'tel_number['+lastID+']';
-        div.getElementsByTagName('input')[0].value = '';
-        div.getElementsByTagName('select')[0].selectedIndex = 0;
-        $('tel_p').appendChild(div);
-    }
-
-    function AddEmailItem()
-    {
-        lastID = lastID + 1;
-        $('removeEmailButton').style.display = 'inline'
-        var div = $('email_p').getElementsByTagName('div')[0].cloneNode(true);
-        div.className = 'email';
-        div.id = "email_" + lastID;
-        div.getElementsByTagName('select')[0].name = 'email_type['+lastID+']';
-        div.getElementsByTagName('input')[0].name  = 'email['+lastID+']';
-        div.getElementsByTagName('input')[0].value = '';
-        div.getElementsByTagName('select')[0].selectedIndex = 0;
-        $('email_p').appendChild(div);
-    }
-
-    function AddAdrItem()
-    {
-        lastID = lastID + 1;
-        $('removeAdrButton').style.display = 'inline'
-        var div = $('adr_p').getElementsByTagName('div')[0].cloneNode(true);
-        div.className = 'adr';
-        div.id = "adr_" + lastID;
-        div.getElementsByTagName('select')[0].name = 'adr_type['+lastID+']';
-        div.getElementsByTagName('textarea')[0].name  = 'adr['+lastID+']';
-        div.getElementsByTagName('textarea')[0].value = '';
-        div.getElementsByTagName('select')[0].selectedIndex = 0;
-        $('adr_p').appendChild(div);
-    }
-
-    function AddUrlItem()
-    {
-        lastID = lastID + 1;
-        $('removeUrlButton').style.display = 'inline'
-        var div = $('url_p').getElementsByTagName('div')[0].cloneNode(true);
-        div.className = 'url';
-        div.id = "url_" + lastID;
-        div.getElementsByTagName('input')[0].name  = 'url['+lastID+']';
-        div.getElementsByTagName('input')[0].value = '';
-        $('url_p').appendChild(div);
-    }
-
-    function RemoveItem(inputObject)
-    {
-        remain = $(inputObject).parentNode.parentNode.getElementsByTagName('div').length;
-        parent = $(inputObject).parentNode.parentNode.getElementsByTagName('div');
-        Element.destroy($(inputObject).parentNode);
-        if (remain == 2) {
-            parent[0].getElementsByTagName('button')[1].style.display = 'none';
-        }
     }
  </script>
 
