@@ -296,7 +296,8 @@ class Jaws_ORM
                         $column
                     );
                 } else {
-                    $column = $this->_identifier_quoting['start'] . trim($column);
+                    $column = $this->_identifier_quoting['start'] .
+                        ($dotted_column? $this->_tbl_prefix : '') . trim($column);
                     if (false !== $aliased_column = strpos($column, ' as ')) {
                         $column = substr_replace(
                             $column,
