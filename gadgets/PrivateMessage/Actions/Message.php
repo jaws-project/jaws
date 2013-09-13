@@ -115,22 +115,11 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
         }
 
         if ($view != 'reference') {
-            if (!empty($message['child_id'])) {
-                $tpl->SetBlock('message/message_nav');
-                $tpl->SetVariable('message_nav_url', $this->gadget->urlMap(
-                    'ViewMessage',
-                    array('id' => $message['child_id'])));
-                $tpl->SetVariable('message_nav', _t('PRIVATEMESSAGE_NEXT_MESSAGE'));
-                $tpl->ParseBlock('message/message_nav');
-            }
-
-            if (empty($message['child_id'])) {
-                $tpl->SetBlock('message/reply');
-                $tpl->SetVariable('reply_url', $this->gadget->urlMap('Reply', array('id' => $id)));
-                $tpl->SetVariable('icon_reply', STOCK_JUMP_TO);
-                $tpl->SetVariable('reply', _t('PRIVATEMESSAGE_REPLY'));
-                $tpl->ParseBlock('message/reply');
-            }
+            $tpl->SetBlock('message/reply');
+            $tpl->SetVariable('reply_url', $this->gadget->urlMap('Reply', array('id' => $id)));
+            $tpl->SetVariable('icon_reply', STOCK_JUMP_TO);
+            $tpl->SetVariable('reply', _t('PRIVATEMESSAGE_REPLY'));
+            $tpl->ParseBlock('message/reply');
 
             $tpl->SetBlock('message/delete');
             $tpl->SetVariable('icon_delete', STOCK_DELETE);

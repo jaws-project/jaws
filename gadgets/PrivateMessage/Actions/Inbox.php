@@ -23,12 +23,34 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $page = jaws()->request->fetch('page', 'get');
-        $page = empty($page)? 1 : (int)$page;
-        $limit = (int)$this->gadget->registry->fetch('inbox_limit');
         $tpl = $this->gadget->loadTemplate('Inbox.html');
         $tpl->SetBlock('inbox');
+
+        $post = jaws()->request->fetch(array('page', 'read', 'attachment', 'filter'), 'post');
+        if (!empty($post['read']) || !empty($post['attachment']) || !empty($post['filter'])) {
+
+            $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
+            $tpl->SetVariable('opt_attachment_' . $post['attachment'], 'selected="selected"');
+            $tpl->SetVariable('txt_filter', $post['filter']);
+            $page = $post['page'];
+        } else {
+            $post = null;
+            $page = jaws()->request->fetch('page', 'get');
+        }
+
+        $page = empty($page)? 1 : (int)$page;
+        $limit = (int)$this->gadget->registry->fetch('inbox_limit');
+
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_NAVIGATION_AREA_INBOX'));
+        $tpl->SetVariable('page', $page);
+        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
+        $tpl->SetVariable('status_read', _t('PRIVATEMESSAGE_STATUS_READ'));
+        $tpl->SetVariable('status_unread', _t('PRIVATEMESSAGE_STATUS_UNREAD'));
+        $tpl->SetVariable('lbl_attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));
+        $tpl->SetVariable('attachment_yes', _t('GLOBAL_YES'));
+        $tpl->SetVariable('attachment_no', _t('GLOBAL_NO'));
+        $tpl->SetVariable('filter', _t('PRIVATEMESSAGE_FILTER'));
+        $tpl->SetVariable('icon_filter', STOCK_SEARCH);
 
         $date = $GLOBALS['app']->loadDate();
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
@@ -40,7 +62,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
             $tpl->ParseBlock('inbox/response');
         }
 
-        $messages = $model->GetInbox($user, null, $limit, ($page - 1) * $limit);
+        $messages = $model->GetInbox($user, $post, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
             foreach ($messages as $message) {
@@ -81,7 +103,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
 
         $iModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
-        $inboxTotal = $iModel->GetInboxStatistics($user);
+        $inboxTotal = $iModel->GetInboxStatistics($user, $post);
 
         // page navigation
         $this->GetPagesNavigation(

@@ -15,12 +15,12 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   integer  $user      User id
-     * @param   integer  $read      Message read flag
-     * @param   int      $limit  Count of posts to be returned
-     * @param   int      $offset Offset of data array
+     * @param   array    $filters   Search filters
+     * @param   int      $limit     Count of posts to be returned
+     * @param   int      $offset    Offset of data array
      * @return  mixed    Inbox content  or Jaws_Error on failure
      */
-    function GetInbox($user, $read = null, $limit = 0, $offset = null)
+    function GetInbox($user, $filters = null, $limit = 0, $offset = null)
     {
         $table = Jaws_ORM::getInstance()->table('pm_messages');
         $table->select(
@@ -32,8 +32,24 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
         $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message');
         $table->where('pm_recipients.recipient', $user)->and()->where('pm_messages.published', true);
 
-        if ($read !== null) {
-            $table->and()->where('pm_recipients.read', $read);
+        if (!empty($filters)) {
+            if (isset($filters['read']) && !empty($filters['read'])) {
+                if ($filters['read'] == 'yes') {
+                    $table->and()->where('pm_recipients.read', true);
+                } else {
+                    $table->and()->where('pm_recipients.read', false);
+                }
+            }
+            if (isset($filters['attachment']) && !empty($filters['attachment'])) {
+                if ($filters['attachment'] == 'yes') {
+                    $table->and()->where('pm_messages.attachments', 0, '>');
+                } else {
+                    $table->and()->where('pm_messages.attachments', 0);
+                }
+            }
+            if (isset($filters['filter']) && !empty($filters['filter'])) {
+                $table->and()->where('pm_messages.subject', '%' . $filters['filter'] . '%', 'like');
+            }
         }
 
         $result = $table->orderBy('insert_time desc')->limit($limit, $offset)->fetchAll();
@@ -49,17 +65,34 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   integer  $user      User id
-     * @param   integer  $read      Message read flag
+     * @param   array    $filters   Search filters
      * @return  mixed    Inbox count or Jaws_Error on failure
      */
-    function GetInboxStatistics($user, $read = null)
+    function GetInboxStatistics($user, $filters = null)
     {
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
         $table->select('count(message):integer')->where('recipient', $user);
         $table->join('pm_messages', 'pm_messages.id', 'pm_recipients.message');
         $table->and()->where('pm_messages.published', true);
-        if ($read !== null) {
-            $table->and()->where('read', $read);
+
+        if (!empty($filters)) {
+            if (isset($filters['read']) && !empty($filters['read'])) {
+                if ($filters['read'] == 'yes') {
+                    $table->and()->where('pm_recipients.read', true);
+                } else {
+                    $table->and()->where('pm_recipients.read', false);
+                }
+            }
+            if (isset($filters['attachment']) && !empty($filters['attachment'])) {
+                if ($filters['attachment'] == 'yes') {
+                    $table->and()->where('pm_messages.attachments', 0, '>');
+                } else {
+                    $table->and()->where('pm_messages.attachments', 0);
+                }
+            }
+            if (isset($filters['filter']) && !empty($filters['filter'])) {
+                $table->and()->where('pm_messages.subject', '%' . $filters['filter'] . '%', 'like');
+            }
         }
 
         $result = $table->fetchOne();

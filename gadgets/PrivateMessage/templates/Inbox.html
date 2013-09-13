@@ -4,6 +4,34 @@
     <h2>{title}</h2>
     <!-- BEGIN response --><div class="{type}">{text}</div><!-- END response -->
 
+    <form name="pm" action="{base_script}" method="post">
+        <input type="hidden" name="gadget" value="PrivateMessage"/>
+        <input type="hidden" name="action" value="Inbox"/>
+        <input type="hidden" name="page" value="{page}"/>
+
+        <div class="filter">
+            <label for="read">{lbl_status}</label>
+            <select id="read" name="read">
+                <option {opt_read_} value=""></option>
+                <option {opt_read_yes} value="yes">{status_read}</option>
+                <option {opt_read_no} value="no">{status_unread}</option>
+            </select>
+
+            <label for="attachment">{lbl_attachment}</label>
+            <select id="attachment" name="attachment">
+                <option {opt_attachment_} value=""></option>
+                <option {opt_attachment_yes} value="yes">{attachment_yes}</option>
+                <option {opt_attachment_no} value="no">{attachment_no}</option>
+            </select>
+
+            <input type="text" id="filter" name="filter" size="20" value="{txt_filter}">
+
+            <button value="{filter}" id="filter_button" name="filter_button"
+                    type="submit"><img src="{icon_filter}" alt="{filter}"/>&nbsp;{filter}
+            </button>
+        </div>
+    </form>
+
     <div class="content">
         <table>
             <thead>

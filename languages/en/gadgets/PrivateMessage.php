@@ -36,6 +36,7 @@ define('_EN_PRIVATEMESSAGE_MESSAGE_SUBJECT', "Subject");
 define('_EN_PRIVATEMESSAGE_MESSAGE_BODY', "Message Body");
 define('_EN_PRIVATEMESSAGE_MESSAGE_SEND_TIME', "Send Time");
 define('_EN_PRIVATEMESSAGE_MESSAGE_ATTACHMENTS', "Attachments");
+define('_EN_PRIVATEMESSAGE_MESSAGE_ATTACHMENT', "Attachment");
 define('_EN_PRIVATEMESSAGE_MESSAGE_CONFIRM_DELETE', "Delete this message?");
 define('_EN_PRIVATEMESSAGE_PREVIOUS_MESSAGE', "Previous message");
 define('_EN_PRIVATEMESSAGE_NEXT_MESSAGE', "Next message");
@@ -60,6 +61,9 @@ define('_EN_PRIVATEMESSAGE_MESSAGE_FILE_SIZE', "File size");
 define('_EN_PRIVATEMESSAGE_ADD_ANOTHER_FILE', "Add another file");
 define('_EN_PRIVATEMESSAGE_PUBLISH', "Publish");
 define('_EN_PRIVATEMESSAGE_MESSAGE_COUNT', "{0} messages");
+define('_EN_PRIVATEMESSAGE_STATUS_READ', "Read");
+define('_EN_PRIVATEMESSAGE_STATUS_UNREAD', "Unread");
+define('_EN_PRIVATEMESSAGE_FILTER', "Filter");
 
 /* Responses */
 define('_EN_PRIVATEMESSAGE_PROPERTIES_UPDATED', "The properties have been updated");
