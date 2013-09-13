@@ -87,4 +87,14 @@ function GetUserInfo()
     $('person_image').src = userInfo['avatar'];
 }
 
+
+/**
+ * Filter AddressBooks and show results
+ */
+function FilterAddress()
+{
+    var filterResult = AddressBookAjax.callSync('FilterAddress', {'gid': $('addressbook_group').value, 'term': $('addressbook_term').value});
+    $('addressbook_result').innerHTML = filterResult;
+}
+
 var AddressBookAjax = new JawsAjax('AddressBook');

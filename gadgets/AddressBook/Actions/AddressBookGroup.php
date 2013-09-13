@@ -39,6 +39,7 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('lbl_firstname', _t('ADDRESSBOOK_ITEMS_FIRSTNAME'));
         $tpl->SetVariable('lbl_lastname', _t('ADDRESSBOOK_ITEMS_LASTNAME'));
+        $tpl->SetVariable('lbl_title', _t('ADDRESSBOOK_ITEMS_TITLE'));
 
         foreach ($addressItems as $addressItem) {
             $tpl->SetBlock("address_list/item1");

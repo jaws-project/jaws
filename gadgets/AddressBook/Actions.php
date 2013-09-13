@@ -10,7 +10,7 @@
  */
 $actions = array();
 
-$actions['AddressList'] = array(
+$actions['AddressBook'] = array(
     'normal' => true,
     'file'   => 'AddressBook',
 );
@@ -22,11 +22,11 @@ $actions['EditAddress'] = array(
     'normal' => true,
     'file'   => 'AddressBook',
 );
-$actions['InsertItem'] = array(
+$actions['InsertAddress'] = array(
     'stanalone' => true,
     'file'   => 'AddressBook',
 );
-$actions['UpdateItem'] = array(
+$actions['UpdateAddress'] = array(
     'stanalone' => true,
     'file'   => 'AddressBook',
 );
@@ -44,6 +44,10 @@ $actions['AddGroup'] = array(
 );
 $actions['EditGroup'] = array(
     'normal' => true,
+    'file'   => 'Groups',
+);
+$actions['Groups'] = array(
+    'layout' => true,
     'file'   => 'Groups',
 );
 $actions['InsertGroup'] = array(

@@ -13,26 +13,43 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
      * Gets a list of Address Books
      *
      * @access  public
-     * @param   array()     $gid      list of Group ID, AddressBook Items must be member of one(minimum) Group ID has exist in this array
+     * @param   int     $user     User ID
+     * @param   int     $gid      Group ID, AddressBook Items must be member of this Group ID
+     * @param   boolean $public   If true show only public addressbooks
+     * @param   string  $term     Search term
      * @returns array of Address Books or Jaws_Error on error
      */
-    function GetAddressList($user, $gid, $public = false, $limit, $offset = null)
+    function GetAddressList($user, $gid, $public = false, $term = '', $limit = null, $offset = null)
     {
         $adrTable = Jaws_ORM::getInstance()->table('address_book');
         $adrTable->select('*');
-        $adrTable->where('address_book.user', $user)->and();
+        $adrTable->where('address_book.user', $user);
 
         if ($public) {
-            $adrTable->where('address_book.public', true)->and();
+            $adrTable->and()->where('address_book.public', true);
         }
 
         if (!empty($limit)) {
             $adrTable->limit($limit, $offset);
         }
 
-        if (!empty($gid) && count($gid) > 0) {
+        if (!empty($gid) && $gid != 0) {
             $adrTable->join('address_book_group', 'address_book_group.address', 'address_book.id', 'left');
-            $adrTable->where('address_book_group.group', $gid, 'in');
+            $adrTable->and()->where('address_book_group.group', $gid);
+        }
+
+        if (!empty($term)) {
+            $term = Jaws_UTF8::strtolower($term);
+            $adrTable->and()->openWhere('lower(name)',   '%'.$term.'%', 'like');
+            $adrTable->or()->where('lower(nickname)',    '%'.$term.'%', 'like');
+            $adrTable->or()->where('lower(title)',       '%'.$term.'%', 'like');
+            $adrTable->or()->where('lower(tel_home)',    '%'.$term.'%', 'like');
+            $adrTable->or()->where('lower(tel_work)',    '%'.$term.'%', 'like');
+            $adrTable->or()->where('lower(tel_other)',   '%'.$term.'%', 'like');
+            $adrTable->or()->where('lower(email_home)',  '%'.$term.'%', 'like');
+            $adrTable->or()->where('lower(email_work)',  '%'.$term.'%', 'like');
+            $adrTable->or()->where('lower(email_other)', '%'.$term.'%', 'like');
+            $adrTable->or()->closeWhere('lower(notes)',  '%'.$term.'%', 'like');
         }
 
         return $adrTable->fetchAll();

@@ -48,46 +48,35 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         3 => array('fieldType' => 'other', 'lang' => 'OTHER_ADR'),
     );
 
+
     /**
-     * Displays the list of Address Book items, this items can filter by $gid(group ID) param.
+     * Displays the list of Address Book items, this items can filter by $uid(user ID) param.
      *
      * @access  public
      * $gid     Group ID
      * @return  string HTML content with menu and menu items
      */
-    function AddressList()
-    {
+     function AddressBook()
+     {
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
 
-        $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
+        $uid = (int) jaws()->request->fetch('uid');
+        $uid = ($uid == 0) ? (int) $GLOBALS['app']->Session->GetAttribute('user') : $uid;
 
-        $rqst = jaws()->request->fetch(array('uid', 'page'));
-
-        $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
-        $user = empty($rqst['uid'])? (int) $GLOBALS['app']->Session->GetAttribute('user') : $rqst['uid'];
-        $limit = 2;
-
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $usrModel = new Jaws_User;
-        $user = $usrModel->GetUser($user);
+        $user = $usrModel->GetUser($uid);
         if (Jaws_Error::IsError($user) || empty($user)) {
             return Jaws_HTTPError::Get(404);
         }
 
-        $mine = ($user['id'] == $GLOBALS['app']->Session->GetAttribute('user'));
-        $addressItems = $model->GetAddressList($user['id'], null, !$mine, $limit, ($page - 1) * $limit);
-        if (Jaws_Error::IsError($addressItems)) {
-            return $addressItems->getMessage(); // TODO: Show intelligible message
-        }
-        $addressCount = $model->GetAddressListCount($user['id'], null, !$mine);
-
+        $this->AjaxMe('site_script.js');
         $this->SetTitle(_t('ADDRESSBOOK_NAME'));
-        $tpl = $this->gadget->loadTemplate('AddressList.html');
-
+        $tpl = $this->gadget->loadTemplate('AddressBook.html');
         $tpl->SetBlock("address_list");
+
         $tpl->SetVariable('title', _t('ADDRESSBOOK_NAME'));
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
             $tpl->SetBlock('address_list/response');
@@ -95,38 +84,25 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             $tpl->ParseBlock('address_list/response');
         }
 
-        $tpl->SetVariable('lbl_name', _t('ADDRESSBOOK_ITEMS_NAME'));
-        $tpl->SetVariable('lbl_title', _t('ADDRESSBOOK_ITEMS_TITLE'));
-
-        foreach ($addressItems as $addressItem) {
-            $tpl->SetBlock("address_list/item1");
-            $tpl->SetVariable('name', str_replace(';' , ' ', $addressItem['name']));
-            $tpl->SetVariable('view_url', $this->gadget->urlMap('View', array('id' => $addressItem['id'])));
-            $tpl->SetVariable('title', $addressItem['title']);
-
-            if ($mine) {
-                $tpl->SetBlock('address_list/item1/action');
-                $tpl->SetVariable('action_lbl', _t('GLOBAL_EDIT'));
-                $tpl->SetVariable('action_url', $this->gadget->urlMap('EditAddress', array('id' => $addressItem['id'])));
-                $tpl->ParseBlock('address_list/item1/action');
-
-                $tpl->SetBlock('address_list/item1/action');
-                $tpl->SetVariable('action_lbl', _t('GLOBAL_DELETE'));
-                $tpl->SetVariable('action_url', $this->gadget->urlMap('DeleteAddress', array('id' => $addressItem['id'])));
-                $tpl->ParseBlock('address_list/item1/action');
-            }
-
-            $tpl->ParseBlock("address_list/item1");
+        $tpl->SetVariable('lbl_group', _t('ADDRESSBOOK_GROUP'));
+        $tpl->SetVariable('lbl_term', _t('ADDRESSBOOK_TERM'));
+        $gModel = $this->gadget->load('Model')->load('Model', 'Groups');
+        $groupList = $gModel->GetGroups($uid);
+        foreach ($groupList as $gInfo) {
+            $tpl->SetBlock('address_list/group_item');
+            $tpl->SetVariable('group_name', $gInfo['name']);
+            $tpl->SetVariable('gid', $gInfo['id']);
+            $tpl->ParseBlock('address_list/group_item');
         }
+        $tpl->SetVariable('icon_filter', STOCK_SEARCH);
 
+        $tpl->SetVariable('addressbook', $this->AddressList($uid));
+
+        $mine = ($uid == $GLOBALS['app']->Session->GetAttribute('user'));
         if ($mine) {
             $link = $this->gadget->urlMap('ManageGroups');
             $tpl->SetVariable('manage_groups_link', $link);
             $tpl->SetVariable('manage_groups', _t('ADDRESSBOOK_GROUPS_MANAGE'));
-
-            $tpl->SetBlock('address_list/action_header');
-            $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
-            $tpl->ParseBlock('address_list/action_header');
 
             // Add New
             $tpl->SetBlock("address_list/actions");
@@ -136,20 +112,62 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             $tpl->ParseBlock("address_list/actions");
         }
 
-        // page navigation
-        $this->GetPagesNavigation(
-            $tpl,
-            'address_list',
-            $page,
-            $limit,
-            $addressCount,
-            _t('ADDRESSBOOK_COUNT', 4),
-            'AddressList',
-            array('uid' => $user['username'])
-        );
-
         $tpl->ParseBlock('address_list');
 
+        return $tpl->Get();
+     }
+
+    /**
+     * Displays the list of Address Book items, this items can filter by $uid(user ID) param.
+     *
+     * @access  public
+     * @param   int     $uid     User ID
+     * @param   int     $gid     Group ID
+     * @param   string  $term    Search term
+     * @return  string HTML content with menu and menu items
+     */
+    function AddressList($uid = 0, $gid = null, $term = '')
+    {
+        $uid = ($uid == 0) ? (int) $GLOBALS['app']->Session->GetAttribute('user') : $uid;
+        $mine = ($uid == $GLOBALS['app']->Session->GetAttribute('user'));
+        $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
+        $addressItems = $model->GetAddressList($uid, $gid, !$mine, $term);
+        if (Jaws_Error::IsError($addressItems)) {
+            return $addressItems->getMessage(); // TODO: Show intelligible message
+        }
+
+        $tpl = $this->gadget->loadTemplate('AddressList.html');
+        $tpl->SetBlock("list");
+
+        $tpl->SetVariable('lbl_name', _t('ADDRESSBOOK_ITEMS_NAME'));
+        $tpl->SetVariable('lbl_title', _t('ADDRESSBOOK_ITEMS_TITLE'));
+
+        if ($mine) {
+            $tpl->SetBlock('list/action_header');
+            $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
+            $tpl->ParseBlock('list/action_header');
+        }
+        foreach ($addressItems as $addressItem) {
+            $tpl->SetBlock("list/item1");
+            $tpl->SetVariable('name', str_replace(';' , ' ', $addressItem['name']));
+            $tpl->SetVariable('view_url', $this->gadget->urlMap('View', array('id' => $addressItem['id'])));
+            $tpl->SetVariable('title', $addressItem['title']);
+
+            if ($mine) {
+                $tpl->SetBlock('list/item1/action');
+                $tpl->SetVariable('action_lbl', _t('GLOBAL_EDIT'));
+                $tpl->SetVariable('action_url', $this->gadget->urlMap('EditAddress', array('id' => $addressItem['id'])));
+                $tpl->ParseBlock('list/item1/action');
+
+                $tpl->SetBlock('list/item1/action');
+                $tpl->SetVariable('action_lbl', _t('GLOBAL_DELETE'));
+                $tpl->SetVariable('action_url', $this->gadget->urlMap('DeleteAddress', array('id' => $addressItem['id'])));
+                $tpl->ParseBlock('list/item1/action');
+            }
+
+            $tpl->ParseBlock("list/item1");
+        }
+        $tpl->ParseBlock("list");
         return $tpl->Get();
     }
 
@@ -180,7 +198,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('id', 0);
         $tpl->SetVariable('lastID', 1);
-        $tpl->SetVariable('action', 'InsertItem');
+        $tpl->SetVariable('action', 'InsertAddress');
         $tpl->SetVariable('lbl_user_link',  _t('ADDRESSBOOK_ITEMS_USER_LINK'));
         $tpl->SetVariable('lbl_firstname',    _t('ADDRESSBOOK_ITEMS_FIRSTNAME'));
         $tpl->SetVariable('lbl_lastname',     _t('ADDRESSBOOK_ITEMS_LASTNAME'));
@@ -199,7 +217,6 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $current_image = $GLOBALS['app']->getSiteURL('/gadgets/AddressBook/images/photo128px.png');
         $tpl->SetVariable('image_src', $current_image);
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $uModel = new Jaws_User();
         $users = $uModel->GetUsers();
         $tpl->SetBlock('address/user_item');
@@ -209,7 +226,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         foreach ($users as $user) {
             $tpl->SetBlock('address/user_item');
             $tpl->SetVariable('user_id', $user['id']);
-            $tpl->SetVariable('user_name', $user['username']);
+            $tpl->SetVariable('user_name', $user['nickname']);
             $tpl->ParseBlock('address/user_item');
         }
         $tpl->SetVariable('icon_load', STOCK_REFRESH);
@@ -237,7 +254,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->SetVariable('cancel_lbl', _t('GLOBAL_CANCEL'));
-        $link = $this->gadget->urlMap('AddressList');
+        $link = $this->gadget->urlMap('AddressBook');
         $tpl->SetVariable('cancel_url', $link);
 
         $tpl->ParseBlock('address');
@@ -290,7 +307,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         }
 
         $tpl->SetVariable('id', $info['id']);
-        $tpl->SetVariable('action', 'UpdateItem');
+        $tpl->SetVariable('action', 'UpdateAddress');
         $tpl->SetVariable('lbl_user_link',  _t('ADDRESSBOOK_ITEMS_USER_LINK'));
         $tpl->SetVariable('lbl_firstname',  _t('ADDRESSBOOK_ITEMS_FIRSTNAME'));
         $tpl->SetVariable('lbl_lastname',   _t('ADDRESSBOOK_ITEMS_LASTNAME'));
@@ -313,7 +330,6 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             $tpl->ParseBlock('address/selected');
         }
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $uModel = new Jaws_User();
         $users = $uModel->GetUsers();
         $tpl->SetBlock('address/user_item');
@@ -323,16 +339,15 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         foreach ($users as $user) {
             $tpl->SetBlock('address/user_item');
             $tpl->SetVariable('user_id', $user['id']);
-            $tpl->SetVariable('user_name', $user['username']);
+            $tpl->SetVariable('user_name', $user['nickname']);
             $tpl->SetVariable('selected', ($user['id'] == $info['user_link'])? 'selected="selected"': '');
             $tpl->ParseBlock('address/user_item');
         }
         $tpl->SetVariable('icon_load', STOCK_REFRESH);
 
         $names = explode(';', $info['name']);
-        if (count($names) > 1) {
-            $tpl->SetVariable('lastname', $names[0]);
-            $tpl->SetVariable('firstname', $names[1]);
+        foreach ($names as $key => $name) {
+            $tpl->SetVariable('name' . $key, $name);
         }
 
         if (empty($info['image'])) {
@@ -452,7 +467,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->SetVariable('cancel_lbl', _t('GLOBAL_CANCEL'));
-        $link = $this->gadget->urlMap('AddressList');
+        $link = $this->gadget->urlMap('AddressBook');
         $tpl->SetVariable('cancel_url', $link);
 
         $tpl->ParseBlock('address');
@@ -466,17 +481,16 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
      * @access  public
      * @return  string HTML content with menu and menu items
      */
-    function InsertItem()
+    function InsertAddress()
     {
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(array('firstname', 'lastname', 'nickname', 'title', 
-                                             'delete_image', 'url', 'notes', 'public', 'user_link:int'), 'post');
-        $post['name'] = $post['lastname'] . ';' . $post['firstname'] . ';;;';
-        unset($post['firstname'], $post['lastname']);
+        $post = jaws()->request->fetch(array('nickname', 'title', 'delete_image', 'url', 
+                                             'notes', 'public', 'user_link:int'), 'post');
+        $post['name'] = implode(';', jaws()->request->fetch('name:array', 'post'));
 
         $groupIDs = jaws()->request->fetch('groups:array');
         $tels = jaws()->request->fetch(array('tel_type:array', 'tel_number:array'), 'post');
@@ -573,7 +587,6 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
                 $post['image'] = $res['image'][0]['host_filename'];
             } elseif (!Jaws_Error::IsError($res)) {
                 $uid = (int) $post['user_link'];
-                require_once JAWS_PATH . 'include/Jaws/User.php';
                 $uModel = new Jaws_User();
                 $userInfo = $uModel->GetUser($uid);
                 if (!empty($userInfo['avatar'])) {
@@ -601,7 +614,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             }
 
             $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_NEW_ADDRESS_SAVED'), 'AddressBook');
-            $link = $this->gadget->urlMap('AddressList');
+            $link = $this->gadget->urlMap('AddressBook');
             Jaws_Header::Location($link);
         }
     }
@@ -612,19 +625,19 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
      * @access  public
      * @return  string HTML content with menu and menu items
      */
-    function UpdateItem()
+    function UpdateAddress()
     {
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(array('firstname', 'lastname', 'nickname', 'title', 'user_link:int',
+        $post = jaws()->request->fetch(array('nickname', 'title', 'user_link:int',
                                              'delete_image', 'url', 'notes', 'public', 'id'),
                                     'post');
 
-        $post['name'] = $post['lastname'] . ';' . $post['firstname'] . ';;;';
-        unset($post['firstname'], $post['lastname']);
+        $post['name'] = implode(';', jaws()->request->fetch('name:array', 'post'));
+
         $id = (int) $post['id'];
         unset($post['id']);
         $groupIDs = jaws()->request->fetch('groups:array');
@@ -731,7 +744,6 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             if (!empty($res) && !Jaws_Error::IsError($res)) {
                 $post['image'] = $res['image'][0]['host_filename'];
             } elseif (!Jaws_Error::IsError($res) && $uid != -1) {
-                require_once JAWS_PATH . 'include/Jaws/User.php';
                 $uModel = new Jaws_User();
                 $userInfo = $uModel->GetUser($uid);
                 if (empty($userInfo['avatar'])) {
@@ -762,178 +774,9 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
             }
 
             $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_EDIT_ADDRESS_SAVED'), 'AddressBook');
-            $link = $this->gadget->urlMap('AddressList');
+            $link = $this->gadget->urlMap('AddressBook');
             Jaws_Header::Location($link);
         }
-    }
-
-    /**
-     * Get page navigation links
-     *
-     * @access  public
-     * @param   object  $tpl
-     * @param   string  $base_block
-     * @param   int     $page       page number
-     * @param   int     $page_size  Entries count per page
-     * @param   int     $total      Total entries count
-     * @param   string  $total_string
-     * @param   string  $action     Action name
-     * @param   array   $params     Action params array
-     * @return  string  XHTML template content
-     */
-    function GetPagesNavigation(&$tpl, $base_block, $page, $page_size, $total,
-                                $total_string, $action, $params = array())
-    {
-        $pager = $this->GetNumberedPagesNavigation($page, $page_size, $total);
-        if (count($pager) > 0) {
-            $tpl->SetBlock("$base_block/pager");
-            $tpl->SetVariable('total', $total_string);
-
-            foreach ($pager as $k => $v) {
-                $tpl->SetBlock("$base_block/pager/item");
-                $params['page'] = $v;
-                if ($k == 'next') {
-                    if ($v) {
-                        $tpl->SetBlock("$base_block/pager/item/next");
-                        $tpl->SetVariable('lbl_next', _t('GLOBAL_NEXTPAGE'));
-                        $url = $this->gadget->urlMap($action, $params);
-                        $tpl->SetVariable('url_next', $url);
-                        $tpl->ParseBlock("$base_block/pager/item/next");
-                    } else {
-                        $tpl->SetBlock("$base_block/pager/item/no_next");
-                        $tpl->SetVariable('lbl_next', _t('GLOBAL_NEXTPAGE'));
-                        $tpl->ParseBlock("$base_block/pager/item/no_next");
-                    }
-                } elseif ($k == 'previous') {
-                    if ($v) {
-                        $tpl->SetBlock("$base_block/pager/item/previous");
-                        $tpl->SetVariable('lbl_previous', _t('GLOBAL_PREVIOUSPAGE'));
-                        $url = $this->gadget->urlMap($action, $params);
-                        $tpl->SetVariable('url_previous', $url);
-                        $tpl->ParseBlock("$base_block/pager/item/previous");
-                    } else {
-                        $tpl->SetBlock("$base_block/pager/item/no_previous");
-                        $tpl->SetVariable('lbl_previous', _t('GLOBAL_PREVIOUSPAGE'));
-                        $tpl->ParseBlock("$base_block/pager/item/no_previous");
-                    }
-                } elseif ($k == 'separator1' || $k == 'separator2') {
-                    $tpl->SetBlock("$base_block/pager/item/page_separator");
-                    $tpl->ParseBlock("$base_block/pager/item/page_separator");
-                } elseif ($k == 'current') {
-                    $tpl->SetBlock("$base_block/pager/item/page_current");
-                    $url = $this->gadget->urlMap($action, $params);
-                    $tpl->SetVariable('lbl_page', $v);
-                    $tpl->SetVariable('url_page', $url);
-                    $tpl->ParseBlock("$base_block/pager/item/page_current");
-                } elseif ($k != 'total' && $k != 'next' && $k != 'previous') {
-                    $tpl->SetBlock("$base_block/pager/item/page_number");
-                    $url = $this->gadget->urlMap($action, $params);
-                    $tpl->SetVariable('lbl_page', $v);
-                    $tpl->SetVariable('url_page', $url);
-                    $tpl->ParseBlock("$base_block/pager/item/page_number");
-                }
-                $tpl->ParseBlock("$base_block/pager/item");
-            }
-
-            $tpl->ParseBlock("$base_block/pager");
-        }
-    }
-
-    /**
-     * Get numbered pages navigation
-     *
-     * @access  public
-     * @param   int     $page      Current page number
-     * @param   int     $page_size Entries count per page
-     * @param   int     $total     Total entries count
-     * @return  array   array with numbers of pages
-     */
-    function GetNumberedPagesNavigation($page, $page_size, $total)
-    {
-        $tail = 1;
-        $paginator_size = 4;
-        $pages = array();
-        if ($page_size == 0) {
-            return $pages;
-        }
-
-        $npages = ceil($total / $page_size);
-        if ($npages < 2) {
-            return $pages;
-        }
-
-        // Previous
-        if ($page == 1) {
-            $pages['previous'] = false;
-        } else {
-            $pages['previous'] = $page - 1;
-        }
-
-        if ($npages <= ($paginator_size + $tail)) {
-            for ($i = 1; $i <= $npages; $i++) {
-                if ($i == $page) {
-                    $pages['current'] = $i;
-                } else {
-                    $pages[$i] = $i;
-                }
-            }
-        } elseif ($page < $paginator_size) {
-            for ($i = 1; $i <= $paginator_size; $i++) {
-                if ($i == $page) {
-                    $pages['current'] = $i;
-                } else {
-                    $pages[$i] = $i;
-                }
-            }
-
-            $pages['separator2'] = true;
-            for ($i = $npages - ($tail - 1); $i <= $npages; $i++) {
-                $pages[$i] = $i;
-            }
-        } elseif ($page > ($npages - $paginator_size + $tail)) {
-            for ($i = 1; $i <= $tail; $i++) {
-                $pages[$i] = $i;
-            }
-
-            $pages['separator1'] = true;
-            for ($i = $npages - $paginator_size + ($tail - 1); $i <= $npages; $i++) {
-                if ($i == $page) {
-                    $pages['current'] = $i;
-                } else {
-                    $pages[$i] = $i;
-                }
-            }
-        } else {
-            for ($i = 1; $i <= $tail; $i++) {
-                $pages[$i] = $i;
-            }
-
-            $pages['separator1'] = true;
-            $start = floor(($paginator_size - $tail)/2);
-            $end = ($paginator_size - $tail) - $start;
-            for ($i = $page - $start; $i < $page + $end; $i++) {
-                if ($i == $page) {
-                    $pages['current'] = $i;
-                } else {
-                    $pages[$i] = $i;
-                }
-            }
-
-            $pages['separator2'] = true;
-            for ($i = $npages - ($tail - 1); $i <= $npages; $i++) {
-                $pages[$i] = $i;
-            }
-        }
-
-        // Next
-        if ($page == $npages) {
-            $pages['next'] = false;
-        } else {
-            $pages['next'] = $page + 1;
-        }
-
-        $pages['total'] = $total;
-        return $pages;
     }
 
     /**
@@ -974,18 +817,21 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         $tpl->SetBlock("address");
         $tpl->SetVariable('top_title', _t('ADDRESSBOOK_ITEMS_EDIT_TITLE'));
         $tpl->SetVariable('id', $info['id']);
-        $tpl->SetVariable('action', 'UpdateItem');
-        $tpl->SetVariable('lbl_name',     _t('ADDRESSBOOK_ITEMS_NAME'));
+        $tpl->SetVariable('action', 'UpdateAddress');
+        $tpl->SetVariable('lbl_fname',    _t('ADDRESSBOOK_ITEMS_FIRSTNAME'));
+        $tpl->SetVariable('lbl_lname',    _t('ADDRESSBOOK_ITEMS_LASTNAME'));
         $tpl->SetVariable('lbl_nickname', _t('ADDRESSBOOK_ITEMS_NICKNAME'));
         $tpl->SetVariable('lbl_title',    _t('ADDRESSBOOK_ITEMS_TITLE'));
-        $tpl->SetVariable('lbl_url',      _t('ADDRESSBOOK_ITEMS_URL'));
         $tpl->SetVariable('lbl_notes',    _t('ADDRESSBOOK_ITEMS_NOTES'));
-        $tpl->SetVariable('lbl_public',   _t('ADDRESSBOOK_ITEMS_PUBLIC'));
-        $tpl->SetVariable('name',      $info['name']);
         $tpl->SetVariable('nickname',  $info['nickname']);
         $tpl->SetVariable('title',     $info['title']);
-        $tpl->SetVariable('url',       $info['url']);
         $tpl->SetVariable('notes',     $info['notes']);
+
+        $names = explode(';', $info['name']);
+        if (count($names) > 1) {
+            $tpl->SetVariable('lname', $names[0]);
+            $tpl->SetVariable('fname', $names[1]);
+        }
 
         if (trim($info['tel_home']) != '') {
             $tels = explode(',', $info['tel_home']);
@@ -998,6 +844,25 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         if (trim($info['tel_other']) != '') {
             $tels = explode(',', $info['tel_other']);
             $this->GetItemsLable($tpl, 'item', $tels, $this->_TelTypes);
+        }
+
+        //////
+        if (trim($info['email_home']) != '') {
+            $emails = explode(',', $info['email_home']);
+            $this->GetItemsLable($tpl, 'item', $emails, $this->_EmailTypes);
+        }
+        if (trim($info['email_work']) != '') {
+            $tels = explode(',', $info['email_work']);
+            $this->GetItemsLable($tpl, 'item', $emails, $this->_EmailTypes);
+        }
+        if (trim($info['email_other']) != '') {
+            $tels = explode(',', $info['email_other']);
+            $this->GetItemsLable($tpl, 'item', $emails, $this->_EmailTypes);
+        }
+
+        if (trim($info['url']) != '') {
+            $urls = explode('/n', $info['url']);
+            $this->GetItemsLable($tpl, 'item', $urls);
         }
 
         if ($info['public']) {
@@ -1030,21 +895,20 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
 
             $tpl->SetBlock('address/actions/action');
             $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_VIEW_ALL_ADDREESS_MY'));
-            $tpl->SetVariable('action_url', $this->gadget->urlMap('AddressList'));
+            $tpl->SetVariable('action_url', $this->gadget->urlMap('AddressBook'));
             $tpl->ParseBlock('address/actions/action');
         } else {
             $tpl->SetBlock('address/actions/action');
             $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_VIEW_ALL_ADDREESS_MY'));
-            $tpl->SetVariable('action_url', $this->gadget->urlMap('AddressList'));
+            $tpl->SetVariable('action_url', $this->gadget->urlMap('AddressBook'));
             $tpl->ParseBlock('address/actions/action');
 
-            require_once JAWS_PATH . 'include/Jaws/User.php';
             $usrModel = new Jaws_User;
             $user = $usrModel->GetUser((int) $info['user']);
             if (!Jaws_Error::IsError($user) && !empty($user)) {
                 $tpl->SetBlock('address/actions/action');
                 $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_VIEW_ALL_ADDREESS_USER'));
-                $tpl->SetVariable('action_url', $this->gadget->urlMap('AddressList', array('uid' => $user['username'])));
+                $tpl->SetVariable('action_url', $this->gadget->urlMap('AddressBook', array('uid' => $user['username'])));
                 $tpl->ParseBlock('address/actions/action');
             }
         }
@@ -1120,13 +984,18 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
      * @param   array   $options
      * @return  string  XHTML template content
      */
-    function GetItemsLable(&$tpl, $base_block, $inputValue, $options)
+    function GetItemsLable(&$tpl, $base_block, $inputValue, $options = null)
     {
         foreach ($inputValue as $val) {
-            $result = explode(':', $val);
             $tpl->SetBlock("address/$base_block");
-            $tpl->SetVariable('item', $result[1]);
-            $tpl->SetVariable('lbl_item', _t('ADDRESSBOOK_' . $options[$result[0]]['lang']));
+            if (isset($options)) {
+                $result = explode(':', $val);
+                $tpl->SetVariable('item', $result[1]);
+                $tpl->SetVariable('lbl_item', _t('ADDRESSBOOK_' . $options[$result[0]]['lang']));
+            } else {
+                $tpl->SetVariable('item', $val);
+                $tpl->SetVariable('lbl_item', _t('ADDRESSBOOK_ITEMS_URL'));
+            }
             $tpl->ParseBlock("address/$base_block");
         }
     }

@@ -1,0 +1,31 @@
+<!-- BEGIN address_list -->
+<div class="gadget addressbook_list">
+  <h2>{title}</h2>
+  <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
+  <div class="content">
+    <div class="addressbook_navbar"><a class="button" href="{manage_groups_link}">{manage_groups}</a></div>
+    <div class="addressbook_list_search">
+        {lbl_group}: 
+        <select id="addressbook_group" name="group" style="width: 150px;" >
+          <option value="0"></option>
+          <!-- BEGIN group_item -->
+          <option value="{gid}">{group_name}</option>
+          <!-- END group_item -->
+        </select>
+        {lbl_term}: 
+        <input id="addressbook_term" name="term" type="text" value="" />
+        <button onclick="FilterAddress();" value="" id="FilterAddress" name="FilterAddress"type="button">
+          <img alt="" src="{icon_filter}">
+        </button>
+    </div>
+    <div class="addressbook_result" id="addressbook_result">
+        {addressbook}
+    </div
+    <!-- BEGIN actions -->
+    <div class="actions">
+        <a class="button" href="{action_url}" title="{action_lbl}">{action_lbl}</a>
+    </div>
+    <!-- END actions -->
+  </div>
+</div>
+<!-- END address_list -->

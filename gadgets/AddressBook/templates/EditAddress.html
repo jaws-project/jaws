@@ -22,13 +22,16 @@
         </button>
       </div>
       <div>
-        <label for="addressbook_firstname" >{lbl_firstname}:</label>
-        <input id="addressbook_firstname" name="firstname" type="text" value="{firstname}" />
+        <label for="addressbook_lastname" >{lbl_lastname}:</label>
+        <input id="addressbook_lastname" name="name[0]" type="text" value="{name0}" />
       </div>
       <div>
-        <label for="addressbook_lastname" >{lbl_lastname}:</label>
-        <input id="addressbook_lastname" name="lastname" type="text" value="{lastname}" />
+        <label for="addressbook_firstname" >{lbl_firstname}:</label>
+        <input id="addressbook_firstname" name="name[1]" type="text" value="{name1}" />
       </div>
+      <input type="hidden" name="name[2]" value="" />
+      <input type="hidden" name="name[3]" value="" />
+      <input type="hidden" name="name[4]" value="" />
       <div>
         <label for="addressbook_nickname" >{lbl_nickname}:</label>
         <input id="addressbook_nickname" name="nickname" type="text" value="{nickname}" />
@@ -127,7 +130,7 @@
       </div>
 
       <div>
-        <label for="addressbook_notes" >{lbl_notes}:</label>
+        <label for="addressbook_notes" >{lbl_notes}: </label>
         <textarea id="addressbook_notes" name="notes" cols="25" rows="6">{notes}</textarea>
       </div>
       <div>

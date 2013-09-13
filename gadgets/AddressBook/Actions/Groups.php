@@ -10,10 +10,58 @@
 class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
 {
     /**
+     * Layout Action. Displays plane list of Address Book Groups
+     *
+     * @access  public
+     * @return  string HTML content with menu and menu items
+     */
+    function Groups()
+    {
+        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $model = $this->gadget->load('Model')->load('Model', 'Groups');
+        $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
+
+        $groupItems = $model->GetGroups($user);
+        if (Jaws_Error::IsError($groupItems) || !isset($groupItems)) {
+            return $groupItems->getMessage(); // TODO: Show intelligible message
+        }
+
+        $this->SetTitle(_t('ADDRESSBOOK_NAME'));
+        $tpl = $this->gadget->loadTemplate('ManageGroups.html');
+
+        $tpl->SetBlock("groups");
+        $tpl->SetVariable('title', _t('ADDRESSBOOK_GROUP_TITLE'));
+        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
+            $tpl->SetBlock('groups/response');
+            $tpl->SetVariable('msg', $response);
+            $tpl->ParseBlock('groups/response');
+        }
+        $link = $this->gadget->urlMap('AddressBook');
+        $tpl->SetVariable('address_list_link', $link);
+        $tpl->SetVariable('address_list', _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
+
+        $tpl->SetVariable('lbl_name', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
+
+        foreach ($groupItems as $groupItem) {
+            $tpl->SetBlock("groups/item");
+            $tpl->SetVariable('name', $groupItem['name']);
+            $tpl->SetVariable('description', $groupItem['description']);
+            $tpl->ParseBlock("groups/item");
+        }
+
+        $tpl->ParseBlock('groups');
+
+        return $tpl->Get();
+    }
+    /**
      * Displays the list of Address Book Group items, this items can filter by $user(User ID) param.
      *
      * @access  public
-     * $param   int/string  $user   User ID, Show Groups for this user
      * @return  string HTML content with menu and menu items
      */
     function ManageGroups()
@@ -41,7 +89,7 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
             $tpl->SetVariable('msg', $response);
             $tpl->ParseBlock('groups/response');
         }
-        $link = $this->gadget->urlMap('AddressList');
+        $link = $this->gadget->urlMap('AddressBook');
         $tpl->SetVariable('address_list_link', $link);
         $tpl->SetVariable('address_list', _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
 

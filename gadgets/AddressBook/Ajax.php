@@ -18,15 +18,26 @@ class AddressBook_Ajax extends Jaws_Gadget_HTML
     function GetUserInfo()
     {
         $uid = (int) jaws()->request->fetch('uid');
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $uModel = new Jaws_User();
         $userInfo = $uModel->GetUser($uid, true, true);
         if (empty($userInfo['avatar'])) {
-            $userInfo['avatar'] = $GLOBALS['app']->getSiteURL('/gadgets/Users/images/photo128px.png');
+            $userInfo['avatar'] = $GLOBALS['app']->getSiteURL('/gadgets/AddressBook/images/photo128px.png');
         } else {
             $userInfo['avatar'] = $GLOBALS['app']->getDataURL(). 'avatar/'. $userInfo['avatar'];
         }
         return $userInfo;
     }
 
+    /**
+     * Filter AddressBook and return result
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function FilterAddress()
+    {
+        $rqst = jaws()->request->fetch(array('gid:int', 'term'));
+        $gadgetHTML = $GLOBALS['app']->LoadGadget('AddressBook', 'HTML', 'AddressBook');
+        return $gadgetHTML->AddressList(0, (int) $rqst['gid'], $rqst['term']); // TODO: Send request user id
+    }
 }

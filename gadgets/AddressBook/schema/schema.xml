@@ -222,23 +222,16 @@
         </field>
 
         <index>
-            <name><variable>table_prefix</variable>address_book_group_adr</name>
+            <name><variable>table_prefix</variable>address_book_group_ui</name>
+            <unique>true</unique>
+            <field>
+                <name>user</name>
+            </field>
             <field>
                 <name>address</name>
             </field>
-        </index>
-
-        <index>
-            <name><variable>table_prefix</variable>address_book_group_gi</name>
             <field>
                 <name>group</name>
-            </field>
-        </index>
-
-        <index>
-            <name><variable>table_prefix</variable>address_book_group_ui</name>
-            <field>
-                <name>user</name>
             </field>
         </index>
 

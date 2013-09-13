@@ -1,34 +1,20 @@
-<!-- BEGIN address_list -->
-<div class="gadget addressbook_list">
-  <h2>{title}</h2>
-  <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
-  <div class="content">
-    <div class="addressbook_navbar"><a href="{manage_groups_link}">{manage_groups}</a></div>
-    <div class="addressbook_list_search"></div>
-    <table>
-      <tr>
-        <th>{lbl_name}</th>
-        <th>{lbl_title}</th>
-        <th><!-- BEGIN action_header -->{lbl_actions}<!-- END action_header --></th>
-      </tr>
-      <!-- BEGIN item1 -->
-      <tr>
-        <td><a href="{view_url}" >{name}</a></td>
-        <td>{title}</td>
-        <td>
-          <!-- BEGIN action -->
-            <a class="button" href="{action_url}" title="{action_lbl}">{action_lbl}</a>
-          <!-- END action -->
-        </td>
-      </tr>
-      <!-- END item1 -->
-    </table>
-    <!-- BEGIN actions -->
-    <div class="actions">
+<!-- BEGIN list -->
+<table>
+  <tr>
+    <th>{lbl_name}</th>
+    <th>{lbl_title}</th>
+    <th><!-- BEGIN action_header -->{lbl_actions}<!-- END action_header --></th>
+  </tr>
+  <!-- BEGIN item1 -->
+  <tr>
+    <td><a href="{view_url}" >{name}</a></td>
+    <td>{title}</td>
+    <td>
+      <!-- BEGIN action -->
         <a class="button" href="{action_url}" title="{action_lbl}">{action_lbl}</a>
-    </div>
-    <!-- END actions -->
-  </div>
-  <!-- INCLUDE PageNavigation.html -->
-</div>
-<!-- END address_list -->
+      <!-- END action -->
+    </td>
+  </tr>
+  <!-- END item1 -->
+</table>
+<!-- END list -->
