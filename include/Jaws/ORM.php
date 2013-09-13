@@ -250,7 +250,7 @@ class Jaws_ORM
         if (is_object($table)) {
             $this->_table_quoted = '('. $table->get(). ')';
         } else {
-            $this->_table_quoted = $this->quoteIdentifier($this->_tbl_prefix. $table);
+            $this->_table_quoted = $this->quoteIdentifier($this->_tbl_prefix. $table, true);
         }
         return $this;
     }
@@ -262,11 +262,13 @@ class Jaws_ORM
      * @param   string  $column  Column name
      * @return  string  quoted string
      */
-    function quoteIdentifier($column)
+    function quoteIdentifier($column, $prefix_aliased = false)
     {
+        $prev_is_as = false;
         $parts = array_filter(array_map('trim', explode(' ', $column)));
         foreach ($parts as $idx => $column) {
             if (in_array($column, $this->reserved_words)) {
+                $prev_is_as = $column == 'as'? true : false;
                 continue;
             }
 
@@ -296,25 +298,12 @@ class Jaws_ORM
                         $column
                     );
                 } else {
-                    $column = $this->_identifier_quoting['start'] .
-                        ($dotted_column? $this->_tbl_prefix : '') . trim($column);
-                    if (false !== $aliased_column = strpos($column, ' as ')) {
-                        $column = substr_replace(
-                            $column,
-                            $this->_identifier_quoting['end'],
-                            $aliased_column,
-                            0
-                        );
-                    } elseif (false !== $spaced_column = strpos($column, ' ')) {
-                        $column = substr_replace(
-                            $column,
-                            $this->_identifier_quoting['end'],
-                            $spaced_column,
-                            0
-                        );
-                    } else {
-                        $column = $column. $this->_identifier_quoting['end'];
+                    if (($prev_is_as && $prefix_aliased) || $dotted_column) {
+                        $prev_is_as  = false;
+                        $column = $this->_tbl_prefix. $column;
                     }
+
+                    $column = $this->_identifier_quoting['start']. $column. $this->_identifier_quoting['end'];
                 }
             }
 
@@ -423,7 +412,7 @@ class Jaws_ORM
      */
     function join($table, $source, $target, $join = 'inner', $opt = '=')
     {
-        $table  = $this->quoteIdentifier($this->_tbl_prefix. $table);
+        $table  = $this->quoteIdentifier($this->_tbl_prefix. $table, true);
         $source = $this->quoteIdentifier($source);
         $target = $this->quoteIdentifier($target);
 
