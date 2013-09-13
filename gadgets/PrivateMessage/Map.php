@@ -30,6 +30,13 @@ $maps[] = array(
     )
 );
 $maps[] = array(
+    'PublishMessage',
+    'pm/publish/message/{id}',
+    array(
+        'id' => '[\p{L}[:digit:]-_\.]+',
+    )
+);
+$maps[] = array(
     'MessageHistory',
     'pm/message/history/{id}',
     array('id' => '[\p{L}[:digit:]-_\.]+',)

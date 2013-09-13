@@ -27,6 +27,10 @@
                 <a href="javascript:deleteMessage()" class="button" title="{delete}"><img src="{icon_delete}"
                                                                                           alt="{delete}"/></a>
                 <!-- END delete -->
+                <!-- BEGIN publish -->
+                <a href="javascript:publishMessage()" class="button" title="{publish}"><img src="{icon_publish}"
+                                                                                          alt="{publish}"/></a>
+                <!-- END publish -->
             </div>
 
             <div class="actions">
@@ -66,6 +70,13 @@
         if (confirm('{confirmDelete}')) {
             window.location.href = "{delete_url}";
         }
+    }
+
+    /**
+     * Publish Message
+     */
+    function publishMessage() {
+       window.location.href = "{publish_url}";
     }
 
 </script>

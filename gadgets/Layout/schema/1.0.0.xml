@@ -15,7 +15,7 @@
          <field>
              <name>section</name>
              <type>text</type>
-             <length>20</length>
+             <length>32</length>
              <notnull>true</notnull>
              <default>main</default>
          </field>
@@ -23,13 +23,24 @@
          <field>
              <name>gadget</name>
              <type>text</type>
-             <length>255</length>
+             <length>32</length>
          </field>
 
          <field>
              <name>gadget_action</name>
              <type>text</type>
-             <length>255</length>
+             <length>32</length>
+         </field>
+
+         <field>
+             <name>action_params</name>
+             <type>text</type>
+         </field>
+
+         <field>
+             <name>action_filename</name>
+             <type>text</type>
+             <length>32</length>
          </field>
 
          <field>
@@ -41,6 +52,12 @@
              <name>layout_position</name>
              <type>integer</type>
          </field>
+
+        <field>
+            <name>published</name>
+            <type>boolean</type>
+            <default>true</default>
+        </field>
 
      </declaration>
  </table>

@@ -69,40 +69,11 @@ class Layout_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '1.0.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '0.4.0.xml');
+        if (version_compare($old, '2.0.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '1.0.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
-
-            $layoutModel = $this->gadget->load('Model')->load('Model', 'Layout');
-            $items = $layoutModel->GetLayoutItems();
-            if (Jaws_Error::IsError($items)) {
-                return $items;
-            }
-
-            $lyTable = Jaws_ORM::getInstance()->table('layout');
-            foreach ($items as $item) {
-                $lid = $item['id'];
-                preg_match_all('/^([a-z0-9]+)\((.*?)\)$/i', $item['gadget_action'], $matches);
-                if (isset($matches[1][0]) && isset($matches[2][0])) {
-                    $item['gadget_action'] = $matches[1][0];
-                    $item['action_params'] = array_filter(explode(',', $matches[2][0]));
-                }
-                $item['action_params'] = serialize($item['action_params']);
-                unset($item['id'], $item['action_filename'], $item['display_when'], $item['section']);
-                $result = $lyTable->update($item)->where('id', $lid)->exec();
-                if (Jaws_Error::IsError($result)) {
-                    return $result;
-                }
-            }
-
-            // Remove old event listener
-            $GLOBALS['app']->Listener->DeleteListener($this->gadget->name);
-            // Add listener for remove/publish layout elements related to given gadget
-            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
-            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'EnableGadget');
-            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'DisableGadget');
         }
 
         return true;
