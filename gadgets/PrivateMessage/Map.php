@@ -8,9 +8,27 @@
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-$maps[] = array('Inbox', 'pm/inbox');
-$maps[] = array('Outbox', 'pm/outbox');
-$maps[] = array('Draft', 'pm/draft');
+$maps[] = array(
+    'Inbox',
+    'pm/inbox[/page/{page}]',
+    array(
+        'page' => '[[:digit:]]+',
+    )
+);
+$maps[] = array(
+    'Outbox',
+    'pm/outbox[/page/{page}]',
+    array(
+        'page' => '[[:digit:]]+',
+    )
+);
+$maps[] = array(
+    'Draft',
+    'pm/draft[/page/{page}]',
+    array(
+        'page' => '[[:digit:]]+',
+    )
+);
 $maps[] = array(
     'Send',
     'pm/send[/forward/{id}]',

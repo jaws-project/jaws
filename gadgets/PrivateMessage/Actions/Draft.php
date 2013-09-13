@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class PrivateMessage_Actions_Draft extends Jaws_Gadget_HTML
+class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
 {
     /**
      * Display draft
@@ -23,6 +23,9 @@ class PrivateMessage_Actions_Draft extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
+        $page = jaws()->request->fetch('page', 'get');
+        $page = empty($page)? 1 : (int)$page;
+        $limit = (int)$this->gadget->registry->fetch('draft_limit');
         $tpl = $this->gadget->loadTemplate('Outbox.html');
         $tpl->SetBlock('outbox');
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_NAVIGATION_AREA_DRAFT'));
@@ -37,7 +40,7 @@ class PrivateMessage_Actions_Draft extends Jaws_Gadget_HTML
             $tpl->ParseBlock('outbox/response');
         }
 
-        $messages = $model->GetOutbox($user, false);
+        $messages = $model->GetOutbox($user, false, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
             foreach ($messages as $message) {
@@ -58,6 +61,19 @@ class PrivateMessage_Actions_Draft extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
+
+        $draftTotal = $model->GetOutboxStatistics($user, false);
+
+        // page navigation
+        $this->GetPagesNavigation(
+            $tpl,
+            'outbox',
+            $page,
+            $limit,
+            $draftTotal,
+            _t('PRIVATEMESSAGE_MESSAGE_COUNT', $draftTotal),
+            'Draft'
+        );
 
         $tpl->ParseBlock('outbox');
         return $tpl->Get();

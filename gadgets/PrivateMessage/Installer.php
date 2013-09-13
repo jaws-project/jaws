@@ -11,6 +11,18 @@
 class PrivateMessage_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'inbox_limit' => '10',
+        'outbox_limit' => '10',
+        'draft_limit' => '10',
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array

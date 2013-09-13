@@ -16,9 +16,11 @@ class PrivateMessage_Model_Outbox extends Jaws_Gadget_Model
      * @access  public
      * @param   integer  $user          User id
      * @param   boolean  $published
+     * @param   int      $limit  Count of posts to be returned
+     * @param   int      $offset Offset of data array
      * @return  mixed    Inbox content  or Jaws_Error on failure
      */
-    function GetOutbox($user, $published = true)
+    function GetOutbox($user, $published = true, $limit = 0, $offset = null)
     {
         $table = Jaws_ORM::getInstance()->table('pm_messages');
         $table->select(
@@ -26,7 +28,8 @@ class PrivateMessage_Model_Outbox extends Jaws_Gadget_Model
             'users.nickname as from_nickname'
         );
         $table->join('users', 'pm_messages.user', 'users.id');
-        $result = $table->where('pm_messages.user', $user)->and()->where('published', $published)->fetchAll();
+        $table->where('pm_messages.user', $user)->and()->where('published', $published);
+        $result = $table->orderBy('insert_time desc')->limit($limit, $offset)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }

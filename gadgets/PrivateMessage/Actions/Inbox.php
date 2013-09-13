@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class PrivateMessage_Actions_Inbox extends Jaws_Gadget_HTML
+class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
 {
     /**
      * Display Inbox
@@ -23,6 +23,9 @@ class PrivateMessage_Actions_Inbox extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
+        $page = jaws()->request->fetch('page', 'get');
+        $page = empty($page)? 1 : (int)$page;
+        $limit = (int)$this->gadget->registry->fetch('inbox_limit');
         $tpl = $this->gadget->loadTemplate('Inbox.html');
         $tpl->SetBlock('inbox');
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_NAVIGATION_AREA_INBOX'));
@@ -37,7 +40,7 @@ class PrivateMessage_Actions_Inbox extends Jaws_Gadget_HTML
             $tpl->ParseBlock('inbox/response');
         }
 
-        $messages = $model->GetInbox($user);
+        $messages = $model->GetInbox($user, null, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
             foreach ($messages as $message) {
@@ -76,6 +79,20 @@ class PrivateMessage_Actions_Inbox extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
+
+        $iModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
+        $inboxTotal = $iModel->GetInboxStatistics($user);
+
+        // page navigation
+        $this->GetPagesNavigation(
+            $tpl,
+            'inbox',
+            $page,
+            $limit,
+            $inboxTotal,
+            _t('PRIVATEMESSAGE_MESSAGE_COUNT', $inboxTotal),
+            'Inbox'
+        );
 
         $tpl->ParseBlock('inbox');
         return $tpl->Get();

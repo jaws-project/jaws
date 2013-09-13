@@ -16,9 +16,11 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
      * @access  public
      * @param   integer  $user      User id
      * @param   integer  $read      Message read flag
+     * @param   int      $limit  Count of posts to be returned
+     * @param   int      $offset Offset of data array
      * @return  mixed    Inbox content  or Jaws_Error on failure
      */
-    function GetInbox($user, $read = null)
+    function GetInbox($user, $read = null, $limit = 0, $offset = null)
     {
         $table = Jaws_ORM::getInstance()->table('pm_messages');
         $table->select(
@@ -34,7 +36,7 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
             $table->and()->where('pm_recipients.read', $read);
         }
 
-        $result = $table->orderBy('insert_time desc')->fetchAll();
+        $result = $table->orderBy('insert_time desc')->limit($limit, $offset)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
