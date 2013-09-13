@@ -35,21 +35,23 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('GroupMembers.html');
 
         $tpl->SetBlock("address_list");
-        $tpl->SetVariable('title', _t('ADDRESSBOOK_GROUP_MEMBERS_TITLE'));
+        $gModel = $this->gadget->load('Model')->load('Model', 'Groups');
+        $gInfo = $gModel->GetGroupInfo($gid);
+        $tpl->SetVariable('title', _t('ADDRESSBOOK_GROUP_MEMBERS_TITLE', $gInfo['name']));
 
-        $tpl->SetVariable('lbl_firstname', _t('ADDRESSBOOK_ITEMS_FIRSTNAME'));
-        $tpl->SetVariable('lbl_lastname', _t('ADDRESSBOOK_ITEMS_LASTNAME'));
+        $tpl->SetVariable('lbl_name0', _t('ADDRESSBOOK_ITEMS_LASTNAME'));
+        $tpl->SetVariable('lbl_name1', _t('ADDRESSBOOK_ITEMS_FIRSTNAME'));
         $tpl->SetVariable('lbl_title', _t('ADDRESSBOOK_ITEMS_TITLE'));
+
+        $tpl->SetVariable('back_to_groups', _t('ADDRESSBOOK_GROUP_BACK_TO_GROUPS_LIST'));
+        $tpl->SetVariable('back_to_groups_link', $this->gadget->urlMap('ManageGroups'));
 
         foreach ($addressItems as $addressItem) {
             $tpl->SetBlock("address_list/item1");
-
             $names = explode(';', $addressItem['name']);
-            if (count($names) > 1) {
-                $tpl->SetVariable('lastname', $names[0]);
-                $tpl->SetVariable('firstname', $names[1]);
+            foreach ($names as $key => $name) {
+                $tpl->SetVariable('name' . $key, $name);
             }
-
             $tpl->SetVariable('title', $addressItem['title']);
             $tpl->ParseBlock("address_list/item1");
         }

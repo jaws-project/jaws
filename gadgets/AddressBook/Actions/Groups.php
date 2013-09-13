@@ -31,14 +31,14 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         }
 
         $this->SetTitle(_t('ADDRESSBOOK_NAME'));
-        $tpl = $this->gadget->loadTemplate('ManageGroups.html');
+        $tpl = $this->gadget->loadTemplate('Groups.html');
 
-        $tpl->SetBlock("groups");
+        $tpl->SetBlock("group");
         $tpl->SetVariable('title', _t('ADDRESSBOOK_GROUP_TITLE'));
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
-            $tpl->SetBlock('groups/response');
+            $tpl->SetBlock('group/response');
             $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('groups/response');
+            $tpl->ParseBlock('group/response');
         }
         $link = $this->gadget->urlMap('AddressBook');
         $tpl->SetVariable('address_list_link', $link);
@@ -48,13 +48,14 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
 
         foreach ($groupItems as $groupItem) {
-            $tpl->SetBlock("groups/item");
+            $tpl->SetBlock("group/item");
             $tpl->SetVariable('name', $groupItem['name']);
             $tpl->SetVariable('description', $groupItem['description']);
-            $tpl->ParseBlock("groups/item");
+            $tpl->SetVariable('link', $this->gadget->urlMap('GroupMembers', array('id' => $groupItem['id'])));
+            $tpl->ParseBlock("group/item");
         }
 
-        $tpl->ParseBlock('groups');
+        $tpl->ParseBlock('group');
 
         return $tpl->Get();
     }
@@ -287,6 +288,9 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
 
         $model = $this->gadget->load('Model')->load('Model', 'Groups');
         $info = $model->GetGroupInfo($gid);
+        if (!isset($info)) {
+            return Jaws_HTTPError::Get(404);
+        }
         if ($info['user'] != $GLOBALS['app']->Session->GetAttribute('user')) {
             return Jaws_HTTPError::Get(403);
         }
@@ -305,4 +309,37 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
             Jaws_Header::Location($link);
         }
     }
+
+    /**
+     * Delete Group
+     *
+     * @access  public
+     */
+     function DeleteGroup()
+     {
+        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $gid = (int) jaws()->request->fetch('id');
+        $model = $this->gadget->load('Model')->load('Model', 'Groups');
+        $info = $model->GetGroupInfo($gid);
+        if (!isset($info)) {
+            return Jaws_HTTPError::Get(404);
+        }
+        if ($info['user'] != $GLOBALS['app']->Session->GetAttribute('user')) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $result = $model->DeleteGroup($info['id'], $info['user']);
+
+        if (Jaws_Error::IsError($result)) {
+            $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(), 'AddressBook');
+        } else {
+            $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_DELETE_GROUP_COMPLETE'), 'AddressBook');
+        }
+        $link = $this->gadget->urlMap('ManageGroups');
+        Jaws_Header::Location($link);
+     }
 }

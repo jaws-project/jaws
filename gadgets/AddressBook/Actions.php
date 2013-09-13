@@ -22,6 +22,10 @@ $actions['EditAddress'] = array(
     'normal' => true,
     'file'   => 'AddressBook',
 );
+$actions['View'] = array(
+    'normal' => true,
+    'file'   => 'AddressBook',
+);
 $actions['InsertAddress'] = array(
     'stanalone' => true,
     'file'   => 'AddressBook',
@@ -30,8 +34,8 @@ $actions['UpdateAddress'] = array(
     'stanalone' => true,
     'file'   => 'AddressBook',
 );
-$actions['View'] = array(
-    'normal' => true,
+$actions['DeleteAddress'] = array(
+    'stanalone' => true,
     'file'   => 'AddressBook',
 );
 $actions['ManageGroups'] = array(
@@ -55,6 +59,10 @@ $actions['InsertGroup'] = array(
     'file'   => 'Groups',
 );
 $actions['UpdateGroup'] = array(
+    'stanalone' => true,
+    'file'   => 'Groups',
+);
+$actions['DeleteGroup'] = array(
     'stanalone' => true,
     'file'   => 'Groups',
 );

@@ -186,4 +186,18 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
         $adrTable = Jaws_ORM::getInstance()->table('address_book');
         return $adrTable->update($data)->where('id', (int) $id)->exec();
     }
+
+    /**
+     * Delete one address
+     *
+     * @access  public
+     * @returns array of Address Books or Jaws_Error on error
+     */
+    function DeleteAddress($address, $user)
+    {
+        $agModel = $this->gadget->load('Model')->load('Model', 'AddressBookGroup');
+        $agModel->DeleteGroupForAddress($address, $user);
+        $aTable = Jaws_ORM::getInstance()->table('address_book');
+        return $aTable->delete()->where('user', (int) $user)->and()->where('id', (int) $address)->exec();
+    }
 }

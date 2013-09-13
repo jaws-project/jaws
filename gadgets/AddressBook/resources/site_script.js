@@ -6,6 +6,15 @@
  * @author     HamidReza Aboutalebi <hamid@aboutalebi.com>
  * @copyright  2013 Jaws Development Group
  */
+/**
+ * Use async mode, create Callback
+ */
+var AddressBookCallback = {
+    DeleteAddress: function(response) {
+        showResponse(response);
+        FilterAddress();
+    }
+}
 
 function AddTellItem()
 {
@@ -97,4 +106,27 @@ function FilterAddress()
     $('addressbook_result').innerHTML = filterResult;
 }
 
-var AddressBookAjax = new JawsAjax('AddressBook');
+/**
+ * Delete Address
+ */
+function SaveAddress()
+{
+    if ($('addressbook_firstname').value == '' && $('addressbook_lastname').value == '') {
+        alert(nameEmptyWarning);
+        return;
+    }
+    $('edit_addressbook').submit();
+}
+
+/**
+ * Delete Address
+ */
+function DeleteAddress(aid)
+{
+    if (confirm(confirmDelete)) {
+        //AddressBookAjax.callSync('FilterAddress', {'id': aid});
+        window.location.href = deleteURL + aid;
+    }
+}
+
+var AddressBookAjax = new JawsAjax('AddressBook', AddressBookCallback);

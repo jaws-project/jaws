@@ -40,4 +40,10 @@ class AddressBook_Ajax extends Jaws_Gadget_HTML
         $gadgetHTML = $GLOBALS['app']->LoadGadget('AddressBook', 'HTML', 'AddressBook');
         return $gadgetHTML->AddressList(0, (int) $rqst['gid'], $rqst['term']); // TODO: Send request user id
     }
+
+    function DeleteAddress()
+    {
+        //return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
+        return $GLOBALS['app']->Session->GetResponse('afasfasf', RESPONSE_ERROR);
+    }
 }

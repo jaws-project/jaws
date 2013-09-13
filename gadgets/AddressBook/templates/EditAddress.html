@@ -2,7 +2,7 @@
 <div class="gadget addressbook">
   <h2>{top_title}</h2>
   <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
-  <form name="addressbook" action="{base_script}" method="post" enctype="multipart/form-data">
+  <form name="addressbook" action="{base_script}" method="post" enctype="multipart/form-data" id="edit_addressbook">
   <input type="hidden" name="gadget" value="AddressBook" />
   <input type="hidden" name="action" value="{action}" />
   <input type="hidden" name="id" value="{id}" />
@@ -154,12 +154,13 @@
   </div>
   <div class="actions">
     <a class="button" href="{cancel_url}" title="{cancel_lbl}">{cancel_lbl}</a>
-    {btn_save}
+    <a class="button" href="javascript:SaveAddress();" title="{lbl_save}">{lbl_save}</a>
   </div>
   </form>
 
  <script type="text/javascript">
     var lastID = {lastID};
+    var nameEmptyWarning = "{nameEmptyWarning}";
 
     remain = $('removeTelButton').parentNode.parentNode.getElementsByTagName('div').length;
     if (remain == 1) {
