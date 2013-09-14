@@ -20,7 +20,7 @@ class PrivateMessage_Hooks_Menu extends Jaws_Gadget_Hook
     {
         $urls   = array();
         $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('PrivateMessage', 'PrivateMessage'),
-                        'title' => _t('PRIVATEMESSAGE_ACTIONS_NAVIGATIONAREA'));
+                        'title' => _t('PRIVATEMESSAGE_ACTIONS_PRIVATEMESSAGE'));
 
         return $urls;
     }

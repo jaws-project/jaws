@@ -21,8 +21,8 @@ define('_EN_PRIVATEMESSAGE_ACL_REPLYMESSAGE', "Reply message");
 define('_EN_PRIVATEMESSAGE_ACL_SENDMESSAGE', "Send message");
 
 /* Layout Actions */
-define('_EN_PRIVATEMESSAGE_ACTIONS_NAVIGATIONAREA', "Navigation Area");
-define('_EN_PRIVATEMESSAGE_ACTIONS_NAVIGATIONAREA_DESC', "Display navigation bar");
+define('_EN_PRIVATEMESSAGE_ACTIONS_PRIVATEMESSAGE', "Private Message");
+define('_EN_PRIVATEMESSAGE_ACTIONS_PRIVATEMESSAGE_DESC', "Display private message");
 
 /* Navigation Area */
 define('_EN_PRIVATEMESSAGE_NAVIGATION_AREA_INBOX', "Inbox {0}");
@@ -55,6 +55,7 @@ define('_EN_PRIVATEMESSAGE_FORWARD_MESSAGE', "Forward a message");
 define('_EN_PRIVATEMESSAGE_BACK', "Back");
 define('_EN_PRIVATEMESSAGE_FORWARD', "Forward");
 define('_EN_PRIVATEMESSAGE_HISTORY', "History");
+define('_EN_PRIVATEMESSAGE_UNREAD', "Unread");
 define('_EN_PRIVATEMESSAGE_FILE', "File");
 define('_EN_PRIVATEMESSAGE_FILE_HINTS_COUNT', "Hints");
 define('_EN_PRIVATEMESSAGE_MESSAGE_FILE_SIZE', "File size");

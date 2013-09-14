@@ -31,6 +31,10 @@ $actions['PublishMessage'] = array(
     'standalone' => true,
     'file' => 'Message',
 );
+$actions['UnreadMessage'] = array(
+    'standalone' => true,
+    'file' => 'Message',
+);
 $actions['MessageHistory'] = array(
     'normal' => true,
     'file' => 'Message',

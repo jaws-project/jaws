@@ -121,6 +121,12 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             $tpl->SetVariable('reply', _t('PRIVATEMESSAGE_REPLY'));
             $tpl->ParseBlock('message/reply');
 
+            $tpl->SetBlock('message/unread');
+            $tpl->SetVariable('unread_url', $this->gadget->urlMap('UnreadMessage', array('id' => $id)));
+            $tpl->SetVariable('icon_unread', STOCK_EMPTY);
+            $tpl->SetVariable('unread', _t('PRIVATEMESSAGE_UNREAD'));
+            $tpl->ParseBlock('message/unread');
+
             $tpl->SetBlock('message/delete');
             $tpl->SetVariable('icon_delete', STOCK_DELETE);
             $tpl->ParseBlock('message/delete');
@@ -338,6 +344,44 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             );
         }
         Jaws_Header::Location($this->gadget->urlMap('Draft'));
+    }
+
+
+    /**
+     * Unread a message
+     *
+     * @access  public
+     * @return  void
+     */
+    function UnreadMessage()
+    {
+        $id = jaws()->request->fetch('id', 'get');
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
+
+        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
+        $res = $model->MarkMessages($id, false, $user);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushResponse(
+                $res->getMessage(),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        }
+
+        if ($res == true) {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_MESSAGE_UNREAD'),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        } else {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_UNREAD'),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        }
+        Jaws_Header::Location($this->gadget->urlMap('Inbox'));
     }
 
 }

@@ -59,6 +59,13 @@ $maps[] = array(
     )
 );
 $maps[] = array(
+    'UnreadMessage',
+    'pm/unread/message/{id}',
+    array(
+        'id' => '[\p{L}[:digit:]-_\.]+',
+    )
+);
+$maps[] = array(
     'MessageHistory',
     'pm/message/history/{id}',
     array('id' => '[\p{L}[:digit:]-_\.]+',)
