@@ -36,19 +36,12 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
 
         $tpl->SetBlock("group");
         $tpl->SetVariable('title', _t('ADDRESSBOOK_GROUP_TITLE'));
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
-            $tpl->SetBlock('group/response');
-            $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('group/response');
-        }
-        $link = $this->gadget->urlMap('AddressBook');
-        $tpl->SetVariable('address_list_link', $link);
-        $tpl->SetVariable('address_list',    _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
         $tpl->SetVariable('lbl_name',        _t('GLOBAL_TITLE'));
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
 
         foreach ($groupItems as $groupItem) {
             $tpl->SetBlock("group/item");
+            $tpl->SetVariable('link', $this->gadget->urlMap('GroupMembers', array('id' => $groupItem['id'])));
             $tpl->SetVariable('name', $groupItem['name']);
             $tpl->SetVariable('description', $groupItem['description']);
             $tpl->ParseBlock("group/item");

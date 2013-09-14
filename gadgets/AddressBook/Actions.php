@@ -22,10 +22,6 @@ $actions['EditAddress'] = array(
     'normal' => true,
     'file'   => 'AddressBook',
 );
-$actions['View'] = array(
-    'normal' => true,
-    'file'   => 'AddressBook',
-);
 $actions['InsertAddress'] = array(
     'stanalone' => true,
     'file'   => 'AddressBook',
@@ -77,4 +73,12 @@ $actions['UnbondAddress'] = array(
 $actions['BondAddress'] = array(
     'stanalone' => true,
     'file'   => 'AddressBookGroup',
+);
+$actions['View'] = array(
+    'normal' => true,
+    'file'   => 'ViewAddress',
+);
+$actions['VCardBuild'] = array(
+    'stanalone' => true,
+    'file'   => 'VCardBuilder',
 );

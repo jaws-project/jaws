@@ -2,18 +2,15 @@
 <div class="gadget addressbook">
   <h2>{top_title}</h2>
   <div class="content">
-      <p><label>{lbl_fname}:</label> {fname}</p>
-      <p><label>{lbl_lname}:</label> {lname}</p>
-      <p><label>{lbl_nickname}:</label> {nickname}</p>
-      <p><label>{lbl_title}:</label> {title}</p>
-      <!-- BEGIN item -->
-      <p><label>{lbl_item}:</label> {item}</p>
-      <!-- END item -->
-      <p><label>{lbl_notes}:</label>{notes}</p>
-      <!-- BEGIN selected --><p><label for="addressbook_public">{lbl_is_public}</label></p><!-- END selected -->
-      <!-- BEGIN group -->
-      <p><label for="group_{gid}">{lbl_group}</label></p>
-      <!-- END group -->
+    <div class="addressbook_image"><img id="person_image" src="{image_src}" alt="person image" width="128px" /></div>
+    <p><label>{lbl_name0}: </label>{name0}</p>
+    <p><label>{lbl_name1}: </label>{name1}</p>
+    <p><label>{lbl_nickname}: </label>{nickname}</p>
+    <p><label>{lbl_title}: </label>{title}</p>
+    <!-- BEGIN item --><p><label>{lbl_item}: </label>{item}</p><!-- END item -->
+    <p><label>{lbl_notes}: </label>{notes}</p>
+    <!-- BEGIN selected --><p><label for="addressbook_public">{lbl_is_public}</label></p><!-- END selected -->
+    <!-- BEGIN group --><p><label for="group_{gid}">{lbl_group}</label></p><!-- END group -->
 
     <!-- BEGIN actions -->
     <div class="actions">
