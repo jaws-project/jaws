@@ -7,6 +7,7 @@
  * @author     HamidReza Aboutalebi <hamid@aboutalebi.com>
  * @copyright  2013 Jaws Development Group
  */
+$GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/resources/site_style.css');
 class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
 {
     /**
@@ -42,16 +43,14 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         }
         $link = $this->gadget->urlMap('AddressBook');
         $tpl->SetVariable('address_list_link', $link);
-        $tpl->SetVariable('address_list', _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
-
-        $tpl->SetVariable('lbl_name', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('address_list',    _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
+        $tpl->SetVariable('lbl_name',        _t('GLOBAL_TITLE'));
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
 
         foreach ($groupItems as $groupItem) {
             $tpl->SetBlock("group/item");
             $tpl->SetVariable('name', $groupItem['name']);
             $tpl->SetVariable('description', $groupItem['description']);
-            $tpl->SetVariable('link', $this->gadget->urlMap('GroupMembers', array('id' => $groupItem['id'])));
             $tpl->ParseBlock("group/item");
         }
 
@@ -90,17 +89,20 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
             $tpl->SetVariable('msg', $response);
             $tpl->ParseBlock('groups/response');
         }
-        $link = $this->gadget->urlMap('AddressBook');
-        $tpl->SetVariable('address_list_link', $link);
-        $tpl->SetVariable('address_list', _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
 
-        $tpl->SetVariable('lbl_name', _t('GLOBAL_TITLE'));
+        $this->AjaxMe('site_script.js');
+        $tpl->SetVariable('address_list_link', $this->gadget->urlMap('AddressBook'));
+        $tpl->SetVariable('address_list',    _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
+        $tpl->SetVariable('lbl_name',        _t('GLOBAL_TITLE'));
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
-        $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
+        $tpl->SetVariable('lbl_actions',     _t('GLOBAL_ACTIONS'));
+        $tpl->SetVariable('confirmDelete',   _t('ADDRESSBOOK_DELETE_CONFIRM'));
+        $tpl->SetVariable('deleteURL', $this->gadget->urlMap('DeleteGroup', array('id' => '')));
 
         foreach ($groupItems as $groupItem) {
             $tpl->SetBlock("groups/item");
-            $tpl->SetVariable('name', $groupItem['name']);
+            $tpl->SetVariable('index', $groupItem['id']);
+            $tpl->SetVariable('name',  $groupItem['name']);
             $tpl->SetVariable('description', $groupItem['description']);
 
             //Edite Item, TODO: Check user can do this action
@@ -117,7 +119,7 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
             //Delete Item, TODO: Check user can do this action
             $tpl->SetBlock('groups/item/action');
             $tpl->SetVariable('action_lbl', _t('GLOBAL_DELETE'));
-            $tpl->SetVariable('action_url', $this->gadget->urlMap('DeleteGroup', array('id' => $groupItem['id'])));
+            $tpl->SetVariable('action_url', 'javascript:DeleteGroup(' . $groupItem['id'] . ')');//$this->gadget->urlMap('DeleteGroup', array('id' => $groupItem['id'])));
             $tpl->ParseBlock('groups/item/action');
 
             $tpl->ParseBlock("groups/item");

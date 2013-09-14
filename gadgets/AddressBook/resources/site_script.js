@@ -123,9 +123,35 @@ function SaveAddress()
  */
 function DeleteAddress(aid)
 {
-    if (confirm(confirmDelete)) {
+    msg = confirmDelete.substr(0, confirmDelete.indexOf('%s%'))+
+          $('aid_'+aid).innerHTML+
+          confirmDelete.substr(confirmDelete.indexOf('%s%') + 3);
+    if (confirm(msg)) {
         //AddressBookAjax.callSync('FilterAddress', {'id': aid});
         window.location.href = deleteURL + aid;
+    }
+}
+
+/**
+ * Delete Address
+ */
+function DeleteGroup(gid)
+{
+    msg = confirmDelete.substr(0, confirmDelete.indexOf('%s%'))+
+          $('ag_'+gid).innerHTML+
+          confirmDelete.substr(confirmDelete.indexOf('%s%') + 3);
+    if (confirm(msg)) {
+        window.location.href = deleteURL + gid;
+    }
+}
+
+/**
+ * Add Relation Between Address And Group
+ */
+function AddAddressToGroup()
+{
+    if ($('addressbook_group').value) {
+        $('addressbook_bonding').submit();
     }
 }
 

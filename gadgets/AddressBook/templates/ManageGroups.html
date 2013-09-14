@@ -13,7 +13,7 @@
       </tr>
       <!-- BEGIN item -->
       <tr>
-        <td>{name}</td>
+        <td id="ag_{index}">{name}</td>
         <td>{description}</td>
         <td>
           <!-- BEGIN action -->
@@ -28,6 +28,10 @@
         <a class="button" href="{add_group_link}" title="{add_group}" >{add_group}</a>
     </div>
     <!-- END actions -->
+  <script type="text/javascript">
+    var confirmDelete = "{confirmDelete}";
+    var deleteURL = "{deleteURL}";
+  </script>
   </div>
 </div>
 <!-- END groups -->

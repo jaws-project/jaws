@@ -70,3 +70,11 @@ $actions['GroupMembers'] = array(
     'normal' => true,
     'file'   => 'AddressBookGroup',
 );
+$actions['UnbondAddress'] = array(
+    'stanalone' => true,
+    'file'   => 'AddressBookGroup',
+);
+$actions['BondAddress'] = array(
+    'stanalone' => true,
+    'file'   => 'AddressBookGroup',
+);

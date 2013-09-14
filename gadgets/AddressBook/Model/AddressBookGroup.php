@@ -61,7 +61,7 @@ class AddressBook_Model_AddressBookGroup extends Jaws_Gadget_Model
     {
         $data['address']    = (int) $address;
         $data['group']      = (int) $group;
-        $data['[user]']       = (int) $user;
+        $data['[user]']     = (int) $user;
 
         $agTable = Jaws_ORM::getInstance()->table('address_book_group');
         return $agTable->insert($data)->exec();
@@ -89,5 +89,44 @@ class AddressBook_Model_AddressBookGroup extends Jaws_Gadget_Model
     {
         $agTable = Jaws_ORM::getInstance()->table('address_book_group');
         return $agTable->delete()->where('user', (int) $user)->and()->where('group', (int) $group)->exec();
+    }
+
+    /**
+     * Delete one address for one group
+     *
+     * @access  public
+     * @param   int     $address    Address ID
+     * @param   int     $group      Group ID
+     * @param   int     $user       User ID
+     * @returns boolean of delete result or Jaws_Error on error
+     */
+    function DeleteAddressBookGroup($address, $group, $user)
+    {
+        $agTable = Jaws_ORM::getInstance()->table('address_book_group');
+        $agTable->delete()->where('user', (int) $user);
+        $agTable->and()->where('group', (int) $group);
+        return $agTable->and()->where('address', (int) $address)->exec();
+    }
+
+    /**
+     * Get list of AddressBooks Is Not To Selecred Group
+     *
+     * @access  public
+     * @param   int     $group      Group ID
+     * @param   int     $user       User ID
+     * @returns array of Address Books or Jaws_Error on error
+     */
+    function GetAddressListNotInGroup($gid, $user)
+    {
+        $agTable = Jaws_ORM::getInstance()->table('address_book_group');
+        $agTable->select('address')->where('group', $gid);
+        $result = $agTable->and()->where('address_book_group.user', $user)->fetchColumn();
+        if (Jaws_Error::IsError($addressItems)) {
+            return $result;
+        } else if (is_array($result) && count($result) > 0) {
+            $agTable->where('id', $result, 'not in');
+        }
+        $agTable->table('address_book')->select('*');
+        return $agTable->fetchAll();
     }
 }

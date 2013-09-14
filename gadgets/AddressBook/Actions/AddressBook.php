@@ -7,6 +7,7 @@
  * @author     HamidReza Aboutalebi <hamid@aboutalebi.com>
  * @copyright  2013 Jaws Development Group
  */
+$GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/resources/site_style.css');
 class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
 {
     /**
@@ -152,6 +153,7 @@ class AddressBook_Actions_AddressBook extends Jaws_Gadget_HTML
         }
         foreach ($addressItems as $addressItem) {
             $tpl->SetBlock("list/item1");
+            $tpl->SetVariable('index', $addressItem['id']);
             $tpl->SetVariable('name', str_replace(';' , ' ', $addressItem['name']));
             $tpl->SetVariable('view_url', $this->gadget->urlMap('View', array('id' => $addressItem['id'])));
             $tpl->SetVariable('title', $addressItem['title']);
