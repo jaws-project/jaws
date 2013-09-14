@@ -33,6 +33,11 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
         $table->where('pm_recipients.recipient', $user)->and()->where('pm_messages.published', true);
 
         if (!empty($filters)) {
+
+            if (isset($filters['archived']) && ($filters['archived'] !== "")) {
+                $table->and()->where('archived', $filters['archived']);
+            }
+
             if (isset($filters['read']) && !empty($filters['read'])) {
                 if ($filters['read'] == 'yes') {
                     $table->and()->where('pm_recipients.read', true);

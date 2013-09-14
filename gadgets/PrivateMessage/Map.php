@@ -14,9 +14,10 @@ $maps[] = array(
 );
 $maps[] = array(
     'Inbox',
-    'pm/inbox[/page/{page}]',
+    'pm/inbox[/view/{view}][/page/{page}]',
     array(
         'page' => '[[:digit:]]+',
+        'view' => '[[:lower:]-]+',
     )
 );
 $maps[] = array(

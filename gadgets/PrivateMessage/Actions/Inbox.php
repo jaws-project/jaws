@@ -26,15 +26,23 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $tpl = $this->gadget->loadTemplate('Inbox.html');
         $tpl->SetBlock('inbox');
 
-        $post = jaws()->request->fetch(array('page', 'read', 'attachment', 'filter'), 'post');
+        $post = jaws()->request->fetch(array('view', 'page', 'read', 'attachment', 'filter'), 'post');
         if (!empty($post['read']) || !empty($post['attachment']) || !empty($post['filter'])) {
             $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
             $tpl->SetVariable('opt_attachment_' . $post['attachment'], 'selected="selected"');
             $tpl->SetVariable('txt_filter', $post['filter']);
             $page = $post['page'];
+            $view = $post['view'];
         } else {
             $post = null;
-            $page = jaws()->request->fetch('page', 'get');
+            $get = jaws()->request->fetch(array('view', 'page'), 'get');
+            $page = $get['page'];
+            $view = $get['view'];
+        }
+
+        $post['archived'] = false;
+        if ($view == 'archived') {
+            $post['archived'] = true;
         }
 
         $page = empty($page)? 1 : (int)$page;
@@ -42,6 +50,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
 
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_INBOX'));
         $tpl->SetVariable('page', $page);
+        $tpl->SetVariable('view', $view);
         $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
         $tpl->SetVariable('status_read', _t('PRIVATEMESSAGE_STATUS_READ'));
         $tpl->SetVariable('status_unread', _t('PRIVATEMESSAGE_STATUS_UNREAD'));

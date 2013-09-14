@@ -47,6 +47,7 @@ define('_EN_PRIVATEMESSAGE_FORWARD_MESSAGE', "Forward a message");
 
 /* Common */
 define('_EN_PRIVATEMESSAGE_INBOX', "Inbox {0}");
+define('_EN_PRIVATEMESSAGE_ARCHIVED', "Archived");
 define('_EN_PRIVATEMESSAGE_OUTBOX', "Outbox");
 define('_EN_PRIVATEMESSAGE_DRAFT', "Draft {0}");
 define('_EN_PRIVATEMESSAGE_COMPOSE_MESSAGE', "Compose");

@@ -37,6 +37,8 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_HTML
             $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX'));
         }
 
+        $tpl->SetVariable('archived', _t('PRIVATEMESSAGE_ARCHIVED'));
+
         if ($draftMessageCount > 0) {
             $tpl->SetVariable('draft', _t('PRIVATEMESSAGE_DRAFT', '(' . $draftMessageCount . ')'));
         } else {
@@ -44,6 +46,7 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_HTML
         }
 
         $tpl->SetVariable('inbox_url', $this->gadget->urlMap('Inbox'));
+        $tpl->SetVariable('archived_url', $this->gadget->urlMap('Inbox', array('view' => 'archived')));
         $tpl->SetVariable('draft_url', $this->gadget->urlMap('Draft'));
 
         $tpl->SetVariable('outbox', _t('PRIVATEMESSAGE_OUTBOX'));
