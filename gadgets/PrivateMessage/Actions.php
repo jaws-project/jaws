@@ -10,10 +10,10 @@
  */
 $actions = array();
 
-$actions['NavigationArea'] = array(
+$actions['PrivateMessage'] = array(
     'normal' => true,
     'layout' => true,
-    'file' => 'NavigationArea',
+    'file' => 'PrivateMessage',
 );
 $actions['Inbox'] = array(
     'normal' => true,
@@ -28,7 +28,7 @@ $actions['ViewMessage'] = array(
     'file' => 'Message',
 );
 $actions['PublishMessage'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Message',
 );
 $actions['MessageHistory'] = array(
@@ -36,11 +36,11 @@ $actions['MessageHistory'] = array(
     'file' => 'Message',
 );
 $actions['DeleteMessage'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Message',
 );
 $actions['UnreadMessage'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Message',
 );
 $actions['Reply'] = array(
@@ -48,7 +48,7 @@ $actions['Reply'] = array(
     'file' => 'Reply',
 );
 $actions['ReplyMessage'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Reply',
 );
 $actions['Outbox'] = array(
@@ -60,7 +60,7 @@ $actions['Send'] = array(
     'file' => 'Send',
 );
 $actions['SendMessage'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Send',
 );
 $actions['Attachment'] = array(

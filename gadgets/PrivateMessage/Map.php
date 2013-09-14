@@ -9,7 +9,7 @@
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 $maps[] = array(
-    'NavigationArea',
+    'PrivateMessage',
     'privatemessage'
 );
 $maps[] = array(

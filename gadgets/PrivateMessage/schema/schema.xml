@@ -55,6 +55,12 @@
             </field>
 
             <field>
+                <name>archived</name>
+                <type>boolean</type>
+                <default>false</default>
+            </field>
+
+            <field>
                 <name>insert_time</name>
                 <type>integer</type>
                 <length>8</length>

@@ -24,7 +24,7 @@ class PrivateMessage_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_action = 'NavigationArea';
+    var $default_action = 'PrivateMessage';
 
     /**
      * Default back-end action name

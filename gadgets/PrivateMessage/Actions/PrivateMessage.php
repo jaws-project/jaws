@@ -8,23 +8,23 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class PrivateMessage_Actions_NavigationArea extends Jaws_Gadget_HTML
+class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_HTML
 {
     /**
-     * Display Navigation Area
+     * Display Private Message
      *
      * @access  public
      * @return  void
      */
-    function NavigationArea()
+    function PrivateMessage()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
-        $tpl = $this->gadget->loadTemplate('NavigationArea.html');
-        $tpl->SetBlock('NavigationArea');
+        $tpl = $this->gadget->loadTemplate('PrivateMessage.html');
+        $tpl->SetBlock('PrivateMessage');
 
         $iModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
         $oModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');
@@ -53,7 +53,7 @@ class PrivateMessage_Actions_NavigationArea extends Jaws_Gadget_HTML
         $tpl->SetVariable('send_message', _t('PRIVATEMESSAGE_NAVIGATION_AREA_SEND_MESSAGE'));
         $tpl->SetVariable('send_message_url', $this->gadget->urlMap('Send'));
 
-        $tpl->ParseBlock('NavigationArea');
+        $tpl->ParseBlock('PrivateMessage');
         return $tpl->Get();
     }
 }
