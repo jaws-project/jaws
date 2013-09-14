@@ -332,13 +332,16 @@ class Jaws_Utils
                 }
 
                 $result = @copy($source, $dest);
-                if ($result && !empty($mode)) {
-                    Jaws_Utils::chmod($dest, $mode);
+                if ($result) {
+                    $result = $dest;
+                    if (!empty($mode)) {
+                        Jaws_Utils::chmod($dest, $mode);
+                    }
                 }
             }
         }
 
-        return ($result === true)? $dest : false;
+        return $result;
     }
 
     /**
@@ -386,13 +389,19 @@ class Jaws_Utils
                     }
 
                     $result = @rename($source, $dest);
+                    if ($result) {
+                        $result = $dest;
+                    }
                 }
             } else {
                 $result = @rename($source, $dest);
+                if ($result) {
+                    $result = $dest;
+                }
             }
         }
 
-        return ($result === true)? $dest : false;
+        return $result;
     }
 
     /**
