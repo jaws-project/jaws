@@ -16,7 +16,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
      * @access  public
      * @return  string  XHTML template content
      */
-    function ViewMessage()
+    function Message()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
@@ -108,7 +108,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             $tpl->ParseBlock('message/history');
 
             $tpl->SetBlock('message/message_nav');
-            $tpl->SetVariable('message_nav_url', $this->gadget->urlMap('ViewMessage',
+            $tpl->SetVariable('message_nav_url', $this->gadget->urlMap('Message',
                                                  array('id' => $message['parent'])));
             $tpl->SetVariable('message_nav', _t('PRIVATEMESSAGE_PREVIOUS_MESSAGE'));
             $tpl->ParseBlock('message/message_nav');

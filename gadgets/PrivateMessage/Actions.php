@@ -23,7 +23,7 @@ $actions['Draft'] = array(
     'normal' => true,
     'file' => 'Draft',
 );
-$actions['ViewMessage'] = array(
+$actions['Message'] = array(
     'normal' => true,
     'file' => 'Message',
 );

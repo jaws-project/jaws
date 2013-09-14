@@ -80,7 +80,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
                 $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
 
                 $tpl->SetVariable('message_url', $this->gadget->urlMap(
-                    'ViewMessage',
+                    'Message',
                     array('id' => $message['message_recipient_id'])));
 
                 // user's profile

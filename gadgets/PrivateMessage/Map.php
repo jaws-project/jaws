@@ -44,7 +44,7 @@ $maps[] = array(
     array('id' => '[\p{L}[:digit:]-_\.]+',)
 );
 $maps[] = array(
-    'ViewMessage',
+    'Message',
     'pm/message/{id}[/view/{view}]',
     array(
         'id' => '[\p{L}[:digit:]-_\.]+',

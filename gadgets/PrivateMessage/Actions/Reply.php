@@ -169,6 +169,6 @@ class PrivateMessage_Actions_Reply extends Jaws_Gadget_HTML
                 RESPONSE_ERROR
             );
         }
-        Jaws_Header::Location($this->gadget->urlMap('ViewMessage', array('id' => $post['id'])));
+        Jaws_Header::Location($this->gadget->urlMap('Message', array('id' => $post['id'])));
     }
 }
