@@ -102,7 +102,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
 
         if(!empty($message['parent'])) {
             $tpl->SetBlock('message/history');
-            $tpl->SetVariable('history_url',    $this->gadget->urlMap('MessageHistory', array('id' => $id)));
+            $tpl->SetVariable('history_url',    $this->gadget->urlMap('MessageHistory', array('id' => $message['id'])));
             $tpl->SetVariable('icon_history',   STOCK_UNDO);
             $tpl->SetVariable('history',        _t('PRIVATEMESSAGE_HISTORY'));
             $tpl->ParseBlock('message/history');
@@ -172,7 +172,8 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $usrModel = new Jaws_User;
         $messages = array();
-        $model->GetParentMessages($id, true, $messages);
+        $message = $model->GetMessage($id, false, false);
+        $model->GetParentMessages($message['id'], true, $messages);
         if(empty($messages)) {
             return false;
         }

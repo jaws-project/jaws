@@ -23,12 +23,29 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $page = jaws()->request->fetch('page', 'get');
-        $page = empty($page)? 1 : (int)$page;
-        $limit = (int)$this->gadget->registry->fetch('outbox_limit');
         $tpl = $this->gadget->loadTemplate('Outbox.html');
         $tpl->SetBlock('outbox');
+
+        $post = jaws()->request->fetch(array('page', 'replied', 'attachment', 'filter'), 'post');
+        if (!empty($post['replied']) || !empty($post['attachment']) || !empty($post['filter'])) {
+            $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
+            $tpl->SetVariable('opt_attachment_' . $post['attachment'], 'selected="selected"');
+            $tpl->SetVariable('txt_filter', $post['filter']);
+            $page = $post['page'];
+        } else {
+            $post = null;
+            $page = jaws()->request->fetch('page', 'get');
+        }
+        $page = empty($page)? 1 : (int)$page;
+        $limit = (int)$this->gadget->registry->fetch('outbox_limit');
+
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_NAVIGATION_AREA_OUTBOX'));
+        $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
+        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
+        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
+        $tpl->SetVariable('lbl_attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));
+        $tpl->SetVariable('filter', _t('PRIVATEMESSAGE_FILTER'));
+        $tpl->SetVariable('icon_filter', STOCK_SEARCH);
 
         $date = $GLOBALS['app']->loadDate();
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');
@@ -40,7 +57,8 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
             $tpl->ParseBlock('inbox/response');
         }
 
-        $messages = $model->GetOutbox($user, true, $limit, ($page - 1) * $limit);
+        $post['published'] = true;
+        $messages = $model->GetOutbox($user, $post, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
             foreach ($messages as $message) {
@@ -62,7 +80,8 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
 
-        $outboxTotal = $model->GetOutboxStatistics($user, true);
+        $post['published'] = true;
+        $outboxTotal = $model->GetOutboxStatistics($user, $post);
 
         // page navigation
         $this->GetPagesNavigation(

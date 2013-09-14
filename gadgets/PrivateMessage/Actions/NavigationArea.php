@@ -30,7 +30,7 @@ class PrivateMessage_Actions_NavigationArea extends Jaws_Gadget_HTML
         $oModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');
         $user_id = $GLOBALS['app']->Session->GetAttribute('user');
         $unreadMessageCount = $iModel->GetInboxStatistics($user_id, array('read'=>'no'));
-        $draftMessageCount = $oModel->GetOutboxStatistics($user_id, false);
+        $draftMessageCount = $oModel->GetOutboxStatistics($user_id, array('published' => false));
         if ($unreadMessageCount > 0) {
             $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_NAVIGATION_AREA_INBOX', '(' . $unreadMessageCount . ')'));
         } else {

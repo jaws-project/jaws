@@ -16,7 +16,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      * @access  public
      * @param   integer $id                 Message id
      * @param   bool    $fetchAttachment    Fetch message's attachment info?
-     * @param   bool    $getRecipients       Get recipient info?
+     * @param   bool    $getRecipients      Get recipient info?
      * @return  mixed   Inbox count or Jaws_Error on failure
      */
     function GetMessage($id, $fetchAttachment = false, $getRecipients = true)
@@ -71,7 +71,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         );
         $table->join('users', 'pm_messages.user', 'users.id');
         $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message');
-        $table->where('pm_recipients.id', $id);
+        $table->where('pm_messages.id', $id);
 
         $message = $table->fetchRow();
         if (Jaws_Error::IsError($message)) {
@@ -167,6 +167,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $data['subject']     = $message['subject'];
         $data['body']        = $message['body'];
         $data['published']   = $message['published'];
+        $data['attachments'] = count($attachments);
         $data['insert_time'] = time();
         $message_id = $mTable->insert($data)->exec();
         if (Jaws_Error::IsError($message_id)) {

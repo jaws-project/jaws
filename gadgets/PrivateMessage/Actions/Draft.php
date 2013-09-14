@@ -40,7 +40,7 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
             $tpl->ParseBlock('outbox/response');
         }
 
-        $messages = $model->GetOutbox($user, false, $limit, ($page - 1) * $limit);
+        $messages = $model->GetOutbox($user, array('published' => false), $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
             foreach ($messages as $message) {
@@ -62,7 +62,7 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
 
-        $draftTotal = $model->GetOutboxStatistics($user, false);
+        $draftTotal = $model->GetOutboxStatistics($user, array('published' => false));
 
         // page navigation
         $this->GetPagesNavigation(

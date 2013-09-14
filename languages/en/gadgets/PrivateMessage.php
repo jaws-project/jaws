@@ -64,6 +64,7 @@ define('_EN_PRIVATEMESSAGE_MESSAGE_COUNT', "{0} messages");
 define('_EN_PRIVATEMESSAGE_STATUS_READ', "Read");
 define('_EN_PRIVATEMESSAGE_STATUS_UNREAD', "Unread");
 define('_EN_PRIVATEMESSAGE_FILTER', "Filter");
+define('_EN_PRIVATEMESSAGE_MESSAGE_REPLIED', "Replied");
 
 /* Responses */
 define('_EN_PRIVATEMESSAGE_PROPERTIES_UPDATED', "The properties have been updated");

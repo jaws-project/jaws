@@ -28,7 +28,6 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
 
         $post = jaws()->request->fetch(array('page', 'read', 'attachment', 'filter'), 'post');
         if (!empty($post['read']) || !empty($post['attachment']) || !empty($post['filter'])) {
-
             $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
             $tpl->SetVariable('opt_attachment_' . $post['attachment'], 'selected="selected"');
             $tpl->SetVariable('txt_filter', $post['filter']);
