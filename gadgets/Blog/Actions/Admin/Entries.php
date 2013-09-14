@@ -179,7 +179,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $tModel = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Trackbacks');
 
         $names   = array('edit_timestamp:array', 'pubdate', 'categories:array', 'title',
-                         'fasturl', 'allow_comments', 'published',
+                         'fasturl', 'allow_comments:array', 'published',
                          'trackback_to', 'meta_keywords', 'meta_desc');
         $post    = jaws()->request->fetch($names, 'post');
         $content = jaws()->request->fetch(array('summary_block', 'text_block'), 'post', false);
@@ -439,7 +439,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
     {
         $names   = array('id', 'edit_timestamp:array', 'pubdate', 'categories:array', 'title',
                          'fasturl', 'meta_keywords', 'meta_desc', 
-                         'allow_comments', 'published', 'trackback_to');
+                         'allow_comments:array', 'published', 'trackback_to');
         $post    = jaws()->request->fetch($names, 'post');
         $content = jaws()->request->fetch(array('summary_block', 'text_block'), 'post', false);
 
