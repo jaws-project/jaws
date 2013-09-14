@@ -9,6 +9,10 @@
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 $maps[] = array(
+    'NavigationArea',
+    'privatemessage'
+);
+$maps[] = array(
     'Inbox',
     'pm/inbox[/page/{page}]',
     array(
