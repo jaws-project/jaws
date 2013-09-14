@@ -8,22 +8,22 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
+class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
 {
     /**
-     * Display Send page
+     * Display Compose page
      *
      * @access  public
      * @return  void
      */
-    function Send()
+    function Compose()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
-        $this->gadget->CheckPermission('SendMessage');
+        $this->gadget->CheckPermission('ComposeMessage');
         $this->AjaxMe('site_script.js');
 
 //        $date = $GLOBALS['app']->loadDate();
@@ -31,8 +31,8 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
 //        $usrModel = new Jaws_User;
         $id = jaws()->request->fetch('id', 'get');
 
-        $tpl = $this->gadget->loadTemplate('Send.html');
-        $tpl->SetBlock('send');
+        $tpl = $this->gadget->loadTemplate('Compose.html');
+        $tpl->SetBlock('compose');
 
         // forward a message?
         if (!empty($id) && $id > 0) {
@@ -45,7 +45,7 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
             if (!empty($message['attachments'])) {
                 $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
                 foreach ($message['attachments'] as $file) {
-                    $tpl->SetBlock('send/file');
+                    $tpl->SetBlock('compose/file');
                     $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
                     $tpl->SetVariable('file_name', $file['title']);
                     $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['filesize']));
@@ -60,11 +60,11 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
                         ));
                     $tpl->SetVariable('file_download_link', $file_url);
 
-                    $tpl->ParseBlock('send/file');
+                    $tpl->ParseBlock('compose/file');
                 }
             }
         } else {
-            $tpl->SetVariable('title', _t('PRIVATEMESSAGE_NAVIGATION_AREA_SEND_MESSAGE'));
+            $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
         }
 
 
@@ -73,7 +73,7 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_body', _t('PRIVATEMESSAGE_MESSAGE_BODY'));
         $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
-        $tpl->SetVariable('lbl_send', _t('PRIVATEMESSAGE_SEND'));
+        $tpl->SetVariable('lbl_compose', _t('PRIVATEMESSAGE_COMPOSE'));
         $tpl->SetVariable('lbl_back', _t('PRIVATEMESSAGE_BACK'));
         $tpl->SetVariable('lbl_file', _t('PRIVATEMESSAGE_FILE'));
         $tpl->SetVariable('lbl_add_file', _t('PRIVATEMESSAGE_ADD_ANOTHER_FILE'));
@@ -85,23 +85,23 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('icon_add', STOCK_ADD);
 
-        $tpl->ParseBlock('send');
+        $tpl->ParseBlock('compose');
         return $tpl->Get();
     }
 
     /**
-     * Send a message
+     * Compose a message
      *
      * @access  public
      * @return  void
      */
-    function SendMessage()
+    function ComposeMessage()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
-        $this->gadget->CheckPermission('SendMessage');
+        $this->gadget->CheckPermission('ComposeMessage');
 
         $attachments = array();
         $post = jaws()->request->fetch(array('recipient_users', 'recipient_groups', 'subject',
@@ -197,7 +197,7 @@ class PrivateMessage_Actions_Send extends Jaws_Gadget_HTML
             $post['published'] = false;
         }
         unset($post['status']);
-        $res = $model->SendMessage($user, $post, $attachments);
+        $res = $model->ComposeMessage($user, $post, $attachments);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
                 $res->GetMessage(),

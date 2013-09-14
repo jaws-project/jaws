@@ -28,7 +28,7 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
         $limit = (int)$this->gadget->registry->fetch('draft_limit');
         $tpl = $this->gadget->loadTemplate('Outbox.html');
         $tpl->SetBlock('outbox');
-        $tpl->SetVariable('title', _t('PRIVATEMESSAGE_NAVIGATION_AREA_DRAFT'));
+        $tpl->SetVariable('title', _t('PRIVATEMESSAGE_DRAFT'));
 
         $date = $GLOBALS['app']->loadDate();
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');

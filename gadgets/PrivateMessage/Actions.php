@@ -59,13 +59,13 @@ $actions['Outbox'] = array(
     'normal' => true,
     'file' => 'Outbox',
 );
-$actions['Send'] = array(
+$actions['Compose'] = array(
     'normal' => true,
-    'file' => 'Send',
+    'file' => 'Compose',
 );
-$actions['SendMessage'] = array(
+$actions['ComposeMessage'] = array(
     'standalone' => true,
-    'file' => 'Send',
+    'file' => 'Compose',
 );
 $actions['Attachment'] = array(
     'standalone' => true,

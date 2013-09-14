@@ -23,7 +23,7 @@ class PrivateMessage_Actions_Reply extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $this->gadget->CheckPermission('SendMessage');
+        $this->gadget->CheckPermission('ComposeMessage');
         $this->AjaxMe('site_script.js');
 
         $id = jaws()->request->fetch('id', 'get');
@@ -43,7 +43,7 @@ class PrivateMessage_Actions_Reply extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_body', _t('PRIVATEMESSAGE_MESSAGE_BODY'));
         $tpl->SetVariable('lbl_reply', _t('PRIVATEMESSAGE_REPLY'));
-        $tpl->SetVariable('lbl_send', _t('PRIVATEMESSAGE_SEND'));
+        $tpl->SetVariable('lbl_compose', _t('PRIVATEMESSAGE_COMPOSE'));
         $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
         $tpl->SetVariable('lbl_file', _t('PRIVATEMESSAGE_FILE'));
         $tpl->SetVariable('lbl_add_file', _t('PRIVATEMESSAGE_ADD_ANOTHER_FILE'));
@@ -161,7 +161,7 @@ class PrivateMessage_Actions_Reply extends Jaws_Gadget_HTML
         $message = $model->GetMessage($post['id']);
         $post['parent']          = $message['id'];
         $post['recipient_users'] = $message['user'];
-        $res = $model->SendMessage($user, $post, $attachments);
+        $res = $model->ComposeMessage($user, $post, $attachments);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
                 $res->getMessage(),

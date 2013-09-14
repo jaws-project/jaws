@@ -32,7 +32,7 @@ class PrivateMessage_Installer extends Jaws_Gadget_Installer
         'ManageProperties',
         'DeleteMessage',
         'ReplyMessage',
-        'SendMessage',
+        'ComposeMessage',
     );
 
     /**

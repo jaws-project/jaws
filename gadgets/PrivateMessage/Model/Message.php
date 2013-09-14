@@ -145,7 +145,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
     }
 
     /**
-     * Send message
+     * Compose message
      *
      * @access  public
      * @param   integer $user           User id
@@ -153,7 +153,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      * @param   array   $attachments    File attachments data
      * @return  mixed    True or Jaws_Error on failure
      */
-    function SendMessage($user, $message, $attachments)
+    function ComposeMessage($user, $message, $attachments)
     {
         $mTable = Jaws_ORM::getInstance()->table('pm_messages');
         //Start Transaction

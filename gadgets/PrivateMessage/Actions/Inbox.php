@@ -40,7 +40,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $page = empty($page)? 1 : (int)$page;
         $limit = (int)$this->gadget->registry->fetch('inbox_limit');
 
-        $tpl->SetVariable('title', _t('PRIVATEMESSAGE_NAVIGATION_AREA_INBOX'));
+        $tpl->SetVariable('title', _t('PRIVATEMESSAGE_INBOX'));
         $tpl->SetVariable('page', $page);
         $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
         $tpl->SetVariable('status_read', _t('PRIVATEMESSAGE_STATUS_READ'));

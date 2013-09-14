@@ -24,12 +24,6 @@ define('_EN_PRIVATEMESSAGE_ACL_SENDMESSAGE', "Send message");
 define('_EN_PRIVATEMESSAGE_ACTIONS_PRIVATEMESSAGE', "Private Message");
 define('_EN_PRIVATEMESSAGE_ACTIONS_PRIVATEMESSAGE_DESC', "Display private message");
 
-/* Navigation Area */
-define('_EN_PRIVATEMESSAGE_NAVIGATION_AREA_INBOX', "Inbox {0}");
-define('_EN_PRIVATEMESSAGE_NAVIGATION_AREA_OUTBOX', "Outbox");
-define('_EN_PRIVATEMESSAGE_NAVIGATION_AREA_DRAFT', "Draft {0}");
-define('_EN_PRIVATEMESSAGE_NAVIGATION_AREA_SEND_MESSAGE', "Send a message");
-
 /* Message */
 define('_EN_PRIVATEMESSAGE_MESSAGE_FROM', "From");
 define('_EN_PRIVATEMESSAGE_MESSAGE_SUBJECT', "Subject");
@@ -45,13 +39,17 @@ define('_EN_PRIVATEMESSAGE_NEXT_MESSAGE', "Next message");
 define('_EN_PRIVATEMESSAGE_REPLY', "Reply");
 define('_EN_PRIVATEMESSAGE_REPLY_ON', "Reply on {0}");
 
-/* Send Message */
-define('_EN_PRIVATEMESSAGE_SEND', "Send");
+/* Compose Message */
+define('_EN_PRIVATEMESSAGE_COMPOSE', "Cmpose");
 define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS', "Recipient users");
 define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS', "Recipient groups");
 define('_EN_PRIVATEMESSAGE_FORWARD_MESSAGE', "Forward a message");
 
 /* Common */
+define('_EN_PRIVATEMESSAGE_INBOX', "Inbox {0}");
+define('_EN_PRIVATEMESSAGE_OUTBOX', "Outbox");
+define('_EN_PRIVATEMESSAGE_DRAFT', "Draft {0}");
+define('_EN_PRIVATEMESSAGE_COMPOSE_MESSAGE', "Compose");
 define('_EN_PRIVATEMESSAGE_BACK', "Back");
 define('_EN_PRIVATEMESSAGE_FORWARD', "Forward");
 define('_EN_PRIVATEMESSAGE_HISTORY', "History");

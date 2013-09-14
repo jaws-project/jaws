@@ -144,7 +144,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
 
         if ($message['published']) {
             $tpl->SetBlock('message/forward');
-            $tpl->SetVariable('forward_url', $this->gadget->urlMap('Send', array('id' => $message['id'])));
+            $tpl->SetVariable('forward_url', $this->gadget->urlMap('Compose', array('id' => $message['id'])));
             $tpl->SetVariable('icon_forward', STOCK_RIGHT);
             $tpl->SetVariable('forward', _t('PRIVATEMESSAGE_FORWARD'));
             $tpl->ParseBlock('message/forward');
@@ -249,7 +249,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             }
 
             $tpl->SetVariable('reply_url', $this->gadget->urlMap('Reply', array('id' => $id)));
-            $tpl->SetVariable('forward_url', $this->gadget->urlMap('Send', array('id' => $id)));
+            $tpl->SetVariable('forward_url', $this->gadget->urlMap('Compose', array('id' => $id)));
             $tpl->SetVariable('delete_url', $this->gadget->urlMap('DeleteMessage', array('id' => $id)));
             $tpl->SetVariable('back_url', $this->gadget->urlMap('Inbox'));
 
@@ -316,7 +316,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
      */
     function PublishMessage()
     {
-        $this->gadget->CheckPermission('SendMessage');
+        $this->gadget->CheckPermission('ComposeMessage');
 
         $id = jaws()->request->fetch('id', 'get');
 

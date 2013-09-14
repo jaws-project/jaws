@@ -32,26 +32,26 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_HTML
         $unreadMessageCount = $iModel->GetInboxStatistics($user_id, array('read'=>'no'));
         $draftMessageCount = $oModel->GetOutboxStatistics($user_id, array('published' => false));
         if ($unreadMessageCount > 0) {
-            $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_NAVIGATION_AREA_INBOX', '(' . $unreadMessageCount . ')'));
+            $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX', '(' . $unreadMessageCount . ')'));
         } else {
-            $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_NAVIGATION_AREA_INBOX'));
+            $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX'));
         }
 
         if ($draftMessageCount > 0) {
-            $tpl->SetVariable('draft', _t('PRIVATEMESSAGE_NAVIGATION_AREA_DRAFT', '(' . $draftMessageCount . ')'));
+            $tpl->SetVariable('draft', _t('PRIVATEMESSAGE_DRAFT', '(' . $draftMessageCount . ')'));
         } else {
-            $tpl->SetVariable('draft', _t('PRIVATEMESSAGE_NAVIGATION_AREA_DRAFT'));
+            $tpl->SetVariable('draft', _t('PRIVATEMESSAGE_DRAFT'));
         }
 
         $tpl->SetVariable('inbox_url', $this->gadget->urlMap('Inbox'));
         $tpl->SetVariable('draft_url', $this->gadget->urlMap('Draft'));
 
-        $tpl->SetVariable('outbox', _t('PRIVATEMESSAGE_NAVIGATION_AREA_OUTBOX'));
+        $tpl->SetVariable('outbox', _t('PRIVATEMESSAGE_OUTBOX'));
         $tpl->SetVariable('outbox_url', $this->gadget->urlMap('Outbox'));
 
 
-        $tpl->SetVariable('send_message', _t('PRIVATEMESSAGE_NAVIGATION_AREA_SEND_MESSAGE'));
-        $tpl->SetVariable('send_message_url', $this->gadget->urlMap('Send'));
+        $tpl->SetVariable('compose_message', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
+        $tpl->SetVariable('compose_message_url', $this->gadget->urlMap('Compose'));
 
         $tpl->ParseBlock('PrivateMessage');
         return $tpl->Get();

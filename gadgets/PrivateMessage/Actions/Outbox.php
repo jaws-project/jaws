@@ -39,7 +39,7 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         $page = empty($page)? 1 : (int)$page;
         $limit = (int)$this->gadget->registry->fetch('outbox_limit');
 
-        $tpl->SetVariable('title', _t('PRIVATEMESSAGE_NAVIGATION_AREA_OUTBOX'));
+        $tpl->SetVariable('title', _t('PRIVATEMESSAGE_OUTBOX'));
         $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
         $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
         $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
