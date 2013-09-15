@@ -73,8 +73,11 @@ $maps[] = array(
 );
 $maps[] = array(
     'DeleteMessage',
-    'pm/message/delete/{id}',
-    array('id' => '[\p{L}[:digit:]-_\.]+',)
+    'pm/message[/type/{type}]/delete/{id}',
+    array(
+        'id' => '[\p{L}[:digit:]-_\.]+',
+        'type' => '[[:lower:]-]+',
+    )
 );
 
 $maps[] = array(

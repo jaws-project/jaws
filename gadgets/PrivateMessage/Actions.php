@@ -23,15 +23,15 @@ $actions['Draft'] = array(
     'normal' => true,
     'file' => 'Draft',
 );
+$actions['DraftMessage'] = array(
+    'standalone' => true,
+    'file' => 'Draft',
+);
 $actions['Message'] = array(
     'normal' => true,
     'file' => 'Message',
 );
 $actions['PublishMessage'] = array(
-    'standalone' => true,
-    'file' => 'Message',
-);
-$actions['UnreadMessage'] = array(
     'standalone' => true,
     'file' => 'Message',
 );

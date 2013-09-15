@@ -28,6 +28,10 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             'user:integer', 'pm_messages.insert_time');
         if($getRecipients) {
             $columns[] = 'pm_recipients.read:boolean';
+        } else {
+            $subTable = Jaws_ORM::getInstance()->table('pm_recipients');
+            $subTable->select('count(id)')->where('read', true)->and()->where('message', $id)->alias('read_count');
+            $columns[] = $subTable;
         }
 
         $table->select($columns);
@@ -96,28 +100,65 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   integer  $id     Message id
-     * @param   integer  $user   User id
      * @return  mixed    True or Jaws_Error on failure
      */
-    function DeleteMessage($id, $user)
+    function DeleteMessage($id)
     {
-        $table = Jaws_ORM::getInstance()->table('pm_recipients');
-        $result = $table->delete()->where('message', $id)->and()->where('recipient', $user)->exec();
+        // Delete message's recipients
+        $rTable = Jaws_ORM::getInstance()->table('pm_recipients');
+        //Start Transaction
+        $rTable->beginTransaction();
+
+        $rTable->delete()->where('message', $id)->exec();
+
+        // Delete message's attachments
+        $aTable = Jaws_ORM::getInstance()->table('pm_attachments');
+        $aTable->delete()->where('message', $id)->exec();
+
+        // Delete message
+        $mTable = Jaws_ORM::getInstance()->table('pm_messages');
+        $result = $mTable->delete()->where('id', $id)->exec();
+
+        //Commit Transaction
+        $rTable->commit();
         return $result;
     }
 
     /**
-     * Publish a message
+     * Get a message recipient
      *
      * @access  public
      * @param   integer  $id     Message id
      * @return  mixed    True or Jaws_Error on failure
      */
-    function PublishMessage($id)
+    function DeleteMessageRecipient($id)
     {
-        $table = Jaws_ORM::getInstance()->table('pm_messages');
-        $result = $table->update(array('published'=>true))->where('id', $id)->exec();
+        $table = Jaws_ORM::getInstance()->table('pm_recipients');
+        $result = $table->delete()->where('id', $id)->exec();
         return $result;
+    }
+
+    /**
+     * Change messages publish status
+     *
+     * @access  public
+     * @param   integer  $ids           Messages id
+     * @param   bool     $published     Published status
+     * @return  bool    True or False
+     */
+    function MarkMessagesPublishStatus($ids, $published)
+    {
+        if(!is_array($ids) && is_numeric($ids)) {
+            $ids = array($ids);
+        }
+
+        $table = Jaws_ORM::getInstance()->table('pm_messages');
+        $table->update(array('published' => $published, 'update_time' => time()));
+        $res = $table->where('id', $ids, 'in')->exec();
+        if (Jaws_Error::IsError($res)) {
+            return false;
+        }
+        return true;
     }
 
     /**

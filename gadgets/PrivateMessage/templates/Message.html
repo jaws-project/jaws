@@ -26,6 +26,14 @@
                 <a href="{unread_url}" class="button" title="{unread}"><img src="{icon_unread}" alt="{unread}"/></a>
                 <!-- END unread -->
 
+                <!-- BEGIN draft -->
+                <a href="{draft_url}" class="button" title="{draft}"><img src="{icon_draft}" alt="{draft}"/></a>
+                <!-- END draft -->
+
+                <!-- BEGIN publish -->
+                <a href="{publish_url}" class="button" title="{publish}"><img src="{icon_publish}" alt="{publish}"/></a>
+                <!-- END publish -->
+
                 <!-- BEGIN forward -->
                 <a href="{forward_url}" class="button" title="{forward}"><img src="{icon_forward}" alt="{forward}"/></a>
                 <!-- END forward -->
@@ -33,9 +41,7 @@
                 <!-- BEGIN delete -->
                 <a href="javascript:deleteMessage()" class="button" title="{delete}"><img src="{icon_delete}" alt="{delete}"/></a>
                 <!-- END delete -->
-                <!-- BEGIN publish -->
-                <a href="javascript:publishMessage()" class="button" title="{publish}"><img src="{icon_publish}" alt="{publish}"/></a>
-                <!-- END publish -->
+
             </div>
 
             <div class="actions">
@@ -75,13 +81,6 @@
         if (confirm('{confirmDelete}')) {
             window.location.href = "{delete_url}";
         }
-    }
-
-    /**
-     * Publish Message
-     */
-    function publishMessage() {
-       window.location.href = "{publish_url}";
     }
 
 </script>

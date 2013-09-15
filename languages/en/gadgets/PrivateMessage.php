@@ -18,7 +18,7 @@ define('_EN_PRIVATEMESSAGE_ACL_DEFAULT', "Administer PrivateMessage");
 define('_EN_PRIVATEMESSAGE_ACL_MANAGEPROPERTIES', "Manage Properties");
 define('_EN_PRIVATEMESSAGE_ACL_DELETEMESSAGE', "Delete message");
 define('_EN_PRIVATEMESSAGE_ACL_REPLYMESSAGE', "Reply message");
-define('_EN_PRIVATEMESSAGE_ACL_SENDMESSAGE', "Send message");
+define('_EN_PRIVATEMESSAGE_ACL_COMPOSEMESSAGE', "Compose message");
 
 /* Layout Actions */
 define('_EN_PRIVATEMESSAGE_ACTIONS_PRIVATEMESSAGE', "Private Message");
@@ -71,9 +71,11 @@ define('_EN_PRIVATEMESSAGE_PROPERTIES_UPDATED', "The properties have been update
 define('_EN_PRIVATEMESSAGE_ERROR_NO_FILE_UPLOADED', "No image has been uploaded.");
 define('_EN_PRIVATEMESSAGE_MESSAGE_DELETED', "Message has been deleted.");
 define('_EN_PRIVATEMESSAGE_MESSAGE_PUBLISHED', "Message has been published.");
+define('_EN_PRIVATEMESSAGE_MESSAGE_DRAFTED', "Message has been drafted.");
 
 /* Errors */
 define('_EN_PRIVATEMESSAGE_ERROR_PROPERTIES_NOT_UPDATED', "Updating the properties failed");
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_DELETED', "There was a problem deleting message.");
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_PUBLISHED', "There was a problem publishing message.");
+define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_DRAFTED', "There was a problem drafting message.");
 

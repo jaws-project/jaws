@@ -78,4 +78,42 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
         $tpl->ParseBlock('outbox');
         return $tpl->Get();
     }
+
+    /**
+     * Draft a message
+     *
+     * @access  public
+     * @return  void
+     */
+    function DraftMessage()
+    {
+        $this->gadget->CheckPermission('ComposeMessage');
+
+        $id = jaws()->request->fetch('id', 'get');
+
+        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
+        $res = $model->MarkMessagesPublishStatus($id, false);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushResponse(
+                $res->getMessage(),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        }
+
+        if ($res == true) {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_MESSAGE_DRAFTED'),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        } else {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_DRAFTED'),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        }
+        Jaws_Header::Location($this->gadget->urlMap('Draft'));
+    }
 }

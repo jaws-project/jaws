@@ -114,6 +114,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             $tpl->ParseBlock('message/message_nav');
         }
 
+        // View inbox message
         if ($view != 'reference') {
             $tpl->SetBlock('message/reply');
             $tpl->SetVariable('reply_url', $this->gadget->urlMap('Reply', array('id' => $id)));
@@ -133,12 +134,28 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             $tpl->SetVariable('delete_url', $this->gadget->urlMap('DeleteMessage', array('id' => $id)));
 
         } else {
+            // View outbox message
             if (!$message['published']) {
                 $tpl->SetBlock('message/publish');
                 $tpl->SetVariable('icon_publish', STOCK_OK);
                 $tpl->SetVariable('publish', _t('PRIVATEMESSAGE_PUBLISH'));
-                $tpl->ParseBlock('message/publish');
                 $tpl->SetVariable('publish_url', $this->gadget->urlMap('PublishMessage', array('id' => $id)));
+                $tpl->ParseBlock('message/publish');
+
+                $tpl->SetBlock('message/delete');
+                $tpl->SetVariable('icon_delete', STOCK_DELETE);
+                $tpl->ParseBlock('message/delete');
+                $tpl->SetVariable('delete_url', $this->gadget->urlMap(
+                                  'DeleteMessage', array('id' => $id, 'type'=>'reference')));
+
+            } else {
+                if ($message['read_count'] < 1) {
+                    $tpl->SetBlock('message/draft');
+                    $tpl->SetVariable('icon_draft', STOCK_BOOK);
+                    $tpl->SetVariable('draft', _t('PRIVATEMESSAGE_DRAFT'));
+                    $tpl->SetVariable('draft_url', $this->gadget->urlMap('DraftMessage', array('id' => $id)));
+                    $tpl->ParseBlock('message/draft');
+                }
             }
         }
 
@@ -279,11 +296,15 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('DeleteMessage');
 
-        $id = jaws()->request->fetch('id', 'get');
-        $user = $GLOBALS['app']->Session->GetAttribute('user');
+        $get = jaws()->request->fetch(array('id', 'type'), 'get');
+//        $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
-        $res = $model->DeleteMessage($id, $user);
+        if($get['type']=='reference') {
+            $res = $model->DeleteMessage($get['id']);
+        } else {
+            $res = $model->DeleteMessageRecipient($get['id']);
+        }
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
                 $res->getMessage(),
@@ -321,7 +342,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
         $id = jaws()->request->fetch('id', 'get');
 
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
-        $res = $model->PublishMessage($id);
+        $res = $model->MarkMessagesPublishStatus($id, true);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
                 $res->getMessage(),
