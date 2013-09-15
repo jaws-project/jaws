@@ -47,9 +47,9 @@
                 <tr>
                     <th>#</th>
                     <th>{lbl_from}</th>
+                    <th>&nbsp;</th>
                     <th>{lbl_subject}</th>
                     <th>{lbl_send_time}</th>
-                    <th>&nbsp;</th>
                 </tr>
                 </thead>
 
@@ -61,8 +61,6 @@
                         {rownum}
                     </td>
                     <td><a href="{user_url}">{from}</a></td>
-                    <td><a href="{message_url}">{subject}</a></td>
-                    <td>{send_time}</td>
 
                     <!-- BEGIN have_attachment -->
                     <td><img src="{icon_attachment}" alt="{attachment}"/></td>
@@ -70,6 +68,9 @@
                     <!-- BEGIN no_attachment -->
                     <td>&nbsp;</td>
                     <!-- END no_attachment -->
+
+                    <td><a href="{message_url}">{subject}</a></td>
+                    <td>{send_time}</td>
 
                 </tr>
                 <!-- END message -->

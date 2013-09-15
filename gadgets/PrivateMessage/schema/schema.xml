@@ -61,6 +61,19 @@
             </field>
 
             <field>
+                <name>recipient_users</name>
+                <type>text</type>
+                <length>255</length>
+            </field>
+
+            <field>
+                <name>recipient_groups</name>
+                <type>text</type>
+                <length>255</length>
+            </field>
+
+
+            <field>
                 <name>insert_time</name>
                 <type>integer</type>
                 <length>8</length>
@@ -142,6 +155,12 @@
 
             <field>
                 <name>read</name>
+                <type>boolean</type>
+                <default>false</default>
+            </field>
+
+            <field>
+                <name>archived</name>
                 <type>boolean</type>
                 <default>false</default>
             </field>

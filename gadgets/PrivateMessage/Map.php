@@ -36,7 +36,8 @@ $maps[] = array(
 );
 $maps[] = array(
     'Compose',
-    'pm/compose[/forward/{id}]',
+//    'pm/compose[/forward/{id}]',
+    'pm/compose[/id/{id}][/reply/{reply}]',
     array('id' => '[\p{L}[:digit:]-_\.]+',)
 );
 $maps[] = array(

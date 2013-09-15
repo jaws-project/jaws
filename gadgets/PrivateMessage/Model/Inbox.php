@@ -62,7 +62,9 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
                 }
             }
             if (isset($filters['term']) && !empty($filters['term'])) {
-                $table->and()->where('pm_messages.subject', '%' . $filters['term'] . '%', 'like');
+                $filters['term'] = '%' . $filters['term'] . '%';
+                $table->and()->openWhere('pm_messages.subject', $filters['term'] , 'like')->or();
+                $table->and()->closeWhere('pm_messages.body', $filters['term'] , 'like');
             }
         }
 
