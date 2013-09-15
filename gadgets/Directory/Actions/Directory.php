@@ -45,7 +45,10 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetVariable('description', '{description}');
         $tpl->SetVariable('type', '{type}');
         $tpl->SetVariable('size', '{size}');
+        $tpl->SetVariable('created', '{created}');
+        $tpl->SetVariable('modified', '{modified}');
         $tpl->SetVariable('shared', '{shared}');
+        $tpl->SetVariable('foreign', '{foreign}');
         $tpl->ParseBlock('workspace/fileTemplate');
 
         // Status bar
@@ -75,11 +78,11 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      */
     function GetFiles()
     {
-        $flags = jaws()->request->fetch(array('parent', 'shared', 'shared_for_me'), 'post');
-        _log_var_dump($flags);
+        $flags = jaws()->request->fetch(array('parent', 'shared', 'foreign'), 'post');
+        //_log_var_dump($flags);
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-        $files = $model->GetFiles($user, $flags['parent'], $flags['shared'], $flags['shared_for_me']);
+        $files = $model->GetFiles($user, $flags['parent'], $flags['shared'], $flags['foreign']);
         if (Jaws_Error::IsError($files)){
             return array();
         }
@@ -87,8 +90,8 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         foreach ($files as &$file) {
             $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
-            $file['size'] = Jaws_Utils::FormatSize($file['filesize']);
-            $file['is_shared'] = $file['shared']? _t('DIRECTORY_IS_SHARED') : _t('DIRECTORY_NOT_SHARED');
+            //$file['size'] = Jaws_Utils::FormatSize($file['filesize']);
+            //$file['is_shared'] = $file['shared']? _t('DIRECTORY_IS_SHARED') : _t('DIRECTORY_NOT_SHARED');
         }
         return $files;
     }

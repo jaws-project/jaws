@@ -17,7 +17,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      * @param   int     $parent     Restrict result to a specified node
      * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($user = null, $parent = null, $shared = null, $shared_for_me = null)
+    function GetFiles($user = null, $parent = null, $shared = null, $foreign = null)
     {
         $table = Jaws_ORM::getInstance()->table('directory');
         $table->select('id', 'parent', 'user', 'is_dir:boolean', 'title',
@@ -36,8 +36,8 @@ class Directory_Model_Files extends Jaws_Gadget_Model
             $table->and()->where('shared', $shared);
         }
 
-        if ($shared_for_me !== null){
-            $flag = $shared_for_me? '<>' : '=';
+        if ($foreign !== null){
+            $flag = $foreign? '<>' : '=';
             $table->and()->where('user', $table->expr('owner'), $flag);
         }
 

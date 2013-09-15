@@ -76,10 +76,14 @@ function initDirectory()
     DirectoryAjax.backwardSupport();
     imgDeleteFile = new Element('img', {src:imgDeleteFile});
     imgDeleteFile.addEvent('click', removeFile);
-    currentDir = Number(DirectoryStorage.fetch('current_dir'));
-    fileTemplate = $('workspace').get('html');
+    fileTemplate = $('file_arena').get('html');
     statusTemplate = $('statusbar').get('html');
     pageBody = $('requested_gadget_directory');
+    viewType = DirectoryStorage.fetch('view_type');
+    if (viewType === null) viewType = 'list';
+    $('view_type').value = viewType;
+    changeFileView(viewType);
+    currentDir = Number(DirectoryStorage.fetch('current_dir'));
     openDirectory(currentDir);
 }
 
@@ -91,24 +95,27 @@ function displayFiles(parent)
     if (parent === undefined) {
         parent = currentDir;
     }
-    console.log($('file_filter'));
-    var ws = $('workspace'),
+    //console.log($('file_filter'));
+    var ws = $('file_arena'),
         shared = ($('file_filter').value === 'shared')? true : null,
-        others = ($('file_filter').value === 'others')? true : null,
+        foreign = ($('file_filter').value === 'foreign')? true : null,
         files = DirectoryAjax.callSync('GetFiles', 
-            {'parent':parent, 'shared':shared, 'shared_for_me':others});
+            {'parent':parent, 'shared':shared, 'foreign':foreign});
     //console.log(files);
     ws.empty();
     fileById = {};
     filesCount = files.length;
     files.each(function (file) {
+        file.size = formatSize(file.filesize, 0);
         fileById[file.id] = Object.clone(file);
-        file.type = file.is_dir? 'folder' : 'file';
+        file.type = file.is_dir? 'folder' : file.filename.split('.').pop();
+        //console.log(file.filetype);
         file.shared = file.shared? 'shared' : '';
+        file.foreign = (file.user !== file.owner)? 'foreign' : '';
         ws.grab(getFileElement(file));
     });
 
-    $('statusbar').set('html', filesCount + ' items').show();
+    $('statusbar').set('html', filesCount + ' items');
 }
 
 /**
@@ -125,20 +132,30 @@ function getFileElement(fileData)
 }
 
 /**
+ * Changes display type to icon/list
+ */
+function changeFileView(view)
+{
+    $('file_arena').set('class', view + '-view');
+    DirectoryStorage.update('view_type', view);
+}
+
+/**
  * Fetches and displays details on a file/directory
  */
 function fileSelect(e)
 {
-    var ws = $('workspace'),
-        st = $('statusbar');
+    var ws = $('file_arena'),
+        st = $('statusbar'),
+        data = Object.clone(fileById[this.fid]);
     cancel();
     this.addClass('selected');
     selectedId = this.fid;
-    // if (!fileById[selectedId]) {
-        // fileById[selectedId] = DirectoryAjax.callSync('GetFile', {id:selectedId});
-    // }
-    //console.log(fileById[selectedId]);
-    st.set('html', statusTemplate.substitute(fileById[selectedId]));
+    //console.log(data);
+    data.size = formatSize(data.filesize, 2);
+    st.set('html', statusTemplate.substitute(data));
+    st.getElement('#stat_file_size').style.display =
+        (data.size === '')? 'none' : '';
     e.stop();
     updateActions();
 }
@@ -289,8 +306,8 @@ function cancel()
 {
     selectedId = null;
     $('form').set('html', '');
-    $('workspace').getElements('.selected').removeClass('selected');
-    $('statusbar').set('html', filesCount + ' items').show();
+    $('file_arena').getElements('.selected').removeClass('selected');
+    $('statusbar').set('html', filesCount + ' items');
     updateActions();
     pageBody.addEvent('click', cancel);
 }
@@ -544,6 +561,24 @@ function submitShare()
         {'id':selectedId, 'users':users.toString()}
     );
 }
+
+/**
+ * Formats size in bytes to human readbale
+ */
+function formatSize(size, precision)
+{
+    var i = -1,
+        byteUnits = [' KB', ' MB', ' GB', ' TB'];
+    if (size === null) return '';
+    size = Number(size);
+    if (precision > 0 && size < 1024) return size + ' bytes';
+    do {
+        size = size / 1024;
+        i++;
+    } while (size > 1024);
+
+    return Math.max(size, 1).toFixed(precision) + byteUnits[i];
+};
 
 var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
     DirectoryStorage = new JawsStorage('Directory'),

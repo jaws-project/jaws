@@ -10,7 +10,7 @@
   <select id="file_filter" onchange="displayFiles()">
     <option value="all">All files & folders</option>
     <option value="shared">Shared files & folders only</option>
-    <option value="others">Shares from other users only</option>
+    <option value="foreign">Shares from other users only</option>
   </select>
   <div id="file_actions">
     <button type="button" id="btn_share" onclick="share()">{lbl_share}</button>
@@ -18,22 +18,30 @@
     <button type="button" id="btn_delete" onclick="del()">{lbl_delete}</button>
     <button type="button" id="btn_props" onclick="properties()">{lbl_props}</button>
   </div>
-  <div id="workspace">
+  <div id="file_arena" class="list-view">
     <!-- BEGIN fileTemplate -->
-    <div id="file_{id}" title="{description}" class="file-box">
-      <div class="file-icon {type} {shared} {is_dir}"></div>
-      <div class="file-title">{title}</div>
-    </div>
+    <dl id="file_{id}" title="{description}">
+      <dd class="file-icon type-{type}"><div class="file-sharing {shared} {foreign}"></div></dd>
+      <dd class="file-title">{title}</dd>
+      <dd class="file-created">{created}</dd>
+      <dd class="file-modified">{modified}</dd>
+      <dd class="file-type">{type}</dd>
+      <dd class="file-size">{size}</dd>
+    </dl>
     <!-- END fileTemplate -->
   </div>
-  <div id="statusbar" style="display:none;">
+  <div id="statusbar">
     <!-- BEGIN statusbar -->
     <strong>{title}</strong>
-    <span>Size: </span>{size}
+    <span id="stat_file_size">Size: </span>{size}
     <span>Date created: </span>{created}
     <span>Date modified: </span>{modified}
     <!-- END statusbar -->
-  </div><br/>
+  </div>
+  <select id="view_type" onchange="changeFileView(this.value)">
+    <option value="icon">Icon view</option>
+    <option value="list">List view</option>
+  </select><br/>
   <div id="form"></div>
 </div>
 <script>
