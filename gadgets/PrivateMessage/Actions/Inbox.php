@@ -26,11 +26,11 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $tpl = $this->gadget->loadTemplate('Inbox.html');
         $tpl->SetBlock('inbox');
 
-        $post = jaws()->request->fetch(array('view', 'page', 'read', 'attachment', 'filter'), 'post');
-        if (!empty($post['read']) || !empty($post['attachment']) || !empty($post['filter'])) {
+        $post = jaws()->request->fetch(array('view', 'page', 'read', 'replied', 'term'), 'post');
+        if (!empty($post['read']) || !empty($post['replied']) || !empty($post['term'])) {
+            $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
             $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
-            $tpl->SetVariable('opt_attachment_' . $post['attachment'], 'selected="selected"');
-            $tpl->SetVariable('txt_filter', $post['filter']);
+            $tpl->SetVariable('txt_term', $post['term']);
             $page = $post['page'];
             $view = $post['view'];
         } else {
@@ -51,12 +51,10 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_INBOX'));
         $tpl->SetVariable('page', $page);
         $tpl->SetVariable('view', $view);
-        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
-        $tpl->SetVariable('status_read', _t('PRIVATEMESSAGE_STATUS_READ'));
-        $tpl->SetVariable('status_unread', _t('PRIVATEMESSAGE_STATUS_UNREAD'));
-        $tpl->SetVariable('lbl_attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));
-        $tpl->SetVariable('attachment_yes', _t('GLOBAL_YES'));
-        $tpl->SetVariable('attachment_no', _t('GLOBAL_NO'));
+        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
+        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
+        $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
+        $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
         $tpl->SetVariable('filter', _t('PRIVATEMESSAGE_FILTER'));
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
 

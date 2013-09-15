@@ -45,6 +45,15 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
                     $table->and()->where('pm_recipients.read', false);
                 }
             }
+            if (isset($filters['replied']) && !empty($filters['replied'])) {
+                $subTable = Jaws_ORM::getInstance()->table('pm_messages')->select('count(id):integer')->where('parent', 1);
+
+                if ($filters['replied'] == 'yes') {
+                    $table->and()->where($subTable, 0, '>');
+                } else {
+                    $table->and()->where($subTable, 0);
+                }
+            }
             if (isset($filters['attachment']) && !empty($filters['attachment'])) {
                 if ($filters['attachment'] == 'yes') {
                     $table->and()->where('pm_messages.attachments', 0, '>');
@@ -52,8 +61,8 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
                     $table->and()->where('pm_messages.attachments', 0);
                 }
             }
-            if (isset($filters['filter']) && !empty($filters['filter'])) {
-                $table->and()->where('pm_messages.subject', '%' . $filters['filter'] . '%', 'like');
+            if (isset($filters['term']) && !empty($filters['term'])) {
+                $table->and()->where('pm_messages.subject', '%' . $filters['term'] . '%', 'like');
             }
         }
 

@@ -11,21 +11,21 @@
         <input type="hidden" name="view" value="{view}"/>
 
         <div class="filter">
-            <label for="read">{lbl_status}</label>
+            <label for="read">{lbl_read}</label>
             <select id="read" name="read">
                 <option {opt_read_} value=""></option>
-                <option {opt_read_yes} value="yes">{status_read}</option>
-                <option {opt_read_no} value="no">{status_unread}</option>
+                <option {opt_read_yes} value="yes">{lbl_yes}</option>
+                <option {opt_read_no} value="no">{lbl_no}</option>
             </select>
 
-            <label for="attachment">{lbl_attachment}</label>
-            <select id="attachment" name="attachment">
-                <option {opt_attachment_} value=""></option>
-                <option {opt_attachment_yes} value="yes">{attachment_yes}</option>
-                <option {opt_attachment_no} value="no">{attachment_no}</option>
+            <label for="replied">{lbl_replied}</label>
+            <select id="replied" name="replied">
+                <option {opt_replied_} value=""></option>
+                <option {opt_replied_yes} value="yes">{lbl_yes}</option>
+                <option {opt_replied_no} value="no">{lbl_no}</option>
             </select>
 
-            <input type="text" id="filter" name="filter" size="20" value="{txt_filter}">
+            <input type="text" id="term" name="term" size="20" value="{txt_term}">
 
             <button value="{filter}" id="filter_button" name="filter_button"
                     type="submit"><img src="{icon_filter}" alt="{filter}"/>&nbsp;{filter}
