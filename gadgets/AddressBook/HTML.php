@@ -16,14 +16,14 @@ class AddressBook_HTML extends Jaws_Gadget_HTML
      * @access  private
      */
     var $_TelTypes = array(
-        1 => array('fieldType' => 'home', 'telType' => 'cell', 'lang' => 'HOME_TELL'),
-        2 => array('fieldType' => 'home', 'telType' => 'mobile', 'lang' => 'HOME_MOBILE'),
+        1 => array('fieldType' => 'home', 'telType' => 'voice', 'lang' => 'HOME_TELL'),
+        2 => array('fieldType' => 'home', 'telType' => 'cell', 'lang' => 'HOME_MOBILE'),
         3 => array('fieldType' => 'home', 'telType' => 'fax', 'lang' => 'HOME_FAX'),
-        4 => array('fieldType' => 'work', 'telType' => 'cell', 'lang' => 'WORK_TELL'),
-        5 => array('fieldType' => 'work', 'telType' => 'mobile', 'lang' => 'WORK_MOBILE'),
+        4 => array('fieldType' => 'work', 'telType' => 'voice', 'lang' => 'WORK_TELL'),
+        5 => array('fieldType' => 'work', 'telType' => 'cell', 'lang' => 'WORK_MOBILE'),
         6 => array('fieldType' => 'work', 'telType' => 'fax', 'lang' => 'WORK_FAX'),
-        7 => array('fieldType' => 'other', 'telType' => 'cell', 'lang' => 'OTHER_TELL'),
-        8 => array('fieldType' => 'other', 'telType' => 'mobile', 'lang' => 'OTHER_MOBILE'),
+        7 => array('fieldType' => 'other', 'telType' => 'voice', 'lang' => 'OTHER_TELL'),
+        8 => array('fieldType' => 'other', 'telType' => 'cell', 'lang' => 'OTHER_MOBILE'),
         9 => array('fieldType' => 'other', 'telType' => 'fax', 'lang' => 'OTHER_FAX'),
     );
 

@@ -8,7 +8,7 @@
  * @copyright  2013 Jaws Development Group
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/resources/site_style.css');
-class AddressBook_Actions_VCardBuilder extends Jaws_Gadget_HTML
+class AddressBook_Actions_VCardBuilder extends AddressBook_HTML
 {
     /**
      * Build and export data with VCard format
@@ -18,39 +18,94 @@ class AddressBook_Actions_VCardBuilder extends Jaws_Gadget_HTML
      */
     function VCardBuild()
     {
-        require_once PEAR_PATH . 'File/IMC.php';
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
 
-        // instantiate a builder object
-        // (defaults to version 3.0)
-        $vcard = File_IMC::build('vCard');
-var_dump($vcard);
-        // set a formatted name
-        $vcard->setFormattedName('Bolivar Shagnasty');
+        require_once JAWS_PATH . 'gadgets/Addressbook/vCard.php';
 
-        // set the structured name parts
-        $vcard->setName('Shagnasty', 'Bolivar', 'Odysseus', 'Mr.', 'III');
+        $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
+        $agModel = $this->gadget->load('Model')->load('Model', 'AddressBookGroup');
+        $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
+        $post = jaws()->request->fetch(array('address:int', 'group:int', 'term'));
 
-        // add a work email.  note that we add the value
-        // first and the param after -- Contact_Vcard_Build
-        // is smart enough to add the param in the correct
-        // place.
-        $vcard->addEmail('boshag@example.com');
-        $vcard->addParam('TYPE', 'WORK');
+        $addressItems = $model->GetAddressList($user, $post['group'], false, $post['term']);
+        if (Jaws_Error::IsError($addressItems) || empty($addressItems)) {
+            return Jaws_HTTPError::Get(404);
+        }
 
-        // add a home/preferred email
-        $vcard->addEmail('bolivar@example.net');
-        $vcard->addParam('TYPE', 'HOME');
-        $vcard->addParam('TYPE', 'PREF');
+        $result = '';
+        $nVCard = array('LastName', 'FirstName', 'AdditionalNames', 'Prefixes', 'Suffixes');
+        foreach ($addressItems as $addressItem) {
+            $vCard = new vCard;
 
-        // add a work address
-        $vcard->addAddress('POB 101', 'Suite 202', '123 Main',
-                           'Beverly Hills', 'CA', '90210', 'US');
-        $vcard->addParam('TYPE', 'WORK');
+            $names = explode(';', $addressItem['name']);
+            foreach ($names as $key => $name) {
+                 $vCard->n($name, $nVCard[$key]);
+            }
+            $vCard->nickname($addressItem['nickname']);
 
-        // get back the vCard and print it
-        $text = $vcard->fetch();
-        echo '<pre>';
-        print_r($text);
-        echo '</pre>';
+            $adrGroups = $agModel->GetGroupNames($addressItem['address_id'], $user);
+            $vCard->categories(implode(',', $adrGroups));
+
+            $this->FillVCardTypes($vCard, 'tel', $addressItem['tel_home'], $this->_TelTypes);
+            $this->FillVCardTypes($vCard, 'tel', $addressItem['tel_work'], $this->_TelTypes);
+            $this->FillVCardTypes($vCard, 'tel', $addressItem['tel_other'], $this->_TelTypes);
+
+            $this->FillVCardTypes($vCard, 'email', $addressItem['email_home'], $this->_EmailTypes);
+            $this->FillVCardTypes($vCard, 'email', $addressItem['email_work'], $this->_EmailTypes);
+            $this->FillVCardTypes($vCard, 'email', $addressItem['email_other'], $this->_EmailTypes);
+
+            $this->FillVCardTypes($vCard, 'adr', $addressItem['adr_home'], $this->_AdrTypes);
+            $this->FillVCardTypes($vCard, 'adr', $addressItem['adr_work'], $this->_AdrTypes);
+            $this->FillVCardTypes($vCard, 'adr', $addressItem['adr_other'], $this->_AdrTypes);
+
+            $this->FillVCardTypes($vCard, 'url', $addressItem['url']);
+            $vCard->note($addressItem['notes']);
+
+            $result = $result . $vCard;
+        }
+
+        header("Content-Disposition: attachment; filename=\"" . 'address.vcf' . "\"");
+        header("Content-type: application/csv");
+        header("Content-Length: " . strlen($result));
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        header("Connection: close");
+
+        echo $result;
+        exit;
+    }
+
+    /**
+     * Fill data in vcard format
+     *
+     * @access  public
+     * @param   object  $vCard
+     * @param   string  $base_block
+     * @param   array   $inputValue
+     * @param   array   $options
+     * @return  string  XHTML template content
+     */
+    function FillVCardTypes(&$vCard, $dataType, $inputValue, $options = null)
+    {
+        if (trim($inputValue) == '') {
+            return;
+        }
+        $inputValue = explode(',', trim($inputValue));
+        foreach ($inputValue as $val) {
+            $result = explode(':', $val);
+            if ($dataType == 'tel') {
+                $vCard->tel($result[1], $options[$result[0]]['fieldType'], $options[$result[0]]['telType']);
+            } else if ($dataType == 'adr') {
+                //$vCard->adr('', $options[$result[0]]['fieldType']);
+                //$vCard->adr($result[1], 'ExtendedAddress');
+                $vCard->label($result[1], $options[$result[0]]['fieldType']);
+            } else if ($dataType == 'url') {
+                $vCard->url($val);
+            } else {
+                $vCard->$dataType($result[1], $options[$result[0]]['fieldType']);
+            }
+        }
     }
 }

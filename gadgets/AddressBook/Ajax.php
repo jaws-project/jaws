@@ -41,6 +41,18 @@ class AddressBook_Ajax extends Jaws_Gadget_HTML
         return $gadgetHTML->AddressList(0, (int) $rqst['gid'], $rqst['term']); // TODO: Send request user id
     }
 
+    /**
+     * Generate download link for vCard format
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function GetVCardDownloadLink()
+    {
+        $rqst = jaws()->request->fetch(array('gid:int', 'term'));
+        return $this->gadget->urlMap('VCardBuild', array('group' => $rqst['gid'], 'term' => $rqst['term']));
+    }
+
     function DeleteAddress()
     {
         //return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);

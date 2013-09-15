@@ -19,7 +19,6 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
      */
      function AddressBook()
      {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
@@ -40,6 +39,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
 
         $tpl->SetVariable('title', _t('ADDRESSBOOK_NAME'));
         $tpl->SetVariable('confirmDelete', _t('ADDRESSBOOK_DELETE_CONFIRM'));
+        // Set default delete URL for use in javascript
         $tpl->SetVariable('deleteURL', $this->gadget->urlMap('DeleteAddress', array('id' => '')));
 
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
@@ -71,8 +71,13 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
             // Add New
             $tpl->SetBlock("address_list/actions");
             $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_ITEMS_ADD'));
-            $link = $this->gadget->urlMap('AddAddress');
-            $tpl->SetVariable('action_url', $link);
+            $tpl->SetVariable('action_url', $this->gadget->urlMap('AddAddress'));
+            $tpl->ParseBlock("address_list/actions");
+
+            // Export vCard
+            $tpl->SetBlock("address_list/actions");
+            $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_EXPORT_VCARD'));
+            $tpl->SetVariable('action_url', 'javascript:DownloadVCard();');
             $tpl->ParseBlock("address_list/actions");
         }
 
@@ -144,7 +149,6 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
      */
     function AddAddress()
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
@@ -237,7 +241,6 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
      */
     function EditAddress()
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
@@ -417,7 +420,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $agData = $agModel->GetGroupIDs($info['id'], $user);
         $groupAux = array();
         foreach ($agData as $group) {
-            $groupAux[] = $group['group'];
+            $groupAux[] = $group;
         }
 
         foreach ($groupList as $gInfo) {
@@ -452,7 +455,6 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
      */
     function InsertAddress()
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
@@ -596,7 +598,6 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
      */
     function UpdateAddress()
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
@@ -810,7 +811,6 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
      */
      function DeleteAddress()
      {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }

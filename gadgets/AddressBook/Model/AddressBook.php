@@ -22,7 +22,7 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
     function GetAddressList($user, $gid, $public = false, $term = '', $limit = null, $offset = null)
     {
         $adrTable = Jaws_ORM::getInstance()->table('address_book');
-        $adrTable->select('*');
+        $adrTable->select('*', 'address_book.id as address_id');
         $adrTable->where('address_book.user', $user);
 
         if ($public) {

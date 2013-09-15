@@ -33,7 +33,20 @@ class AddressBook_Model_AddressBookGroup extends Jaws_Gadget_Model
     function GetGroupIDs($address, $user)
     {
         $agTable = Jaws_ORM::getInstance()->table('address_book_group');
-        return $agTable->select('group')->where('address', $address)->and()->where('user', $user)->fetchAll();
+        return $agTable->select('group')->where('address', $address)->and()->where('user', $user)->fetchColumn();
+    }
+
+    /**
+     * Get list of Group Names AddressBooks Groups
+     *
+     * @access  public
+     * @returns array of Address Books or Jaws_Error on error
+     */
+    function GetGroupNames($address, $user)
+    {
+        $agTable = Jaws_ORM::getInstance()->table('address_book_group');
+        $agTable->join('address_group', 'address_book_group.group', 'address_group.id');
+        return $agTable->select('name')->where('address', $address)->and()->where('address_group.user', $user)->fetchColumn();
     }
 
     /**

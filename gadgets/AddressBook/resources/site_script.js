@@ -104,6 +104,8 @@ function FilterAddress()
 {
     var filterResult = AddressBookAjax.callSync('FilterAddress', {'gid': $('addressbook_group').value, 'term': $('addressbook_term').value});
     $('addressbook_result').innerHTML = filterResult;
+    lastGroup = $('addressbook_group').value;
+    lastTerm = $('addressbook_term').value;
 }
 
 /**
@@ -127,7 +129,6 @@ function DeleteAddress(aid)
           $('aid_'+aid).innerHTML+
           confirmDelete.substr(confirmDelete.indexOf('%s%') + 3);
     if (confirm(msg)) {
-        //AddressBookAjax.callSync('FilterAddress', {'id': aid});
         window.location.href = deleteURL + aid;
     }
 }
@@ -155,4 +156,13 @@ function AddAddressToGroup()
     }
 }
 
+function DownloadVCard()
+{
+    var vCardDownLink = AddressBookAjax.callSync('GetVCardDownloadLink', {'gid': lastGroup, 'term': lastTerm});
+    window.location.href = vCardDownLink;
+}
+
 var AddressBookAjax = new JawsAjax('AddressBook', AddressBookCallback);
+
+var lastGroup = 0;
+var lastTerm = '';
