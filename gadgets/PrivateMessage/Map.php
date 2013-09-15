@@ -60,10 +60,11 @@ $maps[] = array(
     )
 );
 $maps[] = array(
-    'UnreadMessage',
-    'pm/unread/message/{id}',
+    'ChangeMessageRead',
+    'pm/change/read/status/{status}/message/{id}',
     array(
         'id' => '[\p{L}[:digit:]-_\.]+',
+        'status' => '[[:lower:]-]+',
     )
 );
 $maps[] = array(

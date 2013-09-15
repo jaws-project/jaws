@@ -123,7 +123,8 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             $tpl->ParseBlock('message/reply');
 
             $tpl->SetBlock('message/unread');
-            $tpl->SetVariable('unread_url', $this->gadget->urlMap('UnreadMessage', array('id' => $id)));
+            $tpl->SetVariable('unread_url', $this->gadget->urlMap('ChangeMessageRead',
+                                                                   array('id' => $id, 'status'=>'unread')));
             $tpl->SetVariable('icon_unread', STOCK_EMPTY);
             $tpl->SetVariable('unread', _t('PRIVATEMESSAGE_UNREAD'));
             $tpl->ParseBlock('message/unread');
@@ -287,7 +288,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
     }
 
     /**
-     * Delete a message
+     * Delete message
      *
      * @access  public
      * @return  void
@@ -297,13 +298,19 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('DeleteMessage');
 
         $get = jaws()->request->fetch(array('id', 'type'), 'get');
+        $post = jaws()->request->fetch('message_checkbox:array', 'post');
 //        $user = $GLOBALS['app']->Session->GetAttribute('user');
 
+        if(!empty($post) && count($post)>0) {
+            $ids = $post;
+        } else {
+            $ids = $get['id'];
+        }
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         if($get['type']=='reference') {
-            $res = $model->DeleteMessage($get['id']);
+            $res = $model->DeleteMessage($ids);
         } else {
-            $res = $model->DeleteMessageRecipient($get['id']);
+            $res = $model->DeleteMessageRecipient($ids);
         }
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
@@ -369,18 +376,32 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
 
 
     /**
-     * Unread a message
+     * Change message read status
      *
      * @access  public
      * @return  void
      */
-    function UnreadMessage()
+    function ChangeMessageRead()
     {
-        $id = jaws()->request->fetch('id', 'get');
+        $get = jaws()->request->fetch(array('id', 'status'), 'get');
+        $post = jaws()->request->fetch(array('message_checkbox:array', 'status'), 'post');
+//        $user = $GLOBALS['app']->Session->GetAttribute('user');
+        if(!empty($post['message_checkbox']) && count($post['message_checkbox'])>0) {
+            $ids = $post['message_checkbox'];
+            $status = $post['status'];
+        } else {
+            $ids = $get['id'];
+            $status = $get['status'];
+        }
+        if($status=='read') {
+            $status = true;
+        } else {
+            $status = false;
+        }
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
-        $res = $model->MarkMessages($id, false, $user);
+        $res = $model->MarkMessages($ids, $status, $user);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
                 $res->getMessage(),
@@ -391,13 +412,13 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
 
         if ($res == true) {
             $GLOBALS['app']->Session->PushResponse(
-                _t('PRIVATEMESSAGE_MESSAGE_UNREAD'),
+                _t('PRIVATEMESSAGE_MESSAGE_READ_MESSAGE_STATUS_CHANGED'),
                 'PrivateMessage.Message',
                 RESPONSE_ERROR
             );
         } else {
             $GLOBALS['app']->Session->PushResponse(
-                _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_UNREAD'),
+                _t('PRIVATEMESSAGE_ERROR_MESSAGE_READ_STATUS_NOT_CHANGED'),
                 'PrivateMessage.Message',
                 RESPONSE_ERROR
             );

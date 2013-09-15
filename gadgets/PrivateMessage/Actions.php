@@ -43,7 +43,7 @@ $actions['DeleteMessage'] = array(
     'standalone' => true,
     'file' => 'Message',
 );
-$actions['UnreadMessage'] = array(
+$actions['ChangeMessageRead'] = array(
     'standalone' => true,
     'file' => 'Message',
 );

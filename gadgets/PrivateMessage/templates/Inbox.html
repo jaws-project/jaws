@@ -2,27 +2,36 @@
 {alerts}
 <div class="gadget privateMessage inbox">
     <h2>{title}</h2>
-    <!-- BEGIN response --><div class="{type}">{text}</div><!-- END response -->
+    <!-- BEGIN response -->
+    <div class="{type}">{text}</div>
+    <!-- END response -->
 
-    <form name="pm" action="{base_script}" method="post">
+    <form name="privatemessage" id="privatemessage" action="{base_script}" method="post">
         <input type="hidden" name="gadget" value="PrivateMessage"/>
         <input type="hidden" name="action" value="Inbox"/>
         <input type="hidden" name="page" value="{page}"/>
         <input type="hidden" name="view" value="{view}"/>
+        <input type="hidden" name="status" value=""/>
 
         <div class="filter">
             <label for="read">{lbl_read}</label>
             <select id="read" name="read">
-                <option {opt_read_} value=""></option>
-                <option {opt_read_yes} value="yes">{lbl_yes}</option>
-                <option {opt_read_no} value="no">{lbl_no}</option>
+                <option
+                {opt_read_} value="">&nbsp;</option>
+                <option
+                {opt_read_yes} value="yes">{lbl_yes}</option>
+                <option
+                {opt_read_no} value="no">{lbl_no}</option>
             </select>
 
             <label for="replied">{lbl_replied}</label>
             <select id="replied" name="replied">
-                <option {opt_replied_} value=""></option>
-                <option {opt_replied_yes} value="yes">{lbl_yes}</option>
-                <option {opt_replied_no} value="no">{lbl_no}</option>
+                <option
+                {opt_replied_} value="">&nbsp;</option>
+                <option
+                {opt_replied_yes} value="yes">{lbl_yes}</option>
+                <option
+                {opt_replied_no} value="no">{lbl_no}</option>
             </select>
 
             <input type="text" id="term" name="term" size="20" value="{txt_term}">
@@ -31,33 +40,77 @@
                     type="submit"><img src="{icon_filter}" alt="{filter}"/>&nbsp;{filter}
             </button>
         </div>
+
+        <div class="content">
+            <table>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>{lbl_from}</th>
+                    <th>{lbl_subject}</th>
+                    <th>{lbl_send_time}</th>
+                    <th>&nbsp;</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <!-- BEGIN message -->
+                <tr>
+                    <td>
+                        <input type="checkbox" name="message_checkbox[]" value="{id}">
+                        {rownum}
+                    </td>
+                    <td><a href="{user_url}">{from}</a></td>
+                    <td><a href="{message_url}">{subject}</a></td>
+                    <td>{send_time}</td>
+
+                    <!-- BEGIN have_attachment -->
+                    <td><img src="{icon_attachment}" alt="{attachment}"/></td>
+                    <!-- END have_attachment -->
+                    <!-- BEGIN no_attachment -->
+                    <td>&nbsp;</td>
+                    <!-- END no_attachment -->
+
+                </tr>
+                <!-- END message -->
+                </tbody>
+            </table>
+
+            <!-- INCLUDE PageNavigation.html -->
+            <div class="grid_actions">
+                <label for="inbox_actions_combo">{lbl_actions}:&nbsp;</label>
+                <select title="{lbl_actions}" id="inbox_actions_combo" name="inbox_actions_combo">
+                    <option value="">&nbsp;</option>
+                    <option value="delete">{lbl_delete}</option>
+                    <option value="read">{lbl_mark_as_read}</option>
+                    <option value="unread">{lbl_mark_as_unread}</option>
+                </select>
+
+                <button value="{lbl_actions}" id="action_button" name="action_button"
+                        onclick="javascript: return inboxDGAction();" ><img src="{icon_ok}" alt="{lbl_actions}"/>
+                </button>
+
+            </div>
+        </div>
     </form>
 
-    <div class="content">
-        <table>
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>{lbl_from}</th>
-                <th>{lbl_subject}</th>
-                <th>{lbl_send_time}</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <!-- BEGIN message -->
-            <tr>
-                <td>{rownum}</td>
-                <td><a href="{user_url}">{from}</a></td>
-                <td><a href="{message_url}">{subject}</a></td>
-                <td>{send_time}</td>
-            </tr>
-            <!-- END message -->
-            </tbody>
-        </table>
-
-        <!-- INCLUDE PageNavigation.html -->
-
-    </div>
 </div>
+
+<script type="text/javascript">
+    function inboxDGAction() {
+        var action = document.getElementById("inbox_actions_combo").value;
+        console.log(action);
+        if (action == 'delete') {
+            document.privatemessage.action.value = 'DeleteMessage';
+        } else if(action == 'read') {
+            document.privatemessage.action.value = 'ChangeMessageRead';
+            document.privatemessage.status.value = 'read';
+        } else if(action == 'unread') {
+            document.privatemessage.action.value = 'ChangeMessageRead';
+            document.privatemessage.status.value = 'unread';
+        }
+        document.getElementById("privatemessage").submit();
+        return true;
+    }
+</script>
 <!-- END inbox -->

@@ -99,25 +99,28 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      * Get a message
      *
      * @access  public
-     * @param   integer  $id     Message id
+     * @param   array    $ids     Message ids
      * @return  mixed    True or Jaws_Error on failure
      */
-    function DeleteMessage($id)
+    function DeleteMessage($ids)
     {
+        if (!is_array($ids) && $ids > 0) {
+            $ids = array($ids);
+        }
         // Delete message's recipients
         $rTable = Jaws_ORM::getInstance()->table('pm_recipients');
         //Start Transaction
         $rTable->beginTransaction();
 
-        $rTable->delete()->where('message', $id)->exec();
+        $rTable->delete()->where('message', $ids, 'in')->exec();
 
         // Delete message's attachments
         $aTable = Jaws_ORM::getInstance()->table('pm_attachments');
-        $aTable->delete()->where('message', $id)->exec();
+        $aTable->delete()->where('message', $ids, 'in')->exec();
 
         // Delete message
         $mTable = Jaws_ORM::getInstance()->table('pm_messages');
-        $result = $mTable->delete()->where('id', $id)->exec();
+        $result = $mTable->delete()->where('id', $ids, 'in')->exec();
 
         //Commit Transaction
         $rTable->commit();
@@ -128,13 +131,16 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      * Get a message recipient
      *
      * @access  public
-     * @param   integer  $id     Message id
+     * @param   array    $ids     Message ids
      * @return  mixed    True or Jaws_Error on failure
      */
-    function DeleteMessageRecipient($id)
+    function DeleteMessageRecipient($ids)
     {
+        if (!is_array($ids) && $ids > 0) {
+            $ids = array($ids);
+        }
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
-        $result = $table->delete()->where('id', $id)->exec();
+        $result = $table->delete()->where('id', $ids, 'in')->exec();
         return $result;
     }
 

@@ -56,7 +56,12 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
         $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
         $tpl->SetVariable('filter', _t('PRIVATEMESSAGE_FILTER'));
+        $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
+        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
+        $tpl->SetVariable('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
+        $tpl->SetVariable('icon_ok', STOCK_OK);
 
         $date = $GLOBALS['app']->loadDate();
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
@@ -75,6 +80,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
                 $i++;
                 $tpl->SetBlock('inbox/message');
                 $tpl->SetVariable('rownum', $i);
+                $tpl->SetVariable('id',  $message['message_recipient_id']);
                 $tpl->SetVariable('from', $message['from_nickname']);
                 if($message['read']) {
                     $subject = $message['subject'];
@@ -89,6 +95,16 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
                 $tpl->SetVariable('message_url', $this->gadget->urlMap(
                     'Message',
                     array('id' => $message['message_recipient_id'])));
+
+                if ($message['attachments'] > 0) {
+                    $tpl->SetBlock('inbox/message/have_attachment');
+                    $tpl->SetVariable('attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));
+                    $tpl->SetVariable('icon_attachment', STOCK_ATTACH);
+                    $tpl->ParseBlock('inbox/message/have_attachment');
+                } else {
+                    $tpl->SetBlock('inbox/message/no_attachment');
+                    $tpl->ParseBlock('inbox/message/no_attachment');
+                }
 
                 // user's profile
                 $tpl->SetVariable(
