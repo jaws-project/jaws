@@ -109,7 +109,7 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
         }
 
         $tpl->SetBlock('message/reply');
-        $tpl->SetVariable('reply_url', $this->gadget->urlMap('Compose', array('id' => $id, 'reply' => 'true')));
+        $tpl->SetVariable('reply_url', $this->gadget->urlMap('Compose', array('id' => $message['id'], 'reply' => 'true')));
         $tpl->SetVariable('icon_reply', STOCK_JUMP_TO);
         $tpl->SetVariable('reply', _t('PRIVATEMESSAGE_REPLY'));
         $tpl->ParseBlock('message/reply');

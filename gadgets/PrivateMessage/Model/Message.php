@@ -99,10 +99,11 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      * Delete outbox message
      *
      * @access  public
-     * @param   array    $ids     Message ids
+     * @param   array    $ids                   Message ids
+     * @param   bool     $deleteAttachments     Delete messages attachments
      * @return  mixed    True or False or Jaws_Error on failure
      */
-    function DeleteOutboxMessage($ids)
+    function DeleteOutboxMessage($ids, $deleteAttachments = true)
     {
         if (!is_array($ids) && $ids > 0) {
             $ids = array($ids);
@@ -112,24 +113,27 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         //Start Transaction
         $rTable->beginTransaction();
 
-        $aModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');
-        foreach ($ids as $id) {
-            $message = $this->GetMessage($id, true, false);
-            foreach($message['attachments'] as $attachment) {
-                $filepath = $aModel->GetMessageAttachmentFilePath($message['user'], $attachment['filename']);
-                if (!Jaws_Utils::delete($filepath)) {
-                    //Rollback Transaction
-                    $rTable->rollback();
-                    return false;
+        // Delete attachments
+        if ($deleteAttachments) {
+            $aModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');
+            foreach ($ids as $id) {
+                $message = $this->GetMessage($id, true, false);
+                foreach ($message['attachments'] as $attachment) {
+                    $filepath = $aModel->GetMessageAttachmentFilePath($message['user'], $attachment['filename']);
+                    if (!Jaws_Utils::delete($filepath)) {
+                        //Rollback Transaction
+                        $rTable->rollback();
+                        return false;
+                    }
                 }
             }
+
+            // Delete message's attachments
+            $aTable = Jaws_ORM::getInstance()->table('pm_attachments');
+            $aTable->delete()->where('message', $ids, 'in')->exec();
         }
 
         $rTable->delete()->where('message', $ids, 'in')->exec();
-
-        // Delete message's attachments
-        $aTable = Jaws_ORM::getInstance()->table('pm_attachments');
-        $aTable->delete()->where('message', $ids, 'in')->exec();
 
         // Delete message
         $mTable = Jaws_ORM::getInstance()->table('pm_messages');
@@ -221,7 +225,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         // compose a draft message
         if(!empty($message['id']) && $message['id']>0) {
-            $this->DeleteOutboxMessage($message['id']);
+            $this->DeleteOutboxMessage($message['id'], false);
         }
 
         $data = array();
@@ -299,6 +303,15 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             //Rollback Transaction
             $mTable->rollback();
             return false;
+        }
+
+
+        // compose a draft message
+        // TODO: must removed this line after manage draft attachments file changes
+        if(!empty($message['id']) && $message['id']>0) {
+            // update old attachment's message-id with new message-id
+            $aTable = Jaws_ORM::getInstance()->table('pm_attachments');
+            $aTable->update(array('message' => $message_id))->where('message', $message['id'])->exec();
         }
 
         //Commit Transaction

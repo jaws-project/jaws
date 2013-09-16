@@ -42,6 +42,7 @@ define('_EN_PRIVATEMESSAGE_REPLY_ON', "Reply on {0}");
 /* Compose Message */
 define('_EN_PRIVATEMESSAGE_COMPOSE', "Compose");
 define('_EN_PRIVATEMESSAGE_SEND', "Send");
+define('_EN_PRIVATEMESSAGE_SAVE_DRAFT', "Save draft");
 define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS', "Recipient users");
 define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS', "Recipient groups");
 define('_EN_PRIVATEMESSAGE_FORWARD_MESSAGE', "Forward a message");

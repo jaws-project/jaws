@@ -31,9 +31,14 @@ function getGroups(term) {
  */
 function saveDraft(id) {
     var data = new Array();
-    data[1] = '';
-
-   return pmAjax.callASync('SaveDraftMessage', id, data);
+    data['id'] = id;
+    data['recipient_users'] = $('recipient_users').value;
+    data['recipient_groups'] = $('recipient_groups').value;
+    data['subject'] = $('subject').value;
+    data['body'] = $('body').value;
+    data['published'] = false;
+//    data['selected_files'] = $('body').value;
+   pmAjax.callAsync('SaveDraftMessage', data);
 }
 
 var pmAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback, 'index.php');

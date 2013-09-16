@@ -27,10 +27,12 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $this->AjaxMe('site_script.js');
         $get = jaws()->request->fetch(array('id', 'reply'), 'get');
         $id = $get['id'];
+
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $tpl = $this->gadget->loadTemplate('Compose.html');
         $tpl->SetBlock('compose');
-
+        $tpl->SetVariable('id', $id);
+        $body_value = "";
         if (!empty($id) && $id > 0) {
             $message = $model->GetMessage($id, true, false);
 
@@ -39,7 +41,7 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
                 $tpl->SetVariable('recipient_users', $message['recipient_users']);
                 $tpl->SetVariable('recipient_groups', $message['recipient_groups']);
-                $tpl->SetVariable('body', $message['body']);
+                $body_value = $message['body'];
                 $tpl->SetVariable('subject', $message['subject']);
 
                 if (!empty($message['attachments'])) {
@@ -71,7 +73,7 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
             // forward a message
             } else if (!empty($get['reply']) && $get['reply'] == 'false') {
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_FORWARD_MESSAGE'));
-                $tpl->SetVariable('body', $message['body']);
+                $body_value = $message['body'];
                 $tpl->SetVariable('subject', $message['subject']);
 
                 if (!empty($message['attachments'])) {
@@ -100,12 +102,18 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
             $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
         }
 
+        $body =& $GLOBALS['app']->LoadEditor('PrivateMessage', 'body', $body_value);
+        $body->setID('$body');
+        $body->TextArea->SetStyle('width: 99%;');
+        $body->SetWidth('100%');
+        $tpl->SetVariable('body', $body->Get());
 
         $tpl->SetVariable('lbl_recipient_users', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS'));
         $tpl->SetVariable('lbl_recipient_groups', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS'));
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_body', _t('PRIVATEMESSAGE_MESSAGE_BODY'));
         $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
+        $tpl->SetVariable('lbl_save_draft', _t('PRIVATEMESSAGE_SAVE_DRAFT'));
         $tpl->SetVariable('lbl_send', _t('PRIVATEMESSAGE_SEND'));
         $tpl->SetVariable('lbl_back', _t('PRIVATEMESSAGE_BACK'));
         $tpl->SetVariable('lbl_file', _t('PRIVATEMESSAGE_FILE'));
@@ -135,7 +143,7 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
 
         $attachments = array();
         $post = jaws()->request->fetch(array('id', 'recipient_users', 'recipient_groups', 'subject',
-                                             'body', 'selected_files:array', 'status'), 'post');
+                                             'body', 'selected_files:array'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
 
