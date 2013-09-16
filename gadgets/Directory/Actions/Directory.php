@@ -29,7 +29,12 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetVariable('new_dir', 'gadgets/Directory/images/new-dir.png');
         $tpl->SetVariable('new_file', 'gadgets/Directory/images/new-file.png');
 
-        $tpl->SetVariable('lbl_share', _t('DIRECTORY_SHARE'));
+        if ($this->gadget->GetPermission('ShareFile')) {
+            $tpl->SetBlock('workspace/share');
+            $tpl->SetVariable('lbl_share', _t('DIRECTORY_SHARE'));
+            $tpl->ParseBlock('workspace/share');
+        }
+
         $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('lbl_props', _t('DIRECTORY_PROPERTIES'));
@@ -79,10 +84,10 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
     function GetFiles()
     {
         $flags = jaws()->request->fetch(array('parent', 'shared', 'foreign'), 'post');
-        //_log_var_dump($flags);
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-        $files = $model->GetFiles($user, $flags['parent'], $flags['shared'], $flags['foreign']);
+        $files = $model->GetFiles($flags['parent'], $user, $flags['shared'], $flags['foreign']);
+        //_log_var_dump($files);
         if (Jaws_Error::IsError($files)){
             return array();
         }
@@ -90,7 +95,6 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         foreach ($files as &$file) {
             $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
-            //$file['size'] = Jaws_Utils::FormatSize($file['filesize']);
             //$file['is_shared'] = $file['shared']? _t('DIRECTORY_IS_SHARED') : _t('DIRECTORY_NOT_SHARED');
         }
         return $files;
@@ -106,15 +110,20 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
     {
         $id = jaws()->request->fetch('id', 'post');
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-        $res = $model->GetFile($id);
-        if (Jaws_Error::IsError($res)) {
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $access = $model->CheckAccess($id, $user);
+        if ($access !== true) {
+            return array();
+        }
+        $file = $model->GetFile($id);
+        if (Jaws_Error::IsError($file)) {
             return array();
         }
         $objDate = $GLOBALS['app']->loadDate();
-        $res['createtime'] = $objDate->Format($res['createtime'], 'n/j/Y g:i A');
-        $res['updatetime'] = $objDate->Format($res['updatetime'], 'n/j/Y g:i A');
-        $res['filesize'] = Jaws_Utils::FormatSize($res['filesize']);
-        return $res;
+        $file['createtime'] = $objDate->Format($file['createtime'], 'n/j/Y g:i A');
+        $file['updatetime'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i A');
+        //$file['filesize'] = Jaws_Utils::FormatSize($file['filesize']);
+        return $file;
     }
 
     /**

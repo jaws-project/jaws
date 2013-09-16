@@ -11,41 +11,43 @@
 class Directory_Model_Files extends Jaws_Gadget_Model
 {
     /**
-     * Fetches list of files and directories
+     * Fetches list of files including shared files
      *
      * @access  public
-     * @param   int     $parent     Restrict result to a specified node
+     * @param   int     $parent  Restricts results to a specified node
      * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($user = null, $parent = null, $shared = null, $foreign = null)
+    function GetFiles($parent = 0, $user = null, $shared = null, $foreign = null)
     {
+        $access = $this->CheckAccess($parent, $user);
+        if ($access === false) {
+            return array();
+        }
+
         $table = Jaws_ORM::getInstance()->table('directory');
         $table->select('id', 'parent', 'user', 'is_dir:boolean', 'title',
             'description', 'filename', 'filetype', 'filesize', 'url',
             'shared:boolean', 'owner', 'reference', 'createtime', 'updatetime');
+        $table->where('parent', $parent)->and();
 
-        if ($user !== null){
-            $table->where('user', $user);
-        }
-
-        if ($parent !== null){
-            $table->and()->where('parent', $parent);
+        if ($access !== true && $user !== null){
+            $table->where('user', $user)->and();
         }
 
         if ($shared !== null){
-            $table->and()->where('shared', $shared);
+            $table->where('shared', $shared)->and();
         }
 
         if ($foreign !== null){
             $flag = $foreign? '<>' : '=';
-            $table->and()->where('user', $table->expr('owner'), $flag);
+            $table->where('user', $table->expr('owner'), $flag);
         }
 
         return $table->orderBy('is_dir desc', 'title asc')->fetchAll();
     }
 
     /**
-     * Fetches data of a file/directory
+     * Fetches data of a file or directory
      *
      * @access  public
      * @param   int     $id  File ID
@@ -61,10 +63,47 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     }
 
     /**
+     * Checks user access to files including shared files
+     *
+     * @access  public
+     * @param   int     $id  File ID
+     * @return  bool    True or false
+     */
+    function CheckAccess($id, $user)
+    {
+        if ($id === 0) {
+            return null; // root is neutral
+        } else {
+            $table = Jaws_ORM::getInstance()->table('directory');
+            $table->select('user:integer', 'parent:integer');
+            $data = $table->where('id', $id)->fetchRow();
+            if ($data['user'] === $user) {
+                return true;
+            }
+        }
+
+        // Check for shared files
+        $table = Jaws_ORM::getInstance()->table('directory');
+        $table->select('count(id):integer');
+        $table->where('user', $user)->and();
+        $table->where('reference', $id);
+        $count = $table->fetchOne();
+        if ($count > 0) {
+            return true;
+        }
+
+        if ($data['parent'] !== 0) {
+            return $this->CheckAccess($data['parent'], $user);
+        }
+
+        return false;
+    }
+
+    /**
      * Fetches path of a file/directory
      *
      * @access  public
-     * @param   int     $id     File or Directory ID
+     * @param   int     $id     File ID
      * @param   array   $path   Directory hierarchy
      * @return  void
      */
@@ -83,7 +122,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      * Inserts a new file/directory
      *
      * @access  public
-     * @param   array  $data    File data
+     * @param   array   $data    File data
      * @return  mixed   True on successful insert, Jaws_Error otherwise
      */
     function InsertFile($data)

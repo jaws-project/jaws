@@ -95,7 +95,6 @@ function displayFiles(parent)
     if (parent === undefined) {
         parent = currentDir;
     }
-    //console.log($('file_filter'));
     var ws = $('file_arena'),
         shared = ($('file_filter').value === 'shared')? true : null,
         foreign = ($('file_filter').value === 'foreign')? true : null,
@@ -107,11 +106,13 @@ function displayFiles(parent)
     filesCount = files.length;
     files.each(function (file) {
         file.size = formatSize(file.filesize, 0);
+        file.foreign = (file.user !== file.owner);
         fileById[file.id] = Object.clone(file);
+        //console.log(file.filename);
+        file.filename = (file.filename === null)? '' : file.filename;
         file.type = file.is_dir? 'folder' : file.filename.split('.').pop();
-        //console.log(file.filetype);
         file.shared = file.shared? 'shared' : '';
-        file.foreign = (file.user !== file.owner)? 'foreign' : '';
+        file.foreign = file.foreign? 'foreign' : '';
         ws.grab(getFileElement(file));
     });
 
@@ -165,10 +166,12 @@ function fileSelect(e)
  */
 function fileOpen()
 {
-    if (fileById[selectedId].is_dir) {
-        openDirectory(selectedId);
+    var file = fileById[selectedId],
+        id = (file.foreign)? file.reference : file.id;
+    if (file.is_dir) {
+        openDirectory(id);
     } else {
-        openFile(selectedId);
+        openFile(id);
     }
 }
 
@@ -190,15 +193,19 @@ function openDirectory(id)
  */
 function openFile(id)
 {
-    var docDim = document.getSize(),
+    var file = fileById[id],
+        docDim = document.getSize(),
         height = 500,
         width = 800,
         left = (docDim.x - width) / 2,
         top = (docDim.y - height) / 2,
         specs = 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top;
-    if (fileById[id].filename) {
+    if (!file) {
+        file = fileById[id] = DirectoryAjax.callSync('GetFile', {'id':id});
+    }
+    if (file.filename) {
         window.open(
-            data_url + UID + '/' + fileById[id].filename,
+            data_url + file.owner + '/' + file.filename,
             '_blank',
             specs,
             true
@@ -336,9 +343,8 @@ function editDirectory()
         cachedForms.editDir = DirectoryAjax.callSync('DirectoryForm', {mode:'edit'});
     }
     $('form').set('html', cachedForms.editDir);
-    //var data = DirectoryAjax.callSync('GetFile', {'id':selectedId});
-    var data = fileById[selectedId];
-    var form = $('frm_dir');
+    var data = fileById[selectedId],
+        form = $('frm_dir');
     form.id.value = selectedId;
     form.title.value = data.title;
     form.description.value = data.description;
@@ -489,6 +495,7 @@ function share()
     if (!cachedForms.share) {
         cachedForms.share = DirectoryAjax.callSync('GetShareForm');
     }
+    console.log(cachedForms);
     $('form').set('html', cachedForms.share);
     $('groups').selectedIndex = -1;
 
