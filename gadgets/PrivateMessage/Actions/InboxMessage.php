@@ -121,11 +121,18 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
         $tpl->SetVariable('unread', _t('PRIVATEMESSAGE_UNREAD'));
         $tpl->ParseBlock('message/unread');
 
-        $tpl->SetBlock('message/delete');
-        $tpl->SetVariable('icon_delete', STOCK_DELETE);
-        $tpl->ParseBlock('message/delete');
-        $tpl->SetVariable('delete_url', $this->gadget->urlMap('DeleteInboxMessage', array('id' => $id)));
+//        $tpl->SetBlock('message/delete');
+//        $tpl->SetVariable('icon_delete', STOCK_DELETE);
+//        $tpl->ParseBlock('message/delete');
+//        $tpl->SetVariable('delete_url', $this->gadget->urlMap('DeleteInboxMessage', array('id' => $id)));
 
+        if (!$message['archived']) {
+            $tpl->SetBlock('message/archive');
+            $tpl->SetVariable('icon_archive', STOCK_DOWN);
+            $tpl->SetVariable('archive', _t('PRIVATEMESSAGE_ARCHIVE'));
+            $tpl->SetVariable('archive_url', $this->gadget->urlMap('ArchiveInboxMessage', array('id' => $id)));
+            $tpl->ParseBlock('message/archive');
+        }
 
         if ($message['published']) {
             $tpl->SetBlock('message/forward');

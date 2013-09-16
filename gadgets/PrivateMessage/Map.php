@@ -90,6 +90,13 @@ $maps[] = array(
     )
 );
 $maps[] = array(
+    'ArchiveInboxMessage',
+    'pm/inbox/message/archive/{id}',
+    array(
+        'id' => '[\p{L}[:digit:]-_\.]+',
+    )
+);
+$maps[] = array(
     'DeleteOutboxMessage',
     'pm/outbox/message/delete/{id}',
     array(

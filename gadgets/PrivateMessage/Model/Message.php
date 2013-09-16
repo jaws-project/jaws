@@ -28,6 +28,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             'user:integer', 'pm_messages.insert_time', 'recipient_users', 'recipient_groups');
         if($getRecipients) {
             $columns[] = 'pm_recipients.read:boolean';
+            $columns[] = 'pm_recipients.archived:boolean';
         } else {
             $subTable = Jaws_ORM::getInstance()->table('pm_recipients');
             $subTable->select('count(id)')->where('read', true)->and()->where('message', (int)$id)->alias('read_count');
