@@ -45,6 +45,7 @@ class AddressBook_Actions_VCardBuilder extends AddressBook_HTML
             }
             $vCard->fn($names[3] . (trim($names[3]) == '' ?  '' : ' ') . $names[1] . (trim($names[1]) == '' ? '' : ' ') . $names[0]);
             $vCard->nickname($addressItem['nickname']);
+            $vCard->title($addressItem['title']);
 
             $adrGroups = $agModel->GetGroupNames($addressItem['address_id'], $user);
             $vCard->categories(implode(',', $adrGroups));
@@ -57,11 +58,11 @@ class AddressBook_Actions_VCardBuilder extends AddressBook_HTML
             $this->FillVCardTypes($vCard, 'email', $addressItem['email_work'], $this->_EmailTypes);
             $this->FillVCardTypes($vCard, 'email', $addressItem['email_other'], $this->_EmailTypes);
 
-            $this->FillVCardTypes($vCard, 'adr', $addressItem['adr_home'], $this->_AdrTypes);
-            $this->FillVCardTypes($vCard, 'adr', $addressItem['adr_work'], $this->_AdrTypes);
-            $this->FillVCardTypes($vCard, 'adr', $addressItem['adr_other'], $this->_AdrTypes);
+            $this->FillVCardTypes($vCard, 'adr', $addressItem['adr_home'], $this->_AdrTypes, '\n');
+            $this->FillVCardTypes($vCard, 'adr', $addressItem['adr_work'], $this->_AdrTypes, '\n');
+            $this->FillVCardTypes($vCard, 'adr', $addressItem['adr_other'], $this->_AdrTypes, '\n');
 
-            $this->FillVCardTypes($vCard, 'url', $addressItem['url']);
+            $this->FillVCardTypes($vCard, 'url', $addressItem['url'], null, '\n');
             $vCard->note($addressItem['notes']);
 
             $result = $result . $vCard;
@@ -88,20 +89,20 @@ class AddressBook_Actions_VCardBuilder extends AddressBook_HTML
      * @param   array   $options
      * @return  string  XHTML template content
      */
-    function FillVCardTypes(&$vCard, $dataType, $inputValue, $options = null)
+    function FillVCardTypes(&$vCard, $dataType, $inputValue, $options = null, $seperatChar = ',')
     {
         if (trim($inputValue) == '') {
             return;
         }
-        $inputValue = explode(',', trim($inputValue));
+        $inputValue = explode($seperatChar, trim($inputValue));
         foreach ($inputValue as $val) {
             $result = explode(':', $val);
             if ($dataType == 'tel') {
                 $vCard->tel($result[1], $options[$result[0]]['fieldType'], $options[$result[0]]['telType']);
             } else if ($dataType == 'adr') {
-                //$vCard->adr('', $options[$result[0]]['fieldType']);
-                //$vCard->adr($result[1], 'ExtendedAddress');
-                $vCard->label($result[1], $options[$result[0]]['fieldType']);
+                $vCard->adr('', $options[$result[0]]['fieldType']);
+                $vCard->adr($result[1], 'ExtendedAddress');
+                //$vCard->label($result[1], $options[$result[0]]['fieldType']);
             } else if ($dataType == 'url') {
                 $vCard->url($val);
             } else {

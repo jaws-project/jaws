@@ -50,30 +50,4 @@ class AddressBook_HTML extends Jaws_Gadget_HTML
         2 => array('fieldType' => 'work', 'lang' => 'WORK_ADR'),
         3 => array('fieldType' => 'other', 'lang' => 'OTHER_ADR'),
     );
-
-    /**
-     * Get lists of phone number, email address, address
-     *
-     * @access  public
-     * @param   object  $tpl
-     * @param   string  $base_block
-     * @param   array   $inputValue
-     * @param   array   $options
-     * @return  string  XHTML template content
-     */
-    function GetItemsLable(&$tpl, $base_block, $inputValue, $options = null)
-    {
-        foreach ($inputValue as $val) {
-            $tpl->SetBlock("address/$base_block");
-            if (isset($options)) {
-                $result = explode(':', $val);
-                $tpl->SetVariable('item', $result[1]);
-                $tpl->SetVariable('lbl_item', _t('ADDRESSBOOK_' . $options[$result[0]]['lang']));
-            } else {
-                $tpl->SetVariable('item', $val);
-                $tpl->SetVariable('lbl_item', _t('ADDRESSBOOK_ITEMS_URL'));
-            }
-            $tpl->ParseBlock("address/$base_block");
-        }
-    }
 }

@@ -208,11 +208,10 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         }
         $tpl->SetVariable('icon_load', STOCK_REFRESH);
 
-        $tels = array(':');
         $iIndex = 1;
-        $this->GetItemsCombo($tpl, 'tel', $tels, $iIndex, $this->_TelTypes);
-        $this->GetItemsCombo($tpl, 'email', $tels, $iIndex, $this->_EmailTypes);
-        $this->GetItemsCombo($tpl, 'adr', $tels, $iIndex, $this->_AdrTypes);
+        $this->GetItemsCombo($tpl, 'tel', ':', $iIndex, $this->_TelTypes);
+        $this->GetItemsCombo($tpl, 'email', ':', $iIndex, $this->_EmailTypes);
+        $this->GetItemsCombo($tpl, 'adr', ':', $iIndex, $this->_AdrTypes);
         $this->GetItemsInput($tpl, 'url', array(''), $iIndex);
 
         $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
@@ -336,79 +335,39 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $tpl->SetVariable('lbl_upload_image', _t('ADDRESSBOOK_PERSON_IMAGE_UPLOAD'));
         $tpl->SetVariable('lbl_delete_image', _t('ADDRESSBOOK_PERSON_IMAGE_DELETE'));
 
-        /////////////
+        // Tel
         $iIndex = 1;
-        if (trim($info['tel_home']) != '') {
-            $tels = explode(',', $info['tel_home']);
-            $this->GetItemsCombo($tpl, 'tel', $tels, $iIndex, $this->_TelTypes);
-        }
-
-        if (trim($info['tel_work']) != '') {
-            $tels = explode(',', $info['tel_work']);
-            $this->GetItemsCombo($tpl, 'tel', $tels, $iIndex, $this->_TelTypes);
-        }
-
-        if (trim($info['tel_other']) != '') {
-            $tels = explode(',', $info['tel_other']);
-            $this->GetItemsCombo($tpl, 'tel', $tels, $iIndex, $this->_TelTypes);
-        }
-
+        $this->GetItemsCombo($tpl, 'tel', $info['tel_home'], $iIndex, $this->_TelTypes);
+        $this->GetItemsCombo($tpl, 'tel', $info['tel_work'], $iIndex, $this->_TelTypes);
+        $this->GetItemsCombo($tpl, 'tel', $info['tel_other'], $iIndex, $this->_TelTypes);
         if ($iIndex == 1) {
-            $tels = array(':');
-            $this->GetItemsCombo($tpl, 'tel', $tels, $iIndex, $this->_TelTypes);
+            $this->GetItemsCombo($tpl, 'tel', ':', $iIndex, $this->_TelTypes);
         }
 
-        /////////////
+        // Email
         $iIndex = 1;
-        if (trim($info['email_home']) != '') {
-            $emails = explode(',', $info['email_home']);
-            $this->GetItemsCombo($tpl, 'email', $emails, $iIndex, $this->_EmailTypes);
-        }
-
-        if (trim($info['email_work']) != '') {
-            $emails = explode(',', $info['email_work']);
-            $this->GetItemsCombo($tpl, 'email', $emails, $iIndex, $this->_EmailTypes);
-        }
-
-        if (trim($info['email_other']) != '') {
-            $emails = explode(',', $info['email_other']);
-            $this->GetItemsCombo($tpl, 'email', $emails, $iIndex, $this->_EmailTypes);
-        }
-
+        $this->GetItemsCombo($tpl, 'email', $info['email_home'], $iIndex, $this->_EmailTypes);
+        $this->GetItemsCombo($tpl, 'email', $info['email_work'], $iIndex, $this->_EmailTypes);
+        $this->GetItemsCombo($tpl, 'email', $info['email_other'], $iIndex, $this->_EmailTypes);
         if ($iIndex == 1) {
-            $emails = array(':');
-            $this->GetItemsCombo($tpl, 'email', $emails, $iIndex, $this->_EmailTypes);
+            $this->GetItemsCombo($tpl, 'email', ':', $iIndex, $this->_EmailTypes);
         }
 
-        /////////////
+        // Address
         $iIndex = 1;
-        if (trim($info['adr_home']) != '') {
-            $adrs = explode(',', $info['adr_home']);
-            $this->GetItemsCombo($tpl, 'adr', $adrs, $iIndex, $this->_AdrTypes);
-        }
-
-        if (trim($info['adr_work']) != '') {
-            $adrs = explode(',', $info['adr_work']);
-            $this->GetItemsCombo($tpl, 'adr', $adrs, $iIndex, $this->_AdrTypes);
-        }
-
-        if (trim($info['adr_other']) != '') {
-            $adrs = explode(',', $info['adr_other']);
-            $this->GetItemsCombo($tpl, 'adr', $adrs, $iIndex, $this->_AdrTypes);
-        }
-
+        $this->GetItemsCombo($tpl, 'adr', $info['adr_home'], $iIndex, $this->_AdrTypes, '\n');
+        $this->GetItemsCombo($tpl, 'adr', $info['adr_work'], $iIndex, $this->_AdrTypes, '\n');
+        $this->GetItemsCombo($tpl, 'adr', $info['adr_other'], $iIndex, $this->_AdrTypes, '\n');
         if ($iIndex == 1) {
-            $adrs = array(':');
-            $this->GetItemsCombo($tpl, 'adr', $adrs, $iIndex, $this->_AdrTypes);
+            $this->GetItemsCombo($tpl, 'adr', ':', $iIndex, $this->_AdrTypes);
         }
 
-        /////////////
+        // URL
         $iIndex = 1;
         if (trim($info['url']) != '') {
-            $urls = explode('/n', $info['url']);
+            $urls = explode('\n', $info['url']);
             $this->GetItemsInput($tpl, 'url', $urls, $iIndex);
         }
-
         if ($iIndex == 1) {
             $this->GetItemsInput($tpl, 'url', array(''), $iIndex);
         }
@@ -526,8 +485,10 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $adrHome = array();
         $adrWork = array();
         $adrOther = array();
+        $arrSearch = array("\r\n", "\n", "\r");
         if (isset($adrs['adr_type'])) {
             foreach ($adrs['adr'] as $key => $adr) {
+                $adr = str_replace($arrSearch, ' ', $adr);
                 if (trim($adr) != '') {
                     switch ($adrs['adr_type'][$key]) {
                         case 1: //Home
@@ -543,12 +504,12 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
                 }
             }
         }
-        $post['adr_home'] = implode(',', $adrHome);
-        $post['adr_work'] = implode(',', $adrWork);
-        $post['adr_other'] = implode(',', $adrOther);
+        $post['adr_home'] = implode('\n', $adrHome);
+        $post['adr_work'] = implode('\n', $adrWork);
+        $post['adr_other'] = implode('\n', $adrOther);
 
         $urls = jaws()->request->fetch('url:array', 'post');
-        $post['url'] = implode('/n', $urls);
+        $post['url'] = implode('\n', $urls);
 
         if (empty($post['delete_image'])) {
             $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), 'gif,jpg,jpeg,png');
@@ -681,8 +642,10 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $adrHome = array();
         $adrWork = array();
         $adrOther = array();
+        $arrSearch = array("\r\n", "\n", "\r");
         if (isset($adrs['adr_type'])) {
             foreach ($adrs['adr'] as $key => $adr) {
+                $adr = str_replace($arrSearch, ' ', $adr);
                 if (trim($adr) != '') {
                     switch ($adrs['adr_type'][$key]) {
                         case 1: //Home
@@ -698,12 +661,12 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
                 }
             }
         }
-        $post['adr_home'] = implode(',', $adrHome);
-        $post['adr_work'] = implode(',', $adrWork);
-        $post['adr_other'] = implode(',', $adrOther);
+        $post['adr_home'] = implode('\n', $adrHome);
+        $post['adr_work'] = implode('\n', $adrWork);
+        $post['adr_other'] = implode('\n', $adrOther);
 
         $urls = jaws()->request->fetch('url:array', 'post');
-        $post['url'] = implode('/n', $urls);
+        $post['url'] = implode('\n', $urls);
 
         if (empty($post['delete_image'])) {
             $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), 'gif,jpg,jpeg,png');
@@ -757,8 +720,13 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
      * @param   array   $options
      * @return  string  XHTML template content
      */
-    function GetItemsCombo(&$tpl, $base_block, $inputValue, &$startIndex, $options)
+    function GetItemsCombo(&$tpl, $base_block, $inputValue, &$startIndex, $options, $seperatChar = ',')
     {
+        if (trim($inputValue) == '') {
+            return;
+        }
+        $inputValue = explode($seperatChar, trim($inputValue));
+
         foreach ($inputValue as $val) {
             $result = explode(':', $val);
             $tpl->SetBlock("address/$base_block");

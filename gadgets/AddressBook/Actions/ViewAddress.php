@@ -71,37 +71,18 @@ class AddressBook_Actions_ViewAddress extends AddressBook_HTML
         }
         $tpl->SetVariable('image_src', $current_image);
 
-        if (trim($info['tel_home']) != '') {
-            $tels = explode(',', $info['tel_home']);
-            $this->GetItemsLable($tpl, 'item', $tels, $this->_TelTypes);
-        }
-        if (trim($info['tel_work']) != '') {
-            $tels = explode(',', $info['tel_work']);
-            $this->GetItemsLable($tpl, 'item', $tels, $this->_TelTypes);
-        }
-        if (trim($info['tel_other']) != '') {
-            $tels = explode(',', $info['tel_other']);
-            $this->GetItemsLable($tpl, 'item', $tels, $this->_TelTypes);
-        }
+        // Tel
+        $this->GetItemsLable($tpl, 'item', $info['tel_home'], $this->_TelTypes);
+        $this->GetItemsLable($tpl, 'item', $info['tel_work'], $this->_TelTypes);
+        $this->GetItemsLable($tpl, 'item', $info['tel_other'], $this->_TelTypes);
 
-        //////
-        if (trim($info['email_home']) != '') {
-            $emails = explode(',', $info['email_home']);
-            $this->GetItemsLable($tpl, 'item', $emails, $this->_EmailTypes);
-        }
-        if (trim($info['email_work']) != '') {
-            $tels = explode(',', $info['email_work']);
-            $this->GetItemsLable($tpl, 'item', $emails, $this->_EmailTypes);
-        }
-        if (trim($info['email_other']) != '') {
-            $tels = explode(',', $info['email_other']);
-            $this->GetItemsLable($tpl, 'item', $emails, $this->_EmailTypes);
-        }
+        // Email
+        $this->GetItemsLable($tpl, 'item', $info['email_home'], $this->_EmailTypes);
+        $this->GetItemsLable($tpl, 'item', $info['email_work'], $this->_EmailTypes);
+        $this->GetItemsLable($tpl, 'item', $info['email_other'], $this->_EmailTypes);
 
-        if (trim($info['url']) != '') {
-            $urls = explode('/n', $info['url']);
-            $this->GetItemsLable($tpl, 'item', $urls);
-        }
+        // URL
+        $this->GetItemsLable($tpl, 'item', $info['url'], null, '\n');
 
         if ($info['public']) {
             $tpl->SetBlock('address/selected');
@@ -151,5 +132,36 @@ class AddressBook_Actions_ViewAddress extends AddressBook_HTML
         $tpl->ParseBlock('address');
 
         return $tpl->Get();
+    }
+
+    /**
+     * Get lists of phone number, email address, address
+     *
+     * @access  public
+     * @param   object  $tpl
+     * @param   string  $base_block
+     * @param   array   $inputValue
+     * @param   array   $options
+     * @return  string  XHTML template content
+     */
+    function GetItemsLable(&$tpl, $base_block, $inputValue, $options = null, $seperatChar = ',')
+    {
+        if (trim($inputValue) == '') {
+            return;
+        }
+        $inputValue = explode($seperatChar, trim($inputValue));
+
+        foreach ($inputValue as $val) {
+            $tpl->SetBlock("address/$base_block");
+            if (isset($options)) {
+                $result = explode(':', $val);
+                $tpl->SetVariable('item', $result[1]);
+                $tpl->SetVariable('lbl_item', _t('ADDRESSBOOK_' . $options[$result[0]]['lang']));
+            } else {
+                $tpl->SetVariable('item', $val);
+                $tpl->SetVariable('lbl_item', _t('ADDRESSBOOK_ITEMS_URL'));
+            }
+            $tpl->ParseBlock("address/$base_block");
+        }
     }
 }

@@ -22,10 +22,25 @@ class AddressBook_Actions_VCardImport extends AddressBook_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $this->SetTitle(_t('ADDRESSBOOK_IMPORT_VCART'));
+        $this->SetTitle(_t('ADDRESSBOOK_IMPORT_VCART_TITLE'));
         $tpl = $this->gadget->loadTemplate('VCardImport.html');
         $tpl->SetBlock("vcard");
-        $tpl->SetVariable('title', _t('ADDRESSBOOK_IMPORT_VCART'));
+        $tpl->SetVariable('title', _t('ADDRESSBOOK_IMPORT_VCART_TITLE'));
+        $tpl->SetVariable('upload_vcard_file_desc', _t('ADDRESSBOOK_IMPORT_VCART_DESC'));
+
+        $tpl->SetVariable('lbl_save', _t('ADDRESSBOOK_IMPORT_VCART'));
+        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook_Import')) {
+            $tpl->SetBlock('vcard/response');
+            $tpl->SetVariable('msg', $response);
+            $tpl->ParseBlock('vcard/response');
+        }
+
+        // Cancel Button
+        $tpl->SetBlock("vcard/actions");
+        $tpl->SetVariable('action_lbl', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('action_url', $this->gadget->urlMap('AddressBook'));
+        $tpl->ParseBlock("vcard/actions");
+
         $tpl->ParseBlock('vcard');
 
         return $tpl->Get();
@@ -44,12 +59,19 @@ class AddressBook_Actions_VCardImport extends AddressBook_HTML
         }
 
         require_once JAWS_PATH . 'gadgets/Addressbook/vCard.php';
+
+        if (empty($_FILES) || !is_array($_FILES)) {
+            $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_ERROR_IMPORT_PLEASE_SELECT_FILE'), 'AddressBook_Import');
+            Jaws_Header::Location($this->gadget->urlMap('VCardImport'));
+        }
+
         try {
             $vCard = new vCard($_FILES['vcard_file']['tmp_name'], false, array('Collapse' => false));
 
             $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
             if (count($vCard) == 0) {
-                // TODO: Show meesage: No entry find
+                $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_ERROR_VCARD_DATA_NOT_FOUND'), 'AddressBook_Import');
+                Jaws_Header::Location($this->gadget->urlMap('VCardImport'));
             } elseif (count($vCard) == 1) {
                 $result = $this->PrepareForImport($vCard);
                 if ($result) {
@@ -64,7 +86,8 @@ class AddressBook_Actions_VCardImport extends AddressBook_HTML
                 }
             }
         } catch (Exception $e) {
-            return 'error';
+            $GLOBALS['app']->Session->PushSimpleResponse($e->getMessage(), 'AddressBook_Import'); // TODO: Translate Messages
+            Jaws_Header::Location($this->gadget->urlMap('VCardImport'));
         }
 
         $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_IMPORT_COMPLETED'), 'AddressBook');
@@ -180,7 +203,7 @@ class AddressBook_Actions_VCardImport extends AddressBook_HTML
         }
 
         if ($vCard->URL) {
-            $data['url'] = implode('/n', $vCard->URL);
+            $data['url'] = implode('\n', $vCard->URL);
         }
 
         if ($vCard->PHOTO) {
@@ -192,6 +215,32 @@ class AddressBook_Actions_VCardImport extends AddressBook_HTML
                 }
             }
         }
+
+		if ($vCard->ADR) {
+            $adrHome = array();
+            $adrWork = array();
+            $adrOther = array();
+			foreach ($vCard->ADR as $Address) {
+                $adr = ($Address['StreetAddress'] ? $Address['StreetAddress'] . ' ' : '');
+                $adr .= ($Address['POBox'] ? $Address['POBox'] . ' ' : '');
+                $adr .= ($Address['ExtendedAddress'] ? $Address['ExtendedAddress'] . ' ' : '');
+                $adr .= ($Address['Locality'] ? $Address['Locality'] . ' ' : '');
+                $adr .= ($Address['Region'] ? $Address['Region'] . ' ' : '');
+                $adr .= ($Address['PostalCode'] ? $Address['PostalCode'] . ' ' : '');
+                $adr .= ($Address['Country'] ? $Address['Country'] . ' ' : '');
+
+                if (in_array('home', $Address['Type'])) {
+                    $adrHome[] = '1:' . $adr;
+                } elseif (in_array('work', $Address['Type'])) {
+                    $adrWork[] = '2:' . $adr;
+                } else {
+                    $adrOther[] = '3:' . $adr;
+                }
+			}
+            $data['adr_home'] = implode('\n ', $adrHome);
+            $data['adr_work'] = implode('\n ', $adrWork);
+            $data['adr_other'] = implode('\n ', $adrOther);
+		}
 
         $data['public'] = false;
         $data['[user]'] = (int) $GLOBALS['app']->Session->GetAttribute('user');
