@@ -109,7 +109,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
 
             // Insert record
             $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-            $res = $model->InsertFile($data);
+            $res = $model->Insert($data);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception(_t('DIRECTORY_ERROR_FILE_CREATE'));
             }
@@ -187,7 +187,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
 
             // Update record
             $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-            $res = $model->UpdateFile($id, $data);
+            $res = $model->Update($id, $data);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception(_t('DIRECTORY_ERROR_FILE_UPDATE'));
             }
@@ -199,18 +199,20 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
     }
 
     /**
-     * Deletes file
+     * Deletes file from both database and disk
      *
      * @access  public
+     * @param   int     $id     File ID to be deleted - optional
      * @return  mixed   Response array or Jaws_Error on error
      */
-    function DeleteFile()
+    function DeleteFile($id = null)
     {
-        try {
+        if ($id === null) {
             $id = (int)jaws()->request->fetch('id');
-            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-
+        }
+        try {
             // Check for existance
+            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
             $file = $model->GetFile($id);
             if (Jaws_Error::IsError($file)) {
                 throw new Exception($file->getMessage());
@@ -221,19 +223,15 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             }
 
             // Delete from disk
-            $file = $model->GetFile($id);
-            if (Jaws_Error::IsError($res)) {
-                throw new Exception($res->getMessage());
-            }
-            $file = $GLOBALS['app']->getDataURL('directory/' . $file['user'] . '/' . $file['filename']);
-            if (file_exists($file)) {
-                if (!Jaws_Utils::delete($file)) {
+            $filename = $GLOBALS['app']->getDataURL('directory/' . $file['user'] . '/' . $file['filename']);
+            if (file_exists($filename)) {
+                if (!Jaws_Utils::delete($filename)) {
                     throw new Exception(_t('DIRECTORY_ERROR_FILE_DELETE'));
                 }
             }
 
             // Delete from database
-            $res = $model->DeleteFile($id);
+            $res = $model->Delete($id);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception($res->getMessage());
             }

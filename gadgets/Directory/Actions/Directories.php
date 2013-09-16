@@ -61,7 +61,7 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
             $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-            $result = $model->InsertFile($data);
+            $result = $model->Insert($data);
             if (Jaws_Error::IsError($result)) {
                 throw new Exception(_t('DIRECTORY_ERROR_DIR_CREATE'));
             }
@@ -100,7 +100,7 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
             }
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
-            $result = $model->UpdateFile($id, $data);
+            $result = $model->Update($id, $data);
             if (Jaws_Error::IsError($result)) {
                 throw new Exception(_t('DIRECTORY_ERROR_DIR_UPDATE'));
             }
@@ -112,28 +112,49 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
     }
 
     /**
-     * Deletes directory
+     * Deletes directory recursively
      *
      * @access  public
+     * @param   int     $id     Directory ID to be deleted - optional
      * @return  mixed   Response array or Jaws_Error on error
      */
-    function DeleteDirectory()
+    function DeleteDirectory($id = null)
     {
-        try {
+        if ($id === null) {
             $id = (int)jaws()->request->fetch('id');
+        }
+        try {
             $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
 
             // Check for existance
             $dir = $model->GetFile($id);
             if (Jaws_Error::IsError($dir)) {
                 throw new Exception($dir->getMessage());
             }
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+
+            // Check for files and sub directories
+            $files = $model->GetFiles($id, $user);
+            if (Jaws_Error::IsError($files)) {
+                throw new Exception($files->getMessage());
+            }
+            foreach ($files as $file) {
+                if ($file['is_dir']) {
+                    $res = $this->DeleteDirectory($file['id']);
+                } else {
+                    $res = $this->DeleteFile($file['id']);
+                }
+                //_log_var_dump($res);
+                // FIXME: what should we do if one delete call fails?
+            }
+
+            // Check for user
             if ($dir['user'] != $user) {
                 throw new Exception(_t('DIRECTORY_ERROR_DIR_DELETE'));
             }
 
-            $res = $model->DeleteFile($id);
+            // Let's delete the directory from database
+            $res = $model->Delete($id);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception($res->getMessage());
             }

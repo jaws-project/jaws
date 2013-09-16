@@ -19,7 +19,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      */
     function GetFiles($parent = 0, $user = null, $shared = null, $foreign = null)
     {
-        $access = $this->CheckAccess($parent, $user);
+        $access = ($user === null)? null : $this->CheckAccess($parent, $user);
         if ($access === false) {
             return array();
         }
@@ -125,7 +125,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      * @param   array   $data    File data
      * @return  mixed   True on successful insert, Jaws_Error otherwise
      */
-    function InsertFile($data)
+    function Insert($data)
     {
         $data['createtime'] = $data['updatetime'] = time();
         $table = Jaws_ORM::getInstance()->table('directory');
@@ -140,7 +140,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      * @param   array   $data   File data
      * @return  mixed   True on successful update and Jaws_Error on error
      */
-    function UpdateFile($id, $data)
+    function Update($id, $data)
     {
         $data['updatetime'] = time();
         $table = Jaws_ORM::getInstance()->table('directory');
@@ -154,7 +154,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      * @param   int     $id  File ID
      * @return  mixed   Array of file data or Jaws_Error on error
      */
-    function DeleteFile($id)
+    function Delete($id)
     {
         $table = Jaws_ORM::getInstance()->table('directory');
         return $table->delete()->where('id', $id)->exec();

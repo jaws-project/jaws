@@ -495,7 +495,7 @@ function share()
     if (!cachedForms.share) {
         cachedForms.share = DirectoryAjax.callSync('GetShareForm');
     }
-    console.log(cachedForms);
+    //console.log(cachedForms);
     $('form').set('html', cachedForms.share);
     $('groups').selectedIndex = -1;
 
