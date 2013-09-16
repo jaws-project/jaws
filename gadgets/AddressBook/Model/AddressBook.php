@@ -131,8 +131,13 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
                 }
             }
         }
-        if (!Jaws_Error::IsError($insertResult)) {
-            $this->UpdateAddress($insertResult, $data);
+
+        if (!Jaws_Error::IsError($insertResult) && !empty($data['image'])) {
+            $fileinfo = pathinfo($data['image']);
+            if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
+                $new_image = $insertResult . '.'. $fileinfo['extension'];
+                $adrTable->update(array('image' => $new_image))->where('id', (int) $insertResult)->exec();
+            }
         }
         return $insertResult;
     }
@@ -195,9 +200,19 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
      */
     function DeleteAddress($address, $user)
     {
+        $adrInfo = $this->GetAddressInfo($address);
+        if (Jaws_Error::IsError($adrInfo) || empty($adrInfo)) {
+            return;
+        }
+        // TODO: Use transaction
         $agModel = $this->gadget->load('Model')->load('Model', 'AddressBookGroup');
         $agModel->DeleteGroupForAddress($address, $user);
         $aTable = Jaws_ORM::getInstance()->table('address_book');
-        return $aTable->delete()->where('user', (int) $user)->and()->where('id', (int) $address)->exec();
+        $result = $aTable->delete()->where('user', (int) $user)->and()->where('id', (int) $address)->exec();
+        if (!Jaws_Error::IsError($result)) {
+            $targetDir = JAWS_DATA. 'addressbook'. DIRECTORY_SEPARATOR . 'image'. DIRECTORY_SEPARATOR;
+            Jaws_Utils::Delete($targetDir . $adrInfo['image']);
+        }
+        return $result;
     }
 }

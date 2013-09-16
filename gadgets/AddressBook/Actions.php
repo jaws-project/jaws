@@ -23,15 +23,15 @@ $actions['EditAddress'] = array(
     'file'   => 'AddressBook',
 );
 $actions['InsertAddress'] = array(
-    'stanalone' => true,
+    'standalone' => true,
     'file'   => 'AddressBook',
 );
 $actions['UpdateAddress'] = array(
-    'stanalone' => true,
+    'standalone' => true,
     'file'   => 'AddressBook',
 );
 $actions['DeleteAddress'] = array(
-    'stanalone' => true,
+    'standalone' => true,
     'file'   => 'AddressBook',
 );
 $actions['ManageGroups'] = array(
@@ -51,15 +51,15 @@ $actions['Groups'] = array(
     'file'   => 'Groups',
 );
 $actions['InsertGroup'] = array(
-    'stanalone' => true,
+    'standalone' => true,
     'file'   => 'Groups',
 );
 $actions['UpdateGroup'] = array(
-    'stanalone' => true,
+    'standalone' => true,
     'file'   => 'Groups',
 );
 $actions['DeleteGroup'] = array(
-    'stanalone' => true,
+    'standalone' => true,
     'file'   => 'Groups',
 );
 $actions['GroupMembers'] = array(
@@ -67,11 +67,11 @@ $actions['GroupMembers'] = array(
     'file'   => 'AddressBookGroup',
 );
 $actions['UnbondAddress'] = array(
-    'stanalone' => true,
+    'standalone' => true,
     'file'   => 'AddressBookGroup',
 );
 $actions['BondAddress'] = array(
-    'stanalone' => true,
+    'standalone' => true,
     'file'   => 'AddressBookGroup',
 );
 $actions['View'] = array(
@@ -79,6 +79,14 @@ $actions['View'] = array(
     'file'   => 'ViewAddress',
 );
 $actions['VCardBuild'] = array(
-    'stanalone' => true,
+    'standalone' => true,
     'file'   => 'VCardBuilder',
+);
+$actions['VCardImport'] = array(
+    'normal' => true,
+    'file'   => 'VCardImport',
+);
+$actions['VCardImportFile'] = array(
+    'standalone' => true,
+    'file'   => 'VCardImport',
 );

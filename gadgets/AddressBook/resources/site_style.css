@@ -25,3 +25,4 @@ margin-top: 10px;
 .addressbook_list_search, .addressbook_group {margin: 5px 0px;}
 .addressbook_list_search button, .addressbook_group button {padding: 1px;}
 #addressbook_term {width: 200px;}
+.actions {margin-top: 5px;}

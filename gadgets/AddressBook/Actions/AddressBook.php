@@ -79,6 +79,12 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
             $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_EXPORT_VCARD'));
             $tpl->SetVariable('action_url', 'javascript:DownloadVCard();');
             $tpl->ParseBlock("address_list/actions");
+
+            // Import vCard
+            $tpl->SetBlock("address_list/actions");
+            $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_IMPORT_VCARD'));
+            $tpl->SetVariable('action_url', $this->gadget->urlMap('VCardImport'));
+            $tpl->ParseBlock("address_list/actions");
         }
 
         $tpl->ParseBlock('address_list');
@@ -219,10 +225,6 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
             $tpl->SetVariable('gid', $gInfo['id']);
             $tpl->ParseBlock('address/group');
         }
-
-        $btnSave =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'));
-        $btnSave->SetSubmit();
-        $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->SetVariable('cancel_lbl', _t('GLOBAL_CANCEL'));
         $link = $this->gadget->urlMap('AddressBook');
@@ -434,10 +436,6 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
             $tpl->ParseBlock('address/group');
         }
 
-        $btnSave =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'));
-        $btnSave->SetSubmit();
-        $tpl->SetVariable('btn_save', $btnSave->Get());
-
         $tpl->SetVariable('cancel_lbl', _t('GLOBAL_CANCEL'));
         $link = $this->gadget->urlMap('AddressBook');
         $tpl->SetVariable('cancel_url', $link);
@@ -459,7 +457,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(array('nickname', 'title', 'delete_image', 'url', 
+        $post = jaws()->request->fetch(array('nickname', 'title', 'delete_image', 
                                              'notes', 'public', 'user_link:int'), 'post');
         $post['name'] = implode(';', jaws()->request->fetch('name:array', 'post'));
 
@@ -585,8 +583,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
             }
 
             $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_NEW_ADDRESS_SAVED'), 'AddressBook');
-            $link = $this->gadget->urlMap('AddressBook');
-            Jaws_Header::Location($link);
+            Jaws_Header::Location($this->gadget->urlMap('AddressBook'));
         }
     }
 

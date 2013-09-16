@@ -26,6 +26,7 @@ class AddressBook_HTML extends Jaws_Gadget_HTML
         8 => array('fieldType' => 'other', 'telType' => 'cell', 'lang' => 'OTHER_MOBILE'),
         9 => array('fieldType' => 'other', 'telType' => 'fax', 'lang' => 'OTHER_FAX'),
     );
+    var $_DefaultTelTypes = array('voice' => 7, 'cell' => 8, 'fax' => 9);
 
     /**
      * Email Types
@@ -37,6 +38,7 @@ class AddressBook_HTML extends Jaws_Gadget_HTML
         2 => array('fieldType' => 'work', 'lang' => 'WORK_EMAIL'),
         3 => array('fieldType' => 'other', 'lang' => 'OTHER_EMAIL'),
     );
+    var $_DefaultEmailTypes = 3;
 
     /**
      * Address Types

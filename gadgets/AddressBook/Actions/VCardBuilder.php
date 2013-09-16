@@ -43,6 +43,7 @@ class AddressBook_Actions_VCardBuilder extends AddressBook_HTML
             foreach ($names as $key => $name) {
                  $vCard->n($name, $nVCard[$key]);
             }
+            $vCard->fn($names[3] . (trim($names[3]) == '' ?  '' : ' ') . $names[1] . (trim($names[1]) == '' ? '' : ' ') . $names[0]);
             $vCard->nickname($addressItem['nickname']);
 
             $adrGroups = $agModel->GetGroupNames($addressItem['address_id'], $user);

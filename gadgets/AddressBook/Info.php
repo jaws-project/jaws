@@ -24,6 +24,6 @@ class AddressBook_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_action = 'AddressList';
+    var $default_action = 'AddressBook';
 
 }

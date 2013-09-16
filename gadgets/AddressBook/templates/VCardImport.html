@@ -1,0 +1,22 @@
+<!-- BEGIN vcard -->
+<div class="gadget addressbook_vcard">
+  <h2>{title}</h2>
+  <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
+  <div class="content">
+    <form name="import_vcard" action="{base_script}" method="post" enctype="multipart/form-data" id="import_vcard">
+      <input type="hidden" name="gadget" value="AddressBook" />
+      <input type="hidden" name="action" value="VCardImportFile" />
+      <div>
+        <label for="vcard_file">{lbl_upload_vcard_file}:</label>
+        <input type="file" name="vcard_file" id="vcard_file">
+      </div>
+      <div class="actions">
+          <button value="{lbl_save}" id="btn_import_vcard" name="btn_import_vcard" type="submit">{lbl_save}</button>
+          <!-- BEGIN actions -->
+          <a class="button" href="{action_url}" title="{action_lbl}">{action_lbl}</a>
+          <!-- END actions -->
+      </div>
+    </form>
+  </div>
+</div>
+<!-- END vcard -->
