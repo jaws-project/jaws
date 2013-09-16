@@ -59,17 +59,30 @@ define('_EN_ADDRESSBOOK_OTHER_ADR', "Other Address");
 define('_EN_ADDRESSBOOK_ITEMS_FIRSTNAME', "First Name");
 define('_EN_ADDRESSBOOK_ITEMS_LASTNAME', "Last Name");
 define('_EN_ADDRESSBOOK_ITEMS_USER_LINK', "Linked To");
+define('_EN_ADDRESSBOOK_TERM', "Term");
+define('_EN_ADDRESSBOOK_EMPTY_NAME_WARNING', "Please Enter 'First Name' Or 'Last Name'");
+define('_EN_ADDRESSBOOK_ADDRESS_REMOVE_FROM_GROUP', "Remove From Group");
+define('_EN_ADDRESSBOOK_EXPORT_VCARD', "Export To vCard");
+define('_EN_ADDRESSBOOK_IMPORT_VCARD', "Import From vCard");
 
 /* Groups */
+define('_EN_ADDRESSBOOK_GROUP', "Group");
 define('_EN_ADDRESSBOOK_GROUP_TITLE', "Address Book Groups");
 define('_EN_ADDRESSBOOK_GROUPS_ADD', "Add New Group");
 define('_EN_ADDRESSBOOK_GROUP_ADD_NEW_TITLE', "Add New Group");
 define('_EN_ADDRESSBOOK_GROUP_EDIT_TITLE', "Edit Group");
 define('_EN_ADDRESSBOOK_GROUPS_MANAGE', "Manage Groups");
 define('_EN_ADDRESSBOOK_VIEW_GROUP_MEMBER', "View Members");
+define('_EN_ADDRESSBOOK_GROUP_MEMBERS_TITLE', "AddressBooks Of {0}");
+define('_EN_ADDRESSBOOK_GROUP_BACK_TO_GROUPS_LIST', "Back To Groups List");
 
 // Responses
 define('_EN_ADDRESSBOOK_RESULT_NEW_GROUP_SAVED', "Group was successfully added");
 define('_EN_ADDRESSBOOK_RESULT_EDIT_GROUP_SAVED', "Group was successfully updated");
 define('_EN_ADDRESSBOOK_RESULT_EDIT_ADDRESS_SAVED', "Address was successfully updated");
 define('_EN_ADDRESSBOOK_RESULT_NEW_ADDRESS_SAVED', "Address was successfully added");
+define('_EN_ADDRESSBOOK_DELETE_CONFIRM', "Are you sure you want to delete (%s%)?");
+define('_EN_ADDRESSBOOK_RESULT_DELETE_GROUP_COMPLETE', "The group has been deleted");
+define('_EN_ADDRESSBOOK_RESULT_DELETE_ADDRESS_COMPLETE', "The address has been deleted");
+define('_EN_ADDRESSBOOK_RESULT_DELETE_ADDRESS_RELATION_COMPLETE', "The relation between address and group was successfully removed");
+define('_EN_ADDRESSBOOK_RESULT_ADD_ADDRESS_RELATION_COMPLETE', "The relation between address and group was successfully added");
