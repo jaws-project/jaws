@@ -13,7 +13,7 @@ define('STOCK_ADD',                     PIWI_URL . 'piwidata/art/stock/actions/l
 define('STOCK_ALIGN_CENTER',            PIWI_URL . 'piwidata/art/stock/actions/format-justify-center.png');
 define('STOCK_ALIGN_LEFT',              PIWI_URL . 'piwidata/art/stock/actions/format-justify-left.png');
 define('STOCK_ALIGN_RIGHT',             PIWI_URL . 'piwidata/art/stock/actions/format-justify-right.png');
-define('STOCK_ATTACH',                  PIWI_URL . 'piwidata/art/stock/status/mail-attach.png');
+define('STOCK_ATTACH',                  PIWI_URL . 'piwidata/art/stock/status/mail-attachment.png');
 define('STOCK_BOOK',                    PIWI_URL . 'piwidata/art/stock/stock_book.png');
 define('STOCK_BOTTOM',                  PIWI_URL . 'piwidata/art/stock/actions/go-bottom.png');
 define('STOCK_BROKEN_IMAGE',            PIWI_URL . 'piwidata/art/stock/status/image-missing.png');
