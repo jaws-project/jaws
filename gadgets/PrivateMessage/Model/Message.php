@@ -96,13 +96,13 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
     }
 
     /**
-     * Get a message
+     * Delete outbox message
      *
      * @access  public
      * @param   array    $ids     Message ids
      * @return  mixed    True or Jaws_Error on failure
      */
-    function DeleteMessage($ids)
+    function DeleteOutboxMessage($ids)
     {
         if (!is_array($ids) && $ids > 0) {
             $ids = array($ids);
@@ -128,13 +128,13 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
     }
 
     /**
-     * Get a message recipient
+     * Delete inbox message
      *
      * @access  public
      * @param   array    $ids     Message ids
      * @return  mixed    True or Jaws_Error on failure
      */
-    function DeleteMessageRecipient($ids)
+    function DeleteInboxMessage($ids)
     {
         if (!is_array($ids) && $ids > 0) {
             $ids = array($ids);

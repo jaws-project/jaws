@@ -27,25 +27,33 @@ $actions['DraftMessage'] = array(
     'standalone' => true,
     'file' => 'Draft',
 );
-$actions['Message'] = array(
+$actions['InboxMessage'] = array(
     'normal' => true,
-    'file' => 'Message',
+    'file' => 'InboxMessage',
+);
+$actions['OutboxMessage'] = array(
+    'normal' => true,
+    'file' => 'OutboxMessage',
 );
 $actions['PublishMessage'] = array(
     'standalone' => true,
-    'file' => 'Message',
+    'file' => 'OutboxMessage',
 );
 $actions['MessageHistory'] = array(
     'normal' => true,
     'file' => 'Message',
 );
-$actions['DeleteMessage'] = array(
+$actions['DeleteInboxMessage'] = array(
     'standalone' => true,
-    'file' => 'Message',
+    'file' => 'InboxMessage',
+);
+$actions['DeleteOutboxMessage'] = array(
+    'standalone' => true,
+    'file' => 'OutboxMessage',
 );
 $actions['ChangeMessageRead'] = array(
     'standalone' => true,
-    'file' => 'Message',
+    'file' => 'InboxMessage',
 );
 $actions['Reply'] = array(
     'normal' => true,

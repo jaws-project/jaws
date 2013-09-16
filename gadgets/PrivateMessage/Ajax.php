@@ -36,4 +36,27 @@ class PrivateMessage_Ajax extends Jaws_Gadget_HTML
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Users');
         return $model->GetGroups($term);
     }
+
+    /**
+     * Save draft message
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function SaveDraftMessage()
+    {
+        $post = jaws()->request->fetch(array('id', 'data:array'), 'post');
+        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
+
+        $res = $model->SaveDraftMessage($post['id'], $post['data']);
+        if ($res === false) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('PRIVATEMESSAGE_DRAFT_SAVED'),
+                RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('PRIVATEMESSAGE_DRAFT_NOT_SAVED'),
+                RESPONSE_NOTICE);
+        }
+
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
 }

@@ -46,11 +46,17 @@ $maps[] = array(
     array('id' => '[\p{L}[:digit:]-_\.]+',)
 );
 $maps[] = array(
-    'Message',
-    'pm/message/{id}[/view/{view}]',
+    'InboxMessage',
+    'pm/inbox/message/{id}',
     array(
         'id' => '[\p{L}[:digit:]-_\.]+',
-        'view' => '[[:lower:]-]+',
+    )
+);
+$maps[] = array(
+    'OutboxMessage',
+    'pm/outbox/message/{id}',
+    array(
+        'id' => '[\p{L}[:digit:]-_\.]+',
     )
 );
 $maps[] = array(
@@ -74,11 +80,17 @@ $maps[] = array(
     array('id' => '[\p{L}[:digit:]-_\.]+',)
 );
 $maps[] = array(
-    'DeleteMessage',
-    'pm/message[/type/{type}]/delete/{id}',
+    'DeleteInboxMessage',
+    'pm/inbox/message/delete/{id}',
     array(
         'id' => '[\p{L}[:digit:]-_\.]+',
-        'type' => '[[:lower:]-]+',
+    )
+);
+$maps[] = array(
+    'DeleteOutboxMessage',
+    'pm/outbox/message/delete/{id}',
+    array(
+        'id' => '[\p{L}[:digit:]-_\.]+',
     )
 );
 

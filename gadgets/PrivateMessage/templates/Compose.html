@@ -7,6 +7,7 @@
         <input type="hidden" value="15000000" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE">
         <input type="hidden" name="gadget" value="PrivateMessage"/>
         <input type="hidden" name="action" value="ComposeMessage"/>
+        <input type="hidden" name="id" id="id" value="{id}"/>
 
         <div class="content">
             <div>
@@ -67,7 +68,8 @@
 
         <div class="actions">
             <a href="{back_url}" class="button">{lbl_back}</a>
-            <button type="submit">{lbl_compose}</button>
+            <a class="button" href="javascript:saveDraft($('id').value)">{lbl_save_draft}zzz</a>
+            <button type="submit">{lbl_send}</button>
         </div>
     </form>
 </div>

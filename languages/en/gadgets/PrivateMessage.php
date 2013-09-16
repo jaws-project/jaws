@@ -40,7 +40,8 @@ define('_EN_PRIVATEMESSAGE_REPLY', "Reply");
 define('_EN_PRIVATEMESSAGE_REPLY_ON', "Reply on {0}");
 
 /* Compose Message */
-define('_EN_PRIVATEMESSAGE_COMPOSE', "Cmpose");
+define('_EN_PRIVATEMESSAGE_COMPOSE', "Compose");
+define('_EN_PRIVATEMESSAGE_SEND', "Send");
 define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS', "Recipient users");
 define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS', "Recipient groups");
 define('_EN_PRIVATEMESSAGE_FORWARD_MESSAGE', "Forward a message");
@@ -75,6 +76,7 @@ define('_EN_PRIVATEMESSAGE_MESSAGE_DELETED', "Message has been deleted.");
 define('_EN_PRIVATEMESSAGE_MESSAGE_PUBLISHED', "Message has been published.");
 define('_EN_PRIVATEMESSAGE_MESSAGE_DRAFTED', "Message has been drafted.");
 define('_EN_PRIVATEMESSAGE_MESSAGE_READ_MESSAGE_STATUS_CHANGED', "Message read status has been changed.");
+define('_EN_PRIVATEMESSAGE_DRAFT_SAVED', "Draft message has been saved.");
 
 /* Errors */
 define('_EN_PRIVATEMESSAGE_ERROR_PROPERTIES_NOT_UPDATED', "Updating the properties failed");
@@ -82,4 +84,5 @@ define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_DELETED', "There was a problem dele
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_PUBLISHED', "There was a problem publishing message.");
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_DRAFTED', "There was a problem drafting message.");
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_READ_STATUS_NOT_CHANGED', "There was a problem changing message read status.");
+define('_EN_PRIVATEMESSAGE_DRAFT_NOT_SAVED', "There was a problem saving draft message.");
 

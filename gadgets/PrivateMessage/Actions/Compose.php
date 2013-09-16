@@ -73,7 +73,7 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_body', _t('PRIVATEMESSAGE_MESSAGE_BODY'));
         $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
-        $tpl->SetVariable('lbl_compose', _t('PRIVATEMESSAGE_COMPOSE'));
+        $tpl->SetVariable('lbl_send', _t('PRIVATEMESSAGE_SEND'));
         $tpl->SetVariable('lbl_back', _t('PRIVATEMESSAGE_BACK'));
         $tpl->SetVariable('lbl_file', _t('PRIVATEMESSAGE_FILE'));
         $tpl->SetVariable('lbl_add_file', _t('PRIVATEMESSAGE_ADD_ANOTHER_FILE'));
