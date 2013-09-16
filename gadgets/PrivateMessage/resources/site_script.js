@@ -32,6 +32,7 @@ function getGroups(term) {
 function saveDraft(id) {
     var data = new Array();
     data['id'] = id;
+    data['parent'] = $('parent').value;
     data['recipient_users'] = $('recipient_users').value;
     data['recipient_groups'] = $('recipient_groups').value;
     data['subject'] = $('subject').value;

@@ -24,6 +24,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
         }
 
         $id = jaws()->request->fetch('id', 'get');
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
         $date = $GLOBALS['app']->loadDate();
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $usrModel = new Jaws_User;
@@ -98,18 +99,23 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
                 $tpl->ParseBlock('history/message/attachment');
             }
 
-            $tpl->SetVariable('reply_url', $this->gadget->urlMap('Reply', array('id' => $id)));
-            $tpl->SetVariable('forward_url', $this->gadget->urlMap('Compose', array('id' => $id)));
-//            $tpl->SetVariable('delete_url', $this->gadget->urlMap('DeleteMessage', array('id' => $id)));
-            $tpl->SetVariable('back_url', $this->gadget->urlMap('Inbox'));
+
+            if ($message['user'] != $user) {
+                $tpl->SetBlock('history/message/reply');
+                $tpl->SetVariable('reply_url', $this->gadget->urlMap('Compose', array('id' => $message['id'], 'reply' => 'true')));
+                $tpl->SetVariable('icon_reply', STOCK_JUMP_TO);
+                $tpl->SetVariable('reply', _t('PRIVATEMESSAGE_REPLY'));
+                $tpl->ParseBlock('history/message/reply');
+            }
+
+            $tpl->SetVariable('forward_url', $this->gadget->urlMap('Compose', array(
+                'id' => $message['id'],
+                'reply'=>'false'))); $tpl->SetVariable('back_url', $this->gadget->urlMap('Inbox'));
 
             $tpl->SetVariable('icon_back',      STOCK_LEFT);
             $tpl->SetVariable('icon_forward',   STOCK_RIGHT);
-            $tpl->SetVariable('icon_reply',     STOCK_JUMP_TO);
-//            $tpl->SetVariable('icon_delete',    STOCK_DELETE);
 
             $tpl->SetVariable('back', _t('PRIVATEMESSAGE_BACK'));
-            $tpl->SetVariable('reply', _t('PRIVATEMESSAGE_REPLY'));
             $tpl->SetVariable('forward', _t('PRIVATEMESSAGE_FORWARD'));
 
             $tpl->ParseBlock('history/message');

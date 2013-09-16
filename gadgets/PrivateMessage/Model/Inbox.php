@@ -22,15 +22,15 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
      */
     function GetInbox($user, $filters = null, $limit = 0, $offset = null)
     {
-        $table = Jaws_ORM::getInstance()->table('pm_messages');
+        $table = Jaws_ORM::getInstance()->table('pm_messages', 'message');
         $table->select(
-            'pm_messages.id:integer','pm_messages.subject', 'pm_messages.body', 'pm_messages.insert_time',
+            'message.id:integer','message.subject', 'message.body', 'message.insert_time',
             'users.nickname as from_nickname', 'pm_recipients.read:boolean', 'users.username as from_username',
-            'pm_messages.attachments:integer', 'pm_recipients.id as message_recipient_id:integer'
-        );
-        $table->join('users', 'pm_messages.user', 'users.id');
-        $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message');
-        $table->where('pm_recipients.recipient', $user)->and()->where('pm_messages.published', true);
+            'message.attachments:integer', 'pm_recipients.id as message_recipient_id:integer'
+        )->alias('xxx');
+        $table->join('users', 'message.user', 'users.id')->alias('yyy');
+        $table->join('pm_recipients', 'message.id', 'pm_recipients.message');
+        $table->where('pm_recipients.recipient', $user)->and()->where('message.published', true);
 
         if (!empty($filters)) {
 
@@ -46,8 +46,8 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
                 }
             }
             if (isset($filters['replied']) && !empty($filters['replied'])) {
-                $subTable = Jaws_ORM::getInstance()->table('pm_messages')->select('count(id):integer')->where('parent', 1);
-
+//                $subTable = Jaws_ORM::getInstance()->table('pm_messages')->select('count(id):integer')->where('parent', $table->expr('message.id'));
+                $subTable = Jaws_ORM::getInstance()->table('pm_messages')->select('count(id):integer')->where('parent', array('message.id', 'expr'));
                 if ($filters['replied'] == 'yes') {
                     $table->and()->where($subTable, 0, '>');
                 } else {
@@ -56,15 +56,15 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
             }
             if (isset($filters['attachment']) && !empty($filters['attachment'])) {
                 if ($filters['attachment'] == 'yes') {
-                    $table->and()->where('pm_messages.attachments', 0, '>');
+                    $table->and()->where('message.attachments', 0, '>');
                 } else {
-                    $table->and()->where('pm_messages.attachments', 0);
+                    $table->and()->where('message.attachments', 0);
                 }
             }
             if (isset($filters['term']) && !empty($filters['term'])) {
                 $filters['term'] = '%' . $filters['term'] . '%';
-                $table->and()->openWhere('pm_messages.subject', $filters['term'] , 'like')->or();
-                $table->and()->closeWhere('pm_messages.body', $filters['term'] , 'like');
+                $table->and()->openWhere('message.subject', $filters['term'] , 'like')->or();
+                $table->closeWhere('message.body', $filters['term'] , 'like');
             }
         }
 

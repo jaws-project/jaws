@@ -31,16 +31,17 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $tpl = $this->gadget->loadTemplate('Compose.html');
         $tpl->SetBlock('compose');
-        $tpl->SetVariable('id', $id);
         $body_value = "";
         if (!empty($id) && $id > 0) {
             $message = $model->GetMessage($id, true, false);
+            $tpl->SetVariable('parent', $message['parent']);
 
             // edit draft
             if (empty($get['reply'])) {
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
                 $tpl->SetVariable('recipient_users', $message['recipient_users']);
                 $tpl->SetVariable('recipient_groups', $message['recipient_groups']);
+                $tpl->SetVariable('id', $id);
                 $body_value = $message['body'];
                 $tpl->SetVariable('subject', $message['subject']);
 
@@ -68,8 +69,10 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
 
             // reply a message
             } else if (!empty($get['reply']) && $get['reply'] == 'true') {
+                $tpl->SetVariable('parent', $id);
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_REPLY'));
                 $tpl->SetVariable('recipient_users', $message['user']);
+                $tpl->SetVariable('subject', _t('PRIVATEMESSAGE_REPLY_ON', $message['subject']));
             // forward a message
             } else if (!empty($get['reply']) && $get['reply'] == 'false') {
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_FORWARD_MESSAGE'));
@@ -103,7 +106,7 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         }
 
         $body =& $GLOBALS['app']->LoadEditor('PrivateMessage', 'body', $body_value);
-        $body->setID('$body');
+        $body->setID('body');
         $body->TextArea->SetStyle('width: 99%;');
         $body->SetWidth('100%');
         $tpl->SetVariable('body', $body->Get());
@@ -142,7 +145,7 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ComposeMessage');
 
         $attachments = array();
-        $post = jaws()->request->fetch(array('id', 'recipient_users', 'recipient_groups', 'subject',
+        $post = jaws()->request->fetch(array('id', 'parent', 'recipient_users', 'recipient_groups', 'subject',
                                              'body', 'selected_files:array'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');

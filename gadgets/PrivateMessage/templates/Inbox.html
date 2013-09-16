@@ -102,7 +102,7 @@
         var action = document.getElementById("inbox_actions_combo").value;
         console.log(action);
         if (action == 'delete') {
-            document.privatemessage.action.value = 'DeleteMessage';
+            document.privatemessage.action.value = 'DeleteInboxMessage';
         } else if(action == 'read') {
             document.privatemessage.action.value = 'ChangeMessageRead';
             document.privatemessage.status.value = 'read';
