@@ -58,6 +58,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $tpl->SetVariable('filter', _t('PRIVATEMESSAGE_FILTER'));
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
         $tpl->SetVariable('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
         $tpl->SetVariable('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);

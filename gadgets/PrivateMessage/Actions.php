@@ -47,6 +47,10 @@ $actions['DeleteInboxMessage'] = array(
     'standalone' => true,
     'file' => 'InboxMessage',
 );
+$actions['ArchiveInboxMessage'] = array(
+    'standalone' => true,
+    'file' => 'InboxMessage',
+);
 $actions['DeleteOutboxMessage'] = array(
     'standalone' => true,
     'file' => 'OutboxMessage',

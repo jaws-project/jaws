@@ -148,6 +148,48 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
     }
 
     /**
+     * Archive Inbox message
+     *
+     * @access  public
+     * @return  void
+     */
+    function ArchiveInboxMessage()
+    {
+        $this->gadget->CheckPermission('ArchiveMessage');
+
+        $ids = jaws()->request->fetch('id', 'get');
+        $post = jaws()->request->fetch('message_checkbox:array', 'post');
+
+        if(!empty($post) && count($post)>0) {
+            $ids = $post;
+        }
+        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
+        $res = $model->ArchiveInboxMessage($ids);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushResponse(
+                $res->getMessage(),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        }
+
+        if ($res == true) {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_MESSAGE_ARCHIVED'),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        } else {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_ARCHIVED'),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        }
+        Jaws_Header::Location($this->gadget->urlMap('Inbox'));
+    }
+
+    /**
      * Delete Inbox message
      *
      * @access  public

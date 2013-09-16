@@ -83,6 +83,7 @@
                 <select title="{lbl_actions}" id="inbox_actions_combo" name="inbox_actions_combo">
                     <option value="">&nbsp;</option>
                     <option value="delete">{lbl_delete}</option>
+                    <option value="archive">{lbl_archive}</option>
                     <option value="read">{lbl_mark_as_read}</option>
                     <option value="unread">{lbl_mark_as_unread}</option>
                 </select>
@@ -100,9 +101,10 @@
 <script type="text/javascript">
     function inboxDGAction() {
         var action = document.getElementById("inbox_actions_combo").value;
-        console.log(action);
         if (action == 'delete') {
             document.privatemessage.action.value = 'DeleteInboxMessage';
+        } else if(action == 'archive') {
+            document.privatemessage.action.value = 'ArchiveInboxMessage';
         } else if(action == 'read') {
             document.privatemessage.action.value = 'ChangeMessageRead';
             document.privatemessage.status.value = 'read';

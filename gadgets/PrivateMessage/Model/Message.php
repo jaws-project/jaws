@@ -145,6 +145,23 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
     }
 
     /**
+     * Archive inbox message
+     *
+     * @access  public
+     * @param   array    $ids     Message ids
+     * @return  mixed    True or Jaws_Error on failure
+     */
+    function ArchiveInboxMessage($ids)
+    {
+        if (!is_array($ids) && $ids > 0) {
+            $ids = array($ids);
+        }
+        $table = Jaws_ORM::getInstance()->table('pm_recipients');
+        $result = $table->update(array('archived' => true))->where('id', $ids, 'in')->exec();
+        return $result;
+    }
+
+    /**
      * Delete inbox message
      *
      * @access  public

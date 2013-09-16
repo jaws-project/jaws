@@ -17,6 +17,7 @@ define('_EN_PRIVATEMESSAGE_DESCRIPTION', "User can send private message to each 
 define('_EN_PRIVATEMESSAGE_ACL_DEFAULT', "Administer PrivateMessage");
 define('_EN_PRIVATEMESSAGE_ACL_MANAGEPROPERTIES', "Manage Properties");
 define('_EN_PRIVATEMESSAGE_ACL_DELETEMESSAGE', "Delete message");
+define('_EN_PRIVATEMESSAGE_ACL_ARCHIVEMESSAGE', "Archive message");
 define('_EN_PRIVATEMESSAGE_ACL_REPLYMESSAGE', "Reply message");
 define('_EN_PRIVATEMESSAGE_ACL_COMPOSEMESSAGE', "Compose message");
 
@@ -52,6 +53,7 @@ define('_EN_PRIVATEMESSAGE_INBOX', "Inbox {0}");
 define('_EN_PRIVATEMESSAGE_ARCHIVED', "Archived");
 define('_EN_PRIVATEMESSAGE_OUTBOX', "Outbox");
 define('_EN_PRIVATEMESSAGE_DRAFT', "Draft {0}");
+define('_EN_PRIVATEMESSAGE_ARCHIVE', "Archive");
 define('_EN_PRIVATEMESSAGE_COMPOSE_MESSAGE', "Compose");
 define('_EN_PRIVATEMESSAGE_BACK', "Back");
 define('_EN_PRIVATEMESSAGE_FORWARD', "Forward");
@@ -74,6 +76,7 @@ define('_EN_PRIVATEMESSAGE_MARK_AS_UNREAD', "Mark as unread");
 define('_EN_PRIVATEMESSAGE_PROPERTIES_UPDATED', "The properties have been updated");
 define('_EN_PRIVATEMESSAGE_ERROR_NO_FILE_UPLOADED', "No image has been uploaded.");
 define('_EN_PRIVATEMESSAGE_MESSAGE_DELETED', "Message has been deleted.");
+define('_EN_PRIVATEMESSAGE_MESSAGE_ARCHIVED', "Message has been archived.");
 define('_EN_PRIVATEMESSAGE_MESSAGE_PUBLISHED', "Message has been published.");
 define('_EN_PRIVATEMESSAGE_MESSAGE_DRAFTED', "Message has been drafted.");
 define('_EN_PRIVATEMESSAGE_MESSAGE_READ_MESSAGE_STATUS_CHANGED', "Message read status has been changed.");
@@ -82,6 +85,7 @@ define('_EN_PRIVATEMESSAGE_DRAFT_SAVED', "Draft message has been saved.");
 /* Errors */
 define('_EN_PRIVATEMESSAGE_ERROR_PROPERTIES_NOT_UPDATED', "Updating the properties failed");
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_DELETED', "There was a problem deleting message.");
+define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_ARCHIVED', "There was a problem archiving message.");
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_PUBLISHED', "There was a problem publishing message.");
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_DRAFTED', "There was a problem drafting message.");
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_READ_STATUS_NOT_CHANGED', "There was a problem changing message read status.");
