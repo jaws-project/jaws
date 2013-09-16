@@ -116,7 +116,7 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
             $tpl->SetVariable('icon_delete', STOCK_DELETE);
             $tpl->ParseBlock('message/delete');
             $tpl->SetVariable('delete_url', $this->gadget->urlMap(
-                'DeleteOutboxMessage', array('id' => $id, 'type' => 'reference')));
+                'DeleteOutboxMessage', array('id' => $id)));
 
         } else {
             if ($message['read_count'] < 1) {
@@ -130,7 +130,9 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
 
         if ($message['published']) {
             $tpl->SetBlock('message/forward');
-            $tpl->SetVariable('forward_url', $this->gadget->urlMap('Compose', array('id' => $message['id'])));
+            $tpl->SetVariable('forward_url', $this->gadget->urlMap('Compose', array(
+                                                                   'id' => $message['id'],
+                                                                   'reply'=>'false')));
             $tpl->SetVariable('icon_forward', STOCK_RIGHT);
             $tpl->SetVariable('forward', _t('PRIVATEMESSAGE_FORWARD'));
             $tpl->ParseBlock('message/forward');

@@ -52,8 +52,10 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
                 $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
 
                 $tpl->SetVariable('message_url', $this->gadget->urlMap(
-                    'Message',
-                    array('id' => $message['id'], 'view' => 'reference')));
+                    'OutboxMessage',
+                    array('id' => $message['id'])));
+
+                $tpl->SetVariable('message_url', $this->gadget->urlMap('Compose', array('id' => $message['id'])));
                 $tpl->ParseBlock('outbox/message');
             }
         }

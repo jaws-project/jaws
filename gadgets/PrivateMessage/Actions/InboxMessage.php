@@ -109,7 +109,7 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
         }
 
         $tpl->SetBlock('message/reply');
-        $tpl->SetVariable('reply_url', $this->gadget->urlMap('Reply', array('id' => $id)));
+        $tpl->SetVariable('reply_url', $this->gadget->urlMap('Compose', array('id' => $id, 'reply' => 'true')));
         $tpl->SetVariable('icon_reply', STOCK_JUMP_TO);
         $tpl->SetVariable('reply', _t('PRIVATEMESSAGE_REPLY'));
         $tpl->ParseBlock('message/reply');
@@ -129,7 +129,9 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
 
         if ($message['published']) {
             $tpl->SetBlock('message/forward');
-            $tpl->SetVariable('forward_url', $this->gadget->urlMap('Compose', array('id' => $message['id'])));
+            $tpl->SetVariable('forward_url', $this->gadget->urlMap('Compose', array(
+                                                                   'id' => $message['id'],
+                                                                   'reply'=>'false')));
             $tpl->SetVariable('icon_forward', STOCK_RIGHT);
             $tpl->SetVariable('forward', _t('PRIVATEMESSAGE_FORWARD'));
             $tpl->ParseBlock('message/forward');

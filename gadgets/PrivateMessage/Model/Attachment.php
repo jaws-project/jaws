@@ -46,4 +46,17 @@ class PrivateMessage_Model_Attachment extends Jaws_Gadget_Model
         return $result;
     }
 
+    /**
+     * Get a message attachments file path
+     *
+     * @access  public
+     * @param   integer  $uid   user id
+     * @param   string   $filename   attachment file name
+     * @return  array    Array of message attachments or Empty Array
+     */
+    function GetMessageAttachmentFilePath($uid, $filename)
+    {
+        return JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $uid . DIRECTORY_SEPARATOR . $filename;
+    }
+
 }

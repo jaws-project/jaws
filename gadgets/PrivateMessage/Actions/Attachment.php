@@ -32,10 +32,10 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_HTML
         if (Jaws_Error::IsError($message)) {
             return Jaws_HTTPError::Get(500);
         }
-
-        if ($message['user'] != $rqst['uid']) {
-            return Jaws_HTTPError::Get(500);
-        }
+//TODO::Must check users
+//        if ($message['user'] != $rqst['uid']) {
+//            return Jaws_HTTPError::Get(500);
+//        }
 
         $attachment = $aModel->GetMessageAttachment($rqst['aid']);
         if (!empty($attachment) && ($attachment['message'] == $rqst['mid'])) {

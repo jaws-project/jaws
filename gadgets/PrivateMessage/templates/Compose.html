@@ -12,12 +12,12 @@
         <div class="content">
             <div>
                 <label for="recipient_users">{lbl_recipient_users}:</label>
-                <input name="recipient_users" id="recipient_users" type="text"/>
+                <input name="recipient_users" id="recipient_users" type="text" value="{recipient_users}"/>
             </div>
 
             <div>
                 <label for="recipient_groups">{lbl_recipient_groups}:</label>
-                <input name="recipient_groups" id="recipient_groups" type="text"/>
+                <input name="recipient_groups" id="recipient_groups" type="text" value="{recipient_groups}"/>
             </div>
 
             <div>
@@ -30,13 +30,13 @@
                 <textarea name="body" id="body" rows="6">{body}</textarea>
             </div>
 
-            <div>
-                <label for="status">{lbl_status}:</label>
-                <select id="status" name="status">
-                    <option value="published" selected>{lbl_published}</option>
-                    <option value="draft">{lbl_draft}</option>
-                </select>
-            </div>
+            <!--<div>-->
+                <!--<label for="status">{lbl_status}:</label>-->
+                <!--<select id="status" name="status">-->
+                    <!--<option value="published" selected>{lbl_published}</option>-->
+                    <!--<option value="draft">{lbl_draft}</option>-->
+                <!--</select>-->
+            <!--</div>-->
 
             <fieldset>
                 <legend><span>{lbl_attachments}</span></legend>

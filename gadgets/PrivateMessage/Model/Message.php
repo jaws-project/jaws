@@ -25,12 +25,12 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $columns = array(
             'pm_messages.id:integer', 'parent:integer', 'pm_messages.subject', 'pm_messages.body', 'published:boolean',
             'users.nickname as from_nickname', 'users.username as from_username', 'users.avatar', 'users.email',
-            'user:integer', 'pm_messages.insert_time');
+            'user:integer', 'pm_messages.insert_time', 'recipient_users', 'recipient_groups');
         if($getRecipients) {
             $columns[] = 'pm_recipients.read:boolean';
         } else {
             $subTable = Jaws_ORM::getInstance()->table('pm_recipients');
-            $subTable->select('count(id)')->where('read', true)->and()->where('message', $id)->alias('read_count');
+            $subTable->select('count(id)')->where('read', true)->and()->where('message', (int)$id)->alias('read_count');
             $columns[] = $subTable;
         }
 
@@ -39,9 +39,9 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         if($getRecipients) {
             $columns[] = 'pm_recipients.read:boolean';
             $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message');
-            $table->where('pm_recipients.id', $id);
+            $table->where('pm_recipients.id', (int)$id);
         } else {
-            $table->where('pm_messages.id', $id);
+            $table->where('pm_messages.id', (int)$id);
         }
 
         $result = $table->fetchRow();
@@ -100,7 +100,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   array    $ids     Message ids
-     * @return  mixed    True or Jaws_Error on failure
+     * @return  mixed    True or False or Jaws_Error on failure
      */
     function DeleteOutboxMessage($ids)
     {
@@ -111,6 +111,19 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $rTable = Jaws_ORM::getInstance()->table('pm_recipients');
         //Start Transaction
         $rTable->beginTransaction();
+
+        $aModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');
+        foreach ($ids as $id) {
+            $message = $this->GetMessage($id, true, false);
+            foreach($message['attachments'] as $attachment) {
+                $filepath = $aModel->GetMessageAttachmentFilePath($message['user'], $attachment['filename']);
+                if (!Jaws_Utils::delete($filepath)) {
+                    //Rollback Transaction
+                    $rTable->rollback();
+                    return false;
+                }
+            }
+        }
 
         $rTable->delete()->where('message', $ids, 'in')->exec();
 
@@ -206,15 +219,22 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         //Start Transaction
         $mTable->beginTransaction();
 
-        $data = array();
-        $data['user']        = $user;
-        if(!empty($message['parent'])) {
-            $data['parent']  = $message['parent'];
+        // compose a draft message
+        if(!empty($message['id']) && $message['id']>0) {
+            $this->DeleteOutboxMessage($message['id']);
         }
-        $data['subject']     = $message['subject'];
-        $data['body']        = $message['body'];
-        $data['published']   = $message['published'];
-        $data['attachments'] = count($attachments);
+
+        $data = array();
+        $data['user']               = $user;
+        if(!empty($message['parent'])) {
+            $data['parent'] = $message['parent'];
+        }
+        $data['subject']            = $message['subject'];
+        $data['body']               = $message['body'];
+        $data['published']          = $message['published'];
+        $data['attachments']        = count($attachments);
+        $data['recipient_users']    = $message['recipient_users'];
+        $data['recipient_groups']   = $message['recipient_groups'];
         $data['insert_time'] = time();
         $message_id = $mTable->insert($data)->exec();
         if (Jaws_Error::IsError($message_id)) {
