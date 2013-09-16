@@ -92,6 +92,11 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
         $table->and()->where('pm_messages.published', true);
 
         if (!empty($filters)) {
+
+            if (isset($filters['archived']) && ($filters['archived'] !== "")) {
+                $table->and()->where('pm_recipients.archived', $filters['archived']);
+            }
+
             if (isset($filters['read']) && !empty($filters['read'])) {
                 if ($filters['read'] == 'yes') {
                     $table->and()->where('pm_recipients.read', true);
@@ -99,15 +104,25 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
                     $table->and()->where('pm_recipients.read', false);
                 }
             }
-            if (isset($filters['attachment']) && !empty($filters['attachment'])) {
-                if ($filters['attachment'] == 'yes') {
-                    $table->and()->where('pm_messages.attachments', 0, '>');
+            if (isset($filters['replied']) && !empty($filters['replied'])) {
+                $subTable = Jaws_ORM::getInstance()->table('pm_messages')->select('count(id):integer')->where('parent', array('message.id', 'expr'));
+                if ($filters['replied'] == 'yes') {
+                    $table->and()->where($subTable, 0, '>');
                 } else {
-                    $table->and()->where('pm_messages.attachments', 0);
+                    $table->and()->where($subTable, 0);
                 }
             }
-            if (isset($filters['filter']) && !empty($filters['filter'])) {
-                $table->and()->where('pm_messages.subject', '%' . $filters['filter'] . '%', 'like');
+            if (isset($filters['attachment']) && !empty($filters['attachment'])) {
+                if ($filters['attachment'] == 'yes') {
+                    $table->and()->where('message.attachments', 0, '>');
+                } else {
+                    $table->and()->where('message.attachments', 0);
+                }
+            }
+            if (isset($filters['term']) && !empty($filters['term'])) {
+                $filters['term'] = '%' . $filters['term'] . '%';
+                $table->and()->openWhere('message.subject', $filters['term'] , 'like')->or();
+                $table->closeWhere('message.body', $filters['term'] , 'like');
             }
         }
 

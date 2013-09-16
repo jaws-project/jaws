@@ -30,7 +30,7 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_HTML
         $iModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
         $oModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');
         $user_id = $GLOBALS['app']->Session->GetAttribute('user');
-        $unreadMessageCount = $iModel->GetInboxStatistics($user_id, array('read'=>'no'));
+        $unreadMessageCount = $iModel->GetInboxStatistics($user_id, array('read'=>'no', 'archived'=> false));
         $draftMessageCount = $oModel->GetOutboxStatistics($user_id, array('published' => false));
         if ($unreadMessageCount > 0) {
             $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX', '(' . $unreadMessageCount . ')'));
