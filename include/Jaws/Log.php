@@ -262,7 +262,7 @@ class Jaws_Log
     function VarDump($mixed = null)
     {
         ob_start();
-        var_dump($mixed);
+        call_user_func_array('var_dump', func_get_args());
         $content = ob_get_contents();
         ob_end_clean();
         $method = $this->_Method;
@@ -515,6 +515,6 @@ function _log($priority, $msg, $backtrace = 0)
 function _log_var_dump($mixed = null)
 {
     if (isset($GLOBALS['log'])) {
-        $GLOBALS['log']->VarDump($mixed);
+        call_user_func_array(array($GLOBALS['log'], 'VarDump'), func_get_args());
     }
 }
