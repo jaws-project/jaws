@@ -17,7 +17,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      * @param   int     $parent  Restricts results to a specified node
      * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($parent = 0, $user = null, $shared = null, $foreign = null)
+    function GetFiles($parent = 0, $user = null, $shared = null, $foreign = null, $is_dir = null)
     {
         $access = ($user === null)? null : $this->CheckAccess($parent, $user);
         if ($access === false) {
@@ -40,7 +40,11 @@ class Directory_Model_Files extends Jaws_Gadget_Model
 
         if ($foreign !== null){
             $flag = $foreign? '<>' : '=';
-            $table->where('user', $table->expr('owner'), $flag);
+            $table->where('user', $table->expr('owner'), $flag)->and();
+        }
+
+        if ($is_dir !== null){
+            $table->where('is_dir', $is_dir);
         }
 
         return $table->orderBy('is_dir desc', 'title asc')->fetchAll();
@@ -123,7 +127,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   array   $data    File data
-     * @return  mixed   True on successful insert, Jaws_Error otherwise
+     * @return  mixed   Query result
      */
     function Insert($data)
     {
@@ -138,7 +142,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      * @access  public
      * @param   int     $id     File ID
      * @param   array   $data   File data
-     * @return  mixed   True on successful update and Jaws_Error on error
+     * @return  mixed   Query result
      */
     function Update($id, $data)
     {
@@ -152,11 +156,26 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $id  File ID
-     * @return  mixed   Array of file data or Jaws_Error on error
+     * @return  mixed   Query result
      */
     function Delete($id)
     {
         $table = Jaws_ORM::getInstance()->table('directory');
         return $table->delete()->where('id', $id)->exec();
+    }
+
+    /**
+     * Updates parent of the file/directory
+     *
+     * @access  public
+     * @param   int     $id      File ID
+     * @param   int     $parent  New file parent
+     * @return  mixed   Query result
+     */
+    function Move($id, $parent)
+    {
+        $table = Jaws_ORM::getInstance()->table('directory');
+        $table->update(array('parent' => $parent));
+        return $table->where('id', $id)->exec();
     }
 }

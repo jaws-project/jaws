@@ -27,6 +27,14 @@ $actions['GetPath'] = array(
     'standalone' => true,
     'file' => 'Directory'
 );
+$actions['GetTree'] = array(
+    'standalone' => true,
+    'file' => 'Directory'
+);
+$actions['Move'] = array(
+    'standalone' => true,
+    'file' => 'Directory'
+);
 
 /* Directory Actions */
 $actions['DirectoryForm'] = array(
@@ -68,7 +76,7 @@ $actions['UploadFile'] = array(
     'file' => 'Files'
 );
 
-/* Share Actions */
+/* Sharing Actions */
 $actions['GetUsers'] = array(
     'standalone' => true,
     'file' => 'Share'
@@ -84,10 +92,4 @@ $actions['GetFileUsers'] = array(
 $actions['UpdateFileUsers'] = array(
     'standalone' => true,
     'file' => 'Share'
-);
-
-/* Setting Actions */
-$actions['Settings'] = array(
-    'normal' => true,
-    'file' => 'Settings'
 );

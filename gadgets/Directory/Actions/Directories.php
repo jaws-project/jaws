@@ -164,5 +164,4 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
 
         return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_DIR_DELETED'), RESPONSE_NOTICE);
     }
-
 }

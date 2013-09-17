@@ -37,6 +37,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('lbl_move', _t('DIRECTORY_MOVE'));
         $tpl->SetVariable('lbl_props', _t('DIRECTORY_PROPERTIES'));
         $tpl->SetVariable('imgDeleteFile', STOCK_DELETE);
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
@@ -141,4 +142,124 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         return $path;
     }
 
+    /**
+     * Builds a (sub)tree of directories
+     *
+     * @access  public
+     * @return  string   XHTML tree
+     */
+    function GetTree()
+    {
+        $tree = '';
+        $data = jaws()->request->fetch(array('root', 'exclude'), 'post');
+        if ($data['root'] !== null) {
+            $this->BuildTree((int)$data['root'], $data['exclude'], $tree);
+        }
+
+        $tpl = $this->gadget->loadTemplate('Move.html');
+        $tpl->SetBlock('tree');
+        $tpl->SetVariable('lbl_submit', _t('GLOBAL_SUBMIT'));
+        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('tree', $tree);
+        $tpl->ParseBlock('tree');
+        return $tpl->Get();
+    }
+
+    /**
+     * Builds a (sub)tree of directories
+     *
+     * @access  public
+     * @param   int     $root       File ID as tree root
+     * @param   int     $exclude    File ID to be excluded in tree
+     * @param   string  $tree       XHTML tree
+     * @return  void
+     */
+    function BuildTree($root = 0, $exclude = null, &$tree)
+    {
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $dirs = $model->GetFiles($root, $user, null, null, true);
+        if (Jaws_Error::IsError($dirs)) {
+            return;
+        }
+        if (!empty($dirs)) {
+            $tree .= '<ul>';
+            foreach ($dirs as $dir) {
+                if ($dir['id'] == $exclude) {
+                    continue;
+                }
+                $tree .= "<li><a id='node_{$dir['id']}'>{$dir['title']}</a>";
+                $this->BuildTree($dir['id'], $exclude, $tree);
+                $tree .= "</li>";
+            }
+            $tree .= '</ul>';
+        }
+    }
+
+    /**
+     * Moves file/directory to the given target directory
+     *
+     * @access  public
+     * @return  mixed   Response array or Jaws_Error on error
+     */
+    function Move()
+    {
+        try {
+            $data = jaws()->request->fetch(array('id', 'target'));
+            if ($data['id'] === null || $data['target'] === null) {
+                throw new Exception(_t('DIRECTORY_ERROR_MOVE'));
+            }
+
+            $id = (int)$data['id'];
+            $target = (int)$data['target'];
+            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+
+            // Validate source/target
+            $file = $model->GetFile($id);
+            if (Jaws_Error::IsError($file)) {
+                throw new Exception($file->getMessage());
+            }
+            if ($target !== 0) {
+                $dir = $model->GetFile($target);
+                if (Jaws_Error::IsError($dir)) {
+                    throw new Exception($dir->getMessage());
+                }
+                if (!$dir['is_dir']) {
+                    throw new Exception(_t('DIRECTORY_ERROR_MOVE'));
+                }
+            }
+
+            // Stop moving to itself, it's parent or it's children
+            if ($target == $id || $target == $file['parent']) {
+                throw new Exception(_t('DIRECTORY_ERROR_MOVE'));
+            }
+            $path = array();
+            $id_set = array();
+            $model->GetPath($target, $path);
+            foreach ($path as $d) {
+                $id_set[] = $d['id'];
+            }
+            if (in_array($id, $id_set)) {
+                throw new Exception(_t('DIRECTORY_ERROR_MOVE'));
+            }
+
+            // Validate user
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            // FIXME: we should be able to move into a shared directory
+            // if ($file['user'] != $user || $dir['user'] != $user) {
+            if ($file['user'] != $user) {
+                throw new Exception(_t('DIRECTORY_ERROR_MOVE'));
+            }
+
+            // Let's perform move
+            $res = $model->Move($id, $target);
+            if (Jaws_Error::IsError($res)) {
+                throw new Exception($res->getMessage());
+            }
+        } catch (Exception $e) {
+            return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_MOVE'), RESPONSE_NOTICE);
+    }
 }

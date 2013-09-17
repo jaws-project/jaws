@@ -131,6 +131,29 @@ width:100%;
 .file-info th{
 white-space:nowrap;
 }
+
+#dir_tree{
+line-height:1.5;
+border:1px solid silver;
+padding:10px;
+}
+#dir_tree li{
+padding-left:15px;
+border-left:1px dotted silver;
+}
+#dir_tree > ul > li{
+padding-left:0;
+border-left:0;
+}
+#dir_tree a{
+padding:1px 2px;
+cursor:pointer;
+}
+#dir_tree a.selected{
+background-color:grey;
+color:white;
+}
+
 #file_actions{
 height:24px;
 }

@@ -59,6 +59,14 @@ var DirectoryCallback = {
         $('simple_response').set('html', response.message);
     },
 
+    Move: function(response) {
+        if (response.css === 'notice-message') {
+            cancel();
+            displayFiles(currentDir);
+        }
+        $('simple_response').set('html', response.message);
+    },
+
     UpdateFileUsers: function(response) {
         if (response.css === 'notice-message') {
             cancel();
@@ -304,6 +312,31 @@ function del()
             DirectoryAjax.callAsync('DeleteFile', {'id':selectedId});
         }
     }
+}
+
+/**
+ * Moves selected directory/file to another directory
+ */
+function move() {
+    var tree = DirectoryAjax.callSync('GetTree', {'root':0}),
+        form = $('form');
+    form.set('html', tree);
+    form.getElements('a').addEvent('click', function () {
+        $('form').getElements('a').removeClass('selected');
+        this.className = 'selected';
+    });
+    pageBody.removeEvent('click', cancel);
+}
+
+/**
+ * Performs moving file/directory
+ */
+function submitMove() {
+    var tree = $('dir_tree'),
+        selected = tree.getElement('a.selected'),
+        target = selected.id.substr(5, selected.id.length - 5);
+    //console.log(id);
+    DirectoryAjax.callAsync('Move', {'id':selectedId, 'target':target});
 }
 
 /**
