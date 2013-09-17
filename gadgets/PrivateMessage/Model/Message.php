@@ -265,22 +265,16 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         if (!empty($attachments) && count($attachments) > 0) {
             $table = Jaws_ORM::getInstance()->table('pm_attachments');
-//            $aData = array();
-//            foreach ($attachments as $attachment) {
-//                $attachment['message_id'] = $message_id;
-//                $aData[] = $attachment;
-//            }
-//            $res = $table->insertAll($aData)->exec();
+            $aData = array();
+            $fields = array('title', 'filename', 'filesize', 'filetype', 'message');
             foreach ($attachments as $attachment) {
-                $aData = array();
-                $aData = $attachment;
-                $aData['message'] = $message_id;
-                $res = $table->insert($aData)->exec();
-                if (Jaws_Error::IsError($res)) {
-                    return false;
-                }
+                $attachment['message_id'] = $message_id;
+                $aData[] = array_values($attachment);
             }
-
+            $res = $table->insertAll($fields, $aData)->exec();
+            if (Jaws_Error::IsError($res)) {
+                return false;
+            }
         }
 
         $recipient_users = array();
@@ -297,25 +291,14 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }
 
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
-//        $data = array();
-//        foreach($recipient_users as $recipient_user) {
-//            $data[] = array(
-//                'message_id' =>$message_id,
-//                'recipient' =>$recipient_user,
-//            );
-//        }
-//        $res = $table->insertAll($data)->exec();
-
         if (!empty($recipient_users) && count($recipient_users) > 0) {
+            $rData = array();
             foreach ($recipient_users as $recipient_user) {
-                $data = array(
-                    'message' => $message_id,
-                    'recipient' => $recipient_user,
-                );
-                $res = $table->insert($data)->exec();
-                if (Jaws_Error::IsError($res)) {
-                    return false;
-                }
+                $rData[] = array($message_id, $recipient_user);
+            }
+            $res = $table->insertAll(array('message', 'recipient'), $rData)->exec();
+            if (Jaws_Error::IsError($res)) {
+                return false;
             }
         } else {
             //Rollback Transaction
