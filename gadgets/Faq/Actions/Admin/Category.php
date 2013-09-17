@@ -58,7 +58,7 @@ class Faq_Actions_Admin_Category extends Faq_AdminHTML
         $catbox->PackStart($cfasturl);
 
         $desc = isset($cat) ? $cat['description'] : '';
-        $editor =& $GLOBALS['app']->LoadEditor('Faq', 'description', $desc, false);
+        $editor =& $GLOBALS['app']->LoadEditor('Faq', 'description', $desc, false, _t('GLOBAL_DESCRIPTION'));
         $editor->TextArea->SetStyle('width: 100%;');
         $editor->TextArea->SetRows(8);
 

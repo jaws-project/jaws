@@ -247,7 +247,7 @@ class Faq_Actions_Admin_Question extends Faq_AdminHTML
         $qbox->PackStart($qfasturl);
 
         $answer = isset($q) ? $q['answer'] : '';
-        $editor =& $GLOBALS['app']->LoadEditor('Faq', 'answer', $answer, false);
+        $editor =& $GLOBALS['app']->LoadEditor('Faq', 'answer', $answer, false, _t('FAQ_ANSWER'));
         $editor->TextArea->SetStyle('width: 100%;');
         $editor->TextArea->SetRows(8);
         $editor->setID('answer');
