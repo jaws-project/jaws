@@ -43,10 +43,10 @@ class AddressBook_Actions_ViewAddress extends AddressBook_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $this->SetTitle(_t('ADDRESSBOOK_ITEMS_EDIT_TITLE'));
+        $this->SetTitle(_t('ADDRESSBOOK_ITEMS_VIEW_TITLE'));
         $tpl = $this->gadget->loadTemplate('ViewAddress.html');
         $tpl->SetBlock("address");
-        $tpl->SetVariable('top_title', _t('ADDRESSBOOK_ITEMS_EDIT_TITLE'));
+        $tpl->SetVariable('top_title', _t('ADDRESSBOOK_ITEMS_VIEW_TITLE'));
         $tpl->SetVariable('id', $info['id']);
         $tpl->SetVariable('action', 'UpdateAddress');
         $tpl->SetVariable('lbl_name0',    _t('ADDRESSBOOK_ITEMS_LASTNAME'));
@@ -123,7 +123,7 @@ class AddressBook_Actions_ViewAddress extends AddressBook_HTML
             if (!Jaws_Error::IsError($user) && !empty($user)) {
                 $tpl->SetBlock('address/actions/action');
                 $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_VIEW_ALL_ADDREESS_USER'));
-                $tpl->SetVariable('action_url', $this->gadget->urlMap('AddressBook', array('uid' => $user['username'])));
+                $tpl->SetVariable('action_url', $this->gadget->urlMap('UserAddress', array('uid' => $user['username'])));
                 $tpl->ParseBlock('address/actions/action');
             }
         }

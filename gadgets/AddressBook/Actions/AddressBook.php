@@ -23,8 +23,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $uid = (int) jaws()->request->fetch('uid');
-        $uid = ($uid == 0) ? (int) $GLOBALS['app']->Session->GetAttribute('user') : $uid;
+        $uid = (int) $GLOBALS['app']->Session->GetAttribute('user');
 
         $usrModel = new Jaws_User;
         $user = $usrModel->GetUser($uid);
@@ -60,32 +59,29 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         }
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
 
-        $tpl->SetVariable('addressbook', $this->AddressList($uid));
+        $tpl->SetVariable('addressbook', $this->AddressList());
 
-        $mine = ($uid == $GLOBALS['app']->Session->GetAttribute('user'));
-        if ($mine) {
-            $link = $this->gadget->urlMap('ManageGroups');
-            $tpl->SetVariable('manage_groups_link', $link);
-            $tpl->SetVariable('manage_groups', _t('ADDRESSBOOK_GROUPS_MANAGE'));
+        $link = $this->gadget->urlMap('ManageGroups');
+        $tpl->SetVariable('manage_groups_link', $link);
+        $tpl->SetVariable('manage_groups', _t('ADDRESSBOOK_GROUPS_MANAGE'));
 
-            // Add New
-            $tpl->SetBlock("address_list/actions");
-            $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_ITEMS_ADD'));
-            $tpl->SetVariable('action_url', $this->gadget->urlMap('AddAddress'));
-            $tpl->ParseBlock("address_list/actions");
+        // Add New
+        $tpl->SetBlock("address_list/actions");
+        $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_ITEMS_ADD'));
+        $tpl->SetVariable('action_url', $this->gadget->urlMap('AddAddress'));
+        $tpl->ParseBlock("address_list/actions");
 
-            // Export vCard
-            $tpl->SetBlock("address_list/actions");
-            $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_EXPORT_VCARD'));
-            $tpl->SetVariable('action_url', 'javascript:DownloadVCard();');
-            $tpl->ParseBlock("address_list/actions");
+        // Export vCard
+        $tpl->SetBlock("address_list/actions");
+        $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_EXPORT_VCARD'));
+        $tpl->SetVariable('action_url', 'javascript:DownloadVCard();');
+        $tpl->ParseBlock("address_list/actions");
 
-            // Import vCard
-            $tpl->SetBlock("address_list/actions");
-            $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_IMPORT_VCARD'));
-            $tpl->SetVariable('action_url', $this->gadget->urlMap('VCardImport'));
-            $tpl->ParseBlock("address_list/actions");
-        }
+        // Import vCard
+        $tpl->SetBlock("address_list/actions");
+        $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_IMPORT_VCARD'));
+        $tpl->SetVariable('action_url', $this->gadget->urlMap('VCardImport'));
+        $tpl->ParseBlock("address_list/actions");
 
         $tpl->ParseBlock('address_list');
 
@@ -101,12 +97,11 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
      * @param   string  $term    Search term
      * @return  string HTML content with menu and menu items
      */
-    function AddressList($uid = 0, $gid = null, $term = '')
+    function AddressList($gid = null, $term = '')
     {
-        $uid = ($uid == 0) ? (int) $GLOBALS['app']->Session->GetAttribute('user') : $uid;
-        $mine = ($uid == $GLOBALS['app']->Session->GetAttribute('user'));
+        $uid = (int) $GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
-        $addressItems = $model->GetAddressList($uid, $gid, !$mine, $term);
+        $addressItems = $model->GetAddressList($uid, $gid, false, $term);
         if (Jaws_Error::IsError($addressItems)) {
             return $addressItems->getMessage(); // TODO: Show intelligible message
         }
@@ -116,12 +111,8 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
 
         $tpl->SetVariable('lbl_name',      _t('ADDRESSBOOK_ITEMS_NAME'));
         $tpl->SetVariable('lbl_title',     _t('ADDRESSBOOK_ITEMS_TITLE'));
+        $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
 
-        if ($mine) {
-            $tpl->SetBlock('list/action_header');
-            $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
-            $tpl->ParseBlock('list/action_header');
-        }
         foreach ($addressItems as $addressItem) {
             $tpl->SetBlock("list/item1");
             $tpl->SetVariable('index', $addressItem['id']);
@@ -129,17 +120,15 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
             $tpl->SetVariable('view_url', $this->gadget->urlMap('View', array('id' => $addressItem['id'])));
             $tpl->SetVariable('title', $addressItem['title']);
 
-            if ($mine) {
-                $tpl->SetBlock('list/item1/action');
-                $tpl->SetVariable('action_lbl', _t('GLOBAL_EDIT'));
-                $tpl->SetVariable('action_url', $this->gadget->urlMap('EditAddress', array('id' => $addressItem['id'])));
-                $tpl->ParseBlock('list/item1/action');
+            $tpl->SetBlock('list/item1/action');
+            $tpl->SetVariable('action_lbl', _t('GLOBAL_EDIT'));
+            $tpl->SetVariable('action_url', $this->gadget->urlMap('EditAddress', array('id' => $addressItem['id'])));
+            $tpl->ParseBlock('list/item1/action');
 
-                $tpl->SetBlock('list/item1/action');
-                $tpl->SetVariable('action_lbl', _t('GLOBAL_DELETE'));
-                $tpl->SetVariable('action_url', 'javascript:DeleteAddress(' . $addressItem['id'] . ')');//$this->gadget->urlMap('DeleteAddress', array('id' => $addressItem['id'])));
-                $tpl->ParseBlock('list/item1/action');
-            }
+            $tpl->SetBlock('list/item1/action');
+            $tpl->SetVariable('action_lbl', _t('GLOBAL_DELETE'));
+            $tpl->SetVariable('action_url', 'javascript:DeleteAddress(' . $addressItem['id'] . ')');//$this->gadget->urlMap('DeleteAddress', array('id' => $addressItem['id'])));
+            $tpl->ParseBlock('list/item1/action');
 
             $tpl->ParseBlock("list/item1");
         }
@@ -189,7 +178,11 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $tpl->SetVariable('group_title',      _t('ADDRESSBOOK_GROUP_TITLE'));
         $tpl->SetVariable('other_details',    _t('ADDRESSBOOK_OTHER_DETAILS'));
         $tpl->SetVariable('nameEmptyWarning', _t('ADDRESSBOOK_EMPTY_NAME_WARNING'));
+        $tpl->SetVariable('public_title',     _t('ADDRESSBOOK_ITEMS_PUBLIC'));
+        $tpl->SetVariable('url_title',        _t('ADDRESSBOOK_ITEMS_URL'));
         $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+        $tpl->SetVariable('toggle_max',     STOCK_ADD);
+        $tpl->SetVariable('toggle_min',     STOCK_REMOVE);
 
         $current_image = $GLOBALS['app']->getSiteURL('/gadgets/AddressBook/images/photo128px.png');
         $tpl->SetVariable('image_src', $current_image);
@@ -294,6 +287,10 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $tpl->SetVariable('other_details',    _t('ADDRESSBOOK_OTHER_DETAILS'));
         $tpl->SetVariable('nameEmptyWarning', _t('ADDRESSBOOK_EMPTY_NAME_WARNING'));
         $tpl->SetVariable('lbl_save',         _t('GLOBAL_SAVE'));
+        $tpl->SetVariable('public_title',     _t('ADDRESSBOOK_ITEMS_PUBLIC'));
+        $tpl->SetVariable('url_title',        _t('ADDRESSBOOK_ITEMS_URL'));
+        $tpl->SetVariable('toggle_max',     STOCK_ADD);
+        $tpl->SetVariable('toggle_min',     STOCK_REMOVE);
         $tpl->SetVariable('title',          $info['title']);
         $tpl->SetVariable('nickname',       $info['nickname']);
         $tpl->SetVariable('url',            $info['url']);

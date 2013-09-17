@@ -23,6 +23,13 @@
     </div>
 
     <div class="actions">
+        <select id="addressbook_gaction" name="gaction" style="width: 150px; float: left; display:none;" >
+          <option value="0"></option>
+          <option value="delete">{delete_items}</option>
+          <option value="public">{public_items}</option>
+          <option value="private">{private_items}</option>
+        </select>
+        <a class="button" href="{accept_gaction_url}" title="{accept_gaction}" style="float: left; display:none;">{accept_gaction}</a>
         <!-- BEGIN actions -->
         <a class="button" href="{action_url}" title="{action_lbl}">{action_lbl}</a>
         <!-- END actions -->

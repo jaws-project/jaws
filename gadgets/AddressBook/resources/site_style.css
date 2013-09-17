@@ -10,7 +10,6 @@ border: 1px solid #CCCCCC;
 padding: 1px;
 }
 table td {border: 1px solid #CCCCCC; padding: 2px 4px;}
-.addressbook p label {font-weight: bold;}
 .addressbook_image {float: right;}
 #addressbook_name, #addressbook_firstname, #addressbook_lastname, #addressbook_nickname {width: 380px;}
 #addTelButton, #addEmailButton, #addAdrButton, #addUrlButton,
@@ -26,3 +25,5 @@ margin-top: 10px;
 .addressbook_list_search button, .addressbook_group button {padding: 1px;}
 #addressbook_term {width: 200px;}
 .actions {margin-top: 5px;}
+.addressbook_view p label {font-weight: bold;}
+.addressbook_view .actions {margin-top: 20px;}

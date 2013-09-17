@@ -90,3 +90,7 @@ $actions['VCardImportFile'] = array(
     'standalone' => true,
     'file'   => 'VCardImport',
 );
+$actions['UserAddress'] = array(
+    'normal' => true,
+    'file'   => 'UserAddress',
+);

@@ -29,7 +29,7 @@ class AddressBook_Hooks_Activity extends Jaws_Gadget_Hook
 
         $entity['title'] = _t('ADDRESSBOOK_PUBLICS');
         $entity['count'] = $addressCount;
-        $entity['url'] = $this->gadget->urlMap('AddressList', array('uid' => $uname));
+        $entity['url'] = $this->gadget->urlMap('UserAddress', array('uid' => $uname));
 
         return array($entity);
     }

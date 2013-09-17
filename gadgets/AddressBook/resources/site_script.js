@@ -162,6 +162,55 @@ function DownloadVCard()
     window.location.href = vCardDownLink;
 }
 
+function ReloadToggle()
+{
+    $('group_p').toggle();
+    var mDiv = $('tel_p').getElementsByTagName('div')[0];
+    if ($('tel_p').getElementsByTagName('div').length == 1 && mDiv.getElementsByTagName('input')[0].value == '') {
+        $('tel_p').toggle();
+    } else {
+        ChangeToggleIcon($('legend_tel'));
+    }
+
+    var mDiv = $('email_p').getElementsByTagName('div')[0];
+    if ($('email_p').getElementsByTagName('div').length == 1 && mDiv.getElementsByTagName('input')[0].value == '') {
+        $('email_p').toggle();
+    } else {
+        ChangeToggleIcon($('legend_email'));
+    }
+
+    var mDiv = $('adr_p').getElementsByTagName('div')[0];
+    if ($('adr_p').getElementsByTagName('div').length == 1 && mDiv.getElementsByTagName('textarea')[0].value == '') {
+        $('adr_p').toggle();
+    } else {
+        ChangeToggleIcon($('legend_adr'));
+    }
+
+    var mDiv = $('url_p').getElementsByTagName('div')[0];
+    if ($('url_p').getElementsByTagName('div').length == 1 && mDiv.getElementsByTagName('input')[0].value == '') {
+        $('url_p').toggle();
+    } else {
+        ChangeToggleIcon($('legend_urls'));
+    }
+
+    if ($('other_p').getElementsByTagName('textarea')[0].value == '') {
+        $('other_p').toggle();
+    } else {
+        ChangeToggleIcon($('legend_other'));
+    }
+}
+
+function ChangeToggleIcon(obj)
+{
+    if ($(obj).get('toggle-status') == 'min') {
+        $(obj).getElementsByTagName('img')[0].src = toggleMin;
+        $(obj).set('toggle-status', 'max');
+    } else {
+        $(obj).getElementsByTagName('img')[0].src = toggleMax;
+        $(obj).set('toggle-status', 'min');
+    }
+}
+
 var AddressBookAjax = new JawsAjax('AddressBook', AddressBookCallback);
 
 var lastGroup = 0;

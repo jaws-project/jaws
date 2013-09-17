@@ -38,7 +38,7 @@ class AddressBook_Ajax extends Jaws_Gadget_HTML
     {
         $rqst = jaws()->request->fetch(array('gid:int', 'term'));
         $gadgetHTML = $GLOBALS['app']->LoadGadget('AddressBook', 'HTML', 'AddressBook');
-        return $gadgetHTML->AddressList(0, (int) $rqst['gid'], $rqst['term']); // TODO: Send request user id
+        return $gadgetHTML->AddressList((int) $rqst['gid'], $rqst['term']);
     }
 
     /**
