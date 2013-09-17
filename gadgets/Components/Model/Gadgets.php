@@ -45,7 +45,10 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
                     continue;
                 }
 
-                if (!$this->gadget->GetPermission(JAWS_SCRIPT == 'index'? 'default' : 'default_admin', '', $gadget)) {
+                if (!$this->gadget->GetPermission(
+                    JAWS_SCRIPT == 'index'? 'default' : 'default_admin',
+                    '', false, $gadget)
+                ) {
                     continue;
                 }
 

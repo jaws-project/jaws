@@ -38,7 +38,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
             $g['disabled'] = $gadget['disabled'];
             $g['core_gadget'] = $gadget['core_gadget'];
             $g['description'] = $gadget['description'];
-            $g['manage_reg'] = $this->gadget->GetPermission('default_registry', '', $gadget['name']);
+            $g['manage_reg'] = $this->gadget->GetPermission('default_registry', '', false, $gadget['name']);
             $g['manage_acl'] = $this->gadget->GetPermission('ManageACLs');
             $result[$key] = $g;
         }
@@ -143,7 +143,12 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         $plugins = $model->GetPluginsList();
         foreach ($plugins as $key => $plugin) {
             $plugins[$key]['state'] = $plugin['installed']? 'installed' : 'notinstalled';
-            $plugins[$key]['manage_reg'] = $this->gadget->GetPermission('default_registry', '', $plugin['name']);
+            $plugins[$key]['manage_reg'] = $this->gadget->GetPermission(
+                'default_registry',
+                '',
+                false,
+                $plugin['name']
+            );
             $plugins[$key]['manage_acl'] = $this->gadget->GetPermission('ManageACLs');
             unset($plugins[$key]['installed']);
         }
