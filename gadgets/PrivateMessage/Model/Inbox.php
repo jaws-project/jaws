@@ -27,8 +27,8 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
             'message.id:integer','message.subject', 'message.body', 'message.insert_time',
             'users.nickname as from_nickname', 'pm_recipients.read:boolean', 'users.username as from_username',
             'message.attachments:integer', 'pm_recipients.id as message_recipient_id:integer'
-        )->alias('xxx');
-        $table->join('users', 'message.user', 'users.id')->alias('yyy');
+        );
+        $table->join('users', 'message.user', 'users.id');
         $table->join('pm_recipients', 'message.id', 'pm_recipients.message');
         $table->where('pm_recipients.recipient', $user)->and()->where('message.published', true);
 
@@ -86,10 +86,10 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
      */
     function GetInboxStatistics($user, $filters = null)
     {
-        $table = Jaws_ORM::getInstance()->table('pm_recipients');
-        $table->select('count(message):integer')->where('recipient', $user);
-        $table->join('pm_messages', 'pm_messages.id', 'pm_recipients.message');
-        $table->and()->where('pm_messages.published', true);
+        $table = Jaws_ORM::getInstance()->table('pm_messages', 'message');
+        $table->select('count(message.id):integer');
+        $table->join('pm_recipients', 'message.id', 'pm_recipients.message');
+        $table->where('pm_recipients.recipient', $user)->and()->where('message.published', true);
 
         if (!empty($filters)) {
 

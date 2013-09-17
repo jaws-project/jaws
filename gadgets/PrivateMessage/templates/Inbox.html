@@ -45,7 +45,7 @@
             <table>
                 <thead>
                 <tr>
-                    <th>#</th>
+                    <th><a href="javascript:toggleCheckboxes()">#</a></th>
                     <th>{lbl_from}</th>
                     <th>&nbsp;</th>
                     <th>{lbl_subject}</th>
@@ -57,7 +57,7 @@
                 <!-- BEGIN message -->
                 <tr>
                     <td>
-                        <input type="checkbox" name="message_checkbox[]" value="{id}">
+                        <input type="checkbox" name="message_checkbox[]" value="{id}" class="table-checkbox">
                         {rownum}
                     </td>
                     <td><a href="{user_url}">{from}</a></td>
@@ -99,6 +99,12 @@
 </div>
 
 <script type="text/javascript">
+    function toggleCheckboxes(){
+        do_check = !do_check;
+        $$('.table-checkbox').each(function(el) { el.checked = do_check; });
+    }
+    var do_check = false;
+
     function inboxDGAction() {
         var action = document.getElementById("inbox_actions_combo").value;
         if (action == 'delete') {
