@@ -13,6 +13,10 @@
 define('_EN_DIRECTORY_NAME', "Directory");
 define('_EN_DIRECTORY_DESCRIPTION', "Total file and directory management gadget");
 
+/* ACLs */
+define('_EN_DIRECTORY_ACL_DEFAULT', "Use banners");
+define('_EN_DIRECTORY_ACL_SHAREFILE', "Share File");
+
 // Actions
 define('_EN_DIRECTORY_ACTION_TITLE', "Directory");
 define('_EN_DIRECTORY_ACTION_DEFAULT', "Default Action");
@@ -26,6 +30,7 @@ define('_EN_DIRECTORY_BYTES', "bytes");
 define('_EN_DIRECTORY_NEW_DIR', "New Folder");
 define('_EN_DIRECTORY_NEW_FILE', "New File");
 define('_EN_DIRECTORY_PROPERTIES', "Properties");
+define('_EN_DIRECTORY_MOVE', "Move");
 define('_EN_DIRECTORY_FILE', "File");
 define('_EN_DIRECTORY_DIR', "Directory");
 define('_EN_DIRECTORY_FILE_TYPE', "Type");
@@ -50,6 +55,8 @@ define('_EN_DIRECTORY_NOT_SHARED', "Not shared");
 define('_EN_DIRECTORY_ERROR_INCOMPLETE_DATA', "Some fields are necessary to be filled.");
 define('_EN_DIRECTORY_NOTICE_SHARE_UPDATED', "Shared file has been updated.");
 define('_EN_DIRECTORY_ERROR_UPDATING_SHARE', "Could not update shared file.");
+define('_EN_DIRECTORY_NOTICE_MOVE', "Selected item has been moved successfully");
+define('_EN_DIRECTORY_ERROR_MOVE', "Could not move item to specified target.");
 
 define('_EN_DIRECTORY_NOTICE_DIR_CREATED', "A new directory has been created.");
 define('_EN_DIRECTORY_NOTICE_DIR_UPDATED', "Directory has been updated.");
