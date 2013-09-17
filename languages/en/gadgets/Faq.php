@@ -39,6 +39,7 @@ define('_EN_FAQ_CONFIRM_DELETE_CATEGORY', "Are you sure you want to delete this 
 define('_EN_FAQ_EDIT_CATEGORY', "Edit category");
 define('_EN_FAQ_DELETE_CATEGORY', "Delete category");
 define('_EN_FAQ_QUESTION', "Question");
+define('_EN_FAQ_ANSWER', "Answer");
 define('_EN_FAQ_MOVEUP', "Move up");
 define('_EN_FAQ_MOVEDOWN', "Move down");
 define('_EN_FAQ_CONFIRM_DELETE_QUESTION', "Are you sure you want to delete this question?");
