@@ -31,7 +31,7 @@ class Label extends Bin
      */
     function Label($label, $bound = '')
     {
-        $this->_text  = $label;
+        $this->_value = $label;
         $this->_bound = $bound;
         parent::init();
     }
@@ -52,7 +52,7 @@ class Label extends Bin
         $this->_XHTML .= $this->buildBasicXHTML();
         $this->_XHTML .= $this->buildJSEvents();
         $this->_XHTML.= '>';
-        $this->_XHTML.= $this->_text . '</label>';
+        $this->_XHTML.= $this->_value . '</label>';
     }
 
 }
