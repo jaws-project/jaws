@@ -261,9 +261,13 @@ function updateActions()
  */
 function properties()
 {
-    //console.log(fileById[selectedId]);
     if (selectedId === null) return;
-    if (fileById[selectedId].is_dir) {
+    var data = fileById[selectedId];
+    if (!data.users) {
+        data = DirectoryAjax.callSync('GetFile', {id:selectedId});
+    }
+    //console.log(data);
+    if (data.is_dir) {
         var form = cachedForms.viewDir;
         if (!form) {
             form = DirectoryAjax.callSync('DirectoryForm', {mode:'view'});
@@ -276,7 +280,7 @@ function properties()
         }
         cachedForms.viewFile = form;
     }
-    $('form').set('html', form.substitute(fileById[selectedId]));
+    $('form').set('html', form.substitute(data));
     // if (data.filename) {
         // $('filelink').grab(getDownloadLink(data.filename, data_url + UID));
     // }
@@ -535,7 +539,7 @@ function share()
     var users = DirectoryAjax.callSync('GetFileUsers', {'id':selectedId});
     sharedFileUsers = {};
     users.each(function (user) {
-        sharedFileUsers[user.id] = user.nickname;
+        sharedFileUsers[user.id] = user.username;
     });
     updateShareUsers()
     pageBody.removeEvent('click', cancel);
@@ -557,7 +561,7 @@ function toggleUsers(gid)
             label = new Element('label', {'for':'chk_'+user.id});
         input.set('checked', (sharedFileUsers[user.id] !== undefined));
         input.addEvent('click', selectUser)
-        label.set('html', user.nickname);
+        label.set('html', user.username);
         div.adopt(input, label);
         container.grab(div);
     });

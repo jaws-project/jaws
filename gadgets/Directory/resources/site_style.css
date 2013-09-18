@@ -42,6 +42,9 @@ display:none;
 .icon-view .file-type{
 display:none;
 }
+.icon-view .file-owner{
+display:none;
+}
 
 .icon-view dl:hover{
 box-shadow:0 0 1px #3a41af;

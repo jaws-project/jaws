@@ -20,7 +20,7 @@ class Directory_Model_Share extends Jaws_Gadget_Model
     function GetFileUsers($id)
     {
         $table = Jaws_ORM::getInstance()->table('directory');
-        $table->select('users.id', 'users.nickname');
+        $table->select('users.id', 'users.username');
         $table->join('users', 'directory.user', 'users.id');
         $table->where('directory.reference', $id);
         return $table->fetchAll();

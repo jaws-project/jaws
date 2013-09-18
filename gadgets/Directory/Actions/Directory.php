@@ -51,6 +51,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetVariable('description', '{description}');
         $tpl->SetVariable('type', '{type}');
         $tpl->SetVariable('size', '{size}');
+        $tpl->SetVariable('username', '{username}');
         $tpl->SetVariable('created', '{created}');
         $tpl->SetVariable('modified', '{modified}');
         $tpl->SetVariable('shared', '{shared}');
@@ -96,7 +97,6 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         foreach ($files as &$file) {
             $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
-            //$file['is_shared'] = $file['shared']? _t('DIRECTORY_IS_SHARED') : _t('DIRECTORY_NOT_SHARED');
         }
         return $files;
     }
@@ -121,9 +121,20 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
             return array();
         }
         $objDate = $GLOBALS['app']->loadDate();
-        $file['createtime'] = $objDate->Format($file['createtime'], 'n/j/Y g:i A');
-        $file['updatetime'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i A');
-        //$file['filesize'] = Jaws_Utils::FormatSize($file['filesize']);
+        $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
+        $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
+
+        // Shared for
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Share');
+        $users = $model->GetFileUsers($id);
+        if (!Jaws_Error::IsError($users)) {
+            $uid_set = array();
+            foreach ($users as $user) {
+                $uid_set[] = $user['username'];
+            }
+            $file['users'] = implode(', ', $uid_set);
+        }
+
         return $file;
     }
 

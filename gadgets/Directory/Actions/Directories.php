@@ -27,13 +27,15 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         if ($mode === 'view') {
             $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
-            $tpl->SetVariable('lbl_shared', _t('DIRECTORY_SHARE_STATUS'));
+            $tpl->SetVariable('lbl_owner', _t('DIRECTORY_FILE_OWNER'));
+            $tpl->SetVariable('lbl_shared', _t('DIRECTORY_SHARED_FOR'));
             $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
             $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
             $tpl->SetVariable('title', '{title}');
             $tpl->SetVariable('desc', '{description}');
             $tpl->SetVariable('type', '{type}');
-            $tpl->SetVariable('is_shared', '{is_shared}');
+            $tpl->SetVariable('username', '{username}');
+            $tpl->SetVariable('shared_for', '{shared_for}');
             $tpl->SetVariable('createtime', '{createtime}');
             $tpl->SetVariable('updatetime', '{updatetime}');
             $tpl->SetVariable('created', '{created}');

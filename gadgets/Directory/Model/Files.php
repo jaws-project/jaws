@@ -24,10 +24,11 @@ class Directory_Model_Files extends Jaws_Gadget_Model
             return array();
         }
 
-        $table = Jaws_ORM::getInstance()->table('directory');
-        $table->select('id', 'parent', 'user', 'is_dir:boolean', 'title',
-            'description', 'filename', 'filetype', 'filesize', 'url',
-            'shared:boolean', 'owner', 'reference', 'createtime', 'updatetime');
+        $table = Jaws_ORM::getInstance()->table('directory as dir');
+        $table->select('dir.id', 'parent', 'user', 'is_dir:boolean', 'title',
+            'description', 'filename', 'filetype', 'filesize', 'dir.url', 'shared:boolean',
+            'owner', 'reference', 'createtime', 'updatetime', 'users.username');
+        $table->join('users', 'owner', 'users.id');
         $table->where('parent', $parent)->and();
 
         if ($access !== true && $user !== null){
@@ -59,11 +60,12 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      */
     function GetFile($id)
     {
-        $table = Jaws_ORM::getInstance()->table('directory');
-        $table->select('id', 'parent', 'user', 'is_dir:boolean', 'title',
-            'description', 'filename', 'filetype', 'filesize', 'url',
-            'shared:boolean', 'owner', 'reference', 'createtime', 'updatetime');
-        return $table->where('id', $id)->fetchRow();
+        $table = Jaws_ORM::getInstance()->table('directory as dir');
+        $table->select('dir.id', 'parent', 'user', 'is_dir:boolean', 'title',
+            'description', 'filename', 'filetype', 'filesize', 'dir.url', 'shared:boolean',
+            'owner', 'reference', 'createtime', 'updatetime', 'users.username');
+        $table->join('users', 'owner', 'users.id');
+        return $table->where('dir.id', $id)->fetchRow();
     }
 
     /**

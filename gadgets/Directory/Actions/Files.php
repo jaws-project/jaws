@@ -32,10 +32,11 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
         if ($mode === 'view') {
             //$tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
             $tpl->SetVariable('lbl_filename', _t('DIRECTORY_FILE_FILENAME'));
-            $tpl->SetVariable('lbl_filetype', _t('DIRECTORY_FILE_FILETYPE'));
-            $tpl->SetVariable('lbl_filesize', _t('DIRECTORY_FILE_FILESIZE'));
+            $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
+            $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
+            $tpl->SetVariable('lbl_owner', _t('DIRECTORY_FILE_OWNER'));
             $tpl->SetVariable('lbl_bytes', _t('DIRECTORY_BYTES'));
-            $tpl->SetVariable('lbl_shared', _t('DIRECTORY_SHARE_STATUS'));
+            $tpl->SetVariable('lbl_shared', _t('DIRECTORY_SHARED_FOR'));
             $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
             $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
             $tpl->SetVariable('title', '{title}');
@@ -44,8 +45,9 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             $tpl->SetVariable('filetype', '{filetype}');
             $tpl->SetVariable('filesize', '{filesize}');
             $tpl->SetVariable('size', '{size}');
+            $tpl->SetVariable('username', '{username}');
             $tpl->SetVariable('url', '{url}');
-            $tpl->SetVariable('is_shared', '{is_shared}');
+            $tpl->SetVariable('shared_for', '{shared_for}');
             $tpl->SetVariable('createtime', '{createtime}');
             $tpl->SetVariable('updatetime', '{updatetime}');
             $tpl->SetVariable('created', '{created}');
