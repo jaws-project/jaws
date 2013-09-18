@@ -182,15 +182,21 @@ line-height:120%;
 .gadget{
 margin-bottom:12px;
 }
-.gadget .gadget_header{
+.gadget_header{
 }
 .gadget h2{
 margin-bottom:8px;
 display:inline-block;
 }
-.gadget .gadget_menubar{
+.gadget_menubar{
 float:right;
 display:inline-block;
+}
+.gadget_menubar li{
+display:inline;
+}
+.gadget_menubar li img{
+vertical-align:-3px;
 }
 .gadget_section{
 padding-bottom:10px;
