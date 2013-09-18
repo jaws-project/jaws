@@ -187,10 +187,15 @@ margin-bottom:12px;
 }
 .gadget h2{
 margin-bottom:8px;
+}
+#mainbar .gadget h2{
 display:inline-block;
 }
 .gadget_menubar{
 float:left;
+display:none;
+}
+#mainbar .gadget_menubar{
 display:inline-block;
 }
 .gadget_menubar li{
