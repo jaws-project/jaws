@@ -59,6 +59,29 @@ background:#eee;
 a:link,a:visited{
 color:#325994;
 }
+table{
+width:100%;
+border-spacing:1px;
+}
+table thead{
+padding:0px;
+color:#325994;
+line-height:140%;
+background:#eee;
+}
+table th{
+padding:0 4px;
+text-align:left;
+font-weight:bold;
+border:1px solid #ccc;
+border-radius:2px 2px 0 0;
+}
+table tr:nth-child(even){
+background:#ebf1f3;
+}
+table td{
+padding:0 4px;
+}
 input,textarea,select{
 color:#666;
 padding:2px;
@@ -75,15 +98,18 @@ width:100%;
 display:block;
 }
 button,.button{
-padding:4px;
 color:#325994;
+padding:1px 4px;
 background:#eee;
-line-height:100%;
-border-radius:3px;
+line-height:140%;
+border-radius:2px;
 border:1px solid #ccc;
 box-sizing:border-box;
 -ms-box-sizing:border-box;
 -moz-box-sizing:border-box;
+}
+button img,.button img{
+vertical-align:-3px;
 }
 .clearfix:after{
 display:block;
@@ -180,7 +206,7 @@ border-bottom:1px solid #ccc;
 }
 .sidebar .gadget h2{
 text-indent:8px;
-border-radius:3px;
+border-radius:2px;
 background:#eee;
 border:1px solid #ccc;
 }
@@ -249,7 +275,7 @@ text-align:center;
 }
 .pager span{
 padding:0px 4px;
-border-radius:3px;
+border-radius:2px;
 display:inline-block;
 border:1px solid #ccc;
 }
@@ -325,7 +351,7 @@ font-weight:normal;
 padding:4px;
 color:#325994;
 border:1px solid #ccc;
-border-radius:3px 3px 0 0;
+border-radius:2px 2px 0 0;
 background:#eee;
 }
 .forums_header dd{
@@ -358,7 +384,7 @@ position:relative;
 word-wrap:break-word;
 padding:10px 0;
 margin-bottom:10px;
-border-radius:3px;
+border-radius:2px;
 background:#eee;
 }
 .forum_post .post_profile{
@@ -409,7 +435,7 @@ position:relative;
 word-wrap:break-word;
 padding:10px 0;
 margin-bottom:10px;
-border-radius:3px;
+border-radius:2px;
 background:#eee;
 }
 .comments_post .post_profile{
