@@ -1,7 +1,8 @@
 <!-- BEGIN compose -->
 {alerts}
-<div class="gadget privateMessage message">
+<div class="gadget privateMessage message" id="compose">
     <h2>{title}</h2>
+
     <div id="simple_response" class="{response_type}">{response}</div>
 
     <form name="contacts" action="{base_script}" method="post" enctype="multipart/form-data">
@@ -31,67 +32,77 @@
                 <label for="body">{lbl_body}:</label>
                 {body}
             </div>
-
-            <fieldset>
-                <legend><span>{lbl_attachments}</span></legend>
-
-                <!-- BEGIN file -->
-                <div>
-                    <input type="checkbox" name="selected_files[]" id="chk_file_{file_id}" value="{file_id}" checked>
-                    <a href="{file_download_link}">{file_name}</a> ({lbl_file_size}: {file_size})
-                </div>
-                <!-- END file -->
-
-                <div>
-                    <label for="file1" id="file1_label">{lbl_file} 1:&nbsp;</label>
-                    <input type="file" title="{lbl_file}1" id="file1" name="file1"></div>
-                <br>
-
-                <div>
-
-  <span id="file_addentry2">
-      <div>
-          <button onclick="addEntry('{lbl_file}');" value="{lbl_add_file}" id="addEntryButton" name="addEntryButton"
-                  type="button"><img id="addEntryButton_stockimage" alt="" src="{icon_add}">&nbsp;{lbl_add_file}
-          </button>
-      </div></span></div>
-            </fieldset>
-
-
-        </div>
-
-        <div class="actions">
-            <a href="{back_url}" class="button">{lbl_back}</a>
-            <a class="button" href="javascript:saveDraft($('id').value)">{lbl_save_draft}</a>
-            <button type="submit">{lbl_send}</button>
         </div>
     </form>
+
+    <form id="frm_file" name="frm_file" method="post" target="ifrm_upload" action="{base_script}"
+          enctype="multipart/form-data" onsubmit="return true">
+        <input type="hidden" name="gadget" value="PrivateMessage"/>
+        <input type="hidden" name="action" value="UploadFile"/>
+        <input type="hidden" name="attachment_number" id="attachment_number" value="1"/>
+        <fieldset>
+            <legend><span>{lbl_attachments}</span></legend>
+
+            <!-- BEGIN file -->
+            <div>
+                <input type="checkbox" name="selected_files[]" id="chk_file_{file_id}" value="{file_id}"
+                       checked>
+                <a href="{file_download_link}">{file_name}</a> ({lbl_file_size}: {file_size})
+            </div>
+            <!-- END file -->
+
+            <div class="attach_actions">
+                <button value="Add attachment" id="btn_upload" name="btn_upload" type="button"
+                        style="text-decoration: none; display: inline-block;">Add attachment
+                </button>
+                <img id="attach_loading" src="images/loading.gif"/>
+
+                <div id="btn_attach1">
+                    <img src="gadgets/Contact/images/attachment.png"/>
+                    <a id="file_link1"></a> -
+                    <small id="file_size1"></small>
+                    <a onclick="javascript:removeAttachment(1);" href="javascript:void(0);"><img border="0"
+                                                                                                title="Remove"
+                                                                                                alt="Remove"
+                                                                                                src="images/stock/cancel.png"></a>
+                </div>
+                <!--<div class="wrapper"-->
+                     <!--onmouseover="$('btn_upload').style.textDecoration='underline'"-->
+                     <!--onmouseout="$('btn_upload').style.textDecoration='none'">-->
+                    <input type="file" onchange="uploadFile();" id="attachment1" name="attachment1" size="1"
+                           style="display: block;">
+                <!--</div>-->
+
+
+                <span id="attachment_addentry2">
+                </span>
+            </div>
+        </fieldset>
+    </form>
+
 </div>
 
-<script type="text/javascript">
-    $('recipient_users').addEvent('keypress',function(e) {
-        console.log(getUsers($('recipient_users').value));
-    });
-
-    $('recipient_groups').addEvent('keypress',function(e) {
-        console.log(getGroups($('recipient_groups').value));
-    });
-
-</script>
+<div class="actions">
+    <a href="{back_url}" class="button" id="btn_back">{lbl_back}</a>
+    <a class="button" href="javascript:saveDraft($('id').value)" id="btn_save_draft">{lbl_save_draft}</a>
+    <a class="button" href="javascript:composeMessage()" id="btn_send">{lbl_send}</a>
+</div>
+<!--</div>-->
 
 <script type="text/javascript">
+    $('attachment1').show();
+    $('btn_upload').show();
+    $('attach_loading').hide();
+    $('btn_attach1').hide();
 
-    /**
-     * add a file entry
-     */
-    function addEntry(title) {
-        num_entries++;
-        var id = num_entries;
-        entry = '<label id="file' + id + '_label" for="file' + id + '">' + title + ' ' + id + ':&nbsp;</label>';
-        entry += '<input type="file" name="file' + id + '" id="file' + id + '" title="' + title + id + '" /><br />';
-        $('file_addentry' + id).innerHTML = entry + '<span id="file_addentry' + (id + 1) + '">' + $('file_addentry' + id).innerHTML + '</span>';
-    }
-    var num_entries = 1;
+    //    $('recipient_users').addEvent('keypress',function(e) {
+//        console.log(getUsers($('recipient_users').value));
+//    });
+//
+//    $('recipient_groups').addEvent('keypress',function(e) {
+//        console.log(getGroups($('recipient_groups').value));
+//    });
+
 </script>
 
 <!-- END compose -->

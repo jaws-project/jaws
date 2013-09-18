@@ -54,4 +54,37 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_HTML
         return Jaws_HTTPError::Get(404);
     }
 
+    /**
+     * Uploads attachment file
+     *
+     * @access  public
+     * @return  string  javascript script segment
+     */
+    function UploadFile()
+    {
+        $file_num = jaws()->request->fetch('attachment_number', 'post');
+
+        $file = Jaws_Utils::UploadFiles(
+            $_FILES,
+            Jaws_Utils::upload_tmp_dir(),
+            '',
+            'php,php3,php4,php5,phtml,phps,pl,py,cgi,pcgi,pcgi5,pcgi4,htaccess',
+            null
+        );
+        if (Jaws_Error::IsError($file)) {
+            $response = array('type'    => 'error',
+                'message' => $file->getMessage());
+        } else {
+            $response = array('type' => 'notice', 'file_info' => array(
+                'filename' => $file['attachment' . $file_num][0]['host_filename'],
+                'user_filename' => $file['attachment' . $file_num][0]['user_filename'],
+                'filetype' => $file['attachment' . $file_num][0]['host_filetype'],
+                'filesize_format' =>  Jaws_Utils::FormatSize($file['attachment' . $file_num][0]['host_filesize']),
+                'filesize' => $file['attachment' . $file_num][0]['host_filesize']));
+        }
+
+        $response = $GLOBALS['app']->UTF8->json_encode($response);
+        return "<script type='text/javascript'>parent.onUpload($response);</script>";
+    }
+
 }

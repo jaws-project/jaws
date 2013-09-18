@@ -83,3 +83,7 @@ $actions['Attachment'] = array(
     'standalone' => true,
     'file'   => 'Attachment',
 );
+$actions['UploadFile'] = array(
+    'standalone' => true,
+    'file' => 'Attachment'
+);
