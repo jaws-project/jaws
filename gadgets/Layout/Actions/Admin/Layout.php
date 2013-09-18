@@ -112,6 +112,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
                     $t_item->SetVariable('section_name', $name);
                     $t_item->SetVariable('delete', 'void(0);');
                     $t_item->SetVariable('delete-img', 'gadgets/Layout/images/no-delete.gif');
+                    $t_item->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
                     $t_item->SetVariable('item_status', 'none');
                     $t_item->ParseBlock('item');
                 } else {
@@ -127,6 +128,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
                         "deleteElement('{$gadget['id']}');"
                     );
                     $t_item->SetVariable('delete-img', 'gadgets/Layout/images/delete-item.gif');
+                    $t_item->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
 
                     $actions = $eModel->GetGadgetLayoutActions($gadget['gadget'], true);
                     if (isset($actions[$gadget['gadget_action']]) &&
