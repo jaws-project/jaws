@@ -70,7 +70,7 @@ line-height:140%;
 background:#eee;
 }
 table th{
-padding:0 4px;
+padding:2px 4px;
 text-align:left;
 font-weight:bold;
 border:1px solid #ccc;
@@ -80,7 +80,7 @@ table tr:nth-child(even){
 background:#ebf1f3;
 }
 table td{
-padding:0 4px;
+padding:2px 4px;
 }
 input,textarea,select{
 color:#666;
@@ -209,11 +209,14 @@ padding-bottom:10px;
 }
 .actions{
 text-align:left;
-padding-top:2px;
+padding-top:4px;
 }
 .actions label+input,.actions label+textarea,.actions label+select{
 width:auto;
 display:table-cell;
+}
+.filters{
+padding-bottom:4px;
 }
 .filters label+input,.filters label+textarea,.filters label+select{
 width:auto;
