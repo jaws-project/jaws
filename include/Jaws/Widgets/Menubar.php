@@ -138,12 +138,12 @@ class Jaws_Widgets_Menubar
      */
     function Get()
     {
-        $result = "\n". '<div id="'.$this->_CSS_Class_Name. '-'. $this->_Name.
+        $result = "\n". '<div id="'.$this->_CSS_Class_Name. '_'. $this->_Name.
             '" class="'. $this->_CSS_Class_Name. '">'. "<ul>\n";
         foreach ($this->_Options as $option) {
-            $result.= '<li id="menu-option-'. $option['action']. '"';
+            $result.= '<li id="menu_option_'. $option['action']. '"';
             if ($option['selected']) {
-                $result.= ' class="'. $this->_CSS_Class_Name. '-selected" ';
+                $result.= ' class="'. $this->_CSS_Class_Name. '_selected" ';
             }
             $result.= '><a href="'. $option['url']. '">';
             if (!empty($option['icon'])) {
