@@ -192,6 +192,14 @@ padding-bottom:10px;
 text-align:right;
 padding-top:2px;
 }
+.actions label+input,.actions label+textarea,.actions label+select{
+width:auto;
+display:table-cell;
+}
+.filters label+input,.filters label+textarea,.filters label+select{
+width:auto;
+display:table-cell;
+}
 .spam_check{
 display:none;
 }
