@@ -219,7 +219,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
         if (!empty($docurl) && !is_null($docurl)) {
             $tpl->SetBlock('controls/documentation');
             $tpl->SetVariable('src', 'images/stock/help-browser.png');
-            $tpl->SetVariable('alt', _t('GLOBAL_READ_DOCUMENTATION'));
+            $tpl->SetVariable('alt', _t('GLOBAL_HELP'));
             $tpl->SetVariable('url', $docurl);
             $tpl->ParseBlock('controls/documentation');
         }
