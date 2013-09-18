@@ -1,15 +1,3 @@
-table {
-border: 1px solid #CCCCCC;
-border-collapse: collapse;
-border-spacing: 0;
-width: 95%;
-}
-table th {
-background-color: #EEEEEE;
-border: 1px solid #CCCCCC;
-padding: 1px;
-}
-table td {border: 1px solid #CCCCCC; padding: 2px 4px;}
 .addressbook_image {float: right;}
 #addressbook_name, #addressbook_firstname, #addressbook_lastname, #addressbook_nickname {width: 380px;}
 #addTelButton, #addEmailButton, #addAdrButton, #addUrlButton,
