@@ -35,7 +35,7 @@ function removeAttachment(id) {
     $('file_size' + id).set('html', '');
     $('btn_upload').show();
     $('attachment' + lastAttachment).show();
-    uploadedFiles['file' + id] = false;
+    uploadedFiles[id] = false;
 }
 
 /**
@@ -70,7 +70,8 @@ function uploadFile() {
 function onUpload(response) {
     toggleDisableForm(false);
     console.warn(lastAttachment);
-    uploadedFiles['file' + lastAttachment] = response.file_info;
+    uploadedFiles[lastAttachment] = response.file_info;
+//    uploadedFiles.push(response.file_info);
     console.log(uploadedFiles);
     if (response.type === 'error') {
         alert(response.message);
@@ -132,7 +133,7 @@ function composeMessage(id) {
     data['body'] = $('body').value;
     data['published'] = true;
 //    data['uploaded_files'] = uploadedFiles;
-   pmAjax.callAsync('ComposeMessage', data);
+   pmAjax.callAsync('ComposeMessage', data, uploadedFiles);
 }
 
 

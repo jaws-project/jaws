@@ -45,7 +45,8 @@ class PrivateMessage_Ajax extends Jaws_Gadget_HTML
      */
     function ComposeMessage()
     {
-        $post = jaws()->request->fetchAll('post');
+        $post = jaws()->request->fetch('0:array', 'post');
+        $uploaded_files = jaws()->request->fetch('1:array', 'post');
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
