@@ -2,6 +2,7 @@
 {alerts}
 <div class="gadget privateMessage message">
     <h2>{title}</h2>
+    <div id="simple_response" class="{response_type}">{response}</div>
 
     <form name="contacts" action="{base_script}" method="post" enctype="multipart/form-data">
         <input type="hidden" value="15000000" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE">
@@ -28,17 +29,8 @@
 
             <div>
                 <label for="body">{lbl_body}:</label>
-                <!--<textarea name="body" id="body" rows="6">{body}</textarea>-->
                 {body}
             </div>
-
-            <!--<div>-->
-                <!--<label for="status">{lbl_status}:</label>-->
-                <!--<select id="status" name="status">-->
-                    <!--<option value="published" selected>{lbl_published}</option>-->
-                    <!--<option value="draft">{lbl_draft}</option>-->
-                <!--</select>-->
-            <!--</div>-->
 
             <fieldset>
                 <legend><span>{lbl_attachments}</span></legend>

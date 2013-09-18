@@ -233,10 +233,27 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      * @param   integer $user           User id
      * @param   array   $message        Message data
      * @param   array   $attachments    File attachments data
-     * @return  mixed    True or Jaws_Error on failure
+     * @return  mixed   True or Jaws_Error on failure
      */
     function ComposeMessage($user, $message, $attachments)
     {
+        // merge recipient users & groups to an array
+        $recipient_users = array();
+        if (!empty($message['recipient_users'])) {
+            $recipient_users = explode(",", $message['recipient_users']);
+        }
+        if (!empty($message['recipient_groups'])) {
+            $recipient_groups = explode(",", $message['recipient_groups']);
+            $table = Jaws_ORM::getInstance()->table('users_groups');
+            $group_users = $table->select('user_id')->where('group_id', $recipient_groups, 'in')->fetchColumn();
+            if (!empty($group_users) && count($group_users) > 0) {
+                $recipient_users = array_merge($recipient_users, $group_users);
+            }
+        }
+        if (empty($recipient_users) || count($recipient_users) <= 0) {
+            return false;
+        }
+
         $mTable = Jaws_ORM::getInstance()->table('pm_messages');
         //Start Transaction
         $mTable->beginTransaction();
@@ -257,12 +274,13 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $data['attachments']        = count($attachments);
         $data['recipient_users']    = $message['recipient_users'];
         $data['recipient_groups']   = $message['recipient_groups'];
-        $data['insert_time'] = time();
+        $data['insert_time']        = time();
         $message_id = $mTable->insert($data)->exec();
         if (Jaws_Error::IsError($message_id)) {
             return false;
         }
 
+        // Insert attachments info
         if (!empty($attachments) && count($attachments) > 0) {
             $table = Jaws_ORM::getInstance()->table('pm_attachments');
             $aData = array();
@@ -277,35 +295,16 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             }
         }
 
-        $recipient_users = array();
-        if (!empty($message['recipient_users'])) {
-            $recipient_users = explode(",", $message['recipient_users']);
-        }
-        if (!empty($message['recipient_groups'])) {
-            $recipient_groups = explode(",", $message['recipient_groups']);
-            $table = Jaws_ORM::getInstance()->table('users_groups');
-            $group_users = $table->select('user_id')->where('group_id', $recipient_groups, 'in')->fetchColumn();
-            if (!empty($group_users) && count($group_users) > 0) {
-                $recipient_users = array_merge($recipient_users, $group_users);
-            }
-        }
-
+        // Insert recipients info
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
-        if (!empty($recipient_users) && count($recipient_users) > 0) {
-            $rData = array();
-            foreach ($recipient_users as $recipient_user) {
-                $rData[] = array($message_id, $recipient_user);
-            }
-            $res = $table->insertAll(array('message', 'recipient'), $rData)->exec();
-            if (Jaws_Error::IsError($res)) {
-                return false;
-            }
-        } else {
-            //Rollback Transaction
-            $mTable->rollback();
+        $rData = array();
+        foreach ($recipient_users as $recipient_user) {
+            $rData[] = array($message_id, $recipient_user);
+        }
+        $res = $table->insertAll(array('message', 'recipient'), $rData)->exec();
+        if (Jaws_Error::IsError($res)) {
             return false;
         }
-
 
         // compose a draft message
         // TODO: must removed this line after manage draft attachments file changes

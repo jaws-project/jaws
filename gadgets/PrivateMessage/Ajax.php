@@ -50,7 +50,7 @@ class PrivateMessage_Ajax extends Jaws_Gadget_HTML
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         $res = $model->ComposeMessage($user, $post, array());
-        if ($res === false) {
+        if ($res === true) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PRIVATEMESSAGE_DRAFT_SAVED'),
                 RESPONSE_ERROR);
         } else {

@@ -8,8 +8,12 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 var PrivateMessageCallback = {
-    savedraftmessage: function(response) {
-        showResponse(response);
+    SaveDraftMessage: function (response) {
+        response = response[0];
+        if (response.css !== 'notice-message' || response.css!== 'error-message') {
+            console.log('error');
+        }
+        $('simple_response').set('html', response.message);
     }
 }
 /**
@@ -42,4 +46,4 @@ function saveDraft(id) {
    pmAjax.callAsync('SaveDraftMessage', data);
 }
 
-var pmAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback, 'index.php');
+var pmAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback);
