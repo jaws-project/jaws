@@ -21,7 +21,9 @@
 <!-- BEGIN item -->
 <div class="item" id="item_{item_id}" title="{description}" style="text-decoration: {item_status};">
     <div class="item_icon"><img src="{icon}" width="48" alt="icon"/></div>
-    <div class="item-delete"><a href="javascript:void(0);" onclick="{delete}"><img src="{delete-img}" alt="delete"/></a></div>
+    <div class="item-delete">
+      <a href="javascript:void(0);" onclick="{delete}"><img src="{delete-img}" alt="{lbl_delete}"/></a>
+    </div>
     <div class="item-gadget">{gadget}</div>
     <div class="item-action">
         <a id="ea{item_id}" name="ea{item_id}" href="javascript:void(0);"
