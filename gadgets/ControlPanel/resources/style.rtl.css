@@ -284,7 +284,7 @@ margin:0 auto;
 margin-bottom:1px;
 }
 /* ----- MENUBAR ----- */
-.jaws-menubar{
+.gadget_menubar{
 direction:ltr;
 float:right;
 padding:0;
@@ -292,13 +292,13 @@ width:100%;
 margin:0 0 1em 0;
 border-bottom:1px solid silver;
 }
-.jaws-menubar ul{
+.gadget_menubar ul{
 margin:0;
 padding:0;
 width:100%;
 list-style:none;
 }
-.jaws-menubar li{
+.gadget_menubar li{
 float:right;
 margin:0 2px -1px 0;
 padding:0 0 0 8px;
@@ -307,13 +307,13 @@ box-shadow:inset 0 -15px 20px #e8e8e8;
 border:1px solid silver;
 border-radius:5px 5px 0 0;
 }
-.jaws-menubar li:first-child{
+.gadget_menubar li:first-child{
 margin-right:1em;
 }
-.jaws-menubar li:hover{
+.gadget_menubar li:hover{
 box-shadow:inset 0 -15px 20px #eee;
 }
-.jaws-menubar a{
+.gadget_menubar a{
 display:block;
 padding:4px 8px 4px 0px;
 border-bottom:none;
@@ -321,33 +321,33 @@ color:#666;
 text-decoration:none;
 vertical-align:bottom;
 }
-.jaws-menubar a:hover{
+.gadget_menubar a:hover{
 color:#222;
 }
-.jaws-menubar img{
+.gadget_menubar img{
 border:0;
 vertical-align:bottom;
 }
-li.jaws-menubar-selected{
+li.gadget_menubar-selected{
 box-shadow:none;
 border-bottom:1px solid white;
 }
-li.jaws-menubar-selected:hover{
+li.gadget_menubar-selected:hover{
 box-shadow:none;
 border-bottom:1px solid white;
 }
-li.jaws-menubar-selected a{
+li.gadget_menubar-selected a{
 color:#000;
 font-weight:bold;
 }
-/* ----- JAWS-SIDEBAR ----- */
-.jaws-sidebar{
+/* ----- gadget_sidebar ----- */
+.gadget_sidebar{
 width:100%;
 float:right;
 margin:0;
 padding:0;
 }
-.jaws-sidebar li{
+.gadget_sidebar li{
 margin-bottom:3px;
 border:1px solid silver;
 border-radius:0 5px 5px 0;
@@ -355,28 +355,28 @@ box-shadow:inset 0 0 30px #e8e8e8;
 list-style:none;
 text-align:right;
 }
-.jaws-sidebar li:hover{
+.gadget_sidebar li:hover{
 box-shadow:inset 0 0 30px #eee;
 }
-.jaws-sidebar a{
+.gadget_sidebar a{
 display:block;
 padding:10px;
 color:#666;
 }
-.jaws-sidebar a:hover{
+.gadget_sidebar a:hover{
 color:#222;
 }
-.jaws-sidebar img{
+.gadget_sidebar img{
 float:right;
 margin-left:6px;
 }
-li.jaws-sidebar-selected{
+li.gadget_sidebar-selected{
 box-shadow:none;
 }
-li.jaws-sidebar-selected:hover{
+li.gadget_sidebar-selected:hover{
 box-shadow:none;
 }
-li.jaws-sidebar-selected a{
+li.gadget_sidebar-selected a{
 color:#000;
 font-weight:bold;
 }
