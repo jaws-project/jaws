@@ -328,15 +328,15 @@ color:#222;
 border:0;
 vertical-align:bottom;
 }
-li.gadget_menubar-selected{
+li.gadget_menubar_selected{
 box-shadow:none;
 border-bottom:1px solid white;
 }
-li.gadget_menubar-selected:hover{
+li.gadget_menubar_selected:hover{
 box-shadow:none;
 border-bottom:1px solid white;
 }
-li.gadget_menubar-selected a{
+li.gadget_menubar_selected a{
 color:#000;
 font-weight:bold;
 }
@@ -370,13 +370,13 @@ color:#222;
 float:right;
 margin-left:6px;
 }
-li.gadget_sidebar-selected{
+li.gadget_sidebar_selected{
 box-shadow:none;
 }
-li.gadget_sidebar-selected:hover{
+li.gadget_sidebar_selected:hover{
 box-shadow:none;
 }
-li.gadget_sidebar-selected a{
+li.gadget_sidebar_selected a{
 color:#000;
 font-weight:bold;
 }
