@@ -32,7 +32,7 @@ class Jaws_Widgets_Menubar
      * @access  private
      * @var     string
      */
-    var $_CSS_Class_Name = 'jaws-menubar';
+    var $_CSS_Class_Name = 'gadget_menubar';
 
     /**
      * Constructor
