@@ -16,6 +16,6 @@ class Jaws_Widgets_Sidebar extends Jaws_Widgets_Menubar
      * @access  private
      * @var     string
      */
-    var $_CSS_Class_Name = 'jaws-sidebar';
+    var $_CSS_Class_Name = 'gadget_sidebar';
 
 }
