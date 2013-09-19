@@ -177,7 +177,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
 
         $tpl = $this->gadget->loadTemplate('Move.html');
         $tpl->SetBlock('tree');
-        $tpl->SetVariable('lbl_submit', _t('GLOBAL_SUBMIT'));
+        $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         $tpl->SetVariable('tree', $tree);
         $tpl->ParseBlock('tree');

@@ -61,8 +61,8 @@ var DirectoryCallback = {
 
     PublishFile: function(response) {
         if (response.css === 'notice-message') {
-            showFileURL(response.data);
             fileById[selectedId].public = response.data;
+            showFileURL(response.data);
         }
         $('simple_response').set('html', response.message);
     },
@@ -221,9 +221,12 @@ function openFile(id)
     if (!file) {
         file = fileById[id] = DirectoryAjax.callSync('GetFile', {'id':id});
     }
+    if (file.public && !file.dl_url) {
+        fileById[id].dl_url = DirectoryAjax.callSync('GetDownloadURL', {'id':id});
+    }
     if (file.filename) {
         window.open(
-            data_url + file.owner + '/' + file.filename,
+            fileById[id].dl_url,
             '_blank',
             specs,
             true
@@ -238,7 +241,10 @@ function updatePath()
 {
     var pathArr = DirectoryAjax.callSync('GetPath', {'id':currentDir}),
         path = $('path').set('html', ''),
-        link = new Element('span', {'html':'My Drive'});
+        link = new Element('img', {
+            'src':'gadgets/Directory/images/logo.png',
+            'title': 'Root'
+        });
     link.addEvent('click', openDirectory.pass(0));
     path.grab(link);
     pathArr.reverse().each(function (dir, i) {
@@ -267,12 +273,13 @@ function updateActions()
 }
 
 /**
- * Displays file/directory information
+ * Displays file/directory properties
  */
-function properties()
+function props()
 {
     if (selectedId === null) return;
     var data = fileById[selectedId];
+    // console.log(selectedId);
     if (!data.users) {
         var users = DirectoryAjax.callSync('GetFileUsers', {id:selectedId}),
             id_set = [];
@@ -281,7 +288,9 @@ function properties()
         });
         data.users = id_set.join(', ');
     }
-    //console.log(data);
+    if (data.public && !data.dl_url) {
+        data.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:selectedId});
+    }
     if (data.is_dir) {
         var form = cachedForms.viewDir;
         if (!form) {
@@ -296,8 +305,9 @@ function properties()
         cachedForms.viewFile = form;
     }
     $('form').set('html', form.substitute(data));
-
-    showFileURL(data.public);
+    if (data.dl_url) {
+        showFileURL(data.dl_url);
+    }
     pageBody.removeEvent('click', cancel);
 }
 
@@ -428,8 +438,8 @@ function editFile()
         cachedForms.editFile = DirectoryAjax.callSync('FileForm', {mode:'edit'});
     }
     $('form').set('html', cachedForms.editFile);
-    var data = fileById[selectedId];
-    var form = $('frm_file');
+    var form = $('frm_file'),
+        data = fileById[selectedId];
     form.action.value = 'UpdateFile';
     form.id.value = selectedId;
     form.title.value = data.title;
@@ -438,8 +448,10 @@ function editFile()
     form.parent.value = data.parent;
     form.filetype.value = data.filetype;
     form.filesize.value = data.filesize;
-    if (data.filename) {
-        setFile(data.filename, data_url + UID);
+    if (data.filename && !data.dl_url) {
+        var url = DirectoryAjax.callSync('GetDownloadURL', {id:selectedId});
+        fileById[selectedId].dl_url = url;
+        setFilename(data.filename, url);
         $('filename').value = ':nochange:';
     } else {
         $('tr_file').hide();
@@ -465,7 +477,7 @@ function onUpload(response) {
         $('frm_upload').reset();
     } else {
         var filename = encodeURIComponent(response.filename);
-        setFile(filename, '');
+        setFilename(filename, '');
         $('filename').value = filename;
         $('filetype').value = response.filetype;
         $('filesize').value = response.filesize;
@@ -477,26 +489,9 @@ function onUpload(response) {
 }
 
 /**
- * Creates a link to attached file
- */
-function getDownloadLink(filename, url)
-{
-    var link = new Element('a', {'html':filename, 'target':'_blank'});
-    if (url !== '') {
-        link.href = url + '/' + filename;
-    }
-    return link;
-    $('filelink').grab(link);
-    $('filelink').grab(imgDeleteFile);
-    $('tr_file').show();
-    $('frm_upload').hide();
-    $('filename').value = filename;
-}
-
-/**
  * Sets file (not)to be available publicly
  */
-function setFilePublished(published)
+function publishFile(published)
 {
     DirectoryAjax.callAsync('PublishFile', {
         'id':selectedId,
@@ -505,14 +500,13 @@ function setFilePublished(published)
 }
 
 /**
- * Displays/Hides file URL
+ * Shows/Hides file URL
  */
-function showFileURL(show)
+function showFileURL(url)
 {
-    //console.log(download_url);
     var link = $('public_url');
-    if (show) {
-        link.innerHTML = link.href = download_url + '/uid/' + UID + '/id/' + selectedId;
+    if (url != '') {
+        link.innerHTML = link.href = url;
         link.show();
         $('btn_unpublic').show();
         $('btn_public').hide();
@@ -524,13 +518,13 @@ function showFileURL(show)
 }
 
 /**
- * Creates a link to the attached file
+ * Sets download link of the file
  */
-function setFile(filename, url)
+function setFilename(filename, url)
 {
     var link = new Element('a', {'html':filename, 'target':'_blank'});
     if (url !== '') {
-        link.href = url + '/' + filename;
+        link.href = url;
     }
     $('filelink').grab(link);
     $('filelink').grab(imgDeleteFile);
@@ -646,7 +640,7 @@ function submitShare()
     });
     DirectoryAjax.callAsync(
         'UpdateFileUsers',
-        {'id':selectedId, 'users':users.toString()}
+        {'id':selectedId, 'users':users.join(',')}
     );
 }
 

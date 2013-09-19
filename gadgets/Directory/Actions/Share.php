@@ -60,7 +60,7 @@ class Directory_Actions_Share extends Jaws_Gadget_HTML
             }
             $tpl->ParseBlock('share/edit');
             $tpl->SetBlock('share/actions');
-            $tpl->SetVariable('lbl_submit', _t('GLOBAL_SUBMIT'));
+            $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
             $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
             $tpl->ParseBlock('share/actions');
         }
@@ -109,12 +109,14 @@ class Directory_Actions_Share extends Jaws_Gadget_HTML
         try {
             $id = (int)jaws()->request->fetch('id');
 
-            // Check for existance
+            // Validate file
             $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
             $file = $model->GetFile($id);
             if (Jaws_Error::IsError($file)) {
                 throw new Exception($file->getMessage());
             }
+
+            // Validate user
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
             if ($file['user'] != $user) {
                 throw new Exception(_t('DIRECTORY_ERROR_UPDATING_SHARE'));
@@ -140,5 +142,4 @@ class Directory_Actions_Share extends Jaws_Gadget_HTML
             RESPONSE_NOTICE
         );
     }
-
 }

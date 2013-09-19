@@ -13,9 +13,9 @@
       <tr><th>{lbl_created}:</th><td title="{createtime}">{created}</td></tr>
       <tr><th>{lbl_modified}:</th><td title="{updatetime}">{modified}</td></tr>
       <tr><th>{lbl_public}:</th><td>
-        <button id="btn_public" onclick="setFilePublished(true)">Make it public</button>
+        <button id="btn_public" onclick="publishFile(true)">Make it public</button>
         <a id="public_url" target="_blank"></a>
-        <button id="btn_unpublic" title="Remove" onclick="setFilePublished(false)"> X </button>
+        <button id="btn_unpublic" title="Remove" onclick="publishFile(false)"> X </button>
       </td></tr>
     </table>
   </fieldset>
@@ -27,19 +27,6 @@
 
 <!-- BEGIN edit -->
 <fieldset>
-  <form id="frm_file">
-    <input type="hidden" name="id" />
-    <input type="hidden" name="parent" value="0" />
-    <input type="hidden" name="filename" id="filename" />
-    <input type="hidden" name="filetype" id="filetype" />
-    <input type="hidden" name="filesize" id="filesize" />
-    <table>
-      <tr><th>{lbl_title}:</th><td><input name="title" /></td></tr>
-      <tr><th>{lbl_desc}:</th><td><input name="description" /></td></tr>
-      <tr><th>{lbl_url}:</th><td><input name="url" value="" /></td></tr>
-      <tr id="tr_file"><th>{lbl_file}:</th><td id="filelink"></td></tr>
-    </table>
-  </form>
   <form id="frm_upload" action="{base_script}" target="ifrm_upload"
         method="post" enctype="multipart/form-data" onsubmit="return true">
     <input type="hidden" name="gadget" value="Directory" />
@@ -50,9 +37,22 @@
       </td></tr>
     </table>
   </form>
+  <form id="frm_file">
+    <input type="hidden" name="id" />
+    <input type="hidden" name="parent" value="0" />
+    <input type="hidden" name="filename" id="filename" />
+    <input type="hidden" name="filetype" id="filetype" />
+    <input type="hidden" name="filesize" id="filesize" />
+    <table>
+      <tr id="tr_file"><th>{lbl_file}:</th><td id="filelink"></td></tr>
+      <tr><th>{lbl_title}:</th><td><input name="title" /></td></tr>
+      <tr><th>{lbl_desc}:</th><td><input name="description" /></td></tr>
+      <tr><th>{lbl_url}:</th><td><input name="url" value="" /></td></tr>
+    </table>
+  </form>
 </fieldset>
 <div class="actions">
-  <button type="button" onclick="submitFile()">{lbl_submit}</button>
+  <button type="button" onclick="submitFile()">{lbl_ok}</button>
   <button type="button" onclick="cancel()">{lbl_cancel}</button>
 </div>
 <!-- END edit -->

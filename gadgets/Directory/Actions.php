@@ -83,6 +83,10 @@ $actions['DownloadFile'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
+$actions['GetDownloadURL'] = array(
+    'standalone' => true,
+    'file' => 'Files'
+);
 
 /* Sharing Actions */
 $actions['GetUsers'] = array(

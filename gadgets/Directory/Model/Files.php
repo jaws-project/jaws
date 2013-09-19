@@ -61,10 +61,13 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     function GetFile($id)
     {
         $table = Jaws_ORM::getInstance()->table('directory as dir');
-        $table->select('dir.id', 'parent', 'user', 'is_dir:boolean', 'title',
-            'description', 'filename', 'filetype', 'filesize', 'dir.url', 'shared:boolean',
-            'dir.public:boolean', 'owner', 'reference', 'createtime', 'updatetime', 'users.username');
-        $table->join('users', 'owner', 'users.id');
+        // $table->select('dir.id', 'parent', 'user', 'is_dir:boolean', 'title',
+            // 'description', 'filename', 'filetype', 'filesize', 'dir.url', 'shared:boolean',
+            // 'dir.public:boolean', 'owner', 'reference', 'createtime', 'updatetime', 'users.username');
+        // $table->join('users', 'owner', 'users.id');
+        $table->select('id', 'parent', 'user', 'is_dir:boolean', 'title',
+            'description', 'filename', 'filetype', 'filesize', 'url', 'shared:boolean',
+            'public:boolean', 'owner', 'reference', 'createtime', 'updatetime');
         return $table->where('dir.id', $id)->fetchRow();
     }
 
@@ -148,7 +151,6 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      */
     function Update($id, $data)
     {
-        $data['updatetime'] = time();
         $table = Jaws_ORM::getInstance()->table('directory');
         return $table->update($data)->where('id', $id)->exec();
     }
@@ -181,5 +183,19 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('directory');
         $table->update(array('parent' => $parent));
         return $table->where('id', $id)->exec();
+    }
+
+    /**
+     * Updates shortcuts
+     *
+     * @access  public
+     * @param   int     $ref    File reference ID
+     * @param   array   $data   File data
+     * @return  mixed   Query result
+     */
+    function UpdateShortcuts($ref, $data)
+    {
+        $table = Jaws_ORM::getInstance()->table('directory');
+        return $table->update($data)->where('reference', $ref)->exec();
     }
 }

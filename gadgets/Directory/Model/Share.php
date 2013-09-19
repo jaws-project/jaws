@@ -27,11 +27,11 @@ class Directory_Model_Share extends Jaws_Gadget_Model
     }
 
     /**
-     * Creates shortcuts of the file record for passed users
+     * Creates shortcuts of the file for passed users
      *
      * @access  public
-     * @param   int     $id  File ID
-     * @param   array   Users ID's
+     * @param   int     $id     File ID
+     * @param   array   $users  Users ID's
      * @return  mixed   True or Jaws_Error
      */
     function UpdateFileUsers($id, $users)
@@ -40,6 +40,7 @@ class Directory_Model_Share extends Jaws_Gadget_Model
 
         // Fetch file info
         $table->select('is_dir:boolean', 'title', 'description', 
+            'filename', 'filetype', 'filesize', 'url', 'updatetime',
             'user', 'owner', 'reference', 'shared:boolean');
         $file = $table->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($file)) {
@@ -71,17 +72,11 @@ class Directory_Model_Share extends Jaws_Gadget_Model
 
         // Create new shortcuts
         if (!empty($new_ids)) {
-            $shortcut = array(
-                'parent' => 0,
-                'shared' => false,
-                'is_dir' => $file['is_dir'],
-                'title' => $file['title'],
-                'description' => $file['description'],
-                'owner' => $file['owner'],
-                'reference' => !empty($file['reference'])? $file['reference'] : $id,
-                'createtime' => time(),
-                'updatetime' => time()
-            );
+            $shortcut = $file;
+            $shortcut['parent'] = 0;
+            $shortcut['shared'] = false;
+            $shortcut['reference'] = !empty($file['reference'])? $file['reference'] : $id;
+            $shortcut['createtime'] = time();
             foreach ($new_ids as $uid) {
                 $shortcut['user'] = $uid;
                 $table->reset();

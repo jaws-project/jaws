@@ -166,12 +166,21 @@ float:right;
 #file_arena{
 max-height:300px;
 overflow-y:auto;
-margin-top:5px;
-padding:10px 0;
+margin:5px 0;
 }
 
-#path span {color:blue; cursor:pointer;}
-#path span:hover {text-decoration:underline;}
+#path span {
+color:blue;
+cursor:pointer;
+}
+#path span:hover {
+text-decoration:underline;
+}
+#path img {
+width:16px;
+cursor:pointer;
+vertical-align:middle;
+}
 
 #statusbar{
 display:none;
@@ -199,3 +208,9 @@ margin:5px 0;
 #share_users {width:100%; height:100px;}
 #users input {margin-right:3px; vertical-align:middle;}
 #users label {font-weight:bold; vertical-align:middle;}
+
+#btn_unpublic{
+display:none;
+}
+
+#file_header dd{

@@ -23,7 +23,7 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
         $tpl->SetBlock($mode);
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
-        $tpl->SetVariable('lbl_submit', _t('GLOBAL_SUBMIT'));
+        $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         if ($mode === 'view') {
             $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
@@ -83,28 +83,41 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
     function UpdateDirectory()
     {
         try {
-            $id = (int)jaws()->request->fetch('id', 'post');
-            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-
-            // Validate file
-            $dir = $model->GetFile($id);
-            if (Jaws_Error::IsError($dir)) {
-                throw new Exception($dir->getMessage());
-            }
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            if ($dir['user'] != $user) {
-                throw new Exception(_t('DIRECTORY_ERROR_DIR_UPDATE'));
-            }
-
             $data = jaws()->request->fetch(array('title', 'description', 'parent'), 'post');
+
+            // Validate data
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
+
+            $id = (int)jaws()->request->fetch('id', 'post');
+            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+
+            // Validate directory
+            $dir = $model->GetFile($id);
+            if (Jaws_Error::IsError($dir)) {
+                throw new Exception($dir->getMessage());
+            }
+
+            // Validate user
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            if ($dir['user'] != $user) {
+                throw new Exception(_t('DIRECTORY_ERROR_DIR_UPDATE'));
+            }
+
+            // Update directory
+            $data['updatetime'] = time();
             $result = $model->Update($id, $data);
             if (Jaws_Error::IsError($result)) {
                 throw new Exception(_t('DIRECTORY_ERROR_DIR_UPDATE'));
+            }
+
+            // Update shortcuts
+            if ($dir['shared']) {
+                $shortcut = array('updatetime' => $data['updatetime']);
+                $model->UpdateShortcuts($id, $shortcut);
             }
         } catch (Exception $e) {
             return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
