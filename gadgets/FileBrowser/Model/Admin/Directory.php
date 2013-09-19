@@ -22,16 +22,11 @@ class FileBrowser_Model_Admin_Directory extends Jaws_Gadget_Model
      */
     function MakeDir($path, $dir_name)
     {
-        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
-        if (!empty($path) && $path != '/') {
-            if (substr($path, -1) != '/') {
-                $path .= '/';
-            }
-        } else {
-            $path = '';
-        }
+        $path = trim($path, '/');
         $path = str_replace('..', '', $path);
-        $dir = $fModel->GetFileBrowserRootDir() . $path . '/' . $dir_name;
+
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
+        $dir = $fModel->GetFileBrowserRootDir(). $path. '/'. $dir_name;
 
         require_once PEAR_PATH. 'File/Util.php';
         $realpath = File_Util::realpath($dir);

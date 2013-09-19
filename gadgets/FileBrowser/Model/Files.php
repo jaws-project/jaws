@@ -12,7 +12,6 @@
  */
 class FileBrowser_Model_Files extends Jaws_Gadget_Model
 {
-
     /**
      * Get root dir
      *
@@ -24,11 +23,11 @@ class FileBrowser_Model_Files extends Jaws_Gadget_Model
         static $root_dir;
         if (!isset($root_dir)) {
             $root_dir = trim($this->gadget->registry->fetch('root_dir'));
-            $root_dir = JAWS_DATA . $root_dir;
+            $root_dir = JAWS_DATA . trim($root_dir, "\\/");
             $root_dir = str_replace('..', '', $root_dir);
 
             require_once PEAR_PATH. 'File/Util.php';
-            $root_dir = File_Util::realpath($root_dir) . DIRECTORY_SEPARATOR;
+            $root_dir = File_Util::realpath($root_dir). '/';
             if (!File_Util::pathInRoot($root_dir, JAWS_DATA)) {
                 Jaws_Error::Fatal(_t('FILEBROWSER_ERROR_DIRECTORY_DOES_NOT_EXISTS'), __FILE__, __LINE__);
             }
@@ -112,7 +111,7 @@ class FileBrowser_Model_Files extends Jaws_Gadget_Model
         //Set the extension
         $file['ext'] = $ext;
         //Fullpath
-        $filepath = $this->GetFileBrowserRootDir() . $path . $fname;
+        $filepath = $this->GetFileBrowserRootDir(). $path. '/'. $fname;
         $file['fullpath'] = $filepath;
         //Set the icon
         $file['mini_icon'] = 'gadgets/FileBrowser/images/mini_file.png';
@@ -152,13 +151,7 @@ class FileBrowser_Model_Files extends Jaws_Gadget_Model
      */
     function DBFileInfo($path, $file)
     {
-        if (!empty($path) && $path != '/') {
-            if (substr($path, -1) != '/') {
-                $path .= '/';
-            }
-        } else {
-            $path = '';
-        }
+        $path = trim($path, '/');
         $path = str_replace('..', '', $path);
 
         $table = Jaws_ORM::getInstance()->table('filebrowser');
