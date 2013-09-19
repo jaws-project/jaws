@@ -91,8 +91,8 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
         @list($path, $file, $title, $description, $fast_url, $oldname) = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
         $res = true;
-        $file = preg_replace('/[^[:alnum:]_\.-]*/', '', $file);
-        $oldname = preg_replace('/[^[:alnum:]_\.-]*/', '', $oldname);
+        $file = preg_replace('/[^[:alnum:]_\.-\s]*/', '', $file);
+        $oldname = preg_replace('/[^[:alnum:]_\.-\s]*/', '', $oldname);
         if ($oldname != $file) {
             $res = $model->Rename($path, $oldname, $file);
         }
@@ -124,8 +124,8 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
         $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
         $dModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Directory');
         $res = true;
-        $dir = preg_replace('/[^[:alnum:]_\.-]*/', '', $dir);
-        $oldname = preg_replace('/[^[:alnum:]_\.-]*/', '', $oldname);
+        $dir = preg_replace('/[^[:alnum:]_\.-\s]*/', '', $dir);
+        $oldname = preg_replace('/[^[:alnum:]_\.-\s]*/', '', $oldname);
         if (empty($oldname)) {
             $res = $dModel->MakeDir($path, $dir);
         } elseif ($oldname != $dir) {
@@ -152,7 +152,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageFiles');
         @list($path, $file) = jaws()->request->fetchAll('post');
         $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
-        $file = preg_replace('/[^[:alnum:]_\.-]*/', '', $file);
+        $file = preg_replace('/[^[:alnum:]_\.-\s]*/', '', $file);
         if ($fModel->Delete($path, $file)) {
             $fModel->DeleteDBFileInfo($path, $file);
         }
@@ -173,7 +173,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageDirectories');
         @list($path, $dir) = jaws()->request->fetchAll('post');
         $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
-        $dir = preg_replace('/[^[:alnum:]_\.-]*/', '', $dir);
+        $dir = preg_replace('/[^[:alnum:]_\.-\s]*/', '', $dir);
         if ($fModel->Delete($path, $dir)) {
             $fModel->DeleteDBFileInfo($path, $dir);
         }
