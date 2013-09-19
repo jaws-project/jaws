@@ -879,11 +879,12 @@ class Jaws_Utils
      * Providing download file
      *
      * @access  public
-     * @param   string  $fpath  File path
-     * @param   string  $fname  File name
+     * @param   string  $fpath      File path
+     * @param   string  $fname      File name
+     * @param   string  $mimetype   File mime type
      * @return  bool    Returns TRUE on success or FALSE on failure
      */
-    function Download($fpath, $fname)
+    function Download($fpath, $fname, $mimetype = '')
     {
         if (false === $fhandle = @fopen($fpath, 'rb')) {
             return false;
@@ -910,8 +911,12 @@ class Jaws_Utils
         header("Expires: 0");
         header("Pragma: public");
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-        // force download dialog
-        header("Content-Type: application/force-download");
+        if (empty($mimetype)) {
+            // force download dialog
+            header("Content-Type: application/force-download");
+        } else {
+            header("Content-Type: $mimetype");
+        }
         // set data type, size and filename
         header("Content-Disposition: attachment; filename=\"{$fname}\"");
         header("Content-Transfer-Encoding: binary");
