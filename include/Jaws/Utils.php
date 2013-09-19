@@ -882,9 +882,10 @@ class Jaws_Utils
      * @param   string  $fpath      File path
      * @param   string  $fname      File name
      * @param   string  $mimetype   File mime type
+     * @param   string  $inline     Inline disposition?
      * @return  bool    Returns TRUE on success or FALSE on failure
      */
-    function Download($fpath, $fname, $mimetype = '')
+    function Download($fpath, $fname, $mimetype = '', $inline = true)
     {
         if (false === $fhandle = @fopen($fpath, 'rb')) {
             return false;
@@ -911,14 +912,17 @@ class Jaws_Utils
         header("Expires: 0");
         header("Pragma: public");
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        // content mime type
         if (empty($mimetype)) {
             // force download dialog
             header("Content-Type: application/force-download");
         } else {
             header("Content-Type: $mimetype");
         }
-        // set data type, size and filename
-        header("Content-Disposition: attachment; filename=\"{$fname}\"");
+        // content disposition and filename
+        $disposition = $inline? 'inline' : 'attachment';
+        header("Content-Disposition: $disposition; filename=$fname");
+        // content length
         header("Content-Transfer-Encoding: binary");
         header('Content-Length: '.($fstop - $fstart + 1));
 
