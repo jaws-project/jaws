@@ -125,7 +125,6 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $tpl->SetVariable('back_url', $this->gadget->urlMap('Inbox'));
 
         $tpl->SetVariable('icon_add', STOCK_ADD);
-        $tpl->SetVariable('icon_remove', STOCK_REMOVE);
 
         $tpl->ParseBlock('compose');
         return $tpl->Get();
@@ -145,37 +144,108 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         }
         $this->gadget->CheckPermission('ComposeMessage');
 
-        $post = jaws()->request->fetch(array('id', 'parent', 'published', 'recipient_users', 'recipient_groups',
-                                             'subject', 'body', 'attachments:array'), 'post');
+        $attachments = array();
+        $post = jaws()->request->fetch(array('id', 'parent', 'recipient_users', 'recipient_groups', 'subject',
+                                             'body', 'selected_files:array'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
 
-
-        $message_id = $model->ComposeMessage($user, $post);
-        $url = $this->gadget->urlMap('Outbox');
-        if (is_numeric($message_id) && $message_id > 0) {
-            if($post['published']==true) {
+        $pm_dir = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $user . DIRECTORY_SEPARATOR;
+        if (!file_exists($pm_dir)) {
+            if (!Jaws_Utils::mkdir($pm_dir)) {
                 $GLOBALS['app']->Session->PushResponse(
-                    _t('PRIVATEMESSAGE_MESSAGE_SEND'),
+                    _t('GLOBAL_ERROR_FAILED_CREATING_DIR', $pm_dir),
                     'PrivateMessage.Message',
-                    RESPONSE_NOTICE
+                    RESPONSE_ERROR
                 );
-            }
-            return $GLOBALS['app']->Session->GetResponse(
-                _t('PRIVATEMESSAGE_DRAFT_SAVED'),
-                RESPONSE_NOTICE,
-                array('published' => $post['published'], 'url' => $url, 'message_id' => $message_id));
 
-        } else {
-            if($post['published']==true) {
-                return $GLOBALS['app']->Session->GetResponse(
-                                        _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_SEND'), RESPONSE_ERROR);
+                Jaws_Header::Location($this->gadget->urlMap('Inbox'));
             }
-            return $GLOBALS['app']->Session->GetResponse(
-                _t('PRIVATEMESSAGE_DRAFT_NOT_SAVED'),
-                RESPONSE_ERROR);
+        }
+
+        // detect message have attachment(s)?
+        if (!empty($_FILES['file1']['name'])) {
+            $files = Jaws_Utils::UploadFiles(
+                $_FILES,
+                $pm_dir,
+                '',
+                'php,php3,php4,php5,phtml,phps,pl,py,cgi,pcgi,pcgi5,pcgi4,htaccess',
+                null
+            );
+
+            if (Jaws_Error::IsError($files)) {
+                $GLOBALS['app']->Session->PushResponse(
+                    $files->GetMessage(),
+                    'PrivateMessage.Message',
+                    RESPONSE_ERROR
+                );
+            } else if ($files === false || count($files) < 1) {
+                $GLOBALS['app']->Session->PushResponse(
+                    _t('PRIVATEMESSAGE_ERROR_NO_FILE_UPLOADED'),
+                    'PrivateMessage.Message',
+                    RESPONSE_ERROR
+                );
+            } else {
+                for ($i = 1; $i <= count($files); $i++) {
+                    if (!isset($files['file' . $i])) {
+                        continue;
+                    }
+                    $user_filename  = $files['file' . $i][0]['user_filename'];
+                    $host_filename  = $files['file' . $i][0]['host_filename'];
+                    $host_filesize  = $files['file' . $i][0]['host_filesize'];
+                    $host_filetype  = $files['file' . $i][0]['host_filetype'];
+                    if (!empty($host_filename)) {
+                        $attachments[] = array(
+                            'title' => $user_filename,
+                            'filename' => $host_filename,
+                            'filesize' => $host_filesize,
+                            'filetype' => $host_filetype,
+                        );
+                    }
+                }
+            }
 
         }
+
+        // check forward with pre attachments
+        if (!empty($post['selected_files'])) {
+            $aModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');
+
+            foreach ($post['selected_files'] as $attachment_id) {
+                if ($attachment_id < 1) {
+                    continue;
+                }
+                $attachment_info = $aModel->GetMessageAttachment($attachment_id);
+                $message_info = $model->GetMessage($attachment_info['message']);
+                $filepath = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $message_info['user'] . DIRECTORY_SEPARATOR .
+                    $attachment_info['filename'];
+
+                $host_filename = Jaws_Utils::RandomText(15, true, false, true) . '.' . $files['extension'];
+                $new_filepath = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $user . DIRECTORY_SEPARATOR .
+                    $host_filename;
+                $cres = Jaws_Utils::copy($filepath, $new_filepath);
+                if ($cres) {
+                    $attachments[] = array(
+                        'title' => $attachment_info['title'],
+                        'filename' => $host_filename,
+                        'filesize' => $attachment_info['filesize'],
+                        'filetype' => $attachment_info['filetype'],
+                    );
+                }
+            }
+        }
+
+        $post['published'] = true;
+        $res = $model->ComposeMessage($user, $post, $attachments);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushResponse(
+                $res->GetMessage(),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        }
+
+        Jaws_Header::Location($this->gadget->urlMap('Inbox'));
     }
 
 }
