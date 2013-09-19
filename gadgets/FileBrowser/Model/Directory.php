@@ -12,33 +12,23 @@
  */
 class FileBrowser_Model_Directory extends Jaws_Gadget_Model
 {
-
-
     /**
      * Get files of the current root dir
      *
      * @access  public
-     * @param   string  $current_dir    Current directory
+     * @param   string  $path    Current directory
      * @return  array   A list of directories or files of a certain directory
      */
-    function GetCurrentRootDir($current_dir)
+    function GetCurrentRootDir($path)
     {
+        $path = trim($path, '/');
+        $path = str_replace('..', '', $path);
+
         $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
-        if (!is_dir($fModel->GetFileBrowserRootDir() . $current_dir)) {
+        if (!is_dir($fModel->GetFileBrowserRootDir() . $path)) {
             return new Jaws_Error(_t('FILEBROWSER_ERROR_DIRECTORY_DOES_NOT_EXISTS'),
                 _t('FILEBROWSER_NAME'));
         }
-
-        if (trim($current_dir) != '') {
-            $path = $current_dir;
-            if (substr($path, -1) != '/') {
-                $path .= '/';
-            }
-        } else {
-            $path = '/';
-        }
-
-        $path = str_replace('..', '', $path);
 
         $tree = array();
         $tree['/'] = '/';
@@ -102,7 +92,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
         $dir['size'] = '-';
 
         //Fullpath
-        $filepath = $fModel->GetFileBrowserRootDir() . $path . $dirname;
+        $filepath = $fModel->GetFileBrowserRootDir(). $path. '/'. $dirname;
         $dir['fullpath'] = $filepath;
 
         //Get $date
@@ -152,15 +142,9 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
      */
     function ReadDir($path = '', $limit = 0, $offset = 0, $order = '')
     {
-        if (!empty($path) && $path != '/') {
-            if (substr($path, -1) != '/') {
-                $path .= '/';
-            }
-        } else {
-            $path = '';
-        }
-
+        $path = trim($path, '/');
         $path = str_replace('..', '', $path);
+
         $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
         $folder = $fModel->GetFileBrowserRootDir() . $path;
         if (!file_exists($folder) || !$adr = scandir($folder)) {
@@ -178,7 +162,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
             //we should return only 'visible' files, not hidden files
             if ($file{0} != '.') {
                 $file_counter++;
-                $filepath = $fModel->GetFileBrowserRootDir() . $path . $file;
+                $filepath = $fModel->GetFileBrowserRootDir(). $path. '/'. $file;
                 if (is_dir($filepath)) {
                     $files[$file_counter] = $this->GetDirProperties($path, $file);
                     // check directory access permission
@@ -195,8 +179,8 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
             }
         }
 
-        $fModel   = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
-        $files = $fModel->SortFiles($files, $order);
+        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
+        $files  = $fModel->SortFiles($files, $order);
         if (empty($limit)) {
             return $files;
         }
@@ -213,15 +197,9 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
      */
     function GetDirContentsCount($path)
     {
-        if (!empty($path) && $path != '/') {
-            if (substr($path, -1) != '/') {
-                $path .= '/';
-            }
-        } else {
-            $path = '';
-        }
-
+        $path = trim($path, '/');
         $path = str_replace('..', '', $path);
+
         $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
         $folder = $fModel->GetFileBrowserRootDir() . $path;
         if (file_exists($folder) && $adr = scandir($folder)) {

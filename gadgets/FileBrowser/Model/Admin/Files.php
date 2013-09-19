@@ -26,13 +26,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
      */
     function UpdateDBFileInfo($path, $file, $title, $description, $fast_url, $oldname = '')
     {
-        if (!empty($path) && $path != '/') {
-            if (substr($path, -1) != '/') {
-                $path .= '/';
-            }
-        } else {
-            $path = '';
-        }
+        $path = trim($path, '/');
         $path = str_replace('..', '', $path);
 
         $title = empty($title)? $file : $title;
@@ -98,13 +92,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
      */
     function DeleteDBFileInfo($path, $file)
     {
-        if (!empty($path) && $path != '/') {
-            if (substr($path, -1) != '/') {
-                $path .= '/';
-            }
-        } else {
-            $path = '';
-        }
+        $path = trim($path, '/');
         $path = str_replace('..', '', $path);
 
         $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
@@ -133,18 +121,12 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
      */
     function Delete($path, $filename)
     {
-        if (!empty($path) && $path != '/') {
-            if (substr($path, -1) != '/') {
-                $path .= '/';
-            }
-        } else {
-            $path = '';
-        }
+        $path = trim($path, '/');
         $path = str_replace('..', '', $path);
 
+        $file = $path. '/'. $filename;
         $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
-        $file = $path . ((empty($path)? '': DIRECTORY_SEPARATOR)) . $filename;
-        $filename = $fModel->GetFileBrowserRootDir() . DIRECTORY_SEPARATOR . $file;
+        $filename = $fModel->GetFileBrowserRootDir(). $file;
         $blackList = explode(',', $this->gadget->registry->fetch('black_list'));
         $blackList = array_map('strtolower', $blackList);
 
@@ -188,17 +170,12 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
      */
     function Rename($path, $old, $new)
     {
-        if (!empty($path) && $path != '/') {
-            if (substr($path, -1) != '/') {
-                $path .= '/';
-            }
-        } else {
-            $path = '';
-        }
+        $path = trim($path, '/');
         $path = str_replace('..', '', $path);
+
         $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
-        $oldfile = $fModel->GetFileBrowserRootDir() . $path . '/' . $old;
-        $newfile = $fModel->GetFileBrowserRootDir() . $path . '/' . $new;
+        $oldfile = $fModel->GetFileBrowserRootDir(). $path. '/'. $old;
+        $newfile = $fModel->GetFileBrowserRootDir(). $path. '/'. $new;
 
         require_once PEAR_PATH. 'File/Util.php';
         $oldfile = File_Util::realpath($oldfile);
@@ -211,13 +188,19 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
             in_array(strtolower(basename($oldfile)), $blackList) ||
             in_array(strtolower(basename($newfile)), $blackList))
         {
-            $GLOBALS['app']->Session->PushLastResponse(_t('FILEBROWSER_ERROR_CANT_RENAME', $old, $new), RESPONSE_ERROR);
+            $GLOBALS['app']->Session->PushLastResponse(
+                _t('FILEBROWSER_ERROR_CANT_RENAME', $old, $new),
+                RESPONSE_ERROR
+            );
             return false;
         }
 
         $return = @rename($oldfile, $newfile);
         if ($return) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('FILEBROWSER_RENAMED', $old, $new), RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(
+                _t('FILEBROWSER_RENAMED', $old, $new),
+                RESPONSE_NOTICE
+            );
             return true;
         }
 

@@ -35,14 +35,8 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_HTML
             }
         }
 
-        if (jaws()->request->fetch('path', 'get')) {
-            $path = jaws()->request->fetch('path', 'get');
-        } elseif (jaws()->request->fetch('path', 'post')) {
-            $path = jaws()->request->fetch('path', 'post');
-        } else {
-            $path = '';
-        }
-
+        $path = jaws()->request->fetch('path');
+        $path = trim((string)$path, '/');
         $page = jaws()->request->fetch('page', 'get');
         if (is_null($page) || $page <= 0 ) {
             $page = 1;
@@ -63,10 +57,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_HTML
         $parentPath = '';
         $tpl->SetVariable('location', _t('FILEBROWSER_LOCATION'));
         foreach ($locationTree as $_path => $dir) {
-            if (!empty($dir) && $_path{0} == '/') {
-                $_path = substr($_path, 1);
-            }
-
+            $_path = trim($_path, '/');
             $dbFile = $fModel->DBFileInfo($parentPath, $dir);
             if (Jaws_Error::IsError($dbFile) || empty($dbFile)) {
                 $dirTitle = $dir;
@@ -304,10 +295,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_HTML
         }
 
         if (!empty($iFile)) {
-            if ($iFile['path'] == '/') {
-                $iFile['path'] = '';
-            }
-            $filepath = $fModel->GetFileBrowserRootDir() . $iFile['path'] . $iFile['filename'];
+            $filepath = $fModel->GetFileBrowserRootDir(). $iFile['path']. '/'. $iFile['filename'];
             if (file_exists($filepath)) {
                 // increase download hits
                 $fModel->HitFileDownload($iFile['id']);

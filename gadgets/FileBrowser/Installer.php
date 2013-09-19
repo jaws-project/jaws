@@ -91,10 +91,20 @@ class FileBrowser_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        // Update layout actions
-        $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
-        if (!Jaws_Error::isError($layoutModel)) {
-            $layoutModel->EditGadgetLayoutAction('FileBrowser', 'InitialFolder', 'InitialFolder', 'Directory');
+        if (version_compare($old, '0.9.0', '<')) {
+            // Update layout actions
+            $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
+            if (!Jaws_Error::isError($layoutModel)) {
+                $layoutModel->EditGadgetLayoutAction('FileBrowser', 'InitialFolder', 'InitialFolder', 'Directory');
+            }
+        }
+
+        $filesTable = Jaws_ORM::getInstance()->table('filebrowser');
+        $files = $filesTable->select('id', 'path')->fetchAll();
+        foreach ($files as $file) {
+            $filesTable->update(array('path' => trim($file['path'], '/')))
+                ->where('id', $file['id'])
+                ->exec();
         }
 
         return true;
