@@ -42,7 +42,7 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_HTML
             $filepath = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $rqst['uid'] . DIRECTORY_SEPARATOR .
                 $attachment['filename'];
             if (file_exists($filepath)) {
-                if (Jaws_Utils::Download($filepath, $attachment['title'])) {
+                if (Jaws_Utils::Download($filepath, $attachment['title'], $attachment['filetype'])) {
                     return;
                 }
 
