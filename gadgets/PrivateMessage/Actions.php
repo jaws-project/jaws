@@ -79,6 +79,10 @@ $actions['ComposeMessage'] = array(
     'standalone' => true,
     'file' => 'Compose',
 );
+$actions['GetMessageAttachmentUI'] = array(
+    'standalone' => true,
+    'file' => 'Compose',
+);
 $actions['Attachment'] = array(
     'standalone' => true,
     'file'   => 'Attachment',

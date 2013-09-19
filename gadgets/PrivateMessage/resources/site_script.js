@@ -27,9 +27,11 @@ var PrivateMessageCallback = {
  * Reset attachments after save draft a message
  */
 function resetAttachments(message_id) {
-    //TODO: must load attachments again here
-//    var ui = pmAjax.callSync('GetMessageAttachmentUI', {'id': message_id});
-//    $('attachment_area').set('html', ui);
+    var ui = pmAjax.callSync('GetMessageAttachmentUI', {'id': message_id});
+    $('attachment_area').set('html', ui);
+    $('attachment1').show();
+    $('attach_loading').hide();
+    $('btn_attach1').hide();
 }
 
 /**

@@ -14,7 +14,7 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
      * Display Compose page
      *
      * @access  public
-     * @return  void
+     * @return  string XHTML template content
      */
     function Compose()
     {
@@ -47,24 +47,7 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
 
                 if (!empty($message['attachments'])) {
                     $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
-                    foreach ($message['attachments'] as $file) {
-                        $tpl->SetBlock('compose/file');
-                        $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
-                        $tpl->SetVariable('file_name', $file['title']);
-                        $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['filesize']));
-                        $tpl->SetVariable('file_id', $file['id']);
-
-                        $tpl->SetVariable('file_download_link', $file['title']);
-                        $file_url = $this->gadget->urlMap('Attachment',
-                            array(
-                                'uid' => $message['user'],
-                                'mid' => $id,
-                                'aid' => $file['id'],
-                            ));
-                        $tpl->SetVariable('file_download_link', $file_url);
-
-                        $tpl->ParseBlock('compose/file');
-                    }
+                    $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id));
                 }
 
             // reply a message
@@ -81,28 +64,12 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
 
                 if (!empty($message['attachments'])) {
                     $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
-                    foreach ($message['attachments'] as $file) {
-                        $tpl->SetBlock('compose/file');
-                        $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
-                        $tpl->SetVariable('file_name', $file['title']);
-                        $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['filesize']));
-                        $tpl->SetVariable('file_id', $file['id']);
-
-                        $tpl->SetVariable('file_download_link', $file['title']);
-                        $file_url = $this->gadget->urlMap('Attachment',
-                            array(
-                                'uid' => $message['user'],
-                                'mid' => $id,
-                                'aid' => $file['id'],
-                            ));
-                        $tpl->SetVariable('file_download_link', $file_url);
-
-                        $tpl->ParseBlock('compose/file');
-                    }
+                    $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id));
                 }
             }
         } else {
             $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
+            $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI());
         }
 
         $body =& $GLOBALS['app']->LoadEditor('PrivateMessage', 'body', $body_value);
@@ -128,6 +95,52 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $tpl->SetVariable('icon_remove', STOCK_REMOVE);
 
         $tpl->ParseBlock('compose');
+        return $tpl->Get();
+    }
+
+    /**
+     * Get Message Attachment UI
+     *
+     * @access  public
+     * @param   integer $message_id   Message Id
+     * @return  string XHTML template content
+     */
+    function GetMessageAttachmentUI($message_id = null)
+    {
+        $this->gadget->CheckPermission('ComposeMessage');
+
+        if(empty($message_id)) {
+            $message_id = jaws()->request->fetch('id', 'post');
+        }
+
+        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
+        $tpl = $this->gadget->loadTemplate('Compose.html');
+        $tpl->SetBlock('attachments');
+
+        if (!empty($message_id)) {
+            $message = $model->GetMessage($message_id, true, false);
+
+            foreach ($message['attachments'] as $file) {
+                $tpl->SetBlock('attachments/file');
+                $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
+                $tpl->SetVariable('file_name', $file['title']);
+                $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['filesize']));
+                $tpl->SetVariable('file_id', $file['id']);
+
+                $tpl->SetVariable('file_download_link', $file['title']);
+                $file_url = $this->gadget->urlMap('Attachment',
+                    array(
+                        'uid' => $message['user'],
+                        'mid' => $message_id,
+                        'aid' => $file['id'],
+                    ));
+                $tpl->SetVariable('file_download_link', $file_url);
+
+                $tpl->ParseBlock('attachments/file');
+            }
+        }
+        $tpl->ParseBlock('attachments');
+
         return $tpl->Get();
     }
 
