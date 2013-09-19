@@ -12,6 +12,11 @@
       <tr><th>{lbl_shared}:</th><td>{users}</td></tr>
       <tr><th>{lbl_created}:</th><td title="{createtime}">{created}</td></tr>
       <tr><th>{lbl_modified}:</th><td title="{updatetime}">{modified}</td></tr>
+      <tr><th>{lbl_public}:</th><td>
+        <button id="btn_public" onclick="setFilePublished(true)">Make it public</button>
+        <a id="public_url" target="_blank"></a>
+        <button id="btn_unpublic" title="Remove" onclick="setFilePublished(false)"> X </button>
+      </td></tr>
     </table>
   </fieldset>
   <div class="actions">

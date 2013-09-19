@@ -39,6 +39,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             $tpl->SetVariable('lbl_shared', _t('DIRECTORY_SHARED_FOR'));
             $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
             $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
+            $tpl->SetVariable('lbl_public', _t('DIRECTORY_FILE_PUBLIC_URL'));
             $tpl->SetVariable('title', '{title}');
             $tpl->SetVariable('desc', '{description}');
             $tpl->SetVariable('filename', '{filename}');
@@ -47,7 +48,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             $tpl->SetVariable('size', '{size}');
             $tpl->SetVariable('username', '{username}');
             $tpl->SetVariable('url', '{url}');
-            $tpl->SetVariable('shared_for', '{shared_for}');
+            $tpl->SetVariable('users', '{users}');
             $tpl->SetVariable('createtime', '{createtime}');
             $tpl->SetVariable('updatetime', '{updatetime}');
             $tpl->SetVariable('created', '{created}');
@@ -134,7 +135,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             $id = (int)jaws()->request->fetch('id');
             $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
 
-            // Check for existance
+            // Validate file
             $file = $model->GetFile($id);
             if (Jaws_Error::IsError($file)) {
                 throw new Exception($file->getMessage());
@@ -213,7 +214,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             $id = (int)jaws()->request->fetch('id');
         }
         try {
-            // Check for existance
+            // Validate file
             $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
             $file = $model->GetFile($id);
             if (Jaws_Error::IsError($file)) {
@@ -251,6 +252,51 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
     }
 
     /**
+     * Makes file public/unpublic
+     *
+     * @access  public
+     * @return  array   Response array
+     */
+    function PublishFile()
+    {
+        try {
+            $id = (int)jaws()->request->fetch('id');
+            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+
+            // Validate file
+            $file = $model->GetFile($id);
+            if (Jaws_Error::IsError($file)) {
+                throw new Exception($file->getMessage());
+            }
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            if ($file['user'] != $user) {
+                throw new Exception(_t('DIRECTORY_ERROR_FILE_UPDATE'));
+            }
+
+            $public = jaws()->request->fetch('public');
+            if ($public === null) {
+                throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
+            }
+            $public = (bool)$public;
+
+            // Update record
+            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+            $res = $model->Update($id, array('public' => $public));
+            if (Jaws_Error::IsError($res)) {
+                throw new Exception(_t('DIRECTORY_ERROR_FILE_UPDATE'));
+            }
+        } catch (Exception $e) {
+            return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('DIRECTORY_NOTICE_FILE_UPDATED'),
+            RESPONSE_NOTICE,
+            $public
+        );
+    }
+
+    /**
      * Uploads file to system temp directory
      *
      * @access  public
@@ -271,6 +317,55 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
 
         $response = $GLOBALS['app']->UTF8->json_encode($response);
         return "<script>parent.onUpload($response);</script>";
+    }
+
+    /**
+     * Downloads file
+     *
+     * @access  public
+     * @return  array   Response array
+     */
+    function DownloadFile()
+    {
+        $data = jaws()->request->fetch(array('id', 'uid'));
+        //_log_var_dump($data);
+        if (is_null($data['id']) || is_null($data['uid'])) {
+            return Jaws_HTTPError::Get(500);
+        }
+        $id = (int)$data['id'];
+        $uid = (int)$data['uid'];
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+
+        // Validate file
+        $file = $model->GetFile($id);
+        if (Jaws_Error::IsError($file)) {
+            return Jaws_HTTPError::Get(500);
+        }
+        if (empty($file) || empty($file['filename'])) {
+            return Jaws_HTTPError::Get(404);
+        }
+
+        if (!$file['public']) {
+            // Validate user
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            if ($user != $uid || $user != $file['user']) {
+                return Jaws_HTTPError::Get(403);
+            }
+        }
+
+        // Check for fie existance
+        $filename = $GLOBALS['app']->getDataURL("directory/$uid/") . $file['filename'];
+        if (!file_exists($filename)) {
+            return Jaws_HTTPError::Get(404);
+        }
+
+        // Stream file
+        // TODO: we need to set content-type
+        if (!Jaws_Utils::Download($filename, $file['filename'])) {
+            return Jaws_HTTPError::Get(500);
+        }
+
+        return;
     }
 
 }

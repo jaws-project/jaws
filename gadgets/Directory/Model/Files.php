@@ -27,7 +27,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('directory as dir');
         $table->select('dir.id', 'parent', 'user', 'is_dir:boolean', 'title',
             'description', 'filename', 'filetype', 'filesize', 'dir.url', 'shared:boolean',
-            'owner', 'reference', 'createtime', 'updatetime', 'users.username');
+            'dir.public:boolean', 'owner', 'reference', 'createtime', 'updatetime', 'users.username');
         $table->join('users', 'owner', 'users.id');
         $table->where('parent', $parent)->and();
 
@@ -63,7 +63,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('directory as dir');
         $table->select('dir.id', 'parent', 'user', 'is_dir:boolean', 'title',
             'description', 'filename', 'filetype', 'filesize', 'dir.url', 'shared:boolean',
-            'owner', 'reference', 'createtime', 'updatetime', 'users.username');
+            'dir.public:boolean', 'owner', 'reference', 'createtime', 'updatetime', 'users.username');
         $table->join('users', 'owner', 'users.id');
         return $table->where('dir.id', $id)->fetchRow();
     }
@@ -163,7 +163,9 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     function Delete($id)
     {
         $table = Jaws_ORM::getInstance()->table('directory');
-        return $table->delete()->where('id', $id)->exec();
+        $table->delete()->where('id', $id);
+        $table->or()->where('reference', $id);
+        return $table->exec();
     }
 
     /**

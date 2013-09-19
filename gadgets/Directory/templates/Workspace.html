@@ -24,7 +24,7 @@
   <div id="file_arena" class="list-view">
     <!-- BEGIN fileTemplate -->
     <dl id="file_{id}" title="{description}">
-      <dd class="file-icon type-{type}"><div class="file-sharing {shared} {foreign}"></div></dd>
+      <dd class="file-icon type-{type}"><div class="file-sharing {shared} {foreign} {public}"></div></dd>
       <dd class="file-title">{title}</dd>
       <dd class="file-created">{created}</dd>
       <dd class="file-modified">{modified}</dd>
@@ -45,12 +45,14 @@
   <select id="view_type" onchange="changeFileView(this.value)">
     <option value="icon">Icon view</option>
     <option value="list">List view</option>
-  </select><br/>
+  </select>
   <div id="form"></div>
 </div>
 <script>
   var UID = "{UID}",
+      site_url = "{site_url}",
       data_url = "{data_url}",
+      download_url = "{download_url}",
       imgDeleteFile = "{imgDeleteFile}";
   initDirectory();
 </script>

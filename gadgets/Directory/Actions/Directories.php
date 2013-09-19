@@ -35,7 +35,7 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
             $tpl->SetVariable('desc', '{description}');
             $tpl->SetVariable('type', '{type}');
             $tpl->SetVariable('username', '{username}');
-            $tpl->SetVariable('shared_for', '{shared_for}');
+            $tpl->SetVariable('users', '{users}');
             $tpl->SetVariable('createtime', '{createtime}');
             $tpl->SetVariable('updatetime', '{updatetime}');
             $tpl->SetVariable('created', '{created}');
@@ -86,7 +86,7 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
             $id = (int)jaws()->request->fetch('id', 'post');
             $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
 
-            // Check for existance
+            // Validate file
             $dir = $model->GetFile($id);
             if (Jaws_Error::IsError($dir)) {
                 throw new Exception($dir->getMessage());
@@ -129,13 +129,13 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
             $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
 
-            // Check for existance
+            // Validate file
             $dir = $model->GetFile($id);
             if (Jaws_Error::IsError($dir)) {
                 throw new Exception($dir->getMessage());
             }
 
-            // Check for files and sub directories
+            // Delete files and sub directories
             $files = $model->GetFiles($id, $user);
             if (Jaws_Error::IsError($files)) {
                 throw new Exception($files->getMessage());
@@ -150,12 +150,12 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
                 // FIXME: what should we do if one delete call fails?
             }
 
-            // Check for user
+            // Validate user
             if ($dir['user'] != $user) {
                 throw new Exception(_t('DIRECTORY_ERROR_DIR_DELETE'));
             }
 
-            // Let's delete the directory from database
+            // Delete directory from database
             $res = $model->Delete($id);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception($res->getMessage());

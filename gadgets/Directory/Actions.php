@@ -71,7 +71,15 @@ $actions['DeleteFile'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
+$actions['PublishFile'] = array(
+    'standalone' => true,
+    'file' => 'Files'
+);
 $actions['UploadFile'] = array(
+    'standalone' => true,
+    'file' => 'Files'
+);
+$actions['DownloadFile'] = array(
     'standalone' => true,
     'file' => 'Files'
 );

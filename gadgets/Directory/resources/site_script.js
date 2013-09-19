@@ -59,6 +59,14 @@ var DirectoryCallback = {
         $('simple_response').set('html', response.message);
     },
 
+    PublishFile: function(response) {
+        if (response.css === 'notice-message') {
+            showFileURL(response.data);
+            fileById[selectedId].public = response.data;
+        }
+        $('simple_response').set('html', response.message);
+    },
+
     Move: function(response) {
         if (response.css === 'notice-message') {
             cancel();
@@ -87,9 +95,10 @@ function initDirectory()
     fileTemplate = $('file_arena').get('html');
     statusTemplate = $('statusbar').get('html');
     pageBody = $('requested_gadget_directory');
-    viewType = DirectoryStorage.fetch('view_type');
-    if (viewType === null) viewType = 'list';
-    $('view_type').value = viewType;
+    // viewType = DirectoryStorage.fetch('view_type');
+    // if (viewType === null) viewType = 'list';
+    // $('view_type').value = viewType;
+    viewType = 'list';
     changeFileView(viewType);
     currentDir = Number(DirectoryStorage.fetch('current_dir'));
     openDirectory(currentDir);
@@ -116,10 +125,10 @@ function displayFiles(parent)
         file.size = formatSize(file.filesize, 0);
         file.foreign = (file.user !== file.owner);
         fileById[file.id] = Object.clone(file);
-        //console.log(file.filename);
         file.filename = (file.filename === null)? '' : file.filename;
         file.type = file.is_dir? 'folder' : file.filename.split('.').pop();
         file.shared = file.shared? 'shared' : '';
+        file.public = file.public? 'public' : '';
         file.foreign = file.foreign? 'foreign' : '';
         ws.grab(getFileElement(file));
     });
@@ -132,6 +141,7 @@ function displayFiles(parent)
  */
 function getFileElement(fileData)
 {
+    //console.log(fileData);
     var html = fileTemplate.substitute(fileData),
         div = new Element('div', {'html':html}).getFirst();
     div.addEvent('click', fileSelect);
@@ -146,7 +156,7 @@ function getFileElement(fileData)
 function changeFileView(view)
 {
     $('file_arena').set('class', view + '-view');
-    DirectoryStorage.update('view_type', view);
+    //DirectoryStorage.update('view_type', view);
 }
 
 /**
@@ -264,7 +274,12 @@ function properties()
     if (selectedId === null) return;
     var data = fileById[selectedId];
     if (!data.users) {
-        data = DirectoryAjax.callSync('GetFile', {id:selectedId});
+        var users = DirectoryAjax.callSync('GetFileUsers', {id:selectedId}),
+            id_set = [];
+        users.each(function (user) {
+            id_set.push(user.username);
+        });
+        data.users = id_set.join(', ');
     }
     //console.log(data);
     if (data.is_dir) {
@@ -281,9 +296,8 @@ function properties()
         cachedForms.viewFile = form;
     }
     $('form').set('html', form.substitute(data));
-    // if (data.filename) {
-        // $('filelink').grab(getDownloadLink(data.filename, data_url + UID));
-    // }
+
+    showFileURL(data.public);
     pageBody.removeEvent('click', cancel);
 }
 
@@ -477,6 +491,36 @@ function getDownloadLink(filename, url)
     $('tr_file').show();
     $('frm_upload').hide();
     $('filename').value = filename;
+}
+
+/**
+ * Sets file (not)to be available publicly
+ */
+function setFilePublished(published)
+{
+    DirectoryAjax.callAsync('PublishFile', {
+        'id':selectedId,
+        'public':published
+    });
+}
+
+/**
+ * Displays/Hides file URL
+ */
+function showFileURL(show)
+{
+    //console.log(download_url);
+    var link = $('public_url');
+    if (show) {
+        link.innerHTML = link.href = download_url + '/uid/' + UID + '/id/' + selectedId;
+        link.show();
+        $('btn_unpublic').show();
+        $('btn_public').hide();
+    } else {
+        link.hide();
+        $('btn_public').show();
+        $('btn_unpublic').hide();
+    }
 }
 
 /**
