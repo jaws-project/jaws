@@ -76,11 +76,11 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_HTML
                 'message' => $file->getMessage());
         } else {
             $response = array('type' => 'notice', 'file_info' => array(
+                'title' => $file['attachment' . $file_num][0]['user_filename'],
                 'filename' => $file['attachment' . $file_num][0]['host_filename'],
-                'user_filename' => $file['attachment' . $file_num][0]['user_filename'],
-                'filetype' => $file['attachment' . $file_num][0]['host_filetype'],
                 'filesize_format' =>  Jaws_Utils::FormatSize($file['attachment' . $file_num][0]['host_filesize']),
-                'filesize' => $file['attachment' . $file_num][0]['host_filesize']));
+                'filesize' => $file['attachment' . $file_num][0]['host_filesize'],
+                'filetype' => $file['attachment' . $file_num][0]['host_filetype']));
         }
 
         $response = $GLOBALS['app']->UTF8->json_encode($response);

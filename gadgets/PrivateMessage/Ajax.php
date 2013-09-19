@@ -47,40 +47,43 @@ class PrivateMessage_Ajax extends Jaws_Gadget_HTML
     {
         $post = jaws()->request->fetch('0:array', 'post');
         $uploaded_files = jaws()->request->fetch('1:array', 'post');
-        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
-        $user = $GLOBALS['app']->Session->GetAttribute('user');
-
-        $res = $model->ComposeMessage($user, $post, array());
-        if ($res === true) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PRIVATEMESSAGE_DRAFT_SAVED'),
-                RESPONSE_ERROR);
-        } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PRIVATEMESSAGE_DRAFT_NOT_SAVED'),
-                RESPONSE_NOTICE);
+        $attachments = $post['selected_attachments'];
+        foreach($uploaded_files as $file) {
+            if ($file==false) {
+                continue;
+            }
+            $attachments[] = $file;
         }
-
-        return $GLOBALS['app']->Session->PopLastResponse();
-    }
-
-    /**
-     * Save draft message
-     *
-     * @access  public
-     * @return  array   Response array (notice or error)
-     */
-    function SaveDraftMessage()
-    {
-        $post = jaws()->request->fetchAll('post');
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
-        $res = $model->ComposeMessage($user, $post, array());
+        $res = $model->ComposeMessage($user, $post, $attachments);
+        $url = $this->gadget->urlMap('Outbox');
         if ($res === true) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PRIVATEMESSAGE_DRAFT_SAVED'),
-                RESPONSE_ERROR);
+            if($post['published']==true) {
+                $GLOBALS['app']->Session->PushResponse(
+                    _t('PRIVATEMESSAGE_MESSAGE_SEND'),
+                    'PrivateMessage.Message',
+                    RESPONSE_NOTICE
+                );
+            }
+            $GLOBALS['app']->Session->PushLastResponse(
+                _t('PRIVATEMESSAGE_DRAFT_SAVED'),
+                RESPONSE_NOTICE, array('published' => $post['published'], 'url'=> $url));
+
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PRIVATEMESSAGE_DRAFT_NOT_SAVED'),
-                RESPONSE_NOTICE);
+
+            if($post['published']==true) {
+                $GLOBALS['app']->Session->PushResponse(
+                    _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_SEND'),
+                    'PrivateMessage.Message',
+                    RESPONSE_ERROR
+                );
+            }
+            $GLOBALS['app']->Session->PushLastResponse(
+                _t('PRIVATEMESSAGE_DRAFT_NOT_SAVED'),
+                RESPONSE_ERROR, array('published' => $post['published'], 'url'=> $url));
+
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();

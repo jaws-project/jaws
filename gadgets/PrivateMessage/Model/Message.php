@@ -286,8 +286,48 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             $aData = array();
             $fields = array('title', 'filename', 'filesize', 'filetype', 'message');
             foreach ($attachments as $attachment) {
-                $attachment['message_id'] = $message_id;
-                $aData[] = array_values($attachment);
+
+                // check new attachments file -- we must copy tmp files to gool location
+                if (is_array($attachment)) {
+                    $src_filepath = Jaws_Utils::upload_tmp_dir() . '/' . $attachment['filename'];
+                    if (!file_exists($src_filepath)) {
+                        continue;
+                    }
+
+                    $pm_dir = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $user . DIRECTORY_SEPARATOR;
+                    if (!file_exists($pm_dir)) {
+                        if (!Jaws_Utils::mkdir($pm_dir)) {
+                            $GLOBALS['app']->Session->PushResponse(
+                                _t('GLOBAL_ERROR_FAILED_CREATING_DIR', $pm_dir),
+                                'PrivateMessage.Message',
+                                RESPONSE_ERROR
+                            );
+
+                            Jaws_Header::Location($this->gadget->urlMap('Inbox'));
+                        }
+                    }
+
+                    $pathinfo = pathinfo($src_filepath);
+                    $dest_filename = Jaws_Utils::RandomText(15, true, false, true) . '.' . $pathinfo['extension'];
+                    $dest_filepath = $pm_dir . DIRECTORY_SEPARATOR . $dest_filename;
+
+                    $cres = Jaws_Utils::copy($src_filepath, $dest_filepath);
+                    if ($cres) {
+                        $aData[] = array(
+                            'title' => $attachment['title'],
+                            'filename' => $dest_filename,
+                            'filesize' => $attachment['filesize'],
+                            'filetype' => $attachment['filetype'],
+                            'message_id' => $message_id,
+                        );
+                    }
+
+                } else {
+                    $attachment['message_id'] = $message_id;
+                    $aData[] = array_values($attachment);
+                }
+
+
             }
             $res = $table->insertAll($fields, $aData)->exec();
             if (Jaws_Error::IsError($res)) {

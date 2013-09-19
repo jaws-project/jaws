@@ -9,16 +9,16 @@
  */
 var PrivateMessageCallback = {
     ComposeMessage: function (response) {
+        console.warn(response);
         response = response[0];
-        if (response.css !== 'notice-message' || response.css!== 'error-message') {
-            console.log('error');
-        }
-        $('simple_response').set('html', response.message);
-    },
-    SaveDraftMessage: function (response) {
-        response = response[0];
-        if (response.css !== 'notice-message' || response.css!== 'error-message') {
-            console.log('error');
+        if (response.css == 'notice-message') {
+            if(response.data.published==true) {
+                window.location.href = response.data.url;
+                return;
+            }
+            console.log('Yes');
+        } else {
+            console.log('No');
         }
         $('simple_response').set('html', response.message);
     }
@@ -70,8 +70,15 @@ function uploadFile() {
 function onUpload(response) {
     toggleDisableForm(false);
     console.warn(lastAttachment);
-    uploadedFiles[lastAttachment] = response.file_info;
-//    uploadedFiles.push(response.file_info);
+    var fileInfo = {
+        'new'               :true,
+        'filename'          :response.file_info.filename,
+        'title'             : response.file_info.title,
+        'filetype'          : response.file_info.filetype,
+        'filesize_format'   : response.file_info.filesize_format,
+        'filesize'          : response.file_info.filesize
+    };
+    uploadedFiles[lastAttachment] = fileInfo;
     console.log(uploadedFiles);
     if (response.type === 'error') {
         alert(response.message);
@@ -79,7 +86,7 @@ function onUpload(response) {
         $('btn_upload').show();
         $('attachment' + lastAttachment).show();
     } else {
-        $('file_link' + lastAttachment).set('html', response.file_info.user_filename);
+        $('file_link' + lastAttachment).set('html', response.file_info.title);
         $('file_size' + lastAttachment).set('html', response.file_info.filesize_format);
         $('btn_attach' + lastAttachment).show();
         $('attachment' + lastAttachment).dispose();
@@ -121,9 +128,9 @@ function getGroups(term) {
 }
 
 /**
- * get groups list with custom term
+ * compose a message
  */
-function composeMessage(id) {
+function composeMessage() {
     var data = new Array();
     data['id'] = $('id').value;
     data['parent'] = $('parent').value;
@@ -132,13 +139,13 @@ function composeMessage(id) {
     data['subject'] = $('subject').value;
     data['body'] = $('body').value;
     data['published'] = true;
-//    data['uploaded_files'] = uploadedFiles;
+    data['selected_attachments'] = getSelectedAttachments();
    pmAjax.callAsync('ComposeMessage', data, uploadedFiles);
 }
 
 
 /**
- * get groups list with custom term
+ * save message as draft
  */
 function saveDraft(id) {
     var data = new Array();
@@ -149,10 +156,18 @@ function saveDraft(id) {
     data['subject'] = $('subject').value;
     data['body'] = $('body').value;
     data['published'] = false;
-    data['uploaded_files'] = uploadedFiles;
-    pmAjax.callAsync('SaveDraftMessage', data);
+    data['selected_attachments'] = getSelectedAttachments();
+    pmAjax.callAsync('ComposeMessage', data, uploadedFiles);
 }
 
+function getSelectedAttachments() {
+    var files = [];
+    $$("input[type=checkbox][name=selected_files[]]:checked").each(function(i){
+        files.push( i.value );
+    });
+
+    return files;
+}
 var pmAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback);
 var uploadedFiles = new Array();
 var lastAttachment = 1;

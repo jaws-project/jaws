@@ -78,7 +78,7 @@ define('_EN_PRIVATEMESSAGE_ERROR_NO_FILE_UPLOADED', "No image has been uploaded.
 define('_EN_PRIVATEMESSAGE_MESSAGE_DELETED', "Message has been deleted.");
 define('_EN_PRIVATEMESSAGE_MESSAGE_ARCHIVED', "Message has been archived.");
 define('_EN_PRIVATEMESSAGE_MESSAGE_PUBLISHED', "Message has been published.");
-define('_EN_PRIVATEMESSAGE_MESSAGE_COMPOSED', "Message has been composed.");
+define('_EN_PRIVATEMESSAGE_MESSAGE_SEND', "Message has been send.");
 define('_EN_PRIVATEMESSAGE_MESSAGE_DRAFTED', "Message has been drafted.");
 define('_EN_PRIVATEMESSAGE_MESSAGE_READ_MESSAGE_STATUS_CHANGED', "Message read status has been changed.");
 define('_EN_PRIVATEMESSAGE_DRAFT_SAVED', "Draft message has been saved.");
@@ -88,7 +88,7 @@ define('_EN_PRIVATEMESSAGE_ERROR_PROPERTIES_NOT_UPDATED', "Updating the properti
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_DELETED', "There was a problem deleting message.");
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_ARCHIVED', "There was a problem archiving message.");
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_PUBLISHED', "There was a problem publishing message.");
-define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_COMPOSED', "There was a problem composing message.");
+define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_SEND', "There was a problem sending message.");
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_DRAFTED', "There was a problem drafting message.");
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_READ_STATUS_NOT_CHANGED', "There was a problem changing message read status.");
 define('_EN_PRIVATEMESSAGE_DRAFT_NOT_SAVED', "There was a problem saving draft message.");

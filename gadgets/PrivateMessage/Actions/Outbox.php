@@ -51,10 +51,10 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
-            $tpl->SetBlock('inbox/response');
+            $tpl->SetBlock('outbox/response');
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('inbox/response');
+            $tpl->ParseBlock('outbox/response');
         }
 
         $post['published'] = true;
