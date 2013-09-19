@@ -23,7 +23,7 @@ define('_EN_GLOBAL_RESET', "Reset {0}");
 define('_EN_GLOBAL_NEW', "New {0}");
 define('_EN_GLOBAL_CREATE', "Create {0}");
 define('_EN_GLOBAL_UPDATE', "Update {0}");
-define('_EN_GLOBAL_OK', "Ok");
+define('_EN_GLOBAL_OK', "OK");
 define('_EN_GLOBAL_CANCEL', "Cancel");
 define('_EN_GLOBAL_NAME', "Name");
 define('_EN_GLOBAL_FILE', "File");
