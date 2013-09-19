@@ -9,21 +9,28 @@
  */
 var PrivateMessageCallback = {
     ComposeMessage: function (response) {
-        console.warn(response);
-        response = response[0];
         if (response.css == 'notice-message') {
             if(response.data.published==true) {
                 window.location.href = response.data.url;
                 return;
+            } else {
+                $('id').value = response.data.message_id;
+                resetAttachments(response.data.message_id);
             }
-            console.log('Yes');
-        } else {
-            console.log('No');
         }
         $('simple_response').set('html', response.message);
     }
 }
 
+
+/**
+ * Reset attachments after save draft a message
+ */
+function resetAttachments(message_id) {
+    //TODO: must load attachments again here
+//    var ui = pmAjax.callSync('GetMessageAttachmentUI', {'id': message_id});
+//    $('attachment_area').set('html', ui);
+}
 
 /**
  * Removes the attachment
@@ -33,7 +40,6 @@ function removeAttachment(id) {
     $('btn_attach' + id).hide();
     $('file_link' + id).set('html', '');
     $('file_size' + id).set('html', '');
-    $('btn_upload').show();
     $('attachment' + lastAttachment).show();
     uploadedFiles[id] = false;
 }
@@ -43,11 +49,11 @@ function removeAttachment(id) {
  */
 function toggleDisableForm(disabled)
 {
-    $('subject').disabled         = disabled;
-    $('body').disabled      = disabled;
-    $('btn_back').disabled    = disabled;
-    $('btn_save_draft').disabled = disabled;
-    $('btn_send').disabled     = disabled;
+    $('subject').disabled           = disabled;
+    $('body').disabled              = disabled;
+    $('btn_back').disabled          = disabled;
+    $('btn_save_draft').disabled    = disabled;
+    $('btn_send').disabled          = disabled;
 }
 
 
@@ -69,21 +75,18 @@ function uploadFile() {
  */
 function onUpload(response) {
     toggleDisableForm(false);
-    console.warn(lastAttachment);
     var fileInfo = {
-        'new'               :true,
-        'filename'          :response.file_info.filename,
+        'new'               : true,
+        'filename'          : response.file_info.filename,
         'title'             : response.file_info.title,
         'filetype'          : response.file_info.filetype,
         'filesize_format'   : response.file_info.filesize_format,
         'filesize'          : response.file_info.filesize
     };
     uploadedFiles[lastAttachment] = fileInfo;
-    console.log(uploadedFiles);
     if (response.type === 'error') {
         alert(response.message);
         $('frm_file').reset();
-        $('btn_upload').show();
         $('attachment' + lastAttachment).show();
     } else {
         $('file_link' + lastAttachment).set('html', response.file_info.title);
@@ -128,36 +131,14 @@ function getGroups(term) {
 }
 
 /**
- * compose a message
+ * send a message
  */
-function composeMessage() {
-    var data = new Array();
-    data['id'] = $('id').value;
-    data['parent'] = $('parent').value;
-    data['recipient_users'] = $('recipient_users').value;
-    data['recipient_groups'] = $('recipient_groups').value;
-    data['subject'] = $('subject').value;
-    data['body'] = $('body').value;
-    data['published'] = true;
-    data['selected_attachments'] = getSelectedAttachments();
-   pmAjax.callAsync('ComposeMessage', data, uploadedFiles);
-}
-
-
-/**
- * save message as draft
- */
-function saveDraft(id) {
-    var data = new Array();
-    data['id'] = id;
-    data['parent'] = $('parent').value;
-    data['recipient_users'] = $('recipient_users').value;
-    data['recipient_groups'] = $('recipient_groups').value;
-    data['subject'] = $('subject').value;
-    data['body'] = $('body').value;
-    data['published'] = false;
-    data['selected_attachments'] = getSelectedAttachments();
-    pmAjax.callAsync('ComposeMessage', data, uploadedFiles);
+function sendMessage(published) {
+    var attachments = uploadedFiles.concat(getSelectedAttachments());
+    pmAjax.callAsync('ComposeMessage', {'id': $('id').value, 'parent':$('parent').value, 'published':published,
+                     'recipient_users':$('recipient_users').value, 'recipient_groups':$('recipient_groups').value,
+                     'subject':$('subject').value, 'body':$('body').value,'attachments':attachments
+    });
 }
 
 function getSelectedAttachments() {
@@ -165,9 +146,11 @@ function getSelectedAttachments() {
     $$("input[type=checkbox][name=selected_files[]]:checked").each(function(i){
         files.push( i.value );
     });
-
     return files;
 }
+
 var pmAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback);
+pmAjax.backwardSupport();
+
 var uploadedFiles = new Array();
 var lastAttachment = 1;
