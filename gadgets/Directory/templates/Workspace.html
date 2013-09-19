@@ -24,11 +24,13 @@
   <div id="file_arena" class="list-view">
     <!-- BEGIN fileTemplate -->
     <dl id="file_{id}" title="{description}">
-      <dd class="file-icon type-{type}"><div class="file-sharing {shared} {foreign} {public}"></div></dd>
+      <!--dd class="file-icon type-{type}"><div class="file-sharing {shared} {foreign} {public}"></div></dd-->
+      <!--dd class="file-icon"><img src="images/mimetypes/{type}.png" /></dd-->
+      <dd class="file-icon">{icon}<span class="file-sharing {shared} {foreign} {public}"></span></dd>
       <dd class="file-title">{title}</dd>
       <dd class="file-created">{created}</dd>
       <dd class="file-modified">{modified}</dd>
-      <dd class="file-type">{type}</dd>
+      <!--dd class="file-type">{type}</dd-->
       <dd class="file-owner">{username}</dd>
       <dd class="file-size">{size}</dd>
     </dl>
@@ -52,7 +54,7 @@
   var UID = "{UID}",
       site_url = "{site_url}",
       data_url = "{data_url}",
-      download_url = "{download_url}",
+      icon_url = "{icon_url}",
       imgDeleteFile = "{imgDeleteFile}";
   initDirectory();
 </script>

@@ -61,7 +61,7 @@ var DirectoryCallback = {
 
     PublishFile: function(response) {
         if (response.css === 'notice-message') {
-            fileById[selectedId].public = response.data;
+            fileById[selectedId]['public'] = response.data;
             showFileURL(response.data);
         }
         $('simple_response').set('html', response.message);
@@ -82,7 +82,7 @@ var DirectoryCallback = {
         }
         $('simple_response').set('html', response.message);
     }
-}
+};
 
 /**
  * Initiates Directory
@@ -98,6 +98,17 @@ function initDirectory()
     // viewType = DirectoryStorage.fetch('view_type');
     // if (viewType === null) viewType = 'list';
     // $('view_type').value = viewType;
+
+    // Build icons map (ext => icon)
+    Object.each(fileTypes, function (values, type) {
+        values.each(function (ext) {
+            if (!iconByExt[ext]) {
+                iconByExt[ext] = type;
+            }
+        });
+    });
+    iconByExt.folder = 'folder';
+
     viewType = 'list';
     changeFileView(viewType);
     currentDir = Number(DirectoryStorage.fetch('current_dir'));
@@ -122,13 +133,15 @@ function displayFiles(parent)
     fileById = {};
     filesCount = files.length;
     files.each(function (file) {
+        var ext = file.is_dir? 'folder' : file.filename.split('.').pop();
+        file.type = iconByExt[ext] || 'unknown';
+        file.icon = '<img src="' + icon_url + file.type + '.png" />';
         file.size = formatSize(file.filesize, 0);
         file.foreign = (file.user !== file.owner);
         fileById[file.id] = Object.clone(file);
         file.filename = (file.filename === null)? '' : file.filename;
-        file.type = file.is_dir? 'folder' : file.filename.split('.').pop();
         file.shared = file.shared? 'shared' : '';
-        file.public = file.public? 'public' : '';
+        file['public'] = file['public']? 'public' : '';
         file.foreign = file.foreign? 'foreign' : '';
         ws.grab(getFileElement(file));
     });
@@ -139,14 +152,17 @@ function displayFiles(parent)
 /**
  * Builds a file element from passed data
  */
-function getFileElement(fileData)
+function getFileElement(data)
 {
-    //console.log(fileData);
-    var html = fileTemplate.substitute(fileData),
+    //console.log(data);
+    var html = fileTemplate.substitute(data),
         div = new Element('div', {'html':html}).getFirst();
+        //icon = icons_url + (iconByExt[data.type] || 'unknown') + '.png',
+        //img = new Element('img', {'src':icon});
+    //div.grab(img);
     div.addEvent('click', fileSelect);
     div.addEvent('dblclick', fileOpen);
-    div.fid = fileData.id;
+    div.fid = data.id;
     return div;
 }
 
@@ -221,7 +237,7 @@ function openFile(id)
     if (!file) {
         file = fileById[id] = DirectoryAjax.callSync('GetFile', {'id':id});
     }
-    if (file.public && !file.dl_url) {
+    if (!file.dl_url) {
         fileById[id].dl_url = DirectoryAjax.callSync('GetDownloadURL', {'id':id});
     }
     if (file.filename) {
@@ -278,7 +294,8 @@ function updateActions()
 function props()
 {
     if (selectedId === null) return;
-    var data = fileById[selectedId];
+    var data = fileById[selectedId],
+        form;
     // console.log(selectedId);
     if (!data.users) {
         var users = DirectoryAjax.callSync('GetFileUsers', {id:selectedId}),
@@ -288,17 +305,17 @@ function props()
         });
         data.users = id_set.join(', ');
     }
-    if (data.public && !data.dl_url) {
+    if (data['public'] && !data.dl_url) {
         data.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:selectedId});
     }
     if (data.is_dir) {
-        var form = cachedForms.viewDir;
+        form = cachedForms.viewDir;
         if (!form) {
             form = DirectoryAjax.callSync('DirectoryForm', {mode:'view'});
         }
         cachedForms.viewDir = form;
     } else {
-        var form = cachedForms.viewFile;
+        form = cachedForms.viewFile;
         if (!form) {
             form = DirectoryAjax.callSync('FileForm', {mode:'view'});
         }
@@ -481,7 +498,7 @@ function onUpload(response) {
         $('filename').value = filename;
         $('filetype').value = response.filetype;
         $('filesize').value = response.filesize;
-        if ($('frm_file').title.value == '') {
+        if ($('frm_file').title.value === '') {
             $('frm_file').title.value = filename;
         }
     }
@@ -505,7 +522,7 @@ function publishFile(published)
 function showFileURL(url)
 {
     var link = $('public_url');
-    if (url != '') {
+    if (url !== '') {
         link.innerHTML = link.href = url;
         link.show();
         $('btn_unpublic').show();
@@ -579,7 +596,7 @@ function share()
     users.each(function (user) {
         sharedFileUsers[user.id] = user.username;
     });
-    updateShareUsers()
+    updateShareUsers();
     pageBody.removeEvent('click', cancel);
 }
 
@@ -598,7 +615,7 @@ function toggleUsers(gid)
             input = new Element('input', {type:'checkbox', id:'chk_'+user.id, value:user.id}),
             label = new Element('label', {'for':'chk_'+user.id});
         input.set('checked', (sharedFileUsers[user.id] !== undefined));
-        input.addEvent('click', selectUser)
+        input.addEvent('click', selectUser);
         label.set('html', user.username);
         div.adopt(input, label);
         container.grab(div);
@@ -660,11 +677,12 @@ function formatSize(size, precision)
     } while (size > 1024);
 
     return Math.max(size, 1).toFixed(precision) + byteUnits[i];
-};
+}
 
 var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
     DirectoryStorage = new JawsStorage('Directory'),
     fileById = {},
+    iconByExt = {},
     usersByGroup = {},
     sharedFileUsers = {},
     cachedForms = {},
@@ -675,3 +693,31 @@ var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
     wsClickEvent = null,
     pageBody,
     selectedId;
+
+var fileTypes = {
+    'font-generic' : ['ttf', 'otf', 'fon', 'pfa', 'afm', 'pfb'],
+    'audio-generic' : ['mp3', 'wav', 'aac', 'flac', 'ogg', 'wma', 'cda', 'voc', 'midi', 'ac3', 'bonk', 'mod'],
+    'image-generic' : ['gif', 'png', 'jpg', 'jpeg', 'raw', 'bmp', 'tiff', 'svg'],
+    'package-generic' : ['tar', 'tar.gz', 'tgz', 'zip', 'gzip', 'rar', 'rpm', 'deb', 'iso', 'bz2', 'bak', 'gz'],
+    'video-generic' : ['mpg', 'mpeg', 'avi', 'wma', 'rm', 'asf', 'flv', 'mov'],
+    'help-contents' : ['hlp', 'chm', 'manual', 'man'],
+    'text-generic' : ['txt', ''],
+    'text-html' : ['html', 'htm', 'mht'],
+    'text-java' : ['jsp', 'java', 'jar'],
+    'text-python' : ['py'],
+    'text-script' : ['sh', 'pl', 'asp', 'c', 'css', 'htaccess'],
+    'office-document-template' : ['stw', 'ott'],
+    'office-document' : ['doc', 'docx', 'sxw', 'odt', 'rtf', 'sdw'],
+    'office-presentation-template' : ['pot', 'otp', 'sti'],
+    'office-presentation' : ['ppt', 'odp', 'sxi'],
+    'office-spreadsheet-template' : ['xlt', 'ots', 'stc'],
+    'office-spreadsheet' : ['xls', 'ods', 'sxc', 'sdc'],
+    'office-drawing-template' : [],
+    'office-drawing' : ['sxd', 'sda', 'sdd', 'odg'],
+    'application-executable' : ['exe'],
+    'application-php' : ['php', 'phps'],
+    'application-rss+xml' : ['xml', 'rss', 'atom', 'rdf'],
+    'application-pdf' : ['pdf'],
+    'application-flash' : ['swf'],
+    'application-ruby' : ['rb']
+}

@@ -5,7 +5,7 @@
       <tr><th>{lbl_title}:</th><td>{title}</td></tr>
       <tr><th>{lbl_desc}:</th><td>{desc}</td></tr>
       <tr><th>{lbl_filename}:</th><td>{filename}</td></tr>
-      <tr><th>{lbl_type}:</th><td>{filetype}</td></tr>
+      <tr><th>{lbl_type}:</th><td title="{filetype}">{type}</td></tr>
       <tr><th>{lbl_size}:</th><td>{size} ({filesize} {lbl_bytes})</td></tr>
       <tr><th>{lbl_owner}:</th><td>{username}</td></tr>
       <tr><th>{lbl_url}:</th><td>{url}</td></tr>
@@ -52,7 +52,7 @@
   </form>
 </fieldset>
 <div class="actions">
-  <button type="button" onclick="submitFile()">{lbl_ok}</button>
   <button type="button" onclick="cancel()">{lbl_cancel}</button>
+  <button type="button" onclick="submitFile()">{lbl_ok}</button>
 </div>
 <!-- END edit -->

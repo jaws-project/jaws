@@ -43,9 +43,10 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             $tpl->SetVariable('title', '{title}');
             $tpl->SetVariable('desc', '{description}');
             $tpl->SetVariable('filename', '{filename}');
+            $tpl->SetVariable('type', '{type}');
             $tpl->SetVariable('filetype', '{filetype}');
-            $tpl->SetVariable('filesize', '{filesize}');
             $tpl->SetVariable('size', '{size}');
+            $tpl->SetVariable('filesize', '{filesize}');
             $tpl->SetVariable('username', '{username}');
             $tpl->SetVariable('url', '{url}');
             $tpl->SetVariable('users', '{users}');

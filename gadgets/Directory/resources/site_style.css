@@ -55,33 +55,29 @@ box-shadow:0 0 2px #3a41af;
 background-color:#eaf0fc;
 }
 .file-icon{
-height:36px;
-background-position:center top;
-background-repeat:no-repeat;
-background-image:url(../../../images/mimetypes/text-generic.png);
+position:relative;
 }
-.type-folder{
-background-image:url(../images/folder.png);
-}
-.type-txt{
-background-image:url(../../../images/mimetypes/text-generic.png);
-}
-.type-php{
-background-image:url(../../../images/mimetypes/application-php.png);
-}
-.file-title{
-cursor:default;
-word-break:break-all;
-overflow:hidden;
+.file-icon img{
+width:32px;
 }
 .file-sharing{
-height:36px;
+position:absolute;
+top:50%;
+left:50%;
+display:inline-block;
+width:16px;
+height:16px;
 }
 .file-sharing.shared{
 background:url(../images/share.png) no-repeat center center;
 }
 .file-sharing.foreign{
 background:url(../images/users.png) no-repeat center center;
+}
+.file-title{
+cursor:default;
+word-break:break-all;
+overflow:hidden;
 }
 
 /* List View */

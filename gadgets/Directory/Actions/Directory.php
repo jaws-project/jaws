@@ -43,20 +43,14 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $tpl->SetVariable('UID', $user);
         $tpl->SetVariable('data_url', $GLOBALS['app']->getDataURL('directory/'));
-        $url = $GLOBALS['app']->Map->GetURLFor(
-            'Directory',
-            'DownloadFile',
-            // FIXME: we need to set variables with string
-            // array('uid' => '{uid}', 'id' => '{id}'),
-            array(),
-            true);
-        $tpl->SetVariable('download_url', $url);
+        $tpl->SetVariable('icon_url', 'images/mimetypes/');
 
         // File template
         $tpl->SetBlock('workspace/fileTemplate');
         $tpl->SetVariable('id', '{id}');
         $tpl->SetVariable('title', '{title}');
         $tpl->SetVariable('description', '{description}');
+        $tpl->SetVariable('icon', '{icon}');
         $tpl->SetVariable('type', '{type}');
         $tpl->SetVariable('size', '{size}');
         $tpl->SetVariable('username', '{username}');
