@@ -41,7 +41,12 @@
         <input type="hidden" name="action" value="UploadFile"/>
         <input type="hidden" name="attachment_number" id="attachment_number" value="1"/>
         <fieldset>
-            <legend><span>{lbl_attachments}</span></legend>
+            <legend id="legend_attachments" toggle-status="max">
+                <span>
+                    <img alt="toggle attachments maximize" src="{icon_remove}">
+                    {lbl_attachments}
+                </span>
+            </legend>
 
             <!-- BEGIN file -->
             <div>
@@ -51,10 +56,7 @@
             </div>
             <!-- END file -->
 
-            <div class="attach_actions">
-                <button value="Add attachment" id="btn_upload" name="btn_upload" type="button"
-                        style="text-decoration: none; display: inline-block;">Add attachment
-                </button>
+            <div class="attach_actions" id="attachment_area">
                 <img id="attach_loading" src="images/loading.gif"/>
 
                 <div id="btn_attach1">
@@ -66,13 +68,8 @@
                                                                                                 alt="Remove"
                                                                                                 src="images/stock/cancel.png"></a>
                 </div>
-                <!--<div class="wrapper"-->
-                     <!--onmouseover="$('btn_upload').style.textDecoration='underline'"-->
-                     <!--onmouseout="$('btn_upload').style.textDecoration='none'">-->
                     <input type="file" onchange="uploadFile();" id="attachment1" name="attachment1" size="1"
                            style="display: block;">
-                <!--</div>-->
-
 
                 <span id="attachment_addentry2">
                 </span>
@@ -84,16 +81,39 @@
 
 <div class="actions">
     <a href="{back_url}" class="button" id="btn_back">{lbl_back}</a>
-    <a class="button" href="javascript:saveDraft($('id').value)" id="btn_save_draft">{lbl_save_draft}</a>
-    <a class="button" href="javascript:composeMessage()" id="btn_send">{lbl_send}</a>
+    <a class="button" href="javascript:sendMessage(false)" id="btn_save_draft">{lbl_save_draft}</a>
+    <a class="button" href="javascript:sendMessage(true)" id="btn_send">{lbl_send}</a>
 </div>
 <!--</div>-->
 
 <script type="text/javascript">
     $('attachment1').show();
-    $('btn_upload').show();
     $('attach_loading').hide();
     $('btn_attach1').hide();
+
+    var toggleMax = "{icon_add}";
+    var toggleMin = "{icon_remove}";
+    $('attachment_area').toggle();
+
+    function ChangeToggleIcon(obj)
+    {
+        if ($(obj).get('toggle-status') == 'min') {
+            $(obj).getElementsByTagName('img')[0].src = toggleMin;
+            $(obj).set('toggle-status', 'max');
+        } else {
+            $(obj).getElementsByTagName('img')[0].src = toggleMax;
+            $(obj).set('toggle-status', 'min');
+        }
+    }
+
+    window.addEvent('domready', function() {
+
+        $('legend_attachments').addEvent('click', function(){
+            $('attachment_area').toggle();
+            ChangeToggleIcon(this);
+        });
+    });
+
 
     //    $('recipient_users').addEvent('keypress',function(e) {
 //        console.log(getUsers($('recipient_users').value));
