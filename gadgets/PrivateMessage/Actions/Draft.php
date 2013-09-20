@@ -23,12 +23,25 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
             return Jaws_HTTPError::Get(403);
         }
 
+        $this->AjaxMe('site_script.js');
         $page = jaws()->request->fetch('page', 'get');
         $page = empty($page)? 1 : (int)$page;
         $limit = (int)$this->gadget->registry->fetch('draft_limit');
         $tpl = $this->gadget->loadTemplate('Outbox.html');
         $tpl->SetBlock('outbox');
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_DRAFT'));
+        $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
+        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
+        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
+        $tpl->SetVariable('lbl_attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));
+        $tpl->SetVariable('filter', _t('PRIVATEMESSAGE_FILTER'));
+        $tpl->SetVariable('icon_filter', STOCK_SEARCH);
+
+        $tpl->SetBlock('outbox/actions');
+        $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
+        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('icon_ok', STOCK_OK);
+        $tpl->ParseBlock('outbox/actions');
 
         $date = $GLOBALS['app']->loadDate();
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');
@@ -46,7 +59,10 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
             foreach ($messages as $message) {
                 $i++;
                 $tpl->SetBlock('outbox/message');
-                $tpl->SetVariable('rownum', $i);
+                $tpl->SetBlock('outbox/message/checkbox');
+                $tpl->SetVariable('id', $message['id']);
+                $tpl->ParseBlock('outbox/message/checkbox');
+
                 $tpl->SetVariable('from', $message['from_nickname']);
                 $tpl->SetVariable('subject', $message['subject']);
                 $tpl->SetVariable('send_time', $date->Format($message['insert_time']));

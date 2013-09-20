@@ -1,10 +1,10 @@
 <!-- BEGIN outbox -->
 {alerts}
-<div class="gadget privateMessage inbox">
-    <h2>{title}</h2>
+<div class="gadget privateMessage outbox">
+    <div class="gadget_header"><h2>{title}</h2><div class="gadget_menubar">{menubar}</div></div>
     <!-- BEGIN response --><div class="gadget_response {type}">{text}</div><!-- END response -->
 
-    <form name="pm" action="{base_script}" method="post">
+    <form name="privatemessage" id="privatemessage" action="{base_script}" method="post">
         <input type="hidden" name="gadget" value="PrivateMessage"/>
         <input type="hidden" name="action" value="Outbox"/>
         <input type="hidden" name="page" value="{page}"/>
@@ -30,13 +30,12 @@
                     type="submit"><img src="{icon_filter}" alt="{filter}"/>&nbsp;{filter}
             </button>
         </div>
-    </form>
 
     <div class="content">
         <table>
             <thead>
             <tr>
-                <th>#</th>
+                <th><a href="javascript:toggleCheckboxes()">#</a></th>
                 <th>{lbl_from}</th>
                 <th>{lbl_subject}</th>
                 <th>{lbl_send_time}</th>
@@ -46,7 +45,12 @@
             <tbody>
             <!-- BEGIN message -->
             <tr>
-                <td>{rownum}</td>
+                <td>
+                    <!-- BEGIN checkbox -->
+                    <input type="checkbox" name="message_checkbox[]" value="{id}" class="table-checkbox">
+                    <!-- END checkbox -->
+                    {rownum}
+                </td>
                 <td>{from}</td>
                 <td><a href="{message_url}">{subject}</a></td>
                 <td>{send_time}</td>
@@ -57,6 +61,41 @@
 
         <!-- INCLUDE PageNavigation.html -->
 
+        <!-- BEGIN actions -->
+        <div class="actions">
+            <label for="outbox_actions_combo">{lbl_actions}:&nbsp;</label>
+            <select title="{lbl_actions}" id="outbox_actions_combo" name="outbox_actions_combo">
+                <option value="">&nbsp;</option>
+                <option value="delete">{lbl_delete}</option>
+            </select>
+
+            <button value="{lbl_actions}" id="action_button" name="action_button"
+                    onclick="javascript: return outboxDGAction();" ><img src="{icon_ok}" alt="{lbl_actions}"/>
+            </button>
+        </div>
+        <!-- END actions -->
+
     </div>
+    </form>
+
 </div>
+
+<script type="text/javascript">
+    function toggleCheckboxes(){
+        do_check = !do_check;
+        $$('.table-checkbox').each(function(el) { el.checked = do_check; });
+    }
+    var do_check = false;
+
+    function outboxDGAction() {
+        var action = document.getElementById("outbox_actions_combo").value;
+        if(action == 'delete') {
+            document.privatemessage.action.value = 'DeleteOutboxMessage';
+        } else {
+            return;
+        }
+        document.getElementById("privatemessage").submit();
+        return true;
+    }
+</script>
 <!-- END outbox -->

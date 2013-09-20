@@ -23,6 +23,7 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
             return Jaws_HTTPError::Get(403);
         }
 
+        $this->AjaxMe('site_script.js');
         $tpl = $this->gadget->loadTemplate('Outbox.html');
         $tpl->SetBlock('outbox');
 

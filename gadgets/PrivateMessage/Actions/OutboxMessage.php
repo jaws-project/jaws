@@ -174,7 +174,7 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
             );
         }
 
-        if ($res === true) {
+        if ($res == true) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('PRIVATEMESSAGE_MESSAGE_DELETED'),
                 'PrivateMessage.Message',
@@ -187,7 +187,7 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
                 RESPONSE_ERROR
             );
         }
-        Jaws_Header::Location($this->gadget->urlMap('Inbox'));
+        Jaws_Header::Location($this->gadget->urlMap('Draft'));
     }
 
     /**
