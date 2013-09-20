@@ -271,6 +271,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         if (!empty($messageData['id']) && $messageData['id'] > 0) {
             $data['subject']            = $messageData['subject'];
             $data['body']               = $messageData['body'];
+            $data['published']          = $messageData['published'];
             $data['attachments']        = count($messageData['attachments']);
             $data['recipient_users']    = $messageData['recipient_users'];
             $data['recipient_groups']   = $messageData['recipient_groups'];

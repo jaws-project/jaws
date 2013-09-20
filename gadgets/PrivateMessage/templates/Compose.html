@@ -15,12 +15,14 @@
         <div class="content">
             <div>
                 <label for="recipient_users">{lbl_recipient_users}:</label>
-                <input name="recipient_users" id="recipient_users" type="text" value="{recipient_users}"/>
+                <!--<input name="recipient_users" id="recipient_users" type="text" value="{recipient_users}"/>-->
+                {recipient_users_opt}
             </div>
 
             <div>
                 <label for="recipient_groups">{lbl_recipient_groups}:</label>
-                <input name="recipient_groups" id="recipient_groups" type="text" value="{recipient_groups}"/>
+                <!--<input name="recipient_groups" id="recipient_groups" type="text" value="{recipient_groups}"/>-->
+                {recipient_groups_opt}
             </div>
 
             <div>
@@ -41,9 +43,9 @@
         <input type="hidden" name="action" value="UploadFile"/>
         <input type="hidden" name="attachment_number" id="attachment_number" value="1"/>
         <fieldset>
-            <legend id="legend_attachments" toggle-status="max">
+            <legend id="legend_attachments" toggle-status="min">
                 <span>
-                    <img alt="toggle attachments maximize" src="{icon_remove}">
+                    <img alt="toggle attachments maximize" src="{icon_add}">
                     {lbl_attachments}
                 </span>
             </legend>

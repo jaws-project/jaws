@@ -78,6 +78,35 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $body->SetWidth('100%');
         $tpl->SetVariable('body', $body->Get());
 
+
+        // User List
+        $bUsers =& Piwi::CreateWidget('Combo', 'recipient_users');
+        $bUsers->SetID('recipient_users');
+        $bUsers->AddOption('None user', '');
+        $bUsers->setMultiple(true);
+        require_once JAWS_PATH . 'include/Jaws/User.php';
+        $userModel = new Jaws_User();
+        $users = $userModel->GetUsers();
+        foreach($users as $user) {
+            $bUsers->AddOption($user['nickname'], $user['id']);
+        }
+        $tpl->SetVariable('recipient_users_opt', $bUsers->Get());
+
+        // Group List
+        $bGroups =& Piwi::CreateWidget('Combo', 'recipient_groups');
+        $bGroups->SetID('recipient_groups');
+        $bGroups->AddOption('None group', '');
+        $bGroups->setMultiple(true);
+        require_once JAWS_PATH . 'include/Jaws/User.php';
+        $userModel = new Jaws_User();
+        $groups = $userModel->GetGroups(true);
+        foreach($groups as $group) {
+            $bGroups->AddOption($group['title'], $group['id']);
+        }
+        $tpl->SetVariable('recipient_groups_opt', $bGroups->Get());
+
+
+
         $tpl->SetVariable('lbl_recipient_users', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS'));
         $tpl->SetVariable('lbl_recipient_groups', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS'));
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));

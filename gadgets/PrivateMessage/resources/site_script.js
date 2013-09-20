@@ -29,6 +29,8 @@ var PrivateMessageCallback = {
 function resetAttachments(message_id) {
     var ui = pmAjax.callSync('GetMessageAttachmentUI', {'id': message_id});
     $('attachment_area').set('html', ui);
+    uploadedFiles = new Array();
+    lastAttachment = 1;
     $('attachment1').show();
     $('attach_loading').hide();
     $('btn_attach1').hide();
@@ -136,6 +138,21 @@ function getGroups(term) {
  * send a message
  */
 function sendMessage(published) {
+    var recipient_users_array = new Array();
+    var recipient_groups_array = new Array();
+    $$('#recipient_users').getSelected()[0].each(function (i) {
+        if (i.get('value').length>0) {
+            recipient_users_array.push(i.get('value'));
+        }
+    });
+    $$('#recipient_groups').getSelected()[0].each(function (i) {
+        if (i.get('value')!="") {
+            recipient_groups_array.push(i.get('value'));
+        }
+    });
+    var recipient_users = recipient_users_array.join(',');
+    var recipient_groups = recipient_groups_array.join(',');
+
     var attachments = uploadedFiles.concat(getSelectedAttachments());
     pmAjax.callAsync('ComposeMessage', {'id': $('id').value, 'parent':$('parent').value, 'published':published,
                      'recipient_users':$('recipient_users').value, 'recipient_groups':$('recipient_groups').value,
