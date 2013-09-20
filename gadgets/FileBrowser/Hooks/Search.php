@@ -27,11 +27,13 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
             return array();
         }
 
+        $match['all'] = array_map('preg_quote', $match['all']);
         $pattern = '';
         if (!empty($match['all'])) {
             $pattern = '(' . implode(').*(', $match['all']) . ')';
         }
 
+        $match['exact'] = array_map('preg_quote', $match['exact']);
         if (!empty($match['exact'])) {
             if (empty($pattern)) {
                 $pattern = '(' . implode(' ', $match['exact']) . ')';
@@ -40,6 +42,7 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
             }
         }
 
+        $match['least'] = array_map('preg_quote', $match['least']);
         if (!empty($match['least'])) {
             if (empty($pattern)) {
                 $pattern = '(' . implode(')|(', $match['least']) . ')';
@@ -51,7 +54,7 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
 
         require_once PEAR_PATH. 'File/Find.php';
         $path  = JAWS_DATA . 'files';
-        $files = &File_Find::search('/'.$pattern.'/i', $path, 'perl', false, 'both');
+        $files = &File_Find::search('$'.$pattern.'$i', $path, 'perl', false, 'both');
 
         //Load model
         $model = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
