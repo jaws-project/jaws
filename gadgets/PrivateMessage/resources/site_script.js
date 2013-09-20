@@ -138,20 +138,26 @@ function getGroups(term) {
  * send a message
  */
 function sendMessage(published) {
-    var recipient_users_array = new Array();
-    var recipient_groups_array = new Array();
-    $$('#recipient_users').getSelected()[0].each(function (i) {
-        if (i.get('value').length>0) {
-            recipient_users_array.push(i.get('value'));
-        }
-    });
-    $$('#recipient_groups').getSelected()[0].each(function (i) {
-        if (i.get('value')!="") {
-            recipient_groups_array.push(i.get('value'));
-        }
-    });
-    var recipient_users = recipient_users_array.join(',');
-    var recipient_groups = recipient_groups_array.join(',');
+
+    if (recipient_user == "" || recipient_user.length == 0) {
+        var recipient_users_array = new Array();
+        var recipient_groups_array = new Array();
+        $$('#recipient_users').getSelected()[0].each(function (i) {
+            if (i.get('value').length > 0) {
+                recipient_users_array.push(i.get('value'));
+            }
+        });
+        $$('#recipient_groups').getSelected()[0].each(function (i) {
+            if (i.get('value') != "") {
+                recipient_groups_array.push(i.get('value'));
+            }
+        });
+        var recipient_users = recipient_users_array.join(',');
+        var recipient_groups = recipient_groups_array.join(',');
+    } else {
+        var recipient_users = recipient_user;
+        var recipient_groups = "";
+    }
 
     var attachments = uploadedFiles.concat(getSelectedAttachments());
     pmAjax.callAsync('ComposeMessage', {'id': $('id').value, 'parent':$('parent').value, 'published':published,

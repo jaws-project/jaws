@@ -34,6 +34,7 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $body_value = "";
         $recipient_users = array();
         $recipient_groups = array();
+        $show_recipient = true;
         if (!empty($id) && $id > 0) {
             $message = $model->GetMessage($id, true, false);
             $tpl->SetVariable('parent', $message['parent']);
@@ -42,7 +43,7 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
             if (empty($get['reply'])) {
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
                 $recipient_users = explode(",", $message['recipient_users']);
-                $recipient_groups = explode(",",  $message['recipient_groups']);
+                $recipient_groups = explode(",", $message['recipient_groups']);
                 $tpl->SetVariable('id', $id);
                 $body_value = $message['body'];
                 $tpl->SetVariable('subject', $message['subject']);
@@ -52,20 +53,24 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
 
             // reply a message
             } else if (!empty($get['reply']) && $get['reply'] == 'true') {
+                $show_recipient = false;
                 $tpl->SetVariable('parent', $id);
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_REPLY'));
-                $recipient_users = array($message['recipient_users']);
                 $tpl->SetVariable('subject', _t('PRIVATEMESSAGE_REPLY_ON', $message['subject']));
+                $tpl->SetVariable('recipient_user', $message['user']);
+                $recipient_users = array($message['user']);
+
+                $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
+                $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id, false));
+
             // forward a message
             } else if (!empty($get['reply']) && $get['reply'] == 'false') {
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_FORWARD_MESSAGE'));
                 $body_value = $message['body'];
                 $tpl->SetVariable('subject', $message['subject']);
 
-                if (!empty($message['attachments'])) {
-                    $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
-                    $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id));
-                }
+                $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
+                $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id));
             }
         } else {
             $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
@@ -78,38 +83,55 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $body->SetWidth('100%');
         $tpl->SetVariable('body', $body->Get());
 
-        // User List
-        $bUsers =& Piwi::CreateWidget('Combo', 'recipient_users');
-        $bUsers->SetID('recipient_users');
-        $bUsers->AddOption('None user', '');
-        $bUsers->setMultiple(true);
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User();
-        $users = $userModel->GetUsers();
-        foreach($users as $user) {
-            $bUsers->AddOption($user['nickname'], $user['id']);
+        if ($show_recipient) {
+            $tpl->SetBlock('compose/recipients');
+            // User List
+            $bUsers =& Piwi::CreateWidget('Combo', 'recipient_users');
+            $bUsers->SetID('recipient_users');
+            $bUsers->AddOption('None user', '');
+            $bUsers->setMultiple(true);
+            $users = $userModel->GetUsers();
+            foreach ($users as $user) {
+                $bUsers->AddOption($user['nickname'], $user['id']);
+            }
+            $bUsers->setDefault($recipient_users);
+            $tpl->SetVariable('lbl_recipient_users', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS'));
+            $tpl->SetVariable('recipient_users_opt', $bUsers->Get());
+
+            // Group List
+            $bGroups =& Piwi::CreateWidget('Combo', 'recipient_groups');
+            $bGroups->SetID('recipient_groups');
+            $bGroups->AddOption('None group', '');
+            $bGroups->setMultiple(true);
+            $groups = $userModel->GetGroups(true);
+            foreach ($groups as $group) {
+                $bGroups->AddOption($group['title'], $group['id']);
+            }
+            $bGroups->setDefault($recipient_groups);
+            $tpl->SetVariable('lbl_recipient_groups', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS'));
+            $tpl->SetVariable('recipient_groups_opt', $bGroups->Get());
+            $tpl->ParseBlock('compose/recipients');
+        } else {
+            $tpl->SetBlock('compose/recipient');
+            $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT'));
+            $user_info = $userModel->GetUser($recipient_users[0]);
+
+            // user's profile
+            $tpl->SetVariable(
+                'recipient_user_url',
+                $GLOBALS['app']->Map->GetURLFor(
+                    'Users',
+                    'Profile',
+                    array('user' => $user_info['username'])
+                )
+            );
+            $tpl->SetVariable('recipient_user', $user_info['nickname']);
+
+            $tpl->ParseBlock('compose/recipient');
         }
-        $bUsers->setDefault($recipient_users);
-        $tpl->SetVariable('recipient_users_opt', $bUsers->Get());
 
-        // Group List
-        $bGroups =& Piwi::CreateWidget('Combo', 'recipient_groups');
-        $bGroups->SetID('recipient_groups');
-        $bGroups->AddOption('None group', '');
-        $bGroups->setMultiple(true);
-        require_once JAWS_PATH . 'include/Jaws/User.php';
-        $userModel = new Jaws_User();
-        $groups = $userModel->GetGroups(true);
-        foreach($groups as $group) {
-            $bGroups->AddOption($group['title'], $group['id']);
-        }
-        $bGroups->setDefault($recipient_groups);
-        $tpl->SetVariable('recipient_groups_opt', $bGroups->Get());
-
-
-
-        $tpl->SetVariable('lbl_recipient_users', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS'));
-        $tpl->SetVariable('lbl_recipient_groups', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS'));
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_body', _t('PRIVATEMESSAGE_MESSAGE_BODY'));
         $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
@@ -132,10 +154,11 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
      * Get Message Attachment UI
      *
      * @access  public
-     * @param   integer $message_id   Message Id
+     * @param   integer $message_id         Message Id
+     * @param   bool    $loadAttachments    Load and show message attachments (parent message attachments)
      * @return  string XHTML template content
      */
-    function GetMessageAttachmentUI($message_id = null)
+    function GetMessageAttachmentUI($message_id = null, $loadAttachments = true)
     {
         $this->gadget->CheckPermission('ComposeMessage');
 
@@ -147,7 +170,7 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('Compose.html');
         $tpl->SetBlock('attachments');
 
-        if (!empty($message_id)) {
+        if ($loadAttachments && !empty($message_id)) {
             $message = $model->GetMessage($message_id, true, false);
 
             foreach ($message['attachments'] as $file) {

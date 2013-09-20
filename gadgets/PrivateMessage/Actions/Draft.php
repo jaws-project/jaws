@@ -103,11 +103,11 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
             );
         }
 
-        if ($res == true) {
+        if ($res === true) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('PRIVATEMESSAGE_MESSAGE_DRAFTED'),
                 'PrivateMessage.Message',
-                RESPONSE_ERROR
+                RESPONSE_NOTICE
             );
         } else {
             $GLOBALS['app']->Session->PushResponse(

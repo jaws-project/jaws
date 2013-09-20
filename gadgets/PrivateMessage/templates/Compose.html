@@ -13,6 +13,8 @@
         <input type="hidden" name="parent" id="parent" value="{parent}"/>
 
         <div class="content">
+
+            <!-- BEGIN recipients -->
             <div>
                 <label for="recipient_users">{lbl_recipient_users}:</label>
                 {recipient_users_opt}
@@ -22,6 +24,14 @@
                 <label for="recipient_groups">{lbl_recipient_groups}:</label>
                 {recipient_groups_opt}
             </div>
+            <!-- END recipients -->
+
+             <!-- BEGIN recipient -->
+            <div>
+                <label for="recipient">{lbl_recipient}:</label>
+                <a href="{recipient_user_url}">{recipient_user}</a>
+            </div>
+            <!-- END recipient -->
 
             <div>
                 <label for="subject">{lbl_subject}:</label>
@@ -64,6 +74,7 @@
 <script type="text/javascript">
     var toggleMax = "{icon_add}";
     var toggleMin = "{icon_remove}";
+    var recipient_user = "{recipient_user}";
 
     $('attachment1').show();
     $('attach_loading').hide();
