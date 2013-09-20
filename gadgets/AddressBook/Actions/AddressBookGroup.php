@@ -54,8 +54,10 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_address', _t('ADDRESSBOOK_ITEMS_ADDRESS'));
         $tpl->SetVariable('icon_add', STOCK_ADD);
 
-        $tpl->SetVariable('back_to_groups', _t('ADDRESSBOOK_GROUP_BACK_TO_GROUPS_LIST'));
-        $tpl->SetVariable('back_to_groups_link', $this->gadget->urlMap('ManageGroups'));
+        $tpl->SetVariable('address_list_link', $this->gadget->urlMap('AddressBook'));
+        $tpl->SetVariable('address_list',    _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
+        $tpl->SetVariable('groups_link', $this->gadget->urlMap('ManageGroups'));
+        $tpl->SetVariable('groups', _t('ADDRESSBOOK_GROUPS_MANAGE'));
 
         $notInGroupAddress = $model->GetAddressListNotInGroup($gid, $user);
         if (!Jaws_Error::IsError($notInGroupAddress) || !empty($notInGroupAddress)) {

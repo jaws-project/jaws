@@ -137,7 +137,9 @@ class AddressBook_Model_AddressBookGroup extends Jaws_Gadget_Model
         if (Jaws_Error::IsError($addressItems)) {
             return $result;
         } else if (is_array($result) && count($result) > 0) {
-            $agTable->where('id', $result, 'not in');
+            $agTable->where('id', $result, 'not in')->and()->where('user', $user);
+        } else {
+            $agTable->where('user', $user);
         }
         $agTable->table('address_book')->select('*');
         return $agTable->fetchAll();

@@ -101,23 +101,20 @@ class AddressBook_Actions_ViewAddress extends AddressBook_HTML
             }
         }
 
+        $tpl->SetBlock('address/menu_bar');
+        $tpl->SetVariable('address_list_link', $this->gadget->urlMap('AddressBook'));
+        $tpl->SetVariable('address_list',    _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
+        $tpl->SetVariable('groups_link', $this->gadget->urlMap('ManageGroups'));
+        $tpl->SetVariable('groups', _t('ADDRESSBOOK_GROUPS_MANAGE'));
+        $tpl->ParseBlock('address/menu_bar');
+
         $tpl->SetBlock('address/actions');
         if ($info['user'] == $GLOBALS['app']->Session->GetAttribute('user')) {
             $tpl->SetBlock('address/actions/action');
             $tpl->SetVariable('action_lbl', _t('GLOBAL_EDIT'));
             $tpl->SetVariable('action_url', $this->gadget->urlMap('EditAddress', array('id' => $info['id'])));
             $tpl->ParseBlock('address/actions/action');
-
-            $tpl->SetBlock('address/actions/action');
-            $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_VIEW_ALL_ADDREESS_MY'));
-            $tpl->SetVariable('action_url', $this->gadget->urlMap('AddressBook'));
-            $tpl->ParseBlock('address/actions/action');
         } else {
-            $tpl->SetBlock('address/actions/action');
-            $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_VIEW_ALL_ADDREESS_MY'));
-            $tpl->SetVariable('action_url', $this->gadget->urlMap('AddressBook'));
-            $tpl->ParseBlock('address/actions/action');
-
             $usrModel = new Jaws_User;
             $user = $usrModel->GetUser((int) $info['user']);
             if (!Jaws_Error::IsError($user) && !empty($user)) {

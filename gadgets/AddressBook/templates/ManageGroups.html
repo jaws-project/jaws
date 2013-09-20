@@ -1,10 +1,10 @@
 <!-- BEGIN groups -->
 <div class="gadget addressbook_list">
   <h2>{title}</h2>
+  <ul class="gadget_menubar"><li><a href="{address_list_link}">{address_list}</a></li></ul>
   <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
   <div class="content">
-    <div class="addressbook_navbar"><a class="button" href="{address_list_link}">{address_list}</a></div>
-    <div class="filters"></div>
+    <div class="addressbook_list_search"></div>
     <table>
       <tr>
         <th>{lbl_name}</th>
@@ -17,7 +17,7 @@
         <td>{description}</td>
         <td>
           <!-- BEGIN action -->
-            <a class="button" href="{action_url}" title="{action_lbl}">{action_lbl}</a>
+            <a href="{action_url}" title="{action_lbl}"><img src="{icon}" alt="{action_lbl}" /></a>
           <!-- END action -->
         </td>
       </tr>

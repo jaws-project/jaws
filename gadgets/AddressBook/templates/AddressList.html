@@ -1,25 +1,24 @@
 <!-- BEGIN list -->
 <table>
-  <thead>
+ <thead>
   <tr>
-    <th>{lbl_name}</th>
+    <!--<th></th>-->
+    <th style="width: 270px;">{lbl_name}</th>
     <th>{lbl_title}</th>
-    <th>{lbl_actions}</th>
+    <th style="width: 70px;">{lbl_actions}</th>
   </tr>
-  </thead>
-  <tbody>
+ </thead>
   <!-- BEGIN item1 -->
   <tr>
     <!--<td><input type="checkbox" name="adr[{index}]" id="adr_{index}" value="true" /></td>-->
-    <td><a href="{view_url}" id="aid_{index}">{name}</a></td>
+    <td><!-- BEGIN is_public -->*<!-- END is_public --><a href="{view_url}" id="aid_{index}">{name}</a></td>
     <td>{title}</td>
     <td>
       <!-- BEGIN action -->
-        <a class="button" href="{action_url}" title="{action_lbl}">{action_lbl}</a>
+        <a href="{action_url}" title="{action_lbl}"><img src="{icon}" alt="{action_lbl}" /></a>
       <!-- END action -->
     </td>
   </tr>
   <!-- END item1 -->
-  </tbody>
 </table>
 <!-- END list -->

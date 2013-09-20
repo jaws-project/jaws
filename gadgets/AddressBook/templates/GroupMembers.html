@@ -1,6 +1,10 @@
 <!-- BEGIN address_list -->
 <div class="gadget addressbook_list">
   <h2>{title}</h2>
+  <ul class="gadget_menubar">
+    <li><a href="{address_list_link}">{address_list}</a></li>
+    <li><a href="{groups_link}">{groups}</a></li>
+  </ul>
   <div class="content">
   <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
     <div class="addressbook_group">
@@ -33,9 +37,6 @@
       </tr>
       <!-- END item1 -->
     </table>
-    <div class="actions">
-        <a class="button" href="{back_to_groups_link}" title="{back_to_groups}" >{back_to_groups}</a>
-    </div>
   </div>
 </div>
 <!-- END address_list -->

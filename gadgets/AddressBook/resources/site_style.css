@@ -1,8 +1,21 @@
+table {
+border: 1px solid #CCCCCC;
+border-collapse: collapse;
+border-spacing: 0;
+width: 95%;
+}
+table th {
+background-color: #EEEEEE;
+border: 1px solid #CCCCCC;
+padding: 1px;
+}
+table td {border: 1px solid #CCCCCC; padding: 2px 4px;}
 .addressbook_image {float: right;}
-#addressbook_name, #addressbook_firstname, #addressbook_lastname, #addressbook_nickname {width: 380px;}
+#addressbook_nickname {width: 410px;}
+#addressbook_firstname {width: 190px;}
+#addressbook_lastname {width: 205px;}
 #addTelButton, #addEmailButton, #addAdrButton, #addUrlButton,
-#removeTelButton, #removeEmailButton, #removeAdrButton, #removeUrlButton
- {padding: 0;}
+#removeTelButton, #removeEmailButton, #removeAdrButton, #removeUrlButton {padding: 0;}
 .addressbook #email_p, .addressbook #tel_p {
 border-bottom: 1px dashed #CCCCCC;
 margin-bottom: 5px;
