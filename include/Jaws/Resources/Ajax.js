@@ -767,7 +767,7 @@ function toJSON(v) {
             object: function (x) {
                 if (x) {
                     var a = [], b, f, i, l, v;
-                    if (x instanceof Array && x[0] != undefined) {
+                    if (x instanceof Array) {
                         a[0] = '[';
                         l = x.length;
                         for (i = 0; i < l; i += 1) {
@@ -785,7 +785,7 @@ function toJSON(v) {
                             }
                         }
                         a[a.length] = ']';
-                    } else if (x instanceof Object) {
+                    } else if ((x instanceof Object) || (typeof x) == 'object') {
                         a[0] = '{';
                         for (i in x) {
                             v = x[i];
