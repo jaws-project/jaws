@@ -29,6 +29,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         if($getRecipients) {
             $columns[] = 'pm_recipients.read:boolean';
             $columns[] = 'pm_recipients.archived:boolean';
+            $columns[] = 'pm_recipients.recipient:integer';
         } else {
             $subTable = Jaws_ORM::getInstance()->table('pm_recipients');
             $subTable->select('count(id)')->where('read', true)->and()->where('message', (int)$id)->alias('read_count');
@@ -38,7 +39,6 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $table->select($columns);
         $table->join('users', 'pm_messages.user', 'users.id');
         if($getRecipients) {
-            $columns[] = 'pm_recipients.read:boolean';
             $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message');
             $table->where('pm_recipients.id', (int)$id);
         } else {
@@ -159,15 +159,20 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   array    $ids     Message ids
+     * @param   integer  $user     User id
      * @return  mixed    True or Jaws_Error on failure
      */
-    function ArchiveInboxMessage($ids)
+    function ArchiveInboxMessage($ids, $user)
     {
         if (!is_array($ids) && $ids > 0) {
             $ids = array($ids);
         }
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
-        $result = $table->update(array('archived' => true))->where('id', $ids, 'in')->exec();
+        $table->update(array('archived' => true))->where('id', $ids, 'in');
+        if($user!=null) {
+            $table->and()->where('recipient', $user);
+        }
+        $result = $table->exec();
         return $result;
     }
 
@@ -247,7 +252,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
     {
         // merge recipient users & groups to an array
         $recipient_users = array();
-        if (!empty($messageData['recipient_users'])) {
+        if ($messageData['recipient_users'] == '0' || !empty($messageData['recipient_users'])) {
             $recipient_users = explode(",", $messageData['recipient_users']);
         }
         if (!empty($messageData['recipient_groups'])) {
@@ -363,9 +368,13 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
         $rData = array();
         foreach ($recipient_users as $recipient_user) {
-            $rData[] = array($message_id, $recipient_user);
+            $read = false;
+            if($recipient_user==0) {
+                $read = true;
+            }
+            $rData[] = array($message_id, $recipient_user, $read);
         }
-        $res = $table->insertAll(array('message', 'recipient'), $rData)->exec();
+        $res = $table->insertAll(array('message', 'recipient', 'read'), $rData)->exec();
         if (Jaws_Error::IsError($res)) {
             return false;
         }

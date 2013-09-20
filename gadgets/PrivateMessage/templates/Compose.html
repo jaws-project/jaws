@@ -16,11 +16,23 @@
 
             <!-- BEGIN recipients -->
             <div>
+                {lbl_recipient}:
+            </div>
+            <!-- BEGIN all_users -->
+            <div>
+                <label for="recipient_all_users">
+                    <input type="checkbox" value="comments" id="recipient_all_users" name="recipient_all_users"
+                            onclick="toggleAllUsersChk(this)">
+                    {lbl_recipient_all_users}
+                </label>
+            </div>
+            <!-- END all_users -->
+            <div id="recipient_users_area">
                 <label for="recipient_users">{lbl_recipient_users}:</label>
                 {recipient_users_opt}
             </div>
 
-            <div>
+            <div id="recipient_groups_area">
                 <label for="recipient_groups">{lbl_recipient_groups}:</label>
                 {recipient_groups_opt}
             </div>
@@ -80,6 +92,17 @@
     $('attach_loading').hide();
     $('btn_attach1').hide();
     $('attachment_area').toggle();
+
+    function toggleAllUsersChk(cb)
+    {
+        if(cb.checked) {
+            $('recipient_users').set('disabled', true);
+            $('recipient_groups').set('disabled', true);
+        } else {
+            $('recipient_users').set('disabled', false);
+            $('recipient_groups').set('disabled', false);
+        }
+    }
 
     function ChangeToggleIcon(obj)
     {

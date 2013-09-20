@@ -20,6 +20,7 @@ define('_EN_PRIVATEMESSAGE_ACL_DELETEMESSAGE', "Delete message");
 define('_EN_PRIVATEMESSAGE_ACL_ARCHIVEMESSAGE', "Archive message");
 define('_EN_PRIVATEMESSAGE_ACL_REPLYMESSAGE', "Reply message");
 define('_EN_PRIVATEMESSAGE_ACL_COMPOSEMESSAGE', "Compose message");
+define('_EN_PRIVATEMESSAGE_ACL_COMPOSEMESSAGETOALLUSERS', "Compose message to all users");
 
 /* Layout Actions */
 define('_EN_PRIVATEMESSAGE_ACTIONS_PRIVATEMESSAGE', "Private Message");
@@ -33,8 +34,6 @@ define('_EN_PRIVATEMESSAGE_MESSAGE_SEND_TIME', "Send Time");
 define('_EN_PRIVATEMESSAGE_MESSAGE_ATTACHMENTS', "Attachments");
 define('_EN_PRIVATEMESSAGE_MESSAGE_ATTACHMENT', "Attachment");
 define('_EN_PRIVATEMESSAGE_MESSAGE_CONFIRM_DELETE', "Delete this message?");
-define('_EN_PRIVATEMESSAGE_PREVIOUS_MESSAGE', "Previous message");
-define('_EN_PRIVATEMESSAGE_NEXT_MESSAGE', "Next message");
 
 /* Reply */
 define('_EN_PRIVATEMESSAGE_REPLY', "Reply");
@@ -45,8 +44,9 @@ define('_EN_PRIVATEMESSAGE_COMPOSE', "Compose");
 define('_EN_PRIVATEMESSAGE_SEND', "Send");
 define('_EN_PRIVATEMESSAGE_SAVE_DRAFT', "Save draft");
 define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT', "Recipient");
-define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS', "Recipient users");
-define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS', "Recipient groups");
+define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_ALL_USERS', "All users");
+define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS', "Users");
+define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS', "Groups");
 define('_EN_PRIVATEMESSAGE_FORWARD_MESSAGE', "Forward a message");
 
 /* Common */

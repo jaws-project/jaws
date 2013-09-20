@@ -139,21 +139,28 @@ function getGroups(term) {
  */
 function sendMessage(published) {
 
+    // detect pre load users or groups list
     if (recipient_user == "" || recipient_user.length == 0) {
-        var recipient_users_array = new Array();
-        var recipient_groups_array = new Array();
-        $$('#recipient_users').getSelected()[0].each(function (i) {
-            if (i.get('value').length > 0) {
-                recipient_users_array.push(i.get('value'));
-            }
-        });
-        $$('#recipient_groups').getSelected()[0].each(function (i) {
-            if (i.get('value') != "") {
-                recipient_groups_array.push(i.get('value'));
-            }
-        });
-        var recipient_users = recipient_users_array.join(',');
-        var recipient_groups = recipient_groups_array.join(',');
+        // check All users checkbox
+        if($('recipient_all_users').get('checked')) {
+            var recipient_users = '0';
+            var recipient_groups = '';
+        } else {
+            var recipient_users_array = new Array();
+            var recipient_groups_array = new Array();
+            $$('#recipient_users').getSelected()[0].each(function (i) {
+                if (i.get('value').length > 0) {
+                    recipient_users_array.push(i.get('value'));
+                }
+            });
+            $$('#recipient_groups').getSelected()[0].each(function (i) {
+                if (i.get('value') != "") {
+                    recipient_groups_array.push(i.get('value'));
+                }
+            });
+            var recipient_users = recipient_users_array.join(',');
+            var recipient_groups = recipient_groups_array.join(',');
+        }
     } else {
         var recipient_users = recipient_user;
         var recipient_groups = "";

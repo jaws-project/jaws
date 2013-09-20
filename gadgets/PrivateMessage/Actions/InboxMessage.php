@@ -100,12 +100,6 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
             $tpl->SetVariable('icon_history',   STOCK_UNDO);
             $tpl->SetVariable('history',        _t('PRIVATEMESSAGE_HISTORY'));
             $tpl->ParseBlock('message/history');
-
-//            $tpl->SetBlock('message/message_nav');
-//            $tpl->SetVariable('message_nav_url', $this->gadget->urlMap('Message',
-//                array('id' => $message['parent'])));
-//            $tpl->SetVariable('message_nav', _t('PRIVATEMESSAGE_PREVIOUS_MESSAGE'));
-//            $tpl->ParseBlock('message/message_nav');
         }
 
         $tpl->SetBlock('message/reply');
@@ -114,24 +108,21 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
         $tpl->SetVariable('reply', _t('PRIVATEMESSAGE_REPLY'));
         $tpl->ParseBlock('message/reply');
 
-        $tpl->SetBlock('message/unread');
-        $tpl->SetVariable('unread_url', $this->gadget->urlMap('ChangeMessageRead',
-            array('id' => $id, 'status' => 'unread')));
-        $tpl->SetVariable('icon_unread', STOCK_EMPTY);
-        $tpl->SetVariable('unread', _t('PRIVATEMESSAGE_UNREAD'));
-        $tpl->ParseBlock('message/unread');
+        if ($message['recipient'] != 0) {
+            $tpl->SetBlock('message/unread');
+            $tpl->SetVariable('unread_url', $this->gadget->urlMap('ChangeMessageRead',
+                array('id' => $id, 'status' => 'unread')));
+            $tpl->SetVariable('icon_unread', STOCK_EMPTY);
+            $tpl->SetVariable('unread', _t('PRIVATEMESSAGE_UNREAD'));
+            $tpl->ParseBlock('message/unread');
 
-//        $tpl->SetBlock('message/delete');
-//        $tpl->SetVariable('icon_delete', STOCK_DELETE);
-//        $tpl->ParseBlock('message/delete');
-//        $tpl->SetVariable('delete_url', $this->gadget->urlMap('DeleteInboxMessage', array('id' => $id)));
-
-        if (!$message['archived']) {
-            $tpl->SetBlock('message/archive');
-            $tpl->SetVariable('icon_archive', STOCK_DOWN);
-            $tpl->SetVariable('archive', _t('PRIVATEMESSAGE_ARCHIVE'));
-            $tpl->SetVariable('archive_url', $this->gadget->urlMap('ArchiveInboxMessage', array('id' => $id)));
-            $tpl->ParseBlock('message/archive');
+            if (!$message['archived']) {
+                $tpl->SetBlock('message/archive');
+                $tpl->SetVariable('icon_archive', STOCK_DOWN);
+                $tpl->SetVariable('archive', _t('PRIVATEMESSAGE_ARCHIVE'));
+                $tpl->SetVariable('archive_url', $this->gadget->urlMap('ArchiveInboxMessage', array('id' => $id)));
+                $tpl->ParseBlock('message/archive');
+            }
         }
 
         if ($message['published']) {
@@ -171,7 +162,8 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
             $ids = $post;
         }
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
-        $res = $model->ArchiveInboxMessage($ids);
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
+        $res = $model->ArchiveInboxMessage($ids, $user);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
                 $res->getMessage(),
@@ -248,7 +240,6 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
     {
         $get = jaws()->request->fetch(array('id', 'status'), 'get');
         $post = jaws()->request->fetch(array('message_checkbox:array', 'status'), 'post');
-//        $user = $GLOBALS['app']->Session->GetAttribute('user');
         if(!empty($post['message_checkbox']) && count($post['message_checkbox'])>0) {
             $ids = $post['message_checkbox'];
             $status = $post['status'];

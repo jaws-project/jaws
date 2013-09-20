@@ -79,7 +79,6 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
 
         $body =& $GLOBALS['app']->LoadEditor('PrivateMessage', 'body', $body_value);
         $body->setID('body');
-        $body->TextArea->SetStyle('width: 99%;');
         $body->SetWidth('100%');
         $tpl->SetVariable('body', $body->Get());
 
@@ -87,6 +86,15 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $userModel = new Jaws_User();
         if ($show_recipient) {
             $tpl->SetBlock('compose/recipients');
+            $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT'));
+
+            if($this->gadget->GetPermission('ComposeToAllUsers')) {
+                //All users
+                $tpl->SetBlock('compose/recipients/all_users');
+                $tpl->SetVariable('lbl_recipient_all_users', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_ALL_USERS'));
+                $tpl->ParseBlock('compose/recipients/all_users');
+            }
+
             // User List
             $bUsers =& Piwi::CreateWidget('Combo', 'recipient_users');
             $bUsers->SetID('recipient_users');
@@ -213,6 +221,13 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
 
         $post = jaws()->request->fetch(array('id', 'parent', 'published', 'recipient_users', 'recipient_groups',
                                              'subject', 'body', 'attachments:array'), 'post');
+
+        // Check permission for sending a message to all users
+        $recipient_users = explode(",", $post['recipient_users']);
+        if (in_array('0', $recipient_users)) {
+            $this->gadget->CheckPermission('ComposeToAllUsers');
+        }
+
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
 
