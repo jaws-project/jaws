@@ -3,7 +3,7 @@
 <div class="gadget privateMessage message" id="compose">
     <h2>{title}</h2>
 
-    <div id="simple_response" class="{response_type}">{response}</div>
+    <div id="simple_response" class="gadget_response {response_type}">{response}</div>
 
     <form name="contacts" action="{base_script}" method="post" enctype="multipart/form-data">
         <input type="hidden" value="15000000" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE">
@@ -15,13 +15,11 @@
         <div class="content">
             <div>
                 <label for="recipient_users">{lbl_recipient_users}:</label>
-                <!--<input name="recipient_users" id="recipient_users" type="text" value="{recipient_users}"/>-->
                 {recipient_users_opt}
             </div>
 
             <div>
                 <label for="recipient_groups">{lbl_recipient_groups}:</label>
-                <!--<input name="recipient_groups" id="recipient_groups" type="text" value="{recipient_groups}"/>-->
                 {recipient_groups_opt}
             </div>
 
@@ -64,12 +62,12 @@
 <!--</div>-->
 
 <script type="text/javascript">
+    var toggleMax = "{icon_add}";
+    var toggleMin = "{icon_remove}";
+
     $('attachment1').show();
     $('attach_loading').hide();
     $('btn_attach1').hide();
-
-    var toggleMax = "{icon_add}";
-    var toggleMin = "{icon_remove}";
     $('attachment_area').toggle();
 
     function ChangeToggleIcon(obj)
@@ -91,7 +89,6 @@
         });
     });
 
-
     //    $('recipient_users').addEvent('keypress',function(e) {
 //        console.log(getUsers($('recipient_users').value));
 //    });
@@ -104,8 +101,8 @@
 
 <!-- END compose -->
 
-<!-- BEGIN attachments -->
 
+<!-- BEGIN attachments -->
 <!-- BEGIN file -->
 <div>
     <input type="checkbox" name="selected_files[]" id="chk_file_{file_id}" value="{file_id}"

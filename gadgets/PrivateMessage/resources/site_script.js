@@ -155,7 +155,7 @@ function sendMessage(published) {
 
     var attachments = uploadedFiles.concat(getSelectedAttachments());
     pmAjax.callAsync('ComposeMessage', {'id': $('id').value, 'parent':$('parent').value, 'published':published,
-                     'recipient_users':$('recipient_users').value, 'recipient_groups':$('recipient_groups').value,
+                     'recipient_users':recipient_users, 'recipient_groups':recipient_groups,
                      'subject':$('subject').value, 'body':$('body').value,'attachments':attachments
     });
 }

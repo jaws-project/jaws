@@ -32,6 +32,8 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('Compose.html');
         $tpl->SetBlock('compose');
         $body_value = "";
+        $recipient_users = array();
+        $recipient_groups = array();
         if (!empty($id) && $id > 0) {
             $message = $model->GetMessage($id, true, false);
             $tpl->SetVariable('parent', $message['parent']);
@@ -39,22 +41,20 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
             // edit draft
             if (empty($get['reply'])) {
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
-                $tpl->SetVariable('recipient_users', $message['recipient_users']);
-                $tpl->SetVariable('recipient_groups', $message['recipient_groups']);
+                $recipient_users = explode(",", $message['recipient_users']);
+                $recipient_groups = explode(",",  $message['recipient_groups']);
                 $tpl->SetVariable('id', $id);
                 $body_value = $message['body'];
                 $tpl->SetVariable('subject', $message['subject']);
 
-                if (!empty($message['attachments'])) {
-                    $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
-                    $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id));
-                }
+                $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
+                $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id));
 
             // reply a message
             } else if (!empty($get['reply']) && $get['reply'] == 'true') {
                 $tpl->SetVariable('parent', $id);
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_REPLY'));
-                $tpl->SetVariable('recipient_users', $message['user']);
+                $recipient_users = array($message['recipient_users']);
                 $tpl->SetVariable('subject', _t('PRIVATEMESSAGE_REPLY_ON', $message['subject']));
             // forward a message
             } else if (!empty($get['reply']) && $get['reply'] == 'false') {
@@ -78,7 +78,6 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $body->SetWidth('100%');
         $tpl->SetVariable('body', $body->Get());
 
-
         // User List
         $bUsers =& Piwi::CreateWidget('Combo', 'recipient_users');
         $bUsers->SetID('recipient_users');
@@ -90,6 +89,7 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         foreach($users as $user) {
             $bUsers->AddOption($user['nickname'], $user['id']);
         }
+        $bUsers->setDefault($recipient_users);
         $tpl->SetVariable('recipient_users_opt', $bUsers->Get());
 
         // Group List
@@ -103,6 +103,7 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         foreach($groups as $group) {
             $bGroups->AddOption($group['title'], $group['id']);
         }
+        $bGroups->setDefault($recipient_groups);
         $tpl->SetVariable('recipient_groups_opt', $bGroups->Get());
 
 
