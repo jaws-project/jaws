@@ -1,7 +1,9 @@
 <!-- BEGIN personal -->
 <div class="gadget users personalbox">
   <h2>{title}</h2>
-  <!-- BEGIN response --><div class="{type}">{text}</div><!-- END response -->
+  <!-- BEGIN response -->
+  <div class="gadget_response {type}">{text}</div>
+  <!-- END response -->
   <form name="personalbox" action="{base_script}" method="post" enctype="multipart/form-data">
   <input type="hidden" name="gadget" value="Users" />
   <input type="hidden" name="action" value="UpdatePersonal" />
