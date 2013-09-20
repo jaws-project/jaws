@@ -66,17 +66,29 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
                 $i++;
                 $tpl->SetBlock('outbox/message');
                 $tpl->SetVariable('rownum', $i);
-                $tpl->SetVariable('from', $message['from_nickname']);
+//                $tpl->SetVariable('from', $message['from_nickname']);
+                $tpl->SetVariable('recipients', '...');
                 $tpl->SetVariable('subject', $message['subject']);
                 $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
 
                 $tpl->SetVariable('message_url', $this->gadget->urlMap(
                     'OutboxMessage', array('id' => $message['id'])));
+
+                if ($message['attachments'] > 0) {
+                    $tpl->SetBlock('outbox/message/have_attachment');
+                    $tpl->SetVariable('attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));
+                    $tpl->SetVariable('icon_attachment', STOCK_ATTACH);
+                    $tpl->ParseBlock('outbox/message/have_attachment');
+                } else {
+                    $tpl->SetBlock('outbox/message/no_attachment');
+                    $tpl->ParseBlock('outbox/message/no_attachment');
+                }
+
                 $tpl->ParseBlock('outbox/message');
             }
         }
 
-        $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
+        $tpl->SetVariable('lbl_recipients', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
 

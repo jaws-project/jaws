@@ -86,7 +86,7 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $userModel = new Jaws_User();
         if ($show_recipient) {
             $tpl->SetBlock('compose/recipients');
-            $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT'));
+            $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
 
             if($this->gadget->GetPermission('ComposeToAllUsers')) {
                 //All users
@@ -98,7 +98,6 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
             // User List
             $bUsers =& Piwi::CreateWidget('Combo', 'recipient_users');
             $bUsers->SetID('recipient_users');
-            $bUsers->AddOption('None user', '');
             $bUsers->setMultiple(true);
             $users = $userModel->GetUsers();
             foreach ($users as $user) {
@@ -111,7 +110,6 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
             // Group List
             $bGroups =& Piwi::CreateWidget('Combo', 'recipient_groups');
             $bGroups->SetID('recipient_groups');
-            $bGroups->AddOption('None group', '');
             $bGroups->setMultiple(true);
             $groups = $userModel->GetGroups(true);
             foreach ($groups as $group) {
@@ -123,7 +121,7 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
             $tpl->ParseBlock('compose/recipients');
         } else {
             $tpl->SetBlock('compose/recipient');
-            $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT'));
+            $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
             $user_info = $userModel->GetUser($recipient_users[0]);
 
             // user's profile

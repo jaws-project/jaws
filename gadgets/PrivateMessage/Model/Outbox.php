@@ -25,7 +25,7 @@ class PrivateMessage_Model_Outbox extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('pm_messages');
         $table->select(
             'pm_messages.id:integer','pm_messages.subject', 'pm_messages.body', 'pm_messages.insert_time',
-            'users.nickname as from_nickname'
+            'users.nickname as from_nickname','attachments:integer'
         );
         $table->join('users', 'pm_messages.user', 'users.id');
         $table->where('pm_messages.user', $user);

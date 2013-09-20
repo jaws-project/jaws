@@ -36,7 +36,8 @@
             <thead>
             <tr>
                 <th><a href="javascript:toggleCheckboxes()">#</a></th>
-                <th>{lbl_from}</th>
+                <th>{lbl_recipients}</th>
+                <th>&nbsp;</th>
                 <th>{lbl_subject}</th>
                 <th>{lbl_send_time}</th>
             </tr>
@@ -51,7 +52,15 @@
                     <!-- END checkbox -->
                     {rownum}
                 </td>
-                <td>{from}</td>
+                <td>{recipients}</td>
+
+                <!-- BEGIN have_attachment -->
+                <td><img src="{icon_attachment}" alt="{attachment}"/></td>
+                <!-- END have_attachment -->
+                <!-- BEGIN no_attachment -->
+                <td>&nbsp;</td>
+                <!-- END no_attachment -->
+
                 <td><a href="{message_url}">{subject}</a></td>
                 <td>{send_time}</td>
             </tr>

@@ -79,15 +79,7 @@ function uploadFile() {
  */
 function onUpload(response) {
     toggleDisableForm(false);
-    var fileInfo = {
-        'new'               : true,
-        'filename'          : response.file_info.filename,
-        'title'             : response.file_info.title,
-        'filetype'          : response.file_info.filetype,
-        'filesize_format'   : response.file_info.filesize_format,
-        'filesize'          : response.file_info.filesize
-    };
-    uploadedFiles[lastAttachment] = fileInfo;
+    uploadedFiles[lastAttachment] = response.file_info;
     if (response.type === 'error') {
         alert(response.message);
         $('frm_file').reset();
