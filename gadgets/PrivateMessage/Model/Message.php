@@ -27,6 +27,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             'users.nickname as from_nickname', 'users.username as from_username', 'users.avatar', 'users.email',
             'user:integer', 'pm_messages.insert_time', 'recipient_users', 'recipient_groups');
         if($getRecipients) {
+            $columns[] = 'pm_recipients.recipient:integer';
             $columns[] = 'pm_recipients.read:boolean';
             $columns[] = 'pm_recipients.archived:boolean';
             $columns[] = 'pm_recipients.recipient:integer';
@@ -54,6 +55,24 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');
             $result['attachments'] = $model->GetMessageAttachments($result['id']);
         }
+        return $result;
+    }
+    /**
+     * Get a message Info
+     *
+     * @access  public
+     * @param   integer $id   Message id
+     * @return  mixed   Inbox count or Jaws_Error on failure
+     */
+    function GetMessageRecipients($id)
+    {
+        $table = Jaws_ORM::getInstance()->table('pm_recipients');
+
+        $result = $table->select('recipient:integer')->where('message', $id)->fetchColumn();
+        if (Jaws_Error::IsError($result)) {
+            return new Jaws_Error($result->getMessage(), 'SQL');
+        }
+
         return $result;
     }
 
@@ -169,7 +188,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
         $table->update(array('archived' => true))->where('id', $ids, 'in');
-        if($user!=null) {
+        if ($user != null) {
             $table->and()->where('recipient', $user);
         }
         $result = $table->exec();

@@ -26,8 +26,16 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
         $id = jaws()->request->fetch('id', 'get');
         $date = $GLOBALS['app']->loadDate();
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
         $usrModel = new Jaws_User;
         $message = $model->GetMessage($id, true);
+
+        // Check permissions
+        if ($message['recipient'] > 0 && $message['recipient'] != $user) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+
         if ($message['read'] == false) {
             $user = $GLOBALS['app']->Session->GetAttribute('user');
             $model->MarkMessages($id, true, $user);

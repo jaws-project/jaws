@@ -37,6 +37,15 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $show_recipient = true;
         if (!empty($id) && $id > 0) {
             $message = $model->GetMessage($id, true, false);
+
+            // Check permissions
+            $messageRecipients = $model->GetMessageRecipients($id, true, false);
+            $user = $GLOBALS['app']->Session->GetAttribute('user');
+            if (!in_array($user, $messageRecipients)) {
+                require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+                return Jaws_HTTPError::Get(403);
+            }
+
             $tpl->SetVariable('parent', $message['parent']);
 
             // edit draft
