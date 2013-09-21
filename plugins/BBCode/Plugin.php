@@ -133,6 +133,12 @@ class BBCode_Plugin extends Jaws_Plugin
                         $replacement = "<em>$innertext</em>";
                         break;
 
+                    case 'h1':
+                    case 'h2':
+                    case 'h3':
+                    case 'h4':
+                    case 'h5':
+                    case 'h6':
                     case 's':
                     case 'u':
                     case 'ol':
