@@ -30,6 +30,14 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
         $usrModel = new Jaws_User;
         $messages = array();
         $message = $model->GetMessage($id, false, false);
+
+        // Check permissions
+        $messageRecipients = $model->GetMessageRecipients($id, true, false);
+        if (!in_array('0', $messageRecipients) && !in_array($user, $messageRecipients) && $message['user'] != $user) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+
         $model->GetParentMessages($message['id'], true, $messages);
         if(empty($messages)) {
             return false;

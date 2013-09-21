@@ -25,17 +25,23 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_HTML
 
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         $rqst = jaws()->request->fetch(array('uid', 'mid', 'aid'), 'get');
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         $mModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $aModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');
-        $message = $mModel->GetMessage($rqst['mid']);
+        $message = $mModel->GetMessage($rqst['mid'], false, false);
         if (Jaws_Error::IsError($message)) {
             return Jaws_HTTPError::Get(500);
         }
-//TODO::Must check users
-//        if ($message['user'] != $rqst['uid']) {
-//            return Jaws_HTTPError::Get(500);
-//        }
+
+        // Check permissions
+        $messageRecipients = $mModel->GetMessageRecipients($rqst['mid']);
+        if ($message['user'] != $rqst['uid'] || ($message['user'] != $user && !in_array($user, $messageRecipients)
+                && !in_array($rqst['uid'], $messageRecipients))
+        ) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
 
         $attachment = $aModel->GetMessageAttachment($rqst['aid']);
         if (!empty($attachment) && ($attachment['message'] == $rqst['mid'])) {

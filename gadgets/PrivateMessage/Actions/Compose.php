@@ -39,9 +39,9 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
             $message = $model->GetMessage($id, true, false);
 
             // Check permissions
-            $messageRecipients = $model->GetMessageRecipients($id, true, false);
+            $messageRecipients = $model->GetMessageRecipients($id);
             $user = $GLOBALS['app']->Session->GetAttribute('user');
-            if (!in_array($user, $messageRecipients)) {
+            if (!in_array($user, $messageRecipients) && !in_array('0', $messageRecipients) &&  $message['user']!=$user) {
                 require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
                 return Jaws_HTTPError::Get(403);
             }
