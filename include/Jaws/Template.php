@@ -81,7 +81,7 @@ class Jaws_Template
             $this->globalVariables['jaws_index'] = $GLOBALS['app']->requestedInIndex? 'jaws_index' : '';
             $this->globalVariables['.browser']   = empty($brow)? '' : '.'.$brow;
             $this->globalVariables['requested_gadget'] = strtolower($GLOBALS['app']->requestedGadget);
-            $this->globalVariables['requested_action'] = $GLOBALS['app']->requestedAction;
+            $this->globalVariables['requested_action'] = strtolower($GLOBALS['app']->requestedAction);
         }
 
     }
