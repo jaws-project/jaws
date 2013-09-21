@@ -165,6 +165,9 @@ overflow-y:auto;
 margin:5px 0;
 }
 
+#path {
+font-size:11px;
+}
 #path span {
 color:blue;
 cursor:pointer;

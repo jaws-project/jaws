@@ -35,16 +35,20 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
             $tpl->ParseBlock('workspace/share');
         }
 
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $tpl->SetVariable('UID', $user);
         $tpl->SetVariable('lbl_props', _t('DIRECTORY_PROPERTIES'));
         $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('lbl_move', _t('DIRECTORY_MOVE'));
         $tpl->SetVariable('lbl_download', _t('DIRECTORY_DOWNLOAD'));
         $tpl->SetVariable('imgDeleteFile', STOCK_DELETE);
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $tpl->SetVariable('UID', $user);
+        $tpl->SetVariable('site_url', $GLOBALS['app']->getSiteURL('/'));
         $tpl->SetVariable('data_url', $GLOBALS['app']->getDataURL('directory/'));
-        $tpl->SetVariable('icon_url', 'images/mimetypes/');
+        $theme = $GLOBALS['app']->GetTheme();
+        $icon_url = is_dir($theme['url'] . 'mimetypes')?
+            $theme['url'] . 'mimetypes/' : 'images/mimetypes/';
+        $tpl->SetVariable('icon_url', $icon_url);
 
         // File template
         $tpl->SetBlock('workspace/fileTemplate');

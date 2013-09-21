@@ -319,7 +319,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
      * Generates file download URL
      *
      * @access  public
-     * @return  string  Absolute URL
+     * @return  string  Related URL
      */
     function GetDownloadURL($id = null, $uid = null, $inline = null)
     {
@@ -329,8 +329,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
         return $GLOBALS['app']->Map->GetURLFor(
             'Directory',
             'DownloadFile',
-            array('id' => $id, 'uid' => $user, 'inline' => $inline),
-            true);
+            array('id' => $id, 'uid' => $user, 'inline' => $inline));
     }
 
     /**

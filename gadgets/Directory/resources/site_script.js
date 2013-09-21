@@ -134,7 +134,7 @@ function displayFiles(parent)
     filesCount = files.length;
     files.each(function (file) {
         file.ext = file.is_dir? 'folder' : file.filename.split('.').pop();
-        file.type = iconByExt[file.ext] || 'unknown';
+        file.type = iconByExt[file.ext] || 'file-generic';
         file.icon = '<img src="' + icon_url + file.type + '.png" />';
         file.size = formatSize(file.filesize, 0);
         file.foreign = (file.user !== file.owner);
@@ -242,15 +242,15 @@ function openFile(id)
     if (!file) {
         file = fileById[id] = DirectoryAjax.callSync('GetFile', {'id':id});
     }
-    if (!file.dl_url) {
-        fileById[id].dl_url = DirectoryAjax.callSync(
+    if (!file.open_url) {
+        fileById[id].open_url = DirectoryAjax.callSync(
             'GetDownloadURL',
             {'id':id, 'inline':true}
         );
     }
     if (file.filename) {
         window.open(
-            fileById[id].dl_url,
+            fileById[id].open_url,
             '_blank',
             specs,
             true
@@ -295,8 +295,8 @@ function updatePath()
     var pathArr = DirectoryAjax.callSync('GetPath', {'id':currentDir}),
         path = $('path').set('html', ''),
         link = new Element('img', {
-            'src':'gadgets/Directory/images/logo.png',
-            'title': 'Root'
+            'src':'gadgets/Directory/images/home.png',
+            'title': 'Home'
         });
     link.addEvent('click', openDirectory.pass(0));
     path.grab(link);
@@ -560,7 +560,8 @@ function showFileURL(url)
 {
     var link = $('public_url');
     if (url !== '') {
-        link.innerHTML = link.href = url;
+        link.innerHTML = site_url + url;
+        link.href = url;
         link.show();
         $('btn_unpublic').show();
         $('btn_public').hide();
@@ -736,7 +737,7 @@ var fileTypes = {
     'audio-generic' : ['mp3', 'wav', 'aac', 'flac', 'ogg', 'wma', 'cda', 'voc', 'midi', 'ac3', 'bonk', 'mod'],
     'image-generic' : ['gif', 'png', 'jpg', 'jpeg', 'raw', 'bmp', 'tiff', 'svg'],
     'package-generic' : ['tar', 'tar.gz', 'tgz', 'zip', 'gzip', 'rar', 'rpm', 'deb', 'iso', 'bz2', 'bak', 'gz'],
-    'video-generic' : ['mpg', 'mpeg', 'avi', 'wma', 'rm', 'asf', 'flv', 'mov'],
+    'video-generic' : ['mpg', 'mpeg', 'avi', 'wma', 'rm', 'asf', 'flv', 'mov', 'mp4'],
     'help-contents' : ['hlp', 'chm', 'manual', 'man'],
     'text-generic' : ['txt', ''],
     'text-html' : ['html', 'htm', 'mht'],
