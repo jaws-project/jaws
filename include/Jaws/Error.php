@@ -158,9 +158,7 @@ class Jaws_Error
         //Get content
         $content = file_get_contents(JAWS_PATH . 'gadgets/ControlPanel/templates/FatalError.html');
         $content = str_replace('{message}', $message, $content);
-        echo $content;            
-        $GLOBALS['log']->End();
-        exit;
+        terminate($content, 500, '', false);
     }
 
 }

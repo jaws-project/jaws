@@ -140,8 +140,7 @@ class Jaws_Session_Web extends Jaws_Session
         $GLOBALS['app']->InstanceLayout();
         $GLOBALS['app']->Layout->LoadControlPanelHead();
         $user = $GLOBALS['app']->LoadGadget('Users', 'HTML');
-        echo $user->ShowNoPermission($this->GetAttribute('username'), $gadget, $key);
-        exit;
+        terminate($data = $user->ShowNoPermission($this->GetAttribute('username'), $gadget, $key), 403);
     }
 
 }
