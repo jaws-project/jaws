@@ -58,9 +58,18 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
         $tpl->SetVariable('filter', _t('PRIVATEMESSAGE_FILTER'));
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
-        $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
-        $tpl->SetVariable('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
-        $tpl->SetVariable('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
+
+        if ($view == 'archived') {
+            $tpl->SetBlock('inbox/archive_action');
+            $tpl->SetVariable('lbl_move_to_inbox', _t('PRIVATEMESSAGE_MOVE_TO_INBOX'));
+            $tpl->ParseBlock('inbox/archive_action');
+        } else {
+            $tpl->SetBlock('inbox/inbox_action');
+            $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
+            $tpl->SetVariable('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
+            $tpl->SetVariable('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
+            $tpl->ParseBlock('inbox/inbox_action');
+        }
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
         $tpl->SetVariable('icon_ok', STOCK_OK);
 

@@ -82,9 +82,17 @@
                 <label for="inbox_actions_combo">{lbl_actions}:&nbsp;</label>
                 <select title="{lbl_actions}" id="inbox_actions_combo" name="inbox_actions_combo">
                     <option value="">&nbsp;</option>
+
+                    <!-- BEGIN archive_action -->
+                    <option value="move_to_inbox">{lbl_move_to_inbox}</option>
+                    <!-- END archive_action -->
+
+                    <!-- BEGIN inbox_action -->
                     <option value="archive">{lbl_archive}</option>
                     <option value="read">{lbl_mark_as_read}</option>
                     <option value="unread">{lbl_mark_as_unread}</option>
+                    <!-- END inbox_action -->
+
                 </select>
 
                 <button value="{lbl_actions}" id="action_button" name="action_button"
@@ -106,8 +114,12 @@
 
     function inboxDGAction() {
         var action = document.getElementById("inbox_actions_combo").value;
-        if(action == 'archive') {
+        if(action == 'move_to_inbox') {
             document.privatemessage.action.value = 'ArchiveInboxMessage';
+            document.privatemessage.status.value = 'retrieve';
+        } else if(action == 'archive') {
+            document.privatemessage.action.value = 'ArchiveInboxMessage';
+            document.privatemessage.status.value = 'archive';
         } else if(action == 'read') {
             document.privatemessage.action.value = 'ChangeMessageRead';
             document.privatemessage.status.value = 'read';

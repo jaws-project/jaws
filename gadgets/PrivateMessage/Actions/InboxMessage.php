@@ -164,14 +164,21 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ArchiveMessage');
 
         $ids = jaws()->request->fetch('id', 'get');
-        $post = jaws()->request->fetch('message_checkbox:array', 'post');
-
-        if(!empty($post) && count($post)>0) {
-            $ids = $post;
+        $post = jaws()->request->fetch(array('message_checkbox:array', 'status'), 'post');
+        $status = $post['status'];
+        if ($status == 'archive') {
+            $status = true;
+        } else {
+            $status = false;
         }
+
+        if(!empty($post['message_checkbox']) && count($post['message_checkbox'])>0) {
+            $ids = $post['message_checkbox'];
+        }
+
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $res = $model->ArchiveInboxMessage($ids, $user);
+        $res = $model->ArchiveInboxMessage($ids, $user, $status);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
                 $res->getMessage(),
@@ -248,18 +255,19 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
     {
         $get = jaws()->request->fetch(array('id', 'status'), 'get');
         $post = jaws()->request->fetch(array('message_checkbox:array', 'status'), 'post');
-        if(!empty($post['message_checkbox']) && count($post['message_checkbox'])>0) {
-            $ids = $post['message_checkbox'];
-            $status = $post['status'];
-        } else {
-            $ids = $get['id'];
-            $status = $get['status'];
-        }
-        if($status=='read') {
+        $status = $post['status'];
+        if ($status == 'read') {
             $status = true;
         } else {
             $status = false;
         }
+
+        if(!empty($post['message_checkbox']) && count($post['message_checkbox'])>0) {
+            $ids = $post['message_checkbox'];
+        } else {
+            $ids = $get['id'];
+        }
+
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');

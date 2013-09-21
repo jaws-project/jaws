@@ -72,6 +72,7 @@ define('_EN_PRIVATEMESSAGE_FILTER', "Filter");
 define('_EN_PRIVATEMESSAGE_MESSAGE_REPLIED', "Replied");
 define('_EN_PRIVATEMESSAGE_MARK_AS_READ', "Mark as read");
 define('_EN_PRIVATEMESSAGE_MARK_AS_UNREAD', "Mark as unread");
+define('_EN_PRIVATEMESSAGE_MOVE_TO_INBOX', "Move to inbox");
 
 /* Responses */
 define('_EN_PRIVATEMESSAGE_PROPERTIES_UPDATED', "The properties have been updated");
