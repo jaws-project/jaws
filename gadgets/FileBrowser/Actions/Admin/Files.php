@@ -153,12 +153,14 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
                 if (!empty($post['oldname']) && ($res['uploadfile'][0]['host_filename'] != $post['oldname'])) {
                     $fModelAdmin->Delete($post['path'], $post['oldname']);
                 }
-                $fModelAdmin->UpdateDBFileInfo($post['path'],
+                $fModelAdmin->UpdateDBFileInfo(
+                    $post['path'],
                     $res['uploadfile'][0]['host_filename'],
-                    $post['file_title'],
+                    empty($post['file_title'])? $res['uploadfile'][0]['user_filename'] : $post['file_title'],
                     $post['file_description'],
                     $post['file_fast_url'],
-                    $post['oldname']);
+                    $post['oldname']
+                );
             }
         }
 
