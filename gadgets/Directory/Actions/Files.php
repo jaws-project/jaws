@@ -303,7 +303,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             if (Jaws_Error::IsError($res)) {
                 throw new Exception(_t('DIRECTORY_ERROR_FILE_UPDATE'));
             }
-            $dl_url = $public? $this->GetDownloadURL($id, $user) : '';
+            $dl_url = $public? $this->GetDownloadURL($id, $user, false) : '';
         } catch (Exception $e) {
             return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
         }
@@ -321,15 +321,31 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
      * @access  public
      * @return  string  Absolute URL
      */
-    function GetDownloadURL($id = null, $uid = null)
+    function GetDownloadURL($id = null, $uid = null, $inline = null)
     {
         $id = ($id !== null)? $id : (int)jaws()->request->fetch('id');
         $user = ($uid !== null)? $uid : (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $inline = ($inline !== null)? $inline : (bool)jaws()->request->fetch('inline');
         return $GLOBALS['app']->Map->GetURLFor(
             'Directory',
             'DownloadFile',
-            array('id' => $id, 'uid' => $user),
+            array('id' => $id, 'uid' => $user, 'inline' => $inline),
             true);
+    }
+
+    /**
+     * Builds HTML5 audio/video tags for the file
+     *
+     * @access  public
+     * @return  array   Response array
+     */
+    function PlayMedia()
+    {
+        $id = (int)jaws()->request->fetch('id');
+        $type = jaws()->request->fetch('type');
+        $url = $this->GetDownloadURL($id, null, true);
+        $tpl = "[$type]" . $url . "[/$type]";
+        return $this->gadget->ParseText($tpl, 'Directory', 'index');
     }
 
     /**
@@ -356,20 +372,21 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
     }
 
     /**
-     * Downloads file
+     * Downloads file (stream)
      *
      * @access  public
      * @return  array   Response array
      */
     function DownloadFile()
     {
-        $data = jaws()->request->fetch(array('id', 'uid'));
+        $data = jaws()->request->fetch(array('id', 'uid', 'inline'));
         //_log_var_dump($data);
         if (is_null($data['id']) || is_null($data['uid'])) {
             return Jaws_HTTPError::Get(500);
         }
         $id = (int)$data['id'];
         $uid = (int)$data['uid'];
+        $inline = (bool)$data['inline'];
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
 
         // Validate file
@@ -396,11 +413,10 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
         }
 
         // Stream file
-        if (!Jaws_Utils::Download($filename, $file['filename'], $file['filetype'])) {
+        if (!Jaws_Utils::Download($filename, $file['filename'], $file['filetype'], $inline)) {
             return Jaws_HTTPError::Get(500);
         }
 
         return;
     }
-
 }

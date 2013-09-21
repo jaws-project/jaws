@@ -87,6 +87,10 @@ $actions['GetDownloadURL'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
+$actions['PlayMedia'] = array(
+    'standalone' => true,
+    'file' => 'Files'
+);
 
 /* Sharing Actions */
 $actions['GetUsers'] = array(

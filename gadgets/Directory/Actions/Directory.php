@@ -35,10 +35,11 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
             $tpl->ParseBlock('workspace/share');
         }
 
+        $tpl->SetVariable('lbl_props', _t('DIRECTORY_PROPERTIES'));
         $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('lbl_move', _t('DIRECTORY_MOVE'));
-        $tpl->SetVariable('lbl_props', _t('DIRECTORY_PROPERTIES'));
+        $tpl->SetVariable('lbl_download', _t('DIRECTORY_DOWNLOAD'));
         $tpl->SetVariable('imgDeleteFile', STOCK_DELETE);
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $tpl->SetVariable('UID', $user);

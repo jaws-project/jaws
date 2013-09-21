@@ -133,8 +133,8 @@ function displayFiles(parent)
     fileById = {};
     filesCount = files.length;
     files.each(function (file) {
-        var ext = file.is_dir? 'folder' : file.filename.split('.').pop();
-        file.type = iconByExt[ext] || 'unknown';
+        file.ext = file.is_dir? 'folder' : file.filename.split('.').pop();
+        file.type = iconByExt[file.ext] || 'unknown';
         file.icon = '<img src="' + icon_url + file.type + '.png" />';
         file.size = formatSize(file.filesize, 0);
         file.foreign = (file.user !== file.owner);
@@ -186,7 +186,6 @@ function fileSelect(e)
     cancel();
     this.addClass('selected');
     selectedId = this.fid;
-    //console.log(data);
     data.size = formatSize(data.filesize, 2);
     st.set('html', statusTemplate.substitute(data));
     st.getElement('#stat_file_size').style.display =
@@ -196,7 +195,7 @@ function fileSelect(e)
 }
 
 /**
- * Opens directory
+ * Opens, plays or downloads the file/directory
  */
 function fileOpen()
 {
@@ -205,7 +204,13 @@ function fileOpen()
     if (file.is_dir) {
         openDirectory(id);
     } else {
-        openFile(id);
+        if (['wav', 'mp3', 'ogg'].indexOf(file.ext) !== -1) {
+            openMedia(id, 'audio');
+        } else if (['webm', 'mp4', 'ogg'].indexOf(file.ext) !== -1) {
+            openMedia(id, 'video');
+        } else {
+            openFile(id);
+        }
     }
 }
 
@@ -238,7 +243,10 @@ function openFile(id)
         file = fileById[id] = DirectoryAjax.callSync('GetFile', {'id':id});
     }
     if (!file.dl_url) {
-        fileById[id].dl_url = DirectoryAjax.callSync('GetDownloadURL', {'id':id});
+        fileById[id].dl_url = DirectoryAjax.callSync(
+            'GetDownloadURL',
+            {'id':id, 'inline':true}
+        );
     }
     if (file.filename) {
         window.open(
@@ -248,6 +256,35 @@ function openFile(id)
             true
         );
     }
+}
+
+/**
+ * Plays audio/video file
+ */
+function openMedia(id, type)
+{
+    var tpl = DirectoryAjax.callSync('PlayMedia', {'id':id, 'type':type});
+    $('form').innerHTML = tpl;
+    pageBody.removeEvent('click', cancel);
+}
+
+/**
+ * Downloads the file
+ */
+function downloadFile()
+{
+    var id = selectedId,
+        file = fileById[id];
+    if (!file) {
+        file = fileById[id] = DirectoryAjax.callSync('GetFile', {'id':id});
+    }
+    if (!file.dl_url) {
+        fileById[id].dl_url = DirectoryAjax.callSync(
+            'GetDownloadURL',
+            {'id':id, 'inline':false}
+        );
+    }
+    window.location.assign(fileById[id].dl_url);
 }
 
 /**
