@@ -238,6 +238,7 @@ class BBCode_Plugin extends Jaws_Plugin
                         $replacement = "<audio $size". implode(' ', $params).' controls>';
                         $replacement.= "<source src=\"$innertext.ogg\" type=\"audio/ogg\">";
                         $replacement.= "<source src=\"$innertext.mp3\" type=\"audio/mpeg\">";
+                        $replacement.= "<source src=\"$innertext.wav\" type=\"audio/wav\">";
                         $replacement.= 'Your browser does not support the HTML5 audio tag.';
                         $replacement.= '</audio>';
                         break;
