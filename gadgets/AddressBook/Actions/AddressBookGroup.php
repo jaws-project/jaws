@@ -36,9 +36,11 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('GroupMembers.html');
         $tpl->SetBlock("address_list");
 
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
+        $response = $GLOBALS['app']->Session->PopResponse('AddressBook.AdrGroups');
+        if (!empty($response)) {
             $tpl->SetBlock('address_list/response');
-            $tpl->SetVariable('msg', $response);
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
             $tpl->ParseBlock('address_list/response');
         }
 
@@ -106,9 +108,9 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
             $result = $model->AddGroupToAddress($rqst['address'], $rqst['group'], $user);
             $link = $this->gadget->urlMap('GroupMembers', array('id' => $rqst['group']));
             if (Jaws_Error::IsError($result)) {
-                $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(), 'AddressBook');
+                $GLOBALS['app']->Session->PushResponse($result->getMessage(), 'AddressBook.AdrGroups', RESPONSE_ERROR);
             } else {
-                $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_ADD_ADDRESS_RELATION_COMPLETE'), 'AddressBook');
+                $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_ADD_ADDRESS_RELATION_COMPLETE'), 'AddressBook.AdrGroups');
             }
             Jaws_Header::Location($link);
         }
@@ -134,9 +136,9 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
         $result = $model->DeleteAddressBookGroup($aid, $gid, $user);
         $link = $this->gadget->urlMap('GroupMembers', array('id' => $gid));
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse($result->getMessage(), 'AddressBook.AdrGroups', RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_DELETE_ADDRESS_RELATION_COMPLETE'), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_DELETE_ADDRESS_RELATION_COMPLETE'), 'AddressBook.AdrGroups');
         }
         Jaws_Header::Location($link);
     }

@@ -2,26 +2,17 @@
 <div class="gadget addressbook_list">
   <div class="gadget_header">
    <h2>{title}</h2>
-   <ul class="gadget_menubar">
+  </div>
+  <div class="content">
+   <ul>
     <li><a href="{address_list_link}">{address_list}</a></li>
     <li><a href="{groups_link}">{groups}</a></li>
    </ul>
-  </div>
-  <div class="content">
-    <table>
-     <thead>
-      <tr>
-        <th>{lbl_name}</th>
-        <th>{lbl_description}</th>
-      </tr>
-     </thead>
+    <ul>
       <!-- BEGIN item -->
-      <tr>
-        <td><a href="{link}" >{name}</a></td>
-        <td>{description}</td>
-      </tr>
+      <li><a href="{link}" alt="{description}" >{name}</a></li>
       <!-- END item -->
-    </table>
+    </ul>
   </div>
 </div>
 <!-- END group -->

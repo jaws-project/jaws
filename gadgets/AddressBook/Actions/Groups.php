@@ -31,11 +31,10 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
             return $groupItems->getMessage(); // TODO: Show intelligible message
         }
 
-        $this->SetTitle(_t('ADDRESSBOOK_NAME'));
         $tpl = $this->gadget->loadTemplate('Groups.html');
 
         $tpl->SetBlock("group");
-        $tpl->SetVariable('title', _t('ADDRESSBOOK_GROUP_TITLE'));
+        $tpl->SetVariable('title', _t('ADDRESSBOOK_NAME'));
         $tpl->SetVariable('lbl_name',        _t('GLOBAL_TITLE'));
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
 
@@ -82,9 +81,11 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
 
         $tpl->SetBlock("groups");
         $tpl->SetVariable('title', _t('ADDRESSBOOK_GROUP_TITLE'));
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
+        $response = $GLOBALS['app']->Session->PopResponse('AddressBook.Groups');
+        if (!empty($response)) {
             $tpl->SetBlock('groups/response');
-            $tpl->SetVariable('msg', $response);
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
             $tpl->ParseBlock('groups/response');
         }
 
@@ -274,10 +275,10 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         $result = $model->InsertGroup($post);
 
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse($result->getMessage(), 'AddressBook.Groups', RESPONSE_ERROR);
             Jaws_Header::Referrer();
         } else {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_NEW_GROUP_SAVED'), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_NEW_GROUP_SAVED'), 'AddressBook.Groups');
             $link = $this->gadget->urlMap('ManageGroups');
             Jaws_Header::Location($link);
         }
@@ -314,10 +315,10 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         $result = $model->UpdateGroup($gid, $post);
 
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse($result->getMessage(), 'AddressBook.Groups', RESPONSE_ERROR);
             Jaws_Header::Referrer();
         } else {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_EDIT_GROUP_SAVED'), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_EDIT_GROUP_SAVED'), 'AddressBook.Groups');
             $link = $this->gadget->urlMap('ManageGroups');
             Jaws_Header::Location($link);
         }
@@ -348,9 +349,9 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         $result = $model->DeleteGroup($info['id'], $info['user']);
 
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse($result->getMessage(), 'AddressBook.Groups', RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_DELETE_GROUP_COMPLETE'), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_DELETE_GROUP_COMPLETE'), 'AddressBook.Groups');
         }
         $link = $this->gadget->urlMap('ManageGroups');
         Jaws_Header::Location($link);

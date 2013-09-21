@@ -41,9 +41,11 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         // Set default delete URL for use in javascript
         $tpl->SetVariable('deleteURL', $this->gadget->urlMap('DeleteAddress', array('id' => '')));
 
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
+        $response = $GLOBALS['app']->Session->PopResponse('AddressBook');
+        if (!empty($response)) {
             $tpl->SetBlock('address_list/response');
-            $tpl->SetVariable('msg', $response);
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
             $tpl->ParseBlock('address_list/response');
         }
 
@@ -559,7 +561,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $adrID = $model->InsertAddress($post);
 
         if (Jaws_Error::IsError($adrID)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($adrID->getMessage(), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse($adrID->getMessage(), 'AddressBook', RESPONSE_ERROR);
             Jaws_Header::Referrer();
         } else {
             if (is_array($groupIDs) && count($groupIDs) > 0) {
@@ -569,7 +571,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
                 }
             }
 
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_NEW_ADDRESS_SAVED'), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_NEW_ADDRESS_SAVED'), 'AddressBook');
             Jaws_Header::Location($this->gadget->urlMap('AddressBook'));
         }
     }
@@ -697,7 +699,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $result = $model->UpdateAddress($id, $post);
 
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse($result->getMessage(), 'AddressBook', RESPONSE_ERROR);
             Jaws_Header::Referrer();
         } else {
             $agModel = $this->gadget->load('Model')->load('Model', 'AddressBookGroup');
@@ -708,7 +710,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
                 }
             }
 
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_EDIT_ADDRESS_SAVED'), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_EDIT_ADDRESS_SAVED'), 'AddressBook');
             $link = $this->gadget->urlMap('AddressBook');
             Jaws_Header::Location($link);
         }
@@ -808,9 +810,9 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $result = $model->DeleteAddress($info['id'], $info['user']);
 
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($result->getMessage(), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse($result->getMessage(), 'AddressBook', RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('ADDRESSBOOK_RESULT_DELETE_ADDRESS_COMPLETE'), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_DELETE_ADDRESS_COMPLETE'), 'AddressBook');
         }
         $link = $this->gadget->urlMap('AddressBook');
         Jaws_Header::Location($link);
