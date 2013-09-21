@@ -1,15 +1,3 @@
-table {
-border: 1px solid #CCCCCC;
-border-collapse: collapse;
-border-spacing: 0;
-width: 95%;
-}
-table th {
-background-color: #EEEEEE;
-border: 1px solid #CCCCCC;
-padding: 1px;
-}
-table td {border: 1px solid #CCCCCC; padding: 2px 4px;}
 .addressbook_image {float: right;}
 #addressbook_nickname {width: 410px;}
 #addressbook_firstname {width: 190px;}
@@ -28,3 +16,12 @@ margin-top: 10px;
 .actions {margin-top: 5px;}
 .addressbook_view p label {font-weight: bold;}
 .addressbook_view .actions {margin-top: 20px;}
+
+.addressbook_image .actions button {
+height: 24px;
+margin: 0;
+width: 24px;
+padding: 3px 5px;
+}
+.addressbook_image .wrapper1 {height: 24px; overflow: hidden; position: absolute; top: 0; width: 24px;}
+.addressbook_image .wrapper1 input {width: 110px; padding: 0pt; font-size: 30px; margin: 0; opacity: 0;}

@@ -58,4 +58,25 @@ class AddressBook_Ajax extends Jaws_Gadget_HTML
         //return $GLOBALS['app']->Session->GetResponse($res->getMessage(), RESPONSE_ERROR);
         return $GLOBALS['app']->Session->GetResponse('afasfasf', RESPONSE_ERROR);
     }
+
+    /**
+     * Copy user avatar to tmp folder
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function CopyUserAvatar()
+    {       
+        $uid = (int) jaws()->request->fetch('uid');
+        $uModel = new Jaws_User();
+        $userInfo = $uModel->GetUser($uid);
+        if (empty($userInfo['avatar'])) {
+            $response = '';
+        } else {
+            $userAvatar = $GLOBALS['app']->getDataURL(). 'avatar/'. $userInfo['avatar'];
+            copy($userAvatar, Jaws_Utils::upload_tmp_dir() . '/' . $userInfo['avatar']);
+            $response = $userInfo['avatar'];
+        }
+        return $response;
+    }
 }

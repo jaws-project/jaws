@@ -1,9 +1,13 @@
 <!-- BEGIN vcard -->
 <div class="gadget addressbook_vcard">
-  <h2>{title}</h2>
-  <!-- BEGIN response -->
-  <div class="gadget_response simple-response-msg">{msg}</div>
-  <!-- END response -->
+  <div class="gadget_header">
+   <h2>{title}</h2>
+   <ul class="gadget_menubar">
+    <li><a href="{address_list_link}">{address_list}</a></li>
+    <li><a href="{groups_link}">{groups}</a></li>
+   </ul>
+  </div>
+  <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
   <div class="content">
     <form name="import_vcard" action="{base_script}" method="post" enctype="multipart/form-data" id="import_vcard">
       <input type="hidden" name="gadget" value="AddressBook" />

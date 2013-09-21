@@ -188,7 +188,11 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
         $tpl->SetVariable('toggle_max',     STOCK_ADD);
         $tpl->SetVariable('toggle_min',     STOCK_REMOVE);
+        $tpl->SetVariable('upload_icon',    STOCK_ADD);
+        $tpl->SetVariable('delete_icon',    STOCK_DELETE);
 
+        $tpl->SetVariable('baseSiteUrl', $GLOBALS['app']->getSiteURL());
+        $tpl->SetVariable('loadImageUrl', $this->gadget->urlMap('LoadImage', array('file' => '')));
         $current_image = $GLOBALS['app']->getSiteURL('/gadgets/AddressBook/images/photo128px.png');
         $tpl->SetVariable('image_src', $current_image);
 
@@ -316,6 +320,12 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $tpl->SetVariable('nickname',       $info['nickname']);
         $tpl->SetVariable('url',            $info['url']);
         $tpl->SetVariable('notes',          $info['notes']);
+        $tpl->SetVariable('upload_icon',    STOCK_ADD);
+        $tpl->SetVariable('delete_icon',    STOCK_DELETE);
+
+        $tpl->SetVariable('baseSiteUrl', $GLOBALS['app']->getSiteURL());
+        $tpl->SetVariable('loadImageUrl', $this->gadget->urlMap('LoadImage', array('file' => '')));
+
         if ($info['public']) {
             $tpl->SetBlock('address/selected');
             $tpl->ParseBlock('address/selected');
@@ -451,7 +461,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(array('nickname', 'title', 'delete_image', 'related',
+        $post = jaws()->request->fetch(array('nickname', 'title', 'image', 'related',
                                              'notes', 'public', 'user_link:int'), 'post');
         $post['name'] = implode(';', jaws()->request->fetch('name:array', 'post'));
 
@@ -546,25 +556,6 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $urls = jaws()->request->fetch('url:array', 'post');
         $post['url'] = implode('\n', $urls);
 
-        if (empty($post['delete_image'])) {
-            $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), 'gif,jpg,jpeg,png');
-            if (!empty($res) && !Jaws_Error::IsError($res)) {
-                $post['image'] = $res['image'][0]['host_filename'];
-            } elseif (!Jaws_Error::IsError($res)) {
-                $uid = (int) $post['user_link'];
-                $uModel = new Jaws_User();
-                $userInfo = $uModel->GetUser($uid);
-                if (!empty($userInfo['avatar'])) {
-                    $userAvatar = $GLOBALS['app']->getDataURL(). 'avatar/'. $userInfo['avatar'];
-                    copy($userAvatar, Jaws_Utils::upload_tmp_dir() . '/' . $userInfo['avatar']);
-                    $post['image'] = $userInfo['avatar'];
-                }
-            }
-        } else {
-            $post['image'] = '';
-        }
-        unset($post['delete_image']);
-
         $adrID = $model->InsertAddress($post);
 
         if (Jaws_Error::IsError($adrID)) {
@@ -596,7 +587,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         }
 
         $post = jaws()->request->fetch(array('nickname', 'title', 'user_link:int', 'related',
-                                             'delete_image', 'url', 'notes', 'public', 'id'),
+                                             'image', 'url', 'notes', 'public', 'id'),
                                     'post');
 
         $post['name'] = implode(';', jaws()->request->fetch('name:array', 'post'));
@@ -703,27 +694,6 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $urls = jaws()->request->fetch('url:array', 'post');
         $post['url'] = implode('\n', $urls);
 
-        if (empty($post['delete_image'])) {
-            $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), 'gif,jpg,jpeg,png');
-            $uid = (int) jaws()->request->fetch('last_refreh_user_link', 'post');
-            if (!empty($res) && !Jaws_Error::IsError($res)) {
-                $post['image'] = $res['image'][0]['host_filename'];
-            } elseif (!Jaws_Error::IsError($res) && $uid != -1) {
-                $uModel = new Jaws_User();
-                $userInfo = $uModel->GetUser($uid);
-                if (empty($userInfo['avatar'])) {
-                    $post['image'] = '';
-                } else {
-                    $userAvatar = $GLOBALS['app']->getDataURL(). 'avatar/'. $userInfo['avatar'];
-                    copy($userAvatar, Jaws_Utils::upload_tmp_dir() . '/' . $userInfo['avatar']);
-                    $post['image'] = $userInfo['avatar'];
-                }
-            }
-        } else {
-            $post['image'] = '';
-        }
-        unset($post['delete_image']);
-
         $result = $model->UpdateAddress($id, $post);
 
         if (Jaws_Error::IsError($result)) {
@@ -809,8 +779,8 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
      *
      * @access  public
      */
-     function DeleteAddress()
-     {
+    function DeleteAddress()
+    {
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
@@ -844,5 +814,61 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         }
         $link = $this->gadget->urlMap('AddressBook');
         Jaws_Header::Location($link);
-     }
+    }
+
+    /**
+     * Uploads the personal image
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function UploadImage()
+    {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $res = Jaws_Utils::UploadFiles($_FILES,
+                                       Jaws_Utils::upload_tmp_dir(),
+                                       'gif,jpg,jpeg,png');
+        if (Jaws_Error::IsError($res)) {
+            $response = array('type'    => 'error',
+                              'message' => $res->getMessage());
+        } else {
+            $response = array('type'    => 'notice',
+                              'message' => $res['upload_image'][0]['host_filename']);
+        }
+
+        $response = $GLOBALS['app']->UTF8->json_encode($response);            
+
+        return "<script type='text/javascript'>parent.onUpload($response);</script>";
+    }
+
+    /**
+     * Returns personal image as stream data
+     *
+     * @access  public
+     * @return  bool    True on success, false otherwise
+     */
+    function LoadImage()
+    {
+        $file = jaws()->request->fetch('file', 'get');
+
+        $objImage = Jaws_Image::factory();
+        if (!Jaws_Error::IsError($objImage)) {
+            if (!empty($file)) {
+                $file = preg_replace("/[^[:alnum:]_\.-]*/i", "", $file);
+                $result = $objImage->load(Jaws_Utils::upload_tmp_dir(). '/'. $file, true);
+                if (!Jaws_Error::IsError($result)) {
+                    $result = $objImage->display();
+                    if (!Jaws_Error::IsError($result)) {
+                        return $result;
+                    }
+                }
+                                return var_dump($file);
+            }
+        }
+
+        return false;
+    }
 }

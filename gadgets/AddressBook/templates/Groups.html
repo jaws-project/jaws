@@ -1,16 +1,20 @@
 <!-- BEGIN group -->
 <div class="gadget addressbook_list">
-  <h2>{title}</h2>
-  <ul class="gadget_menubar">
+  <div class="gadget_header">
+   <h2>{title}</h2>
+   <ul class="gadget_menubar">
     <li><a href="{address_list_link}">{address_list}</a></li>
     <li><a href="{groups_link}">{groups}</a></li>
-  </ul>
+   </ul>
+  </div>
   <div class="content">
     <table>
+     <thead>
       <tr>
         <th>{lbl_name}</th>
         <th>{lbl_description}</th>
       </tr>
+     </thead>
       <!-- BEGIN item -->
       <tr>
         <td><a href="{link}" >{name}</a></td>

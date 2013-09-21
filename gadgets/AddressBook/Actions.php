@@ -34,6 +34,14 @@ $actions['DeleteAddress'] = array(
     'standalone' => true,
     'file'   => 'AddressBook',
 );
+$actions['UploadImage'] = array(
+    'standalone' => true,
+    'file'   => 'AddressBook',
+);
+$actions['LoadImage'] = array(
+    'standalone' => true,
+    'file'   => 'AddressBook',
+);
 $actions['ManageGroups'] = array(
     'normal' => true,
     'file'   => 'Groups',

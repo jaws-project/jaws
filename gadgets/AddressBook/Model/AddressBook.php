@@ -209,7 +209,7 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
         $agModel->DeleteGroupForAddress($address, $user);
         $aTable = Jaws_ORM::getInstance()->table('address_book');
         $result = $aTable->delete()->where('user', (int) $user)->and()->where('id', (int) $address)->exec();
-        if (!Jaws_Error::IsError($result)) {
+        if (!Jaws_Error::IsError($result) && !empty($adrInfo['image']) && trim($adrInfo['image']) != '') {
             $targetDir = JAWS_DATA. 'addressbook'. DIRECTORY_SEPARATOR . 'image'. DIRECTORY_SEPARATOR;
             Jaws_Utils::Delete($targetDir . $adrInfo['image']);
         }

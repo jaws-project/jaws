@@ -1,14 +1,14 @@
 <!-- BEGIN address_list -->
 <div class="gadget addressbook_list">
-  <h2>{title}</h2>
-  <ul class="gadget_menubar">
+  <div class="gadget_header">
+   <h2>{title}</h2>
+   <ul class="gadget_menubar">
     <li><a href="{address_list_link}">{address_list}</a></li>
     <li><a href="{groups_link}">{groups}</a></li>
-  </ul>
+   </ul>
+  </div>
   <div class="content">
-  <!-- BEGIN response -->
-  <div class="gadget_response simple-response-msg">{msg}</div>
-  <!-- END response -->
+  <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
     <div class="addressbook_group">
       <form name="addressbook_bonding" action="{base_script}" method="post" enctype="multipart/form-data" id="addressbook_bonding">
       <input type="hidden" name="gadget" value="AddressBook" />
@@ -20,22 +20,24 @@
           <option value="{aid}">{address_name}</option>
           <!-- END address_item -->
         </select>
-        <button onclick="AddAddressToGroup();" value="" id="BtnAddAddressToGroup" name="BtnAddAddressToGroup"type="button">
-          <img alt="" src="{icon_add}">
+        <button onclick="AddAddressToGroup();" value="" id="BtnAddAddressToGroup" name="BtnAddAddressToGroup" type="button">
+          <img alt="" src="{add_icon}">
         </button>
       </form>  
     </div>
     <table>
+     <thead>
       <tr>
         <th>{lbl_name0}</th>
         <th>{lbl_name1}</th>
         <th>{lbl_action}</th>
       </tr>
+     </thead>
       <!-- BEGIN item1 -->
       <tr>
         <td>{name0}</td>
         <td>{name1}</td>
-        <td><a class="button" href="{unbond_url}" title="{unbond}" >{unbond}</a></td>
+        <td><a class="button" href="{unbond_url}" title="{unbond}" ><img src="{remove_icon}" alt="{unbond}" /> </a></td>
       </tr>
       <!-- END item1 -->
     </table>

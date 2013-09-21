@@ -81,7 +81,7 @@ function RemoveItem(inputObject)
 }
 
 /**
- * Get user information and replace with current data
+ * Get user information and set in address book
  */
 function GetUserInfo()
 {
@@ -93,7 +93,9 @@ function GetUserInfo()
     $('addressbook_firstname').value = userInfo['fname'];
     $('addressbook_lastname').value = userInfo['lname'];
     $('addressbook_nickname').value = userInfo['nickname'];
+    var userAvatar = AddressBookAjax.callSync('CopyUserAvatar', {'uid': $('addressbook_user_link').value});
     $('person_image').src = userInfo['avatar'];
+    $('image').value = userAvatar;
 }
 
 
@@ -209,6 +211,43 @@ function ChangeToggleIcon(obj)
         $(obj).getElementsByTagName('img')[0].src = toggleMax;
         $(obj).set('toggle-status', 'min');
     }
+}
+
+/**
+ * Uploads the image
+ */
+function upload() {
+    //showWorkingNotification();
+    var iframe = new Element('iframe', {id:'ifrm_upload', name:'ifrm_upload'});
+    iframe.style.display = 'none';
+    $('addressbook_image').adopt(iframe);
+    $('frm_person_image').submit();
+}
+
+/**
+ * Loads and sets the uploaded image
+ */
+function onUpload(response) {
+    //hideWorkingNotification();
+    if (response.type === 'error') {
+        alert(response.message);
+        $('frm_person_image').reset();
+    } else {
+        var filename = response.message + '//time//' + (new Date()).getTime();
+        $('person_image').src = loadImageUrl + filename;
+        $('image').value = response.message;
+    }
+    $('ifrm_upload').destroy();
+}
+
+
+/**
+ * Removes the image
+ */
+function removeImage() {
+    $('image').value = '';
+    $('frm_person_image').reset();
+    $('person_image').src = baseSiteUrl + '/gadgets/AddressBook/images/photo128px.png?' + (new Date()).getTime();
 }
 
 var AddressBookAjax = new JawsAjax('AddressBook', AddressBookCallback);

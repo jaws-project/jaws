@@ -52,7 +52,7 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_name1', _t('ADDRESSBOOK_ITEMS_FIRSTNAME'));
         $tpl->SetVariable('lbl_title', _t('ADDRESSBOOK_ITEMS_TITLE'));
         $tpl->SetVariable('lbl_address', _t('ADDRESSBOOK_ITEMS_ADDRESS'));
-        $tpl->SetVariable('icon_add', STOCK_ADD);
+        $tpl->SetVariable('add_icon', STOCK_ADD);
 
         $tpl->SetVariable('address_list_link', $this->gadget->urlMap('AddressBook'));
         $tpl->SetVariable('address_list',    _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
@@ -78,6 +78,7 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
             $tpl->SetVariable('title', $addressItem['title']);
             $tpl->SetVariable('unbond', _t('ADDRESSBOOK_ADDRESS_REMOVE_FROM_GROUP'));
             $tpl->SetVariable('unbond_url', $this->gadget->urlMap('UnbondAddress', array('aid' => $addressItem['id'], 'gid' => $gid)));
+            $tpl->SetVariable('remove_icon', STOCK_REMOVE);
             $tpl->ParseBlock("address_list/item1");
         }
 
