@@ -206,9 +206,9 @@ vertical-align:-3px;
 }
 .gadget_response{
 font-weight:bold;
-line-height:160%;
+line-height:150%;
 border-radius:2px;
-padding:2px 20px 0;
+padding:1px 20px 0;
 }
 .response_notice{
 border:1px solid #795;
