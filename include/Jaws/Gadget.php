@@ -179,6 +179,9 @@ class Jaws_Gadget
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
         $this->name = $gadget;
 
+        // load gadget Request interface
+        $this->request = new Jaws_Gadget_Request($this);
+
         // load gadget ACL interface
         $this->acl = new Jaws_Gadget_ACL($this);
         // load gadget registry interface
