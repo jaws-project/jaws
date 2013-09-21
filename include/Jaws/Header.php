@@ -17,29 +17,17 @@ class Jaws_Header
     /**
      * Redirects the browser to another url via HTTP Location method
      *
-     * @param   string  $url URL to move the location
-     * @param   bool    $addSiteURL
-     * @param   int     $statusCode
+     * @param   string  $url            URL to move the location
+     * @param   int     $status_code
      * @access  public
      */
-    function Location($url = '', $statusCode = 302)
+    function Location($url = '', $status_code = 302)
     {
-        if (isset($GLOBALS['app']->Session)) {
-            $GLOBALS['app']->Session->Synchronize();
-        }
-
         if (empty($url) || !preg_match('$^(http|https|ftp)://.*$i', $url)) {
             $url = $GLOBALS['app']->getSiteURL('/'). $url;
         }
 
-        if ($statusCode == 301) {
-            header('HTTP/1.1 301 Moved Permanently');
-        } else {
-            header('HTTP/1.1 302 Found');
-        }
-
-        header('Location: '.$url);
-        exit;
+        terminate($data = null, $status_code, $url);
     }
 
     /**
@@ -49,19 +37,13 @@ class Jaws_Header
      */
     function Referrer()
     {
-        if (isset($GLOBALS['app']->Session)) {
-            $GLOBALS['app']->Session->Synchronize();
-        }
-
         if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
             $url = $_SERVER['HTTP_REFERER'];
         } else {
             $url = $GLOBALS['app']->getSiteURL('/');
         }
 
-        header('HTTP/1.1 302 Found');
-        header('Location: '.$url);
-        exit;
+        terminate($data = null, 302, $url);
     }
 
     /**
