@@ -160,8 +160,7 @@ class Jaws_Layout
            !$GLOBALS['app']->Session->IsSuperAdmin()
         ) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-            echo Jaws_HTTPError::Get(503);
-            exit;
+            terminate($data = Jaws_HTTPError::Get(503), 503);
         }
 
         $favicon = $this->attributes['site_favicon'];
