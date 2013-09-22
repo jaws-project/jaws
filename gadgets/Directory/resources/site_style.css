@@ -63,16 +63,22 @@ width:32px;
 .file-sharing{
 position:absolute;
 top:50%;
-left:50%;
+left:0;
 display:inline-block;
-width:16px;
+width:100%;
 height:16px;
 }
 .file-sharing.shared{
-background:url(../images/share.png) no-repeat center center;
+background:url(../images/share.png) no-repeat 20% center;
 }
 .file-sharing.foreign{
-background:url(../images/users.png) no-repeat center center;
+background:url(../images/users.png) no-repeat 20% center;
+}
+.file-sharing.public{
+background:url(../images/link.png) no-repeat 20% center;
+}
+.file-sharing.shared.public{
+background:url(../images/share.png) no-repeat 20% center, url(../images/link.png) no-repeat 60% center;
 }
 .file-title{
 cursor:default;
