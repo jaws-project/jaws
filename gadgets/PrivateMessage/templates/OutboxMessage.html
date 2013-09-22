@@ -1,0 +1,27 @@
+<!-- BEGIN outboxmessage -->
+{alerts}
+<div class="gadget privateMessage message">
+    <h2>{title}</h2>
+
+    <form name="pm" action="{base_script}" method="post">
+        <input type="hidden" name="gadget" value="PrivateMessage"/>
+        <input type="hidden" name="action" id="action" value=""/>
+        <input type="hidden" name="id" id="id" value="{id}"/>
+
+        <!-- INCLUDE Message.html -->
+
+    </form>
+</div>
+
+<script type="text/javascript">
+    /**
+     * Delete Message
+     */
+    function deleteMessage() {
+        if (confirm('{confirmDelete}')) {
+            window.location.href = "{delete_url}";
+        }
+    }
+
+</script>
+<!-- END outboxmessage -->
