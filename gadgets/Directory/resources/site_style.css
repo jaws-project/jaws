@@ -159,26 +159,29 @@ height:24px;
 #file_filter{
 float:right;
 }
+#frm_search{
+display:none;
+float:right;
+}
+#dir_pathbar {
+font-size:11px;
+}
+#dir_pathbar span {
+color:blue;
+cursor:pointer;
+}
+#dir_pathbar span:hover {
+text-decoration:underline;
+}
+#dir_pathbar img {
+width:16px;
+cursor:pointer;
+vertical-align:middle;
+}
 #file_arena{
 max-height:300px;
 overflow-y:auto;
 margin:5px 0;
-}
-
-#path {
-font-size:11px;
-}
-#path span {
-color:blue;
-cursor:pointer;
-}
-#path span:hover {
-text-decoration:underline;
-}
-#path img {
-width:16px;
-cursor:pointer;
-vertical-align:middle;
 }
 
 #statusbar{

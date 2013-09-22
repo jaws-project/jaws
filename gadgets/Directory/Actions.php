@@ -35,6 +35,10 @@ $actions['Move'] = array(
     'standalone' => true,
     'file' => 'Directory'
 );
+$actions['Search'] = array(
+    'standalone' => true,
+    'file' => 'Directory'
+);
 
 /* Directory Actions */
 $actions['DirectoryForm'] = array(

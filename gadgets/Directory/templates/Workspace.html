@@ -5,9 +5,15 @@
   <div class="toolbar">
     <img src="{new_file}" alt="{lbl_new_file}" title="{lbl_new_file}" onclick="newFile()" />
     <img src="{new_dir}" alt="{lbl_new_dir}" title="{lbl_new_dir}" onclick="newDirectory()" />
+    <img src="{search}" alt="{lbl_search}" title="{lbl_search}" onclick="toggleSearch()" />
   </div>
-  <div><span id="path"></span></div>
-  <select id="file_filter" onchange="displayFiles()">
+  <div><span id="dir_pathbar"></span></div>
+  <div id="frm_search">
+    <input id="file_search"></input>
+    <button onclick="performSearch()">{lbl_search}</button>
+    <button onclick="toggleSearch(); updateFiles();">x</button>
+  </div>
+  <select id="file_filter" onchange="updateFiles()">
     <option value="all">All files & folders</option>
     <option value="shared">Shared files & folders only</option>
     <option value="foreign">Shares from other users only</option>

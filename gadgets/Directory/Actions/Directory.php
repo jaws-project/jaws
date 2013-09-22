@@ -26,8 +26,10 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetVariable('title', _t('DIRECTORY_NAME'));
         $tpl->SetVariable('lbl_new_dir', _t('DIRECTORY_NEW_DIR'));
         $tpl->SetVariable('lbl_new_file', _t('DIRECTORY_NEW_FILE'));
+        $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('new_dir', 'gadgets/Directory/images/new-dir.png');
         $tpl->SetVariable('new_file', 'gadgets/Directory/images/new-file.png');
+        $tpl->SetVariable('search', 'gadgets/Directory/images/search.png');
 
         if ($this->gadget->GetPermission('ShareFile')) {
             $tpl->SetBlock('workspace/share');
@@ -63,6 +65,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetVariable('modified', '{modified}');
         $tpl->SetVariable('shared', '{shared}');
         $tpl->SetVariable('foreign', '{foreign}');
+        $tpl->SetVariable('public', '{public}');
         $tpl->ParseBlock('workspace/fileTemplate');
 
         // Status bar
@@ -88,7 +91,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      * Fetches list of files
      *
      * @access  public
-     * @return  mixed   Array of files or false on error
+     * @return  array   File data or an empty array
      */
     function GetFiles()
     {
@@ -112,7 +115,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      * Fetches data of a file/directory
      *
      * @access  public
-     * @return  mixed   Array of file data or false on error
+     * @return  array   File data or an empty array
      */
     function GetFile()
     {
@@ -218,7 +221,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      * Moves file/directory to the given target directory
      *
      * @access  public
-     * @return  mixed   Response array or Jaws_Error on error
+     * @return  array   Response array
      */
     function Move()
     {
@@ -279,5 +282,39 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         }
 
         return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_MOVE'), RESPONSE_NOTICE);
+    }
+
+    /**
+     * Searches among files and directories for passed query
+     *
+     * @access  public
+     * @return  array   Response array
+     */
+    function Search()
+    {
+        try {
+            $query = jaws()->request->fetch('query');
+            if ($query === null || strlen($query) < 2) {
+                throw new Exception(_t('DIRECTORY_ERROR_SEARCH'));
+            }
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+            $files = $model->GetFiles(null, $user, null, null, null, $query);
+            if (Jaws_Error::IsError($files)){
+                return array();
+            }
+            $objDate = $GLOBALS['app']->loadDate();
+            foreach ($files as &$file) {
+                $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
+                $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
+            }
+        } catch (Exception $e) {
+            return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
+        }
+
+        return $GLOBALS['app']->Session->GetResponse(
+            _t('DIRECTORY_NOTICE_SEARCH_RESULT', count($files)),
+            RESPONSE_NOTICE,
+            $files);
     }
 }

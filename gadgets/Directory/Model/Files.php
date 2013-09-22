@@ -17,7 +17,8 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      * @param   int     $parent  Restricts results to a specified node
      * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($parent = 0, $user = null, $shared = null, $foreign = null, $is_dir = null)
+    function GetFiles($parent = null, $user = null,
+        $shared = null, $foreign = null, $is_dir = null, $query = null)
     {
         $access = ($user === null)? null : $this->CheckAccess($parent, $user);
         if ($access === false) {
@@ -29,7 +30,10 @@ class Directory_Model_Files extends Jaws_Gadget_Model
             'description', 'filename', 'filetype', 'filesize', 'dir.url', 'shared:boolean',
             'dir.public:boolean', 'owner', 'reference', 'createtime', 'updatetime', 'users.username');
         $table->join('users', 'owner', 'users.id');
-        $table->where('parent', $parent)->and();
+
+        if ($parent !== null){
+            $table->where('parent', $parent)->and();
+        }
 
         if ($access !== true && $user !== null){
             $table->where('user', $user)->and();
@@ -45,7 +49,14 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         }
 
         if ($is_dir !== null){
-            $table->where('is_dir', $is_dir);
+            $table->where('is_dir', $is_dir)->and();
+        }
+
+        $query = "%$query%";
+        if ($query !== null){
+            $table->openWhere('title', $query, 'like')->or();
+            $table->where('description', $query, 'like')->or();
+            $table->closeWhere('filename', $query, 'like');
         }
 
         return $table->orderBy('is_dir desc', 'title asc')->fetchAll();
@@ -80,7 +91,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      */
     function CheckAccess($id, $user)
     {
-        if ($id === 0) {
+        if (empty($id)) {
             return null; // root is neutral
         } else {
             $table = Jaws_ORM::getInstance()->table('directory');
