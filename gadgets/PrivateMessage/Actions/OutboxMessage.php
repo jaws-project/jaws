@@ -36,10 +36,11 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $tpl = $this->gadget->loadTemplate('Message.html');
-        $tpl->SetBlock('message');
-
+        $tpl = $this->gadget->loadTemplate('OutboxMessage.html');
+        $tpl->SetBlock('outboxmessage');
         $tpl->SetVariable('id', $id);
+
+        $tpl->SetBlock('outboxmessage/message');
 
         $tpl->SetVariable('confirmDelete', _t('PRIVATEMESSAGE_MESSAGE_CONFIRM_DELETE'));
         $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
@@ -75,10 +76,10 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
         );
 
         if(!empty($message['attachments'])) {
-            $tpl->SetBlock('message/attachment');
+            $tpl->SetBlock('outboxmessage/message/attachment');
             $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
             foreach($message['attachments'] as $file) {
-                $tpl->SetBlock('message/attachment/file');
+                $tpl->SetBlock('outboxmessage/message/attachment/file');
                 $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
                 $tpl->SetVariable('file_name', $file['title']);
                 $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['filesize']));
@@ -92,66 +93,61 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
                                                   ));
                 $tpl->SetVariable('file_download_link', $file_url);
 
-                $tpl->ParseBlock('message/attachment/file');
+                $tpl->ParseBlock('outboxmessage/message/attachment/file');
             }
-            $tpl->ParseBlock('message/attachment');
+            $tpl->ParseBlock('outboxmessage/message/attachment');
         }
 
         if(!empty($message['parent'])) {
-            $tpl->SetBlock('message/history');
+            $tpl->SetBlock('outboxmessage/message/history');
             $tpl->SetVariable('history_url',    $this->gadget->urlMap('MessageHistory', array('id' => $message['id'])));
-            $tpl->SetVariable('icon_history',   STOCK_UNDO);
+            $tpl->SetVariable('icon_history',   'gadgets/PrivateMessage/images/history-mini.png');
             $tpl->SetVariable('history',        _t('PRIVATEMESSAGE_HISTORY'));
-            $tpl->ParseBlock('message/history');
-
-//            $tpl->SetBlock('message/message_nav');
-//            $tpl->SetVariable('message_nav_url', $this->gadget->urlMap('Message',
-//                                                 array('id' => $message['parent'])));
-//            $tpl->SetVariable('message_nav', _t('PRIVATEMESSAGE_PREVIOUS_MESSAGE'));
-//            $tpl->ParseBlock('message/message_nav');
+            $tpl->ParseBlock('outboxmessage/message/history');
         }
 
         // View outbox message
         if (!$message['published']) {
-            $tpl->SetBlock('message/publish');
+            $tpl->SetBlock('outboxmessage/message/publish');
             $tpl->SetVariable('icon_publish', STOCK_OK);
             $tpl->SetVariable('publish', _t('PRIVATEMESSAGE_PUBLISH'));
             $tpl->SetVariable('publish_url', $this->gadget->urlMap('PublishMessage', array('id' => $id)));
-            $tpl->ParseBlock('message/publish');
+            $tpl->ParseBlock('outboxmessage/message/publish');
 
-            $tpl->SetBlock('message/delete');
+            $tpl->SetBlock('outboxmessage/message/delete');
             $tpl->SetVariable('icon_delete', STOCK_DELETE);
-            $tpl->ParseBlock('message/delete');
+            $tpl->ParseBlock('outboxmessage/message/delete');
             $tpl->SetVariable('delete_url', $this->gadget->urlMap(
                 'DeleteOutboxMessage', array('id' => $id)));
 
         } else {
             if ($message['read_count'] < 1) {
-                $tpl->SetBlock('message/draft');
+                $tpl->SetBlock('outboxmessage/message/draft');
                 $tpl->SetVariable('icon_draft', STOCK_BOOK);
                 $tpl->SetVariable('draft', _t('PRIVATEMESSAGE_DRAFT'));
                 $tpl->SetVariable('draft_url', $this->gadget->urlMap('DraftMessage', array('id' => $id)));
-                $tpl->ParseBlock('message/draft');
+                $tpl->ParseBlock('outboxmessage/message/draft');
             }
         }
 
         if ($message['published']) {
-            $tpl->SetBlock('message/forward');
+            $tpl->SetBlock('outboxmessage/message/forward');
             $tpl->SetVariable('forward_url', $this->gadget->urlMap('Compose', array(
                                                                    'id' => $message['id'],
                                                                    'reply'=>'false')));
-            $tpl->SetVariable('icon_forward', STOCK_RIGHT);
+            $tpl->SetVariable('icon_forward', 'gadgets/PrivateMessage/images/forward-mini.png');
             $tpl->SetVariable('forward', _t('PRIVATEMESSAGE_FORWARD'));
-            $tpl->ParseBlock('message/forward');
+            $tpl->ParseBlock('outboxmessage/message/forward');
         }
 
+        $tpl->SetBlock('outboxmessage/message/back');
         $tpl->SetVariable('back_url', $this->gadget->urlMap('Outbox'));
-
-        $tpl->SetVariable('icon_back', STOCK_LEFT);
-
+        $tpl->SetVariable('icon_back', 'gadgets/PrivateMessage/images/back-mini.png');
         $tpl->SetVariable('back', _t('PRIVATEMESSAGE_BACK'));
+        $tpl->ParseBlock('outboxmessage/message/back');
 
-        $tpl->ParseBlock('message');
+        $tpl->ParseBlock('outboxmessage/message');
+        $tpl->ParseBlock('outboxmessage');
         return $tpl->Get();
     }
 

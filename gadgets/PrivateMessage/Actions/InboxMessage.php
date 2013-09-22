@@ -41,10 +41,11 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
             $model->MarkMessages($id, true, $user);
         }
 
-        $tpl = $this->gadget->loadTemplate('Message.html');
-        $tpl->SetBlock('message');
-
+        $tpl = $this->gadget->loadTemplate('InboxMessage.html');
+        $tpl->SetBlock('inboxmessage');
         $tpl->SetVariable('id', $id);
+
+        $tpl->SetBlock('inboxmessage/message');
 
         $tpl->SetVariable('confirmDelete', _t('PRIVATEMESSAGE_MESSAGE_CONFIRM_DELETE'));
         $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
@@ -80,10 +81,10 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
         );
 
         if(!empty($message['attachments'])) {
-            $tpl->SetBlock('message/attachment');
+            $tpl->SetBlock('inboxmessage/message/attachment');
             $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
             foreach($message['attachments'] as $file) {
-                $tpl->SetBlock('message/attachment/file');
+                $tpl->SetBlock('inboxmessage/message/attachment/file');
                 $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
                 $tpl->SetVariable('file_name', $file['title']);
                 $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['filesize']));
@@ -97,59 +98,53 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
                                                   ));
                 $tpl->SetVariable('file_download_link', $file_url);
 
-                $tpl->ParseBlock('message/attachment/file');
+                $tpl->ParseBlock('inboxmessage/message/attachment/file');
             }
-            $tpl->ParseBlock('message/attachment');
+            $tpl->ParseBlock('inboxmessage/message/attachment');
         }
 
         if(!empty($message['parent'])) {
-            $tpl->SetBlock('message/history');
+            $tpl->SetBlock('inboxmessage/message/history');
             $tpl->SetVariable('history_url',    $this->gadget->urlMap('MessageHistory', array('id' => $message['id'])));
-            $tpl->SetVariable('icon_history',   STOCK_UNDO);
+            $tpl->SetVariable('icon_history',   'gadgets/PrivateMessage/images/history-mini.png');
             $tpl->SetVariable('history',        _t('PRIVATEMESSAGE_HISTORY'));
-            $tpl->ParseBlock('message/history');
+            $tpl->ParseBlock('inboxmessage/message/history');
         }
 
-        $tpl->SetBlock('message/reply');
+        $tpl->SetBlock('inboxmessage/message/reply');
         $tpl->SetVariable('reply_url', $this->gadget->urlMap('Compose', array('id' => $message['id'], 'reply' => 'true')));
-        $tpl->SetVariable('icon_reply', STOCK_JUMP_TO);
+        $tpl->SetVariable('icon_reply', 'gadgets/PrivateMessage/images/reply-mini.png');
         $tpl->SetVariable('reply', _t('PRIVATEMESSAGE_REPLY'));
-        $tpl->ParseBlock('message/reply');
+        $tpl->ParseBlock('inboxmessage/message/reply');
 
         if ($message['recipient'] != 0) {
-            $tpl->SetBlock('message/unread');
-            $tpl->SetVariable('unread_url', $this->gadget->urlMap('ChangeMessageRead',
-                array('id' => $id, 'status' => 'unread')));
-            $tpl->SetVariable('icon_unread', STOCK_EMPTY);
-            $tpl->SetVariable('unread', _t('PRIVATEMESSAGE_UNREAD'));
-            $tpl->ParseBlock('message/unread');
-
             if (!$message['archived']) {
-                $tpl->SetBlock('message/archive');
-                $tpl->SetVariable('icon_archive', STOCK_DOWN);
+                $tpl->SetBlock('inboxmessage/message/archive');
+                $tpl->SetVariable('icon_archive', 'gadgets/PrivateMessage/images/archive-mini.png');
                 $tpl->SetVariable('archive', _t('PRIVATEMESSAGE_ARCHIVE'));
                 $tpl->SetVariable('archive_url', $this->gadget->urlMap('ArchiveInboxMessage', array('id' => $id)));
-                $tpl->ParseBlock('message/archive');
+                $tpl->ParseBlock('inboxmessage/message/archive');
             }
         }
 
         if ($message['published']) {
-            $tpl->SetBlock('message/forward');
+            $tpl->SetBlock('inboxmessage/message/forward');
             $tpl->SetVariable('forward_url', $this->gadget->urlMap('Compose', array(
                                                                    'id' => $message['id'],
                                                                    'reply'=>'false')));
-            $tpl->SetVariable('icon_forward', STOCK_RIGHT);
+            $tpl->SetVariable('icon_forward', 'gadgets/PrivateMessage/images/forward-mini.png');
             $tpl->SetVariable('forward', _t('PRIVATEMESSAGE_FORWARD'));
-            $tpl->ParseBlock('message/forward');
+            $tpl->ParseBlock('inboxmessage/message/forward');
         }
 
+        $tpl->SetBlock('inboxmessage/message/back');
         $tpl->SetVariable('back_url', $this->gadget->urlMap('Inbox'));
-
-        $tpl->SetVariable('icon_back', STOCK_LEFT);
-
+        $tpl->SetVariable('icon_back', 'gadgets/PrivateMessage/images/back-mini.png');
         $tpl->SetVariable('back', _t('PRIVATEMESSAGE_BACK'));
+        $tpl->ParseBlock('inboxmessage/message/back');
 
-        $tpl->ParseBlock('message');
+        $tpl->ParseBlock('inboxmessage/message');
+        $tpl->ParseBlock('inboxmessage');
         return $tpl->Get();
     }
 

@@ -1,30 +1,23 @@
 <!-- BEGIN message -->
-{alerts}
-<div class="gadget privateMessage message">
-    <h2>{title}</h2>
-
-    <form name="pm" action="{base_script}" method="post">
-        <input type="hidden" name="gadget" value="PrivateMessage"/>
-        <input type="hidden" name="action" id="action" value=""/>
-        <input type="hidden" name="id" id="id" value="{id}"/>
-
         <div class="content">
-            <div class="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></div>
-            <div>{lbl_from}: <a href="{user_url}">{from}</a></div>
-            <div>{lbl_send_time}: {send_time}</div>
+            <div class="user_avatar">
+                <img src="{avatar}" alt="{username}" title="{nickname}"/>
+            </div>
+
+            <div><b>{lbl_from}:</b> <a href="{user_url}">{from}</a></div>
+            <div><b>{lbl_send_time}:</b> {send_time}</div>
 
             <div class="actions">
+                <!-- BEGIN back -->
                 <a href="{back_url}" class="button" title="{back}"><img src="{icon_back}" alt="{back}"/></a>
+                <!-- END back -->
+
                 <!-- BEGIN history -->
                 <a href="{history_url}" class="button" title="{history}"><img src="{icon_history}" alt="{history}"/></a>
                 <!-- END history -->
                 <!-- BEGIN reply -->
                 <a href="{reply_url}" class="button" title="{reply}"><img src="{icon_reply}" alt="{reply}"/></a>
                 <!-- END reply -->
-
-                <!-- BEGIN unread -->
-                <a href="{unread_url}" class="button" title="{unread}"><img src="{icon_unread}" alt="{unread}"/></a>
-                <!-- END unread -->
 
                 <!-- BEGIN draft -->
                 <a href="{draft_url}" class="button" title="{draft}"><img src="{icon_draft}" alt="{draft}"/></a>
@@ -45,18 +38,11 @@
                 <!-- BEGIN delete -->
                 <a href="javascript:deleteMessage()" class="button" title="{delete}"><img src="{icon_delete}" alt="{delete}"/></a>
                 <!-- END delete -->
-
             </div>
 
-            <div class="actions">
-                <!-- BEGIN message_nav -->
-                <a href="{message_nav_url}" title="{message_nav}">{message_nav}</a>
-                <!-- END message_nav -->
-            </div>
-
-            <div>{lbl_subject}: {subject}</div>
+            <div><b>{lbl_subject}:</b> {subject}</div>
             <div>
-                <div>{lbl_body}:</div>
+                <div><b>{lbl_body}:</b></div>
                 <div>{body}</div>
             </div>
 
@@ -74,18 +60,4 @@
             <!-- END attachment -->
 
         </div>
-    </form>
-</div>
-
-<script type="text/javascript">
-    /**
-     * Delete Message
-     */
-    function deleteMessage() {
-        if (confirm('{confirmDelete}')) {
-            window.location.href = "{delete_url}";
-        }
-    }
-
-</script>
 <!-- END message -->
