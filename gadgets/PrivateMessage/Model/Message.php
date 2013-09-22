@@ -283,6 +283,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                 $recipient_users = array_merge($recipient_users, $group_users);
             }
         }
+        $recipient_users = array_unique($recipient_users);
         if (empty($recipient_users) || count($recipient_users) <= 0) {
             return false;
         }
@@ -361,6 +362,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
                 $cres = Jaws_Utils::copy($src_filepath, $dest_filepath);
                 if ($cres) {
+                    Jaws_Utils::delete($src_filepath);
                     $aData[] = array(
                         'title'         => $attachment['title'],
                         'filename'      => $dest_filename,
