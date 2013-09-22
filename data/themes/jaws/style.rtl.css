@@ -555,3 +555,13 @@ float:right;
 .phoo_image .content{
 text-align:center;
 }
+
+
+/* PrivateMessage */
+.privateMessage  .user_avatar{
+    float:left;
+}
+.privateMessage  .actions{
+    clear: both;
+    float: left;
+}
