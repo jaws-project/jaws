@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
+class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
 {
     /**
      * Display Compose page
@@ -31,6 +31,10 @@ class PrivateMessage_Actions_Compose extends Jaws_Gadget_HTML
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $tpl = $this->gadget->loadTemplate('Compose.html');
         $tpl->SetBlock('compose');
+
+        // Menubar
+        $tpl->SetVariable('menubar', $this->MenuBar('Compose'));
+
         $body_value = "";
         $recipient_users = array();
         $recipient_groups = array();

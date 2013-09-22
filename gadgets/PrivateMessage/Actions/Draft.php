@@ -29,6 +29,10 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
         $limit = (int)$this->gadget->registry->fetch('draft_limit');
         $tpl = $this->gadget->loadTemplate('Outbox.html');
         $tpl->SetBlock('outbox');
+
+        // Menubar
+        $tpl->SetVariable('menubar', $this->MenuBar('Draft'));
+
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_DRAFT'));
         $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
         $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));

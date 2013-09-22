@@ -41,9 +41,14 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
             $view = $get['view'];
         }
 
-        $post['archived'] = false;
         if ($view == 'archived') {
             $post['archived'] = true;
+            // Menubar
+            $tpl->SetVariable('menubar', $this->MenuBar('Archived'));
+        } else {
+            $post['archived'] = false;
+            // Menubar
+            $tpl->SetVariable('menubar', $this->MenuBar('Inbox'));
         }
 
         $page = empty($page)? 1 : (int)$page;

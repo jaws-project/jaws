@@ -27,6 +27,9 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         $tpl = $this->gadget->loadTemplate('Outbox.html');
         $tpl->SetBlock('outbox');
 
+        // Menubar
+        $tpl->SetVariable('menubar', $this->MenuBar('Outbox'));
+
         $post = jaws()->request->fetch(array('page', 'replied', 'attachment', 'filter'), 'post');
         if (!empty($post['replied']) || !empty($post['attachment']) || !empty($post['filter'])) {
             $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');

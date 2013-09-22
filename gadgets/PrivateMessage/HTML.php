@@ -11,6 +11,43 @@
 class PrivateMessage_HTML extends Jaws_Gadget_HTML
 {
     /**
+     * Displays menu bar according to selected action
+     *
+     * @access  public
+     * @param   string  $action_selected    selected action
+     * @return  string XHTML template content
+     */
+    function MenuBar($action_selected)
+    {
+        $actions = array('Inbox', 'Outbox', 'Draft', 'Archived', 'Compose');
+        if (!in_array($action_selected, $actions)) {
+            $action_selected = 'Inbox';
+        }
+
+        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
+        $menubar = new Jaws_Widgets_Menubar();
+
+        $menubar->AddOption('Inbox',_t('PRIVATEMESSAGE_INBOX'),
+            $this->gadget->urlMap('Inbox'), 'gadgets/PrivateMessage/images/inbox.png');
+
+        $menubar->AddOption('Outbox',_t('PRIVATEMESSAGE_OUTBOX'),
+            $this->gadget->urlMap('Outbox'), 'gadgets/PrivateMessage/images/outbox.png');
+
+        $menubar->AddOption('Draft',_t('PRIVATEMESSAGE_DRAFT'),
+            $this->gadget->urlMap('Draft'), 'gadgets/PrivateMessage/images/draft.png');
+
+        $menubar->AddOption('Archived',_t('PRIVATEMESSAGE_ARCHIVED'),
+            $this->gadget->urlMap('Inbox', array('view' => 'archived')), 'gadgets/PrivateMessage/images/archive.png');
+
+        $menubar->AddOption('Compose',_t('PRIVATEMESSAGE_COMPOSE_MESSAGE'),
+            $this->gadget->urlMap('Compose'), 'gadgets/PrivateMessage/images/compose.png');
+
+        $menubar->Activate($action_selected);
+
+        return $menubar->Get();
+    }
+
+    /**
      * Get page navigation links
      *
      * @access  public
