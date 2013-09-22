@@ -39,7 +39,7 @@
   </form>
   <form id="frm_file">
     <input type="hidden" name="id" />
-    <input type="hidden" name="parent" value="0" />
+    <input type="hidden" name="parent" id="parent" value="0" />
     <input type="hidden" name="filename" id="filename" />
     <input type="hidden" name="filetype" id="filetype" />
     <input type="hidden" name="filesize" id="filesize" />
@@ -47,7 +47,7 @@
       <tr id="tr_file"><th>{lbl_file}:</th><td id="filelink"></td></tr>
       <tr><th>{lbl_title}:</th><td><input name="title" /></td></tr>
       <tr><th>{lbl_desc}:</th><td><input name="description" /></td></tr>
-      <tr><th>{lbl_url}:</th><td><input name="url" value="" /></td></tr>
+      <tr id="tr_url"><th>{lbl_url}:</th><td><input name="url" value="" /></td></tr>
     </table>
   </form>
 </fieldset>

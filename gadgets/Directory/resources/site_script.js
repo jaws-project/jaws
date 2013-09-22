@@ -119,7 +119,7 @@ function initDirectory()
     iconByExt.folder = 'folder';
 
     viewType = 'list';
-    changeFileView(viewType);
+    //changeFileView(viewType);
     currentDir = Number(DirectoryStorage.fetch('current_dir'));
     openDirectory(currentDir);
 }
@@ -157,7 +157,7 @@ function displayFiles(files)
         return div;
     }
 
-    var ws = $('file_arena').empty();
+    var ws = $('file_arena').empty().show();
     fileById = {};
     filesCount = files.length;
     files.each(function (file) {
@@ -186,7 +186,7 @@ function changeFileView(view)
 }
 
 /**
- * Fetches and displays details on a file/directory
+ * Highlights file/directory on click
  */
 function fileSelect(e)
 {
@@ -196,22 +196,25 @@ function fileSelect(e)
     cancel();
     this.addClass('selected');
     selectedId = this.fid;
-    data.size = formatSize(data.filesize, 2);
-    st.set('html', statusTemplate.substitute(data));
-    st.getElement('#stat_file_size').style.display =
-        (data.size === '')? 'none' : '';
+    // data.size = formatSize(data.filesize, 2);
+    // st.set('html', statusTemplate.substitute(data));
+    // st.getElement('#stat_file_size').style.display =
+        // (data.size === '')? 'none' : '';
     e.stop();
     updateActions();
 }
 
 /**
- * Opens, plays or downloads the file/directory
+ * Opens, plays or downloads the file/directory on dblclick
  */
 function fileOpen()
 {
     var file = fileById[selectedId],
-        id = (file.foreign)? file.reference : file.id;
+        id = file.id;
     if (file.is_dir) {
+        if (file.foreign) {
+            id = file.reference;
+        }
         openDirectory(id);
     } else {
         if (['wav', 'mp3', 'ogg'].indexOf(file.ext) !== -1) {
@@ -283,6 +286,7 @@ function openMedia(id, type)
  */
 function downloadFile()
 {
+    if (selectedId === null) return;
     var id = selectedId,
         file = fileById[id];
     if (!file) {
@@ -337,6 +341,11 @@ function updateActions()
         } else {
             $('btn_download').show();
         }
+        if (fileById[selectedId].foreign) {
+            $('btn_share').hide();
+        } else {
+            $('btn_share').show();
+        }
     }
 }
 
@@ -357,9 +366,6 @@ function props()
         });
         data.users = id_set.join(', ');
     }
-    if (data['public'] && !data.dl_url) {
-        data.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:selectedId});
-    }
     if (data.is_dir) {
         form = cachedForms.viewDir;
         if (!form) {
@@ -374,6 +380,9 @@ function props()
         cachedForms.viewFile = form;
     }
     $('form').set('html', form.substitute(data));
+    if (data['public'] && !data.dl_url) {
+        data.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:selectedId});
+    }
     if (data.dl_url) {
         showFileURL(data.dl_url);
     }
@@ -508,24 +517,34 @@ function editFile()
     }
     $('form').set('html', cachedForms.editFile);
     var form = $('frm_file'),
-        data = fileById[selectedId];
+        file = fileById[selectedId];
+    if (file.foreign) {
+        $('frm_upload').remove();
+        $('parent').remove();
+        $('filename').remove();
+        $('filetype').remove();
+        $('filesize').remove();
+        $('tr_file').remove();
+        $('tr_url').remove();
+    } else {
+        form.url.value = file.url;
+        form.parent.value = file.parent;
+        form.filetype.value = file.filetype;
+        form.filesize.value = file.filesize;
+        if (file.filename && !file.dl_url) {
+            var url = DirectoryAjax.callSync('GetDownloadURL', {id:selectedId});
+            fileById[selectedId].dl_url = url;
+            setFilename(file.filename, url);
+            $('filename').value = ':nochange:';
+        } else {
+            $('tr_file').hide();
+            $('frm_upload').show();
+        }
+    }
     form.action.value = 'UpdateFile';
     form.id.value = selectedId;
-    form.title.value = data.title;
-    form.description.value = data.description;
-    form.url.value = data.url;
-    form.parent.value = data.parent;
-    form.filetype.value = data.filetype;
-    form.filesize.value = data.filesize;
-    if (data.filename && !data.dl_url) {
-        var url = DirectoryAjax.callSync('GetDownloadURL', {id:selectedId});
-        fileById[selectedId].dl_url = url;
-        setFilename(data.filename, url);
-        $('filename').value = ':nochange:';
-    } else {
-        $('tr_file').hide();
-        $('frm_upload').show();
-    }
+    form.title.value = file.title;
+    form.description.value = file.description;
 }
 
 /**

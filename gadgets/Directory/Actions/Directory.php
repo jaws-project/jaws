@@ -99,7 +99,6 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $files = $model->GetFiles($flags['parent'], $user, $flags['shared'], $flags['foreign']);
-        //_log_var_dump($files);
         if (Jaws_Error::IsError($files)){
             return array();
         }

@@ -111,6 +111,7 @@ padding:0 5px;
 vertical-align:middle;
 cursor:default;
 border-bottom:1px solid #eaf0fc;
+white-space:nowrap;
 }
 .list-view dl:first-child dd{
 border-top:1px solid #eaf0fc;
@@ -128,6 +129,9 @@ height:32px;
 }
 .list-view .file-size{
 text-align:right;
+}
+.list-view .file-title{
+width:100%;
 }
 
 .file-info table{

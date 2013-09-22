@@ -135,7 +135,8 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
         try {
             // Validate data
             $data = jaws()->request->fetch(
-                array('title', 'description', 'parent', 'url', 'filename', 'filetype', 'filesize')
+                array('id', 'title', 'description', 'parent',
+                    'url', 'filename', 'filetype', 'filesize')
             );
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
@@ -146,7 +147,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
 
             // Validate file
-            $id = (int)jaws()->request->fetch('id');
+            $id = (int)$data['id'];
             $file = $model->GetFile($id);
             if (Jaws_Error::IsError($file)) {
                 throw new Exception($file->getMessage());
@@ -159,35 +160,40 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             }
 
             // Upload file
-            $path = $GLOBALS['app']->getDataURL('directory/' . $user);
-            if (!is_dir($path)) {
-                if (!Jaws_Utils::mkdir($path, 2)) {
-                    throw new Exception('DIRECTORY_ERROR_FILE_UPLOAD');
-                }
-            }
-            $res = Jaws_Utils::UploadFiles($_FILES, $path);
-            if (Jaws_Error::IsError($res)) {
-                throw new Exception($res->getMessage());
-            } else if ($res !== false) {
-                $data['filename'] = $res['file'][0]['host_filename'];
-                $data['filetype'] = $res['file'][0]['host_filetype'];
-                $data['filesize'] = $res['file'][0]['host_filesize'];
+            if ($file['user'] != $file['owner']) { // is shortcut
+                unset($data['parent'], $data['url'], $data['filename']);
+                unset($data['filetype'], $data['filesize']);
             } else {
-                if ($data['filename'] === ':nochange:') {
-                    unset($data['filename']);
-                } else if (empty($data['filename'])) {
-                    throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
+                $path = $GLOBALS['app']->getDataURL('directory/' . $user);
+                if (!is_dir($path)) {
+                    if (!Jaws_Utils::mkdir($path, 2)) {
+                        throw new Exception('DIRECTORY_ERROR_FILE_UPLOAD');
+                    }
+                }
+                $res = Jaws_Utils::UploadFiles($_FILES, $path);
+                if (Jaws_Error::IsError($res)) {
+                    throw new Exception($res->getMessage());
+                } else if ($res !== false) {
+                    $data['filename'] = $res['file'][0]['host_filename'];
+                    $data['filetype'] = $res['file'][0]['host_filetype'];
+                    $data['filesize'] = $res['file'][0]['host_filesize'];
                 } else {
-                    $filename = Jaws_Utils::upload_tmp_dir(). '/'. $data['filename'];
-                    if (file_exists($filename)) {
-                        $target = $path . '/' . $data['filename'];
-                        $res = Jaws_Utils::rename($filename, $target, false);
-                        if ($res === false) {
+                    if ($data['filename'] === ':nochange:') {
+                        unset($data['filename']);
+                    } else if (empty($data['filename'])) {
+                        throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
+                    } else {
+                        $filename = Jaws_Utils::upload_tmp_dir(). '/'. $data['filename'];
+                        if (file_exists($filename)) {
+                            $target = $path . '/' . $data['filename'];
+                            $res = Jaws_Utils::rename($filename, $target, false);
+                            if ($res === false) {
+                                throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
+                            }
+                            $data['filename'] = basename($res);
+                        } else {
                             throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
                         }
-                        $data['filename'] = basename($res);
-                    } else {
-                        throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
                     }
                 }
             }
@@ -303,7 +309,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             if (Jaws_Error::IsError($res)) {
                 throw new Exception(_t('DIRECTORY_ERROR_FILE_UPDATE'));
             }
-            $dl_url = $public? $this->GetDownloadURL($id, $user, false) : '';
+            $dl_url = $public? $this->GetDownloadURL($id, false) : '';
         } catch (Exception $e) {
             return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
         }
@@ -321,15 +327,14 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
      * @access  public
      * @return  string  Related URL
      */
-    function GetDownloadURL($id = null, $uid = null, $inline = null)
+    function GetDownloadURL($id = null, $inline = null)
     {
         $id = ($id !== null)? $id : (int)jaws()->request->fetch('id');
-        $user = ($uid !== null)? $uid : (int)$GLOBALS['app']->Session->GetAttribute('user');
         $inline = ($inline !== null)? $inline : (bool)jaws()->request->fetch('inline');
         return $GLOBALS['app']->Map->GetURLFor(
             'Directory',
             'DownloadFile',
-            array('id' => $id, 'uid' => $user, 'inline' => $inline));
+            array('id' => $id, 'inline' => $inline));
     }
 
     /**
@@ -342,7 +347,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
     {
         $id = (int)jaws()->request->fetch('id');
         $type = jaws()->request->fetch('type');
-        $url = $this->GetDownloadURL($id, null, true);
+        $url = $this->GetDownloadURL($id, true);
         $tpl = "[$type]" . $url . "[/$type]";
         return $this->gadget->ParseText($tpl, 'Directory', 'index');
     }
@@ -378,13 +383,11 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
      */
     function DownloadFile()
     {
-        $data = jaws()->request->fetch(array('id', 'uid', 'inline'));
-        //_log_var_dump($data);
-        if (is_null($data['id']) || is_null($data['uid'])) {
+        $data = jaws()->request->fetch(array('id', 'inline'));
+        if (is_null($data['id'])) {
             return Jaws_HTTPError::Get(500);
         }
         $id = (int)$data['id'];
-        $uid = (int)$data['uid'];
         $inline = (bool)$data['inline'];
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
 
@@ -397,15 +400,17 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(404);
         }
 
+        // Validate user
         if (!$file['public']) {
-            // Validate user
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            if ($user != $uid || $user != $file['user']) {
+            $access = $model->CheckAccess($id, $user);
+            if ($access !== true) {
                 return Jaws_HTTPError::Get(403);
             }
         }
 
         // Check for fie existance
+        $uid = ($file['id'] == $file['reference'])? $file['user'] : $file['owner'];
         $filename = $GLOBALS['app']->getDataURL("directory/$uid/") . $file['filename'];
         if (!file_exists($filename)) {
             return Jaws_HTTPError::Get(404);

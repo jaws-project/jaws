@@ -92,12 +92,12 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     function CheckAccess($id, $user)
     {
         if (empty($id)) {
-            return null; // root is neutral
+            return null;
         } else {
             $table = Jaws_ORM::getInstance()->table('directory');
             $table->select('user:integer', 'parent:integer');
-            $data = $table->where('id', $id)->fetchRow();
-            if ($data['user'] === $user) {
+            $file = $table->where('id', $id)->fetchRow();
+            if ($file['user'] === $user) {
                 return true;
             }
         }
@@ -112,8 +112,8 @@ class Directory_Model_Files extends Jaws_Gadget_Model
             return true;
         }
 
-        if ($data['parent'] !== 0) {
-            return $this->CheckAccess($data['parent'], $user);
+        if ($file['parent'] !== 0) {
+            return $this->CheckAccess($file['parent'], $user);
         }
 
         return false;
