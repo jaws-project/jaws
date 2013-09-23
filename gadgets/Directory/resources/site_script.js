@@ -135,10 +135,10 @@ function updateFiles(parent)
     var shared = ($('file_filter').value === 'shared')? true : null,
         foreign = ($('file_filter').value === 'foreign')? true : null,
         files = DirectoryAjax.callSync('GetFiles', 
-            {'parent':parent, 'shared':shared, 'foreign':foreign});
-    toggleSearch(false);
-    updatePath();
+            {'id':parent, 'shared':shared, 'foreign':foreign});
     displayFiles(files);
+    updatePath();
+    toggleSearch(false);
 }
 
 /**
@@ -258,7 +258,7 @@ function openFile(id)
     if (!file.open_url) {
         fileById[id].open_url = DirectoryAjax.callSync(
             'GetDownloadURL',
-            {'id':id, 'inline':true}
+            {'id':id, 'open':true}
         );
     }
     if (file.filename) {
@@ -295,7 +295,7 @@ function downloadFile()
     if (!file.dl_url) {
         fileById[id].dl_url = DirectoryAjax.callSync(
             'GetDownloadURL',
-            {'id':id, 'inline':false}
+            {'id':id}
         );
     }
     window.location.assign(fileById[id].dl_url);
@@ -357,7 +357,6 @@ function props()
     if (selectedId === null) return;
     var data = fileById[selectedId],
         form;
-    // console.log(selectedId);
     if (!data.users) {
         var users = DirectoryAjax.callSync('GetFileUsers', {id:selectedId}),
             id_set = [];
@@ -369,13 +368,13 @@ function props()
     if (data.is_dir) {
         form = cachedForms.viewDir;
         if (!form) {
-            form = DirectoryAjax.callSync('DirectoryForm', {mode:'view'});
+            form = DirectoryAjax.callSync('DirectoryForm');
         }
         cachedForms.viewDir = form;
     } else {
         form = cachedForms.viewFile;
         if (!form) {
-            form = DirectoryAjax.callSync('FileForm', {mode:'view'});
+            form = DirectoryAjax.callSync('FileForm');
         }
         cachedForms.viewFile = form;
     }
@@ -424,7 +423,7 @@ function del()
  * Moves selected directory/file to another directory
  */
 function move() {
-    var tree = DirectoryAjax.callSync('GetTree', {'root':0}),
+    var tree = DirectoryAjax.callSync('GetTree', {'id':selectedId}),
         form = $('form');
     form.set('html', tree);
     form.getElements('a').addEvent('click', function () {
@@ -657,7 +656,7 @@ function submitFile()
 function share()
 {
     if (!cachedForms.share) {
-        cachedForms.share = DirectoryAjax.callSync('GetShareForm');
+        cachedForms.share = DirectoryAjax.callSync('ShareForm');
     }
     //console.log(cachedForms);
     $('form').set('html', cachedForms.share);

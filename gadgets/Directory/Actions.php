@@ -88,6 +88,10 @@ $actions['DownloadFile'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
+$actions['OpenFile'] = array(
+    'standalone' => true,
+    'file' => 'Files'
+);
 $actions['GetDownloadURL'] = array(
     'standalone' => true,
     'file' => 'Files'
@@ -98,11 +102,11 @@ $actions['PlayMedia'] = array(
 );
 
 /* Sharing Actions */
-$actions['GetUsers'] = array(
+$actions['ShareForm'] = array(
     'standalone' => true,
     'file' => 'Share'
 );
-$actions['GetShareForm'] = array(
+$actions['GetUsers'] = array(
     'standalone' => true,
     'file' => 'Share'
 );

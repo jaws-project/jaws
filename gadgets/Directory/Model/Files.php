@@ -52,8 +52,8 @@ class Directory_Model_Files extends Jaws_Gadget_Model
             $table->where('is_dir', $is_dir)->and();
         }
 
-        $query = "%$query%";
         if ($query !== null){
+            $query = "%$query%";
             $table->openWhere('title', $query, 'like')->or();
             $table->where('description', $query, 'like')->or();
             $table->closeWhere('filename', $query, 'like');

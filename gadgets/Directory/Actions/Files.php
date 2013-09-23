@@ -18,7 +18,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
      */
     function FileForm()
     {
-        $mode = jaws()->request->fetch('mode', 'post');
+        $mode = jaws()->request->fetch('mode');
         $tpl = $this->gadget->loadTemplate('File.html');
         $tpl->SetBlock($mode);
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
@@ -28,9 +28,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
         if ($mode === 'edit') {
             $tpl->SetVariable('lbl_file', _t('DIRECTORY_FILE'));
             $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
-        }
-        if ($mode === 'view') {
-            //$tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
+        } else {
             $tpl->SetVariable('lbl_filename', _t('DIRECTORY_FILE_FILENAME'));
             $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
             $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
@@ -327,14 +325,15 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
      * @access  public
      * @return  string  Related URL
      */
-    function GetDownloadURL($id = null, $inline = null)
+    function GetDownloadURL($id = null, $open = null)
     {
         $id = ($id !== null)? $id : (int)jaws()->request->fetch('id');
-        $inline = ($inline !== null)? $inline : (bool)jaws()->request->fetch('inline');
+        $open = ($open !== null)? $open : (bool)jaws()->request->fetch('open');
+        $action = $open? 'OpenFile' : 'DownloadFile';
         return $GLOBALS['app']->Map->GetURLFor(
             'Directory',
-            'DownloadFile',
-            array('id' => $id, 'inline' => $inline));
+            $action,
+            array('id' => $id));
     }
 
     /**
@@ -376,19 +375,40 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
     }
 
     /**
-     * Downloads file (stream)
+     * Downloads file (not force)
      *
      * @access  public
-     * @return  array   Response array
+     * @return  mixed   File data or Jaws_Error
+     */
+    function OpenFile()
+    {
+        return $this->Download(true);
+    }
+
+    /**
+     * Downloads file (force download)
+     *
+     * @access  public
+     * @return  mixed   File data or Jaws_Error
      */
     function DownloadFile()
     {
-        $data = jaws()->request->fetch(array('id', 'inline'));
-        if (is_null($data['id'])) {
+        return $this->Download(false);
+    }
+
+    /**
+     * Downloads file (stream)
+     *
+     * @access  public
+     * @return  mixed   File data or Jaws_Error
+     */
+    function Download($open = true)
+    {
+        $id = jaws()->request->fetch('id');
+        if (is_null($id)) {
             return Jaws_HTTPError::Get(500);
         }
-        $id = (int)$data['id'];
-        $inline = (bool)$data['inline'];
+        $id = (int)$id;
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
 
         // Validate file
@@ -417,7 +437,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
         }
 
         // Stream file
-        if (!Jaws_Utils::Download($filename, $file['filename'], $file['filetype'], $inline)) {
+        if (!Jaws_Utils::Download($filename, $file['filename'], $file['filetype'], $open)) {
             return Jaws_HTTPError::Get(500);
         }
 

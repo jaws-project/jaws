@@ -95,10 +95,10 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      */
     function GetFiles()
     {
-        $flags = jaws()->request->fetch(array('parent', 'shared', 'foreign'), 'post');
+        $flags = jaws()->request->fetch(array('id', 'shared', 'foreign'));
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-        $files = $model->GetFiles($flags['parent'], $user, $flags['shared'], $flags['foreign']);
+        $files = $model->GetFiles($flags['id'], $user, $flags['shared'], $flags['foreign']);
         if (Jaws_Error::IsError($files)){
             return array();
         }
@@ -118,7 +118,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      */
     function GetFile()
     {
-        $id = jaws()->request->fetch('id', 'post');
+        $id = jaws()->request->fetch('id');
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $access = $model->CheckAccess($id, $user);
@@ -155,7 +155,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      */
     function GetPath()
     {
-        $id = jaws()->request->fetch('id', 'post');
+        $id = jaws()->request->fetch('id');
         $path = array();
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $model->GetPath($id, $path);
@@ -171,10 +171,8 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
     function GetTree()
     {
         $tree = '';
-        $data = jaws()->request->fetch(array('root', 'exclude'), 'post');
-        if ($data['root'] !== null) {
-            $this->BuildTree((int)$data['root'], $data['exclude'], $tree);
-        }
+        $exclude = (int)jaws()->request->fetch('id');
+        $this->BuildTree(0, $exclude, $tree);
 
         $tpl = $this->gadget->loadTemplate('Move.html');
         $tpl->SetBlock('tree');
@@ -292,7 +290,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
     function Search()
     {
         try {
-            $query = jaws()->request->fetch('query');
+            $query = jaws()->request->fetch('query', 'post');
             if ($query === null || strlen($query) < 2) {
                 throw new Exception(_t('DIRECTORY_ERROR_SEARCH'));
             }
