@@ -36,7 +36,7 @@ $maps[] = array(
     'directory/file/{id}/download',
     array('id' => '[[:digit:]]+')
 );
-/*$maps[] = array(
+$maps[] = array(
     'OpenFile',
     'directory/file/{id}/open[.{ext}]',
     array(
@@ -44,7 +44,7 @@ $maps[] = array(
         'ext' => '[[:alnum:]]+'
     ),
     ''
-);*/
+);
 $maps[] = array(
     'GetPath',
     'directory/path/{id}',
