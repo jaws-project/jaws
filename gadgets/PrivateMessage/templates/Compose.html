@@ -16,7 +16,7 @@
 
             <!-- BEGIN recipients -->
             <div>
-                {lbl_recipient}:
+                <b>{lbl_recipient}:</b>
             </div>
             <!-- BEGIN all_users -->
             <div>
@@ -28,12 +28,12 @@
             </div>
             <!-- END all_users -->
             <div id="recipient_users_area">
-                <label for="recipient_users">{lbl_recipient_users}:</label>
+                <label for="recipient_users"><b>{lbl_recipient_users}:</b></label>
                 {recipient_users_opt}
             </div>
 
             <div id="recipient_groups_area">
-                <label for="recipient_groups">{lbl_recipient_groups}:</label>
+                <label for="recipient_groups"><b>{lbl_recipient_groups}:</b></label>
                 {recipient_groups_opt}
             </div>
             <!-- END recipients -->
@@ -46,12 +46,12 @@
             <!-- END recipient -->
 
             <div>
-                <label for="subject">{lbl_subject}:</label>
+                <label for="subject"><b>{lbl_subject}:</b></label>
                 <input name="subject" id="subject" type="text" value="{subject}"/>
             </div>
 
             <div>
-                <label for="body">{lbl_body}:</label>
+                <label for="body"><b>{lbl_body}:</b></label>
                 {body}
             </div>
         </div>

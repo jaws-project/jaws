@@ -91,6 +91,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
         }
 
         $body =& $GLOBALS['app']->LoadEditor('PrivateMessage', 'body', $body_value);
+        $body->TextArea->SetRows(8);
         $body->setID('body');
         $body->SetWidth('100%');
         $tpl->SetVariable('body', $body->Get());
