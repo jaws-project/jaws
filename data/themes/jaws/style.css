@@ -180,8 +180,8 @@ padding-top:8px;
 line-height:120%;
 }
 .gadget{
-margin-bottom:12px;
 position:relative;
+margin-bottom:12px;
 }
 .gadget_header{
 }
@@ -205,9 +205,9 @@ display:inline;
 vertical-align:-3px;
 }
 .gadget_response{
+width:100%;
 position:absolute;
 text-align:center;
-width:100%;
 }
 .gadget_response div{
 font-weight:bold;
