@@ -21,6 +21,11 @@
  */
 function terminate(&$data = null, $status_code = 200, $next_location = '', $sync = true)
 {
+    // Sync session
+    if ($sync && isset($GLOBALS['app'])) {
+        $GLOBALS['app']->Session->Synchronize();
+    }
+
     // Send content to client
     $resType = jaws()->request->fetch('restype');
     switch ($resType) {
@@ -36,32 +41,24 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
             $data = gzencode($data, COMPRESS_LEVEL, FORCE_GZIP);
             header('Content-Length: '.strlen($data));
             header('Content-Encoding: '. $resType);
-            echo $data;
-            break;
-
         default:
-            echo $data;
-    }
+            switch ($status_code) {
+                case 301:
+                    header('HTTP/1.1 301 Moved Permanently');
+                    header('Location: '.$next_location);
+                    break;
+                case 302:
+                    header('HTTP/1.1 302 Found');
+                    header('Location: '.$next_location);
+                    break;
+                default:
+            }
 
-    // Sync session
-    if ($sync && isset($GLOBALS['app'])) {
-        $GLOBALS['app']->Session->Synchronize();
+            echo $data;
     }
 
     if (isset($GLOBALS['log'])) {
         $GLOBALS['log']->End();
-    }
-
-    switch ($status_code) {
-        case 301:
-            header('HTTP/1.1 301 Moved Permanently');
-            header('Location: '.$next_location);
-            break;
-        case 302:
-            header('HTTP/1.1 302 Found');
-            header('Location: '.$next_location);
-            break;
-        default:
     }
 
     exit;
