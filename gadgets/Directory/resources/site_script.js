@@ -13,6 +13,8 @@
 var DirectoryCallback = {
     CreateDirectory: function(response) {
         $('simple_response').set('html', response.message);
+        //console.log(response);
+        //showResponse2(response);
         if (response.css === 'notice-message') {
             cancel();
             updateFiles(currentDir);

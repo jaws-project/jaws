@@ -36,11 +36,15 @@ $maps[] = array(
     'directory/file/{id}/download',
     array('id' => '[[:digit:]]+')
 );
-$maps[] = array(
+/*$maps[] = array(
     'OpenFile',
-    'directory/file/{id}/open',
-    array('id' => '[[:digit:]]+')
-);
+    'directory/file/{id}/open[.{ext}]',
+    array(
+        'id' => '[[:digit:]]+',
+        'ext' => '[[:alnum:]]+'
+    ),
+    ''
+);*/
 $maps[] = array(
     'GetPath',
     'directory/path/{id}',

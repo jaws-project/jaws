@@ -73,6 +73,9 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
         }
 
         return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_DIR_CREATED'), RESPONSE_NOTICE);
+        // return $GLOBALS['app']->Session->PushResponse(
+                // _t('DIRECTORY_NOTICE_DIR_CREATED')
+            // );
     }
 
     /**
