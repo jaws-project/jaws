@@ -723,7 +723,7 @@ function showResponse2(response)
     ).toLowerCase();
 
     $(div_response).set('html', response.text);
-    $(div_response).set('class', 'gadget_response ' + response.type);
+    $(div_response).set('class', response.type);
 }
 
 /**
