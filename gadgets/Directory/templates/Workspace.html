@@ -7,7 +7,14 @@
     <img src="{new_dir}" alt="{lbl_new_dir}" title="{lbl_new_dir}" onclick="newDirectory()" />
     <img src="{search}" alt="{lbl_search}" title="{lbl_search}" onclick="toggleSearch()" />
   </div>
-  <div><span id="dir_pathbar"></span></div>
+  <div id="dir_pathbar">
+    <img src="gadgets/Directory/images/home.png" onclick="openDirectory(0)" />
+    <span id="dir_path"></span>
+  </div>
+  <div id="dir_searchbar">
+    <img src="gadgets/Directory/images/search-res.png" />
+    <span id="search_res"></span>
+  </div>
   <div id="frm_search">
     <input id="file_search"></input>
     <button onclick="performSearch()">{lbl_search}</button>
@@ -58,7 +65,6 @@
 <script>
   var UID = "{UID}",
       site_url = "{site_url}",
-      data_url = "{data_url}",
       icon_url = "{icon_url}",
       imgDeleteFile = "{imgDeleteFile}";
   initDirectory();

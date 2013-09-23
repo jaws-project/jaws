@@ -173,21 +173,24 @@ float:right;
 display:none;
 float:right;
 }
-#dir_pathbar {
+
+#dir_pathbar, #dir_searchbar{
 font-size:11px;
 }
-#dir_pathbar span {
+#dir_pathbar img{
+vertical-align:middle;
+cursor:pointer;
+}
+#dir_path span {
+cursor:pointer;
+}
+#dir_path span:hover {
 color:blue;
-cursor:pointer;
 }
-#dir_pathbar span:hover {
-text-decoration:underline;
-}
-#dir_pathbar img {
-width:16px;
-cursor:pointer;
+#dir_searchbar img{
 vertical-align:middle;
 }
+
 #file_arena{
 max-height:300px;
 overflow-y:auto;

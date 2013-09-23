@@ -46,7 +46,6 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_download', _t('DIRECTORY_DOWNLOAD'));
         $tpl->SetVariable('imgDeleteFile', STOCK_DELETE);
         $tpl->SetVariable('site_url', $GLOBALS['app']->getSiteURL('/'));
-        $tpl->SetVariable('data_url', $GLOBALS['app']->getDataURL('directory/'));
         $theme = $GLOBALS['app']->GetTheme();
         $icon_url = is_dir($theme['url'] . 'mimetypes')?
             $theme['url'] . 'mimetypes/' : 'images/mimetypes/';

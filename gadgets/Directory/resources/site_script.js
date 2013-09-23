@@ -12,19 +12,19 @@
  */
 var DirectoryCallback = {
     CreateDirectory: function(response) {
+        $('simple_response').set('html', response.message);
         if (response.css === 'notice-message') {
             cancel();
             updateFiles(currentDir);
         }
-        $('simple_response').set('html', response.message);
     },
 
     UpdateDirectory: function(response) {
+        $('simple_response').set('html', response.message);
         if (response.css === 'notice-message') {
             cancel();
             updateFiles(currentDir);
         }
-        $('simple_response').set('html', response.message);
     },
 
     DeleteDirectory: function(response) {
@@ -36,19 +36,19 @@ var DirectoryCallback = {
     },
 
     CreateFile: function(response) {
+        $('simple_response').set('html', response.message);
         if (response.css === 'notice-message') {
             cancel();
             updateFiles(currentDir);
         }
-        $('simple_response').set('html', response.message);
     },
 
     UpdateFile: function(response) {
+        $('simple_response').set('html', response.message);
         if (response.css === 'notice-message') {
             cancel();
             updateFiles(currentDir);
         }
-        $('simple_response').set('html', response.message);
     },
 
     DeleteFile: function(response) {
@@ -60,33 +60,35 @@ var DirectoryCallback = {
     },
 
     PublishFile: function(response) {
+        $('simple_response').set('html', response.message);
         if (response.css === 'notice-message') {
             fileById[selectedId]['public'] = response.data;
             showFileURL(response.data);
         }
-        $('simple_response').set('html', response.message);
     },
 
     Move: function(response) {
+        $('simple_response').set('html', response.message);
         if (response.css === 'notice-message') {
             cancel();
             updateFiles(currentDir);
         }
-        $('simple_response').set('html', response.message);
     },
 
     UpdateFileUsers: function(response) {
+        $('simple_response').set('html', response.message);
         if (response.css === 'notice-message') {
             cancel();
             updateFiles(currentDir);
         }
-        $('simple_response').set('html', response.message);
     },
 
     Search: function(response) {
         if (response.css === 'notice-message') {
+            $('dir_pathbar').hide();
+            $('dir_searchbar').show();
+            $('search_res').innerHTML = ' > ' + response.message;
             displayFiles(response.data);
-            $('dir_pathbar').innerHTML = response.message;
         } else {
             $('simple_response').innerHTML = response.message;
         }
@@ -108,7 +110,7 @@ function initDirectory()
     // if (viewType === null) viewType = 'list';
     // $('view_type').value = viewType;
 
-    // Build icons map (ext => icon)
+    // Builds icons map (ext => icon)
     Object.each(fileTypes, function (values, type) {
         values.each(function (ext) {
             if (!iconByExt[ext]) {
@@ -136,9 +138,15 @@ function updateFiles(parent)
         foreign = ($('file_filter').value === 'foreign')? true : null,
         files = DirectoryAjax.callSync('GetFiles', 
             {'id':parent, 'shared':shared, 'foreign':foreign});
+    if (files[0] && files[0].user != UID) {
+        $('dir_path').innerHTML = ' > ' + files[0].username;
+    } else {
+        updatePath();
+    }
     displayFiles(files);
-    updatePath();
     toggleSearch(false);
+    $('dir_pathbar').show();
+    $('dir_searchbar').hide();
 }
 
 /**
@@ -237,7 +245,6 @@ function openDirectory(id)
     DirectoryStorage.update('current_dir', id);
     updateFiles(id);
     cancel();
-    toggleSearch(false);
 }
 
 /**
@@ -307,19 +314,13 @@ function downloadFile()
 function updatePath()
 {
     var pathArr = DirectoryAjax.callSync('GetPath', {'id':currentDir}),
-        path = $('dir_pathbar').set('html', ''),
-        link = new Element('img', {
-            'src':'gadgets/Directory/images/home.png',
-            'title': 'Home'
-        });
-    link.addEvent('click', openDirectory.pass(0));
-    path.grab(link);
+        path = $('dir_path').set('html', '');
     pathArr.reverse().each(function (dir, i) {
         path.appendText(' > ');
         if (i === pathArr.length - 1) {
             path.appendText(dir.title);
         } else {
-            link = new Element('span');
+            var link = new Element('span');
             link.set('html', dir.title);
             link.addEvent('click', openDirectory.pass(dir.id));
             path.grab(link);
@@ -336,15 +337,20 @@ function updateActions()
         $('file_actions').style.visibility = 'hidden';
     } else {
         $('file_actions').style.visibility = 'visible';
-        if (fileById[selectedId].is_dir) {
-            $('btn_download').hide();
-        } else {
-            $('btn_download').show();
-        }
         if (fileById[selectedId].foreign) {
             $('btn_share').hide();
         } else {
             $('btn_share').show();
+        }
+        if (fileById[selectedId].user != UID) {
+            $('file_actions').getElements('button').hide();
+        } else {
+            $('file_actions').getElements('button').show();
+        }
+        if (fileById[selectedId].is_dir) {
+            $('btn_download').hide();
+        } else {
+            $('btn_download').show();
         }
     }
 }
@@ -462,7 +468,7 @@ function cancel()
  */
 function newDirectory()
 {
-    selectedId = null;
+    cancel();
     if (!cachedForms.editDir) {
         cachedForms.editDir = DirectoryAjax.callSync('DirectoryForm', {mode:'edit'});
     }
@@ -494,7 +500,7 @@ function editDirectory()
  */
 function newFile()
 {
-    selectedId = null;
+    cancel();
     if (!cachedForms.editFile) {
         cachedForms.editFile = DirectoryAjax.callSync('FileForm', {mode:'edit'});
     }
@@ -530,9 +536,12 @@ function editFile()
         form.parent.value = file.parent;
         form.filetype.value = file.filetype;
         form.filesize.value = file.filesize;
-        if (file.filename && !file.dl_url) {
-            var url = DirectoryAjax.callSync('GetDownloadURL', {id:selectedId});
-            fileById[selectedId].dl_url = url;
+        if (file.filename) {
+            var url = file.dl_url;
+            if (!url) {
+                url = DirectoryAjax.callSync('GetDownloadURL', {id:selectedId});
+                fileById[selectedId].dl_url = url;
+            }
             setFilename(file.filename, url);
             $('filename').value = ':nochange:';
         } else {
@@ -610,7 +619,7 @@ function showFileURL(url)
  */
 function setFilename(filename, url)
 {
-    var link = new Element('a', {'html':filename, 'target':'_blank'});
+    var link = new Element('a', {'html':filename});
     if (url !== '') {
         link.href = url;
     }
@@ -658,7 +667,6 @@ function share()
     if (!cachedForms.share) {
         cachedForms.share = DirectoryAjax.callSync('ShareForm');
     }
-    //console.log(cachedForms);
     $('form').set('html', cachedForms.share);
     $('groups').selectedIndex = -1;
 
@@ -759,7 +767,7 @@ function performSearch()
 {
     var query = $('file_search').value;
     if (query.length < 2) {
-        alert('The search query must contains 2 letters at least.')
+        alert('The search query must contains 2 letters at least.');
     }
     DirectoryAjax.callAsync('Search', {'query':query});
 }
@@ -823,4 +831,4 @@ var fileTypes = {
     'application-pdf' : ['pdf'],
     'application-flash' : ['swf'],
     'application-ruby' : ['rb']
-}
+};
