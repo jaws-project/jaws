@@ -21,13 +21,13 @@ class Jaws_Header
      * @param   int     $status_code
      * @access  public
      */
-    function Location($url = '', $status_code = 302)
+    function Location($url = '', $resource = '', $status_code = 302)
     {
         if (empty($url) || !preg_match('$^(http|https|ftp)://.*$i', $url)) {
             $url = $GLOBALS['app']->getSiteURL('/'). $url;
         }
 
-        terminate($data = null, $status_code, $url);
+        terminate($data = $GLOBALS['app']->Session->PopResponse($resource), $status_code, $url);
     }
 
     /**
