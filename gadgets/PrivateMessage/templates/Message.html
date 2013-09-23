@@ -5,6 +5,16 @@
             </div>
 
             <div><b>{lbl_from}:</b> <a href="{user_url}">{from}</a></div>
+
+            <!-- BEGIN recipients -->
+            <div>
+                <b>{lbl_recipients}:</b> {lbl_all_users}
+                <!-- BEGIN recipient -->
+                    <a href="{user_url}">{recipient}</a> {separator}
+                <!-- END recipient -->
+            </div>
+            <!-- END recipients -->
+
             <div><b>{lbl_send_time}:</b> {send_time}</div>
 
             <div class="actions">

@@ -52,7 +52,8 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
 
         $date = $GLOBALS['app']->loadDate();
-        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');
+        $oModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');
+        $mModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
             $tpl->SetBlock('outbox/response');
@@ -62,15 +63,28 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         }
 
         $post['published'] = true;
-        $messages = $model->GetOutbox($user, $post, $limit, ($page - 1) * $limit);
+        $messages = $oModel->GetOutbox($user, $post, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
             foreach ($messages as $message) {
                 $i++;
                 $tpl->SetBlock('outbox/message');
                 $tpl->SetVariable('rownum', $i);
-//                $tpl->SetVariable('from', $message['from_nickname']);
-                $tpl->SetVariable('recipients', '...');
+                $recipients = $mModel->GetMessageRecipientsInfo($message['id']);
+
+                $recipients_str = _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_ALL_USERS');
+                if (count($recipients) > 0) {
+                    // user's profile
+                    $user_url = $GLOBALS['app']->Map->GetURLFor(
+                        'Users',
+                        'Profile',
+                        array('user' => $recipients[0]['username']));
+                    $recipients_str = '<a href=' . $user_url . '>' . $recipients[0]['nickname'] . '<a/>';
+                    if (count($recipients) > 1) {
+                        $recipients_str .= ' , ...';
+                    }
+                }
+                $tpl->SetVariable('recipients', $recipients_str);
                 $tpl->SetVariable('subject', $message['subject']);
                 $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
 
@@ -96,7 +110,7 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
 
         $post['published'] = true;
-        $outboxTotal = $model->GetOutboxStatistics($user, $post);
+        $outboxTotal = $oModel->GetOutboxStatistics($user, $post);
 
         // page navigation
         $this->GetPagesNavigation(

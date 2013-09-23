@@ -48,6 +48,39 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_body', _t('PRIVATEMESSAGE_MESSAGE_BODY'));
 
+        // fill recipients users
+        $recipients = $model->GetMessageRecipientsInfo($message['id']);
+        $tpl->SetBlock('outboxmessage/message/recipients');
+        $tpl->SetVariable('lbl_recipients', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
+
+        if (count($recipients) > 0) {
+            $i = 0;
+            foreach ($recipients as $recipient) {
+                $i++;
+                $tpl->SetBlock('outboxmessage/message/recipients/recipient');
+                // user's profile
+                $tpl->SetVariable(
+                    'user_url',
+                    $GLOBALS['app']->Map->GetURLFor(
+                        'Users',
+                        'Profile',
+                        array('user' => $recipient['username'])
+                    )
+                );
+                $tpl->SetVariable('recipient', $recipient['nickname']);
+                if ($i < count($recipients)) {
+                    $tpl->SetVariable('separator', ',');
+                } else {
+                    $tpl->SetVariable('separator', '');
+                }
+                $tpl->ParseBlock('outboxmessage/message/recipients/recipient');
+            }
+        } else {
+            $tpl->SetVariable('lbl_all_users', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_ALL_USERS'));
+
+        }
+        $tpl->ParseBlock('outboxmessage/message/recipients');
+
         $tpl->SetVariable('from', $message['from_nickname']);
         $tpl->SetVariable('username', $message['from_username']);
         $tpl->SetVariable('nickname', $message['from_nickname']);

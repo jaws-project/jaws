@@ -107,7 +107,8 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
                 }
             }
             if (isset($filters['replied']) && !empty($filters['replied'])) {
-                $subTable = Jaws_ORM::getInstance()->table('pm_messages')->select('count(id):integer')->where('parent', array('message.id', 'expr'));
+                $subTable = Jaws_ORM::getInstance()->table('pm_messages')->select('count(id):integer')->where(
+                    'parent', array('message.id', 'expr'));
                 if ($filters['replied'] == 'yes') {
                     $table->and()->where($subTable, 0, '>');
                 } else {

@@ -57,8 +57,9 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }
         return $result;
     }
+
     /**
-     * Get a message Info
+     * Get a message recipients
      *
      * @access  public
      * @param   integer $id   Message id
@@ -69,6 +70,29 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
 
         $result = $table->select('recipient:integer')->where('message', $id)->fetchColumn();
+        if (Jaws_Error::IsError($result)) {
+            return new Jaws_Error($result->getMessage(), 'SQL');
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get a message recipients info
+     *
+     * @access  public
+     * @param   integer $id   Message id
+     * @return  mixed   Inbox count or Jaws_Error on failure
+     */
+    function GetMessageRecipientsInfo($id)
+    {
+        $table = Jaws_ORM::getInstance()->table('pm_recipients');
+
+        $table->select(array('recipient:integer', 'users.nickname as nickname',
+                             'users.username as username', 'users.avatar', 'users.email'
+        ))->where('message', $id);
+        $table->join('users', 'pm_recipients.recipient', 'users.id');
+        $result = $table->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
