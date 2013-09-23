@@ -103,7 +103,7 @@ function initDirectory()
     imgDeleteFile.addEvent('click', removeFile);
     fileTemplate = $('file_arena').get('html');
     statusTemplate = $('statusbar').get('html');
-    pageBody = $('requested_gadget_directory');
+    pageBody = document.body;
     // viewType = DirectoryStorage.fetch('view_type');
     // if (viewType === null) viewType = 'list';
     // $('view_type').value = viewType;

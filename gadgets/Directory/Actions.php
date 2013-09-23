@@ -13,6 +13,7 @@ $actions = array();
 /* Public Actions */
 $actions['Directory'] = array(
     'normal' => true,
+    'layout' => true,
     'file' => 'Directory'
 );
 $actions['GetFiles'] = array(
