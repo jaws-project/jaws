@@ -712,6 +712,21 @@ function hideResponseBoxCallback(name)
 }
 
 /**
+ * Show the response
+ */
+function showResponse2(response)
+{
+    var div_response = (
+        $$('meta[name=requested_gadget]').getProperty('content')+'_'+
+        $$('meta[name=requested_action]').getProperty('content')+'_'+
+        'response'
+    ).toLowerCase();
+
+    $(div_response).set('html', response.text);
+    $(div_response).set('class', 'gadget_response ' + response.type);
+}
+
+/**
  * Show working notification.
  */
 function showWorkingNotification(msg)
