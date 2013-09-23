@@ -1,8 +1,8 @@
 <!-- BEGIN contacts -->
 <div class="gadget users contacts">
   <h2>{title}</h2>
-  <!-- BEGIN response --><div class="gadget_response {type}">{text}</div><!-- END response -->
-  <form name="contacts" action="{base_script}" method="post">
+  <div id="users_contacts_response" class="gadget_response {type}">{text}</div>
+  <form name="contacts" action="{base_script}" method="post" onsubmit="return updateContacts();">
   <input type="hidden" name="gadget" value="Users" />
   <input type="hidden" name="action" value="UpdateContacts" />
   <div class="content">
