@@ -21,9 +21,9 @@
     <button onclick="toggleSearch(); updateFiles();">x</button>
   </div>
   <select id="file_filter" onchange="updateFiles()">
-    <option value="all">All files & folders</option>
-    <option value="shared">Shared files & folders only</option>
-    <option value="foreign">Shares from other users only</option>
+    <option value="all">{lbl_all_files}</option>
+    <option value="shared">{lbl_shared_files}</option>
+    <option value="foreign">{lbl_foreign_files}</option>
   </select>
   <div id="file_actions">
     <button type="button" id="btn_props" onclick="props()">{lbl_props}</button>
@@ -66,7 +66,10 @@
   var UID = "{UID}",
       site_url = "{site_url}",
       icon_url = "{icon_url}",
-      imgDeleteFile = "{imgDeleteFile}";
+      imgDeleteFile = "{imgDeleteFile}",
+      alertShortQuery = "{alertShortQuery}",
+      confirmDirDelete = "{confirmDirDelete}",
+      confirmFileDelete = "{confirmFileDelete}";
   initDirectory();
 </script>
 <!-- END workspace -->

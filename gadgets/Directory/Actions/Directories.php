@@ -18,14 +18,15 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
      */
     function DirectoryForm()
     {
-        $mode = jaws()->request->fetch('mode', 'post');
+        $mode = jaws()->request->fetch('mode');
+        if ($mode === null) $mode = 'view';
         $tpl = $this->gadget->loadTemplate('Directory.html');
         $tpl->SetBlock($mode);
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        if ($mode !== 'edit') {
+        if ($mode === 'view') {
             $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
             $tpl->SetVariable('lbl_owner', _t('DIRECTORY_FILE_OWNER'));
             $tpl->SetVariable('lbl_shared', _t('DIRECTORY_SHARED_FOR'));

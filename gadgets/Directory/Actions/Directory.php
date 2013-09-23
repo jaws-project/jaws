@@ -27,6 +27,9 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_new_dir', _t('DIRECTORY_NEW_DIR'));
         $tpl->SetVariable('lbl_new_file', _t('DIRECTORY_NEW_FILE'));
         $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
+        $tpl->SetVariable('lbl_all_files', _t('DIRECTORY_FILTER_ALL_FILES'));
+        $tpl->SetVariable('lbl_shared_files', _t('DIRECTORY_FILTER_SHARED_FILES'));
+        $tpl->SetVariable('lbl_foreign_files', _t('DIRECTORY_FILTER_FOREIGN_FILES'));
         $tpl->SetVariable('new_dir', 'gadgets/Directory/images/new-dir.png');
         $tpl->SetVariable('new_file', 'gadgets/Directory/images/new-file.png');
         $tpl->SetVariable('search', 'gadgets/Directory/images/search.png');
@@ -44,6 +47,9 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('lbl_move', _t('DIRECTORY_MOVE'));
         $tpl->SetVariable('lbl_download', _t('DIRECTORY_DOWNLOAD'));
+        $tpl->SetVariable('alertShortQuery', _t('DIRECTORY_ERROR_SHORT_QUERY'));
+        $tpl->SetVariable('confirmDirDelete', _t('DIRECTORY_CONFIRM_DIR_DELETE'));
+        $tpl->SetVariable('confirmFileDelete', _t('DIRECTORY_CONFIRM_FILE_DELETE'));
         $tpl->SetVariable('imgDeleteFile', STOCK_DELETE);
         $tpl->SetVariable('site_url', $GLOBALS['app']->getSiteURL('/'));
         $theme = $GLOBALS['app']->GetTheme();

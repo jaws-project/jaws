@@ -415,11 +415,11 @@ function del()
 {
     if (selectedId === null) return;
     if (fileById[selectedId].is_dir) {
-        if (confirm('Are you sure you want to delete directory?')) {
+        if (confirm(confirmDirDelete)) {
             DirectoryAjax.callAsync('DeleteDirectory', {'id':selectedId});
         }
     } else {
-        if (confirm('Are you sure you want to delete file?')) {
+        if (confirm(confirmFileDelete)) {
             DirectoryAjax.callAsync('DeleteFile', {'id':selectedId});
         }
     }
@@ -767,7 +767,9 @@ function performSearch()
 {
     var query = $('file_search').value;
     if (query.length < 2) {
-        alert('The search query must contains 2 letters at least.');
+        alert(alertShortQuery);
+        $('file_search').focus();
+        return;
     }
     DirectoryAjax.callAsync('Search', {'query':query});
 }

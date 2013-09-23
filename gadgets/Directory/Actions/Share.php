@@ -20,10 +20,13 @@ class Directory_Actions_Share extends Jaws_Gadget_HTML
     {
         $tpl = $this->gadget->loadTemplate('Share.html');
         $tpl->SetBlock('share');
+        $tpl->SetVariable('lbl_shared_for', _t('DIRECTORY_SHARED_FOR'));
 
         // Edit UI
         if ($this->gadget->GetPermission('ShareFile')) {
             $tpl->SetBlock('share/edit');
+            $tpl->SetVariable('lbl_groups', _t('DIRECTORY_GROUPS'));
+            $tpl->SetVariable('lbl_users', _t('DIRECTORY_USERS'));
             require_once JAWS_PATH . 'include/Jaws/User.php';
             $uModel = new Jaws_User();
             $groups = $uModel->GetGroups(true, 'title');

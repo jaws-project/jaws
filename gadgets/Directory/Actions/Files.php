@@ -19,6 +19,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
     function FileForm()
     {
         $mode = jaws()->request->fetch('mode');
+        if ($mode === null) $mode = 'view';
         $tpl = $this->gadget->loadTemplate('File.html');
         $tpl->SetBlock($mode);
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
@@ -38,6 +39,7 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
             $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
             $tpl->SetVariable('lbl_public', _t('DIRECTORY_FILE_PUBLIC_URL'));
+            $tpl->SetVariable('lbl_make_public', _t('DIRECTORY_FILE_MAKE_PUBLIC'));
             $tpl->SetVariable('title', '{title}');
             $tpl->SetVariable('desc', '{description}');
             $tpl->SetVariable('filename', '{filename}');
