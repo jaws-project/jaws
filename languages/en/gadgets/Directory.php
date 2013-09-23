@@ -3,7 +3,7 @@
  * Meta Data
  *
  * "Project-Id-Version: Directory"
- * "Last-Translator: "
+ * "Last-Translator: Mohsen Khahani <mkhahani@gmail.com>"
  * "Language-Team: EN"
  * "MIME-Version: 1.0"
  * "Content-Type: text/plain; charset=UTF-8"
@@ -11,52 +11,60 @@
  */
 
 define('_EN_DIRECTORY_NAME', "Directory");
-define('_EN_DIRECTORY_DESCRIPTION', "Total file and directory management gadget");
+define('_EN_DIRECTORY_DESCRIPTION', "Total file management with sharing capability.");
 
 /* ACLs */
-define('_EN_DIRECTORY_ACL_DEFAULT', "Use banners");
+define('_EN_DIRECTORY_ACL_DEFAULT', "Use Directory");
 define('_EN_DIRECTORY_ACL_SHAREFILE', "Share File");
 
 // Actions
-define('_EN_DIRECTORY_ACTION_TITLE', "Directory");
-define('_EN_DIRECTORY_ACTION_DEFAULT', "Default Action");
-define('_EN_DIRECTORY_ACTIONS_DISPLAY', "Display");
-define('_EN_DIRECTORY_ACTIONS_DISPLAY_DESC', "Displays directory");
+define('_EN_DIRECTORY_ACTIONS_DIRECTORY', "Directory");
+define('_EN_DIRECTORY_ACTIONS_DIRECTORY_DESC', "Display Directory.");
 
 // Terms
-define('_EN_DIRECTORY_BYTES', "bytes");
-
-// Files/Directories
 define('_EN_DIRECTORY_NEW_DIR', "New Folder");
 define('_EN_DIRECTORY_NEW_FILE', "New File");
 define('_EN_DIRECTORY_PROPERTIES', "Properties");
+define('_EN_DIRECTORY_DOWNLOAD', "Download");
+define('_EN_DIRECTORY_BYTES', "bytes");
 define('_EN_DIRECTORY_MOVE', "Move");
 define('_EN_DIRECTORY_FILE', "File");
 define('_EN_DIRECTORY_DIR', "Directory");
-define('_EN_DIRECTORY_FILE_TYPE', "Type");
 define('_EN_DIRECTORY_FILE_TITLE', "Title");
 define('_EN_DIRECTORY_FILE_DESC', "Description");
 define('_EN_DIRECTORY_FILE_PARENT', "Parent");
 define('_EN_DIRECTORY_FILE_DIR', "Directory");
 define('_EN_DIRECTORY_FILE_URL', "URL");
 define('_EN_DIRECTORY_FILE_FILENAME', "File name");
-define('_EN_DIRECTORY_FILE_FILETYPE', "File type");
-define('_EN_DIRECTORY_FILE_FILESIZE', "File size");
+define('_EN_DIRECTORY_FILE_TYPE', "Type");
+define('_EN_DIRECTORY_FILE_SIZE', "Size");
+define('_EN_DIRECTORY_FILE_OWNER', "Owner");
 define('_EN_DIRECTORY_FILE_CREATED', "Created");
 define('_EN_DIRECTORY_FILE_MODIFIED', "Modified");
+define('_EN_DIRECTORY_FILE_MAKE_PUBLIC', "Make it public");
+define('_EN_DIRECTORY_FILE_PUBLIC_URL', "Public URL");
+define('_EN_DIRECTORY_FILTER_ALL_FILES', "All files & folders");
+define('_EN_DIRECTORY_FILTER_SHARED_FILES', "Shared files & folders only");
+define('_EN_DIRECTORY_FILTER_FOREIGN_FILES', "Shares from other users only");
 
 // Sharing
 define('_EN_DIRECTORY_SHARE', "Share");
-define('_EN_DIRECTORY_SHARE_STATUS', "Share Status");
-define('_EN_DIRECTORY_IS_SHARED', "Shared");
-define('_EN_DIRECTORY_NOT_SHARED', "Not shared");
+define('_EN_DIRECTORY_SHARED_FOR', "Shared for");
+define('_EN_DIRECTORY_GROUPS', "Groups");
+define('_EN_DIRECTORY_USERS', "Users");
 
 // Messages
-define('_EN_DIRECTORY_ERROR_INCOMPLETE_DATA', "Some fields are necessary to be filled.");
+define('_EN_DIRECTORY_ERROR_INCOMPLETE_DATA', "Some fields are necessary to be filled in.");
 define('_EN_DIRECTORY_NOTICE_SHARE_UPDATED', "Shared file has been updated.");
 define('_EN_DIRECTORY_ERROR_UPDATING_SHARE', "Could not update shared file.");
 define('_EN_DIRECTORY_NOTICE_MOVE', "Selected item has been moved successfully");
 define('_EN_DIRECTORY_ERROR_MOVE', "Could not move item to specified target.");
+define('_EN_DIRECTORY_NOTICE_SEARCH_RESULT', "<b>{0}</b> result(s)");
+define('_EN_DIRECTORY_NOTICE_SEARCH', "<b>{0}</b> result(s)");
+define('_EN_DIRECTORY_ERROR_SEARCH', "Search has been failed.");
+define('_EN_DIRECTORY_ERROR_SHORT_QUERY', "Search query must have 2 characters length at least.");
+define('_EN_DIRECTORY_CONFIRM_FILE_DELETE', "Are you sure you want to delete the file?");
+define('_EN_DIRECTORY_CONFIRM_DIR_DELETE', "Are you sure you want to delete directory? All files inside it will be deleted too.");
 
 define('_EN_DIRECTORY_NOTICE_DIR_CREATED', "A new directory has been created.");
 define('_EN_DIRECTORY_NOTICE_DIR_UPDATED', "Directory has been updated.");
