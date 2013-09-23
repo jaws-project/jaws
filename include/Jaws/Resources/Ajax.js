@@ -722,8 +722,11 @@ function showResponse2(response)
         'response'
     ).toLowerCase();
 
+    $(div_response).getParent().setStyle('position', 'absolute');
     $(div_response).set('html', response.text);
     $(div_response).set('class', response.type);
+    $(div_response).fade('show');
+    (function(){$(div_response).fade('out');}).delay(4000);
 }
 
 /**
