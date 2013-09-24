@@ -70,8 +70,8 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
                 $i++;
                 $tpl->SetBlock('outbox/message');
                 $tpl->SetVariable('rownum', $i);
-                $recipients = $mModel->GetMessageRecipientsInfo($message['id']);
 
+                $recipients = $mModel->GetMessageRecipientsInfo($message['id']);
                 $recipients_str = _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_ALL_USERS');
                 if (count($recipients) > 0) {
                     // user's profile
@@ -85,6 +85,7 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
                     }
                 }
                 $tpl->SetVariable('recipients', $recipients_str);
+
                 $tpl->SetVariable('subject', $message['subject']);
                 $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
 
