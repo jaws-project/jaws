@@ -715,7 +715,7 @@ function toggleUsers(gid)
             label = new Element('label', {'for':'chk_'+user.id});
         input.set('checked', (sharedFileUsers[user.id] !== undefined));
         input.addEvent('click', selectUser);
-        label.set('html', user.username);
+        label.set('html', user.nickname + ' (' + user.username + ')');
         div.adopt(input, label);
         container.grab(div);
     });

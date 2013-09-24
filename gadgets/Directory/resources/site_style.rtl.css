@@ -220,7 +220,7 @@ margin:5px 0;
   max-height:150px; overflow-y:auto; line-height:1.5;
 }
 #share_users {width:100%; height:100px;}
-#users input {margin-right:3px; vertical-align:middle;}
+#users input {margin-left:3px; vertical-align:middle;}
 #users label {font-weight:bold; vertical-align:middle;}
 
 #btn_unpublic{
@@ -233,4 +233,10 @@ font-size:11px;
 .file-info td.file-size{
 direction:ltr;
 text-align:right;
+}
+
+#loading{
+display:none;
+vertical-align:middle;
+margin:0 5px;
 }
