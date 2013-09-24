@@ -87,6 +87,10 @@
     var toggleMax = "{icon_add}";
     var toggleMin = "{icon_remove}";
     var recipient_user = "{recipient_user}";
+    var selectAllUsersChk = {selectAllUsersChk};
+    if (selectAllUsersChk) {
+        $('recipient_all_users').set('checked', 'checked');
+    }
 
     $('attachment1').show();
     $('attach_loading').hide();

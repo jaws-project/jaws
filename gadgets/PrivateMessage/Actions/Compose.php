@@ -35,6 +35,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
         // Menubar
         $tpl->SetVariable('menubar', $this->MenuBar('Compose'));
 
+        $tpl->SetVariable('selectAllUsersChk', 'false');
         $body_value = "";
         $recipient_users = array();
         $recipient_groups = array();
@@ -55,9 +56,13 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
             // edit draft
             if (empty($get['reply'])) {
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
+                $tpl->SetVariable('id', $id);
                 $recipient_users = explode(",", $message['recipient_users']);
                 $recipient_groups = explode(",", $message['recipient_groups']);
-                $tpl->SetVariable('id', $id);
+                // check recipient is all users?
+                if (count($recipient_users) == 1 && $recipient_users[0] == 0) {
+                    $tpl->SetVariable('selectAllUsersChk', 'true');
+                }
                 $body_value = $message['body'];
                 $tpl->SetVariable('subject', $message['subject']);
 
