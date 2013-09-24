@@ -12,21 +12,23 @@
  */
 var DirectoryCallback = {
     CreateDirectory: function(response) {
-        $('simple_response').set('html', response.message);
-        //console.log(response);
-        //showResponse2(response);
         if (response.css === 'notice-message') {
             cancel();
             updateFiles(currentDir);
         }
+        response.type = response.level;
+        response.text = response.message;
+        showResponse2(response);
     },
 
     UpdateDirectory: function(response) {
-        $('simple_response').set('html', response.message);
         if (response.css === 'notice-message') {
             cancel();
             updateFiles(currentDir);
         }
+        response.type = response.level;
+        response.text = response.message;
+        showResponse2(response);
     },
 
     DeleteDirectory: function(response) {
@@ -34,23 +36,29 @@ var DirectoryCallback = {
             cancel();
             updateFiles(currentDir);
         }
-        $('simple_response').set('html', response.message);
+        response.type = response.level;
+        response.text = response.message;
+        showResponse2(response);
     },
 
     CreateFile: function(response) {
-        $('simple_response').set('html', response.message);
         if (response.css === 'notice-message') {
             cancel();
             updateFiles(currentDir);
         }
+        response.type = response.level;
+        response.text = response.message;
+        showResponse2(response);
     },
 
     UpdateFile: function(response) {
-        $('simple_response').set('html', response.message);
         if (response.css === 'notice-message') {
             cancel();
             updateFiles(currentDir);
         }
+        response.type = response.level;
+        response.text = response.message;
+        showResponse2(response);
     },
 
     DeleteFile: function(response) {
@@ -58,31 +66,39 @@ var DirectoryCallback = {
             cancel();
             updateFiles(currentDir);
         }
-        $('simple_response').set('html', response.message);
+        response.type = response.level;
+        response.text = response.message;
+        showResponse2(response);
     },
 
     PublishFile: function(response) {
-        $('simple_response').set('html', response.message);
         if (response.css === 'notice-message') {
             fileById[selectedId]['public'] = response.data;
             showFileURL(response.data);
         }
+        response.type = response.level;
+        response.text = response.message;
+        showResponse2(response);
     },
 
     Move: function(response) {
-        $('simple_response').set('html', response.message);
         if (response.css === 'notice-message') {
             cancel();
             updateFiles(currentDir);
         }
+        response.type = response.level;
+        response.text = response.message;
+        showResponse2(response);
     },
 
     UpdateFileUsers: function(response) {
-        $('simple_response').set('html', response.message);
         if (response.css === 'notice-message') {
             cancel();
             updateFiles(currentDir);
         }
+        response.type = response.level;
+        response.text = response.message;
+        showResponse2(response);
     },
 
     Search: function(response) {
@@ -92,7 +108,9 @@ var DirectoryCallback = {
             $('search_res').innerHTML = ' > ' + response.message;
             displayFiles(response.data);
         } else {
-            $('simple_response').innerHTML = response.message;
+            response.type = response.level;
+            response.text = response.message;
+            showResponse2(response);
         }
     }
 };

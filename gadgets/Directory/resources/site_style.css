@@ -2,8 +2,6 @@ fieldset {border:1px solid silver; margin:0; padding:10px;}
 fieldset input:not([type=checkbox]) {width:100%;}
 fieldset table {width:100%}
 fieldset th {width:1%; text-align:left;}
-.response_notice {color:#0a0;}
-.response_error {color:#a00;}
 
 .directory .toolbar{
 float:right;
