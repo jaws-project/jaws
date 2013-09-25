@@ -38,19 +38,28 @@
     <!-- END share -->
     <button type="button" id="btn_download" onclick="downloadFile()">{lbl_download}</button>
   </div>
-  <div id="file_arena" class="list-view" style="display:none;">
-    <!-- BEGIN fileTemplate -->
-    <dl id="file_{id}" title="{description}">
-      <dd class="file-icon">{icon}<span class="file-sharing {shared} {foreign} {public}"></span></dd>
-      <dd class="file-title">{title}</dd>
-      <dd class="file-created">{created}</dd>
-      <dd class="file-modified">{modified}</dd>
-      <!--dd class="file-type">{type}</dd-->
-      <dd class="file-owner">{username}</dd>
-      <dd class="file-size">{size}</dd>
-    </dl>
-    <!-- END fileTemplate -->
-  </div>
+  <table class="files-table">
+    <thead><tr>
+      <th colspan="2">{lbl_title}</th>
+      <th>{lbl_created}</th>
+      <th>{lbl_modified}</th>
+      <th>{lbl_username}</th>
+      <th>{lbl_size}</th>
+    </tr></thead>
+    <tbody id="file_arena" style="display:none;">
+      <!-- BEGIN fileTemplate -->
+      <tr id="file_{id}" title="{description}">
+        <td class="file-icon">{icon}<span class="file-sharing {shared} {foreign} {public}"></span></td>
+        <td class="file-title">{title}</td>
+        <td class="file-created">{created}</td>
+        <td class="file-modified">{modified}</td>
+        <!--td class="file-type">{type}</td-->
+        <td class="file-owner">{username}</td>
+        <td class="file-size">{size}</td>
+      </tr>
+      <!-- END fileTemplate -->
+    </tbody>
+  </table>
   <div id="statusbar">
     <!-- BEGIN statusbar -->
     <strong>{title}</strong>

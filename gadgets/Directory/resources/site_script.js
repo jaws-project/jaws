@@ -178,14 +178,14 @@ function displayFiles(files)
     function getFileElement(data)
     {
         var html = fileTemplate.substitute(data),
-            div = new Element('div', {'html':html}).getFirst();
-        div.addEvent('click', fileSelect);
-        div.addEvent('dblclick', fileOpen);
-        div.fid = data.id;
-        return div;
+            tr = Elements.from(html)[0];
+        tr.addEvent('click', fileSelect);
+        tr.addEvent('dblclick', fileOpen);
+        tr.fid = data.id;
+        return tr;
     }
 
-    var ws = $('file_arena').empty().show();
+    var ws = $('file_arena').empty().show('table-row-group');
     fileById = {};
     filesCount = files.length;
     files.each(function (file) {

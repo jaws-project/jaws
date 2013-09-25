@@ -47,6 +47,11 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('lbl_move', _t('DIRECTORY_MOVE'));
         $tpl->SetVariable('lbl_download', _t('DIRECTORY_DOWNLOAD'));
+        $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
+        $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
+        $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
+        $tpl->SetVariable('lbl_username', _t('DIRECTORY_FILE_OWNER'));
+        $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
         $tpl->SetVariable('alertShortQuery', _t('DIRECTORY_ERROR_SHORT_QUERY'));
         $tpl->SetVariable('confirmDirDelete', _t('DIRECTORY_CONFIRM_DIR_DELETE'));
         $tpl->SetVariable('confirmFileDelete', _t('DIRECTORY_CONFIRM_FILE_DELETE'));

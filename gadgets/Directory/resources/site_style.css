@@ -11,52 +11,32 @@ cursor:pointer;
 vertical-align:middle;
 }
 
-/* Icon View */
-#file_arena.icon-view{
-min-height:200px;
-border-top:1px solid #ddd;
-}
-.icon-view dl{
-display:inline-block;
-width:50px;
-max-height:100px;
-margin:10px;
-text-align:center;
-border-radius:1px;
-line-height:1.5;
+.files-table{
+width:100%;
 font:11px tahoma;
-padding:3px;
-vertical-align:top;
 }
-.icon-view .file-created{
-display:none;
+.files-table td{
+cursor:default;
+white-space:nowrap;
 }
-.icon-view .file-modified{
-display:none;
-}
-.icon-view .file-size{
-display:none;
-}
-.icon-view .file-type{
-display:none;
-}
-.icon-view .file-owner{
-display:none;
-}
-
-.icon-view dl:hover{
-box-shadow:0 0 1px #3a41af;
-background-color:#f9fbff;
-}
-.icon-view dl.selected{
-box-shadow:0 0 2px #3a41af;
-background-color:#eaf0fc;
+.files-table tr.selected td{
+background-color:#7299c4;
+color:white;
 }
 .file-icon{
 position:relative;
 }
 .file-icon img{
 width:32px;
+}
+.file-title{
+width:100%;
+cursor:default;
+word-break:break-all;
+overflow:hidden;
+}
+.file-size{
+text-align:right;
 }
 .file-sharing{
 position:absolute;
@@ -77,59 +57,6 @@ background:url(../images/link.png) no-repeat 20% center;
 }
 .file-sharing.shared.public{
 background:url(../images/share.png) no-repeat 20% center, url(../images/link.png) no-repeat 60% center;
-}
-.file-title{
-cursor:default;
-word-break:break-all;
-overflow:hidden;
-}
-
-/* List View */
-#file_arena.list-view{
-display:table;
-width:100%;
-}
-.list-view dl{
-max-height:100px;
-margin:10px;
-text-align:center;
-border-radius:1px;
-line-height:1.5;
-font:11px tahoma;
-padding:3px;
-vertical-align:top;
-background-position:center top;
-background-repeat:no-repeat;
-text-align:left;
-display:table-row;
-}
-.list-view dd{
-display:table-cell;
-padding:0 5px;
-vertical-align:middle;
-cursor:default;
-border-bottom:1px solid #eaf0fc;
-white-space:nowrap;
-}
-.list-view dl:first-child dd{
-border-top:1px solid #eaf0fc;
-}
-.list-view dl:hover dd{
-background-color:#f9fbff;
-}
-.list-view dl.selected dd{
-background-color:#7299c4;
-color:white;
-}
-.list-view .file-icon{
-width:32px;
-height:32px;
-}
-.list-view .file-size{
-text-align:right;
-}
-.list-view .file-title{
-width:100%;
 }
 
 .file-info table{
