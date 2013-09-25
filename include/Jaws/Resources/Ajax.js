@@ -103,6 +103,19 @@ var JawsAjax = new Class({
 
     onFailure: function () {
         // TODO: alert failure message
+    },
+
+    showResponse: function (response) {
+        var div_response = (
+            this.mainRequest['gadget']+'_'+
+            this.mainRequest['action']+'_'+
+            'response'
+        ).toLowerCase();
+
+        $(div_response).getParent().setStyles({'position': 'absolute', 'display': 'block'});
+        $(div_response).set({'html': response.text, 'class': response.type});
+        $(div_response).fade('show');
+        (function(){$(div_response).fade('out');}).delay(4000);
     }
 
 });
