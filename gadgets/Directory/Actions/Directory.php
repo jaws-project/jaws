@@ -213,7 +213,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         if (!empty($dirs)) {
             $tree .= '<ul>';
             foreach ($dirs as $dir) {
-                if ($dir['id'] == $exclude) {
+                if ($dir['id'] == $exclude || $dir['user'] !== $dir['owner']) {
                     continue;
                 }
                 $tree .= "<li><a id='node_{$dir['id']}'>{$dir['title']}</a>";
