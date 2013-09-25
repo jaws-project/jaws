@@ -578,3 +578,6 @@ text-align:center;
     margin-top: 20px;
     margin-bottom: 20px;
 }
+.privateMessage .center{
+    margin:0 auto;text-align: center
+}

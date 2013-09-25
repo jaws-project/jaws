@@ -24,14 +24,24 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
         }
 
         $this->AjaxMe('site_script.js');
+
         $page = jaws()->request->fetch('page', 'get');
+        $page_item = jaws()->request->fetch('page_item', 'post');
         $page = empty($page)? 1 : (int)$page;
-        $limit = (int)$this->gadget->registry->fetch('draft_limit');
+        if (empty($page_item)) {
+            $limit = (int)$this->gadget->registry->fetch('draft_limit');
+        } else {
+            $limit = $page_item;
+        }
+
         $tpl = $this->gadget->loadTemplate('Outbox.html');
         $tpl->SetBlock('outbox');
 
         // Menubar
         $tpl->SetVariable('menubar', $this->MenuBar('Draft'));
+
+        $tpl->SetVariable('action', 'Draft');
+        $tpl->SetVariable('opt_page_item_' . $page_item, 'selected="selected"');
 
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_DRAFT'));
         $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));

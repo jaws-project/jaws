@@ -30,7 +30,11 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         // Menubar
         $tpl->SetVariable('menubar', $this->MenuBar('Outbox'));
 
-        $post = jaws()->request->fetch(array('page', 'replied', 'attachment', 'filter'), 'post');
+        $tpl->SetVariable('action', 'Outbox');
+
+        $post = jaws()->request->fetch(array('page', 'replied', 'attachment', 'filter', 'page_item'), 'post');
+        $tpl->SetVariable('opt_page_item_' . $post['page_item'], 'selected="selected"');
+        $page_item = $post['page_item'];
         if (!empty($post['replied']) || !empty($post['attachment']) || !empty($post['filter'])) {
             $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
             $tpl->SetVariable('opt_attachment_' . $post['attachment'], 'selected="selected"');
@@ -41,7 +45,11 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
             $page = jaws()->request->fetch('page', 'get');
         }
         $page = empty($page)? 1 : (int)$page;
-        $limit = (int)$this->gadget->registry->fetch('outbox_limit');
+        if (empty($page_item)) {
+            $limit = (int)$this->gadget->registry->fetch('outbox_limit');
+        } else {
+            $limit = $page_item;
+        }
 
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_OUTBOX'));
         $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
