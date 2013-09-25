@@ -19,15 +19,15 @@
     <span id="search_res"></span>
   </div>
   <div id="frm_search">
+    <select id="file_filter" onchange="updateFiles()">
+      <option value="all">{lbl_all_files}</option>
+      <option value="shared">{lbl_shared_files}</option>
+      <option value="foreign">{lbl_foreign_files}</option>
+    </select>
     <input id="file_search"></input>
     <button onclick="performSearch()">{lbl_search}</button>
     <button onclick="toggleSearch(); updateFiles();">x</button>
   </div>
-  <select id="file_filter" onchange="updateFiles()">
-    <option value="all">{lbl_all_files}</option>
-    <option value="shared">{lbl_shared_files}</option>
-    <option value="foreign">{lbl_foreign_files}</option>
-  </select>
   <div id="file_actions">
     <button type="button" id="btn_props" onclick="props()">{lbl_props}</button>
     <button type="button" id="btn_edit" onclick="edit()">{lbl_edit}</button>
@@ -53,25 +53,12 @@
         <td class="file-title">{title}</td>
         <td class="file-created">{created}</td>
         <td class="file-modified">{modified}</td>
-        <!--td class="file-type">{type}</td-->
         <td class="file-owner">{username}</td>
         <td class="file-size">{size}</td>
       </tr>
       <!-- END fileTemplate -->
     </tbody>
   </table>
-  <div id="statusbar">
-    <!-- BEGIN statusbar -->
-    <strong>{title}</strong>
-    <span id="stat_file_size">Size: </span>{size}
-    <span>Date created: </span>{created}
-    <span>Date modified: </span>{modified}
-    <!-- END statusbar -->
-  </div>
-  <select id="view_type" onchange="changeFileView(this.value)">
-    <option value="icon">Icon view</option>
-    <option value="list">List view</option>
-  </select>
   <div id="form"></div>
 </div>
 <script>

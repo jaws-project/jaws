@@ -105,10 +105,10 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      */
     function GetFiles()
     {
-        $flags = jaws()->request->fetch(array('id', 'shared', 'foreign'));
+        $data = jaws()->request->fetch(array('id', 'shared', 'foreign'));
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-        $files = $model->GetFiles($flags['id'], $user, $flags['shared'], $flags['foreign']);
+        $files = $model->GetFiles($data['id'], $user, $data['shared'], $data['foreign'], null);
         if (Jaws_Error::IsError($files)){
             return array();
         }
@@ -117,6 +117,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
             $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
         }
+
         return $files;
     }
 
@@ -299,24 +300,22 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      */
     function Search()
     {
-        try {
-            $query = jaws()->request->fetch('query', 'post');
-            if ($query === null || strlen($query) < 2) {
-                throw new Exception(_t('DIRECTORY_ERROR_SEARCH'));
-            }
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-            $files = $model->GetFiles(null, $user, null, null, null, $query);
-            if (Jaws_Error::IsError($files)){
-                return array();
-            }
-            $objDate = $GLOBALS['app']->loadDate();
-            foreach ($files as &$file) {
-                $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
-                $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
-            }
-        } catch (Exception $e) {
-            return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
+        $data = jaws()->request->fetch(array('id', 'shared', 'foreign', 'query'));
+        if ($data['query'] === null || strlen($data['query']) < 2) {
+            return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_ERROR_SEARCH'), RESPONSE_ERROR);
+        }
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+        $files = $model->GetFiles($data['id'], $user, $data['shared'], 
+            $data['foreign'], null, $data['query']);
+        if (Jaws_Error::IsError($files)){
+            return $GLOBALS['app']->Session->GetResponse($files->getMessage(), RESPONSE_ERROR);
+        }
+
+        $objDate = $GLOBALS['app']->loadDate();
+        foreach ($files as &$file) {
+            $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
+            $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
         }
 
         return $GLOBALS['app']->Session->GetResponse(

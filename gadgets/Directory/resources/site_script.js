@@ -124,11 +124,7 @@ function initDirectory()
     imgDeleteFile = new Element('img', {src:imgDeleteFile});
     imgDeleteFile.addEvent('click', removeFile);
     fileTemplate = $('file_arena').get('html');
-    statusTemplate = $('statusbar').get('html');
     pageBody = document.body;
-    // viewType = DirectoryStorage.fetch('view_type');
-    // if (viewType === null) viewType = 'list';
-    // $('view_type').value = viewType;
 
     // Builds icons map (ext => icon)
     Object.each(fileTypes, function (values, type) {
@@ -140,8 +136,6 @@ function initDirectory()
     });
     iconByExt.folder = 'folder';
 
-    viewType = 'list';
-    //changeFileView(viewType);
     currentDir = Number(DirectoryStorage.fetch('current_dir'));
     openDirectory(currentDir);
 }
@@ -201,16 +195,6 @@ function displayFiles(files)
         file['public'] = file['public']? 'public' : '';
         ws.grab(getFileElement(file));
     });
-    //$('statusbar').set('html', filesCount + ' items');
-}
-
-/**
- * Changes display type to icon/list
- */
-function changeFileView(view)
-{
-    $('file_arena').set('class', view + '-view');
-    //DirectoryStorage.update('view_type', view);
 }
 
 /**
@@ -219,15 +203,10 @@ function changeFileView(view)
 function fileSelect(e)
 {
     var ws = $('file_arena'),
-        st = $('statusbar'),
         data = Object.clone(fileById[this.fid]);
     cancel();
     this.addClass('selected');
     selectedId = this.fid;
-    // data.size = formatSize(data.filesize, 2);
-    // st.set('html', statusTemplate.substitute(data));
-    // st.getElement('#stat_file_size').style.display =
-        // (data.size === '')? 'none' : '';
     e.stop();
     updateActions();
 }
@@ -447,7 +426,6 @@ function cancel()
     selectedId = null;
     $('form').set('html', '');
     $('file_arena').getElements('.selected').removeClass('selected');
-    $('statusbar').set('html', filesCount + ' items');
     updateActions();
     pageBody.addEvent('click', cancel);
 }
@@ -740,11 +718,9 @@ function toggleSearch(show)
     }
     if (show) {
         form.show();
-        $('file_filter').hide();
         $('file_search').focus();
     } else {
         form.hide();
-        $('file_filter').show();
         $('file_search').value = '';
     }
 }
@@ -754,13 +730,18 @@ function toggleSearch(show)
  */
 function performSearch()
 {
-    var query = $('file_search').value;
+    var shared = ($('file_filter').value === 'shared')? true : null,
+        foreign = ($('file_filter').value === 'foreign')? true : null,
+        query = $('file_search').value;
     if (query.length < 2) {
         alert(alertShortQuery);
         $('file_search').focus();
         return;
     }
-    DirectoryAjax.callAsync('Search', {'query':query});
+    DirectoryAjax.callAsync(
+        'Search',
+        {'id':currentDir, 'shared':shared, 'foreign':foreign, 'query':query}
+    );
 }
 
 /**

@@ -17,8 +17,8 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      * @param   int     $parent  Restricts results to a specified node
      * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($parent = null, $user = null,
-        $shared = null, $foreign = null, $is_dir = null, $query = null)
+    function GetFiles($parent = null, $user = null, $shared = null,
+        $foreign = null, $is_dir = null, $query = null)
     {
         $access = ($user === null)? null : $this->CheckAccess($parent, $user);
         if ($access === false) {

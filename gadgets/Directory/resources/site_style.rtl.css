@@ -91,15 +91,9 @@ background-color:grey;
 color:white;
 }
 
-#file_actions{
-height:24px;
-}
-#file_filter{
-float:left;
-}
 #frm_search{
 display:none;
-float:left;
+width:100%;
 }
 
 #dir_pathbar, #dir_searchbar{
@@ -122,21 +116,6 @@ vertical-align:middle;
 #file_arena{
 max-height:300px;
 overflow-y:auto;
-margin:5px 0;
-}
-
-#statusbar{
-display:none;
-background-color:#eee;
-font:11px tahoma;
-padding:2px 3px;
-}
-#statusbar span{
-margin-left:10px;
-color:#999;
-}
-#view_type{
-display:none;
 margin:5px 0;
 }
 
