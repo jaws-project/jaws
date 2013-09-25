@@ -25,8 +25,9 @@ var JawsAjax = new Class({
     initialize: function (gadget, callback, baseScript) {
         this.gadget = gadget;
         this.callback = callback;
-        baseScript = (baseScript === undefined)?
-            $(document).getElement('meta[name=base_script]').getProperty('content') : baseScript;
+        var reqValues = $(document).getElement('meta[name=application-name]').getProperty('content').split(':');
+        this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
+        baseScript = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
         this.baseURL = baseScript + '?gadget=' + this.gadget + '&action=Ajax&method=';
     },
 
@@ -37,8 +38,7 @@ var JawsAjax = new Class({
      * @return  void
      */
     backwardSupport: function (baseScript) {
-        baseScript = (baseScript === undefined)?
-            $(document).getElement('meta[name=base_script]').getProperty('content') : baseScript;
+        baseScript = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
         this.baseURL = baseScript + '?gadget=' + this.gadget + '&restype=json&action=';
     },
 
