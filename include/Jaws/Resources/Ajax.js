@@ -115,7 +115,10 @@ var JawsAjax = new Class({
         $(div_response).getParent().setStyles({'position': 'absolute', 'display': 'block'});
         $(div_response).set({'html': response.text, 'class': response.type});
         $(div_response).fade('show');
-        (function(){$(div_response).fade('out');}).delay(4000);
+        (function(){
+            this.fade('out');
+            (function(){this.set('class', '')}).delay(1000, this);
+        }).delay(4000, $(div_response));
     }
 
 });
