@@ -12,12 +12,7 @@
  */
 var UsersCallback = {
     UpdateContacts: function(response) {
-        showResponse2(response);
-        //console.log(response);
-        // if (response[0]['css'] == 'notice-message') {
-            // stopUserAction();
-        // }
-        // showResponse(response);
+        UsersAjax.showResponse(response);
     }
 
 }
