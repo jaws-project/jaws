@@ -574,3 +574,8 @@ text-align:center;
     clear: both;
     float: left;
 }
+.privateMessage hr{
+    border: 1px dashed;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

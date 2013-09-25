@@ -89,7 +89,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('pm_recipients');
 
         $table->select(array('recipient:integer', 'users.nickname as nickname',
-                             'users.username as username', 'users.avatar', 'users.email'
+                             'users.username as username', 'users.avatar', 'users.email', 'update_time'
         ))->where('message', $id);
         $table->join('users', 'pm_recipients.recipient', 'users.id');
         $result = $table->fetchAll();

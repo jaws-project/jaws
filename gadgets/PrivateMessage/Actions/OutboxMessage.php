@@ -52,12 +52,16 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
         $recipients = $model->GetMessageRecipientsInfo($message['id']);
         $tpl->SetBlock('outboxmessage/message/recipients');
         $tpl->SetVariable('lbl_recipients', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
+        $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT'));
+        $tpl->SetVariable('lbl_view_time', _t('PRIVATEMESSAGE_MESSAGE_VIEW_TIME'));
 
         if (count($recipients) > 0) {
             $i = 0;
             foreach ($recipients as $recipient) {
                 $i++;
                 $tpl->SetBlock('outboxmessage/message/recipients/recipient');
+                $tpl->SetVariable('rownum', $i);
+
                 // user's profile
                 $tpl->SetVariable(
                     'user_url',
@@ -68,6 +72,13 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
                     )
                 );
                 $tpl->SetVariable('recipient', $recipient['nickname']);
+                if(!empty($recipient['update_time'])) {
+                    $tpl->SetVariable('view_time', $date->Format($recipient['update_time']));
+                } else {
+                    $tpl->SetVariable('view_time', _t('PRIVATEMESSAGE_MESSAGE_NOT_VIEW'));
+                }
+
+
                 if ($i < count($recipients)) {
                     $tpl->SetVariable('separator', ',');
                 } else {

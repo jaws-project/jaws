@@ -12,16 +12,9 @@
         <div class="filters">
             <label for="replied">{lbl_replied}</label>
             <select id="replied" name="replied">
-                <option {opt_replied_} value=""></option>
+                <option {opt_replied_} value="">{lbl_all}</option>
                 <option {opt_replied_yes} value="yes">{lbl_yes}</option>
                 <option {opt_replied_no} value="no">{lbl_no}</option>
-            </select>
-
-            <label for="attachment">{lbl_attachment}</label>
-            <select id="attachment" name="attachment">
-                <option {opt_attachment_} value=""></option>
-                <option {opt_attachment_yes} value="yes">{lbl_yes}</option>
-                <option {opt_attachment_no} value="no">{lbl_no}</option>
             </select>
 
             <input type="text" id="filter" name="filter" size="20" value="{txt_filter}">
@@ -74,7 +67,7 @@
         <div class="actions">
             <label for="outbox_actions_combo">{lbl_actions}:&nbsp;</label>
             <select title="{lbl_actions}" id="outbox_actions_combo" name="outbox_actions_combo">
-                <option value="">&nbsp;</option>
+                <option value="">{lbl_no_action}</option>
                 <option value="delete">{lbl_delete}</option>
             </select>
 

@@ -564,6 +564,7 @@ float:left;
 text-align:center;
 }
 
+
 /* PrivateMessage */
 .privateMessage  .user_avatar{
     float:right;
@@ -571,4 +572,9 @@ text-align:center;
 .privateMessage  .actions{
     clear: both;
     float: right;
+}
+.privateMessage hr{
+    border: 1px dashed;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

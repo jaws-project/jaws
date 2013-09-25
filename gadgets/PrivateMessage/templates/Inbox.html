@@ -17,7 +17,7 @@
             <label for="read">{lbl_read}</label>
             <select id="read" name="read">
                 <option
-                {opt_read_} value="">&nbsp;</option>
+                {opt_read_} value="">{lbl_all}</option>
                 <option
                 {opt_read_yes} value="yes">{lbl_yes}</option>
                 <option
@@ -27,7 +27,7 @@
             <label for="replied">{lbl_replied}</label>
             <select id="replied" name="replied">
                 <option
-                {opt_replied_} value="">&nbsp;</option>
+                {opt_replied_} value="">{lbl_all}</option>
                 <option
                 {opt_replied_yes} value="yes">{lbl_yes}</option>
                 <option
@@ -81,7 +81,7 @@
             <div class="actions">
                 <label for="inbox_actions_combo">{lbl_actions}:&nbsp;</label>
                 <select title="{lbl_actions}" id="inbox_actions_combo" name="inbox_actions_combo">
-                    <option value="">&nbsp;</option>
+                    <option value="">{lbl_no_action}</option>
 
                     <!-- BEGIN archive_action -->
                     <option value="move_to_inbox">{lbl_move_to_inbox}</option>

@@ -5,16 +5,6 @@
             </div>
 
             <div><b>{lbl_from}:</b> <a href="{user_url}">{from}</a></div>
-
-            <!-- BEGIN recipients -->
-            <div>
-                <b>{lbl_recipients}:</b> {lbl_all_users}
-                <!-- BEGIN recipient -->
-                    <a href="{user_url}">{recipient}</a> {separator}
-                <!-- END recipient -->
-            </div>
-            <!-- END recipients -->
-
             <div><b>{lbl_send_time}:</b> {send_time}</div>
 
             <div class="actions">
@@ -69,5 +59,34 @@
             </fieldset>
             <!-- END attachment -->
 
+            <!-- BEGIN recipients -->
+            <b>{lbl_recipients}:</b> {lbl_all_users}
+            <table>
+                <thead>
+                <tr>
+                    <!--<th>#</th>-->
+                    <th>{lbl_recipient}</th>
+                    <th>{lbl_view_time}</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <!-- BEGIN recipient -->
+                <tr>
+                    <!--<td>{rownum}</td>-->
+                    <td><a href="{user_url}">{recipient}</a></td>
+                    <td>{view_time}</td>
+                </tr>
+                <!-- END recipient -->
+
+                </tbody>
+            </table>
+            <!-- END recipients -->
+
         </div>
+
+        <!-- BEGIN splitter -->
+        <hr>
+        <!-- END splitter -->
 <!-- END message -->

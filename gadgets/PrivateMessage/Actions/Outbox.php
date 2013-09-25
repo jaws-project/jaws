@@ -45,6 +45,7 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
 
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_OUTBOX'));
         $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
+        $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
         $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
         $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
         $tpl->SetVariable('lbl_attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));

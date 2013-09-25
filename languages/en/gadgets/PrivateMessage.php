@@ -44,6 +44,7 @@ define('_EN_PRIVATEMESSAGE_COMPOSE', "Compose");
 define('_EN_PRIVATEMESSAGE_SEND', "Send");
 define('_EN_PRIVATEMESSAGE_SAVE_DRAFT', "Save draft");
 define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENTS', "Recipients");
+define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT', "Recipient");
 define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_ALL_USERS', "All users");
 define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS', "Users");
 define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS', "Groups");
@@ -73,6 +74,9 @@ define('_EN_PRIVATEMESSAGE_MESSAGE_REPLIED', "Replied");
 define('_EN_PRIVATEMESSAGE_MARK_AS_READ', "Mark as read");
 define('_EN_PRIVATEMESSAGE_MARK_AS_UNREAD', "Mark as unread");
 define('_EN_PRIVATEMESSAGE_MOVE_TO_INBOX', "Move to inbox");
+define('_EN_PRIVATEMESSAGE_MESSAGE_NO_ACTION', "No action");
+define('_EN_PRIVATEMESSAGE_MESSAGE_VIEW_TIME', "View time");
+define('_EN_PRIVATEMESSAGE_MESSAGE_NOT_VIEW', "Not view");
 
 /* Responses */
 define('_EN_PRIVATEMESSAGE_PROPERTIES_UPDATED', "The properties have been updated");

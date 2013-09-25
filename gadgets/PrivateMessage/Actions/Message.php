@@ -47,7 +47,9 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('MessageHistory.html');
         $tpl->SetBlock('history');
 
+        $i = 0;
         foreach ($messages as $message) {
+            $i++;
             $tpl->SetBlock('history/message');
             $tpl->SetVariable('id', $id);
 
@@ -63,6 +65,11 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
             $tpl->SetVariable('subject', $message['subject']);
             $tpl->SetVariable('body', $message['body']);
+
+            if ($i < count($messages)) {
+                $tpl->SetBlock('history/message/splitter');
+                $tpl->ParseBlock('history/message/splitter');
+            }
 
             // user's avatar
             $tpl->SetVariable(

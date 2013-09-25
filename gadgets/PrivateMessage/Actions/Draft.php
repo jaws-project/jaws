@@ -35,6 +35,7 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
 
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_DRAFT'));
         $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
+        $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
         $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
         $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
         $tpl->SetVariable('lbl_attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));
@@ -43,6 +44,7 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
 
         $tpl->SetBlock('outbox/actions');
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
+        $tpl->SetVariable('lbl_no_action', _t('PRIVATEMESSAGE_MESSAGE_NO_ACTION'));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('icon_ok', STOCK_OK);
         $tpl->ParseBlock('outbox/actions');
