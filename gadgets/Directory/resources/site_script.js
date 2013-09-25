@@ -250,7 +250,7 @@ function fileOpen()
         } else if (['webm', 'mp4', 'ogg'].indexOf(file.ext) !== -1) {
             openMedia(id, 'video');
         } else {
-            openFile(id);
+            downloadFile();
         }
     }
 }
@@ -265,37 +265,6 @@ function openDirectory(id)
     DirectoryStorage.update('current_dir', id);
     updateFiles(id);
     cancel();
-}
-
-/**
- * Opens/Downloads the file
- */
-function openFile(id)
-{
-    var file = fileById[id],
-        docDim = document.getSize(),
-        height = 500,
-        width = 800,
-        left = (docDim.x - width) / 2,
-        top = (docDim.y - height) / 2,
-        specs = 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top;
-    if (!file) {
-        file = fileById[id] = DirectoryAjax.callSync('GetFile', {'id':id});
-    }
-    if (!file.open_url) {
-        fileById[id].open_url = DirectoryAjax.callSync(
-            'GetDownloadURL',
-            {'id':id, 'open':true}
-        );
-    }
-    if (file.filename) {
-        window.open(
-            fileById[id].open_url,
-            '_blank',
-            specs,
-            true
-        );
-    }
 }
 
 /**
