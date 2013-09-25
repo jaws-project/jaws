@@ -673,9 +673,10 @@ class Jaws_Layout
         header('Cache-Control: no-cache, must-revalidate');
         header('Pragma: no-cache');
 
-        $this->AddHeadMeta('base_script', BASE_SCRIPT);
-        $this->AddHeadMeta('requested_gadget', $GLOBALS['app']->requestedGadget);
-        $this->AddHeadMeta('requested_action', $GLOBALS['app']->requestedAction);
+        $this->AddHeadMeta(
+            'application-name',
+            BASE_SCRIPT.':'.$GLOBALS['app']->requestedGadget.':'.$GLOBALS['app']->requestedAction
+        );
         $this->AddHeadMeta('generator', 'Jaws Framework 0.9 (http://jaws-project.com)');
         $headContent = $this->GetHeaderContent($this->_HeadLink, $this->_ScriptLink, $this->_HeadMeta, $this->_HeadOther);
 
