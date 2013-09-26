@@ -79,4 +79,11 @@ class AddressBook_Ajax extends Jaws_Gadget_HTML
         }
         return $response;
     }
+
+    function VCardBuild()
+    {
+        $ids = jaws()->request->fetch('adr:array');
+        $gadgetHTML = $GLOBALS['app']->LoadGadget('AddressBook', 'HTML', 'VCardBuild');
+        return $gadgetHTML->VCardBuild($ids);
+    }
 }

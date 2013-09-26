@@ -56,6 +56,24 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
     }
 
     /**
+     * Gets info of selected Address Books
+     *
+     * @access  public
+     * @param   array   $addresses  array of address for get info
+     * @param   int     $user       User ID
+     * @returns array of Address Books or Jaws_Error on error
+     */
+    function GetAddresses($addresses, $user)
+    {
+        $adrTable = Jaws_ORM::getInstance()->table('address_book');
+        $adrTable->select('*', 'id as address_id');
+        $adrTable->where('user', $user);
+        $adrTable->and()->where('id', $addresses, 'in');
+
+        return $adrTable->fetchAll();
+    }
+
+    /**
      * Gets count of Address Books
      *
      * @access  public
@@ -207,8 +225,30 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
         // TODO: Use transaction
         $agModel = $this->gadget->load('Model')->load('Model', 'AddressBookGroup');
         $agModel->DeleteGroupForAddress($address, $user);
+
         $aTable = Jaws_ORM::getInstance()->table('address_book');
         $result = $aTable->delete()->where('user', (int) $user)->and()->where('id', (int) $address)->exec();
+        if (!Jaws_Error::IsError($result) && !empty($adrInfo['image']) && trim($adrInfo['image']) != '') {
+            $targetDir = JAWS_DATA. 'addressbook'. DIRECTORY_SEPARATOR . 'image'. DIRECTORY_SEPARATOR;
+            Jaws_Utils::Delete($targetDir . $adrInfo['image']);
+        }
+        return $result;
+    }
+
+    /**
+     * Delete many address
+     *
+     * @access  public
+     * @returns array of Address Books or Jaws_Error on error
+     */
+    function DeleteAddressSection($addresses, $user)
+    {
+        // TODO: Use transaction
+        $agModel = $this->gadget->load('Model')->load('Model', 'AddressBookGroup');
+        $agModel->DeleteGroupForAddresses($addresses, $user);
+
+        $aTable = Jaws_ORM::getInstance()->table('address_book');
+        $result = $aTable->delete()->where('user', (int) $user)->and()->where('id', $addresses, 'in')->exec();
         if (!Jaws_Error::IsError($result) && !empty($adrInfo['image']) && trim($adrInfo['image']) != '') {
             $targetDir = JAWS_DATA. 'addressbook'. DIRECTORY_SEPARATOR . 'image'. DIRECTORY_SEPARATOR;
             Jaws_Utils::Delete($targetDir . $adrInfo['image']);

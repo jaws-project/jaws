@@ -50,8 +50,7 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
         $tpl->SetVariable('group', $gid);
         $tpl->SetVariable('lbl_action', _t('GLOBAL_ACTIONS'));
 
-        $tpl->SetVariable('lbl_name0', _t('ADDRESSBOOK_ITEMS_LASTNAME'));
-        $tpl->SetVariable('lbl_name1', _t('ADDRESSBOOK_ITEMS_FIRSTNAME'));
+        $tpl->SetVariable('lbl_name', _t('ADDRESSBOOK_ITEMS_LASTNAME'));
         $tpl->SetVariable('lbl_title', _t('ADDRESSBOOK_ITEMS_TITLE'));
         $tpl->SetVariable('lbl_address', _t('ADDRESSBOOK_ITEMS_ADDRESS'));
         $tpl->SetVariable('add_icon', STOCK_ADD);
@@ -73,10 +72,7 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
 
         foreach ($addressItems as $addressItem) {
             $tpl->SetBlock("address_list/item1");
-            $names = explode(';', $addressItem['name']);
-            foreach ($names as $key => $name) {
-                $tpl->SetVariable('name' . $key, $name);
-            }
+            $tpl->SetVariable('name', str_replace(';' , ' ', $addressItem['name']));
             $tpl->SetVariable('title', $addressItem['title']);
             $tpl->SetVariable('unbond', _t('ADDRESSBOOK_ADDRESS_REMOVE_FROM_GROUP'));
             $tpl->SetVariable('unbond_url', $this->gadget->urlMap('UnbondAddress', array('aid' => $addressItem['id'], 'gid' => $gid)));

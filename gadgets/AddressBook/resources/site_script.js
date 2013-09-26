@@ -13,6 +13,10 @@ var AddressBookCallback = {
     DeleteAddress: function(response) {
         showResponse(response);
         FilterAddress();
+    },
+    ExAction: function(response) {
+        AddressBookAjax.showResponse(response);
+        FilterAddress();
     }
 }
 
@@ -111,7 +115,7 @@ function FilterAddress()
 }
 
 /**
- * Delete Address
+ * Save Address Info
  */
 function SaveAddress()
 {
@@ -136,7 +140,21 @@ function DeleteAddress(aid)
 }
 
 /**
- * Delete Address
+ * Execute Selected Action In Selected Addresses
+ */
+function ExAction()
+{
+    var action = $('addressbook_gaction').value;
+    if (action == 'DeleteAddress') {
+        AddressBookAjax.callAsync('DeleteAddress', $(document).getElement('form[name=AddressBookAction]').toQueryString().parseQueryString());
+    } else if (action == 'VCardBuild') {
+        AddressBookAjax.callSync('VCardBuild', $(document).getElement('form[name=AddressBookAction]').toQueryString().parseQueryString());
+    }
+    return false;
+}
+
+/**
+ * Delete Address Group
  */
 function DeleteGroup(gid)
 {
@@ -156,12 +174,6 @@ function AddAddressToGroup()
     if ($('addressbook_group').value) {
         $('addressbook_bonding').submit();
     }
-}
-
-function DownloadVCard()
-{
-    var vCardDownLink = AddressBookAjax.callSync('GetVCardDownloadLink', {'gid': lastGroup, 'term': lastTerm});
-    window.location.href = vCardDownLink;
 }
 
 function ReloadToggle()

@@ -16,7 +16,7 @@ class AddressBook_Actions_VCardBuilder extends AddressBook_HTML
      * @access  public
      * @return  string HTML content with menu and menu items
      */
-    function VCardBuild()
+    function VCardBuild($ids = null)
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
@@ -27,9 +27,18 @@ class AddressBook_Actions_VCardBuilder extends AddressBook_HTML
         $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
         $agModel = $this->gadget->load('Model')->load('Model', 'AddressBookGroup');
         $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
-        $post = jaws()->request->fetch(array('address:int', 'group:int', 'term'));
+        if (empty($ids)) {
+            $ids =  jaws()->request->fetch('adr:array');
+        }
 
-        $addressItems = $model->GetAddressList($user, $post['group'], false, $post['term']);
+        $link = $this->gadget->urlMap('AddressBook', array(), true);
+
+        if (empty($ids)) {
+            Jaws_Header::Location($link);
+            return false;
+        }
+
+        $addressItems = $model->GetAddresses(array_keys($ids), $user);
         if (Jaws_Error::IsError($addressItems) || empty($addressItems)) {
             return Jaws_HTTPError::Get(404);
         }
