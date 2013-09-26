@@ -7,7 +7,11 @@
     <li><a href="{groups_link}">{groups}</a></li>
    </ul>
   </div>
-  <!-- BEGIN response --><div class="gadget_response {type}">{text}</div><!-- END response -->
+  <!-- BEGIN response -->
+  <div class="gadget_response">
+    <div class="{type}">{text}</div>
+  </div>
+  <!-- END response -->
   <div class="content">
     <form name="import_vcard" action="{base_script}" method="post" enctype="multipart/form-data" id="import_vcard">
       <input type="hidden" name="gadget" value="AddressBook" />
