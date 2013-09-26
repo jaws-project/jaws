@@ -299,7 +299,7 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
             $GLOBALS['app']->Session->PushResponse($result->getMessage(), 'AddressBook.Groups', RESPONSE_ERROR);
             Jaws_Header::Referrer();
         } else {
-            $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_EDIT_GROUP_SAVED'), 'AddressBook.Groups');
+            $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_EDIT_GROUP_SAVED'), 'AddressBook.AdrGroups');
             $link = $this->gadget->urlMap('GroupMembers', array('id' => $gid));
             Jaws_Header::Location($link);
         }
