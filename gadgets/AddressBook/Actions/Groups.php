@@ -55,6 +55,7 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
 
         return $tpl->Get();
     }
+
     /**
      * Displays the list of Address Book Group items, this items can filter by $user(User ID) param.
      *
@@ -83,10 +84,8 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         $tpl->SetVariable('title', _t('ADDRESSBOOK_GROUP_TITLE'));
         $response = $GLOBALS['app']->Session->PopResponse('AddressBook.Groups');
         if (!empty($response)) {
-            $tpl->SetBlock('groups/response');
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('groups/response');
         }
 
         $this->AjaxMe('site_script.js');
@@ -97,31 +96,21 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_actions',     _t('GLOBAL_ACTIONS'));
         $tpl->SetVariable('confirmDelete',   _t('ADDRESSBOOK_DELETE_CONFIRM'));
         $tpl->SetVariable('deleteURL', $this->gadget->urlMap('DeleteGroup', array('id' => '')));
+        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('icon_ok', STOCK_OK);
 
         foreach ($groupItems as $groupItem) {
             $tpl->SetBlock("groups/item");
             $tpl->SetVariable('index', $groupItem['id']);
             $tpl->SetVariable('name',  $groupItem['name']);
             $tpl->SetVariable('description', $groupItem['description']);
+            $tpl->SetVariable('view_member_url', $this->gadget->urlMap('GroupMembers', array('id' => $groupItem['id'])));
 
             //Edite Item, TODO: Check user can do this action
             $tpl->SetBlock('groups/item/action');
             $tpl->SetVariable('action_lbl', _t('GLOBAL_EDIT'));
             $tpl->SetVariable('action_url', $this->gadget->urlMap('EditGroup', array('id' => $groupItem['id'])));
             $tpl->SetVariable('icon', STOCK_EDIT);
-            $tpl->ParseBlock('groups/item/action');
-
-            //Delete Item, TODO: Check user can do this action
-            $tpl->SetBlock('groups/item/action');
-            $tpl->SetVariable('action_lbl', _t('GLOBAL_DELETE'));
-            $tpl->SetVariable('action_url', 'javascript:DeleteGroup(' . $groupItem['id'] . ')');//$this->gadget->urlMap('DeleteGroup', array('id' => $groupItem['id'])));
-            $tpl->SetVariable('icon', STOCK_DELETE);
-            $tpl->ParseBlock('groups/item/action');
-
-            $tpl->SetBlock('groups/item/action');
-            $tpl->SetVariable('action_lbl', _t('ADDRESSBOOK_VIEW_GROUP_MEMBER'));
-            $tpl->SetVariable('action_url', $this->gadget->urlMap('GroupMembers', array('id' => $groupItem['id'])));
-            $tpl->SetVariable('icon', STOCK_SEARCH);
             $tpl->ParseBlock('groups/item/action');
 
             $tpl->ParseBlock("groups/item");
@@ -336,24 +325,16 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $gid = (int) jaws()->request->fetch('id');
+        $gids = jaws()->request->fetch('gid:array');
         $model = $this->gadget->load('Model')->load('Model', 'Groups');
-        $info = $model->GetGroupInfo($gid);
-        if (!isset($info)) {
-            return Jaws_HTTPError::Get(404);
-        }
-        if ($info['user'] != $GLOBALS['app']->Session->GetAttribute('user')) {
-            return Jaws_HTTPError::Get(403);
-        }
 
-        $result = $model->DeleteGroup($info['id'], $info['user']);
+        $result = $model->DeleteGroups($gids, (int) $GLOBALS['app']->Session->GetAttribute('user'));
 
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushResponse($result->getMessage(), 'AddressBook.Groups', RESPONSE_ERROR);
         } else {
             $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_DELETE_GROUP_COMPLETE'), 'AddressBook.Groups');
         }
-        $link = $this->gadget->urlMap('ManageGroups');
-        Jaws_Header::Location($link);
+        Jaws_Header::Location($this->gadget->urlMap('ManageGroups'), 'AddressBook.Groups');
      }
 }

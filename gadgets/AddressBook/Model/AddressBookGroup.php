@@ -117,6 +117,18 @@ class AddressBook_Model_AddressBookGroup extends Jaws_Gadget_Model
     }
 
     /**
+     * Delete all address for many group
+     *
+     * @access  public
+     * @returns array of Address Books or Jaws_Error on error
+     */
+    function DeleteAddressForGroups($groups, $user)
+    {
+        $agTable = Jaws_ORM::getInstance()->table('address_book_group');
+        return $agTable->delete()->where('user', (int) $user)->and()->where('group', $groups, 'in')->exec();
+    }
+
+    /**
      * Delete one address for one group
      *
      * @access  public

@@ -97,6 +97,13 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
     {
         $uid = (int) $GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
+
+        if (empty($gid) && $term == '') {
+            $rqst = jaws()->request->fetch(array('gid:int', 'term'));
+            $gid = $rqst['gid'];
+            $term = $rqst['term'];
+        }
+
         $addressItems = $model->GetAddressList($uid, $gid, false, $term);
         if (Jaws_Error::IsError($addressItems)) {
             return $addressItems->getMessage(); // TODO: Show intelligible message
@@ -765,22 +772,24 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
      *
      * @access  public
      */
-    function DeleteAddress()
+    function DeleteAddress($ids = null)
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
 
-        $ids = jaws()->request->fetch('adr:array');
-        return var_dump($ids);
+        if (empty($ids)) {
+            $ids = jaws()->request->fetch('adr:array');
+        }
         $link = $this->gadget->urlMap('AddressBook');
+//return var_dump(jaws()->request->data['post']);
         if (empty($ids)) {
             Jaws_Header::Location($link);
             return false;
         }
 
         $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
-        $result = $model->DeleteAddressSection(array_keys($ids), (int) $GLOBALS['app']->Session->GetAttribute('user'));
+        $result = $model->DeleteAddressSection($ids, (int) $GLOBALS['app']->Session->GetAttribute('user'));
 
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushResponse($result->getMessage(), 'AddressBook', RESPONSE_ERROR);

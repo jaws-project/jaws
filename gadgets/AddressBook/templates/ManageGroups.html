@@ -4,34 +4,49 @@
    <h2>{title}</h2>
    <ul class="gadget_menubar"><li><a href="{address_list_link}">{address_list}</a></li></ul>
   </div>
-  <!-- BEGIN response --><div class="gadget_response {type}">{text}</div><!-- END response -->
+  <div class="gadget_response">
+    <div id="addressbook_managegroups_response" class="{type}">{text}</div>
+  </div>
   <div class="content">
     <div class="addressbook_list_search"></div>
-    <table>
-     <thead>
-      <tr>
-        <th>{lbl_name}</th>
-        <th>{lbl_description}</th>
-        <th>{lbl_actions}</th>
-      </tr>
-     </thead>
-      <!-- BEGIN item -->
-      <tr>
-        <td id="ag_{index}">{name}</td>
-        <td>{description}</td>
-        <td>
-          <!-- BEGIN action -->
-            <a href="{action_url}" title="{action_lbl}"><img src="{icon}" alt="{action_lbl}" /></a>
-          <!-- END action -->
-        </td>
-      </tr>
-      <!-- END item -->
-    </table>
-    <!-- BEGIN actions -->
-    <div class="actions">
-        <a class="button" href="{add_group_link}" title="{add_group}" >{add_group}</a>
-    </div>
-    <!-- END actions -->
+    <form name="AddressBookAction" action="{base_script}" method="post" >
+    <input type="hidden" name="gadget" value="AddressBook" />
+        <table>
+         <thead>
+          <tr>
+            <th style="width: 15px;"><a href="javascript:toggleCheckboxes()">#</a></th>
+            <th>{lbl_name}</th>
+            <th>{lbl_description}</th>
+            <th>{lbl_actions}</th>
+          </tr>
+         </thead>
+          <!-- BEGIN item -->
+          <tr>
+            <td><input type="checkbox" name="gid[]" id="gid_{index}" value="{index}" class="table-checkbox" /></td>
+            <td id="ag_{index}"><a href="{view_member_url}" title="{name}">{name}</a></td>
+            <td>{description}</td>
+            <td>
+              <!-- BEGIN action -->
+                <a href="{action_url}" title="{action_lbl}"><img src="{icon}" alt="{action_lbl}" /></a>
+              <!-- END action -->
+            </td>
+          </tr>
+          <!-- END item -->
+        </table>
+
+        <div class="actions">
+            <div style="float: left;">
+              <select id="addressbook_gaction" name="action" style="width: 150px;" >
+                <option value="ManageGroups"></option>
+                <option value="DeleteGroup">{lbl_delete}</option>
+              </select>
+              <button value="" id="BtnExAction" name="BtnExAction" type="submit"><img alt="" src="{icon_ok}"></button>
+            </div>
+            <!-- BEGIN actions -->
+            <a class="button" href="{add_group_link}" title="{add_group}" >{add_group}</a>
+            <!-- END actions -->
+        </div>
+    </form>
   <script type="text/javascript">
     var confirmDelete = "{confirmDelete}";
     var deleteURL = "{deleteURL}";

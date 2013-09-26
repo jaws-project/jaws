@@ -42,6 +42,14 @@ $actions['LoadImage'] = array(
     'standalone' => true,
     'file'   => 'AddressBook',
 );
+$actions['AddressList'] = array(
+    'standalone' => true,
+    'file'   => 'AddressBook',
+);
+$actions['LoadUserInfo'] = array(
+    'standalone' => true,
+    'file'   => 'UserInfo',
+);
 $actions['ManageGroups'] = array(
     'normal' => true,
     'file'   => 'Groups',

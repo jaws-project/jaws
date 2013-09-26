@@ -38,10 +38,8 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
 
         $response = $GLOBALS['app']->Session->PopResponse('AddressBook.AdrGroups');
         if (!empty($response)) {
-            $tpl->SetBlock('address_list/response');
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('address_list/response');
         }
 
         $gModel = $this->gadget->load('Model')->load('Model', 'Groups');

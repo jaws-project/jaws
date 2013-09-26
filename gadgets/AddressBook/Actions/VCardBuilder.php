@@ -34,11 +34,11 @@ class AddressBook_Actions_VCardBuilder extends AddressBook_HTML
         $link = $this->gadget->urlMap('AddressBook', array(), true);
 
         if (empty($ids)) {
-            Jaws_Header::Location($link);
+            //Jaws_Header::Location($link);
             return false;
         }
 
-        $addressItems = $model->GetAddresses(array_keys($ids), $user);
+        $addressItems = $model->GetAddresses($ids, $user);
         if (Jaws_Error::IsError($addressItems) || empty($addressItems)) {
             return Jaws_HTTPError::Get(404);
         }

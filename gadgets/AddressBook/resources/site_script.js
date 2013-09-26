@@ -11,12 +11,12 @@
  */
 var AddressBookCallback = {
     DeleteAddress: function(response) {
-        showResponse(response);
-        FilterAddress();
-    },
-    ExAction: function(response) {
         AddressBookAjax.showResponse(response);
         FilterAddress();
+    },
+    DeleteGroup:  function(response) {
+        AddressBookAjax.showResponse(response);
+        //ReloadGroups();
     }
 }
 
@@ -93,13 +93,12 @@ function GetUserInfo()
         return;
     }
     $('last_refreh_user_link').value = $('addressbook_user_link').value;
-    var userInfo = AddressBookAjax.callSync('GetUserInfo', {'uid': $('addressbook_user_link').value});
+    var userInfo = AddressBookAjax.callSync('LoadUserInfo', {'uid': $('addressbook_user_link').value});
     $('addressbook_firstname').value = userInfo['fname'];
     $('addressbook_lastname').value = userInfo['lname'];
     $('addressbook_nickname').value = userInfo['nickname'];
-    var userAvatar = AddressBookAjax.callSync('CopyUserAvatar', {'uid': $('addressbook_user_link').value});
     $('person_image').src = userInfo['avatar'];
-    $('image').value = userAvatar;
+    $('image').value = userInfo['avatar_file_name'];
 }
 
 
@@ -108,7 +107,7 @@ function GetUserInfo()
  */
 function FilterAddress()
 {
-    var filterResult = AddressBookAjax.callSync('FilterAddress', {'gid': $('addressbook_group').value, 'term': $('addressbook_term').value});
+    var filterResult = AddressBookAjax.callSync('AddressList', {'gid': $('addressbook_group').value, 'term': $('addressbook_term').value});
     $('addressbook_result').innerHTML = filterResult;
     lastGroup = $('addressbook_group').value;
     lastTerm = $('addressbook_term').value;
@@ -145,10 +144,13 @@ function DeleteAddress(aid)
 function ExAction()
 {
     var action = $('addressbook_gaction').value;
+    $$('.table-checkbox').each(function(el) { el.name = el.name.replace('[]', '');});
     if (action == 'DeleteAddress') {
         AddressBookAjax.callAsync('DeleteAddress', $(document).getElement('form[name=AddressBookAction]').toQueryString().parseQueryString());
     } else if (action == 'VCardBuild') {
         AddressBookAjax.callSync('VCardBuild', $(document).getElement('form[name=AddressBookAction]').toQueryString().parseQueryString());
+    } else if (action == 'DeleteGroup') {
+        AddressBookAjax.callAsync('DeleteGroup', $(document).getElement('form[name=AddressBookAction]').toQueryString().parseQueryString());
     }
     return false;
 }
@@ -262,7 +264,14 @@ function removeImage() {
     $('person_image').src = baseSiteUrl + '/gadgets/AddressBook/images/photo128px.png?' + (new Date()).getTime();
 }
 
-var AddressBookAjax = new JawsAjax('AddressBook', AddressBookCallback);
+function toggleCheckboxes(){
+    checkStatus = !checkStatus;
+    $$('.table-checkbox').each(function(el) { el.checked = checkStatus; });
+}
 
+
+var AddressBookAjax = new JawsAjax('AddressBook', AddressBookCallback);
+AddressBookAjax.backwardSupport();
 var lastGroup = 0;
 var lastTerm = '';
+var checkStatus = false;
