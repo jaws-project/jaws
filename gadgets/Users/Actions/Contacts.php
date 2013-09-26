@@ -83,10 +83,8 @@ class Users_Actions_Contacts extends Users_HTML
         }
 
         if (!empty($response)) {
-            $tpl->SetBlock('contacts/response');
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('contacts/response');
         }
 
         $tpl->ParseBlock('contacts');
