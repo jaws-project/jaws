@@ -27,7 +27,7 @@ class Jaws_Header
             $url = $GLOBALS['app']->getSiteURL('/'). $url;
         }
 
-        terminate($data = $GLOBALS['app']->Session->PopResponse($resource), $status_code, $url);
+        terminate($resource, $status_code, $url);
     }
 
     /**

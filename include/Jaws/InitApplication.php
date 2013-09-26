@@ -21,11 +21,6 @@
  */
 function terminate(&$data = null, $status_code = 200, $next_location = '', $sync = true)
 {
-    // Sync session
-    if ($sync && isset($GLOBALS['app'])) {
-        $GLOBALS['app']->Session->Synchronize();
-    }
-
     // Send content to client
     $resType = jaws()->request->fetch('restype');
     switch ($resType) {
@@ -33,6 +28,14 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
             header('Content-Type: application/json; charset=utf-8');
             header('Cache-Control: no-cache, must-revalidate');
             header('Pragma: no-cache');
+            if (in_array($status_code, array(301, 302))) {
+                $data = $GLOBALS['app']->Session->PopResponse($data);
+            }
+            // Sync session
+            if ($sync && isset($GLOBALS['app'])) {
+                $GLOBALS['app']->Session->Synchronize();
+            }
+
             echo Jaws_UTF8::json_encode($data);
             break;
 
@@ -42,6 +45,11 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
             header('Content-Length: '.strlen($data));
             header('Content-Encoding: '. $resType);
         default:
+            // Sync session
+            if ($sync && isset($GLOBALS['app'])) {
+                $GLOBALS['app']->Session->Synchronize();
+            }
+
             switch ($status_code) {
                 case 301:
                     header('HTTP/1.1 301 Moved Permanently');
