@@ -25,6 +25,7 @@ var JawsAjax = new Class({
     initialize: function (gadget, callback, baseScript) {
         this.gadget = gadget;
         this.callback = callback;
+        this.loadingMessage = 'Loading...';
         var reqValues = $(document).getElement('meta[name=application-name]').getProperty('content').split(':');
         this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
         baseScript = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
@@ -90,7 +91,7 @@ var JawsAjax = new Class({
     },
 
     onRequest: function () {
-        // TODO: start loading..
+        this.showLoading();
     },
 
     onSuccess: function (reqOptions, responseText) {
@@ -106,19 +107,31 @@ var JawsAjax = new Class({
     },
 
     showResponse: function (response) {
-        var div_response = (
+        var div_message = (
             this.mainRequest['gadget']+'_'+
             this.mainRequest['action']+'_'+
             'response'
         ).toLowerCase();
 
-        $(div_response).getParent().setStyles({'position': 'absolute', 'display': 'block'});
-        $(div_response).set({'html': response.text, 'class': response.type});
-        $(div_response).fade('show');
+        $(div_message).getParent().setStyles({'position': 'absolute', 'display': 'block'});
+        $(div_message).set({'html': response.text, 'class': response.type});
+        $(div_message).fade('show');
         (function(){
             this.fade('out');
-            (function(){this.set('class', '')}).delay(1000, this);
-        }).delay(4000, $(div_response));
+            (function(){this.set('class', '')}).delay(500, this);
+        }).delay(4000, $(div_message));
+    },
+
+    showLoading: function () {
+        var div_message = (
+            this.mainRequest['gadget']+'_'+
+            this.mainRequest['action']+'_'+
+            'response'
+        ).toLowerCase();
+
+        $(div_message).getParent().setStyles({'position': 'absolute', 'display': 'block'});
+        $(div_message).set({'html': this.loadingMessage, 'class': 'response_loading'});
+        $(div_message).fade('show');
     }
 
 });
