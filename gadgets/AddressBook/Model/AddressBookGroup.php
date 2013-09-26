@@ -146,6 +146,23 @@ class AddressBook_Model_AddressBookGroup extends Jaws_Gadget_Model
     }
 
     /**
+     * Delete many address for one group
+     *
+     * @access  public
+     * @param   int     $address    Address ID
+     * @param   int     $group      Group ID
+     * @param   int     $user       User ID
+     * @returns boolean of delete result or Jaws_Error on error
+     */
+    function DeleteAddressBooksGroup($addresses, $group, $user)
+    {
+        $agTable = Jaws_ORM::getInstance()->table('address_book_group');
+        $agTable->delete()->where('user', (int) $user);
+        $agTable->and()->where('group', (int) $group);
+        return $agTable->and()->where('address', $addresses, 'in')->exec();
+    }
+
+    /**
      * Get list of AddressBooks Is Not To Selecred Group
      *
      * @access  public

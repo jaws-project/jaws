@@ -105,14 +105,6 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
             $tpl->SetVariable('name',  $groupItem['name']);
             $tpl->SetVariable('description', $groupItem['description']);
             $tpl->SetVariable('view_member_url', $this->gadget->urlMap('GroupMembers', array('id' => $groupItem['id'])));
-
-            //Edite Item, TODO: Check user can do this action
-            $tpl->SetBlock('groups/item/action');
-            $tpl->SetVariable('action_lbl', _t('GLOBAL_EDIT'));
-            $tpl->SetVariable('action_url', $this->gadget->urlMap('EditGroup', array('id' => $groupItem['id'])));
-            $tpl->SetVariable('icon', STOCK_EDIT);
-            $tpl->ParseBlock('groups/item/action');
-
             $tpl->ParseBlock("groups/item");
         }
 
@@ -234,7 +226,7 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->SetVariable('cancel_lbl', _t('GLOBAL_CANCEL'));
-        $link = $this->gadget->urlMap('ManageGroups');
+        $link = $this->gadget->urlMap('GroupMembers', array('id' => $info['id']));
         $tpl->SetVariable('cancel_url', $link);
 
         $tpl->ParseBlock('group');
@@ -308,7 +300,7 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
             Jaws_Header::Referrer();
         } else {
             $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_EDIT_GROUP_SAVED'), 'AddressBook.Groups');
-            $link = $this->gadget->urlMap('ManageGroups');
+            $link = $this->gadget->urlMap('GroupMembers', array('id' => $gid));
             Jaws_Header::Location($link);
         }
     }

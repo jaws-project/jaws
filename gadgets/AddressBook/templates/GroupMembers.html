@@ -27,22 +27,38 @@
         </button>
       </form>  
     </div>
-    <table>
-     <thead>
-      <tr>
-        <th style="width: 270px;">{lbl_name}</th>
-        <th>{lbl_title}</th>
-        <th>{lbl_action}</th>
-      </tr>
-     </thead>
-      <!-- BEGIN item1 -->
-      <tr>
-        <td>{name}</td>
-        <td>{title}</td>
-        <td><a class="button" href="{unbond_url}" title="{unbond}" ><img src="{remove_icon}" alt="{unbond}" /> </a></td>
-      </tr>
-      <!-- END item1 -->
-    </table>
+    <form name="addressbook_unbonding" action="{base_script}" method="post" enctype="multipart/form-data" id="addressbook_unbonding">
+    <input type="hidden" name="gadget" value="AddressBook" />
+    <input type="hidden" name="action" value="UnbondAddress" />
+    <input type="hidden" name="group" value="{group}" />
+        <table>
+         <thead>
+          <tr>
+            <th style="width: 15px;"><a href="javascript:toggleCheckboxes()">#</a></th>
+            <th style="width: 270px;">{lbl_name}</th>
+            <th>{lbl_title}</th>
+          </tr>
+         </thead>
+          <!-- BEGIN item1 -->
+          <tr>
+            <td><input type="checkbox" name="adr[]" id="adr_{index}" value="{index}" class="table-checkbox" /></td>
+            <td>{name}</td>
+            <td>{title}</td>
+          </tr>
+          <!-- END item1 -->
+        </table>
+
+        <div class="actions">
+            <div style="float: left;">
+              <select id="addressbook_gaction" name="actions" style="width: 150px;" >
+                <option value=""></option>
+                <option value="UnbondAddress">{lbl_delete}</option>
+              </select>
+              <button value="" id="BtnExAction" name="BtnExAction" type="submit"><img alt="" src="{icon_ok}"></button>
+            </div>
+            <a class="button" href="{edit_group_link}" title="{edit_group}" >{edit_group}</a>
+        </div>
+    </form>
   </div>
 </div>
 <!-- END address_list -->

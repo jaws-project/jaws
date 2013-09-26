@@ -57,6 +57,10 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
         $tpl->SetVariable('address_list',    _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
         $tpl->SetVariable('groups_link', $this->gadget->urlMap('ManageGroups'));
         $tpl->SetVariable('groups', _t('ADDRESSBOOK_GROUPS_MANAGE'));
+        $tpl->SetVariable('edit_group', _t('ADDRESSBOOK_GROUPS_EDIT'));
+        $tpl->SetVariable('edit_group_link', $this->gadget->urlMap('EditGroup', array('id' => $gid)));
+        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('icon_ok', STOCK_OK);
 
         $notInGroupAddress = $model->GetAddressListNotInGroup($gid, $user);
         if (!Jaws_Error::IsError($notInGroupAddress) || !empty($notInGroupAddress)) {
@@ -72,9 +76,7 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
             $tpl->SetBlock("address_list/item1");
             $tpl->SetVariable('name', str_replace(';' , ' ', $addressItem['name']));
             $tpl->SetVariable('title', $addressItem['title']);
-            $tpl->SetVariable('unbond', _t('ADDRESSBOOK_ADDRESS_REMOVE_FROM_GROUP'));
-            $tpl->SetVariable('unbond_url', $this->gadget->urlMap('UnbondAddress', array('aid' => $addressItem['id'], 'gid' => $gid)));
-            $tpl->SetVariable('remove_icon', STOCK_REMOVE);
+            $tpl->SetVariable('index', $addressItem['id']);
             $tpl->ParseBlock("address_list/item1");
         }
 
@@ -123,11 +125,12 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
         }
 
         $model = $this->gadget->load('Model')->load('Model', 'AddressBookGroup');
-        $aid = (int) jaws()->request->fetch('aid');
-        $gid = (int) jaws()->request->fetch('gid');
+        $adrs = jaws()->request->fetch('adr:array');
+        $gid = (int) jaws()->request->fetch('group');
         $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
 
-        $result = $model->DeleteAddressBookGroup($aid, $gid, $user);
+        $result = $model->DeleteAddressBooksGroup($adrs, $gid, $user);
+        //return var_dump($result);
         $link = $this->gadget->urlMap('GroupMembers', array('id' => $gid));
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushResponse($result->getMessage(), 'AddressBook.AdrGroups', RESPONSE_ERROR);
