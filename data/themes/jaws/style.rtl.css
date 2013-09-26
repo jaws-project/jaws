@@ -47,14 +47,16 @@ margin-bottom:1em;
 legend{
 width:100%;
 margin-bottom:5px;
-padding:2px 4px 2px 0;
+border-radius:2px;
 border-bottom:1px solid #ccc;
+box-shadow:20px 0px 25px #eee inset;
 }
 legend span{
 padding:4px;
 color:#325994;
-border:1px solid #ccc;
-background:#eee;
+}
+legend span img{
+vertical-align:-3px;
 }
 a:link,a:visited{
 color:#325994;
