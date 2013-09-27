@@ -48,7 +48,7 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
         $tpl->SetVariable('group', $gid);
         $tpl->SetVariable('lbl_action', _t('GLOBAL_ACTIONS'));
 
-        $tpl->SetVariable('lbl_name', _t('ADDRESSBOOK_ITEMS_LASTNAME'));
+        $tpl->SetVariable('lbl_name', _t('ADDRESSBOOK_ITEMS_NAME'));
         $tpl->SetVariable('lbl_title', _t('ADDRESSBOOK_ITEMS_TITLE'));
         $tpl->SetVariable('lbl_address', _t('ADDRESSBOOK_ITEMS_ADDRESS'));
         $tpl->SetVariable('add_icon', STOCK_ADD);

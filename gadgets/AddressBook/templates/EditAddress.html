@@ -85,12 +85,12 @@
           <div id="tel_p">
            <!-- BEGIN tel -->
            <div id="tel_{index}" class="tel">
-            <select name="tel_type[{index}]" style="width: 150px;" >
+            <select name="tel_type[]" style="width: 150px;" >
               <!-- BEGIN item -->
               <option value="{type_id}" {selected}>{type_name}</option>
               <!-- END item -->
             </select>
-            <input name="tel_number[{index}]" type="text" value="{value}" />
+            <input name="tel_number[]" type="text" value="{value}" />
             <button onclick="AddTellItem();" value="" id="addTelButton" name="addTelButton" type="button">
               <img alt="{lbl_add_tell}" src="{icon_add}">
             </button>
@@ -108,12 +108,12 @@
           <div id="email_p">
            <!-- BEGIN email -->
            <div id="email_{index}" class="email">
-            <select name="email_type[{index}]" style="width: 150px;" >
+            <select name="email_type[]" style="width: 150px;" >
               <!-- BEGIN item -->
               <option value="{type_id}" {selected}>{type_name}</option>
               <!-- END item -->
             </select>
-            <input name="email[{index}]" type="text" value="{value}" />
+            <input name="email[]" type="text" value="{value}" />
             <button onclick="AddEmailItem();" value="" id="addEmailButton" name="addEmailButton" type="button">
               <img alt="{lbl_add_email}" src="{icon_add}">
             </button>
@@ -131,7 +131,7 @@
           <div id="adr_p">
            <!-- BEGIN adr -->
            <div id="adr_{index}" class="adr">
-            <select name="adr_type[{index}]" style="width: 150px;" >
+            <select name="adr_type[]" style="width: 150px;" >
               <!-- BEGIN item -->
               <option value="{type_id}" {selected}>{type_name}</option>
               <!-- END item -->
@@ -142,7 +142,7 @@
             <button onclick="RemoveItem(this);" value="" id="removeAdrButton" name="removeAdrButton" type="button">
               <img alt="{lbl_remove_adr}" src="{icon_remove}">
             </button>
-            <textarea name="adr[{index}]" cols="25" rows="6" style="width: 100%;">{value}</textarea>
+            <textarea name="adr[]" cols="25" rows="6" style="width: 100%;">{value}</textarea>
            </div>
            <!-- END adr -->
           </div>
@@ -155,7 +155,7 @@
            <!-- BEGIN url -->
            <div id="url_{index}" class="url">
             <label>{lbl_url}:</label>
-            <input name="url[{index}]" type="text" value="{value}" style="width: 350px; display: inline;"/>
+            <input name="url[]" type="text" value="{value}" style="width: 350px; display: inline;"/>
             <button onclick="AddUrlItem();" value="" id="addUrlButton" name="addUrlButton" type="button">
               <img alt="{lbl_add_Url}" src="{icon_add}">
             </button>
@@ -191,9 +191,9 @@
           <div id="group_p">
           <!-- BEGIN group -->
             <div>
-              <input type="checkbox" name="groups[{gid}]" id="group_{gid}"
+              <input type="checkbox" name="groups[]" id="group_{gid}"
                     <!-- BEGIN selected_group -->checked="checked"<!-- END selected_group -->
-                    value="true" />
+                    value="{gid}" />
               <label for="group_{gid}">{lbl_group}</label>
             </div>
           <!-- END group -->

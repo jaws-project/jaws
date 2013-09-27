@@ -588,6 +588,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $id = (int) $post['id'];
         unset($post['id']);
         $groupIDs = jaws()->request->fetch('groups:array');
+
         $tels = jaws()->request->fetch(array('tel_type:array', 'tel_number:array'), 'post');
 
         $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
@@ -696,7 +697,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
             $agModel = $this->gadget->load('Model')->load('Model', 'AddressBookGroup');
             $agModel->DeleteGroupForAddress($id, $addressInfo['user']);
             if (is_array($groupIDs) && count($groupIDs) > 0) {
-                foreach ($groupIDs as $gid => $group) {
+                foreach ($groupIDs as $gid) {
                     $agModel->AddGroupToAddress($id, $gid, $user);
                 }
             }

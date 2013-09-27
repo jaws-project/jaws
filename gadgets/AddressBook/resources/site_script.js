@@ -27,8 +27,8 @@ function AddTellItem()
     var div = $('tel_p').getElementsByTagName('div')[0].cloneNode(true);
     div.className = 'tel';
     div.id = "tel_" + lastID;
-    div.getElementsByTagName('select')[0].name = 'tel_type['+lastID+']';
-    div.getElementsByTagName('input')[0].name  = 'tel_number['+lastID+']';
+    div.getElementsByTagName('select')[0].name = 'tel_type[]';
+    div.getElementsByTagName('input')[0].name  = 'tel_number[]';
     div.getElementsByTagName('input')[0].value = '';
     div.getElementsByTagName('select')[0].selectedIndex = 0;
     $('tel_p').appendChild(div);
@@ -41,8 +41,8 @@ function AddEmailItem()
     var div = $('email_p').getElementsByTagName('div')[0].cloneNode(true);
     div.className = 'email';
     div.id = "email_" + lastID;
-    div.getElementsByTagName('select')[0].name = 'email_type['+lastID+']';
-    div.getElementsByTagName('input')[0].name  = 'email['+lastID+']';
+    div.getElementsByTagName('select')[0].name = 'email_type[]';
+    div.getElementsByTagName('input')[0].name  = 'email[]';
     div.getElementsByTagName('input')[0].value = '';
     div.getElementsByTagName('select')[0].selectedIndex = 0;
     $('email_p').appendChild(div);
@@ -55,8 +55,8 @@ function AddAdrItem()
     var div = $('adr_p').getElementsByTagName('div')[0].cloneNode(true);
     div.className = 'adr';
     div.id = "adr_" + lastID;
-    div.getElementsByTagName('select')[0].name = 'adr_type['+lastID+']';
-    div.getElementsByTagName('textarea')[0].name  = 'adr['+lastID+']';
+    div.getElementsByTagName('select')[0].name = 'adr_type[]';
+    div.getElementsByTagName('textarea')[0].name  = 'adr[]';
     div.getElementsByTagName('textarea')[0].value = '';
     div.getElementsByTagName('select')[0].selectedIndex = 0;
     $('adr_p').appendChild(div);
@@ -69,7 +69,7 @@ function AddUrlItem()
     var div = $('url_p').getElementsByTagName('div')[0].cloneNode(true);
     div.className = 'url';
     div.id = "url_" + lastID;
-    div.getElementsByTagName('input')[0].name  = 'url['+lastID+']';
+    div.getElementsByTagName('input')[0].name  = 'url[]';
     div.getElementsByTagName('input')[0].value = '';
     $('url_p').appendChild(div);
 }
