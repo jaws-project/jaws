@@ -12,7 +12,7 @@
  */
 var FriendsCallback = { 
     newfriend: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('friends_datagrid').addItem();
             $('friends_datagrid').setCurrentPage(0);
         }
@@ -21,7 +21,7 @@ var FriendsCallback = {
     },
 
     deletefriend: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('friends_datagrid').deleteItem();          
         }
         showResponse(response);
