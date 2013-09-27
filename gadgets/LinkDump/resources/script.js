@@ -13,7 +13,7 @@
  */
 var LinkDumpCallback = { 
     updategroup: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('group_'+$('gid').value).getElementsByTagName('a')[1].innerHTML = $('title').value;
             stopAction();
         }
@@ -70,7 +70,7 @@ function saveLink()
                                                  $('limit_count').value,
                                                  $('links_type').value,
                                                  $('order_type').value);
-            if (response[0]['css'] == 'notice-message') {
+            if (response[0]['type'] == 'response_notice') {
                 var gid = response[0]['data'];
                 AddNewGroup(gid);
                 stopAction();
@@ -99,7 +99,7 @@ function saveLink()
                                                  $('description').value,
                                                  $('tags').value,
                                                  $('rank').value);
-            if (response[0]['css'] == 'notice-message') {
+            if (response[0]['type'] == 'response_notice') {
                 var lid = response[0]['data'];
                 AddNewLinkItem($('gid').value, lid, $('rank').value);
                 stopAction();
@@ -115,7 +115,7 @@ function saveLink()
                                                  $('description').value,
                                                  $('tags').value,
                                                  $('rank').value);
-            if (response[0]['css'] == 'notice-message') {
+            if (response[0]['type'] == 'response_notice') {
                 $('link_'+$('lid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
                 var new_parent = $('links_group_'+$('gid').value);
                 var old_parent = $('link_'+$('lid').value).parentNode;
@@ -382,7 +382,7 @@ function delLinks()
         if (confirm(msg)) {
             cacheMenuForm = null;
             var response = LinkDumpAjax.callSync('deletegroup', gid);
-            if (response[0]['css'] == 'notice-message') {
+            if (response[0]['type'] == 'response_notice') {
                 Element.destroy($('group_'+gid));
             }
             stopAction();
@@ -396,7 +396,7 @@ function delLinks()
               msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
             var response = LinkDumpAjax.callSync('deletelink', lid, $('gid').value, $('rank').value);
-            if (response[0]['css'] == 'notice-message') {
+            if (response[0]['type'] == 'response_notice') {
                 link_parent = $('link_'+lid).parentNode;
                 Element.destroy($('link_'+lid));
                 if (link_parent.innerHTML.blank()) {
