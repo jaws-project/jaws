@@ -63,19 +63,18 @@ define('_EN_DIRECTORY_NOTICE_SEARCH_RESULT', "<b>{0}</b> result(s)");
 define('_EN_DIRECTORY_NOTICE_SEARCH', "<b>{0}</b> result(s)");
 define('_EN_DIRECTORY_ERROR_SEARCH', "Search has been failed.");
 define('_EN_DIRECTORY_ERROR_SHORT_QUERY', "Search query must have 2 characters length at least.");
-define('_EN_DIRECTORY_CONFIRM_FILE_DELETE', "Are you sure you want to delete the file?");
-define('_EN_DIRECTORY_CONFIRM_DIR_DELETE', "Are you sure you want to delete directory? All files inside it will be deleted too.");
+define('_EN_DIRECTORY_CONFIRM_DELETE', "Are you sure you want to delete selected item(s)?");
 
 define('_EN_DIRECTORY_NOTICE_DIR_CREATED', "A new directory has been created.");
 define('_EN_DIRECTORY_NOTICE_DIR_UPDATED', "Directory has been updated.");
-define('_EN_DIRECTORY_NOTICE_DIR_DELETED', "Directory has been deleted.");
 define('_EN_DIRECTORY_ERROR_DIR_CREATE', "Creating directory has been failed.");
 define('_EN_DIRECTORY_ERROR_DIR_UPDATE', "Updating directory has been failed.");
-define('_EN_DIRECTORY_ERROR_DIR_DELETE', "Could not delete the directory.");
+define('_EN_DIRECTORY_NOTICE_DELETE', "Selected item(s) have been deleted.");
+define('_EN_DIRECTORY_WARNING_DELETE', "Some items have not been deleted.");
+define('_EN_DIRECTORY_ERROR_DELETE', "Deleting item(s) have been failed.");
 
 define('_EN_DIRECTORY_NOTICE_FILE_CREATED', "A new file has been created.");
 define('_EN_DIRECTORY_NOTICE_FILE_UPDATED', "File has been updated.");
-define('_EN_DIRECTORY_NOTICE_FILE_DELETED', "File has been deleted.");
 define('_EN_DIRECTORY_ERROR_FILE_CREATE', "Creating file has been failed.");
 define('_EN_DIRECTORY_ERROR_FILE_UPDATE', "Updating file has been failed.");
 define('_EN_DIRECTORY_ERROR_FILE_DELETE', "Could not delete the file.");

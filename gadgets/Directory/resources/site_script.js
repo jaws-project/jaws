@@ -12,105 +12,77 @@
  */
 var DirectoryCallback = {
     CreateDirectory: function(response) {
-        if (response.css === 'notice-message') {
+        if (response.type === 'response_notice') {
             cancel();
             updateFiles(currentDir);
         }
-        response.type = response.level;
-        response.text = response.message;
-        showResponse2(response);
+        DirectoryAjax.showResponse(response);
     },
 
     UpdateDirectory: function(response) {
-        if (response.css === 'notice-message') {
+        if (response.type === 'response_notice') {
             cancel();
             updateFiles(currentDir);
         }
-        response.type = response.level;
-        response.text = response.message;
-        showResponse2(response);
-    },
-
-    DeleteDirectory: function(response) {
-        if (response.css === 'notice-message') {
-            cancel();
-            updateFiles(currentDir);
-        }
-        response.type = response.level;
-        response.text = response.message;
-        showResponse2(response);
+        DirectoryAjax.showResponse(response);
     },
 
     CreateFile: function(response) {
-        if (response.css === 'notice-message') {
+        if (response.type === 'response_notice') {
             cancel();
             updateFiles(currentDir);
         }
-        response.type = response.level;
-        response.text = response.message;
-        showResponse2(response);
+        DirectoryAjax.showResponse(response);
     },
 
     UpdateFile: function(response) {
-        if (response.css === 'notice-message') {
+        if (response.type === 'response_notice') {
             cancel();
             updateFiles(currentDir);
         }
-        response.type = response.level;
-        response.text = response.message;
-        showResponse2(response);
+        DirectoryAjax.showResponse(response);
     },
 
-    DeleteFile: function(response) {
-        if (response.css === 'notice-message') {
+    Delete: function(response) {
+        if (response.type === 'response_notice') {
             cancel();
             updateFiles(currentDir);
         }
-        response.type = response.level;
-        response.text = response.message;
-        showResponse2(response);
+        DirectoryAjax.showResponse(response);
     },
 
     PublishFile: function(response) {
-        if (response.css === 'notice-message') {
-            fileById[selectedId]['public'] = response.data;
+        if (response.type === 'response_notice') {
+            fileById[selectedIds.join(',')]['public'] = response.data;
             showFileURL(response.data);
         }
-        response.type = response.level;
-        response.text = response.message;
-        showResponse2(response);
+        DirectoryAjax.showResponse(response);
     },
 
     Move: function(response) {
-        if (response.css === 'notice-message') {
+        if (response.type === 'response_notice') {
             cancel();
             updateFiles(currentDir);
         }
-        response.type = response.level;
-        response.text = response.message;
-        showResponse2(response);
+        DirectoryAjax.showResponse(response);
     },
 
     UpdateFileUsers: function(response) {
-        if (response.css === 'notice-message') {
+        if (response.type === 'response_notice') {
             cancel();
             updateFiles(currentDir);
         }
-        response.type = response.level;
-        response.text = response.message;
-        showResponse2(response);
+        DirectoryAjax.showResponse(response);
     },
 
     Search: function(response) {
-        if (response.css === 'notice-message') {
+        if (response.type === 'response_notice') {
             $('dir_pathbar').hide();
             $('dir_searchbar').show();
             $('search_res').innerHTML = ' > ' + response.message;
             displayFiles(response.data);
         } else {
-            response.type = response.level;
-            response.text = response.message;
-            showResponse2(response);
+            DirectoryAjax.showResponse(response);
         }
     }
 };
@@ -174,7 +146,7 @@ function displayFiles(files)
             tr = Elements.from(html)[0];
         tr.addEvent('click', fileSelect);
         tr.addEvent('dblclick', fileOpen);
-        tr.fid = data.id;
+        tr.getElement('input').addEvent('click', fileCheck);
         return tr;
     }
 
@@ -201,13 +173,55 @@ function displayFiles(files)
  */
 function fileSelect(e)
 {
-    var ws = $('file_arena'),
-        data = Object.clone(fileById[this.fid]);
-    cancel();
+    if (e.target.tagName === 'INPUT') {
+        return;
+    }
+    var ws = $('file_arena');
+    ws.getElements('tr').removeClass('selected');
+    ws.getElements('input').set('checked', false);
     this.addClass('selected');
-    selectedId = this.fid;
-    e.stop();
+    this.getElement('input').set('checked', true);
+    selectedIds = getSelected();
     updateActions();
+    $('form').innerHTML = '';
+    //console.log(selectedIds);
+}
+
+/**
+ * Checks/Unchecks file/directory
+ */
+function fileCheck(e)
+{
+    if (this.checked) {
+        this.getParent('tr').addClass('selected');
+    } else {
+        this.getParent('tr').removeClass('selected');
+    }
+    selectedIds = getSelected();
+    updateActions();
+    $('form').innerHTML = '';
+    //console.log(selectedIds);
+}
+
+/**
+ * Checks/Unchecks all files/directories
+ */
+function checkAll(checked)
+{
+    $('file_arena').getElements('input').set('checked', checked);
+    if (checked) {
+        $('file_arena').getElements('tr').addClass('selected');
+    } else {
+        $('file_arena').getElements('tr').removeClass('selected');
+    }
+}
+
+/**
+ * Fetches ID set of selected files/directories
+ */
+function getSelected()
+{
+    return $('file_arena').getElements('input:checked').get('value');
 }
 
 /**
@@ -215,7 +229,7 @@ function fileSelect(e)
  */
 function fileOpen()
 {
-    var file = fileById[selectedId],
+    var file = fileById[selectedIds],
         id = file.id;
     if (file.is_dir) {
         if (file.foreign) {
@@ -239,7 +253,7 @@ function fileOpen()
 function openDirectory(id)
 {
     currentDir = id;
-    selectedId = null;
+    selectedIds = null;
     DirectoryStorage.update('current_dir', id);
     updateFiles(id);
     cancel();
@@ -260,8 +274,8 @@ function openMedia(id, type)
  */
 function downloadFile()
 {
-    if (selectedId === null) return;
-    var id = selectedId,
+    if (selectedIds === null) return;
+    var id = selectedIds,
         file = fileById[id];
     if (!file) {
         file = fileById[id] = DirectoryAjax.callSync('GetFile', {'id':id});
@@ -300,32 +314,36 @@ function updatePath()
  */
 function updateActions()
 {
-    if (selectedId === null) {
-        //$('file_actions').style.visibility = 'hidden';
-        $('file_actions').getElements('img').addClass('disabled');
-        $('btn_new_file').removeClass('disabled');
-        $('btn_new_dir').removeClass('disabled');
-    } else {
-        //$('file_actions').style.visibility = 'visible';
-        $('file_actions').getElements('img').removeClass('disabled');
-    }
-    return;
+    $('file_actions').getElements('img').addClass('disabled');
 
-        if (fileById[selectedId].foreign) {
-            $('btn_share').hide();
+    // if (fileById[Object.keys(fileById)[0]].user != UID) {  // we are in another user's files
+        // $('btn_dl').removeClass('disabled');
+        // return;
+    // }
+
+    $('btn_new_file').removeClass('disabled');
+    $('btn_new_dir').removeClass('disabled');
+    if (selectedIds.length === 0) {
+        return;
+    }
+
+    $('btn_delete').removeClass('disabled');
+    if (selectedIds.length === 1) {
+        var selId = selectedIds[0];
+        if (fileById[selId].foreign) {
+            $('btn_share').addClass('disabled');
         } else {
-            $('btn_share').show();
+            $('btn_share').removeClass('disabled');
         }
-        if (fileById[selectedId].user != UID) {
-            $('file_actions').getElements('button').hide();
+        if (fileById[selId].is_dir) {
+            $('btn_dl').addClass('disabled');
         } else {
-            $('file_actions').getElements('button').show();
+            $('btn_dl').removeClass('disabled');
         }
-        if (fileById[selectedId].is_dir) {
-            $('btn_download').hide();
-        } else {
-            $('btn_download').show();
-        }
+        $('btn_props').removeClass('disabled');
+        $('btn_edit').removeClass('disabled');
+        $('btn_move').removeClass('disabled');
+    }
 }
 
 /**
@@ -333,11 +351,12 @@ function updateActions()
  */
 function props()
 {
-    if (selectedId === null) return;
-    var data = fileById[selectedId],
+    if (selectedIds.length === 0) return;
+    var idSet = selectedIds.join(','),
+        data = fileById[idSet],
         form;
     if (!data.users) {
-        var users = DirectoryAjax.callSync('GetFileUsers', {id:selectedId}),
+        var users = DirectoryAjax.callSync('GetFileUsers', {id:idSet}),
             id_set = [];
         users.each(function (user) {
             id_set.push(user.username);
@@ -359,7 +378,7 @@ function props()
     }
     $('form').set('html', form.substitute(data));
     if (data['public'] && !data.dl_url) {
-        data.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:selectedId});
+        data.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:idSet});
     }
     if (data.dl_url) {
         showFileURL(data.dl_url);
@@ -372,8 +391,9 @@ function props()
  */
 function edit()
 {
-    if (selectedId === null) return;
-    if (fileById[selectedId].is_dir) {
+    if (selectedIds.length === 0) return;
+    var idSet = selectedIds.join(',');
+    if (fileById[idSet].is_dir) {
         editDirectory();
     } else {
         editFile();
@@ -382,19 +402,15 @@ function edit()
 }
 
 /**
- * Deletes selected directory/file
+ * Deletes selected files/directories
  */
 function del()
 {
-    if (selectedId === null) return;
-    if (fileById[selectedId].is_dir) {
-        if (confirm(confirmDirDelete)) {
-            DirectoryAjax.callAsync('DeleteDirectory', {'id':selectedId});
-        }
-    } else {
-        if (confirm(confirmFileDelete)) {
-            DirectoryAjax.callAsync('DeleteFile', {'id':selectedId});
-        }
+    if (selectedIds.length === 0) {
+        return;
+    }
+    if (confirm(confirmDelete)) {
+        DirectoryAjax.callAsync('Delete', {'id_set':selectedIds.join(',')});
     }
 }
 
@@ -402,8 +418,9 @@ function del()
  * Moves selected directory/file to another directory
  */
 function move() {
-    if (selectedId === null) return;
-    var tree = DirectoryAjax.callSync('GetTree', {'id':selectedId}),
+    if (selectedIds.length === 0) return;
+    var idSet = selectedIds.join(',');
+    var tree = DirectoryAjax.callSync('GetTree', {'id':idSet}),
         form = $('form');
     form.set('html', tree);
     form.getElements('a').addEvent('click', function () {
@@ -420,20 +437,20 @@ function submitMove() {
     var tree = $('dir_tree'),
         selected = tree.getElement('a.selected'),
         target = selected.id.substr(5, selected.id.length - 5);
-    //console.log(id);
-    DirectoryAjax.callAsync('Move', {'id':selectedId, 'target':target});
+    DirectoryAjax.callAsync('Move', {'id':selectedIds.join(','), 'target':target});
 }
 
 /**
- * Deselects file and hides the form
+ * Deselects file and hides active form
  */
 function cancel()
 {
-    selectedId = null;
+    selectedIds = [];
     $('form').set('html', '');
     $('file_arena').getElements('.selected').removeClass('selected');
+    $('file_arena').getElements('input').set('checked', false);
     updateActions();
-    pageBody.addEvent('click', cancel);
+    //pageBody.addEvent('click', cancel);
 }
 
 /**
@@ -460,9 +477,9 @@ function editDirectory()
         cachedForms.editDir = DirectoryAjax.callSync('DirectoryForm', {mode:'edit'});
     }
     $('form').set('html', cachedForms.editDir);
-    var data = fileById[selectedId],
+    var data = fileById[selectedIds.join(',')],
         form = $('frm_dir');
-    form.id.value = selectedId;
+    form.id.value = selectedIds.join(',');
     form.title.value = data.title;
     form.description.value = data.description;
     form.parent.value = data.parent;
@@ -495,7 +512,7 @@ function editFile()
     }
     $('form').set('html', cachedForms.editFile);
     var form = $('frm_file'),
-        file = fileById[selectedId];
+        file = fileById[selectedIds.join(',')];
     if (file.foreign) {
         $('frm_upload').remove();
         $('parent').remove();
@@ -512,8 +529,8 @@ function editFile()
         if (file.filename) {
             var url = file.dl_url;
             if (!url) {
-                url = DirectoryAjax.callSync('GetDownloadURL', {id:selectedId});
-                fileById[selectedId].dl_url = url;
+                url = DirectoryAjax.callSync('GetDownloadURL', {id:selectedIds.join(',')});
+                fileById[selectedIds.join(',')].dl_url = url;
             }
             setFilename(file.filename, url);
             $('filename').value = ':nochange:';
@@ -523,7 +540,7 @@ function editFile()
         }
     }
     form.action.value = 'UpdateFile';
-    form.id.value = selectedId;
+    form.id.value = selectedIds.join(',');
     form.title.value = file.title;
     form.description.value = file.description;
 }
@@ -563,7 +580,7 @@ function onUpload(response) {
 function publishFile(published)
 {
     DirectoryAjax.callAsync('PublishFile', {
-        'id':selectedId,
+        'id':selectedIds.join(','),
         'public':published
     });
 }
@@ -619,7 +636,7 @@ function removeFile()
  */
 function submitDirectory()
 {
-    var action = (selectedId === null)? 'CreateDirectory' : 'UpdateDirectory';
+    var action = (selectedIds.length === 0)? 'CreateDirectory' : 'UpdateDirectory';
     DirectoryAjax.callAsync(action, $('frm_dir').toQueryString().parseQueryString());
 }
 
@@ -628,7 +645,7 @@ function submitDirectory()
  */
 function submitFile()
 {
-    var action = (selectedId === null)? 'CreateFile' : 'UpdateFile';
+    var action = (selectedIds.length === 0)? 'CreateFile' : 'UpdateFile';
     DirectoryAjax.callAsync(action, $('frm_file').toQueryString().parseQueryString());
 }
 
@@ -637,14 +654,14 @@ function submitFile()
  */
 function share()
 {
-    if (selectedId === null) return;
+    if (selectedIds.length === 0) return;
     if (!cachedForms.share) {
         cachedForms.share = DirectoryAjax.callSync('ShareForm');
     }
     $('form').set('html', cachedForms.share);
     $('groups').selectedIndex = -1;
 
-    var users = DirectoryAjax.callSync('GetFileUsers', {'id':selectedId});
+    var users = DirectoryAjax.callSync('GetFileUsers', {'id':selectedIds.join(',')});
     sharedFileUsers = {};
     users.each(function (user) {
         sharedFileUsers[user.id] = user.username;
@@ -710,7 +727,7 @@ function submitShare()
     });
     DirectoryAjax.callAsync(
         'UpdateFileUsers',
-        {'id':selectedId, 'users':users.join(',')}
+        {'id':selectedIds.join(','), 'users':users.join(',')}
     );
 }
 
@@ -764,7 +781,7 @@ var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
     statusTemplate = '',
     wsClickEvent = null,
     pageBody,
-    selectedId;
+    selectedIds = [];
 
 var fileTypes = {
     'font-generic' : ['ttf', 'otf', 'fon', 'pfa', 'afm', 'pfb'],

@@ -97,7 +97,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
             $table = Jaws_ORM::getInstance()->table('directory');
             $table->select('user:integer', 'parent:integer');
             $file = $table->where('id', $id)->fetchRow();
-            if ($file['user'] === $user) {
+            if ($file['user'] == $user) {
                 return true;
             }
         }
@@ -173,12 +173,38 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      * @param   int     $id  File ID
      * @return  mixed   Query result
      */
-    function Delete($id)
+    function Delete($data)
     {
+        if ($data['is_dir']) {
+            $files = $this->GetFiles($data['id'], $data['user']);
+            if (Jaws_Error::IsError($files)) {
+                return false;
+            }
+            foreach ($files as $file) {
+                $this->Delete($file);
+            }
+        }
+
+        // Delete file/folder and related shortcuts
         $table = Jaws_ORM::getInstance()->table('directory');
-        $table->delete()->where('id', $id);
-        $table->or()->where('reference', $id);
-        return $table->exec();
+        $table->delete()->where('id', $data['id']);
+        $table->or()->where('reference', $data['id']);
+        $res = $table->exec();
+        if (Jaws_Error::IsError($res)) {
+            return false;
+        }
+
+        // Delete from disk
+        if (!$data['is_dir']) {
+            $filename = $GLOBALS['app']->getDataURL('directory/' . $data['user'] . '/' . $data['filename']);
+            if (file_exists($filename)) {
+                if (!Jaws_Utils::delete($filename)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**

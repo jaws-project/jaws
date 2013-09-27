@@ -59,7 +59,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_username', _t('DIRECTORY_FILE_OWNER'));
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
         $tpl->SetVariable('alertShortQuery', _t('DIRECTORY_ERROR_SHORT_QUERY'));
-        $tpl->SetVariable('confirmDirDelete', _t('DIRECTORY_CONFIRM_DIR_DELETE'));
+        $tpl->SetVariable('confirmDelete', _t('DIRECTORY_CONFIRM_DELETE'));
         $tpl->SetVariable('confirmFileDelete', _t('DIRECTORY_CONFIRM_FILE_DELETE'));
         $tpl->SetVariable('imgDeleteFile', STOCK_DELETE);
         $tpl->SetVariable('site_url', $GLOBALS['app']->getSiteURL('/'));
@@ -228,6 +228,54 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
                 $tree .= "</li>";
             }
             $tree .= '</ul>';
+        }
+    }
+
+    /**
+     * Deletes passed file(s)/directorie(s)
+     *
+     * @access  public
+     * @return  mixed   Response array
+     */
+    function Delete()
+    {
+        $id_set = jaws()->request->fetch('id_set');
+        $id_set = explode(',', $id_set);
+        if (empty($id_set)) {
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('DIRECTORY_ERROR_DELETE'),
+                RESPONSE_ERROR
+            );
+        }
+
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $fault = false;
+        foreach ($id_set as $id) {
+            // Validate file & user
+            $file = $model->GetFile($id);
+            if (Jaws_Error::IsError($file) || $file['user'] != $user) {
+                $fault = true;
+                continue;
+            }
+
+            // Delete file/directory
+            $res = $model->Delete($file);
+            if (Jaws_Error::IsError($res)) {
+                $fault = true;
+            }
+        }
+        
+        if ($fault === true) {
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('DIRECTORY_WARNING_DELETE'),
+                RESPONSE_WARNING
+            );
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('DIRECTORY_NOTICE_DELETE'),
+                RESPONSE_NOTICE
+            );
         }
     }
 

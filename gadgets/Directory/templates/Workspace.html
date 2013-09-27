@@ -36,6 +36,7 @@
   </div>
   <table class="files-table">
     <thead><tr>
+      <th><input type="checkbox" id="chk_all_files" onchange="checkAll(this.checked)"></input></th>
       <th colspan="2">{lbl_title}</th>
       <th>{lbl_created}</th>
       <th>{lbl_modified}</th>
@@ -45,6 +46,7 @@
     <tbody id="file_arena" style="display:none;">
       <!-- BEGIN fileTemplate -->
       <tr id="file_{id}" title="{description}">
+        <td class="file-check"><input type="checkbox" value="{id}"></input></td>
         <td class="file-icon">{icon}<span class="file-sharing {shared} {foreign} {public}"></span></td>
         <td class="file-title">{title}</td>
         <td class="file-created">{created}</td>
@@ -63,8 +65,7 @@
       icon_url = "{icon_url}",
       imgDeleteFile = "{imgDeleteFile}",
       alertShortQuery = "{alertShortQuery}",
-      confirmDirDelete = "{confirmDirDelete}",
-      confirmFileDelete = "{confirmFileDelete}";
+      confirmDelete = "{confirmDelete}";
   initDirectory();
 </script>
 <!-- END workspace -->

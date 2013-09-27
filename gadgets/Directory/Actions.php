@@ -36,6 +36,10 @@ $actions['Move'] = array(
     'standalone' => true,
     'file' => 'Directory'
 );
+$actions['Delete'] = array(
+    'standalone' => true,
+    'file' => 'Directory'
+);
 $actions['Search'] = array(
     'standalone' => true,
     'file' => 'Directory'
@@ -47,14 +51,6 @@ $actions['DirectoryForm'] = array(
     'file' => 'Directories'
 );
 $actions['CreateDirectory'] = array(
-    'standalone' => true,
-    'file' => 'Directories'
-);
-$actions['UpdateDirectory'] = array(
-    'standalone' => true,
-    'file' => 'Directories'
-);
-$actions['DeleteDirectory'] = array(
     'standalone' => true,
     'file' => 'Directories'
 );
