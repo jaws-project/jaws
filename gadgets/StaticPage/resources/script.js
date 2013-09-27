@@ -318,18 +318,17 @@ function deleteGroup(rowElement, gid)
  * Show the response but only text, nothing with datagrid.
  * FIXME!
  */
-function showSimpleResponse(message)
+function showSimpleResponse(response)
 {
     if (!autoDraftDone) {
         var actioni   = document.forms[0].elements['action'].value;
-        if (actioni == 'AddPage' && message[0]['type'] == 'response_notice') {
+        if (actioni == 'AddPage' && response[0]['type'] == 'response_notice') {
             document.forms[0].elements['action'].value = 'SaveEditPage';
-            document.forms[0].elements['id'].value     = message[0]['message']['id'];
-            message[0]['message'] = message[0]['message']['message'];
+            document.forms[0].elements['id'].value     = response[0]['data'];
         }
         autoDraftDone = true;
     }
-    showResponse(message);
+    showResponse(response);
 }
 
 /**
