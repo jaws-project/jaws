@@ -13,7 +13,7 @@
  */
 var PollCallback = {
     insertpoll: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             $('polls_datagrid').addItem();
             $('polls_datagrid').setCurrentPage(0);
@@ -23,7 +23,7 @@ var PollCallback = {
     },
 
     updatepoll: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG();
         }
@@ -31,7 +31,7 @@ var PollCallback = {
     },
 
     deletepoll: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             $('polls_datagrid').deleteItem();
             getDG();
@@ -40,14 +40,14 @@ var PollCallback = {
     },
 
     updatepollanswers: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
         }
         showResponse(response);
     },
 
     insertpollgroup: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             $('pollgroups_datagrid').addItem();
             $('pollgroups_datagrid').setCurrentPage(0);
@@ -57,7 +57,7 @@ var PollCallback = {
     },
 
     updatepollgroup: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG();
         }
@@ -65,7 +65,7 @@ var PollCallback = {
     },
 
     deletepollgroup: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             $('pollgroups_datagrid').deleteItem();
             getDG();
