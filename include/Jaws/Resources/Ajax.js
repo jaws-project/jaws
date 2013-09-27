@@ -708,25 +708,25 @@ function Jaws_Ajax_ServerError(error)
 /**
  * Show the response
  */
-function showResponse(message, goTop)
+function showResponse(text, goTop)
 {
     if (typeof(goTop) == 'undefined' || goTop) {
         $(document.body).scrollTo(0, 0);
     }
 
     var messages = [];
-    if (message[0] == undefined) {
-        messages[0] = message;
+    if (text[0] == undefined) {
+        messages[0] = text;
     } else {
-        messages = message;
+        messages = text;
     }
 
     $('msgbox-wrapper').innerHTML = '';
     for(var i = 0; i < messages.length; i++) {
         var messageDiv  = new Element(
             'div',
-            {'id':'msgbox_'+i, 'class':messages[i]['css']}
-        ).appendText(messages[i]['message']);
+            {'id':'msgbox_'+i, 'class':messages[i]['type']}
+        ).appendText(messages[i]['text']);
         $('msgbox-wrapper').appendChild(messageDiv);
         messageDiv.fade('show');
         hideResponseBox(messageDiv);
