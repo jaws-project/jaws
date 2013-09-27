@@ -51,30 +51,27 @@ right:0;
 font-family:"Lucida Grande", Myriad, "Andale Sans", "Luxi Sans", "Bitstream Vera Sans", Tahoma, "Toga Sans", Helvetica, Arial, sans-serif;
 z-index:100;
 }
-.error-message, .warning-message, .notice-message, .working-message{
+.response_error,.response_warning,.response_notice,.working-message{
 color:#000;
 font-weight:bold;
 display:inline;
 text-align:left;
-line-height:25px;
 padding-left:26px;
 padding-right:8px;
-padding-top:4px;
-padding-bottom:3px;
 background-repeat:no-repeat;
 background-position:2px 0px;
 }
-.notice-message{
+.response_notice{
 border:1px solid #9db029;
 background-color:#e6f0a5;
 background-image:url("../../../images/stock/info-small.png");
 }
-.warning-message{
+.response_warning{
 border:1px solid #fce94f;
 background-color:#fdf4a7;
 background-image:url("../../../images/stock/warning-small.png");
 }
-.error-message{
+.response_error{
 border:1px solid #cc0000;
 background-color:#fabfbf;
 background-image:url("../../../images/stock/error-small.png");
