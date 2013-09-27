@@ -51,6 +51,7 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
         $tpl->SetVariable('lbl_attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));
         $tpl->SetVariable('filter', _t('PRIVATEMESSAGE_FILTER'));
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
+        $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
 
         $tpl->SetBlock('outbox/actions');
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));

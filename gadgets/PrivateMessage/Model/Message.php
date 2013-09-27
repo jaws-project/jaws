@@ -408,6 +408,11 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             if (Jaws_Error::IsError($res)) {
                 return false;
             }
+        } else {
+            if (!empty($messageData['id']) && $messageData['id'] > 0) {
+                // delete message's recipients and attachments before insert new items
+                $this->DeleteOutboxMessage($messageData['id'], array('attachments', 'recipients'));
+            }
         }
 
         // Insert recipients info

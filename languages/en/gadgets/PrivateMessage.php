@@ -62,7 +62,6 @@ define('_EN_PRIVATEMESSAGE_FORWARD', "Forward");
 define('_EN_PRIVATEMESSAGE_HISTORY', "History");
 define('_EN_PRIVATEMESSAGE_UNREAD', "Unread");
 define('_EN_PRIVATEMESSAGE_FILE', "File");
-define('_EN_PRIVATEMESSAGE_FILE_HINTS_COUNT', "Hints");
 define('_EN_PRIVATEMESSAGE_MESSAGE_FILE_SIZE', "File size");
 define('_EN_PRIVATEMESSAGE_ADD_ANOTHER_FILE', "Add another file");
 define('_EN_PRIVATEMESSAGE_PUBLISH', "Publish");
@@ -77,6 +76,8 @@ define('_EN_PRIVATEMESSAGE_MOVE_TO_INBOX', "Move to inbox");
 define('_EN_PRIVATEMESSAGE_MESSAGE_NO_ACTION', "No action");
 define('_EN_PRIVATEMESSAGE_MESSAGE_VIEW_TIME', "View time");
 define('_EN_PRIVATEMESSAGE_MESSAGE_NOT_VIEW', "Not view");
+define('_EN_PRIVATEMESSAGE_MESSAGE_UNDO_SENDING', "Undo sending");
+define('_EN_PRIVATEMESSAGE_ITEMS_PER_PAGE', "Item per page");
 
 /* Responses */
 define('_EN_PRIVATEMESSAGE_PROPERTIES_UPDATED', "The properties have been updated");

@@ -9,7 +9,7 @@
  */
 var PrivateMessageCallback = {
     ComposeMessage: function (response) {
-        if (response.css == 'notice-message') {
+        if (response.type == 'response_notice') {
             if(response.data.published==true) {
                 window.location.href = response.data.url;
                 return;
@@ -18,7 +18,7 @@ var PrivateMessageCallback = {
                 resetAttachments(response.data.message_id);
             }
         }
-        $('simple_response').set('html', response.message);
+        PrivateMessageAjax.showResponse(response);
     }
 }
 
@@ -27,7 +27,7 @@ var PrivateMessageCallback = {
  * Reset attachments after save draft a message
  */
 function resetAttachments(message_id) {
-    var ui = pmAjax.callSync('GetMessageAttachmentUI', {'id': message_id});
+    var ui = PrivateMessageAjax.callSync('GetMessageAttachmentUI', {'id': message_id});
     $('attachment_area').set('html', ui);
     uploadedFiles = new Array();
     lastAttachment = 1;
@@ -112,19 +112,6 @@ function addFileEntry() {
     $('attach_loading').hide();
     $('btn_attach' + id).hide();
 }
-/**
- * get users list with custom term
- */
-function getUsers(term) {
-    return pmAjax.callSync('GetUsers', term);
-}
-
-/**
- * get groups list with custom term
- */
-function getGroups(term) {
-   return pmAjax.callSync('GetGroups', term);
-}
 
 /**
  * send a message
@@ -134,7 +121,7 @@ function sendMessage(published) {
     // detect pre load users or groups list
     if (recipient_user == "" || recipient_user.length == 0) {
         // check All users checkbox
-        if($('recipient_all_users').get('checked')) {
+        if($('recipient_all_users') != null && $('recipient_all_users').get('checked')) {
             var recipient_users = '0';
             var recipient_groups = '';
         } else {
@@ -159,7 +146,7 @@ function sendMessage(published) {
     }
 
     var attachments = uploadedFiles.concat(getSelectedAttachments());
-    pmAjax.callAsync('ComposeMessage', {'id': $('id').value, 'parent':$('parent').value, 'published':published,
+    PrivateMessageAjax.callAsync('ComposeMessage', {'id': $('id').value, 'parent':$('parent').value, 'published':published,
                      'recipient_users':recipient_users, 'recipient_groups':recipient_groups,
                      'subject':$('subject').value, 'body':$('body').value,'attachments':attachments
     });
@@ -173,8 +160,8 @@ function getSelectedAttachments() {
     return files;
 }
 
-var pmAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback);
-pmAjax.backwardSupport();
+var PrivateMessageAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback);
+PrivateMessageAjax.backwardSupport();
 
 var uploadedFiles = new Array();
 var lastAttachment = 1;

@@ -248,7 +248,6 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
 
-
         $message_id = $model->ComposeMessage($user, $post);
         $url = $this->gadget->urlMap('Outbox');
         if (is_numeric($message_id) && $message_id > 0) {
@@ -259,21 +258,31 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
                     RESPONSE_NOTICE
                 );
             }
-            return $GLOBALS['app']->Session->GetResponse(
-                _t('PRIVATEMESSAGE_DRAFT_SAVED'),
-                RESPONSE_NOTICE,
-                array('published' => $post['published'], 'url' => $url, 'message_id' => $message_id));
 
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_DRAFT_SAVED'),
+                'PrivateMessage.Compose',
+                RESPONSE_NOTICE,
+                array('published' => $post['published'], 'url' => $url, 'message_id' => $message_id)
+            );
         } else {
             if($post['published']==true) {
-                return $GLOBALS['app']->Session->GetResponse(
-                                        _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_SEND'), RESPONSE_ERROR);
+                $GLOBALS['app']->Session->PushResponse(
+                    _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_SEND'),
+                    'PrivateMessage.Compose',
+                    RESPONSE_ERROR
+                );
+            } else {
+                $GLOBALS['app']->Session->PushResponse(
+                    _t('PRIVATEMESSAGE_DRAFT_NOT_SAVED'),
+                    'PrivateMessage.Compose',
+                    RESPONSE_ERROR
+                );
             }
-            return $GLOBALS['app']->Session->GetResponse(
-                _t('PRIVATEMESSAGE_DRAFT_NOT_SAVED'),
-                RESPONSE_ERROR);
-
         }
+
+        Jaws_Header::Location($this->gadget->urlMap('Outbox'), 'PrivateMessage.Compose');
+
     }
 
 }

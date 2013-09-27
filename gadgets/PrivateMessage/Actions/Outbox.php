@@ -59,6 +59,7 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         $tpl->SetVariable('lbl_attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));
         $tpl->SetVariable('filter', _t('PRIVATEMESSAGE_FILTER'));
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
+        $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
 
         $date = $GLOBALS['app']->loadDate();
         $oModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');

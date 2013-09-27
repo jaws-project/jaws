@@ -39,10 +39,9 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('OutboxMessage.html');
         $tpl->SetBlock('outboxmessage');
         $tpl->SetVariable('id', $id);
+        $tpl->SetVariable('confirmDelete', _t('PRIVATEMESSAGE_MESSAGE_CONFIRM_DELETE'));
 
         $tpl->SetBlock('outboxmessage/message');
-
-        $tpl->SetVariable('confirmDelete', _t('PRIVATEMESSAGE_MESSAGE_CONFIRM_DELETE'));
         $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
@@ -160,6 +159,7 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
 
             $tpl->SetBlock('outboxmessage/message/delete');
             $tpl->SetVariable('icon_delete', STOCK_DELETE);
+            $tpl->SetVariable('delete', _t('GLOBAL_DELETE'));
             $tpl->ParseBlock('outboxmessage/message/delete');
             $tpl->SetVariable('delete_url', $this->gadget->urlMap(
                 'DeleteOutboxMessage', array('id' => $id)));
@@ -167,8 +167,8 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
         } else {
             if ($message['read_count'] < 1) {
                 $tpl->SetBlock('outboxmessage/message/draft');
-                $tpl->SetVariable('icon_draft', STOCK_BOOK);
-                $tpl->SetVariable('draft', _t('PRIVATEMESSAGE_DRAFT'));
+                $tpl->SetVariable('icon_draft', STOCK_STOP);
+                $tpl->SetVariable('draft', _t('PRIVATEMESSAGE_MESSAGE_UNDO_SENDING'));
                 $tpl->SetVariable('draft_url', $this->gadget->urlMap('DraftMessage', array('id' => $id)));
                 $tpl->ParseBlock('outboxmessage/message/draft');
             }
