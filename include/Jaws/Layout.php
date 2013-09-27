@@ -326,8 +326,8 @@ class Jaws_Layout
         if ($responses) {
             foreach ($responses as $msg_id => $response) {
                 $this->_Template->SetBlock('layout/msgbox');
-                $this->_Template->SetVariable('msg-css', $response['css']);
-                $this->_Template->SetVariable('msg-txt', $response['message']);
+                $this->_Template->SetVariable('text', $response['text']);
+                $this->_Template->SetVariable('type', $response['type']);
                 $this->_Template->SetVariable('msg-id', $msg_id);
                 $this->_Template->ParseBlock('layout/msgbox');
             }
