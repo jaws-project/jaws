@@ -754,24 +754,6 @@ function hideResponseBoxCallback(name)
 }
 
 /**
- * Show the response
- */
-function showResponse2(response)
-{
-    var div_response = (
-        $$('meta[name=requested_gadget]').getProperty('content')+'_'+
-        $$('meta[name=requested_action]').getProperty('content')+'_'+
-        'response'
-    ).toLowerCase();
-
-    $(div_response).getParent().setStyle('position', 'absolute');
-    $(div_response).set('html', response.text);
-    $(div_response).set('class', response.type);
-    $(div_response).fade('show');
-    (function(){$(div_response).fade('out');}).delay(4000);
-}
-
-/**
  * Show working notification.
  */
 function showWorkingNotification(msg)
