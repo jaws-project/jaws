@@ -13,7 +13,7 @@
  */
 var WeatherCallback = {
     deleteregion: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('weather_datagrid').deleteItem();          
             getDG();
             stopAction();
@@ -22,7 +22,7 @@ var WeatherCallback = {
     },
     
     insertregion: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('weather_datagrid').addItem();
             $('weather_datagrid').setCurrentPage(0);
             getDG();
@@ -32,7 +32,7 @@ var WeatherCallback = {
     },
 
     updateregion: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             getDG();
             stopAction();
         }
