@@ -220,7 +220,7 @@ padding:1px 20px 0;
 .response_notice{
 border:1px solid #795;
 display:inline-block !important;
-background:#dea url("../../../images/stock/info.png") no-repeat 2px;
+background:#dea url("../../../images/stock/notice.png") no-repeat 2px;
 }
 .response_warning{
 border:1px solid #dd5;
@@ -231,6 +231,11 @@ background:#ffb url("../../../images/stock/warning.png") no-repeat 2px;
 border:1px solid #c00;
 display:inline-block !important;
 background:#fbb url("../../../images/stock/error.png") no-repeat 2px;
+}
+.response_loading{
+border:1px solid #579;
+display:inline-block !important;
+background:#ace url("../../../images/loading.svg") no-repeat 2px;
 }
 .gadget_section{
 padding-bottom:10px;
