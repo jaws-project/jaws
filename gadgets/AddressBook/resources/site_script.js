@@ -144,12 +144,14 @@ function DeleteAddress(aid)
 function ExAction()
 {
     var action = $('addressbook_gaction').value;
-    $$('.table-checkbox').each(function(el) { el.name = el.name.replace('[]', '');});
     if (action == 'DeleteAddress') {
+        $$('.table-checkbox').each(function(el) { el.name = el.name.replace('[]', '');});
         AddressBookAjax.callAsync('DeleteAddress', $(document).getElement('form[name=AddressBookAction]').toQueryString().parseQueryString());
     } else if (action == 'VCardBuild') {
-        AddressBookAjax.callSync('VCardBuild', $(document).getElement('form[name=AddressBookAction]').toQueryString().parseQueryString());
+        //AddressBookAjax.callSync('VCardBuild', $(document).getElement('form[name=AddressBookAction]').toQueryString().parseQueryString());
+        $('AddressBookAction').submit();
     } else if (action == 'DeleteGroup') {
+        $$('.table-checkbox').each(function(el) { el.name = el.name.replace('[]', '');});
         AddressBookAjax.callAsync('DeleteGroup', $(document).getElement('form[name=AddressBookAction]').toQueryString().parseQueryString());
     }
     return false;
