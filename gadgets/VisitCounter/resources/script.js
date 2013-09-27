@@ -13,7 +13,7 @@
  */
 var VisitCounterCallback = { 
     cleanentries: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('visitcounter_datagrid').setCurrentPage(0);
             $('visitcounter_datagrid').rowsSize = 0;
             $('visitcounter_datagrid').updatePageCounter();
@@ -24,7 +24,7 @@ var VisitCounterCallback = {
     },
     
     resetcounter: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('visitcounter_datagrid').setCurrentPage(0);
             $('visitcounter_datagrid').rowsSize = 0;
             $('visitcounter_datagrid').updatePageCounter();
