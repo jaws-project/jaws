@@ -43,7 +43,7 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
             $gadgetsCombo =& Piwi::CreateWidget('Combo', 'gadgets_filter');
             $gadgetsCombo->SetID('gadgets_filter');
             $gadgetsCombo->setStyle('width: 100px;');
-            $gadgetsCombo->AddEvent(ON_CHANGE, "searchTags()");
+            $gadgetsCombo->AddEvent(ON_CHANGE, "changeGadget()");
             $gadgetsCombo->AddOption('', '');
             // TODO: Get List Of Gadget Which Use Tags
             $gadgetsCombo->AddOption(_t('BLOG_NAME'), 'Blog');
