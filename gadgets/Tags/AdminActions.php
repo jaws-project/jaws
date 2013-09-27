@@ -9,3 +9,12 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $actions = array();
+$actions['Tags'] = array(
+    'normal' => true,
+    'file' => 'Tags',
+);
+
+$actions['Properties'] = array(
+    'normal' => true,
+    'file' => 'Settings',
+);
