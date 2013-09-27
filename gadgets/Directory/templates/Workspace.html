@@ -4,18 +4,12 @@
   <div class="gadget_response">
     <div id="directory_directory_response" class="{type}">{text}</div>
   </div>
-  <div style="height:20px"></div>
-  <div class="toolbar">
-    <img src="{new_file}" alt="{lbl_new_file}" title="{lbl_new_file}" onclick="newFile()" />
-    <img src="{new_dir}" alt="{lbl_new_dir}" title="{lbl_new_dir}" onclick="newDirectory()" />
-    <img src="{search}" alt="{lbl_search}" title="{lbl_search}" onclick="toggleSearch()" />
-  </div>
   <div id="dir_pathbar">
     <img src="gadgets/Directory/images/home.png" onclick="openDirectory(0)" />
     <span id="dir_path"></span>
   </div>
   <div id="dir_searchbar">
-    <img src="gadgets/Directory/images/search-res.png" />
+    <img src="gadgets/Directory/images/search.png" />
     <span id="search_res"></span>
   </div>
   <div id="frm_search">
@@ -26,17 +20,19 @@
     </select>
     <input id="file_search"></input>
     <button onclick="performSearch()">{lbl_search}</button>
-    <button onclick="toggleSearch(); updateFiles();">x</button>
+    <button onclick="updateFiles();">x</button>
   </div>
   <div id="file_actions">
-    <button type="button" id="btn_props" onclick="props()">{lbl_props}</button>
-    <button type="button" id="btn_edit" onclick="edit()">{lbl_edit}</button>
-    <button type="button" id="btn_move" onclick="move()">{lbl_move}</button>
-    <button type="button" id="btn_delete" onclick="del()">{lbl_delete}</button>
+    <img id="btn_new_file" src="{img_new_file}" alt="{lbl_new_file}" title="{lbl_new_file}" onclick="newFile()" />
+    <img id="btn_new_dir" src="{img_new_dir}" alt="{lbl_new_dir}" title="{lbl_new_dir}" onclick="newDirectory()" />
+    <img id="btn_props" src="{img_props}" alt="{lbl_props}" title="{lbl_props}" onclick="props()" />
+    <img id="btn_edit" src="{img_edit}" alt="{lbl_edit}" title="{lbl_edit}" onclick="edit()" />
+    <img id="btn_move" src="{img_move}" alt="{lbl_move}" title="{lbl_move}" onclick="move()" />
+    <img id="btn_delete" src="{img_delete}" alt="{lbl_delete}" title="{lbl_delete}" onclick="del()" />
     <!-- BEGIN share -->
-    <button type="button" id="btn_share" onclick="share()">{lbl_share}</button>
+    <img id="btn_share" src="{img_share}" alt="{lbl_share}" title="{lbl_share}" onclick="share()" />
     <!-- END share -->
-    <button type="button" id="btn_download" onclick="downloadFile()">{lbl_download}</button>
+    <img id="btn_dl" src="{img_dl}" alt="{lbl_dl}" title="{lbl_dl}" onclick="downloadFile()" />
   </div>
   <table class="files-table">
     <thead><tr>

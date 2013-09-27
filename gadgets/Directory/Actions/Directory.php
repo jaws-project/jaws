@@ -24,29 +24,35 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetBlock('workspace');
 
         $tpl->SetVariable('title', _t('DIRECTORY_NAME'));
-        $tpl->SetVariable('lbl_new_dir', _t('DIRECTORY_NEW_DIR'));
-        $tpl->SetVariable('lbl_new_file', _t('DIRECTORY_NEW_FILE'));
         $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('lbl_all_files', _t('DIRECTORY_FILTER_ALL_FILES'));
         $tpl->SetVariable('lbl_shared_files', _t('DIRECTORY_FILTER_SHARED_FILES'));
         $tpl->SetVariable('lbl_foreign_files', _t('DIRECTORY_FILTER_FOREIGN_FILES'));
-        $tpl->SetVariable('new_dir', 'gadgets/Directory/images/new-dir.png');
-        $tpl->SetVariable('new_file', 'gadgets/Directory/images/new-file.png');
-        $tpl->SetVariable('search', 'gadgets/Directory/images/search.png');
+        $tpl->SetVariable('lbl_new_dir', _t('DIRECTORY_NEW_DIR'));
+        $tpl->SetVariable('lbl_new_file', _t('DIRECTORY_NEW_FILE'));
+        $tpl->SetVariable('lbl_props', _t('DIRECTORY_PROPERTIES'));
+        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
+        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('lbl_move', _t('DIRECTORY_MOVE'));
+        $tpl->SetVariable('lbl_dl', _t('DIRECTORY_DOWNLOAD'));
+
+        $tpl->SetVariable('img_new_dir', STOCK_DIRECTORY_NEW);
+        $tpl->SetVariable('img_new_file', STOCK_NEW);
+        $tpl->SetVariable('img_props', 'images/stock/properties.png');
+        $tpl->SetVariable('img_edit', STOCK_EDIT);
+        $tpl->SetVariable('img_delete', STOCK_DELETE);
+        $tpl->SetVariable('img_move', STOCK_RIGHT);
+        $tpl->SetVariable('img_dl', STOCK_SAVE);
 
         if ($this->gadget->GetPermission('ShareFile')) {
             $tpl->SetBlock('workspace/share');
             $tpl->SetVariable('lbl_share', _t('DIRECTORY_SHARE'));
+            $tpl->SetVariable('img_share', 'gadgets/Directory/images/share.png');
             $tpl->ParseBlock('workspace/share');
         }
 
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $tpl->SetVariable('UID', $user);
-        $tpl->SetVariable('lbl_props', _t('DIRECTORY_PROPERTIES'));
-        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
-        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
-        $tpl->SetVariable('lbl_move', _t('DIRECTORY_MOVE'));
-        $tpl->SetVariable('lbl_download', _t('DIRECTORY_DOWNLOAD'));
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
         $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));

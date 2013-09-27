@@ -3,14 +3,6 @@ fieldset input:not([type=checkbox]) {width:100%;}
 fieldset table {width:100%}
 fieldset th {width:1%; text-align:left;}
 
-.directory .toolbar{
-float:right;
-}
-.directory .toolbar img{
-cursor:pointer;
-vertical-align:middle;
-}
-
 .files-table{
 width:100%;
 font:11px tahoma;
@@ -47,7 +39,7 @@ width:100%;
 height:16px;
 }
 .file-sharing.shared{
-background:url(../images/share.png) no-repeat 20% center;
+background:url(../images/shared.png) no-repeat 20% center;
 }
 .file-sharing.foreign{
 background:url(../images/users.png) no-repeat 20% center;
@@ -56,7 +48,7 @@ background:url(../images/users.png) no-repeat 20% center;
 background:url(../images/link.png) no-repeat 20% center;
 }
 .file-sharing.shared.public{
-background:url(../images/share.png) no-repeat 20% center, url(../images/link.png) no-repeat 60% center;
+background:url(../images/shared.png) no-repeat 20% center, url(../images/link.png) no-repeat 60% center;
 }
 
 .file-info table{
@@ -64,6 +56,48 @@ width:100%;
 }
 .file-info th{
 white-space:nowrap;
+}
+
+#dir_pathbar, #dir_searchbar{
+font-size:11px;
+}
+#dir_pathbar img{
+vertical-align:middle;
+cursor:pointer;
+}
+#dir_path span {
+cursor:pointer;
+}
+#dir_path span:hover {
+color:blue;
+}
+#dir_searchbar img{
+vertical-align:middle;
+}
+
+#file_actions{
+float:right;
+}
+#file_actions img{
+vertical-align:middle;
+}
+#file_actions img {
+filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0\'/></filter></svg>#grayscale");
+-webkit-filter: grayscale(0%);
+}
+#file_actions img.disabled{
+filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
+filter: gray; /* IE6-9 */
+-webkit-filter: grayscale(100%);
+opacity:0.5;
+}
+
+#frm_search{
+float:left;
+}
+
+#frm_search #file_filter{
+width:160px;
 }
 
 #dir_tree{
@@ -86,28 +120,6 @@ cursor:pointer;
 #dir_tree a.selected{
 background-color:grey;
 color:white;
-}
-
-#frm_search{
-display:none;
-width:100%;
-}
-
-#dir_pathbar, #dir_searchbar{
-font-size:11px;
-}
-#dir_pathbar img{
-vertical-align:middle;
-cursor:pointer;
-}
-#dir_path span {
-cursor:pointer;
-}
-#dir_path span:hover {
-color:blue;
-}
-#dir_searchbar img{
-vertical-align:middle;
 }
 
 #file_arena{

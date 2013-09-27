@@ -3,14 +3,6 @@ fieldset input:not([type=checkbox]) {width:100%;}
 fieldset table {width:100%}
 fieldset th {width:1%; text-align:right;}
 
-.directory .toolbar{
-float:left;
-}
-.directory .toolbar img{
-cursor:pointer;
-vertical-align:middle;
-}
-
 .files-table{
 width:100%;
 font:11px tahoma;
@@ -50,7 +42,7 @@ width:100%;
 height:16px;
 }
 .file-sharing.shared{
-background:url(../images/share.png) no-repeat 20% center;
+background:url(../images/shared.png) no-repeat 20% center;
 }
 .file-sharing.foreign{
 background:url(../images/users.png) no-repeat 20% center;
@@ -59,7 +51,7 @@ background:url(../images/users.png) no-repeat 20% center;
 background:url(../images/link.png) no-repeat 20% center;
 }
 .file-sharing.shared.public{
-background:url(../images/share.png) no-repeat 20% center, url(../images/link.png) no-repeat 60% center;
+background:url(../images/shared.png) no-repeat 20% center, url(../images/link.png) no-repeat 60% center;
 }
 
 .file-info table{
@@ -92,7 +84,6 @@ color:white;
 }
 
 #frm_search{
-display:none;
 width:100%;
 }
 

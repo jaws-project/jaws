@@ -158,7 +158,6 @@ function updateFiles(parent)
         updatePath();
     }
     displayFiles(files);
-    toggleSearch(false);
     $('dir_pathbar').show();
     $('dir_searchbar').hide();
 }
@@ -302,9 +301,16 @@ function updatePath()
 function updateActions()
 {
     if (selectedId === null) {
-        $('file_actions').style.visibility = 'hidden';
+        //$('file_actions').style.visibility = 'hidden';
+        $('file_actions').getElements('img').addClass('disabled');
+        $('btn_new_file').removeClass('disabled');
+        $('btn_new_dir').removeClass('disabled');
     } else {
-        $('file_actions').style.visibility = 'visible';
+        //$('file_actions').style.visibility = 'visible';
+        $('file_actions').getElements('img').removeClass('disabled');
+    }
+    return;
+
         if (fileById[selectedId].foreign) {
             $('btn_share').hide();
         } else {
@@ -320,7 +326,6 @@ function updateActions()
         } else {
             $('btn_download').show();
         }
-    }
 }
 
 /**
@@ -397,6 +402,7 @@ function del()
  * Moves selected directory/file to another directory
  */
 function move() {
+    if (selectedId === null) return;
     var tree = DirectoryAjax.callSync('GetTree', {'id':selectedId}),
         form = $('form');
     form.set('html', tree);
@@ -631,6 +637,7 @@ function submitFile()
  */
 function share()
 {
+    if (selectedId === null) return;
     if (!cachedForms.share) {
         cachedForms.share = DirectoryAjax.callSync('ShareForm');
     }
@@ -705,24 +712,6 @@ function submitShare()
         'UpdateFileUsers',
         {'id':selectedId, 'users':users.join(',')}
     );
-}
-
-/**
- * Shows/hides search form
- */
-function toggleSearch(show)
-{
-    var form = $('frm_search');
-    if (show === undefined) {
-        show = !form.isDisplayed();
-    }
-    if (show) {
-        form.show();
-        $('file_search').focus();
-    } else {
-        form.hide();
-        $('file_search').value = '';
-    }
 }
 
 /**
