@@ -14,7 +14,7 @@
  */
 var ContactCallback = {
     updatecontact: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             getDG('contacts_datagrid');
             stopAction();
         }
@@ -22,7 +22,7 @@ var ContactCallback = {
     },
 
     updatereply: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             selectedRow.getElement('label').set({style:'font-weight:normal'});
             stopAction();
         }
@@ -30,7 +30,7 @@ var ContactCallback = {
     },
 
     deleterecipient: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('recipient_datagrid').deleteItem();          
             getDG();
             stopAction();
@@ -39,7 +39,7 @@ var ContactCallback = {
     },
 
     insertrecipient: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('recipient_datagrid').addItem();
             $('recipient_datagrid').setCurrentPage(0);
             getDG();
@@ -49,7 +49,7 @@ var ContactCallback = {
     },
 
     updaterecipient: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             getDG();
             stopAction();
         }
@@ -61,7 +61,7 @@ var ContactCallback = {
     },
 
     deletecontact: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('contacts_datagrid').deleteItem();          
             getDG('contacts_datagrid');
             stopAction();
@@ -70,7 +70,7 @@ var ContactCallback = {
     },
 
     sendemail: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             newEmail();
         }
         showResponse(response);
