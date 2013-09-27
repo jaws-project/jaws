@@ -27,7 +27,7 @@ var SitemapCallback = {
     },
     
     newitem: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             currentID = response['id'];
             getItems();
         }
@@ -35,14 +35,14 @@ var SitemapCallback = {
     },
 
     updateitem: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             getItems();
         }
         showResponse(response);
     },
 
     deleteitem: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             currentID = '';
             getItems();
         }
@@ -50,7 +50,7 @@ var SitemapCallback = {
     },
 
     moveitem: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             getItems();
         }
         showResponse(response);
