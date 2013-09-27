@@ -14,7 +14,7 @@
  */
 var CommentsCallback = {
     UpdateComment: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopCommentAction();
             getDG('comments_datagrid');
         }
@@ -22,7 +22,7 @@ var CommentsCallback = {
     },
 
     DeleteComments: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopCommentAction();
             getDG('comments_datagrid');
         }
@@ -30,7 +30,7 @@ var CommentsCallback = {
     },
 
     MarkAs: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopCommentAction();
             getDG('comments_datagrid');
         }
