@@ -46,7 +46,7 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
             header('Content-Encoding: '. $resType);
         default:
             // Sync session
-            if ($sync && isset($GLOBALS['app'])) {
+            if ($sync && isset($GLOBALS['app']->Session)) {
                 $GLOBALS['app']->Session->Synchronize();
             }
 
