@@ -13,7 +13,7 @@
  */
 var BannerCallback = {
     insertbanner: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             $('banners_datagrid').addItem();
             $('banners_datagrid').setCurrentPage(0);
@@ -23,7 +23,7 @@ var BannerCallback = {
     },
 
     updatebanner: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG('banners_datagrid');
         }
@@ -31,7 +31,7 @@ var BannerCallback = {
     },
 
     deletebanner: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             $('banners_datagrid').deleteItem();
             getDG('banners_datagrid');
@@ -40,21 +40,21 @@ var BannerCallback = {
     },
 
     resetviews: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             getDG('reports_datagrid');
         }
         showResponse(response);
     },
 
     resetclicks: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             getDG('reports_datagrid');
         }
         showResponse(response);
     },
 
     insertgroup: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             getGroups();
             stopAction();
         }
@@ -62,7 +62,7 @@ var BannerCallback = {
     },
 
     updategroup: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             getGroups();
             stopAction();
         }
@@ -70,7 +70,7 @@ var BannerCallback = {
     },
 
     deletegroup: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             getGroups();
             stopAction();
         }
