@@ -116,7 +116,6 @@ var JawsAjax = new Class({
     },
 
     onFailure: function () {
-        alert('failure message');
         // TODO: alert failure message
     },
 
