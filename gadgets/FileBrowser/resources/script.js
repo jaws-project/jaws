@@ -12,7 +12,7 @@
  */
 var FileBrowserCallback = {
     updatedbfileinfo: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG('fb_datagrid');
         }
@@ -20,7 +20,7 @@ var FileBrowserCallback = {
     },
 
     updatedbdirinfo: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG('fb_datagrid');
         }
@@ -28,7 +28,7 @@ var FileBrowserCallback = {
     },
 
     deletefile: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG('fb_datagrid');
         }
@@ -36,7 +36,7 @@ var FileBrowserCallback = {
     },
 
     deletedir: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG('fb_datagrid');
         }
