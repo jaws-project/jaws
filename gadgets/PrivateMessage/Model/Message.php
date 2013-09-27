@@ -308,8 +308,19 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             }
         }
         $recipient_users = array_unique($recipient_users);
-        if (empty($recipient_users) || count($recipient_users) <= 0) {
-            return false;
+
+        // validation input fields
+        if ($messageData['published']) {
+            if (empty($recipient_users) || count($recipient_users) <= 0 ||
+                empty($messageData['subject']) || empty($messageData['body'])
+            ) {
+                return new Jaws_Error(_t('PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS'), _t('PRIVATEMESSAGE_NAME'));
+            }
+
+        } else {
+            if (empty($messageData['body'])) {
+                return new Jaws_Error(_t('PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS'), _t('PRIVATEMESSAGE_NAME'));
+            }
         }
 
         $mTable = Jaws_ORM::getInstance()->table('pm_messages');
@@ -416,18 +427,20 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }
 
         // Insert recipients info
-        $table = Jaws_ORM::getInstance()->table('pm_recipients');
-        $rData = array();
-        foreach ($recipient_users as $recipient_user) {
-            $read = false;
-            if($recipient_user==0) {
-                $read = true;
+        if (!empty($recipient_users) && count($recipient_users) > 0) {
+            $table = Jaws_ORM::getInstance()->table('pm_recipients');
+            $rData = array();
+            foreach ($recipient_users as $recipient_user) {
+                $read = false;
+                if ($recipient_user == 0) {
+                    $read = true;
+                }
+                $rData[] = array($message_id, $recipient_user, $read);
             }
-            $rData[] = array($message_id, $recipient_user, $read);
-        }
-        $res = $table->insertAll(array('message', 'recipient', 'read'), $rData)->exec();
-        if (Jaws_Error::IsError($res)) {
-            return false;
+            $res = $table->insertAll(array('message', 'recipient', 'read'), $rData)->exec();
+            if (Jaws_Error::IsError($res)) {
+                return false;
+            }
         }
 
         //Commit Transaction

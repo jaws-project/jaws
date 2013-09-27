@@ -77,7 +77,7 @@ define('_EN_PRIVATEMESSAGE_MESSAGE_NO_ACTION', "No action");
 define('_EN_PRIVATEMESSAGE_MESSAGE_VIEW_TIME', "View time");
 define('_EN_PRIVATEMESSAGE_MESSAGE_NOT_VIEW', "Not view");
 define('_EN_PRIVATEMESSAGE_MESSAGE_UNDO_SENDING', "Undo sending");
-define('_EN_PRIVATEMESSAGE_ITEMS_PER_PAGE', "Item per page");
+define('_EN_PRIVATEMESSAGE_ITEMS_PER_PAGE', "Items per page");
 
 /* Responses */
 define('_EN_PRIVATEMESSAGE_PROPERTIES_UPDATED', "The properties have been updated");
@@ -99,4 +99,5 @@ define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_SEND', "There was a problem sending
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_NOT_DRAFTED', "There was a problem drafting message.");
 define('_EN_PRIVATEMESSAGE_ERROR_MESSAGE_READ_STATUS_NOT_CHANGED', "There was a problem changing message read status.");
 define('_EN_PRIVATEMESSAGE_DRAFT_NOT_SAVED', "There was a problem saving draft message.");
+define('_EN_PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS', "Some fields haven't been (correctly) filled in.");
 

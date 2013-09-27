@@ -114,6 +114,15 @@ function addFileEntry() {
 }
 
 /**
+ * auto save draft message
+ */
+function autoDraftMessage() {
+    if($('body').value.trim()!=='') {
+        sendMessage(false);
+    }
+}
+
+/**
  * send a message
  */
 function sendMessage(published) {

@@ -129,13 +129,8 @@
         });
     });
 
-    //    $('recipient_users').addEvent('keypress',function(e) {
-//        console.log(getUsers($('recipient_users').value));
-//    });
-//
-//    $('recipient_groups').addEvent('keypress',function(e) {
-//        console.log(getGroups($('recipient_groups').value));
-//    });
+    // auto draft message
+    setInterval('autoDraftMessage();', 120000);
 
 </script>
 
