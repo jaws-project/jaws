@@ -18,6 +18,7 @@ function GetComments()
     $$('.shoutbox_comments').innerHTML = comments;
 }
 
-
 var ShoutboxAjax = new JawsAjax('Shoutbox');
+ShoutboxAjax.backwardSupport();
+ShoutboxAjax.setMessageBox('shoutbox_comments_response');
 setInterval(GetComments, 30*1000);
