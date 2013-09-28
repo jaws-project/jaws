@@ -67,6 +67,8 @@ define('_EN_GLOBAL_DESCRIPTION', "Description");
 define('_EN_GLOBAL_INFO', "Info");
 define('_EN_GLOBAL_VERSION', "Version");
 define('_EN_GLOBAL_ALL', "All");
+define('_EN_GLOBAL_ALL_USERS', "All users");
+define('_EN_GLOBAL_ALL_GROUPS', "All groups");
 define('_EN_GLOBAL_HOME', "Home");
 define('_EN_GLOBAL_IS_SPAM', 'Spam?');
 define('_EN_GLOBAL_LOADING', "Loading...");
