@@ -19,7 +19,6 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_HTML
     function PrivateMessage()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
