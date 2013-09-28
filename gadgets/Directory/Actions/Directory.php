@@ -18,6 +18,10 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      */
     function Directory()
     {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
         $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/resources/site_style.css');
         $this->AjaxMe('site_script.js');
         $tpl = $this->gadget->loadTemplate('Workspace.html');
