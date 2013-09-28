@@ -59,11 +59,23 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
-            $data['user'] = $data['owner'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+
+            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+
+            // Validate parent
+            $parent = $model->GetFile($data['parent']);
+            if (Jaws_Error::IsError($parent)) {
+                throw new Exception(_t('DIRECTORY_ERROR_DIR_CREATE'));
+            }
+            if ($parent['user'] != $user) {
+                throw new Exception(_t('DIRECTORY_ERROR_NO_PERMISSION'));
+            }
+
+            $data['user'] = $data['owner'] = $user;
             $data['is_dir'] = true;
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
-            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
             $result = $model->Insert($data);
             if (Jaws_Error::IsError($result)) {
                 throw new Exception(_t('DIRECTORY_ERROR_DIR_CREATE'));

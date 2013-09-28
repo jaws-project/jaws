@@ -74,7 +74,20 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
-            $data['user'] = $data['owner'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+
+            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+
+            // Validate parent
+            $parent = $model->GetFile($data['parent']);
+            if (Jaws_Error::IsError($parent)) {
+                throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
+            }
+            if ($parent['user'] != $user) {
+                throw new Exception(_t('DIRECTORY_ERROR_NO_PERMISSION'));
+            }
+
+            $data['user'] = $data['owner'] = $user;
             $data['is_dir'] = false;
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
@@ -112,7 +125,6 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
             }
 
             // Insert record
-            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
             $res = $model->Insert($data);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception(_t('DIRECTORY_ERROR_FILE_CREATE'));

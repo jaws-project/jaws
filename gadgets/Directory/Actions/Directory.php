@@ -18,10 +18,6 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      */
     function Directory()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
-            return Jaws_HTTPError::Get(403);
-        }
-
         $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/resources/site_style.css');
         $this->AjaxMe('site_script.js');
         $tpl = $this->gadget->loadTemplate('Workspace.html');
@@ -277,7 +273,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
             );
         } else {
             return $GLOBALS['app']->Session->GetResponse(
-                _t('DIRECTORY_NOTICE_DELETE'),
+                _t('DIRECTORY_NOTICE_ITEMS_DELETED'),
                 RESPONSE_NOTICE
             );
         }
@@ -347,7 +343,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
             return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_MOVE'), RESPONSE_NOTICE);
+        return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_ITEMS_MOVED'), RESPONSE_NOTICE);
     }
 
     /**
