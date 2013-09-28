@@ -43,7 +43,7 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
             $gadgetsCombo =& Piwi::CreateWidget('Combo', 'gadgets_filter');
             $gadgetsCombo->SetID('gadgets_filter');
             $gadgetsCombo->setStyle('width: 100px;');
-            $gadgetsCombo->AddEvent(ON_CHANGE, "changeGadget()");
+            $gadgetsCombo->AddEvent(ON_CHANGE, "changeGadget(this.value)");
             $gadgetsCombo->AddOption('', '');
             // TODO: Get List Of Gadget Which Use Tags
             $gadgetsCombo->AddOption(_t('BLOG_NAME'), 'Blog');
@@ -91,14 +91,16 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
 
             $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
             $btnSave->AddEvent(ON_CLICK, "updateTag();");
-            $btnSave->SetStyle('display: none;');
+//            $btnSave->SetStyle('display: none;');
             $tpl->SetVariable('btn_save', $btnSave->Get());
         }
 
-        $tpl->SetVariable('incompleteTagFields', _t('TAGS_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmTagDelete',    _t('TAGS_CONFIRM_DELETE'));
-        $tpl->SetVariable('legend_title',        _t('TAGS_EDIT_TAG'));
-        $tpl->SetVariable('tagDetail_title',     _t('TAGS_EDIT_TAG'));
+        $tpl->SetVariable('incompleteTagFields',    _t('TAGS_INCOMPLETE_FIELDS'));
+        $tpl->SetVariable('confirmTagDelete',       _t('TAGS_CONFIRM_DELETE'));
+        $tpl->SetVariable('selectMoreThanOneTags',  _t('TAGS_SELECT_MORE_THAN_ONE_TAG_FOR_MERGE'));
+        $tpl->SetVariable('legend_title',           _t('TAGS_ADD_TAG'));
+        $tpl->SetVariable('editTagTitle',           _t('TAGS_EDIT_TAG'));
+        $tpl->SetVariable('tagDetail_title',        _t('TAGS_EDIT_TAG'));
 
         $tpl->ParseBlock('tags');
         return $tpl->Get();
@@ -129,13 +131,12 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
      * Build a new array with filtered data
      *
      * @access  public
-     * @param   string  $gadget     Gadget name
      * @param   string  $editAction Edit action
-     * @param   string  $filters       Search term
+     * @param   array   $filters    Search terms
      * @param   mixed   $offset     Data offset (numeric/boolean)
      * @return  array   Filtered Comments
      */
-    function GetDataAsArray($gadget, $editAction, $filters, $offset)
+    function GetDataAsArray($editAction, $filters, $offset)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
         $tags = $cModel->GetTags($filters, 15, $offset);
@@ -210,7 +211,7 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
 
         $execute =& Piwi::CreateWidget('Button', 'executeTagAction', '',
             STOCK_YES);
-        $execute->AddEvent(ON_CLICK, "javascript: tagDGAction(document.getElementById('tags_actions_combo'));");
+        $execute->AddEvent(ON_CLICK, "javascript: tagsDGAction(document.getElementById('tags_actions_combo'));");
 
         $gridFormBox->Add($actions);
         $gridFormBox->Add($execute);

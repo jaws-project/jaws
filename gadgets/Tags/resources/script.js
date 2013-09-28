@@ -11,6 +11,14 @@
  * Use async mode, create Callback
  */
 var TagsCallback = {
+    AddTag: function(response) {
+        if (response[0].type == 'response_notice') {
+            stopTagAction();
+            getDG('tags_datagrid');
+        }
+        showResponse(response);
+    },
+
     UpdateTag: function(response) {
         if (response[0].type == 'response_notice') {
             stopTagAction();
@@ -27,7 +35,7 @@ var TagsCallback = {
         showResponse(response);
     },
 
-    MarkAs: function(response) {
+    MergeTags: function(response) {
         if (response[0].type == 'response_notice') {
             stopTagAction();
             getDG('tags_datagrid');
@@ -47,27 +55,22 @@ function getTagsDataGrid(name, offset, reset)
 {
     var tags = TagsAjax.callSync(
         'SearchTags',
-        offset,
-        $('gadgets_filter').value,
-        $('filter').value,
-        $('actions').value
+        { 'gadget': $('gadgets_filter').value, 'action': $('actions').value, 'name': $('filter').value},
+        offset
     );
+
     if (reset) {
-        stopTagAction();
         $(name).setCurrentPage(0);
+        stopTagAction();
+
         var total = TagsAjax.callSync(
             'SizeOfTagsSearch',
-            $('gadgets_filter').value,
-            $('filter').value,
-            $('actions').value
+            { 'gadget': $('gadgets_filter').value, 'action': $('actions').value, 'name': $('filter').value}
         );
+
     }
 
     resetGrid(name, tags, total);
-}
-
-function isValidEmail(email) {
-    return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email));
 }
 
 /**
@@ -78,9 +81,10 @@ function stopTagAction()
 {
     $('id').value                      = 0;
     $('name').value                    = '';
-    $('btn_save').style.display        = 'none';
+//    $('btn_save').style.display        = 'none';
     $('btn_cancel').style.display      = 'none';
     $('name').disabled                 = false;
+    $('legend_title').innerHTML        = addNewTagTitle;
 
     unselectGridRow('tags_datagrid');
     $('name').focus();
@@ -96,15 +100,20 @@ function editTag(rowElement, id)
     var tag = TagsAjax.callSync('GetTag', id);
     $('id').value                 = id;
     $('name').value               = tag['name'];
-    $('btn_save').style.display   = 'inline';
+//    $('btn_save').style.display   = 'inline';
     $('btn_cancel').style.display = 'inline';
+    $('legend_title').innerHTML   = editTagTitle;
 }
 
 /**
  * Update a tag
  */
 function updateTag() {
-    TagsAjax.callAsync('UpdateTag', $('id').value, $('name').value);
+    if($('id').value==0) {
+        TagsAjax.callAsync('AddTag', $('name').value);
+    } else {
+        TagsAjax.callAsync('UpdateTag', $('id').value, $('name').value);
+    }
 }
 
 /**
@@ -122,45 +131,52 @@ function deleteTag(id)
 
 
 /**
- * Executes an action on comments
+ * Executes an action on tags
  */
 function tagsDGAction(combo)
 {
     var rows = $('tags_datagrid').getSelectedRows();
-    var selectedRows = false;
-    if (rows.length > 0) {
-        selectedRows = true;
+    if (rows.length < 1) {
+        return;
     }
 
-     if (combo.value == 'delete') {
-        if (selectedRows) {
-            var confirmation = confirm(confirmCommentDelete);
-            if (confirmation) {
-                TagsAjax.callAsync('DeleteComments', rows);
-            }
+    if (combo.value == 'delete') {
+        var confirmation = confirm(confirmTagDelete);
+        if (confirmation) {
+            TagsAjax.callAsync('DeleteTags', rows);
         }
-    } else if (combo.value != '') {
-        if (selectedRows) {
-            TagsAjax.callAsync('MarkAs', $('gadget').value, rows, combo.value);
+    } else if (combo.value == 'merge') {
+        if(rows.length<2) {
+            alert(selectMoreThanOneTags);
+            return;
         }
+        var newName = prompt("Please enter new tag name:");
+        if (newName.trim() == "") {
+            return;
+        }
+        TagsAjax.callAsync('MergeTags', rows, newName);
     }
 }
 
 /**
- * change gadget combo (fetch available action list)
+ * change gadget combo (fetch available action list for gadget)
  */
 function changeGadget(gadget)
 {
-    alert(gadget.value);
-    var tag = TagsAjax.callSync('GetGadgetActions', gadget.value);
-    $('id').value                 = id;
-    $('name').value               = tag['name'];
-    $('btn_save').style.display   = 'inline';
-    $('btn_cancel').style.display = 'inline';
+    var actions = TagsAjax.callSync('GetGadgetActions', gadget);
+    $('actions').empty();
+
+    var newoption = new Option("", "");
+    $('actions').add(newoption);
+    for (var i=0;i<actions.length;i++)
+    {
+        var newoption = new Option(actions[i], actions[i]);
+        $('actions').add(newoption);
+    }
 }
 
 /**
- * search for a comment
+ * search for a tag
  */
 function searchTags()
 {
@@ -172,7 +188,6 @@ function searchTags()
  */
 function SaveSettings()
 {
-    TagsAjax.callAsync('SaveSettings', $('allow_comments').value, $('allow_duplicate').value);
 }
 
 var TagsAjax = new JawsAjax('Tags', TagsCallback),

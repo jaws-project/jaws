@@ -28,16 +28,19 @@
   </tr>
   <tr>
     <td></td>
-    <td class="buttons">{btn_cancel}{btn_save}{btn_reply}</td>
+    <td class="buttons">{btn_cancel}{btn_save}</td>
   </tr>
 </table>
 
 <script type="text/javascript">
+  var addNewTagTitle = "{legend_title}";
+  var editTagTitle = "{editTagTitle}";
   currentAction = 'Tags';
   $('gadgets_filter').selectedIndex = 0;
   initDataGrid('tags_datagrid', TagsAjax, getTagsDataGrid);
-  var incompleteTafFields   = "{incompleteTagFields}";
-  var confirmTagDelete      = "{confirmTagDelete}";
+  var incompleteTafFields       = "{incompleteTagFields}";
+  var confirmTagDelete          = "{confirmTagDelete}";
+  var selectMoreThanOneTags     = "{selectMoreThanOneTags}";
   var tagDetail_title           = "{tagDetail_title}";
 </script>
 

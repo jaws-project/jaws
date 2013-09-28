@@ -18,9 +18,9 @@ class Tags_Installer extends Jaws_Gadget_Installer
      */
     var $_ACLKeys = array(
         'ManageProperties',
-        'AddTag',
-        'DeleteTag',
-        'MergeTag',
+        'AddTags',
+        'DeleteTags',
+        'MergeTags',
     );
 
     /**

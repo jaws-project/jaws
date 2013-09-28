@@ -18,23 +18,42 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
      */
     function SearchTags()
     {
-        $this->gadget->CheckPermission('ManageComments');
-        @list($limit, $gadget, $search, $status) = jaws()->request->fetchAll('post');
+        @list($filters, $offset) = jaws()->request->fetchAll('post');
+        $filters = jaws()->request->fetch('0:array', 'post');
         $tHTML = $GLOBALS['app']->LoadGadget('Tags', 'AdminHTML', 'Tags');
-        return $tHTML->GetDataAsArray($gadget, "javascript:editTag(this, '{id}')", $search, $status, $limit, true);
+        return $tHTML->GetDataAsArray("javascript:editTag(this, '{id}')", $filters, $offset);
     }
 
     /**
-     * Get total posts of a tag search
+     * Get total tags of a tag search
      *
      * @access  public
-     * @return  int     Total of posts
+     * @return  int     Total of tags
      */
     function SizeOfTagsSearch()
     {
-        @list($gadget, $search, $status) = jaws()->request->fetchAll('post');
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
-        return $cModel->GetCommentsCount($gadget, '', '', $search, $status);
+        $filters = jaws()->request->fetchAll('post');
+        $tModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        return $tModel->GetTagsCount($filters);
+    }
+
+    /**
+     * Get a gadget available actions
+     *
+     * @access   public
+     * @internal param   string $gadget Gadget name
+     * @return   array   gadget actions
+     */
+    function GetGadgetActions()
+    {
+        $gadget = jaws()->request->fetchAll('post');
+        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $actions = $model->GetGadgetActions($gadget);
+        if (Jaws_Error::IsError($actions)) {
+            return false; //we need to handle errors on ajax
+        }
+
+        return $actions;
     }
 
     /**
@@ -56,7 +75,28 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Update comment information
+     * Add an new tag
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function AddTag()
+    {
+        $this->gadget->CheckPermission('AddTags');
+        $name = jaws()->request->fetchAll('post');
+        $tModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $res = $tModel->AddTag($name);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('TAGS_TAG_ADDED'), RESPONSE_NOTICE);
+        }
+
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Update tag information
      *
      * @access  public
      * @return  array   Response array (notice or error)
@@ -65,7 +105,6 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageTags');
         @list($id, $name) = jaws()->request->fetchAll('post');
-        // TODO: Fill permalink In New Versions, Please!!
         $tModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
         $res = $tModel->UpdateTag($id, $name);
         if (Jaws_Error::IsError($res)) {
@@ -78,7 +117,7 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Does a massive delete on comments
+     * Does a massive delete on tags
      *
      * @access  public
      * @return  array   Response array (notice or error)
@@ -99,21 +138,23 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
-     * Mark as different type a group of ids
+     * Merge tags
      *
      * @access  public
      * @return  array   Response array (notice or error)
      */
-    function MarkAs()
+    function MergeTags()
     {
-        $this->gadget->CheckPermission('ManageComments');
-        @list($gadget, $ids, $status) = jaws()->request->fetch(array('0', '1:array', '2'), 'post');
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
-        $res = $cModel->MarkAs($gadget, $ids, $status);
+        $this->gadget->CheckPermission('MergeTags');
+        @list($ids, $newName) = jaws()->request->fetchAll('post');
+        $ids = jaws()->request->fetch('0:array', 'post');
+
+        $tModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $res = $tModel->MergeTags($ids, $newName);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_COMMENT_MARKED'), RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(_t('TAGS_TAGS_MERGED'), RESPONSE_NOTICE);
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();
