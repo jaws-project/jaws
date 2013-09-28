@@ -69,7 +69,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
         $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
         $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
-        $tpl->SetVariable('filter', _t('PRIVATEMESSAGE_FILTER'));
+        $tpl->SetVariable('filter', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
         $tpl->SetVariable('lbl_no_action', _t('PRIVATEMESSAGE_MESSAGE_NO_ACTION'));

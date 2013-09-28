@@ -49,7 +49,7 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
         $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
         $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
         $tpl->SetVariable('lbl_attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));
-        $tpl->SetVariable('filter', _t('PRIVATEMESSAGE_FILTER'));
+        $tpl->SetVariable('filter', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
         $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
 
