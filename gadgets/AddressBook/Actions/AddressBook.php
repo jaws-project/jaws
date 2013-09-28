@@ -53,7 +53,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('lbl_export', _t('ADDRESSBOOK_EXPORT_VCARD'));
         $tpl->SetVariable('lbl_all_groups', _t('ADDRESSBOOK_GROUP_ALL_GROUPS'));
-        $tpl->SetVariable('lbl_no_action', _t('ADDRESSBOOK_NO_ACTION'));
+        $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
         $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('icon_ok', STOCK_OK);
         $gModel = $this->gadget->load('Model')->load('Model', 'Groups');

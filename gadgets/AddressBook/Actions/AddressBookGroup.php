@@ -57,7 +57,7 @@ class AddressBook_Actions_AddressBookGroup extends AddressBook_HTML
         $tpl->SetVariable('edit_group', _t('ADDRESSBOOK_GROUPS_EDIT'));
         $tpl->SetVariable('edit_group_link', $this->gadget->urlMap('EditGroup', array('id' => $gid)));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
-        $tpl->SetVariable('lbl_no_action', _t('ADDRESSBOOK_NO_ACTION'));
+        $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
         $tpl->SetVariable('icon_ok', STOCK_OK);
 
         $notInGroupAddress = $model->GetAddressListNotInGroup($gid, $user);

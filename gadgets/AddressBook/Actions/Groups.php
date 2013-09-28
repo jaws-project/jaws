@@ -96,7 +96,7 @@ class AddressBook_Actions_Groups extends AddressBook_HTML
         $tpl->SetVariable('lbl_actions',     _t('GLOBAL_ACTIONS'));
         $tpl->SetVariable('confirmDelete',   _t('ADDRESSBOOK_DELETE_CONFIRM'));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
-        $tpl->SetVariable('lbl_no_action', _t('ADDRESSBOOK_NO_ACTION'));
+        $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
         $tpl->SetVariable('icon_ok', STOCK_OK);
 
         foreach ($groupItems as $groupItem) {
