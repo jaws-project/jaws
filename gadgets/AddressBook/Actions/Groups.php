@@ -18,7 +18,6 @@ class AddressBook_Actions_Groups extends AddressBook_HTML
      */
     function Groups()
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }

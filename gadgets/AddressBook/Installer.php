@@ -11,6 +11,14 @@
 class AddressBook_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Default ACL value of frontend gadget access
+     *
+     * @var     bool
+     * @access  protected
+     */
+    var $default_acl = false;
+
+    /**
      * Install the gadget
      *
      * @access  public
