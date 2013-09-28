@@ -38,6 +38,14 @@ class PrivateMessage_Installer extends Jaws_Gadget_Installer
     );
 
     /**
+     * Default ACL value of frontend gadget access
+     *
+     * @var     bool
+     * @access  protected
+     */
+    var $default_acl = false;
+
+    /**
      * Installs the gadget
      *
      * @access  public
