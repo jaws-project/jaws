@@ -64,12 +64,14 @@ class Directory_Actions_Directories extends Jaws_Gadget_HTML
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
 
             // Validate parent
-            $parent = $model->GetFile($data['parent']);
-            if (Jaws_Error::IsError($parent)) {
-                throw new Exception(_t('DIRECTORY_ERROR_DIR_CREATE'));
-            }
-            if ($parent['user'] != $user) {
-                throw new Exception(_t('DIRECTORY_ERROR_NO_PERMISSION'));
+            if ($data['parent'] != 0) {
+                $parent = $model->GetFile($data['parent']);
+                if (Jaws_Error::IsError($parent)) {
+                    throw new Exception(_t('DIRECTORY_ERROR_DIR_CREATE'));
+                }
+                if ($parent['user'] != $user) {
+                    throw new Exception(_t('DIRECTORY_ERROR_NO_PERMISSION'));
+                }
             }
 
             $data['user'] = $data['owner'] = $user;

@@ -54,6 +54,10 @@ $actions['CreateDirectory'] = array(
     'standalone' => true,
     'file' => 'Directories'
 );
+$actions['UpdateDirectory'] = array(
+    'standalone' => true,
+    'file' => 'Directories'
+);
 
 /* File Actions */
 $actions['FileForm'] = array(

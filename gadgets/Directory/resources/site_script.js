@@ -228,8 +228,8 @@ function getSelected()
  */
 function fileOpen()
 {
-    var file = fileById[idSet],
-        id = file.id;
+    var id = idSet[0],
+        file = fileById[idSet];
     if (file.is_dir) {
         if (file.foreign) {
             id = file.reference;
@@ -273,7 +273,7 @@ function openMedia(id, type)
 function downloadFile()
 {
     if (idSet === null) return;
-    var id = idSet,
+    var id = idSet[0],
         file = fileById[id];
     if (!file) {
         file = fileById[id] = DirectoryAjax.callSync('GetFile', {'id':id});
@@ -344,11 +344,11 @@ function updateActions()
 function props()
 {
     if (idSet.length === 0) return;
-    var idSet = idSet.join(','),
+    var id = idSet[0],
         data = fileById[idSet],
         form;
     if (!data.users) {
-        var users = DirectoryAjax.callSync('GetFileUsers', {id:idSet}),
+        var users = DirectoryAjax.callSync('GetFileUsers', {id:id}),
             id_set = [];
         users.each(function (user) {
             id_set.push(user.username);
@@ -370,7 +370,7 @@ function props()
     }
     $('form').set('html', form.substitute(data));
     if (data['public'] && !data.dl_url) {
-        data.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:idSet});
+        data.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:id});
     }
     if (data.dl_url) {
         showFileURL(data.dl_url);
@@ -383,11 +383,10 @@ function props()
 function edit()
 {
     if (idSet.length === 0) return;
-    var idSet = idSet.join(',');
-    if (fileById[idSet].is_dir) {
-        editDirectory();
+    if (fileById[idSet[0]].is_dir) {
+        editDirectory(idSet[0]);
     } else {
-        editFile();
+        editFile(idSet[0]);
     }
 }
 
@@ -455,15 +454,15 @@ function newDirectory()
 /**
  * Brings the edit directory UI up
  */
-function editDirectory()
+function editDirectory(id)
 {
     if (!cachedForms.editDir) {
         cachedForms.editDir = DirectoryAjax.callSync('DirectoryForm', {mode:'edit'});
     }
     $('form').set('html', cachedForms.editDir);
-    var data = fileById[idSet.join(',')],
+    var data = fileById[id],
         form = $('frm_dir');
-    form.id.value = idSet.join(',');
+    form.id.value = id;
     form.title.value = data.title;
     form.description.value = data.description;
     form.parent.value = data.parent;
@@ -488,14 +487,14 @@ function newFile()
 /**
  * Brings the edit file UI up
  */
-function editFile()
+function editFile(id)
 {
     if (!cachedForms.editFile) {
         cachedForms.editFile = DirectoryAjax.callSync('FileForm', {mode:'edit'});
     }
     $('form').set('html', cachedForms.editFile);
     var form = $('frm_file'),
-        file = fileById[idSet.join(',')];
+        file = fileById[id];
     if (file.foreign) {
         $('frm_upload').remove();
         $('parent').remove();
@@ -512,8 +511,8 @@ function editFile()
         if (file.filename) {
             var url = file.dl_url;
             if (!url) {
-                url = DirectoryAjax.callSync('GetDownloadURL', {id:idSet.join(',')});
-                fileById[idSet.join(',')].dl_url = url;
+                url = DirectoryAjax.callSync('GetDownloadURL', {id:id});
+                fileById[id].dl_url = url;
             }
             setFilename(file.filename, url);
             $('filename').value = ':nochange:';
@@ -523,7 +522,7 @@ function editFile()
         }
     }
     form.action.value = 'UpdateFile';
-    form.id.value = idSet.join(',');
+    form.id.value = id;
     form.title.value = file.title;
     form.description.value = file.description;
 }
@@ -644,7 +643,7 @@ function share()
     $('form').set('html', cachedForms.share);
     $('groups').selectedIndex = -1;
 
-    var users = DirectoryAjax.callSync('GetFileUsers', {'id':idSet.join(',')});
+    var users = DirectoryAjax.callSync('GetFileUsers', {'id':idSet[0]});
     sharedFileUsers = {};
     users.each(function (user) {
         sharedFileUsers[user.id] = user.username;

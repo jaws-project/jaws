@@ -1,7 +1,7 @@
-fieldset {border:1px solid silver; margin:0; padding:10px;}
-fieldset input:not([type=checkbox]) {width:100%;}
-fieldset table {width:100%}
-fieldset th {width:1%; text-align:left;}
+.directory fieldset {border:1px solid silver; margin:0; padding:10px;}
+.directory fieldset input:not([type=checkbox]) {width:100%;}
+.directory fieldset table {width:100%}
+.directory fieldset th {width:1%; text-align:left;}
 
 .files-table{
 width:100%;
