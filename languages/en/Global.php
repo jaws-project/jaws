@@ -57,6 +57,7 @@ define('_EN_GLOBAL_CATEGORY', "Category");
 define('_EN_GLOBAL_CATEGORIES', "Categories");
 define('_EN_GLOBAL_DATE', "Date");
 define('_EN_GLOBAL_ACTIONS', "Actions");
+define('_EN_GLOBAL_NO_ACTION', "No action");
 define('_EN_GLOBAL_GADGETS', "Gadgets");
 define('_EN_GLOBAL_GADGET_ACTIONS', "Actions");
 define('_EN_GLOBAL_SETTINGS', "Settings");
