@@ -91,7 +91,7 @@
               <!-- END item -->
             </select>
             <input name="tel_number[]" type="text" value="{value}" />
-            <button onclick="AddTellItem();" value="" id="addTelButton" name="addTelButton" type="button">
+            <button onclick="AddTellItem(this);" value="" id="addTelButton" name="addTelButton" type="button">
               <img alt="{lbl_add_tell}" src="{icon_add}">
             </button>
             <button onclick="RemoveItem(this);" value="" id="removeTelButton" name="removeTelButton" type="button">
@@ -114,7 +114,7 @@
               <!-- END item -->
             </select>
             <input name="email[]" type="text" value="{value}" />
-            <button onclick="AddEmailItem();" value="" id="addEmailButton" name="addEmailButton" type="button">
+            <button onclick="AddEmailItem(this);" value="" id="addEmailButton" name="addEmailButton" type="button">
               <img alt="{lbl_add_email}" src="{icon_add}">
             </button>
             <button onclick="RemoveItem(this);" value="" id="removeEmailButton" name="removeEmailButton" type="button">
@@ -136,7 +136,7 @@
               <option value="{type_id}" {selected}>{type_name}</option>
               <!-- END item -->
             </select>
-            <button onclick="AddAdrItem();" value="" id="addAdrButton" name="addAdrButton" type="button">
+            <button onclick="AddAdrItem(this);" value="" id="addAdrButton" name="addAdrButton" type="button">
               <img alt="{lbl_add_adr}" src="{icon_add}">
             </button>
             <button onclick="RemoveItem(this);" value="" id="removeAdrButton" name="removeAdrButton" type="button">
@@ -156,7 +156,7 @@
            <div id="url_{index}" class="url">
             <label>{lbl_url}:</label>
             <input name="url[]" type="text" value="{value}" style="width: 350px; display: inline;"/>
-            <button onclick="AddUrlItem();" value="" id="addUrlButton" name="addUrlButton" type="button">
+            <button onclick="AddUrlItem(this);" value="" id="addUrlButton" name="addUrlButton" type="button">
               <img alt="{lbl_add_Url}" src="{icon_add}">
             </button>
             <button onclick="RemoveItem(this);" value="" id="removeUrlButton" name="removeUrlButton" type="button">

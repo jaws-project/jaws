@@ -20,7 +20,7 @@ var AddressBookCallback = {
     }
 }
 
-function AddTellItem()
+function AddTellItem(inputObject)
 {
     lastID = lastID + 1;
     $('removeTelButton').style.display = 'inline'
@@ -31,10 +31,10 @@ function AddTellItem()
     div.getElementsByTagName('input')[0].name  = 'tel_number[]';
     div.getElementsByTagName('input')[0].value = '';
     div.getElementsByTagName('select')[0].selectedIndex = 0;
-    $('tel_p').appendChild(div);
+    div.inject($(inputObject).parentNode, 'after');
 }
 
-function AddEmailItem()
+function AddEmailItem(inputObject)
 {
     lastID = lastID + 1;
     $('removeEmailButton').style.display = 'inline'
@@ -45,10 +45,10 @@ function AddEmailItem()
     div.getElementsByTagName('input')[0].name  = 'email[]';
     div.getElementsByTagName('input')[0].value = '';
     div.getElementsByTagName('select')[0].selectedIndex = 0;
-    $('email_p').appendChild(div);
+    div.inject($(inputObject).parentNode, 'after');
 }
 
-function AddAdrItem()
+function AddAdrItem(inputObject)
 {
     lastID = lastID + 1;
     $('removeAdrButton').style.display = 'inline'
@@ -59,10 +59,10 @@ function AddAdrItem()
     div.getElementsByTagName('textarea')[0].name  = 'adr[]';
     div.getElementsByTagName('textarea')[0].value = '';
     div.getElementsByTagName('select')[0].selectedIndex = 0;
-    $('adr_p').appendChild(div);
+    div.inject($(inputObject).parentNode, 'after');
 }
 
-function AddUrlItem()
+function AddUrlItem(inputObject)
 {
     lastID = lastID + 1;
     $('removeUrlButton').style.display = 'inline'
@@ -71,7 +71,7 @@ function AddUrlItem()
     div.id = "url_" + lastID;
     div.getElementsByTagName('input')[0].name  = 'url[]';
     div.getElementsByTagName('input')[0].value = '';
-    $('url_p').appendChild(div);
+    div.inject($(inputObject).parentNode, 'after');
 }
 
 function RemoveItem(inputObject)
