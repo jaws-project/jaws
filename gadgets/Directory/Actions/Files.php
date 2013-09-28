@@ -236,56 +236,6 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
     }
 
     /**
-     * Deletes file from both database and disk
-     *
-     * @access  public
-     * @param   int     $id     File ID to be deleted - optional
-     * @return  mixed   Response array or Jaws_Error on error
-     */
-    function DeleteFile($id = null)
-    {
-        if ($id === null) {
-            $id = (int)jaws()->request->fetch('id');
-        }
-        try {
-            // Validate file
-            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-            $file = $model->GetFile($id);
-            if (Jaws_Error::IsError($file)) {
-                throw new Exception($file->getMessage());
-            }
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            if ($file['user'] != $user) {
-                throw new Exception(_t('DIRECTORY_ERROR_FILE_DELETE'));
-            }
-
-            // Delete from disk
-            $filename = $GLOBALS['app']->getDataURL('directory/' . $file['user'] . '/' . $file['filename']);
-            if (file_exists($filename)) {
-                if (!Jaws_Utils::delete($filename)) {
-                    throw new Exception(_t('DIRECTORY_ERROR_FILE_DELETE'));
-                }
-            }
-
-            // Delete from database
-            $res = $model->Delete($id);
-            if (Jaws_Error::IsError($res)) {
-                throw new Exception($res->getMessage());
-            }
-        } catch (Exception $e) {
-            return $GLOBALS['app']->Session->GetResponse(
-                $e->getMessage(),
-                RESPONSE_ERROR
-            );
-        }
-
-        return $GLOBALS['app']->Session->GetResponse(
-            _t('DIRECTORY_NOTICE_FILE_DELETED'),
-            RESPONSE_NOTICE
-        );
-    }
-
-    /**
      * Makes file public/unpublic
      *
      * @access  public

@@ -188,7 +188,8 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
     function GetTree()
     {
         $tree = '';
-        $exclude = (int)jaws()->request->fetch('id');
+        $exclude = jaws()->request->fetch('id_set');
+        $exclude = empty($exclude)? array() : explode(',', $exclude);
         $this->BuildTree(0, $exclude, $tree);
 
         $tpl = $this->gadget->loadTemplate('Move.html');
@@ -205,11 +206,11 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      *
      * @access  public
      * @param   int     $root       File ID as tree root
-     * @param   int     $exclude    File ID to be excluded in tree
+     * @param   array   $exclude    Set of IDs to be excluded in tree
      * @param   string  $tree       XHTML tree
      * @return  void
      */
-    function BuildTree($root = 0, $exclude = null, &$tree)
+    function BuildTree($root = 0, $exclude = array(), &$tree)
     {
         $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
@@ -220,7 +221,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         if (!empty($dirs)) {
             $tree .= '<ul>';
             foreach ($dirs as $dir) {
-                if ($dir['id'] == $exclude || $dir['user'] !== $dir['owner']) {
+                if (in_array($dir['id'], $exclude) || $dir['user'] !== $dir['owner']) {
                     continue;
                 }
                 $tree .= "<li><a id='node_{$dir['id']}'>{$dir['title']}</a>";
@@ -287,63 +288,89 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      */
     function Move()
     {
-        try {
-            $data = jaws()->request->fetch(array('id', 'target'));
-            if ($data['id'] === null || $data['target'] === null) {
-                throw new Exception(_t('DIRECTORY_ERROR_MOVE'));
+        $data = jaws()->request->fetch(array('id_set', 'target'));
+        if (empty($data['id_set']) || is_null($data['target'])) {
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('DIRECTORY_ERROR_MOVE'),
+                RESPONSE_ERROR
+            );
+        }
+
+        $id_set = explode(',', $data['id_set']);
+        $target = (int)$data['target'];
+        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+
+        // Validate target
+        if ($target !== 0) {
+            $dir = $model->GetFile($target);
+            if (Jaws_Error::IsError($dir) || !$dir['is_dir']) {
+                return $GLOBALS['app']->Session->GetResponse(
+                    _t('DIRECTORY_ERROR_MOVE'),
+                    RESPONSE_ERROR
+                );
+            }
+        }
+
+        $fault = false;
+        foreach ($id_set as $id) {
+            // Prevent moving to itself
+            if ($target == $id) {
+                $fault = true;
+                continue;
             }
 
-            $id = (int)$data['id'];
-            $target = (int)$data['target'];
-            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
-
-            // Validate source/target
+            // Validate file
             $file = $model->GetFile($id);
             if (Jaws_Error::IsError($file)) {
-                throw new Exception($file->getMessage());
-            }
-            if ($target !== 0) {
-                $dir = $model->GetFile($target);
-                if (Jaws_Error::IsError($dir)) {
-                    throw new Exception($dir->getMessage());
-                }
-                if (!$dir['is_dir']) {
-                    throw new Exception(_t('DIRECTORY_ERROR_MOVE'));
-                }
-            }
-
-            // Stop moving to itself, it's parent or it's children
-            if ($target == $id || $target == $file['parent']) {
-                throw new Exception(_t('DIRECTORY_ERROR_MOVE'));
-            }
-            $path = array();
-            $id_set = array();
-            $model->GetPath($target, $path);
-            foreach ($path as $d) {
-                $id_set[] = $d['id'];
-            }
-            if (in_array($id, $id_set)) {
-                throw new Exception(_t('DIRECTORY_ERROR_MOVE'));
+                $fault = true;
+                continue;
             }
 
             // Validate user
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            // FIXME: we should be able to move into a shared directory
-            // if ($file['user'] != $user || $dir['user'] != $user) {
             if ($file['user'] != $user) {
-                throw new Exception(_t('DIRECTORY_ERROR_MOVE'));
+                $fault = true;
+                continue;
+            }
+
+            // Prevent moving to it's parent
+            if ($target == $file['parent']) {
+                $fault = true;
+                continue;
+            }
+
+            // Prevent moving to it's children
+            $path = array();
+            $pathArr = array();
+            $model->GetPath($target, $path);
+            foreach ($path as $dir) {
+                $pathArr[] = $dir['id'];
+            }
+            if (in_array($id, $pathArr)) {
+                $fault = true;
+                continue;
             }
 
             // Let's perform move
+            // FIXME: we can move all files at once
             $res = $model->Move($id, $target);
             if (Jaws_Error::IsError($res)) {
-                throw new Exception($res->getMessage());
+                $fault = true;
+                continue;
             }
-        } catch (Exception $e) {
-            return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
         }
 
-        return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_NOTICE_ITEMS_MOVED'), RESPONSE_NOTICE);
+        if ($fault === true) {
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('DIRECTORY_WARNING_MOVE'),
+                RESPONSE_WARNING
+            );
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(
+                _t('DIRECTORY_NOTICE_ITEMS_MOVED'),
+                RESPONSE_NOTICE
+            );
+        }
     }
 
     /**
