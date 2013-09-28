@@ -8,7 +8,7 @@
  * @copyright  2013 Jaws Development Group
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/resources/site_style.css');
-class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
+class AddressBook_Actions_Groups extends AddressBook_HTML
 {
     /**
      * Layout Action. Displays plane list of Address Book Groups
@@ -89,14 +89,15 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         }
 
         $this->AjaxMe('site_script.js');
+        $tpl->SetVariable('menubar', $this->MenuBar('Groups'));
         $tpl->SetVariable('address_list_link', $this->gadget->urlMap('AddressBook'));
         $tpl->SetVariable('address_list',    _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
         $tpl->SetVariable('lbl_name',        _t('GLOBAL_TITLE'));
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
         $tpl->SetVariable('lbl_actions',     _t('GLOBAL_ACTIONS'));
         $tpl->SetVariable('confirmDelete',   _t('ADDRESSBOOK_DELETE_CONFIRM'));
-        $tpl->SetVariable('deleteURL', $this->gadget->urlMap('DeleteGroup', array('id' => '')));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('lbl_no_action', _t('ADDRESSBOOK_NO_ACTION'));
         $tpl->SetVariable('icon_ok', STOCK_OK);
 
         foreach ($groupItems as $groupItem) {
@@ -148,10 +149,7 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
         $tpl->SetVariable('lbl_desc', _t('GLOBAL_DESCRIPTION'));
 
-        $tpl->SetVariable('address_list_link', $this->gadget->urlMap('AddressBook'));
-        $tpl->SetVariable('address_list',    _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
-        $tpl->SetVariable('groups_link', $this->gadget->urlMap('ManageGroups'));
-        $tpl->SetVariable('groups', _t('ADDRESSBOOK_GROUPS_MANAGE'));
+        $tpl->SetVariable('menubar', $this->MenuBar(''));
 
         $btnSave =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'));
         $btnSave->SetSubmit();
@@ -216,10 +214,7 @@ class AddressBook_Actions_Groups extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_desc',   _t('GLOBAL_DESCRIPTION'));
         $tpl->SetVariable('desc',       $info['description']);
 
-        $tpl->SetVariable('address_list_link', $this->gadget->urlMap('AddressBook'));
-        $tpl->SetVariable('address_list',    _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
-        $tpl->SetVariable('groups_link', $this->gadget->urlMap('ManageGroups'));
-        $tpl->SetVariable('groups', _t('ADDRESSBOOK_GROUPS_MANAGE'));
+        $tpl->SetVariable('menubar', $this->MenuBar(''));
 
         $btnSave =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'));
         $btnSave->SetSubmit();

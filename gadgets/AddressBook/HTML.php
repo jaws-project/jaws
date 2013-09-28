@@ -50,4 +50,32 @@ class AddressBook_HTML extends Jaws_Gadget_HTML
         2 => array('fieldType' => 'work', 'lang' => 'WORK_ADR'),
         3 => array('fieldType' => 'other', 'lang' => 'OTHER_ADR'),
     );
+
+    /**
+     * Displays menu bar according to selected action
+     *
+     * @access  public
+     * @param   string  $action_selected    selected action
+     * @return  string XHTML template content
+     */
+    function MenuBar($action_selected)
+    {
+        $actions = array('AddressBook', 'Groups');
+        if (!in_array($action_selected, $actions)) {
+            $action_selected = 'AddressBook';
+        }
+
+        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
+        $menubar = new Jaws_Widgets_Menubar();
+
+        $menubar->AddOption('AddressBook',_t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'),
+            $this->gadget->urlMap('AddressBook'), 'gadgets/AddressBook/images/contact.png');
+
+        $menubar->AddOption('Groups',_t('ADDRESSBOOK_GROUPS_MANAGE'),
+            $this->gadget->urlMap('ManageGroups'), 'gadgets/AddressBook/images/groups_mini.png');
+
+        $menubar->Activate($action_selected);
+
+        return $menubar->Get();
+    }
 }

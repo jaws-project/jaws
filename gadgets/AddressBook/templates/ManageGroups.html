@@ -2,7 +2,7 @@
 <div class="gadget addressbook_list">
   <div class="gadget_header">
    <h2>{title}</h2>
-   <ul class="gadget_menubar"><li><a href="{address_list_link}">{address_list}</a></li></ul>
+   <div class="gadget_menubar">{menubar}</div>
   </div>
   <div class="gadget_response">
     <div id="addressbook_managegroups_response" class="{type}">{text}</div>
@@ -31,7 +31,7 @@
         <div class="actions">
             <div style="float: left;">
               <select id="addressbook_gaction" name="action" style="width: 150px;" >
-                <option value="ManageGroups"></option>
+                <option value="ManageGroups">{lbl_no_action}</option>
                 <option value="DeleteGroup">{lbl_delete}</option>
               </select>
               <button value="" id="BtnExAction" name="BtnExAction" type="submit"><img alt="" src="{icon_ok}"></button>
@@ -43,7 +43,6 @@
     </form>
   <script type="text/javascript">
     var confirmDelete = "{confirmDelete}";
-    var deleteURL = "{deleteURL}";
   </script>
   </div>
 </div>

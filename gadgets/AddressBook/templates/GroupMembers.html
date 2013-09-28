@@ -2,10 +2,7 @@
 <div class="gadget addressbook_list">
   <div class="gadget_header">
    <h2>{title}</h2>
-   <ul class="gadget_menubar">
-    <li><a href="{address_list_link}">{address_list}</a></li>
-    <li><a href="{groups_link}">{groups}</a></li>
-   </ul>
+   <div class="gadget_menubar">{menubar}</div>
   </div>
   <div class="gadget_response">
     <div id="addressbook_groupmembers_response" class="{type}">{text}</div>
@@ -51,7 +48,7 @@
         <div class="actions">
             <div style="float: left;">
               <select id="addressbook_gaction" name="actions" style="width: 150px;" >
-                <option value=""></option>
+                <option value="">{lbl_no_action}</option>
                 <option value="UnbondAddress">{lbl_delete}</option>
               </select>
               <button value="" id="BtnExAction" name="BtnExAction" type="submit"><img alt="" src="{icon_ok}"></button>

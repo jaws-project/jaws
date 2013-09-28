@@ -37,10 +37,7 @@ class AddressBook_Actions_VCardImport extends AddressBook_HTML
             $tpl->ParseBlock('vcard/response');
         }
 
-        $tpl->SetVariable('address_list_link', $this->gadget->urlMap('AddressBook'));
-        $tpl->SetVariable('address_list',    _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
-        $tpl->SetVariable('groups_link', $this->gadget->urlMap('ManageGroups'));
-        $tpl->SetVariable('groups', _t('ADDRESSBOOK_GROUPS_MANAGE'));
+        $tpl->SetVariable('menubar', $this->MenuBar(''));
 
         // Cancel Button
         $tpl->SetBlock("vcard/actions");

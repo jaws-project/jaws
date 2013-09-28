@@ -101,12 +101,7 @@ class AddressBook_Actions_ViewAddress extends AddressBook_HTML
             }
         }
 
-        $tpl->SetBlock('address/menu_bar');
-        $tpl->SetVariable('address_list_link', $this->gadget->urlMap('AddressBook'));
-        $tpl->SetVariable('address_list',    _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
-        $tpl->SetVariable('groups_link', $this->gadget->urlMap('ManageGroups'));
-        $tpl->SetVariable('groups', _t('ADDRESSBOOK_GROUPS_MANAGE'));
-        $tpl->ParseBlock('address/menu_bar');
+        $tpl->SetVariable('menubar', $this->MenuBar(''));
 
         $tpl->SetBlock('address/actions');
         if ($info['user'] == $GLOBALS['app']->Session->GetAttribute('user')) {

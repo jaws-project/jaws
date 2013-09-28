@@ -2,7 +2,7 @@
 <div class="gadget addressbook_list">
  <div class="gadget_header">
   <h2>{title}</h2>
-  <ul class="gadget_menubar"><li><a href="{manage_groups_link}">{manage_groups}</a></li></ul>
+  <div class="gadget_menubar">{menubar}</div>
  </div>
   <div class="gadget_response">
     <div id="addressbook_addressbook_response" class="{type}">{text}</div>
@@ -11,15 +11,15 @@
     <div class="addressbook_list_search">
         {lbl_group}: 
         <select id="addressbook_group" name="group" style="width: 150px;" >
-          <option value="0"></option>
+          <option value="0">{lbl_all_groups}</option>
           <!-- BEGIN group_item -->
           <option value="{gid}">{group_name}</option>
           <!-- END group_item -->
         </select>
         {lbl_term}: 
         <input id="addressbook_term" name="term" type="text" value="" />
-        <button onclick="FilterAddress();" value="" id="FilterAddress" name="FilterAddress"type="button">
-          <img alt="" src="{icon_filter}">
+        <button onclick="FilterAddress();" value="{lbl_search}" id="FilterAddress" name="FilterAddress" type="button">
+          <img alt="lbl_search" src="{icon_filter}"> {lbl_search}
         </button>
     </div>
 
@@ -33,7 +33,7 @@
       <div class="actions">
         <div style="float: left;">
           <select id="addressbook_gaction" name="action" style="width: 150px;" >
-            <option value="AddressBook"></option>
+            <option value="AddressBook">{lbl_no_action}</option>
             <option value="DeleteAddress">{lbl_delete}</option>
             <option value="VCardBuild">{lbl_export}</option>
           </select>

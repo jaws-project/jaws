@@ -126,19 +126,6 @@ function SaveAddress()
 }
 
 /**
- * Delete Address
- */
-function DeleteAddress(aid)
-{
-    msg = confirmDelete.substr(0, confirmDelete.indexOf('%s%'))+
-          $('aid_'+aid).innerHTML+
-          confirmDelete.substr(confirmDelete.indexOf('%s%') + 3);
-    if (confirm(msg)) {
-        window.location.href = deleteURL + aid;
-    }
-}
-
-/**
  * Execute Selected Action In Selected Addresses
  */
 function ExAction()
@@ -153,19 +140,6 @@ function ExAction()
         AddressBookAjax.callAsync('DeleteGroup', $(document).getElement('form[name=AddressBookAction]').toQueryString().parseQueryString());
     }
     return false;
-}
-
-/**
- * Delete Address Group
- */
-function DeleteGroup(gid)
-{
-    msg = confirmDelete.substr(0, confirmDelete.indexOf('%s%'))+
-          $('ag_'+gid).innerHTML+
-          confirmDelete.substr(confirmDelete.indexOf('%s%') + 3);
-    if (confirm(msg)) {
-        window.location.href = deleteURL + gid;
-    }
 }
 
 /**

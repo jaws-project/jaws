@@ -8,7 +8,7 @@
  * @copyright  2013 Jaws Development Group
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/resources/site_style.css');
-class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
+class AddressBook_Actions_AddressBookGroup extends AddressBook_HTML
 {
     /**
      * Displays the list of Address Book items for selected group
@@ -53,13 +53,11 @@ class AddressBook_Actions_AddressBookGroup extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_address', _t('ADDRESSBOOK_ITEMS_ADDRESS'));
         $tpl->SetVariable('add_icon', STOCK_ADD);
 
-        $tpl->SetVariable('address_list_link', $this->gadget->urlMap('AddressBook'));
-        $tpl->SetVariable('address_list',    _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
-        $tpl->SetVariable('groups_link', $this->gadget->urlMap('ManageGroups'));
-        $tpl->SetVariable('groups', _t('ADDRESSBOOK_GROUPS_MANAGE'));
+        $tpl->SetVariable('menubar', $this->MenuBar(''));
         $tpl->SetVariable('edit_group', _t('ADDRESSBOOK_GROUPS_EDIT'));
         $tpl->SetVariable('edit_group_link', $this->gadget->urlMap('EditGroup', array('id' => $gid)));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('lbl_no_action', _t('ADDRESSBOOK_NO_ACTION'));
         $tpl->SetVariable('icon_ok', STOCK_OK);
 
         $notInGroupAddress = $model->GetAddressListNotInGroup($gid, $user);

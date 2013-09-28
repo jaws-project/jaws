@@ -47,10 +47,14 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
             $tpl->SetVariable('text', $response['text']);
         }
 
-        $tpl->SetVariable('lbl_group', _t('ADDRESSBOOK_GROUP'));
-        $tpl->SetVariable('lbl_term', _t('ADDRESSBOOK_TERM'));
+        $tpl->SetVariable('menubar', $this->MenuBar('AddressBook'));
+        $tpl->SetVariable('lbl_group',  _t('ADDRESSBOOK_GROUP'));
+        $tpl->SetVariable('lbl_term',   _t('ADDRESSBOOK_TERM'));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('lbl_export', _t('ADDRESSBOOK_EXPORT_VCARD'));
+        $tpl->SetVariable('lbl_all_groups', _t('ADDRESSBOOK_GROUP_ALL_GROUPS'));
+        $tpl->SetVariable('lbl_no_action', _t('ADDRESSBOOK_NO_ACTION'));
+        $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('icon_ok', STOCK_OK);
         $gModel = $this->gadget->load('Model')->load('Model', 'Groups');
         $groupList = $gModel->GetGroups($uid);
@@ -63,9 +67,6 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
 
         $tpl->SetVariable('addressbook', $this->AddressList());
-
-        $tpl->SetVariable('manage_groups_link', $this->gadget->urlMap('ManageGroups'));
-        $tpl->SetVariable('manage_groups', _t('ADDRESSBOOK_GROUPS_MANAGE'));
 
         // Add New
         $tpl->SetBlock("address_list/actions");
@@ -189,10 +190,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         $current_image = $GLOBALS['app']->getSiteURL('/gadgets/AddressBook/images/photo128px.png');
         $tpl->SetVariable('image_src', $current_image);
 
-        $tpl->SetVariable('address_list_link', $this->gadget->urlMap('AddressBook'));
-        $tpl->SetVariable('address_list',    _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
-        $tpl->SetVariable('groups_link', $this->gadget->urlMap('ManageGroups'));
-        $tpl->SetVariable('groups', _t('ADDRESSBOOK_GROUPS_MANAGE'));
+        $tpl->SetVariable('menubar', $this->MenuBar(''));
 
         $uModel = new Jaws_User();
         $users = $uModel->GetUsers();
@@ -324,10 +322,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
             $tpl->ParseBlock('address/selected');
         }
 
-        $tpl->SetVariable('address_list_link', $this->gadget->urlMap('AddressBook'));
-        $tpl->SetVariable('address_list',    _t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'));
-        $tpl->SetVariable('groups_link', $this->gadget->urlMap('ManageGroups'));
-        $tpl->SetVariable('groups', _t('ADDRESSBOOK_GROUPS_MANAGE'));
+        $tpl->SetVariable('menubar', $this->MenuBar(''));
 
         $uModel = new Jaws_User();
         $users = $uModel->GetUsers();
