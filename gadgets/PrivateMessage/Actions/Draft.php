@@ -55,7 +55,7 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
 
         $tpl->SetBlock('outbox/actions');
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
-        $tpl->SetVariable('lbl_no_action', _t('PRIVATEMESSAGE_MESSAGE_NO_ACTION'));
+        $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('icon_ok', STOCK_OK);
         $tpl->ParseBlock('outbox/actions');

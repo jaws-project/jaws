@@ -72,7 +72,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $tpl->SetVariable('filter', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
-        $tpl->SetVariable('lbl_no_action', _t('PRIVATEMESSAGE_MESSAGE_NO_ACTION'));
+        $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
 
         if ($view == 'archived') {
             $tpl->SetBlock('inbox/archive_action');
