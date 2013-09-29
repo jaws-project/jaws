@@ -95,17 +95,11 @@ if (!$GLOBALS['app']->Session->Logged())
 
     if ($httpAuthEnabled) {
         $httpAuth->showLoginBox();
-    } else {
-        // Init layout
-        $GLOBALS['app']->InstanceLayout();
-        $cpl = $GLOBALS['app']->LoadGadget('ControlPanel', 'AdminHTML', 'Login');
-        echo $cpl->LoginBox($loginMsg);
     }
-
-    // Sync session
-    $GLOBALS['app']->Session->Synchronize();
-    $GLOBALS['log']->End();
-    exit;
+    // Init layout
+    $GLOBALS['app']->InstanceLayout();
+    $cpl = $GLOBALS['app']->LoadGadget('ControlPanel', 'AdminHTML', 'Login');
+    terminate($data = $cpl->LoginBox($loginMsg), 401);
 }
 
 // remove checksess(check session) parameter from requested url
@@ -150,33 +144,8 @@ if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
         $GLOBALS['app']->Layout->LoadControlPanel($ReqGadget);
         $ReqResult = $GLOBALS['app']->Layout->Get();
     }
-} else {
-    Jaws_Error::Fatal('Invalid requested gadget');
+
+    terminate($ReqResult);
 }
 
-// Send content to client
-$resType = jaws()->request->fetch('restype');
-switch ($resType) {
-    case 'json':
-        header('Content-Type: application/json; charset=utf-8');
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Pragma: no-cache');
-        echo Jaws_UTF8::json_encode($ReqResult);
-        break;
-
-    case 'gzip':
-    case 'x-gzip':
-        $ReqResult = gzencode($ReqResult, COMPRESS_LEVEL, FORCE_GZIP);
-        header('Content-Length: '.strlen($ReqResult));
-        header('Content-Encoding: '. $resType);
-        echo $ReqResult;
-        break;
-
-    default:
-        echo $ReqResult;
-}
-
-// Sync session
-$GLOBALS['app']->Session->Synchronize();
-$GLOBALS['log']->End();
-exit;
+Jaws_Error::Fatal('Invalid requested gadget');
