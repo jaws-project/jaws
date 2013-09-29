@@ -20,7 +20,7 @@ class Phoo_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls   = array();
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Phoo', 'DefaultAction'),
+        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Phoo', 'AlbumList'),
                         'title' => _t('PHOO_NAME'));
 
         //Load model
