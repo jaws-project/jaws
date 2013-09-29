@@ -26,8 +26,7 @@ class LinkDump_Actions_Link extends Jaws_Gadget_HTML
         if (!Jaws_Error::IsError($link) && !empty($link)) {
             $click = $model->Click($link['id']);
             if (!Jaws_Error::IsError($click)) {
-                header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 301 Moved Permanently");
-                Jaws_Header::Location($link['url']);
+                Jaws_Header::Location($link['url'], null, 301);
             }
         }
 

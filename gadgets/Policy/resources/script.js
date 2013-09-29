@@ -13,7 +13,7 @@
  */
 var PolicyCallback = {
     addiprange: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('blocked_ips_datagrid').addItem();
             $('blocked_ips_datagrid').setCurrentPage(0);
             getDG();
@@ -23,7 +23,7 @@ var PolicyCallback = {
     },
 
     editiprange: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG();
         }
@@ -31,7 +31,7 @@ var PolicyCallback = {
     },
 
     deleteiprange: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('blocked_ips_datagrid').deleteItem();
             getDG();
         }
@@ -39,7 +39,7 @@ var PolicyCallback = {
     },
 
     addagent: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('blocked_agents_datagrid').addItem();
             $('blocked_agents_datagrid').setCurrentPage(0);
             getDG();
@@ -49,7 +49,7 @@ var PolicyCallback = {
     },
 
     editagent: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG();
         }
@@ -57,7 +57,7 @@ var PolicyCallback = {
     },
 
     deleteagent: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('blocked_agents_datagrid').deleteItem();
             getDG();
         }

@@ -139,7 +139,11 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
                                       date('H:i:s'),
                                       (int)$id,
                                       date('D, d'));
-            $GLOBALS['app']->Session->PushLastResponse($response, RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(
+                _t('STATICPAGE_PAGE_AUTOUPDATED', date('H:i:s'), (int)$id, date('D, d')),
+                RESPONSE_NOTICE,
+                $newid
+            );
         } else {
             $model->UpdatePage($id, $group, $showtitle, $title, $content, $language,
                                       $fast_url, $meta_keys, $meta_desc, $published, true);

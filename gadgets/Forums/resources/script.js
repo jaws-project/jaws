@@ -13,7 +13,7 @@
 var ForumsCallback = {
 
     updategroup: function(response) {
-        if (response['css'] == 'notice-message') {
+        if (response['type'] == 'response_notice') {
             $('group_'+$('gid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
             stopAction();
         }
@@ -106,7 +106,7 @@ function saveForums()
                                     $('order').value,
                                     $('locked').value,
                                     $('published').value);
-            if (response['css'] == 'notice-message') {
+            if (response['type'] == 'response_notice') {
                 AddNewForumGroup(response['data']);
                 stopAction();
             }
@@ -131,7 +131,7 @@ function saveForums()
                                     $('order').value,
                                     $('locked').value,
                                     $('published').value);
-            if (response['css'] == 'notice-message') {
+            if (response['type'] == 'response_notice') {
                 AddNewForumItem($('gid').value, response['data'], $('order').value);
                 stopAction();
             }
@@ -146,7 +146,7 @@ function saveForums()
                                     $('order').value,
                                     $('locked').value,
                                     $('published').value);
-            if (response['css'] == 'notice-message') {
+            if (response['type'] == 'response_notice') {
                 $('forum_'+$('fid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
                 var new_parentNode = $('group_'+$('gid').value);
                 if ($('forum_'+$('fid').value).parentNode != new_parentNode) {
@@ -302,7 +302,7 @@ function delForums()
         if (confirm(msg)) {
             cacheForumForm = null;
             var response = ForumsAjax.callSync('deletegroup', gid);
-            if (response['css'] == 'notice-message') {
+            if (response['type'] == 'response_notice') {
                 Element.destroy($('group_'+gid));
                 stopAction();
             }
@@ -316,7 +316,7 @@ function delForums()
               msg.substr(msg.indexOf('%s%') + 3);
         if (confirm(msg)) {
             var response = ForumsAjax.callSync('deleteforum', fid);
-            if (response['css'] == 'notice-message') {
+            if (response['type'] == 'response_notice') {
                 Element.destroy($('forum_'+fid));
                 stopAction();
             }

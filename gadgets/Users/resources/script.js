@@ -14,7 +14,7 @@
  */
 var UsersCallback = {
     adduser: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopUserAction();
             $('users_datagrid').addItem();
             $('users_datagrid').lastPage();
@@ -24,7 +24,7 @@ var UsersCallback = {
     },
 
     updateuser: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopUserAction();
             getDG('users_datagrid');
         }
@@ -36,28 +36,28 @@ var UsersCallback = {
     },
 
     addusertogroups: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopUserAction();
         }
         showResponse(response);
     },
 
     updatepreferences: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopUserAction();
         }
         showResponse(response);
     },
 
     updatecontacts: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopUserAction();
         }
         showResponse(response);
     },
 
     updatepersonal: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopUserAction();
         }
         showResponse(response);
@@ -70,7 +70,7 @@ var UsersCallback = {
     },
 
     deleteuser: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopUserAction();
             $('users_datagrid').deleteItem();
             getDG('users_datagrid');
@@ -79,7 +79,7 @@ var UsersCallback = {
     },
 
     addgroup: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopGroupAction();
             $('groups_datagrid').addItem();
             $('groups_datagrid').lastPage();
@@ -89,7 +89,7 @@ var UsersCallback = {
     },
 
     updategroup: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopGroupAction();
             getDG('groups_datagrid');
         }
@@ -97,7 +97,7 @@ var UsersCallback = {
     },
 
     deletegroup: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopGroupAction();
             $('groups_datagrid').deleteItem();          
             getDG('groups_datagrid');
@@ -110,14 +110,14 @@ var UsersCallback = {
     },
 
     adduserstogroup: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopGroupAction();
         }
         showResponse(response);
     },
 
     deletesession: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             clearTimeout(fTimeout);
             getOnlineUsers('onlineusers_datagrid');
         }

@@ -14,7 +14,7 @@
 var BlocksCallback = {
 
     newblock: function(response) {
-        if (response['css'] == 'notice-message') {
+        if (response['type'] == 'response_notice') {
             afterNewBlock(response['data']);
         }
         showResponse(response);
@@ -44,7 +44,7 @@ var BlocksCallback = {
                 selIndex = 0;
                 combo.options[selIndex].selected = true;
             }
-            if (response[0]['css'] == 'notice-message') {
+            if (response[0]['type'] == 'response_notice') {
                 edit(combo.options[selIndex].value);
             }
         } else {

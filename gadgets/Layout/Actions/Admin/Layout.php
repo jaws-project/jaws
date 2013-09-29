@@ -33,8 +33,8 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
         if ($responses) {
             foreach ($responses as $msg_id => $response) {
                 $t_item->SetBlock('msgbox-wrapper/msgbox');
-                $t_item->SetVariable('msg-css', $response['css']);
-                $t_item->SetVariable('msg-txt', $response['message']);
+                $t_item->SetVariable('text', $response['text']);
+                $t_item->SetVariable('type', $response['type']);
                 $t_item->SetVariable('msg-id', $msg_id);
                 $t_item->ParseBlock('msgbox-wrapper/msgbox');
             }

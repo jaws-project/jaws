@@ -92,7 +92,7 @@ function saveQuote()
                                             $('stop_time').value,
                                             $('show_title').value == 'true',
                                             $('published').value == 'true');
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             if ($('group_filter').value == -1 || $('group_filter').value == $('gid').value) {
                 var box = $('quotes_combo');
                 box.options[box.options.length] = new Option(response[0]['message']['title'], response[0]['message']['id']);
@@ -113,7 +113,7 @@ function saveQuote()
                                             $('stop_time').value,
                                             $('show_title').value == 'true',
                                             $('published').value == 'true');
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             box.options[quoteIndex].text = $('title').value;
             stopAction();
         }
@@ -131,7 +131,7 @@ function deleteQuote()
         var box = $('quotes_combo');
         var quoteIndex = box.selectedIndex;
         var response = QuotesAjax.callSync('deletequote', box.value);
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             box.options[quoteIndex] = null;
             stopAction();
         }
@@ -209,7 +209,7 @@ function saveGroup()
                                                 $('limit_count').value,
                                                 $('random').value == 'true',
                                                 $('published').value == 'true');
-            if (response[0]['css'] == 'notice-message') {
+            if (response[0]['type'] == 'response_notice') {
                 var box = $('groups_combo');
                 box.options[box.options.length] = new Option(response[0]['message']['title'], response[0]['message']['id']);
                 response[0]['message'] = response[0]['message']['message'];
@@ -228,7 +228,7 @@ function saveGroup()
                                                 $('limit_count').value,
                                                 $('random').value == 'true',
                                                 $('published').value == 'true');
-            if (response[0]['css'] == 'notice-message') {
+            if (response[0]['type'] == 'response_notice') {
                 box.options[groupIndex].text = $('title').value;
                 stopAction();
             }
@@ -262,7 +262,7 @@ function deleteGroup()
         var box = $('groups_combo');
         var quoteIndex = box.selectedIndex;
         var response = QuotesAjax.callSync('deletegroup', box.value);
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             box.options[quoteIndex] = null;
             stopAction();
         }

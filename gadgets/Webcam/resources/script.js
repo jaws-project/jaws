@@ -12,7 +12,7 @@
  */
 var WebcamCallback = { 
     newwebcam: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('webcam_datagrid').addItem();
             $('webcam_datagrid').setCurrentPage(0);
             getDG();
@@ -21,7 +21,7 @@ var WebcamCallback = {
     },
 
     deletewebcam: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('webcam_datagrid').deleteItem();          
             getDG();
         }
@@ -29,7 +29,7 @@ var WebcamCallback = {
     },
     
     updatewebcam: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             getDG();
         }
         showResponse(response);

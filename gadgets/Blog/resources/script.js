@@ -14,7 +14,7 @@
 var BlogCallback = {
 
     deleteentries: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             var rows = $('posts_datagrid').getSelectedRows();
             if (rows.length > 0) {
                 for(var i=0; i<rows.length; i++) {
@@ -33,7 +33,7 @@ var BlogCallback = {
     },
 
     changeentrystatus: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             PiwiGrid.multiSelect($('posts_datagrid'));
             resetLEForm();
             var formData = getDataOfLEForm();
@@ -46,7 +46,7 @@ var BlogCallback = {
     },
 
     deletetrackbacks: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             var rows = $('trackbacks_datagrid').getSelectedRows();
             if (rows.length > 0) {
                 for(var i=0; i<rows.length; i++) {
@@ -66,7 +66,7 @@ var BlogCallback = {
     },
 
     trackbackmarkas: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             PiwiGrid.multiSelect($('trackbacks_datagrid'));
             resetLTBForm();
             var formData = getDataOfLTBForm();
@@ -91,7 +91,7 @@ var BlogCallback = {
 
     addcategory: function(response) {
         showResponse(response);
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             resetCategoryCombo();
         }
@@ -99,7 +99,7 @@ var BlogCallback = {
 
     updatecategory: function(response) {
         showResponse(response);
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             resetCategoryCombo();
         }
@@ -107,7 +107,7 @@ var BlogCallback = {
 
     deletecategory: function(response) {
         showResponse(response);
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             resetCategoryCombo();
         }
@@ -651,7 +651,7 @@ function showSimpleResponse(message)
 {
     if (!autoDraftDone) {
         var actioni   = $('action').value;
-        if (actioni == 'SaveNewEntry' && message[0]['css'] == 'notice-message') {
+        if (actioni == 'SaveNewEntry' && message[0]['type'] == 'response_notice') {
             $('published').value = '0';
             $('id').value        = message[0]['message']['id'];
             $('action').value    = 'SaveEditEntry';

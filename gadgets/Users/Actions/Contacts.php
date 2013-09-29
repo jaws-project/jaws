@@ -28,6 +28,7 @@ class Users_Actions_Contacts extends Users_HTML
         }
 
         $this->gadget->CheckPermission('EditUserContacts');
+        $this->AjaxMe('index.js');
         $response = $GLOBALS['app']->Session->PopResponse('Users.Contacts');
         if (!isset($response['data'])) {
             require_once JAWS_PATH . 'include/Jaws/User.php';
@@ -82,10 +83,8 @@ class Users_Actions_Contacts extends Users_HTML
         }
 
         if (!empty($response)) {
-            $tpl->SetBlock('contacts/response');
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('contacts/response');
         }
 
         $tpl->ParseBlock('contacts');
@@ -143,7 +142,7 @@ class Users_Actions_Contacts extends Users_HTML
             );
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('Contacts'));
+        Jaws_Header::Location($this->gadget->urlMap('Contacts'), 'Users.Contacts');
     }
 
 }

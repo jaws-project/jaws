@@ -13,13 +13,13 @@
 var FaqCallback = {
     deletequestion: function(response) {
         showResponse(response);
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             buildCategory(currentCategory);
         }
     },
 
     deletecategory: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('FaqCategory_'+currentCategory).destroy();
         }
         showResponse(response);
@@ -31,7 +31,7 @@ var FaqCallback = {
 
     movequestion: function(response) {
         showResponse(response);
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             buildCategory(currentCategory);
         }
     }

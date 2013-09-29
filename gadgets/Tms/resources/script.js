@@ -13,7 +13,7 @@
 var TmsCallback = {
     sharetheme: function(response) {
         var optionSelected = $('themes_combo').options[$('themes_combo').selectedIndex];
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             optionSelected.className = 'isshared';
             $('unshare_button').style.display = 'block';
             $('share_button').style.display   = 'none';
@@ -27,7 +27,7 @@ var TmsCallback = {
     
     unsharetheme: function(response) {
         var optionSelected = $('themes_combo').options[$('themes_combo').selectedIndex];
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             optionSelected.className = 'isnotshared';
             $('unshare_button').style.display = 'none';
             $('share_button').style.display   = 'block';
@@ -40,7 +40,7 @@ var TmsCallback = {
     },    
     
     installtheme: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('themes_combo').value = selectedTheme;
             editTheme(selectedTheme);
         }
@@ -48,13 +48,13 @@ var TmsCallback = {
     },
 
     uninstalltheme: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
         }
         showResponse(response);
     },
 
     newrepository: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('repositories_datagrid').addItem();
             $('repositories_datagrid').setCurrentPage(0);
         }
@@ -63,7 +63,7 @@ var TmsCallback = {
     },
 
     deleterepository: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             $('repositories_datagrid').deleteItem();          
         }
         showResponse(response);

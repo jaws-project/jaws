@@ -50,10 +50,13 @@
       <!-- END cptitle -->
       <div id="msgbox-wrapper">
         <!-- BEGIN msgbox -->
-        <div id="msgbox_{msg-id}" class="{msg-css}">{msg-txt}</div>
+        <div id="msgbox_{msg-id}" class="{type}">{text}</div>
         <script type="text/javascript">
           var msgbox = $('msgbox_{msg-id}');
-          if((msgbox.className != 'error-message') && (msgbox.className != 'warning-message') && (window.hideResponseBox)) {
+          if ((msgbox.className != 'response_error') &&
+              (msgbox.className != 'response_warning') &&
+              (window.hideResponseBox)
+          ) {
             hideResponseBox(msgbox);
           }
         </script>

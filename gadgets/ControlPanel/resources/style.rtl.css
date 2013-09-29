@@ -737,7 +737,7 @@ height:auto;
 border:1px solid transparent;
 }
 /* ----- NOTIFICATIONS ----- */
-.error-message,.warning-message,.notice-message,.working-message{
+.response_error,.response_warning,.response_notice,.working-message{
 border-radius:4px;
 font-weight:bold;
 display:inline-block;
@@ -749,17 +749,17 @@ padding-bottom:3px;
 background-repeat:no-repeat;
 background-position:right;
 }
-.notice-message{
+.response_notice{
 border:1px solid #9db029;
 background-color:#e6f0a5;
 background-image:url("../../../images/stock/info-small.png");
 }
-.warning-message{
+.response_warning{
 border:1px solid #fce94f;
 background-color:#fdf4a7;
 background-image:url("../../../images/stock/warning-small.png");
 }
-.error-message{
+.response_error{
 border:1px solid #cc0000;
 background-color:#fabfbf;
 background-image:url("../../../images/stock/error-small.png");

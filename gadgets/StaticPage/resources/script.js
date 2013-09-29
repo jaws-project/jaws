@@ -14,21 +14,21 @@
  */
 var StaticPageCallback = { 
     deletepage: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             getDG('pages_datagrid');
         }
         showResponse(response);
     }, 
 
     deletetranslation: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             getDG('pages_datagrid');
         }
         showResponse(response);
     }, 
     
     massivedelete: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             var rows = $('pages_datagrid').getSelectedRows();
             if (rows.length > 0) {
                 for(var i=0; i<rows.length; i++) {
@@ -50,7 +50,7 @@ var StaticPageCallback = {
     },
 
     insertgroup: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             $('groups_datagrid').addItem();
             $('groups_datagrid').setCurrentPage(0);
@@ -60,7 +60,7 @@ var StaticPageCallback = {
     },
 
     updategroup: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG('groups_datagrid');
         }
@@ -68,7 +68,7 @@ var StaticPageCallback = {
     },
 
     deletegroup: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopAction();
             $('groups_datagrid').deleteItem();
             getDG('groups_datagrid');
@@ -154,7 +154,7 @@ function deletePage(id, redirect)
         if (redirect) {
             var response = StaticPageAjax.callSync('deletepage', id);
             showResponse(response);
-            if (response[0]['css'] == 'notice-message') {
+            if (response[0]['type'] == 'response_notice') {
                 window.location= base_script + '?gadget=StaticPage&action=Admin';
             }
         } else {
@@ -173,7 +173,7 @@ function deleteTranslation(id, redirect)
         if (redirect) {
             var response = StaticPageAjax.callSync('deletetranslation', id);
             showResponse(response);
-            if (response[0]['css'] == 'notice-message') {
+            if (response[0]['type'] == 'response_notice') {
                 window.location= base_script + '?gadget=StaticPage&action=Admin';
             }
         } else {
@@ -318,18 +318,17 @@ function deleteGroup(rowElement, gid)
  * Show the response but only text, nothing with datagrid.
  * FIXME!
  */
-function showSimpleResponse(message)
+function showSimpleResponse(response)
 {
     if (!autoDraftDone) {
         var actioni   = document.forms[0].elements['action'].value;
-        if (actioni == 'AddPage' && message[0]['css'] == 'notice-message') {
+        if (actioni == 'AddPage' && response[0]['type'] == 'response_notice') {
             document.forms[0].elements['action'].value = 'SaveEditPage';
-            document.forms[0].elements['id'].value     = message[0]['message']['id'];
-            message[0]['message'] = message[0]['message']['message'];
+            document.forms[0].elements['id'].value     = response[0]['data'];
         }
         autoDraftDone = true;
     }
-    showResponse(message);
+    showResponse(response);
 }
 
 /**

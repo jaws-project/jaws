@@ -16,7 +16,7 @@ var UrlMapperCallback = {
      * Updates a map
      */
     updatemap: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             enableMapEditingArea(false);
             showActionMaps();
         }
@@ -34,7 +34,7 @@ var UrlMapperCallback = {
      * Adds a new alias
      */
     addalias: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             rebuildAliasCombo();
         }
         showResponse(response);
@@ -44,7 +44,7 @@ var UrlMapperCallback = {
      * Updates a new alias
      */
     updatealias: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             rebuildAliasCombo();
         }
         showResponse(response);
@@ -54,7 +54,7 @@ var UrlMapperCallback = {
      * Deletes a new alias
      */
     deletealias: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             rebuildAliasCombo();
         }
         showResponse(response);
@@ -64,7 +64,7 @@ var UrlMapperCallback = {
      * Add a new error map
      */
     adderrormap: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopErrorMapAction();
             $('errormaps_datagrid').addItem();
             $('errormaps_datagrid').lastPage();
@@ -77,7 +77,7 @@ var UrlMapperCallback = {
      * delete an  error map
      */
     deleteerrormap: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopErrorMapAction();
             $('errormaps_datagrid').deleteItem();
             getDG('errormaps_datagrid');
@@ -89,7 +89,7 @@ var UrlMapperCallback = {
      * update an  error map
      */
     updateerrormap: function(response) {
-        if (response[0]['css'] == 'notice-message') {
+        if (response[0]['type'] == 'response_notice') {
             stopErrorMapAction();
             getDG('errormaps_datagrid');
         }
