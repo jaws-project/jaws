@@ -186,7 +186,7 @@ function searchTags()
 /**
  * save properties
  */
-function SaveSettings()
+function saveSettings()
 {
 }
 

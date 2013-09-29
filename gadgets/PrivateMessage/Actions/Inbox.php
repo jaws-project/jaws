@@ -28,13 +28,8 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $tpl->SetBlock('inbox');
 
         $post = jaws()->request->fetch(array('view', 'page', 'read', 'replied', 'term', 'page_item'), 'post');
-        $tpl->SetVariable('opt_page_item_' . $post['page_item'], 'selected="selected"');
-        $page_item = $post['page_item'];
 
         if (!empty($post['read']) || !empty($post['replied']) || !empty($post['term'])) {
-            $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
-            $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
-            $tpl->SetVariable('txt_term', $post['term']);
             $page = $post['page'];
             $view = $post['view'];
         } else {
@@ -54,43 +49,15 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
             $tpl->SetVariable('menubar', $this->MenuBar('Inbox'));
         }
 
-        $page = empty($page)? 1 : (int)$page;
-        if (empty($page_item)) {
-            $limit = (int)$this->gadget->registry->fetch('inbox_limit');
-        } else {
-            $limit = $page_item;
-        }
 
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_INBOX'));
         $tpl->SetVariable('page', $page);
         $tpl->SetVariable('view', $view);
-        $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
-        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
-        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
-        $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
-        $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
-        $tpl->SetVariable('filter', _t('GLOBAL_SEARCH'));
-        $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
-        $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
-        $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
 
-        if ($view == 'archived') {
-            $tpl->SetBlock('inbox/archive_action');
-            $tpl->SetVariable('lbl_move_to_inbox', _t('PRIVATEMESSAGE_MOVE_TO_INBOX'));
-            $tpl->ParseBlock('inbox/archive_action');
-        } else {
-            $tpl->SetBlock('inbox/inbox_action');
-            $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
-            $tpl->SetVariable('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
-            $tpl->SetVariable('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
-            $tpl->ParseBlock('inbox/inbox_action');
-        }
-        $tpl->SetVariable('icon_filter', STOCK_SEARCH);
-        $tpl->SetVariable('icon_ok', STOCK_OK);
+        $tpl->SetVariable('inbox_filters', $this->InboxFiltersUI());
+        $tpl->SetVariable('inbox_datagrid', $this->InboxDataGridUI());
+        $tpl->SetVariable('inbox_actions', $this->InboxActionsUI());
 
-        $date = $GLOBALS['app']->loadDate();
-        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
-        $user = $GLOBALS['app']->Session->GetAttribute('user');
         if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
             $tpl->SetBlock('inbox/response');
             $tpl->SetVariable('type', $response['type']);
@@ -98,12 +65,88 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
             $tpl->ParseBlock('inbox/response');
         }
 
+        $tpl->ParseBlock('inbox');
+        return $tpl->Get();
+    }
+
+    /**
+     * Return Inbox Filters UI
+     *
+     * @access  public
+     * @return  void
+     */
+    function InboxFiltersUI()
+    {
+        $tpl = $this->gadget->loadTemplate('Inbox.html');
+        $tpl->SetBlock('filters');
+
+        $post = jaws()->request->fetch(array('view', 'page', 'read', 'replied', 'term', 'page_item'), 'post');
+        if (!empty($post['read']) || !empty($post['replied']) || !empty($post['term'])) {
+            $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
+            $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
+            $tpl->SetVariable('txt_term', $post['term']);
+        }
+
+        $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
+        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
+        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
+        $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
+        $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
+        $tpl->SetVariable('filter', _t('GLOBAL_SEARCH'));
+        $tpl->SetVariable('icon_filter', STOCK_SEARCH);
+
+        $tpl->ParseBlock('filters');
+        return $tpl->Get();
+    }
+
+    /**
+     * Return Inbox Data Grid UI
+     *
+     * @access  public
+     * @return  void
+     */
+    function InboxDataGridUI()
+    {
+        $post = jaws()->request->fetch(array('view', 'page', 'read', 'replied', 'term', 'page_item'), 'post');
+
+        $tpl = $this->gadget->loadTemplate('Inbox.html');
+        $tpl->SetBlock('dataGrid');
+
+        $tpl->SetVariable('opt_page_item_' . $post['page_item'], 'selected="selected"');
+        $page_item = $post['page_item'];
+
+        if (!empty($post['read']) || !empty($post['replied']) || !empty($post['term'])) {
+            $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
+            $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
+            $tpl->SetVariable('txt_term', $post['term']);
+            $page = $post['page'];
+        } else {
+            $post = null;
+            $get = jaws()->request->fetch(array('view', 'page'), 'get');
+            $page = $get['page'];
+        }
+
+        $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
+        $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
+        $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
+        $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
+
+        $page = empty($page)? 1 : (int)$page;
+        if (empty($page_item)) {
+            $limit = (int)$this->gadget->registry->fetch('inbox_limit');
+        } else {
+            $limit = $page_item;
+        }
+
+        $date = $GLOBALS['app']->loadDate();
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
+        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
         $messages = $model->GetInbox($user, $post, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
             foreach ($messages as $message) {
                 $i++;
-                $tpl->SetBlock('inbox/message');
+                $tpl->SetBlock('dataGrid/message');
                 $tpl->SetVariable('rownum', $i);
                 $tpl->SetVariable('id',  $message['message_recipient_id']);
                 $tpl->SetVariable('from', $message['from_nickname']);
@@ -122,13 +165,13 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
                     array('id' => $message['message_recipient_id'])));
 
                 if ($message['attachments'] > 0) {
-                    $tpl->SetBlock('inbox/message/have_attachment');
+                    $tpl->SetBlock('dataGrid/message/have_attachment');
                     $tpl->SetVariable('attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));
                     $tpl->SetVariable('icon_attachment', STOCK_ATTACH);
-                    $tpl->ParseBlock('inbox/message/have_attachment');
+                    $tpl->ParseBlock('dataGrid/message/have_attachment');
                 } else {
-                    $tpl->SetBlock('inbox/message/no_attachment');
-                    $tpl->ParseBlock('inbox/message/no_attachment');
+                    $tpl->SetBlock('dataGrid/message/no_attachment');
+                    $tpl->ParseBlock('dataGrid/message/no_attachment');
                 }
 
                 // user's profile
@@ -141,13 +184,9 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
                     )
                 );
 
-                $tpl->ParseBlock('inbox/message');
+                $tpl->ParseBlock('dataGrid/message');
             }
         }
-
-        $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
-        $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
-        $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
 
         $iModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
         $inboxTotal = $iModel->GetInboxStatistics($user, $post);
@@ -163,7 +202,51 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
             'Inbox'
         );
 
-        $tpl->ParseBlock('inbox');
+        $tpl->ParseBlock('dataGrid');
+        return $tpl->Get();
+    }
+
+    /**
+     * Return Inbox Actions UI
+     *
+     * @access  public
+     * @return  void
+     */
+    function InboxActionsUI()
+    {
+        $post = jaws()->request->fetch(array('view', 'page', 'read', 'replied', 'term', 'page_item'), 'post');
+
+        $tpl = $this->gadget->loadTemplate('Inbox.html');
+        $tpl->SetBlock('actions');
+
+        if (!empty($post['read']) || !empty($post['replied']) || !empty($post['term'])) {
+            $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
+            $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
+            $tpl->SetVariable('txt_term', $post['term']);
+            $view = $post['view'];
+        } else {
+            $post = null;
+            $get = jaws()->request->fetch(array('view', 'page'), 'get');
+            $view = $get['view'];
+        }
+
+        $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
+        $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
+
+        if ($view == 'archived') {
+            $tpl->SetBlock('actions/archive_action');
+            $tpl->SetVariable('lbl_move_to_inbox', _t('PRIVATEMESSAGE_MOVE_TO_INBOX'));
+            $tpl->ParseBlock('actions/archive_action');
+        } else {
+            $tpl->SetBlock('actions/inbox_action');
+            $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
+            $tpl->SetVariable('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
+            $tpl->SetVariable('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
+            $tpl->ParseBlock('actions/inbox_action');
+        }
+        $tpl->SetVariable('icon_ok', STOCK_OK);
+
+        $tpl->ParseBlock('actions');
         return $tpl->Get();
     }
 }

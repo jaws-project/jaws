@@ -22,6 +22,20 @@ var PrivateMessageCallback = {
     }
 }
 
+/**
+ * Filter inbox
+ */
+function filterInbox()
+{
+    var result = PrivateMessageAjax.callSync(
+        'InboxDataGridUI',
+        $(document).getElement('form[name=inbox]').toQueryString().parseQueryString()
+    );
+    console.log(result);
+    $('inbox-datagrid').innerHTML = result;
+    return false;
+}
+
 
 /**
  * Reset attachments after save draft a message
