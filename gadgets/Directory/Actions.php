@@ -1,6 +1,6 @@
 <?php
 /**
- * Contact Actions file
+ * Notepad Actions file
  *
  * @category    GadgetActions
  * @package     Directory

@@ -35,23 +35,23 @@ text-align:right;
 }
 .file-sharing{
 position:absolute;
-top:50%;
-left:0;
-display:inline-block;
-width:100%;
-height:16px;
+right:22px;
+width:16px;
+height:32px;
+background-position:left top;
+background-repeat:no-repeat;
 }
 .file-sharing.shared{
-background:url(../images/shared.png) no-repeat 20% center;
+background-image:url(../images/shared.png);
 }
 .file-sharing.foreign{
-background:url(../images/users.png) no-repeat 20% center;
+background-image:url(../images/users.png);
 }
 .file-sharing.public{
-background:url(../images/link.png) no-repeat 20% center;
+background-image:url(../images/link.png);
 }
 .file-sharing.shared.public{
-background:url(../images/shared.png) no-repeat 20% center, url(../images/link.png) no-repeat 60% center;
+background:url(../images/shared.png) no-repeat left top, url(../images/link.png) no-repeat left 70%;
 }
 
 .file-info table{
@@ -153,10 +153,4 @@ font-size:11px;
 .file-info td.file-size{
 direction:ltr;
 text-align:right;
-}
-
-#loading{
-display:none;
-vertical-align:middle;
-margin:0 5px;
 }

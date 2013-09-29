@@ -84,21 +84,6 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         $tpl->SetVariable('public', '{public}');
         $tpl->ParseBlock('workspace/fileTemplate');
 
-        // Status bar
-        $tpl->SetBlock('workspace/statusbar');
-        $tpl->SetVariable('title', '{title}');
-        $tpl->SetVariable('size', '{size}');
-        $tpl->SetVariable('created', '{created}');
-        $tpl->SetVariable('modified', '{modified}');
-        $tpl->ParseBlock('workspace/statusbar');
-
-        // Display probabley responses
-        $response = $GLOBALS['app']->Session->PopResponse('Directory');
-        if ($response) {
-            $tpl->SetVariable('response', $response['text']);
-            $tpl->SetVariable('response_type', $response['type']);
-        }
-
         $tpl->ParseBlock('workspace');
         return $tpl->Get();
     }

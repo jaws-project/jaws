@@ -575,15 +575,18 @@ function publishFile(published)
  */
 function showFileURL(url)
 {
-    var link = $('public_url');
+    var link = $('public_url'),
+        span = $('file_' + idSet[0]).getElement('span');
     if (url !== '') {
         link.innerHTML = site_url + url;
         link.href = url;
         link.show();
+        span.addClass('public');
         $('btn_unpublic').show('inline');
         $('btn_public').hide();
     } else {
         link.hide();
+        span.removeClass('public');
         $('btn_public').show();
         $('btn_unpublic').hide();
     }
