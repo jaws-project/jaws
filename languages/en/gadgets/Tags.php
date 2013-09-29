@@ -21,7 +21,11 @@ define('_EN_TAGS_ACL_DELETETAGS', "Delete tags");
 define('_EN_TAGS_ACL_MERGETAGS', "Merge tags");
 
 /* Layout Actions */
-//define('_EN_TAGS_ACTIONS_PRIVATEMESSAGE', "Private Message");
+define('_EN_TAGS_ACTIONS_TAGCLOUD', "Tag Cloud");
+define('_EN_TAGS_ACTIONS_TAGCLOUD_DESC', "Display Tag Cloud");
+
+/* Tag Cloud */
+define('_EN_TAGS_TAG_CLOUD', "{0} Tag Cloud");
 
 /* Tags */
 define('_EN_TAGS_TAG_NAME', "Tag name");
@@ -32,7 +36,7 @@ define('_EN_TAGS_CONFIRM_DELETE', "Are you sure you want to delete this tag(s)?"
 define('_EN_TAGS_SELECT_MORE_THAN_ONE_TAG_FOR_MERGE', "Please select more than one tag for merging");
 
 /* Common */
-define('_EN_TAGS_GADGETS', "Gadgets");
+define('_EN_TAGS_GADGET', "Gadget");
 define('_EN_TAGS_ACTIONS', "Actions");
 define('_EN_TAGS_MERGE', "Merge");
 

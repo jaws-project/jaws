@@ -49,7 +49,7 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
             $gadgetsCombo->AddOption(_t('BLOG_NAME'), 'Blog');
             $gadgetsCombo->AddOption(_t('LINKDUMP_NAME'), 'LinkDump');
             $gadgetsCombo->SetDefault('');
-            $tpl->SetVariable('lbl_gadgets_filter', _t('TAGS_GADGETS'));
+            $tpl->SetVariable('lbl_gadgets_filter', _t('TAGS_GADGET'));
             $tpl->SetVariable('gadgets_filter', $gadgetsCombo->Get());
             $tpl->ParseBlock('tags/gadgets_filter');
         } else {
