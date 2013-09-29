@@ -14,9 +14,9 @@ class Jaws_Gadget_Installer
      * Default ACL value of frontend gadget access
      *
      * @var     bool
-     * @access  private
+     * @access  protected
      */
-    var $_DefaultACL = true;
+    var $default_acl = true;
 
     /**
      * Gadget Registry keys
@@ -103,7 +103,7 @@ class Jaws_Gadget_Installer
         }
 
         // Adding common ACL keys
-        $result[] = array('default', '', $this->_DefaultACL);
+        $result[] = array('default', '', $this->default_acl);
         $result[] = array('default_admin', '', false);
         $result[] = array('default_registry', '', false);
         return $result;

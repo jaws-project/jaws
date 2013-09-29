@@ -160,8 +160,7 @@ class Jaws_Layout
            !$GLOBALS['app']->Session->IsSuperAdmin()
         ) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-            echo Jaws_HTTPError::Get(503);
-            exit;
+            terminate($data = Jaws_HTTPError::Get(503), 503);
         }
 
         $favicon = $this->attributes['site_favicon'];
@@ -327,8 +326,8 @@ class Jaws_Layout
         if ($responses) {
             foreach ($responses as $msg_id => $response) {
                 $this->_Template->SetBlock('layout/msgbox');
-                $this->_Template->SetVariable('msg-css', $response['css']);
-                $this->_Template->SetVariable('msg-txt', $response['message']);
+                $this->_Template->SetVariable('text', $response['text']);
+                $this->_Template->SetVariable('type', $response['type']);
                 $this->_Template->SetVariable('msg-id', $msg_id);
                 $this->_Template->ParseBlock('layout/msgbox');
             }
@@ -674,9 +673,10 @@ class Jaws_Layout
         header('Cache-Control: no-cache, must-revalidate');
         header('Pragma: no-cache');
 
-        $this->AddHeadMeta('base_script', BASE_SCRIPT);
-        $this->AddHeadMeta('requested_gadget', $GLOBALS['app']->requestedGadget);
-        $this->AddHeadMeta('requested_action', $GLOBALS['app']->requestedAction);
+        $this->AddHeadMeta(
+            'application-name',
+            BASE_SCRIPT.':'.$GLOBALS['app']->requestedGadget.':'.$GLOBALS['app']->requestedAction
+        );
         $this->AddHeadMeta('generator', 'Jaws Framework 0.9 (http://jaws-project.com)');
         $headContent = $this->GetHeaderContent($this->_HeadLink, $this->_ScriptLink, $this->_HeadMeta, $this->_HeadOther);
 

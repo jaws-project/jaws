@@ -60,7 +60,6 @@ class Jaws_HTTPAuth
 
         // This code is only executed if the user hits the cancel button
         // or in some browsers user enters wrong data 3 times.
-        echo _t('GLOBAL_ERROR_ACCESS_DENIED');
-        exit;
+        terminate($data = _t('GLOBAL_ERROR_ACCESS_DENIED'), 401);
     }
 }

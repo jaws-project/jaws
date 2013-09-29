@@ -25,8 +25,12 @@ var JawsAjax = new Class({
     initialize: function (gadget, callback, baseScript) {
         this.gadget = gadget;
         this.callback = callback;
-        baseScript = (baseScript === undefined)? $$('meta[name=base_script]').getProperty('content') : baseScript;
+        this.loadingMessage = 'Loading...';
+        var reqValues = $(document).getElement('meta[name=application-name]').getProperty('content').split(':');
+        this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
+        baseScript = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
         this.baseURL = baseScript + '?gadget=' + this.gadget + '&action=Ajax&method=';
+        this.msgBox = (this.mainRequest['gadget']+'_'+ this.mainRequest['action']+'_'+'response').toLowerCase();
     },
 
     /**
@@ -36,8 +40,18 @@ var JawsAjax = new Class({
      * @return  void
      */
     backwardSupport: function (baseScript) {
-        baseScript = (baseScript === undefined)? $$('meta[name=base_script]').getProperty('content') : baseScript;
+        baseScript = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
         this.baseURL = baseScript + '?gadget=' + this.gadget + '&restype=json&action=';
+    },
+
+    /**
+     * Set message/response box
+     *
+     * @param   string  msgBox  Message box ID
+     * @return  void
+     */
+    setMessageBox: function (msgBox) {
+        this.msgBox = msgBox.toLowerCase();
     },
 
     /**
@@ -58,9 +72,10 @@ var JawsAjax = new Class({
         options.data = toJSON(params);
         options.urlEncoded = false;
         options.headers = {'content-type' : 'application/json; charset=utf-8'};
-        options.onRequest = this.onRequest.bind(this);
-        options.onSuccess = this.onSuccess.bind(this, options);
-        options.onFailure = this.onFailure.bind(this, options);
+        options.onRequest  = this.onRequest.bind(this);
+        options.onSuccess  = this.onSuccess.bind(this, options);
+        options.onFailure  = this.onFailure.bind(this, options);
+        options.onComplete = this.onComplete.bind(this, options);
         new Request(options).send();
     },
 
@@ -83,12 +98,13 @@ var JawsAjax = new Class({
         options.urlEncoded = false;
         options.headers = {'content-type' : 'application/json; charset=utf-8'};
         options.onRequest = this.onRequest.bind(this);
+        options.onComplete = this.onComplete.bind(this, options);
         var req = new Request(options).send();
         return eval('(' + req.response.text + ')');
     },
 
     onRequest: function () {
-        // TODO: start loading..
+        this.showLoading(true);
     },
 
     onSuccess: function (reqOptions, responseText) {
@@ -101,6 +117,32 @@ var JawsAjax = new Class({
 
     onFailure: function () {
         // TODO: alert failure message
+    },
+
+    onComplete: function () {
+        this.showLoading(false);
+    },
+
+    showResponse: function (response) {
+        $(this.msgBox).getParent().setStyles({'position': 'absolute', 'display': 'block'});
+        $(this.msgBox).set({'html': response.text, 'class': response.type});
+        $(this.msgBox).fade('show');
+        (function(){
+            this.fade('out');
+            (function(){this.set('class', '')}).delay(500, this);
+        }).delay(4000, $(this.msgBox));
+    },
+
+    showLoading: function (show) {
+        if ($(this.msgBox)) {
+            if (show) {
+                $(this.msgBox).getParent().setStyles({'position': 'absolute', 'display': 'block'});
+                $(this.msgBox).set({'html': this.loadingMessage, 'class': 'response_loading'});
+                $(this.msgBox).fade('show');
+            } else {
+                $(this.msgBox).set('class', '');
+            }
+        }
     }
 
 });
@@ -666,25 +708,25 @@ function Jaws_Ajax_ServerError(error)
 /**
  * Show the response
  */
-function showResponse(message, goTop)
+function showResponse(text, goTop)
 {
     if (typeof(goTop) == 'undefined' || goTop) {
         $(document.body).scrollTo(0, 0);
     }
 
     var messages = [];
-    if (message[0] == undefined) {
-        messages[0] = message;
+    if (text[0] == undefined) {
+        messages[0] = text;
     } else {
-        messages = message;
+        messages = text;
     }
 
     $('msgbox-wrapper').innerHTML = '';
     for(var i = 0; i < messages.length; i++) {
         var messageDiv  = new Element(
             'div',
-            {'id':'msgbox_'+i, 'class':messages[i]['css']}
-        ).appendText(messages[i]['message']);
+            {'id':'msgbox_'+i, 'class':messages[i]['type']}
+        ).appendText(messages[i]['text']);
         $('msgbox-wrapper').appendChild(messageDiv);
         messageDiv.fade('show');
         hideResponseBox(messageDiv);
@@ -767,27 +809,12 @@ function toJSON(v) {
             object: function (x) {
                 if (x) {
                     var a = [], b, f, i, l, v;
-                    if (x instanceof Array) {
-                        a[0] = '[';
-                        l = x.length;
-                        for (i = 0; i < l; i += 1) {
-                            v = x[i];
-                            f = s[typeof v];
-                            if (f) {
-                                v = f(v);
-                                if (typeof v == 'string') {
-                                    if (b) {
-                                        a[a.length] = ',';
-                                    }
-                                    a[a.length] = v;
-                                    b = true;
-                                }
-                            }
-                        }
-                        a[a.length] = ']';
-                    } else if ((x instanceof Object) || (typeof x) == 'object') {
+                    if ((x instanceof Object) || ((typeof x) == 'object') || (x instanceof Array)) {
                         a[0] = '{';
                         for (i in x) {
+                            if (!x.hasOwnProperty(i)) {
+                                continue;
+                            }
                             v = x[i];
                             f = s[typeof v];
                             if (f) {

@@ -840,63 +840,39 @@ class Jaws_Session
      * Add the last response to the session system
      *
      * @access  public
-     * @param   string  $msg    Response's message
-     * @param   string  $level  Response type
-     * @param   mixed   $data   Optional extra data
+     * @param   string  $text   Response text
+     * @param   string  $type   Response type
+     * @param   mixed   $data   Response data
      * @return  void
      */
-    function PushLastResponse($msg, $level = RESPONSE_WARNING, $data = null)
+    function PushLastResponse($text, $type = RESPONSE_NOTICE, $data = null)
     {
-        switch ($level) {
-            case RESPONSE_ERROR:
-                $css = 'error-message';
-                break;
-            case RESPONSE_NOTICE:
-                $css = 'notice-message';
-                break;
-            default:
-                $level = RESPONSE_WARNING;
-                $css = 'warning-message';
-                break;
-        }
-
-        $this->SetAttribute('LastResponses',
-                            array('message' => $msg,
-                                  'data'    => $data,
-                                  'level'   => $level,
-                                  'css'     => $css
-                                  )
-                            );
+        $this->SetAttribute(
+            'LastResponses',
+            array(
+                'text' => $text,
+                'type' => $type,
+                'data' => $data
+            )
+        );
     }
 
     /**
      * Get the response
      *
      * @access  public
-     * @param   string  $msg    Response's message
-     * @param   string  $level  Response type
-     * @param   mixed   $data   Optional extra data
-     * @return  array   Returns array include msg, data, level and css class
+     * @param   string  $text   Response text
+     * @param   string  $type   Response type
+     * @param   mixed   $data   Response data
+     * @return  array   Returns array include text, type and data class
      */
-    function GetResponse($msg, $level = RESPONSE_WARNING, $data = null)
+    function GetResponse($text, $type = RESPONSE_NOTICE, $data = null)
     {
-        switch ($level) {
-            case RESPONSE_ERROR:
-                $css = 'error-message';
-                break;
-            case RESPONSE_NOTICE:
-                $css = 'notice-message';
-                break;
-            default:
-                $level = RESPONSE_WARNING;
-                $css = 'warning-message';
-                break;
-        }
-
-        return array('message' => $msg,
-                     'data'    => $data,
-                     'level'   => $level,
-                     'css'     => $css);
+        return array(
+            'text' => $text,
+            'type' => $type,
+            'data' => $data
+        );
     }
 
     /**
@@ -914,7 +890,7 @@ class Jaws_Session
 
         $this->DeleteAttribute('LastResponses');
         $responses = array_reverse($responses);
-        if (empty($responses[0]['message'])) {
+        if (empty($responses[0]['text'])) {
             return false;
         }
 
