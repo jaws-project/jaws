@@ -1,16 +1,21 @@
 <!-- BEGIN share -->
 <fieldset>
-<div><b>{lbl_shared_for}:</b></div>
-<select id="share_users" size="10"></select>
-<div></div>
-<!-- BEGIN edit -->
-<form id="frm_share">
-  <div><b>{lbl_groups}:</b></div>
-  {groups}
-  <div><b>{lbl_users}:</b></div>
-  <div id="users"></div>
-</form>
-<!-- END edit -->
+  <div><label>{lbl_shared_for}:</label></div>
+  <select id="share_users" size="10"></select>
+  <div></div>
+  <!-- BEGIN edit -->
+  <form id="frm_share">
+    <div><label>{lbl_groups}:</label></div>
+    {groups}
+    <div><label>{lbl_users}:</label></div>
+    <div id="users"></div>
+  </form>
+  <!-- END edit -->
+  <div><label>{lbl_public}:</label>
+    <button id="btn_public" onclick="publishFile(true)">{lbl_make_public}</button>
+    <a id="public_url"></a>
+    <button id="btn_unpublic" title="Remove" onclick="publishFile(false)"> X </button>
+  </div>
 </fieldset>
 <!-- BEGIN actions -->
 <div class="actions">

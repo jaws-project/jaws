@@ -61,7 +61,7 @@ var DirectoryCallback = {
 
     PublishFile: function(response) {
         if (response.type === 'response_notice') {
-            fileById[idSet.join(',')]['public'] = response.data;
+            fileById[idSet[0]]['public'] = response.data;
             showFileURL(response.data);
         }
         DirectoryAjax.showResponse(response);
@@ -373,7 +373,10 @@ function props()
         data.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:id});
     }
     if (data.dl_url) {
-        showFileURL(data.dl_url);
+        var link = $('public_url');
+        link.innerHTML = site_url + data.dl_url;
+        link.href = data.dl_url;
+        link.show();
     }
 }
 
@@ -562,7 +565,7 @@ function onUpload(response) {
 function publishFile(published)
 {
     DirectoryAjax.callAsync('PublishFile', {
-        'id':idSet.join(','),
+        'id':idSet[0],
         'public':published
     });
 }
@@ -577,7 +580,7 @@ function showFileURL(url)
         link.innerHTML = site_url + url;
         link.href = url;
         link.show();
-        $('btn_unpublic').show();
+        $('btn_unpublic').show('inline');
         $('btn_public').hide();
     } else {
         link.hide();
@@ -636,19 +639,29 @@ function submitFile()
  */
 function share()
 {
-    if (idSet.length === 0) return;
+    var id = idSet[0];
+    if (!id) return;
     if (!cachedForms.share) {
         cachedForms.share = DirectoryAjax.callSync('ShareForm');
     }
     $('form').set('html', cachedForms.share);
     $('groups').selectedIndex = -1;
 
-    var users = DirectoryAjax.callSync('GetFileUsers', {'id':idSet[0]});
+    var users = DirectoryAjax.callSync('GetFileUsers', {'id':id});
     sharedFileUsers = {};
     users.each(function (user) {
         sharedFileUsers[user.id] = user.username;
     });
     updateShareUsers();
+
+    // Public link
+    var file = fileById[id];
+    if (file['public'] && !file.dl_url) {
+        file.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:id});
+    }
+    if (file.dl_url) {
+        showFileURL(file.dl_url);
+    }
 }
 
 /**

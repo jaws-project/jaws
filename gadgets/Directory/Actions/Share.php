@@ -21,6 +21,8 @@ class Directory_Actions_Share extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('Share.html');
         $tpl->SetBlock('share');
         $tpl->SetVariable('lbl_shared_for', _t('DIRECTORY_SHARED_FOR'));
+        $tpl->SetVariable('lbl_public', _t('DIRECTORY_FILE_PUBLIC_URL'));
+        $tpl->SetVariable('lbl_make_public', _t('DIRECTORY_FILE_MAKE_PUBLIC'));
 
         // Edit UI
         if ($this->gadget->GetPermission('ShareFile')) {

@@ -15,19 +15,19 @@ white-space:nowrap;
 background-color:#7299c4;
 color:white;
 }
-.file-icon{
+.files-table .file-icon{
 position:relative;
 }
-.file-icon img{
+.files-table .file-icon img{
 width:32px;
 }
-.file-title{
+.files-table .file-title{
 width:100%;
 cursor:default;
 word-break:break-all;
 overflow:hidden;
 }
-.file-size{
+.files-table .file-size{
 text-align:right;
 }
 .file-sharing{
