@@ -9,3 +9,14 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $actions = array();
+
+$actions['TagCloud'] = array(
+    'layout' => true,
+    'parametric' => true,
+    'file'   => 'Tags',
+);
+
+$actions['ViewTag'] = array(
+    'normal' => true,
+    'file'   => 'Tags',
+);
