@@ -24,12 +24,13 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
         }
 
         $this->AjaxMe('site_script.js');
+        $date_format = $this->gadget->registry->fetch('date_format');
 
         $page = jaws()->request->fetch('page', 'get');
         $page_item = jaws()->request->fetch('page_item', 'post');
         $page = empty($page)? 1 : (int)$page;
         if (empty($page_item)) {
-            $limit = (int)$this->gadget->registry->fetch('draft_limit');
+            $limit = 5;
         } else {
             $limit = $page_item;
         }
@@ -52,6 +53,9 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
         $tpl->SetVariable('filter', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
         $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
+
+        $tpl->SetBlock('outbox/table_checkbox');
+        $tpl->ParseBlock('outbox/table_checkbox');
 
         $tpl->SetBlock('outbox/actions');
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
@@ -98,7 +102,7 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
 
 
                 $tpl->SetVariable('subject', $message['subject']);
-                $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
+                $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
 
                 $tpl->SetVariable('message_url', $this->gadget->urlMap(
                     'OutboxMessage',

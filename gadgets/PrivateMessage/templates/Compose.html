@@ -1,5 +1,4 @@
 <!-- BEGIN compose -->
-{alerts}
 <div class="gadget privateMessage message" id="compose">
     <div class="gadget_header"><h2>{title}</h2><div class="gadget_menubar">{menubar}</div></div>
 
@@ -14,8 +13,14 @@
         <input type="hidden" name="id" id="id" value="{id}"/>
         <input type="hidden" name="parent" id="parent" value="{parent}"/>
 
-        <div class="content">
+        <!-- BEGIN parent_message -->
+        <div class="parent-message">
+            <!-- INCLUDE Message.html -->
+            <hr>
+        </div>
+        <!-- END parent_message -->
 
+        <div class="content">
             <!-- BEGIN recipients -->
             <div>
                 <b>{lbl_recipient}:</b>

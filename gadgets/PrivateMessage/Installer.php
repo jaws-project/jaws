@@ -17,9 +17,7 @@ class PrivateMessage_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'inbox_limit' => '10',
-        'outbox_limit' => '10',
-        'draft_limit' => '10',
+        'date_format' => 'DN d MN Y g:i a',
     );
 
     /**

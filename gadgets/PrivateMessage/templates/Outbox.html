@@ -1,5 +1,4 @@
 <!-- BEGIN outbox -->
-{alerts}
 <div class="gadget privateMessage outbox">
     <div class="gadget_header"><h2>{title}</h2><div class="gadget_menubar">{menubar}</div></div>
     <!-- BEGIN response -->
@@ -21,7 +20,7 @@
                 <option {opt_replied_no} value="no">{lbl_no}</option>
             </select>
 
-            <input type="text" id="filter" name="filter" size="20" value="{txt_filter}">
+            <input type="text" id="term" name="term" size="20" value="{txt_term}">
 
             <button value="{filter}" id="filter_button" name="filter_button"
                     type="submit"><img src="{icon_filter}" alt="{filter}"/>&nbsp;{filter}
@@ -32,10 +31,16 @@
         <table>
             <thead>
             <tr>
-                <th><a href="javascript:toggleCheckboxes()">#</a></th>
-                <th>{lbl_recipients}</th>
-                <th>&nbsp;</th>
+                <!-- BEGIN table_checkbox -->
+                <th><input type="checkbox" onclick="toggleCheckboxes();"></th>
+                <!-- END table_checkbox -->
+                <!-- BEGIN table_number -->
+                <th>#</th>
+                <!-- END table_number -->
+
                 <th>{lbl_subject}</th>
+                <th>&nbsp;</th>
+                <th>{lbl_recipients}</th>
                 <th>{lbl_send_time}</th>
             </tr>
             </thead>
@@ -49,7 +54,7 @@
                     <!-- END checkbox -->
                     {rownum}
                 </td>
-                <td>{recipients}</td>
+                <td><a href="{message_url}">{subject}</a></td>
 
                 <!-- BEGIN have_attachment -->
                 <td><img src="{icon_attachment}" alt="{attachment}"/></td>
@@ -58,7 +63,7 @@
                 <td>&nbsp;</td>
                 <!-- END no_attachment -->
 
-                <td><a href="{message_url}">{subject}</a></td>
+                <td>{recipients}</td>
                 <td>{send_time}</td>
             </tr>
             <!-- END message -->

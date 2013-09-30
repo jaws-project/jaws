@@ -36,6 +36,7 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(403);
         }
 
+        $date_format = $this->gadget->registry->fetch('date_format');
         $tpl = $this->gadget->loadTemplate('OutboxMessage.html');
         $tpl->SetBlock('outboxmessage');
         $tpl->SetVariable('id', $id);
@@ -72,7 +73,7 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
                 );
                 $tpl->SetVariable('recipient', $recipient['nickname']);
                 if(!empty($recipient['update_time'])) {
-                    $tpl->SetVariable('view_time', $date->Format($recipient['update_time']));
+                    $tpl->SetVariable('view_time', $date->Format($recipient['update_time'], $date_format));
                 } else {
                     $tpl->SetVariable('view_time', _t('PRIVATEMESSAGE_MESSAGE_NOT_VIEW'));
                 }
@@ -94,7 +95,7 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
         $tpl->SetVariable('from', $message['from_nickname']);
         $tpl->SetVariable('username', $message['from_username']);
         $tpl->SetVariable('nickname', $message['from_nickname']);
-        $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
+        $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
         $tpl->SetVariable('subject', $message['subject']);
         $tpl->SetVariable('body', $message['body']);
 

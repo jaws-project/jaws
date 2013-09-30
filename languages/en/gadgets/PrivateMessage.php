@@ -20,7 +20,7 @@ define('_EN_PRIVATEMESSAGE_ACL_DELETEMESSAGE', "Delete message");
 define('_EN_PRIVATEMESSAGE_ACL_ARCHIVEMESSAGE', "Archive message");
 define('_EN_PRIVATEMESSAGE_ACL_REPLYMESSAGE', "Reply message");
 define('_EN_PRIVATEMESSAGE_ACL_COMPOSEMESSAGE', "Compose message");
-define('_EN_PRIVATEMESSAGE_ACL_COMPOSEMESSAGETOALLUSERS', "Compose message to all users");
+define('_EN_PRIVATEMESSAGE_ACL_COMPOSETOALLUSERS', "Compose message to all users");
 
 /* Layout Actions */
 define('_EN_PRIVATEMESSAGE_ACTIONS_PRIVATEMESSAGE', "Private Message");

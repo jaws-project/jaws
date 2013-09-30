@@ -71,7 +71,75 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
 
             // reply a message
             } else if (!empty($get['reply']) && $get['reply'] == 'true') {
+                $date_format = $this->gadget->registry->fetch('date_format');
+                $date = $GLOBALS['app']->loadDate();
+                $usrModel = new Jaws_User;
                 $show_recipient = false;
+
+                // show parent message
+                $tpl->SetBlock('compose/parent_message');
+                $tpl->SetBlock('compose/parent_message/message');
+
+                $tpl->SetVariable('confirmDelete', _t('PRIVATEMESSAGE_MESSAGE_CONFIRM_DELETE'));
+                $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
+                $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
+                $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
+                $tpl->SetVariable('lbl_body', _t('PRIVATEMESSAGE_MESSAGE_BODY'));
+
+                $tpl->SetVariable('from', $message['from_nickname']);
+                $tpl->SetVariable('username', $message['from_username']);
+                $tpl->SetVariable('nickname', $message['from_nickname']);
+                $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
+                $tpl->SetVariable('subject', $message['subject']);
+                $tpl->SetVariable('body', $message['body']);
+
+                // user's avatar
+                $tpl->SetVariable(
+                    'avatar',
+                    $usrModel->GetAvatar(
+                        $message['avatar'],
+                        $message['email'],
+                        80
+                    )
+                );
+
+                // user's profile
+                $tpl->SetVariable(
+                    'user_url',
+                    $GLOBALS['app']->Map->GetURLFor(
+                        'Users',
+                        'Profile',
+                        array('user' => $message['from_username'])
+                    )
+                );
+
+                if(!empty($message['attachments'])) {
+                    $tpl->SetBlock('compose/parent_message/message/attachment');
+                    $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
+                    foreach($message['attachments'] as $file) {
+                        $tpl->SetBlock('compose/parent_message/message/attachment/file');
+                        $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
+                        $tpl->SetVariable('file_name', $file['title']);
+                        $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['filesize']));
+
+                        $tpl->SetVariable('file_download_link', $file['title']);
+                        $file_url = $this->gadget->urlMap('Attachment',
+                            array(
+                                'uid' => $message['user'],
+                                'mid' => $message['id'],
+                                'aid' => $file['id'],
+                            ));
+                        $tpl->SetVariable('file_download_link', $file_url);
+
+                        $tpl->ParseBlock('compose/parent_message/message/attachment/file');
+                    }
+                    $tpl->ParseBlock('compose/parent_message/message/attachment');
+                }
+
+                $tpl->ParseBlock('compose/parent_message/message');
+                $tpl->ParseBlock('compose/parent_message');
+
+                //
                 $tpl->SetVariable('parent', $id);
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_REPLY'));
                 $tpl->SetVariable('subject', _t('PRIVATEMESSAGE_REPLY_ON', $message['subject']));

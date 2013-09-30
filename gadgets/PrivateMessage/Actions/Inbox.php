@@ -24,6 +24,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         }
 
         $this->AjaxMe('site_script.js');
+        $date_format = $this->gadget->registry->fetch('date_format');
         $tpl = $this->gadget->loadTemplate('Inbox.html');
         $tpl->SetBlock('inbox');
 
@@ -32,17 +33,23 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $page_item = $post['page_item'];
 
         if (!empty($post['read']) || !empty($post['replied']) || !empty($post['term'])) {
-            $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
-            $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
-            $tpl->SetVariable('txt_term', $post['term']);
             $page = $post['page'];
             $view = $post['view'];
         } else {
             $post = null;
-            $get = jaws()->request->fetch(array('view', 'page'), 'get');
+            $get = jaws()->request->fetch(array('view', 'page', 'read', 'replied', 'term'), 'get');
             $page = $get['page'];
             $view = $get['view'];
+
+            $post['read'] = $get['read'];
+            $post['replied'] = $get['replied'];
+            $post['term'] = $get['term'];
         }
+
+        $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
+        $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
+        $tpl->SetVariable('txt_term', $post['term']);
+
 
         if ($view == 'archived') {
             $post['archived'] = true;
@@ -54,9 +61,9 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
             $tpl->SetVariable('menubar', $this->MenuBar('Inbox'));
         }
 
-        $page = empty($page)? 1 : (int)$page;
+        $page = empty($page) ? 1 : (int)$page;
         if (empty($page_item)) {
-            $limit = (int)$this->gadget->registry->fetch('inbox_limit');
+            $limit = 5;
         } else {
             $limit = $page_item;
         }
@@ -115,7 +122,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
                     $tpl->SetVariable('status', 'unread');
                 }
                 $tpl->SetVariable('subject', $subject);
-                $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
+                $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
 
                 $tpl->SetVariable('message_url', $this->gadget->urlMap(
                     'InboxMessage',
@@ -152,6 +159,17 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $iModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
         $inboxTotal = $iModel->GetInboxStatistics($user, $post);
 
+        $params = array();
+        if(!empty($post['read'])) {
+            $params['read'] = $post['read'];
+        }
+        if(!empty($post['replied'])) {
+            $params['replied'] = $post['replied'];
+        }
+        if(!empty($post['term'])) {
+            $params['term'] = $post['term'];
+        }
+
         // page navigation
         $this->GetPagesNavigation(
             $tpl,
@@ -160,7 +178,8 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
             $limit,
             $inboxTotal,
             _t('PRIVATEMESSAGE_MESSAGE_COUNT', $inboxTotal),
-            'Inbox'
+            'Inbox',
+            $params
         );
 
         $tpl->ParseBlock('inbox');

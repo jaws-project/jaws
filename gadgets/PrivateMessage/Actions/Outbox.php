@@ -24,6 +24,7 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         }
 
         $this->AjaxMe('site_script.js');
+        $date_format = $this->gadget->registry->fetch('date_format');
         $tpl = $this->gadget->loadTemplate('Outbox.html');
         $tpl->SetBlock('outbox');
 
@@ -32,21 +33,26 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
 
         $tpl->SetVariable('action', 'Outbox');
 
-        $post = jaws()->request->fetch(array('page', 'replied', 'attachment', 'filter', 'page_item'), 'post');
+        $post = jaws()->request->fetch(array('page', 'replied', 'attachment', 'term', 'page_item'), 'post');
         $tpl->SetVariable('opt_page_item_' . $post['page_item'], 'selected="selected"');
         $page_item = $post['page_item'];
-        if (!empty($post['replied']) || !empty($post['attachment']) || !empty($post['filter'])) {
-            $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
-            $tpl->SetVariable('opt_attachment_' . $post['attachment'], 'selected="selected"');
-            $tpl->SetVariable('txt_filter', $post['filter']);
+        if (!empty($post['replied']) || !empty($post['attachment']) || !empty($post['term'])) {
             $page = $post['page'];
         } else {
             $post = null;
-            $page = jaws()->request->fetch('page', 'get');
+            $get = jaws()->request->fetch(array('page', 'replied', 'term'), 'get');
+            $page = $get['page'];
+
+            $post['replied'] = $get['replied'];
+            $post['term'] = $get['term'];
         }
+
+        $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
+        $tpl->SetVariable('txt_term', $post['term']);
+
         $page = empty($page)? 1 : (int)$page;
         if (empty($page_item)) {
-            $limit = (int)$this->gadget->registry->fetch('outbox_limit');
+            $limit = 5;
         } else {
             $limit = $page_item;
         }
@@ -60,6 +66,9 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         $tpl->SetVariable('filter', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
         $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
+
+        $tpl->SetBlock('outbox/table_number');
+        $tpl->ParseBlock('outbox/table_number');
 
         $date = $GLOBALS['app']->loadDate();
         $oModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');
@@ -97,7 +106,7 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
                 $tpl->SetVariable('recipients', $recipients_str);
 
                 $tpl->SetVariable('subject', $message['subject']);
-                $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
+                $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
 
                 $tpl->SetVariable('message_url', $this->gadget->urlMap(
                     'OutboxMessage', array('id' => $message['id'])));
@@ -123,6 +132,14 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         $post['published'] = true;
         $outboxTotal = $oModel->GetOutboxStatistics($user, $post);
 
+        $params = array();
+        if(!empty($post['replied'])) {
+            $params['replied'] = $post['replied'];
+        }
+        if(!empty($post['term'])) {
+            $params['term'] = $post['term'];
+        }
+
         // page navigation
         $this->GetPagesNavigation(
             $tpl,
@@ -131,7 +148,8 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
             $limit,
             $outboxTotal,
             _t('PRIVATEMESSAGE_MESSAGE_COUNT', $outboxTotal),
-            'Outbox'
+            'Outbox',
+            $params
         );
 
         $tpl->ParseBlock('outbox');

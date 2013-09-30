@@ -53,7 +53,7 @@
                 <legend><span>{lbl_attachments}</span></legend>
 
                 <!-- BEGIN file -->
-                <div><a href="{file_download_link}">{file_name}</a> ({lbl_file_size}: {file_size})
+                <div><a href="{file_download_link}" target="_blank">{file_name}</a> ({lbl_file_size}: {file_size})
                 </div>
                 <!-- END file -->
 
@@ -65,7 +65,6 @@
             <table>
                 <thead>
                 <tr>
-                    <!--<th>#</th>-->
                     <th>{lbl_recipient}</th>
                     <th>{lbl_view_time}</th>
                 </tr>
@@ -75,7 +74,6 @@
 
                 <!-- BEGIN recipient -->
                 <tr>
-                    <!--<td>{rownum}</td>-->
                     <td><a href="{user_url}">{recipient}</a></td>
                     <td>{view_time}</td>
                 </tr>

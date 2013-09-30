@@ -41,6 +41,7 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
             $model->MarkMessages($id, true, $user);
         }
 
+        $date_format = $this->gadget->registry->fetch('date_format');
         $tpl = $this->gadget->loadTemplate('InboxMessage.html');
         $tpl->SetBlock('inboxmessage');
         $tpl->SetVariable('id', $id);
@@ -56,7 +57,7 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
         $tpl->SetVariable('from', $message['from_nickname']);
         $tpl->SetVariable('username', $message['from_username']);
         $tpl->SetVariable('nickname', $message['from_nickname']);
-        $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
+        $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
         $tpl->SetVariable('subject', $message['subject']);
         $tpl->SetVariable('body', $message['body']);
 

@@ -51,8 +51,10 @@ class PrivateMessage_Model_Outbox extends Jaws_Gadget_Model
                     $table->and()->where('pm_messages.attachments', 0);
                 }
             }
-            if (isset($filters['filter']) && !empty($filters['filter'])) {
-                $table->and()->where('pm_messages.subject', '%' . $filters['filter'] . '%', 'like');
+            if (isset($filters['term']) && !empty($filters['term'])) {
+                $filters['term'] = '%' . $filters['term'] . '%';
+                $table->and()->openWhere('pm_messages.subject', $filters['term'] , 'like')->or();
+                $table->closeWhere('pm_messages.body', $filters['term'] , 'like');
             }
         }
 
@@ -98,8 +100,10 @@ class PrivateMessage_Model_Outbox extends Jaws_Gadget_Model
                     $table->and()->where('pm_messages.attachments', 0);
                 }
             }
-            if (isset($filters['filter']) && !empty($filters['filter'])) {
-                $table->and()->where('pm_messages.subject', '%' . $filters['filter'] . '%', 'like');
+            if (isset($filters['term']) && !empty($filters['term'])) {
+                $filters['term'] = '%' . $filters['term'] . '%';
+                $table->and()->openWhere('pm_messages.subject', $filters['term'] , 'like')->or();
+                $table->closeWhere('pm_messages.body', $filters['term'] , 'like');
             }
         }
 

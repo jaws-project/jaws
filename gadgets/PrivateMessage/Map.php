@@ -14,7 +14,7 @@ $maps[] = array(
 );
 $maps[] = array(
     'Inbox',
-    'pm/inbox[/view/{view}][/page/{page}]',
+    'pm/inbox[/view/{view}][/page/{page}][/read/{read}][/replied/{replied}][/term/{term}]',
     array(
         'page' => '[[:digit:]]+',
         'view' => '[[:lower:]-]+',
@@ -22,21 +22,20 @@ $maps[] = array(
 );
 $maps[] = array(
     'Outbox',
-    'pm/outbox[/page/{page}]',
+    'pm/outbox[/page/{page}][/replied/{replied}][/term/{term}]',
     array(
         'page' => '[[:digit:]]+',
     )
 );
 $maps[] = array(
     'Draft',
-    'pm/draft[/page/{page}]',
+    'pm/draft[/page/{page}][/replied/{replied}][/term/{term}]',
     array(
         'page' => '[[:digit:]]+',
     )
 );
 $maps[] = array(
     'Compose',
-//    'pm/compose[/forward/{id}]',
     'pm/compose[/id/{id}][/reply/{reply}]',
     array(
         'id' => '[\p{L}[:digit:]-_\.]+',

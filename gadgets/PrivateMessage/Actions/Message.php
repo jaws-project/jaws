@@ -44,6 +44,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
         }
         $messages = array_reverse($messages, true);
 
+        $date_format = $this->gadget->registry->fetch('date_format');
         $tpl = $this->gadget->loadTemplate('MessageHistory.html');
         $tpl->SetBlock('history');
 
@@ -62,7 +63,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             $tpl->SetVariable('from', $message['from_nickname']);
             $tpl->SetVariable('username', $message['from_username']);
             $tpl->SetVariable('nickname', $message['from_nickname']);
-            $tpl->SetVariable('send_time', $date->Format($message['insert_time']));
+            $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
             $tpl->SetVariable('subject', $message['subject']);
             $tpl->SetVariable('body', $message['body']);
 

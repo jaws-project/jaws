@@ -1,5 +1,4 @@
 <!-- BEGIN inbox -->
-{alerts}
 <div class="gadget privateMessage inbox">
     <div class="gadget_header"><h2>{title}</h2><div class="gadget_menubar">{menubar}</div></div>
     <!-- BEGIN response -->
@@ -47,10 +46,11 @@
             <table>
                 <thead>
                 <tr>
-                    <th><a href="javascript:toggleCheckboxes()">#</a></th>
-                    <th>{lbl_from}</th>
-                    <th>&nbsp;</th>
+                    <th><input type="checkbox" onclick="toggleCheckboxes();"></th>
+
                     <th>{lbl_subject}</th>
+                    <th>&nbsp;</th>
+                    <th>{lbl_from}</th>
                     <th>{lbl_send_time}</th>
                 </tr>
                 </thead>
@@ -62,7 +62,7 @@
                         <input type="checkbox" name="message_checkbox[]" value="{id}" class="table-checkbox">
                         <!--{rownum}-->
                     </td>
-                    <td><a href="{user_url}">{from}</a></td>
+                    <td><a href="{message_url}">{subject}</a></td>
 
                     <!-- BEGIN have_attachment -->
                     <td><img src="{icon_attachment}" alt="{attachment}"/></td>
@@ -71,7 +71,7 @@
                     <td>&nbsp;</td>
                     <!-- END no_attachment -->
 
-                    <td><a href="{message_url}">{subject}</a></td>
+                    <td><a href="{user_url}">{from}</a></td>
                     <td>{send_time}</td>
 
                 </tr>
