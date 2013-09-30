@@ -19,10 +19,6 @@ $actions['Inbox'] = array(
     'normal' => true,
     'file' => 'Inbox',
 );
-$actions['InboxDataGridUI'] = array(
-    'standalone' => true,
-    'file' => 'Inbox',
-);
 $actions['Draft'] = array(
     'normal' => true,
     'file' => 'Draft',
