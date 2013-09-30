@@ -73,6 +73,8 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
     $ReqAction = null;
 }
 
+// set main request
+$GLOBALS['app']->SetMainRequest($IsIndex, $ReqGadget, $ReqAction);
 // Init layout...
 $GLOBALS['app']->InstanceLayout();
 $GLOBALS['app']->Layout->Load();
