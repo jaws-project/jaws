@@ -295,10 +295,11 @@ background:#fff;
 color:#325994 !important;
 }
 #headbar .menu ul ul{
-width:220px;
 left:0;
 top:26px;
 height:0;
+z-index:99;
+width:220px;
 position:absolute;
 visibility:hidden;
 }
