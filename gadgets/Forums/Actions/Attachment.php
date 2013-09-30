@@ -19,7 +19,7 @@ class Forums_Actions_Attachment extends Forums_HTML
     function Attachment()
     {
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-        $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid'), 'get');
+        $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'attach'), 'get');
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);
@@ -27,17 +27,23 @@ class Forums_Actions_Attachment extends Forums_HTML
             $this->SetActionMode('Attachment', 'normal', 'standalone');
             return Jaws_HTTPError::Get(500);
         }
+        $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+        $attachment = $aModel->GetAttachmentInfo($rqst['attach']);
+        if (Jaws_Error::IsError($attachment)) {
+            $this->SetActionMode('Attachment', 'normal', 'standalone');
+            return Jaws_HTTPError::Get(500);
+        }
 
-        if (!empty($post) && !empty($post['attachment_host_fname'])) {
-            $filepath = JAWS_DATA. 'forums/'. $post['attachment_host_fname'];
+        if (!empty($attachment)) {
+            $filepath = JAWS_DATA. 'forums/'. $attachment['filename'];
             if (file_exists($filepath)) {
                 // increase download hits
-                $result = $pModel->HitAttachmentDownload($rqst['pid']);
+                $result = $aModel->HitAttachmentDownload($rqst['attach']);
                 if (Jaws_Error::IsError($result)) {
                     // do nothing
                 }
 
-                if (Jaws_Utils::Download($filepath, $post['attachment_user_fname'])) {
+                if (Jaws_Utils::Download($filepath, $attachment['title'])) {
                     return;
                 }
 

@@ -99,22 +99,26 @@ class Forums_Actions_Posts extends Forums_HTML
             );
 
             // attachment
-            if (!empty($post['attachment_host_fname'])) {
-                $tpl->SetBlock('posts/post/attachment');
-                $tpl->SetVariable('user_fname', $post['attachment_user_fname']);
-                $tpl->SetVariable('lbl_attachment', _t('FORUMS_POSTS_ATTACHMENT'));
-                $tpl->SetVariable(
-                    'hits_count',
-                    _t('FORUMS_POSTS_ATTACHMENT_HITS', $post['attachment_hits_count'])
-                );
-                $tpl->SetVariable(
-                    'url_attachment',
-                    $this->gadget->urlMap(
-                        'Attachment',
-                        array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id'])
-                    )
-                );
-                $tpl->ParseBlock('posts/post/attachment');
+            if ($post['attachments'] > 0) {
+                $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+                $attachments = $aModel->GetAttachments($post['id']);
+
+                foreach ($attachments as $attachment) {
+                    $tpl->SetBlock('posts/post/attachment');
+                    $tpl->SetVariable('user_fname', $attachment['title']);
+                    $tpl->SetVariable('lbl_attachment', _t('FORUMS_POSTS_ATTACHMENT'));
+                    $tpl->SetVariable(
+                        'hits_count',
+                        _t('FORUMS_POSTS_ATTACHMENT_HITS', $attachment['hits_count'])
+                    );
+                    $tpl->SetVariable('url_attachment',
+                            $this->gadget->urlMap(
+                            'Attachment',
+                            array('fid' => $rqst['fid'], 'tid' => $rqst['tid'], 'pid' => $post['id'], 'attach' => $attachment['id'])
+                        )
+                    );
+                    $tpl->ParseBlock('posts/post/attachment');
+                }
             }
 
             // update information
@@ -362,6 +366,7 @@ class Forums_Actions_Posts extends Forums_HTML
             return false;
         }
 
+        $this->AjaxMe('site_script.js');
         if ($reply || empty($rqst['pid'])) {
             $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
             $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
@@ -457,8 +462,21 @@ class Forums_Actions_Posts extends Forums_HTML
             $this->gadget->GetPermission('AddPostAttachment'))
         {
             $tpl->SetBlock('post/attachment');
-            $tpl->SetVariable('lbl_attachment',_t('FORUMS_POSTS_ATTACHMENT'));
-            $tpl->SetVariable('lbl_remove_attachment',_t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
+            $tpl->SetVariable('lbl_attachment', _t('FORUMS_POSTS_ATTACHMENT'));
+            $tpl->SetVariable('lbl_extra_attachment', _t('FORUMS_POSTS_EXTRA_ATTACHMENT'));
+            $tpl->SetVariable('lbl_remove_attachment', _t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
+            if ($post['id'] != 0) {
+                $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+                $attachments = $aModel->GetAttachments($post['id']);
+
+                foreach ($attachments as $attachment) {
+                    $tpl->SetBlock('post/attachment/current_attachment');
+                    $tpl->SetVariable('aid', $attachment['id']);
+                    $tpl->SetVariable('lbl_filename', $attachment['title']);
+                    $tpl->SetVariable('lbl_remove_attachment', _t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
+                    $tpl->ParseBlock('post/attachment/current_attachment');
+                }
+            }
             $tpl->ParseBlock('post/attachment');
         }
 
@@ -498,7 +516,7 @@ class Forums_Actions_Posts extends Forums_HTML
         }
 
         $post = jaws()->request->fetch(
-            array('fid', 'tid', 'pid', 'subject', 'message', 'remove_attachment', 'update_reason'),
+            array('fid', 'tid', 'pid', 'subject', 'message', 'update_reason'),
             'post'
         );
 
@@ -529,9 +547,8 @@ class Forums_Actions_Posts extends Forums_HTML
         }
 
         // attachment
-        $post['attachment'] = is_null($post['remove_attachment'])? null : false;
-        if (is_null($post['attachment']) &&
-            $this->gadget->registry->fetch('enable_attachment') == 'true' &&
+        $topic['attachments'] = null;
+        if ($this->gadget->registry->fetch('enable_attachment') == 'true' &&
             $this->gadget->GetPermission('AddPostAttachment'))
         {
             $res = Jaws_Utils::UploadFiles(
@@ -548,8 +565,7 @@ class Forums_Actions_Posts extends Forums_HTML
             }
 
             if (!empty($res)) {
-                $post['attachment']['host_fname'] = $res['attachment'][0]['host_filename'];
-                $post['attachment']['user_fname'] = $res['attachment'][0]['user_filename'];
+                $post['attachments'] = $res['attachment'];
             }
         }
 
@@ -569,7 +585,7 @@ class Forums_Actions_Posts extends Forums_HTML
                 $post['tid'],
                 $post['fid'],
                 $post['message'],
-                $post['attachment']
+                $post['attachments']
             );
             $event_type = 'new';
             $error_message = _t('FORUMS_POSTS_NEW_ERROR');
@@ -598,12 +614,25 @@ class Forums_Actions_Posts extends Forums_HTML
                 $post['update_reason'] = '';
             }
 
+            // Update Attachments
+            $remainAttachments = jaws()->request->fetch('current_attachments:array');
+            $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+            $oldAttachments = $aModel->GetAttachments($oldPost['id']);
+            if (count($remainAttachments) == 0) {
+                $aModel->DeletePostAttachments($oldPost['id']);
+            } else {
+                foreach ($oldAttachments as $oldAttachment) {
+                    if (!in_array($oldAttachment['id'], $remainAttachments)) {
+                        $aModel->DeleteAttachment($oldAttachment['id']);
+                    }
+                }
+            }
+
             $result = $pModel->UpdatePost(
                 $post['pid'],
                 $update_uid,
                 $post['message'],
-                $post['attachment'],
-                $oldPost['attachment_host_fname'],
+                $post['attachments'],
                 $post['update_reason']
             );
             $event_type = 'edit';
@@ -690,8 +719,7 @@ class Forums_Actions_Posts extends Forums_HTML
                 $result = $pModel->DeletePost(
                     $post['id'],
                     $post['tid'],
-                    $post['fid'],
-                    $post['attachment_host_fname']
+                    $post['fid']
                 );
                 if (Jaws_Error::IsError($result)) {
                     $GLOBALS['app']->Session->PushSimpleResponse(

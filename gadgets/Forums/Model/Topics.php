@@ -29,7 +29,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
                 'last_post_time:integer','forums_topics.published:boolean', 'forums_topics.locked:boolean',
                 'forums.title as forum_title', 'forums.fast_url as forum_fast_url',
                 'forums.last_topic_id as forum_last_topic_id:integer',
-                'forums_posts.message', 'attachment_host_fname', 'update_reason',
+                'forums_posts.message', 'update_reason',
                 'users.username', 'users.nickname', 'users.email'
         );
         $table->join('forums', 'forums_topics.fid', 'forums.id', 'left');
@@ -177,12 +177,12 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * @param   string  $update_reason  Update reason text
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function UpdateTopic($target, $fid, $tid, $pid, $uid, $subject, $message, $attachment = null, $old_attachment = '',
+    function UpdateTopic($target, $fid, $tid, $pid, $uid, $subject, $message, $attachment = null,
         $published = null, $update_reason = '')
     {
         $data['fid']    = (int)$target;
         $data['subject']   = $subject;
-        $data['published'] = true;
+        $data['published'] = $published;
 
         $table = Jaws_ORM::getInstance()->table('forums_topics');
         //Start Transaction
@@ -194,7 +194,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         }
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
-        $result = $pModel->UpdatePost($pid, $uid, $message, $attachment, $old_attachment, $update_reason);
+        $result = $pModel->UpdatePost($pid, $uid, $message, $attachment, $update_reason);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -230,8 +230,10 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * @param   mixed   $attachment Topic first post attachment
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function DeleteTopic($tid, $fid, $attachment = '')
+    function DeleteTopic($tid, $fid)
     {
+        $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+        $topicAttachments = $aModel->GetTopicAttachments($tid);
         $table = Jaws_ORM::getInstance()->table('forums_posts');
         //Start Transaction
         $table->beginTransaction();
@@ -250,8 +252,10 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         $table->commit();
 
         // remove attachment file
-        if (!empty($attachment)) {
-            Jaws_Utils::Delete(JAWS_DATA . 'forums/' . $attachment);
+        foreach ($topicAttachments as $attachment) {
+            if (!empty($attachment['filename'])) {
+                $aModel->DeleteAttachmentWithFName($attachment['id'], $attachment['filename']);
+            }
         }
 
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');

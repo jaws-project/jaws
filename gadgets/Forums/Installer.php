@@ -100,7 +100,8 @@ class Forums_Installer extends Jaws_Gadget_Installer
             'forums_posts',
             'forums_topics',
             'forums',
-            'forums_groups'
+            'forums_groups',
+            'forums_attachments'
         );
         $gName  = _t('FORUMS_NAME');
         $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);

@@ -116,7 +116,7 @@ $maps[] = array(
 );
 $maps[] = array(
     'Attachment',
-    'forums/{fid}/topics/{tid}/posts/{pid}/attachment',
+    'forums/{fid}/topics/{tid}/posts/{pid}/attachment/{attach}',
     array(
         'fid' => '[[:alnum:]-_]+',
         'tid' => '[[:alnum:]-_]+',

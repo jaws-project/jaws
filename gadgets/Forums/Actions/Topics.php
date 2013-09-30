@@ -174,6 +174,7 @@ class Forums_Actions_Topics extends Forums_HTML
             return false;
         }
 
+        $this->AjaxMe('site_script.js');
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         if (!empty($rqst['tid'])) {
             $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
@@ -303,7 +304,21 @@ class Forums_Actions_Topics extends Forums_HTML
         {
             $tpl->SetBlock('topic/attachment');
             $tpl->SetVariable('lbl_attachment',_t('FORUMS_POSTS_ATTACHMENT'));
+            $tpl->SetVariable('lbl_extra_attachment', _t('FORUMS_POSTS_EXTRA_ATTACHMENT'));
             $tpl->SetVariable('lbl_remove_attachment',_t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
+
+            if (!empty($topic['first_post_id'])) {
+                $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+                $attachments = $aModel->GetAttachments($topic['first_post_id']);
+
+                foreach ($attachments as $attachment) {
+                    $tpl->SetBlock('topic/attachment/current_attachment');
+                    $tpl->SetVariable('aid', $attachment['id']);
+                    $tpl->SetVariable('lbl_filename', $attachment['title']);
+                    $tpl->SetVariable('lbl_remove_attachment', _t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
+                    $tpl->ParseBlock('topic/attachment/current_attachment');
+                }
+            }
             $tpl->ParseBlock('topic/attachment');
         }
 
@@ -344,7 +359,7 @@ class Forums_Actions_Topics extends Forums_HTML
 
         $topic = jaws()->request->fetch(
             array(
-                'fid', 'tid', 'target', 'subject', 'message', 'remove_attachment',
+                'fid', 'tid', 'target', 'subject', 'message',
                 'update_reason', 'status'
             ),
             'post'
@@ -371,9 +386,8 @@ class Forums_Actions_Topics extends Forums_HTML
         }
 
         // attachment
-        $topic['attachment'] = is_null($topic['remove_attachment'])? null : false;
-        if (is_null($topic['attachment']) &&
-            $this->gadget->registry->fetch('enable_attachment') == 'true' &&
+        $topic['attachments'] = null;
+        if ($this->gadget->registry->fetch('enable_attachment') == 'true' &&
             $this->gadget->GetPermission('AddPostAttachment'))
         {
             $res = Jaws_Utils::UploadFiles(
@@ -383,6 +397,7 @@ class Forums_Actions_Topics extends Forums_HTML
                 'php,php3,php4,php5,phtml,phps,pl,py,cgi,pcgi,pcgi5,pcgi4,htaccess',
                 null
             );
+
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushSimpleResponse($res->getMessage(), 'UpdateTopic');
                 // redirect to referrer page
@@ -390,8 +405,7 @@ class Forums_Actions_Topics extends Forums_HTML
             }
 
             if (!empty($res)) {
-                $topic['attachment']['host_fname'] = $res['attachment'][0]['host_filename'];
-                $topic['attachment']['user_fname'] = $res['attachment'][0]['user_filename'];
+                $topic['attachments'] = $res['attachment'];
             }
         }
 
@@ -419,7 +433,7 @@ class Forums_Actions_Topics extends Forums_HTML
                     $topic['fid'],
                     $topic['subject'],
                     $topic['message'],
-                    $topic['attachment'],
+                    $topic['attachments'],
                     $published
                 );
             }
@@ -455,7 +469,22 @@ class Forums_Actions_Topics extends Forums_HTML
                 $topic['target'] = $topic['fid'];
             }
 
+            // Update Attachments
+            $remainAttachments = jaws()->request->fetch('current_attachments:array');
+            $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+            $oldAttachments = $aModel->GetAttachments($oldTopic['first_post_id']);
+            if (count($remainAttachments) == 0) {
+                $aModel->DeletePostAttachments($oldTopic['first_post_id']);
+            } else {
+                foreach ($oldAttachments as $oldAttachment) {
+                    if (!in_array($oldAttachment['id'], $remainAttachments)) {
+                        $aModel->DeleteAttachment($oldAttachment['id']);
+                    }
+                }
+            }
+
             $topic['forum_title'] = $oldTopic['forum_title'];
+            $topic['published'] = ($topic['status'] == 'published');
             $result = $tModel->UpdateTopic(
                 $topic['target'],
                 $topic['fid'],
@@ -464,8 +493,7 @@ class Forums_Actions_Topics extends Forums_HTML
                 $update_uid,
                 $topic['subject'],
                 $topic['message'],
-                $topic['attachment'],
-                $oldTopic['attachment_host_fname'],
+                $topic['attachments'],
                 $topic['published'],
                 $topic['update_reason']
             );
@@ -546,7 +574,7 @@ class Forums_Actions_Topics extends Forums_HTML
                     return Jaws_HTTPError::Get(403);
                 }
 
-                $result = $tModel->DeleteTopic($topic['id'], $topic['fid'], $topic['attachment_host_fname']);
+                $result = $tModel->DeleteTopic($topic['id'], $topic['fid']);
                 if (Jaws_Error::IsError($result)) {
                     $GLOBALS['app']->Session->PushSimpleResponse(
                         _t('FORUMS_TOPICS_DELETE_ERROR'),

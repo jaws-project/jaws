@@ -35,14 +35,23 @@
         {message}
       </div>
       <!-- BEGIN attachment -->
-      <div>
-        <input id="remove_attachment" name="remove_attachment" type="checkbox" />
-        <label for="remove_attachment">{lbl_remove_attachment}</label>
-      </div>
-      <div>
+      <script type="text/javascript">
+          var lblRemoveAttachment = "{lbl_remove_attachment}";
+          var removeIconSrc = "{removeIconSrc}";
+      </script>
+      <div id="attachments">
         <label for="post_attachment">{lbl_attachment}:</label>
-        <input id="post_attachment" name="attachment" type="file" />
+        <div id="current_attachments">
+            <!-- BEGIN current_attachment -->
+            <p id="p_attach{aid}">
+              <input type="hidden" name="current_attachments[]" value="{aid}" />
+              {lbl_filename}
+              <a href="javascript:removeCurrentAttachment({aid});" title="{lbl_remove_attachment}">{lbl_remove_attachment}</a>
+            </p>
+            <!-- END current_attachment -->
+        </div>
       </div>
+      <div><a href="javascript:extraAttachment();" >{lbl_extra_attachment}</a></div>
       <!-- END attachment -->
       <!-- BEGIN update_reason -->
       <div>

@@ -25,7 +25,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('forums_posts');
         $table->select('
                 forums_posts.id:integer', 'forums_posts.uid:integer', 'tid:integer', 'message', 'forums_posts.insert_time:integer',
-                'attachment_host_fname', 'attachment_user_fname', 'attachment_hits_count:integer',
+                'attachments',
                 'update_uid:integer', 'update_reason', 'update_time:integer', 'forums_posts.status:integer',
                 'forums_topics.fid:integer', 'forums_topics.subject', 'forums_topics.locked as topic_locked:boolean',
                 'first_post_id as topic_first_post_id:integer', 'first_post_time as topic_first_post_time:integer',
@@ -66,7 +66,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('forums_posts');
         $table->select(
             'forums_posts.id', 'uid', 'message',
-                'attachment_host_fname', 'attachment_user_fname', 'attachment_hits_count', 'update_uid',
+                'attachments', 'update_uid',
                 'update_reason', 'update_time', 'forums_posts.insert_time', 'forums_posts.status',
                 'cuser.username', 'cuser.nickname', 'cuser.registered_date as user_registered_date',
                 'cuser.email', 'cuser.avatar', 'cuser.last_update as user_last_update',
@@ -117,28 +117,21 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * Insert new post
      *
      * @access  public
-     * @param   int     $uid        User's ID
-     * @param   int     $tid        Topic ID
-     * @param   int     $fid        Forum ID
-     * @param   string  $message    Post content
-     * @param   mixed   $attachment Post attachment
+     * @param   int     $uid                User's ID
+     * @param   int     $tid                Topic ID
+     * @param   int     $fid                Forum ID
+     * @param   string  $message            Post content
+     * @param   mixed   $attachments        Post attachments
      * @param   bool    $new_topic  Is this first post of topic?
      * @return  mixed   Post ID on successfully or Jaws_Error on failure
      */
-    function InsertPost($uid, $tid, $fid, $message, $attachment = null, $new_topic = false)
+    function InsertPost($uid, $tid, $fid, $message, $attachments = null, $new_topic = false)
     {
         $data['uid']            = (int)$uid;
         $data['tid']            = (int)$tid;
         $data['insert_time']    = time();
         $data['ip']             = $_SERVER['REMOTE_ADDR'];
         $data['message']        = $message;
-        if (empty($attachment)) {
-            $data['attachment_host_fname'] = '';
-            $data['attachment_user_fname'] = '';
-        } else {
-            $data['attachment_host_fname'] = $attachment['host_fname'];
-            $data['attachment_user_fname'] = $attachment['user_fname'];
-        }
         $table = Jaws_ORM::getInstance()->table('forums_posts');
         $pid = $table->insert($data)->exec();
         if (Jaws_Error::IsError($pid)) {
@@ -161,6 +154,12 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             }
         }
 
+        if (!is_null($attachments)) {
+            $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+            $aModel->InsertAttachments($pid, $attachments);
+            $this->UpdatePostAttachCount($pid);
+        }
+
         return $pid;
     }
 
@@ -171,32 +170,22 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * @param   int     $pid            Post ID
      * @param   int     $uid            User's ID
      * @param   string  $message        Post content
-     * @param   mixed   $attachment     Post attachment
-     * @param   string  $old_attachment Post old attachment
+     * @param   mixed   $attachments     Post attachments
      * @param   string  $update_reason  Update reason text
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function UpdatePost($pid, $uid, $message, $attachment = null, $old_attachment = '', $update_reason = '')
+    function UpdatePost($pid, $uid, $message, $attachments = null, $update_reason = '')
     {
         $data['update_uid']     = (int)$uid;
         $data['update_time']    = time();
         $data['message']        = $message;
         $data['update_reason']  = $update_reason;
-        if (!is_null($attachment)) {
-            if (empty($attachment)) {
-                $data['attachment_hits_count'] = 0;
-                $data['attachment_host_fname'] = '';
-                $data['attachment_user_fname'] = '';
-            } else {
-                $data['attachment_host_fname'] = $attachment['host_fname'];
-                $data['attachment_user_fname'] = $attachment['user_fname'];
-            }
 
-            // remove old attachment file
-            if (!empty($old_attachment)) {
-                Jaws_Utils::Delete(JAWS_DATA . 'forums/' . $old_attachment);
-            }
+        if (!is_null($attachments)) {
+            $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+            $aModel->InsertAttachments($pid, $attachments);
         }
+        $this->UpdatePostAttachCount($pid);
 
         $table = Jaws_ORM::getInstance()->table('forums_posts');
         $result = $table->update($data)->where('id', $pid)->exec();
@@ -214,10 +203,9 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * @param   int     $pid        Post ID
      * @param   int     $tid        Topic ID
      * @param   int     $fid        Forum ID
-     * @param   string  $attachment Post attachment
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function DeletePost($pid, $tid, $fid, $attachment = '')
+    function DeletePost($pid, $tid, $fid)
     {
         $table = Jaws_ORM::getInstance()->table('forums_posts');
         $result = $table->delete()->where('id', $pid)->exec();
@@ -226,9 +214,8 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         }
 
         // remove attachment file
-        if (!empty($attachment)) {
-            Jaws_Utils::Delete(JAWS_DATA . 'forums/' . $attachment);
-        }
+        $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+        $aModel->DeletePostAttachments($pid);
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
         $result = $tModel->UpdateTopicStatistics($tid);
@@ -240,29 +227,6 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $result = $fModel->UpdateForumStatistics($fid);
         if (Jaws_Error::IsError($result)) {
             return $result;
-        }
-
-        return true;
-    }
-
-    /**
-     * Increment attachment download hits
-     *
-     * @access  public
-     * @param   int     $pid    Post ID
-     * @return  mixed   True if hits increased successfully or Jaws_Error on error
-     */
-    function HitAttachmentDownload($pid)
-    {
-        $table = Jaws_ORM::getInstance()->table('forums_posts');
-        $res = $table->update(
-            array(
-                'attachment_hits_count' => $table->expr('attachment_hits_count + ?', 1)
-            )
-        )->where('id', $pid)->exec();
-
-        if (Jaws_Error::IsError($res)) {
-            return $res;
         }
 
         return true;
@@ -329,4 +293,19 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         return $ObjMail->send();
     }
 
+    /**
+     * Edit count of attachments for one post
+     *
+     * @access  public
+     * @param   int     $pid           Post ID
+     * @return  mixed   True on successfully or Jaws_Error on failure
+     */
+    function UpdatePostAttachCount($pid)
+    {
+        $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+        $attachCount = $aModel->GetAttachmentsCount($pid);
+        $postsTable = Jaws_ORM::getInstance()->table('forums_posts');
+        $postsTable->update(array('attachments' => $attachCount))->where('id', $pid);
+        return $postsTable->exec();          
+    }
 }

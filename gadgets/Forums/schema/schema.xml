@@ -263,20 +263,9 @@
         </field>
 
         <field>
-            <name>attachment_host_fname</name>
-            <type>text</type>
-            <length>128</length>
-        </field>
-
-        <field>
-            <name>attachment_user_fname</name>
-            <type>text</type>
-            <length>128</length>
-        </field>
-
-        <field>
-            <name>attachment_hits_count</name>
+            <name>attachments</name>
             <type>integer</type>
+            <length>1</length>
             <default>0</default>
         </field>
 
@@ -333,4 +322,52 @@
         </index>
     </declaration>
  </table>
+
+<table>
+    <name><variable>table_prefix</variable>forums_attachments</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>post</name>
+            <type>integer</type>
+        </field>
+
+        <field>
+            <name>title</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>filename</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>filesize</name>
+            <type>integer</type>
+        </field>
+
+        <field>
+            <name>filetype</name>
+            <type>text</type>
+            <length>64</length>
+        </field>
+
+        <field>
+            <name>hits_count</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+    </declaration>
+</table>
 </database>
