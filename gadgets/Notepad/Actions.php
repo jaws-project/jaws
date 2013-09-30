@@ -16,7 +16,35 @@ $actions['Notepad'] = array(
     'layout' => true,
     'file' => 'Notepad'
 );
-$actions['GetFiles'] = array(
+$actions['GetNotes'] = array(
     'standalone' => true,
-    'file' => ''
+    'file' => 'Notepad'
+);
+$actions['ViewNote'] = array(
+    'normal' => true,
+    'file' => 'Notepad'
+);
+$actions['NewNote'] = array(
+    'normal' => true,
+    'file' => 'Notepad'
+);
+$actions['EditNote'] = array(
+    'normal' => true,
+    'file' => 'Notepad'
+);
+$actions['ShareNote'] = array(
+    'normal' => true,
+    'file' => 'Notepad'
+);
+$actions['CreateNote'] = array(
+    'standalone' => true,
+    'file' => 'Notepad'
+);
+$actions['UpdateNote'] = array(
+    'standalone' => true,
+    'file' => 'Notepad'
+);
+$actions['DeleteNote'] = array(
+    'standalone' => true,
+    'file' => 'Notepad'
 );
