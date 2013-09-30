@@ -107,8 +107,7 @@ function initDirectory()
     });
     iconByExt.folder = 'folder';
 
-    currentDir = Number(DirectoryStorage.fetch('current_dir'));
-    openDirectory(currentDir);
+    openDirectory(0);
 }
 
 /**
@@ -253,7 +252,6 @@ function openDirectory(id)
 {
     currentDir = id;
     idSet = null;
-    DirectoryStorage.update('current_dir', id);
     updateFiles(id);
     cancel();
 }
@@ -784,7 +782,6 @@ function formatSize(size, precision)
 }
 
 var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
-    DirectoryStorage = new JawsStorage('Directory'),
     fileById = {},
     iconByExt = {},
     usersByGroup = {},
