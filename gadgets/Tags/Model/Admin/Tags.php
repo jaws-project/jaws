@@ -10,6 +10,80 @@
  */
 class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
 {
+/**
+     * Add tags to item
+     *
+     * @access  public
+     * @param   string      $gadget         gadget name
+     * @param   string      $action         action name
+     * @param   int         $reference      reference
+     * @param   array       $tags           array of tags name
+     * @return  mixed       Array of Tag info or Jaws_Error on failure
+     */
+    function AddTagsToItem($gadget, $action ,$reference, $tags)
+    {
+        if(empty($tags) || count($tags)<1) {
+            return true;
+        }
+
+        $systemTags = array();
+        foreach($tags as $tag){
+            $table = Jaws_ORM::getInstance()->table('tags');
+            $tagId = $table->select('id:integer')->where('name', $tag)->fetchOne();
+            if(!empty($tagId)) {
+                $systemTags[$tag] = $tagId;
+            } else {
+                //Add an new tag
+                $systemTags[$tag] = $this->AddTag($tag);
+            }
+        }
+
+        $table = Jaws_ORM::getInstance()->table('tags_items');
+        $tData = array();
+        foreach($systemTags as $tagName=>$tagId) {
+            $data = array($gadget , $action, $reference, $tagId, time());
+            $tData[] = $data;
+        }
+
+        $res = $table->insertAll(array('gadget', 'action', 'reference', 'tag', 'insert_time'), $tData)->exec();
+        if (Jaws_Error::IsError($res)) {
+            return new Jaws_Error($res->getMessage(), 'SQL');
+        }
+
+        return $res;
+    }
+
+/**
+     * Remove tags from item
+     *
+     * @access  public
+     * @param   string      $gadget         gadget name
+     * @param   string      $action         action name
+     * @param   int         $reference      reference
+     * @param   array       $tags           array of tags name
+     * @return  mixed       Array of Tag info or Jaws_Error on failure
+     */
+    function RemoveTagsFromItem($gadget, $action ,$reference, $tags)
+    {
+        if(empty($tags) || count($tags)<1) {
+            return true;
+        }
+        $table = Jaws_ORM::getInstance()->table('tags');
+        $tagsId = $table->select('id:integer')->where('name', $tags, 'in')->fetchColumn();
+
+        $table = Jaws_ORM::getInstance()->table('tags_items');
+
+        $table->delete()->where('gadget', $gadget)->and()->where('action', $action);
+        $table->and()->where('reference', $reference)->and()->where('tag', $tagsId, 'in');
+        $res = $table->exec();
+        if (Jaws_Error::IsError($res)) {
+            return new Jaws_Error($res->getMessage(), 'SQL');
+        }
+
+        return $res;
+    }
+
+
     /**
      * Add an new tag
      *
@@ -122,6 +196,55 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
 
         return $result;
     }
+
+    /**
+     * Get tags
+     *
+     * @access  public
+     * @param   array   $filters           Data that will be used in the filter
+     * @param   bool    $justReturnName    Data that will be used in the filter
+     * @return  mixed   Array of Tags info or Jaws_Error on failure
+     */
+    function GetItemTags($filters = array(), $justReturnName = false)
+    {
+        $table = Jaws_ORM::getInstance()->table('tags');
+
+        $columns = array('tags.name');
+        if (!$justReturnName) {
+            $columns[] = 'tags_items.id as item_id:integer';
+            $columns[] = 'tags.id as tag_id:integer';
+        }
+
+        $table->select($columns);
+        $table->join('tags_items', 'tags_items.tag', 'tags.id');
+
+        if (!empty($filters) && count($filters) > 0) {
+            if (array_key_exists('name', $filters) && !empty($filters['name'])) {
+                $table->and()->where('name', '%' . $filters['name'] . '%', 'like');
+            }
+            if (array_key_exists('gadget', $filters) && !empty($filters['gadget'])) {
+                $table->and()->where('gadget', $filters['gadget']);
+            }
+            if (array_key_exists('action', $filters) && !empty($filters['action'])) {
+                $table->and()->where('action', $filters['action']);
+            }
+            if (array_key_exists('reference', $filters) && !empty($filters['reference'])) {
+                $table->and()->where('reference', $filters['reference']);
+            }
+        }
+
+        if ($justReturnName) {
+            $result = $table->fetchColumn();
+        } else {
+            $result = $table->fetchAll();
+        }
+        if (Jaws_Error::IsError($result)) {
+            return new Jaws_Error($result->getMessage(), 'SQL');
+        }
+
+        return $result;
+    }
+
 
     /**
      * Get tags

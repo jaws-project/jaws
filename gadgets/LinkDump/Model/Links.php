@@ -33,13 +33,8 @@ class LinkDump_Model_Links extends Jaws_Gadget_Model
         }
 
         if (!empty($link)) {
-            $objORM->select('tag')->table('linkdump_links_tags');
-            $objORM->join('linkdump_tags', 'linkdump_tags.id', 'linkdump_links_tags.tag_id');
-            $tags = $objORM->where('link_id', $link['id'])->fetchColumn();
-            if (Jaws_Error::IsError($tags)) {
-                return $tags;
-            }
-
+            $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+            $tags = $model->GetItemTags(array('gadget'=>'LinkDump', 'action'=>'link', 'reference'=>$id), true);
             $link['tags'] = array_filter($tags);
         }
 

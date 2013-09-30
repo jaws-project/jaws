@@ -48,13 +48,19 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
 
         $this->MoveLink($lid, $gid, $gid, $rank, null);
         $tags = array_filter(array_map(array($GLOBALS['app']->UTF8, 'trim'), explode(',', $tags)));
-        foreach ($tags as $tag) {
-            $res = $this->AddTagToLink($lid, $tag);
-            if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_ADD_TAG_ERROR'), RESPONSE_ERROR);
-                break;
-            }
+
+        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $res = $model->AddTagsToItem('LinkDump', 'link' ,$lid, $tags);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_ADD_TAG_ERROR'), RESPONSE_ERROR);
         }
+//        foreach ($tags as $tag) {
+//            $res = $this->AddTagToLink($lid, $tag);
+//            if (Jaws_Error::IsError($res)) {
+//                $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_ADD_TAG_ERROR'), RESPONSE_ERROR);
+//                break;
+//            }
+//        }
 
         $this->InvalidateFeed($gid);
         $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_ADDED'), RESPONSE_NOTICE, $lid);
@@ -105,23 +111,24 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
 
         $this->MoveLink($id, $gid, $oldLink['gid'], $rank, $oldLink['rank']);
 
+        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $oldLinkTagsInfo = $model->GetItemTags(array('gadget'=>'LinkDump', 'action'=>'link', 'reference'=>$id));
+        $oldLinkTags = array();
+        foreach($oldLinkTagsInfo as $tagInfo) {
+            $oldLinkTags[] = $tagInfo['name'];
+        }
         $tags = array_filter(array_map(array($GLOBALS['app']->UTF8, 'trim'), explode(',', $tags)));
-        $to_be_added_tags = array_diff($tags, $oldLink['tags']);
-        foreach ($to_be_added_tags as $newtag) {
-            $res = $this->AddTagToLink($id, $newtag);
-            if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_ADD_TAG_ERROR'), RESPONSE_ERROR);
-                break;
-            }
+        $to_be_added_tags = array_diff($tags, $oldLinkTags);
+
+        $res = $model->AddTagsToItem('LinkDump', 'link' ,$id, $to_be_added_tags);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_ADD_TAG_ERROR'), RESPONSE_ERROR);
         }
 
-        $to_be_removed_tags = array_diff($oldLink['tags'], $tags);
-        foreach ($to_be_removed_tags as $oldtag) {
-            $res = $this->RemoveTagFromLink($id, $oldtag);
-            if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_DELETE_TAG_ERROR'), RESPONSE_ERROR);
-                break;
-            }
+        $to_be_removed_tags = array_diff($oldLinkTags, $tags);
+        $res = $model->RemoveTagsFromItem('LinkDump', 'link', $id, $to_be_removed_tags);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_DELETE_TAG_ERROR'), RESPONSE_ERROR);
         }
 
         if ($oldLink['gid'] != $gid) {
