@@ -94,11 +94,11 @@ opacity:0.5;
 #frm_search{
 float:right;
 }
-
 #frm_search #file_filter{
 width:140px;
-height:22px;
-vertical-align:top;
+}
+#frm_search #btn_search_close{
+display:none;
 }
 
 #dir_tree{

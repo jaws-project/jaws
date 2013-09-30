@@ -79,7 +79,7 @@ var DirectoryCallback = {
         if (response.type === 'response_notice') {
             $('dir_pathbar').hide();
             $('dir_searchbar').show();
-            $('search_res').innerHTML = ' > ' + response.message;
+            $('search_res').innerHTML = ' > ' + response.text;
             displayFiles(response.data);
         } else {
             DirectoryAjax.showResponse(response);
@@ -729,6 +729,14 @@ function submitShare()
 }
 
 /**
+ * Shows/Hides search close button
+ */
+function onSearchChange(input)
+{
+    $('btn_search_close').style.display = (input.value === '')? 'none' : 'inline';
+}
+
+/**
  * Search among files and directories
  */
 function performSearch()
@@ -745,6 +753,16 @@ function performSearch()
         'Search',
         {'id':currentDir, 'shared':shared, 'foreign':foreign, 'query':query}
     );
+}
+
+/**
+ * Clears the search box and resets data grid
+ */
+function closeSearch()
+{
+    $('btn_search_close').hide();
+    $('file_search').value = '';
+    updateFiles();
 }
 
 /**
