@@ -179,7 +179,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('tags');
 
-        $table->select('count(*):integer');
+        $table->select('count(tags.id):integer');
         $table->join('tags_items', 'tags_items.tag', 'tags.id', 'left');
 
         if (!empty($filters) && count($filters) > 0) {

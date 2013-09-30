@@ -65,7 +65,7 @@ function getTagsDataGrid(name, offset, reset)
 
         var total = TagsAjax.callSync(
             'SizeOfTagsSearch',
-            { 'gadget': $('gadgets_filter').value, 'action': $('actions').value, 'name': $('filter').value}
+            { 'gadgets_filter': $('gadgets_filter').value, 'action_filter': $('actions').value, 'name': $('filter').value}
         );
 
     }
