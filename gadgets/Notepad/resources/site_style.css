@@ -1,0 +1,7 @@
+.notepad input {
+width:100%;
+}
+.notepad textarea {
+width:100%;
+height:100px;
+}

@@ -1,0 +1,33 @@
+<!-- BEGIN notepad -->
+<div class="gadget notepad">
+  <h2>{title}</h2>
+  <div class="gadget_response">
+    <div id="notepad_notepad_response" class="{type}">{text}</div>
+  </div>
+  <div id="workspace">
+    <table>
+      <thead><tr>
+        <th>{lbl_title}</th>
+        <th>{lbl_created}</th>
+        <th>{lbl_owner}</th>
+      </tr></thead>
+      <tbody id="note_template">
+        <!-- BEGIN note -->
+        <tr id="file_{id}">
+          <td class="note-title"><a href="{url}">{title}</a></td>
+          <td class="note-created">{created}</td>
+          <td class="note-owner">{owner}</td>
+        </tr>
+        <!-- END note -->
+      </tbody>
+    </table>
+    <div class="actions">
+      <button onclick="location.href='{url_new}'">{lbl_new_note}</button>
+      <button id="btn_del_note">{lbl_del_note}</button>
+    </div>
+  </div>
+</div>
+<script>
+initNotepad();
+</script>
+<!-- END notepad -->
