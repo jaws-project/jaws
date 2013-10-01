@@ -50,7 +50,7 @@ width:100%;
 margin-bottom:5px;
 border-radius:2px;
 border-bottom:1px solid #ccc;
-box-shadow:20px 0px 25px #eee inset;
+box-shadow:-20px 0px 25px #eee inset;
 }
 legend span{
 padding:4px;
