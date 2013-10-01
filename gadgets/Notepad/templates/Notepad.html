@@ -7,13 +7,15 @@
   <div id="workspace">
     <table>
       <thead><tr>
+        <th><input type="checkbox" onchange="checkAll()"/></th>
         <th>{lbl_title}</th>
         <th>{lbl_created}</th>
         <th>{lbl_owner}</th>
       </tr></thead>
-      <tbody id="note_template">
+      <tbody id="grid_notes">
         <!-- BEGIN note -->
-        <tr id="file_{id}">
+        <tr id="note_{id}">
+          <td class="note-check"><input type="checkbox" value="{id}"/></td>
           <td class="note-title"><a href="{url}">{title}</a></td>
           <td class="note-created">{created}</td>
           <td class="note-owner">{owner}</td>

@@ -52,23 +52,19 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
     }
 
     /**
-     * Fetches data of a file or directory
+     * Fetches data of passed note
      *
      * @access  public
-     * @param   int     $id  File ID
-     * @return  mixed   Array of file data or Jaws_Error on error
+     * @param   int     $id  Note ID
+     * @return  mixed   Query result
      */
-    function GetFile($id)
+    function GetNote($id)
     {
-        $table = Jaws_ORM::getInstance()->table('directory as dir');
-        // $table->select('dir.id', 'parent', 'user', 'is_dir:boolean', 'title',
-            // 'description', 'filename', 'filetype', 'filesize', 'dir.url', 'shared:boolean',
-            // 'dir.public:boolean', 'owner', 'reference', 'createtime', 'updatetime', 'users.username');
-        // $table->join('users', 'owner', 'users.id');
-        $table->select('id', 'parent', 'user', 'is_dir:boolean', 'title',
-            'description', 'filename', 'filetype', 'filesize', 'url', 'shared:boolean',
-            'public:boolean', 'owner', 'reference', 'createtime', 'updatetime');
-        return $table->where('dir.id', $id)->fetchRow();
+        $table = Jaws_ORM::getInstance()->table('notepad as note');
+        $table->select('note.id', 'user', 'title', 'content',
+            'createtime', 'updatetime', 'users.username as owner');
+        $table->join('users', 'user', 'users.id');
+        return $table->where('note.id', $id)->fetchRow();
     }
 
     /**
@@ -86,57 +82,30 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
     }
 
     /**
-     * Updates file/directory
+     * Updates note
      *
      * @access  public
-     * @param   int     $id     File ID
-     * @param   array   $data   File data
+     * @param   int     $id     Note ID
+     * @param   array   $data   Note data
      * @return  mixed   Query result
      */
     function Update($id, $data)
     {
-        $table = Jaws_ORM::getInstance()->table('directory');
+        $data['updatetime'] = time();
+        $table = Jaws_ORM::getInstance()->table('notepad');
         return $table->update($data)->where('id', $id)->exec();
     }
 
     /**
-     * Deletes file/directory
+     * Deletes note
      *
      * @access  public
-     * @param   int     $id  File ID
+     * @param   int     $id  Note ID
      * @return  mixed   Query result
      */
-    function Delete($data)
+    function Delete($id)
     {
-        if ($data['is_dir']) {
-            $files = $this->GetFiles($data['id'], $data['user']);
-            if (Jaws_Error::IsError($files)) {
-                return false;
-            }
-            foreach ($files as $file) {
-                $this->Delete($file);
-            }
-        }
-
-        // Delete file/folder and related shortcuts
-        $table = Jaws_ORM::getInstance()->table('directory');
-        $table->delete()->where('id', $data['id']);
-        $table->or()->where('reference', $data['id']);
-        $res = $table->exec();
-        if (Jaws_Error::IsError($res)) {
-            return false;
-        }
-
-        // Delete from disk
-        if (!$data['is_dir']) {
-            $filename = $GLOBALS['app']->getDataURL('directory/' . $data['user'] . '/' . $data['filename']);
-            if (file_exists($filename)) {
-                if (!Jaws_Utils::delete($filename)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+        $table = Jaws_ORM::getInstance()->table('notepad');
+        return $table->delete()->where('id', $id)->exec();
     }
 }

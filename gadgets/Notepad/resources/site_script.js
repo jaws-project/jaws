@@ -11,11 +11,12 @@
  * Use async mode, create Callback
  */
 var NotepadCallback = {
-    Delete: function(response) {
-        if (response.type === 'response_notice') {
-            updateNotes();
+    DeleteNote: function(response) {
+        if (response.type === 'response_error') {
+            NotepadAjax.showResponse(response);
+        } else {
+            window.location = notepad_url;
         }
-        NotepadAjax.showResponse(response);
     }
 };
 
@@ -25,39 +26,36 @@ var NotepadCallback = {
 function initNotepad()
 {
     NotepadAjax.backwardSupport();
-    noteTemplate = $('note_template').get('html');
-    updateNotes();
     //console.log(noteTemplate);
 }
 
 /**
- * Feches and displays notes
+ * Submits form
  */
-function updateNotes()
+function submitNote()
 {
-    var notes = NotepadAjax.callSync('GetNotes');
-    displayNotes(notes);
+    var form = $('frm_note');
+    if (form.title.value === '') {
+        alert(errorIncompleteData);
+        form.title.focus();
+        return;
+    }
+    if (form.content.value === '') {
+        alert(errorIncompleteData);
+        form.content.focus();
+        return;
+    }
+    form.submit();
 }
 
 /**
- * Displays files and directories
+ * Deletes note
  */
-function displayNotes(notes)
+function deleteNote(id)
 {
-    // Creates a datagrid row from raw data
-    function getNoteRow(data)
-    {
-        var html = noteTemplate.substitute(data),
-            tr = Elements.from(html)[0];
-        //tr.getElement('input').addEvent('click', fileCheck);
-        return tr;
+    if (confirm(confirmDelete)) {
+        NotepadAjax.callAsync('DeleteNote', {id_set:id});
     }
-
-    var ws = $('note_template').empty();
-    notes.each(function (note) {
-        ws.grab(getNoteRow(note));
-    });
 }
 
-var NotepadAjax = new JawsAjax('Notepad', NotepadCallback),
-    noteTemplate;
+var NotepadAjax = new JawsAjax('Notepad', NotepadCallback);

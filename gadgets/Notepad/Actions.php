@@ -3,7 +3,7 @@
  * Notepad Actions file
  *
  * @category    GadgetActions
- * @package     Directory
+ * @package     Notepad
  * @author      Mohsen Khahani <mkhahani@gmail.com>
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html

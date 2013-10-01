@@ -1,11 +1,11 @@
-<!-- BEGIN note -->
+<!-- BEGIN form -->
 <div class="gadget notepad">
   <h2>{title}</h2>
   <div class="gadget_response">
     <div id="notepad_{action}_response" class="{type}">{text}</div>
   </div>
   <div id="workspace">
-    <form name="frm_note" action="{base_script}" method="post">
+    <form id="frm_note" name="frm_note" action="{base_script}" method="post">
       <input type="hidden" name="gadget" value="Notepad" />
       <input type="hidden" name="action" value="{form_action}" />
       <input type="hidden" name="id" value="{id}" />
@@ -15,11 +15,12 @@
       <div>{note_content}</div>
       <div class="actions">
         <button type="button" onclick="location.href='{url_back}'">{lbl_cancel}</button>
-        <button type="submit">{lbl_ok}</button>
+        <button type="button" onclick="submitNote(this.form)">{lbl_ok}</button>
       </div>
     </form>
   </div>
 </div>
 <script>
+var errorIncompleteData = "{errorIncompleteData}";
 </script>
-<!-- END note -->
+<!-- END form -->
