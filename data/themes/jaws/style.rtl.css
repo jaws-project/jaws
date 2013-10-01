@@ -381,10 +381,15 @@ float:left;
 }
 /* users style */
 .users #personal_fname,.users #personal_lname,
-.users #username,.users #nickname,.users #email,
+.users #username,.users #nickname,.users #personal_ssn,.users #email,
 .users #country,.users #city,.users #postal_code,
 .users #user_language,.users #user_theme,.users #user_editor{
 width:380px;
+}
+.users #personal_avatar{
+width:128px;
+height:23px;
+padding:0px;
 }
 .users #user_gender{
 width:148px;
@@ -402,6 +407,10 @@ padding-right:5px;
 }
 .users div.user_avatar{
 float:left;
+width:132px;
+}
+.users div.user_avatar img{
+max-width:128px;
 }
 /* forums style */
 #requested_gadget_forums #mainbar{
