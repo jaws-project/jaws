@@ -115,7 +115,6 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
 
         $tpl->SetVariable('lbl_name',      _t('ADDRESSBOOK_ITEMS_NAME'));
         $tpl->SetVariable('lbl_title',     _t('ADDRESSBOOK_ITEMS_TITLE'));
-        $tpl->SetVariable('lbl_actions',   _t('GLOBAL_ACTIONS'));
 
         foreach ($addressItems as $addressItem) {
             $tpl->SetBlock("list/item1");
@@ -778,7 +777,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
             $ids = jaws()->request->fetch('adr:array');
         }
         $link = $this->gadget->urlMap('AddressBook');
-//return var_dump(jaws()->request->data['post']);
+
         if (empty($ids)) {
             Jaws_Header::Location($link);
             return false;

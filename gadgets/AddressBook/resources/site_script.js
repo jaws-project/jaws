@@ -204,8 +204,8 @@ function ChangeToggleIcon(obj)
 /**
  * Uploads the image
  */
-function upload() {
-    //showWorkingNotification();
+function upload()
+{
     var iframe = new Element('iframe', {id:'ifrm_upload', name:'ifrm_upload'});
     iframe.style.display = 'none';
     $('addressbook_image').adopt(iframe);
@@ -215,8 +215,8 @@ function upload() {
 /**
  * Loads and sets the uploaded image
  */
-function onUpload(response) {
-    //hideWorkingNotification();
+function onUpload(response)
+{
     if (response.type === 'error') {
         alert(response.message);
         $('frm_person_image').reset();
@@ -232,14 +232,15 @@ function onUpload(response) {
 /**
  * Removes the image
  */
-function removeImage() {
+function removeImage()
+{
     $('image').value = '';
     $('frm_person_image').reset();
     $('person_image').src = baseSiteUrl + '/gadgets/AddressBook/images/photo128px.png?' + (new Date()).getTime();
 }
 
-function toggleCheckboxes(){
-    checkStatus = !checkStatus;
+function toggleCheckboxes(checkStatus)
+{
     $$('.table-checkbox').each(function(el) { el.checked = checkStatus; });
 }
 
@@ -248,4 +249,3 @@ var AddressBookAjax = new JawsAjax('AddressBook', AddressBookCallback);
 AddressBookAjax.backwardSupport();
 var lastGroup = 0;
 var lastTerm = '';
-var checkStatus = false;

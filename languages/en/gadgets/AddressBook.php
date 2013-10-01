@@ -86,6 +86,7 @@ define('_EN_ADDRESSBOOK_VIEW_GROUP_MEMBER', "View Members");
 define('_EN_ADDRESSBOOK_GROUP_MEMBERS_TITLE', "AddressBooks Of {0}");
 define('_EN_ADDRESSBOOK_GROUP_BACK_TO_GROUPS_LIST', "Back To Groups List");
 define('_EN_ADDRESSBOOK_GROUPS_EDIT', "Edit Group");
+define('_EN_ADDRESSBOOK_GROUPS_EMPTY_NAME_WARNING', "Please Enter Group Name.");
 
 // Responses
 define('_EN_ADDRESSBOOK_RESULT_NEW_GROUP_SAVED', "Group was successfully added");

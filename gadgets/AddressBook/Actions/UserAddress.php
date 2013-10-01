@@ -40,8 +40,7 @@ class AddressBook_Actions_UserAddress extends Jaws_Gadget_HTML
         $tpl->SetBlock("address_list");
         $tpl->SetVariable('title', _t('ADDRESSBOOK_USER_ADDRESS_TITLE', $user['nickname']));
 
-        $tpl->SetVariable('lbl_name0', _t('ADDRESSBOOK_ITEMS_LASTNAME'));
-        $tpl->SetVariable('lbl_name1', _t('ADDRESSBOOK_ITEMS_FIRSTNAME'));
+        $tpl->SetVariable('lbl_name', _t('ADDRESSBOOK_ITEMS_NAME'));
         $tpl->SetVariable('lbl_title', _t('ADDRESSBOOK_ITEMS_TITLE'));
 
         $tpl->SetVariable('back_to_my_adr', _t('ADDRESSBOOK_BACK_TO_MY_ADDRESS'));
@@ -53,6 +52,7 @@ class AddressBook_Actions_UserAddress extends Jaws_Gadget_HTML
             foreach ($names as $key => $name) {
                 $tpl->SetVariable('name' . $key, $name);
             }
+            $tpl->SetVariable('name', str_replace(';' , ' ', $addressItem['name']));
             $tpl->SetVariable('title', $addressItem['title']);
             $tpl->SetVariable('view_url', $this->gadget->urlMap('View', array('id' => $addressItem['id'])));
             $tpl->ParseBlock("address_list/item1");

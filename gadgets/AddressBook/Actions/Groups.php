@@ -137,10 +137,10 @@ class AddressBook_Actions_Groups extends AddressBook_HTML
 
         $tpl->SetBlock("group");
         $tpl->SetVariable('top_title', _t('ADDRESSBOOK_GROUP_ADD_NEW_TITLE'));
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
-            $tpl->SetBlock('group/response');
-            $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('group/response');
+        $response = $GLOBALS['app']->Session->PopResponse('AddressBook.Groups');
+        if (!empty($response)) {
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
         }
 
         $tpl->SetVariable('gid', 0);
@@ -200,10 +200,10 @@ class AddressBook_Actions_Groups extends AddressBook_HTML
 
         $tpl->SetBlock("group");
         $tpl->SetVariable('top_title', _t('ADDRESSBOOK_GROUP_EDIT_TITLE'));
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
-            $tpl->SetBlock('group/response');
-            $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('group/response');
+        $response = $GLOBALS['app']->Session->PopResponse('AddressBook.Groups');
+        if (!empty($response)) {
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
         }
 
         $tpl->SetVariable('gid', $info['id']);
@@ -245,6 +245,10 @@ class AddressBook_Actions_Groups extends AddressBook_HTML
         $post['[description]'] = $post['description'];
         unset($post['description']);
 
+        if (empty($post['name']) || trim($post['name']) == '') {
+            $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_GROUPS_EMPTY_NAME_WARNING'), 'AddressBook.Groups', RESPONSE_WARNING);
+            Jaws_Header::Referrer();
+        }
         $post['[user]'] = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->load('Model')->load('Model', 'Groups');
         $result = $model->InsertGroup($post);
@@ -282,6 +286,11 @@ class AddressBook_Actions_Groups extends AddressBook_HTML
         }
         if ($info['user'] != $GLOBALS['app']->Session->GetAttribute('user')) {
             return Jaws_HTTPError::Get(403);
+        }
+
+        if (empty($post['name']) || trim($post['name']) == '') {
+            $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_GROUPS_EMPTY_NAME_WARNING'), 'AddressBook.Groups', RESPONSE_WARNING);
+            Jaws_Header::Referrer();
         }
 
         $post['[description]'] = $post['description'];

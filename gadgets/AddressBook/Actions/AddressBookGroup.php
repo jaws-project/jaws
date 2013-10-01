@@ -128,7 +128,7 @@ class AddressBook_Actions_AddressBookGroup extends AddressBook_HTML
         $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
 
         $result = $model->DeleteAddressBooksGroup($adrs, $gid, $user);
-        //return var_dump($result);
+
         $link = $this->gadget->urlMap('GroupMembers', array('id' => $gid));
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushResponse($result->getMessage(), 'AddressBook.AdrGroups', RESPONSE_ERROR);

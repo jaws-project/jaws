@@ -4,7 +4,9 @@
    <h2>{top_title}</h2>
    <div class="gadget_menubar">{menubar}</div>
   </div>
-  <!-- BEGIN response --><div class="simple-response-msg">{msg}</div><!-- END response -->
+  <div class="gadget_response">
+    <div id="addressbook_managegroups_response" class="{type}">{text}</div>
+  </div>
   <form name="addressbook_group" action="{base_script}" method="post" enctype="multipart/form-data">
   <input type="hidden" name="gadget" value="AddressBook" />
   <input type="hidden" name="action" value="{action}" />
