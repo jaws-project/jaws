@@ -61,8 +61,11 @@ class Forums_Actions_Posts extends Forums_HTML
         $objDate = $GLOBALS['app']->loadDate();
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $usrModel = new Jaws_User;
+        $startPostNumber = $limit * ($page - 1);
         foreach ($posts as $pnum => $post) {
             $tpl->SetBlock('posts/post');
+            $startPostNumber ++;
+            $tpl->SetVariable('post_number', $startPostNumber);
             $tpl->SetVariable('title', $topic['subject']);
             $tpl->SetVariable('posts_count_lbl',_t('FORUMS_USERS_POSTS_COUNT'));
             $tpl->SetVariable('registered_date_lbl',_t('FORUMS_USERS_REGISTERED_DATE'));
@@ -74,6 +77,7 @@ class Forums_Actions_Posts extends Forums_HTML
             $tpl->SetVariable('registered_date', $objDate->Format($post['user_registered_date'], 'd MN Y'));
             $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
+            $tpl->SetVariable('post_id',  $post['id']);
             $tpl->SetVariable('message',  $this->gadget->ParseText($post['message'], 'Forums', 'index'));
             $tpl->SetVariable('username', $post['username']);
             $tpl->SetVariable('nickname', $post['nickname']);

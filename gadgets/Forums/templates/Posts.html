@@ -3,7 +3,7 @@
   <h2><a href="{findex_url}">{findex_title}</a> &rsaquo; <a href="{forum_url}">{forum_title}</a> &rsaquo; <a href="{url}">{title}</a></h2>
   <div class="content">
     <!-- BEGIN post -->
-    <div class="forum_post">
+    <div id="p{post_id}" class="forum_post">
       <div class="post_profile">
         <ul>
           <li><a href="{user_url}" title="{username}">{nickname}</a></li>
@@ -14,6 +14,7 @@
       </div>
       <div class="post_body">
         <div class="post_meta">
+          <a href="{requested_url}#p{post_id}">#{post_number}</a>
           {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
           &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
         </div>

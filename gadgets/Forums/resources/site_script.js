@@ -17,7 +17,7 @@ function extraAttachment()
     var fileDivElement = new Element('div#div_attachment' + NumAttachments);
     var fileInputElement = new Element('input', {type: 'file', name: 'attachment[]'});
     fileDivElement.grab(fileInputElement);
-    
+
     var fileAElement = new Element('a', {href: 'javascript:removeAttachment(' + NumAttachments + ');', html: ' ' + lblRemoveAttachment});
     //var fileImageElement = new Element('img', {src: removeIconSrc, alt: lblRemoveAttachment});
     fileDivElement.grab(fileAElement);
