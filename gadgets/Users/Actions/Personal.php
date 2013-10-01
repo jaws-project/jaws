@@ -158,7 +158,7 @@ class Users_Actions_Personal extends Users_HTML
             $post['url'] = '';
         }
 
-        $avatar = '';
+        unset($post['avatar']);
         if (empty($post['delete_avatar'])) {
             $res = Jaws_Utils::UploadFiles(
                 $_FILES,
@@ -175,25 +175,16 @@ class Users_Actions_Personal extends Users_HTML
 
                 Jaws_Header::Location($this->gadget->urlMap('Personal'));
             } elseif (!empty($res)) {
-                $avatar = $res['avatar'][0]['host_filename'];
+                $post['avatar'] = $res['avatar'][0]['host_filename'];
             }
+        } else {
+            $post['avatar'] = '';
         }
 
         $model  = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Personal');
         $result = $model->UpdatePersonal(
             $GLOBALS['app']->Session->GetAttribute('user'),
-            $post['fname'],
-            $post['lname'],
-            $post['gender'],
-            $post['ssn'],
-            $post['dob'],
-            $post['url'],
-            $avatar,
-            $post['signature'],
-            $post['about'],
-            $post['experiences'],
-            $post['occupations'],
-            $post['interests']
+            $post
         );
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushResponse(
