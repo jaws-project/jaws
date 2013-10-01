@@ -7,19 +7,32 @@
     <div><label>{lbl_nickname}: </label><p>{nickname}</p></div>
     <div><label>{lbl_registered_date}: </label><p>{registered_date}</p></div>
     <!-- BEGIN public -->
-    <div><label>{lbl_fname}: </label><p>{fname}</p></div>
-    <div><label>{lbl_lname}: </label><p>{lname}</p></div>
-    <div><label>{lbl_gender}: </label><p>{gender}</p></div>
-    <div><label>{lbl_ssn}: </label><p>{ssn}</p></div>
-    <div><label>{lbl_dob}: </label><p>{dob}</p></div>
-    <div><label>{lbl_url}: </label>
-      <p><!-- BEGIN website --><a href="{url}" target="_blank" rel="nofollow">{url}</a><!-- END website --></p>
-    </div>
-    <hr/>
-    <div><label>{lbl_about}: </label><p>{about}</p></div>
-    <div><label>{lbl_experiences}: </label><p>{experiences}</p></div>
-    <div><label>{lbl_occupations}: </label><p>{occupations}</p></div>
-    <div><label>{lbl_interests}: </label><p>{interests}</p></div>
+    <fieldset>
+      <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
+        <span>{lbl_private}</span>
+      </legend>
+      <div>
+        <div><label>{lbl_fname}: </label><p>{fname}</p></div>
+        <div><label>{lbl_lname}: </label><p>{lname}</p></div>
+        <div><label>{lbl_gender}: </label><p>{gender}</p></div>
+        <div><label>{lbl_ssn}: </label><p>{ssn}</p></div>
+        <div><label>{lbl_dob}: </label><p>{dob}</p></div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
+        <span>{lbl_public}</span>
+      </legend>
+      <div>
+        <div><label>{lbl_url}: </label>
+          <p><!-- BEGIN website --><a href="{url}" target="_blank" rel="nofollow">{url}</a><!-- END website --></p>
+        </div>
+        <div><label>{lbl_about}: </label><p>{about}</p></div>
+        <div><label>{lbl_experiences}: </label><p>{experiences}</p></div>
+        <div><label>{lbl_occupations}: </label><p>{occupations}</p></div>
+        <div><label>{lbl_interests}: </label><p>{interests}</p></div>
+      </div>
+    </fieldset>
     <!-- END public -->
   </div>
 </div>
