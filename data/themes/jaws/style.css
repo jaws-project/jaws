@@ -42,6 +42,7 @@ ul li{
 padding:0 5px;
 }
 fieldset{
+clear:both;
 margin-bottom:1em;
 }
 legend{
@@ -263,6 +264,7 @@ width:auto;
 display:table-cell;
 }
 .filters{
+clear:both;
 padding-bottom:4px;
 }
 .filters label+input,.filters label+textarea,.filters label+select{
@@ -404,11 +406,11 @@ display:inline-block;
 display:inline;
 padding-left:5px;
 }
-.users div.user_avatar{
+div.user_avatar{
 float:right;
 width:132px;
 }
-.users div.user_avatar img{
+div.user_avatar img{
 max-width:128px;
 }
 /* forums style */
@@ -597,9 +599,6 @@ text-align:center;
 
 
 /* PrivateMessage */
-.privateMessage  .user_avatar{
-    float:right;
-}
 .privateMessage  .actions{
     clear: both;
     float: right;

@@ -42,6 +42,7 @@ ul li{
 padding:0 5px;
 }
 fieldset{
+clear:both;
 margin-bottom:1em;
 }
 legend{
@@ -63,14 +64,14 @@ display:none;
 }
 fieldset legend.collapse span{
 padding-right:20px;
-background:url("../../../images/stock/plus.png") no-repeat 2px;
+background:url("../../../images/stock/plus.png") no-repeat right 2px;
 }
 fieldset legend.uncollapse+div{
 display:block;
 }
 fieldset legend.uncollapse span{
 padding-right:20px;
-background:url("../../../images/stock/minus.png") no-repeat 2px;
+background:url("../../../images/stock/minus.png") no-repeat right 2px;
 }
 a:link,a:visited{
 color:#325994;
@@ -235,22 +236,22 @@ padding:1px 20px 0;
 .response_notice{
 border:1px solid #795;
 display:inline-block !important;
-background:#dea url("../../../images/stock/notice.png") no-repeat 2px;
+background:#dea url("../../../images/stock/notice.png") no-repeat right 2px;
 }
 .response_warning{
 border:1px solid #dd5;
 display:inline-block !important;
-background:#ffb url("../../../images/stock/warning.png") no-repeat 2px;
+background:#ffb url("../../../images/stock/warning.png") no-repeat right 2px;
 }
 .response_error{
 border:1px solid #c00;
 display:inline-block !important;
-background:#fbb url("../../../images/stock/error.png") no-repeat 2px;
+background:#fbb url("../../../images/stock/error.png") no-repeat right 2px;
 }
 .response_loading{
 border:1px solid #579;
 display:inline-block !important;
-background:#ace url("../../../images/loading.svg") no-repeat 2px;
+background:#ace url("../../../images/loading.svg") no-repeat right 2px;
 }
 .gadget_section{
 padding-bottom:10px;
@@ -264,6 +265,7 @@ width:auto;
 display:table-cell;
 }
 .filters{
+clear:both;
 padding-bottom:4px;
 }
 .filters label+input,.filters label+textarea,.filters label+select{
@@ -405,11 +407,11 @@ display:inline-block;
 display:inline;
 padding-right:5px;
 }
-.users div.user_avatar{
+div.user_avatar{
 float:left;
 width:132px;
 }
-.users div.user_avatar img{
+div.user_avatar img{
 max-width:128px;
 }
 /* forums style */
@@ -598,9 +600,6 @@ text-align:center;
 
 
 /* PrivateMessage */
-.privateMessage  .user_avatar{
-    float:left;
-}
 .privateMessage  .actions{
     clear: both;
     float: left;
