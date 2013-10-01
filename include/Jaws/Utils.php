@@ -502,8 +502,8 @@ class Jaws_Utils
                     $file['error'] = $listFiles['error'][$i];
                 }
 
-                if (isset($file['error']) && !empty($file['error'])) {
-                    return ($file['error'] == 4)? false : Jaws_Error::raiseError(
+                if (isset($file['error']) && !empty($file['error']) && $file['error'] != 4) {
+                    return Jaws_Error::raiseError(
                         _t('GLOBAL_ERROR_UPLOAD_'.$file['error']),
                         __FUNCTION__
                     );
