@@ -762,7 +762,7 @@ class Jaws_User
             if (!empty($pData['avatar'])) {
                 $fileinfo = pathinfo($pData['avatar']);
                 if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
-                    if (!in_array($fileinfo['extension'], array('gif','jpg','jpeg','png'))) {
+                    if (!in_array($fileinfo['extension'], array('gif','jpg','jpeg','png','svg'))) {
                         return false;
                     } else {
                         $new_avatar = $user['username']. '.'. $fileinfo['extension'];

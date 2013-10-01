@@ -163,7 +163,7 @@ class Users_Actions_Personal extends Users_HTML
             $res = Jaws_Utils::UploadFiles(
                 $_FILES,
                 Jaws_Utils::upload_tmp_dir(),
-                'gif,jpg,jpeg,png'
+                'gif,jpg,jpeg,png,svg'
             );
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushResponse(
