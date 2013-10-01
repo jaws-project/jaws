@@ -526,12 +526,12 @@ class Jaws_Utils
                 }
 
                 if (is_null($overwrite) || empty($fileinfo['filename'])) {
-                    $host_filename = uniqid(floor(microtime()*1000));
+                    $host_filename = time(). mt_rand();
                     if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
                         $host_filename.= '.'. $fileinfo['extension'];
                     }
                 } elseif (!$overwrite && file_exists($dest . $host_filename)) {
-                    $host_filename = $fileinfo['filename']. '_'. uniqid(floor(microtime()*1000));
+                    $host_filename = $fileinfo['filename']. '_'. time(). mt_rand();
                     if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
                         $host_filename.= '.'. $fileinfo['extension'];
                     }
