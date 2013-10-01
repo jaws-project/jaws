@@ -142,6 +142,7 @@ define('_EN_FORUMS_POSTS_MESSAGE', "Message");
 define('_EN_FORUMS_POSTS_ATTACHMENT', "Attachment");
 define('_EN_FORUMS_POSTS_ATTACHMENT_HITS', "Downloaded {0} times");
 define('_EN_FORUMS_POSTS_ATTACHMENT_REMOVE', "Remove attachment");
+define('_EN_FORUMS_POSTS_EXTRA_ATTACHMENT', "Add attachment");
 define('_EN_FORUMS_POSTS_EDIT_REASON', "Edit reason");
 define('_EN_FORUMS_POSTS_UPDATEDBY', "Updated by");
 define('_EN_FORUMS_POSTS_COUNT', "{0} posts");

@@ -686,7 +686,7 @@ class Forums_Actions_Posts extends Forums_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'confirm'));
+        $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'confirm', 'delete_reason'));
 
         $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
         $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);
@@ -737,7 +737,8 @@ class Forums_Actions_Posts extends Forums_HTML
                     $post['forum_title'],
                     $topic_link,
                     $post['subject'],
-                    $this->gadget->ParseText($post['message'], 'Forums', 'index', 'index')
+                    $this->gadget->ParseText($post['message'], 'Forums', 'index', 'index'),
+                    $this->gadget->ParseText($rqst['delete_reason'], 'Forums', 'index')
                 );
                 if (Jaws_Error::IsError($result)) {
                     // do nothing
@@ -788,6 +789,8 @@ class Forums_Actions_Posts extends Forums_HTML
             $objDate = $GLOBALS['app']->loadDate();
             $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
+            
+            $tpl->SetVariable('lbl_delete_reason', _t('FORUMS_POSTS_DELETE_REASON'));
 
             // message
             $tpl->SetVariable('message', $post['message']);
