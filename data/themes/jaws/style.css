@@ -58,6 +58,20 @@ color:#325994;
 legend span img{
 vertical-align:-3px;
 }
+fieldset legend.collapse+div{
+display:none;
+}
+fieldset legend.collapse span{
+padding-left:20px;
+background:url("../../../images/stock/plus.png") no-repeat 2px;
+}
+fieldset legend.uncollapse+div{
+display:block;
+}
+fieldset legend.uncollapse span{
+padding-left:20px;
+background:url("../../../images/stock/minus.png") no-repeat 2px;
+}
 a:link,a:visited{
 color:#325994;
 }
