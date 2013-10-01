@@ -301,6 +301,9 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_HTML
         if (Jaws_Error::IsError($res)) {
             $response = array('type'    => 'error',
                               'message' => $res->getMessage());
+        } elseif (empty($res)) {
+            $response = array('type'    => 'error',
+                              'message' => _t('GLOBAL_ERROR_UPLOAD_4'));
         } else {
             $response = array('type'    => 'notice',
                               'message' => $res['upload_image'][0]['host_filename']);
