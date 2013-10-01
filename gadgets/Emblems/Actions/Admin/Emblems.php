@@ -203,7 +203,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_HTML
             'jpg,gif,swf,png,jpeg,bmp,svg');
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
-        } else if ($res === false) {
+        } elseif (empty($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_ERROR_NO_IMAGE_UPLOADED'), RESPONSE_ERROR);
         } else {
             $post['image'] = $res['image'][0]['host_filename'];
