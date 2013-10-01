@@ -410,6 +410,7 @@ padding-right:5px;
 div.user_avatar{
 float:left;
 width:132px;
+text-align:center;
 }
 div.user_avatar img{
 max-width:128px;
