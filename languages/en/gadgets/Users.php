@@ -110,6 +110,8 @@ define('_EN_USERS_USERS_TYPE_NORMAL', "Normal user");
 define('_EN_USERS_USERS_STATUS_0', "Disabled");
 define('_EN_USERS_USERS_STATUS_1', "Enabled");
 define('_EN_USERS_USERS_STATUS_2', "Not Verified");
+define('_EN_USERS_USERS_PRIVATE', "Private Information");
+define('_EN_USERS_USERS_PUBLIC', "Public Information");
 define('_EN_USERS_USERS_PRIVACY', "Privacy");
 define('_EN_USERS_USERS_GENDER', "Gender");
 define('_EN_USERS_USERS_GENDER_0', "Unknown");
