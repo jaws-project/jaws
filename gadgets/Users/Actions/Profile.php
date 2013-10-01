@@ -46,8 +46,6 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
      */
     function AboutUser($user)
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $usrModel = new Jaws_User;
         $user = $usrModel->GetUser($user, true, true);
         if (Jaws_Error::IsError($user) || empty($user)) {
@@ -93,11 +91,13 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         // auto paragraph content
         $user['about'] = Jaws_String::AutoParagraph($user['about']);
         $user = $user + array(
+            'lbl_private'     => _t('USERS_USERS_PRIVATE'),
             'lbl_fname'       => _t('USERS_USERS_FIRSTNAME'),
             'lbl_lname'       => _t('USERS_USERS_LASTNAME'),
             'lbl_gender'      => _t('USERS_USERS_GENDER'),
             'lbl_ssn'         => _t('USERS_USERS_SSN'),
             'lbl_dob'         => _t('USERS_USERS_BIRTHDAY'),
+            'lbl_public'      => _t('USERS_USERS_PUBLIC'),
             'lbl_url'         => _t('GLOBAL_URL'),
             'lbl_about'       => _t('USERS_USERS_ABOUT'),
             'lbl_experiences' => _t('USERS_USERS_EXPERIENCES'),
@@ -177,11 +177,13 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
         // auto paragraph content
         $user['about'] = Jaws_String::AutoParagraph($user['about']);
         $user = $user + array(
+            'lbl_private'     => _t('USERS_USERS_PRIVATE'),
             'lbl_fname'       => _t('USERS_USERS_FIRSTNAME'),
             'lbl_lname'       => _t('USERS_USERS_LASTNAME'),
             'lbl_gender'      => _t('USERS_USERS_GENDER'),
             'lbl_ssn'         => _t('USERS_USERS_SSN'),
             'lbl_dob'         => _t('USERS_USERS_BIRTHDAY'),
+            'lbl_public'      => _t('USERS_USERS_PUBLIC'),
             'lbl_url'         => _t('GLOBAL_URL'),
             'lbl_about'       => _t('USERS_USERS_ABOUT'),
             'lbl_experiences' => _t('USERS_USERS_EXPERIENCES'),
