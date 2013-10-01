@@ -9,9 +9,23 @@
   <form name="personalbox" action="{base_script}" method="post" enctype="multipart/form-data">
   <input type="hidden" name="gadget" value="Users" />
   <input type="hidden" name="action" value="UpdatePersonal" />
+  <input type="hidden" name="MAX_FILE_SIZE" value="524288" />
   <div class="content">
     <fieldset>
-      <div class="user_avatar">{avatar}</div>
+      <div class="user_avatar">{avatar}
+        <input type="file" name="avatar" id="personal_avatar" onchange="previewImage(this);">
+        <input type="checkbox" name="delete_avatar" id="delete_avatar" value="0">
+        <label for="delete_avatar">{lbl_delete_avatar}</label>
+        <script type="text/javascript">
+        function previewImage(fileElement) {
+            var fReader = new FileReader();
+            fReader.readAsDataURL(fileElement.files[0]);
+            fReader.onload = function (event) {
+                document.getElementById('avatar').src = event.target.result;
+            }
+        }
+        </script>
+      </div>
       <div>
         <label for="personal_fname">{lbl_fname}:</label>
         <input name="fname" id="personal_fname" value="{fname}" type="text" />
@@ -42,14 +56,6 @@
       <div>
         <label for="personal_url">{lbl_url}:</label>
         <input name="url" id="personal_url" value="{url}" type="text" style="direction: ltr;" />
-      </div>
-      <div>
-        <label for="personal_avatar">{lbl_upload_avatar}:</label>
-        <input type="file" name="avatar" id="personal_avatar">
-      </div>
-      <div>
-        <input type="checkbox" name="delete_avatar" id="delete_avatar" value="0">
-        <label for="delete_avatar">{lbl_delete_avatar}</label>
       </div>
       <div>
         <label for="personal_signature">{lbl_signature}:</label>
