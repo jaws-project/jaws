@@ -143,6 +143,9 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage(), _t('PHOO_NAME'));
+        } elseif (empty($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_4'), _t('PHOO_NAME'));
         }
         $filename = $res[0][0]['host_filename'];
         $uploadfile = $uploaddir . $filename;
