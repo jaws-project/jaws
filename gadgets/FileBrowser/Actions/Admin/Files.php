@@ -148,6 +148,8 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
                 $this->gadget->registry->fetch('black_list'));
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            } elseif (empty($res)) {
+                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
             } else {
                 $post['oldname'] = preg_replace('/[^[:alnum:]_\.-]*/', '', $post['oldname']);
                 if (!empty($post['oldname']) && ($res['uploadfile'][0]['host_filename'] != $post['oldname'])) {
