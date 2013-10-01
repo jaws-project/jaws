@@ -14,14 +14,10 @@
 function extraAttachment()
 {
     NumAttachments++;
-    var fileDivElement = new Element('div#div_attachment' + NumAttachments);
-    var fileInputElement = new Element('input', {type: 'file', name: 'attachment[]'});
-    fileDivElement.grab(fileInputElement);
-
-    var fileAElement = new Element('a', {href: 'javascript:removeAttachment(' + NumAttachments + ');', html: ' ' + lblRemoveAttachment});
-    //var fileImageElement = new Element('img', {src: removeIconSrc, alt: lblRemoveAttachment});
-    fileDivElement.grab(fileAElement);
-    $('attachments').grab(fileDivElement);
+    var div = $('attachment_model').cloneNode(true);
+    div.id = 'div_attachment' + NumAttachments
+    div.style.display = 'block';
+    $('attachments').grab(div);
 }
 
 /**
@@ -30,7 +26,7 @@ function extraAttachment()
 function removeAttachment(objID)
 {
     NumAttachments--;
-    $('div_attachment' + objID).dispose();
+    Element.destroy($(objID).parentNode);
 }
 
 /**

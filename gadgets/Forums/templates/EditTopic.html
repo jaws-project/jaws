@@ -63,6 +63,9 @@
             var lblRemoveAttachment = "{lbl_remove_attachment}";
             var removeIconSrc = "{removeIconSrc}";
         </script>
+        <div id="attachment_model" style="display: none;">
+          <input type="file" name="attachment[]" multiple /> <button onclick="removeAttachment(this);">{lbl_remove_attachment}</button>
+        </div>
         <label for="post_attachment">{lbl_attachment}:</label>
         <div id="current_attachments">
             <!-- BEGIN current_attachment -->

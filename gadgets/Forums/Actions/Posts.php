@@ -551,7 +551,7 @@ class Forums_Actions_Posts extends Forums_HTML
         }
 
         // attachment
-        $topic['attachments'] = null;
+        $post['attachments'] = null;
         if ($this->gadget->registry->fetch('enable_attachment') == 'true' &&
             $this->gadget->GetPermission('AddPostAttachment'))
         {
