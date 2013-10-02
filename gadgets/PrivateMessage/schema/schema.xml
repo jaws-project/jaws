@@ -124,7 +124,7 @@
             <field>
                 <name>filetype</name>
                 <type>text</type>
-                <length>64</length>
+                <length>128</length>
             </field>
 
         </declaration>
