@@ -86,14 +86,15 @@ class Jaws_Gadget_ACL
      * Delete ACL key
      *
      * @access  public
-     * @param   string  $name   Key name
-     * @param   string  $gadget (Optional) Gadget name
+     * @param   string  $key_name   Key name
+     * @param   string  $subkey     Subkey name
+     * @param   string  $gadget     (Optional) Gadget name
      * @return  bool    Returns True or False
      */
-    function delete($name, $gadget = '')
+    function delete($key_name, $subkey = '', $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->ACL->delete($gadget, $name);
+        return $GLOBALS['app']->ACL->delete($gadget, $key_name, $subkey);
     }
 
     /**
