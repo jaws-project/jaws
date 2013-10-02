@@ -14,7 +14,6 @@
 var ComponentsCallback = {
     installgadget: function (response) {
         if (response[0].type == 'response_notice') {
-            console.log(selectedComponent);
             components[selectedComponent].state =
                 components[selectedComponent].core_gadget ? 'core' : 'installed';
             buildComponentList();
