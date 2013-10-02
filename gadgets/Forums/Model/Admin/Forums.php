@@ -42,6 +42,7 @@ class Forums_Model_Admin_Forums extends Jaws_Gadget_Model
             return $res;
         }
 
+        $this->gadget->acl->insert('ForumAccess', $res, true);
         return $res;
     }
 
@@ -97,6 +98,7 @@ class Forums_Model_Admin_Forums extends Jaws_Gadget_Model
             return $res;
         }
 
+        $this->gadget->acl->delete('ForumAccess', $fid);
         return (bool)$res;
     }
 

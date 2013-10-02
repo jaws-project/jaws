@@ -29,6 +29,10 @@ class Forums_Actions_Topics extends Forums_HTML
             return false;
         }
 
+        if (!$this->gadget->GetPermission('ForumAccess', $forum['id'])) {
+            return Jaws_HTTPError::Get(403);
+        }
+
         $limit = (int)$this->gadget->registry->fetch('topics_limit');
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
 
@@ -174,7 +178,6 @@ class Forums_Actions_Topics extends Forums_HTML
             return false;
         }
 
-        $this->AjaxMe('site_script.js');
         $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
         if (!empty($rqst['tid'])) {
             $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
@@ -202,6 +205,11 @@ class Forums_Actions_Topics extends Forums_HTML
             $btn_title = _t('FORUMS_TOPICS_NEW_BUTTON');
         }
 
+        if (!$this->gadget->GetPermission('ForumAccess', $topic['fid'])) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $this->AjaxMe('site_script.js');
         $tpl = $this->gadget->loadTemplate('EditTopic.html');
         $tpl->SetBlock('topic');
 
@@ -365,6 +373,10 @@ class Forums_Actions_Topics extends Forums_HTML
             'post'
         );
         $topic['forum_title'] = '';
+
+        if (empty($topic['fid']) || !$this->gadget->GetPermission('ForumAccess', $topic['fid'])) {
+            return Jaws_HTTPError::Get(403);
+        }
 
         if (empty($topic['subject']) ||  empty($topic['message'])) {
             $GLOBALS['app']->Session->PushSimpleResponse(

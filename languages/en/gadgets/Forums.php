@@ -48,6 +48,7 @@ define('_EN_FORUMS_ACL_DELETEPOST', "Delete post");
 define('_EN_FORUMS_ACL_DELETEOTHERSPOST', "Delete others post");
 define('_EN_FORUMS_ACL_DELETEOUTDATEDPOST', "Delete outdated post");
 define('_EN_FORUMS_ACL_DELETEPOSTINLOCKEDTOPIC', "Delete post in locked topic");
+define('_EN_FORUMS_ACL_FORUM_ACCESS', "Access To Forum: {0}");
 
 /* Commons */
 define('_EN_FORUMS_GROUP', "Group");
@@ -145,6 +146,8 @@ define('_EN_FORUMS_POSTS_ATTACHMENT_REMOVE', "Remove attachment");
 define('_EN_FORUMS_POSTS_EXTRA_ATTACHMENT', "Add attachment");
 define('_EN_FORUMS_POSTS_EDIT_REASON', "Edit reason");
 define('_EN_FORUMS_POSTS_UPDATEDBY', "Updated by");
+define('_EN_FORUMS_POSTS_DELETE_REASON', "Delete reason");
+define('_EN_FORUMS_POSTS_REASON', "Reason");
 define('_EN_FORUMS_POSTS_COUNT', "{0} posts");
 
 /* Users */

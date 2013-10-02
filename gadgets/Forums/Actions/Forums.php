@@ -39,19 +39,26 @@ class Forums_Actions_Forums extends Forums_HTML
         $posts_limit = $this->gadget->registry->fetch('posts_limit');
         $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
         foreach ($groups as $group) {
-            $tpl->SetBlock('forums/group');
-            $tpl->SetVariable('title', $group['title']);
-            $tpl->SetVariable('lbl_topics', _t('FORUMS_TOPICS'));
-            $tpl->SetVariable('lbl_posts', _t('FORUMS_POSTS'));
-            $tpl->SetVariable('lbl_lastpost', _t('FORUMS_LASTPOST'));
-
             $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
             $forums = $fModel->GetForums($group['id'], true, true);
             if (Jaws_Error::IsError($forums)) {
                 continue;
             }
 
+            $forumCount = 0;
             foreach ($forums as $forum) {
+                if (!$this->gadget->GetPermission('ForumAccess', $forum['id'])) {
+                    continue;
+                }
+                $forumCount ++;
+                if ($forumCount == 1) {
+                    $tpl->SetBlock('forums/group');
+                    $tpl->SetVariable('title', $group['title']);
+                    $tpl->SetVariable('lbl_topics', _t('FORUMS_TOPICS'));
+                    $tpl->SetVariable('lbl_posts', _t('FORUMS_POSTS'));
+                    $tpl->SetVariable('lbl_lastpost', _t('FORUMS_LASTPOST'));
+                }
+
                 $tpl->SetBlock('forums/group/forum');
                 $tpl->SetVariable('status', (int)$forum['locked']);
                 $tpl->SetVariable('title', $forum['title']);
@@ -89,7 +96,9 @@ class Forums_Actions_Forums extends Forums_HTML
                 $tpl->ParseBlock('forums/group/forum');
             }
 
-            $tpl->ParseBlock('forums/group');
+            if ($forumCount > 0) {
+                $tpl->ParseBlock('forums/group');
+            }
         }
 
         $tpl->ParseBlock('forums');
