@@ -98,23 +98,129 @@ class Tags_Actions_Tags extends Jaws_Gadget_HTML
      */
     function ViewTag()
     {
-        $get = jaws()->request->fetch(array('name', 'id'), 'get');
-        $model = $GLOBALS['app']->LoadGadget('Tags', 'Model', 'Tags');
-        $tagItems = $model->GetTagItems($get['id']);
+        $tag = jaws()->request->fetch('tag', 'get');
+//        $model = $GLOBALS['app']->LoadGadget('Tags', 'Model', 'Tags');
+//        $tagItems = $model->GetTagItems($get['id']);
 
         $tpl = $this->gadget->loadTemplate('Tag.html');
         $tpl->SetBlock('tag');
-        $tpl->SetVariable('title', _t('TAGS_VIEW_TAG', $get['name']));
+        $tpl->SetVariable('title', _t('TAGS_VIEW_TAG', $tag));
 
-        foreach ($tagItems as $item) {
-            $tpl->SetBlock('tag/item');
-            $tpl->SetVariable('content_title',  $item['gadget']);
-            $tpl->SetVariable('content_url', '');
-            $tpl->ParseBlock('tag/item');
+        $gadgets = $this->GetGadgets();
+        if (is_array($gadgets) && count($gadgets) > 0) {
+            foreach ($gadgets as $gadget) {
+                $gadget = trim($gadget);
+                if ($gadget == 'Tags' || empty($gadget)) {
+                    continue;
+                }
+
+                $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+                if (Jaws_Error::IsError($objGadget)) {
+                    continue;
+                }
+                $objHook = $objGadget->load('Hook')->load('Tags');
+                if (Jaws_Error::IsError($objHook)) {
+                    continue;
+                }
+
+                $result[$gadget] = array();
+                $gResult = $objHook->Execute($tag);
+                if (!Jaws_Error::IsError($gResult) || !$gResult) {
+                    if (is_array($gResult) && !empty($gResult)) {
+                        $result[$gadget] = $gResult;
+                        $result['_totalItems'] += count($gResult);
+                    } else {
+                        unset($result[$gadget]);
+                    }
+                }
+            }
+
+            reset($result);
         }
-        $tpl->ParseBlock('tag');
 
+
+
+//        $tpl->SetVariable(
+//            'navigation',
+//            $this->GetNumberedPageNavigation(
+//                $page,
+//                $results_limit,
+//                $items['_totalItems'],
+//                $query_string
+//            )
+//        );
+//        if (count($items) > 2) {
+//            $tpl->SetBlock('results/subtitle');
+//            $tpl->SetVariable('text', _t('SEARCH_RESULTS_SUBTITLE',
+//                $items['_totalItems'],
+//                $model->implodeSearch()));
+//            $tpl->ParseBlock('results/subtitle');
+//        }
+        unset($result['_totalItems']);
+
+        $date = $GLOBALS['app']->loadDate();
+        $max_result_len = (int)$this->gadget->registry->fetch('max_result_len');
+        if (empty($max_result_len)) {
+            $max_result_len = 500;
+        }
+
+        $item_counter = 0;
+        foreach ($result as $gadget => $result) {
+            $tpl->SetBlock('tags/gadget');
+            $info = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+            $tpl->SetVariable('gadget_result', _t('SEARCH_RESULTS_IN_GADGETS',
+                count($result),
+                $model->implodeSearch(),
+                $info->title));
+            $tpl->ParseBlock('tags/gadget');
+            foreach ($result as $item) {
+                $item_counter++;
+                if ($item_counter <= ($page-1)*$results_limit || $item_counter > $page*$results_limit) {
+                    continue;
+                }
+                $tpl->SetBlock('tags/item');
+                $tpl->SetVariable('title',  $item['title']);
+                $tpl->SetVariable('url',    $item['url']);
+                $tpl->SetVariable('target', (isset($item['outer']) && $item['outer'])? '_blank' : '_self');
+                $tpl->SetVariable('image',  $item['image']);
+
+                if (!isset($item['parse_text']) || $item['parse_text']) {
+                    $item['snippet'] = $this->gadget->ParseText($item['snippet'], $gadget);
+                }
+                if (!isset($item['strip_tags']) || $item['strip_tags']) {
+                    $item['snippet'] = strip_tags($item['snippet']);
+                }
+                $item['snippet'] = $GLOBALS['app']->UTF8->substr($item['snippet'], 0, $max_result_len);
+
+                $tpl->SetVariable('snippet', $item['snippet']);
+                $tpl->SetVariable('date', $date->Format($item['date']));
+                $tpl->ParseBlock('tags/item');
+            }
+        }
+
+
+        $tpl->ParseBlock('tag');
         return $tpl->Get();
+    }
+
+
+
+    /**
+     * Gets list of gadgets that use Tags
+     *
+     * @access  public
+     * @return  array   List of searchable gadgets
+     */
+    function GetGadgets()
+    {
+        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
+        $gadgetList = $cmpModel->GetGadgetsList(false, true, true);
+        $gadgets = array();
+        foreach ($gadgetList as $key => $gadget) {
+            if (is_file(JAWS_PATH . 'gadgets/' . $gadget['name'] . '/hooks/Tags.php'))
+                $gadgets[$key] = $gadget;
+        }
+        return array_keys($gadgets);
     }
 
 }
