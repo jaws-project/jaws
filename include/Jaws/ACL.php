@@ -365,14 +365,18 @@ class Jaws_ACL
      * @access  public
      * @param   string  $component  Component name
      * @param   string  $key_name   Key name
+     * @param   string  $subkey     Subkey name
      * @return  bool    True is set otherwise False
      */
-    function delete($component, $key_name = '')
+    function delete($component, $key_name = '', $subkey = '')
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
         $tblACL->delete()->where('component', $component);
         if (!empty($key_name)) {
             $tblACL->and()->where('key_name', $key_name);
+            if (!empty($subkey)) {
+                $tblACL->and()->where('key_subkey', $subkey);
+            }
         }
 
         $result = $tblACL->exec();
