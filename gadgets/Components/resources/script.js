@@ -13,7 +13,8 @@
  */
 var ComponentsCallback = {
     installgadget: function (response) {
-        if (response[0].css === 'notice-message') {
+        if (response[0].type == 'response_notice') {
+            console.log(selectedComponent);
             components[selectedComponent].state =
                 components[selectedComponent].core_gadget ? 'core' : 'installed';
             buildComponentList();
@@ -23,7 +24,7 @@ var ComponentsCallback = {
     },
 
     upgradegadget: function (response) {
-        if (response[0].css === 'notice-message') {
+        if (response[0].type == 'response_notice') {
             components[selectedComponent].state =
                 components[selectedComponent].core_gadget ? 'core' : 'installed';
             buildComponentList();
@@ -33,7 +34,7 @@ var ComponentsCallback = {
     },
 
     uninstallgadget: function (response) {
-        if (response[0].css === 'notice-message') {
+        if (response[0].type == 'response_notice') {
             components[selectedComponent].state = 'notinstalled';
             buildComponentList();
             closeUI();
@@ -42,7 +43,7 @@ var ComponentsCallback = {
     },
 
     enablegadget: function (response) {
-        if (response[0].css === 'notice-message') {
+        if (response[0].type == 'response_notice') {
             components[selectedComponent].state = 'installed';
             components[selectedComponent].disabled = false;
             buildComponentList();
@@ -52,7 +53,7 @@ var ComponentsCallback = {
     },
 
     disablegadget: function (response) {
-        if (response[0].css === 'notice-message') {
+        if (response[0].type == 'response_notice') {
             components[selectedComponent].state = 'installed';
             components[selectedComponent].disabled = true;
             buildComponentList();
@@ -62,7 +63,7 @@ var ComponentsCallback = {
     },
 
     installplugin: function (response) {
-        if (response[0].css === 'notice-message') {
+        if (response[0].type == 'response_notice') {
             components[selectedComponent].state = 'installed';
             buildComponentList();
             closeUI();
@@ -71,7 +72,7 @@ var ComponentsCallback = {
     },
 
     uninstallplugin: function (response) {
-        if (response[0].css === 'notice-message') {
+        if (response[0].type == 'response_notice') {
             components[selectedComponent].state = 'notinstalled';
             buildComponentList();
             closeUI();
@@ -80,7 +81,7 @@ var ComponentsCallback = {
     },
 
     updatepluginusage: function (response) {
-        if (response[0].css === 'notice-message') {
+        if (response[0].type == 'response_notice') {
             usageCache = $('plugin_usage').clone(true, true);
             if (regCache) {
                 regCache = null;
@@ -91,7 +92,7 @@ var ComponentsCallback = {
     },
 
     updateregistry: function (response) {
-        if (response[0].css === 'notice-message') {
+        if (response[0].type == 'response_notice') {
             regChanges = {};
             regCache = $('component_registry').clone(true, true);
             if (usageCache) {
@@ -103,7 +104,7 @@ var ComponentsCallback = {
     },
 
     updateacl: function (response) {
-        if (response[0].css === 'notice-message') {
+        if (response[0].type == 'response_notice') {
             aclChanges = {};
             aclCache = $('component_acl').clone(true, true);
         }
