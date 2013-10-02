@@ -90,6 +90,48 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
     }
 
     /**
+     * Get user's topics
+     *
+     * @access  public
+     * @param   int     $uid    User's ID
+     * @param   int     $limit  Count of posts to be returned
+     * @param   int     $offset Offset of data array
+     * @return  mixed   User's topics array or Jaws_Error on failure
+     */
+    function GetUserTopics($uid, $limit = 0, $offset = null)
+    {
+        $table = Jaws_ORM::getInstance()->table('forums_topics');
+        $table->select(
+                'forums_topics.id:integer', 'fid:integer', 'subject',
+                'forums_topics.views:integer', 'forums_topics.replies:integer',
+                'first_post_id:integer', 'first_post_uid:integer', 'first_post_time:integer',
+                'last_post_id:integer', 'last_post_uid:integer', 'last_post_time:integer',
+                'luser.username as last_username', 'luser.nickname as last_nickname',
+                'forums_topics.locked:boolean', 'forums_topics.published:boolean',
+                'forums.title', 'forums.fast_url as forum_fast_url'
+        );
+        $table->join('forums', 'forums_topics.fid', 'forums.id', 'left');
+        $table->join('users as luser', 'forums_topics.last_post_uid', 'luser.id', 'left');
+        $table->where('first_post_uid', $uid)->orderBy('forums_topics.last_post_time desc');
+        $result = $table->limit($limit, $offset)->fetchAll();
+        return $result;
+    }
+
+    /**
+     * Get topic count of user
+     *
+     * @access  public
+     * @param   int     $uid    User's ID
+     * @return  mixed   Count of user's posts or Jaws_Error on failure
+     */
+    function GetUserTopicCount($uid)
+    {
+        $table = Jaws_ORM::getInstance()->table('forums_topics');
+        $count = $table->select('count(id)')->where('first_post_uid', $uid)->fetchOne();
+        return $count;
+    }
+
+    /**
      * Get recent updated topics
      *
      * @access  public

@@ -19,6 +19,10 @@ $actions['UserPosts'] = array(
     'normal' => true,
     'file'   => 'UserPosts',
 );
+$actions['UserTopics'] = array(
+    'normal' => true,
+    'file'   => 'UserTopics',
+);
 $actions['Forums'] = array(
     'normal' => true,
     'file'   => 'Forums',
