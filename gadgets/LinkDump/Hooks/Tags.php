@@ -20,18 +20,18 @@ class LinkDump_Hooks_Tags extends Jaws_Gadget_Hook
     function Execute($tag)
     {
 
-        return 'LinkDump' . $tag;
+        $table = Jaws_ORM::getInstance()->table('tags');
+        $table->select(
+            'linkdump_links.id as links_id:integer', 'linkdump_links.title',
+            'linkdump_links.description', 'linkdump_links.updatetime'
+        );
 
-        $sql = '
-            SELECT
-                [id], [title], [url], [description], [updatetime]
-            FROM [[linkdump_links]]
-            ';
+        $table->join('tags_items', 'tags_items.tag', 'tags.id');
+        $table->join('linkdump_links', 'linkdump_links.id', 'tags_items.reference');
+        $table->where('tags.name', $tag)->and()->where('tags_items.gadget', 'LinkDump');
+        $table->and()->where('tags_items.action', 'link');
 
-        $sql .= ' WHERE ' . $pSql;
-        $sql .= ' ORDER BY [createtime] desc';
-
-        $result = $GLOBALS['db']->queryAll($sql);
+        $result = $table->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return array();
         }
@@ -41,7 +41,7 @@ class LinkDump_Hooks_Tags extends Jaws_Gadget_Hook
         foreach ($result as $r) {
             $link = array();
             $link['title']   = $r['title'];
-            $link['url']     = $GLOBALS['app']->Map->GetURLFor('LinkDump', 'Link', array('id' => $r['id']));
+            $link['url']     = $GLOBALS['app']->Map->GetURLFor('LinkDump', 'Link', array('id' => $r['links_id']));
             $link['outer']   = true;
             $link['image']   = 'gadgets/LinkDump/images/logo.png';
             $link['snippet'] = $r['description'];

@@ -8,7 +8,7 @@
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Tags_Actions_Tags extends Jaws_Gadget_HTML
+class Tags_Actions_Tags extends Tags_HTML
 {
 
     /**
@@ -80,9 +80,14 @@ class Tags_Actions_Tags extends Jaws_Gadget_HTML
             $tpl->SetVariable('size', (int)$fsize);
             $tpl->SetVariable('tagname',  Jaws_UTF8::strtolower($tag['name']));
             $tpl->SetVariable('frequency', $tag['howmany']);
+            if (empty($gadget)) {
+                $param = array('tag' => $tag['name']);
+            } else {
+                $param = array('tag' => $tag['name'], 'gname' => $gadget);
+            }
             $tpl->SetVariable('url', $this->gadget->urlMap(
                 'ViewTag',
-                array('id' => $tag['id'], 'name' => $tag['name'])));
+                $param));
             $tpl->ParseBlock('tagcloud/tag');
         }
         $tpl->ParseBlock('tagcloud');
@@ -98,15 +103,28 @@ class Tags_Actions_Tags extends Jaws_Gadget_HTML
      */
     function ViewTag()
     {
-        $tag = jaws()->request->fetch('tag', 'get');
-//        $model = $GLOBALS['app']->LoadGadget('Tags', 'Model', 'Tags');
-//        $tagItems = $model->GetTagItems($get['id']);
-
+        $get = jaws()->request->fetch(array('tag', 'gname', 'page'), 'get');
+        $tag = $get['tag'];
+        $gadget = $get['gname'];
         $tpl = $this->gadget->loadTemplate('Tag.html');
         $tpl->SetBlock('tag');
         $tpl->SetVariable('title', _t('TAGS_VIEW_TAG', $tag));
 
-        $gadgets = $this->GetGadgets();
+        $page = $get['page'];
+        if (is_null($page) || !is_numeric($page) || $page <= 0 ) {
+            $page = 1;
+        }
+
+        $results_limit = (int)$this->gadget->registry->fetch('results_limit');
+        if (empty($results_limit)) {
+            $results_limit = 10;
+        }
+
+        if(empty($gadget)) {
+            $gadgets = $this->GetGadgets();
+        } else {
+            $gadgets = array($gadget);
+        }
         if (is_array($gadgets) && count($gadgets) > 0) {
             foreach ($gadgets as $gadget) {
                 $gadget = trim($gadget);
@@ -124,6 +142,7 @@ class Tags_Actions_Tags extends Jaws_Gadget_HTML
                 }
 
                 $result[$gadget] = array();
+                $result['_totalItems'] = 0;
                 $gResult = $objHook->Execute($tag);
                 if (!Jaws_Error::IsError($gResult) || !$gResult) {
                     if (is_array($gResult) && !empty($gResult)) {
@@ -138,24 +157,26 @@ class Tags_Actions_Tags extends Jaws_Gadget_HTML
             reset($result);
         }
 
+        // page navigation
+        $this->GetPagesNavigation(
+            $tpl,
+            'tag',
+            $page,
+            $results_limit,
+            $result['_totalItems'],
+            _t('TAGS_TAG_ITEM_COUNT', $result['_totalItems']),
+            'ViewTag',
+            array('tag'=>$tag)
+        );
 
+        if (count($result) > 2) {
+            $tpl->SetBlock('tag/subtitle');
+            $tpl->SetVariable('text', _t('SEARCH_RESULTS_SUBTITLE',
+                $result['_totalItems'],
+                'TEST'));
+            $tpl->ParseBlock('tag/subtitle');
+        }
 
-//        $tpl->SetVariable(
-//            'navigation',
-//            $this->GetNumberedPageNavigation(
-//                $page,
-//                $results_limit,
-//                $items['_totalItems'],
-//                $query_string
-//            )
-//        );
-//        if (count($items) > 2) {
-//            $tpl->SetBlock('results/subtitle');
-//            $tpl->SetVariable('text', _t('SEARCH_RESULTS_SUBTITLE',
-//                $items['_totalItems'],
-//                $model->implodeSearch()));
-//            $tpl->ParseBlock('results/subtitle');
-//        }
         unset($result['_totalItems']);
 
         $date = $GLOBALS['app']->loadDate();
@@ -165,20 +186,20 @@ class Tags_Actions_Tags extends Jaws_Gadget_HTML
         }
 
         $item_counter = 0;
-        foreach ($result as $gadget => $result) {
+        foreach ($result as $gadget => $tags) {
             $tpl->SetBlock('tags/gadget');
             $info = $GLOBALS['app']->LoadGadget($gadget, 'Info');
             $tpl->SetVariable('gadget_result', _t('SEARCH_RESULTS_IN_GADGETS',
-                count($result),
-                $model->implodeSearch(),
+                count($tags),
+                'TEST',
                 $info->title));
             $tpl->ParseBlock('tags/gadget');
-            foreach ($result as $item) {
+            foreach ($tags as $item) {
                 $item_counter++;
-                if ($item_counter <= ($page-1)*$results_limit || $item_counter > $page*$results_limit) {
+                if ($item_counter <= ($page - 1) * $results_limit || $item_counter > $page * $results_limit) {
                     continue;
                 }
-                $tpl->SetBlock('tags/item');
+                $tpl->SetBlock('tag/tag_item');
                 $tpl->SetVariable('title',  $item['title']);
                 $tpl->SetVariable('url',    $item['url']);
                 $tpl->SetVariable('target', (isset($item['outer']) && $item['outer'])? '_blank' : '_self');
@@ -194,7 +215,7 @@ class Tags_Actions_Tags extends Jaws_Gadget_HTML
 
                 $tpl->SetVariable('snippet', $item['snippet']);
                 $tpl->SetVariable('date', $date->Format($item['date']));
-                $tpl->ParseBlock('tags/item');
+                $tpl->ParseBlock('tag/tag_item');
             }
         }
 
@@ -202,8 +223,6 @@ class Tags_Actions_Tags extends Jaws_Gadget_HTML
         $tpl->ParseBlock('tag');
         return $tpl->Get();
     }
-
-
 
     /**
      * Gets list of gadgets that use Tags

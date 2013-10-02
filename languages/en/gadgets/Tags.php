@@ -26,6 +26,7 @@ define('_EN_TAGS_ACTIONS_TAGCLOUD_DESC', "Display Tag Cloud");
 
 /* Tag Cloud */
 define('_EN_TAGS_TAG_CLOUD', "{0} Tag Cloud");
+define('_EN_TAGS_VIEW_TAG', "View {0} tag");
 
 /* Tags */
 define('_EN_TAGS_TAG_NAME', "Tag name");

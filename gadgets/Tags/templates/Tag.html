@@ -2,12 +2,28 @@
 <div class="gadget tag">
     <h2>{title}</h2>
 
-    <div class="tags-cloud">
-        <ul>
-            <!-- BEGIN item -->
-            <li><span class="tag-item"><a href="{content_url}" title="{content_title}">{content_title}</a></span></li>
-            <!-- END item -->
-        </ul>
+    <div class="gadget_section tag_result_summary">
+        <!-- BEGIN subtitle -->{text}<!-- END subtitle -->
+        <!-- BEGIN gadget --><h3>{gadget_result}</h3><!-- END gadget -->
     </div>
+
+    <div class="content">
+        <ul>
+            <!-- BEGIN tag_item -->
+            <li class="gadget_section">
+                <div class="tag_result_meta">
+                    <img src="{image}" width="48" alt="{title}"/>
+                    <h3><a href="{url}" target="{target}">{title}</a></h3>
+                    <span>{date}</span>
+                </div>
+                <p>{snippet}</p>
+            </li>
+            <!-- END tag_item -->
+        </ul>
+        <!-- BEGIN notfound -->{message}<!-- END notfound -->
+    </div>
+
+    <!-- INCLUDE PageNavigation.html -->
+
 </div>
 <!-- END tag -->
