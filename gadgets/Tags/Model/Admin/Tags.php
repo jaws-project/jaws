@@ -161,11 +161,28 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         //Start Transaction
         $table->beginTransaction();
 
-        // Add new tag
+        //Add new tag
         $newId = $this->AddTag($newName);
 
         //Update tag items
-        $res = $table->update(array('tag' => $newId))->where('tag', $ids, 'in')->exec();
+        $table->update(array('tag' => $newId))->where('tag', $ids, 'in')->exec();
+
+
+//        DELETE n1 FROM tags_items n1, tags_items n2 WHERE n1.id > n2.id
+//    AND n1.gadget = n2.gadget
+//    AND n1.action = n2.action
+//    AND n1.reference = n2.reference
+//    AND n1.tag = n2.tag
+
+        // TODO: fix me
+        //Delete duplicated items
+        $table = Jaws_ORM::getInstance()->table('tags_items', 'items1');
+        $table->join('tags_items as items2', 'items2.id', 'item1.id', 'inner', '>');
+        $table->delete()->where('item1.gadget', 'item2.gadget');
+        $table->and()->where('item1.action', 'item2.action');
+        $table->and()->where('item1.reference', 'item2.reference');
+        $table->and()->where('item1.tag', 'item2.tag');
+        $res = $table->exec();
 
         //Delete old tags
         $table = Jaws_ORM::getInstance()->table('tags');

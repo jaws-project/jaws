@@ -9,3 +9,5 @@
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 $maps[] = array('ViewTag', 'tag/{tag}[/gname/{gname}][/page/{page}]');
+
+$maps[] = array('TagCloud', 'tagcloud/[/gname/{gname}]');

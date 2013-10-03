@@ -44,8 +44,12 @@ class Tags_Actions_Tags extends Tags_HTML
      * @param   string  $gadget gadget name
      * @return  string  XHTML template content
      */
-    function TagCloud($gadget)
+    function TagCloud($gadget = null)
     {
+        if(empty($gadget)) {
+            $gadget = jaws()->request->fetch('gname', 'get');
+        }
+
         $model = $GLOBALS['app']->LoadGadget('Tags', 'Model', 'Tags');
         $res = $model->GenerateTagCloud($gadget);
         $sortedTags = $res;
@@ -121,17 +125,12 @@ class Tags_Actions_Tags extends Tags_HTML
         }
 
         if(empty($gadget)) {
-            $gadgets = $this->GetGadgets();
+            $gadgets = $this->GetTagRelativeGadgets();
         } else {
             $gadgets = array($gadget);
         }
         if (is_array($gadgets) && count($gadgets) > 0) {
             foreach ($gadgets as $gadget) {
-                $gadget = trim($gadget);
-                if ($gadget == 'Tags' || empty($gadget)) {
-                    continue;
-                }
-
                 $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
@@ -230,14 +229,20 @@ class Tags_Actions_Tags extends Tags_HTML
      * @access  public
      * @return  array   List of searchable gadgets
      */
-    function GetGadgets()
+    function GetTagRelativeGadgets()
     {
         $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
         $gadgetList = $cmpModel->GetGadgetsList(false, true, true);
         $gadgets = array();
         foreach ($gadgetList as $key => $gadget) {
-            if (is_file(JAWS_PATH . 'gadgets/' . $gadget['name'] . '/hooks/Tags.php'))
+            if (is_file(JAWS_PATH . 'gadgets/' . $gadget['name'] . '/hooks/Tags.php')) {
+                $gadget['name'] = trim($gadget['name']);
+                if ($gadget['name'] == 'Tags' || empty($gadget['name'])) {
+                    continue;
+                }
+
                 $gadgets[$key] = $gadget;
+            }
         }
         return array_keys($gadgets);
     }
