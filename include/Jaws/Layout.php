@@ -454,7 +454,10 @@ class Jaws_Layout
     function GetLayoutItems()
     {
         if (JAWS_SCRIPT == 'index') {
-            return $this->_Model->GetLayoutItems(true);
+            return $this->_Model->GetLayoutItems(
+                $GLOBALS['app']->Session->GetAttribute('layout'),
+                true
+            );
         }
         $items = array();
         $items[] = array('id'            => null,
