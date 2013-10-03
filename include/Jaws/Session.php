@@ -328,6 +328,7 @@ class Jaws_Session
             $info['username']    = '';
             $info['superadmin']  = false;
             $info['groups']      = array();
+            $info['layout']      = 0;
             $info['nickname']    = '';
             $info['logon_hours'] = '';
             $info['expiry_date'] = 0;
@@ -353,9 +354,12 @@ class Jaws_Session
         $this->SetAttribute('logon_hours', $info['logon_hours']);
         $this->SetAttribute('expiry_date', $info['expiry_date']);
         $this->SetAttribute('concurrents', $info['concurrents']);
-        $this->SetAttribute('longevity',  $remember?
-                                          (int)$GLOBALS['app']->Registry->fetch('session_remember_timeout', 'Policy')*3600 : 0);
+        $this->SetAttribute(
+            'longevity', 
+            $remember? (int)$GLOBALS['app']->Registry->fetch('session_remember_timeout', 'Policy')*3600 : 0
+        );
         $this->SetAttribute('logged',     !empty($info['id']));
+        $this->SetAttribute('layout',     isset($info['layout'])? $info['layout'] : 0);
         //profile
         $this->SetAttribute('nickname',   $info['nickname']);
         $this->SetAttribute('email',      $info['email']);
@@ -392,6 +396,7 @@ class Jaws_Session
         $this->SetAttribute('concurrents', 0);
         $this->SetAttribute('longevity',   0);
         $this->SetAttribute('logged',      false);
+        $this->SetAttribute('layout',      0);
         $this->SetAttribute('nickname',    '');
         $this->SetAttribute('email',       '');
         $this->SetAttribute('url',         '');
