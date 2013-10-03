@@ -10,20 +10,60 @@
  */
 class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
 {
+
+/**
+     * Update a gadget's tags item
+     *
+     * @access  public
+     * @param   string          $gadget         gadget name
+     * @param   string          $action         action name
+     * @param   int             $reference      reference
+     * @param   string/array    $tags     comma separated of tags name (tag1, tag2, tag3, ...)
+     * @return  mixed       Array of Tag info or Jaws_Error on failure
+     */
+    function UpdateTagsItems($gadget, $action ,$reference, $tags)
+    {
+        if (!is_array($tags)) {
+            $tags = array_filter(array_map(array($GLOBALS['app']->UTF8, 'trim'), explode(',', $tags)));
+        }
+        $oldTagsInfo = $this->GetItemTags(array('gadget' => $gadget, 'action' => $action, 'reference' => $reference));
+        $oldTags = array();
+        foreach ($oldTagsInfo as $tagInfo) {
+            $oldTags[] = $tagInfo['name'];
+        }
+        $to_be_added_tags = array_diff($tags, $oldTags);
+
+        $res = $this->AddTagsToItem($gadget, $action, $reference, $to_be_added_tags);
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        $to_be_removed_tags = array_diff($oldTags, $tags);
+        $res = $this->RemoveTagsFromItem($gadget, $action, $reference, $to_be_removed_tags);
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+    }
+
 /**
      * Add tags to item
      *
      * @access  public
-     * @param   string      $gadget         gadget name
-     * @param   string      $action         action name
-     * @param   int         $reference      reference
-     * @param   array       $tags           array of tags name
+     * @param   string          $gadget         gadget name
+     * @param   string          $action         action name
+     * @param   int             $reference      reference
+     * @param   string/array    $tagsString     comma separated of tags name (tag1, tag2, tag3, ...)
      * @return  mixed       Array of Tag info or Jaws_Error on failure
      */
     function AddTagsToItem($gadget, $action ,$reference, $tags)
     {
         if(empty($tags) || count($tags)<1) {
             return true;
+        }
+
+        if (!is_array($tags)) {
+            $tags = array_filter(array_map(array($GLOBALS['app']->UTF8, 'trim'), explode(',', $tags)));
         }
 
         $systemTags = array();
@@ -122,11 +162,39 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
     }
 
     /**
+     * Delete Item tags
+     *
+     * @access  public
+     * @param   string      $gadget         gadget name
+     * @param   string      $action         action name
+     * @param   int/array   $references     references
+     * @return  mixed   True/False or Jaws_Error on failure
+     */
+    function DeleteItemTags($gadget, $action, $references)
+    {
+        if(!is_array($references)) {
+            $references = array($references);
+        }
+        $table = Jaws_ORM::getInstance()->table('tags_items');
+
+        $table->delete()->where('gadget', $gadget);
+        $table->and()->where('action', $action);
+        $table->and()->where('reference', $references, 'in');
+
+        $result = $table->exec();
+        if (Jaws_Error::IsError($result)) {
+            return new Jaws_Error($result->getMessage(), 'SQL');
+        }
+
+        return $result;
+    }
+
+    /**
      * Delete tags
      *
      * @access  public
      * @param   array   $ids    Tags id
-     * @return  mixed   Array of Tag info or Jaws_Error on failure
+     * @return  mixed   True/False or Jaws_Error on failure
      */
     function DeleteTags($ids)
     {

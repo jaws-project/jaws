@@ -70,6 +70,17 @@
                 <length>8</length>
             </field>
 
+            <field>
+                <name>update_time</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <field>
+                <name>published</name>
+                <type>boolean</type>
+                <default>true</default>
+            </field>
 
         </declaration>
     </table>
