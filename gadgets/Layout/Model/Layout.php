@@ -15,10 +15,11 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
      * Get the layout items
      *
      * @access  public
+     * @param   int     $user       User's ID
      * @param   bool    $published  Publish status
      * @return  array   Returns an array with the layout items or Jaws_Error on failure
      */
-    function GetLayoutItems($published = null)
+    function GetLayoutItems($user = 0, $published = null)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $items = $lyTable->select(
@@ -26,8 +27,9 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
             'action_filename', 'display_when', 'section'
         );
 
+        $items->where('user', (int)$user);
         if (!is_null($published)) {
-            $items->where('published', (bool)$published);
+            $items->and()->where('published', (bool)$published);
         }
 
         $lyTable->orderBy('layout_position asc');
