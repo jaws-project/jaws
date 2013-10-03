@@ -79,6 +79,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
      * @param   string      $fast_url       Fast URL
      * @param   string      $meta_keys      Meta keywords
      * @param   string      $meta_desc      Meta description
+     * @param   string      $tags           Tags (comma separated)
      * @param   string      $content        Page content
      * @param   bool        $published      Whether 'published' is checked or not
      * @param   bool        $show_title     Whether 'show_title' is checked or not
@@ -89,7 +90,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
      * @param   string      $mode           The mode we are using (base by default or translation)
      * @return  string      XHTML form
      */
-    function CreateForm($title, $fast_url, $meta_keys, $meta_desc, $content,
+    function CreateForm($title, $fast_url, $meta_keys, $meta_desc, $tags, $content,
                         $published, $show_title, $language, $id, $gid, $action, $mode = 'base')
     {
         $this->AjaxMe('script.js');
@@ -186,6 +187,11 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
         $metaDescEntry =& Piwi::CreateWidget('Entry', 'meta_desc', $meta_desc);
         $metaDescEntry->SetTitle(_t('GLOBAL_META_DESCRIPTION'));
         $advBox->Add($metaDescEntry);
+
+        // Tags
+        $tagsEntry =& Piwi::CreateWidget('Entry', 'tags', $tags);
+        $tagsEntry->SetTitle(_t('GLOBAL_TAGS'));
+        $advBox->Add($tagsEntry);
 
         // Auto Draft
         if ($mode == 'base') {

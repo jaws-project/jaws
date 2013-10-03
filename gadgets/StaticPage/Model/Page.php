@@ -42,7 +42,15 @@ class StaticPage_Model_Page extends Jaws_Gadget_Model
             $spTable->and()->where('sp.fast_url', $id);
         }
 
-        return  $spTable->fetchRow();
+        $page = $spTable->fetchRow();
+        if (!empty($page)) {
+            $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+            $tags = $model->GetItemTags(
+                    array('gadget'=>'StaticPage', 'action'=>'page', 'reference'=>$page['translation_id']),
+                    true);
+            $page['tags'] = array_filter($tags);
+        }
+        return  $page;
     }
 
 

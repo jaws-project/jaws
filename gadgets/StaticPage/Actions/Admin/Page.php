@@ -231,7 +231,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminHTML
     function AddNewPage()
     {
         $this->gadget->CheckPermission('AddPage');
-        return $this->CreateForm('', '', '', '', '', false, true, '', '', '', 'AddPage');
+        return $this->CreateForm('', '', '', '', '', '', false, true, '', '', '', 'AddPage');
     }
 
     /**
@@ -275,7 +275,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminHTML
         }
 
         return $this->CreateForm($page['title'], $page['fast_url'], $page['meta_keywords'], $page['meta_description'],
-            $page['content'], $page['published'], $page['show_title'],  $page['language'],
+            $page['tags'], $page['content'], $page['published'], $page['show_title'],  $page['language'],
             $id, $page['group_id'], 'SaveEditPage');
     }
 
