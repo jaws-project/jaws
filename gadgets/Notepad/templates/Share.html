@@ -1,0 +1,25 @@
+<!-- BEGIN share -->
+<div class="gadget notepad">
+  <h2>{title}</h2>
+  <div class="gadget_response">
+    <div id="notepad_sharenote_response" class="{type}">{text}</div>
+  </div>
+  <h3>{note_title}</h3>
+  <div id="note_share">
+    <div><label>{lbl_note_users}:</label></div>
+    {note_users}
+    <div><label>{lbl_groups}:</label></div>
+    {groups}
+    <div><label>{lbl_users}:</label></div>
+    <div id="sys_users"></div>
+    <div class="actions">
+      <button type="button" onclick="location.href='{url_back}'">{lbl_cancel}</button>
+      <button type="button" onclick="submitShare({id})">{lbl_ok}</button>
+    </div>
+  </div>
+</div>
+<script>
+var UID = "{UID}";
+initShare();
+</script>
+<!-- END share -->

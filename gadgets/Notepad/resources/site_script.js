@@ -17,6 +17,10 @@ var NotepadCallback = {
         } else {
             window.location = notepad_url;
         }
+    },
+
+    UpdateShare: function(response) {
+        NotepadAjax.showResponse(response);
     }
 };
 
@@ -26,15 +30,34 @@ var NotepadCallback = {
 function initNotepad()
 {
     NotepadAjax.backwardSupport();
-    //console.log(noteTemplate);
+}
+
+/**
+ * Selects/Deselects all rows
+ */
+function checkAll()
+{
+    var checked = $('chk_all').checked;
+    $('grid_notes').getElements('input').set('checked', checked);
 }
 
 /**
  * Submits form
  */
-function submitNote()
+function searchNotes(form)
 {
-    var form = $('frm_note');
+    // if (form.query.value.length < 2) {
+        // alert(errorShortQuery);
+        // return;
+    // }
+    form.submit();
+}
+
+/**
+ * Submits form
+ */
+function submitNote(form)
+{
     if (form.title.value === '') {
         alert(errorIncompleteData);
         form.title.focus();
@@ -49,7 +72,7 @@ function submitNote()
 }
 
 /**
- * Deletes note
+ * Deletes current note
  */
 function deleteNote(id)
 {
@@ -58,4 +81,91 @@ function deleteNote(id)
     }
 }
 
-var NotepadAjax = new JawsAjax('Notepad', NotepadCallback);
+/**
+ * Deletes selected notes
+ */
+function deleteNotes()
+{
+    var id_set = $('grid_notes').getElements('input:checked').get('value');
+    if (id_set.length === 0) {
+        return;
+    }
+    if (confirm(confirmDelete)) {
+        NotepadAjax.callAsync('DeleteNote', {id_set:id_set.join(',')});
+    }
+}
+
+/**
+ * Initiates Sharing
+ */
+function initShare()
+{
+    NotepadAjax.backwardSupport();
+    $('sys_groups').selectedIndex = -1;
+    Array.each($('note_users').options, function(opt) {
+        sharedNoteUsers[opt.value] = opt.text;
+    });
+}
+
+/**
+ * Fetches and displays users of selected group
+ */
+function toggleUsers(gid)
+{
+    var container = $('sys_users').empty(),
+        users = usersByGroup[gid];
+    if (users === undefined) {
+        users = NotepadAjax.callSync('GetUsers', {'gid':gid});
+        usersByGroup[gid] = users;
+    }
+    users.each(function (user) {
+        if (user.id == UID) return;
+        var div = new Element('div'),
+            input = new Element('input', {type:'checkbox', id:'chk_'+user.id, value:user.id}),
+            label = new Element('label', {'for':'chk_'+user.id});
+        input.set('checked', (sharedNoteUsers[user.id] !== undefined));
+        input.addEvent('click', selectUser);
+        label.set('html', user.nickname + ' (' + user.username + ')');
+        div.adopt(input, label);
+        container.grab(div);
+    });
+}
+
+/**
+ * Adds/removes user to/from shares
+ */
+function selectUser()
+{
+    if (this.checked) {
+        sharedNoteUsers[this.value] = this.getNext('label').get('html');
+    } else {
+        delete sharedNoteUsers[this.value];
+    }
+    updateShareUsers();
+}
+
+/**
+ * Updates list of note users
+ */
+function updateShareUsers()
+{
+    var list = $('note_users').empty();
+    Object.each(sharedNoteUsers, function(name, id) {
+        list.options[list.options.length] = new Option(name, id);
+    });
+}
+
+/**
+ * Submits share data
+ */
+function submitShare(id)
+{
+    NotepadAjax.callAsync(
+        'UpdateShare',
+        {'id':id, 'users':Object.keys(sharedNoteUsers).join(',')}
+    );
+}
+
+var NotepadAjax = new JawsAjax('Notepad', NotepadCallback),
+    usersByGroup = {},
+    sharedNoteUsers = {};

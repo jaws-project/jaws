@@ -1,6 +1,6 @@
 <?php
 /**
- * Notepad Actions file
+ * Notepad Actions
  *
  * @category    GadgetActions
  * @package     Notepad
@@ -16,35 +16,43 @@ $actions['Notepad'] = array(
     'layout' => true,
     'file' => 'Notepad'
 );
-$actions['GetNotes'] = array(
-    'standalone' => true,
-    'file' => 'Notepad'
-);
 $actions['ViewNote'] = array(
     'normal' => true,
-    'file' => 'Notepad'
+    'file' => 'View'
 );
 $actions['NewNote'] = array(
     'normal' => true,
-    'file' => 'Notepad'
+    'file' => 'Create'
 );
 $actions['EditNote'] = array(
     'normal' => true,
-    'file' => 'Notepad'
+    'file' => 'Update'
 );
 $actions['ShareNote'] = array(
     'normal' => true,
-    'file' => 'Notepad'
+    'file' => 'Share'
 );
 $actions['CreateNote'] = array(
     'standalone' => true,
-    'file' => 'Notepad'
+    'file' => 'Create'
 );
 $actions['UpdateNote'] = array(
     'standalone' => true,
-    'file' => 'Notepad'
+    'file' => 'Update'
 );
 $actions['DeleteNote'] = array(
     'standalone' => true,
+    'file' => 'Delete'
+);
+$actions['Search'] = array(
+    'standalone' => true,
     'file' => 'Notepad'
+);
+$actions['GetUsers'] = array(
+    'standalone' => true,
+    'file' => 'Share'
+);
+$actions['UpdateShare'] = array(
+    'standalone' => true,
+    'file' => 'Share'
 );

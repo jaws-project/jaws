@@ -1,7 +1,23 @@
-.notepad input {
+.notepad .note-title {
 width:100%;
 }
-.notepad textarea {
+#grid_notes td {
+white-space:nowrap;
+}
+#frm_search input {
+width:200px;
+}
+#frm_note input {
+width:100%;
+}
+#frm_note textarea {
 width:100%;
 height:100px;
+}
+#note_share select {
+width:100%;
+}
+#note_share input[type=checkbox] {
+vertical-align:middle;
+margin-right:2px;
 }

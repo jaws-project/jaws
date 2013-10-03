@@ -19,18 +19,14 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
      */
     function GetNotes($user = null, $shared = null, $foreign = null, $query = null)
     {
-        // $access = ($user === null)? null : $this->CheckAccess($parent, $user);
-        // if ($access === false) {
-            // return array();
-        // }
-
         $table = Jaws_ORM::getInstance()->table('notepad as note');
-        $table->select('note.id', 'user', 'title', 'content',
-            'createtime', 'updatetime', 'users.username as owner');
-        $table->join('users', 'user', 'users.id');
+        $table->select('note.id', 'user as owner', 'title', 'content',
+            'createtime', 'updatetime', 'users.id as user');
+        $table->join('notepad_users', 'note.id', 'note_id');
+        $table->join('users', 'user_id', 'users.id');
 
         if ($user !== null){
-            $table->where('user', $user)->and();
+            $table->where('user_id', $user)->and();
         }
 
         // if ($shared !== null){
@@ -55,16 +51,38 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
      * Fetches data of passed note
      *
      * @access  public
-     * @param   int     $id  Note ID
+     * @param   int     $id     Note ID
+     * @param   int     $user   User ID
      * @return  mixed   Query result
      */
-    function GetNote($id)
+    function GetNote($id, $user = null)
     {
         $table = Jaws_ORM::getInstance()->table('notepad as note');
-        $table->select('note.id', 'user', 'title', 'content',
-            'createtime', 'updatetime', 'users.username as owner');
-        $table->join('users', 'user', 'users.id');
-        return $table->where('note.id', $id)->fetchRow();
+        $table->select('note.id', 'user as owner', 'title', 'content',
+            'createtime', 'updatetime', 'users.id as user');
+        $table->join('notepad_users', 'note.id', 'note_id');
+        $table->join('users', 'user_id', 'users.id');
+        $table->where('note.id', $id);
+        if (!empty($user)) {
+            $table->and()->where('user_id', $user);
+        }
+        return $table->fetchRow();
+    }
+
+    /**
+     * Checks the user of passed notes
+     *
+     * @access  public
+     * @param   int     $parent  Restricts results to a specified node
+     * @return  array   Query result
+     */
+    function CheckNotes($id_set, $user)
+    {
+        $table = Jaws_ORM::getInstance()->table('notepad');
+        $table->select('id');
+        $table->where('id', $id_set, 'in')->and();
+        $table->where('user', $user);
+        return $table->fetchColumn();
     }
 
     /**
@@ -78,6 +96,13 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
     {
         $data['createtime'] = $data['updatetime'] = time();
         $table = Jaws_ORM::getInstance()->table('notepad');
+        $id = $table->insert($data)->exec();
+
+        $data = array(
+            'note_id' => $id,
+            'user_id' => $data['user']
+        );
+        $table = Jaws_ORM::getInstance()->table('notepad_users');
         return $table->insert($data)->exec();
     }
 
@@ -97,15 +122,22 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
     }
 
     /**
-     * Deletes note
+     * Deletes note(s)
      *
      * @access  public
-     * @param   int     $id  Note ID
+     * @param   array   $id_set  Set of Note IDs
      * @return  mixed   Query result
      */
-    function Delete($id)
+    function Delete($id_set)
     {
         $table = Jaws_ORM::getInstance()->table('notepad');
-        return $table->delete()->where('id', $id)->exec();
+        $res = $table->delete()->where('id', $id_set, 'in')->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        // Delete shares
+        $table = Jaws_ORM::getInstance()->table('notepad_users');
+        return $table->delete()->where('note_id', $id_set, 'in')->exec();
     }
 }

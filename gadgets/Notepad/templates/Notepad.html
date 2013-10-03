@@ -4,32 +4,40 @@
   <div class="gadget_response">
     <div id="notepad_notepad_response" class="{type}">{text}</div>
   </div>
-  <div id="workspace">
+  <div>
+    <form id="frm_search" action="{base_script}" method="post">
+      <input type="hidden" name="gadget" value="Notepad" />
+      <input type="hidden" name="action" value="Search" />
+      <input name="query" value="{query}" /> {btn_search}
+    </form>
     <table>
       <thead><tr>
-        <th><input type="checkbox" onchange="checkAll()"/></th>
-        <th>{lbl_title}</th>
+        <th><input type="checkbox" id="chk_all" onchange="checkAll()"/></th>
+        <th class="note-title">{lbl_title}</th>
         <th>{lbl_created}</th>
-        <th>{lbl_owner}</th>
+        <!--th>{lbl_owner}</th-->
       </tr></thead>
       <tbody id="grid_notes">
         <!-- BEGIN note -->
         <tr id="note_{id}">
-          <td class="note-check"><input type="checkbox" value="{id}"/></td>
-          <td class="note-title"><a href="{url}">{title}</a></td>
-          <td class="note-created">{created}</td>
-          <td class="note-owner">{owner}</td>
+          <td><input type="checkbox" value="{id}"/></td>
+          <td><a href="{url}">{title}</a></td>
+          <td>{created}</td>
+          <!--td class="note-owner">{owner}</td-->
         </tr>
         <!-- END note -->
       </tbody>
     </table>
     <div class="actions">
       <button onclick="location.href='{url_new}'">{lbl_new_note}</button>
-      <button id="btn_del_note">{lbl_del_note}</button>
+      <button id="btn_del_note" onclick="deleteNotes()">{lbl_del_note}</button>
     </div>
   </div>
 </div>
 <script>
+var notepad_url = "{notepad_url}",
+    confirmDelete = "{confirmDelete}",
+    errorShortQuery = "{errorShortQuery}";
 initNotepad();
 </script>
 <!-- END notepad -->
