@@ -28,23 +28,9 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $tpl = $this->gadget->loadTemplate('Inbox.html');
         $tpl->SetBlock('inbox');
 
-        $post = jaws()->request->fetch(array('view', 'page', 'read', 'replied', 'term', 'page_item'), 'post');
-        $tpl->SetVariable('opt_page_item_' . $post['page_item'], 'selected="selected"');
-        $page_item = $post['page_item'];
-
-        if (!empty($post['read']) || !empty($post['replied']) || !empty($post['term'])) {
-            $page = $post['page'];
-            $view = $post['view'];
-        } else {
-            $post = null;
-            $get = jaws()->request->fetch(array('view', 'page', 'read', 'replied', 'term'), 'get');
-            $page = $get['page'];
-            $view = $get['view'];
-
-            $post['read'] = $get['read'];
-            $post['replied'] = $get['replied'];
-            $post['term'] = $get['term'];
-        }
+        $post = jaws()->request->fetch(array('view', 'page', 'read', 'replied', 'term', 'page_item'));
+        $page = $post['page'];
+        $view = $post['view'];
 
         $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
         $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
@@ -62,11 +48,15 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         }
 
         $page = empty($page) ? 1 : (int)$page;
-        if (empty($page_item)) {
-            $limit = 5;
+        if (empty($post['page_item'])) {
+            $limit = $this->gadget->registry->fetch('paging_limit');
+            if(empty($limit)) {
+                $limit = 10;
+            }
         } else {
-            $limit = $page_item;
+            $limit = $post['page_item'];
         }
+        $tpl->SetVariable('opt_page_item_' . $limit, 'selected="selected"');
 
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_INBOX'));
         $tpl->SetVariable('page', $page);

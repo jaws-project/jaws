@@ -26,11 +26,14 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
         $this->AjaxMe('site_script.js');
         $date_format = $this->gadget->registry->fetch('date_format');
 
-        $page = jaws()->request->fetch('page', 'get');
+        $page = jaws()->request->fetch('page');
         $page_item = jaws()->request->fetch('page_item', 'post');
         $page = empty($page)? 1 : (int)$page;
         if (empty($page_item)) {
-            $limit = 5;
+            $limit = $this->gadget->registry->fetch('paging_limit');
+            if(empty($limit)) {
+                $limit = 10;
+            }
         } else {
             $limit = $page_item;
         }
@@ -42,7 +45,7 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
         $tpl->SetVariable('menubar', $this->MenuBar('Draft'));
 
         $tpl->SetVariable('action', 'Draft');
-        $tpl->SetVariable('opt_page_item_' . $page_item, 'selected="selected"');
+        $tpl->SetVariable('opt_page_item_' . $limit, 'selected="selected"');
 
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_DRAFT'));
         $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));

@@ -33,29 +33,22 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
 
         $tpl->SetVariable('action', 'Outbox');
 
-        $post = jaws()->request->fetch(array('page', 'replied', 'attachment', 'term', 'page_item'), 'post');
-        $tpl->SetVariable('opt_page_item_' . $post['page_item'], 'selected="selected"');
-        $page_item = $post['page_item'];
-        if (!empty($post['replied']) || !empty($post['attachment']) || !empty($post['term'])) {
-            $page = $post['page'];
-        } else {
-            $post = null;
-            $get = jaws()->request->fetch(array('page', 'replied', 'term'), 'get');
-            $page = $get['page'];
-
-            $post['replied'] = $get['replied'];
-            $post['term'] = $get['term'];
-        }
+        $post = jaws()->request->fetch(array('page', 'replied', 'attachment', 'term', 'page_item'));
+        $page = $post['page'];
 
         $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
         $tpl->SetVariable('txt_term', $post['term']);
 
         $page = empty($page)? 1 : (int)$page;
-        if (empty($page_item)) {
-            $limit = 5;
+        if (empty($post['page_item'])) {
+            $limit = $this->gadget->registry->fetch('paging_limit');
+            if(empty($limit)) {
+                $limit = 10;
+            }
         } else {
-            $limit = $page_item;
+            $limit = $post['page_item'];
         }
+        $tpl->SetVariable('opt_page_item_' . $limit, 'selected="selected"');
 
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_OUTBOX'));
         $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
