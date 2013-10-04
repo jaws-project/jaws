@@ -21,11 +21,11 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      * @param   string  $action_params   Action's params
      * @param   string  $action_filename Filename that contant action method
      * @param   string  $pos             (Optional) Element position
+     * @param   int     $user            (Optional) User's ID
      * @return  bool    Returns true if gadget was added without problems, if not, returns false
      */
-    function NewElement($section, $gadget, $action, $action_params, $action_filename, $pos = '')
+    function NewElement($section, $gadget, $action, $action_params, $action_filename, $pos = '', $user = 0)
     {
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         if (empty($pos)) {
             $pos = $lyTable->select('max(layout_position)')

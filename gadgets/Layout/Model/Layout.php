@@ -36,4 +36,29 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
         return $items->fetchAll();
     }
 
+    /**
+     * Switch between layouts
+     *
+     * @access  public
+     * @param   int     $user   User's ID
+     * @return  void
+     */
+    function layoutSwitch($user = 0)
+    {
+        $lyTable = Jaws_ORM::getInstance()->table('layout');
+        $lyTable->select('count(id)')->where('user', (int)$user);
+        $exists = $lyTable->and()->where('gadget', '[REQUESTEDGADGET]')->fetchOne();
+        if (!Jaws_Error::IsError($exists)) {
+            if (empty($exists)) {
+                $elModel = $this->gadget->load('Model')->load('AdminModel', 'Elements');
+                $elModel->NewElement('main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1, $user);
+            }
+
+            $GLOBALS['app']->Session->SetAttribute('layout', (int)$user);
+            return true;
+        }
+
+        return false;
+    }
+
 }

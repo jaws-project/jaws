@@ -105,7 +105,8 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
         $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
         $actions = $model->GetGadgetLayoutActions($gadget, true);
         if (isset($actions[$action])) {
-            $id = $model->NewElement('main', $gadget, $action, $params, $actions[$action]['file']);
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
+            $id = $model->NewElement('main', $gadget, $action, $params, $actions[$action]['file'], '', $user);
             $id = Jaws_Error::IsError($id)? false : $id;
         }
         if ($id === false) {
