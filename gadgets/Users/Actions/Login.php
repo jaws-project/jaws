@@ -285,6 +285,17 @@ class Users_Actions_Login extends Users_HTML
                 $tpl->ParseBlock('UserLinks/cpanel');
             }
 
+            // Layout/Dashboard
+            // permission check
+            $tpl->SetBlock('UserLinks/layout');
+            $tpl->SetVariable('layout', _t('USERS_DASHBOARD'));
+            $user = $GLOBALS['app']->Session->GetAttribute('layout');
+            $user = empty($user)? $GLOBALS['app']->Session->GetAttribute('user') : 0;
+            $tpl->SetVariable(
+                'layout_url',
+                $this->gadget->urlMap('Layout', array('user' => $user), false, 'Layout'));
+            $tpl->ParseBlock('UserLinks/layout');
+
             $tpl->SetVariable('logout', _t('GLOBAL_LOGOUT'));
             $tpl->SetVariable('logout_url', $this->gadget->urlMap('Logout'));
 
