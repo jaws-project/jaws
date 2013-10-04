@@ -15,7 +15,8 @@
         <th><input type="checkbox" id="chk_all" onchange="checkAll()"/></th>
         <th class="note-title">{lbl_title}</th>
         <th>{lbl_created}</th>
-        <!--th>{lbl_owner}</th-->
+        <th>{lbl_shared}</th>
+        <th>{lbl_owner}</th>
       </tr></thead>
       <tbody id="grid_notes">
         <!-- BEGIN note -->
@@ -23,7 +24,8 @@
           <td><input type="checkbox" value="{id}"/></td>
           <td><a href="{url}">{title}</a></td>
           <td>{created}</td>
-          <!--td class="note-owner">{owner}</td-->
+          <td>{shared}</td>
+          <td class="note-owner" title="{username}">{nickname}</td>
         </tr>
         <!-- END note -->
       </tbody>

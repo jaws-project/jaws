@@ -36,6 +36,16 @@ class Notepad_Model_Share extends Jaws_Gadget_Model
      */
     function UpdateNoteUsers($id, $users)
     {
+        // Update shared status of the note
+        $shared = !empty($users);
+        $table = Jaws_ORM::getInstance()->table('notepad');
+        $table->beginTransaction();
+        $table->update(array('shared' => $shared));
+        $res = $table->where('id', $id)->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
         // Delete current users except owner
         $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $table = Jaws_ORM::getInstance()->table('notepad_users');
@@ -44,16 +54,25 @@ class Notepad_Model_Share extends Jaws_Gadget_Model
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
-        if (empty($users)) {
-            return $res;
-        }
 
         // Insert users
-        foreach ($users as &$user) {
-            $user = array('note_id' => $id, 'user_id' => $user);
+        if (!empty($users)) {
+            foreach ($users as &$user) {
+                $user = array(
+                    'note_id' => $id,
+                    'user_id' => $user,
+                    'owner_id' => $uid
+                );
+            }
+            $table = Jaws_ORM::getInstance()->table('notepad_users');
+            $table->reset();
+            $table->insertAll(array('note_id', 'user_id', 'owner_id'), $users);
+            $res = $table->exec();
+            if (Jaws_Error::IsError($res)) {
+                return $res;
+            }
         }
-        $table = Jaws_ORM::getInstance()->table('notepad_users');
-        $table->insertAll(array('note_id', 'user_id'), $users);
-        return $table->exec();
+
+        $table->commit();
     }
 }

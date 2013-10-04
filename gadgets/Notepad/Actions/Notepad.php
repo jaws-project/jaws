@@ -26,6 +26,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_HTML
         $tpl->SetVariable('title', _t('NOTEPAD_NAME'));
         $tpl->SetVariable('lbl_title', _t('NOTEPAD_NOTE_TITLE'));
         $tpl->SetVariable('lbl_created', _t('NOTEPAD_NOTE_CREATED'));
+        $tpl->SetVariable('lbl_shared', _t('NOTEPAD_SHARED'));
         $tpl->SetVariable('lbl_owner', _t('NOTEPAD_NOTE_OWNER'));
 
         // Ckeck for response
@@ -50,9 +51,17 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_HTML
                 $tpl->SetBlock('notepad/note');
                 $tpl->SetVariable('id', $note['id']);
                 $tpl->SetVariable('title', $note['title']);
-                $tpl->SetVariable('owner', $note['owner']);
                 $tpl->SetVariable('created', $objDate->Format($note['createtime'], 'n/j/Y g:i a'));
                 $tpl->SetVariable('url', $this->gadget->urlMap('ViewNote', array('id' => $note['id'])));
+                if ($note['user'] != $user) {
+                    $tpl->SetVariable('shared', '');
+                    $tpl->SetVariable('nickname', $note['nickname']);
+                    $tpl->SetVariable('username', $note['username']);
+                } else {
+                    $tpl->SetVariable('shared', $note['shared']? _t('NOTEPAD_SHARED') : '');
+                    $tpl->SetVariable('nickname', '');
+                    $tpl->SetVariable('username', '');
+                }
                 $tpl->ParseBlock('notepad/note');
             }
         }
