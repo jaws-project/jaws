@@ -40,6 +40,8 @@ gadgets\Blog\templates\ViewDate.html
 gadgets\Blog\templates\ViewPage.html
 gadgets\Blog\templates\ViewTrackback.html
 gadgets\Contact\AdminModel.php
+gadgets\Contact\HTML.php
+gadgets\Contact\LayoutHTML.php
 gadgets\Contact\Hooks\URLList.php
 gadgets\Contact\Model.php
 gadgets\Contact\schema\0.2.0.xml
@@ -248,6 +250,7 @@ gadgets\ServerTime\templates\AdminServerTime.html
 gadgets\Settings\Actions.php
 gadgets\Settings\AdminModel.php
 gadgets\Settings\templates\Settings.html
+gadgets\Shoutbox\Ajax.php
 gadgets\Skeleton\AdminModel.php
 gadgets\Skeleton\templates\ControlPanel.html
 gadgets\StaticPage\AdminModel.php
