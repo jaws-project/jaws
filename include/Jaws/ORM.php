@@ -139,28 +139,20 @@ class Jaws_ORM
     var $_table = '';
 
     /**
-     * Table quoted name
-     *
-     * @var     string
-     * @access  private
-     */
-    var $_table_quoted = '';
-
-    /**
-     * Table alias name
-     *
-     * @var     string
-     * @access  private
-     */
-    var $_table_alias = '';
-
-    /**
      * Table primary key name
      *
      * @var     string
      * @access  private
      */
     var $_pk_field;
+
+    /**
+     * Table(s) quoted/aliased identifier
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_tablesIdentifier = array();
 
     /**
      * SQL command name(insert/update/delete)
@@ -238,20 +230,27 @@ class Jaws_ORM
      * Sets table name/alias
      *
      * @access  public
-     * @param   string  $table  Table name
-     * @param   string  $alias  Table alias in query
+     * @param   mixed   $table      Table name or array include multi or single (name, alias)
+     * @param   string  $alias      Table alias in query
+     * @param   string  $pk_field   Table primary key
      * @return  object  Jaws_ORM object
      */
     function table($table, $alias = '', $pk_field = 'id')
     {
-        $this->_table = $table;
-        $this->_pk_field = $pk_field;
-        $this->_table_alias = empty($alias)? '': (' as '. $this->quoteIdentifier($alias));
-        if (is_object($table)) {
-            $this->_table_quoted = '('. $table->get(). ')';
-        } else {
-            $this->_table_quoted = $this->quoteIdentifier($this->_tbl_prefix. $table, true);
+        $tables = !is_array($table)? array(array($table, $alias, $pk_field)) : $table;
+        $this->_table = $tables[0][0];
+        $this->_pk_field = is_null($tables[0][2])? 'id' : $tables[0][2];
+        foreach($tables as $table) {
+            @list($name, $alias) = $table;
+            $alias = empty($alias)? '': (' as '. $this->quoteIdentifier($alias));
+            if (is_object($name)) {
+                $table_quoted = '('. $name->get(). ')';
+            } else {
+                $table_quoted = $this->quoteIdentifier($this->_tbl_prefix. $name, true);
+            }
+            $this->_tablesIdentifier[] = $table_quoted. $alias;
         }
+
         return $this;
     }
 
@@ -739,7 +738,7 @@ class Jaws_ORM
         }
 
         $sql = 'select '. $this->_distinct. implode(', ', $this->_columns) . "\n";
-        $sql.= 'from '. $this->_table_quoted. $this->_table_alias. "\n";
+        $sql.= 'from '. implode(',', $this->_tablesIdentifier). "\n";
         $sql.= $this->_build_join();
         $sql.= $this->_build_where();
         $sql.= $this->_build_groupBy();
@@ -808,13 +807,13 @@ class Jaws_ORM
         switch ($this->_query_command) {
             case 'delete':
                 $sql = "delete\n";
-                $sql.= 'from '. $this->_table_quoted. $this->_table_alias. "\n";
+                $sql.= 'from '. implode(',', $this->_tablesIdentifier). "\n";
                 $sql.= $this->_build_where();
                 $result = $this->jawsdb->dbc->exec($sql);
                 break;
 
             case 'update':
-                $sql = 'update '. $this->_table_quoted. $this->_table_alias. " set\n";
+                $sql = 'update '. implode(',', $this->_tablesIdentifier). " set\n";
                 foreach ($this->_values as $column => $value) {
                     $value  = $this->quoteValue($value);
                     $column = $this->quoteIdentifier($column);
@@ -831,7 +830,7 @@ class Jaws_ORM
             case 'insert':
                 $values  = '';
                 $columns = '';
-                $sql = 'insert into '. $this->_table_quoted. $this->_table_alias;
+                $sql = 'insert into '. implode(',', $this->_tablesIdentifier);
                 foreach ($this->_values as $column => $value) {
                     $values .= ', '. $this->quoteValue($value);
                     $columns.= ', '. $this->quoteIdentifier($column);
@@ -839,14 +838,17 @@ class Jaws_ORM
                 $sql.= "\n(". trim($columns, ', '). ")\nvalues(". trim($values, ', '). ")\n";
                 $result = $this->jawsdb->dbc->exec($sql);
                 if (!PEAR::IsError($result) && !empty($result) && !empty($this->_pk_field)) {
-                    $result = $this->jawsdb->dbc->lastInsertID($this->_tbl_prefix. $this->_table, $this->_pk_field);
+                    $result = $this->jawsdb->dbc->lastInsertID(
+                        $this->_tbl_prefix. $this->_table,
+                        $this->_pk_field
+                    );
                 }
                 break;
 
             // insert multiple rows
             case 'insertAll':
                 $columns = '';
-                $sql = 'insert into '. $this->_table_quoted. $this->_table_alias;
+                $sql = 'insert into '. implode(',', $this->_tablesIdentifier);
                 // build insert columns list
                 $sql.= "\n(". implode(', ', array_map(array($this, 'quoteIdentifier'), $this->_columns)). ")";
                 // build insert values list
