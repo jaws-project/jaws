@@ -85,8 +85,7 @@ class Jaws_Widgets_TinyMCE extends Container
      * @access  private
      */
     var $_BaseToolbar = array(
-        'bold,italic,strikethrough,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,outdent,indent,|,fontselect,fontsizeselect,|,code',
-        'ltr,rtl,|,cut,copy,paste,pastetext,pasteword,|,styleprops,attribs,|,forecolor,backcolor,|,hr,|,link,unlink,image,|,undo,redo,|,cleanup',
+        ',undo,redo,|,styleselect,|,bold,italic,|,alignleft,aligncenter,alignright,alignjustify,|,bullist,numlist,outdent,indent,|,link,unlink,image,|,ltr,rtl,|,styleprops,attribs,|,fontselect,fontsizeselect,|,forecolor,backcolor,',
     );
 
     /**
