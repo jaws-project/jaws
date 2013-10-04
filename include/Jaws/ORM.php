@@ -239,7 +239,7 @@ class Jaws_ORM
     {
         $tables = !is_array($table)? array(array($table, $alias, $pk_field)) : $table;
         $this->_table = $tables[0][0];
-        $this->_pk_field = is_null($tables[0][2])? 'id' : $tables[0][2];
+        $this->_pk_field = $pk_field;
         foreach($tables as $table) {
             @list($name, $alias) = $table;
             $alias = empty($alias)? '': (' as '. $this->quoteIdentifier($alias));
