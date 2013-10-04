@@ -74,9 +74,9 @@ class Phoo_Model extends Jaws_Gadget_Model
         }
 
         if (strpos($orderType,'desc')) {
-                $orderType = '['. trim(substr($orderType, 0, strpos($orderType,'desc'))). '] desc';
+                $orderType = trim(substr($orderType, 0, strpos($orderType,'desc'))). ' desc';
         } else {
-                $orderType = '['.$orderType.']';
+                $orderType = $orderType;
         }
 
         return $orderType;
