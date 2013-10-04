@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH . 'gadgets/Layout/Model/Layout.php';
 /**
  * Layout Core Gadget
  *
@@ -10,7 +9,7 @@ require_once JAWS_PATH . 'gadgets/Layout/Model/Layout.php';
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Layout_Model_Admin_Layout extends Layout_Model_Layout
+class Layout_Model_Admin_Layout extends Jaws_Gadget_Model
 {
     /**
      * Update the gadget layout action name/file
@@ -37,14 +36,19 @@ class Layout_Model_Admin_Layout extends Layout_Model_Layout
      * Get the gadgets that are in a section
      *
      * @access  public
-     * @param   int     $id Section to search
+     * @param   int     $id     Section to search
      * @return  array   Returns an array of gadgets that are in a section and false on error
      */
     function GetGadgetsInSection($id)
     {
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->select('id', 'gadget', 'gadget_action', 'display_when', 'layout_position', 'published');
-        return $lyTable->where('section', $id)->orderBy('layout_position')->fetchAll();
+        return $lyTable->where('section', $id)
+            ->and()
+            ->where('user', $user)
+            ->orderBy('layout_position')
+            ->fetchAll();
     }
 
     /**

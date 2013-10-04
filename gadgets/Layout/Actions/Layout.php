@@ -15,9 +15,9 @@ class Layout_Actions_Layout extends Jaws_Gadget_HTML
      */
     function Layout()
     {
-        $this->gadget->CheckPermission('UserLayout');
         $user = jaws()->request->fetch('user');
-
+        // permission check
+        $GLOBALS['app']->Session->SetAttribute('layout', (int)$user);
         Jaws_Header::Location('');
     }
 
