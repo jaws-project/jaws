@@ -94,6 +94,7 @@ function AutoDraft()
     var fasturl   = document.forms[0].elements['fast_url'].value;
     var language  = document.forms[0].elements['language'].value;
     var published = document.forms[0].elements['published'].value;
+    var tags      = document.forms[0].elements['tags'].value;
     var showtitle = document.forms[0].elements['show_title'].value;
     var actioni   = document.forms[0].elements['action'].value;
     var id        = '';
@@ -108,7 +109,7 @@ function AutoDraft()
     }
     var content   = getEditorValue('content');
 
-    StaticPageAjax.callAsync('autodraft', id, group, fasturl, showtitle, title, content, language, published);
+    StaticPageAjax.callAsync('autodraft', id, group, fasturl, showtitle, title, content, language, tags, published);
     setTimeout('startAutoDrafting();', 120000);
 }
 

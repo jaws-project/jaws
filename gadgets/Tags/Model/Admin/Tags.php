@@ -162,7 +162,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
     }
 
     /**
-     * Delete Item tags
+     * Delete Item(s) tags
      *
      * @access  public
      * @param   string      $gadget         gadget name

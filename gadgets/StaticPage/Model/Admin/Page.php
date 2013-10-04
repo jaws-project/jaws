@@ -26,12 +26,13 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
      * @param   string  $fast_url   The fast URL of the page
      * @param   string  $meta_keys  Meta keywords
      * @param   string  $meta_desc  Meta description
+     * @param   string  $tags       Tags
      * @param   bool    $published  Whether the page is published or not
      * @param   bool    $auto       Whether its an auto saved page or not
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function AddPage($title, $group, $show_title, $content, $language,
-                     $fast_url, $meta_keys, $meta_desc, $published, $auto = false)
+    function AddPage($title, $group, $show_title, $content, $language, $fast_url,
+                     $meta_keys, $meta_desc, $tags, $published, $auto = false)
     {
         $fast_url = empty($fast_url)? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'static_pages', $auto === false);
@@ -50,8 +51,8 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
 
         $base_id = $GLOBALS['db']->lastInsertID('static_pages', 'page_id');
         $tModel = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel', 'Translation');
-        $result = $tModel->AddTranslation($base_id, $title, $content, $language, $meta_keys, $meta_desc, $published);
-        if (Jaws_Error::IsError($result)) {
+        $tid = $tModel->AddTranslation($base_id, $title, $content, $language, $meta_keys, $meta_desc, $tags, $published);
+        if (Jaws_Error::IsError($tid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'), _t('STATICPAGE_NAME'));
         }
@@ -73,12 +74,13 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
      * @param   string  $fast_url   The fast URL of the page
      * @param   string  $meta_keys  Meta keywords
      * @param   string  $meta_desc  Meta description
+     * @param   string  $tags       Tags
      * @param   bool    $published  Whether the page is published or not
      * @param   bool    $auto       Whether its an auto saved page or not
      * @return  mixed   True on success or Jaws_Error on failure
      */
     function UpdatePage($id, $group, $show_title, $title, $content, $language,
-                        $fast_url, $meta_keys, $meta_desc, $published, $auto = false)
+                        $fast_url, $meta_keys, $meta_desc, $tags, $published, $auto = false)
     {
         $fast_url = empty($fast_url)? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'static_pages', false);
@@ -102,7 +104,8 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         }
 
         $tModel = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel', 'Translation');
-        $result = $tModel->UpdateTranslation($page['translation_id'], $title, $content, $language, $meta_keys, $meta_desc, $published);
+        $result = $tModel->UpdateTranslation($page['translation_id'], $title, $content, $language,
+                                             $meta_keys, $meta_desc, $tags, $published);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_UPDATED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_UPDATED'), _t('STATICPAGE_NAME'));
@@ -133,6 +136,15 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
             }
         }
 
+        // Delete Page Translation Tags
+        $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
+        $tIds = $sptTable->select('translation_id:integer')->where('base_id', $id)->fetchColumn();
+        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $res = $model->DeleteItemTags('StaticPage', 'page', $tIds);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TAG_NOT_DELETED'), RESPONSE_ERROR);
+            return $res;
+        }
 
         $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
         $result = $sptTable->delete()->where('base_id', $id)->exec();

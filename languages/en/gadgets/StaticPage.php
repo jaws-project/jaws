@@ -54,6 +54,9 @@ define('_EN_STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED', "There was a problem upda
 define('_EN_STATICPAGE_ERROR_TRANSLATION_NOT_DELETED', "There was a problem deleting the page translation");
 define('_EN_STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS', "The translation does not exists");
 define('_EN_STATICPAGE_ERROR_GROUP_NOT_DELETABLE', "This group not deletable.");
+define('_EN_STATICPAGE_ERROR_TAG_NOT_ADDED', "There was a problem while saving the page tags");
+define('_EN_STATICPAGE_ERROR_TAG_NOT_UPDATED', "There was a problem while updating the page tags");
+define('_EN_STATICPAGE_ERROR_TAG_NOT_DELETED', "There was a problem while deleting the page tags");
 
 // Strings
 define('_EN_STATICPAGE_PAGES_LIST', "Page Index");

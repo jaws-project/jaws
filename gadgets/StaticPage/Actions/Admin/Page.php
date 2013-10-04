@@ -245,12 +245,13 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminHTML
         $this->gadget->CheckPermission('AddPage');
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel', 'Page');
 
-        $fetch = array('title', 'fast_url', 'meta_keys', 'meta_desc', 'group_id', 'language', 'published', 'show_title');
+        $fetch = array('title', 'fast_url', 'meta_keys', 'meta_desc', 'tags',
+                       'group_id', 'language', 'published', 'show_title');
         $post  = jaws()->request->fetch($fetch, 'post');
         $post['content'] = jaws()->request->fetch('content', 'post', false);
 
         $model->AddPage($post['title'], $post['group_id'], $post['show_title'], $post['content'], $post['language'],
-            $post['fast_url'], $post['meta_keys'], $post['meta_desc'], $post['published']);
+            $post['fast_url'], $post['meta_keys'], $post['meta_desc'], $post['tags'], $post['published']);
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=Admin');
     }
@@ -289,14 +290,15 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminHTML
     {
         $this->gadget->CheckPermission('EditPage');
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel', 'Page');
-        $fetch   = array('page', 'title', 'group_id', 'language', 'fast_url', 'meta_keys', 'meta_desc', 'published', 'show_title');
+        $fetch   = array('page', 'title', 'group_id', 'language', 'fast_url', 'meta_keys',
+                         'meta_desc', 'tags', 'published', 'show_title');
         $post    = jaws()->request->fetch($fetch, 'post');
         $post['content'] = jaws()->request->fetch('content', 'post', false);
         $id      = (int)$post['page'];
 
         $model->UpdatePage($id, $post['group_id'], $post['show_title'], $post['title'],
-            $post['content'], $post['language'], $post['fast_url'],
-            $post['meta_keys'], $post['meta_desc'], $post['published']);
+            $post['content'], $post['language'], $post['fast_url'], $post['meta_keys'],
+            $post['meta_desc'], $post['tags'], $post['published']);
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=EditPage&id=' . $id);
     }

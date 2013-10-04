@@ -125,14 +125,14 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function AutoDraft()
     {
         @list($id, $group, $showtitle, $title, $content, $language,
-            $fast_url, $meta_keys, $meta_desc, $published
+            $fast_url, $meta_keys, $meta_desc, $tags,  $published
         ) = jaws()->request->fetchAll('post');
         $content = jaws()->request->fetch(4, 'post', false);
         $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Page');
 
         if ($id == 'NEW') {
             $model->AddPage($title, $group, $showtitle, $content, $language,
-                                   $fast_url, $meta_keys, $meta_desc, $published, true);
+                                   $fast_url, $meta_keys, $meta_desc, $tags, $published, true);
             $newid    = $GLOBALS['db']->lastInsertID('static_pages', 'id');
             $response['id'] = $newid;
             $response['message'] = _t('STATICPAGE_PAGE_AUTOUPDATED',

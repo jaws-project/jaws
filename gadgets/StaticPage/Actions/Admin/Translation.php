@@ -45,13 +45,13 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_AdminHTML
     {
         $this->gadget->CheckPermission('EditPage');
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel', 'Translation');
-        $fetch   = array('page', 'title', 'content', 'language', 'meta_keys', 'meta_desc', 'published');
+        $fetch   = array('page', 'title', 'content', 'language', 'meta_keys', 'meta_desc', 'tags', 'published');
         $post    = jaws()->request->fetch($fetch, 'post');
         $post['content'] = jaws()->request->fetch('content', 'post', false);
         $page    = (int)$post['page'];
 
         $result = $model->AddTranslation($page, $post['title'], $post['content'], $post['language'],
-            $post['meta_keys'], $post['meta_desc'], $post['published']);
+            $post['meta_keys'], $post['meta_desc'], $post['tags'], $post['published']);
         if (Jaws_Error::isError($result)) {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage');
         } else {
@@ -98,12 +98,12 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_AdminHTML
     {
         $this->gadget->CheckPermission('EditPage');
         $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel', 'Translation');
-        $fetch   = array('trans_id', 'title', 'language', 'meta_keys', 'meta_desc', 'published');
+        $fetch   = array('trans_id', 'title', 'language', 'meta_keys', 'meta_desc', 'tags', 'published');
         $post    = jaws()->request->fetch($fetch, 'post');
         $post['content'] = jaws()->request->fetch('content', 'post', false);
         $trans   = (int)$post['trans_id'];
         $result = $model->UpdateTranslation($trans, $post['title'], $post['content'], $post['language'],
-            $post['meta_keys'], $post['meta_desc'], $post['published']);
+            $post['meta_keys'], $post['meta_desc'], $post['tags'], $post['published']);
 
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=EditTranslation&id=' . $trans);
     }

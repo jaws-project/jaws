@@ -23,10 +23,11 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
      * @param   string  $language   The language we are using
      * @param   string  $meta_keys  Meta keywords
      * @param   string  $meta_desc  Meta description
+     * @param   string  $tags       Tags
      * @param   bool    $published  Publish status of the page
-     * @return  mixed   True on success or Jaws_Error on failure
+     * @return  mixed   Translation Id or Jaws_Error on failure
      */
-    function AddTranslation($page_id, $title, $content, $language, $meta_keys, $meta_desc, $published)
+    function AddTranslation($page_id, $title, $content, $language, $meta_keys, $meta_desc, $tags, $published)
     {
         // Language exists?
         $language = str_replace(array('.', '/'), '', $language);
@@ -52,14 +53,21 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
         $params['updated'] = $GLOBALS['db']->Date();
 
         $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
-        $result = $sptTable->insert($params)->exec();
-        if (Jaws_Error::IsError($result)) {
+        $tid = $sptTable->insert($params)->exec();
+        if (Jaws_Error::IsError($tid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_ADDED'), _t('STATICPAGE_NAME'));
         }
 
+        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $res = $model->AddTagsToItem('StaticPage', 'page', $tid, $tags);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TAG_NOT_ADDED'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('STATICPAGE_ERROR_TAG_NOT_ADDED'), _t('STATICPAGE_NAME'));
+        }
+
         $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_TRANSLATION_CREATED'), RESPONSE_NOTICE);
-        return true;
+        return $tid;
     }
 
     /**
@@ -72,10 +80,11 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
      * @param   string  $language   The language we are using
      * @param   string  $meta_keys  Meta keywords
      * @param   string  $meta_desc  Meta description
+     * @param   string  $tags       Tags
      * @param   bool    $published  Publish status of the page
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function UpdateTranslation($id, $title, $content, $language, $meta_keys, $meta_desc, $published)
+    function UpdateTranslation($id, $title, $content, $language, $meta_keys, $meta_desc, $tags, $published)
     {
         //Language exists?
         $language = str_replace(array('.', '/'), '', $language);
@@ -137,6 +146,13 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'), _t('STATICPAGE_NAME'));
         }
 
+        // Update page translation tags
+        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $res = $model->UpdateTagsItems('StaticPage', 'page', $id, $tags);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TAG_NOT_UPDATED'), RESPONSE_ERROR);
+        }
+
         $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_TRANSLATION_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
@@ -171,6 +187,13 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_DELETED'), _t('STATICPAGE_NAME'));
+        }
+
+        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $res = $model->DeleteItemTags('StaticPage', 'page', $id);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TAG_NOT_DELETED'), RESPONSE_ERROR);
+            return $res;
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_TRANSLATION_DELETED'), RESPONSE_NOTICE);

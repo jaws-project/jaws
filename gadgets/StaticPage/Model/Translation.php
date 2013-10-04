@@ -39,7 +39,7 @@ class StaticPage_Model_Translation extends Jaws_Gadget_Model
                 $tags = $model->GetItemTags(
                     array('gadget'=>'StaticPage', 'action'=>'page', 'reference'=>$row['translation_id']),
                     true);
-                $row['tags'] = array_filter($tags);
+                $row['tags'] = implode(',', array_filter($tags));
             }
             return $row;
         }
