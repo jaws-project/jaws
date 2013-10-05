@@ -36,15 +36,29 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_HTML
             $tpl->SetVariable('type', $response['type']);
         }
 
+        $page = jaws()->request->fetch('page', 'get');
+        if (empty($page)) {
+            $page = 1;
+        }
+        //$page = 2;
+        //$limit = (int)$this->gadget->registry->fetch('notes_limit');
+        $limit = 2;
+        $notepad_url = ($page === 1)?
+            $this->gadget->urlMap('Notepad'):
+            $this->gadget->urlMap('Notepad', array('page' => $page));
+
         // Check for search
         $response = $GLOBALS['app']->Session->PopResponse('Notepad.Data');
-        $query = $response['data'];
-        $tpl->SetVariable('query', $query);
+        $filter = (int)$response['data']['filter'];
+        $query = $response['data']['query'];
+        $shared = ($filter === 1)? true : null;
+        $foreign = ($filter === 2)? true : null;
 
         // Notes
         $model = $GLOBALS['app']->LoadGadget('Notepad', 'Model', 'Notepad');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $notes = $model->GetNotes($user, null, null, $query);
+        $count = $model->GetNumberOfNotes($user, null, null, $query);
+        $notes = $model->GetNotes($user, null, null, $query, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($notes)){
             $objDate = $GLOBALS['app']->loadDate();
             foreach ($notes as $note) {
@@ -52,7 +66,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_HTML
                 $tpl->SetVariable('id', $note['id']);
                 $tpl->SetVariable('title', $note['title']);
                 $tpl->SetVariable('created', $objDate->Format($note['createtime'], 'n/j/Y g:i a'));
-                $tpl->SetVariable('url', $this->gadget->urlMap('ViewNote', array('id' => $note['id'])));
+                $tpl->SetVariable('url', $this->gadget->urlMap('OpenNote', array('id' => $note['id'])));
                 if ($note['user'] != $user) {
                     $tpl->SetVariable('shared', '');
                     $tpl->SetVariable('nickname', $note['nickname']);
@@ -67,10 +81,32 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_HTML
         }
 
         // Search
-        $button =& Piwi::CreateWidget('Button', '', 'Search', STOCK_SEARCH);
+        $combo =& Piwi::CreateWidget('Combo', 'filter');
+        $combo->SetID('');
+        $combo->AddOption(_t('NOTEPAD_SEARCH_ALL_NOTES'), 0);
+        $combo->AddOption(_t('NOTEPAD_SEARCH_SHARED_NOTES_ONLY'), 1);
+        $combo->AddOption(_t('NOTEPAD_SEARCH_FOREIGN_NOTES_ONLY'), 2);
+        $combo->SetDefault($filter);
+        $tpl->SetVariable('filter', $combo->Get());
+
+        $entry =& Piwi::CreateWidget('Entry', 'query', $query);
+        $entry->SetID('');
+        $entry->AddEvent(ON_CHANGE, 'onSearchChange(this.value)');
+        $entry->AddEvent(ON_KUP, 'onSearchChange(this.value)');
+        $tpl->SetVariable('query', $entry->Get());
+
+        $button =& Piwi::CreateWidget('Button', '', _t('NOTEPAD_SEARCH'), STOCK_SEARCH);
         $button->SetSubmit(false);
         $button->AddEvent(ON_CLICK, 'searchNotes(this.form)');
         $tpl->SetVariable('btn_search', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_note_search_reset', 'X');
+        $button->SetSubmit(false);
+        $button->AddEvent(ON_CLICK, "window.location='$notepad_url'");
+        if (empty($query)) {
+            $button->SetStyle('display:none;');
+        }
+        $tpl->SetVariable('btn_reset', $button->Get());
 
         // Actions
         $tpl->SetVariable('lbl_new_note', _t('NOTEPAD_NEW_NOTE'));
@@ -78,7 +114,19 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_HTML
         $tpl->SetVariable('confirmDelete', _t('NOTEPAD_WARNING_DELETE_NOTES'));
         $tpl->SetVariable('errorShortQuery', _t('NOTEPAD_ERROR_SHORT_QUERY'));
         $tpl->SetVariable('url_new', $this->gadget->urlMap('NewNote'));
-        $tpl->SetVariable('notepad_url', $this->gadget->urlMap('Notepad'));
+        $tpl->SetVariable('notepad_url', $notepad_url);
+
+        // Pagination
+        $action = $GLOBALS['app']->LoadGadget('Notepad', 'HTML', 'Pager');
+        $action->GetPagesNavigation(
+            $tpl,
+            'notepad',
+            $page,
+            $limit,
+            $count,
+            _t('NOTEPAD_NOTES_COUNT', $count),
+            'Notepad'
+        );
 
         $tpl->ParseBlock('notepad');
         return $tpl->Get();
@@ -92,8 +140,8 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_HTML
      */
     function Search()
     {
-        $query = jaws()->request->fetch('query', 'post');
-        if (strlen($query) < 2) {
+        $search = jaws()->request->fetch(array('filter', 'query'), 'post');
+        if (strlen($search['query']) < 2) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('NOTEPAD_ERROR_SHORT_QUERY'),
                 'Notepad.Response',
@@ -104,7 +152,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_HTML
                 '',
                 'Notepad.Data',
                 RESPONSE_NOTICE,
-                $query
+                $search
             );
         }
         Jaws_Header::Referrer();

@@ -42,19 +42,27 @@ function checkAll()
 }
 
 /**
- * Submits form
+ * Submits search
  */
 function searchNotes(form)
 {
-    // if (form.query.value.length < 2) {
-        // alert(errorShortQuery);
-        // return;
-    // }
+    if (form.query.value.length < 2) {
+        alert(errorShortQuery);
+        return;
+    }
     form.submit();
 }
 
 /**
- * Submits form
+ * Shows/Hides search reset button
+ */
+function onSearchChange(value)
+{
+    $('btn_note_search_reset').style.display = (value === '')? 'none' : 'inline';
+}
+
+/**
+ * Submits note
  */
 function submitNote(form)
 {

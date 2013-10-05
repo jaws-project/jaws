@@ -8,21 +8,23 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$GLOBALS['app']->Layout->AddHeadLink('gadgets/Notepad/resources/site_style.css');
 class Notepad_Actions_View extends Jaws_Gadget_HTML
 {
     /**
-     * Builds UI to display a single note
+     * Displays a single note
      *
      * @access  public
      * @return  string  XHTML UI
      */
-    function ViewNote()
+    function ViewNote($id = null)
     {
+        $GLOBALS['app']->Layout->AddHeadLink('gadgets/Notepad/resources/site_style.css');
         $tpl = $this->gadget->loadTemplate('View.html');
-        $tpl->SetBlock('view');
+        $tpl->SetBlock('note');
 
-        $id = (int)jaws()->request->fetch('id', 'get');
+        if ($id === null) {
+            $id = (int)jaws()->request->fetch('id', 'get');
+        }
         $model = $GLOBALS['app']->LoadGadget('Notepad', 'Model', 'Notepad');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $note = $model->GetNote($id, $user);
@@ -31,21 +33,10 @@ class Notepad_Actions_View extends Jaws_Gadget_HTML
             $tpl->SetVariable('type', 'response_error');
         }
 
-        $this->AjaxMe('site_script.js');
-        $tpl->SetVariable('id', $id);
-        $tpl->SetVariable('note_title', $note['title']);
-        $tpl->SetVariable('note_content', $this->gadget->ParseText($note['content'], 'Notepad'));
+        $tpl->SetVariable('title', $note['title']);
+        $tpl->SetVariable('content', $this->gadget->ParseText($note['content'], 'Notepad'));
 
-        // Actions
-        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
-        $tpl->SetVariable('lbl_share', _t('NOTEPAD_SHARE'));
-        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
-        $tpl->SetVariable('confirmDelete', _t('NOTEPAD_WARNING_DELETE_NOTE'));
-        $tpl->SetVariable('notepad_url', $this->gadget->urlMap('Notepad'));
-        $tpl->SetVariable('url_edit', $this->gadget->urlMap('EditNote', array('id' => $id)));
-        $tpl->SetVariable('url_share', $this->gadget->urlMap('ShareNote', array('id' => $id)));
-
-        $tpl->ParseBlock('view');
+        $tpl->ParseBlock('note');
         return $tpl->Get();
     }
 }

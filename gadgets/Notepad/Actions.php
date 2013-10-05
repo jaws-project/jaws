@@ -16,9 +16,19 @@ $actions['Notepad'] = array(
     'layout' => true,
     'file' => 'Notepad'
 );
+$actions['StickyNote'] = array(
+    'normal' => true,
+    'layout' => true,
+    'file' => 'StickyNote',
+    'parametric' => true
+);
 $actions['ViewNote'] = array(
     'normal' => true,
     'file' => 'View'
+);
+$actions['OpenNote'] = array(
+    'normal' => true,
+    'file' => 'Open'
 );
 $actions['NewNote'] = array(
     'normal' => true,
@@ -55,4 +65,8 @@ $actions['GetUsers'] = array(
 $actions['UpdateShare'] = array(
     'standalone' => true,
     'file' => 'Share'
+);
+$actions['Pager'] = array(
+    'standalone' => true,
+    'file' => 'Pager'
 );

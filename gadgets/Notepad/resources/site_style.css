@@ -1,3 +1,6 @@
+.notepad.sticky-notes ol {
+padding-left:20px;
+}
 .notepad .note-title {
 width:100%;
 }

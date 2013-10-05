@@ -10,16 +10,22 @@
  */
 $maps[] = array(
     'Notepad',
-    'notepad'
-);
-$maps[] = array(
-    'NewNote',
-    'notepad/new'
+    'notepad[/page/{page}]',
+    array('page' => '[[:digit:]]+')
 );
 $maps[] = array(
     'ViewNote',
     'notepad/view/{id}',
     array('id' => '[[:digit:]]+')
+);
+$maps[] = array(
+    'OpenNote',
+    'notepad/open/{id}',
+    array('id' => '[[:digit:]]+')
+);
+$maps[] = array(
+    'NewNote',
+    'notepad/new'
 );
 $maps[] = array(
     'EditNote',

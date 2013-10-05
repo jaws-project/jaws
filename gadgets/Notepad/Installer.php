@@ -11,6 +11,16 @@
 class Notepad_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        'notes_limit' => '10'
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -46,7 +56,7 @@ class Notepad_Installer extends Jaws_Gadget_Installer
         $tables = array('notepad, notepad_users');
         foreach ($tables as $table) {
             $result = $GLOBALS['db']->dropTable($table);
-            _log_var_dump($result);
+            //_log_var_dump($result);
             if (Jaws_Error::IsError($result)) {
                 $gName  = _t('CONTACT_NAME');
                 $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);

@@ -1,24 +1,11 @@
-<!-- BEGIN view -->
+<!-- BEGIN note -->
 <div class="gadget notepad">
   <h2>{title}</h2>
   <div class="gadget_response">
     <div id="notepad_viewnote_response" class="{type}">{text}</div>
   </div>
   <div>
-    <h3>{note_title}</h3>
-    <div class="note-content">{note_content}</div>
-    <div class="note-properties">
-    </div>
-    <div class="actions">
-      <button type="button" onclick="deleteNote({id})">{lbl_delete}</button>
-      <button type="button" onclick="location.href='{url_share}'">{lbl_share}</button>
-      <button type="button" onclick="location.href='{url_edit}'">{lbl_edit}</button>
-    </div>
+    <div class="note-content">{content}</div>
   </div>
 </div>
-<script>
-var notepad_url = "{notepad_url}",
-    confirmDelete = "{confirmDelete}";
-initNotepad();
-</script>
-<!-- END view -->
+<!-- END note -->

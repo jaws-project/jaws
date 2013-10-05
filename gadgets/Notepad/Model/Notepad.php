@@ -17,7 +17,8 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
      * @param   int     $user   User ID
      * @return  array   Query result
      */
-    function GetNotes($user = null, $shared = null, $foreign = null, $query = null)
+    function GetNotes($user = null, $shared = null, $foreign = null, $query = null,
+        $limit = 0, $offset = null)
     {
         $table = Jaws_ORM::getInstance()->table('notepad as note');
         $table->select('note.id', 'user', 'title', 'content', 'shared',
@@ -29,25 +30,13 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
             $table->where('user_id', $user)->and();
         }
 
-        // $table = Jaws_ORM::getInstance()->table('notepad as note');
-        // $table->select('note.id', 'title', 'content', 'createtime', 'updatetime',
-            // 'users.nickname', 'users.username', 'user_id', 'user');
-        // $table->join('notepad_users', 'note.id', 'note_id', 'left');
-        // $table->join('users', 'owner_id', 'users.id', 'left');
-
-        // if ($user !== null){
-            // $table->openWhere('user', $user)->or();
-            // $table->closeWhere('user_id', $user);
-        // }
-
         if ($shared !== null){
             $table->and()->where('shared', $shared);
         }
 
-        // if ($foreign !== null){
-            // $flag = $foreign? '<>' : '=';
-            // $table->where('user', $table->expr('owner'), $flag)->and();
-        // }
+        if ($foreign === false){
+            $table->and()->where('user', $user);
+        }
 
         if ($query !== null){
             $query = "%$query%";
@@ -55,7 +44,45 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
             $table->closeWhere('content', $query, 'like');
         }
 
-        return $table->orderBy('createtime desc', 'title asc')->fetchAll();
+        $table->limit($limit, $offset);
+        $table->orderBy('createtime desc', 'title asc');
+        return $table->fetchAll();
+    }
+
+    /**
+     * Fetches number of notes
+     *
+     * @access  public
+     * @param   int     $user   User ID
+     * @return  array   Query result
+     */
+    function GetNumberOfNotes($user = null, $shared = null, $foreign = null, $query = null)
+    {
+        $table = Jaws_ORM::getInstance()->table('notepad as note');
+        $table->select('count(note.id)');
+        $table->join('notepad_users', 'note.id', 'note_id');
+        $table->join('users', 'owner_id', 'users.id');
+
+        if ($user !== null){
+            $table->where('user_id', $user)->and();
+        }
+
+        if ($shared !== null){
+            $table->and()->where('shared', $shared);
+        }
+
+        if ($foreign === false){
+            $table->and()->where('user', $user);
+        }
+
+        if ($query !== null){
+            $query = "%$query%";
+            $table->openWhere('title', $query, 'like')->or();
+            $table->closeWhere('content', $query, 'like');
+        }
+
+        $table->orderBy('createtime desc', 'title asc');
+        return $table->fetchOne();
     }
 
     /**
@@ -69,14 +96,13 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
     function GetNote($id, $user = null)
     {
         $table = Jaws_ORM::getInstance()->table('notepad as note');
-        $table->select('note.id', 'title', 'content', 'createtime', 'updatetime',
-            'user', 'users.nickname', 'users.username');
-        $table->join('notepad_users', 'note.id', 'note_id', 'left');
-        $table->join('users', 'owner_id', 'users.id', 'left');
+        $table->select('note.id', 'user', 'title', 'content', 'shared',
+            'createtime', 'updatetime', 'nickname', 'username');
+        $table->join('notepad_users', 'note.id', 'note_id');
+        $table->join('users', 'owner_id', 'users.id');
         $table->where('note.id', $id)->and();
         if ($user !== null){
-            $table->openWhere('user', $user)->or();
-            $table->closeWhere('user_id', $user);
+            $table->where('user_id', $user)->and();
         }
 
         return $table->fetchRow();

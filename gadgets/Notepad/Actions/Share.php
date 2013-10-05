@@ -31,11 +31,15 @@ class Notepad_Actions_Share extends Jaws_Gadget_HTML
             $tpl->SetVariable('text', _t('NOTEPAD_ERROR_RETRIEVING_DATA'));
             $tpl->SetVariable('type', 'response_error');
         }
+        if ($note['user'] != $uid) {
+            $tpl->SetVariable('text', _t('NOTEPAD_ERROR_NO_PERMISSION'));
+            $tpl->SetVariable('type', 'response_error');
+        }
 
         $this->AjaxMe('site_script.js');
         $tpl->SetVariable('id', $id);
+        $tpl->SetVariable('UID', $uid);
         $tpl->SetVariable('note_title', $note['title']);
-        $tpl->SetVariable('UID', (int)$GLOBALS['app']->Session->GetAttribute('user'));
         $tpl->SetVariable('title', _t('NOTEPAD_SHARE'));
         $tpl->SetVariable('lbl_users', _t('NOTEPAD_USERS'));
 
@@ -122,7 +126,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_HTML
 
         // Verify owner
         if ($note['user'] != $user) {
-            $GLOBALS['app']->Session->GetResponse(
+            return $GLOBALS['app']->Session->GetResponse(
                 _t('NOTEPAD_ERROR_NO_PERMISSION'),
                 RESPONSE_ERROR
             );
