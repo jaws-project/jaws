@@ -31,6 +31,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
 
         $oldTagsInfo = $this->GetItemTags(array('gadget' => $gadget, 'action' => $action, 'reference' => $reference));
         $oldTags = array();
+        $oldTagsId = array();
         foreach ($oldTagsInfo as $tagInfo) {
             $oldTags[] = $tagInfo['name'];
             $oldTagsId[] = $tagInfo['item_id'];

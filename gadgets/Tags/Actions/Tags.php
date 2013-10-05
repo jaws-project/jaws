@@ -149,10 +149,43 @@ class Tags_Actions_Tags extends Tags_HTML
             $page = 1;
         }
 
-        $results_limit = (int)$this->gadget->registry->fetch('results_limit');
-        if (empty($results_limit)) {
-            $results_limit = 10;
+        $limit = (int)$this->gadget->registry->fetch('results_limit');
+        if (empty($limit)) {
+            $limit = 4;
         }
+
+        // Detect all items count(for paging)
+        $table = Jaws_ORM::getInstance()->table('tags');
+        $table->select('count(tags.id):integer');
+        $table->join('tags_items', 'tags_items.tag', 'tags.id');
+        if(!empty($gadget)) {
+            $table->where('gadget', $gadget);
+        }
+        $table->and()->where('tags.name', $tag)->and()->where('tags_items.published', true);
+        $table->and()->openWhere('tags_items.update_time', time(), '>')->or();
+        $table->closeWhere('tags_items.update_time', null, 'is' );
+        $itemsTotal = $table->fetchOne();
+
+
+        $table = Jaws_ORM::getInstance()->table('tags');
+        $table->select(
+            'gadget', 'action', 'reference:integer'
+        );
+
+        $table->join('tags_items', 'tags_items.tag', 'tags.id');
+        if(!empty($gadget)) {
+            $table->where('gadget', $gadget);
+        }
+        $table->and()->where('tags.name', $tag)->and()->where('tags_items.published', true);
+        $table->and()->openWhere('tags_items.update_time', time(), '>')->or();
+        $table->closeWhere('tags_items.update_time', null, 'is' );
+        $items = $table->orderBy('insert_time')->limit($limit, ($page - 1) * $limit)->fetchAll();
+
+        $gadgetItems = array();
+        foreach ($items as $item) {
+            $gadgetItems[$item['gadget']][$item['action']][] = $item['reference'];
+        }
+
 
         if(empty($gadget)) {
             $gadgets = $this->GetTagRelativeGadgets();
@@ -171,12 +204,10 @@ class Tags_Actions_Tags extends Tags_HTML
                 }
 
                 $result[$gadget] = array();
-                $result['_totalItems'] = 0;
-                $gResult = $objHook->Execute($tag);
+                $gResult = $objHook->Execute($gadgetItems[$gadget]);
                 if (!Jaws_Error::IsError($gResult) || !$gResult) {
                     if (is_array($gResult) && !empty($gResult)) {
                         $result[$gadget] = $gResult;
-                        $result['_totalItems'] += count($gResult);
                     } else {
                         unset($result[$gadget]);
                     }
@@ -191,9 +222,9 @@ class Tags_Actions_Tags extends Tags_HTML
             $tpl,
             'tag',
             $page,
-            $results_limit,
-            $result['_totalItems'],
-            _t('TAGS_TAG_ITEM_COUNT', $result['_totalItems']),
+            $limit,
+            $itemsTotal,
+            _t('TAGS_TAG_ITEM_COUNT', $itemsTotal),
             'ViewTag',
             array('tag'=>$tag)
         );
@@ -201,12 +232,10 @@ class Tags_Actions_Tags extends Tags_HTML
         if (count($result) > 2) {
             $tpl->SetBlock('tag/subtitle');
             $tpl->SetVariable('text', _t('SEARCH_RESULTS_SUBTITLE',
-                $result['_totalItems'],
+                $itemsTotal,
                 'TEST'));
             $tpl->ParseBlock('tag/subtitle');
         }
-
-        unset($result['_totalItems']);
 
         $date = $GLOBALS['app']->loadDate();
         $max_result_len = (int)$this->gadget->registry->fetch('max_result_len');
@@ -214,7 +243,6 @@ class Tags_Actions_Tags extends Tags_HTML
             $max_result_len = 500;
         }
 
-        $item_counter = 0;
         foreach ($result as $gadget => $tags) {
             $tpl->SetBlock('tags/gadget');
             $info = $GLOBALS['app']->LoadGadget($gadget, 'Info');
@@ -224,10 +252,6 @@ class Tags_Actions_Tags extends Tags_HTML
                 $info->title));
             $tpl->ParseBlock('tags/gadget');
             foreach ($tags as $item) {
-                $item_counter++;
-                if ($item_counter <= ($page - 1) * $results_limit || $item_counter > $page * $results_limit) {
-                    continue;
-                }
                 $tpl->SetBlock('tag/tag_item');
                 $tpl->SetVariable('title',  $item['title']);
                 $tpl->SetVariable('url',    $item['url']);
