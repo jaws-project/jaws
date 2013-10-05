@@ -30,9 +30,9 @@ class PrivateMessage_Installer extends Jaws_Gadget_Installer
     var $_ACLKeys = array(
         'ManageProperties',
         'DeleteMessage',
-        array('ArchiveMessage', '', true),
-        array('ReplyMessage', '', true),
-        array('ComposeMessage', '', true),
+        'ArchiveMessage',
+        'ReplyMessage',
+        'ComposeMessage',
         'ComposeToAllUsers',
     );
 
