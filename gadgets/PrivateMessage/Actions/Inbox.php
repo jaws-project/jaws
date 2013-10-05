@@ -41,10 +41,12 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
             $post['archived'] = true;
             // Menubar
             $tpl->SetVariable('menubar', $this->MenuBar('Archived'));
+            $tpl->SetVariable('title', _t('PRIVATEMESSAGE_ARCHIVE'));
         } else {
             $post['archived'] = false;
             // Menubar
             $tpl->SetVariable('menubar', $this->MenuBar('Inbox'));
+            $tpl->SetVariable('title', _t('PRIVATEMESSAGE_INBOX'));
         }
 
         $page = empty($page) ? 1 : (int)$page;
@@ -58,7 +60,6 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         }
         $tpl->SetVariable('opt_page_item_' . $limit, 'selected="selected"');
 
-        $tpl->SetVariable('title', _t('PRIVATEMESSAGE_INBOX'));
         $tpl->SetVariable('page', $page);
         $tpl->SetVariable('view', $view);
         $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
