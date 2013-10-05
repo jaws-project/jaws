@@ -15,8 +15,18 @@ class Layout_Actions_Layout extends Jaws_Gadget_HTML
      */
     function Layout()
     {
+        $dashboard_building = $this->gadget->registry->fetch('dashboard_building') == 'true';
+        if (!$dashboard_building &&
+            !$GLOBALS['app']->Session->GetPermission('Users', 'EditUserDashboard')
+        ) {
+            return Jaws_HTTPError::Get(403);
+        }
+
         $user = jaws()->request->fetch('user');
-        // permission check
+        if (!$GLOBALS['app']->Session->GetPermission('Users', 'ManageUsersDashboard') || empty($user)) {
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        }
+
         $layoutModel = $this->gadget->load('Model')->load('Model', 'Layout');
         $layoutModel->layoutSwitch($user);
         Jaws_Header::Location('');

@@ -54,7 +54,8 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
                 $elModel->NewElement('main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1, $user);
             }
 
-            $GLOBALS['app']->Session->SetAttribute('layout', (int)$user);
+            $layout_user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
+            $GLOBALS['app']->Session->SetAttribute('layout', empty($layout_user)? $user : 0);
             return true;
         }
 
