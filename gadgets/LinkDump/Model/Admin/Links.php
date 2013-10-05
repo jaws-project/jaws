@@ -49,7 +49,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         $this->MoveLink($lid, $gid, $gid, $rank, null);
 
         $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
-        $res = $model->AddTagsToItem('LinkDump', 'link', $lid, $tags);
+        $res = $model->AddTagsToItem('LinkDump', 'link', $lid, true, null, $tags);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_ADD_TAG_ERROR'), RESPONSE_ERROR);
         }
@@ -104,7 +104,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         $this->MoveLink($id, $gid, $oldLink['gid'], $rank, $oldLink['rank']);
 
         $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
-        $res = $model->UpdateTagsItems('LinkDump', 'link', $id, $tags);
+        $res = $model->UpdateTagsItems('LinkDump', 'link', $id, true, null, $tags);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_UPDATE_TAG_ERROR'), RESPONSE_ERROR);
         }

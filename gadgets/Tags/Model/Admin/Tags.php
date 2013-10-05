@@ -18,22 +18,35 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      * @param   string          $gadget         gadget name
      * @param   string          $action         action name
      * @param   int             $reference      reference
+     * @param   bool            $published      reference published?
+     * @param   int             $update_time    reference update time
      * @param   string/array    $tags     comma separated of tags name (tag1, tag2, tag3, ...)
      * @return  mixed       Array of Tag info or Jaws_Error on failure
      */
-    function UpdateTagsItems($gadget, $action ,$reference, $tags)
+    function UpdateTagsItems($gadget, $action , $reference, $published, $update_time, $tags)
     {
         if (!is_array($tags)) {
             $tags = array_filter(array_map(array($GLOBALS['app']->UTF8, 'trim'), explode(',', $tags)));
         }
+
         $oldTagsInfo = $this->GetItemTags(array('gadget' => $gadget, 'action' => $action, 'reference' => $reference));
         $oldTags = array();
         foreach ($oldTagsInfo as $tagInfo) {
             $oldTags[] = $tagInfo['name'];
+            $oldTagsId[] = $tagInfo['item_id'];
         }
-        $to_be_added_tags = array_diff($tags, $oldTags);
 
-        $res = $this->AddTagsToItem($gadget, $action, $reference, $to_be_added_tags);
+        // First - Update old tag info
+        $table = Jaws_ORM::getInstance()->table('tags_items');
+        $table->update(array('published' => $published, 'update_time' => $update_time));
+        $table->where('gadget', $gadget);
+        $table->and()->where('action', $action);
+        $table->and()->where('reference', $reference);
+        $table->and()->where('tag', $oldTagsId, 'in');
+        $table->exec();
+
+        $to_be_added_tags = array_diff($tags, $oldTags);
+        $res = $this->AddTagsToItem($gadget, $action, $reference, $published, $update_time, $to_be_added_tags);
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
@@ -53,10 +66,12 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      * @param   string          $gadget         gadget name
      * @param   string          $action         action name
      * @param   int             $reference      reference
+     * @param   bool            $published      reference published?
+     * @param   int             $update_time    reference update time
      * @param   string/array    $tagsString     comma separated of tags name (tag1, tag2, tag3, ...)
-     * @return  mixed       Array of Tag info or Jaws_Error on failure
+     * @return  mixed           Array of Tag info or Jaws_Error on failure
      */
-    function AddTagsToItem($gadget, $action ,$reference, $tags)
+    function AddTagsToItem($gadget, $action ,$reference, $published, $update_time, $tags)
     {
         if(empty($tags) || count($tags)<1) {
             return true;
@@ -81,11 +96,12 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('tags_items');
         $tData = array();
         foreach($systemTags as $tagName=>$tagId) {
-            $data = array($gadget , $action, $reference, $tagId, time());
+            $data = array($gadget , $action, $reference, $tagId, time(), $published, $update_time);
             $tData[] = $data;
         }
 
-        $res = $table->insertAll(array('gadget', 'action', 'reference', 'tag', 'insert_time'), $tData)->exec();
+        $column = array('gadget', 'action', 'reference', 'tag', 'insert_time', 'published', 'update_time');
+        $res = $table->insertAll($column, $tData)->exec();
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage(), 'SQL');
         }
