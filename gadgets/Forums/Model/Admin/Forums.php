@@ -43,6 +43,7 @@ class Forums_Model_Admin_Forums extends Jaws_Gadget_Model
         }
 
         $this->gadget->acl->insert('ForumAccess', $res, true);
+        $this->gadget->acl->insert('ForumManage', $res, false);
         return $res;
     }
 
@@ -99,6 +100,7 @@ class Forums_Model_Admin_Forums extends Jaws_Gadget_Model
         }
 
         $this->gadget->acl->delete('ForumAccess', $fid);
+        $this->gadget->acl->delete('ForumManage', $fid);
         return (bool)$res;
     }
 
