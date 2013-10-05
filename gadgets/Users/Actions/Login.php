@@ -286,16 +286,25 @@ class Users_Actions_Login extends Users_HTML
             }
 
             // Layout/Dashboard
-            // permission check
-            $tpl->SetBlock('UserLinks/layout');
-            $tpl->SetVariable('layout', _t('USERS_DASHBOARD'));
-            $user = $GLOBALS['app']->Session->GetAttribute('layout');
-            $user = empty($user)? $GLOBALS['app']->Session->GetAttribute('user') : 0;
-            $tpl->SetVariable(
-                'layout_url',
-                $this->gadget->urlMap('Layout', array('user' => $user), false, 'Layout'));
-            $tpl->ParseBlock('UserLinks/layout');
+            $dashboard_building = $this->gadget->registry->fetch('dashboard_building') == 'true';
+            if ($dashboard_building &&
+                $this->gadget->GetPermission('EditUserDashboard')
+            ) {
+                $tpl->SetBlock('UserLinks/layout');
+                $user = $GLOBALS['app']->Session->GetAttribute('layout');
+                if (empty($user)) {
+                    $tpl->SetVariable('layout', _t('USERS_DASHBOARD_USER'));
+                } else {
+                    $tpl->SetVariable('layout', _t('USERS_DASHBOARD_GLOBAL'));
+                }
+                $tpl->SetVariable(
+                    'layout_url',
+                    $this->gadget->urlMap('Layout', array(), false, 'Layout')
+                );
+                $tpl->ParseBlock('UserLinks/layout');
+            }
 
+            // Logout
             $tpl->SetVariable('logout', _t('GLOBAL_LOGOUT'));
             $tpl->SetVariable('logout_url', $this->gadget->urlMap('Logout'));
 
