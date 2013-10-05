@@ -100,6 +100,36 @@ class Tags_Actions_Tags extends Tags_HTML
     }
 
     /**
+     * Display a Tag Items
+     *
+     * @access  public
+     * @param   string  $gadget         Gadget name
+     * @param   string  $action         Action name
+     * @param   int     $reference      Reference
+     * @param   object  $tpl            Jaws_Template object
+     * @param   string  $tpl_base_block Template block name
+     * @return  string  XHTML template content
+     */
+    function ViewItemTags($gadget, $action, $reference, &$tpl, $tpl_base_block)
+    {
+        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $tags = $model->GetItemTags(array('gadget' => $gadget, 'action' => $action, 'reference' => $reference), true);
+
+        $tpl->SetBlock("$tpl_base_block/tags");
+        $tpl->SetVariable('lbl_tags', _t('GLOBAL_TAGS'));
+        foreach($tags as $tag) {
+            $tpl->SetBlock("$tpl_base_block/tags/tag");
+            $tpl->SetVariable('name', $tag);
+            $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Tags', 'ViewTag',
+                             array('tag'=>$tag, 'gname'=>'StaticPage')));
+            $tpl->ParseBlock("$tpl_base_block/tags/tag");
+        }
+        $tpl->ParseBlock("$tpl_base_block/tags");
+
+    }
+
+
+    /**
      * Display a Tag
      *
      * @access  public

@@ -265,6 +265,9 @@ define('_EN_GLOBAL_CAPTCHA_ERROR_OLD_CAPTCHAS_NOT_DELETED', "There was a problem
 define('_EN_GLOBAL_CAPTCHA_ERROR_FORCED_CAPTCHAS_NOT_DELETED', "There was a problem while forcing a delete of all Captcha keys");
 define('_EN_GLOBAL_CAPTCHA_ERROR_DOES_NOT_MATCH', "The captcha you wrote doesn't match with the image");
 
+/* Captcha */
+define('_EN_GLOBAL_TAGS', "Tags");
+
 /* HTTP Error Codes */
 define('_EN_GLOBAL_HTTP_ERROR_TITLE_301', "Moved permanently");
 define('_EN_GLOBAL_HTTP_ERROR_TITLE_302', "Moved temporarily");

@@ -136,6 +136,11 @@ class StaticPage_Actions_Page extends Jaws_Gadget_HTML
                 }
             }
         }
+
+        // Show Tags
+        $tagsHTML = $GLOBALS['app']->LoadGadget('Tags', 'HTML', 'Tags');
+        $tagsHTML->ViewItemTags('StaticPage', 'page', $page['translation_id'], $tpl, 'page');
+
         $tpl->ParseBlock('page');
 
         return $tpl->Get();
