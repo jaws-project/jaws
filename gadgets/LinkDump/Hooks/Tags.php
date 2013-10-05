@@ -23,9 +23,6 @@ class LinkDump_Hooks_Tags extends Jaws_Gadget_Hook
             return;
         }
 
-        foreach($tag_items['link'] as $item) {
-
-        }
         $table = Jaws_ORM::getInstance()->table('linkdump_links');
         $table->select('id:integer', 'title', 'description', 'updatetime');
         $result = $table->where('id', $tag_items['link'], 'in')->fetchAll();

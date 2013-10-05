@@ -43,7 +43,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table->where('gadget', $gadget);
         $table->and()->where('action', $action);
         $table->and()->where('reference', $reference);
-        $table->and()->where('tag', $oldTagsId, 'in');
+        $table->and()->where('id', $oldTagsId, 'in');
         $table->exec();
 
         $to_be_added_tags = array_diff($tags, $oldTags);
@@ -261,9 +261,10 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
 
         // TODO: fix me
         //Delete duplicated items
-        $table = Jaws_ORM::getInstance()->table('tags_items', 'items1');
-        $table->join('tags_items as items2', 'items2.id', 'item1.id', 'inner', '>');
-        $table->delete()->where('item1.gadget', 'item2.gadget');
+//        $table = Jaws_ORM::getInstance()->table(array('tags_items', 'tags_items'), array('items1', 'items2'));
+        $table = Jaws_ORM::getInstance()->table(array(array('tags_items', 'items1'), array('tags_items', 'items2')));
+        $table->delete()->where('items1.id', 'items2.id', '>');
+        $table->and()->where('item1.gadget', 'item2.gadget');
         $table->and()->where('item1.action', 'item2.action');
         $table->and()->where('item1.reference', 'item2.reference');
         $table->and()->where('item1.tag', 'item2.tag');

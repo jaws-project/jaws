@@ -192,7 +192,7 @@ class Tags_Actions_Tags extends Tags_HTML
         } else {
             $gadgets = array($gadget);
         }
-        if (is_array($gadgets) && count($gadgets) > 0) {
+        if (is_array($gadgets) && count($gadgets) > 0 && $itemsTotal>0) {
             foreach ($gadgets as $gadget) {
                 $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
                 if (Jaws_Error::IsError($objGadget)) {
@@ -200,6 +200,10 @@ class Tags_Actions_Tags extends Tags_HTML
                 }
                 $objHook = $objGadget->load('Hook')->load('Tags');
                 if (Jaws_Error::IsError($objHook)) {
+                    continue;
+                }
+
+                if(!isset($gadgetItems[$gadget])) {
                     continue;
                 }
 
@@ -215,6 +219,9 @@ class Tags_Actions_Tags extends Tags_HTML
             }
 
             reset($result);
+        } else {
+            $tpl->ParseBlock('tag');
+            return $tpl->Get();
         }
 
         // page navigation

@@ -46,6 +46,9 @@ class Tags_Model_Tags extends Jaws_Gadget_Model
 
         $table->select('tags.id:integer', 'name', 'count(tags_items.gadget) as howmany:integer');
         $table->join('tags_items', 'tags_items.tag', 'tags.id', 'left');
+        $table->where('tags_items.published', true);
+        $table->and()->openWhere('tags_items.update_time', time(), '>')->or();
+        $table->closeWhere('tags_items.update_time', null, 'is' );
         $table->groupBy('tags.id');
 
         if (!empty($gadget)) {
