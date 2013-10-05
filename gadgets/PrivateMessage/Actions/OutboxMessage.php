@@ -30,6 +30,11 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
         $usrModel = new Jaws_User;
         $message = $model->GetMessage($id, true, false);
 
+        if (empty($message)) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(404);
+        }
+
         // Check permissions
         if ($message['user'] != $user) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';

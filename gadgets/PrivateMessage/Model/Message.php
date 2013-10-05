@@ -51,7 +51,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
 
-        if($fetchAttachment) {
+        if($fetchAttachment && !empty($result)) {
             $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');
             $result['attachments'] = $model->GetMessageAttachments($result['id']);
         }
