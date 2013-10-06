@@ -36,29 +36,27 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_HTML
             $tpl->SetVariable('type', $response['type']);
         }
 
-        $page = jaws()->request->fetch('page', 'get');
-        if (empty($page)) {
-            $page = 1;
+        // Fetch url params
+        $get = jaws()->request->fetch(array('filter', 'query', 'page'), 'get');
+        foreach ($get as $k => $v) {
+            if ($v === null) {
+                unset($get[$k]);
+            }
         }
-        //$page = 2;
-        //$limit = (int)$this->gadget->registry->fetch('notes_limit');
-        $limit = 2;
-        $notepad_url = ($page === 1)?
-            $this->gadget->urlMap('Notepad'):
-            $this->gadget->urlMap('Notepad', array('page' => $page));
 
-        // Check for search
-        $response = $GLOBALS['app']->Session->PopResponse('Notepad.Data');
-        $filter = (int)$response['data']['filter'];
-        $query = $response['data']['query'];
+        // Prepare action arguments
+        $query = isset($get['query'])? $get['query'] : null;
+        $filter = isset($get['filter'])? (int)$get['filter'] : null;
         $shared = ($filter === 1)? true : null;
         $foreign = ($filter === 2)? true : null;
+        $page = isset($get['page'])? $get['page'] : 1;
+        $limit = (int)$this->gadget->registry->fetch('notes_limit');
 
-        // Notes
+        // Fetch notes
         $model = $GLOBALS['app']->LoadGadget('Notepad', 'Model', 'Notepad');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $count = $model->GetNumberOfNotes($user, null, null, $query);
-        $notes = $model->GetNotes($user, null, null, $query, $limit, ($page - 1) * $limit);
+        $count = $model->GetNumberOfNotes($user, $shared, $foreign, $query);
+        $notes = $model->GetNotes($user, $shared, $foreign, $query, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($notes)){
             $objDate = $GLOBALS['app']->loadDate();
             foreach ($notes as $note) {
@@ -96,10 +94,10 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_HTML
         $tpl->SetVariable('query', $entry->Get());
 
         $button =& Piwi::CreateWidget('Button', '', _t('NOTEPAD_SEARCH'), STOCK_SEARCH);
-        $button->SetSubmit(false);
-        $button->AddEvent(ON_CLICK, 'searchNotes(this.form)');
+        $button->SetSubmit(true);
         $tpl->SetVariable('btn_search', $button->Get());
 
+        $notepad_url = $this->gadget->urlMap('Notepad');
         $button =& Piwi::CreateWidget('Button', 'btn_note_search_reset', 'X');
         $button->SetSubmit(false);
         $button->AddEvent(ON_CLICK, "window.location='$notepad_url'");
@@ -125,7 +123,8 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_HTML
             $limit,
             $count,
             _t('NOTEPAD_NOTES_COUNT', $count),
-            'Notepad'
+            'Notepad',
+            $get
         );
 
         $tpl->ParseBlock('notepad');
@@ -140,21 +139,21 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_HTML
      */
     function Search()
     {
-        $search = jaws()->request->fetch(array('filter', 'query'), 'post');
-        if (strlen($search['query']) < 2) {
+        $post = jaws()->request->fetch(array('filter', 'query', 'page'), 'post');
+        foreach ($post as $k => $v) {
+            if ($v === null) {
+                unset($post[$k]);
+            }
+        }
+        $url = $this->gadget->urlMap('Notepad', $post);
+        Jaws_Header::Location($url);
+
+        /*if (strlen($search['query']) < 2) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('NOTEPAD_ERROR_SHORT_QUERY'),
                 'Notepad.Response',
                 RESPONSE_ERROR
             );
-        } else {
-            $GLOBALS['app']->Session->PushResponse(
-                '',
-                'Notepad.Data',
-                RESPONSE_NOTICE,
-                $search
-            );
-        }
-        Jaws_Header::Referrer();
+        }*/
     }
 }

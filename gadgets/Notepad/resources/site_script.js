@@ -20,7 +20,11 @@ var NotepadCallback = {
     },
 
     UpdateShare: function(response) {
-        NotepadAjax.showResponse(response);
+        if (response.type === 'response_error') {
+            NotepadAjax.showResponse(response);
+        } else {
+            window.location = notepad_url;
+        }
     }
 };
 
@@ -44,14 +48,14 @@ function checkAll()
 /**
  * Submits search
  */
-function searchNotes(form)
+/*function searchNotes(form)
 {
     if (form.query.value.length < 2) {
         alert(errorShortQuery);
         return;
     }
     form.submit();
-}
+}*/
 
 /**
  * Shows/Hides search reset button

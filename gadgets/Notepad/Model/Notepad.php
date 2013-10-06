@@ -30,12 +30,13 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
             $table->where('user_id', $user)->and();
         }
 
-        if ($shared !== null){
-            $table->and()->where('shared', $shared);
+        if ($shared === true){
+            $table->where('shared', true)->and();
+            $table->where('user', $user)->and();
         }
 
-        if ($foreign === false){
-            $table->and()->where('user', $user);
+        if ($foreign === true){
+            $table->where('user', $user, '<>')->and();
         }
 
         if ($query !== null){
@@ -67,12 +68,13 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
             $table->where('user_id', $user)->and();
         }
 
-        if ($shared !== null){
-            $table->and()->where('shared', $shared);
+        if ($shared === true){
+            $table->where('shared', true)->and();
+            $table->where('user', $user)->and();
         }
 
-        if ($foreign === false){
-            $table->and()->where('user', $user);
+        if ($foreign === true){
+            $table->where('user', $user, '<>')->and();
         }
 
         if ($query !== null){

@@ -19,15 +19,9 @@ class Notepad_Actions_Update extends Jaws_Gadget_HTML
      */
     function EditNote()
     {
-        $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('Form.html');
-        $tpl->SetBlock('form');
-
         // Response
         $response = $GLOBALS['app']->Session->PopResponse('Notepad.Response');
         if ($response) {
-            $tpl->SetVariable('text', $response['text']);
-            $tpl->SetVariable('type', $response['type']);
             $note = $response['data'];
         }
 
@@ -36,12 +30,17 @@ class Notepad_Actions_Update extends Jaws_Gadget_HTML
             $model = $GLOBALS['app']->LoadGadget('Notepad', 'Model', 'Notepad');
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
             $note = $model->GetNote($id, $user);
-            if (Jaws_Error::IsError($note) || empty($note)) {
-                $tpl->SetVariable('text', _t('NOTEPAD_ERROR_RETRIEVING_DATA'));
-                $tpl->SetVariable('type', 'response_error');
+            if (Jaws_Error::IsError($note) ||
+                empty($note) ||
+                $note['user'] != $user)
+            {
+                return;
             }
         }
 
+        $this->AjaxMe('site_script.js');
+        $tpl = $this->gadget->loadTemplate('Form.html');
+        $tpl->SetBlock('form');
         $tpl->SetVariable('title', _t('NOTEPAD_EDIT_NOTE'));
         $tpl->SetVariable('errorIncompleteData', _t('NOTEPAD_ERROR_INCOMPLETE_DATA'));
         $tpl->SetVariable('action', 'editnote');

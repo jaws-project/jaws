@@ -53,10 +53,9 @@ class Notepad_Installer extends Jaws_Gadget_Installer
      */
     function Uninstall()
     {
-        $tables = array('notepad, notepad_users');
+        $tables = array('notepad', 'notepad_users');
         foreach ($tables as $table) {
             $result = $GLOBALS['db']->dropTable($table);
-            //_log_var_dump($result);
             if (Jaws_Error::IsError($result)) {
                 $gName  = _t('CONTACT_NAME');
                 $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);

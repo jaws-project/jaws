@@ -10,8 +10,12 @@
  */
 $maps[] = array(
     'Notepad',
-    'notepad[/page/{page}]',
-    array('page' => '[[:digit:]]+')
+    'notepad[/filter/{filter}][/query/{query}][/page/{page}]',
+    array(
+        'filter' => '[[:digit:]]+',
+        'query' => '[[:alnum:]-_]+',
+        'page' => '[[:digit:]]+'
+    )
 );
 $maps[] = array(
     'ViewNote',

@@ -43,9 +43,8 @@ class Notepad_Actions_StickyNote extends Jaws_Gadget_HTML
         $model = $GLOBALS['app']->LoadGadget('Notepad', 'Model', 'StickyNote');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $notes = $model->GetLatestNotes($user, $count);
-        if (Jaws_Error::IsError($notes)) {
-            //$tpl->SetVariable('text', _t('NOTEPAD_ERROR_RETRIEVING_DATA'));
-            //$tpl->SetVariable('type', 'response_error');
+        if (Jaws_Error::IsError($notes) || empty($notes)) {
+            return;
         }
 
         if ($count == 1) {

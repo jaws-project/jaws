@@ -19,29 +19,28 @@ class Notepad_Actions_Share extends Jaws_Gadget_HTML
      */
     function ShareNote()
     {
-        $tpl = $this->gadget->loadTemplate('Share.html');
-        $tpl->SetBlock('share');
 
         // Fetch note
         $id = (int)jaws()->request->fetch('id', 'get');
         $model = $GLOBALS['app']->LoadGadget('Notepad', 'Model', 'Notepad');
         $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $note = $model->GetNote($id, $uid);
-        if (Jaws_Error::IsError($note) || empty($note)) {
-            $tpl->SetVariable('text', _t('NOTEPAD_ERROR_RETRIEVING_DATA'));
-            $tpl->SetVariable('type', 'response_error');
-        }
-        if ($note['user'] != $uid) {
-            $tpl->SetVariable('text', _t('NOTEPAD_ERROR_NO_PERMISSION'));
-            $tpl->SetVariable('type', 'response_error');
+        if (Jaws_Error::IsError($note) ||
+            empty($note) ||
+            $note['user'] != $uid)
+        {
+            return;
         }
 
         $this->AjaxMe('site_script.js');
+        $tpl = $this->gadget->loadTemplate('Share.html');
+        $tpl->SetBlock('share');
         $tpl->SetVariable('id', $id);
         $tpl->SetVariable('UID', $uid);
         $tpl->SetVariable('note_title', $note['title']);
         $tpl->SetVariable('title', _t('NOTEPAD_SHARE'));
         $tpl->SetVariable('lbl_users', _t('NOTEPAD_USERS'));
+        $tpl->SetVariable('notepad_url', $this->gadget->urlMap('Notepad'));
 
         // User groups
         require_once JAWS_PATH . 'include/Jaws/User.php';
@@ -143,6 +142,10 @@ class Notepad_Actions_Share extends Jaws_Gadget_HTML
             );
         }
 
+        $GLOBALS['app']->Session->PushResponse(
+            _t('NOTEPAD_NOTICE_SHARE_UPDATED'),
+            'Notepad.Response'
+        );
         return $GLOBALS['app']->Session->GetResponse(
             _t('NOTEPAD_NOTICE_SHARE_UPDATED')
         );
