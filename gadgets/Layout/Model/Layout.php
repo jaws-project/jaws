@@ -59,7 +59,7 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
             return true;
         }
 
-        return false;
+        return $exists;
     }
 
 }

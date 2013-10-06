@@ -10,7 +10,7 @@
  */
 $actions = array();
 
-$actions['Layout'] = array(
+$actions['LayoutSwitch'] = array(
     'standalone' => true,
     'file' => 'Layout',
 );

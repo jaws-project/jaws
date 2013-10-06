@@ -179,11 +179,6 @@ function initUI()
     });
 }
 
-function changeTheme()
-{
-    $('controls').submit();
-}
-
 function addGadget(url, title)
 {
     showDialogBox('gadgets_dialog', title, url, 400, 800);

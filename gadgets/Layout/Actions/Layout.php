@@ -11,12 +11,15 @@
 class Layout_Actions_Layout extends Jaws_Gadget_HTML
 {
     /**
+     * Switch between layouts/dashboards
      *
+     * @access  public
+     * @return  mixed   Redirect if switched successfully otherwise content of 403 html status code
      */
-    function Layout()
+    function LayoutSwitch()
     {
-        $dashboard_building = $this->gadget->registry->fetch('dashboard_building') == 'true';
-        if (!$dashboard_building &&
+        $dashboard_building = $this->gadget->registry->fetch('dashboard_building', 'Users') == 'true';
+        if (!$dashboard_building ||
             !$GLOBALS['app']->Session->GetPermission('Users', 'EditUserDashboard')
         ) {
             return Jaws_HTTPError::Get(403);

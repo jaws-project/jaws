@@ -199,6 +199,24 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
         $tpl->SetVariable('icon-gadget', 'gadgets/Layout/images/logo.png');
         $tpl->SetVariable('title-gadget', 'Layout');
 
+        // layouts/dashboards
+        $dashboard_building = $this->gadget->registry->fetch('dashboard_building', 'Users') == 'true';
+        if ($dashboard_building &&
+            $this->gadget->GetPermission('EditUserDashboard')
+        ) {
+            $tpl->SetBlock('controls/layouts');
+            $tpl->SetVariable('layouts', _t('LAYOUT_LAYOUTS'));
+            $layoutsCombo =& Piwi::CreateWidget('Combo', 'layouts');
+            $layoutsCombo->setID('layouts');
+            $layoutsCombo->AddOption(_t('LAYOUT_LAYOUTS_GLOBAL'), '0');
+            $layoutsCombo->AddOption(_t('LAYOUT_LAYOUTS_USER'), $GLOBALS['app']->Session->GetAttribute('user'));
+            $layoutsCombo->SetDefault($GLOBALS['app']->Session->GetAttribute('layout'));
+            $layoutsCombo->AddEvent(ON_CHANGE, "this.form.submit();");
+            $tpl->SetVariable('layouts_combo', $layoutsCombo->Get());
+            $tpl->ParseBlock('controls/layouts');
+        }
+
+        // themes
         $tpl->SetVariable('theme', _t('LAYOUT_THEME'));
         $themeCombo =& Piwi::CreateWidget('ComboGroup', 'theme');
         $themeCombo->setID('theme');
@@ -209,7 +227,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
             $themeCombo->AddOption($tInfo['local']? 'local' : 'remote', $tInfo['name'], $theme);
         }
         $themeCombo->SetDefault($this->gadget->registry->fetch('theme', 'Settings'));
-        $themeCombo->AddEvent(ON_CHANGE, "changeTheme();");
+        $themeCombo->AddEvent(ON_CHANGE, "this.form.submit();");
         $themeCombo->SetEnabled($this->gadget->GetPermission('ManageThemes'));
         $tpl->SetVariable('theme_combo', $themeCombo->Get());
 
@@ -228,6 +246,40 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
 
         $tpl->ParseBlock('controls');
         return $tpl->Get();
+    }
+
+    /**
+     * Switch between layouts/dashboards
+     *
+     * @access  public
+     * @return  void
+     */
+    function LayoutSwitch()
+    {
+        $dashboard_building = $this->gadget->registry->fetch('dashboard_building') == 'true';
+        if (!$dashboard_building &&
+            !$GLOBALS['app']->Session->GetPermission('Users', 'EditUserDashboard')
+        ) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_ACCESS_DENIED'), RESPONSE_ERROR);
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout');
+        }
+
+        $user = jaws()->request->fetch('user');
+        if (empty($user) ||
+           !$GLOBALS['app']->Session->GetPermission('Users', 'ManageUsersDashboard')
+        ) {
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        }
+
+        $layoutModel = $this->gadget->load('Model')->load('Model', 'Layout');
+        $result = $layoutModel->layoutSwitch($user);
+        if (Jaws_Error::IsError($result)) {
+            $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_LAYOUTS_SWITCHED'), RESPONSE_NOTICE);
+        }
+
+        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout');
     }
 
 }
