@@ -299,7 +299,7 @@ class Users_Actions_Login extends Users_HTML
                 }
                 $tpl->SetVariable(
                     'layout_url',
-                    $this->gadget->urlMap('Layout', array(), false, 'Layout')
+                    $this->gadget->urlMap('LayoutSwitch', array(), false, 'Layout')
                 );
                 $tpl->ParseBlock('UserLinks/layout');
             }
