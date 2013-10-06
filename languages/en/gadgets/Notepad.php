@@ -17,11 +17,13 @@ define('_EN_NOTEPAD_DESCRIPTION', "Personal notepad with sharing capability.");
 define('_EN_NOTEPAD_ACL_DEFAULT', "Use Notepad");
 define('_EN_NOTEPAD_ACL_SHARENOTES', "Share notes");
 
-// Actions
+/* Layout */
 define('_EN_NOTEPAD_ACTIONS_NOTEPAD', "Notepad");
 define('_EN_NOTEPAD_ACTIONS_NOTEPAD_DESC', "Display Notepad.");
+define('_EN_NOTEPAD_ACTIONS_STICKYNOTE', "Sticky Note");
+define('_EN_NOTEPAD_ACTIONS_STICKYNOTE_DESC', "Displays last note or latest notes.");
 
-// Terms
+// Notes
 define('_EN_NOTEPAD_NOTES', "Notes");
 define('_EN_NOTEPAD_NOTE', "Note");
 define('_EN_NOTEPAD_NOTE_TITLE', "Title");
@@ -29,14 +31,24 @@ define('_EN_NOTEPAD_NOTE_CONTENT', "Content");
 define('_EN_NOTEPAD_NOTE_CREATED', "Created");
 define('_EN_NOTEPAD_NOTE_MODIFIED', "Modified");
 define('_EN_NOTEPAD_NOTE_OWNER', "Owner");
-
 define('_EN_NOTEPAD_NEW_NOTE', "New Note");
 define('_EN_NOTEPAD_EDIT_NOTE', "Edit Note");
 define('_EN_NOTEPAD_VIEW_NOTE', "View Note");
 define('_EN_NOTEPAD_DELETE_NOTE', "Delete");
+define('_EN_NOTEPAD_STICKYNOTE_DISPLAY', "Display");
+define('_EN_NOTEPAD_LAST_NOTE', "Last Note");
+define('_EN_NOTEPAD_LATEST_NOTES', "Latest Notes");
+define('_EN_NOTEPAD_LATEST_5_NOTES', "Latest 5 Notes");
+define('_EN_NOTEPAD_LATEST_10_NOTES', "Latest 10 Notes");
+define('_EN_NOTEPAD_SEARCH', "Search");
+define('_EN_NOTEPAD_SEARCH_ALL_NOTES', "All notes");
+define('_EN_NOTEPAD_SEARCH_SHARED_NOTES_ONLY', "Shared notes only");
+define('_EN_NOTEPAD_SEARCH_FOREIGN_NOTES_ONLY', "Foreign notes only");
+define('_EN_NOTEPAD_NOTES_COUNT', "{0} notes");
 
 // Sharing
 define('_EN_NOTEPAD_SHARE', "Share");
+define('_EN_NOTEPAD_SHARED', "Shared");
 define('_EN_NOTEPAD_SHARED_FOR', "Shared for");
 define('_EN_NOTEPAD_GROUPS', "Groups");
 define('_EN_NOTEPAD_USERS', "Users");
