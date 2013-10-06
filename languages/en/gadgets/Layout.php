@@ -24,11 +24,10 @@ define('_EN_LAYOUT_ACL_MANAGETHEMES', "Select default template of website");
 
 /* Layout */
 define('_EN_LAYOUT', "Layout");
-define('_EN_LAYOUT_MODE', "Layout Mode");
-define('_EN_LAYOUT_MODE_TWOBAR', "Both Sidebars");
-define('_EN_LAYOUT_MODE_LEFTBAR', "Left Sidebar");
-define('_EN_LAYOUT_MODE_RIGHTBAR', "Right Sidebar");
-define('_EN_LAYOUT_MODE_NOBAR', "No Sidebars");
+define('_EN_LAYOUT_LAYOUTS', "Layouts");
+define('_EN_LAYOUT_LAYOUTS_GLOBAL', "Global");
+define('_EN_LAYOUT_LAYOUTS_USER', "User");
+define('_EN_LAYOUT_LAYOUTS_SWITCHED', "Layout has been switched");
 define('_EN_LAYOUT_NEW', "Add Gadget");
 define('_EN_LAYOUT_BACK', "Back to Control Panel");
 define('_EN_LAYOUT_CHANGE_DW', "When to display this gadget");

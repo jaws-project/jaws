@@ -183,6 +183,11 @@ define('_EN_USERS_ACLS_DEFAULT', "Default");
 define('_EN_USERS_ACLS_ALLOW', "Allow");
 define('_EN_USERS_ACLS_DENY', "Deny");
 
+/* Dashboard */
+define('_EN_USERS_DASHBOARD', "Dashboard");
+define('_EN_USERS_DASHBOARD_GLOBAL', "Global Website");
+define('_EN_USERS_DASHBOARD_USER', "User's Dashboard");
+
 /* MyAccount */
 define('_EN_USERS_MYACCOUNT_UPDATED', "Your profile has been updated.");
 define('_EN_USERS_MYACCOUNT_PASSWORDS_DONT_MATCH', "Your password and password verification do not match.");
