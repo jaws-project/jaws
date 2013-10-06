@@ -44,6 +44,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'), _t('BLOG_NAME'));
         }
 
+        $this->gadget->acl->insert('CategoryAccess', $result, true);
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_CATEGORY_ADDED'), RESPONSE_NOTICE);
         return true;
     }
@@ -128,6 +129,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
             return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), _t('BLOG_NAME'));
         }
 
+        $this->gadget->acl->delete('CategoryAccess', $id);
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_CATEGORY_DELETED'), RESPONSE_NOTICE);
         return true;
     }

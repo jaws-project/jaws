@@ -41,6 +41,9 @@ class Blog_Actions_Tags extends Blog_HTML
         $tpl->SetVariable('title', _t('BLOG_TAGCLOUD'));
 
         foreach ($res as $key => $value) {
+            if (!$this->gadget->GetPermission('CategoryAccess', $value['category_id'])) {
+                break;
+            }
             $count  = $value['howmany'];
             $fsize = $minFontSize + $fontSizeRange * (log($count) - $minTagCount)/$tagCountRange;
             $tpl->SetBlock('tagcloud/tag');

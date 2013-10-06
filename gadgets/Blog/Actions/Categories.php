@@ -35,6 +35,7 @@ class Blog_Actions_Categories extends Blog_HTML
         }
 
         $catInfo = $cModel->GetCategory($cat);
+
         if (!Jaws_Error::IsError($catInfo) && isset($catInfo['id'])) {
             $name = $catInfo['name'];
             $tpl = $this->gadget->loadTemplate('CategoryPosts.html');
@@ -94,6 +95,9 @@ class Blog_Actions_Categories extends Blog_HTML
         $entries = $model->GetEntriesAsCategories();
         if (!Jaws_Error::IsError($entries)) {
             foreach ($entries as $e) {
+                if (!$this->gadget->GetPermission('CategoryAccess', $e['id'])) {
+                    break;
+                }
                 $tpl->SetBlock('categories_list/item');
                 $tpl->SetVariable('category', $e['name']);
                 $cid = empty($e['fast_url']) ? $e['id'] : $e['fast_url'];

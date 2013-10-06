@@ -61,6 +61,12 @@ class Blog_Actions_Post extends Blog_HTML
         }
 
         if (!Jaws_Error::IsError($entry) && !empty($entry)) {
+            foreach ($entry['categories'] as $cat) {
+                if (!$this->gadget->GetPermission('CategoryAccess', $cat['id'])) {
+                    return Jaws_HTTPError::Get(403);
+                }
+            }
+
             //increase entry's visits counter
             $res = $model->ViewEntry($entry['id']);
             $entry['clicks']++;
