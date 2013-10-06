@@ -141,7 +141,14 @@ class Users_Installer extends Jaws_Gadget_Installer
             $this->gadget->acl->delete('EditAccountPreferences');
         }
 
-        if (version_compare($old, '1.1.0', '<')) {
+        if (version_compare($old, '2.0.0', '<')) {
+            $variables = array();
+            $variables['logon_hours'] = str_pad('', 42, 'F');
+            $result = $this->installSchema('schema.xml', $variables, '1.0.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
             // Registry key
             $this->gadget->registry->insert('dashboard_building', 'false');
 
