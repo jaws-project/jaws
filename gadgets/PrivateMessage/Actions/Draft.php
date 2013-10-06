@@ -133,6 +133,14 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
 
         $draftTotal = $oModel->GetOutboxStatistics($user, array('published' => false));
 
+        $params = array();
+        if (!empty($post['term'])) {
+            $params['term'] = $post['term'];
+        }
+        if (!empty($post['page_item'])) {
+            $params['page_item'] = $post['page_item'];
+        }
+
         // page navigation
         $this->GetPagesNavigation(
             $tpl,
@@ -141,7 +149,8 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
             $limit,
             $draftTotal,
             _t('PRIVATEMESSAGE_MESSAGE_COUNT', $draftTotal),
-            'Draft'
+            'Draft',
+            $params
         );
 
         $tpl->ParseBlock('outbox');

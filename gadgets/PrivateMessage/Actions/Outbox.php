@@ -36,7 +36,6 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         $post = jaws()->request->fetch(array('page', 'replied', 'attachment', 'term', 'page_item'));
         $page = $post['page'];
 
-        $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
         $tpl->SetVariable('txt_term', $post['term']);
 
         $page = empty($page)? 1 : (int)$page;
@@ -51,14 +50,18 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         $tpl->SetVariable('opt_page_item_' . $limit, 'selected="selected"');
 
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_OUTBOX'));
-        $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
-        $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
-        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
-        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
         $tpl->SetVariable('lbl_attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));
         $tpl->SetVariable('filter', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
         $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
+
+        $tpl->SetBlock('outbox/replied_filter');
+        $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
+        $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
+        $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
+        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
+        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
+        $tpl->ParseBlock('outbox/replied_filter');
 
         $tpl->SetBlock('outbox/table_number');
         $tpl->ParseBlock('outbox/table_number');
@@ -126,11 +129,14 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         $outboxTotal = $oModel->GetOutboxStatistics($user, $post);
 
         $params = array();
-        if(!empty($post['replied'])) {
+        if (!empty($post['replied'])) {
             $params['replied'] = $post['replied'];
         }
-        if(!empty($post['term'])) {
+        if (!empty($post['term'])) {
             $params['term'] = $post['term'];
+        }
+        if (!empty($post['page_item'])) {
+            $params['page_item'] = $post['page_item'];
         }
 
         // page navigation

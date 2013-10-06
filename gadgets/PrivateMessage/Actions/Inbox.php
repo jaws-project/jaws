@@ -160,6 +160,9 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         if(!empty($post['term'])) {
             $params['term'] = $post['term'];
         }
+        if (!empty($post['page_item'])) {
+            $params['page_item'] = $post['page_item'];
+        }
 
         // page navigation
         $this->GetPagesNavigation(
