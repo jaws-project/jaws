@@ -70,6 +70,7 @@ define('_EN_GLOBAL_ALL', "All");
 define('_EN_GLOBAL_ALL_USERS', "All users");
 define('_EN_GLOBAL_ALL_GROUPS', "All groups");
 define('_EN_GLOBAL_HOME', "Home");
+define('_EN_GLOBAL_TAGS', "Tags");
 define('_EN_GLOBAL_IS_SPAM', 'Spam?');
 define('_EN_GLOBAL_LOADING', "Loading...");
 define('_EN_GLOBAL_MENU', "Menu");
@@ -264,9 +265,6 @@ define('_EN_GLOBAL_CAPTCHA_ERROR_NOT_ADDED', "There was a problem while saving t
 define('_EN_GLOBAL_CAPTCHA_ERROR_OLD_CAPTCHAS_NOT_DELETED', "There was a problem while deleting the old Captcha keys");
 define('_EN_GLOBAL_CAPTCHA_ERROR_FORCED_CAPTCHAS_NOT_DELETED', "There was a problem while forcing a delete of all Captcha keys");
 define('_EN_GLOBAL_CAPTCHA_ERROR_DOES_NOT_MATCH', "The captcha you wrote doesn't match with the image");
-
-/* Captcha */
-define('_EN_GLOBAL_TAGS', "Tags");
 
 /* HTTP Error Codes */
 define('_EN_GLOBAL_HTTP_ERROR_TITLE_301', "Moved permanently");
