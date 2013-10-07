@@ -48,6 +48,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         'EditUserPassword',
         'EditUserPersonal',
         'EditUserContacts',
+        'ManageUserGroups',
         'EditUserPreferences',
         'EditUserDashboard',
         'ManageAuthenticationMethod',

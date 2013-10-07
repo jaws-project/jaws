@@ -27,6 +27,7 @@ define('_EN_USERS_ACL_EDITUSEREMAIL', "Edit user's email by user");
 define('_EN_USERS_ACL_EDITUSERPASSWORD', "Edit user's password by user");
 define('_EN_USERS_ACL_EDITUSERPERSONAL', "Edit user's personal data by user");
 define('_EN_USERS_ACL_EDITUSERCONTACTS', "Edit user's contacts data by user");
+define('_EN_USERS_ACL_MANAGEUSERGROUPS', "Manage user's groups by user");
 define('_EN_USERS_ACL_EDITUSERPREFERENCES', "Edit user's preferences by user");
 define('_EN_USERS_ACL_MANAGEAUTHENTICATIONMETHOD', "Manage authentication method");
 
@@ -198,6 +199,7 @@ define('_EN_USERS_EDIT_PERSONAL', "Edit Personal");
 define('_EN_USERS_CONTROLPANEL', "Control Panel");
 define('_EN_USERS_EDIT_PREFERENCES', "Edit Preferences");
 define('_EN_USERS_EDIT_CONTACTS', "Edit Contacts");
+define('_EN_USERS_MANAGE_GROUPS', "Manage Groups");
 define('_EN_USERS_PREFERENCES_UPDATED', "Your preferences have been updated.");
 define('_EN_USERS_LOGINLINKS', "Login links");
 define('_EN_USERS_WELCOME', 'Welcome');

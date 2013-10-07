@@ -276,6 +276,14 @@ class Users_Actions_Login extends Users_HTML
                 $tpl->ParseBlock('UserLinks/contacts');
             }
 
+            // manage user groups
+            if ($this->gadget->GetPermission('ManageUserGroups')) {
+                $tpl->SetBlock('UserLinks/groups');
+                $tpl->SetVariable('user_groups', _t('USERS_MANAGE_GROUPS'));
+                $tpl->SetVariable('groups_url', $this->gadget->urlMap('Groups'));
+                $tpl->ParseBlock('UserLinks/groups');
+            }
+
             // ControlPanel
             if ($this->gadget->GetPermission('default_admin', '', false, 'ControlPanel')) {
                 $tpl->SetBlock('UserLinks/cpanel');

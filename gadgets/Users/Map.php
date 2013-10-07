@@ -21,6 +21,7 @@ $maps[] = array('Account', 'users/account');
 $maps[] = array('Personal', 'users/personal');
 $maps[] = array('Preferences', 'users/preferences');
 $maps[] = array('Contacts', 'users/contacts');
+$maps[] = array('Groups', 'users/groups');
 $maps[] = array('ForgotLogin', 'users/forget');
 $maps[] = array('ChangePassword', 'users/recover[/{key}]');
 $maps[] = array('ActivateUser', 'users/activate[/{key}]');

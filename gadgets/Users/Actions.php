@@ -110,3 +110,15 @@ $actions['UpdateContacts'] = array(
     'standalone' => true,
     'file' => 'Contacts',
 );
+$actions['Groups'] = array(
+    'normal' => true,
+    'file' => 'Groups',
+);
+$actions['DeleteGroups'] = array(
+    'normal' => true,
+    'file' => 'Groups',
+);
+$actions['EnableGroups'] = array(
+    'normal' => true,
+    'file' => 'Groups',
+);
