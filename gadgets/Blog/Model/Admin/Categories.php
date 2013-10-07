@@ -45,6 +45,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         }
 
         $this->gadget->acl->insert('CategoryAccess', $result, true);
+        $this->gadget->acl->insert('CategoryManage', $result, true);
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_CATEGORY_ADDED'), RESPONSE_NOTICE);
         return true;
     }
@@ -130,6 +131,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         }
 
         $this->gadget->acl->delete('CategoryAccess', $id);
+        $this->gadget->acl->delete('CategoryManage', $id);
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_CATEGORY_DELETED'), RESPONSE_NOTICE);
         return true;
     }

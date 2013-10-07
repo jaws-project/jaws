@@ -25,6 +25,7 @@ define('_EN_BLOG_ACL_MANAGETRACKBACKS', "Manage trackbacks");
 define('_EN_BLOG_ACL_MANAGECATEGORIES', "Manage categories");
 define('_EN_BLOG_ACL_SETTINGS', "Change settings");
 define('_EN_BLOG_ACL_CATEGORY_ACCESS', "Category Access: {0}");
+define('_EN_BLOG_ACL_CATEGORY_MANAGE', "Category Manage: {0}");
 
 /* Provided services */
 define('_EN_BLOG_XMLRPC', "Blog XML-RPC service, provides Blogger and MetaWeblog API support.");

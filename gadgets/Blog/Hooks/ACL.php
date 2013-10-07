@@ -27,6 +27,10 @@ class Blog_Hooks_ACL extends Jaws_Gadget_Hook
                     strtoupper('_'. $language. '_'. $this->gadget->name. '_ACL_CATEGORYACCESS_'. $item['id']),
                     _t('BLOG_ACL_CATEGORY_ACCESS', $item['name'])
                 );
+                define(
+                    strtoupper('_'. $language. '_'. $this->gadget->name. '_ACL_CATEGORYMANAGE_'. $item['id']),
+                    _t('BLOG_ACL_CATEGORY_MANAGE', $item['name'])
+                );
             }
         }
     }

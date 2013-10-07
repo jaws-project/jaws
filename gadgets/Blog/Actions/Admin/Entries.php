@@ -45,7 +45,9 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $categories = $model->GetCategories();
         if (!Jaws_Error::IsError($categories)) {
             foreach ($categories as $a) {
-                $catChecks->AddOption($a['name'], $a['id']);
+                if ($this->gadget->GetPermission('CategoryManage', $a['id'])) {
+                    $catChecks->AddOption($a['name'], $a['id']);
+                }
             }
         }
         $catDefault = explode(',', $this->gadget->registry->fetch('default_category'));
@@ -190,6 +192,12 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
             $pubdate = $post['pubdate'];
         }
 
+        foreach ($post['categories'] as $cat) {        
+            if (!$this->gadget->GetPermission('CategoryManage', $cat)) {
+                return Jaws_HTTPError::Get(403);
+            }
+        }
+
         $id = $pModel->NewEntry($GLOBALS['app']->Session->GetAttribute('user') , $post['categories'],
                                $post['title'], $content['summary_block'], $content['text_block'],
                                $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
@@ -272,12 +280,17 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $categories = $cModel->GetCategories();
         if (!Jaws_Error::IsError($categories)) {
             foreach ($categories as $a) {
-                $catChecks->AddOption($a['name'], $a['id']);
+                if ($this->gadget->GetPermission('CategoryManage', $a['id'])) {
+                    $catChecks->AddOption($a['name'], $a['id']);
+                }
             }
         }
         $catDefault = array();
         if (!Jaws_Error::isError($entry['categories'])) {
             foreach ($entry['categories'] as $cat) {
+                if (!$this->gadget->GetPermission('CategoryManage', $cat['id'])) {
+                    return Jaws_HTTPError::Get(403);
+                }
                 $catDefault[] = $cat['id'];
             }
         }
@@ -454,6 +467,12 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
             $pubdate = $post['pubdate'];
         }
 
+        foreach ($post['categories'] as $cat) {        
+            if (!$this->gadget->GetPermission('CategoryManage', $cat)) {
+                return Jaws_HTTPError::Get(403);
+            }
+        }
+
         $pModel->UpdateEntry($id, $post['categories'], $post['title'], $content['summary_block'], $content['text_block'],
                             $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
                             isset($post['allow_comments'][0]), $post['trackback_to'], $post['published'], $pubdate);
@@ -600,8 +619,10 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $categories = $cModel->GetCategories();
         if (!Jaws_Error::IsError($categories)) {
             foreach ($categories as $cat) {
-                $name = $cat['name'];
-                $catCombo->AddOption($name, $cat['id']);
+                if ($this->gadget->GetPermission('CategoryManage', $cat['id'])) {
+                    $name = $cat['name'];
+                    $catCombo->AddOption($name, $cat['id']);
+                }
             }
         }
 
