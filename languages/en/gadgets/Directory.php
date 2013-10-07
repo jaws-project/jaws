@@ -17,9 +17,11 @@ define('_EN_DIRECTORY_DESCRIPTION', "Total file management with sharing capabili
 define('_EN_DIRECTORY_ACL_DEFAULT', "Use Directory");
 define('_EN_DIRECTORY_ACL_SHAREFILE', "Share File");
 
-// Actions
+// Layout
 define('_EN_DIRECTORY_ACTIONS_DIRECTORY', "Directory");
-define('_EN_DIRECTORY_ACTIONS_DIRECTORY_DESC', "Display Directory.");
+define('_EN_DIRECTORY_ACTIONS_DIRECTORY_DESC', "Displays Directory management UI.");
+define('_EN_DIRECTORY_ACTIONS_STATISTICS', "Statistics");
+define('_EN_DIRECTORY_ACTIONS_STATISTICS_DESC', "Displays overal information about file and directories.");
 
 // Terms
 define('_EN_DIRECTORY_NEW_DIR', "New Folder");
@@ -46,6 +48,12 @@ define('_EN_DIRECTORY_FILE_PUBLIC_URL', "Public URL");
 define('_EN_DIRECTORY_FILTER_ALL_FILES', "All files & folders");
 define('_EN_DIRECTORY_FILTER_SHARED_FILES', "Shared files & folders only");
 define('_EN_DIRECTORY_FILTER_FOREIGN_FILES', "Shares from other users only");
+define('_EN_DIRECTORY_STATISTICS', "Statistics");
+define('_EN_DIRECTORY_STAT_FILES', "Number of files");
+define('_EN_DIRECTORY_STAT_DIRS', "Number of directories");
+define('_EN_DIRECTORY_STAT_SHARED', "Number of shared files/directories");
+define('_EN_DIRECTORY_STAT_FOREIGN', "Number of foreign files/directories");
+define('_EN_DIRECTORY_STAT_PUBLIC', "Number of public files/directories");
 
 // Sharing
 define('_EN_DIRECTORY_SHARE', "Share");

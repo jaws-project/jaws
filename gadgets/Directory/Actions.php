@@ -16,6 +16,10 @@ $actions['Directory'] = array(
     'layout' => true,
     'file' => 'Directory'
 );
+$actions['Statistics'] = array(
+    'layout' => true,
+    'file' => 'Statistics'
+);
 $actions['GetFiles'] = array(
     'standalone' => true,
     'file' => 'Directory'
