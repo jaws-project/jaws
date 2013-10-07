@@ -70,4 +70,32 @@ class Users_HTML extends Jaws_Gadget_HTML
         return $tpl->Get();
     }
 
+    /**
+     * Displays menu bar according to selected action
+     *
+     * @access  public
+     * @param   string  $action_selected    selected action
+     * @return  string XHTML template content
+     */
+    function MenuBar($action_selected)
+    {
+        $actions = array('AddGroup');
+        if (!in_array($action_selected, $actions)) {
+            $action_selected = 'AddGroup';
+        }
+
+        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
+        $menubar = new Jaws_Widgets_Menubar();
+
+
+        $menubar->AddOption('AddGroup',_t('USERS_ADD_GROUP'),
+            $this->gadget->urlMap('AddGroupUI'), STOCK_ADD);
+
+        $menubar->AddOption('Groups',_t('USERS_MANAGE_GROUPS'),
+            $this->gadget->urlMap('Groups'), 'gadgets/Users/images/groups_mini.png');
+
+        $menubar->Activate($action_selected);
+
+        return $menubar->Get();
+    }
 }

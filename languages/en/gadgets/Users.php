@@ -189,6 +189,12 @@ define('_EN_USERS_DASHBOARD', "Dashboard");
 define('_EN_USERS_DASHBOARD_GLOBAL', "Global Website");
 define('_EN_USERS_DASHBOARD_USER', "User's Dashboard");
 
+/* Manage User's group */
+define('_EN_USERS_GROUP_DELETED', "Group(s) has been deleted.");
+define('_EN_USERS_GROUP_STATUS_CHANGED', "Group(s) status has been changed.");
+define('_EN_USERS_CANT_CHANGE_GROUPS_STATUS', "There was a problem changing group status.");
+define('_EN_USERS_ADD_GROUP', "Add group");
+
 /* MyAccount */
 define('_EN_USERS_MYACCOUNT_UPDATED', "Your profile has been updated.");
 define('_EN_USERS_MYACCOUNT_PASSWORDS_DONT_MATCH', "Your password and password verification do not match.");

@@ -122,3 +122,19 @@ $actions['EnableGroups'] = array(
     'normal' => true,
     'file' => 'Groups',
 );
+$actions['AddGroupUI'] = array(
+    'normal' => true,
+    'file' => 'Groups',
+);
+$actions['AddGroup'] = array(
+    'normal' => true,
+    'file' => 'Groups',
+);
+$actions['ManageGroup'] = array(
+    'normal' => true,
+    'file' => 'Groups',
+);
+$actions['UpdateGroup'] = array(
+    'normal' => true,
+    'file' => 'Groups',
+);
