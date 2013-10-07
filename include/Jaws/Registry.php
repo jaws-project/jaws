@@ -36,7 +36,11 @@ class Jaws_Registry
     {
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         $result = $tblReg->select('component', 'key_name', 'key_value')
-            ->where('key_name', 'version')->or()->where('component', '')
+            ->where('user', 0)
+            ->and()
+            ->openWhere('key_name', 'version')
+            ->or()
+            ->closeWhere('component', '')
             ->fetchAll('', JAWS_ERROR_NOTICE);
         if (Jaws_Error::IsError($result)) {
             if ($result->getCode() == MDB2_ERROR_NOSUCHFIELD) {
@@ -70,7 +74,10 @@ class Jaws_Registry
         if (!@array_key_exists($key_name, $this->_Registry[$component])) {
             $tblReg = Jaws_ORM::getInstance()->table('registry');
             $value  = $tblReg->select('key_value')
-                ->where('component', $component)->and()
+                ->where('user', 0)
+                ->and()
+                ->where('component', $component)
+                ->and()
                 ->where('key_name', $key_name)
                 ->fetchOne();
             if (Jaws_Error::IsError($value)) {
@@ -94,7 +101,10 @@ class Jaws_Registry
     function fetchAll($component = '', $pattern = '')
     {
         $tblReg = Jaws_ORM::getInstance()->table('registry');
-        $tblReg->select('key_name', 'key_value')->where('component', $component);
+        $tblReg->select('key_name', 'key_value')
+            ->where('component', $component)
+            ->and()
+            ->where('user', 0);
         if (!empty($pattern)) {
             $tblReg->and()->where('key_name', $pattern, 'like');
         }
@@ -121,6 +131,7 @@ class Jaws_Registry
     {
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         $tblReg->insert(array(
+            'user'       => 0,
             'component'  => $component,
             'key_name'   => $key_name,
             'key_value'  => $key_value,
@@ -140,15 +151,17 @@ class Jaws_Registry
      * @access  public
      * @param   array   $keys       Pairs of keys/values
      * @param   string  $component  Component name
+     * @param   int     $user       User ID
      * @return  bool    True is set otherwise False
      */
-    function insertAll($keys, $component = '')
+    function insertAll($keys, $component = '', $user = 0)
     {
         if (empty($keys)) {
             return true;
         }
 
         $params = array();
+        $params['user']      = (int)$user;
         $params['component'] = $component;
         $params['now']       = $GLOBALS['db']->Date();
 
@@ -164,22 +177,22 @@ class Jaws_Registry
             switch ($dbDriver) {
                 case 'oci8':
                     $sqls .= (empty($sqls)? '' : "\n UNION ALL").
-                             "\n SELECT {component}, {name_$ndx}, {value_$ndx}, {now} FROM DUAL";
+                             "\n SELECT {user}, {component}, {name_$ndx}, {value_$ndx}, {now} FROM DUAL";
                     break;
                 case 'ibase':
-                    $sqls[] = " VALUES ({component}, {name_$ndx}, {value_$ndx}, {now})";
+                    $sqls[] = " VALUES ({user}, {component}, {name_$ndx}, {value_$ndx}, {now})";
                     break;
                 case 'pgsql':
                     if (version_compare($dbVersion, '8.2.0', '>=')) {
                         $sqls .= (empty($sqls)? "\n VALUES" : ",").
-                                 "\n ({component}, {name_$ndx}, {value_$ndx}, {now})";
+                                 "\n ({user}, {component}, {name_$ndx}, {value_$ndx}, {now})";
                     } else {
-                        $sqls[] = " VALUES ({component}, {name_$ndx}, {value_$ndx}, {now})";
+                        $sqls[] = " VALUES ({user}, {component}, {name_$ndx}, {value_$ndx}, {now})";
                     }
                     break;
                 default:
                     $sqls .= (empty($sqls)? '' : "\n UNION ALL").
-                             "\n SELECT {component}, {name_$ndx}, {value_$ndx}, {now}";
+                             "\n SELECT {user}, {component}, {name_$ndx}, {value_$ndx}, {now}";
                     break;
             }
 
@@ -190,7 +203,7 @@ class Jaws_Registry
             foreach ($sqls as $sql) {
                 $qsql = '
                     INSERT INTO [[registry]]
-                        ([component], [key_name], [key_value], [updatetime])
+                        ([user], [component], [key_name], [key_value], [updatetime])
                     '. $sql;
                 $result = $GLOBALS['db']->query($qsql, $params);
                 if (Jaws_Error::IsError($result)) {
@@ -200,7 +213,7 @@ class Jaws_Registry
         } else {
             $qsql = '
                 INSERT INTO [[registry]]
-                    ([component], [key_name], [key_value], [updatetime])
+                    ([user], [component], [key_name], [key_value], [updatetime])
                 '. $sqls;
             $result = $GLOBALS['db']->query($qsql, $params);
             if (Jaws_Error::IsError($result)) {
@@ -223,8 +236,12 @@ class Jaws_Registry
     function update($key_name, $key_value, $component = '')
     {
         $tblReg = Jaws_ORM::getInstance()->table('registry');
-        $tblReg->update(array('key_value' => $key_value));
-        $tblReg->where('component', $component)->and()->where('key_name', $key_name);
+        $tblReg->update(array('key_value' => $key_value))
+            ->where('user', 0)
+            ->and()
+            ->where('component', $component)
+            ->and()
+            ->where('key_name', $key_name);
         $result = $tblReg->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
@@ -258,6 +275,25 @@ class Jaws_Registry
             }
         }
 
+        return !Jaws_Error::IsError($result);
+    }
+
+    /**
+     * Delete all registry keys related to the user
+     *
+     * @access  public
+     * @param   int     $user       User ID
+     * @param   string  $component  Component name
+     * @return  bool    True if success otherwise False
+     */
+    function deleteByUser($user, $component = '')
+    {
+        $tblACL = Jaws_ORM::getInstance()->table('registry');
+        $tblACL->delete()->where('user', (int)$user);
+        if (!empty($component)) {
+            $tblACL->and()->where('component', $component);
+        }
+        $result = $tblACL->exec();
         return !Jaws_Error::IsError($result);
     }
 
