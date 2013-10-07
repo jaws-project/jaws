@@ -27,6 +27,10 @@ class Forums_Hooks_ACL extends Jaws_Gadget_Hook
                     strtoupper('_'. $language. '_'. $this->gadget->name. '_ACL_FORUMACCESS_'. $item['id']),
                     _t('FORUMS_ACL_FORUM_ACCESS', $item['title'])
                 );
+                define(
+                    strtoupper('_'. $language. '_'. $this->gadget->name. '_ACL_FORUMMANAGE_'. $item['id']),
+                    _t('FORUMS_ACL_FORUM_MANAGE', $item['title'])
+                );
             }
         }
     }

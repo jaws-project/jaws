@@ -66,6 +66,7 @@ class Forums_Actions_Posts extends Forums_HTML
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $usrModel = new Jaws_User;
         $startPostNumber = $limit * ($page - 1);
+        $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
         foreach ($posts as $pnum => $post) {
             $tpl->SetBlock('posts/post');
             $startPostNumber ++;
@@ -156,7 +157,9 @@ class Forums_Actions_Posts extends Forums_HTML
 
             // reply: check permission for add post
             if ($this->gadget->GetPermission('AddPost') &&
-                (!$topic['locked'] || $this->gadget->GetPermission('AddPostToLockedTopic'))
+                (!$topic['locked'] || 
+                ($forumManage && 
+                $this->gadget->GetPermission('AddPostToLockedTopic')))
             ) {
                 $tpl->SetBlock('posts/post/action');
                 $tpl->SetVariable('action_lbl',_t('FORUMS_POSTS_REPLY'));
@@ -175,10 +178,10 @@ class Forums_Actions_Posts extends Forums_HTML
                 // check permission for edit topic
                 if ($this->gadget->GetPermission('EditTopic') &&
                     ($post['uid'] == (int)$GLOBALS['app']->Session->GetAttribute('user') ||
-                     $this->gadget->GetPermission('EditOthersTopic')) &&
-                    (!$topic['locked'] || $this->gadget->GetPermission('EditLockedTopic')) &&
+                     ($this->gadget->GetPermission('EditOthersTopic') && $forumManage)) &&
+                    (!$topic['locked'] || ($this->gadget->GetPermission('EditLockedTopic') && $forumManage)) &&
                     ((time() - $post['insert_time']) <= $edit_max_limit_time ||
-                     $this->gadget->GetPermission('EditOutdatedTopic'))
+                     ($this->gadget->GetPermission('EditOutdatedTopic') && $forumManage))
                 ) {
                     $tpl->SetBlock('posts/post/action');
                     $tpl->SetVariable('action_lbl',_t('FORUMS_TOPICS_EDIT'));
@@ -196,9 +199,9 @@ class Forums_Actions_Posts extends Forums_HTML
                 // check permission for delete topic
                 if ($this->gadget->GetPermission('DeleteTopic') &&
                     ($post['uid'] == (int)$GLOBALS['app']->Session->GetAttribute('user') ||
-                     $this->gadget->GetPermission('DeleteOthersTopic')) &&
+                     ($this->gadget->GetPermission('DeleteOthersTopic') && $forumManage)) &&
                     ((time() - $post['insert_time']) <= $edit_min_limit_time ||
-                     $this->gadget->GetPermission('DeleteOutdatedTopic'))
+                     ($this->gadget->GetPermission('DeleteOutdatedTopic') && $forumManage))
                 ) {
                     $tpl->SetBlock('posts/post/action');
                     $tpl->SetVariable('action_lbl',_t('FORUMS_TOPICS_DELETE'));
@@ -216,10 +219,10 @@ class Forums_Actions_Posts extends Forums_HTML
                 // check permission for edit post
                 if ($this->gadget->GetPermission('EditPost') &&
                     ($post['uid'] == (int)$GLOBALS['app']->Session->GetAttribute('user') ||
-                     $this->gadget->GetPermission('EditOthersPost')) &&
-                    (!$topic['locked'] || $this->gadget->GetPermission('EditPostInLockedTopic')) &&
+                     ($this->gadget->GetPermission('EditOthersPost') && $forumManage)) &&
+                    (!$topic['locked'] || ($this->gadget->GetPermission('EditPostInLockedTopic') && $forumManage)) &&
                     ((time() - $post['insert_time']) <= $edit_max_limit_time ||
-                     $this->gadget->GetPermission('EditOutdatedPost'))
+                     ($this->gadget->GetPermission('EditOutdatedPost') && $forumManage))
                 ) {
                     $tpl->SetBlock('posts/post/action');
                     $tpl->SetVariable('action_lbl',_t('FORUMS_POSTS_EDIT'));
@@ -237,10 +240,10 @@ class Forums_Actions_Posts extends Forums_HTML
                 // check permission for delete post
                 if ($this->gadget->GetPermission('DeletePost') &&
                     ($post['uid'] == (int)$GLOBALS['app']->Session->GetAttribute('user') ||
-                     $this->gadget->GetPermission('DeleteOthersPost')) &&
-                    (!$topic['locked'] || $this->gadget->GetPermission('DeletePostInLockedTopic')) &&
+                     ($this->gadget->GetPermission('DeleteOthersPost') && $forumManage)) &&
+                    (!$topic['locked'] || ($this->gadget->GetPermission('DeletePostInLockedTopic') && $forumManage)) &&
                     ((time() - $post['insert_time']) <= $edit_min_limit_time ||
-                     $this->gadget->GetPermission('DeleteOutdatedPost'))
+                     ($this->gadget->GetPermission('DeleteOutdatedPost') && $forumManage))
                 ){
                     $tpl->SetBlock('posts/post/action');
                     $tpl->SetVariable('action_lbl',_t('FORUMS_POSTS_DELETE'));
@@ -273,7 +276,9 @@ class Forums_Actions_Posts extends Forums_HTML
 
         // check permission to add new post
         if ($this->gadget->GetPermission('AddPost') &&
-            (!$topic['locked'] || $this->gadget->GetPermission('AddPostToLockedTopic'))
+            (!$topic['locked'] || 
+            ($forumManage && 
+            $this->gadget->GetPermission('AddPostToLockedTopic')))
         ){
             $tpl->SetBlock('posts/action');
             $tpl->SetVariable('action_lbl', _t('FORUMS_POSTS_NEW'));
@@ -285,7 +290,7 @@ class Forums_Actions_Posts extends Forums_HTML
         }
 
         // check permission to lock/unlock topic
-        if ($this->gadget->GetPermission('LockTopic')){
+        if ($this->gadget->GetPermission('LockTopic') && $forumManage){
             $tpl->SetBlock('posts/action');
             $tpl->SetVariable(
                 'action_lbl',
@@ -299,7 +304,7 @@ class Forums_Actions_Posts extends Forums_HTML
         }
 
         // check permission to publish/draft topic
-        if ($this->gadget->GetPermission('PublishTopic')){
+        if ($this->gadget->GetPermission('PublishTopic') && $forumManage){
             $tpl->SetBlock('posts/action');
             $tpl->SetVariable(
                 'action_lbl',
@@ -614,12 +619,13 @@ class Forums_Actions_Posts extends Forums_HTML
             }
 
             // check edit permissions
+            $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
             $update_uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
             if ((!$this->gadget->GetPermission('EditPost')) ||
-                ($oldPost['uid'] != $update_uid && !$this->gadget->GetPermission('EditOthersPost')) ||
-                ($topic['locked'] && !$this->gadget->GetPermission('EditPostInLockedTopic')) ||
+                ($oldPost['uid'] != $update_uid && !($this->gadget->GetPermission('EditOthersPost') && $forumManage)) ||
+                ($topic['locked'] && !($this->gadget->GetPermission('EditPostInLockedTopic') && $forumManage)) ||
                 ((time() - $oldPost['insert_time']) > $edit_max_limit_time &&
-                 !$this->gadget->GetPermission('EditOutdatedPost'))
+                 !($this->gadget->GetPermission('EditOutdatedPost') && $forumManage))
             ) {
                 return Jaws_HTTPError::Get(403);
             }
@@ -722,12 +728,13 @@ class Forums_Actions_Posts extends Forums_HTML
                 $delete_limit_time = (int)$this->gadget->registry->fetch('edit_min_limit_time');
 
                 // check delete permissions
+                $forumManage = $this->gadget->GetPermission('ForumManage', $post['fid']);
                 if ((!$this->gadget->GetPermission('DeletePost')) ||
                     ($post['uid'] != (int)$GLOBALS['app']->Session->GetAttribute('user') &&
-                     !$this->gadget->GetPermission('DeleteOthersPost')) ||
-                    ($post['topic_locked'] && !$this->gadget->GetPermission('DeletePostInLockedTopic')) ||
+                     !($this->gadget->GetPermission('DeleteOthersPost') && $forumManage)) ||
+                    ($post['topic_locked'] && !($this->gadget->GetPermission('DeletePostInLockedTopic') && $forumManage)) ||
                     ((time() - $post['insert_time']) > $delete_limit_time &&
-                     !$this->gadget->GetPermission('DeleteOutdatedPost'))
+                     !($this->gadget->GetPermission('DeleteOutdatedPost') && $forumManage))
                 ) {
                     return Jaws_HTTPError::Get(403);
                 }

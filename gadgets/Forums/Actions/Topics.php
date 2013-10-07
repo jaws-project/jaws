@@ -41,7 +41,8 @@ class Forums_Actions_Topics extends Forums_HTML
         if (empty($uid)) {
             $published = true;
         } else {
-            if ($this->gadget->GetPermission('EditOthersTopic')) {
+            if ($this->gadget->GetPermission('EditOthersTopic') &&
+                $this->gadget->GetPermission('ForumManage', $forum['id'])) {
                 $uid = null;
             }
             if (!empty($rqst['status'])) {
@@ -265,7 +266,8 @@ class Forums_Actions_Topics extends Forums_HTML
         }
 
         // move topic
-        if (!empty($topic['id']) && $this->gadget->GetPermission('MoveTopic')) {
+        if (!empty($topic['id']) && $this->gadget->GetPermission('MoveTopic') &&
+           $this->gadget->GetPermission('ForumManage', $forum['id'])) {
             $tpl->SetBlock('topic/target');
             $topic['target'] = isset($topic['target'])? $topic['target'] : $topic['fid'];
             $tpl->SetVariable('lbl_target', _t('FORUMS_TOPICS_MOVEDTO'));
@@ -298,7 +300,8 @@ class Forums_Actions_Topics extends Forums_HTML
         $tpl->SetVariable('message', $message->Get());
 
         // status (published or draft)
-        if ($this->gadget->GetPermission('PublishTopic')) {
+        if ($this->gadget->GetPermission('PublishTopic') && 
+           $this->gadget->GetPermission('ForumManage', $forum['id'])) {
             $tpl->SetBlock('topic/status');
             $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
             $tpl->SetVariable('lbl_draft', _t('GLOBAL_DRAFT'));
@@ -459,13 +462,14 @@ class Forums_Actions_Topics extends Forums_HTML
             }
 
             // check permission for edit topic
+            $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
             $update_uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
             if ((!$this->gadget->GetPermission('EditTopic')) ||
                 ($oldTopic['first_post_uid'] != $update_uid &&
-                 !$this->gadget->GetPermission('EditOthersTopic')) ||
-                ($oldTopic['locked'] && !$this->gadget->GetPermission('EditLockedTopic')) ||
+                 !($this->gadget->GetPermission('EditOthersTopic') && $forumManage)) ||
+                ($oldTopic['locked'] && !($this->gadget->GetPermission('EditLockedTopic') && $forumManage)) ||
                 ((time() - $oldTopic['first_post_time']) > $edit_max_limit_time &&
-                 !$this->gadget->GetPermission('EditOutdatedTopic'))
+                 !($this->gadget->GetPermission('EditOutdatedTopic') && $forumManage))
             ) {
                 return Jaws_HTTPError::Get(403);
             }
@@ -477,7 +481,7 @@ class Forums_Actions_Topics extends Forums_HTML
             }
 
             // set target topic for move
-            if (!$this->gadget->GetPermission('MoveTopic') || empty($topic['target'])) {
+            if (!($this->gadget->GetPermission('MoveTopic') && $forumManage) || empty($topic['target'])) {
                 $topic['target'] = $topic['fid'];
             }
 
@@ -577,11 +581,12 @@ class Forums_Actions_Topics extends Forums_HTML
                 $delete_limit_time = (int)$this->gadget->registry->fetch('edit_min_limit_time');
 
                 // check delete permissions
+                $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
                 if ((!$this->gadget->GetPermission('DeleteTopic')) ||
                     ($topic['first_post_uid'] != (int)$GLOBALS['app']->Session->GetAttribute('user') &&
-                     !$this->gadget->GetPermission('DeleteOthersTopic')) ||
+                     !($this->gadget->GetPermission('DeleteOthersTopic') && $forumManage)) ||
                     ((time() - $topic['first_post_time']) > $delete_limit_time &&
-                     !$this->gadget->GetPermission('DeleteOutdatedTopic'))
+                     !($this->gadget->GetPermission('DeleteOutdatedTopic') && $forumManage))
                 ) {
                     return Jaws_HTTPError::Get(403);
                 }
@@ -689,6 +694,11 @@ class Forums_Actions_Topics extends Forums_HTML
             Jaws_Header::Referrer();
         }
 
+        if (!($this->gadget->GetPermission('LockTopic') &&
+           $this->gadget->GetPermission('ForumManage', $topic['fid']))){
+            return Jaws_HTTPError::Get(403);
+        }
+
         $result = $tModel->LockTopic($topic['id'], !$topic['locked']);
         if (Jaws_Error::IsError($result)) {
             // do nothing
@@ -739,7 +749,8 @@ class Forums_Actions_Topics extends Forums_HTML
 
         // check user permissions
         $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        if(!$this->gadget->GetPermission('EditOthersTopic') && ($uid!=$topic['first_post_uid'])) {
+        $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
+        if(!($this->gadget->GetPermission('EditOthersTopic') && $forumManage) && ($uid!=$topic['first_post_uid'])) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }

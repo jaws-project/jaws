@@ -49,6 +49,7 @@ define('_EN_FORUMS_ACL_DELETEOTHERSPOST', "Delete others post");
 define('_EN_FORUMS_ACL_DELETEOUTDATEDPOST', "Delete outdated post");
 define('_EN_FORUMS_ACL_DELETEPOSTINLOCKEDTOPIC', "Delete post in locked topic");
 define('_EN_FORUMS_ACL_FORUM_ACCESS', "Access To Forum: {0}");
+define('_EN_FORUMS_ACL_FORUM_MANAGE', "Manage Forum: {0}");
 
 /* Commons */
 define('_EN_FORUMS_GROUP', "Group");
