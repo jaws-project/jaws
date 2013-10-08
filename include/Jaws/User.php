@@ -285,7 +285,7 @@ class Jaws_User
      *
      * @access  public
      * @param   mixed   $group  The group ID/Name
-     * @param   int     $owner  The owner of group 
+     * @param   int     $owner  The owner of group
      * @return  mixed   Returns an array with the info of the group and false on error
      */
     function GetGroup($group, $owner = 0)
@@ -989,13 +989,17 @@ class Jaws_User
      */
     function DeleteUser($id)
     {
-        $user = Jaws_User::GetUser((int)$id);
-        if (Jaws_Error::IsError($user) || empty($user)) {
+        $objORM = Jaws_ORM::getInstance();
+
+        //Start Transaction
+        $objORM->beginTransaction();
+
+        $result = $objORM->delete()->table('users')->where('id', $id)->exec();
+        if (Jaws_Error::IsError($result)) {
             return false;
         }
 
-        $objORM = Jaws_ORM::getInstance();
-        $result = $objORM->delete()->table('users')->where('id', $id)->exec();
+        $result = $objORM->delete()->table('groups')->where('owner', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -1005,7 +1009,6 @@ class Jaws_User
             return false;
         }
 
-        $GLOBALS['app']->loadObject('Jaws_ACL', 'ACL');
         $GLOBALS['app']->ACL->deleteByUser($id);
         if (isset($GLOBALS['app']->Session)) {
             $res = $GLOBALS['app']->Session->DeleteUserSessions($id);
@@ -1017,6 +1020,9 @@ class Jaws_User
             return false;
         }
 
+        //Commit Transaction
+        $objORM->commit();
+
         return true;
     }
 
@@ -1025,15 +1031,24 @@ class Jaws_User
      *
      * @access  public
      * @param   int     $id     Group's ID
+     * @param   int     $owner  The owner of group
      * @return  bool    Returns true if group was successfully deleted, false if not
      */
-    function DeleteGroup($id)
+    function DeleteGroup($id, $owner = 0)
     {
         $objORM = Jaws_ORM::getInstance();
+
+        //Start Transaction
+        $objORM->beginTransaction();
+
         $objORM->delete()->table('groups');
-        $objORM->where('id', $id)->and()->where('removable', true);
-        $result = $objORM->exec();
-        if (Jaws_Error::IsError($result)) {
+        $result = $objORM->where('id', $id)
+            ->and()
+            ->where('removable', true)
+            ->and()
+            ->where('owner', (int)$owner)
+            ->exec();
+        if (Jaws_Error::IsError($result) || empty($result)) {
             return false;
         }
 
@@ -1043,12 +1058,14 @@ class Jaws_User
         }
 
         $GLOBALS['app']->ACL->deleteByGroup($id);
-
         // Let everyone know a group has been deleted
         $res = $GLOBALS['app']->Listener->Shout('DeleteGroup', $id);
         if (Jaws_Error::IsError($res)) {
             return false;
         }
+
+        //Commit Transaction
+        $objORM->commit();
 
         return true;
     }
@@ -1059,12 +1076,24 @@ class Jaws_User
      * @access  public
      * @param   int     $user   User's ID
      * @param   int     $group  Group's ID
+     * @param   int     $owner  The owner of group
      * @return  bool    Returns true if user was sucessfully added to the group, false if not
      */
-    function AddUserToGroup($user, $group)
+    function AddUserToGroup($user, $group, $owner = 0)
     {
-        $usrgrpTable = Jaws_ORM::getInstance()->table('users_groups');
-        return $usrgrpTable->insert(array('user_id' => $user, 'group_id' => $group))->exec();
+        $objORM = Jaws_ORM::getInstance();
+        $result = $objORM->table('groups')
+            ->select('id')
+            ->where('owner', (int)$owner)
+            ->and()
+            ->where('id', $group)
+            ->fetchOne();
+        if (Jaws_Error::IsError($result) || empty($result)) {
+            return $result;
+        }
+
+        $objORM->table('users_groups');
+        return $objORM->insert(array('user_id' => $user, 'group_id' => $group))->exec();
     }
 
     /**
@@ -1073,14 +1102,24 @@ class Jaws_User
      * @access  public
      * @param   int     $user   User's ID
      * @param   int     $group  Group's ID
+     * @param   int     $owner  The owner of group
      * @return  bool    Returns true if user was sucessfully deleted from a group, false if not
      */
-    function DeleteUserFromGroup($user, $group)
+    function DeleteUserFromGroup($user, $group, $owner = 0)
     {
-        $usrgrpTable = Jaws_ORM::getInstance()->table('users_groups');
-        $usrgrpTable->delete();
-        $usrgrpTable->where('user_id', $user)->and()->where('group_id', $group);
-        return $usrgrpTable->exec();
+        $objORM = Jaws_ORM::getInstance();
+        $result = $objORM->table('groups')
+            ->select('id')
+            ->where('owner', (int)$owner)
+            ->and()
+            ->where('id', $group)
+            ->fetchOne();
+        if (Jaws_Error::IsError($result) || empty($result)) {
+            return $result;
+        }
+
+        $objORM->table('users_groups')->delete();
+        return $objORM->where('user_id', $user)->and()->where('group_id', $group)->exec();
     }
 
     /**
