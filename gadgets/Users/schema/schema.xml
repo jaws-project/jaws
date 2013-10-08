@@ -316,7 +316,7 @@
         </field>
 
         <field>
-            <name>user</name>
+            <name>owner</name>
             <type>integer</type>
             <default>0</default>
         </field>
