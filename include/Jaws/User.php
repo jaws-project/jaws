@@ -285,16 +285,18 @@ class Jaws_User
      *
      * @access  public
      * @param   mixed   $group  The group ID/Name
+     * @param   int     $owner  The owner of group 
      * @return  mixed   Returns an array with the info of the group and false on error
      */
-    function GetGroup($group)
+    function GetGroup($group, $owner = 0)
     {
         $groupsTable = Jaws_ORM::getInstance()->table('groups');
         $groupsTable->select('id:integer', 'name', 'title', 'description', 'enabled:boolean');
+        $groupsTable->where('owner', (int)$owner);
         if (is_int($group)) {
-            $groupsTable->where('id', $group);
+            $groupsTable->and()->where('id', $group);
         } else {
-            $groupsTable->where('lower(name)', Jaws_UTF8::strtolower($group));
+            $groupsTable->and()->where('lower(name)', Jaws_UTF8::strtolower($group));
         }
 
         return $groupsTable->fetchRow();
@@ -332,7 +334,7 @@ class Jaws_User
         );
         if ($group !== false) {
             $usersTable->join('users_groups', 'users_groups.user_id', 'users.id');
-            $usersTable->where('group_id', $group);
+            $usersTable->where('group_id', (int)$group);
         }
 
         if (!is_null($superadmin)) {
@@ -371,7 +373,7 @@ class Jaws_User
         $usersTable->select('count(users.id):integer');
         if ($group !== false) {
             $usersTable->join('users_groups', 'users_groups.user_id', 'users.id');
-            $usersTable->where('group_id', $group);
+            $usersTable->where('group_id', (int)$group);
         }
 
         if (!is_null($superadmin)) {
@@ -401,13 +403,14 @@ class Jaws_User
      * Get a list of all groups
      *
      * @access  public
+     * @param   int     $owner      The owner of group 
      * @param   bool    $enabled    enabled groups?(null for both)
      * @param   string  $orderBy    field to order by
      * @param   int     $limit
      * @param   int     $offset
      * @return  array   Returns an array of the available groups and false on error
      */
-    function GetGroups($enabled = null, $orderBy = 'name', $limit = 0, $offset = null)
+    function GetGroups($owner = 0, $enabled = null, $orderBy = 'name', $limit = 0, $offset = null)
     {
         $fields  = array('id', 'name', 'title');
         if (!in_array($orderBy, $fields)) {
@@ -417,8 +420,9 @@ class Jaws_User
 
         $groupsTable = Jaws_ORM::getInstance()->table('groups');
         $groupsTable->select('id:integer', 'name', 'title', 'description', 'enabled:boolean');
+        $groupsTable->where('owner', (int)$owner);
         if (!is_null($enabled)) {
-            $groupsTable->where('enabled', (bool)$enabled);
+            $groupsTable->and()->where('enabled', (bool)$enabled);
         }
         $groupsTable->limit($limit, $offset)->orderBy($orderBy);
         return $groupsTable->fetchAll();
@@ -428,15 +432,17 @@ class Jaws_User
      * Get count of groups
      *
      * @access  public
+     * @param   int     $owner      The owner of group 
      * @param   bool    $enabled    enabled groups?(null for both)
      * @return  int     Returns groups count
      */
-    function GetGroupsCount($enabled = null)
+    function GetGroupsCount($owner = 0, $enabled = null)
     {
         $groupsTable = Jaws_ORM::getInstance()->table('groups');
         $groupsTable->select('count(id):integer');
+        $groupsTable->where('owner', (int)$owner);
         if (!is_null($enabled)) {
-            $groupsTable->where('enabled', (bool)$enabled);
+            $groupsTable->and()->where('enabled', (bool)$enabled);
         }
         $result = $groupsTable->fetchOne();
         if (Jaws_Error::IsError($result)) {
@@ -450,19 +456,21 @@ class Jaws_User
      * Get a list of groups where a user is
      *
      * @access  public
-     * @param   mixed  $user  Username or UserID
-     * @return  array  Returns an array of the available groups and false on error
+     * @param   mixed   $user   Username or UserID
+     * @param   int     $owner  Owner ID
+     * @return  array   Returns an array of the available groups and false on error
      */
-    function GetGroupsOfUser($user)
+    function GetGroupsOfUser($user, $owner = 0)
     {
         $ugroupsTable = Jaws_ORM::getInstance()->table('users_groups');
         $ugroupsTable->select('groups.id:integer', 'groups.name');
         $ugroupsTable->join('users',  'users.id',  'users_groups.user_id');
         $ugroupsTable->join('groups', 'groups.id', 'users_groups.group_id');
+        $ugroupsTable->where('groups.owner', (int)$owner);
         if (is_int($user)) {
-            $ugroupsTable->where('users.id', $user);
+            $ugroupsTable->and()->where('users.id', $user);
         } else {
-            $ugroupsTable->where('users.username', $user);
+            $ugroupsTable->and()->where('users.username', $user);
         }
 
         $result = $ugroupsTable->fetchAll();
@@ -863,9 +871,10 @@ class Jaws_User
      *
      * @access  public
      * @param   array   $gData  Group information data
+     * @param   int     $owner  The owner of group 
      * @return  bool    Returns true if group  was sucessfully added, false if not
      */
-    function AddGroup($gData)
+    function AddGroup($gData, $owner = 0)
     {
         // name
         $gData['name'] = trim($gData['name'], '-_.@');
@@ -876,7 +885,8 @@ class Jaws_User
                 JAWS_ERROR_NOTICE
             );
         }
-        $gData['name'] = strtolower($gData['name']);
+        $gData['name']  = strtolower($gData['name']);
+        $gData['owner'] = (int)$owner;
 
         // title
         $gData['title'] = $GLOBALS['app']->UTF8->trim($gData['title']);
@@ -912,10 +922,12 @@ class Jaws_User
      * Update the info of a group
      *
      * @access  public
+     * @param   int     $id     Group ID
      * @param   array   $gData  Group information data
+     * @param   int     $owner  The owner of group 
      * @return  bool    Returns true if group was sucessfully updated, false if not
      */
-    function UpdateGroup($id, $gData)
+    function UpdateGroup($id, $gData, $owner = 0)
     {
         // unset invalid keys
         $invalids = array_diff(array_keys($gData), array('name', 'title', 'description', 'enabled'));
@@ -924,6 +936,7 @@ class Jaws_User
         }
 
         // name
+        $gData['owner'] = (int)$owner;
         $gData['name'] = trim($gData['name'], '-_.@');
         if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $gData['name'])) {
             return Jaws_Error::raiseError(
@@ -932,7 +945,8 @@ class Jaws_User
                 JAWS_ERROR_NOTICE
             );
         }
-        $gData['name'] = strtolower($gData['name']);
+        $gData['name']  = strtolower($gData['name']);
+        $gData['owner'] = (int)$owner;
 
         // title
         $gData['title'] = $GLOBALS['app']->UTF8->trim($gData['title']);
