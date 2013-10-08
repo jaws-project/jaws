@@ -283,6 +283,21 @@ class Users_Actions_Groups extends Users_HTML
         $tpl->SetVariable('description', $group['description']);
         $tpl->SetVariable('selected_enabled_' . (int) $group['enabled'], 'selected');
 
+
+        $allUsers = $jUser->GetUsers();
+        $groupUsers = $jUser->GetUsers($gid);
+
+        $tpl->SetVariable('lbl_group_member', _t('USERS_MANAGE_GROUPS_MEMBERS'));
+        $tpl->SetVariable('lbl_users', _t('USERS_USERS'));
+
+        foreach($allUsers as $user) {
+            $tpl->SetBlock('manage_group/user');
+            $tpl->SetVariable('user', $user['id']);
+            $tpl->SetVariable('username', $user['username']);
+            $tpl->SetVariable('nickname', $user['nickname']);
+            $tpl->ParseBlock('manage_group/user');
+        }
+
         $tpl->ParseBlock('manage_group');
         return $tpl->Get();
     }

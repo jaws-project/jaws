@@ -145,6 +145,30 @@
                     </select>
                 </div>
             </fieldset>
+
+            <fieldset>
+                <legend><span>{lbl_group_member}</span></legend>
+
+                <div><label for="users">{lbl_users}:</label>
+                    <select name="users" id="users">
+
+                        <!-- BEGIN user -->
+                        <option value="{user}">{username} - {nickname}</option>
+                        <!-- END user -->
+
+                    </select>
+                </div>
+
+                <div><label for="members">{lbl_members}:</label>
+                    <select name="members" id="members" multiple="multiple">
+                        <!-- BEGIN user -->
+                        <option value="2" class="piwi_option_even">aaaaaaa</option>
+                        <!-- END user -->
+                    </select>
+                </div>
+
+            </fieldset>
+
         </div>
         <div class="actions">
             <button type="submit" value="{update}">{update}</button>
