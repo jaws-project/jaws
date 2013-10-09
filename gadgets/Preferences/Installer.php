@@ -17,13 +17,13 @@ class Preferences_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'display_theme'             => 'true',
-        'display_editor'            => 'true',
-        'display_language'          => 'true',
-        'display_calendar_type'     => 'true',
-        'display_calendar_language' => 'true',
-        'display_date_format'       => 'true',
-        'display_timezone'          => 'true',
+        array('display_theme', 'true'),
+        array('display_editor', 'true'),
+        array('display_language', 'true'),
+        array('display_calendar_type', 'true'),
+        array('display_calendar_language', 'true'),
+        array('display_date_format', 'true'),
+        array('display_timezone', 'true'),
     );
 
     /**
