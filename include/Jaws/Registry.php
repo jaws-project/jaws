@@ -35,7 +35,7 @@ class Jaws_Registry
     function Init()
     {
         $tblReg = Jaws_ORM::getInstance()->table('registry');
-        $result = $tblReg->select('component', 'key_name', 'key_value')
+        $result = $tblReg->select('component', 'key_name', 'key_value', 'custom:boolean')
             ->where('user', 0)
             ->and()
             ->openWhere('key_name', 'version')
@@ -55,10 +55,10 @@ class Jaws_Registry
         }
 
         foreach ($result as $regrec) {
-            $this->_Registry[$regrec['component']][$regrec['key_name']] = $regrec['key_value'];
+            $this->_Registry[$regrec['component']][$regrec['key_name']] = $regrec;
         }
 
-        return isset($this->_Registry['']['version'])? $this->_Registry['']['version'] : null;
+        return isset($this->_Registry['']['version'])? $this->_Registry['']['version']['key_value'] : null;
     }
 
     /**
@@ -67,27 +67,42 @@ class Jaws_Registry
      * @access  public
      * @param   string  $key_name   Key name
      * @param   string  $component  Component name
+     * @param   int     $user       User ID
      * @return  string  The value of the key
      */
-    function fetch($key_name, $component = '')
+    function fetch($key_name, $component = '', $user = 0)
     {
         if (!@array_key_exists($key_name, $this->_Registry[$component])) {
             $tblReg = Jaws_ORM::getInstance()->table('registry');
-            $value  = $tblReg->select('key_value')
+            $rowVal = $tblReg->select('key_value', 'custom:boolean')
                 ->where('user', 0)
                 ->and()
                 ->where('component', $component)
                 ->and()
                 ->where('key_name', $key_name)
-                ->fetchOne();
-            if (Jaws_Error::IsError($value)) {
+                ->fetchRow();
+            if (Jaws_Error::IsError($rowVal) || empty($rowVal)) {
                 return null;
             }
 
-            $this->_Registry[$component][$key_name] = $value;
+            $this->_Registry[$component][$key_name] = $rowVal;
         }
 
-        return $this->_Registry[$component][$key_name];
+        // trying fetch user's registry key value
+        if (!empty($user) && $this->_Registry[$component][$key_name]['custom']) {
+            $value = $tblReg->select('key_value')
+                ->where('user', (int)$user)
+                ->and()
+                ->where('component', $component)
+                ->and()
+                ->where('key_name', $key_name)
+                ->fetchOne();
+            if (!Jaws_Error::IsError($value) && !is_null($value)) {
+                return $value;
+            }
+        }
+
+        return $this->_Registry[$component][$key_name]['key_value'];
     }
 
     /**
@@ -111,6 +126,30 @@ class Jaws_Registry
 
         $tblReg->orderBy('key_name');
         $result = $tblReg->fetchAll();
+        if (Jaws_Error::IsError($result)) {
+            return null;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Fetch all user's registry keys of a gadget
+     *
+     * @access  public
+     * @param   int     $user       User ID
+     * @param   string  $component  Component name
+     * @return  mixed   Array of keys if successful or Jaws_Error on failure
+     */
+    function fetchAllByUser($user, $component = '')
+    {
+        $tblReg = Jaws_ORM::getInstance()->table('registry');
+        $result = $tblReg->select('key_name', 'key_value')
+            ->where('component', $component)
+            ->and()
+            ->where('user', (int)$user)
+            ->orderBy('key_name')
+            ->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return null;
         }
