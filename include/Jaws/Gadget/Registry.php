@@ -36,13 +36,14 @@ class Jaws_Gadget_Registry
      * @access  public
      * @param   string  $key    Key name
      * @param   string  $value  Key value
+     * @param   bool    $custom Customizable by user?
      * @param   string  $gadget (Optional) Gadget name
      * @return  bool    Returns True or False
      */
-    function insert($key, $value, $gadget = '')
+    function insert($key, $value, $custom = false, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->insert($key, $value, $gadget);
+        return $GLOBALS['app']->Registry->insert($key, $value, $custom, $gadget);
     }
 
     /**
@@ -110,13 +111,14 @@ class Jaws_Gadget_Registry
      * @access  public
      * @param   string  $name   Key name
      * @param   string  $value  Key value
+     * @param   bool    $custom Customizable by user?
      * @param   string  $gadget (Optional) Gadget name
      * @return  bool    Returns True or False
      */
-    function update($name, $value, $gadget = '')
+    function update($name, $value, $custom = false, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->update($name, $value, $gadget);
+        return $GLOBALS['app']->Registry->update($name, $value, $custom, $gadget);
     }
 
     /**
