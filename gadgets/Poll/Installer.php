@@ -17,7 +17,7 @@ class Poll_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'cookie_period' => '150',
+        array('cookie_period', '150'),
     );
 
     /**
