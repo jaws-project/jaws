@@ -17,22 +17,22 @@ class Phoo_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'default_action'    => 'AlbumList',
-        'thumbsize'         => '133x100',
-        'mediumsize'        => '400x300',
-        'moblog_limit'      => '10',
-        'photoblog_album'   => '',
-        'photoblog_limit'   => '5',
-        'allow_comments'    => 'true',
-        'published'         => 'true',
-        'plugabble'         => 'true',
-        'show_exif_info'    => 'false',
-        'keep_original'     => 'true',
-        'thumbnail_limit'   => '0',
-        'use_antispam'      => 'true',
-        'comment_status'    => 'approved',
-        'albums_order_type' => 'name',
-        'photos_order_type' => 'id',
+        array('default_action', 'AlbumList'),
+        array('thumbsize', '133x100'),
+        array('mediumsize', '400x300'),
+        array('moblog_limit', '10'),
+        array('photoblog_album', ''),
+        array('photoblog_limit', '5'),
+        array('allow_comments', 'true'),
+        array('published', 'true'),
+        array('plugabble', 'true'),
+        array('show_exif_info', 'false'),
+        array('keep_original', 'true'),
+        array('thumbnail_limit', '0'),
+        array('use_antispam', 'true'),
+        array('comment_status', 'approved'),
+        array('albums_order_type', 'name'),
+        array('photos_order_type', 'id'),
     );
 
     /**
