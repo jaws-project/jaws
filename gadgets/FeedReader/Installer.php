@@ -17,7 +17,7 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'default_feed' => '0',
+        array('default_feed', '0'),
     );
 
     /**
