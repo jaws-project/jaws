@@ -177,10 +177,11 @@ class Jaws_Registry
      * @access  public
      * @param   string  $key_name   Key name
      * @param   string  $key_value  Key value
+     * @param   bool    $custom     Customizable by user?
      * @param   string  $component  Component name
      * @return  bool    True is set otherwise False
      */
-    function insert($key_name, $key_value, $component = '')
+    function insert($key_name, $key_value, $custom = false, $component = '')
     {
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         $tblReg->insert(array(
@@ -188,6 +189,7 @@ class Jaws_Registry
             'component'  => $component,
             'key_name'   => $key_name,
             'key_value'  => $key_value,
+            'custom'     => (bool)$custom,
             'updatetime' => $GLOBALS['db']->Date(),
         ));
         $result = $tblReg->exec();
@@ -202,7 +204,7 @@ class Jaws_Registry
      * Inserts array of keys
      *
      * @access  public
-     * @param   array   $keys       Pairs of keys/values
+     * @param   array   $keys       Array of keys, values
      * @param   string  $component  Component name
      * @param   int     $user       User ID
      * @return  bool    True is set otherwise False
@@ -213,68 +215,17 @@ class Jaws_Registry
             return true;
         }
 
-        $params = array();
-        $params['user']      = (int)$user;
-        $params['component'] = $component;
-        $params['now']       = $GLOBALS['db']->Date();
-
-        $sqls = '';
-        $dbDriver  = $GLOBALS['db']->getDriver();
-        $dbVersion = $GLOBALS['db']->getDBVersion();
-        for ($ndx = 0; $ndx < count($keys); $ndx++) {
-            list($key_name, $key_value) = each($keys);
-            $params["name_$ndx"]  = $key_name;
-            $params["value_$ndx"] = $key_value;
-
-            // Ugly hack to support all databases
-            switch ($dbDriver) {
-                case 'oci8':
-                    $sqls .= (empty($sqls)? '' : "\n UNION ALL").
-                             "\n SELECT {user}, {component}, {name_$ndx}, {value_$ndx}, {now} FROM DUAL";
-                    break;
-                case 'ibase':
-                    $sqls[] = " VALUES ({user}, {component}, {name_$ndx}, {value_$ndx}, {now})";
-                    break;
-                case 'pgsql':
-                    if (version_compare($dbVersion, '8.2.0', '>=')) {
-                        $sqls .= (empty($sqls)? "\n VALUES" : ",").
-                                 "\n ({user}, {component}, {name_$ndx}, {value_$ndx}, {now})";
-                    } else {
-                        $sqls[] = " VALUES ({user}, {component}, {name_$ndx}, {value_$ndx}, {now})";
-                    }
-                    break;
-                default:
-                    $sqls .= (empty($sqls)? '' : "\n UNION ALL").
-                             "\n SELECT {user}, {component}, {name_$ndx}, {value_$ndx}, {now}";
-                    break;
-            }
-
-            unset($this->_Registry[$component][$key_name]);
+        $data = array();
+        $user = (int)$user;
+        $time = $GLOBALS['db']->Date();
+        $columns = array('user', 'component', 'key_name', 'key_value', 'custom', 'updatetime');
+        foreach ($keys  as $key) {
+            list($key_name, $key_value, $custom) = each($key);
+            $data[] = array($user, $component, $key_name, $key_value, (bool)$custom, $time);
         }
 
-        if (is_array($sqls)) {
-            foreach ($sqls as $sql) {
-                $qsql = '
-                    INSERT INTO [[registry]]
-                        ([user], [component], [key_name], [key_value], [updatetime])
-                    '. $sql;
-                $result = $GLOBALS['db']->query($qsql, $params);
-                if (Jaws_Error::IsError($result)) {
-                    return $result;
-                }
-            }
-        } else {
-            $qsql = '
-                INSERT INTO [[registry]]
-                    ([user], [component], [key_name], [key_value], [updatetime])
-                '. $sqls;
-            $result = $GLOBALS['db']->query($qsql, $params);
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        return true;
+        $tblReg = Jaws_ORM::getInstance()->table('registry');
+        return $tblReg->insertAll($columns, $data)->exec();;
     }
 
     /**
@@ -283,13 +234,18 @@ class Jaws_Registry
      * @access  public
      * @param   string  $key_name   Key name
      * @param   string  $key_value  Key value
+     * @param   bool    $custom     Customizable by user?
      * @param   string  $component  Component name
      * @return  bool    True is set otherwise False
      */
-    function update($key_name, $key_value, $component = '')
+    function update($key_name, $key_value, $custom = false, $component = '')
     {
+        $data = array(
+            'key_value' => $key_value,
+            'custom' => (bool)$custom
+        );
         $tblReg = Jaws_ORM::getInstance()->table('registry');
-        $tblReg->update(array('key_value' => $key_value))
+        $tblReg->update($data)
             ->where('user', 0)
             ->and()
             ->where('component', $component)
@@ -300,7 +256,7 @@ class Jaws_Registry
             return false;
         }
 
-        $this->_Registry[$component][$key_name] = $key_value;
+        $this->_Registry[$component][$key_name] = $data;
         return true;
     }
 
