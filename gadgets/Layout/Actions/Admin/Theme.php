@@ -64,7 +64,7 @@ class Layout_Actions_Admin_Theme extends Jaws_Gadget_HTML
             }
         }
 
-        $this->gadget->registry->update('theme', $theme, 'Settings');
+        $this->gadget->registry->update('theme', $theme, true, 'Settings');
         $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_THEME_CHANGED'), RESPONSE_NOTICE);
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout');
     }
