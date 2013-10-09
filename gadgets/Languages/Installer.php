@@ -17,8 +17,8 @@ class Languages_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'base_lang' => 'en',
-        'update_default_lang' => 'false',
+        array('base_lang', 'en'),
+        array('update_default_lang', 'false'),
     );
 
     /**
