@@ -17,13 +17,13 @@ class Forums_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'topics_limit' => '15',
-        'posts_limit'  =>  '10',
-        'recent_limit' =>  '5',
-        'date_format'  => 'd MN Y G:i',
-        'edit_min_limit_time' => '300',
-        'edit_max_limit_time' => '900',
-        'enable_attachment'   => 'true',
+        array('topics_limit', '15'),
+        array('posts_limit',  '10'),
+        array('recent_limit',  '5'),
+        array('date_format', 'd MN Y G:i'),
+        array('edit_min_limit_time', '300'),
+        array('edit_max_limit_time', '900'),
+        array('enable_attachment', 'true'),
     );
 
     /**
