@@ -17,15 +17,15 @@ class VisitCounter_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'timeout' => '600',
-        'type'    => 'impressions',
-        'period'  => '0',
-        'start'   => '',
-        'mode'    => 'text',
-        'custom_text'    => '<strong>Total Visitors:</strong> <font color="red">{total}</font>',
-        'unique_visits'  => '0',
-        'visit_counters' => 'online,today,yesterday,total',
-        'impression_visits' => '0',
+        array('timeout', '600'),
+        array('type', 'impressions'),
+        array('period', '0'),
+        array('start', ''),
+        array('mode', 'text'),
+        array('custom_text', '<strong>Total Visitors:</strong> <font color="red">{total}</font>'),
+        array('unique_visits', '0'),
+        array('visit_counters', 'online,today,yesterday,total'),
+        array('impression_visits', '0'),
     );
 
     /**
