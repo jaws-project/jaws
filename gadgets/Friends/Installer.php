@@ -17,7 +17,7 @@ class Friends_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'limit' => '5',
+        array('limit', '5'),
     );
 
     /**
