@@ -17,8 +17,8 @@ class LinkDump_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'links_target'    => 'blank',
-        'max_limit_count' => '100',
+        array('links_target', 'blank'),
+        array('max_limit_count', '100'),
     );
 
     /**
