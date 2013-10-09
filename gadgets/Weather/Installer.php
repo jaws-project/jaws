@@ -17,10 +17,10 @@ class Weather_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'unit'          => 'metric',
-        'date_format'   => 'DN d MN',
-        'update_period' => '3600',
-        'api_key'       => '',
+        array('unit', 'metric'),
+        array('date_format', 'DN d MN'),
+        array('update_period', '3600'),
+        array('api_key', ''),
     );
 
     /**
