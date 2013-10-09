@@ -67,10 +67,9 @@ class Jaws_Registry
      * @access  public
      * @param   string  $key_name   Key name
      * @param   string  $component  Component name
-     * @param   int     $user       User ID
      * @return  string  The value of the key
      */
-    function fetch($key_name, $component = '', $user = 0)
+    function fetch($key_name, $component = '')
     {
         if (!@array_key_exists($key_name, $this->_Registry[$component])) {
             $tblReg = Jaws_ORM::getInstance()->table('registry');
@@ -86,20 +85,6 @@ class Jaws_Registry
             }
 
             $this->_Registry[$component][$key_name] = $rowVal;
-        }
-
-        // trying fetch user's registry key value
-        if (!empty($user) && $this->_Registry[$component][$key_name]['custom']) {
-            $value = $tblReg->select('key_value')
-                ->where('user', (int)$user)
-                ->and()
-                ->where('component', $component)
-                ->and()
-                ->where('key_name', $key_name)
-                ->fetchOne();
-            if (!Jaws_Error::IsError($value) && !is_null($value)) {
-                return $value;
-            }
         }
 
         return $this->_Registry[$component][$key_name]['key_value'];
@@ -131,6 +116,35 @@ class Jaws_Registry
         }
 
         return $result;
+    }
+
+    /**
+     * Fetch user's registry key value
+     *
+     * @access  public
+     * @param   int     $user       User ID
+     * @param   string  $key_name   Key name
+     * @param   string  $component  Component name
+     * @return  mixed   User's value of the key if success otherwise default key value
+     */
+    function fetchByUser($user, $key_name, $component = '')
+    {
+        $value = $this->fetch($key_name, $component);
+        if (!is_null($value) && $this->_Registry[$component][$key_name]['custom']) {
+            $tblReg = Jaws_ORM::getInstance()->table('registry');
+            $value  = $tblReg->select('key_value')
+                ->where('user', (int)$user)
+                ->and()
+                ->where('component', $component)
+                ->and()
+                ->where('key_name', $key_name)
+                ->fetchOne();
+            if (!Jaws_Error::IsError($value) && !is_null($value)) {
+                return $value;
+            }
+        }
+
+        return $value;
     }
 
     /**
