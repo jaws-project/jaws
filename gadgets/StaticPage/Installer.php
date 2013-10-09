@@ -17,9 +17,9 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'hide_title'    => 'true',
-        'default_page'  => '1',
-        'multilanguage' => 'yes',
+        array('hide_title', 'true'),
+        array('default_page', '1'),
+        array('multilanguage', 'yes'),
     );
 
     /**
