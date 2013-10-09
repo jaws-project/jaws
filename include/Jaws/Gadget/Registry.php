@@ -78,6 +78,24 @@ class Jaws_Gadget_Registry
     }
 
     /**
+     * Fetch user's registry key value
+     *
+     * @access  public
+     * @param   string  $name   Key name
+     * @param   string  $gadget (Optional) Gadget name
+     * @return  mixed   Returns key value if exists otherwise null
+     */
+    function fetchByUser($name, $gadget = '')
+    {
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
+        return $GLOBALS['app']->Registry->fetchByUser(
+            $GLOBALS['app']->Session->GetAttribute('layout'),
+            $name,
+            $gadget
+        );
+    }
+
+    /**
      * Update registry key value
      *
      * @access  public
