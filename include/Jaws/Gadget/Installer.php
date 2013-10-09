@@ -167,7 +167,7 @@ class Jaws_Gadget_Installer
             array('version' => $this->gadget->version, 'requires' => $requires),
             $installer->_RegKeys
         );
-        $this->gadget->registry->insert($installer->_RegKeys, $this->gadget->name);
+        $this->gadget->registry->insertAll($installer->_RegKeys, $this->gadget->name);
 
         // load gadget install method
         $result = $installer->Install($insert, $variables);
