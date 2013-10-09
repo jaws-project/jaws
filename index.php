@@ -45,10 +45,10 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
         $ReqAction = 'LoginBox';
     } elseif (empty($ReqGadget)) {
         $IsIndex = true;
-        $ReqGadget = $GLOBALS['app']->Registry->fetch(
+        $ReqGadget = $GLOBALS['app']->Registry->fetchByUser(
+            $GLOBALS['app']->Session->GetAttribute('layout'),
             'main_gadget',
-            'Settings',
-            $GLOBALS['app']->Session->GetAttribute('layout')
+            'Settings'
         );
     }
 
