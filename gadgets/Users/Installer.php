@@ -17,15 +17,15 @@ class Users_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'latest_limit' => '10',
-        'password_recovery' => 'false',
-        'register_notification' => 'true',
-        'authtype' => 'Default',
-        'anon_register' => 'false',
-        'anon_repetitive_email' => 'true',
-        'anon_activation' => 'user',
-        'anon_group' => '',
-        'dashboard_building' => 'false',
+        array('latest_limit', '10'),
+        array('password_recovery', 'false'),
+        array('register_notification', 'true'),
+        array('authtype', 'Default'),
+        array('anon_register', 'false'),
+        array('anon_repetitive_email', 'true'),
+        array('anon_activation', 'user'),
+        array('anon_group', ''),
+        array('dashboard_building', 'false'),
     );
 
     /**
