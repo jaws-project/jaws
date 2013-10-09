@@ -37,6 +37,7 @@ class Preferences_Model_Admin_Preferences extends Jaws_Gadget_Model
         $this->gadget->registry->update(
             'cookie_precedence',
             (empty($preferences_config['cookie_precedence'])? 'false' : 'true'),
+            false,
             'Settings'
         );
         $GLOBALS['app']->Session->PushLastResponse(_t('PREFERENCES_PROPERTIES_UPDATED'), RESPONSE_NOTICE);

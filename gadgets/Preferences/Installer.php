@@ -45,7 +45,7 @@ class Preferences_Installer extends Jaws_Gadget_Installer
     function Install()
     {
         //enable cookie precedence
-        $this->gadget->registry->update('cookie_precedence', 'true', 'Settings');
+        $this->gadget->registry->update('cookie_precedence', 'true', false, 'Settings');
 
         return true;
     }
@@ -59,7 +59,7 @@ class Preferences_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         //disable cookie precedence
-        $this->gadget->registry->update('cookie_precedence', 'false', 'Settings');
+        $this->gadget->registry->update('cookie_precedence', 'false', false, 'Settings');
 
         return true;
     }
