@@ -34,20 +34,29 @@ class Jaws_Gadget_Registry
      * Insert a registry key value
      *
      * @access  public
-     * @param   string  $name   Key name
+     * @param   string  $key    Key name
      * @param   string  $value  Key value
      * @param   string  $gadget (Optional) Gadget name
      * @return  bool    Returns True or False
      */
-    function insert($name, $value = '', $gadget = '')
+    function insert($key, $value, $gadget = '')
     {
-        if (is_array($name)) {
-            $gadget = empty($value)? $this->gadget->name : $value;
-            return $GLOBALS['app']->Registry->insertAll($name, $gadget);
-        } else {
-            $gadget = empty($gadget)? $this->gadget->name : $gadget;
-            return $GLOBALS['app']->Registry->insert($name, $value, $gadget);
-        }
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
+        return $GLOBALS['app']->Registry->insert($key, $value, $gadget);
+    }
+
+    /**
+     * Insert a registry key value
+     *
+     * @access  public
+     * @param   array   $keys   Array of registry keys, values
+     * @param   string  $gadget (Optional) Gadget name
+     * @return  mixed   Returns number of records inserted otherwise Jaws_Error
+     */
+    function insertAll($keys, $gadget = '')
+    {
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
+        return $GLOBALS['app']->Registry->insertAll($keys, $gadget);
     }
 
     /**
