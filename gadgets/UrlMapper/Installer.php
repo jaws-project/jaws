@@ -17,14 +17,14 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'map_enabled' => 'true',
-        'map_use_file' => 'true',
-        'map_use_rewrite' => 'false',
-        'map_map_to_use' => 'both',
-        'map_custom_precedence' => 'false',
-        'map_restrict_multimap' => 'false',
-        'map_extensions' => 'html',
-        'map_use_aliases' => 'true',
+        array('map_enabled', 'true'),
+        array('map_use_file', 'true'),
+        array('map_use_rewrite', 'false'),
+        array('map_map_to_use', 'both'),
+        array('map_custom_precedence', 'false'),
+        array('map_restrict_multimap', 'false'),
+        array('map_extensions', 'html'),
+        array('map_use_aliases', 'true'),
     );
 
     /**
