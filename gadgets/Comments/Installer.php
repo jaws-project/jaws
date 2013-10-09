@@ -17,11 +17,11 @@ class Comments_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'allow_duplicate'   => 'no',
-        'allow_comments'    => 'true',
-        'comments_per_page' => '10',
-        'recent_comment_limit'   => '10',
-        'default_comment_status' => '1',
+        array('allow_duplicate', 'no'),
+        array('allow_comments', 'true'),
+        array('comments_per_page', '10'),
+        array('recent_comment_limit', '10'),
+        array('default_comment_status', '1'),
     );
 
     /**
