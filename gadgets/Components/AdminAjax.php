@@ -243,8 +243,8 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManagePlugins');
         @list($plugin, $backend, $frontend) = jaws()->request->fetchAll('post');
-        $this->gadget->registry->update('backend_gadgets', $backend, $plugin);
-        $this->gadget->registry->update('frontend_gadgets', $frontend, $plugin);
+        $this->gadget->registry->update('backend_gadgets', $backend, false, $plugin);
+        $this->gadget->registry->update('frontend_gadgets', $frontend, false, $plugin);
         $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_PLUGINS_UPDATED'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -277,7 +277,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
         @list($comp, $data) = jaws()->request->fetchAll('post');
         $data = jaws()->request->fetch('1:array', 'post');
         foreach ($data as $key => $value) {
-            $res = $GLOBALS['app']->Registry->update($key, $value, $comp);
+            $res = $GLOBALS['app']->Registry->update($key, $value, false, $comp);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_REGISTRY_NOT_UPDATED'), RESPONSE_ERROR);
             }
