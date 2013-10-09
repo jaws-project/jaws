@@ -17,11 +17,11 @@ class Contact_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'use_antispam' => 'true',
-        'email_format' => 'html',
-        'enable_attachment' => 'false',
-        'comments' => '',
-        'default_items' => 'name,email,url,recipient,subject,attachment,message',
+        array('use_antispam', 'true'),
+        array('email_format', 'html'),
+        array('enable_attachment', 'false'),
+        array('comments', ''),
+        array('default_items', 'name,email,url,recipient,subject,attachment,message'),
     );
 
     /**
