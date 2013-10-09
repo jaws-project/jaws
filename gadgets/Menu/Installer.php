@@ -17,7 +17,7 @@ class Menu_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'default_group_id' => '1'
+        array('default_group_id', '1'),
     );
 
     /**
