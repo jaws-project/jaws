@@ -17,30 +17,30 @@ class Policy_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'block_undefined_ip' => 'false',
-        'block_undefined_agent' => 'false',
-        'filter' => 'DISABLED',
-        'default_captcha_status' => 'DISABLED',
-        'default_captcha_driver' => 'Math',
-        'obfuscator' => 'DISABLED',
-        'akismet_key' => '',
-        'typepad_key' => '',
-        'crypt_enabled' => 'false',
-        'crypt_pub_key' => '',
-        'crypt_pvt_key' => '',
-        'crypt_key_len' => '128',
-        'crypt_key_age' => '86400',
-        'crypt_key_start_date' => '0',
-        'passwd_bad_count' => '7',
-        'passwd_lockedout_time' => '60',      // per second
-        'passwd_max_age' => '0',              // per day  0 = resistant
-        'passwd_min_length' => '0',
-        'passwd_complexity' => 'no',
-        'login_captcha_status' => '1',
-        'login_captcha_driver' => 'Math',
-        'xss_parsing_level' => 'paranoid',
-        'session_idle_timeout' => '30',       // per minute
-        'session_remember_timeout' => '720',  // hours = 1 month
+        array('block_undefined_ip', 'false'),
+        array('block_undefined_agent', 'false'),
+        array('filter', 'DISABLED'),
+        array('default_captcha_status', 'DISABLED'),
+        array('default_captcha_driver', 'Math'),
+        array('obfuscator', 'DISABLED'),
+        array('akismet_key', ''),
+        array('typepad_key', ''),
+        array('crypt_enabled', 'false'),
+        array('crypt_pub_key', ''),
+        array('crypt_pvt_key', ''),
+        array('crypt_key_len', '128'),
+        array('crypt_key_age', '86400'),
+        array('crypt_key_start_date', '0'),
+        array('passwd_bad_count', '7'),
+        array('passwd_lockedout_time', '60'),      // per second
+        array('passwd_max_age', '0'),              // per day  0 = resistant
+        array('passwd_min_length', '0'),
+        array('passwd_complexity', 'no'),
+        array('login_captcha_status', '1'),
+        array('login_captcha_driver', 'Math'),
+        array('xss_parsing_level', 'paranoid'),
+        array('session_idle_timeout', '30'),       // per minute
+        array('session_remember_timeout', '720'),  // hours = 1 month
     );
 
     /**
