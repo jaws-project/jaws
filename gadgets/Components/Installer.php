@@ -17,7 +17,7 @@ class Components_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'versions_remote_access' => 'false',
+        array('versions_remote_access', 'false'),
     );
 
     /**
