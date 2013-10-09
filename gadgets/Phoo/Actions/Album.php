@@ -19,8 +19,7 @@ class Phoo_Actions_Album extends Jaws_Gadget_HTML
     function AlbumLayoutParams()
     {
         $result = array();
-        //$model = $this->gadget->load('Model')->load('Model', 'Albums');
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
+        $model = $this->gadget->load('Model')->load('Model', 'Albums');
         $albums = $model->GetAlbumList();
         if (!Jaws_Error::IsError($albums)) {
             $palbums = array();
