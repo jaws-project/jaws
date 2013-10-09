@@ -17,7 +17,7 @@ class Webcam_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'limit_random' => '3',
+        array('limit_random', '3'),
     );
 
     /**
