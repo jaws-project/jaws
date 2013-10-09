@@ -17,11 +17,11 @@ class Quotes_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'last_entries_limit'       => '10',
-        'last_entries_view_mode'   => '0',
-        'last_entries_view_type'   => '0',
-        'last_entries_show_title'  => 'true',
-        'last_entries_view_random' => 'false',
+        array('last_entries_limit', '10'),
+        array('last_entries_view_mode', '0'),
+        array('last_entries_view_type', '0'),
+        array('last_entries_show_title', 'true'),
+        array('last_entries_view_random', 'false'),
     );
 
     /**
