@@ -1009,19 +1009,21 @@ class Jaws_User
             return false;
         }
 
+        // Registry
+        $GLOBALS['app']->Registry->deleteByUser($id);
+        // ACL
         $GLOBALS['app']->ACL->deleteByUser($id);
-        if (isset($GLOBALS['app']->Session)) {
-            $res = $GLOBALS['app']->Session->DeleteUserSessions($id);
-        }
+        // Session
+        $GLOBALS['app']->Session->DeleteUserSessions($id);
+
+        //Commit Transaction
+        $objORM->commit();
 
         // Let everyone know that a user has been deleted
         $res = $GLOBALS['app']->Listener->Shout('DeleteUser', $id);
         if (Jaws_Error::IsError($res)) {
-            return false;
+            // nothing
         }
-
-        //Commit Transaction
-        $objORM->commit();
 
         return true;
     }
@@ -1058,14 +1060,15 @@ class Jaws_User
         }
 
         $GLOBALS['app']->ACL->deleteByGroup($id);
-        // Let everyone know a group has been deleted
-        $res = $GLOBALS['app']->Listener->Shout('DeleteGroup', $id);
-        if (Jaws_Error::IsError($res)) {
-            return false;
-        }
 
         //Commit Transaction
         $objORM->commit();
+
+        // Let everyone know a group has been deleted
+        $res = $GLOBALS['app']->Listener->Shout('DeleteGroup', $id);
+        if (Jaws_Error::IsError($res)) {
+            // nothing
+        }
 
         return true;
     }
