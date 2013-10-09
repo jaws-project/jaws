@@ -17,11 +17,11 @@ class Shoutbox_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'limit'               => '7',
-        'use_antispam'        => 'true',
-        'max_strlen'          => '125',
-        'comment_status'      => 'approved',
-        'anon_post_authority' => 'true',
+        array('limit', '7'),
+        array('use_antispam', 'true'),
+        array('max_strlen', '125'),
+        array('comment_status', 'approved'),
+        array('anon_post_authority', 'true'),
     );
 
     /**
