@@ -17,7 +17,7 @@ class Notepad_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'notes_limit' => '10'
+        array('notes_limit', '10'),
     );
 
     /**
