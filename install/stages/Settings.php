@@ -143,7 +143,11 @@ class Installer_Settings extends JawsInstallerStage
         $settings['admin_language'] = $post['site_language'];
         $settings['site_email']     = $_SESSION['install']['CreateUser']['email'];
         foreach ($settings as $key => $value) {
-            $GLOBALS['app']->Registry->update($key, $value, 'Settings');
+            if (in_array($key, array('site_language', 'admin_language'))) {
+                $GLOBALS['app']->Registry->update($key, $value, true, 'Settings');
+            } else {
+                $GLOBALS['app']->Registry->update($key, $value, false, 'Settings');
+            }
         }
 
         if (!empty($post['site_sample'])) {
@@ -236,7 +240,7 @@ class Installer_Settings extends JawsInstallerStage
         }
 
         // set Blog as main gadget
-        $GLOBALS['app']->Registry->update('main_gadget', 'Blog', 'Settings');
+        $GLOBALS['app']->Registry->update('main_gadget', 'Blog', true, 'Settings');
 
         // Copy Photo Organizer sample data
         $source = JAWS_PATH. 'install/stages/Settings/Sample/Phoo/data/';

@@ -309,18 +309,6 @@ class Installer_Database extends JawsInstallerStage
             return $result;
         }
 
-        //Make sure user don't have any data/cache/registry|acl stuff
-        _log(JAWS_LOG_DEBUG,"Cleaning previous registry and acl cache data files");
-        $path = JAWS_DATA . 'cache/registry';
-        if (!Jaws_Utils::Delete($path, false)) {
-            _log(JAWS_LOG_DEBUG,"Can't delete $path");
-        }
-
-        $path = JAWS_DATA . 'cache/acl';
-        if (!Jaws_Utils::Delete($path, false)) {
-            _log(JAWS_LOG_DEBUG,"Can't delete $path");
-        }
-
         // Create application
         require_once JAWS_PATH . 'include/Jaws.php';
         $GLOBALS['app'] = jaws();
@@ -330,11 +318,11 @@ class Installer_Database extends JawsInstallerStage
         // registry keys
         $result = $GLOBALS['app']->Registry->insertAll(
             array(
-                'version' => JAWS_VERSION,
-                'gadgets_installed_items' => ',',
-                'gadgets_disabled_items' => ',',
-                'gadgets_autoload_items' => ',',
-                'plugins_installed_items' => ',',
+                array('version', JAWS_VERSION),
+                array('gadgets_installed_items', ','),
+                array('gadgets_disabled_items', ','),
+                array('gadgets_autoload_items', ','),
+                array('plugins_installed_items', ','),
             )
         );
 
