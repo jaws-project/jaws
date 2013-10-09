@@ -17,7 +17,7 @@ class ServerTime_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'date_format' =>'DN d MN Y',
+        array('date_format', 'DN d MN Y'),
     );
 
     /**
