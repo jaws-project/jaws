@@ -17,12 +17,12 @@ class FileBrowser_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'black_list'  => 'htaccess',
-        'root_dir'    => 'files',
-        'order_type'  => 'filename, false',
-        'views_limit' => '0',
-        'virtual_links'  => 'false',
-        'frontend_avail' => 'true',
+        array('black_list', 'htaccess'),
+        array('root_dir', 'files'),
+        array('order_type', 'filename, false'),
+        array('views_limit', '0'),
+        array('virtual_links', 'false'),
+        array('frontend_avail', 'true'),
     );
 
     /**
