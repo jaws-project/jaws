@@ -17,10 +17,10 @@ class Search_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        'min_key_len'    => '3',
-        'max_result_len' => '500',
-        'results_limit'  => '10',
-        'searchable_gadgets' => '*',
+        array('min_key_len', '3'),
+        array('max_result_len', '500'),
+        array('results_limit', '10'),
+        array('searchable_gadgets', '*'),
     );
 
     /**
