@@ -302,7 +302,10 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         if (!empty($messageData['recipient_groups'])) {
             $recipient_groups = explode(",", $messageData['recipient_groups']);
             $table = Jaws_ORM::getInstance()->table('users_groups');
-            $group_users = $table->select('user_id')->where('group_id', $recipient_groups, 'in')->fetchColumn();
+            $table->select('user_id:integer');
+            $table->join('groups', 'groups.id', 'users_groups.group_id');
+            $table->where('group_id', $recipient_groups, 'in');
+            $group_users = $table->and()->where('groups.owner', $user)->fetchColumn();
             if (!empty($group_users) && count($group_users) > 0) {
                 $recipient_users = array_merge($recipient_users, $group_users);
             }

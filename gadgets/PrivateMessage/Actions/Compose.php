@@ -24,6 +24,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
         }
 
         $this->gadget->CheckPermission('ComposeMessage');
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
         $this->AjaxMe('site_script.js');
         $get = jaws()->request->fetch(array('id', 'reply'), 'get');
         $id = $get['id'];
@@ -45,8 +46,8 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
 
             // Check permissions
             $messageRecipients = $model->GetMessageRecipients($id);
-            $user = $GLOBALS['app']->Session->GetAttribute('user');
-            if (!in_array($user, $messageRecipients) && !in_array('0', $messageRecipients) &&  $message['user']!=$user) {
+            if (!in_array($user, $messageRecipients) &&
+                !in_array('0', $messageRecipients) && $message['user'] != $user) {
                 require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
                 return Jaws_HTTPError::Get(403);
             }
@@ -187,8 +188,8 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
             $bUsers->SetID('recipient_users');
             $bUsers->setMultiple(true);
             $users = $userModel->GetUsers();
-            foreach ($users as $user) {
-                $bUsers->AddOption($user['nickname'], $user['id']);
+            foreach ($users as $u) {
+                $bUsers->AddOption($u['nickname'], $u['id']);
             }
             $bUsers->setDefault($recipient_users);
             $tpl->SetVariable('lbl_recipient_users', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS'));
@@ -198,7 +199,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
             $bGroups =& Piwi::CreateWidget('Combo', 'recipient_groups');
             $bGroups->SetID('recipient_groups');
             $bGroups->setMultiple(true);
-            $groups = $userModel->GetGroups(true);
+            $groups = $userModel->GetGroups($user, true);
             foreach ($groups as $group) {
                 $bGroups->AddOption($group['title'], $group['id']);
             }
