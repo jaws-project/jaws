@@ -97,16 +97,20 @@ class Jaws_Registry
      *
      * @access  public
      * @param   string  $component  Component name
+     * @param   bool    $onlyCustom Only custom
      * @param   string  $pattern    Key pattern
      * @return  mixed   Array of keys if successful or Jaws_Error on failure
      */
-    function fetchAll($component = '', $pattern = '')
+    function fetchAll($component = '', $onlyCustom = false, $pattern = '')
     {
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         $tblReg->select('key_name', 'key_value')
-            ->where('component', $component)
+            ->where('user', 0)
             ->and()
-            ->where('user', 0);
+            ->where('component', $component);
+        if ($onlyCustom) {
+            $tblReg->and()->where('custom', true);
+        }
         if (!empty($pattern)) {
             $tblReg->and()->where('key_name', $pattern, 'like');
         }
