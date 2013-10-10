@@ -39,7 +39,6 @@ define('_EN_TAGS_SELECT_MORE_THAN_ONE_TAG_FOR_MERGE', "Please select more than o
 
 /* Common */
 define('_EN_TAGS_GADGET', "Gadget");
-define('_EN_TAGS_ACTIONS', "Actions");
 define('_EN_TAGS_MERGE', "Merge");
 
 /* Responses */
