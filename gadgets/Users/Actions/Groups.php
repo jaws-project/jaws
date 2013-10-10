@@ -30,10 +30,10 @@ class Users_Actions_Groups extends Users_HTML
         $this->gadget->CheckPermission('ManageUserGroups');
         $this->AjaxMe('index.js');
         $response = $GLOBALS['app']->Session->PopResponse('Users.Groups');
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
-        // TODO: must set user_id
-        $groups = $jUser->GetGroups();
+        $groups = $jUser->GetGroups($user);
 
         // Load the template
         $tpl = $this->gadget->loadTemplate('Groups.html');
@@ -132,8 +132,7 @@ class Users_Actions_Groups extends Users_HTML
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
-        // TODO: must set user_id
-        $res = $jUser->AddGroup($post);
+        $res = $jUser->AddGroup($post, $user);
 
         if (Jaws_Error::isError($res)) {
             $GLOBALS['app']->Session->PushResponse(
@@ -166,10 +165,9 @@ class Users_Actions_Groups extends Users_HTML
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
-        // TODO: must set user_id
         foreach($ids as $id) {
             // TODO: improve performance
-            $res= $jUser->DeleteGroup($id);
+            $res= $jUser->DeleteGroup($id, $user);
         }
 
         if ($res == true) {
@@ -210,11 +208,9 @@ class Users_Actions_Groups extends Users_HTML
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
-        // TODO: must set user_id
-        foreach($ids as $id) {
+        foreach ($ids as $id) {
             // TODO: improve performance
-//            $res= $jUser->UpdateGroup($id, array('enabled', $enabled));
-            $res = false;
+            $res = $jUser->UpdateGroup($id, array('enabled' => $enabled), $user);
         }
 
         if ($res == true) {
@@ -275,27 +271,34 @@ class Users_Actions_Groups extends Users_HTML
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
-        // TODO: must set user_id
-        $group = $jUser->GetGroup($gid);
+        $group = $jUser->GetGroup($gid, $user);
 
         $tpl->SetVariable('name', $group['name']);
         $tpl->SetVariable('title', $group['title']);
         $tpl->SetVariable('description', $group['description']);
         $tpl->SetVariable('selected_enabled_' . (int) $group['enabled'], 'selected');
 
-
         $allUsers = $jUser->GetUsers();
-        $groupUsers = $jUser->GetUsers($gid);
-
         $tpl->SetVariable('lbl_group_member', _t('USERS_MANAGE_GROUPS_MEMBERS'));
         $tpl->SetVariable('lbl_users', _t('USERS_USERS'));
-
+        $tpl->SetVariable('lbl_add_user_to_group', _t('USERS_GROUPS_ADD_USER'));
         foreach($allUsers as $user) {
             $tpl->SetBlock('manage_group/user');
             $tpl->SetVariable('user', $user['id']);
             $tpl->SetVariable('username', $user['username']);
             $tpl->SetVariable('nickname', $user['nickname']);
             $tpl->ParseBlock('manage_group/user');
+        }
+
+        $members = $jUser->GetUsers($gid);
+        $tpl->SetVariable('lbl_members', _t('USERS_GROUPS_MEMBERS'));
+        $tpl->SetVariable('lbl_remove_user_from_member', _t('USERS_GROUPS_REMOVE_USER'));
+        foreach($members as $user) {
+            $tpl->SetBlock('manage_group/member');
+            $tpl->SetVariable('user', $user['id']);
+            $tpl->SetVariable('username', $user['username']);
+            $tpl->SetVariable('nickname', $user['nickname']);
+            $tpl->ParseBlock('manage_group/member');
         }
 
         $tpl->ParseBlock('manage_group');
@@ -314,13 +317,34 @@ class Users_Actions_Groups extends Users_HTML
         $this->gadget->CheckPermission('ManageUserGroups');
 
         $post = jaws()->request->fetch(array('gid', 'name', 'title', 'description', 'enabled'), 'post');
+        $selected_members = jaws()->request->fetch('members:array', 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $post['enabled'] = (bool) $post['enabled'];
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
-        // TODO: must set user_id
-        $res = $jUser->UpdateGroup($post['gid'], $post);
+        $res = $jUser->UpdateGroup($post['gid'], $post, $user);
+
+        $current_members_info = $jUser->GetUsers($post['gid']);
+        $current_members = array();
+        foreach($current_members_info as $member_info) {
+            $current_members[] = $member_info['id'];
+        }
+        $new_member = array_diff($selected_members, $current_members);
+        if (!Jaws_Error::isError($res) && count($new_member) > 0) {
+            // TODO: improve performance
+            foreach ($new_member as $member) {
+                $res = $jUser->AddUserToGroup($member, $post['gid'], $user);
+            }
+        }
+
+        $removed_member = array_diff($current_members, $selected_members);
+        if (!Jaws_Error::isError($res) && count($removed_member) > 0) {
+            // TODO: improve performance
+            foreach ($removed_member as $member) {
+                $res = $jUser->DeleteUserFromGroup($member, $post['gid'], $user);
+            }
+        }
 
         if (Jaws_Error::isError($res)) {
             $GLOBALS['app']->Session->PushResponse(

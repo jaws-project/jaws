@@ -121,7 +121,7 @@
 <!-- BEGIN manage_group -->
 <div class="gadget users groups">
     <div class="gadget_header"><h2>{title}</h2><div class="gadget_menubar">{menubar}</div></div>
-    <form name="groups" id="groups" action="{base_script}" method="post">
+    <form name="groups" id="groups" action="{base_script}" method="post" onsubmit="return selectAllMembers()">
         <input type="hidden" name="gadget" value="Users"/>
         <input type="hidden" name="action" value="UpdateGroup"/>
         <input type="hidden" name="gid" value="{gid}"/>
@@ -151,20 +151,20 @@
 
                 <div><label for="users">{lbl_users}:</label>
                     <select name="users" id="users">
-
                         <!-- BEGIN user -->
                         <option value="{user}">{username} - {nickname}</option>
                         <!-- END user -->
-
                     </select>
+                    <a class="button" href="javascript:addUserToMember()">{lbl_add_user_to_group}</a>
                 </div>
 
                 <div><label for="members">{lbl_members}:</label>
-                    <select name="members" id="members" multiple="multiple">
-                        <!-- BEGIN user -->
-                        <option value="2" class="piwi_option_even">aaaaaaa</option>
-                        <!-- END user -->
+                    <select name="members[]" id="members" multiple="multiple">
+                        <!-- BEGIN member -->
+                        <option value="{user}">{username} - {nickname}</option>
+                        <!-- END member -->
                     </select>
+                    <a class="button" href="javascript:removeUserFromMember()">{lbl_remove_user_from_member}</a>
                 </div>
 
             </fieldset>
@@ -175,4 +175,36 @@
         </div>
     </form>
 </div>
+
+<script type="text/javascript">
+    function addUserToMember() {
+        var alreadyMember = false;
+        var userId = $('users').value;
+        var userTitle = $('users').getSelected().get('text');
+        $$('#members').getElements('option')[0].each(function(member) {
+            if(userId==member.value) {
+                alreadyMember = true;
+                return;
+            }
+        });
+
+        if (!alreadyMember) {
+            var newElement = new Element('option');
+            newElement.inject($('members'));
+            newElement.setProperty('value', userId);
+            newElement.appendText(userTitle);
+        }
+    }
+
+    function removeUserFromMember() {
+        $$('#members').getSelected()[0].each(function (member) {
+            member.dispose();
+        });
+    }
+
+    function selectAllMembers() {
+        $$('#members').getElements('option')[0].each(function(member) { member.selected = 'selected'; });
+        return true;
+    }
+</script>
 <!-- END manage_group -->

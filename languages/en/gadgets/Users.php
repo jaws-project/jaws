@@ -195,6 +195,7 @@ define('_EN_USERS_GROUP_STATUS_CHANGED', "Group(s) status has been changed.");
 define('_EN_USERS_CANT_CHANGE_GROUPS_STATUS', "There was a problem changing group status.");
 define('_EN_USERS_ADD_GROUP', "Add group");
 define('_EN_USERS_MANAGE_GROUPS_MEMBERS', "Manage Members");
+define('_EN_USERS_GROUPS_REMOVE_USER', "Remove user from group");
 
 /* MyAccount */
 define('_EN_USERS_MYACCOUNT_UPDATED', "Your profile has been updated.");
