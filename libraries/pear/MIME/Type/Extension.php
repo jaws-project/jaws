@@ -258,6 +258,7 @@ class MIME_Type_Extension
             return PEAR::raiseError("File has no extension.");
         }
 
+        $extension = strtolower($extension);
         if (!isset($this->extensionToType[$extension])) {
             return PEAR::raiseError("Sorry, couldn't determine file type.");
         }
