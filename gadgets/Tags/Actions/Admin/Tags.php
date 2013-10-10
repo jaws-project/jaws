@@ -179,7 +179,7 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
     function GetDataGrid()
     {
         $tModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel');
-        $total = $tModel->TotalOfData('banners');
+        $total = $tModel->TotalOfData('tags');
 
         $gridBox =& Piwi::CreateWidget('VBox');
         $gridBox->SetID('tags_box');
