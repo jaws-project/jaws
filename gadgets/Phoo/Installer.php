@@ -20,7 +20,6 @@ class Phoo_Installer extends Jaws_Gadget_Installer
         'default_action'    => 'AlbumList',
         'thumbsize'         => '133x100',
         'mediumsize'        => '400x300',
-        'moblog_album'      => '',
         'moblog_limit'      => '10',
         'photoblog_album'   => '',
         'photoblog_limit'   => '5',

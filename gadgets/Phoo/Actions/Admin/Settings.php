@@ -120,22 +120,6 @@ class Phoo_Actions_Admin_Settings extends Phoo_AdminHTML
         $exifCombo->SetDefault($settings['show_exif_info']);
 
         // Moblog
-        $albums = $aModel->GetAlbums('name', 'ASC');
-        $moblogAlbumCombo =& Piwi::CreateWidget('Combo', 'moblog_album', _t('PHOO_MOBLOG_ALBUM'));
-        $moblogAlbumCombo->setContainerClass('oneline');
-        $moblogAlbumCombo->AddOption('&nbsp;', '');
-        if (!Jaws_Error::IsError($albums) && !empty($albums)) {
-            $date = $GLOBALS['app']->loadDate();
-            foreach ($albums as $a) {
-                // FIXME: Ugly hack to add title to moblogAlbumCombo
-                $o =& Piwi::CreateWidget('ComboOption', $a['name'], $a['name']);
-                $o->SetTitle(_t('PHOO_NUM_PHOTOS_ALBUM', $a['howmany']) . ' / '.
-                _t('PHOO_ALBUM_CREATION_DATE') . ': ' . $date->Format($a['createtime']));
-                $moblogAlbumCombo->_options[$a['name']] = $o;
-            }
-        }
-        $moblogAlbumCombo->SetDefault($settings['moblog_album']);
-
         $moblogLimitCombo =& Piwi::CreateWidget('Combo', 'moblog_limit', _t('PHOO_MOBLOG_LIMIT'));
         $moblogLimitCombo->setContainerClass('oneline');
         $moblogLimitCombo->AddOption('5', '5');
@@ -145,6 +129,7 @@ class Phoo_Actions_Admin_Settings extends Phoo_AdminHTML
         $moblogLimitCombo->SetDefault($settings['moblog_limit']);
 
         // Photoblog
+        $albums = $aModel->GetAlbums('name', 'ASC');
         $photoblogAlbumCombo =& Piwi::CreateWidget('Combo', 'photoblog_album', _t('PHOO_PHOTOBLOG_ALBUM'));
         $photoblogAlbumCombo->setContainerClass('oneline');
         $photoblogAlbumCombo->AddOption('&nbsp;', '');
@@ -186,7 +171,6 @@ class Phoo_Actions_Admin_Settings extends Phoo_AdminHTML
         $fieldset->Add($moderateCombo);
         $fieldset->Add($keepCombo);
         $fieldset->Add($exifCombo);
-        $fieldset->Add($moblogAlbumCombo);
         $fieldset->Add($moblogLimitCombo);
         $fieldset->Add($photoblogAlbumCombo);
         $fieldset->Add($photoblogLimitCombo);

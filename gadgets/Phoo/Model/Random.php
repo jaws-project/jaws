@@ -28,7 +28,7 @@ class Phoo_Model_Random extends Phoo_Model
         $table->join('phoo_image', 'phoo_image.id', 'phoo_image_album.phoo_image_id');
 
         if (is_numeric($albumid)) {
-            $table->and()->where('phoo_image_album.phoo_album_id', (int)$album);
+            $table->and()->where('phoo_image_album.phoo_album_id', (int)$albumid);
         }
         $table->orderBy($table->random());
         $row = $table->limit(1)->fetchRow();

@@ -14,6 +14,32 @@
 class Phoo_Actions_Random extends Jaws_Gadget_HTML
 {
     /**
+     * Get Random action params(albums list)
+     *
+     * @access  public
+     * @return  array list of Albums action params(albums list)
+     */
+    function RandomLayoutParams()
+    {
+        $result = array();
+        $model = $this->gadget->load('Model')->load('Model', 'Albums');
+        $albums = $model->GetAlbums();
+        if (!Jaws_Error::IsError($albums)) {
+            $palbums = array();
+            foreach ($albums as $album) {
+                $palbums[$album['id']] = $album['name'];
+            }
+
+            $result[] = array(
+                'title' => _t('PHOO_ALBUMS'),
+                'value' => $palbums
+            );
+        }
+
+        return $result;
+    }
+
+    /**
      * Displays a random image from one of the galleries.
      *
      * @access  public

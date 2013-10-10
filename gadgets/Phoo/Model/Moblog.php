@@ -19,20 +19,15 @@ class Phoo_Model_Moblog extends Phoo_Model
      * @access  public
      * @return  mixed   Returns an array of phoo entries in moblog format and Jaws_Error on error
      */
-    function GetMoblog()
+    function GetMoblog($album)
     {
-        $album = $this->gadget->registry->fetch('moblog_album');
-        if (Jaws_Error::isError($album)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETMOBLOG'), _t('PHOO_NAME'));
-        }
-
         $table = Jaws_ORM::getInstance()->table('phoo_image_album');
         $table->select('phoo_album_id', 'filename', 'phoo_image.id',
             'phoo_image.title', 'phoo_image.description', 'phoo_image.createtime');
         $table->join('phoo_image', 'phoo_image.id', 'phoo_image_album.phoo_image_id');
         $table->join('phoo_album', 'phoo_album.id', 'phoo_image_album.phoo_album_id');
         $table->where('phoo_image.published', true)->and();
-        $table->where('phoo_album.name', $album);
+        $table->where('phoo_album.id', $album);
         $table->orderBy('phoo_image.createtime desc');
 
         $limit = $this->gadget->registry->fetch('moblog_limit');

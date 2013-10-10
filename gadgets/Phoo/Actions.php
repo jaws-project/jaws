@@ -39,13 +39,10 @@ $actions['ViewImage'] = array(
 $actions['Random'] = array(
     'layout' => true,
     'file' => 'Random',
+    'parametric' => true,
 );
 $actions['Moblog'] = array(
     'layout' => true,
     'file' => 'Moblog',
-);
-$actions['Album'] = array(
-    'layout' => true,
-    'file' => 'Album',
     'parametric' => true,
 );

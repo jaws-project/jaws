@@ -14,19 +14,45 @@
 class Phoo_Actions_Moblog extends Jaws_Gadget_HTML
 {
     /**
+     * Get Moblog action params(albums list)
+     *
+     * @access  public
+     * @return  array list of Albums action params(albums list)
+     */
+    function MoblogLayoutParams()
+    {
+        $result = array();
+        $model = $this->gadget->load('Model')->load('Model', 'Albums');
+        $albums = $model->GetAlbums();
+        if (!Jaws_Error::IsError($albums)) {
+            $palbums = array();
+            foreach ($albums as $album) {
+                $palbums[$album['id']] = $album['name'];
+            }
+
+            $result[] = array(
+                'title' => _t('PHOO_ALBUMS'),
+                'value' => $palbums
+            );
+        }
+
+        return $result;
+    }
+
+    /**
      * Displays a random image from the gallery listed as a Moblog
      *
      * @access  public
      * @return  string  XHTML template content
      */
-    function Moblog()
+    function Moblog($aid)
     {
         $tpl = $this->gadget->loadTemplate('Moblog.html');
         $tpl->SetBlock('moblog');
         $tpl->SetVariable('title',_t('PHOO_ACTIONS_MOBLOG'));
 
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Moblog');
-        $moblog = $model->GetMoblog();
+        $moblog = $model->GetMoblog($aid);
         if (!Jaws_Error::IsError($moblog)) {
             $objDate = $GLOBALS['app']->loadDate();
             include_once JAWS_PATH . 'include/Jaws/Image.php';
