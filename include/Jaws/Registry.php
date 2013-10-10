@@ -220,7 +220,7 @@ class Jaws_Registry
         $time = $GLOBALS['db']->Date();
         $columns = array('user', 'component', 'key_name', 'key_value', 'custom', 'updatetime');
         foreach ($keys  as $key) {
-            list($key_name, $key_value, $custom) = each($key);
+            @list($key_name, $key_value, $custom) = $key;
             $data[] = array($user, $component, $key_name, $key_value, (bool)$custom, $time);
         }
 

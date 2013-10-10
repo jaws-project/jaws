@@ -164,7 +164,10 @@ class Jaws_Gadget_Installer
         // Registry keys
         $requires = ','. implode($this->gadget->_Requires, ','). ',';
         $installer->_RegKeys = array_merge(
-            array('version' => $this->gadget->version, 'requires' => $requires),
+            array(
+                array('version', $this->gadget->version),
+                array('requires', $requires),
+            ),
             $installer->_RegKeys
         );
         $this->gadget->registry->insertAll($installer->_RegKeys, $this->gadget->name);
