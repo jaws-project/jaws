@@ -132,7 +132,7 @@ class MIME_Type
      */
     function parse($type)
     {
-        if (is_a($type, 'PEAR_Error')) {
+        if ($type instanceof PEAR_Error) {
             return false;
         }
 
@@ -459,7 +459,7 @@ class MIME_Type
             return $t->_autoDetect($file, $params);
         } else {
             $type = $this->_autoDetect($file, $params);
-            if (!is_a($type, 'PEAR_Error')) {
+            if (!$type instanceof PEAR_Error) {
                 $this->parse($type);
             }
             return $type;
