@@ -220,13 +220,6 @@ class Jaws_Gadget_Installer
             );
         }
 
-        if ($this->gadget->registry->fetch('main_gadget', 'Settings') == $this->gadget->name) {
-            return Jaws_Error::raiseError(
-                "you can't uninstall main gadget",
-                __FUNCTION__
-            );
-        }
-
         if ($this->gadget->_IsCore) {
             return Jaws_Error::raiseError(
                 "you can't uninstall core gadgets",
@@ -391,13 +384,6 @@ class Jaws_Gadget_Installer
         if (!Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
             return Jaws_Error::raiseError(
                 "gadget [{$this->gadget->name}] not installed",
-                __FUNCTION__
-            );
-        }
-
-        if ($this->gadget->registry->fetch('main_gadget', 'Settings') == $this->gadget->name) {
-            return Jaws_Error::raiseError(
-                "you can't disable main gadget",
                 __FUNCTION__
             );
         }
