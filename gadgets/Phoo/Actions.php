@@ -44,3 +44,8 @@ $actions['Moblog'] = array(
     'layout' => true,
     'file' => 'Moblog',
 );
+$actions['Album'] = array(
+    'layout' => true,
+    'file' => 'Album',
+    'parametric' => true,
+);
