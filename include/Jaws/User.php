@@ -936,26 +936,29 @@ class Jaws_User
         }
 
         // name
-        $gData['owner'] = (int)$owner;
-        $gData['name'] = trim($gData['name'], '-_.@');
-        if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $gData['name'])) {
-            return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INVALID_GROUPNAME'),
-                __FUNCTION__,
-                JAWS_ERROR_NOTICE
-            );
+        if (isset($gData['name'])) {
+            $gData['name'] = trim($gData['name'], '-_.@');
+            if (!preg_match('/^[[:alnum:]-_.@]{3,32}$/', $gData['name'])) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_INVALID_GROUPNAME'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+            $gData['name']  = strtolower($gData['name']);
         }
-        $gData['name']  = strtolower($gData['name']);
         $gData['owner'] = (int)$owner;
 
         // title
-        $gData['title'] = $GLOBALS['app']->UTF8->trim($gData['title']);
-        if (empty($gData['title'])) {
-            return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
-                __FUNCTION__,
-                JAWS_ERROR_NOTICE
-            );
+        if (isset($gData['title'])) {
+            $gData['title'] = $GLOBALS['app']->UTF8->trim($gData['title']);
+            if (empty($gData['title'])) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
         }
 
         if (isset($gData['enabled'])) {
