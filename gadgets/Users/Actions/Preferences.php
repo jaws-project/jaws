@@ -39,7 +39,46 @@ class Users_Actions_Preferences extends Users_HTML
         // Load the template
         $tpl = $this->gadget->loadTemplate('Preferences.html');
         $tpl->SetBlock('preferences');
-        
+
+        $gDir = JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
+        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
+        $gadgets  = $cmpModel->GetGadgetsList(null, true, true);
+        foreach ($gadgets as $gadget => $gInfo) {
+            if (!file_exists($gDir . $gadget. '/Hooks/Preferences.php')) {
+                continue;
+            }
+
+            $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+            if (Jaws_Error::IsError($objGadget)) {
+                continue;
+            }
+
+            $objHook = $objGadget->load('Hook')->load('Preferences');
+            if (Jaws_Error::IsError($objHook)) {
+                continue;
+            }
+
+            $customized = $objHook->Execute();
+            if (Jaws_Error::IsError($customized)) {
+                continue;
+            }
+
+            $keys = $GLOBALS['app']->Registry->fetchAll('Settings', true);
+            $tpl->SetBlock('preferences/gadget');
+            foreach ($keys as $key) {
+                $tpl->SetBlock('preferences/gadget/key');
+                $tpl->SetVariable('gadget', $gadget);
+                $tpl->SetVariable('key_name', $key['key_name']);
+                if (isset($customized[$key['key_name']])) {
+                    $tpl->SetVariable('key_value', $customized[$key['key_name']]['key_value']);
+                } else {
+                    $tpl->SetVariable('key_value', $key['key_value']);
+                }
+                $tpl->ParseBlock('preferences/gadget/key');
+            }
+            $tpl->ParseBlock('preferences/gadget');
+        }
+
         $tpl->SetVariable('title', _t('USERS_PREFERENCES_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
