@@ -21,15 +21,15 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('http_auth', 'false'),
         array('realm', 'Jaws Control Panel'),
         array('key', ''),
-        array('theme', 'jaws'),
-        array('date_format', 'd MN Y'),
-        array('calendar_type', 'Gregorian'),
-        array('calendar_language', 'en'),
-        array('timezone', 'UTC'),
+        array('theme', 'jaws', true),
+        array('date_format', 'd MN Y', true),
+        array('calendar_type', 'Gregorian', true),
+        array('calendar_language', 'en', true),
+        array('timezone', 'UTC', true),
         array('gzip_compression', 'false'),
         array('use_gravatar', 'no'),
         array('gravatar_rating', 'G'),
-        array('editor', 'TextArea'),
+        array('editor', 'TextArea', true),
         array('editor_tinymce_toolbar', ''),
         array('editor_ckeditor_toolbar', ''),
         array('browsers_flag', 'opera,firefox,ie7up,ie,safari,nav,konq,gecko,text'),
@@ -50,10 +50,10 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('site_license', ''),
         array('site_favicon', 'images/jaws.png'),
         array('site_title_separator', '-'),
-        array('main_gadget', ''),
+        array('main_gadget', '', true),
         array('site_copyright', ''),
-        array('site_language', 'en'),
-        array('admin_language', 'en'),
+        array('site_language', 'en', true),
+        array('admin_language', 'en', true),
         array('site_email', ''),
         array('cookie_domain', ''),
         array('cookie_path', '/'),
@@ -141,12 +141,16 @@ class Settings_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.4.0', '<')) {
-            $this->gadget->registry->insert('global_website', 'true');
-            $this->gadget->registry->insert('cookie_httponly', 'false');
-            $this->gadget->registry->delete('allow_comments');
-            $this->gadget->registry->delete('layoutmode');
-            $this->gadget->registry->delete('site_url');
+        if (version_compare($old, '1.0.0', '<')) {
+            $this->gadget->registry->update('theme', null, true);
+            $this->gadget->registry->update('date_format', null, true);
+            $this->gadget->registry->update('calendar_type', null, true);
+            $this->gadget->registry->update('calendar_language', null, true);
+            $this->gadget->registry->update('timezone', null, true);
+            $this->gadget->registry->update('editor', null, true);
+            $this->gadget->registry->update('main_gadget', null, true);
+            $this->gadget->registry->update('site_language', null, true);
+            $this->gadget->registry->update('admin_language', null, true);
         }
 
         return true;
