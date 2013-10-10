@@ -657,6 +657,7 @@ function share()
 
     // Public link
     var file = fileById[id];
+    $('public_ui').style.display = file.is_dir? 'none' : '';
     if (file['public'] && !file.dl_url) {
         file.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:id});
     }

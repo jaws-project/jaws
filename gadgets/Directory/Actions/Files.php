@@ -250,8 +250,8 @@ class Directory_Actions_Files extends Jaws_Gadget_HTML
 
             // Validate file
             $file = $model->GetFile($id);
-            if (Jaws_Error::IsError($file)) {
-                throw new Exception($file->getMessage());
+            if (Jaws_Error::IsError($file) || $file['is_dir']) {
+                throw new Exception(_t('DIRECTORY_ERROR_FILE_UPDATE'));
             }
 
             // Validate user
