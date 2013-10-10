@@ -116,7 +116,7 @@ class Jaws_Layout
     function Jaws_Layout()
     {
         // fetch all registry keys related to site attributes
-        $this->attributes = $GLOBALS['app']->Registry->fetchAll('Settings', 'site_%');
+        $this->attributes = $GLOBALS['app']->Registry->fetchAll('Settings', false, 'site_%');
         $this->attributes = array_column($this->attributes, 'key_value', 'key_name');
 
         //parse default site keywords
