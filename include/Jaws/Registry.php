@@ -71,7 +71,9 @@ class Jaws_Registry
      */
     function fetch($key_name, $component = '')
     {
-        if (!@array_key_exists($key_name, $this->_Registry[$component])) {
+        if (!@array_key_exists($key_name, $this->_Registry[$component]) ||
+            is_null($this->_Registry[$component][$key_name]['key_value'])
+        ) {
             $tblReg = Jaws_ORM::getInstance()->table('registry');
             $rowVal = $tblReg->select('key_value', 'custom:boolean')
                 ->where('user', 0)
@@ -238,12 +240,16 @@ class Jaws_Registry
      * @param   string  $component  Component name
      * @return  bool    True is set otherwise False
      */
-    function update($key_name, $key_value, $custom = false, $component = '')
+    function update($key_name, $key_value, $custom = null, $component = '')
     {
-        $data = array(
-            'key_value' => $key_value,
-            'custom' => (bool)$custom
-        );
+        $data = array();
+        if (!is_null($key_value)) {
+            $data['key_value'] = $key_value;
+        }
+        if (!is_null($custom)) {
+            $data['custom'] = (bool)$custom;
+        }
+
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         $tblReg->update($data)
             ->where('user', 0)
