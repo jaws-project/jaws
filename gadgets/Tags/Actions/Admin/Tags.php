@@ -108,11 +108,36 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
         $tpl = $this->gadget->loadTemplate('Tags.html');
         $tpl->SetBlock('tagUI');
 
-        //name
+        // name
         $nameEntry =& Piwi::CreateWidget('Entry', 'name', '');
-        $nameEntry->setStyle('width: 160px;');
+//        $nameEntry->setStyle('width: 160px;');
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
         $tpl->SetVariable('name', $nameEntry->Get());
+
+        // title
+        $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
+        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('title', $titleEntry->Get());
+
+        // description
+        $entry =& Piwi::CreateWidget('TextArea', 'description', '');
+        $entry->SetId('description');
+        $entry->SetRows(4);
+        $entry->SetColumns(30);
+        $entry->SetStyle('width: 99%; direction: ltr; white-space: nowrap;');
+        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
+        $tpl->SetVariable('description', $entry->Get());
+
+
+        // meta_keywords
+        $entry =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
+        $tpl->SetVariable('lbl_meta_keywords', _t('GLOBAL_META_KEYWORDS'));
+        $tpl->SetVariable('meta_keywords', $entry->Get());
+
+        // meta_description
+        $entry =& Piwi::CreateWidget('Entry', 'meta_description', '');
+        $tpl->SetVariable('lbl_meta_description', _t('GLOBAL_META_DESCRIPTION'));
+        $tpl->SetVariable('meta_description', $entry->Get());
 
         $tpl->ParseBlock('tagUI');
         return $tpl->Get();

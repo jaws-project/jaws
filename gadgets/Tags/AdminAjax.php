@@ -85,9 +85,9 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
     function AddTag()
     {
         $this->gadget->CheckPermission('AddTags');
-        $name = jaws()->request->fetchAll('post');
+        $data = jaws()->request->fetchAll('post');
         $tModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
-        $res = $tModel->AddTag($name);
+        $res = $tModel->AddTag($data);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -106,9 +106,10 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
     function UpdateTag()
     {
         $this->gadget->CheckPermission('ManageTags');
-        @list($id, $name) = jaws()->request->fetchAll('post');
+        @list($id, $data) = jaws()->request->fetchAll('post');
+        $data = jaws()->request->fetch('1:array', 'post');
         $tModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
-        $res = $tModel->UpdateTag($id, $name);
+        $res = $tModel->UpdateTag($id, $data);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {

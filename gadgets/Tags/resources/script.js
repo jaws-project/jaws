@@ -81,7 +81,10 @@ function stopTagAction()
 {
     $('id').value                      = 0;
     $('name').value                    = '';
-//    $('btn_save').style.display        = 'none';
+    $('title').value                   = '';
+    $('description').value             = '';
+    $('meta_keywords').value           = '';
+    $('meta_description').value        = '';
     $('btn_cancel').style.display      = 'none';
     $('name').disabled                 = false;
     $('legend_title').innerHTML        = addNewTagTitle;
@@ -100,6 +103,10 @@ function editTag(rowElement, id)
     var tag = TagsAjax.callSync('GetTag', id);
     $('id').value                 = id;
     $('name').value               = tag['name'];
+    $('title').value              = tag['title'];
+    $('description').value        = tag['description'];
+    $('meta_keywords').value      = tag['meta_keywords'];
+    $('meta_description').value   = tag['meta_description'];
 //    $('btn_save').style.display   = 'inline';
     $('btn_cancel').style.display = 'inline';
     $('legend_title').innerHTML   = editTagTitle;
@@ -109,10 +116,26 @@ function editTag(rowElement, id)
  * Update a tag
  */
 function updateTag() {
+
     if($('id').value==0) {
-        TagsAjax.callAsync('AddTag', $('name').value);
+        TagsAjax.callAsync('AddTag',
+            {'name':$('name').value,
+            'title':$('title').value,
+            'description':$('description').value,
+            'meta_keywords':$('meta_keywords').value,
+            'meta_description':$('meta_description').value
+            }
+        );
     } else {
-        TagsAjax.callAsync('UpdateTag', $('id').value, $('name').value);
+        TagsAjax.callAsync('UpdateTag',
+            $('id').value,
+            {'name':$('name').value,
+             'title':$('title').value,
+             'description':$('description').value,
+             'meta_keywords':$('meta_keywords').value,
+             'meta_description':$('meta_description').value
+            }
+        );
     }
 }
 

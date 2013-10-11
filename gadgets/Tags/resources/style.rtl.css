@@ -1,0 +1,13 @@
+.workarea{
+width:370px;
+padding-right:8px;
+vertical-align:top;
+}
+#settings{
+border:1px solid #D3D7CF;
+float:left;
+margin-bottom:4px;
+padding-bottom:10px;
+padding-top:10px;
+width:980px;
+}

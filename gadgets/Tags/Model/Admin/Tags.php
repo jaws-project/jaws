@@ -145,13 +145,14 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      * Add an new tag
      *
      * @access  public
-     * @param   string  $name   Tag name
+     * @param   array   $data   Tag data
      * @return  mixed   Array of Tag info or Jaws_Error on failure
      */
-    function AddTag($name)
+    function AddTag($data)
     {
+        $data['user'] = 0;
         $table = Jaws_ORM::getInstance()->table('tags');
-        $result = $table->insert(array('name' => $name, 'user' => 0))->exec();
+        $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
@@ -163,14 +164,14 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      * Update a tag
      *
      * @access  public
-     * @param   int     $id   Tag id
-     * @param   string  $name   Tag name
+     * @param   int     $id    Tag id
+     * @param   array   $data  Tag data
      * @return  mixed   Array of Tag info or Jaws_Error on failure
      */
-    function UpdateTag($id, $name)
+    function UpdateTag($id, $data)
     {
         $table = Jaws_ORM::getInstance()->table('tags');
-        $result = $table->update(array('name' => $name))->where('id', $id)->exec();
+        $result = $table->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
@@ -300,7 +301,8 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
     function GetTag($id)
     {
         $table = Jaws_ORM::getInstance()->table('tags');
-        $result = $table->select('name', 'user:integer')->where('id', $id)->fetchRow();
+        $table->select('name', 'user:integer', 'title', 'description', 'meta_keywords', 'meta_description');
+        $result = $table->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
