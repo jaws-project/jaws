@@ -153,11 +153,10 @@ class Jaws_User
      * @param   mixed   $user           The username or ID
      * @param   bool    $account        Account information
      * @param   bool    $personal       Personal information
-     * @param   bool    $preferences    Preferences options
      * @param   bool    $contacts       Contacts information
      * @return  mixed   Returns an array with the info of the user and false on error
      */
-    function GetUser($user, $account = true, $personal = false, $preferences = false, $contacts = false)
+    function GetUser($user, $account = true, $personal = false, $contacts = false)
     {
         $columns = array('id:integer', 'avatar');
         // account information
@@ -173,10 +172,6 @@ class Jaws_User
                 'public:boolean', 'privacy:boolean', 'signature', 'about', 'experiences', 'occupations',
                 'interests',)
             );
-        }
-
-        if ($preferences) {
-            $columns = array_merge($columns, array('language', 'theme', 'editor', 'timezone'));
         }
 
         if ($contacts) {
@@ -799,38 +794,6 @@ class Jaws_User
                 } else {
                     $GLOBALS['app']->Session->SetAttribute($k, $v);
                 }
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Update advanced options of a user such as language, theme, editor, etc..
-     *
-     * @access  public
-     * @param   int     $id     User's ID
-     * @param   array   $pData  Preferences information data
-     * @return  bool    Returns true on success, false on failure
-     */
-    function UpdatePreferences($id, $pData)
-    {
-        // unset invalid keys
-        $invalids = array_diff(array_keys($pData), array('language', 'theme', 'editor', 'timezone'));
-        foreach ($invalids as $invalid) {
-            unset($pData[$invalid]);
-        }
-
-        $pData['last_update'] = time();
-        $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update($pData)->where('id', $id)->exec();
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        if (isset($GLOBALS['app']->Session) && $GLOBALS['app']->Session->GetAttribute('user') == $id) {
-            foreach($pData as $k => $v) {
-                $GLOBALS['app']->Session->SetAttribute($k, $v);
             }
         }
 
