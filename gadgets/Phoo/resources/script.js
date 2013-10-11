@@ -158,6 +158,19 @@ function stopAction()
     $('btn_delete').style.display = 'none';
 }
 
+/**
+ * Filter albums combo with selected group
+ */
+function filterAlbums(gid)
+{
+    var response = PhooAjax.callSync('GetAlbums', {'gid': gid});
+    var select = $('albums_list');
+    select.options.length = 0;
+    for (var i=0; i<response.length; i++) {
+        select.options[select.options.length] = new Option(response[i]['name'], response[0]['id']);
+    }
+}
+
 var PhooAjax = new JawsAjax('Phoo', PhooCallback);
 
 var num_entries = 5;

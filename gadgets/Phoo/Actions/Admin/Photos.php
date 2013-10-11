@@ -32,6 +32,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
         $pnModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Photos');
         $albums = $aModel->GetAlbums('createtime', 'ASC');
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
+            $this->AjaxMe('script.js');
             $objDate = $GLOBALS['app']->loadDate();
             $tpl->SetBlock('phoo/photos');
             $tpl->SetVariable('base_action', BASE_SCRIPT . '?gadget=Phoo');
@@ -215,8 +216,20 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
             //Delete key
             $GLOBALS['app']->Session->DeleteAttribute('failures');
 
+            // Groups
+            $gModel = $this->gadget->load('Model')->load('Model', 'Groups');
+            $groups = $gModel->GetGroups();
+            $tpl->SetVariable('lbl_group', _t('GLOBAL_GROUP'));
+            $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
+            foreach ($groups as $group) {
+                $tpl->SetBlock('phoo/photos/group');
+                $tpl->SetVariable('gid', $group['id']);
+                $tpl->SetVariable('group', $group['name']);
+                $tpl->ParseBlock('phoo/photos/group');
+            }
 
             $tpl->ParseBlock('phoo/photos');
+
         } else {
             $tpl->SetBlock('phoo/noalbums');
             $tpl->SetVariable('message', _t('PHOO_EMPTY_ALBUMSET'));

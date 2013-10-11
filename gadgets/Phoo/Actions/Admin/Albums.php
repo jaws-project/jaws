@@ -7,6 +7,7 @@
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Raul Murciano <raul@murciano.net>
+ * @author     Hamid Reza Aboutalebi <hamid@aboutalebi.com>
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
@@ -269,6 +270,13 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
         $album = (int)jaws()->request->fetch('album', 'get');
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
         $foo = $model->DeleteAlbum($album);
+
+        // AlbumGroup
+        if (!Jaws_Error::IsError($foo)) {
+            $agModel = $this->gadget->load('Model')->load('AdminModel', 'AlbumGroup');
+            $agModel->DeleteAlbum($album);
+        }
+
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
     }
 

@@ -93,7 +93,7 @@ class Phoo_Model_Albums extends Phoo_Model
      * @param   string  $direction  order direction
      * @return  mixed   A list of available albums and Jaws_Error on error
      */
-    function GetAlbums($by = 'name', $direction = 'asc')
+    function GetAlbums($by = 'name', $direction = 'asc', $group = 0)
     {
         $directions = array('asc', 'desc');
         $direction = strtolower($direction);
@@ -108,11 +108,17 @@ class Phoo_Model_Albums extends Phoo_Model
         }
 
         $table = Jaws_ORM::getInstance()->table('phoo_album');
-        $table->select('id', 'name', 'count(phoo_image_id) as howmany',
+        $table->select('phoo_album.id', 'name', 'count(phoo_image_id) as howmany',
             'published:boolean', 'createtime');
-        $table->join('phoo_image_album', 'id', 'phoo_album_id', 'left');
-        $table->groupBy('id', 'name', 'published', 'createtime');
+        $table->join('phoo_image_album', 'phoo_album.id', 'phoo_album_id', 'left');
+        $table->groupBy('phoo_album.id', 'name', 'published', 'createtime');
         $table->orderBy("$by $direction");
+
+        if (!empty($group) && $group != 0) {
+            $table->join('phoo_album_group', 'phoo_album.id', 'album', 'left');
+            $table->where('group', $group);
+        }
+
         $rows = $table->fetchAll();
         if (Jaws_Error::IsError($rows)) {
             return new Jaws_Error(_t('PHOO_ERROR_ALBUMS', $by), _t('PHOO_NAME'));

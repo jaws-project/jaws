@@ -147,4 +147,21 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
 
         return $group;
     }
+
+    function GetAlbums()
+    {
+        $gid = jaws()->request->fetch('gid');
+        $aModel = $this->gadget->load('Model')->load('Model', 'Albums');
+        $albums = $aModel->GetAlbums('createtime', 'ASC', $gid);
+        $free_photos[] = array('id'         => 0,
+            'name'       => _t('PHOO_WITHOUT_ALBUM'),
+            'createtime' => date('Y-m-d H:i:s'),
+            'howmany'    => 0);
+        if (Jaws_Error::IsError($albums) || !is_array($albums)) {
+            $albums = $free_photos;
+        } else {
+            $albums = array_merge($free_photos, $albums);
+        }
+        return $albums;
+    }
 }
