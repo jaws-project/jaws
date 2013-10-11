@@ -52,12 +52,26 @@ class Jaws_Gadget_Registry
      * @access  public
      * @param   array   $keys   Array of registry keys, values
      * @param   string  $gadget (Optional) Gadget name
+     * @param   int     $user   (Optional) User ID
      * @return  mixed   Returns number of records inserted otherwise Jaws_Error
      */
-    function insertAll($keys, $gadget = '')
+    function insertAll($keys, $gadget = '', $user = 0)
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->insertAll($keys, $gadget);
+        return $GLOBALS['app']->Registry->insertAll($keys, $gadget, $user);
+    }
+
+    /**
+     * Insert a registry key value
+     *
+     * @access  public
+     * @param   array   $keys   Array of registry keys, values
+     * @param   string  $gadget (Optional) Gadget name
+     * @return  mixed   Returns number of records inserted otherwise Jaws_Error
+     */
+    function insertAllByUser($keys, $gadget = '')
+    {
+        return $this->insertAll($keys, $gadget, $GLOBALS['app']->Session->GetAttribute('user'));
     }
 
     /**
@@ -148,6 +162,19 @@ class Jaws_Gadget_Registry
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $GLOBALS['app']->Registry->delete($gadget, $name);
+    }
+
+    /**
+     * Delete all registry keys related to the user
+     *
+     * @access  public
+     * @param   string  $gadget (Optional) Gadget name
+     * @return  bool    True if success otherwise False
+     */
+    function deleteByUser($gadget = '')
+    {
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
+        return $GLOBALS['app']->Registry->deleteByUser($GLOBALS['app']->Session->GetAttribute('user'), $gadget);
     }
 
 }
