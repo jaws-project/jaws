@@ -60,14 +60,6 @@ class Jaws_Gadget
     var $_IsCore = false;
 
     /**
-     * Is this gadget has layout action?
-     *
-     * @var     bool
-     * @access  private
-     */
-    var $_has_layout = true;
-
-    /**
      * Section of the gadget(Gadget, Customers, etc..)
      *
      * @var     string
@@ -121,7 +113,7 @@ class Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_action = 'DefaultAction';
+    var $default_action = false;
 
     /**
      * Default back-end action name
