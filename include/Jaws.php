@@ -183,108 +183,32 @@ class Jaws
      */
     function loadPreferences($preferences = array(), $loadFromDatabase = true)
     {
-        $cookies = array();
         if ($loadFromDatabase) {
+            $user = $this->Session->GetAttribute('user');
             $this->_Preferences = array(
-                'theme'             => $this->Registry->fetch('theme', 'Settings'),
-                'language'          => $this->Registry->fetch(
+                'theme'             => $this->Registry->fetchByUser($user, 'theme', 'Settings'),
+                'language'          => $this->Registry->fetchByUser(
+                    $user,
                     JAWS_SCRIPT == 'index'? 'site_language': 'admin_language',
                     'Settings'
                 ),
-                'editor'            => $this->Registry->fetch('editor', 'Settings'),
-                'timezone'          => $this->Registry->fetch('timezone', 'Settings'),
-                'calendar_type'     => $this->Registry->fetch('calendar_type', 'Settings'),
-                'calendar_language' => $this->Registry->fetch('calendar_language', 'Settings'),
+                'editor'            => $this->Registry->fetchByUser($user, 'editor', 'Settings'),
+                'timezone'          => $this->Registry->fetchByUser($user, 'timezone', 'Settings'),
+                'calendar_type'     => $this->Registry->fetchByUser($user, 'calendar_type', 'Settings'),
+                'calendar_language' => $this->Registry->fetchByUser($user, 'calendar_language', 'Settings'),
             );
-
-            $cookie_precedence = ($this->Registry->fetch('cookie_precedence', 'Settings') == 'true');
-            if ($cookie_precedence) {
-                // load cookies preferences
-                $cookies = $GLOBALS['app']->Session->GetCookie('preferences');
-                if (!is_array($cookies)) {
-                    $cookies = array();
-                }
-            }
-
-            // load from session
-            $this->_Theme            = $this->Session->GetAttribute('theme');
-            $this->_Language         = $this->Session->GetAttribute('language');
-            $this->_Editor           = $this->Session->GetAttribute('editor');
-            $this->_Timezone         = $this->Session->GetAttribute('timezone');
-            $this->_CalendarType     = $this->Session->GetAttribute('calendartype');
-            $this->_CalendarLanguage = $this->Session->GetAttribute('calendarlanguage');
         }
 
         // merge default with passed preferences
         $this->_Preferences = array_merge($this->_Preferences, $preferences);
 
-        // theme
-        if (empty($this->_Theme)) {
-            if (array_key_exists('theme', $cookies)) {
-                $this->_Theme = $cookies['theme'];
-            } else {
-                $this->_Theme = $this->_Preferences['theme'];
-            }
-        }
-
-        // language
-        if (JAWS_SCRIPT == 'admin') {
-            $this->_Language = empty($this->_Language)? $this->_Preferences['language'] : $this->_Language;
-        } else {
-            if (array_key_exists('language', $cookies)) {
-                $this->_Language = $cookies['language'];
-            } else {
-                $this->_Language = $this->_Preferences['language'];
-            }
-        }
-
-        // editor
-        if (JAWS_SCRIPT == 'admin') {
-            if (empty($this->_Editor)) {
-                if (array_key_exists('editor', $cookies)) {
-                    $this->_Editor = $cookies['editor'];
-                } else {
-                    $this->_Editor = $this->_Preferences['editor'];
-                }
-            }
-        } else {
-            $this->_Editor = 'TextArea';
-        }
-
-        // timezone
-        if (is_null($this->_Timezone)) {
-            if (array_key_exists('timezone', $cookies)) {
-                $this->_Timezone = $cookies['timezone'];
-            } else {
-                $this->_Timezone = $this->_Preferences['timezone'];
-            }
-        }
-
-        // calendar type
-        if (empty($this->_CalendarType)) {
-            if (array_key_exists('calendar_type', $cookies)) {
-                $this->_CalendarType = $cookies['calendar_type'];
-            } else {
-                $this->_CalendarType = $this->_Preferences['calendar_type'];
-            }
-        }
-
-        // calendar language
-        if (empty($this->_CalendarLanguage)) {
-            if (array_key_exists('calendar_language', $cookies)) {
-                $this->_CalendarLanguage = $cookies['calendar_language'];
-            } else {
-                $this->_CalendarLanguage = $this->_Preferences['calendar_language'];
-            }
-        }
-
         // filter non validate character
-        $this->_Theme            = preg_replace('/[^[:alnum:]_-]/', '', $this->_Theme);
-        $this->_Language         = preg_replace('/[^[:alnum:]_-]/', '', $this->_Language);
-        $this->_Editor           = preg_replace('/[^[:alnum:]_-]/', '', $this->_Editor);
+        $this->_Theme            = preg_replace('/[^[:alnum:]_-]/', '', $this->_Preferences['theme']);
+        $this->_Language         = preg_replace('/[^[:alnum:]_-]/', '', $this->_Preferences['language']);
+        $this->_Editor           = preg_replace('/[^[:alnum:]_-]/', '', $this->_Preferences['editor']);
         $this->_Timezone         = $this->_Preferences['timezone'];
-        $this->_CalendarType     = preg_replace('/[^[:alnum:]_]/',  '', $this->_CalendarType);
-        $this->_CalendarLanguage = preg_replace('/[^[:alnum:]_]/',  '', $this->_CalendarLanguage);
+        $this->_CalendarType     = preg_replace('/[^[:alnum:]_]/',  '', $this->_Preferences['calendar_type']);
+        $this->_CalendarLanguage = preg_replace('/[^[:alnum:]_]/',  '', $this->_Preferences['calendar_language']);
 
         // load the language translates
         $this->Translate->Init($this->_Language);
