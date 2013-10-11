@@ -83,7 +83,6 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
 
             $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
             $btnSave->AddEvent(ON_CLICK, "updateTag();");
-//            $btnSave->SetStyle('display: none;');
             $tpl->SetVariable('btn_save', $btnSave->Get());
         }
 
