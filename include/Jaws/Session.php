@@ -336,10 +336,6 @@ class Jaws_Session
             $info['email']      = '';
             $info['url']        = '';
             $info['avatar']     = '';
-            $info['language']   = '';
-            $info['theme']      = '';
-            $info['editor']     = '';
-            $info['timezone']   = null;
         }
 
         $this->_Attributes = array();
@@ -365,11 +361,6 @@ class Jaws_Session
         $this->SetAttribute('email',      $info['email']);
         $this->SetAttribute('url',        $info['url']);
         $this->SetAttribute('avatar',     $info['avatar']);
-        //preferences
-        $this->SetAttribute('language',   $info['language']);
-        $this->SetAttribute('theme',      $info['theme']);
-        $this->SetAttribute('editor',     $info['editor']);
-        $this->SetAttribute('timezone',  (trim($info['timezone']) == "") ? null : $info['timezone']);
 
         $this->_SessionID = $this->Synchronize($this->_SessionID);
         return true;
@@ -401,10 +392,6 @@ class Jaws_Session
         $this->SetAttribute('email',       '');
         $this->SetAttribute('url',         '');
         $this->SetAttribute('avatar',      '');
-        $this->SetAttribute('language',    '');
-        $this->SetAttribute('theme',       '');
-        $this->SetAttribute('editor',      '');
-        $this->SetAttribute('timezone',    null);
         return true;
     }
 
