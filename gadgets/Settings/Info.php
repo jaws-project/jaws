@@ -27,12 +27,4 @@ class Settings_Info extends Jaws_Gadget
      */
     var $_IsCore = true;
 
-    /**
-     * Default front-end action name
-     *
-     * @var     string
-     * @access  protected
-     */
-    var $default_action = false;
-
 }
