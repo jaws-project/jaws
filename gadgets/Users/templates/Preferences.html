@@ -6,26 +6,27 @@
     <div class="{type}">{text}</div>
   </div>
   <!-- END response -->
-  <form name="preferencesBox" action="{base_script}" method="post">
-    <input type="hidden" name="gadget" value="Users" />
-    <input type="hidden" name="action" value="UpdatePreferences" />
     <div class="content">
       <!-- BEGIN gadget -->
-      <fieldset>
-        <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
-          <span>{lbl_private}</span>
-        </legend>
-        <div>
-          <!-- BEGIN key -->
+      <form name="preferencesBox" action="{base_script}" method="post">
+        <input type="hidden" name="gadget" value="Users" />
+        <input type="hidden" name="action" value="UpdatePreferences" />
+        <input type="hidden" name="component" value="{component}" />
+        <fieldset>
+          <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
+            <span>{lbl_private}</span>
+          </legend>
           <div>
-            <label>{key_name}:</label>{input_value}
+            <!-- BEGIN key -->
+            <div>
+              <label>{key_name}:</label>{input_value}
+            </div>
+            <!-- END key -->
+            <div class="actions"><button type="submit" value="{update}">{update}</button></div>
           </div>
-          <!-- END key -->
-        </div>
-      </fieldset>
+        </fieldset>
+      </form>
       <!-- END gadget -->
     </div>
-    <div class="actions"><button type="submit" value="{update}">{update}</button></div>
-  </form>
 </div>
 <!-- END preferences -->

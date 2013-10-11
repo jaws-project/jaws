@@ -29,16 +29,11 @@ class Users_Actions_Preferences extends Users_HTML
         }
 
         $this->gadget->CheckPermission('EditUserPreferences');
-        //Here we load the Settings/Layout models (which is part of core) to extract some data
-        $settingsModel = $GLOBALS['app']->loadGadget('Settings', 'AdminModel', 'Settings');
-
-        require_once JAWS_PATH . 'include/Jaws/User.php';
-        $jUser = new Jaws_User;
-        $info  = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), false, false, true);
 
         // Load the template
         $tpl = $this->gadget->loadTemplate('Preferences.html');
         $tpl->SetBlock('preferences');
+        $tpl->SetVariable('title', _t('USERS_PREFERENCES_INFO'));
 
         $gDir = JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
         $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
@@ -69,20 +64,20 @@ class Users_Actions_Preferences extends Users_HTML
             $customized = array_column($customized, 'key_value', 'key_name');
 
             $tpl->SetBlock('preferences/gadget');
+            $tpl->SetVariable('component', $gadget);
             foreach ($keys as $key_name => $key_value) {
                 $tpl->SetBlock('preferences/gadget/key');
                 $tpl->SetVariable('gadget', $gadget);
                 $tpl->SetVariable('key_name', $key_name);
-                $key_element_name = $gadget.'_'.$key_name;
                 if (@isset($options[$key_name]['values'])) {
-                    $element =& Piwi::CreateWidget('Combo', $key_element_name);
-                    $element->SetID($key_element_name);
+                    $element =& Piwi::CreateWidget('Combo', $key_name);
+                    $element->SetID($key_name);
                     foreach ($options[$key_name]['values'] as $value => $title) {
                         $element->AddOption($title, $value);
                     }
                 } else {
-                    $element =& Piwi::CreateWidget('Entry', $key_element_name);
-                    $element->SetID($key_element_name);
+                    $element =& Piwi::CreateWidget('Entry', $key_name);
+                    $element->SetID($key_name);
                 }
 
                 $element->SetValue(isset($customized[$key_name])? $customized[$key_name] : $key_value);
@@ -90,12 +85,9 @@ class Users_Actions_Preferences extends Users_HTML
 
                 $tpl->ParseBlock('preferences/gadget/key');
             }
+            $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
             $tpl->ParseBlock('preferences/gadget');
         }
-
-        $tpl->SetVariable('title', _t('USERS_PREFERENCES_INFO'));
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
 
         if ($response = $GLOBALS['app']->Session->PopResponse('Users.Preferences')) {
             $tpl->SetBlock('preferences/response');
@@ -103,6 +95,7 @@ class Users_Actions_Preferences extends Users_HTML
             $tpl->SetVariable('text', $response['text']);
             $tpl->ParseBlock('preferences/response');
         }
+
         $tpl->ParseBlock('preferences');
         return $tpl->Get();
     }
@@ -125,15 +118,14 @@ class Users_Actions_Preferences extends Users_HTML
         }
 
         $this->gadget->CheckPermission('EditUserPreferences');
-        $post = jaws()->request->fetch(array('user_language', 'user_theme', 'user_editor', 'user_timezone'), 'post');
+        $post = jaws()->request->fetchAll('post');
+        $gadget = $post['component'];
+        unset($post['gadget'], $post['action'], $post['component']);
 
-        $model = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Preferences');
-        $result = $model->UpdatePreferences(
-            $GLOBALS['app']->Session->GetAttribute('user'),
-            $post['user_language'],
-            $post['user_theme'],
-            $post['user_editor'],
-            $post['user_timezone']
+        $this->gadget->registry->deleteByUser($gadget);
+        $result = $this->gadget->registry->insertAllByUser(
+            array_map(null, array_keys($post), array_values($post)),
+            $gadget
         );
         if (!Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushResponse(
