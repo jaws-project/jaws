@@ -58,4 +58,72 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 
+    /**
+     * Add new group
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function AddGroup()
+    {
+        $rqst = jaws()->request->fetch(array('name', 'description'));
+        $rqst['[description]'] = $rqst['description'];
+        unset($rqst['description']);
+        $model = $this->gadget->load('Model')->load('AdminModel', 'Groups');
+        $res = $model->AddGroup($rqst);
+
+        if (Jaws_Error::isError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+        } else {
+            $response =  array();
+            $response['id']      = $res;
+            $response['message'] = _t('PHOO_GROUPS_GROUP_CREATED');
+
+            $GLOBALS['app']->Session->PushLastResponse($response, RESPONSE_NOTICE);
+        }
+
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Edit a group
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function EditGroup()
+    {
+        $rqst = jaws()->request->fetch(array('name', 'description'));
+        $gid  = (int) jaws()->request->fetch('id');
+        $rqst['[description]'] = $rqst['description'];
+        unset($rqst['description']);
+        $model = $this->gadget->load('Model')->load('AdminModel', 'Groups');
+        $res = $model->EditGroup($gid, $rqst);
+
+        if (Jaws_Error::isError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_GROUPS_GROUP_UPDATED'), RESPONSE_NOTICE);
+        }
+
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Gets data of a group
+     *
+     * @access  public
+     * @return  mixed   Group data array or False on error
+     */
+    function GetGroup()
+    {
+        $gid = jaws()->request->fetch('gid');
+        $model = $this->gadget->load('Model')->load('Model', 'Groups');
+        $group = $model->GetGroup($gid);
+        if (Jaws_Error::IsError($group)) {
+            return false; //we need to handle errors on ajax
+        }
+
+        return $group;
+    }
 }

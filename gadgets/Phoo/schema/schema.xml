@@ -183,4 +183,74 @@
   </declaration>
  </table>
 
+ <table>
+    <name><variable>table_prefix</variable>phoo_group</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>name</name>
+            <type>text</type>
+            <length>32</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>description</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>phoo_group_name</name>
+            <unique>true</unique>
+            <field>
+                <name>name</name>
+            </field>
+        </index>
+
+    </declaration>
+ </table>
+
+ <table>
+    <name><variable>table_prefix</variable>phoo_album_group</name>
+    <declaration>
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>album</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>group</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>phoo_album_group_ag</name>
+            <unique>true</unique>
+            <field>
+                <name>album</name>
+            </field>
+            <field>
+                <name>group</name>
+            </field>
+        </index>
+
+    </declaration>
+ </table>
 </database>

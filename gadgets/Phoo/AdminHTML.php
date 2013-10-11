@@ -21,7 +21,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
      */
     function MenuBar($action_selected)
     {
-        $actions = array('Photos', 'ManageComments', 'AdditionalSettings', 'Import');
+        $actions = array('Photos', 'Groups', 'ManageComments', 'AdditionalSettings', 'Import');
         if (!in_array($action_selected, $actions))
             $action_selected = 'Photos';
 
@@ -33,6 +33,10 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         if (Jaws_Gadget::IsGadgetInstalled('Comments') && $this->gadget->GetPermission('ManageComments')) {
             $menubar->AddOption('ManageComments', _t('PHOO_COMMENTS'),
                                 BASE_SCRIPT . '?gadget=Phoo&amp;action=ManageComments', 'images/stock/stock-comments.png');
+        }
+        if ($this->gadget->GetPermission('Groups')) {
+            $menubar->AddOption('Groups', _t('PHOO_GROUPS'),
+                                BASE_SCRIPT . '?gadget=Phoo&amp;action=Groups', 'gadgets/Phoo/images/groups_mini.png');
         }
         if ($this->gadget->GetPermission('Settings')) {
             $menubar->AddOption('AdditionalSettings', _t('PHOO_ADDITIONAL_SETTINGS'),

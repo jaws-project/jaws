@@ -81,6 +81,60 @@ function addEntry(title)
     $('phoo_addentry' + id).innerHTML = entry + '<span id="phoo_addentry' + (id + 1) + '">' + $('phoo_addentry' + id).innerHTML + '</span>';
 }
 
+/**
+ * add a group entry
+ */
+function saveGroup()
+{
+        if($('gid').value==0) {
+            var response = PhooAjax.callSync('AddGroup', {'name': $('name').value, 'description': $('description').value});
+            if (response[0]['type'] == 'response_notice') {
+                var box = $('groups_combo');
+                box.options[box.options.length] = new Option($('name').value, response[0]['id']);
+                response[0]['message'] = response[0]['message']['message'];
+                stopAction();
+            }
+            showResponse(response);
+        } else {
+            var box = $('groups_combo');
+            var groupIndex = box.selectedIndex;
+            var response = PhooAjax.callSync('EditGroup', 
+                                {'id': $('gid').value, 'name': $('name').value, 'description': $('description').value});
+            if (response[0]['type'] == 'response_notice') {
+                box.options[groupIndex].text = $('name').value;
+                stopAction();
+            }
+            showResponse(response);
+        }
+
+    PhooAjax.callAsync('AddGroup', {'name': $('name').value, 'description': $('description').value});
+}
+
+/**
+ * Fill form with selected group data
+ */
+function editGroup(id) 
+{
+    if (id == 0) return;
+    var groupInfo = PhooAjax.callSync('GetGroup', {'gid': id});
+    $('gid').value    = groupInfo['id'];
+    $('name').value   = groupInfo['name'].defilter();
+    $('description').value = groupInfo['description'].defilter();
+    $('btn_delete').style.display = 'inline';
+}
+
+/**
+ * Clean the form
+ */
+function stopAction() 
+{
+    $('gid').value         = 0;
+    $('name').value        = '';
+    $('description').value = '';
+    $('groups_combo').selectedIndex = -1;
+    $('btn_delete').style.display = 'none';
+}
+
 var PhooAjax = new JawsAjax('Phoo', PhooCallback);
 
 var num_entries = 5;

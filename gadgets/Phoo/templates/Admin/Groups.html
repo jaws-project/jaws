@@ -1,0 +1,55 @@
+<!-- BEGIN groups -->
+{menubar}
+<div id="main">
+  <table>
+    <tr><td class="groups_title">
+      <b>{groups_title}</b>
+      <table style="width: 100%">
+        <tr>
+          <td style="width: 220px;">
+            <div id="groupsComboTable">{combo}</div>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td id="catinfoform">
+      <input type="hidden" name="gid" id="gid" value="0" />
+      <fieldset>
+        <legend><span id="legend_title">{legend_title}</span></legend>
+        <div id="work_area">
+          <div>
+            <label for="name">{lbl_name}</label><br/>
+            <input type="text" style="width: 300px;" id="name" name="name">
+          </div>
+          <div>
+            <label for="description">{lbl_description}</label><br/>
+            <textarea style="width: 300px;" id="description" name="description"></textarea>
+          </div>
+        </div>
+      </fieldset>
+      <div class="actions">
+        <button onclick="javascript:deleteGroup();" style="display: none;" value="{delete}" id="btn_delete" name="btn_delete" type="button">
+            <img height="16" width="16" id="btn_delete_stockimage" alt="" src="{delete_icon}">
+            &nbsp;{delete}
+        </button>
+        <button onclick="javascript:stopAction();" style="display: inline;" value="{cancel}" id="btn_cancel" name="btn_cancel" type="button">
+            <img height="16" width="16" id="btn_cancel_stockimage" alt="" src="{cancel_icon}">
+            &nbsp;{cancel}
+        </button>
+        <button onclick="javascript:saveGroup();" style="display: inline;" value="{save}" id="btn_save" name="btn_save" type="button">
+            <img height="16" width="16" id="btn_save_stockimage" alt="" src="{save_icon}">
+            &nbsp;{save}
+        </button>
+      </div>
+    </td></tr>
+  </table>
+</div>
+<script type="text/javascript">
+    var deleteMessage = "{delete_message}";
+    var incompleteGroupFields = "{incompleteGroupFields}";
+    var addGroupTitle = "{addGroupTitle}";
+    var editGroupTitle = "{editGroupTitle}";
+
+    $('legend_title').innerHTML = addGroupTitle;
+</script>
+<!-- END groups -->

@@ -86,6 +86,10 @@ $actions['FinishImport'] = array(
     'normal' => true,
     'file' => 'Import',
 );
+$actions['Groups'] = array(
+    'normal' => true,
+    'file' => 'Groups',
+);
 
 /* Standalone Admin Actions */
 $actions['Thumb'] = array(
