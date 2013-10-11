@@ -42,32 +42,6 @@ class LinkDump_Model_Links extends Jaws_Gadget_Model
     }
 
     /**
-     * Retrieve All links tagged by a specific keyword
-     *
-     * @access  public
-     * @param   string  $tag    The keyword (tag)
-     * @return  array   An array contains links info
-     */
-    function GetTagLinks($tag)
-    {
-        $ltagsTable = Jaws_ORM::getInstance()->table('linkdump_tags');
-        $res = $ltagsTable->select('id:integer')->where('tag', $tag)->fetchRow();
-        if (!Jaws_Error::IsError($res) && !empty($res)) {
-            $tag_id = $res['id'];
-
-            $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
-            $linksTable->select(
-                'id:integer', 'title', 'description', 'url', 'fast_url',
-                'createtime', 'updatetime', 'clicks:integer'
-            );
-            $linksTable->join('linkdump_links_tags', 'linkdump_links_tags.link_id', 'linkdump_links.id');
-            $res = $linksTable->where('tag_id', $tag_id)->orderBy('id asc')->fetchAll();
-        }
-
-        return $res;
-    }
-
-    /**
      * Increase the link's clicks by one
      *
      * @access  public
@@ -78,19 +52,5 @@ class LinkDump_Model_Links extends Jaws_Gadget_Model
     {
         $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
         return $linksTable->update(array('clicks' => $linksTable->expr('clicks + ?', 1)))->where('id', $id)->exec();
-    }
-
-    /**
-     * Generates a TagCloud
-     *
-     * @access  public
-     * @return  mixed   TagCloud data or Jaws_Error on error
-     */
-    function CreateTagCloud()
-    {
-        $ltagsTable = Jaws_ORM::getInstance()->table('linkdump_links_tags');
-        $ltagsTable->select('tag_id:integer', 'tag', 'count(tag_id) as howmany:integer');
-        $ltagsTable->join('linkdump_tags', 'linkdump_tags.id', 'linkdump_links_tags.tag_id');
-        return $ltagsTable->groupBy('tag_id', 'tag')->orderBy('tag')->fetchAll();
     }
 }
