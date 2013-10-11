@@ -19,12 +19,10 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
      * @param   bool    $core_gadget accepts true/false/null
      * @param   bool    $installed   accepts true/false/null
      * @param   bool    $updated     accepts true/false/null
-     * @param   bool    $has_layout  accepts true/false/null
      * @param   bool    $has_html    accepts true/false/null
      * @return  array   List of gadgets
      */
-    function GetGadgetsList($core_gadget = null, $installed = null, $updated = null,
-        $has_layout = null, $has_html = null)
+    function GetGadgetsList($core_gadget = null, $installed = null, $updated = null, $has_html = null)
     {
         //TODO: implementing cache for this method
         static $gadgetsList;
@@ -96,7 +94,6 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
                         'installed'   => (bool)$gInstalled,
                         'updated'     => (bool)$gUpdated,
                         'disabled'    => strpos($disabled_gadgets, ",$gadget,") !==false,
-                        'has_layout'  => $objGadget->_has_layout,
                         'has_html'    => $objGadget->default_action? true : false,
                 );
             }
@@ -109,7 +106,6 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
             if ((is_null($core_gadget) || $gadget['core_gadget'] == $core_gadget) &&
                 (is_null($installed) || $gadget['installed'] == $installed) &&
                 (is_null($updated) || $gadget['updated'] == $updated) &&
-                (is_null($has_layout) || $gadget['has_layout'] == $has_layout) &&
                 (is_null($has_html) || $gadget['has_html'] == $has_html))
             {
                 $resList[$gadget['name']] = $gadget;
