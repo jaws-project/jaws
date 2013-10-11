@@ -34,9 +34,7 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
     {
         $filters = jaws()->request->fetchAll('post');
         $filters['gadget'] = $filters['gadgets_filter'];
-        $filters['action'] = $filters['action_filter'];
         unset($filters['gadgets_filter']);
-        unset($filters['action_filter']);
         $tModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
         return $tModel->GetTagsCount($filters);
     }

@@ -58,14 +58,6 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
             $tpl->SetVariable('gadgets_filter', $gadgets_filter->Get());
         }
 
-        //Actions filter
-        $actions =& Piwi::CreateWidget('Combo', 'actions');
-        $actions->AddOption('&nbsp;',0);
-        $actions->SetDefault(0);
-        $actions->AddEvent(ON_CHANGE, 'searchTags();');
-        $tpl->SetVariable('lbl_actions', _t('TAGS_ACTIONS'));
-        $tpl->SetVariable('actions', $actions->Get());
-
         // filter
         $filterData = jaws()->request->fetch('filter', 'get');
         $filterEntry =& Piwi::CreateWidget('Entry', 'filter', is_null($filterData)? '' : $filterData);
