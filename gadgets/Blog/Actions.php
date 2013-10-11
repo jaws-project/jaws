@@ -11,6 +11,9 @@
  */
 $actions = array();
 
+$actions['DefaultAction'] = array(
+    'normal' => true,
+);
 $actions['LastPost'] = array(
     'normal' => true,
     'file'   => 'Post',
