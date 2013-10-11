@@ -381,6 +381,11 @@ float:left;
 float:right;
 }
 /* users style */
+.users.preferences input,.users.preferences textarea,.users.preferences select{
+float:right;
+width:380px;
+display:inline;
+}
 .users #personal_fname,.users #personal_lname,
 .users #username,.users #nickname,.users #personal_ssn,.users #email,
 .users #country,.users #city,.users #postal_code,
