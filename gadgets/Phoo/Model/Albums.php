@@ -19,11 +19,17 @@ class Phoo_Model_Albums extends Phoo_Model
      * @access  public
      * @return  array  Returns an array of the dates of the phoo entries and Jaws_Error on error
      */
-    function GetAlbumList()
+    function GetAlbumList($gid = 0)
     {
         $table = Jaws_ORM::getInstance()->table('phoo_album');
-        $table->select('id', 'name', 'description', 'createtime');
+        $table->select('phoo_album.id', 'name', 'description', 'createtime');
         $table->where('published', true)->orderBy($this->GetOrderType('albums_order_type'));
+
+        if (!empty($gid) && $gid != 0) {
+            $table->join('phoo_album_group', 'phoo_album.id', 'album', 'left');
+            $table->and()->where('group', $gid);
+        }
+
         $albums = $table->fetchAll();
         if (Jaws_Error::IsError($albums)) {
             return new Jaws_Error(_t('PHOO_ERROR_ALBUMLIST'), _t('PHOO_NAME'));

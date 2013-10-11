@@ -167,7 +167,7 @@ function filterAlbums(gid)
     var select = $('albums_list');
     select.options.length = 0;
     for (var i=0; i<response.length; i++) {
-        select.options[select.options.length] = new Option(response[i]['name'], response[0]['id']);
+        select.options[select.options.length] = new Option(response[i]['name'], response[i]['id']);
     }
 }
 

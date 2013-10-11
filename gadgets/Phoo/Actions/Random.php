@@ -26,6 +26,7 @@ class Phoo_Actions_Random extends Jaws_Gadget_HTML
         $albums = $model->GetAlbums();
         if (!Jaws_Error::IsError($albums)) {
             $palbums = array();
+            $palbums[0] = _t('GLOBAL_ALL');
             foreach ($albums as $album) {
                 $palbums[$album['id']] = $album['name'];
             }

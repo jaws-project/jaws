@@ -18,6 +18,7 @@ $actions['AlbumList'] = array(
     'normal' => true,
     'layout' => true,
     'file' => 'Albums',
+    'parametric' => true,
 );
 $actions['ViewAlbum'] = array(
     'normal' => true,

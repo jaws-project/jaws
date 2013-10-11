@@ -25,12 +25,12 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
         $tpl->SetVariable('menubar', $this->MenuBar('AdminPhotos'));
 
         $album = jaws()->request->fetch('album', 'get');
-        $post  = jaws()->request->fetch(array('date', 'album:array'), 'post');
+        $post  = jaws()->request->fetch(array('date', 'album:array', 'group'), 'post');
 
         $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
         $pModel = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Photos');
         $pnModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Photos');
-        $albums = $aModel->GetAlbums('createtime', 'ASC');
+        $albums = $aModel->GetAlbums('createtime', 'ASC', $post['group']);
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
             $this->AjaxMe('script.js');
             $objDate = $GLOBALS['app']->loadDate();
@@ -221,10 +221,18 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
             $groups = $gModel->GetGroups();
             $tpl->SetVariable('lbl_group', _t('GLOBAL_GROUP'));
             $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
+            if (!isset($post['group'])) {
+                $post['group'] = 0;
+            }
+
             foreach ($groups as $group) {
                 $tpl->SetBlock('phoo/photos/group');
                 $tpl->SetVariable('gid', $group['id']);
                 $tpl->SetVariable('group', $group['name']);
+                if ($post['group'] == $group['id']) {
+                    $tpl->SetBlock('phoo/photos/group/selected_group');
+                    $tpl->ParseBlock('phoo/photos/group/selected_group');
+                }
                 $tpl->ParseBlock('phoo/photos/group');
             }
 

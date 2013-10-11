@@ -67,7 +67,8 @@ class Phoo_Model extends Jaws_Gadget_Model
                 $orderType = 'title';
             }
         } else {
-            if (!in_array($orderType, array('createtime desc', 'createtime', 'name desc', 'name', 'id desc', 'id' )))
+            if (!in_array($orderType, array('createtime desc', 'createtime', 
+                                        'phoo_album.name desc', 'phoo_album.name', 'phoo_album.id desc', 'phoo_album.id' )))
             {
                 $orderType = 'name';
             }

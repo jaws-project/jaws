@@ -14,18 +14,46 @@
 class Phoo_Actions_Albums extends Jaws_Gadget_HTML
 {
     /**
+     * Get AlbumList action params(group list)
+     *
+     * @access  public
+     * @return  array list of AlbumList action params(group list)
+     */
+    function AlbumListLayoutParams()
+    {
+        $result = array();
+        $model = $this->gadget->load('Model')->load('Model', 'Groups');
+        $groups = $model->GetGroups();
+        if (!Jaws_Error::IsError($groups)) {
+            $pgroups = array();
+            $pgroups[0] = _t('GLOBAL_ALL');
+            foreach ($groups as $group) {
+                $pgroups[$group['id']] = $group['name'];
+            }
+
+            $result[] = array(
+                'title' => _t('GLOBAL_GROUP'),
+                'value' => $pgroups
+            );
+        }
+
+        return $result;
+    }
+
+    /**
      * Displays an index of galleries.
      *
      * @access  public
+     * @param   int      $gid         Group ID
      * @return  string XHTML template content
      */
-    function AlbumList()
+    function AlbumList($gid = 0)
     {
         $tpl = $this->gadget->loadTemplate('Albums.html');
         $tpl->SetBlock('albums');
         $tpl->SetVariable('title', _t('PHOO_ALBUMS'));
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
-        $albums = $model->GetAlbumList();
+        $albums = $model->GetAlbumList($gid);
         if (!Jaws_Error::IsError($albums)) {
             $date = $GLOBALS['app']->loadDate();
             require_once JAWS_PATH . 'include/Jaws/Image.php';
