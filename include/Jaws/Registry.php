@@ -138,15 +138,15 @@ class Jaws_Registry
         $value = $this->fetch($key_name, $component);
         if (!is_null($value) && $this->_Registry[$component][$key_name]['custom']) {
             $tblReg = Jaws_ORM::getInstance()->table('registry');
-            $value  = $tblReg->select('key_value')
+            $uvalue  = $tblReg->select('key_value')
                 ->where('user', (int)$user)
                 ->and()
                 ->where('component', $component)
                 ->and()
                 ->where('key_name', $key_name)
                 ->fetchOne();
-            if (!Jaws_Error::IsError($value) && !is_null($value)) {
-                return $value;
+            if (!Jaws_Error::IsError($uvalue) && !is_null($uvalue)) {
+                return $uvalue;
             }
         }
 
