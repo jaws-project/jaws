@@ -106,7 +106,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
     function SaveNewAlbum()
     {
         $this->gadget->CheckPermission('ManageAlbums');
-        $post        = jaws()->request->fetch(array('name', 'allow_comments', 'published'), 'post');
+        $post        = jaws()->request->fetch(array('name', 'allow_comments:array', 'published'), 'post');
         $description = jaws()->request->fetch('description', 'post', false);
 
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
@@ -234,7 +234,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
     {
         $this->gadget->CheckPermission('ManageAlbums');
 
-        $post        = jaws()->request->fetch(array('name', 'album', 'allow_comments', 'published'), 'post');
+        $post        = jaws()->request->fetch(array('name', 'album', 'allow_comments:array', 'published'), 'post');
         $description = jaws()->request->fetch('description', 'post', false);
 
         $id = (int)$post['album'];
