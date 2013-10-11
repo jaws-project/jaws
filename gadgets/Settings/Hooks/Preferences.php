@@ -20,19 +20,23 @@ class Settings_Hooks_Preferences extends Jaws_Gadget_Hook
     {
         $result = array();
         $languages = Jaws_Utils::GetLanguagesList();
-        $keys = $this->gadget->registry->fetchAllByUser();
-        foreach ($keys as $index => $key) {
-            $result[$key['key_name']] = array('key_value' => $key['key_value']);
-            switch ($key['key_name']) {
-                case 'admin_language':
-                    $result[$key['key_name']]['key_values'] = $languages;
-                    break;
-                default:
-            }
-        }
+        $themes = Jaws_Utils::GetThemesList();
+        $themes = array_column(array_values($themes), 'title', 'name');
+        $objSettings = $GLOBALS['app']->loadGadget('Settings', 'AdminModel', 'Settings');
+        $objComponents = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
+        $gadgets = $objComponents->GetGadgetsList(null, true, true, null, true);
+        $gadgets = array_column(array_values($gadgets), 'title', 'name');
 
+        $result['admin_language']['values'] = $languages;
+        $result['site_language']['values'] = $languages;
+        $result['calendar_language']['values'] = $languages;
+        $result['calendar_type']['values'] = $objSettings->GetCalendarList();
+        $result['date_format']['values'] = $objSettings->GetDateFormatList();
+        $result['theme']['values'] = $themes;
+        $result['main_gadget']['values'] = $gadgets;
+        $result['editor']['values'] = $objSettings->GetEditorList();
+        $result['timezone']['values'] = $objSettings->GetTimeZonesList();
         return $result;
-
     }
 
 }
