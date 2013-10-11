@@ -1,40 +1,31 @@
 <!-- BEGIN preferences -->
-<div class="gadget users preferencesbox">
+<div class="gadget users preferences">
   <h2>{title}</h2>
   <!-- BEGIN response -->
   <div class="gadget_response">
     <div class="{type}">{text}</div>
   </div>
   <!-- END response -->
-  <!-- BEGIN gadget -->
-  <fieldset>
-    <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
-      <span>{lbl_private}</span>
-    </legend>
-    <div>
-      <!-- BEGIN key -->
-      <div>
-        <label>{key_name}:</label>
-        <input name="{gadget}_{key_name}" id="{gadget}_{key_name}" value="{key_value}" type="text" style="direction: ltr;" />
-      </div>
-      <!-- END key -->
-    </div>
-  </fieldset>
-  <!-- END gadget -->
-  <!-- BEGIN public -->
   <form name="preferencesBox" action="{base_script}" method="post">
-  <input type="hidden" name="gadget" value="Users" />
-  <input type="hidden" name="action" value="UpdatePreferences" />
-  <div class="content">
-    <fieldset>
-      <div class="user_avatar">{avatar}</div>
-      <div><label for="user_language">{language}:</label>{user_language}</div>
-      <div><label for="user_theme">{theme}:</label>{user_theme}</div>
-      <div><label for="user_editor">{editor}:</label>{user_editor}</div>
-      <div><label for="user_timezone">{timezone}:</label>{user_timezone}</div>
-    </fieldset>
-  </div>
-  <div class="actions"><button type="submit" value="{update}">{update}</button></div>
+    <input type="hidden" name="gadget" value="Users" />
+    <input type="hidden" name="action" value="UpdatePreferences" />
+    <div class="content">
+      <!-- BEGIN gadget -->
+      <fieldset>
+        <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
+          <span>{lbl_private}</span>
+        </legend>
+        <div>
+          <!-- BEGIN key -->
+          <div>
+            <label>{key_name}:</label>{input_value}
+          </div>
+          <!-- END key -->
+        </div>
+      </fieldset>
+      <!-- END gadget -->
+    </div>
+    <div class="actions"><button type="submit" value="{update}">{update}</button></div>
   </form>
 </div>
 <!-- END preferences -->

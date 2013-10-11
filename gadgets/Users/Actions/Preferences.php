@@ -58,22 +58,36 @@ class Users_Actions_Preferences extends Users_HTML
                 continue;
             }
 
-            $customized = $objHook->Execute();
-            if (Jaws_Error::IsError($customized)) {
+            $options = $objHook->Execute();
+            if (Jaws_Error::IsError($options)) {
                 continue;
             }
 
             $keys = $GLOBALS['app']->Registry->fetchAll('Settings', true);
+            $keys = array_column($keys, 'key_value', 'key_name');
+            $customized = $this->gadget->registry->fetchAllByUser($gadget);
+            $customized = array_column($customized, 'key_value', 'key_name');
+
             $tpl->SetBlock('preferences/gadget');
-            foreach ($keys as $key) {
+            foreach ($keys as $key_name => $key_value) {
                 $tpl->SetBlock('preferences/gadget/key');
                 $tpl->SetVariable('gadget', $gadget);
-                $tpl->SetVariable('key_name', $key['key_name']);
-                if (isset($customized[$key['key_name']])) {
-                    $tpl->SetVariable('key_value', $customized[$key['key_name']]['key_value']);
+                $tpl->SetVariable('key_name', $key_name);
+                $key_element_name = $gadget.'_'.$key_name;
+                if (@isset($options[$key_name]['values'])) {
+                    $element =& Piwi::CreateWidget('Combo', $key_element_name);
+                    $element->SetID($key_element_name);
+                    foreach ($options[$key_name]['values'] as $value => $title) {
+                        $element->AddOption($title, $value);
+                    }
                 } else {
-                    $tpl->SetVariable('key_value', $key['key_value']);
+                    $element =& Piwi::CreateWidget('Entry', $key_element_name);
+                    $element->SetID($key_element_name);
                 }
+
+                $element->SetValue(isset($customized[$key_name])? $customized[$key_name] : $key_value);
+                $tpl->SetVariable('input_value', $element->Get());
+
                 $tpl->ParseBlock('preferences/gadget/key');
             }
             $tpl->ParseBlock('preferences/gadget');
@@ -82,71 +96,6 @@ class Users_Actions_Preferences extends Users_HTML
         $tpl->SetVariable('title', _t('USERS_PREFERENCES_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
-
-        // avatar
-        if (empty($info['avatar'])) {
-            $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/images/photo128px.png');
-        } else {
-            $user_current_avatar = $GLOBALS['app']->getDataURL() . "avatar/" . $info['avatar'];
-            $user_current_avatar .= !empty($info['last_update']) ? "?" . $info['last_update'] . "" : '';
-        }
-        $avatar =& Piwi::CreateWidget('Image', $user_current_avatar);
-        $avatar->SetID('avatar');
-        $tpl->SetVariable('avatar', $avatar->Get());
-
-        //Language
-        $lang =& Piwi::CreateWidget('Combo', 'user_language');
-        $lang->setID('user_language');
-        $lang->AddOption(_t('USERS_ADVANCED_OPTS_NOT_YET'), null);
-        $languages = Jaws_Utils::GetLanguagesList();
-        foreach($languages as $k => $v) {
-            $lang->AddOption($v, $k);
-        }
-        $lang->SetDefault($info['language']);
-        $lang->SetTitle(_t('USERS_ADVANCED_OPTS_LANGUAGE'));
-        $tpl->SetVariable('user_language', $lang->Get());
-        $tpl->SetVariable('language', _t('USERS_ADVANCED_OPTS_LANGUAGE'));
-
-        //Theme
-        $uTheme =& Piwi::CreateWidget('ComboGroup', 'user_theme');
-        $uTheme->setID('user_theme');
-        $uTheme->addGroup('local', _t('LAYOUT_THEME_LOCAL'));
-        $uTheme->addGroup('remote', _t('LAYOUT_THEME_REMOTE'));
-        $uTheme->AddOption('local', _t('USERS_ADVANCED_OPTS_NOT_YET'), null);
-        $themes = Jaws_Utils::GetThemesList();
-        foreach ($themes as $theme => $tInfo) {
-            $uTheme->AddOption($tInfo['local']? 'local' : 'remote', $tInfo['name'], $theme);
-        }
-        $uTheme->SetDefault($info['theme']);
-        $uTheme->SetTitle(_t('USERS_ADVANCED_OPTS_THEME'));
-        $tpl->SetVariable('user_theme', $uTheme->Get());
-        $tpl->SetVariable('theme', _t('USERS_ADVANCED_OPTS_THEME'));
-
-        //Editor
-        $editor =& Piwi::CreateWidget('Combo', 'user_editor');
-        $editor->setID('user_editor');
-        $editor->AddOption(_t('USERS_ADVANCED_OPTS_NOT_YET'), null);
-        $editors = $settingsModel->GetEditorList();
-        foreach($editors as $k => $v) {
-            $editor->AddOption($v, $k);
-        }
-        $editor->SetDefault($info['editor']);
-        $editor->SetTitle(_t('USERS_ADVANCED_OPTS_EDITOR'));
-        $tpl->SetVariable('user_editor', $editor->Get());
-        $tpl->SetVariable('editor', _t('USERS_ADVANCED_OPTS_EDITOR'));
-
-        //Time Zones
-        $timezone =& Piwi::CreateWidget('Combo', 'user_timezone');
-        $timezone->setID('user_timezone');
-        $timezone->AddOption(_t('USERS_ADVANCED_OPTS_NOT_YET'), null);
-        $timezones = $settingsModel->GetTimeZonesList();
-        foreach($timezones as $k => $v) {
-            $timezone->AddOption($v, $k);
-        }
-        $timezone->SetDefault($info['timezone']);
-        $timezone->SetTitle(_t('GLOBAL_TIMEZONE'));
-        $tpl->SetVariable('user_timezone', $timezone->Get());
-        $tpl->SetVariable('timezone', _t('GLOBAL_TIMEZONE'));
 
         if ($response = $GLOBALS['app']->Session->PopResponse('Users.Preferences')) {
             $tpl->SetBlock('preferences/response');
@@ -170,7 +119,7 @@ class Users_Actions_Preferences extends Users_HTML
             Jaws_Header::Location(
                 $this->gadget->urlMap(
                     'LoginBox',
-                    array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
+                    array('referrer' => bin2hex(Jaws_Utils::getRequestURL(true)))
                 )
             );
         }
