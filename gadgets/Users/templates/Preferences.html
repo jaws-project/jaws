@@ -1,32 +1,30 @@
 <!-- BEGIN preferences -->
 <div class="gadget users preferences">
   <h2>{title}</h2>
-  <!-- BEGIN response -->
   <div class="gadget_response">
-    <div class="{type}">{text}</div>
+    <div id="users_preferences_response" class="{type}">{text}</div>
   </div>
-  <!-- END response -->
-    <div class="content">
-      <!-- BEGIN gadget -->
-      <form name="preferencesBox" action="{base_script}" method="post">
-        <input type="hidden" name="gadget" value="Users" />
-        <input type="hidden" name="action" value="UpdatePreferences" />
-        <input type="hidden" name="component" value="{component}" />
-        <fieldset>
-          <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
-            <span>{lbl_private}</span>
-          </legend>
+  <div class="content">
+    <!-- BEGIN gadget -->
+    <form name="preferencesBox" action="{base_script}" method="post" onsubmit="return updatePreferences(this);">
+      <input type="hidden" name="gadget" value="Users" />
+      <input type="hidden" name="action" value="UpdatePreferences" />
+      <input type="hidden" name="component" value="{component}" />
+      <fieldset>
+        <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
+          <span>{lbl_component}</span>
+        </legend>
+        <div>
+          <!-- BEGIN key -->
           <div>
-            <!-- BEGIN key -->
-            <div>
-              <label>{key_name}:</label>{input_value}
-            </div>
-            <!-- END key -->
-            <div class="actions"><button type="submit" value="{update}">{update}</button></div>
+            <label>{key_name}:</label>{input_value}
           </div>
-        </fieldset>
-      </form>
-      <!-- END gadget -->
-    </div>
+          <!-- END key -->
+          <div class="actions"><button type="submit" value="{update}">{update}</button></div>
+        </div>
+      </fieldset>
+    </form>
+    <!-- END gadget -->
+  </div>
 </div>
 <!-- END preferences -->

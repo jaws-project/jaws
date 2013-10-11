@@ -13,6 +13,10 @@
 var UsersCallback = {
     UpdateContacts: function(response) {
         UsersAjax.showResponse(response);
+    },
+
+    UpdatePreferences: function(response) {
+        UsersAjax.showResponse(response);
     }
 
 }
@@ -25,6 +29,18 @@ function updateContacts()
     var result = UsersAjax.callAsync(
         'UpdateContacts',
         $(document).getElement('form[name=contacts]').toQueryString().parseQueryString()
+    );
+    return false;
+}
+
+/**
+ * Update preferences
+ */
+function updatePreferences(form)
+{
+    var result = UsersAjax.callAsync(
+        'UpdatePreferences',
+        form.toQueryString().parseQueryString()
     );
     return false;
 }

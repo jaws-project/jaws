@@ -29,6 +29,7 @@ class Users_Actions_Preferences extends Users_HTML
         }
 
         $this->gadget->CheckPermission('EditUserPreferences');
+        $this->AjaxMe('index.js');
 
         // Load the template
         $tpl = $this->gadget->loadTemplate('Preferences.html');
@@ -65,6 +66,7 @@ class Users_Actions_Preferences extends Users_HTML
 
             $tpl->SetBlock('preferences/gadget');
             $tpl->SetVariable('component', $gadget);
+            $tpl->SetVariable('lbl_component', _t(strtoupper($gadget.'_NAME')));
             foreach ($keys as $key_name => $key_value) {
                 $tpl->SetBlock('preferences/gadget/key');
                 $tpl->SetVariable('gadget', $gadget);
@@ -85,15 +87,13 @@ class Users_Actions_Preferences extends Users_HTML
 
                 $tpl->ParseBlock('preferences/gadget/key');
             }
-            $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
+            $tpl->SetVariable('update', _t('GLOBAL_UPDATE'));
             $tpl->ParseBlock('preferences/gadget');
         }
 
         if ($response = $GLOBALS['app']->Session->PopResponse('Users.Preferences')) {
-            $tpl->SetBlock('preferences/response');
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('preferences/response');
         }
 
         $tpl->ParseBlock('preferences');
@@ -140,7 +140,7 @@ class Users_Actions_Preferences extends Users_HTML
             );
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('Preferences'));
+        Jaws_Header::Location($this->gadget->urlMap('Preferences'), 'Users.Preferences');
     }
 
 }
