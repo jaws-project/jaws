@@ -30,9 +30,14 @@ class Phoo_Actions_Admin_Groups extends Phoo_AdminHTML
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
         $tpl->SetVariable('addGroupTitle', _t('PHOO_GROUPS_ADD_GROUP'));
         $tpl->SetVariable('editGroupTitle', _t('PHOO_GROUPS_EDIT_GROUP'));
+        $tpl->SetVariable('confirmGroupDelete', _t('PHOO_GROUPS_CONFIRM_DELETE'));
+        $tpl->SetVariable('incompleteGroupFields', _t('PHOO_GROUPS_INCOMPLETE_GROUP_FIELDS'));
         $tpl->SetVariable('delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('cancel', _t('GLOBAL_CANCEL'));
         $tpl->SetVariable('save', _t('GLOBAL_SAVE'));
+        $tpl->SetVariable('delete_icon', STOCK_DELETE);
+        $tpl->SetVariable('save_icon', STOCK_SAVE);
+        $tpl->SetVariable('cancel_icon', STOCK_CANCEL);
 
         //Fill the groups combo..
         $comboGroups =& Piwi::CreateWidget('Combo', 'groups_combo');

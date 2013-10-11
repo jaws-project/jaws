@@ -110,6 +110,27 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
     }
 
     /**
+     * Delete a group
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function DeleteGroup()
+    {
+        $gid  = (int) jaws()->request->fetch('id');
+        $model = $this->gadget->load('Model')->load('AdminModel', 'Groups');
+        $res = $model->DeleteGroup($gid);
+
+        if (Jaws_Error::isError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_GROUPS_GROUP_DELETED'), RESPONSE_NOTICE);
+        }
+
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
      * Gets data of a group
      *
      * @access  public

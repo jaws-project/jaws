@@ -19,8 +19,17 @@
     </tr>
     <tr>
      <td colspan="2" class="extra" align="right">
-      <table>
+      <table style="width: 100%;">
        <tr>
+        <td id="group-cell">
+         <label>{lbl_group}</label>
+          <!-- BEGIN group -->
+            <input type="checkbox" name="groups[]" id="group_{gid}"
+                  <!-- BEGIN selected_group -->checked="checked"<!-- END selected_group -->
+                  value="{gid}" />
+            <label for="group_{gid}">{lbl_group}</label>
+          <!-- END group -->
+        </td>
         <td id="allow-comments-cell">
          {allow_comments_field}
         </td>

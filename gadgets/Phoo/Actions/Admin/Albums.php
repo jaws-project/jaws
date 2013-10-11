@@ -74,6 +74,16 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
         $editor->TextArea->SetRows(5);
         $tpl->SetVariable('description', $editor->get());
 
+        // Groups
+        $gModel = $this->gadget->load('Model')->load('Model', 'Groups');
+        $groups = $gModel->GetGroups();
+        foreach ($groups as $group) {
+            $tpl->SetBlock('edit_album/group');
+            $tpl->SetVariable('gid', $group['id']);
+            $tpl->SetVariable('lbl_group', $group['name']);
+            $tpl->ParseBlock('edit_album/group');
+        }
+
         $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, 'history.go(-1)');
         $tpl->SetVariable('cancel', $cancel->Get());
@@ -100,6 +110,16 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
 
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
         $album = $model->NewAlbum($post['name'], $description, isset($post['allow_comments'][0]), $post['published']);
+        if (!Jaws_Error::IsError($album)) {
+            $agModel = $this->gadget->load('Model')->load('AdminModel', 'AlbumGroup');
+            $groups = jaws()->request->fetch('groups:array');
+            foreach ($groups as $group) {
+                $insertData = array();
+                $insertData['album'] = $album;
+                $insertData['group'] = $group;
+                $agModel->AddAlbumGroup($insertData);
+            }
+        }
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album='.$album);
     }
 
@@ -173,6 +193,22 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
         $editor->TextArea->SetRows(5);
         $tpl->SetVariable('description', $editor->get());
 
+        // Groups
+        $gModel = $this->gadget->load('Model')->load('Model', 'Groups');
+        $agModel = $this->gadget->load('Model')->load('Model', 'AlbumGroup');
+        $currentGroups = $agModel->GetAlbumGroupsID($id);
+        $groups = $gModel->GetGroups();
+        foreach ($groups as $group) {
+            $tpl->SetBlock('edit_album/group');
+            $tpl->SetVariable('gid', $group['id']);
+            $tpl->SetVariable('lbl_group', $group['name']);
+            if (in_array($group['id'], $currentGroups)) {
+                $tpl->SetBlock('edit_album/group/selected_group');
+                $tpl->ParseBlock('edit_album/group/selected_group');
+            }
+            $tpl->ParseBlock('edit_album/group');
+        }
+
         $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, "gotoLocation({$get['album']})");
         $tpl->SetVariable('cancel', $cancel->Get());
@@ -201,7 +237,21 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
 
         $id = (int)$post['album'];
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
-        $model->UpdateAlbum($id, $post['name'], $description, isset($post['allow_comments'][0]), $post['published']);
+        $result = $model->UpdateAlbum($id, $post['name'], $description, isset($post['allow_comments'][0]), $post['published']);
+
+        // AlbumGroup
+        if (!Jaws_Error::IsError($result)) {
+            $agModel = $this->gadget->load('Model')->load('AdminModel', 'AlbumGroup');
+            $agModel->DeleteAlbum($id);
+            $groups = jaws()->request->fetch('groups:array');
+            foreach ($groups as $group) {
+                $insertData = array();
+                $insertData['album'] = $id;
+                $insertData['group'] = $group;
+                $agModel->AddAlbumGroup($insertData);
+            }
+        }
+
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditAlbum&album='.$id);
     }
 

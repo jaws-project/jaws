@@ -86,26 +86,31 @@ function addEntry(title)
  */
 function saveGroup()
 {
-        if($('gid').value==0) {
-            var response = PhooAjax.callSync('AddGroup', {'name': $('name').value, 'description': $('description').value});
-            if (response[0]['type'] == 'response_notice') {
-                var box = $('groups_combo');
-                box.options[box.options.length] = new Option($('name').value, response[0]['id']);
-                response[0]['message'] = response[0]['message']['message'];
-                stopAction();
-            }
-            showResponse(response);
-        } else {
+    if ($('name').value.blank()) {
+        alert(incompleteGroupFields);
+        return false;
+    }
+
+    if($('gid').value==0) {
+        var response = PhooAjax.callSync('AddGroup', {'name': $('name').value, 'description': $('description').value});
+        if (response[0]['type'] == 'response_notice') {
             var box = $('groups_combo');
-            var groupIndex = box.selectedIndex;
-            var response = PhooAjax.callSync('EditGroup', 
-                                {'id': $('gid').value, 'name': $('name').value, 'description': $('description').value});
-            if (response[0]['type'] == 'response_notice') {
-                box.options[groupIndex].text = $('name').value;
-                stopAction();
-            }
-            showResponse(response);
+            box.options[box.options.length] = new Option($('name').value, response[0]['id']);
+            response[0]['message'] = response[0]['message']['message'];
+            stopAction();
         }
+        showResponse(response);
+    } else {
+        var box = $('groups_combo');
+        var groupIndex = box.selectedIndex;
+        var response = PhooAjax.callSync('EditGroup', 
+                            {'id': $('gid').value, 'name': $('name').value, 'description': $('description').value});
+        if (response[0]['type'] == 'response_notice') {
+            box.options[groupIndex].text = $('name').value;
+            stopAction();
+        }
+        showResponse(response);
+    }
 
     PhooAjax.callAsync('AddGroup', {'name': $('name').value, 'description': $('description').value});
 }
@@ -121,6 +126,24 @@ function editGroup(id)
     $('name').value   = groupInfo['name'].defilter();
     $('description').value = groupInfo['description'].defilter();
     $('btn_delete').style.display = 'inline';
+}
+
+/**
+ * Delete group
+ */
+function deleteGroup()
+{
+    var answer = confirm(confirmGroupDelete);
+    if (answer) {
+        var box = $('groups_combo');
+        var quoteIndex = box.selectedIndex;
+        var response = PhooAjax.callSync('DeleteGroup', {'id': $('gid').value});
+        if (response[0]['type'] == 'response_notice') {
+            box.options[quoteIndex] = null;
+            stopAction();
+        }
+        showResponse(response);
+    }
 }
 
 /**
