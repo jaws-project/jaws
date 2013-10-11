@@ -102,14 +102,6 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
 
             if ($this->gadget->CheckPermission('ManageUsers')) {
                 $link =& Piwi::CreateWidget('Link',
-                                            _t('USERS_PREFERENCES'),
-                                            "javascript: editPreferences(this, '".$user['id']."');",
-                                            STOCK_FONT);
-                $actions.= $link->Get().'&nbsp;';
-            }
-
-            if ($this->gadget->CheckPermission('ManageUsers')) {
-                $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_CONTACTS'),
                                             "javascript: editContacts(this, '".$user['id']."');",
                                             'gadgets/Users/images/mail.png');
@@ -244,7 +236,6 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $tpl->SetVariable('editACL_title', _t('USERS_ACLS'));
         $tpl->SetVariable('editUserGroups_title', _t('USERS_USERS_GROUPS'));
         $tpl->SetVariable('editPersonal_title', _t('USERS_PERSONAL'));
-        $tpl->SetVariable('editPreferences_title', _t('USERS_PREFERENCES'));
         $tpl->SetVariable('editContacts_title', _t('USERS_CONTACTS'));
         $tpl->SetVariable('noGroup', _t('USERS_GROUPS_NOGROUP'));
         $tpl->SetVariable('wrongPassword', _t('USERS_USERS_PASSWORDS_DONT_MATCH'));
@@ -478,72 +469,6 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
         $tpl->SetVariable('about', $about->Get());
 
         $tpl->ParseBlock('personal');
-        return $tpl->Get();
-    }
-
-    /**
-     * Builds a form to edit user's preferences
-     *
-     * @access  public
-     * @return  string  XHTML form
-     */
-    function PreferencesUI()
-    {
-        $tpl = $this->gadget->loadTemplate('Preferences.html');
-        $tpl->SetBlock('preferences');
-
-        // language
-        $language =& Piwi::CreateWidget('Combo', 'language');
-        $language->SetID('language');
-        $language->AddOption(_t('USERS_ADVANCED_OPTS_NOT_YET'), '-default-');
-        $languages = Jaws_Utils::GetLanguagesList();
-        foreach($languages as $k => $v) {
-            $language->AddOption($v, $k);
-        }
-        $language->SetDefault('-default-');
-        $tpl->SetVariable('lbl_language', _t('USERS_ADVANCED_OPTS_LANGUAGE'));
-        $tpl->SetVariable('language', $language->Get());
-
-        // theme
-        $theme =& Piwi::CreateWidget('ComboGroup', 'theme');
-        $theme->SetID('theme');
-        $theme->AddGroup('local',  _t('LAYOUT_THEME_LOCAL'));
-        $theme->AddGroup('remote', _t('LAYOUT_THEME_REMOTE'));
-        $theme->AddOption('local', _t('USERS_ADVANCED_OPTS_NOT_YET'), '-default-');
-        $themes = Jaws_Utils::GetThemesList();
-        foreach($themes as $k => $v) {
-            $theme->AddOption($v['local']? 'local' : 'remote', $v['name'], $k);
-        }
-        $theme->SetDefault('-default-');
-        $tpl->SetVariable('lbl_theme', _t('USERS_ADVANCED_OPTS_THEME'));
-        $tpl->SetVariable('theme', $theme->Get());
-
-        // editor
-        $editor =& Piwi::CreateWidget('Combo', 'editor');
-        $editor->SetID('editor');
-        $editor->AddOption(_t('USERS_ADVANCED_OPTS_NOT_YET'), '-default-');
-        $settingsModel = $GLOBALS['app']->loadGadget('Settings', 'AdminModel', 'Settings');
-        $editors = $settingsModel->GetEditorList();
-        foreach($editors as $k => $v) {
-            $editor->AddOption($v, $k);
-        }
-        $editor->SetDefault('-default-');
-        $tpl->SetVariable('lbl_editor', _t('USERS_ADVANCED_OPTS_EDITOR'));
-        $tpl->SetVariable('editor', $editor->Get());
-
-        // timezone
-        $timezone =& Piwi::CreateWidget('Combo', 'timezone');
-        $timezone->SetID('timezone');
-        $timezone->AddOption(_t('USERS_ADVANCED_OPTS_NOT_YET'), '-default-');
-        $timezones = $settingsModel->GetTimeZonesList();
-        foreach($timezones as $k => $v) {
-            $timezone->AddOption($v, $k);
-        }
-        $timezone->SetDefault('-default-');
-        $tpl->SetVariable('lbl_timezone', _t('GLOBAL_TIMEZONE'));
-        $tpl->SetVariable('timezone', $timezone->Get());
-
-        $tpl->ParseBlock('preferences');
         return $tpl->Get();
     }
 

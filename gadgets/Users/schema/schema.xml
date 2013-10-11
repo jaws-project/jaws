@@ -149,30 +149,6 @@
         </field>
 
         <field>
-            <name>timezone</name>
-            <type>text</type>
-            <length>48</length>
-        </field>
-
-        <field>
-            <name>language</name>
-            <type>text</type>
-            <length>5</length>
-        </field>
-
-        <field>
-            <name>theme</name>
-            <type>text</type>
-            <length>24</length>
-        </field>
-
-        <field>
-            <name>editor</name>
-            <type>text</type>
-            <length>24</length>
-        </field>
-
-        <field>
             <name>signature</name>
             <type>text</type>
             <length>255</length>

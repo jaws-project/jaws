@@ -133,7 +133,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $usrModel = new Jaws_User;
-        $user = $usrModel->GetUser($user, true, true, true, true);
+        $user = $usrModel->GetUser($user, true, true, true);
         if (Jaws_Error::IsError($user) || empty($user)) {
             return Jaws_HTTPError::Get(404);
         }

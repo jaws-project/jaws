@@ -42,13 +42,6 @@ var UsersCallback = {
         showResponse(response);
     },
 
-    updatepreferences: function(response) {
-        if (response[0]['type'] == 'response_notice') {
-            stopUserAction();
-        }
-        showResponse(response);
-    },
-
     updatecontacts: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopUserAction();
@@ -310,15 +303,6 @@ function saveUser()
                                 $('privacy').value);
             break;
 
-        case 'UserPreferences':
-            UsersAjax.callAsync('updatepreferences',
-                                $('uid').value,
-                                $('language').value,
-                                $('theme').value,
-                                $('editor').value,
-                                $('timezone').value);
-            break;
-
         case 'UserContacts':
             UsersAjax.callAsync('updatecontacts',
                                 $('uid').value,
@@ -543,27 +527,6 @@ function editPersonal(rowElement, uid)
 }
 
 /**
- * Edit user's preferences
- */
-function editPreferences(rowElement, uid)
-{
-    $('uid').value = uid;
-    currentAction = 'UserPreferences';
-    $('legend_title').innerHTML  = editPreferences_title;
-    if (cachedPreferencesForm == null) {
-        cachedPreferencesForm = UsersAjax.callSync('preferencesui');
-    }
-    $('workarea').innerHTML = cachedPreferencesForm;
-    selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
-
-    var uInfo = UsersAjax.callSync('getuser', uid, false, false, true);
-    $('language').value = uInfo['language'] == null? '-default-': uInfo['language'];
-    $('theme').value    = uInfo['theme']    == null? '-default-': uInfo['theme'];
-    $('editor').value   = uInfo['editor']   == null? '-default-': uInfo['editor'];
-    $('timezone').value = uInfo['timezone'] == null? '-default-': uInfo['timezone'];
-}
-
-/**
  * Edit user's contacts info
  */
 function editContacts(rowElement, uid)
@@ -577,7 +540,7 @@ function editContacts(rowElement, uid)
     $('workarea').innerHTML = cachedContactsForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var uInfo = UsersAjax.callSync('getuser', uid, false, false, false, true);
+    var uInfo = UsersAjax.callSync('getuser', uid, false, false, true);
     $('country').value          = uInfo['country'];
     $('city').value             = uInfo['city'];
     $('address').value          = uInfo['address'];
@@ -811,7 +774,6 @@ var chkImages = [];
 
 //Cached form variables
 var cachedPersonalForm = null,
-    cachedPreferencesForm = null,
     cachedContactsForm = null,
     cachedUserGroupsForm = null,
     cachedGroupUsersForm = null,

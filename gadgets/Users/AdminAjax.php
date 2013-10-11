@@ -40,8 +40,8 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetUser()
     {
-        @list($uid, $account, $personal, $preferences, $contacts) = jaws()->request->fetchAll('post');
-        $profile = $this->_UserModel->GetUser((int)$uid, $account, $personal, $preferences, $contacts);
+        @list($uid, $account, $personal, $contacts) = jaws()->request->fetchAll('post');
+        $profile = $this->_UserModel->GetUser((int)$uid, $account, $personal, $contacts);
         if (Jaws_Error::IsError($profile)) {
             return array();
         }
