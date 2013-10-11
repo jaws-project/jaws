@@ -174,6 +174,17 @@ class Combo extends Bin
     }
 
     /**
+     * Set the value of the widget
+     *
+     * @aram    string   $value  Widget value
+     * @access   public
+     */
+    function setValue($value)
+    {
+        $this->setDefault($value);
+    }
+
+    /**
      * Set multiple flag
      *
      * @param   boolean $flag
