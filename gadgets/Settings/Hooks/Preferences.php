@@ -26,6 +26,7 @@ class Settings_Hooks_Preferences extends Jaws_Gadget_Hook
         $objComponents = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
         $gadgets = $objComponents->GetGadgetsList(null, true, true, null, true);
         $gadgets = array_column(array_values($gadgets), 'title', 'name');
+        array_unshift($gadgets, _t('GLOBAL_NOGADGET'));
 
         $result['admin_language']['values'] = $languages;
         $result['site_language']['values'] = $languages;
