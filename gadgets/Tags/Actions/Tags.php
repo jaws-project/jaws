@@ -149,9 +149,9 @@ class Tags_Actions_Tags extends Tags_HTML
             $page = 1;
         }
 
-        $limit = (int)$this->gadget->registry->fetch('results_limit');
+        $limit = (int)$this->gadget->registry->fetch('tag_results_limit');
         if (empty($limit)) {
-            $limit = 4;
+            $limit = 10;
         }
 
         // Detect all items count(for paging)

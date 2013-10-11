@@ -171,13 +171,13 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
     function SaveSettings()
     {
         $this->gadget->CheckPermission('Settings');
-        @list($allowComments, $allowDuplicate) = jaws()->request->fetchAll('post');
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel', 'Settings');
-        $res = $cModel->SaveSettings($allowComments, $allowDuplicate);
+        @list($tagResultLimit) = jaws()->request->fetchAll('post');
+        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Settings');
+        $res = $model->SaveSettings($tagResultLimit);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(_t('TAGS_PROPERTIES_UPDATED'), RESPONSE_NOTICE);
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();

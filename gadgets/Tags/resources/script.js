@@ -188,6 +188,7 @@ function searchTags()
  */
 function saveSettings()
 {
+    TagsAjax.callAsync('SaveSettings', $('tag_results_limit').value);
 }
 
 var TagsAjax = new JawsAjax('Tags', TagsCallback),

@@ -40,12 +40,12 @@ define('_EN_TAGS_SELECT_MORE_THAN_ONE_TAG_FOR_MERGE', "Please select more than o
 /* Common */
 define('_EN_TAGS_GADGET', "Gadget");
 define('_EN_TAGS_MERGE', "Merge");
+define('_EN_TAGS_RESULT_LIMIT', "Tag result limit");
 
 /* Responses */
 define('_EN_TAGS_TAG_ADDED', "The tag have been added");
 define('_EN_TAGS_TAG_UPDATED', "The tag have been updated");
 define('_EN_TAGS_TAGS_MERGED', "The tags have been merged");
 define('_EN_TAGS_TAG_DELETED', "The tag have been deleted");
-
-/* Errors */
-//define('_EN_TAGS_ERROR_PROPERTIES_NOT_UPDATED', "Updating the properties failed");
+define('_EN_TAGS_PROPERTIES_UPDATED', "Properties have been updated");
+define('_EN_TAGS_ERROR_CANT_UPDATE_PROPERTIES', "There was a problem updating the properties");
