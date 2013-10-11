@@ -27,12 +27,6 @@ class ControlPanel_Info extends Jaws_Gadget
     var $_IsCore = true;
 
     /**
-     * @var     boolean
-     * @access  private
-     */
-    var $_has_layout = false;
-
-    /**
      * Default front-end action name
      *
      * @var     string
