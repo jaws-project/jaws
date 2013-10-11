@@ -35,7 +35,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
                                 BASE_SCRIPT . '?gadget=Phoo&amp;action=ManageComments', 'images/stock/stock-comments.png');
         }
         if ($this->gadget->GetPermission('Groups')) {
-            $menubar->AddOption('Groups', _t('PHOO_GROUPS'),
+            $menubar->AddOption('Groups', _t('GLOBAL_GROUPS'),
                                 BASE_SCRIPT . '?gadget=Phoo&amp;action=Groups', 'gadgets/Phoo/images/groups_mini.png');
         }
         if ($this->gadget->GetPermission('Settings')) {

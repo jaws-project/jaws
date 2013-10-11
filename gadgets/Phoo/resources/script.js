@@ -95,8 +95,8 @@ function saveGroup()
         var response = PhooAjax.callSync('AddGroup', {'name': $('name').value, 'description': $('description').value});
         if (response[0]['type'] == 'response_notice') {
             var box = $('groups_combo');
-            box.options[box.options.length] = new Option($('name').value, response[0]['id']);
-            response[0]['message'] = response[0]['message']['message'];
+            box.options[box.options.length] = new Option($('name').value, response[0]['text']['id']);
+            response[0]['text'] = response[0]['text']['message'];
             stopAction();
         }
         showResponse(response);
@@ -111,8 +111,6 @@ function saveGroup()
         }
         showResponse(response);
     }
-
-    PhooAjax.callAsync('AddGroup', {'name': $('name').value, 'description': $('description').value});
 }
 
 /**
@@ -126,6 +124,7 @@ function editGroup(id)
     $('name').value   = groupInfo['name'].defilter();
     $('description').value = groupInfo['description'].defilter();
     $('btn_delete').style.display = 'inline';
+    $('legend_title').innerHTML = editGroupTitle;
 }
 
 /**
@@ -156,6 +155,7 @@ function stopAction()
     $('description').value = '';
     $('groups_combo').selectedIndex = -1;
     $('btn_delete').style.display = 'none';
+    $('legend_title').innerHTML = addGroupTitle;
 }
 
 /**
