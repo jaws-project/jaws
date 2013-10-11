@@ -194,3 +194,12 @@ define('_EN_PHOO_COMMENT_REPLIED',  "The comment has been replied");
 define('_EN_PHOO_COMMENT_DELETED',  "The comment has been deleted");
 define('_EN_PHOO_SETTINGS_UPDATED', "The settings have been updated");
 define('_EN_PHOO_COMMENT_MARKED',   "Some comment has changed their status");
+
+/* GROUPS */
+define('_EN_PHOO_GROUPS_ADD_GROUP', "Add New Group");
+define('_EN_PHOO_GROUPS_EDIT_GROUP', "Edit Group");
+define('_EN_PHOO_GROUPS_INCOMPLETE_GROUP_FIELDS', "Please Fill Group Name.");
+define('_EN_PHOO_GROUPS_CONFIRM_DELETE', "Are you sure you want to delete this group?");
+define('_EN_PHOO_GROUPS_GROUP_UPDATED', "The group have been updated");
+define('_EN_PHOO_GROUPS_GROUP_DELETED', "The group has been deleted");
+define('_EN_PHOO_GROUPS_GROUP_CREATED', "The group has been created");
