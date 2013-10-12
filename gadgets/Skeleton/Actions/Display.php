@@ -1,14 +1,14 @@
 <?php
 /**
- * Skeleton Gadget - An example gadget to be used by gadget developers (layout actions)
+ * Skeleton Gadget
  *
- * @category   GadgetLayout
- * @package    Skeleton
- * @author     Jon Wood <jon@substance-it.co.uk>
- * @copyright  2004-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    Gadget
+ * @package     Skeleton
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Skeleton_LayoutHTML extends Jaws_Gadget_HTML
+class Skeleton_Actions_Display extends Jaws_Gadget_HTML
 {
     /**
      * Displays version of Jaws
@@ -20,7 +20,6 @@ class Skeleton_LayoutHTML extends Jaws_Gadget_HTML
     {
         $model   = $GLOBALS['app']->LoadGadget('Skeleton', 'Model');
         $version = $model->GetJawsVersion();
-
         return _t('SKELETON_DISPLAY_MESSAGE', $version);
     }
 

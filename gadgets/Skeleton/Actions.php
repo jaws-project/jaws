@@ -11,5 +11,7 @@
 $actions = array();
 
 $actions['Display'] = array(
+    'normal' => true, 
     'layout' => true, 
+    'file' => 'Display',
 );
