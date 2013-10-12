@@ -29,4 +29,12 @@ class Banner_Info extends Jaws_Gadget
      */
     var $DataDirectory = 'banners/';
 
+    /**
+     * Default front-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_action = 'Banners';
+
 }
