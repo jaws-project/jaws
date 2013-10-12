@@ -11,18 +11,6 @@
 class Forums_HTML extends Jaws_Gadget_HTML
 {
     /**
-     * Default action
-     *
-     * @acces   public
-     * @return  string  XHTML template content
-     */
-    function DefaultAction()
-    {
-        $forumHTML = $GLOBALS['app']->LoadGadget('Forums', 'HTML', 'Forums');
-        return $forumHTML->Forums();
-    }
-
-    /**
      * Get page navigation links
      *
      * @access  public
