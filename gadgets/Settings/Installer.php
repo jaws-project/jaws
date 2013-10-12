@@ -34,7 +34,6 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('editor_ckeditor_toolbar', ''),
         array('browsers_flag', 'opera,firefox,ie7up,ie,safari,nav,konq,gecko,text'),
         array('show_viewsite', 'true'),
-        array('cookie_precedence', 'false'),
         array('robots', ''),
         array('connection_timeout', '5'),           // per second
         array('global_website', 'true'),            // global website?
@@ -142,6 +141,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         if (version_compare($old, '1.0.0', '<')) {
+            $this->gadget->registry->delete('cookie_precedence');
             $this->gadget->registry->update('theme', null, true);
             $this->gadget->registry->update('date_format', null, true);
             $this->gadget->registry->update('calendar_type', null, true);
