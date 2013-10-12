@@ -34,7 +34,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
 //        $image = $model->GetImage($post['reference'], $post['albumid']);
 //        if (Jaws_Error::isError($image)) {
 //            $GLOBALS['app']->Session->PushSimpleResponse($image->getMessage(), 'Phoo');
-//            Jaws_Header::Location($this->gadget->urlMap('DefaultAction'));
+//            Jaws_Header::Location($this->gadget->urlMap('AlbumList'));
 //        }
 //
 //        return $this->ViewImage($post['reference'], $post['albumid'], true);
