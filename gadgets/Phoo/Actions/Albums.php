@@ -47,16 +47,25 @@ class Phoo_Actions_Albums extends Jaws_Gadget_HTML
      * @param   int      $gid         Group ID
      * @return  string XHTML template content
      */
-    function AlbumList($gid = 0)
+    function AlbumList($gid = null)
     {
         $tpl = $this->gadget->loadTemplate('Albums.html');
         $tpl->SetBlock('albums');
         $tpl->SetVariable('title', _t('PHOO_ALBUMS'));
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
+
+        if (is_null($gid)) {
+            $group  = (int) $this->gadget->request->fetch('group');
+            if (!empty($group) && $group != 0) {
+                $gid = $group;
+            }
+        }
+
         $albums = $model->GetAlbumList($gid);
         if (!Jaws_Error::IsError($albums)) {
             $date = $GLOBALS['app']->loadDate();
             require_once JAWS_PATH . 'include/Jaws/Image.php';
+            $agModel = $this->gadget->load('Model')->load('Model', 'AlbumGroup');
             foreach ($albums as $album) {
                 if (!isset($album['qty'])) {
                     continue;
@@ -76,6 +85,17 @@ class Phoo_Actions_Albums extends Jaws_Gadget_HTML
                 $tpl->SetVariable('howmany',  _t('PHOO_NUM_PHOTOS_ALBUM', $album['qty']));
                 $tpl->SetVariable('description', $this->gadget->ParseText($album['description']));
                 $tpl->SetVariable('createtime', $date->Format($album['createtime']));
+
+                $groupInfo = $agModel->GetAlbumGroupsInfo($album['id']);
+                if (is_array($groupInfo)) {
+                    foreach ($groupInfo as $group) {
+                        $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'AlbumList', array('group' => $group['group']));
+                        $tpl->SetBlock('albums/item/group');
+                        $tpl->SetVariable('url',  $url);
+                        $tpl->SetVariable('name', $group['name']);
+                        $tpl->ParseBlock('albums/item/group');
+                    }
+                }
                 $tpl->ParseBlock('albums/item');
             }
         }

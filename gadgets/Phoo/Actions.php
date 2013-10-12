@@ -47,3 +47,7 @@ $actions['Moblog'] = array(
     'file' => 'Moblog',
     'parametric' => true,
 );
+$actions['Groups'] = array(
+    'layout' => true,
+    'file' => 'Groups',
+);
