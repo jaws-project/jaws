@@ -34,20 +34,25 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
 
         //load other gadget translations
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
-        $GLOBALS['app']->Translate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
-        $GLOBALS['app']->Translate->LoadTranslation('LinkDump', JAWS_COMPONENT_GADGET, $site_language);
 
         if (empty($gadget)) {
             $tpl->SetBlock('tags/gadgets_filter');
             //Gadgets filter
             $gadgetsCombo =& Piwi::CreateWidget('Combo', 'gadgets_filter');
             $gadgetsCombo->SetID('gadgets_filter');
-            $gadgetsCombo->setStyle('width: 100px;');
-            $gadgetsCombo->AddEvent(ON_CHANGE, "changeGadget(this.value)");
+            $gadgetsCombo->setStyle('width: 150px;');
+            $gadgetsCombo->AddEvent(ON_CHANGE, "searchTags()");
             $gadgetsCombo->AddOption('', '');
-            // TODO: Get List Of Gadget Which Use Tags
-            $gadgetsCombo->AddOption(_t('BLOG_NAME'), 'Blog');
-            $gadgetsCombo->AddOption(_t('LINKDUMP_NAME'), 'LinkDump');
+
+            $model = $GLOBALS['app']->LoadGadget('Tags', 'Model', 'Tags');
+            $gadgets = $model->GetTagRelativeGadgets();
+            $tagGadgets = array();
+            $tagGadgets[''] = _t('GLOBAL_ALL');
+            foreach($gadgets as $gadget) {
+                $GLOBALS['app']->Translate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
+                $gadgetsCombo->AddOption(_t(strtoupper($gadget) . '_NAME'), $gadget);
+            }
+
             $gadgetsCombo->SetDefault('');
             $tpl->SetVariable('lbl_gadgets_filter', _t('TAGS_GADGET'));
             $tpl->SetVariable('gadgets_filter', $gadgetsCombo->Get());
@@ -110,7 +115,6 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
 
         // name
         $nameEntry =& Piwi::CreateWidget('Entry', 'name', '');
-//        $nameEntry->setStyle('width: 160px;');
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
         $tpl->SetVariable('name', $nameEntry->Get());
 
@@ -155,7 +159,7 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
     function GetDataAsArray($editAction, $filters, $offset)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
-        $tags = $cModel->GetTags($filters, 15, $offset);
+        $tags = $cModel->GetTags($filters, 10, $offset);
         if (Jaws_Error::IsError($tags)) {
             return array();
         }

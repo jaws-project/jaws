@@ -62,4 +62,29 @@ class Tags_Model_Tags extends Jaws_Gadget_Model
         return $result;
     }
 
+
+    /**
+     * Gets list of gadgets that use Tags
+     *
+     * @access  public
+     * @return  array   List of searchable gadgets
+     */
+    function GetTagRelativeGadgets()
+    {
+        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
+        $gadgetList = $cmpModel->GetGadgetsList(false, true, true);
+        $gadgets = array();
+        foreach ($gadgetList as $key => $gadget) {
+            if (is_file(JAWS_PATH . 'gadgets/' . $gadget['name'] . '/hooks/Tags.php')) {
+                $gadget['name'] = trim($gadget['name']);
+                if ($gadget['name'] == 'Tags' || empty($gadget['name'])) {
+                    continue;
+                }
+
+                $gadgets[$key] = $gadget;
+            }
+        }
+        return array_keys($gadgets);
+    }
+
 }

@@ -22,16 +22,18 @@ class Tags_Actions_Tags extends Tags_HTML
         $result = array();
 
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
-        $GLOBALS['app']->Translate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
-        $GLOBALS['app']->Translate->LoadTranslation('LinkDump', JAWS_COMPONENT_GADGET, $site_language);
+        $model = $GLOBALS['app']->LoadGadget('Tags', 'Model', 'Tags');
+        $gadgets = $model->GetTagRelativeGadgets();
+        $tagGadgets = array();
+        $tagGadgets[''] = _t('GLOBAL_ALL');
+        foreach($gadgets as $gadget) {
+            $GLOBALS['app']->Translate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
+            $tagGadgets[$gadget] = _t(strtoupper($gadget) . '_NAME');
+        }
 
         $result[] = array(
             'title' => _t('TAGS_GADGET'),
-            'value' => array(
-                '' => _t('GLOBAL_ALL') ,
-                'Blog' => _t('BLOG_NAME') ,
-                'LinkDump' => _t('LINKDUMP_NAME') ,
-            )
+            'value' => $tagGadgets
         );
 
         return $result;
@@ -188,7 +190,8 @@ class Tags_Actions_Tags extends Tags_HTML
 
 
         if(empty($gadget)) {
-            $gadgets = $this->GetTagRelativeGadgets();
+            $model = $GLOBALS['app']->LoadGadget('Tags', 'Model', 'Tags');
+            $gadgets = $model->GetTagRelativeGadgets();
         } else {
             $gadgets = array($gadget);
         }
@@ -279,33 +282,7 @@ class Tags_Actions_Tags extends Tags_HTML
             }
         }
 
-
         $tpl->ParseBlock('tag');
         return $tpl->Get();
     }
-
-    /**
-     * Gets list of gadgets that use Tags
-     *
-     * @access  public
-     * @return  array   List of searchable gadgets
-     */
-    function GetTagRelativeGadgets()
-    {
-        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
-        $gadgetList = $cmpModel->GetGadgetsList(false, true, true);
-        $gadgets = array();
-        foreach ($gadgetList as $key => $gadget) {
-            if (is_file(JAWS_PATH . 'gadgets/' . $gadget['name'] . '/hooks/Tags.php')) {
-                $gadget['name'] = trim($gadget['name']);
-                if ($gadget['name'] == 'Tags' || empty($gadget['name'])) {
-                    continue;
-                }
-
-                $gadgets[$key] = $gadget;
-            }
-        }
-        return array_keys($gadgets);
-    }
-
 }
