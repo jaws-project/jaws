@@ -41,7 +41,7 @@ class Glossary_Actions_Term extends Jaws_Gadget_HTML
 
                     $tpl->SetBlock('list/letters');
                     $tpl->SetVariable('letter', $letter);
-                    $tpl->SetVariable('url', $this->gadget->urlMap('DefaultAction'));
+                    $tpl->SetVariable('url', $this->gadget->urlMap('ViewTerms'));
                     $tpl->ParseBlock ('list/letters');
 
                     //open new block

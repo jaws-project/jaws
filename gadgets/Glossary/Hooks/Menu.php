@@ -20,7 +20,7 @@ class Glossary_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls   = array();
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Glossary', 'DefaultAction'),
+        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Glossary', 'ViewTerms'),
                         'title' => _t('GLOSSARY_NAME'));
         return $urls;
     }
