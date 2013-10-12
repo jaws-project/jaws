@@ -105,6 +105,7 @@ function stopCommentAction()
  */
 function editComment(rowElement, id)
 {
+    stopCommentAction();
     selectGridRow('comments_datagrid', rowElement.parentNode.parentNode);
     var comment = CommentsAjax.callSync('getcomment', id);
     $('name').disabled            = false;
