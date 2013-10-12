@@ -76,6 +76,11 @@ class Phoo_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
+        $result = $this->installSchema('insert.xml', null, 'schema.xml', true);
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
         if (!empty($input_schema)) {
             $result = $this->installSchema($input_schema, $input_variables, 'schema.xml', true);
             if (Jaws_Error::IsError($result)) {
@@ -99,7 +104,9 @@ class Phoo_Installer extends Jaws_Gadget_Installer
     {
         $tables = array('phoo_album',
                         'phoo_image',
-                        'phoo_image_album');
+                        'phoo_image_album',
+                        'phoo_group',
+                        'phoo_album_group');
         foreach ($tables as $table) {
             $result = $GLOBALS['db']->dropTable($table);
             if (Jaws_Error::IsError($result)) {

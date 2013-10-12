@@ -76,6 +76,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
         $tpl->SetVariable('description', $editor->get());
 
         // Groups
+        $tpl->SetVariable('lbl_group', _t('GLOBAL_GROUPS'));
         $gModel = $this->gadget->load('Model')->load('Model', 'Groups');
         $groups = $gModel->GetGroups();
         foreach ($groups as $group) {
