@@ -11,18 +11,6 @@
 class Comments_HTML extends Jaws_Gadget_HTML
 {
     /**
-     * Calls default action(display)
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function DefaultAction()
-    {
-        $commentsHtml = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
-        return $commentsHtml->Comments();
-    }
-
-    /**
      * Get page navigation links
      *
      * @access  public
