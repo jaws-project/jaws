@@ -19,4 +19,12 @@ class Blocks_Info extends Jaws_Gadget
      */
     var $version = '1.0.0';
 
+    /**
+     * Default front-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_action = 'Block';
+
 }

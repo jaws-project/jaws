@@ -51,19 +51,21 @@ class Blocks_Actions_Block extends Jaws_Gadget_HTML
         }
 
         $tpl = $this->gadget->loadTemplate('Blocks.html');
-        $model = $GLOBALS['app']->LoadGadget('Blocks', 'Model', 'Block');
-        $block = $model->GetBlock($id);
-        if (!Jaws_Error::IsError($block)) {
-            $tpl->SetBlock('blocks');
-            $tpl->SetVariable('id', $block['id']);
-            $contents = $this->gadget->ParseText($block['contents']);
-            $tpl->SetVariable('contents', $contents);
-            if ($block['display_title']) {
-                $tpl->SetBlock('blocks/block_title');
-                $tpl->SetVariable('title', $block['title']);
-                $tpl->ParseBlock('blocks/block_title');
+        if (!empty($id)) {
+            $model = $GLOBALS['app']->LoadGadget('Blocks', 'Model', 'Block');
+            $block = $model->GetBlock($id);
+            if (!Jaws_Error::IsError($block)) {
+                $tpl->SetBlock('blocks');
+                $tpl->SetVariable('id', $block['id']);
+                $contents = $this->gadget->ParseText($block['contents']);
+                $tpl->SetVariable('contents', $contents);
+                if ($block['display_title']) {
+                    $tpl->SetBlock('blocks/block_title');
+                    $tpl->SetVariable('title', $block['title']);
+                    $tpl->ParseBlock('blocks/block_title');
+                }
+                $tpl->ParseBlock('blocks');
             }
-            $tpl->ParseBlock('blocks');
         }
 
         return $tpl->Get();
