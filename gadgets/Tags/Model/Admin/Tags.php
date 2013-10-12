@@ -90,7 +90,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
                 $systemTags[$tag] = $tagId;
             } else {
                 //Add an new tag
-                $systemTags[$tag] = $this->AddTag($tag);
+                $systemTags[$tag] = $this->AddTag(array('name' => $tag));
             }
         }
 
@@ -249,7 +249,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table->beginTransaction();
 
         //Add new tag
-        $newId = $this->AddTag($newName);
+        $newId = $this->AddTag(array('name' => $newName));
 
         //Update tag items
         $table->update(array('tag' => $newId))->where('tag', $ids, 'in')->exec();
