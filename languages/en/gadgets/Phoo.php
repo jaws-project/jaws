@@ -26,6 +26,8 @@ define('_EN_PHOO_ACTIONS_ALBUMLIST', "Albums");
 define('_EN_PHOO_ACTIONS_ALBUMLIST_DESC', "Displays all albums list");
 define('_EN_PHOO_ACTIONS_RECENTCOMMENTS', "Recent Comments On Photos");
 define('_EN_PHOO_ACTIONS_RECENTCOMMENTS_DESC', "Displays a summary of recent comments.");
+define('_EN_PHOO_ACTIONS_GROUPS', "List Of Groups");
+define('_EN_PHOO_ACTIONS_GROUPS_DESC', "Displays a list of album groups");
 
 define('_EN_PHOO_UNKNOW_ALBUM', "Not found in an album");
 define('_EN_PHOO_WITHOUT_ALBUM', "Orphaned Photos");
