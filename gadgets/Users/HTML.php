@@ -12,18 +12,6 @@
 class Users_HTML extends Jaws_Gadget_HTML
 {
     /**
-     * Calls LoginBox function if no action is specified
-     *
-     * @access  public
-     * @return  string  XHTML content
-     */
-    function DefaultAction()
-    {
-        $userHTML = $GLOBALS['app']->LoadGadget('Users', 'HTML', 'Login');
-        return $userHTML->LoginBox();
-    }
-
-    /**
      * Builds the NoPermission UI
      *
      * @access  public
