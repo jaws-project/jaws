@@ -258,6 +258,7 @@ define('_EN_USERS_PROPERTIES_ACTIVATION_BY_USER', "By User");
 define('_EN_USERS_PROPERTIES_ACTIVATION_BY_ADMIN', "By Admin");
 define('_EN_USERS_PROPERTIES_ANON_GROUP', "Default group of registered user");
 define('_EN_USERS_PROPERTIES_PASS_RECOVERY', "Users can recover their passwords");
+define('_EN_USERS_PROPERTIES_DASHBOARD_BUILDING', "Users can build their dashboard");
 define('_EN_USERS_PROPERTIES_UPDATED', "Properties have been updated");
 define('_EN_USERS_PROPERTIES_CANT_UPDATE', "There was a problem when updating the properties");
 
