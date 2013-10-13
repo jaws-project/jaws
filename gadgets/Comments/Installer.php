@@ -128,7 +128,31 @@ class Comments_Installer extends Jaws_Gadget_Installer
                 }
             }
 
-            $result = $this->installSchema('schema.xml', '', '0.9.0.xml');
+            $result = $this->installSchema('1.0.0.xml', '', '0.9.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            $result = $this->installSchema('schema.xml', '', '1.0.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
+        if (version_compare($old, '1.0.0', '<')) {
+            $result = $this->installSchema('1.0.0.xml', '', '0.9.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            $result = $this->installSchema('schema.xml', '', '1.0.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
+        if (version_compare($old, '1.1.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '1.0.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }

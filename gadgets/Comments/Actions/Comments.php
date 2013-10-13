@@ -64,6 +64,7 @@ class Comments_Actions_Comments extends Comments_HTML
         $tpl->SetVariable('action', $action);
         $tpl->SetVariable('reference', $reference);
         $tpl->SetVariable('redirect_to', $redirect_to. '#'. $gadget. '_'. $action);
+        $tpl->SetVariable('private', _t('COMMENTS_PRIVATE'));
 
         $allow_comments_config = $this->gadget->registry->fetch('allow_comments', 'Comments');
         switch ($allow_comments_config) {
@@ -497,7 +498,7 @@ class Comments_Actions_Comments extends Comments_HTML
     function PostMessage()
     {
         $post  = jaws()->request->fetch(array('message', 'name', 'email', 'url', 'url2', 'requested_gadget',
-                                    'requested_action', 'reference', 'redirect_to'), 'post');
+                                    'requested_action', 'reference', 'redirect_to', 'is_private'), 'post');
 
         $redirectTo = str_replace('&amp;', '&', $post['redirect_to']);
         if ($GLOBALS['app']->Session->Logged()) {
@@ -553,9 +554,9 @@ class Comments_Actions_Comments extends Comments_HTML
         $model = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
         $res = $model->insertComment(
             $post['requested_gadget'], $post['reference'], $post['requested_action'], $post['name'],
-            $post['email'], $post['url'], $post['message'], $_SERVER['REMOTE_ADDR'], $permalink, $status
+            $post['email'], $post['url'], $post['message'], $_SERVER['REMOTE_ADDR'],
+            $permalink, $status, $post['is_private']
         );
-
 
         if (Jaws_Error::isError($res)) {
             $GLOBALS['app']->Session->PushResponse(

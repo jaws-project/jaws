@@ -37,6 +37,10 @@
             <p><label for="message{rand}">{lbl_message}:</label>
                 <textarea id="message{rand}" cols="20" rows="7" name="message">{message}</textarea>
             </p>
+            <p>
+                <input name="is_private" id="private_comments{rand}" type="checkbox" value="0" />
+                <label for="private_comments{rand}">{private}</label>
+            </p>
         </div>
         <div class="actions">
             <button type="button" name="preview" id="preview" value="{preview}"

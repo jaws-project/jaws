@@ -45,11 +45,12 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
      * @param   string  $ip        Author's IP
      * @param   string  $permalink Permanent link to resource
      * @param   int     $status
+     * @param   boolean $is_private
      * @return  int     Comment status or Jaws_Error on any error
      * @access  public
      */
     function insertComment($gadget, $gadgetId, $action, $name, $email, $url, $message,
-                        $ip, $permalink, $status = COMMENT_STATUS_APPROVED)
+                        $ip, $permalink, $status = COMMENT_STATUS_APPROVED, $is_private = null)
     {
         if (!in_array($status, array(1, 2, 3))) {
             $status = Comments_Info::COMMENT_STATUS_SPAM;
@@ -82,6 +83,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         $cData['url']           = $url;
         $cData['msg_txt']       = $message;
         $cData['status']        = (int)$status;
+        $cData['is_private']    = (is_null($is_private) ? 0 : 1);
         $cData['msg_key']       = $message_key;
         $cData['ip']            = $ip;
         $cData['user']          = (int)$GLOBALS['app']->Session->GetAttribute('user');

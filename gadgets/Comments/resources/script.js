@@ -125,6 +125,8 @@ function editComment(rowElement, id)
 
     if(comment['reply']!=null) {
         $('reply').value          = comment['reply'].defilter();
+    } else {
+        $('reply').value          = '';
     }
 }
 
