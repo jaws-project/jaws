@@ -65,10 +65,10 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     function UpdateComment()
     {
         $this->gadget->CheckPermission('ManageComments');
-        @list($gadget, $id, $name, $email, $url, $message, $reply, $status) = jaws()->request->fetchAll('post');
+        @list($gadget, $id, $name, $email, $url, $message, $reply, $status, $sendEmail) = jaws()->request->fetchAll('post');
         // TODO: Fill permalink In New Versions, Please!!
         $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
-        $res = $cModel->updateComment($gadget, $id, $name, $email, $url, $message, $reply, '', $status);
+        $res = $cModel->updateComment($gadget, $id, $name, $email, $url, $message, $reply, '', $status, $sendEmail);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {

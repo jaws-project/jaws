@@ -88,6 +88,7 @@ function stopCommentAction()
     $('reply').value                   = '';
     $('comment_status').selectedIndex  = 0;
     $('btn_save').style.display        = 'none';
+    $('btn_reply').style.display       = 'none';
     $('btn_cancel').style.display      = 'none';
     $('name').disabled                 = false;
     $('email').disabled                = false;
@@ -122,19 +123,18 @@ function editComment(rowElement, id)
     $('message').value            = comment['msg_txt'].defilter();
     $('comment_status').value     = comment['status'];
     $('btn_save').style.display   = 'inline';
+    $('btn_reply').style.display  = 'inline';
     $('btn_cancel').style.display = 'inline';
 
     if(comment['reply']!=null) {
         $('reply').value          = comment['reply'].defilter();
-    } else {
-        $('reply').value          = '';
     }
 }
 
 /**
  * Update a Comment
  */
-function updateComment() {
+function updateComment(sendEmail) {
     CommentsAjax.callAsync('UpdateComment',
         $('gadget').value,
         $('id').value,
@@ -143,7 +143,8 @@ function updateComment() {
         $('url').value,
         $('message').value,
         $('reply').value,
-        $('comment_status').value);
+        $('comment_status').value,
+        sendEmail);
 }
 
 /**

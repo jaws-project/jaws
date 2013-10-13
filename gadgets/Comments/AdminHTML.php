@@ -144,9 +144,15 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
             $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-            $btnSave->AddEvent(ON_CLICK, "updateComment();");
+            $btnSave->AddEvent(ON_CLICK, "updateComment(false);");
             $btnSave->SetStyle('display: none;');
             $tpl->SetVariable('btn_save', $btnSave->Get());
+
+            $btnReply =& Piwi::CreateWidget('Button', 'btn_reply', _t('COMMENTS_SAVE_AND_REPLY'), 
+                                                        'gadgets/Contact/images/contact_mini.png');
+            $btnReply->AddEvent(ON_CLICK, "updateComment(true);");
+            $btnReply->SetStyle('display: none;');
+            $tpl->SetVariable('btn_reply', $btnReply->Get());
         }
 
         $tpl->SetVariable('incompleteCommentsFields', _t('COMMENTS_INCOMPLETE_FIELDS'));
