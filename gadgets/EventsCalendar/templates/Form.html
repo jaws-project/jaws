@@ -1,0 +1,43 @@
+<!-- BEGIN form -->
+<div class="gadget events-calendar">
+  <h2>{title}</h2>
+  <div class="gadget_response">
+    <div id="eventscalendar_{action}_response" class="{resp_type}">{resp_text}</div>
+  </div>
+  <div>
+    <form id="frm_event" name="frm_event" action="{base_script}" method="post">
+      <input type="hidden" name="gadget" value="EventsCalendar" />
+      <input type="hidden" name="action" value="{form_action}" />
+      <input type="hidden" name="id" value="{id}" />
+      <table>
+        <tr><th><label for="event_subject">{lbl_subject}:</label></th>
+          <td><input id="event_subject" name="subject" value="{subject}" /></td></tr>
+        <tr><th><label for="event_location">{lbl_location}:</label></th>
+          <td><input id="event_location" name="location" value="{location}" /></td></tr>
+        <tr><th><label for="event_desc">{lbl_desc}:</label></th>
+          <td><textarea id="event_desc" name="description">{description}</textarea></td></tr>
+        <tr><th><label for="event_start_time">{lbl_start_time}:</label></th>
+          <td>{start_time}</td></tr>
+        <tr><th><label for="event_stop_time">{lbl_stop_time}:</label></th>
+          <td>{stop_time}</td></tr>
+        <tr><th><label for="event_type">{lbl_type}:</label></th>
+          <td>{type}</td></tr>
+        <tr><th><label for="event_priority">{lbl_priority}:</label></th>
+          <td>{priority}</td></tr>
+        <tr><th><label for="event_reminder">{lbl_reminder}:</label></th>
+          <td>{reminder}</td></tr>
+        <tr><th><label for="event_repeat">{lbl_repeat}:</label></th>
+          <td>{repeat}</td></tr>
+      </table>
+      <div class="actions">
+        <button type="button" onclick="location.href='{url_back}'">{lbl_cancel}</button>
+        <button type="button" onclick="submitEvent(this.form)">{lbl_ok}</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+var errorIncompleteData = "{errorIncompleteData}";
+$('event_subject').focus();
+</script>
+<!-- END form -->

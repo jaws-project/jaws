@@ -1,0 +1,46 @@
+<!-- BEGIN events -->
+<div class="gadget events-calendar">
+  <h2>{title}</h2>
+  <div class="gadget_response">
+    <div id="eventscalendar_events_response" class="{type}">{text}</div>
+  </div>
+  <div>
+    <form id="frm_search" action="{base_script}" method="post">
+      <input type="hidden" name="gadget" value="EventsCalendar" />
+      <input type="hidden" name="action" value="Search" />
+      {filter} {query} {btn_search} {btn_reset}
+    </form>
+    <table>
+      <thead><tr>
+        <th><input type="checkbox" id="chk_all" onchange="checkAll()"/></th>
+        <th class="event-subject">{lbl_subject}</th>
+        <th>{lbl_start}</th>
+        <th>{lbl_shared}</th>
+        <th>{lbl_owner}</th>
+      </tr></thead>
+      <tbody id="grid_events">
+        <!-- BEGIN event -->
+        <tr id="event_{id}">
+          <td><input type="checkbox" value="{id}"/></td>
+          <td><a href="{url}">{title}</a></td>
+          <td>{created}</td>
+          <td>{shared}</td>
+          <td class="event-owner" title="{username}">{nickname}</td>
+        </tr>
+        <!-- END event -->
+      </tbody>
+    </table>
+    <!-- INCLUDE_ PageNavigation.html -->
+    <div class="actions">
+      <button onclick="location.href='{url_new}'">{lbl_new_event}</button>
+      <button id="btn_del_event" onclick="deleteEvents()">{lbl_del_event}</button>
+    </div>
+  </div>
+</div>
+<script>
+var events_url = "{events_url}",
+    confirmDelete = "{confirmDelete}",
+    errorShortQuery = "{errorShortQuery}";
+initEvents();
+</script>
+<!-- END events -->

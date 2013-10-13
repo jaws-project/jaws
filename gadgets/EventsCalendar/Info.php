@@ -32,7 +32,7 @@ class EventsCalendar_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_action = 'EventsCalendar';
+    var $default_action = 'Events';
 
     /**
      * Default back-end action name
@@ -40,5 +40,5 @@ class EventsCalendar_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_admin_action = 'EventsCalendar';
+    var $default_admin_action = 'Events';
 }

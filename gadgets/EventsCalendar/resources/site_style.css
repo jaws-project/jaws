@@ -1,0 +1,33 @@
+.events .event-title {
+width:100%;
+}
+#grid_events td {
+white-space:nowrap;
+}
+#frm_search input {
+width:200px;
+}
+#frm_event input {
+width:100%;
+}
+#frm_event select {
+width:100px;
+}
+#frm_event textarea {
+width:100%;
+height:50px;
+}
+#event_share select {
+width:100%;
+}
+#event_share input[type=checkbox] {
+vertical-align:middle;
+margin-right:2px;
+}
+
+#event_start_time_table, #event_stop_time_table {
+width:180px;
+}
+#event_start_time_table td, #event_stop_time_table td {
+padding:0;
+}
