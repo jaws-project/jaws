@@ -31,6 +31,7 @@ define('_EN_TAGS_TAG_ITEM_COUNT', "{0} items");
 
 /* Tags */
 define('_EN_TAGS_TAG_NAME', "Tag name");
+define('_EN_TAGS_TAG_TITLE', "Tag title");
 define('_EN_TAGS_TAG_USAGE_COUNT', "Usage count");
 define('_EN_TAGS_ADD_TAG', "Add tag");
 define('_EN_TAGS_EDIT_TAG', "Edit tag");

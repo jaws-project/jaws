@@ -84,7 +84,7 @@ class Tags_Actions_Tags extends Tags_HTML
             $fsize = $minFontSize + $fontSizeRange * (log($count) - $minTagCount)/$tagCountRange;
             $tpl->SetBlock('tagcloud/tag');
             $tpl->SetVariable('size', (int)$fsize);
-            $tpl->SetVariable('tagname',  Jaws_UTF8::strtolower($tag['name']));
+            $tpl->SetVariable('tagname',  Jaws_UTF8::strtolower($tag['title']));
             $tpl->SetVariable('frequency', $tag['howmany']);
             if (empty($gadget)) {
                 $param = array('tag' => $tag['name']);

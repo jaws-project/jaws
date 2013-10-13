@@ -40,16 +40,17 @@ class Tags_Model_Tags extends Jaws_Gadget_Model
      * @param   string  $gadget     gadget name
      * @return  mixed   An array on success and Jaws_Error in case of errors
      */
-    function GenerateTagCloud($gadget)
+    function
+    GenerateTagCloud($gadget)
     {
         $table = Jaws_ORM::getInstance()->table('tags');
 
-        $table->select('tags.id:integer', 'name', 'count(tags_items.gadget) as howmany:integer');
+        $table->select('tags.id:integer', 'name', 'title', 'count(tags_items.gadget) as howmany:integer');
         $table->join('tags_items', 'tags_items.tag', 'tags.id', 'left');
         $table->where('tags_items.published', true);
         $table->and()->openWhere('tags_items.update_time', time(), '>')->or();
         $table->closeWhere('tags_items.update_time', null, 'is' );
-        $table->groupBy('tags.id');
+        $table->groupBy('tags.id', 'tags.name', 'tags.title');
 
         if (!empty($gadget)) {
             $table->and()->where('gadget', $gadget);

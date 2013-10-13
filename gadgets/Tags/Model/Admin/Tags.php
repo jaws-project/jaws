@@ -150,6 +150,10 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      */
     function AddTag($data)
     {
+        if(empty($data['title'])) {
+            $data['title'] = $data['name'];
+        }
+        $data['name'] = $this->GetRealFastUrl($data['name'], null, false);
         $data['user'] = 0;
         $table = Jaws_ORM::getInstance()->table('tags');
         $result = $table->insert($data)->exec();
@@ -373,7 +377,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('tags');
 
-        $table->select('tags.id:integer', 'name', 'count(tags_items.gadget) as usage_count:integer');
+        $table->select('tags.id:integer', 'name', 'title', 'count(tags_items.gadget) as usage_count:integer');
         $table->join('tags_items', 'tags_items.tag', 'tags.id', 'left');
         $table->groupBy('tags.id')->limit($limit, $offset);
 
