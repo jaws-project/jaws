@@ -77,6 +77,12 @@ class Users_Actions_Admin_Properties extends Users_AdminHTML
         $passRecovery->AddOption(_t('GLOBAL_NO'), 'false');
         $passRecovery->SetDefault($this->gadget->registry->fetch('password_recovery'));
 
+        $dashboard =& Piwi::CreateWidget('Combo', 'dashboard_building');
+        $dashboard->SetTitle(_t('USERS_PROPERTIES_DASHBOARD_BUILDING'));
+        $dashboard->AddOption(_t('GLOBAL_YES'), 'true');
+        $dashboard->AddOption(_t('GLOBAL_NO'), 'false');
+        $dashboard->SetDefault($this->gadget->registry->fetch('dashboard_building'));
+
         include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fieldset = new Jaws_Widgets_FieldSet('');
         $fieldset->SetTitle('vertical');
@@ -87,6 +93,7 @@ class Users_Actions_Admin_Properties extends Users_AdminHTML
         $fieldset->Add($anonactivate);
         $fieldset->Add($anonGroup);
         $fieldset->Add($passRecovery);
+        $fieldset->Add($dashboard);
 
         $form->Add($fieldset);
 

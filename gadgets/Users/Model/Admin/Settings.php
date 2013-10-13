@@ -21,15 +21,11 @@ class Users_Model_Admin_Settings extends Jaws_Gadget_Model
      * @param   string  $act        Activation type
      * @param   int     $group      Default group of anonymous registered user
      * @param   string  $recover    Users can recover their passwords
+     * @param   string  $dashboard  Users can build their dashboard
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function SaveSettings($method, $anon, $repetitive, $act, $group, $recover)
+    function SaveSettings($method, $anon, $repetitive, $act, $group, $recover, $dashboard)
     {
-        $method     = $method;
-        $anon       = $anon;
-        $repetitive = $repetitive;
-        $recover    = $recover;
-
         $res = true;
         if ($this->gadget->GetPermission('ManageAuthenticationMethod')) {
             $methods = Jaws::getAuthTypes();
@@ -42,6 +38,7 @@ class Users_Model_Admin_Settings extends Jaws_Gadget_Model
         $res = $res && $this->gadget->registry->update('anon_activation', $act);
         $res = $res && $this->gadget->registry->update('anon_group', (int)$group);
         $res = $res && $this->gadget->registry->update('password_recovery', $recover);
+        $res = $res && $this->gadget->registry->update('dashboard_building', $dashboard);
         if ($res) {
             return true;
         }

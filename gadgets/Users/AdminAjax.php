@@ -449,9 +449,9 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function SaveSettings()
     {
         $this->gadget->CheckPermission('ManageProperties');
-        @list($method, $anon, $repetitive, $act, $group, $recover) = jaws()->request->fetchAll('post');
+        @list($method, $anon, $repetitive, $act, $group, $recover, $dashboard) = jaws()->request->fetchAll('post');
         $uModel = $GLOBALS['app']->LoadGadget('Users', 'AdminModel', 'Settings');
-        $res = $uModel->SaveSettings($method, $anon, $repetitive, $act, $group, $recover);
+        $res = $uModel->SaveSettings($method, $anon, $repetitive, $act, $group, $recover, $dashboard);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
