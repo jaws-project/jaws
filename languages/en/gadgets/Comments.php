@@ -64,3 +64,8 @@ define('_EN_COMMENTS_COMMENTS_RESTRICTED', "You must <a href=\"{0}\">login</a> o
 define('_EN_COMMENTS_COMMENT_UPDATED', "Comment updated");
 define('_EN_COMMENTS_COMMENT_MARKED', "Comment marked");
 define('_EN_COMMENTS_COMMENT_DELETED', "Comment deleted");
+
+define('_EN_COMMENTS_PRIVATE', "Private");
+define('_EN_COMMENTS_SAVE_AND_REPLY', "Save And Email Reply");
+define('_EN_COMMENTS_REPLY_BY', "Replied By {0}");
+define('_EN_COMMENTS_YOU_GET_REPLY', "New Reply For Your Comment");
