@@ -36,7 +36,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
         // Menubar
         $tpl->SetVariable('menubar', $this->MenuBar('Compose'));
 
-        $tpl->SetVariable('selectAllUsersChk', 'false');
+        $tpl->SetVariable('selectAnnouncementChk', 'false');
         $body_value = "";
         $recipient_users = array();
         $recipient_groups = array();
@@ -60,9 +60,9 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
                 $tpl->SetVariable('id', $id);
                 $recipient_users = explode(",", $message['recipient_users']);
                 $recipient_groups = explode(",", $message['recipient_groups']);
-                // check recipient is all users?
-                if (count($recipient_users) == 1 && $recipient_users[0] == 0) {
-                    $tpl->SetVariable('selectAllUsersChk', 'true');
+                // check message type is announcement?
+                if ($message['type'] == PrivateMessage_Info::PRIVATEMESSAGE_TYPE_ANNOUNCEMENT) {
+                    $tpl->SetVariable('selectAnnouncementChk', 'true');
                 }
                 $body_value = $message['body'];
                 $tpl->SetVariable('subject', $message['subject']);
@@ -173,15 +173,15 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User();
         if ($show_recipient) {
+            if($this->gadget->GetPermission('ComposeAnnouncement')) {
+                // Announcement
+                $tpl->SetBlock('compose/announcement');
+                $tpl->SetVariable('lbl_announcement', _t('PRIVATEMESSAGE_MESSAGE_TYPE_ANNOUNCEMENT'));
+                $tpl->ParseBlock('compose/announcement');
+            }
+
             $tpl->SetBlock('compose/recipients');
             $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
-
-            if($this->gadget->GetPermission('ComposeToAllUsers')) {
-                //All users
-                $tpl->SetBlock('compose/recipients/all_users');
-                $tpl->SetVariable('lbl_recipient_all_users', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_ALL_USERS'));
-                $tpl->ParseBlock('compose/recipients/all_users');
-            }
 
             // User List
             $bUsers =& Piwi::CreateWidget('Combo', 'recipient_users');
@@ -308,10 +308,10 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
         $post = jaws()->request->fetch(array('id', 'parent', 'published', 'recipient_users', 'recipient_groups',
                                              'subject', 'body', 'attachments:array'), 'post');
 
-        // Check permission for sending a message to all users
+        // Check permission for sending announcement
         $recipient_users = explode(",", $post['recipient_users']);
         if (in_array('0', $recipient_users)) {
-            $this->gadget->CheckPermission('ComposeToAllUsers');
+            $this->gadget->CheckPermission('ComposeAnnouncement');
         }
 
         $user = $GLOBALS['app']->Session->GetAttribute('user');

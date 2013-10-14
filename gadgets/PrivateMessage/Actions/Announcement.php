@@ -28,9 +28,8 @@ class PrivateMessage_Actions_Announcement extends PrivateMessage_HTML
         $tpl = $this->gadget->loadTemplate('Inbox.html');
         $tpl->SetBlock('inbox');
 
-        $post = jaws()->request->fetch(array('view', 'page', 'read', 'replied', 'term', 'page_item'));
+        $post = jaws()->request->fetch(array('page', 'read', 'replied', 'term', 'page_item'));
         $page = $post['page'];
-        $view = $post['view'];
 
         $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
         $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
@@ -52,7 +51,6 @@ class PrivateMessage_Actions_Announcement extends PrivateMessage_HTML
         $tpl->SetVariable('opt_page_item_' . $limit, 'selected="selected"');
 
         $tpl->SetVariable('page', $page);
-        $tpl->SetVariable('view', $view);
         $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
         $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
         $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
@@ -63,17 +61,12 @@ class PrivateMessage_Actions_Announcement extends PrivateMessage_HTML
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
         $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
 
-        if ($view == 'archived') {
-            $tpl->SetBlock('inbox/archive_action');
-            $tpl->SetVariable('lbl_move_to_inbox', _t('PRIVATEMESSAGE_MOVE_TO_INBOX'));
-            $tpl->ParseBlock('inbox/archive_action');
-        } else {
-            $tpl->SetBlock('inbox/inbox_action');
-            $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
-            $tpl->SetVariable('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
-            $tpl->SetVariable('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
-            $tpl->ParseBlock('inbox/inbox_action');
-        }
+        $tpl->SetBlock('inbox/inbox_action');
+        $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
+        $tpl->SetVariable('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
+        $tpl->SetVariable('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
+        $tpl->ParseBlock('inbox/inbox_action');
+
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
         $tpl->SetVariable('icon_ok', STOCK_OK);
 
@@ -87,7 +80,8 @@ class PrivateMessage_Actions_Announcement extends PrivateMessage_HTML
             $tpl->ParseBlock('inbox/response');
         }
 
-        $post['type'] = 1; // Just show announcement
+        $post['archived'] = false;
+        $post['type'] = PrivateMessage_Info::PRIVATEMESSAGE_TYPE_ANNOUNCEMENT; // Just show announcement
         $messages = $model->GetInbox($user, $post, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;

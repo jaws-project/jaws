@@ -11,6 +11,12 @@
 class PrivateMessage_Info extends Jaws_Gadget
 {
     /**
+     * Constants
+     */
+    const PRIVATEMESSAGE_TYPE_MESSAGE = 0;
+    const PRIVATEMESSAGE_TYPE_ANNOUNCEMENT = 1;
+
+    /**
      * Gadget version
      *
      * @var     string

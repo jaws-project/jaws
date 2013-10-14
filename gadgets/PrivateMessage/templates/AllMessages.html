@@ -1,5 +1,5 @@
 <!-- BEGIN all -->
-<div class="gadget privateMessage inbox">
+<div class="gadget privateMessage allMessages">
     <div class="gadget_header"><h2>{title}</h2><div class="gadget_menubar">{menubar}</div></div>
     <!-- BEGIN response -->
     <div class="gadget_response">
@@ -9,32 +9,12 @@
 
     <form name="privatemessage" id="privatemessage" action="{requested_url}" method="post">
         <input type="hidden" name="gadget" value="PrivateMessage"/>
-        <input type="hidden" name="action" value="Inbox"/>
+        <input type="hidden" name="action" value="AllMessages"/>
         <input type="hidden" name="page" value="{page}"/>
         <input type="hidden" name="view" value="{view}"/>
         <input type="hidden" name="status" value=""/>
 
         <div class="filters">
-            <label for="read">{lbl_read}</label>
-            <select id="read" name="read">
-                <option
-                {opt_read_} value="">{lbl_all}</option>
-                <option
-                {opt_read_yes} value="yes">{lbl_yes}</option>
-                <option
-                {opt_read_no} value="no">{lbl_no}</option>
-            </select>
-
-            <label for="replied">{lbl_replied}</label>
-            <select id="replied" name="replied">
-                <option
-                {opt_replied_} value="">{lbl_all}</option>
-                <option
-                {opt_replied_yes} value="yes">{lbl_yes}</option>
-                <option
-                {opt_replied_no} value="no">{lbl_no}</option>
-            </select>
-
             <input type="text" id="term" name="term" size="20" value="{txt_term}">
 
             <button value="{filter}" id="filter_button" name="filter_button"
@@ -47,10 +27,12 @@
                 <thead>
                 <tr>
                     <th>#</th>
+                    <th>{lbl_in_out}</th>
 
                     <th>{lbl_subject}</th>
                     <th>&nbsp;</th>
                     <th>{lbl_from}</th>
+                    <th>{lbl_recipients}</th>
                     <th>{lbl_send_time}</th>
                 </tr>
                 </thead>
@@ -61,6 +43,7 @@
                     <td>
                         {rownum}
                     </td>
+                    <td>{in_out}</td>
                     <td><a href="{message_url}">{subject}</a></td>
 
                     <!-- BEGIN have_attachment -->
@@ -71,6 +54,7 @@
                     <!-- END no_attachment -->
 
                     <td><a href="{user_url}">{from}</a></td>
+                    <td><a href="{user_url}">{recipients}</a></td>
                     <td>{send_time}</td>
 
                 </tr>
@@ -78,7 +62,7 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td colspan="5">
+                    <td colspan="7">
                         {lbl_page_item}
                         <select id="page_item" name="page_item" onchange="this.form.submit();">
                             <option {opt_page_item_5} value="5">5</option>

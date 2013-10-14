@@ -25,7 +25,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $columns = array(
             'pm_messages.id:integer', 'parent:integer', 'pm_messages.subject', 'pm_messages.body', 'published:boolean',
             'users.nickname as from_nickname', 'users.username as from_username', 'users.avatar', 'users.email',
-            'user:integer', 'pm_messages.insert_time', 'recipient_users', 'recipient_groups');
+            'user:integer', 'pm_messages.insert_time', 'pm_messages.type:integer', 'recipient_users', 'recipient_groups');
         if($getRecipients) {
             $columns[] = 'pm_recipients.recipient:integer';
             $columns[] = 'pm_recipients.read:boolean';
@@ -294,12 +294,12 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      */
     function ComposeMessage($user, $messageData)
     {
-        $messageData['type'] = 0; // Normal status
+        $messageData['type'] = PrivateMessage_Info::PRIVATEMESSAGE_TYPE_MESSAGE;
         // merge recipient users & groups to an array
         $recipient_users = array();
         if (trim($messageData['recipient_users']) == '0' || !empty($messageData['recipient_users'])) {
             if (trim($messageData['recipient_users']) == '0') {
-                $messageData['type'] = 1; // Announcement status
+                $messageData['type'] = PrivateMessage_Info::PRIVATEMESSAGE_TYPE_ANNOUNCEMENT;
                 $table = Jaws_ORM::getInstance()->table('users');
                 $recipient_users = $table->select('id:integer')->fetchColumn();
             } else {
@@ -361,6 +361,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             $data['subject']            = $messageData['subject'];
             $data['body']               = $messageData['body'];
             $data['published']          = $messageData['published'];
+            $data['type']               = $messageData['type'];
             $data['attachments']        = count($messageData['attachments']);
             $data['recipient_users']    = $messageData['recipient_users'];
             $data['recipient_groups']   = $messageData['recipient_groups'];

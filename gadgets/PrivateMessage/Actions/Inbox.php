@@ -44,7 +44,8 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
             $tpl->SetVariable('title', _t('PRIVATEMESSAGE_ARCHIVE'));
         } else {
             $post['archived'] = false;
-            $post['type'] = 0; // Just show inbox normal message (not announcement)
+            // Just show inbox normal message (not announcement)
+            $post['type'] = PrivateMessage_Info::PRIVATEMESSAGE_TYPE_MESSAGE;
             // Menubar
             $tpl->SetVariable('menubar', $this->MenuBar('Inbox'));
             $tpl->SetVariable('title', _t('PRIVATEMESSAGE_INBOX'));

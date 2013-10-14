@@ -53,12 +53,17 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_body', _t('PRIVATEMESSAGE_MESSAGE_BODY'));
 
+        // check announcement\
+        $tpl->SetBlock('outboxmessage/message/announcement');
+        $tpl->SetVariable('lbl_message_is_announcement', _t('PRIVATEMESSAGE_MESSAGE_IS_ANNOUNCEMENT'));
+        $tpl->ParseBlock('outboxmessage/message/announcement');
+
         // fill recipients users
         $recipients = $model->GetMessageRecipientsInfo($message['id']);
         $tpl->SetBlock('outboxmessage/message/recipients');
         $tpl->SetVariable('lbl_recipients', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
 
-        if (count($recipients) > 0) {
+        if ($message['type'] == PrivateMessage_Info::PRIVATEMESSAGE_TYPE_MESSAGE) {
             $tpl->SetBlock('outboxmessage/message/recipients/recipients_list');
             $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT'));
             $tpl->SetVariable('lbl_view_time', _t('PRIVATEMESSAGE_MESSAGE_VIEW_TIME'));
@@ -106,7 +111,7 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
         $tpl->SetVariable('nickname', $message['from_nickname']);
         $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
         $tpl->SetVariable('subject', $message['subject']);
-        $tpl->SetVariable('body', $message['body']);
+        $tpl->SetVariable('body', $this->gadget->ParseText($message['body'], 'PrivateMessage', 'index'));
 
         // user's avatar
         $tpl->SetVariable(

@@ -64,7 +64,7 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
         $tpl->SetVariable('nickname', $message['from_nickname']);
         $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
         $tpl->SetVariable('subject', $message['subject']);
-        $tpl->SetVariable('body', $message['body']);
+        $tpl->SetVariable('body', $this->gadget->ParseText($message['body'], 'PrivateMessage', 'index'));
 
         // user's avatar
         $tpl->SetVariable(

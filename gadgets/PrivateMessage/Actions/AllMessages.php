@@ -32,8 +32,6 @@ class PrivateMessage_Actions_AllMessages extends PrivateMessage_HTML
         $page = $post['page'];
         $view = $post['view'];
 
-        $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
-        $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
         $tpl->SetVariable('txt_term', $post['term']);
 
         // Menubar
@@ -62,53 +60,68 @@ class PrivateMessage_Actions_AllMessages extends PrivateMessage_HTML
         $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
         $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
+        $tpl->SetVariable('lbl_in_out', _t('PRIVATEMESSAGE_IN_OUT'));
 
-        if ($view == 'archived') {
-            $tpl->SetBlock('all/archive_action');
-            $tpl->SetVariable('lbl_move_to_inbox', _t('PRIVATEMESSAGE_MOVE_TO_INBOX'));
-            $tpl->ParseBlock('all/archive_action');
-        } else {
-            $tpl->SetBlock('all/inbox_action');
-            $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
-            $tpl->SetVariable('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
-            $tpl->SetVariable('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
-            $tpl->ParseBlock('all/inbox_action');
-        }
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
-        $tpl->SetVariable('icon_ok', STOCK_OK);
 
         $date = $GLOBALS['app']->loadDate();
-        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
+        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'AllMessages');
+        $mModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
-        if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
-            $tpl->SetBlock('all/response');
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('all/response');
-        }
 
-        $messages = $model->GetInbox($user, $post, $limit, ($page - 1) * $limit);
+        $messages = $model->GetAllMessages($user, $post, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
             foreach ($messages as $message) {
                 $i++;
                 $tpl->SetBlock('all/message');
                 $tpl->SetVariable('rownum', $i);
-                $tpl->SetVariable('id',  $message['message_recipient_id']);
-                $tpl->SetVariable('from', $message['from_nickname']);
-                if($message['read']) {
-                    $subject = $message['subject'];
-                    $tpl->SetVariable('status', 'read');
+
+                // check inbox or outbox
+                if ($message['recipient'] == $user) {
+                    $tpl->SetVariable('in_out', _t('PRIVATEMESSAGE_IN'));
+                    $tpl->SetVariable('id',  $message['message_recipient_id']);
+
+                    $tpl->SetVariable('message_url', $this->gadget->urlMap(
+                        'InboxMessage',
+                        array('id' => $message['message_recipient_id'])));
+
+                    if($message['read']) {
+                        $subject = $message['subject'];
+                        $tpl->SetVariable('status', 'read');
+                    } else {
+                        $subject = '<strong>' . $message['subject'] . '</strong>';
+                        $tpl->SetVariable('status', 'unread');
+                    }
                 } else {
-                    $subject = '<strong>' . $message['subject'] . '</strong>';
-                    $tpl->SetVariable('status', 'unread');
+                    $tpl->SetVariable('in_out', _t('PRIVATEMESSAGE_OUT'));
+                    $tpl->SetVariable('id',  $message['id']);
+
+                    $tpl->SetVariable('message_url', $this->gadget->urlMap(
+                        'OutboxMessage',
+                        array('id' => $message['id'])));
                 }
+
+                $recipients = $mModel->GetMessageRecipientsInfo($message['id']);
+                $recipients_str = _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_ALL_USERS');
+                if (count($recipients) > 0) {
+                    // user's profile
+                    $user_url = $GLOBALS['app']->Map->GetURLFor(
+                        'Users',
+                        'Profile',
+                        array('user' => $recipients[0]['username']));
+                    $recipients_str = '<a href=' . $user_url . '>' . $recipients[0]['nickname'] . '<a/>';
+                    if (count($recipients) > 1) {
+                        $recipients_str .= ' , ...';
+                    }
+                }
+                $tpl->SetVariable('recipients', $recipients_str);
+
+
+                $tpl->SetVariable('from', $message['from_nickname']);
+
                 $tpl->SetVariable('subject', $subject);
                 $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
-
-                $tpl->SetVariable('message_url', $this->gadget->urlMap(
-                    'InboxMessage',
-                    array('id' => $message['message_recipient_id'])));
 
                 if ($message['attachments'] > 0) {
                     $tpl->SetBlock('all/message/have_attachment');
@@ -135,11 +148,10 @@ class PrivateMessage_Actions_AllMessages extends PrivateMessage_HTML
         }
 
         $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
+        $tpl->SetVariable('lbl_recipients', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
-
-        $iModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
-        $inboxTotal = $iModel->GetInboxStatistics($user, $post);
+        $total = $model->GetAllMessagesStatistics($user, $post);
 
         $params = array();
         if(!empty($post['read'])) {
@@ -161,9 +173,9 @@ class PrivateMessage_Actions_AllMessages extends PrivateMessage_HTML
             'all',
             $page,
             $limit,
-            $inboxTotal,
-            _t('PRIVATEMESSAGE_MESSAGE_COUNT', $inboxTotal),
-            'Inbox',
+            $total,
+            _t('PRIVATEMESSAGE_MESSAGE_COUNT', $total),
+            'AllMessages',
             $params
         );
 

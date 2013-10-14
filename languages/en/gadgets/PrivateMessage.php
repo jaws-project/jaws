@@ -20,7 +20,7 @@ define('_EN_PRIVATEMESSAGE_ACL_DELETEMESSAGE', "Delete message");
 define('_EN_PRIVATEMESSAGE_ACL_ARCHIVEMESSAGE', "Archive message");
 define('_EN_PRIVATEMESSAGE_ACL_REPLYMESSAGE', "Reply message");
 define('_EN_PRIVATEMESSAGE_ACL_COMPOSEMESSAGE', "Compose message");
-define('_EN_PRIVATEMESSAGE_ACL_COMPOSETOALLUSERS', "Compose message to all users");
+define('_EN_PRIVATEMESSAGE_ACL_COMPOSEANNOUNCEMENT', "Compose announcement message");
 
 /* Layout Actions */
 define('_EN_PRIVATEMESSAGE_ACTIONS_PRIVATEMESSAGE', "Private Message");
@@ -49,9 +49,10 @@ define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_ALL_USERS', "All users");
 define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS', "Users");
 define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS', "Groups");
 define('_EN_PRIVATEMESSAGE_FORWARD_MESSAGE', "Forward a message");
+define('_EN_PRIVATEMESSAGE_MESSAGE_TYPE_ANNOUNCEMENT', "Announcement");
 
 /* Common */
-define('_EN_PRIVATEMESSAGE_ALL_MESSAGES', "All messages");
+define('_EN_PRIVATEMESSAGE_ALL_MESSAGES', "All Messages");
 define('_EN_PRIVATEMESSAGE_ANNOUNCEMENT', "Announcement {0}");
 define('_EN_PRIVATEMESSAGE_INBOX', "Inbox {0}");
 define('_EN_PRIVATEMESSAGE_ARCHIVED', "Archived");
@@ -80,6 +81,10 @@ define('_EN_PRIVATEMESSAGE_MESSAGE_VIEW_TIME', "View time");
 define('_EN_PRIVATEMESSAGE_MESSAGE_NOT_VIEW', "Not view");
 define('_EN_PRIVATEMESSAGE_MESSAGE_UNDO_SENDING', "Undo sending");
 define('_EN_PRIVATEMESSAGE_ITEMS_PER_PAGE', "Items per page");
+define('_EN_PRIVATEMESSAGE_MESSAGE_IS_ANNOUNCEMENT', "Message is an announcement");
+define('_EN_PRIVATEMESSAGE_IN_OUT', "In/Out");
+define('_EN_PRIVATEMESSAGE_IN', "In");
+define('_EN_PRIVATEMESSAGE_OUT', "Out");
 
 /* Responses */
 define('_EN_PRIVATEMESSAGE_PROPERTIES_UPDATED', "The properties have been updated");

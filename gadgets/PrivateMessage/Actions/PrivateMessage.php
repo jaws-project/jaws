@@ -29,11 +29,19 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_HTML
         $iModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
         $oModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');
         $user_id = $GLOBALS['app']->Session->GetAttribute('user');
-        $unreadAnnouncementMessageCount = $iModel->GetInboxStatistics($user_id, array('read' => 'no', 'archived' => false, 'type' => 1));
-        $unreadInboxMessageCount = $iModel->GetInboxStatistics($user_id, array('read' => 'no', 'archived' => false, 'type' => 0));
+        $unreadAnnouncementCount = $iModel->GetInboxStatistics(
+                                                $user_id,
+                                                array('read' => 'no',
+                                                      'archived' => false,
+                                                      'type' => PrivateMessage_Info::PRIVATEMESSAGE_TYPE_ANNOUNCEMENT));
+        $unreadInboxCount = $iModel->GetInboxStatistics(
+                                                $user_id,
+                                                array('read' => 'no',
+                                                      'archived' => false,
+                                                      'type' => PrivateMessage_Info::PRIVATEMESSAGE_TYPE_MESSAGE));
         $draftMessageCount = $oModel->GetOutboxStatistics($user_id, array('published' => false));
-        if ($unreadInboxMessageCount > 0) {
-            $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX', '(' . $unreadInboxMessageCount . ')'));
+        if ($unreadInboxCount > 0) {
+            $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX', '(' . $unreadInboxCount . ')'));
         } else {
             $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX'));
         }
@@ -49,8 +57,8 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_HTML
         $tpl->SetVariable('all_messages', _t('PRIVATEMESSAGE_ALL_MESSAGES'));
         $tpl->SetVariable('all_messages_url', $this->gadget->urlMap('AllMessages'));
 
-        if ($unreadAnnouncementMessageCount > 0) {
-            $tpl->SetVariable('announcement', _t('PRIVATEMESSAGE_ANNOUNCEMENT', '(' . $unreadAnnouncementMessageCount . ')'));
+        if ($unreadAnnouncementCount > 0) {
+            $tpl->SetVariable('announcement', _t('PRIVATEMESSAGE_ANNOUNCEMENT', '(' . $unreadAnnouncementCount . ')'));
         } else {
             $tpl->SetVariable('announcement', _t('PRIVATEMESSAGE_ANNOUNCEMENT'));
         }
