@@ -185,13 +185,14 @@ class Jaws_Registry
      * @param   string  $key_value  Key value
      * @param   bool    $custom     Customizable by user?
      * @param   string  $component  Component name
+     * @param   int     $user       User ID
      * @return  bool    True is set otherwise False
      */
-    function insert($key_name, $key_value, $custom = false, $component = '')
+    function insert($key_name, $key_value, $custom = false, $component = '', $user = 0)
     {
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         $tblReg->insert(array(
-            'user'       => 0,
+            'user'       => (int)$user,
             'component'  => $component,
             'key_name'   => $key_name,
             'key_value'  => $key_value,
@@ -242,9 +243,10 @@ class Jaws_Registry
      * @param   string  $key_value  Key value
      * @param   bool    $custom     Customizable by user?
      * @param   string  $component  Component name
+     * @param   int     $user       User ID
      * @return  bool    True is set otherwise False
      */
-    function update($key_name, $key_value, $custom = null, $component = '')
+    function update($key_name, $key_value, $custom = null, $component = '', $user = 0)
     {
         $data = array();
         if (!is_null($key_value)) {
@@ -256,7 +258,7 @@ class Jaws_Registry
 
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         $tblReg->update($data)
-            ->where('user', 0)
+            ->where('user', (int)$user)
             ->and()
             ->where('component', $component)
             ->and()
@@ -266,7 +268,15 @@ class Jaws_Registry
             return false;
         }
 
-        $this->_Registry[$component][$key_name] = $data;
+        // if nothing updated then try to insert a new record
+        if (empty($result)) {
+            return $this->insert($key_name, $key_value, false, $component, $user);
+        }
+
+        // update registry cache array
+        if (empty($user)) {
+            $this->_Registry[$component][$key_name] = $data;
+        }
         return true;
     }
 
