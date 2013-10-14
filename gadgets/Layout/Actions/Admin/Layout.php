@@ -226,7 +226,13 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
         foreach ($themes as $theme => $tInfo) {
             $themeCombo->AddOption($tInfo['local']? 'local' : 'remote', $tInfo['name'], $theme);
         }
-        $themeCombo->SetDefault($this->gadget->registry->fetch('theme', 'Settings'));
+        $themeCombo->SetDefault(
+            $this->gadget->registry->fetchByUser(
+                'theme',
+                'Settings',
+                $GLOBALS['app']->Session->GetAttribute('layout')
+            )
+        );
         $themeCombo->AddEvent(ON_CHANGE, "this.form.submit();");
         $themeCombo->SetEnabled($this->gadget->GetPermission('ManageThemes'));
         $tpl->SetVariable('theme_combo', $themeCombo->Get());
