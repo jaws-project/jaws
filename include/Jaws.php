@@ -184,19 +184,21 @@ class Jaws
     function loadPreferences($preferences = array(), $loadFromDatabase = true)
     {
         if ($loadFromDatabase) {
-            $user = $this->Session->GetAttribute('user');
+            $user   = $this->Session->GetAttribute('user');
+            $layout = $this->Session->GetAttribute('layout');
             $this->_Preferences = array(
-                'theme'             => $this->Registry->fetchByUser($user, 'theme', 'Settings'),
-                'language'          => $this->Registry->fetchByUser(
-                    $user,
-                    JAWS_SCRIPT == 'index'? 'site_language': 'admin_language',
-                    'Settings'
-                ),
+                'theme'             => $this->Registry->fetchByUser($layout, 'theme', 'Settings'),
                 'editor'            => $this->Registry->fetchByUser($user, 'editor', 'Settings'),
                 'timezone'          => $this->Registry->fetchByUser($user, 'timezone', 'Settings'),
-                'calendar_type'     => $this->Registry->fetchByUser($user, 'calendar_type', 'Settings'),
-                'calendar_language' => $this->Registry->fetchByUser($user, 'calendar_language', 'Settings'),
+                'calendar_type'     => $this->Registry->fetchByUser($layout, 'calendar_type', 'Settings'),
+                'calendar_language' => $this->Registry->fetchByUser($layout, 'calendar_language', 'Settings'),
             );
+
+            if (JAWS_SCRIPT == 'index') {
+                $this->_Preferences['language'] = $this->Registry->fetchByUser($layout, 'site_language', 'Settings');
+            } else {
+                $this->_Preferences['language'] = $this->Registry->fetchByUser($user, 'admin_language', 'Settings');
+            }
         }
 
         // merge default with passed preferences
