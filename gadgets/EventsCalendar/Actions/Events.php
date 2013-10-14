@@ -12,7 +12,7 @@ $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/resources/site_styl
 class EventsCalendar_Actions_Events extends Jaws_Gadget_HTML
 {
     /**
-     * Builds notes management UI
+     * Builds events management UI
      *
      * @access  public
      * @return  string  XHTML UI
@@ -53,37 +53,38 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_HTML
         // $limit = (int)$this->gadget->registry->fetch('events_limit');
 
         // Fetch events
-        /*$model = $GLOBALS['app']->LoadGadget('Notepad', 'Model', 'Notepad');
+        $model = $GLOBALS['app']->LoadGadget('EventsCalendar', 'Model', 'Events');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $count = $model->GetNumberOfNotes($user, $shared, $foreign, $query);
-        $notes = $model->GetNotes($user, $shared, $foreign, $query, $limit, ($page - 1) * $limit);
-        if (!Jaws_Error::IsError($notes)){
+        //$count = $model->GetNumberOfEvents($user, $shared, $foreign, $query);
+        //$events = $model->GetEvents($user, $shared, $foreign, $query, $limit, ($page - 1) * $limit);
+        $events = $model->GetEvents($user);
+        if (!Jaws_Error::IsError($events)){
             $objDate = $GLOBALS['app']->loadDate();
-            foreach ($notes as $note) {
-                $tpl->SetBlock('notepad/note');
-                $tpl->SetVariable('id', $note['id']);
-                $tpl->SetVariable('title', $note['title']);
-                $tpl->SetVariable('created', $objDate->Format($note['createtime'], 'n/j/Y g:i a'));
-                $tpl->SetVariable('url', $this->gadget->urlMap('OpenNote', array('id' => $note['id'])));
-                if ($note['user'] != $user) {
+            foreach ($events as $event) {
+                $tpl->SetBlock('events/event');
+                $tpl->SetVariable('id', $event['id']);
+                $tpl->SetVariable('subject', $event['subject']);
+                $tpl->SetVariable('date', $objDate->Format($event['start_time'], 'n/j/Y g:i'));
+                $tpl->SetVariable('url', $this->gadget->urlMap('EditEvent', array('id' => $event['id'])));
+                if ($event['user'] != $user) {
                     $tpl->SetVariable('shared', '');
-                    $tpl->SetVariable('nickname', $note['nickname']);
-                    $tpl->SetVariable('username', $note['username']);
+                    $tpl->SetVariable('nickname', $event['nickname']);
+                    $tpl->SetVariable('username', $event['username']);
                 } else {
-                    $tpl->SetVariable('shared', $note['shared']? _t('EVENTSCALENDAR_SHARED') : '');
+                    $tpl->SetVariable('shared', $event['shared']? _t('EVENTSCALENDAR_SHARED') : '');
                     $tpl->SetVariable('nickname', '');
                     $tpl->SetVariable('username', '');
                 }
-                $tpl->ParseBlock('notepad/note');
+                $tpl->ParseBlock('events/event');
             }
-        }*/
+        }
 
         // Search
         // $combo =& Piwi::CreateWidget('Combo', 'filter');
         // $combo->SetID('');
-        // $combo->AddOption(_t('EVENTSCALENDAR_SEARCH_ALL_NOTES'), 0);
-        // $combo->AddOption(_t('EVENTSCALENDAR_SEARCH_SHARED_NOTES_ONLY'), 1);
-        // $combo->AddOption(_t('EVENTSCALENDAR_SEARCH_FOREIGN_NOTES_ONLY'), 2);
+        // $combo->AddOption(_t('EVENTSCALENDAR_SEARCH_ALL_EVENTS'), 0);
+        // $combo->AddOption(_t('EVENTSCALENDAR_SEARCH_SHARED_EVENTS_ONLY'), 1);
+        // $combo->AddOption(_t('EVENTSCALENDAR_SEARCH_FOREIGN_EVENTS_ONLY'), 2);
         // $combo->SetDefault($filter);
         // $tpl->SetVariable('filter', $combo->Get());
 
@@ -98,7 +99,7 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_HTML
         // $tpl->SetVariable('btn_search', $button->Get());
 
         $events_url = $this->gadget->urlMap('Events');
-        $button =& Piwi::CreateWidget('Button', 'btn_note_search_reset', 'X');
+        $button =& Piwi::CreateWidget('Button', 'btn_events_search_reset', 'X');
         $button->SetSubmit(false);
         $button->AddEvent(ON_CLICK, "window.location='$events_url'");
         if (empty($query)) {
@@ -115,15 +116,15 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_HTML
         $tpl->SetVariable('events_url', $events_url);
 
         // Pagination
-        // $action = $GLOBALS['app']->LoadGadget('Notepad', 'HTML', 'Pager');
+        // $action = $GLOBALS['app']->LoadGadget('EventsCalendar', 'HTML', 'Pager');
         // $action->GetPagesNavigation(
             // $tpl,
-            // 'notepad',
+            // 'events',
             // $page,
             // $limit,
             // $count,
-            // _t('EVENTSCALENDAR_NOTES_COUNT', $count),
-            // 'Notepad',
+            // _t('EVENTSCALENDAR_EVENTS_COUNT', $count),
+            // 'EventsCalendar',
             // $get
         // );
 
@@ -132,7 +133,7 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_HTML
     }
 
     /**
-     * Searches through notes including shared noes from other users
+     * Searches through events including shared events from other users
      *
      * @access  public
      * @return  array   Response array
@@ -145,13 +146,13 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_HTML
                 unset($post[$k]);
             }
         }
-        $url = $this->gadget->urlMap('Notepad', $post);
+        $url = $this->gadget->urlMap('EventsCalendar', $post);
         Jaws_Header::Location($url);
 
         /*if (strlen($search['query']) < 2) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('EVENTSCALENDAR_ERROR_SHORT_QUERY'),
-                'Notepad.Response',
+                'Events.Response',
                 RESPONSE_ERROR
             );
         }*/

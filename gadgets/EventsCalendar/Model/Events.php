@@ -21,13 +21,15 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
         $limit = 0, $offset = null)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as event');
-        $table->select('event.id', 'user', 'subject', 'content', 'shared',
-            'createtime', 'updatetime', 'nickname', 'username');
-        $table->join('ec_users', 'event.id', 'event');
-        $table->join('users', 'owner', 'users.id');
+        // $table->select('event.id', 'user', 'subject', 'location', 'description', 'shared',
+            // 'createtime', 'updatetime', 'nickname', 'username');
+        // $table->join('ec_users', 'event.id', 'event');
+        // $table->join('users', 'owner', 'users.id');
+        $table->select('event.id', 'user', 'subject', 'location', 'description', 'shared',
+            'start_time');
 
         if ($user !== null){
-            $table->where('user_id', $user)->and();
+            $table->where('user', $user)->and();
         }
 
         if ($shared === true){
@@ -98,10 +100,14 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
     function GetEvent($id, $user = null)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as event');
-        $table->select('event.id', 'user', 'subject', 'description', 'shared',
-            'createtime', 'updatetime', 'nickname', 'username');
-        $table->join('ec_users', 'event.id', 'event');
-        $table->join('users', 'owner', 'users.id');
+        // $table->select('event.id', 'user', 'subject', 'description', 'shared',
+            // 'createtime', 'updatetime', 'nickname', 'username');
+        // $table->join('ec_users', 'event.id', 'event');
+        // $table->join('users', 'owner', 'users.id');
+        $table->select('event.id', 'user', 'subject', 'location', 'description', 
+            'type', 'priority', 'reminder', 'shared', 'repeated',
+            'minute', 'hour', 'week_day', 'month_day', 'month',
+            'start_time', 'stop_time', 'createtime', 'updatetime');
         $table->where('event.id', $id)->and();
         if ($user !== null){
             $table->where('user', $user)->and();
@@ -179,7 +185,18 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
      */
     function Update($id, $data)
     {
+        $date = $GLOBALS['app']->loadDate();
+        $start_time = $date->ToBaseDate(preg_split('/[- :]/', $data['start_time']), 'Y-m-d H:i');
+        $data['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time);
+        if (empty($data['stop_time'])) {
+            $data['stop_time'] = $data['start_time'];
+        } else {
+            $stop_time = $date->ToBaseDate(preg_split('/[- :]/', $data['stop_time']), 'Y-m-d H:i');
+            $data['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time);
+        }
         $data['updatetime'] = time();
+        unset($data['repeat']);
+
         $table = Jaws_ORM::getInstance()->table('ec_events');
         return $table->update($data)->where('id', $id)->exec();
     }

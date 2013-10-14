@@ -48,7 +48,7 @@ $actions['GetUsers'] = array(
     'standalone' => true,
     'file' => 'Share'
 );
-$actions['UpdateEvent'] = array(
+$actions['UpdateShare'] = array(
     'standalone' => true,
     'file' => 'Share'
 );
