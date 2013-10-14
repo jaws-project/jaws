@@ -109,13 +109,14 @@ class Jaws_Gadget_Registry
      * @access  public
      * @param   string  $name   Key name
      * @param   string  $gadget (Optional) Gadget name
+     * @param   int     $user   User ID
      * @return  mixed   Returns key value if exists otherwise null
      */
-    function fetchByUser($name, $gadget = '')
+    function fetchByUser($name, $gadget = '', $user = null)
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $GLOBALS['app']->Registry->fetchByUser(
-            $GLOBALS['app']->Session->GetAttribute('layout'),
+            is_null($user)? $GLOBALS['app']->Session->GetAttribute('user') : $user,
             $name,
             $gadget
         );
@@ -131,7 +132,10 @@ class Jaws_Gadget_Registry
     function fetchAllByUser($gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->fetchAllByUser($GLOBALS['app']->Session->GetAttribute('user'), $gadget);
+        return $GLOBALS['app']->Registry->fetchAllByUser(
+            $GLOBALS['app']->Session->GetAttribute('user'),
+            $gadget
+        );
     }
 
     /**
@@ -148,6 +152,28 @@ class Jaws_Gadget_Registry
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $GLOBALS['app']->Registry->update($name, $value, $custom, $gadget);
+    }
+
+    /**
+     * Update registry key value
+     *
+     * @access  public
+     * @param   string  $name   Key name
+     * @param   string  $value  Key value
+     * @param   string  $gadget (Optional) Gadget name
+     * @param   int     $user   User ID
+     * @return  bool    Returns True or False
+     */
+    function updateByUser($name, $value, $gadget = '', $user = null)
+    {
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
+        return $GLOBALS['app']->Registry->update(
+            $name,
+            $value,
+            null,
+            $gadget,
+            is_null($user)? $GLOBALS['app']->Session->GetAttribute('user') : $user
+        );
     }
 
     /**
@@ -174,7 +200,10 @@ class Jaws_Gadget_Registry
     function deleteByUser($gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->deleteByUser($GLOBALS['app']->Session->GetAttribute('user'), $gadget);
+        return $GLOBALS['app']->Registry->deleteByUser(
+            $GLOBALS['app']->Session->GetAttribute('user'),
+            $gadget
+        );
     }
 
 }
