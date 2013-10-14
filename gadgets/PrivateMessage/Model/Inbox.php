@@ -30,10 +30,14 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
         );
         $table->join('users', 'message.user', 'users.id');
         $table->join('pm_recipients', 'message.id', 'pm_recipients.message');
-        $table->openWhere('pm_recipients.recipient', $user)->or()->closeWhere('pm_recipients.recipient', '0');
+        $table->and()->where('pm_recipients.recipient', $user);
         $table->and()->where('message.published', true);
 
         if (!empty($filters)) {
+
+            if (isset($filters['type']) && ($filters['type'] !== "")) {
+                $table->and()->where('message.type', $filters['type']);
+            }
 
             if (isset($filters['archived']) && ($filters['archived'] !== "")) {
                 $table->and()->where('pm_recipients.archived', $filters['archived']);
@@ -90,10 +94,14 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('pm_messages', 'message');
         $table->select('count(message.id):integer');
         $table->join('pm_recipients', 'message.id', 'pm_recipients.message');
-        $table->openWhere('pm_recipients.recipient', $user)->or()->closeWhere('pm_recipients.recipient', '0');
+        $table->and()->where('pm_recipients.recipient', $user);
         $table->and()->where('message.published', true);
 
         if (!empty($filters)) {
+
+            if (isset($filters['type']) && ($filters['type'] !== "")) {
+                $table->and()->where('message.type', $filters['type']);
+            }
 
             if (isset($filters['archived']) && ($filters['archived'] !== "")) {
                 $table->and()->where('pm_recipients.archived', $filters['archived']);

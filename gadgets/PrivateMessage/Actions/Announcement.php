@@ -8,15 +8,15 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
+class PrivateMessage_Actions_Announcement extends PrivateMessage_HTML
 {
     /**
-     * Display Inbox
+     * Display AllMessages
      *
      * @access  public
      * @return  void
      */
-    function Inbox()
+    function Announcement()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
@@ -36,19 +36,9 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
         $tpl->SetVariable('txt_term', $post['term']);
 
-
-        if ($view == 'archived') {
-            $post['archived'] = true;
-            // Menubar
-            $tpl->SetVariable('menubar', $this->MenuBar('Archived'));
-            $tpl->SetVariable('title', _t('PRIVATEMESSAGE_ARCHIVE'));
-        } else {
-            $post['archived'] = false;
-            $post['type'] = 0; // Just show inbox normal message (not announcement)
-            // Menubar
-            $tpl->SetVariable('menubar', $this->MenuBar('Inbox'));
-            $tpl->SetVariable('title', _t('PRIVATEMESSAGE_INBOX'));
-        }
+        // Menubar
+        $tpl->SetVariable('menubar', $this->MenuBar('Announcement'));
+        $tpl->SetVariable('title', _t('PRIVATEMESSAGE_ANNOUNCEMENT'));
 
         $page = empty($page) ? 1 : (int)$page;
         if (empty($post['page_item'])) {
@@ -97,6 +87,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
             $tpl->ParseBlock('inbox/response');
         }
 
+        $post['type'] = 1; // Just show announcement
         $messages = $model->GetInbox($user, $post, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
@@ -173,7 +164,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
             $limit,
             $inboxTotal,
             _t('PRIVATEMESSAGE_MESSAGE_COUNT', $inboxTotal),
-            'Inbox',
+            'Announcement',
             $params
         );
 

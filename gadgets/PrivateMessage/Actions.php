@@ -15,6 +15,14 @@ $actions['PrivateMessage'] = array(
     'layout' => true,
     'file' => 'PrivateMessage',
 );
+$actions['AllMessages'] = array(
+    'normal' => true,
+    'file' => 'AllMessages',
+);
+$actions['Announcement'] = array(
+    'normal' => true,
+    'file' => 'Announcement',
+);
 $actions['Inbox'] = array(
     'normal' => true,
     'file' => 'Inbox',

@@ -51,6 +51,8 @@ define('_EN_PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS', "Groups");
 define('_EN_PRIVATEMESSAGE_FORWARD_MESSAGE', "Forward a message");
 
 /* Common */
+define('_EN_PRIVATEMESSAGE_ALL_MESSAGES', "All messages");
+define('_EN_PRIVATEMESSAGE_ANNOUNCEMENT', "Announcement {0}");
 define('_EN_PRIVATEMESSAGE_INBOX', "Inbox {0}");
 define('_EN_PRIVATEMESSAGE_ARCHIVED', "Archived");
 define('_EN_PRIVATEMESSAGE_OUTBOX', "Outbox");

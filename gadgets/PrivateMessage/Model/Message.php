@@ -294,10 +294,17 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      */
     function ComposeMessage($user, $messageData)
     {
+        $messageData['type'] = 0; // Normal status
         // merge recipient users & groups to an array
         $recipient_users = array();
-        if ($messageData['recipient_users'] == '0' || !empty($messageData['recipient_users'])) {
-            $recipient_users = explode(",", $messageData['recipient_users']);
+        if (trim($messageData['recipient_users']) == '0' || !empty($messageData['recipient_users'])) {
+            if (trim($messageData['recipient_users']) == '0') {
+                $messageData['type'] = 1; // Announcement status
+                $table = Jaws_ORM::getInstance()->table('users');
+                $recipient_users = $table->select('id:integer')->fetchColumn();
+            } else {
+                $recipient_users = explode(",", $messageData['recipient_users']);
+            }
         }
         if (!empty($messageData['recipient_groups'])) {
             $recipient_groups = explode(",", $messageData['recipient_groups']);
@@ -336,6 +343,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             $data['subject']            = $messageData['subject'];
             $data['body']               = $messageData['body'];
             $data['published']          = $messageData['published'];
+            $data['type']               = $messageData['type'];
             $data['attachments']        = count($messageData['attachments']);
             $data['recipient_users']    = $messageData['recipient_users'];
             $data['recipient_groups']   = $messageData['recipient_groups'];

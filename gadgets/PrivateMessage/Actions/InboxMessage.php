@@ -167,10 +167,10 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
         $ids = jaws()->request->fetch('id', 'get');
         $post = jaws()->request->fetch(array('message_checkbox:array', 'status'), 'post');
         $status = $post['status'];
-        if ($status == 'archive') {
-            $status = true;
-        } else {
+        if ($status == 'retrieve') {
             $status = false;
+        } else {
+            $status = true;
         }
 
         if(!empty($post['message_checkbox']) && count($post['message_checkbox'])>0) {

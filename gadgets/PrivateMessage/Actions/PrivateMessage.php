@@ -29,10 +29,11 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_HTML
         $iModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
         $oModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');
         $user_id = $GLOBALS['app']->Session->GetAttribute('user');
-        $unreadMessageCount = $iModel->GetInboxStatistics($user_id, array('read'=>'no', 'archived'=> false));
+        $unreadAnnouncementMessageCount = $iModel->GetInboxStatistics($user_id, array('read' => 'no', 'archived' => false, 'type' => 1));
+        $unreadInboxMessageCount = $iModel->GetInboxStatistics($user_id, array('read' => 'no', 'archived' => false, 'type' => 0));
         $draftMessageCount = $oModel->GetOutboxStatistics($user_id, array('published' => false));
-        if ($unreadMessageCount > 0) {
-            $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX', '(' . $unreadMessageCount . ')'));
+        if ($unreadInboxMessageCount > 0) {
+            $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX', '(' . $unreadInboxMessageCount . ')'));
         } else {
             $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX'));
         }
@@ -44,6 +45,16 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_HTML
         } else {
             $tpl->SetVariable('draft', _t('PRIVATEMESSAGE_DRAFT'));
         }
+
+        $tpl->SetVariable('all_messages', _t('PRIVATEMESSAGE_ALL_MESSAGES'));
+        $tpl->SetVariable('all_messages_url', $this->gadget->urlMap('AllMessages'));
+
+        if ($unreadAnnouncementMessageCount > 0) {
+            $tpl->SetVariable('announcement', _t('PRIVATEMESSAGE_ANNOUNCEMENT', '(' . $unreadAnnouncementMessageCount . ')'));
+        } else {
+            $tpl->SetVariable('announcement', _t('PRIVATEMESSAGE_ANNOUNCEMENT'));
+        }
+        $tpl->SetVariable('announcement_url', $this->gadget->urlMap('Announcement'));
 
         $tpl->SetVariable('inbox_url', $this->gadget->urlMap('Inbox'));
         $tpl->SetVariable('archived_url', $this->gadget->urlMap('Inbox', array('view' => 'archived')));

@@ -8,15 +8,15 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
+class PrivateMessage_Actions_AllMessages extends PrivateMessage_HTML
 {
     /**
-     * Display Inbox
+     * Display AllMessages
      *
      * @access  public
      * @return  void
      */
-    function Inbox()
+    function AllMessages()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
@@ -25,8 +25,8 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
 
         $this->AjaxMe('site_script.js');
         $date_format = $this->gadget->registry->fetch('date_format');
-        $tpl = $this->gadget->loadTemplate('Inbox.html');
-        $tpl->SetBlock('inbox');
+        $tpl = $this->gadget->loadTemplate('AllMessages.html');
+        $tpl->SetBlock('all');
 
         $post = jaws()->request->fetch(array('view', 'page', 'read', 'replied', 'term', 'page_item'));
         $page = $post['page'];
@@ -36,24 +36,14 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
         $tpl->SetVariable('txt_term', $post['term']);
 
-
-        if ($view == 'archived') {
-            $post['archived'] = true;
-            // Menubar
-            $tpl->SetVariable('menubar', $this->MenuBar('Archived'));
-            $tpl->SetVariable('title', _t('PRIVATEMESSAGE_ARCHIVE'));
-        } else {
-            $post['archived'] = false;
-            $post['type'] = 0; // Just show inbox normal message (not announcement)
-            // Menubar
-            $tpl->SetVariable('menubar', $this->MenuBar('Inbox'));
-            $tpl->SetVariable('title', _t('PRIVATEMESSAGE_INBOX'));
-        }
+        // Menubar
+        $tpl->SetVariable('menubar', $this->MenuBar('AllMessages'));
+        $tpl->SetVariable('title', _t('PRIVATEMESSAGE_ALL_MESSAGES'));
 
         $page = empty($page) ? 1 : (int)$page;
         if (empty($post['page_item'])) {
             $limit = $this->gadget->registry->fetch('paging_limit');
-            if(empty($limit)) {
+            if (empty($limit)) {
                 $limit = 10;
             }
         } else {
@@ -74,15 +64,15 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
 
         if ($view == 'archived') {
-            $tpl->SetBlock('inbox/archive_action');
+            $tpl->SetBlock('all/archive_action');
             $tpl->SetVariable('lbl_move_to_inbox', _t('PRIVATEMESSAGE_MOVE_TO_INBOX'));
-            $tpl->ParseBlock('inbox/archive_action');
+            $tpl->ParseBlock('all/archive_action');
         } else {
-            $tpl->SetBlock('inbox/inbox_action');
+            $tpl->SetBlock('all/inbox_action');
             $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
             $tpl->SetVariable('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
             $tpl->SetVariable('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
-            $tpl->ParseBlock('inbox/inbox_action');
+            $tpl->ParseBlock('all/inbox_action');
         }
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
         $tpl->SetVariable('icon_ok', STOCK_OK);
@@ -91,10 +81,10 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Inbox');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
-            $tpl->SetBlock('inbox/response');
+            $tpl->SetBlock('all/response');
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('inbox/response');
+            $tpl->ParseBlock('all/response');
         }
 
         $messages = $model->GetInbox($user, $post, $limit, ($page - 1) * $limit);
@@ -102,7 +92,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
             $i = 0;
             foreach ($messages as $message) {
                 $i++;
-                $tpl->SetBlock('inbox/message');
+                $tpl->SetBlock('all/message');
                 $tpl->SetVariable('rownum', $i);
                 $tpl->SetVariable('id',  $message['message_recipient_id']);
                 $tpl->SetVariable('from', $message['from_nickname']);
@@ -121,13 +111,13 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
                     array('id' => $message['message_recipient_id'])));
 
                 if ($message['attachments'] > 0) {
-                    $tpl->SetBlock('inbox/message/have_attachment');
+                    $tpl->SetBlock('all/message/have_attachment');
                     $tpl->SetVariable('attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));
                     $tpl->SetVariable('icon_attachment', STOCK_ATTACH);
-                    $tpl->ParseBlock('inbox/message/have_attachment');
+                    $tpl->ParseBlock('all/message/have_attachment');
                 } else {
-                    $tpl->SetBlock('inbox/message/no_attachment');
-                    $tpl->ParseBlock('inbox/message/no_attachment');
+                    $tpl->SetBlock('all/message/no_attachment');
+                    $tpl->ParseBlock('all/message/no_attachment');
                 }
 
                 // user's profile
@@ -140,7 +130,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
                     )
                 );
 
-                $tpl->ParseBlock('inbox/message');
+                $tpl->ParseBlock('all/message');
             }
         }
 
@@ -168,7 +158,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
         // page navigation
         $this->GetPagesNavigation(
             $tpl,
-            'inbox',
+            'all',
             $page,
             $limit,
             $inboxTotal,
@@ -177,7 +167,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_HTML
             $params
         );
 
-        $tpl->ParseBlock('inbox');
+        $tpl->ParseBlock('all');
         return $tpl->Get();
     }
 }
