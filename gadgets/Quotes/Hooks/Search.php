@@ -55,7 +55,7 @@ class Quotes_Hooks_Search extends Jaws_Gadget_Hook
             $quotation = array();
             $quotation['title']   = $r['title'];
             $quotation['url']     = $GLOBALS['app']->Map->GetURLFor('Quotes', 'ViewQuote', array('id' => $r['id']));
-            $quotation['image']   = 'gadgets/Quotes/images/logo.png';
+            $quotation['image']   = 'gadgets/Quotes/Resources/images/logo.png';
             $quotation['snippet'] = $r['quotation'];
             $quotation['date']    = $date->ToISO($r['updatetime']);
             $quotations[] = $quotation;
