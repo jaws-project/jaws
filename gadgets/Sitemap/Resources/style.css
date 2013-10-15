@@ -38,7 +38,7 @@ border:1px solid #fff;
 .folder a{
 color:#000;
 text-decoration:none;
-background:transparent url('../images/folder.png') 0 center no-repeat;
+background:transparent url('../Resources/images/folder.png') 0 center no-repeat;
 padding-left:18px;
 height:20px;
 min-height:20px;

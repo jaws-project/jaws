@@ -174,7 +174,7 @@ function selectItem(id) {
     if (selectedItems.inArray(id)) {
         // CLOSE
         selectedItems.splice(id,1);
-        $('ssa' + id).style.backgroundImage = 'url(\'gadgets/Sitemap/images/folder.png\')';
+        $('ssa' + id).style.backgroundImage = 'url(\'gadgets/Sitemap/Resources/images/folder.png\')';
         if ($('ssd' + id + 'childs')) {
             $('ssd' + id + 'childs').style.display = 'none';
         }
@@ -182,7 +182,7 @@ function selectItem(id) {
         // OPEN
         selectedItems[id] = id;
         if ($('ssd' + id + 'childs')) {
-            $('ssa' + id).style.backgroundImage = 'url(\'gadgets/Sitemap/images/folder-open.png\')';
+            $('ssa' + id).style.backgroundImage = 'url(\'gadgets/Sitemap/Resources/images/folder-open.png\')';
             $('ssd' + id + 'childs').style.display = 'block';
         }
     }
