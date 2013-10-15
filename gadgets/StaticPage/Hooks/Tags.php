@@ -42,7 +42,7 @@ class StaticPage_Hooks_Tags extends Jaws_Gadget_Hook
                       $p['page_id'] : $p['fast_url'],
                      'language'  => $p['language']));
             $page['url']     = $url;
-            $page['image']   = 'gadgets/StaticPage/images/logo.png';
+            $page['image']   = 'gadgets/StaticPage/Resources/images/logo.png';
             $page['snippet'] = $p['content'];
             $page['date']    = $date->ToISO($p['updated']);
 

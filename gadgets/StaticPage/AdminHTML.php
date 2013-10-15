@@ -44,7 +44,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
         if ($this->gadget->GetPermission('ManageGroups')) {
             $menubar->AddOption('Groups', _t('STATICPAGE_GROUPS'),
                                 BASE_SCRIPT . '?gadget=StaticPage&amp;action=Groups', 
-                                'gadgets/StaticPage/images/groups.png');
+                                'gadgets/StaticPage/Resources/images/groups.png');
         }
 
         if ($this->gadget->GetPermission('Properties')) {
