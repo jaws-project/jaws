@@ -51,25 +51,25 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
             $menubar->AddOption('Contacts',
                                 _t('CONTACT_NAME'),
                                 BASE_SCRIPT . '?gadget=Contact&amp;action=Admin',
-                                'gadgets/Contact/images/contact_mini.png');
+                                'gadgets/Contact/Resources/images/contact_mini.png');
         }
         if ($this->gadget->GetPermission('ManageRecipients')) {
             $menubar->AddOption('Recipients',
                                 _t('CONTACT_RECIPIENTS'),
                                 BASE_SCRIPT . '?gadget=Contact&amp;action=Recipients',
-                                'gadgets/Contact/images/recipients_mini.png');
+                                'gadgets/Contact/Resources/images/recipients_mini.png');
         }
         if ($this->gadget->GetPermission('AccessToMailer')) {
             $menubar->AddOption('Mailer',
                                 _t('CONTACT_MAILER'),
                                 BASE_SCRIPT . '?gadget=Contact&amp;action=Mailer',
-                                'gadgets/Contact/images/email_send.png');
+                                'gadgets/Contact/Resources/images/email_send.png');
         }
         if ($this->gadget->GetPermission('UpdateProperties')) {
             $menubar->AddOption('Properties',
                                 _t('GLOBAL_PROPERTIES'),
                                 BASE_SCRIPT . '?gadget=Contact&amp;action=Properties',
-                                'gadgets/Contact/images/properties_mini.png');
+                                'gadgets/Contact/Resources/images/properties_mini.png');
         }
 
         $menubar->Activate($action);

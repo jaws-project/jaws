@@ -143,7 +143,7 @@ class Contact_Actions_Admin_Contacts extends Contact_AdminHTML
             if (empty($contact['attachment'])) {
                 $contactData['attach'] = '';
             } else {
-                $image =& Piwi::CreateWidget('Image', 'gadgets/Contact/images/attachment.png');
+                $image =& Piwi::CreateWidget('Image', 'gadgets/Contact/Resources/images/attachment.png');
                 $image->setTitle($contact['attachment']);
                 $contactData['attach'] = $image->get();
             }
@@ -163,7 +163,7 @@ class Contact_Actions_Admin_Contacts extends Contact_AdminHTML
 
                 $link =& Piwi::CreateWidget('Link', _t('CONTACT_CONTACTS_MESSAGE_REPLY'),
                                             "javascript: editReply(this, '" . $contact['id'] . "');",
-                                            'gadgets/Contact/images/contact_mini.png');
+                                            'gadgets/Contact/Resources/images/contact_mini.png');
                 $actions.= $link->Get().'&nbsp;';
 
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),

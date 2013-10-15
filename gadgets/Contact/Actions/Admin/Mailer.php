@@ -135,21 +135,21 @@ class Contact_Actions_Admin_Mailer extends Contact_AdminHTML
         $button =& Piwi::CreateWidget('Button',
                                       'btn_new',
                                       _t('CONTACT_MAILER_BUTTON_NEW'),
-                                      'gadgets/Contact/images/contact_mini.png');
+                                      'gadgets/Contact/Resources/images/contact_mini.png');
         $button->AddEvent(ON_CLICK, 'newEmail();');
         $tpl->SetVariable('btn_new', $button->Get());
 
         $button =& Piwi::CreateWidget('Button',
                                       'btn_preview',
                                       _t('CONTACT_MAILER_BUTTON_PREVIEW'),
-                                      'gadgets/Contact/images/email_preview.png');
+                                      'gadgets/Contact/Resources/images/email_preview.png');
         $button->AddEvent(ON_CLICK, 'previewMessage();');
         $tpl->SetVariable('btn_preview', $button->Get());
 
         $button =& Piwi::CreateWidget('Button',
                                       'btn_send',
                                       _t('CONTACT_MAILER_BUTTON_SEND'),
-                                      'gadgets/Contact/images/email_send.png');
+                                      'gadgets/Contact/Resources/images/email_send.png');
         $button->AddEvent(ON_CLICK, 'sendEmail();');
         $tpl->SetVariable('btn_send', $button->Get());
 
