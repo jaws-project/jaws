@@ -31,7 +31,7 @@ class UrlMapper_AdminHTML extends Jaws_Gadget_HTML
         $menubar->AddOption('Maps', _t('URLMAPPER_MAPS'),
                             BASE_SCRIPT . '?gadget=UrlMapper&amp;action=Maps', STOCK_DOCUMENTS);
         $menubar->AddOption('Aliases', _t('URLMAPPER_ALIASES'),
-                            BASE_SCRIPT . '?gadget=UrlMapper&amp;action=Aliases', 'gadgets/UrlMapper/images/aliases.png');
+                            BASE_SCRIPT . '?gadget=UrlMapper&amp;action=Aliases', 'gadgets/UrlMapper/Resources/images/aliases.png');
         $menubar->AddOption('ErrorMaps', _t('URLMAPPER_ERRORMAPS'),
                             BASE_SCRIPT . '?gadget=UrlMapper&amp;action=ErrorMaps', STOCK_DOCUMENTS);
         $menubar->AddOption('Properties', _t('GLOBAL_PROPERTIES'),
