@@ -28,9 +28,9 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_HTML
         }
 
         // Init layout
-        $GLOBALS['app']->Layout->Load('gadgets/ControlPanel/templates', 'LoginBox.html');
+        $GLOBALS['app']->Layout->Load('gadgets/ControlPanel/Resources/templates', 'LoginBox.html');
         $ltpl =& $GLOBALS['app']->Layout->_Template;
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/ControlPanel/resources/style.css');
+        $GLOBALS['app']->Layout->AddHeadLink('gadgets/ControlPanel/Resources/style.css');
         $ltpl->SetVariable('admin_script', BASE_SCRIPT);
         $ltpl->SetVariable('control-panel', _t('GLOBAL_CONTROLPANEL'));
 

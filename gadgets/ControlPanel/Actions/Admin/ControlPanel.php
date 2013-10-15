@@ -54,10 +54,10 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_HTML
                 $tpl->SetVariable('name', $gadget['tname']);
                 $tpl->SetVariable('desc', $gadget['desc']);
                 if ($gadget['name'] === 'Index') {
-                    $tpl->SetVariable('icon', Jaws::CheckImage('gadgets/ControlPanel/images/view_site.png'));
+                    $tpl->SetVariable('icon', Jaws::CheckImage('gadgets/ControlPanel/Resources/images/view_site.png'));
                     $tpl->SetVariable('url', $GLOBALS['app']->getSiteURL('/'));
                 } else {
-                    $tpl->SetVariable('icon', Jaws::CheckImage('gadgets/'.$gadget['name'].'/images/logo.png'));
+                    $tpl->SetVariable('icon', Jaws::CheckImage('gadgets/'.$gadget['name'].'/Resources/images/logo.png'));
                     $tpl->SetVariable('url', BASE_SCRIPT . '?gadget='.$gadget['name']);
                 }
                 $tpl->ParseBlock('main/item');
@@ -74,7 +74,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_HTML
                 foreach ($noninstalled as $key => $gadget) {
                     $tpl->SetBlock('notifybox/item');
                     $gadgetCompleteDesc = $gadget['title'] . ' - ' . $gadget['description'];
-                    $icon = Jaws::CheckImage('gadgets/' . $key . '/images/logo.png');
+                    $icon = Jaws::CheckImage('gadgets/' . $key . '/Resources/images/logo.png');
                     $tpl->SetVariable('title', $gadgetCompleteDesc);
                     $tpl->SetVariable('name', $gadget['title']);
                     $tpl->SetVariable('icon', $icon);
@@ -93,7 +93,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_HTML
                 foreach ($nonupdated as $key => $gadget) {
                     $tpl->SetBlock('notifybox/item');
                     $gadgetCompleteDesc = $gadget['title'] . ' - ' . $gadget['description'];
-                    $icon = Jaws::CheckImage('gadgets/' . $key . '/images/logo.png');
+                    $icon = Jaws::CheckImage('gadgets/' . $key . '/Resources/images/logo.png');
                     $tpl->SetVariable('title', $gadgetCompleteDesc);
                     $tpl->SetVariable('name', $gadget['title']);
                     $tpl->SetVariable('icon', $icon);

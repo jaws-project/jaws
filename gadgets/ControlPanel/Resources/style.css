@@ -66,7 +66,7 @@ border:1px solid #fce94f;
 background-color:#fdf4a7;
 background-position:2px 0px;
 background-repeat:no-repeat;
-background-image:url("../../../images/stock/warning-small.png")
+background-image:url("../../../Resources/images/stock/warning-small.png")
 }
 /* ----- FOOTER ----- */
 #footer{
@@ -100,12 +100,12 @@ margin-bottom:0;
 #login #username{
 width:100%;
 padding-left:24px;
-background:#fff url(../images/user.png) no-repeat;
+background:#fff url(../Resources/images/user.png) no-repeat;
 }
 #login #password{
 width:100%;
 padding-left:24px;
-background:#fff url(../images/pass.png) no-repeat;
+background:#fff url(../Resources/images/pass.png) no-repeat;
 }
 #login .captcha input{
 width:160px;
@@ -636,10 +636,10 @@ cursor:pointer;
 font-size:small;
 font-weight:bold;
 border-radius:2px 2px 0 0;
-background:#3465a4 url(../images/collapse.png) 98% no-repeat;
+background:#3465a4 url(../Resources/images/collapse.png) 98% no-repeat;
 }
 .notify_box h2.collapsed{
-background:#3465a4 url(../images/uncollapse.png) 98% no-repeat;
+background:#3465a4 url(../Resources/images/uncollapse.png) 98% no-repeat;
 }
 .notify_content{
 padding:2px;
@@ -709,14 +709,14 @@ font-size:10pt;
 font-weight:bold;
 text-align:left;
 margin-bottom:4px;
-background:#3465A4 url(../../ControlPanel/images/dlg_head.png) repeat-x left top;
+background:#3465A4 url(../../ControlPanel/Resources/images/dlg_head.png) repeat-x left top;
 }
 .dialog_box_close{
 float:right;
 width:11px;
 height:13px;
 cursor:pointer;
-background:#3465A4 url(../../ControlPanel/images/dlg_close.png) no-repeat left 2px;
+background:#3465A4 url(../../ControlPanel/Resources/images/dlg_close.png) no-repeat left 2px;
 }
 /* ----- MESSAGE BOX ----- */
 #msgbox-wrapper{
@@ -746,27 +746,27 @@ background-position:2px 0px;
 .response_notice{
 border:1px solid #9db029;
 background-color:#e6f0a5;
-background-image:url("../../../images/stock/info-small.png");
+background-image:url("../../../Resources/images/stock/info-small.png");
 }
 .response_warning{
 border:1px solid #fce94f;
 background-color:#fdf4a7;
-background-image:url("../../../images/stock/warning-small.png");
+background-image:url("../../../Resources/images/stock/warning-small.png");
 }
 .response_error{
 border:1px solid #cc0000;
 background-color:#fabfbf;
-background-image:url("../../../images/stock/error-small.png");
+background-image:url("../../../Resources/images/stock/error-small.png");
 }
 .working-message{
 color:#888a85;
-background-image:url("../../../images/loading.gif");
+background-image:url("../../../Resources/images/loading.gif");
 background-repeat:no-repeat;
 background-position:4px 2px;
 }
 #working_notification{
 visibility :hidden;
-background:#fafafa url("../../../images/loading.gif") no-repeat 2px center;
+background:#fafafa url("../../../Resources/images/loading.gif") no-repeat 2px center;
 color:#888a85;
 font-size:x-small;
 padding:4px;
