@@ -28,19 +28,19 @@ class PrivateMessage_HTML extends Jaws_Gadget_HTML
         $menubar = new Jaws_Widgets_Menubar();
 
         $menubar->AddOption('Inbox',_t('PRIVATEMESSAGE_INBOX'),
-            $this->gadget->urlMap('Inbox'), 'gadgets/PrivateMessage/images/inbox.png');
+            $this->gadget->urlMap('Inbox'), 'gadgets/PrivateMessage/Resources/images/inbox.png');
 
         $menubar->AddOption('Outbox',_t('PRIVATEMESSAGE_OUTBOX'),
-            $this->gadget->urlMap('Outbox'), 'gadgets/PrivateMessage/images/outbox.png');
+            $this->gadget->urlMap('Outbox'), 'gadgets/PrivateMessage/Resources/images/outbox.png');
 
         $menubar->AddOption('Draft',_t('PRIVATEMESSAGE_DRAFT'),
-            $this->gadget->urlMap('Draft'), 'gadgets/PrivateMessage/images/draft.png');
+            $this->gadget->urlMap('Draft'), 'gadgets/PrivateMessage/Resources/images/draft.png');
 
         $menubar->AddOption('Archived',_t('PRIVATEMESSAGE_ARCHIVED'),
-            $this->gadget->urlMap('Inbox', array('view' => 'archived')), 'gadgets/PrivateMessage/images/archive.png');
+            $this->gadget->urlMap('Inbox', array('view' => 'archived')), 'gadgets/PrivateMessage/Resources/images/archive.png');
 
         $menubar->AddOption('Compose',_t('PRIVATEMESSAGE_COMPOSE_MESSAGE'),
-            $this->gadget->urlMap('Compose'), 'gadgets/PrivateMessage/images/compose.png');
+            $this->gadget->urlMap('Compose'), 'gadgets/PrivateMessage/Resources/images/compose.png');
 
         $menubar->Activate($action_selected);
 
