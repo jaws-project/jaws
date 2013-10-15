@@ -74,7 +74,7 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
                                                         'FileBrowser',
                                                         'Display',
                                                         array('path' => $entry['title']));
-                    $icon = 'gadgets/FileBrowser/images/folder.png';
+                    $icon = 'gadgets/FileBrowser/Resources/images/folder.png';
                 } else {
                     $entry['url'] = str_replace(JAWS_PATH, '', $f);
                     if (DIRECTORY_SEPARATOR!='/') {
@@ -84,11 +84,11 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
                     $file_extension = strtolower(strrev(substr(strrev($f), 0, strpos(strrev($f), '.'))));
                     //Get the icon
                     $iconName = $model->getExtImage($file_extension);
-                    $icon = JAWS_PATH . 'gadgets/FileBrowser/images/'.$iconName;
+                    $icon = JAWS_PATH . 'gadgets/FileBrowser/Resources/images/'.$iconName;
                     if (!is_file($icon)) {
-                        $icon = 'gadgets/FileBrowser/images/unknown.png';
+                        $icon = 'gadgets/FileBrowser/Resources/images/unknown.png';
                     } else {
-                        $icon = 'gadgets/FileBrowser/images/'.$iconName;
+                        $icon = 'gadgets/FileBrowser/Resources/images/'.$iconName;
                     }
                 }
                 $entry['image'] = $icon;

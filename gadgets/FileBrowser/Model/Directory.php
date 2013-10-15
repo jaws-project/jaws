@@ -104,11 +104,11 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
         $dir['is_shared'] = file_exists($dir['fullpath'].'/.jaws_virtual');
         //hold.. is it shared?
         if ($dir['is_shared']) {
-            $dir['icon'] = 'gadgets/FileBrowser/images/folder-remote.png';
-            $dir['mini_icon'] =  'gadgets/FileBrowser/images/folder-remote.png';
+            $dir['icon'] = 'gadgets/FileBrowser/Resources/images/folder-remote.png';
+            $dir['mini_icon'] =  'gadgets/FileBrowser/Resources/images/folder-remote.png';
         } else {
-            $dir['icon'] = 'gadgets/FileBrowser/images/folder.png';
-            $dir['mini_icon'] = 'gadgets/FileBrowser/images/mini_folder.png';
+            $dir['icon'] = 'gadgets/FileBrowser/Resources/images/folder.png';
+            $dir['mini_icon'] = 'gadgets/FileBrowser/Resources/images/mini_folder.png';
         }
 
         $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');

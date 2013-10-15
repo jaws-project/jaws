@@ -114,7 +114,7 @@ class FileBrowser_Model_Files extends Jaws_Gadget_Model
         $filepath = $this->GetFileBrowserRootDir(). $path. '/'. $fname;
         $file['fullpath'] = $filepath;
         //Set the icon
-        $file['mini_icon'] = 'gadgets/FileBrowser/images/mini_file.png';
+        $file['mini_icon'] = 'gadgets/FileBrowser/Resources/images/mini_file.png';
 
         //Get $date
         $file['date'] = @filemtime($filepath);
