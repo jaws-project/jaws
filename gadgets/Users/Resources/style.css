@@ -35,7 +35,7 @@ text-align:left;
 }
 /* New menu */
 #right_menu{
-background:#fff url(../images/right_menu_bg.png) top left repeat-x;
+background:#fff url(../Resources/images/right_menu_bg.png) top left repeat-x;
 border:1px solid #babdb6;
 margin:0.5em;
 width:15em;

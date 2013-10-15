@@ -61,7 +61,7 @@ class Users_Actions_Account extends Users_HTML
         }
 
         if (empty($account['avatar'])) {
-            $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/images/photo128px.png');
+            $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
         } else {
             $user_current_avatar = $GLOBALS['app']->getDataURL() . "avatar/" . $account['avatar'];
             $user_current_avatar .= !empty($account['last_update']) ? "?" . $account['last_update'] . "" : '';

@@ -57,7 +57,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
 
         if ($personal) {
             if (empty($profile['avatar'])) {
-                $profile['avatar'] = $GLOBALS['app']->getSiteURL('/gadgets/Users/images/photo128px.png');
+                $profile['avatar'] = $GLOBALS['app']->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
             } else {
                 $profile['avatar'] = $GLOBALS['app']->getDataURL(). 'avatar/'. $profile['avatar'];
             }

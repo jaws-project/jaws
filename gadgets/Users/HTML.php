@@ -80,7 +80,7 @@ class Users_HTML extends Jaws_Gadget_HTML
             $this->gadget->urlMap('AddGroupUI'), STOCK_ADD);
 
         $menubar->AddOption('Groups',_t('USERS_MANAGE_GROUPS'),
-            $this->gadget->urlMap('Groups'), 'gadgets/Users/images/groups_mini.png');
+            $this->gadget->urlMap('Groups'), 'gadgets/Users/Resources/images/groups_mini.png');
 
         $menubar->Activate($action_selected);
 

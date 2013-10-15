@@ -76,7 +76,7 @@ class Users_Actions_Admin_Groups extends Users_AdminHTML
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_ACLS'),
                                             "javascript: editACL(this, '".$group['id']."', 'GroupACL');",
-                                            'gadgets/Users/images/acls.png');
+                                            'gadgets/Users/Resources/images/acls.png');
                 $actions.= $link->Get().'&nbsp;';
             }
 
@@ -84,7 +84,7 @@ class Users_Actions_Admin_Groups extends Users_AdminHTML
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_GROUPS_MEMBERS'),
                                             "javascript: editGroupUsers(this, '".$group['id']."');",
-                                            'gadgets/Users/images/groups_mini.png');
+                                            'gadgets/Users/Resources/images/groups_mini.png');
                 $actions.= $link->Get().'&nbsp;';
             }
 

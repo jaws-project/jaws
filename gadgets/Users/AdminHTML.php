@@ -55,13 +55,13 @@ class Users_AdminHTML extends Jaws_Gadget_HTML
             $menubar->AddOption('Users',
                                 _t('USERS_NAME'),
                                 BASE_SCRIPT . '?gadget=Users&amp;action=Users',
-                                'gadgets/Users/images/users_mini.png');
+                                'gadgets/Users/Resources/images/users_mini.png');
         }
         if ($this->gadget->GetPermission('ManageGroups')) {
             $menubar->AddOption('Groups',
                                 _t('USERS_GROUPS_GROUPS'),
                                 BASE_SCRIPT . '?gadget=Users&amp;action=Groups',
-                                'gadgets/Users/images/groups_mini.png');
+                                'gadgets/Users/Resources/images/groups_mini.png');
         }
         if ($this->gadget->GetPermission('ManageOnlineUsers')) {
             $menubar->AddOption('OnlineUsers',

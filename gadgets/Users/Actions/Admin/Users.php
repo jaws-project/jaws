@@ -80,7 +80,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_ACLS'),
                                             "javascript: editACL(this, '".$user['id']."', 'UserACL');",
-                                            'gadgets/Users/images/acls.png');
+                                            'gadgets/Users/Resources/images/acls.png');
                 $actions.= $link->Get().'&nbsp;';
             }
 
@@ -88,7 +88,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_USERS_GROUPS'),
                                             "javascript: editUserGroups(this, '".$user['id']."');",
-                                            'gadgets/Users/images/groups_mini.png');
+                                            'gadgets/Users/Resources/images/groups_mini.png');
                 $actions.= $link->Get().'&nbsp;';
             }
 
@@ -96,7 +96,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_PERSONAL'),
                                             "javascript: editPersonal(this, '".$user['id']."');",
-                                            'gadgets/Users/images/user_mini.png');
+                                            'gadgets/Users/Resources/images/user_mini.png');
                 $actions.= $link->Get().'&nbsp;';
             }
 
@@ -104,7 +104,7 @@ class Users_Actions_Admin_Users extends Users_AdminHTML
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_CONTACTS'),
                                             "javascript: editContacts(this, '".$user['id']."');",
-                                            'gadgets/Users/images/mail.png');
+                                            'gadgets/Users/Resources/images/mail.png');
                 $actions.= $link->Get().'&nbsp;';
             }
 
