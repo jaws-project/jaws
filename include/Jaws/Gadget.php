@@ -234,7 +234,7 @@ class Jaws_Gadget
             $subdir = empty($fpath)? JAWS_SCRIPT : $fpath;
             $subdir = ($subdir == 'admin')? 'Admin' : '';
             $gadget = empty($gadget)? $this->name : $gadget;
-            $fpath  = "gadgets/$gadget/templates/$subdir";
+            $fpath  = "gadgets/$gadget/Resources/templates/$subdir";
         }
 
         // set options
@@ -562,7 +562,7 @@ class Jaws_Gadget
         if (empty($name)) {
             $name = $this->name;
         }
-        $image = Jaws::CheckImage('gadgets/'.$name.'/images/logo.png');
+        $image = Jaws::CheckImage('gadgets/'.$name.'/Resources/images/logo.png');
         return $image;
     }
 
