@@ -54,25 +54,25 @@ class SysInfo_AdminHTML extends Jaws_Gadget_HTML
         if ($this->gadget->GetPermission('SysInfo')) {
             $sidebar->AddOption('SysInfo', _t('SYSINFO_SYSINFO'), 
                                 BASE_SCRIPT . '?gadget=SysInfo&amp;action=SysInfo',
-                                'gadgets/SysInfo/images/sysinfo.png');
+                                'gadgets/SysInfo/Resources/images/sysinfo.png');
         }
 
         if ($this->gadget->GetPermission('PHPInfo')) {
             $sidebar->AddOption('PHPInfo', _t('SYSINFO_PHPINFO'),
                                 BASE_SCRIPT . '?gadget=SysInfo&amp;action=PHPInfo',
-                                'gadgets/SysInfo/images/phpinfo.png');
+                                'gadgets/SysInfo/Resources/images/phpinfo.png');
         }
 
         if ($this->gadget->GetPermission('JawsInfo')) {
             $sidebar->AddOption('JawsInfo', _t('SYSINFO_JAWSINFO'),
                                 BASE_SCRIPT . '?gadget=SysInfo&amp;action=JawsInfo',
-                                'gadgets/SysInfo/images/jawsinfo.png');
+                                'gadgets/SysInfo/Resources/images/jawsinfo.png');
         }
 
         if ($this->gadget->GetPermission('DirInfo')) {
             $sidebar->AddOption('DirInfo', _t('SYSINFO_DIRINFO'),
                                 BASE_SCRIPT . '?gadget=SysInfo&amp;action=DirInfo',
-                                'gadgets/SysInfo/images/dirinfo.png');
+                                'gadgets/SysInfo/Resources/images/dirinfo.png');
         }
 
         $sidebar->Activate($action);
