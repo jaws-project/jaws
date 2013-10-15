@@ -269,7 +269,7 @@ class Jaws_Registry
         }
 
         // if nothing updated then try to insert a new record
-        if (empty($result)) {
+        if (!empty($user) && empty($result)) {
             return $this->insert($key_name, $key_value, false, $component, $user);
         }
 
