@@ -51,7 +51,7 @@ class Glossary_Hooks_Search extends Jaws_Gadget_Hook
             $entry = array();
             $entry['title']   = $r['term'];
             $entry['url']     = $GLOBALS['app']->Map->GetURLFor('Glossary', 'ViewTerm', array('term' => $r['id']));
-            $entry['image']   = 'gadgets/Glossary/images/logo.png';
+            $entry['image']   = 'gadgets/Glossary/Resources/images/logo.png';
             $entry['snippet'] = $r['description'];
             $entry['date']    = $date->ToISO($r['createtime']);
             $stamp = str_replace(array('-', ':', ' '), '', $r['createtime']);
