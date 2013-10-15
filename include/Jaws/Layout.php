@@ -302,7 +302,7 @@ class Jaws_Layout
             // help icon
             if (!empty($docurl) && !is_null($docurl)) {
                 $this->_Template->SetBlock('layout/cptitle/documentation');
-                $this->_Template->SetVariable('src', 'gadgets/ControlPanel/images/help.png');
+                $this->_Template->SetVariable('src', 'gadgets/ControlPanel/Resources/images/help.png');
                 $this->_Template->SetVariable('alt', _t('GLOBAL_HELP'));
                 $this->_Template->SetVariable('url', $docurl);
                 $this->_Template->ParseBlock('layout/cptitle/documentation');
