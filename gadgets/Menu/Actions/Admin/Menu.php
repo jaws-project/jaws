@@ -47,7 +47,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_HTML
         $cancel_btn->AddEvent(ON_CLICK, 'javascript: stopAction();');
         $tpl->SetVariable('cancel', $cancel_btn->Get());
 
-        $tpl->SetVariable('menu_tree_image', 'gadgets/Menu/images/menu-item.png');
+        $tpl->SetVariable('menu_tree_image', 'gadgets/Menu/Resources/images/menu-item.png');
         $tpl->SetVariable('menu_tree_title', _t('MENU_TREE_TITLE'));
         $tpl->SetVariable('addMenuTitle',    _t('MENU_ADD_MENU'));
         $tpl->SetVariable('editMenuTitle',   _t('MENU_EDIT_MENU'));
@@ -55,7 +55,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_HTML
         $tpl->SetVariable('addGroupTitle',   _t('MENU_ADD_GROUP'));
         $tpl->SetVariable('editGroupTitle',  _t('MENU_EDIT_GROUP'));
         $tpl->SetVariable('delGroupTitle',   _t('MENU_DELETE_GROUP'));
-        $tpl->SetVariable('menuImageSrc',    'gadgets/Menu/images/menu-item.png');
+        $tpl->SetVariable('menuImageSrc',    'gadgets/Menu/Resources/images/menu-item.png');
         $tpl->SetVariable('incompleteFields',   _t('MENU_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('confirmDeleteGroup', _t('MENU_CONFIRM_DELETE_GROUP'));
         $tpl->SetVariable('confirmDeleteMenu',  _t('MENU_CONFIRM_DELETE_MENU'));
@@ -87,7 +87,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_HTML
             $tpl->SetBlock('parent/menu');
             $tpl->SetVariable('class_name', 'menu_levels');
             $tpl->SetVariable('mg_id', 'menu_'.$menu['id']);
-            $tpl->SetVariable('icon', 'gadgets/Menu/images/menu-item.png');
+            $tpl->SetVariable('icon', 'gadgets/Menu/Resources/images/menu-item.png');
             $tpl->SetVariable('title', $menu['title']);
             $tpl->SetVariable('js_edit_func', "editMenu({$menu['id']})");
             $tpl->SetVariable('add_title', _t('MENU_ADD_MENU'));
@@ -119,7 +119,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_HTML
             $tpl_str = '<!-- BEGIN parent --><!-- BEGIN menu -->'.$tpl->GetCurrentBlockContent().'<!-- END menu --><!-- END parent -->';
             $tpl->SetVariable('class_name', 'menu_groups');
             $tpl->SetVariable('mg_id', 'group_'.$group['id']);
-            $tpl->SetVariable('icon', 'gadgets/Menu/images/menu-group.png');
+            $tpl->SetVariable('icon', 'gadgets/Menu/Resources/images/menu-group.png');
             $tpl->SetVariable('title', $group['title']);
             $tpl->SetVariable('js_edit_func', "editGroup({$group['id']})");
             $tpl->SetVariable('add_title', _t('MENU_ADD_MENU'));

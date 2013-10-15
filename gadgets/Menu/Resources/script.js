@@ -372,7 +372,7 @@ function editMenu(mid)
 
     $('imagename').value  = 'true';
     if (!menuInfo['image']) {
-        $('image').src = 'gadgets/Menu/images/no-image.png?' + (new Date()).getTime();
+        $('image').src = 'gadgets/Menu/Resources/images/no-image.png?' + (new Date()).getTime();
     } else {
         $('image').src = base_script + '?gadget=Menu&action=LoadImage&id=' + menuInfo['id'] + '&' + (new Date()).getTime();;
     }
@@ -529,7 +529,7 @@ function onUpload(response) {
 function removeImage() {
     $('imagename').value = '';
     $('frm_image').reset();
-    $('image').src = 'gadgets/Menu/images/no-image.png?' + (new Date()).getTime();
+    $('image').src = 'gadgets/Menu/Resources/images/no-image.png?' + (new Date()).getTime();
 }
 
 var MenuAjax = new JawsAjax('Menu', MenuCallback);
