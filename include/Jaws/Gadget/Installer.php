@@ -463,7 +463,7 @@ class Jaws_Gadget_Installer
     {
         $main_file = $main_schema;
         if (!preg_match('@\\\\|/@', $main_schema)) {
-            $main_file = JAWS_PATH. "gadgets/{$this->gadget->name}/schema/$main_schema";
+            $main_file = JAWS_PATH. "gadgets/{$this->gadget->name}/Resources/schema/$main_schema";
         }
         if (!file_exists($main_file)) {
             return Jaws_Error::raiseError(
@@ -478,7 +478,7 @@ class Jaws_Gadget_Installer
         if (!empty($base_schema)) {
                 $base_file = $base_schema;
             if (!preg_match('@\\\\|/@', $base_schema)) {
-                $base_file = JAWS_PATH. "gadgets/{$this->gadget->name}/schema/$base_schema";
+                $base_file = JAWS_PATH. "gadgets/{$this->gadget->name}/Resources/schema/$base_schema";
             }
             if (!file_exists($base_file)) {
                 return Jaws_Error::raiseError(
