@@ -70,7 +70,7 @@ class Layout_Actions_Admin_Element extends Jaws_Gadget_HTML
         foreach ($gadget_list as $gadget) {
             $tpl->SetBlock('template/gadget');
             $tpl->SetVariable('id',     $gadget['name']);
-            $tpl->SetVariable('icon',   'gadgets/'.$gadget['name'].'/images/logo.png');
+            $tpl->SetVariable('icon',   'gadgets/'.$gadget['name'].'/Resources/images/logo.png');
             $tpl->SetVariable('gadget', $gadget['title']);
             $tpl->SetVariable('desc',   $gadget['description']);
             $tpl->ParseBlock('template/gadget');

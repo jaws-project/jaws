@@ -60,7 +60,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
         $fakeLayout->AddScriptLink('libraries/mootools/core.js');
         $fakeLayout->AddScriptLink('libraries/mootools/more.js');
         $fakeLayout->AddScriptLink('include/Jaws/Resources/Ajax.js');
-        $fakeLayout->AddScriptLink('gadgets/Layout/resources/script.js');
+        $fakeLayout->AddScriptLink('gadgets/Layout/Resources/script.js');
 
         $layoutContent = $fakeLayout->_Template->Blocks['layout']->Content;
         $layoutContent = preg_replace(
@@ -79,7 +79,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
             'default'
         );
         $fakeLayout->AddHeadLink(
-            'gadgets/Layout/resources/style.css',
+            'gadgets/Layout/Resources/style.css',
             'stylesheet',
             'text/css'
         );
@@ -104,14 +104,14 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
                     $t_item->SetVariable('pos', $gadget['layout_position']);
                     $t_item->SetVariable('gadget', _t('LAYOUT_REQUESTED_GADGET'));
                     $t_item->SetVariable('action', '&nbsp;');
-                    $t_item->SetVariable('icon', 'gadgets/Layout/images/requested-gadget.png');
+                    $t_item->SetVariable('icon', 'gadgets/Layout/Resources/images/requested-gadget.png');
                     $t_item->SetVariable('description', _t('LAYOUT_REQUESTED_GADGET_DESC'));
                     $t_item->SetVariable('lbl_display_when', _t('LAYOUT_DISPLAY_IN'));
                     $t_item->SetVariable('display_when', _t('GLOBAL_ALWAYS'));
                     $t_item->SetVariable('void_link', 'return;');
                     $t_item->SetVariable('section_name', $name);
                     $t_item->SetVariable('delete', 'void(0);');
-                    $t_item->SetVariable('delete-img', 'gadgets/Layout/images/no-delete.gif');
+                    $t_item->SetVariable('delete-img', 'gadgets/Layout/Resources/images/no-delete.gif');
                     $t_item->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
                     $t_item->SetVariable('item_status', 'none');
                     $t_item->ParseBlock('item');
@@ -122,12 +122,12 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
                     $t_item->SetVariable('pos', $gadget['layout_position']);
                     $t_item->SetVariable('item_id', $gadget['id']);
                     $t_item->SetVariable('base_script_url', $GLOBALS['app']->getSiteURL('/'.BASE_SCRIPT));
-                    $t_item->SetVariable('icon', Jaws::CheckImage('gadgets/'.$gadget['gadget'].'/images/logo.png'));
+                    $t_item->SetVariable('icon', Jaws::CheckImage('gadgets/'.$gadget['gadget'].'/Resources/images/logo.png'));
                     $t_item->SetVariable(
                         'delete',
                         "deleteElement('{$gadget['id']}');"
                     );
-                    $t_item->SetVariable('delete-img', 'gadgets/Layout/images/delete-item.gif');
+                    $t_item->SetVariable('delete-img', 'gadgets/Layout/Resources/images/delete-item.gif');
                     $t_item->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
 
                     $actions = $eModel->GetGadgetLayoutActions($gadget['gadget'], true);
@@ -196,7 +196,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
         $tpl->SetVariable('admin_script', BASE_SCRIPT);
         $tpl->SetVariable('title-cp', _t('GLOBAL_CONTROLPANEL'));
         $tpl->SetVariable('title-name', _t('LAYOUT_NAME'));
-        $tpl->SetVariable('icon-gadget', 'gadgets/Layout/images/logo.png');
+        $tpl->SetVariable('icon-gadget', 'gadgets/Layout/Resources/images/logo.png');
         $tpl->SetVariable('title-gadget', 'Layout');
 
         // layouts/dashboards
