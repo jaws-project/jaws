@@ -72,7 +72,7 @@ class Blog_Hooks_Search extends Jaws_Gadget_Hook
             }
             $entry['url'] = $url;
             //FIXME: Will be great if we can get the first image in "text"
-            $entry['image'] = 'gadgets/Blog/images/logo.png';
+            $entry['image'] = 'gadgets/Blog/Resources/images/logo.png';
             $entry['snippet'] = empty($r['summary'])? $r['text'] : $r['summary'];
             $entry['date']    = $date->ToISO($r['createtime']);
 

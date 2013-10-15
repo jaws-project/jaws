@@ -27,7 +27,7 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog');
         }
 
-        $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/resources/script.js');
+        $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/Resources/script.js');
 
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
         return $cHTML->Comments('blog', $this->MenuBar('ManageComments'));

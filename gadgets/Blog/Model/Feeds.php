@@ -67,7 +67,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $this->_Atom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->fetch('version'));
         $this->_Atom->SetCopyright($this->gadget->registry->fetch('copyright', 'Settings'));
 
-        $this->_Atom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
+        $this->_Atom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/Resources/templates/atom.xsl'), 'text/xsl');
 
         $objDate = $GLOBALS['app']->loadDate();
         foreach ($result as $r) {
@@ -235,7 +235,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             $this->gadget->registry->fetch('gate_email', 'Settings'));
         $categoryAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->fetch('version'));
         $categoryAtom->SetCopyright($this->gadget->registry->fetch('copyright', 'Settings'));
-        $categoryAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
+        $categoryAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/Resources/templates/atom.xsl'), 'text/xsl');
 
         $objDate = $GLOBALS['app']->loadDate();
         foreach ($result as $r) {
@@ -390,7 +390,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->fetch('version'));
         $commentAtom->SetCopyright($this->gadget->registry->fetch('copyright', 'Settings'));
 
-        $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
+        $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/Resources/templates/atom.xsl'), 'text/xsl');
         $commentAtom->SetTagLine(_t('BLOG_RECENT_COMMENTS'));
 
         $objDate = $GLOBALS['app']->loadDate();
@@ -495,7 +495,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->fetch('version'));
         $commentAtom->SetCopyright($this->gadget->registry->fetch('copyright', 'Settings'));
 
-        $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/templates/atom.xsl'), 'text/xsl');
+        $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/Resources/templates/atom.xsl'), 'text/xsl');
         $commentAtom->SetTagLine(_t('BLOG_COMMENTS_ON_POST').' '.$id);
 
         $objDate = $GLOBALS['app']->loadDate();
