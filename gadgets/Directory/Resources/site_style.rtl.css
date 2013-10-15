@@ -42,16 +42,16 @@ background-position:left top;
 background-repeat:no-repeat;
 }
 .file-sharing.shared{
-background-image:url(../images/shared.png);
+background-image:url(../Resources/images/shared.png);
 }
 .file-sharing.foreign{
-background-image:url(../images/users.png);
+background-image:url(../Resources/images/users.png);
 }
 .file-sharing.public{
-background-image:url(../images/link.png);
+background-image:url(../Resources/images/link.png);
 }
 .file-sharing.shared.public{
-background:url(../images/shared.png) no-repeat left top, url(../images/link.png) no-repeat left 70%;
+background:url(../Resources/images/shared.png) no-repeat left top, url(../Resources/images/link.png) no-repeat left 70%;
 }
 
 .file-info table{

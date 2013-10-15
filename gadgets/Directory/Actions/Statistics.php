@@ -18,7 +18,7 @@ class Directory_Actions_Statistics extends Jaws_Gadget_HTML
      */
     function Statistics()
     {
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/resources/site_style.css');
+        $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/Resources/site_style.css');
         $tpl = $this->gadget->loadTemplate('Statistics.html');
         $tpl->SetBlock('statistics');
 

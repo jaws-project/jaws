@@ -18,7 +18,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
      */
     function Directory()
     {
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/resources/site_style.css');
+        $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/Resources/site_style.css');
         $this->AjaxMe('site_script.js');
         $tpl = $this->gadget->loadTemplate('Workspace.html');
         $tpl->SetBlock('workspace');
@@ -47,7 +47,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_HTML
         if ($this->gadget->GetPermission('ShareFile')) {
             $tpl->SetBlock('workspace/share');
             $tpl->SetVariable('lbl_share', _t('DIRECTORY_SHARE'));
-            $tpl->SetVariable('img_share', 'gadgets/Directory/images/share.png');
+            $tpl->SetVariable('img_share', 'gadgets/Directory/Resources/images/share.png');
             $tpl->ParseBlock('workspace/share');
         }
 
