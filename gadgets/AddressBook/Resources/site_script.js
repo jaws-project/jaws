@@ -236,7 +236,7 @@ function removeImage()
 {
     $('image').value = '';
     $('frm_person_image').reset();
-    $('person_image').src = baseSiteUrl + '/gadgets/AddressBook/images/photo128px.png?' + (new Date()).getTime();
+    $('person_image').src = baseSiteUrl + '/gadgets/AddressBook/Resources/images/photo128px.png?' + (new Date()).getTime();
 }
 
 function toggleCheckboxes(checkStatus)

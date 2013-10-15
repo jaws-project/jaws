@@ -69,10 +69,10 @@ class AddressBook_HTML extends Jaws_Gadget_HTML
         $menubar = new Jaws_Widgets_Menubar();
 
         $menubar->AddOption('AddressBook',_t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'),
-            $this->gadget->urlMap('AddressBook'), 'gadgets/AddressBook/images/contact.png');
+            $this->gadget->urlMap('AddressBook'), 'gadgets/AddressBook/Resources/images/contact.png');
 
         $menubar->AddOption('Groups',_t('ADDRESSBOOK_GROUPS_MANAGE'),
-            $this->gadget->urlMap('ManageGroups'), 'gadgets/AddressBook/images/groups_mini.png');
+            $this->gadget->urlMap('ManageGroups'), 'gadgets/AddressBook/Resources/images/groups_mini.png');
 
         $menubar->Activate($action_selected);
 

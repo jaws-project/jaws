@@ -7,7 +7,7 @@
  * @author     HamidReza Aboutalebi <hamid@aboutalebi.com>
  * @copyright  2013 Jaws Development Group
  */
-$GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/resources/site_style.css');
+$GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/Resources/site_style.css');
 class AddressBook_Actions_AddressBook extends AddressBook_HTML
 {
     /**
@@ -186,7 +186,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
 
         $tpl->SetVariable('baseSiteUrl', $GLOBALS['app']->getSiteURL());
         $tpl->SetVariable('loadImageUrl', $this->gadget->urlMap('LoadImage', array('file' => '')));
-        $current_image = $GLOBALS['app']->getSiteURL('/gadgets/AddressBook/images/photo128px.png');
+        $current_image = $GLOBALS['app']->getSiteURL('/gadgets/AddressBook/Resources/images/photo128px.png');
         $tpl->SetVariable('image_src', $current_image);
 
         $tpl->SetVariable('menubar', $this->MenuBar(''));
@@ -356,7 +356,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_HTML
         }
 
         if (empty($info['image'])) {
-            $current_image = $GLOBALS['app']->getSiteURL('/gadgets/AddressBook/images/photo128px.png');
+            $current_image = $GLOBALS['app']->getSiteURL('/gadgets/AddressBook/Resources/images/photo128px.png');
         } else {
             $current_image = $GLOBALS['app']->getDataURL() . "addressbook/image/" . $info['image'];
             $current_image .= !empty($info['updatetime']) ? "?" . $info['updatetime'] . "" : '';
