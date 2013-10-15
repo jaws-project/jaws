@@ -69,17 +69,17 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
         if ($this->gadget->GetPermission('Encryption')) {
             $sidebar->AddOption('Encryption', _t('POLICY_ENCRYPTION'),
                                 BASE_SCRIPT . '?gadget=Policy&amp;action=Encryption',
-                                'gadgets/Policy/images/encryption.png');
+                                'gadgets/Policy/Resources/images/encryption.png');
         }
         if ($this->gadget->GetPermission('AntiSpam')) {
             $sidebar->AddOption('AntiSpam', _t('POLICY_ANTISPAM'),
                                 BASE_SCRIPT . '?gadget=Policy&amp;action=AntiSpam',
-                                'gadgets/Policy/images/antispam.png');
+                                'gadgets/Policy/Resources/images/antispam.png');
         }
         if ($this->gadget->GetPermission('AdvancedPolicies')) {
             $sidebar->AddOption('AdvancedPolicies', _t('POLICY_ADVANCED_POLICIES'),
                                 BASE_SCRIPT . '?gadget=Policy&amp;action=AdvancedPolicies',
-                                'gadgets/Policy/images/policies.png');
+                                'gadgets/Policy/Resources/images/policies.png');
         }
 
         $sidebar->Activate($action);
