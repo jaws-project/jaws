@@ -36,7 +36,7 @@ class Weather_Actions_Admin_GoogleMap extends Weather_AdminHTML
         $httpRequest = new Jaws_HTTPRequest();
         $result = $httpRequest->get($gMapURL, $data);
         if (Jaws_Error::IsError($result) || $result != 200) {
-            $data = @file_get_contents('gadgets/Weather/images/gmap.png');
+            $data = @file_get_contents('gadgets/Weather/Resources/images/gmap.png');
             header("Expires: 0");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         } else {

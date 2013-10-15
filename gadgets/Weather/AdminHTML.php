@@ -49,12 +49,12 @@ class Weather_AdminHTML extends Jaws_Gadget_HTML
         $menubar = new Jaws_Widgets_Menubar();
         if ($this->gadget->GetPermission('ManageRegions')) {
             $menubar->AddOption('Regions', _t('WEATHER_REGIONS'),
-                                BASE_SCRIPT . '?gadget=Weather&amp;action=Regions', 'gadgets/Weather/images/regions.png');
+                                BASE_SCRIPT . '?gadget=Weather&amp;action=Regions', 'gadgets/Weather/Resources/images/regions.png');
         }
 
         if ($this->gadget->GetPermission('UpdateProperties')) {
             $menubar->AddOption('Properties', _t('GLOBAL_PROPERTIES'),
-                                BASE_SCRIPT . '?gadget=Weather&amp;action=Properties', 'gadgets/Weather/images/properties.png');
+                                BASE_SCRIPT . '?gadget=Weather&amp;action=Properties', 'gadgets/Weather/Resources/images/properties.png');
         }
 
         $menubar->Activate($action);

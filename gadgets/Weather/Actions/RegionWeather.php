@@ -101,7 +101,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_HTML
             $tpl->SetVariable('unit', $metric? _t('WEATHER_UNIT_METRIC_TEMP') :
                 _t('WEATHER_UNIT_IMPERIAL_TEMP'));
             $tpl->SetVariable('alt',  $rWeather['icon']);
-            $tpl->SetVariable('icon', "gadgets/Weather/images/states/{$rWeather['icon']}.png");
+            $tpl->SetVariable('icon', "gadgets/Weather/Resources/images/states/{$rWeather['icon']}.png");
             $tpl->ParseBlock('weather/current');
 
             if ($forecast) {
@@ -123,7 +123,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_HTML
                     $tpl->SetVariable('unit', $metric? _t('WEATHER_UNIT_METRIC_TEMP') :
                         _t('WEATHER_UNIT_IMPERIAL_TEMP'));
                     $tpl->SetVariable('alt',  $fWeather['icon']);
-                    $tpl->SetVariable('icon', "gadgets/Weather/images/states/{$fWeather['icon']}.png");
+                    $tpl->SetVariable('icon', "gadgets/Weather/Resources/images/states/{$fWeather['icon']}.png");
                     $tpl->ParseBlock('weather/forecast/item');
                 }
                 $tpl->ParseBlock('weather/forecast');
@@ -185,7 +185,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_HTML
                     $tpl->SetVariable('unit', $metric? _t('WEATHER_UNIT_METRIC_TEMP') :
                         _t('WEATHER_UNIT_IMPERIAL_TEMP'));
                     $tpl->SetVariable('alt',  $rWeather['icon']);
-                    $tpl->SetVariable('icon', "gadgets/Weather/images/states/{$rWeather['icon']}.png");
+                    $tpl->SetVariable('icon', "gadgets/Weather/Resources/images/states/{$rWeather['icon']}.png");
                     $tpl->ParseBlock('weather/region');
                 }
             }
