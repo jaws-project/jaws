@@ -37,7 +37,7 @@ class Phoo_Actions_Admin_Thumb extends Phoo_AdminHTML
         }
 
         header('Content-type: image/png');
-        return file_get_contents('gadgets/Phoo/images/logo.png');
+        return file_get_contents('gadgets/Phoo/Resources/images/logo.png');
     }
 
 }

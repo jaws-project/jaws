@@ -36,7 +36,7 @@ class Phoo_AdminHTML extends Jaws_Gadget_HTML
         }
         if ($this->gadget->GetPermission('Groups')) {
             $menubar->AddOption('Groups', _t('GLOBAL_GROUPS'),
-                                BASE_SCRIPT . '?gadget=Phoo&amp;action=Groups', 'gadgets/Phoo/images/groups_mini.png');
+                                BASE_SCRIPT . '?gadget=Phoo&amp;action=Groups', 'gadgets/Phoo/Resources/images/groups_mini.png');
         }
         if ($this->gadget->GetPermission('Settings')) {
             $menubar->AddOption('AdditionalSettings', _t('PHOO_ADDITIONAL_SETTINGS'),

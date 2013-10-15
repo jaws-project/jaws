@@ -285,13 +285,13 @@ class Phoo_Model_Photos extends Phoo_Model
                 if (isset($data['IFD0']['Make'])) {
                     $camera = $data['IFD0']['Make'].' / '.$data['IFD0']['Model'];
                     $image['exif']['camera'] = $camera;
-                    $cameraimg = 'gadgets/Phoo/images/'.str_replace(' ','',$data['IFD0']['Make']).'_'.
+                    $cameraimg = 'gadgets/Phoo/Resources/images/'.str_replace(' ','',$data['IFD0']['Make']).'_'.
                         str_replace(' ', '', $data['IFD0']['Model']).'.jpg';
                     $image['exif']['cameraimg'] = $cameraimg;
                 }
 
                 if (!file_exists($cameraimg)) {
-                    $image['exif']['cameraimg'] = 'gadgets/Phoo/images/Camera.png';
+                    $image['exif']['cameraimg'] = 'gadgets/Phoo/Resources/images/Camera.png';
                 }
 
                 if (!empty($data['COMPUTED']['Width'])) {

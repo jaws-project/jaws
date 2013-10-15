@@ -61,7 +61,7 @@ class Phoo_Actions_Admin_Comments extends Phoo_AdminHTML
         }
 
         $this->AjaxMe('script.js');
-        $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/resources/script.js');
+        $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/Resources/script.js');
 
         $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
         return $cHTML->Comments('phoo', $this->MenuBar('ManageComments'));

@@ -72,7 +72,7 @@ class Phoo_Hooks_Search extends Jaws_Gadget_Hook
             $entry['title']   = $r['name'];
             $entry['url']     = $GLOBALS['app']->Map->GetURLFor('Phoo', 'ViewAlbum',
                                                                 array('id' => $r['id']));
-            $entry['image']   = 'gadgets/Phoo/images/logo.png';
+            $entry['image']   = 'gadgets/Phoo/Resources/images/logo.png';
             $entry['snippet'] = $r['description'];
             $entry['date']    = $date->ToISO($r['createtime']);
             $stamp            = str_replace(array('-', ':', ' '), '', $r['createtime']);

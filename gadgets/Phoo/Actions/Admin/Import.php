@@ -93,7 +93,7 @@ class Phoo_Actions_Admin_Import extends Phoo_AdminHTML
         $tpl->SetVariable('importing', _t('PHOO_IMPORTING'));
         $tpl->SetVariable('album', $post['album']);
         $tpl->SetVariable('howmany', (string)count($post['images']));
-        $tpl->SetVariable('indicator_image', 'gadgets/ControlPanel/images/indicator.gif');
+        $tpl->SetVariable('indicator_image', 'gadgets/ControlPanel/Resources/images/indicator.gif');
         $tpl->SetVariable('ok_image', STOCK_OK);
         $tpl->SetVariable('finished', _t('PHOO_FINISHED'));
         $tpl->SetVariable('import_warning', _t('PHOO_IMPORTING_WARNING'));

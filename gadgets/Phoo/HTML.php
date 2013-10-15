@@ -52,7 +52,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
 //        $image = jaws()->request->fetch('image', 'get');
 //
 //        include_once JAWS_PATH . 'include/Jaws/Image.php';
-//        Jaws_Image::get_exif_thumbnail(JAWS_DATA . 'phoo/import/' . $image, 'gadgets/Phoo/images/Phoo.png');
+//        Jaws_Image::get_exif_thumbnail(JAWS_DATA . 'phoo/import/' . $image, 'gadgets/Phoo/Resources/images/Phoo.png');
 //    }
 
 }
