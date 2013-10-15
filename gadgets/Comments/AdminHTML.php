@@ -149,7 +149,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
             $tpl->SetVariable('btn_save', $btnSave->Get());
 
             $btnReply =& Piwi::CreateWidget('Button', 'btn_reply', _t('COMMENTS_SAVE_AND_REPLY'), 
-                                                        'gadgets/Contact/images/contact_mini.png');
+                                                        'gadgets/Contact/Resources/images/contact_mini.png');
             $btnReply->AddEvent(ON_CLICK, "updateComment(true);");
             $btnReply->SetStyle('display: none;');
             $tpl->SetVariable('btn_reply', $btnReply->Get());

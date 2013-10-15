@@ -150,7 +150,7 @@ class Comments_Actions_Feeds extends Comments_HTML
         $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->fetch('version'));
         $commentAtom->SetCopyright($this->gadget->registry->fetch('copyright', 'Settings'));
 
-        $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Comments/templates/atom.xsl'), 'text/xsl');
+        $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Comments/Resources/templates/atom.xsl'), 'text/xsl');
         $commentAtom->SetTagLine(_t('COMMENTS_RECENT_COMMENTS', $gadget));
 
         $objDate = $GLOBALS['app']->loadDate();
