@@ -62,24 +62,36 @@ class Users_HTML extends Jaws_Gadget_HTML
      * Displays menu bar according to selected action
      *
      * @access  public
-     * @param   string  $action_selected    selected action
-     * @return  string XHTML template content
+     * @param   string    $action_selected    selected action
+     * @param   array     $visible_actions    visible actions
+     * @param   array     $action_params      action params
+     * @return  string    XHTML template content
      */
-    function MenuBar($action_selected)
+    function MenuBar($action_selected, $visible_actions, $action_params = null)
     {
-        $actions = array('AddGroup');
+        $actions = array('EditGroup', 'AddGroup', 'Groups');
         if (!in_array($action_selected, $actions)) {
-            $action_selected = 'AddGroup';
+            $action_selected = 'Groups';
         }
 
         require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
 
-        $menubar->AddOption('AddGroup',_t('USERS_ADD_GROUP'),
-            $this->gadget->urlMap('UserGroupUI', array('type'=>'add')), STOCK_ADD);
+        if (in_array('AddGroup', $visible_actions)) {
+            $menubar->AddOption('AddGroup', _t('USERS_ADD_GROUP'),
+                $this->gadget->urlMap('UserGroupUI', array('type' => 'add')), STOCK_ADD);
+        }
 
-        $menubar->AddOption('Groups',_t('USERS_MANAGE_GROUPS'),
-            $this->gadget->urlMap('Groups'), 'gadgets/Users/Resources/images/groups_mini.png');
+        if (in_array('EditGroup', $visible_actions)) {
+            $action_params['type'] = 'edit';
+            $menubar->AddOption('EditGroup', _t('USERS_EDIT_GROUP'),
+                $this->gadget->urlMap('UserGroupUI', $action_params), STOCK_EDIT);
+        }
+
+        if (in_array('Groups', $visible_actions)) {
+            $menubar->AddOption('Groups', _t('USERS_MANAGE_GROUPS'),
+                $this->gadget->urlMap('Groups'), 'gadgets/Users/Resources/images/groups_mini.png');
+        }
 
         $menubar->Activate($action_selected);
 

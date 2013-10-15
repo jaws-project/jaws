@@ -115,7 +115,15 @@ $actions['Groups'] = array(
     'file' => 'Groups',
 );
 $actions['DeleteGroups'] = array(
-    'normal' => true,
+    'standalone' => true,
+    'file' => 'Groups',
+);
+$actions['AddUserToGroup'] = array(
+    'standalone' => true,
+    'file' => 'Groups',
+);
+$actions['RemoveUserFromGroup'] = array(
+    'standalone' => true,
     'file' => 'Groups',
 );
 $actions['UserGroupUI'] = array(
