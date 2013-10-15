@@ -35,7 +35,7 @@ class Emblems_Installer extends Jaws_Gadget_Installer
         // If you are here, then copy the default jaws and feeds images
         $emblems = array('jaws', 'php', 'apache', 'mysql', 'pgsql', 'xhtml', 'css', 'atom', 'rss');
         foreach ($emblems as $emblem) {
-            copy(JAWS_PATH. "gadgets/Emblems/images/$emblem.png", $new_dir. "$emblem.png");
+            copy(JAWS_PATH. "gadgets/Emblems/Resources/images/$emblem.png", $new_dir. "$emblem.png");
             Jaws_Utils::chmod($new_dir. "$emblem.png");
         }
 
