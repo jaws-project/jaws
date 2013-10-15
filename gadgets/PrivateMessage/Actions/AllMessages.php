@@ -77,6 +77,7 @@ class PrivateMessage_Actions_AllMessages extends PrivateMessage_HTML
                 $tpl->SetBlock('all/message');
                 $tpl->SetVariable('rownum', $i);
 
+                $subject = $message['subject'];
                 // check inbox or outbox
                 if ($message['recipient'] == $user) {
                     $tpl->SetVariable('in_out', _t('PRIVATEMESSAGE_IN'));
@@ -87,7 +88,6 @@ class PrivateMessage_Actions_AllMessages extends PrivateMessage_HTML
                         array('id' => $message['message_recipient_id'])));
 
                     if($message['read']) {
-                        $subject = $message['subject'];
                         $tpl->SetVariable('status', 'read');
                     } else {
                         $subject = '<strong>' . $message['subject'] . '</strong>';
