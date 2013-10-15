@@ -52,15 +52,15 @@ class Banner_AdminHTML extends Jaws_Gadget_HTML
         $menubar = new Jaws_Widgets_Menubar();
         if ($this->gadget->GetPermission('ManageBanners')) {
             $menubar->AddOption('Banners', _t('BANNER_NAME'),
-                                BASE_SCRIPT . '?gadget=Banner&amp;action=Admin', 'gadgets/Banner/images/banners_mini.png');
+                                BASE_SCRIPT . '?gadget=Banner&amp;action=Admin', 'gadgets/Banner/Resources/images/banners_mini.png');
         }
         if ($this->gadget->GetPermission('ManageGroups')) {
             $menubar->AddOption('Groups', _t('BANNER_GROUPS_GROUPS'),
-                                BASE_SCRIPT . '?gadget=Banner&amp;action=Groups', 'gadgets/Banner/images/groups_mini.png');
+                                BASE_SCRIPT . '?gadget=Banner&amp;action=Groups', 'gadgets/Banner/Resources/images/groups_mini.png');
         }
         if ($this->gadget->GetPermission('ViewReports')) {
             $menubar->AddOption('Reports', _t('BANNER_REPORTS_REPORTS'),
-                                BASE_SCRIPT . '?gadget=Banner&amp;action=Reports', 'gadgets/Banner/images/reports_mini.png');
+                                BASE_SCRIPT . '?gadget=Banner&amp;action=Reports', 'gadgets/Banner/Resources/images/reports_mini.png');
         }
         $menubar->Activate($action);
         return $menubar->Get();

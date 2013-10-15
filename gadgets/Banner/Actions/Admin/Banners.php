@@ -150,17 +150,17 @@ class Banner_Actions_Admin_Banners extends Banner_AdminHTML
         $tpl->SetVariable('lbl_template', _t('BANNER_BANNERS_TEMPLATE'));
         $tpl->SetVariable('template', $template->Get());
 
-        $btnText =& Piwi::CreateWidget('Button','btn_text', '', 'gadgets/Banner/images/text.png');
+        $btnText =& Piwi::CreateWidget('Button','btn_text', '', 'gadgets/Banner/Resources/images/text.png');
         $btnText->SetTitle(_t('BANNER_BANNERS_BANNERTYPE_TEXT'));
         $btnText->AddEvent(ON_CLICK, 'javascript: setTemplate(textTemplate);');
         $tpl->SetVariable('btn_text', $btnText->Get());
 
-        $btnImage =& Piwi::CreateWidget('Button','btn_image', '', 'gadgets/Banner/images/image.png');
+        $btnImage =& Piwi::CreateWidget('Button','btn_image', '', 'gadgets/Banner/Resources/images/image.png');
         $btnImage->SetTitle(_t('BANNER_BANNERS_BANNERTYPE_IMAGE'));
         $btnImage->AddEvent(ON_CLICK, 'javascript: setTemplate(imageTemplate);');
         $tpl->SetVariable('btn_image', $btnImage->Get());
 
-        $btnFlash =& Piwi::CreateWidget('Button','btn_flash', '', 'gadgets/Banner/images/flash.png');
+        $btnFlash =& Piwi::CreateWidget('Button','btn_flash', '', 'gadgets/Banner/Resources/images/flash.png');
         $btnFlash->SetTitle(_t('BANNER_BANNERS_BANNERTYPE_FLASH'));
         $btnFlash->AddEvent(ON_CLICK, 'javascript: setTemplate(flashTemplate);');
         $tpl->SetVariable('btn_flash', $btnFlash->Get());
