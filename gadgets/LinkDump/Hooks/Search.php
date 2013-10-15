@@ -52,7 +52,7 @@ class LinkDump_Hooks_Search extends Jaws_Gadget_Hook
             $link['title']   = $r['title'];
             $link['url']     = $GLOBALS['app']->Map->GetURLFor('LinkDump', 'Link', array('id' => $r['id']));
             $link['outer']   = true;
-            $link['image']   = 'gadgets/LinkDump/images/logo.png';
+            $link['image']   = 'gadgets/LinkDump/Resources/images/logo.png';
             $link['snippet'] = $r['description'];
             $link['date']    = $date->ToISO($r['updatetime']);
             $links[] = $link;

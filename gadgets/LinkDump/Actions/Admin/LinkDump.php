@@ -45,7 +45,7 @@ class LinkDump_Actions_Admin_LinkDump extends Jaws_Gadget_HTML
         $cancel_btn->AddEvent(ON_CLICK, 'javascript: stopAction();');
         $tpl->SetVariable('cancel', $cancel_btn->Get());
 
-        $tpl->SetVariable('links_tree_image', 'gadgets/LinkDump/images/logo.mini.png');
+        $tpl->SetVariable('links_tree_image', 'gadgets/LinkDump/Resources/images/logo.mini.png');
         $tpl->SetVariable('links_tree_title', _t('LINKDUMP_LINKS_TITLE'));
         $tpl->SetVariable('addLinkTitle',     _t('LINKDUMP_LINKS_ADD'));
         $tpl->SetVariable('editLinkTitle',    _t('LINKDUMP_LINKS_EDIT'));
@@ -53,7 +53,7 @@ class LinkDump_Actions_Admin_LinkDump extends Jaws_Gadget_HTML
         $tpl->SetVariable('addGroupTitle',    _t('LINKDUMP_GROUPS_ADD'));
         $tpl->SetVariable('editGroupTitle',   _t('LINKDUMP_GROUPS_EDIT'));
         $tpl->SetVariable('delGroupTitle',    _t('LINKDUMP_GROUPS_DELETE'));
-        $tpl->SetVariable('linkImageSrc',     'gadgets/LinkDump/images/logo.mini.png');
+        $tpl->SetVariable('linkImageSrc',     'gadgets/LinkDump/Resources/images/logo.mini.png');
         $tpl->SetVariable('linksListOpenImageSrc',  STOCK_ADD);
         $tpl->SetVariable('linksListCloseImageSrc', STOCK_REMOVE);
         $tpl->SetVariable('noLinkExists',       _t('LINKDUMP_LINKS_NOEXISTS'));

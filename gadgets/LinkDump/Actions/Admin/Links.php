@@ -32,7 +32,7 @@ class LinkDump_Actions_Admin_Links extends Jaws_Gadget_HTML
         foreach ($links as $link) {
             $tpl->SetBlock('linkdump/link_list');
             $tpl->SetVariable('lid', 'link_'.$link['id']);
-            $tpl->SetVariable('icon', 'gadgets/LinkDump/images/logo.mini.png');
+            $tpl->SetVariable('icon', 'gadgets/LinkDump/Resources/images/logo.mini.png');
             $tpl->SetVariable('title', $link['title']);
             $tpl->SetVariable('js_edit_func', "editLink(this, {$link['id']})");
             $tpl->SetVariable('add_icon', STOCK_NEW);
