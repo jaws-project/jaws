@@ -39,7 +39,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_HTML
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Themes', _t('TMS_THEMES'),
                             BASE_SCRIPT . '?gadget=Tms&amp;action=Themes',
-                            'gadgets/Tms/images/themes.png');
+                            'gadgets/Tms/Resources/images/themes.png');
         $menubar->Activate($action);
         return $menubar->Get();
     }
