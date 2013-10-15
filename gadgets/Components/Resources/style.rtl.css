@@ -21,7 +21,7 @@ border:1px solid #d3d7cf;
 padding:0px;
 }
 #components h3{
-background:#3465a4 url(../images/arrow-up.png) 3px no-repeat;
+background:#3465a4 url(../Resources/images/arrow-up.png) 3px no-repeat;
 color:white;
 cursor:default;
 margin:1px 1px 0 1px;
@@ -31,7 +31,7 @@ font-weight:bold;
 text-align:right;
 }
 #components h3.collapsed{
-background:#3465a4 url(../images/arrow-down.png) 3px no-repeat;
+background:#3465a4 url(../Resources/images/arrow-down.png) 3px no-repeat;
 }
 #components ul{
 margin:0;

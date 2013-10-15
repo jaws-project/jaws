@@ -161,8 +161,8 @@ function getComponentElement(comp)
     }
     li.adopt(img, span);
     img.src = pluginsMode?
-        'gadgets/Components/images/plugin.png' :
-        'gadgets/' + comp.name + '/images/logo.png';
+        'gadgets/Components/Resources/images/plugin.png' :
+        'gadgets/' + comp.name + '/Resources/images/logo.png';
     if (comp.state !== 'core') {
         a.set('href', 'javascript:void(0);');
         a.addEvent('click', function(e) {
@@ -328,8 +328,8 @@ function selectComponent()
         img = new Element('img'),
         h1 = new Element('h1');
     img.src = pluginsMode ? 
-        'gadgets/Components/images/plugin.png': 
-        'gadgets/' + components[comp].name + '/images/logo.png';
+        'gadgets/Components/Resources/images/plugin.png': 
+        'gadgets/' + components[comp].name + '/Resources/images/logo.png';
     img.alt = components[comp].title;
     h1.innerHTML = components[comp].title + ': ' + components[comp].description;
     $('component_head').innerHTML = '';

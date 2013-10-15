@@ -47,11 +47,11 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
         $menubar = new Jaws_Widgets_Menubar();
         if ($this->gadget->GetPermission('ManageGadgets')) {
             $menubar->AddOption('Gadgets', _t('COMPONENTS_GADGETS'),
-                                BASE_SCRIPT . '?gadget=Components&amp;action=Gadgets', 'gadgets/Components/images/gadgets.png');
+                                BASE_SCRIPT . '?gadget=Components&amp;action=Gadgets', 'gadgets/Components/Resources/images/gadgets.png');
         }
         if ($this->gadget->GetPermission('ManagePlugins')) {
             $menubar->AddOption('Plugins', _t('COMPONENTS_PLUGINS'),
-                                BASE_SCRIPT . '?gadget=Components&amp;action=Plugins', 'gadgets/Components/images/plugins.png');
+                                BASE_SCRIPT . '?gadget=Components&amp;action=Plugins', 'gadgets/Components/Resources/images/plugins.png');
         }
         $menubar->Activate($action);
         return $menubar->Get();

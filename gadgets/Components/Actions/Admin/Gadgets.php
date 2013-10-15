@@ -94,7 +94,7 @@ class Components_Actions_Admin_Gadgets extends Components_AdminHTML
 
         $tpl->SetVariable('gadget', $objGadget->title);
         $tpl->SetVariable('description', $objGadget->description);
-        $tpl->SetVariable('image', "gadgets/$gadget/images/logo.png");
+        $tpl->SetVariable('image', "gadgets/$gadget/Resources/images/logo.png");
 
         $tpl->SetVariable('lbl_version', _t('GLOBAL_VERSION').':');
         $tpl->SetVariable('version', $objGadget->version);
