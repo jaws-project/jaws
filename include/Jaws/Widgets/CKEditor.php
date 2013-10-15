@@ -298,9 +298,9 @@ class Jaws_Widgets_CKEditor extends Container
         $this->_Config['autoParagraph'] = 'false';
 
         if ('rtl' == $this->_Direction) {
-            $this->_Config['contentsCss'] = 'gadgets/ControlPanel/resources/ckeditor.rtl.css';
+            $this->_Config['contentsCss'] = 'gadgets/ControlPanel/Resources/ckeditor.rtl.css';
         } else {
-            $this->_Config['contentsCss'] = 'gadgets/ControlPanel/resources/ckeditor.css';
+            $this->_Config['contentsCss'] = 'gadgets/ControlPanel/Resources/ckeditor.css';
         }
 
         $siteURL = $GLOBALS['app']->GetSiteURL();

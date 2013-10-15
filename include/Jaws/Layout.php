@@ -226,7 +226,7 @@ class Jaws_Layout
         $this->AddScriptLink('libraries/mootools/core.js');
         $this->AddScriptLink('include/Jaws/Resources/Ajax.js');
         $this->AddHeadLink(
-            'gadgets/ControlPanel/resources/style.css',
+            'gadgets/ControlPanel/Resources/style.css',
             'stylesheet',
             'text/css'
         );
@@ -237,7 +237,7 @@ class Jaws_Layout
         }
 
         $this->_Template = new Jaws_Template();
-        $this->_Template->Load('Layout.html', 'gadgets/ControlPanel/templates');
+        $this->_Template->Load('Layout.html', 'gadgets/ControlPanel/Resources/templates');
         $this->_Template->SetBlock('layout');
 
         $base_url = $GLOBALS['app']->GetSiteURL('/');
@@ -296,7 +296,7 @@ class Jaws_Layout
             $this->_Template->SetVariable('cp-title', _t('GLOBAL_CONTROLPANEL'));
             $this->_Template->SetVariable('cp-title-separator', _t('GLOBAL_CONTROLPANEL_TITLE_SEPARATOR'));
             $this->_Template->SetVariable('title-name', $gname);
-            $this->_Template->SetVariable('icon-gadget', 'gadgets/'.$gadget.'/images/logo.png');
+            $this->_Template->SetVariable('icon-gadget', 'gadgets/'.$gadget.'/Resources/images/logo.png');
             $this->_Template->SetVariable('title-gadget', $gadget);
             
             // help icon

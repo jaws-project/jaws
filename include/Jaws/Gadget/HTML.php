@@ -111,7 +111,7 @@ class Jaws_Gadget_HTML
      *
      * @access  protected
      * @param   string  $file       Optional The gadget can require a special JS file,
-     *                              it should be located under gadgets/$gadget/resources/$file
+     *                              it should be located under gadgets/$gadget/Resources/$file
      * @param   string  $version    Optional File version
      */
     function AjaxMe($file = '', $version = '')
@@ -122,7 +122,7 @@ class Jaws_Gadget_HTML
             $GLOBALS['app']->Layout->AddScriptLink(
                 'gadgets/'.
                 $this->gadget->name.
-                '/resources/'.
+                '/Resources/'.
                 $file.
                 (empty($version)? '' : "?$version")
             );
