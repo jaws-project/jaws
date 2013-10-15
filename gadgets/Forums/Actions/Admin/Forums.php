@@ -29,7 +29,7 @@ class Forums_Actions_Admin_Forums extends Forums_AdminHTML
         foreach ($groups as $group) {
             $tpl->SetBlock('forums/group');
             $tpl->SetVariable('gid', $group['id']);
-            $tpl->SetVariable('icon', 'gadgets/Forums/images/menu-group.png');
+            $tpl->SetVariable('icon', 'gadgets/Forums/Resources/images/menu-group.png');
             $tpl->SetVariable('title', $group['title']);
             $tpl->SetVariable('js_edit_func', "editGroup({$group['id']})");
             $tpl->SetVariable('add_title', _t('FORUMS_FORUM_NEW'));
@@ -40,7 +40,7 @@ class Forums_Actions_Admin_Forums extends Forums_AdminHTML
                 foreach ($forums as $forum) {
                     $tpl->SetBlock('forums/group/forum');
                     $tpl->SetVariable('fid', $forum['id']);
-                    $tpl->SetVariable('icon', 'gadgets/Forums/images/menu-item.png');
+                    $tpl->SetVariable('icon', 'gadgets/Forums/Resources/images/menu-item.png');
                     $tpl->SetVariable('title', $forum['title']);
                     $tpl->SetVariable('js_edit_func', "editForum(this, {$forum['id']})");
                     $tpl->ParseBlock('forums/group/forum');
@@ -74,7 +74,7 @@ class Forums_Actions_Admin_Forums extends Forums_AdminHTML
         $tpl->SetVariable('addForumTitle',   _t('FORUMS_FORUM_NEW'));
         $tpl->SetVariable('editForumTitle',  _t('FORUMS_FORUM_EDIT'));
         $tpl->SetVariable('delForumTitle',   _t('FORUMS_FORUM_DELETE'));
-        $tpl->SetVariable('forumImageSrc',    'gadgets/Forums/images/menu-item.png');
+        $tpl->SetVariable('forumImageSrc',    'gadgets/Forums/Resources/images/menu-item.png');
         $tpl->SetVariable('incompleteFields',   _t('FORUMS_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('confirmForumDelete', _t('FORUMS_CONFIRM_DELETE_FORUM'));
         $tpl->SetVariable('confirmGroupDelete', _t('FORUMS_CONFIRM_DELETE_GROUP'));

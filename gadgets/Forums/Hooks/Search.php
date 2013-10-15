@@ -71,7 +71,7 @@ class Forums_Hooks_Search extends Jaws_Gadget_Hook
                     'page' => ceil($r['post_number']/10)
                 )
             );
-            $post['image']   = 'gadgets/Forums/images/logo.png';
+            $post['image']   = 'gadgets/Forums/Resources/images/logo.png';
             $post['snippet'] = $r['message'];
             $post['date']    = $objDate->ToISO($r['insert_time']);
             $posts[] = $post;
