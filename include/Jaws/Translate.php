@@ -139,18 +139,30 @@ class Jaws_Translate
 
         switch ($type) {
             case JAWS_COMPONENT_GADGET:
-                $orig_i18n = JAWS_PATH . "languages/$language/gadgets/$module.php";
-                $data_i18n = JAWS_DATA . "languages/$language/gadgets/$module.php";
+                if ($language == 'en') {
+                    $orig_i18n = JAWS_PATH . "gadgets/$module/Resources/translates.ini";
+                } else {
+                    $orig_i18n = JAWS_PATH . "languages/$language/gadgets/$module.ini";
+                }
+                $data_i18n = JAWS_DATA . "languages/$language/gadgets/$module.ini";
                 break;
 
             case JAWS_COMPONENT_PLUGIN:
-                $orig_i18n = JAWS_PATH . "languages/$language/plugins/$module.php";
-                $data_i18n = JAWS_DATA . "languages/$language/plugins/$module.php";
+                if ($language == 'en') {
+                    $orig_i18n = JAWS_PATH . "plugins/$module/Resources/translates.ini";
+                } else {
+                    $orig_i18n = JAWS_PATH . "languages/$language/plugins/$module.ini";
+                }
+                $data_i18n = JAWS_DATA . "languages/$language/plugins/$module.ini";
                 break;
 
             default:
-                $orig_i18n = JAWS_PATH . "languages/$language/$module.php";
-                $data_i18n = JAWS_DATA . "languages/$language/$module.php";
+                if ($language == 'en') {
+                    $orig_i18n = JAWS_PATH . "include/Jaws/Resources/translates.ini";
+                } else {
+                    $orig_i18n = JAWS_PATH . "languages/$language/$module.ini";
+                }
+                $data_i18n = JAWS_DATA . "languages/$language/$module.ini";
         }
 
         $GLOBALS['i18n'][$language][] = array($module, $type);
