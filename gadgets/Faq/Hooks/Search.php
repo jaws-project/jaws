@@ -60,7 +60,7 @@ class Faq_Hooks_Search extends Jaws_Gadget_Hook
             $question['url']     = $GLOBALS['app']->Map->GetURLFor('Faq', 'ViewCategory', 
                                                                    array('id' => $r['category'])).
                 '#Question'.$r['faq_position'];
-            $question['image']   = 'gadgets/Faq/images/logo.png';
+            $question['image']   = 'gadgets/Faq/Resources/images/logo.png';
             $question['snippet'] = $r['answer'];
             $question['date']    = $date->ToISO($r['updatetime']);
             $questions[] = $question;
