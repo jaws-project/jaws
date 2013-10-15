@@ -112,21 +112,21 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
         if(!empty($message['parent'])) {
             $tpl->SetBlock('inboxmessage/message/history');
             $tpl->SetVariable('history_url',    $this->gadget->urlMap('MessageHistory', array('id' => $message['id'])));
-            $tpl->SetVariable('icon_history',   'gadgets/PrivateMessage/images/history-mini.png');
+            $tpl->SetVariable('icon_history',   'gadgets/PrivateMessage/Resources/images/history-mini.png');
             $tpl->SetVariable('history',        _t('PRIVATEMESSAGE_HISTORY'));
             $tpl->ParseBlock('inboxmessage/message/history');
         }
 
         $tpl->SetBlock('inboxmessage/message/reply');
         $tpl->SetVariable('reply_url', $this->gadget->urlMap('Compose', array('id' => $message['id'], 'reply' => 'true')));
-        $tpl->SetVariable('icon_reply', 'gadgets/PrivateMessage/images/reply-mini.png');
+        $tpl->SetVariable('icon_reply', 'gadgets/PrivateMessage/Resources/images/reply-mini.png');
         $tpl->SetVariable('reply', _t('PRIVATEMESSAGE_REPLY'));
         $tpl->ParseBlock('inboxmessage/message/reply');
 
         if ($message['recipient'] != 0) {
             if (!$message['archived']) {
                 $tpl->SetBlock('inboxmessage/message/archive');
-                $tpl->SetVariable('icon_archive', 'gadgets/PrivateMessage/images/archive-mini.png');
+                $tpl->SetVariable('icon_archive', 'gadgets/PrivateMessage/Resources/images/archive-mini.png');
                 $tpl->SetVariable('archive', _t('PRIVATEMESSAGE_ARCHIVE'));
                 $tpl->SetVariable('archive_url', $this->gadget->urlMap('ArchiveInboxMessage', array('id' => $id)));
                 $tpl->ParseBlock('inboxmessage/message/archive');
@@ -138,14 +138,14 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
             $tpl->SetVariable('forward_url', $this->gadget->urlMap('Compose', array(
                                                                    'id' => $message['id'],
                                                                    'reply'=>'false')));
-            $tpl->SetVariable('icon_forward', 'gadgets/PrivateMessage/images/forward-mini.png');
+            $tpl->SetVariable('icon_forward', 'gadgets/PrivateMessage/Resources/images/forward-mini.png');
             $tpl->SetVariable('forward', _t('PRIVATEMESSAGE_FORWARD'));
             $tpl->ParseBlock('inboxmessage/message/forward');
         }
 
         $tpl->SetBlock('inboxmessage/message/back');
         $tpl->SetVariable('back_url', $this->gadget->urlMap('Inbox'));
-        $tpl->SetVariable('icon_back', 'gadgets/PrivateMessage/images/back-mini.png');
+        $tpl->SetVariable('icon_back', 'gadgets/PrivateMessage/Resources/images/back-mini.png');
         $tpl->SetVariable('back', _t('PRIVATEMESSAGE_BACK'));
         $tpl->ParseBlock('inboxmessage/message/back');
 

@@ -119,7 +119,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
             if ($message['user'] != $user) {
                 $tpl->SetBlock('history/message/reply');
                 $tpl->SetVariable('reply_url', $this->gadget->urlMap('Compose', array('id' => $message['id'], 'reply' => 'true')));
-                $tpl->SetVariable('icon_reply', 'gadgets/PrivateMessage/images/reply-mini.png');
+                $tpl->SetVariable('icon_reply', 'gadgets/PrivateMessage/Resources/images/reply-mini.png');
                 $tpl->SetVariable('reply', _t('PRIVATEMESSAGE_REPLY'));
                 $tpl->ParseBlock('history/message/reply');
             }
@@ -128,7 +128,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
                 'id' => $message['id'],
                 'reply'=>'false')));
 
-            $tpl->SetVariable('icon_forward',   'gadgets/PrivateMessage/images/forward-mini.png');
+            $tpl->SetVariable('icon_forward',   'gadgets/PrivateMessage/Resources/images/forward-mini.png');
 
             $tpl->SetVariable('forward', _t('PRIVATEMESSAGE_FORWARD'));
 
@@ -137,7 +137,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('back',       _t('PRIVATEMESSAGE_BACK'));
         $tpl->SetVariable('back_url',   $this->gadget->urlMap('Inbox'));
-        $tpl->SetVariable('icon_back',  'gadgets/PrivateMessage/images/back-mini.png');
+        $tpl->SetVariable('icon_back',  'gadgets/PrivateMessage/Resources/images/back-mini.png');
 
         $tpl->ParseBlock('history');
         return $tpl->Get();

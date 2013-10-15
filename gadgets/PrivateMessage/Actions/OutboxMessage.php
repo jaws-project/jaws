@@ -159,7 +159,7 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
         if(!empty($message['parent'])) {
             $tpl->SetBlock('outboxmessage/message/history');
             $tpl->SetVariable('history_url',    $this->gadget->urlMap('MessageHistory', array('id' => $message['id'])));
-            $tpl->SetVariable('icon_history',   'gadgets/PrivateMessage/images/history-mini.png');
+            $tpl->SetVariable('icon_history',   'gadgets/PrivateMessage/Resources/images/history-mini.png');
             $tpl->SetVariable('history',        _t('PRIVATEMESSAGE_HISTORY'));
             $tpl->ParseBlock('outboxmessage/message/history');
         }
@@ -194,14 +194,14 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
             $tpl->SetVariable('forward_url', $this->gadget->urlMap('Compose', array(
                                                                    'id' => $message['id'],
                                                                    'reply'=>'false')));
-            $tpl->SetVariable('icon_forward', 'gadgets/PrivateMessage/images/forward-mini.png');
+            $tpl->SetVariable('icon_forward', 'gadgets/PrivateMessage/Resources/images/forward-mini.png');
             $tpl->SetVariable('forward', _t('PRIVATEMESSAGE_FORWARD'));
             $tpl->ParseBlock('outboxmessage/message/forward');
         }
 
         $tpl->SetBlock('outboxmessage/message/back');
         $tpl->SetVariable('back_url', $this->gadget->urlMap('Outbox'));
-        $tpl->SetVariable('icon_back', 'gadgets/PrivateMessage/images/back-mini.png');
+        $tpl->SetVariable('icon_back', 'gadgets/PrivateMessage/Resources/images/back-mini.png');
         $tpl->SetVariable('back', _t('PRIVATEMESSAGE_BACK'));
         $tpl->ParseBlock('outboxmessage/message/back');
 

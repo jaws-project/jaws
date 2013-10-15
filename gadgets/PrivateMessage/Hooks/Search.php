@@ -72,7 +72,7 @@ class PrivateMessage_Hooks_Search extends Jaws_Gadget_Hook
             }
 
             $message['url']     = $url;
-            $message['image']   = 'gadgets/PrivateMessage/images/logo.png';
+            $message['image']   = 'gadgets/PrivateMessage/Resources/images/logo.png';
             $message['snippet'] = $m['body'];
             $message['date']    = $m['insert_time'];
 
