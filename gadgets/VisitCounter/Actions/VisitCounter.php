@@ -39,10 +39,10 @@ class VisitCounter_Actions_VisitCounter extends Jaws_Gadget_HTML
         $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'Model', 'Visitors');
         $viewMode = strtolower($this->gadget->registry->fetch('mode'));
         $theme = $GLOBALS['app']->GetTheme();
-        if (is_dir($theme['path'] . 'VisitCounter/images/')) {
-            $counter_image = $theme['url'] . 'VisitCounter/images/';
+        if (is_dir($theme['path'] . 'VisitCounter/Resources/images/')) {
+            $counter_image = $theme['url'] . 'VisitCounter/Resources/images/';
         } else {
-            $counter_image = $GLOBALS['app']->getSiteURL('/gadgets/VisitCounter/images/', true);
+            $counter_image = $GLOBALS['app']->getSiteURL('/gadgets/VisitCounter/Resources/images/', true);
         }
 
         $online_count = $model->GetOnlineVisitors();
