@@ -45,7 +45,7 @@ class Poll_Actions_Admin_Poll extends Poll_AdminHTML
 
                 $link =& Piwi::CreateWidget('Link', _t('POLL_POLLS_ANSWERS'),
                     "javascript: editPollAnswers(this, '" . $poll['id'] . "');",
-                    'gadgets/Poll/images/polls_mini.png');
+                    'gadgets/Poll/Resources/images/polls_mini.png');
                 $actions.= $link->Get().'&nbsp;';
 
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
