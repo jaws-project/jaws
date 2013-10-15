@@ -131,9 +131,9 @@ function addFileEntry() {
  * auto save draft message
  */
 function autoDraftMessage() {
-    if($('body').value.trim()!=='') {
-        sendMessage(false);
-    }
+//    if($('body').value.trim()!=='') {
+//        sendMessage(false);
+//    }
 }
 
 /**

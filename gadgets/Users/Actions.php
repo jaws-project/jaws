@@ -118,11 +118,7 @@ $actions['DeleteGroups'] = array(
     'normal' => true,
     'file' => 'Groups',
 );
-$actions['EnableGroups'] = array(
-    'normal' => true,
-    'file' => 'Groups',
-);
-$actions['AddGroupUI'] = array(
+$actions['UserGroupUI'] = array(
     'normal' => true,
     'file' => 'Groups',
 );

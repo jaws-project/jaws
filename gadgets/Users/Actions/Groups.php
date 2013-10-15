@@ -50,7 +50,6 @@ class Users_Actions_Groups extends Users_HTML
 
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-        $tpl->SetVariable('lbl_enabled', _t('GLOBAL_ENABLED'));
 
         foreach ($groups as $group) {
             $tpl->SetBlock('groups/group');
@@ -58,8 +57,6 @@ class Users_Actions_Groups extends Users_HTML
             $tpl->SetVariable('url', $this->gadget->urlMap('ManageGroup', array('id' => $group['id'])));
             $tpl->SetVariable('name', $group['name']);
             $tpl->SetVariable('title', $group['title']);
-            $enabled = ($group['enabled'] == true) ? _t('GLOBAL_YES') : _t('GLOBAL_NO');
-            $tpl->SetVariable('enabled', $enabled);
             $tpl->ParseBlock('groups/group');
         }
 
@@ -67,8 +64,6 @@ class Users_Actions_Groups extends Users_HTML
         $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
 
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
-        $tpl->SetVariable('lbl_disable', _t('GLOBAL_DISABLE'));
-        $tpl->SetVariable('lbl_enable', _t('GLOBAL_ENABLE'));
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
         $tpl->SetVariable('icon_ok', STOCK_OK);
 
@@ -77,12 +72,12 @@ class Users_Actions_Groups extends Users_HTML
     }
 
     /**
-     * Add an new group UI
+     * User's group UI
      *
      * @access  public
      * @return  string  XHTML template of a form
      */
-    function AddGroupUI()
+    function UserGroupUI()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             Jaws_Header::Location(
@@ -107,7 +102,6 @@ class Users_Actions_Groups extends Users_HTML
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
-        $tpl->SetVariable('lbl_enabled', _t('GLOBAL_ENABLED'));
         $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
         $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
         $tpl->SetVariable('save', _t('GLOBAL_SAVE'));
@@ -126,9 +120,8 @@ class Users_Actions_Groups extends Users_HTML
     {
         $this->gadget->CheckPermission('ManageUserGroups');
 
-        $post = jaws()->request->fetch(array('name', 'title', 'description', 'enabled'), 'post');
+        $post = jaws()->request->fetch(array('name', 'title', 'description'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $post['enabled'] = (bool) $post['enabled'];
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
@@ -186,48 +179,6 @@ class Users_Actions_Groups extends Users_HTML
         Jaws_Header::Location($this->gadget->urlMap('Groups'));
     }
 
-    /**
-     * Enable or Disable user's group(s)
-     *
-     * @access  public
-     * @return  void
-     */
-    function EnableGroups()
-    {
-        $this->gadget->CheckPermission('ManageUserGroups');
-
-        $post = jaws()->request->fetch(array('group_checkbox:array', 'status'), 'post');
-        $ids = $post['group_checkbox'];
-        $status = $post['status'];
-        $enabled = false;
-        if ($status == 'yes') {
-            $enabled = true;
-        }
-
-        $user = $GLOBALS['app']->Session->GetAttribute('user');
-
-        require_once JAWS_PATH . 'include/Jaws/User.php';
-        $jUser = new Jaws_User;
-        foreach ($ids as $id) {
-            // TODO: improve performance
-            $res = $jUser->UpdateGroup($id, array('enabled' => $enabled), $user);
-        }
-
-        if ($res == true) {
-            $GLOBALS['app']->Session->PushResponse(
-                _t('USERS_GROUP_STATUS_CHANGED'),
-                'Users.Groups',
-                RESPONSE_NOTICE
-            );
-        } else {
-            $GLOBALS['app']->Session->PushResponse(
-                _t('USERS_CANT_CHANGE_GROUPS_STATUS'),
-                'Users.Groups',
-                RESPONSE_ERROR
-            );
-        }
-        Jaws_Header::Location($this->gadget->urlMap('Groups'));
-    }
 
     /**
      * Manage group
@@ -264,7 +215,6 @@ class Users_Actions_Groups extends Users_HTML
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
-        $tpl->SetVariable('lbl_enabled', _t('GLOBAL_ENABLED'));
         $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
         $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
         $tpl->SetVariable('update', _t('GLOBAL_UPDATE'));

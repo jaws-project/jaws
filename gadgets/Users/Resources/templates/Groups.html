@@ -18,7 +18,6 @@
                 <th><input type="checkbox" onclick="toggleCheckboxes();"></th>
                 <th>{lbl_name}</th>
                 <th>{lbl_title}</th>
-                <th>{lbl_enabled}</th>
             </tr>
             </thead>
 
@@ -30,7 +29,6 @@
                 </td>
                 <td><a href="{url}" title="{name}">{name}</a></td>
                 <td>{title}</td>
-                <td>{enabled}</td>
             </tr>
             <!-- END group -->
             </tbody>
@@ -41,8 +39,6 @@
             <select title="{lbl_actions}" id="groups_actions_combo" name="groups_actions_combo">
                 <option value="">{lbl_no_action}</option>
                 <option value="delete">{lbl_delete}</option>
-                <option value="disable">{lbl_disable}</option>
-                <option value="enable">{lbl_enable}</option>
             </select>
 
             <button value="{lbl_actions}" id="action_button" name="action_button"
@@ -102,13 +98,6 @@
                 <div><label for="description">{lbl_description}:</label>
                     <textarea name="description" id="description" cols="45" rows="4"></textarea>
                 </div>
-
-                <div><label for="enabled">{lbl_enabled}:</label>
-                    <select name="enabled" id="enabled">
-                        <option value="1" selected>{lbl_yes}</option>
-                        <option value="0">{lbl_no}</option>
-                    </select>
-                </div>
             </fieldset>
         </div>
         <div class="actions">
@@ -136,13 +125,6 @@
                 </div>
                 <div><label for="description">{lbl_description}:</label>
                     <textarea name="description" id="description" cols="45" rows="4">{description}</textarea>
-                </div>
-
-                <div><label for="enabled">{lbl_enabled}:</label>
-                    <select name="enabled" id="enabled">
-                        <option value="1" {selected_enabled_1}>{lbl_yes}</option>
-                        <option value="0" {selected_enabled_0}>{lbl_no}</option>
-                    </select>
                 </div>
             </fieldset>
 

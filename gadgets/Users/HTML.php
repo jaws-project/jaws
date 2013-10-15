@@ -75,9 +75,8 @@ class Users_HTML extends Jaws_Gadget_HTML
         require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
 
-
         $menubar->AddOption('AddGroup',_t('USERS_ADD_GROUP'),
-            $this->gadget->urlMap('AddGroupUI'), STOCK_ADD);
+            $this->gadget->urlMap('UserGroupUI', array('type'=>'add')), STOCK_ADD);
 
         $menubar->AddOption('Groups',_t('USERS_MANAGE_GROUPS'),
             $this->gadget->urlMap('Groups'), 'gadgets/Users/Resources/images/groups_mini.png');
