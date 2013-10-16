@@ -234,7 +234,7 @@ class Jaws_Gadget
             $subdir = empty($fpath)? JAWS_SCRIPT : $fpath;
             $subdir = ($subdir == 'admin')? 'Admin' : '';
             $gadget = empty($gadget)? $this->name : $gadget;
-            $fpath  = "gadgets/$gadget/Resources/templates/$subdir";
+            $fpath  = "gadgets/$gadget/Templates/$subdir";
         }
 
         // set options
