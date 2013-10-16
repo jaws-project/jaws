@@ -265,7 +265,7 @@ class Blog_Actions_DatePosts extends Blog_HTML
     function Calendar()
     {
         require_once JAWS_PATH.'include/Jaws/Calendar.php';
-        $cal = new Jaws_Calendar('gadgets/Blog/Resources/templates/');
+        $cal = new Jaws_Calendar('gadgets/Blog/Templates/');
 
         //By default.
         $objDate = $GLOBALS['app']->loadDate();

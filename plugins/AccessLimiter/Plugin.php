@@ -57,7 +57,7 @@ class AccessLimiter_Plugin extends Jaws_Plugin
                         (empty($groups) || !count(array_intersect($groups, $user_groups))))
                     {
                         $tpl = new Jaws_Template();
-                        $tpl->Load('AccessLimiter.html', 'plugins/AccessLimiter/templates/');
+                        $tpl->Load('AccessLimiter.html', 'plugins/AccessLimiter/Templates/');
                         $tpl->SetBlock('AccessLimiter');
                         $tpl->SetVariable('message', _t('GLOBAL_ERROR_ACCESS_DENIED'));
                         $tpl->ParseBlock('AccessLimiter');
@@ -70,7 +70,7 @@ class AccessLimiter_Plugin extends Jaws_Plugin
         }
 
         $tpl = new Jaws_Template();
-        $tpl->Load('AccessLimiter.html', 'plugins/AccessLimiter/templates/');
+        $tpl->Load('AccessLimiter.html', 'plugins/AccessLimiter/Templates/');
         $tpl->SetBlock('AccessLimiter');
         $login_url    = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
         $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
