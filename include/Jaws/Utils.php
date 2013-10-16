@@ -290,7 +290,7 @@ class Jaws_Utils
      * @access  public
      * @param   string  $source     Path to the source file or directory
      * @param   string  $dest       The destination path
-     * @param   bool    $overwrite  Overwite files if exists
+     * @param   bool    $overwrite  Overwrite files if exists
      * @param   int     $mode       see php chmod() function
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/copy
