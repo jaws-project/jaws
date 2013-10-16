@@ -30,6 +30,14 @@ class Jaws_Translate
     var $_load_user_translated = true;
 
     /**
+     * store components translates data
+     *
+     * @access  private
+     * @var     bool
+     */
+    var $translates = array();
+
+    /**
      * Constructor
      *
      * @access  public
@@ -71,13 +79,30 @@ class Jaws_Translate
      */
     function Translate($lang, $string, $replacements = array())
     {
-        $lang = strtoupper(empty($lang)? $this->_defaultLanguage : $lang);
-        $orig_translate = "_{$lang}_$string";
-        $data_translate = "_{$lang}_DATA_$string";
-        if (defined($data_translate)) {
-            $string = constant($data_translate);
-        } elseif (defined($orig_translate)) {
-            $string = constant($orig_translate);
+        $lang = empty($lang)? $this->_defaultLanguage : $lang;
+        @list($type, $module) = explode('_', $string);
+        switch ($type) {
+            case 'GLOBAL':
+                $type = 0;
+                $module = 'GLOBAL';
+                break;
+
+            case 'DATE':
+                $type = 0;
+                $module = 'GLOBAL';
+                break;
+
+            case 'PLUGINS':
+                $type = 2;
+                break;
+
+            default:
+                $module = $type;
+                $type = 1;
+        }
+
+        if (isset($this->translates[$lang][$type][$module][$string])) {
+            $string = $this->translates[$lang][$type][$module][$string];
         }
 
         $count = count($replacements);
@@ -166,17 +191,18 @@ class Jaws_Translate
         }
 
         $GLOBALS['i18n'][$language][] = array($module, $type);
-        if ($this->_load_user_translated && file_exists($data_i18n)) {
-            require_once $data_i18n;
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded data translation for $module, language $language");
-        }
-
         if (file_exists($orig_i18n)) {
-            require_once $orig_i18n;
+            $this->translates[$language][$type][strtoupper($module)] = parse_ini_file($orig_i18n, false, INI_SCANNER_RAW);
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded translation for $module, language $language");
         } else {
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "No translation could be found for $module for language $language");
         }
+
+        if ($this->_load_user_translated && file_exists($data_i18n)) {
+            $this->translates[$language][$type][strtoupper($module)] = parse_ini_file($data_i18n, false, INI_SCANNER_RAW);
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded data translation for $module, language $language");
+        }
+
     }
 
 }
