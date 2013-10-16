@@ -736,7 +736,7 @@ class Jaws_Utils
     {
         static $langs;
         if (!isset($langs)) {
-            $langs = array();
+            $langs = array('en' => 'International English');
             $langdir = JAWS_PATH . 'languages/';
             $files = @scandir($langdir);
             if ($files !== false) {
