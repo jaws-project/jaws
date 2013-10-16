@@ -92,7 +92,7 @@ if (isset($_SESSION['upgrade']['language'])) {
     $GLOBALS['i10n']->SetLanguage($_SESSION['upgrade']['language']);
 }
 $GLOBALS['i10n']->LoadTranslation('Global');
-$GLOBALS['i10n']->LoadTranslation('Upgrade');
+$GLOBALS['i10n']->LoadTranslation('Upgrade', JAWS_COMPONENT_UPGRADE);
 
 require_once 'stagelist.php';
 require_once 'JawsUpgrader.php';
