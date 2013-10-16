@@ -237,7 +237,7 @@ class Jaws_Layout
         }
 
         $this->_Template = new Jaws_Template();
-        $this->_Template->Load('Layout.html', 'gadgets/ControlPanel/Resources/templates');
+        $this->_Template->Load('Layout.html', 'gadgets/ControlPanel/Templates');
         $this->_Template->SetBlock('layout');
 
         $base_url = $GLOBALS['app']->GetSiteURL('/');
