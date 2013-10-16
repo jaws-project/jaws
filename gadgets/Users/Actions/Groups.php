@@ -110,7 +110,7 @@ class Users_Actions_Groups extends Users_HTML
         }
 
         $tpl->SetVariable('title', _t('USERS_ADD_GROUP'));
-        $tpl->SetVariable('menubar', $this->MenuBar('AddGroup', array('EditGroup', 'Groups')));
+        $tpl->SetVariable('menubar', $this->MenuBar('AddGroup', array('AddGroup', 'Groups')));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
@@ -134,12 +134,20 @@ class Users_Actions_Groups extends Users_HTML
     {
         $this->gadget->CheckPermission('ManageUserGroups');
 
-        $post = jaws()->request->fetch(array('name', 'title', 'description'), 'post');
+        $post = jaws()->request->fetch(array('gid', 'name', 'title', 'description'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
-        $res = $jUser->AddGroup($post, $user);
+
+        // Update group
+        if(!empty($post['gid'])) {
+            $res = $jUser->UpdateGroup($post['gid'], $post, $user);
+        // Add new group
+        } else {
+            unset($post['gid']);
+            $res = $jUser->AddGroup($post, $user);
+        }
 
         if (Jaws_Error::isError($res)) {
             $GLOBALS['app']->Session->PushResponse(
@@ -213,7 +221,7 @@ class Users_Actions_Groups extends Users_HTML
 
         if ($res == true) {
             $GLOBALS['app']->Session->PushResponse(
-                _t('USERS_GROUP_ADD_USER'),
+                _t('USERS_GROUP_ADDED_USER'),
                 'Users.GroupMember',
                 RESPONSE_NOTICE
             );
@@ -245,6 +253,7 @@ class Users_Actions_Groups extends Users_HTML
         $res = $jUser->AddUserToGroup($post['users'], $post['gid'], $user);
 
         // TODO: improve performance
+        $res = false;
         foreach ($post['member_checkbox'] as $member) {
             $res = $jUser->DeleteUserFromGroup($member, $post['gid'], $user);
         }
@@ -334,18 +343,22 @@ class Users_Actions_Groups extends Users_HTML
         }
 
         $allUsers = $jUser->GetUsers();
-        $tpl->SetVariable('lbl_group_member', _t('USERS_MANAGE_GROUPS_MEMBERS'));
-        $tpl->SetVariable('lbl_users', _t('USERS_USERS'));
-        $tpl->SetVariable('lbl_add_user_to_group', _t('USERS_GROUPS_ADD_USER'));
-        foreach ($allUsers as $user) {
-            if (in_array($user, $members)) {
-                continue;
+        if (count($allUsers) != count($members)) {
+            $tpl->SetBlock('manage_group/all_users');
+            $tpl->SetVariable('lbl_group_member', _t('USERS_MANAGE_GROUPS_MEMBERS'));
+            $tpl->SetVariable('lbl_users', _t('USERS_USERS'));
+            $tpl->SetVariable('lbl_add_user_to_group', _t('USERS_GROUPS_ADD_USER'));
+            foreach ($allUsers as $user) {
+                if (in_array($user, $members)) {
+                    continue;
+                }
+                $tpl->SetBlock('manage_group/all_users/user');
+                $tpl->SetVariable('user', $user['id']);
+                $tpl->SetVariable('username', $user['username']);
+                $tpl->SetVariable('nickname', $user['nickname']);
+                $tpl->ParseBlock('manage_group/all_users/user');
             }
-            $tpl->SetBlock('manage_group/user');
-            $tpl->SetVariable('user', $user['id']);
-            $tpl->SetVariable('username', $user['username']);
-            $tpl->SetVariable('nickname', $user['nickname']);
-            $tpl->ParseBlock('manage_group/user');
+            $tpl->ParseBlock('manage_group/all_users');
         }
 
         $tpl->ParseBlock('manage_group');

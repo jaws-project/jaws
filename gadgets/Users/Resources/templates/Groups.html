@@ -157,6 +157,7 @@
             </div>
 
 
+            <!-- BEGIN all_users -->
             <div><label for="users">{lbl_users}:</label>
                 <select name="users" id="users">
                     <!-- BEGIN user -->
@@ -166,6 +167,7 @@
                 <button type="submit" value="{lbl_add_user_to_group}">{lbl_add_user_to_group}</button>
 
             </div>
+            <!-- END all_users -->
 
 
         </div>
@@ -183,6 +185,8 @@
         var action = document.getElementById("member_actions_combo").value;
         if(action == 'delete') {
             document.group_members.action.value = 'RemoveUserFromGroup';
+        } else {
+            return false;
         }
         document.getElementById("group_members").submit();
         return true;
