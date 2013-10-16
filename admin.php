@@ -137,7 +137,7 @@ if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
         $GLOBALS['app']->Layout->LoadControlPanelHead();
         $GLOBALS['app']->Layout->Populate($ReqResult);
         $GLOBALS['app']->Layout->AddHeadLink(
-            'gadgets/'.$ReqGadget.'/resources/style.css',
+            'gadgets/'.$ReqGadget.'/Resources/style.css',
             'stylesheet',
             'text/css'
         );
