@@ -466,7 +466,7 @@ class Jaws_Utils
      * @param   string  $dest           destination directory(include end directory separator)
      * @param   string  $allow_formats  permitted file format
      * @param   string  $deny_formats   not permitted file format
-     * @param   bool    $overwrite      overwite file or generate random filename
+     * @param   bool    $overwrite      overwrite file or generate random filename
      *                                  null: random, true/false: overwrite?
      * @param   bool    $move_files     moving or only copying files. this param avail for non-uploaded files
      * @param   int     $max_size       max size of file
