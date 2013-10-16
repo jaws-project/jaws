@@ -350,7 +350,7 @@ class Jaws_Utils
      * @access  public
      * @param   string  $source     Path to the source file or directory
      * @param   string  $dest       The destination path
-     * @param   bool    $overwrite  Overwite files if exists
+     * @param   bool    $overwrite  Overwrite files if exists
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/rename
      */
@@ -583,10 +583,10 @@ class Jaws_Utils
      *
      * @access  public
      * @param   array   $files        $_FILES array
-     * @param   string  $dest         destination directory(include end directory separator)
-     * @param   bool    $extractToDir create separate directory for extracted files
-     * @param   bool    $overwrite    overwite directory if exist
-     * @param   int     $max_size     max size of file
+     * @param   string  $dest         Destination directory(include end directory separator)
+     * @param   bool    $extractToDir Create separate directory for extracted files
+     * @param   bool    $overwrite    Overwrite directory if exist
+     * @param   int     $max_size     Max size of file
      * @return  bool    Returns TRUE on success or FALSE on failure
      */
     function ExtractFiles($files, $dest, $extractToDir = true, $overwrite = true, $max_size = null)
