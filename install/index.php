@@ -86,7 +86,7 @@ if (isset($_SESSION['install']['language'])) {
     $GLOBALS['i10n']->SetLanguage($_SESSION['install']['language']);
 }
 $GLOBALS['i10n']->LoadTranslation('Global');
-$GLOBALS['i10n']->LoadTranslation('Install');
+$GLOBALS['i10n']->LoadTranslation('Install', JAWS_COMPONENT_INSTALL);
 
 require_once 'stagelist.php';
 require_once 'JawsInstaller.php';
