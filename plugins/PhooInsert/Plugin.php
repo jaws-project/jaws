@@ -29,7 +29,7 @@ class PhooInsert_Plugin extends Jaws_Plugin
         $popbutton =& Piwi::CreateWidget('Button', 'popbutton', '', 'plugins/PhooInsert/images/image.png');
         $popbutton->SetTitle(_t('PLUGINS_PHOOINSERT_INSERT_IMAGE'));
         $popbutton->AddEvent(ON_CLICK, "browsePhoo('$textarea', '$url')");
-        $popbutton->AddFile('plugins/PhooInsert/resources/PhooInsert.js');
+        $popbutton->AddFile('plugins/PhooInsert/Resources/PhooInsert.js');
 
         return $popbutton;
     }

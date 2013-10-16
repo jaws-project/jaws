@@ -29,7 +29,7 @@ class FileBrowser_Plugin extends Jaws_Plugin
                                          'plugins/FileBrowser/images/file-browser.png');
         $popbutton->SetTitle(_t('PLUGINS_FILEBROWSER_BROWSE_SERVER'));
         $popbutton->AddEvent(ON_CLICK, "browse('$textarea', '$url')");
-        $popbutton->AddFile('plugins/FileBrowser/resources/FileBrowser.js');
+        $popbutton->AddFile('plugins/FileBrowser/Resources/FileBrowser.js');
 
         return $popbutton;
     }
