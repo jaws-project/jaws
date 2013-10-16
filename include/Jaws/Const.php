@@ -10,10 +10,12 @@
  */
 
 // Jaws components type
-define('JAWS_COMPONENT_OTHERS', 0);
-define('JAWS_COMPONENT_GADGET', 1);
-define('JAWS_COMPONENT_PLUGIN', 2);
-define('JAWS_COMPONENT_THEMES', 3);
+define('JAWS_COMPONENT_OTHERS',  0);
+define('JAWS_COMPONENT_GADGET',  1);
+define('JAWS_COMPONENT_PLUGIN',  2);
+define('JAWS_COMPONENT_THEMES',  3);
+define('JAWS_COMPONENT_INSTALL', 4);
+define('JAWS_COMPONENT_UPGRADE', 5);
 
 // Version of the unpacked Jaws (not the one in registry)
 define('JAWS_VERSION', '1.0.0');

@@ -96,6 +96,16 @@ class Jaws_Translate
                 $type = 2;
                 break;
 
+            case 'INSTALL':
+                $type = 4;
+                $module = 'INSTALL';
+                break;
+
+            case 'UPGRADE':
+                $type = 5;
+                $module = 'UPGRADE';
+                break;
+
             default:
                 $module = $type;
                 $type = 1;
@@ -179,6 +189,24 @@ class Jaws_Translate
                     $orig_i18n = JAWS_PATH . "languages/$language/plugins/$module.ini";
                 }
                 $data_i18n = JAWS_DATA . "languages/$language/plugins/$module.ini";
+                break;
+
+            case JAWS_COMPONENT_INSTALL:
+                if ($language == 'en') {
+                    $orig_i18n = JAWS_PATH . "install/Resources/translates.ini";
+                } else {
+                    $orig_i18n = JAWS_PATH . "languages/$language/$module.ini";
+                }
+                $data_i18n = JAWS_DATA . "languages/$language/$module.ini";
+                break;
+
+            case JAWS_COMPONENT_UPGRADE:
+                if ($language == 'en') {
+                    $orig_i18n = JAWS_PATH . "upgrade/Resources/translates.ini";
+                } else {
+                    $orig_i18n = JAWS_PATH . "languages/$language/$module.ini";
+                }
+                $data_i18n = JAWS_DATA . "languages/$language/$module.ini";
                 break;
 
             default:
