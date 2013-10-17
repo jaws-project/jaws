@@ -37,11 +37,11 @@ class Tags_Model_Tags extends Jaws_Gadget_Model
      * Generates a tag cloud
      *
      * @access  public
-     * @param   string  $gadget     gadget name
+     * @param   string  $gadget     Gadget name
+     * @param   bool    $global     Just show global tags?
      * @return  mixed   An array on success and Jaws_Error in case of errors
      */
-    function
-    GenerateTagCloud($gadget)
+    function  GenerateTagCloud($gadget, $global)
     {
         $table = Jaws_ORM::getInstance()->table('tags');
 
@@ -49,7 +49,13 @@ class Tags_Model_Tags extends Jaws_Gadget_Model
         $table->join('tags_items', 'tags_items.tag', 'tags.id', 'left');
         $table->where('tags_items.published', true);
         $table->and()->openWhere('tags_items.update_time', time(), '>')->or();
-        $table->closeWhere('tags_items.update_time', null, 'is' );
+        $table->closeWhere('tags_items.update_time', null, 'is');
+        if ($global) {
+            $table->and()->where('tags.user', 0);
+        } else {
+            $table->and()->where('tags.user', $GLOBALS['app']->Session->GetAttribute('user'));
+        }
+
         $table->groupBy('tags.id', 'tags.name', 'tags.title');
 
         if (!empty($gadget)) {

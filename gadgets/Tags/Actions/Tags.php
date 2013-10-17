@@ -36,6 +36,14 @@ class Tags_Actions_Tags extends Tags_HTML
             'value' => $tagGadgets
         );
 
+        $result[] = array(
+            'title' => _t('TAGS_SHOW_TAGS'),
+            'value' => array(
+                1 => _t('TAGS_GLOBAL_TAGS'),
+                0 => _t('TAGS_USER_TAGS'),
+            )
+        );
+
         return $result;
     }
 
@@ -43,17 +51,18 @@ class Tags_Actions_Tags extends Tags_HTML
      * Displays Tags Cloud
      *
      * @access  public
-     * @param   string  $gadget gadget name
+     * @param   string  $gadget Gadget name
+     * @param   bool    $global Only show global tags?
      * @return  string  XHTML template content
      */
-    function TagCloud($gadget = null)
+    function TagCloud($gadget = null, $global = true)
     {
         if(empty($gadget)) {
             $gadget = jaws()->request->fetch('gname', 'get');
         }
 
         $model = $GLOBALS['app']->LoadGadget('Tags', 'Model', 'Tags');
-        $res = $model->GenerateTagCloud($gadget);
+        $res = $model->GenerateTagCloud($gadget, $global);
         $sortedTags = $res;
         sort($sortedTags);
         $minTagCount = log((isset($sortedTags[0]) ? $sortedTags[0]['howmany'] : 0));
@@ -90,6 +99,9 @@ class Tags_Actions_Tags extends Tags_HTML
                 $param = array('tag' => $tag['name']);
             } else {
                 $param = array('tag' => $tag['name'], 'gname' => $gadget);
+            }
+            if(!$global) {
+                $param['user'] = $GLOBALS['app']->Session->GetAttribute('user');
             }
             $tpl->SetVariable('url', $this->gadget->urlMap(
                 'ViewTag',
@@ -139,9 +151,15 @@ class Tags_Actions_Tags extends Tags_HTML
      */
     function ViewTag()
     {
-        $get = jaws()->request->fetch(array('tag', 'gname', 'page'), 'get');
+        $get = jaws()->request->fetch(array('tag', 'gname', 'page', 'user'), 'get');
         $tag = $get['tag'];
         $gadget = $get['gname'];
+        if (!empty($get['user']) && ($get['user'] != $GLOBALS['app']->Session->GetAttribute('user'))) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+
+
         $tpl = $this->gadget->loadTemplate('Tag.html');
         $tpl->SetBlock('tag');
         $tpl->SetVariable('title', _t('TAGS_VIEW_TAG', $tag));
@@ -166,6 +184,11 @@ class Tags_Actions_Tags extends Tags_HTML
         $table->and()->where('tags.name', $tag)->and()->where('tags_items.published', true);
         $table->and()->openWhere('tags_items.update_time', time(), '>')->or();
         $table->closeWhere('tags_items.update_time', null, 'is' );
+        if(!empty($get['user'])) {
+            $table->and()->where('tags.user', $get['user']);
+        } else {
+            $table->and()->where('tags.user', 0);
+        }
         $itemsTotal = $table->fetchOne();
 
 
@@ -181,6 +204,11 @@ class Tags_Actions_Tags extends Tags_HTML
         $table->and()->where('tags.name', $tag)->and()->where('tags_items.published', true);
         $table->and()->openWhere('tags_items.update_time', time(), '>')->or();
         $table->closeWhere('tags_items.update_time', null, 'is' );
+        if(!empty($get['user'])) {
+            $table->and()->where('tags.user', $get['user']);
+        } else {
+            $table->and()->where('tags.user', 0);
+        }
         $items = $table->orderBy('insert_time')->limit($limit, ($page - 1) * $limit)->fetchAll();
 
         $gadgetItems = array();

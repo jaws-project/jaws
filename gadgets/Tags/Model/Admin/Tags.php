@@ -20,16 +20,20 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      * @param   int             $reference      reference
      * @param   bool            $published      reference published?
      * @param   int             $update_time    reference update time
-     * @param   string/array    $tags     comma separated of tags name (tag1, tag2, tag3, ...)
+     * @param   string/array    $tags           comma separated of tags name (tag1, tag2, tag3, ...)
+     * @param   bool            $global         is global tags?
      * @return  mixed       Array of Tag info or Jaws_Error on failure
      */
-    function UpdateTagsItems($gadget, $action , $reference, $published, $update_time, $tags)
+    function UpdateTagsItems($gadget, $action , $reference, $published, $update_time, $tags, $global = true)
     {
         if (!is_array($tags)) {
             $tags = array_filter(array_map(array($GLOBALS['app']->UTF8, 'trim'), explode(',', $tags)));
         }
 
-        $oldTagsInfo = $this->GetItemTags(array('gadget' => $gadget, 'action' => $action, 'reference' => $reference));
+        $oldTagsInfo = $this->GetItemTags(
+                                           array('gadget' => $gadget, 'action' => $action, 'reference' => $reference),
+                                           false,
+                                           $global);
         $oldTags = array();
         $oldTagsId = array();
         foreach ($oldTagsInfo as $tagInfo) {
@@ -47,7 +51,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table->exec();
 
         $to_be_added_tags = array_diff($tags, $oldTags);
-        $res = $this->AddTagsToItem($gadget, $action, $reference, $published, $update_time, $to_be_added_tags);
+        $res = $this->AddTagsToItem($gadget, $action, $reference, $published, $update_time, $to_be_added_tags, $global);
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
@@ -70,11 +74,12 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      * @param   bool            $published      reference published?
      * @param   int             $update_time    reference update time
      * @param   string/array    $tagsString     comma separated of tags name (tag1, tag2, tag3, ...)
+     * @param   bool            $global         is global tag?
      * @return  mixed           Array of Tag info or Jaws_Error on failure
-     */
-    function AddTagsToItem($gadget, $action ,$reference, $published, $update_time, $tags)
+ */
+    function AddTagsToItem($gadget, $action, $reference, $published, $update_time, $tags, $global = true)
     {
-        if(empty($tags) || count($tags)<1) {
+        if (empty($tags) || count($tags) < 1) {
             return true;
         }
 
@@ -90,7 +95,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
                 $systemTags[$tag] = $tagId;
             } else {
                 //Add an new tag
-                $systemTags[$tag] = $this->AddTag(array('name' => $tag));
+                $systemTags[$tag] = $this->AddTag(array('name' => $tag), $global);
             }
         }
 
@@ -146,15 +151,19 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   array   $data   Tag data
+     * @param   bool    $global Is global tag?
      * @return  mixed   Array of Tag info or Jaws_Error on failure
      */
-    function AddTag($data)
+    function AddTag($data, $global = true)
     {
-        if(empty($data['title'])) {
+        $data['user'] = 0;
+        if(!$global) {
+            $data['user'] = $GLOBALS['app']->Session->GetAttribute('user');
+        }
+        if (empty($data['title'])) {
             $data['title'] = $data['name'];
         }
         $data['name'] = $this->GetRealFastUrl($data['name'], null, false);
-        $data['user'] = 0;
         $table = Jaws_ORM::getInstance()->table('tags');
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
@@ -320,9 +329,10 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      * @access  public
      * @param   array   $filters           Data that will be used in the filter
      * @param   bool    $justReturnName    Data that will be used in the filter
+     * @param   bool    $global            Just fetch global tags?
      * @return  mixed   Array of Tags info or Jaws_Error on failure
      */
-    function GetItemTags($filters = array(), $justReturnName = false)
+    function GetItemTags($filters = array(), $justReturnName = false, $global = true)
     {
         $table = Jaws_ORM::getInstance()->table('tags');
 
@@ -349,6 +359,13 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
                 $table->and()->where('reference', $filters['reference']);
             }
         }
+
+        if ($global) {
+            $table->and()->where('tags.user', 0);
+        } else {
+            $table->and()->where('tags.user', $GLOBALS['app']->Session->GetAttribute('user'));
+        }
+
 
         if ($justReturnName) {
             $result = $table->fetchColumn();

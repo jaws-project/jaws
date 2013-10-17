@@ -8,6 +8,6 @@
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-$maps[] = array('ViewTag', 'tag/{tag}[/gname/{gname}][/page/{page}]');
+$maps[] = array('ViewTag', 'tag/{tag}[/user/{user}][/gname/{gname}][/page/{page}]');
 
 $maps[] = array('TagCloud', 'tagcloud/[/gname/{gname}]');
