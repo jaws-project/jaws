@@ -10,7 +10,7 @@
  */
 $actions = array();
 
-/* Public Actions */
+/* Manage Actions */
 $actions['Events'] = array(
     'normal' => true,
     'layout' => true,
@@ -55,4 +55,22 @@ $actions['UpdateShare'] = array(
 $actions['Pager'] = array(
     'standalone' => true,
     'file' => 'Pager'
+);
+
+/* Report Actions */
+$actions['ViewYear'] = array(
+    'normal' => true,
+    'file' => 'ViewYear'
+);
+$actions['ViewMonth'] = array(
+    'normal' => true,
+    'file' => 'ViewMonth'
+);
+$actions['ViewWeek'] = array(
+    'normal' => true,
+    'file' => 'ViewWeek'
+);
+$actions['ViewDay'] = array(
+    'normal' => true,
+    'file' => 'ViewDay'
 );
