@@ -24,6 +24,11 @@ class Tags_Hooks_Menu extends Jaws_Gadget_Hook
         $gadgets = $model->GetTagRelativeGadgets();
 
         $urls[] = array(
+            'url' => $this->gadget->urlMap('ManageTags'),
+            'title' => _t('TAGS_MANAGE_TAGS')
+        );
+
+        $urls[] = array(
             'url' => $this->gadget->urlMap('TagCloud'),
             'title' => _t('TAGS_TAG_CLOUD', _t('GLOBAL_ALL'))
         );

@@ -15,8 +15,11 @@ $actions['TagCloud'] = array(
     'parametric' => true,
     'file'   => 'Tags',
 );
-
 $actions['ViewTag'] = array(
     'normal' => true,
     'file'   => 'Tags',
+);
+$actions['ManageTags'] = array(
+    'normal' => true,
+    'file'   => 'ManageTags',
 );
