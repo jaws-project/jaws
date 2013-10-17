@@ -3,8 +3,6 @@
  *
  * @category   Ajax
  * @package    AddressBook
- * @author     HamidReza Aboutalebi <hamid@aboutalebi.com>
- * @copyright  2013 Jaws Development Group
  */
 /**
  * Use async mode, create Callback

@@ -4,9 +4,6 @@
  *
  * @category   GadgetInfo
  * @package    AddressBook
- * @author     Hamid Reza Aboutalebi <hamid@aboutalebi.com>
- * @copyright  2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class AddressBook_Info extends Jaws_Gadget
 {

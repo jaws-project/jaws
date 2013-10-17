@@ -4,9 +4,6 @@
  *
  * @category   GadgetModel
  * @package    AddressBook
- * @author     Hamid Reza Aboutalebi <hamid@aboutalebi.com>
- * @copyright  2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class AddressBook_Installer extends Jaws_Gadget_Installer
 {

@@ -4,8 +4,6 @@
  *
  * @category    GadgetHook
  * @package     AddressBook
- * @author      Hamid Reza Aboutalebi <hamid@aboutalebi.com>
- * @copyright   2013 Jaws Development Group
  */
 class AddressBook_Hooks_Activity extends Jaws_Gadget_Hook
 {

@@ -4,8 +4,6 @@
  *
  * @category   GadgetAdmin
  * @package    AddressBook
- * @author     HamidReza Aboutalebi <hamid@aboutalebi.com>
- * @copyright  2013 Jaws Development Group
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/Resources/site_style.css');
 class AddressBook_Actions_AddressBookGroup extends AddressBook_HTML
