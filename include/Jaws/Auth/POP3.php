@@ -90,7 +90,7 @@ class Jaws_Auth_POP3
         $info['concurrents'] = 0;
         $info['email']      = '';
         $info['url']        = '';
-        $info['avatar']     = 'gadgets/Users/images/photo48px.png';
+        $info['avatar']     = 'gadgets/Users/Resources/images/photo48px.png';
         $info['language']   = '';
         $info['theme']      = '';
         $info['editor']     = '';

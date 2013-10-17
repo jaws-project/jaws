@@ -17,7 +17,7 @@ class Jaws_Gravatar
         if (file_exists($theme['path'] . 'default_avatar.png')) {
             $defaultImage = $theme['url'] . 'default_avatar.png';
         } else {
-            $defaultImage = "gadgets/Users/images/photo{$size}px.png";
+            $defaultImage = "gadgets/Users/Resources/images/photo{$size}px.png";
         }
 
         if (empty($email) || $GLOBALS['app']->Registry->fetch('use_gravatar', 'Settings') == 'no') {
