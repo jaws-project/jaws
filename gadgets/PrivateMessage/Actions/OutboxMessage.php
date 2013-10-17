@@ -53,10 +53,12 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_body', _t('PRIVATEMESSAGE_MESSAGE_BODY'));
 
-        // check announcement\
-        $tpl->SetBlock('outboxmessage/message/announcement');
-        $tpl->SetVariable('lbl_message_is_announcement', _t('PRIVATEMESSAGE_MESSAGE_IS_ANNOUNCEMENT'));
-        $tpl->ParseBlock('outboxmessage/message/announcement');
+        // check announcement
+        if ($message['type'] == PrivateMessage_Info::PRIVATEMESSAGE_TYPE_ANNOUNCEMENT) {
+            $tpl->SetBlock('outboxmessage/message/announcement');
+            $tpl->SetVariable('lbl_message_is_announcement', _t('PRIVATEMESSAGE_MESSAGE_IS_ANNOUNCEMENT'));
+            $tpl->ParseBlock('outboxmessage/message/announcement');
+        }
 
         // fill recipients users
         $recipients = $model->GetMessageRecipientsInfo($message['id']);

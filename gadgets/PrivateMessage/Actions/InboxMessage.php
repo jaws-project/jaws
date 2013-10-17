@@ -59,6 +59,13 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_body', _t('PRIVATEMESSAGE_MESSAGE_BODY'));
 
+        // check announcement
+        if ($message['type'] == PrivateMessage_Info::PRIVATEMESSAGE_TYPE_ANNOUNCEMENT) {
+            $tpl->SetBlock('inboxmessage/message/announcement');
+            $tpl->SetVariable('lbl_message_is_announcement', _t('PRIVATEMESSAGE_MESSAGE_IS_ANNOUNCEMENT'));
+            $tpl->ParseBlock('inboxmessage/message/announcement');
+        }
+
         $tpl->SetVariable('from', $message['from_nickname']);
         $tpl->SetVariable('username', $message['from_username']);
         $tpl->SetVariable('nickname', $message['from_nickname']);
