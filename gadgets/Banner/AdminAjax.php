@@ -4,10 +4,6 @@
  *
  * @category   Ajax
  * @package    Banner
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Banner_AdminAjax extends Jaws_Gadget_HTML
 {
