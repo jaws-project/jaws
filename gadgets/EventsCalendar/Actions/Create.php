@@ -82,7 +82,7 @@ class EventsCalendar_Actions_Create extends Jaws_Gadget_HTML
         // Type
         $combo =& Piwi::CreateWidget('Combo', 'type');
         $combo->SetId('event_type');
-        for ($i = 0; $i <= 5; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $combo->AddOption(_t('EVENTSCALENDAR_EVENT_TYPE_' . $i), $i);
         }
         $combo->SetDefault($type);

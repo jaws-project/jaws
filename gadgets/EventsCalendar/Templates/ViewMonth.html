@@ -5,14 +5,18 @@
     <div class="current-date">{current_date}</div>
     <table>
       <thead><tr>
-        <th>{lbl_day}</th>
+        <th width="20%">{lbl_day}</th>
         <th>{lbl_events}</th>
       </tr></thead>
       <tbody>
         <!-- BEGIN day -->
         <tr>
           <td>{day}</td>
-          <td>{events}</td>
+          <td>
+            <!-- BEGIN event -->
+            <div><a href="{event_url}">{event}</a></div>
+            <!-- END event -->
+          </td>
         </tr>
         <!-- END day -->
       </tbody>
