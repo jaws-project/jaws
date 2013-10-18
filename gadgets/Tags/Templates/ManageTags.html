@@ -8,16 +8,16 @@
     <!-- END response -->
 
 
-    <form name="privatemessage" id="privatemessage" action="{requested_url}" method="post">
+    <form name="tags" id="tags" action="{requested_url}" method="post">
         <input type="hidden" name="gadget" value="Tags"/>
         <input type="hidden" name="action" value="ManageTags"/>
-        <input type="hidden" name="status" value=""/>
+        <input type="hidden" name="new_tag_name" value=""/>
 
         <div class="filters">
             <label for="gadgets_filter">{lbl_gadgets}: </label>
             <select id="gadgets_filter" name="gadgets_filter">
                 <option
-                {opt_read_} value="">{lbl_all}</option>
+                value="">{lbl_all}</option>
                 <option
                 <!-- BEGIN gadget -->
                 <option {selected} value="{name}">{title}</option>
@@ -56,15 +56,15 @@
             </table>
 
             <div class="actions">
-                <label for="inbox_actions_combo">{lbl_actions}:&nbsp;</label>
-                <select title="{lbl_actions}" id="inbox_actions_combo" name="inbox_actions_combo">
+                <label for="tags_actions_combo">{lbl_actions}:&nbsp;</label>
+                <select title="{lbl_actions}" id="tags_actions_combo" name="tags_actions_combo">
                     <option value="">{lbl_no_action}</option>
-                    <option value="archive">{lbl_delete}</option>
-                    <option value="read">{lbl_merge}</option>
+                    <option value="delete">{lbl_delete}</option>
+                    <option value="merge">{lbl_merge}</option>
                 </select>
 
                 <button value="{lbl_actions}" id="action_button" name="action_button"
-                        onclick="javascript: return inboxDGAction();" ><img src="{icon_ok}" alt="{lbl_actions}"/>
+                        onclick="javascript: return doDGAction();" ><img src="{icon_ok}" alt="{lbl_actions}"/>
                 </button>
             </div>
 
@@ -81,22 +81,26 @@
     }
     var do_check = false;
 
-    function inboxDGAction() {
-        var action = document.getElementById("inbox_actions_combo").value;
-        if(action == 'move_to_inbox') {
-            document.privatemessage.action.value = 'ArchiveInboxMessage';
-            document.privatemessage.status.value = 'retrieve';
-        } else if(action == 'archive') {
-            document.privatemessage.action.value = 'ArchiveInboxMessage';
-            document.privatemessage.status.value = 'archive';
-        } else if(action == 'read') {
-            document.privatemessage.action.value = 'ChangeMessageRead';
-            document.privatemessage.status.value = 'read';
-        } else if(action == 'unread') {
-            document.privatemessage.action.value = 'ChangeMessageRead';
-            document.privatemessage.status.value = 'unread';
+    function doDGAction() {
+        var action = document.getElementById("tags_actions_combo").value;
+        if(action == 'delete') {
+            document.tags.action.value = 'DeleteTags';
+        } else if(action == 'merge') {
+            if($$("input[name='tags_checkbox[]']:checked").length<2) {
+                alert("{selectMoreThanOneTags}");
+                return false;
+            }
+            var newName = prompt("{enterNewTagName}:");
+            if (newName.trim() == "") {
+                return false;
+            }
+
+            document.tags.action.value = 'MergeTags';
+            document.tags.new_tag_name.value = newName;
+        } else {
+            return false;
         }
-        document.getElementById("privatemessage").submit();
+        document.getElementById("tags").submit();
         return true;
     }
 </script>
