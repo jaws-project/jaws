@@ -98,10 +98,11 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_HTML
         // $button->SetSubmit(true);
         // $tpl->SetVariable('btn_search', $button->Get());
 
-        $events_url = $this->gadget->urlMap('Events');
+        $site_url = $GLOBALS['app']->GetSiteURL('/');
+        $events_url = $site_url . $this->gadget->urlMap('Events');
         $button =& Piwi::CreateWidget('Button', 'btn_events_search_reset', 'X');
         $button->SetSubmit(false);
-        $button->AddEvent(ON_CLICK, "window.location='$events_url'");
+        $button->AddEvent(ON_CLICK, "location.assign('$events_url')");
         if (empty($query)) {
             $button->SetStyle('display:none;');
         }
@@ -112,7 +113,7 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_del_event', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('confirmDelete', _t('EVENTSCALENDAR_WARNING_DELETE_EVENTS'));
         $tpl->SetVariable('errorShortQuery', _t('EVENTSCALENDAR_ERROR_SHORT_QUERY'));
-        $tpl->SetVariable('url_new', $this->gadget->urlMap('NewEvent'));
+        $tpl->SetVariable('url_new', $site_url . $this->gadget->urlMap('NewEvent'));
         $tpl->SetVariable('events_url', $events_url);
 
         // Pagination

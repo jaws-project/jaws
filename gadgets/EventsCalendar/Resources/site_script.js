@@ -15,7 +15,7 @@ var ECCallback = {
         if (response.type === 'response_error') {
             ECAjax.showResponse(response);
         } else {
-            window.location = events_url;
+            location.assign(events_url);
         }
     },
 
@@ -23,7 +23,7 @@ var ECCallback = {
         if (response.type === 'response_error') {
             ECAjax.showResponse(response);
         } else {
-            window.location = events_url;
+            location.assign(events_url);
         }
     }
 };

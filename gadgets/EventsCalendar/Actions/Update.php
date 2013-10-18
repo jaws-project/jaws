@@ -56,7 +56,6 @@ class EventsCalendar_Actions_Update extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
         $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
-        $tpl->SetVariable('url_back', $this->gadget->urlMap('Events'));
 
         $tpl->SetVariable('id', $event['id']);
         $tpl->SetVariable('subject', $event['subject']);
@@ -133,7 +132,7 @@ class EventsCalendar_Actions_Update extends Jaws_Gadget_HTML
         // Actions
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('url_back', $this->gadget->urlMap('Events'));
+        $tpl->SetVariable('url_back', $GLOBALS['app']->GetSiteURL('/') . $this->gadget->urlMap('Events'));
 
         $tpl->ParseBlock('form');
         return $tpl->Get();
