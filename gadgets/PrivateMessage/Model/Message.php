@@ -383,18 +383,14 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                 // check new attachments file -- we must copy tmp files to correct location
                 if (is_array($attachment)) {
                     $src_filepath = Jaws_Utils::upload_tmp_dir() . '/' . $attachment['filename'];
-                    $pathinfo = pathinfo($src_filepath);
-                    $dest_filename = Jaws_Utils::RandomText(15, true, false, true) . '.' . $pathinfo['extension'];
-                    $dest_filepath = $pm_dir . DIRECTORY_SEPARATOR . $dest_filename;
+                    $dest_filepath = $pm_dir . DIRECTORY_SEPARATOR . $attachment['filename'];
                 } else {
                     // check exist attachments -- we just need to copy it!
                     $attachment = $aModel->GetMessageAttachment($attachment);
                     $message_info = $this->GetMessage($attachment['message'], false, false);
-                    $file_extension = substr(strrchr($attachment['filename'], '.'), 1);
                     $src_filepath = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $message_info['user'] .
                         DIRECTORY_SEPARATOR . $attachment['filename'];
-                    $dest_filename = Jaws_Utils::RandomText(15, true, false, true) . '.' . $file_extension;
-                    $dest_filepath = $pm_dir . $dest_filename;
+                    $dest_filepath = $pm_dir . $attachment['filename'];
                 }
 
                 if (!file_exists($src_filepath)) {
@@ -407,7 +403,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                     }
                 }
 
-                $cres = Jaws_Utils::copy($src_filepath, $dest_filepath);
+                $cres = Jaws_Utils::rename($src_filepath, $dest_filepath);
                 if ($cres) {
                     Jaws_Utils::delete($src_filepath);
                     $aData[] = array(
