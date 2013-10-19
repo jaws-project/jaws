@@ -35,18 +35,36 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_HTML
 
         $jdate = $GLOBALS['app']->loadDate();
 
+        // Previous week
+        $info = $jdate->GetDateInfo($year, $month, $day - 6);
+        $url = $this->gadget->urlMap('ViewWeek', array(
+            'year' => $info['year'],
+            'month' => $info['mon'],
+            'day' => $info['mday']
+        ));
+        $tpl->SetVariable('prev', $url);
+
+        // Next week
+        $info = $jdate->GetDateInfo($year, $month, $day + 6);
+        $url = $this->gadget->urlMap('ViewWeek', array(
+            'year' => $info['year'],
+            'month' => $info['mon'],
+            'day' => $info['mday']
+        ));
+        $tpl->SetVariable('next', $url);
+
         $todayInfo = $jdate->GetDateInfo($year, $month, $day);
-        $todayInfo['monthDays'] = 30; // we need this property
         $startDay = $day - $todayInfo['wday'];
         $stopDay = $startDay + 6;
         $startDayInfo = $jdate->GetDateInfo($year, $month, $startDay);
         $stopDayInfo = $jdate->GetDateInfo($year, $month, $stopDay);
 
+        // Current week
         $startDate = $jdate->ToBaseDate($year, $month, $startDay);
         $stopDate = $jdate->ToBaseDate($year, $month, $stopDay);
         $from = $jdate->Format($startDate['timestamp'], 'Y MN d');
         $to = $jdate->Format($stopDate['timestamp'], 'Y MN d');
-        $tpl->SetVariable('current_date', $from . ' - ' . $to);
+        $tpl->SetVariable('current_week', $from . ' - ' . $to);
 
         for ($day = $startDay; $day <= $stopDay; $day++) {
             //$date = $jdate->ToBaseDate($year, $month, $day);
