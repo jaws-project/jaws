@@ -33,9 +33,30 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_hour', _t('EVENTSCALENDAR_HOUR'));
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 
+        // Current date
         $jdate = $GLOBALS['app']->loadDate();
         $date = $jdate->ToBaseDate($year, $month, $day);
         $tpl->SetVariable('current_date', $jdate->Format($date['timestamp'], 'DN d MN Y'));
+
+        // Previous day
+        $info = $jdate->GetDateInfo($year, $month, $day - 1);
+        $url = $this->gadget->urlMap('ViewDay', array(
+            'year' => $info['year'],
+            'month' => $info['mon'],
+            'day' => $info['mday']
+        ));
+        $tpl->SetVariable('prev', $url);
+        $tpl->SetVariable('prev_day', $info['weekday']);
+
+        // Next day
+        $info = $jdate->GetDateInfo($year, $month, $day + 1);
+        $url = $this->gadget->urlMap('ViewDay', array(
+            'year' => $info['year'],
+            'month' => $info['mon'],
+            'day' => $info['mday']
+        ));
+        $tpl->SetVariable('next', $url);
+        $tpl->SetVariable('next_day', $info['weekday']);
 
         for ($i = 0; $i <= 23; $i++) {
             //$time = date('ga', mktime($hour));
