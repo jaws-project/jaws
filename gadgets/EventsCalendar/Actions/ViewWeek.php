@@ -60,18 +60,46 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_HTML
         $stopDayInfo = $jdate->GetDateInfo($year, $month, $stopDay);
 
         // Current week
-        $startDate = $jdate->ToBaseDate($year, $month, $startDay);
-        $stopDate = $jdate->ToBaseDate($year, $month, $stopDay);
-        $from = $jdate->Format($startDate['timestamp'], 'Y MN d');
-        $to = $jdate->Format($stopDate['timestamp'], 'Y MN d');
+        $start = $jdate->ToBaseDate($year, $month, $startDay);
+        $start = $start['timestamp'];
+        $stop = $jdate->ToBaseDate($year, $month, $stopDay);
+        $stop = $stop['timestamp'];
+        $from = $jdate->Format($start, 'Y MN d');
+        $to = $jdate->Format($stop, 'Y MN d');
         $tpl->SetVariable('current_week', $from . ' - ' . $to);
 
-        for ($day = $startDay; $day <= $stopDay; $day++) {
-            //$date = $jdate->ToBaseDate($year, $month, $day);
-            $info = $jdate->GetDateInfo($year, $month, $day);
+        // Fetch events
+        $model = $GLOBALS['app']->LoadGadget('EventsCalendar', 'Model', 'Month');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $events = $model->GetEvents($user, null, null, $start, $stop);
+        if (Jaws_Error::IsError($events)){
+            $events = array();
+        }
+
+        // Prepare events
+        $eventsById = array();
+        $eventsByDay = array_fill(0, 7, array());
+        foreach ($events as $e) {
+            $eventsById[$e['id']] = $e;
+            $startIdx = ($e['start_time'] <= $start)? 0:
+                floor(($e['start_time'] - $start) / 86400);
+            $stopIdx = ($e['stop_time'] >= $stop)? 6:
+                floor(($e['stop_time'] - $start) / 86400);
+            for ($i = $startIdx; $i <= $stopIdx; $i++) {
+                $eventsByDay[$i][] = $e['id'];
+            }
+        }
+
+        // Display events
+        for ($i = 0; $i <= 6; $i++) {
+            $info = $jdate->GetDateInfo($year, $month, $startDay + $i);
             $tpl->SetBlock('week/day');
             $tpl->SetVariable('day', $info['mday'] . ' ' . $info['weekday']);
-            $tpl->SetVariable('events', '');
+            foreach ($eventsByDay[$i] as $event_id) {
+                $tpl->SetBlock('week/day/event');
+                $tpl->SetVariable('event', $eventsById[$event_id]['subject']);
+                $tpl->ParseBlock('week/day/event');
+            }
             $tpl->ParseBlock('week/day');
         }
 
