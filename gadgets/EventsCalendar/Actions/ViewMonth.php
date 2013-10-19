@@ -39,8 +39,36 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_HTML
         $stop = $jdate->ToBaseDate($year, $month, $daysInMonth, 23, 59, 59);
         $stop = $stop['timestamp'];
 
-        $monthName = $jdate->Format($start, 'MN');
-        $tpl->SetVariable('current_date', $year . ' ' . $monthName);
+        // Current date
+        $tpl->SetVariable('current_date', $year . ' ' . $jdate->Format($start, 'MN'));
+
+        // Previous month
+        $prevYear = $year;
+        $prevMonth = $month - 1;
+        if ($prevMonth === 0) {
+            $prevMonth = 12;
+            $prevYear--;
+        }
+        $prevURL = $this->gadget->urlMap('ViewMonth', array(
+            'year' => $prevYear,
+            'month' => $prevMonth
+        ));
+        $tpl->SetVariable('prev', $prevURL);
+        $tpl->SetVariable('prev_year', $prevURL);
+
+        // Next month
+        $nextYear = $year;
+        $nextMonth = $month + 1;
+        if ($nextMonth > 12) {
+            $nextMonth = 1;
+            $nextYear++;
+        }
+        $nextURL = $this->gadget->urlMap('ViewMonth', array(
+            'year' => $nextYear,
+            'month' => $nextMonth
+        ));
+        $tpl->SetVariable('next', $nextURL);
+        $tpl->SetVariable('next_year', $nextYear);
 
         // Fetch events
         $model = $GLOBALS['app']->LoadGadget('EventsCalendar', 'Model', 'Month');

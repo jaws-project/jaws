@@ -34,13 +34,13 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_HTML
         $tpl->SetVariable('current_year', $year);
 
         // Previous year
-        $prev_url = $this->gadget->urlMap('ViewYear', array('year' => $year - 1));
-        $tpl->SetVariable('prev', $prev_url);
+        $prevURL = $this->gadget->urlMap('ViewYear', array('year' => $year - 1));
+        $tpl->SetVariable('prev', $prevURL);
         $tpl->SetVariable('prev_year', $year - 1);
 
         // Next year
-        $next_url = $this->gadget->urlMap('ViewYear', array('year' => $year + 1));
-        $tpl->SetVariable('next', $next_url);
+        $nextURL = $this->gadget->urlMap('ViewYear', array('year' => $year + 1));
+        $tpl->SetVariable('next', $nextURL);
         $tpl->SetVariable('next_year', $year + 1);
 
         // Month's
