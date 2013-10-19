@@ -12,42 +12,6 @@ class Tags_Actions_ManageTags extends Tags_HTML
 {
 
     /**
-     * Get then TagsCloud action params
-     *
-     * @access  public
-     * @return  array list of the TagsCloud action params
-     */
-    function TagCloudLayoutParams()
-    {
-        $result = array();
-
-        $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
-        $model = $GLOBALS['app']->LoadGadget('Tags', 'Model', 'Tags');
-        $gadgets = $model->GetTagRelativeGadgets();
-        $tagGadgets = array();
-        $tagGadgets[''] = _t('GLOBAL_ALL');
-        foreach($gadgets as $gadget) {
-            $GLOBALS['app']->Translate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
-            $tagGadgets[$gadget] = _t(strtoupper($gadget) . '_NAME');
-        }
-
-        $result[] = array(
-            'title' => _t('TAGS_GADGET'),
-            'value' => $tagGadgets
-        );
-
-        $result[] = array(
-            'title' => _t('TAGS_SHOW_TAGS'),
-            'value' => array(
-                1 => _t('TAGS_GLOBAL_TAGS'),
-                0 => _t('TAGS_USER_TAGS'),
-            )
-        );
-
-        return $result;
-    }
-
-    /**
      * Manage User's Tags
      *
      * @access  public
@@ -61,6 +25,7 @@ class Tags_Actions_ManageTags extends Tags_HTML
         }
 
         $this->AjaxMe();
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
         $post = jaws()->request->fetch(array('gadgets_filter', 'term'));
         $filters = array();
         $selected_gadget = "";
@@ -84,6 +49,10 @@ class Tags_Actions_ManageTags extends Tags_HTML
             $tpl->SetVariable('text', $response['text']);
             $tpl->ParseBlock('tags/response');
         }
+
+        // Menubar
+        $tpl->SetVariable('menubar', $this->MenuBar('ManageTags', array('ManageTags')));
+
         $tpl->SetVariable('txt_term', $post['term']);
         $tpl->SetVariable('lbl_gadgets', _t('GLOBAL_GADGETS'));
         $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
@@ -124,11 +93,101 @@ class Tags_Actions_ManageTags extends Tags_HTML
             $tpl->SetVariable('id', $tag['id']);
             $tpl->SetVariable('title', $tag['title']);
             $tpl->SetVariable('usage_count', $tag['usage_count']);
+//            $tpl->SetVariable('tag_url', $this->gadget->urlMap('ViewTag', array('tag'=>$tag['name'], 'user'=>$user)));
+            $tpl->SetVariable('tag_url', $this->gadget->urlMap('EditTagUI', array('tag'=>$tag['id'])));
             $tpl->ParseBlock('tags/tag');
         }
 
         $tpl->ParseBlock('tags');
         return $tpl->Get();
+    }
+
+    /**
+     * Edit Tag UI
+     *
+     * @access  public
+     * @return  string  XHTML template of a form
+     */
+    function EditTagUI()
+    {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $this->AjaxMe('index.js');
+
+        $tag_id = jaws()->request->fetch('tag', 'get');
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
+        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $tag = $model->GetTag($tag_id);
+        if ($tag['user'] != $user) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+
+        // Load the template
+        $tpl = $this->gadget->loadTemplate('ManageTags.html');
+        $tpl->SetBlock('edit_tag');
+
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
+        $tpl->SetVariable('tid', $tag_id);
+        $tpl->SetVariable('name', $tag['name']);
+        $tpl->SetVariable('tag_title', $tag['title']);
+        $tpl->SetVariable('description', $tag['description']);
+
+        $tpl->SetVariable('title', _t('TAGS_EDIT_TAG'));
+        $tpl->SetVariable('menubar', $this->MenuBar('ViewTags',
+                                     array('ManageTags', 'ViewTag'),
+                                     array('tag' => $tag['name'], 'user' => $user)));
+
+        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
+        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
+        $tpl->SetVariable('save', _t('GLOBAL_SAVE'));
+
+        $tpl->ParseBlock('edit_tag');
+        return $tpl->Get();
+    }
+
+    /**
+     * Update a Tag
+     *
+     * @access  public
+     * @return  void
+     */
+    function UpdateTag()
+    {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $post = jaws()->request->fetch(array('tid', 'name', 'title', 'description'), 'post');
+        $id = $post['tid'];
+        unset($post['tid']);
+        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $tag = $model->GetTag($id);
+        if ($tag['user'] != $GLOBALS['app']->Session->GetAttribute('user')) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+        $res = $model->UpdateTag($id, $post);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('TAGS_ERROR_CANT_UPDATE_TAG'),
+                'Tags.ManageTags',
+                RESPONSE_ERROR
+            );
+        } else {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('TAGS_TAG_UPDATED'),
+                'Tags.ManageTags',
+                RESPONSE_NOTICE
+            );
+        }
+
+        Jaws_Header::Location($this->gadget->urlMap('ManageTags'));
     }
 
     /**

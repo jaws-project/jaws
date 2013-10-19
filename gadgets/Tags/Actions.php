@@ -23,11 +23,19 @@ $actions['ManageTags'] = array(
     'normal' => true,
     'file'   => 'ManageTags',
 );
+$actions['EditTagUI'] = array(
+    'normal' => true,
+    'file'   => 'ManageTags',
+);
+$actions['UpdateTag'] = array(
+    'standalone' => true,
+    'file'       => 'ManageTags',
+);
 $actions['DeleteTags'] = array(
     'standalone' => true,
-    'file'   => 'ManageTags',
+    'file'       => 'ManageTags',
 );
 $actions['MergeTags'] = array(
     'standalone' => true,
-    'file'   => 'ManageTags',
+    'file'       => 'ManageTags',
 );

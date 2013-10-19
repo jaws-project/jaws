@@ -47,7 +47,7 @@
                     <td>
                         <input type="checkbox" name="tags_checkbox[]" value="{id}">
                     </td>
-                    <td><a href="{title}">{title}</a></td>
+                    <td><a href="{tag_url}">{title}</a></td>
                     <td>{usage_count}</td>
 
                 </tr>
@@ -105,3 +105,31 @@
     }
 </script>
 <!-- END tags -->
+
+<!-- BEGIN edit_tag -->
+<div class="gadget tag">
+    <div class="gadget_header"><h2>{title}</h2><div class="gadget_menubar">{menubar}</div></div>
+    <form name="groups" id="groups" action="{base_script}" method="post">
+        <input type="hidden" name="gadget" value="Tags"/>
+        <input type="hidden" name="action" value="UpdateTag"/>
+        <input type="hidden" name="tid" value="{tid}"/>
+
+        <div class="content">
+            <fieldset>
+                <div><label for="name">{lbl_name}:</label>
+                    <input name="name" id="name" value="{name}" type="text"/>
+                </div>
+                <div><label for="title">{lbl_title}:</label>
+                    <input name="title" id="title" value="{tag_title}" type="text"/>
+                </div>
+                <div><label for="description">{lbl_description}:</label>
+                    <textarea name="description" id="description" cols="45" rows="4">{description}</textarea>
+                </div>
+            </fieldset>
+        </div>
+        <div class="actions">
+            <button type="submit" value="{save}">{save}</button>
+        </div>
+    </form>
+</div>
+<!-- END edit_tag -->
