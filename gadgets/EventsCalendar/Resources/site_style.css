@@ -31,3 +31,9 @@ width:180px;
 #event_start_time_table td, #event_stop_time_table td {
 padding:0;
 }
+
+.view-year .months {
+margin-top:10px;
+text-align:center;
+border:1px solid #C6D3D8;
+}
