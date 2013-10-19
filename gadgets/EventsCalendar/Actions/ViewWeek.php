@@ -19,6 +19,11 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_HTML
      */
     function ViewWeek()
     {
+        $data = jaws()->request->fetch(array('year', 'month', 'day'), 'get');
+        $year = (int)$data['year'];
+        $month = (int)$data['month'];
+        $day = (int)$data['day'];
+
         $this->AjaxMe('site_script.js');
         $tpl = $this->gadget->loadTemplate('ViewWeek.html');
         $tpl->SetBlock('week');
@@ -30,24 +35,24 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_HTML
 
         $jdate = $GLOBALS['app']->loadDate();
 
-        $year = 2013;
-        $month = 10;
-        $day = 16;
-        $info = $jdate->GetDateInfo($year, $month, $day);
-        $wday = $info['wday'];
-        $startDay = $day - $wday;
-        $date = mktime(0, 0, 0, $month, $startDay, $year);
-        $monthName = $jdate->Format($date, 'MN');
-        $monthDay = $jdate->Format($date, 'd');
-        $theYear = $jdate->Format($date, 'Y');
-        $tpl->SetVariable('current_date', $theYear . ', ' . $monthDay . ' - ' . ($monthDay + 6) . ' ' . $monthName);
+        $todayInfo = $jdate->GetDateInfo($year, $month, $day);
+        $todayInfo['monthDays'] = 30; // we need this property
+        $startDay = $day - $todayInfo['wday'];
+        $stopDay = $startDay + 6;
+        $startDayInfo = $jdate->GetDateInfo($year, $month, $startDay);
+        $stopDayInfo = $jdate->GetDateInfo($year, $month, $stopDay);
 
-        for ($i = $startDay; $i <= $startDay + 6; $i++) {
-            $date = mktime(0, 0, 0, $month, $i, $year);
-            $weekDay = $jdate->Format($date, 'DN');
-            $monthDay = $jdate->Format($date, 'd');
+        $startDate = $jdate->ToBaseDate($year, $month, $startDay);
+        $stopDate = $jdate->ToBaseDate($year, $month, $stopDay);
+        $from = $jdate->Format($startDate['timestamp'], 'Y MN d');
+        $to = $jdate->Format($stopDate['timestamp'], 'Y MN d');
+        $tpl->SetVariable('current_date', $from . ' - ' . $to);
+
+        for ($day = $startDay; $day <= $stopDay; $day++) {
+            //$date = $jdate->ToBaseDate($year, $month, $day);
+            $info = $jdate->GetDateInfo($year, $month, $day);
             $tpl->SetBlock('week/day');
-            $tpl->SetVariable('day', $monthDay . ' ' . $weekDay);
+            $tpl->SetVariable('day', $info['mday'] . ' ' . $info['weekday']);
             $tpl->SetVariable('events', '');
             $tpl->ParseBlock('week/day');
         }

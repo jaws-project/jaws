@@ -17,7 +17,7 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_HTML
      * @access  public
      * @return  string  XHTML UI
      */
-    function Events()
+    function ManageEvents()
     {
         $this->AjaxMe('site_script.js');
         $tpl = $this->gadget->loadTemplate('Events.html');

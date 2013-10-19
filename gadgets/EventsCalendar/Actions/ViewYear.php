@@ -19,6 +19,10 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_HTML
      */
     function ViewYear()
     {
+        $jdate = $GLOBALS['app']->loadDate();
+        $year = jaws()->request->fetch('year', 'get');
+        $year = empty($year)? $jdate->Format(time(), 'Y') : (int)$year;
+
         $this->AjaxMe('site_script.js');
         $tpl = $this->gadget->loadTemplate('ViewYear.html');
         $tpl->SetBlock('year');
@@ -26,9 +30,7 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_HTML
         $this->SetTitle(_t('EVENTSCALENDAR_VIEW_YEAR'));
         $tpl->SetVariable('title', _t('EVENTSCALENDAR_VIEW_YEAR'));
 
-        $jdate = $GLOBALS['app']->loadDate();
 
-        $year = 1392;
         $tpl->SetVariable('current_date', $year);
 
         for ($i = 1; $i <= 12; $i++) {

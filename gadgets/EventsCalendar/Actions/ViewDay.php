@@ -12,13 +12,18 @@ $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/site_styl
 class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_HTML
 {
     /**
-     * Builds week view UI
+     * Builds day view UI
      *
      * @access  public
      * @return  string  XHTML UI
      */
     function ViewDay()
     {
+        $data = jaws()->request->fetch(array('year', 'month', 'day'), 'get');
+        $year = (int)$data['year'];
+        $month = (int)$data['month'];
+        $day = (int)$data['day'];
+
         $this->AjaxMe('site_script.js');
         $tpl = $this->gadget->loadTemplate('ViewDay.html');
         $tpl->SetBlock('day');
@@ -29,10 +34,6 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 
         $jdate = $GLOBALS['app']->loadDate();
-
-        $year = 1392;
-        $month = 7;
-        $day = 24;
         $date = $jdate->ToBaseDate($year, $month, $day);
         $tpl->SetVariable('current_date', $jdate->Format($date['timestamp'], 'DN d MN Y'));
 

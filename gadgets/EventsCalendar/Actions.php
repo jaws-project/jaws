@@ -11,7 +11,7 @@
 $actions = array();
 
 /* Manage Actions */
-$actions['Events'] = array(
+$actions['ManageEvents'] = array(
     'normal' => true,
     'layout' => true,
     'file' => 'Events'

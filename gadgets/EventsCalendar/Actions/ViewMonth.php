@@ -12,13 +12,17 @@ $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/site_styl
 class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_HTML
 {
     /**
-     * Builds week view UI
+     * Builds month view UI
      *
      * @access  public
      * @return  string  XHTML UI
      */
     function ViewMonth()
     {
+        $data = jaws()->request->fetch(array('year', 'month'), 'get');
+        $year = (int)$data['year'];
+        $month = (int)$data['month'];
+
         $this->AjaxMe('site_script.js');
         $tpl = $this->gadget->loadTemplate('ViewMonth.html');
         $tpl->SetBlock('month');
@@ -28,8 +32,6 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_WEEK_DAY'));
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 
-        $year = 1392;
-        $month = 7;
         $daysInMonth = 30;
         $jdate = $GLOBALS['app']->loadDate();
         $start = $jdate->ToBaseDate($year, $month, 1);
