@@ -33,8 +33,9 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_hour', _t('EVENTSCALENDAR_HOUR'));
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 
-        // Current date
         $jdate = $GLOBALS['app']->loadDate();
+
+        // Current date
         $date = $jdate->ToBaseDate($year, $month, $day);
         $tpl->SetVariable('current_date', $jdate->Format($date['timestamp'], 'DN d MN Y'));
 
@@ -58,12 +59,41 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_HTML
         $tpl->SetVariable('next', $url);
         $tpl->SetVariable('next_day', $info['weekday']);
 
+        // Fetch events
+        $model = $GLOBALS['app']->LoadGadget('EventsCalendar', 'Model', 'Month');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $start = $date['timestamp'];
+        $stop = $jdate->ToBaseDate($year, $month, $day, 23, 59, 59);
+        $stop = $stop['timestamp'];
+        $events = $model->GetEvents($user, null, null, $start, $stop);
+        if (Jaws_Error::IsError($events)){
+            $events = array();
+        }
+
+        // Prepare events
+        $eventsById = array();
+        $eventsByHour = array_fill(0, 24, array());
+        foreach ($events as $e) {
+            $eventsById[$e['id']] = $e;
+            $startIdx = ($e['start_time'] <= $start)? 0:
+                floor(($e['start_time'] - $start) / 3600);
+            $stopIdx = ($e['stop_time'] >= $stop)? 23:
+                floor(($e['stop_time'] - $start) / 3600);
+            for ($i = $startIdx; $i <= $stopIdx; $i++) {
+                $eventsByHour[$i][] = $e['id'];
+            }
+        }
+
+        // Display events
         for ($i = 0; $i <= 23; $i++) {
-            //$time = date('ga', mktime($hour));
             $time = date('H:00', mktime($i));
             $tpl->SetBlock('day/hour');
             $tpl->SetVariable('hour', $time);
-            $tpl->SetVariable('events', '');
+            foreach ($eventsByHour[$i] as $event_id) {
+                $tpl->SetBlock('day/hour/event');
+                $tpl->SetVariable('event', $eventsById[$event_id]['subject']);
+                $tpl->ParseBlock('day/hour/event');
+            }
             $tpl->ParseBlock('day/hour');
         }
 

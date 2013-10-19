@@ -16,7 +16,11 @@
         <!-- BEGIN hour -->
         <tr>
           <td>{hour}</td>
-          <td>{events}</td>
+          <td>
+            <!-- BEGIN event -->
+            <div><a href="{event_url}">{event}</a></div>
+            <!-- END event -->
+          </td>
         </tr>
         <!-- END hour -->
       </tbody>
