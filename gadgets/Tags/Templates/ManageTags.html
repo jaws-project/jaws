@@ -53,7 +53,22 @@
                 </tr>
                 <!-- END tag -->
                 </tbody>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="5">
+                        {lbl_page_item}
+                        <select id="page_item" name="page_item" onchange="this.form.submit();">
+                            <option {opt_page_item_10} value="10">10</option>
+                            <option {opt_page_item_20} value="20">20</option>
+                            <option {opt_page_item_50} value="50">50</option>
+                            <option {opt_page_item_100} value="100">100</option>
+                        </select>
+                    </td>
+                </tr>
+                </tfoot>
             </table>
+            <!-- INCLUDE PageNavigation.html -->
 
             <div class="actions">
                 <label for="tags_actions_combo">{lbl_actions}:&nbsp;</label>

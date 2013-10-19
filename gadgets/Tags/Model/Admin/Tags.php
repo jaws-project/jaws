@@ -440,9 +440,11 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   array   $filters    Data that will be used in the filter
+     * @param   bool    $global     just get global tags?
+     *                              (null : get all tags, true : just get global tags, false : just get user tags)\
      * @return  mixed   Array of Tags info or Jaws_Error on failure
      */
-    function GetTagsCount($filters = array())
+    function GetTagsCount($filters = array(), $global = null)
     {
         $table = Jaws_ORM::getInstance()->table('tags');
 
@@ -459,6 +461,12 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             if (array_key_exists('action', $filters) && !empty($filters['action'])) {
                 $table->and()->where('action', $filters['action']);
             }
+        }
+
+        if($global===true) {
+            $table->and()->where('tags.user', 0);
+        } elseif ($global===false) {
+            $table->and()->where('tags.user', $GLOBALS['app']->Session->GetAttribute('user'));
         }
 
         $result = $table->fetchOne();

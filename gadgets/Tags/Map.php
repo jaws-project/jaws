@@ -10,5 +10,5 @@
  */
 $maps[] = array('ViewTag', 'tag/{tag}[/user/{user}][/gname/{gname}][/page/{page}]');
 $maps[] = array('TagCloud', 'tagcloud/[/gname/{gname}]');
-$maps[] = array('ManageTags', 'tags/manage');
+$maps[] = array('ManageTags', 'tags/manage[/page/{page}][/gadgets_filter/{gadgets_filter}][/term/{term}][/pageitem/{page_item}]');
 $maps[] = array('EditTagUI', 'tags/edit/tag/{tag}');

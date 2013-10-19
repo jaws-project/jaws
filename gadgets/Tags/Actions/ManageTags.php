@@ -25,8 +25,9 @@ class Tags_Actions_ManageTags extends Tags_HTML
         }
 
         $this->AjaxMe();
-        $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $post = jaws()->request->fetch(array('gadgets_filter', 'term'));
+        $post = jaws()->request->fetch(array('gadgets_filter', 'term', 'page', 'page_item'));
+        $page = $post['page'];
+
         $filters = array();
         $selected_gadget = "";
         if(!empty($post['gadgets_filter'])) {
@@ -38,9 +39,6 @@ class Tags_Actions_ManageTags extends Tags_HTML
             $filters['name'] = $post['term'];
         }
 
-        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
-        $tags = $model->GetTags($filters, null, 0, 0, false);
-
         $tpl = $this->gadget->loadTemplate('ManageTags.html');
         $tpl->SetBlock('tags');
         if ($response = $GLOBALS['app']->Session->PopResponse('Tags.ManageTags')) {
@@ -49,9 +47,20 @@ class Tags_Actions_ManageTags extends Tags_HTML
             $tpl->SetVariable('text', $response['text']);
             $tpl->ParseBlock('tags/response');
         }
-
         // Menubar
         $tpl->SetVariable('menubar', $this->MenuBar('ManageTags', array('ManageTags')));
+
+        $page = empty($page) ? 1 : (int)$page;
+        if (empty($post['page_item'])) {
+            $limit = 10;
+        } else {
+            $limit = $post['page_item'];
+        }
+        $tpl->SetVariable('opt_page_item_' . $limit, 'selected="selected"');
+
+        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $tags = $model->GetTags($filters, $limit, ($page - 1) * $limit, 0, false);
+        $tagsTotal = $model->GetTagsCount($filters, false);
 
         $tpl->SetVariable('txt_term', $post['term']);
         $tpl->SetVariable('lbl_gadgets', _t('GLOBAL_GADGETS'));
@@ -93,10 +102,28 @@ class Tags_Actions_ManageTags extends Tags_HTML
             $tpl->SetVariable('id', $tag['id']);
             $tpl->SetVariable('title', $tag['title']);
             $tpl->SetVariable('usage_count', $tag['usage_count']);
-//            $tpl->SetVariable('tag_url', $this->gadget->urlMap('ViewTag', array('tag'=>$tag['name'], 'user'=>$user)));
             $tpl->SetVariable('tag_url', $this->gadget->urlMap('EditTagUI', array('tag'=>$tag['id'])));
             $tpl->ParseBlock('tags/tag');
         }
+
+        $params = array();
+        if(!empty($post['gadgets_filter'])) {
+            $params['gadgets_filter'] = $post['gadgets_filter'];
+        }
+        if(!empty($post['term'])) {
+            $params['term'] = $post['term'];
+        }
+        // page navigation
+        $this->GetPagesNavigation(
+            $tpl,
+            'tags',
+            $page,
+            $limit,
+            $tagsTotal,
+            _t('TAGS_TAG_COUNT', $tagsTotal),
+            'ManageTags',
+            $params
+        );
 
         $tpl->ParseBlock('tags');
         return $tpl->Get();
