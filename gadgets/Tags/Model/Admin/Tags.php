@@ -446,10 +446,12 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      */
     function GetTagsCount($filters = array(), $global = null)
     {
+        //TODO: we must improve performance!
         $table = Jaws_ORM::getInstance()->table('tags');
 
         $table->select('count(tags.id):integer');
         $table->join('tags_items', 'tags_items.tag', 'tags.id', 'left');
+        $table->groupBy('tags.id');
 
         if (!empty($filters) && count($filters) > 0) {
             if (array_key_exists('name', $filters) && !empty($filters['name'])) {
@@ -474,7 +476,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
 
-        return $result;
+        return count($result);
     }
 
     /**
