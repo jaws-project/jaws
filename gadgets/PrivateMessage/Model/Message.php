@@ -408,7 +408,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                     Jaws_Utils::delete($src_filepath);
                     $aData[] = array(
                         'title'         => $attachment['title'],
-                        'filename'      => $dest_filename,
+                        'filename'      => $attachment['filename'],
                         'filesize'      => $attachment['filesize'],
                         'filetype'      => $attachment['filetype'],
                         'message_id'    => $message_id,
