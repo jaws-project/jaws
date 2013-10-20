@@ -30,7 +30,7 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_HTML
 
         $this->SetTitle(_t('EVENTSCALENDAR_VIEW_WEEK'));
         $tpl->SetVariable('title', _t('EVENTSCALENDAR_VIEW_WEEK'));
-        $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_WEEK_DAY'));
+        $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 
         $jdate = $GLOBALS['app']->loadDate();

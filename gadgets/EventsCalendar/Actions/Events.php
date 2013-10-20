@@ -99,7 +99,7 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_HTML
         // $tpl->SetVariable('btn_search', $button->Get());
 
         $site_url = $GLOBALS['app']->GetSiteURL('/');
-        $events_url = $site_url . $this->gadget->urlMap('Events');
+        $events_url = $site_url . $this->gadget->urlMap('ManageEvents');
         $button =& Piwi::CreateWidget('Button', 'btn_events_search_reset', 'X');
         $button->SetSubmit(false);
         $button->AddEvent(ON_CLICK, "location.assign('$events_url')");

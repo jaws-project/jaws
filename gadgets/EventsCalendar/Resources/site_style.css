@@ -10,6 +10,9 @@ width:200px;
 #frm_event input {
 width:100%;
 }
+#frm_event input[type=checkbox] {
+width:15px;
+}
 #frm_event select {
 width:100px;
 }
@@ -31,7 +34,12 @@ width:180px;
 #event_start_time_table td, #event_stop_time_table td {
 padding:0;
 }
-
+#tbl_repeat {
+display:none;
+}
+#tbl_repeat select {
+width:100%;
+}
 .view-year .months {
 margin-top:10px;
 text-align:center;

@@ -37,6 +37,14 @@ function initEvents()
 }
 
 /**
+ * Shows/Hides event repeat options
+ */
+function toggleRepeat(checked)
+{
+    $('tbl_repeat').style.display = checked? 'table' : 'none';
+}
+
+/**
  * Selects/Deselects all rows
  */
 function checkAll()

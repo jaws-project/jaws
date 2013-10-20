@@ -29,7 +29,7 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_HTML
 
         $this->SetTitle(_t('EVENTSCALENDAR_VIEW_MONTH'));
         $tpl->SetVariable('title', _t('EVENTSCALENDAR_VIEW_MONTH'));
-        $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_WEEK_DAY'));
+        $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 
         $daysInMonth = 30;
@@ -54,7 +54,7 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_HTML
             'month' => $prevMonth
         ));
         $tpl->SetVariable('prev', $prevURL);
-        $tpl->SetVariable('prev_year', $prevURL);
+        $tpl->SetVariable('prev_year', $prevYear);
 
         // Next month
         $nextYear = $year;
@@ -83,12 +83,12 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_HTML
         $eventsByDay = array_fill(1, $daysInMonth, array());
         foreach ($events as $e) {
             $eventsById[$e['id']] = $e;
-            $startDay = $e['start_time'] - $start;
-            $startDay = ($startDay <= 0)? 1 : ceil($startDay / 86400);
-            $length = ceil($e['stop_time'] - $e['start_time']) / 86400;
-            $stopDay = ($startDay + $length > $daysInMonth)? $daysInMonth : $startDay + $length;
-            for ($dayIndex = $startDay; $dayIndex <= $stopDay; $dayIndex++) {
-                $eventsByDay[$dayIndex][] = $e['id'];
+            $startIdx = ($e['start_time'] <= $start)? 1:
+                ceil(($e['start_time'] - $start) / 86400);
+            $stopIdx = ($e['stop_time'] >= $stop)? $daysInMonth:
+                ceil(($e['stop_time'] - $start) / 86400);
+            for ($i = $startIdx; $i <= $stopIdx; $i++) {
+                $eventsByDay[$i][] = $e['id'];
             }
         }
 

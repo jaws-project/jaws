@@ -201,6 +201,6 @@ class EventsCalendar_Actions_Update extends Jaws_Gadget_HTML
             _t('EVENTSCALENDAR_NOTICE_EVENT_UPDATED'),
             'Events.Response'
         );
-        Jaws_Header::Location($this->gadget->urlMap('Events'));
+        Jaws_Header::Location($this->gadget->urlMap('ManageEvents'));
     }
 }
