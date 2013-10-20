@@ -95,10 +95,14 @@ class LinkDump_Actions_Admin_Links extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_rank', _t('LINKDUMP_RANK'));
         $tpl->SetVariable('rank', $rank->Get());
 
-        $tpl->SetVariable('lbl_tag', _t('LINKDUMP_LINKS_TAGS'));
-        $linktags  =& Piwi::CreateWidget('Entry', 'tags', '');
-        $linktags->SetStyle('direction: ltr; width: 356px;');
-        $tpl->SetVariable('tag', $linktags->Get());
+        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+            $tpl->SetBlock('linkdump/LinksUI/tags');
+            $tpl->SetVariable('lbl_tag', _t('LINKDUMP_LINKS_TAGS'));
+            $linktags =& Piwi::CreateWidget('Entry', 'tags', '');
+            $linktags->SetStyle('direction: ltr; width: 356px;');
+            $tpl->SetVariable('tag', $linktags->Get());
+            $tpl->ParseBlock('linkdump/LinksUI/tags');
+        }
 
         $tpl->SetVariable('lbl_clicks', _t('LINKDUMP_LINKS_CLICKS'));
         $linkclicks  =& Piwi::CreateWidget('Entry', 'clicks', '');

@@ -90,6 +90,10 @@ function saveLink()
             alert(incompleteFields);
             return false;
         }
+        var tags = "";
+        if($('tags')!=null) {
+            tags = $('tags').value;
+        }
         if (selectedLink == null) {
             var response = LinkDumpAjax.callSync('insertlink',
                                                  $('gid').value,
@@ -97,7 +101,7 @@ function saveLink()
                                                  $('url').value,
                                                  $('fast_url').value,
                                                  $('description').value,
-                                                 $('tags').value,
+                                                 tags,
                                                  $('rank').value);
             if (response[0]['type'] == 'response_notice') {
                 var lid = response[0]['data'];
@@ -113,7 +117,7 @@ function saveLink()
                                                  $('url').value,
                                                  $('fast_url').value,
                                                  $('description').value,
-                                                 $('tags').value,
+                                                 tags,
                                                  $('rank').value);
             if (response[0]['type'] == 'response_notice') {
                 $('link_'+$('lid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
@@ -364,7 +368,9 @@ function editLink(element, lid)
     $('url').value         = linkInfo['url'];
     $('fast_url').value    = linkInfo['fast_url'];
     $('description').value = linkInfo['description'].defilter();
-    $('tags').value        = linkInfo['tags'];
+    if($('tags')!=null) {
+        $('tags').value        = linkInfo['tags'];
+    }
     $('clicks').value      = linkInfo['clicks'];
     setRanksCombo($('gid').value);
     $('rank').value = linkInfo['rank'];
