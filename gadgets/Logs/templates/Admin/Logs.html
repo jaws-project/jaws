@@ -1,0 +1,31 @@
+<!-- BEGIN Logs -->
+{menubar}
+<div id="main">
+<table width="100%">
+  <tr>
+    <td id="l_datagrid" valign="top">
+      {grid}
+    </td>
+    <td id="log_ui">
+      <fieldset>
+        <legend><span id="legend_title">{legend_title}</span></legend>
+        <div id="l_work_area">{log_ui}</div>
+      </fieldset>
+    </td>
+  </tr>
+  <tr>
+    <td class="buttons" colspan="2">{btn_cancel}</td>
+  </tr>
+</table>
+<script type="text/javascript">
+  initDataGrid('logs_datagrid', LogsAjax, getLogs);
+</script>
+</div>
+<!-- END Logs -->
+<!-- BEGIN LogUI -->
+<table id="contact_box">
+  <tr><td><label>{lbl_ip}:</label></td><td id="log_ip"></td></tr>
+  <tr><td><label for="name">{lbl_user}:</label></td><td id="log_user"></td></tr>
+  <tr><td><label for="email">{lbl_gadget}:</label></td><td id="log_gadget"></td></tr>
+</table>
+<!-- END LogUI -->
