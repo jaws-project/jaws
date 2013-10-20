@@ -148,7 +148,7 @@ class Jaws_Gadget_Registry
      * @param   string  $gadget (Optional) Gadget name
      * @return  bool    Returns True or False
      */
-    function update($name, $value, $custom = false, $gadget = '')
+    function update($name, $value, $custom = null, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $GLOBALS['app']->Registry->update($name, $value, $custom, $gadget);
