@@ -369,7 +369,7 @@ function editLink(element, lid)
     $('fast_url').value    = linkInfo['fast_url'];
     $('description').value = linkInfo['description'].defilter();
     if($('tags')!=null) {
-        $('tags').value        = linkInfo['tags'];
+        $('tags').value    = linkInfo['tags'];
     }
     $('clicks').value      = linkInfo['clicks'];
     setRanksCombo($('gid').value);
