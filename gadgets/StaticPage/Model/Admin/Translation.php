@@ -88,11 +88,6 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
     {
         //Language exists?
         $language = str_replace(array('.', '/'), '', $language);
-        if (!file_exists(JAWS_PATH . "languages/$language/FullName")) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_LANGUAGE_NOT_EXISTS'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('STATICPAGE_ERROR_LANGUAGE_NOT_EXISTS'), _t('STATICPAGE_NAME'));
-        }
-
         //Original language?
         $translation = $this->GetPageTranslation($id);
         if (Jaws_Error::isError($translation)) {
@@ -105,7 +100,6 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
                 $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_EXISTS'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_EXISTS'), _t('STATICPAGE_NAME'));
             }
-
         }
 
         // check modify other's pages ACL
