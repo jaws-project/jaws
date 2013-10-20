@@ -321,14 +321,12 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         // validation input fields
         if ($messageData['published']) {
-            if (empty($recipient_users) || count($recipient_users) <= 0 ||
-                empty($messageData['subject']) || empty($messageData['body'])
-            ) {
+            if (empty($recipient_users) || count($recipient_users) <= 0 || empty($messageData['subject'])) {
                 return new Jaws_Error(_t('PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS'), _t('PRIVATEMESSAGE_NAME'));
             }
 
         } else {
-            if (empty($messageData['body'])) {
+            if (empty($messageData['title'])) {
                 return new Jaws_Error(_t('PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS'), _t('PRIVATEMESSAGE_NAME'));
             }
         }

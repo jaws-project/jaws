@@ -337,13 +337,13 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_HTML
         } else {
             if($post['published']==true) {
                 $GLOBALS['app']->Session->PushResponse(
-                    _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_SEND'),
+                    $message_id->getMessage(),
                     'PrivateMessage.Compose',
                     RESPONSE_ERROR
                 );
             } else {
                 $GLOBALS['app']->Session->PushResponse(
-                    _t('PRIVATEMESSAGE_DRAFT_NOT_SAVED'),
+                    $message_id->getMessage(),
                     'PrivateMessage.Compose',
                     RESPONSE_ERROR
                 );
