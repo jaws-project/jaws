@@ -186,38 +186,6 @@ class Jaws_Gadget
     }
 
     /**
-     * Loads the gadget extension file in question, makes a instance and
-     * stores it globally for later use so we do not have duplicates
-     * of the same instance around in our code.
-     *
-     * @access  public
-     * @param   string  $extension  Extension name
-     * @return  mixed   Extension class object on successful, Jaws_Error otherwise
-     */
-    function &load($extension)
-    {
-        // filter non validate character
-        $extension = preg_replace('/[^[:alnum:]_]/', '', $extension);
-        $model_class_name = "Jaws_Gadget_$extension";
-        if (!isset($this->components[$extension])) {
-            $file = JAWS_PATH. "include/Jaws/Gadget/$extension.php";
-            if (!file_exists($file)) {
-                return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
-            }
-
-            include_once($file);
-            if (!Jaws::classExists($model_class_name)) {
-                return Jaws_Error::raiseError("Class [$model_class_name] not exists!", __FUNCTION__);
-            }
-
-            $this->components[$extension] = new $model_class_name($this);
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded extension: [$extension]");
-        }
-
-        return $this->components[$extension];
-    }
-
-    /**
      * Loads a template from a file
      *
      * @access  public
@@ -564,6 +532,33 @@ class Jaws_Gadget
         }
         $image = Jaws::CheckImage('gadgets/'.$name.'/Resources/images/logo.png');
         return $image;
+    }
+
+    /**
+     * Overloading magic method
+     *
+     * @access  private
+     * @param   string  $method     Method name
+     * @param   string  $arguments  Method parameters
+     * @return  mixed   Requested object otherwise Jaws_Error
+     */
+    function __call($method, $arguments)
+    {
+        switch ($method) {
+            case 'loadModel':
+                $extension = substr($method, 4);
+                $model_class_name = "Jaws_Gadget_$extension";
+                if (!isset($this->components[$extension])) {
+                    $this->components[$extension] = new $model_class_name($this);
+                    $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded extension: [$extension]");
+                }
+
+                return call_user_func_array(array($this->components[$extension], 'load'), $arguments);
+                break;
+
+        }
+
+        return Jaws_Error::raiseError("Method '$method' not exists!", __FUNCTION__);
     }
 
 }
