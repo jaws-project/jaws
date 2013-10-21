@@ -36,8 +36,8 @@ class Layout_Installer extends Jaws_Gadget_Installer
         }
 
         // Insert default layout elements
-        $layoutModel  = $this->gadget->loadModel('Model', 'Layout');
-        $elementModel = $this->gadget->loadModel('AdminModel', 'Elements');
+        $layoutModel  = $this->gadget->loadModel('Layout');
+        $elementModel = $this->gadget->loadModel('Elements', true);
         $result = $layoutModel->GetLayoutItems();
         if (!Jaws_Error::IsError($result) && empty($result)) {
             $elementModel->NewElement('main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1);

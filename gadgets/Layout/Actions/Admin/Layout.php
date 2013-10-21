@@ -277,7 +277,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         }
 
-        $layoutModel = $this->gadget->loadModel('Model', 'Layout');
+        $layoutModel = $this->gadget->loadModel('Layout');
         $result = $layoutModel->layoutSwitch($user);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);

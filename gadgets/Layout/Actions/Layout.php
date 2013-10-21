@@ -30,7 +30,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_HTML
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         }
 
-        $layoutModel = $this->gadget->loadModel('Model', 'Layout');
+        $layoutModel = $this->gadget->loadModel('Layout');
         $layoutModel->layoutSwitch($user);
         Jaws_Header::Location('');
     }
