@@ -184,6 +184,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
     function UpdateTag($id, $data)
     {
         $table = Jaws_ORM::getInstance()->table('tags');
+        $data['name'] = $this->GetRealFastUrl($data['name'], null, false);
         $result = $table->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');
