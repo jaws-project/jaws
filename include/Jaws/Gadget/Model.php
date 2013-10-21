@@ -38,11 +38,11 @@ class Jaws_Gadget_Model
      * of the same instance around in our code.
      *
      * @access  public
+     * @param   bool    $adminModel Admin Model?
      * @param   string  $filename   Model class file name
-     * @param   string  $adminModel Admin Model?
      * @return  mixed   Model class object on successful, Jaws_Error otherwise
      */
-    function &load($filename = '', $adminModel = false)
+    function &load($adminModel, $filename = '')
     {
         // filter non validate character
         $filename = preg_replace('/[^[:alnum:]_]/', '', $filename);
