@@ -328,8 +328,13 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('tags_items');
         $table->update(array('tag' => $firstID))->where('tag', $ids, 'in')->exec();
 
+        $keepIds = Jaws_ORM::getInstance()->table('tags_items')
+            ->select('tags_items.id:integer')->groupBy('gadget', 'action', 'reference', 'tag', 'user')
+            ->join('tags', 'tags.id', 'tags_items.tag')
+            ->having('count(tags_items.id)', '1', '>')->fetchColumn();
+
         //Delete duplicated items
-        // 1.first we need to find all duplicated items for deleting
+        // We need to find all duplicated items for deleting
         $table = Jaws_ORM::getInstance()->table('tags_items', 'item1');
         $table->distinct();
         $table->select('item1.id:integer');
@@ -340,17 +345,13 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table->and()->where('item1.reference', array('item2.reference', 'expr'));
         $table->and()->where('item1.id', array('item2.id', 'expr'), '<>');
         $table->and()->where('tags.user', $user);
-        $subTable = Jaws_ORM::getInstance()->table('tags_items')
-            ->select('id:integer')->groupBy('gadget', 'action', 'reference', 'tag', 'user')
-            ->having('count(id)', '1', '>');
-
-        $table->and()->where('item1.id', array($subTable), 'not in');
+        $table->and()->where('item1.id', $keepIds, 'not in');
         $items = $table->fetchColumn();
         if (Jaws_Error::IsError($items)) {
             return new Jaws_Error($items->getMessage(), 'SQL');
         }
 
-        // 2.delete duplicated tags items
+        // delete duplicated tags items
         if (count($items) > 0) {
             $table = Jaws_ORM::getInstance()->table('tags_items');
             $res = $table->delete()->where('id', $items, 'in')->exec();
