@@ -548,6 +548,7 @@ class Jaws_Gadget
             case 'loadHook':
             case 'loadEvent':
             case 'loadModel':
+            case 'loadInstaller':
                 $extension = substr($method, 4);
                 $model_class_name = "Jaws_Gadget_$extension";
                 if (!isset($this->components[$extension])) {
