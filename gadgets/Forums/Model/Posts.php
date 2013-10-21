@@ -155,7 +155,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         }
 
         if (!is_null($attachments)) {
-            $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+            $aModel = $this->gadget->loadModel('Model', 'Attachments');
             $aModel->InsertAttachments($pid, $attachments);
             $this->UpdatePostAttachCount($pid);
         }
@@ -182,7 +182,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $data['update_reason']  = $update_reason;
 
         if (!is_null($attachments)) {
-            $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+            $aModel = $this->gadget->loadModel('Model', 'Attachments');
             $aModel->InsertAttachments($pid, $attachments);
         }
         $this->UpdatePostAttachCount($pid);
@@ -214,7 +214,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         }
 
         // remove attachment file
-        $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+        $aModel = $this->gadget->loadModel('Model', 'Attachments');
         $aModel->DeletePostAttachments($pid);
 
         $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
@@ -310,7 +310,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      */
     function UpdatePostAttachCount($pid)
     {
-        $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+        $aModel = $this->gadget->loadModel('Model', 'Attachments');
         $attachCount = $aModel->GetAttachmentsCount($pid);
         $postsTable = Jaws_ORM::getInstance()->table('forums_posts');
         $postsTable->update(array('attachments' => $attachCount))->where('id', $pid);

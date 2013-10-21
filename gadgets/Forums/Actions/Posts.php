@@ -109,7 +109,7 @@ class Forums_Actions_Posts extends Forums_HTML
 
             // attachment
             if ($post['attachments'] > 0) {
-                $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+                $aModel = $this->gadget->loadModel('Model', 'Attachments');
                 $attachments = $aModel->GetAttachments($post['id']);
 
                 foreach ($attachments as $attachment) {
@@ -483,7 +483,7 @@ class Forums_Actions_Posts extends Forums_HTML
             $tpl->SetVariable('lbl_extra_attachment', _t('FORUMS_POSTS_EXTRA_ATTACHMENT'));
             $tpl->SetVariable('lbl_remove_attachment', _t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
             if ($post['id'] != 0) {
-                $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+                $aModel = $this->gadget->loadModel('Model', 'Attachments');
                 $attachments = $aModel->GetAttachments($post['id']);
 
                 foreach ($attachments as $attachment) {
@@ -638,7 +638,7 @@ class Forums_Actions_Posts extends Forums_HTML
 
             // Update Attachments
             $remainAttachments = jaws()->request->fetch('current_attachments:array');
-            $aModel = $this->gadget->load('Model')->load('Model', 'Attachments');
+            $aModel = $this->gadget->loadModel('Model', 'Attachments');
             $oldAttachments = $aModel->GetAttachments($oldPost['id']);
             if (count($remainAttachments) == 0) {
                 $aModel->DeletePostAttachments($oldPost['id']);
