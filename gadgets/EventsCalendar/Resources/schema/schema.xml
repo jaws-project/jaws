@@ -38,18 +38,6 @@
       </field>
 
       <field>
-        <name>start_time</name>
-        <type>integer</type>
-        <length>8</length>
-      </field>
-
-      <field>
-        <name>stop_time</name>
-        <type>integer</type>
-        <length>8</length>
-      </field>
-
-      <field>
         <name>type</name>
         <type>integer</type>
       </field>
@@ -73,39 +61,55 @@
       </field>
 
       <field>
-        <name>repeated</name>
-        <type>boolean</type>
-        <default>false</default>
+        <name>start_date</name>
+        <type>integer</type>
+        <length>8</length>
       </field>
 
       <field>
-        <name>minute</name>
+        <name>stop_date</name>
         <type>integer</type>
-        <length>1</length>
+        <length>8</length>
+      </field>
+
+      <field>
+        <name>start_time</name>
+        <type>integer</type>
+        <length>8</length>
+      </field>
+
+      <field>
+        <name>stop_time</name>
+        <type>integer</type>
+        <length>8</length>
       </field>
 
       <field>
         <name>hour</name>
         <type>integer</type>
         <length>1</length>
+        <default>-1</default>
       </field>
 
       <field>
         <name>week_day</name>
         <type>integer</type>
         <length>1</length>
+        <default>-1</default>
       </field>
 
       <field>
         <name>month_day</name>
         <type>integer</type>
         <length>1</length>
+        <default>-1</default>
       </field>
 
       <field>
         <name>month</name>
         <type>integer</type>
         <length>1</length>
+        <default>-1</default>
       </field>
 
       <field>
@@ -119,16 +123,6 @@
         <type>integer</type>
         <length>8</length>
       </field>
-
-      <index>
-        <name><variable>table_prefix</variable>ec_event_time_idx</name>
-        <field>
-          <name>start_time</name>
-        </field>
-        <field>
-          <name>stop_time</name>
-        </field>
-      </index>
 
     </declaration>
   </table>
