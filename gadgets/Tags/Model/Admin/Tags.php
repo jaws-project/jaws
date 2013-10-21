@@ -145,7 +145,6 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         return $res;
     }
 
-
     /**
      * Add an new tag
      *
@@ -290,47 +289,74 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      */
     function MergeTags($ids, $newName, $global = true)
     {
-        $table = Jaws_ORM::getInstance()->table('tags_items');
+        // check duplicated tag
+        $user = 0;
+        if (!$global) {
+            $user = $GLOBALS['app']->Session->GetAttribute('user');
+        }
+        $table = Jaws_ORM::getInstance()->table('tags');
+        $table->select('count(id)')->where('name', $newName)->and()->where('user', $user);
+        $tag = $table->and()->where('id', $ids, 'not in')->fetchOne();
+        if (Jaws_Error::IsError($result)) {
+            return new Jaws_Error($result->getMessage(), 'SQL');
+        }
+        if ($tag > 0) {
+            return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $newName), _t('TAGS_NAME'));
+        }
 
+        $data = array();
+        $data['title'] = $newName;
+        $data['name'] = $this->GetRealFastUrl($newName, null, false);
+
+        $table = Jaws_ORM::getInstance()->table('tags');
         //Start Transaction
         $table->beginTransaction();
 
-        //Add new tag
-        $newId = $this->AddTag(array('name' => $newName), $global);
+        $firstID = $ids[0];
+        unset($ids[0]);
+
+        //Delete extra tags
+        $result = $table->delete()->where('id', $ids, 'in')->exec();
+        if (Jaws_Error::IsError($result)) {
+            return new Jaws_Error($result->getMessage(), 'SQL');
+        }
+
+        //Update first tag
+        $this->UpdateTag($firstID, $data, $global);
 
         //Update tag items
-        $table->update(array('tag' => $newId))->where('tag', $ids, 'in')->exec();
+        $table = Jaws_ORM::getInstance()->table('tags_items');
+        $table->update(array('tag' => $firstID))->where('tag', $ids, 'in')->exec();
 
         //Delete duplicated items
-        // 1.first we need to find all duplicated items
+        // 1.first we need to find all duplicated items for deleting
         $table = Jaws_ORM::getInstance()->table('tags_items', 'item1');
         $table->distinct();
         $table->select('item1.id:integer');
         $table->join('tags_items as item2', 'item2.tag', 'item1.tag');
+        $table->join('tags', 'tags.id', 'item1.tag');
         $table->and()->where('item1.gadget', array('item2.gadget', 'expr'));
         $table->and()->where('item1.action', array('item2.action', 'expr'));
         $table->and()->where('item1.reference', array('item2.reference', 'expr'));
         $table->and()->where('item1.id', array('item2.id', 'expr'), '<>');
+        $table->and()->where('tags.user', $user);
+        $subTable = Jaws_ORM::getInstance()->table('tags_items')
+            ->select('id:integer')->groupBy('gadget', 'action', 'reference', 'tag', 'user')
+            ->having('count(id)', '1', '>');
+
+        $table->and()->where('item1.id', array($subTable), 'not in');
         $items = $table->fetchColumn();
         if (Jaws_Error::IsError($items)) {
             return new Jaws_Error($items->getMessage(), 'SQL');
         }
-        // 2.second we need just keep one duplicated item and must remove others
-        if (count($items) > 1) {
-            unset($items[0]);
+
+        // 2.delete duplicated tags items
+        if (count($items) > 0) {
             $table = Jaws_ORM::getInstance()->table('tags_items');
             $res = $table->delete()->where('id', $items, 'in')->exec();
             if (Jaws_Error::IsError($res)) {
                 return new Jaws_Error($res->getMessage(), 'SQL');
             }
-        }
-
-
-        //Delete old tags
-        $table = Jaws_ORM::getInstance()->table('tags');
-        $result = $table->delete()->where('id', $ids, 'in')->exec();
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
         }
 
         //Commit Transaction

@@ -285,7 +285,7 @@ class Tags_Actions_ManageTags extends Tags_HTML
         $res = $model->MergeTags($ids, $post['new_tag_name'], false);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
-                _t('TAGS_ERROR_CANT_DELETE_TAG'),
+                $res->getMessage(),
                 'Tags.ManageTags',
                 RESPONSE_ERROR
             );
