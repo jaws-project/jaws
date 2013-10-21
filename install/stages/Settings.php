@@ -205,7 +205,7 @@ class Installer_Settings extends JawsInstallerStage
                 _log(JAWS_LOG_DEBUG, "There was a problem while loading sample gadget: $gadget");
                 _log(JAWS_LOG_DEBUG, $objGadget->getMessage());
             } else {
-                $installer = $objGadget->load('Installer');
+                $installer = $objGadget->loadInstaller();
                 $input_schema = JAWS_PATH. "install/stages/Settings/Sample/$gadget/insert.xml";
                 if (!file_exists($input_schema)) {
                     $input_schema = '';
@@ -229,7 +229,7 @@ class Installer_Settings extends JawsInstallerStage
             $base_schema  = JAWS_PATH. "gadgets/Layout/schema/schema.xml";
             $input_schema = JAWS_PATH. "install/stages/Settings/Sample/Layout/insert.xml";
 
-            $installer = $objGadget->load('Installer');
+            $installer = $objGadget->loadInstaller();
             $res = $installer->installSchema($input_schema, '', $base_schema, true);
             if (Jaws_Error::IsError($res)) {
                 _log(JAWS_LOG_DEBUG, "There was a problem while inserting sample itemes into gadget $gadget");
