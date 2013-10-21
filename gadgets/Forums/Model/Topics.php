@@ -274,7 +274,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function DeleteTopic($tid, $fid)
     {
-        $aModel = $this->gadget->loadModel('Model', 'Attachments');
+        $aModel = $this->gadget->loadModel('Attachments');
         $topicAttachments = $aModel->GetTopicAttachments($tid);
         $table = Jaws_ORM::getInstance()->table('forums_posts');
         //Start Transaction

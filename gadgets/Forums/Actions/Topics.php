@@ -319,7 +319,7 @@ class Forums_Actions_Topics extends Forums_HTML
             $tpl->SetVariable('lbl_remove_attachment',_t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
 
             if (!empty($topic['first_post_id'])) {
-                $aModel = $this->gadget->loadModel('Model', 'Attachments');
+                $aModel = $this->gadget->loadModel('Attachments');
                 $attachments = $aModel->GetAttachments($topic['first_post_id']);
 
                 foreach ($attachments as $attachment) {
@@ -487,7 +487,7 @@ class Forums_Actions_Topics extends Forums_HTML
 
             // Update Attachments
             $remainAttachments = jaws()->request->fetch('current_attachments:array');
-            $aModel = $this->gadget->loadModel('Model', 'Attachments');
+            $aModel = $this->gadget->loadModel('Attachments');
             $oldAttachments = $aModel->GetAttachments($oldTopic['first_post_id']);
             if (count($remainAttachments) == 0) {
                 $aModel->DeletePostAttachments($oldTopic['first_post_id']);

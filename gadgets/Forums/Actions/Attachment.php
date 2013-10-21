@@ -28,7 +28,7 @@ class Forums_Actions_Attachment extends Forums_HTML
             $this->SetActionMode('Attachment', 'normal', 'standalone');
             return Jaws_HTTPError::Get(500);
         }
-        $aModel = $this->gadget->loadModel('Model', 'Attachments');
+        $aModel = $this->gadget->loadModel('Attachments');
         $attachment = $aModel->GetAttachmentInfo($rqst['attach']);
         if (Jaws_Error::IsError($attachment)) {
             $this->SetActionMode('Attachment', 'normal', 'standalone');
