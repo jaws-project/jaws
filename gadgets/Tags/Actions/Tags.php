@@ -229,7 +229,7 @@ class Tags_Actions_Tags extends Tags_HTML
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
                 }
-                $objHook = $objGadget->loadHook->load('Tags');
+                $objHook = $objGadget->loadHook('Tags');
                 if (Jaws_Error::IsError($objHook)) {
                     continue;
                 }
