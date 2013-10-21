@@ -67,6 +67,7 @@ class Tags_Actions_ManageTags extends Tags_HTML
         $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
         $tpl->SetVariable('icon_ok', STOCK_OK);
+        $tpl->SetVariable('lbl_tag_name', _t('TAGS_TAG_NAME'));
         $tpl->SetVariable('lbl_tag_title', _t('TAGS_TAG_TITLE'));
         $tpl->SetVariable('lbl_tag_usage_count', _t('TAGS_TAG_USAGE_COUNT'));
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
@@ -100,6 +101,7 @@ class Tags_Actions_ManageTags extends Tags_HTML
         foreach($tags as $tag) {
             $tpl->SetBlock('tags/tag');
             $tpl->SetVariable('id', $tag['id']);
+            $tpl->SetVariable('name', $tag['name']);
             $tpl->SetVariable('title', $tag['title']);
             $tpl->SetVariable('usage_count', $tag['usage_count']);
             $tpl->SetVariable('tag_url', $this->gadget->urlMap('EditTagUI', array('tag'=>$tag['id'])));

@@ -169,7 +169,8 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
             $newRow = array();
             $newRow['__KEY__']      = $row['id'];
 
-            $newRow['name']         = $row['title'];
+            $newRow['name']         = $row['name'];
+            $newRow['title']         = $row['title'];
             $newRow['usage_count']  = $row['usage_count'];
 
             if (!empty($editAction)) {
@@ -211,6 +212,7 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
         $grid->SetStyle('width: 100%;');
         $grid->TotalRows($total);
         $grid->useMultipleSelection();
+        $grid->AddColumn(Piwi::CreateWidget('Column', _t('TAGS_TAG_NAME')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('TAGS_TAG_TITLE')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('TAGS_TAG_USAGE_COUNT')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS')));
