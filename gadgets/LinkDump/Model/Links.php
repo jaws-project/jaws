@@ -32,10 +32,12 @@ class LinkDump_Model_Links extends Jaws_Gadget_Model
             return $link;
         }
 
-        if (!empty($link)) {
-            $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
-            $tags = $model->GetItemTags(array('gadget'=>'LinkDump', 'action'=>'link', 'reference'=>$id), true);
-            $link['tags'] = array_filter($tags);
+        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+            if (!empty($link)) {
+                $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+                $tags = $model->GetItemTags(array('gadget' => 'LinkDump', 'action' => 'link', 'reference' => $id), true);
+                $link['tags'] = array_filter($tags);
+            }
         }
 
         return $link;
