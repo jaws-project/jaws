@@ -47,8 +47,10 @@ class Tags_Actions_ManageTags extends Tags_HTML
             $tpl->SetVariable('text', $response['text']);
             $tpl->ParseBlock('tags/response');
         }
+
         // Menubar
         $tpl->SetVariable('menubar', $this->MenuBar('ManageTags', array('ManageTags')));
+        $tpl->SetVariable('title', _t('TAGS_MANAGE_TAGS'));
 
         $page = empty($page) ? 1 : (int)$page;
         if (empty($post['page_item'])) {
@@ -70,6 +72,8 @@ class Tags_Actions_ManageTags extends Tags_HTML
         $tpl->SetVariable('lbl_tag_name', _t('TAGS_TAG_NAME'));
         $tpl->SetVariable('lbl_tag_title', _t('TAGS_TAG_TITLE'));
         $tpl->SetVariable('lbl_tag_usage_count', _t('TAGS_TAG_USAGE_COUNT'));
+        $tpl->SetVariable('filter', _t('GLOBAL_SEARCH'));
+        $tpl->SetVariable('lbl_page_item', _t('TAGS_ITEMS_PER_PAGE'));
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
         $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));

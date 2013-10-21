@@ -61,6 +61,7 @@ class Tags_Actions_Tags extends Tags_HTML
             $gadget = jaws()->request->fetch('gname', 'get');
         }
 
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $GLOBALS['app']->LoadGadget('Tags', 'Model', 'Tags');
         $res = $model->GenerateTagCloud($gadget, $global);
         $sortedTags = $res;
@@ -88,6 +89,10 @@ class Tags_Actions_Tags extends Tags_HTML
             $tpl->SetVariable('title', _t('TAGS_TAG_CLOUD', _t('GLOBAL_ALL')));
         }
 
+        if (!$global) {
+            $tpl->SetVariable('menubar', $this->MenuBar('ManageTags', array('ManageTags')));
+        }
+
         foreach ($res as $tag) {
             $count  = $tag['howmany'];
             $fsize = $minFontSize + $fontSizeRange * (log($count) - $minTagCount)/$tagCountRange;
@@ -101,7 +106,7 @@ class Tags_Actions_Tags extends Tags_HTML
                 $param = array('tag' => $tag['name'], 'gname' => $gadget);
             }
             if(!$global) {
-                $param['user'] = $GLOBALS['app']->Session->GetAttribute('user');
+                $param['user'] = $user;
             }
             $tpl->SetVariable('url', $this->gadget->urlMap(
                 'ViewTag',
