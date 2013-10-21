@@ -49,7 +49,7 @@ class Jaws_Listener
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
                 }
-                $objEvent = $objGadget->load('Event')->load($event);
+                $objEvent = $objGadget->loadEvent($event);
                 if (Jaws_Error::IsError($objEvent)) {
                     continue;
                 }
