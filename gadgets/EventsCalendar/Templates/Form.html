@@ -1,5 +1,5 @@
 <!-- BEGIN form -->
-<div class="gadget events-calendar">
+<div class="gadget events-calendar event-form">
   <h2>{title}</h2>
   <div class="gadget_response">
     <div id="eventscalendar_{action}_response" class="{resp_type}">{resp_text}</div>
@@ -16,10 +16,10 @@
           <td><input id="event_location" name="location" value="{location}" /></td></tr>
         <tr><th><label for="event_desc">{lbl_desc}:</label></th>
           <td><textarea id="event_desc" name="description">{description}</textarea></td></tr>
-        <tr><th><label for="event_start_time">{lbl_start_time}:</label></th>
-          <td>{start_time}</td></tr>
-        <tr><th><label for="event_stop_time">{lbl_stop_time}:</label></th>
-          <td>{stop_time}</td></tr>
+        <tr><th><label for="event_start_date">{lbl_date}:</label></th>
+          <td>{start_date} {lbl_to} {stop_date}</td></tr>
+        <tr><th><label for="event_start_time">{lbl_time}:</label></th>
+          <td>{start_time} {lbl_to} {stop_time}</td></tr>
         <tr><th><label for="event_type">{lbl_type}:</label></th>
           <td>{type}</td></tr>
         <tr><th><label for="event_priority">{lbl_priority}:</label></th>
@@ -28,13 +28,11 @@
           <td>{reminder}</td></tr>
         <tr><th><label for="event_repeat">{lbl_repeat}:</label></th>
           <td>
-            <input type="checkbox" name="repeat" onclick="toggleRepeat(this.checked)"></input>
-            <table id="tbl_repeat">
+            <table>
               <tr><th>{lbl_month}:</th><td>{month}</td></tr>
-              <tr><th>{lbl_day}:</th><td>{day}</td></tr>
+              <tr><th>{lbl_month_day}:</th><td>{month_day}</td></tr>
               <tr><th>{lbl_week_day}:</th><td>{week_day}</td></tr>
               <tr><th>{lbl_hour}:</th><td>{hour}</td></tr>
-              <tr><th>{lbl_minute}:</th><td>{minute}</td></tr>
             </table>
           </td></tr>
       </table>

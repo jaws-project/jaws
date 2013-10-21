@@ -33,6 +33,8 @@ class EventsCalendar_Actions_Create extends Jaws_Gadget_HTML
             $tpl->SetVariable('subject', $data['subject']);
             $tpl->SetVariable('location', $data['location']);
             $tpl->SetVariable('description', $data['description']);
+            $start_date = $data['start_date'];
+            $stop_date = $data['stop_date'];
             $start_time = $data['start_time'];
             $stop_time = $data['stop_time'];
             $type = $data['type'];
@@ -40,6 +42,8 @@ class EventsCalendar_Actions_Create extends Jaws_Gadget_HTML
             $reminder = $data['reminder'];
             $repeat = $data['repeat'];
         } else {
+            $start_date = '';
+            $stop_date = '';
             $start_time = '';
             $stop_time = '';
             $type = 0;
@@ -55,29 +59,49 @@ class EventsCalendar_Actions_Create extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
         $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
+        $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
 
-        // Start time
+        // Start date
         $cal_type = $this->gadget->registry->fetch('calendar_type', 'Settings');
-        $datePicker =& Piwi::CreateWidget('DatePicker', 'start_time', $start_time);
-        $datePicker->SetId('event_start_time');
+        $cal_lang = $this->gadget->registry->fetch('calendar_language', 'Settings');
+        $datePicker =& Piwi::CreateWidget('DatePicker', 'start_date', $start_date);
+        $datePicker->SetId('event_start_date');
         $datePicker->showTimePicker(true);
-        $datePicker->setLanguageCode($this->gadget->registry->fetch('calendar_language', 'Settings'));
         $datePicker->setCalType($cal_type);
-        $datePicker->setDateFormat('%Y-%m-%d %H:00');
-        $tpl->SetVariable('lbl_start_time', _t('GLOBAL_START_TIME'));
-        $tpl->SetVariable('start_time', $datePicker->Get());
+        $datePicker->setLanguageCode($cal_lang);
+        $datePicker->setDateFormat('%Y-%m-%d');
+        $tpl->SetVariable('start_date', $datePicker->Get());
+        $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
 
-        // Stop time
-        $datePicker =& Piwi::CreateWidget('DatePicker', 'stop_time', $stop_time);
-        $datePicker->SetId('event_stop_time');
+        // Stop date
+        $datePicker =& Piwi::CreateWidget('DatePicker', 'stop_date', $stop_date);
+        $datePicker->SetId('event_stop_date');
         $datePicker->showTimePicker(true);
-        $datePicker->setDateFormat('%Y-%m-%d %H:00');
+        $datePicker->setDateFormat('%Y-%m-%d');
         $datePicker->SetIncludeCSS(false);
         $datePicker->SetIncludeJS(false);
-        $datePicker->setLanguageCode($this->gadget->registry->fetch('calendar_language', 'Settings'));
         $datePicker->setCalType($cal_type);
-        $tpl->SetVariable('lbl_stop_time', _t('GLOBAL_STOP_TIME'));
-        $tpl->SetVariable('stop_time', $datePicker->Get());
+        $datePicker->setLanguageCode($cal_lang);
+        $tpl->SetVariable('stop_date', $datePicker->Get());
+
+        // Start time
+        $combo =& Piwi::CreateWidget('Combo', 'start_time');
+        $combo->SetId('event_start_time');
+        for ($i = 0; $i <= 23; $i++) {
+            $combo->AddOption($i, $i);
+        }
+        $combo->SetDefault($type);
+        $tpl->SetVariable('start_time', $combo->Get());
+        $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_LENGTH'));
+
+        // Stop time
+        $combo =& Piwi::CreateWidget('Combo', 'stop_time');
+        $combo->SetId('event_stop_time');
+        for ($i = 0; $i <= 23; $i++) {
+            $combo->AddOption($i, $i);
+        }
+        $combo->SetDefault($type);
+        $tpl->SetVariable('stop_time', $combo->Get());
 
         // Type
         $combo =& Piwi::CreateWidget('Combo', 'type');
@@ -127,16 +151,16 @@ class EventsCalendar_Actions_Create extends Jaws_Gadget_HTML
         $tpl->SetVariable('month', $combo->Get());
         $tpl->SetVariable('lbl_month', _t('EVENTSCALENDAR_MONTH'));
 
-        // Month Day
-        $combo =& Piwi::CreateWidget('Combo', 'day');
+        // Day
+        $combo =& Piwi::CreateWidget('Combo', 'month_day');
         $combo->SetId('event_day');
         $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_EVERY_DAY'), -1);
         for ($i = 1; $i <= 31; $i++) {
             $combo->AddOption($i, $i);
         }
         $combo->SetDefault(-1);
-        $tpl->SetVariable('day', $combo->Get());
-        $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
+        $tpl->SetVariable('month_day', $combo->Get());
+        $tpl->SetVariable('lbl_month_day', _t('EVENTSCALENDAR_DAY'));
 
         // Week Day
         $combo =& Piwi::CreateWidget('Combo', 'week_day');
@@ -160,17 +184,6 @@ class EventsCalendar_Actions_Create extends Jaws_Gadget_HTML
         $tpl->SetVariable('hour', $combo->Get());
         $tpl->SetVariable('lbl_hour', _t('EVENTSCALENDAR_HOUR'));
 
-        // Minute
-        $combo =& Piwi::CreateWidget('Combo', 'minute');
-        $combo->SetId('event_minute');
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_EVERY_MINUTE'), -1);
-        for ($i = 0; $i <= 59; $i++) {
-            $combo->AddOption($i, $i);
-        }
-        $combo->SetDefault(0);
-        $tpl->SetVariable('minute', $combo->Get());
-        $tpl->SetVariable('lbl_minute', _t('EVENTSCALENDAR_MINUTE'));
-
         // Actions
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
@@ -188,9 +201,11 @@ class EventsCalendar_Actions_Create extends Jaws_Gadget_HTML
      */
     function CreateEvent()
     {
-        $data = jaws()->request->fetch(array('subject', 'location', 'description',
-            'start_time', 'stop_time', 'type', 'priority', 'reminder', 'repeat'), 'post');
-        if (empty($data['subject']) || empty($data['start_time'])) {
+        $data = jaws()->request->fetch(array('subject', 'location',
+            'description', 'type', 'priority', 'reminder',
+            'start_date', 'stop_date', 'start_time', 'stop_time',
+            'month', 'month_day', 'week_day', 'hour'), 'post');
+        if (empty($data['subject']) || empty($data['start_date'])) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'),
                 'Events.Response',
@@ -200,6 +215,7 @@ class EventsCalendar_Actions_Create extends Jaws_Gadget_HTML
             Jaws_Header::Referrer();
         }
 
+        $jdate = $GLOBALS['app']->loadDate();
         $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $data['subject'] = Jaws_XSS::defilter($data['subject']);
         $data['location'] = Jaws_XSS::defilter($data['location']);

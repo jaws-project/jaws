@@ -7,16 +7,13 @@ white-space:nowrap;
 #frm_search input {
 width:200px;
 }
-#frm_event input {
+.event-form input {
 width:100%;
 }
-#frm_event input[type=checkbox] {
+.event-form input[type=checkbox] {
 width:15px;
 }
-#frm_event select {
-width:100px;
-}
-#frm_event textarea {
+.event-form textarea {
 width:100%;
 height:50px;
 }
@@ -28,17 +25,16 @@ vertical-align:middle;
 margin-right:2px;
 }
 
-#event_start_time_table, #event_stop_time_table {
-width:180px;
+#event_start_date_table, #event_stop_date_table {
+display:inline-table;
+vertical-align: middle;
+width:120px;
 }
-#event_start_time_table td, #event_stop_time_table td {
+#event_start_date_table td, #event_stop_date_table td {
 padding:0;
 }
-#tbl_repeat {
-display:none;
-}
-#tbl_repeat select {
-width:100%;
+#event_start_time, #event_stop_time {
+width:50px;
 }
 .view-year .months {
 margin-top:10px;

@@ -105,7 +105,7 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
         // $table->join('ec_users', 'event.id', 'event');
         // $table->join('users', 'owner', 'users.id');
         $table->select('event.id', 'user', 'subject', 'location', 'description', 
-            'type', 'priority', 'reminder', 'shared', 'repeated',
+            'type', 'priority', 'reminder', 'shared',
             'minute', 'hour', 'week_day', 'month_day', 'month',
             'start_time', 'stop_time', 'createtime', 'updatetime');
         $table->where('event.id', $id)->and();
@@ -142,17 +142,17 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
     function Insert($data)
     {
         $date = $GLOBALS['app']->loadDate();
-        $start_time = $date->ToBaseDate(preg_split('/[- :]/', $data['start_time']), 'Y-m-d H:i');
-        $data['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time);
-        if (empty($data['stop_time'])) {
-            $data['stop_time'] = $data['start_time'];
+        $start_date = $date->ToBaseDate(preg_split('/[- :]/', $data['start_date']), 'Y-m-d');
+        $data['start_date'] = $GLOBALS['app']->UserTime2UTC($start_date);
+        if (empty($data['stop_date'])) {
+            $data['stop_date'] = $data['start_date'];
         } else {
-            $stop_time = $date->ToBaseDate(preg_split('/[- :]/', $data['stop_time']), 'Y-m-d H:i');
-            $data['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time);
+            $stop_date = $date->ToBaseDate(preg_split('/[- :]/', $data['stop_date']), 'Y-m-d');
+            $data['stop_date'] = $GLOBALS['app']->UserTime2UTC($stop_date);
         }
         $data['createtime'] = $data['updatetime'] = time();
-        $data['repeated'] = empty($data['repeat']) ;
-        unset($data['repeat']);
+        $data['start_time'] = $data['start_time'] * 3600;
+        $data['stop_time'] = $data['stop_time'] * 3600;
 
         $table = Jaws_ORM::getInstance()->table('ec_events');
         $table->beginTransaction();
