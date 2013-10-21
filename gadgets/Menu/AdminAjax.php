@@ -249,7 +249,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
             if (Jaws_Gadget::IsGadgetUpdated($request)) {
                 $objGadget = $GLOBALS['app']->LoadGadget($request, 'Info');
                 if (!Jaws_Error::IsError($objGadget)) {
-                    $objHook = $objGadget->loadHook->load('Menu');
+                    $objHook = $objGadget->loadHook('Menu');
                     if (!Jaws_Error::IsError($objHook)) {
                         return $objHook->Execute();
                     }
