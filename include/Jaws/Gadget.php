@@ -545,6 +545,7 @@ class Jaws_Gadget
     function __call($method, $arguments)
     {
         switch ($method) {
+            case 'loadHook':
             case 'loadModel':
                 $extension = substr($method, 4);
                 $model_class_name = "Jaws_Gadget_$extension";
