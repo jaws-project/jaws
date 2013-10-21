@@ -295,7 +295,7 @@ class Banner_Actions_Admin_Banners extends Banner_AdminHTML
             'stop_time', 'random', 'published'), 'post');
         $post['template'] = jaws()->request->fetch('template', 'post', false);
 
-        $model = $this->gadget->loadModel('Banners', true);
+        $model = $this->gadget->loadAdminModel('Banners');
         $res = Jaws_Utils::UploadFiles($_FILES,
             JAWS_DATA . $this->gadget->DataDirectory,
             'jpg,gif,swf,png,jpeg,bmp,svg',

@@ -96,7 +96,7 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
             return false;
         }
 
-        $model = $this->gadget->loadModel('Banners', true);
+        $model = $this->gadget->loadAdminModel('Banners');
         $model->UpdateBannerGroup(-1, $gid, 0, 0);
 
         $bannersTable = Jaws_ORM::getInstance()->table('banners_groups');
