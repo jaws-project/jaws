@@ -50,7 +50,7 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
         $exists = $lyTable->and()->where('gadget', '[REQUESTEDGADGET]')->fetchOne();
         if (!Jaws_Error::IsError($exists)) {
             if (empty($exists)) {
-                $elModel = $this->gadget->load('Model')->load('AdminModel', 'Elements');
+                $elModel = $this->gadget->loadModel('AdminModel', 'Elements');
                 $elModel->NewElement('main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1, $user);
             }
 
