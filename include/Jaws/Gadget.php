@@ -546,6 +546,7 @@ class Jaws_Gadget
     {
         switch ($method) {
             case 'loadHook':
+            case 'loadEvent':
             case 'loadModel':
                 $extension = substr($method, 4);
                 $model_class_name = "Jaws_Gadget_$extension";
