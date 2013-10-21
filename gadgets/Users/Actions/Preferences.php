@@ -49,7 +49,7 @@ class Users_Actions_Preferences extends Users_HTML
                 continue;
             }
 
-            $objHook = $objGadget->load('Hook')->load('Preferences');
+            $objHook = $objGadget->loadHook->load('Preferences');
             if (Jaws_Error::IsError($objHook)) {
                 continue;
             }
