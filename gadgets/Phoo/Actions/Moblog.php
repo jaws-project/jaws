@@ -22,7 +22,7 @@ class Phoo_Actions_Moblog extends Jaws_Gadget_HTML
     function MoblogLayoutParams()
     {
         $result = array();
-        $model = $this->gadget->load('Model')->load('Model', 'Albums');
+        $model = $this->gadget->loadModel('Model', 'Albums');
         $albums = $model->GetAlbums();
         if (!Jaws_Error::IsError($albums)) {
             $palbums = array();

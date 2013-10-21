@@ -44,7 +44,7 @@ class Phoo_Actions_Admin_Groups extends Phoo_AdminHTML
         $comboGroups->SetSize(14);
         $comboGroups->AddEvent(ON_CHANGE, 'javascript: editGroup(this.value);');
         $comboGroups->SetStyle('width: 100%;');
-        $model = $this->gadget->load('Model')->load('Model', 'Groups');
+        $model = $this->gadget->loadModel('Model', 'Groups');
         $groups = $model->GetGroups();
         foreach($groups as $group) {
             $comboGroups->AddOption($group['name'], $group['id']);
