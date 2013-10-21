@@ -69,7 +69,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
         $rqst = jaws()->request->fetch(array('name', 'description'));
         $rqst['[description]'] = $rqst['description'];
         unset($rqst['description']);
-        $model = $this->gadget->loadModel('Groups', true);
+        $model = $this->gadget->loadAdminModel('Groups');
         $res = $model->AddGroup($rqst);
 
         if (Jaws_Error::isError($res)) {
@@ -97,7 +97,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
         $gid  = (int) jaws()->request->fetch('id');
         $rqst['[description]'] = $rqst['description'];
         unset($rqst['description']);
-        $model = $this->gadget->loadModel('Groups', true);
+        $model = $this->gadget->loadAdminModel('Groups');
         $res = $model->EditGroup($gid, $rqst);
 
         if (Jaws_Error::isError($res)) {
@@ -118,7 +118,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
     function DeleteGroup()
     {
         $gid  = (int) jaws()->request->fetch('id');
-        $model = $this->gadget->loadModel('Groups', true);
+        $model = $this->gadget->loadAdminModel('Groups');
         $res = $model->DeleteGroup($gid);
 
         if (Jaws_Error::isError($res)) {

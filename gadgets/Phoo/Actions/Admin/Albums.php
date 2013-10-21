@@ -113,7 +113,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
         $album = $model->NewAlbum($post['name'], $description, isset($post['allow_comments'][0]), $post['published']);
         if (!Jaws_Error::IsError($album)) {
-            $agModel = $this->gadget->loadModel('AlbumGroup', true);
+            $agModel = $this->gadget->loadAdminModel('AlbumGroup');
             $groups = jaws()->request->fetch('groups:array');
             foreach ($groups as $group) {
                 $insertData = array();
@@ -244,7 +244,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
 
         // AlbumGroup
         if (!Jaws_Error::IsError($result)) {
-            $agModel = $this->gadget->loadModel('AlbumGroup', true);
+            $agModel = $this->gadget->loadAdminModel('AlbumGroup');
             $agModel->DeleteAlbum($id);
             $groups = jaws()->request->fetch('groups:array');
             foreach ($groups as $group) {
@@ -275,7 +275,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
 
         // AlbumGroup
         if (!Jaws_Error::IsError($foo)) {
-            $agModel = $this->gadget->loadModel('AlbumGroup', true);
+            $agModel = $this->gadget->loadAdminModel('AlbumGroup');
             $agModel->DeleteAlbum($album);
         }
 
