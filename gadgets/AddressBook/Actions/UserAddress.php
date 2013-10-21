@@ -27,7 +27,7 @@ class AddressBook_Actions_UserAddress extends Jaws_Gadget_HTML
             return Jaws_HTTPError::Get(404);
         }
 
-        $model = $this->gadget->loadModel('Model', 'AddressBook');
+        $model = $this->gadget->loadModel('AddressBook');
         $addressItems = $model->GetAddressList($user['id'], 0, true);
         if (Jaws_Error::IsError($addressItems) || !isset($addressItems)) {
             return $addressItems->getMessage(); // TODO: Show intelligible message

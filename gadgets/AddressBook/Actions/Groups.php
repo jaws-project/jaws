@@ -20,7 +20,7 @@ class AddressBook_Actions_Groups extends AddressBook_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $model = $this->gadget->loadModel('Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
 
         $groupItems = $model->GetGroups($user);
@@ -66,7 +66,7 @@ class AddressBook_Actions_Groups extends AddressBook_HTML
             return Jaws_HTTPError::Get(403);
         }
 
-        $model = $this->gadget->loadModel('Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
 
         $groupItems = $model->GetGroups($user);
@@ -179,7 +179,7 @@ class AddressBook_Actions_Groups extends AddressBook_HTML
             return false;
         }
 
-        $model = $this->gadget->loadModel('Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $info = $model->GetGroupInfo((int) $rqst['id']);
         if (Jaws_Error::IsError($info)) {
             return $info->getMessage(); // TODO: Show intelligible message
@@ -248,7 +248,7 @@ class AddressBook_Actions_Groups extends AddressBook_HTML
             Jaws_Header::Referrer();
         }
         $post['[user]'] = $GLOBALS['app']->Session->GetAttribute('user');
-        $model = $this->gadget->loadModel('Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $result = $model->InsertGroup($post);
 
         if (Jaws_Error::IsError($result)) {
@@ -277,7 +277,7 @@ class AddressBook_Actions_Groups extends AddressBook_HTML
         $post = jaws()->request->fetch(array('name', 'description'), 'post');
         $gid = (int) jaws()->request->fetch('gid', 'post');
 
-        $model = $this->gadget->loadModel('Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $info = $model->GetGroupInfo($gid);
         if (!isset($info)) {
             return Jaws_HTTPError::Get(404);
@@ -319,7 +319,7 @@ class AddressBook_Actions_Groups extends AddressBook_HTML
         }
 
         $gids = jaws()->request->fetch('gid:array');
-        $model = $this->gadget->loadModel('Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
 
         $result = $model->DeleteGroups($gids, (int) $GLOBALS['app']->Session->GetAttribute('user'));
 
