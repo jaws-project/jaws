@@ -69,7 +69,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
         $rqst = jaws()->request->fetch(array('name', 'description'));
         $rqst['[description]'] = $rqst['description'];
         unset($rqst['description']);
-        $model = $this->gadget->loadModel('AdminModel', 'Groups');
+        $model = $this->gadget->loadModel('Groups', true);
         $res = $model->AddGroup($rqst);
 
         if (Jaws_Error::isError($res)) {
@@ -97,7 +97,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
         $gid  = (int) jaws()->request->fetch('id');
         $rqst['[description]'] = $rqst['description'];
         unset($rqst['description']);
-        $model = $this->gadget->loadModel('AdminModel', 'Groups');
+        $model = $this->gadget->loadModel('Groups', true);
         $res = $model->EditGroup($gid, $rqst);
 
         if (Jaws_Error::isError($res)) {
@@ -118,7 +118,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
     function DeleteGroup()
     {
         $gid  = (int) jaws()->request->fetch('id');
-        $model = $this->gadget->loadModel('AdminModel', 'Groups');
+        $model = $this->gadget->loadModel('Groups', true);
         $res = $model->DeleteGroup($gid);
 
         if (Jaws_Error::isError($res)) {
@@ -139,7 +139,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
     function GetGroup()
     {
         $gid = jaws()->request->fetch('gid');
-        $model = $this->gadget->loadModel('Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
             return false; //we need to handle errors on ajax
@@ -151,7 +151,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
     function GetAlbums()
     {
         $gid = jaws()->request->fetch('gid');
-        $aModel = $this->gadget->loadModel('Model', 'Albums');
+        $aModel = $this->gadget->loadModel('Albums');
         $albums = $aModel->GetAlbums('createtime', 'ASC', $gid);
         $free_photos[] = array('id'         => 0,
             'name'       => _t('PHOO_WITHOUT_ALBUM'),

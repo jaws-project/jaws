@@ -77,7 +77,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
 
         // Groups
         $tpl->SetVariable('lbl_group', _t('GLOBAL_GROUPS'));
-        $gModel = $this->gadget->loadModel('Model', 'Groups');
+        $gModel = $this->gadget->loadModel('Groups');
         $groups = $gModel->GetGroups();
         foreach ($groups as $group) {
             $tpl->SetBlock('edit_album/group');
@@ -113,7 +113,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
         $model = $GLOBALS['app']->LoadGadget('Phoo', 'AdminModel', 'Albums');
         $album = $model->NewAlbum($post['name'], $description, isset($post['allow_comments'][0]), $post['published']);
         if (!Jaws_Error::IsError($album)) {
-            $agModel = $this->gadget->loadModel('AdminModel', 'AlbumGroup');
+            $agModel = $this->gadget->loadModel('AlbumGroup', true);
             $groups = jaws()->request->fetch('groups:array');
             foreach ($groups as $group) {
                 $insertData = array();
@@ -197,8 +197,8 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
 
         // Groups
         $tpl->SetVariable('lbl_group', _t('GLOBAL_GROUPS'));
-        $gModel = $this->gadget->loadModel('Model', 'Groups');
-        $agModel = $this->gadget->loadModel('Model', 'AlbumGroup');
+        $gModel = $this->gadget->loadModel('Groups');
+        $agModel = $this->gadget->loadModel('AlbumGroup');
         $currentGroups = $agModel->GetAlbumGroupsID($id);
         $groups = $gModel->GetGroups();
         foreach ($groups as $group) {
@@ -244,7 +244,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
 
         // AlbumGroup
         if (!Jaws_Error::IsError($result)) {
-            $agModel = $this->gadget->loadModel('AdminModel', 'AlbumGroup');
+            $agModel = $this->gadget->loadModel('AlbumGroup', true);
             $agModel->DeleteAlbum($id);
             $groups = jaws()->request->fetch('groups:array');
             foreach ($groups as $group) {
@@ -275,7 +275,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_AdminHTML
 
         // AlbumGroup
         if (!Jaws_Error::IsError($foo)) {
-            $agModel = $this->gadget->loadModel('AdminModel', 'AlbumGroup');
+            $agModel = $this->gadget->loadModel('AlbumGroup', true);
             $agModel->DeleteAlbum($album);
         }
 

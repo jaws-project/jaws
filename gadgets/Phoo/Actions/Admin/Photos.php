@@ -217,7 +217,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_AdminHTML
             $GLOBALS['app']->Session->DeleteAttribute('failures');
 
             // Groups
-            $gModel = $this->gadget->loadModel('Model', 'Groups');
+            $gModel = $this->gadget->loadModel('Groups');
             $groups = $gModel->GetGroups();
             $tpl->SetVariable('lbl_group', _t('GLOBAL_GROUP'));
             $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));

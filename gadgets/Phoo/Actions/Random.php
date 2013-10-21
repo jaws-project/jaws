@@ -22,7 +22,7 @@ class Phoo_Actions_Random extends Jaws_Gadget_HTML
     function RandomLayoutParams()
     {
         $result = array();
-        $model = $this->gadget->loadModel('Model', 'Albums');
+        $model = $this->gadget->loadModel('Albums');
         $albums = $model->GetAlbums();
         if (!Jaws_Error::IsError($albums)) {
             $palbums = array();
