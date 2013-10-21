@@ -545,9 +545,23 @@ class Jaws_Gadget
     function __call($method, $arguments)
     {
         switch ($method) {
+            case 'loadAdminModel':
+                array_unshift($arguments, true);
+                $extension = substr($method, 8);
+                $model_class_name = "Jaws_Gadget_$extension";
+                if (!isset($this->components[$extension])) {
+                    $this->components[$extension] = new $model_class_name($this);
+                    $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded extension: [$extension]");
+                }
+
+                return call_user_func_array(array($this->components[$extension], 'load'), $arguments);
+                break;
+
+            case 'loadModel':
+                array_unshift($arguments, false);
+
             case 'loadHook':
             case 'loadEvent':
-            case 'loadModel':
             case 'loadInstaller':
                 $extension = substr($method, 4);
                 $model_class_name = "Jaws_Gadget_$extension";
@@ -558,7 +572,6 @@ class Jaws_Gadget
 
                 return call_user_func_array(array($this->components[$extension], 'load'), $arguments);
                 break;
-
         }
 
         return Jaws_Error::raiseError("Method '$method' not exists!", __FUNCTION__);
