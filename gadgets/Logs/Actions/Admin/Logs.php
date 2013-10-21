@@ -49,7 +49,7 @@ class Logs_Actions_Admin_Logs extends Jaws_Gadget_HTML
      */
     function LogsDataGrid()
     {
-        $model = $this->gadget->load('Model')->load('AdminModel', 'Logs');
+        $model = $this->gadget->loadModel('AdminModel', 'Logs');
         $total = $model->TotalOfData('logs');
 
         $grid =& Piwi::CreateWidget('DataGrid', array());
@@ -104,7 +104,7 @@ class Logs_Actions_Admin_Logs extends Jaws_Gadget_HTML
     function GetLogs()
     {
         $offset = jaws()->request->fetch('offset');
-        $model = $this->gadget->load('Model')->load('AdminModel', 'Logs');
+        $model = $this->gadget->loadModel('AdminModel', 'Logs');
         $logs = $model->GetLogs(12, $offset);
         if (Jaws_Error::IsError($logs)) {
             return array();
@@ -153,7 +153,7 @@ class Logs_Actions_Admin_Logs extends Jaws_Gadget_HTML
     function GetLogInfo()
     {
         $logID = jaws()->request->fetch('logID');
-        $model = $this->gadget->load('Model')->load('AdminModel', 'Logs');
+        $model = $this->gadget->loadModel('AdminModel', 'Logs');
         $logInfo = $model->GetLogInfo($logID);
         if (Jaws_Error::IsError($logInfo)) {
             return array();
