@@ -177,8 +177,8 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
     function SaveNewEntry()
     {
         $this->gadget->CheckPermission('AddEntries');
-        $pModel = $this->gadget->loadModel('Posts', true);
-        $tModel = $this->gadget->loadModel('Trackbacks', true);
+        $pModel = $this->gadget->loadAdminModel('Posts');
+        $tModel = $this->gadget->loadAdminModel('Trackbacks');
 
         $names   = array('edit_timestamp:array', 'pubdate', 'categories:array', 'title',
                          'fasturl', 'allow_comments:array', 'published',
@@ -458,8 +458,8 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
 
         $post['trackback_to'] = str_replace("\r\n", "\n", $post['trackback_to']);
 
-        $pModel = $this->gadget->loadModel('Posts', true);
-        $tModel = $this->gadget->loadModel('Trackbacks', true);
+        $pModel = $this->gadget->loadAdminModel('Posts');
+        $tModel = $this->gadget->loadAdminModel('Trackbacks');
         $id = (int)$post['id'];
 
         $pubdate = null;
@@ -501,7 +501,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
     function DeleteEntry()
     {
         $this->gadget->CheckPermission('DeleteEntries');
-        $model = $this->gadget->loadModel('Posts', true);
+        $model = $this->gadget->loadAdminModel('Posts');
         $bModel = $this->gadget->loadModel('Posts');
 
         $post = jaws()->request->fetch(array('id', 'step'), 'post');
@@ -593,7 +593,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
         $showCombo->AddOption('&nbsp;', 'NOTHING');
         $showCombo->AddOption(_t('BLOG_RECENT_POSTS'), 'RECENT');
 
-        $pModel = $this->gadget->loadModel('Posts', true);
+        $pModel = $this->gadget->loadAdminModel('Posts');
         $dpModel = $this->gadget->loadModel('DatePosts');
         $cModel = $this->gadget->loadModel('Categories');
         $monthentries = $dpModel->GetMonthsEntries();

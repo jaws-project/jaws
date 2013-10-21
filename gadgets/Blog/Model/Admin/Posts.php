@@ -365,7 +365,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         }
 
         // Remove comment entries..
-        $model = $this->gadget->loadModel('Comments', true);
+        $model = $this->gadget->loadAdminModel('Comments');
         $model->DeleteCommentsIn($post_id);
 
         return true;

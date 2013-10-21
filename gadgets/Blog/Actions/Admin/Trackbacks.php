@@ -24,7 +24,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_AdminHTML
      */
     function TrackbacksData($limit = 0, $filter = '', $search = '', $status = '')
     {
-        $model = $this->gadget->loadModel('Trackbacks', true);
+        $model = $this->gadget->loadAdminModel('Trackbacks');
         return $model->GetTrackbacksDataAsArray($filter, $search, $status, $limit);
     }
 
@@ -146,8 +146,8 @@ class Blog_Actions_Admin_Trackbacks extends Blog_AdminHTML
     {
         $this->gadget->CheckPermission('ManageTrackbacks');
 
-        $tModel = $this->gadget->loadModel('Trackbacks', true);
-        $pModel = $this->gadget->loadModel('Posts', true);
+        $tModel = $this->gadget->loadAdminModel('Trackbacks');
+        $pModel = $this->gadget->loadAdminModel('Posts');
         // Fetch the trackback
         $trackback = $tModel->GetTrackback(jaws()->request->fetch('id', 'get'));
         if (Jaws_Error::IsError($trackback)) {
