@@ -25,7 +25,7 @@ class Blog_Actions_Pingback extends Blog_HTML
             $response = $pback->listen();
             if (is_array($response)) {
                 //Load model
-                $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
+                $model = $this->gadget->loadModel('Posts');
 
                 //We need to parse the target URI to get the post ID
                 $GLOBALS['app']->Map->Parse($response['targetURI']);

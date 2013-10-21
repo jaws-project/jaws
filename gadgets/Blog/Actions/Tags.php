@@ -20,7 +20,7 @@ class Blog_Actions_Tags extends Blog_HTML
      */
     function ShowTagCloud()
     {
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Tags');
+        $model = $this->gadget->loadModel('Tags');
         $res = $model->CreateTagCloud();
         $sortedTags = $res;
         sort($sortedTags);

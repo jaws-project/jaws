@@ -29,7 +29,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
                 break;
 
             case 'monthly':
-                $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
+                $model = $this->gadget->loadModel('Posts');
                 $dates = $model->GetPostsDateLimitation(true);
                 $date = $GLOBALS['app']->loadDate();
                 $mDate = $date->Format($dates['max_date'], 'Y-m');
@@ -65,7 +65,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('PageNavigation.html');
         $tpl->SetBlock('pager');
 
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
+        $model = $this->gadget->loadModel('Posts');
         $pager = $model->GetEntryPagerNumbered($page, $page_size, $total);
         if (count($pager) > 0) {
             $tpl->SetBlock('pager/numbered-navigation');
@@ -211,7 +211,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
             $text    = Jaws_UTF8::str_replace('[more]', '', $text);
 
             // Update this entry to split summary and body of post
-            $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
+            $model = $this->gadget->loadModel('Posts');
             $model->SplitEntry($entry['id'], $summary, $text);
         }
 

@@ -21,8 +21,8 @@ class Blog_Actions_Categories extends Blog_HTML
      */
     function ShowCategory($cat = '')
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Categories');
-        $pModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
+        $cModel = $this->gadget->loadModel('Categories');
+        $pModel = $this->gadget->loadModel('Posts');
 
         $post = jaws()->request->fetch(array('id', 'page'), 'get');
         $page = $post['page'];
@@ -91,7 +91,7 @@ class Blog_Actions_Categories extends Blog_HTML
         $tpl = $this->gadget->loadTemplate('Categories.html');
         $tpl->SetBlock('categories_list');
         $tpl->SetVariable('title', _t('BLOG_CATEGORIES'));
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
+        $model = $this->gadget->loadModel('Posts');
         $entries = $model->GetEntriesAsCategories();
         if (!Jaws_Error::IsError($entries)) {
             foreach ($entries as $e) {

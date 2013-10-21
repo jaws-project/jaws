@@ -24,7 +24,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
     {
         $params['entry_id']    = (int)$blog_id;
         $params['category_id'] = (int)$category_id;
-        $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Feeds');
+        $model = $this->gadget->loadModel('Feeds');
 
         $entrycatTable = Jaws_ORM::getInstance()->table('blog_entrycat');
         $result = $entrycatTable->insert($params)->exec();
@@ -67,7 +67,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         }
 
         if ($this->gadget->registry->fetch('generate_category_xml') == 'true') {
-            $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Feeds');
+            $model = $this->gadget->loadModel('Feeds');
             $catAtom = $model->GetCategoryAtomStruct($category_id);
             if (Jaws_Error::IsError($catAtom)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_XML_NOT_GENERATED'), RESPONSE_ERROR);
@@ -175,7 +175,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         }
 
         if ($this->gadget->registry->fetch('generate_xml') == 'true') {
-            $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Feeds');
+            $model = $this->gadget->loadModel('Feeds');
             $model->MakeAtom(true);
             $model->MakeRSS(true);
         }
@@ -227,7 +227,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             $params['allow_comments'] = $params['allow_comments'] == '1' ? true : false;
         }
 
-        $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Posts');
+        $model = $this->gadget->loadModel('Posts');
         $e = $model->GetEntry($post_id);
         if (Jaws_Error::IsError($e)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), RESPONSE_ERROR);
@@ -280,7 +280,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         }
 
         if ($this->gadget->registry->fetch('generate_xml') == 'true') {
-            $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Feeds');
+            $model = $this->gadget->loadModel('Feeds');
             $model->MakeAtom(true);
             $model->MakeRSS (true);
         }
@@ -294,13 +294,13 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             $catAux[] = $cat['id'];
         }
 
-        $feedModel = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Feeds');
+        $feedModel = $this->gadget->loadModel('Feeds');
         foreach ($categories as $category) {
             if (!in_array($category, $catAux)) {
                 $this->AddCategoryToEntry($post_id, $category);
             } else {
                 if ($this->gadget->registry->fetch('generate_category_xml') == 'true') {
-                    $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Feeds');
+                    $model = $this->gadget->loadModel('Feeds');
                     $catAtom = $model->GetCategoryAtomStruct($category);
                     $feedModel->MakeCategoryAtom($category, $catAtom, true);
                     $feedModel->MakeCategoryRSS($category, $catAtom, true);
@@ -334,7 +334,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      */
     function DeleteEntry($post_id)
     {
-        $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Posts');
+        $model = $this->gadget->loadModel('Posts');
         $e = $model->GetEntry($post_id);
         if (Jaws_Error::IsError($e)) {
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_DELETED'), _t('BLOG_NAME'));
@@ -359,13 +359,13 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         }
 
         if ($this->gadget->registry->fetch('generate_xml') == 'true') {
-            $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Feeds');
+            $model = $this->gadget->loadModel('Feeds');
             $model->MakeAtom(true);
             $model->MakeRSS (true);
         }
 
         // Remove comment entries..
-        $model = $GLOBALS['app']->loadGadget('Blog', 'AdminModel', 'Comments');
+        $model = $this->gadget->loadModel('Comments', true);
         $model->DeleteCommentsIn($post_id);
 
         return true;

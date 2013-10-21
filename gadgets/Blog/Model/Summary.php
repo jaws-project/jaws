@@ -20,7 +20,7 @@ class Blog_Model_Summary extends Jaws_Gadget_Model
      */
     function GetSummary()
     {
-        $model   = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'DatePosts');
+        $model   = $this->gadget->loadModel('DatePosts');
         $summary = $model->GetPostsDateLimitation();
 
         // Avg. entries per week

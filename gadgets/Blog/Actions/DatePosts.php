@@ -53,8 +53,8 @@ class Blog_Actions_DatePosts extends Blog_HTML
         $min_date = $GLOBALS['app']->UserTime2UTC($min_date['timestamp'], 'Y-m-d H:i:s');
         $max_date = $GLOBALS['app']->UserTime2UTC($max_date['timestamp'], 'Y-m-d H:i:s');
 
-        $pModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
-        $dpModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'DatePosts');
+        $pModel = $this->gadget->loadModel('Posts');
+        $dpModel = $this->gadget->loadModel('DatePosts');
         $entries = $pModel->GetEntriesByDate($page, $min_date, $max_date);
         if (!Jaws_Error::IsError($entries)) {
             $tpl = $this->gadget->loadTemplate('DatePosts.html');
@@ -124,7 +124,7 @@ class Blog_Actions_DatePosts extends Blog_HTML
         $nurl   = null;
         $ntitle = null;
         $objDate = $GLOBALS['app']->loadDate();
-        $model   = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'DatePosts');
+        $model   = $this->gadget->loadModel('DatePosts');
         $dLimit  = $model->GetPostsDateLimitation(true);
         if ($dLimit['qty_posts'] != 0) {
             if (empty($month)) {
@@ -210,7 +210,7 @@ class Blog_Actions_DatePosts extends Blog_HTML
         $tpl = $this->gadget->loadTemplate('MonthlyHistory.html');
         $tpl->SetBlock('monthly_history');
         $tpl->SetVariable('title', _t('BLOG_ARCHIVE'));
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'DatePosts');
+        $model = $this->gadget->loadModel('DatePosts');
         $entries = $model->GetEntriesAsHistory();
         if (!Jaws_Error::IsError($entries)) {
             $aux_mon_year = '';
@@ -326,7 +326,7 @@ class Blog_Actions_DatePosts extends Blog_HTML
             ));
         $cal->addArrow('right', $date->MonthString($rmonth) . '&raquo;', $url);
 
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'DatePosts');
+        $model = $this->gadget->loadModel('DatePosts');
         $bgnDate = $objDate->ToBaseDate($year, $month, 1, 0, 0, 0, 'Y-m-d H:i:s');
         $endDate = $objDate->ToBaseDate($year, $month + 1, 1, 0, 0, 0, 'Y-m-d H:i:s');
         $entries = $model->GetEntriesAsCalendar($bgnDate, $endDate);

@@ -68,7 +68,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             $ids[] = $r['id'];
         }
         $result = null;
-        $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Categories');
+        $model = $this->gadget->loadModel('Categories');
         $categories = $model->GetCategoriesInEntries($ids);
         foreach ($categories as $cat) {
             $entries[$cat['entry_id']]['categories'][] = array('id'       => $cat['id'],
@@ -276,7 +276,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
 
         $entry = array();
         if (!empty($row)) {
-            $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Categories');
+            $model = $this->gadget->loadModel('Categories');
             $entry = $row;
             require_once JAWS_PATH . 'include/Jaws/Gravatar.php';
             $entry['avatar_source'] = Jaws_Gravatar::GetGravatar($row['email']);

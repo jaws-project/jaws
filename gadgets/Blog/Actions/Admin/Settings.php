@@ -41,8 +41,8 @@ class Blog_Actions_Admin_Settings extends Blog_AdminHTML
         $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $save->AddEvent(ON_CLICK, 'javascript: saveSettings(this.form);');
 
-        $sModel = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Settings');
-        $cModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Categories');
+        $sModel = $this->gadget->loadModel('Settings', true);
+        $cModel = $this->gadget->loadModel('Categories');
         $settings = $sModel->GetSettings();
         if (Jaws_Error::IsError($settings)) {
             $settings = array();
@@ -209,7 +209,7 @@ class Blog_Actions_Admin_Settings extends Blog_AdminHTML
             'comments', 'comment_status', 'trackback', 'trackback_status');
         $post = jaws()->request->fetch($names, 'post');
 
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel', 'Settings');
+        $model = $this->gadget->loadModel('Settings', true);
         $model->SaveSettings($post['default_view'], $post['last_entries_limit'],
                              $post['last_comments_limit'], $post['last_recentcomments_limit'],
                              $post['default_category'], $post['xml_limit'],

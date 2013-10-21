@@ -43,8 +43,8 @@ class Blog_Actions_AuthorPosts extends Blog_HTML
             );
         }
 
-        $pModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'Posts');
-        $aModel = $GLOBALS['app']->LoadGadget('Blog', 'Model', 'AuthorPosts');
+        $pModel = $this->gadget->loadModel('Posts');
+        $aModel = $this->gadget->loadModel('AuthorPosts');
         $entries = $pModel->GetEntriesAsPage(null, $page, $whereArray);
         if (!Jaws_Error::IsError($entries) && !empty($entries)) {
             $tpl = $this->gadget->loadTemplate('AuthorPosts.html');

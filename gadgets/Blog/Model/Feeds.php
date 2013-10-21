@@ -91,7 +91,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
                 $text    = Jaws_UTF8::str_replace('[more]', '', $text);
 
                 // Update this entry to split summary and body of post
-                $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Posts');
+                $model = $this->gadget->loadModel('Posts');
                 $model->SplitEntry($r['id'], $summary, $text);
             }
 
@@ -106,7 +106,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             $entry->SetPublished($objDate->ToISO($r['publishtime']));
             $entry->SetUpdated($objDate->ToISO($r['updatetime']));
 
-            $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Categories');
+            $model = $this->gadget->loadModel('Categories');
             $cats = $model->GetCategoriesInEntry($r['id']);
             foreach ($cats as $c) {
                 $schema = $GLOBALS['app']->Map->GetURLFor('Blog', 'ShowCategory',
@@ -195,7 +195,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
      */
     function GetCategoryAtomStruct($category, $feed_type = 'atom')
     {
-        $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Categories');
+        $model = $this->gadget->loadModel('Categories');
         $catInfo = $model->GetCategory($category);
         if (Jaws_Error::IsError($catInfo)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_CATEGORIES_ATOMSTRUCT'), _t('BLOG_NAME'));
@@ -258,7 +258,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
                 $text    = Jaws_UTF8::str_replace('[more]', '', $text);
 
                 // Update this entry to split summary and body of post
-                $model = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Posts');
+                $model = $this->gadget->loadModel('Posts');
                 $model->SplitEntry($r['id'], $summary, $text);
             }
 

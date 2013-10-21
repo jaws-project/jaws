@@ -33,8 +33,8 @@ class Blog_Hooks_Menu extends Jaws_Gadget_Hook
                          'title'  => _t('BLOG_POSTS_AUTHORS'));
 
         //Blog model
-        $pModel      = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Posts');
-        $cModel      = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Categories');
+        $pModel      = $this->gadget->loadModel('Posts');
+        $cModel      = $this->gadget->loadModel('Categories');
         $categories = $cModel->GetCategories();
         if (!Jaws_Error::IsError($categories)) {
             $max_size = 32;
