@@ -29,7 +29,7 @@ class Blocks_Actions_Admin_Block extends Blocks_AdminHTML
         $blocksCombo->SetID('block_id');
         $blocksCombo->SetSize(16);
         $blocksCombo->AddEvent(ON_CHANGE, 'edit(this.value, \'' . _t('GLOBAL_EDIT') . '\');');
-        $model = $GLOBALS['app']->LoadGadget('Blocks', 'Model', 'Block');
+        $model = $this->gadget->loadModel('Block');
         $blocks = $model->GetBlocks(false);
         if (!Jaws_Error::isError($blocks)) {
             foreach ($blocks as $b) {

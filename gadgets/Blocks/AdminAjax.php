@@ -20,7 +20,7 @@ class Blocks_AdminAjax extends Jaws_Gadget_HTML
     function GetBlock()
     {
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Blocks', 'Model', 'Block');
+        $model = $this->gadget->loadModel('Block');
         $block = $model->GetBlock($id);
         if (Jaws_Error::IsError($block)) {
             return false;
@@ -45,7 +45,7 @@ class Blocks_AdminAjax extends Jaws_Gadget_HTML
         @list($title, $contents, $displayTitle) = jaws()->request->fetchAll('post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $contents = jaws()->request->fetch(1, 'post', false);
-        $model = $GLOBALS['app']->LoadGadget('Blocks', 'AdminModel', 'Block');
+        $model = $this->gadget->loadModel('Block', true);
         $res = $model->NewBlock($title, $contents, $displayTitle, $user);
         if (Jaws_Error::IsError($res)) {
             return $GLOBALS['app']->Session->GetResponse($res->GetMessage(),
@@ -74,7 +74,7 @@ class Blocks_AdminAjax extends Jaws_Gadget_HTML
         @list($id, $title, $contents, $displayTitle) = jaws()->request->fetchAll('post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $contents = jaws()->request->fetch(2, 'post', false);
-        $model = $GLOBALS['app']->LoadGadget('Blocks', 'AdminModel', 'Block');
+        $model = $this->gadget->loadModel('Block', true);
         $model->UpdateBlock($id, $title, $contents, $displayTitle, $user);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -90,7 +90,7 @@ class Blocks_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('DeleteBlock');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Blocks', 'AdminModel', 'Block');
+        $model = $this->gadget->loadModel('Block', true);
         $model->DeleteBlock($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }

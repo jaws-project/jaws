@@ -79,7 +79,7 @@ class Blocks_Model_Admin_Block extends Jaws_Gadget_Model
      */
     function DeleteBlock($id)
     {
-        $model = $GLOBALS['app']->LoadGadget('Blocks', 'Model', 'Block');
+        $model = $this->gadget->loadModel('Block');
         $block = $model->GetBlock($id);
         $blocksTable = Jaws_ORM::getInstance()->table('blocks');
         $result = $blocksTable->delete()->where('id', $id)->exec();
