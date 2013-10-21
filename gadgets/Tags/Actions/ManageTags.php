@@ -201,7 +201,7 @@ class Tags_Actions_ManageTags extends Tags_HTML
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
-        $res = $model->UpdateTag($id, $post);
+        $res = $model->UpdateTag($id, $post, false);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('TAGS_ERROR_CANT_UPDATE_TAG'),

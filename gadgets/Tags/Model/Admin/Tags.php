@@ -164,6 +164,18 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             $data['title'] = $data['name'];
         }
         $data['name'] = $this->GetRealFastUrl($data['name'], null, false);
+
+        // check duplicated tag
+        $table = Jaws_ORM::getInstance()->table('tags');
+        $table->select('count(id)')->where('name', $data['name'])->and()->where('user', $data['user']);
+        $tag = $table->fetchOne();
+        if (Jaws_Error::IsError($result)) {
+            return new Jaws_Error($result->getMessage(), 'SQL');
+        }
+        if ($tag > 0) {
+            return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $data['name']), _t('TAGS_NAME'));
+        }
+
         $table = Jaws_ORM::getInstance()->table('tags');
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
@@ -177,14 +189,34 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      * Update a tag
      *
      * @access  public
-     * @param   int     $id    Tag id
-     * @param   array   $data  Tag data
+     * @param   int     $id     Tag id
+     * @param   array   $data   Tag data
+     * @param   bool    $global Is global tag?
      * @return  mixed   Array of Tag info or Jaws_Error on failure
      */
-    function UpdateTag($id, $data)
+    function UpdateTag($id, $data, $global = true)
     {
-        $table = Jaws_ORM::getInstance()->table('tags');
         $data['name'] = $this->GetRealFastUrl($data['name'], null, false);
+
+        // check duplicated tag
+        $oldTag = $this->GetTag($id);
+        if ($oldTag['name'] != $data['name']) {
+            $user = 0;
+            if(!$global) {
+                $user = $GLOBALS['app']->Session->GetAttribute('user');
+            }
+            $table = Jaws_ORM::getInstance()->table('tags');
+            $table->select('count(id)')->where('name', $data['name'])->and()->where('user', $user);
+            $tag = $table->fetchOne();
+            if (Jaws_Error::IsError($result)) {
+                return new Jaws_Error($result->getMessage(), 'SQL');
+            }
+            if ($tag > 0) {
+                return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $data['name']), _t('TAGS_NAME'));
+            }
+        }
+
+        $table = Jaws_ORM::getInstance()->table('tags');
         $result = $table->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage(), 'SQL');

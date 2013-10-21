@@ -159,7 +159,7 @@ class Tags_Actions_Admin_Tags extends Tags_AdminHTML
     function GetDataAsArray($editAction, $filters, $offset)
     {
         $cModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
-        $tags = $cModel->GetTags($filters, 10, $offset);
+        $tags = $cModel->GetTags($filters, 10, $offset, 0, true);
         if (Jaws_Error::IsError($tags)) {
             return array();
         }
