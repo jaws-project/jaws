@@ -55,6 +55,17 @@ class Jaws_Gadget_Installer
     }
 
     /**
+     * Loads the Installer class object
+     *
+     * @access  public
+     * @return  pbject  Installer class object
+     */
+    function &load()
+    {
+        return $this;
+    }
+
+    /**
      * Loads the gadget model file in question, makes a instance and
      * stores it globally for later use so we do not have duplicates
      * of the same instance around in our code.
