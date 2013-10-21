@@ -44,13 +44,15 @@ class StaticPage_Model_Page extends Jaws_Gadget_Model
 
         $page = $spTable->fetchRow();
         if (!empty($page)) {
-            $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
-            $tags = $model->GetItemTags(
-                    array('gadget'=>'StaticPage', 'action'=>'page', 'reference'=>$page['translation_id']),
+            if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+                $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+                $tags = $model->GetItemTags(
+                    array('gadget' => 'StaticPage', 'action' => 'page', 'reference' => $page['translation_id']),
                     true);
-            $page['tags'] = implode(',' ,array_filter($tags));
+                $page['tags'] = implode(',', array_filter($tags));
+            }
         }
-        return  $page;
+        return $page;
     }
 
 

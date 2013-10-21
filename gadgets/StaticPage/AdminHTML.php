@@ -189,9 +189,11 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
         $advBox->Add($metaDescEntry);
 
         // Tags
-        $tagsEntry =& Piwi::CreateWidget('Entry', 'tags', $tags);
-        $tagsEntry->SetTitle(_t('GLOBAL_TAGS'));
-        $advBox->Add($tagsEntry);
+        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+            $tagsEntry =& Piwi::CreateWidget('Entry', 'tags', $tags);
+            $tagsEntry->SetTitle(_t('GLOBAL_TAGS'));
+            $advBox->Add($tagsEntry);
+        }
 
         // Auto Draft
         if ($mode == 'base') {

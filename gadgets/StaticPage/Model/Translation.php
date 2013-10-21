@@ -35,11 +35,13 @@ class StaticPage_Model_Translation extends Jaws_Gadget_Model
 
         if (isset($row['translation_id'])) {
             if (!empty($row)) {
-                $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
-                $tags = $model->GetItemTags(
-                    array('gadget'=>'StaticPage', 'action'=>'page', 'reference'=>$row['translation_id']),
-                    true);
-                $row['tags'] = implode(',', array_filter($tags));
+                if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+                    $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+                    $tags = $model->GetItemTags(
+                        array('gadget' => 'StaticPage', 'action' => 'page', 'reference' => $row['translation_id']),
+                        true);
+                    $row['tags'] = implode(',', array_filter($tags));
+                }
             }
             return $row;
         }
