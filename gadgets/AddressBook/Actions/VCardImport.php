@@ -70,7 +70,7 @@ class AddressBook_Actions_VCardImport extends AddressBook_HTML
         try {
             $vCard = new vCard($_FILES['vcard_file']['tmp_name'], false, array('Collapse' => false));
 
-            $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
+            $model = $this->gadget->loadModel('Model', 'AddressBook');
             if (count($vCard) == 0) {
                 $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_ERROR_VCARD_DATA_NOT_FOUND'), 'AddressBook.Import', RESPONSE_ERROR);
                 Jaws_Header::Location($this->gadget->urlMap('VCardImport'));

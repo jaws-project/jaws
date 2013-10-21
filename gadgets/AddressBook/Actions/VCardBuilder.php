@@ -22,8 +22,8 @@ class AddressBook_Actions_VCardBuilder extends AddressBook_HTML
 
         require_once JAWS_PATH . 'gadgets/Addressbook/vCard.php';
 
-        $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
-        $agModel = $this->gadget->load('Model')->load('Model', 'AddressBookGroup');
+        $model = $this->gadget->loadModel('Model', 'AddressBook');
+        $agModel = $this->gadget->loadModel('Model', 'AddressBookGroup');
         $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
         $ids =  jaws()->request->fetch('adr:array');
 

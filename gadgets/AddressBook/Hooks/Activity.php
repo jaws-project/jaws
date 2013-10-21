@@ -18,7 +18,7 @@ class AddressBook_Hooks_Activity extends Jaws_Gadget_Hook
     function Execute($uid, $uname)
     {
         $entity = array();
-        $model = $this->gadget->load('Model')->load('Model', 'AddressBook');
+        $model = $this->gadget->loadModel('Model', 'AddressBook');
         $addressCount = $model->GetAddressListCount($uid, null, true, null);
 
         if ($addressCount == 0) {

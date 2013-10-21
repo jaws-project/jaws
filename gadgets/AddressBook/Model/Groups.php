@@ -70,7 +70,7 @@ class AddressBook_Model_Groups extends Jaws_Gadget_Model
      */
     function DeleteGroup($group, $user)
     {
-        $agModel = $this->gadget->load('Model')->load('Model', 'AddressBookGroup');
+        $agModel = $this->gadget->loadModel('Model', 'AddressBookGroup');
         $agModel->DeleteAddressForGroup($group, $user);
         $aTable = Jaws_ORM::getInstance()->table('address_group');
         return $aTable->delete()->where('user', (int) $user)->and()->where('id', (int) $group)->exec();
@@ -84,7 +84,7 @@ class AddressBook_Model_Groups extends Jaws_Gadget_Model
      */
     function DeleteGroups($groups, $user)
     {
-        $agModel = $this->gadget->load('Model')->load('Model', 'AddressBookGroup');
+        $agModel = $this->gadget->loadModel('Model', 'AddressBookGroup');
         $agModel->DeleteAddressForGroups($groups, $user);
         $aTable = Jaws_ORM::getInstance()->table('address_group');
         return $aTable->delete()->where('user', (int) $user)->and()->where('id', $groups, 'in')->exec();
