@@ -79,7 +79,7 @@ class UrlMapper_Installer extends Jaws_Gadget_Installer
             }
 
             // Update all gadgets maps
-            $umapModel = $this->gadget->loadModel('AdminModel', 'Maps');
+            $umapModel = $this->gadget->loadModel('Maps', true);
             $gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
             $gadgets = array_filter(explode(',', $gadgets));
             foreach ($gadgets as $gadget) {
