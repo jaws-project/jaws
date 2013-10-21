@@ -17,7 +17,7 @@ class Banner_Actions_Admin_Reports extends Banner_AdminHTML
      */
     function GetReportBanners($gid, $offset = null)
     {
-        $model = $GLOBALS['app']->LoadGadget('Banner', 'Model', 'Banners');
+        $model = $this->gadget->loadModel('Banners');
         $banners = $model->GetBanners(-1, $gid, 18, $offset);
         if (Jaws_Error::IsError($banners)) {
             return array();
@@ -79,7 +79,7 @@ class Banner_Actions_Admin_Reports extends Banner_AdminHTML
         $tpl = $this->gadget->loadTemplate('BannerReports.html');
         $tpl->SetBlock('Reports');
 
-        $model = $GLOBALS['app']->LoadGadget('Banner', 'AdminModel');
+        $model = $this->gadget->loadModel();
         $total = $model->TotalOfData('banners', 'id');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
@@ -118,7 +118,7 @@ class Banner_Actions_Admin_Reports extends Banner_AdminHTML
         $bGroup->setStyle('min-width:200px;');
         $bGroup->AddEvent(ON_CHANGE, "getBannersDataGrid('reports_datagrid', 0, true)");
         $bGroup->AddOption('&nbsp;', -1);
-        $model = $GLOBALS['app']->LoadGadget('Banner', 'Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $groups = $model->GetGroups(-1);
         foreach($groups as $group) {
             $bGroup->AddOption($group['title'], $group['id']);

@@ -17,7 +17,7 @@ class Banner_Model_Admin_Reports extends Jaws_Gadget_Model
      */
     function ResetViews($bid)
     {
-        $model = $GLOBALS['app']->LoadGadget('Banner', 'Model', 'Banners');
+        $model = $this->gadget->loadModel('Banners');
         $banner = $model->GetBanner($bid);
         if (Jaws_Error::IsError($banner)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -53,7 +53,7 @@ class Banner_Model_Admin_Reports extends Jaws_Gadget_Model
      */
     function ResetClicks($bid)
     {
-        $model = $GLOBALS['app']->LoadGadget('Banner', 'Model', 'Banners');
+        $model = $this->gadget->loadModel('Banners');
         $banner = $model->GetBanner($bid);
         if (Jaws_Error::IsError($banner)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);

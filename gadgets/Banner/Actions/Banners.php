@@ -16,7 +16,7 @@ class Banner_Actions_Banners extends Jaws_Gadget_HTML
     function BannersLayoutParams()
     {
         $result = array();
-        $bModel = $GLOBALS['app']->LoadGadget('Banner', 'Model', 'Groups');
+        $bModel = $this->gadget->loadModel('Groups');
         $groups = $bModel->GetGroups();
         if (!Jaws_Error::isError($groups)) {
             $pgroups = array();
@@ -51,13 +51,13 @@ class Banner_Actions_Banners extends Jaws_Gadget_HTML
             $abs_url = true;
         }
 
-        $groupModel = $GLOBALS['app']->LoadGadget('Banner', 'Model', 'Groups');
+        $groupModel = $this->gadget->loadModel('Groups');
         $group = $groupModel->GetGroup($gid);
         if (Jaws_Error::IsError($group) || empty($group) || !$group['published']) {
             return false;
         }
 
-        $bannerModel = $GLOBALS['app']->LoadGadget('Banner', 'Model', 'Banners');
+        $bannerModel = $this->gadget->loadModel('Banners');
         $banners = $bannerModel->GetVisibleBanners($gid, $group['limit_count']);
         if (Jaws_Error::IsError($banners) || empty($banners)) {
             return false;
@@ -125,7 +125,7 @@ class Banner_Actions_Banners extends Jaws_Gadget_HTML
      */
     function Click()
     {
-        $model = $GLOBALS['app']->LoadGadget('Banner', 'Model', 'Banners');
+        $model = $this->gadget->loadModel('Banners');
         $id = (int)jaws()->request->fetch('id', 'get');
         $banner = $model->GetBanners($id);
         if (!Jaws_Error::IsError($banner) && !empty($banner)) {

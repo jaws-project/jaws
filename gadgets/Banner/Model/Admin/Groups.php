@@ -84,7 +84,7 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
             return false;
         }
 
-        $model = $GLOBALS['app']->LoadGadget('Banner', 'Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -96,7 +96,7 @@ class Banner_Model_Admin_Groups extends Jaws_Gadget_Model
             return false;
         }
 
-        $model = $GLOBALS['app']->LoadGadget('Banner', 'AdminModel', 'Banners');
+        $model = $this->gadget->loadModel('Banners', true);
         $model->UpdateBannerGroup(-1, $gid, 0, 0);
 
         $bannersTable = Jaws_ORM::getInstance()->table('banners_groups');

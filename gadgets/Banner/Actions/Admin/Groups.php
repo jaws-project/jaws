@@ -55,7 +55,7 @@ class Banner_Actions_Admin_Groups extends Banner_AdminHTML
         $comboGroups->SetSize(20);
         $comboGroups->AddEvent(ON_CHANGE, 'javascript: editGroup(this.value);');
 
-        $model = $GLOBALS['app']->LoadGadget('Banner', 'Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $groups = $model->GetGroups(-1);
         foreach($groups as $group) {
             $comboGroups->AddOption($group['title'], $group['id']);
@@ -133,7 +133,7 @@ class Banner_Actions_Admin_Groups extends Banner_AdminHTML
         $tpl = $this->gadget->loadTemplate('GroupBanners.html');
         $tpl->SetBlock('GroupBanners');
 
-        $model = $GLOBALS['app']->LoadGadget('Banner', 'Model', 'Banners');
+        $model = $this->gadget->loadModel('Banners');
 
         $tpl->SetVariable('lbl_banners', _t('BANNER_GROUPS_MARK_BANNERS'));
         $bannersCombo =& Piwi::CreateWidget('Combo', 'banners_combo');
