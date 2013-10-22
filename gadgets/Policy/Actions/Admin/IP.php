@@ -21,7 +21,7 @@ class Policy_Actions_Admin_IP extends Policy_AdminHTML
      */
     function GetBlockedIPRanges($offset = null)
     {
-        $model  = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'IP');
+        $model  = $this->gadget->loadAdminModel('IP');
         $ipRanges = $model->GetBlockedIPs(12, $offset);
         if (Jaws_Error::IsError($ipRanges)) {
             return array();
@@ -60,7 +60,7 @@ class Policy_Actions_Admin_IP extends Policy_AdminHTML
      */
     function IPsDatagrid()
     {
-        $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'IP');
+        $model = $this->gadget->loadAdminModel('IP');
         $totalIPs = $model->GetTotalOfBlockedIPs();
 
         $grid =& Piwi::CreateWidget('DataGrid', array(), null);

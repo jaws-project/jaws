@@ -20,7 +20,7 @@ class Policy_Actions_Admin_Agent extends Policy_AdminHTML
      */
     function GetBlockedAgents($offset = 0)
     {
-        $model  = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Agent');
+        $model  = $this->gadget->loadAdminModel('Agent');
         $agents = $model->GetBlockedAgents(12, $offset);
         if (Jaws_Error::IsError($agents)) {
             return array();
@@ -59,7 +59,7 @@ class Policy_Actions_Admin_Agent extends Policy_AdminHTML
      */
     function AgentsDatagrid()
     {
-        $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Agent');
+        $model = $this->gadget->loadAdminModel('Agent');
         $totalAgents = $model->GetTotalOfBlockedAgents();
 
         $grid =& Piwi::CreateWidget('DataGrid', array(), null);

@@ -23,7 +23,7 @@ class Policy_Actions_Admin_AntiSpam extends Policy_AdminHTML
         $this->gadget->CheckPermission('AntiSpam');
         $this->AjaxMe('script.js');
 
-        $model = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'AntiSpam');
+        $model = $this->gadget->loadAdminModel('AntiSpam');
         $tpl = $this->gadget->loadTemplate('AntiSpam.html');
         $tpl->SetBlock('AntiSpam');
 
