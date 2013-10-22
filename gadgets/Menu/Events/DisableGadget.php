@@ -16,7 +16,7 @@ class Menu_Events_DisableGadget extends Jaws_Gadget_Event
      */
     function Execute($gadget)
     {
-        $model = $GLOBALS['app']->LoadGadget('Menu', 'AdminModel', 'Menu');
+        $model = $this->gadget->loadAdminModel('Menu');
         $res = $model->PublishGadgetMenus($gadget, false);
         return $res;
     }

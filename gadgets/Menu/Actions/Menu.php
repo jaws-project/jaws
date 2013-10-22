@@ -28,7 +28,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_HTML
     function MenuLayoutParams()
     {
         $result = array();
-        $model = $GLOBALS['app']->LoadGadget('Menu', 'Model', 'Group');
+        $model = $this->gadget->loadModel('Group');
         $groups = $model->GetGroups();
         if (!Jaws_Error::isError($groups)) {
             $pgroups = array();
@@ -54,8 +54,8 @@ class Menu_Actions_Menu extends Jaws_Gadget_HTML
      */
     function Menu($gid = 0)
     {
-        $mModel = $GLOBALS['app']->LoadGadget('Menu', 'Model', 'Menu');
-        $gModel = $GLOBALS['app']->LoadGadget('Menu', 'Model', 'Group');
+        $mModel = $this->gadget->loadModel('Menu');
+        $gModel = $this->gadget->loadModel('Group');
         $group = $gModel->GetGroups($gid);
         if (Jaws_Error::IsError($group) || empty($group) || !$group['published']) {
             return false;
@@ -161,7 +161,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_HTML
     function LoadImage()
     {
         $id = (int)jaws()->request->fetch('id', 'get');
-        $model = $GLOBALS['app']->LoadGadget('Menu', 'Model', 'Menu');
+        $model = $this->gadget->loadModel('Menu');
         $image = $model->GetMenuImage($id);
         if (!Jaws_Error::IsError($image)) {
             require_once JAWS_PATH . 'include/Jaws/Image.php';
