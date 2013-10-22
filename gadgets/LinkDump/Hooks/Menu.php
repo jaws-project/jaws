@@ -22,7 +22,7 @@ class LinkDump_Hooks_Menu extends Jaws_Gadget_Hook
         $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('LinkDump', 'Categories'),
                         'title' => _t('LINKDUMP_NAME'));
 
-        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $groups = $model->GetGroups();
         if (!Jaws_Error::IsError($groups)) {
             $max_size = 32;

@@ -20,7 +20,7 @@ class LinkDump_Actions_Groups extends Jaws_Gadget_HTML
     function CategoryLayoutParams()
     {
         $result = array();
-        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $groups = $model->GetGroups();
         if (!Jaws_Error::isError($groups)) {
             $pgroups = array();
@@ -55,7 +55,7 @@ class LinkDump_Actions_Groups extends Jaws_Gadget_HTML
             $tplFile = 'LinkDump.html';
         }
 
-        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group) || empty($group)) {
             return false;
@@ -115,7 +115,7 @@ class LinkDump_Actions_Groups extends Jaws_Gadget_HTML
      */
     function Categories()
     {
-        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $groups = $model->GetGroups();
         if (Jaws_Error::IsError($group)) {
             return false;

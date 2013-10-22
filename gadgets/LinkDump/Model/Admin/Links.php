@@ -78,7 +78,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'linkdump_links', false);
 
-        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model', 'Links');
+        $model = $this->gadget->loadModel('Links');
         $oldLink = $model->GetLink($id);
         if (Jaws_Error::IsError($oldLink)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_UPDATE_ERROR'), RESPONSE_ERROR);
@@ -234,7 +234,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
     function InvalidateFeed($gid)
     {
         if (is_numeric($gid)) {
-            $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model', 'Groups');
+            $model = $this->gadget->loadModel('Groups');
             $group = $model->GetGroup($gid);
             $gid = $group['fast_url'];
         }

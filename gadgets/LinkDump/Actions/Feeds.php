@@ -49,7 +49,7 @@ class LinkDump_Actions_Feeds extends Jaws_Gadget_HTML
      */
     function GenerateFeed($gid)
     {
-        $model = $GLOBALS['app']->LoadGadget('LinkDump', 'Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
             return false;
