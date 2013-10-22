@@ -90,7 +90,7 @@ class Layout_Actions_Admin_Element extends Jaws_Gadget_HTML
     function EditElementAction()
     {
         $id = jaws()->request->fetch('id', 'get');
-        $model = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
+        $model = $this->gadget->loadAdminModel('Elements');
         $layoutElement = $model->GetElement($id);
         if (!$layoutElement || !isset($layoutElement['id'])) {
             return false;

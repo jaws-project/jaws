@@ -19,8 +19,8 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
      */
     function LayoutManager()
     {
-        $lModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
-        $eModel = $GLOBALS['app']->LoadGadget('Layout', 'AdminModel', 'Elements');
+        $lModel = $this->gadget->loadAdminModel('Layout');
+        $eModel = $this->gadget->loadAdminModel('Elements');
 
         $t_item = $this->gadget->loadTemplate('LayoutManager.html');
         $t_item->SetBlock('working_notification');

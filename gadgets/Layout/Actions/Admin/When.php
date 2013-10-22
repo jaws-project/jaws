@@ -19,7 +19,7 @@ class Layout_Actions_Admin_When extends Jaws_Gadget_HTML
      */
     function ChangeDisplayWhen()
     {
-        $model = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Elements');
+        $model = $this->gadget->loadAdminModel('Elements');
 
         $tpl = $this->gadget->loadTemplate('DisplayWhen.html');
         $tpl->SetBlock('template');
