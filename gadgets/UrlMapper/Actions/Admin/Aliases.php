@@ -68,7 +68,7 @@ class UrlMapper_Actions_Admin_Aliases extends UrlMapper_AdminHTML
         $tpl->SetVariable('edit_form', $form->Get());
         $tpl->SetVariable('menubar', $this->MenuBar('Aliases'));
 
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminModel', 'Aliases');
+        $model = $this->gadget->loadAdminModel('Aliases');
         $aliases = $model->GetAliases();
 
         foreach($aliases as $alias) {

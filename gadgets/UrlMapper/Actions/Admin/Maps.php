@@ -22,7 +22,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_AdminHTML
      */
     function GetMaps($gadget, $action)
     {
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminModel', 'Maps');
+        $model = $this->gadget->loadAdminModel('Maps');
         $maps  = $model->GetActionMaps($gadget, $action);
         if (Jaws_Error::IsError($maps)) {
             return array();

@@ -63,7 +63,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_AdminHTML
     function GetErrorMaps($limit, $offset)
     {
         require_once JAWS_PATH . 'include/Jaws/User.php';
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminModel', 'ErrorMaps');
+        $model = $this->gadget->loadAdminModel('ErrorMaps');
         $errorMaps = $model->GetErrorMaps($limit, $offset);
         if (Jaws_Error::IsError($errorMaps)) {
             return array();

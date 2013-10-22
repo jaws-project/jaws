@@ -16,7 +16,7 @@ class UrlMapper_Events_InstallGadget extends Jaws_Gadget_Event
      */
     function Execute($gadget)
     {
-        $uModel = $GLOBALS['app']->loadGadget('UrlMapper', 'AdminModel', 'Maps');
+        $uModel = $this->gadget->loadAdminModel('Maps');
         $res = $uModel->AddGadgetMaps($gadget);
         return $res;
     }

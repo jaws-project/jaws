@@ -20,7 +20,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
     function GetGadgetActions()
     {
         @list($gadget) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminModel', 'Maps');
+        $model = $this->gadget->loadAdminModel('Maps');
         $actions = $model->GetGadgetActions($gadget);
         if (Jaws_Error::IsError($actions)) {
             return false;
@@ -52,7 +52,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
     function UpdateMap()
     {
         @list($id, $map, $order) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminModel', 'Maps');
+        $model = $this->gadget->loadAdminModel('Maps');
         $res = $model->UpdateMap($id, $map, null, $order);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_MAP_NOT_UPDATED'), RESPONSE_ERROR);
@@ -72,7 +72,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
     function GetMap()
     {
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminModel', 'Maps');
+        $model = $this->gadget->loadAdminModel('Maps');
         return $model->GetMap($id);
     }
 
@@ -85,7 +85,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
     function UpdateSettings()
     {
         @list($enabled, $use_aliases, $precedence, $extension) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminModel', 'Properties');
+        $model = $this->gadget->loadAdminModel('Properties');
         $model->SaveSettings($enabled == 'true',
                                     $use_aliases == 'true',
                                     $precedence == 'true',
@@ -101,7 +101,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetAliases()
     {
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'Model', 'Aliases');
+        $model = $this->gadget->loadModel('Aliases');
         $aliases = $model->GetAliases();
         if (count($aliases) > 0) {
             return $aliases;
@@ -118,7 +118,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
     function GetAlias()
     {
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'Model', 'Aliases');
+        $model = $this->gadget->loadModel('Aliases');
         return $model->GetAlias($id);
     }
 
@@ -131,7 +131,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
     function AddAlias()
     {
         @list($alias, $url) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminModel', 'Aliases');
+        $model = $this->gadget->loadAdminModel('Aliases');
         $model->AddAlias($alias, $url);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -145,7 +145,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
     function UpdateAlias()
     {
         @list($id, $alias, $url) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminModel', 'Aliases');
+        $model = $this->gadget->loadAdminModel('Aliases');
         $model->UpdateAlias($id, $alias, $url);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -159,7 +159,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
     function DeleteAlias()
     {
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminModel', 'Aliases');
+        $model = $this->gadget->loadAdminModel('Aliases');
         $model->DeleteAlias($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -189,7 +189,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetErrorMapsCount()
     {
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminModel', 'ErrorMaps');
+        $model = $this->gadget->loadAdminModel('ErrorMaps');
         $res = $model->GetErrorMapsCount();
         if (Jaws_Error::IsError($res)) {
             return false;
@@ -207,7 +207,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
     function AddErrorMap()
     {
         @list($url, $code, $new_url, $new_code) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminModel', 'ErrorMaps');
+        $model = $this->gadget->loadAdminModel('ErrorMaps');
         $res = $model->AddErrorMap($url, $code, $new_url, $new_code);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
@@ -227,7 +227,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
     function UpdateErrorMap()
     {
         @list($id, $url, $code, $new_url, $new_code) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminModel', 'ErrorMaps');
+        $model = $this->gadget->loadAdminModel('ErrorMaps');
         $model->UpdateErrorMap($id, $url, $code, $new_url, $new_code);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -241,7 +241,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
     function GetErrorMap()
     {
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminModel', 'ErrorMaps');
+        $model = $this->gadget->loadAdminModel('ErrorMaps');
         return $model->GetErrorMap($id);
     }
 
@@ -254,7 +254,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
     function DeleteErrorMap()
     {
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminModel', 'ErrorMaps');
+        $model = $this->gadget->loadAdminModel('ErrorMaps');
         $model->DeleteErrorMap($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
