@@ -181,7 +181,7 @@ class Users_Actions_Personal extends Users_HTML
             $post['avatar'] = '';
         }
 
-        $model  = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Personal');
+        $model  = $this->gadget->loadModel('Personal');
         $result = $model->UpdatePersonal(
             $GLOBALS['app']->Session->GetAttribute('user'),
             $post

@@ -84,7 +84,7 @@ class Users_Actions_Registration extends Users_HTML
                     $dob  = date('Y-m-d H:i:s', $dob['timestamp']);
                 }
 
-                $uModel = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Registration');
+                $uModel = $this->gadget->loadModel('Registration');
                 $result = $uModel->CreateUser(
                     $post['username'],
                     $post['email'],

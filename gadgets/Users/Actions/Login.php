@@ -38,7 +38,7 @@ class Users_Actions_Login extends Users_HTML
             Jaws_Header::Location($this->gadget->urlMap('ForgotLogin'));
         }
 
-        $uModel = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Registration');
+        $uModel = $this->gadget->loadModel('Registration');
         $result = $uModel->SendRecoveryKey($post['email']);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushResponse(

@@ -66,7 +66,7 @@ class Users_Actions_Contacts extends Users_HTML
         $tpl->SetVariable('avatar', $avatar->Get());
 
         // countries list
-        $ObjCountry = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Country');
+        $ObjCountry = $this->gadget->loadModel('Country');
         $countries = $ObjCountry->GetCountries();
         if (!Jaws_Error::IsError($Countries)) {
             array_unshift($countries, _t('USERS_ADVANCED_OPTS_NOT_YET'));
@@ -117,7 +117,7 @@ class Users_Actions_Contacts extends Users_HTML
             'post'
         );
 
-        $uModel = $GLOBALS['app']->LoadGadget('Users', 'Model', 'Contacts');
+        $uModel = $this->gadget->loadModel('Contacts');
         $result = $uModel->UpdateContacts(
             $GLOBALS['app']->Session->GetAttribute('user'),
             $post['country'],

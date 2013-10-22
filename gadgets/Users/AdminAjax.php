@@ -430,7 +430,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageGroups');
         @list($guid, $users) = jaws()->request->fetchAll('post');
         $users = jaws()->request->fetch('1:array', 'post');
-        $uModel = $GLOBALS['app']->LoadGadget('Users', 'AdminModel', 'UsersGroup');
+        $uModel = $this->gadget->loadAdminModel('UsersGroup');
         $res = $uModel->AddUsersToGroup($guid, $users);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
@@ -450,7 +450,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageProperties');
         @list($method, $anon, $repetitive, $act, $group, $recover, $dashboard) = jaws()->request->fetchAll('post');
-        $uModel = $GLOBALS['app']->LoadGadget('Users', 'AdminModel', 'Settings');
+        $uModel = $this->gadget->loadAdminModel('Settings');
         $res = $uModel->SaveSettings($method, $anon, $repetitive, $act, $group, $recover, $dashboard);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
