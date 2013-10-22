@@ -20,7 +20,7 @@ class Webcam_Actions_Webcam extends Jaws_Gadget_HTML
     function Display()
     {
         $tpl = $this->gadget->loadTemplate('Webcam.html');
-        $model = $GLOBALS['app']->LoadGadget('Webcam', 'Model', 'Webcam');
+        $model = $this->gadget->loadModel('Webcam');
         $webcams = $model->GetWebcams();
         if (!Jaws_Error::IsError($webcams)) {
             $tpl->SetBlock('webcam');
@@ -48,7 +48,7 @@ class Webcam_Actions_Webcam extends Jaws_Gadget_HTML
     function Random()
     {
         $tpl = $this->gadget->loadTemplate('Webcam.html');
-        $model = $GLOBALS['app']->LoadGadget('Webcam', 'Model', 'Webcam');
+        $model = $this->gadget->loadModel('Webcam');
         $webcam = $model->GetRandomWebCam();
         if (!Jaws_Error::IsError($webcam)) {
             $tpl->SetBlock('webcam');

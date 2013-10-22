@@ -36,7 +36,7 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_HTML
      */
     function GetWebCams($limit = 0)
     {
-        $model = $GLOBALS['app']->LoadGadget('Webcam', 'Model', 'Webcam');
+        $model = $this->gadget->loadModel('Webcam');
         $webcams = $model->GetWebCams($limit);
         if (Jaws_Error::IsError($webcams)) {
             return array();
@@ -75,7 +75,7 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_HTML
      */
     function DataGrid()
     {
-        $model = $GLOBALS['app']->LoadGadget('Webcam', 'AdminModel');
+        $model = $this->gadget->loadModel();
         $total = $model->TotalOfData('webcam');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
