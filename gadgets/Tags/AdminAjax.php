@@ -35,7 +35,7 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
         $filters = jaws()->request->fetchAll('post');
         $filters['gadget'] = $filters['gadgets_filter'];
         unset($filters['gadgets_filter']);
-        $tModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $tModel = $this->gadget->loadAdminModel('Tags');
         return $tModel->GetTagsCount($filters);
     }
 
@@ -49,7 +49,7 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
     function GetGadgetActions()
     {
         $gadget = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $model = $this->gadget->loadAdminModel('Tags');
         $actions = $model->GetGadgetActions($gadget);
         if (Jaws_Error::IsError($actions)) {
             return false; //we need to handle errors on ajax
@@ -67,7 +67,7 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
     function GetTag()
     {
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $model = $this->gadget->loadAdminModel('Tags');
         $tag = $model->GetTag($id);
         if (Jaws_Error::IsError($tag)) {
             return false; //we need to handle errors on ajax
@@ -86,7 +86,7 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('AddTags');
         $data = jaws()->request->fetchAll('post');
-        $tModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $tModel = $this->gadget->loadAdminModel('Tags');
         $res = $tModel->AddTag($data);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
@@ -108,7 +108,7 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageTags');
         @list($id, $data) = jaws()->request->fetchAll('post');
         $data = jaws()->request->fetch('1:array', 'post');
-        $tModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $tModel = $this->gadget->loadAdminModel('Tags');
         $res = $tModel->UpdateTag($id, $data);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
@@ -129,7 +129,7 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageTags');
         $ids = jaws()->request->fetchAll('post');
-        $tModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $tModel = $this->gadget->loadAdminModel('Tags');
         $res = $tModel->DeleteTags($ids);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
@@ -152,7 +152,7 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
         @list($ids, $newName) = jaws()->request->fetchAll('post');
         $ids = jaws()->request->fetch('0:array', 'post');
 
-        $tModel = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $tModel = $this->gadget->loadAdminModel('Tags');
         $res = $tModel->MergeTags($ids, $newName);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
@@ -173,7 +173,7 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('Settings');
         @list($tagResultLimit) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Settings');
+        $model = $this->gadget->loadAdminModel('Settings');
         $res = $model->SaveSettings($tagResultLimit);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);

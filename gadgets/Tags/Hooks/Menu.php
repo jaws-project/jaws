@@ -20,7 +20,7 @@ class Tags_Hooks_Menu extends Jaws_Gadget_Hook
     {
         $urls = array();
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
-        $model = $GLOBALS['app']->loadGadget('Tags', 'Model', 'Tags');
+        $model = $this->gadget->loadModel('Tags');
         $gadgets = $model->GetTagRelativeGadgets();
 
         $urls[] = array(

@@ -22,7 +22,7 @@ class Tags_Actions_Tags extends Tags_HTML
         $result = array();
 
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
-        $model = $GLOBALS['app']->LoadGadget('Tags', 'Model', 'Tags');
+        $model = $this->gadget->loadModel('Tags');
         $gadgets = $model->GetTagRelativeGadgets();
         $tagGadgets = array();
         $tagGadgets[''] = _t('GLOBAL_ALL');
@@ -62,7 +62,7 @@ class Tags_Actions_Tags extends Tags_HTML
         }
 
         $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $model = $GLOBALS['app']->LoadGadget('Tags', 'Model', 'Tags');
+        $model = $this->gadget->loadModel('Tags');
         $res = $model->GenerateTagCloud($gadget, $global);
         $sortedTags = $res;
         sort($sortedTags);
@@ -131,7 +131,7 @@ class Tags_Actions_Tags extends Tags_HTML
      */
     function ViewItemTags($gadget, $action, $reference, &$tpl, $tpl_base_block)
     {
-        $model = $GLOBALS['app']->LoadGadget('Tags', 'AdminModel', 'Tags');
+        $model = $this->gadget->loadAdminModel('Tags');
         $tags = $model->GetItemTags(array('gadget' => $gadget, 'action' => $action, 'reference' => $reference), true);
 
         $tpl->SetBlock("$tpl_base_block/tags");
@@ -223,7 +223,7 @@ class Tags_Actions_Tags extends Tags_HTML
 
 
         if(empty($gadget)) {
-            $model = $GLOBALS['app']->LoadGadget('Tags', 'Model', 'Tags');
+            $model = $this->gadget->loadModel('Tags');
             $gadgets = $model->GetTagRelativeGadgets();
         } else {
             $gadgets = array($gadget);
