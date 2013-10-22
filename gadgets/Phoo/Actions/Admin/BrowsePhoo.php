@@ -20,8 +20,8 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminHTML
      */
     function BrowsePhoo()
     {
-        $pModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Photos');
-        $aModel = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
+        $pModel = $this->gadget->loadModel('Photos');
+        $aModel = $this->gadget->loadModel('Albums');
         $tpl = $this->gadget->loadTemplate('PhooBrowse.html');
         $tpl->SetBlock('phoo_browse');
 

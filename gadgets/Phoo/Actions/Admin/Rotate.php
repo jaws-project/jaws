@@ -23,7 +23,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_AdminHTML
 
         //FIXME: Ugly, maybe we need to pass just the image id, also we need to create a class
         //to manage image actions(resize, rotate)
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Photos');
+        $model = $this->gadget->loadModel('Photos');
         $image = $model->GetImageEntry($post['image']);
         if (Jaws_Error::IsError($image))  {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditPhoto&image='.$post['image'].
@@ -80,7 +80,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_AdminHTML
 
         //FIXME: Ugly, maybe we need to pass just the image id, also we need to create a
         //class to manage image actions(resize, rotate)
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Photos');
+        $model = $this->gadget->loadModel('Photos');
         $image = $model->GetImageEntry($post['image']);
         if (Jaws_Error::IsError($image)) {
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditPhoto&image='.$post['image'].

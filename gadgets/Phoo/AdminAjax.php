@@ -25,8 +25,8 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
         $file['name'] = $image;
         $file['size'] = @filesize($file['tmp_name']);
 
-        $aModel = $GLOBALS['app']->loadGadget('Phoo', 'Model', 'Albums');
-        $pModel = $GLOBALS['app']->loadGadget('Phoo', 'AdminModel', 'Photos');
+        $aModel = $this->gadget->loadModel('Albums');
+        $pModel = $this->gadget->loadAdminModel('Photos');
         $album_data = $aModel->getAlbumInfo($album);
         $id = $pModel->NewEntry($GLOBALS['app']->Session->GetAttribute('user'),
                                 $file,
@@ -53,7 +53,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_HTML
             $published = null;
         }
 
-        $model = $GLOBALS['app']->loadGadget('Phoo', 'AdminModel', 'Photos');
+        $model = $this->gadget->loadAdminModel('Photos');
         $model->UpdateEntry($id, $title, $desc, $allow_comments, $published, $albums);
         return $GLOBALS['app']->Session->PopLastResponse();
     }

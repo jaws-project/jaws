@@ -52,7 +52,7 @@ class Phoo_Actions_Albums extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('Albums.html');
         $tpl->SetBlock('albums');
         $tpl->SetVariable('title', _t('PHOO_ALBUMS'));
-        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model', 'Albums');
+        $model = $this->gadget->loadModel('Albums');
 
         if (is_null($gid)) {
             $group  = (int) $this->gadget->request->fetch('group');
