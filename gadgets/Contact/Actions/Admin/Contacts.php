@@ -34,7 +34,7 @@ class Contact_Actions_Admin_Contacts extends Contact_AdminHTML
         $recipientCombo->AddEvent(ON_CHANGE, "getContacts('contacts_datagrid', 0, true)");
         $recipientCombo->AddOption('', -1);
         $recipientCombo->AddOption($this->gadget->registry->fetch('site_author', 'Settings'), 0);
-        $model = $GLOBALS['app']->LoadGadget('Contact', 'Model', 'Recipients');
+        $model = $this->gadget->loadModel('Recipients');
         $recipients = $model->GetRecipients();
         if (!Jaws_Error::IsError($result)) {
             foreach ($recipients as $recipient) {
@@ -88,7 +88,7 @@ class Contact_Actions_Admin_Contacts extends Contact_AdminHTML
      */
     function ContactsDataGrid()
     {
-        $model = $GLOBALS['app']->LoadGadget('Contact', 'AdminModel');
+        $model = $this->gadget->loadModel();
         $total = $model->TotalOfData('contacts');
 
         $grid =& Piwi::CreateWidget('DataGrid', array());
@@ -120,7 +120,7 @@ class Contact_Actions_Admin_Contacts extends Contact_AdminHTML
      */
     function GetContacts($recipient = -1, $offset = null)
     {
-        $model = $GLOBALS['app']->LoadGadget('Contact', 'AdminModel', 'Contacts');
+        $model = $this->gadget->loadAdminModel('Contacts');
         $contacts = $model->GetContacts($recipient, 12, $offset);
         if (Jaws_Error::IsError($contacts)) {
             return array();
@@ -235,7 +235,7 @@ class Contact_Actions_Admin_Contacts extends Contact_AdminHTML
         $recipientCombo =& Piwi::CreateWidget('Combo', 'rid');
         $recipientCombo->SetID('rid');
         $recipientCombo->AddOption($this->gadget->registry->fetch('site_author', 'Settings'), 0);
-        $model = $GLOBALS['app']->LoadGadget('Contact', 'Model', 'Recipients');
+        $model = $this->gadget->loadModel('Recipients');
         $recipients = $model->GetRecipients();
         if (!Jaws_Error::IsError($result)) {
             foreach ($recipients as $recipient) {
@@ -315,7 +315,7 @@ class Contact_Actions_Admin_Contacts extends Contact_AdminHTML
      */
     function SendReply($cid)
     {
-        $model = $GLOBALS['app']->LoadGadget('Contact', 'AdminModel', 'Contacts');
+        $model = $this->gadget->loadAdminModel('Contacts');
         $contact = $model->GetReply($cid);
         if (Jaws_Error::IsError($contact)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'),
@@ -334,7 +334,7 @@ class Contact_Actions_Admin_Contacts extends Contact_AdminHTML
         $to  = $contact['email'];
         $rid = $contact['recipient'];
         if ($rid != 0) {
-            $model = $GLOBALS['app']->LoadGadget('Contact', 'Model', 'Recipients');
+            $model = $this->gadget->loadModel('Recipients');
             $recipient = $model->GetRecipient($rid);
             if (Jaws_Error::IsError($recipient)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'),

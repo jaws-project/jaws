@@ -74,7 +74,7 @@ class Contact_Actions_Send extends Jaws_Gadget_HTML
             }
         }
 
-        $model = $GLOBALS['app']->LoadGadget('Contact', 'Model', 'Contacts');
+        $model = $this->gadget->loadModel('Contacts');
         $result = $model->InsertContact($post['contact_name'],
                                         $post['contact_email'],
                                         $post['contact_company'],
@@ -94,7 +94,7 @@ class Contact_Actions_Send extends Jaws_Gadget_HTML
             $cid = $GLOBALS['db']->lastInsertID('contacts', 'id');
             $rid = (int)$post['contact_recipient'];
             if (!empty($rid)) {
-                $model = $GLOBALS['app']->LoadGadget('Contact', 'Model', 'Recipients');
+                $model = $this->gadget->loadModel('Recipients');
                 $recipient = $model->GetRecipient((int)$post['contact_recipient']);
                 if (Jaws_Error::IsError($recipient) || !isset($recipient['id'])) {
                     $res_msg = _t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS');
@@ -119,7 +119,7 @@ class Contact_Actions_Send extends Jaws_Gadget_HTML
      */
     function SendEmailToRecipient($to, $cid)
     {
-        $model = $GLOBALS['app']->LoadGadget('Contact', 'Model', 'Contacts');
+        $model = $this->gadget->loadModel('Contacts');
         $contact = $model->GetContact($cid);
         if (Jaws_Error::IsError($contact)) {
             return $contact;
