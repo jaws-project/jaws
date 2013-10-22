@@ -167,7 +167,7 @@ class Comments_Actions_Comments extends Comments_HTML
             $perPage = $this->gadget->registry->fetch('comments_per_page');
         }
 
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+        $cModel = $this->gadget->loadModel('Comments');
         $comments = $cModel->GetComments(
             $gadget,
             $action,
@@ -410,9 +410,17 @@ class Comments_Actions_Comments extends Comments_HTML
             $orderBy = 0;
         }
 
-        $model = $GLOBALS['app']->LoadGadget('Comments', 'Model');
-        $comments = $model->GetComments('comments', $perPage, null, null, array(Comments_Info::COMMENT_STATUS_APPROVED), false,
-                                              ($page - 1) * $perPage, $orderBy);
+        $model = $this->gadget->loadModel('Comments');
+        $comments = $model->GetComments(
+            'comments',
+            $perPage,
+            null,
+            null,
+            array(Comments_Info::COMMENT_STATUS_APPROVED),
+            false,
+            ($page - 1) * $perPage,
+            $orderBy
+        );
         $comments_count = $model->HowManyFilteredComments('comments', '', 1);
 
         $tpl = $this->gadget->loadTemplate('Comments.html');
@@ -551,7 +559,7 @@ class Comments_Actions_Comments extends Comments_HTML
             $status = Comments_Info::COMMENT_STATUS_APPROVED;
         }
 
-        $model = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
+        $model = $this->gadget->loadModel('EditComments');
         $res = $model->insertComment(
             $post['requested_gadget'], $post['reference'], $post['requested_action'], $post['name'],
             $post['email'], $post['url'], $post['message'], $_SERVER['REMOTE_ADDR'],

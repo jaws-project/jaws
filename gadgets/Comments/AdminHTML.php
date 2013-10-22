@@ -242,7 +242,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      */
     function GetDataAsArray($gadget, $editAction, $term, $status, $offset, $gadgetColumn=false)
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+        $cModel = $this->gadget->loadModel('Comments');
         $comments = $cModel->GetComments($gadget, '', '', $term, $status, 15, $offset, 0, true);
         if (Jaws_Error::IsError($comments)) {
             return array();
@@ -307,7 +307,7 @@ class Comments_AdminHTML extends Jaws_Gadget_HTML
      */
     function Get($gadget, $gadgetColumn = false)
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+        $cModel = $this->gadget->loadModel('Comments');
         $total  = $cModel->GetCommentsCount($gadget, '', '', '', array(), false);
 
         $gridBox =& Piwi::CreateWidget('VBox');

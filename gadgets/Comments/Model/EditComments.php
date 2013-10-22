@@ -134,7 +134,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
             return $result;
         }
 
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+        $cModel = $this->gadget->loadModel('Comments');
         $origComment = $cModel->GetComment($id);
         if (($status == Comments_Info::COMMENT_STATUS_SPAM || $origComment['status'] == Comments_Info::COMMENT_STATUS_SPAM) &&
             $origComment['status'] != $status)

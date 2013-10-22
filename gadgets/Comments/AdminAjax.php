@@ -34,7 +34,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     function SizeOfCommentsSearch()
     {
         @list($gadget, $search, $status) = jaws()->request->fetchAll('post');
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+        $cModel = $this->gadget->loadModel('Comments');
         return $cModel->GetCommentsCount($gadget, '', '', $search, $status);
     }
 
@@ -47,7 +47,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     function GetComment()
     {
         @list($id) = jaws()->request->fetchAll('post');
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+        $cModel = $this->gadget->loadModel('Comments');
         $comment = $cModel->GetComment($id);
         if (Jaws_Error::IsError($comment)) {
             return false; //we need to handle errors on ajax
@@ -67,7 +67,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageComments');
         @list($gadget, $id, $name, $email, $url, $message, $reply, $status, $sendEmail) = jaws()->request->fetchAll('post');
         // TODO: Fill permalink In New Versions, Please!!
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
+        $cModel = $this->gadget->loadModel('EditComments');
         $res = $cModel->updateComment($gadget, $id, $name, $email, $url, $message, $reply, '', $status, $sendEmail);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
@@ -88,7 +88,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageComments');
         $ids = jaws()->request->fetchAll('post');
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'DeleteComments');
+        $cModel = $this->gadget->loadModel('DeleteComments');
         $res = $cModel->DeleteMassiveComment($ids);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
@@ -109,7 +109,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageComments');
         @list($gadget, $ids, $status) = jaws()->request->fetch(array('0', '1:array', '2'), 'post');
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'EditComments');
+        $cModel = $this->gadget->loadModel('EditComments');
         $res = $cModel->MarkAs($gadget, $ids, $status);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
@@ -130,7 +130,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('Settings');
         @list($allowComments, $allowDuplicate) = jaws()->request->fetchAll('post');
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'AdminModel', 'Settings');
+        $cModel = $this->gadget->loadAdminModel('Settings');
         $res = $cModel->SaveSettings($allowComments, $allowDuplicate);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
