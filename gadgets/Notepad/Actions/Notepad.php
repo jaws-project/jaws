@@ -53,7 +53,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_HTML
         $limit = (int)$this->gadget->registry->fetch('notes_limit');
 
         // Fetch notes
-        $model = $GLOBALS['app']->LoadGadget('Notepad', 'Model', 'Notepad');
+        $model = $this->gadget->loadModel('Notepad');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $count = $model->GetNumberOfNotes($user, $shared, $foreign, $query);
         $notes = $model->GetNotes($user, $shared, $foreign, $query, $limit, ($page - 1) * $limit);

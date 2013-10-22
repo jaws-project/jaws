@@ -29,7 +29,7 @@ class Notepad_Actions_Delete extends Jaws_Gadget_HTML
         }
 
         // Verify notes & user
-        $model = $GLOBALS['app']->LoadGadget('Notepad', 'Model', 'Notepad');
+        $model = $this->gadget->loadModel('Notepad');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $verified_nodes = $model->CheckNotes($id_set, $user);
         if (Jaws_Error::IsError($verified_nodes)) {

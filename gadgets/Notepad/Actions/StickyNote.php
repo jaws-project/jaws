@@ -40,7 +40,7 @@ class Notepad_Actions_StickyNote extends Jaws_Gadget_HTML
     function StickyNote($count)
     {
         $GLOBALS['app']->Layout->AddHeadLink('gadgets/Notepad/Resources/site_style.css');
-        $model = $GLOBALS['app']->LoadGadget('Notepad', 'Model', 'StickyNote');
+        $model = $this->gadget->loadModel('StickyNote');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $notes = $model->GetLatestNotes($user, $count);
         if (Jaws_Error::IsError($notes) || empty($notes)) {
