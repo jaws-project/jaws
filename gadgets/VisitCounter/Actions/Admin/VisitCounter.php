@@ -22,7 +22,7 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_HTML
     {
         $this->AjaxMe('script.js');
 
-        $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'Model', 'Visitors');
+        $model = $this->gadget->loadModel('Visitors');
         $num_online       = $model->GetOnlineVisitors();
         $uniqueToday      = $model->GetTodayVisitors('unique');
         $impressionsToday = $model->GetTodayVisitors('impressions');
@@ -229,7 +229,7 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_HTML
      */
     function GetVisits($offset = 0)
     {
-        $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminModel', 'Visitors');
+        $model = $this->gadget->loadAdminModel('Visitors');
         $visits = $model->GetVisitors($offset);
         if (Jaws_Error::IsError($visits)) {
             return array();

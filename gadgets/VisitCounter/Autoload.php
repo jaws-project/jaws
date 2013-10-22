@@ -32,7 +32,7 @@ class VisitCounter_Autoload
      */
     function AddVisitor()
     {
-        $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'Model', 'Visitors');
+        $model = $this->gadget->loadModel('Visitors');
         $days = $model->GetCookiePeriod();
         if (!$GLOBALS['app']->Session->GetCookie('VisitCounter')) {
             $res = $model->AddVisitor($_SERVER['REMOTE_ADDR'], true);

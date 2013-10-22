@@ -36,7 +36,7 @@ class VisitCounter_Actions_VisitCounter extends Jaws_Gadget_HTML
         $tpl->SetBlock("VisiCounter");
         $tpl->SetVariable('title', _t('VISITCOUNTER_VISITORS'));
 
-        $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'Model', 'Visitors');
+        $model = $this->gadget->loadModel('Visitors');
         $viewMode = strtolower($this->gadget->registry->fetch('mode'));
         $theme = $GLOBALS['app']->GetTheme();
         if (is_dir($theme['path'] . 'VisitCounter/Resources/images/')) {
