@@ -54,7 +54,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_HTML
     {
         $this->AjaxMe('script.js');
 
-        $model = $GLOBALS['app']->LoadGadget('Tms', 'AdminModel');
+        $model = $this->gadget->loadModel();
         $tpl = $this->gadget->loadTemplate('Themes.html');
         $tpl->SetBlock('Tms');
 
@@ -190,7 +190,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_HTML
                 }
             }
             $tmpDir = sys_get_temp_dir();
-            $tmsModel = $GLOBALS['app']->loadGadget('Tms', 'AdminModel', 'Themes');
+            $tmsModel = $this->gadget->loadAdminModel('Themes');
             $res = $tmsModel->packTheme($theme,
                                         ($locally? JAWS_DATA : JAWS_BASE_DATA) . 'themes',
                                         $tmpDir,
