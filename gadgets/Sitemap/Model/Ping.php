@@ -21,7 +21,7 @@ class Sitemap_Model_Ping extends Jaws_Gadget_Model
     function ping($redo = false)
     {
         if ($redo === true) {
-            $model =  $GLOBALS['app']->LoadGadget('Sitemap', 'Model', 'Sitemap');
+            $model =  $this->gadget->loadModel('Sitemap');
             $buildSitemap = $model->makeSitemap(true);
         }
 

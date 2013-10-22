@@ -20,7 +20,7 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_HTML
     function Display()
     {
         // Get content via 'path'
-        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model', 'Sitemap');
+        $model = $this->gadget->loadModel('Sitemap');
         return $model->GetContent(jaws()->request->fetch('path', 'get'));
     }
 
@@ -57,7 +57,7 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_HTML
      */
     function Sitemap()
     {
-        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model', 'Sitemap');
+        $model = $this->gadget->loadModel('Sitemap');
 
         $tpl = $this->gadget->loadTemplate('Sitemap.html');
         $items = $model->GetItems();
@@ -90,7 +90,7 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_HTML
     function SitemapXML()
     {
         header('Content-Type: text/xml; charset=utf-8');
-        $sitemap = $GLOBALS['app']->LoadGadget('Sitemap', 'Model', 'Sitemap');
+        $sitemap = $this->gadget->loadModel('Sitemap');
         $xml     = $sitemap->makeSitemap(false);
         return $xml;
     }

@@ -20,7 +20,7 @@ class Sitemap_Actions_Show extends Jaws_Gadget_HTML
      */
     function Show($levels = false)
     {
-        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model', 'Sitemap');
+        $model = $this->gadget->loadModel('Sitemap');
         $items = $model->GetItems($levels);
 
         $tpl = $this->gadget->loadTemplate('Show.html');
@@ -84,7 +84,7 @@ class Sitemap_Actions_Show extends Jaws_Gadget_HTML
     {
         $tpl = $this->gadget->loadTemplate('TopMenu.html');
         $tpl->SetBlock('topmenu');
-        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model', 'Sitemap');
+        $model = $this->gadget->loadModel('Sitemap');
 
         if ($GLOBALS['app']->Layout->requestedGadget == 'Sitemap') {
             $items = $model->GetItems(jaws()->request->fetch('path', 'get'));
@@ -164,7 +164,7 @@ class Sitemap_Actions_Show extends Jaws_Gadget_HTML
      */
     function DisplayLevel($depth = 1)
     {
-        $model = $GLOBALS['app']->LoadGadget('Sitemap', 'Model', 'Sitemap');
+        $model = $this->gadget->loadModel('Sitemap');
         $path = jaws()->request->fetch('path', 'get');
         $aux = explode('/',$path);
         if (count($aux) > 1) array_pop($aux);

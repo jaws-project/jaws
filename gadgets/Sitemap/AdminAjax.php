@@ -21,7 +21,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
     function Sitemap_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_HTML($gadget);
-        $this->_Model = $GLOBALS['app']->LoadGadget('Sitemap', 'AdminModel', 'Sitemap');
+        $this->_Model = $this->gadget->loadAdminModel('Sitemap');
     }
 
     /**
@@ -223,7 +223,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
     function PingSitemap()
     {
         $this->gadget->CheckPermission('PingSite');
-        $model =  $GLOBALS['app']->LoadGadget('Sitemap', 'Model', 'Ping');
+        $model =  $this->gadget->loadModel('Ping');
         $model->ping(true);
         $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_SITEMAP_SENT'), RESPONSE_NOTICE);
         return $GLOBALS['app']->Session->PopLastResponse();
