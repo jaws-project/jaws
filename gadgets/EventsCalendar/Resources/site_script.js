@@ -83,9 +83,14 @@ function submitEvent(form)
         form.subject.focus();
         return;
     }
-    if (form.start_time.value === '') {
+    if (form.start_date.value === '') {
         alert(errorIncompleteData);
-        form.start_time.focus();
+        form.start_date.focus();
+        return;
+    }
+    if (form.stop_date.value === '') {
+        alert(errorIncompleteData);
+        form.stop_date.focus();
         return;
     }
     form.submit();

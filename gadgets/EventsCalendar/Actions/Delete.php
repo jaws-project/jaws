@@ -29,7 +29,7 @@ class EventsCalendar_Actions_Delete extends Jaws_Gadget_HTML
         }
 
         // Verify events & user
-        $model = $GLOBALS['app']->LoadGadget('EventsCalendar', 'Model', 'Events');
+        $model = $GLOBALS['app']->LoadGadget('EventsCalendar', 'Model', 'Event');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $verified_nodes = $model->CheckEvents($id_set, $user);
         if (Jaws_Error::IsError($verified_nodes)) {
@@ -48,6 +48,7 @@ class EventsCalendar_Actions_Delete extends Jaws_Gadget_HTML
         }
 
         // Delete events
+        $model = $GLOBALS['app']->LoadGadget('EventsCalendar', 'Model', 'Event');
         $res = $model->Delete($verified_nodes);
         if (Jaws_Error::IsError($res)) {
             return $GLOBALS['app']->Session->GetResponse(

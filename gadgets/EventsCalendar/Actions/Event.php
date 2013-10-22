@@ -73,6 +73,8 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_HTML
                     $jdate->Format($event['start_date'], 'Y-m-d');
                 $event['stop_date'] = empty($event['stop_date'])? '' :
                     $jdate->Format($event['stop_date'], 'Y-m-d');
+                $event['start_time'] = round($event['start_time'] / 3600);
+                $event['stop_time'] = round($event['stop_time'] / 3600);
             } else {
                 $event = array();
                 $event['id'] = 0;
@@ -81,8 +83,8 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_HTML
                 $event['description'] = '';
                 $event['start_date'] = '';
                 $event['stop_date'] = '';
-                $event['start_time'] = '';
-                $event['stop_time'] = '';
+                $event['start_time'] = 0;
+                $event['stop_time'] = 0;
                 $event['month'] = -1;
                 $event['month_day'] = -1;
                 $event['week_day'] = -1;

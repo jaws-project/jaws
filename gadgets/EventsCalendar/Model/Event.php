@@ -65,7 +65,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         $jdate = $GLOBALS['app']->loadDate();
         $start_date = $jdate->ToBaseDate(preg_split('/[- :]/', $data['start_date']), 'Y-m-d');
         $data['start_date'] = $GLOBALS['app']->UserTime2UTC($start_date);
-        $stop_date = $jdate->ToBaseDate(preg_split('/[- :]/', $data['stop_date']), 'Y-m-d');
+        $stop_date = $jdate->ToBaseDate(preg_split('/[- :]/', $data['stop_date']), 'Y-m-d 23:59:59');
         $data['stop_date'] = $GLOBALS['app']->UserTime2UTC($stop_date);
         $data['start_time'] = $data['start_time'] * 3600;
         $data['stop_time'] = $data['stop_time'] * 3600;
@@ -105,7 +105,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         $jdate = $GLOBALS['app']->loadDate();
         $start_date = $jdate->ToBaseDate(preg_split('/[- :]/', $data['start_date']), 'Y-m-d');
         $data['start_date'] = $GLOBALS['app']->UserTime2UTC($start_date);
-        $stop_date = $jdate->ToBaseDate(preg_split('/[- :]/', $data['stop_date']), 'Y-m-d');
+        $stop_date = $jdate->ToBaseDate(preg_split('/[- :]/', $data['stop_date']), 'Y-m-d 23:59:59');
         $data['stop_date'] = $GLOBALS['app']->UserTime2UTC($stop_date);
         $data['start_time'] = $data['start_time'] * 3600;
         $data['stop_time'] = $data['stop_time'] * 3600;

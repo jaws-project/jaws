@@ -29,7 +29,6 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_HTML
         $tpl->SetBlock('day');
 
         $this->SetTitle(_t('EVENTSCALENDAR_VIEW_DAY'));
-        $tpl->SetVariable('title', _t('EVENTSCALENDAR_VIEW_DAY'));
         $tpl->SetVariable('lbl_hour', _t('EVENTSCALENDAR_HOUR'));
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 
@@ -37,27 +36,29 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_HTML
 
         // Current date
         $date = $jdate->ToBaseDate($year, $month, $day);
-        $tpl->SetVariable('current_date', $jdate->Format($date['timestamp'], 'DN d MN Y'));
+        $tpl->SetVariable('title', $jdate->Format($date['timestamp'], 'DN d MN Y'));
 
         // Previous day
+        $date = $jdate->ToBaseDate($year, $month, $day - 1);
+        $tpl->SetVariable('prev', $jdate->Format($date['timestamp'], 'DN d MN Y'));
         $info = $jdate->GetDateInfo($year, $month, $day - 1);
         $url = $this->gadget->urlMap('ViewDay', array(
             'year' => $info['year'],
             'month' => $info['mon'],
             'day' => $info['mday']
         ));
-        $tpl->SetVariable('prev', $url);
-        $tpl->SetVariable('prev_day', $info['weekday']);
+        $tpl->SetVariable('prev_url', $url);
 
         // Next day
+        $date = $jdate->ToBaseDate($year, $month, $day + 1);
+        $tpl->SetVariable('next', $jdate->Format($date['timestamp'], 'DN d MN Y'));
         $info = $jdate->GetDateInfo($year, $month, $day + 1);
         $url = $this->gadget->urlMap('ViewDay', array(
             'year' => $info['year'],
             'month' => $info['mon'],
             'day' => $info['mday']
         ));
-        $tpl->SetVariable('next', $url);
-        $tpl->SetVariable('next_day', $info['weekday']);
+        $tpl->SetVariable('next_url', $url);
 
         // Fetch events
         $model = $GLOBALS['app']->LoadGadget('EventsCalendar', 'Model', 'Month');
@@ -75,10 +76,8 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_HTML
         $eventsByHour = array_fill(0, 24, array());
         foreach ($events as $e) {
             $eventsById[$e['id']] = $e;
-            $startIdx = ($e['start_time'] <= $start)? 0:
-                floor(($e['start_time'] - $start) / 3600);
-            $stopIdx = ($e['stop_time'] >= $stop)? 23:
-                floor(($e['stop_time'] - $start) / 3600);
+            $startIdx = floor($e['start_time'] / 3600);
+            $stopIdx = floor($e['stop_time'] / 3600);
             for ($i = $startIdx; $i <= $stopIdx; $i++) {
                 $eventsByHour[$i][] = $e['id'];
             }

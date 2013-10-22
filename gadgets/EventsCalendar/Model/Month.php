@@ -35,8 +35,8 @@ class EventsCalendar_Model_Month extends Jaws_Gadget_Model
             $table->where('user', $user, '<>')->and();
         }
 
-        $table->where('start_time', $stop, '<')->and();
-        $table->where('stop_time', $start, '>');
+        $table->where('start_date', $stop, '<')->and();
+        $table->where('stop_date', $start, '>');
 
         return $table->fetchAll();
     }
