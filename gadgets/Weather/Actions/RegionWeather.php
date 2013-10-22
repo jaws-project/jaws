@@ -22,7 +22,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_HTML
     function RegionWeatherLayoutParams()
     {
         $result = array();
-        $wModel = $GLOBALS['app']->LoadGadget('Weather', 'Model', 'Regions');
+        $wModel = $this->gadget->loadModel('Regions');
         $regions = $wModel->GetRegions();
         if (!Jaws_Error::isError($regions)) {
             $pregions = array();
@@ -56,7 +56,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_HTML
             $forecast = true;
         }
 
-        $model = $GLOBALS['app']->LoadGadget('Weather', 'Model', 'Regions');
+        $model = $this->gadget->loadModel('Regions');
         $region = $model->GetRegion($region);
         if (Jaws_Error::IsError($region) || empty($region)) {
             return false;
@@ -148,7 +148,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_HTML
         $tpl->SetBlock('weather');
         $tpl->SetVariable('title', _t('WEATHER_ALL_REGIONS'));
 
-        $model = $GLOBALS['app']->LoadGadget('Weather', 'Model', 'Regions');
+        $model = $this->gadget->loadModel('Regions');
         $regions = $model->GetRegions();
         if (!Jaws_Error::isError($regions)) {
             $options = array();

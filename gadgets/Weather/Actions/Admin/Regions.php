@@ -86,7 +86,7 @@ class Weather_Actions_Admin_Regions extends Weather_AdminHTML
      */
     function RegionsDataGrid()
     {
-        $model = $GLOBALS['app']->LoadGadget('Weather', 'AdminModel');
+        $model = $this->gadget->loadModel();
         $total = $model->TotalOfData('weather');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
@@ -110,7 +110,7 @@ class Weather_Actions_Admin_Regions extends Weather_AdminHTML
      */
     function GetRegions($offset = null)
     {
-        $model = $GLOBALS['app']->LoadGadget('Weather', 'Model', 'Regions');
+        $model = $this->gadget->loadModel('Regions');
         $regions = $model->GetRegions(null, 10, $offset);
         if (Jaws_Error::IsError($regions)) {
             return array();

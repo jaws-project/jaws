@@ -21,7 +21,7 @@ class Weather_AdminAjax extends Jaws_Gadget_HTML
     function GetRegion()
     {
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Weather', 'Model', 'Regions');
+        $model = $this->gadget->loadModel('Regions');
         $region = $model->GetRegion($id);
         if (Jaws_Error::IsError($region)) {
             return false;
@@ -40,7 +40,7 @@ class Weather_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageRegions');
         @list($title, $fast_url, $latitude, $longitude, $published) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Weather', 'AdminModel', 'Regions');
+        $model = $this->gadget->loadAdminModel('Regions');
         $model->InsertRegion($title, $fast_url, $latitude, $longitude, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -55,7 +55,7 @@ class Weather_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageRegions');
         @list($id, $title, $fast_url, $latitude, $longitude, $published) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Weather', 'AdminModel', 'Regions');
+        $model = $this->gadget->loadAdminModel('Regions');
         $model->UpdateRegion($id, $title, $fast_url, $latitude, $longitude, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -70,7 +70,7 @@ class Weather_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageRegions');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Weather', 'AdminModel', 'Regions');
+        $model = $this->gadget->loadAdminModel('Regions');
         $model->DeleteRegion($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -85,7 +85,7 @@ class Weather_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('UpdateProperties');
         @list($unit, $update_period, $date_format, $api_key) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Weather', 'AdminModel', 'Properties');
+        $model = $this->gadget->loadAdminModel('Properties');
         $model->UpdateProperties($unit, $update_period, $date_format, $api_key);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
