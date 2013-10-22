@@ -19,7 +19,7 @@ class Friends_Actions_Admin_Friends extends Friends_AdminHTML
      */
     function DataGrid()
     {
-        $model = $GLOBALS['app']->LoadGadget('Friends', 'AdminModel', 'Friends');
+        $model = $this->gadget->loadAdminModel('Friends');
         $total = $model->TotalOfData('friend');
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
         $datagrid->SetID('friends_datagrid');
@@ -41,7 +41,7 @@ class Friends_Actions_Admin_Friends extends Friends_AdminHTML
      */
     function GetFriends($limit = 0)
     {
-        $model = $GLOBALS['app']->LoadGadget('Friends', 'Model', 'Friends');
+        $model = $this->gadget->loadModel('Friends');
         $friends = $model->GetFriendsList($limit);
         if (Jaws_Error::IsError($friends)) {
             return array();

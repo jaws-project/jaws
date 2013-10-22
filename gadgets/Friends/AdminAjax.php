@@ -20,7 +20,7 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     function GetFriend()
     {
         @list($friend) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('Friends', 'Model', 'Friends');
+        $model = $this->gadget->loadModel('Friends');
         $friendInfo = $model->GetFriend($friend);
         if (Jaws_Error::IsError($friendInfo)) {
             return false; //we need to handle errors on ajax
@@ -41,7 +41,7 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('AddFriend');
         @list($friend, $url) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
+        $model = $this->gadget->loadAdminModel('Friends');
         $model->NewFriend($friend, $url);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -59,7 +59,7 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('EditFriend');
         @list($old, $friend, $url) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
+        $model = $this->gadget->loadAdminModel('Friends');
         $model->UpdateFriend($old, $friend, $url);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -75,7 +75,7 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('DeleteFriend');
         @list($friend) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
+        $model = $this->gadget->loadAdminModel('Friends');
         $model->DeleteFriend($friend);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -91,7 +91,7 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('UpdateProperties');
         @list($limit) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('Friends', 'AdminModel', 'Friends');
+        $model = $this->gadget->loadAdminModel('Friends');
         $model->UpdateProperties($limit);
         return $GLOBALS['app']->Session->PopLastResponse();
     }

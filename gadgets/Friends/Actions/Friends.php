@@ -20,7 +20,7 @@ class Friends_Actions_Friends extends Jaws_Gadget_HTML
     function Display()
     {
         $tpl = $this->gadget->loadTemplate('Friends.html');
-        $model = $GLOBALS['app']->LoadGadget('Friends', 'Model', 'Friends');
+        $model = $this->gadget->loadModel('Friends');
         $friends = $model->GetRandomFriends();
         if (!Jaws_Error::IsError($friends)) {
             $tpl->SetBlock('friends');
