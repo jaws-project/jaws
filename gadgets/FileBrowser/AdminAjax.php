@@ -21,7 +21,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     function DBFileInfo()
     {
         @list($path, $file) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
+        $model = $this->gadget->loadModel('Files');
         return $model->DBFileInfo($path, $file);
     }
 
@@ -35,7 +35,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     function GetDirContentsCount()
     {
         @list($path) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Directory');
+        $model = $this->gadget->loadModel('Directory');
         return $model->GetDirContentsCount($path);
     }
 
@@ -89,7 +89,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageFiles');
         @list($path, $file, $title, $description, $fast_url, $oldname) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
+        $model = $this->gadget->loadAdminModel('Files');
         $res = true;
         $file = preg_replace('/[^[:alnum:]_\.-\s]*/', '', $file);
         $oldname = preg_replace('/[^[:alnum:]_\.-\s]*/', '', $oldname);
@@ -121,8 +121,8 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageDirectories');
         @list($path, $dir, $title, $description, $fast_url, $oldname) = jaws()->request->fetchAll('post');
 
-        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
-        $dModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Directory');
+        $fModel = $this->gadget->loadAdminModel('Files');
+        $dModel = $this->gadget->loadAdminModel('Directory');
         $res = true;
         $dir = preg_replace('/[^[:alnum:]_\.-\s]*/', '', $dir);
         $oldname = preg_replace('/[^[:alnum:]_\.-\s]*/', '', $oldname);
@@ -151,7 +151,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageFiles');
         @list($path, $file) = jaws()->request->fetchAll('post');
-        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
+        $fModel = $this->gadget->loadAdminModel('Files');
         $file = preg_replace('/[^[:alnum:]_\.-\s]*/', '', $file);
         if ($fModel->Delete($path, $file)) {
             $fModel->DeleteDBFileInfo($path, $file);
@@ -172,7 +172,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageDirectories');
         @list($path, $dir) = jaws()->request->fetchAll('post');
-        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'AdminModel', 'Files');
+        $fModel = $this->gadget->loadAdminModel('Files');
         $dir = preg_replace('/[^[:alnum:]_\.-\s]*/', '', $dir);
         if ($fModel->Delete($path, $dir)) {
             $fModel->DeleteDBFileInfo($path, $dir);

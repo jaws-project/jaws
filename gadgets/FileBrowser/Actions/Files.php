@@ -42,8 +42,8 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_HTML
             $page = 1;
         }
 
-        $dModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Directory');
-        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
+        $dModel = $this->gadget->loadModel('Directory');
+        $fModel = $this->gadget->loadModel('Files');
         $locationTree = $dModel->GetCurrentRootDir($path);
         if (Jaws_Error::IsError($locationTree)) {
             return false;
@@ -147,7 +147,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('PageNavigation.html');
         $tpl->SetBlock('pager');
 
-        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
+        $model = $this->gadget->loadModel('Files');
         $pager = $model->GetEntryPagerNumbered($page, $page_size, $total);
         if (count($pager) > 0) {
             $tpl->SetBlock('pager/numbered-navigation');
@@ -219,8 +219,8 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_HTML
         $id = jaws()->request->fetch('id', 'get');
         $id = Jaws_XSS::defilter($id, true);
 
-        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
-        $dModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Directory');
+        $fModel = $this->gadget->loadModel('Files');
+        $dModel = $this->gadget->loadModel('Directory');
         $dbInfo = $fModel->DBFileInfoByIndex($id);
         if (Jaws_Error::IsError($dbInfo) || empty($dbInfo)) {
             return false;
@@ -287,7 +287,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_HTML
         $id = Jaws_XSS::defilter($id, true);
 
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
+        $fModel = $this->gadget->loadModel('Files');
         $iFile  = $fModel->DBFileInfoByIndex($id);
         if (Jaws_Error::IsError($iFile)) {
             $this->SetActionMode('Download', 'normal', 'standalone');

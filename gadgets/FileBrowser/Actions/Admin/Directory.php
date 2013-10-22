@@ -24,7 +24,7 @@ class FileBrowser_Actions_Admin_Directory extends FileBrowser_AdminHTML
      */
     function GetDirectory($dir, $offset, $order)
     {
-        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Directory');
+        $model = $this->gadget->loadModel('Directory');
         $files = $model->ReadDir($dir, 15, $offset, $order);
         if (Jaws_Error::IsError($files)) {
             return array();
@@ -157,7 +157,7 @@ class FileBrowser_Actions_Admin_Directory extends FileBrowser_AdminHTML
     {
         $this->gadget->CheckPermission('ManageDirectories');
 
-        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel', 'Files');
+        $model = $this->gadget->loadAdminModel('Files');
         $post = jaws()->request->fetch(array('path', 'selected_item', 'extra_params'), 'post');
 
         if ($model->Delete($post['path'], $post['selected_item'])) {

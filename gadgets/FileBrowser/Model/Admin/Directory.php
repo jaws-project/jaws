@@ -25,7 +25,7 @@ class FileBrowser_Model_Admin_Directory extends Jaws_Gadget_Model
         $path = trim($path, '/');
         $path = str_replace('..', '', $path);
 
-        $fModel = $GLOBALS['app']->loadGadget('FileBrowser', 'Model', 'Files');
+        $fModel = $this->gadget->loadModel('Files');
         $dir = $fModel->GetFileBrowserRootDir(). $path. '/'. $dir_name;
 
         require_once PEAR_PATH. 'File/Util.php';

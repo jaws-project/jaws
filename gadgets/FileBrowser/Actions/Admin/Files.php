@@ -128,8 +128,8 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
     {
         $this->gadget->CheckPermission('UploadFiles');
 
-        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
-        $fModelAdmin = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel', 'Files');
+        $fModel = $this->gadget->loadModel('Files');
+        $fModelAdmin = $this->gadget->loadAdminModel('Files');
         $post = jaws()->request->fetch(
             array('path', 'file_title', 'file_description', 'file_fast_url', 'oldname', 'extra_params'),
             'post'
@@ -234,8 +234,8 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
             $tpl->ParseBlock("browse/upload_file");
         }
 
-        $fModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Files');
-        $dModel = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Directory');
+        $fModel = $this->gadget->loadModel('Files');
+        $dModel = $this->gadget->loadModel('Directory');
         $pathArr = $dModel->GetCurrentRootDir($path);
         if (!Jaws_Error::IsError($pathArr)) {
             foreach ($pathArr as $_path => $dir)
@@ -332,7 +332,7 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
     {
         $this->gadget->CheckPermission('ManageFiles');
 
-        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminModel', 'Files');
+        $model = $this->gadget->loadAdminModel('Files');
         $post = jaws()->request->fetch(array('path', 'selected_item', 'extra_params'), 'post');
 
         if ($model->Delete($post['path'], $post['selected_item'])) {

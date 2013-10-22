@@ -21,7 +21,7 @@ class FileBrowser_AdminHTML extends Jaws_Gadget_HTML
      */
     function DataGrid($path = '')
     {
-        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Directory');
+        $model = $this->gadget->loadModel('Directory');
         $total = $model->GetDirContentsCount($path);
 
         $grid =& Piwi::CreateWidget('DataGrid', array());
@@ -51,7 +51,7 @@ class FileBrowser_AdminHTML extends Jaws_Gadget_HTML
      */
     function GetLocation($path)
     {
-        $model = $GLOBALS['app']->LoadGadget('FileBrowser', 'Model', 'Directory');
+        $model = $this->gadget->loadModel('Directory');
 
         $dir_array = $model->GetCurrentRootDir($path);
         $path_link = '';
