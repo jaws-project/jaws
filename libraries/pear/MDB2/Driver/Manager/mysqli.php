@@ -1106,7 +1106,7 @@ class MDB2_Driver_Manager_mysqli extends MDB2_Driver_Manager_Common
 
                 $restrict_action .= implode(' AND ', $conditions).') IS NOT NULL';
                 $restrict_action2 = empty($conditions2) ? '' : ' AND (' .implode(' OR ', $conditions2) .')';
-                $restrict_action3 = ' THEN CALL %s_ON_TABLE_'.$table.'_VIOLATES_FOREIGN_KEY_CONSTRAINT();'
+                $restrict_action3 = ' THEN CALL %s_ON_TABLE_'.$table.'();'
                                    .' END IF;';
 
                 $restrict_action_update = $restrict_action . $restrict_action2 . $restrict_action3;
