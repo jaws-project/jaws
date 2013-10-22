@@ -20,7 +20,7 @@ class Glossary_AdminAjax extends Jaws_Gadget_HTML
     function GetTerm()
     {
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Glossary', 'Model', 'Term');
+        $model = $this->gadget->loadModel('Term');
         $term = $model->GetTerm($id);
         if (Jaws_Error::IsError($term)) {
             return false;
@@ -42,7 +42,7 @@ class Glossary_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('AddTerm');
         @list($term, $fast_url, $contents) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Glossary', 'AdminModel', 'Term');
+        $model = $this->gadget->loadAdminModel('Term');
 
         $contents = jaws()->request->fetch(2, 'post', false);
         $id = $model->NewTerm($term, $fast_url, $contents);
@@ -65,7 +65,7 @@ class Glossary_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('UpdateTerm');
         @list($id, $term, $fast_url, $contents) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Glossary', 'AdminModel', 'Term');
+        $model = $this->gadget->loadAdminModel('Term');
 
         $contents = jaws()->request->fetch(3, 'post', false);
         $model->UpdateTerm($id, $term, $fast_url, $contents);
@@ -83,7 +83,7 @@ class Glossary_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('DeleteTerm');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Glossary', 'AdminModel', 'Term');
+        $model = $this->gadget->loadAdminModel('Term');
         $model->DeleteTerm($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }

@@ -24,7 +24,7 @@ class Glossary_Actions_Admin_Term extends Glossary_AdminHTML
         $tpl->SetBlock('Glossary');
 
         // Block List
-        $model = $GLOBALS['app']->LoadGadget('Glossary', 'Model', 'Term');
+        $model = $this->gadget->loadModel('Term');
         $terms = $model->GetTerms();
         $termsCombo =& Piwi::CreateWidget('Combo', 'term_id');
         $termsCombo->SetID('term_id');
