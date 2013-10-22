@@ -188,7 +188,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         }
 
         $pid = 0;
-        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
+        $pModel = $this->gadget->loadModel('Posts');
         if (!Jaws_Error::IsError($pModel)) {
             $pid = $pModel->InsertPost($uid, $tid, $data['fid'], $message, $attachment, true);
             if (Jaws_Error::IsError($pid)) {
@@ -235,7 +235,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             return $result;
         }
 
-        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
+        $pModel = $this->gadget->loadModel('Posts');
         $result = $pModel->UpdatePost($pid, $uid, $message, $attachment, $update_reason);
         if (Jaws_Error::IsError($result)) {
             return $result;
@@ -246,7 +246,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         // update forums statistics if topic moved
         if ($target != $fid) {
-            $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
+            $fModel = $this->gadget->loadModel('Forums');
             // old forum
             $result = $fModel->UpdateForumStatistics($fid);
             if (Jaws_Error::IsError($result)) {
@@ -300,7 +300,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             }
         }
 
-        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
+        $fModel = $this->gadget->loadModel('Forums');
         if (!Jaws_Error::IsError($fModel)) {
             $result = $fModel->UpdateForumStatistics($fid);
             if (Jaws_Error::IsError($result)) {

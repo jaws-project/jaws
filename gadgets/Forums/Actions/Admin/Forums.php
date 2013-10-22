@@ -23,8 +23,8 @@ class Forums_Actions_Admin_Forums extends Forums_AdminHTML
         $tpl = $this->gadget->loadTemplate('Forums.html');
         $tpl->SetBlock('forums');
 
-        $gModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Groups');
-        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
+        $gModel = $this->gadget->loadModel('Groups');
+        $fModel = $this->gadget->loadModel('Forums');
         $groups = $gModel->GetGroups();
         foreach ($groups as $group) {
             $tpl->SetBlock('forums/group');

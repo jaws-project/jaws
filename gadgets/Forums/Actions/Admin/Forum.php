@@ -22,7 +22,7 @@ class Forums_Actions_Admin_Forum extends Forums_AdminHTML
         $tpl = $this->gadget->loadTemplate('ForumUI.html');
         $tpl->SetBlock('ForumUI');
 
-        $gModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Groups');
+        $gModel = $this->gadget->loadModel('Groups');
         $groups = $gModel->GetGroups();
         $groupCombo =& Piwi::CreateWidget('Combo', 'gid');
         $groupCombo->SetID('gid');

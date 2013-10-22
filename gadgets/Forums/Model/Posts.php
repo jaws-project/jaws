@@ -138,7 +138,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             return $pid;
         }
 
-        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $tModel = $this->gadget->loadModel('Topics');
         if (!Jaws_Error::IsError($tModel)) {
             $result = $tModel->UpdateTopicStatistics($data['tid'], $new_topic? $pid : 0, $data['insert_time']);
             if (Jaws_Error::IsError($result)) {
@@ -146,7 +146,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             }
         }
 
-        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
+        $fModel = $this->gadget->loadModel('Forums');
         if (!Jaws_Error::IsError($fModel)) {
             $result = $fModel->UpdateForumStatistics($fid);
             if (Jaws_Error::IsError($result)) {
@@ -217,13 +217,13 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $aModel = $this->gadget->loadModel('Attachments');
         $aModel->DeletePostAttachments($pid);
 
-        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $tModel = $this->gadget->loadModel('Topics');
         $result = $tModel->UpdateTopicStatistics($tid);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
-        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
+        $fModel = $this->gadget->loadModel('Forums');
         $result = $fModel->UpdateForumStatistics($fid);
         if (Jaws_Error::IsError($result)) {
             return $result;

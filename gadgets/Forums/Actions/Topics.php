@@ -23,7 +23,7 @@ class Forums_Actions_Topics extends Forums_HTML
         $rqst = jaws()->request->fetch(array('fid', 'page', 'status'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
-        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
+        $fModel = $this->gadget->loadModel('Forums');
         $forum  = $fModel->GetForum($rqst['fid']);
         if (Jaws_Error::IsError($forum) || empty($forum)) {
             return false;
@@ -34,7 +34,7 @@ class Forums_Actions_Topics extends Forums_HTML
         }
 
         $limit = (int)$this->gadget->registry->fetch('topics_limit');
-        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $tModel = $this->gadget->loadModel('Topics');
 
         $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $published = null;
@@ -179,9 +179,9 @@ class Forums_Actions_Topics extends Forums_HTML
             return false;
         }
 
-        $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
+        $fModel = $this->gadget->loadModel('Forums');
         if (!empty($rqst['tid'])) {
-            $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+            $tModel = $this->gadget->loadModel('Topics');
             $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
             if (Jaws_Error::IsError($topic) || empty($topic)) {
                 return false;
@@ -429,9 +429,9 @@ class Forums_Actions_Topics extends Forums_HTML
         $edit_min_limit_time = (int)$this->gadget->registry->fetch('edit_min_limit_time');
         $edit_max_limit_time = (int)$this->gadget->registry->fetch('edit_max_limit_time');
 
-        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $tModel = $this->gadget->loadModel('Topics');
         if (empty($topic['tid'])) {
-            $fModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Forums');
+            $fModel = $this->gadget->loadModel('Forums');
             $result = $fModel->GetForum($topic['fid']);
             if (!Jaws_Error::IsError($result) && !empty($result)) {
 
@@ -569,7 +569,7 @@ class Forums_Actions_Topics extends Forums_HTML
 
         $rqst = jaws()->request->fetch(array('fid', 'tid', 'confirm'));
 
-        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $tModel = $this->gadget->loadModel('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic) || empty($topic)) {
             return false;
@@ -687,7 +687,7 @@ class Forums_Actions_Topics extends Forums_HTML
 
         $rqst = jaws()->request->fetch(array('fid', 'tid'), 'get');
 
-        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $tModel = $this->gadget->loadModel('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic)) {
             // redirect to referrer page
@@ -740,7 +740,7 @@ class Forums_Actions_Topics extends Forums_HTML
         $this->gadget->CheckPermission('PublishTopic');
 
         $rqst = jaws()->request->fetch(array('fid', 'tid'), 'get');
-        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $tModel = $this->gadget->loadModel('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic)) {
             // redirect to referrer page

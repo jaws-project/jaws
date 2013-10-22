@@ -22,7 +22,7 @@ class Forums_Actions_Attachment extends Forums_HTML
         require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'attach'), 'get');
 
-        $pModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Posts');
+        $pModel = $this->gadget->loadModel('Posts');
         $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($post)) {
             $this->SetActionMode('Attachment', 'normal', 'standalone');

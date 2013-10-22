@@ -35,7 +35,7 @@ class Forums_Actions_UserTopics extends Forums_HTML
         $limit = empty($limit)? 10 : (int)$limit;
 
         $tpl = $this->gadget->loadTemplate('UserTopics.html');
-        $tModel = $GLOBALS['app']->LoadGadget('Forums', 'Model', 'Topics');
+        $tModel = $this->gadget->loadModel('Topics');
         $topics = $tModel->GetUserTopics($uid, $limit, ($page - 1) * $limit);
         $topicCounts = $tModel->GetUserTopicCount($uid);
 
