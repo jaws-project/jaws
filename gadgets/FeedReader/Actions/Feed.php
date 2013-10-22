@@ -21,7 +21,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_HTML
     function DisplayFeedsLayoutParams()
     {
         $result = array();
-        $rModel = $GLOBALS['app']->LoadGadget('FeedReader', 'Model', 'Feed');
+        $rModel = $this->gadget->loadModel('Feed');
         $sites = $rModel->GetFeeds();
         if (!Jaws_Error::isError($sites)) {
             $psites = array();
@@ -51,7 +51,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_HTML
             $id = $this->gadget->registry->fetch('default_feed');
         }
 
-        $model = $GLOBALS['app']->LoadGadget('FeedReader', 'Model', 'Feed');
+        $model = $this->gadget->loadModel('Feed');
         $site = $model->GetFeed($id);
         if (Jaws_Error::IsError($site) || empty($site) || $site['visible'] == 0) {
             return false;

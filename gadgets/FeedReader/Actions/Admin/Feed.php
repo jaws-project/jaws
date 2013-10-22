@@ -21,7 +21,7 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_HTML
      */
     function GetFeedSites($offset = null)
     {
-        $model = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminModel', 'Feed');
+        $model = $this->gadget->loadAdminModel('Feed');
 
         $sites = $model->GetFeeds(false, 12, $offset);
         if (Jaws_Error::IsError($sites)) {
@@ -61,7 +61,7 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_HTML
      */
     function DataGrid()
     {
-        $model = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminModel', 'Feed');
+        $model = $this->gadget->loadAdminModel('Feed');
         $total = $model->TotalOfData('feeds');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
