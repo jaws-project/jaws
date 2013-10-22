@@ -69,7 +69,7 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_HTML
         $tpl->SetVariable('current_week', $from . ' - ' . $to);
 
         // Fetch events
-        $model = $GLOBALS['app']->LoadGadget('EventsCalendar', 'Model', 'Month');
+        $model = $this->gadget->loadModel('Month');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $events = $model->GetEvents($user, null, null, $start, $stop);
         if (Jaws_Error::IsError($events)){

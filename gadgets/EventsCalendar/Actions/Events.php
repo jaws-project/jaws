@@ -54,7 +54,7 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_HTML
         // $limit = (int)$this->gadget->registry->fetch('events_limit');
 
         // Fetch events
-        $model = $GLOBALS['app']->LoadGadget('EventsCalendar', 'Model', 'Events');
+        $model = $this->gadget->loadModel('Events');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         //$count = $model->GetNumberOfEvents($user, $shared, $foreign, $query);
         //$events = $model->GetEvents($user, $shared, $foreign, $query, $limit, ($page - 1) * $limit);

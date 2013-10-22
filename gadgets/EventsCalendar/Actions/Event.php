@@ -59,7 +59,7 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_HTML
 
         if (!isset($event) || empty($event)) {
             if (!empty($id)) {
-                $model = $GLOBALS['app']->LoadGadget('EventsCalendar', 'Model', 'Event');
+                $model = $this->gadget->loadModel('Event');
                 $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
                 $event = $model->GetEvent($id, $user);
                 if (Jaws_Error::IsError($event) ||
@@ -274,7 +274,7 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_HTML
         $data['location'] = Jaws_XSS::defilter($data['location']);
         $data['description'] = Jaws_XSS::defilter($data['description']);
 
-        $model = $GLOBALS['app']->LoadGadget('EventsCalendar', 'Model', 'Event');
+        $model = $this->gadget->loadModel('Event');
         $result = $model->Insert($data);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushResponse(
@@ -316,7 +316,7 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_HTML
         }
 
         // Validate event
-        $model = $GLOBALS['app']->LoadGadget('EventsCalendar', 'Model', 'Event');
+        $model = $this->gadget->loadModel('Event');
         $id = (int)$data['id'];
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $event = $model->GetEvent($id, $user);
