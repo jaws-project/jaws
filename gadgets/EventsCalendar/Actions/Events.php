@@ -26,6 +26,7 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_HTML
         $tpl->SetVariable('title', _t('EVENTSCALENDAR_NAME'));
         $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
         $tpl->SetVariable('lbl_start', _t('GLOBAL_START_TIME'));
+        $tpl->SetVariable('lbl_stop', _t('GLOBAL_STOP_TIME'));
         $tpl->SetVariable('lbl_shared', _t('EVENTSCALENDAR_SHARED'));
         $tpl->SetVariable('lbl_owner', _t('EVENTSCALENDAR_EVENT_OWNER'));
 
@@ -64,7 +65,8 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_HTML
                 $tpl->SetBlock('events/event');
                 $tpl->SetVariable('id', $event['id']);
                 $tpl->SetVariable('subject', $event['subject']);
-                $tpl->SetVariable('date', $objDate->Format($event['start_time'], 'n/j/Y g:i'));
+                $tpl->SetVariable('start', $objDate->Format($event['start_date'], 'n/j/Y'));
+                $tpl->SetVariable('stop', $objDate->Format($event['stop_date'], 'n/j/Y'));
                 $tpl->SetVariable('url', $this->gadget->urlMap('EditEvent', array('id' => $event['id'])));
                 if ($event['user'] != $user) {
                     $tpl->SetVariable('shared', '');

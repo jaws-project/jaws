@@ -18,23 +18,23 @@ $actions['ManageEvents'] = array(
 );
 $actions['NewEvent'] = array(
     'normal' => true,
-    'file' => 'Create'
+    'file' => 'Event'
 );
 $actions['EditEvent'] = array(
     'normal' => true,
-    'file' => 'Update'
+    'file' => 'Event'
+);
+$actions['CreateEvent'] = array(
+    'standalone' => true,
+    'file' => 'Event'
+);
+$actions['UpdateEvent'] = array(
+    'standalone' => true,
+    'file' => 'Event'
 );
 $actions['ShareEvent'] = array(
     'normal' => true,
     'file' => 'Share'
-);
-$actions['CreateEvent'] = array(
-    'standalone' => true,
-    'file' => 'Create'
-);
-$actions['UpdateEvent'] = array(
-    'standalone' => true,
-    'file' => 'Update'
 );
 $actions['DeleteEvent'] = array(
     'standalone' => true,

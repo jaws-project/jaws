@@ -15,6 +15,7 @@
         <th><input type="checkbox" id="chk_all" onchange="checkAll()"/></th>
         <th class="event-subject">{lbl_subject}</th>
         <th>{lbl_start}</th>
+        <th>{lbl_stop}</th>
         <th>{lbl_shared}</th>
         <th>{lbl_owner}</th>
       </tr></thead>
@@ -23,7 +24,8 @@
         <tr id="event_{id}">
           <td><input type="checkbox" value="{id}"/></td>
           <td><a href="{url}">{subject}</a></td>
-          <td>{date}</td>
+          <td>{start}</td>
+          <td>{stop}</td>
           <td>{shared}</td>
           <td class="event-owner" title="{username}">{nickname}</td>
         </tr>
