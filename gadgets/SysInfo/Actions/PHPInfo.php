@@ -22,7 +22,7 @@ class SysInfo_Actions_PHPInfo extends Jaws_Gadget_HTML
             return false;
         }
 
-        $model = $GLOBALS['app']->LoadGadget('SysInfo', 'Model', 'PHPInfo');
+        $model = $this->gadget->loadModel('PHPInfo');
         $tpl = $this->gadget->loadTemplate('SysInfo.html');
         $tpl->SetBlock('SysInfo');
         $tpl->SetVariable('title',  _t('SYSINFO_PHPINFO'));

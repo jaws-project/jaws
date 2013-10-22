@@ -22,7 +22,7 @@ class SysInfo_Actions_DirInfo extends Jaws_Gadget_HTML
             return false;
         }
 
-        $model = $GLOBALS['app']->LoadGadget('SysInfo', 'Model', 'DirInfo');
+        $model = $this->gadget->loadModel('DirInfo');
         $tpl = $this->gadget->loadTemplate('SysInfo.html');
         $tpl->SetBlock('SysInfo');
         $tpl->SetVariable('title',  _t('SYSINFO_DIRINFO'));

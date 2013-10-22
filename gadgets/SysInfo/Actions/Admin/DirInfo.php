@@ -19,7 +19,7 @@ class SysInfo_Actions_Admin_DirInfo extends SysInfo_AdminHTML
     function DirInfo()
     {
         $this->gadget->CheckPermission('DirInfo');
-        $model = $GLOBALS['app']->LoadGadget('SysInfo', 'Model', 'DirInfo');
+        $model = $this->gadget->loadModel('DirInfo');
         $tpl = $this->gadget->loadTemplate('SysInfo.html');
         $tpl->SetBlock('SysInfo');
         $tpl->SetVariable('sidebar', $this->SideBar('DirInfo'));
