@@ -20,7 +20,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_HTML
     function GroupPagesLayoutParams()
     {
         $result = array();
-        $model = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Group');
+        $model = $this->gadget->loadModel('Group');
         $groups = $model->GetGroups(true);
         if (!Jaws_Error::isError($groups)) {
             $pgroups = array();
@@ -65,8 +65,8 @@ class StaticPage_Actions_Group extends Jaws_Gadget_HTML
             $orderBy = $get['order'];
         }
 
-        $pModel = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Page');
-        $gModel = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Group');
+        $pModel = $this->gadget->loadModel('Page');
+        $gModel = $this->gadget->loadModel('Group');
         $group = $gModel->GetGroup($gid);
         if (Jaws_Error::IsError($group) || $group == null) {
             return false;
@@ -111,7 +111,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_HTML
      */
     function GroupsList()
     {
-        $model = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Group');
+        $model = $this->gadget->loadModel('Group');
         $groups = $model->GetGroups(true);
         if (Jaws_Error::IsError($groups)) {
             return false;

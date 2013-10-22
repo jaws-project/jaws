@@ -20,7 +20,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('DeletePage');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Page');
+        $model = $this->gadget->loadAdminModel('Page');
         $model->DeletePage($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -35,7 +35,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('DeletePage');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Translation');
+        $model = $this->gadget->loadAdminModel('Translation');
         $model->DeleteTranslation($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -50,7 +50,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('DeletePage');
         $pages = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Page');
+        $model = $this->gadget->loadAdminModel('Page');
         $model->MassiveDelete($pages);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -65,7 +65,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('Properties');
         @list($defaultPage, $multiLang) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Settings');
+        $model = $this->gadget->loadAdminModel('Settings');
         $model->UpdateSettings($defaultPage, $multiLang);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -92,7 +92,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function SizeOfSearch()
     {
         @list($group, $status, $search) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Page');
+        $model = $this->gadget->loadAdminModel('Page');
         $pages = $model->SearchPages($group, $status, $search, null);
         return count($pages);
     }
@@ -128,7 +128,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
             $fast_url, $meta_keys, $meta_desc, $tags,  $published
         ) = jaws()->request->fetchAll('post');
         $content = jaws()->request->fetch(4, 'post', false);
-        $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Page');
+        $model = $this->gadget->loadAdminModel('Page');
 
         if ($id == 'NEW') {
             $model->AddPage($title, $group, $showtitle, $content, $language,
@@ -160,7 +160,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function GetGroup()
     {
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('StaticPage', 'Model', 'Group');
+        $model = $this->gadget->loadModel('Group');
         $group = $model->GetGroup($id);
         if (Jaws_Error::IsError($group)) {
             return false;
@@ -193,7 +193,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function GetGroupsCount()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Group');
+        $model = $this->gadget->loadAdminModel('Group');
         return $model->GetGroupsCount();
     }
 
@@ -207,7 +207,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageGroups');
         @list($title, $fast_url, $meta_keys, $meta_desc, $visible) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Group');
+        $model = $this->gadget->loadAdminModel('Group');
         $res = $model->InsertGroup($title, $fast_url, $meta_keys, $meta_desc, $visible);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
@@ -228,7 +228,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageGroups');
         @list($id, $title, $fast_url, $meta_keys, $meta_desc, $visible) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Group');
+        $model = $this->gadget->loadAdminModel('Group');
         $res = $model->UpdateGroup($id, $title, $fast_url, $meta_keys, $meta_desc, $visible == 'true');
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
@@ -249,7 +249,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageGroups');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('StaticPage', 'AdminModel', 'Group');
+        $model = $this->gadget->loadAdminModel('Group');
         $res = $model->DeleteGroup($id);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);

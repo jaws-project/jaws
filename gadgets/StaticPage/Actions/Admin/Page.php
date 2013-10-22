@@ -21,7 +21,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminHTML
      */
     function DataGrid()
     {
-        $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel');
+        $model = $this->gadget->loadModel();
         $total = $model->TotalOfData('static_pages', 'page_id');
 
         $grid =& Piwi::CreateWidget('DataGrid', array());
@@ -53,8 +53,8 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminHTML
      */
     function GetPages($group, $status, $search, $orderBy, $limit)
     {
-        $pModel = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel', 'Page');
-        $tModel = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Translation');
+        $pModel = $this->gadget->loadAdminModel('Page');
+        $tModel = $this->gadget->loadModel('Translation');
         $pages = $pModel->SearchPages($group, $status, $search, $orderBy, $limit);
         if (Jaws_Error::IsError($pages)) {
             return array();
@@ -167,7 +167,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminHTML
         $tpl->SetVariable('language_field', $languageCombo->Get());
 
         // Group filter
-        $model = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Group');
+        $model = $this->gadget->loadModel('Group');
         $groups = $model->GetGroups();
         $combo =& Piwi::CreateWidget('Combo', 'group');
         $combo->AddOption('&nbsp;', 0);
@@ -243,7 +243,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminHTML
     function AddPage()
     {
         $this->gadget->CheckPermission('AddPage');
-        $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel', 'Page');
+        $model = $this->gadget->loadAdminModel('Page');
 
         $fetch = array('title', 'fast_url', 'meta_keys', 'meta_desc', 'tags',
                        'group_id', 'language', 'published', 'show_title');
@@ -265,7 +265,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminHTML
     function EditPage()
     {
         $this->gadget->CheckPermission('EditPage');
-        $model = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Page');
+        $model = $this->gadget->loadModel('Page');
 
         $id = (int)jaws()->request->fetch('id', 'get');
 
@@ -289,7 +289,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminHTML
     function SaveEditPage()
     {
         $this->gadget->CheckPermission('EditPage');
-        $model = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel', 'Page');
+        $model = $this->gadget->loadAdminModel('Page');
         $fetch   = array('page', 'title', 'group_id', 'language', 'fast_url', 'meta_keys',
                          'meta_desc', 'tags', 'published', 'show_title');
         $post    = jaws()->request->fetch($fetch, 'post');

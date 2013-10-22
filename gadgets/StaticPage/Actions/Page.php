@@ -19,7 +19,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_HTML
      */
     function PagesList()
     {
-        $model = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Page');
+        $model = $this->gadget->loadModel('Page');
         $pages = $model->GetPages();
         if (Jaws_Error::IsError($pages)) {
             return false;
@@ -57,9 +57,9 @@ class StaticPage_Actions_Page extends Jaws_Gadget_HTML
         $post['gid'] = Jaws_XSS::defilter($post['gid'], true);
         $post['pid'] = Jaws_XSS::defilter($post['pid'], true);
 
-        $pModel = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Page');
-        $gModel = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Group');
-        $tModel = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Translation');
+        $pModel = $this->gadget->loadModel('Page');
+        $gModel = $this->gadget->loadModel('Group');
+        $tModel = $this->gadget->loadModel('Translation');
         if ($base_action == 'Pages') {
             $group = $gModel->GetGroup($post['gid']);
             if (Jaws_Error::IsError($group) || empty($group)) {
@@ -169,8 +169,8 @@ class StaticPage_Actions_Page extends Jaws_Gadget_HTML
         $tpl->SetBlock('pages_tree');
         $tpl->SetVariable('title', _t('STATICPAGE_PAGES_TREE'));
 
-        $pModel = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Page');
-        $gModel = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Group');
+        $pModel = $this->gadget->loadModel('Page');
+        $gModel = $this->gadget->loadModel('Group');
         $groups = $gModel->GetGroups(true);
         if (Jaws_Error::IsError($groups)) {
             return false;

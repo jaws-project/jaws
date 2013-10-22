@@ -120,7 +120,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
 
         // Group
         if ($mode == 'base') {
-            $model = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Group');
+            $model = $this->gadget->loadModel('Group');
             $groups = $model->GetGroups();
             $combo =& Piwi::CreateWidget('Combo', 'group_id');
             foreach ($groups as $group) {

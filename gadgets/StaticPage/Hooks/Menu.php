@@ -28,8 +28,8 @@ class StaticPage_Hooks_Menu extends Jaws_Gadget_Hook
 
         //Load model
         $max_size = 32;
-        $pModel  = $GLOBALS['app']->loadGadget('StaticPage', 'Model', 'Page');
-        $gModel  = $GLOBALS['app']->loadGadget('StaticPage', 'Model', 'Group');
+        $pModel  = $this->gadget->loadModel('Page');
+        $gModel  = $this->gadget->loadModel('Group');
         $groups = $gModel->GetGroups(true);
         foreach($groups as $group) {
             $url   = $GLOBALS['app']->Map->GetURLFor(

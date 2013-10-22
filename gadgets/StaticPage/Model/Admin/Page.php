@@ -50,7 +50,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         }
 
         $base_id = $GLOBALS['db']->lastInsertID('static_pages', 'page_id');
-        $tModel = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel', 'Translation');
+        $tModel = $this->gadget->loadAdminModel('Translation');
         $tid = $tModel->AddTranslation($base_id, $title, $content, $language, $meta_keys, $meta_desc, $tags, $published);
         if (Jaws_Error::IsError($tid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'), RESPONSE_ERROR);
@@ -103,7 +103,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_UPDATED'), _t('STATICPAGE_NAME'));
         }
 
-        $tModel = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminModel', 'Translation');
+        $tModel = $this->gadget->loadAdminModel('Translation');
         $result = $tModel->UpdateTranslation($page['translation_id'], $title, $content, $language,
                                              $meta_keys, $meta_desc, $tags, $published);
         if (Jaws_Error::IsError($result)) {
