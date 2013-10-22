@@ -30,7 +30,7 @@ class Quotes_Actions_Admin_Groups extends Quotes_AdminHTML
         $comboGroups =& Piwi::CreateWidget('Combo', 'groups_combo');
         $comboGroups->SetSize(14);
         $comboGroups->AddEvent(ON_CHANGE, 'javascript: editGroup(this.value);');
-        $model = $GLOBALS['app']->LoadGadget('Quotes', 'Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $groups = $model->GetGroups(-1);
         foreach($groups as $group) {
             $comboGroups->AddOption($group['title'], $group['id']);
@@ -119,7 +119,7 @@ class Quotes_Actions_Admin_Groups extends Quotes_AdminHTML
         $tpl->SetBlock('quotes');
         $tpl->SetBlock('quotes/quotes_groups_ui_section');
 
-        $model = $GLOBALS['app']->LoadGadget('Quotes', 'Model', 'Quotes');
+        $model = $this->gadget->loadModel('Quotes');
 
         $quotesCombo =& Piwi::CreateWidget('CheckButtons', 'group_quotes');
         $quotesCombo->SetColumns(1);

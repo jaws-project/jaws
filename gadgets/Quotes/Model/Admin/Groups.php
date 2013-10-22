@@ -120,7 +120,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
             $GLOBALS['app']->Session->PushLastResponse(_t('QUOTES_ERROR_GROUP_NOT_DELETABLE'), RESPONSE_ERROR);
             return false;
         }
-        $model = $GLOBALS['app']->loadGadget('Quotes', 'Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $group = $model->GetGroups($gid);
         if (Jaws_Error::IsError($group)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -132,7 +132,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
             return false;
         }
 
-        $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
+        $model = $this->gadget->loadAdminModel('Quotes');
         $model->UpdateQuoteGroup(-1, $gid, 0);
         $table = Jaws_ORM::getInstance()->table('quotes_groups');
         $res = $table->delete()->where('id', $gid)->exec();

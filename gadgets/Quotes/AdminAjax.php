@@ -19,7 +19,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
     function GetQuote()
     {
         @list($qid) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('Quotes', 'Model', 'Quotes');
+        $model = $this->gadget->loadModel('Quotes');
         $quote = $model->GetQuote($qid);
         if (Jaws_Error::IsError($quote)) {
             return false; //we need to handle errors on ajax
@@ -48,7 +48,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
     {
         @list($qid, $gid) = jaws()->request->fetchAll('post');
         $gid = empty($gid)? -1 : $gid;
-        $model = $GLOBALS['app']->loadGadget('Quotes', 'Model', 'Quotes');
+        $model = $this->gadget->loadModel('Quotes');
         $quoteInfo = $model->GetQuotes($qid, $gid);
         if (Jaws_Error::IsError($quoteInfo) || !isset($quoteInfo[0])) {
             return false; //we need to handle errors on ajax
@@ -70,7 +70,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
             $show_title, $published
         ) = jaws()->request->fetchAll('post');
         $quotation = jaws()->request->fetch(1, 'post', false);
-        $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
+        $model = $this->gadget->loadAdminModel('Quotes');
         $model->InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -88,7 +88,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
             $show_title, $published
         ) = jaws()->request->fetchAll('post');
         $quotation = jaws()->request->fetch(2, 'post', false);
-        $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
+        $model = $this->gadget->loadAdminModel('Quotes');
         $model->UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -103,7 +103,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageQuotes');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
+        $model = $this->gadget->loadAdminModel('Quotes');
         $model->DeleteQuote($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -117,7 +117,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
     function GetGroup()
     {
         @list($gid) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('Quotes', 'Model', 'Groups');
+        $model = $this->gadget->loadModel('Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
             return false; //we need to handle errors on ajax
@@ -138,7 +138,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
         @list($title, $view_mode, $view_type, $show_title,
             $limit_count, $randomly, $published
         ) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Groups');
+        $model = $this->gadget->loadAdminModel('Groups');
         $model->InsertGroup($title, $view_mode, $view_type, $show_title, $limit_count, $randomly, $published);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -156,7 +156,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
         @list($gid, $title, $view_mode, $view_type, $show_title,
             $limit_count, $randomly, $published
         ) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Groups');
+        $model = $this->gadget->loadAdminModel('Groups');
         $model->UpdateGroup($gid, $title, $view_mode, $view_type, $show_title, $limit_count, $randomly, $published);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -184,7 +184,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageQuoteGroups');
         @list($gid, $quotes) = jaws()->request->fetch(array('0', '1:array'), 'post');
-        $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Quotes');
+        $model = $this->gadget->loadAdminModel('Quotes');
         $model->AddQuotesToGroup($gid, $quotes);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -199,7 +199,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageQuoteGroups');
         @list($gid) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->loadGadget('Quotes', 'AdminModel', 'Groups');
+        $model = $this->gadget->loadAdminModel('Groups');
         $model->DeleteGroup($gid);
 
         return $GLOBALS['app']->Session->PopLastResponse();
