@@ -72,7 +72,7 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_HTML
         }
 
         // Components
-        $model = $GLOBALS['app']->LoadGadget('Languages', 'AdminModel', 'Languages');
+        $model = $this->gadget->loadAdminModel('Languages');
         $components = $model->GetComponents();
         $componentsName = array('Global', 'Gadgets', 'Plugins');
         foreach ($components as $compk => $compv) {
@@ -133,7 +133,7 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_HTML
         $tpl->SetBlock('LangStrings');
 
         $langFrom = $this->gadget->registry->fetch('base_lang');
-        $model = $GLOBALS['app']->LoadGadget('Languages', 'AdminModel', 'Languages');
+        $model = $this->gadget->loadAdminModel('Languages');
         $data = $model->GetLangData($module, $type, $langTo, $langFrom);
         $color = 'even';
         if (count($data['strings']) > 0) {

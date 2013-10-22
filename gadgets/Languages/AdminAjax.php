@@ -20,7 +20,7 @@ class Languages_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ModifyLanguageProperties');
         @list($lang_str) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Languages', 'AdminModel', 'Languages');
+        $model = $this->gadget->loadAdminModel('Languages');
         $model->SaveLanguage($lang_str);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -52,7 +52,7 @@ class Languages_AdminAjax extends Jaws_Gadget_HTML
         $data = jaws()->request->fetch('2:array', 'post', false);
         $component = explode('|', $component);
         $component[1] = preg_replace("/[^A-Za-z0-9]/", '', $component[1]);
-        $model = $GLOBALS['app']->LoadGadget('Languages', 'AdminModel', 'Languages');
+        $model = $this->gadget->loadAdminModel('Languages');
         $model->SetLangData($component[1], (int)$component[0], $langTo, $data);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
