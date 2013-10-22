@@ -25,7 +25,7 @@ class Faq_Actions_Admin_Category extends Faq_AdminHTML
 
         $category = jaws()->request->fetch('category', 'get');
         if (!is_null($category)) {
-            $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Category');
+            $model = $this->gadget->loadAdminModel('Category');
             $cat = $model->GetCategory($category);
         }
 
@@ -95,7 +95,7 @@ class Faq_Actions_Admin_Category extends Faq_AdminHTML
     function NewCategory()
     {
         $this->gadget->CheckPermission('ManageCategories');
-        $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Category');
+        $model = $this->gadget->loadAdminModel('Category');
 
         $post    = jaws()->request->fetch(array('category', 'fast_url'), 'post');
         $post['description'] = jaws()->request->fetch('description', 'post', false);
@@ -113,7 +113,7 @@ class Faq_Actions_Admin_Category extends Faq_AdminHTML
     function UpdateCategory()
     {
         $this->gadget->CheckPermission('ManageCategories');
-        $model = $GLOBALS['app']->LoadGadget('Faq', 'AdminModel', 'Category');
+        $model = $this->gadget->loadAdminModel('Category');
 
         $post    = jaws()->request->fetch(array('id', 'category', 'fast_url'), 'post');
         $post['description'] = jaws()->request->fetch('description', 'post', false);
