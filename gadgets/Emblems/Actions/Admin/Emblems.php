@@ -122,7 +122,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_HTML
      */
     function GetEmblems($limit = 0)
     {
-        $model = $GLOBALS['app']->LoadGadget('Emblems', 'Model', 'Emblems');
+        $model = $this->gadget->loadModel('Emblems');
         $rsemblem = $model->GetEmblems(false, $limit);
         $entries_grid = array();
         if (Jaws_Error::IsError($rsemblem)) {
@@ -208,7 +208,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_HTML
         } else {
             $post['image'] = $res['image'][0]['host_filename'];
             $post['published'] = (bool)$post['published'];
-            $model = $GLOBALS['app']->LoadGadget('Emblems', 'AdminModel', 'Emblems');
+            $model = $this->gadget->loadAdminModel('Emblems');
             $res = $model->AddEmblem($post);
             if (Jaws_Error::IsError($res)) {
                 Jaws_Utils::delete(JAWS_DATA. 'emblems/'. $post['image']);

@@ -21,7 +21,7 @@ class Emblems_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageEmblems');
         @list($id, $data) = jaws()->request->fetch(array('0', '1:array'), 'post');
-        $model = $GLOBALS['app']->LoadGadget('Emblems', 'AdminModel', 'Emblems');
+        $model = $this->gadget->loadAdminModel('Emblems');
         $res = $model->UpdateEmblem($id, $data);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -42,10 +42,10 @@ class Emblems_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageEmblems');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $GLOBALS['app']->LoadGadget('Emblems', 'Model', 'Emblems');
+        $model = $this->gadget->loadModel('Emblems');
         $emblem = $model->GetEmblem($id);
 
-        $model = $GLOBALS['app']->LoadGadget('Emblems', 'AdminModel', 'Emblems');
+        $model = $this->gadget->loadAdminModel('Emblems');
         $res = $model->DeleteEmblem($id);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
