@@ -23,7 +23,7 @@ class Poll_Actions_Admin_Report extends Poll_AdminHTML
         $this->gadget->CheckPermission('ViewReports');
         $this->AjaxMe('script.js');
 
-        $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Group');
+        $model = $this->gadget->loadModel('Group');
         $tpl = $this->gadget->loadTemplate('Reports.html');
         $tpl->SetBlock('Reports');
 
@@ -63,7 +63,7 @@ class Poll_Actions_Admin_Report extends Poll_AdminHTML
     {
         $tpl = $this->gadget->loadTemplate('Reports.html');
         $tpl->SetBlock('PollResults');
-        $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Poll');
+        $model = $this->gadget->loadModel('Poll');
         $poll = $model->GetPoll($pid);
         if (Jaws_Error::IsError($poll)) {
             //we need to handle errors

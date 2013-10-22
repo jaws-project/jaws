@@ -112,7 +112,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
             return false;
         }
 
-        $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel', 'Poll');
+        $model = $this->gadget->loadAdminModel('Poll');
         $model->UpdateGroupsOfPolls(-1, $gid, 0);
 
         $table = Jaws_ORM::getInstance()->table('poll_groups');

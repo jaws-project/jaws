@@ -20,7 +20,7 @@ class Poll_Actions_Admin_Group extends Poll_AdminHTML
      */
     function GetPollGroups($offset = null)
     {
-        $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Group');
+        $model = $this->gadget->loadModel('Group');
         $groups = $model->GetPollGroups(10, $offset);
         if (Jaws_Error::IsError($groups)) {
             return array();
@@ -66,7 +66,7 @@ class Poll_Actions_Admin_Group extends Poll_AdminHTML
      */
     function PollGroupsDatagrid()
     {
-        $model = $GLOBALS['app']->LoadGadget('Poll', 'AdminModel');
+        $model = $this->gadget->loadModel();
         $total = $model->TotalOfData('poll_groups');
         $grid =& Piwi::CreateWidget('DataGrid', array());
         $grid->SetID('pollgroups_datagrid');
@@ -166,7 +166,7 @@ class Poll_Actions_Admin_Group extends Poll_AdminHTML
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('title', $title->Get());
 
-        $model = $GLOBALS['app']->LoadGadget('Poll', 'Model', 'Poll');
+        $model = $this->gadget->loadModel('Poll');
         $polls = $model->GetPolls();
         $pollsCombo =& Piwi::CreateWidget('CheckButtons', 'pg_polls_combo');
         foreach ($polls as $poll) {
