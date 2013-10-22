@@ -20,7 +20,7 @@ class Launcher_Actions_Execute extends Jaws_Gadget_HTML
     function ExecuteLayoutParams()
     {
         $result = array();
-        $model = $GLOBALS['app']->LoadGadget('Launcher', 'Model', 'Scripts');
+        $model = $this->gadget->loadModel('Scripts');
         $scripts = $model->GetScripts();
         if (!Jaws_Error::IsError($scripts)) {
             $pscripts = array();
