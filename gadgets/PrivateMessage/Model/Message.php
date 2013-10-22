@@ -52,7 +52,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }
 
         if($fetchAttachment && !empty($result)) {
-            $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');
+            $model = $this->gadget->loadModel('Attachment');
             $result['attachments'] = $model->GetMessageAttachments($result['id']);
         }
         return $result;
@@ -127,7 +127,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }
 
         if($fetchAttachment) {
-            $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');
+            $model = $this->gadget->loadModel('Attachment');
             $message['attachments'] = $model->GetMessageAttachments($id);
         }
 
@@ -164,7 +164,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         // Delete attachments
         if (count($justDelete) == 0 || in_array('attachments', $justDelete)) {
-            $aModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');
+            $aModel = $this->gadget->loadModel('Attachment');
             foreach ($ids as $id) {
                 $message = $this->GetMessage($id, true, false);
                 foreach ($message['attachments'] as $attachment) {
@@ -372,7 +372,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         // Insert attachments info
         if (!empty($messageData['attachments']) && count($messageData['attachments']) > 0) {
-            $aModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Attachment');
+            $aModel = $this->gadget->loadModel('Attachment');
 
             $aData = array();
             $pm_dir = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $user . DIRECTORY_SEPARATOR;

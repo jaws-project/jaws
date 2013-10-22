@@ -65,8 +65,8 @@ class PrivateMessage_Actions_AllMessages extends PrivateMessage_HTML
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
 
         $date = $GLOBALS['app']->loadDate();
-        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'AllMessages');
-        $mModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
+        $model = $this->gadget->loadModel('AllMessages');
+        $mModel = $this->gadget->loadModel('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         $messages = $model->GetAllMessages($user, $post, $limit, ($page - 1) * $limit);

@@ -25,7 +25,7 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
 
         $id = jaws()->request->fetch('id', 'get');
         $date = $GLOBALS['app']->loadDate();
-        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
+        $model = $this->gadget->loadModel('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $usrModel = new Jaws_User;
         $message = $model->GetMessage($id, true);
@@ -184,7 +184,7 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
             $ids = $post['message_checkbox'];
         }
 
-        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
+        $model = $this->gadget->loadModel('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $res = $model->ArchiveInboxMessage($ids, $user, $status);
         if (Jaws_Error::IsError($res)) {
@@ -227,7 +227,7 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
         if(!empty($post) && count($post)>0) {
             $ids = $post;
         }
-        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
+        $model = $this->gadget->loadModel('Message');
         $res = $model->DeleteInboxMessage($ids);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
@@ -278,7 +278,7 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_HTML
 
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
-        $model = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
+        $model = $this->gadget->loadModel('Message');
         $res = $model->MarkMessages($ids, $status, $user);
         if ($res === true) {
             $GLOBALS['app']->Session->PushResponse(

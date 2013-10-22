@@ -67,8 +67,8 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_HTML
         $tpl->ParseBlock('outbox/table_number');
 
         $date = $GLOBALS['app']->loadDate();
-        $oModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Outbox');
-        $mModel = $GLOBALS['app']->LoadGadget('PrivateMessage', 'Model', 'Message');
+        $oModel = $this->gadget->loadModel('Outbox');
+        $mModel = $this->gadget->loadModel('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
             $tpl->SetBlock('outbox/response');
