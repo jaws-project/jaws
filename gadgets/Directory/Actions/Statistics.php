@@ -29,7 +29,7 @@ class Directory_Actions_Statistics extends Jaws_Gadget_HTML
         $tpl->SetVariable('lbl_foreign', _t('DIRECTORY_STAT_FOREIGN'));
         $tpl->SetVariable('lbl_public', _t('DIRECTORY_STAT_PUBLIC'));
 
-        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Statistics');
+        $model = $this->gadget->loadModel('Statistics');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $stats = $model->GetStatistics($user);
         //_log_var_dump(print_r($stats, true));

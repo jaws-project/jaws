@@ -84,7 +84,7 @@ class Directory_Actions_Share extends Jaws_Gadget_HTML
         $id = (int)jaws()->request->fetch('id');
 
         // Validate file
-        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+        $model = $this->gadget->loadModel('Files');
         $file = $model->GetFile($id);
         if (Jaws_Error::IsError($file)) {
             return array();
@@ -94,7 +94,7 @@ class Directory_Actions_Share extends Jaws_Gadget_HTML
             return array();
         }
 
-        $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Share');
+        $model = $this->gadget->loadModel('Share');
         $users = $model->GetFileUsers($id);
         if (Jaws_Error::IsError($users)) {
             return array();
@@ -114,7 +114,7 @@ class Directory_Actions_Share extends Jaws_Gadget_HTML
             $id = (int)jaws()->request->fetch('id');
 
             // Validate file
-            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Files');
+            $model = $this->gadget->loadModel('Files');
             $file = $model->GetFile($id);
             if (Jaws_Error::IsError($file)) {
                 throw new Exception($file->getMessage());
@@ -128,7 +128,7 @@ class Directory_Actions_Share extends Jaws_Gadget_HTML
 
             $users = jaws()->request->fetch('users');
             $users = empty($users)? array() : explode(',', $users);
-            $model = $GLOBALS['app']->LoadGadget('Directory', 'Model', 'Share');
+            $model = $this->gadget->loadModel('Share');
             $res = $model->UpdateFileUsers($id, $users);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception($res->getMessage());
