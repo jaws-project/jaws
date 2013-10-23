@@ -50,7 +50,7 @@ class Layout_Actions_Admin_Element extends Jaws_Gadget_HTML
 
         $tpl->SetVariable('section', $section);
 
-        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
+        $cmpModel = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
         $gadget_list = $cmpModel->GetGadgetsList(null, true, true, true);
 
         //Hold.. if we dont have a selected gadget?.. like no gadgets?

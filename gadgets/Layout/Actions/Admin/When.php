@@ -61,7 +61,7 @@ class Layout_Actions_Admin_When extends Jaws_Gadget_HTML
         // for index...
         $gadget_field =& Piwi::CreateWidget('CheckButtons', 'checkbox_index', 'vertical');
         $gadget_field->AddOption(_t('LAYOUT_INDEX'), 'index', null, in_array('index', $selectedGadgets));
-        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
+        $cmpModel = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
         $gadget_list = $cmpModel->GetGadgetsList(null, true, true, true);
         foreach ($gadget_list as $g) {
             $gadget_field->AddOption($g['title'], $g['name'], null, in_array($g['name'], $selectedGadgets));
