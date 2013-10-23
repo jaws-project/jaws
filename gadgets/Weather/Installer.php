@@ -91,7 +91,7 @@ class Weather_Installer extends Jaws_Gadget_Installer
         $this->gadget->registry->insert('api_key', '');
 
         // Update layout actions
-        $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
+        $layoutModel = Jaws_Gadget::getInstance('Layout')->loadAdminModel('Layout');
         if (!Jaws_Error::isError($layoutModel)) {
             $layoutModel->EditGadgetLayoutAction('Weather', 'RegionWeather', 'RegionWeather', 'RegionWeather');
             $layoutModel->EditGadgetLayoutAction('Weather', 'AllRegionsWeather', 'AllRegionsWeather', 'RegionWeather');
