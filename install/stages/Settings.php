@@ -226,7 +226,7 @@ class Installer_Settings extends JawsInstallerStage
             _log(JAWS_LOG_DEBUG, "There was a problem while loading gadget: Layout");
             _log(JAWS_LOG_DEBUG, $objGadget->getMessage());
         } else {
-            $base_schema  = JAWS_PATH. "gadgets/Layout/schema/schema.xml";
+            $base_schema  = JAWS_PATH. "gadgets/Layout/Resources/schema/schema.xml";
             $input_schema = JAWS_PATH. "install/stages/Settings/Sample/Layout/insert.xml";
 
             $installer = $objGadget->loadInstaller();
