@@ -206,7 +206,7 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_HTML
      */
     function DataGrid()
     {
-        $model = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminModel');
+        $model = $this->gadget->loadModel();
         $total = $model->TotalOfData('ipvisitor', 'ip');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
