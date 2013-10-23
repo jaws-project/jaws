@@ -895,11 +895,18 @@ class Jaws
         $gadgets = array_filter(explode(',', $data));
         foreach($gadgets as $gadget) {
             if (Jaws_Gadget::IsGadgetEnabled($gadget)) {
-                $objGadget = $this->loadGadget($gadget, 'Autoload');
-                if (!Jaws_Error::isError($objGadget)) {
-                    if (method_exists($objGadget, 'Execute')) {
-                        $objGadget->Execute();
-                    }
+                $objGadget = $this->LoadGadget($gadget, 'Info');
+                if (Jaws_Error::IsError($objGadget)) {
+                    continue;
+                }
+                $objHook = $objGadget->loadHook('Autoload');
+                if (Jaws_Error::IsError($objHook)) {
+                    continue;
+                }
+
+                $result = $objHook->Execute();
+                if (Jaws_Error::IsError($result)) {
+                    //do nothing;
                 }
             }
         }
