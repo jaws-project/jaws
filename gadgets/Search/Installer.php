@@ -57,7 +57,7 @@ class Search_Installer extends Jaws_Gadget_Installer
     {
         if (version_compare($old, '0.9.0', '<')) {
             // Update layout actions
-            $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
+            $layoutModel = Jaws_Gadget::getInstance('Layout')->loadAdminModel('Layout');
             if (!Jaws_Error::isError($layoutModel)) {
                 $layoutModel->EditGadgetLayoutAction('Search', 'Box', 'Box', 'Search');
                 $layoutModel->EditGadgetLayoutAction('Search', 'SimpleBox', 'SimpleBox', 'Search');
