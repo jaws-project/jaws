@@ -467,7 +467,8 @@ class Blog_Actions_Admin_Entries extends Blog_AdminHTML
             $pubdate = $post['pubdate'];
         }
 
-        foreach ($post['categories'] as $cat) {        
+        $post['categories'] = !empty($post['categories'])? $post['categories'] : array();
+        foreach ($post['categories'] as $cat) {
             if (!$this->gadget->GetPermission('CategoryManage', $cat)) {
                 return Jaws_HTTPError::Get(403);
             }
