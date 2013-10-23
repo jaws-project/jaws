@@ -55,7 +55,7 @@ class Jaws_Gadget_Model
                         $type_class_name = $this->gadget->name. '_Model';
                         $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Model.php';
                         if (!file_exists($file)) {
-                            return $this->gadget->models['Model'];
+                            return $this->gadget->extensions['Model'];
                         }
                     } else {
                         $type_class_name = $this->gadget->name. "_Model_$filename";
@@ -68,7 +68,7 @@ class Jaws_Gadget_Model
                         $type_class_name = $this->gadget->name. '_AdminModel';
                         $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/AdminModel.php';
                         if (!file_exists($file)) {
-                            return $this->gadget->models['Model'];
+                            return $this->gadget->extensions['Model'];
                         }
                     } else {
                         $type_class_name = $this->gadget->name. "_Model_Admin_$filename";

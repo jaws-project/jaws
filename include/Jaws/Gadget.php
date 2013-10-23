@@ -124,12 +124,11 @@ class Jaws_Gadget
     var $default_admin_action = 'Admin';
 
     /**
-     * Store component objects for later use so we aren't running
-     * around with multiple copies
+     * Store extension objects for later use so we aren't running around with multiple copies
      * @var     array
      * @access  protected
      */
-    var $components = array();
+    var $extensions = array();
 
     /**
      * Store models objects for later use so we aren't running around with multiple copies
@@ -602,12 +601,12 @@ class Jaws_Gadget
                 array_unshift($arguments, true);
                 $extension = substr($method, 9);
                 $model_class_name = "Jaws_Gadget_$extension";
-                if (!isset($this->components[$extension])) {
-                    $this->components[$extension] = new $model_class_name($this);
+                if (!isset($this->extensions[$extension])) {
+                    $this->extensions[$extension] = new $model_class_name($this);
                     $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded extension: [$extension]");
                 }
 
-                return call_user_func_array(array($this->components[$extension], 'load'), $arguments);
+                return call_user_func_array(array($this->extensions[$extension], 'load'), $arguments);
                 break;
 
             case 'loadModel':
@@ -618,12 +617,12 @@ class Jaws_Gadget
             case 'loadInstaller':
                 $extension = substr($method, 4);
                 $model_class_name = "Jaws_Gadget_$extension";
-                if (!isset($this->components[$extension])) {
-                    $this->components[$extension] = new $model_class_name($this);
+                if (!isset($this->extensions[$extension])) {
+                    $this->extensions[$extension] = new $model_class_name($this);
                     $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded extension: [$extension]");
                 }
 
-                return call_user_func_array(array($this->components[$extension], 'load'), $arguments);
+                return call_user_func_array(array($this->extensions[$extension], 'load'), $arguments);
                 break;
         }
 
