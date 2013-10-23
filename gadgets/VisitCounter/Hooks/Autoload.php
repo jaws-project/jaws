@@ -9,7 +9,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class VisitCounter_Autoload
+class VisitCounter_Hooks_Autoload extends Jaws_Gadget_Hook
 {
     /**
      * Autoload function
