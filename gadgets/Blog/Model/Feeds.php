@@ -366,7 +366,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
      */
     function GetRecentCommentsAtomStruct($feed_type = 'atom')
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+        $cModel = Jaws_Gadget::getInstance('Comments')->loadModel('Comments');
         $comments = $cModel->GetComments($this->gadget->name, 'entry');
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENTS_ATOMSTRUCT'), _t('BLOG_NAME'));

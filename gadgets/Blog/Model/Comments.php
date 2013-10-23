@@ -22,7 +22,7 @@ class Blog_Model_Comments extends Jaws_Gadget_Model
      */
     function GetComments($id)
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+        $cModel = Jaws_Gadget::getInstance('Comments')->loadModel('Comments');
         $comments = $cModel->GetComments($this->gadget->name, 0, $id, 'entry', array(1), true);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENTS'), _t('BLOG_NAME'));
@@ -63,7 +63,7 @@ class Blog_Model_Comments extends Jaws_Gadget_Model
      */
     function GetCommentsFiltered($filterby, $filter, $status, $limit)
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+        $cModel = Jaws_Gadget::getInstance('Comments')->loadModel('Comments');
         $filterMode = '';
         switch($filterby) {
             case 'postid':
@@ -123,7 +123,7 @@ class Blog_Model_Comments extends Jaws_Gadget_Model
      */
     function GetComment($id)
     {
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+        $cModel = Jaws_Gadget::getInstance('Comments')->loadModel('Comments');
         $comment = $cModel->GetComment($id, $this->gadget->name);
         if (Jaws_Error::IsError($comment)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENT'), _t('BLOG_NAME'));

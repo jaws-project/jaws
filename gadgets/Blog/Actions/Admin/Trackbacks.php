@@ -83,7 +83,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_AdminHTML
 
         $tpl->SetVariable('filter_button', $filterButton->Get());
 
-        $model = $GLOBALS['app']->LoadGadget('Blog', 'AdminModel');
+        $model = $this->gadget->loadModel();
         $total = $model->TotalOfData('blog_trackback');
 
         $gridBox =& Piwi::CreateWidget('VBox');

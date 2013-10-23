@@ -62,7 +62,7 @@ class Blog_Model_Summary extends Jaws_Gadget_Model
         }
 
         if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
-            $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+            $cModel = Jaws_Gadget::getInstance('Comments')->loadModel('Comments');
             // total comments
             $summary['CommentsQty'] = $cModel->GetCommentsCount($this->gadget->name);
             // recent comments
