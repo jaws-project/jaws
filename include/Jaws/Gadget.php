@@ -186,6 +186,59 @@ class Jaws_Gadget
     }
 
     /**
+     * Creates the Jaws_Gadget instance
+     *
+     * @return  object returns the instance
+     * @access  public
+     */
+    function getInstance($gadget)
+    {
+        static $instances = array();
+        $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
+        if (!isset($instances[$gadget])) {
+            if (!is_dir(JAWS_PATH . "gadgets/$gadget")) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', $gadget),
+                    __FUNCTION__
+                );
+            }
+
+            $file = JAWS_PATH . "gadgets/$gadget/Info.php";
+            if (!file_exists($file)) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', $gadget),
+                    __FUNCTION__
+                );
+            }
+
+            // is gadget available?
+            if (defined('JAWS_AVAILABLE_GADGETS')) {
+                static $available_gadgets;
+                if (!isset($available_gadgets)) {
+                    $available_gadgets = array_filter(array_map('trim', explode(',', JAWS_AVAILABLE_GADGETS)));
+                }
+
+                if (!in_array($gadget, $available_gadgets)) {
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_GADGET_NOT_AVAILABLE', $gadget),
+                        __FUNCTION__,
+                        JAWS_ERROR_INFO
+                    );
+                }
+            }
+
+            require_once $file;
+            $classname = $gadget. '_Info';
+            $instances[$gadget] = new $classname($gadget);
+            if (!Jaws_Error::IsError($instances[$gadget])) {
+                $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget: $gadget");
+            }
+        }
+
+        return $instances[$gadget];
+    }
+
+    /**
      * Loads a template from a file
      *
      * @access  public
