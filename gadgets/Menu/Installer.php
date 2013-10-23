@@ -105,7 +105,7 @@ class Menu_Installer extends Jaws_Gadget_Installer
             }
 
             // Update layout actions
-            $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
+            $layoutModel = Jaws_Gadget::getInstance('Layout')->loadAdminModel('Layout');
             if (!Jaws_Error::isError($layoutModel)) {
                 $layoutModel->EditGadgetLayoutAction('Menu', 'Display', 'Menu', 'Menu');
             }
