@@ -30,7 +30,7 @@ class Phoo_HTML extends Jaws_Gadget_HTML
 //        $post['reference'] = (int)$post['reference'];
 //        $post['albumid']   = (int)$post['albumid'];
 //
-//        $model = $GLOBALS['app']->LoadGadget('Phoo', 'Model');
+//        $model = $this->gadget->loadModel('Photos');
 //        $image = $model->GetImage($post['reference'], $post['albumid']);
 //        if (Jaws_Error::isError($image)) {
 //            $GLOBALS['app']->Session->PushSimpleResponse($image->getMessage(), 'Phoo');

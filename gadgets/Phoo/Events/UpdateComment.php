@@ -20,7 +20,7 @@ class Phoo_Events_UpdateComment extends Jaws_Gadget_Event
             return;
         }
 
-        $cModel = $GLOBALS['app']->LoadGadget('Comments', 'Model', 'Comments');
+        $cModel = Jaws_Gadget::getInstance('Comments')->loadModel('Comments');
         $howManyComment = $cModel->GetCommentsCount('Phoo', $action, $reference, '',
             Comments_Info::COMMENT_STATUS_APPROVED);
         $pModel = $this->gadget->loadAdminModel('Comments');
