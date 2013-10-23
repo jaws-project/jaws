@@ -86,7 +86,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_HTML
      */
     function Datagrid()
     {
-        $model = $GLOBALS['app']->LoadGadget('Emblems', 'AdminModel');
+        $model = $this->gadget->loadModel();
         $total = $model->TotalOfData('emblem');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
