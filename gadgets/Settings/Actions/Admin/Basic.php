@@ -118,7 +118,7 @@ class Settings_Actions_Admin_Basic extends Settings_AdminHTML
         $tpl->ParseBlock('settings/item');
 
         // Main gadget
-        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
+        $cmpModel = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
         $installedgadgets = $cmpModel->GetGadgetsList(null, true, true, null, true);
         $gdt =& Piwi::CreateWidget('Combo', 'main_gadget');
         $gdt->setID('main_gadget');
