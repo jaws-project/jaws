@@ -78,7 +78,7 @@ class Tags_Model_Tags extends Jaws_Gadget_Model
      */
     function GetTagRelativeGadgets()
     {
-        $cmpModel = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
+        $cmpModel = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
         $gadgetList = $cmpModel->GetGadgetsList(false, true, true);
         $gadgets = array();
         foreach ($gadgetList as $key => $gadget) {
