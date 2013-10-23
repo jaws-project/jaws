@@ -547,7 +547,7 @@ class Jaws_Gadget
         switch ($method) {
             case 'loadAdminModel':
                 array_unshift($arguments, true);
-                $extension = substr($method, 8);
+                $extension = substr($method, 9);
                 $model_class_name = "Jaws_Gadget_$extension";
                 if (!isset($this->components[$extension])) {
                     $this->components[$extension] = new $model_class_name($this);
