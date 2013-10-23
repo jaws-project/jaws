@@ -28,7 +28,7 @@ class Users_Actions_Admin_ACL extends Users_AdminHTML
         $tpl->SetVariable('lbl_default', _t('USERS_ACLS_DEFAULT'));
 
         // Components
-        $model = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
+        $model = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
         $gadgets = $model->GetGadgetsList(null, true, true);
         $combo =& Piwi::CreateWidget('Combo', 'components');
         $combo->AddOption('', '');

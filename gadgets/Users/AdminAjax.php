@@ -284,7 +284,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageIPs');
 
         @list($ip) = jaws()->request->fetchAll('post');
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'IP');
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAdminModel('IP');
         if ($mPolicy->AddIPRange($ip, null, true)) {
             $GLOBALS['app']->Session->PushLastResponse(
                 _t('POLICY_RESPONSE_IP_ADDED'),
@@ -312,7 +312,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
         $this->gadget->CheckPermission('ManageAgents');
         @list($agent) = jaws()->request->fetchAll('post');
 
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'AdminModel', 'Agent');
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAdminModel('Agent');
         if ($mPolicy->AddAgent($agent, true)) {
             $GLOBALS['app']->Session->PushLastResponse(
                 _t('POLICY_RESPONSE_AGENT_ADDED'),
