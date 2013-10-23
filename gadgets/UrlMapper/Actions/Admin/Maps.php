@@ -81,7 +81,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_AdminHTML
         $tpl->SetVariable('menubar', $this->MenuBar('Maps'));
 
         //Combo for gadgets
-        $model = $GLOBALS['app']->LoadGadget('Components', 'Model', 'Gadgets');
+        $model = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
         $gadgets = $model->GetGadgetsList(null, true, true, null, true);
         $comboGadgets =& Piwi::CreateWidget('Combo', 'gadgets_combo');
         $comboGadgets->SetStyle('width: 200px;');
