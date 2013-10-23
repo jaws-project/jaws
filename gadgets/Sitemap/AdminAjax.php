@@ -72,7 +72,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetStaticPageReferences()
     {
-        $staticPage = $GLOBALS['app']->loadGadget('StaticPage', 'Model', 'Page');
+        $staticPage = Jaws_Gadget::getInstance('StaticPage')->loadModel('Page');
         $pages = $staticPage->GetPages();
         if (Jaws_Error::IsError($pages)) {
             return array();
@@ -92,7 +92,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetBlogReferences()
     {
-        $blog = $GLOBALS['app']->loadGadget('Blog', 'Model', 'Posts');
+        $blog = Jaws_Gadget::getInstance('Blog')->loadModel('Posts');
         $posts = $blog->GetEntriesAsArchive();
         if (Jaws_Error::IsError($posts)) {
             return array();
@@ -112,7 +112,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetLauncherReferences()
     {
-        $launcher = $GLOBALS['app']->loadGadget('Launcher', 'Model');
+        $launcher = Jaws_Gadget::getInstance('Launcher')->loadModel('Scripts');
         $items = $launcher->GetScripts();
         $result = array();
         if (Jaws_Error::IsError($items)) {

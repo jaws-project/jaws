@@ -83,7 +83,7 @@ class Sitemap_Installer extends Jaws_Gadget_Installer
         }
 
         // Update layout actions
-        $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
+        $layoutModel = Jaws_Gadget::getInstance('Layout')->loadAdminModel('Layout');
         if (!Jaws_Error::isError($layoutModel)) {
             $layoutModel->EditGadgetLayoutAction('Sitemap', 'Show', 'Show', 'Show');
             $layoutModel->EditGadgetLayoutAction('Sitemap', 'ShowWithoutTop', 'ShowWithoutTop', 'Show');
