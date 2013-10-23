@@ -87,7 +87,7 @@ class Banner_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         // Update layout actions
-        $layoutModel = $GLOBALS['app']->loadGadget('Layout', 'AdminModel', 'Layout');
+        $layoutModel = Jaws_Gadget::getInstance('Layout')->loadAdminModel('Layout');
         if (!Jaws_Error::isError($layoutModel)) {
             $layoutModel->EditGadgetLayoutAction('Banner', 'Display', 'Banners', 'Banners');
         }
