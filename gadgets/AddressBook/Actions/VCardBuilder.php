@@ -6,7 +6,7 @@
  * @package    AddressBook
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/Resources/site_style.css');
-class AddressBook_Actions_VCardBuilder extends AddressBook_HTML
+class AddressBook_Actions_VCardBuilder extends AddressBook_Action
 {
     /**
      * Build and export data with VCard format

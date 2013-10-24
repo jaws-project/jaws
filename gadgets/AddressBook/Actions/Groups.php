@@ -6,7 +6,7 @@
  * @package    AddressBook
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/Resources/site_style.css');
-class AddressBook_Actions_Groups extends AddressBook_HTML
+class AddressBook_Actions_Groups extends AddressBook_Action
 {
     /**
      * Layout Action. Displays plane list of Address Book Groups

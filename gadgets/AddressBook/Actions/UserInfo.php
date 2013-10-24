@@ -6,7 +6,7 @@
  * @package    AddressBook
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/Resources/site_style.css');
-class AddressBook_Actions_UserInfo extends Jaws_Gadget_HTML
+class AddressBook_Actions_UserInfo extends Jaws_Gadget_Action
 {
     /**
      *

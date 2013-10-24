@@ -6,7 +6,7 @@
  * @package    AddressBook
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/Resources/site_style.css');
-class AddressBook_Actions_AddressBook extends AddressBook_HTML
+class AddressBook_Actions_AddressBook extends AddressBook_Action
 {
     /**
      * Displays the list of Address Book items, this items can filter by $uid(user ID) param.

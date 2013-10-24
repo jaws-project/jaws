@@ -6,7 +6,7 @@
  * @package    AddressBook
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/Resources/site_style.css');
-class AddressBook_Actions_VCardImport extends AddressBook_HTML
+class AddressBook_Actions_VCardImport extends AddressBook_Action
 {
     /**
      * Show import data form

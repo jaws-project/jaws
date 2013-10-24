@@ -6,7 +6,7 @@
  * @package    AddressBook
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/Resources/site_style.css');
-class AddressBook_Actions_ViewAddress extends AddressBook_HTML
+class AddressBook_Actions_ViewAddress extends AddressBook_Action
 {
     /**
      * Displays not editable version of one address
