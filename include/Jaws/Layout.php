@@ -587,7 +587,7 @@ class Jaws_Layout
             return $output;
         }
 
-        $goGadget = $GLOBALS['app']->loadGadget($gadget, 'HTML', $filename);
+        $goGadget = $GLOBALS['app']->loadGadget($gadget, 'Action', $filename);
         if (!Jaws_Error::isError($goGadget)) {
             if (method_exists($goGadget, $action)) {
                 if (is_null($params)) {
@@ -596,7 +596,7 @@ class Jaws_Layout
                     $output = call_user_func_array(array($goGadget, $action), $params);
                 }
             } else {
-                $GLOBALS['log']->Log(JAWS_LOG_ERROR, "Action $action in $gadget's HTML dosn't exist.");
+                $GLOBALS['log']->Log(JAWS_LOG_ERROR, "Action $action in $gadget's Actions dosn't exist.");
             }
         }
 
