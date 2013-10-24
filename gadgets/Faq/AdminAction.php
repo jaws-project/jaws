@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Faq_AdminHTML extends Jaws_Gadget_HTML
+class Faq_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Builds the menubar
@@ -54,7 +54,7 @@ class Faq_AdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Faq', 'AdminHTML', 'Question');
+        $gadgetHTML = $GLOBALS['app']->LoadGadget('Faq', 'AdminAction', 'Question');
         return $gadgetHTML->ManageQuestions();
     }
 

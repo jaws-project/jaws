@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Faq_Actions_Admin_Category extends Faq_AdminHTML
+class Faq_Actions_Admin_Category extends Faq_AdminAction
 {
     /**
      * Edit a category

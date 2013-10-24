@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Faq_Actions_Category extends Jaws_Gadget_HTML
+class Faq_Actions_Category extends Jaws_Gadget_Action
 {
     /**
      * Displays a list with links to each category

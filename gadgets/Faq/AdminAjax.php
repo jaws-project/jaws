@@ -8,7 +8,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Faq_AdminAjax extends Jaws_Gadget_HTML
+class Faq_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Delete a category
@@ -99,7 +99,7 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
     {
         $text = jaws()->request->fetch(0, 'post', false);
 
-        $gadget = $GLOBALS['app']->LoadGadget('Faq', 'AdminHTML', 'Question');
+        $gadget = $GLOBALS['app']->LoadGadget('Faq', 'AdminAction', 'Question');
         return $gadget->gadget->ParseText($text);
     }
 
@@ -113,7 +113,7 @@ class Faq_AdminAjax extends Jaws_Gadget_HTML
     function GetCategoryGrid()
     {
         @list($id) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('Faq', 'AdminHTML', 'Question');
+        $gadget = $GLOBALS['app']->LoadGadget('Faq', 'AdminAction', 'Question');
         $datagrid = $gadget->DataGrid($id);
 
         if (!empty($datagrid)) {
