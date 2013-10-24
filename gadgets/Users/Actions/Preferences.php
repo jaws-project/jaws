@@ -44,7 +44,7 @@ class Users_Actions_Preferences extends Users_HTML
                 continue;
             }
 
-            $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+            $objGadget = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($objGadget)) {
                 continue;
             }

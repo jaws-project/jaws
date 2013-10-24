@@ -240,7 +240,7 @@ class Users_Actions_Profile extends Jaws_Gadget_HTML
                 continue;
             }
 
-            $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+            $objGadget = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($objGadget)) {
                 continue;
             }

@@ -486,7 +486,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
         // fetch default ACLs
         $default_acls = $GLOBALS['app']->ACL->fetchAll($comp);
         // set ACL keys description
-        $info = $GLOBALS['app']->LoadGadget($comp, 'Info');
+        $info = Jaws_Gadget::getInstance($comp);
         foreach ($default_acls as $k => $acl) {
             $default_acls[$k]['key_desc'] = $info->acl->description($acl['key_name'], $acl['key_subkey']);
         }
