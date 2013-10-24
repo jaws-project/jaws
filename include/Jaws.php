@@ -439,7 +439,7 @@ class Jaws
                         );
                         break;
 
-                    case 'AdminHTML':
+                    case 'AdminAction':
                         $type_class_name = 'Jaws_Gadget_Action';
                         break;
 
@@ -479,12 +479,12 @@ class Jaws
         if (!empty($filename)) {
             if (!isset($this->_Gadgets[$gadget][$type]['files'][$filename])) {
                 switch ($type) {
-                    case 'HTML':
+                    case 'Action':
                         $file_class_name = $gadget. '_Actions_'. $filename;
                         $file = JAWS_PATH. "gadgets/$gadget/Actions/$filename.php";
                         break;
 
-                    case 'AdminHTML':
+                    case 'AdminAction':
                         $file_class_name = $gadget. '_Actions_Admin_'. $filename;
                         $file = JAWS_PATH. "gadgets/$gadget/Actions/Admin/$filename.php";
                         break;
