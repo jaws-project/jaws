@@ -9,7 +9,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Components_Actions_Admin_Registry extends Jaws_Gadget_HTML
+class Components_Actions_Admin_Registry extends Jaws_Gadget_Action
 {
     /**
      * Builds registry UI

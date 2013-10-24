@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Components_Actions_Version extends Jaws_Gadget_HTML
+class Components_Actions_Version extends Jaws_Gadget_Action
 {
     /**
      * Returns the Jaws/component version

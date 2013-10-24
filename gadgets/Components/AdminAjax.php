@@ -8,7 +8,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Components_AdminAjax extends Jaws_Gadget_HTML
+class Components_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Gets list of gadgets
@@ -56,7 +56,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageGadgets');
         @list($gadget) = jaws()->request->fetchAll('post');
-        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'Gadgets');
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminAction', 'Gadgets');
         return $html->GadgetInfo($gadget);
     }
 
@@ -69,7 +69,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function InstallGadget()
     {
         @list($gadget) = jaws()->request->fetchAll('post');
-        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'GadgetInstaller');
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminAction', 'GadgetInstaller');
         $html->InstallGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -83,7 +83,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function UpgradeGadget()
     {
         @list($gadget) = jaws()->request->fetchAll('post');
-        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'GadgetInstaller');
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminAction', 'GadgetInstaller');
         $html->UpgradeGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -97,7 +97,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function UninstallGadget()
     {
         @list($gadget) = jaws()->request->fetchAll('post');
-        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'GadgetInstaller');
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminAction', 'GadgetInstaller');
         $html->UninstallGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -111,7 +111,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function EnableGadget()
     {
         @list($gadget) = jaws()->request->fetchAll('post');
-        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'GadgetInstaller');
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminAction', 'GadgetInstaller');
         $html->EnableGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -125,7 +125,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     function DisableGadget()
     {
         @list($gadget) = jaws()->request->fetchAll('post');
-        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'GadgetInstaller');
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminAction', 'GadgetInstaller');
         $html->DisableGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -165,7 +165,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManagePlugins');
         @list($plugin) = jaws()->request->fetchAll('post');
-        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'Plugins');
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminAction', 'Plugins');
         return $html->PluginInfo($plugin);
     }
 
@@ -217,7 +217,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManagePlugins');
         @list($plugin) = jaws()->request->fetchAll('post');
-        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'Plugins');
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminAction', 'Plugins');
         $ui = $html->PluginUsage();
 
         $usage = array();
@@ -259,7 +259,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageRegistry');
         @list($comp, $is_plugin) = jaws()->request->fetchAll('post');
-        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'Registry');
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminAction', 'Registry');
         $ui = $html->RegistryUI();
         $data = $GLOBALS['app']->Registry->fetchAll($comp);
         return array('ui' => $ui, 'data' => $data);
@@ -296,7 +296,7 @@ class Components_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageACLs');
         @list($comp, $is_plugin) = jaws()->request->fetchAll('post');
-        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'ACL');
+        $html = $GLOBALS['app']->LoadGadget('Components', 'AdminAction', 'ACL');
         $ui = $html->ACLUI();
         $acls = $GLOBALS['app']->ACL->fetchAll($comp);
         if (!$is_plugin) {

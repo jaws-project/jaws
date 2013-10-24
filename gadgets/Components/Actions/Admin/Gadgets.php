@@ -9,7 +9,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Components_Actions_Admin_Gadgets extends Components_AdminHTML
+class Components_Actions_Admin_Gadgets extends Components_AdminAction
 {
     /**
      * Builds gadgets management UI

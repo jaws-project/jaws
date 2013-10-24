@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Components_AdminHTML extends Jaws_Gadget_HTML
+class Components_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Default admin action
@@ -20,12 +20,12 @@ class Components_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         if ($this->gadget->GetPermission('ManageGadgets')) {
-            $htmlGadgets = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'Gadgets');
+            $htmlGadgets = $GLOBALS['app']->LoadGadget('Components', 'AdminAction', 'Gadgets');
             return $htmlGadgets->Gadgets();
         }
 
         $this->gadget->CheckPermission('ManagePlugins');
-        $htmlPlugins = $GLOBALS['app']->LoadGadget('Components', 'AdminHTML', 'Plugins');
+        $htmlPlugins = $GLOBALS['app']->LoadGadget('Components', 'AdminAction', 'Plugins');
         return $htmlPlugins->Plugins();
     }
 
