@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Languages_AdminAjax extends Jaws_Gadget_HTML
+class Languages_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Saves language
@@ -36,7 +36,7 @@ class Languages_AdminAjax extends Jaws_Gadget_HTML
         @list($component, $langTo) = jaws()->request->fetchAll('post');
         $component = explode('|', $component);
         $component[1] = preg_replace("/[^A-Za-z0-9]/", '', $component[1]);
-        $gadget = $GLOBALS['app']->LoadGadget('Languages', 'AdminHTML', 'Languages');
+        $gadget = $GLOBALS['app']->LoadGadget('Languages', 'AdminAction', 'Languages');
         return $gadget->GetLangDataUI($component[1], (int)$component[0], $langTo);
     }
 
