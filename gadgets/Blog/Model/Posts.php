@@ -283,6 +283,12 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             $entry['categories']    = $model->GetCategoriesInEntry($row['id']);
         }
 
+        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+            $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
+            $tags = $model->GetItemTags(array('gadget' => 'Blog', 'action' => 'post', 'reference' => $id), true);
+            $entry['tags'] = array_filter($tags);
+        }
+
         return $entry;
     }
 

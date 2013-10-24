@@ -608,6 +608,10 @@ function startAutoDrafting()
     var published      = $('published').value;
     var summary        = getEditorValue('summary_block');
     var content        = getEditorValue('text_block');
+    var tags           = '';
+    if ($('tags') != null) {
+        tags = $('tags').value;
+    }
 
     if (!title.blank() && (!summary.blank() || !content.blank()))
     {
@@ -639,7 +643,7 @@ function startAutoDrafting()
         }
 
         BlogAjax.callAsync('autodraft', id, categories, title, summary, content, fasturl, meta_keywords, meta_desc,
-                       allow_comments, trackbacks, published, timestamp);
+                            tags, allow_comments, trackbacks, published, timestamp);
     }
     setTimeout('startAutoDrafting();', 120000);
 }

@@ -224,7 +224,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
     function DeleteEntries()
     {
         $this->gadget->CheckPermission('DeleteEntries');
-        @list($ids) = jaws()->request->fetchAll('post');
+        $ids = jaws()->request->fetchAll('post');
         $model = $this->gadget->loadAdminModel('Posts');
         $model->MassiveEntryDelete($ids);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -257,7 +257,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
     function DeleteTrackbacks()
     {
         $this->gadget->CheckPermission('ManageTrackbacks');
-        @list($ids) = jaws()->request->fetchAll('post');
+        $ids = jaws()->request->fetchAll('post');
         $model = $this->gadget->loadAdminModel('Trackbacks');
         $model->MassiveTrackbackDelete($ids);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -295,6 +295,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
      * @internal param  string  $fasturl        FastURL
      * @internal param  string  $meta_keywords  Meta keywords
      * @internal param  string  $meta_desc      Meta description
+     * @internal param  string  $tags           Tags
      * @internal param  bool    $allow_comments If entry should allow commnets
      * @internal param  string  $trackbacks     Trackback to send
      * @internal param  bool    $published      If entry should be published
@@ -304,7 +305,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
     function AutoDraft()
     {
         $this->gadget->CheckPermission('AddEntries');
-        @list($id, $categories, $title, $summary, $text, $fasturl, $meta_keywords, $meta_desc,
+        @list($id, $categories, $title, $summary, $text, $fasturl, $meta_keywords, $meta_desc, $tags,
             $allow_comments, $trackbacks, $published, $timestamp
         ) = jaws()->request->fetchAll('post');
         $model = $this->gadget->loadAdminModel('Posts');
@@ -322,6 +323,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
                                            $fasturl,
                                            $meta_keywords,
                                            $meta_desc,
+                                           $tags,
                                            $allow_comments,
                                            $trackbacks,
                                            false,
@@ -346,6 +348,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
                                        $fasturl,
                                        $meta_keywords,
                                        $meta_desc,
+                                       $tags,
                                        $allow_comments,
                                        $trackbacks,
                                        $published,

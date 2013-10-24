@@ -153,6 +153,15 @@ class Blog_Actions_Admin_Entries extends Blog_AdminAction
         $metaDesc->SetStyle('width: 100%;');
         $tpl->SetVariable('meta_desc', $metaDesc->Get());
 
+        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+            $tpl->SetBlock('edit_entry/advanced/tags');
+            $tpl->SetVariable('tags_label', _t('GLOBAL_TAGS'));
+            $tags =& Piwi::CreateWidget('Entry', 'tags', '');
+            $tags->SetStyle('width: 100%;');
+            $tpl->SetVariable('tags', $tags->Get());
+            $tpl->ParseBlock('edit_entry/advanced/tags');
+        }
+
         if ($this->gadget->registry->fetch('trackback') == 'true') {
             $tpl->SetBlock('edit_entry/advanced/trackback');
             $tpl->SetVariable('trackback_to', _t('BLOG_TRACKBACK'));
@@ -182,7 +191,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminAction
 
         $names   = array('edit_timestamp:array', 'pubdate', 'categories:array', 'title',
                          'fasturl', 'allow_comments:array', 'published',
-                         'trackback_to', 'meta_keywords', 'meta_desc');
+                         'trackback_to', 'meta_keywords', 'meta_desc', 'tags');
         $post    = jaws()->request->fetch($names, 'post');
         $content = jaws()->request->fetch(array('summary_block', 'text_block'), 'post', false);
         $post['trackback_to'] = str_replace("\r\n", "\n", $post['trackback_to']);
@@ -201,7 +210,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminAction
         $id = $pModel->NewEntry($GLOBALS['app']->Session->GetAttribute('user') , $post['categories'],
                                $post['title'], $content['summary_block'], $content['text_block'],
                                $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
-                               isset($post['allow_comments'][0]), $post['trackback_to'],
+                               $post['tags'], isset($post['allow_comments'][0]), $post['trackback_to'],
                                $post['published'], $pubdate);
 
         if (!Jaws_Error::IsError($id)) {
@@ -413,6 +422,16 @@ class Blog_Actions_Admin_Entries extends Blog_AdminAction
         $metaDesc->SetStyle('width: 100%;');
         $tpl->SetVariable('meta_desc', $metaDesc->Get());
 
+        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+            $tpl->SetBlock('edit_entry/advanced/tags');
+            $tpl->SetVariable('tags_label', _t('GLOBAL_TAGS'));
+            $postTags = implode(', ', $entry['tags']);
+            $tags =& Piwi::CreateWidget('Entry', 'tags', $postTags);
+            $tags->SetStyle('width: 100%;');
+            $tpl->SetVariable('tags', $tags->Get());
+            $tpl->ParseBlock('edit_entry/advanced/tags');
+        }
+
         // Trackback
         if ($this->gadget->registry->fetch('trackback') == 'true') {
             $tpl->SetBlock('edit_entry/advanced/trackback');
@@ -451,7 +470,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminAction
     function SaveEditEntry()
     {
         $names   = array('id', 'edit_timestamp:array', 'pubdate', 'categories:array', 'title',
-                         'fasturl', 'meta_keywords', 'meta_desc', 
+                         'fasturl', 'meta_keywords', 'meta_desc', 'tags',
                          'allow_comments:array', 'published', 'trackback_to');
         $post    = jaws()->request->fetch($names, 'post');
         $content = jaws()->request->fetch(array('summary_block', 'text_block'), 'post', false);
@@ -475,7 +494,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminAction
         }
 
         $pModel->UpdateEntry($id, $post['categories'], $post['title'], $content['summary_block'], $content['text_block'],
-                            $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
+                            $post['fasturl'], $post['meta_keywords'], $post['meta_desc'], $post['tags'],
                             isset($post['allow_comments'][0]), $post['trackback_to'], $post['published'], $pubdate);
         if (!Jaws_Error::IsError($id)) {
             if ($this->gadget->registry->fetch('trackback') == 'true') {

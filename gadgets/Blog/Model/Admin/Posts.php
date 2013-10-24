@@ -94,6 +94,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      * @param   string  $fast_url       FastURL
      * @param   string  $meta_keywords  Meta keywords
      * @param   string  $meta_desc      Meta description
+     * @param   string  $tags           Tags
      * @param   bool    $allow_comments If entry should allow commnets
      * @param   bool    $trackbacks
      * @param   bool    $publish        If entry should be published
@@ -101,7 +102,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      * @param   bool    $autodraft      Does it comes from an autodraft action?
      * @return  mixed   Returns the ID of the new post or Jaws_Error on failure
      */
-    function NewEntry($user, $categories, $title, $summary, $content, $fast_url, $meta_keywords, $meta_desc,
+    function NewEntry($user, $categories, $title, $summary, $content, $fast_url, $meta_keywords, $meta_desc, $tags,
                       $allow_comments, $trackbacks, $publish, $timestamp = null, $autoDraft = false)
     {
         $fast_url = empty($fast_url) ? $title : $fast_url;
@@ -141,14 +142,8 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         }
 
         $blogTable = Jaws_ORM::getInstance()->table('blog');
-        $result = $blogTable->insert($params)->exec();
+        $max = $blogTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_ADDED'), _t('BLOG_NAME'));
-        }
-
-        $max = Jaws_ORM::getInstance()->table('blog')->select('max(id)')->where('title', $title)->fetchOne();
-        if (Jaws_Error::IsError($max)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_ADDED'), _t('BLOG_NAME'));
         }
@@ -180,6 +175,14 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             $model->MakeRSS(true);
         }
 
+        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+            $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
+            $res = $model->AddTagsToItem('Blog', 'post', $max, $params['published'], $params['publishtime'], $tags);
+            if (Jaws_Error::IsError($res)) {
+                $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_TAGS_NOT_ADDED'), RESPONSE_ERROR);
+            }
+        }
+
         return $max;
     }
 
@@ -195,7 +198,8 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      * @param   string  $fast_url       FastURL
      * @param   string  $meta_keywords  Meta keywords
      * @param   string  $meta_desc      Meta description
-     * @param   bool    $allow_comments If entry should allow commnets
+     * @param   string  $tags           Tags
+     * @param   bool    $allow_comments If entry should allow comments
      * @param   bool    $trackbacks
      * @param   bool    $publish        If entry should be published
      * @param   string  $timestamp      Entry timestamp (optional)
@@ -203,7 +207,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      * @return  mixed   Returns the ID of the post or Jaws_Error on failure
      */
     function UpdateEntry($post_id, $categories, $title, $summary, $content, $fast_url, $meta_keywords, $meta_desc,
-                         $allow_comments, $trackbacks, $publish, $timestamp = null, $autoDraft = false)
+                         $tags, $allow_comments, $trackbacks, $publish, $timestamp = null, $autoDraft = false)
     {
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog', false);
@@ -321,6 +325,14 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
                 true), $params['text']);
         }
 
+        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+            $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
+            $res = $model->UpdateTagsItems('Blog', 'post', $post_id, $params['published'], $params['publishtime'], $tags);
+            if (Jaws_Error::IsError($res)) {
+                $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_TAGS_NOT_UPDATED'), RESPONSE_ERROR);
+            }
+        }
+
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ENTRY_UPDATED'), RESPONSE_NOTICE);
         return $post_id;
     }
@@ -367,6 +379,15 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         // Remove comment entries..
         $model = $this->gadget->loadAdminModel('Comments');
         $model->DeleteCommentsIn($post_id);
+
+        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+            $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
+            $res = $model->DeleteItemTags('Blog', 'post', $post_id);
+            if (Jaws_Error::IsError($res)) {
+                $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_TAGS_NOT_DELETED'), RESPONSE_ERROR);
+                return $res;
+            }
+        }
 
         return true;
     }
