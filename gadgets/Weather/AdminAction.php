@@ -11,7 +11,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Weather_AdminHTML extends Jaws_Gadget_HTML
+class Weather_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Default action of the gadget
@@ -22,12 +22,12 @@ class Weather_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         if ($this->gadget->GetPermission('ManageRegions')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Weather', 'AdminHTML', 'Regions');
+            $gadgetHTML = $GLOBALS['app']->LoadGadget('Weather', 'AdminAction', 'Regions');
             return $gadgetHTML->Regions();
         }
 
         $this->gadget->CheckPermission('UpdateProperties');
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Weather', 'AdminHTML', 'Properties');
+        $gadgetHTML = $GLOBALS['app']->LoadGadget('Weather', 'AdminAction', 'Properties');
         return $gadgetHTML->Properties();
     }
 

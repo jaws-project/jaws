@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Weather_Actions_RegionWeather extends Jaws_Gadget_HTML
+class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
 {
 
     /**

@@ -10,7 +10,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Weather_AdminAjax extends Jaws_Gadget_HTML
+class Weather_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Gets associated data of the region
@@ -99,7 +99,7 @@ class Weather_AdminAjax extends Jaws_Gadget_HTML
     function GetData()
     {
         @list($offset, $grid) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('Weather', 'AdminHTML', 'Regions');
+        $gadget = $GLOBALS['app']->LoadGadget('Weather', 'AdminAction', 'Regions');
         if (!is_numeric($offset)) {
             $offset = null;
         }

@@ -11,7 +11,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Weather_Actions_Admin_GoogleMap extends Weather_AdminHTML
+class Weather_Actions_Admin_GoogleMap extends Weather_AdminAction
 {
     /**
      * Returns google map image

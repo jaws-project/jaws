@@ -11,7 +11,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Weather_Actions_Admin_Properties extends Weather_AdminHTML
+class Weather_Actions_Admin_Properties extends Weather_AdminAction
 {
 
     /**
