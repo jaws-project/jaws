@@ -8,7 +8,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Friends_AdminAjax extends Jaws_Gadget_HTML
+class Friends_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Get information of a friend
@@ -109,7 +109,7 @@ class Friends_AdminAjax extends Jaws_Gadget_HTML
         if(empty($limit)) {
             $limit = 0;
         }
-        $gadget = $GLOBALS['app']->LoadGadget('Friends', 'AdminHTML', 'Friends');
+        $gadget = $GLOBALS['app']->LoadGadget('Friends', 'AdminAction', 'Friends');
         if (!is_numeric($limit)) {
             $limit = 0;
         }

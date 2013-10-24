@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Friends_AdminHTML extends Jaws_Gadget_HTML
+class Friends_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Creates and prints the administration template
@@ -19,7 +19,7 @@ class Friends_AdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Friends', 'AdminHTML', 'Friends');
+        $gadgetHTML = $GLOBALS['app']->LoadGadget('Friends', 'AdminAction', 'Friends');
         return $gadgetHTML->Friends();
     }
 }
