@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class PrivateMessage_Actions_AllMessages extends PrivateMessage_HTML
+class PrivateMessage_Actions_AllMessages extends PrivateMessage_Action
 {
     /**
      * Display AllMessages

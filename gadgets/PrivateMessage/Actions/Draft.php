@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class PrivateMessage_Actions_Draft extends PrivateMessage_HTML
+class PrivateMessage_Actions_Draft extends PrivateMessage_Action
 {
     /**
      * Display draft

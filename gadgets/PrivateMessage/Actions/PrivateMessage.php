@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_HTML
+class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
 {
     /**
      * Display Private Message
