@@ -45,7 +45,7 @@ class Jaws_Listener
         $result = null;
         foreach ($listeners as $listener) {
             if (Jaws_Gadget::IsGadgetInstalled($listener['gadget'])) {
-                $objGadget = $GLOBALS['app']->LoadGadget($listener['gadget'], 'Info');
+                $objGadget = Jaws_Gadget::getInstance($listener['gadget']);
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
                 }
