@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/Notepad/Resources/site_style.css');
-class Notepad_Actions_Notepad extends Jaws_Gadget_HTML
+class Notepad_Actions_Notepad extends Jaws_Gadget_Action
 {
     /**
      * Builds notes management UI
@@ -115,7 +115,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_HTML
         $tpl->SetVariable('notepad_url', $notepad_url);
 
         // Pagination
-        $action = $GLOBALS['app']->LoadGadget('Notepad', 'HTML', 'Pager');
+        $action = $GLOBALS['app']->LoadGadget('Notepad', 'Action', 'Pager');
         $action->GetPagesNavigation(
             $tpl,
             'notepad',

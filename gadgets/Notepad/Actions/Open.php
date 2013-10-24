@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/Notepad/Resources/site_style.css');
-class Notepad_Actions_Open extends Jaws_Gadget_HTML
+class Notepad_Actions_Open extends Jaws_Gadget_Action
 {
     /**
      * Builds UI to display a single note

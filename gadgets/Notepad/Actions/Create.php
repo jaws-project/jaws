@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/Notepad/Resources/site_style.css');
-class Notepad_Actions_Create extends Jaws_Gadget_HTML
+class Notepad_Actions_Create extends Jaws_Gadget_Action
 {
     /**
      * Builds form to create a new note

@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Notepad_Actions_View extends Jaws_Gadget_HTML
+class Notepad_Actions_View extends Jaws_Gadget_Action
 {
     /**
      * Displays a single note

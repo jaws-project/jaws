@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Notepad_Actions_StickyNote extends Jaws_Gadget_HTML
+class Notepad_Actions_StickyNote extends Jaws_Gadget_Action
 {
     /**
      * Builds layout params of the StickyNote action
@@ -48,7 +48,7 @@ class Notepad_Actions_StickyNote extends Jaws_Gadget_HTML
         }
 
         if ($count == 1) {
-            $action = $GLOBALS['app']->LoadGadget('Notepad', 'HTML', 'View');
+            $action = $GLOBALS['app']->LoadGadget('Notepad', 'Action', 'View');
             $view = $action->ViewNote($notes[0]['id']);
         } else {
             $view = $this->GetNotesView($notes);
