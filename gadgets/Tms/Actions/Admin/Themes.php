@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Tms_Actions_Admin_Themes extends Jaws_Gadget_HTML
+class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
 {
     /**
      * Calls Themes function

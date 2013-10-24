@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Tms_AdminAjax extends Jaws_Gadget_HTML
+class Tms_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Gets information of given theme
@@ -20,7 +20,7 @@ class Tms_AdminAjax extends Jaws_Gadget_HTML
     function GetThemeInfo()
     {
         @list($theme) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('Tms', 'AdminHTML', 'Themes');
+        $gadget = $GLOBALS['app']->LoadGadget('Tms', 'AdminAction', 'Themes');
         return $gadget->GetThemeInfo($theme);
     }
 }
