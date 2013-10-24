@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Actions_Trackbacks extends Blog_HTML
+class Blog_Actions_Trackbacks extends Blog_Action
 {
     /**
      * Saves a new trackback if all is ok and sends response

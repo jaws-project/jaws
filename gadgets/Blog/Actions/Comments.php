@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Actions_Comments extends Blog_HTML
+class Blog_Actions_Comments extends Blog_Action
 {
 
     /**
@@ -35,7 +35,7 @@ class Blog_Actions_Comments extends Blog_HTML
             Jaws_Header::Location($this->gadget->urlMap('DefaultAction'));
         }
 
-        $postHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Post');
+        $postHTML = $GLOBALS['app']->LoadGadget('Blog', 'Action', 'Post');
         $id = !empty($entry['fast_url']) ? $entry['fast_url'] : $entry['id'];
         return $postHTML->SingleView($id, true);
     }

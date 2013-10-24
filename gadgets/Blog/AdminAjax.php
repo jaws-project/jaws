@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_AdminAjax extends Jaws_Gadget_HTML
+class Blog_AdminAjax extends Jaws_Gadget_Action
 {
 
     /**
@@ -42,7 +42,7 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
         if(empty($limit)) {
             $limit = 0;
         }
-        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Entries');
+        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminAction', 'Entries');
         return $gadget->PostsData($period, $cat, $status, $search, $limit);
     }
 
@@ -194,7 +194,7 @@ class Blog_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageTrackbacks');
         @list($limit, $filter, $search, $status) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminHTML', 'Trackbacks');
+        $gadget = $GLOBALS['app']->LoadGadget('Blog', 'AdminAction', 'Trackbacks');
         return $gadget->TrackbacksData($limit, $filter, $search, $status);
     }
 

@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Actions_Admin_Trackbacks extends Blog_AdminHTML
+class Blog_Actions_Admin_Trackbacks extends Blog_AdminAction
 {
     /**
      * Builds the data (an array) of filtered trackbacks

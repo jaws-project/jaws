@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_HTML extends Jaws_Gadget_HTML
+class Blog_Action extends Jaws_Gadget_Action
 {
     /**
      * Calls default action(view)
@@ -24,7 +24,7 @@ class Blog_HTML extends Jaws_Gadget_HTML
         switch ($default_view) {
             case 'default_category':
                 $cat = $this->gadget->registry->fetch('default_category');
-                $postsHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Posts');
+                $postsHTML = $GLOBALS['app']->LoadGadget('Blog', 'Action', 'Posts');
                 return $postsHTML->ViewPage($cat);
                 break;
 
@@ -34,17 +34,17 @@ class Blog_HTML extends Jaws_Gadget_HTML
                 $date = $GLOBALS['app']->loadDate();
                 $mDate = $date->Format($dates['max_date'], 'Y-m');
                 $mDate = explode('-', $mDate);
-                $dateHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'DatePosts');
+                $dateHTML = $GLOBALS['app']->LoadGadget('Blog', 'Action', 'DatePosts');
                 return $dateHTML->ViewDatePage($mDate[0], $mDate[1]);
                 break;
 
             case 'latest_entry':
-                $postHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Post');
+                $postHTML = $GLOBALS['app']->LoadGadget('Blog', 'Action', 'Post');
                 return $postHTML->LastPost();
                 break;
 
             default:
-                $postsHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Posts');
+                $postsHTML = $GLOBALS['app']->LoadGadget('Blog', 'Action', 'Posts');
                 return $postsHTML->ViewPage();
         }
     }

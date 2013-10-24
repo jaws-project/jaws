@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_AdminHTML extends Jaws_Gadget_HTML
+class Blog_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Displays admin menu bar according to selected action

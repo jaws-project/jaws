@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Actions_Post extends Blog_HTML
+class Blog_Actions_Post extends Blog_Action
 {
     /**
      * Displays a list of recent blog entries ordered by date
@@ -84,7 +84,7 @@ class Blog_Actions_Post extends Blog_HTML
             $tpl->SetBlock('single_view');
             $res = $this->ShowEntry($tpl, 'single_view', $entry, false);
 
-            $trbkHTML = $GLOBALS['app']->LoadGadget('Blog', 'HTML', 'Trackbacks');
+            $trbkHTML = $GLOBALS['app']->LoadGadget('Blog', 'Action', 'Trackbacks');
             if (!Jaws_Error::IsError($trbkHTML)) {
                 $tpl->SetVariable('trackbacks', $trbkHTML->ShowTrackbacks($entry['id']));
             }
@@ -106,7 +106,7 @@ class Blog_Actions_Post extends Blog_HTML
                                   $this->gadget->registry->fetch('allow_comments') == 'true' &&
                                   $allow_comments_config;
 
-                $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
+                $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'Action', 'Comments');
                 $tpl->SetVariable('comments', $cHTML->ShowComments('Blog', 'Post', $entry['id'],
                     array('action' => 'SingleView',
                           'params' => array('id' => empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url']))));

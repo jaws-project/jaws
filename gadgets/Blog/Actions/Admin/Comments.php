@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Actions_Admin_Comments extends Blog_AdminHTML
+class Blog_Actions_Admin_Comments extends Blog_AdminAction
 {
 
     /**
@@ -29,7 +29,7 @@ class Blog_Actions_Admin_Comments extends Blog_AdminHTML
 
         $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/Resources/script.js');
 
-        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
+        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminAction');
         return $cHTML->Comments('blog', $this->MenuBar('ManageComments'));
     }
 
