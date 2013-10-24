@@ -38,7 +38,7 @@ $AccessToWebsiteDenied = !$GLOBALS['app']->Session->Logged() &&
 $ReqError = jaws()->request->fetch('http_error', 'get');
 if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
     $ReqGadget = Jaws_Gadget::filter(jaws()->request->fetch('gadget'));
-    $ReqAction = Jaws_Gadget_HTML::filter(jaws()->request->fetch('action'));
+    $ReqAction = Jaws_Gadget_Action::filter(jaws()->request->fetch('action'));
 
     if ($AccessToWebsiteDenied && $ReqGadget !== 'Users') {
         $ReqGadget = 'Users';
