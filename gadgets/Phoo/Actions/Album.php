@@ -8,7 +8,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_Actions_Album extends Jaws_Gadget_HTML
+class Phoo_Actions_Album extends Jaws_Gadget_Action
 {
     /**
      * Get Album action params(albums list)

@@ -11,7 +11,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_Actions_Photos extends Jaws_Gadget_HTML
+class Phoo_Actions_Photos extends Jaws_Gadget_Action
 {
 
     /**
@@ -220,7 +220,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_HTML
 
             $redirect_to = $this->gadget->urlMap('ViewImage', array('id' => $image['id'], 'albumid' => $albumid));
 
-            $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
+            $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'Action', 'Comments');
             $tpl->SetVariable('comments', $cHTML->ShowComments('Phoo', 'Image', $image['id'],
                 array('action' => 'ViewImage',
                     'params' => array('albumid' => $albumid, 'id' => $image['id']))));

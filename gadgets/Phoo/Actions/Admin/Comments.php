@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_Actions_Admin_Comments extends Phoo_AdminHTML
+class Phoo_Actions_Admin_Comments extends Phoo_AdminAction
 {
     /**
      * Prepares the comments datagrid of an advanced search
@@ -20,7 +20,7 @@ class Phoo_Actions_Admin_Comments extends Phoo_AdminHTML
      */
     function CommentsDatagrid()
     {
-        $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
+        $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminAction');
         return $cHtml->Get($this->gadget->name);
     }
 
@@ -36,7 +36,7 @@ class Phoo_Actions_Admin_Comments extends Phoo_AdminHTML
      */
     function CommentsData($limit = 0, $filter = '', $search = '', $status = '')
     {
-        $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
+        $cHtml = $GLOBALS['app']->LoadGadget('Comments', 'AdminAction');
         return $cHtml->GetDataAsArray(
             'phoo',
             BASE_SCRIPT . '?gadget=Phoo&amp;action=EditComment&amp;id={id}',
@@ -63,7 +63,7 @@ class Phoo_Actions_Admin_Comments extends Phoo_AdminHTML
         $this->AjaxMe('script.js');
         $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/Resources/script.js');
 
-        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
+        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminAction');
         return $cHTML->Comments('phoo', $this->MenuBar('ManageComments'));
     }
 

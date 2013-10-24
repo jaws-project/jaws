@@ -8,7 +8,7 @@
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_Actions_Admin_Groups extends Phoo_AdminHTML
+class Phoo_Actions_Admin_Groups extends Phoo_AdminAction
 {
     /**
      * Displays phoo groups administration panel

@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_Actions_Admin_Upload extends Phoo_AdminHTML
+class Phoo_Actions_Admin_Upload extends Phoo_AdminAction
 {
     /**
      * Displays a form for adding new images.
