@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Skeleton_Actions_Display extends Jaws_Gadget_HTML
+class Skeleton_Actions_Display extends Jaws_Gadget_Action
 {
     /**
      * Displays version of Jaws
