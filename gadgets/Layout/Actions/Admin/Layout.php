@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
+class Layout_Actions_Admin_Layout extends Jaws_Gadget_Action
 {
     /**
      * Returns the HTML content to manage the layout in the browser
@@ -181,7 +181,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
      */
     function getLayoutControls()
     {
-        $GLOBALS['app']->LoadGadget('ControlPanel', 'AdminHTML');
+        $GLOBALS['app']->LoadGadget('ControlPanel', 'AdminAction');
 
         $tpl = $this->gadget->loadTemplate('LayoutControls.html');
         $tpl->SetBlock('controls');

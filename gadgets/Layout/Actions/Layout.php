@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Layout_Actions_Layout extends Jaws_Gadget_HTML
+class Layout_Actions_Layout extends Jaws_Gadget_Action
 {
     /**
      * Switch between layouts/dashboards
