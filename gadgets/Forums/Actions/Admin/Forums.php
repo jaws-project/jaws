@@ -8,7 +8,7 @@
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Actions_Admin_Forums extends Forums_AdminHTML
+class Forums_Actions_Admin_Forums extends Forums_AdminAction
 {
     /**
      * Show forums administration interface

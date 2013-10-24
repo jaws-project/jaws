@@ -8,7 +8,7 @@
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_AdminHTML extends Jaws_Gadget_HTML
+class Forums_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Calls default admin action
@@ -18,7 +18,7 @@ class Forums_AdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        $forumHTML = $GLOBALS['app']->LoadGadget('Forums', 'AdminHTML', 'Forums');
+        $forumHTML = $GLOBALS['app']->LoadGadget('Forums', 'AdminAction', 'Forums');
         return $forumHTML->Forums();
     }
 

@@ -10,7 +10,7 @@
  * @copyright   2012-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Actions_Topics extends Forums_HTML
+class Forums_Actions_Topics extends Forums_Action
 {
     /**
      * Display forum topics
@@ -343,7 +343,7 @@ class Forums_Actions_Topics extends Forums_HTML
 
         // check captcha only in new topic action
         if (empty($topic['id'])) {
-            $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
+            $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Action', 'Captcha');
             $htmlPolicy->loadCaptcha($tpl, 'topic');
         }
 
@@ -392,7 +392,7 @@ class Forums_Actions_Topics extends Forums_HTML
 
         // check captcha only in new topic action
         if (empty($topic['tid'])) {
-            $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
+            $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Action', 'Captcha');
             $resCheck = $htmlPolicy->checkCaptcha();
             if (Jaws_Error::IsError($resCheck)) {
                 $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'UpdateTopic');

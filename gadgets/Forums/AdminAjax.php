@@ -8,7 +8,7 @@
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_AdminAjax extends Jaws_Gadget_HTML
+class Forums_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Get information of a group
@@ -59,7 +59,7 @@ class Forums_AdminAjax extends Jaws_Gadget_HTML
     function GetGroupUI()
     {
         $this->gadget->CheckPermission('default');
-        $gHTML = $GLOBALS['app']->LoadGadget('Forums', 'AdminHTML', 'Group');
+        $gHTML = $GLOBALS['app']->LoadGadget('Forums', 'AdminAction', 'Group');
         return $gHTML->GetGroupUI();
     }
 
@@ -72,7 +72,7 @@ class Forums_AdminAjax extends Jaws_Gadget_HTML
     function GetForumUI()
     {
         $this->gadget->CheckPermission('default');
-        $fHTML = $GLOBALS['app']->LoadGadget('Forums', 'AdminHTML', 'Forum');
+        $fHTML = $GLOBALS['app']->LoadGadget('Forums', 'AdminAction', 'Forum');
         return $fHTML->GetForumUI();
     }
 

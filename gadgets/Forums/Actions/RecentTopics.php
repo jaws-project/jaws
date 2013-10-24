@@ -8,7 +8,7 @@
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Actions_RecentTopics extends Jaws_Gadget_HTML
+class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
 {
     /**
      * Get RecentTopics action params

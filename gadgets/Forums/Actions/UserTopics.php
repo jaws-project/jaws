@@ -8,7 +8,7 @@
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Actions_UserTopics extends Forums_HTML
+class Forums_Actions_UserTopics extends Forums_Action
 {
     /**
      * Displays list of user's posts ordered by date
