@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Emblems_AdminAjax extends Jaws_Gadget_HTML
+class Emblems_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Updates the emblem
@@ -70,7 +70,7 @@ class Emblems_AdminAjax extends Jaws_Gadget_HTML
     function GetData()
     {
         @list($limit) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('Emblems', 'AdminHTML', 'Emblems');
+        $gadget = $GLOBALS['app']->LoadGadget('Emblems', 'AdminAction', 'Emblems');
         return $gadget->GetEmblems($limit);
     }
 }

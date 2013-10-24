@@ -8,7 +8,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Emblems_Actions_Emblems extends Jaws_Gadget_HTML
+class Emblems_Actions_Emblems extends Jaws_Gadget_Action
 {
     /**
      * Displays the emblems
