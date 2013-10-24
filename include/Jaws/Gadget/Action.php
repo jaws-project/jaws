@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Gadget_HTML
+class Jaws_Gadget_Action
 {
     /**
      * Jaws_Gadget object
@@ -35,7 +35,7 @@ class Jaws_Gadget_HTML
      * @param   object $gadget Jaws_Gadget object
      * @return  void
      */
-    function Jaws_Gadget_HTML($gadget)
+    function Jaws_Gadget_Action($gadget)
     {
         $this->gadget = $gadget;
         $this->LoadActions();
@@ -91,7 +91,7 @@ class Jaws_Gadget_HTML
         }
 
         $output = '';
-        $method = Jaws_Gadget_HTML::filter(jaws()->request->fetch('method', 'get'));
+        $method = Jaws_Gadget_Action::filter(jaws()->request->fetch('method', 'get'));
         if (method_exists($objAjax, $method)) {
             $output = $objAjax->$method();
         } else {
