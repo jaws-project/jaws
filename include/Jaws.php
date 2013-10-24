@@ -392,7 +392,7 @@ class Jaws
      * @param   string $filename    Try to find gadget class in this file
      * @return  mixed  Gadget class object on successful, Jaws_Error otherwise
      */
-    function LoadGadget($gadget, $type = 'HTML', $filename = '')
+    function LoadGadget($gadget, $type = 'Action', $filename = '')
     {
         // filter non validate character
         $type = preg_replace('/[^[:alnum:]_]/', '', $type);
@@ -440,7 +440,7 @@ class Jaws
                         break;
 
                     case 'AdminHTML':
-                        $type_class_name = 'Jaws_Gadget_HTML';
+                        $type_class_name = 'Jaws_Gadget_Action';
                         break;
 
                     case 'AdminModel':
