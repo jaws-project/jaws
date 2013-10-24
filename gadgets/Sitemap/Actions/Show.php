@@ -9,7 +9,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Sitemap_Actions_Show extends Jaws_Gadget_HTML
+class Sitemap_Actions_Show extends Jaws_Gadget_Action
 {
     /**
      * Displays the Menu

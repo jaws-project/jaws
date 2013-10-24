@@ -9,7 +9,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Sitemap_AdminHTML extends Jaws_Gadget_HTML
+class Sitemap_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Prepares the menubar

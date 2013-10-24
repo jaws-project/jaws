@@ -9,7 +9,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Sitemap_AdminAjax extends Jaws_Gadget_HTML
+class Sitemap_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Constructor
@@ -20,7 +20,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_HTML
      */
     function Sitemap_AdminAjax($gadget)
     {
-        parent::Jaws_Gadget_HTML($gadget);
+        parent::Jaws_Gadget_Action($gadget);
         $this->_Model = $this->gadget->loadAdminModel('Sitemap');
     }
 
