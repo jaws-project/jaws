@@ -8,7 +8,7 @@
  * @copyright  2008-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class SysInfo_Actions_PHPInfo extends Jaws_Gadget_HTML
+class SysInfo_Actions_PHPInfo extends Jaws_Gadget_Action
 {
     /**
      * Displays some common PHP settings like memory limit, safe mode, ...

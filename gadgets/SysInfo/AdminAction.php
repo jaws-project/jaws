@@ -8,7 +8,7 @@
  * @copyright  2008-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class SysInfo_AdminHTML extends Jaws_Gadget_HTML
+class SysInfo_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Calls default action
@@ -19,17 +19,17 @@ class SysInfo_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         if ($this->gadget->GetPermission('SysInfo')) {
-            $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminHTML', 'SysInfo');
+            $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminAction', 'SysInfo');
             return $HTML->SysInfo();
         } elseif ($this->gadget->GetPermission('PHPInfo')) {
-            $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminHTML', 'PHPInfo');
+            $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminAction', 'PHPInfo');
             return $HTML->PHPInfo();
         } elseif ($this->gadget->GetPermission('JawsInfo')) {
-            $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminHTML', 'JawsInfo');
+            $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminAction', 'JawsInfo');
             return $HTML->JawsInfo();
         }
 
-        $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminHTML', 'DirInfo');
+        $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminAction', 'DirInfo');
         $this->gadget->CheckPermission('DirInfo');
         return $HTML->DirInfo();
     }

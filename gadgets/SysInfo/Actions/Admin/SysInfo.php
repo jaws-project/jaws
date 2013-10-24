@@ -8,7 +8,7 @@
  * @copyright  2008-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class SysInfo_Actions_Admin_SysInfo extends SysInfo_AdminHTML
+class SysInfo_Actions_Admin_SysInfo extends SysInfo_AdminAction
 {
     /**
      * Returns information around system(OS, WebServer, Database,...)

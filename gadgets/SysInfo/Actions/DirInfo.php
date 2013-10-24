@@ -8,7 +8,7 @@
  * @copyright  2008-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class SysInfo_Actions_DirInfo extends Jaws_Gadget_HTML
+class SysInfo_Actions_DirInfo extends Jaws_Gadget_Action
 {
     /**
      * Displays information about Jaws's main directories like permissions, ...
