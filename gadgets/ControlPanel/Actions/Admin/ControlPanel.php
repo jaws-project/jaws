@@ -9,7 +9,7 @@
  * @copyright   2004-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_HTML
+class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
 {
     /**
      * Calls default action

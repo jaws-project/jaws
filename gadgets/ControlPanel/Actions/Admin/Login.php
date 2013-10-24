@@ -9,7 +9,7 @@
  * @copyright   2004-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_HTML
+class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
 {
     /**
      * Get HTML login form
@@ -97,7 +97,7 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_HTML
         $ltpl->ParseBlock('layout/remember');
 
         //captcha
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Action', 'Captcha');
         $mPolicy->loadCaptcha($ltpl, 'layout', 'login');
 
         $ltpl->SetVariable('login', _t('GLOBAL_LOGIN'));

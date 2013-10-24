@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class ControlPanel_Actions_Admin_JawsVersion extends Jaws_Gadget_HTML
+class ControlPanel_Actions_Admin_JawsVersion extends Jaws_Gadget_Action
 {
     /**
      * Returns latest jaws version
