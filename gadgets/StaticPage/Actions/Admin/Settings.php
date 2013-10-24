@@ -11,7 +11,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class StaticPage_Actions_Admin_Settings extends StaticPage_AdminHTML
+class StaticPage_Actions_Admin_Settings extends StaticPage_AdminAction
 {
     /**
      * Builds the management UI for gadget properties

@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class StaticPage_Actions_Page extends Jaws_Gadget_HTML
+class StaticPage_Actions_Page extends Jaws_Gadget_Action
 {
     /**
      * Displays a block of static pages
@@ -138,7 +138,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_HTML
         }
 
         // Show Tags
-        $tagsHTML = $GLOBALS['app']->LoadGadget('Tags', 'HTML', 'Tags');
+        $tagsHTML = $GLOBALS['app']->LoadGadget('Tags', 'Action', 'Tags');
         $tagsHTML->ViewItemTags('StaticPage', 'page', $page['translation_id'], $tpl, 'page');
 
         $tpl->ParseBlock('page');

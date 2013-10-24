@@ -8,7 +8,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class StaticPage_AdminAjax extends Jaws_Gadget_HTML
+class StaticPage_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Deletes the page and all of its translations
@@ -79,7 +79,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function ParseText()
     {
         $text = jaws()->request->fetch(0, 'post', false);
-        $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminAction');
         return $gadget->gadget->ParseText($text);
     }
 
@@ -106,7 +106,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     function SearchPages()
     {
         @list($group, $status, $search, $orderBy, $limit) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminHTML', 'Page');
+        $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminAction', 'Page');
         if (!is_numeric($limit)) {
             $limit = 0;
         }
@@ -179,7 +179,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageGroups');
         @list($offset) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminHTML', 'Group');
+        $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminAction', 'Group');
 
         return $gadget->GetGroupsGrid($offset);
     }

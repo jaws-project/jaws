@@ -11,7 +11,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class StaticPage_AdminHTML extends Jaws_Gadget_HTML
+class StaticPage_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Builds the menubar
@@ -67,7 +67,7 @@ class StaticPage_AdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminHTML', 'Page');
+        $gadgetHTML = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminAction', 'Page');
         return $gadgetHTML->Admin();
     }
 
