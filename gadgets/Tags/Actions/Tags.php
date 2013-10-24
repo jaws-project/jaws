@@ -230,7 +230,7 @@ class Tags_Actions_Tags extends Tags_HTML
         }
         if (is_array($gadgets) && count($gadgets) > 0 && $itemsTotal>0) {
             foreach ($gadgets as $gadget) {
-                $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+                $objGadget = Jaws_Gadget::getInstance($gadget);
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
                 }
@@ -288,7 +288,7 @@ class Tags_Actions_Tags extends Tags_HTML
 
         foreach ($result as $gadget => $tags) {
             $tpl->SetBlock('tags/gadget');
-            $info = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+            $info = Jaws_Gadget::getInstance($gadget);
             $tpl->SetVariable('gadget_result', _t('SEARCH_RESULTS_IN_GADGETS',
                 count($tags),
                 'TEST',
