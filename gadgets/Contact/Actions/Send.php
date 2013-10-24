@@ -9,7 +9,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Contact_Actions_Send extends Jaws_Gadget_HTML
+class Contact_Actions_Send extends Jaws_Gadget_Action
 {
     /**
      * Save contact in database
@@ -38,7 +38,7 @@ class Contact_Actions_Send extends Jaws_Gadget_HTML
             Jaws_Header::Referrer();
         }
 
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Action', 'Captcha');
         $resCheck = $mPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'Contact');

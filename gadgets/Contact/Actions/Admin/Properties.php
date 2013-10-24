@@ -9,7 +9,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Contact_Actions_Admin_Properties extends Contact_AdminHTML
+class Contact_Actions_Admin_Properties extends Contact_AdminAction
 {
     /**
      * Builds Properties UI

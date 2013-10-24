@@ -9,7 +9,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Contact_AdminHTML extends Jaws_Gadget_HTML
+class Contact_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Admin of Gadget
@@ -20,10 +20,10 @@ class Contact_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         if ($this->gadget->GetPermission('ManageContacts')) {
-            $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminHTML', 'Contacts');
+            $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminAction', 'Contacts');
             return $gadget->Contacts();
         } elseif ($this->gadget->GetPermission('ManageRecipients')) {
-            $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminHTML', 'Recipients');
+            $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminAction', 'Recipients');
             return $gadget->Recipients();
         }
 
