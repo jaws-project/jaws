@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_AdminAjax extends Jaws_Gadget_HTML
+class Users_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * User model
@@ -28,7 +28,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function Users_AdminAjax($gadget)
     {
-        parent::Jaws_Gadget_HTML($gadget);
+        parent::Jaws_Gadget_Action($gadget);
         $this->_UserModel = new Jaws_User();
     }
 
@@ -92,7 +92,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
             $offset = null;
         }
 
-        $usrHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'Users');
+        $usrHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Users');
         return $usrHTML->GetUsers($group, $superadmin, $status, $term, $orderBy, $offset);
     }
 
@@ -104,7 +104,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetOnlineUsers()
     {
-        $usrHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'OnlineUsers');
+        $usrHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'OnlineUsers');
         return $usrHTML->GetOnlineUsers();
     }
 
@@ -203,7 +203,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
         } else {
             // send activate notification
             if ($uData['prev_status'] == 2 && $uData['status'] == 1) {
-                $uRegistration = $GLOBALS['app']->LoadGadget('Users', 'HTML', 'Registration');
+                $uRegistration = $GLOBALS['app']->LoadGadget('Users', 'Action', 'Registration');
                 $uRegistration->ActivateNotification($uData, $this->gadget->registry->fetch('anon_activation'));
             }
             $GLOBALS['app']->Session->PushLastResponse(
@@ -469,7 +469,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function GetACLUI()
     {
         $this->gadget->CheckPermission('default');
-        $html = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'ACL');
+        $html = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'ACL');
         return $html->ACLUI();
     }
 
@@ -546,7 +546,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function UserGroupsUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'Users');
+        $gadget = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Users');
         return $gadget->UserGroupsUI();
     }
 
@@ -575,7 +575,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function PersonalUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'Users');
+        $gadget = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Users');
         return $gadget->PersonalUI();
     }
     
@@ -587,7 +587,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function PreferencesUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'Users');
+        $gadget = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Users');
         return $gadget->PreferencesUI();
     }
 
@@ -599,7 +599,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function ContactsUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'Users');
+        $gadget = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Users');
         return $gadget->ContactsUI();
     }
 
@@ -751,7 +751,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
     function GetGroups()
     {
         @list($offset) = jaws()->request->fetchAll('post');
-        $grpHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'Groups');
+        $grpHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Groups');
         return $grpHTML->GetGroups(null, $offset);
     }
 
@@ -848,7 +848,7 @@ class Users_AdminAjax extends Jaws_Gadget_HTML
      */
     function GroupUsersUI()
     {
-        $grpHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'Groups');
+        $grpHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Groups');
         return $grpHTML->GroupUsersUI();
     }
 

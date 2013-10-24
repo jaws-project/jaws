@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Admin_Groups extends Users_AdminHTML
+class Users_Actions_Admin_Groups extends Users_AdminAction
 {
     /**
      * Builds groups datagrid

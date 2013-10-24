@@ -9,7 +9,7 @@
  * @copyright   2004-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Registration extends Users_HTML
+class Users_Actions_Registration extends Users_Action
 {
     /**
      * Tells the user the registation process is done
@@ -67,7 +67,7 @@ class Users_Actions_Registration extends Users_HTML
             $post['url'] = '';
         }
 
-        $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
+        $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Action', 'Captcha');
         $resCheck = $htmlPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $result = $resCheck->getMessage();
@@ -180,7 +180,7 @@ class Users_Actions_Registration extends Users_HTML
         $tpl->SetVariable('register', _t('USERS_REGISTER'));
 
         //captcha
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Action', 'Captcha');
         $mPolicy->loadCaptcha($tpl, 'register');
 
         if (!empty($response)) {

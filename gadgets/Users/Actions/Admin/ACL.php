@@ -8,7 +8,7 @@
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Admin_ACL extends Users_AdminHTML
+class Users_Actions_Admin_ACL extends Users_AdminAction
 {
     /**
      * Builds ACL UI

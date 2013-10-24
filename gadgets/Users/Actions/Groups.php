@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Groups extends Users_HTML
+class Users_Actions_Groups extends Users_Action
 {
     /**
      * Prepares a form for manage user's groups

@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Login extends Users_HTML
+class Users_Actions_Login extends Users_Action
 {
     /**
      * Verifies if user/email/(captcha) are valid, if they are a mail
@@ -27,7 +27,7 @@ class Users_Actions_Login extends Users_HTML
         $post  = jaws()->request->fetch(array('email'), 'post');
         $error = '';
 
-        $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
+        $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Action', 'Captcha');
         $resCheck = $htmlPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $GLOBALS['app']->Session->PushResponse(
@@ -78,7 +78,7 @@ class Users_Actions_Login extends Users_HTML
         $tpl->SetVariable('remember', _t('GLOBAL_SUBMIT'));
 
         //captcha
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Action', 'Captcha');
         $mPolicy->loadCaptcha($tpl, 'forgot');
 
         if ($response = $GLOBALS['app']->Session->PopResponse('Users.ForgotLogin')) {
@@ -172,7 +172,7 @@ class Users_Actions_Login extends Users_HTML
         }
 
         //captcha
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
+        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Action', 'Captcha');
         $mPolicy->loadCaptcha($tpl, 'LoginBox', 'login');
 
         // remember
@@ -379,7 +379,7 @@ class Users_Actions_Login extends Users_HTML
         }
 
         // check captcha
-        $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'HTML', 'Captcha');
+        $htmlPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Action', 'Captcha');
         $resCheck = $htmlPolicy->checkCaptcha('login');
         if (!Jaws_Error::IsError($resCheck)) {
             // try to login

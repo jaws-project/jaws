@@ -9,7 +9,7 @@
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Statistics extends Jaws_Gadget_HTML
+class Users_Actions_Statistics extends Jaws_Gadget_Action
 {
     /**
      * Show online users list

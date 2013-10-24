@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_AdminHTML extends Jaws_Gadget_HTML
+class Users_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Calls default admin action
@@ -20,18 +20,18 @@ class Users_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         if ($this->gadget->GetPermission('ManageUsers')) {
-            $userHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'Users');
+            $userHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Users');
             return $userHTML->Users();
         } elseif ($this->gadget->GetPermission('ManageGroups')) {
-            $groupHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'Groups');
+            $groupHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Groups');
             return $groupHTML->Groups();
         } elseif ($this->gadget->GetPermission('ManageOnlineUsers')) {
-            $onlineHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'OnlineUsers');
+            $onlineHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'OnlineUsers');
             return $onlineHTML->OnlineUsers();
         }
 
         $this->gadget->CheckPermission('ManageProperties');
-        $propHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminHTML', 'Properties');
+        $propHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Properties');
         return $propHTML->Properties();
     }
 
