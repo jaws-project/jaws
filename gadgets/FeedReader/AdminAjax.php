@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FeedReader_AdminAjax extends Jaws_Gadget_HTML
+class FeedReader_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Constructor
@@ -20,7 +20,7 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
      */
     function FeedReader_AdminAjax($gadget)
     {
-        parent::Jaws_Gadget_HTML($gadget);
+        parent::Jaws_Gadget_Action($gadget);
         $this->_Model = $this->gadget->loadAdminModel('Feed');
     }
 
@@ -117,7 +117,7 @@ class FeedReader_AdminAjax extends Jaws_Gadget_HTML
     function GetData()
     {
         @list($offset) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminHTML', 'Feed');
+        $gadget = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminAction', 'Feed');
         if (!is_numeric($offset)) {
             $offset = null;
         }

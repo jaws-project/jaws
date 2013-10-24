@@ -10,7 +10,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FeedReader_Actions_Feed extends Jaws_Gadget_HTML
+class FeedReader_Actions_Feed extends Jaws_Gadget_Action
 {
     /**
      * Get Display action params
@@ -184,7 +184,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_HTML
     {
         $id = jaws()->request->fetch('id', 'get');
 
-        $layoutGadget = $GLOBALS['app']->LoadGadget('FeedReader', 'HTML', 'Feed');
+        $layoutGadget = $GLOBALS['app']->LoadGadget('FeedReader', 'Action', 'Feed');
         return $layoutGadget->DisplayFeeds($id);
     }
 }

@@ -10,7 +10,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_HTML
+class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
 {
     /**
      * Prepares data of feed sites for data grid
