@@ -5,7 +5,7 @@
  * @category   GadgetAdmin
  * @package    Banner
  */
-class Banner_Actions_Admin_Reports extends Banner_AdminHTML
+class Banner_Actions_Admin_Reports extends Banner_AdminAction
 {
     /**
      * Get all the data

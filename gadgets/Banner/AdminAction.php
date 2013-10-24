@@ -5,7 +5,7 @@
  * @category   GadgetAdmin
  * @package    Banner
  */
-class Banner_AdminHTML extends Jaws_Gadget_HTML
+class Banner_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Calls default admin action
@@ -16,15 +16,15 @@ class Banner_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         if ($this->gadget->GetPermission('ManageBanners')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Banner', 'AdminHTML', 'Banners');
+            $gadgetHTML = $GLOBALS['app']->LoadGadget('Banner', 'AdminAction', 'Banners');
             return $gadgetHTML->Banners();
         } elseif ($this->gadget->GetPermission('ManageGroups')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Banner', 'AdminHTML', 'Groups');
+            $gadgetHTML = $GLOBALS['app']->LoadGadget('Banner', 'AdminAction', 'Groups');
             return $gadgetHTML->Groups();
         }
 
         $this->gadget->CheckPermission('ViewReports');
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Banner', 'AdminHTML', 'Reports');
+        $gadgetHTML = $GLOBALS['app']->LoadGadget('Banner', 'AdminAction', 'Reports');
         return $gadgetHTML->Reports();
     }
 

@@ -5,7 +5,7 @@
  * @category   Gadget
  * @package    Banner
  */
-class Banner_Actions_Banners extends Jaws_Gadget_HTML
+class Banner_Actions_Banners extends Jaws_Gadget_Action
 {
     /**
      * Get then Banners action params

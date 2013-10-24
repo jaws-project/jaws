@@ -5,7 +5,7 @@
  * @category   GadgetAdmin
  * @package    Banner
  */
-class Banner_Actions_Admin_Groups extends Banner_AdminHTML
+class Banner_Actions_Admin_Groups extends Banner_AdminAction
 {
 
     /**

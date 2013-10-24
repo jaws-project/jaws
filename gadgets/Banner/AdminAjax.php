@@ -5,7 +5,7 @@
  * @category   Ajax
  * @package    Banner
  */
-class Banner_AdminAjax extends Jaws_Gadget_HTML
+class Banner_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Get a banner info
@@ -256,7 +256,7 @@ class Banner_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetGroupUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Banner', 'AdminHTML', 'Groups');
+        $gadget = $GLOBALS['app']->LoadGadget('Banner', 'AdminAction', 'Groups');
         return $gadget->EditGroupUI();
     }
 
@@ -268,7 +268,7 @@ class Banner_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetGroupBannersUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Banner', 'AdminHTML', 'Groups');
+        $gadget = $GLOBALS['app']->LoadGadget('Banner', 'AdminAction', 'Groups');
         return $gadget->GetGroupBannersUI();
     }
 
@@ -287,10 +287,10 @@ class Banner_AdminAjax extends Jaws_Gadget_HTML
             $offset = null;
         }
         if ($name == 'banners_datagrid') {
-            $gadget = $GLOBALS['app']->LoadGadget('Banner', 'AdminHTML', 'Banners');
+            $gadget = $GLOBALS['app']->LoadGadget('Banner', 'AdminAction', 'Banners');
             $dataGrid = $gadget->GetBanners($gid, $offset);
         } else {
-            $gadget = $GLOBALS['app']->LoadGadget('Banner', 'AdminHTML', 'Reports');
+            $gadget = $GLOBALS['app']->LoadGadget('Banner', 'AdminAction', 'Reports');
             $dataGrid = $gadget->GetReportBanners($gid, $offset);
         }
 
