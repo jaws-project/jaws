@@ -115,7 +115,7 @@ class Layout_AdminAjax extends Jaws_Gadget_HTML
         } else {
             $el = $model->GetElement($id);
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_ADDED'), RESPONSE_NOTICE);
-            $info = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+            $info = Jaws_Gadget::getInstance($gadget);
             $el['tname'] = $info->title;
             if (isset($actions[$action])) {
                 $el['taction'] = $actions[$action]['name'];

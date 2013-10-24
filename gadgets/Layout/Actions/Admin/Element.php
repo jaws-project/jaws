@@ -110,7 +110,7 @@ class Layout_Actions_Admin_Element extends Jaws_Gadget_HTML
         $tpl->SetVariable('.browser', $brow);
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
-        $gInfo = $GLOBALS['app']->LoadGadget($layoutElement['gadget'], 'Info');
+        $gInfo = Jaws_Gadget::getInstance($layoutElement['gadget']);
         $tpl->SetVariable('gadget', $layoutElement['gadget']);
         $tpl->SetVariable('gadget_name', $gInfo->title);
         $tpl->SetVariable('gadget_description', $gInfo->description);

@@ -186,13 +186,6 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('LayoutControls.html');
         $tpl->SetBlock('controls');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-
-        $gInfo  = $GLOBALS['app']->loadGadget('Layout', 'Info');
-        $docurl = null;
-        if (!Jaws_Error::isError($gInfo)) {
-            $docurl = $gInfo->GetDoc();
-        }
-
         $tpl->SetVariable('admin_script', BASE_SCRIPT);
         $tpl->SetVariable('title-cp', _t('GLOBAL_CONTROLPANEL'));
         $tpl->SetVariable('title-name', _t('LAYOUT_NAME'));
@@ -242,6 +235,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_HTML
         $add->AddEvent(ON_CLICK, "addGadget('".$url."', '"._t('LAYOUT_NEW')."');");
         $tpl->SetVariable('add_gadget', $add->Get());
 
+        $docurl = $this->gadget->GetDoc();
         if (!empty($docurl) && !is_null($docurl)) {
             $tpl->SetBlock('controls/documentation');
             $tpl->SetVariable('src', 'images/stock/help-browser.png');
