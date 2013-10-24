@@ -9,7 +9,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Policy_Actions_Admin_Agent extends Policy_AdminHTML
+class Policy_Actions_Admin_Agent extends Policy_AdminAction
 {
     /**
      * Returns an array with all the blocked agents

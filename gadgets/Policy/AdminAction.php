@@ -9,7 +9,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Policy_AdminHTML extends Jaws_Gadget_HTML
+class Policy_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Calls default admin action (IPBlocking)
@@ -20,21 +20,21 @@ class Policy_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         if ($this->gadget->GetPermission('IPBlocking')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminHTML', 'IP');
+            $gadgetHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminAction', 'IP');
             return $gadgetHTML->IPBlocking();
         } elseif ($this->gadget->GetPermission('AgentBlocking')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminHTML', 'Agent');
+            $gadgetHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminAction', 'Agent');
             return $gadgetHTML->AgentBlocking();
         } elseif ($this->gadget->GetPermission('Encryption')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminHTML', 'Encryption');
+            $gadgetHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminAction', 'Encryption');
             return $gadgetHTML->Encryption();
         } elseif ($this->gadget->GetPermission('AntiSpam')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminHTML', 'AntiSpam');
+            $gadgetHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminAction', 'AntiSpam');
             return $gadgetHTML->AntiSpam();
         }
 
         $this->gadget->CheckPermission('AdvancedPolicies');
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminHTML', 'AdvancedPolicies');
+        $gadgetHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminAction', 'AdvancedPolicies');
         return $gadgetHTML->AdvancedPolicies();
     }
 

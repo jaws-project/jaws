@@ -9,7 +9,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Policy_AdminAjax extends Jaws_Gadget_HTML
+class Policy_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Get blocked IP range
@@ -252,8 +252,8 @@ class Policy_AdminAjax extends Jaws_Gadget_HTML
     function GetData()
     {
         @list($offset, $grid) = jaws()->request->fetchAll('post');
-        $ipHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminHTML', 'IP');
-        $agentHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminHTML', 'Agent');
+        $ipHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminAction', 'IP');
+        $agentHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminAction', 'Agent');
         if (!is_numeric($offset)) {
             $offset = null;
         }

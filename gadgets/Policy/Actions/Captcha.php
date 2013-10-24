@@ -8,7 +8,7 @@
  * @copyright  2008-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Policy_Actions_Captcha extends Jaws_Gadget_HTML
+class Policy_Actions_Captcha extends Jaws_Gadget_Action
 {
     /**
      * Load and get captcha
