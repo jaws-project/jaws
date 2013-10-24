@@ -200,7 +200,7 @@ class Installer_Settings extends JawsInstallerStage
 
         // Install gadgets
         foreach ($gadgets as $gadget) {
-            $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+            $objGadget = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($objGadget)) {
                 _log(JAWS_LOG_DEBUG, "There was a problem while loading sample gadget: $gadget");
                 _log(JAWS_LOG_DEBUG, $objGadget->getMessage());
@@ -221,7 +221,7 @@ class Installer_Settings extends JawsInstallerStage
         }
 
         // Inserts layout sample itemes
-        $objGadget = $GLOBALS['app']->LoadGadget('Layout', 'Info');
+        $objGadget = Jaws_Gadget::getInstance('Layout');
         if (Jaws_Error::IsError($objGadget)) {
             _log(JAWS_LOG_DEBUG, "There was a problem while loading gadget: Layout");
             _log(JAWS_LOG_DEBUG, $objGadget->getMessage());

@@ -336,7 +336,7 @@ class Installer_Database extends JawsInstallerStage
         );
 
         foreach ($gadgets as $gadget) {
-            $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+            $objGadget = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($objGadget)) {
                 _log(JAWS_LOG_DEBUG,"There was a problem installing core gadget: ".$gadget);
                 return $objGadget;
