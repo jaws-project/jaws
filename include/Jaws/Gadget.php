@@ -472,7 +472,7 @@ class Jaws_Gadget
         if (!array_key_exists($gadget, $gadgets_status)) {
             $gadgets_status[$gadget] = false;
             if (self::IsGadgetInstalled($gadget)) {
-                $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+                $objGadget = Jaws_Gadget::getInstance($gadget);
                 $current_version = $objGadget->registry->fetch('version');
                 $gadgets_status[$gadget] = version_compare($objGadget->version, $current_version, '>')? false : true;
             }
