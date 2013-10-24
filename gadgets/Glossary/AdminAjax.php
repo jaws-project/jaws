@@ -8,7 +8,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Glossary_AdminAjax extends Jaws_Gadget_HTML
+class Glossary_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Get a term
@@ -98,7 +98,7 @@ class Glossary_AdminAjax extends Jaws_Gadget_HTML
     function ParseText()
     {
         $text = jaws()->request->fetch(0, 'post', false);
-        $gadget = $GLOBALS['app']->LoadGadget('Glossary', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('Glossary', 'AdminAction');
         return $gadget->gadget->ParseText($text);
     }
 

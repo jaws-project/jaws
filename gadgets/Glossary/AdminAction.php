@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Glossary_AdminHTML extends Jaws_Gadget_HTML
+class Glossary_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Manages the main functions of Glossary administration
@@ -19,7 +19,7 @@ class Glossary_AdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Glossary', 'AdminHTML', 'Term');
+        $gadgetHTML = $GLOBALS['app']->LoadGadget('Glossary', 'AdminAction', 'Term');
         return $gadgetHTML->Term();
     }
 

@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Glossary_Actions_Admin_Term extends Glossary_AdminHTML
+class Glossary_Actions_Admin_Term extends Glossary_AdminAction
 {
     /**
      * Manages the main functions of Glossary administration
