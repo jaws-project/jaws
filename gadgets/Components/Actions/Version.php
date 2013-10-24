@@ -30,7 +30,7 @@ class Components_Actions_Version extends Jaws_Gadget_HTML
                 break;
 
             case 1:
-                $objGadget = $GLOBALS['app']->LoadGadget($get['component'], 'Info');
+                $objGadget = Jaws_Gadget::getInstance($get['component']);
                 $version = Jaws_Error::isError($objGadget)? Jaws_HTTPError::Get(404) : $objGadget->version;
                 break;
 

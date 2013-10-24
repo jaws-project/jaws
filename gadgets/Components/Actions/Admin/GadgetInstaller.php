@@ -27,7 +27,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
             $gadget = jaws()->request->fetch('comp', 'get');
         }
 
-        $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+        $objGadget = Jaws_Gadget::getInstance($gadget);
         if (Jaws_Error::IsError($objGadget)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_ENABLE_FAILURE', $gadget), RESPONSE_ERROR);
         } else {
@@ -62,7 +62,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
         }
 
         if (!Jaws_Gadget::IsGadgetUpdated($gadget)) {
-            $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+            $objGadget = Jaws_Gadget::getInstance($gadget);
             $installer = $objGadget->loadInstaller();
             $return = $installer->UpgradeGadget();
             if (Jaws_Error::IsError($return)) {
@@ -95,7 +95,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
             $gadget = jaws()->request->fetch('comp', 'get');
         }
 
-        $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+        $objGadget = Jaws_Gadget::getInstance($gadget);
         if (Jaws_Error::IsError($objGadget)) {
             $GLOBALS['app']->Session->PushLastResponse($objGadget->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -129,7 +129,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
             $gadget = jaws()->request->fetch('comp', 'get');
         }
 
-        $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+        $objGadget = Jaws_Gadget::getInstance($gadget);
         if (Jaws_Error::IsError($objGadget)) {
             $GLOBALS['app']->Session->PushLastResponse($objGadget->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -163,7 +163,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_HTML
             $gadget = jaws()->request->fetch('comp', 'get');
         }
 
-        $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+        $objGadget = Jaws_Gadget::getInstance($gadget);
         if (Jaws_Error::IsError($objGadget)) {
             $GLOBALS['app']->Session->PushLastResponse($objGadget->GetMessage(), RESPONSE_ERROR);
         } else {

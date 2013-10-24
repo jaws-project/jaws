@@ -84,7 +84,7 @@ class Components_Actions_Admin_Gadgets extends Components_AdminHTML
      */
     function GadgetInfo($gadget)
     {
-        $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+        $objGadget = Jaws_Gadget::getInstance($gadget);
         if (Jaws_Error::IsError($objGadget)) {
             return $objGadget->getMessage();
         }

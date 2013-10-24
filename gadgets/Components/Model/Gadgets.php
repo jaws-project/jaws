@@ -50,7 +50,7 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
                     continue;
                 }
 
-                $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+                $objGadget = Jaws_Gadget::getInstance($gadget);
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
                 }
