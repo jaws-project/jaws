@@ -42,7 +42,7 @@ class ActionImport_Plugin extends Jaws_Plugin
 
         $actions = $GLOBALS['app']->GetGadgetActions($gadget, 'normal', 'index');
         if (in_array($action, array_keys($actions))) {
-            $objAction = $GLOBALS['app']->LoadGadget($gadget, 'HTML', $actions[$action]['file']);
+            $objAction = $GLOBALS['app']->LoadGadget($gadget, 'Action', $actions[$action]['file']);
             return isset($params)? $objAction->$action($params) : $objAction->$action();
         }
 
