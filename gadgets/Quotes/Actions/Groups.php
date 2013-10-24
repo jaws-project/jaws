@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Quotes_Actions_Groups extends Jaws_Gadget_HTML
+class Quotes_Actions_Groups extends Jaws_Gadget_Action
 {
     /**
      * Displays quotes by group
@@ -19,7 +19,7 @@ class Quotes_Actions_Groups extends Jaws_Gadget_HTML
     function ViewGroupQuotes()
     {
         $gid = jaws()->request->fetch('id', 'get');
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Quotes', 'HTML', 'Quotes');
+        $layoutGadget = $GLOBALS['app']->LoadGadget('Quotes', 'Action', 'Quotes');
         return $layoutGadget->Display($gid);
     }
 

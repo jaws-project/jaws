@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Quotes_Actions_Quotes extends Jaws_Gadget_HTML
+class Quotes_Actions_Quotes extends Jaws_Gadget_Action
 {
     /**
      * Get Display action params

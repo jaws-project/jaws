@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Quotes_AdminAjax extends Jaws_Gadget_HTML
+class Quotes_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Gets data of the quote
@@ -170,7 +170,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_HTML
      */
     function GroupQuotesUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Quotes', 'AdminHTML', 'Groups');
+        $gadget = $GLOBALS['app']->LoadGadget('Quotes', 'AdminAction', 'Groups');
         return $gadget->GroupQuotesUI();
     }
 

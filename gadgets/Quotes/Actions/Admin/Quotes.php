@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Quotes_Actions_Admin_Quotes extends Quotes_AdminHTML
+class Quotes_Actions_Admin_Quotes extends Quotes_AdminAction
 {
 
     /**
