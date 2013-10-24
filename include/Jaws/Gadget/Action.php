@@ -222,7 +222,7 @@ class Jaws_Gadget_Action
         if (!empty($file)) {
             $objAction = $GLOBALS['app']->LoadGadget(
                 $this->gadget->name,
-                JAWS_SCRIPT == 'index'? 'HTML' : 'AdminHTML',
+                JAWS_SCRIPT == 'index'? 'Action' : 'AdminAction',
                 $file
             );
             if (Jaws_Error::isError($objAction)) {
