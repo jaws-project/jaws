@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Poll_AdminHTML extends Jaws_Gadget_HTML
+class Poll_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Calls default admin action
@@ -20,10 +20,10 @@ class Poll_AdminHTML extends Jaws_Gadget_HTML
     function Admin()
     {
         if ($this->gadget->GetPermission('ManagePolls')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Poll', 'AdminHTML', 'Poll');
+            $gadgetHTML = $GLOBALS['app']->LoadGadget('Poll', 'AdminAction', 'Poll');
             return $gadgetHTML->Polls();
         } elseif ($this->gadget->GetPermission('ManageGroups')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Poll', 'AdminHTML', 'Group');
+            $gadgetHTML = $GLOBALS['app']->LoadGadget('Poll', 'AdminAction', 'Group');
             return $gadgetHTML->PollGroups();
         }
 

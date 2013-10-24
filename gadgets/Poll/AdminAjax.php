@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Poll_AdminAjax extends Jaws_Gadget_HTML
+class Poll_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Get a Poll
@@ -118,7 +118,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
      */
     function PollAnswersUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminHTML', 'Poll');
+        $gadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminAction', 'Poll');
         return $gadget->PollAnswersUI();
     }
 
@@ -246,7 +246,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
      */
     function PollGroupPollsUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminHTML', 'Group');
+        $gadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminAction', 'Group');
         return $gadget->PollGroupPollsUI();
     }
 
@@ -322,7 +322,7 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ViewReports');
         @list($pid) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminHTML', 'Report');
+        $gadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminAction', 'Report');
         return $gadget->PollResultsUI($pid);
     }
 
@@ -337,8 +337,8 @@ class Poll_AdminAjax extends Jaws_Gadget_HTML
     function GetData()
     {
         @list($offset, $grid) = jaws()->request->fetchAll('post');
-        $pGadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminHTML', 'Poll');
-        $gGadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminHTML', 'Group');
+        $pGadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminAction', 'Poll');
+        $gGadget = $GLOBALS['app']->LoadGadget('Poll', 'AdminAction', 'Group');
         if (!is_numeric($offset)) {
             $offset = null;
         }

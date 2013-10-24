@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Poll_Actions_Admin_Group extends Poll_AdminHTML
+class Poll_Actions_Admin_Group extends Poll_AdminAction
 {
     /**
      * Prepares the data (an array) of polls

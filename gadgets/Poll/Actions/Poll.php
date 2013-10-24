@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Poll_Actions_Poll extends Jaws_Gadget_HTML
+class Poll_Actions_Poll extends Jaws_Gadget_Action
 {
     /**
      * Get Display action params
