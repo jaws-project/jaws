@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/site_style.css');
-class EventsCalendar_Actions_Events extends Jaws_Gadget_HTML
+class EventsCalendar_Actions_Events extends Jaws_Gadget_Action
 {
     /**
      * Builds events management UI
@@ -119,7 +119,7 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_HTML
         $tpl->SetVariable('events_url', $events_url);
 
         // Pagination
-        // $action = $GLOBALS['app']->LoadGadget('EventsCalendar', 'HTML', 'Pager');
+        // $action = $GLOBALS['app']->LoadGadget('EventsCalendar', 'Action', 'Pager');
         // $action->GetPagesNavigation(
             // $tpl,
             // 'events',

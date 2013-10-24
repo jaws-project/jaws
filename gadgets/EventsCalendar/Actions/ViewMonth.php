@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/site_style.css');
-class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_HTML
+class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
 {
     /**
      * Builds month view UI
