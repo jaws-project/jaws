@@ -9,7 +9,7 @@
  * @copyright   2012-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Comments_AdminAjax extends Jaws_Gadget_HTML
+class Comments_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Search for comments and return the data in an array
@@ -21,7 +21,7 @@ class Comments_AdminAjax extends Jaws_Gadget_HTML
     {
         $this->gadget->CheckPermission('ManageComments');
         @list($limit, $gadget, $search, $status) = jaws()->request->fetchAll('post');
-        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
+        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminAction');
         return $cHTML->GetDataAsArray($gadget, "javascript:editComment(this, '{id}')", $search, $status, $limit, true);
     }
 

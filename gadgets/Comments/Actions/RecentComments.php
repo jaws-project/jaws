@@ -8,7 +8,7 @@
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Comments_Actions_RecentComments extends Comments_HTML
+class Comments_Actions_RecentComments extends Comments_Action
 {
     /**
      * Get RecentComments action params
@@ -74,7 +74,7 @@ class Comments_Actions_RecentComments extends Comments_HTML
         $tpl->SetVariable('title', _t('COMMENTS_RECENT_COMMENTS', _t(strtoupper($gadget) . '_NAME')));
         $tpl->SetVariable('gadget', $gadget);
 
-        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
+        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'Action', 'Comments');
         $tpl->SetVariable('comments', $cHTML->ShowComments($gadget, '', 0, array('action' => 'RecentComments'), $limit, $orderBy));
 
         $tpl->ParseBlock('recent_comments');

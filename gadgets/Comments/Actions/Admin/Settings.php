@@ -8,7 +8,7 @@
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Comments_Actions_Admin_Settings extends Comments_AdminHTML
+class Comments_Actions_Admin_Settings extends Comments_AdminAction
 {
     /**
      * Builds admin properties UI

@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Comments_HTML extends Jaws_Gadget_HTML
+class Comments_Action extends Jaws_Gadget_Action
 {
     /**
      * Get page navigation links
