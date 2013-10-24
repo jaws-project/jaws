@@ -138,6 +138,13 @@ class Jaws_Gadget
     var $models = array();
 
     /**
+     * Store actions objects for later use so we aren't running around with multiple copies
+     * @var     array
+     * @access  protected
+     */
+    var $actions = array();
+
+    /**
      * Store hooks objects for later use so we aren't running around with multiple copies
      * @var     array
      * @access  protected
@@ -598,6 +605,7 @@ class Jaws_Gadget
     {
         switch ($method) {
             case 'loadAdminModel':
+            case 'loadAdminAction':
                 array_unshift($arguments, true);
                 $extension = substr($method, 9);
                 $model_class_name = "Jaws_Gadget_$extension";
@@ -610,6 +618,7 @@ class Jaws_Gadget
                 break;
 
             case 'loadModel':
+            case 'loadAction':
                 array_unshift($arguments, false);
 
             case 'loadHook':
