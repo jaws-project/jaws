@@ -45,16 +45,16 @@ class Jaws_URLMapping
      */
     function Init($request_uri = '')
     {
-        $urlMapper = $GLOBALS['app']->LoadGadget('UrlMapper', 'Info');
+        $urlMapper = Jaws_Gadget::getInstance('UrlMapper');
         if (Jaws_Error::isError($urlMapper)) {
             Jaws_Error::Fatal($urlMapper->getMessage());
         }
 
-        $this->_MapsModel = $GLOBALS['app']->LoadGadget('UrlMapper', 'Model', 'Maps');
+        $this->_MapsModel = Jaws_Gadget::getInstance('UrlMapper')->loadModel('Maps');
         if (Jaws_Error::isError($this->_MapsModel)) {
             Jaws_Error::Fatal($this->_MapsModel->getMessage());
         }
-        $this->_AliasesModel = $GLOBALS['app']->LoadGadget('UrlMapper', 'Model', 'Aliases');
+        $this->_AliasesModel = Jaws_Gadget::getInstance('UrlMapper')->loadModel('Aliases');
         if (Jaws_Error::isError($this->_AliasesModel)) {
             Jaws_Error::Fatal($this->_AliasesModel->getMessage());
         }
