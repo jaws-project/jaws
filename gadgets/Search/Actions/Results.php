@@ -9,7 +9,7 @@
  * @copyright   2005-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Search_Actions_Results extends Search_HTML
+class Search_Actions_Results extends Jaws_Gadget_Action
 {
     /**
      * Displays search results

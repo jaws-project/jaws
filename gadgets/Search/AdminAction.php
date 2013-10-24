@@ -8,7 +8,7 @@
  * @copyright   2005-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Search_AdminHTML extends Jaws_Gadget_HTML
+class Search_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Displays gadget administration section
@@ -18,7 +18,7 @@ class Search_AdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Search', 'AdminHTML', 'Settings');
+        $gadgetHTML = $GLOBALS['app']->LoadGadget('Search', 'AdminAction', 'Settings');
         return $gadgetHTML->Settings();
     }
 }

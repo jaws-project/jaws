@@ -8,7 +8,7 @@
  * @copyright   2005-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Search_Actions_Admin_Settings extends Search_AdminHTML
+class Search_Actions_Admin_Settings extends Search_AdminAction
 {
     /**
      * Displays gadget administration section
