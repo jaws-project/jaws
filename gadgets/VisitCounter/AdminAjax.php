@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
+class VisitCounter_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Cleans all the entries (records)
@@ -82,7 +82,7 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_HTML
         if (!is_numeric($offset)) {
             $offset = 0;
         }
-        $gadget = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminHTML', 'VisitCounter');
+        $gadget = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminAction', 'VisitCounter');
         return $gadget->GetVisits($offset);
     }
 

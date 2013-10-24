@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class VisitCounter_Actions_VisitCounter extends Jaws_Gadget_HTML
+class VisitCounter_Actions_VisitCounter extends Jaws_Gadget_Action
 {
     /**
      * Calls Display function if no action is specified
