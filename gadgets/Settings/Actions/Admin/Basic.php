@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Settings_Actions_Admin_Basic extends Settings_AdminHTML
+class Settings_Actions_Admin_Basic extends Settings_AdminAction
 {
     /**
      * Displays gadget administration section

@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Settings_AdminAjax extends Jaws_Gadget_HTML
+class Settings_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Constructor
@@ -20,7 +20,7 @@ class Settings_AdminAjax extends Jaws_Gadget_HTML
      */
     function Settings_AdminAjax($gadget)
     {
-        parent::Jaws_Gadget_HTML($gadget);
+        parent::Jaws_Gadget_Action($gadget);
         $this->_Model = $this->gadget->loadAdminModel('Settings');
     }
 

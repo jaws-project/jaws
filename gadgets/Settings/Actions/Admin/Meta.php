@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Settings_Actions_Admin_Meta extends Settings_AdminHTML
+class Settings_Actions_Admin_Meta extends Settings_AdminAction
 {
     /**
      * Displays meta settings form
