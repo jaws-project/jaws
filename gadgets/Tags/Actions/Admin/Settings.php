@@ -8,7 +8,7 @@
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Tags_Actions_Admin_Settings extends Tags_AdminHTML
+class Tags_Actions_Admin_Settings extends Tags_AdminAction
 {
     /**
      * Builds admin properties UI

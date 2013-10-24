@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Tags_AdminAjax extends Jaws_Gadget_HTML
+class Tags_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Search for tags and return the data in an array
@@ -20,7 +20,7 @@ class Tags_AdminAjax extends Jaws_Gadget_HTML
     {
         @list($filters, $offset) = jaws()->request->fetchAll('post');
         $filters = jaws()->request->fetch('0:array', 'post');
-        $tHTML = $GLOBALS['app']->LoadGadget('Tags', 'AdminHTML', 'Tags');
+        $tHTML = $GLOBALS['app']->LoadGadget('Tags', 'AdminAction', 'Tags');
         return $tHTML->GetDataAsArray("javascript:editTag(this, '{id}')", $filters, $offset);
     }
 

@@ -8,7 +8,7 @@
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Tags_Actions_ManageTags extends Tags_HTML
+class Tags_Actions_ManageTags extends Tags_Action
 {
 
     /**
