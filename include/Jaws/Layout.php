@@ -128,7 +128,7 @@ class Jaws_Layout
         // set default site language
         $this->_Languages[] = $GLOBALS['app']->GetLanguage();
 
-        $this->_Model = $GLOBALS['app']->loadGadget('Layout', 'Model', 'Layout');
+        $this->_Model = Jaws_Gadget::getInstance('Layout')->loadModel('Layout');
         if (Jaws_Error::isError($this->_Model)) {
             Jaws_Error::Fatal("Can't load layout model");
         }
@@ -285,7 +285,7 @@ class Jaws_Layout
 
         // Set the header thingie for each gadget and the response box
         if (isset($gadget) && ($gadget != 'ControlPanel')){
-            $gInfo  = $GLOBALS['app']->loadGadget($gadget, 'Info');
+            $gInfo  = Jaws_Gadget::getInstance($gadget);
             $docurl = null;
             if (!Jaws_Error::isError($gInfo)) {
                 $docurl = $gInfo->GetDoc();
