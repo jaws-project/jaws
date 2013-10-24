@@ -215,7 +215,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_HTML
                 continue;
             }
 
-            $objGadget = $GLOBALS['app']->LoadGadget($gadget['name'], 'Info');
+            $objGadget = Jaws_Gadget::getInstance($gadget['name']);
             if (Jaws_Error::IsError($objGadget)) {
                 continue;
             }
