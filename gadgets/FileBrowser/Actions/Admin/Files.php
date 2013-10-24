@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
+class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminAction
 {
     /**
      * Show Admin action
@@ -22,7 +22,7 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminHTML
     {
         $this->AjaxMe('script.js');
 
-        $dHTML = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminHTML', 'Directory');
+        $dHTML = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminAction', 'Directory');
 
         $tpl = $this->gadget->loadTemplate('FileBrowser.html');
         $tpl->SetBlock('filebrowser');

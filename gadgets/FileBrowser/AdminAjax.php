@@ -8,7 +8,7 @@
  * @copyright  2010-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
+class FileBrowser_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Gets information of the directory content
@@ -49,7 +49,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     function GetLocation()
     {
         @list($path) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminHTML', 'Files');
+        $gadget = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminAction', 'Files');
         return $gadget->GetLocation($path);
     }
 
@@ -65,7 +65,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_HTML
     function GetDirectory()
     {
         @list($dir, $offset, $order) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminHTML', 'Directory');
+        $gadget = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminAction', 'Directory');
         if (!is_numeric($offset)) {
             $offset = null;
         }

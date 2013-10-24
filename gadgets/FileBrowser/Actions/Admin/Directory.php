@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowser_Actions_Admin_Directory extends FileBrowser_AdminHTML
+class FileBrowser_Actions_Admin_Directory extends FileBrowser_AdminAction
 {
 
     /**
