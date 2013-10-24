@@ -92,7 +92,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
             $offset = null;
         }
 
-        $usrHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Users');
+        $usrHTML = $this->gadget->loadAdminAction('Users');
         return $usrHTML->GetUsers($group, $superadmin, $status, $term, $orderBy, $offset);
     }
 
@@ -104,7 +104,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
      */
     function GetOnlineUsers()
     {
-        $usrHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'OnlineUsers');
+        $usrHTML = $this->gadget->loadAdminAction('OnlineUsers');
         return $usrHTML->GetOnlineUsers();
     }
 
@@ -203,7 +203,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
         } else {
             // send activate notification
             if ($uData['prev_status'] == 2 && $uData['status'] == 1) {
-                $uRegistration = $GLOBALS['app']->LoadGadget('Users', 'Action', 'Registration');
+                $uRegistration = $this->gadget->loadAction('Registration');
                 $uRegistration->ActivateNotification($uData, $this->gadget->registry->fetch('anon_activation'));
             }
             $GLOBALS['app']->Session->PushLastResponse(
@@ -469,7 +469,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
     function GetACLUI()
     {
         $this->gadget->CheckPermission('default');
-        $html = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'ACL');
+        $html = $this->gadget->loadAdminAction('ACL');
         return $html->ACLUI();
     }
 
@@ -546,7 +546,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
      */
     function UserGroupsUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Users');
+        $gadget = $this->gadget->loadAdminAction('Users');
         return $gadget->UserGroupsUI();
     }
 
@@ -575,7 +575,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
      */
     function PersonalUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Users');
+        $gadget = $this->gadget->loadAdminAction('Users');
         return $gadget->PersonalUI();
     }
     
@@ -587,7 +587,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
      */
     function PreferencesUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Users');
+        $gadget = $this->gadget->loadAdminAction('Users');
         return $gadget->PreferencesUI();
     }
 
@@ -599,7 +599,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
      */
     function ContactsUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Users');
+        $gadget = $this->gadget->loadAdminAction('Users');
         return $gadget->ContactsUI();
     }
 
@@ -751,7 +751,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
     function GetGroups()
     {
         @list($offset) = jaws()->request->fetchAll('post');
-        $grpHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Groups');
+        $grpHTML = $this->gadget->loadAdminAction('Groups');
         return $grpHTML->GetGroups(null, $offset);
     }
 
@@ -848,7 +848,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
      */
     function GroupUsersUI()
     {
-        $grpHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Groups');
+        $grpHTML = $this->gadget->loadAdminAction('Groups');
         return $grpHTML->GroupUsersUI();
     }
 

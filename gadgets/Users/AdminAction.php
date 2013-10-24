@@ -20,18 +20,18 @@ class Users_AdminAction extends Jaws_Gadget_Action
     function Admin()
     {
         if ($this->gadget->GetPermission('ManageUsers')) {
-            $userHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Users');
+            $userHTML = $this->gadget->loadAdminAction('Users');
             return $userHTML->Users();
         } elseif ($this->gadget->GetPermission('ManageGroups')) {
-            $groupHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Groups');
+            $groupHTML = $this->gadget->loadAdminAction('Groups');
             return $groupHTML->Groups();
         } elseif ($this->gadget->GetPermission('ManageOnlineUsers')) {
-            $onlineHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'OnlineUsers');
+            $onlineHTML = $this->gadget->loadAdminAction('OnlineUsers');
             return $onlineHTML->OnlineUsers();
         }
 
         $this->gadget->CheckPermission('ManageProperties');
-        $propHTML = $GLOBALS['app']->LoadGadget('Users', 'AdminAction', 'Properties');
+        $propHTML = $this->gadget->loadAdminAction('Properties');
         return $propHTML->Properties();
     }
 
