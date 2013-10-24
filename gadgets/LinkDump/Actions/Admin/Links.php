@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class LinkDump_Actions_Admin_Links extends Jaws_Gadget_HTML
+class LinkDump_Actions_Admin_Links extends Jaws_Gadget_Action
 {
     /**
      * Links List Action

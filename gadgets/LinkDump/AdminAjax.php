@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class LinkDump_AdminAjax extends Jaws_Gadget_HTML
+class LinkDump_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Returns the group form
@@ -19,7 +19,7 @@ class LinkDump_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetGroupUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminHTML', 'Groups');
+        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminAction', 'Groups');
         return $gadget->GetGroupUI();
     }
 
@@ -31,7 +31,7 @@ class LinkDump_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetLinkUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminHTML', 'Links');
+        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminAction', 'Links');
         return $gadget->GetLinkUI();
     }
 
@@ -81,7 +81,7 @@ class LinkDump_AdminAjax extends Jaws_Gadget_HTML
     function GetLinksList()
     {
         @list($gid) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminHTML', 'Links');
+        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminAction', 'Links');
         return $gadget->GetLinksList($gid);
     }
 
