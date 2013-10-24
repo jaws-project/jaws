@@ -7,7 +7,7 @@
  * @author     HamidReza Aboutalebi <hamid@aboutalebi.com>
  * @copyright  2013 Jaws Development Group
  */
-class Logs_Actions_Admin_Logs extends Jaws_Gadget_HTML
+class Logs_Actions_Admin_Logs extends Jaws_Gadget_Action
 {
     /**
      *
