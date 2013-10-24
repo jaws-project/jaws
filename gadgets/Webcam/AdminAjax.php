@@ -8,7 +8,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Webcam_AdminAjax extends Jaws_Gadget_HTML
+class Webcam_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Gets information of a webcam
@@ -113,7 +113,7 @@ class Webcam_AdminAjax extends Jaws_Gadget_HTML
     function GetData()
     {
         @list($limit) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('Webcam', 'AdminHTML', 'Webcam');
+        $gadget = $GLOBALS['app']->LoadGadget('Webcam', 'AdminAction', 'Webcam');
         return $gadget->GetWebcams($limit);
     }
 
