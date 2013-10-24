@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Shoutbox_Actions_Admin_Settings extends Shoutbox_AdminHTML
+class Shoutbox_Actions_Admin_Settings extends Shoutbox_AdminAction
 {
     /**
      * Displays shoutbox Settings

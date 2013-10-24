@@ -9,7 +9,7 @@
  * @copyright   2004-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Shoutbox_Actions_Comments extends Jaws_Gadget_HTML
+class Shoutbox_Actions_Comments extends Jaws_Gadget_Action
 {
     /**
      * Get the shoutbox comments full interface
@@ -24,7 +24,7 @@ class Shoutbox_Actions_Comments extends Jaws_Gadget_HTML
         $tpl = $this->gadget->loadTemplate('Shoutbox.html');
         $tpl->SetBlock('shoutbox');
         $tpl->SetVariable('title', _t('SHOUTBOX_SHOUTBOX'));
-        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
+        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'Action', 'Comments');
 
         $tpl->SetVariable(
             'comments',
@@ -61,7 +61,7 @@ class Shoutbox_Actions_Comments extends Jaws_Gadget_HTML
      */
     function GetComments()
     {
-        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'HTML', 'Comments');
+        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'Action', 'Comments');
         return $cHTML->ShowComments('Shoutbox', '', 0, array('action' => 'Comments','params' => array()));
     }
 

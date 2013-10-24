@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Shoutbox_Actions_Admin_Comments extends Shoutbox_AdminHTML
+class Shoutbox_Actions_Admin_Comments extends Shoutbox_AdminAction
 {
     /**
      * Displays shoutbox admin (comments manager)
@@ -23,7 +23,7 @@ class Shoutbox_Actions_Admin_Comments extends Shoutbox_AdminHTML
         $this->AjaxMe('script.js');
         $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/Resources/script.js');
 
-        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminHTML');
+        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'AdminAction');
         return $cHTML->Comments('shoutbox', $this->MenuBar('Comments'));
     }
 
