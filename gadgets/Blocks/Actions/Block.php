@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blocks_Actions_Block extends Jaws_Gadget_HTML
+class Blocks_Actions_Block extends Jaws_Gadget_Action
 {
     /**
      * Get Display action params

@@ -8,7 +8,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blocks_AdminHTML extends Jaws_Gadget_HTML
+class Blocks_AdminAction extends Jaws_Gadget_Action
 {
     /**
      * Creates and prints the administration template
@@ -18,7 +18,7 @@ class Blocks_AdminHTML extends Jaws_Gadget_HTML
      */
     function Admin()
     {
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Blocks', 'AdminHTML', 'Block');
+        $gadgetHTML = $GLOBALS['app']->LoadGadget('Blocks', 'AdminAction', 'Block');
         return $gadgetHTML->Block();
 
     }

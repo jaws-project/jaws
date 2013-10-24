@@ -8,7 +8,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blocks_AdminAjax extends Jaws_Gadget_HTML
+class Blocks_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Get Block
@@ -105,7 +105,7 @@ class Blocks_AdminAjax extends Jaws_Gadget_HTML
     function ParseText()
     {
         $text = jaws()->request->fetch(0, 'post', false);
-        $gadget = $GLOBALS['app']->LoadGadget('Blocks', 'AdminHTML');
+        $gadget = $GLOBALS['app']->LoadGadget('Blocks', 'AdminAction');
         return $gadget->gadget->ParseText($text);
     }
 }
