@@ -10,7 +10,7 @@
  * @copyright   2005-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Menu_AdminAjax extends Jaws_Gadget_HTML
+class Menu_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Get all menus and groups data
@@ -20,7 +20,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetMenusTrees()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Menu', 'AdminHTML', 'Menu');
+        $gadget = $GLOBALS['app']->LoadGadget('Menu', 'AdminAction', 'Menu');
         $data = $gadget->GetMenusTrees();
         unset($gadget);
         if (Jaws_Error::IsError($data)) {
@@ -37,7 +37,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetGroupUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Menu', 'AdminHTML', 'Menu');
+        $gadget = $GLOBALS['app']->LoadGadget('Menu', 'AdminAction', 'Menu');
         return $gadget->GetGroupUI();
     }
 
@@ -49,7 +49,7 @@ class Menu_AdminAjax extends Jaws_Gadget_HTML
      */
     function GetMenuUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Menu', 'AdminHTML', 'Menu');
+        $gadget = $GLOBALS['app']->LoadGadget('Menu', 'AdminAction', 'Menu');
         return $gadget->GetMenuUI();
     }
 

@@ -9,7 +9,7 @@
  * @copyright   2004-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Menu_Actions_Menu extends Jaws_Gadget_HTML
+class Menu_Actions_Menu extends Jaws_Gadget_Action
 {
     /**
      * Request URL
