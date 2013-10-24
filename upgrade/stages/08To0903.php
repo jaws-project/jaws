@@ -58,7 +58,7 @@ class Upgrader_08To0903 extends JawsUpgraderStage
             'Layout', 'Users', 'Policy', 'Comments'
         );
         foreach ($gadgets as $gadget) {
-            $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+            $objGadget = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($objGadget)) {
                 _log(JAWS_LOG_DEBUG,"There was a problem loading core gadget: ".$gadget);
                 return $objGadget;
