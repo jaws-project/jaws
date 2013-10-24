@@ -10,7 +10,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UrlMapper_Actions_Admin_Maps extends UrlMapper_AdminHTML
+class UrlMapper_Actions_Admin_Maps extends UrlMapper_AdminAction
 {
     /**
      * Prepares the data of maps for a certain gadget and action

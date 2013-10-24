@@ -9,7 +9,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
+class UrlMapper_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Returns mapped actions of a certain gadget
@@ -39,7 +39,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
     {
         @list($gadget, $action) = jaws()->request->fetchAll('post');
         //Now get the custom maps
-        $gHTML = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminHTML', 'Maps');
+        $gHTML = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminAction', 'Maps');
         return $gHTML->GetMaps($gadget, $action);
     }
 
@@ -177,7 +177,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_HTML
             $limit = 0;
         }
 
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminHTML', 'ErrorMaps');
+        $gadgetHTML = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminAction', 'ErrorMaps');
         return $gadgetHTML->GetErrorMaps($limit, $offset);
     }
 

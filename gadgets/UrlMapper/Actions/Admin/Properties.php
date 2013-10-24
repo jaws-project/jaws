@@ -10,7 +10,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UrlMapper_Actions_Admin_Properties extends UrlMapper_AdminHTML
+class UrlMapper_Actions_Admin_Properties extends UrlMapper_AdminAction
 {
     /**
      * Builds Properties UI
