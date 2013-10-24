@@ -40,9 +40,10 @@ class ActionImport_Plugin extends Jaws_Plugin
         $action = $data[3];
         $params = @$data[5];
 
-        $layoutModel = $GLOBALS['app']->LoadGadget($gadget, 'LayoutHTML');
-        if (!Jaws_Error::IsError($layoutModel) && method_exists($layoutModel, $action)) {
-            return isset($params)? $layoutModel->$action($params) : $layoutModel->$action();
+        $actions = $GLOBALS['app']->GetGadgetActions($gadget, 'normal', 'index');
+        if (in_array($action, array_keys($actions))) {
+            $objAction = $GLOBALS['app']->LoadGadget($gadget, 'HTML', $actions[$action]['file']);
+            return isset($params)? $objAction->$action($params) : $objAction->$action();
         }
 
         return $data[0];
