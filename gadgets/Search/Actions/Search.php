@@ -46,7 +46,7 @@ class Search_Actions_Search extends Search_HTML
             $gchk =& Piwi::CreateWidget('Combo', 'gadgets');
             $gchk->addOption(_t('GLOBAL_ALL'), '');
             foreach ($searchableGadgets as $gadget) {
-                $info = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+                $info = Jaws_Gadget::getInstance($gadget);
                 if (Jaws_Error::IsError($info)) {
                     continue;
                 }
@@ -122,7 +122,7 @@ class Search_Actions_Search extends Search_HTML
         $gchk =& Piwi::CreateWidget('Combo', 'gadgets');
         $gchk->addOption(_t('GLOBAL_ALL'), '');
         foreach ($searchableGadgets as $gadget) {
-            $info = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+            $info = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($info)) {
                 continue;
             }

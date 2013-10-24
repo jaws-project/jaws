@@ -50,7 +50,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
                     continue;
                 }
 
-                $objGadget = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+                $objGadget = Jaws_Gadget::getInstance($gadget);
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
                 }

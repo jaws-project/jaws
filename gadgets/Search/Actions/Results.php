@@ -82,7 +82,7 @@ class Search_Actions_Results extends Search_HTML
             $item_counter = 0;
             foreach ($items as $gadget => $result) {
                 $tpl->SetBlock('results/gadget');
-                $info = $GLOBALS['app']->LoadGadget($gadget, 'Info');
+                $info = Jaws_Gadget::getInstance($gadget);
                 $tpl->SetVariable('gadget_result', _t('SEARCH_RESULTS_IN_GADGETS',
                                                       count($result),
                                                       $model->implodeSearch(),
