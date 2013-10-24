@@ -8,7 +8,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class ServerTime_AdminAjax extends Jaws_Gadget_HTML
+class ServerTime_AdminAjax extends Jaws_Gadget_Action
 {
     /**
      * Updates properties
