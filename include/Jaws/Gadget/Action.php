@@ -77,6 +77,67 @@ class Jaws_Gadget_Action
     }
 
     /**
+     * Loads the gadget action file in question, makes a instance and
+     * stores it globally for later use so we do not have duplicates
+     * of the same instance around in our code.
+     *
+     * @access  public
+     * @param   bool    $backend    Admin Action?
+     * @param   string  $filename   Action class file name
+     * @return  mixed   Action class object on successful, Jaws_Error otherwise
+     */
+    function &load($backend, $filename = '')
+    {
+        // filter non validate character
+        $filename = preg_replace('/[^[:alnum:]_]/', '', $filename);
+        $filetype = $backend? 'AdminActions' : 'Actions';
+
+        if (!isset($this->gadget->actions[$filetype][$filename])) {
+            switch ($filetype) {
+                case 'Actions':
+                    if (empty($filename)) {
+                        $classname = $this->gadget->name. '_Action';
+                        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Action.php';
+                        if (!file_exists($file)) {
+                            return $this->gadget->extensions['Action'];
+                        }
+                    } else {
+                        $classname = $this->gadget->name. "_Actions_$filename";
+                        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/$filename.php";
+                    }
+                    break;
+
+                case 'AdminActions':
+                    if (empty($filename)) {
+                        $classname = $this->gadget->name. '_AdminAction';
+                        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/AdminAction.php';
+                        if (!file_exists($file)) {
+                            return $this->gadget->extensions['Action'];
+                        }
+                    } else {
+                        $classname = $this->gadget->name. "_Actions_Admin_$filename";
+                        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/Admin/$filename.php";
+                    }
+                    break;
+            }
+
+            if (!file_exists($file)) {
+                return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
+            }
+
+            include_once($file);
+            if (!Jaws::classExists($classname)) {
+                return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
+            }
+
+            $this->gadget->actions[$filetype][$filename] = new $classname($this->gadget);
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget action class: [$classname]");
+        }
+
+        return $this->gadget->actions[$filetype][$filename];
+    }
+
+    /**
      * Ajax Admin stuff
      *
      * @access  public
