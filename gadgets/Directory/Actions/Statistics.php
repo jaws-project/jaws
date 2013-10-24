@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Directory_Actions_Statistics extends Jaws_Gadget_HTML
+class Directory_Actions_Statistics extends Jaws_Gadget_Action
 {
     /**
      * Displays overal information about files and directory

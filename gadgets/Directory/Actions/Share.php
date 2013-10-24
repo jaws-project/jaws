@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Directory_Actions_Share extends Jaws_Gadget_HTML
+class Directory_Actions_Share extends Jaws_Gadget_Action
 {
     /**
      * Fetches list of system user groups
