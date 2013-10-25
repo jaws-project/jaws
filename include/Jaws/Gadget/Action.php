@@ -282,9 +282,9 @@ class Jaws_Gadget_Action
         $file = $this->_ValidAction[JAWS_SCRIPT][$action]['file'];
         if (!empty($file)) {
             if (JAWS_SCRIPT == 'index') {
-                Jaws_Gadget::getInstance($this->gadget->name)->loadAction($file);
+                $objAction = Jaws_Gadget::getInstance($this->gadget->name)->loadAction($file);
             } else {
-                Jaws_Gadget::getInstance($this->gadget->name)->loadAdminAction($file);
+                $objAction = Jaws_Gadget::getInstance($this->gadget->name)->loadAdminAction($file);
             }
 
             if (Jaws_Error::isError($objAction)) {
