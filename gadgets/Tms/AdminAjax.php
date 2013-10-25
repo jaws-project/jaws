@@ -20,7 +20,7 @@ class Tms_AdminAjax extends Jaws_Gadget_Action
     function GetThemeInfo()
     {
         @list($theme) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('Tms', 'AdminAction', 'Themes');
+        $gadget = $this->gadget->loadAdminAction('Themes');
         return $gadget->GetThemeInfo($theme);
     }
 }
