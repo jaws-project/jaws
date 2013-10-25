@@ -22,12 +22,12 @@ class Weather_AdminAction extends Jaws_Gadget_Action
     function Admin()
     {
         if ($this->gadget->GetPermission('ManageRegions')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Weather', 'AdminAction', 'Regions');
+            $gadgetHTML = $this->gadget->loadAdminAction('Regions');
             return $gadgetHTML->Regions();
         }
 
         $this->gadget->CheckPermission('UpdateProperties');
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Weather', 'AdminAction', 'Properties');
+        $gadgetHTML = $this->gadget->loadAdminAction('Properties');
         return $gadgetHTML->Properties();
     }
 

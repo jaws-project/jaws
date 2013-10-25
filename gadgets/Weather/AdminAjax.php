@@ -99,7 +99,7 @@ class Weather_AdminAjax extends Jaws_Gadget_Action
     function GetData()
     {
         @list($offset, $grid) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('Weather', 'AdminAction', 'Regions');
+        $gadget = $this->gadget->loadAdminAction('Regions');
         if (!is_numeric($offset)) {
             $offset = null;
         }
