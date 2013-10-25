@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH. 'gadgets/Glossary/AdminAction.php';
 /**
  * Glossary Admin Gadget
  *
