@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH. 'gadgets/Blog/AdminAction.php';
 /**
  * Blog Admin HTML file
  *
