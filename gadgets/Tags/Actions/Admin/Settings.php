@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH. 'gadgets/Tags/AdminAction.php';
 /**
  * Tags Gadget Admin
  *
