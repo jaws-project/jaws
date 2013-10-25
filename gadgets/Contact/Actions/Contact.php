@@ -139,7 +139,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
         }
 
         //captcha
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Action', 'Captcha');
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAction('Captcha');
         $mPolicy->loadCaptcha($tpl, 'contact');
 
         //company
@@ -269,7 +269,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
             Jaws_Header::Referrer();
         }
 
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Action', 'Captcha');
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAction('Captcha');
         $resCheck = $mPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'Contact');

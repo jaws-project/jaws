@@ -220,7 +220,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
 
             $redirect_to = $this->gadget->urlMap('ViewImage', array('id' => $image['id'], 'albumid' => $albumid));
 
-            $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'Action', 'Comments');
+            $cHTML = Jaws_Gadget::getInstance('Comments')->loadAction('Comments');
             $tpl->SetVariable('comments', $cHTML->ShowComments('Phoo', 'Image', $image['id'],
                 array('action' => 'ViewImage',
                     'params' => array('albumid' => $albumid, 'id' => $image['id']))));

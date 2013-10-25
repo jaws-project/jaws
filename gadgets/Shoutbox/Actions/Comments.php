@@ -24,7 +24,7 @@ class Shoutbox_Actions_Comments extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('Shoutbox.html');
         $tpl->SetBlock('shoutbox');
         $tpl->SetVariable('title', _t('SHOUTBOX_SHOUTBOX'));
-        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'Action', 'Comments');
+        $cHTML = Jaws_Gadget::getInstance('Comments')->loadAction('Comments');
 
         $tpl->SetVariable(
             'comments',
@@ -61,7 +61,7 @@ class Shoutbox_Actions_Comments extends Jaws_Gadget_Action
      */
     function GetComments()
     {
-        $cHTML = $GLOBALS['app']->LoadGadget('Comments', 'Action', 'Comments');
+        $cHTML = Jaws_Gadget::getInstance('Comments')->loadAction('Comments');
         return $cHTML->ShowComments('Shoutbox', '', 0, array('action' => 'Comments','params' => array()));
     }
 
