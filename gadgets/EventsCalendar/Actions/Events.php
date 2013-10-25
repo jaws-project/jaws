@@ -119,7 +119,7 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_Action
         $tpl->SetVariable('events_url', $events_url);
 
         // Pagination
-        // $action = $GLOBALS['app']->LoadGadget('EventsCalendar', 'Action', 'Pager');
+        // $action = $this->gadget->loadAction('Pager');
         // $action->GetPagesNavigation(
             // $tpl,
             // 'events',
