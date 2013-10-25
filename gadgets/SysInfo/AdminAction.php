@@ -19,17 +19,17 @@ class SysInfo_AdminAction extends Jaws_Gadget_Action
     function Admin()
     {
         if ($this->gadget->GetPermission('SysInfo')) {
-            $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminAction', 'SysInfo');
+            $HTML = $this->gadget->loadAdminAction('SysInfo');
             return $HTML->SysInfo();
         } elseif ($this->gadget->GetPermission('PHPInfo')) {
-            $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminAction', 'PHPInfo');
+            $HTML = $this->gadget->loadAdminAction('PHPInfo');
             return $HTML->PHPInfo();
         } elseif ($this->gadget->GetPermission('JawsInfo')) {
-            $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminAction', 'JawsInfo');
+            $HTML = $this->gadget->loadAdminAction('JawsInfo');
             return $HTML->JawsInfo();
         }
 
-        $HTML = $GLOBALS['app']->LoadGadget('SysInfo', 'AdminAction', 'DirInfo');
+        $HTML = $this->gadget->loadAdminAction('DirInfo');
         $this->gadget->CheckPermission('DirInfo');
         return $HTML->DirInfo();
     }
