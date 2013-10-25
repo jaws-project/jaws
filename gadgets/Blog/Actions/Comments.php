@@ -35,7 +35,7 @@ class Blog_Actions_Comments extends Blog_Action
             Jaws_Header::Location($this->gadget->urlMap('DefaultAction'));
         }
 
-        $postHTML = $GLOBALS['app']->LoadGadget('Blog', 'Action', 'Post');
+        $postHTML = $this->gadget->loadAction('Post');
         $id = !empty($entry['fast_url']) ? $entry['fast_url'] : $entry['id'];
         return $postHTML->SingleView($id, true);
     }

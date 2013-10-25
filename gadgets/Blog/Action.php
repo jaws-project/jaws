@@ -24,7 +24,7 @@ class Blog_Action extends Jaws_Gadget_Action
         switch ($default_view) {
             case 'default_category':
                 $cat = $this->gadget->registry->fetch('default_category');
-                $postsHTML = $GLOBALS['app']->LoadGadget('Blog', 'Action', 'Posts');
+                $postsHTML = $this->gadget->loadAction('Posts');
                 return $postsHTML->ViewPage($cat);
                 break;
 
@@ -34,17 +34,17 @@ class Blog_Action extends Jaws_Gadget_Action
                 $date = $GLOBALS['app']->loadDate();
                 $mDate = $date->Format($dates['max_date'], 'Y-m');
                 $mDate = explode('-', $mDate);
-                $dateHTML = $GLOBALS['app']->LoadGadget('Blog', 'Action', 'DatePosts');
+                $dateHTML = $this->gadget->loadAction('DatePosts');
                 return $dateHTML->ViewDatePage($mDate[0], $mDate[1]);
                 break;
 
             case 'latest_entry':
-                $postHTML = $GLOBALS['app']->LoadGadget('Blog', 'Action', 'Post');
+                $postHTML = $this->gadget->loadAction('Post');
                 return $postHTML->LastPost();
                 break;
 
             default:
-                $postsHTML = $GLOBALS['app']->LoadGadget('Blog', 'Action', 'Posts');
+                $postsHTML = $this->gadget->loadAction('Posts');
                 return $postsHTML->ViewPage();
         }
     }
