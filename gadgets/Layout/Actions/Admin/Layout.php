@@ -181,8 +181,6 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_Action
      */
     function getLayoutControls()
     {
-        $GLOBALS['app']->LoadGadget('ControlPanel', 'AdminAction');
-
         $tpl = $this->gadget->loadTemplate('LayoutControls.html');
         $tpl->SetBlock('controls');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
