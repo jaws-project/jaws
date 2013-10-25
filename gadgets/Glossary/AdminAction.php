@@ -19,7 +19,7 @@ class Glossary_AdminAction extends Jaws_Gadget_Action
      */
     function Admin()
     {
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Glossary', 'AdminAction', 'Term');
+        $gadgetHTML = $this->gadget->loadAdminAction('Term');
         return $gadgetHTML->Term();
     }
 

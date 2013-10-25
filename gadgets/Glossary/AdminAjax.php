@@ -98,8 +98,7 @@ class Glossary_AdminAjax extends Jaws_Gadget_Action
     function ParseText()
     {
         $text = jaws()->request->fetch(0, 'post', false);
-        $gadget = $GLOBALS['app']->LoadGadget('Glossary', 'AdminAction');
-        return $gadget->gadget->ParseText($text);
+        return $this->gadget->ParseText($text);
     }
 
 }
