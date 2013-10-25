@@ -18,7 +18,7 @@ class Blocks_AdminAction extends Jaws_Gadget_Action
      */
     function Admin()
     {
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Blocks', 'AdminAction', 'Block');
+        $gadgetHTML = $this->gadget->loadAdminAction('Block');
         return $gadgetHTML->Block();
 
     }
