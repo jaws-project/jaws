@@ -70,7 +70,7 @@ class Jaws_Calendar
             $year = $this->Today['year'];
         }
         $tpl = new Jaws_Template();
-        $tpl->Load('Calendar.html', $this->_TemplateDir, 'Blog');
+        $tpl->Load('Calendar.html', $this->_TemplateDir);
         $tpl->SetBlock('calendar');
         $tpl->setVariable('title', _t('BLOG_LAYOUT_CALENDAR'));
 
