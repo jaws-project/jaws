@@ -895,7 +895,7 @@ class Jaws
         $gadgets = array_filter(explode(',', $data));
         foreach($gadgets as $gadget) {
             if (Jaws_Gadget::IsGadgetEnabled($gadget)) {
-                $objGadget = $this->LoadGadget($gadget, 'Info');
+                $objGadget = Jaws_Gadget::getInstance($gadget);
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
                 }
