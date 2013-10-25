@@ -18,7 +18,7 @@ class Forums_AdminAction extends Jaws_Gadget_Action
      */
     function Admin()
     {
-        $forumHTML = $GLOBALS['app']->LoadGadget('Forums', 'AdminAction', 'Forums');
+        $forumHTML = $this->gadget->loadAdminAction('Forums');
         return $forumHTML->Forums();
     }
 
