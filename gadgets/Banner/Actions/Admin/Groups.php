@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH. 'gadgets/Banner/AdminAction.php';
 /**
  * Banner Gadget Admin
  *

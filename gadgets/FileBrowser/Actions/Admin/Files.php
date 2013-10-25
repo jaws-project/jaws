@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH. 'gadgets/FileBrowser/AdminAction.php';
 /**
  * Filebrowser Admin Gadget
  *

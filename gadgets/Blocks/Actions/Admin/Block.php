@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH. 'gadgets/Blocks/AdminAction.php';
 /**
  * Blocks Admin Gadget
  *

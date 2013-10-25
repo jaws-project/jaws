@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH. 'gadgets/Faq/AdminAction.php';
 /**
  * Faq Admin Gadget
  *

@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH. 'gadgets/Contact/AdminAction.php';
 /**
  * Contact Gadget Admin
  *
