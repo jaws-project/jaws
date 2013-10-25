@@ -54,7 +54,7 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
 
     if (!empty($ReqGadget)) {
         if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
-            $objGadget = $GLOBALS['app']->LoadGadget($ReqGadget);
+            $objGadget = Jaws_Gadget::getInstance($ReqGadget);
             if (Jaws_Error::IsError($objGadget)) {
                 Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
             }
