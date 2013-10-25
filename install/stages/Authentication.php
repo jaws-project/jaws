@@ -42,7 +42,7 @@ class Installer_Authentication extends JawsInstallerStage
         }
         _log(JAWS_LOG_DEBUG,"Generating new installation key");
 
-        $tpl = new Jaws_Template(false, false);
+        $tpl = new Jaws_Template(false);
         $tpl->Load('display.html', 'stages/Authentication/templates');
         $tpl->SetBlock('Authentication');
 
