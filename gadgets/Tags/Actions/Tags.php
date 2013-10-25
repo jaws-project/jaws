@@ -187,7 +187,7 @@ class Tags_Actions_Tags extends Tags_Action
             $table->where('gadget', $gadget);
         }
         $table->and()->where('tags.name', $tag)->and()->where('tags_items.published', true);
-        $table->and()->openWhere('tags_items.update_time', time(), '>')->or();
+        $table->and()->openWhere('tags_items.update_time', time(), '<')->or();
         $table->closeWhere('tags_items.update_time', null, 'is' );
         if(!empty($get['user'])) {
             $table->and()->where('tags.user', $get['user']);
@@ -207,7 +207,7 @@ class Tags_Actions_Tags extends Tags_Action
             $table->where('gadget', $gadget);
         }
         $table->and()->where('tags.name', $tag)->and()->where('tags_items.published', true);
-        $table->and()->openWhere('tags_items.update_time', time(), '>')->or();
+        $table->and()->openWhere('tags_items.update_time', time(), '<')->or();
         $table->closeWhere('tags_items.update_time', null, 'is' );
         if(!empty($get['user'])) {
             $table->and()->where('tags.user', $get['user']);
