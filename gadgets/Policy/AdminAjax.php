@@ -252,8 +252,8 @@ class Policy_AdminAjax extends Jaws_Gadget_Action
     function GetData()
     {
         @list($offset, $grid) = jaws()->request->fetchAll('post');
-        $ipHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminAction', 'IP');
-        $agentHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminAction', 'Agent');
+        $ipHTML = $this->gadget->loadAdminAction('IP');
+        $agentHTML = $this->gadget->loadAdminAction('Agent');
         if (!is_numeric($offset)) {
             $offset = null;
         }

@@ -20,21 +20,21 @@ class Policy_AdminAction extends Jaws_Gadget_Action
     function Admin()
     {
         if ($this->gadget->GetPermission('IPBlocking')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminAction', 'IP');
+            $gadgetHTML = $this->gadget->loadAdminAction('IP');
             return $gadgetHTML->IPBlocking();
         } elseif ($this->gadget->GetPermission('AgentBlocking')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminAction', 'Agent');
+            $gadgetHTML = $this->gadget->loadAdminAction('Agent');
             return $gadgetHTML->AgentBlocking();
         } elseif ($this->gadget->GetPermission('Encryption')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminAction', 'Encryption');
+            $gadgetHTML = $this->gadget->loadAdminAction('Encryption');
             return $gadgetHTML->Encryption();
         } elseif ($this->gadget->GetPermission('AntiSpam')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminAction', 'AntiSpam');
+            $gadgetHTML = $this->gadget->loadAdminAction('AntiSpam');
             return $gadgetHTML->AntiSpam();
         }
 
         $this->gadget->CheckPermission('AdvancedPolicies');
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Policy', 'AdminAction', 'AdvancedPolicies');
+        $gadgetHTML = $this->gadget->loadAdminAction('AdvancedPolicies');
         return $gadgetHTML->AdvancedPolicies();
     }
 
