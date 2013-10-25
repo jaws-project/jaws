@@ -105,7 +105,6 @@ class Blocks_AdminAjax extends Jaws_Gadget_Action
     function ParseText()
     {
         $text = jaws()->request->fetch(0, 'post', false);
-        $gadget = $GLOBALS['app']->LoadGadget('Blocks', 'AdminAction');
-        return $gadget->gadget->ParseText($text);
+        return $this->gadget->ParseText($text);
     }
 }
