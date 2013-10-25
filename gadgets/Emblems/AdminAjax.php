@@ -70,7 +70,7 @@ class Emblems_AdminAjax extends Jaws_Gadget_Action
     function GetData()
     {
         @list($limit) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('Emblems', 'AdminAction', 'Emblems');
+        $gadget = $this->gadget->loadAdminAction('Emblems');
         return $gadget->GetEmblems($limit);
     }
 }
