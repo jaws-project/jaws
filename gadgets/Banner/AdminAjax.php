@@ -256,7 +256,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
      */
     function GetGroupUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Banner', 'AdminAction', 'Groups');
+        $gadget = $this->gadget->loadAdminAction('Groups');
         return $gadget->EditGroupUI();
     }
 
@@ -268,7 +268,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
      */
     function GetGroupBannersUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Banner', 'AdminAction', 'Groups');
+        $gadget = $this->gadget->loadAdminAction('Groups');
         return $gadget->GetGroupBannersUI();
     }
 
@@ -287,10 +287,10 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
             $offset = null;
         }
         if ($name == 'banners_datagrid') {
-            $gadget = $GLOBALS['app']->LoadGadget('Banner', 'AdminAction', 'Banners');
+            $gadget = $this->gadget->loadAdminAction('Banners');
             $dataGrid = $gadget->GetBanners($gid, $offset);
         } else {
-            $gadget = $GLOBALS['app']->LoadGadget('Banner', 'AdminAction', 'Reports');
+            $gadget = $this->gadget->loadAdminAction('Reports');
             $dataGrid = $gadget->GetReportBanners($gid, $offset);
         }
 

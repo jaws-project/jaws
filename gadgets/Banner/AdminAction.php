@@ -16,15 +16,15 @@ class Banner_AdminAction extends Jaws_Gadget_Action
     function Admin()
     {
         if ($this->gadget->GetPermission('ManageBanners')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Banner', 'AdminAction', 'Banners');
+            $gadgetHTML = $this->gadget->loadAdminAction('Banners');
             return $gadgetHTML->Banners();
         } elseif ($this->gadget->GetPermission('ManageGroups')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Banner', 'AdminAction', 'Groups');
+            $gadgetHTML = $this->gadget->loadAdminAction('Groups');
             return $gadgetHTML->Groups();
         }
 
         $this->gadget->CheckPermission('ViewReports');
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Banner', 'AdminAction', 'Reports');
+        $gadgetHTML = $this->gadget->loadAdminAction('Reports');
         return $gadgetHTML->Reports();
     }
 
