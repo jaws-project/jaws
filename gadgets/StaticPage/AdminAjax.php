@@ -79,8 +79,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_Action
     function ParseText()
     {
         $text = jaws()->request->fetch(0, 'post', false);
-        $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminAction');
-        return $gadget->gadget->ParseText($text);
+        return $this->gadget->ParseText($text);
     }
 
     /**
@@ -106,7 +105,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_Action
     function SearchPages()
     {
         @list($group, $status, $search, $orderBy, $limit) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminAction', 'Page');
+        $gadget = $this->gadget->loadAdminAction('Page');
         if (!is_numeric($limit)) {
             $limit = 0;
         }
@@ -179,7 +178,7 @@ class StaticPage_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageGroups');
         @list($offset) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminAction', 'Group');
+        $gadget = $this->gadget->loadAdminAction('Group');
 
         return $gadget->GetGroupsGrid($offset);
     }

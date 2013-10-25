@@ -67,7 +67,7 @@ class StaticPage_AdminAction extends Jaws_Gadget_Action
      */
     function Admin()
     {
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('StaticPage', 'AdminAction', 'Page');
+        $gadgetHTML = $this->gadget->loadAdminAction('Page');
         return $gadgetHTML->Admin();
     }
 
