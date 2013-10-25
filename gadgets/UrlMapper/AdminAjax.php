@@ -39,7 +39,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_Action
     {
         @list($gadget, $action) = jaws()->request->fetchAll('post');
         //Now get the custom maps
-        $gHTML = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminAction', 'Maps');
+        $gHTML = $this->gadget->loadAdminAction('Maps');
         return $gHTML->GetMaps($gadget, $action);
     }
 
@@ -177,7 +177,7 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_Action
             $limit = 0;
         }
 
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('UrlMapper', 'AdminAction', 'ErrorMaps');
+        $gadgetHTML = $this->gadget->loadAdminAction('ErrorMaps');
         return $gadgetHTML->GetErrorMaps($limit, $offset);
     }
 
