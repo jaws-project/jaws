@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH. 'gadgets/Comments/AdminAction.php';
 /**
  * Comments Core Gadget Admin
  *
