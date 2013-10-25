@@ -269,7 +269,7 @@ class Jaws_Gadget
             $tpl->$option = $value;
         }
 
-        $tpl->Load($fname, $fpath, $gadget);
+        $tpl->Load($fname, $fpath);
         return $tpl;
     }
 
@@ -606,6 +606,7 @@ class Jaws_Gadget
         switch ($method) {
             case 'loadAdminModel':
             case 'loadAdminAction':
+            case 'loadAdminTemplate':
                 array_unshift($arguments, true);
                 $extension = substr($method, 9);
                 $model_class_name = "Jaws_Gadget_$extension";
@@ -619,6 +620,7 @@ class Jaws_Gadget
 
             case 'loadModel':
             case 'loadAction':
+            case 'loadTemplate':
                 array_unshift($arguments, false);
 
             case 'loadHook':
