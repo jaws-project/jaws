@@ -19,7 +19,7 @@ class Quotes_Actions_Groups extends Jaws_Gadget_Action
     function ViewGroupQuotes()
     {
         $gid = jaws()->request->fetch('id', 'get');
-        $layoutGadget = $GLOBALS['app']->LoadGadget('Quotes', 'Action', 'Quotes');
+        $layoutGadget = $this->gadget->loadAction('Quotes');
         return $layoutGadget->Display($gid);
     }
 
