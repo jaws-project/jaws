@@ -281,11 +281,12 @@ class Jaws_Gadget_Action
 
         $file = $this->_ValidAction[JAWS_SCRIPT][$action]['file'];
         if (!empty($file)) {
-            $objAction = $GLOBALS['app']->LoadGadget(
-                $this->gadget->name,
-                JAWS_SCRIPT == 'index'? 'Action' : 'AdminAction',
-                $file
-            );
+            if (JAWS_SCRIPT == 'index') {
+                Jaws_Gadget::getInstance($this->gadget->name)->loadAction($file);
+            } else {
+                Jaws_Gadget::getInstance($this->gadget->name)->loadAdminAction($file);
+            }
+
             if (Jaws_Error::isError($objAction)) {
                 return $objAction;
             }
