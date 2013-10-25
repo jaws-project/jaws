@@ -117,7 +117,7 @@ class FeedReader_AdminAjax extends Jaws_Gadget_Action
     function GetData()
     {
         @list($offset) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('FeedReader', 'AdminAction', 'Feed');
+        $gadget = $this->gadget->loadAdminAction('Feed');
         if (!is_numeric($offset)) {
             $offset = null;
         }
