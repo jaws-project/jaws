@@ -20,12 +20,12 @@ class Components_AdminAction extends Jaws_Gadget_Action
     function Admin()
     {
         if ($this->gadget->GetPermission('ManageGadgets')) {
-            $htmlGadgets = $GLOBALS['app']->LoadGadget('Components', 'AdminAction', 'Gadgets');
+            $htmlGadgets = $this->gadget->loadAdminAction('Gadgets');
             return $htmlGadgets->Gadgets();
         }
 
         $this->gadget->CheckPermission('ManagePlugins');
-        $htmlPlugins = $GLOBALS['app']->LoadGadget('Components', 'AdminAction', 'Plugins');
+        $htmlPlugins = $this->gadget->loadAdminAction('Plugins');
         return $htmlPlugins->Plugins();
     }
 
