@@ -40,7 +40,6 @@ class Jaws_Template
     var $globalVariables = array();
 
     var $rawStore = null;
-    var $loadFromTheme = null;
     var $loadRTLDirection = null;
 
     /**
@@ -53,9 +52,8 @@ class Jaws_Template
      *                                                 JAWS_COMPONENT_PLUGIN)
      * @return  void
      */
-    function Jaws_Template($loadFromTheme = null, $loadGlobalVariables = true)
+    function Jaws_Template($loadGlobalVariables = true)
     {
-        $this->loadFromTheme = $loadFromTheme;
         $this->IdentifierRegExp = '[\.[:digit:][:lower:]_-]+';
         $this->BlockRegExp = '@<!--\s+begin\s+('.$this->IdentifierRegExp.')\s+([^>]*)-->(.*)<!--\s+end\s+\1\s+-->@sim';
         $this->VarsRegExp = '@{\s*('.$this->IdentifierRegExp.')\s*}@sim';
@@ -102,11 +100,10 @@ class Jaws_Template
      * @access  public
      * @param   string  $fname      File name
      * @param   string  $fpath      File path
-     * @param   string  $component  Component name(owner of template file)
      * @param   bool    $return     Return content?
      * @return  mixed   Template content or void(based on $return parameter)
      */
-    function Load($fname, $fpath = '', $component = '', $return = false)
+    function Load($fname, $fpath = '', $return = false)
     {
         $fpath   = rtrim($fpath, '/');
         $extFile = strrchr($fname, '.');
@@ -118,33 +115,15 @@ class Jaws_Template
             $prefix = '.rtl';
         }
 
-        $tplExists = false;
-        $this->loadFromTheme = is_null($this->loadFromTheme)? (JAWS_SCRIPT == 'index') : $this->loadFromTheme;
-        if ($this->loadFromTheme && (!empty($component) || empty($fpath))) {
-            $theme = $GLOBALS['app']->GetTheme();
-            if (!$theme['exists']) {
-                Jaws_Error::Fatal('Theme '. $theme['name']. ' doesn\'t exists.');
-            }
-
-            $tplFile = $theme['path']. $component. '/'. $nmeFile. $prefix. $extFile;
+        $tplFile = $fpath. '/'. $nmeFile. $prefix. $extFile;
+        $tplExists = file_exists($tplFile);
+        if (!$tplExists && !empty($prefix)) {
+            $tplFile = $fpath. '/'. $nmeFile. $extFile;
             $tplExists = file_exists($tplFile);
-            if (!$tplExists && !empty($prefix)) {
-                $tplFile = $theme['path']. $component. '/'. $nmeFile. $extFile;
-                $tplExists = file_exists($tplFile);
-            }
         }
 
         if (!$tplExists) {
-            $tplFile = $fpath. '/'. $nmeFile. $prefix. $extFile;
-            $tplExists = file_exists($tplFile);
-            if (!$tplExists && !empty($prefix)) {
-                $tplFile = $fpath. '/'. $nmeFile. $extFile;
-                $tplExists = file_exists($tplFile);
-            }
-
-            if (!$tplExists) {
-                Jaws_Error::Fatal('Template '. $tplFile. ' doesn\'t exists');
-            }
+            Jaws_Error::Fatal('Template '. $tplFile. ' doesn\'t exists');
         }
 
         $content = @file_get_contents($tplFile);
@@ -154,13 +133,12 @@ class Jaws_Template
 
         if (preg_match_all("#<!-- INCLUDE (.*) -->#i", $content, $includes, PREG_SET_ORDER)) {
             foreach ($includes as $key => $include) {
-                @list($incl_fname, $incl_fpath, $incl_component) = preg_split('#\s#', $include[1]);
+                @list($incl_fname, $incl_fpath) = preg_split('#\s#', $include[1]);
                 if (empty($incl_fpath)) {
                     $incl_fpath = $fpath;
-                    $incl_component = $component;
                 }
 
-                $replacement = $this->Load($incl_fname, $incl_fpath, $incl_component, true);
+                $replacement = $this->Load($incl_fname, $incl_fpath, true);
                 $content = str_replace($include[0], $replacement, $content);
             }
         }
