@@ -19,7 +19,7 @@ class Friends_AdminAction extends Jaws_Gadget_Action
      */
     function Admin()
     {
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Friends', 'AdminAction', 'Friends');
+        $gadgetHTML = $this->gadget->loadAdminAction('Friends');
         return $gadgetHTML->Friends();
     }
 }
