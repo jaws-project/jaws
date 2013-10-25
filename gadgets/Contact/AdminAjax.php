@@ -77,7 +77,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Action
         $res = $model->UpdateReply($id, $reply);
         if (!Jaws_Error::IsError($res) && $send_reply) {
             $GLOBALS['app']->Session->PopLastResponse(); // emptying all responses message
-            $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminAction', 'Contacts');
+            $gadget = $this->gadget->loadAdminAction('Contacts');
             $gadget->SendReply($id);
         }
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -128,7 +128,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Action
      */
     function ReplyUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminAction', 'Contacts');
+        $gadget = $this->gadget->loadAdminAction('Contacts');
         return $gadget->ReplyUI();
     }
 
@@ -247,7 +247,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Action
         if (!is_numeric($offset)) {
             $offset = null;
         }
-        $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminAction', 'Contacts');
+        $gadget = $this->gadget->loadAdminAction('Contacts');
 
         return $gadget->GetContacts($recipient, $offset);
     }
@@ -301,7 +301,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('AccessToMailer');
         $message = jaws()->request->fetch(0, 'post', false);
 
-        $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminAction', 'Mailer');
+        $gadget = $this->gadget->loadAdminAction('Mailer');
         return $gadget->PrepareMessage($message);
     }
 
@@ -321,7 +321,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Action
         @list($target, $subject, $message, $attachment) = jaws()->request->fetchAll('post');
         $message = jaws()->request->fetch(2, 'post', false);
 
-        $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminAction', 'Mailer');
+        $gadget = $this->gadget->loadAdminAction('Mailer');
         $gadget->SendEmail($target, $subject, $message, $attachment);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -340,7 +340,7 @@ class Contact_AdminAjax extends Jaws_Gadget_Action
         if (!is_numeric($offset)) {
             $offset = null;
         }
-        $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminAction', 'Recipients');
+        $gadget = $this->gadget->loadAdminAction('Recipients');
 
         return $gadget->GetRecipients($offset);
     }

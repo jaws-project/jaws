@@ -20,10 +20,10 @@ class Contact_AdminAction extends Jaws_Gadget_Action
     function Admin()
     {
         if ($this->gadget->GetPermission('ManageContacts')) {
-            $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminAction', 'Contacts');
+            $gadget = $this->gadget->loadAdminAction('Contacts');
             return $gadget->Contacts();
         } elseif ($this->gadget->GetPermission('ManageRecipients')) {
-            $gadget = $GLOBALS['app']->LoadGadget('Contact', 'AdminAction', 'Recipients');
+            $gadget = $this->gadget->loadAdminAction('Recipients');
             return $gadget->Recipients();
         }
 
