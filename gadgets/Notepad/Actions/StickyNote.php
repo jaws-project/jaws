@@ -48,7 +48,7 @@ class Notepad_Actions_StickyNote extends Jaws_Gadget_Action
         }
 
         if ($count == 1) {
-            $action = $GLOBALS['app']->LoadGadget('Notepad', 'Action', 'View');
+            $action = $this->gadget->loadAction('View');
             $view = $action->ViewNote($notes[0]['id']);
         } else {
             $view = $this->GetNotesView($notes);
