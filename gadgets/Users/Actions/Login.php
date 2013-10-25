@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Login extends Users_Action
+class Users_Actions_Login extends Jaws_Gadget_Action
 {
     /**
      * Verifies if user/email/(captcha) are valid, if they are a mail

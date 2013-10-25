@@ -9,7 +9,7 @@
  * @copyright   2004-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Preferences extends Users_Action
+class Users_Actions_Preferences extends Jaws_Gadget_Action
 {
     /**
      * Prepares a simple form to update user's data (name, email, password)
