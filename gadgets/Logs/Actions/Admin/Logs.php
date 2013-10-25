@@ -139,7 +139,7 @@ class Logs_Actions_Admin_Logs extends Jaws_Gadget_Action
 
         //Tools
         $gridForm =& Piwi::CreateWidget('Form');
-        $gridForm->SetID('tags_form');
+        $gridForm->SetID('logs_form');
         $gridForm->SetStyle('float: right');
 
         $gridFormBox =& Piwi::CreateWidget('HBox');
