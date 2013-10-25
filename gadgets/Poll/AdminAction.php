@@ -20,10 +20,10 @@ class Poll_AdminAction extends Jaws_Gadget_Action
     function Admin()
     {
         if ($this->gadget->GetPermission('ManagePolls')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Poll', 'AdminAction', 'Poll');
+            $gadgetHTML = $this->gadget->loadAdminAction('Poll');
             return $gadgetHTML->Polls();
         } elseif ($this->gadget->GetPermission('ManageGroups')) {
-            $gadgetHTML = $GLOBALS['app']->LoadGadget('Poll', 'AdminAction', 'Group');
+            $gadgetHTML = $this->gadget->loadAdminAction('Group');
             return $gadgetHTML->PollGroups();
         }
 
