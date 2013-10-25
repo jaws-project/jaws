@@ -111,7 +111,7 @@ class Comments_Actions_Comments extends Comments_Action
             }
 
             //captcha
-            $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Action', 'Captcha');
+            $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAction('Captcha');
             $mPolicy->loadCaptcha($tpl, 'comment_form');
 
         } else {
@@ -541,7 +541,7 @@ class Comments_Actions_Comments extends Comments_Action
             Jaws_Header::Location($redirectTo);
         }
 
-        $mPolicy = $GLOBALS['app']->LoadGadget('Policy', 'Action', 'Captcha');
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAction('Captcha');
         $resCheck = $mPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $GLOBALS['app']->Session->PushResponse(
