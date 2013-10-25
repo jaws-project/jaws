@@ -20,7 +20,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Action
      */
     function GetMenusTrees()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Menu', 'AdminAction', 'Menu');
+        $gadget = $this->gadget->loadAdminAction('Menu');
         $data = $gadget->GetMenusTrees();
         unset($gadget);
         if (Jaws_Error::IsError($data)) {
@@ -37,7 +37,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Action
      */
     function GetGroupUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Menu', 'AdminAction', 'Menu');
+        $gadget = $this->gadget->loadAdminAction('Menu');
         return $gadget->GetGroupUI();
     }
 
@@ -49,7 +49,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Action
      */
     function GetMenuUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('Menu', 'AdminAction', 'Menu');
+        $gadget = $this->gadget->loadAdminAction('Menu');
         return $gadget->GetMenuUI();
     }
 
