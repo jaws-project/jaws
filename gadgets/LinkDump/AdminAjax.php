@@ -19,7 +19,7 @@ class LinkDump_AdminAjax extends Jaws_Gadget_Action
      */
     function GetGroupUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminAction', 'Groups');
+        $gadget = $this->gadget->loadAdminAction('Groups');
         return $gadget->GetGroupUI();
     }
 
@@ -31,7 +31,7 @@ class LinkDump_AdminAjax extends Jaws_Gadget_Action
      */
     function GetLinkUI()
     {
-        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminAction', 'Links');
+        $gadget = $this->gadget->loadAdminAction('Links');
         return $gadget->GetLinkUI();
     }
 
@@ -81,7 +81,7 @@ class LinkDump_AdminAjax extends Jaws_Gadget_Action
     function GetLinksList()
     {
         @list($gid) = jaws()->request->fetchAll('post');
-        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminAction', 'Links');
+        $gadget = $this->gadget->loadAdminAction('Links');
         return $gadget->GetLinksList($gid);
     }
 

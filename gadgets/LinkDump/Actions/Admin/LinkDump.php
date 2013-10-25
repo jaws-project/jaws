@@ -24,7 +24,7 @@ class LinkDump_Actions_Admin_LinkDump extends Jaws_Gadget_Action
         $tpl->SetBlock('linkdump');
 
         $tpl->SetBlock('linkdump/links_base');
-        $gadget = $GLOBALS['app']->LoadGadget('LinkDump', 'AdminAction', 'Groups');
+        $gadget = $this->gadget->loadAdminAction('Groups');
         $tpl->SetVariable('links_tree', $gadget->GetGroupsList());
         $add_btn =& Piwi::CreateWidget('Button','btn_add', _t('LINKDUMP_GROUPS_ADD'), STOCK_NEW);
         $add_btn->AddEvent(ON_CLICK, 'javascript: addGroup();');
