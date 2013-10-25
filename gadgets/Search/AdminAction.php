@@ -18,7 +18,7 @@ class Search_AdminAction extends Jaws_Gadget_Action
      */
     function Admin()
     {
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Search', 'AdminAction', 'Settings');
+        $gadgetHTML = $this->gadget->loadAdminAction('Settings');
         return $gadgetHTML->Settings();
     }
 }
