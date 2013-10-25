@@ -1,0 +1,24 @@
+#log_ui{
+width:300px;
+padding-left:8px;
+vertical-align:top;
+}
+.tableform td{
+padding-top: 5px;
+}
+#logs_filter{
+height:70px;
+text-align:left;
+padding-bottom:4px;
+}
+#logs_filter input,#logs_filter select{
+width:200px;
+white-space:nowrap;
+margin:0 10px 4px 0;
+}
+#logs_filter table td{
+padding:2px;
+}
+#logs_filter .filter_label{
+width:70px;
+}

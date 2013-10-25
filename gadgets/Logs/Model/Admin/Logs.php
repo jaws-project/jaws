@@ -5,6 +5,7 @@
  * @category    GadgetModel
  * @package     Logs
  * @author      Hamid Reza Aboutalebi <hamid@aboutalebi.com>
+ * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
  * @copyright   2013 Jaws Development Group
  */
 class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
@@ -13,17 +14,47 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
      * Get a list of the Logs
      *
      * @access  public
-     * @param   int     $limit      Count of logs to be returned
-     * @param   int     $offset     offset of data array
+     * @param   array    $filters   log filters
+     * @param   bool|int $limit     Count of logs to be returned
+     * @param   int      $offset    Offset of data array
      * @return  mixed   Array of Logs or Jaws_Error on failure
      */
-    function GetLogs($limit = false, $offset = null)
+    function GetLogs($filters = null, $limit = false, $offset = null)
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
-        $logsTable->select('*');
+        $logsTable->select('logs.id:integer', 'ip', 'agent', 'gadget', 'action', 'logs.insert_time',
+                           'users.nickname', 'users.username', 'users.id as user_id:integer');
+        $logsTable->join('users', 'users.id', 'logs.user');
         $logsTable->orderBy('id desc');
         if (is_numeric($limit)) {
             $logsTable->limit($limit, $offset);
+        }
+
+        if (!empty($filters) && count($filters) > 1) {
+            if (isset($filters['from_date']) && !empty($filters['from_date'])) {
+                if (!is_numeric($filters['from_date'])) {
+                    $objDate = $GLOBALS['app']->loadDate();
+                    $filters['from_date'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['from_date']), 'U')
+                    );
+                }
+                $logsTable->and()->where('logs.insert_time', $filters['from_date'], '>=');
+            }
+            if (isset($filters['to_date']) && !empty($filters['to_date'])) {
+                if (!is_numeric($filters['to_date'])) {
+                    $objDate = $GLOBALS['app']->loadDate();
+                    $filters['to_date'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['to_date']), 'U')
+                    );
+                }
+                $logsTable->and()->where('logs.insert_time', $filters['to_date'], '<=');
+            }
+            if (isset($filters['gadget']) && !empty($filters['gadget'])) {
+                $logsTable->and()->where('logs.gadget', $filters['gadget']);
+            }
+            if (isset($filters['user']) && !empty($filters['user'])) {
+                $logsTable->and()->where('user', $filters['user']);
+            }
         }
         return $logsTable->fetchAll();
     }
@@ -32,12 +63,28 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
      * Gets logs count
      *
      * @access  public
+     * @param   array   $filters   log filters
      * @return  mixed   Count of available logs and Jaws_Error on failure
      */
-    function GetLogsCount()
+    function GetLogsCount($filters = null)
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
-        $logsTable->select('count([id]):integer');
+        $logsTable->select('count(id):integer');
+
+        if (!empty($filters) && count($filters) > 1) {
+            if (isset($filters['from_date']) && !empty($filters['from_date'])) {
+                $logsTable->and()->where('logs.insert_time', $filters['from_date'], '>=');
+            }
+            if (isset($filters['to_date']) && !empty($filters['to_date'])) {
+                $logsTable->and()->where('logs.insert_time', $filters['to_date'], '<=');
+            }
+            if (isset($filters['gadget']) && !empty($filters['gadget'])) {
+                $logsTable->and()->where('logs.gadget', $filters['gadget']);
+            }
+            if (isset($filters['user']) && !empty($filters['user'])) {
+                $logsTable->and()->where('user', $filters['user']);
+            }
+        }
         return $logsTable->fetchOne();
     }
 
@@ -51,7 +98,22 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
     function GetLogInfo($logID)
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
-        $logsTable->select('*')->where('id', (int) $logID);
-        return $logsTable->fetchRow();
+        $logsTable->select('logs.id:integer', 'ip', 'agent', 'gadget', 'action',
+            'insert_time', 'users.nickname', 'users.username', 'users.id as user_id:integer');
+        $logsTable->join('users', 'users.id', 'logs.user');
+        return $logsTable->where('logs.id', (int) $logID)->fetchRow();
+    }
+
+    /**
+     * Delete Logs
+     *
+     * @access  public
+     * @param   array   $logsID      Logs ID
+     * @return  mixed   Array of Logs or Jaws_Error on failure
+     */
+    function DeleteLogs($logsID)
+    {
+        $logsTable = Jaws_ORM::getInstance()->table('logs');
+        return $logsTable->delete()->where('id', $logsID, 'in')->exec();
     }
 }

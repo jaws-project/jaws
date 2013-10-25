@@ -4,7 +4,18 @@
 <table width="100%">
   <tr>
     <td id="l_datagrid" valign="top">
-      {grid}
+        <table id="logs_filter">
+            <tr>
+                <td class="filter_label"><label>{lbl_filter_from_date}:</label></td><td>{filter_from_date}</td>
+                <td class="filter_label"><label>{lbl_filter_to_date}:</label></td><td>{filter_to_date}</td>
+            </tr>
+            <tr>
+                <td class="filter_label"><label>{lbl_filter_gadget}:</label></td><td>{filter_gadget}</td>
+                <td class="filter_label"><label>{lbl_filter_user}:</label></td><td>{filter_user}</td>
+            </tr>
+        </table>
+
+        {grid}
     </td>
     <td id="log_ui">
       <fieldset>
@@ -18,14 +29,18 @@
   </tr>
 </table>
 <script type="text/javascript">
-  initDataGrid('logs_datagrid', LogsAjax, getLogs);
+    var confirmLogsDelete = "{confirmLogsDelete}";
+    initDataGrid('logs_datagrid', LogsAjax, getLogs);
 </script>
 </div>
 <!-- END Logs -->
 <!-- BEGIN LogUI -->
 <table id="contact_box">
-  <tr><td><label>{lbl_ip}:</label></td><td id="log_ip"></td></tr>
-  <tr><td><label for="name">{lbl_user}:</label></td><td id="log_user"></td></tr>
-  <tr><td><label for="email">{lbl_gadget}:</label></td><td id="log_gadget"></td></tr>
+  <tr><td><label for="log_gadget">{lbl_gadget}:</label></td><td id="log_gadget"></td></tr>
+  <tr><td><label for="log_action">{lbl_action}:</label></td><td id="log_action"></td></tr>
+  <tr><td><label for="log_user">{lbl_user}:</label></td><td id="log_user"></td></tr>
+  <tr><td><label for="log_ip">{lbl_ip}:</label></td><td id="log_ip"></td></tr>
+  <tr><td><label for="log_agent">{lbl_agent}:</label></td><td id="log_agent"></td></tr>
+  <tr><td><label for="log_date">{lbl_date}:</label></td><td id="log_date"></td></tr>
 </table>
 <!-- END LogUI -->

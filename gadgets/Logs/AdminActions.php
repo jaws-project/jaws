@@ -22,3 +22,7 @@ $actions['GetLogInfo'] = array(
     'standalone' => true,
     'file'       => 'Logs',
 );
+$actions['DeleteLogs'] = array(
+    'standalone' => true,
+    'file'       => 'Logs',
+);
