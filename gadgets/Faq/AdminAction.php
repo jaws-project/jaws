@@ -54,7 +54,7 @@ class Faq_AdminAction extends Jaws_Gadget_Action
      */
     function Admin()
     {
-        $gadgetHTML = $GLOBALS['app']->LoadGadget('Faq', 'AdminAction', 'Question');
+        $gadgetHTML = $this->gadget->loadAdminAction('Question');
         return $gadgetHTML->ManageQuestions();
     }
 
