@@ -22,7 +22,7 @@ class FileBrowser_Actions_Admin_Files extends FileBrowser_AdminAction
     {
         $this->AjaxMe('script.js');
 
-        $dHTML = $GLOBALS['app']->LoadGadget('FileBrowser', 'AdminAction', 'Directory');
+        $dHTML = $this->gadget->loadAdminAction('Directory');
 
         $tpl = $this->gadget->loadTemplate('FileBrowser.html');
         $tpl->SetBlock('filebrowser');
