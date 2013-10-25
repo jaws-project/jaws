@@ -177,7 +177,8 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
             $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
-            $res = $model->AddTagsToItem('Blog', 'post', $max, $params['published'], $params['publishtime'], $tags);
+            $res = $model->AddTagsToItem('Blog', 'post', $max, $params['published'],
+                                         strtotime($params['publishtime']), $tags);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_TAGS_NOT_ADDED'), RESPONSE_ERROR);
             }
@@ -327,7 +328,8 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
             $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
-            $res = $model->UpdateTagsItems('Blog', 'post', $post_id, $params['published'], $params['publishtime'], $tags);
+            $res = $model->UpdateTagsItems('Blog', 'post', $post_id, $params['published'],
+                                           strtotime($params['publishtime']), $tags);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_TAGS_NOT_UPDATED'), RESPONSE_ERROR);
             }
