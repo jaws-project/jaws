@@ -12,18 +12,6 @@
 class VisitCounter_Actions_VisitCounter extends Jaws_Gadget_Action
 {
     /**
-     * Calls Display function if no action is specified
-     *
-     * @access  public
-     * @return  string  XHTML content
-     */
-    function DefaultAction()
-    {
-        $layoutGadget = $GLOBALS['app']->LoadGadget('VisitCounter', 'LayoutHTML');
-        return $layoutGadget->Display();
-    }
-
-    /**
      * Builds the visits report
      *
      * @access  public

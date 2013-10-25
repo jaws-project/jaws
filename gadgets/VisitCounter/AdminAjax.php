@@ -82,7 +82,7 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_Action
         if (!is_numeric($offset)) {
             $offset = 0;
         }
-        $gadget = $GLOBALS['app']->LoadGadget('VisitCounter', 'AdminAction', 'VisitCounter');
+        $gadget = $this->gadget->loadAdminAction('VisitCounter');
         return $gadget->GetVisits($offset);
     }
 
