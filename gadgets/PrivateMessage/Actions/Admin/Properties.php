@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH. 'gadgets/PrivateMessage/AdminAction.php';
 /**
  * PrivateMessage Gadget Admin
  *

@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH. 'gadgets/Search/AdminAction.php';
 /**
  * Search Gadget Admin
  *

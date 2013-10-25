@@ -1,4 +1,5 @@
 <?php
+require_once JAWS_PATH. 'gadgets/Settings/AdminAction.php';
 /**
  * Settings Core Gadget Admin
  *
