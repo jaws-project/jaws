@@ -184,8 +184,16 @@ class Jaws_Layout
             }
         }
 
+        if (empty($layout_path)) {
+            $theme = $GLOBALS['app']->GetTheme();
+            if (!$theme['exists']) {
+                Jaws_Error::Fatal('Theme '. $theme['name']. ' doesn\'t exists.');
+            }
+
+            $layout_path = $theme['path'];
+        }
+
         $this->_Template = new Jaws_Template();
-        $this->_Template->loadFromTheme = true;
         $this->_Template->Load(empty($layout_file)? 'layout.html' : $layout_file, $layout_path);
         $this->_Template->SetBlock('layout');
 
