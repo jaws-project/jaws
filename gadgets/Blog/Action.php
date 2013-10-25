@@ -279,6 +279,13 @@ class Blog_Action extends Jaws_Gadget_Action
             $tpl->ParseBlock("$tpl_base_block/entry/$tpl_block");
         }
 
+        // Show Tags
+        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+            $tagsHTML = Jaws_Gadget::getInstance('Tags')->loadAction('Tags');
+            $tagsHTML->ViewItemTags('Blog', 'post', $entry['id'], $tpl, 'single_view/entry');
+        }
+
+
         $tpl->ParseBlock("$tpl_base_block/entry");
         return $tpl->Get();
     }
