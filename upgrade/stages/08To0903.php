@@ -18,7 +18,7 @@ class Upgrader_08To0903 extends JawsUpgraderStage
      */
     function Display()
     {
-        $tpl = new Jaws_Template(false, false);
+        $tpl = new Jaws_Template(false);
         $tpl->Load('display.html', 'stages/08To0903/templates');
         $tpl->SetBlock('08To0903');
 
