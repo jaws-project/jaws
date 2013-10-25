@@ -50,7 +50,9 @@ class LinkDump_AdminAjax extends Jaws_Gadget_Action
             return false; //Maybe handled one day
         }
 
-        $link['tags'] = implode(', ', $link['tags']);
+        if (isset($link['tags'])) {
+            $link['tags'] = implode(', ', $link['tags']);
+        }
         return $link;
     }
 

@@ -17,11 +17,6 @@ $maps[] = array(
     array('id' =>  '[\p{L}[:digit:]-_\.]+',)
 );
 $maps[] = array(
-    'Tag',
-    'links/tags/{tag}',
-    array('tag' =>  '[\p{L}[:digit:]-_\.]+',)
-);
-$maps[] = array(
     'Link', 
     'links/{id}',
     array('id' => '[\p{L}[:digit:]-_\.]+',)

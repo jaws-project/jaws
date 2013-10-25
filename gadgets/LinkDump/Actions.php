@@ -26,14 +26,6 @@ $actions['Categories'] = array(
     'layout' => true,
     'file' => 'Groups'
 );
-$actions['Tag'] = array(
-    'normal' => true,
-    'file' => 'Tag'
-);
-$actions['ShowTagCloud'] = array(
-    'layout' => true,
-    'file' => 'TagCloud'
-);
 $actions['RSS'] = array(
     'standalone' => true,
     'file' => 'Feeds'

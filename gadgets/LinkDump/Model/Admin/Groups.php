@@ -105,17 +105,20 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
             return false;
         }
 
-        $objORM = Jaws_ORM::getInstance()->table('linkdump_links_tags');
-        $links = $model->GetGroupLinks($gid);
-        foreach ($links as $link) {
-            $res = $objORM->delete()->where('link_id', $link['id'])->exec();
-            if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-                return false;
+        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+            $links = $model->GetGroupLinks($gid);
+            $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
+            foreach ($links as $link) {
+                $res = $model->DeleteItemTags('LinkDump', 'link', $link['id']);
+                if (Jaws_Error::IsError($res)) {
+                    $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
+                    return false;
+                }
             }
         }
 
-        $res = $objORM->delete()->table('linkdump_links')->where('gid', $gid)->exec();
+        $objORM = Jaws_ORM::getInstance()->table('linkdump_links');
+        $res = $objORM->delete()->where('gid', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;

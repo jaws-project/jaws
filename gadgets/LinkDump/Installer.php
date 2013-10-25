@@ -30,7 +30,6 @@ class LinkDump_Installer extends Jaws_Gadget_Installer
     var $_ACLKeys = array(
         'ManageLinks',
         'ManageGroups',
-        'ManageTags',
         'UpdateProperties',
     );
 
@@ -78,9 +77,7 @@ class LinkDump_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         $tables = array('linkdump_links',
-                        'linkdump_groups',
-                        'linkdump_tags',
-                        'linkdump_links_tags');
+                        'linkdump_groups');
         foreach ($tables as $table) {
             $result = $GLOBALS['db']->dropTable($table);
             if (Jaws_Error::IsError($result)) {
