@@ -166,7 +166,7 @@ class Jaws_Request
      * @access  public
      * @return  object returns the instance
      */
-    function &getInstance()
+    static function getInstance()
     {
         static $objRequest;
         if (!isset($objRequest)) {
