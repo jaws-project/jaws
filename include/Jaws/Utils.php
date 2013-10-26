@@ -23,7 +23,7 @@ class Jaws_Utils
      * @return  string  New color
      * @access  public
      */
-    function RowColor($color)
+    static function RowColor($color)
     {
         if ($color == '#fff') {
             return '#eee';
@@ -42,7 +42,7 @@ class Jaws_Utils
      * @param   bool    $use_number Include numbers
      * @return  string  Random text
      */
-    function RandomText($lenght = 5, $use_lower = true, $use_upper = true, $use_number = false)
+    static function RandomText($lenght = 5, $use_lower = true, $use_upper = true, $use_number = false)
     {
         $lower_case = 'abcdefghijklmnopqrstuvwxyz';
         $upper_case = 'ABCDEFGHIJKLMNPQRSTUVWXYZ';
@@ -72,7 +72,7 @@ class Jaws_Utils
      * @param   int     $num
      * @return  string  The converted number in string
      */
-    function FormatSize($num)
+    static function FormatSize($num)
     {
         $unims = array("B", "KB", "MB", "GB", "TB");
         $i = 0;
@@ -92,14 +92,14 @@ class Jaws_Utils
      * @param   bool    $rel_url    relative url
      * @return  string  url of base script
      */
-    function getBaseURL($suffix = '', $rel_url = false)
+    static function getBaseURL($suffix = '', $rel_url = false)
     {
         static $site_url;
         if (!isset($site_url)) {
             $site_url = array();
             $site_url['scheme'] = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on')? 'https' : 'http';
             //$site_url['host'] = $_SERVER['SERVER_NAME'];
-            $site_url['host'] = reset(explode(':', $_SERVER['HTTP_HOST']));
+            $site_url['host'] = current(explode(':', $_SERVER['HTTP_HOST']));
             $site_url['port'] = $_SERVER['SERVER_PORT']==80? '' : (':'.$_SERVER['SERVER_PORT']);
 
             $path = strip_tags($_SERVER['PHP_SELF']);
@@ -138,7 +138,7 @@ class Jaws_Utils
      * @param   bool    $rel_url    relative or full URL
      * @return  string  get url without base url
      */
-    function getRequestURL($rel_url = true)
+    static function getRequestURL($rel_url = true)
     {
         static $uri;
         if (!isset($uri)) {
@@ -164,7 +164,7 @@ class Jaws_Utils
      * @param   string  $path directory path
      * @return  bool    True/False
      */
-    function is_writable($path)
+    static function is_writable($path)
     {
         clearstatcache();
         $path = rtrim($path, "\\/");
@@ -196,7 +196,7 @@ class Jaws_Utils
      * @access  public
      * @see http://www.php.net/file_put_contents
      */
-    function file_put_contents($file, $data, $flags = null, $resource_context = null)
+    static function file_put_contents($file, $data, $flags = null, $resource_context = null)
     {
         $res = @file_put_contents($file, $data, $flags, $resource_context);
         if ($res !== false) {
@@ -217,7 +217,7 @@ class Jaws_Utils
      * @param   int     $mode see php chmod() function
      * @return  bool    True/False
      */
-    function chmod($path, $mode = null)
+    static function chmod($path, $mode = null)
     {
         $result = false;
         if (is_null($mode)) {
@@ -262,7 +262,7 @@ class Jaws_Utils
      * @return  bool    Returns TRUE on success or FALSE on failure
      * @see     http://www.php.net/chmod
      */
-    function mkdir($path, $recursive = 0, $mode = null)
+    static function mkdir($path, $recursive = 0, $mode = null)
     {
         $result = true;
         if (!file_exists($path) || !is_dir($path)) {
@@ -295,7 +295,7 @@ class Jaws_Utils
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/copy
      */
-    function copy($source, $dest, $overwrite = true, $mode = null)
+    static function copy($source, $dest, $overwrite = true, $mode = null)
     {
         $result = false;
         if (file_exists($source)) {
@@ -354,7 +354,7 @@ class Jaws_Utils
      * @return  bool    True if success, False otherwise
      * @see http://www.php.net/rename
      */
-    function rename($source, $dest, $overwrite = true)
+    static function rename($source, $dest, $overwrite = true)
     {
         $result = false;
         if (file_exists($source)) {
@@ -414,7 +414,7 @@ class Jaws_Utils
      * @return  bool    Returns TRUE on success or FALSE on failure
      * @see http://www.php.net/rmdir & http://www.php.net/unlink
      */
-    function delete($path, $dirs_include = true, $self_include = true)
+    static function delete($path, $dirs_include = true, $self_include = true)
     {
         if (!file_exists($path)) {
             return true;
@@ -452,7 +452,7 @@ class Jaws_Utils
      * get upload temp directory
      *
      */
-    function upload_tmp_dir()
+    static function upload_tmp_dir()
     {
         $upload_dir = ini_get('upload_tmp_dir')? ini_get('upload_tmp_dir') : sys_get_temp_dir();
         return rtrim($upload_dir, "\\/");
@@ -472,7 +472,7 @@ class Jaws_Utils
      * @param   int     $max_size       max size of file
      * @return  mixed   Returns uploaded files array on success or Jaws_Error/FALSE on failure
      */
-    function UploadFiles($files, $dest, $allow_formats = '', $deny_formats = '',
+    static function UploadFiles($files, $dest, $allow_formats = '', $deny_formats = '',
                          $overwrite = true, $move_files = true, $max_size = null)
     {
         if (empty($files) || !is_array($files)) {
@@ -589,7 +589,7 @@ class Jaws_Utils
      * @param   int     $max_size     Max size of file
      * @return  bool    Returns TRUE on success or FALSE on failure
      */
-    function ExtractFiles($files, $dest, $extractToDir = true, $overwrite = true, $max_size = null)
+    static function ExtractFiles($files, $dest, $extractToDir = true, $overwrite = true, $max_size = null)
     {
         if (empty($files) || !is_array($files)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD'),
@@ -674,7 +674,7 @@ class Jaws_Utils
      * @access  public
      * @return  array   include proxy and client ip addresses
      */
-    function GetRemoteAddress()
+    static function GetRemoteAddress()
     {
         static $proxy, $client;
 
@@ -732,7 +732,7 @@ class Jaws_Utils
      * @param   bool    $use_data_lang  Include language added into Jaws data directory
      * @return  array   A list of available languages
      */
-    function GetLanguagesList($use_data_lang = true)
+    static function GetLanguagesList($use_data_lang = true)
     {
         static $langs;
         if (!isset($langs)) {
@@ -789,7 +789,7 @@ class Jaws_Utils
      * @param   bool    $include_base_themes    Include themes existing in base theme directory
      * @return  array   A list of themes(filenames)
      */
-    function GetThemesList($include_base_themes = true)
+    static function GetThemesList($include_base_themes = true)
     {
         if (!function_exists('is_vaild_theme')) {
             /**
@@ -891,7 +891,7 @@ class Jaws_Utils
      * @param   string  $inline     Inline disposition?
      * @return  bool    Returns TRUE on success or FALSE on failure
      */
-    function Download($fpath, $fname, $mimetype = '', $inline = true)
+    static function Download($fpath, $fname, $mimetype = '', $inline = true)
     {
         if (false === $fhandle = @fopen($fpath, 'rb')) {
             return false;
