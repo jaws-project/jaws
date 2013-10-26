@@ -61,7 +61,7 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
         $tpl->SetVariable('title', $jdate->Format($date['timestamp'], 'DN d MN Y'));
 
         // Fetch events
-        $model = $this->gadget->loadModel('Month');
+        $model = $this->gadget->loadModel('Report');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $start = $date['timestamp'];
         $stop = $jdate->ToBaseDate($year, $month, $day, 23, 59, 59);
