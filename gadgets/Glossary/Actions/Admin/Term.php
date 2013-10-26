@@ -21,7 +21,7 @@ class Glossary_Actions_Admin_Term extends Glossary_AdminAction
     function Term()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Glossary.html');
+        $tpl = $this->gadget->loadAdminTemplate('Glossary.html');
         $tpl->SetBlock('Glossary');
 
         // Block List
