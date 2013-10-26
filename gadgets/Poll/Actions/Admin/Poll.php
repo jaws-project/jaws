@@ -97,7 +97,7 @@ class Poll_Actions_Admin_Poll extends Poll_AdminAction
         $this->gadget->CheckPermission('ManagePolls');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadTemplate('Polls.html');
+        $tpl = $this->gadget->loadAdminTemplate('Polls.html');
         $tpl->SetBlock('Polls');
 
         //Menu bar
@@ -133,7 +133,7 @@ class Poll_Actions_Admin_Poll extends Poll_AdminAction
      */
     function PollUI()
     {
-        $tpl = $this->gadget->loadTemplate('Polls.html');
+        $tpl = $this->gadget->loadAdminTemplate('Polls.html');
         $tpl->SetBlock('PollUI');
 
         $question =& Piwi::CreateWidget('Entry', 'question', '');
@@ -213,7 +213,7 @@ class Poll_Actions_Admin_Poll extends Poll_AdminAction
      */
     function PollAnswersUI()
     {
-        $tpl = $this->gadget->loadTemplate('Polls.html');
+        $tpl = $this->gadget->loadAdminTemplate('Polls.html');
         $tpl->SetBlock('PollAnswersUI');
 
         $question =& Piwi::CreateWidget('Entry', 'question', '');
