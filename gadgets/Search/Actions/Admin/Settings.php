@@ -20,7 +20,7 @@ class Search_Actions_Admin_Settings extends Search_AdminAction
     function Settings()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Search.html');
+        $tpl = $this->gadget->loadAdminTemplate('Search.html');
         $tpl->SetBlock('admin');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
