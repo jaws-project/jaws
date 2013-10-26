@@ -208,7 +208,7 @@ class Installer_Database extends JawsInstallerStage
      */
     function Validate()
     {
-        $request =& Jaws_Request::getInstance();
+        $request = Jaws_Request::getInstance();
         $post = $request->fetch(array('host', 'user', 'name', 'path', 'port'), 'post');
         if (isset($_SESSION['install']['data']['Database'])) {
             $post = $_SESSION['install']['data']['Database'] + $post;
@@ -243,7 +243,7 @@ class Installer_Database extends JawsInstallerStage
     {
         $keys = array_keys($this->_Defaults);
         $keys[] = 'dbpass';
-        $request =& Jaws_Request::getInstance();
+        $request = Jaws_Request::getInstance();
         $post = $request->fetch($keys, 'post');
         $request->reset();
 

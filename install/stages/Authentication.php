@@ -71,7 +71,7 @@ class Installer_Authentication extends JawsInstallerStage
             return true;
         }
  
-        $request =& Jaws_Request::getInstance();
+        $request = Jaws_Request::getInstance();
         $secure = $request->fetch('secure', 'post');
         $_SESSION['secure'] = !empty($secure);
 
