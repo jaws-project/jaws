@@ -22,7 +22,7 @@ class Shoutbox_Actions_Admin_Settings extends Shoutbox_AdminAction
     function Settings()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Settings.html');
+        $tpl = $this->gadget->loadAdminTemplate('Settings.html');
         $tpl->SetBlock('settings');
 
         $tpl->SetVariable('menubar',  $this->MenuBar('Settings'));
