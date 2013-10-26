@@ -18,7 +18,7 @@ class Logs_Actions_Admin_Logs extends Jaws_Gadget_Action
     function Logs()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Logs.html');
+        $tpl = $this->gadget->loadAdminTemplate('Logs.html');
         $tpl->SetBlock('Logs');
 
         //Menu bar
@@ -172,7 +172,7 @@ class Logs_Actions_Admin_Logs extends Jaws_Gadget_Action
      */
     function LogUI()
     {
-        $tpl = $this->gadget->loadTemplate('Logs.html');
+        $tpl = $this->gadget->loadAdminTemplate('Logs.html');
         $tpl->SetBlock('LogUI');
 
         // Gadget
