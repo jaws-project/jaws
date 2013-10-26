@@ -21,7 +21,7 @@ class SysInfo_Actions_Admin_SysInfo extends SysInfo_AdminAction
     {
         $this->gadget->CheckPermission('SysInfo');
         $model = $this->gadget->loadModel('SysInfo');
-        $tpl = $this->gadget->loadTemplate('SysInfo.html');
+        $tpl = $this->gadget->loadAdminTemplate('SysInfo.html');
         $tpl->SetBlock('SysInfo');
         $tpl->SetVariable('sidebar', $this->SideBar('SysInfo'));
 

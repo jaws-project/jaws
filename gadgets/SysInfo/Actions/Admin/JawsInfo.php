@@ -21,7 +21,7 @@ class SysInfo_Actions_Admin_JawsInfo extends SysInfo_AdminAction
     {
         $this->gadget->CheckPermission('JawsInfo');
         $model = $this->gadget->loadModel('JawsInfo');
-        $tpl = $this->gadget->loadTemplate('SysInfo.html');
+        $tpl = $this->gadget->loadAdminTemplate('SysInfo.html');
         $tpl->SetBlock('SysInfo');
         $tpl->SetVariable('sidebar', $this->SideBar('JawsInfo'));
 
