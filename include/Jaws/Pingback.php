@@ -39,7 +39,7 @@ class Jaws_PingBack
      *
      * @access  public
      */
-    function &getInstance()
+    static function getInstance()
     {
         static $instances;
         if (!isset($instances)) {
