@@ -21,7 +21,7 @@ class Quotes_Actions_Admin_Groups extends Quotes_AdminAction
     {
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadTemplate('Quotes.html');
+        $tpl = $this->gadget->loadAdminTemplate('Quotes.html');
         $tpl->SetBlock('quotes');
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('QuoteGroups'));
@@ -116,7 +116,7 @@ class Quotes_Actions_Admin_Groups extends Quotes_AdminAction
      */
     function GroupQuotesUI()
     {
-        $tpl = $this->gadget->loadTemplate('Quotes.html');
+        $tpl = $this->gadget->loadAdminTemplate('Quotes.html');
         $tpl->SetBlock('quotes');
         $tpl->SetBlock('quotes/quotes_groups_ui_section');
 
