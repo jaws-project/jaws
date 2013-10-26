@@ -23,7 +23,7 @@ class Settings_Actions_Admin_Mail extends Settings_AdminAction
         $this->gadget->CheckPermission('MailSettings');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadTemplate('Settings.html');
+        $tpl = $this->gadget->loadAdminTemplate('Settings.html');
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('Mail'));
