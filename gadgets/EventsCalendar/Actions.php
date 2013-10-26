@@ -16,6 +16,10 @@ $actions['ManageEvents'] = array(
     'layout' => true,
     'file' => 'Events'
 );
+$actions['Search'] = array(
+    'standalone' => true,
+    'file' => 'Events'
+);
 $actions['NewEvent'] = array(
     'normal' => true,
     'file' => 'Event'
@@ -32,17 +36,13 @@ $actions['UpdateEvent'] = array(
     'standalone' => true,
     'file' => 'Event'
 );
+$actions['DeleteEvent'] = array(
+    'standalone' => true,
+    'file' => 'Event'
+);
 $actions['ShareEvent'] = array(
     'normal' => true,
     'file' => 'Share'
-);
-$actions['DeleteEvent'] = array(
-    'standalone' => true,
-    'file' => 'Delete'
-);
-$actions['Search'] = array(
-    'standalone' => true,
-    'file' => 'Events'
 );
 $actions['GetUsers'] = array(
     'standalone' => true,
