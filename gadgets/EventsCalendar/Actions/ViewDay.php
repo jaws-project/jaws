@@ -28,7 +28,6 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('ViewDay.html');
         $tpl->SetBlock('day');
 
-        $this->SetTitle(_t('EVENTSCALENDAR_VIEW_DAY'));
         $tpl->SetVariable('lbl_hour', _t('EVENTSCALENDAR_HOUR'));
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 
@@ -58,7 +57,9 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
 
         // Current date
         $date = $jdate->ToBaseDate($year, $month, $day);
-        $tpl->SetVariable('title', $jdate->Format($date['timestamp'], 'DN d MN Y'));
+        $today = $jdate->Format($date['timestamp'], 'DN d MN Y');
+        $tpl->SetVariable('title', $today);
+        $this->SetTitle($today . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
 
         // Fetch events
         $model = $this->gadget->loadModel('Report');
