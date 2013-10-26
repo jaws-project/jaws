@@ -77,7 +77,7 @@ class Banner_Actions_Admin_Reports extends Banner_AdminAction
     {
         $this->gadget->CheckPermission('ViewReports');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('BannerReports.html');
+        $tpl = $this->gadget->loadAdminTemplate('BannerReports.html');
         $tpl->SetBlock('Reports');
 
         $model = $this->gadget->loadModel();

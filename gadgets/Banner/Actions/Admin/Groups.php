@@ -20,7 +20,7 @@ class Banner_Actions_Admin_Groups extends Banner_AdminAction
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadTemplate('GroupBanners.html');
+        $tpl = $this->gadget->loadAdminTemplate('GroupBanners.html');
         $tpl->SetBlock('Groups');
 
         $addGroup =& Piwi::CreateWidget('Button', 'add_group', _t('BANNER_GROUPS_ADD'), STOCK_NEW);
@@ -77,7 +77,7 @@ class Banner_Actions_Admin_Groups extends Banner_AdminAction
      */
     function EditGroupUI()
     {
-        $tpl = $this->gadget->loadTemplate('GroupBanners.html');
+        $tpl = $this->gadget->loadAdminTemplate('GroupBanners.html');
         $tpl->SetBlock('GroupInfo');
 
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
@@ -131,7 +131,7 @@ class Banner_Actions_Admin_Groups extends Banner_AdminAction
      */
     function GetGroupBannersUI()
     {
-        $tpl = $this->gadget->loadTemplate('GroupBanners.html');
+        $tpl = $this->gadget->loadAdminTemplate('GroupBanners.html');
         $tpl->SetBlock('GroupBanners');
 
         $model = $this->gadget->loadModel('Banners');
