@@ -22,7 +22,7 @@ class UrlMapper_Actions_Admin_Properties extends UrlMapper_AdminAction
     function Properties()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Properties.html');
+        $tpl = $this->gadget->loadAdminTemplate('Properties.html');
         $tpl->SetBlock('Properties');
 
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'POST');

@@ -75,7 +75,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_AdminAction
     function Maps()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Maps.html');
+        $tpl = $this->gadget->loadAdminTemplate('Maps.html');
         $tpl->SetBlock('UrlMapper');
 
         // Menubar
