@@ -3,9 +3,8 @@
   <h2>{title}</h2>
   <div class="content">
     <div class="nav">
-      <a href="{prev}" title="{prev_month}" class="button">&lt;</a>
-      {current_date}
-      <a href="{next}" title="{next_month}" class="button">&gt;</a>
+      <a href="{prev_url}" class="float-left">&laquo; {prev}</a>
+      <a href="{next_url}" class="float-right">{next} &raquo;</a>
     </div>
     <table>
       <thead><tr>
@@ -15,7 +14,7 @@
       <tbody>
         <!-- BEGIN day -->
         <tr>
-          <td>{day}</td>
+          <td><a href="{day_url}">{day}</a></td>
           <td>
             <!-- BEGIN event -->
             <div><a href="{event_url}">{event}</a></div>
