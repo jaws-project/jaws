@@ -27,21 +27,27 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('ViewYear.html');
         $tpl->SetBlock('year');
 
-        $this->SetTitle(_t('EVENTSCALENDAR_VIEW_YEAR'));
-        $tpl->SetVariable('title', _t('EVENTSCALENDAR_VIEW_YEAR'));
-
         // Current year
-        $tpl->SetVariable('current_year', $year);
+        $tpl->SetVariable('title', $year);
+        $this->SetTitle($year . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
 
         // Previous year
         $prevURL = $this->gadget->urlMap('ViewYear', array('year' => $year - 1));
-        $tpl->SetVariable('prev', $prevURL);
-        $tpl->SetVariable('prev_year', $year - 1);
+        $tpl->SetVariable('prev_url', $prevURL);
+        $tpl->SetVariable('prev', $year - 1);
 
         // Next year
         $nextURL = $this->gadget->urlMap('ViewYear', array('year' => $year + 1));
-        $tpl->SetVariable('next', $nextURL);
-        $tpl->SetVariable('next_year', $year + 1);
+        $tpl->SetVariable('next_url', $nextURL);
+        $tpl->SetVariable('next', $year + 1);
+
+        // Fetch events
+        $model = $this->gadget->loadModel('Report');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $events = $model->GetYearEvents($user, null, null, $year);
+        if (Jaws_Error::IsError($events)){
+            $events = array();
+        }
 
         // Month's
         for ($s = 0; $s <= 3; $s++) {
@@ -54,6 +60,7 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
                 $tpl->SetVariable('month', $month);
                 $url = $this->gadget->urlMap('ViewMonth', array('year' => $year, 'month' => $m));
                 $tpl->SetVariable('month_url', $url);
+                $tpl->SetVariable('events_count', $events[$m]);
                 $tpl->ParseBlock('year/season/month');
             }
             $tpl->ParseBlock('year/season');
