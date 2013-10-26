@@ -88,21 +88,24 @@
         <name>month</name>
         <type>integer</type>
         <length>1</length>
-        <default>-1</default>
+        <default>0</default>
+        <description>0-12</description>
       </field>
 
       <field>
         <name>day</name>
         <type>integer</type>
         <length>1</length>
-        <default>-1</default>
+        <default>0</default>
+        <description>0-31</description>
       </field>
 
       <field>
         <name>wday</name>
         <type>integer</type>
         <length>1</length>
-        <default>-1</default>
+        <default>0</default>
+        <description>0-7</description>
       </field>
 
       <field>
