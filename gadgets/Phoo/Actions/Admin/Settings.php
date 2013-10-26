@@ -21,7 +21,7 @@ class Phoo_Actions_Admin_Settings extends Phoo_AdminAction
     function AdditionalSettings()
     {
         $this->gadget->CheckPermission('Settings');
-        $tpl = $this->gadget->loadTemplate('AdditionalSettings.html');
+        $tpl = $this->gadget->loadAdminTemplate('AdditionalSettings.html');
         $tpl->SetBlock('additional');
 
         // Header

@@ -22,7 +22,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_AdminAction
     {
         $pModel = $this->gadget->loadModel('Photos');
         $aModel = $this->gadget->loadModel('Albums');
-        $tpl = $this->gadget->loadTemplate('PhooBrowse.html');
+        $tpl = $this->gadget->loadAdminTemplate('PhooBrowse.html');
         $tpl->SetBlock('phoo_browse');
 
         $GLOBALS['app']->LoadPlugin('PhooInsert');

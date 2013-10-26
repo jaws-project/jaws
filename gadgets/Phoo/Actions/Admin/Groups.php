@@ -20,7 +20,7 @@ class Phoo_Actions_Admin_Groups extends Phoo_AdminAction
     {
         $this->gadget->CheckPermission('Groups');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Groups.html');
+        $tpl = $this->gadget->loadAdminTemplate('Groups.html');
         $tpl->SetBlock('groups');
 
         // Header

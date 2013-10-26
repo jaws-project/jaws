@@ -26,7 +26,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_AdminAction
         $album = jaws()->request->fetch('album', 'get');
 
         $model = $this->gadget->loadModel('Albums');
-        $tpl = $this->gadget->loadTemplate('UploadPhotos.html');
+        $tpl = $this->gadget->loadAdminTemplate('UploadPhotos.html');
         $tpl->SetBlock('upload');
         $tpl->SetVariable('menubar', $this->MenuBar('UploadPhotos'));
 
