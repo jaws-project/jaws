@@ -49,7 +49,7 @@ class Jaws_Captcha
      * @param   string  $field  Captcha field
      * @return  object  Jaws_Captcha instance
      */
-    function &getInstance($driver, $field = 'default')
+    static function getInstance($driver, $field = 'default')
     {
         static $instances;
         if (!isset($instances)) {
