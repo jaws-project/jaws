@@ -133,7 +133,7 @@ set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');
 require_once JAWS_PATH . 'include/Jaws.php';
 $GLOBALS['app'] = jaws();
 // get an instance of Jaws_DB
-$GLOBALS['db'] =& Jaws_DB::getInstance($db);
+$GLOBALS['db'] = Jaws_DB::getInstance($db);
 if (Jaws_Error::IsError($GLOBALS['db'])) {
     Jaws_Error::Fatal($GLOBALS['db']->getMessage());
 }
