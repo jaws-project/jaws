@@ -20,7 +20,7 @@ class Jaws_XSS
      *                         will allow some attributes (id) and tags (object, applet, embed)
      * @return  string The safe string
      */
-    function parse($string, $strict = null)
+    static function parse($string, $strict = null)
     {
         static $safe_xss;
         static $xss_parsing_level;
@@ -44,7 +44,7 @@ class Jaws_XSS
     /**
      *
      */
-    function filter($string, $noquotes = true)
+    static function filter($string, $noquotes = true)
     {
         return htmlspecialchars($string, $noquotes? ENT_QUOTES : ENT_NOQUOTES, 'UTF-8');
     }
@@ -52,7 +52,7 @@ class Jaws_XSS
     /**
      *
      */
-    function defilter($string, $noquotes = true)
+    static function defilter($string, $noquotes = true)
     {
         return htmlspecialchars_decode($string, $noquotes? ENT_QUOTES : ENT_NOQUOTES);
     }
