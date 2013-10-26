@@ -57,6 +57,7 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_Action
             }
         }
 
+        $jdate = $GLOBALS['app']->loadDate();
         if (!isset($event) || empty($event)) {
             if (!empty($id)) {
                 $model = $this->gadget->loadModel('Event');
@@ -68,7 +69,6 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_Action
                 {
                     return;
                 }
-                $jdate = $GLOBALS['app']->loadDate();
                 $event['start_date'] = empty($event['start_date'])? '' :
                     $jdate->Format($event['start_date'], 'Y-m-d');
                 $event['stop_date'] = empty($event['stop_date'])? '' :
@@ -85,10 +85,9 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_Action
                 $event['stop_date'] = '';
                 $event['start_time'] = 0;
                 $event['stop_time'] = 0;
-                $event['month'] = -1;
-                $event['month_day'] = -1;
-                $event['week_day'] = -1;
-                $event['hour'] = -1;
+                $event['month'] = 0;
+                $event['day'] = 0;
+                $event['wday'] = 0;
                 $event['type'] = 1;
                 $event['priority'] = 0;
                 $event['reminder'] = 0;
@@ -189,53 +188,50 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_reminder', _t('EVENTSCALENDAR_EVENT_REMINDER'));
 
         // Repeat
+        $combo =& Piwi::CreateWidget('Combo', 'repeat');
+        $combo->SetId('event_repeat');
+        //$combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_NO_REPEAT'), 0);
+        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_DAILY'), 1);
+        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_WEEKLY'), 2);
+        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_MONTHLY'), 3);
+        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_YEARLY'), 4);
+        $combo->SetDefault(1);
+        $combo->AddEvent(ON_CHANGE, 'switchRepeatUI(this.value)');
+        $tpl->SetVariable('repeat', $combo->Get());
         $tpl->SetVariable('lbl_repeat', _t('EVENTSCALENDAR_EVENT_REPEAT'));
 
-        $jdate = $GLOBALS['app']->loadDate();
+        // Day
+        $combo =& Piwi::CreateWidget('Combo', 'day');
+        $combo->SetId('event_day');
+        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_EVERY_DAY'), 0);
+        for ($i = 1; $i <= 31; $i++) {
+            $combo->AddOption($i, $i);
+        }
+        $combo->SetDefault($event['day']);
+        $tpl->SetVariable('day', $combo->Get());
+        $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
+
+        // Week Day
+        $combo =& Piwi::CreateWidget('Combo', 'wday');
+        $combo->SetId('event_wday');
+        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_EVERY_WEEK_DAY'), 0);
+        for ($i = 1; $i <= 7; $i++) {
+            $combo->AddOption($jdate->DayString($i-1), $i);
+        }
+        $combo->SetDefault($event['wday']);
+        $tpl->SetVariable('wday', $combo->Get());
+        $tpl->SetVariable('lbl_wday', _t('EVENTSCALENDAR_WEEK_DAY'));
 
         // Month
         $combo =& Piwi::CreateWidget('Combo', 'month');
         $combo->SetId('event_month');
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_EVERY_MONTH'), -1);
+        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_EVERY_MONTH'), 0);
         for ($i = 1; $i <= 12; $i++) {
             $combo->AddOption($jdate->MonthString($i), $i);
         }
         $combo->SetDefault($event['month']);
         $tpl->SetVariable('month', $combo->Get());
         $tpl->SetVariable('lbl_month', _t('EVENTSCALENDAR_MONTH'));
-
-        // Day
-        $combo =& Piwi::CreateWidget('Combo', 'month_day');
-        $combo->SetId('event_day');
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_EVERY_DAY'), -1);
-        for ($i = 1; $i <= 31; $i++) {
-            $combo->AddOption($i, $i);
-        }
-        $combo->SetDefault($event['month_day']);
-        $tpl->SetVariable('month_day', $combo->Get());
-        $tpl->SetVariable('lbl_month_day', _t('EVENTSCALENDAR_DAY'));
-
-        // Week Day
-        $combo =& Piwi::CreateWidget('Combo', 'week_day');
-        $combo->SetId('event_wday');
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_EVERY_WEEK_DAY'), -1);
-        for ($i = 0; $i <= 6; $i++) {
-            $combo->AddOption($jdate->DayString($i), $i);
-        }
-        $combo->SetDefault($event['week_day']);
-        $tpl->SetVariable('week_day', $combo->Get());
-        $tpl->SetVariable('lbl_week_day', _t('EVENTSCALENDAR_WEEK_DAY'));
-
-        // Hour
-        $combo =& Piwi::CreateWidget('Combo', 'hour');
-        $combo->SetId('event_hour');
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_EVERY_HOUR'), -1);
-        for ($i = 0; $i <= 23; $i++) {
-            $combo->AddOption($i, $i);
-        }
-        $combo->SetDefault($event['hour']);
-        $tpl->SetVariable('hour', $combo->Get());
-        $tpl->SetVariable('lbl_hour', _t('EVENTSCALENDAR_HOUR'));
 
         // Actions
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
@@ -257,7 +253,7 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_Action
         $data = jaws()->request->fetch(array('subject', 'location',
             'description', 'type', 'priority', 'reminder',
             'start_date', 'stop_date', 'start_time', 'stop_time',
-            'month', 'month_day', 'week_day', 'hour'), 'post');
+            'month', 'day', 'wday'), 'post');
         if (empty($data['subject']) || empty($data['start_date'])) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'),
@@ -304,7 +300,7 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_Action
         $data = jaws()->request->fetch(array('id', 'subject', 'location',
             'description', 'type', 'priority', 'reminder',
             'start_date', 'stop_date', 'start_time', 'stop_time',
-            'month', 'month_day', 'week_day', 'hour'), 'post');
+            'month', 'day', 'wday'), 'post');
         if (empty($data['subject']) || empty($data['start_date'])) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'),

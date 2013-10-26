@@ -37,11 +37,35 @@ function initEvents()
 }
 
 /**
- * Shows/Hides event repeat options
+ * Updates event repeat UI
  */
-function toggleRepeat(checked)
+function switchRepeatUI(type)
 {
-    $('tbl_repeat').style.display = checked? 'table' : 'none';
+    $('event_day').hide();
+    $('event_wday').hide();
+    $('event_month').hide();
+    switch (type) {
+        case '1':
+            $('event_day').value = 0;
+            $('event_wday').value = 0;
+            $('event_month').value = 0;
+            break;
+        case '2':
+            $('event_wday').show('inline');
+            $('event_day').value = 0;
+            $('event_month').value = 0;
+            break;
+        case '3':
+            $('event_day').show('inline');
+            $('event_wday').value = 0;
+            $('event_month').value = 0;
+            break;
+        case '4':
+            $('event_day').show('inline');
+            $('event_month').show('inline');
+            $('event_wday').value = 0;
+            break;
+    }
 }
 
 /**

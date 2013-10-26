@@ -27,7 +27,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         // $table->join('users', 'owner', 'users.id');
         $table->select('event.id', 'user', 'subject', 'location', 'description', 
             'start_time', 'stop_time', 'start_date', 'stop_date',
-            'month', 'month_day', 'week_day', 'hour', 'type', 'priority',
+            'month', 'day', 'wday', 'type', 'priority',
             'reminder', 'shared', 'createtime', 'updatetime');
         $table->where('event.id', $id)->and();
         if ($user !== null){

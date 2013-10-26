@@ -36,6 +36,9 @@ padding:0;
 #event_start_time, #event_stop_time {
 width:50px;
 }
+#event_month, #event_day, #event_wday {
+display:none;
+} 
 .events-calendar .float-left {
 float:left;
 }
