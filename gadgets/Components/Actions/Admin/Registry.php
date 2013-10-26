@@ -19,7 +19,7 @@ class Components_Actions_Admin_Registry extends Jaws_Gadget_Action
      */
     function RegistryUI()
     {
-        $tpl = $this->gadget->loadTemplate('Registry.html');
+        $tpl = $this->gadget->loadAdminTemplate('Registry.html');
         $tpl->SetBlock('registry');
 
         $button =& Piwi::CreateWidget('Button', '', _t('GLOBAL_SAVE'), STOCK_SAVE);
