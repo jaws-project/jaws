@@ -108,7 +108,7 @@ class FileBrowser_Actions_Admin_Directory extends FileBrowser_AdminAction
      */
     function GetDirectoryUI()
     {
-        $tpl = $this->gadget->loadTemplate('FileBrowser.html');
+        $tpl = $this->gadget->loadAdminTemplate('FileBrowser.html');
         $tpl->SetBlock('dir_ui');
 
         $dirname =& Piwi::CreateWidget('Entry', 'dirname', '');
