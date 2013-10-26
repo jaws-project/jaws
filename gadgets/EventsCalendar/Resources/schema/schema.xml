@@ -85,28 +85,21 @@
       </field>
 
       <field>
-        <name>hour</name>
-        <type>integer</type>
-        <length>1</length>
-        <default>-1</default>
-      </field>
-
-      <field>
-        <name>week_day</name>
-        <type>integer</type>
-        <length>1</length>
-        <default>-1</default>
-      </field>
-
-      <field>
-        <name>month_day</name>
-        <type>integer</type>
-        <length>1</length>
-        <default>-1</default>
-      </field>
-
-      <field>
         <name>month</name>
+        <type>integer</type>
+        <length>1</length>
+        <default>-1</default>
+      </field>
+
+      <field>
+        <name>day</name>
+        <type>integer</type>
+        <length>1</length>
+        <default>-1</default>
+      </field>
+
+      <field>
+        <name>wday</name>
         <type>integer</type>
         <length>1</length>
         <default>-1</default>
