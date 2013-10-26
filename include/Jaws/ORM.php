@@ -221,7 +221,7 @@ class Jaws_ORM
      * @return  object returns the instance
      * @access  public
      */
-    function getInstance()
+    static function getInstance()
     {
         return new Jaws_ORM();
     }
