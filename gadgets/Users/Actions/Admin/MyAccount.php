@@ -30,7 +30,7 @@ class Users_Actions_Admin_MyAccount extends Users_AdminAction
         }
 
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('MyAccount.html');
+        $tpl = $this->gadget->loadAdminTemplate('MyAccount.html');
         $tpl->SetBlock('MyAccount');
         $tpl->SetVariable('uid', $uInfo['id']);
         $tpl->SetVariable('legend_title', _t('USERS_USERS_ACCOUNT'));

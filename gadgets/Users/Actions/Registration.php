@@ -258,7 +258,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $site_url  = $GLOBALS['app']->getSiteURL('/');
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
 
-        $tpl = $this->gadget->loadTemplate('UserNotification.txt', 'index');
+        $tpl = $this->gadget->loadTemplate('UserNotification.txt');
         $tpl->SetBlock('Notification');
         $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $user['nickname']));
         $tpl->SetVariable('message', _t('USERS_ACTIVATE_ACTIVATED_MAIL_MSG'));

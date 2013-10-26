@@ -19,7 +19,7 @@ class Users_Actions_Admin_ACL extends Users_AdminAction
      */
     function ACLUI()
     {
-        $tpl = $this->gadget->loadTemplate('ACL.html');
+        $tpl = $this->gadget->loadAdminTemplate('ACL.html');
         $tpl->SetBlock('acl');
 
         $tpl->SetVariable('lbl_permissions', _t('USERS_ACLS').':');
