@@ -23,7 +23,7 @@ class Contact_Actions_Admin_Contacts extends Contact_AdminAction
     {
         $this->gadget->CheckPermission('ManageContacts');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Contacts.html');
+        $tpl = $this->gadget->loadAdminTemplate('Contacts.html');
         $tpl->SetBlock('Contacts');
 
         //Menu bar
@@ -186,7 +186,7 @@ class Contact_Actions_Admin_Contacts extends Contact_AdminAction
      */
     function ContactUI()
     {
-        $tpl = $this->gadget->loadTemplate('Contacts.html');
+        $tpl = $this->gadget->loadAdminTemplate('Contacts.html');
         $tpl->SetBlock('ContactUI');
 
         //IP
@@ -269,7 +269,7 @@ class Contact_Actions_Admin_Contacts extends Contact_AdminAction
      */
     function ReplyUI()
     {
-        $tpl = $this->gadget->loadTemplate('Contacts.html');
+        $tpl = $this->gadget->loadAdminTemplate('Contacts.html');
         $tpl->SetBlock('ReplyUI');
 
         //name
@@ -371,7 +371,7 @@ class Contact_Actions_Admin_Contacts extends Contact_AdminAction
         $GLOBALS['app']->Translate->LoadTranslation('Global', JAWS_COMPONENT_OTHERS, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
 
-        $tpl = $this->gadget->loadTemplate('SendReplyTo.html', 'index', '',
+        $tpl = $this->gadget->loadTemplate('SendReplyTo.html',
             array(
                 'loadFromTheme' => true,
                 'loadRTLDirection' => _t_lang($site_language, 'GLOBAL_LANG_DIRECTION') == 'rtl',

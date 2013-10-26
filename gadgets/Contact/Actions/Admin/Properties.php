@@ -22,7 +22,7 @@ class Contact_Actions_Admin_Properties extends Contact_AdminAction
     {
         $this->gadget->CheckPermission('UpdateProperties');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Properties.html');
+        $tpl = $this->gadget->loadAdminTemplate('Properties.html');
         $tpl->SetBlock('Properties');
 
         //Menu bar
