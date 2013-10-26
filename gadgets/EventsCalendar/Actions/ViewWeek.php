@@ -28,30 +28,30 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('ViewWeek.html');
         $tpl->SetBlock('week');
 
-        $this->SetTitle(_t('EVENTSCALENDAR_VIEW_WEEK'));
-        $tpl->SetVariable('title', _t('EVENTSCALENDAR_VIEW_WEEK'));
         $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 
         $jdate = $GLOBALS['app']->loadDate();
 
         // Previous week
-        $info = $jdate->GetDateInfo($year, $month, $day - 6);
-        $url = $this->gadget->urlMap('ViewWeek', array(
+        $info = $jdate->GetDateInfo($year, $month, $day - 7);
+        $prev_url = $this->gadget->urlMap('ViewWeek', array(
             'year' => $info['year'],
             'month' => $info['mon'],
             'day' => $info['mday']
         ));
-        $tpl->SetVariable('prev', $url);
+        $tpl->SetVariable('prev_url', $prev_url);
+        $tpl->SetVariable('prev', _t('EVENTSCALENDAR_PREV_WEEK'));
 
         // Next week
-        $info = $jdate->GetDateInfo($year, $month, $day + 6);
-        $url = $this->gadget->urlMap('ViewWeek', array(
+        $info = $jdate->GetDateInfo($year, $month, $day + 7);
+        $next_url = $this->gadget->urlMap('ViewWeek', array(
             'year' => $info['year'],
             'month' => $info['mon'],
             'day' => $info['mday']
         ));
-        $tpl->SetVariable('next', $url);
+        $tpl->SetVariable('next_url', $next_url);
+        $tpl->SetVariable('next', _t('EVENTSCALENDAR_NEXT_WEEK'));
 
         $todayInfo = $jdate->GetDateInfo($year, $month, $day);
         $startDay = $day - $todayInfo['wday'];
@@ -62,11 +62,13 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         // Current week
         $start = $jdate->ToBaseDate($year, $month, $startDay);
         $start = $start['timestamp'];
-        $stop = $jdate->ToBaseDate($year, $month, $stopDay);
+        $stop = $jdate->ToBaseDate($year, $month, $stopDay, 23, 59, 59);
         $stop = $stop['timestamp'];
         $from = $jdate->Format($start, 'Y MN d');
         $to = $jdate->Format($stop, 'Y MN d');
-        $tpl->SetVariable('current_week', $from . ' - ' . $to);
+        $current = $from . ' - ' . $to;
+        $this->SetTitle($current . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
+        $tpl->SetVariable('title', $current);
 
         // Fetch events
         $model = $this->gadget->loadModel('Report');
@@ -78,22 +80,28 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
 
         // Prepare events
         $eventsById = array();
-        $eventsByDay = array_fill(0, 7, array());
+        $eventsByDay = array_fill(1, 8, array());
         foreach ($events as $e) {
             $eventsById[$e['id']] = $e;
-            $startIdx = ($e['start_time'] <= $start)? 0:
-                floor(($e['start_time'] - $start) / 86400);
-            $stopIdx = ($e['stop_time'] >= $stop)? 6:
-                floor(($e['stop_time'] - $start) / 86400);
+            $startIdx = ($e['start_date'] <= $start)? 1:
+                floor(($e['start_date'] - $start) / 86400) + 1;
+            $stopIdx = ($e['stop_date'] >= $stop)? 7:
+                ceil(($e['stop_date'] - $start) / 86400);
             for ($i = $startIdx; $i <= $stopIdx; $i++) {
                 $eventsByDay[$i][] = $e['id'];
             }
         }
 
         // Display events
-        for ($i = 0; $i <= 6; $i++) {
-            $info = $jdate->GetDateInfo($year, $month, $startDay + $i);
+        for ($i = 1; $i <= 7; $i++) {
+            $info = $jdate->GetDateInfo($year, $month, $startDay + $i - 1);
             $tpl->SetBlock('week/day');
+            $day_url = $this->gadget->urlMap('ViewWeek', array(
+                'year' => $year,
+                'month' => $month,
+                'day' => $info['mday']
+            ));
+            $tpl->SetVariable('day_url', $day_url);
             $tpl->SetVariable('day', $info['mday'] . ' ' . $info['weekday']);
             foreach ($eventsByDay[$i] as $event_id) {
                 $tpl->SetBlock('week/day/event');
