@@ -87,7 +87,7 @@ class Policy_Actions_Admin_Agent extends Policy_AdminAction
         $this->gadget->CheckPermission('AgentBlocking');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadTemplate('AgentBlocking.html');
+        $tpl = $this->gadget->loadAdminTemplate('AgentBlocking.html');
         $tpl->SetBlock('agentblocking');
 
         // Sidebar

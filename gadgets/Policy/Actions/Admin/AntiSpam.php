@@ -25,7 +25,7 @@ class Policy_Actions_Admin_AntiSpam extends Policy_AdminAction
         $this->AjaxMe('script.js');
 
         $model = $this->gadget->loadAdminModel('AntiSpam');
-        $tpl = $this->gadget->loadTemplate('AntiSpam.html');
+        $tpl = $this->gadget->loadAdminTemplate('AntiSpam.html');
         $tpl->SetBlock('AntiSpam');
 
         // Sidebar

@@ -23,7 +23,7 @@ class Policy_Actions_Admin_Encryption extends Policy_AdminAction
         $this->gadget->CheckPermission('Encryption');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadTemplate('Encryption.html');
+        $tpl = $this->gadget->loadAdminTemplate('Encryption.html');
         $tpl->SetBlock('encryption');
 
         // Sidebar

@@ -24,7 +24,7 @@ class Policy_Actions_Admin_AdvancedPolicies extends Policy_AdminAction
         $this->AjaxMe('script.js');
 
         $model = $this->gadget->loadAdminModel('AntiSpam');
-        $tpl = $this->gadget->loadTemplate('AdvancedPolicies.html');
+        $tpl = $this->gadget->loadAdminTemplate('AdvancedPolicies.html');
         $tpl->SetBlock('AdvancedPolicies');
 
         // Sidebar
