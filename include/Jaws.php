@@ -151,7 +151,7 @@ class Jaws
      * @access  public
      * @return  object returns the instance
      */
-    function &getInstance()
+    static function getInstance()
     {
         static $objJaws;
         if (!isset($objJaws)) {
@@ -920,7 +920,7 @@ class Jaws
      *
      * @access  public
      */
-    function classExists($classname)
+    static function classExists($classname)
     {
         return class_exists($classname, false);
     }
@@ -1079,6 +1079,6 @@ class Jaws
  * @access  public
  * @return  object  Jaws object
  */
-function &jaws() {
+function jaws() {
     return Jaws::getInstance();
 }
