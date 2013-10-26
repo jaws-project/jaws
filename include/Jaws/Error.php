@@ -133,7 +133,7 @@ class Jaws_Error
      * @param   mixed   $input  Input to validate(can be boolean, object, numeric, etc)
      * @return  bool    True if input is a Jaws_Error, false if not.
      */
-    function IsError(&$input)
+    static function IsError(&$input)
     {
         return(bool)(is_object($input) &&(strtolower(get_class($input)) == 'jaws_error'));
     }
