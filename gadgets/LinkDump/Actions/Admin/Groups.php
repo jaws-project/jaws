@@ -19,7 +19,7 @@ class LinkDump_Actions_Admin_Groups extends Jaws_Gadget_Action
      */
     function GetGroupsList()
     {
-        $tpl = $this->gadget->loadTemplate('LinkDump.html');
+        $tpl = $this->gadget->loadAdminTemplate('LinkDump.html');
         $tpl->SetBlock('linkdump');
 
         $model = $this->gadget->loadModel('Groups');
@@ -49,7 +49,7 @@ class LinkDump_Actions_Admin_Groups extends Jaws_Gadget_Action
      */
     function GetGroupUI()
     {
-        $tpl = $this->gadget->loadTemplate('LinkDump.html');
+        $tpl = $this->gadget->loadAdminTemplate('LinkDump.html');
         $tpl->SetBlock('linkdump');
         $tpl->SetBlock('linkdump/GroupsUI');
 
