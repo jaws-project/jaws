@@ -27,7 +27,7 @@ class Blog_Actions_Admin_Summary extends Blog_AdminAction
             $summary = array();
         }
 
-        $tpl = $this->gadget->loadTemplate('Summary.html');
+        $tpl = $this->gadget->loadAdminTemplate('Summary.html');
         $tpl->SetBlock('summary');
         $tpl->SetVariable('menubar', $this->MenuBar('Summary'));
 

@@ -24,7 +24,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminAction
     {
         $this->gadget->CheckPermission('AddEntries');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Entry.html');
+        $tpl = $this->gadget->loadAdminTemplate('Entry.html');
         $tpl->SetBlock('edit_entry');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
@@ -270,7 +270,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminAction
         }
 
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Entry.html');
+        $tpl = $this->gadget->loadAdminTemplate('Entry.html');
         $tpl->SetBlock('edit_entry');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         // Header
@@ -547,7 +547,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminAction
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Blog&action=ListEntries');
         }
 
-        $tpl = $this->gadget->loadTemplate('EntryDelete.html');
+        $tpl = $this->gadget->loadAdminTemplate('EntryDelete.html');
         $tpl->SetBlock('delete_entry');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         // Header
@@ -599,7 +599,7 @@ class Blog_Actions_Admin_Entries extends Blog_AdminAction
     function ListEntries()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Entries.html');
+        $tpl = $this->gadget->loadAdminTemplate('Entries.html');
         $tpl->SetBlock('list_entries');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);

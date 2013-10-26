@@ -24,7 +24,7 @@ class Blog_Actions_Admin_Settings extends Blog_AdminAction
         $this->gadget->CheckPermission('Settings');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadTemplate('Settings.html');
+        $tpl = $this->gadget->loadAdminTemplate('Settings.html');
         $tpl->SetBlock('additional');
 
         // Header
