@@ -119,7 +119,7 @@ class Jaws_DB
      * @param   string $instance Jaws_DB instance name
      * @return  object Jaws_DB instance
      */
-    function &getInstance($options = array(), $instance = 'default')
+    static function getInstance($options = array(), $instance = 'default')
     {
         static $instances;
         if (!isset($instances)) {
@@ -185,7 +185,7 @@ class Jaws_DB
             $options['DBA_password'] = $this->_dsn['password'];
         }
 
-        $this->dbc =& MDB2::singleton($this->_dsn, $options);
+        $this->dbc = MDB2::singleton($this->_dsn, $options);
         if (PEAR::IsError($this->dbc)) {
             return Jaws_Error::raiseError(
                 "Couldn't connect to the database<br />".
