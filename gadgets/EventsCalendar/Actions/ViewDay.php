@@ -34,10 +34,6 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
 
         $jdate = $GLOBALS['app']->loadDate();
 
-        // Current date
-        $date = $jdate->ToBaseDate($year, $month, $day);
-        $tpl->SetVariable('title', $jdate->Format($date['timestamp'], 'DN d MN Y'));
-
         // Previous day
         $date = $jdate->ToBaseDate($year, $month, $day - 1);
         $tpl->SetVariable('prev', $jdate->Format($date['timestamp'], 'DN d MN Y'));
@@ -59,6 +55,10 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
             'day' => $info['mday']
         ));
         $tpl->SetVariable('next_url', $url);
+
+        // Current date
+        $date = $jdate->ToBaseDate($year, $month, $day);
+        $tpl->SetVariable('title', $jdate->Format($date['timestamp'], 'DN d MN Y'));
 
         // Fetch events
         $model = $this->gadget->loadModel('Month');
