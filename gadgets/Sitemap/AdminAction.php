@@ -40,7 +40,7 @@ class Sitemap_AdminAction extends Jaws_Gadget_Action
     function Admin()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Sitemap.html');
+        $tpl = $this->gadget->loadAdminTemplate('Sitemap.html');
         $tpl->SetBlock('sitemap');
         
         $tpl->SetVariable('empty_message', _t('SITEMAP_EMPTY'));
