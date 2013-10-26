@@ -46,15 +46,19 @@ class Jaws_Gadget_Template
             Jaws_Error::Fatal('Theme '. $theme['name']. ' doesn\'t exists.');
         }
 
-        $tpl = new Jaws_Template();
-        $loadFromTheme = isset($options['loadFromTheme'])? $options['loadFromTheme'] : (JAWS_SCRIPT == 'index');
-        if ($loadFromTheme && file_exists($theme['path']. $this->gadget->name. '/'. $filename)) {
-            $filepath = $theme['path']. $this->gadget->name;
-        } else {
-            $filepath = 'gadgets/'. $this->gadget->name. '/Templates/'. ($backend? 'Admin': '');
+        $filepath = dirname($filename);
+        $filename = basename($filename);
+        // if dirname returned dot ('.'), indicating no slashes in path
+        if ($filepath == '.') {
+            $loadFromTheme = isset($options['loadFromTheme'])? $options['loadFromTheme'] : (JAWS_SCRIPT == 'index');
+            if ($loadFromTheme && file_exists($theme['path']. $this->gadget->name. '/'. $filename)) {
+                $filepath = $theme['path']. $this->gadget->name;
+            } else {
+                $filepath = 'gadgets/'. $this->gadget->name. '/Templates/'. ($backend? 'Admin': '');
+            }
         }
 
-        // set options
+        $tpl = new Jaws_Template();
         foreach ($options as $option => $value) {
             $tpl->$option = $value;
         }
