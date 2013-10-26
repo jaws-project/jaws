@@ -197,7 +197,7 @@ class Jaws_Gadget
      * @return  object returns the instance
      * @access  public
      */
-    function getInstance($gadget)
+    static function getInstance($gadget)
     {
         static $instances = array();
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
