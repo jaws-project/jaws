@@ -20,7 +20,7 @@ class Forums_Actions_Admin_Group extends Forums_AdminAction
     function GetGroupUI()
     {
         $this->gadget->CheckPermission('default');
-        $tpl = $this->gadget->loadTemplate('GroupUI.html');
+        $tpl = $this->gadget->loadAdminTemplate('GroupUI.html');
         $tpl->SetBlock('GroupsUI');
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');

@@ -20,7 +20,7 @@ class Forums_Actions_Admin_Forum extends Forums_AdminAction
     function GetForumUI()
     {
         $this->gadget->CheckPermission('default');
-        $tpl = $this->gadget->loadTemplate('ForumUI.html');
+        $tpl = $this->gadget->loadAdminTemplate('ForumUI.html');
         $tpl->SetBlock('ForumUI');
 
         $gModel = $this->gadget->loadModel('Groups');

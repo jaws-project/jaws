@@ -21,7 +21,7 @@ class Forums_Actions_Admin_Forums extends Forums_AdminAction
     {
         $this->gadget->CheckPermission('ManageForums');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Forums.html');
+        $tpl = $this->gadget->loadAdminTemplate('Forums.html');
         $tpl->SetBlock('forums');
 
         $gModel = $this->gadget->loadModel('Groups');
