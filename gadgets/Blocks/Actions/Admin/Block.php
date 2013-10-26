@@ -20,7 +20,7 @@ class Blocks_Actions_Admin_Block extends Blocks_AdminAction
     function Block()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadTemplate('Blocks.html');
+        $tpl = $this->gadget->loadAdminTemplate('Blocks.html');
         $tpl->SetBlock('blocks');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
