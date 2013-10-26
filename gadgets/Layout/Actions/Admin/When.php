@@ -21,7 +21,7 @@ class Layout_Actions_Admin_When extends Jaws_Gadget_Action
     {
         $model = $this->gadget->loadAdminModel('Elements');
 
-        $tpl = $this->gadget->loadTemplate('DisplayWhen.html');
+        $tpl = $this->gadget->loadAdminTemplate('DisplayWhen.html');
         $tpl->SetBlock('template');
 
         $direction = _t('GLOBAL_LANG_DIRECTION');

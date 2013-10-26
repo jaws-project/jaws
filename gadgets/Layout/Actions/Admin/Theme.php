@@ -24,7 +24,7 @@ class Layout_Actions_Admin_Theme extends Jaws_Gadget_Action
         if (!file_exists($layout_path. '/layout.html')) {
             $layout_path = JAWS_BASE_THEMES. $theme;
         }
-        $tpl = $this->gadget->loadTemplate('layout.html', $layout_path);
+        $tpl = $this->gadget->loadAdminTemplate("$layout_path/layout.html");
 
         // Validate theme
         if (!isset($tpl->Blocks['layout'])) {

@@ -22,7 +22,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_Action
         $lModel = $this->gadget->loadAdminModel('Layout');
         $eModel = $this->gadget->loadAdminModel('Elements');
 
-        $t_item = $this->gadget->loadTemplate('LayoutManager.html');
+        $t_item = $this->gadget->loadAdminTemplate('LayoutManager.html');
         $t_item->SetBlock('working_notification');
         $t_item->SetVariable('loading-message', _t('GLOBAL_LOADING'));
         $working_box = $t_item->ParseBlock('working_notification');
@@ -181,7 +181,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_Action
      */
     function getLayoutControls()
     {
-        $tpl = $this->gadget->loadTemplate('LayoutControls.html');
+        $tpl = $this->gadget->loadAdminTemplate('LayoutControls.html');
         $tpl->SetBlock('controls');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('admin_script', BASE_SCRIPT);
