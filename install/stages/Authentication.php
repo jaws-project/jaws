@@ -34,7 +34,7 @@ class Installer_Authentication extends JawsInstallerStage
      */
     function Display()
     {
-        $request =& Jaws_Request::getInstance();
+        $request = Jaws_Request::getInstance();
         $use_log = $request->fetch('use_log', 'post');
         //Set main session-log vars
         if (isset($use_log)) {
