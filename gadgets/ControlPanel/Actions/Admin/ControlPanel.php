@@ -44,7 +44,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
         }
 
         // Load the template
-        $tpl = $this->gadget->loadTemplate('ControlPanel.html');
+        $tpl = $this->gadget->loadAdminTemplate('ControlPanel.html');
         $this->AjaxMe('script.js');
         foreach ($gadgetsections as $section  => $gadgets) {
             $tpl->SetBlock('main');
