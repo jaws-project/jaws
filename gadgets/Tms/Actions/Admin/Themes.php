@@ -55,7 +55,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
         $this->AjaxMe('script.js');
 
         $model = $this->gadget->loadModel();
-        $tpl = $this->gadget->loadTemplate('Themes.html');
+        $tpl = $this->gadget->loadAdminTemplate('Themes.html');
         $tpl->SetBlock('Tms');
 
         $tpl->SetVariable('confirmUninstallTheme', _t('TMS_THEMES_UNINSTALL_CONFIRM'));
@@ -107,7 +107,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
      */
     function GetThemeInfo($theme)
     {
-        $tpl = $this->gadget->loadTemplate('ThemeInfo.html');
+        $tpl = $this->gadget->loadAdminTemplate('ThemeInfo.html');
         $tpl->SetBlock('ThemeInfo');
         $tpl->SetVariable('theme_str', _t('TMS_THEME_INFO_NAME'));
 
