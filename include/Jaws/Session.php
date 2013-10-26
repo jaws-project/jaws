@@ -79,7 +79,7 @@ class Jaws_Session
      * @access  public
      * @return  object  Jaws_Session type object
      */
-    function &factory()
+    static function factory()
     {
         if (!defined('JAWS_APPTYPE')) {
             $apptype = jaws()->request->fetch('apptype');
