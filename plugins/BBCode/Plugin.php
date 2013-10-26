@@ -205,8 +205,8 @@ class BBCode_Plugin extends Jaws_Plugin
                         $replacement = '';
                         $mSourcePath = JAWS_PATH. "plugins/BBCode/Templates/$mSource.html";
                         if (file_exists($mSourcePath)) {
-                            $tpl = new Jaws_Template('plugins/BBCode/Templates/');
-                            $tpl->Load("$mSource.html");
+                            $tpl = new Jaws_Template();
+                            $tpl->Load("$mSource.html", 'plugins/BBCode/Templates/');
                             $tpl->SetBlock('media');
                             $tpl->SetVariable('vid', $innertext);
                             if (is_numeric($width)) {
