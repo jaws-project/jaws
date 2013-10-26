@@ -54,7 +54,7 @@ class Jaws_Widgets_Menubar
      * @param   string  $action Action short-name(NOT URL)
      * @return  object  returns the instance
      */
-    function getInstance($action = 'menubar')
+    static function getInstance($action = 'menubar')
     {
         return new Jaws_Widgets_Menubar($action);
     }
