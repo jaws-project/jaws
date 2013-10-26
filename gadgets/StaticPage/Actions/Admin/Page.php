@@ -133,7 +133,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_AdminAction
     {
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadTemplate('StaticPage.html');
+        $tpl = $this->gadget->loadAdminTemplate('StaticPage.html');
         $tpl->SetBlock('static_page');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
