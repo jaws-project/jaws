@@ -70,7 +70,7 @@ class Comments_AdminAction extends Jaws_Gadget_Action
     {
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadTemplate('Comments.html');
+        $tpl = $this->gadget->loadAdminTemplate('Comments.html');
         $tpl->SetBlock('Comments');
 
         //Menu bar
@@ -172,7 +172,7 @@ class Comments_AdminAction extends Jaws_Gadget_Action
      */
     function CommentUI()
     {
-        $tpl = $this->gadget->loadTemplate('Comments.html');
+        $tpl = $this->gadget->loadAdminTemplate('Comments.html');
         $tpl->SetBlock('CommentUI');
 
         //IP
