@@ -18,7 +18,7 @@
 // |          Jason Rust <jrust@php.net>                                  |
 // +----------------------------------------------------------------------+
 
-// $Id: Detect.php 326006 2012-06-07 02:52:23Z clockwerx $
+// $Id$
 
 // }}}
 // {{{ constants
@@ -102,7 +102,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return void
      */
-    function detect($in_userAgent = null, $in_detect = null)
+    static function detect($in_userAgent = null, $in_detect = null)
     {
         static $hasRun;
         $options = &Net_UserAgent_Detect::_getStaticProperty('options');
@@ -519,7 +519,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return string first flag that matches
      */
-    function getBrowser($in_expectList)
+    static function getBrowser($in_expectList)
     {
         Net_UserAgent_Detect::detect();
         $browser = &Net_UserAgent_Detect::_getStaticProperty('browser');
@@ -760,7 +760,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return void
      */
-    function setQuirk($in_quirk, $in_hasQuirk = true)
+    static function setQuirk($in_quirk, $in_hasQuirk = true)
     {
         $quirks = &Net_UserAgent_Detect::_getStaticProperty('quirks');
         $hasQuirk = !empty($in_hasQuirk); 
@@ -825,7 +825,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return void
      */
-    function setFeature($in_feature, $in_hasFeature = true)
+    static function setFeature($in_feature, $in_hasFeature = true)
     {
         $features = &Net_UserAgent_Detect::_getStaticProperty('features');
         $features[strtolower($in_feature)] = $in_hasFeature;
@@ -926,7 +926,7 @@ class Net_UserAgent_Detect {
      * @access public
      * @return void
      */
-    function setAcceptType($in_values, $in_type)
+    static function setAcceptType($in_values, $in_type)
     {
         $type = strtolower($in_type);
 
@@ -988,7 +988,7 @@ class Net_UserAgent_Detect {
      * @return mixed   A reference to the variable. If not set it will be
      *                 auto initialised to NULL.
      */
-    function &_getStaticProperty($var)
+    static function &_getStaticProperty($var)
     {
         static $properties;
         return $properties[$var];
