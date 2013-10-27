@@ -42,7 +42,7 @@
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: sqlite.php 327310 2012-08-27 15:16:18Z danielc $
 //
 
 require_once 'MDB2/Driver/Function/Common.php';
@@ -147,12 +147,12 @@ class MDB2_Driver_Function_sqlite extends MDB2_Driver_Function_Common
      */
     function replace($str, $from_str, $to_str)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
-        $error =& $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
+        $error = $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
             'method not implemented', __FUNCTION__);
         return $error;
     }

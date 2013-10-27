@@ -43,7 +43,7 @@
 // | Author: Frank M. Kromann <frank@kromann.info>                        |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: mssql.php 328145 2012-10-25 20:20:57Z danielc $
 //
 // {{{ Class MDB2_Driver_mssql
 /**
@@ -254,7 +254,7 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
             register_shutdown_function('MDB2_closeOpenTransactions');
         }
         $result =& $this->_doQuery('BEGIN TRANSACTION', true);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         $this->in_transaction = true;
@@ -287,7 +287,7 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
         }
 
         $result =& $this->_doQuery('COMMIT TRANSACTION', true);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         $this->in_transaction = false;
@@ -321,7 +321,7 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
         }
 
         $result =& $this->_doQuery('ROLLBACK TRANSACTION', true);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         $this->in_transaction = false;
@@ -343,9 +343,9 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
      */
     function _doConnect($username, $password, $persistent = false)
     {
-        if (   !PEAR::loadExtension($this->phptype)
-            && !PEAR::loadExtension('sybase_ct')
-            && !PEAR::loadExtension('odbtp')
+        if (   !extension_loaded($this->phptype)
+            && !extension_loaded('sybase_ct')
+            && !extension_loaded('odbtp')
             && !function_exists('mssql_connect')
         ) {
             return $this->raiseError(MDB2_ERROR_NOT_FOUND, null, null,
@@ -381,7 +381,7 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
         /*
         if (!empty($this->dsn['charset'])) {
             $result = $this->setCharset($this->dsn['charset'], $connection);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
         }
@@ -429,7 +429,7 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
             $this->dsn['password'],
             $this->options['persistent']
         );
-        if (PEAR::isError($connection)) {
+        if (MDB2::isError($connection)) {
             return $connection;
         }
 
@@ -469,7 +469,7 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
         $connection = $this->_doConnect($this->dsn['username'],
                                         $this->dsn['password'],
                                         $this->options['persistent']);
-        if (PEAR::isError($connection)) {
+        if (MDB2::isError($connection)) {
             return $connection;
         }
 
@@ -542,12 +542,12 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
      * @return mixed MDB2_OK on success, a MDB2 error on failure
      * @access public
      */
-    function &standaloneQuery($query, $types = null, $is_manip = false)
+    function standaloneQuery($query, $types = null, $is_manip = false)
     {
         $user = $this->options['DBA_username']? $this->options['DBA_username'] : $this->dsn['username'];
         $pass = $this->options['DBA_password']? $this->options['DBA_password'] : $this->dsn['password'];
         $connection = $this->_doConnect($user, $pass, $this->options['persistent']);
-        if (PEAR::isError($connection)) {
+        if (MDB2::isError($connection)) {
             return $connection;
         }
 
@@ -556,8 +556,8 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
         $this->offset = $this->limit = 0;
         $query = $this->_modifyQuery($query, $is_manip, $limit, $offset);
 
-        $result =& $this->_doQuery($query, $is_manip, $connection, $this->database_name);
-        if (!PEAR::isError($result)) {
+        $result = $this->_doQuery($query, $is_manip, $connection, $this->database_name);
+        if (!MDB2::isError($result)) {
             $result = $this->_affectedRows($connection, $result);
         }
 
@@ -577,12 +577,12 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
      * @return result or error object
      * @access protected
      */
-    function &_doQuery($query, $is_manip = false, $connection = null, $database_name = null)
+    function _doQuery($query, $is_manip = false, $connection = null, $database_name = null)
     {
         $this->last_query = $query;
         $result = $this->debug($query, 'query', array('is_manip' => $is_manip, 'when' => 'pre'));
         if ($result) {
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
             $query = $result;
@@ -594,7 +594,7 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
 
         if (null === $connection) {
             $connection = $this->getConnection();
-            if (PEAR::isError($connection)) {
+            if (MDB2::isError($connection)) {
                 return $connection;
             }
         }
@@ -615,7 +615,7 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
 
         $result = @mssql_query($query, $connection);
         if (!$result) {
-            $err =& $this->raiseError(null, null, null,
+            $err = $this->raiseError(null, null, null,
                 'Could not execute statement', __FUNCTION__);
             return $err;
         }
@@ -639,7 +639,7 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
     {
         if (null === $connection) {
             $connection = $this->getConnection();
-            if (PEAR::isError($connection)) {
+            if (MDB2::isError($connection)) {
                 return $connection;
             }
         }
@@ -688,13 +688,13 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
         } else {
             $query = 'SELECT @@VERSION';
             $server_info = $this->queryOne($query, 'text');
-            if (PEAR::isError($server_info)) {
+            if (MDB2::isError($server_info)) {
                 return $server_info;
             }
         }
         // cache server_info
         $this->connected_server_info = $server_info;
-        if (!$native && !PEAR::isError($server_info)) {
+        if (!$native && !MDB2::isError($server_info)) {
             if (preg_match('/(\d+)\.(\d+)\.(\d+)/', $server_info, $tmp)) {
                 $server_info = array(
                     'major' => $tmp[1],
@@ -729,8 +729,8 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
     function _checkSequence($seq_name)
     {
         $query = "SELECT * FROM $seq_name";
-        $tableExists =& $this->_doQuery($query, true);
-        if (PEAR::isError($tableExists)) {
+        $tableExists = $this->_doQuery($query, true);
+        if (MDB2::isError($tableExists)) {
             if ($tableExists->getCode() == MDB2_ERROR_NOSUCHTABLE) {
                 return false;
             }
@@ -769,14 +769,14 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
         } else {
             $query = "INSERT INTO $sequence_name ($seqcol_name) VALUES (0)";
         }
-        $result =& $this->_doQuery($query, true);
+        $result = $this->_doQuery($query, true);
         $this->popExpect();
         $this->popErrorHandling();
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             if ($ondemand && !$this->_checkSequence($sequence_name)) {
                 $this->loadModule('Manager', null, true);
                 $result = $this->manager->createSequence($seq_name);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $this->raiseError($result, null, null,
                         'on demand sequence '.$seq_name.' could not be created', __FUNCTION__);
                 } else {
@@ -803,8 +803,8 @@ class MDB2_Driver_mssql extends MDB2_Driver_Common
         $value = $this->lastInsertID($sequence_name);
         if (is_numeric($value)) {
             $query = "DELETE FROM $sequence_name WHERE $seqcol_name < $value";
-            $result =& $this->_doQuery($query, true);
-            if (PEAR::isError($result)) {
+            $result = $this->_doQuery($query, true);
+            if (MDB2::isError($result)) {
                 $this->warnings[] = 'nextID: could not delete previous sequence table values from '.$seq_name;
             }
         }
@@ -896,22 +896,23 @@ class MDB2_Result_mssql extends MDB2_Result_Common
      * @return int data array on success, a MDB2 error on failure
      * @access public
      */
-    function &fetchRow($fetchmode = MDB2_FETCHMODE_DEFAULT, $rownum = null)
+    function fetchRow($fetchmode = MDB2_FETCHMODE_DEFAULT, $rownum = null)
     {
         if (!$this->_skipLimitOffset()) {
-            $null = null;
-            return $null;
+            return null;
         }
         if (null !== $rownum) {
             $seek = $this->seek($rownum);
-            if (PEAR::isError($seek)) {
+            if (MDB2::isError($seek)) {
                 return $seek;
             }
         }
         if ($fetchmode == MDB2_FETCHMODE_DEFAULT) {
             $fetchmode = $this->db->fetchmode;
         }
-        if ($fetchmode & MDB2_FETCHMODE_ASSOC) {
+        if (   $fetchmode == MDB2_FETCHMODE_ASSOC
+            || $fetchmode == MDB2_FETCHMODE_OBJECT
+        ) {
             $row = @mssql_fetch_assoc($this->result);
             if (is_array($row)
                 && $this->db->options['portability'] & MDB2_PORTABILITY_FIX_CASE
@@ -923,12 +924,11 @@ class MDB2_Result_mssql extends MDB2_Result_Common
         }
         if (!$row) {
             if (false === $this->result) {
-                $err =& $this->db->raiseError(MDB2_ERROR_NEED_MORE_DATA, null, null,
+                $err = $this->db->raiseError(MDB2_ERROR_NEED_MORE_DATA, null, null,
                     'resultset has already been freed', __FUNCTION__);
                 return $err;
             }
-            $null = null;
-            return $null;
+            return null;
         }
         $mode = $this->db->options['portability'] & MDB2_PORTABILITY_EMPTY_TO_NULL;
         $rtrim = false;
@@ -942,8 +942,12 @@ class MDB2_Result_mssql extends MDB2_Result_Common
         if ($mode) {
             $this->db->_fixResultArrayValues($row, $mode);
         }
-        if (!empty($this->types)) {
-            $row = $this->db->datatype->convertResultRow($this->types, $row, $rtrim);
+        if ($fetchmode == MDB2_FETCHMODE_ORDERED) {
+            if (!empty($this->types)) {
+                $row = $this->db->datatype->convertResultRow($this->types, $row, $rtrim);
+            }
+        } elseif (!empty($this->types_assoc)) {
+            $row = $this->db->datatype->convertResultRow($this->types_assoc, $row, $rtrim);
         }
         if (!empty($this->values)) {
             $this->_assignBindColumns($row);
@@ -977,7 +981,7 @@ class MDB2_Result_mssql extends MDB2_Result_Common
     {
         $columns = array();
         $numcols = $this->numCols();
-        if (PEAR::isError($numcols)) {
+        if (MDB2::isError($numcols)) {
             return $numcols;
         }
         for ($column = 0; $column < $numcols; $column++) {
@@ -1114,7 +1118,7 @@ class MDB2_BufferedResult_mssql extends MDB2_Result_mssql
     function valid()
     {
         $numrows = $this->numRows();
-        if (PEAR::isError($numrows)) {
+        if (MDB2::isError($numrows)) {
             return $numrows;
         }
         return $this->rownum < ($numrows - 1);

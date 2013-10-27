@@ -43,7 +43,7 @@
 // | Author: Lorenzo Alberton <l.alberton@quipo.it>                       |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: ibase.php 328145 2012-10-25 20:20:57Z danielc $
 
 /**
  * MDB2 FireBird/InterBase driver
@@ -279,7 +279,7 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
     function getConnection()
     {
         $result = $this->connect();
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         if ($this->in_transaction) {
@@ -314,7 +314,7 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
             return MDB2_OK;  //nothing to do
         }
         $connection = $this->getConnection();
-        if (PEAR::isError($connection)) {
+        if (MDB2::isError($connection)) {
             return $connection;
         }
         $result = @ibase_trans(IBASE_DEFAULT, $connection);
@@ -480,7 +480,7 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
             return $database_name;
         }
         $ret = $this->options['database_path'] . $database_name;
-        if (!preg_match('/\.[fg]db$/i', $database_name)) {
+        if (!preg_match('/\.([fg]db|ib)$/i', $database_name)) {
             $ret .= $this->options['database_extension'];
         }
         return $ret;
@@ -497,7 +497,7 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
      */
     function _doConnect($username, $password, $database_name, $persistent = false)
     {
-        if (!PEAR::loadExtension('interbase')) {
+        if (!extension_loaded('interbase')) {
             return $this->raiseError(MDB2_ERROR_NOT_FOUND, null, null,
                 'extension '.$this->phptype.' is not compiled into PHP', __FUNCTION__);
         }
@@ -568,7 +568,7 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
                                         $this->dsn['password'],
                                         $this->database_name,
                                         $this->options['persistent']);
-        if (PEAR::isError($connection)) {
+        if (MDB2::isError($connection)) {
             return $connection;
         }
         $this->connection =& $connection;
@@ -653,12 +653,12 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
      * @return mixed MDB2_OK on success, a MDB2 error on failure
      * @access public
      */
-    function &standaloneQuery($query, $types = null, $is_manip = false)
+    function standaloneQuery($query, $types = null, $is_manip = false)
     {
         $user = $this->options['DBA_username']? $this->options['DBA_username'] : $this->dsn['username'];
         $pass = $this->options['DBA_password']? $this->options['DBA_password'] : $this->dsn['password'];
         $connection = $this->_doConnect($user, $pass, $this->database_name, $this->options['persistent']);
-        if (PEAR::isError($connection)) {
+        if (MDB2::isError($connection)) {
             return $connection;
         }
 
@@ -666,9 +666,9 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
         $limit = $this->limit;
         $this->offset = $this->limit = 0;
         $query = $this->_modifyQuery($query, $is_manip, $limit, $offset);
-        
-        $result =& $this->_doQuery($query, $is_manip, $connection);
-        if (!PEAR::isError($result)) {
+
+        $result = $this->_doQuery($query, $is_manip, $connection);
+        if (!MDB2::isError($result)) {
             $result = $this->_affectedRows($connection, $result);
         }
 
@@ -688,12 +688,12 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
      * @return result or error object
      * @access protected
      */
-    function &_doQuery($query, $is_manip = false, $connection = null, $database_name = null)
+    function _doQuery($query, $is_manip = false, $connection = null, $database_name = null)
     {
         $this->last_query = $query;
         $result = $this->debug($query, 'query', array('is_manip' => $is_manip, 'when' => 'pre'));
         if ($result) {
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
             $query = $result;
@@ -707,14 +707,14 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
 
         if (null === $connection) {
             $connection = $this->getConnection();
-            if (PEAR::isError($connection)) {
+            if (MDB2::isError($connection)) {
                 return $connection;
             }
         }
         $result = @ibase_query($connection, $query);
 
         if (false === $result) {
-            $err =& $this->raiseError(null, null, null,
+            $err = $this->raiseError(null, null, null,
                 'Could not execute statement', __FUNCTION__);
             return $err;
         }
@@ -738,7 +738,7 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
     {
         if (null === $connection) {
             $connection = $this->getConnection();
-            if (PEAR::isError($connection)) {
+            if (MDB2::isError($connection)) {
                 return $connection;
             }
         }
@@ -840,11 +840,10 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
      * @access public
      * @see bindParam, execute
      */
-    function &prepare($query, $types = null, $result_types = null, $lobs = array())
+    function prepare($query, $types = null, $result_types = null, $lobs = array())
     {
         if ($this->options['emulate_prepared']) {
-            $obj =& parent::prepare($query, $types, $result_types, $lobs);
-            return $obj;
+            return parent::prepare($query, $types, $result_types, $lobs);
         }
         $is_manip = ($result_types === MDB2_PREPARE_MANIP);
         $offset = $this->offset;
@@ -852,7 +851,7 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
         $this->offset = $this->limit = 0;
         $result = $this->debug($query, __FUNCTION__, array('is_manip' => $is_manip, 'when' => 'pre'));
         if ($result) {
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
             $query = $result;
@@ -879,7 +878,7 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
             }
 
             $new_pos = $this->_skipDelimitedStrings($query, $position, $p_position);
-            if (PEAR::isError($new_pos)) {
+            if (MDB2::isError($new_pos)) {
                 return $new_pos;
             }
             if ($new_pos != $position) {
@@ -896,7 +895,7 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
                     $regexp = '/^.{'.($position+1).'}('.$this->options['bindname_format'].').*$/s';
                     $parameter = preg_replace($regexp, '\\1', $query);
                     if ($parameter === '') {
-                        $err =& $this->raiseError(MDB2_ERROR_SYNTAX, null, null,
+                        $err = $this->raiseError(MDB2_ERROR_SYNTAX, null, null,
                             'named parameter name must match "bindname_format" option', __FUNCTION__);
                         return $err;
                     }
@@ -911,12 +910,12 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
             }
         }
         $connection = $this->getConnection();
-        if (PEAR::isError($connection)) {
+        if (MDB2::isError($connection)) {
             return $connection;
         }
         $statement = @ibase_prepare($connection, $query);
         if (!$statement) {
-            $err =& $this->raiseError(null, null, null,
+            $err = $this->raiseError(null, null, null,
                 'Could not create statement', __FUNCTION__);
             return $err;
         }
@@ -964,11 +963,11 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
         $result = $this->queryOne($query, 'integer');
         $this->popExpect();
         $this->popErrorHandling();
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             if ($ondemand) {
                 $this->loadModule('Manager', null, true);
                 $result = $this->manager->createSequence($seq_name);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $this->raiseError($result, null, null,
                         'on demand sequence could not be created', __FUNCTION__);
                 } else {
@@ -1012,7 +1011,7 @@ class MDB2_Driver_ibase extends MDB2_Driver_Common
         $sequence_name = $this->getSequenceName($seq_name);
         $query = 'SELECT GEN_ID('.$sequence_name.', 0) as the_value FROM RDB$DATABASE';
         $value = $this->queryOne($query);
-        if (PEAR::isError($value)) {
+        if (MDB2::isError($value)) {
             return $this->raiseError($value, null, null,
                 'Unable to select from ' . $seq_name, __FUNCTION__);
         }
@@ -1077,27 +1076,27 @@ class MDB2_Result_ibase extends MDB2_Result_Common
      * @return int data array on success, a MDB2 error on failure
      * @access public
      */
-    function &fetchRow($fetchmode = MDB2_FETCHMODE_DEFAULT, $rownum = null)
+    function fetchRow($fetchmode = MDB2_FETCHMODE_DEFAULT, $rownum = null)
     {
         if (true === $this->result) {
             //query successfully executed, but without results...
-            $null = null;
-            return $null;
+            return null;
         }
         if (!$this->_skipLimitOffset()) {
-            $null = null;
-            return $null;
+            return null;
         }
         if (null !== $rownum) {
             $seek = $this->seek($rownum);
-            if (PEAR::isError($seek)) {
+            if (MDB2::isError($seek)) {
                 return $seek;
             }
         }
         if ($fetchmode == MDB2_FETCHMODE_DEFAULT) {
             $fetchmode = $this->db->fetchmode;
         }
-        if ($fetchmode & MDB2_FETCHMODE_ASSOC) {
+        if (   $fetchmode == MDB2_FETCHMODE_ASSOC
+            || $fetchmode == MDB2_FETCHMODE_OBJECT
+        ) {
             $row = @ibase_fetch_assoc($this->result);
             if (is_array($row)
                 && $this->db->options['portability'] & MDB2_PORTABILITY_FIX_CASE
@@ -1109,12 +1108,11 @@ class MDB2_Result_ibase extends MDB2_Result_Common
         }
         if (!$row) {
             if (false === $this->result) {
-                $err =& $this->db->raiseError(MDB2_ERROR_NEED_MORE_DATA, null, null,
+                $err = $this->db->raiseError(MDB2_ERROR_NEED_MORE_DATA, null, null,
                     'resultset has already been freed', __FUNCTION__);
                 return $err;
             }
-            $null = null;
-            return $null;
+            return null;
         }
         $mode = $this->db->options['portability'] & MDB2_PORTABILITY_EMPTY_TO_NULL;
         $rtrim = false;
@@ -1128,8 +1126,12 @@ class MDB2_Result_ibase extends MDB2_Result_Common
         if ($mode) {
             $this->db->_fixResultArrayValues($row, $mode);
         }
-        if (!empty($this->types)) {
-            $row = $this->db->datatype->convertResultRow($this->types, $row, $rtrim);
+        if ($fetchmode == MDB2_FETCHMODE_ORDERED) {
+            if (!empty($this->types)) {
+                $row = $this->db->datatype->convertResultRow($this->types, $row, $rtrim);
+            }
+        } elseif (!empty($this->types_assoc)) {
+            $row = $this->db->datatype->convertResultRow($this->types_assoc, $row, $rtrim);
         }
         if (!empty($this->values)) {
             $this->_assignBindColumns($row);
@@ -1163,7 +1165,7 @@ class MDB2_Result_ibase extends MDB2_Result_Common
     {
         $columns = array();
         $numcols = $this->numCols();
-        if (PEAR::isError($numcols)) {
+        if (MDB2::isError($numcols)) {
             return $numcols;
         }
         for ($column = 0; $column < $numcols; $column++) {
@@ -1308,21 +1310,20 @@ class MDB2_BufferedResult_ibase extends MDB2_Result_ibase
      * @return int data array on success, a MDB2 error on failure
      * @access public
      */
-    function &fetchRow($fetchmode = MDB2_FETCHMODE_DEFAULT, $rownum = null)
+    function fetchRow($fetchmode = MDB2_FETCHMODE_DEFAULT, $rownum = null)
     {
         if (true === $this->result || (null === $this->result)) {
             //query successfully executed, but without results...
-            $null = null;
-            return $null;
+            return null;
         }
         if (false === $this->result) {
-            $err =& $this->db->raiseError(MDB2_ERROR_NEED_MORE_DATA, null, null,
+            $err = $this->db->raiseError(MDB2_ERROR_NEED_MORE_DATA, null, null,
                 'resultset has already been freed', __FUNCTION__);
             return $err;
         }
         if (null !== $rownum) {
             $seek = $this->seek($rownum);
-            if (PEAR::isError($seek)) {
+            if (MDB2::isError($seek)) {
                 return $seek;
             }
         }
@@ -1331,11 +1332,12 @@ class MDB2_BufferedResult_ibase extends MDB2_Result_ibase
             $fetchmode = $this->db->fetchmode;
         }
         if (!$this->_fillBuffer($target_rownum)) {
-            $null = null;
-            return $null;
+            return null;
         }
         $row = $this->buffer[$target_rownum];
-        if ($fetchmode & MDB2_FETCHMODE_ASSOC) {
+        if (   $fetchmode == MDB2_FETCHMODE_ASSOC
+            || $fetchmode == MDB2_FETCHMODE_OBJECT
+        ) {
             $column_names = $this->getColumnNames();
             foreach ($column_names as $name => $i) {
                 $column_names[$name] = $row[$i];
@@ -1354,8 +1356,12 @@ class MDB2_BufferedResult_ibase extends MDB2_Result_ibase
         if ($mode) {
             $this->db->_fixResultArrayValues($row, $mode);
         }
-        if (!empty($this->types)) {
-            $row = $this->db->datatype->convertResultRow($this->types, $row, $rtrim);
+        if ($fetchmode == MDB2_FETCHMODE_ORDERED) {
+            if (!empty($this->types)) {
+                $row = $this->db->datatype->convertResultRow($this->types, $row, $rtrim);
+            }
+        } elseif (!empty($this->types_assoc)) {
+            $row = $this->db->datatype->convertResultRow($this->types_assoc, $row, $rtrim);
         }
         if (!empty($this->values)) {
             $this->_assignBindColumns($row);
@@ -1479,10 +1485,10 @@ class MDB2_Statement_ibase extends MDB2_Statement_Common
      *               a MDB2 error on failure
      * @access private
      */
-    function &_execute($result_class = true, $result_wrap_class = false)
+    function _execute($result_class = true, $result_wrap_class = true)
     {
         if (null === $this->statement) {
-            $result =& parent::_execute($result_class, $result_wrap_class);
+            $result = parent::_execute($result_class, $result_wrap_class);
             return $result;
         }
         $this->db->last_query = $this->query;
@@ -1493,7 +1499,7 @@ class MDB2_Statement_ibase extends MDB2_Statement_Common
         }
 
         $connection = $this->db->getConnection();
-        if (PEAR::isError($connection)) {
+        if (MDB2::isError($connection)) {
             return $connection;
         }
 
@@ -1506,7 +1512,7 @@ class MDB2_Statement_ibase extends MDB2_Statement_Common
             $value = $this->values[$parameter];
             $type = !empty($this->types[$parameter]) ? $this->types[$parameter] : null;
             $quoted = $this->db->quote($value, $type, false);
-            if (PEAR::isError($quoted)) {
+            if (MDB2::isError($quoted)) {
                 return $quoted;
             }
             $parameters[] = $quoted;
@@ -1514,7 +1520,7 @@ class MDB2_Statement_ibase extends MDB2_Statement_Common
 
         $result = @call_user_func_array('ibase_execute', $parameters);
         if (false === $result) {
-            $err =& $this->db->raiseError(null, null, null,
+            $err = $this->db->raiseError(null, null, null,
                 'Could not execute statement', __FUNCTION__);
             return $err;
         }
@@ -1524,7 +1530,7 @@ class MDB2_Statement_ibase extends MDB2_Statement_Common
             return $affected_rows;
         }
 
-        $result =& $this->db->_wrapResult($result, $this->result_types,
+        $result = $this->db->_wrapResult($result, $this->result_types,
             $result_class, $result_wrap_class, $this->limit, $this->offset);
         $this->db->debug($this->query, 'execute', array('is_manip' => $this->is_manip, 'when' => 'post', 'result' => $result));
         return $result;

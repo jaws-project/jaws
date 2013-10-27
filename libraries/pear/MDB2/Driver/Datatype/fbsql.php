@@ -43,7 +43,7 @@
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: fbsql.php 327310 2012-08-27 15:16:18Z danielc $
 //
 
 require_once 'MDB2/Driver/Datatype/Common.php';
@@ -115,7 +115,7 @@ class MDB2_Driver_Datatype_fbsql extends MDB2_Driver_Datatype_Common
     function getTypeDeclaration($field)
     {
         $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -331,7 +331,7 @@ class MDB2_Driver_Datatype_fbsql extends MDB2_Driver_Datatype_Common
             break;
         default:
             $db =& $this->getDBInstance();
-            if (PEAR::isError($db)) {
+            if (MDB2::isError($db)) {
                 return $db;
             }
             return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,

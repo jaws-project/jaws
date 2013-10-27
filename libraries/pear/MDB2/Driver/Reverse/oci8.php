@@ -43,7 +43,7 @@
 // |          Lorenzo Alberton <l.alberton@quipo.it>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: oci8.php 327310 2012-08-27 15:16:18Z danielc $
 //
 
 require_once 'MDB2/Driver/Reverse/Common.php';
@@ -69,13 +69,13 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
      */
     function getTableFieldDefinition($table_name, $field_name)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $result = $db->loadModule('Datatype', null, true);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -96,7 +96,7 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
                      AND (column_name=? OR column_name=?)
                 ORDER BY column_id';
         $stmt = $db->prepare($query);
-        if (PEAR::isError($stmt)) {
+        if (MDB2::isError($stmt)) {
             return $stmt;
         }
         $args = array(
@@ -108,11 +108,11 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
             strtoupper($field_name)
         );
         $result = $stmt->execute($args);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         $column = $result->fetchRow(MDB2_FETCHMODE_ASSOC);
-        if (PEAR::isError($column)) {
+        if (MDB2::isError($column)) {
             return $column;
         }
         $stmt->free();
@@ -132,7 +132,7 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
             }
         }
         $mapped_datatype = $db->datatype->mapNativeDatatype($column);
-        if (PEAR::isError($mapped_datatype)) {
+        if (MDB2::isError($mapped_datatype)) {
             return $mapped_datatype;
         }
         list($types, $length, $unsigned, $fixed) = $mapped_datatype;
@@ -178,22 +178,22 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
                       WHERE table_name=?
                         AND triggering_event='INSERT'
                         AND trigger_type='BEFORE EACH ROW'";
-			// ^^ pretty reasonable mimic for "auto_increment" in oracle?
-			$stmt = $db->prepare($query);
-            if (PEAR::isError($stmt)) {
+            // ^^ pretty reasonable mimic for "auto_increment" in oracle?
+            $stmt = $db->prepare($query);
+            if (MDB2::isError($stmt)) {
                 return $stmt;
             }
-			$result = $stmt->execute(strtoupper($table));
-	        if (PEAR::isError($result)) {
-	            return $result;
-	        }
-	        while ($triggerstr = $result->fetchOne()) {
-	           	if (preg_match('/.*SELECT\W+(.+)\.nextval +into +\:NEW\.'.$field_name.' +FROM +dual/im', $triggerstr, $matches)) {
-					$definition[0]['autoincrement'] = $matches[1];
+            $result = $stmt->execute(strtoupper($table));
+            if (MDB2::isError($result)) {
+                return $result;
+            }
+            while ($triggerstr = $result->fetchOne()) {
+                   if (preg_match('/.*SELECT\W+(.+)\.nextval +into +\:NEW\.'.$field_name.' +FROM +dual/im', $triggerstr, $matches)) {
+                    $definition[0]['autoincrement'] = $matches[1];
                 }
             }
-	        $stmt->free();
-	        $result->free();
+            $stmt->free();
+            $result->free();
         }
         return $definition;
     }
@@ -211,8 +211,8 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
      */
     function getTableIndexDefinition($table_name, $index_name)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
         
@@ -236,7 +236,7 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
                      AND (aic.table_owner=? OR aic.table_owner=?)
                 ORDER BY column_position";
         $stmt = $db->prepare($query);
-        if (PEAR::isError($stmt)) {
+        if (MDB2::isError($stmt)) {
             return $stmt;
         }
         $indexnames = array_unique(array($db->getIndexName($index_name), $index_name));
@@ -251,15 +251,15 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
                 $owner,
                 strtoupper($owner)
             );
-        	$result = $stmt->execute($args);
-        	if (PEAR::isError($result)) {
+            $result = $stmt->execute($args);
+            if (MDB2::isError($result)) {
                 return $result;
             }
-        	$row = $result->fetchRow(MDB2_FETCHMODE_ASSOC);
-        	if (PEAR::isError($row)) {
+            $row = $result->fetchRow(MDB2_FETCHMODE_ASSOC);
+            if (MDB2::isError($row)) {
                 return $row;
             }
-        	$i++;
+            $i++;
         }
         if (null === $row) {
             return $db->raiseError(MDB2_ERROR_NOT_FOUND, null, null,
@@ -311,8 +311,8 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
      */
     function getTableConstraintDefinition($table_name, $constraint_name)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
         
@@ -358,7 +358,7 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
             $tablenames = array($table, strtoupper($table));
         }
         $stmt = $db->prepare($query);
-        if (PEAR::isError($stmt)) {
+        if (MDB2::isError($stmt)) {
             return $stmt;
         }
         
@@ -376,11 +376,11 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
                 $args = array_merge($args, $tablenames);
             }
             $result = $stmt->execute($args);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
             $row = $result->fetchRow(MDB2_FETCHMODE_ASSOC);
-            if (PEAR::isError($row)) {
+            if (MDB2::isError($row)) {
                 return $row;
             }
             $c++;
@@ -400,18 +400,18 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
 
         if ($definition['check']) {
             // pattern match constraint for check constraint values into enum-style output:
-			$enumregex = '/'.$row['column_name'].' in \((.+?)\)/i';
-			if (preg_match($enumregex, $row['search_condition'], $rangestr)) {
-				$definition['fields'][$column_name] = array();
-				$allowed = explode(',', $rangestr[1]);
-				foreach ($allowed as $val) {
-					$val = trim($val);
-					$val = preg_replace('/^\'/', '', $val);
-					$val = preg_replace('/\'$/', '', $val);
-					array_push($definition['fields'][$column_name], $val);
-				}
-			}
-		}
+            $enumregex = '/'.$row['column_name'].' in \((.+?)\)/i';
+            if (preg_match($enumregex, $row['search_condition'], $rangestr)) {
+                $definition['fields'][$column_name] = array();
+                $allowed = explode(',', $rangestr[1]);
+                foreach ($allowed as $val) {
+                    $val = trim($val);
+                    $val = preg_replace('/^\'/', '', $val);
+                    $val = preg_replace('/\'$/', '', $val);
+                    array_push($definition['fields'][$column_name], $val);
+                }
+            }
+        }
         
         while (null !== $row) {
             $row = array_change_key_case($row, CASE_LOWER);
@@ -467,8 +467,8 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
      */
     function getSequenceDefinition($sequence)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -477,7 +477,7 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
         $query.= ' WHERE sequence_name='.$db->quote($sequence_name, 'text');
         $query.= '    OR sequence_name='.$db->quote(strtoupper($sequence_name), 'text');
         $start = $db->queryOne($query, 'integer');
-        if (PEAR::isError($start)) {
+        if (MDB2::isError($start)) {
             return $start;
         }
         $definition = array();
@@ -504,8 +504,8 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
      */
     function getTriggerDefinition($trigger)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -530,7 +530,7 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
             'when_clause'     => 'text',
         );
         $result = $db->queryRow($query, $types, MDB2_FETCHMODE_ASSOC);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         if (!empty($result['trigger_type'])) {
@@ -569,8 +569,8 @@ class MDB2_Driver_Reverse_oci8 extends MDB2_Driver_Reverse_Common
            return parent::tableInfo($result, $mode);
         }
 
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 

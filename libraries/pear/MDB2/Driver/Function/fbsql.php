@@ -42,7 +42,7 @@
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: fbsql.php 208329 2006-03-01 12:15:38Z lsmith $
 //
 
 require_once 'MDB2/Driver/Function/Common.php';

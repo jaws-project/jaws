@@ -43,7 +43,7 @@
 // |          Lorenzo Alberton <l.alberton@quipo.it>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: sqlite.php 327310 2012-08-27 15:16:18Z danielc $
 //
 
 require_once 'MDB2/Driver/Reverse/Common.php';
@@ -78,8 +78,8 @@ class MDB2_Driver_Reverse_sqlite extends MDB2_Driver_Reverse_Common
      */
     function _getTableColumns($sql)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
         $start_pos  = strpos($sql, '(');
@@ -158,15 +158,15 @@ class MDB2_Driver_Reverse_sqlite extends MDB2_Driver_Reverse_Common
      */
     function getTableFieldDefinition($table_name, $field_name)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         list($schema, $table) = $this->splitTableSchema($table_name);
 
         $result = $db->loadModule('Datatype', null, true);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         $query = "SELECT sql FROM sqlite_master WHERE type='table' AND ";
@@ -176,7 +176,7 @@ class MDB2_Driver_Reverse_sqlite extends MDB2_Driver_Reverse_Common
             $query.= 'name='.$db->quote($table, 'text');
         }
         $sql = $db->queryOne($query);
-        if (PEAR::isError($sql)) {
+        if (MDB2::isError($sql)) {
             return $sql;
         }
         $columns = $this->_getTableColumns($sql);
@@ -192,7 +192,7 @@ class MDB2_Driver_Reverse_sqlite extends MDB2_Driver_Reverse_Common
             }
             if ($field_name == $column['name']) {
                 $mapped_datatype = $db->datatype->mapNativeDatatype($column);
-                if (PEAR::isError($mapped_datatype)) {
+                if (MDB2::isError($mapped_datatype)) {
                     return $mapped_datatype;
                 }
                 list($types, $length, $unsigned, $fixed) = $mapped_datatype;
@@ -260,8 +260,8 @@ class MDB2_Driver_Reverse_sqlite extends MDB2_Driver_Reverse_Common
      */
     function getTableIndexDefinition($table_name, $index_name)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -281,7 +281,7 @@ class MDB2_Driver_Reverse_sqlite extends MDB2_Driver_Reverse_Common
             $qry = sprintf($query, $db->quote($index_name_mdb2, 'text'));
         }
         $sql = $db->queryOne($qry, 'text');
-        if (PEAR::isError($sql) || empty($sql)) {
+        if (MDB2::isError($sql) || empty($sql)) {
             // fallback to the given $index_name, without transformation
             if ($db->options['portability'] & MDB2_PORTABILITY_FIX_CASE) {
                 $qry = sprintf($query, $db->quote(strtolower($index_name), 'text'));
@@ -290,7 +290,7 @@ class MDB2_Driver_Reverse_sqlite extends MDB2_Driver_Reverse_Common
             }
             $sql = $db->queryOne($qry, 'text');
         }
-        if (PEAR::isError($sql)) {
+        if (MDB2::isError($sql)) {
             return $sql;
         }
         if (!$sql) {
@@ -343,8 +343,8 @@ class MDB2_Driver_Reverse_sqlite extends MDB2_Driver_Reverse_Common
      */
     function getTableConstraintDefinition($table_name, $constraint_name)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -364,7 +364,7 @@ class MDB2_Driver_Reverse_sqlite extends MDB2_Driver_Reverse_Common
             $qry = sprintf($query, $db->quote($constraint_name_mdb2, 'text'));
         }
         $sql = $db->queryOne($qry, 'text');
-        if (PEAR::isError($sql) || empty($sql)) {
+        if (MDB2::isError($sql) || empty($sql)) {
             // fallback to the given $index_name, without transformation
             if ($db->options['portability'] & MDB2_PORTABILITY_FIX_CASE) {
                 $qry = sprintf($query, $db->quote(strtolower($constraint_name), 'text'));
@@ -373,7 +373,7 @@ class MDB2_Driver_Reverse_sqlite extends MDB2_Driver_Reverse_Common
             }
             $sql = $db->queryOne($qry, 'text');
         }
-        if (PEAR::isError($sql)) {
+        if (MDB2::isError($sql)) {
             return $sql;
         }
         //default values, eventually overridden
@@ -402,7 +402,7 @@ class MDB2_Driver_Reverse_sqlite extends MDB2_Driver_Reverse_Common
             }
             $query.= " AND sql NOT NULL ORDER BY name";
             $sql = $db->queryOne($query, 'text');
-            if (PEAR::isError($sql)) {
+            if (MDB2::isError($sql)) {
                 return $sql;
             }
             if ($constraint_name == 'primary') {
@@ -534,8 +534,8 @@ class MDB2_Driver_Reverse_sqlite extends MDB2_Driver_Reverse_Common
      */
     function getTriggerDefinition($trigger)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -563,7 +563,7 @@ class MDB2_Driver_Reverse_sqlite extends MDB2_Driver_Reverse_Common
             'trigger_enabled' => 'boolean',
         );
         $def = $db->queryRow($query, $types, MDB2_FETCHMODE_ASSOC);
-        if (PEAR::isError($def)) {
+        if (MDB2::isError($def)) {
             return $def;
         }
         if (empty($def)) {
@@ -598,8 +598,8 @@ class MDB2_Driver_Reverse_sqlite extends MDB2_Driver_Reverse_Common
            return parent::tableInfo($result, $mode);
         }
 
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 

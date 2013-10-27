@@ -42,7 +42,7 @@
 // | Author: Lorenzo Alberton <l.alberton@quipo.it>                       |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: ibase.php 327310 2012-08-27 15:16:18Z danielc $
 //
 
 require_once 'MDB2/Driver/Reverse/Common.php';
@@ -131,13 +131,13 @@ class MDB2_Driver_Reverse_ibase extends MDB2_Driver_Reverse_Common
      */
     function getTableFieldDefinition($table_name, $field_name)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $result = $db->loadModule('Datatype', null, true);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -163,7 +163,7 @@ class MDB2_Driver_Reverse_ibase extends MDB2_Driver_Reverse_Common
                    WHERE UPPER(RDB\$RELATION_FIELDS.RDB\$RELATION_NAME)=$table
                      AND UPPER(RDB\$RELATION_FIELDS.RDB\$FIELD_NAME)=$field_name;";
         $column = $db->queryRow($query, null, MDB2_FETCHMODE_ASSOC);
-        if (PEAR::isError($column)) {
+        if (MDB2::isError($column)) {
             return $column;
         }
         if (empty($column)) {
@@ -190,7 +190,7 @@ class MDB2_Driver_Reverse_ibase extends MDB2_Driver_Reverse_Common
             $column['field_sub_type'] = null;
         }
         $mapped_datatype = $db->datatype->mapNativeDatatype($column);
-        if (PEAR::isError($mapped_datatype)) {
+        if (MDB2::isError($mapped_datatype)) {
             return $mapped_datatype;
         }
         list($types, $length, $unsigned, $fixed) = $mapped_datatype;
@@ -242,8 +242,8 @@ class MDB2_Driver_Reverse_ibase extends MDB2_Driver_Reverse_Common
      */
     function getTableIndexDefinition($table_name, $index_name, $format_index_name = true)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -262,7 +262,7 @@ class MDB2_Driver_Reverse_ibase extends MDB2_Driver_Reverse_Common
                 ORDER BY RDB\$INDEX_SEGMENTS.RDB\$FIELD_POSITION";
         $index_name_mdb2 = $db->quote(strtoupper($db->getIndexName($index_name)), 'text');
         $result = $db->queryRow(sprintf($query, $index_name_mdb2));
-        if (!PEAR::isError($result) && (null !== $result)) {
+        if (!MDB2::isError($result) && (null !== $result)) {
             // apply 'idxname_format' only if the query succeeded, otherwise
             // fallback to the given $index_name, without transformation
             $index_name = $index_name_mdb2;
@@ -270,7 +270,7 @@ class MDB2_Driver_Reverse_ibase extends MDB2_Driver_Reverse_Common
             $index_name = $db->quote(strtoupper($index_name), 'text');
         }
         $result = $db->query(sprintf($query, $index_name));
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         
@@ -317,8 +317,8 @@ class MDB2_Driver_Reverse_ibase extends MDB2_Driver_Reverse_Common
      */
     function getTableConstraintDefinition($table_name, $constraint_name)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -354,7 +354,7 @@ class MDB2_Driver_Reverse_ibase extends MDB2_Driver_Reverse_Common
                 ORDER BY s.RDB\$FIELD_POSITION";
         $constraint_name_mdb2 = $db->quote(strtoupper($db->getIndexName($constraint_name)), 'text');
         $result = $db->queryRow(sprintf($query, $constraint_name_mdb2));
-        if (!PEAR::isError($result) && (null !== $result)) {
+        if (!MDB2::isError($result) && (null !== $result)) {
             // apply 'idxname_format' only if the query succeeded, otherwise
             // fallback to the given $index_name, without transformation
             $constraint_name = $constraint_name_mdb2;
@@ -362,7 +362,7 @@ class MDB2_Driver_Reverse_ibase extends MDB2_Driver_Reverse_Common
             $constraint_name = $db->quote(strtoupper($constraint_name), 'text');
         }
         $result = $db->query(sprintf($query, $constraint_name));
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         
@@ -423,7 +423,7 @@ class MDB2_Driver_Reverse_ibase extends MDB2_Driver_Reverse_Common
         $definition['ondelete'] = $lastrow['ondelete'];
         $definition['match']    = $lastrow['match'];
         
-		return $definition;
+        return $definition;
     }
 
     // }}}
@@ -443,8 +443,8 @@ class MDB2_Driver_Reverse_ibase extends MDB2_Driver_Reverse_Common
      */
     function getTriggerDefinition($trigger)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -485,12 +485,12 @@ class MDB2_Driver_Reverse_ibase extends MDB2_Driver_Reverse_Common
         );
 
         $def = $db->queryRow($query, $types, MDB2_FETCHMODE_ASSOC);
-        if (PEAR::isError($def)) {
+        if (MDB2::isError($def)) {
             return $def;
         }
 
         $clob = $def['trigger_body'];
-        if (!PEAR::isError($clob) && is_resource($clob)) {
+        if (!MDB2::isError($clob) && is_resource($clob)) {
             $value = '';
             while (!feof($clob)) {
                 $data = fread($clob, 8192);
@@ -530,8 +530,8 @@ class MDB2_Driver_Reverse_ibase extends MDB2_Driver_Reverse_Common
            return parent::tableInfo($result, $mode);
         }
 
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -572,7 +572,7 @@ class MDB2_Driver_Reverse_ibase extends MDB2_Driver_Reverse_Common
                 'flags'  => '',
             );
             $mdb2type_info = $db->datatype->mapNativeDatatype($res[$i]);
-            if (PEAR::isError($mdb2type_info)) {
+            if (MDB2::isError($mdb2type_info)) {
                return $mdb2type_info;
             }
             $res[$i]['mdb2type'] = $mdb2type_info[0][0];

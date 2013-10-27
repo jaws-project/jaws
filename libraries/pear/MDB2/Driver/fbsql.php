@@ -43,7 +43,7 @@
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: fbsql.php 328145 2012-10-25 20:20:57Z danielc $
 //
 
 /**
@@ -171,7 +171,7 @@ class MDB2_Driver_fbsql extends MDB2_Driver_Common
             register_shutdown_function('MDB2_closeOpenTransactions');
         }
         $result =& $this->_doQuery('SET COMMIT FALSE;', true);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         $this->in_transaction = true;
@@ -205,11 +205,11 @@ class MDB2_Driver_fbsql extends MDB2_Driver_Common
         }
 
         $result =& $this->_doQuery('COMMIT;', true);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         $result =& $this->_doQuery('SET COMMIT TRUE;', true);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         $this->in_transaction = false;
@@ -243,11 +243,11 @@ class MDB2_Driver_fbsql extends MDB2_Driver_Common
         }
 
         $result =& $this->_doQuery('ROLLBACK;', true);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         $result =& $this->_doQuery('SET COMMIT TRUE;', true);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         $this->in_transaction = false;
@@ -265,7 +265,7 @@ class MDB2_Driver_fbsql extends MDB2_Driver_Common
      */
     function _doConnect($username, $password, $persistent = false)
     {
-        if (!PEAR::loadExtension($this->phptype)) {
+        if (!extension_loaded($this->phptype)) {
             return $this->raiseError(MDB2_ERROR_NOT_FOUND, null, null,
                 'extension '.$this->phptype.' is not compiled into PHP', __FUNCTION__);
         }
@@ -286,7 +286,7 @@ class MDB2_Driver_fbsql extends MDB2_Driver_Common
 
         if (!empty($this->dsn['charset'])) {
             $result = $this->setCharset($this->dsn['charset'], $connection);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
         }
@@ -317,7 +317,7 @@ class MDB2_Driver_fbsql extends MDB2_Driver_Common
         $connection = $this->_doConnect($this->dsn['username'],
                                         $this->dsn['password'],
                                         $this->options['persistent']);
-        if (PEAR::isError($connection)) {
+        if (MDB2::isError($connection)) {
             return $connection;
         }
 
@@ -357,7 +357,7 @@ class MDB2_Driver_fbsql extends MDB2_Driver_Common
         $connection = $this->_doConnect($this->dsn['username'],
                                         $this->dsn['password'],
                                         $this->options['persistent']);
-        if (PEAR::isError($connection)) {
+        if (MDB2::isError($connection)) {
             return $connection;
         }
 
@@ -420,7 +420,7 @@ class MDB2_Driver_fbsql extends MDB2_Driver_Common
         $user = $this->options['DBA_username']? $this->options['DBA_username'] : $this->dsn['username'];
         $pass = $this->options['DBA_password']? $this->options['DBA_password'] : $this->dsn['password'];
         $connection = $this->_doConnect($user, $pass, $this->options['persistent']);
-        if (PEAR::isError($connection)) {
+        if (MDB2::isError($connection)) {
             return $connection;
         }
 
@@ -430,7 +430,7 @@ class MDB2_Driver_fbsql extends MDB2_Driver_Common
         $query = $this->_modifyQuery($query, $is_manip, $limit, $offset);
 
         $result =& $this->_doQuery($query, $is_manip, $connection, $this->database_name);
-        if (!PEAR::isError($result)) {
+        if (!MDB2::isError($result)) {
             $result = $this->_affectedRows($connection, $result);
         }
 
@@ -455,7 +455,7 @@ class MDB2_Driver_fbsql extends MDB2_Driver_Common
         $this->last_query = $query;
         $result = $this->debug($query, 'query', array('is_manip' => $is_manip, 'when' => 'pre'));
         if ($result) {
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
             $query = $result;
@@ -467,7 +467,7 @@ class MDB2_Driver_fbsql extends MDB2_Driver_Common
 
         if (null === $connection) {
             $connection = $this->getConnection();
-            if (PEAR::isError($connection)) {
+            if (MDB2::isError($connection)) {
                 return $connection;
             }
         }
@@ -512,7 +512,7 @@ class MDB2_Driver_fbsql extends MDB2_Driver_Common
     {
         if (null === $connection) {
             $connection = $this->getConnection();
-            if (PEAR::isError($connection)) {
+            if (MDB2::isError($connection)) {
                 return $connection;
             }
         }
@@ -571,11 +571,11 @@ class MDB2_Driver_fbsql extends MDB2_Driver_Common
         $result =& $this->_doQuery($query, true);
         $this->popExpect();
         $this->popErrorHandling();
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             if ($ondemand && $result->getCode() == MDB2_ERROR_NOSUCHTABLE) {
                 $this->loadModule('Manager', null, true);
                 $result = $this->manager->createSequence($seq_name);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $this->raiseError($result, null, null,
                         'on demand sequence '.$seq_name.' could not be created', __FUNCTION__);
                 } else {
@@ -588,7 +588,7 @@ class MDB2_Driver_fbsql extends MDB2_Driver_Common
         if (is_numeric($value)) {
             $query = "DELETE FROM $sequence_name WHERE $seqcol_name < $value";
             $result =& $this->_doQuery($query, true);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 $this->warnings[] = 'nextID: could not delete previous sequence table values from '.$seq_name;
             }
         }
@@ -610,7 +610,7 @@ class MDB2_Driver_fbsql extends MDB2_Driver_Common
     function lastInsertID($table = null, $field = null)
     {
         $connection = $this->getConnection();
-        if (PEAR::isError($connection)) {
+        if (MDB2::isError($connection)) {
             return $connection;
         }
         $value = @fbsql_insert_id($connection);
@@ -664,14 +664,16 @@ class MDB2_Result_fbsql extends MDB2_Result_Common
     {
         if (null !== $rownum) {
             $seek = $this->seek($rownum);
-            if (PEAR::isError($seek)) {
+            if (MDB2::isError($seek)) {
                 return $seek;
             }
         }
         if ($fetchmode == MDB2_FETCHMODE_DEFAULT) {
             $fetchmode = $this->db->fetchmode;
         }
-        if ($fetchmode & MDB2_FETCHMODE_ASSOC) {
+        if (   $fetchmode == MDB2_FETCHMODE_ASSOC
+            || $fetchmode == MDB2_FETCHMODE_OBJECT
+        ) {
             $row = @fbsql_fetch_assoc($this->result);
             if (is_array($row)
                 && $this->db->options['portability'] & MDB2_PORTABILITY_FIX_CASE
@@ -694,8 +696,12 @@ class MDB2_Result_fbsql extends MDB2_Result_Common
         if ($mode) {
             $this->db->_fixResultArrayValues($row, $mode);
         }
-        if (!empty($this->types)) {
-            $row = $this->db->datatype->convertResultRow($this->types, $row, false);
+        if ($fetchmode == MDB2_FETCHMODE_ORDERED) {
+            if (!empty($this->types)) {
+                $row = $this->db->datatype->convertResultRow($this->types, $row, $rtrim);
+            }
+        } elseif (!empty($this->types_assoc)) {
+            $row = $this->db->datatype->convertResultRow($this->types_assoc, $row, $rtrim);
         }
         if (!empty($this->values)) {
             $this->_assignBindColumns($row);
@@ -705,7 +711,7 @@ class MDB2_Result_fbsql extends MDB2_Result_Common
             if ($object_class == 'stdClass') {
                 $row = (object) $row;
             } else {
-                $row = &new $object_class($row);
+                $row = new $object_class($row);
             }
         }
         ++$this->rownum;
@@ -728,7 +734,7 @@ class MDB2_Result_fbsql extends MDB2_Result_Common
     {
         $columns = array();
         $numcols = $this->numCols();
-        if (PEAR::isError($numcols)) {
+        if (MDB2::isError($numcols)) {
             return $numcols;
         }
         for ($column = 0; $column < $numcols; $column++) {
@@ -861,7 +867,7 @@ class MDB2_BufferedResult_fbsql extends MDB2_Result_fbsql
     function valid()
     {
         $numrows = $this->numRows();
-        if (PEAR::isError($numrows)) {
+        if (MDB2::isError($numrows)) {
             return $numrows;
         }
         return $this->rownum < ($numrows - 1);

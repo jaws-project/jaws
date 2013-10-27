@@ -235,7 +235,7 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
             $this->destructor_registered = true;
             register_shutdown_function('MDB2_closeOpenTransactions');
         }
-        if (PEAR::isError(sqlsrv_begin_transaction($this->connection))) {
+        if (MDB2::isError(sqlsrv_begin_transaction($this->connection))) {
             return MDB2_ERROR;
         }
         $this->in_transaction = true;
@@ -267,7 +267,7 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
             return MDB2_OK;
         }
 
-        if (PEAR::isError(sqlsrv_commit($this->connection))) {
+        if (MDB2::isError(sqlsrv_commit($this->connection))) {
             return MDB2_ERROR;
         }
         $this->in_transaction = false;
@@ -300,7 +300,7 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
             return $this->_doQuery($query, true);
         }
 
-        if (PEAR::isError(sqlsrv_rollback($this->connection))) {
+        if (MDB2::isError(sqlsrv_rollback($this->connection))) {
             return MDB2_ERROR;
         }
         $this->in_transaction = false;
@@ -318,7 +318,7 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
      */
     function _doConnect($username, $password, $database=null, $persistent = false)
     {
-        if (!PEAR::loadExtension($this->phptype)) {
+        if (!extension_loaded($this->phptype)) {
             return $this->raiseError(MDB2_ERROR_NOT_FOUND, null, null,
                 'extension '.$this->phptype.' is not installed PHP', __FUNCTION__);
         }
@@ -379,7 +379,7 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
             $this->database_name,
             $this->options['persistent']
         );
-        if (PEAR::isError($connection)) {
+        if (MDB2::isError($connection)) {
             return $connection;
         }
 
@@ -406,7 +406,7 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
     function databaseExists($name)
     {
         $connection = $this->_doConnect($this->dsn['username'],$this->dsn['password']);
-        if (PEAR::isError($connection)) {
+        if (MDB2::isError($connection)) {
             return MDB2_ERROR_CONNECT_FAILED;
         }
         $result = @sqlsrv_query($connection,'select name from master..sysdatabases where name = \''.strtolower($name).'\'');
@@ -467,7 +467,7 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
         $user = $this->options['DBA_username']? $this->options['DBA_username'] : $this->dsn['username'];
         $pass = $this->options['DBA_password']? $this->options['DBA_password'] : $this->dsn['password'];
         $connection = $this->_doConnect($user, $pass, $this->database_name, $this->options['persistent']);
-        if (PEAR::isError($connection)) {
+        if (MDB2::isError($connection)) {
             return $connection;
         }
 
@@ -475,7 +475,7 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
         $this->offset = $this->limit = 0;
 
         $result = $this->_doQuery($query, $is_manip, $connection);
-        if (!PEAR::isError($result)) {
+        if (!MDB2::isError($result)) {
             $result = $this->_affectedRows($connection, $result);
         }
 
@@ -500,7 +500,7 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
         $this->last_query = $query;
         $result = $this->debug($query, 'query', array('is_manip' => $is_manip, 'when' => 'pre'));
         if ($result) {
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
             $query = $result;
@@ -512,7 +512,7 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
 
         if (null === $connection) {
             $connection = $this->getConnection();
-            if (PEAR::isError($connection)) {
+            if (MDB2::isError($connection)) {
                 return $connection;
             }
         }
@@ -522,7 +522,7 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
 
         if ($database_name && $database_name != $this->connected_database_name) {
             $connection = $this->_doConnect($this->dsn['username'],$this->dsn['password'],$database_name);
-            if (PEAR::isError($connection)) {
+            if (MDB2::isError($connection)) {
                 $err = $this->raiseError(null, null, null,
                     'Could not select the database: '.$database_name, __FUNCTION__);
                 return $err;
@@ -644,7 +644,7 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
     {
         $query = "SELECT * FROM $seq_name";
         $tableExists =& $this->_doQuery($query, true);
-        if (PEAR::isError($tableExists)) {
+        if (MDB2::isError($tableExists)) {
             if ($tableExists->getCode() == MDB2_ERROR_NOSUCHTABLE) {
                 return false;
             }
@@ -688,11 +688,11 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
         $result = $this->_doQuery($query, true);
         $this->popExpect();
         $this->popErrorHandling();
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             if ($ondemand && !$this->_checkSequence($sequence_name)) {
                 $this->loadModule('Manager', null, true);
                 $result = $this->manager->createSequence($seq_name);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $this->raiseError($result, null, null,
                         'on demand sequence '.$seq_name.' could not be created', __FUNCTION__);
                 } else {
@@ -720,7 +720,7 @@ class MDB2_Driver_sqlsrv extends MDB2_Driver_Common
         if (is_numeric($value)) {
             $query = "DELETE FROM $sequence_name WHERE $seqcol_name < $value";
             $result = $this->_doQuery($query, true);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 $this->warnings[] = 'nextID: could not delete previous sequence table values from '.$seq_name;
             }
         }
@@ -851,12 +851,11 @@ class MDB2_Result_sqlsrv extends MDB2_Result_Common
             return $this->db->raiseError(MDB2_ERROR_INVALID, null, null, 'no valid statement given', __FUNCTION__);
         }
         if (($this->limit && $this->rownum >= $this->limit) || ($this->cursor >= $this->rowcnt || $this->rowcnt == 0)) {
-            $null = null;
-            return $null;
+            return null;
         }
         if (null !== $rownum) {
             $seek = $this->seek($rownum);
-            if (PEAR::isError($seek)) {
+            if (MDB2::isError($seek)) {
                 return $seek;
             }
         }
@@ -882,10 +881,7 @@ class MDB2_Result_sqlsrv extends MDB2_Result_Common
                 $o = new $this->db->options['fetch_class'];
                 $row = $this->array_to_obj($this->rows[$this->cursor], $o);
                 break;
-            default:
-            $row = $this->rows[$this->cursor] + $arrNum;
-            break;
-        } 
+        }
         $this->cursor++;
 
         /*
@@ -919,8 +915,7 @@ class MDB2_Result_sqlsrv extends MDB2_Result_Common
                     'resultset has already been freed', __FUNCTION__);
                 return $err;
             }
-            $null = null;
-            return $null;
+            return null;
         }
         $mode = $this->db->options['portability'] & MDB2_PORTABILITY_EMPTY_TO_NULL;
         $rtrim = false;
@@ -934,8 +929,12 @@ class MDB2_Result_sqlsrv extends MDB2_Result_Common
         if ($mode) {
             $this->db->_fixResultArrayValues($row, $mode);
         }
-        if (!empty($this->types)) {
-            $row = $this->db->datatype->convertResultRow($this->types, $row, $rtrim);
+        if ($fetchmode == MDB2_FETCHMODE_ORDERED) {
+            if (!empty($this->types)) {
+                $row = $this->db->datatype->convertResultRow($this->types, $row, $rtrim);
+            }
+        } elseif (!empty($this->types_assoc)) {
+            $row = $this->db->datatype->convertResultRow($this->types_assoc, $row, $rtrim);
         }
         if (!empty($this->values)) {
             $this->_assignBindColumns($row);
@@ -1139,7 +1138,7 @@ class MDB2_BufferedResult_sqlsrv extends MDB2_Result_sqlsrv
     function valid()
     {
         $numrows = $this->numRows();
-        if (PEAR::isError($numrows)) {
+        if (MDB2::isError($numrows)) {
             return $numrows;
         }
         return $this->rownum < ($numrows - 1);

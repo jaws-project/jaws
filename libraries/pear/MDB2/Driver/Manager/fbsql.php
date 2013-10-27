@@ -42,7 +42,7 @@
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: fbsql.php 327310 2012-08-27 15:16:18Z danielc $
 //
 
 require_once 'MDB2/Driver/Manager/Common.php';
@@ -70,7 +70,7 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
     function createDatabase($name, $options = array())
     {
         $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -92,7 +92,7 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
     function dropDatabase($name)
     {
         $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -115,12 +115,16 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
     function dropTable($name)
     {
         $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $name = $db->quoteIdentifier($name, true);
-        return $db->exec("DROP TABLE $name CASCADE");
+        $result = $db->exec("DROP TABLE $name CASCADE");
+        if (MDB2::isError($result)) {
+            return $result;
+        }
+        return MDB2_OK;
     }
 
     // }}}
@@ -219,7 +223,7 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
     function alterTable($name, $changes, $check)
     {
         $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -305,7 +309,11 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
         }
 
         $name = $db->quoteIdentifier($name, true);
-        return $db->exec("ALTER TABLE $name $query");
+        $result = $db->exec("ALTER TABLE $name $query");
+        if (MDB2::isError($result)) {
+            return $result;
+        }
+        return MDB2_OK;
     }
 
     // }}}
@@ -320,7 +328,7 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
     function listDatabases()
     {
         $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -340,7 +348,7 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
     function listUsers()
     {
         $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -359,7 +367,7 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
     function listTables()
     {
         $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -369,7 +377,7 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
                 . ' WHERE t0.schema_pk=t1.schema_pk AND'
                 . ' "table_type" = \'BASE TABLE\''
                 . ' AND "schema_name" = current_schema');
-        if (PEAR::isError($table_names)) {
+        if (MDB2::isError($table_names)) {
             return $table_names;
         }
         $result = array();
@@ -397,13 +405,13 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
     function listTableFields($table)
     {
         $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $table = $db->quoteIdentifier($table, true);
         $result = $db->queryCol("SHOW COLUMNS FROM $table");
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         if ($db->options['portability'] & MDB2_PORTABILITY_FIX_CASE) {
@@ -426,13 +434,17 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
     function dropIndex($table, $name)
     {
         $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $table = $db->quoteIdentifier($table, true);
         $name = $db->quoteIdentifier($db->getIndexName($name), true);
-        return $db->exec("ALTER TABLE $table DROP INDEX $name");
+        $result = $db->exec("ALTER TABLE $table DROP INDEX $name");
+        if (MDB2::isError($result)) {
+            return $result;
+        }
+        return MDB2_OK;
     }
 
     // }}}
@@ -448,7 +460,7 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
     function listTableIndexes($table)
     {
         $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -464,7 +476,7 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
         $table = $db->quoteIdentifier($table, true);
         $query = "SHOW INDEX FROM $table";
         $indexes = $db->queryCol($query, 'text', $key_name);
-        if (PEAR::isError($indexes)) {
+        if (MDB2::isError($indexes)) {
             return $indexes;
         }
 
@@ -495,7 +507,7 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
     function createSequence($seq_name, $start = 1)
     {
         $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -504,19 +516,19 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
         $query = "CREATE TABLE $sequence_name ($seqcol_name INTEGER DEFAULT UNIQUE, PRIMARY KEY($seqcol_name))";
         $res = $db->exec($query);
         $res = $db->exec("SET UNIQUE = 1 FOR $sequence_name");
-        if (PEAR::isError($res)) {
+        if (MDB2::isError($res)) {
             return $res;
         }
         if ($start == 1) {
             return MDB2_OK;
         }
         $res = $db->exec("INSERT INTO $sequence_name ($seqcol_name) VALUES (".($start-1).')');
-        if (!PEAR::isError($res)) {
+        if (!MDB2::isError($res)) {
             return MDB2_OK;
         }
         // Handle error
         $result = $db->exec("DROP TABLE $sequence_name");
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $db->raiseError($result, null, null,
                 'could not drop inconsistent sequence table', __FUNCTION__);
         }
@@ -537,12 +549,16 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
     function dropSequence($seq_name)
     {
         $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $sequence_name = $db->quoteIdentifier($db->getSequenceName($seq_name), true);
-        return $db->exec("DROP TABLE $sequence_name CASCADE");
+        $result = $db->exec("DROP TABLE $sequence_name CASCADE");
+        if (MDB2::isError($result)) {
+            return $result;
+        }
+        return MDB2_OK;
     }
 
     // }}}
@@ -557,12 +573,12 @@ class MDB2_Driver_Manager_fbsql extends MDB2_Driver_Manager_Common
     function listSequences()
     {
         $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $table_names = $db->queryCol('SHOW TABLES', 'text');
-        if (PEAR::isError($table_names)) {
+        if (MDB2::isError($table_names)) {
             return $table_names;
         }
         $result = array();

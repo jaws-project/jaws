@@ -42,7 +42,7 @@
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: fbsql.php 327310 2012-08-27 15:16:18Z danielc $
 //
 
 require_once 'MDB2/Driver/Reverse/Common.php';
@@ -81,7 +81,7 @@ class MDB2_Driver_Reverse_fbsql extends MDB2_Driver_Reverse_Common
         }
 
         $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
