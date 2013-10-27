@@ -1116,8 +1116,10 @@ class MDB2_Driver_Manager_mysqli extends MDB2_Driver_Manager_Common
                 //create the ON [UPDATE|DELETE] triggers on the primary table
                 $restrict_action = ' IF (SELECT ';
                 $aliased_fields = array();
-                foreach ($table_fields as $field) {
-                    $aliased_fields[] = $table_quoted .'.'.$field .' AS '.$field;
+                foreach ($table_fields as $i => $field) {
+                    $table_fields[$i] = $db->quoteIdentifier($field, true);
+                    $referenced_fields[$i] = $db->quoteIdentifier($referenced_fields[$id], true);
+                    $aliased_fields[] = $table_quoted .'.'.$table_fields[$i];
                 }
                 $restrict_action .= implode(',', $aliased_fields)
                        .' FROM '.$table_quoted
