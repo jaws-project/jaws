@@ -99,7 +99,8 @@ if (!$GLOBALS['app']->Session->Logged())
     // Init layout
     $GLOBALS['app']->InstanceLayout();
     $cpl = Jaws_Gadget::getInstance('ControlPanel')->loadAdminAction('Login');
-    terminate($data = $cpl->LoginBox($loginMsg), 401);
+    $data = $cpl->LoginBox($loginMsg);
+    terminate($data, 401);
 }
 
 // remove checksess(check session) parameter from requested url
