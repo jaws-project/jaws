@@ -122,6 +122,8 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
             foreach ($eventsByDay[$i] as $event_id) {
                 $tpl->SetBlock('month/day/event');
                 $tpl->SetVariable('event', $eventsById[$event_id]['subject']);
+                $url = $this->gadget->urlMap('ViewEvent', array('id' => $event_id));
+                $tpl->SetVariable('event_url', $url);
                 $tpl->ParseBlock('month/day/event');
             }
             $tpl->ParseBlock('month/day');

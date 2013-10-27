@@ -103,6 +103,8 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
             foreach ($eventsByHour[$i] as $event_id) {
                 $tpl->SetBlock('day/hour/event');
                 $tpl->SetVariable('event', $eventsById[$event_id]['subject']);
+                $url = $this->gadget->urlMap('ViewEvent', array('id' => $event_id));
+                $tpl->SetVariable('event_url', $url);
                 $tpl->ParseBlock('day/hour/event');
             }
             $tpl->ParseBlock('day/hour');

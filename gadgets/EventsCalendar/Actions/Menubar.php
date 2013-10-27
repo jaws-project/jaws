@@ -30,7 +30,7 @@ class EventsCalendar_Actions_Menubar extends Jaws_Gadget_Action
         $menubar->AddOption('ManageEvents',_t('EVENTSCALENDAR_EVENTS_MANAGE'),
             $this->gadget->urlMap('ManageEvents'), 'gadgets/EventsCalendar/Resources/images/events.png');
 
-        $menubar->AddOption('Events',_t('EVENTSCALENDAR_EVENTS'),
+        $menubar->AddOption('Events',_t('EVENTSCALENDAR_CALENDAR'),
             $this->gadget->urlMap('ViewYear'), 'gadgets/EventsCalendar/Resources/images/calendar.png');
 
         $menubar->Activate($action);

@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 
-// Manage Maps
+// Management
 $maps[] = array(
     'ManageEvents',
     'events/manage'
@@ -29,7 +29,7 @@ $maps[] = array(
     array('id' => '[[:digit:]]+')
 );
 
-// Report Maps
+// Reporting
 $maps[] = array(
     'ViewEvent',
     'events/view/{id}',

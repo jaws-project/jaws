@@ -62,6 +62,10 @@ $actions['Pager'] = array(
 );
 
 /* Report Actions */
+$actions['ViewEvent'] = array(
+    'normal' => true,
+    'file' => 'ViewEvent'
+);
 $actions['ViewYear'] = array(
     'normal' => true,
     'file' => 'ViewYear'
