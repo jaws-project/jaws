@@ -91,6 +91,7 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_Action
                 $event['type'] = 1;
                 $event['priority'] = 0;
                 $event['reminder'] = 0;
+                $repeat = 1;
             }
         }
         $tpl->SetVariable('id', $event['id']);
@@ -188,16 +189,25 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_reminder', _t('EVENTSCALENDAR_EVENT_REMINDER'));
 
         // Repeat
+        if ($event['day'] == 0 && $event['wday'] == 0 && $event['month'] == 0) {
+            $repeat = 1;
+        } else if ($event['day'] == 0 && $event['month'] == 0) {
+            $repeat = 2;
+        } else if ($event['wday'] == 0 && $event['month'] == 0) {
+            $repeat = 3;
+        } else {  // $event['wday'] == 0
+            $repeat = 4;
+        }
         $combo =& Piwi::CreateWidget('Combo', 'repeat');
         $combo->SetId('event_repeat');
-        //$combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_NO_REPEAT'), 0);
         $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_DAILY'), 1);
         $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_WEEKLY'), 2);
         $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_MONTHLY'), 3);
         $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_YEARLY'), 4);
-        $combo->SetDefault(1);
+        $combo->SetDefault($repeat);
         $combo->AddEvent(ON_CHANGE, 'switchRepeatUI(this.value)');
         $tpl->SetVariable('repeat', $combo->Get());
+        $tpl->SetVariable('repeat_value', $repeat);
         $tpl->SetVariable('lbl_repeat', _t('EVENTSCALENDAR_EVENT_REPEAT'));
 
         // Day

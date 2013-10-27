@@ -17,11 +17,11 @@ class EventsCalendar_Model_Report extends Jaws_Gadget_Model
      * @param   int     $user   User ID
      * @return  array   Query result
      */
-    function GetEvents($user = null, $shared = null, $foreign = null, $start, $stop)
+    function GetEvents($user = null, $shared = null, $foreign = null, $start, $stop, $repeat)
     {
         //_log_var_dump($start . ' - ' . $stop);
         $table = Jaws_ORM::getInstance()->table('ec_events as event');
-        $table->select('event.id', 'subject', 'shared',
+        $table->select('event.id', 'subject', 'shared', 'day', 'wday',
             'start_date', 'stop_date', 'start_time', 'stop_time');
 
         if ($user !== null){
@@ -35,6 +35,21 @@ class EventsCalendar_Model_Report extends Jaws_Gadget_Model
 
         if ($foreign === true){
             $table->where('user', $user, '<>')->and();
+        }
+
+        if (isset($repeat['day'])){
+            $table->openWhere('day', 0)->or();
+            $table->closeWhere('day', $repeat['day'])->and();
+        }
+
+        if (isset($repeat['wday'])){
+            $table->openWhere('wday', 0)->or();
+            $table->closeWhere('wday', $repeat['wday'])->and();
+        }
+
+        if (isset($repeat['month'])){
+            $table->openWhere('month', 0)->or();
+            $table->closeWhere('month', $repeat['month'])->and();
         }
 
         $table->where('start_date', $stop, '<')->and();
@@ -73,7 +88,9 @@ class EventsCalendar_Model_Report extends Jaws_Gadget_Model
             $start = $jdate->ToBaseDate($year, $m, 1);
             $stop = $jdate->ToBaseDate($year, $m, $daysInMonth, 23, 59, 59);
             $table->where('start_date', $stop['timestamp'], '<')->and();
-            $table->where('stop_date', $start['timestamp'], '>');
+            $table->where('stop_date', $start['timestamp'], '>')->and();
+            $table->openWhere('month', 0)->or();
+            $table->closeWhere('month', $m);
             $eventsByMonth[$m] = (int)$table->fetchOne();
         }
 

@@ -59,7 +59,7 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         $startDayInfo = $jdate->GetDateInfo($year, $month, $startDay);
         $stopDayInfo = $jdate->GetDateInfo($year, $month, $stopDay);
 
-        // Current week
+        // This week
         $start = $jdate->ToBaseDate($year, $month, $startDay);
         $start = $start['timestamp'];
         $stop = $jdate->ToBaseDate($year, $month, $stopDay, 23, 59, 59);
@@ -73,14 +73,14 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         // Fetch events
         $model = $this->gadget->loadModel('Report');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $events = $model->GetEvents($user, null, null, $start, $stop);
+        $events = $model->GetEvents($user, null, null, $start, $stop, array('month' => $month));
         if (Jaws_Error::IsError($events)){
             $events = array();
         }
 
         // Prepare events
         $eventsById = array();
-        $eventsByDay = array_fill(1, 8, array());
+        $eventsByDay = array_fill(1, 7, array());
         foreach ($events as $e) {
             $eventsById[$e['id']] = $e;
             $startIdx = ($e['start_date'] <= $start)? 1:
@@ -104,9 +104,14 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
             $tpl->SetVariable('day_url', $day_url);
             $tpl->SetVariable('day', $info['mday'] . ' ' . $info['weekday']);
             foreach ($eventsByDay[$i] as $event_id) {
-                $tpl->SetBlock('week/day/event');
-                $tpl->SetVariable('event', $eventsById[$event_id]['subject']);
-                $tpl->ParseBlock('week/day/event');
+                $e = $eventsById[$event_id];
+                if (($e['day'] == 0 || $e['day'] == $info['mday']) &&
+                    ($e['wday'] == 0 || $e['wday'] == $info['wday'] + 1))
+                {
+                    $tpl->SetBlock('week/day/event');
+                    $tpl->SetVariable('event', $e['subject']);
+                    $tpl->ParseBlock('week/day/event');
+                }
             }
             $tpl->ParseBlock('week/day');
         }

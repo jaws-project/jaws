@@ -37,7 +37,7 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
         $stop = $jdate->ToBaseDate($year, $month, $daysInMonth, 23, 59, 59);
         $stop = $stop['timestamp'];
 
-        // Current date
+        // Current month
         $current = $jdate->Format($start, 'Y MN');
         $tpl->SetVariable('title', $current);
         $this->SetTitle($current . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
@@ -77,7 +77,7 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
         // Fetch events
         $model = $this->gadget->loadModel('Report');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $events = $model->GetEvents($user, null, null, $start, $stop);
+        $events = $model->GetEvents($user, null, null, $start, $stop, array('month' => $month));
         if (Jaws_Error::IsError($events)){
             $events = array();
         }
@@ -92,7 +92,14 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
             $stopIdx = ($e['stop_date'] >= $stop)? $daysInMonth:
                 ceil(($e['stop_date'] - $start) / 86400);
             for ($i = $startIdx; $i <= $stopIdx; $i++) {
-                $eventsByDay[$i][] = $e['id'];
+                if ($e['wday'] != 0) {
+                    $info = $jdate->GetDateInfo($year, $month, $i);
+                    if ($e['wday'] == $info['wday'] + 1) {
+                        $eventsByDay[$i][] = $e['id'];
+                    }
+                } else if ($e['day'] == 0 || $e['day'] == $i) {
+                    $eventsByDay[$i][] = $e['id'];
+                }
             }
         }
 

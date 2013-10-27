@@ -55,11 +55,18 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
         ));
         $tpl->SetVariable('next_url', $url);
 
-        // Current date
+        // Today
         $date = $jdate->ToBaseDate($year, $month, $day);
         $today = $jdate->Format($date['timestamp'], 'DN d MN Y');
         $tpl->SetVariable('title', $today);
         $this->SetTitle($today . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
+
+        // Repeat
+        $info = $jdate->GetDateInfo($year, $month, $day);
+        $repeat = array();
+        $repeat['day'] = $day;
+        $repeat['wday'] = $info['wday'] + 1;
+        $repeat['month'] = $month;
 
         // Fetch events
         $model = $this->gadget->loadModel('Report');
@@ -67,7 +74,7 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
         $start = $date['timestamp'];
         $stop = $jdate->ToBaseDate($year, $month, $day, 23, 59, 59);
         $stop = $stop['timestamp'];
-        $events = $model->GetEvents($user, null, null, $start, $stop);
+        $events = $model->GetEvents($user, null, null, $start, $stop, $repeat);
         if (Jaws_Error::IsError($events)){
             $events = array();
         }
