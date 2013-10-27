@@ -762,7 +762,7 @@ class Jaws_ORM
             case 'all':
                 if (!empty($this->_limit)) {
                     $result = $this->jawsdb->dbc->setLimit($this->_limit, $this->_offset);
-                    if (PEAR::IsError($result)) {
+                    if (MDB2::isError($result)) {
                         break;
                     }
                 }
@@ -774,7 +774,7 @@ class Jaws_ORM
         }
 
         $this->reset();
-        if (PEAR::IsError($result)) {
+        if (MDB2::isError($result)) {
             // auto rollback
             if (self::$in_transaction && self::$auto_rollback_on_error) {
                 $this->rollback();
@@ -834,7 +834,7 @@ class Jaws_ORM
                 }
                 $sql.= "\n(". trim($columns, ', '). ")\nvalues(". trim($values, ', '). ")\n";
                 $result = $this->jawsdb->dbc->exec($sql);
-                if (!PEAR::IsError($result) && !empty($result) && !empty($this->_pk_field)) {
+                if (!MDB2::isError($result) && !empty($result) && !empty($this->_pk_field)) {
                     $result = $this->jawsdb->dbc->lastInsertID(
                         $this->_tbl_prefix. $this->_table,
                         $this->_pk_field
@@ -881,7 +881,7 @@ class Jaws_ORM
         }
 
         $this->reset();
-        if (PEAR::IsError($result)) {
+        if (MDB2::isError($result)) {
             // auto rollback
             if (self::$in_transaction && self::$auto_rollback_on_error) {
                 $this->rollback();
