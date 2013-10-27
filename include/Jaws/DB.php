@@ -186,7 +186,7 @@ class Jaws_DB
         }
 
         $this->dbc = MDB2::singleton($this->_dsn, $options);
-        if (PEAR::IsError($this->dbc)) {
+        if (MDB2::isError($this->dbc)) {
             return Jaws_Error::raiseError(
                 "Couldn't connect to the database<br />".
                 $this->dbc->getMessage(). '<br />'. $this->dbc->getUserinfo(),
@@ -238,7 +238,7 @@ class Jaws_DB
     function getDBVersion($native = true)
     {
         $dbInfo = $this->dbc->getServerVersion($native);
-        return PEAR::IsError($dbInfo)? '' : $dbInfo;
+        return MDB2::isError($dbInfo)? '' : $dbInfo;
     }
 
     /**
@@ -292,7 +292,7 @@ class Jaws_DB
     {
         $sql = $this->sqlParse($sql, $params);
         $result = $this->dbc->exec($sql);
-        if (PEAR::IsError($result)) {
+        if (MDB2::isError($result)) {
             $GLOBALS['log']->Log($error_level, $result->getUserInfo(), 2);
             return new Jaws_Error($result->getMessage(),
                                   $result->getCode(),
@@ -321,7 +321,7 @@ class Jaws_DB
     {
         $sql = $this->sqlParse($sql, $params);
         $result = $this->dbc->queryOne($sql, $type);
-        if (PEAR::IsError($result)) {
+        if (MDB2::isError($result)) {
             $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
             return new Jaws_Error($result->getMessage(),
                                   $result->getCode(),
@@ -355,7 +355,7 @@ class Jaws_DB
     {
         $sql = $this->sqlParse($sql, $params);
         $result = $this->dbc->queryRow($sql, $types, $fetchmode);
-        if (PEAR::IsError($result)) {
+        if (MDB2::isError($result)) {
             $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
             return new Jaws_Error($result->getMessage(),
                                   $result->getCode(),
@@ -394,7 +394,7 @@ class Jaws_DB
     {
         $sql = $this->sqlParse($sql, $params);
         $result = $this->dbc->queryAll($sql, $types, $fetchmode, $rekey, $force_array, $group);
-        if (PEAR::IsError($result)) {
+        if (MDB2::isError($result)) {
             $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
             return new Jaws_Error($result->getMessage(),
                                   $result->getCode(),
@@ -423,7 +423,7 @@ class Jaws_DB
     {
         $sql = $this->sqlParse($sql, $params);
         $result = $this->dbc->queryCol($sql, $type, $colnum);
-        if (PEAR::IsError($result)) {
+        if (MDB2::isError($result)) {
             $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
             return new Jaws_Error($result->getMessage(),
                                   $result->getCode(),
@@ -468,7 +468,7 @@ class Jaws_DB
     function lastInsertID($table = null, $field = null)
     {
         $result = $this->dbc->lastInsertID($this->getPrefix() . $table, $field);
-        if (PEAR::IsError($result)) {
+        if (MDB2::isError($result)) {
             $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
             return new Jaws_Error($result->getMessage(),
                                   $result->getCode(),
@@ -496,7 +496,7 @@ class Jaws_DB
             $table = $this->getPrefix() . $table;
             $seq = $table . '_' . $field;
             $id = $this->dbc->nextID($seq, $ondemend);
-            if (!$quote || PEAR::isError($id)) {
+            if (!$quote || MDB2::isError($id)) {
                 return $id;
             }
             return $this->dbc->quote($id, 'integer');
@@ -548,7 +548,7 @@ class Jaws_DB
         );
 
         $schema =& MDB2_Schema::factory($dsn, $options);
-        if (PEAR::IsError($schema)) {
+        if (MDB2::isError($schema)) {
             return $schema->getMessage();
         }
 
@@ -570,12 +570,12 @@ class Jaws_DB
         );
 
         $DBDef = $schema->getDefinitionFromDatabase();
-        if (PEAR::isError($DBDef)) {
+        if (MDB2::isError($DBDef)) {
             return $DBDef->getMessage();
         }
 
         $res = $schema->dumpDatabase($DBDef, $config, $dump_what);
-        if (PEAR::isError($res)) {
+        if (MDB2::isError($res)) {
             return $res->getMessage();
         }
 
@@ -593,7 +593,7 @@ class Jaws_DB
     function setLimit($limit, $offset = null)
     {
         $result = $this->dbc->setLimit($limit, $offset);
-        if (PEAR::IsError($result)) {
+        if (MDB2::isError($result)) {
             $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
             return new Jaws_Error($result->getMessage(),
                                   $result->getCode(),
@@ -631,7 +631,7 @@ class Jaws_DB
     {
         $this->dbc->loadModule('Manager');
         $result = $this->dbc->manager->dropTable($this->getPrefix() . $table);
-        if (PEAR::IsError($result)) {
+        if (MDB2::isError($result)) {
             if ($result->getCode() !== MDB2_ERROR_NOSUCHTABLE) {
                 return Jaws_Error::raiseError($result->getMessage(), $result->getCode(), JAWS_ERROR_ERROR, 1);
             }
@@ -742,7 +742,7 @@ class Jaws_DB
 
         if (!isset($this->schema)) {
             $this->schema =& MDB2_Schema::factory($this->dbc, $options);;
-            if (PEAR::IsError($this->schema)) {
+            if (MDB2::isError($this->schema)) {
                 return $this->schema;
             }
         }
@@ -750,7 +750,7 @@ class Jaws_DB
         $method = $data === true ? 'writeInitialization' : 'updateDatabase';
         $result = $this->schema->$method($file, $file_update, $variables);
 
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             $this->schema->disconnect();
             unset($this->schema);
             $GLOBALS['log']->Log(JAWS_ERROR_ERROR, $result->getUserInfo(), 2);
