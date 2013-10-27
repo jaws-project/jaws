@@ -106,7 +106,7 @@ class Piwi
      * @param   mixed  $firstParam  Can be an array or a string
      * @param   string $action      Action to execute
      */
-    function managePiwiConf($firstParam, $action) 
+    static function managePiwiConf($firstParam, $action) 
     {
         static $piwiConf;
 
@@ -164,7 +164,7 @@ class Piwi
      * @access  public
      * @param   array   $data Array Conf
      */
-    function exportConf($data) 
+    static function exportConf($data) 
     {
         Piwi::managePiwiConf($data, 'EXPORT');
     }
@@ -176,7 +176,7 @@ class Piwi
      * @param   string   $key  Key name
      * @retrun  string   The value of the key or an empty string if anything goes wrong
      */
-    function getVarConf($key)
+    static function getVarConf($key)
     {
         return Piwi::managePiwiConf($key, 'GET');
     }
@@ -187,7 +187,7 @@ class Piwi
      * @access  public
      * @param   array    $data Array Conf
      */
-    function addExtraConf($data) 
+    static function addExtraConf($data) 
     {
         Piwi::managePiwiConf($data, 'ADD');
     }
@@ -255,4 +255,3 @@ class Piwi
         Piwi::managePiwiIds($id, 'REGISTER');
     }
 }
-?>
