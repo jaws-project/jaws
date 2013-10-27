@@ -40,11 +40,6 @@ class JSValidator
      */
     var $_error;
 
-    function JSValidator($field, $error)
-    {
-        $this->__construct($field, $error);
-    }
-
     /**
      * Public constructor
      *
