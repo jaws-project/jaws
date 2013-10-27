@@ -72,7 +72,7 @@ class Jaws_Error
      * @param   int     $backtrace Log trace back level
      * @access  public
      */
-    function &raiseError($message, $code = 0, $level = JAWS_ERROR_ERROR, $backtrace = 0)
+    static function &raiseError($message, $code = 0, $level = JAWS_ERROR_ERROR, $backtrace = 0)
     {
         if ($backtrace >= 0) {
             $backtrace++;
