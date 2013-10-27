@@ -43,7 +43,7 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
         }
 
         $dCaptcha = $this->gadget->registry->fetch($field. '_captcha_driver');
-        $objCaptcha =& Jaws_Captcha::getInstance($dCaptcha, $field);
+        $objCaptcha = Jaws_Captcha::getInstance($dCaptcha, $field);
 
         $resCaptcha = $objCaptcha->get();
         if (empty($resCaptcha['key'])) {
