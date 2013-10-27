@@ -74,7 +74,7 @@ class Crypt_RSA_MathLoader
      *
      * @access public
      */
-    function &loadWrapper($wrapper_name = 'default')
+    static function &loadWrapper($wrapper_name = 'default')
     {
         static $math_objects = array();
         // ordered by performance. GMP is the fastest math library, BCMath - the slowest.
