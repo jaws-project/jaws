@@ -797,7 +797,7 @@ class Jaws
             $site_url = array();
             $site_url['scheme'] = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on')? 'https' : 'http';
             //$site_url['host'] = $_SERVER['SERVER_NAME'];
-            $site_url['host'] = reset(explode(':', $_SERVER['HTTP_HOST']));
+            $site_url['host'] = current(explode(':', $_SERVER['HTTP_HOST']));
             $site_url['port'] = $_SERVER['SERVER_PORT']==80? '' : (':'.$_SERVER['SERVER_PORT']);
 
             $path = strip_tags($_SERVER['PHP_SELF']);
