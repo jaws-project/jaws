@@ -20,6 +20,10 @@ $actions['Search'] = array(
     'standalone' => true,
     'file' => 'Events'
 );
+$actions['Menubar'] = array(
+    'standalone' => true,
+    'file' => 'Menubar'
+);
 $actions['NewEvent'] = array(
     'normal' => true,
     'file' => 'Event'

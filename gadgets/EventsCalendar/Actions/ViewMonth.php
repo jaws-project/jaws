@@ -27,6 +27,10 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('ViewMonth.html');
         $tpl->SetBlock('month');
 
+        // Menubar
+        $action = $this->gadget->loadAction('Menubar');
+        $tpl->SetVariable('menubar', $action->Menubar('Events'));
+
         $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 

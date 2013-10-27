@@ -1,3 +1,6 @@
+.gadget_menubar_selected {
+display:none !important;
+}
 .events .event-title {
 width:100%;
 }

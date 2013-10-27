@@ -27,6 +27,10 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('ViewYear.html');
         $tpl->SetBlock('year');
 
+        // Menubar
+        $action = $this->gadget->loadAction('Menubar');
+        $tpl->SetVariable('menubar', $action->Menubar('Events'));
+
         // Current year
         $tpl->SetVariable('title', $year);
         $this->SetTitle($year . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
