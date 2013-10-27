@@ -1118,7 +1118,7 @@ class MDB2_Driver_Manager_mysqli extends MDB2_Driver_Manager_Common
                 $aliased_fields = array();
                 foreach ($table_fields as $i => $field) {
                     $table_fields[$i] = $db->quoteIdentifier($field, true);
-                    $referenced_fields[$i] = $db->quoteIdentifier($referenced_fields[$id], true);
+                    $referenced_fields[$i] = $db->quoteIdentifier($referenced_fields[$i], true);
                     $aliased_fields[] = $table_quoted .'.'.$table_fields[$i];
                 }
                 $restrict_action .= implode(',', $aliased_fields)
