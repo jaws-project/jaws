@@ -21,6 +21,12 @@
         </field>
 
         <field>
+            <name>title</name>
+            <type>text</type>
+            <length>64</length>
+        </field>
+
+        <field>
             <name>ip</name>
             <type>integer</type>
             <length>5</length>
@@ -45,7 +51,7 @@
         </field>
 
         <field>
-            <name>parames</name>
+            <name>params</name>
             <type>text</type>
         </field>
 
@@ -56,9 +62,21 @@
         </field>
 
         <field>
-            <name>req_type</name>
+            <name>request_type</name>
             <type>text</type>
             <length>64</length>
+        </field>
+
+        <field>
+            <name>priority</name>
+            <type>integer</type>
+            <length>1</length>
+        </field>
+
+        <field>
+            <name>status</name>
+            <type>integer</type>
+            <length>2</length>
         </field>
 
         <field>

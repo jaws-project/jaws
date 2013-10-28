@@ -11,6 +11,13 @@
 class Logs_Info extends Jaws_Gadget
 {
     /**
+     * Constants
+     */
+    const LOGS_PRIORITY_INFO = 3;
+    const LOGS_PRIORITY_NOTICE = 2;
+    const LOGS_PRIORITY_WARNING = 1;
+
+    /**
      * Gadget version
      *
      * @var     string

@@ -55,6 +55,12 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
             if (isset($filters['user']) && !empty($filters['user'])) {
                 $logsTable->and()->where('user', $filters['user']);
             }
+            if (isset($filters['priority']) && !empty($filters['priority'])) {
+                $logsTable->and()->where('priority', $filters['priority']);
+            }
+            if (isset($filters['term']) && !empty($filters['term'])) {
+                $logsTable->and()->where('title', '%' . $filters['term'] . '%', 'like');
+            }
         }
         return $logsTable->fetchAll();
     }
@@ -92,16 +98,17 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
      * Get info of a Log
      *
      * @access  public
-     * @param   int     $logID      Log ID
+     * @param   int     $id      Log ID
      * @return  mixed   Array of Logs or Jaws_Error on failure
      */
-    function GetLogInfo($logID)
+    function GetLogInfo($id)
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
-        $logsTable->select('logs.id:integer', 'ip', 'agent', 'gadget', 'action',
-            'insert_time', 'users.nickname', 'users.username', 'users.id as user_id:integer');
+        $logsTable->select('logs.id:integer', 'ip', 'agent', 'gadget', 'action', 'priority:integer',
+                           'logs.status:integer','request_type:integer', 'insert_time', 'users.nickname',
+                           'logs.script:boolean', 'logs.title', 'users.username', 'users.id as user_id:integer');
         $logsTable->join('users', 'users.id', 'logs.user');
-        return $logsTable->where('logs.id', (int) $logID)->fetchRow();
+        return $logsTable->where('logs.id', (int) $id)->fetchRow();
     }
 
     /**

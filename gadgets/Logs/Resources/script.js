@@ -22,6 +22,17 @@ var LogsCallback = {
 }
 
 /**
+ * On term key press, for compatibility Opera/IE with other browsers
+ */
+function OnTermKeypress(element, event)
+{
+    if (event.keyCode == 13) {
+        element.blur();
+        element.focus();
+    }
+}
+
+/**
  * Get logs
  *
  */
@@ -29,20 +40,24 @@ function getLogs(name, offset, reset) {
     var result = LogsAjax.callSync('GetLogs', {
         'offset': offset,
         'filters': {
-            'from_date': $('from_date').value,
-            'to_date': $('to_date').value,
-            'gadget': $('filter_gadget').value,
-            'user': $('filter_user').value
+            'from_date' : $('from_date').value,
+            'to_date'   : $('to_date').value,
+            'gadget'    : $('filter_gadget').value,
+            'user'      : $('filter_user').value,
+            'priority'  : $('filter_priority').value,
+            'term'      : $('filter_term').value
         }});
 
     if (reset) {
         $(name).setCurrentPage(0);
         var total = LogsAjax.callSync('GetLogsCount', {
             'offset': {
-                'from_date': $('from_date').value,
-                'to_date': $('to_date').value,
-                'gadget': $('filter_gadget').value,
-                'user': $('filter_user').value
+                'from_date' : $('from_date').value,
+                'to_date'   : $('to_date').value,
+                'gadget'    : $('filter_gadget').value,
+                'user'      : $('filter_user').value,
+                'priority'  : $('filter_priority').value,
+                'term'      : $('filter_term').value
             }});
 
     }
@@ -68,32 +83,25 @@ function logsDGAction(combo)
 }
 
 /**
- * Delete a log
- *
- */
-function deleteLog(logID)
-{
-    var confirmation = confirm(confirmLogsDelete);
-    if (confirmation) {
-        var logsId = new Array();
-        logsId[0] = logID;
-        LogsAjax.callAsync('DeleteLogs', logsId);
-    }
-}
-
-/**
  * Get selected log info
  *
  */
-function viewLog(logID)
+function viewLog(rowElement, id)
 {
-    var result = LogsAjax.callSync('GetLogInfo', {'logID': logID});
-    $('log_gadget').innerHTML   = result['gadget'];
-    $('log_action').innerHTML   = result['action'];
-    $('log_user').innerHTML     = '<a href = "' + result['user_url'] + '">' + result['username'] + '</a>';
-    $('log_ip').innerHTML       = result['ip'];
-    $('log_agent').innerHTML    = result['agent'];
-    $('log_date').innerHTML     = result['insert_time'];
+    selectGridRow('contacts_datagrid', rowElement.parentNode.parentNode);
+    var result = LogsAjax.callSync('GetLogInfo', {'id': id});
+    $('log_title').innerHTML = result['title'];
+    $('log_gadget').innerHTML = result['gadget'];
+    $('log_action').innerHTML = result['action'];
+    $('log_script').innerHTML = result['script'];
+    $('log_priority').innerHTML = result['priority'];
+    $('log_status').innerHTML = result['status'];
+    $('log_request_type').innerHTML = result['request_type'];
+    $('log_user_name').innerHTML = '<a href = "' + result['user_url'] + '">' + result['username'] + '</a>';
+    $('log_user_nickname').innerHTML = result['nickname'];
+    $('log_ip').innerHTML = result['ip'];
+    $('log_agent').innerHTML = result['agent'];
+    $('log_date').innerHTML = result['insert_time'];
 }
 
 /**

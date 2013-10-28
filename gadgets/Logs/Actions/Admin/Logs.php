@@ -74,6 +74,24 @@ class Logs_Actions_Admin_Logs extends Jaws_Gadget_Action
         $tpl->SetVariable('filter_user', $usersCombo->Get());
         $tpl->SetVariable('lbl_filter_user', _t('LOGS_USERS'));
 
+        // Priority
+        $priorityCombo =& Piwi::CreateWidget('Combo', 'filter_priority');
+        $priorityCombo->AddOption(_t('GLOBAL_ALL'), 0, false);
+        $priorityCombo->AddOption(_t('LOGS_PRIORITY_INFO'), Logs_Info::LOGS_PRIORITY_INFO, false);
+        $priorityCombo->AddOption(_t('LOGS_PRIORITY_NOTICE'), Logs_Info::LOGS_PRIORITY_NOTICE, false);
+        $priorityCombo->AddOption(_t('LOGS_PRIORITY_WARNING'), Logs_Info::LOGS_PRIORITY_WARNING, false);
+        $gadgetsCombo->AddEvent(ON_CHANGE, "javascript: searchLogs();");
+        $gadgetsCombo->SetDefault(0);
+        $tpl->SetVariable('filter_priority', $priorityCombo->Get());
+        $tpl->SetVariable('lbl_filter_priority', _t('LOGS_LOG_PRIORITY'));
+
+        // Term
+        $filterTerm =& Piwi::CreateWidget('Entry', 'filter_term', '');
+        $filterTerm->SetID('filter_term');
+        $filterTerm->AddEvent(ON_CHANGE, "javascript: searchLogs();");
+        $filterTerm->AddEvent(ON_KPRESS, "javascript: OnTermKeypress(this, event);");
+        $tpl->SetVariable('lbl_filter_term', _t('LOGS_SEARCH_TERM'));
+        $tpl->SetVariable('filter_term', $filterTerm->Get());
 
         //DataGrid
         $tpl->SetVariable('grid', $this->LogsDataGrid());
@@ -121,20 +139,16 @@ class Logs_Actions_Admin_Logs extends Jaws_Gadget_Action
         $column2->SetStyle('width:72px; white-space:nowrap;');
         $grid->AddColumn($column2);
 
-        $column3 = Piwi::CreateWidget('Column', _t('LOGS_USER'), null, false);
+        $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME'), null, false);
         $column3->SetStyle('width:160px; white-space:nowrap;');
         $grid->AddColumn($column3);
 
-        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_IP'), null, false);
-        $column4->SetStyle('width:100px; white-space:nowrap;');
+        $column4 = Piwi::CreateWidget('Column', _t('LOGS_USER_NICKNAME'), null, false);
+        $column4->SetStyle('width:160px; white-space:nowrap;');
         $grid->AddColumn($column4);
 
-        $column5 = Piwi::CreateWidget('Column', _t('GLOBAL_DATE'), null, false);
-        $column5->SetStyle('width:85px; white-space:nowrap;');
-        $grid->AddColumn($column5);
-
-        $column6 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
-        $column6->SetStyle('width:64px; white-space:nowrap;');
+        $column6 = Piwi::CreateWidget('Column', _t('GLOBAL_DATE'), null, false);
+        $column6->SetStyle('width:135px; white-space:nowrap;');
         $grid->AddColumn($column6);
 
         //Tools
@@ -176,13 +190,31 @@ class Logs_Actions_Admin_Logs extends Jaws_Gadget_Action
         $tpl->SetBlock('LogUI');
 
         // Gadget
+        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+
+        // Gadget
         $tpl->SetVariable('lbl_gadget', _t('GLOBAL_GADGETS'));
 
         // Action
         $tpl->SetVariable('lbl_action', _t('LOGS_ACTION'));
 
-        // User
-        $tpl->SetVariable('lbl_user', _t('LOGS_USER'));
+        // Script
+        $tpl->SetVariable('lbl_script', _t('LOGS_LOG_SCRIPT'));
+
+        // Priority
+        $tpl->SetVariable('lbl_priority', _t('LOGS_LOG_PRIORITY'));
+
+        // Status
+        $tpl->SetVariable('lbl_status', _t('LOGS_LOG_STATUS'));
+
+        // Request Type
+        $tpl->SetVariable('lbl_request_type', _t('LOGS_LOG_REQUEST_TYPE'));
+
+        // User name
+        $tpl->SetVariable('lbl_user_name', _t('GLOBAL_USERNAME'));
+
+        // User nickname
+        $tpl->SetVariable('lbl_user_nickname', _t('LOGS_USER_NICKNAME'));
 
         // IP
         $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
@@ -218,45 +250,22 @@ class Logs_Actions_Admin_Logs extends Jaws_Gadget_Action
         $newData = array();
         foreach ($logs as $log) {
             $logData = array();
-
             $logData['__KEY__'] = $log['id'];
 
+            $link =& Piwi::CreateWidget('Link', $log['gadget'],
+                "javascript: viewLog(this, '".$log['id']."');");
+
             // Gadget
-            $label =& Piwi::CreateWidget('Label', $log['gadget']);
-            $label->setTitle($log['gadget']);
-            $logData['gadget'] = $label->get();
-
+//            $logData['gadget'] = $log['gadget'];
+            $logData['gadget'] = $link->get();
             // Action
-            $label =& Piwi::CreateWidget('Label', $log['action']);
-            $label->setTitle($log['action']);
-            $logData['action'] = $label->get();
-
-            // User
-            $label =& Piwi::CreateWidget('Label', $log['nickname']);
-            $label->setTitle($log['nickname']);
-            $logData['user'] = $label->get();
-
-            // IP
-            $label =& Piwi::CreateWidget('Label', long2ip($log['ip']));
-            $label->setTitle(long2ip($log['ip']));
-            $logData['ip'] = $label->get();
-
+            $logData['action'] = $log['action'];
+            // User - Username
+            $logData['username'] = $log['username'];
+            // User - Nickname
+            $logData['nickname'] = $log['nickname'];
             // Date
-            $label =& Piwi::CreateWidget('Label', $date->Format($log['insert_time'],'Y-m-d'));
-            $label->setTitle($date->Format($log['insert_time'],'H:i:s'));
-            $logData['time'] = $label->get();
-
-            // Actions
-            $actions = '';
-            $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                "javascript: deleteLog('".$log['id']."');",
-                STOCK_DELETE);
-            $actions.= $link->Get().'&nbsp;';
-            $link =& Piwi::CreateWidget('Link', _t('GLOBAL_VIEW'),
-                                        "javascript: viewLog('".$log['id']."');",
-                                        STOCK_SEARCH);
-            $actions.= $link->Get().'&nbsp;';
-            $logData['actions'] = $actions;
+            $logData['time'] = $date->Format($log['insert_time'], 'Y-m-d H:i:s');
 
             $newData[] = $logData;
         }
@@ -271,16 +280,30 @@ class Logs_Actions_Admin_Logs extends Jaws_Gadget_Action
      */
     function GetLogInfo()
     {
-        $logID = jaws()->request->fetch('logID');
+        $id = jaws()->request->fetch('id');
         $model = $this->gadget->loadAdminModel('Logs');
-        $logInfo = $model->GetLogInfo($logID);
+        $logInfo = $model->GetLogInfo($id);
         if (Jaws_Error::IsError($logInfo)) {
             return array();
+        }
+
+        switch ($logInfo['priority']) {
+            case Logs_Info::LOGS_PRIORITY_INFO :
+                $priority = _t('LOGS_PRIORITY_INFO');
+                break;
+            case Logs_Info::LOGS_PRIORITY_NOTICE :
+                $priority = _t('LOGS_PRIORITY_NOTICE');
+                break;
+            case Logs_Info::LOGS_PRIORITY_WARNING :
+                $priority = _t('LOGS_PRIORITY_WARNING');
+                break;
         }
 
         $date = $GLOBALS['app']->loadDate();
         $logInfo['insert_time'] = $date->Format($logInfo['insert_time']);
         $logInfo['ip'] = long2ip($logInfo['ip']);
+        $logInfo['priority'] = $priority;
+        $logInfo['script'] = ($logInfo['script']==true) ? _t('LOGS_LOG_SCRIPT_ADMIN') : _t('LOGS_LOG_SCRIPT_SCRIPT');
 
         // user's profile
         $logInfo['user_url'] = $GLOBALS['app']->Map->GetURLFor(
