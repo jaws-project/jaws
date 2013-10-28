@@ -18,6 +18,9 @@ var LogsCallback = {
             getDG('logs_datagrid');
         }
         showResponse(response);
+    },
+    SaveSettings: function(response) {
+        showResponse(response);
     }
 }
 
@@ -110,6 +113,17 @@ function viewLog(rowElement, id)
 function searchLogs()
 {
     getLogs('logs_datagrid', 0, true);
+}
+
+/**
+ * save properties
+ */
+function saveSettings()
+{
+    LogsAjax.callAsync('SaveSettings', {
+        'priority': $('priority').value,
+        'log_parameters': $('log_parameters').value
+    });
 }
 
 var LogsAjax = new JawsAjax('Logs', LogsCallback);

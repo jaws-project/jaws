@@ -8,7 +8,7 @@
  * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
  * @copyright  2013 Jaws Development Group
  */
-class Logs_Actions_Admin_Logs extends Jaws_Gadget_Action
+class Logs_Actions_Admin_Logs extends Logs_AdminAction
 {
     /**
      *
@@ -22,7 +22,7 @@ class Logs_Actions_Admin_Logs extends Jaws_Gadget_Action
         $tpl->SetBlock('Logs');
 
         //Menu bar
-        //$tpl->SetVariable('menubar', $this->MenuBar('Logs'));
+        $tpl->SetVariable('menubar', $this->MenuBar('Logs'));
 
         // From Date Filter
         $fromDate =& Piwi::CreateWidget('DatePicker', 'from_date', '');
@@ -80,8 +80,8 @@ class Logs_Actions_Admin_Logs extends Jaws_Gadget_Action
         $priorityCombo->AddOption(_t('LOGS_PRIORITY_INFO'), Logs_Info::LOGS_PRIORITY_INFO, false);
         $priorityCombo->AddOption(_t('LOGS_PRIORITY_NOTICE'), Logs_Info::LOGS_PRIORITY_NOTICE, false);
         $priorityCombo->AddOption(_t('LOGS_PRIORITY_WARNING'), Logs_Info::LOGS_PRIORITY_WARNING, false);
-        $gadgetsCombo->AddEvent(ON_CHANGE, "javascript: searchLogs();");
-        $gadgetsCombo->SetDefault(0);
+        $priorityCombo->AddEvent(ON_CHANGE, "javascript: searchLogs();");
+        $priorityCombo->SetDefault(0);
         $tpl->SetVariable('filter_priority', $priorityCombo->Get());
         $tpl->SetVariable('lbl_filter_priority', _t('LOGS_LOG_PRIORITY'));
 

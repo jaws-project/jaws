@@ -26,3 +26,11 @@ $actions['DeleteLogs'] = array(
     'standalone' => true,
     'file'       => 'Logs',
 );
+$actions['Settings'] = array(
+    'normal' => true,
+    'file'   => 'Settings',
+);
+$actions['SaveSettings'] = array(
+    'standalone' => true,
+    'file'   => 'Settings',
+);

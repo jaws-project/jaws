@@ -11,12 +11,34 @@
 class Logs_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        array('log_priority_level', '0'),
+        array('log_parameters', 'false'),
+    );
+
+    /**
      * Default ACL value of frontend gadget access
      *
      * @var     bool
      * @access  protected
      */
     var $default_acl = false;
+
+    /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLKeys = array(
+        'ManageSettings',
+    );
+
 
     /**
      * Install the gadget
