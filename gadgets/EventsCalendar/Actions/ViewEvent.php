@@ -34,6 +34,10 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('ViewEvent.html');
         $tpl->SetBlock('event');
 
+        // Menubar
+        $action = $this->gadget->loadAction('Menubar');
+        $tpl->SetVariable('menubar', $action->Menubar('Events'));
+
         // Subject
         $tpl->SetVariable('title', $event['subject']);
         $this->SetTitle($event['subject']);
@@ -62,6 +66,10 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('stop_time', $stop_time);
         $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
 
+        // Type
+        $tpl->SetVariable('type', $event['type']);
+        $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
+
         // Priority
         $tpl->SetVariable('priority', _t('EVENTSCALENDAR_EVENT_PRIORITY_'.$event['priority']));
         $tpl->SetVariable('lbl_priority', _t('EVENTSCALENDAR_EVENT_PRIORITY'));
@@ -73,6 +81,11 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         // Repeat
         $tpl->SetVariable('repeat', '');
         $tpl->SetVariable('lbl_repeat', _t('EVENTSCALENDAR_EVENT_REPEAT'));
+
+        // Actions
+        $site_url = $GLOBALS['app']->GetSiteURL('/');
+        $tpl->SetVariable('url_edit', $site_url . $this->gadget->urlMap('EditEvent', array('id' => $id)));
+        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
 
         $tpl->ParseBlock('event');
         return $tpl->Get();

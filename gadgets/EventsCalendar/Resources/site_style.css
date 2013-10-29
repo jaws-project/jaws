@@ -20,6 +20,9 @@ width:15px;
 width:100%;
 height:50px;
 }
+.event-form select {
+min-width:100px;
+}
 #event_share select {
 width:100%;
 }

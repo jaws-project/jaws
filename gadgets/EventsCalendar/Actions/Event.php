@@ -46,6 +46,10 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('Form.html');
         $tpl->SetBlock('form');
 
+        // Menubar
+        $action = $this->gadget->loadAction('Menubar');
+        $tpl->SetVariable('menubar', $action->Menubar('Events'));
+
         // Response
         $response = $GLOBALS['app']->Session->PopResponse('Events.Response');
         if ($response) {
@@ -145,7 +149,7 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_Action
         }
         $combo->SetDefault($event['start_time']);
         $tpl->SetVariable('start_time', $combo->Get());
-        $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_LENGTH'));
+        $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
 
         // Stop time
         $combo =& Piwi::CreateWidget('Combo', 'stop_time');
@@ -246,7 +250,7 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_Action
         // Actions
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('url_back', $GLOBALS['app']->GetSiteURL('/') . $this->gadget->urlMap('Events'));
+        $tpl->SetVariable('url_back', $GLOBALS['app']->GetSiteURL('/') . $this->gadget->urlMap('ManageEvents'));
 
         $tpl->ParseBlock('form');
         return $tpl->Get();
