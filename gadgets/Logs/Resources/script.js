@@ -121,7 +121,7 @@ function searchLogs()
 function saveSettings()
 {
     LogsAjax.callAsync('SaveSettings', {
-        'priority': $('priority').value,
+        'log_priority_level': $('priority').value,
         'log_parameters': $('log_parameters').value
     });
 }
