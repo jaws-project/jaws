@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/site_style.css');
-class EventsCalendar_Actions_Events extends Jaws_Gadget_Action
+class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
 {
     /**
      * Builds events management UI
@@ -20,7 +20,7 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_Action
     function ManageEvents()
     {
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('Events.html');
+        $tpl = $this->gadget->loadTemplate('ManageEvents.html');
         $tpl->SetBlock('events');
 
         $tpl->SetVariable('title', _t('EVENTSCALENDAR_NAME'));
@@ -71,7 +71,7 @@ class EventsCalendar_Actions_Events extends Jaws_Gadget_Action
                 $tpl->SetVariable('subject', $event['subject']);
                 $tpl->SetVariable('start', $objDate->Format($event['start_date'], 'n/j/Y'));
                 $tpl->SetVariable('stop', $objDate->Format($event['stop_date'], 'n/j/Y'));
-                $tpl->SetVariable('url', $this->gadget->urlMap('EditEvent', array('id' => $event['id'])));
+                $tpl->SetVariable('url', $this->gadget->urlMap('ViewEvent', array('id' => $event['id'])));
                 if ($event['user'] != $user) {
                     $tpl->SetVariable('shared', '');
                     $tpl->SetVariable('nickname', $event['nickname']);

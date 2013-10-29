@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/site_style.css');
-class EventsCalendar_Actions_Event extends Jaws_Gadget_Action
+class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
 {
     /**
      * Builds form for creating a new event
@@ -43,7 +43,7 @@ class EventsCalendar_Actions_Event extends Jaws_Gadget_Action
     function EventForm($id = null)
     {
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('Form.html');
+        $tpl = $this->gadget->loadTemplate('EventForm.html');
         $tpl->SetBlock('form');
 
         // Menubar

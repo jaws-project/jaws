@@ -14,11 +14,11 @@ $actions = array();
 $actions['ManageEvents'] = array(
     'normal' => true,
     'layout' => true,
-    'file' => 'Events'
+    'file' => 'ManageEvents'
 );
 $actions['Search'] = array(
     'standalone' => true,
-    'file' => 'Events'
+    'file' => 'ManageEvents'
 );
 $actions['Menubar'] = array(
     'standalone' => true,
@@ -26,23 +26,23 @@ $actions['Menubar'] = array(
 );
 $actions['NewEvent'] = array(
     'normal' => true,
-    'file' => 'Event'
+    'file' => 'ManageEvent'
 );
 $actions['EditEvent'] = array(
     'normal' => true,
-    'file' => 'Event'
+    'file' => 'ManageEvent'
 );
 $actions['CreateEvent'] = array(
     'standalone' => true,
-    'file' => 'Event'
+    'file' => 'ManageEvent'
 );
 $actions['UpdateEvent'] = array(
     'standalone' => true,
-    'file' => 'Event'
+    'file' => 'ManageEvent'
 );
 $actions['DeleteEvent'] = array(
     'standalone' => true,
-    'file' => 'Event'
+    'file' => 'ManageEvent'
 );
 $actions['ShareEvent'] = array(
     'normal' => true,

@@ -4,6 +4,9 @@ display:none !important;
 .events .event-title {
 width:100%;
 }
+.today {
+background-color:silver;
+}
 #grid_events td {
 white-space:nowrap;
 }
