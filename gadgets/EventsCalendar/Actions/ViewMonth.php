@@ -42,6 +42,12 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
         $stop = $stop['timestamp'];
 
         // Current month
+        $info = $jdate->GetDateInfo($year, $month, 1);
+        $tpl->SetVariable('year', $info['year']);
+        $tpl->SetVariable('month', $info['month']);
+        $tpl->SetVariable('year_url',
+            $this->gadget->urlMap('ViewYear', array('year' => $info['year'])));
+
         $current = $jdate->Format($start, 'Y MN');
         $tpl->SetVariable('title', $current);
         $this->SetTitle($current . ' - ' . _t('EVENTSCALENDAR_EVENTS'));

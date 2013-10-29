@@ -60,9 +60,17 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
         $tpl->SetVariable('next_url', $url);
 
         // Today
+        $info = $jdate->GetDateInfo($year, $month, $day - 1);
+        $tpl->SetVariable('year', $info['year']);
+        $tpl->SetVariable('month', $info['month']);
+        $tpl->SetVariable('day', $info['mday']);
+        $tpl->SetVariable('year_url',
+            $this->gadget->urlMap('ViewYear', array('year' => $info['year'])));
+        $tpl->SetVariable('month_url',
+            $this->gadget->urlMap('ViewMonth', array('year' => $info['year'], 'month' => $info['mon'])));
+
         $date = $jdate->ToBaseDate($year, $month, $day);
         $today = $jdate->Format($date['timestamp'], 'DN d MN Y');
-        $tpl->SetVariable('title', $today);
         $this->SetTitle($today . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
 
         // Repeat
