@@ -258,6 +258,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageOnlineUsers');
         @list($sIds) = jaws()->request->fetchAll('post');
+        // TODO : must added array of id to delete session method
         if ($GLOBALS['app']->Session->Delete($sIds)) {
             $GLOBALS['app']->Session->PushLastResponse(
                 _t('USERS_ONLINE_SESSION_DELETED'),
@@ -284,18 +285,22 @@ class Users_AdminAjax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageOnlineUsers');
         $this->gadget->CheckPermission('ManageIPs');
 
-        @list($ip) = jaws()->request->fetchAll('post');
         $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAdminModel('IP');
-        if ($mPolicy->AddIPRange($ip, null, true)) {
-            $GLOBALS['app']->Session->PushLastResponse(
-                _t('POLICY_RESPONSE_IP_ADDED'),
-                RESPONSE_NOTICE
-            );
-        } else {
-            $GLOBALS['app']->Session->PushLastResponse(
-                _t('POLICY_RESPONSE_IP_NOT_ADDED'),
-                RESPONSE_ERROR
-            );
+        @list($sIds) = jaws()->request->fetchAll('post');
+        foreach ($sIds as $id) {
+            $session = $GLOBALS['app']->Session->GetSession($id);
+
+            if ($mPolicy->AddIPRange($session['ip'], null, true)) {
+                $GLOBALS['app']->Session->PushLastResponse(
+                    _t('POLICY_RESPONSE_IP_ADDED'),
+                    RESPONSE_NOTICE
+                );
+            } else {
+                $GLOBALS['app']->Session->PushLastResponse(
+                    _t('POLICY_RESPONSE_IP_NOT_ADDED'),
+                    RESPONSE_ERROR
+                );
+            }
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -311,19 +316,23 @@ class Users_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageOnlineUsers');
         $this->gadget->CheckPermission('ManageAgents');
-        @list($agent) = jaws()->request->fetchAll('post');
+        @list($sIds) = jaws()->request->fetchAll('post');
 
         $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAdminModel('Agent');
-        if ($mPolicy->AddAgent($agent, true)) {
-            $GLOBALS['app']->Session->PushLastResponse(
-                _t('POLICY_RESPONSE_AGENT_ADDED'),
-                RESPONSE_NOTICE
-            );
-        } else {
-            $GLOBALS['app']->Session->PushLastResponse(
-                _t('POLICY_RESPONSE_AGENT_NOT_ADDEDD'),
-                RESPONSE_ERROR
-            );
+        foreach ($sIds as $id) {
+            $session = $GLOBALS['app']->Session->GetSession($id);
+
+            if ($mPolicy->AddAgent($session['agent'], true)) {
+                $GLOBALS['app']->Session->PushLastResponse(
+                    _t('POLICY_RESPONSE_AGENT_ADDED'),
+                    RESPONSE_NOTICE
+                );
+            } else {
+                $GLOBALS['app']->Session->PushLastResponse(
+                    _t('POLICY_RESPONSE_AGENT_NOT_ADDEDD'),
+                    RESPONSE_ERROR
+                );
+            }
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();

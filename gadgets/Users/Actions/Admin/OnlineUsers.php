@@ -25,7 +25,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_AdminAction
         $gridBox->SetStyle('width: 100%;');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
-//        $datagrid->pageBy(1024);
+        $datagrid->pageBy(1024);
         $datagrid->useMultipleSelection();
         $datagrid->SetID('onlineusers_datagrid');
         $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME'));
