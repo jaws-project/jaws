@@ -86,6 +86,8 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $site_url = $GLOBALS['app']->GetSiteURL('/');
         $tpl->SetVariable('url_edit', $site_url . $this->gadget->urlMap('EditEvent', array('id' => $id)));
         $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
+        $tpl->SetVariable('url_share', $site_url . $this->gadget->urlMap('ShareEvent', array('id' => $id)));
+        $tpl->SetVariable('lbl_share', _t('EVENTSCALENDAR_SHARE'));
 
         $tpl->ParseBlock('event');
         return $tpl->Get();

@@ -130,6 +130,10 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
                 $tpl->SetVariable('event', $eventsById[$event_id]['subject']);
                 $url = $this->gadget->urlMap('ViewEvent', array('id' => $event_id));
                 $tpl->SetVariable('event_url', $url);
+                if ($eventsById[$event_id]['shared']) {
+                    $tpl->SetBlock('month/day/event/shared');
+                    $tpl->ParseBlock('month/day/event/shared');
+                }
                 $tpl->ParseBlock('month/day/event');
             }
             $tpl->ParseBlock('month/day');

@@ -59,3 +59,14 @@ margin-top:10px;
 text-align:center;
 border:1px solid #C6D3D8;
 }
+.shared a:after {
+content:
+}
+/* share */
+#event_share select {
+width:100%;
+}
+#event_share input[type=checkbox] {
+vertical-align:middle;
+margin-right:2px;
+}

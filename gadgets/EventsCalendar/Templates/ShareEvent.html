@@ -1,0 +1,27 @@
+<!-- BEGIN share -->
+<div class="gadget events-calendar share-form">
+  <h2>{title}</h2>
+  <div class="gadget_menubar">{menubar}</div>
+  <div class="gadget_response">
+    <div id="eventscalendar_{action}_response" class="{resp_type}">{resp_text}</div>
+  </div>
+  <h3>{subject}</h3>
+  <div id="event_share">
+    <div><label>{lbl_event_users}:</label></div>
+    {event_users}
+    <div><label>{lbl_groups}:</label></div>
+    {groups}
+    <div><label>{lbl_users}:</label></div>
+    <div id="sys_users"></div>
+    <div class="actions">
+      <button type="button" onclick="location.href='{url_back}'">{lbl_cancel}</button>
+      <button type="button" onclick="submitShare({id})">{lbl_ok}</button>
+    </div>
+  </div>
+</div>
+<script>
+var UID = "{UID}",
+    events_url = "{events_url}";
+initShare();
+</script>
+<!-- END share -->

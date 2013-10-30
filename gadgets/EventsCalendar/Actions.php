@@ -20,10 +20,6 @@ $actions['Search'] = array(
     'standalone' => true,
     'file' => 'ManageEvents'
 );
-$actions['Menubar'] = array(
-    'standalone' => true,
-    'file' => 'Menubar'
-);
 $actions['NewEvent'] = array(
     'normal' => true,
     'file' => 'ManageEvent'
@@ -46,15 +42,19 @@ $actions['DeleteEvent'] = array(
 );
 $actions['ShareEvent'] = array(
     'normal' => true,
-    'file' => 'Share'
-);
-$actions['GetUsers'] = array(
-    'standalone' => true,
-    'file' => 'Share'
+    'file' => 'ShareEvent'
 );
 $actions['UpdateShare'] = array(
     'standalone' => true,
-    'file' => 'Share'
+    'file' => 'ShareEvent'
+);
+$actions['GetUsers'] = array(
+    'standalone' => true,
+    'file' => 'ShareEvent'
+);
+$actions['Menubar'] = array(
+    'standalone' => true,
+    'file' => 'Menubar'
 );
 $actions['Pager'] = array(
     'standalone' => true,
