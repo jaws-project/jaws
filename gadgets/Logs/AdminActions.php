@@ -18,6 +18,10 @@ $actions['GetLogs'] = array(
     'standalone' => true,
     'file'       => 'Logs',
 );
+$actions['GetLogsCount'] = array(
+    'standalone' => true,
+    'file'       => 'Logs',
+);
 $actions['GetLogInfo'] = array(
     'standalone' => true,
     'file'       => 'Logs',

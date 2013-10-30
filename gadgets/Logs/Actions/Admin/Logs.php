@@ -253,7 +253,7 @@ class Logs_Actions_Admin_Logs extends Logs_AdminAction
             $logData['__KEY__'] = $log['id'];
 
             $link =& Piwi::CreateWidget('Link', $log['gadget'],
-                "javascript: viewLog(this, '".$log['id']."');");
+                "javascript:viewLog(this, '".$log['id']."');");
 
             // Gadget
 //            $logData['gadget'] = $log['gadget'];
@@ -288,15 +288,14 @@ class Logs_Actions_Admin_Logs extends Logs_AdminAction
         }
 
         switch ($logInfo['priority']) {
-            case Logs_Info::LOGS_PRIORITY_INFO :
-                $priority = _t('LOGS_PRIORITY_INFO');
-                break;
             case Logs_Info::LOGS_PRIORITY_NOTICE :
                 $priority = _t('LOGS_PRIORITY_NOTICE');
                 break;
             case Logs_Info::LOGS_PRIORITY_WARNING :
                 $priority = _t('LOGS_PRIORITY_WARNING');
                 break;
+            default:
+                $priority = _t('LOGS_PRIORITY_INFO');
         }
 
         $date = $GLOBALS['app']->loadDate();
