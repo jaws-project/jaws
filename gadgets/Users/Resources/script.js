@@ -190,9 +190,47 @@ function getGroups(name, offset, reset)
  */
 function getOnlineUsers(name, offset, reset)
 {
-    var result = UsersAjax.callSync('getonlineusers');
+    var result = UsersAjax.callSync('getonlineusers', {
+        'session_status': $('filter_session_status').value,
+        'membership': $('filter_membership').value});
     resetGrid(name, result, result.length);
     fTimeout = setTimeout("getOnlineUsers('onlineusers_datagrid');", 30000);
+}
+
+
+/**
+ * Search online users
+ */
+function searchOnlineUsers()
+{
+    clearTimeout(fTimeout);
+    getOnlineUsers('onlineusers_datagrid');
+}
+
+
+/**
+ * Executes an action on Online User
+ */
+function onlineUsersDGAction(combo)
+{
+    var rows = $('onlineusers_datagrid').getSelectedRows();
+    if (rows.length < 1) {
+        return;
+    }
+
+    if (combo.value == 'delete') {
+        if (confirm(confirmThrowOut)) {
+            UsersAjax.callAsync('deletesession', rows);
+        }
+    } else if (combo.value == 'block_ip') {
+        if (confirm(confirmBlockIP)) {
+            UsersAjax.callAsync('ipblock', rows);
+        }
+    } else if (combo.value == 'block_agent') {
+        if (confirm(confirmBlockAgent)) {
+            UsersAjax.callAsync('agentblock', rows);
+        }
+    }
 }
 
 /**

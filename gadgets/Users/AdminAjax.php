@@ -105,7 +105,8 @@ class Users_AdminAjax extends Jaws_Gadget_Action
     function GetOnlineUsers()
     {
         $usrHTML = $this->gadget->loadAdminAction('OnlineUsers');
-        return $usrHTML->GetOnlineUsers();
+        $filters = jaws()->request->fetchAll('post');
+        return $usrHTML->GetOnlineUsers($filters);
     }
 
     /**
@@ -256,8 +257,8 @@ class Users_AdminAjax extends Jaws_Gadget_Action
     function DeleteSession()
     {
         $this->gadget->CheckPermission('ManageOnlineUsers');
-        @list($sid) = jaws()->request->fetchAll('post');
-        if ($GLOBALS['app']->Session->Delete($sid)) {
+        @list($sIds) = jaws()->request->fetchAll('post');
+        if ($GLOBALS['app']->Session->Delete($sIds)) {
             $GLOBALS['app']->Session->PushLastResponse(
                 _t('USERS_ONLINE_SESSION_DELETED'),
                 RESPONSE_NOTICE

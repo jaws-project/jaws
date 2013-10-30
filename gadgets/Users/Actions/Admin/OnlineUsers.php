@@ -20,8 +20,13 @@ class Users_Actions_Admin_OnlineUsers extends Users_AdminAction
      */
     function OnlineUsersDataGrid()
     {
+        $gridBox =& Piwi::CreateWidget('VBox');
+        $gridBox->SetID('tags_box');
+        $gridBox->SetStyle('width: 100%;');
+
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
-        $datagrid->pageBy(1024);
+//        $datagrid->pageBy(1024);
+        $datagrid->useMultipleSelection();
         $datagrid->SetID('onlineusers_datagrid');
         $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME'));
         $column1->SetStyle('width:100px;');
@@ -37,20 +42,46 @@ class Users_Actions_Admin_OnlineUsers extends Users_AdminAction
         $column5 = Piwi::CreateWidget('Column', _t('USERS_ONLINE_LAST_ACTIVETIME'), false, null);
         $column5->SetStyle('width:128px;');
         $datagrid->AddColumn($column5);
-        $action_column = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), false, null);
-        $action_column->SetStyle('width:60px;');
-        $datagrid->AddColumn($action_column);
         $datagrid->SetStyle('margin-top: 0px; width: 100%;');
-        return $datagrid->Get();
+
+        //Tools
+        $gridForm =& Piwi::CreateWidget('Form');
+        $gridForm->SetID('tags_form');
+        $gridForm->SetStyle('float: right');
+
+        $gridFormBox =& Piwi::CreateWidget('HBox');
+
+        $actions =& Piwi::CreateWidget('Combo', 'online_users_actions');
+        $actions->SetID('ou_actions_combo');
+        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
+        $actions->AddOption('&nbsp;', '');
+        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+        $actions->AddOption(_t('USERS_ONLINE_BLOCKING_IP'), 'block_ip');
+        $actions->AddOption(_t('USERS_ONLINE_BLOCKING_AGENT'), 'block_agent');
+
+        $execute =& Piwi::CreateWidget('Button', 'executeOnlineUsersAction', '',
+            STOCK_YES);
+        $execute->AddEvent(ON_CLICK, "javascript:onlineUsersDGAction(document.getElementById('ou_actions_combo'));");
+
+        $gridFormBox->Add($actions);
+        $gridFormBox->Add($execute);
+        $gridForm->Add($gridFormBox);
+
+        //Pack everything
+        $gridBox->Add($datagrid);
+        $gridBox->Add($gridForm);
+
+        return $gridBox->Get();
     }
 
     /**
      * Prepares list of online users for datagrid
      *
      * @access  public
-     * @return  array  Grid data
+     * @param   array   $filters    Grid filters
+     * @return  array   Grid data
      */
-    function GetOnlineUsers()
+    function GetOnlineUsers($filters)
     {
         $sessions = $GLOBALS['app']->Session->GetSessions(false);
         if (Jaws_Error::IsError($sessions)) {
@@ -62,6 +93,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_AdminAction
 
         foreach ($sessions as $session) {
             $usrData = array();
+            $usrData['__KEY__']      = $session['sid'];
             if (empty($session['username'])) {
                 $usrData['username'] = _t('USERS_ONLINE_ANONY');
             } else {
@@ -83,32 +115,32 @@ class Users_Actions_Admin_OnlineUsers extends Users_AdminAction
                     $objDate->Format($session['updatetime'], 'Y-m-d H:i')."</s>";
             }
 
-            $link =& Piwi::CreateWidget(
-                'Link',
-                _t('GLOBAL_DELETE'),
-                "javascript: deleteSession(this, '{$session['sid']}');",
-                STOCK_DELETE);
-            $actions = $link->Get() . '&nbsp;';
-
-            if ($this->gadget->GetPermission('ManageIPs', '', false, 'Policy')) {
-                $link =& Piwi::CreateWidget(
-                    'Link',
-                    _t('USERS_ONLINE_BLOCKING_IP'),
-                    "javascript: ipBlock(this, '" . long2ip($session['ip']) . "');",
-                    STOCK_STOP);
-                $actions .= $link->Get() . '&nbsp;';
-            }
-
-            if ($this->gadget->GetPermission('ManageAgents', '', false, 'Policy')) {
-                $link =& Piwi::CreateWidget(
-                    'Link',
-                    _t('USERS_ONLINE_BLOCKING_AGENT'),
-                    "javascript: agentBlock(this, '{$session['agent']}');",
-                    STOCK_STOP);
-                $actions .= $link->Get();
-            }
-
-            $usrData['actions'] = $actions;
+//            $link =& Piwi::CreateWidget(
+//                'Link',
+//                _t('GLOBAL_DELETE'),
+//                "javascript: deleteSession(this, '{$session['sid']}');",
+//                STOCK_DELETE);
+//            $actions = $link->Get() . '&nbsp;';
+//
+//            if ($this->gadget->GetPermission('ManageIPs', '', false, 'Policy')) {
+//                $link =& Piwi::CreateWidget(
+//                    'Link',
+//                    _t('USERS_ONLINE_BLOCKING_IP'),
+//                    "javascript: ipBlock(this, '" . long2ip($session['ip']) . "');",
+//                    STOCK_STOP);
+//                $actions .= $link->Get() . '&nbsp;';
+//            }
+//
+//            if ($this->gadget->GetPermission('ManageAgents', '', false, 'Policy')) {
+//                $link =& Piwi::CreateWidget(
+//                    'Link',
+//                    _t('USERS_ONLINE_BLOCKING_AGENT'),
+//                    "javascript: agentBlock(this, '{$session['agent']}');",
+//                    STOCK_STOP);
+//                $actions .= $link->Get();
+//            }
+//
+//            $usrData['actions'] = $actions;
             $retData[] = $usrData;
         }
 
@@ -128,6 +160,26 @@ class Users_Actions_Admin_OnlineUsers extends Users_AdminAction
 
         $tpl = $this->gadget->loadAdminTemplate('OnlineUsers.html');
         $tpl->SetBlock('OnlineUsers');
+
+        // Session Status
+        $filterSession =& Piwi::CreateWidget('Combo', 'filter_session_status');
+        $filterSession->AddOption(_t('GLOBAL_ALL'), -1, false);
+        $filterSession->AddOption(_t('USERS_ONLINE_FILTER_SESSION_STATUS_ACTIVE'), 1);
+        $filterSession->AddOption(_t('USERS_ONLINE_FILTER_SESSION_STATUS_INACTIVE'), 0);
+        $filterSession->AddEvent(ON_CHANGE, "javascript: searchOnlineUsers();");
+        $filterSession->SetDefault(-1);
+        $tpl->SetVariable('filter_session_status', $filterSession->Get());
+        $tpl->SetVariable('lbl_filter_session_status', _t('USERS_ONLINE_FILTER_SESSION_STATUS'));
+
+        // Membership
+        $filterMembership =& Piwi::CreateWidget('Combo', 'filter_membership');
+        $filterMembership->AddOption(_t('GLOBAL_ALL'), -1, false);
+        $filterMembership->AddOption(_t('USERS_ONLINE_FILTER_MEMBERSHIP_MEMBERS'), 1);
+        $filterMembership->AddOption(_t('USERS_ONLINE_FILTER_MEMBERSHIP_ANONYMOUS'), 0);
+        $filterMembership->AddEvent(ON_CHANGE, "javascript: searchOnlineUsers();");
+        $filterMembership->SetDefault(-1);
+        $tpl->SetVariable('filter_membership', $filterMembership->Get());
+        $tpl->SetVariable('lbl_filter_membership', _t('USERS_ONLINE_FILTER_MEMBERSHIP'));
 
         $tpl->SetVariable('online_users_datagrid', $this->OnlineUsersDataGrid());
         $tpl->SetVariable('menubar', $this->MenuBar('OnlineUsers'));
