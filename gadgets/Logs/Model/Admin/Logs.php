@@ -23,7 +23,7 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->select('logs.id:integer', 'ip', 'agent', 'gadget', 'action', 'logs.insert_time',
-                           'users.nickname', 'users.username', 'users.id as user_id:integer');
+                           'title', 'users.nickname', 'users.username', 'users.id as user_id:integer');
         $logsTable->join('users', 'users.id', 'logs.user');
         $logsTable->orderBy('id desc');
         if (is_numeric($limit)) {
@@ -79,9 +79,21 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
 
         if (!empty($filters) && count($filters) > 1) {
             if (isset($filters['from_date']) && !empty($filters['from_date'])) {
+                if (!is_numeric($filters['from_date'])) {
+                    $objDate = $GLOBALS['app']->loadDate();
+                    $filters['from_date'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['from_date']), 'U')
+                    );
+                }
                 $logsTable->and()->where('logs.insert_time', $filters['from_date'], '>=');
             }
             if (isset($filters['to_date']) && !empty($filters['to_date'])) {
+                if (!is_numeric($filters['to_date'])) {
+                    $objDate = $GLOBALS['app']->loadDate();
+                    $filters['to_date'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['to_date']), 'U')
+                    );
+                }
                 $logsTable->and()->where('logs.insert_time', $filters['to_date'], '<=');
             }
             if (isset($filters['gadget']) && !empty($filters['gadget'])) {
@@ -90,7 +102,14 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
             if (isset($filters['user']) && !empty($filters['user'])) {
                 $logsTable->and()->where('user', $filters['user']);
             }
+            if (isset($filters['priority']) && !empty($filters['priority'])) {
+                $logsTable->and()->where('priority', $filters['priority']);
+            }
+            if (isset($filters['term']) && !empty($filters['term'])) {
+                $logsTable->and()->where('title', '%' . $filters['term'] . '%', 'like');
+            }
         }
+
         return $logsTable->fetchOne();
     }
 

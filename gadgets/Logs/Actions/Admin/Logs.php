@@ -34,7 +34,6 @@ class Logs_Actions_Admin_Logs extends Logs_AdminAction
         $tpl->SetVariable('filter_from_date', $fromDate->Get());
         $tpl->SetVariable('lbl_filter_from_date', _t('LOGS_FROM_DATE'));
 
-
         // To Date Filter
         $toDate =& Piwi::CreateWidget('DatePicker', 'to_date', '');
         $toDate->showTimePicker(true);
@@ -50,9 +49,8 @@ class Logs_Actions_Admin_Logs extends Logs_AdminAction
         $gadgetsCombo->AddOption(_t('LOGS_ALL_GADGETS'), "", false);
         $cmpModel = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
         $gadgetList = $cmpModel->GetGadgetsList();
-        $gadgets = array_keys($gadgetList);
-        foreach ($gadgets as $gadget) {
-            $gadgetsCombo->AddOption($gadget, $gadget);
+        foreach ($gadgetList as $gadget) {
+            $gadgetsCombo->AddOption($gadget['title'], $gadget['name']);
         }
         $gadgetsCombo->AddEvent(ON_CHANGE, "javascript: searchLogs();");
         $gadgetsCombo->SetDefault(-1);
@@ -131,6 +129,11 @@ class Logs_Actions_Admin_Logs extends Logs_AdminAction
         $grid->TotalRows($total);
         $grid->useMultipleSelection();
         $grid->pageBy(12);
+
+        $column0 = Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'), null, false);
+        $column0->SetStyle('width:100px; white-space:nowrap;');
+        $grid->AddColumn($column0);
+
         $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_GADGETS'), null, false);
         $column1->SetStyle('width:100px; white-space:nowrap;');
         $grid->AddColumn($column1);
@@ -189,7 +192,7 @@ class Logs_Actions_Admin_Logs extends Logs_AdminAction
         $tpl = $this->gadget->loadAdminTemplate('Logs.html');
         $tpl->SetBlock('LogUI');
 
-        // Gadget
+        // title
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
 
         // Gadget
@@ -252,12 +255,13 @@ class Logs_Actions_Admin_Logs extends Logs_AdminAction
             $logData = array();
             $logData['__KEY__'] = $log['id'];
 
-            $link =& Piwi::CreateWidget('Link', $log['gadget'],
+            // Title
+            $link =& Piwi::CreateWidget('Link', $log['title'],
                 "javascript:viewLog(this, '".$log['id']."');");
+            $logData['title'] = $link->get();
 
             // Gadget
-//            $logData['gadget'] = $log['gadget'];
-            $logData['gadget'] = $link->get();
+            $logData['gadget'] = $log['gadget'];
             // Action
             $logData['action'] = $log['action'];
             // User - Username
@@ -270,6 +274,19 @@ class Logs_Actions_Admin_Logs extends Logs_AdminAction
             $newData[] = $logData;
         }
         return $newData;
+    }
+
+    /**
+     * Get logs count
+     *
+     * @access  public
+     * @return  int     Total of tags
+     */
+    function GetLogsCount()
+    {
+        $filters = jaws()->request->fetchAll('post');
+        $model = $this->gadget->loadAdminModel('Logs');
+        return $model->GetLogsCount($filters);
     }
 
     /**
@@ -299,7 +316,7 @@ class Logs_Actions_Admin_Logs extends Logs_AdminAction
         }
 
         $date = $GLOBALS['app']->loadDate();
-        $logInfo['insert_time'] = $date->Format($logInfo['insert_time']);
+        $logInfo['insert_time'] = $date->Format($logInfo['insert_time'], 'DN d MN Y H:i:s');
         $logInfo['ip'] = long2ip($logInfo['ip']);
         $logInfo['priority'] = $priority;
         $logInfo['script'] = ($logInfo['script']==true) ? _t('LOGS_LOG_SCRIPT_ADMIN') : _t('LOGS_LOG_SCRIPT_SCRIPT');

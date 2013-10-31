@@ -54,14 +54,13 @@ function getLogs(name, offset, reset) {
     if (reset) {
         $(name).setCurrentPage(0);
         var total = LogsAjax.callSync('GetLogsCount', {
-            'offset': {
-                'from_date' : $('from_date').value,
-                'to_date'   : $('to_date').value,
-                'gadget'    : $('filter_gadget').value,
-                'user'      : $('filter_user').value,
-                'priority'  : $('filter_priority').value,
-                'term'      : $('filter_term').value
-            }});
+            'from_date': $('from_date').value,
+            'to_date': $('to_date').value,
+            'gadget': $('filter_gadget').value,
+            'user': $('filter_user').value,
+            'priority': $('filter_priority').value,
+            'term': $('filter_term').value
+        });
 
     }
     resetGrid(name, result, total);
