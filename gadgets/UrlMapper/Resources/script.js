@@ -313,7 +313,7 @@ function changeCode()
  */
 function getErrorMaps(name, offset, reset)
 {
-    var result = UrlMapperAjax.callSync('geterrormaps', 10, offset);
+    var result = UrlMapperAjax.callSync('geterrormaps', 15, offset);
     if (reset) {
         $(name).setCurrentPage(0);
         var total = UrlMapperAjax.callSync('geterrormapscount');

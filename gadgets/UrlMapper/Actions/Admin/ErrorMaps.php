@@ -28,6 +28,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_AdminAction
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
         $datagrid->setID('errormaps_datagrid');
         $datagrid->useMultipleSelection();
+        $datagrid->pageBy(15);
 
         $column1 = Piwi::CreateWidget('Column', _t('URLMAPPER_ERRORMAPS_URL'), null, false);
         $column1->SetStyle('width:200px;');
