@@ -3,9 +3,6 @@ width:230px;
 padding-right:8px;
 vertical-align:top;
 }
-table td label{
-float:right;
-}
 #buttons{
 float:left;
 padding-top:15px;
@@ -26,5 +23,5 @@ direction:ltr;
 margin:0 auto;
 }
 #main table td{
-    vertical-align: top;
+vertical-align: top;
 }

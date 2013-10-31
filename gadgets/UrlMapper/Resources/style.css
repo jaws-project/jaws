@@ -16,9 +16,12 @@ padding:0px;
 #map_area label{
 margin:5px 0 2px;
 }
+#alias, #custom_url{
+direction:ltr;
+}
 #main table{
 margin:0 auto;
 }
 #main table td{
-    vertical-align: top;
+vertical-align: top;
 }
