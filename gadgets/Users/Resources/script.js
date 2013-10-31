@@ -357,40 +357,6 @@ function saveUser()
 }
 
 /**
-/**
- * Logout an user
- */
-function deleteSession(rowElement, sid) {
-    selectGridRow('onlineusers_datagrid', rowElement.parentNode.parentNode);
-    if (confirm(confirmThrowOut)) {
-        UsersAjax.callAsync('deletesession', sid);
-    }
-    unselectGridRow('onlineusers_datagrid');
-}
-
-/**
- * User's IP block
- */
-function ipBlock(rowElement, ip) {
-    selectGridRow('onlineusers_datagrid', rowElement.parentNode.parentNode);
-    if (confirm(confirmBlockIP)) {
-        UsersAjax.callAsync('ipblock', ip);
-    }
-    unselectGridRow('onlineusers_datagrid');
-}
-
-/**
- * User's Agent block
- */
-function agentBlock(rowElement, agent) {
-    selectGridRow('onlineusers_datagrid', rowElement.parentNode.parentNode);
-    if (confirm(confirmBlockAgent)) {
-        UsersAjax.callAsync('agentblock', agent);
-    }
-    unselectGridRow('onlineusers_datagrid');
-}
-
-/**
  * Delete user
  */
 function deleteUser(rowElement, uid)

@@ -115,32 +115,6 @@ class Users_Actions_Admin_OnlineUsers extends Users_AdminAction
                     $objDate->Format($session['updatetime'], 'Y-m-d H:i')."</s>";
             }
 
-//            $link =& Piwi::CreateWidget(
-//                'Link',
-//                _t('GLOBAL_DELETE'),
-//                "javascript: deleteSession(this, '{$session['sid']}');",
-//                STOCK_DELETE);
-//            $actions = $link->Get() . '&nbsp;';
-//
-//            if ($this->gadget->GetPermission('ManageIPs', '', false, 'Policy')) {
-//                $link =& Piwi::CreateWidget(
-//                    'Link',
-//                    _t('USERS_ONLINE_BLOCKING_IP'),
-//                    "javascript: ipBlock(this, '" . long2ip($session['ip']) . "');",
-//                    STOCK_STOP);
-//                $actions .= $link->Get() . '&nbsp;';
-//            }
-//
-//            if ($this->gadget->GetPermission('ManageAgents', '', false, 'Policy')) {
-//                $link =& Piwi::CreateWidget(
-//                    'Link',
-//                    _t('USERS_ONLINE_BLOCKING_AGENT'),
-//                    "javascript: agentBlock(this, '{$session['agent']}');",
-//                    STOCK_STOP);
-//                $actions .= $link->Get();
-//            }
-//
-//            $usrData['actions'] = $actions;
             $retData[] = $usrData;
         }
 
