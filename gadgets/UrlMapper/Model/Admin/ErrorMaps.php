@@ -112,16 +112,16 @@ class UrlMapper_Model_Admin_ErrorMaps extends UrlMapper_Model_ErrorMaps
     }
 
     /**
-     * Deletes the error map
+     * Deletes the error maps
      *
      * @access  public
-     * @param   int     $id     Error map ID
+     * @param   array   $ids     Error map IDs
      * @return  array   Response array (notice or error)
      */
-    function DeleteErrorMap($id)
+    function DeleteErrorMaps($ids)
     {
         $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
-        $result = $errorsTable->delete()->where('id', $id)->exec();
+        $result = $errorsTable->delete()->where('id', $ids, 'in')->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_DELETED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_DELETED'), _t('URLMAPPER_NAME'));

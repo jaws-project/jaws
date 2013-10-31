@@ -251,11 +251,11 @@ class UrlMapper_AdminAjax extends Jaws_Gadget_Action
      * @access  public
      * @return  array   Response array (notice or error)
      */
-    function DeleteErrorMap()
+    function DeleteErrorMaps()
     {
-        @list($id) = jaws()->request->fetchAll('post');
+        $ids = jaws()->request->fetchAll('post');
         $model = $this->gadget->loadAdminModel('ErrorMaps');
-        $model->DeleteErrorMap($id);
+        $model->DeleteErrorMaps($ids);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

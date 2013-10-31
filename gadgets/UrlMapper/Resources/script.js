@@ -76,7 +76,7 @@ var UrlMapperCallback = {
     /**
      * delete an  error map
      */
-    deleteerrormap: function(response) {
+    deleteerrormaps: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopErrorMapAction();
             $('errormaps_datagrid').deleteItem();
@@ -321,18 +321,23 @@ function getErrorMaps(name, offset, reset)
     resetGrid(name, result, total);
 }
 
+
 /**
- * Delete error map
+ * Executes an action on error maps
  */
-function deleteErrorMap(element, emid)
+function errorMapsDGAction(combo)
 {
-    stopErrorMapAction();
-    selectDataGridRow(element.parentNode.parentNode);
-    var answer = confirm(confirmErrorMapDelete);
-    if (answer) {
-        UrlMapperAjax.callAsync('deleteerrormap', emid);
+    var rows = $('errormaps_datagrid').getSelectedRows();
+    if (rows.length < 1) {
+        return;
     }
-    unselectDataGridRow();
+
+    if (combo.value == 'delete') {
+        var confirmation = confirm(confirmErrorMapDelete);
+        if (confirmation) {
+            UrlMapperAjax.callAsync('deleteerrormaps', rows);
+        }
+    }
 }
 
 /**

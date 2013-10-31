@@ -21,8 +21,13 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_AdminAction
      */
     function ErrorMapsDatagrid()
     {
+        $gridBox =& Piwi::CreateWidget('VBox');
+        $gridBox->SetID('logs_box');
+        $gridBox->SetStyle('width: 100%;');
+
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
         $datagrid->setID('errormaps_datagrid');
+        $datagrid->useMultipleSelection();
 
         $column1 = Piwi::CreateWidget('Column', _t('URLMAPPER_ERRORMAPS_URL'), null, false);
         $column1->SetStyle('width:200px;');
@@ -44,13 +49,33 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_AdminAction
         $column5->SetStyle('width:100px;');
         $datagrid->AddColumn($column5);
 
-
-        $colActions = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
-        $colActions->SetStyle('width: 60px; white-space:nowrap;');
-        $datagrid->addColumn($colActions);
-
         $datagrid->SetStyle('margin-top: 0px; width: 100%;');
-        return $datagrid->Get();
+
+        //Tools
+        $gridForm =& Piwi::CreateWidget('Form');
+        $gridForm->SetID('errormaps_form');
+        $gridForm->SetStyle('float: right');
+
+        $gridFormBox =& Piwi::CreateWidget('HBox');
+        $actions =& Piwi::CreateWidget('Combo', 'errormaps_actions');
+        $actions->SetID('errormaps_actions_combo');
+        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
+        $actions->AddOption('&nbsp;', '');
+        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+
+        $execute =& Piwi::CreateWidget('Button', 'executeErrorMapsAction', '',
+            STOCK_YES);
+        $execute->AddEvent(ON_CLICK, "javascript: errorMapsDGAction(document.getElementById('errormaps_actions_combo'));");
+
+        $gridFormBox->Add($actions);
+        $gridFormBox->Add($execute);
+        $gridForm->Add($gridFormBox);
+
+        //Pack everything
+        $gridBox->Add($datagrid);
+        $gridBox->Add($gridForm);
+
+        return $gridBox->Get();
     }
 
     /**
@@ -73,28 +98,18 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_AdminAction
         $retData = array();
         foreach ($errorMaps as $errorMap) {
             $usrData = array();
+            $usrData['__KEY__'] = $errorMap['id'];
+            if ($this->gadget->GetPermission('ManageErrorMaps')) {
+                $errorMap['url'] =& Piwi::CreateWidget('Link',
+                    $errorMap['url'],
+                    "javascript: editErrorMap(this, '" . $errorMap['id'] . "');")->get();
+            }
             $usrData['url'] = $errorMap['url'];
             $usrData['code'] = $errorMap['code'];
             $usrData['new_url'] = $errorMap['new_url'];
             $usrData['new_code'] = $errorMap['new_code'];
             $usrData['hits'] = $errorMap['hits'];
 
-            $actions = '';
-            if ($this->gadget->GetPermission('ManageErrorMaps')) {
-                $link =& Piwi::CreateWidget('Link',
-                    _t('GLOBAL_EDIT'),
-                    "javascript: editErrorMap(this, '".$errorMap['id']."');",
-                    STOCK_EDIT);
-                $actions.= $link->Get().'&nbsp;';
-                $link =& Piwi::CreateWidget('Link',
-                    _t('GLOBAL_DELETE'),
-                    "javascript: deleteErrorMap(this, '".$errorMap['id']."');",
-                    STOCK_DELETE);
-                $actions.= $link->Get().'&nbsp;';
-            }
-
-
-            $usrData['actions'] = $actions;
             $retData[] = $usrData;
         }
 
