@@ -77,8 +77,10 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
                     $jdate->Format($event['start_date'], 'Y-m-d');
                 $event['stop_date'] = empty($event['stop_date'])? '' :
                     $jdate->Format($event['stop_date'], 'Y-m-d');
-                $event['start_time'] = round($event['start_time'] / 3600);
-                $event['stop_time'] = round($event['stop_time'] / 3600);
+                $event['start_time'] = empty($event['start_time'])? '' :
+                    $jdate->Format($event['start_time'], 'H:s');
+                $event['stop_time'] = empty($event['stop_time'])? '' :
+                    $jdate->Format($event['stop_time'], 'H:s');
             } else {
                 $event = array();
                 $event['id'] = 0;
@@ -87,8 +89,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
                 $event['description'] = '';
                 $event['start_date'] = '';
                 $event['stop_date'] = '';
-                $event['start_time'] = 0;
-                $event['stop_time'] = 0;
+                $event['start_time'] = '';
+                $event['stop_time'] = '';
                 $event['month'] = 0;
                 $event['day'] = 0;
                 $event['wday'] = 0;
@@ -141,24 +143,11 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $datePicker->setLanguageCode($cal_lang);
         $tpl->SetVariable('stop_date', $datePicker->Get());
 
-        // Start time
-        $combo =& Piwi::CreateWidget('Combo', 'start_time');
-        $combo->SetId('event_start_time');
-        for ($i = 0; $i <= 23; $i++) {
-            $combo->AddOption($i, $i);
-        }
-        $combo->SetDefault($event['start_time']);
-        $tpl->SetVariable('start_time', $combo->Get());
+        // Start/Stop time
         $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
-
-        // Stop time
-        $combo =& Piwi::CreateWidget('Combo', 'stop_time');
-        $combo->SetId('event_stop_time');
-        for ($i = 0; $i <= 23; $i++) {
-            $combo->AddOption($i, $i);
-        }
-        $combo->SetDefault($event['stop_time']);
-        $tpl->SetVariable('stop_time', $combo->Get());
+        $tpl->SetVariable('error_time_value', _t('EVENTSCALENDAR_ERROR_INVALID_TIME_FORMAT'));
+        $tpl->SetVariable('start_time', $event['start_time']);
+        $tpl->SetVariable('stop_time', $event['stop_time']);
 
         // Type
         $combo =& Piwi::CreateWidget('Combo', 'type');

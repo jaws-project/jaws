@@ -20,7 +20,17 @@
         <tr><th><label for="event_start_date">{lbl_date}:</label></th>
           <td>{start_date} {lbl_to} {stop_date}</td></tr>
         <tr><th><label for="event_start_time">{lbl_time}:</label></th>
-          <td>{start_time} {lbl_to} {stop_time}</td></tr>
+          <td>
+            <input type="time" name="start_time" id="event_start_time" value="{start_time}"
+              pattern="(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])" placeholder="00:00"
+              oninvalid="setCustomValidity('{error_time_value}')"
+              onchange="try{setCustomValidity('')}catch(e){}" />
+            {lbl_to}
+            <input type="time" name="stop_time" id="event_stop_time" value="{stop_time}"
+              pattern="(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])" placeholder="00:00"
+              oninvalid="setCustomValidity('{error_time_value}')"
+              onchange="try{setCustomValidity('')}catch(e){}" />
+          </td></tr>
         <tr><th><label for="event_type">{lbl_type}:</label></th>
           <td>{type}</td></tr>
         <tr><th><label for="event_priority">{lbl_priority}:</label></th>

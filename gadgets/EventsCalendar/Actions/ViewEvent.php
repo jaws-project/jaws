@@ -60,8 +60,10 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
 
         // Time
-        $start_time = round($event['start_time'] / 3600);
-        $stop_time = round($event['stop_time'] / 3600);
+        $start_time = empty($event['start_time'])? '' :
+            $jdate->Format($event['start_time'], 'H:s');
+        $stop_time = empty($event['stop_time'])? '' :
+            $jdate->Format($event['stop_time'], 'H:s');
         $tpl->SetVariable('start_time', $start_time);
         $tpl->SetVariable('stop_time', $stop_time);
         $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));

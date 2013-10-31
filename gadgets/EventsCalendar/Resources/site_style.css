@@ -43,7 +43,7 @@ width:120px;
 padding:0;
 }
 #event_start_time, #event_stop_time {
-width:50px;
+width:100px;
 }
 #event_month, #event_day, #event_wday {
 display:none;
