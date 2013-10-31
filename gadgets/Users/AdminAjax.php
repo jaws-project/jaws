@@ -257,7 +257,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
     function DeleteSession()
     {
         $this->gadget->CheckPermission('ManageOnlineUsers');
-        @list($sIds) = jaws()->request->fetchAll('post');
+        $sIds = jaws()->request->fetchAll('post');
         // TODO : must added array of id to delete session method
         if ($GLOBALS['app']->Session->Delete($sIds)) {
             $GLOBALS['app']->Session->PushLastResponse(
@@ -286,7 +286,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageIPs');
 
         $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAdminModel('IP');
-        @list($sIds) = jaws()->request->fetchAll('post');
+        $sIds = jaws()->request->fetchAll('post');
         foreach ($sIds as $id) {
             $session = $GLOBALS['app']->Session->GetSession($id);
 
@@ -316,7 +316,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageOnlineUsers');
         $this->gadget->CheckPermission('ManageAgents');
-        @list($sIds) = jaws()->request->fetchAll('post');
+        $sIds = jaws()->request->fetchAll('post');
 
         $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAdminModel('Agent');
         foreach ($sIds as $id) {
