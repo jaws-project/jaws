@@ -69,7 +69,7 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
 
         // Type
-        $tpl->SetVariable('type', $event['type']);
+        $tpl->SetVariable('type', _t('EVENTSCALENDAR_EVENT_TYPE_'.$event['type']));
         $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
 
         // Priority
@@ -81,8 +81,21 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_reminder', _t('EVENTSCALENDAR_EVENT_REMINDER'));
 
         // Repeat
-        $tpl->SetVariable('repeat', '');
+        if ($event['day'] == 0 && $event['wday'] == 0 && $event['month'] == 0) {
+            $repeat = 'DAILY';
+        } else if ($event['day'] == 0 && $event['month'] == 0) {
+            $repeat = 'WEEKLY';
+        } else if ($event['wday'] == 0 && $event['month'] == 0) {
+            $repeat = 'MONTHLY';
+        } else {  // $event['wday'] == 0
+            $repeat = 'YEARLY';
+        }
+        $tpl->SetVariable('repeat', _t('EVENTSCALENDAR_EVENT_REPEAT_'.$repeat));
         $tpl->SetVariable('lbl_repeat', _t('EVENTSCALENDAR_EVENT_REPEAT'));
+
+        // Shared
+        $tpl->SetVariable('shared', $event['shared']? _t('GLOBAL_YES') : _t('GLOBAL_NO'));
+        $tpl->SetVariable('lbl_shared', _t('EVENTSCALENDAR_SHARED'));
 
         // Actions
         $site_url = $GLOBALS['app']->GetSiteURL('/');
