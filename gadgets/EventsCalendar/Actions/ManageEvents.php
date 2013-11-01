@@ -41,28 +41,23 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
             $tpl->SetVariable('type', $response['type']);
         }
 
-        // Fetch url params
-        // $get = jaws()->request->fetch(array('filter', 'query', 'page'), 'get');
-        // foreach ($get as $k => $v) {
-            // if ($v === null) {
-                // unset($get[$k]);
-            // }
-        // }
-
-        // Prepare action arguments
-        // $query = isset($get['query'])? $get['query'] : null;
-        // $filter = isset($get['filter'])? (int)$get['filter'] : null;
-        // $shared = ($filter === 1)? true : null;
-        // $foreign = ($filter === 2)? true : null;
-        // $page = isset($get['page'])? $get['page'] : 1;
-        // $limit = (int)$this->gadget->registry->fetch('events_limit');
+        // Ckeck for search query
+        $params = $GLOBALS['app']->Session->PopSimpleResponse('Events.Search');
+        $query = isset($params['query'])? $params['query'] : null;
+        $start = isset($params['start'])? $params['start'] : null;
+        $stop = isset($params['stop'])? $params['stop'] : null;
+        $filter = isset($params['filter'])? (int)$params['filter'] : null;
+        $shared = ($filter === 1)? true : null;
+        $foreign = ($filter === 2)? true : null;
+        $page = isset($params['page'])? $params['page'] : 1;
+        $limit = (int)$this->gadget->registry->fetch('events_limit');
 
         // Fetch events
         $model = $this->gadget->loadModel('Events');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        //$count = $model->GetNumberOfEvents($user, $shared, $foreign, $query);
-        //$events = $model->GetEvents($user, $shared, $foreign, $query, $limit, ($page - 1) * $limit);
-        $events = $model->GetEvents($user);
+        $count = $model->GetNumberOfEvents($user, $shared, $foreign, $query, $start, $stop);
+        $events = $model->GetEvents($user, $shared, $foreign, $query, 
+            $start, $stop, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($events)){
             $objDate = $GLOBALS['app']->loadDate();
             foreach ($events as $event) {
@@ -86,33 +81,53 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         }
 
         // Search
-        // $combo =& Piwi::CreateWidget('Combo', 'filter');
-        // $combo->SetID('');
-        // $combo->AddOption(_t('EVENTSCALENDAR_SEARCH_ALL_EVENTS'), 0);
-        // $combo->AddOption(_t('EVENTSCALENDAR_SEARCH_SHARED_EVENTS_ONLY'), 1);
-        // $combo->AddOption(_t('EVENTSCALENDAR_SEARCH_FOREIGN_EVENTS_ONLY'), 2);
-        // $combo->SetDefault($filter);
-        // $tpl->SetVariable('filter', $combo->Get());
+        $entry =& Piwi::CreateWidget('Entry', 'query', $query);
+        $entry->SetID('');
+        $tpl->SetVariable('query', $entry->Get());
 
-        // $entry =& Piwi::CreateWidget('Entry', 'query', $query);
-        // $entry->SetID('');
-        // $entry->AddEvent(ON_CHANGE, 'onSearchChange(this.value)');
-        // $entry->AddEvent(ON_KUP, 'onSearchChange(this.value)');
-        // $tpl->SetVariable('query', $entry->Get());
+        $cal_type = $this->gadget->registry->fetch('calendar_type', 'Settings');
+        $cal_lang = $this->gadget->registry->fetch('calendar_language', 'Settings');
+        $datePicker =& Piwi::CreateWidget('DatePicker', 'start', $start);
+        $datePicker->SetId('event_start_date');
+        $datePicker->showTimePicker(true);
+        $datePicker->setCalType($cal_type);
+        $datePicker->setLanguageCode($cal_lang);
+        $datePicker->setDateFormat('%Y-%m-%d');
+        $tpl->SetVariable('start', $datePicker->Get());
+        $tpl->SetVariable('lbl_from', _t('EVENTSCALENDAR_FROM'));
 
-        // $button =& Piwi::CreateWidget('Button', '', _t('EVENTSCALENDAR_SEARCH'), STOCK_SEARCH);
-        // $button->SetSubmit(true);
-        // $tpl->SetVariable('btn_search', $button->Get());
+        $datePicker =& Piwi::CreateWidget('DatePicker', 'stop', $stop);
+        $datePicker->SetId('event_stop_date');
+        $datePicker->showTimePicker(true);
+        $datePicker->setDateFormat('%Y-%m-%d');
+        $datePicker->SetIncludeCSS(false);
+        $datePicker->SetIncludeJS(false);
+        $datePicker->setCalType($cal_type);
+        $datePicker->setLanguageCode($cal_lang);
+        $tpl->SetVariable('stop', $datePicker->Get());
+        $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
+
+        $combo =& Piwi::CreateWidget('Combo', 'filter');
+        $combo->SetID('');
+        $combo->AddOption(_t('EVENTSCALENDAR_SEARCH_ALL_EVENTS'), 0);
+        $combo->AddOption(_t('EVENTSCALENDAR_SEARCH_SHARED_EVENTS_ONLY'), 1);
+        $combo->AddOption(_t('EVENTSCALENDAR_SEARCH_FOREIGN_EVENTS_ONLY'), 2);
+        $combo->SetDefault($filter);
+        $tpl->SetVariable('filter', $combo->Get());
+
+        $button =& Piwi::CreateWidget('Button', '', _t('EVENTSCALENDAR_SEARCH'), STOCK_SEARCH);
+        $button->SetSubmit(true);
+        $tpl->SetVariable('btn_search', $button->Get());
 
         $site_url = $GLOBALS['app']->GetSiteURL('/');
         $events_url = $site_url . $this->gadget->urlMap('ManageEvents');
-        $button =& Piwi::CreateWidget('Button', 'btn_events_search_reset', 'X');
-        $button->SetSubmit(false);
-        $button->AddEvent(ON_CLICK, "location.assign('$events_url')");
-        if (empty($query)) {
-            $button->SetStyle('display:none;');
+
+        if (!is_null($params)) { // search mode
+            $button =& Piwi::CreateWidget('Button', 'btn_event_search_reset', 'X');
+            $button->SetSubmit(false);
+            $button->AddEvent(ON_CLICK, "location.assign('$events_url')");
+            $tpl->SetVariable('btn_reset', $button->Get());
         }
-        $tpl->SetVariable('btn_reset', $button->Get());
 
         // Actions
         $tpl->SetVariable('lbl_new_event', _t('EVENTSCALENDAR_NEW_EVENT'));
@@ -132,7 +147,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
             // $count,
             // _t('EVENTSCALENDAR_EVENTS_COUNT', $count),
             // 'EventsCalendar',
-            // $get
+            // $params
         // );
 
         $tpl->ParseBlock('events');
@@ -140,28 +155,24 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
     }
 
     /**
-     * Searches through events including shared events from other users
+     * Searches among events
      *
      * @access  public
      * @return  array   Response array
      */
     function Search()
     {
-        $post = jaws()->request->fetch(array('filter', 'query', 'page'), 'post');
+        $post = jaws()->request->fetch(array('query', 'filter', 'start', 'stop', 'page'), 'post');
         foreach ($post as $k => $v) {
             if ($v === null) {
                 unset($post[$k]);
             }
         }
-        $url = $this->gadget->urlMap('EventsCalendar', $post);
+        $GLOBALS['app']->Session->PushSimpleResponse(
+            $post,
+            'Events.Search'
+        );
+        $url = $this->gadget->urlMap('ManageEvents');
         Jaws_Header::Location($url);
-
-        /*if (strlen($search['query']) < 2) {
-            $GLOBALS['app']->Session->PushResponse(
-                _t('EVENTSCALENDAR_ERROR_SHORT_QUERY'),
-                'Events.Response',
-                RESPONSE_ERROR
-            );
-        }*/
     }
 }

@@ -90,14 +90,6 @@ function checkAll()
 }*/
 
 /**
- * Shows/Hides search reset button
- */
-function onSearchChange(value)
-{
-    $('btn_event_search_reset').style.display = (value === '')? 'none' : 'inline';
-}
-
-/**
  * Submits event
  */
 function submitEvent(form)

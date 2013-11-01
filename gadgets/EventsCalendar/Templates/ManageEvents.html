@@ -9,11 +9,11 @@
     <form id="frm_search" action="{base_script}" method="post">
       <input type="hidden" name="gadget" value="EventsCalendar" />
       <input type="hidden" name="action" value="Search" />
-      {filter} {query} {btn_search} {btn_reset}
+      {query} {filter} {lbl_from}{start} {lbl_to}{stop} {btn_search} {btn_reset}
     </form>
     <table>
       <thead><tr>
-        <th><input type="checkbox" id="chk_all" onchange="checkAll()"/></th>
+        <th class="th-check"><input type="checkbox" id="chk_all" onchange="checkAll()"/></th>
         <th class="event-subject">{lbl_subject}</th>
         <th>{lbl_start}</th>
         <th>{lbl_stop}</th>

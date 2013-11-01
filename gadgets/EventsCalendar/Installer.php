@@ -17,7 +17,7 @@ class EventsCalendar_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        array('notes_limit', '10'),
+        array('events_limit', '10'),
     );
 
     /**

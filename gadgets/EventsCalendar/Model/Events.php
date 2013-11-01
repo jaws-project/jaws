@@ -18,33 +18,44 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
      * @return  array   Query result
      */
     function GetEvents($user = null, $shared = null, $foreign = null, $query = null,
-        $limit = 0, $offset = null)
+        $start = null, $stop = null, $limit = 0, $offset = null)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as event');
-        // $table->select('event.id', 'user', 'subject', 'location', 'description', 'shared',
-            // 'createtime', 'updatetime', 'nickname', 'username');
-        // $table->join('ec_users', 'event.id', 'event');
-        // $table->join('users', 'owner', 'users.id');
-        $table->select('event.id', 'user', 'subject', 'location', 'description', 'shared',
-            'start_date', 'stop_date');
+        $table->select('event.id', 'event.user', 'subject', 'location', 'description',
+            'start_date', 'stop_date', 'shared', 'nickname', 'username');
+        $table->join('ec_users', 'event.id', 'event');
+        $table->join('users', 'owner', 'users.id');
 
         if ($user !== null){
-            $table->where('user', $user)->and();
+            $table->where('ec_users.user', $user)->and();
         }
 
         if ($shared === true){
             $table->where('shared', true)->and();
-            $table->where('user', $user)->and();
+            $table->where('event.user', $user)->and();
         }
 
         if ($foreign === true){
-            $table->where('user', $user, '<>')->and();
+            $table->where('ec_users.owner', $user, '<>')->and();
         }
 
         if ($query !== null){
             $query = "%$query%";
             $table->openWhere('subject', $query, 'like')->or();
-            $table->closeWhere('content', $query, 'like');
+            $table->where('location', $query, 'like')->or();
+            $table->closeWhere('description', $query, 'like')->and();
+        }
+
+        $jdate = $GLOBALS['app']->loadDate();
+        if (!empty($start)){
+            $start = $jdate->ToBaseDate(preg_split('/[- :]/', $start), 'Y-m-d');
+            $start = $GLOBALS['app']->UserTime2UTC($start);
+            $table->where('stop_date', $start, '>')->and();
+        }
+        if (!empty($stop)){
+            $stop = $jdate->ToBaseDate(preg_split('/[- :]/', $stop), 'Y-m-d');
+            $stop = $GLOBALS['app']->UserTime2UTC($stop);
+            $table->where('start_date', $stop, '<');
         }
 
         $table->limit($limit, $offset);
@@ -59,7 +70,8 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
      * @param   int     $user   User ID
      * @return  array   Query result
      */
-    function GetNumberOfEvents($user = null, $shared = null, $foreign = null, $query = null)
+    function GetNumberOfEvents($user = null, $shared = null, $foreign = null,
+        $start = null, $stop = null, $query = null)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as event');
         $table->select('count(event.id)');
@@ -67,25 +79,37 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
         $table->join('users', 'owner', 'users.id');
 
         if ($user !== null){
-            $table->where('user', $user)->and();
+            $table->where('ec_users.user', $user)->and();
         }
 
         if ($shared === true){
             $table->where('shared', true)->and();
-            $table->where('user', $user)->and();
+            $table->where('event.user', $user)->and();
         }
 
         if ($foreign === true){
-            $table->where('user', $user, '<>')->and();
+            $table->where('ec_users.owner', $user, '<>')->and();
         }
 
         if ($query !== null){
             $query = "%$query%";
             $table->openWhere('subject', $query, 'like')->or();
-            $table->closeWhere('description', $query, 'like');
+            $table->where('location', $query, 'like')->or();
+            $table->closeWhere('description', $query, 'like')->and();
         }
 
-        $table->orderBy('createtime desc', 'subject asc');
+        $jdate = $GLOBALS['app']->loadDate();
+        if (!empty($start)){
+            $start = $jdate->ToBaseDate(preg_split('/[- :]/', $start), 'Y-m-d');
+            $start = $GLOBALS['app']->UserTime2UTC($start);
+            $table->where('stop_date', $start, '>')->and();
+        }
+        if (!empty($stop)){
+            $stop = $jdate->ToBaseDate(preg_split('/[- :]/', $stop), 'Y-m-d');
+            $stop = $GLOBALS['app']->UserTime2UTC($stop);
+            $table->where('start_date', $stop, '<');
+        }
+
         return $table->fetchOne();
     }
 }
