@@ -380,8 +380,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Verify events & user
         $model = $this->gadget->loadModel('Event');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $verified_nodes = $model->CheckEvents($id_set, $user);
-        if (Jaws_Error::IsError($verified_nodes)) {
+        $verified_events = $model->CheckEvents($id_set, $user);
+        if (Jaws_Error::IsError($verified_events)) {
             return $GLOBALS['app']->Session->GetResponse(
                 _t('EVENTSCALENDAR_ERROR_EVENT_DELETE'),
                 RESPONSE_ERROR
@@ -389,7 +389,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         }
 
         // No events was verified
-        if (empty($verified_nodes)) {
+        if (empty($verified_events)) {
             return $GLOBALS['app']->Session->GetResponse(
                 _t('EVENTSCALENDAR_ERROR_NO_PERMISSION'),
                 RESPONSE_ERROR
@@ -398,7 +398,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
 
         // Delete events
         $model = $this->gadget->loadModel('Event');
-        $res = $model->Delete($verified_nodes);
+        $res = $model->Delete($verified_events);
         if (Jaws_Error::IsError($res)) {
             return $GLOBALS['app']->Session->GetResponse(
                 _t('EVENTSCALENDAR_ERROR_EVENT_DELETE'),
@@ -406,7 +406,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             );
         }
 
-        if (count($id_set) !== count($verified_nodes)) {
+        if (count($id_set) !== count($verified_events)) {
             $msg = _t('EVENTSCALENDAR_WARNING_DELETE_EVENTS_FAILED');
             // FIXME: we are creating response twice
             $GLOBALS['app']->Session->PushResponse($msg, 'Events.Response', RESPONSE_WARNING);

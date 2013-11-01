@@ -21,17 +21,15 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
     function GetEvent($id, $user = null)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as event');
-        // $table->select('event.id', 'user', 'subject', 'description', 'shared',
-            // 'createtime', 'updatetime', 'nickname', 'username');
-        // $table->join('ec_users', 'event.id', 'event');
-        // $table->join('users', 'owner', 'users.id');
-        $table->select('event.id', 'user', 'subject', 'location', 'description', 
-            'start_time', 'stop_time', 'start_date', 'stop_date',
-            'month', 'day', 'wday', 'type', 'priority',
-            'reminder', 'shared', 'createtime', 'updatetime');
+        $table->select('event.id', 'subject', 'location', 'description', 
+            'start_date', 'stop_date', 'start_time', 'stop_time',
+            'month', 'day', 'wday', 'type', 'priority', 'reminder', 'shared', 
+            'createtime', 'updatetime', 'nickname', 'username', 'ec_users.user');
+        $table->join('ec_users', 'event.id', 'event');
+        $table->join('users', 'owner', 'users.id');
         $table->where('event.id', $id)->and();
         if ($user !== null){
-            $table->where('user', $user)->and();
+            $table->where('ec_users.user', $user)->and();
         }
 
         return $table->fetchRow();
