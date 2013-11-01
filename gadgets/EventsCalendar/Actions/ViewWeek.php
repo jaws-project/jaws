@@ -116,6 +116,11 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
                     $tpl->SetVariable('event', $e['subject']);
                     $url = $this->gadget->urlMap('ViewEvent', array('id' => $event_id));
                     $tpl->SetVariable('event_url', $url);
+                    if ($e['shared']) {
+                        $block = ($e['user'] == $e['owner'])? 'shared' : 'foreign';
+                        $tpl->SetBlock("week/day/event/$block");
+                        $tpl->ParseBlock("week/day/event/$block");
+                    }
                     $tpl->ParseBlock('week/day/event');
                 }
             }

@@ -53,7 +53,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         // Fetch page
         $page = jaws()->request->fetch('page', 'get');
         $page = !empty($page)? (int)$page : 1;
-        $limit = 3;//(int)$this->gadget->registry->fetch('events_limit');
+        $limit = (int)$this->gadget->registry->fetch('events_limit');
 
         // Fetch events
         $model = $this->gadget->loadModel('Events');

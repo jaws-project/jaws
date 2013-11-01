@@ -22,19 +22,21 @@ class EventsCalendar_Model_Report extends Jaws_Gadget_Model
         //_log_var_dump($start . ' - ' . $stop);
         $table = Jaws_ORM::getInstance()->table('ec_events as event');
         $table->select('event.id', 'subject', 'shared', 'day', 'wday',
-            'start_date', 'stop_date', 'start_time', 'stop_time');
+            'start_date', 'stop_date', 'start_time', 'stop_time', 'ec_users.user', 'owner');
+        $table->join('ec_users', 'event.id', 'event');
+        $table->join('users', 'owner', 'users.id');
 
         if ($user !== null){
-            $table->where('user', $user)->and();
+            $table->where('ec_users.user', $user)->and();
         }
 
         if ($shared === true){
             $table->where('shared', true)->and();
-            $table->where('user', $user)->and();
+            $table->where('event.user', $user)->and();
         }
 
         if ($foreign === true){
-            $table->where('user', $user, '<>')->and();
+            $table->where('ec_users.owner', $user, '<>')->and();
         }
 
         if (isset($repeat['day'])){
@@ -74,15 +76,20 @@ class EventsCalendar_Model_Report extends Jaws_Gadget_Model
         for ($m = 1; $m <= 12; $m++) {
             $table->reset();
             $table->select('count(event.id)');
+            $table->join('ec_users', 'event.id', 'event');
+            $table->join('users', 'owner', 'users.id');
+
             if ($user !== null){
-                $table->where('user', $user)->and();
+                $table->where('ec_users.user', $user)->and();
             }
+
             if ($shared === true){
                 $table->where('shared', true)->and();
-                $table->where('user', $user)->and();
+                $table->where('event.user', $user)->and();
             }
+
             if ($foreign === true){
-                $table->where('user', $user, '<>')->and();
+                $table->where('ec_users.owner', $user, '<>')->and();
             }
 
             $start = $jdate->ToBaseDate($year, $m, 1);

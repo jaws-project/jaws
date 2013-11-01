@@ -109,10 +109,16 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
             $tpl->SetBlock('day/hour');
             $tpl->SetVariable('hour', $time);
             foreach ($eventsByHour[$i] as $event_id) {
+                $e = $eventsById[$event_id];
                 $tpl->SetBlock('day/hour/event');
-                $tpl->SetVariable('event', $eventsById[$event_id]['subject']);
+                $tpl->SetVariable('event', $e['subject']);
                 $url = $this->gadget->urlMap('ViewEvent', array('id' => $event_id));
                 $tpl->SetVariable('event_url', $url);
+                if ($e['shared']) {
+                    $block = ($e['user'] == $e['owner'])? 'shared' : 'foreign';
+                    $tpl->SetBlock("day/hour/event/$block");
+                    $tpl->ParseBlock("day/hour/event/$block");
+                }
                 $tpl->ParseBlock('day/hour/event');
             }
             $tpl->ParseBlock('day/hour');

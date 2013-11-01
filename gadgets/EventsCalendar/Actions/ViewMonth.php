@@ -34,6 +34,7 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 
+        // FIXME: we don't have daysInMonth
         $daysInMonth = 30;
         $jdate = $GLOBALS['app']->loadDate();
         $start = $jdate->ToBaseDate($year, $month, 1);
@@ -126,13 +127,15 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
             $tpl->SetVariable('day_url', $day_url);
             $tpl->SetVariable('day', $i . ' ' . $weekDay);
             foreach ($eventsByDay[$i] as $event_id) {
+                $e = $eventsById[$event_id];
                 $tpl->SetBlock('month/day/event');
-                $tpl->SetVariable('event', $eventsById[$event_id]['subject']);
+                $tpl->SetVariable('event', $e['subject']);
                 $url = $this->gadget->urlMap('ViewEvent', array('id' => $event_id));
                 $tpl->SetVariable('event_url', $url);
-                if ($eventsById[$event_id]['shared']) {
-                    $tpl->SetBlock('month/day/event/shared');
-                    $tpl->ParseBlock('month/day/event/shared');
+                if ($e['shared']) {
+                    $block = ($e['user'] == $e['owner'])? 'shared' : 'foreign';
+                    $tpl->SetBlock("month/day/event/$block");
+                    $tpl->ParseBlock("month/day/event/$block");
                 }
                 $tpl->ParseBlock('month/day/event');
             }
