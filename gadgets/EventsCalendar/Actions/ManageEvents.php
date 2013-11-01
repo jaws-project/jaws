@@ -49,14 +49,17 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $filter = isset($params['filter'])? (int)$params['filter'] : null;
         $shared = ($filter === 1)? true : null;
         $foreign = ($filter === 2)? true : null;
-        $page = isset($params['page'])? $params['page'] : 1;
-        $limit = (int)$this->gadget->registry->fetch('events_limit');
+
+        // Fetch page
+        $page = jaws()->request->fetch('page', 'get');
+        $page = !empty($page)? (int)$page : 1;
+        $limit = 3;//(int)$this->gadget->registry->fetch('events_limit');
 
         // Fetch events
         $model = $this->gadget->loadModel('Events');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $count = $model->GetNumberOfEvents($user, $shared, $foreign, $query, $start, $stop);
-        $events = $model->GetEvents($user, $shared, $foreign, $query, 
+        $count = $model->GetNumberOfEvents($user, $query, $shared, $foreign, $start, $stop);
+        $events = $model->GetEvents($user, $query, $shared, $foreign,
             $start, $stop, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($events)){
             $objDate = $GLOBALS['app']->loadDate();
@@ -138,17 +141,17 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $tpl->SetVariable('events_url', $events_url);
 
         // Pagination
-        // $action = $this->gadget->loadAction('Pager');
-        // $action->GetPagesNavigation(
-            // $tpl,
-            // 'events',
-            // $page,
-            // $limit,
-            // $count,
-            // _t('EVENTSCALENDAR_EVENTS_COUNT', $count),
-            // 'EventsCalendar',
-            // $params
-        // );
+        $action = $this->gadget->loadAction('Pager');
+        $action->GetPagesNavigation(
+            $tpl,
+            'events',
+            $page,
+            $limit,
+            $count,
+            _t('EVENTSCALENDAR_EVENTS_COUNT', $count),
+            'ManageEvents',
+            array('page' => $page)
+        );
 
         $tpl->ParseBlock('events');
         return $tpl->Get();
@@ -163,11 +166,6 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
     function Search()
     {
         $post = jaws()->request->fetch(array('query', 'filter', 'start', 'stop', 'page'), 'post');
-        foreach ($post as $k => $v) {
-            if ($v === null) {
-                unset($post[$k]);
-            }
-        }
         $GLOBALS['app']->Session->PushSimpleResponse(
             $post,
             'Events.Search'

@@ -12,7 +12,10 @@
 // Management
 $maps[] = array(
     'ManageEvents',
-    'events/manage'
+    'events/manage[/page/{page}]',
+    array(
+        'page' => '[[:digit:]]+'
+    )
 );
 $maps[] = array(
     'NewEvent',

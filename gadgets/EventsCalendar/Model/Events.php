@@ -17,7 +17,7 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
      * @param   int     $user   User ID
      * @return  array   Query result
      */
-    function GetEvents($user = null, $shared = null, $foreign = null, $query = null,
+    function GetEvents($user = null, $query = null, $shared = null, $foreign = null,
         $start = null, $stop = null, $limit = 0, $offset = null)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as event');
@@ -70,8 +70,8 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
      * @param   int     $user   User ID
      * @return  array   Query result
      */
-    function GetNumberOfEvents($user = null, $shared = null, $foreign = null,
-        $start = null, $stop = null, $query = null)
+    function GetNumberOfEvents($user = null, $query = null,
+        $shared = null, $foreign = null, $start = null, $stop = null)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as event');
         $table->select('count(event.id)');
@@ -91,7 +91,7 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
             $table->where('ec_users.owner', $user, '<>')->and();
         }
 
-        if ($query !== null){
+       if ($query !== null){
             $query = "%$query%";
             $table->openWhere('subject', $query, 'like')->or();
             $table->where('location', $query, 'like')->or();
