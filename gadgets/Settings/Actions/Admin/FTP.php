@@ -10,7 +10,7 @@ require_once JAWS_PATH. 'gadgets/Settings/AdminAction.php';
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Settings_Actions_Admin_FTP extends Settings_AdminAction
+class Settings_Actions_Admin_FTP extends Settings_Actions_Admin_Default
 {
     /**
      * Display general/ftpserver settings form
