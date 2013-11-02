@@ -22,7 +22,6 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
     {
         $use_crypt = $this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true';
         if ($use_crypt) {
-            require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $use_crypt = $JCrypt->Init();
         }

@@ -31,7 +31,7 @@ class ControlPanel_Actions_Admin_Backup extends Jaws_Gadget_Action
         $GLOBALS['db']->Dump($dbFilePath);
 
         $files = array();
-        require_once PEAR_PATH. "File/Archive.php"; 
+        require_once PEAR_PATH. 'File/Archive.php'; 
         $files[] = File_Archive::read(JAWS_DATA);
         $files[] = File_Archive::read($dbFilePath , $dbFileName);
         File_Archive::extract($files, File_Archive::toArchive($pathArchive, File_Archive::toFiles()));
