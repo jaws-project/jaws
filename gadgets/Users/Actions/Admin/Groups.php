@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Users/AdminAction.php';
+require_once JAWS_PATH. 'gadgets/Users/Actions/Admin/Default.php';
 /**
  * Users Core Gadget Admin
  *
