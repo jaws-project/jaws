@@ -9,7 +9,7 @@ require_once JAWS_PATH. 'gadgets/Comments/Action.php';
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Comments_Actions_Comments extends Comments_Action
+class Comments_Actions_Comments extends Comments_Actions_Default
 {
 
     /**

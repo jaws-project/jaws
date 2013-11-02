@@ -9,7 +9,7 @@ require_once JAWS_PATH. 'gadgets/Comments/AdminAction.php';
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Comments_Actions_Admin_Settings extends Comments_AdminAction
+class Comments_Actions_Admin_Settings extends Comments_Actions_Admin_Default
 {
     /**
      * Builds admin properties UI

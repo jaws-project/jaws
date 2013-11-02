@@ -8,7 +8,7 @@
  * @copyright   2012-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Comments_AdminAction extends Jaws_Gadget_Action
+class Comments_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /*
      * Admin of Gadget
