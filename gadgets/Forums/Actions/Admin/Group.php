@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Forums/AdminAction.php';
+require_once JAWS_PATH. 'gadgets/Forums/Actions/Admin/Default.php';
 /**
  * Forums Admin Gadget
  *
