@@ -9,7 +9,7 @@ require_once JAWS_PATH. 'gadgets/SysInfo/AdminAction.php';
  * @copyright  2008-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class SysInfo_Actions_Admin_PHPInfo extends SysInfo_AdminAction
+class SysInfo_Actions_Admin_PHPInfo extends SysInfo_Actions_Admin_Default
 {
     /**
      * Returns some PHP Settings

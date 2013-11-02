@@ -8,7 +8,7 @@
  * @copyright  2008-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class SysInfo_AdminAction extends Jaws_Gadget_Action
+class SysInfo_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
      * Calls default action
