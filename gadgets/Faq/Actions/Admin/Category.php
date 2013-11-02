@@ -11,7 +11,7 @@ require_once JAWS_PATH. 'gadgets/Faq/AdminAction.php';
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Faq_Actions_Admin_Category extends Faq_AdminAction
+class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
 {
     /**
      * Edit a category
