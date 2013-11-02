@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Tags/Actions/Default.php';
 /**
  * Tags Gadget
  *
