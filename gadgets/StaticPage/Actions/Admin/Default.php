@@ -31,7 +31,6 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
             $selected = 'AddNewPage';
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Admin', _t('STATICPAGE_MENU_PAGES'),
                             BASE_SCRIPT . '?gadget=StaticPage&amp;action=Admin', STOCK_DOCUMENTS);

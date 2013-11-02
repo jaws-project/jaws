@@ -63,7 +63,6 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
         if ($base_action == 'Pages') {
             $group = $gModel->GetGroup($post['gid']);
             if (Jaws_Error::IsError($group) || empty($group)) {
-                require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
                 return Jaws_HTTPError::Get(404);
             }
         }
@@ -80,7 +79,6 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
 
         $page = $pModel->GetPage($page_id,  $page_language);
         if (Jaws_Error::IsError($page) || empty($page)) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(404);
         } else {
             //add static page language to meta language tag

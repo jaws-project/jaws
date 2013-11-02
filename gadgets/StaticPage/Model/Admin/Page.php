@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH . 'gadgets/StaticPage/Model/Page.php';
 /**
  * StaticPage Gadget
  *
