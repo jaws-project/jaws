@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Logs/AdminAction.php';
+require_once JAWS_PATH. 'gadgets/Logs/Actions/Admin/Default.php';
 /**
  * Logs Gadget Admin
  *
