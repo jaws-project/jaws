@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH . 'gadgets/UrlMapper/Model/ErrorMaps.php';
 /**
  * UrlMapper Core Gadget
  *

@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH . 'gadgets/UrlMapper/Model/Aliases.php';
 /**
  * UrlMapper Core Gadget
  *
