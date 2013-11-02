@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Quotes/Actions/Admin/Default.php';
 /**
  * Quotes Gadget Action
  *
