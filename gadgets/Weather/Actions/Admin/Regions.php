@@ -12,7 +12,7 @@ require_once JAWS_PATH. 'gadgets/Weather/AdminAction.php';
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Weather_Actions_Admin_Regions extends Weather_AdminAction
+class Weather_Actions_Admin_Regions extends Weather_Actions_Admin_Default
 {
     /**
      * Displays the management UI for regions

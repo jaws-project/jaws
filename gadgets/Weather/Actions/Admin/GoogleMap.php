@@ -12,7 +12,7 @@ require_once JAWS_PATH. 'gadgets/Weather/AdminAction.php';
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Weather_Actions_Admin_GoogleMap extends Weather_AdminAction
+class Weather_Actions_Admin_GoogleMap extends Weather_Actions_Admin_Default
 {
     /**
      * Returns google map image
