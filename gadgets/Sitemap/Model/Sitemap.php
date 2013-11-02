@@ -194,7 +194,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
                 return $launcher->Execute($result['reference']);
                 break;
             case 'Blog':
-                $blog = Jaws_Gadget::getInstance('Blog')->loadAction();
+                $blog = Jaws_Gadget::getInstance('Blog')->loadAction('Default');
                 return $blog->SingleView(true, $result['reference']);
                 break;
             default:
