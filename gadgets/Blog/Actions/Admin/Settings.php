@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Blog/AdminAction.php';
+require_once JAWS_PATH. 'gadgets/Blog/Actions/Admin/Default.php';
 /**
  * Blog Admin HTML file
  *
