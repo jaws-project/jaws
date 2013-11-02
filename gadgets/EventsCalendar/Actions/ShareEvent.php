@@ -42,7 +42,6 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('events_url', $this->gadget->urlMap('ManageEvents'));
 
         // User groups
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $uModel = new Jaws_User();
         $groups = $uModel->GetGroups($uid, true, 'title');
         if (!Jaws_Error::IsError($groups)) {
@@ -92,7 +91,6 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         if ($gid === 0) {
             $gid = false;
         }
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $uModel = new Jaws_User();
         $users = $uModel->GetUsers($gid, null, 1);
         if (Jaws_Error::IsError($users)) {

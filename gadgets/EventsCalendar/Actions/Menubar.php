@@ -24,9 +24,7 @@ class EventsCalendar_Actions_Menubar extends Jaws_Gadget_Action
             $action = 'ManageEvents';
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
-
         $menubar->AddOption('ManageEvents',_t('EVENTSCALENDAR_EVENTS_MANAGE'),
             $this->gadget->urlMap('ManageEvents'), 'gadgets/EventsCalendar/Resources/images/events.png');
 
