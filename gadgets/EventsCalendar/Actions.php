@@ -13,7 +13,6 @@ $actions = array();
 /* Manage Actions */
 $actions['ManageEvents'] = array(
     'normal' => true,
-    'layout' => true,
     'file' => 'ManageEvents'
 );
 $actions['Search'] = array(
@@ -81,4 +80,9 @@ $actions['ViewWeek'] = array(
 $actions['ViewDay'] = array(
     'normal' => true,
     'file' => 'ViewDay'
+);
+$actions['Reminder'] = array(
+    'normal' => true,
+    'layout' => true,
+    'file' => 'Reminder'
 );

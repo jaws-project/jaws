@@ -17,21 +17,19 @@ class EventsCalendar_Actions_Menubar extends Jaws_Gadget_Action
      * @param   string  $action  Selected action
      * @return  string  XHTML UI
      */
-    function MenuBar($action)
+    function MenuBar($action = null)
     {
-        $actions = array('ManageEvents', 'Events');
-        if (!in_array($action, $actions)) {
-            $action = 'ManageEvents';
-        }
-
         $menubar = new Jaws_Widgets_Menubar();
+
         $menubar->AddOption('ManageEvents',_t('EVENTSCALENDAR_EVENTS_MANAGE'),
             $this->gadget->urlMap('ManageEvents'), 'gadgets/EventsCalendar/Resources/images/events.png');
 
         $menubar->AddOption('Events',_t('EVENTSCALENDAR_CALENDAR'),
             $this->gadget->urlMap('ViewYear'), 'gadgets/EventsCalendar/Resources/images/calendar.png');
 
-        $menubar->Activate($action);
+        if (!empty($action)) {
+            $menubar->Activate($action);
+        }
 
         return $menubar->Get();
     }
