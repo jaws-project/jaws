@@ -99,7 +99,6 @@ class Glossary_Actions_Term extends Jaws_Gadget_Action
             $tpl->ParseBlock('definition/term');
             $tpl->ParseBlock ('definition');
         } else {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(404);
         }
 
