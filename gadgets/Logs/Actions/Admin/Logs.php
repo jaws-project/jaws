@@ -8,7 +8,7 @@
  * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
  * @copyright  2013 Jaws Development Group
  */
-class Logs_Actions_Admin_Logs extends Logs_AdminAction
+class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
 {
     /**
      *

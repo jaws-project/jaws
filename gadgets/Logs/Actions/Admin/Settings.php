@@ -9,7 +9,7 @@ require_once JAWS_PATH. 'gadgets/Logs/AdminAction.php';
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Logs_Actions_Admin_Settings extends Logs_AdminAction
+class Logs_Actions_Admin_Settings extends Logs_Actions_Admin_Default
 {
     /**
      * Builds admin settings UI
