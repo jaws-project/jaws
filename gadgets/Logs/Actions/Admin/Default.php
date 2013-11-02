@@ -24,7 +24,6 @@ class Logs_Actions_Admin_Default extends Jaws_Gadget_Action
             $action = 'Logs';
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Logs',
                             _t('LOGS_NAME'),
