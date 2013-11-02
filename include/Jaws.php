@@ -761,9 +761,14 @@ class Jaws
     {
         // filter non validate character
         $classname = preg_replace('/[^[:alnum:]_]/', '', $classname);
-        $file = JAWS_PATH. 'include'. DIRECTORY_SEPARATOR. str_replace('_', DIRECTORY_SEPARATOR, $classname).'.php';
+        $classname = str_replace('_', '/', $classname);
+        if (0 === strpos($classname, 'Jaws/')) {
+            $file = JAWS_PATH. "include/$classname.php";
+        } else {
+            $file = JAWS_PATH. "gadgets/$classname.php";
+        }
         require_once $file;
-        $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loaded class: ' . $classname . ', File: ' . $file);
+        $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loaded class file: ' . $file);
     }
 
     /**
