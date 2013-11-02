@@ -9,7 +9,7 @@ require_once JAWS_PATH. 'gadgets/PrivateMessage/Action.php';
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class PrivateMessage_Actions_Announcement extends PrivateMessage_Action
+class PrivateMessage_Actions_Announcement extends PrivateMessage_Actions_Default
 {
     /**
      * Display AllMessages

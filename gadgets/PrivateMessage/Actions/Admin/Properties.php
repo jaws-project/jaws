@@ -9,7 +9,7 @@ require_once JAWS_PATH. 'gadgets/PrivateMessage/AdminAction.php';
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class PrivateMessage_Actions_Admin_Properties extends PrivateMessage_AdminAction
+class PrivateMessage_Actions_Admin_Properties extends PrivateMessage_Actions_Admin_Default
 {
     /**
      * Builds admin properties UI

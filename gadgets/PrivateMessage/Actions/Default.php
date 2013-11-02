@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class PrivateMessage_Action extends Jaws_Gadget_Action
+class PrivateMessage_Actions_Default extends Jaws_Gadget_Action
 {
     /**
      * Displays menu bar according to selected action
