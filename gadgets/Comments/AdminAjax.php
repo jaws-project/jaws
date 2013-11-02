@@ -21,7 +21,7 @@ class Comments_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageComments');
         @list($limit, $gadget, $search, $status) = jaws()->request->fetchAll('post');
-        $cHTML = $this->gadget->loadAdminAction();
+        $cHTML = $this->gadget->loadAdminAction('Default');
         return $cHTML->GetDataAsArray($gadget, "javascript:editComment(this, '{id}')", $search, $status, $limit, true);
     }
 
