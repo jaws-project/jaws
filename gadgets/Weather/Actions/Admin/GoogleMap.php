@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Weather/AdminAction.php';
+require_once JAWS_PATH. 'gadgets/Weather/Actions/Admin/Default.php';
 /**
  * Weather Gadget Admin
  *
