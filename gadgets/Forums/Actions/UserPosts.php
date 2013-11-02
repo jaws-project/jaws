@@ -9,7 +9,7 @@ require_once JAWS_PATH. 'gadgets/Forums/Action.php';
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Actions_UserPosts extends Forums_Action
+class Forums_Actions_UserPosts extends Forums_Actions_Default
 {
     /**
      * Displays list of user's posts ordered by date

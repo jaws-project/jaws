@@ -9,7 +9,7 @@ require_once JAWS_PATH. 'gadgets/Forums/AdminAction.php';
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Actions_Admin_Group extends Forums_AdminAction
+class Forums_Actions_Admin_Group extends Forums_Actions_Admin_Default
 {
     /**
      * Show a form to edit a given group
