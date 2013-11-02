@@ -352,7 +352,6 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
 
         $format = $this->gadget->registry->fetch('email_format');
         if ($format == 'html') {
-            require_once JAWS_PATH . 'include/Jaws/String.php';
             $reply = $this->gadget->ParseText($contact['reply']);
         } else {
             $reply = $contact['reply'];
@@ -396,7 +395,6 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $template = $tpl->Get();
         $subject = _t_lang($site_language, 'CONTACT_REPLY_TO', Jaws_XSS::defilter($contact['subject']));
 
-        require_once JAWS_PATH . 'include/Jaws/Mail.php';
         $mail = new Jaws_Mail;
         $mail->SetFrom($from_email, $from_name);
         $mail->AddRecipient($to);

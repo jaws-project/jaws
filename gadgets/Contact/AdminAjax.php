@@ -284,7 +284,6 @@ class Contact_AdminAjax extends Jaws_Gadget_Action
     function GetUsers()
     {
         @list($group) = jaws()->request->fetchAll('post');
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User();
         return $userModel->GetUsers($group, null, true);
     }

@@ -135,7 +135,6 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
 
         $format = $this->gadget->registry->fetch('email_format');
         if ($format == 'html') {
-            require_once JAWS_PATH . 'include/Jaws/String.php';
             $message = Jaws_String::AutoParagraph($contact['msg_txt']);
         } else {
             $message = $contact['msg_txt'];
@@ -171,7 +170,6 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         $tpl->ParseBlock($format);
         $template = $tpl->Get();
 
-        require_once JAWS_PATH . 'include/Jaws/Mail.php';
         $mail = new Jaws_Mail;
         $mail->SetFrom($from_email, $from_name);
         $mail->AddRecipient($to);

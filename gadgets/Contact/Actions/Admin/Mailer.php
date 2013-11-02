@@ -34,7 +34,6 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $radio->AddEvent(ON_CLICK, 'switchEmailTarget(this.value);');
         $tpl->SetVariable('options', $radio->Get());
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User();
 
         // Group
@@ -198,7 +197,6 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $this->gadget->CheckPermission('AccessToMailer');
         $format = $this->gadget->registry->fetch('email_format');
         if ($format == 'html') {
-            require_once JAWS_PATH . 'include/Jaws/String.php';
             $message = $this->gadget->ParseText($message);
         } else {
             $message = strip_tags($message);
@@ -240,7 +238,6 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
     function SendEmail($target, $subject, $message, $attachment)
     {
         $this->gadget->CheckPermission('AccessToMailer');
-        require_once JAWS_PATH . 'include/Jaws/Mail.php';
         $mail = new Jaws_Mail;
         $mail->SetFrom();
         $mail->SetSubject(Jaws_XSS::defilter($subject));
@@ -266,7 +263,6 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
                 }
             }
         } else {
-            require_once JAWS_PATH . 'include/Jaws/User.php';
             $userModel = new Jaws_User();
             if ($target['user'] != 0) {
                 $user = $userModel->GetUser((int)$target['user']);
