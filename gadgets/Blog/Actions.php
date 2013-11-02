@@ -13,6 +13,7 @@ $actions = array();
 
 $actions['DefaultAction'] = array(
     'normal' => true,
+    'file'   => 'Default',
 );
 $actions['LastPost'] = array(
     'normal' => true,
