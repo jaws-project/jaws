@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Comments/Actions/Default.php';
 /**
  * Comments Gadget
  *
