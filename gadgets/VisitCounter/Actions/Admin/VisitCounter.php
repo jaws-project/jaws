@@ -178,7 +178,6 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_Action
             $selected = 'Admin';
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Admin', _t('VISITCOUNTER_ADMIN_ACTION'), '');
 
