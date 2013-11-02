@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH. 'gadgets/UrlMapper/AdminAction.php';
+require_once JAWS_PATH. 'gadgets/UrlMapper/Actions/Admin/Default.php';
 /**
  * UrlMapper Core Gadget Admin
  *
