@@ -44,11 +44,10 @@ class PhooInsert_Plugin extends Jaws_Plugin
     function ParseText($html)
     {
         if (file_exists (JAWS_PATH.'gadgets/Phoo/Model.php') && Jaws_Gadget::IsGadgetInstalled ('Phoo')) {
-            require_once JAWS_PATH.'gadgets/Phoo/Model.php';
-            require_once JAWS_PATH . 'include/Jaws/Image.php';
             $howMany = preg_match_all("#\[phoo album=\"(.*?)\" picture=\"(.*?)\" title=\"(.*?)\" class=\"(.*?)\" size=\"(.*?)\" linked=\"(.*?)\"\]#si", $html, $matches);
             $new_html = $html;
             $url = $GLOBALS['app']->getSiteURL();
+            $objPhoo = Jaws_Gadget::getInstance('Phoo')->loadModel('Photos');
             for ($i = 0; $i < $howMany; $i++) {
                 $albumid = $matches[1][$i];
                 $imageid = $matches[2][$i];
@@ -56,7 +55,7 @@ class PhooInsert_Plugin extends Jaws_Plugin
                 $clase   = $matches[4][$i];
                 $size    = $matches[5][$i];
                 $linked  = $matches[6][$i];
-                $image = PhooModel::GetImageEntry($imageid);
+                $image = $objPhoo->GetImageEntry($imageid);
                 if (!Jaws_Error::IsError($image) && !empty($image)) {
                     if (strtoupper($size)=='THUMB') {
                         $img_file = JAWS_DATA . 'phoo/' . $image['thumb'];
