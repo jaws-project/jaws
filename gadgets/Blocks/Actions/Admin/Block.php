@@ -9,7 +9,7 @@ require_once JAWS_PATH. 'gadgets/Blocks/AdminAction.php';
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blocks_Actions_Admin_Block extends Blocks_AdminAction
+class Blocks_Actions_Admin_Block extends Blocks_Actions_Admin_Default
 {
     /**
      * Prepares the block management view
