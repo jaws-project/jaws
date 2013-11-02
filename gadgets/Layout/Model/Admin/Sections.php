@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH . 'gadgets/Layout/Model/Layout.php';
 /**
  * Layout Core Gadget
  *
