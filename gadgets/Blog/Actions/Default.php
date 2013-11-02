@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Action extends Jaws_Gadget_Action
+class Blog_Actions_Default extends Jaws_Gadget_Action
 {
     /**
      * Calls default action(view)

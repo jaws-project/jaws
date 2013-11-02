@@ -11,7 +11,7 @@ require_once JAWS_PATH. 'gadgets/Blog/Action.php';
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Actions_DatePosts extends Blog_Action
+class Blog_Actions_DatePosts extends Blog_Actions_Default
 {
     /**
      * Generates and retrieves Date Page
