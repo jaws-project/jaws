@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Components/Actions/Admin/Default.php';
 /**
  * Components Gadget Admin
  *
