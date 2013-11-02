@@ -186,7 +186,6 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $tpl->SetVariable('gadget', $gadget);
 
         $objDate = $GLOBALS['app']->loadDate();
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $usrModel = new Jaws_User;
         if (!Jaws_Error::IsError($comments) && $comments != null) {
             foreach ($comments as $entry) {
@@ -317,7 +316,6 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $tpl = $this->gadget->loadTemplate('Comments.html');
         $tpl->SetBlock('comment-preview');
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $usrModel = new Jaws_User;
         $objDate = $GLOBALS['app']->loadDate();
 
@@ -427,7 +425,6 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $tpl->SetBlock('comments');
 
         $objDate = $GLOBALS['app']->loadDate();
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $usrModel = new Jaws_User;
         if (!Jaws_Error::IsError($comments) && $comments != null) {
             foreach ($comments as $entry) {

@@ -190,7 +190,6 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         $tpl->ParseBlock('notification');
         $template = $tpl->Get();
 
-        require_once JAWS_PATH . '/include/Jaws/Mail.php';
         $ObjMail = new Jaws_Mail;
         $ObjMail->SetFrom();
         if (empty($email)) {

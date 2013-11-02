@@ -132,9 +132,7 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
             return new Jaws_Error(_t('COMMENTS_ERROR_GETTING_COMMENTS_ATOMSTRUCT'), _t('COMMENTS_NAME'));
         }
 
-        require_once JAWS_PATH . 'include/Jaws/AtomFeed.php';
         $commentAtom = new Jaws_AtomFeed();
-
         $siteURL = $GLOBALS['app']->GetSiteURL('/');
         $url = $GLOBALS['app']->Map->GetURLFor('Comments',
             $feed_type == 'atom'? 'RecentCommentsAtom' : 'RecentCommentsRSS',
