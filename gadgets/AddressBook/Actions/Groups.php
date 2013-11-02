@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH. 'gadgets/AddressBook/Action.php';
+require_once JAWS_PATH. 'gadgets/AddressBook/Actions/Default.php';
 /**
  * AddressBook Gadget
  *
