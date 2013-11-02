@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Policy/Actions/Admin/Default.php';
 /**
  * Policy Admin Gadget
  *
