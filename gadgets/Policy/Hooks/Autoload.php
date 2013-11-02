@@ -31,7 +31,6 @@ class Policy_Hooks_Autoload extends Jaws_Gadget_Hook
         $model  = $this->gadget->loadModel('IP');
         $res    = $model->IsIPBlocked($_SERVER['REMOTE_ADDR']);
         if ($res) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             echo Jaws_HTTPError::Get(403);
             exit;
         }
@@ -47,7 +46,6 @@ class Policy_Hooks_Autoload extends Jaws_Gadget_Hook
         $model = $this->gadget->loadModel('Agent');
         $res   = $model->IsAgentBlocked($_SERVER["HTTP_USER_AGENT"]);
         if ($res) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             echo Jaws_HTTPError::Get(403);
             exit;
         }

@@ -53,9 +53,7 @@ class Policy_Actions_Admin_Default extends Jaws_Gadget_Action
             $action = 'IPBlocking';
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Sidebar.php';
         $sidebar = new Jaws_Widgets_Sidebar('policy');
-
         if ($this->gadget->GetPermission('IPBlocking')) {
             $sidebar->AddOption('IPBlocking', _t('POLICY_IP_BLOCKING'), 
                                 BASE_SCRIPT . '?gadget=Policy&amp;action=IPBlocking',
