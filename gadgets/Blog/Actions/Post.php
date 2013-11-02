@@ -72,7 +72,6 @@ class Blog_Actions_Post extends Blog_Actions_Default
             $entry['clicks']++;
 
             if ($this->gadget->registry->fetch('pingback') == 'true') {
-                require_once JAWS_PATH . 'include/Jaws/Pingback.php';
                 $pback =& Jaws_PingBack::getInstance();
                 $pback->showHeaders($this->gadget->urlMap('Pingback', array(), true));
             }
@@ -156,7 +155,6 @@ class Blog_Actions_Post extends Blog_Actions_Default
             $tpl->ParseBlock('single_view');
             return $tpl->Get();
         } else {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(404);
         }
     }

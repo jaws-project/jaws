@@ -103,7 +103,6 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
             $tpl->ParseBlock('view_date');
             return $tpl->Get();
         } else {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(404);
         }
     }
@@ -264,9 +263,7 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
      */
     function Calendar()
     {
-        require_once JAWS_PATH.'include/Jaws/Calendar.php';
         $cal = new Jaws_Calendar('gadgets/Blog/Templates/');
-
         //By default.
         $objDate = $GLOBALS['app']->loadDate();
         $dt = explode('-', $objDate->Format(time(), 'Y-m-d'));

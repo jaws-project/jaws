@@ -74,7 +74,6 @@ class Blog_Actions_Categories extends Blog_Actions_Default
             $tpl->ParseBlock('view_category');
             return $tpl->Get();
         } else {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(404);
         }
     }

@@ -28,7 +28,6 @@ class Blog_Actions_Admin_Default extends Jaws_Gadget_Action
             $action_selected = 'ListEntries';
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Summary',_t('BLOG_SUMMARY'),
                                 BASE_SCRIPT . '?gadget=Blog&amp;action=Summary', 'images/stock/new.png');

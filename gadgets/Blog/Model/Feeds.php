@@ -33,9 +33,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             return $this->_Atom;
         }
 
-        require_once JAWS_PATH . 'include/Jaws/AtomFeed.php';
         $this->_Atom = new Jaws_AtomFeed();
-
         $now = $GLOBALS['db']->Date();
         $limit = $this->gadget->registry->fetch('xml_limit');
 
@@ -217,9 +215,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
 
         $cid = empty($catInfo['fast_url']) ? $catInfo['id'] : Jaws_XSS::filter($catInfo['fast_url']);
 
-        require_once JAWS_PATH . 'include/Jaws/AtomFeed.php';
         $categoryAtom = new Jaws_AtomFeed();
-
         $siteURL = $GLOBALS['app']->GetSiteURL('/');
         $url = $GLOBALS['app']->Map->GetURLFor('Blog',
             $feed_type == 'atom'? 'ShowAtomCategory' : 'ShowRSSCategory',
@@ -372,9 +368,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENTS_ATOMSTRUCT'), _t('BLOG_NAME'));
         }
 
-        require_once JAWS_PATH . 'include/Jaws/AtomFeed.php';
         $commentAtom = new Jaws_AtomFeed();
-
         $siteURL = $GLOBALS['app']->GetSiteURL('/');
         $url = $GLOBALS['app']->Map->GetURLFor('Blog',
             $feed_type == 'atom'? 'RecentCommentsAtom' : 'RecentCommentsRSS',
@@ -477,9 +471,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_POST_COMMENTS_ATOMSTRUCT'), _t('BLOG_NAME'));
         }
 
-        require_once JAWS_PATH . 'include/Jaws/AtomFeed.php';
         $commentAtom = new Jaws_AtomFeed();
-
         $siteURL = $GLOBALS['app']->GetSiteURL('/');
         $url = $GLOBALS['app']->Map->GetURLFor('Blog',
             $feed_type == 'atom'? 'CommentsAtom' : 'CommentsRSS',

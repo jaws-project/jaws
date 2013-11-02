@@ -59,7 +59,6 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         //Only load Jaws_Gravatar if we really have entries
         if (count($result) > 0) {
             $date = $GLOBALS['app']->loadDate();
-            require_once JAWS_PATH . 'include/Jaws/Gravatar.php';
         }
         foreach ($result as $r) {
             $r['avatar_source'] = Jaws_Gravatar::GetGravatar($r['email']);
@@ -278,7 +277,6 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         if (!empty($row)) {
             $model = $this->gadget->loadModel('Categories');
             $entry = $row;
-            require_once JAWS_PATH . 'include/Jaws/Gravatar.php';
             $entry['avatar_source'] = Jaws_Gravatar::GetGravatar($row['email']);
             $entry['categories']    = $model->GetCategoriesInEntry($row['id']);
         }
@@ -332,7 +330,6 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_LAST_ENTRIES'), _t('BLOG_NAME'));
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Gravatar.php';
         foreach ($result as $key => $value) {
             $result[$key]['avatar_source'] = Jaws_Gravatar::GetGravatar($value['email']);
         }

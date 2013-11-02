@@ -69,7 +69,6 @@ class Blog_Actions_AuthorPosts extends Blog_Actions_Default
             $tpl->ParseBlock('view_author');
             return $tpl->Get();
         } else {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(404);
         }
     }

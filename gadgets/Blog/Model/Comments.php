@@ -41,7 +41,6 @@ class Blog_Model_Comments extends Jaws_Gadget_Model
      */
     function _AdditionalCommentsData(&$comments, $prenum = '')
     {
-        require_once JAWS_PATH.'include/Jaws/Gravatar.php';
         $num = 0;
         foreach ($comments as $k => $v) {
             $num++;
@@ -104,7 +103,6 @@ class Blog_Model_Comments extends Jaws_Gadget_Model
         }
 
         $commentsGravatar = array();
-        require_once JAWS_PATH.'include/Jaws/Gravatar.php';
         foreach ($comments as $r) {
             $r['avatar_source'] = Jaws_Gravatar::GetGravatar($r['email']);
             $r['createtime']    = $r['createtime'];
@@ -129,7 +127,6 @@ class Blog_Model_Comments extends Jaws_Gadget_Model
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENT'), _t('BLOG_NAME'));
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Gravatar.php';
         if ($comment) {
             $comment['avatar_source'] = Jaws_Gravatar::GetGravatar($comment['email']);
             $comment['createtime']    = $comment['createtime'];
@@ -177,7 +174,6 @@ class Blog_Model_Comments extends Jaws_Gadget_Model
         $tpl->ParseBlock('comment');
         $template = $tpl->Get();
 
-        require_once JAWS_PATH . '/include/Jaws/Mail.php';
         $mail = new Jaws_Mail;
         $subject = _t('BLOG_COMMENT_REPLY', $id). ' - ' . $title;
         $mail->SetFrom($from_email);
