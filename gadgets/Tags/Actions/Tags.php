@@ -160,7 +160,6 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         $tag = $get['tag'];
         $gadget = $get['gname'];
         if (!empty($get['user']) && ($get['user'] != $GLOBALS['app']->Session->GetAttribute('user'))) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 

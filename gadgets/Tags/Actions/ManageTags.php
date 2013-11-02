@@ -20,7 +20,6 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
     function ManageTags()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -144,7 +143,6 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
     function EditTagUI()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -155,7 +153,6 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         $model = $this->gadget->loadAdminModel('Tags');
         $tag = $model->GetTag($tag_id);
         if ($tag['user'] != $user) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -192,7 +189,6 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
     function UpdateTag()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -202,7 +198,6 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         $model = $this->gadget->loadAdminModel('Tags');
         $tag = $model->GetTag($id);
         if ($tag['user'] != $GLOBALS['app']->Session->GetAttribute('user')) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
         $res = $model->UpdateTag($id, $post, false);
@@ -232,7 +227,6 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
     function DeleteTags()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -265,7 +259,6 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
     function MergeTags()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 

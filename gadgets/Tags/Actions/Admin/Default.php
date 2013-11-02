@@ -24,7 +24,6 @@ class Tags_Actions_Admin_Default extends Jaws_Gadget_Action
             $action = 'Tags';
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Tags',
                             _t('TAGS_NAME'),

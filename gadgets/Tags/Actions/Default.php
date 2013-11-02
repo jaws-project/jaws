@@ -195,9 +195,7 @@ class Tags_Actions_Default extends Jaws_Gadget_Action
             $selected_action = 'ManageTags';
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
-
         if (in_array('ViewTag', $visible_actions)) {
             $menubar->AddOption('ViewTag',_t('TAGS_VIEW_TAG'),
                 $this->gadget->urlMap('ViewTag', $action_params), 'gadgets/Tags/Resources/images/view-tag-mini.png');
