@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Action extends Jaws_Gadget_Action
+class Users_Actions_Default extends Jaws_Gadget_Action
 {
     /**
      * Builds the NoPermission UI

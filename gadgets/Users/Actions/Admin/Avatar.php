@@ -9,7 +9,7 @@ require_once JAWS_PATH. 'gadgets/Users/AdminAction.php';
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Admin_Avatar extends Users_AdminAction
+class Users_Actions_Admin_Avatar extends Users_Actions_Admin_Default
 {
     /**
      * Uploads the avatar

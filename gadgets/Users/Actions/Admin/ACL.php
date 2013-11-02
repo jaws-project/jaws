@@ -9,7 +9,7 @@ require_once JAWS_PATH. 'gadgets/Users/AdminAction.php';
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Admin_ACL extends Users_AdminAction
+class Users_Actions_Admin_ACL extends Users_Actions_Admin_Default
 {
     /**
      * Builds ACL UI

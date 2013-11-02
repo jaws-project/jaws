@@ -9,7 +9,7 @@ require_once JAWS_PATH. 'gadgets/Users/Action.php';
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Groups extends Users_Action
+class Users_Actions_Groups extends Users_Actions_Default
 {
     /**
      * Prepares a form for manage user's groups

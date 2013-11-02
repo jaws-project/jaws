@@ -10,7 +10,7 @@ require_once JAWS_PATH. 'gadgets/Users/AdminAction.php';
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Admin_MyAccount extends Users_AdminAction
+class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
 {
     /**
      * Builds account settings for logged users
