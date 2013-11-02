@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH. 'gadgets/SysInfo/Actions/Admin/Default.php';
 /**
  * SysInfo Core Gadget Admin
  *
