@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Blog/Action.php';
+require_once JAWS_PATH. 'gadgets/Blog/Actions/Default.php';
 /**
  * Blog Gadget
  *
