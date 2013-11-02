@@ -31,7 +31,6 @@ class Users_Actions_Groups extends Users_Actions_Default
         $this->AjaxMe('index.js');
         $response = $GLOBALS['app']->Session->PopResponse('Users.Groups');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
         $groups = $jUser->GetGroups($user);
 
@@ -99,7 +98,6 @@ class Users_Actions_Groups extends Users_Actions_Default
 
         // edit an user group
         if ($get['type'] == 'edit') {
-            require_once JAWS_PATH . 'include/Jaws/User.php';
             $jUser = new Jaws_User;
             $group = $jUser->GetGroup((int)$get['group'], $GLOBALS['app']->Session->GetAttribute('user'));
 
@@ -137,9 +135,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $post = jaws()->request->fetch(array('gid', 'name', 'title', 'description'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
-
         // Update group
         if(!empty($post['gid'])) {
             $res = $jUser->UpdateGroup($post['gid'], $post, $user);
@@ -178,7 +174,6 @@ class Users_Actions_Groups extends Users_Actions_Default
         $ids = jaws()->request->fetch('group_checkbox:array', 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
         foreach($ids as $id) {
             // TODO: improve performance
@@ -215,7 +210,6 @@ class Users_Actions_Groups extends Users_Actions_Default
         $post = jaws()->request->fetch(array('gid', 'users'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
         $res = $jUser->AddUserToGroup($post['users'], $post['gid'], $user);
 
@@ -248,7 +242,6 @@ class Users_Actions_Groups extends Users_Actions_Default
         $post = jaws()->request->fetch(array('gid', 'member_checkbox:array'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
         $res = $jUser->AddUserToGroup($post['users'], $post['gid'], $user);
 
@@ -301,7 +294,6 @@ class Users_Actions_Groups extends Users_Actions_Default
         $tpl = $this->gadget->loadTemplate('Groups.html');
         $tpl->SetBlock('manage_group');
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
         $group = $jUser->GetGroup($gid, $user);
 
@@ -381,7 +373,6 @@ class Users_Actions_Groups extends Users_Actions_Default
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $post['enabled'] = (bool) $post['enabled'];
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
         $res = $jUser->UpdateGroup($post['gid'], $post, $user);
 

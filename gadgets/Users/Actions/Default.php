@@ -74,9 +74,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
             $action_selected = 'Groups';
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
-
         if (in_array('AddGroup', $visible_actions)) {
             $menubar->AddOption('AddGroup', _t('USERS_ADD_GROUP'),
                 $this->gadget->urlMap('UserGroupUI', array('type' => 'add')), STOCK_ADD);

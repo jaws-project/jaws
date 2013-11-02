@@ -19,7 +19,6 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
      */
     function UsersDataGrid()
     {
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $uModel = new Jaws_User();
         $total = $uModel->GetUsersCount();
 
@@ -54,7 +53,6 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
      */
     function GetUsers($group, $superadmin, $status, $term, $orderBy, $offset = null)
     {
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $uModel = new Jaws_User();
         $users = $uModel->GetUsers($group, $superadmin, $status, $term, $orderBy, 10, $offset);
         if (Jaws_Error::IsError($users)) {
@@ -158,7 +156,6 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         // Group Filter
         $filterGroup =& Piwi::CreateWidget('Combo', 'filter_group');
         $filterGroup->AddOption(_t('USERS_GROUPS_ALL_GROUPS'), -1, false);
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User();
         $groups = $userModel->GetGroups(null, 'title');
         if (!Jaws_Error::IsError($groups)) {
@@ -261,7 +258,6 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
 
         $use_crypt = $this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true';
         if ($use_crypt) {
-            require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $use_crypt = $JCrypt->Init();
         }
@@ -362,7 +358,6 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
     {
         $tpl = $this->gadget->loadAdminTemplate('UserGroups.html');
         $tpl->SetBlock('user_groups');
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $uModel = new Jaws_User();
 
         $user_groups =& Piwi::CreateWidget('CheckButtons', 'user_groups');

@@ -19,7 +19,6 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
      */
     function GroupsDataGrid()
     {
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $uModel = new Jaws_User();
         $total = $uModel->GetGroupsCount();
 
@@ -50,7 +49,6 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
      */
     function GetGroups($enabled, $offset = null)
     {
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $uModel = new Jaws_User();
         $groups = $uModel->GetGroups($enabled, 'title', 12, $offset);
         if (Jaws_Error::IsError($groups)) {
@@ -200,7 +198,6 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
     {
         $tpl = $this->gadget->loadAdminTemplate('GroupUsers.html');
         $tpl->SetBlock('group_users');
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $model = new Jaws_User();
 
         $group_users =& Piwi::CreateWidget('CheckButtons', 'group_users');

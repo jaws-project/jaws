@@ -31,7 +31,6 @@ class Users_Actions_Personal extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('EditUserPersonal');
         $response = $GLOBALS['app']->Session->PopResponse('Users.Personal.Response');
         if (!isset($response['data'])) {
-            require_once JAWS_PATH . 'include/Jaws/User.php';
             $jUser = new Jaws_User;
             $personal  = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), true, true);
         } else {

@@ -75,7 +75,6 @@ class Users_Installer extends Jaws_Gadget_Installer
         }
 
         // Create the group 'users'
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User;
         $result = $userModel->AddGroup(
             array(

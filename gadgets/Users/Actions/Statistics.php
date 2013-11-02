@@ -93,7 +93,6 @@ class Users_Actions_Statistics extends Jaws_Gadget_Action
         $limit = (int)$this->gadget->registry->fetch('latest_limit');
         $limit = empty($limit)? 10 : $limit;
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $usrModel = new Jaws_User;
         $users = $usrModel->GetUsers(false, null, 1, '', '[id] desc', $limit);
         foreach($users as $user) {

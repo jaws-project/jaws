@@ -19,7 +19,6 @@ class Users_Actions_Profile extends Jaws_Gadget_Action
     function AboutUserLayoutParams()
     {
         $result = array();
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $usrModel = new Jaws_User;
         $users = $usrModel->GetUsers(false, true);
         if (!Jaws_Error::IsError($users)) {
@@ -125,13 +124,11 @@ class Users_Actions_Profile extends Jaws_Gadget_Action
      */
     function Profile()
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         $user = jaws()->request->fetch('user', 'get');
         if (empty($user)) {
             return Jaws_HTTPError::Get(404);
         }
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $usrModel = new Jaws_User;
         $user = $usrModel->GetUser($user, true, true, true);
         if (Jaws_Error::IsError($user) || empty($user)) {

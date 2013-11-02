@@ -21,7 +21,6 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', false);
 
-        require_once JAWS_PATH.'include/Jaws/User.php';
         $uModel = new Jaws_User();
         $uInfo = $uModel->GetUser($GLOBALS['app']->Session->GetAttribute('user'), true, true);
         if (Jaws_Error::IsError($uInfo) || empty($uInfo)) {
@@ -36,7 +35,6 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
 
         $use_crypt = $this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true';
         if ($use_crypt) {
-            require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $use_crypt = $JCrypt->Init();
         }

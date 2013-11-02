@@ -21,9 +21,7 @@ class Users_Model_Admin_UsersGroup extends Jaws_Gadget_Model
      */
     function AddUsersToGroup($guid, $users)
     {
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User();
-
         $group = $userModel->GetGroup((int)$guid);
         if (!$group) {
             return new Jaws_Error(_t('USERS_GROUPS_GROUP_NOT_EXIST'), _t('USERS_NAME'));

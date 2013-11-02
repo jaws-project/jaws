@@ -24,7 +24,6 @@ class Users_Model_Account extends Jaws_Gadget_Model
      */
     function UpdateAccount($uid, $username, $nickname, $email, $password)
     {
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser  = new Jaws_User;
         $result = $jUser->UpdateUser(
             $uid,
@@ -47,7 +46,6 @@ class Users_Model_Account extends Jaws_Gadget_Model
      */
     function ChangePassword($key)
     {
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
         $user = $jUser->GetUserByPasswordVerifyKey($key);
         if (Jaws_Error::IsError($user) || empty($user)) {
@@ -88,7 +86,6 @@ class Users_Model_Account extends Jaws_Gadget_Model
         $message = $tpl->Get();            
         $subject = _t('USERS_FORGOT_PASSWORD_CHANGED_SUBJECT');
 
-        require_once JAWS_PATH . 'include/Jaws/Mail.php';
         $mail = new Jaws_Mail;
         $mail->SetFrom();
         $mail->AddRecipient($user['email']);

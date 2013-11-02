@@ -26,8 +26,7 @@ class Users_Model_Contacts extends Jaws_Gadget_Model
      */
     function UpdateContacts($uid, $country, $city, $address, $postalCode, $phoneNumber, $mobileNumber, $faxNumber)
     {
-        require_once JAWS_PATH . 'include/Jaws/User.php';
-        $jUser    = new Jaws_User;
+        $jUser  = new Jaws_User;
         $result = $jUser->UpdateContacts(
             $uid,
             array(

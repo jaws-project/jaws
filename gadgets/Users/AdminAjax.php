@@ -140,7 +140,6 @@ class Users_AdminAjax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageUsers');
         $uData = jaws()->request->fetchAll('post');
         if ($this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true') {
-            require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();
             $uData['password'] = $JCrypt->decrypt($uData['password']);
@@ -180,7 +179,6 @@ class Users_AdminAjax extends Jaws_Gadget_Action
         $uid = $uData['uid'];
 
         if ($this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true') {
-            require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();
             $uData['password'] = $JCrypt->decrypt($uData['password']);
@@ -527,7 +525,6 @@ class Users_AdminAjax extends Jaws_Gadget_Action
         }
 
         if ($this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true') {
-            require_once JAWS_PATH . 'include/Jaws/Crypt.php';
             $JCrypt = new Jaws_Crypt();
             $JCrypt->Init();
             $uData['password'] = $JCrypt->decrypt($uData['password']);

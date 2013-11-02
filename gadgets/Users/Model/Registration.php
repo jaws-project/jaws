@@ -42,9 +42,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $password = Jaws_Utils::RandomText(8);
         }
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $jUser = new Jaws_User;
-
         //We already have a $username in the DB?
         $info = $jUser->GetUser($username);
         if (Jaws_Error::IsError($info) || isset($info['username'])) {
@@ -90,9 +88,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $jUser->AddUserToGroup($user_id, $group);
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Mail.php';
         $mail = new Jaws_Mail;
-
         $site_url     = $GLOBALS['app']->getSiteURL('/');
         $site_name    = $this->gadget->registry->fetch('site_name', 'Settings');
         $site_author  = $this->gadget->registry->fetch('site_author', 'Settings');
@@ -255,7 +251,6 @@ class Users_Model_Registration extends Jaws_Gadget_Model
      */
     function SendRecoveryKey($user_email)
     {
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User;
         $uInfos = $userModel->GetUserInfoByEmail($user_email);
         if (Jaws_Error::IsError($uInfos)) {
@@ -301,7 +296,6 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $message = $tpl->Get();            
             $subject = _t('USERS_FORGOT_REMEMBER', $site_name);
 
-            require_once JAWS_PATH . 'include/Jaws/Mail.php';
             $mail = new Jaws_Mail;
             $mail->SetFrom();
             $mail->AddRecipient($user_email);

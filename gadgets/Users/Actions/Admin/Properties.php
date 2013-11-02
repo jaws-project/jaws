@@ -56,9 +56,7 @@ class Users_Actions_Admin_Properties extends Users_Actions_Admin_Default
         $anonactivate->AddOption(_t('USERS_PROPERTIES_ACTIVATION_BY_ADMIN'), 'admin');
         $anonactivate->SetDefault($this->gadget->registry->fetch('anon_activation'));
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User();
-
         $anonGroup =& Piwi::CreateWidget('Combo', 'anon_group');
         $anonGroup->SetID('anon_group');
         $anonGroup->SetTitle(_t('USERS_PROPERTIES_ANON_GROUP'));

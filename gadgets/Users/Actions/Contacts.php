@@ -31,7 +31,6 @@ class Users_Actions_Contacts extends Jaws_Gadget_Action
         $this->AjaxMe('index.js');
         $response = $GLOBALS['app']->Session->PopResponse('Users.Contacts');
         if (!isset($response['data'])) {
-            require_once JAWS_PATH . 'include/Jaws/User.php';
             $jUser = new Jaws_User;
             $contacts = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), false, false, true);
         } else {
