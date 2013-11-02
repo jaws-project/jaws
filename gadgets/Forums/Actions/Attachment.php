@@ -19,7 +19,6 @@ class Forums_Actions_Attachment extends Forums_Actions_Default
      */
     function Attachment()
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'attach'), 'get');
 
         $pModel = $this->gadget->loadModel('Posts');

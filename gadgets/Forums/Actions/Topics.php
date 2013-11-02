@@ -170,7 +170,6 @@ class Forums_Actions_Topics extends Forums_Actions_Default
     function EditTopic()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -364,7 +363,6 @@ class Forums_Actions_Topics extends Forums_Actions_Default
     function UpdateTopic()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -563,7 +561,6 @@ class Forums_Actions_Topics extends Forums_Actions_Default
     function DeleteTopic()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -681,7 +678,6 @@ class Forums_Actions_Topics extends Forums_Actions_Default
     function LockTopic()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -733,7 +729,6 @@ class Forums_Actions_Topics extends Forums_Actions_Default
     function PublishTopic()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -751,7 +746,6 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
         if(!($this->gadget->GetPermission('EditOthersTopic') && $forumManage) && ($uid!=$topic['first_post_uid'])) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
         

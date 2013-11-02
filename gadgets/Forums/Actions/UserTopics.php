@@ -24,7 +24,6 @@ class Forums_Actions_UserTopics extends Forums_Actions_Default
             return;
         }
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User();
         $user = $userModel->GetUser($uid);
 

@@ -63,7 +63,6 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         $edit_min_limit_time = (int)$this->gadget->registry->fetch('edit_min_limit_time');
 
         $objDate = $GLOBALS['app']->loadDate();
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $usrModel = new Jaws_User;
         $startPostNumber = $limit * ($page - 1);
         $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
@@ -370,7 +369,6 @@ class Forums_Actions_Posts extends Forums_Actions_Default
     function EditPost($reply = false, $reply_to_message = '')
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -527,7 +525,6 @@ class Forums_Actions_Posts extends Forums_Actions_Default
      */
     function UpdatePost()
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
@@ -703,7 +700,6 @@ class Forums_Actions_Posts extends Forums_Actions_Default
      */
     function DeletePost()
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
