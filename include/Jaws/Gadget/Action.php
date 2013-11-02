@@ -86,12 +86,15 @@ class Jaws_Gadget_Action
      * @param   string  $filename   Action class file name
      * @return  mixed   Action class object on successful, Jaws_Error otherwise
      */
-    function &load($backend, $filename)
+    function &load($backend, $filename = '')
     {
         // filter non validate character
         $filename = preg_replace('/[^[:alnum:]_]/', '', $filename);
-        $filetype = $backend? 'AdminActions' : 'Actions';
+        if (empty($filename)) {
+            return $this->gadget->extensions['Action'];
+        }
 
+        $filetype = $backend? 'AdminActions' : 'Actions';
         if (!isset($this->gadget->actions[$filetype][$filename])) {
             switch ($filetype) {
                 case 'Actions':
