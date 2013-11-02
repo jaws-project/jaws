@@ -24,8 +24,6 @@ class FindFriend_Plugin extends Jaws_Plugin
     {
         if (file_exists(JAWS_PATH.'gadgets/Friends/Model.php') &&
             Jaws_Gadget::IsGadgetInstalled('Friends')) {
-            require_once JAWS_PATH.'gadgets/Friends/Model.php';
-
             $button =& Piwi::CreateWidget('Button', 'addfriend', '',
                             $GLOBALS['app']->getSiteURL('/plugins/FindFriend/images/stock-friends.png', true));
             $button->SetTitle(_t('PLUGINS_FINDFRIEND_ADD').' ALT+F');
@@ -50,13 +48,12 @@ class FindFriend_Plugin extends Jaws_Plugin
     {
         if (file_exists(JAWS_PATH.'gadgets/Friends/Model.php') &&
             Jaws_Gadget::IsGadgetInstalled('Friends')) {
-            require_once JAWS_PATH.'gadgets/Friends/Model.php';
-
             $howMany = preg_match_all('#\[friend\](.*?)\[/friend\]#si', $html, $matches);
+            $objFriends = Jaws_Gadget::getInstance('Friends')->loadModel('Friends');
             for ($i = 0; $i < $howMany; $i++) {
                 $match_text = $matches[1][$i];
                 //How many?
-                $friend =  FriendsModel::GetFriendByName($match_text);
+                $friend =  $objFriends->GetFriendByName($match_text);
                 if (!Jaws_Error::IsError($friend)) {
                     $new_text = "<a href=\"".$friend['url']."\" rel=\"friend\">".$match_text."</a>";
                 } else {
