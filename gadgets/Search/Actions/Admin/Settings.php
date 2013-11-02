@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Search/AdminAction.php';
+require_once JAWS_PATH. 'gadgets/Search/Actions/Admin/Default.php';
 /**
  * Search Gadget Admin
  *
