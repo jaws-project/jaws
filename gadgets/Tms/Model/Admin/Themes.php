@@ -44,7 +44,7 @@ class Tms_Model_Admin_Themes extends Jaws_Gadget_Model
             @unlink($themeDest);
         }
 
-        require_once 'File/Archive.php';
+        require_once PEAR_PATH. 'File/Archive.php';
         $res = File_Archive::extract(File_Archive::read($themeSrc, $theme),
                                      File_Archive::toArchive($themeDest,
                                                              File_Archive::toFiles()

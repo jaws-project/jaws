@@ -35,7 +35,6 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
             $action = 'Themes';
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Themes', _t('TMS_THEMES'),
                             BASE_SCRIPT . '?gadget=Tms&amp;action=Themes',
@@ -184,7 +183,6 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
             $locally = $themes[$theme]['local'];
             if (!$locally) {
                 if (!isset($themes[$theme]['download']) || !(bool)$themes[$theme]['download']) {
-                    require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
                     echo Jaws_HTTPError::Get(403);
                     exit;
                 }
