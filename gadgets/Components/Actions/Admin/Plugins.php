@@ -10,7 +10,7 @@ require_once JAWS_PATH. 'gadgets/Components/AdminAction.php';
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Components_Actions_Admin_Plugins extends Components_AdminAction
+class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
 {
     /**
      * Builds plugins management UI

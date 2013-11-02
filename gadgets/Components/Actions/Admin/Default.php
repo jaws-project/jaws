@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Components_AdminAction extends Jaws_Gadget_Action
+class Components_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
      * Default admin action
