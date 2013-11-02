@@ -22,13 +22,11 @@ class Shoutbox_Model_Comment extends Jaws_Gadget_Model
      */
     function MailComment($link, $from_email, $comment, $url)
     {
-        require_once JAWS_PATH . '/include/Jaws/Mail.php';
-        $mail = new Jaws_Mail;
-
         $subject  = _t('SHOUTBOX_COMMENT_MAIL_TITLE');
         $comment .= "<br /><br />";
         $comment .= _t("SHOUTBOX_COMMENT_MAIL_VISIT_URL", $link. '/', $this->gadget->registry->fetch('site_name', 'Settings'));
 
+        $mail = new Jaws_Mail;
         $mail->SetFrom($from_email);
         $mail->AddRecipient('');
         $mail->SetSubject($subject);
