@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Users/Actions/Default.php';
 /**
  * Users Core Gadget
  *
