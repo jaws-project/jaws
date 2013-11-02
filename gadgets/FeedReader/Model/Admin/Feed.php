@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH . 'gadgets/FeedReader/Model/Feed.php';
 /**
  * FeedReader Gadget
  *
