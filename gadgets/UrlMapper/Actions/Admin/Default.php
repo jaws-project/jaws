@@ -10,7 +10,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UrlMapper_AdminAction extends Jaws_Gadget_Action
+class UrlMapper_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
      * Builds the menubar

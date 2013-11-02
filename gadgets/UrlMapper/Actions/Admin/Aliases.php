@@ -11,7 +11,7 @@ require_once JAWS_PATH. 'gadgets/UrlMapper/AdminAction.php';
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UrlMapper_Actions_Admin_Aliases extends UrlMapper_AdminAction
+class UrlMapper_Actions_Admin_Aliases extends UrlMapper_Actions_Admin_Default
 {
     /**
      * Builds aliases UI
