@@ -9,7 +9,7 @@ require_once JAWS_PATH. 'gadgets/Tags/AdminAction.php';
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Tags_Actions_Admin_Tags extends Tags_AdminAction
+class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
 {
     /**
      * Show tags list

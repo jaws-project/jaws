@@ -9,7 +9,7 @@ require_once JAWS_PATH. 'gadgets/Tags/Action.php';
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Tags_Actions_ManageTags extends Tags_Action
+class Tags_Actions_ManageTags extends Tags_Actions_Default
 {
 
     /**
