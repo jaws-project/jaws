@@ -135,7 +135,6 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
                 Jaws_Header::Location($link);
             }
         } else {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(404);
         }
     }
