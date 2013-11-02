@@ -228,8 +228,8 @@ class Google_Weather
             //cache file is fresh
             $data = $this->loadFile($cache_file);
         } else {
-            require_once 'HTTP/Request.php';
-            require_once "XML/Unserializer.php";
+            require_once PEAR_PATH. 'HTTP/Request.php';
+            require_once PEAR_PATH. 'XML/Unserializer.php';
 
             $latitude  = $latitude  * 1000000;
             $longitude = $longitude * 1000000;

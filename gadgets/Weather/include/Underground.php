@@ -268,8 +268,8 @@ class Underground_Weather
             //cache file is fresh
             $data = $this->loadFile($cache_file);
         } else {
-            require_once 'HTTP/Request.php';
-            require_once "XML/Unserializer.php";
+            require_once PEAR_PATH. 'HTTP/Request.php';
+            require_once PEAR_PATH. 'XML/Unserializer.php';
 
             $req_url = "http://api.wunderground.com/api/{$this->_apikey}/forecast/conditions/q/";
             $req_url.= "{$latitude},{$longitude}.xml";
