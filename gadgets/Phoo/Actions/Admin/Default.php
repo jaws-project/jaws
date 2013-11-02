@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_AdminAction extends Jaws_Gadget_Action
+class Phoo_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
      * Displays a menu bar for the control panel gadget.

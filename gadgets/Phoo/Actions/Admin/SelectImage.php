@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_Actions_Admin_SelectImage extends Phoo_AdminAction
+class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
 {
     /**
      * Show the image selected from BrowsePhoo with some options to insert.

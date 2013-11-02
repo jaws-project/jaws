@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_Actions_Admin_Photos extends Phoo_AdminAction
+class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
 {
     /**
      * Main UI to admin photos
