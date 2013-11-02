@@ -179,9 +179,7 @@ class FileBrowser_Model_Files extends Jaws_Gadget_Model
             return $files;
         }
 
-        require_once JAWS_PATH.'include/Jaws/ArraySort.php';
         $files = Jaws_ArraySort::SortBySecondIndex($files, 'is_dir', false, true);
-
         $filesStart = count($files);
         foreach ($files as $pos => $item) {
             if (!$item['is_dir']) {

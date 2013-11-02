@@ -286,7 +286,6 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
         $id = jaws()->request->fetch('id', 'get');
         $id = Jaws_XSS::defilter($id, true);
 
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         $fModel = $this->gadget->loadModel('Files');
         $iFile  = $fModel->DBFileInfoByIndex($id);
         if (Jaws_Error::IsError($iFile)) {
