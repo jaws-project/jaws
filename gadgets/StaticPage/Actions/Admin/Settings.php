@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH. 'gadgets/StaticPage/AdminAction.php';
+require_once JAWS_PATH. 'gadgets/StaticPage/Actions/Admin/Default.php';
 /**
  * StaticPage Gadget Admin
  *
