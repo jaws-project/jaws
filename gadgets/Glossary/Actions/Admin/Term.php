@@ -10,7 +10,7 @@ require_once JAWS_PATH. 'gadgets/Glossary/AdminAction.php';
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Glossary_Actions_Admin_Term extends Glossary_AdminAction
+class Glossary_Actions_Admin_Term extends Glossary_Actions_Admin_Default
 {
     /**
      * Manages the main functions of Glossary administration
