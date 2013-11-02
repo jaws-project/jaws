@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Shoutbox/AdminAction.php';
+require_once JAWS_PATH. 'gadgets/Shoutbox/Actions/Admin/Default.php';
 /**
  * Shoutbox Gadget
  *
