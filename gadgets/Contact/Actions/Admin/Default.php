@@ -9,7 +9,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Contact_AdminAction extends Jaws_Gadget_Action
+class Contact_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
      * Admin of Gadget
