@@ -43,7 +43,6 @@ class Components_Actions_Admin_Default extends Jaws_Gadget_Action
             $action = 'Gadgets';
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
         if ($this->gadget->GetPermission('ManageGadgets')) {
             $menubar->AddOption('Gadgets', _t('COMPONENTS_GADGETS'),
