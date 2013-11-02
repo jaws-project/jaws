@@ -164,7 +164,6 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
         $model = $this->gadget->loadModel('Menu');
         $image = $model->GetMenuImage($id);
         if (!Jaws_Error::IsError($image)) {
-            require_once JAWS_PATH . 'include/Jaws/Image.php';
             $objImage = Jaws_Image::factory();
             if (!Jaws_Error::IsError($objImage)) {
                 $objImage->setData($image, true);
