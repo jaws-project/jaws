@@ -43,7 +43,6 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         $tpl->SetVariable('notepad_url', $this->gadget->urlMap('Notepad'));
 
         // User groups
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $uModel = new Jaws_User();
         $groups = $uModel->GetGroups(true, 'title');
         if (!Jaws_Error::IsError($groups)) {
@@ -93,7 +92,6 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         if ($gid === 0) {
             $gid = false;
         }
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $uModel = new Jaws_User();
         $users = $uModel->GetUsers($gid, null, 1);
         if (Jaws_Error::IsError($users)) {
