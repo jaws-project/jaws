@@ -22,7 +22,7 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as event');
         $table->select('event.id', 'event.user', 'subject', 'location', 'description',
-            'start_date', 'stop_date', 'shared', 'nickname', 'username');
+            'start_date', 'stop_date', 'start_time', 'stop_time', 'shared', 'nickname', 'username');
         $table->join('ec_users', 'event.id', 'event');
         $table->join('users', 'owner', 'users.id');
 

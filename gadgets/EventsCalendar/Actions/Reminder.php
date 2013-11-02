@@ -32,7 +32,7 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
         $time = $GLOBALS['app']->UTC2UserTime();
         $jdate = $GLOBALS['app']->loadDate();
         $info = $jdate->GetDateInfo(time());
-        _log_var_dump($info);
+        //_log_var_dump($info);
         // FIXME: we don't have daysInMonth
         $daysInMonth = 30;
 

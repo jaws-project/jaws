@@ -9,14 +9,14 @@
     <form id="frm_search" action="{base_script}" method="post">
       <input type="hidden" name="gadget" value="EventsCalendar" />
       <input type="hidden" name="action" value="Search" />
-      {query} {filter} {lbl_from}{start} {lbl_to}{stop} {btn_search} {btn_reset}
+      {filter} {lbl_from}{start} {lbl_to}{stop} {query} {btn_search} {btn_reset}
     </form>
     <table>
       <thead><tr>
         <th class="th-check"><input type="checkbox" id="chk_all" onchange="checkAll()"/></th>
         <th class="event-subject">{lbl_subject}</th>
-        <th>{lbl_start}</th>
-        <th>{lbl_stop}</th>
+        <th>{lbl_date}</th>
+        <th>{lbl_time}</th>
         <th>{lbl_shared}</th>
         <th>{lbl_owner}</th>
       </tr></thead>
@@ -25,8 +25,8 @@
         <tr id="event_{id}">
           <td><input type="checkbox" value="{id}"/></td>
           <td><a href="{url}">{subject}</a></td>
-          <td>{start}</td>
-          <td>{stop}</td>
+          <td>{date}</td>
+          <td>{time}</td>
           <td>{shared}</td>
           <td class="event-owner" title="{username}">{nickname}</td>
         </tr>
