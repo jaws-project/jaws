@@ -5,7 +5,7 @@
  * @category   GadgetAdmin
  * @package    Banner
  */
-class Banner_AdminAction extends Jaws_Gadget_Action
+class Banner_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
      * Calls default admin action

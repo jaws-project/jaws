@@ -6,7 +6,7 @@ require_once JAWS_PATH. 'gadgets/Banner/AdminAction.php';
  * @category   GadgetAdmin
  * @package    Banner
  */
-class Banner_Actions_Admin_Reports extends Banner_AdminAction
+class Banner_Actions_Admin_Reports extends Banner_Actions_Admin_Default
 {
     /**
      * Get all the data
