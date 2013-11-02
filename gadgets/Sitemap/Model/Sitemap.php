@@ -198,7 +198,6 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
                 return $blog->SingleView(true, $result['reference']);
                 break;
             default:
-                require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
                 return Jaws_HTTPError::Get(404);
 
         }

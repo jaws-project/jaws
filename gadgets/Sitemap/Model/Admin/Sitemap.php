@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH . 'gadgets/Sitemap/Model/Sitemap.php';
 /**
  * Sitemap Gadget
  *

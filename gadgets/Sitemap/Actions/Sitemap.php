@@ -75,7 +75,6 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_Action
             }
             $tpl->ParseBlock('sitemap');
         } else {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(404);
         }
         return $tpl->Get();

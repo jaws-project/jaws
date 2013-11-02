@@ -20,7 +20,6 @@ class Sitemap_Actions_Admin_Default extends Jaws_Gadget_Action
     function Menubar()
     {
         if ($this->gadget->GetPermission('PingSite')) {
-            require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
             $menubar = new Jaws_Widgets_Menubar();
             $menubar->AddOption('PingSite', _t('SITEMAP_PING_SITEMAP'),
                                 'javascript: pingSitemap();',
