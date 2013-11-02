@@ -9,8 +9,9 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $actions = array();
-$actions['DefaultAction'] = array(
+$actions['Admin'] = array(
     'normal' => true,
+    'file'   => 'Default',
 );
 $actions['Gadgets'] = array(
     'normal' => true,
