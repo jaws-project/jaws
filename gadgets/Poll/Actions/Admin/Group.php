@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Poll/Actions/Admin/Default.php';
 /**
  * Poll Gadget
  *
