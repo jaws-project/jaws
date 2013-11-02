@@ -19,7 +19,6 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_Actions_Default
     function Inbox()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 

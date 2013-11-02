@@ -19,11 +19,9 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_Action
     function Attachment()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         $rqst = jaws()->request->fetch(array('uid', 'mid', 'aid'), 'get');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
@@ -39,7 +37,6 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_Action
         if ($message['user'] != $rqst['uid'] || ($message['user'] != $user && !in_array($user, $messageRecipients)
                 && !in_array($rqst['uid'], $messageRecipients))
         ) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 

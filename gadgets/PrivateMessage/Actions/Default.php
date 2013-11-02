@@ -24,9 +24,7 @@ class PrivateMessage_Actions_Default extends Jaws_Gadget_Action
             $action_selected = 'Inbox';
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
-
         $menubar->AddOption('Inbox',_t('PRIVATEMESSAGE_INBOX'),
             $this->gadget->urlMap('Inbox'), 'gadgets/PrivateMessage/Resources/images/inbox.png');
 

@@ -19,7 +19,6 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
     function Compose()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -48,7 +47,6 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             $messageRecipients = $model->GetMessageRecipients($id);
             if (!in_array($user, $messageRecipients) &&
                 !in_array('0', $messageRecipients) && $message['user'] != $user) {
-                require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
                 return Jaws_HTTPError::Get(403);
             }
 
@@ -170,7 +168,6 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $body->SetWidth('100%');
         $tpl->SetVariable('body', $body->Get());
 
-        require_once JAWS_PATH . 'include/Jaws/User.php';
         $userModel = new Jaws_User();
         if ($show_recipient) {
             if($this->gadget->GetPermission('ComposeAnnouncement')) {
@@ -300,7 +297,6 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
     function ComposeMessage()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
         $this->gadget->CheckPermission('ComposeMessage');

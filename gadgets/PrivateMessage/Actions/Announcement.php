@@ -19,7 +19,6 @@ class PrivateMessage_Actions_Announcement extends PrivateMessage_Actions_Default
     function Announcement()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 

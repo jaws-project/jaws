@@ -19,7 +19,6 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_Action
     function InboxMessage()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
@@ -31,13 +30,11 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_Action
         $message = $model->GetMessage($id, true);
 
         if (empty($message)) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(404);
         }
 
         // Check permissions
         if ($message['recipient'] > 0 && $message['recipient'] != $user) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);
         }
 
