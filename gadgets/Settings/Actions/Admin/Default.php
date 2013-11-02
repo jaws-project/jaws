@@ -25,9 +25,7 @@ class Settings_Actions_Admin_Default extends Jaws_Gadget_Action
             $action = 'Basic';
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Sidebar.php';
         $sidebar = new Jaws_Widgets_Sidebar('settings');
-
         if ($this->gadget->GetPermission('BasicSettings')) {
             $sidebar->AddOption('Basic', _t('SETTINGS_BASIC_SETTINGS'),
                                 BASE_SCRIPT . '?gadget=Settings&amp;action=Admin');
