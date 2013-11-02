@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Friends_AdminAction extends Jaws_Gadget_Action
+class Friends_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
      * Creates and prints the administration template
