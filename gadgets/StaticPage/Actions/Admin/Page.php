@@ -12,7 +12,7 @@ require_once JAWS_PATH. 'gadgets/StaticPage/AdminAction.php';
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class StaticPage_Actions_Admin_Page extends StaticPage_AdminAction
+class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
 {
     /**
      * Builds datagrid structure
