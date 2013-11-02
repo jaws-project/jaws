@@ -9,7 +9,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Policy_AdminAction extends Jaws_Gadget_Action
+class Policy_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
      * Calls default admin action (IPBlocking)

@@ -10,7 +10,7 @@ require_once JAWS_PATH. 'gadgets/Policy/AdminAction.php';
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Policy_Actions_Admin_Encryption extends Policy_AdminAction
+class Policy_Actions_Admin_Encryption extends Policy_Actions_Admin_Default
 {
     /**
      * Encryption action for the Policy gadget
