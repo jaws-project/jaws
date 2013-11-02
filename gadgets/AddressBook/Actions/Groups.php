@@ -61,7 +61,6 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
      */
     function ManageGroups()
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
@@ -125,7 +124,6 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
      */
     function AddGroup()
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
@@ -169,7 +167,6 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
      */
     function EditGroup()
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
@@ -234,7 +231,6 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
      */
     function InsertGroup()
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
@@ -269,7 +265,6 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
      */
     function UpdateGroup()
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
@@ -313,7 +308,6 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
      */
      function DeleteGroup()
      {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }

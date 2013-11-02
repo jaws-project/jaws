@@ -62,9 +62,7 @@ class AddressBook_Actions_Default extends Jaws_Gadget_Action
             $action_selected = 'AddressBook';
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
-
         $menubar->AddOption('AddressBook',_t('ADDRESSBOOK_ADDRESSBOOK_MANAGE'),
             $this->gadget->urlMap('AddressBook'), 'gadgets/AddressBook/Resources/images/contact.png');
 

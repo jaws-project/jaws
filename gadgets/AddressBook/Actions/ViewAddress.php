@@ -16,7 +16,6 @@ class AddressBook_Actions_ViewAddress extends AddressBook_Actions_Default
      */
     function View()
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
