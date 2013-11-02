@@ -1,5 +1,5 @@
 <?php
-require_once JAWS_PATH. 'gadgets/Friends/AdminAction.php';
+require_once JAWS_PATH. 'gadgets/Friends/Actions/Admin/Default.php';
 /**
  * Friends Admin Gadget
  *
