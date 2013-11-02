@@ -40,7 +40,6 @@ class Phoo_Model_Comments extends Jaws_Gadget_Model
      */
     function _AdditionalCommentsData(&$comments)
     {
-        require_once JAWS_PATH.'include/Jaws/Gravatar.php';
         foreach ($comments as $k => $v) {
             $comments[$k]['avatar_source'] = Jaws_Gravatar::GetGravatar($v['email']);
             $comments[$k]['createtime']    = $v['createtime'];
@@ -95,7 +94,6 @@ class Phoo_Model_Comments extends Jaws_Gadget_Model
         }
 
         $commentsGravatar = array();
-        require_once JAWS_PATH . 'include/Jaws/Gravatar.php';
         foreach ($comments as $r) {
             $r['avatar_source'] = Jaws_Gravatar::GetGravatar($r['email']);
             $r['createtime'] = $r['createtime'];
@@ -120,7 +118,6 @@ class Phoo_Model_Comments extends Jaws_Gadget_Model
             return new Jaws_Error(_t('PHOO_ERROR_GETCOMMENT'), _t('PHOO_NAME'));
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Gravatar.php';
         if ($comment) {
             $comment['avatar_source'] = Jaws_Gravatar::GetGravatar($comment['email']);
             $comment['createtime']    = $comment['createtime'];
@@ -142,14 +139,11 @@ class Phoo_Model_Comments extends Jaws_Gadget_Model
      */
     function MailComment($link, $title, $from_email, $comment, $url)
     {
-        require_once JAWS_PATH . '/include/Jaws/Mail.php';
-        $mail = new Jaws_Mail;
-
         $subject   = $title;
-
         $comment .= "<br /><br />";
         $comment .= _t("PHOO_COMMENT_MAIL_VISIT_URL", $GLOBALS['app']->getSiteURL('/'). $link, $title);
 
+        $mail = new Jaws_Mail;
         $mail->SetFrom($from_email);
         $mail->AddRecipient('');
         $mail->SetSubject($subject);

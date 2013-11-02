@@ -59,7 +59,6 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             // display images
             $tpl->SetBlock('ViewAlbumPage/photos');
             if (isset($album['images']) && is_array($album['images'])) {
-                require_once JAWS_PATH . 'include/Jaws/Image.php';
                 foreach ($album['images'] as $image) {
                     if ($image['published'] === true) {
                         $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $image['thumb']);
@@ -138,7 +137,6 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
                 $tpl->ParseBlock('ViewAlbumPage/pager');
             }
         } else {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(404);
         }
 
@@ -157,7 +155,6 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
      */
     function ViewImage($id = null, $albumid = null, $preview_mode = false)
     {
-        require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
         $tpl = $this->gadget->loadTemplate('ViewImage.html');
 
         $get = jaws()->request->fetch(array('id', 'albumid'), 'get');
@@ -171,7 +168,6 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(404);
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Image.php';
         $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $image['medium']);
         if (Jaws_Error::IsError($imgData)) {
             return Jaws_HTTPError::Get(404);

@@ -25,11 +25,8 @@ class Phoo_Actions_Admin_Default extends Jaws_Gadget_Action
         if (!in_array($action_selected, $actions))
             $action_selected = 'Photos';
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Menubar.php';
         $menubar = new Jaws_Widgets_Menubar();
-
         $menubar->AddOption('Photos', _t('PHOO_PHOTOS'), BASE_SCRIPT . '?gadget=Phoo', STOCK_IMAGE);
-
         if (Jaws_Gadget::IsGadgetInstalled('Comments') && $this->gadget->GetPermission('ManageComments')) {
             $menubar->AddOption('ManageComments', _t('PHOO_COMMENTS'),
                                 BASE_SCRIPT . '?gadget=Phoo&amp;action=ManageComments', 'images/stock/stock-comments.png');

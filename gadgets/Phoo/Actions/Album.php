@@ -54,7 +54,6 @@ class Phoo_Actions_Album extends Jaws_Gadget_Action
         $albums = $model->GetAlbumList();
         if (!Jaws_Error::IsError($albums)) {
             $date = $GLOBALS['app']->loadDate();
-            require_once JAWS_PATH . 'include/Jaws/Image.php';
             foreach ($albums as $album) {
                 if (!isset($album['qty'])) {
                     continue;

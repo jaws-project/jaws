@@ -119,7 +119,6 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
                 $r_album[] = $aux;
             }
 
-            require_once JAWS_PATH . 'include/Jaws/Image.php';
             // Show albums
             if (!empty($r_album) && is_array($r_album)) {
                 if (!empty($post['date'])) {
