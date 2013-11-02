@@ -9,7 +9,7 @@ require_once JAWS_PATH. 'gadgets/Search/AdminAction.php';
  * @copyright   2005-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Search_Actions_Admin_Settings extends Search_AdminAction
+class Search_Actions_Admin_Settings extends Search_Actions_Admin_Default
 {
     /**
      * Displays gadget administration section
