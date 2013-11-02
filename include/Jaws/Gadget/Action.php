@@ -86,7 +86,7 @@ class Jaws_Gadget_Action
      * @param   string  $filename   Action class file name
      * @return  mixed   Action class object on successful, Jaws_Error otherwise
      */
-    function &load($backend, $filename = '')
+    function &load($backend, $filename)
     {
         // filter non validate character
         $filename = preg_replace('/[^[:alnum:]_]/', '', $filename);
@@ -95,29 +95,13 @@ class Jaws_Gadget_Action
         if (!isset($this->gadget->actions[$filetype][$filename])) {
             switch ($filetype) {
                 case 'Actions':
-                    if (empty($filename)) {
-                        $classname = $this->gadget->name. '_Action';
-                        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Action.php';
-                        if (!file_exists($file)) {
-                            return $this->gadget->extensions['Action'];
-                        }
-                    } else {
-                        $classname = $this->gadget->name. "_Actions_$filename";
-                        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/$filename.php";
-                    }
+                    $classname = $this->gadget->name. "_Actions_$filename";
+                    $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/$filename.php";
                     break;
 
                 case 'AdminActions':
-                    if (empty($filename)) {
-                        $classname = $this->gadget->name. '_AdminAction';
-                        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/AdminAction.php';
-                        if (!file_exists($file)) {
-                            return $this->gadget->extensions['Action'];
-                        }
-                    } else {
-                        $classname = $this->gadget->name. "_Actions_Admin_$filename";
-                        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/Admin/$filename.php";
-                    }
+                    $classname = $this->gadget->name. "_Actions_Admin_$filename";
+                    $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/Admin/$filename.php";
                     break;
             }
 
