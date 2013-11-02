@@ -7,7 +7,7 @@ require_once JAWS_PATH. 'gadgets/AddressBook/Action.php';
  * @package    AddressBook
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/Resources/site_style.css');
-class AddressBook_Actions_ViewAddress extends AddressBook_Action
+class AddressBook_Actions_ViewAddress extends AddressBook_Actions_Default
 {
     /**
      * Displays not editable version of one address

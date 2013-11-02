@@ -7,7 +7,7 @@ require_once JAWS_PATH. 'gadgets/AddressBook/Action.php';
  * @package    AddressBook
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/Resources/site_style.css');
-class AddressBook_Actions_AddressBook extends AddressBook_Action
+class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
 {
     /**
      * Displays the list of Address Book items, this items can filter by $uid(user ID) param.

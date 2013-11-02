@@ -5,7 +5,7 @@
  * @category   Gadget
  * @package    AddressBook
  */
-class AddressBook_Action extends Jaws_Gadget_Action
+class AddressBook_Actions_Default extends Jaws_Gadget_Action
 {
     /**
      * Telephone Types

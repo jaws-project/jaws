@@ -7,7 +7,7 @@ require_once JAWS_PATH. 'gadgets/AddressBook/Action.php';
  * @package    AddressBook
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/Resources/site_style.css');
-class AddressBook_Actions_Groups extends AddressBook_Action
+class AddressBook_Actions_Groups extends AddressBook_Actions_Default
 {
     /**
      * Layout Action. Displays plane list of Address Book Groups
