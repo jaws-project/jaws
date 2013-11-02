@@ -48,9 +48,7 @@ class SysInfo_Actions_Admin_Default extends Jaws_Gadget_Action
             $action = 'SysInfo';
         }
 
-        require_once JAWS_PATH . 'include/Jaws/Widgets/Sidebar.php';
         $sidebar = new Jaws_Widgets_Sidebar('sysinfo');
-
         if ($this->gadget->GetPermission('SysInfo')) {
             $sidebar->AddOption('SysInfo', _t('SYSINFO_SYSINFO'), 
                                 BASE_SCRIPT . '?gadget=SysInfo&amp;action=SysInfo',
