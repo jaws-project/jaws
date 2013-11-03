@@ -133,6 +133,9 @@ if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
         Jaws_Error::Fatal($ReqResult->getMessage());
     }
 
+    // Event Logging
+    $GLOBALS['app']->Listener->Shout('Log', array($ReqGadget, $ReqAction));
+
     if (!$IsReqActionStandAlone) {
         // Load ControlPanel header
         $GLOBALS['app']->Layout->LoadControlPanelHead();
