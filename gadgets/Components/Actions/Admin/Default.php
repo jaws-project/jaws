@@ -12,24 +12,6 @@
 class Components_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
-     * Default admin action
-     *
-     * @access  public
-     * @return  string  XHTML UI
-     */
-    function Admin()
-    {
-        if ($this->gadget->GetPermission('ManageGadgets')) {
-            $htmlGadgets = $this->gadget->loadAdminAction('Gadgets');
-            return $htmlGadgets->Gadgets();
-        }
-
-        $this->gadget->CheckPermission('ManagePlugins');
-        $htmlPlugins = $this->gadget->loadAdminAction('Plugins');
-        return $htmlPlugins->Plugins();
-    }
-
-    /**
      * Builds the menubar
      *
      * @access  public
