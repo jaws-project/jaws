@@ -10,7 +10,7 @@
  */
 $actions = array();
 
-$actions['Admin'] = array(
+$actions['VisitCounter'] = array(
     'normal' => true,
     'file' => 'VisitCounter'
 );

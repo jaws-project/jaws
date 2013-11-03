@@ -18,7 +18,7 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_Action
      * @access  public
      * @return  string  XHTML content
      */
-    function Admin()
+    function VisitCounter()
     {
         $this->AjaxMe('script.js');
 
