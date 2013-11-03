@@ -14,24 +14,6 @@
 class Weather_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
-     * Default action of the gadget
-     *
-     * @access  public
-     * @return  string  XHTML content
-     */
-    function Admin()
-    {
-        if ($this->gadget->GetPermission('ManageRegions')) {
-            $gadgetHTML = $this->gadget->loadAdminAction('Regions');
-            return $gadgetHTML->Regions();
-        }
-
-        $this->gadget->CheckPermission('UpdateProperties');
-        $gadgetHTML = $this->gadget->loadAdminAction('Properties');
-        return $gadgetHTML->Properties();
-    }
-
-    /**
      * Builds the weather menubar
      *
      * @access  public
