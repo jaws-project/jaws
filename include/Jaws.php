@@ -40,12 +40,11 @@ class Jaws
      * @access  private
      */
     var $_Preferences = array(
-        'theme'             => 'jaws',
-        'language'          => 'en',
-        'editor'            => null,
-        'timezone'          => null,
-        'calendar_type'     => 'Gregorian',
-        'calendar_language' => 'en',
+        'theme'    => 'jaws',
+        'language' => 'en',
+        'editor'   => null,
+        'timezone' => null,
+        'calendar' => 'Gregorian',
     );
 
     /**
@@ -63,18 +62,11 @@ class Jaws
     var $_Language = 'en';
 
     /**
-     * The calendar type.
+     * The calendar
      * @var     string
      * @access  protected
      */
-    var $_CalendarType = 'Gregorian';
-
-    /**
-     * The calendar language the application is running in.
-     * @var     string
-     * @access  protected
-     */
-    var $_CalendarLanguage = 'en';
+    var $_Calendar = 'Gregorian';
 
     /**
      * The editor application is using
@@ -187,11 +179,10 @@ class Jaws
             $user   = $this->Session->GetAttribute('user');
             $layout = $this->Session->GetAttribute('layout');
             $this->_Preferences = array(
-                'theme'             => $this->Registry->fetchByUser($layout, 'theme', 'Settings'),
-                'editor'            => $this->Registry->fetchByUser($user, 'editor', 'Settings'),
-                'timezone'          => $this->Registry->fetchByUser($user, 'timezone', 'Settings'),
-                'calendar_type'     => $this->Registry->fetchByUser($layout, 'calendar_type', 'Settings'),
-                'calendar_language' => $this->Registry->fetchByUser($layout, 'calendar_language', 'Settings'),
+                'theme'    => $this->Registry->fetchByUser($layout, 'theme',    'Settings'),
+                'editor'   => $this->Registry->fetchByUser($user,   'editor',   'Settings'),
+                'timezone' => $this->Registry->fetchByUser($user,   'timezone', 'Settings'),
+                'calendar' => $this->Registry->fetchByUser($layout, 'calendar', 'Settings'),
             );
 
             if (JAWS_SCRIPT == 'index') {
@@ -205,12 +196,11 @@ class Jaws
         $this->_Preferences = array_merge($this->_Preferences, $preferences);
 
         // filter non validate character
-        $this->_Theme            = preg_replace('/[^[:alnum:]_-]/', '', $this->_Preferences['theme']);
-        $this->_Language         = preg_replace('/[^[:alnum:]_-]/', '', $this->_Preferences['language']);
-        $this->_Editor           = preg_replace('/[^[:alnum:]_-]/', '', $this->_Preferences['editor']);
-        $this->_Timezone         = $this->_Preferences['timezone'];
-        $this->_CalendarType     = preg_replace('/[^[:alnum:]_]/',  '', $this->_Preferences['calendar_type']);
-        $this->_CalendarLanguage = preg_replace('/[^[:alnum:]_]/',  '', $this->_Preferences['calendar_language']);
+        $this->_Theme    = preg_replace('/[^[:alnum:]_-]/', '', $this->_Preferences['theme']);
+        $this->_Language = preg_replace('/[^[:alnum:]_-]/', '', $this->_Preferences['language']);
+        $this->_Editor   = preg_replace('/[^[:alnum:]_-]/', '', $this->_Preferences['editor']);
+        $this->_Timezone = $this->_Preferences['timezone'];
+        $this->_Calendar = preg_replace('/[^[:alnum:]_]/',  '', $this->_Preferences['calendar']);
 
         // load the language translates
         $this->Translate->Init($this->_Language);
@@ -335,25 +325,14 @@ class Jaws
     }
 
     /**
-     * Get the default language
+     * Get the default calendar
      *
      * @access  public
      * @return  string The default language
      */
-    function GetCalendarType()
+    function GetCalendar()
     {
-        return $this->_CalendarType;
-    }
-
-    /**
-     * Get the default language
-     *
-     * @access  public
-     * @return  string The default language
-     */
-    function GetCalendarLanguage()
-    {
-        return $this->_CalendarLanguage;
+        return $this->_Calendar;
     }
 
     /**
@@ -719,7 +698,7 @@ class Jaws
         $signature = serialize(array('date'));
         if (!isset($instances[$signature])) {
             include_once JAWS_PATH . 'include/Jaws/Date.php';
-            $calendar = $this->GetCalendarType();
+            $calendar = $this->GetCalendar();
             $instances[$signature] =& Jaws_Date::factory($calendar);
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Date class is loaded');
         }
