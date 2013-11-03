@@ -22,13 +22,14 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
     function GetLogs($filters = null, $limit = false, $offset = null)
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
-        $logsTable->select('logs.id:integer', 'ip', 'agent', 'gadget', 'action', 'logs.insert_time',
-                           'title', 'users.nickname', 'users.username', 'users.id as user_id:integer');
+        $logsTable->select(
+            'logs.id:integer', 'gadget', 'action', 'title',
+            'users.nickname', 'users.username', 'users.id as user_id:integer',
+            'apptype', 'backend:boolean', 'logs.status', 'logs.insert_time'
+        );
         $logsTable->join('users', 'users.id', 'logs.user');
         $logsTable->orderBy('id desc');
-        if (is_numeric($limit)) {
-            $logsTable->limit($limit, $offset);
-        }
+        $logsTable->limit($limit, $offset);
 
         if (!empty($filters) && count($filters) > 1) {
             if (isset($filters['from_date']) && !empty($filters['from_date'])) {
@@ -120,12 +121,15 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
      * @param   int     $id      Log ID
      * @return  mixed   Array of Logs or Jaws_Error on failure
      */
-    function GetLogInfo($id)
+    function GetLog($id)
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
-        $logsTable->select('logs.id:integer', 'ip', 'agent', 'gadget', 'action', 'priority:integer',
-                           'logs.status:integer','request_type:integer', 'insert_time', 'users.nickname',
-                           'logs.script:boolean', 'logs.title', 'users.username', 'users.id as user_id:integer');
+        $logsTable->select(
+            'logs.id:integer', 'logs.title', 'gadget', 'action', 'priority:integer',
+            'users.nickname', 'users.username', 'users.id as user_id:integer',
+            'apptype', 'backend:boolean', 'ip', 'agent', 'logs.status:integer',
+            'insert_time'
+        );
         $logsTable->join('users', 'users.id', 'logs.user');
         return $logsTable->where('logs.id', (int) $id)->fetchRow();
     }
@@ -142,4 +146,5 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         return $logsTable->delete()->where('id', $logsID, 'in')->exec();
     }
+
 }

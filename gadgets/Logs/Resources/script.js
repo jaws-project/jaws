@@ -91,16 +91,16 @@ function logsDGAction(combo)
 function viewLog(rowElement, id)
 {
     selectGridRow('contacts_datagrid', rowElement.parentNode.parentNode);
-    var result = LogsAjax.callSync('GetLogInfo', {'id': id});
+    var result = LogsAjax.callSync('GetLog', {'id': id});
     $('log_title').innerHTML = result['title'];
     $('log_gadget').innerHTML = result['gadget'];
     $('log_action').innerHTML = result['action'];
-    $('log_script').innerHTML = result['script'];
+    $('log_backend').innerHTML = result['backend'];
     $('log_priority').innerHTML = result['priority'];
     $('log_status').innerHTML = result['status'];
-    $('log_request_type').innerHTML = result['request_type'];
-    $('log_user_name').innerHTML = '<a href = "' + result['user_url'] + '">' + result['username'] + '</a>';
-    $('log_user_nickname').innerHTML = result['nickname'];
+    $('log_apptype').innerHTML = result['apptype'];
+    $('log_username').innerHTML = '<a href = "' + result['user_url'] + '">' + result['username'] + '</a>';
+    $('log_nickname').innerHTML = result['nickname'];
     $('log_ip').innerHTML = result['ip'];
     $('log_agent').innerHTML = result['agent'];
     $('log_date').innerHTML = result['insert_time'];

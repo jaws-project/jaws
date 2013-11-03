@@ -192,40 +192,17 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $tpl = $this->gadget->loadAdminTemplate('Logs.html');
         $tpl->SetBlock('LogUI');
 
-        // title
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
-
-        // Gadget
         $tpl->SetVariable('lbl_gadget', _t('GLOBAL_GADGETS'));
-
-        // Action
         $tpl->SetVariable('lbl_action', _t('LOGS_ACTION'));
-
-        // Script
-        $tpl->SetVariable('lbl_script', _t('LOGS_LOG_SCRIPT'));
-
-        // Priority
+        $tpl->SetVariable('lbl_backend', _t('LOGS_LOG_SCRIPT'));
         $tpl->SetVariable('lbl_priority', _t('LOGS_LOG_PRIORITY'));
-
-        // Status
         $tpl->SetVariable('lbl_status', _t('LOGS_LOG_STATUS'));
-
-        // Request Type
-        $tpl->SetVariable('lbl_request_type', _t('LOGS_LOG_REQUEST_TYPE'));
-
-        // User name
-        $tpl->SetVariable('lbl_user_name', _t('GLOBAL_USERNAME'));
-
-        // User nickname
-        $tpl->SetVariable('lbl_user_nickname', _t('LOGS_USER_NICKNAME'));
-
-        // IP
+        $tpl->SetVariable('lbl_apptype', _t('LOGS_LOG_REQUEST_TYPE'));
+        $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
+        $tpl->SetVariable('lbl_nickname', _t('LOGS_USER_NICKNAME'));
         $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
-        
-        // Agent
         $tpl->SetVariable('lbl_agent', _t('LOGS_AGENT'));
-
-        // Date
         $tpl->SetVariable('lbl_date', _t('GLOBAL_DATE'));
 
         $tpl->ParseBlock('LogUI');
@@ -295,16 +272,16 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
      * @access  public
      * @return  string  XHTML template content
      */
-    function GetLogInfo()
+    function GetLog()
     {
         $id = jaws()->request->fetch('id');
-        $model = $this->gadget->loadAdminModel('Logs');
-        $logInfo = $model->GetLogInfo($id);
-        if (Jaws_Error::IsError($logInfo)) {
+        $logModel = $this->gadget->loadAdminModel('Logs');
+        $log = $logModel->GetLog($id);
+        if (Jaws_Error::IsError($log)) {
             return array();
         }
 
-        switch ($logInfo['priority']) {
+        switch ($log['priority']) {
             case Logs_Info::LOGS_PRIORITY_NOTICE :
                 $priority = _t('LOGS_PRIORITY_NOTICE');
                 break;
@@ -316,19 +293,19 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         }
 
         $date = $GLOBALS['app']->loadDate();
-        $logInfo['insert_time'] = $date->Format($logInfo['insert_time'], 'DN d MN Y H:i:s');
-        $logInfo['ip'] = long2ip($logInfo['ip']);
-        $logInfo['priority'] = $priority;
-        $logInfo['script'] = ($logInfo['script']==true) ? _t('LOGS_LOG_SCRIPT_ADMIN') : _t('LOGS_LOG_SCRIPT_SCRIPT');
+        $log['insert_time'] = $date->Format($log['insert_time'], 'DN d MN Y H:i:s');
+        $log['ip'] = long2ip($log['ip']);
+        $log['priority'] = $priority;
+        $log['backend'] = $log['backend'] ? _t('LOGS_LOG_SCRIPT_ADMIN') : _t('LOGS_LOG_SCRIPT_SCRIPT');
 
         // user's profile
-        $logInfo['user_url'] = $GLOBALS['app']->Map->GetURLFor(
+        $log['user_url'] = $GLOBALS['app']->Map->GetURLFor(
                 'Users',
                 'Profile',
-                array('user' => $logInfo['username'])
+                array('user' => $log['username'])
         );
 
-        return $logInfo;
+        return $log;
     }
 
     /**

@@ -27,18 +27,6 @@
         </field>
 
         <field>
-            <name>ip</name>
-            <type>integer</type>
-            <length>5</length>
-        </field>
-
-        <field>
-            <name>agent</name>
-            <type>text</type>
-            <length>252</length>
-        </field>
-
-        <field>
             <name>gadget</name>
             <type>text</type>
             <length>64</length>
@@ -51,26 +39,39 @@
         </field>
 
         <field>
+            <name>priority</name>
+            <type>integer</type>
+            <length>1</length>
+            <default>0</default>
+        </field>
+
+        <field>
             <name>params</name>
             <type>text</type>
         </field>
 
         <field>
-            <name>script</name>
+            <name>apptype</name>
+            <type>text</type>
+            <length>32</length>
+        </field>
+
+        <field>
+            <name>backend</name>
             <type>boolean</type>
             <default>true</default>
         </field>
 
         <field>
-            <name>request_type</name>
-            <type>text</type>
-            <length>64</length>
+            <name>ip</name>
+            <type>integer</type>
+            <length>5</length>
         </field>
 
         <field>
-            <name>priority</name>
-            <type>integer</type>
-            <length>1</length>
+            <name>agent</name>
+            <type>text</type>
+            <length>252</length>
         </field>
 
         <field>

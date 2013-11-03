@@ -53,6 +53,8 @@ class Logs_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
+        // Install listener for logging
+        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'Log');
         return true;
     }
 

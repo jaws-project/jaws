@@ -22,7 +22,7 @@ $actions['GetLogsCount'] = array(
     'standalone' => true,
     'file'       => 'Logs',
 );
-$actions['GetLogInfo'] = array(
+$actions['GetLog'] = array(
     'standalone' => true,
     'file'       => 'Logs',
 );
