@@ -10,6 +10,10 @@
  */
 $actions = array();
 
+$actions['Admin'] = array(
+    'normal' => true,
+    'file' => 'Default',
+);
 $actions['SysInfo'] = array(
     'normal' => true,
     'file' => 'SysInfo',
