@@ -23,8 +23,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('key', ''),
         array('theme', 'jaws', true),
         array('date_format', 'd MN Y', true),
-        array('calendar_type', 'Gregorian', true),
-        array('calendar_language', 'en', true),
+        array('calendar', 'Gregorian', true),
         array('timezone', 'UTC', true),
         array('gzip_compression', 'false'),
         array('use_gravatar', 'no'),
@@ -141,11 +140,11 @@ class Settings_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         if (version_compare($old, '1.0.0', '<')) {
+            $this->gadget->registry->delete('calendar_language');
             $this->gadget->registry->delete('cookie_precedence');
             $this->gadget->registry->update('theme', null, true);
             $this->gadget->registry->update('date_format', null, true);
-            $this->gadget->registry->update('calendar_type', null, true);
-            $this->gadget->registry->update('calendar_language', null, true);
+            $this->gadget->registry->rename('calendar_type', 'calendar');
             $this->gadget->registry->update('timezone', null, true);
             $this->gadget->registry->update('editor', null, true);
             $this->gadget->registry->update('main_gadget', null, true);

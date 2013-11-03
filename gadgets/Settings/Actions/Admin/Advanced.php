@@ -48,36 +48,22 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         $tpl->ParseBlock('settings/item');
 
         // Calendar
-        $date_calendar =& Piwi::CreateWidget('Combo', 'calendar_type');
-        $date_calendar->setID('calendar_type');
+        $date_calendar =& Piwi::CreateWidget('Combo', 'calendar');
+        $date_calendar->setID('calendar');
         $calendars = $model->GetCalendarList();
         foreach ($calendars as $calendar) {
             $date_calendar->AddOption($calendar, $calendar);
         }
-        $current_cal = $this->gadget->registry->fetch('calendar_type');
+        $current_cal = $this->gadget->registry->fetch('calendar');
         if (Jaws_Error::isError($current_cal)) {
             $date_calendar->SetDefault('Gregorian');
         } else {
             $date_calendar->SetDefault($current_cal);
         }
         $tpl->SetBlock('settings/item');
-        $tpl->SetVariable('field-name', 'calendar_type');
-        $tpl->SetVariable('label', _t('SETTINGS_CALENDAR_TYPE'));
+        $tpl->SetVariable('field-name', 'calendar');
+        $tpl->SetVariable('label', _t('SETTINGS_CALENDAR'));
         $tpl->SetVariable('field', $date_calendar->Get());
-        $tpl->ParseBlock('settings/item');
-
-        // calendar language
-        $lang =& Piwi::CreateWidget('Combo', 'calendar_language');
-        $lang->setID('calendar_language');
-        $tpl->SetBlock('settings/item');
-        $languages = Jaws_Utils::GetLanguagesList();
-        foreach ($languages as $k => $v) {
-            $lang->AddOption($v, $k);
-        }
-        $lang->SetDefault($this->gadget->registry->fetch('calendar_language'));
-        $tpl->SetVariable('field-name', 'calendar_language');
-        $tpl->SetVariable('label', _t('SETTINGS_CALENDAR_LANGUAGE'));
-        $tpl->SetVariable('field', $lang->Get());
         $tpl->ParseBlock('settings/item');
 
         // Use gravatar? or local images?

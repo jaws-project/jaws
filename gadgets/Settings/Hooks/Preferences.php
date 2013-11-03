@@ -30,8 +30,7 @@ class Settings_Hooks_Preferences extends Jaws_Gadget_Hook
 
         $result['admin_language']['values'] = $languages;
         $result['site_language']['values'] = $languages;
-        $result['calendar_language']['values'] = $languages;
-        $result['calendar_type']['values'] = $objSettings->GetCalendarList();
+        $result['calendar']['values'] = $objSettings->GetCalendarList();
         $result['date_format']['values'] = $objSettings->GetDateFormatList();
         $result['theme']['values'] = $themes;
         $result['main_gadget']['values'] = $gadgets;
