@@ -33,12 +33,4 @@ class Notepad_Info extends Jaws_Gadget
      * @access  protected
      */
     var $default_action = 'Notepad';
-
-    /**
-     * Default back-end action name
-     *
-     * @var     string
-     * @access  protected
-     */
-    var $default_admin_action = 'Notepad';
 }
