@@ -7,7 +7,6 @@
  */
 class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
 {
-
     /**
      * Show banners administration
      *

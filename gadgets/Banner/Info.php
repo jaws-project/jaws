@@ -31,4 +31,12 @@ class Banner_Info extends Jaws_Gadget
      */
     var $default_action = 'Banners';
 
+    /**
+     * Default back-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_admin_action = 'Banners';
+
 }
