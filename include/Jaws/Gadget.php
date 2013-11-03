@@ -121,7 +121,7 @@ class Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_admin_action = 'Admin';
+    var $default_admin_action = false;
 
     /**
      * Store extension objects for later use so we aren't running around with multiple copies
