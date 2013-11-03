@@ -8,7 +8,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blocks_Actions_Admin_Block extends Blocks_Actions_Admin_Default
+class Blocks_Actions_Admin_Block extends Jaws_Gadget_Action
 {
     /**
      * Prepares the block management view
