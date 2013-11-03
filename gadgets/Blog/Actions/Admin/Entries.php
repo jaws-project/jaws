@@ -132,8 +132,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $pubdate->SetId('pubdate');
         $pubdate->showTimePicker(true);
         $pubdate->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $pubdate->setLanguageCode($this->gadget->registry->fetch('calendar_language', 'Settings'));
-        $pubdate->setCalType($this->gadget->registry->fetch('calendar_type', 'Settings'));
+        $pubdate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
+        $pubdate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $tpl->SetVariable('pubdate', $pubdate->Get());
 
         $tpl->SetVariable('fasturl', _t('BLOG_FASTURL'));
@@ -401,8 +401,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $pubdate->SetId('pubdate');
         $pubdate->showTimePicker(true);
         $pubdate->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $pubdate->setLanguageCode($this->gadget->registry->fetch('calendar_language', 'Settings'));
-        $pubdate->setCalType($this->gadget->registry->fetch('calendar_type', 'Settings'));
+        $pubdate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
+        $pubdate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $tpl->SetVariable('pubdate', $pubdate->Get());
 
         $tpl->SetVariable('fasturl', _t('BLOG_FASTURL'));
