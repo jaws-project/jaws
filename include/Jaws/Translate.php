@@ -54,7 +54,6 @@ class Jaws_Translate
     {
         $this->_defaultLanguage = $lang;
         $this->LoadTranslation('Global');
-        $this->LoadTranslation('Date');
     }
 
     /**
@@ -83,11 +82,6 @@ class Jaws_Translate
         @list($type, $module) = explode('_', $string);
         switch ($type) {
             case 'GLOBAL':
-                $type = 0;
-                $module = 'GLOBAL';
-                break;
-
-            case 'DATE':
                 $type = 0;
                 $module = 'GLOBAL';
                 break;
@@ -148,11 +142,7 @@ class Jaws_Translate
      */
     function LoadTranslation($module, $type = JAWS_COMPONENT_OTHERS, $lang = null)
     {
-        $language = $this->_defaultLanguage;
-        if ($module == 'Date' && isset($GLOBALS['app'])) {
-            $language = $GLOBALS['app']->GetCalendarLanguage();
-        }
-        $language = empty($lang) ? $language : $lang;
+        $language = empty($lang) ? $this->_defaultLanguage : $lang;
 
         // Make sure the arrays are setup
         if (!isset($GLOBALS['i18n'])) {
