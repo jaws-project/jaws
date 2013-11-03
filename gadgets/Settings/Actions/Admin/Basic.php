@@ -12,30 +12,6 @@
 class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
 {
     /**
-     * Displays gadget administration section
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function Admin()
-    {
-        if ($this->gadget->GetPermission('BasicSettings')) {
-            return $this->BasicSettings();
-        } elseif ($this->gadget->GetPermission('AdvancedSettings')) {
-            return $this->AdvancedSettings();
-        } elseif ($this->gadget->GetPermission('MetaSettings')) {
-            return $this->MetaSettings();
-        } elseif ($this->gadget->GetPermission('MailSettings')) {
-            return $this->MailSettings();
-        } elseif ($this->gadget->GetPermission('FTPSettings')) {
-            return $this->FTPSettings();
-        }
-
-        $this->gadget->CheckPermission('ProxySettings');
-        return $this->ProxySettings();
-    }
-
-    /**
      * Displays general/basic settings form
      *
      * @access  public

@@ -10,11 +10,7 @@
  */
 $actions = array();
 
-$actions['DefaultAction'] = array(
-    'normal' => true,
-    'file' => 'Basic',
-);
-$actions['Admin'] = array(
+$actions['BasicSettings'] = array(
     'normal' => true,
     'file' => 'Basic',
 );
