@@ -57,19 +57,6 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
     }
 
 
-
-    /**
-     * Builds the gadget administration UI
-     *
-     * @access  public
-     * @return  string  XHTML content
-     */
-    function Admin()
-    {
-        $gadgetHTML = $this->gadget->loadAdminAction('Page');
-        return $gadgetHTML->Admin();
-    }
-
     /**
      * Builds a pre-filled form
      *

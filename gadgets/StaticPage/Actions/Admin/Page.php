@@ -128,7 +128,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
      * @access  public
      * @return  string  XHTML content
      */
-    function Admin()
+    function ManagePages()
     {
         $this->AjaxMe('script.js');
 

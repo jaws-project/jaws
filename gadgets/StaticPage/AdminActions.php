@@ -11,6 +11,10 @@
 $actions = array();
 
 /* Admin actions */
+$actions['ManagePages'] = array(
+    'normal' => true,
+    'file'   => 'Page',
+);
 $actions['AddPage'] = array(
     'normal' => true,
     'file'   => 'Page',
