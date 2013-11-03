@@ -10,6 +10,10 @@
  */
 $actions = array();
 
+$actions['Comments'] = array(
+    'normal' => true,
+    'file' => 'Comments',
+);
 $actions['Settings'] = array(
     'normal' => true,
     'file' => 'Settings',
