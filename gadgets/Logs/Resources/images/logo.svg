@@ -12,13 +12,13 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    inkscape:export-ydpi="90.000000"
    inkscape:export-xdpi="90.000000"
-   inkscape:export-filename="C:\Users\Administrator\Desktop\logo6.png"
+   inkscape:export-filename="C:\Users\Administrator\Desktop\logo.png"
    width="48px"
    height="48px"
    id="svg11300"
    sodipodi:version="0.32"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="logo3.svg"
+   sodipodi:docname="logo.svg"
    version="1.1">
   <defs
      id="defs3">
@@ -599,7 +599,7 @@
         <dc:source>http://jimmac.musichall.cz</dc:source>
         <cc:license
            rdf:resource="http://creativecommons.org/licenses/by-sa/2.0/" />
-        <dc:title></dc:title>
+        <dc:title />
         <dc:description>To be replaced by vendor/distribution branding.</dc:description>
         <dc:subject>
           <rdf:Bag>
@@ -642,7 +642,7 @@
        transform="matrix(0.582036,0,0,0.582076,-63.9369,-62.75444)" />
     <g
        id="g3946"
-       transform="matrix(0.99645,0,0,1.007814,-5.7933458,-3.7240766)"
+       transform="matrix(1.1414781,0.18991939,-0.1920853,1.154496,-2.6201605,-10.163347)"
        inkscape:r_cx="true"
        inkscape:r_cy="true">
       <g
@@ -678,7 +678,7 @@
     </g>
     <g
        id="g3940"
-       transform="matrix(0.996431,0,0,1.007807,-4.3254772,0.91961816)"
+       transform="matrix(1.1450185,-0.16715424,0.16906262,1.158091,-7.8440806,5.6617892)"
        inkscape:r_cx="true"
        inkscape:r_cy="true">
       <g
@@ -714,7 +714,7 @@
     <g
        style="display:inline"
        id="g1772"
-       transform="matrix(0.8368709,0,0,0.8368709,5.5864286,7.4769291)">
+       transform="matrix(0.63209579,0,0,0.63209579,13.778127,14.913954)">
       <path
          sodipodi:type="arc"
          style="opacity:0.17112301;color:#000000;fill:url(#radialGradient3190);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible"
