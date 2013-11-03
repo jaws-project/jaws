@@ -27,8 +27,8 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         // From Date Filter
         $fromDate =& Piwi::CreateWidget('DatePicker', 'from_date', '');
         $fromDate->showTimePicker(true);
-        $fromDate->setLanguageCode($this->gadget->registry->fetch('calendar_language', 'Settings'));
-        $fromDate->setCalType($this->gadget->registry->fetch('calendar_type', 'Settings'));
+        $fromDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
+        $fromDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $fromDate->setDateFormat('%Y-%m-%d %H:%M:%S');
         $fromDate->AddEvent(ON_CHANGE, "javascript: searchLogs();");
         $tpl->SetVariable('filter_from_date', $fromDate->Get());
@@ -37,8 +37,8 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         // To Date Filter
         $toDate =& Piwi::CreateWidget('DatePicker', 'to_date', '');
         $toDate->showTimePicker(true);
-        $toDate->setLanguageCode($this->gadget->registry->fetch('calendar_language', 'Settings'));
-        $toDate->setCalType($this->gadget->registry->fetch('calendar_type', 'Settings'));
+        $toDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
+        $toDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $toDate->setDateFormat('%Y-%m-%d %H:%M:%S');
         $toDate->AddEvent(ON_CHANGE, "javascript: searchLogs();");
         $tpl->SetVariable('filter_to_date', $toDate->Get());
