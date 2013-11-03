@@ -12,25 +12,6 @@
 class Poll_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
-     * Calls default admin action
-     *
-     * @access  public
-     * @return  string  XHTML Template content
-     */
-    function Admin()
-    {
-        if ($this->gadget->GetPermission('ManagePolls')) {
-            $gadgetHTML = $this->gadget->loadAdminAction('Poll');
-            return $gadgetHTML->Polls();
-        } elseif ($this->gadget->GetPermission('ManageGroups')) {
-            $gadgetHTML = $this->gadget->loadAdminAction('Group');
-            return $gadgetHTML->PollGroups();
-        }
-
-        $this->gadget->CheckPermission('ViewReports');
-    }
-
-    /**
      * Prepares the poll menubar
      *
      * @access  public

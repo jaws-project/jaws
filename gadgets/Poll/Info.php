@@ -27,4 +27,11 @@ class Poll_Info extends Jaws_Gadget
      */
     var $default_action = 'Polls';
 
+    /**
+     * Default back-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_admin_action = 'Polls';
 }
