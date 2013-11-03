@@ -236,7 +236,7 @@ class Jaws_Registry
     }
 
     /**
-     * Updates the value of a key
+     * Updates value of a key
      *
      * @access  public
      * @param   string  $key_name   Key name
@@ -276,6 +276,32 @@ class Jaws_Registry
         // update registry cache array
         if (empty($user)) {
             $this->_Registry[$component][$key_name] = $data;
+        }
+        return true;
+    }
+
+    /**
+     * Renames a key
+     *
+     * @access  public
+     * @param   string  $old_name   Old key name
+     * @param   string  $new_name   New key name
+     * @param   string  $component  Component name
+     * @return  bool    True is set otherwise False
+     */
+    function rename($old_name, $new_name, $component = '')
+    {
+        $tblReg = Jaws_ORM::getInstance()->table('registry');
+        $tblReg->update(array('key_name' => $new_name));
+        $tblReg->where('component', $component)->and()->where('key_name', $old_name);
+        $result = $tblReg->exec();
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
+
+        if (isset($this->_Registry[$component][$old_name])) {
+            $this->_Registry[$component][$new_name] = $this->_Registry[$component][$old_name];
+            unset($this->_Registry[$component][$old_name]);
         }
         return true;
     }
