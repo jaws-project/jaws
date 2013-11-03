@@ -10,17 +10,17 @@
  */
 $actions = array();
 
+$actions['LayoutManager'] = array(
+    'standalone' => true,
+    'normal' => true,
+    'file' => 'Layout',
+);
 $actions['ChangeTheme'] = array(
     'standalone' => true,
     'file' => 'Theme',
 );
 $actions['LayoutSwitch'] = array(
     'standalone' => true,
-    'file' => 'Layout',
-);
-$actions['LayoutManager'] = array(
-    'standalone' => true,
-    'normal' => true,
     'file' => 'Layout',
 );
 $actions['EditElementAction'] = array(
