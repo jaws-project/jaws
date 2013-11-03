@@ -247,9 +247,9 @@ class Jaws_Date_Jalali extends Jaws_Date
                         $i = $i + 2;
                     } else {
                         if (date('a', $date['date']) == 'pm') {
-                            $return .= $this->_t_cal('DATE_HOURS_PM');
+                            $return .= $this->_t_cal('GLOBAL_HOURS_PM');
                         } else {
-                            $return .= $this->_t_cal('DATE_HOURS_AM');
+                            $return .= $this->_t_cal('GLOBAL_HOURS_AM');
                         }
                     }
                     break;
