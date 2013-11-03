@@ -181,18 +181,18 @@ class Jaws_Date
         $cal_name = strtoupper(isset($GLOBALS['app']) ? $GLOBALS['app']->GetCalendarType() : 'Gregorian');
         if (!isset($this->_Months['long'])) {
             $months = array(
-                $this->_t('DATE_'.$cal_name.'_MONTH_FIRST'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_SECOND'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_THIRD'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_FOURTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_FIFTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_SIXTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_SEVENTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_EIGHTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_NINTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_TENTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_ELEVENTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_TWELFTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_FIRST'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_SECOND'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_THIRD'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_FOURTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_FIFTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_SIXTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_SEVENTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_EIGHTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_NINTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_TENTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_ELEVENTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_TWELFTH'),
             );
             $this->_Months['long'] =& $months;
         }
@@ -217,18 +217,18 @@ class Jaws_Date
         $cal_name = strtoupper(isset($GLOBALS['app']) ? $GLOBALS['app']->GetCalendarType() : 'Gregorian');
         if (!isset($this->_Months['short'])) {
             $months = array(
-                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_FIRST'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_SECOND'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_THIRD'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_FOURTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_FIFTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_SIXTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_SEVENTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_EIGHTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_NINTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_TENTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_ELEVENTH'),
-                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_TWELFTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_SHORT_FIRST'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_SHORT_SECOND'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_SHORT_THIRD'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_SHORT_FOURTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_SHORT_FIFTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_SHORT_SIXTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_SHORT_SEVENTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_SHORT_EIGHTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_SHORT_NINTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_SHORT_TENTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_SHORT_ELEVENTH'),
+                $this->_t('GLOBAL_'.$cal_name.'_MONTH_SHORT_TWELFTH'),
             );
             $this->_Months['short'] =& $months;
         }
@@ -251,13 +251,13 @@ class Jaws_Date
     {
         if (!isset($this->_Days['long'])) {
             $days = array(
-                $this->_t('DATE_DAY_SUNDAY'),
-                $this->_t('DATE_DAY_MONDAY'),
-                $this->_t('DATE_DAY_TUESDAY'),
-                $this->_t('DATE_DAY_WEDNESDAY'),
-                $this->_t('DATE_DAY_THURSDAY'),
-                $this->_t('DATE_DAY_FRIDAY'),
-                $this->_t('DATE_DAY_SATURDAY'),
+                $this->_t('GLOBAL_DAY_SUNDAY'),
+                $this->_t('GLOBAL_DAY_MONDAY'),
+                $this->_t('GLOBAL_DAY_TUESDAY'),
+                $this->_t('GLOBAL_DAY_WEDNESDAY'),
+                $this->_t('GLOBAL_DAY_THURSDAY'),
+                $this->_t('GLOBAL_DAY_FRIDAY'),
+                $this->_t('GLOBAL_DAY_SATURDAY'),
             );
             $this->_Days['long'] =& $days;
         }
@@ -280,13 +280,13 @@ class Jaws_Date
     {
         if (!isset($this->_Days['short'])) {
             $days = array(
-                $this->_t('DATE_DAY_SHORT_SUNDAY'),
-                $this->_t('DATE_DAY_SHORT_MONDAY'),
-                $this->_t('DATE_DAY_SHORT_TUESDAY'),
-                $this->_t('DATE_DAY_SHORT_WEDNESDAY'),
-                $this->_t('DATE_DAY_SHORT_THURSDAY'),
-                $this->_t('DATE_DAY_SHORT_FRIDAY'),
-                $this->_t('DATE_DAY_SHORT_SATURDAY'),
+                $this->_t('GLOBAL_DAY_SHORT_SUNDAY'),
+                $this->_t('GLOBAL_DAY_SHORT_MONDAY'),
+                $this->_t('GLOBAL_DAY_SHORT_TUESDAY'),
+                $this->_t('GLOBAL_DAY_SHORT_WEDNESDAY'),
+                $this->_t('GLOBAL_DAY_SHORT_THURSDAY'),
+                $this->_t('GLOBAL_DAY_SHORT_FRIDAY'),
+                $this->_t('GLOBAL_DAY_SHORT_SATURDAY'),
             );
             $this->_Days['short'] =& $days;
         }
