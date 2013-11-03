@@ -26,4 +26,12 @@ class Tms_Info extends Jaws_Gadget
      */
     var $_IsCore = true;
 
+    /**
+     * Default back-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_admin_action = 'Themes';
+
 }

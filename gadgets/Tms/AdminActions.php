@@ -10,10 +10,6 @@
  */
 $actions = array();
 
-$actions['Admin'] = array(
-    'normal' => true,
-    'file' => 'Themes'
-);
 $actions['Themes'] = array(
     'normal' => true,
     'file' => 'Themes'

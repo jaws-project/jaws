@@ -11,17 +11,6 @@
 class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
 {
     /**
-     * Calls Themes function
-     *
-     * @access  public
-     * @return  string  XHTML content
-     */
-    function Admin()
-    {
-        return $this->Themes();
-    }
-
-    /**
      * Prepares the menubar
      *
      * @access  public
