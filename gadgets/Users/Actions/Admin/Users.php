@@ -131,8 +131,8 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageUsers');
         // DatePicker
-        $calType = strtolower($this->gadget->registry->fetch('calendar_type', 'Settings'));
-        $calLang = strtolower($this->gadget->registry->fetch('calendar_language', 'Settings'));
+        $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
+        $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
         if ($calType != 'gregorian') {
             $GLOBALS['app']->Layout->AddScriptLink("libraries/piwi/piwidata/js/jscalendar/$calType.js");
         }
@@ -328,8 +328,8 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $dExpiry =& Piwi::CreateWidget('DatePicker', 'expiry_date', '');
         $dExpiry->SetId('expiry_date');
         $dExpiry->showTimePicker(true);
-        $dExpiry->setLanguageCode($this->gadget->registry->fetch('calendar_language', 'Settings'));
-        $dExpiry->setCalType($this->gadget->registry->fetch('calendar_type', 'Settings'));
+        $dExpiry->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
+        $dExpiry->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $dExpiry->setDateFormat('%Y-%m-%d %H:%M:%S');
         $tpl->SetVariable('lbl_expiry_date', _t('USERS_USERS_EXPIRY_DATE'));
         $tpl->SetVariable('expiry_date', $dExpiry->Get());
@@ -443,8 +443,8 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $dob =& Piwi::CreateWidget('DatePicker', 'dob', '');
         $dob->SetId('dob');
         $dob->showTimePicker(true);
-        $dob->setLanguageCode($this->gadget->registry->fetch('calendar_language', 'Settings'));
-        $dob->setCalType($this->gadget->registry->fetch('calendar_type', 'Settings'));
+        $dob->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
+        $dob->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $dob->setDateFormat('%Y-%m-%d');
         $tpl->SetVariable('lbl_dob', _t('USERS_USERS_BIRTHDAY'));
         $tpl->SetVariable('dob', $dob->Get());
