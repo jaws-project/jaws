@@ -10,9 +10,8 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowser_Actions_Admin_Directory extends FileBrowser_Actions_Admin_Default
+class FileBrowser_Actions_Admin_Directory extends Jaws_Gadget_Action
 {
-
     /**
      * Creates and returns some data
      *
