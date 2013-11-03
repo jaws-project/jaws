@@ -88,8 +88,8 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $entry->SetID('');
         $tpl->SetVariable('query', $entry->Get());
 
-        $cal_type = $this->gadget->registry->fetch('calendar_type', 'Settings');
-        $cal_lang = $this->gadget->registry->fetch('calendar_language', 'Settings');
+        $cal_type = $this->gadget->registry->fetch('calendar', 'Settings');
+        $cal_lang = $this->gadget->registry->fetch('site_language', 'Settings');
         $datePicker =& Piwi::CreateWidget('DatePicker', 'start', $start);
         $datePicker->SetId('event_start_date');
         $datePicker->showTimePicker(true);

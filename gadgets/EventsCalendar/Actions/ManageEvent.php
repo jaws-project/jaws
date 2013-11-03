@@ -121,8 +121,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('errorIncompleteData', _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'));
 
         // Start date
-        $cal_type = $this->gadget->registry->fetch('calendar_type', 'Settings');
-        $cal_lang = $this->gadget->registry->fetch('calendar_language', 'Settings');
+        $cal_type = $this->gadget->registry->fetch('calendar', 'Settings');
+        $cal_lang = $this->gadget->registry->fetch('site_language', 'Settings');
         $datePicker =& Piwi::CreateWidget('DatePicker', 'start_date', $event['start_date']);
         $datePicker->SetId('event_start_date');
         $datePicker->showTimePicker(true);
