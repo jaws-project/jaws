@@ -26,4 +26,11 @@ class Search_Info extends Jaws_Gadget
      */
     var $default_action = 'AdvancedBox';
 
+    /**
+     * Default back-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_admin_action = 'Settings';
 }
