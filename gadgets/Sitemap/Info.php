@@ -25,4 +25,12 @@ class Sitemap_Info extends Jaws_Gadget
      * @access  protected
      */
     var $default_action = 'Sitemap';
+
+    /**
+     * Default back-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_admin_action = 'ManageSitemap';
 }
