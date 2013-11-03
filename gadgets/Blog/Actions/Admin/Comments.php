@@ -29,7 +29,7 @@ class Blog_Actions_Admin_Comments extends Blog_Actions_Admin_Default
 
         $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/Resources/script.js');
 
-        $cHTML = Jaws_Gadget::getInstance('Comments')->loadAdminAction('Default');
+        $cHTML = Jaws_Gadget::getInstance('Comments')->loadAdminAction('Comments');
         return $cHTML->Comments('blog', $this->MenuBar('ManageComments'));
     }
 
