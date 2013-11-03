@@ -181,18 +181,18 @@ class Jaws_Date
         $cal_name = strtoupper(isset($GLOBALS['app']) ? $GLOBALS['app']->GetCalendarType() : 'Gregorian');
         if (!isset($this->_Months['long'])) {
             $months = array(
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_FIRST'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_SECOND'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_THIRD'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_FOURTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_FIFTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_SIXTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_SEVENTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_EIGHTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_NINTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_TENTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_ELEVENTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_TWELFTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_FIRST'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_SECOND'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_THIRD'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_FOURTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_FIFTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_SIXTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_SEVENTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_EIGHTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_NINTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_TENTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_ELEVENTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_TWELFTH'),
             );
             $this->_Months['long'] =& $months;
         }
@@ -217,18 +217,18 @@ class Jaws_Date
         $cal_name = strtoupper(isset($GLOBALS['app']) ? $GLOBALS['app']->GetCalendarType() : 'Gregorian');
         if (!isset($this->_Months['short'])) {
             $months = array(
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_SHORT_FIRST'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_SHORT_SECOND'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_SHORT_THIRD'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_SHORT_FOURTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_SHORT_FIFTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_SHORT_SIXTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_SHORT_SEVENTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_SHORT_EIGHTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_SHORT_NINTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_SHORT_TENTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_SHORT_ELEVENTH'),
-                $this->_t_cal('DATE_'.$cal_name.'_MONTH_SHORT_TWELFTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_FIRST'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_SECOND'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_THIRD'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_FOURTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_FIFTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_SIXTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_SEVENTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_EIGHTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_NINTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_TENTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_ELEVENTH'),
+                $this->_t('DATE_'.$cal_name.'_MONTH_SHORT_TWELFTH'),
             );
             $this->_Months['short'] =& $months;
         }
@@ -251,13 +251,13 @@ class Jaws_Date
     {
         if (!isset($this->_Days['long'])) {
             $days = array(
-                $this->_t_cal('DATE_DAY_SUNDAY'),
-                $this->_t_cal('DATE_DAY_MONDAY'),
-                $this->_t_cal('DATE_DAY_TUESDAY'),
-                $this->_t_cal('DATE_DAY_WEDNESDAY'),
-                $this->_t_cal('DATE_DAY_THURSDAY'),
-                $this->_t_cal('DATE_DAY_FRIDAY'),
-                $this->_t_cal('DATE_DAY_SATURDAY'),
+                $this->_t('DATE_DAY_SUNDAY'),
+                $this->_t('DATE_DAY_MONDAY'),
+                $this->_t('DATE_DAY_TUESDAY'),
+                $this->_t('DATE_DAY_WEDNESDAY'),
+                $this->_t('DATE_DAY_THURSDAY'),
+                $this->_t('DATE_DAY_FRIDAY'),
+                $this->_t('DATE_DAY_SATURDAY'),
             );
             $this->_Days['long'] =& $days;
         }
@@ -280,13 +280,13 @@ class Jaws_Date
     {
         if (!isset($this->_Days['short'])) {
             $days = array(
-                $this->_t_cal('DATE_DAY_SHORT_SUNDAY'),
-                $this->_t_cal('DATE_DAY_SHORT_MONDAY'),
-                $this->_t_cal('DATE_DAY_SHORT_TUESDAY'),
-                $this->_t_cal('DATE_DAY_SHORT_WEDNESDAY'),
-                $this->_t_cal('DATE_DAY_SHORT_THURSDAY'),
-                $this->_t_cal('DATE_DAY_SHORT_FRIDAY'),
-                $this->_t_cal('DATE_DAY_SHORT_SATURDAY'),
+                $this->_t('DATE_DAY_SHORT_SUNDAY'),
+                $this->_t('DATE_DAY_SHORT_MONDAY'),
+                $this->_t('DATE_DAY_SHORT_TUESDAY'),
+                $this->_t('DATE_DAY_SHORT_WEDNESDAY'),
+                $this->_t('DATE_DAY_SHORT_THURSDAY'),
+                $this->_t('DATE_DAY_SHORT_FRIDAY'),
+                $this->_t('DATE_DAY_SHORT_SATURDAY'),
             );
             $this->_Days['short'] =& $days;
         }
@@ -414,34 +414,19 @@ class Jaws_Date
         }
 
         $dt = mktime($hour, $minute, $second, $month + 1, $days, $year);
-        return !empty($format)? date($format, $dt) :
-                                array('timestamp' => $dt,
-                                      'year'      => $year,
-                                      'month'     => $month + 1,
-                                      'day'       => $days,
-                                      'hour'      => $hour,
-                                      'minute'    => $minute,
-                                      'second'    => $second,
-                                      'monthDays' => $this->_GregorianDaysInMonthes[$month] + ($month==1 ? $isLeap : 0),
-                                      'yearDay'   => $year_days
-                                    );
+        return !empty($format)?
+            date($format, $dt) :
+            array(
+                'timestamp' => $dt,
+                'year'      => $year,
+                'month'     => $month + 1,
+                'day'       => $days,
+                'hour'      => $hour,
+                'minute'    => $minute,
+                'second'    => $second,
+                'monthDays' => $this->_GregorianDaysInMonthes[$month] + ($month==1 ? $isLeap : 0),
+                'yearDay'   => $year_days
+            );
     }
 
-    /**
-     * Convenience function to translate calendar strings.
-     *
-     * @param   string    string The string to translate.
-     * @access  public
-     */
-    function _t_cal($string)
-    {
-        $lang = isset($GLOBALS['app']) ? $GLOBALS['app']->GetCalendarLanguage() : 'en';
-        $args = null;
-        if (func_num_args() > 1) {
-            $args = func_get_args();
-            // Argument 1 for lang and argument 2 is the string to be translated.
-            array_shift($args);
-        }
-        return _t_lang($lang, $string, $args);
-    }
 }
