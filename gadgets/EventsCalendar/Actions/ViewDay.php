@@ -96,10 +96,15 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
         $eventsByHour = array_fill(0, 24, array());
         foreach ($events as $e) {
             $eventsById[$e['id']] = $e;
-            $startIdx = floor($e['start_time'] / 3600);
-            $stopIdx = floor($e['stop_time'] / 3600) - 1;
-            for ($i = $startIdx; $i <= $stopIdx; $i++) {
-                $eventsByHour[$i][] = $e['id'];
+            if ($e['start_time'] === $e['stop_time']) {
+                $index = floor($e['start_time'] / 3600);
+                $eventsByHour[$index][] = $e['id'];
+            } else {
+                $startIdx = floor($e['start_time'] / 3600);
+                $stopIdx = floor($e['stop_time'] / 3600 - 1);
+                for ($i = $startIdx; $i <= $stopIdx; $i++) {
+                    $eventsByHour[$i][] = $e['id'];
+                }
             }
         }
 

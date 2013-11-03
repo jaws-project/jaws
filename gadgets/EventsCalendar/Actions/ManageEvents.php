@@ -68,13 +68,17 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
                 $tpl->SetVariable('id', $event['id']);
                 $tpl->SetVariable('subject', $event['subject']);
 
-                $start_date = $objDate->Format($event['start_date'], 'n/j/Y');
-                $stop_date = $objDate->Format($event['stop_date'], 'n/j/Y');
-                $tpl->SetVariable('date', $start_date . ' - ' . $stop_date);
+                $start_date = $objDate->Format($event['start_date'], 'Y/n/j');
+                $stop_date = $objDate->Format($event['stop_date'], 'Y/n/j');
+                $date = ($start_date == $stop_date)? $start_date :
+                    $start_date . _t('EVENTSCALENDAR_TO') . $stop_date;
+                $tpl->SetVariable('date', $date);
 
                 $start_time = $objDate->Format($event['start_time'], 'H:s');
-                $stop_time = $objDate->Format($event['stop_time'], 'H:s');
-                $tpl->SetVariable('time', $start_time . ' - ' . $stop_time);
+                $time = ($event['start_time'] == $event['stop_time'])?
+                    $start_time : $start_time . _t('EVENTSCALENDAR_TO') .
+                        $objDate->Format($event['stop_time'], 'H:s');
+                $tpl->SetVariable('time', $time);
 
                 $url = $this->gadget->urlMap('ViewEvent', array('id' => $event['id']));
                 $tpl->SetVariable('url', $url);
