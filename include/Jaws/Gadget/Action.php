@@ -250,6 +250,10 @@ class Jaws_Gadget_Action
      */
     function Execute($action)
     {
+        if (false === $action) {
+            return Jaws_Error::raiseError(_t('GLOBAL_ACTION_NO_DEFAULT'), __FUNCTION__);
+        }
+
         if (!$this->IsValidAction($action)) {
             return Jaws_Error::raiseError(
                 'Invalid action '.$this->gadget->name.'::'.$action,
