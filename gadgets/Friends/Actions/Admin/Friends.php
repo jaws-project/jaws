@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Friends_Actions_Admin_Friends extends Friends_Actions_Admin_Default
+class Friends_Actions_Admin_Friends extends Jaws_Gadget_Action
 {
     /**
      * Creates the datagrid

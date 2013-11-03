@@ -27,4 +27,11 @@ class Friends_Info extends Jaws_Gadget
      */
     var $default_action = 'Display';
 
+    /**
+     * Default back-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_admin_action = 'Friends';
 }
