@@ -1,0 +1,73 @@
+.gadget_menubar_selected {
+display:none !important;
+}
+.events .event-title {
+width:100%;
+}
+.th-check {
+width:1%;
+}
+.today {
+background-color:silver;
+}
+#grid_events td {
+white-space:nowrap;
+}
+#frm_search #event_start_date {
+width:80px;
+}
+#frm_search #event_stop_date {
+width:80px;
+}
+.event-form input {
+width:100%;
+}
+.event-form input[type=checkbox] {
+width:15px;
+}
+.event-form textarea {
+width:100%;
+height:50px;
+}
+.event-form select {
+min-width:100px;
+}
+#event_share select {
+width:100%;
+}
+#event_share input[type=checkbox] {
+vertical-align:middle;
+margin-right:2px;
+}
+
+#event_start_date_table, #event_stop_date_table {
+display:inline-table;
+vertical-align: middle;
+width:110px;
+}
+#event_start_date_table td, #event_stop_date_table td {
+padding:0;
+}
+#event_start_date, #event_stop_date {
+direction:ltr;
+}
+#event_start_time, #event_stop_time {
+width:100px;
+}
+#event_month, #event_day, #event_wday {
+display:none;
+} 
+.events-calendar .float-left {
+float:left;
+}
+.events-calendar .float-right {
+float:right;
+}
+.view-year .months {
+margin-top:10px;
+text-align:center;
+border:1px solid #C6D3D8;
+}
+.shared a:after {
+content:
+}
