@@ -177,6 +177,21 @@ class Jaws_Gadget_Registry
     }
 
     /**
+     * Renames a registry key
+     *
+     * @access  public
+     * @param   string  $old_name   Old key name
+     * @param   string  $new_name   New key name
+     * @param   string  $gadget     (Optional) Gadget name
+     * @return  bool    Returns True or False
+     */
+    function rename($old_name, $new_name, $gadget = '')
+    {
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
+        return $GLOBALS['app']->Registry->rename($old_name, $new_name, $gadget);
+    }
+
+    /**
      * Delete registry key
      *
      * @access  public
