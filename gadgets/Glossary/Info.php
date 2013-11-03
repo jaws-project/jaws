@@ -27,4 +27,12 @@ class Glossary_Info extends Jaws_Gadget
      */
     var $default_action = 'ViewTerms';
 
+    /**
+     * Default back-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_admin_action = 'Term';
+
 }
