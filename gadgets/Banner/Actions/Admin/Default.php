@@ -8,27 +8,6 @@
 class Banner_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
-     * Calls default admin action
-     *
-     * @access  public
-     * @return  string  XTHML Template content
-     */
-    function Admin()
-    {
-        if ($this->gadget->GetPermission('ManageBanners')) {
-            $gadgetHTML = $this->gadget->loadAdminAction('Banners');
-            return $gadgetHTML->Banners();
-        } elseif ($this->gadget->GetPermission('ManageGroups')) {
-            $gadgetHTML = $this->gadget->loadAdminAction('Groups');
-            return $gadgetHTML->Groups();
-        }
-
-        $this->gadget->CheckPermission('ViewReports');
-        $gadgetHTML = $this->gadget->loadAdminAction('Reports');
-        return $gadgetHTML->Reports();
-    }
-
-    /**
      * Prepares the banners menubar
      *
      * @access  public
@@ -45,7 +24,7 @@ class Banner_Actions_Admin_Default extends Jaws_Gadget_Action
         $menubar = new Jaws_Widgets_Menubar();
         if ($this->gadget->GetPermission('ManageBanners')) {
             $menubar->AddOption('Banners', _t('BANNER_NAME'),
-                                BASE_SCRIPT . '?gadget=Banner&amp;action=Admin', 'gadgets/Banner/Resources/images/banners_mini.png');
+                                BASE_SCRIPT . '?gadget=Banner&amp;action=Banners', 'gadgets/Banner/Resources/images/banners_mini.png');
         }
         if ($this->gadget->GetPermission('ManageGroups')) {
             $menubar->AddOption('Groups', _t('BANNER_GROUPS_GROUPS'),

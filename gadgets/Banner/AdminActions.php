@@ -7,6 +7,10 @@
  */
 $actions = array();
 
+$actions['Banners'] = array(
+    'normal' => true,
+    'file' => 'Banners',
+);
 $actions['Groups'] = array(
     'normal' => true,
     'file' => 'Groups',
