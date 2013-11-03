@@ -44,20 +44,19 @@ class Jaws_Date
     /**
      * An interface for available drivers
      *
-     * @param   string  $CalendarType   The type of calendar that's required
+     * @param   string  $calendar   The calendar that's required
      * @access  public
      */
-    function &factory($CalendarType)
+    function &factory($calendar)
     {
-        $CalendarType = ucfirst(strtolower($CalendarType));
-        if (!file_exists(JAWS_PATH . 'include/Jaws/Date/'. $CalendarType .'.php')) {
+        if (!file_exists(JAWS_PATH . 'include/Jaws/Date/'. $calendar .'.php')) {
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG,
-                                 'Loading calendar '.$CalendarType.' failed, Attempting to load default calendar');
-            $CalendarType = 'Gregorian';
+                                 'Loading calendar '.$calendar.' failed, Attempting to load default calendar');
+            $calendar = 'Gregorian';
         }
 
-        require_once JAWS_PATH . "include/Jaws/Date/$CalendarType.php";
-        $class = 'Jaws_Date_' . $CalendarType;
+        require_once JAWS_PATH . "include/Jaws/Date/$calendar.php";
+        $class = 'Jaws_Date_' . $calendar;
         $calendar = new $class();
         return $calendar;
     }
@@ -178,7 +177,7 @@ class Jaws_Date
      */
     function MonthString($m)
     {
-        $cal_name = strtoupper(isset($GLOBALS['app']) ? $GLOBALS['app']->GetCalendarType() : 'Gregorian');
+        $cal_name = strtoupper(isset($GLOBALS['app']) ? $GLOBALS['app']->GetCalendar() : 'Gregorian');
         if (!isset($this->_Months['long'])) {
             $months = array(
                 _t('GLOBAL_'.$cal_name.'_MONTH_FIRST'),
@@ -214,7 +213,7 @@ class Jaws_Date
      */
     function MonthShortString($m = '')
     {
-        $cal_name = strtoupper(isset($GLOBALS['app']) ? $GLOBALS['app']->GetCalendarType() : 'Gregorian');
+        $cal_name = strtoupper(isset($GLOBALS['app']) ? $GLOBALS['app']->GetCalendar() : 'Gregorian');
         if (!isset($this->_Months['short'])) {
             $months = array(
                 _t('GLOBAL_'.$cal_name.'_MONTH_SHORT_FIRST'),
