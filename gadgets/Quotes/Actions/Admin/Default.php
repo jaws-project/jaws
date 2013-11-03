@@ -11,23 +11,6 @@
 class Quotes_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
-     * Calls default admin action
-     *
-     * @access       public
-     * @return       string  Template content
-     */
-    function Admin()
-    {
-        if ($this->gadget->GetPermission('ManageQuotes')) {
-            return $this->Quotes();
-        } elseif ($this->gadget->GetPermission('ManageQuoteGroups')) {
-            return $this->QuoteGroups();
-        }
-
-        $this->gadget->CheckPermission('Properties');
-    }
-
-    /**
      * Prepares the quotes menubar
      *
      * @access  public

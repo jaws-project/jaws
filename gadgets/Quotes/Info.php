@@ -26,4 +26,11 @@ class Quotes_Info extends Jaws_Gadget
      */
     var $default_action = 'RecentQuotes';
 
+    /**
+     * Default back-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_admin_action = 'Quotes';
 }

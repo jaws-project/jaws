@@ -10,7 +10,7 @@
  */
 $actions = array();
 
-$actions['Admin'] = array(
+$actions['Quotes'] = array(
     'normal' => true,
     'file'   => 'Quotes',
 );
