@@ -46,15 +46,4 @@ class Faq_Actions_Admin_Default extends Jaws_Gadget_Action
         return $menubar->Get();
     }
 
-    /**
-     * Displays faq admin section
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function Admin()
-    {
-        $gadgetHTML = $this->gadget->loadAdminAction('Question');
-        return $gadgetHTML->ManageQuestions();
-    }
-
 }
