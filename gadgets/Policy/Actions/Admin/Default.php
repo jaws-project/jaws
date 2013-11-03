@@ -12,33 +12,6 @@
 class Policy_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
-     * Calls default admin action (IPBlocking)
-     *
-     * @access  public
-     * @return  string  Template content
-     */
-    function Admin()
-    {
-        if ($this->gadget->GetPermission('IPBlocking')) {
-            $gadgetHTML = $this->gadget->loadAdminAction('IP');
-            return $gadgetHTML->IPBlocking();
-        } elseif ($this->gadget->GetPermission('AgentBlocking')) {
-            $gadgetHTML = $this->gadget->loadAdminAction('Agent');
-            return $gadgetHTML->AgentBlocking();
-        } elseif ($this->gadget->GetPermission('Encryption')) {
-            $gadgetHTML = $this->gadget->loadAdminAction('Encryption');
-            return $gadgetHTML->Encryption();
-        } elseif ($this->gadget->GetPermission('AntiSpam')) {
-            $gadgetHTML = $this->gadget->loadAdminAction('AntiSpam');
-            return $gadgetHTML->AntiSpam();
-        }
-
-        $this->gadget->CheckPermission('AdvancedPolicies');
-        $gadgetHTML = $this->gadget->loadAdminAction('AdvancedPolicies');
-        return $gadgetHTML->AdvancedPolicies();
-    }
-
-    /**
      * Display the sidebar
      *
      * @access  public
@@ -83,4 +56,5 @@ class Policy_Actions_Admin_Default extends Jaws_Gadget_Action
         $sidebar->Activate($action);
         return $sidebar->Get();
     }
+
 }
