@@ -344,4 +344,62 @@ class Jaws_Date_Jalali extends Jaws_Date
         return $return;
     }
 
+    /**
+     * Return the day number in string
+     *
+     * @param   int    $d   Numeric day (0..6)
+     * @return  string      The day in string not in number
+     * @access  public
+     */
+    function DayString($d = '')
+    {
+        if (!isset($this->_Days['long'])) {
+            $days = array(
+                _t('GLOBAL_DAY_SATURDAY'),
+                _t('GLOBAL_DAY_SUNDAY'),
+                _t('GLOBAL_DAY_MONDAY'),
+                _t('GLOBAL_DAY_TUESDAY'),
+                _t('GLOBAL_DAY_WEDNESDAY'),
+                _t('GLOBAL_DAY_THURSDAY'),
+                _t('GLOBAL_DAY_FRIDAY'),
+            );
+            $this->_Days['long'] =& $days;
+        }
+
+        if (is_numeric($d)) {
+            return $this->_Days['long'][$d];
+        }
+
+        return $this->_Days['long'];
+    }
+
+    /**
+     * Return the day number in string
+     *
+     * @param   int    $d   Numeric day (0..6)
+     * @return  string      The day in string not in number
+     * @access  public
+     */
+    function DayShortString($d)
+    {
+        if (!isset($this->_Days['short'])) {
+            $days = array(
+                _t('GLOBAL_DAY_SHORT_SATURDAY'),
+                _t('GLOBAL_DAY_SHORT_SUNDAY'),
+                _t('GLOBAL_DAY_SHORT_MONDAY'),
+                _t('GLOBAL_DAY_SHORT_TUESDAY'),
+                _t('GLOBAL_DAY_SHORT_WEDNESDAY'),
+                _t('GLOBAL_DAY_SHORT_THURSDAY'),
+                _t('GLOBAL_DAY_SHORT_FRIDAY'),
+            );
+            $this->_Days['short'] =& $days;
+        }
+
+        if (is_numeric($d)) {
+            return $this->_Days['short'][$d];
+        }
+
+        return $this->_Days['short'];
+    }
+
 }
