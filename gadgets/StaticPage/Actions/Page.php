@@ -51,11 +51,11 @@ class StaticPage_Actions_Page extends Jaws_Gadget_HTML
      * @param   string  $base_action    Determines the map to be used (Page/Pages)
      * @return  string  XHTML content
      */
-    function Page($base_action = 'Page')
+    function Page($pid = null, $base_action = 'Page')
     {
         $post = jaws()->request->fetch(array('gid', 'pid','language'), 'get');
         $post['gid'] = Jaws_XSS::defilter($post['gid'], true);
-        $post['pid'] = Jaws_XSS::defilter($post['pid'], true);
+        $post['pid'] = empty($pid)? Jaws_XSS::defilter($post['pid'], true) : $pid;
 
         $pModel = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Page');
         $gModel = $GLOBALS['app']->LoadGadget('StaticPage', 'Model', 'Group');
@@ -149,7 +149,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_HTML
      */
     function Pages()
     {
-        return $this->Page('Pages');
+        return $this->Page(null, 'Pages');
     }
 
     /**
