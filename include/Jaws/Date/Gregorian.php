@@ -12,6 +12,23 @@
 class Jaws_Date_Gregorian extends Jaws_Date
 {
     /**
+     * Gets count of Month(s) days
+     *
+     * @access  public
+     * @param   int     $year   Gregorian year
+     * @param   int     $month  Gregorian month
+     * @return  mixed   Count of Month days or array of count all months days 
+     */
+    function MonthDays($year, $month = 0)
+    {
+        $result = $this->_GregorianDaysInMonthes;
+        if ($this->_IsLeapYear($year)) {
+            $result[1]++;
+        }
+        return empty($month)? $result : $result[$month-1];
+    }
+
+    /**
      *
      * @access  public
      * @param   int     $year   Gregorian year
