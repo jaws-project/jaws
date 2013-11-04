@@ -60,6 +60,23 @@ class Jaws_Date_Jalali extends Jaws_Date
     }
 
     /**
+     * Gets count of Month(s) days
+     *
+     * @access  public
+     * @param   int     $year   Jalali year
+     * @param   int     $month  Jalali month
+     * @return  mixed   Count of Month days or array of count all months days 
+     */
+    function MonthDays($year, $month = 0)
+    {
+        $result = $this->_JalaliDaysInMonthes;
+        if ($this->IsJalaliLeapYear($year)) {
+            $result[11]++;
+        }
+        return empty($month)? $result : $result[$month-1];
+    }
+
+    /**
      * Jalali to Gregorian Convertor
      *
      * @access  public
