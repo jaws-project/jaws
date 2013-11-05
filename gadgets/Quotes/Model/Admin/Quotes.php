@@ -52,12 +52,12 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
             return new Jaws_Error(_t('QUOTES_QUOTE_NOT_ADDED'),_t('QUOTES_NAME'));
         }
 
-        $response =  array();
-        $response['id']      = $result;
-        $response['title']   = $title;
-        $response['message'] = _t('QUOTES_QUOTE_ADDED');
+        $GLOBALS['app']->Session->PushLastResponse(
+            _t('QUOTES_QUOTE_ADDED'),
+            RESPONSE_NOTICE,
+            array('id' => $result, 'title' => $title)
+        );
 
-        $GLOBALS['app']->Session->PushLastResponse($response, RESPONSE_NOTICE);
         return true;
     }
 
