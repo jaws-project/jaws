@@ -46,18 +46,18 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
         $params['published']   = (bool)$published;
 
         $table = Jaws_ORM::getInstance()->table('quotes_groups');
-        $res = $table->insert($params)->exec();
-        if (Jaws_Error::IsError($res)) {
+        $result = $table->insert($params)->exec();
+        if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return false;
         }
 
-        $response =  array();
-        $response['id']      = $res;
-        $response['title']   = $title;
-        $response['message'] = _t('QUOTES_GROUPS_CREATED', $response['id']);
+        $GLOBALS['app']->Session->PushLastResponse(
+            _t('QUOTES_GROUPS_CREATED'),
+            RESPONSE_NOTICE,
+            array('id' => $result, 'title' => $title)
+        );
 
-        $GLOBALS['app']->Session->PushLastResponse($response, RESPONSE_NOTICE);
         return true;
     }
 
