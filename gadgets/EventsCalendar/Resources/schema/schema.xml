@@ -61,18 +61,6 @@
       </field>
 
       <field>
-        <name>start_date</name>
-        <type>integer</type>
-        <length>8</length>
-      </field>
-
-      <field>
-        <name>stop_date</name>
-        <type>integer</type>
-        <length>8</length>
-      </field>
-
-      <field>
         <name>start_time</name>
         <type>integer</type>
         <length>8</length>
@@ -85,25 +73,33 @@
       </field>
 
       <field>
-        <name>month</name>
+        <name>recurrence</name>
         <type>integer</type>
         <length>1</length>
+        <default>0</default>
+        <description>0-4</description>
+      </field>
+
+      <field>
+        <name>month</name>
+        <type>text</type>
+        <length>32</length>
         <default>0</default>
         <description>0-12</description>
       </field>
 
       <field>
         <name>day</name>
-        <type>integer</type>
-        <length>1</length>
+        <type>text</type>
+        <length>32</length>
         <default>0</default>
         <description>0-31</description>
       </field>
 
       <field>
         <name>wday</name>
-        <type>integer</type>
-        <length>1</length>
+        <type>text</type>
+        <length>16</length>
         <default>0</default>
         <description>0-7</description>
       </field>
@@ -116,6 +112,38 @@
 
       <field>
         <name>updatetime</name>
+        <type>integer</type>
+        <length>8</length>
+      </field>
+
+    </declaration>
+  </table>
+
+  <table>
+    <name><variable>table_prefix</variable>ec_recurrences</name>
+    <declaration>
+
+      <field>
+        <name>id</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+        <autoincrement>true</autoincrement>
+      </field>
+
+      <field>
+        <name>event</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+      </field>
+
+      <field>
+        <name>start_time</name>
+        <type>integer</type>
+        <length>8</length>
+      </field>
+
+      <field>
+        <name>stop_time</name>
         <type>integer</type>
         <length>8</length>
       </field>
