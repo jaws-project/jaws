@@ -90,8 +90,8 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         } else {  // $event['wday'] == 0
             $repeat = 'YEARLY';
         }
-        $tpl->SetVariable('repeat', _t('EVENTSCALENDAR_EVENT_REPEAT_'.$repeat));
-        $tpl->SetVariable('lbl_repeat', _t('EVENTSCALENDAR_EVENT_REPEAT'));
+        $tpl->SetVariable('repeat', _t('EVENTSCALENDAR_EVENT_RECURRENCE_'.$repeat));
+        $tpl->SetVariable('lbl_repeat', _t('EVENTSCALENDAR_EVENT_RECURRENCE'));
 
         // Shared
         $tpl->SetVariable('shared', $event['shared']? _t('GLOBAL_YES') : _t('GLOBAL_NO'));

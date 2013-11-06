@@ -7,6 +7,9 @@ width:100%;
 .th-check {
 width:1%;
 }
+.nav {
+clear:both;
+}
 .today {
 background-color:silver;
 }
@@ -30,7 +33,7 @@ width:100%;
 height:50px;
 }
 .event-form select {
-min-width:100px;
+min-width:110px;
 }
 #event_share select {
 width:100%;
@@ -53,15 +56,16 @@ direction:ltr;
 }
 #event_start_time, #event_stop_time {
 width:100px;
+direction:ltr;
 }
 #event_month, #event_day, #event_wday {
 display:none;
-} 
+}
 .events-calendar .float-left {
-float:left;
+float:right;
 }
 .events-calendar .float-right {
-float:right;
+float:left;
 }
 .view-year .months {
 margin-top:10px;

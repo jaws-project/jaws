@@ -37,8 +37,8 @@
           <td>{priority}</td></tr>
         <tr><th><label for="event_reminder">{lbl_reminder}:</label></th>
           <td>{reminder}</td></tr>
-        <tr><th><label for="event_repeat">{lbl_repeat}:</label></th>
-          <td>{repeat} {month} {day} {wday} </td></tr>
+        <tr><th><label for="event_recurrence">{lbl_recurrence}:</label></th>
+          <td>{recurrence} {month} {day} {wday} </td></tr>
       </table>
       <div class="actions">
         <button type="button" onclick="window.location.assign('{url_back}')">{lbl_cancel}</button>
@@ -50,6 +50,6 @@
 <script>
 var errorIncompleteData = "{errorIncompleteData}";
 $('event_subject').focus();
-switchRepeatUI('{repeat_value}');
+switchRepeatUI('{recurrence_value}');
 </script>
 <!-- END form -->

@@ -23,7 +23,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('ManageEvents.html');
         $tpl->SetBlock('events');
 
-        $tpl->SetVariable('title', _t('EVENTSCALENDAR_NAME'));
+        $tpl->SetVariable('title', _t('EVENTSCALENDAR_EVENTS_MANAGE'));
         $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
         $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
         $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
@@ -62,22 +62,22 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $events = $model->GetEvents($user, $query, $shared, $foreign,
             $start, $stop, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($events)){
-            $objDate = $GLOBALS['app']->loadDate();
+            $jdate = $GLOBALS['app']->loadDate();
             foreach ($events as $event) {
                 $tpl->SetBlock('events/event');
                 $tpl->SetVariable('id', $event['id']);
                 $tpl->SetVariable('subject', $event['subject']);
 
-                $start_date = $objDate->Format($event['start_date'], 'Y/n/j');
-                $stop_date = $objDate->Format($event['stop_date'], 'Y/n/j');
+                $start_date = $jdate->Format($event['start_time'], 'Y/m/d');
+                $stop_date = $jdate->Format($event['stop_time'], 'Y/m/d');
                 $date = ($start_date == $stop_date)? $start_date :
                     $start_date . _t('EVENTSCALENDAR_TO') . $stop_date;
                 $tpl->SetVariable('date', $date);
 
-                $start_time = $objDate->Format($event['start_time'], 'H:s');
+                $start_time = $jdate->Format($event['start_time'], 'H:s');
                 $time = ($event['start_time'] == $event['stop_time'])?
                     $start_time : $start_time . _t('EVENTSCALENDAR_TO') .
-                        $objDate->Format($event['stop_time'], 'H:s');
+                    $jdate->Format($event['stop_time'], 'H:s');
                 $tpl->SetVariable('time', $time);
 
                 $url = $this->gadget->urlMap('ViewEvent', array('id' => $event['id']));

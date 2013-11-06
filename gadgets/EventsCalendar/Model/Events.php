@@ -22,7 +22,7 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as event');
         $table->select('event.id', 'event.user', 'subject', 'location', 'description',
-            'start_date', 'stop_date', 'start_time', 'stop_time', 'shared', 'nickname', 'username');
+            'start_time', 'stop_time', 'shared', 'nickname', 'username');
         $table->join('ec_users', 'event.id', 'event');
         $table->join('users', 'owner', 'users.id');
 
@@ -50,16 +50,16 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
         if (!empty($start)){
             $start = $jdate->ToBaseDate(preg_split('/[- :]/', $start), 'Y-m-d');
             $start = $GLOBALS['app']->UserTime2UTC($start);
-            $table->where('stop_date', $start, '>')->and();
+            $table->where('stop_time', $start, '>')->and();
         }
         if (!empty($stop)){
             $stop = $jdate->ToBaseDate(preg_split('/[- :]/', $stop), 'Y-m-d');
             $stop = $GLOBALS['app']->UserTime2UTC($stop);
-            $table->where('start_date', $stop, '<');
+            $table->where('start_time', $stop, '<');
         }
 
         $table->limit($limit, $offset);
-        $table->orderBy('createtime desc', 'subject asc');
+        $table->orderBy('id desc', 'subject asc');
         return $table->fetchAll();
     }
 
@@ -102,12 +102,12 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
         if (!empty($start)){
             $start = $jdate->ToBaseDate(preg_split('/[- :]/', $start), 'Y-m-d');
             $start = $GLOBALS['app']->UserTime2UTC($start);
-            $table->where('stop_date', $start, '>')->and();
+            $table->where('stop_time', $start, '>')->and();
         }
         if (!empty($stop)){
             $stop = $jdate->ToBaseDate(preg_split('/[- :]/', $stop), 'Y-m-d');
             $stop = $GLOBALS['app']->UserTime2UTC($stop);
-            $table->where('start_date', $stop, '<');
+            $table->where('start_time', $stop, '<');
         }
 
         return $table->fetchOne();

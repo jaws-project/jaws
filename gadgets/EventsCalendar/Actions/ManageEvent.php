@@ -91,13 +91,13 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
                 $event['stop_date'] = '';
                 $event['start_time'] = '';
                 $event['stop_time'] = '';
+                $event['recurrence'] = 0;
                 $event['month'] = 0;
                 $event['day'] = 0;
                 $event['wday'] = 0;
                 $event['type'] = 1;
                 $event['priority'] = 0;
                 $event['reminder'] = 0;
-                $repeat = 1;
             }
         }
         $tpl->SetVariable('id', $event['id']);
@@ -181,32 +181,24 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('reminder', $combo->Get());
         $tpl->SetVariable('lbl_reminder', _t('EVENTSCALENDAR_EVENT_REMINDER'));
 
-        // Repeat
-        if ($event['day'] == 0 && $event['wday'] == 0 && $event['month'] == 0) {
-            $repeat = 1;
-        } else if ($event['day'] == 0 && $event['month'] == 0) {
-            $repeat = 2;
-        } else if ($event['wday'] == 0 && $event['month'] == 0) {
-            $repeat = 3;
-        } else {  // $event['wday'] == 0
-            $repeat = 4;
-        }
-        $combo =& Piwi::CreateWidget('Combo', 'repeat');
-        $combo->SetId('event_repeat');
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_DAILY'), 1);
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_WEEKLY'), 2);
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_MONTHLY'), 3);
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_YEARLY'), 4);
-        $combo->SetDefault($repeat);
+        // Recurrence
+        $combo =& Piwi::CreateWidget('Combo', 'recurrence');
+        $combo->SetId('event_recurrence');
+        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_DISABLED'), 0);
+        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_DAILY'), 1);
+        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_WEEKLY'), 2);
+        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_MONTHLY'), 3);
+        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_YEARLY'), 4);
+        $combo->SetDefault($event['recurrence']);
         $combo->AddEvent(ON_CHANGE, 'switchRepeatUI(this.value)');
-        $tpl->SetVariable('repeat', $combo->Get());
-        $tpl->SetVariable('repeat_value', $repeat);
-        $tpl->SetVariable('lbl_repeat', _t('EVENTSCALENDAR_EVENT_REPEAT'));
+        $tpl->SetVariable('recurrence', $combo->Get());
+        $tpl->SetVariable('recurrence_value', $event['recurrence']);
+        $tpl->SetVariable('lbl_recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE'));
 
         // Day
         $combo =& Piwi::CreateWidget('Combo', 'day');
         $combo->SetId('event_day');
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_EVERY_DAY'), 0);
+        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_EVERY_DAY'), 0);
         for ($i = 1; $i <= 31; $i++) {
             $combo->AddOption($i, $i);
         }
@@ -217,7 +209,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Week Day
         $combo =& Piwi::CreateWidget('Combo', 'wday');
         $combo->SetId('event_wday');
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_EVERY_WEEK_DAY'), 0);
+        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_EVERY_WEEK_DAY'), 0);
         for ($i = 1; $i <= 7; $i++) {
             $combo->AddOption($jdate->DayString($i-1), $i);
         }
@@ -228,7 +220,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Month
         $combo =& Piwi::CreateWidget('Combo', 'month');
         $combo->SetId('event_month');
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REPEAT_EVERY_MONTH'), 0);
+        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_EVERY_MONTH'), 0);
         for ($i = 1; $i <= 12; $i++) {
             $combo->AddOption($jdate->MonthString($i), $i);
         }
@@ -239,7 +231,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Actions
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('url_back', $GLOBALS['app']->GetSiteURL('/') . $this->gadget->urlMap('ManageEvents'));
+        $tpl->SetVariable('url_back', $GLOBALS['app']->GetSiteURL('/') . 
+            $this->gadget->urlMap('ManageEvents'));
 
         $tpl->ParseBlock('form');
         return $tpl->Get();
@@ -253,37 +246,40 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
      */
     function CreateEvent()
     {
-        $data = jaws()->request->fetch(array('subject', 'location',
+        $event = jaws()->request->fetch(array('subject', 'location',
             'description', 'type', 'priority', 'reminder',
-            'start_date', 'stop_date', 'start_time', 'stop_time',
-            'month', 'day', 'wday'), 'post');
-        if (empty($data['subject']) || empty($data['start_date'])) {
+            'recurrence', 'month', 'day', 'wday',
+            'start_date', 'stop_date', 'start_time', 'stop_time'), 'post');
+        if (empty($event['subject']) || empty($event['start_date'])) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'),
                 'Events.Response',
                 RESPONSE_ERROR,
-                $data
+                $event
             );
             Jaws_Header::Referrer();
         }
 
         $jdate = $GLOBALS['app']->loadDate();
-        $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $data['subject'] = Jaws_XSS::defilter($data['subject']);
-        $data['location'] = Jaws_XSS::defilter($data['location']);
-        $data['description'] = Jaws_XSS::defilter($data['description']);
+        $event['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $event['subject'] = Jaws_XSS::defilter($event['subject']);
+        $event['location'] = Jaws_XSS::defilter($event['location']);
+        $event['description'] = Jaws_XSS::defilter($event['description']);
 
         $model = $this->gadget->loadModel('Event');
-        $result = $model->Insert($data);
+        $result = $model->InsertEvent($event);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('EVENTSCALENDAR_ERROR_EVENT_CREATE'),
                 'Events.Response',
                 RESPONSE_ERROR,
-                $data
+                $event
             );
             Jaws_Header::Referrer();
         }
+
+        // Calculate recurrence
+        //$recurrence = jaws()->request->fetch(array('month', 'day', 'wday'), 'post');
 
         $GLOBALS['app']->Session->PushResponse(
             _t('EVENTSCALENDAR_NOTICE_EVENT_CREATED'),

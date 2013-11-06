@@ -7,6 +7,9 @@ width:100%;
 .th-check {
 width:1%;
 }
+.nav {
+clear:both;
+}
 .today {
 background-color:silver;
 }
