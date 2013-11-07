@@ -207,7 +207,7 @@ class Jaws_Gadget_Installer
         }
 
         // end install gadget event
-        $res = $GLOBALS['app']->Listener->Shout('InstallGadget', $this->gadget->name);
+        $res = $this->gadget->event->shout('InstallGadget', $this->gadget->name);
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
@@ -272,14 +272,14 @@ class Jaws_Gadget_Installer
         $GLOBALS['app']->Registry->update('gadgets_autoload_items', $autoload_gadgets);
 
         // removeing gadget listeners
-        $GLOBALS['app']->Listener->DeleteListener($this->gadget->name);
+        $this->gadget->event->delete();
         // removeing gadget ACL keys
         $GLOBALS['app']->ACL->delete($this->gadget->name);
         // removeing gadget registry keys
         $GLOBALS['app']->Registry->delete($this->gadget->name);
 
         // end uninstall gadget event
-        $result = $GLOBALS['app']->Listener->Shout('UninstallGadget', $this->gadget->name);
+        $result = $this->gadget->event->shout('UninstallGadget', $this->gadget->name);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -337,7 +337,7 @@ class Jaws_Gadget_Installer
         }
 
         // end upgrade gadget event
-        $result = $GLOBALS['app']->Listener->Shout('UpgradeGadget', $this->gadget->name);
+        $result = $this->gadget->event->shout('UpgradeGadget', $this->gadget->name);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -376,7 +376,7 @@ class Jaws_Gadget_Installer
         $GLOBALS['app']->Registry->update('gadgets_disabled_items', $disabled_gadgets);
 
         // end disable gadget event
-        $res = $GLOBALS['app']->Listener->Shout('EnableGadget', $this->gadget->name);
+        $res = $this->gadget->event->shout('EnableGadget', $this->gadget->name);
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
@@ -430,7 +430,7 @@ class Jaws_Gadget_Installer
         $GLOBALS['app']->Registry->update('gadgets_disabled_items', $disabled_gadgets);
 
         // end disable gadget event
-        $res = $GLOBALS['app']->Listener->Shout('DisableGadget', $this->gadget->name);
+        $res = $this->gadget->event->shout('DisableGadget', $this->gadget->name);
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
