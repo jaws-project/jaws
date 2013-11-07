@@ -63,4 +63,46 @@ class Jaws_Gadget_Event
         return $this->gadget->events[$event];
     }
 
+    /**
+     * Shouts a call to the listener object that will act inmediatly.
+     *
+     * @access  public
+     * @param   string  $event      Event name
+     * @param   mixed   $params     Event param(s)
+     * @param   string  $gadget     If set, returns listener result of this gadget
+     * @param   bool    $broadcast  Broadcast event to all listeners
+     * @return  mixed   True if successfully, otherwise returns Jaws_Error
+     */
+    function shout($event, $params = array(), $gadget = '', $broadcast = true)
+    {
+        return $GLOBALS['app']->Listener->Shout($event, $params, $gadget, $broadcast);
+    }
+
+    /**
+     * Add a new listener and saves it in the DB
+     *
+     * @access  public
+     * @param   string  $event  Event name
+     * @return  bool    True if listener was added, otherwise returns Jaws_Error
+     */
+    function insert($event, $gadget = '')
+    {
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
+        return $GLOBALS['app']->Listener->AddListener($gadget, $event);
+    }
+
+    /**
+     * Deletes a shouter
+     *
+     * @access  public
+     * @param   string  $event   Event name
+     * @param   string  $gadget (Optional) Gadget name
+     * @return  bool    True if listener was deleted, otherwise returns Jaws_Error
+     */
+    function delete($event = '', $gadget = '')
+    {
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
+        return $GLOBALS['app']->Listener->DeleteListener($gadget, $event);
+    }
+
 }
