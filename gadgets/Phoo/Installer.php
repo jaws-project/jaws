@@ -89,7 +89,7 @@ class Phoo_Installer extends Jaws_Gadget_Installer
         }
 
         // Install listener for update comment
-        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UpdateComment');
+        $this->gadget->event->insert('UpdateComment');
 
         return true;
     }
