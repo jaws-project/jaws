@@ -74,7 +74,13 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
         // Components
         $model = $this->gadget->loadAdminModel('Languages');
         $components = $model->GetComponents();
-        $componentsName = array('Global', 'Gadgets', 'Plugins');
+        $componentsName = array(
+            0 => 'Global',
+            1 => 'Gadgets',
+            2 => 'Plugins',
+            4 => 'Install',
+            5 => 'Upgrade'
+        );
         foreach ($components as $compk => $compv) {
             if (is_array($compv)) {
                 $tpl->SetBlock('Languages/group');

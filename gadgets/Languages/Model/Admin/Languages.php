@@ -112,9 +112,11 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
         }
 
         $components = array();
-        $components[JAWS_COMPONENT_OTHERS] = array('Global', 'Date', 'Install', 'Upgrade');
-        $components[JAWS_COMPONENT_GADGET] = GetModulesList('gadgets');
-        $components[JAWS_COMPONENT_PLUGIN] = GetModulesList('plugins');
+        $components[JAWS_COMPONENT_OTHERS]  = array('Global');
+        $components[JAWS_COMPONENT_INSTALL] = array('Install');
+        $components[JAWS_COMPONENT_UPGRADE] = array('Upgrade');
+        $components[JAWS_COMPONENT_GADGET]  = GetModulesList('gadgets');
+        $components[JAWS_COMPONENT_PLUGIN]  = GetModulesList('plugins');
         return $components;
     }
 
@@ -132,78 +134,108 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
     {
         switch ($type) {
             case JAWS_COMPONENT_GADGET:
-                $data_file = JAWS_DATA . "languages/$langTo/gadgets/$module.php";
-                $orig_file = JAWS_PATH . "languages/$langTo/gadgets/$module.php";
-                $from_file = JAWS_PATH . "languages/$langFrom/gadgets/$module.php";
+                if ($langTo == 'en') {
+                    $orig_file = JAWS_PATH . "gadgets/$module/Resources/translates.ini";
+                } else {
+                    $orig_file = JAWS_PATH . "languages/$langTo/gadgets/$module.ini";
+                }
+                $data_file = JAWS_DATA . "languages/$langTo/gadgets/$module.ini";
+                $from_file = JAWS_PATH . "gadgets/$module/Resources/translates.ini";
                 break;
 
             case JAWS_COMPONENT_PLUGIN:
-                $data_file = JAWS_DATA . "languages/$langTo/plugins/$module.php";
-                $orig_file = JAWS_PATH . "languages/$langTo/plugins/$module.php";
-                $from_file = JAWS_PATH . "languages/$langFrom/plugins/$module.php";
+                if ($langTo == 'en') {
+                    $orig_file = JAWS_PATH . "plugins/$module/Resources/translates.ini";
+                } else {
+                    $orig_file = JAWS_PATH . "languages/$langTo/plugins/$module.ini";
+                }
+                $data_file = JAWS_DATA . "languages/$langTo/plugins/$module.ini";
+                $from_file = JAWS_PATH . "plugins/$module/Resources/translates.ini";
                 $module = 'Plugins_' . $module;
                 break;
 
+            case JAWS_COMPONENT_INSTALL:
+                if ($langTo == 'en') {
+                    $orig_file = JAWS_PATH . "install/Resources/translates.ini";
+                } else {
+                    $orig_file = JAWS_PATH . "languages/$langTo/Install.ini";
+                }
+                $data_file = JAWS_DATA . "languages/$langTo/Install.ini";
+                $from_file = JAWS_PATH . "install/Resources/translates.ini";
+                break;
+
+            case JAWS_COMPONENT_UPGRADE:
+                if ($langTo == 'en') {
+                    $orig_file = JAWS_PATH . "upgrade/Resources/translates.ini";
+                } else {
+                    $orig_file = JAWS_PATH . "languages/$langTo/Upgrade.ini";
+                }
+                $data_file = JAWS_DATA . "languages/$langTo/Upgrade.ini";
+                $from_file = JAWS_PATH . "upgrade/Resources/translates.ini";
+                break;
+
             default:
-                $data_file = JAWS_DATA . "languages/$langTo/$module.php";
-                $orig_file = JAWS_PATH . "languages/$langTo/$module.php";
-                $from_file = JAWS_PATH . "languages/$langFrom/$module.php";
+                if ($langTo == 'en') {
+                    $orig_file = JAWS_PATH . "include/Jaws/Resources/translates.ini";
+                } else {
+                    $orig_file = JAWS_PATH . "languages/$langTo/Global.ini";
+                }
+                $data_file = JAWS_DATA . "languages/$langTo/Global.ini";
+                $from_file = JAWS_PATH . "include/Jaws/Resources/translates.ini";
         }
 
         if (!file_exists($from_file)) {
             return false;
         }
 
-        $data = array();
+        $strings = array();
         if (file_exists($orig_file)) {
-            require_once $orig_file;
-            $contents = file_get_contents($orig_file);
+            $content = file_get_contents($orig_file);
+            $strings = parse_ini_file($orig_file, false, INI_SCANNER_RAW);
+        }
+
+        // load "from language" file
+        if ($from_file == $orig_file) {
+            $fromstrings = $strings;
+        } else {
+            $fromstrings = parse_ini_file($from_file, false, INI_SCANNER_RAW);
         }
 
         if (file_exists($data_file)) {
-            require_once $data_file;
-            $contents = file_get_contents($data_file);
+            $strings = array_merge($strings, parse_ini_file($data_file, false, INI_SCANNER_RAW));
         }
 
-        @require_once $from_file;
-        $fromstrings = get_defined_constants();
-
-        $global = JAWS_PATH . "languages/$langTo/Global.php";
-        if (file_exists($global)) {
-            @require_once $global;
-        }
-
-        if (defined('_' . strtoupper($langTo) . '_GLOBAL_LANG_DIRECTION')) {
-            $data['lang_direction'] = constant('_' . strtoupper($langTo) . '_GLOBAL_LANG_DIRECTION');
+        $data = array();
+        $data['lang_direction'] = 'ltr';
+        if ($type != 0) {
+            if ($langTo == 'en') {
+                $global_file = JAWS_PATH . "include/Jaws/Resources/translates.ini";
+            } else {
+                $global_file = JAWS_PATH . "languages/$langTo/Global.ini";
+            }
+            $globals = @parse_ini_file($global_file, false, INI_SCANNER_RAW);
+            $data['lang_direction'] = 
+                isset($globals['GLOBAL_LANG_DIRECTION'])? $globals['GLOBAL_LANG_DIRECTION'] : 'ltr';
         } else {
-            $data['lang_direction'] = 'ltr';
+            $data['lang_direction'] = 
+                isset($strings['GLOBAL_LANG_DIRECTION'])? $strings['GLOBAL_LANG_DIRECTION'] : 'ltr';
         }
 
         // Metadata
-        preg_match('/"Last-Translator:(.*)"/', isset($contents)?$contents:'', $res);
-        $data['meta']['Last-Translator'] = !empty($res) ? trim($res[1]) : '';
+        preg_match('/"Last-Translator:(.*)"/', isset($content)? $content : '', $res);
+        $data['meta']['Last-Translator'] = !empty($res)? trim($res[1]) : '';
 
         // Strings
         foreach ($fromstrings as $k => $v) {
-            if (strpos($k, strtoupper("_{$langFrom}_{$module}")) === false) {
+            if (strpos($k, strtoupper("{$module}_")) != 0) {
                 continue;
             }
-            $cons = str_replace('_' . strtoupper($langFrom) . '_', '', $k);
-            $data['strings'][$cons][$langFrom] = $v;
-            $toValue = '';
-            if (defined('_' . strtoupper($langTo) . '_DATA_' . $cons)) {
-                $toValue = constant('_' . strtoupper($langTo) . '_DATA_' . $cons);
-                if ($toValue == '') {
-                    $toValue = $this->_EMPTY_STRING;
-                }
-            } elseif (defined('_' . strtoupper($langTo) . '_' . $cons)) {
-                $toValue = constant('_' . strtoupper($langTo) . '_' . $cons);
-                if ($toValue == '') {
-                    $toValue = $this->_EMPTY_STRING;
-                }
-            }
-            $data['strings'][$cons][$langTo] = $toValue;
+
+            $data['strings'][$k]['en'] = $v;
+            $data['strings'][$k][$langTo] =
+                isset($strings[$k])? (($strings[$k] === '')? $this->_EMPTY_STRING : $strings[$k]) : '';
         }
+
         return $data;
     }
 
