@@ -176,17 +176,7 @@ class Jaws_Gadget
     {
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
         $this->name = $gadget;
-
-        // load gadget Request interface
-        $this->request = new Jaws_Gadget_Request($this);
-
-        // load gadget ACL interface
-        $this->acl = new Jaws_Gadget_ACL($this);
-        // load gadget registry interface
-        $this->registry = new Jaws_Gadget_Registry($this);
-        // Load gadget's language file
         $GLOBALS['app']->Translate->LoadTranslation($this->name, JAWS_COMPONENT_GADGET);
-
         $this->title       = _t(strtoupper($gadget).'_NAME');
         $this->description = _t(strtoupper($gadget).'_DESCRIPTION');
     }
@@ -565,7 +555,7 @@ class Jaws_Gadget
     }
 
     /**
-     * Overloading magic method
+     * Overloading __call magic method
      *
      * @access  private
      * @param   string  $method     Method name
@@ -609,6 +599,29 @@ class Jaws_Gadget
         }
 
         return Jaws_Error::raiseError("Method '$method' not exists!", __FUNCTION__);
+    }
+
+    /**
+     * Overloading __get magic method
+     *
+     * @access  private
+     * @param   string  $property   Property name
+     * @return  mixed   Requested property otherwise Jaws_Error
+     */
+    function __get($property)
+    {
+        switch ($property) {
+            case 'acl':
+            case 'event':
+            case 'request':
+            case 'registry':
+                $classname = 'Jaws_Gadget_'. ucfirst($property);
+                $this->$property = new $classname($this);
+                return $this->$property;
+                break;
+        }
+
+        return Jaws_Error::raiseError("Property '$property' not exists!", __FUNCTION__);
     }
 
 }
