@@ -130,10 +130,10 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         }
 
         $types = array();
-        $lang = strtoupper($GLOBALS['app']->GetLanguage());
         for ($i = 1; $i <= 15; $i++) {
-            if (defined('_' . $lang . "_EMBLEMS_TYPE_$i")) {
-                $types[$i] = _t("EMBLEMS_TYPE_$i");
+            $type_str = "EMBLEMS_TYPE_$i";
+            if (_t($type_str) != $type_str) {
+                $types[$i] = _t($type_str);
             }
         }
         $dataURL = $GLOBALS['app']->getDataURL('emblems/');
