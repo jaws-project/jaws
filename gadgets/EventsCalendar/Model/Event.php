@@ -61,24 +61,20 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
     function InsertEvent($event)
     {
         $jdate = $GLOBALS['app']->loadDate();
+        $startArr = preg_split('/[- :]/', $event['start_date'] . ' ' . $event['start_time']);
 
         $start_time = $jdate->ToBaseDate(
-            preg_split('/[- :]/',
-            $event['start_date'] . ' ' . $event['start_time']),
-            'Y-m-d H:s'
+            preg_split('/[- :]/', $event['start_date'] . ' ' . $event['start_time'])
         );
-        $event['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time);
+        $event['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time['timestamp']);
         unset($event['start_date']);
 
         $stop_time = $jdate->ToBaseDate(
-            preg_split('/[- :]/',
-            $event['stop_date'] . ' ' . $event['stop_time']),
-            'Y-m-d H:s'
+            preg_split('/[- :]/', $event['stop_date'] . ' ' . $event['stop_time'])
         );
-        $event['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time);
+        $event['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time['timestamp']);
         unset($event['stop_date']);
 
-        //_log_var_dump($start_date);
         $event['createtime'] = $event['updatetime'] = time();
 
         $table = Jaws_ORM::getInstance()->table('ec_events');
@@ -88,13 +84,20 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
             return $id;
         }
 
-        $event = array(
+        // add users
+        $date = array(
             'event' => $id,
             'user' => $event['user'],
             'owner' => (int)$GLOBALS['app']->Session->GetAttribute('user')
         );
         $table = Jaws_ORM::getInstance()->table('ec_users');
-        $res = $table->insert($event)->exec();
+        $res = $table->insert($date)->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        // create recurrences
+        $res = $this->InsertRecurrences($id, $event);
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
@@ -109,21 +112,85 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
      * @param   array   $data   Event data
      * @return  mixed   Query result
      */
-    function InsertRecurrences($event_id, $first_occurrence, $interval, $duration, $count)
+    function InsertRecurrences($event_id, $event)
     {
+        $recArr = array();
+        $jdate = $GLOBALS['app']->loadDate();
+        $start_info = $jdate->GetDateInfo($event['start_time']);
+        $stop_info = $jdate->GetDateInfo($event['stop_time']);
+        if ($event['recurrence'] == 0) {
+            $recArr[] = $event['start_time'];
+        } else {
+            switch ((int)$event['recurrence']) {
+                case 1: // daily
+                    $step = 24 * 60 * 60;
+                    if ($event['start_time'] + $step > $event['stop_time']) {
+                        $recArr[] = $event['start_time'];
+                    } else {
+                        $recArr = range($event['start_time'], $event['stop_time'], $step);
+                    }
+                    break;
+                case 2: // weekly
+                    $step = 7 * 24 * 60 * 60;
+                    // calculate first ocurrence
+                    $diff = $event['wday'] - $start_info['wday'] - 1;
+                    if ($diff < 0) {
+                        $diff += 7;
+                    }
+                    $start = $event['start_time'] + $diff * 86400;
+                    if ($start + $step > $event['stop_time']) {
+                        if ($start <= $event['stop_time']) {
+                            $recArr[] = $start;
+                        }
+                    } else {
+                        $recArr = range($start, $event['stop_time'], $step);
+                    }
+                    break;
+                case 3: // monthly
+                    $startArr[2] = $event['day'];
+                    $endMonth = ($stop_info['year'] - $start_info['year']) * 12 + $stop_info['mon'];
+                    for ($i = (int)$start_info['mon']; $i <= $endMonth; $i++) {
+                        $startArr[1] = $i;
+                        $time = $jdate->ToBaseDate($startArr);
+                        $iso = $GLOBALS['app']->UserTime2UTC($time['timestamp']);
+                        if ($iso < $event['stop_time']) {
+                            $recArr[] = $iso;
+                        }
+                    }
+                    break;
+                case 4: // yearly
+                    $startArr[1] = $event['month'];
+                    $startArr[2] = $event['day'];
+                    for ($i = $start_info['year']; $i <= $stop_info['year']; $i++) {
+                        $startArr[0] = $i;
+                        $time = $jdate->ToBaseDate($startArr);
+                        $iso = $GLOBALS['app']->UserTime2UTC($time['timestamp']);
+                        if ($iso < $event['stop_time']) {
+                            $recArr[] = $iso;
+                        }
+                    }
+                    break;
+            }
+        }
+        //_log_var_dump($recArr);
+
+        $time1 = $start_info['hours'] * 3600 + $start_info['minutes'] * 60;
+        $time2 = $stop_info['hours'] * 3600 + $start_info['minutes'] * 60;
+        $duration = $time2 - $time1;
+        //_log_var_dump($duration);
+        
         $data = array();
-        for ($i = 0; $i <= $count - 1; $i++) {
-            $start = $first_occurrence + ($i * $interval);
+        foreach ($recArr as $rec) {
             $data[] = array(
-                'event_id' => $event_id,
-                'start' => $start,
-                'stop' => $start + $duration
+                'event' => $event_id,
+                'start_time' => $rec,
+                'stop_time' => $rec + $duration
             );
         }
 
-        $table = Jaws_ORM::getInstance()->table('ec_recurrence');
+        $table = Jaws_ORM::getInstance()->table('ec_recurrences');
         $table->beginTransaction();
-        $res = $table->insertAll(array('event_id', 'start', 'stop'), $data)->exec();
+        $res = $table->insertAll(array('event', 'start_time', 'stop_time'), $data)->exec();
         if (Jaws_Error::IsError($res)) {
             return $res;
         }

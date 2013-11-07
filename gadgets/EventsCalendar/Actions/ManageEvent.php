@@ -78,9 +78,9 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
                 $event['stop_date'] = empty($event['stop_date'])? '' :
                     $jdate->Format($event['stop_date'], 'Y-m-d');
                 $event['start_time'] = empty($event['start_time'])? '' :
-                    $jdate->Format($event['start_time'], 'H:s');
+                    $jdate->Format($event['start_time'], 'H:i');
                 $event['stop_time'] = empty($event['stop_time'])? '' :
-                    $jdate->Format($event['stop_time'], 'H:s');
+                    $jdate->Format($event['stop_time'], 'H:i');
             } else {
                 $event = array();
                 $event['id'] = 0;
@@ -198,7 +198,6 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Day
         $combo =& Piwi::CreateWidget('Combo', 'day');
         $combo->SetId('event_day');
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_EVERY_DAY'), 0);
         for ($i = 1; $i <= 31; $i++) {
             $combo->AddOption($i, $i);
         }
@@ -209,7 +208,6 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Week Day
         $combo =& Piwi::CreateWidget('Combo', 'wday');
         $combo->SetId('event_wday');
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_EVERY_WEEK_DAY'), 0);
         for ($i = 1; $i <= 7; $i++) {
             $combo->AddOption($jdate->DayString($i-1), $i);
         }
@@ -220,7 +218,6 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Month
         $combo =& Piwi::CreateWidget('Combo', 'month');
         $combo->SetId('event_month');
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_EVERY_MONTH'), 0);
         for ($i = 1; $i <= 12; $i++) {
             $combo->AddOption($jdate->MonthString($i), $i);
         }
@@ -277,9 +274,6 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             );
             Jaws_Header::Referrer();
         }
-
-        // Calculate recurrence
-        //$recurrence = jaws()->request->fetch(array('month', 'day', 'wday'), 'post');
 
         $GLOBALS['app']->Session->PushResponse(
             _t('EVENTSCALENDAR_NOTICE_EVENT_CREATED'),
