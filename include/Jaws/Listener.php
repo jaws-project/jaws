@@ -30,12 +30,13 @@ class Jaws_Listener
      * Shouts a call to the listener object that will act inmediatly.
      *
      * @access  public
-     * @param   string  $event  Event name
-     * @param   mixed   $params Event param(s)
-     * @param   string  $gadget If set, returns listener result of this gadget
+     * @param   string  $event      Event name
+     * @param   mixed   $params     Event param(s)
+     * @param   string  $gadget     If set, returns listener result of this gadget
+     * @param   bool    $broadcast  Broadcast event to all listeners
      * @return  mixed   True if successfully, otherwise returns Jaws_Error
      */
-    function Shout($event, $params = array(), $gadget = '')
+    function Shout($event, $params = array(), $gadget = '', $broadcast = true)
     {
         $listeners = $this->GetEventListeners($event);
         if (Jaws_Error::IsError($listeners)) {
@@ -44,6 +45,11 @@ class Jaws_Listener
 
         $result = null;
         foreach ($listeners as $listener) {
+            // check event broadcasting
+            if (!$broadcast && $listener['gadget'] !== $gadget) {
+                continue;
+            }
+
             if (Jaws_Gadget::IsGadgetInstalled($listener['gadget'])) {
                 $objGadget = Jaws_Gadget::getInstance($listener['gadget']);
                 if (Jaws_Error::IsError($objGadget)) {
