@@ -59,9 +59,9 @@ class Menu_Installer extends Jaws_Gadget_Installer
         }
 
         // Add listener for remove/publish menu items related to given gadget
-        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
-        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'EnableGadget');
-        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'DisableGadget');
+        $this->gadget->event->insert('UninstallGadget');
+        $this->gadget->event->insert('EnableGadget');
+        $this->gadget->event->insert('DisableGadget');
 
         return true;
     }
@@ -111,11 +111,11 @@ class Menu_Installer extends Jaws_Gadget_Installer
             }
 
             // Remove old event listener
-            $GLOBALS['app']->Listener->DeleteListener($this->gadget->name);
+            $this->gadget->event->delete();
             // Add listener for remove/publish menu items related to given gadget
-            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
-            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'EnableGadget');
-            $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'DisableGadget');
+            $this->gadget->event->insert('UninstallGadget');
+            $this->gadget->event->insert('EnableGadget');
+            $this->gadget->event->insert('DisableGadget');
         }
 
         return true;
