@@ -46,7 +46,7 @@ class Comments_Installer extends Jaws_Gadget_Installer
     function Install($upgrade_from_08x = false)
     {
         // Install listener for removing comments related to uninstalled gadget
-        $GLOBALS['app']->Listener->AddListener($this->gadget->name, 'UninstallGadget');
+        $this->gadget->event->insert('UninstallGadget');
 
         if ($upgrade_from_08x) {
             return $this->Upgrade('0.8.0', '1.0.0');

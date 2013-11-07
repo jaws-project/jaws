@@ -93,7 +93,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         $res = $commentsTable->insert($cData)->exec();
 
         if (!Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Listener->Shout('UpdateComment', array($gadget, $action, $gadgetId));
+            $this->gadget->event->shout('UpdateComment', array($gadget, $action, $gadgetId));
         }
 
         return $res;
@@ -151,7 +151,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
             $commentsTable = Jaws_ORM::getInstance()->table('comments');
             $commentsTable->select('gadget', 'reference:integer', 'action');
             $comment = $commentsTable->where('id', $id)->fetchRow();
-            $GLOBALS['app']->Listener->Shout('UpdateComment', array($comment['gadget'], $comment['action'],
+            $this->gadget->event->shout('UpdateComment', array($comment['gadget'], $comment['action'],
                 $comment['reference']));
         }
 
@@ -234,8 +234,10 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
             return $comments;
         }
         foreach($comments as $comment) {
-            $GLOBALS['app']->Listener->Shout('UpdateComment', array($comment['gadget'], $comment['action'],
-                $comment['reference']));
+            $this->gadget->event->shout(
+                'UpdateComment',
+                array($comment['gadget'], $comment['action'], $comment['reference'])
+            );
         }
 
         if ($status == Comments_Info::COMMENT_STATUS_SPAM) {

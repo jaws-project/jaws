@@ -27,8 +27,10 @@ class Comments_Model_DeleteComments extends Jaws_Gadget_Model
         $res = $commentTable->delete()->where('id', $id)->exec();
 
         if (!Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Listener->Shout('UpdateComment', array($commentInfo['gadget'], $commentInfo['action'],
-                $commentInfo['reference']));
+            $this->gadget->event->shout(
+                'UpdateComment',
+                array($commentInfo['gadget'], $commentInfo['action'], $commentInfo['reference'])
+            );
         }
 
         return $res;
