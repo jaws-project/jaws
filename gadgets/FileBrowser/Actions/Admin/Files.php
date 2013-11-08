@@ -128,7 +128,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
      */
     function DataGrid($path = '')
     {
-        $model = $this->gadget->loadModel('Directory');
+        $model = $this->gadget->model->load('Directory');
         $total = $model->GetDirContentsCount($path);
 
         $grid =& Piwi::CreateWidget('DataGrid', array());
@@ -157,7 +157,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
      */
     function GetLocation($path)
     {
-        $model = $this->gadget->loadModel('Directory');
+        $model = $this->gadget->model->load('Directory');
 
         $dir_array = $model->GetCurrentRootDir($path);
         $path_link = '';
@@ -180,8 +180,8 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('UploadFiles');
 
-        $fModel = $this->gadget->loadModel('Files');
-        $fModelAdmin = $this->gadget->loadAdminModel('Files');
+        $fModel = $this->gadget->model->load('Files');
+        $fModelAdmin = $this->gadget->model->loadAdmin('Files');
         $post = jaws()->request->fetch(
             array('path', 'file_title', 'file_description', 'file_fast_url', 'oldname', 'extra_params'),
             'post'
@@ -286,8 +286,8 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
             $tpl->ParseBlock("browse/upload_file");
         }
 
-        $fModel = $this->gadget->loadModel('Files');
-        $dModel = $this->gadget->loadModel('Directory');
+        $fModel = $this->gadget->model->load('Files');
+        $dModel = $this->gadget->model->load('Directory');
         $pathArr = $dModel->GetCurrentRootDir($path);
         if (!Jaws_Error::IsError($pathArr)) {
             foreach ($pathArr as $_path => $dir)
@@ -384,7 +384,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageFiles');
 
-        $model = $this->gadget->loadAdminModel('Files');
+        $model = $this->gadget->model->loadAdmin('Files');
         $post = jaws()->request->fetch(array('path', 'selected_item', 'extra_params'), 'post');
 
         if ($model->Delete($post['path'], $post['selected_item'])) {

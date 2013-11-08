@@ -33,7 +33,7 @@ class FileBrowser_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetBlock('initial_folder');
         $tpl->SetVariable('title', _t('FILEBROWSER_NAME'));
 
-        $model = $this->gadget->loadModel('Directory');
+        $model = $this->gadget->model->load('Directory');
         $items = $model->ReadDir($path);
         if (!Jaws_Error::IsError($items)) {
             foreach ($items as $item) {

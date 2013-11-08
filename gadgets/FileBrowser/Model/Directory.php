@@ -24,7 +24,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
         $path = trim($path, '/');
         $path = str_replace('..', '', $path);
 
-        $fModel = $this->gadget->loadModel('Files');
+        $fModel = $this->gadget->model->load('Files');
         if (!is_dir($fModel->GetFileBrowserRootDir() . $path)) {
             return new Jaws_Error(_t('FILEBROWSER_ERROR_DIRECTORY_DOES_NOT_EXISTS'),
                 _t('FILEBROWSER_NAME'));
@@ -65,7 +65,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
      */
     function GetDirProperties($path, $dirname)
     {
-        $fModel = $this->gadget->loadModel('Files');
+        $fModel = $this->gadget->model->load('Files');
 
         static $root_dir;
         if (!isset($root_dir)) {
@@ -111,7 +111,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
             $dir['mini_icon'] = 'gadgets/FileBrowser/Resources/images/mini_folder.png';
         }
 
-        $fModel = $this->gadget->loadModel('Files');
+        $fModel = $this->gadget->model->load('Files');
         $dbDir = $fModel->DBFileInfo($path, $dirname);
         if (Jaws_Error::IsError($dbDir) || empty($dbDir)) {
             $dir['id']          = 0;
@@ -145,7 +145,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
         $path = trim($path, '/');
         $path = str_replace('..', '', $path);
 
-        $fModel = $this->gadget->loadModel('Files');
+        $fModel = $this->gadget->model->load('Files');
         $folder = $fModel->GetFileBrowserRootDir() . $path;
         if (!file_exists($folder) || !$adr = scandir($folder)) {
             if (isset($GLOBALS['app']->Session)) {
@@ -179,7 +179,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
             }
         }
 
-        $fModel = $this->gadget->loadModel('Files');
+        $fModel = $this->gadget->model->load('Files');
         $files  = $fModel->SortFiles($files, $order);
         if (empty($limit)) {
             return $files;
@@ -200,7 +200,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
         $path = trim($path, '/');
         $path = str_replace('..', '', $path);
 
-        $fModel = $this->gadget->loadModel('Files');
+        $fModel = $this->gadget->model->load('Files');
         $folder = $fModel->GetFileBrowserRootDir() . $path;
         if (file_exists($folder) && $adr = scandir($folder)) {
             return count($adr) - 2;

@@ -93,7 +93,7 @@ class FileBrowser_Installer extends Jaws_Gadget_Installer
     {
         if (version_compare($old, '0.9.0', '<')) {
             // Update layout actions
-            $layoutModel = Jaws_Gadget::getInstance('Layout')->loadAdminModel('Layout');
+            $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
             if (!Jaws_Error::isError($layoutModel)) {
                 $layoutModel->EditGadgetLayoutAction('FileBrowser', 'InitialFolder', 'InitialFolder', 'Directory');
             }

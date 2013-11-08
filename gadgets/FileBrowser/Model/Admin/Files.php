@@ -39,7 +39,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
         $params['updatetime']  = $GLOBALS['db']->Date();
 
         $oldname = empty($oldname)? $params['filename'] : $oldname;
-        $fModel = $this->gadget->loadModel('Files');
+        $fModel = $this->gadget->model->load('Files');
         $dbFile = $fModel->DBFileInfo($path, $oldname);
         if (Jaws_Error::IsError($dbFile)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -95,7 +95,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
         $path = trim($path, '/');
         $path = str_replace('..', '', $path);
 
-        $fModel = $this->gadget->loadModel('Files');
+        $fModel = $this->gadget->model->load('Files');
         $dbRow = $fModel->DBFileInfo($path, $file);
         if (!Jaws_Error::isError($dbRow) && !empty($dbRow)) {
             $table = Jaws_ORM::getInstance()->table('filebrowser');
@@ -125,7 +125,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
         $path = str_replace('..', '', $path);
 
         $file = $path. '/'. $filename;
-        $fModel = $this->gadget->loadModel('Files');
+        $fModel = $this->gadget->model->load('Files');
         $filename = $fModel->GetFileBrowserRootDir(). $file;
         $blackList = explode(',', $this->gadget->registry->fetch('black_list'));
         $blackList = array_map('strtolower', $blackList);
@@ -172,7 +172,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
         $path = trim($path, '/');
         $path = str_replace('..', '', $path);
 
-        $fModel = $this->gadget->loadModel('Files');
+        $fModel = $this->gadget->model->load('Files');
         $oldfile = $fModel->GetFileBrowserRootDir(). $path. '/'. $old;
         $newfile = $fModel->GetFileBrowserRootDir(). $path. '/'. $new;
 

@@ -57,7 +57,7 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
         $files = &File_Find::search('$'.$pattern.'$i', $path, 'perl', false, 'both');
 
         //Load model
-        $model = $this->gadget->loadModel('Files');
+        $model = $this->gadget->model->load('Files');
         $entries = array();
         if (is_array($files)) {
             $date = $GLOBALS['app']->loadDate();

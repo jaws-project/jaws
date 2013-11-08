@@ -42,8 +42,8 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
             $page = 1;
         }
 
-        $dModel = $this->gadget->loadModel('Directory');
-        $fModel = $this->gadget->loadModel('Files');
+        $dModel = $this->gadget->model->load('Directory');
+        $fModel = $this->gadget->model->load('Files');
         $locationTree = $dModel->GetCurrentRootDir($path);
         if (Jaws_Error::IsError($locationTree)) {
             return false;
@@ -147,7 +147,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('PageNavigation.html');
         $tpl->SetBlock('pager');
 
-        $model = $this->gadget->loadModel('Files');
+        $model = $this->gadget->model->load('Files');
         $pager = $model->GetEntryPagerNumbered($page, $page_size, $total);
         if (count($pager) > 0) {
             $tpl->SetBlock('pager/numbered-navigation');
@@ -219,8 +219,8 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
         $id = jaws()->request->fetch('id', 'get');
         $id = Jaws_XSS::defilter($id, true);
 
-        $fModel = $this->gadget->loadModel('Files');
-        $dModel = $this->gadget->loadModel('Directory');
+        $fModel = $this->gadget->model->load('Files');
+        $dModel = $this->gadget->model->load('Directory');
         $dbInfo = $fModel->DBFileInfoByIndex($id);
         if (Jaws_Error::IsError($dbInfo) || empty($dbInfo)) {
             return false;
@@ -286,7 +286,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
         $id = jaws()->request->fetch('id', 'get');
         $id = Jaws_XSS::defilter($id, true);
 
-        $fModel = $this->gadget->loadModel('Files');
+        $fModel = $this->gadget->model->load('Files');
         $iFile  = $fModel->DBFileInfoByIndex($id);
         if (Jaws_Error::IsError($iFile)) {
             $this->SetActionMode('Download', 'normal', 'standalone');
