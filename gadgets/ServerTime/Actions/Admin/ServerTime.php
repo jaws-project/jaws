@@ -20,7 +20,7 @@ class ServerTime_Actions_Admin_ServerTime extends Jaws_Gadget_Action
     function Admin()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('ServerTime.html');
+        $tpl = $this->gadget->template->loadAdmin('ServerTime.html');
         $tpl->SetBlock('servertime');
 
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
