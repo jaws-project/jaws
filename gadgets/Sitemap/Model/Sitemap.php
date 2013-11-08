@@ -186,15 +186,15 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
 
         switch ($result['rfc_type']) {
             case 'StaticPage':
-                $staticPage = Jaws_Gadget::getInstance('StaticPage')->loadAction('Page');
+                $staticPage = Jaws_Gadget::getInstance('StaticPage')->action->load('Page');
                 return $staticPage->Page($result['reference']);
                 break;
             case 'Launcher':
-                $launcher = Jaws_Gadget::getInstance('Launcher')->loadAction('Execute');
+                $launcher = Jaws_Gadget::getInstance('Launcher')->action->load('Execute');
                 return $launcher->Execute($result['reference']);
                 break;
             case 'Blog':
-                $blog = Jaws_Gadget::getInstance('Blog')->loadAction('Default');
+                $blog = Jaws_Gadget::getInstance('Blog')->action->load('Default');
                 return $blog->SingleView(true, $result['reference']);
                 break;
             default:
