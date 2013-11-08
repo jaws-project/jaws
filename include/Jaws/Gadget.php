@@ -434,12 +434,15 @@ class Jaws_Gadget
             $gadgets_status[$gadget] = false;
             if (self::IsGadgetInstalled($gadget)) {
                 $objGadget = Jaws_Gadget::getInstance($gadget);
-                $current_version = strrstr($objGadget->registry->fetch('version'), '.', true);
-                $gadgets_status[$gadget] = version_compare(
-                    strrstr($objGadget->version, '.', true),
-                    $current_version,
-                    '<='
-                );
+                $current_version = $objGadget->registry->fetch('version');
+                if (false === $gadgets_status[$gadget] = $current_version == $objGadget->version) {
+                    // build version not equal
+                    if (strrstr($current_version, '.', true) == strrstr($objGadget->version, '.', true)) {
+                        $gadgets_status[$gadget] = true;
+                        // update build version
+                        $objGadget->registry->update('version', $objGadget->version);
+                    }
+                }
             }
         }
 
