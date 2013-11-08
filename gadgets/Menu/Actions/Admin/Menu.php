@@ -23,7 +23,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
     function Menu()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Menu.html');
+        $tpl = $this->gadget->template->loadAdmin('Menu.html');
         $tpl->SetBlock('menus');
         $tpl->SetBlock('menus/menus_base');
 
@@ -108,7 +108,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
      */
     function GetMenusTrees()
     {
-        $tpl = $this->gadget->loadAdminTemplate('Menu.html');
+        $tpl = $this->gadget->template->loadAdmin('Menu.html');
         $tpl->SetBlock('menus');
 
         $mModel = $this->gadget->model->load('Menu');
@@ -141,7 +141,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
      */
     function GetGroupUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('Menu.html');
+        $tpl = $this->gadget->template->loadAdmin('Menu.html');
         $tpl->SetBlock('menus');
         $tpl->SetBlock('menus/GroupsUI');
 
@@ -180,7 +180,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
      */
     function GetMenuUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('Menu.html');
+        $tpl = $this->gadget->template->loadAdmin('Menu.html');
         $tpl->SetBlock('menus');
         $tpl->SetBlock('menus/MenusUI');
 
