@@ -194,7 +194,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
      */
     function GetDataAsArray($gadget, $editAction, $term, $status, $offset, $gadgetColumn=false)
     {
-        $cModel = $this->gadget->loadModel('Comments');
+        $cModel = $this->gadget->model->load('Comments');
         $comments = $cModel->GetComments($gadget, '', '', $term, $status, 15, $offset, 0, true);
         if (Jaws_Error::IsError($comments)) {
             return array();
@@ -259,7 +259,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
      */
     function Get($gadget, $gadgetColumn = false)
     {
-        $cModel = $this->gadget->loadModel('Comments');
+        $cModel = $this->gadget->model->load('Comments');
         $total  = $cModel->GetCommentsCount($gadget, '', '', '', array(), false);
 
         $gridBox =& Piwi::CreateWidget('VBox');

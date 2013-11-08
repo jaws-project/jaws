@@ -126,7 +126,7 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
     function GetRecentCommentsAtomStruct($gadget, $feed_type = 'atom')
     {
         $max_title_size = 40;
-        $cModel = $this->gadget->loadModel('Comments');
+        $cModel = $this->gadget->model->load('Comments');
         $comments = $cModel->GetComments($gadget);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('COMMENTS_ERROR_GETTING_COMMENTS_ATOMSTRUCT'), _t('COMMENTS_NAME'));

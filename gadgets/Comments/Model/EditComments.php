@@ -69,7 +69,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         }
 
         // Comment Status...
-        $mPolicy = Jaws_Gadget::getInstance('Policy')->loadModel('AntiSpam');
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->model->load('AntiSpam');
         if ($mPolicy->IsSpam($permalink, $gadget, $name, $email, $url, $message)) {
             $status = COMMENT_STATUS_SPAM;
         }
@@ -134,12 +134,12 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
             return $result;
         }
 
-        $cModel = $this->gadget->loadModel('Comments');
+        $cModel = $this->gadget->model->load('Comments');
         $origComment = $cModel->GetComment($id);
         if (($status == Comments_Info::COMMENT_STATUS_SPAM || $origComment['status'] == Comments_Info::COMMENT_STATUS_SPAM) &&
             $origComment['status'] != $status)
         {
-            $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAdminModel('AntiSpam');
+            $mPolicy = Jaws_Gadget::getInstance('Policy')->model->loadAdmin('AntiSpam');
             if ($status == Comments_Info::COMMENT_STATUS_SPAM) {
                 $mPolicy->SubmitSpam($permalink, $gadget, $name, $email, $url, $message);
             } else {
@@ -241,7 +241,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         }
 
         if ($status == Comments_Info::COMMENT_STATUS_SPAM) {
-            $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAdminModel('AntiSpam');
+            $mPolicy = Jaws_Gadget::getInstance('Policy')->model->loadAdmin('AntiSpam');
             // Submit spam...
             $commentsTable = Jaws_ORM::getInstance()->table('comments');
             $commentsTable->select('id:integer', 'name', 'email', 'url', 'msg_txt', 'msg_txt', 'status:integer');

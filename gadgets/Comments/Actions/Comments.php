@@ -167,7 +167,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
             $perPage = $this->gadget->registry->fetch('comments_per_page');
         }
 
-        $cModel = $this->gadget->loadModel('Comments');
+        $cModel = $this->gadget->model->load('Comments');
         $comments = $cModel->GetComments(
             $gadget,
             $action,
@@ -408,7 +408,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
             $orderBy = 0;
         }
 
-        $model = $this->gadget->loadModel('Comments');
+        $model = $this->gadget->model->load('Comments');
         $comments = $model->GetComments(
             'comments',
             $perPage,
@@ -556,7 +556,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
             $status = Comments_Info::COMMENT_STATUS_APPROVED;
         }
 
-        $model = $this->gadget->loadModel('EditComments');
+        $model = $this->gadget->model->load('EditComments');
         $res = $model->insertComment(
             $post['requested_gadget'], $post['reference'], $post['requested_action'], $post['name'],
             $post['email'], $post['url'], $post['message'], $_SERVER['REMOTE_ADDR'],
