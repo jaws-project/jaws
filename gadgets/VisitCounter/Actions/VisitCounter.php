@@ -20,7 +20,7 @@ class VisitCounter_Actions_VisitCounter extends Jaws_Gadget_Action
      */
     function GetVisitorsFormat($visit_counters)
     {
-        $tpl = $this->gadget->loadTemplate('VisitCounter.html');
+        $tpl = $this->gadget->template->load('VisitCounter.html');
         $tpl->SetBlock("VisiCounter");
         $tpl->SetVariable('title', _t('VISITCOUNTER_VISITORS'));
 
