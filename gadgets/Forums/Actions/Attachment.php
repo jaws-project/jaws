@@ -21,13 +21,13 @@ class Forums_Actions_Attachment extends Forums_Actions_Default
     {
         $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'attach'), 'get');
 
-        $pModel = $this->gadget->loadModel('Posts');
+        $pModel = $this->gadget->model->load('Posts');
         $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($post)) {
             $this->SetActionMode('Attachment', 'normal', 'standalone');
             return Jaws_HTTPError::Get(500);
         }
-        $aModel = $this->gadget->loadModel('Attachments');
+        $aModel = $this->gadget->model->load('Attachments');
         $attachment = $aModel->GetAttachmentInfo($rqst['attach']);
         if (Jaws_Error::IsError($attachment)) {
             $this->SetActionMode('Attachment', 'normal', 'standalone');

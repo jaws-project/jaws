@@ -34,7 +34,7 @@ class Forums_Actions_UserPosts extends Forums_Actions_Default
         $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
 
         $tpl = $this->gadget->loadTemplate('UserPosts.html');
-        $pModel = $this->gadget->loadModel('Posts');
+        $pModel = $this->gadget->model->load('Posts');
         $posts = $pModel->GetUserPosts($uid, $posts_limit, ($page - 1) * $posts_limit);
         $post_counts = $pModel->GetUserPostsCount($uid);
         if (!Jaws_Error::IsError($posts)) {

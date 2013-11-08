@@ -20,7 +20,7 @@ class Forums_Hooks_Activity extends Jaws_Gadget_Hook
     function Execute($uid, $uname)
     {
         $entity = array();
-        $model = $this->gadget->loadModel('Topics');
+        $model = $this->gadget->model->load('Topics');
         $topicCount = $model->GetUserTopicCount($uid);
 
         if ($topicCount > 0) {
@@ -29,7 +29,7 @@ class Forums_Hooks_Activity extends Jaws_Gadget_Hook
             $entity[0]['url'] = $this->gadget->urlMap('UserTopics', array('uid' => $uid));
         }
 
-        $model = $this->gadget->loadModel('Posts');
+        $model = $this->gadget->model->load('Posts');
         $postCount = $model->GetUserPostsCount($uid);
         if ($postCount > 0) {
             $entity[1]['title'] = _t('FORUMS_POSTS');

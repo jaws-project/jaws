@@ -19,7 +19,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
     function RecentTopicsLayoutParams()
     {
         $result = array();
-        $gModel = $this->gadget->loadModel('Groups');
+        $gModel = $this->gadget->model->load('Groups');
         $groups = $gModel->GetGroups(true);
         if (!Jaws_Error::IsError($groups)) {
             $pgroups = array();
@@ -46,7 +46,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
      */
     function RecentTopics($gid = '')
     {
-        $gModel = $this->gadget->loadModel('Groups');
+        $gModel = $this->gadget->model->load('Groups');
         $group = $gModel->GetGroup($gid);
         if (Jaws_Error::IsError($group) || empty($group)) {
             $group = array();
@@ -59,7 +59,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
         $recent_limit = empty($recent_limit)? 5 : (int)$recent_limit;
 
         $tpl = $this->gadget->loadTemplate('RecentTopics.html');
-        $tModel = $this->gadget->loadModel('Topics');
+        $tModel = $this->gadget->model->load('Topics');
         $topics = $tModel->GetRecentTopics($group['id'], $recent_limit);
         if (!Jaws_Error::IsError($topics)) {
             // date format

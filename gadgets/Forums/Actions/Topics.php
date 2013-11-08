@@ -23,7 +23,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         $rqst = jaws()->request->fetch(array('fid', 'page', 'status'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
-        $fModel = $this->gadget->loadModel('Forums');
+        $fModel = $this->gadget->model->load('Forums');
         $forum  = $fModel->GetForum($rqst['fid']);
         if (Jaws_Error::IsError($forum) || empty($forum)) {
             return false;
@@ -34,7 +34,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         }
 
         $limit = (int)$this->gadget->registry->fetch('topics_limit');
-        $tModel = $this->gadget->loadModel('Topics');
+        $tModel = $this->gadget->model->load('Topics');
 
         $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $published = null;
@@ -178,9 +178,9 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             return false;
         }
 
-        $fModel = $this->gadget->loadModel('Forums');
+        $fModel = $this->gadget->model->load('Forums');
         if (!empty($rqst['tid'])) {
-            $tModel = $this->gadget->loadModel('Topics');
+            $tModel = $this->gadget->model->load('Topics');
             $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
             if (Jaws_Error::IsError($topic) || empty($topic)) {
                 return false;
@@ -318,7 +318,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             $tpl->SetVariable('lbl_remove_attachment',_t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
 
             if (!empty($topic['first_post_id'])) {
-                $aModel = $this->gadget->loadModel('Attachments');
+                $aModel = $this->gadget->model->load('Attachments');
                 $attachments = $aModel->GetAttachments($topic['first_post_id']);
 
                 foreach ($attachments as $attachment) {
@@ -427,9 +427,9 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         $edit_min_limit_time = (int)$this->gadget->registry->fetch('edit_min_limit_time');
         $edit_max_limit_time = (int)$this->gadget->registry->fetch('edit_max_limit_time');
 
-        $tModel = $this->gadget->loadModel('Topics');
+        $tModel = $this->gadget->model->load('Topics');
         if (empty($topic['tid'])) {
-            $fModel = $this->gadget->loadModel('Forums');
+            $fModel = $this->gadget->model->load('Forums');
             $result = $fModel->GetForum($topic['fid']);
             if (!Jaws_Error::IsError($result) && !empty($result)) {
 
@@ -485,7 +485,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
             // Update Attachments
             $remainAttachments = jaws()->request->fetch('current_attachments:array');
-            $aModel = $this->gadget->loadModel('Attachments');
+            $aModel = $this->gadget->model->load('Attachments');
             $oldAttachments = $aModel->GetAttachments($oldTopic['first_post_id']);
             if (count($remainAttachments) == 0) {
                 $aModel->DeletePostAttachments($oldTopic['first_post_id']);
@@ -566,7 +566,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
         $rqst = jaws()->request->fetch(array('fid', 'tid', 'confirm'));
 
-        $tModel = $this->gadget->loadModel('Topics');
+        $tModel = $this->gadget->model->load('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic) || empty($topic)) {
             return false;
@@ -683,7 +683,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
         $rqst = jaws()->request->fetch(array('fid', 'tid'), 'get');
 
-        $tModel = $this->gadget->loadModel('Topics');
+        $tModel = $this->gadget->model->load('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic)) {
             // redirect to referrer page
@@ -735,7 +735,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         $this->gadget->CheckPermission('PublishTopic');
 
         $rqst = jaws()->request->fetch(array('fid', 'tid'), 'get');
-        $tModel = $this->gadget->loadModel('Topics');
+        $tModel = $this->gadget->model->load('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic)) {
             // redirect to referrer page

@@ -22,7 +22,7 @@ class Forums_Actions_Admin_Forum extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadAdminTemplate('ForumUI.html');
         $tpl->SetBlock('ForumUI');
 
-        $gModel = $this->gadget->loadModel('Groups');
+        $gModel = $this->gadget->model->load('Groups');
         $groups = $gModel->GetGroups();
         $groupCombo =& Piwi::CreateWidget('Combo', 'gid');
         $groupCombo->SetID('gid');

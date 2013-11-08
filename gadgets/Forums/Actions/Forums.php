@@ -18,7 +18,7 @@ class Forums_Actions_Forums extends Forums_Actions_Default
      */
     function Forums()
     {
-        $gModel = $this->gadget->loadModel('Groups');
+        $gModel = $this->gadget->model->load('Groups');
         $groups = $gModel->GetGroups(true);
         if (Jaws_Error::IsError($groups) || empty($groups)) {
             return false;
@@ -39,7 +39,7 @@ class Forums_Actions_Forums extends Forums_Actions_Default
         $posts_limit = $this->gadget->registry->fetch('posts_limit');
         $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
         foreach ($groups as $group) {
-            $fModel = $this->gadget->loadModel('Forums');
+            $fModel = $this->gadget->model->load('Forums');
             $forums = $fModel->GetForums($group['id'], true, true);
             if (Jaws_Error::IsError($forums)) {
                 continue;

@@ -188,7 +188,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         }
 
         $pid = 0;
-        $pModel = $this->gadget->loadModel('Posts');
+        $pModel = $this->gadget->model->load('Posts');
         if (!Jaws_Error::IsError($pModel)) {
             $pid = $pModel->InsertPost($uid, $tid, $data['fid'], $message, $attachment, true);
             if (Jaws_Error::IsError($pid)) {
@@ -235,7 +235,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             return $result;
         }
 
-        $pModel = $this->gadget->loadModel('Posts');
+        $pModel = $this->gadget->model->load('Posts');
         $result = $pModel->UpdatePost($pid, $uid, $message, $attachment, $update_reason);
         if (Jaws_Error::IsError($result)) {
             return $result;
@@ -246,7 +246,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         // update forums statistics if topic moved
         if ($target != $fid) {
-            $fModel = $this->gadget->loadModel('Forums');
+            $fModel = $this->gadget->model->load('Forums');
             // old forum
             $result = $fModel->UpdateForumStatistics($fid);
             if (Jaws_Error::IsError($result)) {
@@ -274,7 +274,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function DeleteTopic($tid, $fid)
     {
-        $aModel = $this->gadget->loadModel('Attachments');
+        $aModel = $this->gadget->model->load('Attachments');
         $topicAttachments = $aModel->GetTopicAttachments($tid);
         $table = Jaws_ORM::getInstance()->table('forums_posts');
         //Start Transaction
@@ -300,7 +300,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             }
         }
 
-        $fModel = $this->gadget->loadModel('Forums');
+        $fModel = $this->gadget->model->load('Forums');
         if (!Jaws_Error::IsError($fModel)) {
             $result = $fModel->UpdateForumStatistics($fid);
             if (Jaws_Error::IsError($result)) {

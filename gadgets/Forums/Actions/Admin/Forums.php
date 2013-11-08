@@ -23,8 +23,8 @@ class Forums_Actions_Admin_Forums extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadAdminTemplate('Forums.html');
         $tpl->SetBlock('forums');
 
-        $gModel = $this->gadget->loadModel('Groups');
-        $fModel = $this->gadget->loadModel('Forums');
+        $gModel = $this->gadget->model->load('Groups');
+        $fModel = $this->gadget->model->load('Forums');
         $groups = $gModel->GetGroups();
         foreach ($groups as $group) {
             $tpl->SetBlock('forums/group');

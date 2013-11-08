@@ -22,7 +22,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         $rqst = jaws()->request->fetch(array('fid', 'tid', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
-        $tModel = $this->gadget->loadModel('Topics');
+        $tModel = $this->gadget->model->load('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic) || empty($topic)) {
             return false;
@@ -33,7 +33,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         }
 
         $limit = (int)$this->gadget->registry->fetch('posts_limit');
-        $pModel = $this->gadget->loadModel('Posts');
+        $pModel = $this->gadget->model->load('Posts');
         $posts = $pModel->GetPosts($rqst['tid'], $limit, ($page - 1) * $limit);
         if (Jaws_Error::IsError($posts)) {
             return false;
@@ -108,7 +108,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
 
             // attachment
             if ($post['attachments'] > 0) {
-                $aModel = $this->gadget->loadModel('Attachments');
+                $aModel = $this->gadget->model->load('Attachments');
                 $attachments = $aModel->GetAttachments($post['id']);
 
                 foreach ($attachments as $attachment) {
@@ -346,7 +346,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
                 return false;
             }
 
-            $pModel = $this->gadget->loadModel('Posts');
+            $pModel = $this->gadget->model->load('Posts');
             $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);
             if (Jaws_Error::IsError($post) || empty($post)) {
                 return false;
@@ -382,7 +382,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         }
 
         if ($reply || empty($rqst['pid'])) {
-            $tModel = $this->gadget->loadModel('Topics');
+            $tModel = $this->gadget->model->load('Topics');
             $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
             if (Jaws_Error::IsError($topic) || empty($topic)) {
                 return false;
@@ -399,7 +399,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             $title = _t('FORUMS_POSTS_NEW_TITLE');
             $btn_title = _t('FORUMS_POSTS_NEW_BUTTON');
         } else {
-            $pModel = $this->gadget->loadModel('Posts');
+            $pModel = $this->gadget->model->load('Posts');
             $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);
             if (Jaws_Error::IsError($post) || empty($post)) {
                 return false;
@@ -481,7 +481,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             $tpl->SetVariable('lbl_extra_attachment', _t('FORUMS_POSTS_EXTRA_ATTACHMENT'));
             $tpl->SetVariable('lbl_remove_attachment', _t('FORUMS_POSTS_ATTACHMENT_REMOVE'));
             if ($post['id'] != 0) {
-                $aModel = $this->gadget->loadModel('Attachments');
+                $aModel = $this->gadget->model->load('Attachments');
                 $attachments = $aModel->GetAttachments($post['id']);
 
                 foreach ($attachments as $attachment) {
@@ -557,7 +557,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             }
         }
 
-        $tModel = $this->gadget->loadModel('Topics');
+        $tModel = $this->gadget->model->load('Topics');
         $topic  = $tModel->GetTopic($post['tid'], $post['fid']);
         if (Jaws_Error::IsError($topic)) {
             // redirect to referrer page
@@ -596,7 +596,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         $posts_limit = $this->gadget->registry->fetch('posts_limit');
         $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
 
-        $pModel = $this->gadget->loadModel('Posts');
+        $pModel = $this->gadget->model->load('Posts');
         if (empty($post['pid'])) {
             $result = $pModel->InsertPost(
                 $GLOBALS['app']->Session->GetAttribute('user'),
@@ -635,7 +635,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
 
             // Update Attachments
             $remainAttachments = jaws()->request->fetch('current_attachments:array');
-            $aModel = $this->gadget->loadModel('Attachments');
+            $aModel = $this->gadget->model->load('Attachments');
             $oldAttachments = $aModel->GetAttachments($oldPost['id']);
             if (count($remainAttachments) == 0) {
                 $aModel->DeletePostAttachments($oldPost['id']);
@@ -706,7 +706,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
 
         $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'confirm', 'delete_reason'));
 
-        $pModel = $this->gadget->loadModel('Posts');
+        $pModel = $this->gadget->model->load('Posts');
         $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($post) || empty($post) || $post['id'] == $post['topic_first_post_id']) {
             return false;
