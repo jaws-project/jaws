@@ -223,6 +223,24 @@ class Jaws_Translate
 
     }
 
+    /**
+     * Add a new translation statement
+     *
+     * @access  public
+     * @param   string  $module     Module name
+     * @param   string  $key_name   Key name
+     * @param   string  $key_value  Key value
+     * @param   string  $type       Type of module(JAWS_COMPONENT_OTHERS, JAWS_COMPONENT_GADGET, JAWS_COMPONENT_PLUGIN)
+     * @param   string  $lang       Optional language code
+     * @return  void
+     */
+    function AddTranslation($module, $key_name, $key_value, $type = JAWS_COMPONENT_OTHERS, $lang = null)
+    {
+        $language = empty($lang)? $this->_defaultLanguage : $lang;
+        $this->translates[$language][$type][strtoupper($module)][strtoupper($key_name)] = $key_value;
+        return true;
+    }
+
 }
 
 /**
