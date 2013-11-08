@@ -142,7 +142,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
         }
 
         // Update page translation tags
-        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+        if (Jaws_Gadget::IsGadgetInstalled('Tags') && !empty($tags)) {
             $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             $res = $model->UpdateTagsItems('StaticPage', 'page', $id, $params['published'], null, $tags);
             if (Jaws_Error::IsError($res)) {
