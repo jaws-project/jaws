@@ -33,7 +33,7 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_Action
      */
     function GetNextLevel(&$items)
     {
-        $tpl = $this->gadget->loadTemplate('Sitemap.html');
+        $tpl = $this->gadget->template->load('Sitemap.html');
 
         if (count($items) > 0) {
             $tpl->SetBlock('branch');
@@ -59,7 +59,7 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_Action
     {
         $model = $this->gadget->model->load('Sitemap');
 
-        $tpl = $this->gadget->loadTemplate('Sitemap.html');
+        $tpl = $this->gadget->template->load('Sitemap.html');
         $items = $model->GetItems();
         if (count($items) > 0) {
             $tpl->SetBlock('sitemap');

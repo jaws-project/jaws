@@ -23,7 +23,7 @@ class Sitemap_Actions_Show extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Sitemap');
         $items = $model->GetItems($levels);
 
-        $tpl = $this->gadget->loadTemplate('Show.html');
+        $tpl = $this->gadget->template->load('Show.html');
         $tpl->SetBlock('branch');
         $tplString = $tpl->GetCurrentBlockContent();
         $tpl->SetBlock('branch/menu');
@@ -82,7 +82,7 @@ class Sitemap_Actions_Show extends Jaws_Gadget_Action
      */
     function TopMenu()
     {
-        $tpl = $this->gadget->loadTemplate('TopMenu.html');
+        $tpl = $this->gadget->template->load('TopMenu.html');
         $tpl->SetBlock('topmenu');
         $model = $this->gadget->model->load('Sitemap');
 
@@ -172,7 +172,7 @@ class Sitemap_Actions_Show extends Jaws_Gadget_Action
         if ($find == '') return '';
         $branch = $this->GetBranch($model->_items, $find);
 
-        $tpl = $this->gadget->loadTemplate('Show.html');
+        $tpl = $this->gadget->template->load('Show.html');
         $tpl->SetBlock('branch');
         $tplString = $tpl->GetCurrentBlockContent();
         $tpl->SetBlock('branch/menu');

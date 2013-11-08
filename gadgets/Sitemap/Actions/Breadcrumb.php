@@ -22,7 +22,7 @@ class Sitemap_Actions_Breadcrumb extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Breadcrumb');
         $path = jaws()->request->fetch('path', 'get');
         $bc = $model->GetBreadcrumb($path);
-        $tpl = $this->gadget->loadTemplate('Breadcrumb.html');
+        $tpl = $this->gadget->template->load('Breadcrumb.html');
         $tpl->SetBlock('sitemap_breadcrumb');
         $c = 1;
         $t = count($bc);
