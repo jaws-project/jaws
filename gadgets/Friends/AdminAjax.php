@@ -20,7 +20,7 @@ class Friends_AdminAjax extends Jaws_Gadget_Action
     function GetFriend()
     {
         @list($friend) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadModel('Friends');
+        $model = $this->gadget->model->load('Friends');
         $friendInfo = $model->GetFriend($friend);
         if (Jaws_Error::IsError($friendInfo)) {
             return false; //we need to handle errors on ajax
@@ -41,7 +41,7 @@ class Friends_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('AddFriend');
         @list($friend, $url) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Friends');
+        $model = $this->gadget->model->loadAdmin('Friends');
         $model->NewFriend($friend, $url);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -59,7 +59,7 @@ class Friends_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('EditFriend');
         @list($old, $friend, $url) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Friends');
+        $model = $this->gadget->model->loadAdmin('Friends');
         $model->UpdateFriend($old, $friend, $url);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -75,7 +75,7 @@ class Friends_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('DeleteFriend');
         @list($friend) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Friends');
+        $model = $this->gadget->model->loadAdmin('Friends');
         $model->DeleteFriend($friend);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -91,7 +91,7 @@ class Friends_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('UpdateProperties');
         @list($limit) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Friends');
+        $model = $this->gadget->model->loadAdmin('Friends');
         $model->UpdateProperties($limit);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
