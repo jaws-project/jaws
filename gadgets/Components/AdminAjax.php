@@ -19,7 +19,7 @@ class Components_AdminAjax extends Jaws_Gadget_Action
     function GetGadgets()
     {
         $this->gadget->CheckPermission('ManageGadgets');
-        $model = $this->gadget->loadModel('Gadgets');
+        $model = $this->gadget->model->load('Gadgets');
         $gadgets = $model->GetGadgetsList();
         $result = array();
         foreach ($gadgets as $key => $gadget) {
@@ -139,7 +139,7 @@ class Components_AdminAjax extends Jaws_Gadget_Action
     function GetPlugins()
     {
         $this->gadget->CheckPermission('ManagePlugins');
-        $model = $this->gadget->loadModel('Plugins');
+        $model = $this->gadget->model->load('Plugins');
         $plugins = $model->GetPluginsList();
         foreach ($plugins as $key => $plugin) {
             $plugins[$key]['state'] = $plugin['installed']? 'installed' : 'notinstalled';
@@ -224,7 +224,7 @@ class Components_AdminAjax extends Jaws_Gadget_Action
         $usage['gadgets'] = array();
         $usage['backend'] = $GLOBALS['app']->Registry->fetch('backend_gadgets', $plugin);
         $usage['frontend'] = $GLOBALS['app']->Registry->fetch('frontend_gadgets', $plugin);
-        $model = $this->gadget->loadModel('Gadgets');
+        $model = $this->gadget->model->load('Gadgets');
         $gadgets = $model->GetGadgetsList(null, true, true, true);
         foreach ($gadgets as $gadget) {
             $usage['gadgets'][] = array('name' => $gadget['name'], 'title' => $gadget['title']);
