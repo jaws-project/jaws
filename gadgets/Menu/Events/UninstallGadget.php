@@ -16,7 +16,7 @@ class Menu_Events_UninstallGadget extends Jaws_Gadget_Event
      */
     function Execute($gadget)
     {
-        $model = $this->gadget->loadAdminModel('Menu');
+        $model = $this->gadget->model->loadAdmin('Menu');
         $res = $model->DeleteGadgetMenus($gadget);
         return $res;
     }

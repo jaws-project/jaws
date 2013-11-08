@@ -28,7 +28,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
     function MenuLayoutParams()
     {
         $result = array();
-        $model = $this->gadget->loadModel('Group');
+        $model = $this->gadget->model->load('Group');
         $groups = $model->GetGroups();
         if (!Jaws_Error::isError($groups)) {
             $pgroups = array();
@@ -54,8 +54,8 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
      */
     function Menu($gid = 0)
     {
-        $mModel = $this->gadget->loadModel('Menu');
-        $gModel = $this->gadget->loadModel('Group');
+        $mModel = $this->gadget->model->load('Menu');
+        $gModel = $this->gadget->model->load('Group');
         $group = $gModel->GetGroups($gid);
         if (Jaws_Error::IsError($group) || empty($group) || !$group['published']) {
             return false;
@@ -161,7 +161,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
     function LoadImage()
     {
         $id = (int)jaws()->request->fetch('id', 'get');
-        $model = $this->gadget->loadModel('Menu');
+        $model = $this->gadget->model->load('Menu');
         $image = $model->GetMenuImage($id);
         if (!Jaws_Error::IsError($image)) {
             $objImage = Jaws_Image::factory();

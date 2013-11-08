@@ -111,8 +111,8 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadAdminTemplate('Menu.html');
         $tpl->SetBlock('menus');
 
-        $mModel = $this->gadget->loadModel('Menu');
-        $gModel = $this->gadget->loadModel('Group');
+        $mModel = $this->gadget->model->load('Menu');
+        $gModel = $this->gadget->model->load('Group');
         $groups = $gModel->GetGroups();
         foreach ($groups as $group) {
             $tpl->SetBlock('menus/menus_tree');
@@ -184,7 +184,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $tpl->SetBlock('menus');
         $tpl->SetBlock('menus/MenusUI');
 
-        $model = $this->gadget->loadModel('Group');
+        $model = $this->gadget->model->load('Group');
         $groups = $model->GetGroups();
         $groupCombo =& Piwi::CreateWidget('Combo', 'gid');
         $groupCombo->SetID('gid');
@@ -208,7 +208,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $typeCombo->setStyle('width: 256px;');
         $typeCombo->AddOption(_t('GLOBAL_URL'), 'url');
         $gDir = JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
-        $cmpModel = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
+        $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $cmpModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget) {
             if (!file_exists($gDir . $gadget['name']. '/Hooks/Menu.php')) {
@@ -326,7 +326,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $objImage = Jaws_Image::factory();
         if (!Jaws_Error::IsError($objImage)) {
             if (is_null($params['file'])) {
-                $model = $this->gadget->loadModel('Menu');
+                $model = $this->gadget->model->load('Menu');
                 $result = $model->GetMenuImage($params['id']);
                 if (!Jaws_Error::IsError($result)) {
                     $result = $objImage->setData($result, true);

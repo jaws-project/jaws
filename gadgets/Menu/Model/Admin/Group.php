@@ -100,7 +100,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
             $GLOBALS['app']->Session->PushLastResponse(_t('MENU_ERROR_GROUP_NOT_DELETABLE'), RESPONSE_ERROR);
             return false;
         }
-        $model = $this->gadget->loadModel('Group');
+        $model = $this->gadget->model->load('Group');
         $group = $model->GetGroups($gid);
         if (Jaws_Error::IsError($group)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);

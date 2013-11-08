@@ -62,7 +62,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Action
     function GetGroups()
     {
         @list($gid) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadModel('Group');
+        $model = $this->gadget->model->load('Group');
         $groupInfo = $model->GetGroups($gid);
         if (Jaws_Error::IsError($groupInfo)) {
             return false; //we need to handle errors on ajax
@@ -80,7 +80,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Action
     function GetMenu()
     {
         @list($mid) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadModel('Menu');
+        $model = $this->gadget->model->load('Menu');
         $menuInfo = $model->GetMenu($mid);
         if (Jaws_Error::IsError($menuInfo)) {
             return false; //we need to handle errors on ajax
@@ -99,7 +99,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageGroups');
         @list($title, $title_view, $published) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Group');
+        $model = $this->gadget->model->loadAdmin('Group');
         $model->InsertGroup($title, $title_view, (bool)$published);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -117,7 +117,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Action
         @list($pid, $gid, $type, $title, $url, $url_target,
             $rank, $published, $image
         ) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Menu');
+        $model = $this->gadget->model->loadAdmin('Menu');
         $model->InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, (bool)$published, $image);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -133,7 +133,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageGroups');
         @list($gid, $title, $title_view, $published) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Group');
+        $model = $this->gadget->model->loadAdmin('Group');
         $model->UpdateGroup($gid, $title, $title_view, (bool)$published);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -151,7 +151,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Action
         @list($mid, $pid, $gid, $type, $title, $url, $url_target,
             $rank, $published, $image
         ) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Menu');
+        $model = $this->gadget->model->loadAdmin('Menu');
         $model->UpdateMenu(
             $mid, $pid, $gid, $type, $title,
             $url, $url_target, $rank, (bool)$published, $image
@@ -170,7 +170,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageGroups');
         @list($gid) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Group');
+        $model = $this->gadget->model->loadAdmin('Group');
         $model->DeleteGroup($gid);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -186,7 +186,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageMenus');
         @list($mid) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Menu');
+        $model = $this->gadget->model->loadAdmin('Menu');
         $result = $model->DeleteMenu($mid);
         if ($result) {
             $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_MENU_DELETED'), RESPONSE_NOTICE);
@@ -206,7 +206,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Action
         @list($gid, $mid) = jaws()->request->fetchAll('post');
         $result[] = array('pid'=> 0,
                           'title'=>'\\');
-        $model = $this->gadget->loadAdminModel('Menu');
+        $model = $this->gadget->model->loadAdmin('Menu');
         $model->GetParentMenus(0, $gid, $mid, $result);
 
         return $result;
@@ -224,7 +224,7 @@ class Menu_AdminAjax extends Jaws_Gadget_Action
         @list($mid, $new_gid, $old_gid, $new_pid, $old_pid,
             $new_rank, $old_rank
         ) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Menu');
+        $model = $this->gadget->model->loadAdmin('Menu');
         $model->MoveMenu($mid, $new_gid, $old_gid, $new_pid, $old_pid, $new_rank, $old_rank);
 
         return $GLOBALS['app']->Session->PopLastResponse();

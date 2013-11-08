@@ -16,7 +16,7 @@ class Menu_Events_EnableGadget extends Jaws_Gadget_Event
      */
     function Execute($gadget)
     {
-        $model = $this->gadget->loadAdminModel('Menu');
+        $model = $this->gadget->model->loadAdmin('Menu');
         $res = $model->PublishGadgetMenus($gadget, true);
         return $res;
     }

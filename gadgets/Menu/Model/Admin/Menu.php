@@ -82,7 +82,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      */
     function UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $published, $image)
     {
-        $model = $this->gadget->loadModel('Menu');
+        $model = $this->gadget->model->load('Menu');
         $oldMenu = $model->GetMenu($mid);
         if (Jaws_Error::IsError($oldMenu)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('MENU_ERROR_GET_MENUS'), RESPONSE_ERROR);
@@ -132,7 +132,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      */
     function DeleteMenu($mid)
     {
-        $model = $this->gadget->loadModel('Menu');
+        $model = $this->gadget->model->load('Menu');
         $menu = $model->GetMenu($mid);
         if (Jaws_Error::IsError($menu)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -221,7 +221,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         if ($new_gid != $old_gid) {
             // set gid of submenu items
-            $model = $this->gadget->loadModel('Menu');
+            $model = $this->gadget->model->load('Menu');
             $sub_menus = $model->GetLevelsMenus($mid);
             if (!Jaws_Error::IsError($sub_menus)) {
                 foreach ($sub_menus as $menu) {
@@ -313,7 +313,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      */
     function GetParentMenus($pid, $gid, $excluded_mid, &$result, $menu_str = '')
     {
-        $model = $this->gadget->loadModel('Menu');
+        $model = $this->gadget->model->load('Menu');
         $parents = $model->GetLevelsMenus($pid, $gid);
         if (empty($parents)) return false;
         foreach ($parents as $parent) {
