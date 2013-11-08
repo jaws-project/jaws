@@ -82,31 +82,20 @@ class Jaws_Gadget_Action
      * of the same instance around in our code.
      *
      * @access  public
-     * @param   bool    $backend    Admin Action?
      * @param   string  $filename   Action class file name
      * @return  mixed   Action class object on successful, Jaws_Error otherwise
      */
-    function &load($backend, $filename = '')
+    function &load($filename = '')
     {
         // filter non validate character
         $filename = preg_replace('/[^[:alnum:]_]/', '', $filename);
         if (empty($filename)) {
-            return $this->gadget->extensions['Action'];
+            return $this;
         }
 
-        $filetype = $backend? 'AdminActions' : 'Actions';
-        if (!isset($this->gadget->actions[$filetype][$filename])) {
-            switch ($filetype) {
-                case 'Actions':
-                    $classname = $this->gadget->name. "_Actions_$filename";
-                    $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/$filename.php";
-                    break;
-
-                case 'AdminActions':
-                    $classname = $this->gadget->name. "_Actions_Admin_$filename";
-                    $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/Admin/$filename.php";
-                    break;
-            }
+        if (!isset($this->gadget->actions['Actions'][$filename])) {
+            $classname = $this->gadget->name. "_Actions_$filename";
+            $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/$filename.php";
 
             if (!file_exists($file)) {
                 return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
@@ -117,11 +106,48 @@ class Jaws_Gadget_Action
                 return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
             }
 
-            $this->gadget->actions[$filetype][$filename] = new $classname($this->gadget);
+            $this->gadget->actions['Actions'][$filename] = new $classname($this->gadget);
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget action class: [$classname]");
         }
 
-        return $this->gadget->actions[$filetype][$filename];
+        return $this->gadget->actions['Actions'][$filename];
+    }
+
+    /**
+     * Loads the gadget admin action file in question, makes a instance and
+     * stores it globally for later use so we do not have duplicates
+     * of the same instance around in our code.
+     *
+     * @access  public
+     * @param   string  $filename   Action class file name
+     * @return  mixed   Action class object on successful, Jaws_Error otherwise
+     */
+    function &loadAdmin($filename = '')
+    {
+        // filter non validate character
+        $filename = preg_replace('/[^[:alnum:]_]/', '', $filename);
+        if (empty($filename)) {
+            return $this;
+        }
+
+        if (!isset($this->gadget->actions['AdminActions'][$filename])) {
+            $classname = $this->gadget->name. "_Actions_Admin_$filename";
+            $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/Admin/$filename.php";
+
+            if (!file_exists($file)) {
+                return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
+            }
+
+            include_once($file);
+            if (!Jaws::classExists($classname)) {
+                return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
+            }
+
+            $this->gadget->actions['AdminActions'][$filename] = new $classname($this->gadget);
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget action class: [$classname]");
+        }
+
+        return $this->gadget->actions['AdminActions'][$filename];
     }
 
     /**
@@ -272,9 +298,9 @@ class Jaws_Gadget_Action
 
         $file = $this->_ValidAction[JAWS_SCRIPT][$action]['file'];
         if (JAWS_SCRIPT == 'index') {
-            $objAction = Jaws_Gadget::getInstance($this->gadget->name)->loadAction($file);
+            $objAction = Jaws_Gadget::getInstance($this->gadget->name)->action->load($file);
         } else {
-            $objAction = Jaws_Gadget::getInstance($this->gadget->name)->loadAdminAction($file);
+            $objAction = Jaws_Gadget::getInstance($this->gadget->name)->action->loadAdmin($file);
         }
 
         if (Jaws_Error::isError($objAction)) {
