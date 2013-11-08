@@ -34,12 +34,12 @@ class Jaws_Gadget_Template
      * Loads the gadget template file in question
      *
      * @access  public
-     * @param   bool    $backend    Admin template file?
      * @param   string  $filename   Template file name
      * @param   string  $options    Load template options(e.g. loadFromTheme, loadRTLDirection)
+     * @param   bool    $backend    Admin template file?
      * @return  object  Jaws_Template object
      */
-    function &load($backend, $filename, $options = array())
+    function &load($filename, $options = array(), $backend = false)
     {
         $theme = $GLOBALS['app']->GetTheme();
         if (!$theme['exists']) {
@@ -65,6 +65,20 @@ class Jaws_Gadget_Template
 
         $tpl->Load($filename, $filepath);
         return $tpl;
+    }
+
+    /**
+     * Loads the gadget template file in question
+     *
+     * @access  public
+     * @param   string  $filename   Template file name
+     * @param   string  $options    Load template options(e.g. loadFromTheme, loadRTLDirection)
+     * @param   bool    $backend    Admin template file?
+     * @return  object  Jaws_Template object
+     */
+    function &loadAdmin($filename, $options = array())
+    {
+        return $this->load($filename, $options, true);
     }
 
 }

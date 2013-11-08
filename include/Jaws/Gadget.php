@@ -565,21 +565,6 @@ class Jaws_Gadget
     function __call($method, $arguments)
     {
         switch ($method) {
-            case 'loadAdminTemplate':
-                array_unshift($arguments, true);
-                $extension = substr($method, 9);
-                $model_class_name = "Jaws_Gadget_$extension";
-                if (!isset($this->extensions[$extension])) {
-                    $this->extensions[$extension] = new $model_class_name($this);
-                    $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded extension: [$extension]");
-                }
-
-                return call_user_func_array(array($this->extensions[$extension], 'load'), $arguments);
-                break;
-
-            case 'loadTemplate':
-                array_unshift($arguments, false);
-
             case 'loadHook':
             case 'loadEvent':
             case 'loadInstaller':
