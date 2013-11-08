@@ -32,7 +32,7 @@ class VisitCounter_Hooks_Autoload extends Jaws_Gadget_Hook
      */
     function AddVisitor()
     {
-        $model = $this->gadget->loadModel('Visitors');
+        $model = $this->gadget->model->load('Visitors');
         $days = $model->GetCookiePeriod();
         if (!$GLOBALS['app']->Session->GetCookie('VisitCounter')) {
             $res = $model->AddVisitor($_SERVER['REMOTE_ADDR'], true);

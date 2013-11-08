@@ -20,7 +20,7 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_Action
     function CleanEntries()
     {
         $this->gadget->CheckPermission('ResetCounter');
-        $model = $this->gadget->loadAdminModel('Visitors');
+        $model = $this->gadget->model->loadAdmin('Visitors');
         $model->ClearVisitors();
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -34,7 +34,7 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_Action
     function ResetCounter()
     {
         $this->gadget->CheckPermission('ResetCounter');
-        $model = $this->gadget->loadAdminModel('Visitors');
+        $model = $this->gadget->model->loadAdmin('Visitors');
         $model->SetStartDate(date('Y-m-d H:i:s'));
         $model->ResetCounter();
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -49,7 +49,7 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_Action
     function GetStartDate()
     {
         $date  = $GLOBALS['app']->loadDate();
-        $model = $this->gadget->loadModel('Visitors');
+        $model = $this->gadget->model->load('Visitors');
         $start = $model->GetStartDate();
         return $date->Format($start);
     }
@@ -65,7 +65,7 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('UpdateProperties');
         @list($counters, $numdays, $type, $mode, $custom_text) = jaws()->request->fetchAll('post');
         $custom_text = jaws()->request->fetch(4, 'post', false);
-        $model = $this->gadget->loadAdminModel('Properties');
+        $model = $this->gadget->model->loadAdmin('Properties');
         $model->UpdateProperties($counters, $numdays, $type, $mode, $custom_text);
         return $GLOBALS['app']->Session->PopLastResponse();
     }

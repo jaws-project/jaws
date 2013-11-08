@@ -22,7 +22,7 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_Action
     {
         $this->AjaxMe('script.js');
 
-        $model = $this->gadget->loadModel('Visitors');
+        $model = $this->gadget->model->load('Visitors');
         $num_online       = $model->GetOnlineVisitors();
         $uniqueToday      = $model->GetTodayVisitors('unique');
         $impressionsToday = $model->GetTodayVisitors('impressions');
@@ -205,7 +205,7 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_Action
      */
     function DataGrid()
     {
-        $model = $this->gadget->loadModel();
+        $model = $this->gadget->model->load();
         $total = $model->TotalOfData('ipvisitor', 'ip');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
@@ -228,7 +228,7 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_Action
      */
     function GetVisits($offset = 0)
     {
-        $model = $this->gadget->loadAdminModel('Visitors');
+        $model = $this->gadget->model->loadAdmin('Visitors');
         $visits = $model->GetVisitors($offset);
         if (Jaws_Error::IsError($visits)) {
             return array();
