@@ -50,7 +50,7 @@ class Phoo_Actions_Random extends Jaws_Gadget_Action
      */
     function Random($albumid = null)
     {
-        $tpl = $this->gadget->loadTemplate('Random.html');
+        $tpl = $this->gadget->template->load('Random.html');
         $model = $this->gadget->model->load('Random');
         $r = $model->GetRandomImage($albumid);
         if (!Jaws_Error::IsError($r)) {

@@ -26,7 +26,7 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
         }
 
         $model = $this->gadget->model->load('Photos');
-        $tpl = $this->gadget->loadAdminTemplate('SelectImage.html');
+        $tpl = $this->gadget->template->loadAdmin('SelectImage.html');
         $tpl->SetBlock('ImageSelect');
 
         $GLOBALS['app']->LoadPlugin('PhooInsert');

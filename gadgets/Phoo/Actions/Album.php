@@ -47,7 +47,7 @@ class Phoo_Actions_Album extends Jaws_Gadget_Action
      */
     function Album()
     {
-        $tpl = $this->gadget->loadTemplate('Albums.html');
+        $tpl = $this->gadget->template->load('Albums.html');
         $tpl->SetBlock('albums');
         $tpl->SetVariable('title', _t('PHOO_ALBUMS'));
         $model = $this->gadget->model->load('Albums');

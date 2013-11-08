@@ -20,7 +20,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
      */
     function AdminPhotos()
     {
-        $tpl = $this->gadget->loadAdminTemplate('Photos.html');
+        $tpl = $this->gadget->template->loadAdmin('Photos.html');
         $tpl->SetBlock('phoo');
         $tpl->SetVariable('menubar', $this->MenuBar('AdminPhotos'));
 
@@ -282,7 +282,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $allow_comments = $image['allow_comments'];
         $published      = $image['published'];
 
-        $tpl = $this->gadget->loadAdminTemplate('EditPhoto.html');
+        $tpl = $this->gadget->template->loadAdmin('EditPhoto.html');
         $tpl->SetBlock('edit_photo');
         $tpl->SetVariable('base_script', BASE_SCRIPT . '?gadget=Phoo');
         $tpl->SetVariable('menubar', $this->MenuBar('AdminPhotos'));

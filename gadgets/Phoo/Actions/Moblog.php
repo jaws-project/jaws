@@ -47,7 +47,7 @@ class Phoo_Actions_Moblog extends Jaws_Gadget_Action
      */
     function Moblog($aid)
     {
-        $tpl = $this->gadget->loadTemplate('Moblog.html');
+        $tpl = $this->gadget->template->load('Moblog.html');
         $tpl->SetBlock('moblog');
         $tpl->SetVariable('title',_t('PHOO_ACTIONS_MOBLOG'));
 

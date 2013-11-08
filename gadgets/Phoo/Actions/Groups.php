@@ -18,7 +18,7 @@ class Phoo_Actions_Groups extends Jaws_Gadget_Action
      */
     function Groups()
     {
-        $tpl = $this->gadget->loadTemplate('Groups.html');
+        $tpl = $this->gadget->template->load('Groups.html');
         $tpl->SetBlock('groups');
         $tpl->SetVariable('title', _t('PHOO_ALBUMS_GROUPS'));
 

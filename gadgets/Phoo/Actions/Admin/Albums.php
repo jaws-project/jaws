@@ -29,7 +29,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $action      = jaws()->request->fetch('action', 'get');
         $description = jaws()->request->fetch('description', 'post', false);
 
-        $tpl = $this->gadget->loadAdminTemplate('EditAlbum.html');
+        $tpl = $this->gadget->template->loadAdmin('EditAlbum.html');
         $tpl->SetBlock('edit_album');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('menubar', $this->MenuBar(isset($action) ? $action : ''));
@@ -147,7 +147,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
         }
 
-        $tpl = $this->gadget->loadAdminTemplate('EditAlbum.html');
+        $tpl = $this->gadget->template->loadAdmin('EditAlbum.html');
         $tpl->SetBlock('edit_album');
         $tpl->SetVariable('base_script', BASE_SCRIPT . '?gadget=Phoo');
         $tpl->SetVariable('menubar', $this->MenuBar($get['action']));

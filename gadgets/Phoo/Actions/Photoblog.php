@@ -35,7 +35,7 @@ class Phoo_Actions_Photoblog extends Jaws_Gadget_Action
         }
 
         $this->SetTitle(_t('PHOO_PHOTOBLOG'));
-        $tpl = $this->gadget->loadTemplate('Photoblog.html');
+        $tpl = $this->gadget->template->load('Photoblog.html');
         $tpl->SetBlock('photoblog_portrait');
         $first = true;
         include_once JAWS_PATH . 'include/Jaws/Image.php';

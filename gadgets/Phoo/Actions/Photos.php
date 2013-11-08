@@ -34,7 +34,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
      */
     function ViewAlbumPage()
     {
-        $tpl = $this->gadget->loadTemplate('ViewAlbumPage.html');
+        $tpl = $this->gadget->template->load('ViewAlbumPage.html');
         $tpl->SetBlock('ViewAlbumPage');
 
         $get = jaws()->request->fetch(array('id', 'page'), 'get');
@@ -155,7 +155,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
      */
     function ViewImage($id = null, $albumid = null, $preview_mode = false)
     {
-        $tpl = $this->gadget->loadTemplate('ViewImage.html');
+        $tpl = $this->gadget->template->load('ViewImage.html');
 
         $get = jaws()->request->fetch(array('id', 'albumid'), 'get');
         $id  = !is_null($id)? $id : (!empty($get['id'])? $get['id'] : '0');

@@ -21,7 +21,7 @@ class Phoo_Actions_Admin_Import extends Phoo_Actions_Admin_Default
     function Import()
     {
         $this->gadget->CheckPermission('Import');
-        $tpl = $this->gadget->loadAdminTemplate('Import.html');
+        $tpl = $this->gadget->template->loadAdmin('Import.html');
         $tpl->SetBlock('import');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('menubar', $this->MenuBar('Import'));
@@ -87,7 +87,7 @@ class Phoo_Actions_Admin_Import extends Phoo_Actions_Admin_Default
 
         $post = jaws()->request->fetch(array('album', 'images'), 'post');
 
-        $tpl = $this->gadget->loadAdminTemplate('FinishImport.html');
+        $tpl = $this->gadget->template->loadAdmin('FinishImport.html');
         $tpl->SetBlock('finishimport');
         $tpl->SetVariable('menubar', $this->MenuBar('Import'));
         $tpl->SetVariable('importing', _t('PHOO_IMPORTING'));

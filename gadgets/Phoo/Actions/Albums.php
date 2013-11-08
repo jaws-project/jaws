@@ -49,7 +49,7 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
      */
     function AlbumList($gid = null)
     {
-        $tpl = $this->gadget->loadTemplate('Albums.html');
+        $tpl = $this->gadget->template->load('Albums.html');
         $tpl->SetBlock('albums');
         $tpl->SetVariable('title', _t('PHOO_ALBUMS'));
         $model = $this->gadget->model->load('Albums');
