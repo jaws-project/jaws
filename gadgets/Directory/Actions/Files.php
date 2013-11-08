@@ -20,7 +20,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
     {
         $mode = jaws()->request->fetch('mode');
         if ($mode === null) $mode = 'view';
-        $tpl = $this->gadget->loadTemplate('File.html');
+        $tpl = $this->gadget->template->load('File.html');
         $tpl->SetBlock($mode);
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));

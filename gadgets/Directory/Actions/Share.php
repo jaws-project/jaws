@@ -18,7 +18,7 @@ class Directory_Actions_Share extends Jaws_Gadget_Action
      */
     function ShareForm()
     {
-        $tpl = $this->gadget->loadTemplate('Share.html');
+        $tpl = $this->gadget->template->load('Share.html');
         $tpl->SetBlock('share');
         $tpl->SetVariable('lbl_shared_for', _t('DIRECTORY_SHARED_FOR'));
         $tpl->SetVariable('lbl_public', _t('DIRECTORY_FILE_PUBLIC_URL'));

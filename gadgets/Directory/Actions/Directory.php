@@ -20,7 +20,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     {
         $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/Resources/site_style.css');
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('Workspace.html');
+        $tpl = $this->gadget->template->load('Workspace.html');
         $tpl->SetBlock('workspace');
 
         $tpl->SetVariable('title', _t('DIRECTORY_NAME'));
@@ -177,7 +177,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $exclude = empty($exclude)? array() : explode(',', $exclude);
         $this->BuildTree(0, $exclude, $tree);
 
-        $tpl = $this->gadget->loadTemplate('Move.html');
+        $tpl = $this->gadget->template->load('Move.html');
         $tpl->SetBlock('tree');
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));

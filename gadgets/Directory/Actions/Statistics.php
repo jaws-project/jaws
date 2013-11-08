@@ -19,7 +19,7 @@ class Directory_Actions_Statistics extends Jaws_Gadget_Action
     function Statistics()
     {
         $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/Resources/site_style.css');
-        $tpl = $this->gadget->loadTemplate('Statistics.html');
+        $tpl = $this->gadget->template->load('Statistics.html');
         $tpl->SetBlock('statistics');
 
         $tpl->SetVariable('title', _t('DIRECTORY_STATISTICS'));
