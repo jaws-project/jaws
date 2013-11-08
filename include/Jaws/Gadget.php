@@ -615,6 +615,7 @@ class Jaws_Gadget
             case 'event':
             case 'request':
             case 'registry':
+            case 'translate':
                 $classname = 'Jaws_Gadget_'. ucfirst($property);
                 $this->$property = new $classname($this);
                 return $this->$property;
