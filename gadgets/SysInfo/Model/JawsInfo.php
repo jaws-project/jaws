@@ -18,8 +18,8 @@ class SysInfo_Model_JawsInfo extends Jaws_Gadget_Model
      */
     function GetJawsInfo()
     {
-        $cmpGModel = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
-        $cmpPModel = Jaws_Gadget::getInstance('Components')->loadModel('Plugins');
+        $cmpGModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
+        $cmpPModel = Jaws_Gadget::getInstance('Components')->model->load('Plugins');
         $theme          = $GLOBALS['app']->GetTheme();
         $coreGadgets    = $cmpGModel->GetGadgetsList(true, true, true);
         $gadgets        = $cmpGModel->GetGadgetsList(false, true, true);

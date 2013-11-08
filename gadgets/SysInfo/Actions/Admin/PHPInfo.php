@@ -19,7 +19,7 @@ class SysInfo_Actions_Admin_PHPInfo extends SysInfo_Actions_Admin_Default
     function PHPInfo()
     {
         $this->gadget->CheckPermission('PHPInfo');
-        $model = $this->gadget->loadModel('PHPInfo');
+        $model = $this->gadget->model->load('PHPInfo');
         $tpl = $this->gadget->loadAdminTemplate('SysInfo.html');
         $tpl->SetBlock('SysInfo');
         $tpl->SetVariable('sidebar', $this->SideBar('PHPInfo'));

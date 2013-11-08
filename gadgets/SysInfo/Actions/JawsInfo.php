@@ -22,7 +22,7 @@ class SysInfo_Actions_JawsInfo extends Jaws_Gadget_Action
             return false;
         }
 
-        $model = $this->gadget->loadModel('JawsInfo');
+        $model = $this->gadget->model->load('JawsInfo');
         $tpl = $this->gadget->loadTemplate('SysInfo.html');
         $tpl->SetBlock('SysInfo');
         $tpl->SetVariable('title',  _t('SYSINFO_JAWSINFO'));
