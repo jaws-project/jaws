@@ -9,7 +9,7 @@ padding: 0;
 direction: ltr;
 font-size: 1em;
 text-align: center;
-background: #fff url(../images/top.jpg) repeat-x top right;
+background: #fff url(images/top.jpg) repeat-x top right;
 }
 
 a {

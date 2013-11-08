@@ -48,8 +48,8 @@ class Upgrader_08To0901 extends JawsUpgraderStage
         }
 
         // upgrade core database schema
-        $old_schema = JAWS_PATH . 'upgrade/schema/0.8.18.xml';
-        $new_schema = JAWS_PATH . 'upgrade/schema/0.9.0.1.xml';
+        $old_schema = JAWS_PATH . 'upgrade/Resources/schema/0.8.18.xml';
+        $new_schema = JAWS_PATH . 'upgrade/Resources/schema/0.9.0.1.xml';
         if (!file_exists($old_schema)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '0.8.18.xml'),0 , JAWS_ERROR_ERROR);
         }
