@@ -35,7 +35,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $groups = $jUser->GetGroups($user);
 
         // Load the template
-        $tpl = $this->gadget->loadTemplate('Groups.html');
+        $tpl = $this->gadget->template->load('Groups.html');
         $tpl->SetBlock('groups');
 
         if (!empty($response)) {
@@ -93,7 +93,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $get = jaws()->request->fetch(array('type', 'group'), 'get');
 
         // Load the template
-        $tpl = $this->gadget->loadTemplate('Groups.html');
+        $tpl = $this->gadget->template->load('Groups.html');
         $tpl->SetBlock('add_group');
 
         // edit an user group
@@ -291,7 +291,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         // Load the template
-        $tpl = $this->gadget->loadTemplate('Groups.html');
+        $tpl = $this->gadget->template->load('Groups.html');
         $tpl->SetBlock('manage_group');
 
         $jUser = new Jaws_User;

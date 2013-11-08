@@ -131,7 +131,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageOnlineUsers');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('OnlineUsers.html');
+        $tpl = $this->gadget->template->loadAdmin('OnlineUsers.html');
         $tpl->SetBlock('OnlineUsers');
 
         // Session Status

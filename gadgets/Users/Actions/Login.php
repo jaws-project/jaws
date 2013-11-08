@@ -69,7 +69,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         }
 
         // Load the template
-        $tpl = $this->gadget->loadTemplate('ForgotLogin.html');
+        $tpl = $this->gadget->template->load('ForgotLogin.html');
         $tpl->SetBlock('forgot');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('title', _t('USERS_FORGOT_REMEMBER'));
@@ -103,7 +103,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             return $this->LoginLinks();
         }
 
-        $tpl = $this->gadget->loadTemplate('LoginBox.html');
+        $tpl = $this->gadget->template->load('LoginBox.html');
 
         $use_crypt = $this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true';
         if ($use_crypt) {
@@ -220,7 +220,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
      */
     function LoginLinks()
     {
-        $tpl = $this->gadget->loadTemplate('LoginLinks.html');
+        $tpl = $this->gadget->template->load('LoginLinks.html');
 
         if ($GLOBALS['app']->Session->Logged()) {
             $tpl->SetBlock('UserLinks');

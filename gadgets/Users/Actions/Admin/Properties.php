@@ -22,7 +22,7 @@ class Users_Actions_Admin_Properties extends Users_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageProperties');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('Properties.html');
+        $tpl = $this->gadget->template->loadAdmin('Properties.html');
         $tpl->SetBlock('Properties');
 
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');

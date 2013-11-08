@@ -20,7 +20,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
     function Registered()
     {
         // Load the template
-        $tpl = $this->gadget->loadTemplate('Registered.html');
+        $tpl = $this->gadget->template->load('Registered.html');
         $tpl->SetBlock('registered');
         $tpl->SetVariable('title', _t('USERS_REGISTER_REGISTERED'));
 
@@ -132,7 +132,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         }
 
         // Load the template
-        $tpl = $this->gadget->loadTemplate('Register.html');
+        $tpl = $this->gadget->template->load('Register.html');
         $tpl->SetBlock('register');
         $tpl->SetVariable('title', _t('USERS_REGISTER'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
@@ -258,7 +258,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $site_url  = $GLOBALS['app']->getSiteURL('/');
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
 
-        $tpl = $this->gadget->loadTemplate('UserNotification.txt');
+        $tpl = $this->gadget->template->load('UserNotification.txt');
         $tpl->SetBlock('Notification');
         $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $user['nickname']));
         $tpl->SetVariable('message', _t('USERS_ACTIVATE_ACTIVATED_MAIL_MSG'));

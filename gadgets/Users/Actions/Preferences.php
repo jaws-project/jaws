@@ -32,7 +32,7 @@ class Users_Actions_Preferences extends Jaws_Gadget_Action
         $this->AjaxMe('index.js');
 
         // Load the template
-        $tpl = $this->gadget->loadTemplate('Preferences.html');
+        $tpl = $this->gadget->template->load('Preferences.html');
         $tpl->SetBlock('preferences');
         $tpl->SetVariable('title', _t('USERS_PREFERENCES_INFO'));
 

@@ -70,7 +70,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
         $site_url  = $GLOBALS['app']->getSiteURL('/');
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
 
-        $tpl = $this->gadget->loadTemplate('NewPassword.txt');
+        $tpl = $this->gadget->template->load('NewPassword.txt');
         $tpl->SetBlock('NewPassword');
         $tpl->SetVariable('username', $user['username']);
         $tpl->SetVariable('nickname', $user['nickname']);

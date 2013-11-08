@@ -150,7 +150,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         }
 
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Users.html');
+        $tpl = $this->gadget->template->loadAdmin('Users.html');
         $tpl->SetBlock('Users');
 
         // Group Filter
@@ -253,7 +253,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
      */
     function UserUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('User.html');
+        $tpl = $this->gadget->template->loadAdmin('User.html');
         $tpl->SetBlock('user');
 
         $use_crypt = $this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true';
@@ -356,7 +356,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
      */
     function UserGroupsUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('UserGroups.html');
+        $tpl = $this->gadget->template->loadAdmin('UserGroups.html');
         $tpl->SetBlock('user_groups');
         $uModel = new Jaws_User();
 
@@ -382,7 +382,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
      */
     function PersonalUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('Personal.html');
+        $tpl = $this->gadget->template->loadAdmin('Personal.html');
         $tpl->SetBlock('personal');
 
         // privacy
@@ -475,7 +475,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
      */
     function ContactsUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('Contacts.html');
+        $tpl = $this->gadget->template->loadAdmin('Contacts.html');
         $tpl->SetBlock('contacts');
 
         $country =& Piwi::CreateWidget('Combo', 'country');

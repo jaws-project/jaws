@@ -112,7 +112,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('Groups.html');
+        $tpl = $this->gadget->template->loadAdmin('Groups.html');
         $tpl->SetBlock('Groups');
 
         $tpl->SetVariable('menubar',         $this->MenuBar('Groups'));
@@ -152,7 +152,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
      */
     function GroupUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('Group.html');
+        $tpl = $this->gadget->template->loadAdmin('Group.html');
         $tpl->SetBlock('group');
 
         // name
@@ -196,7 +196,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
      */
     function GroupUsersUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('GroupUsers.html');
+        $tpl = $this->gadget->template->loadAdmin('GroupUsers.html');
         $tpl->SetBlock('group_users');
         $model = new Jaws_User();
 

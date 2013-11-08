@@ -38,7 +38,7 @@ class Users_Actions_Contacts extends Jaws_Gadget_Action
         }
 
         // Load the template
-        $tpl = $this->gadget->loadTemplate('Contacts.html');
+        $tpl = $this->gadget->template->load('Contacts.html');
         $tpl->SetBlock('contacts');
         
         $tpl->SetVariable('title', _t('USERS_CONTACTS_INFO'));

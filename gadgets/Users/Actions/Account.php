@@ -72,7 +72,7 @@ class Users_Actions_Account extends Jaws_Gadget_Action
         $account['response'] = $GLOBALS['app']->Session->PopResponse('Users.Account.Response');
 
         // Load the template
-        $tpl = $this->gadget->loadTemplate('Account.html');
+        $tpl = $this->gadget->template->load('Account.html');
         return $tpl->fetch($account);
     }
 
