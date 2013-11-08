@@ -25,7 +25,7 @@ class Notepad_Actions_View extends Jaws_Gadget_Action
         if ($id === null) {
             $id = (int)jaws()->request->fetch('id', 'get');
         }
-        $model = $this->gadget->loadModel('Notepad');
+        $model = $this->gadget->model->load('Notepad');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $note = $model->GetNote($id, $user);
         if (Jaws_Error::IsError($note) || empty($note)) {

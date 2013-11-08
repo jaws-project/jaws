@@ -22,7 +22,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
 
         // Fetch note
         $id = (int)jaws()->request->fetch('id', 'get');
-        $model = $this->gadget->loadModel('Notepad');
+        $model = $this->gadget->model->load('Notepad');
         $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $note = $model->GetNote($id, $uid);
         if (Jaws_Error::IsError($note) ||
@@ -57,7 +57,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_groups', _t('NOTEPAD_GROUPS'));
 
         // Note users
-        $model = $this->gadget->loadModel('Share');
+        $model = $this->gadget->model->load('Share');
         $combo =& Piwi::CreateWidget('Combo', 'note_users');
         $combo->SetSize(10);
         $users = $model->GetNoteUsers($id);
@@ -109,7 +109,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
     function UpdateShare()
     {
         $id = (int)jaws()->request->fetch('id');
-        $model = $this->gadget->loadModel('Notepad');
+        $model = $this->gadget->model->load('Notepad');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
 
         // Validate note
@@ -131,7 +131,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
 
         $users = jaws()->request->fetch('users');
         $users = empty($users)? array() : explode(',', $users);
-        $model = $this->gadget->loadModel('Share');
+        $model = $this->gadget->model->load('Share');
         $res = $model->UpdateNoteUsers($id, $users);
         if (Jaws_Error::IsError($res)) {
             return $GLOBALS['app']->Session->GetResponse(

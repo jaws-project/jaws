@@ -27,7 +27,7 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
 
         if (!isset($note) || empty($note)) {
             $id = (int)jaws()->request->fetch('id', 'get');
-            $model = $this->gadget->loadModel('Notepad');
+            $model = $this->gadget->model->load('Notepad');
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
             $note = $model->GetNote($id, $user);
             if (Jaws_Error::IsError($note) ||
@@ -86,7 +86,7 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         }
 
         // Validate note
-        $model = $this->gadget->loadModel('Notepad');
+        $model = $this->gadget->model->load('Notepad');
         $id = (int)$data['id'];
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $note = $model->GetNote($id, $user);
