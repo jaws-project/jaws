@@ -25,7 +25,7 @@ class Phoo_Actions_Admin_SelectImage extends Phoo_Actions_Admin_Default
             return false;
         }
 
-        $model = $this->gadget->loadModel('Photos');
+        $model = $this->gadget->model->load('Photos');
         $tpl = $this->gadget->loadAdminTemplate('SelectImage.html');
         $tpl->SetBlock('ImageSelect');
 

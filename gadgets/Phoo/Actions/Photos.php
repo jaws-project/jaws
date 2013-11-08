@@ -41,8 +41,8 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         $id  = !empty($get['id'])? $get['id'] : '0';
         $page = !empty($get['page'])? (int) $get['page'] : 1;
 
-        $pModel = $this->gadget->loadModel('Photos');
-        $aModel = $this->gadget->loadModel('Albums');
+        $pModel = $this->gadget->model->load('Photos');
+        $aModel = $this->gadget->model->load('Albums');
         $album = $pModel->GetAlbumImages($id, $page);
         if (!Jaws_Error::IsError($album) && !empty($album) && $album['published']) {
             // display album info
@@ -161,8 +161,8 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         $id  = !is_null($id)? $id : (!empty($get['id'])? $get['id'] : '0');
         $albumid = !is_null($albumid)? $albumid : (!empty($get['albumid'])? $get['albumid'] : '0');
 
-        $pModel = $this->gadget->loadModel('Photos');
-        $sModel = $this->gadget->loadModel('Settings');
+        $pModel = $this->gadget->model->load('Photos');
+        $sModel = $this->gadget->model->load('Settings');
         $image = $pModel->GetImage($id, $albumid);
         if (Jaws_Error::IsError($image) || empty($image)) {
             return Jaws_HTTPError::Get(404);

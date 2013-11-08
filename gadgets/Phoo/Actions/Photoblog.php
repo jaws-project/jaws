@@ -24,7 +24,7 @@ class Phoo_Actions_Photoblog extends Jaws_Gadget_Action
     function PhotoblogPortrait()
     {
         $photoid = jaws()->request->fetch('photoid', 'get');
-        $model = $this->gadget->loadModel('Photoblog');
+        $model = $this->gadget->model->load('Photoblog');
         $entries = $model->GetAsPortrait($photoid);
         if (Jaws_Error::IsError($entries)) {
             return '';

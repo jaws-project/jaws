@@ -77,7 +77,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
 
         // Groups
         $tpl->SetVariable('lbl_group', _t('GLOBAL_GROUPS'));
-        $gModel = $this->gadget->loadModel('Groups');
+        $gModel = $this->gadget->model->load('Groups');
         $groups = $gModel->GetGroups();
         foreach ($groups as $group) {
             $tpl->SetBlock('edit_album/group');
@@ -110,10 +110,10 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $post        = jaws()->request->fetch(array('name', 'allow_comments:array', 'published'), 'post');
         $description = jaws()->request->fetch('description', 'post', false);
 
-        $model = $this->gadget->loadAdminModel('Albums');
+        $model = $this->gadget->model->loadAdmin('Albums');
         $album = $model->NewAlbum($post['name'], $description, isset($post['allow_comments'][0]), $post['published']);
         if (!Jaws_Error::IsError($album)) {
-            $agModel = $this->gadget->loadAdminModel('AlbumGroup');
+            $agModel = $this->gadget->model->loadAdmin('AlbumGroup');
             $groups = jaws()->request->fetch('groups:array');
             foreach ($groups as $group) {
                 $insertData = array();
@@ -137,7 +137,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageAlbums');
         $this->AjaxMe('script.js');
-        $model = $this->gadget->loadModel('Albums');
+        $model = $this->gadget->model->load('Albums');
 
         $get = jaws()->request->fetch(array('action', 'album'), 'get');
         $id  = (int)$get['album'];
@@ -197,8 +197,8 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
 
         // Groups
         $tpl->SetVariable('lbl_group', _t('GLOBAL_GROUPS'));
-        $gModel = $this->gadget->loadModel('Groups');
-        $agModel = $this->gadget->loadModel('AlbumGroup');
+        $gModel = $this->gadget->model->load('Groups');
+        $agModel = $this->gadget->model->load('AlbumGroup');
         $currentGroups = $agModel->GetAlbumGroupsID($id);
         $groups = $gModel->GetGroups();
         foreach ($groups as $group) {
@@ -239,12 +239,12 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $description = jaws()->request->fetch('description', 'post', false);
 
         $id = (int)$post['album'];
-        $model = $this->gadget->loadAdminModel('Albums');
+        $model = $this->gadget->model->loadAdmin('Albums');
         $result = $model->UpdateAlbum($id, $post['name'], $description, isset($post['allow_comments'][0]), $post['published']);
 
         // AlbumGroup
         if (!Jaws_Error::IsError($result)) {
-            $agModel = $this->gadget->loadAdminModel('AlbumGroup');
+            $agModel = $this->gadget->model->loadAdmin('AlbumGroup');
             $agModel->DeleteAlbum($id);
             $groups = jaws()->request->fetch('groups:array');
             foreach ($groups as $group) {
@@ -270,12 +270,12 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageAlbums');
 
         $album = (int)jaws()->request->fetch('album', 'get');
-        $model = $this->gadget->loadAdminModel('Albums');
+        $model = $this->gadget->model->loadAdmin('Albums');
         $foo = $model->DeleteAlbum($album);
 
         // AlbumGroup
         if (!Jaws_Error::IsError($foo)) {
-            $agModel = $this->gadget->loadAdminModel('AlbumGroup');
+            $agModel = $this->gadget->model->loadAdmin('AlbumGroup');
             $agModel->DeleteAlbum($album);
         }
 

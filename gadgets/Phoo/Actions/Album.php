@@ -19,7 +19,7 @@ class Phoo_Actions_Album extends Jaws_Gadget_Action
     function AlbumLayoutParams()
     {
         $result = array();
-        $model = $this->gadget->loadModel('Albums');
+        $model = $this->gadget->model->load('Albums');
         $albums = $model->GetAlbumList();
         if (!Jaws_Error::IsError($albums)) {
             $palbums = array();
@@ -50,7 +50,7 @@ class Phoo_Actions_Album extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('Albums.html');
         $tpl->SetBlock('albums');
         $tpl->SetVariable('title', _t('PHOO_ALBUMS'));
-        $model = $this->gadget->loadModel('Albums');
+        $model = $this->gadget->model->load('Albums');
         $albums = $model->GetAlbumList();
         if (!Jaws_Error::IsError($albums)) {
             $date = $GLOBALS['app']->loadDate();

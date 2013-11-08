@@ -22,7 +22,7 @@ class Phoo_Actions_Groups extends Jaws_Gadget_Action
         $tpl->SetBlock('groups');
         $tpl->SetVariable('title', _t('PHOO_ALBUMS_GROUPS'));
 
-        $gModel = $this->gadget->loadModel('Groups');
+        $gModel = $this->gadget->model->load('Groups');
         $groups = $gModel->GetGroups();
         if (is_array($groups)) {
             foreach ($groups as $group) {

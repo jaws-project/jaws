@@ -30,7 +30,7 @@ class Phoo_Actions_Default extends Jaws_Gadget_Action
 //        $post['reference'] = (int)$post['reference'];
 //        $post['albumid']   = (int)$post['albumid'];
 //
-//        $model = $this->gadget->loadModel('Photos');
+//        $model = $this->gadget->model->load('Photos');
 //        $image = $model->GetImage($post['reference'], $post['albumid']);
 //        if (Jaws_Error::isError($image)) {
 //            $GLOBALS['app']->Session->PushSimpleResponse($image->getMessage(), 'Phoo');

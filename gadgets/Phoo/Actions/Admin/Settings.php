@@ -42,8 +42,8 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
         $reset =& Piwi::CreateWidget('Button', 'reset', _t('GLOBAL_RESET'), STOCK_RESET);
         $reset->setReset(true);
 
-        $sModel = $this->gadget->loadModel('Settings');
-        $aModel = $this->gadget->loadModel('Albums');
+        $sModel = $this->gadget->model->load('Settings');
+        $aModel = $this->gadget->model->load('Albums');
         $settings = $sModel->GetSettings();
 
         // Default View
@@ -204,7 +204,7 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
             'show_exif_info', 'keep_original', 'thumbnail_limit',
             'comment_status', 'albums_order_type', 'photos_order_type'), 'post');
 
-        $model = $this->gadget->loadAdminModel('Settings');
+        $model = $this->gadget->model->loadAdmin('Settings');
         $model->SaveSettings(
             $post['default_action'],
             $post['published'],

@@ -20,8 +20,8 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
      */
     function BrowsePhoo()
     {
-        $pModel = $this->gadget->loadModel('Photos');
-        $aModel = $this->gadget->loadModel('Albums');
+        $pModel = $this->gadget->model->load('Photos');
+        $aModel = $this->gadget->model->load('Albums');
         $tpl = $this->gadget->loadAdminTemplate('PhooBrowse.html');
         $tpl->SetBlock('phoo_browse');
 

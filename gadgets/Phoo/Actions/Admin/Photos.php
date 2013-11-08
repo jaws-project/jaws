@@ -27,9 +27,9 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $album = jaws()->request->fetch('album', 'get');
         $post  = jaws()->request->fetch(array('date', 'album:array', 'group'), 'post');
 
-        $aModel = $this->gadget->loadModel('Albums');
-        $pModel = $this->gadget->loadAdminModel('Photos');
-        $pnModel = $this->gadget->loadModel('Photos');
+        $aModel = $this->gadget->model->load('Albums');
+        $pModel = $this->gadget->model->loadAdmin('Photos');
+        $pnModel = $this->gadget->model->load('Photos');
         $albums = $aModel->GetAlbums('createtime', 'ASC', $post['group']);
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
             $this->AjaxMe('script.js');
@@ -216,7 +216,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
             $GLOBALS['app']->Session->DeleteAttribute('failures');
 
             // Groups
-            $gModel = $this->gadget->loadModel('Groups');
+            $gModel = $this->gadget->model->load('Groups');
             $groups = $gModel->GetGroups();
             $tpl->SetVariable('lbl_group', _t('GLOBAL_GROUP'));
             $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
@@ -264,8 +264,8 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManagePhotos');
         $this->AjaxMe('script.js');
-        $pModel = $this->gadget->loadModel('Photos');
-        $aModel = $this->gadget->loadModel('Albums');
+        $pModel = $this->gadget->model->load('Photos');
+        $aModel = $this->gadget->model->load('Albums');
 
         $get = jaws()->request->fetch(array('image', 'album'), 'get');
         $image = $pModel->GetImageEntry((int)$get['image']);
@@ -405,7 +405,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
 
         $description = jaws()->request->fetch('description', 'post', false);
         // Update photo
-        $model = $this->gadget->loadAdminModel('Photos');
+        $model = $this->gadget->model->loadAdmin('Photos');
         $res = $model->UpdateEntry($post['image'], $post['title'],
             $description, $allow_comments,
             $published);
@@ -425,7 +425,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
     function DeletePhoto()
     {
         $post = jaws()->request->fetch(array('image', 'fromalbum'), 'post');
-        $model = $this->gadget->loadAdminModel('Photos');
+        $model = $this->gadget->model->loadAdmin('Photos');
         $model->DeletePhoto($post['image']);
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album='.$post['fromalbum']);
     }

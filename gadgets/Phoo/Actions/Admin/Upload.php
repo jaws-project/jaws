@@ -25,7 +25,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
 
         $album = jaws()->request->fetch('album', 'get');
 
-        $model = $this->gadget->loadModel('Albums');
+        $model = $this->gadget->model->load('Albums');
         $tpl = $this->gadget->loadAdminTemplate('UploadPhotos.html');
         $tpl->SetBlock('upload');
         $tpl->SetVariable('menubar', $this->MenuBar('UploadPhotos'));
@@ -94,9 +94,9 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
      */
     function UploadPhotosStep2()
     {
-        $uModel = $this->gadget->loadAdminModel('Upload');
-        $pModel = $this->gadget->loadAdminModel('Photos');
-        $aModel = $this->gadget->loadModel('Albums');
+        $uModel = $this->gadget->model->loadAdmin('Upload');
+        $pModel = $this->gadget->model->loadAdmin('Photos');
+        $aModel = $this->gadget->model->load('Albums');
         $files = $uModel->UnpackFiles($_FILES);
 
         $album   = (int)jaws()->request->fetch('album', 'post');

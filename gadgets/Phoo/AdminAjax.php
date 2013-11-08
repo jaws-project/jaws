@@ -25,8 +25,8 @@ class Phoo_AdminAjax extends Jaws_Gadget_Action
         $file['name'] = $image;
         $file['size'] = @filesize($file['tmp_name']);
 
-        $aModel = $this->gadget->loadModel('Albums');
-        $pModel = $this->gadget->loadAdminModel('Photos');
+        $aModel = $this->gadget->model->load('Albums');
+        $pModel = $this->gadget->model->loadAdmin('Photos');
         $album_data = $aModel->getAlbumInfo($album);
         $id = $pModel->NewEntry($GLOBALS['app']->Session->GetAttribute('user'),
                                 $file,
@@ -53,7 +53,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_Action
             $published = null;
         }
 
-        $model = $this->gadget->loadAdminModel('Photos');
+        $model = $this->gadget->model->loadAdmin('Photos');
         $model->UpdateEntry($id, $title, $desc, $allow_comments, $published, $albums);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -69,7 +69,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_Action
         $rqst = jaws()->request->fetch(array('name', 'description'));
         $rqst['[description]'] = $rqst['description'];
         unset($rqst['description']);
-        $model = $this->gadget->loadAdminModel('Groups');
+        $model = $this->gadget->model->loadAdmin('Groups');
         $res = $model->AddGroup($rqst);
 
         if (Jaws_Error::isError($res)) {
@@ -97,7 +97,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_Action
         $gid  = (int) jaws()->request->fetch('id');
         $rqst['[description]'] = $rqst['description'];
         unset($rqst['description']);
-        $model = $this->gadget->loadAdminModel('Groups');
+        $model = $this->gadget->model->loadAdmin('Groups');
         $res = $model->EditGroup($gid, $rqst);
 
         if (Jaws_Error::isError($res)) {
@@ -118,7 +118,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_Action
     function DeleteGroup()
     {
         $gid  = (int) jaws()->request->fetch('id');
-        $model = $this->gadget->loadAdminModel('Groups');
+        $model = $this->gadget->model->loadAdmin('Groups');
         $res = $model->DeleteGroup($gid);
 
         if (Jaws_Error::isError($res)) {
@@ -139,7 +139,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_Action
     function GetGroup()
     {
         $gid = jaws()->request->fetch('gid');
-        $model = $this->gadget->loadModel('Groups');
+        $model = $this->gadget->model->load('Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
             return false; //we need to handle errors on ajax
@@ -151,7 +151,7 @@ class Phoo_AdminAjax extends Jaws_Gadget_Action
     function GetAlbums()
     {
         $gid = jaws()->request->fetch('gid');
-        $aModel = $this->gadget->loadModel('Albums');
+        $aModel = $this->gadget->model->load('Albums');
         $albums = $aModel->GetAlbums('createtime', 'ASC', $gid);
         $free_photos[] = array('id'         => 0,
             'name'       => _t('PHOO_WITHOUT_ALBUM'),

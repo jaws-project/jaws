@@ -22,7 +22,7 @@ class Phoo_Actions_Moblog extends Jaws_Gadget_Action
     function MoblogLayoutParams()
     {
         $result = array();
-        $model = $this->gadget->loadModel('Albums');
+        $model = $this->gadget->model->load('Albums');
         $albums = $model->GetAlbums();
         if (!Jaws_Error::IsError($albums)) {
             $palbums = array();
@@ -51,7 +51,7 @@ class Phoo_Actions_Moblog extends Jaws_Gadget_Action
         $tpl->SetBlock('moblog');
         $tpl->SetVariable('title',_t('PHOO_ACTIONS_MOBLOG'));
 
-        $model = $this->gadget->loadModel('Moblog');
+        $model = $this->gadget->model->load('Moblog');
         $moblog = $model->GetMoblog($aid);
         if (!Jaws_Error::IsError($moblog)) {
             $objDate = $GLOBALS['app']->loadDate();

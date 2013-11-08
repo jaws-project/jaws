@@ -24,7 +24,7 @@ class Phoo_Hooks_Menu extends Jaws_Gadget_Hook
                         'title' => _t('PHOO_NAME'));
 
         //Load model
-        $model  = $this->gadget->loadModel('Albums');
+        $model  = $this->gadget->model->load('Albums');
         $albums = $model->GetAlbums();
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
             $max_size = 20;

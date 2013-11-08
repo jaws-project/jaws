@@ -22,7 +22,7 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
     function AlbumListLayoutParams()
     {
         $result = array();
-        $model = $this->gadget->loadModel('Groups');
+        $model = $this->gadget->model->load('Groups');
         $groups = $model->GetGroups();
         if (!Jaws_Error::IsError($groups)) {
             $pgroups = array();
@@ -52,7 +52,7 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('Albums.html');
         $tpl->SetBlock('albums');
         $tpl->SetVariable('title', _t('PHOO_ALBUMS'));
-        $model = $this->gadget->loadModel('Albums');
+        $model = $this->gadget->model->load('Albums');
 
         if (is_null($gid)) {
             $group  = (int) $this->gadget->request->fetch('group');
@@ -64,7 +64,7 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
         $albums = $model->GetAlbumList($gid);
         if (!Jaws_Error::IsError($albums)) {
             $date = $GLOBALS['app']->loadDate();
-            $agModel = $this->gadget->loadModel('AlbumGroup');
+            $agModel = $this->gadget->model->load('AlbumGroup');
             foreach ($albums as $album) {
                 if (!isset($album['qty'])) {
                     continue;
