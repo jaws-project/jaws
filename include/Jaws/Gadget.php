@@ -434,8 +434,12 @@ class Jaws_Gadget
             $gadgets_status[$gadget] = false;
             if (self::IsGadgetInstalled($gadget)) {
                 $objGadget = Jaws_Gadget::getInstance($gadget);
-                $current_version = $objGadget->registry->fetch('version');
-                $gadgets_status[$gadget] = version_compare($objGadget->version, $current_version, '>')? false : true;
+                $current_version = strrstr($objGadget->registry->fetch('version'), '.', true);
+                $gadgets_status[$gadget] = version_compare(
+                    strrstr($objGadget->version, '.', true),
+                    $current_version,
+                    '<='
+                );
             }
         }
 
