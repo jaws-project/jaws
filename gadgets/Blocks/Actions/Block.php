@@ -20,7 +20,7 @@ class Blocks_Actions_Block extends Jaws_Gadget_Action
     function BlockLayoutParams()
     {
         $result = array();
-        $bModel = $this->gadget->loadModel('Block');
+        $bModel = $this->gadget->model->load('Block');
         $blocks = $bModel->GetBlocks(true);
         if (!Jaws_Error::isError($blocks)) {
             $pblocks = array();
@@ -52,7 +52,7 @@ class Blocks_Actions_Block extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->loadTemplate('Blocks.html');
         if (!empty($id)) {
-            $model = $this->gadget->loadModel('Block');
+            $model = $this->gadget->model->load('Block');
             $block = $model->GetBlock($id);
             if (!Jaws_Error::IsError($block)) {
                 $tpl->SetBlock('blocks');

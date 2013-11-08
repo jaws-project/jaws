@@ -21,7 +21,7 @@ class Blocks_Hooks_Menu extends Jaws_Gadget_Hook
     {
         $urls = array();
         //Blocks model
-        $model  = $this->gadget->loadModel('Block');
+        $model  = $this->gadget->model->load('Block');
         $blocks = $model->GetBlocks(true);
         if (!Jaws_Error::IsError($blocks)) {
             $max_size = 20;
