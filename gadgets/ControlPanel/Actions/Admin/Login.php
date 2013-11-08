@@ -96,7 +96,7 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
         $ltpl->ParseBlock('layout/remember');
 
         //captcha
-        $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAction('Captcha');
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $mPolicy->loadCaptcha($ltpl, 'layout', 'login');
 
         $ltpl->SetVariable('login', _t('GLOBAL_LOGIN'));
