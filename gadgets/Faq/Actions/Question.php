@@ -22,7 +22,7 @@ class Faq_Actions_Question extends Jaws_Gadget_Action
         $qid = jaws()->request->fetch('id', 'get');
         $qid = Jaws_XSS::defilter($qid, true);
 
-        $tpl = $this->gadget->loadTemplate('Question.html');
+        $tpl = $this->gadget->template->load('Question.html');
         $tpl->SetBlock('faq_question');
 
         $model = $this->gadget->model->load('Question');
@@ -45,7 +45,7 @@ class Faq_Actions_Question extends Jaws_Gadget_Action
      */
     function View()
     {
-        $tpl = $this->gadget->loadTemplate('ViewFaq.html');
+        $tpl = $this->gadget->template->load('ViewFaq.html');
         $tpl->SetBlock('faq');
         $tpl->SetVariable('title', _t('FAQ_TITLE'));
         $this->SetTitle(_t('FAQ_TITLE'));

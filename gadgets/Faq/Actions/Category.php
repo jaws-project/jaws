@@ -19,7 +19,7 @@ class Faq_Actions_Category extends Jaws_Gadget_Action
      */
     function ListCategories()
     {
-        $tpl = $this->gadget->loadTemplate('Categories.html');
+        $tpl = $this->gadget->template->load('Categories.html');
         $tpl->SetBlock('faq_categories');
         $tpl->SetVariable('title', _t('FAQ_CATEGORIES'));
         $model = $this->gadget->model->load('Category');
@@ -55,7 +55,7 @@ class Faq_Actions_Category extends Jaws_Gadget_Action
         $this->SetTitle(_t('FAQ_NAME') . ' - ' . _t('FAQ_CATEGORIES'));
         $questions = $model->GetQuestions($cat_id, true);
         if (is_array($questions) && count($questions) > 0) {
-            $tpl = $this->gadget->loadTemplate('Category.html');
+            $tpl = $this->gadget->template->load('Category.html');
             foreach ($questions as $cat) {
                 $tpl->SetBlock('faq_category');
                 $tpl->SetVariable('title', _t('FAQ_TITLE'));

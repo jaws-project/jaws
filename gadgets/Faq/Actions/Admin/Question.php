@@ -84,7 +84,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/more.js');
         $category = jaws()->request->fetch('category', 'get');
 
-        $manageTpl = $this->gadget->loadAdminTemplate('Faq.html');
+        $manageTpl = $this->gadget->template->loadAdmin('Faq.html');
         $manageTpl->SetBlock('Faq');
         $manageTpl->SetVariable('base_script', BASE_SCRIPT);
         $manageTpl->SetVariable('menubar', $this->MenuBar(''));
@@ -110,7 +110,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $manageTpl->SetVariable('category_combo', $catCombo->Get());
 
         ///OK.. build the complete work area..
-        $tpl = $this->gadget->loadAdminTemplate('Faq.html');
+        $tpl = $this->gadget->template->loadAdmin('Faq.html');
         $tpl->SetBlock('ManageQuestions');
 
         $questions = $qModel->GetQuestions();
@@ -179,7 +179,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
     {
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('Faq.html');
+        $tpl = $this->gadget->template->loadAdmin('Faq.html');
         $tpl->SetBlock('edit_question');
         $tpl->SetVariable('menubar', $this->MenuBar('AddNewQuestion'));
 

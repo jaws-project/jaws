@@ -29,7 +29,7 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
             $cat = $model->GetCategory($category);
         }
 
-        $tpl = $this->gadget->loadAdminTemplate('Faq.html');
+        $tpl = $this->gadget->template->loadAdmin('Faq.html');
         $tpl->SetBlock('edit_category');
         $tpl->SetVariable('menubar', $this->MenuBar('AddNewCategory'));
 
