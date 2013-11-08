@@ -113,7 +113,7 @@ class Webcam_AdminAjax extends Jaws_Gadget_Action
     function GetData()
     {
         @list($limit) = jaws()->request->fetchAll('post');
-        $gadget = $this->gadget->loadAdminAction('Webcam');
+        $gadget = $this->gadget->action->loadAdmin('Webcam');
         return $gadget->GetWebcams($limit);
     }
 
