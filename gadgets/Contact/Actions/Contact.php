@@ -191,7 +191,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
         if (in_array('recipient', $items_array)) {
             $tpl->SetBlock('contact/recipient');
             $tpl->SetVariable('lbl_recipient', _t('CONTACT_RECIPIENT'));
-            $model = $this->gadget->loadModel('Recipients');
+            $model = $this->gadget->model->load('Recipients');
             $recipients = $model->GetRecipients(true);
             if (Jaws_Error::IsError($recipients) || empty($recipients)) {
                 $recipients   = array();
@@ -305,7 +305,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
             }
         }
 
-        $model = $this->gadget->loadModel('Contacts');
+        $model = $this->gadget->model->load('Contacts');
         $result = $model->InsertContact($post['contact_name'],
                                         $post['contact_email'],
                                         $post['contact_company'],
@@ -325,7 +325,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
             $cid = $GLOBALS['db']->lastInsertID('contacts', 'id');
             $rid = (int)$post['contact_recipient'];
             if (!empty($rid)) {
-                $model = $this->gadget->loadModel('Recipients');
+                $model = $this->gadget->model->load('Recipients');
                 $recipient = $model->GetRecipient((int)$post['contact_recipient']);
                 if (Jaws_Error::IsError($recipient) || !isset($recipient['id'])) {
                     $res_msg = _t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS');
@@ -350,7 +350,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
      */
     function SendEmailToRecipient($to, $cid)
     {
-        $model = $this->gadget->loadModel('Contacts');
+        $model = $this->gadget->model->load('Contacts');
         $contact = $model->GetContact($cid);
         if (Jaws_Error::IsError($contact)) {
             return $contact;

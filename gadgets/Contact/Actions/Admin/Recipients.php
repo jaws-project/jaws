@@ -91,7 +91,7 @@ class Contact_Actions_Admin_Recipients extends Contact_Actions_Admin_Default
      */
     function RecipientsDataGrid()
     {
-        $model = $this->gadget->loadModel();
+        $model = $this->gadget->model->load();
         $total = $model->TotalOfData('contacts_recipients');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
@@ -122,7 +122,7 @@ class Contact_Actions_Admin_Recipients extends Contact_Actions_Admin_Default
      */
     function GetRecipients($offset = null)
     {
-        $model = $this->gadget->loadModel('Recipients');
+        $model = $this->gadget->model->load('Recipients');
         $recipients = $model->GetRecipients(false, 10, $offset);
         if (Jaws_Error::IsError($recipients)) {
             return array();
