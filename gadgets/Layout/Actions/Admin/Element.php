@@ -21,7 +21,7 @@ class Layout_Actions_Admin_Element extends Jaws_Gadget_Action
     {
         // FIXME: When a gadget don't have layout actions
         // doesn't permit to add it into layout
-        $tpl = $this->gadget->loadAdminTemplate('AddGadget.html');
+        $tpl = $this->gadget->template->loadAdmin('AddGadget.html');
         $tpl->SetBlock('template');
 
         $direction = _t('GLOBAL_LANG_DIRECTION');
@@ -96,7 +96,7 @@ class Layout_Actions_Admin_Element extends Jaws_Gadget_Action
             return false;
         }
 
-        $tpl = $this->gadget->loadAdminTemplate('EditGadget.html');
+        $tpl = $this->gadget->template->loadAdmin('EditGadget.html');
         $tpl->SetBlock('template');
 
         $direction = _t('GLOBAL_LANG_DIRECTION');
