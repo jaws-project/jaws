@@ -108,7 +108,7 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
      */
     function GetGroupsGrid($offset)
     {
-        $model = $this->gadget->loadModel('Group');
+        $model = $this->gadget->model->load('Group');
 
         $groups = $model->GetGroups(null, 10, $offset);
         if (Jaws_Error::IsError($groups)) {

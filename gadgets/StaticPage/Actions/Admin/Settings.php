@@ -29,7 +29,7 @@ class StaticPage_Actions_Admin_Settings extends StaticPage_Actions_Admin_Default
         $action  = jaws()->request->fetch('action', 'get');
         $tpl->SetVariable('menubar', $this->MenuBar($action));
 
-        $model = $this->gadget->loadModel('Page');
+        $model = $this->gadget->model->load('Page');
 
         //Build the form
         $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'POST');

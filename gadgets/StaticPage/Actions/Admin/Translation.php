@@ -23,7 +23,7 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
     {
         $this->gadget->CheckPermission('AddPage');
 
-        $model = $this->gadget->loadModel('Page');
+        $model = $this->gadget->model->load('Page');
         //Get Id
         $page_id = (int)jaws()->request->fetch('page', 'get');
         $page = $model->GetPage($page_id);
@@ -44,7 +44,7 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
     function AddTranslation()
     {
         $this->gadget->CheckPermission('EditPage');
-        $model = $this->gadget->loadAdminModel('Translation');
+        $model = $this->gadget->model->loadAdmin('Translation');
         $fetch   = array('page', 'title', 'content', 'language', 'meta_keys', 'meta_desc', 'tags', 'published');
         $post    = jaws()->request->fetch($fetch, 'post');
         $post['content'] = jaws()->request->fetch('content', 'post', false);
@@ -75,7 +75,7 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
     {
         $this->gadget->CheckPermission('AddPage');
 
-        $model = $this->gadget->loadModel('Translation');
+        $model = $this->gadget->model->load('Translation');
         //Get Id
         $trans_id = (int)jaws()->request->fetch('id', 'get');
         $translation = $model->GetPageTranslation($trans_id);
@@ -97,7 +97,7 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
     function SaveEditTranslation()
     {
         $this->gadget->CheckPermission('EditPage');
-        $model = $this->gadget->loadAdminModel('Translation');
+        $model = $this->gadget->model->loadAdmin('Translation');
         $fetch   = array('trans_id', 'title', 'language', 'meta_keys', 'meta_desc', 'tags', 'published');
         $post    = jaws()->request->fetch($fetch, 'post');
         $post['content'] = jaws()->request->fetch('content', 'post', false);

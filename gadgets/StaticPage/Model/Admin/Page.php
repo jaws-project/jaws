@@ -49,7 +49,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         }
 
         $base_id = $GLOBALS['db']->lastInsertID('static_pages', 'page_id');
-        $tModel = $this->gadget->loadAdminModel('Translation');
+        $tModel = $this->gadget->model->loadAdmin('Translation');
         $tid = $tModel->AddTranslation($base_id, $title, $content, $language, $meta_keys, $meta_desc, $tags, $published);
         if (Jaws_Error::IsError($tid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'), RESPONSE_ERROR);
@@ -102,7 +102,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_UPDATED'), _t('STATICPAGE_NAME'));
         }
 
-        $tModel = $this->gadget->loadAdminModel('Translation');
+        $tModel = $this->gadget->model->loadAdmin('Translation');
         $result = $tModel->UpdateTranslation($page['translation_id'], $title, $content, $language,
                                              $meta_keys, $meta_desc, $tags, $published);
         if (Jaws_Error::IsError($result)) {
@@ -138,7 +138,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         // Delete Page Translation Tags
         $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
         $tIds = $sptTable->select('translation_id:integer')->where('base_id', $id)->fetchColumn();
-        $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
+        $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
         $res = $model->DeleteItemTags('StaticPage', 'page', $tIds);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TAG_NOT_DELETED'), RESPONSE_ERROR);

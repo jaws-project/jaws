@@ -106,7 +106,7 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
 
         // Group
         if ($mode == 'base') {
-            $model = $this->gadget->loadModel('Group');
+            $model = $this->gadget->model->load('Group');
             $groups = $model->GetGroups();
             $combo =& Piwi::CreateWidget('Combo', 'group_id');
             foreach ($groups as $group) {
