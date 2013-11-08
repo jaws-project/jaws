@@ -63,3 +63,57 @@ if (!function_exists('array_column')) {
         return $input;
     }
 }
+
+/**
+ * Find the last occurrence of a string
+ *
+ * @param   string  $haystack       The input string
+ * @param   mixed   $needle         If needle is not a string, it is converted to ordinal value of a character
+ * @param   bool    $before_needle  If TRUE, it returns the part of the haystack
+                                    before the last occurrence of the needle(excluding needle)
+ * @return  mixed   Returns the portion of string, or FALSE if needle is not found
+ * @see     http://www.php.net/strstr
+ */
+if (!function_exists('strrstr')) {
+    function strrstr($haystack, $needle, $before_needle = false)
+    {
+        if (false === $pos = strrpos($haystack, $needle)) {
+            return false;
+        }
+
+        if ($before_needle) {
+            $retval = substr($haystack, 0, $pos);
+        } else {
+            $retval = substr($haystack, $pos);
+        }
+
+        return $retval;
+    }
+}
+
+/**
+ * Case-insensitive strrstr
+ *
+ * @param   string  $haystack       The input string
+ * @param   mixed   $needle         If needle is not a string, it is converted to ordinal value of a character
+ * @param   bool    $before_needle  If TRUE, it returns the part of the haystack
+                                    before the last occurrence of the needle(excluding needle)
+ * @return  mixed   Returns the portion of string, or FALSE if needle is not found
+ * @see     http://www.php.net/stristr
+ */
+if (!function_exists('strristr')) {
+    function strristr($haystack, $needle, $before_needle = false)
+    {
+        if (false === $pos = strripos($haystack, $needle)) {
+            return false;
+        }
+
+        if ($before_needle) {
+            $retval = substr($haystack, 0, $pos);
+        } else {
+            $retval = substr($haystack, $pos);
+        }
+
+        return $retval;
+    }
+}
