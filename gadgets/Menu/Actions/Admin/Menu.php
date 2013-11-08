@@ -219,7 +219,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($objGadget)) {
                 continue;
             }
-            $objHook = $objGadget->loadHook('Menu');
+            $objHook = $objGadget->hook->load('Menu');
             if (Jaws_Error::IsError($objHook)) {
                 continue;
             }
