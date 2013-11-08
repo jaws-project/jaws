@@ -565,7 +565,6 @@ class Jaws_Gadget
     function __call($method, $arguments)
     {
         switch ($method) {
-            case 'loadAdminAction':
             case 'loadAdminTemplate':
                 array_unshift($arguments, true);
                 $extension = substr($method, 9);
@@ -578,7 +577,6 @@ class Jaws_Gadget
                 return call_user_func_array(array($this->extensions[$extension], 'load'), $arguments);
                 break;
 
-            case 'loadAction':
             case 'loadTemplate':
                 array_unshift($arguments, false);
 
