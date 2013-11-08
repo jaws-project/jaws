@@ -25,7 +25,7 @@ class Glossary_Actions_Term extends Jaws_Gadget_Action
         $tpl->SetVariable('title', _t('GLOSSARY_NAME'));
         $this->SetTitle(_t('GLOSSARY_NAME'));
 
-        $model = $this->gadget->loadModel('Term');
+        $model = $this->gadget->model->load('Term');
         $terms = $model->GetTerms();
         if (!Jaws_Error::IsError($terms)) {
             $last_letter = null;
@@ -77,7 +77,7 @@ class Glossary_Actions_Term extends Jaws_Gadget_Action
         $term = jaws()->request->fetch('term', 'get');
         $term = Jaws_XSS::defilter($term, true);
 
-        $model = $this->gadget->loadModel('Term');
+        $model = $this->gadget->model->load('Term');
         $term = $model->GetTerm($term);
         if (!Jaws_Error::IsError($term) && isset($term['term'])) {
             $this->SetTitle($term['term']);
@@ -115,7 +115,7 @@ class Glossary_Actions_Term extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->loadTemplate('Random.html');
         $tpl->SetBlock('random');
-        $model = $this->gadget->loadModel('Term');
+        $model = $this->gadget->model->load('Term');
         $term = $model->GetRandomTerm();
         if (!Jaws_Error::IsError($term)) {
             $tpl->SetVariable('title', _t('GLOSSARY_RANDOM_TERM'));
@@ -138,7 +138,7 @@ class Glossary_Actions_Term extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('SimpleList.html');
         $tpl->SetBlock('list_of_terms');
         $tpl->SetVariable('title', _t('GLOSSARY_NAME'));
-        $model = $this->gadget->loadModel('Term');
+        $model = $this->gadget->model->load('Term');
         $terms = $model->GetTerms();
         if (!Jaws_Error::IsError ($terms)) {
             foreach ($terms as $term) {

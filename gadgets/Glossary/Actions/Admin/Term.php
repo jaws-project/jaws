@@ -24,7 +24,7 @@ class Glossary_Actions_Admin_Term extends Jaws_Gadget_Action
         $tpl->SetBlock('Glossary');
 
         // Block List
-        $model = $this->gadget->loadModel('Term');
+        $model = $this->gadget->model->load('Term');
         $terms = $model->GetTerms();
         $termsCombo =& Piwi::CreateWidget('Combo', 'term_id');
         $termsCombo->SetID('term_id');
