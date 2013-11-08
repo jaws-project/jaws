@@ -118,7 +118,7 @@ class Poll_AdminAjax extends Jaws_Gadget_Action
      */
     function PollAnswersUI()
     {
-        $gadget = $this->gadget->loadAdminAction('Poll');
+        $gadget = $this->gadget->action->loadAdmin('Poll');
         return $gadget->PollAnswersUI();
     }
 
@@ -246,7 +246,7 @@ class Poll_AdminAjax extends Jaws_Gadget_Action
      */
     function PollGroupPollsUI()
     {
-        $gadget = $this->gadget->loadAdminAction('Group');
+        $gadget = $this->gadget->action->loadAdmin('Group');
         return $gadget->PollGroupPollsUI();
     }
 
@@ -322,7 +322,7 @@ class Poll_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ViewReports');
         @list($pid) = jaws()->request->fetchAll('post');
-        $gadget = $this->gadget->loadAdminAction('Report');
+        $gadget = $this->gadget->action->loadAdmin('Report');
         return $gadget->PollResultsUI($pid);
     }
 
@@ -337,8 +337,8 @@ class Poll_AdminAjax extends Jaws_Gadget_Action
     function GetData()
     {
         @list($offset, $grid) = jaws()->request->fetchAll('post');
-        $pGadget = $this->gadget->loadAdminAction('Poll');
-        $gGadget = $this->gadget->loadAdminAction('Group');
+        $pGadget = $this->gadget->action->loadAdmin('Poll');
+        $gGadget = $this->gadget->action->loadAdmin('Group');
         if (!is_numeric($offset)) {
             $offset = null;
         }
