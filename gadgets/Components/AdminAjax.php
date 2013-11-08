@@ -56,7 +56,7 @@ class Components_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageGadgets');
         @list($gadget) = jaws()->request->fetchAll('post');
-        $html = $this->gadget->loadAdminAction('Gadgets');
+        $html = $this->gadget->action->loadAdmin('Gadgets');
         return $html->GadgetInfo($gadget);
     }
 
@@ -69,7 +69,7 @@ class Components_AdminAjax extends Jaws_Gadget_Action
     function InstallGadget()
     {
         @list($gadget) = jaws()->request->fetchAll('post');
-        $html = $this->gadget->loadAdminAction('GadgetInstaller');
+        $html = $this->gadget->action->loadAdmin('GadgetInstaller');
         $html->InstallGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -83,7 +83,7 @@ class Components_AdminAjax extends Jaws_Gadget_Action
     function UpgradeGadget()
     {
         @list($gadget) = jaws()->request->fetchAll('post');
-        $html = $this->gadget->loadAdminAction('GadgetInstaller');
+        $html = $this->gadget->action->loadAdmin('GadgetInstaller');
         $html->UpgradeGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -97,7 +97,7 @@ class Components_AdminAjax extends Jaws_Gadget_Action
     function UninstallGadget()
     {
         @list($gadget) = jaws()->request->fetchAll('post');
-        $html = $this->gadget->loadAdminAction('GadgetInstaller');
+        $html = $this->gadget->action->loadAdmin('GadgetInstaller');
         $html->UninstallGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -111,7 +111,7 @@ class Components_AdminAjax extends Jaws_Gadget_Action
     function EnableGadget()
     {
         @list($gadget) = jaws()->request->fetchAll('post');
-        $html = $this->gadget->loadAdminAction('GadgetInstaller');
+        $html = $this->gadget->action->loadAdmin('GadgetInstaller');
         $html->EnableGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -125,7 +125,7 @@ class Components_AdminAjax extends Jaws_Gadget_Action
     function DisableGadget()
     {
         @list($gadget) = jaws()->request->fetchAll('post');
-        $html = $this->gadget->loadAdminAction('GadgetInstaller');
+        $html = $this->gadget->action->loadAdmin('GadgetInstaller');
         $html->DisableGadget($gadget);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -165,7 +165,7 @@ class Components_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManagePlugins');
         @list($plugin) = jaws()->request->fetchAll('post');
-        $html = $this->gadget->loadAdminAction('Plugins');
+        $html = $this->gadget->action->loadAdmin('Plugins');
         return $html->PluginInfo($plugin);
     }
 
@@ -217,7 +217,7 @@ class Components_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManagePlugins');
         @list($plugin) = jaws()->request->fetchAll('post');
-        $html = $this->gadget->loadAdminAction('Plugins');
+        $html = $this->gadget->action->loadAdmin('Plugins');
         $ui = $html->PluginUsage();
 
         $usage = array();
@@ -259,7 +259,7 @@ class Components_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageRegistry');
         @list($comp, $is_plugin) = jaws()->request->fetchAll('post');
-        $html = $this->gadget->loadAdminAction('Registry');
+        $html = $this->gadget->action->loadAdmin('Registry');
         $ui = $html->RegistryUI();
         $data = $GLOBALS['app']->Registry->fetchAll($comp);
         return array('ui' => $ui, 'data' => $data);
@@ -296,7 +296,7 @@ class Components_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageACLs');
         @list($comp, $is_plugin) = jaws()->request->fetchAll('post');
-        $html = $this->gadget->loadAdminAction('ACL');
+        $html = $this->gadget->action->loadAdmin('ACL');
         $ui = $html->ACLUI();
         $acls = $GLOBALS['app']->ACL->fetchAll($comp);
         if (!$is_plugin) {
