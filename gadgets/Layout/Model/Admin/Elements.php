@@ -186,7 +186,7 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
                 // set initial params
                 $actions[$key]['parametric'] = false;
                 $lParamsMethod = $key. 'LayoutParams';
-                $objGadget = Jaws_Gadget::getInstance($g)->loadAction($action['file']);
+                $objGadget = Jaws_Gadget::getInstance($g)->action->load($action['file']);
                 if (!Jaws_Error::IsError($objGadget) && method_exists($objGadget, $lParamsMethod)) {
                     $actions[$key]['params'] = $objGadget->$lParamsMethod();
                 }
