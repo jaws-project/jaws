@@ -20,7 +20,7 @@ class Tags_AdminAjax extends Jaws_Gadget_Action
     {
         @list($filters, $offset) = jaws()->request->fetchAll('post');
         $filters = jaws()->request->fetch('0:array', 'post');
-        $tHTML = $this->gadget->loadAdminAction('Tags');
+        $tHTML = $this->gadget->action->loadAdmin('Tags');
         return $tHTML->GetDataAsArray("javascript:editTag(this, '{id}')", $filters, $offset);
     }
 
