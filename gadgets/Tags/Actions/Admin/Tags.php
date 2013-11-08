@@ -22,7 +22,7 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
     {
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('Tags.html');
+        $tpl = $this->gadget->template->loadAdmin('Tags.html');
         $tpl->SetBlock('tags');
 
         //Menu bar
@@ -110,7 +110,7 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
      */
     function TagUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('Tags.html');
+        $tpl = $this->gadget->template->loadAdmin('Tags.html');
         $tpl->SetBlock('tagUI');
 
         // name

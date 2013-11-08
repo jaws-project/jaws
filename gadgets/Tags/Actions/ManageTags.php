@@ -38,7 +38,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
             $filters['name'] = $post['term'];
         }
 
-        $tpl = $this->gadget->loadTemplate('ManageTags.html');
+        $tpl = $this->gadget->template->load('ManageTags.html');
         $tpl->SetBlock('tags');
         if ($response = $GLOBALS['app']->Session->PopResponse('Tags.ManageTags')) {
             $tpl->SetBlock('tags/response');
@@ -157,7 +157,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         }
 
         // Load the template
-        $tpl = $this->gadget->loadTemplate('ManageTags.html');
+        $tpl = $this->gadget->template->load('ManageTags.html');
         $tpl->SetBlock('edit_tag');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);

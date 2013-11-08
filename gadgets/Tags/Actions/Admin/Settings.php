@@ -20,7 +20,7 @@ class Tags_Actions_Admin_Settings extends Tags_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('Settings');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Settings.html');
+        $tpl = $this->gadget->template->loadAdmin('Settings.html');
         $tpl->SetBlock('Settings');
 
         // view tag result limit

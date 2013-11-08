@@ -78,7 +78,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         $maxFontSize = 10;
         $fontSizeRange = $maxFontSize - $minFontSize;
 
-        $tpl = $this->gadget->loadTemplate('TagCloud.html');
+        $tpl = $this->gadget->template->load('TagCloud.html');
         $tpl->SetBlock('tagcloud');
 
         if(!empty($gadget)) {
@@ -164,7 +164,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         }
 
 
-        $tpl = $this->gadget->loadTemplate('Tag.html');
+        $tpl = $this->gadget->template->load('Tag.html');
         $tpl->SetBlock('tag');
         $tpl->SetVariable('title', _t('TAGS_VIEW_TAG', $tag));
 
