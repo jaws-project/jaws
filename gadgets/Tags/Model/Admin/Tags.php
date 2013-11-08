@@ -26,6 +26,10 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      */
     function UpdateTagsItems($gadget, $action , $reference, $published, $update_time, $tags, $global = true)
     {
+        if (empty($tags)) {
+            return false;
+        }
+
         if (!is_array($tags)) {
             $tags = array_filter(array_map(array($GLOBALS['app']->UTF8, 'trim'), explode(',', $tags)));
         }
