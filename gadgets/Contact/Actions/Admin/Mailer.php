@@ -20,7 +20,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('AccessToMailer');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Mailer.html');
+        $tpl = $this->gadget->template->loadAdmin('Mailer.html');
         $tpl->SetBlock('mailer');
 
         // Menu bar
@@ -206,7 +206,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $GLOBALS['app']->Translate->LoadTranslation('Global',  JAWS_COMPONENT_OTHERS, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
 
-        $tpl = $this->gadget->loadTemplate('SendEmail.html',
+        $tpl = $this->gadget->template->load('SendEmail.html',
             array(
                 'loadFromTheme' => true,
                 'loadRTLDirection' => _t_lang($site_language, 'GLOBAL_LANG_DIRECTION') == 'rtl',

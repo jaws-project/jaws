@@ -86,7 +86,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
                 break;
         }
 
-        $tpl = $this->gadget->loadTemplate('Contact.html');
+        $tpl = $this->gadget->template->load('Contact.html');
         $tpl->SetBlock('contact');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
@@ -371,7 +371,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
             $message = $contact['msg_txt'];
         }
 
-        $tpl = $this->gadget->loadTemplate('SendToRecipient.html');
+        $tpl = $this->gadget->template->load('SendToRecipient.html');
         $tpl->SetBlock($format);
         $tpl->SetVariable('lbl_name',      _t('GLOBAL_NAME'));
         $tpl->SetVariable('lbl_email',     _t('GLOBAL_EMAIL'));

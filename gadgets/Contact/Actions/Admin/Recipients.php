@@ -21,7 +21,7 @@ class Contact_Actions_Admin_Recipients extends Contact_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageRecipients');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Recipients.html');
+        $tpl = $this->gadget->template->loadAdmin('Recipients.html');
         $tpl->SetBlock('recipients');
 
         $tpl->SetVariable('menubar', $this->MenuBar('Recipients'));
