@@ -63,7 +63,7 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
             return false;
         }
 
-        $tpl = $this->gadget->loadTemplate('Banners.html');
+        $tpl = $this->gadget->template->load('Banners.html');
         switch ($group['show_type']) {
             case 1:
             case 2:

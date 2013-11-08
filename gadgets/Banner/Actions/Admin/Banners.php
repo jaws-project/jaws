@@ -18,7 +18,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageBanners');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('Banners.html');
+        $tpl = $this->gadget->template->loadAdmin('Banners.html');
         $tpl->SetBlock('text_banner');
         $text_banner = $tpl->GetCurrentBlockContent();
         $text_banner = addslashes($text_banner);
@@ -43,7 +43,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $flash_banner = str_replace(chr(10), "\\n", $flash_banner);
         $tpl->ParseBlock('flash_banner');
 
-        $tpl = $this->gadget->loadAdminTemplate('Banners.html');
+        $tpl = $this->gadget->template->loadAdmin('Banners.html');
         $tpl->SetBlock('Banners');
 
         //Menu bar
@@ -96,7 +96,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
      */
     function BannerUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('Banners.html');
+        $tpl = $this->gadget->template->loadAdmin('Banners.html');
         $tpl->SetBlock('BannerInfo');
 
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
