@@ -20,7 +20,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
     function DefaultAction()
     {
         $gadgetsections = array();
-        $cmpModel = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
+        $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $cmpModel->GetGadgetsList(null, true, true);
         unset($gadgets['ControlPanel']);
 
