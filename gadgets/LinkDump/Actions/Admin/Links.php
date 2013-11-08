@@ -26,7 +26,7 @@ class LinkDump_Actions_Admin_Links extends Jaws_Gadget_Action
             return '';
         }
 
-        $tpl = $this->gadget->loadAdminTemplate('LinkDump.html');
+        $tpl = $this->gadget->template->loadAdmin('LinkDump.html');
         $tpl->SetBlock('linkdump');
 
         foreach ($links as $link) {
@@ -51,7 +51,7 @@ class LinkDump_Actions_Admin_Links extends Jaws_Gadget_Action
      */
     function GetLinkUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('LinkDump.html');
+        $tpl = $this->gadget->template->loadAdmin('LinkDump.html');
         $tpl->SetBlock('linkdump');
         $tpl->SetBlock('linkdump/LinksUI');
 

@@ -64,7 +64,7 @@ class LinkDump_Actions_Feeds extends Jaws_Gadget_Action
         $desc   = $this->gadget->registry->fetch('site_description', 'Settings');
         $author = $this->gadget->registry->fetch('site_author', 'Settings');
 
-        $tpl = $this->gadget->loadTemplate('Rdf.html');
+        $tpl = $this->gadget->template->load('Rdf.html');
         $tpl->SetBlock('RDF');
         $tpl->SetVariable('link', $url);
         $tpl->SetVariable('title', $title);

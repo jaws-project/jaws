@@ -20,7 +20,7 @@ class LinkDump_Actions_Admin_LinkDump extends Jaws_Gadget_Action
     function LinkDump()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('LinkDump.html');
+        $tpl = $this->gadget->template->loadAdmin('LinkDump.html');
         $tpl->SetBlock('linkdump');
 
         $tpl->SetBlock('linkdump/links_base');

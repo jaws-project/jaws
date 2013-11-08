@@ -61,7 +61,7 @@ class LinkDump_Actions_Groups extends Jaws_Gadget_Action
             return false;
         }
 
-        $tpl = $this->gadget->loadTemplate($tplFile);
+        $tpl = $this->gadget->template->load($tplFile);
         $tpl->SetBlock('category');
 
         $tpl->SetVariable('gid',   $group['id']);
@@ -121,7 +121,7 @@ class LinkDump_Actions_Groups extends Jaws_Gadget_Action
             return false;
         }
 
-        $tpl = $this->gadget->loadTemplate('Categories.html');
+        $tpl = $this->gadget->template->load('Categories.html');
         $tpl->SetBlock('categories');
         $tpl->SetVariable('title', _t('LINKDUMP_GROUPS'));
 
