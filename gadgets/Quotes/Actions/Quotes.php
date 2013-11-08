@@ -99,7 +99,7 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
             return false;
         }
 
-        $tpl = $this->gadget->loadTemplate('Quotes.html');
+        $tpl = $this->gadget->template->load('Quotes.html');
         $tpl->SetBlock('quotes');
         $tpl->SetVariable('gid', $group['id']);
         if ($group['show_title']) {
@@ -167,7 +167,7 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
         }
 
         $this->SetTitle($quote['title']);
-        $tpl = $this->gadget->loadTemplate('Quote.html');
+        $tpl = $this->gadget->template->load('Quote.html');
         $tpl->SetBlock('quote');
 
         $tpl->SetVariable('title', $group['title']);

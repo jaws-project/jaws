@@ -29,7 +29,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
             'text/css'
         );
 
-        $tpl = $this->gadget->loadAdminTemplate('Quotes.html');
+        $tpl = $this->gadget->template->loadAdmin('Quotes.html');
         $tpl->SetBlock('quotes');
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('Quotes'));
