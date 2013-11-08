@@ -883,7 +883,7 @@ class Jaws
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
                 }
-                $objHook = $objGadget->loadHook('Autoload');
+                $objHook = $objGadget->hook->load('Autoload');
                 if (Jaws_Error::IsError($objHook)) {
                     continue;
                 }
