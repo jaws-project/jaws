@@ -13,7 +13,7 @@
  */
 var LogsCallback = {
     DeleteLogs: function(response) {
-        if (response[0].type == 'response_notice') {
+        if (response[0].['type'] == 'response_notice') {
             unselectGridRow('logs_datagrid');
             getDG('logs_datagrid');
         }
