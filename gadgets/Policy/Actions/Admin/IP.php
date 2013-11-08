@@ -89,7 +89,7 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
         $this->gadget->CheckPermission('IPBlocking');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('IPBlocking.html');
+        $tpl = $this->gadget->template->loadAdmin('IPBlocking.html');
         $tpl->SetBlock('ipblocking');
 
         // Sidebar
