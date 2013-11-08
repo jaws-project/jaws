@@ -74,7 +74,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
 
-            $model = $this->gadget->loadModel('Files');
+            $model = $this->gadget->model->load('Files');
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
 
             // Validate parent
@@ -157,7 +157,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
 
-            $model = $this->gadget->loadModel('Files');
+            $model = $this->gadget->model->load('Files');
 
             // Validate file
             $id = (int)$data['id'];
@@ -213,7 +213,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
 
             // Update file in database
             $data['updatetime'] = time();
-            $model = $this->gadget->loadModel('Files');
+            $model = $this->gadget->model->load('Files');
             $res = $model->Update($id, $data);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception(_t('DIRECTORY_ERROR_FILE_UPDATE'));
@@ -246,7 +246,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
     {
         try {
             $id = (int)jaws()->request->fetch('id');
-            $model = $this->gadget->loadModel('Files');
+            $model = $this->gadget->model->load('Files');
 
             // Validate file
             $file = $model->GetFile($id);
@@ -267,7 +267,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
             $public = (bool)$public;
 
             // Update record
-            $model = $this->gadget->loadModel('Files');
+            $model = $this->gadget->model->load('Files');
             $res = $model->Update($id, array('public' => $public));
             if (Jaws_Error::IsError($res)) {
                 throw new Exception(_t('DIRECTORY_ERROR_FILE_UPDATE'));
@@ -374,7 +374,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(500);
         }
         $id = (int)$id;
-        $model = $this->gadget->loadModel('Files');
+        $model = $this->gadget->model->load('Files');
 
         // Validate file
         $file = $model->GetFile($id);

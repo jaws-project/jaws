@@ -98,7 +98,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     {
         $data = jaws()->request->fetch(array('id', 'shared', 'foreign'));
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $model = $this->gadget->loadModel('Files');
+        $model = $this->gadget->model->load('Files');
         $files = $model->GetFiles($data['id'], $user, $data['shared'], $data['foreign'], null);
         if (Jaws_Error::IsError($files)){
             return array();
@@ -121,7 +121,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     function GetFile()
     {
         $id = jaws()->request->fetch('id');
-        $model = $this->gadget->loadModel('Files');
+        $model = $this->gadget->model->load('Files');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $access = $model->CheckAccess($id, $user);
         if ($access !== true) {
@@ -136,7 +136,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
 
         // Shared for
-        $model = $this->gadget->loadModel('Share');
+        $model = $this->gadget->model->load('Share');
         $users = $model->GetFileUsers($id);
         if (!Jaws_Error::IsError($users)) {
             $uid_set = array();
@@ -159,7 +159,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     {
         $id = jaws()->request->fetch('id');
         $path = array();
-        $model = $this->gadget->loadModel('Files');
+        $model = $this->gadget->model->load('Files');
         $model->GetPath($id, $path);
         return $path;
     }
@@ -197,7 +197,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      */
     function BuildTree($root = 0, $exclude = array(), &$tree)
     {
-        $model = $this->gadget->loadModel('Files');
+        $model = $this->gadget->model->load('Files');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $dirs = $model->GetFiles($root, $user, null, null, true);
         if (Jaws_Error::IsError($dirs)) {
@@ -234,7 +234,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             );
         }
 
-        $model = $this->gadget->loadModel('Files');
+        $model = $this->gadget->model->load('Files');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $fault = false;
         foreach ($id_set as $id) {
@@ -283,7 +283,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         $id_set = explode(',', $data['id_set']);
         $target = (int)$data['target'];
-        $model = $this->gadget->loadModel('Files');
+        $model = $this->gadget->model->load('Files');
 
         // Validate target
         if ($target !== 0) {
@@ -371,7 +371,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_ERROR_SEARCH'), RESPONSE_ERROR);
         }
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $model = $this->gadget->loadModel('Files');
+        $model = $this->gadget->model->load('Files');
         $files = $model->GetFiles($data['id'], $user, $data['shared'], 
             $data['foreign'], null, $data['query']);
         if (Jaws_Error::IsError($files)){

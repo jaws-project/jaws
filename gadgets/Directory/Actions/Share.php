@@ -82,7 +82,7 @@ class Directory_Actions_Share extends Jaws_Gadget_Action
         $id = (int)jaws()->request->fetch('id');
 
         // Validate file
-        $model = $this->gadget->loadModel('Files');
+        $model = $this->gadget->model->load('Files');
         $file = $model->GetFile($id);
         if (Jaws_Error::IsError($file)) {
             return array();
@@ -92,7 +92,7 @@ class Directory_Actions_Share extends Jaws_Gadget_Action
             return array();
         }
 
-        $model = $this->gadget->loadModel('Share');
+        $model = $this->gadget->model->load('Share');
         $users = $model->GetFileUsers($id);
         if (Jaws_Error::IsError($users)) {
             return array();
@@ -112,7 +112,7 @@ class Directory_Actions_Share extends Jaws_Gadget_Action
             $id = (int)jaws()->request->fetch('id');
 
             // Validate file
-            $model = $this->gadget->loadModel('Files');
+            $model = $this->gadget->model->load('Files');
             $file = $model->GetFile($id);
             if (Jaws_Error::IsError($file)) {
                 throw new Exception($file->getMessage());
@@ -126,7 +126,7 @@ class Directory_Actions_Share extends Jaws_Gadget_Action
 
             $users = jaws()->request->fetch('users');
             $users = empty($users)? array() : explode(',', $users);
-            $model = $this->gadget->loadModel('Share');
+            $model = $this->gadget->model->load('Share');
             $res = $model->UpdateFileUsers($id, $users);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception($res->getMessage());

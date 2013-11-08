@@ -60,7 +60,7 @@ class Directory_Actions_Directories extends Jaws_Gadget_Action
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
 
-            $model = $this->gadget->loadModel('Files');
+            $model = $this->gadget->model->load('Files');
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
 
             // Validate parent
@@ -111,7 +111,7 @@ class Directory_Actions_Directories extends Jaws_Gadget_Action
             $data['description'] = Jaws_XSS::defilter($data['description']);
 
             $id = (int)jaws()->request->fetch('id', 'post');
-            $model = $this->gadget->loadModel('Files');
+            $model = $this->gadget->model->load('Files');
 
             // Validate directory
             $dir = $model->GetFile($id);
