@@ -57,7 +57,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
             return false;
         }
 
-        $tpl = $this->gadget->loadTemplate('FeedReader.html');
+        $tpl = $this->gadget->template->load('FeedReader.html');
         $tpl->SetBlock('feedreader');
 
         require_once JAWS_PATH . 'gadgets/FeedReader/include/XML_Feed.php';

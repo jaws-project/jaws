@@ -92,7 +92,7 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
     function ManageFeeds()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('FeedReader.html');
+        $tpl = $this->gadget->template->loadAdmin('FeedReader.html');
         $tpl->SetBlock('feedreader');
 
         $tpl->SetVariable('grid', $this->DataGrid());
