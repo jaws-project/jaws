@@ -20,7 +20,7 @@ class Glossary_Actions_Admin_Term extends Jaws_Gadget_Action
     function Term()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Glossary.html');
+        $tpl = $this->gadget->template->loadAdmin('Glossary.html');
         $tpl->SetBlock('Glossary');
 
         // Block List
