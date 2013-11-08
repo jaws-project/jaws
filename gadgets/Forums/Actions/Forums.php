@@ -25,7 +25,7 @@ class Forums_Actions_Forums extends Forums_Actions_Default
         }
 
         $objDate = $GLOBALS['app']->loadDate();
-        $tpl = $this->gadget->loadTemplate('Forums.html');
+        $tpl = $this->gadget->template->load('Forums.html');
         $tpl->SetBlock('forums');
 
         $tpl->SetVariable('title', _t('FORUMS_FORUMS'));

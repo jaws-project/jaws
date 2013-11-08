@@ -19,7 +19,7 @@ class Forums_Actions_Admin_Group extends Jaws_Gadget_Action
     function GetGroupUI()
     {
         $this->gadget->CheckPermission('default');
-        $tpl = $this->gadget->loadAdminTemplate('GroupUI.html');
+        $tpl = $this->gadget->template->loadAdmin('GroupUI.html');
         $tpl->SetBlock('GroupsUI');
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');

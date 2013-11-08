@@ -44,7 +44,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             // do nothing
         }
 
-        $tpl = $this->gadget->loadTemplate('Posts.html');
+        $tpl = $this->gadget->template->load('Posts.html');
         $tpl->SetBlock('posts');
 
         $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
@@ -410,7 +410,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         }
 
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('EditPost.html');
+        $tpl = $this->gadget->template->load('EditPost.html');
         $tpl->SetBlock('post');
 
         $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
@@ -767,7 +767,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             // redirect to topic posts list
             Jaws_Header::Location($topic_link);
         } else {
-            $tpl = $this->gadget->loadTemplate('DeletePost.html');
+            $tpl = $this->gadget->template->load('DeletePost.html');
             $tpl->SetBlock('post');
 
             $tpl->SetVariable('fid', $post['fid']);

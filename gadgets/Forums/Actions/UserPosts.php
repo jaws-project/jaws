@@ -33,7 +33,7 @@ class Forums_Actions_UserPosts extends Forums_Actions_Default
         $posts_limit = $this->gadget->registry->fetch('posts_limit');
         $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
 
-        $tpl = $this->gadget->loadTemplate('UserPosts.html');
+        $tpl = $this->gadget->template->load('UserPosts.html');
         $pModel = $this->gadget->model->load('Posts');
         $posts = $pModel->GetUserPosts($uid, $posts_limit, ($page - 1) * $posts_limit);
         $post_counts = $pModel->GetUserPostsCount($uid);

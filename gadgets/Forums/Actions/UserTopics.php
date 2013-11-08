@@ -33,7 +33,7 @@ class Forums_Actions_UserTopics extends Forums_Actions_Default
         $limit = $this->gadget->registry->fetch('topics_limit');
         $limit = empty($limit)? 10 : (int)$limit;
 
-        $tpl = $this->gadget->loadTemplate('UserTopics.html');
+        $tpl = $this->gadget->template->load('UserTopics.html');
         $tModel = $this->gadget->model->load('Topics');
         $topics = $tModel->GetUserTopics($uid, $limit, ($page - 1) * $limit);
         $topicCounts = $tModel->GetUserTopicCount($uid);

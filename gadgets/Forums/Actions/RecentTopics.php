@@ -58,7 +58,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
         $recent_limit = $this->gadget->registry->fetch('recent_limit');
         $recent_limit = empty($recent_limit)? 5 : (int)$recent_limit;
 
-        $tpl = $this->gadget->loadTemplate('RecentTopics.html');
+        $tpl = $this->gadget->template->load('RecentTopics.html');
         $tModel = $this->gadget->model->load('Topics');
         $topics = $tModel->GetRecentTopics($group['id'], $recent_limit);
         if (!Jaws_Error::IsError($topics)) {

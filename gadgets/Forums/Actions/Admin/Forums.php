@@ -20,7 +20,7 @@ class Forums_Actions_Admin_Forums extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageForums');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Forums.html');
+        $tpl = $this->gadget->template->loadAdmin('Forums.html');
         $tpl->SetBlock('forums');
 
         $gModel = $this->gadget->model->load('Groups');

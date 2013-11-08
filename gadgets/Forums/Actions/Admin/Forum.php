@@ -19,7 +19,7 @@ class Forums_Actions_Admin_Forum extends Jaws_Gadget_Action
     function GetForumUI()
     {
         $this->gadget->CheckPermission('default');
-        $tpl = $this->gadget->loadAdminTemplate('ForumUI.html');
+        $tpl = $this->gadget->template->loadAdmin('ForumUI.html');
         $tpl->SetBlock('ForumUI');
 
         $gModel = $this->gadget->model->load('Groups');

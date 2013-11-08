@@ -60,7 +60,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         }
 
         $objDate = $GLOBALS['app']->loadDate();
-        $tpl = $this->gadget->loadTemplate('Topics.html');
+        $tpl = $this->gadget->template->load('Topics.html');
         $tpl->SetBlock('topics');
 
         $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
@@ -210,7 +210,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         }
 
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('EditTopic.html');
+        $tpl = $this->gadget->template->load('EditTopic.html');
         $tpl->SetBlock('topic');
 
         $tpl->SetVariable('findex_title', _t('FORUMS_FORUMS'));
@@ -624,7 +624,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
                 $this->gadget->urlMap('Posts', array('fid'=> $topic['fid'],'tid' => $topic['id']))
             );
         } else {
-            $tpl = $this->gadget->loadTemplate('DeleteTopic.html');
+            $tpl = $this->gadget->template->load('DeleteTopic.html');
             $tpl->SetBlock('topic');
 
             $tpl->SetVariable('fid', $topic['fid']);
