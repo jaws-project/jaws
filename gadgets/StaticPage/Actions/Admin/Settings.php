@@ -23,7 +23,7 @@ class StaticPage_Actions_Admin_Settings extends StaticPage_Actions_Admin_Default
     {
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('StaticPage.html');
+        $tpl = $this->gadget->template->loadAdmin('StaticPage.html');
         $tpl->SetBlock('Properties');
 
         $action  = jaws()->request->fetch('action', 'get');

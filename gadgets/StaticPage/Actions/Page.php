@@ -25,7 +25,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
             return false;
         }
 
-        $tpl = $this->gadget->loadTemplate('StaticPage.html');
+        $tpl = $this->gadget->template->load('StaticPage.html');
         $tpl->SetBlock('index');
         $tpl->SetVariable('title', _t('STATICPAGE_PAGES_LIST'));
         foreach ($pages as $page) {
@@ -84,7 +84,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
             //add static page language to meta language tag
             $this->AddToMetaLanguages($page_language);
 
-            $tpl = $this->gadget->loadTemplate('StaticPage.html');
+            $tpl = $this->gadget->template->load('StaticPage.html');
             $tpl->SetBlock('page');
 
             if (!$page['published'] &&
@@ -164,7 +164,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
      */
     function PagesTree()
     {
-        $tpl = $this->gadget->loadTemplate('StaticPage.html');
+        $tpl = $this->gadget->template->load('StaticPage.html');
         $tpl->SetBlock('pages_tree');
         $tpl->SetVariable('title', _t('STATICPAGE_PAGES_TREE'));
 

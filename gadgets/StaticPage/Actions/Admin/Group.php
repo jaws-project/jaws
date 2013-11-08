@@ -24,7 +24,7 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('Groups.html');
+        $tpl = $this->gadget->template->loadAdmin('Groups.html');
         $tpl->SetBlock('Groups');
 
         // Menu bar

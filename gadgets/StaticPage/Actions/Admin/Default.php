@@ -80,7 +80,7 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
                         $published, $show_title, $language, $id, $gid, $action, $mode = 'base')
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('StaticPage.html');
+        $tpl = $this->gadget->template->loadAdmin('StaticPage.html');
         $tpl->SetBlock('pageform');
 
         $m_action  = jaws()->request->fetch('action', 'get');

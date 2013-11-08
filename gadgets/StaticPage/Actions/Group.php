@@ -84,7 +84,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
             return false;
         }
 
-        $tpl = $this->gadget->loadTemplate('StaticPage.html');
+        $tpl = $this->gadget->template->load('StaticPage.html');
         $tpl->SetBlock('group_pages');
         $tpl->SetVariable('title', $group['title']);
         foreach ($pages as $page) {
@@ -117,7 +117,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
             return false;
         }
 
-        $tpl = $this->gadget->loadTemplate('StaticPage.html');
+        $tpl = $this->gadget->template->load('StaticPage.html');
         $tpl->SetBlock('group_index');
         $tpl->SetVariable('title', _t('STATICPAGE_GROUPS_LIST'));
         foreach ($groups as $group) {
