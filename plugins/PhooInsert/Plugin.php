@@ -47,7 +47,7 @@ class PhooInsert_Plugin extends Jaws_Plugin
             $howMany = preg_match_all("#\[phoo album=\"(.*?)\" picture=\"(.*?)\" title=\"(.*?)\" class=\"(.*?)\" size=\"(.*?)\" linked=\"(.*?)\"\]#si", $html, $matches);
             $new_html = $html;
             $url = $GLOBALS['app']->getSiteURL();
-            $objPhoo = Jaws_Gadget::getInstance('Phoo')->loadModel('Photos');
+            $objPhoo = Jaws_Gadget::getInstance('Phoo')->model->load('Photos');
             for ($i = 0; $i < $howMany; $i++) {
                 $albumid = $matches[1][$i];
                 $imageid = $matches[2][$i];
