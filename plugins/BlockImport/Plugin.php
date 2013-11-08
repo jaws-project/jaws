@@ -38,7 +38,7 @@ class BlockImport_Plugin extends Jaws_Plugin
     {
         $blockID = isset($data[1])? $data[1] : '';
         if (Jaws_Gadget::IsGadgetInstalled('Blocks') && !empty($blockID)) {
-            $objBlocks = Jaws_Gadget::getInstance('Blocks')->loadAction('Block');
+            $objBlocks = Jaws_Gadget::getInstance('Blocks')->action->load('Block');
             $result = $objBlocks->Block($blockID);
             if (!Jaws_Error::isError($result)) {
                 return $result;
