@@ -115,7 +115,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_Action
         $tpl->SetVariable('notepad_url', $notepad_url);
 
         // Pagination
-        $action = $this->gadget->loadAction('Pager');
+        $action = $this->gadget->action->load('Pager');
         $action->GetPagesNavigation(
             $tpl,
             'notepad',
