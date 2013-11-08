@@ -22,7 +22,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
     {
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('Comments.html');
+        $tpl = $this->gadget->template->loadAdmin('Comments.html');
         $tpl->SetBlock('Comments');
 
         //Menu bar
@@ -124,7 +124,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
      */
     function CommentUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('Comments.html');
+        $tpl = $this->gadget->template->loadAdmin('Comments.html');
         $tpl->SetBlock('CommentUI');
 
         //IP

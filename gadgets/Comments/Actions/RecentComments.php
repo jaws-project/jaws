@@ -69,7 +69,7 @@ class Comments_Actions_RecentComments extends Comments_Actions_Default
         $GLOBALS['app']->Translate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
         $GLOBALS['app']->Translate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
 
-        $tpl = $this->gadget->loadTemplate('RecentComments.html');
+        $tpl = $this->gadget->template->load('RecentComments.html');
         $tpl->SetBlock('recent_comments');
         $tpl->SetVariable('title', _t('COMMENTS_RECENT_COMMENTS', _t(strtoupper($gadget) . '_NAME')));
         $tpl->SetVariable('gadget', $gadget);

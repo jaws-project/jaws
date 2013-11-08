@@ -20,7 +20,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
      */
     function Comments($preview_mode = false)
     {
-        $tpl = $this->gadget->loadTemplate('Guestbook.html');
+        $tpl = $this->gadget->template->load('Guestbook.html');
         $tpl->SetBlock('guestbook');
         $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
 
@@ -49,7 +49,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
      */
     function ShowCommentsForm($gadget, $action, $reference, $redirect_to)
     {
-        $tpl = $this->gadget->loadTemplate('CommentForm.html');
+        $tpl = $this->gadget->template->load('CommentForm.html');
         $tpl->SetBlock('comment_form');
         $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
 
@@ -180,7 +180,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         );
         $comments_count = $cModel->GetCommentsCount($gadget, $action, $reference);
 
-        $tpl = $this->gadget->loadTemplate('Comments.html');
+        $tpl = $this->gadget->template->load('Comments.html');
         $tpl->SetBlock('comments');
 
         $tpl->SetVariable('gadget', $gadget);
@@ -313,7 +313,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
             $post['url'] = $GLOBALS['app']->Session->GetAttribute('url');
         }
 
-        $tpl = $this->gadget->loadTemplate('Comments.html');
+        $tpl = $this->gadget->template->load('Comments.html');
         $tpl->SetBlock('comment-preview');
 
         $usrModel = new Jaws_User;
@@ -421,7 +421,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         );
         $comments_count = $model->HowManyFilteredComments('comments', '', 1);
 
-        $tpl = $this->gadget->loadTemplate('Comments.html');
+        $tpl = $this->gadget->template->load('Comments.html');
         $tpl->SetBlock('comments');
 
         $objDate = $GLOBALS['app']->loadDate();

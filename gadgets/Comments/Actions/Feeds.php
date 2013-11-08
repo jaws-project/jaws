@@ -100,7 +100,7 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
      */
     function FeedsLink($gadget, $linkType)
     {
-        $tpl = $this->gadget->loadTemplate('XMLLinks.html');
+        $tpl = $this->gadget->template->load('XMLLinks.html');
         if ($linkType == 'RSS') {
             $tpl->SetBlock('recentcomments_rss_link');
             $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Comments', 'RecentCommentsRSS',

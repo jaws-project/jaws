@@ -20,7 +20,7 @@ class Comments_Actions_Admin_Settings extends Comments_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('Settings');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Settings.html');
+        $tpl = $this->gadget->template->loadAdmin('Settings.html');
         $tpl->SetBlock('Settings');
 
         // comments site wide
