@@ -19,7 +19,7 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
     function DisplayLayoutParams()
     {
         $result = array();
-        $qModel = $this->gadget->loadModel('Groups');
+        $qModel = $this->gadget->model->load('Groups');
         $groups = $qModel->GetGroups();
         if (!Jaws_Error::isError($groups)) {
             $pgroups = array();
@@ -52,7 +52,7 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
         $group['limit_count'] = $this->gadget->registry->fetch('last_entries_limit');
         $group['random']      = $this->gadget->registry->fetch('last_entries_view_random') == 'true';
 
-        $model = $this->gadget->loadModel('Quotes');
+        $model = $this->gadget->model->load('Quotes');
         $quotes = $model->GetRecentQuotes($group['limit_count'], $group['random']);
         if (Jaws_Error::IsError($quotes)) {
             return false;
@@ -70,8 +70,8 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
      */
     function Display($gid)
     {
-        $qModel = $this->gadget->loadModel('Quotes');
-        $gModel = $this->gadget->loadModel('Groups');
+        $qModel = $this->gadget->model->load('Quotes');
+        $gModel = $this->gadget->model->load('Groups');
         $group = $gModel->GetGroup($gid);
         if (Jaws_Error::IsError($group) || empty($group) || !$group['published']) {
             return false;
@@ -155,8 +155,8 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
     function ViewQuote()
     {
         $qid = jaws()->request->fetch('id', 'get');
-        $qModel = $this->gadget->loadModel('Quotes');
-        $gModel = $this->gadget->loadModel('Groups');
+        $qModel = $this->gadget->model->load('Quotes');
+        $gModel = $this->gadget->model->load('Groups');
         $quote = $qModel->GetQuote($qid);
         if (Jaws_Error::IsError($quote) || empty($quote) || !$quote['published']) {
             return false;

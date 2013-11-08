@@ -170,7 +170,7 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
      */
     function AddQuotesToGroup($gid, $quotes)
     {
-        $model = $this->gadget->loadModel('Quotes');
+        $model = $this->gadget->model->load('Quotes');
         $AllQuotes = $model->GetQuotes(-1, -1);
 
         foreach ($AllQuotes as $quote) {

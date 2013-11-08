@@ -35,7 +35,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         $tpl->SetVariable('menubar', $this->MenuBar('Quotes'));
         $tpl->SetBlock('quotes/quotes_section');
 
-        $model = $this->gadget->loadModel('Groups');
+        $model = $this->gadget->model->load('Groups');
         $groups = $model->GetGroups();
 
         //Group Filter
@@ -53,7 +53,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         $comboQuotes->SetSize(24);
         $comboQuotes->AddEvent(ON_CHANGE, 'javascript: editQuote(this.value);');
 
-        $model = $this->gadget->loadModel('Quotes');
+        $model = $this->gadget->model->load('Quotes');
         $quotes = $model->GetQuotes(-1);
         foreach($quotes as $quote) {
             $comboQuotes->AddOption($quote['title'], $quote['id']);
