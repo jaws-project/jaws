@@ -121,6 +121,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $params['meta_keywords']    = $meta_keywords;
         $params['meta_description'] = $meta_desc;
         $params['allow_comments']   = $allow_comments;
+        $params['categories']       = implode(',', $categories);
         $params['createtime']       = $now;
         $params['updatetime']       = $now;
 
@@ -142,6 +143,8 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         }
 
         $blogTable = Jaws_ORM::getInstance()->table('blog');
+        //Start Transaction
+        $blogTable->beginTransaction();
         $max = $blogTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_ADDED'), RESPONSE_ERROR);
@@ -161,6 +164,9 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             }
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ENTRY_ADDED'), RESPONSE_NOTICE);
         }
+
+        //Commit Transaction
+        $blogTable->commit();
 
         if ($this->gadget->registry->fetch('pingback') == 'true') {
             $pback =& Jaws_PingBack::getInstance();
@@ -218,6 +224,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $params['trackbacks']       = $trackbacks;
         $params['published']        = $publish;
         $params['allow_comments']   = $allow_comments;
+        $params['categories']       = implode(',', $categories);
         $params['fast_url']         = $fast_url;
         $params['meta_keywords']    = $meta_keywords;
         $params['meta_description'] = $meta_desc;
@@ -277,6 +284,9 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         }
 
         $blogTable = Jaws_ORM::getInstance()->table('blog');
+        //Start Transaction
+        $blogTable->beginTransaction();
+
         $result = $blogTable->update($params)->where('id', $post_id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), RESPONSE_ERROR);
@@ -317,6 +327,9 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
                 $this->DeleteCategoryInEntry($post_id, $v['id']);
             }
         }
+
+        //Commit Transaction
+        $blogTable->commit();
 
         if ($this->gadget->registry->fetch('pingback') == 'true') {
             $pback =& Jaws_PingBack::getInstance();

@@ -43,10 +43,12 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         // Category
         $catChecks =& Piwi::CreateWidget('CheckButtons', 'categories', 'vertical');
         $categories = $model->GetCategories();
+        $canAddNewItem = false;
         if (!Jaws_Error::IsError($categories)) {
             foreach ($categories as $a) {
                 if ($this->gadget->GetPermission('CategoryManage', $a['id'])) {
                     $catChecks->AddOption($a['name'], $a['id']);
+                    $canAddNewItem = true;
                 }
             }
         }
@@ -56,6 +58,12 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         $tpl->SetVariable('category', _t('GLOBAL_CATEGORY'));
         $tpl->SetVariable('category_field', $catChecks->Get());
+
+        // check dynamic ACL for access to at least one category
+        if(!$canAddNewItem) {
+            $menu  = $this->MenuBar('NewEntry');
+            return $menu . _t('GLOBAL_ERROR_ACCESS_DENIED');
+        }
 
         // Summary
         $tpl->SetVariable('lbl_summary', _t('BLOG_ENTRY_SUMMARY'));

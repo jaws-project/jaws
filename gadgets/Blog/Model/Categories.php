@@ -118,7 +118,7 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
      * Get number of category's pages
      *
      * @access  public
-     * @param   int     $category   category iD
+     * @param   int     $category   category Id
      * @return  int number of pages
      */
     function GetCategoryNumberOfPages($category)

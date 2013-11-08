@@ -78,7 +78,6 @@ class Blog_Actions_Categories extends Blog_Actions_Default
         }
     }
 
-
     /**
      * Displays a list of blog categories with a link to each one's posts and xml feeds
      *
@@ -117,7 +116,5 @@ class Blog_Actions_Categories extends Blog_Actions_Default
 
         return $tpl->Get();
     }
-
-
 
 }

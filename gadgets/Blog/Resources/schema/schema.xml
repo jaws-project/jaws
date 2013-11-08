@@ -82,6 +82,12 @@
    </field>
 
    <field>
+    <name>categories</name>
+    <type>text</type>
+    <length>64</length>
+   </field>
+
+   <field>
     <name>published</name>
     <type>boolean</type>
     <notnull>true</notnull>
