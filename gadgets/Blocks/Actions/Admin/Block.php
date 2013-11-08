@@ -19,7 +19,7 @@ class Blocks_Actions_Admin_Block extends Jaws_Gadget_Action
     function Block()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Blocks.html');
+        $tpl = $this->gadget->template->loadAdmin('Blocks.html');
         $tpl->SetBlock('blocks');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
