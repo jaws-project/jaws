@@ -71,34 +71,48 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
             $tpl->ParseBlock('Languages/lang');
         }
 
-        // Components
+        // Global, Install, Upgrade
         $model = $this->gadget->loadAdminModel('Languages');
-        $components = $model->GetComponents();
-        $componentsName = array(
+        $globals = array(
             0 => 'Global',
-            1 => 'Gadgets',
-            2 => 'Plugins',
             4 => 'Install',
             5 => 'Upgrade'
         );
-        foreach ($components as $compk => $compv) {
-            if (is_array($compv)) {
-                $tpl->SetBlock('Languages/group');
-                $tpl->SetVariable('group', $componentsName[$compk]);
-                foreach ($compv as $k => $v) {
-                    $tpl->SetBlock('Languages/group/item');
-                    $tpl->SetVariable('key', "$compk|$v");
-                    $tpl->SetVariable('value', $v);
-                    $tpl->ParseBlock('Languages/group/item');
-                }
-                $tpl->ParseBlock('Languages/group');
-            } else {
-                $tpl->SetBlock('Languages/component');
-                $tpl->SetVariable('key', $compk);
-                $tpl->SetVariable('value', $compv);
-                $tpl->ParseBlock('Languages/component');
-            }
+        $tpl->SetBlock('Languages/group');
+        $tpl->SetVariable('group', 'Global');
+        foreach ($globals as $k => $v) {
+            $tpl->SetBlock('Languages/group/item');
+            $tpl->SetVariable('key', "$k|$v");
+            $tpl->SetVariable('value', $v);
+            $tpl->ParseBlock('Languages/group/item');
         }
+        $tpl->ParseBlock('Languages/group');
+        
+        // Gadgets
+        $tpl->SetBlock('Languages/group');
+        $tpl->SetVariable('group', 'Gadgets');
+        $gCompModel = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
+        $gadgets = $gCompModel->GetGadgetsList();
+        foreach ($gadgets as $gadget => $gInfo) {
+            $tpl->SetBlock('Languages/group/item');
+            $tpl->SetVariable('key', "1|$gadget");
+            $tpl->SetVariable('value', $gadget);
+            $tpl->ParseBlock('Languages/group/item');
+        }
+        $tpl->ParseBlock('Languages/group');
+
+        // Plugins
+        $tpl->SetBlock('Languages/group');
+        $tpl->SetVariable('group', 'Plugins');
+        $pCompModel = Jaws_Gadget::getInstance('Components')->loadModel('Plugins');
+        $plugins = $pCompModel->GetPluginsList();
+        foreach ($plugins as $plugin => $pInfo) {
+            $tpl->SetBlock('Languages/group/item');
+            $tpl->SetVariable('key', "2|$plugin");
+            $tpl->SetVariable('value', $plugin);
+            $tpl->ParseBlock('Languages/group/item');
+        }
+        $tpl->ParseBlock('Languages/group');
 
         $tpl->SetBlock('Languages/buttons');
         //checkbox_filter

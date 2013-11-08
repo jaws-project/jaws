@@ -84,43 +84,6 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
     }
 
     /**
-     * Get grouped Jaws component list
-     *
-     * @access  public
-     * @return  array   List of components
-     */
-    function GetComponents()
-    {
-        /**
-         *
-         */
-        function GetModulesList($type = 'gadgets')
-        {
-            $modules = array();
-            $mDir = JAWS_PATH . $type . DIRECTORY_SEPARATOR;
-            if (!is_dir($mDir)) {
-                return $modules;
-            }
-            $dir = scandir($mDir);
-            foreach($dir as $file) {
-                if ($file{0} != '.' && is_dir($mDir . $file)) {
-                    $modules[] = $file;
-                }
-            }
-            asort($modules);
-            return $modules;        
-        }
-
-        $components = array();
-        $components[JAWS_COMPONENT_OTHERS]  = array('Global');
-        $components[JAWS_COMPONENT_INSTALL] = array('Install');
-        $components[JAWS_COMPONENT_UPGRADE] = array('Upgrade');
-        $components[JAWS_COMPONENT_GADGET]  = GetModulesList('gadgets');
-        $components[JAWS_COMPONENT_PLUGIN]  = GetModulesList('plugins');
-        return $components;
-    }
-
-    /**
      * Returns an array of module language data
      *
      * @access  public
