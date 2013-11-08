@@ -25,7 +25,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_Action
         $id = jaws()->request->fetch('id', 'get');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $date = $GLOBALS['app']->loadDate();
-        $model = $this->gadget->loadModel('Message');
+        $model = $this->gadget->model->load('Message');
         $usrModel = new Jaws_User;
         $messages = array();
         $message = $model->GetMessage($id, false, false);

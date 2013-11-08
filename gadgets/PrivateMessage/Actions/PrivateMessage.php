@@ -26,8 +26,8 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
         $tpl->SetBlock('PrivateMessage');
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_NAME'));
 
-        $iModel = $this->gadget->loadModel('Inbox');
-        $oModel = $this->gadget->loadModel('Outbox');
+        $iModel = $this->gadget->model->load('Inbox');
+        $oModel = $this->gadget->model->load('Outbox');
         $user_id = $GLOBALS['app']->Session->GetAttribute('user');
         $unreadAnnouncementCount = $iModel->GetInboxStatistics(
                                                 $user_id,

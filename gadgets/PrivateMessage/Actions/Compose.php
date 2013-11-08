@@ -28,7 +28,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $get = jaws()->request->fetch(array('id', 'reply'), 'get');
         $id = $get['id'];
 
-        $model = $this->gadget->loadModel('Message');
+        $model = $this->gadget->model->load('Message');
         $tpl = $this->gadget->loadTemplate('Compose.html');
         $tpl->SetBlock('compose');
 
@@ -257,7 +257,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             $message_id = jaws()->request->fetch('id', 'post');
         }
 
-        $model = $this->gadget->loadModel('Message');
+        $model = $this->gadget->model->load('Message');
         $tpl = $this->gadget->loadTemplate('Compose.html');
         $tpl->SetBlock('attachments');
 
@@ -311,7 +311,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         }
 
         $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $model = $this->gadget->loadModel('Message');
+        $model = $this->gadget->model->load('Message');
 
         $message_id = $model->ComposeMessage($user, $post);
         $url = $this->gadget->urlMap('Outbox');

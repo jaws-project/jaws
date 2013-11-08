@@ -67,8 +67,8 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_Actions_Default
         $tpl->ParseBlock('outbox/actions');
 
         $date = $GLOBALS['app']->loadDate();
-        $oModel = $this->gadget->loadModel('Outbox');
-        $mModel = $this->gadget->loadModel('Message');
+        $oModel = $this->gadget->model->load('Outbox');
+        $mModel = $this->gadget->model->load('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
             $tpl->SetBlock('outbox/response');
@@ -168,7 +168,7 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_Actions_Default
 
         $id = jaws()->request->fetch('id', 'get');
 
-        $model = $this->gadget->loadModel('Message');
+        $model = $this->gadget->model->load('Message');
         $res = $model->MarkMessagesPublishStatus($id, false);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(

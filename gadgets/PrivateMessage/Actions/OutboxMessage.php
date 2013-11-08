@@ -24,7 +24,7 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_Action
 
         $id = jaws()->request->fetch('id', 'get');
         $date = $GLOBALS['app']->loadDate();
-        $model = $this->gadget->loadModel('Message');
+        $model = $this->gadget->model->load('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $usrModel = new Jaws_User;
         $message = $model->GetMessage($id, true, false);
@@ -225,7 +225,7 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_Action
         if (!empty($post) && count($post) > 0) {
             $ids = $post;
         }
-        $model = $this->gadget->loadModel('Message');
+        $model = $this->gadget->model->load('Message');
         $res = $model->DeleteOutboxMessage($ids);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
@@ -263,7 +263,7 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_Action
 
         $id = jaws()->request->fetch('id', 'get');
 
-        $model = $this->gadget->loadModel('Message');
+        $model = $this->gadget->model->load('Message');
         $res = $model->MarkMessagesPublishStatus($id, true);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(

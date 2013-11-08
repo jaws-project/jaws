@@ -25,8 +25,8 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_Action
         $rqst = jaws()->request->fetch(array('uid', 'mid', 'aid'), 'get');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
-        $mModel = $this->gadget->loadModel('Message');
-        $aModel = $this->gadget->loadModel('Attachment');
+        $mModel = $this->gadget->model->load('Message');
+        $aModel = $this->gadget->model->load('Attachment');
         $message = $mModel->GetMessage($rqst['mid'], false, false);
         if (Jaws_Error::IsError($message)) {
             return Jaws_HTTPError::Get(500);
