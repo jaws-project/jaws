@@ -72,7 +72,7 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
         }
 
         // Global, Install, Upgrade
-        $model = $this->gadget->loadAdminModel('Languages');
+        $model = $this->gadget->model->loadAdmin('Languages');
         $globals = array(
             0 => 'Global',
             4 => 'Install',
@@ -91,7 +91,7 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
         // Gadgets
         $tpl->SetBlock('Languages/group');
         $tpl->SetVariable('group', 'Gadgets');
-        $gCompModel = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
+        $gCompModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $gCompModel->GetGadgetsList();
         foreach ($gadgets as $gadget => $gInfo) {
             $tpl->SetBlock('Languages/group/item');
@@ -104,7 +104,7 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
         // Plugins
         $tpl->SetBlock('Languages/group');
         $tpl->SetVariable('group', 'Plugins');
-        $pCompModel = Jaws_Gadget::getInstance('Components')->loadModel('Plugins');
+        $pCompModel = Jaws_Gadget::getInstance('Components')->model->load('Plugins');
         $plugins = $pCompModel->GetPluginsList();
         foreach ($plugins as $plugin => $pInfo) {
             $tpl->SetBlock('Languages/group/item');
@@ -153,7 +153,7 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
         $tpl->SetBlock('LangStrings');
 
         $langFrom = $this->gadget->registry->fetch('base_lang');
-        $model = $this->gadget->loadAdminModel('Languages');
+        $model = $this->gadget->model->loadAdmin('Languages');
         $data = $model->GetLangData($module, $type, $langTo, $langFrom);
         $color = 'even';
         if (count($data['strings']) > 0) {
