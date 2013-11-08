@@ -105,7 +105,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
 
         $this->MoveLink($id, $gid, $oldLink['gid'], $rank, $oldLink['rank']);
 
-        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+        if (Jaws_Gadget::IsGadgetInstalled('Tags') && !empty($tags)) {
             $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             $res = $model->UpdateTagsItems('LinkDump', 'link', $id, true, null, $tags);
             if (Jaws_Error::IsError($res)) {
