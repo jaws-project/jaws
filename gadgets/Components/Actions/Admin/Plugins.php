@@ -22,7 +22,7 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
         $this->gadget->CheckPermission('ManagePlugins');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('Plugins.html');
+        $tpl = $this->gadget->template->loadAdmin('Plugins.html');
         $tpl->SetBlock('components');
 
         $tpl->SetVariable('menubar', $this->Menubar('Plugins'));
@@ -56,7 +56,7 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
      */
     function PluginsSummary()
     {
-        $tpl = $this->gadget->loadAdminTemplate('PluginsSummary.html');
+        $tpl = $this->gadget->template->loadAdmin('PluginsSummary.html');
         $tpl->SetBlock('summary');
         $tpl->SetVariable('lbl_summary', _t('COMPONENTS_SUMMARY'));
         $tpl->SetVariable('lbl_installed', _t('COMPONENTS_PLUGINS_INSTALLED').':');
@@ -80,7 +80,7 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
             return $objPlugin->getMessage();
         }
 
-        $tpl = $this->gadget->loadAdminTemplate('Plugin.html');
+        $tpl = $this->gadget->template->loadAdmin('Plugin.html');
         $tpl->SetBlock('info');
 
         $tpl->SetVariable('lbl_version',   _t('COMPONENTS_VERSION').':');
@@ -123,7 +123,7 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
      */
     function PluginUsage()
     {
-        $tpl = $this->gadget->loadAdminTemplate('PluginUsage.html');
+        $tpl = $this->gadget->template->loadAdmin('PluginUsage.html');
         $tpl->SetBlock('usage');
 
         $tpl->SetVariable('decription', _t('COMPONENTS_PLUGINS_USAGE_DESC'));

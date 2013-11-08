@@ -22,7 +22,7 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageGadgets');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('Gadgets.html');
+        $tpl = $this->gadget->template->loadAdmin('Gadgets.html');
         $tpl->SetBlock('components');
 
         $tpl->SetVariable('menubar', $this->Menubar('Gadgets'));
@@ -62,7 +62,7 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
      */
     function GadgetsSummary()
     {
-        $tpl = $this->gadget->loadAdminTemplate('GadgetsSummary.html');
+        $tpl = $this->gadget->template->loadAdmin('GadgetsSummary.html');
         $tpl->SetBlock('summary');
         $tpl->SetVariable('lbl_summary', _t('COMPONENTS_SUMMARY'));
         $tpl->SetVariable('lbl_outdated', _t('COMPONENTS_GADGETS_OUTDATED').':');
@@ -89,7 +89,7 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
             return $objGadget->getMessage();
         }
 
-        $tpl = $this->gadget->loadAdminTemplate('Gadget.html');
+        $tpl = $this->gadget->template->loadAdmin('Gadget.html');
         $tpl->SetBlock('info');
 
         $tpl->SetVariable('gadget', $objGadget->title);

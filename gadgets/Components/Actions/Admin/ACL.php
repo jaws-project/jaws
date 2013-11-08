@@ -19,7 +19,7 @@ class Components_Actions_Admin_ACL extends Jaws_Gadget_Action
      */
     function ACLUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('ACL.html');
+        $tpl = $this->gadget->template->loadAdmin('ACL.html');
         $tpl->SetBlock('acl');
 
         $button =& Piwi::CreateWidget('Button', '', _t('GLOBAL_SAVE'), STOCK_SAVE);
