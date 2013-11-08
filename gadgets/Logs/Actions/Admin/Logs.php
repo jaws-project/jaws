@@ -18,7 +18,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     function Logs()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Logs.html');
+        $tpl = $this->gadget->template->loadAdmin('Logs.html');
         $tpl->SetBlock('Logs');
 
         //Menu bar
@@ -189,7 +189,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
      */
     function LogUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('Logs.html');
+        $tpl = $this->gadget->template->loadAdmin('Logs.html');
         $tpl->SetBlock('LogUI');
 
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));

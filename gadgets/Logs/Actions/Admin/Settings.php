@@ -19,7 +19,7 @@ class Logs_Actions_Admin_Settings extends Logs_Actions_Admin_Default
     function Settings()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Settings.html');
+        $tpl = $this->gadget->template->loadAdmin('Settings.html');
         $tpl->SetBlock('Settings');
 
         // Log Priority Level
