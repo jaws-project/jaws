@@ -20,7 +20,7 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
     function ViewEvent()
     {
         $id = (int)jaws()->request->fetch('id', 'get');
-        $model = $this->gadget->loadModel('Event');
+        $model = $this->gadget->model->load('Event');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $event = $model->GetEvent($id, $user);
         if (Jaws_Error::IsError($event) ||

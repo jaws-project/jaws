@@ -21,7 +21,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
     {
         // Fetch event
         $id = (int)jaws()->request->fetch('id', 'get');
-        $model = $this->gadget->loadModel('Event');
+        $model = $this->gadget->model->load('Event');
         $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $event = $model->GetEvent($id, $uid);
         if (Jaws_Error::IsError($event) ||
@@ -56,7 +56,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_groups', _t('EVENTSCALENDAR_GROUPS'));
 
         // Event users
-        $model = $this->gadget->loadModel('Share');
+        $model = $this->gadget->model->load('Share');
         $combo =& Piwi::CreateWidget('Combo', 'event_users');
         $combo->SetSize(10);
         $users = $model->GetEventUsers($id);
@@ -108,7 +108,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
     function UpdateShare()
     {
         $id = (int)jaws()->request->fetch('id');
-        $model = $this->gadget->loadModel('Event');
+        $model = $this->gadget->model->load('Event');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
 
         // Validate event
@@ -130,7 +130,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
 
         $users = jaws()->request->fetch('users');
         $users = empty($users)? array() : explode(',', $users);
-        $model = $this->gadget->loadModel('Share');
+        $model = $this->gadget->model->load('Share');
         $res = $model->UpdateEventUsers($id, $users);
         if (Jaws_Error::IsError($res)) {
             return $GLOBALS['app']->Session->GetResponse(

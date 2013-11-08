@@ -46,7 +46,7 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
         $tpl->SetVariable('next', $year + 1);
 
         // Fetch events
-        $model = $this->gadget->loadModel('Report');
+        $model = $this->gadget->model->load('Report');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $events = $model->GetYearEvents($user, null, null, $year);
         if (Jaws_Error::IsError($events)){

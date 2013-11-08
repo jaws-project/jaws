@@ -37,7 +37,7 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
         $daysInMonth = 30;
 
         // Fetch events
-        $model = $this->gadget->loadModel('Reminder');
+        $model = $this->gadget->model->load('Reminder');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $events = $model->GetEvents($user, $time, null);
         if (Jaws_Error::IsError($events)) {

@@ -56,7 +56,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $limit = (int)$this->gadget->registry->fetch('events_limit');
 
         // Fetch events
-        $model = $this->gadget->loadModel('Events');
+        $model = $this->gadget->model->load('Events');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $count = $model->GetNumberOfEvents($user, $query, $shared, $foreign, $start, $stop);
         $events = $model->GetEvents($user, $query, $shared, $foreign,

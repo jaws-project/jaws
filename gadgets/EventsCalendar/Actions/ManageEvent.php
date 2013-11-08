@@ -64,7 +64,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $jdate = $GLOBALS['app']->loadDate();
         if (!isset($event) || empty($event)) {
             if (!empty($id)) {
-                $model = $this->gadget->loadModel('Event');
+                $model = $this->gadget->model->load('Event');
                 $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
                 $event = $model->GetEvent($id, $user);
                 if (Jaws_Error::IsError($event) ||
@@ -263,7 +263,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $event['location'] = Jaws_XSS::defilter($event['location']);
         $event['description'] = Jaws_XSS::defilter($event['description']);
 
-        $model = $this->gadget->loadModel('Event');
+        $model = $this->gadget->model->load('Event');
         $result = $model->InsertEvent($event);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushResponse(
@@ -305,7 +305,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         }
 
         // Validate event
-        $model = $this->gadget->loadModel('Event');
+        $model = $this->gadget->model->load('Event');
         $id = (int)$data['id'];
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $event = $model->GetEvent($id, $user);
@@ -368,7 +368,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         }
 
         // Verify events & user
-        $model = $this->gadget->loadModel('Event');
+        $model = $this->gadget->model->load('Event');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $verified_events = $model->CheckEvents($id_set, $user);
         if (Jaws_Error::IsError($verified_events)) {
@@ -387,7 +387,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         }
 
         // Delete events
-        $model = $this->gadget->loadModel('Event');
+        $model = $this->gadget->model->load('Event');
         $res = $model->Delete($verified_events);
         if (Jaws_Error::IsError($res)) {
             return $GLOBALS['app']->Session->GetResponse(

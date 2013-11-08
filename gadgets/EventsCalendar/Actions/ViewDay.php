@@ -81,7 +81,7 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
         $repeat['month'] = $month;
 
         // Fetch events
-        $model = $this->gadget->loadModel('Report');
+        $model = $this->gadget->model->load('Report');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $start = $date['timestamp'];
         $stop = $jdate->ToBaseDate($year, $month, $day, 23, 59, 59);
