@@ -21,7 +21,7 @@ class UrlMapper_Actions_Admin_Aliases extends UrlMapper_Actions_Admin_Default
     function Aliases()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Aliases.html');
+        $tpl = $this->gadget->template->loadAdmin('Aliases.html');
         $tpl->SetBlock('Aliases');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 

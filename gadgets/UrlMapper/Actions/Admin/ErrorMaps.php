@@ -124,7 +124,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
     function ErrorMaps()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('ErrorMaps.html');
+        $tpl = $this->gadget->template->loadAdmin('ErrorMaps.html');
         $tpl->SetBlock('ErrorMaps');
 
         // Menubar
