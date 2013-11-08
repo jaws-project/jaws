@@ -49,7 +49,7 @@ class FindFriend_Plugin extends Jaws_Plugin
         if (file_exists(JAWS_PATH.'gadgets/Friends/Model.php') &&
             Jaws_Gadget::IsGadgetInstalled('Friends')) {
             $howMany = preg_match_all('#\[friend\](.*?)\[/friend\]#si', $html, $matches);
-            $objFriends = Jaws_Gadget::getInstance('Friends')->loadModel('Friends');
+            $objFriends = Jaws_Gadget::getInstance('Friends')->model->load('Friends');
             for ($i = 0; $i < $howMany; $i++) {
                 $match_text = $matches[1][$i];
                 //How many?
