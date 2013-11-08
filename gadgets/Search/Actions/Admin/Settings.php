@@ -25,7 +25,7 @@ class Search_Actions_Admin_Settings extends Jaws_Gadget_Action
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('settings', _t('GLOBAL_SETTINGS'));
 
-        $model = $this->gadget->loadModel('Search');
+        $model = $this->gadget->model->load('Search');
         $gadgetList = $model->GetSearchableGadgets();
         $gSearchable = $this->gadget->registry->fetch('searchable_gadgets');
         $searchableGadgets = ($gSearchable=='*')? array_keys($gadgetList) : explode(', ', $gSearchable);

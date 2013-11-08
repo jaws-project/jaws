@@ -30,7 +30,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
         }
 
         $searchable = false;
-        $model = $this->gadget->loadModel('Search');
+        $model = $this->gadget->model->load('Search');
         $options = $model->parseSearch($post, $searchable);
         if ($searchable) {
             $items = $model->Search($options);
@@ -138,7 +138,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('PageNavigation.html');
         $tpl->SetBlock('pager');
 
-        $model = $this->gadget->loadModel('Search');
+        $model = $this->gadget->model->load('Search');
         $pager = $model->GetEntryPagerNumbered($page, $page_size, $total);
         if (count($pager) > 0) {
             $tpl->SetBlock('pager/numbered-navigation');
