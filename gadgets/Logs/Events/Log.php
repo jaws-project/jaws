@@ -23,7 +23,7 @@ class Logs_Events_Log extends Jaws_Gadget_Event
      */
     function Execute($gadget, $action, $title = '', $priority = 0, $params = null)
     {
-        $logsModel = $this->gadget->loadModel('Logs');
+        $logsModel = $this->gadget->model->load('Logs');
         return $logsModel->InsertLog($gadget, $action, $title, $priority, $params);
     }
 

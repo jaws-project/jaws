@@ -47,7 +47,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         // Gadgets Filter
         $gadgetsCombo =& Piwi::CreateWidget('Combo', 'filter_gadget');
         $gadgetsCombo->AddOption(_t('LOGS_ALL_GADGETS'), "", false);
-        $cmpModel = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
+        $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgetList = $cmpModel->GetGadgetsList();
         foreach ($gadgetList as $gadget) {
             $gadgetsCombo->AddOption($gadget['title'], $gadget['name']);
@@ -117,7 +117,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
      */
     function LogsDataGrid()
     {
-        $model = $this->gadget->loadAdminModel('Logs');
+        $model = $this->gadget->model->loadAdmin('Logs');
         $total = $model->TotalOfData('logs');
 
         $gridBox =& Piwi::CreateWidget('VBox');
@@ -220,7 +220,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $post = jaws()->request->fetch(array('offset', 'filters:array'), 'post');
         $filters = $post['filters'];
 
-        $model = $this->gadget->loadAdminModel('Logs');
+        $model = $this->gadget->model->loadAdmin('Logs');
         $logs = $model->GetLogs($filters, 12, $post['offset']);
         if (Jaws_Error::IsError($logs)) {
             return array();
@@ -262,7 +262,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     function GetLogsCount()
     {
         $filters = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Logs');
+        $model = $this->gadget->model->loadAdmin('Logs');
         return $model->GetLogsCount($filters);
     }
 
@@ -275,7 +275,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     function GetLog()
     {
         $id = jaws()->request->fetch('id');
-        $logModel = $this->gadget->loadAdminModel('Logs');
+        $logModel = $this->gadget->model->loadAdmin('Logs');
         $log = $logModel->GetLog($id);
         if (Jaws_Error::IsError($log)) {
             return array();
@@ -317,7 +317,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     function DeleteLogs()
     {
         $logsID = jaws()->request->fetchAll();
-        $model = $this->gadget->loadAdminModel('Logs');
+        $model = $this->gadget->model->loadAdmin('Logs');
         $res = $model->DeleteLogs($logsID);
         if (Jaws_Error::IsError($res) || $res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LOGS_ERROR_CANT_DELETE_LOGS'),
