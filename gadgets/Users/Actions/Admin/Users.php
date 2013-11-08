@@ -481,7 +481,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $country =& Piwi::CreateWidget('Combo', 'country');
         $country->SetID('country');
         $country->AddOption(_t('USERS_ADVANCED_OPTS_NOT_YET'), '0');
-        $objCountry = $this->gadget->loadModel('Country');
+        $objCountry = $this->gadget->model->load('Country');
         $countries = $objCountry->GetCountries();
         foreach($countries as $code => $name) {
             $country->AddOption($name, $code);

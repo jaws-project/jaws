@@ -180,7 +180,7 @@ class Users_Actions_Personal extends Jaws_Gadget_Action
             $post['avatar'] = '';
         }
 
-        $model  = $this->gadget->loadModel('Personal');
+        $model  = $this->gadget->model->load('Personal');
         $result = $model->UpdatePersonal(
             $GLOBALS['app']->Session->GetAttribute('user'),
             $post

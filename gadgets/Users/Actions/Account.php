@@ -121,7 +121,7 @@ class Users_Actions_Account extends Jaws_Gadget_Action
                 $post['password'] = null;
             }
 
-            $model  = $this->gadget->loadModel('Account');
+            $model  = $this->gadget->model->load('Account');
             $result = $model->UpdateAccount(
                 $GLOBALS['app']->Session->GetAttribute('user'),
                 $post['username'],
@@ -175,7 +175,7 @@ class Users_Actions_Account extends Jaws_Gadget_Action
 
         $key = jaws()->request->fetch('key', 'get');
 
-        $uModel  = $this->gadget->loadModel('Account');
+        $uModel  = $this->gadget->model->load('Account');
         $result = $uModel->ChangePassword($key);
         if (Jaws_Error::IsError($result)) {
             return $result->GetMessage();

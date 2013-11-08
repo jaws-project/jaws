@@ -230,7 +230,7 @@ class Users_Actions_Profile extends Jaws_Gadget_Action
 
         $activity = false;
         $gDir = JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
-        $cmpModel = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
+        $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets  = $cmpModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget => $gInfo) {
             if (!file_exists($gDir . $gadget. '/Hooks/Activity.php')) {

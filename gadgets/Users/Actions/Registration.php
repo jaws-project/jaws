@@ -84,7 +84,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
                     $dob  = date('Y-m-d H:i:s', $dob['timestamp']);
                 }
 
-                $uModel = $this->gadget->loadModel('Registration');
+                $uModel = $this->gadget->model->load('Registration');
                 $result = $uModel->CreateUser(
                     $post['username'],
                     $post['email'],

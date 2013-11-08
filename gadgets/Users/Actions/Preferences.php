@@ -37,7 +37,7 @@ class Users_Actions_Preferences extends Jaws_Gadget_Action
         $tpl->SetVariable('title', _t('USERS_PREFERENCES_INFO'));
 
         $gDir = JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
-        $cmpModel = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
+        $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets  = $cmpModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget => $gInfo) {
             if (!file_exists($gDir . $gadget. '/Hooks/Preferences.php')) {

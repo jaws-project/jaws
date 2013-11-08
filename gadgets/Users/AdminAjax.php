@@ -283,7 +283,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageOnlineUsers');
         $this->gadget->CheckPermission('ManageIPs');
 
-        $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAdminModel('IP');
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->model->loadAdmin('IP');
         $sIds = jaws()->request->fetchAll('post');
         foreach ($sIds as $id) {
             $session = $GLOBALS['app']->Session->GetSession($id);
@@ -316,7 +316,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageAgents');
         $sIds = jaws()->request->fetchAll('post');
 
-        $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAdminModel('Agent');
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->model->loadAdmin('Agent');
         foreach ($sIds as $id) {
             $session = $GLOBALS['app']->Session->GetSession($id);
 
@@ -438,7 +438,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageGroups');
         @list($guid, $users) = jaws()->request->fetchAll('post');
         $users = jaws()->request->fetch('1:array', 'post');
-        $uModel = $this->gadget->loadAdminModel('UsersGroup');
+        $uModel = $this->gadget->model->loadAdmin('UsersGroup');
         $res = $uModel->AddUsersToGroup($guid, $users);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
@@ -458,7 +458,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageProperties');
         @list($method, $anon, $repetitive, $act, $group, $recover, $dashboard) = jaws()->request->fetchAll('post');
-        $uModel = $this->gadget->loadAdminModel('Settings');
+        $uModel = $this->gadget->model->loadAdmin('Settings');
         $res = $uModel->SaveSettings($method, $anon, $repetitive, $act, $group, $recover, $dashboard);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
