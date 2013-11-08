@@ -184,7 +184,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
     {
         $id = jaws()->request->fetch('id', 'get');
 
-        $layoutGadget = $this->gadget->loadAction('Feed');
+        $layoutGadget = $this->gadget->action->load('Feed');
         return $layoutGadget->DisplayFeeds($id);
     }
 }
