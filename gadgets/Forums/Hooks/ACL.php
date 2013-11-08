@@ -23,16 +23,17 @@ class Forums_Hooks_ACL extends Jaws_Gadget_Hook
         $items = $fModel->GetForums();
         if (!Jaws_Error::IsError($items)) {
             foreach ($items as $item) {
-                define(
-                    strtoupper('_'. $language. '_'. $this->gadget->name. '_ACL_FORUMACCESS_'. $item['id']),
+                $this->gadget->translate->insert(
+                    'ACL_FORUMACCESS_'. $item['id'],
                     _t('FORUMS_ACL_FORUM_ACCESS', $item['title'])
                 );
-                define(
-                    strtoupper('_'. $language. '_'. $this->gadget->name. '_ACL_FORUMMANAGE_'. $item['id']),
+                $this->gadget->translate->insert(
+                    'ACL_FORUMMANAGE_'. $item['id'],
                     _t('FORUMS_ACL_FORUM_MANAGE', $item['title'])
                 );
             }
         }
+
     }
 
 }
