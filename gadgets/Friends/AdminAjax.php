@@ -109,7 +109,7 @@ class Friends_AdminAjax extends Jaws_Gadget_Action
         if(empty($limit)) {
             $limit = 0;
         }
-        $gadget = $this->gadget->loadAdminAction('Friends');
+        $gadget = $this->gadget->action->loadAdmin('Friends');
         if (!is_numeric($limit)) {
             $limit = 0;
         }
