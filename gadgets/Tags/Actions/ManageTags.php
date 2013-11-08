@@ -59,7 +59,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         }
         $tpl->SetVariable('opt_page_item_' . $limit, 'selected="selected"');
 
-        $model = $this->gadget->loadAdminModel('Tags');
+        $model = $this->gadget->model->loadAdmin('Tags');
         $tags = $model->GetTags($filters, $limit, ($page - 1) * $limit, 0, false);
         $tagsTotal = $model->GetTagsCount($filters, false);
 
@@ -85,7 +85,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
 
         $tpl->SetBlock('tags/gadgets_filter');
         //Gadgets filter
-        $model = $this->gadget->loadModel('Tags');
+        $model = $this->gadget->model->load('Tags');
         $gadgets = $model->GetTagRelativeGadgets();
         $tagGadgets = array();
         $tagGadgets[''] = _t('GLOBAL_ALL');
@@ -150,7 +150,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
 
         $tag_id = jaws()->request->fetch('tag', 'get');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $model = $this->gadget->loadAdminModel('Tags');
+        $model = $this->gadget->model->loadAdmin('Tags');
         $tag = $model->GetTag($tag_id);
         if ($tag['user'] != $user) {
             return Jaws_HTTPError::Get(403);
@@ -195,7 +195,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         $post = jaws()->request->fetch(array('tid', 'name', 'title', 'description'), 'post');
         $id = $post['tid'];
         unset($post['tid']);
-        $model = $this->gadget->loadAdminModel('Tags');
+        $model = $this->gadget->model->loadAdmin('Tags');
         $tag = $model->GetTag($id);
         if ($tag['user'] != $GLOBALS['app']->Session->GetAttribute('user')) {
             return Jaws_HTTPError::Get(403);
@@ -231,7 +231,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         }
 
         $ids = jaws()->request->fetch('tags_checkbox:array', 'post');
-        $model = $this->gadget->loadAdminModel('Tags');
+        $model = $this->gadget->model->loadAdmin('Tags');
         $res = $model->DeleteTags($ids);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
@@ -278,7 +278,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
                 RESPONSE_ERROR
             );
         }
-        $model = $this->gadget->loadAdminModel('Tags');
+        $model = $this->gadget->model->loadAdmin('Tags');
         $res = $model->MergeTags($ids, $post['new_tag_name'], false);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(

@@ -44,7 +44,7 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
             $gadgetsCombo->AddEvent(ON_CHANGE, "searchTags()");
             $gadgetsCombo->AddOption('', '');
 
-            $model = $this->gadget->loadModel('Tags');
+            $model = $this->gadget->model->load('Tags');
             $gadgets = $model->GetTagRelativeGadgets();
             $tagGadgets = array();
             $tagGadgets[''] = _t('GLOBAL_ALL');
@@ -158,7 +158,7 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
      */
     function GetDataAsArray($editAction, $filters, $offset)
     {
-        $cModel = $this->gadget->loadAdminModel('Tags');
+        $cModel = $this->gadget->model->loadAdmin('Tags');
         $tags = $cModel->GetTags($filters, 10, $offset, 0, true);
         if (Jaws_Error::IsError($tags)) {
             return array();
@@ -199,7 +199,7 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
      */
     function GetDataGrid()
     {
-        $tModel = $this->gadget->loadModel();
+        $tModel = $this->gadget->model->load();
         $total = $tModel->TotalOfData('tags');
 
         $gridBox =& Piwi::CreateWidget('VBox');
