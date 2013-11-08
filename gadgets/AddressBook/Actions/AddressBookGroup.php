@@ -31,7 +31,7 @@ class AddressBook_Actions_AddressBookGroup extends AddressBook_Actions_Default
 
         $this->AjaxMe('site_script.js');
         $this->SetTitle(_t('ADDRESSBOOK_NAME'));
-        $tpl = $this->gadget->loadTemplate('GroupMembers.html');
+        $tpl = $this->gadget->template->load('GroupMembers.html');
         $tpl->SetBlock("address_list");
 
         $response = $GLOBALS['app']->Session->PopResponse('AddressBook.AdrGroups');

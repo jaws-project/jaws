@@ -34,7 +34,7 @@ class AddressBook_Actions_UserAddress extends Jaws_Gadget_Action
         }
 
         $this->SetTitle(_t('ADDRESSBOOK_NAME'));
-        $tpl = $this->gadget->loadTemplate('UserAddress.html');
+        $tpl = $this->gadget->template->load('UserAddress.html');
         $tpl->SetBlock("address_list");
         $tpl->SetVariable('title', _t('ADDRESSBOOK_USER_ADDRESS_TITLE', $user['nickname']));
 

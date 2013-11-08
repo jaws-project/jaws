@@ -28,7 +28,7 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
             return $groupItems->getMessage(); // TODO: Show intelligible message
         }
 
-        $tpl = $this->gadget->loadTemplate('Groups.html');
+        $tpl = $this->gadget->template->load('Groups.html');
 
         $tpl->SetBlock("group");
         $tpl->SetVariable('title', _t('ADDRESSBOOK_NAME'));
@@ -74,7 +74,7 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
         }
 
         $this->SetTitle(_t('ADDRESSBOOK_NAME'));
-        $tpl = $this->gadget->loadTemplate('ManageGroups.html');
+        $tpl = $this->gadget->template->load('ManageGroups.html');
 
         $tpl->SetBlock("groups");
         $tpl->SetVariable('title', _t('ADDRESSBOOK_GROUP_TITLE'));
@@ -129,7 +129,7 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
         }
 
         $this->SetTitle(_t('ADDRESSBOOK_GROUP_ADD_NEW_TITLE'));
-        $tpl = $this->gadget->loadTemplate('EditGroup.html');
+        $tpl = $this->gadget->template->load('EditGroup.html');
 
         $tpl->SetBlock("group");
         $tpl->SetVariable('top_title', _t('ADDRESSBOOK_GROUP_ADD_NEW_TITLE'));
@@ -191,7 +191,7 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
         }
 
         $this->SetTitle(_t('ADDRESSBOOK_GROUP_EDIT_TITLE'));
-        $tpl = $this->gadget->loadTemplate('EditGroup.html');
+        $tpl = $this->gadget->template->load('EditGroup.html');
 
         $tpl->SetBlock("group");
         $tpl->SetVariable('top_title', _t('ADDRESSBOOK_GROUP_EDIT_TITLE'));

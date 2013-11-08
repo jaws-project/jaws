@@ -41,7 +41,7 @@ class AddressBook_Actions_ViewAddress extends AddressBook_Actions_Default
         }
 
         $this->SetTitle(_t('ADDRESSBOOK_ITEMS_VIEW_TITLE'));
-        $tpl = $this->gadget->loadTemplate('ViewAddress.html');
+        $tpl = $this->gadget->template->load('ViewAddress.html');
         $tpl->SetBlock("address");
         $tpl->SetVariable('top_title', _t('ADDRESSBOOK_ITEMS_VIEW_TITLE'));
         $tpl->SetVariable('id', $info['id']);

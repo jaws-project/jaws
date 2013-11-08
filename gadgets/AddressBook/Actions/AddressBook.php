@@ -31,7 +31,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
 
         $this->AjaxMe('site_script.js');
         $this->SetTitle(_t('ADDRESSBOOK_NAME'));
-        $tpl = $this->gadget->loadTemplate('AddressBook.html');
+        $tpl = $this->gadget->template->load('AddressBook.html');
         $tpl->SetBlock("address_list");
 
         $tpl->SetVariable('title', _t('ADDRESSBOOK_NAME'));
@@ -108,7 +108,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
             return $addressItems->getMessage(); // TODO: Show intelligible message
         }
 
-        $tpl = $this->gadget->loadTemplate('AddressList.html');
+        $tpl = $this->gadget->template->load('AddressList.html');
         $tpl->SetBlock("list");
 
         $tpl->SetVariable('lbl_name',      _t('ADDRESSBOOK_ITEMS_NAME'));
@@ -146,7 +146,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
 
         $this->AjaxMe('site_script.js');
         $this->SetTitle(_t('ADDRESSBOOK_ITEMS_ADD_NEW_TITLE'));
-        $tpl = $this->gadget->loadTemplate('EditAddress.html');
+        $tpl = $this->gadget->template->load('EditAddress.html');
 
         $tpl->SetBlock("address");
         $tpl->SetVariable('top_title', _t('ADDRESSBOOK_ITEMS_ADD_NEW_TITLE'));
@@ -274,7 +274,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
 
         $this->AjaxMe('site_script.js');
         $this->SetTitle(_t('ADDRESSBOOK_ITEMS_EDIT_TITLE'));
-        $tpl = $this->gadget->loadTemplate('EditAddress.html');
+        $tpl = $this->gadget->template->load('EditAddress.html');
         $tpl->SetBlock("address");
         $tpl->SetVariable('top_title', _t('ADDRESSBOOK_ITEMS_EDIT_TITLE'));
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {

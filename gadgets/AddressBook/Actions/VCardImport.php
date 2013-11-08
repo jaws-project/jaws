@@ -21,7 +21,7 @@ class AddressBook_Actions_VCardImport extends AddressBook_Actions_Default
         }
 
         $this->SetTitle(_t('ADDRESSBOOK_IMPORT_VCART_TITLE'));
-        $tpl = $this->gadget->loadTemplate('VCardImport.html');
+        $tpl = $this->gadget->template->load('VCardImport.html');
         $tpl->SetBlock("vcard");
         $tpl->SetVariable('title', _t('ADDRESSBOOK_IMPORT_VCART_TITLE'));
         $tpl->SetVariable('upload_vcard_file_desc', _t('ADDRESSBOOK_IMPORT_VCART_DESC'));
