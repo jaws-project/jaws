@@ -20,7 +20,7 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
     {
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('Languages.html');
+        $tpl = $this->gadget->template->loadAdmin('Languages.html');
         $tpl->SetBlock('Languages');
         $tpl->SetVariable('language',   _t('LANGUAGES_LANGUAGE'));
         $tpl->SetVariable('component',  _t('LANGUAGES_COMPONENT'));
@@ -149,7 +149,7 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
      */
     function GetLangDataUI($module, $type, $langTo)
     {
-        $tpl = $this->gadget->loadAdminTemplate('LangStrings.html');
+        $tpl = $this->gadget->template->loadAdmin('LangStrings.html');
         $tpl->SetBlock('LangStrings');
 
         $langFrom = $this->gadget->registry->fetch('base_lang');

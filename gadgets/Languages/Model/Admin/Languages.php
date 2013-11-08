@@ -270,13 +270,13 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
         }
 
         // user translation
-        $tpl = $this->gadget->loadAdminTemplate('FileTemplate.html');
+        $tpl = $this->gadget->template->loadAdmin('FileTemplate.html');
         $tpl->SetBlock('template');
         $tpl->SetVariable('project', $module_name);
         $tpl->SetVariable('language', strtoupper($langTo));
 
         // orig translation
-        $tpl2 = $this->gadget->loadAdminTemplate('FileTemplate.html');
+        $tpl2 = $this->gadget->template->loadAdmin('FileTemplate.html');
         $tpl2->SetBlock('template');
         $tpl2->SetVariable('project', $module_name);
         $tpl2->SetVariable('language', strtoupper($langTo));
