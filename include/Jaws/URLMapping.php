@@ -50,11 +50,11 @@ class Jaws_URLMapping
             Jaws_Error::Fatal($urlMapper->getMessage());
         }
 
-        $this->_MapsModel = Jaws_Gadget::getInstance('UrlMapper')->loadModel('Maps');
+        $this->_MapsModel = Jaws_Gadget::getInstance('UrlMapper')->model->load('Maps');
         if (Jaws_Error::isError($this->_MapsModel)) {
             Jaws_Error::Fatal($this->_MapsModel->getMessage());
         }
-        $this->_AliasesModel = Jaws_Gadget::getInstance('UrlMapper')->loadModel('Aliases');
+        $this->_AliasesModel = Jaws_Gadget::getInstance('UrlMapper')->model->load('Aliases');
         if (Jaws_Error::isError($this->_AliasesModel)) {
             Jaws_Error::Fatal($this->_AliasesModel->getMessage());
         }
