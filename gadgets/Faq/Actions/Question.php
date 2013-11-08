@@ -25,7 +25,7 @@ class Faq_Actions_Question extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('Question.html');
         $tpl->SetBlock('faq_question');
 
-        $model = $this->gadget->loadModel('Question');
+        $model = $this->gadget->model->load('Question');
         $q = $model->GetQuestion($qid);
         if (!Jaws_Error::IsError($q) && !empty($q)) {
             $this->SetTitle($q['question']);
@@ -51,7 +51,7 @@ class Faq_Actions_Question extends Jaws_Gadget_Action
         $this->SetTitle(_t('FAQ_TITLE'));
         $view_answers = $tpl->BlockExists('faq/answers');
 
-        $model = $this->gadget->loadModel('Question');
+        $model = $this->gadget->model->load('Question');
         $questions = $model->GetQuestions(null, true);
         if (is_array($questions) && count($questions) > 0) {
             $tpl->SetBlock('faq/summary');

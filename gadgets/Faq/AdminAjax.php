@@ -21,7 +21,7 @@ class Faq_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageCategories');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Category');
+        $model = $this->gadget->model->loadAdmin('Category');
         $model->DeleteCategory($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -37,7 +37,7 @@ class Faq_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('DeleteQuestion');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Question');
+        $model = $this->gadget->model->loadAdmin('Question');
         $model->DeleteQuestion($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -55,7 +55,7 @@ class Faq_AdminAjax extends Jaws_Gadget_Action
     function MoveQuestion()
     {
         @list($cat, $id, $position, $direction) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Question');
+        $model = $this->gadget->model->loadAdmin('Question');
         $result = $model->MoveQuestion($cat, $id, $position, $direction);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
@@ -78,7 +78,7 @@ class Faq_AdminAjax extends Jaws_Gadget_Action
     function MoveCategory()
     {
         @list($cat, $old_position, $new_position) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Category');
+        $model = $this->gadget->model->loadAdmin('Category');
         $result = $model->MoveCategory($cat, $old_position, $new_position);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);

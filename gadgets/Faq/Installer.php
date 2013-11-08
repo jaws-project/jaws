@@ -80,7 +80,7 @@ class Faq_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         // Update layout actions
-        $layoutModel = Jaws_Gadget::getInstance('Layout')->loadAdminModel('Layout');
+        $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
         if (!Jaws_Error::isError($layoutModel)) {
             $layoutModel->EditGadgetLayoutAction('Faq', 'ListCategories', 'ListCategories', 'Category');
         }

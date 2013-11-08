@@ -24,7 +24,7 @@ class Faq_Hooks_Menu extends Jaws_Gadget_Hook
                         'title' => _t('FAQ_NAME'));
 
         //Load model
-        $model = $this->gadget->loadModel('Category');
+        $model = $this->gadget->model->load('Category');
         $categories = $model->GetCategories();
         if (!Jaws_Error::isError($categories)) {
             $max_size = 20;

@@ -22,7 +22,7 @@ class Faq_Actions_Category extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('Categories.html');
         $tpl->SetBlock('faq_categories');
         $tpl->SetVariable('title', _t('FAQ_CATEGORIES'));
-        $model = $this->gadget->loadModel('Category');
+        $model = $this->gadget->model->load('Category');
         $cats = $model->GetCategories();
         if (is_array($cats) && count($cats) > 0) {
             foreach ($cats as $c) {
@@ -47,7 +47,7 @@ class Faq_Actions_Category extends Jaws_Gadget_Action
      */
     function ViewCategory()
     {
-        $model = $this->gadget->loadModel('Question');
+        $model = $this->gadget->model->load('Question');
 
         $cat_id = jaws()->request->fetch('id', 'get');
         $cat_id = Jaws_XSS::defilter($cat_id, true);

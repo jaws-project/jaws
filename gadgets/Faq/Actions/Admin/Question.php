@@ -22,7 +22,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
      */
     function DataGrid($cat, $questions = null)
     {
-        $model = $this->gadget->loadModel('Question');
+        $model = $this->gadget->model->load('Question');
         if ($questions === null) {
             $questions = $model->GetQuestions($cat);
             $questions = array_shift($questions);
@@ -89,8 +89,8 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $manageTpl->SetVariable('base_script', BASE_SCRIPT);
         $manageTpl->SetVariable('menubar', $this->MenuBar(''));
 
-        $qModel = $this->gadget->loadModel('Question');
-        $cModel = $this->gadget->loadModel('Category');
+        $qModel = $this->gadget->model->load('Question');
+        $cModel = $this->gadget->model->load('Category');
 
         $catCombo =& Piwi::CreateWidget('Combo', 'category');
         $cats = $cModel->GetCategories();
@@ -183,8 +183,8 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $tpl->SetBlock('edit_question');
         $tpl->SetVariable('menubar', $this->MenuBar('AddNewQuestion'));
 
-        $qModel = $this->gadget->loadModel('Question');
-        $cModel = $this->gadget->loadModel('Category');
+        $qModel = $this->gadget->model->load('Question');
+        $cModel = $this->gadget->model->load('Category');
 
         $get = jaws()->request->fetch(array('id', 'category'), 'get');
 
@@ -293,7 +293,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
     function NewQuestion()
     {
         $this->gadget->CheckPermission('AddQuestion');
-        $model = $this->gadget->loadAdminModel('Question');
+        $model = $this->gadget->model->loadAdmin('Question');
 
         $post = jaws()->request->fetch(array('question', 'fast_url', 'category', 'status'), 'post');
         $post['answer'] = jaws()->request->fetch('answer', 'post', false);
@@ -313,7 +313,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
     function UpdateQuestion()
     {
         $this->gadget->CheckPermission('EditQuestion');
-        $model = $this->gadget->loadAdminModel('Question');
+        $model = $this->gadget->model->loadAdmin('Question');
 
         $post    = jaws()->request->fetch(array('id', 'question', 'fast_url', 'category', 'status'), 'post');
         $post['answer'] = jaws()->request->fetch('answer', 'post', false);
@@ -332,7 +332,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
     function DeleteQuestion()
     {
         $this->gadget->CheckPermission('DeleteQuestion');
-        $model = $this->gadget->loadAdminModel('Question');
+        $model = $this->gadget->model->loadAdmin('Question');
 
         $id = (int)jaws()->request->fetch('id', 'get');
         $model->DeleteQuestion($id);
