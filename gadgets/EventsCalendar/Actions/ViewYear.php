@@ -28,7 +28,7 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
         $tpl->SetBlock('year');
 
         // Menubar
-        $action = $this->gadget->loadAction('Menubar');
+        $action = $this->gadget->action->load('Menubar');
         $tpl->SetVariable('menubar', $action->Menubar('Events'));
 
         // Current year

@@ -31,7 +31,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_owner', _t('EVENTSCALENDAR_EVENT_OWNER'));
 
         // Menubar
-        $action = $this->gadget->loadAction('Menubar');
+        $action = $this->gadget->action->load('Menubar');
         $tpl->SetVariable('menubar', $action->Menubar('ManageEvents'));
 
         // Ckeck for response
@@ -154,7 +154,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $tpl->SetVariable('events_url', $events_url);
 
         // Pagination
-        $action = $this->gadget->loadAction('Pager');
+        $action = $this->gadget->action->load('Pager');
         $action->GetPagesNavigation(
             $tpl,
             'events',

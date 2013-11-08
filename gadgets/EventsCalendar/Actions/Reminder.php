@@ -26,7 +26,7 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
         $this->SetTitle(_t('EVENTSCALENDAR_EVENTS'));
 
         // Menubar
-        $action = $this->gadget->loadAction('Menubar');
+        $action = $this->gadget->action->load('Menubar');
         $tpl->SetVariable('menubar', $action->Menubar());
 
         $time = $GLOBALS['app']->UTC2UserTime();

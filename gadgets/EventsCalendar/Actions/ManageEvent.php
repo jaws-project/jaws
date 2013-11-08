@@ -47,7 +47,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $tpl->SetBlock('form');
 
         // Menubar
-        $action = $this->gadget->loadAction('Menubar');
+        $action = $this->gadget->action->load('Menubar');
         $tpl->SetVariable('menubar', $action->Menubar('Events'));
 
         // Response

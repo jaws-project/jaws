@@ -32,7 +32,7 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 
         // Menubar
-        $action = $this->gadget->loadAction('Menubar');
+        $action = $this->gadget->action->load('Menubar');
         $tpl->SetVariable('menubar', $action->Menubar('Events'));
 
         $jdate = $GLOBALS['app']->loadDate();
