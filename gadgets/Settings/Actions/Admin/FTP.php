@@ -22,7 +22,7 @@ class Settings_Actions_Admin_FTP extends Settings_Actions_Admin_Default
         $this->gadget->CheckPermission('FTPSettings');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('Settings.html');
+        $tpl = $this->gadget->template->loadAdmin('Settings.html');
         $tpl->SetBlock('settings');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('sidebar', $this->SideBar('FTP'));
