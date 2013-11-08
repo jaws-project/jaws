@@ -54,7 +54,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
                 }
-                $objHook = $objGadget->loadHook('Search');
+                $objHook = $objGadget->hook->load('Search');
                 if (Jaws_Error::IsError($objHook)) {
                     continue;
                 }
