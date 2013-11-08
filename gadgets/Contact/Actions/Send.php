@@ -38,7 +38,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             Jaws_Header::Referrer();
         }
 
-        $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAction('Captcha');
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $resCheck = $mPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'Contact');
