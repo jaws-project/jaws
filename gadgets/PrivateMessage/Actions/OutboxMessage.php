@@ -39,7 +39,7 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_Action
         }
 
         $date_format = $this->gadget->registry->fetch('date_format');
-        $tpl = $this->gadget->loadTemplate('OutboxMessage.html');
+        $tpl = $this->gadget->template->load('OutboxMessage.html');
         $tpl->SetBlock('outboxmessage');
         $tpl->SetVariable('id', $id);
         $tpl->SetVariable('confirmDelete', _t('PRIVATEMESSAGE_MESSAGE_CONFIRM_DELETE'));

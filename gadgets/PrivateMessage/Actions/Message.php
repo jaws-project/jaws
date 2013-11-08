@@ -43,7 +43,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_Action
         $messages = array_reverse($messages, true);
 
         $date_format = $this->gadget->registry->fetch('date_format');
-        $tpl = $this->gadget->loadTemplate('MessageHistory.html');
+        $tpl = $this->gadget->template->load('MessageHistory.html');
         $tpl->SetBlock('history');
 
         $i = 0;

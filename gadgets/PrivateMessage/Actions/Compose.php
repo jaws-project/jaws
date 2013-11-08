@@ -29,7 +29,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $id = $get['id'];
 
         $model = $this->gadget->model->load('Message');
-        $tpl = $this->gadget->loadTemplate('Compose.html');
+        $tpl = $this->gadget->template->load('Compose.html');
         $tpl->SetBlock('compose');
 
         // Menubar
@@ -258,7 +258,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         }
 
         $model = $this->gadget->model->load('Message');
-        $tpl = $this->gadget->loadTemplate('Compose.html');
+        $tpl = $this->gadget->template->load('Compose.html');
         $tpl->SetBlock('attachments');
 
         if ($loadAttachments && !empty($message_id)) {

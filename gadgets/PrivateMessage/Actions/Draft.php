@@ -37,7 +37,7 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_Actions_Default
             $limit = $page_item;
         }
 
-        $tpl = $this->gadget->loadTemplate('Outbox.html');
+        $tpl = $this->gadget->template->load('Outbox.html');
         $tpl->SetBlock('outbox');
 
         // Menubar

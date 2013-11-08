@@ -22,7 +22,7 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $tpl = $this->gadget->loadTemplate('PrivateMessage.html');
+        $tpl = $this->gadget->template->load('PrivateMessage.html');
         $tpl->SetBlock('PrivateMessage');
         $tpl->SetVariable('title', _t('PRIVATEMESSAGE_NAME'));
 

@@ -44,7 +44,7 @@ class PrivateMessage_Actions_InboxMessage extends Jaws_Gadget_Action
         }
 
         $date_format = $this->gadget->registry->fetch('date_format');
-        $tpl = $this->gadget->loadTemplate('InboxMessage.html');
+        $tpl = $this->gadget->template->load('InboxMessage.html');
         $tpl->SetBlock('inboxmessage');
         $tpl->SetVariable('id', $id);
 

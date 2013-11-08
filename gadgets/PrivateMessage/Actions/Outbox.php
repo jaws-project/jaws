@@ -24,7 +24,7 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_Actions_Default
 
         $this->AjaxMe('site_script.js');
         $date_format = $this->gadget->registry->fetch('date_format');
-        $tpl = $this->gadget->loadTemplate('Outbox.html');
+        $tpl = $this->gadget->template->load('Outbox.html');
         $tpl->SetBlock('outbox');
 
         // Menubar

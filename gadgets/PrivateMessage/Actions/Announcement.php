@@ -24,7 +24,7 @@ class PrivateMessage_Actions_Announcement extends PrivateMessage_Actions_Default
 
         $this->AjaxMe('site_script.js');
         $date_format = $this->gadget->registry->fetch('date_format');
-        $tpl = $this->gadget->loadTemplate('Inbox.html');
+        $tpl = $this->gadget->template->load('Inbox.html');
         $tpl->SetBlock('inbox');
 
         $post = jaws()->request->fetch(array('page', 'read', 'replied', 'term', 'page_item'));

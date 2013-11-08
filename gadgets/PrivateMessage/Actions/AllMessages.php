@@ -24,7 +24,7 @@ class PrivateMessage_Actions_AllMessages extends PrivateMessage_Actions_Default
 
         $this->AjaxMe('site_script.js');
         $date_format = $this->gadget->registry->fetch('date_format');
-        $tpl = $this->gadget->loadTemplate('AllMessages.html');
+        $tpl = $this->gadget->template->load('AllMessages.html');
         $tpl->SetBlock('all');
 
         $post = jaws()->request->fetch(array('view', 'page', 'read', 'replied', 'term', 'page_item'));
