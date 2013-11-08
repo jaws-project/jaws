@@ -21,7 +21,7 @@ class FeedReader_Hooks_Menu extends Jaws_Gadget_Hook
         $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('FeedReader', 'DisplayFeeds'),
                         'title' => _t('FEEDREADER_NAME'));
 
-        $model  = $this->gadget->loadModel('Feed');
+        $model  = $this->gadget->model->load('Feed');
         $feeds = $model->GetFeeds();
         if (!Jaws_Error::isError($feeds)) {
             $max_size = 20;

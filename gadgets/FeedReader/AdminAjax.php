@@ -21,7 +21,7 @@ class FeedReader_AdminAjax extends Jaws_Gadget_Action
     function FeedReader_AdminAjax($gadget)
     {
         parent::Jaws_Gadget_Action($gadget);
-        $this->_Model = $this->gadget->loadAdminModel('Feed');
+        $this->_Model = $this->gadget->model->loadAdmin('Feed');
     }
 
     /**
