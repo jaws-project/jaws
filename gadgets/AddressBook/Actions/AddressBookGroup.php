@@ -20,7 +20,7 @@ class AddressBook_Actions_AddressBookGroup extends AddressBook_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $model = $this->gadget->loadModel('AddressBookGroup');
+        $model = $this->gadget->model->load('AddressBookGroup');
         $gid = (int) jaws()->request->fetch('id');
         $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
 
@@ -40,7 +40,7 @@ class AddressBook_Actions_AddressBookGroup extends AddressBook_Actions_Default
             $tpl->SetVariable('text', $response['text']);
         }
 
-        $gModel = $this->gadget->loadModel('Groups');
+        $gModel = $this->gadget->model->load('Groups');
         $gInfo = $gModel->GetGroupInfo($gid);
         $tpl->SetVariable('title', _t('ADDRESSBOOK_GROUP_MEMBERS_TITLE', $gInfo['name']));
         $tpl->SetVariable('group', $gid);
@@ -96,7 +96,7 @@ class AddressBook_Actions_AddressBookGroup extends AddressBook_Actions_Default
         $rqst = jaws()->request->fetch(array('address:int', 'group:int'));
         if (!empty($rqst['address']) && !empty($rqst['group'])) {
             $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
-            $model = $this->gadget->loadModel('AddressBookGroup');
+            $model = $this->gadget->model->load('AddressBookGroup');
             $result = $model->AddGroupToAddress($rqst['address'], $rqst['group'], $user);
             $link = $this->gadget->urlMap('GroupMembers', array('id' => $rqst['group']));
             if (Jaws_Error::IsError($result)) {
@@ -120,7 +120,7 @@ class AddressBook_Actions_AddressBookGroup extends AddressBook_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $model = $this->gadget->loadModel('AddressBookGroup');
+        $model = $this->gadget->model->load('AddressBookGroup');
         $adrs = jaws()->request->fetch('adr:array');
         $gid = (int) jaws()->request->fetch('group');
         $user = (int) $GLOBALS['app']->Session->GetAttribute('user');

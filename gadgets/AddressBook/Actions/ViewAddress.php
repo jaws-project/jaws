@@ -26,7 +26,7 @@ class AddressBook_Actions_ViewAddress extends AddressBook_Actions_Default
             return false;
         }
 
-        $model = $this->gadget->loadModel('AddressBook');
+        $model = $this->gadget->model->load('AddressBook');
         $info = $model->GetAddressInfo($id);
         if (Jaws_Error::IsError($info)) {
             return $info->getMessage(); // TODO: Show intelligible message
@@ -87,7 +87,7 @@ class AddressBook_Actions_ViewAddress extends AddressBook_Actions_Default
             $tpl->ParseBlock('address/selected');
         }
 
-        $agModel = $this->gadget->loadModel('AddressBookGroup');
+        $agModel = $this->gadget->model->load('AddressBookGroup');
         $agData = $agModel->GetData($info['id'], $info['user']);
 
         if (isset($agData)) {

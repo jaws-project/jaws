@@ -221,7 +221,7 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
             return;
         }
         // TODO: Use transaction
-        $agModel = $this->gadget->loadModel('AddressBookGroup');
+        $agModel = $this->gadget->model->load('AddressBookGroup');
         $agModel->DeleteGroupForAddress($address, $user);
 
         $aTable = Jaws_ORM::getInstance()->table('address_book');
@@ -242,7 +242,7 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
     function DeleteAddressSection($addresses, $user)
     {
         // TODO: Use transaction
-        $agModel = $this->gadget->loadModel('AddressBookGroup');
+        $agModel = $this->gadget->model->load('AddressBookGroup');
         $agModel->DeleteGroupForAddresses($addresses, $user);
 
         $aTable = Jaws_ORM::getInstance()->table('address_book');

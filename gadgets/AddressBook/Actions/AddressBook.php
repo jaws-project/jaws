@@ -54,7 +54,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
         $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
         $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('icon_ok', STOCK_OK);
-        $gModel = $this->gadget->loadModel('Groups');
+        $gModel = $this->gadget->model->load('Groups');
         $groupList = $gModel->GetGroups($uid);
         foreach ($groupList as $gInfo) {
             $tpl->SetBlock('address_list/group_item');
@@ -95,7 +95,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
     function AddressList($gid = null, $term = '')
     {
         $uid = (int) $GLOBALS['app']->Session->GetAttribute('user');
-        $model = $this->gadget->loadModel('AddressBook');
+        $model = $this->gadget->model->load('AddressBook');
 
         if (empty($gid) && $term == '') {
             $rqst = jaws()->request->fetch(array('gid:int', 'term'));
@@ -204,7 +204,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
         $tpl->SetVariable('icon_load', STOCK_REFRESH);
 
         $uid = (int) $GLOBALS['app']->Session->GetAttribute('user');
-        $model = $this->gadget->loadModel('AddressBook');
+        $model = $this->gadget->model->load('AddressBook');
         $addressItems = $model->GetAddressList($uid, 0);
         $tpl->SetVariable('lbl_related', _t('ADDRESSBOOK_LABEL_RALATED'));
         foreach ($addressItems as $addressItem) {
@@ -221,7 +221,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
         $this->GetItemsInput($tpl, 'url', array(''), $iIndex);
 
         $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
-        $gModel = $this->gadget->loadModel('Groups');
+        $gModel = $this->gadget->model->load('Groups');
         $groupList = $gModel->GetGroups($user);
 
         foreach ($groupList as $gInfo) {
@@ -257,7 +257,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
             return false;
         }
 
-        $model = $this->gadget->loadModel('AddressBook');
+        $model = $this->gadget->model->load('AddressBook');
         $info = $model->GetAddressInfo($id);
         if (Jaws_Error::IsError($info)) {
             return $info->getMessage(); // TODO: Show intelligible message
@@ -404,10 +404,10 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
         $tpl->SetVariable('lastID', $iIndex);
 
         $user = (int) $GLOBALS['app']->Session->GetAttribute('user');
-        $gModel = $this->gadget->loadModel('Groups');
+        $gModel = $this->gadget->model->load('Groups');
         $groupList = $gModel->GetGroups($user);
 
-        $agModel = $this->gadget->loadModel('AddressBookGroup');
+        $agModel = $this->gadget->model->load('AddressBookGroup');
         $agData = $agModel->GetGroupIDs($info['id'], $user);
         $groupAux = array();
         foreach ($agData as $group) {
@@ -454,7 +454,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
         $tels = jaws()->request->fetch(array('tel_type:array', 'tel_number:array'), 'post');
 
         $post['[user]'] = (int) $GLOBALS['app']->Session->GetAttribute('user');
-        $model = $this->gadget->loadModel('AddressBook');
+        $model = $this->gadget->model->load('AddressBook');
 
         $telHome = array();
         $telWork = array();
@@ -548,7 +548,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
             Jaws_Header::Referrer();
         } else {
             if (is_array($groupIDs) && count($groupIDs) > 0) {
-                $agModel = $this->gadget->loadModel('AddressBookGroup');
+                $agModel = $this->gadget->model->load('AddressBookGroup');
                 foreach ($groupIDs as $gid => $group) {
                     $agModel->AddGroupToAddress($adrID, $gid, $post['[user]']);
                 }
@@ -583,7 +583,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
 
         $tels = jaws()->request->fetch(array('tel_type:array', 'tel_number:array'), 'post');
 
-        $model = $this->gadget->loadModel('AddressBook');
+        $model = $this->gadget->model->load('AddressBook');
 
         // Check user edit His addressBook
         $addressInfo = $model->GetAddressInfo($id);
@@ -686,7 +686,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
             $GLOBALS['app']->Session->PushResponse($result->getMessage(), 'AddressBook', RESPONSE_ERROR);
             Jaws_Header::Referrer();
         } else {
-            $agModel = $this->gadget->loadModel('AddressBookGroup');
+            $agModel = $this->gadget->model->load('AddressBookGroup');
             $agModel->DeleteGroupForAddress($id, $addressInfo['user']);
             if (is_array($groupIDs) && count($groupIDs) > 0) {
                 foreach ($groupIDs as $gid) {
@@ -781,7 +781,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
             return false;
         }
 
-        $model = $this->gadget->loadModel('AddressBook');
+        $model = $this->gadget->model->load('AddressBook');
         $result = $model->DeleteAddressSection($ids, (int) $GLOBALS['app']->Session->GetAttribute('user'));
 
         if (Jaws_Error::IsError($result)) {
