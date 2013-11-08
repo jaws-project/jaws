@@ -64,7 +64,7 @@ class Upgrader_08To0903 extends JawsUpgraderStage
                 return $objGadget;
             }
 
-            $installer = $objGadget->loadInstaller();
+            $installer = $objGadget->installer->load();
             if (Jaws_Error::IsError($installer)) {
                 _log(JAWS_LOG_DEBUG,"There was a problem loading installer of core gadget: $gadget");
                 return $installer;
