@@ -106,7 +106,7 @@ class FileBrowser_Actions_Admin_Directory extends Jaws_Gadget_Action
      */
     function GetDirectoryUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('FileBrowser.html');
+        $tpl = $this->gadget->template->loadAdmin('FileBrowser.html');
         $tpl->SetBlock('dir_ui');
 
         $dirname =& Piwi::CreateWidget('Entry', 'dirname', '');

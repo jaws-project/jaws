@@ -29,7 +29,7 @@ class FileBrowser_Actions_Directory extends Jaws_Gadget_Action
             return false;
         }
 
-        $tpl = $this->gadget->loadTemplate('FileBrowser.html');
+        $tpl = $this->gadget->template->load('FileBrowser.html');
         $tpl->SetBlock('initial_folder');
         $tpl->SetVariable('title', _t('FILEBROWSER_NAME'));
 
