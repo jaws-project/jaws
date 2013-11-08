@@ -38,7 +38,7 @@ class Blog_Actions_Categories extends Blog_Actions_Default
 
         if (!Jaws_Error::IsError($catInfo) && isset($catInfo['id'])) {
             $name = $catInfo['name'];
-            $tpl = $this->gadget->loadTemplate('CategoryPosts.html');
+            $tpl = $this->gadget->template->load('CategoryPosts.html');
 
             $GLOBALS['app']->Layout->AddHeadLink(
                 $this->gadget->urlMap('ShowAtomCategory', array('id' => $cat)),
@@ -86,7 +86,7 @@ class Blog_Actions_Categories extends Blog_Actions_Default
      */
     function CategoriesList()
     {
-        $tpl = $this->gadget->loadTemplate('Categories.html');
+        $tpl = $this->gadget->template->load('Categories.html');
         $tpl->SetBlock('categories_list');
         $tpl->SetVariable('title', _t('BLOG_CATEGORIES'));
         $model = $this->gadget->model->load('Posts');

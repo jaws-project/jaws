@@ -79,7 +79,7 @@ class Blog_Actions_Trackbacks extends Blog_Actions_Default
         if ($this->gadget->registry->fetch('trackback') == 'true') {
             $model = $this->gadget->model->load('Trackbacks');
             $trackbacks = $model->GetTrackbacks($id);
-            $tpl = $this->gadget->loadTemplate('Trackbacks.html');
+            $tpl = $this->gadget->template->load('Trackbacks.html');
             $tpl->SetBlock('trackbacks');
             $tburi = $this->gadget->urlMap('Trackback', array('id' => $id), true);
             $tpl->SetVariable('TrackbackURI', $tburi);

@@ -159,7 +159,7 @@ class Blog_Model_Comments extends Jaws_Gadget_Model
         $site_url   = $GLOBALS['app']->getSiteURL('/');
         $site_name  = $this->gadget->registry->fetch('site_name', 'Settings');
 
-        $tpl = $this->gadget->loadTemplate('SendComment.html');
+        $tpl = $this->gadget->template->load('SendComment.html');
         $tpl->SetBlock('comment');
         $tpl->SetVariable('comment',   $comment);
         $tpl->SetVariable('lbl-url',   _t("BLOG_COMMENT_MAIL_VISIT"));

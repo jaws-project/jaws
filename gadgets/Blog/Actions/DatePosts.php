@@ -57,7 +57,7 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
         $dpModel = $this->gadget->model->load('DatePosts');
         $entries = $pModel->GetEntriesByDate($page, $min_date, $max_date);
         if (!Jaws_Error::IsError($entries)) {
-            $tpl = $this->gadget->loadTemplate('DatePosts.html');
+            $tpl = $this->gadget->template->load('DatePosts.html');
             $tpl->SetBlock('view_date');
 
             if (empty($month)) {
@@ -206,7 +206,7 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
      */
     function MonthlyHistory()
     {
-        $tpl = $this->gadget->loadTemplate('MonthlyHistory.html');
+        $tpl = $this->gadget->template->load('MonthlyHistory.html');
         $tpl->SetBlock('monthly_history');
         $tpl->SetVariable('title', _t('BLOG_ARCHIVE'));
         $model = $this->gadget->model->load('DatePosts');

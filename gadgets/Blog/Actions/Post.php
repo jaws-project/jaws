@@ -79,7 +79,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
             $this->SetTitle($entry['title']);
             $this->AddToMetaKeywords($entry['meta_keywords']);
             $this->SetDescription($entry['meta_description']);
-            $tpl = $this->gadget->loadTemplate('Post.html');
+            $tpl = $this->gadget->template->load('Post.html');
             $tpl->SetBlock('single_view');
             $res = $this->ShowEntry($tpl, 'single_view', $entry, false);
 
@@ -128,7 +128,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
             }
 
             if ($tpl->VariableExists('navigation')) {
-                $navtpl = $this->gadget->loadTemplate('PostNavigation.html');
+                $navtpl = $this->gadget->template->load('PostNavigation.html');
                 if ($prev = $model->GetNOPEntry($entry['id'], 'previous')) {
                     $navtpl->SetBlock('entry-navigation/previous');
                     $navtpl->SetVariable('url', $this->gadget->urlMap('SingleView',

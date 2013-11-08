@@ -122,7 +122,7 @@ class Blog_Actions_Feeds extends Blog_Actions_Default
      */
     function FeedsLink($linkType)
     {
-        $tpl = $this->gadget->loadTemplate('XMLLinks.html');
+        $tpl = $this->gadget->template->load('XMLLinks.html');
         if ($linkType == 'RSS') {
             $tpl->SetBlock('rss_link');
             $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'RSS'));

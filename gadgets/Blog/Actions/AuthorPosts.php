@@ -47,7 +47,7 @@ class Blog_Actions_AuthorPosts extends Blog_Actions_Default
         $aModel = $this->gadget->model->load('AuthorPosts');
         $entries = $pModel->GetEntriesAsPage(null, $page, $whereArray);
         if (!Jaws_Error::IsError($entries) && !empty($entries)) {
-            $tpl = $this->gadget->loadTemplate('AuthorPosts.html');
+            $tpl = $this->gadget->template->load('AuthorPosts.html');
             $tpl->SetBlock('view_author');
 
             $title = $entries[key($entries)]['nickname'];

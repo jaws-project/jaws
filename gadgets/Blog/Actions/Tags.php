@@ -36,7 +36,7 @@ class Blog_Actions_Tags extends Blog_Actions_Default
         $maxFontSize = 10;
         $fontSizeRange = $maxFontSize - $minFontSize;
 
-        $tpl = $this->gadget->loadTemplate('CategoryCloud.html');
+        $tpl = $this->gadget->template->load('CategoryCloud.html');
         $tpl->SetBlock('tagcloud');
         $tpl->SetVariable('title', _t('BLOG_TAGCLOUD'));
 

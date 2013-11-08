@@ -23,7 +23,7 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageCategories');
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Categories.html');
+        $tpl = $this->gadget->template->loadAdmin('Categories.html');
         $tpl->SetBlock('categories');
 
         // Menubar

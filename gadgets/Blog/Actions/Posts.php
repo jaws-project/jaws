@@ -54,7 +54,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         }
         */
 
-        $tpl = $this->gadget->loadTemplate('Posts.html');
+        $tpl = $this->gadget->template->load('Posts.html');
         $tpl->SetBlock('view');
 
         $model = $this->gadget->model->load('Posts');
@@ -155,7 +155,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         if (!$this->gadget->GetPermission('CategoryAccess', $category['id'])) {
             return Jaws_HTTPError::Get(403);
         }
-        $tpl = $this->gadget->loadTemplate('RecentPosts.html');
+        $tpl = $this->gadget->template->load('RecentPosts.html');
         $tpl->SetBlock('recent_posts');
         $tpl->SetVariable('cat',   empty($cat)? '0' : $cat);
         $tpl->SetVariable('title', $title);
@@ -223,7 +223,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
      */
     function PopularPosts()
     {
-        $tpl = $this->gadget->loadTemplate('PopularPosts.html');
+        $tpl = $this->gadget->template->load('PopularPosts.html');
         $tpl->SetBlock('popular_posts');
         $tpl->SetVariable('title', _t('BLOG_POPULAR_POSTS'));
 
@@ -271,7 +271,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
      */
     function PostsAuthors()
     {
-        $tpl = $this->gadget->loadTemplate('Authors.html');
+        $tpl = $this->gadget->template->load('Authors.html');
         $tpl->SetBlock('posts_authors');
         $tpl->SetVariable('title', _t('BLOG_POSTS_AUTHORS'));
 
