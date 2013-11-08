@@ -28,7 +28,7 @@ class Blog_Actions_Comments extends Blog_Actions_Default
         $post = jaws()->request->fetch($names, 'post');
         $id   = (int)$post['reference'];
 
-        $model = $this->gadget->loadModel('Posts');
+        $model = $this->gadget->model->load('Posts');
         $entry = $model->GetEntry($id, true);
         if (Jaws_Error::isError($entry)) {
             $GLOBALS['app']->Session->PushSimpleResponse($entry->getMessage(), 'Blog');

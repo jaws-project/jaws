@@ -20,7 +20,7 @@ class Blog_Model_Summary extends Jaws_Gadget_Model
      */
     function GetSummary()
     {
-        $model   = $this->gadget->loadModel('DatePosts');
+        $model   = $this->gadget->model->load('DatePosts');
         $summary = $model->GetPostsDateLimitation();
 
         // Avg. entries per week
@@ -52,7 +52,7 @@ class Blog_Model_Summary extends Jaws_Gadget_Model
         }
 
         if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
-            $cModel = Jaws_Gadget::getInstance('Comments')->loadModel('Comments');
+            $cModel = Jaws_Gadget::getInstance('Comments')->model->load('Comments');
             // total comments
             $summary['CommentsQty'] = $cModel->GetCommentsCount($this->gadget->name);
             // recent comments

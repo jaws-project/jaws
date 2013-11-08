@@ -59,7 +59,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
     function SizeOfSearch()
     {
         @list($period, $cat, $status, $search) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadModel('Posts');
+        $model = $this->gadget->model->load('Posts');
         $entries = $model->AdvancedSearch(false, $period, $cat, $status, $search,
                                                  $GLOBALS['app']->Session->GetAttribute('user'));
         return count($entries);
@@ -88,7 +88,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
         @list($view, $limit, $popularLimit, $commentsLimit, $recentcommentsLimit, $category,
             $xml_limit, $comments, $comment_status, $trackback, $trackback_status, $pingback
         ) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Settings');
+        $model = $this->gadget->model->loadAdmin('Settings');
         $model->SaveSettings($view, $limit, $popularLimit, $commentsLimit, $recentcommentsLimit, $category,
                                     $xml_limit, $comments, $comment_status, $trackback, $trackback_status,
                                     $pingback);
@@ -106,7 +106,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageCategories');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadModel('Categories');
+        $model = $this->gadget->model->load('Categories');
         return $model->GetCategory($id);
     }
 
@@ -119,7 +119,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
     function GetCategories()
     {
         $this->gadget->CheckPermission('ManageCategories');
-        $model = $this->gadget->loadModel('Categories');
+        $model = $this->gadget->model->load('Categories');
         return $model->GetCategories();
     }
 
@@ -138,7 +138,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageCategories');
         @list($name, $description, $fast_url, $meta_keywords, $meta_desc) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Categories');
+        $model = $this->gadget->model->loadAdmin('Categories');
         $model->NewCategory($name, $description, $fast_url, $meta_keywords, $meta_desc);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -159,7 +159,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageCategories');
         @list($id, $name, $description, $fast_url, $meta_keywords, $meta_desc) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Categories');
+        $model = $this->gadget->model->loadAdmin('Categories');
         $model->UpdateCategory($id, $name, $description, $fast_url, $meta_keywords, $meta_desc);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -175,7 +175,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageCategories');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Categories');
+        $model = $this->gadget->model->loadAdmin('Categories');
         $model->DeleteCategory($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -210,7 +210,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
     function SizeOfTrackbacksSearch()
     {
         @list($filter, $search, $status) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Trackbacks');
+        $model = $this->gadget->model->loadAdmin('Trackbacks');
         return $model->HowManyFilteredTrackbacks($filter, $search, $status, false);
     }
 
@@ -225,7 +225,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('DeleteEntries');
         $ids = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Posts');
+        $model = $this->gadget->model->loadAdmin('Posts');
         $model->MassiveEntryDelete($ids);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -242,7 +242,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('PublishEntries');
         @list($ids, $status) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Posts');
+        $model = $this->gadget->model->loadAdmin('Posts');
         $model->ChangeEntryStatus($ids, $status);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -258,7 +258,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageTrackbacks');
         $ids = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Trackbacks');
+        $model = $this->gadget->model->loadAdmin('Trackbacks');
         $model->MassiveTrackbackDelete($ids);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -276,7 +276,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageTrackbacks');
         @list($ids, $status) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Trackbacks');
+        $model = $this->gadget->model->loadAdmin('Trackbacks');
         $model->MarkTrackbacksAs($ids, $status);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -308,7 +308,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
         @list($id, $categories, $title, $summary, $text, $fasturl, $meta_keywords, $meta_desc, $tags,
             $allow_comments, $trackbacks, $published, $timestamp
         ) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Posts');
+        $model = $this->gadget->model->loadAdmin('Posts');
 
         $categories = jaws()->request->fetch('1:array', 'post');
         $summary = jaws()->request->fetch(3, 'post', false);

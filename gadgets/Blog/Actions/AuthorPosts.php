@@ -43,8 +43,8 @@ class Blog_Actions_AuthorPosts extends Blog_Actions_Default
             );
         }
 
-        $pModel = $this->gadget->loadModel('Posts');
-        $aModel = $this->gadget->loadModel('AuthorPosts');
+        $pModel = $this->gadget->model->load('Posts');
+        $aModel = $this->gadget->model->load('AuthorPosts');
         $entries = $pModel->GetEntriesAsPage(null, $page, $whereArray);
         if (!Jaws_Error::IsError($entries) && !empty($entries)) {
             $tpl = $this->gadget->loadTemplate('AuthorPosts.html');

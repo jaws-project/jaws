@@ -24,7 +24,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
      */
     function TrackbacksData($limit = 0, $filter = '', $search = '', $status = '')
     {
-        $model = $this->gadget->loadAdminModel('Trackbacks');
+        $model = $this->gadget->model->loadAdmin('Trackbacks');
         return $model->GetTrackbacksDataAsArray($filter, $search, $status, $limit);
     }
 
@@ -83,7 +83,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
 
         $tpl->SetVariable('filter_button', $filterButton->Get());
 
-        $model = $this->gadget->loadModel();
+        $model = $this->gadget->model->load();
         $total = $model->TotalOfData('blog_trackback');
 
         $gridBox =& Piwi::CreateWidget('VBox');
@@ -146,8 +146,8 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageTrackbacks');
 
-        $tModel = $this->gadget->loadAdminModel('Trackbacks');
-        $pModel = $this->gadget->loadAdminModel('Posts');
+        $tModel = $this->gadget->model->loadAdmin('Trackbacks');
+        $pModel = $this->gadget->model->loadAdmin('Posts');
         // Fetch the trackback
         $trackback = $tModel->GetTrackback(jaws()->request->fetch('id', 'get'));
         if (Jaws_Error::IsError($trackback)) {

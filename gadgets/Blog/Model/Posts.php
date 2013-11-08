@@ -67,7 +67,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             $ids[] = $r['id'];
         }
         $result = null;
-        $model = $this->gadget->loadModel('Categories');
+        $model = $this->gadget->model->load('Categories');
         $categories = $model->GetCategoriesInEntries($ids);
         foreach ($categories as $cat) {
             $entries[$cat['entry_id']]['categories'][] = array('id'       => $cat['id'],
@@ -275,14 +275,14 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
 
         $entry = array();
         if (!empty($row)) {
-            $model = $this->gadget->loadModel('Categories');
+            $model = $this->gadget->model->load('Categories');
             $entry = $row;
             $entry['avatar_source'] = Jaws_Gravatar::GetGravatar($row['email']);
             $entry['categories']    = $model->GetCategoriesInEntry($row['id']);
         }
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
-            $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
+            $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             $tags = $model->GetItemTags(array('gadget' => 'Blog', 'action' => 'post', 'reference' => $id), true);
             $entry['tags'] = array_filter($tags);
         }

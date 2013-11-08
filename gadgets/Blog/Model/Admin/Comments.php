@@ -34,7 +34,7 @@ class Blog_Model_Admin_Comments extends Jaws_Gadget_Model
      */
     function DeleteCommentsIn($id)
     {
-        $cModel = Jaws_Gadget::getInstance('Comments')->loadModel('DeleteComments');
+        $cModel = Jaws_Gadget::getInstance('Comments')->model->load('DeleteComments');
         return $cModel->DeleteGadgetComments($this->gadget->name, $id);
     }
 

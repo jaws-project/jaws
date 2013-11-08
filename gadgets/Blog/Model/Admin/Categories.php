@@ -82,7 +82,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         }
 
         if ($this->gadget->registry->fetch('generate_category_xml') == 'true') {
-            $model = $this->gadget->loadModel('Feeds');
+            $model = $this->gadget->model->load('Feeds');
             $catAtom = $model->GetCategoryAtomStruct($cid);
             $model->MakeCategoryAtom($cid, $catAtom, true);
             $model->MakeCategoryRSS($cid, $catAtom, true);

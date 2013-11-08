@@ -92,7 +92,7 @@ class Blog_Model_Trackbacks extends Jaws_Gadget_Model
     function NewTrackback($parent_id, $url, $title, $excerpt, $blog_name, $ip)
     {
         if ($this->gadget->registry->fetch('trackback') == 'true') {
-            $model = $this->gadget->loadModel('Posts');
+            $model = $this->gadget->model->load('Posts');
             if (!$model->DoesEntryExists($parent_id)) {
                 return new Jaws_Error(_t('BLOG_ERROR_DOES_NOT_EXISTS'), _t('BLOG_NAME'));
             }

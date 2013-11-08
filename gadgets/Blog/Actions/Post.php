@@ -31,7 +31,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
             'application/rss+xml',
             'RSS 2.0 - All'
         );
-        $model = $this->gadget->loadModel('Posts');
+        $model = $this->gadget->model->load('Posts');
         $id = $model->GetLatestPublishedEntryID();
         if (!Jaws_Error::IsError($id) && !empty($id)) {
             return $this->SingleView($id);
@@ -53,7 +53,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
         $g_id = jaws()->request->fetch('id', 'get');
         $g_id = Jaws_XSS::defilter($g_id, true);
 
-        $model = $this->gadget->loadModel('Posts');
+        $model = $this->gadget->model->load('Posts');
         if (is_null($id)) {
             $entry = $model->GetEntry($g_id, true);
         } else {

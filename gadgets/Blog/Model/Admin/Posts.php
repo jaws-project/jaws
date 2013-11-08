@@ -24,7 +24,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
     {
         $params['entry_id']    = (int)$blog_id;
         $params['category_id'] = (int)$category_id;
-        $model = $this->gadget->loadModel('Feeds');
+        $model = $this->gadget->model->load('Feeds');
 
         $entrycatTable = Jaws_ORM::getInstance()->table('blog_entrycat');
         $result = $entrycatTable->insert($params)->exec();
@@ -67,7 +67,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         }
 
         if ($this->gadget->registry->fetch('generate_category_xml') == 'true') {
-            $model = $this->gadget->loadModel('Feeds');
+            $model = $this->gadget->model->load('Feeds');
             $catAtom = $model->GetCategoryAtomStruct($category_id);
             if (Jaws_Error::IsError($catAtom)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_XML_NOT_GENERATED'), RESPONSE_ERROR);
@@ -175,13 +175,13 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         }
 
         if ($this->gadget->registry->fetch('generate_xml') == 'true') {
-            $model = $this->gadget->loadModel('Feeds');
+            $model = $this->gadget->model->load('Feeds');
             $model->MakeAtom(true);
             $model->MakeRSS(true);
         }
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
-            $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
+            $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             $res = $model->AddTagsToItem('Blog', 'post', $max, $params['published'],
                                          strtotime($params['publishtime']), $tags);
             if (Jaws_Error::IsError($res)) {
@@ -238,7 +238,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             $params['allow_comments'] = $params['allow_comments'] == '1' ? true : false;
         }
 
-        $model = $this->gadget->loadModel('Posts');
+        $model = $this->gadget->model->load('Posts');
         $e = $model->GetEntry($post_id);
         if (Jaws_Error::IsError($e)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), RESPONSE_ERROR);
@@ -294,7 +294,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         }
 
         if ($this->gadget->registry->fetch('generate_xml') == 'true') {
-            $model = $this->gadget->loadModel('Feeds');
+            $model = $this->gadget->model->load('Feeds');
             $model->MakeAtom(true);
             $model->MakeRSS (true);
         }
@@ -308,13 +308,13 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             $catAux[] = $cat['id'];
         }
 
-        $feedModel = $this->gadget->loadModel('Feeds');
+        $feedModel = $this->gadget->model->load('Feeds');
         foreach ($categories as $category) {
             if (!in_array($category, $catAux)) {
                 $this->AddCategoryToEntry($post_id, $category);
             } else {
                 if ($this->gadget->registry->fetch('generate_category_xml') == 'true') {
-                    $model = $this->gadget->loadModel('Feeds');
+                    $model = $this->gadget->model->load('Feeds');
                     $catAtom = $model->GetCategoryAtomStruct($category);
                     $feedModel->MakeCategoryAtom($category, $catAtom, true);
                     $feedModel->MakeCategoryRSS($category, $catAtom, true);
@@ -338,7 +338,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         }
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
-            $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
+            $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             $res = $model->UpdateTagsItems('Blog', 'post', $post_id, $params['published'],
                                            strtotime($params['publishtime']), $tags);
             if (Jaws_Error::IsError($res)) {
@@ -359,7 +359,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      */
     function DeleteEntry($post_id)
     {
-        $model = $this->gadget->loadModel('Posts');
+        $model = $this->gadget->model->load('Posts');
         $e = $model->GetEntry($post_id);
         if (Jaws_Error::IsError($e)) {
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_DELETED'), _t('BLOG_NAME'));
@@ -384,17 +384,17 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         }
 
         if ($this->gadget->registry->fetch('generate_xml') == 'true') {
-            $model = $this->gadget->loadModel('Feeds');
+            $model = $this->gadget->model->load('Feeds');
             $model->MakeAtom(true);
             $model->MakeRSS (true);
         }
 
         // Remove comment entries..
-        $model = $this->gadget->loadAdminModel('Comments');
+        $model = $this->gadget->model->loadAdmin('Comments');
         $model->DeleteCommentsIn($post_id);
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
-            $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
+            $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             $res = $model->DeleteItemTags('Blog', 'post', $post_id);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_TAGS_NOT_DELETED'), RESPONSE_ERROR);

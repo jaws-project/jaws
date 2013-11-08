@@ -20,7 +20,7 @@ class Blog_Actions_Admin_Summary extends Blog_Actions_Admin_Default
      */
     function Summary()
     {
-        $model = $this->gadget->loadModel('Summary');
+        $model = $this->gadget->model->load('Summary');
         $summary = $model->GetSummary();
         if (Jaws_Error::IsError($summary)) {
             $summary = array();

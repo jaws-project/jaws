@@ -57,7 +57,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         $tpl = $this->gadget->loadTemplate('Posts.html');
         $tpl->SetBlock('view');
 
-        $model = $this->gadget->loadModel('Posts');
+        $model = $this->gadget->model->load('Posts');
         $entries = $model->GetEntriesAsPage($cat, $page);
         if (!Jaws_Error::IsError($entries) && count($entries) > 0) {
             $row = 0;
@@ -103,7 +103,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
     function CategoryEntriesLayoutParams()
     {
         $result = array();
-        $bModel = $this->gadget->loadModel('Categories');
+        $bModel = $this->gadget->model->load('Categories');
         $categories = $bModel->GetCategories();
         if (!Jaws_Error::isError($categories)) {
             $pcats = array();
@@ -135,8 +135,8 @@ class Blog_Actions_Posts extends Blog_Actions_Default
      */
     function CategoryEntries($cat = null, $limit = 0)
     {
-        $cModel = $this->gadget->loadModel('Categories');
-        $pModel = $this->gadget->loadModel('Posts');
+        $cModel = $this->gadget->model->load('Categories');
+        $pModel = $this->gadget->model->load('Posts');
         if (is_null($cat)) {
             $title = _t('BLOG_RECENT_POSTS');
         } else {
@@ -227,7 +227,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         $tpl->SetBlock('popular_posts');
         $tpl->SetVariable('title', _t('BLOG_POPULAR_POSTS'));
 
-        $model = $this->gadget->loadModel('Posts');
+        $model = $this->gadget->model->load('Posts');
         $entries = $model->GetPopularPosts();
         if (!Jaws_Error::IsError($entries)) {
             $date = $GLOBALS['app']->loadDate();
@@ -275,7 +275,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         $tpl->SetBlock('posts_authors');
         $tpl->SetVariable('title', _t('BLOG_POSTS_AUTHORS'));
 
-        $model = $this->gadget->loadModel('Posts');
+        $model = $this->gadget->model->load('Posts');
         $authors = $model->GetPostsAuthors();
         if (!Jaws_Error::IsError($entries)) {
             $date = $GLOBALS['app']->loadDate();

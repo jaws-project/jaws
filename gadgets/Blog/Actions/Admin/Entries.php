@@ -39,7 +39,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $titleEntry->setId('title');
         $tpl->SetVariable('title_field', $titleEntry->Get());
 
-        $model = $this->gadget->loadModel('Categories');
+        $model = $this->gadget->model->load('Categories');
         // Category
         $catChecks =& Piwi::CreateWidget('CheckButtons', 'categories', 'vertical');
         $categories = $model->GetCategories();
@@ -194,8 +194,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
     function SaveNewEntry()
     {
         $this->gadget->CheckPermission('AddEntries');
-        $pModel = $this->gadget->loadAdminModel('Posts');
-        $tModel = $this->gadget->loadAdminModel('Trackbacks');
+        $pModel = $this->gadget->model->loadAdmin('Posts');
+        $tModel = $this->gadget->model->loadAdmin('Trackbacks');
 
         $names   = array('edit_timestamp:array', 'pubdate', 'categories:array', 'title',
                          'fasturl', 'allow_comments:array', 'published',
@@ -265,8 +265,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $post    = jaws()->request->fetch($names, 'post');
 
         $id = !is_null($id) ? $id : $get['id'];
-        $pModel = $this->gadget->loadModel('Posts');
-        $cModel = $this->gadget->loadModel('Categories');
+        $pModel = $this->gadget->model->load('Posts');
+        $cModel = $this->gadget->model->load('Categories');
         $entry = $pModel->GetEntry($id);
         if (Jaws_Error::IsError($entry)) {
             Jaws_Error::Fatal('Post not found', __FILE__, __LINE__);
@@ -485,8 +485,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         $post['trackback_to'] = str_replace("\r\n", "\n", $post['trackback_to']);
 
-        $pModel = $this->gadget->loadAdminModel('Posts');
-        $tModel = $this->gadget->loadAdminModel('Trackbacks');
+        $pModel = $this->gadget->model->loadAdmin('Posts');
+        $tModel = $this->gadget->model->loadAdmin('Trackbacks');
         $id = (int)$post['id'];
 
         $pubdate = null;
@@ -529,8 +529,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
     function DeleteEntry()
     {
         $this->gadget->CheckPermission('DeleteEntries');
-        $model = $this->gadget->loadAdminModel('Posts');
-        $bModel = $this->gadget->loadModel('Posts');
+        $model = $this->gadget->model->loadAdmin('Posts');
+        $bModel = $this->gadget->model->load('Posts');
 
         $post = jaws()->request->fetch(array('id', 'step'), 'post');
         if (!is_null($post['step']) && $post['step'] == 'delete') {
@@ -621,9 +621,9 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $showCombo->AddOption('&nbsp;', 'NOTHING');
         $showCombo->AddOption(_t('BLOG_RECENT_POSTS'), 'RECENT');
 
-        $pModel = $this->gadget->loadAdminModel('Posts');
-        $dpModel = $this->gadget->loadModel('DatePosts');
-        $cModel = $this->gadget->loadModel('Categories');
+        $pModel = $this->gadget->model->loadAdmin('Posts');
+        $dpModel = $this->gadget->model->load('DatePosts');
+        $cModel = $this->gadget->model->load('Categories');
         $monthentries = $dpModel->GetMonthsEntries();
         if (!Jaws_Error::IsError($monthentries) && is_array($monthentries)) {
             $date = $GLOBALS['app']->loadDate();
@@ -747,7 +747,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
     {
         $common_url = BASE_SCRIPT . '?gadget=Blog';
 
-        $model = $this->gadget->loadModel('Posts');
+        $model = $this->gadget->model->load('Posts');
         $entries = $model->AdvancedSearch($limit, $period, $cat, $status, $search,
                                           $GLOBALS['app']->Session->GetAttribute('user'));
 

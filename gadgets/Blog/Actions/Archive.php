@@ -21,7 +21,7 @@ class Blog_Actions_Archive extends Blog_Actions_Default
     function Archive()
     {
         $tpl = $this->gadget->loadTemplate('Archive.html');
-        $model = $this->gadget->loadModel('Posts');
+        $model = $this->gadget->model->load('Posts');
         $archiveEntries = $model->GetEntriesAsArchive();
         $auxMonth = '';
         $this->SetTitle(_t('BLOG_ARCHIVE'));

@@ -19,7 +19,7 @@ class Blog_Hooks_ACL extends Jaws_Gadget_Hook
     function Execute()
     {
         $language = $this->gadget->registry->fetch('admin_language', 'Settings');
-        $cModel = $this->gadget->loadModel('Categories');
+        $cModel = $this->gadget->model->load('Categories');
         $items = $cModel->GetCategories();
         if (!Jaws_Error::IsError($items)) {
             foreach ($items as $item) {
