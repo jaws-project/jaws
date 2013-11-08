@@ -241,7 +241,7 @@ class Users_Actions_Profile extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($objGadget)) {
                 continue;
             }
-            $objHook = $objGadget->loadHook('Activity');
+            $objHook = $objGadget->hook->load('Activity');
             if (Jaws_Error::IsError($objHook)) {
                 continue;
             }
