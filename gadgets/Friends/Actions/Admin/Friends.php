@@ -89,7 +89,7 @@ class Friends_Actions_Admin_Friends extends Jaws_Gadget_Action
     function Friends()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Friends.html');
+        $tpl = $this->gadget->template->loadAdmin('Friends.html');
         $tpl->SetBlock('friends');
         $tpl->SetVariable('grid', $this->Datagrid());
 

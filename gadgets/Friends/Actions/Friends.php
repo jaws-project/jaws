@@ -19,7 +19,7 @@ class Friends_Actions_Friends extends Jaws_Gadget_Action
      */
     function Display()
     {
-        $tpl = $this->gadget->loadTemplate('Friends.html');
+        $tpl = $this->gadget->template->load('Friends.html');
         $model = $this->gadget->model->load('Friends');
         $friends = $model->GetRandomFriends();
         if (!Jaws_Error::IsError($friends)) {
