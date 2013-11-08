@@ -21,7 +21,7 @@ class Shoutbox_Actions_Comments extends Jaws_Gadget_Action
     function Comments($preview = false)
     {
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('Shoutbox.html');
+        $tpl = $this->gadget->template->load('Shoutbox.html');
         $tpl->SetBlock('shoutbox');
         $tpl->SetVariable('title', _t('SHOUTBOX_SHOUTBOX'));
         $cHTML = Jaws_Gadget::getInstance('Comments')->action->load('Comments');

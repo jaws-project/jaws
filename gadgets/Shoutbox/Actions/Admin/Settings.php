@@ -21,7 +21,7 @@ class Shoutbox_Actions_Admin_Settings extends Shoutbox_Actions_Admin_Default
     function Settings()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Settings.html');
+        $tpl = $this->gadget->template->loadAdmin('Settings.html');
         $tpl->SetBlock('settings');
 
         $tpl->SetVariable('menubar',  $this->MenuBar('Settings'));
