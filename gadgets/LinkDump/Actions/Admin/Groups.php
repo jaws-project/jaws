@@ -22,7 +22,7 @@ class LinkDump_Actions_Admin_Groups extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadAdminTemplate('LinkDump.html');
         $tpl->SetBlock('linkdump');
 
-        $model = $this->gadget->loadModel('Groups');
+        $model = $this->gadget->model->load('Groups');
         $groups = $model->GetGroups();
         foreach ($groups as $group) {
             $tpl->SetBlock('linkdump/link_group');

@@ -49,7 +49,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         $this->MoveLink($lid, $gid, $gid, $rank, null);
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
-            $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
+            $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             $res = $model->AddTagsToItem('LinkDump', 'link', $lid, true, null, $tags);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_ADD_TAG_ERROR'), RESPONSE_ERROR);
@@ -80,7 +80,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'linkdump_links', false);
 
-        $model = $this->gadget->loadModel('Links');
+        $model = $this->gadget->model->load('Links');
         $oldLink = $model->GetLink($id);
         if (Jaws_Error::IsError($oldLink)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_UPDATE_ERROR'), RESPONSE_ERROR);
@@ -106,7 +106,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         $this->MoveLink($id, $gid, $oldLink['gid'], $rank, $oldLink['rank']);
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
-            $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
+            $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             $res = $model->UpdateTagsItems('LinkDump', 'link', $id, true, null, $tags);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_UPDATE_TAG_ERROR'), RESPONSE_ERROR);
@@ -217,7 +217,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         $this->MoveLink($lid, $gid, $gid, 0xfff, $rank);
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
-            $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
+            $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             $res = $model->DeleteItemTags('LinkDump', 'link', $lid);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_DELETE_ERROR'), RESPONSE_ERROR);
@@ -240,7 +240,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
     function InvalidateFeed($gid)
     {
         if (is_numeric($gid)) {
-            $model = $this->gadget->loadModel('Groups');
+            $model = $this->gadget->model->load('Groups');
             $group = $model->GetGroup($gid);
             $gid = $group['fast_url'];
         }

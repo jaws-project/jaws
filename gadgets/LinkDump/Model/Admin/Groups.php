@@ -74,7 +74,7 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
             return false;
         }
 
-        $model = $this->gadget->loadAdminModel('Links');
+        $model = $this->gadget->model->loadAdmin('Links');
         $model->InvalidateFeed($gid);
         $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_GROUPS_UPDATED'), RESPONSE_NOTICE);
         return true;
@@ -93,7 +93,7 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
             $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_GROUPS_NOT_DELETABLE'), RESPONSE_ERROR);
             return false;
         }
-        $model = $this->gadget->loadModel('Groups');
+        $model = $this->gadget->model->load('Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -107,7 +107,7 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
             $links = $model->GetGroupLinks($gid);
-            $model = Jaws_Gadget::getInstance('Tags')->loadAdminModel('Tags');
+            $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             foreach ($links as $link) {
                 $res = $model->DeleteItemTags('LinkDump', 'link', $link['id']);
                 if (Jaws_Error::IsError($res)) {

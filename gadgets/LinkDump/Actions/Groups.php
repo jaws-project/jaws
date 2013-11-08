@@ -20,7 +20,7 @@ class LinkDump_Actions_Groups extends Jaws_Gadget_Action
     function CategoryLayoutParams()
     {
         $result = array();
-        $model = $this->gadget->loadModel('Groups');
+        $model = $this->gadget->model->load('Groups');
         $groups = $model->GetGroups();
         if (!Jaws_Error::isError($groups)) {
             $pgroups = array();
@@ -55,7 +55,7 @@ class LinkDump_Actions_Groups extends Jaws_Gadget_Action
             $tplFile = 'LinkDump.html';
         }
 
-        $model = $this->gadget->loadModel('Groups');
+        $model = $this->gadget->model->load('Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group) || empty($group)) {
             return false;
@@ -115,7 +115,7 @@ class LinkDump_Actions_Groups extends Jaws_Gadget_Action
      */
     function Categories()
     {
-        $model = $this->gadget->loadModel('Groups');
+        $model = $this->gadget->model->load('Groups');
         $groups = $model->GetGroups();
         if (Jaws_Error::IsError($group)) {
             return false;

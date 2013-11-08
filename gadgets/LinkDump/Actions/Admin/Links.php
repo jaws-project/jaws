@@ -20,7 +20,7 @@ class LinkDump_Actions_Admin_Links extends Jaws_Gadget_Action
      */
     function GetLinksList($gid)
     {
-        $model = $this->gadget->loadModel('Groups');
+        $model = $this->gadget->model->load('Groups');
         $links = $model->GetGroupLinks($gid);
         if (Jaws_Error::IsError($links) || empty($links)) {
             return '';
@@ -55,7 +55,7 @@ class LinkDump_Actions_Admin_Links extends Jaws_Gadget_Action
         $tpl->SetBlock('linkdump');
         $tpl->SetBlock('linkdump/LinksUI');
 
-        $model = $this->gadget->loadModel('Groups');
+        $model = $this->gadget->model->load('Groups');
         $groups = $model->GetGroups();
         $groupCombo =& Piwi::CreateWidget('Combo', 'gid');
         $groupCombo->SetID('gid');
