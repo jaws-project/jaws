@@ -19,7 +19,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
      */
     function Results()
     {
-        $tpl = $this->gadget->loadTemplate('Results.html');
+        $tpl = $this->gadget->template->load('Results.html');
         $tpl->SetBlock('results');
         $tpl->SetVariable('title', _t('SEARCH_RESULTS'));
 
@@ -135,7 +135,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
      */
     function GetNumberedPageNavigation($page, $page_size, $total, $query_string)
     {
-        $tpl = $this->gadget->loadTemplate('PageNavigation.html');
+        $tpl = $this->gadget->template->load('PageNavigation.html');
         $tpl->SetBlock('pager');
 
         $model = $this->gadget->model->load('Search');

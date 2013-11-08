@@ -19,7 +19,7 @@ class Search_Actions_Admin_Settings extends Jaws_Gadget_Action
     function Settings()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Search.html');
+        $tpl = $this->gadget->template->loadAdmin('Search.html');
         $tpl->SetBlock('admin');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
