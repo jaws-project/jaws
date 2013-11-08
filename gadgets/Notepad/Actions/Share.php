@@ -33,7 +33,7 @@ class Notepad_Actions_Share extends Jaws_Gadget_Action
         }
 
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('Share.html');
+        $tpl = $this->gadget->template->load('Share.html');
         $tpl->SetBlock('share');
         $tpl->SetVariable('id', $id);
         $tpl->SetVariable('UID', $uid);

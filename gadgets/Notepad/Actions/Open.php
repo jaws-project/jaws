@@ -29,7 +29,7 @@ class Notepad_Actions_Open extends Jaws_Gadget_Action
         }
 
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('Open.html');
+        $tpl = $this->gadget->template->load('Open.html');
         $tpl->SetBlock('note');
         $tpl->SetVariable('id', $id);
         $tpl->SetVariable('note_title', $note['title']);

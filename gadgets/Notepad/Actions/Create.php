@@ -20,7 +20,7 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
     function NewNote()
     {
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('Form.html');
+        $tpl = $this->gadget->template->load('Form.html');
         $tpl->SetBlock('form');
 
         // Response

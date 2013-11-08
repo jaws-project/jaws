@@ -20,7 +20,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_Action
     function Notepad()
     {
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('Notepad.html');
+        $tpl = $this->gadget->template->load('Notepad.html');
         $tpl->SetBlock('notepad');
 
         $tpl->SetVariable('title', _t('NOTEPAD_NAME'));

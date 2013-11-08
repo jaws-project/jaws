@@ -39,7 +39,7 @@ class Notepad_Actions_Update extends Jaws_Gadget_Action
         }
 
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('Form.html');
+        $tpl = $this->gadget->template->load('Form.html');
         $tpl->SetBlock('form');
         $tpl->SetVariable('title', _t('NOTEPAD_EDIT_NOTE'));
         $tpl->SetVariable('errorIncompleteData', _t('NOTEPAD_ERROR_INCOMPLETE_DATA'));

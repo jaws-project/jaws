@@ -66,7 +66,7 @@ class Notepad_Actions_StickyNote extends Jaws_Gadget_Action
      */
     function GetNotesView($notes)
     {
-        $tpl = $this->gadget->loadTemplate('StickyNote.html');
+        $tpl = $this->gadget->template->load('StickyNote.html');
         $tpl->SetBlock('notes');
 
         $tpl->SetVariable('title', _t('NOTEPAD_LATEST_NOTES'));
