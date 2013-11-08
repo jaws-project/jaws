@@ -27,7 +27,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         $post  = jaws()->request->fetch(array('email'), 'post');
         $error = '';
 
-        $htmlPolicy = Jaws_Gadget::getInstance('Policy')->loadAction('Captcha');
+        $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $resCheck = $htmlPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
             $GLOBALS['app']->Session->PushResponse(
@@ -78,7 +78,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         $tpl->SetVariable('remember', _t('GLOBAL_SUBMIT'));
 
         //captcha
-        $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAction('Captcha');
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $mPolicy->loadCaptcha($tpl, 'forgot');
 
         if ($response = $GLOBALS['app']->Session->PopResponse('Users.ForgotLogin')) {
@@ -171,7 +171,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         }
 
         //captcha
-        $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAction('Captcha');
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $mPolicy->loadCaptcha($tpl, 'LoginBox', 'login');
 
         // remember
@@ -377,7 +377,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         }
 
         // check captcha
-        $htmlPolicy = Jaws_Gadget::getInstance('Policy')->loadAction('Captcha');
+        $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $resCheck = $htmlPolicy->checkCaptcha('login');
         if (!Jaws_Error::IsError($resCheck)) {
             // try to login
