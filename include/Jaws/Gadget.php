@@ -565,7 +565,6 @@ class Jaws_Gadget
     function __call($method, $arguments)
     {
         switch ($method) {
-            case 'loadAdminModel':
             case 'loadAdminAction':
             case 'loadAdminTemplate':
                 array_unshift($arguments, true);
@@ -579,7 +578,6 @@ class Jaws_Gadget
                 return call_user_func_array(array($this->extensions[$extension], 'load'), $arguments);
                 break;
 
-            case 'loadModel':
             case 'loadAction':
             case 'loadTemplate':
                 array_unshift($arguments, false);
@@ -612,9 +610,14 @@ class Jaws_Gadget
     {
         switch ($property) {
             case 'acl':
+            case 'hook':
             case 'event':
+            case 'model':
+            case 'action':
             case 'request':
+            case 'template':
             case 'registry':
+            case 'installer':
             case 'translate':
                 $classname = 'Jaws_Gadget_'. ucfirst($property);
                 $this->$property = new $classname($this);
