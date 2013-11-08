@@ -36,7 +36,7 @@ class Languages_AdminAjax extends Jaws_Gadget_Action
         @list($component, $langTo) = jaws()->request->fetchAll('post');
         $component = explode('|', $component);
         $component[1] = preg_replace("/[^A-Za-z0-9]/", '', $component[1]);
-        $gadget = $this->gadget->loadAdminAction('Languages');
+        $gadget = $this->gadget->action->loadAdmin('Languages');
         return $gadget->GetLangDataUI($component[1], (int)$component[0], $langTo);
     }
 
