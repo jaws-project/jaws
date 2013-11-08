@@ -21,7 +21,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageIPs');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('IP');
+        $model = $this->gadget->model->loadAdmin('IP');
         $IPRange = $model->GetIPRange($id);
         if (Jaws_Error::IsError($IPRange)) {
             return false; //we need to handle errors on ajax
@@ -45,7 +45,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageIPs');
         @list($from_ip, $to_ip, $blocked) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('IP');
+        $model = $this->gadget->model->loadAdmin('IP');
         $model->AddIPRange($from_ip, $to_ip, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -60,7 +60,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageIPs');
         @list($id, $from_ip, $to_ip, $blocked) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('IP');
+        $model = $this->gadget->model->loadAdmin('IP');
         $model->EditIPRange($id, $from_ip, $to_ip, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -75,7 +75,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageIPs');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('IP');
+        $model = $this->gadget->model->loadAdmin('IP');
         $model->DeleteIPRange($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -90,7 +90,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageAgents');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Agent');
+        $model = $this->gadget->model->loadAdmin('Agent');
         $agent = $model->GetAgent($id);
         if (Jaws_Error::IsError($agent)) {
             return false; //we need to handle errors on ajax
@@ -109,7 +109,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageAgents');
         @list($agent, $blocked) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Agent');
+        $model = $this->gadget->model->loadAdmin('Agent');
         $model->AddAgent($agent, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -124,7 +124,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageAgents');
         @list($id, $agent, $blocked) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Agent');
+        $model = $this->gadget->model->loadAdmin('Agent');
         $model->EditAgent($id, $agent, $blocked);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -139,7 +139,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageAgents');
         @list($id) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Agent');
+        $model = $this->gadget->model->loadAdmin('Agent');
         $model->DeleteAgent($id);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -154,7 +154,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageIPs');
         @list($blocked) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('IP');
+        $model = $this->gadget->model->loadAdmin('IP');
         $res = $model->IPBlockingBlockUndefined($blocked);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
@@ -175,7 +175,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageAgents');
         @list($blocked) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Agent');
+        $model = $this->gadget->model->loadAdmin('Agent');
         $res = $model->AgentBlockingBlockUndefined($blocked);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
@@ -196,7 +196,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('Encryption');
         @list($enabled, $key_age, $key_len) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Encryption');
+        $model = $this->gadget->model->loadAdmin('Encryption');
         $model->UpdateEncryptionSettings($enabled == 'true', $key_age, $key_len);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -211,7 +211,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('AntiSpam');
         @list($filter, $default_captcha, $default_captcha_driver, $obfuscator) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('AntiSpam');
+        $model = $this->gadget->model->loadAdmin('AntiSpam');
         $model->UpdateAntiSpamSettings(
             $filter,
             $default_captcha,
@@ -234,7 +234,7 @@ class Policy_AdminAjax extends Jaws_Gadget_Action
             $passwd_max_age, $passwd_min_length, $login_captcha, $login_captcha_driver,
             $xss_parsing_level, $session_idle_timeout, $session_remember_timeout
         ) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('AdvancedPolicies');
+        $model = $this->gadget->model->loadAdmin('AdvancedPolicies');
         $model->UpdateAdvancedPolicies(
             $passwd_complexity, $passwd_bad_count, $passwd_lockedout_time,
             $passwd_max_age, $passwd_min_length, $login_captcha, $login_captcha_driver,

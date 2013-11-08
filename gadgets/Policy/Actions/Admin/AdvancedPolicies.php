@@ -22,7 +22,7 @@ class Policy_Actions_Admin_AdvancedPolicies extends Policy_Actions_Admin_Default
         $this->gadget->CheckPermission('AntiSpam');
         $this->AjaxMe('script.js');
 
-        $model = $this->gadget->loadAdminModel('AntiSpam');
+        $model = $this->gadget->model->loadAdmin('AntiSpam');
         $tpl = $this->gadget->loadAdminTemplate('AdvancedPolicies.html');
         $tpl->SetBlock('AdvancedPolicies');
 
