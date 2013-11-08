@@ -25,7 +25,7 @@ class Weather_Actions_Admin_Properties extends Weather_Actions_Admin_Default
         $this->gadget->CheckPermission('UpdateProperties');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('Properties.html');
+        $tpl = $this->gadget->template->loadAdmin('Properties.html');
         $tpl->SetBlock('Properties');
 
         $tpl->SetVariable('menubar', $this->MenuBar('Properties'));

@@ -24,7 +24,7 @@ class Weather_Actions_Admin_Regions extends Weather_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageRegions');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('Weather.html');
+        $tpl = $this->gadget->template->loadAdmin('Weather.html');
         $tpl->SetBlock('Weather');
 
         $tpl->SetVariable('menubar', $this->MenuBar('Regions'));
