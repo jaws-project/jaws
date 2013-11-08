@@ -51,16 +51,6 @@ class Blog_Model_Summary extends Jaws_Gadget_Model
             $summary['AvgEntriesPerWeek'] = null;
         }
 
-        // Recent entries
-        $blogTable = Jaws_ORM::getInstance()->table('blog');
-        $blogTable->select('id:integer', 'title', 'fast_url', 'published:boolean', 'publishtime');
-        $result = $blogTable->orderBy('publishtime desc')->limit(10)->fetchAll();
-        if (!Jaws_Error::IsError($result) && $result) {
-            foreach ($result as $r) {
-                $summary['Entries'][] = $r;
-            }
-        }
-
         if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
             $cModel = Jaws_Gadget::getInstance('Comments')->loadModel('Comments');
             // total comments

@@ -108,23 +108,6 @@ class Blog_Actions_Admin_Summary extends Blog_Actions_Admin_Default
             $tpl->ParseBlock('summary/recent');
         }
 
-        // Recent comments
-        if (isset($summary['Comments']) &&(count($summary['Comments']) > 0)) {
-            $tpl->SetBlock('summary/recent');
-            $tpl->SetVariable('title', _t('BLOG_RECENT_COMMENTS'));
-            $date = $GLOBALS['app']->loadDate();
-            foreach ($summary['Comments'] as $c) {
-                $tpl->SetBlock('summary/recent/link');
-                $url = BASE_SCRIPT . '?gadget=Blog&action=EditComment&id='.$c['id'];
-                $extra = "<strong style=\"color: #666;\">" . Jaws_XSS::filter($c['name']) . ": </strong>";
-                $tpl->SetVariable('url',   Jaws_XSS::filter($url));
-                $tpl->SetVariable('extra', $extra);
-                $tpl->SetVariable('date',  $date->Format($c['createtime']));
-                $tpl->ParseBlock('summary/recent/link');
-            }
-            $tpl->ParseBlock('summary/recent');
-        }
-
         $tpl->ParseBlock('summary');
         return $tpl->Get();
     }
