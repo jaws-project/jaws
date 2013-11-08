@@ -117,7 +117,7 @@ class Jaws_Gadget_ACL
             if (!isset($alreadyLoaded)) {
                 $alreadyLoaded = true;
                 // load ACL hook for get dynamic ACL names
-                $objHook = $this->gadget->loadHook('ACL');
+                $objHook = $this->gadget->hook->load('ACL');
                 if (!Jaws_Error::IsError($objHook)) {
                     $objHook->Execute();
                 }
