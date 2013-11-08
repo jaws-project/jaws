@@ -217,24 +217,56 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
         $module_name = $module;
         switch ($type) {
             case JAWS_COMPONENT_GADGET:
-                $data_file = JAWS_DATA . "languages/$langTo/gadgets/$module.php";
-                $orig_file = JAWS_PATH . "languages/$langTo/gadgets/$module.php";
+                if ($langTo == 'en') {
+                    $orig_file = JAWS_PATH . "gadgets/$module/Resources/translates.ini";
+                } else {
+                    $orig_file = JAWS_PATH . "languages/$langTo/gadgets/$module.ini";
+                }
+                $data_file = JAWS_DATA . "languages/$langTo/gadgets/$module.ini";
                 break;
 
             case JAWS_COMPONENT_PLUGIN:
-                $data_file = JAWS_DATA . "languages/$langTo/plugins/$module.php";
-                $orig_file = JAWS_PATH . "languages/$langTo/plugins/$module.php";
+                if ($langTo == 'en') {
+                    $orig_file = JAWS_PATH . "plugins/$module/Resources/translates.ini";
+                } else {
+                    $orig_file = JAWS_PATH . "languages/$langTo/plugins/$module.ini";
+                }
+                $data_file = JAWS_DATA . "languages/$langTo/plugins/$module.ini";
+                $from_file = JAWS_PATH . "plugins/$module/Resources/translates.ini";
                 $module_name = 'Plugins_' . $module;
                 break;
 
+            case JAWS_COMPONENT_INSTALL:
+                if ($langTo == 'en') {
+                    $orig_file = JAWS_PATH . "install/Resources/translates.ini";
+                } else {
+                    $orig_file = JAWS_PATH . "languages/$langTo/Install.ini";
+                }
+                $data_file = JAWS_DATA . "languages/$langTo/Install.ini";
+                break;
+
+            case JAWS_COMPONENT_UPGRADE:
+                if ($langTo == 'en') {
+                    $orig_file = JAWS_PATH . "upgrade/Resources/translates.ini";
+                } else {
+                    $orig_file = JAWS_PATH . "languages/$langTo/Upgrade.ini";
+                }
+                $data_file = JAWS_DATA . "languages/$langTo/Upgrade.ini";
+                break;
+
             default:
-                $data_file = JAWS_DATA . "languages/$langTo/$module.php";
-                $orig_file = JAWS_PATH . "languages/$langTo/$module.php";
+                if ($langTo == 'en') {
+                    $orig_file = JAWS_PATH . "include/Jaws/Resources/translates.ini";
+                } else {
+                    $orig_file = JAWS_PATH . "languages/$langTo/Global.ini";
+                }
+                $data_file = JAWS_DATA . "languages/$langTo/Global.ini";
         }
 
         $update_default_lang = $this->gadget->registry->fetch('update_default_lang') == 'true';
+        $strings = array();
         if (file_exists($orig_file)) {
-            require_once $orig_file;
+            $strings = parse_ini_file($orig_file, false, INI_SCANNER_RAW);
         }
 
         // user translation
@@ -251,7 +283,6 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
 
         // Meta
         foreach ($data['meta'] as $k => $v) {
-            $v = str_replace('"', '\"', $v);
             // user translation
             $tpl->SetBlock('template/meta');
             $tpl->SetVariable('key', $k);
@@ -273,23 +304,20 @@ class Languages_Model_Admin_Languages extends Jaws_Gadget_Model
                 $v = '';
             }
 
-            $orig_cons = '_' . strtoupper($langTo) . '_' . $k;
-            $data_cons = '_' . strtoupper($langTo) . '_DATA_' . $k;
-            $v = preg_replace("$\r\n|\n$", "\n", $v);
-            $changed = !defined($orig_cons) || constant($orig_cons) !== $v;
-            $v = str_replace(array('"', "\n"), array('\"', '\n'), $v);
+            $v = preg_replace("$\r\n|\n$", '\n', $v);
+            $changed = !isset($strings[$k]) || $strings[$k] !== $v;
 
             if ($changed) {
                 $change_detected = true;
                 $tpl->SetBlock('template/string');
-                $tpl->SetVariable('key', $data_cons);
+                $tpl->SetVariable('key', $k);
                 $tpl->SetVariable('value', $v);
                 $tpl->ParseBlock('template/string');
             }
 
             // orig translation
             $tpl2->SetBlock('template/string');
-            $tpl2->SetVariable('key', $orig_cons);
+            $tpl2->SetVariable('key', $k);
             $tpl2->SetVariable('value', $v);
             $tpl2->ParseBlock('template/string');
         }
