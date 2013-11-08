@@ -302,7 +302,7 @@ class Installer_Database extends JawsInstallerStage
         $variables = array();
         $variables['timestamp'] = $GLOBALS['db']->Date();
 
-        $result = $GLOBALS['db']->installSchema('schema/schema.xml', $variables);
+        $result = $GLOBALS['db']->installSchema('Resources/schema/schema.xml', $variables);
         _log(JAWS_LOG_DEBUG,"Installing core schema");
         if (Jaws_Error::isError($result)) {
             _log(JAWS_LOG_DEBUG,$result->getMessage());
