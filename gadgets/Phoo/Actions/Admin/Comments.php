@@ -20,7 +20,7 @@ class Phoo_Actions_Admin_Comments extends Phoo_Actions_Admin_Default
      */
     function CommentsDatagrid()
     {
-        $cHtml = Jaws_Gadget::getInstance('Comments')->loadAdminAction('Comments');
+        $cHtml = Jaws_Gadget::getInstance('Comments')->action->loadAdmin('Comments');
         return $cHtml->Get($this->gadget->name);
     }
 
@@ -36,7 +36,7 @@ class Phoo_Actions_Admin_Comments extends Phoo_Actions_Admin_Default
      */
     function CommentsData($limit = 0, $filter = '', $search = '', $status = '')
     {
-        $cHtml = Jaws_Gadget::getInstance('Comments')->loadAdminAction('Comments');
+        $cHtml = Jaws_Gadget::getInstance('Comments')->action->loadAdmin('Comments');
         return $cHtml->GetDataAsArray(
             'phoo',
             BASE_SCRIPT . '?gadget=Phoo&amp;action=EditComment&amp;id={id}',
@@ -63,7 +63,7 @@ class Phoo_Actions_Admin_Comments extends Phoo_Actions_Admin_Default
         $this->AjaxMe('script.js');
         $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/Resources/script.js');
 
-        $cHTML = Jaws_Gadget::getInstance('Comments')->loadAdminAction('Comments');
+        $cHTML = Jaws_Gadget::getInstance('Comments')->action->loadAdmin('Comments');
         return $cHTML->Comments('phoo', $this->MenuBar('ManageComments'));
     }
 
