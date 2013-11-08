@@ -22,7 +22,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
      */
     function GetMaps($gadget, $action)
     {
-        $model = $this->gadget->loadAdminModel('Maps');
+        $model = $this->gadget->model->loadAdmin('Maps');
         $maps  = $model->GetActionMaps($gadget, $action);
         if (Jaws_Error::IsError($maps)) {
             return array();
@@ -81,7 +81,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
         $tpl->SetVariable('menubar', $this->MenuBar('Maps'));
 
         //Combo for gadgets
-        $model = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
+        $model = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $model->GetGadgetsList(null, true, true, null, true);
         $comboGadgets =& Piwi::CreateWidget('Combo', 'gadgets_combo');
         $comboGadgets->SetStyle('width: 200px;');

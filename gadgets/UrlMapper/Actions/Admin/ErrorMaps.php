@@ -88,7 +88,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
      */
     function GetErrorMaps($limit, $offset)
     {
-        $model = $this->gadget->loadAdminModel('ErrorMaps');
+        $model = $this->gadget->model->loadAdmin('ErrorMaps');
         $errorMaps = $model->GetErrorMaps($limit, $offset);
         if (Jaws_Error::IsError($errorMaps)) {
             return array();

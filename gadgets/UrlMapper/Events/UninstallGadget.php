@@ -16,7 +16,7 @@ class UrlMapper_Events_UninstallGadget extends Jaws_Gadget_Event
      */
     function Execute($gadget)
     {
-        $uModel = $this->gadget->loadAdminModel('Maps');
+        $uModel = $this->gadget->model->loadAdmin('Maps');
         $res = $uModel->DeleteGadgetMaps($gadget);
         return $res;
     }
