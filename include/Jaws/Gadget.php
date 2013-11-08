@@ -124,13 +124,6 @@ class Jaws_Gadget
     var $default_admin_action = false;
 
     /**
-     * Store extension objects for later use so we aren't running around with multiple copies
-     * @var     array
-     * @access  protected
-     */
-    var $extensions = array();
-
-    /**
      * Store models objects for later use so we aren't running around with multiple copies
      * @var     array
      * @access  protected
@@ -564,21 +557,6 @@ class Jaws_Gadget
      */
     function __call($method, $arguments)
     {
-        switch ($method) {
-            case 'loadHook':
-            case 'loadEvent':
-            case 'loadInstaller':
-                $extension = substr($method, 4);
-                $model_class_name = "Jaws_Gadget_$extension";
-                if (!isset($this->extensions[$extension])) {
-                    $this->extensions[$extension] = new $model_class_name($this);
-                    $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded extension: [$extension]");
-                }
-
-                return call_user_func_array(array($this->extensions[$extension], 'load'), $arguments);
-                break;
-        }
-
         return Jaws_Error::raiseError("Method '$method' not exists!", __FUNCTION__);
     }
 
