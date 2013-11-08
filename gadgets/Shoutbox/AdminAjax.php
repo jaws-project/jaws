@@ -20,7 +20,7 @@ class Shoutbox_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('UpdateProperties');
         @list($limit, $max_strlen, $authority) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Settings');
+        $model = $this->gadget->model->loadAdmin('Settings');
         $model->UpdateProperties($limit, $max_strlen, $authority == 'true');
         return $GLOBALS['app']->Session->PopLastResponse();
     }
