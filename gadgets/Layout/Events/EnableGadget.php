@@ -16,7 +16,7 @@ class Layout_Events_EnableGadget extends Jaws_Gadget_Event
      */
     function Execute($gadget)
     {
-        $lModel = $this->gadget->loadAdminModel('Layout');
+        $lModel = $this->gadget->model->loadAdmin('Layout');
         $res = $lModel->PublishGadgetElements($gadget, true);
         return $res;
     }

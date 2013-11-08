@@ -41,7 +41,7 @@ class Layout_Actions_Admin_Theme extends Jaws_Gadget_Action
         }
 
         // Verify blocks/Reassign gadgets
-        $model = $this->gadget->loadAdminModel('Sections');
+        $model = $this->gadget->model->loadAdmin('Sections');
         $sections = $model->GetLayoutSections();
         foreach ($sections as $section) {
             if (!isset($tpl->Blocks['layout']->InnerBlock[$section])) {

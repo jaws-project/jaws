@@ -50,7 +50,7 @@ class Layout_Actions_Admin_Element extends Jaws_Gadget_Action
 
         $tpl->SetVariable('section', $section);
 
-        $cmpModel = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
+        $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadget_list = $cmpModel->GetGadgetsList(null, true, true, true);
 
         //Hold.. if we dont have a selected gadget?.. like no gadgets?
@@ -90,7 +90,7 @@ class Layout_Actions_Admin_Element extends Jaws_Gadget_Action
     function EditElementAction()
     {
         $id = jaws()->request->fetch('id', 'get');
-        $model = $this->gadget->loadAdminModel('Elements');
+        $model = $this->gadget->model->loadAdmin('Elements');
         $layoutElement = $model->GetElement($id);
         if (!$layoutElement || !isset($layoutElement['id'])) {
             return false;

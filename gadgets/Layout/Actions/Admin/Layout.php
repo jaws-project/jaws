@@ -19,8 +19,8 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_Action
      */
     function LayoutManager()
     {
-        $lModel = $this->gadget->loadAdminModel('Layout');
-        $eModel = $this->gadget->loadAdminModel('Elements');
+        $lModel = $this->gadget->model->loadAdmin('Layout');
+        $eModel = $this->gadget->model->loadAdmin('Elements');
 
         $t_item = $this->gadget->loadAdminTemplate('LayoutManager.html');
         $t_item->SetBlock('working_notification');
@@ -269,7 +269,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_Action
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         }
 
-        $layoutModel = $this->gadget->loadModel('Layout');
+        $layoutModel = $this->gadget->model->load('Layout');
         $result = $layoutModel->layoutSwitch($user);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);

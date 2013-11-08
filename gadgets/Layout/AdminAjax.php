@@ -21,7 +21,7 @@ class Layout_AdminAjax extends Jaws_Gadget_Action
     function MoveElement()
     {
         @list($item, $old_section, $old_position, $new_section, $new_position) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Elements');
+        $model = $this->gadget->model->loadAdmin('Elements');
         $result = $model->MoveElement(
             $item,
             $old_section,
@@ -47,7 +47,7 @@ class Layout_AdminAjax extends Jaws_Gadget_Action
     function DeleteElement()
     {
         @list($item, $section, $position) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Elements');
+        $model = $this->gadget->model->loadAdmin('Elements');
         $result = $model->DeleteElement($item, $section, $position);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
@@ -67,7 +67,7 @@ class Layout_AdminAjax extends Jaws_Gadget_Action
     function ChangeDisplayWhen() 
     {
         @list($item, $dw) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Elements');
+        $model = $this->gadget->model->loadAdmin('Elements');
         $res = $model->ChangeDisplayWhen($item, $dw);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_CHANGE_WHEN'), RESPONSE_ERROR);
@@ -86,7 +86,7 @@ class Layout_AdminAjax extends Jaws_Gadget_Action
     function GetGadgetActions()
     {
         @list($gadget) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Elements');
+        $model = $this->gadget->model->loadAdmin('Elements');
         return $model->GetGadgetLayoutActions($gadget);
     }
 
@@ -102,7 +102,7 @@ class Layout_AdminAjax extends Jaws_Gadget_Action
         $id = false;
         @list($gadget, $action, $params) = jaws()->request->fetchAll('post');
         $params = jaws()->request->fetch('2:array', 'post');
-        $model = $this->gadget->loadAdminModel('Elements');
+        $model = $this->gadget->model->loadAdmin('Elements');
         $actions = $model->GetGadgetLayoutActions($gadget, true);
         if (isset($actions[$action])) {
             $user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
@@ -156,8 +156,8 @@ class Layout_AdminAjax extends Jaws_Gadget_Action
         $res = false;
         @list($item, $gadget, $action, $params) = jaws()->request->fetchAll('post');
         $params = jaws()->request->fetch('3:array', 'post');
-        $eModel = $this->gadget->loadAdminModel('Elements');
-        $lModel = $this->gadget->loadAdminModel('Layout');
+        $eModel = $this->gadget->model->loadAdmin('Elements');
+        $lModel = $this->gadget->model->loadAdmin('Layout');
         $actions = $eModel->GetGadgetLayoutActions($gadget, true);
         if (isset($actions[$action])) {
             $res = $lModel->EditElementAction($item, $action, $params, $actions[$action]['file']);
