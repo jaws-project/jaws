@@ -22,7 +22,7 @@ class Emblems_Actions_Emblems extends Jaws_Gadget_Action
         $tpl->SetBlock('emblems');
         $tpl->SetVariable('title', _t('EMBLEMS_ACTION_TITLE'));
 
-        $model = $this->gadget->loadModel('Emblems');
+        $model = $this->gadget->model->load('Emblems');
         $emblems = $model->GetEmblems(true);
         if (!Jaws_Error::IsError($emblems)) {
             $siteURL = Jaws_Utils::getRequestURL(false);

@@ -86,7 +86,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
      */
     function Datagrid()
     {
-        $model = $this->gadget->loadModel();
+        $model = $this->gadget->model->load();
         $total = $model->TotalOfData('emblem');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
@@ -122,7 +122,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
      */
     function GetEmblems($limit = 0)
     {
-        $model = $this->gadget->loadModel('Emblems');
+        $model = $this->gadget->model->load('Emblems');
         $rsemblem = $model->GetEmblems(false, $limit);
         $entries_grid = array();
         if (Jaws_Error::IsError($rsemblem)) {
@@ -208,7 +208,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         } else {
             $post['image'] = $res['image'][0]['host_filename'];
             $post['published'] = (bool)$post['published'];
-            $model = $this->gadget->loadAdminModel('Emblems');
+            $model = $this->gadget->model->loadAdmin('Emblems');
             $res = $model->AddEmblem($post);
             if (Jaws_Error::IsError($res)) {
                 Jaws_Utils::delete(JAWS_DATA. 'emblems/'. $post['image']);
