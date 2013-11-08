@@ -22,8 +22,8 @@ class Settings_Hooks_Preferences extends Jaws_Gadget_Hook
         $languages = Jaws_Utils::GetLanguagesList();
         $themes = Jaws_Utils::GetThemesList();
         $themes = array_column(array_values($themes), 'title', 'name');
-        $objSettings = $this->gadget->loadAdminModel('Settings');
-        $objComponents = Jaws_Gadget::getInstance('Components')->loadModel('Gadgets');
+        $objSettings = $this->gadget->model->loadAdmin('Settings');
+        $objComponents = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $objComponents->GetGadgetsList(null, true, true, null, true);
         $gadgets = array_column(array_values($gadgets), 'title', 'name');
         array_unshift($gadgets, _t('GLOBAL_NOGADGET'));

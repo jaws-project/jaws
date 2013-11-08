@@ -32,7 +32,7 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         $saveButton->AddEvent(ON_CLICK, 'javascript: submitAdvancedForm();');
         $tpl->SetVariable('saveButton', $saveButton->Get());
 
-        $model = $this->gadget->loadAdminModel('Settings');
+        $model = $this->gadget->model->loadAdmin('Settings');
         // Date Format
         $date_format =& Piwi::CreateWidget('Combo', 'date_format');
         $date_format->setID('date_format');
