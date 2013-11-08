@@ -95,7 +95,7 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
 
-        $tpl = $this->gadget->loadAdminTemplate('PollGroups.html');
+        $tpl = $this->gadget->template->loadAdmin('PollGroups.html');
         $tpl->SetBlock('PollGroups');
 
         // Menu bar
@@ -130,7 +130,7 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
      */
     function PollGroupUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('PollGroups.html');
+        $tpl = $this->gadget->template->loadAdmin('PollGroups.html');
         $tpl->SetBlock('PollGroupUI');
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
@@ -158,7 +158,7 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
      */
     function PollGroupPollsUI()
     {
-        $tpl = $this->gadget->loadAdminTemplate('PollGroups.html');
+        $tpl = $this->gadget->template->loadAdmin('PollGroups.html');
         $tpl->SetBlock('PollGroupPollsUI');
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');

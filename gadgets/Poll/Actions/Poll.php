@@ -61,7 +61,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
             return '';
         }
 
-        $tpl = $this->gadget->loadTemplate('Poll.html');
+        $tpl = $this->gadget->template->load('Poll.html');
         $tpl->SetBlock('poll');
         $tpl->SetVariable('title', _t('POLL_ACTION_POLL_TITLE'));
 
@@ -169,7 +169,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
      */
     function Polls($gid = 0)
     {
-        $tpl = $this->gadget->loadTemplate('Polls.html');
+        $tpl = $this->gadget->template->load('Polls.html');
         $tpl->SetBlock('Polls');
 
         $pModel = $this->gadget->model->load('Poll');
@@ -239,7 +239,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
             return false;
         }
 
-        $tpl = $this->gadget->loadTemplate('Results.html');
+        $tpl = $this->gadget->template->load('Results.html');
         $tpl->SetBlock('results');
         $tpl->SetVariable('title', _t('POLL_ACTION_RESULT_TITLE'));
         $tpl->SetVariable('question', $poll['question']);

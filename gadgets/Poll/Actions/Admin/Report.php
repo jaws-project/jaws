@@ -24,7 +24,7 @@ class Poll_Actions_Admin_Report extends Poll_Actions_Admin_Default
         $this->AjaxMe('script.js');
 
         $model = $this->gadget->model->load('Group');
-        $tpl = $this->gadget->loadAdminTemplate('Reports.html');
+        $tpl = $this->gadget->template->loadAdmin('Reports.html');
         $tpl->SetBlock('Reports');
 
         //Menu bar
@@ -61,7 +61,7 @@ class Poll_Actions_Admin_Report extends Poll_Actions_Admin_Default
      */
     function PollResultsUI($pid)
     {
-        $tpl = $this->gadget->loadAdminTemplate('Reports.html');
+        $tpl = $this->gadget->template->loadAdmin('Reports.html');
         $tpl->SetBlock('PollResults');
         $model = $this->gadget->model->load('Poll');
         $poll = $model->GetPoll($pid);
