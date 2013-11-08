@@ -140,7 +140,11 @@ if (Jaws_Error::IsError($GLOBALS['db'])) {
 
 $db_jaws_version = $GLOBALS['app']->Registry->Init();
 if ($db_jaws_version != JAWS_VERSION) {
-    Jaws_Header::Location('upgrade/index.php');
+    if (strrstr(JAWS_VERSION, '.', true) != strrstr($db_jaws_version, '.', true)) {
+        Jaws_Header::Location('upgrade/index.php');
+    }
+
+    $GLOBALS['app']->Registry->update('version', JAWS_VERSION);
 }
 
 // init application
