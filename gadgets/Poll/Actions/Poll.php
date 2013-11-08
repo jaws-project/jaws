@@ -20,7 +20,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
     function PollLayoutParams()
     {
         $result = array();
-        $pModel = $this->gadget->loadModel('Poll');
+        $pModel = $this->gadget->model->load('Poll');
         $polls = $pModel->GetPolls();
         if (!Jaws_Error::isError($polls)) {
             $ppollss = array();
@@ -47,7 +47,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
      */
     function Poll($pid = 0)
     {
-        $model = $this->gadget->loadModel('Poll');
+        $model = $this->gadget->model->load('Poll');
         if (empty($pid)) {
             $poll = $model->GetLastPoll();
         } else {
@@ -142,7 +142,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
     function PollsLayoutParams()
     {
         $result = array();
-        $model = $this->gadget->loadModel('Group');
+        $model = $this->gadget->model->load('Group');
         $pollGroups = $model->GetPollGroups();
         if (!Jaws_Error::isError($pollGroups)) {
             $pgroups = array();
@@ -172,8 +172,8 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
         $tpl = $this->gadget->loadTemplate('Polls.html');
         $tpl->SetBlock('Polls');
 
-        $pModel = $this->gadget->loadModel('Poll');
-        $gModel = $this->gadget->loadModel('Group');
+        $pModel = $this->gadget->model->load('Poll');
+        $gModel = $this->gadget->model->load('Group');
         if (!empty($gid)) {
             $group = $gModel->GetPollGroup($gid);
             if (Jaws_Error::isError($group) || empty($group)) {
@@ -205,7 +205,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
     function Vote()
     {
         $post = jaws()->request->fetch(array('pid', 'answers:array'), 'post');
-        $model = $this->gadget->loadModel('Poll');
+        $model = $this->gadget->model->load('Poll');
         $poll = $model->GetPoll((int)$post['pid']);
         if (!Jaws_Error::IsError($poll) && !empty($poll)) {
             if ((($poll['poll_type'] == 1) || (!$GLOBALS['app']->Session->GetCookie('poll_' . $poll['id']))) &&
@@ -233,7 +233,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
     {
         $pid = jaws()->request->fetch('id', 'get');
 
-        $model = $this->gadget->loadModel('Poll');
+        $model = $this->gadget->model->load('Poll');
         $poll = $model->GetPoll($pid);
         if (Jaws_Error::IsError($poll) || empty($poll) || ($poll['result_view'] == 0)) {
             return false;

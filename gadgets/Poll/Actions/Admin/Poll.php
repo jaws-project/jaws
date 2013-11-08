@@ -20,7 +20,7 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
      */
     function GetPolls($offset = null)
     {
-        $model = $this->gadget->loadModel('Poll');
+        $model = $this->gadget->model->load('Poll');
         $polls = $model->GetPolls(null, false, 12, $offset);
         if (Jaws_Error::IsError($polls)) {
             return array();
@@ -67,7 +67,7 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
      */
     function PollsDatagrid()
     {
-        $model = $this->gadget->loadModel();
+        $model = $this->gadget->model->load();
         $total = $model->TotalOfData('poll');
         $grid =& Piwi::CreateWidget('DataGrid', array());
         $grid->SetID('polls_datagrid');
@@ -141,7 +141,7 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
 
         $groupCombo =& Piwi::CreateWidget('Combo', 'gid');
         $groupCombo->SetID('gid');
-        $model = $this->gadget->loadModel('Group');
+        $model = $this->gadget->model->load('Group');
         $groups = $model->GetPollGroups();
         foreach($groups as $group) {
             $groupCombo->AddOption($group['title'], $group['id']);

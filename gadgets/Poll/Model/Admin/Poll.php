@@ -195,7 +195,7 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
      */
     function UpdatePollAnswers($pid, $answers)
     {
-        $model = $this->gadget->loadAdminModel('Answer');
+        $model = $this->gadget->model->loadAdmin('Answer');
         $oldAnswers = $this->GetPollAnswers($pid);
         if (Jaws_Error::IsError($oldAnswers)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ERROR_ANSWERS_NOT_UPDATED'), RESPONSE_ERROR);
