@@ -65,7 +65,7 @@ class GlossaGlossy_Plugin extends Jaws_Plugin
             return $html;
         }
 
-        $glossyModel = Jaws_Gadget::getInstance('Glossary')->loadModel('Term');
+        $glossyModel = Jaws_Gadget::getInstance('Glossary')->model->load('Term');
         $howMany = preg_match_all('#\[term\](.*?)\[/term\]#si', $html, $matches);
         for ($i = 0; $i < $howMany; $i++) {
             $match_text = $matches[1][$i];
