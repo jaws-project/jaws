@@ -54,7 +54,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $bGroup->setStyle('min-width:150px;');
         $bGroup->AddEvent(ON_CHANGE, "getBannersDataGrid('banners_datagrid', 0, true)");
         $bGroup->AddOption('&nbsp;', -1);
-        $model = $this->gadget->loadModel('Groups');
+        $model = $this->gadget->model->load('Groups');
         $groups = $model->GetGroups(-1);
         foreach($groups as $group) {
             $bGroup->AddOption($group['title'], $group['id']);
@@ -112,7 +112,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $group_combo =& Piwi::CreateWidget('Combo', 'gid');
         $group_combo->SetID('gid');
         $group_combo->setStyle('width: 352px;');
-        $model = $this->gadget->loadModel('Groups');
+        $model = $this->gadget->model->load('Groups');
         $groups = $model->GetGroups(-1);
         foreach($groups as $group) {
             $group_combo->AddOption($group['title'], $group['id']);
@@ -228,7 +228,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
      */
     function GetBanners($gid, $offset = null)
     {
-        $model = $this->gadget->loadModel('Banners');
+        $model = $this->gadget->model->load('Banners');
         $banners = $model->GetBanners(-1, $gid, 18, $offset);
         if (Jaws_Error::IsError($banners)) {
             return array();
@@ -264,7 +264,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
      */
     function BannersDatagrid()
     {
-        $model = $this->gadget->loadModel();
+        $model = $this->gadget->model->load();
         $total = $model->TotalOfData('banners');
         $grid =& Piwi::CreateWidget('DataGrid', array());
         $grid->SetID('banners_datagrid');
@@ -294,7 +294,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
             'stop_time', 'random', 'published'), 'post');
         $post['template'] = jaws()->request->fetch('template', 'post', false);
 
-        $model = $this->gadget->loadAdminModel('Banners');
+        $model = $this->gadget->model->loadAdmin('Banners');
         $res = Jaws_Utils::UploadFiles($_FILES,
             JAWS_DATA . $this->gadget->DataDirectory,
             'jpg,gif,swf,png,jpeg,bmp,svg',

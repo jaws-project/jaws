@@ -17,7 +17,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageBanners');
         @list($bid) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadModel('Banners');
+        $model = $this->gadget->model->load('Banners');
         $banner = $model->GetBanner($bid);
         if (Jaws_Error::IsError($banner)) {
             return false; //we need to handle errors on ajax
@@ -48,7 +48,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
         @list($bid, $gid) = jaws()->request->fetchAll('post');
         $bid = empty($bid)? -1 : $bid;
         $gid = empty($gid)? -1 : $gid;
-        $model = $this->gadget->loadModel('Banners');
+        $model = $this->gadget->model->load('Banners');
         $res = $model->GetBanners($bid, $gid);
         if (Jaws_Error::IsError($res)) {
             return false; //we need to handle errors on ajax
@@ -67,7 +67,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageGroups');
         @list($gid) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadModel('Groups');
+        $model = $this->gadget->model->load('Groups');
         $group = $model->GetGroup($gid);
         if (Jaws_Error::IsError($group)) {
             return false; //we need to handle errors on ajax
@@ -88,7 +88,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
         @list($gid, $bid, $limit, $columns) = jaws()->request->fetchAll('post');
         $bid = empty($bid)? -1 : $bid;
         $gid = empty($gid)? -1 : $gid;
-        $model = $this->gadget->loadModel('Groups');
+        $model = $this->gadget->model->load('Groups');
         $groups = $model->GetGroups($gid, $bid, $limit, $columns);
         if (Jaws_Error::IsError($groups)) {
             return false; //we need to handle errors on ajax
@@ -110,7 +110,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
             $clicks_limit, $start_time, $stop_time, $random, $published
         ) = jaws()->request->fetchAll('post');
         $template = jaws()->request->fetch(4, 'post', false);
-        $model = $this->gadget->loadAdminModel('Banners');
+        $model = $this->gadget->model->loadAdmin('Banners');
         $model->InsertBanner($title, $url, $gid, $banner, $template, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
 
@@ -130,7 +130,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
             $clicks_limit, $start_time, $stop_time, $random, $published
         ) = jaws()->request->fetchAll('post');
         $template = jaws()->request->fetch(5, 'post', false);
-        $model = $this->gadget->loadAdminModel('Banners');
+        $model = $this->gadget->model->loadAdmin('Banners');
         $model->UpdateBanner($bid, $title, $url, $gid, $banner, $template, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
 
@@ -147,7 +147,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageGroups');
         @list($title, $limit_count, $show_title, $show_type, $published) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Groups');
+        $model = $this->gadget->model->loadAdmin('Groups');
         $model->InsertGroup($title, $limit_count, $show_title, $show_type, $published);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -163,7 +163,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageGroups');
         @list($gid, $title, $limit_count, $show_title, $show_type, $published) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Groups');
+        $model = $this->gadget->model->loadAdmin('Groups');
         $model->UpdateGroup($gid, $title, $limit_count, $show_title, $show_type, $published);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -179,7 +179,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('BannersGrouping');
         @list($gid, $banners) = jaws()->request->fetch(array('0', '1:array'), 'post');
-        $model = $this->gadget->loadAdminModel('Banners');
+        $model = $this->gadget->model->loadAdmin('Banners');
         $model->AddBannersToGroup($gid, $banners);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -194,7 +194,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageBanners');
         @list($bid) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Banners');
+        $model = $this->gadget->model->loadAdmin('Banners');
         $model->DeleteBanner($bid);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -210,7 +210,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageBanners');
         @list($bid) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Reports');
+        $model = $this->gadget->model->loadAdmin('Reports');
         $model->ResetViews($bid);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -226,7 +226,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageBanners');
         @list($bid) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Reports');
+        $model = $this->gadget->model->loadAdmin('Reports');
         $model->ResetClicks($bid);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -242,7 +242,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageGroups');
         @list($gid) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->loadAdminModel('Groups');
+        $model = $this->gadget->model->loadAdmin('Groups');
         $model->DeleteGroup($gid);
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -308,7 +308,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageBanners');
         @list($gid) = jaws()->request->fetchAll('post');
         $gid = empty($gid)? -1 : $gid;
-        $model = $this->gadget->loadAdminModel('Banners');
+        $model = $this->gadget->model->loadAdmin('Banners');
         $res = $model->GetBannersCount($gid);
         if (Jaws_Error::IsError($res)) {
             return false;

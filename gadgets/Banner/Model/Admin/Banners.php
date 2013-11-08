@@ -153,7 +153,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
      */
     function AddBannersToGroup($gid, $banners)
     {
-        $model = $this->gadget->loadModel('Banners');
+        $model = $this->gadget->model->load('Banners');
         $AllBanners = $model->GetBanners(-1, -1);
         foreach ($AllBanners as $banner) {
             $rank = array_search($banner['id'], $banners);
@@ -213,7 +213,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
      */
     function DeleteBanner($bid)
     {
-        $model = $this->gadget->loadModel('Banners');
+        $model = $this->gadget->model->load('Banners');
         $banner = $model->GetBanner($bid);
         if (Jaws_Error::IsError($banner)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
