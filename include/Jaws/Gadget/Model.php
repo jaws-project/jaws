@@ -38,45 +38,24 @@ class Jaws_Gadget_Model
      * of the same instance around in our code.
      *
      * @access  public
-     * @param   bool    $adminModel Admin Model?
      * @param   string  $filename   Model class file name
      * @return  mixed   Model class object on successful, Jaws_Error otherwise
      */
-    function &load($adminModel, $filename = '')
+    function &load($filename = '')
     {
         // filter non validate character
         $filename = preg_replace('/[^[:alnum:]_]/', '', $filename);
-        $type = $adminModel? 'AdminModel' : 'Model';
 
-        if (!isset($this->gadget->models[$type][$filename])) {
-            switch ($type) {
-                case 'Model':
-                    if (empty($filename)) {
-                        $type_class_name = $this->gadget->name. '_Model';
-                        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Model.php';
-                        if (!file_exists($file)) {
-                            return $this->gadget->extensions['Model'];
-                        }
-                    } else {
-                        $type_class_name = $this->gadget->name. "_Model_$filename";
-                        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Model/$filename.php";
-                    }
-                    break;
-
-                case 'AdminModel':
-                    if (empty($filename)) {
-                        $type_class_name = $this->gadget->name. '_AdminModel';
-                        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/AdminModel.php';
-                        if (!file_exists($file)) {
-                            return $this->gadget->extensions['Model'];
-                        }
-                    } else {
-                        $type_class_name = $this->gadget->name. "_Model_Admin_$filename";
-                        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Model/Admin/$filename.php";
-                    }
-                    break;
-                default:
-                    return Jaws_Error::raiseError("Gadget [$type] type not exists!", __FUNCTION__);
+        if (!isset($this->gadget->models['Model'][$filename])) {
+            if (empty($filename)) {
+                $classname = $this->gadget->name. '_Model';
+                $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Model.php';
+                if (!file_exists($file)) {
+                    return $this->gadget->extensions['Model'];
+                }
+            } else {
+                $classname = $this->gadget->name. "_Model_$filename";
+                $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Model/$filename.php";
             }
 
             if (!file_exists($file)) {
@@ -84,15 +63,57 @@ class Jaws_Gadget_Model
             }
 
             include_once($file);
-            if (!Jaws::classExists($type_class_name)) {
-                return Jaws_Error::raiseError("Class [$type_class_name] not exists!", __FUNCTION__);
+            if (!Jaws::classExists($classname)) {
+                return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
             }
 
-            $this->gadget->models[$type][$filename] = new $type_class_name($this->gadget);
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget model: [$type_class_name]");
+            $this->gadget->models['Model'][$filename] = new $classname($this->gadget);
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget model: [$classname]");
         }
 
-        return $this->gadget->models[$type][$filename];
+        return $this->gadget->models['Model'][$filename];
+    }
+
+    /**
+     * Loads the gadget model file in question, makes a instance and
+     * stores it globally for later use so we do not have duplicates
+     * of the same instance around in our code.
+     *
+     * @access  public
+     * @param   string  $filename   Model class file name
+     * @return  mixed   Model class object on successful, Jaws_Error otherwise
+     */
+    function &loadAdmin($filename = '')
+    {
+        // filter non validate character
+        $filename = preg_replace('/[^[:alnum:]_]/', '', $filename);
+
+        if (!isset($this->gadget->models['AdminModel'][$filename])) {
+            if (empty($filename)) {
+                $classname = $this->gadget->name. '_AdminModel';
+                $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/AdminModel.php';
+                if (!file_exists($file)) {
+                    return $this->gadget->extensions['Model'];
+                }
+            } else {
+                $classname = $this->gadget->name. "_Model_Admin_$filename";
+                $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Model/Admin/$filename.php";
+            }
+
+            if (!file_exists($file)) {
+                return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
+            }
+
+            include_once($file);
+            if (!Jaws::classExists($classname)) {
+                return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
+            }
+
+            $this->gadget->models['AdminModel'][$filename] = new $classname($this->gadget);
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget model: [$classname]");
+        }
+
+        return $this->gadget->models['AdminModel'][$filename];
     }
 
     /**
