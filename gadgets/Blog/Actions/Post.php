@@ -83,7 +83,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
             $tpl->SetBlock('single_view');
             $res = $this->ShowEntry($tpl, 'single_view', $entry, false);
 
-            $trbkHTML = $this->gadget->loadAction('Trackbacks');
+            $trbkHTML = $this->gadget->action->load('Trackbacks');
             if (!Jaws_Error::IsError($trbkHTML)) {
                 $tpl->SetVariable('trackbacks', $trbkHTML->ShowTrackbacks($entry['id']));
             }
@@ -105,7 +105,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
                                   $this->gadget->registry->fetch('allow_comments') == 'true' &&
                                   $allow_comments_config;
 
-                $cHTML = Jaws_Gadget::getInstance('Comments')->loadAction('Comments');
+                $cHTML = Jaws_Gadget::getInstance('Comments')->action->load('Comments');
                 $tpl->SetVariable('comments', $cHTML->ShowComments('Blog', 'Post', $entry['id'],
                     array('action' => 'SingleView',
                           'params' => array('id' => empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url']))));

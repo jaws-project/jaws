@@ -42,7 +42,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
         if(empty($limit)) {
             $limit = 0;
         }
-        $gadget = $this->gadget->loadAdminAction('Entries');
+        $gadget = $this->gadget->action->loadAdmin('Entries');
         return $gadget->PostsData($period, $cat, $status, $search, $limit);
     }
 
@@ -194,7 +194,7 @@ class Blog_AdminAjax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageTrackbacks');
         @list($limit, $filter, $search, $status) = jaws()->request->fetchAll('post');
-        $gadget = $this->gadget->loadAdminAction('Trackbacks');
+        $gadget = $this->gadget->action->loadAdmin('Trackbacks');
         return $gadget->TrackbacksData($limit, $filter, $search, $status);
     }
 
