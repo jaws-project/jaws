@@ -110,7 +110,7 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
      */
     function UpdateCategory()
     {
-        $post    = jaws()->request->fetch(array('catid', 'catname'), 'post');
+        $post = jaws()->request->fetch(array('catid', 'catname'), 'post');
 
         $this->gadget->CheckPermission('ManageCategories');
         $model = $this->gadget->model->loadAdmin('Categories');

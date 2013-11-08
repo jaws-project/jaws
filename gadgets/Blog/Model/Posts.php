@@ -659,7 +659,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
             'blog.id:integer', 'blog.user_id:integer', 'username', 'title', 'summary', 'text',
-            'fast_url', 'blog.publishtime', 'blog.updatetime', 'published:boolean'
+            'fast_url', 'blog.publishtime', 'blog.updatetime', 'published:boolean', 'categories'
         )->join('users', 'blog.user_id', 'users.id');
 
         if (trim($category) != '') {
@@ -706,6 +706,14 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             return new Jaws_Error(_t('BLOG_ERROR_ADVANCED_SEARCH'), _t('BLOG_NAME'));
         }
 
+        // Check dynamic ACL
+        foreach ($result as $key => $entry) {
+            foreach (explode(",", $entry['categories']) as $cat) {
+                if (!$this->gadget->GetPermission('CategoryManage', $cat)) {
+                    unset($result[$key]);
+                }
+            }
+        }
         return $result;
     }
 

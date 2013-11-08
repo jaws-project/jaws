@@ -64,6 +64,11 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
      */
     function UpdateCategory($cid, $name, $description, $fast_url, $meta_keywords, $meta_desc)
     {
+        if(!$this->gadget->GetPermission('CategoryManage', $cid)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_ACCESS_DENIED'), RESPONSE_ERROR);
+            return false;
+        }
+
         $fast_url = empty($fast_url) ? $name : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog_category', false);
 

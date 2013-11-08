@@ -23,7 +23,15 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
         $catTable = Jaws_ORM::getInstance()->table('blog_category');
         $catTable->select('id', 'name', 'fast_url', 'description', 'createtime', 'updatetime');
         $catTable->orderBy('name');
-        return $catTable->fetchAll();
+        $categories = $catTable->fetchAll();
+
+        // Check dynamic ACL
+        foreach ($categories as $key => $category) {
+            if (!$this->gadget->GetPermission('CategoryManage', $category['id'])) {
+                unset($categories[$key]);
+            }
+        }
+        return $categories;
     }
 
     /**
