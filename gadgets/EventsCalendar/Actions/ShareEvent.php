@@ -32,7 +32,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
         }
 
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('ShareEvent.html');
+        $tpl = $this->gadget->template->load('ShareEvent.html');
         $tpl->SetBlock('share');
         $tpl->SetVariable('title', _t('EVENTSCALENDAR_SHARE'));
         $tpl->SetVariable('id', $id);

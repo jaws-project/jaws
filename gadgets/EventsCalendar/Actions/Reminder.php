@@ -19,7 +19,7 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
      */
     function Reminder()
     {
-        $tpl = $this->gadget->loadTemplate('Reminder.html');
+        $tpl = $this->gadget->template->load('Reminder.html');
         $tpl->SetBlock('reminder');
 
         $tpl->SetVariable('title', _t('EVENTSCALENDAR_ACTIONS_REMINDER'));

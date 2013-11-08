@@ -25,7 +25,7 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
         $day = (int)$data['day'];
 
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('ViewDay.html');
+        $tpl = $this->gadget->template->load('ViewDay.html');
         $tpl->SetBlock('day');
 
         $tpl->SetVariable('lbl_hour', _t('EVENTSCALENDAR_HOUR'));

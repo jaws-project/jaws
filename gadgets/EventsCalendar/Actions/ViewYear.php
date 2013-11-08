@@ -24,7 +24,7 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
         $year = empty($year)? (int)$jdate->Format(time(), 'Y') : (int)$year;
 
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('ViewYear.html');
+        $tpl = $this->gadget->template->load('ViewYear.html');
         $tpl->SetBlock('year');
 
         // Menubar

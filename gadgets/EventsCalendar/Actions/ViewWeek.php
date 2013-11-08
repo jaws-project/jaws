@@ -25,7 +25,7 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         $day = (int)$data['day'];
 
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('ViewWeek.html');
+        $tpl = $this->gadget->template->load('ViewWeek.html');
         $tpl->SetBlock('week');
 
         $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));

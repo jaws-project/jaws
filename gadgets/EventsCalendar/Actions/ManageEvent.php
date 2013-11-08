@@ -43,7 +43,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
     function EventForm($id = null)
     {
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('EventForm.html');
+        $tpl = $this->gadget->template->load('EventForm.html');
         $tpl->SetBlock('form');
 
         // Menubar

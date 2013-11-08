@@ -31,7 +31,7 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         }
 
         $jdate = $GLOBALS['app']->loadDate();
-        $tpl = $this->gadget->loadTemplate('ViewEvent.html');
+        $tpl = $this->gadget->template->load('ViewEvent.html');
         $tpl->SetBlock('event');
 
         // Menubar

@@ -20,7 +20,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
     function ManageEvents()
     {
         $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->loadTemplate('ManageEvents.html');
+        $tpl = $this->gadget->template->load('ManageEvents.html');
         $tpl->SetBlock('events');
 
         $tpl->SetVariable('title', _t('EVENTSCALENDAR_EVENTS_MANAGE'));
