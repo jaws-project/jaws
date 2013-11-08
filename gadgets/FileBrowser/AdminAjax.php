@@ -49,7 +49,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_Action
     function GetLocation()
     {
         @list($path) = jaws()->request->fetchAll('post');
-        $gadget = $this->gadget->loadAdminAction('Files');
+        $gadget = $this->gadget->action->loadAdmin('Files');
         return $gadget->GetLocation($path);
     }
 
@@ -65,7 +65,7 @@ class FileBrowser_AdminAjax extends Jaws_Gadget_Action
     function GetDirectory()
     {
         @list($dir, $offset, $order) = jaws()->request->fetchAll('post');
-        $gadget = $this->gadget->loadAdminAction('Directory');
+        $gadget = $this->gadget->action->loadAdmin('Directory');
         if (!is_numeric($offset)) {
             $offset = null;
         }

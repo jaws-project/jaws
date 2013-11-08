@@ -22,7 +22,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
     {
         $this->AjaxMe('script.js');
 
-        $dHTML = $this->gadget->loadAdminAction('Directory');
+        $dHTML = $this->gadget->action->loadAdmin('Directory');
 
         $tpl = $this->gadget->loadAdminTemplate('FileBrowser.html');
         $tpl->SetBlock('filebrowser');
