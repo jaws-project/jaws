@@ -170,7 +170,7 @@ class Quotes_AdminAjax extends Jaws_Gadget_Action
      */
     function GroupQuotesUI()
     {
-        $gadget = $this->gadget->loadAdminAction('Groups');
+        $gadget = $this->gadget->action->loadAdmin('Groups');
         return $gadget->GroupQuotesUI();
     }
 
