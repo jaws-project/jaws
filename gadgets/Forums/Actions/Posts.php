@@ -505,7 +505,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
 
         // chack captcha only in new post action
         if (empty($rqst['pid'])) {
-            $htmlPolicy = Jaws_Gadget::getInstance('Policy')->loadAction('Captcha');
+            $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
             $htmlPolicy->loadCaptcha($tpl, 'post');
         }
 
@@ -549,7 +549,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
 
         // chack captcha only in new post action
         if (empty($post['pid'])) {
-            $htmlPolicy = Jaws_Gadget::getInstance('Policy')->loadAction('Captcha');
+            $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
             $resCheck = $htmlPolicy->checkCaptcha();
             if (Jaws_Error::IsError($resCheck)) {
                 $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'UpdatePost');

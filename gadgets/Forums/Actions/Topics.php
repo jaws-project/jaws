@@ -342,7 +342,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
         // check captcha only in new topic action
         if (empty($topic['id'])) {
-            $htmlPolicy = Jaws_Gadget::getInstance('Policy')->loadAction('Captcha');
+            $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
             $htmlPolicy->loadCaptcha($tpl, 'topic');
         }
 
@@ -390,7 +390,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
         // check captcha only in new topic action
         if (empty($topic['tid'])) {
-            $htmlPolicy = Jaws_Gadget::getInstance('Policy')->loadAction('Captcha');
+            $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
             $resCheck = $htmlPolicy->checkCaptcha();
             if (Jaws_Error::IsError($resCheck)) {
                 $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'UpdateTopic');

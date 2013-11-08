@@ -59,7 +59,7 @@ class Forums_AdminAjax extends Jaws_Gadget_Action
     function GetGroupUI()
     {
         $this->gadget->CheckPermission('default');
-        $gHTML = $this->gadget->loadAdminAction('Group');
+        $gHTML = $this->gadget->action->loadAdmin('Group');
         return $gHTML->GetGroupUI();
     }
 
@@ -72,7 +72,7 @@ class Forums_AdminAjax extends Jaws_Gadget_Action
     function GetForumUI()
     {
         $this->gadget->CheckPermission('default');
-        $fHTML = $this->gadget->loadAdminAction('Forum');
+        $fHTML = $this->gadget->action->loadAdmin('Forum');
         return $fHTML->GetForumUI();
     }
 
