@@ -18,7 +18,7 @@ class Emblems_Actions_Emblems extends Jaws_Gadget_Action
      */
     function Display()
     {
-        $tpl = $this->gadget->loadTemplate('Emblems.html');
+        $tpl = $this->gadget->template->load('Emblems.html');
         $tpl->SetBlock('emblems');
         $tpl->SetVariable('title', _t('EMBLEMS_ACTION_TITLE'));
 

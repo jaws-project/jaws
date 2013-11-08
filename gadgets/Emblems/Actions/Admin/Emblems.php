@@ -22,7 +22,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageEmblems');
 
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->loadAdminTemplate('Emblems.html');
+        $tpl = $this->gadget->template->loadAdmin('Emblems.html');
         $tpl->SetBlock('emblems');
 
         $addform =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post', 
