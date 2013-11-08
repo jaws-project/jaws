@@ -99,7 +99,7 @@ class Faq_AdminAjax extends Jaws_Gadget_Action
     {
         $text = jaws()->request->fetch(0, 'post', false);
 
-        $gadget = $this->gadget->loadAdminAction('Question');
+        $gadget = $this->gadget->action->loadAdmin('Question');
         return $gadget->gadget->ParseText($text);
     }
 
@@ -113,7 +113,7 @@ class Faq_AdminAjax extends Jaws_Gadget_Action
     function GetCategoryGrid()
     {
         @list($id) = jaws()->request->fetchAll('post');
-        $gadget = $this->gadget->loadAdminAction('Question');
+        $gadget = $this->gadget->action->loadAdmin('Question');
         $datagrid = $gadget->DataGrid($id);
 
         if (!empty($datagrid)) {
