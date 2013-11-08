@@ -68,7 +68,7 @@ if (!$GLOBALS['app']->Session->Logged())
         }
 
         // check captcha
-        $mPolicy = Jaws_Gadget::getInstance('Policy')->loadAction('Captcha');
+        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $resCheck = $mPolicy->checkCaptcha('login');
         if (!Jaws_Error::IsError($resCheck)) {
             $param = jaws()->request->fetch(array('redirect_to', 'remember', 'authtype'), 'post');
@@ -98,7 +98,7 @@ if (!$GLOBALS['app']->Session->Logged())
     }
     // Init layout
     $GLOBALS['app']->InstanceLayout();
-    $cpl = Jaws_Gadget::getInstance('ControlPanel')->loadAdminAction('Login');
+    $cpl = Jaws_Gadget::getInstance('ControlPanel')->action->loadAdmin('Login');
     $data = $cpl->LoginBox($loginMsg);
     terminate($data, 401);
 }
@@ -113,7 +113,7 @@ $GLOBALS['app']->Session->CheckPermission('ControlPanel', 'default_admin');
 
 if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
     $GLOBALS['app']->Session->CheckPermission($ReqGadget, 'default_admin');
-    $goGadget = Jaws_Gadget::getInstance($ReqGadget)->loadAdminAction();
+    $goGadget = Jaws_Gadget::getInstance($ReqGadget)->action->loadAdmin();
     if (Jaws_Error::IsError($goGadget)) {
         Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
     }
