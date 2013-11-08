@@ -74,7 +74,7 @@ class Comments_Actions_RecentComments extends Comments_Actions_Default
         $tpl->SetVariable('title', _t('COMMENTS_RECENT_COMMENTS', _t(strtoupper($gadget) . '_NAME')));
         $tpl->SetVariable('gadget', $gadget);
 
-        $cHTML = Jaws_Gadget::getInstance('Comments')->loadAction('Comments');
+        $cHTML = Jaws_Gadget::getInstance('Comments')->action->load('Comments');
         $tpl->SetVariable('comments', $cHTML->ShowComments($gadget, '', 0, array('action' => 'RecentComments'), $limit, $orderBy));
 
         $tpl->ParseBlock('recent_comments');
