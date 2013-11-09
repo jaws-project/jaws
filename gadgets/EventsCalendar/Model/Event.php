@@ -176,6 +176,13 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
             return $res;
         }
 
+        // Delete recurrences
+        $table = Jaws_ORM::getInstance()->table('ec_recurrences');
+        $res = $table->delete()->where('event', $id_set, 'in')->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
         // Delete shares
         $table = Jaws_ORM::getInstance()->table('ec_users');
         return $table->delete()->where('event', $id_set, 'in')->exec();
@@ -209,8 +216,6 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
                 case 2: // weekly
                     $step = 7 * 24 * 60 * 60;
                     // calculate first ocurrence
-                    _log_var_dump($event['wday']);
-                    _log_var_dump($start_info['wday']);
                     $diff = $event['wday'] - $start_info['wday'] - 1;
                     if ($diff < 0) {
                         $diff += 7;
