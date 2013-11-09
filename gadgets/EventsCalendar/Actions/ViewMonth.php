@@ -34,13 +34,12 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 
-        // FIXME: we don't have daysInMonth
-        $daysInMonth = 30;
         $jdate = $GLOBALS['app']->loadDate();
+        $daysInMonth = $jdate->monthDays($year, $month);
         $start = $jdate->ToBaseDate($year, $month, 1);
-        $start = $start['timestamp'];
+        $start = $GLOBALS['app']->UserTime2UTC($start['timestamp']);
         $stop = $jdate->ToBaseDate($year, $month, $daysInMonth, 23, 59, 59);
-        $stop = $stop['timestamp'];
+        $stop = $GLOBALS['app']->UserTime2UTC($stop['timestamp']);
 
         // Current month
         $info = $jdate->GetDateInfo($year, $month, 1);
@@ -88,7 +87,8 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
         // Fetch events
         $model = $this->gadget->model->load('Calendar');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $events = $model->GetEvents($user, null, null, $start, $stop, array('month' => $month));
+        $events = $model->GetEvents($user, null, null, $start, $stop);
+        // _log_var_dump($events);
         if (Jaws_Error::IsError($events)){
             $events = array();
         }
@@ -98,17 +98,12 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
         $eventsByDay = array_fill(1, $daysInMonth, array());
         foreach ($events as $e) {
             $eventsById[$e['id']] = $e;
-            $startIdx = ($e['start_date'] <= $start)? 1:
-                floor(($e['start_date'] - $start) / 86400) + 1;
-            $stopIdx = ($e['stop_date'] >= $stop)? $daysInMonth:
-                ceil(($e['stop_date'] - $start) / 86400);
+            $startIdx = ($e['start_time'] <= $start)? 1:
+                floor(($e['start_time'] - $start) / 86400) + 1;
+            $stopIdx = ($e['stop_time'] >= $stop)? $daysInMonth:
+                ceil(($e['stop_time'] - $start) / 86400);
             for ($i = $startIdx; $i <= $stopIdx; $i++) {
-                if ($e['wday'] != 0) {
-                    $info = $jdate->GetDateInfo($year, $month, $i);
-                    if ($e['wday'] == $info['wday'] + 1) {
-                        $eventsByDay[$i][] = $e['id'];
-                    }
-                } else if ($e['day'] == 0 || $e['day'] == $i) {
+                if (!in_array($e['id'], $eventsByDay[$i])) {
                     $eventsByDay[$i][] = $e['id'];
                 }
             }

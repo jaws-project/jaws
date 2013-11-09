@@ -17,13 +17,13 @@ class EventsCalendar_Model_Calendar extends Jaws_Gadget_Model
      * @param   int     $user   User ID
      * @return  array   Query result
      */
-    function GetEvents($user = null, $shared = null, $foreign = null, $start, $stop, $repeat)
+    function GetEvents($user = null, $shared = null, $foreign = null, $start, $stop)
     {
-        //_log_var_dump($start . ' - ' . $stop);
-        $table = Jaws_ORM::getInstance()->table('ec_events as event');
-        $table->select('event.id', 'subject', 'shared', 'day', 'wday',
-            'start_date', 'stop_date', 'start_time', 'stop_time', 'ec_users.user', 'owner');
-        $table->join('ec_users', 'event.id', 'event');
+        $table = Jaws_ORM::getInstance()->table('ec_events as events');
+        $table->select('events.id', 'subject', 'shared',
+            'recs.start_time', 'recs.stop_time', 'ec_users.user', 'owner');
+        $table->join('ec_recurrences as recs', 'events.id', 'recs.event');
+        $table->join('ec_users', 'events.id', 'ec_users.event');
         $table->join('users', 'owner', 'users.id');
 
         if ($user !== null){
@@ -32,30 +32,15 @@ class EventsCalendar_Model_Calendar extends Jaws_Gadget_Model
 
         if ($shared === true){
             $table->where('shared', true)->and();
-            $table->where('event.user', $user)->and();
+            $table->where('events.user', $user)->and();
         }
 
         if ($foreign === true){
             $table->where('ec_users.owner', $user, '<>')->and();
         }
 
-        if (isset($repeat['day'])){
-            $table->openWhere('day', 0)->or();
-            $table->closeWhere('day', $repeat['day'])->and();
-        }
-
-        if (isset($repeat['wday'])){
-            $table->openWhere('wday', 0)->or();
-            $table->closeWhere('wday', $repeat['wday'])->and();
-        }
-
-        if (isset($repeat['month'])){
-            $table->openWhere('month', 0)->or();
-            $table->closeWhere('month', $repeat['month'])->and();
-        }
-
-        $table->where('start_date', $stop, '<')->and();
-        $table->where('stop_date', $start, '>');
+        $table->where('recs.start_time', $stop, '<')->and();
+        $table->where('recs.stop_time', $start, '>');
 
         return $table->fetchAll();
     }
