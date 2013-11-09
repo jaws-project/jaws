@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class EventsCalendar_Model_Report extends Jaws_Gadget_Model
+class EventsCalendar_Model_Calendar extends Jaws_Gadget_Model
 {
     /**
      * Fetches list of events

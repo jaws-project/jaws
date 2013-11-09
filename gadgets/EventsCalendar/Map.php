@@ -32,7 +32,7 @@ $maps[] = array(
     array('id' => '[[:digit:]]+')
 );
 
-// Reporting
+// Calendar
 $maps[] = array(
     'ViewEvent',
     'events/view/{id}',

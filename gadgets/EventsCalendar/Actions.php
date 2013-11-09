@@ -60,7 +60,7 @@ $actions['Pager'] = array(
     'file' => 'Pager'
 );
 
-/* Report Actions */
+/* Calendar Actions */
 $actions['ViewEvent'] = array(
     'normal' => true,
     'file' => 'ViewEvent'
