@@ -50,22 +50,20 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('desc', $event['description']);
         $tpl->SetVariable('lbl_desc', _t('EVENTSCALENDAR_EVENT_DESC'));
 
-        // Date
-        $start_date = empty($event['start_date'])? '' :
-            $jdate->Format($event['start_date'], 'Y-m-d');
-        $stop_date = empty($event['stop_date'])? '' :
-            $jdate->Format($event['stop_date'], 'Y-m-d');
-        $tpl->SetVariable('start_date', $start_date);
-        $tpl->SetVariable('stop_date', $stop_date);
-        $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
+        // Start Date/Time
+        $start = $GLOBALS['app']->UTC2UserTime($event['start_time']);
+        $event['start_date'] = $jdate->Format($start, 'Y-m-d');
+        $event['start_time'] = $jdate->Format($start, 'H:i');
+        $tpl->SetVariable('start_date', $jdate->Format($start, 'Y-m-d'));
+        $tpl->SetVariable('start_time', $jdate->Format($start, 'H:i'));
 
-        // Time
-        $start_time = empty($event['start_time'])? '' :
-            $jdate->Format($event['start_time'], 'H:i');
-        $stop_time = empty($event['stop_time'])? '' :
-            $jdate->Format($event['stop_time'], 'H:i');
-        $tpl->SetVariable('start_time', $start_time);
-        $tpl->SetVariable('stop_time', $stop_time);
+        $stop = $GLOBALS['app']->UTC2UserTime($event['stop_time']);
+        $event['stop_date'] = $jdate->Format($start, 'Y-m-d');
+        $event['stop_time'] = $jdate->Format($start, 'H:i');
+        $tpl->SetVariable('stop_date', $jdate->Format($stop, 'Y-m-d'));
+        $tpl->SetVariable('stop_time', $jdate->Format($stop, 'H:i'));
+
+        $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
         $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
 
         // Type
@@ -80,18 +78,9 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('reminder', _t('EVENTSCALENDAR_EVENT_REMINDER_'.$event['reminder']));
         $tpl->SetVariable('lbl_reminder', _t('EVENTSCALENDAR_EVENT_REMINDER'));
 
-        // Repeat
-        if ($event['day'] == 0 && $event['wday'] == 0 && $event['month'] == 0) {
-            $repeat = 'DAILY';
-        } else if ($event['day'] == 0 && $event['month'] == 0) {
-            $repeat = 'WEEKLY';
-        } else if ($event['wday'] == 0 && $event['month'] == 0) {
-            $repeat = 'MONTHLY';
-        } else {  // $event['wday'] == 0
-            $repeat = 'YEARLY';
-        }
-        $tpl->SetVariable('repeat', _t('EVENTSCALENDAR_EVENT_RECURRENCE_'.$repeat));
-        $tpl->SetVariable('lbl_repeat', _t('EVENTSCALENDAR_EVENT_RECURRENCE'));
+        // Recurrences
+        $tpl->SetVariable('recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE_'.$event['recurrence']));
+        $tpl->SetVariable('lbl_recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE'));
 
         // Shared
         $tpl->SetVariable('shared', $event['shared']? _t('GLOBAL_YES') : _t('GLOBAL_NO'));
