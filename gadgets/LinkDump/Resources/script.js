@@ -95,14 +95,16 @@ function saveLink()
             tags = $('tags').value;
         }
         if (selectedLink == null) {
-            var response = LinkDumpAjax.callSync('insertlink',
-                                                 $('gid').value,
-                                                 $('title').value,
-                                                 $('url').value,
-                                                 $('fast_url').value,
-                                                 $('description').value,
-                                                 tags,
-                                                 $('rank').value);
+            var response = LinkDumpAjax.callSync(
+                'insertlink',
+                $('gid').value,
+                $('title').value,
+                $('url').value,
+                $('fast_url').value,
+                $('description').value,
+                tags,
+                $('rank').value
+            );
             if (response[0]['type'] == 'response_notice') {
                 var lid = response[0]['data'];
                 AddNewLinkItem($('gid').value, lid, $('rank').value);
@@ -110,15 +112,17 @@ function saveLink()
             }
             showResponse(response);
         } else {
-            var response = LinkDumpAjax.callSync('updatelink',
-                                                 $('lid').value,
-                                                 $('gid').value,
-                                                 $('title').value,
-                                                 $('url').value,
-                                                 $('fast_url').value,
-                                                 $('description').value,
-                                                 tags,
-                                                 $('rank').value);
+            var response = LinkDumpAjax.callSync(
+                'updatelink',
+                $('lid').value,
+                $('gid').value,
+                $('title').value,
+                $('url').value,
+                $('fast_url').value,
+                $('description').value,
+                tags,
+                $('rank').value
+            );
             if (response[0]['type'] == 'response_notice') {
                 $('link_'+$('lid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
                 var new_parent = $('links_group_'+$('gid').value);
@@ -168,6 +172,9 @@ function AddNewGroup(gid) {
     mainDiv.appendChild(linksDiv);
 }
 
+/**
+ * Add new link item
+ */
 function AddNewLinkItem(gid, lid, rank)
 {
     gLinksDiv = $('links_group_'+gid);
