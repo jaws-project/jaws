@@ -92,7 +92,9 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
             $stopIdx = ($e['stop_time'] >= $stop)? 7:
                 ceil(($e['stop_time'] - $start) / 86400);
             for ($i = $startIdx; $i <= $stopIdx; $i++) {
-                $eventsByDay[$i][] = $e['id'];
+                if (!in_array($e['id'], $eventsByDay[$i])) {
+                    $eventsByDay[$i][] = $e['id'];
+                }
             }
         }
 
