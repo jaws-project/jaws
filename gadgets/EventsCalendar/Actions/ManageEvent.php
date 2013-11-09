@@ -56,9 +56,6 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             $tpl->SetVariable('resp_text', $response['text']);
             $tpl->SetVariable('resp_type', $response['type']);
             $event = $response['data'];
-            if (!isset($event['id'])) {
-                $event['id'] = 0;
-            }
         }
 
         $jdate = $GLOBALS['app']->loadDate();
@@ -69,18 +66,16 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
                 $event = $model->GetEvent($id, $user);
                 if (Jaws_Error::IsError($event) ||
                     empty($event) ||
-                    $event['user'] != $user)
+                    $event['owner'] != $user)
                 {
                     return;
                 }
-                $event['start_date'] = empty($event['start_date'])? '' :
-                    $jdate->Format($event['start_date'], 'Y-m-d');
-                $event['stop_date'] = empty($event['stop_date'])? '' :
-                    $jdate->Format($event['stop_date'], 'Y-m-d');
-                $event['start_time'] = empty($event['start_time'])? '' :
-                    $jdate->Format($event['start_time'], 'H:i');
-                $event['stop_time'] = empty($event['stop_time'])? '' :
-                    $jdate->Format($event['stop_time'], 'H:i');
+                $start = $GLOBALS['app']->UTC2UserTime($event['start_time']);
+                $event['start_date'] = $jdate->Format($start, 'Y-m-d');
+                $event['start_time'] = $jdate->Format($start, 'H:i');
+                $stop = $GLOBALS['app']->UTC2UserTime($event['stop_time']);
+                $event['stop_date'] = $jdate->Format($stop, 'Y-m-d');
+                $event['stop_time'] = $jdate->Format($stop, 'H:i');
             } else {
                 $event = array();
                 $event['id'] = 0;
@@ -184,11 +179,9 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Recurrence
         $combo =& Piwi::CreateWidget('Combo', 'recurrence');
         $combo->SetId('event_recurrence');
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_DISABLED'), 0);
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_DAILY'), 1);
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_WEEKLY'), 2);
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_MONTHLY'), 3);
-        $combo->AddOption(_t('EVENTSCALENDAR_EVENT_RECURRENCE_YEARLY'), 4);
+        for ($i = 0; $i <= 4; $i++) {
+            $combo->AddOption(_t("EVENTSCALENDAR_EVENT_RECURRENCE_$i"), $i);
+        }
         $combo->SetDefault($event['recurrence']);
         $combo->AddEvent(ON_CHANGE, 'switchRepeatUI(this.value)');
         $tpl->SetVariable('recurrence', $combo->Get());
@@ -262,6 +255,12 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $event['subject'] = Jaws_XSS::defilter($event['subject']);
         $event['location'] = Jaws_XSS::defilter($event['location']);
         $event['description'] = Jaws_XSS::defilter($event['description']);
+        if (empty($event['stop_date'])) {
+            $event['stop_date'] = $event['start_date'];
+        }
+        if (empty($event['stop_time'])) {
+            $event['stop_time'] = $event['start_time'];
+        }
 
         $model = $this->gadget->model->load('Event');
         $result = $model->InsertEvent($event);
@@ -292,8 +291,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
     {
         $data = jaws()->request->fetch(array('id', 'subject', 'location',
             'description', 'type', 'priority', 'reminder',
-            'start_date', 'stop_date', 'start_time', 'stop_time',
-            'month', 'day', 'wday'), 'post');
+            'recurrence', 'month', 'day', 'wday',
+            'start_date', 'stop_date', 'start_time', 'stop_time'), 'post');
         if (empty($data['subject']) || empty($data['start_date'])) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'),
@@ -319,7 +318,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         }
 
         // Verify owner
-        if ($event['user'] != $user) {
+        if ($event['owner'] != $user) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('EVENTSCALENDAR_ERROR_NO_PERMISSION'),
                 'Events.Response',
@@ -332,7 +331,14 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $data['subject'] = Jaws_XSS::defilter($data['subject']);
         $data['location'] = Jaws_XSS::defilter($data['location']);
         $data['description'] = Jaws_XSS::defilter($data['description']);
-        $result = $model->Update($id, $data);
+        if (empty($data['stop_date'])) {
+            $data['stop_date'] = $data['start_date'];
+        }
+        if (empty($data['stop_time'])) {
+            $data['stop_time'] = $data['start_time'];
+        }
+
+        $result = $model->UpdateEvent($id, $data, $event);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('EVENTSCALENDAR_ERROR_EVENT_UPDATE'),
