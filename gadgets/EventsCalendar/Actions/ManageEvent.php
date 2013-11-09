@@ -252,9 +252,6 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
 
         $jdate = $GLOBALS['app']->loadDate();
         $event['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $event['subject'] = Jaws_XSS::defilter($event['subject']);
-        $event['location'] = Jaws_XSS::defilter($event['location']);
-        $event['description'] = Jaws_XSS::defilter($event['description']);
         if (empty($event['stop_date'])) {
             $event['stop_date'] = $event['start_date'];
         }
@@ -328,9 +325,6 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         }
 
         $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $data['subject'] = Jaws_XSS::defilter($data['subject']);
-        $data['location'] = Jaws_XSS::defilter($data['location']);
-        $data['description'] = Jaws_XSS::defilter($data['description']);
         if (empty($data['stop_date'])) {
             $data['stop_date'] = $data['start_date'];
         }
