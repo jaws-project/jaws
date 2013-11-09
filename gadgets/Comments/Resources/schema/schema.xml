@@ -90,10 +90,6 @@
                 <type>integer</type>
             </field>
 
-            <field>
-                <name>createtime</name>
-                <type>timestamp</type>
-            </field>
 
             <field>
                 <name>status</name>
@@ -108,6 +104,11 @@
                 <type>integer</type>
                 <length>1</length>
                 <default>0</default>
+            </field>
+
+            <field>
+                <name>createtime</name>
+                <type>timestamp</type>
             </field>
 
             <index>
