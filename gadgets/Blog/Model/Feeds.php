@@ -41,12 +41,21 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $blogTable->select(
             'blog.id:integer', 'user_id:integer', 'username', 'email', 'nickname', 'title', 'summary',
             'text', 'fast_url', 'blog.publishtime', 'blog.updatetime', 'clicks:integer',
-            'comments:integer', 'allow_comments:boolean', 'published:boolean'
+            'comments:integer', 'allow_comments:boolean', 'published:boolean', 'categories'
         )->join('users', 'blog.user_id', 'users.id');
         $blogTable->where('blog.published', true)->and()->where('blog.publishtime', $now, '<=');
         $result = $blogTable->orderBy('blog.publishtime desc')->limit($limit)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_ATOMSTRUCT'), _t('BLOG_NAME'));
+        }
+
+        // Check dynamic ACL
+        foreach ($result as $key => $entry) {
+            foreach (explode(",", $entry['categories']) as $cat) {
+                if (!$this->gadget->GetPermission('CategoryAccess', $cat)) {
+                    unset($result[$key]);
+                }
+            }
         }
 
         $siteURL = $GLOBALS['app']->GetSiteURL('/');

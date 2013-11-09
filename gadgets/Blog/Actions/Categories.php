@@ -16,10 +16,10 @@ class Blog_Actions_Categories extends Blog_Actions_Default
      * Displays a list of blog posts included on the given category
      *
      * @access  public
-     * @param   int     category ID
+     * @param   int     $cat    category ID
      * @return  string  XHTML template content
      */
-    function ShowCategory($cat = '')
+    function ShowCategory($cat = null)
     {
         $cModel = $this->gadget->model->load('Categories');
         $pModel = $this->gadget->model->load('Posts');
@@ -32,6 +32,11 @@ class Blog_Actions_Categories extends Blog_Actions_Default
 
         if (empty($cat)) {
             $cat = Jaws_XSS::defilter($post['id'], true);
+        }
+
+        // Check dynamic ACL
+        if (!$this->gadget->GetPermission('CategoryAccess', $cat)) {
+            return Jaws_HTTPError::Get(403);
         }
 
         $catInfo = $cModel->GetCategory($cat);
@@ -93,9 +98,6 @@ class Blog_Actions_Categories extends Blog_Actions_Default
         $entries = $model->GetEntriesAsCategories();
         if (!Jaws_Error::IsError($entries)) {
             foreach ($entries as $e) {
-                if (!$this->gadget->GetPermission('CategoryAccess', $e['id'])) {
-                    break;
-                }
                 $tpl->SetBlock('categories_list/item');
                 $tpl->SetVariable('category', $e['name']);
                 $cid = empty($e['fast_url']) ? $e['id'] : $e['fast_url'];

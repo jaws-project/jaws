@@ -42,7 +42,7 @@ class Blog_Actions_Tags extends Blog_Actions_Default
 
         foreach ($res as $key => $value) {
             if (!$this->gadget->GetPermission('CategoryAccess', $value['category_id'])) {
-                break;
+                continue;
             }
             $count  = $value['howmany'];
             $fsize = $minFontSize + $fontSizeRange * (log($count) - $minTagCount)/$tagCountRange;

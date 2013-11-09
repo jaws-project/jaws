@@ -152,9 +152,6 @@ class Blog_Actions_Posts extends Blog_Actions_Default
                 $title = _t('BLOG_RECENT_POSTS_BY_CATEGORY');
             }
         }
-        if (!$this->gadget->GetPermission('CategoryAccess', $category['id'])) {
-            return Jaws_HTTPError::Get(403);
-        }
         $tpl = $this->gadget->template->load('RecentPosts.html');
         $tpl->SetBlock('recent_posts');
         $tpl->SetVariable('cat',   empty($cat)? '0' : $cat);

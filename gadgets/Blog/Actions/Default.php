@@ -174,12 +174,6 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
      */
     function ShowEntry(&$tpl, $tpl_base_block, $entry, $show_summary = true)
     {
-        foreach ($entry['categories'] as $cat) {
-            if (!$this->gadget->GetPermission('CategoryAccess', $cat['id'])) {
-                return '';
-            }
-        }
-
         $tpl->SetBlock("$tpl_base_block/entry");
         $tpl->SetVariablesArray($entry);
 

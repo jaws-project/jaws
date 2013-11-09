@@ -76,6 +76,14 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         }
         $categories = null;
 
+        foreach ($entries as $key => $entry) {
+            foreach ($entry['categories'] as $cat) {
+                if (!$this->gadget->GetPermission('CategoryAccess', $cat['id'])) {
+                    unset($entries[$key]);
+                }
+            }
+        }
+
         return $entries;
     }
 
@@ -119,11 +127,20 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
     {
         $now = $GLOBALS['db']->Date();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
-        $blogTable->select('id:integer', 'publishtime', 'updatetime', 'title', 'fast_url', 'comments');
+        $blogTable->select('id:integer', 'publishtime', 'updatetime', 'title', 'fast_url', 'comments', 'categories');
         $blogTable->where('published', true)->and()->where('publishtime', $now, '<=')->orderBy('publishtime desc');
         $result = $blogTable->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_ASARCHIVE'), _t('BLOG_NAME'));
+        }
+
+        // Check dynamic ACL
+        foreach ($result as $key => $entry) {
+            foreach (explode(",", $entry['categories']) as $cat) {
+                if (!$this->gadget->GetPermission('CategoryAccess', $cat)) {
+                    unset($result[$key]);
+                }
+            }
         }
 
         return $result;
@@ -152,6 +169,12 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_ASCATEGORIES'), _t('BLOG_NAME'));
         }
 
+        // Check dynamic ACL
+        foreach ($result as $key => $cat) {
+            if (!$this->gadget->GetPermission('CategoryAccess', $cat['id'])) {
+                unset($result[$key]);
+            }
+        }
         return $result;
     }
 
@@ -169,7 +192,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable->select(
             'blog.id:integer', 'user_id:integer', 'username', 'users.nickname', 'title', 'summary',
             'text', 'fast_url', 'blog.publishtime', 'blog.updatetime', 'comments:integer',
-            'clicks:integer', 'allow_comments:boolean', 'published:boolean'
+            'clicks:integer', 'allow_comments:boolean', 'published:boolean', 'categories'
         );
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
 
@@ -183,7 +206,18 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         }
 
         $blogTable->and()->where('published', true)->and()->where('blog.publishtime', $now, '<=');
-        return $blogTable->orderBy('blog.publishtime desc')->limit($limit)->fetchAll();
+        $entries = $blogTable->orderBy('blog.publishtime desc')->limit($limit)->fetchAll();
+
+        // Check dynamic ACL
+        foreach ($entries as $key => $entry) {
+            foreach (explode(",", $entry['categories']) as $cat) {
+                if (!$this->gadget->GetPermission('CategoryAccess', $cat)) {
+                    unset($entries[$key]);
+                }
+            }
+        }
+
+        return $entries;
     }
 
     /**
@@ -584,12 +618,22 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable->select(
             'blog.id:integer', 'blog.user_id:integer', 'blog.title', 'blog.fast_url', 'summary',
             'text', 'clicks:integer', 'comments:integer', 'allow_comments', 'username', 'nickname',
-            'blog.publishtime:timestamp', 'blog.updatetime:timestamp'
+            'blog.publishtime:timestamp', 'blog.updatetime:timestamp', 'categories'
         );
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
         $blogTable->where('published', true)->and()->where('publishtime', $GLOBALS['db']->Date(), '<=');
-        $blogTable->orderBy('clicks desc');
-        return $blogTable->fetchAll();
+        $entries = $blogTable->orderBy('clicks desc')->fetchAll();
+
+        // Check dynamic ACL
+        foreach ($entries as $key => $entry) {
+            foreach (explode(",", $entry['categories']) as $cat) {
+                if (!$this->gadget->GetPermission('CategoryAccess', $cat)) {
+                    unset($entries[$key]);
+                }
+            }
+        }
+
+        return $entries;
     }
 
     /**
