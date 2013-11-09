@@ -60,14 +60,14 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         $todayInfo = $jdate->GetDateInfo($year, $month, $day);
         $startDay = $day - $todayInfo['wday'];
         $stopDay = $startDay + 6;
-        $startDayInfo = $jdate->GetDateInfo($year, $month, $startDay);
-        $stopDayInfo = $jdate->GetDateInfo($year, $month, $stopDay);
+        // $startDayInfo = $jdate->GetDateInfo($year, $month, $startDay);
+        // $stopDayInfo = $jdate->GetDateInfo($year, $month, $stopDay);
 
         // This week
         $start = $jdate->ToBaseDate($year, $month, $startDay);
-        $start = $start['timestamp'];
+        $start = $GLOBALS['app']->UserTime2UTC($start['timestamp']);
         $stop = $jdate->ToBaseDate($year, $month, $stopDay, 23, 59, 59);
-        $stop = $stop['timestamp'];
+        $stop = $GLOBALS['app']->UserTime2UTC($stop['timestamp']);
         $from = $jdate->Format($start, 'Y MN d');
         $to = $jdate->Format($stop, 'Y MN d');
         $current = $from . ' - ' . $to;
@@ -77,7 +77,7 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         // Fetch events
         $model = $this->gadget->model->load('Calendar');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $events = $model->GetEvents($user, null, null, $start, $stop, array('month' => $month));
+        $events = $model->GetEvents($user, null, null, $start, $stop);
         if (Jaws_Error::IsError($events)){
             $events = array();
         }
@@ -87,10 +87,10 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         $eventsByDay = array_fill(1, 7, array());
         foreach ($events as $e) {
             $eventsById[$e['id']] = $e;
-            $startIdx = ($e['start_date'] <= $start)? 1:
-                floor(($e['start_date'] - $start) / 86400) + 1;
-            $stopIdx = ($e['stop_date'] >= $stop)? 7:
-                ceil(($e['stop_date'] - $start) / 86400);
+            $startIdx = ($e['start_time'] <= $start)? 1:
+                floor(($e['start_time'] - $start) / 86400) + 1;
+            $stopIdx = ($e['stop_time'] >= $stop)? 7:
+                ceil(($e['stop_time'] - $start) / 86400);
             for ($i = $startIdx; $i <= $stopIdx; $i++) {
                 $eventsByDay[$i][] = $e['id'];
             }
@@ -109,20 +109,16 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
             $tpl->SetVariable('day', $info['mday'] . ' ' . $info['weekday']);
             foreach ($eventsByDay[$i] as $event_id) {
                 $e = $eventsById[$event_id];
-                if (($e['day'] == 0 || $e['day'] == $info['mday']) &&
-                    ($e['wday'] == 0 || $e['wday'] == $info['wday'] + 1))
-                {
-                    $tpl->SetBlock('week/day/event');
-                    $tpl->SetVariable('event', $e['subject']);
-                    $url = $this->gadget->urlMap('ViewEvent', array('id' => $event_id));
-                    $tpl->SetVariable('event_url', $url);
-                    if ($e['shared']) {
-                        $block = ($e['user'] == $e['owner'])? 'shared' : 'foreign';
-                        $tpl->SetBlock("week/day/event/$block");
-                        $tpl->ParseBlock("week/day/event/$block");
-                    }
-                    $tpl->ParseBlock('week/day/event');
+                $tpl->SetBlock('week/day/event');
+                $tpl->SetVariable('event', $e['subject']);
+                $url = $this->gadget->urlMap('ViewEvent', array('id' => $event_id));
+                $tpl->SetVariable('event_url', $url);
+                if ($e['shared']) {
+                    $block = ($e['user'] == $e['owner'])? 'shared' : 'foreign';
+                    $tpl->SetBlock("week/day/event/$block");
+                    $tpl->ParseBlock("week/day/event/$block");
                 }
+                $tpl->ParseBlock('week/day/event');
             }
             $tpl->ParseBlock('week/day');
         }
