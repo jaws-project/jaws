@@ -12,7 +12,7 @@
  */
 var TagsCallback = {
     AddTag: function(response) {
-        if (response[0].['type'] == 'response_notice') {
+        if (response[0]['type'] == 'response_notice') {
             stopTagAction();
             getDG('tags_datagrid');
         }
@@ -20,7 +20,7 @@ var TagsCallback = {
     },
 
     UpdateTag: function(response) {
-        if (response[0].['type'] == 'response_notice') {
+        if (response[0]['type'] == 'response_notice') {
             stopTagAction();
             getDG('tags_datagrid');
         }
@@ -28,7 +28,7 @@ var TagsCallback = {
     },
 
     DeleteTags: function(response) {
-        if (response[0].['type'] == 'response_notice') {
+        if (response[0]['type'] == 'response_notice') {
             stopTagAction();
             getDG('tags_datagrid');
         }
@@ -36,7 +36,7 @@ var TagsCallback = {
     },
 
     MergeTags: function(response) {
-        if (response[0].['type'] == 'response_notice') {
+        if (response[0]['type'] == 'response_notice') {
             stopTagAction();
             getDG('tags_datagrid');
         }
