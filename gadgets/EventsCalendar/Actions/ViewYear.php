@@ -49,6 +49,7 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Calendar');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $events = $model->GetYearEvents($user, null, null, $year);
+        // _log_var_dump($events);
         if (Jaws_Error::IsError($events)){
             $events = array();
         }

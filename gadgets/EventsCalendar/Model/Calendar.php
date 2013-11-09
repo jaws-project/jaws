@@ -54,15 +54,14 @@ class EventsCalendar_Model_Calendar extends Jaws_Gadget_Model
      */
     function GetYearEvents($user = null, $shared = null, $foreign = null, $year)
     {
-        // FIXME: we don't have daysInMonth
-        $daysInMonth = 30;
-        $table = Jaws_ORM::getInstance()->table('ec_events as event');
+        $table = Jaws_ORM::getInstance()->table('ec_events as events');
         $jdate = $GLOBALS['app']->loadDate();
+        $eventsByMonth = array();
         for ($m = 1; $m <= 12; $m++) {
             $table->reset();
-            $table->select('count(event.id)');
-            $table->join('ec_users', 'event.id', 'event');
-            $table->join('users', 'owner', 'users.id');
+            $table->select('events.id');
+            $table->join('ec_recurrences as recs', 'events.id', 'recs.event');
+            $table->join('ec_users', 'events.id', 'ec_users.event');
 
             if ($user !== null){
                 $table->where('ec_users.user', $user)->and();
@@ -70,20 +69,22 @@ class EventsCalendar_Model_Calendar extends Jaws_Gadget_Model
 
             if ($shared === true){
                 $table->where('shared', true)->and();
-                $table->where('event.user', $user)->and();
+                $table->where('events.user', $user)->and();
             }
 
             if ($foreign === true){
                 $table->where('ec_users.owner', $user, '<>')->and();
             }
 
+            $daysInMonth = $jdate->monthDays($year, $m);
             $start = $jdate->ToBaseDate($year, $m, 1);
+            $start = $GLOBALS['app']->UserTime2UTC($start['timestamp']);
             $stop = $jdate->ToBaseDate($year, $m, $daysInMonth, 23, 59, 59);
-            $table->where('start_date', $stop['timestamp'], '<')->and();
-            $table->where('stop_date', $start['timestamp'], '>')->and();
-            $table->openWhere('month', 0)->or();
-            $table->closeWhere('month', $m);
-            $eventsByMonth[$m] = (int)$table->fetchOne();
+            $stop = $GLOBALS['app']->UserTime2UTC($stop['timestamp']);
+            $table->where('recs.start_time', $stop, '<')->and();
+            $table->where('recs.stop_time', $start, '>');
+            $table->groupBy('events.id');
+            $eventsByMonth[$m] = count($table->fetchAll());
         }
 
         return $eventsByMonth;
