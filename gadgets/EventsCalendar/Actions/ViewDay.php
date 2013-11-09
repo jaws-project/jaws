@@ -61,6 +61,9 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
 
         // Today
         $info = $jdate->GetDateInfo($year, $month, $day - 1);
+        $date = $jdate->ToBaseDate($year, $month, $day);
+        $today = $jdate->Format($date['timestamp'], 'DN d MN Y');
+        $this->SetTitle($today . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
         $tpl->SetVariable('year', $info['year']);
         $tpl->SetVariable('month', $info['month']);
         $tpl->SetVariable('day', $info['mday']);
@@ -69,24 +72,13 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
         $tpl->SetVariable('month_url',
             $this->gadget->urlMap('ViewMonth', array('year' => $info['year'], 'month' => $info['mon'])));
 
-        $date = $jdate->ToBaseDate($year, $month, $day);
-        $today = $jdate->Format($date['timestamp'], 'DN d MN Y');
-        $this->SetTitle($today . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
-
-        // Repeat
-        $info = $jdate->GetDateInfo($year, $month, $day);
-        $repeat = array();
-        $repeat['day'] = $day;
-        $repeat['wday'] = $info['wday'] + 1;
-        $repeat['month'] = $month;
-
         // Fetch events
         $model = $this->gadget->model->load('Calendar');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $start = $date['timestamp'];
+        $start = $GLOBALS['app']->UserTime2UTC($date['timestamp']);
         $stop = $jdate->ToBaseDate($year, $month, $day, 23, 59, 59);
-        $stop = $stop['timestamp'];
-        $events = $model->GetEvents($user, null, null, $start, $stop, $repeat);
+        $stop = $GLOBALS['app']->UserTime2UTC($stop['timestamp']);
+        $events = $model->GetEvents($user, null, null, $start, $stop);
         if (Jaws_Error::IsError($events)){
             $events = array();
         }
@@ -96,13 +88,12 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
         $eventsByHour = array_fill(0, 24, array());
         foreach ($events as $e) {
             $eventsById[$e['id']] = $e;
-            if ($e['start_time'] === $e['stop_time']) {
-                $index = floor($e['start_time'] / 3600);
-                $eventsByHour[$index][] = $e['id'];
-            } else {
-                $startIdx = floor($e['start_time'] / 3600);
-                $stopIdx = floor($e['stop_time'] / 3600 - 1);
-                for ($i = $startIdx; $i <= $stopIdx; $i++) {
+            $startIdx = ($e['start_time'] <= $start)? 0 :
+                floor(($e['start_time'] - $start) / 3600);
+            $stopIdx = ($e['stop_time'] >= $stop)? $daysInMonth :
+                floor(($e['stop_time'] - $start) / 3600 - 1);
+            for ($i = $startIdx; $i <= $stopIdx; $i++) {
+                if (!in_array($e['id'], $eventsByHour[$i])) {
                     $eventsByHour[$i][] = $e['id'];
                 }
             }
