@@ -179,7 +179,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         $site_url   = $GLOBALS['app']->getSiteURL('/');
         $site_name  = $this->gadget->registry->fetch('site_name', 'Settings');
 
-        $tpl = $this->gadget->template->load('EmailReply.html');
+        $tpl = $this->gadget->template->loadAdmin('EmailReply.html');
         $tpl->SetBlock('notification');
         $tpl->SetVariable('lbl_message',  _t('COMMENTS_MESSAGE'));
         $tpl->SetVariable('message',      $message);
