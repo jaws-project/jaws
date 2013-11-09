@@ -294,8 +294,7 @@ class Jaws_Session
                 $referrer = $_SERVER['HTTP_HOST'];
             }
 
-            if (!$this->GetAttribute('logged') ||
-                (JAWS_SCRIPT != 'admin') ||
+            if ($_SERVER['REQUEST_METHOD'] == 'GET' ||
                 $referrer == $_SERVER['HTTP_HOST'] ||
                 $session['referrer'] === md5($referrer))
             {
