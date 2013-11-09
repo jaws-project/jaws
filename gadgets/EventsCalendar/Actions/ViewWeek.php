@@ -100,7 +100,7 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         for ($i = 1; $i <= 7; $i++) {
             $info = $jdate->GetDateInfo($year, $month, $startDay + $i - 1);
             $tpl->SetBlock('week/day');
-            $day_url = $this->gadget->urlMap('ViewWeek', array(
+            $day_url = $this->gadget->urlMap('ViewDay', array(
                 'year' => $year,
                 'month' => $month,
                 'day' => $info['mday']
