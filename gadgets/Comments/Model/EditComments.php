@@ -111,6 +111,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
      * @param   string  $reply      Comment's reply
      * @param   string  $permalink  Permanent link to resource
      * @param   string  $status     Comment status
+     * @param   bool   $emailReply  Send replay as email to comment owner
      * @return  bool    True if success or Jaws_Error on any error
      * @access  public
      */
@@ -155,7 +156,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
                 $comment['reference']));
         }
 
-        if (!empty($cData['reply']) && $cData['reply'] != '' && $emailReply) {
+        if (!empty($cData['reply']) && !empty($email) && $emailReply) {
             $this->EmailReply($email, $message, $cData['reply'], $cData['replier']);
         }
 
@@ -167,9 +168,10 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
      * Mails reply to the sender
      *
      * @access  public
-     * @param   string  $email          Comment sender's email 
-     * @param   string  $message        Message
-     * @param   string  $reply          Reply message
+     * @param   string  $email      Comment sender's email
+     * @param   string  $message    Message
+     * @param   string  $reply      Reply message
+     * @param   int     $replier    Replier Id
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
     function EmailReply($email, $message, $reply, $replier)
