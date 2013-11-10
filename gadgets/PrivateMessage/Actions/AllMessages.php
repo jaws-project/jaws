@@ -63,7 +63,7 @@ class PrivateMessage_Actions_AllMessages extends PrivateMessage_Actions_Default
 
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $model = $this->gadget->model->load('AllMessages');
         $mModel = $this->gadget->model->load('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');

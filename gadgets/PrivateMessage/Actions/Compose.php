@@ -71,7 +71,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             // reply a message
             } else if (!empty($get['reply']) && $get['reply'] == 'true') {
                 $date_format = $this->gadget->registry->fetch('date_format');
-                $date = $GLOBALS['app']->loadDate();
+                $date = Jaws_Date::getInstance();
                 $usrModel = new Jaws_User;
                 $show_recipient = false;
 

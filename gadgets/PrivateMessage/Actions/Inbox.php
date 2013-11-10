@@ -87,7 +87,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_Actions_Default
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
         $tpl->SetVariable('icon_ok', STOCK_OK);
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $model = $this->gadget->model->load('Inbox');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {

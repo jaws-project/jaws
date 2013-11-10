@@ -23,7 +23,7 @@ class PrivateMessage_Actions_OutboxMessage extends Jaws_Gadget_Action
         }
 
         $id = jaws()->request->fetch('id', 'get');
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $model = $this->gadget->model->load('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $usrModel = new Jaws_User;

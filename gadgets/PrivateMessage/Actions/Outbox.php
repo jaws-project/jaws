@@ -65,7 +65,7 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_Actions_Default
         $tpl->SetBlock('outbox/table_number');
         $tpl->ParseBlock('outbox/table_number');
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $oModel = $this->gadget->model->load('Outbox');
         $mModel = $this->gadget->model->load('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');

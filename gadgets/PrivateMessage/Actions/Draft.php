@@ -66,7 +66,7 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_Actions_Default
         $tpl->SetVariable('icon_ok', STOCK_OK);
         $tpl->ParseBlock('outbox/actions');
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $oModel = $this->gadget->model->load('Outbox');
         $mModel = $this->gadget->model->load('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
