@@ -33,7 +33,7 @@ class ServerTime_Actions_Admin_ServerTime extends Jaws_Gadget_Action
         $fieldset->SetStyle('white-space: nowrap;');
 
         $now = time();
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $dFormat =& Piwi::CreateWidget('Combo', 'date_format');
         $dFormat->SetID('date_format');
         $dFormat->SetTitle(_t('SERVERTIME_FORMAT_TEXT'));

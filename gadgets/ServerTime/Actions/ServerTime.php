@@ -21,7 +21,7 @@ class ServerTime_Actions_ServerTime extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('ServerTime.html');
         $tpl->SetBlock('servertime');
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $strDate = $objDate->Format(time(),
             $this->gadget->registry->fetch('date_format'));
         $tpl->SetVariable('title', _t('SERVERTIME_ACTION_TITLE'));
