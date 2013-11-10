@@ -62,7 +62,7 @@ class Settings_Model_Admin_Settings extends Jaws_Gadget_Model
     {
         $dt_formats = array();
         $time = time();
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $dt_formats['MN j, g:i a']     = $date->Format($time, 'MN j, g:i a');
         $dt_formats['j.m.y']           = $date->Format($time, 'j.m.y');
         $dt_formats['j MN, g:i a']     = $date->Format($time, 'j MN, g:i a');
