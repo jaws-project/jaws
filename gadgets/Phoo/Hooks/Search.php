@@ -66,7 +66,7 @@ class Phoo_Hooks_Search extends Jaws_Gadget_Hook
         }
 
         $entries = array();
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         foreach ($result as $r) {
             $entry = array();
             $entry['title']   = $r['name'];

@@ -134,7 +134,7 @@ class Phoo_Actions_Admin_Settings extends Phoo_Actions_Admin_Default
         $photoblogAlbumCombo->setContainerClass('oneline');
         $photoblogAlbumCombo->AddOption('&nbsp;', '');
         if (!Jaws_Error::IsError($albums)) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             foreach ($albums as $a) {
                 // FIXME: Ugly hack to add title to photoblogAlbumCombo
                 $o =& Piwi::CreateWidget('ComboOption', $a['name'], $a['name']);

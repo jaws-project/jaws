@@ -39,7 +39,7 @@ class Phoo_Actions_Photoblog extends Jaws_Gadget_Action
         $tpl->SetBlock('photoblog_portrait');
         $first = true;
         include_once JAWS_PATH . 'include/Jaws/Image.php';
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         foreach ($entries as $entry) {
             if (empty($photoid)) {
                 if (!$first) {

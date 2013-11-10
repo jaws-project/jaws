@@ -201,7 +201,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
             $data['published'] = false;
         }
 
-        $jDate = $GLOBALS['app']->loadDate();
+        $jDate = Jaws_Date::getInstance();
         $createtime = $GLOBALS['db']->Date();
         if (function_exists('exif_read_data') &&
             (preg_match("/\.jpg$|\.jpeg$/i", $files['name'])) &&

@@ -33,7 +33,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $albums = $aModel->GetAlbums('createtime', 'ASC', $post['group']);
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
             $this->AjaxMe('script.js');
-            $objDate = $GLOBALS['app']->loadDate();
+            $objDate = Jaws_Date::getInstance();
             $tpl->SetBlock('phoo/photos');
             $tpl->SetVariable('base_action', BASE_SCRIPT . '?gadget=Phoo');
 

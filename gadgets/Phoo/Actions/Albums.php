@@ -63,7 +63,7 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
 
         $albums = $model->GetAlbumList($gid);
         if (!Jaws_Error::IsError($albums)) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             $agModel = $this->gadget->model->load('AlbumGroup');
             foreach ($albums as $album) {
                 if (!isset($album['qty'])) {

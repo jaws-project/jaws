@@ -26,7 +26,7 @@ class Phoo_Model_Photos extends Phoo_Model
             return false;
         }
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         return $objDate->Format($max, 'm/d/Y');
     }
 
@@ -44,7 +44,7 @@ class Phoo_Model_Photos extends Phoo_Model
             return false;
         }
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         return $objDate->Format($min, 'm/d/Y');
     }
 

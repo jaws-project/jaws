@@ -45,7 +45,7 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
         $albumcombo =& Piwi::CreateWidget('Combo', 'album', _t('PHOO_ALBUM'));
         $albums = $model->GetAlbums('name', 'ASC');
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             foreach ($albums as $a) {
                 // FIXME: Ugly hack to add title to albumcombo
                 $o =& Piwi::CreateWidget('ComboOption', $a['id'], $a['name']);

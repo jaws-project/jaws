@@ -288,7 +288,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             }
 
             if (!empty($image['exif']['datetime'])) {
-                $date = $GLOBALS['app']->loadDate();
+                $date = Jaws_Date::getInstance();
                 $datatext .= _t('GLOBAL_DATE') . ': ' . $date->Format($image['exif']['datetime']) . '<br />';
             }
 

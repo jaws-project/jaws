@@ -66,7 +66,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
         }
 
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
-            $objDate = $GLOBALS['app']->loadDate();
+            $objDate = Jaws_Date::getInstance();
             $tpl->SetBlock ("phoo_browse/photos");
             $tpl->SetVariable('extra_params', $extraParams);
 
