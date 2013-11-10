@@ -2,12 +2,12 @@
 /**
  * Jaws Gadgets : HTML part
  *
- * @category   Gadget
- * @package    Core
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Gadget
+ * @package     Core
+ * @author      Pablo Fischer <pablo@pablo.com.mx>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2005-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Gadget_Action
 {
@@ -15,18 +15,26 @@ class Jaws_Gadget_Action
      * Jaws_Gadget object
      *
      * @var     object
-     * @access  protected
+     * @access  public
      */
-    var $gadget = null;
+    public $gadget = null;
+
+    /**
+     * Store actions objects for later use so we aren't running around with multiple copies
+     * @var     array
+     * @access  private
+     */
+    private $objects = array();
 
     /**
      * A list of actions that the gadget has
      *
      * @var     array
-     * @access  protected
+     * @access  private
      * @see AddAction()
      */
-    var $_ValidAction = array();
+    private $_ValidAction = array();
+
 
     /**
      * Constructor
@@ -35,7 +43,7 @@ class Jaws_Gadget_Action
      * @param   object $gadget Jaws_Gadget object
      * @return  void
      */
-    function Jaws_Gadget_Action($gadget)
+    public function __construct($gadget)
     {
         $this->gadget = $gadget;
         $this->LoadActions();
@@ -47,34 +55,19 @@ class Jaws_Gadget_Action
         $this->StandaloneAdminAction('Ajax', '');
     }
 
+
     /**
      * Load the gadget's action stuff files
      *
      * @access  public
      */
-    function LoadActions()
+    public function LoadActions()
     {
         if (empty($this->_ValidAction)) {
             $this->_ValidAction = $GLOBALS['app']->GetGadgetActions($this->gadget->name);
-            if (!isset($this->_ValidAction['index']['DefaultAction'])) {
-                $this->_ValidAction['index']['DefaultAction'] = array(
-                    'name' => 'DefaultAction',
-                    'normal' => true,
-                    'desc' => '',
-                    'file' => null
-                );
-            }
-
-            if (!isset($this->_ValidAction['admin']['Admin'])) {
-                $this->_ValidAction['admin']['Admin'] = array(
-                    'name' => 'Admin',
-                    'normal' => true,
-                    'desc' => '',
-                    'file' => null
-                );
-            }
         }
     }
+
 
     /**
      * Loads the gadget action file in question, makes a instance and
@@ -85,7 +78,7 @@ class Jaws_Gadget_Action
      * @param   string  $filename   Action class file name
      * @return  mixed   Action class object on successful, Jaws_Error otherwise
      */
-    function &load($filename = '')
+    public function &load($filename = '')
     {
         // filter non validate character
         $filename = preg_replace('/[^[:alnum:]_]/', '', $filename);
@@ -93,7 +86,7 @@ class Jaws_Gadget_Action
             return $this;
         }
 
-        if (!isset($this->gadget->actions['Actions'][$filename])) {
+        if (!isset($this->objects['Actions'][$filename])) {
             $classname = $this->gadget->name. "_Actions_$filename";
             $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/$filename.php";
 
@@ -106,12 +99,13 @@ class Jaws_Gadget_Action
                 return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
             }
 
-            $this->gadget->actions['Actions'][$filename] = new $classname($this->gadget);
+            $this->objects['Actions'][$filename] = new $classname($this->gadget);
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget action class: [$classname]");
         }
 
-        return $this->gadget->actions['Actions'][$filename];
+        return $this->objects['Actions'][$filename];
     }
+
 
     /**
      * Loads the gadget admin action file in question, makes a instance and
@@ -122,7 +116,7 @@ class Jaws_Gadget_Action
      * @param   string  $filename   Action class file name
      * @return  mixed   Action class object on successful, Jaws_Error otherwise
      */
-    function &loadAdmin($filename = '')
+    public function &loadAdmin($filename = '')
     {
         // filter non validate character
         $filename = preg_replace('/[^[:alnum:]_]/', '', $filename);
@@ -130,7 +124,7 @@ class Jaws_Gadget_Action
             return $this;
         }
 
-        if (!isset($this->gadget->actions['AdminActions'][$filename])) {
+        if (!isset($this->objects['AdminActions'][$filename])) {
             $classname = $this->gadget->name. "_Actions_Admin_$filename";
             $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/Admin/$filename.php";
 
@@ -143,12 +137,13 @@ class Jaws_Gadget_Action
                 return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
             }
 
-            $this->gadget->actions['AdminActions'][$filename] = new $classname($this->gadget);
+            $this->objects['AdminActions'][$filename] = new $classname($this->gadget);
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget action class: [$classname]");
         }
 
-        return $this->gadget->actions['AdminActions'][$filename];
+        return $this->objects['AdminActions'][$filename];
     }
+
 
     /**
      * Ajax Admin stuff
@@ -156,7 +151,7 @@ class Jaws_Gadget_Action
      * @access  public
      * @return  string  JSON encoded string
      */
-    function Ajax()
+    public function Ajax()
     {
         if (JAWS_SCRIPT == 'admin') {
             $objAjax = $GLOBALS['app']->LoadGadget($this->gadget->name, 'AdminAjax');
@@ -180,6 +175,7 @@ class Jaws_Gadget_Action
         return Jaws_UTF8::json_encode($output);
     }
 
+
     /**
      * Ajax the gadget adding the basic script links to build the interface
      *
@@ -188,7 +184,7 @@ class Jaws_Gadget_Action
      *                              it should be located under gadgets/$gadget/Resources/$file
      * @param   string  $version    Optional File version
      */
-    function AjaxMe($file = '', $version = '')
+    public function AjaxMe($file = '', $version = '')
     {
         $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js');
         $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Resources/Ajax.js');
@@ -213,13 +209,14 @@ class Jaws_Gadget_Action
         Piwi::addExtraConf($config);
     }
 
+
     /**
      * Sets the browser's title (<title></title>)
      *
      * @access  public
      * @param   string  $title  Browser's title
      */
-    function SetTitle($title)
+    public function SetTitle($title)
     {
         //Set title in case we are no running on standalone..
         if (isset($GLOBALS['app']->Layout)) {
@@ -227,13 +224,14 @@ class Jaws_Gadget_Action
         }
     }
 
+
     /**
      * Sets the browser's title (<title></title>)
      *
      * @access  public
      * @param   string  $title  Browser's title
      */
-    function SetDescription($desc)
+    public function SetDescription($desc)
     {
         //Set description in case we are no running on standalone..
         if (isset($GLOBALS['app']->Layout)) {
@@ -241,13 +239,14 @@ class Jaws_Gadget_Action
         }
     }
 
+
     /**
      * Add keywords to meta keywords tag
      *
      * @access  public
      * @param   string  $keywords
      */
-    function AddToMetaKeywords($keywords)
+    public function AddToMetaKeywords($keywords)
     {
         //Add keywords in case we are no running on standalone..
         if (isset($GLOBALS['app']->Layout)) {
@@ -255,13 +254,14 @@ class Jaws_Gadget_Action
         }
     }
 
+
     /**
      * Add a language to meta language tag
      *
      * @access  public
      * @param   string  $language  Language
      */
-    function AddToMetaLanguages($language)
+    public function AddToMetaLanguages($language)
     {
         //Add language in case we are no running on standalone..
         if (isset($GLOBALS['app']->Layout)) {
@@ -269,12 +269,13 @@ class Jaws_Gadget_Action
         }
     }
 
+
     /**
      * Execute the action
      *
      * @access  public
      */
-    function Execute($action)
+    public function Execute($action)
     {
         if (false === $action) {
             return Jaws_Error::raiseError(_t('GLOBAL_ACTION_NO_DEFAULT'), __FUNCTION__);
@@ -310,6 +311,7 @@ class Jaws_Gadget_Action
         return $objAction->$action();
     }
 
+
     /**
      * Adds a new Action
      *
@@ -319,7 +321,7 @@ class Jaws_Gadget_Action
      * @param   string  $mode   Action mode
      * @param   string  $description Action's description
      */
-    function AddAction($action, $script, $mode, $description, $file = null)
+    public function AddAction($action, $script, $mode, $description, $file = null)
     {
         $this->_ValidAction[$script][$action] = array(
             'name' => $action,
@@ -328,6 +330,7 @@ class Jaws_Gadget_Action
             'file' => $file
         );
     }
+
 
     /**
      * Set a Action mode
@@ -338,7 +341,7 @@ class Jaws_Gadget_Action
      * @param   string  $old_mode   Action's old mode
      * @param   string  $desc       Action's description
      */
-    function SetActionMode($action, $new_mode, $old_mode, $desc = null, $file = null)
+    public function SetActionMode($action, $new_mode, $old_mode, $desc = null, $file = null)
     {
         $this->_ValidAction[JAWS_SCRIPT][$action] = array(
             'name' => $action,
@@ -349,6 +352,7 @@ class Jaws_Gadget_Action
         );
     }
 
+
     /**
      * Adds a normal action
      *
@@ -357,10 +361,11 @@ class Jaws_Gadget_Action
      * @param   string  $name Action's name
      * @param   string  $description Action's description
      */
-    function NormalAction($action, $name = null, $description = null)
+    public function NormalAction($action, $name = null, $description = null)
     {
         $this->AddAction($action, 'index', 'normal', $description);
     }
+
 
     /**
      * Adds an admin action
@@ -370,10 +375,11 @@ class Jaws_Gadget_Action
      * @param   string  $name Action's name
      * @param   string  $description Action's description
      */
-    function AdminAction($action, $name = null, $description = null)
+    public function AdminAction($action, $name = null, $description = null)
     {
         $this->AddAction($action, 'admin', 'normal', $description);
     }
+
 
     /**
      * Verifies if the action is for admin users(for controlpanel)
@@ -382,7 +388,7 @@ class Jaws_Gadget_Action
      * @param   string  $action to Verify
      * @return  bool    True if action is for admin users, if not, returns false
      */
-    function IsAdmin($action)
+    public function IsAdmin($action)
     {
         if ($this->IsValidAction($action, 'admin')) {
             return (isset($this->_ValidAction['admin'][$action]['normal']) &&
@@ -394,6 +400,7 @@ class Jaws_Gadget_Action
         return false;
     }
 
+
     /**
      * Verifies if action is normal
      *
@@ -401,7 +408,7 @@ class Jaws_Gadget_Action
      * @param   string  $action to Verify
      * @return  bool    True if action is normal, if not, returns false
      */
-    function IsNormal($action)
+    public function IsNormal($action)
     {
         if (empty($action)) {
             $action = 'DefaultAction';
@@ -417,6 +424,7 @@ class Jaws_Gadget_Action
         return false;
     }
 
+
     /**
      * Adds a standalone action
      *
@@ -425,10 +433,11 @@ class Jaws_Gadget_Action
      * @param   string  $name Action's name
      * @param   string  $description Action's description
      */
-    function StandaloneAction($action, $name = null, $description = null)
+    public function StandaloneAction($action, $name = null, $description = null)
     {
         $this->AddAction($action, 'index', 'standalone', $name, $description);
     }
+
 
     /**
      * Adds a standalone/admin action
@@ -438,10 +447,11 @@ class Jaws_Gadget_Action
      * @param   string  $name Action's name
      * @param   string  $description Action's description
      */
-    function StandaloneAdminAction($action, $name = null, $description = null)
+    public function StandaloneAdminAction($action, $name = null, $description = null)
     {
         $this->AddAction($action, 'admin', 'standalone', $name, $description);
     }
+
 
     /**
      * Verifies if action is a standalone
@@ -450,7 +460,7 @@ class Jaws_Gadget_Action
      * @param   string  $action to Verify
      * @return  bool    True if action is standalone, if not, returns false
      */
-    function IsStandAlone($action)
+    public function IsStandAlone($action)
     {
         if ($this->IsValidAction($action, 'index')) {
             return (isset($this->_ValidAction['index'][$action]['standalone']) &&
@@ -459,6 +469,7 @@ class Jaws_Gadget_Action
         return false;
     }
 
+
     /**
      * Verifies if action is a standalone of controlpanel
      *
@@ -466,7 +477,7 @@ class Jaws_Gadget_Action
      * @param   string  $action to Verify
      * @return  bool    True if action is standalone of the controlpanel if not, returns false
      */
-    function IsStandAloneAdmin($action)
+    public function IsStandAloneAdmin($action)
     {
         if ($this->IsValidAction($action, 'admin')) {
             return (isset($this->_ValidAction['admin'][$action]['standalone']) &&
@@ -475,17 +486,19 @@ class Jaws_Gadget_Action
         return false;
     }
 
+
     /**
      * Uses the admin of the gadget(in controlpanel)
      *
      * @access  public
      * @return  string  The text to show
      */
-    function Admin()
+    public function Admin()
     {
         $str = _t('GLOBAL_JG_NOADMIN');
         return $str;
     }
+
 
     /**
      * Validates if an action is valid
@@ -494,10 +507,11 @@ class Jaws_Gadget_Action
      * @param   string  $action Action to validate
      * @return  mixed   Action mode if action is valid, otherwise false
      */
-    function IsValidAction($action, $script = JAWS_SCRIPT)
+    public function IsValidAction($action, $script = JAWS_SCRIPT)
     {
         return isset($this->_ValidAction[$script][$action]);
     }
+
 
     /**
      * Filter non validate character
