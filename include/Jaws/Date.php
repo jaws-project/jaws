@@ -49,7 +49,15 @@ class Jaws_Date
      */
     static function getInstance($calendar = '')
     {
-        $calendar = preg_replace('/[^[:alnum:]_]/', '', $calendar);
+        static $dbCalendar;
+        if (!isset($dbCalendar)) {
+            $dbCalendar = $GLOBALS['app']->Registry->fetchByUser(
+                $GLOBALS['app']->Session->GetAttribute('user'),
+                'calendar',
+                'Settings'
+            );
+        }
+        $calendar = preg_replace('/[^[:alnum:]_]/', '', empty($calendar)? $dbCalendar : $calendar);
         if (!file_exists(JAWS_PATH . 'include/Jaws/Date/'. $calendar .'.php')) {
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG,
                                  'Loading calendar '.$calendar.' failed, Attempting to load default calendar');
@@ -170,77 +178,6 @@ class Jaws_Date
         }
 
         return _t('GLOBAL_DATE_AGO', $since);
-    }
-
-    /**
-     * Return the month number in string
-     *
-     * @param  int    $m  Numeric month(1..12)
-     * @return  string     The month in string not in number
-     * @access  public
-     */
-    function MonthString($m)
-    {
-        $cal_name = strtoupper(isset($GLOBALS['app']) ? $GLOBALS['app']->GetCalendar() : 'Gregorian');
-        if (!isset($this->_Months['long'])) {
-            $months = array(
-                _t('GLOBAL_'.$cal_name.'_MONTH_FIRST'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_SECOND'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_THIRD'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_FOURTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_FIFTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_SIXTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_SEVENTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_EIGHTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_NINTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_TENTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_ELEVENTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_TWELFTH'),
-            );
-            $this->_Months['long'] =& $months;
-        }
-
-        if ($m != '') {
-            $m = (int)$m;
-            return $this->_Months['long'][$m - 1];
-        }
-
-        return $this->_Months['long'];
-    }
-
-    /**
-     * Return the month number in string
-     *
-     * @param  int    $m  Numeric month(1..12)
-     * @return  string     The month in string not in number
-     * @access  public
-     */
-    function MonthShortString($m = '')
-    {
-        $cal_name = strtoupper(isset($GLOBALS['app']) ? $GLOBALS['app']->GetCalendar() : 'Gregorian');
-        if (!isset($this->_Months['short'])) {
-            $months = array(
-                _t('GLOBAL_'.$cal_name.'_MONTH_SHORT_FIRST'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_SHORT_SECOND'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_SHORT_THIRD'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_SHORT_FOURTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_SHORT_FIFTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_SHORT_SIXTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_SHORT_SEVENTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_SHORT_EIGHTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_SHORT_NINTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_SHORT_TENTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_SHORT_ELEVENTH'),
-                _t('GLOBAL_'.$cal_name.'_MONTH_SHORT_TWELFTH'),
-            );
-            $this->_Months['short'] =& $months;
-        }
-
-        if ($m = (int)$m) {
-            return $this->_Months['short'][$m - 1];
-        }
-
-        return $this->_Months['short'];
     }
 
     /**
