@@ -126,7 +126,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
             return array();
         }
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $newData = array();
         foreach ($contacts as $contact) {
             $contactData = array();
@@ -357,7 +357,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
             $reply = $contact['reply'];
         }
 
-        $jDate = $GLOBALS['app']->loadDate();
+        $jDate = Jaws_Date::getInstance();
         $site_url  = $GLOBALS['app']->getSiteURL('/');
         $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
