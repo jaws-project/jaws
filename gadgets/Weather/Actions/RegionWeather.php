@@ -107,7 +107,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
             if ($forecast) {
                 $GLOBALS['app']->Layout->SetTitle(_t('WEATHER_TITLE', $region['title']));
                 $GLOBALS['app']->Layout->AddToMetaKeywords(_t('WEATHER_NAME'). ','. $region['title']);
-                $objDate = $GLOBALS['app']->loadDate();
+                $objDate = Jaws_Date::getInstance();
                 $tpl->SetBlock('weather/forecast');
                 $tpl->SetVariable('lbl_forecast', _t('WEATHER_FORECAST'));
                 $dFormat = $this->gadget->registry->fetch('date_format');

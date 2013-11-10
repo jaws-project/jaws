@@ -50,7 +50,7 @@ class Weather_Actions_Admin_Properties extends Weather_Actions_Admin_Default
         $tpl->SetVariable('update_period', $period->Get());
 
         $now = time();
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $dFormat =& Piwi::CreateWidget('Combo', 'date_format');
         $dFormat->setStyle('width:208px;');
         $dFormat->AddOption($objDate->Format($now, 'DN'), 'DN');
