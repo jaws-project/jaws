@@ -53,7 +53,7 @@ class Faq_Hooks_Search extends Jaws_Gadget_Hook
         }
 
         $questions  = array();
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         foreach ($result as $r) {
             $question = array();
             $question['title']   = $r['question'];

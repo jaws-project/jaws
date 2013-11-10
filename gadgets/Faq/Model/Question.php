@@ -51,7 +51,7 @@ class Faq_Model_Question extends Jaws_Gadget_Model
         $aux = '';
         $pos = 0;
         $res = array();
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         foreach ($result as $r) {
             if ($r['category'] != $aux) {
                 $pos++;
