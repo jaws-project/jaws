@@ -152,13 +152,6 @@ class Jaws_Gadget
     var $events = array();
 
     /**
-     * Store installer object for later use so we aren't running around with multiple copies
-     * @var     object
-     * @access  protected
-     */
-    var $installer;
-
-    /**
      * Constructor
      *
      * @access  protected
