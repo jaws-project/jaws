@@ -25,7 +25,7 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
      */
     function InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
     {
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $now  = $GLOBALS['db']->Date();
         $params['title']       = $title;
         $params['quotation']   = $quotation;
@@ -77,7 +77,7 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
      */
     function UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published)
     {
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $params['title']       = $title;
         $params['quotation']   = $quotation;
         $params['gid']         = $gid;
