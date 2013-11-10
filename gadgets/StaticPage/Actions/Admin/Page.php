@@ -64,7 +64,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         $edit_url  = BASE_SCRIPT . '?gadget=StaticPage&amp;action=EditPage&amp;id=';
         $add_turl  = BASE_SCRIPT . '?gadget=StaticPage&amp;action=AddNewTranslation&amp;page=';
         $edit_turl = BASE_SCRIPT . '?gadget=StaticPage&amp;action=EditTranslation&amp;id=';
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
 
         foreach ($pages as $page) {
             $pageData = array();

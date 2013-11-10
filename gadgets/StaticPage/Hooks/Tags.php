@@ -31,7 +31,7 @@ class StaticPage_Hooks_Tags extends Jaws_Gadget_Hook
             return array();
         }
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $pages = array();
         foreach ($result as $p) {
             $page = array();
