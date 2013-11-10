@@ -42,23 +42,27 @@ class Jaws_Date
     var $_GregorianDaysInMonthes = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
     /**
-     * An interface for available drivers
+     * Creates an available Jaws_Date driver instance calendar
      *
-     * @param   string  $calendar   The calendar that's required
+     * @return  object returns the instance
      * @access  public
      */
-    function &factory($calendar)
+    static function getInstance($calendar = '')
     {
+        $calendar = preg_replace('/[^[:alnum:]_]/', '', $calendar);
         if (!file_exists(JAWS_PATH . 'include/Jaws/Date/'. $calendar .'.php')) {
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG,
                                  'Loading calendar '.$calendar.' failed, Attempting to load default calendar');
             $calendar = 'Gregorian';
         }
 
-        require_once JAWS_PATH . "include/Jaws/Date/$calendar.php";
-        $class = 'Jaws_Date_' . $calendar;
-        $calendar = new $class();
-        return $calendar;
+        static $instances = array();
+        if (!isset($instances[$calendar])) {
+            $classname = 'Jaws_Date_' . $calendar;
+            $instances[$calendar] = new $classname();
+        }
+
+        return $instances[$calendar];
     }
 
     /**
