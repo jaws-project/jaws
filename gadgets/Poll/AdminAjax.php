@@ -28,7 +28,7 @@ class Poll_AdminAjax extends Jaws_Gadget_Action
         }
 
         if (isset($poll['id'])) {
-            $objDate = $GLOBALS['app']->loadDate();
+            $objDate = Jaws_Date::getInstance();
             if (!empty($poll['start_time'])) {
                 $poll['start_time'] = $objDate->Format($poll['start_time'], 'Y-m-d H:i:s');
             }

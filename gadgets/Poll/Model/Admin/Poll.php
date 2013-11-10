@@ -27,7 +27,7 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
      */
     function InsertPoll($question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible)
     {
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $pollData = array();
         $pollData['question'] = $question;
         $pollData['gid'] = $gid;
@@ -74,7 +74,7 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
      */
     function UpdatePoll($pid, $question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible)
     {
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $pollData = array();
         $pollData['question'] = $question;
         $pollData['gid'] = $gid;
