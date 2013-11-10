@@ -279,7 +279,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             $tpl->ParseBlock('tag/subtitle');
         }
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $max_result_len = (int)$this->gadget->registry->fetch('max_result_len');
         if (empty($max_result_len)) {
             $max_result_len = 500;
