@@ -157,7 +157,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
 
         $files = array();
         $file_counter = -1;
-        $date_obj = $GLOBALS['app']->loadDate();
+        $date_obj = Jaws_Date::getInstance();
         foreach ($adr as $file) {
             //we should return only 'visible' files, not hidden files
             if ($file{0} != '.') {

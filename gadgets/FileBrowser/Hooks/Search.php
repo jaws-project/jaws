@@ -60,7 +60,7 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
         $model = $this->gadget->model->load('Files');
         $entries = array();
         if (is_array($files)) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             foreach ($files as $f) {
                 $entry['title'] = str_replace(JAWS_DATA. 'files', '', $f);
                 $entry['title'] = substr($entry['title'], 1);

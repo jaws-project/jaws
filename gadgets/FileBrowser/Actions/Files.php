@@ -89,7 +89,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
         $offset = ($page - 1) * $limit;
         $items = $dModel->ReadDir($path, $limit, $offset);
         if (!Jaws_Error::IsError($items)) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             foreach ($items as $item) {
                 $tpl->SetBlock('filebrowser/item');
                 $tpl->SetVariable('icon',  $item['icon']);
@@ -226,7 +226,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
             return false;
         }
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $tpl = $this->gadget->template->load('FileBrowser.html');
         $tpl->SetBlock('fileinfo');
 
