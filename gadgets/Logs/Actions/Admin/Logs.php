@@ -226,7 +226,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             return array();
         }
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $newData = array();
         foreach ($logs as $log) {
             $logData = array();
@@ -292,7 +292,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
                 $priority = _t('LOGS_PRIORITY_INFO');
         }
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $log['insert_time'] = $date->Format($log['insert_time'], 'DN d MN Y H:i:s');
         $log['ip'] = long2ip($log['ip']);
         $log['priority'] = $priority;
