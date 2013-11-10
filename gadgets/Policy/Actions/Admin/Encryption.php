@@ -60,7 +60,7 @@ class Policy_Actions_Admin_Encryption extends Policy_Actions_Admin_Default
         $tpl->SetVariable('lbl_key_len', _t('POLICY_ENCRYPTION_KEY_LEN'));
         $tpl->SetVariable('key_len', $keyLen->Get());
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $keyStartDate =& Piwi::CreateWidget('Entry', 'key_start_date',
             $date->Format((int)$this->gadget->registry->fetch('crypt_key_start_date')));
         $keyStartDate->setID('key_start_date');
