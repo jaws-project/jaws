@@ -46,24 +46,11 @@ class Jaws_Gadget_Action
     public function __construct($gadget)
     {
         $this->gadget = $gadget;
-        $this->LoadActions();
+        $this->_ValidAction = $GLOBALS['app']->GetGadgetActions($this->gadget->name);
 
         // Add Ajax actions.
         $this->AddAction('Ajax', 'index', 'standalone', '', '');
         $this->AddAction('Ajax', 'admin', 'standalone', '', '');
-    }
-
-
-    /**
-     * Load the gadget's action stuff files
-     *
-     * @access  public
-     */
-    public function LoadActions()
-    {
-        if (empty($this->_ValidAction)) {
-            $this->_ValidAction = $GLOBALS['app']->GetGadgetActions($this->gadget->name);
-        }
     }
 
 
