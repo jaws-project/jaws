@@ -29,7 +29,7 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
         $action = $this->gadget->action->load('Menubar');
         $tpl->SetVariable('menubar', $action->Menubar());
 
-        $jdate = $GLOBALS['app']->loadDate();
+        $jdate = Jaws_Date::getInstance();
 
         // Fetch events
         $model = $this->gadget->model->load('Reminder');

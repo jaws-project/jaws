@@ -34,7 +34,7 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 
-        $jdate = $GLOBALS['app']->loadDate();
+        $jdate = Jaws_Date::getInstance();
         $daysInMonth = $jdate->monthDays($year, $month);
         $start = $jdate->ToBaseDate($year, $month, 1);
         $start = $GLOBALS['app']->UserTime2UTC($start['timestamp']);

@@ -30,7 +30,7 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
             return;
         }
 
-        $jdate = $GLOBALS['app']->loadDate();
+        $jdate = Jaws_Date::getInstance();
         $tpl = $this->gadget->template->load('ViewEvent.html');
         $tpl->SetBlock('event');
 

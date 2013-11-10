@@ -19,7 +19,7 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
      */
     function ViewYear()
     {
-        $jdate = $GLOBALS['app']->loadDate();
+        $jdate = Jaws_Date::getInstance();
         $year = jaws()->request->fetch('year', 'get');
         $year = empty($year)? (int)$jdate->Format(time(), 'Y') : (int)$year;
 

@@ -46,7 +46,7 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
             $table->closeWhere('description', $query, 'like')->and();
         }
 
-        $jdate = $GLOBALS['app']->loadDate();
+        $jdate = Jaws_Date::getInstance();
         if (!empty($start)){
             $start = $jdate->ToBaseDate(preg_split('/[- :]/', $start), 'Y-m-d');
             $start = $GLOBALS['app']->UserTime2UTC($start);
@@ -98,7 +98,7 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
             $table->closeWhere('description', $query, 'like')->and();
         }
 
-        $jdate = $GLOBALS['app']->loadDate();
+        $jdate = Jaws_Date::getInstance();
         if (!empty($start)){
             $start = $jdate->ToBaseDate(preg_split('/[- :]/', $start), 'Y-m-d');
             $start = $GLOBALS['app']->UserTime2UTC($start);

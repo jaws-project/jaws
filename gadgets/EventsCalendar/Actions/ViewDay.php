@@ -35,7 +35,7 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
         $action = $this->gadget->action->load('Menubar');
         $tpl->SetVariable('menubar', $action->Menubar('Events'));
 
-        $jdate = $GLOBALS['app']->loadDate();
+        $jdate = Jaws_Date::getInstance();
 
         // Previous day
         $date = $jdate->ToBaseDate($year, $month, $day - 1);

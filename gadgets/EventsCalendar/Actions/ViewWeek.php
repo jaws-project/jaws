@@ -35,7 +35,7 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         $action = $this->gadget->action->load('Menubar');
         $tpl->SetVariable('menubar', $action->Menubar('Events'));
 
-        $jdate = $GLOBALS['app']->loadDate();
+        $jdate = Jaws_Date::getInstance();
 
         // Previous week
         $info = $jdate->GetDateInfo($year, $month, $day - 7);

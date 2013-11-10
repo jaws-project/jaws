@@ -58,7 +58,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             $event = $response['data'];
         }
 
-        $jdate = $GLOBALS['app']->loadDate();
+        $jdate = Jaws_Date::getInstance();
         if (!isset($event) || empty($event)) {
             if (!empty($id)) {
                 $model = $this->gadget->model->load('Event');
@@ -251,7 +251,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             Jaws_Header::Referrer();
         }
 
-        $jdate = $GLOBALS['app']->loadDate();
+        $jdate = Jaws_Date::getInstance();
         $event['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
         if (empty($event['stop_date'])) {
             $event['stop_date'] = $event['start_date'];

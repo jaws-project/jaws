@@ -62,7 +62,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $events = $model->GetEvents($user, $query, $shared, $foreign,
             $start, $stop, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($events)){
-            $jdate = $GLOBALS['app']->loadDate();
+            $jdate = Jaws_Date::getInstance();
             foreach ($events as $event) {
                 $tpl->SetBlock('events/event');
                 $tpl->SetVariable('id', $event['id']);

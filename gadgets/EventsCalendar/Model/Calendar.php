@@ -56,7 +56,7 @@ class EventsCalendar_Model_Calendar extends Jaws_Gadget_Model
     function GetYearEvents($user = null, $shared = null, $foreign = null, $year)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as events');
-        $jdate = $GLOBALS['app']->loadDate();
+        $jdate = Jaws_Date::getInstance();
         $eventsByMonth = array();
         for ($m = 1; $m <= 12; $m++) {
             $table->reset();
