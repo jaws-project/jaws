@@ -42,6 +42,7 @@ class EventsCalendar_Model_Calendar extends Jaws_Gadget_Model
         $table->where('recs.start_time', $stop, '<')->and();
         $table->where('recs.stop_time', $start, '>');
 
+        $table->orderBy('recs.start_time', 'priority');
         return $table->fetchAll();
     }
 

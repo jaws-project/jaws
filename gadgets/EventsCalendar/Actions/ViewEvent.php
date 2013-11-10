@@ -79,7 +79,23 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_reminder', _t('EVENTSCALENDAR_EVENT_REMINDER'));
 
         // Recurrences
+        switch ($event['recurrence']) {
+            case '0':
+            case '1':
+                $value = '';
+                break;
+            case '2':
+                $value = ' - ' . $jdate->DayString($event['wday']);
+                break;
+            case '3':
+                $value = ' - ' . $event['day'] . ' ' . _t('EVENTSCALENDAR_EVENT_RECURRENCE_EVERY_MONTH');
+                break;
+            case '4':
+                $value = ' - ' . $event['day'] . ' ' . $jdate->MonthString($event['month']);
+                break;
+        }
         $tpl->SetVariable('recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE_'.$event['recurrence']));
+        $tpl->SetVariable('rec_value', $value);
         $tpl->SetVariable('lbl_recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE'));
 
         // Shared
