@@ -279,10 +279,10 @@ class Jaws_Date_Jalali extends Jaws_Date
                 case 'D':
                 case 'l':
                     if (substr($format, $i, 2) == 'DN') {
-                        $return .= $this->DayString(date('w', $date['date']));
+                        $return .= $this->DayString($date['weekDay']);
                         $i++;
                     } else {
-                        $return .= $this->DayShortString(date('w', $date['date']));
+                        $return .= $this->DayShortString($date['weekDay']);
                     }
                     break;
                 case 'e':
@@ -318,7 +318,7 @@ class Jaws_Date_Jalali extends Jaws_Date
                     $return .= $date['month'];
                     break;
                 case 'N':
-                    $return .= date('N', $date['date']);
+                    $return .= $date['weekDay'];
                     break;
                 case 'O':
                     $return .= date('O', $date['date']);
