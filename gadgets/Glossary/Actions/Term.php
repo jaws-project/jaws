@@ -86,7 +86,7 @@ class Glossary_Actions_Term extends Jaws_Gadget_Action
             $tpl->SetBlock('definition');
             $tpl->SetVariable('title', _t('GLOSSARY_NAME'));
 
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             $tpl->SetBlock('definition/term');
             $tpl->SetVariable('term', $term['term']);
             $tid = empty($term['fast_url']) ? $term['id'] : $term['fast_url'];

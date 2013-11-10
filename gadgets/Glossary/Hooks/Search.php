@@ -45,7 +45,7 @@ class Glossary_Hooks_Search extends Jaws_Gadget_Hook
             return false;
         }
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $entries = array();
         foreach ($result as $r) {
             $entry = array();
