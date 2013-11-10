@@ -2,11 +2,11 @@
 /**
  * Jaws Gadget Hook
  *
- * @category   Gadget
- * @package    Core
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Gadget
+ * @package     Core
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Gadget_Hook
 {
@@ -14,9 +14,17 @@ class Jaws_Gadget_Hook
      * Jaws_Gadget object
      *
      * @var     object
-     * @access  protected
+     * @access  public
      */
-    var $gadget = null;
+    public $gadget = null;
+
+    /**
+     * Store hooks objects for later use so we aren't running around with multiple copies
+     * @var     array
+     * @access  private
+     */
+    private $objects = array();
+
 
     /**
      * constructor
@@ -25,10 +33,11 @@ class Jaws_Gadget_Hook
      * @param   object $gadget Jaws_Gadget object
      * @return  void
      */
-    function Jaws_Gadget_Hook($gadget)
+    public function __construct($gadget)
     {
         $this->gadget = $gadget;
     }
+
 
     /**
      * Loads the gadget hook file class in question, makes a instance and
@@ -39,29 +48,30 @@ class Jaws_Gadget_Hook
      * @param   string  $hook  Hook name
      * @return  mixed   Hook class object on successful, Jaws_Error otherwise
      */
-    function &load($hook)
+    public function &load($hook)
     {
         // filter non validate character
         $hook = preg_replace('/[^[:alnum:]_]/', '', $hook);
 
-        if (!isset($this->gadget->hooks[$hook])) {
-            $hook_class_name = $this->gadget->name. '_Hooks_'. $hook;
+        if (!isset($this->objects[$hook])) {
+            $classname = $this->gadget->name. '_Hooks_'. $hook;
             $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Hooks/$hook.php";
             if (!file_exists($file)) {
                 return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
             }
 
             include_once($file);
-            if (!Jaws::classExists($hook_class_name)) {
-                return Jaws_Error::raiseError("Class [$hook_class_name] not exists!", __FUNCTION__);
+            if (!Jaws::classExists($classname)) {
+                return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
             }
 
-            $this->gadget->hooks[$hook] = new $hook_class_name($this->gadget);
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget hook: [$hook_class_name]");
+            $this->objects[$hook] = new $classname($this->gadget);
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget hook: [$classname]");
         }
 
-        return $this->gadget->hooks[$hook];
+        return $this->objects[$hook];
     }
+
 
     /**
      * Get hook options
@@ -69,7 +79,7 @@ class Jaws_Gadget_Hook
      * @access  public
      * @return  mixed   Returns hook options
      */
-    function GetOptions()
+    public function GetOptions()
     {
         return null;
     }
