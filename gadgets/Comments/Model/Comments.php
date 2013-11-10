@@ -41,11 +41,10 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
      * @param   int     $limit      How many comments
      * @param   mixed   $offset     Offset of data
      * @param   int     $orderBy    The column index which the result must be sorted by
-     * @param   boolean $is_private Show private comments or not
      * @return  array   Returns an array with of filtered comments or Jaws_Error on error
      */
     function GetComments($gadget = '', $action = '', $reference = '', $term = '', $status = array(),
-        $limit = 15, $offset = 0, $orderBy = 0, $show_private = false)
+        $limit = 15, $offset = 0, $orderBy = 0)
     {
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $commentsTable->select(
@@ -85,10 +84,6 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
             $commentsTable->or()->closeWhere('msg_txt', '%'.$term.'%', 'like');
         }
 
-        if (!$show_private) {
-            $commentsTable->and()->where('comments.is_private', 0);
-        }
-
         $commentsTable->limit($limit, $offset);
         $orders = array(
             'createtime asc',
@@ -112,7 +107,7 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
      * @param   int     $status     Comment status (approved=1, waiting=2, spam=3)
      * @return  array   Returns count of filtered comments or Jaws_Error on error
      */
-    function GetCommentsCount($gadget = '', $action = '', $reference = '', $term = '', $status = array(), $show_private = false)
+    function GetCommentsCount($gadget = '', $action = '', $reference = '', $term = '', $status = array())
     {
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $commentsTable->select('count(comments.id)');
@@ -141,10 +136,6 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
             $commentsTable->or()->where('comments.email', '%'.$term.'%', 'like');
             $commentsTable->or()->where('comments.url', '%'.$term.'%', 'like');
             $commentsTable->or()->closeWhere('msg_txt', '%'.$term.'%', 'like');
-        }
-
-        if (!$show_private) {
-            $commentsTable->and()->where('comments.is_private', 0);
         }
 
         return $commentsTable->fetchOne();

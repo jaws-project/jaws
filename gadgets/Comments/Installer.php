@@ -104,9 +104,9 @@ class Comments_Installer extends Jaws_Gadget_Installer
             $actionof['Chatbox'] = '';
 
             $statusof = array();
-            $statusof['approved'] = 1;
-            $statusof['waiting'] = 2;
-            $statusof['spam'] = 3;
+            $statusof['approved'] = Comments_Info::COMMENTS_STATUS_APPROVED;
+            $statusof['waiting'] = Comments_Info::COMMENTS_STATUS_WAITING;
+            $statusof['spam'] = Comments_Info::COMMENTS_STATUS_SPAM;
 
             $sql = '
                 UPDATE [[comments]] SET

@@ -31,29 +31,34 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
     /**
      * Inserts a new comment
      *
-     * @param   string  $gadget   Gadget's name
-     * @param   int     $gadgetId  Gadget's reference id.
-     *                             It can be the ID of a blog entry, the ID of a
-     *                             photo in Phoo, etc. This needs to be a reference
-     *                             to find the comments related to a specific record
-     *                             in a gadget.
+     * @param   string  $gadget     Gadget's name
+     * @param   int     $gadgetId   Gadget's reference id.
+     *                              It can be the ID of a blog entry, the ID of a
+     *                              photo in Phoo, etc. This needs to be a reference
+     *                              to find the comments related to a specific record
+     *                              in a gadget.
      * @param   string  $action
-     * @param   string  $name      Author's name
-     * @param   string  $email     Author's email
-     * @param   string  $url       Author's url
-     * @param   string  $message   Author's message
-     * @param   string  $ip        Author's IP
-     * @param   string  $permalink Permanent link to resource
+     * @param   string  $name       Author's name
+     * @param   string  $email      Author's email
+     * @param   string  $url        Author's url
+     * @param   string  $message    Author's message
+     * @param   string  $ip         Author's IP
+     * @param   string  $permalink  Permanent link to resource
      * @param   int     $status
-     * @param   boolean $is_private
+     * @param   boolean $private    Is a private message?
      * @return  int     Comment status or Jaws_Error on any error
      * @access  public
      */
     function insertComment($gadget, $gadgetId, $action, $name, $email, $url, $message,
-                        $ip, $permalink, $status = COMMENT_STATUS_APPROVED, $is_private = null)
+                        $ip, $permalink, $status = Comments_Info::COMMENTS_STATUS_APPROVED, $private = null)
     {
-        if (!in_array($status, array(1, 2, 3))) {
-            $status = Comments_Info::COMMENT_STATUS_SPAM;
+        if (!in_array($status, array(Comments_Info::COMMENTS_STATUS_APPROVED, Comments_Info::COMMENTS_STATUS_WAITING,
+            Comments_Info::COMMENTS_STATUS_SPAM, Comments_Info::COMMENTS_STATUS_PRIVATE))) {
+            $status = Comments_Info::COMMENTS_STATUS_SPAM;
+        }
+
+        if ($private) {
+            $status = Comments_Info::COMMENTS_STATUS_PRIVATE;
         }
 
         $message_key = md5($message);
@@ -71,7 +76,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         // Comment Status...
         $mPolicy = Jaws_Gadget::getInstance('Policy')->model->load('AntiSpam');
         if ($mPolicy->IsSpam($permalink, $gadget, $name, $email, $url, $message)) {
-            $status = COMMENT_STATUS_SPAM;
+            $status = COMMENTS_STATUS_SPAM;
         }
 
         $cData = array();
@@ -83,7 +88,6 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         $cData['url']           = $url;
         $cData['msg_txt']       = $message;
         $cData['status']        = (int)$status;
-        $cData['is_private']    = (is_null($is_private) ? 0 : 1);
         $cData['msg_key']       = $message_key;
         $cData['ip']            = $ip;
         $cData['user']          = (int)$GLOBALS['app']->Session->GetAttribute('user');
@@ -137,11 +141,11 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
 
         $cModel = $this->gadget->model->load('Comments');
         $origComment = $cModel->GetComment($id);
-        if (($status == Comments_Info::COMMENT_STATUS_SPAM || $origComment['status'] == Comments_Info::COMMENT_STATUS_SPAM) &&
+        if (($status == Comments_Info::COMMENTS_STATUS_SPAM || $origComment['status'] == Comments_Info::COMMENTS_STATUS_SPAM) &&
             $origComment['status'] != $status)
         {
             $mPolicy = Jaws_Gadget::getInstance('Policy')->model->loadAdmin('AntiSpam');
-            if ($status == Comments_Info::COMMENT_STATUS_SPAM) {
+            if ($status == Comments_Info::COMMENTS_STATUS_SPAM) {
                 $mPolicy->SubmitSpam($permalink, $gadget, $name, $email, $url, $message);
             } else {
                 $mPolicy->SubmitHam($permalink, $gadget, $name, $email, $url, $message);
@@ -209,25 +213,25 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
      * Mark as a different status several comments
      *
      * @access  public
-     * @param   string $gadget  Gadget's name
+     * @param   string  $gadget  Gadget's name
      * @param   array   $ids     Id's of the comments to mark as spam
-     * @param   string  $status  New status (spam by default)
+     * @param   int     $status  New status (spam by default)
      * @return  bool
      */
-    function MarkAs($gadget, $ids, $status = 'spam')
+    function MarkAs($gadget, $ids, $status = Comments_Info::COMMENTS_STATUS_SPAM)
     {
         if (count($ids) == 0) {
             return true;
         }
 
-        if (!in_array($status, array(1, 2, 3))) {
-            $status = Comments_Info::COMMENT_STATUS_SPAM;
+        if (!in_array($status, array(Comments_Info::COMMENTS_STATUS_APPROVED, Comments_Info::COMMENTS_STATUS_WAITING,
+            Comments_Info::COMMENTS_STATUS_SPAM, Comments_Info::COMMENTS_STATUS_PRIVATE))) {
+            $status = Comments_Info::COMMENTS_STATUS_SPAM;
         }
 
         // Update status...
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $commentsTable->update(array('status'=>$status))->where('id', $ids, 'in')->exec();
-
 
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $commentsTable->select('gadget', 'reference:integer', 'action');
@@ -242,7 +246,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
             );
         }
 
-        if ($status == Comments_Info::COMMENT_STATUS_SPAM) {
+        if ($status == Comments_Info::COMMENTS_STATUS_SPAM) {
             $mPolicy = Jaws_Gadget::getInstance('Policy')->model->loadAdmin('AntiSpam');
             // Submit spam...
             $commentsTable = Jaws_ORM::getInstance()->table('comments');
@@ -253,7 +257,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
             }
 
             foreach ($items as $i) {
-                if ($i['status'] != Comments_Info::COMMENT_STATUS_SPAM) {
+                if ($i['status'] != Comments_Info::COMMENTS_STATUS_SPAM) {
                     // FIXME Get $permalink
                     $permalink = '';
                     $mPolicy->SubmitSpam($permalink, $gadget, $i['name'], $i['email'], $i['url'], $i['message']);

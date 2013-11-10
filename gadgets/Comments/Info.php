@@ -13,9 +13,10 @@ class Comments_Info extends Jaws_Gadget
     /**
      * Constants
      */
-    const COMMENT_STATUS_APPROVED = 1;
-    const COMMENT_STATUS_WAITING  = 2;
-    const COMMENT_STATUS_SPAM     = 3;
+    const COMMENTS_STATUS_APPROVED = 1;
+    const COMMENTS_STATUS_WAITING  = 2;
+    const COMMENTS_STATUS_SPAM     = 3;
+    const COMMENTS_STATUS_PRIVATE  = 4;
 
     /**
      * Gadget version

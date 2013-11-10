@@ -173,7 +173,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
             $action,
             $reference,
             '',
-            Comments_Info::COMMENT_STATUS_APPROVED,
+            Comments_Info::COMMENTS_STATUS_APPROVED,
             $perPage,
             ($page - 1) * $perPage,
             $orderBy
@@ -414,7 +414,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
             $perPage,
             null,
             null,
-            array(Comments_Info::COMMENT_STATUS_APPROVED),
+            array(Comments_Info::COMMENTS_STATUS_APPROVED),
             false,
             ($page - 1) * $perPage,
             $orderBy
@@ -503,7 +503,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
     function PostMessage()
     {
         $post  = jaws()->request->fetch(array('message', 'name', 'email', 'url', 'url2', 'requested_gadget',
-                                    'requested_action', 'reference', 'redirect_to', 'is_private'), 'post');
+                                              'requested_action', 'reference', 'redirect_to', 'is_private'), 'post');
 
         $redirectTo = str_replace('&amp;', '&', $post['redirect_to']);
         if ($GLOBALS['app']->Session->Logged()) {
@@ -553,7 +553,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $permalink = $GLOBALS['app']->GetSiteURL();
         $status = $this->gadget->registry->fetch('default_comment_status');
         if ($this->gadget->GetPermission('ManageComments')) {
-            $status = Comments_Info::COMMENT_STATUS_APPROVED;
+            $status = Comments_Info::COMMENTS_STATUS_APPROVED;
         }
 
         $model = $this->gadget->model->load('EditComments');

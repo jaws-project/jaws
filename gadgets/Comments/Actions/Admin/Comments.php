@@ -64,9 +64,10 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         //Status
         $status =& Piwi::CreateWidget('Combo', 'status');
         $status->AddOption('&nbsp;',0);
-        $status->AddOption(_t('COMMENTS_STATUS_APPROVED'), 1);
-        $status->AddOption(_t('COMMENTS_STATUS_WAITING'), 2);
-        $status->AddOption(_t('COMMENTS_STATUS_SPAM'), 3);
+        $status->AddOption(_t('COMMENTS_STATUS_APPROVED'), Comments_Info::COMMENTS_STATUS_APPROVED);
+        $status->AddOption(_t('COMMENTS_STATUS_WAITING'), Comments_Info::COMMENTS_STATUS_WAITING);
+        $status->AddOption(_t('COMMENTS_STATUS_SPAM'), Comments_Info::COMMENTS_STATUS_SPAM);
+        $status->AddOption(_t('COMMENTS_STATUS_PRIVATE'), Comments_Info::COMMENTS_STATUS_PRIVATE);
         $status->SetDefault(0);
         $status->AddEvent(ON_CHANGE, 'searchComment();');
         $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
@@ -151,9 +152,10 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         //Status
         $status =& Piwi::CreateWidget('Combo', 'comment_status');
         $status->AddOption('&nbsp;','various');
-        $status->AddOption(_t('COMMENTS_STATUS_APPROVED'), 1);
-        $status->AddOption(_t('COMMENTS_STATUS_WAITING'), 2);
-        $status->AddOption(_t('COMMENTS_STATUS_SPAM'), 3);
+        $status->AddOption(_t('COMMENTS_STATUS_APPROVED'), Comments_Info::COMMENTS_STATUS_APPROVED);
+        $status->AddOption(_t('COMMENTS_STATUS_WAITING'), Comments_Info::COMMENTS_STATUS_WAITING);
+        $status->AddOption(_t('COMMENTS_STATUS_SPAM'), Comments_Info::COMMENTS_STATUS_SPAM);
+        $status->AddOption(_t('COMMENTS_STATUS_PRIVATE'), Comments_Info::COMMENTS_STATUS_PRIVATE);
         $status->SetDefault('various');
         $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
         $tpl->SetVariable('status', $status->Get());
@@ -225,15 +227,16 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
             }
 
             $newRow['created'] = $date->Format($row['createtime']);
-            if($row['status']==1) {
-                $status_name = 'APPROVED';
-            } else if($row['status']==2) {
-                $status_name = 'WAITING';
-            } else if ($row['status']==3) {
-                $status_name = 'SPAM';
+            if ($row['status'] == Comments_Info::COMMENTS_STATUS_APPROVED) {
+                $status = _t('COMMENTS_STATUS_APPROVED');
+            } elseif ($row['status'] == Comments_Info::COMMENTS_STATUS_WAITING) {
+                $status = _t('COMMENTS_STATUS_WAITING');
+            } elseif ($row['status'] == Comments_Info::COMMENTS_STATUS_SPAM) {
+                $status = _t('COMMENTS_STATUS_SPAM');
+            } elseif ($row['status'] == Comments_Info::COMMENTS_STATUS_PRIVATE) {
+                $status = _t('COMMENTS_STATUS_PRIVATE');
             }
-
-            $newRow['status']  = _t('COMMENTS_STATUS_'. $status_name);
+            $newRow['status']  = $status;
 
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'), $edit_url, STOCK_EDIT);
             $actions= $link->Get().'&nbsp;';
@@ -292,9 +295,10 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         $actions->SetTitle(_t('GLOBAL_ACTIONS'));
         $actions->AddOption('&nbsp;', '');
         $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
-        $actions->AddOption(_t('COMMENTS_MARK_AS_APPROVED'), 1);
-        $actions->AddOption(_t('COMMENTS_MARK_AS_WAITING'), 2);
-        $actions->AddOption(_t('COMMENTS_MARK_AS_SPAM'), 3);
+        $actions->AddOption(_t('COMMENTS_MARK_AS_APPROVED'), Comments_Info::COMMENTS_STATUS_APPROVED);
+        $actions->AddOption(_t('COMMENTS_MARK_AS_WAITING'), Comments_Info::COMMENTS_STATUS_WAITING);
+        $actions->AddOption(_t('COMMENTS_MARK_AS_SPAM'), Comments_Info::COMMENTS_STATUS_SPAM);
+        $actions->AddOption(_t('COMMENTS_MARK_AS_PRIVATE'), Comments_Info::COMMENTS_STATUS_PRIVATE);
 
         $execute =& Piwi::CreateWidget('Button', 'executeCommentAction', '',
                                        STOCK_YES);
