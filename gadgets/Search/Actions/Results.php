@@ -73,7 +73,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
             }
             unset($items['_totalItems']);
 
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             $max_result_len = (int)$this->gadget->registry->fetch('max_result_len');
             if (empty($max_result_len)) {
                 $max_result_len = 500;
