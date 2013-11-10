@@ -35,7 +35,7 @@ class Jaws_Calendar
      */
     function Jaws_Calendar($templateDir)
     {
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $this->Items = array();
         $this->Today = $objDate->GetDateInfo(time());
         $this->_TemplateDir = $templateDir;
@@ -74,7 +74,7 @@ class Jaws_Calendar
         $tpl->SetBlock('calendar');
         $tpl->setVariable('title', _t('BLOG_LAYOUT_CALENDAR'));
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         // Obtain first week day of month
         $date = $objDate->GetDateInfo($year, $month, 1, 12, 0, 0);
         $first = $date['wday'];

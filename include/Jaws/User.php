@@ -553,7 +553,7 @@ class Jaws_User
             if (empty($uData['expiry_date'])) {
                 $uData['expiry_date'] = 0;
             } else {
-                $objDate = $GLOBALS['app']->loadDate();
+                $objDate = Jaws_Date::getInstance();
                 $uData['expiry_date'] = $GLOBALS['app']->UserTime2UTC(
                     (int)$objDate->ToBaseDate(preg_split('/[- :]/', $uData['expiry_date']), 'U')
                 );
@@ -685,7 +685,7 @@ class Jaws_User
             if (empty($uData['expiry_date'])) {
                 $uData['expiry_date'] = 0;
             } else {
-                $objDate = $GLOBALS['app']->loadDate();
+                $objDate = Jaws_Date::getInstance();
                 $uData['expiry_date'] = $GLOBALS['app']->UserTime2UTC(
                     (int)$objDate->ToBaseDate(preg_split('/[- :]/', $uData['expiry_date']), 'U')
                 );
