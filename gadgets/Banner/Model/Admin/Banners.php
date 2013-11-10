@@ -28,7 +28,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
     function InsertBanner($title, $url, $gid, $banner, $template, $views_limit,
                           $clicks_limit, $start_time, $stop_time, $random, $published)
     {
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $bData['title']             = $title;
         $bData['url']               = $url;
         $bData['gid']               = ((empty($gid) || !is_numeric($gid)) ? 0: $gid);
@@ -88,7 +88,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
     function UpdateBanner($bid, $title, $url, $gid, $banner, $template, $views_limit,
                           $clicks_limit, $start_time, $stop_time, $random, $published)
     {
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $bData['title']             = $title;
         $bData['url']               = $url;
         $bData['gid']               = ((empty($gid) || !is_numeric($gid)) ? 0: $gid);

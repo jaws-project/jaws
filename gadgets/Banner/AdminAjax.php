@@ -24,7 +24,7 @@ class Banner_AdminAjax extends Jaws_Gadget_Action
         }
 
         if (isset($banner['id'])) {
-            $objDate = $GLOBALS['app']->loadDate();
+            $objDate = Jaws_Date::getInstance();
             if (!empty($banner['start_time'])) {
                 $banner['start_time'] = $objDate->Format($banner['start_time'], 'Y-m-d H:i:s');
             }

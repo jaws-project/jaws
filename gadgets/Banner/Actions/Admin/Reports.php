@@ -24,7 +24,7 @@ class Banner_Actions_Admin_Reports extends Banner_Actions_Admin_Default
         }
 
         $new_banners = array();
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         foreach ($banners as $banner) {
             $item = array();
             $item['title']  = '<span><a href="'.$banner['url'].'" title="'.$banner['url'];
