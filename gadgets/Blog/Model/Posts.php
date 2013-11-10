@@ -58,7 +58,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $ids     = array();
         //Only load Jaws_Gravatar if we really have entries
         if (count($result) > 0) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
         }
         foreach ($result as $r) {
             $r['avatar_source'] = Jaws_Gravatar::GetGravatar($r['email']);

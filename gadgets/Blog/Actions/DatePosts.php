@@ -43,7 +43,7 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
         $endMonth = empty($month)? 1 : (empty($day)? ($month + 1) : $month);
         $bgnDay   = empty($day)? 1 : $day;
         $endDay   = empty($day)? 1 : $day + 1;
-        $objDate  = $GLOBALS['app']->loadDate();
+        $objDate  = Jaws_Date::getInstance();
         $min_date = $objDate->ToBaseDate($bgnYear, $bgnMonth, $bgnDay);
         $max_date = $objDate->ToBaseDate($endYear, $endMonth, $endDay);
         if (!$min_date['timestamp'] || !$max_date['timestamp']) {
@@ -122,7 +122,7 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
         $ptitle = null;
         $nurl   = null;
         $ntitle = null;
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $model   = $this->gadget->model->load('DatePosts');
         $dLimit  = $model->GetPostsDateLimitation(true);
         if ($dLimit['qty_posts'] != 0) {
@@ -213,7 +213,7 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
         $entries = $model->GetEntriesAsHistory();
         if (!Jaws_Error::IsError($entries)) {
             $aux_mon_year = '';
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             foreach ($entries as $key => $entry) {
                 $mon_year = $date->Format($entry['publishtime'], 'm,Y');
                 if ($mon_year != $aux_mon_year) {
@@ -265,7 +265,7 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
     {
         $cal = new Jaws_Calendar('gadgets/Blog/Templates/');
         //By default.
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $dt = explode('-', $objDate->Format(time(), 'Y-m-d'));
         $year  = $dt[0];
         $month = $dt[1];
@@ -304,7 +304,7 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
             array('year'  => $lyear,
                 'month' => $lmonth,
             ));
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $cal->addArrow('left', '&laquo;' . $date->MonthString($lmonth), $url);
 
         if ($month == '12') {

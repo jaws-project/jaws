@@ -221,7 +221,7 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
             return array();
         }
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $data = array();
         foreach ($trackbacks as $row) {
             $newRow = array();

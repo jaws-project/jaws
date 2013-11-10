@@ -108,7 +108,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog', $autoDraft === false);
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $now = $GLOBALS['db']->Date();
 
         $params['user_id']          = $user;
@@ -276,7 +276,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             $params['published'] = $params['published'] === 1 ? true : false;
         }
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         if (!is_null($timestamp)) {
             // Maybe we need to not allow crazy dates, e.g. 100 years ago
             $timestamp = $date->ToBaseDate(preg_split('/[- :]/', $timestamp), 'Y-m-d H:i:s');

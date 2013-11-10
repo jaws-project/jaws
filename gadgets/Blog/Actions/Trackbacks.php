@@ -84,7 +84,7 @@ class Blog_Actions_Trackbacks extends Blog_Actions_Default
             $tburi = $this->gadget->urlMap('Trackback', array('id' => $id), true);
             $tpl->SetVariable('TrackbackURI', $tburi);
             if (!Jaws_Error::IsError($trackbacks)) {
-                $date = $GLOBALS['app']->loadDate();
+                $date = Jaws_Date::getInstance();
                 foreach ($trackbacks as $tb) {
                     $tpl->SetBlock('trackbacks/item');
                     $tpl->SetVariablesArray($tb);

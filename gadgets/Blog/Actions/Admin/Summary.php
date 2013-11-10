@@ -39,7 +39,7 @@ class Blog_Actions_Admin_Summary extends Blog_Actions_Admin_Default
         $tpl->SetVariable('bgcolor', $bg);
         $tpl->SetVariable('label', _t('BLOG_FIRST_ENTRY'));
         if (isset($summary['min_date'])) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             $tpl->SetVariable('value', $date->Format($summary['min_date']));
         } else {
             $tpl->SetVariable('value', '');
@@ -52,7 +52,7 @@ class Blog_Actions_Admin_Summary extends Blog_Actions_Admin_Default
         $tpl->SetVariable('bgcolor', $bg);
         $tpl->SetVariable('label', _t('BLOG_LAST_ENTRY'));
         if (isset($summary['max_date'])) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             $tpl->SetVariable('value', $date->Format($summary['max_date']));
         } else {
             $tpl->SetVariable('value', '');
@@ -90,7 +90,7 @@ class Blog_Actions_Admin_Summary extends Blog_Actions_Admin_Default
             $tpl->SetBlock('summary/recent');
             $tpl->SetVariable('title', _t('BLOG_RECENT_ENTRIES'));
 
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             foreach ($summary['Entries'] as $e) {
                 $tpl->SetBlock('summary/recent/link');
                 $url = BASE_SCRIPT . '?gadget=Blog&action=EditEntry&id='.$e['id'];

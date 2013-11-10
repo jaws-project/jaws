@@ -134,7 +134,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('timestamp_check', $tsChk->Get());
 
         // Maybe we need to get date from MDB2
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $now = $objDate->Format(time(), 'Y-m-d H:i:s');
         $pubdate =& Piwi::CreateWidget('DatePicker', 'pubdate', $now);
         $pubdate->SetId('pubdate');
@@ -403,7 +403,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tsChk->AddEvent(ON_CLICK, 'toggleUpdate(this.checked);');
         $tpl->SetVariable('timestamp_check', $tsChk->Get());
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $pubTime = $objDate->Format($entry['publishtime'], 'Y-m-d H:i:s');
         $pubdate =& Piwi::CreateWidget('DatePicker', 'pubdate', $pubTime);
         $pubdate->SetId('pubdate');
@@ -580,7 +580,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('title', $entry['title']);
         $tpl->SetVariable('text', $this->gadget->ParseText($entry['text']));
         $tpl->SetVariable('user', $entry['username']);
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $tpl->SetVariable('createtime', $date->Format($entry['publishtime']));
         $pos = 1;
         $categories = '';
@@ -626,7 +626,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $cModel = $this->gadget->model->load('Categories');
         $monthentries = $dpModel->GetMonthsEntries();
         if (!Jaws_Error::IsError($monthentries) && is_array($monthentries)) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             foreach ($monthentries as $e) {
                 $showCombo->AddOption($date->MonthString($e['month']).' '.$e['year'],
                                       $e['month'].':'.$e['year']);
@@ -756,7 +756,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         }
 
         $posts = array();
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
 
         foreach ($entries as $row) {
             $post = array();

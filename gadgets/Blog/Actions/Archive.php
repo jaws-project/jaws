@@ -28,7 +28,7 @@ class Blog_Actions_Archive extends Blog_Actions_Default
         $tpl->SetBlock('archive');
         $tpl->SetVariable('title', _t('BLOG_ARCHIVE'));
         if (!Jaws_Error::IsError($archiveEntries)) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             foreach ($archiveEntries as $entry) {
                 $currentMonth = $date->Format($entry['publishtime'], 'MN');
                 if ($currentMonth != $auxMonth) {

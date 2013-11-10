@@ -76,7 +76,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
 
         $this->_Atom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/Templates/atom.xsl'), 'text/xsl');
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         foreach ($result as $r) {
             $entry = new AtomEntry();
             $entry->SetTitle($r['title']);
@@ -242,7 +242,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $categoryAtom->SetCopyright($this->gadget->registry->fetch('copyright', 'Settings'));
         $categoryAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/Templates/atom.xsl'), 'text/xsl');
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         foreach ($result as $r) {
             $entry = new AtomEntry();
             $entry->SetTitle($r['title']);
@@ -396,7 +396,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/Templates/atom.xsl'), 'text/xsl');
         $commentAtom->SetTagLine(_t('BLOG_RECENT_COMMENTS'));
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $site = preg_replace('/(.*)\/.*/i', '\\1', $commentAtom->Link->HRef);
         foreach ($comments as $c) {
             $entry_id = $c['reference'];
@@ -499,7 +499,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/Templates/atom.xsl'), 'text/xsl');
         $commentAtom->SetTagLine(_t('BLOG_COMMENTS_ON_POST').' '.$id);
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $site = preg_replace('/(.*)\/.*/i', '\\1', $commentAtom->Link->HRef);
         foreach ($comments as $c) {
             $entry_id = $c['reference'];

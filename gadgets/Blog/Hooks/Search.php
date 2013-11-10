@@ -60,7 +60,7 @@ class Blog_Hooks_Search extends Jaws_Gadget_Hook
             return array();
         }
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $entries = array();
         foreach ($result as $r) {
             $entry = array();

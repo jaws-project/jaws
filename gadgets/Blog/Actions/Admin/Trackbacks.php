@@ -164,7 +164,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
         $tpl->SetBlock('view_trackback');
         $tpl->SetVariable('menubar', $this->MenuBar('ManageTrackbacks'));
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fieldset = new Jaws_Widgets_FieldSet(_t('BLOG_VIEW_TRACKBACK'));
 

@@ -31,7 +31,7 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
             case 'monthly':
                 $model = $this->gadget->model->load('Posts');
                 $dates = $model->GetPostsDateLimitation(true);
-                $date = $GLOBALS['app']->loadDate();
+                $date = Jaws_Date::getInstance();
                 $mDate = $date->Format($dates['max_date'], 'Y-m');
                 $mDate = explode('-', $mDate);
                 $dateHTML = $this->gadget->action->load('DatePosts');
@@ -179,7 +179,7 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
 
         $tpl->SetVariable('posted_by', _t('BLOG_POSTED_BY'));
         $tpl->SetVariable('author-url',   $this->gadget->urlMap('ViewAuthorPage', array('id' => $entry['username'])));
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $tpl->SetVariable('createtime-iso',       $date->ToISO($entry['publishtime']));
         $tpl->SetVariable('createtime',           $date->Format($entry['publishtime']));
         $tpl->SetVariable('createtime-monthname', $date->Format($entry['publishtime'], 'MN'));

@@ -158,7 +158,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         $tpl->SetVariable('title', $title);
         $entries = $pModel->GetRecentEntries($cat, (int)$limit);
         if (!Jaws_Error::IsError($entries)) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             foreach ($entries as $e) {
                 $tpl->SetBlock('recent_posts/item');
 
@@ -227,7 +227,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         $model = $this->gadget->model->load('Posts');
         $entries = $model->GetPopularPosts();
         if (!Jaws_Error::IsError($entries)) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             foreach ($entries as $entry) {
                 $tpl->SetBlock('popular_posts/item');
 
@@ -275,7 +275,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         $model = $this->gadget->model->load('Posts');
         $authors = $model->GetPostsAuthors();
         if (!Jaws_Error::IsError($entries)) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             foreach ($authors as $author) {
                 $tpl->SetBlock('posts_authors/item');
                 $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog',
