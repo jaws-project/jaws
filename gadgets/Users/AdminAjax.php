@@ -28,7 +28,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
      */
     function Users_AdminAjax($gadget)
     {
-        parent::Jaws_Gadget_Action($gadget);
+        parent::__construct($gadget);
         $this->_UserModel = new Jaws_User();
     }
 
