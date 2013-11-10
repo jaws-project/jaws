@@ -419,4 +419,73 @@ class Jaws_Date_Jalali extends Jaws_Date
         return $this->_Days['short'];
     }
 
+    /**
+     * Return the month number in string
+     *
+     * @param  int    $m  Numeric month(1..12)
+     * @return  string     The month in string not in number
+     * @access  public
+     */
+    function MonthString($m)
+    {
+        if (!isset($this->_Months['long'])) {
+            $months = array(
+                _t('GLOBAL_JALALI_MONTH_FIRST'),
+                _t('GLOBAL_JALALI_MONTH_SECOND'),
+                _t('GLOBAL_JALALI_MONTH_THIRD'),
+                _t('GLOBAL_JALALI_MONTH_FOURTH'),
+                _t('GLOBAL_JALALI_MONTH_FIFTH'),
+                _t('GLOBAL_JALALI_MONTH_SIXTH'),
+                _t('GLOBAL_JALALI_MONTH_SEVENTH'),
+                _t('GLOBAL_JALALI_MONTH_EIGHTH'),
+                _t('GLOBAL_JALALI_MONTH_NINTH'),
+                _t('GLOBAL_JALALI_MONTH_TENTH'),
+                _t('GLOBAL_JALALI_MONTH_ELEVENTH'),
+                _t('GLOBAL_JALALI_MONTH_TWELFTH'),
+            );
+            $this->_Months['long'] =& $months;
+        }
+
+        if ($m != '') {
+            $m = (int)$m;
+            return $this->_Months['long'][$m - 1];
+        }
+
+        return $this->_Months['long'];
+    }
+
+    /**
+     * Return the month number in string
+     *
+     * @param  int    $m  Numeric month(1..12)
+     * @return  string     The month in string not in number
+     * @access  public
+     */
+    function MonthShortString($m = '')
+    {
+        if (!isset($this->_Months['short'])) {
+            $months = array(
+                _t('GLOBAL_JALALI_MONTH_SHORT_FIRST'),
+                _t('GLOBAL_JALALI_MONTH_SHORT_SECOND'),
+                _t('GLOBAL_JALALI_MONTH_SHORT_THIRD'),
+                _t('GLOBAL_JALALI_MONTH_SHORT_FOURTH'),
+                _t('GLOBAL_JALALI_MONTH_SHORT_FIFTH'),
+                _t('GLOBAL_JALALI_MONTH_SHORT_SIXTH'),
+                _t('GLOBAL_JALALI_MONTH_SHORT_SEVENTH'),
+                _t('GLOBAL_JALALI_MONTH_SHORT_EIGHTH'),
+                _t('GLOBAL_JALALI_MONTH_SHORT_NINTH'),
+                _t('GLOBAL_JALALI_MONTH_SHORT_TENTH'),
+                _t('GLOBAL_JALALI_MONTH_SHORT_ELEVENTH'),
+                _t('GLOBAL_JALALI_MONTH_SHORT_TWELFTH'),
+            );
+            $this->_Months['short'] =& $months;
+        }
+
+        if ($m = (int)$m) {
+            return $this->_Months['short'][$m - 1];
+        }
+
+        return $this->_Months['short'];
+    }
+
 }
