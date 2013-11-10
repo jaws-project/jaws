@@ -682,31 +682,6 @@ class Jaws
     }
 
     /**
-     * Loads the Jaws Date class.
-     * Singleton approach.
-     *
-     * @access  public
-     * @return  object  Date calender object
-     */
-    function loadDate()
-    {
-        static $instances;
-        if (!isset($instances)) {
-            $instances = array();
-        }
-
-        $signature = serialize(array('date'));
-        if (!isset($instances[$signature])) {
-            include_once JAWS_PATH . 'include/Jaws/Date.php';
-            $calendar = $this->GetCalendar();
-            $instances[$signature] =& Jaws_Date::factory($calendar);
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Date class is loaded');
-        }
-
-        return $instances[$signature];
-    }
-
-    /**
      * Loads a class object
      *
      * @access  public
