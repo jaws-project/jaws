@@ -124,34 +124,6 @@ class Jaws_Gadget
     var $default_admin_action = false;
 
     /**
-     * Store models objects for later use so we aren't running around with multiple copies
-     * @var     array
-     * @access  protected
-     */
-    var $models = array();
-
-    /**
-     * Store actions objects for later use so we aren't running around with multiple copies
-     * @var     array
-     * @access  protected
-     */
-    var $actions = array();
-
-    /**
-     * Store hooks objects for later use so we aren't running around with multiple copies
-     * @var     array
-     * @access  protected
-     */
-    var $hooks = array();
-
-    /**
-     * Store events objects for later use so we aren't running around with multiple copies
-     * @var     array
-     * @access  protected
-     */
-    var $events = array();
-
-    /**
      * Constructor
      *
      * @access  protected
