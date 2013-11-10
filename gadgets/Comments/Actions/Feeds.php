@@ -151,7 +151,7 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
         $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Comments/Templates/atom.xsl'), 'text/xsl');
         $commentAtom->SetTagLine(_t('COMMENTS_RECENT_COMMENTS', $gadget));
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $site = preg_replace('/(.*)\/.*/i', '\\1', $commentAtom->Link->HRef);
         foreach ($comments as $c) {
             $entry_id = $c['reference'];

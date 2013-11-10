@@ -208,7 +208,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
             $GLOBALS['app']->Translate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
         }
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $data = array();
         foreach ($comments as $row) {
             $newRow = array();

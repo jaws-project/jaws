@@ -185,7 +185,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
 
         $tpl->SetVariable('gadget', $gadget);
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $usrModel = new Jaws_User;
         if (!Jaws_Error::IsError($comments) && $comments != null) {
             foreach ($comments as $entry) {
@@ -317,7 +317,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $tpl->SetBlock('comment-preview');
 
         $usrModel = new Jaws_User;
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
 
         $tpl->SetVariable('name', $post['name']);
         $tpl->SetVariable('email', $post['email']);
@@ -327,7 +327,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         }
         $tpl->SetVariable('message', Jaws_String::AutoParagraph($post['message']));
         if (!isset($post['createtime'])) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             $post['createtime'] = $date->Format(time());
         }
 
@@ -424,7 +424,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $tpl = $this->gadget->template->load('Comments.html');
         $tpl->SetBlock('comments');
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $usrModel = new Jaws_User;
         if (!Jaws_Error::IsError($comments) && $comments != null) {
             foreach ($comments as $entry) {
