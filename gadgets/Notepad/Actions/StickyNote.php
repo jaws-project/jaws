@@ -70,7 +70,7 @@ class Notepad_Actions_StickyNote extends Jaws_Gadget_Action
         $tpl->SetBlock('notes');
 
         $tpl->SetVariable('title', _t('NOTEPAD_LATEST_NOTES'));
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         foreach ($notes as $note) {
             $tpl->SetBlock('notes/note');
             $tpl->SetVariable('note_title', $note['title']);

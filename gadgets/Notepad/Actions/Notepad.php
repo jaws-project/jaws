@@ -58,7 +58,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_Action
         $count = $model->GetNumberOfNotes($user, $shared, $foreign, $query);
         $notes = $model->GetNotes($user, $shared, $foreign, $query, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($notes)){
-            $objDate = $GLOBALS['app']->loadDate();
+            $objDate = Jaws_Date::getInstance();
             foreach ($notes as $note) {
                 $tpl->SetBlock('notepad/note');
                 $tpl->SetVariable('id', $note['id']);
