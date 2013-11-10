@@ -103,7 +103,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($files)){
             return array();
         }
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         foreach ($files as &$file) {
             $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
@@ -131,7 +131,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($file)) {
             return array();
         }
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
         $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
 
@@ -378,7 +378,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             return $GLOBALS['app']->Session->GetResponse($files->getMessage(), RESPONSE_ERROR);
         }
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         foreach ($files as &$file) {
             $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
