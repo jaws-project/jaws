@@ -20,7 +20,7 @@ class Sitemap_AdminAjax extends Jaws_Gadget_Action
      */
     function Sitemap_AdminAjax($gadget)
     {
-        parent::Jaws_Gadget_Action($gadget);
+        parent::__construct($gadget);
         $this->_Model = $this->gadget->model->loadAdmin('Sitemap');
     }
 
