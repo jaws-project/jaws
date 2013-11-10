@@ -79,7 +79,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             } else {
                 $dob  = null;
                 if (!empty($post['dob_year']) && !empty($post['dob_year']) && !empty($post['dob_year'])) {
-                    $date = $GLOBALS['app']->loadDate();
+                    $date = Jaws_Date::getInstance();
                     $dob  = $date->ToBaseDate($post['dob_year'], $post['dob_month'], $post['dob_day']);
                     $dob  = date('Y-m-d H:i:s', $dob['timestamp']);
                 }

@@ -69,7 +69,7 @@ class Users_Actions_Personal extends Jaws_Gadget_Action
         if (empty($personal['dob'])) {
             $dob = array('', '', '');
         } else {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             $dob = $date->Format($personal['dob'], 'Y-m-d');
             $dob = explode('-', $dob);
         }
@@ -145,7 +145,7 @@ class Users_Actions_Personal extends Jaws_Gadget_Action
 
         $post['dob'] = null;
         if (!empty($post['dob_year']) && !empty($post['dob_year']) && !empty($post['dob_year'])) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             $dob  = $date->ToBaseDate($post['dob_year'], $post['dob_month'], $post['dob_day']);
             $post['dob'] = date('Y-m-d H:i:s', $dob['timestamp']);
         }

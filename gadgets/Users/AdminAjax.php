@@ -46,7 +46,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
             return array();
         }
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         if ($account) {
             if (!empty($profile['expiry_date'])) {
                 $profile['expiry_date'] = $objDate->Format($profile['expiry_date'], 'Y-m-d H:i:s');
@@ -623,7 +623,7 @@ class Users_AdminAjax extends Jaws_Gadget_Action
         ) = jaws()->request->fetchAll('post');
         $dob = empty($dob)? null : $dob;
         if (!empty($dob)) {
-            $objDate = $GLOBALS['app']->loadDate();
+            $objDate = Jaws_Date::getInstance();
             $dob = $objDate->ToBaseDate(preg_split('/[- :]/', $dob), 'Y-m-d H:i:s');
             $dob = $GLOBALS['app']->UserTime2UTC($dob, 'Y-m-d H:i:s');
         }

@@ -88,7 +88,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         }
 
         $retData = array();
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
 
         foreach ($sessions as $session) {
             $usrData = array();

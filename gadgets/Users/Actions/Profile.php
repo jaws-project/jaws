@@ -63,7 +63,7 @@ class Users_Actions_Profile extends Jaws_Gadget_Action
         $user['gender'] = _t('USERS_USERS_GENDER_'.$user['gender']);
 
         // Date of birth
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $user['dob'] = $objDate->Format($user['dob'], 'd MN Y');
 
         if (!empty($user['registered_date'])) {
@@ -147,7 +147,7 @@ class Users_Actions_Profile extends Jaws_Gadget_Action
         $user['gender'] = _t('USERS_USERS_GENDER_'.$user['gender']);
 
         // Date of birth
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $user['dob'] = $objDate->Format($user['dob'], 'd MN Y');
 
         if (!empty($user['registered_date'])) {
