@@ -2,13 +2,13 @@
 /**
  * Jaws Model schema
  *
- * @category   Gadget
- * @package    Core
- * @author     Jonathan Hernandez <ion@suavizado.com>
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Gadget
+ * @package     Core
+ * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @author      Pablo Fischer <pablo@pablo.com.mx>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2005-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Gadget_Model
 {
@@ -16,9 +16,17 @@ class Jaws_Gadget_Model
      * Jaws_Gadget object
      *
      * @var     object
-     * @access  protected
+     * @access  public
      */
-    var $gadget = null;
+    public $gadget = null;
+
+    /**
+     * Store models objects for later use so we aren't running around with multiple copies
+     * @var     array
+     * @access  private
+     */
+    private $objects = array();
+
 
     /**
      * constructor
@@ -27,10 +35,11 @@ class Jaws_Gadget_Model
      * @param   object $gadget Jaws_Gadget object
      * @return  void
      */
-    function Jaws_Gadget_Model($gadget)
+    public function __construct($gadget)
     {
         $this->gadget = $gadget;
     }
+
 
     /**
      * Loads the gadget model file in question, makes a instance and
@@ -41,12 +50,12 @@ class Jaws_Gadget_Model
      * @param   string  $filename   Model class file name
      * @return  mixed   Model class object on successful, Jaws_Error otherwise
      */
-    function &load($filename = '')
+    public function &load($filename = '')
     {
         // filter non validate character
         $filename = preg_replace('/[^[:alnum:]_]/', '', $filename);
 
-        if (!isset($this->gadget->models['Model'][$filename])) {
+        if (!isset($this->objects['Model'][$filename])) {
             if (empty($filename)) {
                 $classname = $this->gadget->name. '_Model';
                 $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Model.php';
@@ -67,12 +76,13 @@ class Jaws_Gadget_Model
                 return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
             }
 
-            $this->gadget->models['Model'][$filename] = new $classname($this->gadget);
+            $this->objects['Model'][$filename] = new $classname($this->gadget);
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget model: [$classname]");
         }
 
-        return $this->gadget->models['Model'][$filename];
+        return $this->objects['Model'][$filename];
     }
+
 
     /**
      * Loads the gadget model file in question, makes a instance and
@@ -83,12 +93,12 @@ class Jaws_Gadget_Model
      * @param   string  $filename   Model class file name
      * @return  mixed   Model class object on successful, Jaws_Error otherwise
      */
-    function &loadAdmin($filename = '')
+    public function &loadAdmin($filename = '')
     {
         // filter non validate character
         $filename = preg_replace('/[^[:alnum:]_]/', '', $filename);
 
-        if (!isset($this->gadget->models['AdminModel'][$filename])) {
+        if (!isset($this->objects['AdminModel'][$filename])) {
             if (empty($filename)) {
                 $classname = $this->gadget->name. '_AdminModel';
                 $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/AdminModel.php';
@@ -109,12 +119,13 @@ class Jaws_Gadget_Model
                 return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
             }
 
-            $this->gadget->models['AdminModel'][$filename] = new $classname($this->gadget);
+            $this->objects['AdminModel'][$filename] = new $classname($this->gadget);
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget model: [$classname]");
         }
 
-        return $this->gadget->models['AdminModel'][$filename];
+        return $this->objects['AdminModel'][$filename];
     }
+
 
     /**
      * Performs any actions required to finish installing a gadget.
@@ -123,10 +134,11 @@ class Jaws_Gadget_Model
      * @access  public
      * @return  bool    True on success and Jaws_Error on failure
      */
-    function InstallGadget()
+    public function InstallGadget()
     {
         return true;
     }
+
 
     /**
      * Updates the gadget
@@ -134,10 +146,11 @@ class Jaws_Gadget_Model
      * @access  public
      * @return  bool    True on success and Jaws_Error on failure
      */
-    function UpdateGadget()
+    public function UpdateGadget()
     {
         return true;
     }
+
 
     /**
      * Return an array with the Search Results
@@ -150,10 +163,11 @@ class Jaws_Gadget_Model
      * snippet - Snippet of the result(can be null)
      * date - Insert or update date(can be null)
      */
-    function Search($string)
+    public function Search($string)
     {
         return false;
     }
+
 
     /**
      * Returns the fast URL of an entry
@@ -162,10 +176,11 @@ class Jaws_Gadget_Model
      * @param   string   $fastUrl  FastUrl string
      * @return  array    Entry info or false
      */
-    function GetFastURL($fastUrl)
+    public function GetFastURL($fastUrl)
     {
         return false;
     }
+
 
     /**
      * Get the total of data we have in a table
@@ -175,12 +190,13 @@ class Jaws_Gadget_Model
      * @param   string  $pKey   Optional. Primary key to use for counting
      * @return  int     Total of data we have
      */
-    function TotalOfData($table, $pKey = 'id')
+    public function TotalOfData($table, $pKey = 'id')
     {
         $objORM = Jaws_ORM::getInstance()->table($table);
         $res = $objORM->select('count('.$pKey.')')->fetchOne();
         return Jaws_Error::IsError($res)? 0 : $res;
     }
+
 
     /**
      * Checks if fast_url already exists in a table, if it doesn't then it returns
@@ -194,7 +210,7 @@ class Jaws_Gadget_Model
      * @param   string     $field        Table field where fast_url is stored
      * @return  string     Correct fast URL
      */
-    function GetRealFastURL($fast_url, $table, $unique_check = true, $field = 'fast_url')
+    public function GetRealFastURL($fast_url, $table, $unique_check = true, $field = 'fast_url')
     {
         if (is_numeric($fast_url)) {
             $fast_url = '-' . $fast_url . '-';
