@@ -2,11 +2,11 @@
 /**
  * Jaws Gadget Event
  *
- * @category   Gadget
- * @package    Core
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Gadget
+ * @package     Core
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Gadget_Event
 {
@@ -14,9 +14,17 @@ class Jaws_Gadget_Event
      * Jaws_Gadget object
      *
      * @var     object
-     * @access  protected
+     * @access  public
      */
-    var $gadget = null;
+    public $gadget = null;
+
+    /**
+     * Store events objects for later use so we aren't running around with multiple copies
+     * @var     array
+     * @access  private
+     */
+    private $objects = array();
+
 
     /**
      * constructor
@@ -25,7 +33,7 @@ class Jaws_Gadget_Event
      * @param   object $gadget Jaws_Gadget object
      * @return  void
      */
-    function Jaws_Gadget_Event($gadget)
+    public function __construct($gadget)
     {
         $this->gadget = $gadget;
     }
@@ -39,29 +47,30 @@ class Jaws_Gadget_Event
      * @param   string  $event  Event name
      * @return  mixed   Event class object on successful, Jaws_Error otherwise
      */
-    function &load($event)
+    public function &load($event)
     {
         // filter non validate character
         $event = preg_replace('/[^[:alnum:]_]/', '', $event);
 
-        if (!isset($this->gadget->events[$event])) {
-            $event_class_name = $this->gadget->name. '_Events_'. $event;
+        if (!isset($this->objects[$event])) {
+            $classname = $this->gadget->name. '_Events_'. $event;
             $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Events/$event.php";
             if (!file_exists($file)) {
                 return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
             }
 
             include_once($file);
-            if (!Jaws::classExists($event_class_name)) {
-                return Jaws_Error::raiseError("Class [$event_class_name] not exists!", __FUNCTION__);
+            if (!Jaws::classExists($classname)) {
+                return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
             }
 
-            $this->gadget->events[$event] = new $event_class_name($this->gadget);
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget event: [$event_class_name]");
+            $this->objects[$event] = new $classname($this->gadget);
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget event: [$classname]");
         }
 
-        return $this->gadget->events[$event];
+        return $this->objects[$event];
     }
+
 
     /**
      * Shouts a call to the listener object that will act inmediatly.
@@ -73,10 +82,11 @@ class Jaws_Gadget_Event
      * @param   bool    $broadcast  Broadcast event to all listeners
      * @return  mixed   True if successfully, otherwise returns Jaws_Error
      */
-    function shout($event, $params = array(), $gadget = '', $broadcast = true)
+    public function shout($event, $params = array(), $gadget = '', $broadcast = true)
     {
         return $GLOBALS['app']->Listener->Shout($event, $params, $gadget, $broadcast);
     }
+
 
     /**
      * Add a new listener and saves it in the DB
@@ -85,11 +95,12 @@ class Jaws_Gadget_Event
      * @param   string  $event  Event name
      * @return  bool    True if listener was added, otherwise returns Jaws_Error
      */
-    function insert($event, $gadget = '')
+    public function insert($event, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $GLOBALS['app']->Listener->AddListener($gadget, $event);
     }
+
 
     /**
      * Deletes a shouter
@@ -99,7 +110,7 @@ class Jaws_Gadget_Event
      * @param   string  $gadget (Optional) Gadget name
      * @return  bool    True if listener was deleted, otherwise returns Jaws_Error
      */
-    function delete($event = '', $gadget = '')
+    public function delete($event = '', $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $GLOBALS['app']->Listener->DeleteListener($gadget, $event);
