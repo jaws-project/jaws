@@ -60,8 +60,6 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         $todayInfo = $jdate->GetDateInfo($year, $month, $day);
         $startDay = $day - $todayInfo['wday'];
         $stopDay = $startDay + 6;
-        // $startDayInfo = $jdate->GetDateInfo($year, $month, $startDay);
-        // $stopDayInfo = $jdate->GetDateInfo($year, $month, $stopDay);
 
         // This week
         $start = $jdate->ToBaseDate($year, $month, $startDay);
@@ -112,14 +110,25 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
             foreach ($eventsByDay[$i] as $event_id) {
                 $e = $eventsById[$event_id];
                 $tpl->SetBlock('week/day/event');
+
                 $tpl->SetVariable('event', $e['subject']);
+                $tpl->SetVariable('type', $e['type']);
+
+                if ($e['priority'] > 0) {
+                    $tpl->SetVariable('priority', ($e['priority'] == 1)? 'low' : 'high');
+                } else {
+                    $tpl->SetVariable('priority', '');
+                }
+
                 $url = $this->gadget->urlMap('ViewEvent', array('id' => $event_id));
                 $tpl->SetVariable('event_url', $url);
+
                 if ($e['shared']) {
                     $block = ($e['user'] == $e['owner'])? 'shared' : 'foreign';
                     $tpl->SetBlock("week/day/event/$block");
                     $tpl->ParseBlock("week/day/event/$block");
                 }
+
                 $tpl->ParseBlock('week/day/event');
             }
             $tpl->ParseBlock('week/day');

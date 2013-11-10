@@ -88,7 +88,6 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Calendar');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $events = $model->GetEvents($user, null, null, $start, $stop);
-        // _log_var_dump($events);
         if (Jaws_Error::IsError($events)){
             $events = array();
         }
@@ -124,9 +123,19 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
             foreach ($eventsByDay[$i] as $event_id) {
                 $e = $eventsById[$event_id];
                 $tpl->SetBlock('month/day/event');
+
                 $tpl->SetVariable('event', $e['subject']);
+                $tpl->SetVariable('type', $e['type']);
+
+                if ($e['priority'] > 0) {
+                    $tpl->SetVariable('priority', ($e['priority'] == 1)? 'low' : 'high');
+                } else {
+                    $tpl->SetVariable('priority', '');
+                }
+
                 $url = $this->gadget->urlMap('ViewEvent', array('id' => $event_id));
                 $tpl->SetVariable('event_url', $url);
+
                 if ($e['shared']) {
                     $block = ($e['user'] == $e['owner'])? 'shared' : 'foreign';
                     $tpl->SetBlock("month/day/event/$block");

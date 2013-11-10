@@ -20,7 +20,7 @@ class EventsCalendar_Model_Calendar extends Jaws_Gadget_Model
     function GetEvents($user = null, $shared = null, $foreign = null, $start, $stop)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as events');
-        $table->select('events.id', 'subject', 'shared',
+        $table->select('events.id', 'subject', 'shared', 'type', 'priority',
             'recs.start_time', 'recs.stop_time', 'ec_users.user', 'owner');
         $table->join('ec_recurrences as recs', 'events.id', 'recs.event');
         $table->join('ec_users', 'events.id', 'ec_users.event');

@@ -34,8 +34,6 @@ class EventsCalendar_Model_Reminder extends Jaws_Gadget_Model
         }
 
         $table->orderBy('recs.start_time', 'priority');
-        //_log_var_dump($table->get());
-
         return $table->fetchAll();
     }
 }

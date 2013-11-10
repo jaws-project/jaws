@@ -42,11 +42,22 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
         // Display events
         foreach ($events as $event) {
             $tpl->SetBlock('reminder/event');
+
             $tpl->SetVariable('event', $event['subject']);
+            $tpl->SetVariable('type', $event['type']);
+
+            if ($event['priority'] > 0) {
+                $tpl->SetVariable('priority', ($event['priority'] == 1)? 'low' : 'high');
+            } else {
+                $tpl->SetVariable('priority', '');
+            }
+
             $datetime = $GLOBALS['app']->UserTime2UTC($event['start_time']);
             $tpl->SetVariable('datetime', $jdate->Format($datetime, 'DN d MN Y - h:i a'));
+
             $url = $this->gadget->urlMap('ViewEvent', array('id' => $event['id']));
             $tpl->SetVariable('event_url', $url);
+
             if ($event['owner'] != $user) {
                 $tpl->SetBlock('reminder/event/owner');
                 $tpl->SetVariable('owner', $event['nickname']);
