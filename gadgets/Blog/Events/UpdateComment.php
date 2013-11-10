@@ -22,7 +22,7 @@ class Blog_Events_UpdateComment extends Jaws_Gadget_Event
 
         $cModel = Jaws_Gadget::getInstance('Comments')->model->load('Comments');
         $howManyComment = $cModel->GetCommentsCount('Blog', $action, $reference, '',
-            Comments_Info::COMMENT_STATUS_APPROVED);
+            Comments_Info::COMMENTS_STATUS_APPROVED);
         $bModel = $this->gadget->model->loadAdmin('Comments');
         return $bModel->UpdatePostCommentsCount($reference, $howManyComment);
     }
