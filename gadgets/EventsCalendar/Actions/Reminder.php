@@ -29,17 +29,12 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
         $action = $this->gadget->action->load('Menubar');
         $tpl->SetVariable('menubar', $action->Menubar());
 
-        $time = $GLOBALS['app']->UTC2UserTime();
         $jdate = $GLOBALS['app']->loadDate();
-        $info = $jdate->GetDateInfo(time());
-        //_log_var_dump($info);
-        // FIXME: we don't have daysInMonth
-        $daysInMonth = 30;
 
         // Fetch events
         $model = $this->gadget->model->load('Reminder');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $events = $model->GetEvents($user, $time, null);
+        $events = $model->GetEvents($user, time());
         if (Jaws_Error::IsError($events)) {
             $events = array();
         }
@@ -48,6 +43,8 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
         foreach ($events as $event) {
             $tpl->SetBlock('reminder/event');
             $tpl->SetVariable('event', $event['subject']);
+            $datetime = $GLOBALS['app']->UserTime2UTC($event['start_time']);
+            $tpl->SetVariable('datetime', $jdate->Format($datetime, 'DN d MN Y - h:i a'));
             $url = $this->gadget->urlMap('ViewEvent', array('id' => $event['id']));
             $tpl->SetVariable('event_url', $url);
             if ($event['owner'] != $user) {

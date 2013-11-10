@@ -76,6 +76,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
                 $stop = $GLOBALS['app']->UTC2UserTime($event['stop_time']);
                 $event['stop_date'] = $jdate->Format($stop, 'Y-m-d');
                 $event['stop_time'] = $jdate->Format($stop, 'H:i');
+                $event['reminder'] /= 60;
             } else {
                 $event = array();
                 $event['id'] = 0;

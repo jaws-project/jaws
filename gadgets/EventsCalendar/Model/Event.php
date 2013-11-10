@@ -76,6 +76,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         unset($event['stop_date']);
 
         $event['createtime'] = $event['updatetime'] = time();
+        $event['reminder'] *= 60;
 
         $table = Jaws_ORM::getInstance()->table('ec_events');
         $table->beginTransaction();
@@ -131,6 +132,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         unset($event['stop_date']);
 
         $event['updatetime'] = time();
+        $event['reminder'] *= 60;
 
         // update event
         $table = Jaws_ORM::getInstance()->table('ec_events');

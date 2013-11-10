@@ -17,36 +17,24 @@ class EventsCalendar_Model_Reminder extends Jaws_Gadget_Model
      * @param   int     $user   User ID
      * @return  array   Query result
      */
-    function GetEvents($user = null, $current_time, $repeat)
+    function GetEvents($user = null, $current_time)
     {
-        //_log_var_dump($start . ' - ' . $stop);
-        $table = Jaws_ORM::getInstance()->table('ec_events as event');
-        $table->select('event.id', 'subject', 'owner', 'nickname',
-            'start_date', 'start_time', 'stop_time');
-        $table->join('ec_users', 'event.id', 'event');
+        $table = Jaws_ORM::getInstance()->table('ec_events as events');
+        $table->select('events.id', 'subject', 'type', 'priority',
+            'recs.start_time', 'owner', 'nickname');
+        $table->join('ec_recurrences as recs', 'events.id', 'recs.event');
+        $table->join('ec_users', 'events.id', 'ec_users.event');
         $table->join('users', 'owner', 'users.id');
-        // $table->where($table->expr('stop_date' + 'stop_time'), $current_time, '>')->and();
-        // $table->openWhere($table->expr('start_date' + 'start_time'), $current_time, '>=')->and();
-        // $table->closeWhere($table->expr('start_date' + 'start_time'), $current_time, '>=')->and();
+        $table->where('reminder', 0, '<>')->and();
+        $table->where('recs.stop_time', $current_time, '>')->and();
+        $table->where($table->expr('recs.start_time - reminder'), $current_time, '<=');
 
-        // if ($user !== null){
-            // $table->where('ec_users.user', $user)->and();
-        // }
+        if ($user !== null){
+            $table->and()->where('ec_users.user', $user);
+        }
 
-        // if (isset($repeat['day'])){
-            // $table->openWhere('day', 0)->or();
-            // $table->closeWhere('day', $repeat['day'])->and();
-        // }
-
-        // if (isset($repeat['wday'])){
-            // $table->openWhere('wday', 0)->or();
-            // $table->closeWhere('wday', $repeat['wday'])->and();
-        // }
-
-        // if (isset($repeat['month'])){
-            // $table->openWhere('month', 0)->or();
-            // $table->closeWhere('month', $repeat['month'])->and();
-        // }
+        $table->orderBy('recs.start_time', 'priority');
+        //_log_var_dump($table->get());
 
         return $table->fetchAll();
     }
