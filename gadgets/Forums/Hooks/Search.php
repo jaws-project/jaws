@@ -58,7 +58,7 @@ class Forums_Hooks_Search extends Jaws_Gadget_Hook
             return array();
         }
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $posts = array();
         foreach ($result as $r) {
             $post = array();

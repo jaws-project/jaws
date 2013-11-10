@@ -59,7 +59,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             return false;
         }
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $tpl = $this->gadget->template->load('Topics.html');
         $tpl->SetBlock('topics');
 
@@ -258,7 +258,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
                 'user_url',
                 $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['username']))
             );
-            $objDate = $GLOBALS['app']->loadDate();
+            $objDate = Jaws_Date::getInstance();
             $tpl->SetVariable('insert_time', $objDate->Format($topic['first_post_time'], $date_format));
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$topic['first_post_time']));
             $tpl->ParseBlock('topic/post_meta');
@@ -656,7 +656,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
                 'user_url',
                 $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $topic['username']))
             );
-            $objDate = $GLOBALS['app']->loadDate();
+            $objDate = Jaws_Date::getInstance();
             $tpl->SetVariable('insert_time', $objDate->Format($topic['first_post_time'], $date_format));
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$topic['first_post_time']));
 

@@ -24,7 +24,7 @@ class Forums_Actions_Forums extends Forums_Actions_Default
             return false;
         }
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $tpl = $this->gadget->template->load('Forums.html');
         $tpl->SetBlock('forums');
 

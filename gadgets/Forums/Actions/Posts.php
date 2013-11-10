@@ -62,7 +62,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         $edit_max_limit_time = (int)$this->gadget->registry->fetch('edit_max_limit_time');
         $edit_min_limit_time = (int)$this->gadget->registry->fetch('edit_min_limit_time');
 
-        $objDate = $GLOBALS['app']->loadDate();
+        $objDate = Jaws_Date::getInstance();
         $usrModel = new Jaws_User;
         $startPostNumber = $limit * ($page - 1);
         $forumManage = $this->gadget->GetPermission('ForumManage', $topic['fid']);
@@ -459,7 +459,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
                 'user_url',
                 $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $post['username']))
             );
-            $objDate = $GLOBALS['app']->loadDate();
+            $objDate = Jaws_Date::getInstance();
             $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
             $tpl->ParseBlock('post/post_meta');
@@ -805,7 +805,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
                 'user_url',
                 $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $post['username']))
             );
-            $objDate = $GLOBALS['app']->loadDate();
+            $objDate = Jaws_Date::getInstance();
             $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
             

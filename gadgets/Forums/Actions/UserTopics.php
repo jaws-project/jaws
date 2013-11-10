@@ -44,7 +44,7 @@ class Forums_Actions_UserTopics extends Forums_Actions_Default
             $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
 
             $max_size = 128;
-            $objDate = $GLOBALS['app']->loadDate();
+            $objDate = Jaws_Date::getInstance();
             $tpl->SetBlock('topics');
 
             $userURL = $GLOBALS['app']->Map->GetURLFor('Users', 'Profile', array('user' => $user['username']));

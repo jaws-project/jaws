@@ -71,7 +71,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
             $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
 
             $max_size = 128;
-            $objDate = $GLOBALS['app']->loadDate();
+            $objDate = Jaws_Date::getInstance();
             $tpl->SetBlock('recenttopics');
             // title
             $tpl->SetVariable('action_title', _t('FORUMS_LAYOUT_RECENT_POSTS'));
