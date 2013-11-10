@@ -245,7 +245,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
         )->orderBy('id', 'priority')->fetchAll();
 
         if (!Jaws_Error::IsError($result)) {
-            $date = $GLOBALS['app']->loadDate();
+            $date = Jaws_Date::getInstance();
             foreach($result as $row) {
                 if (empty($row['reference'])) {
                     continue;
