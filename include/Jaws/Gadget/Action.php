@@ -47,12 +47,10 @@ class Jaws_Gadget_Action
     {
         $this->gadget = $gadget;
         $this->LoadActions();
-        // Add ShowGadgetInfo action
-        $this->StandaloneAction('ShowGadgetInfo','');
 
         // Add Ajax actions.
-        $this->StandaloneAction('Ajax', '');
-        $this->StandaloneAdminAction('Ajax', '');
+        $this->AddAction('Ajax', 'index', 'standalone', '', '');
+        $this->AddAction('Ajax', 'admin', 'standalone', '', '');
     }
 
 
@@ -354,106 +352,6 @@ class Jaws_Gadget_Action
 
 
     /**
-     * Adds a normal action
-     *
-     * @access  protected
-     * @param   string  $action Action
-     * @param   string  $name Action's name
-     * @param   string  $description Action's description
-     */
-    public function NormalAction($action, $name = null, $description = null)
-    {
-        $this->AddAction($action, 'index', 'normal', $description);
-    }
-
-
-    /**
-     * Adds an admin action
-     *
-     * @access  protected
-     * @param   string  $action Action
-     * @param   string  $name Action's name
-     * @param   string  $description Action's description
-     */
-    public function AdminAction($action, $name = null, $description = null)
-    {
-        $this->AddAction($action, 'admin', 'normal', $description);
-    }
-
-
-    /**
-     * Verifies if the action is for admin users(for controlpanel)
-     *
-     * @access  public
-     * @param   string  $action to Verify
-     * @return  bool    True if action is for admin users, if not, returns false
-     */
-    public function IsAdmin($action)
-    {
-        if ($this->IsValidAction($action, 'admin')) {
-            return (isset($this->_ValidAction['admin'][$action]['normal']) &&
-                    $this->_ValidAction['admin'][$action]['normal']) ||
-                   (isset($this->_ValidAction['admin'][$action]['standalone']) &&
-                    $this->_ValidAction['admin'][$action]['standalone']);
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Verifies if action is normal
-     *
-     * @access  public
-     * @param   string  $action to Verify
-     * @return  bool    True if action is normal, if not, returns false
-     */
-    public function IsNormal($action)
-    {
-        if (empty($action)) {
-            $action = 'DefaultAction';
-        }
-
-        if ($this->IsValidAction($action, 'index')) {
-            return (isset($this->_ValidAction['index'][$action]['normal']) &&
-                    $this->_ValidAction['index'][$action]['normal']) ||
-                   (isset($this->_ValidAction['index'][$action]['standalone']) &&
-                    $this->_ValidAction['index'][$action]['standalone']);
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Adds a standalone action
-     *
-     * @access  protected
-     * @param   string  $action Action
-     * @param   string  $name Action's name
-     * @param   string  $description Action's description
-     */
-    public function StandaloneAction($action, $name = null, $description = null)
-    {
-        $this->AddAction($action, 'index', 'standalone', $name, $description);
-    }
-
-
-    /**
-     * Adds a standalone/admin action
-     *
-     * @access  protected
-     * @param   string  $action Action
-     * @param   string  $name Action's name
-     * @param   string  $description Action's description
-     */
-    public function StandaloneAdminAction($action, $name = null, $description = null)
-    {
-        $this->AddAction($action, 'admin', 'standalone', $name, $description);
-    }
-
-
-    /**
      * Verifies if action is a standalone
      *
      * @access  public
@@ -484,19 +382,6 @@ class Jaws_Gadget_Action
                     $this->_ValidAction['admin'][$action]['standalone']);
         }
         return false;
-    }
-
-
-    /**
-     * Uses the admin of the gadget(in controlpanel)
-     *
-     * @access  public
-     * @return  string  The text to show
-     */
-    public function Admin()
-    {
-        $str = _t('GLOBAL_JG_NOADMIN');
-        return $str;
     }
 
 
