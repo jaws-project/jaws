@@ -48,7 +48,7 @@ class VisitCounter_AdminAjax extends Jaws_Gadget_Action
      */
     function GetStartDate()
     {
-        $date  = $GLOBALS['app']->loadDate();
+        $date  = Jaws_Date::getInstance();
         $model = $this->gadget->model->load('Visitors');
         $start = $model->GetStartDate();
         return $date->Format($start);

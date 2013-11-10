@@ -111,7 +111,7 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_Action
 
         $tpl->SetBlock('visitcounter/item');
         $tpl->SetVariable('label', _t('VISITCOUNTER_STATS_FROM'));
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $tpl->SetVariable('value', $date->Format($startDate, 'Y-m-d'));
         $tpl->SetVariable('item_id', 'stats_from');
         $tpl->ParseBlock('visitcounter/item');
@@ -235,7 +235,7 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_Action
         }
 
         $newData = array();
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         foreach($visits as $visit) {
             $visitData = array();
             $visitData['ip']     = $visit['ip'];

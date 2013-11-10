@@ -38,7 +38,7 @@ class VisitCounter_Actions_VisitCounter extends Jaws_Gadget_Action
         $yesterday_count = $model->GetYesterdayVisitors();
         $total_count = $model->GetTotalVisitors();
 
-        $date = $GLOBALS['app']->loadDate();
+        $date = Jaws_Date::getInstance();
         $startdate = $date->Format($model->GetStartDate());
 
         if (in_array('online', $visit_counters)) {
