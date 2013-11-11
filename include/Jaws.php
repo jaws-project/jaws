@@ -594,11 +594,10 @@ class Jaws
      *
      * @access  public
      * @param   string  $gadget Gadget's name
-     * @param   string  $type   Action's type(NormalAction, AdminAction, ... or empty for all type)
      * @param   string  $script Action belongs to index or admin
      * @return  array   Gadget actions
      */
-    function GetGadgetActions($gadget, $type = '', $script = JAWS_SCRIPT)
+    function GetGadgetActions($gadget, $script = '')
     {
         // filter non validate character
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
@@ -624,7 +623,7 @@ class Jaws
             $file = JAWS_PATH . 'gadgets/' . $gadget . '/Actions.php';
             if (file_exists($file)) {
                 include_once($file);
-                array_walk($actions, $func_merge, $gadget);
+                //array_walk($actions, $func_merge, $gadget);
                 $this->_Gadgets[$gadget]['actions']['index'] = $actions;
             } else {
                 $this->_Gadgets[$gadget]['actions']['index'] = array();
@@ -633,21 +632,16 @@ class Jaws
             $file = JAWS_PATH . 'gadgets/' . $gadget . '/AdminActions.php';
             if (file_exists($file)) {
                 include_once($file);
-                array_walk($actions, $func_merge, $gadget);
+                //array_walk($actions, $func_merge, $gadget);
                 $this->_Gadgets[$gadget]['actions']['admin'] = $actions;
             } else {
                 $this->_Gadgets[$gadget]['actions']['admin'] = array();
             }
         }
 
-        if (empty($type)) {
-            return $this->_Gadgets[$gadget]['actions'];
-        } else {
-            return array_filter(
-                $this->_Gadgets[$gadget]['actions'][$script],
-                create_function('$item', 'return $item[\''.$type.'\'];')
-            );
-        }
+        return empty($script)?
+            $this->_Gadgets[$gadget]['actions'] :
+            $this->_Gadgets[$gadget]['actions'][$script];
     }
 
     /**
