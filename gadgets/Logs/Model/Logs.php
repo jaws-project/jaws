@@ -16,12 +16,11 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
      * @access  public
      * @param   string  $gadget     Gadget name
      * @param   string  $action     Action name
-     * @param   string  $title      Event title
      * @param   int     $priority   Priority of log
      * @param   array   $params     Action parameters
      * @return  mixed   Log identity or Jaws_Error on failure
      */
-    function InsertLog($gadget, $action, $title = '', $priority = 0, $params = null)
+    function InsertLog($gadget, $action, $priority = 0, $params = null)
     {
         // ip address
         $ip = 0;
@@ -36,7 +35,6 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
         $logsTable->insert(
             array(
                 'user'     => (int)$GLOBALS['app']->Session->GetAttribute('user'),
-                'title'    => empty($title)? ($gadget.'_'.$action) : $title,
                 'gadget'   => $gadget,
                 'action'   => $action,
                 'priority' => $priority,

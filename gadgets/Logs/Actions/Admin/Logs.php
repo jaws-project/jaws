@@ -128,11 +128,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $grid->SetID('logs_datagrid');
         $grid->TotalRows($total);
         $grid->useMultipleSelection();
-        $grid->pageBy(12);
-
-        $column0 = Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'), null, false);
-        $column0->SetStyle('width:100px; white-space:nowrap;');
-        $grid->AddColumn($column0);
+        $grid->pageBy(15);
 
         $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_GADGETS'), null, false);
         $column1->SetStyle('width:100px; white-space:nowrap;');
@@ -150,9 +146,9 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $column4->SetStyle('width:160px; white-space:nowrap;');
         $grid->AddColumn($column4);
 
-        $column6 = Piwi::CreateWidget('Column', _t('GLOBAL_DATE'), null, false);
-        $column6->SetStyle('width:135px; white-space:nowrap;');
-        $grid->AddColumn($column6);
+        $column5 = Piwi::CreateWidget('Column', _t('GLOBAL_DATE'), null, false);
+        $column5->SetStyle('width:135px; white-space:nowrap;');
+        $grid->AddColumn($column5);
 
         //Tools
         $gridForm =& Piwi::CreateWidget('Form');
@@ -192,7 +188,6 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $tpl = $this->gadget->template->loadAdmin('Logs.html');
         $tpl->SetBlock('LogUI');
 
-        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('lbl_gadget', _t('GLOBAL_GADGETS'));
         $tpl->SetVariable('lbl_action', _t('LOGS_ACTION'));
         $tpl->SetVariable('lbl_backend', _t('LOGS_LOG_SCRIPT'));
@@ -221,7 +216,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $filters = $post['filters'];
 
         $model = $this->gadget->model->loadAdmin('Logs');
-        $logs = $model->GetLogs($filters, 12, $post['offset']);
+        $logs = $model->GetLogs($filters, 15, $post['offset']);
         if (Jaws_Error::IsError($logs)) {
             return array();
         }
@@ -232,13 +227,9 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             $logData = array();
             $logData['__KEY__'] = $log['id'];
 
-            // Title
-            $link =& Piwi::CreateWidget('Link', $log['title'],
-                "javascript:viewLog(this, '".$log['id']."');");
-            $logData['title'] = $link->get();
-
             // Gadget
-            $logData['gadget'] = $log['gadget'];
+            $link =& Piwi::CreateWidget('Link', $log['gadget'], "javascript:viewLog(this, '".$log['id']."');");
+            $logData['gadget'] = $link->get();
             // Action
             $logData['action'] = $log['action'];
             // User - Username

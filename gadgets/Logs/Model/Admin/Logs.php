@@ -23,7 +23,7 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->select(
-            'logs.id:integer', 'gadget', 'action', 'title',
+            'logs.id:integer', 'gadget', 'action',
             'users.nickname', 'users.username', 'users.id as user_id:integer',
             'apptype', 'backend:boolean', 'logs.status', 'logs.insert_time'
         );
@@ -60,7 +60,7 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
                 $logsTable->and()->where('priority', $filters['priority']);
             }
             if (isset($filters['term']) && !empty($filters['term'])) {
-                $logsTable->and()->where('title', '%' . $filters['term'] . '%', 'like');
+                //nothing for doing
             }
         }
         return $logsTable->fetchAll();
@@ -107,7 +107,7 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
                 $logsTable->and()->where('priority', $filters['priority']);
             }
             if (isset($filters['term']) && !empty($filters['term'])) {
-                $logsTable->and()->where('title', '%' . $filters['term'] . '%', 'like');
+                //nothing for doing
             }
         }
 
@@ -125,7 +125,7 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->select(
-            'logs.id:integer', 'logs.title', 'gadget', 'action', 'priority:integer',
+            'logs.id:integer', 'gadget', 'action', 'priority:integer',
             'users.nickname', 'users.username', 'users.id as user_id:integer',
             'apptype', 'backend:boolean', 'ip', 'agent', 'logs.status:integer',
             'insert_time'

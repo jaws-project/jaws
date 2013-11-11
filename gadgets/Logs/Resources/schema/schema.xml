@@ -21,12 +21,6 @@
         </field>
 
         <field>
-            <name>title</name>
-            <type>text</type>
-            <length>64</length>
-        </field>
-
-        <field>
             <name>gadget</name>
             <type>text</type>
             <length>64</length>

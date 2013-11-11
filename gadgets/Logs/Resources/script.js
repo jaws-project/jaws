@@ -49,19 +49,21 @@ function getLogs(name, offset, reset) {
             'user'      : $('filter_user').value,
             'priority'  : $('filter_priority').value,
             'term'      : $('filter_term').value
-        }});
+        }
+    });
 
     if (reset) {
         $(name).setCurrentPage(0);
         var total = LogsAjax.callSync('GetLogsCount', {
-            'from_date': $('from_date').value,
-            'to_date': $('to_date').value,
-            'gadget': $('filter_gadget').value,
-            'user': $('filter_user').value,
-            'priority': $('filter_priority').value,
-            'term': $('filter_term').value
+            'filters': {
+                'from_date': $('from_date').value,
+                'to_date': $('to_date').value,
+                'gadget': $('filter_gadget').value,
+                'user': $('filter_user').value,
+                'priority': $('filter_priority').value,
+                'term': $('filter_term').value
+            }
         });
-
     }
     resetGrid(name, result, total);
 }
@@ -92,7 +94,6 @@ function viewLog(rowElement, id)
 {
     selectGridRow('contacts_datagrid', rowElement.parentNode.parentNode);
     var result = LogsAjax.callSync('GetLog', {'id': id});
-    $('log_title').innerHTML = result['title'];
     $('log_gadget').innerHTML = result['gadget'];
     $('log_action').innerHTML = result['action'];
     $('log_backend').innerHTML = result['backend'];
