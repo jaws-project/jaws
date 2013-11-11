@@ -190,4 +190,5 @@ class Layout_Actions_Admin_Element extends Jaws_Gadget_Action
         $tpl->ParseBlock('template');
         return $tpl->Get();
     }
+
 }
