@@ -14,9 +14,9 @@ class Jaws_Gadget_Installer
      * Default ACL value of frontend gadget access
      *
      * @var     bool
-     * @access  protected
+     * @access  public
      */
-    var $default_acl = true;
+    public $default_acl = true;
 
     /**
      * Gadget Registry keys
@@ -24,7 +24,7 @@ class Jaws_Gadget_Installer
      * @var     array
      * @access  private
      */
-    var $_RegKeys = array();
+    private $_RegKeys = array();
 
     /**
      * Gadget ACL keys
@@ -32,15 +32,15 @@ class Jaws_Gadget_Installer
      * @var     array
      * @access  private
      */
-    var $_ACLKeys = array();
+    private $_ACLKeys = array();
 
     /**
      * Jaws_Gadget object
      *
      * @var     object
-     * @access  protected
+     * @access  public
      */
-    var $gadget = null;
+    public $gadget = null;
 
     /**
      * constructor
@@ -49,7 +49,7 @@ class Jaws_Gadget_Installer
      * @param   object $gadget Jaws_Gadget object
      * @return  void
      */
-    function Jaws_Gadget_Installer($gadget)
+    public function __construct($gadget)
     {
         $this->gadget = $gadget;
     }
@@ -60,7 +60,7 @@ class Jaws_Gadget_Installer
      * @access  public
      * @return  pbject  Installer class object
      */
-    function &load()
+    public function &load()
     {
         return $this;
     }
@@ -74,26 +74,21 @@ class Jaws_Gadget_Installer
      * @param   string  $type   Model type
      * @return  mixed   Model class object on successful, Jaws_Error otherwise
      */
-    function &loadInstaller()
+    public function &loadInstaller()
     {
-        if (!isset($this->gadget->installer)) {
-            $installer_class_name = $this->gadget->name. '_Installer';
-            $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Installer.php';
-
-            if (!file_exists($file)) {
-                return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
-            }
-
-            include_once($file);
-            if (!Jaws::classExists($installer_class_name)) {
-                return Jaws_Error::raiseError("Class [$installer_class_name] not exists!", __FUNCTION__);
-            }
-
-            $this->gadget->installer = new $installer_class_name($this->gadget);
-            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget installer: [$installer_class_name]");
+        $classname = $this->gadget->name. '_Installer';
+        $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. '/Installer.php';
+        if (!file_exists($file)) {
+            return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
         }
 
-        return $this->gadget->installer;
+        include_once($file);
+        if (!Jaws::classExists($classname)) {
+            return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
+        }
+
+        $objInstaller = new $classname($this->gadget);
+        return $objInstaller;
     }
 
     /**
@@ -102,7 +97,7 @@ class Jaws_Gadget_Installer
      * @access  public
      * @return  array   ACLs of the gadget
      */
-    function GetACLs()
+    public function GetACLs()
     {
         $result = array();
         foreach ($this->_ACLKeys as $acl) {
@@ -126,7 +121,7 @@ class Jaws_Gadget_Installer
      * @access  public
      * @return  mixed   Array of gadgets otherwise Jaws_Error
      */
-    function dependOnGadgets()
+    public function dependOnGadgets()
     {
         $params = array();
         $params['name']  = 'requires';
@@ -151,7 +146,7 @@ class Jaws_Gadget_Installer
      * @access  public
      * @return  mixed   True if success or Jaws_Error on error
      */
-    function InstallGadget($insert = '', $variables = array())
+    public function InstallGadget($insert = '', $variables = array())
     {
         if (Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
             return true;
@@ -222,7 +217,7 @@ class Jaws_Gadget_Installer
      * @access  public
      * @return  mixed    True if success or Jaws_Error on error
      */
-    function UninstallGadget()
+    public function UninstallGadget()
     {
         if (!Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
             return Jaws_Error::raiseError(
@@ -295,7 +290,7 @@ class Jaws_Gadget_Installer
      * @access  public
      * @return  mixed    True if success or Jaws_Error on error
      */
-    function UpgradeGadget()
+    public function UpgradeGadget()
     {
         $oldVersion = $this->gadget->registry->fetch('version', $this->gadget->name);
         $newVersion = $this->gadget->version;
@@ -351,7 +346,7 @@ class Jaws_Gadget_Installer
      * @access  public
      * @return  mixed    True if success or Jaws_Error on error
      */
-    function EnableGadget()
+    public function EnableGadget()
     {
         if (!Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
             return Jaws_Error::raiseError(
@@ -390,7 +385,7 @@ class Jaws_Gadget_Installer
      * @access  public
      * @return  mixed    True if success or Jaws_Error on error
      */
-    function DisableGadget()
+    public function DisableGadget()
     {
         if (!Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
             return Jaws_Error::raiseError(
@@ -446,7 +441,7 @@ class Jaws_Gadget_Installer
      * @access  public
      * @return  bool    True or false, depends of the jaws version
      */
-    function CanRunInCoreVersion()
+    public function CanRunInCoreVersion()
     {
         if (self::IsGadgetInstalled($this->gadget->name)) {
             $coreVersion     = $GLOBALS['app']->Registry->fetch('version');
@@ -470,7 +465,8 @@ class Jaws_Gadget_Installer
      * @access  public
      * @return  bool    True on success and Jaws_Error on failure
      */
-    function InstallSchema($main_schema, $variables = array(), $base_schema = false, $data = false, $create = true, $debug = false)
+    public function InstallSchema($main_schema, $variables = array(),
+        $base_schema = false, $data = false, $create = true, $debug = false)
     {
         $main_file = $main_schema;
         if (!preg_match('@\\\\|/@', $main_schema)) {
@@ -521,7 +517,7 @@ class Jaws_Gadget_Installer
      * @access  public
      * @return  bool    True on successfull install and Jaws_Error on failure
      */
-    function Install()
+    public function Install()
     {
         return true;
     }
@@ -533,7 +529,7 @@ class Jaws_Gadget_Installer
      * @access  public
      * @return  mixed    True on a successful uninstall and Jaws_Error otherwise
      */
-    function Uninstall()
+    public function Uninstall()
     {
         return true;
     }
@@ -545,7 +541,7 @@ class Jaws_Gadget_Installer
      * @access  public
      * @return  bool    True on success and Jaws_Error on failure
      */
-    function Upgrade()
+    public function Upgrade()
     {
         return true;
     }
