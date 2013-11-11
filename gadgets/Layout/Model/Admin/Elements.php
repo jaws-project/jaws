@@ -180,9 +180,17 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      */
     function GetGadgetLayoutActions($g, $associated_by_action = false)
     {
-        $actions = $GLOBALS['app']->GetGadgetActions($g, 'layout', 'index');
+        $actions = $GLOBALS['app']->GetGadgetActions($g, 'index');
         foreach ($actions as $key => $action) {
-            if ($action['parametric']) {
+            if (!isset($action['layout']) || empty($action['layout'])) {
+                unset($actions[$key]);
+                continue;
+            }
+
+            $actions[$key]['action'] = $key;
+            $actions[$key]['name'] = _t(strtoupper($g.'_ACTIONS_'.$key));
+            $actions[$key]['desc'] = _t(strtoupper($g.'_ACTIONS_'.$key.'_DESC'));
+            if (isset($action['parametric']) && $action['parametric']) {
                 // set initial params
                 $actions[$key]['parametric'] = false;
                 $lParamsMethod = $key. 'LayoutParams';
@@ -215,4 +223,5 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
         );
         return $lyTable->where('id', $id)->and()->where('user', $user)->fetchRow();
     }
+
 }
