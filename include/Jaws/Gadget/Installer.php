@@ -22,17 +22,17 @@ class Jaws_Gadget_Installer
      * Gadget Registry keys
      *
      * @var     array
-     * @access  private
+     * @access  public
      */
-    private $_RegKeys = array();
+    public $_RegKeys = array();
 
     /**
      * Gadget ACL keys
      *
      * @var     array
-     * @access  private
+     * @access  public
      */
-    private $_ACLKeys = array();
+    public $_ACLKeys = array();
 
     /**
      * Jaws_Gadget object
