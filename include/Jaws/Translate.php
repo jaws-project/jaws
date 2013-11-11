@@ -144,21 +144,8 @@ class Jaws_Translate
     {
         $language = empty($lang) ? $this->_defaultLanguage : $lang;
 
-        // Make sure the arrays are setup
-        if (!isset($GLOBALS['i18n'])) {
-            $GLOBALS['i18n'] = array();
-        }
-
-        if (!isset($GLOBALS['i18n'][$language])) {
-            $GLOBALS['i18n'][$language] = array();
-        }
-
-        if (!isset($GLOBALS['i18n']['en'])) {
-            $GLOBALS['i18n']['en'] = array();
-        }
-
         // Only attempt to load a translation if it isn't already loaded.
-        if (in_array(array($module, $type), $GLOBALS['i18n'][$language])) {
+        if (isset($this->translates[$language][$type][strtoupper($module)])) {
             return;
         }
 
@@ -208,7 +195,6 @@ class Jaws_Translate
                 $data_i18n = JAWS_DATA . "languages/$language/$module.ini";
         }
 
-        $GLOBALS['i18n'][$language][] = array($module, $type);
         if (file_exists($orig_i18n)) {
             $this->translates[$language][$type][strtoupper($module)] = parse_ini_file($orig_i18n, false, INI_SCANNER_RAW);
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded translation for $module, language $language");
