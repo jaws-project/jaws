@@ -314,6 +314,7 @@ class Installer_Database extends JawsInstallerStage
         $GLOBALS['app'] = jaws();
         $GLOBALS['app']->Registry->Init();
         $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['install']['language']), false);
+        $GLOBALS['app']->Translate->LoadTranslation('Install', JAWS_COMPONENT_INSTALL);
 
         // registry keys
         $result = $GLOBALS['app']->Registry->insertAll(
