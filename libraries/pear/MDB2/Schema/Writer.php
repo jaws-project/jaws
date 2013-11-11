@@ -475,7 +475,7 @@ class MDB2_Schema_Writer
                     foreach ($sequences[$table_name] as $sequence) {
                         $result = $this->dumpSequence($database_definition['sequences'][$sequence],
                                                       $sequence, $eol, $dump);
-                        if (PEAR::isError($result)) {
+                        if (MDB2::isError($result)) {
                             return $result;
                         }
 
@@ -493,7 +493,7 @@ class MDB2_Schema_Writer
             foreach ($sequences[''] as $sequence) {
                 $result = $this->dumpSequence($database_definition['sequences'][$sequence],
                                               $sequence, $eol, $dump);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
 

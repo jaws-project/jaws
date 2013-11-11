@@ -134,7 +134,7 @@ class MDB2_Schema_Parser2 extends XML_Unserializer
     {
         $result = $this->unserialize($this->filename, true);
 
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         } else {
             $this->database_loaded = $this->getUnserializedData();
@@ -199,7 +199,7 @@ class MDB2_Schema_Parser2 extends XML_Unserializer
         }
 
         $result = $this->val->validateDatabase($this->database_definition);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $this->raiseError($result->getUserinfo());
         }
 
@@ -272,7 +272,7 @@ class MDB2_Schema_Parser2 extends XML_Unserializer
         }
 
         $result = $this->val->validateTable($this->database_definition['tables'], $this->table, $this->table_name);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $this->raiseError($result->getUserinfo());
         } else {
             $this->database_definition['tables'][$this->table_name] = $this->table;
@@ -321,7 +321,7 @@ class MDB2_Schema_Parser2 extends XML_Unserializer
         }
 
         $result = $this->val->validateField($this->table['fields'], $this->field, $this->field_name);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $this->raiseError($result->getUserinfo());
         } else {
             $this->table['fields'][$this->field_name] = $this->field;
@@ -373,7 +373,7 @@ class MDB2_Schema_Parser2 extends XML_Unserializer
                 }
 
                 $result = $this->val->validateIndexField($this->index['fields'], $this->field, $this->field_name);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $this->raiseError($result->getUserinfo());
                 }
 
@@ -382,7 +382,7 @@ class MDB2_Schema_Parser2 extends XML_Unserializer
         }
 
         $result = $this->val->validateIndex($this->table['indexes'], $this->index, $this->index_name);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $this->raiseError($result->getUserinfo());
         } else {
             $this->table['indexes'][$this->index_name] = $this->index;
@@ -431,7 +431,7 @@ class MDB2_Schema_Parser2 extends XML_Unserializer
         if (!empty($constraint['field']) && is_array($constraint['field'])) {
             foreach ($constraint['field'] as $field) {
                 $result = $this->val->validateConstraintField($this->constraint['fields'], $field);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $this->raiseError($result->getUserinfo());
                 }
 
@@ -451,7 +451,7 @@ class MDB2_Schema_Parser2 extends XML_Unserializer
             if (!empty($constraint['references']['field']) && is_array($constraint['references']['field'])) {
                 foreach ($constraint['references']['field'] as $field) {
                     $result = $this->val->validateConstraintReferencedField($this->constraint['references']['fields'], $field);
-                    if (PEAR::isError($result)) {
+                    if (MDB2::isError($result)) {
                         return $this->raiseError($result->getUserinfo());
                     }
 
@@ -461,7 +461,7 @@ class MDB2_Schema_Parser2 extends XML_Unserializer
         }
 
         $result = $this->val->validateConstraint($this->table['constraints'], $this->constraint, $this->constraint_name);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $this->raiseError($result->getUserinfo());
         } else {
             $this->table['constraints'][$this->constraint_name] = $this->constraint;
@@ -602,7 +602,7 @@ class MDB2_Schema_Parser2 extends XML_Unserializer
         }
 
         $result = $this->val->validateSequence($this->database_definition['sequences'], $this->sequence, $this->sequence_name);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $this->raiseError($result->getUserinfo());
         } else {
             $this->database_definition['sequences'][$this->sequence_name] = $this->sequence;

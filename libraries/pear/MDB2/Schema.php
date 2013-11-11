@@ -239,7 +239,7 @@ class MDB2_Schema extends PEAR
         $obj = new MDB2_Schema();
 
         $result = $obj->connect($db, $options);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         return $obj;
@@ -270,7 +270,7 @@ class MDB2_Schema extends PEAR
             foreach ($options as $option => $value) {
                 if (array_key_exists($option, $this->options)) {
                     $result = $this->setOption($option, $value);
-                    if (PEAR::isError($result)) {
+                    if (MDB2::isError($result)) {
                         return $result;
                     }
                 } else {
@@ -283,7 +283,7 @@ class MDB2_Schema extends PEAR
             $db =& MDB2::factory($db, $db_options);
         }
 
-        if (PEAR::isError($db)) {
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -385,7 +385,7 @@ class MDB2_Schema extends PEAR
         $class_name = $this->options['parser'];
 
         $result = MDB2::loadClass($class_name, $this->db->getOption('debug'));
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -400,15 +400,15 @@ class MDB2_Schema extends PEAR
         );
 
         $result = $parser->setInputString(file_get_contents($input_file));
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
         $result = $parser->parse();
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
-        if (PEAR::isError($parser->error)) {
+        if (MDB2::isError($parser->error)) {
             return $parser->error;
         }
 
@@ -437,7 +437,7 @@ class MDB2_Schema extends PEAR
         $class_name = $this->options['validate'];
 
         $result = MDB2::loadClass($class_name, $this->db->getOption('debug'));
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -465,13 +465,13 @@ class MDB2_Schema extends PEAR
         );
 
         $tables = $this->db->manager->listTables();
-        if (PEAR::isError($tables)) {
+        if (MDB2::isError($tables)) {
             return $tables;
         }
 
         foreach ($tables as $table_name) {
             $fields = $this->db->manager->listTableFields($table_name);
-            if (PEAR::isError($fields)) {
+            if (MDB2::isError($fields)) {
                 return $fields;
             }
 
@@ -488,7 +488,7 @@ class MDB2_Schema extends PEAR
             $table_definition =& $database_definition['tables'][$table_name];
             foreach ($fields as $field_name) {
                 $definition = $this->db->reverse->getTableFieldDefinition($table_name, $field_name);
-                if (PEAR::isError($definition)) {
+                if (MDB2::isError($definition)) {
                     return $definition;
                 }
 
@@ -519,7 +519,7 @@ class MDB2_Schema extends PEAR
                  * fields which we can guarantee that won't happen when reverse engineering
                  */
                 $result = $val->validateField(array(), $table_definition['fields'][$field_name], $field_name);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
             }
@@ -527,7 +527,7 @@ class MDB2_Schema extends PEAR
             $keys = array();
 
             $indexes = $this->db->manager->listTableIndexes($table_name);
-            if (PEAR::isError($indexes)) {
+            if (MDB2::isError($indexes)) {
                 return $indexes;
             }
 
@@ -536,8 +536,8 @@ class MDB2_Schema extends PEAR
                     $this->db->expectError(MDB2_ERROR_NOT_FOUND);
                     $definition = $this->db->reverse->getTableIndexDefinition($table_name, $index_name);
                     $this->db->popExpect();
-                    if (PEAR::isError($definition)) {
-                        if (PEAR::isError($definition, MDB2_ERROR_NOT_FOUND)) {
+                    if (MDB2::isError($definition)) {
+                        if (MDB2::isError($definition, MDB2_ERROR_NOT_FOUND)) {
                             continue;
                         }
                         return $definition;
@@ -548,7 +548,7 @@ class MDB2_Schema extends PEAR
             }
 
             $constraints = $this->db->manager->listTableConstraints($table_name);
-            if (PEAR::isError($constraints)) {
+            if (MDB2::isError($constraints)) {
                 return $constraints;
             }
 
@@ -557,8 +557,8 @@ class MDB2_Schema extends PEAR
                     $this->db->expectError(MDB2_ERROR_NOT_FOUND);
                     $definition = $this->db->reverse->getTableConstraintDefinition($table_name, $constraint_name);
                     $this->db->popExpect();
-                    if (PEAR::isError($definition)) {
-                        if (PEAR::isError($definition, MDB2_ERROR_NOT_FOUND)) {
+                    if (MDB2::isError($definition)) {
+                        if (MDB2::isError($definition, MDB2_ERROR_NOT_FOUND)) {
                             continue;
                         }
                         return $definition;
@@ -577,7 +577,7 @@ class MDB2_Schema extends PEAR
                      * foreign keys which we can guarantee that won't happen when reverse engineering
                      */
                     $result = $val->validateConstraint(array(), $definition, $key_name);
-                    if (PEAR::isError($result)) {
+                    if (MDB2::isError($result)) {
                         return $result;
                     }
 
@@ -587,7 +587,7 @@ class MDB2_Schema extends PEAR
                          * referencing fields which we can guarantee that won't happen when reverse engineering
                          */
                         $result = $val->validateConstraintField(array(), $field_name);
-                        if (PEAR::isError($result)) {
+                        if (MDB2::isError($result)) {
                             return $result;
                         }
 
@@ -600,7 +600,7 @@ class MDB2_Schema extends PEAR
                          * referenced fields which we can guarantee that won't happen when reverse engineering
                          */
                         $result = $val->validateConstraintReferencedField(array(), $field_name);
-                        if (PEAR::isError($result)) {
+                        if (MDB2::isError($result)) {
                             return $result;
                         }
 
@@ -614,7 +614,7 @@ class MDB2_Schema extends PEAR
                      * indices which we can guarantee that won't happen when reverse engineering
                      */
                     $result = $val->validateIndex(array(), $definition, $key_name);
-                    if (PEAR::isError($result)) {
+                    if (MDB2::isError($result)) {
                         return $result;
                     }
 
@@ -624,7 +624,7 @@ class MDB2_Schema extends PEAR
                          * index fields which we can guarantee that won't happen when reverse engineering
                          */
                         $result = $val->validateIndexField(array(), $field, $field_name);
-                        if (PEAR::isError($result)) {
+                        if (MDB2::isError($result)) {
                             return $result;
                         }
 
@@ -640,21 +640,21 @@ class MDB2_Schema extends PEAR
              * tables which we can guarantee that won't happen when reverse engineering
              */
             $result = $val->validateTable(array(), $table_definition, $table_name);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
 
         }
 
         $sequences = $this->db->manager->listSequences();
-        if (PEAR::isError($sequences)) {
+        if (MDB2::isError($sequences)) {
             return $sequences;
         }
 
         if (is_array($sequences)) {
             foreach ($sequences as $sequence_name) {
                 $definition = $this->db->reverse->getSequenceDefinition($sequence_name);
-                if (PEAR::isError($definition)) {
+                if (MDB2::isError($definition)) {
                     return $definition;
                 }
                 if (isset($database_definition['tables'][$sequence_name])
@@ -678,7 +678,7 @@ class MDB2_Schema extends PEAR
                  * sequences which we can guarantee that won't happen when reverse engineering
                  */
                 $result = $val->validateSequence(array(), $definition, $sequence_name);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
 
@@ -687,7 +687,7 @@ class MDB2_Schema extends PEAR
         }
 
         $result = $val->validateDatabase($database_definition);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -727,7 +727,7 @@ class MDB2_Schema extends PEAR
             }
 
             $this->db->popExpect();
-            if (PEAR::isError($current_indexes)) {
+            if (MDB2::isError($current_indexes)) {
                 if (!MDB2::isError($current_indexes, $errorcodes)) {
                     return $current_indexes;
                 }
@@ -745,7 +745,7 @@ class MDB2_Schema extends PEAR
                         $result = $this->db->manager->dropIndex($table_name, $index_name);
                     }
                     $this->db->popExpect();
-                    if (PEAR::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOT_FOUND)) {
+                    if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOT_FOUND)) {
                         return $result;
                     }
                 }
@@ -761,7 +761,7 @@ class MDB2_Schema extends PEAR
 
                 foreach ($index['fields'] as $field => $empty) {
                     $field_info = $this->db->reverse->getTableFieldDefinition($table_name, $field);
-                    if (PEAR::isError($field_info)) {
+                    if (MDB2::isError($field_info)) {
                         return $field_info;
                     }
                     if (!$field_info[0]['notnull']) {
@@ -782,7 +782,7 @@ class MDB2_Schema extends PEAR
                 } else {
                     $result = $this->db->manager->createIndex($table_name, $index_name, $index);
                 }
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
             }
@@ -818,7 +818,7 @@ class MDB2_Schema extends PEAR
             $this->db->expectError($errorcodes);
             $current_constraints = $this->db->manager->listTableConstraints($table_name);
             $this->db->popExpect();
-            if (PEAR::isError($current_constraints)) {
+            if (MDB2::isError($current_constraints)) {
                 if (!MDB2::isError($current_constraints, $errorcodes)) {
                     return $current_constraints;
                 }
@@ -829,7 +829,7 @@ class MDB2_Schema extends PEAR
                 } else {
                     $this->db->debug('Preparing to overwrite foreign key: '.$constraint_name, __FUNCTION__);
                     $result = $this->db->manager->dropConstraint($table_name, $constraint_name);
-                    if (PEAR::isError($result)) {
+                    if (MDB2::isError($result)) {
                         return $result;
                     }
                 }
@@ -838,7 +838,7 @@ class MDB2_Schema extends PEAR
             // Should the foreign key be created?
             if ($create_constraint) {
                 $result = $this->db->manager->createConstraint($table_name, $constraint_name, $constraint);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
             }
@@ -873,7 +873,7 @@ class MDB2_Schema extends PEAR
         $tables = $this->db->manager->listTables();
 
         $this->db->popExpect();
-        if (PEAR::isError($tables)) {
+        if (MDB2::isError($tables)) {
             if (!MDB2::isError($tables, $errorcodes)) {
                 return $tables;
             }
@@ -883,7 +883,7 @@ class MDB2_Schema extends PEAR
                 $this->db->debug('Table already exists: '.$table_name, __FUNCTION__);
             } else {
                 $result = $this->db->manager->dropTable($table_name);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
                 $this->db->debug('Overwritting table: '.$table_name, __FUNCTION__);
@@ -892,28 +892,28 @@ class MDB2_Schema extends PEAR
 
         if ($create) {
             $result = $this->db->manager->createTable($table_name, $table['fields'], $options);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
         }
 
         if (!empty($table['initialization']) && is_array($table['initialization'])) {
             $result = $this->initializeTable($table_name, $table);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
         }
 
         if (!empty($table['indexes']) && is_array($table['indexes'])) {
             $result = $this->createTableIndexes($table_name, $table['indexes'], $overwrite);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
         }
 
         if (!empty($table['constraints']) && is_array($table['constraints'])) {
             $result = $this->createTableConstraints($table_name, $table['constraints'], $overwrite);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
         }
@@ -989,16 +989,16 @@ class MDB2_Schema extends PEAR
                 break;
             }
             if ($query) {
-                if ($support_transactions && PEAR::isError($res = $this->db->beginNestedTransaction())) {
+                if ($support_transactions && MDB2::isError($res = $this->db->beginNestedTransaction())) {
                     return $res;
                 }
 
                 $result = $this->db->exec($query);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
 
-                if ($support_transactions && PEAR::isError($res = $this->db->completeNestedTransaction())) {
+                if ($support_transactions && MDB2::isError($res = $this->db->completeNestedTransaction())) {
                     return $res;
                 }
             }
@@ -1228,7 +1228,7 @@ class MDB2_Schema extends PEAR
         $this->db->expectError($errorcodes);
         $sequences = $this->db->manager->listSequences();
         $this->db->popExpect();
-        if (PEAR::isError($sequences)) {
+        if (MDB2::isError($sequences)) {
             if (!MDB2::isError($sequences, $errorcodes)) {
                 return $sequences;
             }
@@ -1239,7 +1239,7 @@ class MDB2_Schema extends PEAR
             }
 
             $result = $this->db->manager->dropSequence($sequence_name);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
             $this->db->debug('Overwritting sequence: '.$sequence_name, __FUNCTION__);
@@ -1255,18 +1255,18 @@ class MDB2_Schema extends PEAR
             $this->db->expectError($errorcodes);
             $tables = $this->db->manager->listTables();
             $this->db->popExpect();
-            if (PEAR::isError($tables) && !MDB2::isError($tables, $errorcodes)) {
+            if (MDB2::isError($tables) && !MDB2::isError($tables, $errorcodes)) {
                  return $tables;
             }
 
-            if (!PEAR::isError($tables) && is_array($tables) && in_array($table, $tables)) {
+            if (!MDB2::isError($tables) && is_array($tables) && in_array($table, $tables)) {
                 if ($this->db->supports('summary_functions')) {
                     $query = "SELECT MAX($field) FROM ".$this->db->quoteIdentifier($table, true);
                 } else {
                     $query = "SELECT $field FROM ".$this->db->quoteIdentifier($table, true)." ORDER BY $field DESC";
                 }
                 $start = $this->db->queryOne($query, 'integer');
-                if (PEAR::isError($start)) {
+                if (MDB2::isError($start)) {
                     return $start;
                 }
                 ++$start;
@@ -1279,7 +1279,7 @@ class MDB2_Schema extends PEAR
         }
 
         $result = $this->db->manager->createSequence($sequence_name, $start);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -1333,7 +1333,7 @@ class MDB2_Schema extends PEAR
             $this->db->setDatabase('');
 
             $dbExists = $this->db->databaseExists($db_name);
-            if (PEAR::isError($dbExists)) {
+            if (MDB2::isError($dbExists)) {
                 return $dbExists;
             }
 
@@ -1341,7 +1341,7 @@ class MDB2_Schema extends PEAR
                 $this->db->expectError(MDB2_ERROR_CANNOT_DROP);
                 $result = $this->db->manager->dropDatabase($db_name);
                 $this->db->popExpect();
-                if (PEAR::isError($result) && !MDB2::isError($result, MDB2_ERROR_CANNOT_DROP)) {
+                if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_CANNOT_DROP)) {
                     return $result;
                 }
                 $dbExists = false;
@@ -1361,7 +1361,7 @@ class MDB2_Schema extends PEAR
                     $this->db->expectError($errorcodes);
                     $result = $this->db->manager->alterDatabase($db_name, $dbOptions);
                     $this->db->popExpect();
-                    if (PEAR::isError($result) && !MDB2::isError($result, $errorcodes)) {
+                    if (MDB2::isError($result) && !MDB2::isError($result, $errorcodes)) {
                         return $result;
                     }
                 }
@@ -1370,7 +1370,7 @@ class MDB2_Schema extends PEAR
                 $this->db->expectError(MDB2_ERROR_UNSUPPORTED);
                 $result = $this->db->manager->createDatabase($db_name, $dbOptions);
                 $this->db->popExpect();
-                if (PEAR::isError($result) && !MDB2::isError($result, MDB2_ERROR_UNSUPPORTED)) {
+                if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_UNSUPPORTED)) {
                     return $result;
                 }
                 $this->db->debug('Creating database: ' . $db_name, __FUNCTION__);
@@ -1379,7 +1379,7 @@ class MDB2_Schema extends PEAR
 
         $this->db->setDatabase($db_name);
         if (($support_transactions = $this->db->supports('transactions'))
-            && PEAR::isError($result = $this->db->beginNestedTransaction())
+            && MDB2::isError($result = $this->db->beginNestedTransaction())
         ) {
             return $result;
         }
@@ -1390,20 +1390,20 @@ class MDB2_Schema extends PEAR
         ) {
             foreach ($database_definition['tables'] as $table_name => $table) {
                 $result = $this->createTable($table_name, $table, $overwrite, $options);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     break;
                 }
                 $created_objects++;
             }
         }
-        if (!PEAR::isError($result)
+        if (!MDB2::isError($result)
             && isset($database_definition['sequences'])
             && is_array($database_definition['sequences'])
         ) {
             foreach ($database_definition['sequences'] as $sequence_name => $sequence) {
                 $result = $this->createSequence($sequence_name, $sequence, false, $overwrite);
 
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     break;
                 }
                 $created_objects++;
@@ -1412,12 +1412,12 @@ class MDB2_Schema extends PEAR
 
         if ($support_transactions) {
             $res = $this->db->completeNestedTransaction();
-            if (PEAR::isError($res)) {
+            if (MDB2::isError($res)) {
                 $result = $this->raiseError(MDB2_SCHEMA_ERROR, null, null,
                     'Could not end transaction ('.
                     $res->getMessage().' ('.$res->getUserinfo().'))');
             }
-        } elseif (PEAR::isError($result) && $created_objects) {
+        } elseif (MDB2::isError($result) && $created_objects) {
             $result = $this->raiseError(MDB2_SCHEMA_ERROR, null, null,
                 'the database was only partially created ('.
                 $result->getMessage().' ('.$result->getUserinfo().'))');
@@ -1425,8 +1425,8 @@ class MDB2_Schema extends PEAR
 
         $this->db->setDatabase($previous_database_name);
 
-        if (PEAR::isError($result) && $create
-            && PEAR::isError($result2 = $this->db->manager->dropDatabase($db_name))
+        if (MDB2::isError($result) && $create
+            && MDB2::isError($result2 = $this->db->manager->dropDatabase($db_name))
         ) {
             if (!MDB2::isError($result2, MDB2_ERROR_UNSUPPORTED)) {
                 return $this->raiseError(MDB2_SCHEMA_ERROR, null, null,
@@ -1462,7 +1462,7 @@ class MDB2_Schema extends PEAR
                     $previous_tables = $previous_definition['tables'];
                 }
                 $change = $this->compareTableDefinitions($table_name, $table, $previous_tables, $defined_tables);
-                if (PEAR::isError($change)) {
+                if (MDB2::isError($change)) {
                     return $change;
                 }
                 if (!empty($change)) {
@@ -1492,7 +1492,7 @@ class MDB2_Schema extends PEAR
                                                             $sequence,
                                                             $previous_sequences,
                                                             $defined_sequences);
-                if (PEAR::isError($change)) {
+                if (MDB2::isError($change)) {
                     return $change;
                 }
                 if (!empty($change)) {
@@ -1557,7 +1557,7 @@ class MDB2_Schema extends PEAR
                     $defined_fields[$was_field_name] = true;
 
                     $change = $this->db->compareDefinition($field, $previous_definition[$was_field_name]);
-                    if (PEAR::isError($change)) {
+                    if (MDB2::isError($change)) {
                         return $change;
                     }
 
@@ -1738,7 +1738,7 @@ class MDB2_Schema extends PEAR
                                                                    $current_definition['fields'],
                                                                    $previous_fields);
 
-                    if (PEAR::isError($change)) {
+                    if (MDB2::isError($change)) {
                         return $change;
                     }
                     if (!empty($change)) {
@@ -1756,7 +1756,7 @@ class MDB2_Schema extends PEAR
                                                                     $current_definition['indexes'],
                                                                     $previous_indexes);
 
-                    if (PEAR::isError($change)) {
+                    if (MDB2::isError($change)) {
                         return $change;
                     }
                     if (!empty($change)) {
@@ -1892,7 +1892,7 @@ class MDB2_Schema extends PEAR
                 }
                 unset($table['indexes']);
                 $result = $this->db->manager->alterTable($table_name, $table, true);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
             }
@@ -1950,7 +1950,7 @@ class MDB2_Schema extends PEAR
                     $result = $this->db->manager->dropIndex($table_name, $index_name);
                 }
                 $this->db->popExpect();
-                if (PEAR::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOT_FOUND)) {
+                if (MDB2::isError($result) && !MDB2::isError($result, MDB2_ERROR_NOT_FOUND)) {
                     return $result;
                 }
                 $alterations++;
@@ -1965,13 +1965,13 @@ class MDB2_Schema extends PEAR
                  */
                 if (in_array($index_name, $this->db->manager->listTableIndexes($table_name))) {
                     $result = $this->db->manager->dropIndex($table_name, $index_name);
-                    if (!empty($result) && PEAR::isError($result)) {
+                    if (!empty($result) && MDB2::isError($result)) {
                         return $result;
                     }
                 }
                 if (in_array($index_name, $this->db->manager->listTableConstraints($table_name))) {
                     $result = $this->db->manager->dropConstraint($table_name, $index_name);
-                    if (!empty($result) && PEAR::isError($result)) {
+                    if (!empty($result) && MDB2::isError($result)) {
                         return $result;
                     }
                 }
@@ -1981,7 +1981,7 @@ class MDB2_Schema extends PEAR
                 } else {
                     $result = $this->db->manager->createIndex($table_name, $index_name, $index);
                 }
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
                 $alterations++;
@@ -1994,7 +1994,7 @@ class MDB2_Schema extends PEAR
                 } else {
                     $result = $this->db->manager->createIndex($table_name, $index_name, $index);
                 }
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
                 $alterations++;
@@ -2030,7 +2030,7 @@ class MDB2_Schema extends PEAR
         if (!empty($changes['add']) && is_array($changes['add'])) {
             foreach ($changes['add'] as $table_name => $table) {
                 $result = $this->createTable($table_name, $current_definition[$table_name]);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
                 $alterations++;
@@ -2043,7 +2043,7 @@ class MDB2_Schema extends PEAR
         ) {
             foreach ($changes['remove'] as $table_name => $table) {
                 $result = $this->db->manager->dropTable($table_name);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
                 $alterations++;
@@ -2059,14 +2059,14 @@ class MDB2_Schema extends PEAR
                 }
                 if (!empty($indexes['remove'])) {
                     $result = $this->alterDatabaseIndexes($table_name, array('remove' => $indexes['remove']));
-                    if (PEAR::isError($result)) {
+                    if (MDB2::isError($result)) {
                         return $result;
                     }
                     unset($indexes['remove']);
                     $alterations += $result;
                 }
                 $result = $this->db->manager->alterTable($table_name, $table, false);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
                 $alterations++;
@@ -2078,7 +2078,7 @@ class MDB2_Schema extends PEAR
 
                 if (!empty($indexes)) {
                     $result = $this->alterDatabaseIndexes($table_name, $indexes);
-                    if (PEAR::isError($result)) {
+                    if (MDB2::isError($result)) {
                         return $result;
                     }
                     $alterations += $result;
@@ -2114,7 +2114,7 @@ class MDB2_Schema extends PEAR
         if (!empty($changes['add']) && is_array($changes['add'])) {
             foreach ($changes['add'] as $sequence_name => $sequence) {
                 $result = $this->createSequence($sequence_name, $current_definition[$sequence_name]);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
                 $alterations++;
@@ -2124,7 +2124,7 @@ class MDB2_Schema extends PEAR
         if (!empty($changes['remove']) && is_array($changes['remove'])) {
             foreach ($changes['remove'] as $sequence_name => $sequence) {
                 $result = $this->db->manager->dropSequence($sequence_name);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
                 $alterations++;
@@ -2134,11 +2134,11 @@ class MDB2_Schema extends PEAR
         if (!empty($changes['change']) && is_array($changes['change'])) {
             foreach ($changes['change'] as $sequence_name => $sequence) {
                 $result = $this->db->manager->dropSequence($previous_definition[$sequence_name]['was']);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
                 $result = $this->createSequence($sequence_name, $sequence);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
                 $alterations++;
@@ -2171,7 +2171,7 @@ class MDB2_Schema extends PEAR
         }
 
         $result = $this->verifyAlterDatabase($changes);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -2180,7 +2180,7 @@ class MDB2_Schema extends PEAR
         }
 
         if (($support_transactions = $this->db->supports('transactions'))
-            && PEAR::isError($result = $this->db->beginNestedTransaction())
+            && MDB2::isError($result = $this->db->beginNestedTransaction())
         ) {
             return $result;
         }
@@ -2195,7 +2195,7 @@ class MDB2_Schema extends PEAR
             }
         }
 
-        if (!PEAR::isError($result) && !empty($changes['sequences'])) {
+        if (!MDB2::isError($result) && !empty($changes['sequences'])) {
             $current_sequences  = isset($current_definition['sequences']) ? $current_definition['sequences'] : array();
             $previous_sequences = isset($previous_definition['sequences']) ? $previous_definition['sequences'] : array();
 
@@ -2207,12 +2207,12 @@ class MDB2_Schema extends PEAR
 
         if ($support_transactions) {
             $res = $this->db->completeNestedTransaction();
-            if (PEAR::isError($res)) {
+            if (MDB2::isError($res)) {
                 $result = $this->raiseError(MDB2_SCHEMA_ERROR, null, null,
                     'Could not end transaction ('.
                     $res->getMessage().' ('.$res->getUserinfo().'))');
             }
-        } elseif (PEAR::isError($result) && $alterations) {
+        } elseif (MDB2::isError($result) && $alterations) {
             $result = $this->raiseError(MDB2_SCHEMA_ERROR, null, null,
                 'the requested database alterations were only partially implemented ('.
                 $result->getMessage().' ('.$result->getUserinfo().'))');
@@ -2422,7 +2422,7 @@ class MDB2_Schema extends PEAR
         $class_name = $this->options['writer'];
 
         $result = MDB2::loadClass($class_name, $this->db->getOption('debug'));
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -2444,7 +2444,7 @@ class MDB2_Schema extends PEAR
 
                 $data = $this->db->queryAll($query, $fields, MDB2_FETCHMODE_ASSOC);
 
-                if (PEAR::isError($data)) {
+                if (MDB2::isError($data)) {
                     return $data;
                 }
 
@@ -2493,13 +2493,13 @@ class MDB2_Schema extends PEAR
     {
         if ($structure) {
             $structure = $this->parseDatabaseDefinition($structure, false, $variables);
-            if (PEAR::isError($structure)) {
+            if (MDB2::isError($structure)) {
                 return $structure;
             }
         }
 
         $data = $this->parseDatabaseDefinition($data, false, $variables, false, $structure);
-        if (PEAR::isError($data)) {
+        if (MDB2::isError($data)) {
             return $data;
         }
 
@@ -2516,7 +2516,7 @@ class MDB2_Schema extends PEAR
                     continue;
                 }
                 $result = $this->initializeTable($table_name, $table);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
             }
@@ -2531,7 +2531,7 @@ class MDB2_Schema extends PEAR
                     continue;
                 }
                 $result = $this->createSequence($sequence_name, $sequence, true);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
             }
@@ -2539,7 +2539,7 @@ class MDB2_Schema extends PEAR
         if (!empty($data['sequences']) && is_array($data['sequences'])) {
             foreach ($data['sequences'] as $sequence_name => $sequence) {
                 $result = $this->createSequence($sequence_name, $sequence, true);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
             }
@@ -2589,7 +2589,7 @@ class MDB2_Schema extends PEAR
         $current_definition = $this->parseDatabaseDefinition($current_schema, false, $variables,
                                                              $this->options['fail_on_invalid_names']);
 
-        if (PEAR::isError($current_definition)) {
+        if (MDB2::isError($current_definition)) {
             return $current_definition;
         }
 
@@ -2597,14 +2597,14 @@ class MDB2_Schema extends PEAR
         if ($previous_schema) {
             $previous_definition = $this->parseDatabaseDefinition($previous_schema, true, $variables,
                                                                   $this->options['fail_on_invalid_names']);
-            if (PEAR::isError($previous_definition)) {
+            if (MDB2::isError($previous_definition)) {
                 return $previous_definition;
             }
         }
 
         if ($previous_definition) {
             $dbExists = $this->db->databaseExists($current_definition['name']);
-            if (PEAR::isError($dbExists)) {
+            if (MDB2::isError($dbExists)) {
                 return $dbExists;
             }
 
@@ -2614,7 +2614,7 @@ class MDB2_Schema extends PEAR
             }
 
             $changes = $this->compareDefinitions($current_definition, $previous_definition);
-            if (PEAR::isError($changes)) {
+            if (MDB2::isError($changes)) {
                 return $changes;
             }
 
@@ -2622,13 +2622,13 @@ class MDB2_Schema extends PEAR
                 $this->db->setOption('disable_query', $disable_query);
                 $result = $this->alterDatabase($current_definition, $previous_definition, $changes);
                 $this->db->setOption('disable_query', false);
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
                 $copy = true;
                 if ($this->db->options['debug']) {
                     $result = $this->dumpDatabaseChanges($changes);
-                    if (PEAR::isError($result)) {
+                    if (MDB2::isError($result)) {
                         return $result;
                     }
                 }
@@ -2637,7 +2637,7 @@ class MDB2_Schema extends PEAR
             $this->db->setOption('disable_query', $disable_query);
             $result = $this->createDatabase($current_definition);
             $this->db->setOption('disable_query', false);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
         }
@@ -2687,7 +2687,7 @@ class MDB2_Schema extends PEAR
             return $errorMessages;
         }
 
-        if (PEAR::isError($value)) {
+        if (MDB2::isError($value)) {
             $value = $value->getCode();
         }
 

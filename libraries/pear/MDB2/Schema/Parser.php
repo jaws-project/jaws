@@ -359,7 +359,7 @@ class MDB2_Schema_Parser extends XML_Parser
         case 'database-table-initialization-insert-select-field':
         case 'database-table-initialization-update-field':
             $result = $this->val->validateDataField($this->table['fields'], $this->init['data']['field'], $this->init_field);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 $this->raiseError($result->getUserinfo(), 0, $xp, $result->getCode());
             } else {
                 $this->init['data']['field'][] = $this->init_field;
@@ -412,7 +412,7 @@ class MDB2_Schema_Parser extends XML_Parser
         /* Table definition */
         case 'database-table':
             $result = $this->val->validateTable($this->database_definition['tables'], $this->table, $this->table_name);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 $this->raiseError($result->getUserinfo(), 0, $xp, $result->getCode());
             } else {
                 $this->database_definition['tables'][$this->table_name] = $this->table;
@@ -427,7 +427,7 @@ class MDB2_Schema_Parser extends XML_Parser
         /* Field declaration */
         case 'database-table-declaration-field':
             $result = $this->val->validateField($this->table['fields'], $this->field, $this->field_name);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 $this->raiseError($result->getUserinfo(), 0, $xp, $result->getCode());
             } else {
                 $this->table['fields'][$this->field_name] = $this->field;
@@ -437,7 +437,7 @@ class MDB2_Schema_Parser extends XML_Parser
         /* Index declaration */
         case 'database-table-declaration-index':
             $result = $this->val->validateIndex($this->table['indexes'], $this->index, $this->index_name);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 $this->raiseError($result->getUserinfo(), 0, $xp, $result->getCode());
             } else {
                 $this->table['indexes'][$this->index_name] = $this->index;
@@ -445,7 +445,7 @@ class MDB2_Schema_Parser extends XML_Parser
             break;
         case 'database-table-declaration-index-field':
             $result = $this->val->validateIndexField($this->index['fields'], $this->field, $this->field_name);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 $this->raiseError($result->getUserinfo(), 0, $xp, $result->getCode());
             } else {
                 $this->index['fields'][$this->field_name] = $this->field;
@@ -455,7 +455,7 @@ class MDB2_Schema_Parser extends XML_Parser
         /* Foreign Key declaration */
         case 'database-table-declaration-foreign':
             $result = $this->val->validateConstraint($this->table['constraints'], $this->constraint, $this->constraint_name);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 $this->raiseError($result->getUserinfo(), 0, $xp, $result->getCode());
             } else {
                 $this->table['constraints'][$this->constraint_name] = $this->constraint;
@@ -463,7 +463,7 @@ class MDB2_Schema_Parser extends XML_Parser
             break;
         case 'database-table-declaration-foreign-field':
             $result = $this->val->validateConstraintField($this->constraint['fields'], $this->field_name);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 $this->raiseError($result->getUserinfo(), 0, $xp, $result->getCode());
             } else {
                 $this->constraint['fields'][$this->field_name] = '';
@@ -471,7 +471,7 @@ class MDB2_Schema_Parser extends XML_Parser
             break;
         case 'database-table-declaration-foreign-references-field':
             $result = $this->val->validateConstraintReferencedField($this->constraint['references']['fields'], $this->field_name);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 $this->raiseError($result->getUserinfo(), 0, $xp, $result->getCode());
             } else {
                 $this->constraint['references']['fields'][$this->field_name] = '';
@@ -481,7 +481,7 @@ class MDB2_Schema_Parser extends XML_Parser
         /* Sequence declaration */
         case 'database-sequence':
             $result = $this->val->validateSequence($this->database_definition['sequences'], $this->sequence, $this->sequence_name);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 $this->raiseError($result->getUserinfo(), 0, $xp, $result->getCode());
             } else {
                 $this->database_definition['sequences'][$this->sequence_name] = $this->sequence;
@@ -491,7 +491,7 @@ class MDB2_Schema_Parser extends XML_Parser
         /* End of File */
         case 'database':
             $result = $this->val->validateDatabase($this->database_definition);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 $this->raiseError($result->getUserinfo(), 0, $xp, $result->getCode());
             }
             break;

@@ -188,7 +188,7 @@ class MDB2_Schema_Validate
          * Valid name ?
          */
         $result = $this->validateIdentifier($table_name, 'table');
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -286,7 +286,7 @@ class MDB2_Schema_Validate
          * Valid name ?
          */
         $result = $this->validateIdentifier($field_name, 'field');
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -364,7 +364,7 @@ class MDB2_Schema_Validate
             }
         }
         if (isset($field['default'])
-            && PEAR::isError($result = $this->validateDataFieldValue($field, $field['default'], $field_name))
+            && MDB2::isError($result = $this->validateDataFieldValue($field, $field['default'], $field_name))
         ) {
             return $this->raiseError(MDB2_SCHEMA_ERROR_VALIDATE,
                 'default value of "'.$field_name.'" is incorrect: '.$result->getUserinfo());
@@ -410,7 +410,7 @@ class MDB2_Schema_Validate
          * Valid name ?
          */
         $result = $this->validateIdentifier($index_name, 'index');
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -462,7 +462,7 @@ class MDB2_Schema_Validate
          * Valid name ?
          */
         $result = $this->validateIdentifier($field_name, 'index field');
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -502,7 +502,7 @@ class MDB2_Schema_Validate
          * Valid name ?
          */
         $result = $this->validateIdentifier($constraint_name, 'foreign key');
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -555,7 +555,7 @@ class MDB2_Schema_Validate
          * Valid name ?
          */
         $result = $this->validateIdentifier($field_name, 'foreign key field');
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -586,7 +586,7 @@ class MDB2_Schema_Validate
          * Valid name ?
          */
         $result = $this->validateIdentifier($field_name, 'referenced foreign field');
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -620,7 +620,7 @@ class MDB2_Schema_Validate
          * Valid name ?
          */
         $result = $this->validateIdentifier($sequence_name, 'sequence');
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -677,7 +677,7 @@ class MDB2_Schema_Validate
          * Valid name ?
          */
         $result = $this->validateIdentifier($database['name'], 'database');
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -805,7 +805,7 @@ class MDB2_Schema_Validate
          * Valid name ?
          */
         $result = $this->validateIdentifier($field['name'], 'field');
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
 
@@ -827,7 +827,7 @@ class MDB2_Schema_Validate
         if (isset($field['group']['data'])
             && $field['group']['type'] == 'value'
             && $field['group']['data'] !== ''
-            && PEAR::isError($result = $this->validateDataFieldValue($table_fields[$field['name']], $field['group']['data'], $field['name']))
+            && MDB2::isError($result = $this->validateDataFieldValue($table_fields[$field['name']], $field['group']['data'], $field['name']))
         ) {
             return $this->raiseError(MDB2_SCHEMA_ERROR_VALIDATE,
                 'value of "'.$field['name'].'" is incorrect: '.$result->getUserinfo());
