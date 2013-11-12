@@ -94,9 +94,6 @@ if (empty($ReqError)) {
             $ReqResult = $ReqResult->GetMessage();
         }
 
-        // Event Logging
-        $GLOBALS['app']->Listener->Shout('Log', array($ReqGadget, $ReqAction));
-
         // we must check type of action after execute, because gadget can change it at runtime
         $IsReqActionStandAlone = $objGadget->IsStandAlone($ReqAction);
     }
