@@ -5,7 +5,7 @@
  * @category   Ajax
  * @package    Banner
  */
-class Banner_AdminAjax extends Jaws_Gadget_Action
+class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
     /**
      * Get a banner info
