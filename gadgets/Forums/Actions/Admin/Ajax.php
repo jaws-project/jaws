@@ -8,7 +8,7 @@
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_AdminAjax extends Jaws_Gadget_Action
+class Forums_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
     /**
      * Get information of a group
