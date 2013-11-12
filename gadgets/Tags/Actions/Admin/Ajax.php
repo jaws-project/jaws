@@ -8,7 +8,7 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Tags_AdminAjax extends Jaws_Gadget_Action
+class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
     /**
      * Search for tags and return the data in an array
