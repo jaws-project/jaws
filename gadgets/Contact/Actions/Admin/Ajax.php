@@ -10,7 +10,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Contact_AdminAjax extends Jaws_Gadget_Action
+class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
     /**
      * Get information of a Contact
