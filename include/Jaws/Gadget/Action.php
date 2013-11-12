@@ -27,13 +27,11 @@ class Jaws_Gadget_Action
     private $objects = array();
 
     /**
-     * A list of actions that the gadget has
-     *
+     * Actions attributes array
      * @var     array
      * @access  private
-     * @see AddAction()
      */
-    private $_ValidAction = array();
+    private $actions = array();
 
 
     /**
@@ -46,11 +44,18 @@ class Jaws_Gadget_Action
     public function __construct($gadget)
     {
         $this->gadget = $gadget;
-        $this->_ValidAction = $GLOBALS['app']->GetGadgetActions($this->gadget->name);
+    }
 
-        // Add Ajax actions.
-        $this->AddAction('Ajax', 'index', 'standalone', '', '');
-        $this->AddAction('Ajax', 'admin', 'standalone', '', '');
+
+    /**
+     * initialize object
+     *
+     * @access  public
+     * @return  void
+     */
+    public function init()
+    {
+        $this->fetchAll();
     }
 
 
@@ -131,6 +136,39 @@ class Jaws_Gadget_Action
 
 
     /**
+     * fetchs all actions of gadget
+     *
+     * @access  public
+     * @param   string  $script Action belongs to index or admin
+     * @return  array   Actions of gadget
+     */
+    public function fetchAll($script = '')
+    {
+        if (empty($this->actions)) {
+            $file = JAWS_PATH . 'gadgets/'. $this->gadget->name. '/Actions.php';
+            if (file_exists($file)) {
+                include_once($file);
+                $this->actions['index'] = $actions;
+            } else {
+                $this->actions['index'] = array();
+            }
+            $this->actions['index']['Ajax'] = array('name' => 'Ajax', 'standalone' => true);
+
+            $file = JAWS_PATH . 'gadgets/'. $this->gadget->name. '/AdminActions.php';
+            if (file_exists($file)) {
+                include_once($file);
+                $this->actions['admin'] = $actions;
+            } else {
+                $this->actions['admin'] = array();
+            }
+            $this->actions['admin']['Ajax'] = array('name' => 'Ajax', 'standalone' => true);
+        }
+
+        return empty($script)? $this->actions : $this->actions[$script];
+    }
+
+
+    /**
      * Ajax Admin stuff
      *
      * @access  public
@@ -145,7 +183,7 @@ class Jaws_Gadget_Action
         }
 
         $output = '';
-        $method = Jaws_Gadget_Action::filter(jaws()->request->fetch('method', 'get'));
+        $method = self::filter(jaws()->request->fetch('method', 'get'));
         if (method_exists($objAjax, $method)) {
             $output = $objAjax->$method();
         } else {
@@ -282,7 +320,7 @@ class Jaws_Gadget_Action
             $GLOBALS['app']->Layout->SetDescription($description);
         }
 
-        $file = $this->_ValidAction[JAWS_SCRIPT][$action]['file'];
+        $file = $this->actions[JAWS_SCRIPT][$action]['file'];
         if (JAWS_SCRIPT == 'index') {
             $objAction = Jaws_Gadget::getInstance($this->gadget->name)->action->load($file);
         } else {
@@ -298,26 +336,6 @@ class Jaws_Gadget_Action
 
 
     /**
-     * Adds a new Action
-     *
-     * @access  protected
-     * @param   string  $name   Action name
-     * @param   string  $script Action script
-     * @param   string  $mode   Action mode
-     * @param   string  $description Action's description
-     */
-    public function AddAction($action, $script, $mode, $description, $file = null)
-    {
-        $this->_ValidAction[$script][$action] = array(
-            'name' => $action,
-            $mode => true,
-            'desc' => $description,
-            'file' => $file
-        );
-    }
-
-
-    /**
      * Set a Action mode
      *
      * @access  protected
@@ -328,7 +346,7 @@ class Jaws_Gadget_Action
      */
     public function SetActionMode($action, $new_mode, $old_mode, $desc = null, $file = null)
     {
-        $this->_ValidAction[JAWS_SCRIPT][$action] = array(
+        $this->actions[JAWS_SCRIPT][$action] = array(
             'name' => $action,
             $new_mode => true,
             $old_mode => false,
@@ -348,8 +366,8 @@ class Jaws_Gadget_Action
     public function IsStandAlone($action)
     {
         if ($this->IsValidAction($action, 'index')) {
-            return (isset($this->_ValidAction['index'][$action]['standalone']) &&
-                    $this->_ValidAction['index'][$action]['standalone']);
+            return (isset($this->actions['index'][$action]['standalone']) &&
+                    $this->actions['index'][$action]['standalone']);
         }
         return false;
     }
@@ -365,8 +383,8 @@ class Jaws_Gadget_Action
     public function IsStandAloneAdmin($action)
     {
         if ($this->IsValidAction($action, 'admin')) {
-            return (isset($this->_ValidAction['admin'][$action]['standalone']) &&
-                    $this->_ValidAction['admin'][$action]['standalone']);
+            return (isset($this->actions['admin'][$action]['standalone']) &&
+                    $this->actions['admin'][$action]['standalone']);
         }
         return false;
     }
@@ -381,7 +399,7 @@ class Jaws_Gadget_Action
      */
     public function IsValidAction($action, $script = JAWS_SCRIPT)
     {
-        return isset($this->_ValidAction[$script][$action]);
+        return isset($this->actions[$script][$action]);
     }
 
 
