@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Tms_AdminAjax extends Jaws_Gadget_Action
+class Tms_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
     /**
      * Gets information of given theme
