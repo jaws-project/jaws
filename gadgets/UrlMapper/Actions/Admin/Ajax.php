@@ -9,7 +9,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class UrlMapper_AdminAjax extends Jaws_Gadget_Action
+class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
     /**
      * Returns mapped actions of a certain gadget
