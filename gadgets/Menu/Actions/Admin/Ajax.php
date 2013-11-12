@@ -10,7 +10,7 @@
  * @copyright   2005-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Menu_AdminAjax extends Jaws_Gadget_Action
+class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
     /**
      * Get all menus and groups data
