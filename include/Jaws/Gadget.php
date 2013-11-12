@@ -554,6 +554,9 @@ class Jaws_Gadget
             case 'translate':
                 $classname = 'Jaws_Gadget_'. ucfirst($property);
                 $this->$property = new $classname($this);
+                if (method_exists($this->$property, 'init')) {
+                    $this->$property->init();
+                }
                 return $this->$property;
                 break;
         }
