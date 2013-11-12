@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_AdminAjax extends Jaws_Gadget_Action
+class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
 
     /**
