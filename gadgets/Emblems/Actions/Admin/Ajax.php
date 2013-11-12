@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Emblems_AdminAjax extends Jaws_Gadget_Action
+class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
     /**
      * Updates the emblem
