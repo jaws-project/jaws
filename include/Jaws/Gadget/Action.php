@@ -326,9 +326,13 @@ class Jaws_Gadget_Action
         } else {
             $objAction = Jaws_Gadget::getInstance($this->gadget->name)->action->loadAdmin($file);
         }
-
         if (Jaws_Error::isError($objAction)) {
             return $objAction;
+        }
+
+        // Event Logging
+        if ($GLOBALS['app']->Session->Logged() && !@$this->actions[JAWS_SCRIPT][$action]['variable']) {
+            $this->gadget->event->shout('Log', array($this->gadget->name, $action));
         }
 
         return $objAction->$action();
