@@ -8,7 +8,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Shoutbox_AdminAjax extends Jaws_Gadget_Action
+class Shoutbox_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
     /**
      * Update the properties
