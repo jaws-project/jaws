@@ -40,7 +40,7 @@ class ActionImport_Plugin extends Jaws_Plugin
         $action = $data[3];
         $params = @$data[5];
 
-        $actions = $GLOBALS['app']->GetGadgetActions($gadget, 'index');
+        $actions = Jaws_Gadget::getInstance($gadget)->action->fetchAll('index');
         if (in_array($action, array_keys($actions)) &&
             isset($actions[$action]['normal']) && $actions[$action]['normal'])
         {
