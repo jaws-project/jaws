@@ -590,61 +590,6 @@ class Jaws
     }
 
     /**
-     * Gets the actions of a gadget
-     *
-     * @access  public
-     * @param   string  $gadget Gadget's name
-     * @param   string  $script Action belongs to index or admin
-     * @return  array   Gadget actions
-     */
-    function GetGadgetActions($gadget, $script = '')
-    {
-        // filter non validate character
-        $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
-
-        if (!isset($this->_Gadgets[$gadget]['actions'])) {
-            // Load gadget's language file
-            $this->Translate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET);
-            global $base_properties;
-            $base_properties= array(
-                'normal'     => false,
-                'layout'     => false,
-                'parametric' => false,
-                'standalone' => false,
-                'file'       => false,
-            );
-            $func_merge = create_function(
-                '&$properties, $action, $gadget',
-                'global $base_properties;
-                $base_properties["name"] = _t(strtoupper($gadget."_ACTIONS_".$action));
-                $base_properties["desc"] = _t(strtoupper($gadget."_ACTIONS_".$action."_DESC"));
-                $properties = array_merge($base_properties, $properties);'
-            );
-            $file = JAWS_PATH . 'gadgets/' . $gadget . '/Actions.php';
-            if (file_exists($file)) {
-                include_once($file);
-                //array_walk($actions, $func_merge, $gadget);
-                $this->_Gadgets[$gadget]['actions']['index'] = $actions;
-            } else {
-                $this->_Gadgets[$gadget]['actions']['index'] = array();
-            }
-
-            $file = JAWS_PATH . 'gadgets/' . $gadget . '/AdminActions.php';
-            if (file_exists($file)) {
-                include_once($file);
-                //array_walk($actions, $func_merge, $gadget);
-                $this->_Gadgets[$gadget]['actions']['admin'] = $actions;
-            } else {
-                $this->_Gadgets[$gadget]['actions']['admin'] = array();
-            }
-        }
-
-        return empty($script)?
-            $this->_Gadgets[$gadget]['actions'] :
-            $this->_Gadgets[$gadget]['actions'][$script];
-    }
-
-    /**
      * Prepares the jaws Editor
      *
      * @access  public
