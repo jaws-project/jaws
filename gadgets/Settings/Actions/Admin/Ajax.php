@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Settings_AdminAjax extends Jaws_Gadget_Action
+class Settings_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
     /**
      * Constructor
