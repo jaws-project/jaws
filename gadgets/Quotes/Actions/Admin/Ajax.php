@@ -8,7 +8,7 @@
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Quotes_AdminAjax extends Jaws_Gadget_Action
+class Quotes_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
     /**
      * Gets data of the quote
