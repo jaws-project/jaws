@@ -152,7 +152,7 @@ class Jaws_Gadget_Action
             } else {
                 $this->actions['index'] = array();
             }
-            $this->actions['index']['Ajax'] = array('name' => 'Ajax', 'standalone' => true);
+            $this->actions['index']['Ajax'] = array('name' => 'Ajax', 'standalone' => true, 'file' => 'Ajax');
 
             $file = JAWS_PATH . 'gadgets/'. $this->gadget->name. '/AdminActions.php';
             if (file_exists($file)) {
@@ -161,7 +161,7 @@ class Jaws_Gadget_Action
             } else {
                 $this->actions['admin'] = array();
             }
-            $this->actions['admin']['Ajax'] = array('name' => 'Ajax', 'standalone' => true);
+            $this->actions['admin']['Ajax'] = array('name' => 'Ajax', 'standalone' => true, 'file' => 'Ajax');
         }
 
         return empty($script)? $this->actions : $this->actions[$script];
@@ -177,9 +177,9 @@ class Jaws_Gadget_Action
     public function Ajax()
     {
         if (JAWS_SCRIPT == 'admin') {
-            $objAjax = $GLOBALS['app']->LoadGadget($this->gadget->name, 'AdminAjax');
+            $objAjax = $this->gadget->action->loadAdmin('Ajax');
         } else {
-            $objAjax = $GLOBALS['app']->LoadGadget($this->gadget->name, 'Ajax');
+            $objAjax = $this->gadget->action->load('Ajax');
         }
 
         $output = '';
