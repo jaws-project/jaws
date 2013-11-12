@@ -9,7 +9,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FeedReader_AdminAjax extends Jaws_Gadget_Action
+class FeedReader_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
     /**
      * Constructor
