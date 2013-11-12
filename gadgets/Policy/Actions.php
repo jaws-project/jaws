@@ -13,5 +13,6 @@ $actions = array();
 
 $actions['Captcha'] = array(
     'standalone' => true,
+    'variable' => true,
     'file' => 'Captcha',
 );
