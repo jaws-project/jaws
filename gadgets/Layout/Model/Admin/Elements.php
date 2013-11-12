@@ -180,7 +180,7 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      */
     function GetGadgetLayoutActions($g, $associated_by_action = false)
     {
-        $actions = $GLOBALS['app']->GetGadgetActions($g, 'index');
+        $actions = Jaws_Gadget::getInstance($g)->action->fetchAll('index');
         foreach ($actions as $key => $action) {
             if (!isset($action['layout']) || empty($action['layout'])) {
                 unset($actions[$key]);
