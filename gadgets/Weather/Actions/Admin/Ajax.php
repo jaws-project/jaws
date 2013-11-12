@@ -10,7 +10,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Weather_AdminAjax extends Jaws_Gadget_Action
+class Weather_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
     /**
      * Gets associated data of the region
