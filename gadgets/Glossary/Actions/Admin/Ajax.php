@@ -8,7 +8,7 @@
  * @copyright  2005-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Glossary_AdminAjax extends Jaws_Gadget_Action
+class Glossary_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
     /**
      * Get a term
