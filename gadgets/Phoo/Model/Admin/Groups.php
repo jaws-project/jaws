@@ -18,6 +18,10 @@ class Phoo_Model_Admin_Groups extends Jaws_Gadget_Model
      */
     function AddGroup($insertData)
     {
+        $fast_url = empty($insertData['fast_url']) ? $insertData['name'] : $insertData['fast_url'];
+        $fast_url = $this->GetRealFastUrl($fast_url, 'phoo_group');
+        $insertData['fast_url'] = $fast_url;
+
         $table = Jaws_ORM::getInstance()->table('phoo_group');
         return $table->insert($insertData)->exec();
     }
@@ -28,8 +32,12 @@ class Phoo_Model_Admin_Groups extends Jaws_Gadget_Model
      * @access  public
      * @return  mixed    array with the groups or Jaws_Error on error
      */
-    function EditGroup($gid, $updateData)
+    function UpdateGroup($gid, $updateData)
     {
+        $fast_url = empty($updateData['fast_url']) ? $updateData['name'] : $updateData['fast_url'];
+        $fast_url = $this->GetRealFastUrl($fast_url, 'phoo_group');
+        $updateData['fast_url'] = $fast_url;
+
         $table = Jaws_ORM::getInstance()->table('phoo_group');
         return $table->update($updateData)->where('id', $gid)->exec();
     }

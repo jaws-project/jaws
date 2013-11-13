@@ -16,16 +16,24 @@
       <input type="hidden" name="gid" id="gid" value="0" />
       <fieldset>
         <legend><span id="legend_title">{legend_title}</span></legend>
-        <div id="work_area">
-          <div>
-            <label for="name">{lbl_name}</label><br/>
-            <input type="text" style="width: 300px;" id="name" name="name">
+          <div id="work_area">
+              <div>
+                  <label for="name">{lbl_name}</label> {name}
+              </div>
+
+              <div>
+                  <label for="fast_url">{lbl_fast_url}</label> {fast_url}
+              </div>
+              <div>
+                  <label for="meta_keywords">{lbl_meta_keywords}</label> {meta_keywords}
+              </div>
+              <div>
+                  <label for="meta_description">{lbl_meta_description}</label> {meta_description}
+              </div>
+              <div>
+                  <label for="description">{lbl_description}</label> {description}
+              </div>
           </div>
-          <div>
-            <label for="description">{lbl_description}</label><br/>
-            <textarea style="width: 300px;" id="description" name="description"></textarea>
-          </div>
-        </div>
       </fieldset>
       <div class="actions">
         <button onclick="javascript:deleteGroup();" style="display: none;" value="{delete}" id="btn_delete" name="btn_delete" type="button">

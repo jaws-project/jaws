@@ -43,7 +43,7 @@ class Phoo_Hooks_Menu extends Jaws_Gadget_Hook
         if (!Jaws_Error::IsError($groups) && !empty($groups)) {
             $max_size = 20;
             foreach($groups as $group) {
-                $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'AlbumList', array('group' => $group['id']));
+                $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'AlbumList', array('group' => $group['fast_url']));
                 $urls[] = array('url'   => $url,
                                 'title' => ($GLOBALS['app']->UTF8->strlen($group['name']) > $max_size)?
                                             $GLOBALS['app']->UTF8->substr($group['name'], 0, $max_size).'...' :

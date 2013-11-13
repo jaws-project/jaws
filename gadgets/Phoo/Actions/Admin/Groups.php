@@ -26,8 +26,40 @@ class Phoo_Actions_Admin_Groups extends Phoo_Actions_Admin_Default
         // Header
         $tpl->SetVariable('menubar', $this->MenuBar('Groups'));
 
+
+        // Meta keywords
+        $name =& Piwi::CreateWidget('Entry', 'name', '');
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
+        $tpl->SetVariable('name', $name->Get());
+
+        // Fast URL
+        $fastUrlEntry =& Piwi::CreateWidget('Entry', 'fast_url', '');
+        $fastUrlEntry->SetId('fast_url');
+        $fastUrlEntry->SetStyle('width: 100%');
+        $tpl->SetVariable('lbl_fast_url', _t('PHOO_FASTURL'));
+        $tpl->SetVariable('fast_url', $fastUrlEntry->Get());
+
+        // Meta keywords
+        $metaKeywords =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
+        $metaKeywords->SetStyle('width: 100%;');
+        $tpl->SetVariable('lbl_meta_keywords', _t('GLOBAL_META_KEYWORDS'));
+        $tpl->SetVariable('meta_keywords', $metaKeywords->Get());
+
+        // Meta Description
+        $metaDesc =& Piwi::CreateWidget('Entry', 'meta_description', '');
+        $metaDesc->SetStyle('width: 100%;');
+        $tpl->SetVariable('lbl_meta_description', _t('GLOBAL_META_DESCRIPTION'));
+        $tpl->SetVariable('meta_description', $metaDesc->Get());
+
+        // description
+        $entry =& Piwi::CreateWidget('TextArea', 'description', '');
+        $entry->SetId('description');
+        $entry->SetRows(4);
+        $entry->SetColumns(30);
+        $entry->SetStyle('width: 99%; direction: ltr; white-space: nowrap;');
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
+        $tpl->SetVariable('description', $entry->Get());
+
         $tpl->SetVariable('addGroupTitle', _t('PHOO_GROUPS_ADD_GROUP'));
         $tpl->SetVariable('editGroupTitle', _t('PHOO_GROUPS_EDIT_GROUP'));
         $tpl->SetVariable('confirmGroupDelete', _t('PHOO_GROUPS_CONFIRM_DELETE'));

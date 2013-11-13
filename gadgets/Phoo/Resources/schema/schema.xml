@@ -202,6 +202,24 @@
         </field>
 
         <field>
+            <name>fast_url</name>
+            <type>text</type>
+            <length>90</length>
+        </field>
+
+        <field>
+            <name>meta_keywords</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>meta_description</name>
+            <type>text</type>
+            <length>255</length>
+        </field>
+
+        <field>
             <name>description</name>
             <type>text</type>
             <length>128</length>

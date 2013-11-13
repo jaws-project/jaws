@@ -66,7 +66,7 @@ class Phoo_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function AddGroup()
     {
-        $rqst = jaws()->request->fetch(array('name', 'description'));
+        $rqst = jaws()->request->fetch(array('name', 'fast_url', 'meta_keywords', 'meta_description', 'description'));
         $rqst['[description]'] = $rqst['description'];
         unset($rqst['description']);
         $model = $this->gadget->model->loadAdmin('Groups');
@@ -86,19 +86,18 @@ class Phoo_Actions_Admin_Ajax extends Jaws_Gadget_Action
     }
 
     /**
-     * Edit a group
+     * Update a group info
      *
      * @access  public
      * @return  array   Response array (notice or error)
      */
-    function EditGroup()
+    function UpdateGroup()
     {
-        $rqst = jaws()->request->fetch(array('name', 'description'));
-        $gid  = (int) jaws()->request->fetch('id');
-        $rqst['[description]'] = $rqst['description'];
-        unset($rqst['description']);
+        $gid = jaws()->request->fetch('id', 'post');
+        $data = jaws()->request->fetch('data:array', 'post');
+
         $model = $this->gadget->model->loadAdmin('Groups');
-        $res = $model->EditGroup($gid, $rqst);
+        $res = $model->UpdateGroup($gid, $data);
 
         if (Jaws_Error::isError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
@@ -141,6 +140,11 @@ class Phoo_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $gid = jaws()->request->fetch('gid');
         $model = $this->gadget->model->load('Groups');
         $group = $model->GetGroup($gid);
+        foreach($group as $key=>$value) {
+            if ($value==null) {
+                $group[$key] = "";
+            }
+        }
         if (Jaws_Error::IsError($group)) {
             return false; //we need to handle errors on ajax
         }

@@ -54,8 +54,11 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
         $tpl->SetVariable('title', _t('PHOO_ALBUMS'));
         $model = $this->gadget->model->load('Albums');
 
+        if (empty($gid)) {
+            $gid = jaws()->request->fetch('group', 'get');
+        }
         if (is_null($gid)) {
-            $group  = (int) $this->gadget->request->fetch('group');
+            $group = (int)$this->gadget->request->fetch('group');
             if (!empty($group) && $group != 0) {
                 $gid = $group;
             }
@@ -88,7 +91,7 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
                 $groupInfo = $agModel->GetAlbumGroupsInfo($album['id']);
                 if (is_array($groupInfo)) {
                     foreach ($groupInfo as $group) {
-                        $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'AlbumList', array('group' => $group['group']));
+                        $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'AlbumList', array('group' => $group['fast_url']));
                         $tpl->SetBlock('albums/item/group');
                         $tpl->SetVariable('url',  $url);
                         $tpl->SetVariable('name', $group['name']);

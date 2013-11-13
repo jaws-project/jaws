@@ -16,17 +16,23 @@ class Phoo_Model_Albums extends Phoo_Model
      * Get a list of albums
      *
      * @access  public
+     * @param   int|string $gid     Group Id or Fast url
      * @return  array  Returns an array of the dates of the phoo entries and Jaws_Error on error
      */
     function GetAlbumList($gid = 0)
     {
         $table = Jaws_ORM::getInstance()->table('phoo_album');
-        $table->select('phoo_album.id', 'name', 'description', 'createtime');
+        $table->select('phoo_album.id:integer', 'phoo_album.name', 'phoo_album.description', 'createtime');
         $table->where('published', true)->orderBy($this->GetOrderType('albums_order_type'));
 
-        if (!empty($gid) && $gid != 0) {
+        if (!empty($gid)) {
             $table->join('phoo_album_group', 'phoo_album.id', 'album', 'left');
-            $table->and()->where('group', $gid);
+            if (is_numeric($gid)) {
+                $table->and()->where('group', $gid);
+            } else {
+                $table->join('phoo_group', 'phoo_group.id', 'phoo_album_group.group');
+                $table->and()->where('phoo_group.fast_url', $gid);
+            }
         }
 
         $albums = $table->fetchAll();
