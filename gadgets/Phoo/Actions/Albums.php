@@ -88,13 +88,20 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
                 $tpl->SetVariable('description', $this->gadget->ParseText($album['description']));
                 $tpl->SetVariable('createtime', $date->Format($album['createtime']));
 
-                $groupInfo = $agModel->GetAlbumGroupsInfo($album['id']);
-                if (is_array($groupInfo)) {
-                    foreach ($groupInfo as $group) {
+                $pos = 1;
+                $groups = $agModel->GetAlbumGroupsInfo($album['id']);
+                if (is_array($groups)) {
+                    foreach ($groups as $group) {
                         $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'AlbumList', array('group' => $group['fast_url']));
                         $tpl->SetBlock('albums/item/group');
-                        $tpl->SetVariable('url',  $url);
+                        $tpl->SetVariable('url', $url);
                         $tpl->SetVariable('name', $group['name']);
+                        if ($pos == count($groups)) {
+                            $tpl->SetVariable('separator', '');
+                        } else {
+                            $tpl->SetVariable('separator', ',');
+                        }
+                        $pos++;
                         $tpl->ParseBlock('albums/item/group');
                     }
                 }
