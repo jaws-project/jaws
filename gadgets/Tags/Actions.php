@@ -39,3 +39,15 @@ $actions['MergeTags'] = array(
     'standalone' => true,
     'file'       => 'ManageTags',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Tags'] = array(
+    'normal' => true,
+    'file' => 'Tags',
+);
+$admin_actions['Properties'] = array(
+    'normal' => true,
+    'file' => 'Settings',
+);
