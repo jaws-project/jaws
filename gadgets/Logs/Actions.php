@@ -8,33 +8,35 @@
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$actions = array();
 
-$actions['Logs'] = array(
+/**
+ * Admin actions
+ */
+$admin_actions['Logs'] = array(
     'normal' => true,
     'file'   => 'Logs',
 );
-$actions['GetLogs'] = array(
+$admin_actions['GetLogs'] = array(
     'standalone' => true,
     'file'       => 'Logs',
 );
-$actions['GetLogsCount'] = array(
+$admin_actions['GetLogsCount'] = array(
     'standalone' => true,
     'file'       => 'Logs',
 );
-$actions['GetLog'] = array(
+$admin_actions['GetLog'] = array(
     'standalone' => true,
     'file'       => 'Logs',
 );
-$actions['DeleteLogs'] = array(
+$admin_actions['DeleteLogs'] = array(
     'standalone' => true,
     'file'       => 'Logs',
 );
-$actions['Settings'] = array(
+$admin_actions['Settings'] = array(
     'normal' => true,
     'file'   => 'Settings',
 );
-$actions['SaveSettings'] = array(
+$admin_actions['SaveSettings'] = array(
     'standalone' => true,
     'file'   => 'Settings',
 );
