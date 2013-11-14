@@ -87,3 +87,11 @@ $actions['Attachment'] = array(
     'standalone' => true,
     'file'   => 'Attachment',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Forums'] = array(
+    'normal' => true,
+    'file'   => 'Forums',
+);
