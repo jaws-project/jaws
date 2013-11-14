@@ -31,3 +31,19 @@ $actions['Vote'] = array(
     'normal' => true,
     'file' => 'Poll',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Polls'] = array(
+    'normal' => true,
+    'file' => 'Poll',
+);
+$admin_actions['PollGroups'] = array(
+    'normal' => true,
+    'file' => 'Group',
+);
+$admin_actions['Reports'] = array(
+    'normal' => true,
+    'file' => 'Report',
+);
