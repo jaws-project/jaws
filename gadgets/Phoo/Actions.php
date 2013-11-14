@@ -8,8 +8,10 @@
  * @copyright   2004-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$actions = array();
 
+/**
+ * Index actions
+ */
 $actions['PhotoblogPortrait'] = array(
     'normal' => true,
     'file' => 'Photoblog',
@@ -36,7 +38,6 @@ $actions['ViewImage'] = array(
 //    'normal' => true,
 //    'file' => 'Comments',
 //);
-
 $actions['Random'] = array(
     'layout' => true,
     'file' => 'Random',
