@@ -9,8 +9,10 @@
  * @copyright   2007-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-$actions = array();
 
+/**
+ * Index actions
+ */
 $actions['Captcha'] = array(
     'standalone' => true,
     'variable' => true,
