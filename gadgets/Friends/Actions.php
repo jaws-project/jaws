@@ -14,3 +14,11 @@ $actions['Display'] = array(
     'layout' => true,
     'file'   => 'Friends',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Friends'] = array(
+    'normal' => true,
+    'file' => 'Friends',
+);
