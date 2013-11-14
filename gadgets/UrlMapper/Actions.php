@@ -8,22 +8,24 @@
  * @copyright   2012-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-$actions = array();
 
-$actions['Maps'] = array(
+/**
+ * Admin actions
+ */
+$admin_actions['Maps'] = array(
     'normal' => true,
     'file' => 'Maps',
 );
 
-$actions['Aliases'] = array(
+$admin_actions['Aliases'] = array(
     'normal' => true,
     'file' => 'Aliases',
 );
-$actions['ErrorMaps'] = array(
+$admin_actions['ErrorMaps'] = array(
     'normal' => true,
     'file' => 'ErrorMaps',
 );
-$actions['Properties'] = array(
+$admin_actions['Properties'] = array(
     'normal' => true,
     'file' => 'Properties',
 );
