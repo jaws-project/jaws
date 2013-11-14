@@ -31,3 +31,11 @@ $actions['Results'] = array(
     'normal' => true,
     'file'   => 'Results',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Settings'] = array(
+    'normal' => true,
+    'file' => 'Settings',
+);
