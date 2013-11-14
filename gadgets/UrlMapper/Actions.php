@@ -16,7 +16,6 @@ $admin_actions['Maps'] = array(
     'normal' => true,
     'file' => 'Maps',
 );
-
 $admin_actions['Aliases'] = array(
     'normal' => true,
     'file' => 'Aliases',
