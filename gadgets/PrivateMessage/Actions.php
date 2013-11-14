@@ -99,3 +99,11 @@ $actions['UploadFile'] = array(
     'standalone' => true,
     'file' => 'Attachment'
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Properties'] = array(
+    'normal' => true,
+    'file' => 'Properties',
+);
