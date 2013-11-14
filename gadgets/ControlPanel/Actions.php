@@ -8,24 +8,27 @@
  * @copyright   2012-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-$actions = array();
-$actions['DefaultAction'] = array(
+
+/**
+ * Admin actions
+ */
+$admin_actions['DefaultAction'] = array(
     'normal' => true,
     'file' => 'ControlPanel',
 );
-$actions['LoginBox'] = array(
+$admin_actions['LoginBox'] = array(
     'standalone' => true,
     'file' => 'Login',
 );
-$actions['Logout'] = array(
+$admin_actions['Logout'] = array(
     'standalone' => true,
     'file' => 'Login',
 );
-$actions['Backup'] = array(
+$admin_actions['Backup'] = array(
     'standalone' => true,
     'file' => 'Backup',
 );
-$actions['JawsVersion'] = array(
+$admin_actions['JawsVersion'] = array(
     'standalone' => true,
     'file' => 'JawsVersion',
 );
