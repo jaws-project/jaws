@@ -113,3 +113,83 @@ $actions['ShowAtomCategory'] = array(
     'standalone' => true,
     'file' => 'Feeds',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Summary'] = array(
+    'normal' => true,
+    'file'   => 'Summary',
+);
+$admin_actions['NewEntry'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$admin_actions['SaveNewEntry'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$admin_actions['PreviewNewEntry'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$admin_actions['ListEntries'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$admin_actions['EditEntry'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$admin_actions['PreviewEditEntry'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$admin_actions['SaveEditEntry'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$admin_actions['DeleteEntry'] = array(
+    'normal' => true,
+    'file'   => 'Entries',
+);
+$admin_actions['UpdateCategory'] = array(
+    'normal' => true,
+    'file'   => 'Categories',
+);
+$admin_actions['AddCategory'] = array(
+    'normal' => true,
+    'file'   => 'Categories',
+);
+$admin_actions['EditCategory'] = array(
+    'normal' => true,
+    'file'   => 'Categories',
+);
+$admin_actions['DeleteCategory'] = array(
+    'normal' => true,
+    'file'   => 'Categories',
+);
+$admin_actions['ManageCategories'] = array(
+    'normal' => true,
+    'file'   => 'Categories',
+);
+$admin_actions['ManageComments'] = array(
+    'normal' => true,
+    'file'   => 'Comments',
+);
+$admin_actions['ManageTrackbacks'] = array(
+    'normal' => true,
+    'file'   => 'Trackbacks',
+);
+$admin_actions['ViewTrackback'] = array(
+    'normal' => true,
+    'file'   => 'Trackbacks',
+);
+$admin_actions['AdditionalSettings'] = array(
+    'normal' => true,
+    'file'   => 'Settings',
+);
+$admin_actions['SaveAdditionalSettings'] = array(
+    'normal' => true,
+    'file'   => 'Settings',
+);
