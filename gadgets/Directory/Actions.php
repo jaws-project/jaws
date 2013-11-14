@@ -8,9 +8,10 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$actions = array();
 
-/* Public Actions */
+/**
+ * Index actions
+ */
 $actions['Directory'] = array(
     'normal' => true,
     'layout' => true,
@@ -48,8 +49,6 @@ $actions['Search'] = array(
     'standalone' => true,
     'file' => 'Directory'
 );
-
-/* Directory Actions */
 $actions['DirectoryForm'] = array(
     'standalone' => true,
     'file' => 'Directories'
@@ -62,8 +61,6 @@ $actions['UpdateDirectory'] = array(
     'standalone' => true,
     'file' => 'Directories'
 );
-
-/* File Actions */
 $actions['FileForm'] = array(
     'standalone' => true,
     'file' => 'Files'
@@ -104,8 +101,6 @@ $actions['PlayMedia'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
-
-/* Sharing Actions */
 $actions['ShareForm'] = array(
     'standalone' => true,
     'file' => 'Share'
