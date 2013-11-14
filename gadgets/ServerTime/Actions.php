@@ -14,3 +14,11 @@ $actions['Display'] = array(
     'layout' => true,
     'file' => 'ServerTime',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Admin'] = array(
+    'normal' => true,
+    'file' => 'ServerTime',
+);
