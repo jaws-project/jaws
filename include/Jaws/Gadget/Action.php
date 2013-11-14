@@ -146,18 +146,19 @@ class Jaws_Gadget_Action
     {
         if (empty($this->actions)) {
             $file = JAWS_PATH . 'gadgets/'. $this->gadget->name. '/Actions.php';
-            if (file_exists($file)) {
-                include_once($file);
+            if (!file_exists($file)) {
+                return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
+            }
+            include_once($file);
+            if (isset($actions) && !empty($actions)) {
                 $this->actions['index'] = $actions;
             } else {
                 $this->actions['index'] = array();
             }
             $this->actions['index']['Ajax'] = array('name' => 'Ajax', 'standalone' => true, 'file' => 'Ajax');
 
-            $file = JAWS_PATH . 'gadgets/'. $this->gadget->name. '/AdminActions.php';
-            if (file_exists($file)) {
-                include_once($file);
-                $this->actions['admin'] = $actions;
+            if (isset($admin_actions) && !empty($admin_actions)) {
+                $this->actions['admin'] = $admin_actions;
             } else {
                 $this->actions['admin'] = array();
             }
