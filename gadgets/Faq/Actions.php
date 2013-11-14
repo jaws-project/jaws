@@ -26,3 +26,35 @@ $actions['ListCategories'] = array(
     'layout' => true,
     'file' => 'Category',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['ManageQuestions'] = array(
+    'normal' => true,
+    'file' => 'Question',
+);
+$admin_actions['NewQuestion'] = array(
+    'normal' => true,
+    'file' => 'Question',
+);
+$admin_actions['EditQuestion'] = array(
+    'normal' => true,
+    'file' => 'Question',
+);
+$admin_actions['UpdateQuestion'] = array(
+    'normal' => true,
+    'file' => 'Question',
+);
+$admin_actions['NewCategory'] = array(
+    'normal' => true,
+    'file' => 'Category',
+);
+$admin_actions['EditCategory'] = array(
+    'normal' => true,
+    'file' => 'Category',
+);
+$admin_actions['UpdateCategory'] = array(
+    'normal' => true,
+    'file' => 'Category',
+);
