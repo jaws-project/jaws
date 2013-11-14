@@ -19,3 +19,11 @@ $actions['Random'] = array(
     'layout' => true,
     'file' => 'Webcam',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['ManageWebcams'] = array(
+    'normal' => true,
+    'file' => 'Webcam',
+);
