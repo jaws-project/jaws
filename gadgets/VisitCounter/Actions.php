@@ -32,3 +32,11 @@ $actions['Display'] = array(
     'layout' => true,
     'file' => 'VisitCounter'
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['VisitCounter'] = array(
+    'normal' => true,
+    'file' => 'VisitCounter'
+);
