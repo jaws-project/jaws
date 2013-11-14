@@ -142,3 +142,35 @@ $actions['UpdateGroup'] = array(
     'normal' => true,
     'file' => 'Groups',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Users'] = array(
+    'normal' => true,
+    'file' => 'Users',
+);
+$admin_actions['MyAccount'] = array(
+    'normal' => true,
+    'file' => 'MyAccount',
+);
+$admin_actions['Groups'] = array(
+    'normal' => true,
+    'file' => 'Groups',
+);
+$admin_actions['OnlineUsers'] = array(
+    'normal' => true,
+    'file' => 'OnlineUsers',
+);
+$admin_actions['Properties'] = array(
+    'normal' => true,
+    'file' => 'Properties',
+);
+$admin_actions['LoadAvatar'] = array(
+    'standalone' => true,
+    'file' => 'Avatar',
+);
+$admin_actions['UploadAvatar'] = array(
+    'standalone' => true,
+    'file' => 'Avatar',
+);
