@@ -37,3 +37,51 @@ $actions['PagesTree'] = array(
     'normal' => true,
     'file'   => 'Page',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['ManagePages'] = array(
+    'normal' => true,
+    'file'   => 'Page',
+);
+$admin_actions['AddPage'] = array(
+    'normal' => true,
+    'file'   => 'Page',
+);
+$admin_actions['AddNewPage'] = array(
+    'normal' => true,
+    'file'   => 'Page',
+);
+$admin_actions['EditPage'] = array(
+    'normal' => true,
+    'file'   => 'Page',
+);
+$admin_actions['SaveEditPage'] = array(
+    'normal' => true,
+    'file'   => 'Page',
+);
+$admin_actions['Groups'] = array(
+    'normal' => true,
+    'file'   => 'Group',
+);
+$admin_actions['Properties'] = array(
+    'normal' => true,
+    'file'   => 'Settings',
+);
+$admin_actions['AddNewTranslation'] = array(
+    'normal' => true,
+    'file'   => 'Translation',
+);
+$admin_actions['AddTranslation'] = array(
+    'normal' => true,
+    'file'   => 'Translation',
+);
+$admin_actions['EditTranslation'] = array(
+    'normal' => true,
+    'file'   => 'Translation',
+);
+$admin_actions['SaveEditTranslation'] = array(
+    'normal' => true,
+    'file'   => 'Translation',
+);
