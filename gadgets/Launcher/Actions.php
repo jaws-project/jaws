@@ -9,9 +9,10 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 /* Actions*/
-$actions = array();
 
-/* Layout actions */
+/**
+ * Index actions
+ */
 $actions['Execute'] = array(
     'normal' => true,
     'layout' => true,
