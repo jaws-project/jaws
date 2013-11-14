@@ -17,3 +17,11 @@ $actions['Block'] = array(
     'file'   => 'Block',
     'parametric' => true,
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Block'] = array(
+    'normal' => true,
+    'file'   => 'Block',
+);
