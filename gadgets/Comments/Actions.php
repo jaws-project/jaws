@@ -47,3 +47,15 @@ $actions['RecentCommentsAtom'] = array(
     'standalone' => true,
     'file' => 'Feeds',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Comments'] = array(
+    'normal' => true,
+    'file' => 'Comments',
+);
+$admin_actions['Settings'] = array(
+    'normal' => true,
+    'file' => 'Settings',
+);
