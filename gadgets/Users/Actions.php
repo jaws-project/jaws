@@ -9,8 +9,10 @@
  * @copyright   2004-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-$actions = array();
 
+/**
+ * Index actions
+ */
 $actions['LoginBox'] = array(
     'normal' => true,
     'layout' => true,
