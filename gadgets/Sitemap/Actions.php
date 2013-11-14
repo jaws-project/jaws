@@ -50,3 +50,11 @@ $actions['Breadcrumb'] = array(
     'layout' => true,
     'file'   => 'Breadcrumb'
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['ManageSitemap'] = array(
+    'normal' => true,
+    'file'   => 'ManageSitemap',
+);
