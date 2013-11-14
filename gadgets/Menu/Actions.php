@@ -20,3 +20,19 @@ $actions['LoadImage'] = array(
     'standalone' => true,
     'file' => 'Menu'
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Menu'] = array(
+    'normal' => true,
+    'file' => 'Menu'
+);
+$admin_actions['UploadImage'] = array(
+    'standalone' => true,
+    'file' => 'Menu'
+);
+$admin_actions['LoadImage'] = array(
+    'standalone' => true,
+    'file' => 'Menu'
+);
