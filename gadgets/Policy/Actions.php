@@ -16,3 +16,27 @@ $actions['Captcha'] = array(
     'variable' => true,
     'file' => 'Captcha',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['IPBlocking'] = array(
+    'normal' => true,
+    'file' => 'IP',
+);
+$admin_actions['AgentBlocking'] = array(
+    'normal' => true,
+    'file' => 'Agent',
+);
+$admin_actions['Encryption'] = array(
+    'normal' => true,
+    'file' => 'Encryption',
+);
+$admin_actions['AntiSpam'] = array(
+    'normal' => true,
+    'file' => 'AntiSpam',
+);
+$admin_actions['AdvancedPolicies'] = array(
+    'normal' => true,
+    'file' => 'AdvancedPolicies',
+);
