@@ -35,3 +35,27 @@ $actions['Send'] = array(
     'normal' => true,
     'file' => 'Send'
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Contacts'] = array(
+    'normal' => true,
+    'file' => 'Contacts'
+);
+$admin_actions['Recipients'] = array(
+    'normal' => true,
+    'file' => 'Recipients'
+);
+$admin_actions['Properties'] = array(
+    'normal' => true,
+    'file' => 'Properties'
+);
+$admin_actions['Mailer'] = array(
+    'normal' => true,
+    'file' => 'Mailer'
+);
+$admin_actions['UploadFile'] = array(
+    'standalone' => true,
+    'file' => 'Mailer'
+);
