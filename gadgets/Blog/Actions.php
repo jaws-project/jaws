@@ -9,8 +9,10 @@
  * @copyright   2004-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$actions = array();
 
+/**
+ * Index actions
+ */
 $actions['DefaultAction'] = array(
     'normal' => true,
     'file'   => 'Default',
@@ -47,7 +49,6 @@ $actions['ShowCategory'] = array(
     'normal' => true,
     'file'   => 'Categories',
 );
-
 $actions['CategoryEntries'] = array(
     'layout' => true,
     'parametric' => true,
