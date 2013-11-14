@@ -30,3 +30,11 @@ $actions['RSS'] = array(
     'standalone' => true,
     'file' => 'Feeds'
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['LinkDump'] = array(
+    'normal' => true,
+    'file'   => 'LinkDump'
+);
