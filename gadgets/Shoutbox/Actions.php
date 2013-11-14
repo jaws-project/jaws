@@ -22,3 +22,15 @@ $actions['GetComments'] = array(
     'standalone' => true,
     'file'   => 'Comments',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Comments'] = array(
+    'normal' => true,
+    'file'   => 'Comments',
+);
+$admin_actions['Settings'] = array(
+    'normal' => true,
+    'file'   => 'Settings',
+);
