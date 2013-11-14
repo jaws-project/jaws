@@ -8,9 +8,10 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$actions = array();
 
-/* Manage Actions */
+/**
+ * Index actions
+ */
 $actions['ManageEvents'] = array(
     'normal' => true,
     'file' => 'ManageEvents'
@@ -59,8 +60,6 @@ $actions['Pager'] = array(
     'standalone' => true,
     'file' => 'Pager'
 );
-
-/* Calendar Actions */
 $actions['ViewEvent'] = array(
     'normal' => true,
     'file' => 'ViewEvent'
