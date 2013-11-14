@@ -8,17 +8,19 @@
  * @copyright   2012-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-$actions = array();
 
-$actions['Themes'] = array(
+/**
+ * Admin actions
+ */
+$admin_actions['Themes'] = array(
     'normal' => true,
     'file' => 'Themes'
 );
-$actions['UploadTheme'] = array(
+$admin_actions['UploadTheme'] = array(
     'normal' => true,
     'file' => 'Themes'
 );
-$actions['DownloadTheme'] = array(
+$admin_actions['DownloadTheme'] = array(
     'standalone' => true,
     'file' => 'Themes'
 );
