@@ -8,8 +8,10 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-$actions = array();
 
+/**
+ * Index actions
+ */
 $actions['LayoutSwitch'] = array(
     'standalone' => true,
     'file' => 'Layout',
