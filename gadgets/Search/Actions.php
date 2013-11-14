@@ -9,8 +9,10 @@
  * @copyright   2004-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-$actions = array();
 
+/**
+ * Index actions
+ */
 $actions['Box'] = array(
     'normal' => true,
     'layout' => true,
@@ -21,7 +23,6 @@ $actions['SimpleBox'] = array(
     'layout' => true,
     'file'   => 'Search',
 );
-
 $actions['AdvancedBox'] = array(
     'normal' => true,
     'layout' => true,
