@@ -5,8 +5,10 @@
  * @category   GadgetActions
  * @package    AddressBook
  */
-$actions = array();
 
+/**
+ * Index actions
+ */
 $actions['AddressBook'] = array(
     'normal' => true,
     'file'   => 'AddressBook',
