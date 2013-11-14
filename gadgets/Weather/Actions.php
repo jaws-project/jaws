@@ -22,3 +22,19 @@ $actions['AllRegionsWeather'] = array(
     'layout' => true,
     'file' => 'RegionWeather',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Regions'] = array(
+    'normal' => true,
+    'file' => 'Regions',
+);
+$admin_actions['Properties'] = array(
+    'normal' => true,
+    'file' => 'Properties',
+);
+$admin_actions['GetGoogleMapImage'] = array(
+    'standalone' => true,
+    'file' => 'GoogleMap',
+);
