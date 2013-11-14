@@ -51,3 +51,99 @@ $actions['Groups'] = array(
     'layout' => true,
     'file' => 'Groups',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['UploadPhotos'] = array(
+    'normal' => true,
+    'file' => 'Upload',
+);
+$admin_actions['UploadPhotosStep2'] = array(
+    'normal' => true,
+    'file' => 'Upload',
+);
+$admin_actions['EditPhoto'] = array(
+    'normal' => true,
+    'file' => 'Photos',
+);
+$admin_actions['SaveEditPhoto'] = array(
+    'normal' => true,
+    'file' => 'Photos',
+);
+$admin_actions['AdminPhotos'] = array(
+    'normal' => true,
+    'file' => 'Photos',
+);
+$admin_actions['ManageAlbums'] = array(
+    'normal' => true,
+    'file' => 'Albums',
+);
+$admin_actions['DeletePhoto'] = array(
+    'normal' => true,
+    'file' => 'Photos',
+);
+$admin_actions['NewAlbum'] = array(
+    'normal' => true,
+    'file' => 'Albums',
+);
+$admin_actions['SaveNewAlbum'] = array(
+    'normal' => true,
+    'file' => 'Albums',
+);
+$admin_actions['EditAlbum'] = array(
+    'normal' => true,
+    'file' => 'Albums',
+);
+$admin_actions['SaveEditAlbum'] = array(
+    'normal' => true,
+    'file' => 'Albums',
+);
+$admin_actions['DeleteAlbum'] = array(
+    'normal' => true,
+    'file' => 'Albums',
+);
+$admin_actions['RotateLeft'] = array(
+    'normal' => true,
+    'file' => 'Rotate',
+);
+$admin_actions['RotateRight'] = array(
+    'normal' => true,
+    'file' => 'Rotate',
+);
+$admin_actions['ManageComments'] = array(
+    'normal' => true,
+    'file' => 'Comments',
+);
+$admin_actions['AdditionalSettings'] = array(
+    'normal' => true,
+    'file' => 'Settings',
+);
+$admin_actions['SaveAdditionalSettings'] = array(
+    'normal' => true,
+    'file' => 'Settings',
+);
+$admin_actions['Import'] = array(
+    'normal' => true,
+    'file' => 'Import',
+);
+$admin_actions['FinishImport'] = array(
+    'normal' => true,
+    'file' => 'Import',
+);
+$admin_actions['Groups'] = array(
+    'normal' => true,
+    'file' => 'Groups',
+);
+$admin_actions['Thumb'] = array(
+    'standalone' => true,
+    'file' => 'Thumb',
+);
+$admin_actions['BrowsePhoo'] = array(
+    'standalone' => true,
+    'file' => 'BrowsePhoo',
+);
+$admin_actions['SelectImage'] = array(
+    'standalone' => true,
+    'file' => 'SelectImage',
+);
