@@ -27,3 +27,27 @@ $actions['InitialFolder'] = array(
     'layout' => true,
     'file' => 'Directory',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Files'] = array(
+    'normal' => true,
+    'file' => 'Files',
+);
+$admin_actions['UploadFile'] = array(
+    'standalone' => true,
+    'file' => 'Files',
+);
+$admin_actions['BrowseFile'] = array(
+    'standalone' => true,
+    'file' => 'Files',
+);
+$admin_actions['DeleteFile'] = array(
+    'standalone' => true,
+    'file' => 'Files',
+);
+$admin_actions['DeleteDir'] = array(
+    'standalone' => true,
+    'file' => 'Directory',
+);
