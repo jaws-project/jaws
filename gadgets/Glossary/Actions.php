@@ -22,3 +22,11 @@ $actions['ListOfTerms'] = array(
     'layout' => true,
     'file'   => 'Term',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Term'] = array(
+    'normal' => true,
+    'file' => 'Term',
+);
