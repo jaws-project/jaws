@@ -20,3 +20,11 @@ $actions['GetFeed'] = array(
     'normal' => true,
     'file'   => 'Feed'
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['ManageFeeds'] = array(
+    'normal' => true,
+    'file' => 'Feed',
+);
