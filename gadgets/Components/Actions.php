@@ -13,3 +13,27 @@ $actions['Version'] = array(
     'standalone' => true,
     'file' => 'Version',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Gadgets'] = array(
+    'normal' => true,
+    'file' => 'Gadgets',
+);
+$admin_actions['Plugins'] = array(
+    'normal' => true,
+    'file' => 'Plugins',
+);
+$admin_actions['InstallGadget'] = array(
+    'normal' => true,
+    'file' => 'GadgetInstaller',
+);
+$admin_actions['UpgradeGadget'] = array(
+    'normal' => true,
+    'file' => 'GadgetInstaller',
+);
+$admin_actions['UninstallGadget'] = array(
+    'normal' => true,
+    'file' => 'GadgetInstaller',
+);
