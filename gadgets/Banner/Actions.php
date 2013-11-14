@@ -5,8 +5,10 @@
  * @category    GadgetActions
  * @package     Banner
  */
-$actions = array();
 
+/**
+ * Index actions
+ */
 $actions['Banners'] = array(
     'layout' => true,
     'parametric' => true,
