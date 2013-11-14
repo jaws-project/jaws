@@ -32,3 +32,15 @@ $actions['QuotesByGroup'] = array(
     'standalone' => true,
     'file'   => 'Quotes',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Quotes'] = array(
+    'normal' => true,
+    'file'   => 'Quotes',
+);
+$admin_actions['QuoteGroups'] = array(
+    'normal' => true,
+    'file'   => 'Groups',
+);
