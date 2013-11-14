@@ -30,3 +30,27 @@ $actions['DirInfo'] = array(
 	'layout' => true,
     'file' => 'DirInfo',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Admin'] = array(
+    'normal' => true,
+    'file' => 'Default',
+);
+$admin_actions['SysInfo'] = array(
+    'normal' => true,
+    'file' => 'SysInfo',
+);
+$admin_actions['PHPInfo'] = array(
+    'normal' => true,
+    'file' => 'PHPInfo',
+);
+$admin_actions['JawsInfo'] = array(
+    'normal' => true,
+    'file' => 'JawsInfo',
+);
+$admin_actions['DirInfo'] = array(
+    'normal' => true,
+    'file' => 'DirInfo',
+);
