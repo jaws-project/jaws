@@ -18,7 +18,6 @@ class Forums_Hooks_ACL extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $language = $this->gadget->registry->fetch('admin_language', 'Settings');
         $fModel = $this->gadget->model->load('Forums');
         $items = $fModel->GetForums();
         if (!Jaws_Error::IsError($items)) {

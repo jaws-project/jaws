@@ -18,7 +18,6 @@ class Forums_Actions_Admin_Forums extends Jaws_Gadget_Action
      */
     function Forums()
     {
-        $this->gadget->CheckPermission('ManageForums');
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('Forums.html');
         $tpl->SetBlock('forums');
@@ -38,6 +37,9 @@ class Forums_Actions_Admin_Forums extends Jaws_Gadget_Action
             $forums = $fModel->GetForums($group['id']);
             if (!Jaws_Error::IsError($forums)) {
                 foreach ($forums as $forum) {
+                    if(!$this->gadget->GetPermission('ForumManage', $forum['id'])) {
+                        continue;
+                    }
                     $tpl->SetBlock('forums/group/forum');
                     $tpl->SetVariable('fid', $forum['id']);
                     $tpl->SetVariable('icon', 'gadgets/Forums/Resources/images/menu-item.png');
