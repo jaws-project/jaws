@@ -18,7 +18,7 @@ class Sitemap_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @param   object $gadget Jaws_Gadget object
      * @return  void
      */
-    function Sitemap_AdminAjax($gadget)
+    function Sitemap_Actions_Admin_Ajax($gadget)
     {
         parent::__construct($gadget);
         $this->_Model = $this->gadget->model->loadAdmin('Sitemap');
