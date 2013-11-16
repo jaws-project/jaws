@@ -32,6 +32,9 @@ class StaticPage_Hooks_Menu extends Jaws_Gadget_Hook
         $gModel  = $this->gadget->model->load('Group');
         $groups = $gModel->GetGroups(true);
         foreach($groups as $group) {
+            if (!$this->gadget->GetPermission('AccessGroup', $group['id'])) {
+                continue;
+            }
             $url   = $GLOBALS['app']->Map->GetURLFor(
                                             'StaticPage',
                                             'GroupPages',

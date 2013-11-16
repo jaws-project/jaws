@@ -71,6 +71,9 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($group) || $group == null) {
             return false;
         }
+        if (!$this->gadget->GetPermission('AccessGroup', $group['id'])) {
+            return Jaws_HTTPError::Get(403);
+        }
 
         $GLOBALS['app']->Layout->AddToMetaKeywords($group['meta_keywords']);
         $GLOBALS['app']->Layout->SetDescription($group['meta_description']);
@@ -121,6 +124,9 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
         $tpl->SetBlock('group_index');
         $tpl->SetVariable('title', _t('STATICPAGE_GROUPS_LIST'));
         foreach ($groups as $group) {
+            if (!$this->gadget->GetPermission('AccessGroup', $group['id'])) {
+                continue;
+            }
             $gid = empty($group['fast_url'])? $group['id'] : $group['fast_url'];
             $link = $GLOBALS['app']->Map->GetURLFor('StaticPage', 'GroupPages', array('gid' => $gid));
             $tpl->SetBlock('group_index/item');

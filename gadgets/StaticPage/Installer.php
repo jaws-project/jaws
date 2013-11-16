@@ -60,6 +60,8 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
+        $this->gadget->acl->insert('AccessGroup', 1, true);
+        $this->gadget->acl->insert('ManageGroup', 1, true);
         return true;
     }
 

@@ -110,6 +110,9 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
             $groups = $model->GetGroups();
             $combo =& Piwi::CreateWidget('Combo', 'group_id');
             foreach ($groups as $group) {
+                if (!$this->gadget->GetPermission('AccessGroup', $group['id'])) {
+                    continue;
+                }
                 $combo->AddOption($group['title'], $group['id']);
             }
             $combo->SetTitle(_t('STATICPAGE_GROUP'));

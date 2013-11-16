@@ -60,6 +60,9 @@ class StaticPage_Hooks_Search extends Jaws_Gadget_Hook
         $date  = Jaws_Date::getInstance();
         $pages = array();
         foreach ($result as $p) {
+            if (!$this->gadget->GetPermission('AccessGroup', $p['group_id'])) {
+                continue;
+            }
             $page = array();
             $page['title'] = $p['title'];
             $url = $GLOBALS['app']->Map->GetURLFor(

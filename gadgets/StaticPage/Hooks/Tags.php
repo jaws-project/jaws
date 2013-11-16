@@ -24,7 +24,7 @@ class StaticPage_Hooks_Tags extends Jaws_Gadget_Hook
         }
 
         $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
-        $sptTable->select('page_id:integer', 'title', 'content', 'language', 'fast_url', 'static_pages_translation.updated');
+        $sptTable->select('page_id:integer', 'group_id', 'title', 'content', 'language', 'fast_url', 'static_pages_translation.updated');
         $sptTable->join('static_pages', 'static_pages.page_id', 'static_pages_translation.base_id');
         $result = $sptTable->where('translation_id', $tag_items['page'], 'in')->fetchAll();
         if (Jaws_Error::IsError($result)) {
@@ -34,6 +34,9 @@ class StaticPage_Hooks_Tags extends Jaws_Gadget_Hook
         $date = Jaws_Date::getInstance();
         $pages = array();
         foreach ($result as $p) {
+            if (!$this->gadget->GetPermission('AccessGroup', $p['group_id'])) {
+                continue;
+            }
             $page = array();
             $page['title'] = $p['title'];
             $url = $this->gadget->urlMap(

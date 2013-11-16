@@ -116,6 +116,9 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
         }
         $result = array();
         foreach ($groups as $group) {
+            if (!$this->gadget->GetPermission('AccessGroup', $group['id'])) {
+                continue;
+            }
             $groupData = array();
 
             $groupData['title']  = ($group['visible'])? $group['title'] : '<font color="#aaa">'.$group['title'].'</font>';;

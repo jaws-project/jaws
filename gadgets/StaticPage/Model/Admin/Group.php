@@ -41,6 +41,8 @@ class StaticPage_Model_Admin_Group extends StaticPage_Model_Group
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
         }
 
+        $this->gadget->acl->insert('AccessGroup', $res, true);
+        $this->gadget->acl->insert('ManageGroup', $res, true);
         return true;
     }
 
@@ -112,6 +114,8 @@ class StaticPage_Model_Admin_Group extends StaticPage_Model_Group
             return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
         }
 
+        $this->gadget->acl->delete('AccessGroup', $gid);
+        $this->gadget->acl->delete('ManageGroup', $gid);
         return true;
     }
 

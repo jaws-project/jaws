@@ -29,6 +29,9 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
         $tpl->SetBlock('index');
         $tpl->SetVariable('title', _t('STATICPAGE_PAGES_LIST'));
         foreach ($pages as $page) {
+            if (!$this->gadget->GetPermission('AccessGroup', $page['group_id'])) {
+                continue;
+            }
             if ($page['published'] === true) {
                 $param = array('pid' => empty($page['fast_url']) ? $page['base_id'] : $page['fast_url']);
                 $link = $GLOBALS['app']->Map->GetURLFor('StaticPage', 'Page', $param);
@@ -80,57 +83,60 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
         $page = $pModel->GetPage($page_id,  $page_language);
         if (Jaws_Error::IsError($page) || empty($page)) {
             return Jaws_HTTPError::Get(404);
+        }
+        if (!$this->gadget->GetPermission('AccessGroup', $page['group_id'])) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        //add static page language to meta language tag
+        $this->AddToMetaLanguages($page_language);
+
+        $tpl = $this->gadget->template->load('StaticPage.html');
+        $tpl->SetBlock('page');
+
+        if (!$page['published'] &&
+            !$GLOBALS['app']->Session->IsSuperAdmin() &&
+            $page['user'] !== (int)$GLOBALS['app']->Session->GetAttribute('user'))
+        {
+            $this->SetTitle(_t('STATICPAGE_TITLE_NOT_FOUND'));
+            $tpl->SetVariable('content', _t('STATICPAGE_CONTENT_NOT_FOUND'));
+            $tpl->SetBlock('page/title');
+            $tpl->SetVariable('title', _t('STATICPAGE_TITLE_NOT_FOUND'));
+            $tpl->ParseBlock('page/title');
         } else {
-            //add static page language to meta language tag
-            $this->AddToMetaLanguages($page_language);
-
-            $tpl = $this->gadget->template->load('StaticPage.html');
-            $tpl->SetBlock('page');
-
-            if (!$page['published'] &&
-                !$GLOBALS['app']->Session->IsSuperAdmin() &&
-                $page['user'] !== (int)$GLOBALS['app']->Session->GetAttribute('user'))
-            {
-                $this->SetTitle(_t('STATICPAGE_TITLE_NOT_FOUND'));
-                $tpl->SetVariable('content', _t('STATICPAGE_CONTENT_NOT_FOUND'));
+            $this->SetTitle($page['title']);
+            $this->AddToMetaKeywords($page['meta_keywords']);
+            $this->SetDescription($page['meta_description']);
+            $text = $this->gadget->ParseText($page['content']);
+            $tpl->SetVariable('content', $text, false);
+            if ($page['show_title'] === true) {
                 $tpl->SetBlock('page/title');
-                $tpl->SetVariable('title', _t('STATICPAGE_TITLE_NOT_FOUND'));
+                $tpl->SetVariable('title', $page['title']);
                 $tpl->ParseBlock('page/title');
-            } else {
-                $this->SetTitle($page['title']);
-                $this->AddToMetaKeywords($page['meta_keywords']);
-                $this->SetDescription($page['meta_description']);
-                $text = $this->gadget->ParseText($page['content']);
-                $tpl->SetVariable('content', $text, false);
-                if ($page['show_title'] === true) {
-                    $tpl->SetBlock('page/title');
-                    $tpl->SetVariable('title', $page['title']);
-                    $tpl->ParseBlock('page/title');
-                }
+            }
 
-                if ($this->gadget->registry->fetch('multilanguage') == 'yes') {
-                    $translations = $tModel->GetTranslationsOfPage($page['page_id'], true);
-                    if (!Jaws_Error::isError($translations) && count($translations)>1) {
-                        $tpl->SetBlock('page/translations');
-                        $tpl->SetVariable('avail_trans', _t('STATICPAGE_AVAIL_TRANSLATIONS'));
-                        foreach ($translations as $trans) {
-                            //if ($page['language'] == $trans['language']) continue;
-                            $tpl->SetBlock('page/translations/language');
-                            $tpl->SetVariable('lang', $trans['language']);
-                            if ($base_action == 'Pages') {
-                                $param = array('gid' => !empty($group['fast_url'])? $group['fast_url'] : $group['id'],
-                                    'pid' => !empty($page['fast_url'])? $page['fast_url'] : $page['page_id'],
-                                    'language' => $trans['language']);
-                                $tpl->SetVariable('url', $this->gadget->urlMap('Pages', $param));
-                            } else {
-                                $param = array('pid' => !empty($page['fast_url']) ? $page['fast_url'] : $page['page_id'],
-                                    'language' => $trans['language']);
-                                $tpl->SetVariable('url', $this->gadget->urlMap('Page', $param));
-                            }
-                            $tpl->ParseBlock('page/translations/language');
+            if ($this->gadget->registry->fetch('multilanguage') == 'yes') {
+                $translations = $tModel->GetTranslationsOfPage($page['page_id'], true);
+                if (!Jaws_Error::isError($translations) && count($translations)>1) {
+                    $tpl->SetBlock('page/translations');
+                    $tpl->SetVariable('avail_trans', _t('STATICPAGE_AVAIL_TRANSLATIONS'));
+                    foreach ($translations as $trans) {
+                        //if ($page['language'] == $trans['language']) continue;
+                        $tpl->SetBlock('page/translations/language');
+                        $tpl->SetVariable('lang', $trans['language']);
+                        if ($base_action == 'Pages') {
+                            $param = array('gid' => !empty($group['fast_url'])? $group['fast_url'] : $group['id'],
+                                'pid' => !empty($page['fast_url'])? $page['fast_url'] : $page['page_id'],
+                                'language' => $trans['language']);
+                            $tpl->SetVariable('url', $this->gadget->urlMap('Pages', $param));
+                        } else {
+                            $param = array('pid' => !empty($page['fast_url']) ? $page['fast_url'] : $page['page_id'],
+                                'language' => $trans['language']);
+                            $tpl->SetVariable('url', $this->gadget->urlMap('Page', $param));
                         }
-                        $tpl->ParseBlock('page/translations');
+                        $tpl->ParseBlock('page/translations/language');
                     }
+                    $tpl->ParseBlock('page/translations');
                 }
             }
         }
@@ -176,6 +182,9 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
         }
 
         foreach ($groups as $group) {
+            if (!$this->gadget->GetPermission('AccessGroup', $group['id'])) {
+                continue;
+            }
             $tpl->SetBlock('pages_tree/g_item');
             $gid = empty($group['fast_url'])? $group['id'] : $group['fast_url'];
             $glink = $GLOBALS['app']->Map->GetURLFor('StaticPage', 'GroupPages', array('gid' => $gid));
