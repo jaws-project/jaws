@@ -44,6 +44,7 @@ class StaticPage_Model_Page extends Jaws_Gadget_Model
 
         $page = $spTable->fetchRow();
         if (!empty($page)) {
+            $page['tags'] = '';
             if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
                 $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
                 $tags = $model->GetItemTags(
