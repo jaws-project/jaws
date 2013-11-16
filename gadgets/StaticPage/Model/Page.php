@@ -25,7 +25,7 @@ class StaticPage_Model_Page extends Jaws_Gadget_Model
         $spTable = Jaws_ORM::getInstance()->table('static_pages as sp');
         $spTable->select(
             'sp.page_id:integer', 'sp.group_id:integer', 'spt.translation_id:integer', 'spt.language', 'spt.title',
-            'sp.fast_url', 'spt.published:boolean', 'sp.show_title', 'spt.content', 'spt.user:integer',
+            'sp.fast_url', 'spt.published:boolean', 'sp.show_title:boolean', 'spt.content', 'spt.user:integer',
             'spt.meta_keywords', 'spt.meta_description', 'spt.updated'
         );
         $spTable->join('static_pages_translation as spt',  'sp.page_id',  'spt.base_id');
