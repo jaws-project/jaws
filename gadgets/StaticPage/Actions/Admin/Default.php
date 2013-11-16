@@ -22,9 +22,9 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
      */
     function MenuBar($selected)
     {
-        $actions = array('Admin', 'AddNewPage','PreviewAddPage', 'Groups', 'Properties');
+        $actions = array('ManagePages', 'AddNewPage','PreviewAddPage', 'Groups', 'Properties');
         if (!in_array($selected, $actions)) {
-            $selected = 'Admin';
+            $selected = 'ManagePages';
         }
 
         if ($selected == 'PreviewAddPage') {
@@ -32,8 +32,8 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
         }
 
         $menubar = new Jaws_Widgets_Menubar();
-        $menubar->AddOption('Admin', _t('STATICPAGE_MENU_PAGES'),
-                            BASE_SCRIPT . '?gadget=StaticPage&amp;action=Admin', STOCK_DOCUMENTS);
+        $menubar->AddOption('ManagePages', _t('STATICPAGE_MENU_PAGES'),
+                            BASE_SCRIPT . '?gadget=StaticPage&amp;action=ManagePages', STOCK_DOCUMENTS);
 
         if ($this->gadget->GetPermission('AddPage')) {
             $menubar->AddOption('AddNewPage', _t('STATICPAGE_MENU_ADDPAGE'),

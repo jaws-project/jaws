@@ -253,7 +253,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         $model->AddPage($post['title'], $post['group_id'], $post['show_title'], $post['content'], $post['language'],
             $post['fast_url'], $post['meta_keys'], $post['meta_desc'], $post['tags'], $post['published']);
 
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=Admin');
+        Jaws_Header::Location(BASE_SCRIPT . '?gadget=StaticPage&action=ManagePages');
     }
 
     /**
