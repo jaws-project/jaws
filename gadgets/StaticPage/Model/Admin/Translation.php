@@ -30,7 +30,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
     {
         // Language exists?
         $language = str_replace(array('.', '/'), '', $language);
-        if (!file_exists(JAWS_PATH . "languages/$language/FullName")) {
+        if ($language != 'en' && !file_exists(JAWS_PATH . "languages/$language/FullName")) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_LANGUAGE_NOT_EXISTS', $language), RESPONSE_ERROR);
             return new Jaws_Error(_t('STATICPAGE_ERROR_LANGUAGE_NOT_EXISTS', $language), _t('STATICPAGE_NAME'));
         }
