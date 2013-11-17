@@ -244,6 +244,5 @@ function toggleCheckboxes(checkStatus)
 
 
 var AddressBookAjax = new JawsAjax('AddressBook', AddressBookCallback);
-AddressBookAjax.backwardSupport();
 var lastGroup = 0;
 var lastTerm = '';
