@@ -155,14 +155,12 @@ class Jaws_Gadget_Action
             } else {
                 $this->actions['index'] = array();
             }
-            $this->actions['index']['Ajax'] = array('name' => 'Ajax', 'standalone' => true, 'file' => 'Ajax');
 
             if (isset($admin_actions) && !empty($admin_actions)) {
                 $this->actions['admin'] = $admin_actions;
             } else {
                 $this->actions['admin'] = array();
             }
-            $this->actions['admin']['Ajax'] = array('name' => 'Ajax', 'standalone' => true, 'file' => 'Ajax');
         }
 
         return empty($script)? $this->actions : $this->actions[$script];
