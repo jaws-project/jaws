@@ -40,3 +40,27 @@ $admin_actions['GetGoogleMapImage'] = array(
     'standalone' => true,
     'file' => 'GoogleMap',
 );
+$admin_actions['GetRegion'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['InsertRegion'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateRegion'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteRegion'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateProperties'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetData'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
