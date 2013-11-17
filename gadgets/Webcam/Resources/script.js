@@ -11,7 +11,7 @@
  * Use async mode, create Callback
  */
 var WebcamCallback = { 
-    newwebcam: function(response) {
+    NewWebcam: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('webcam_datagrid').addItem();
             $('webcam_datagrid').setCurrentPage(0);
@@ -20,7 +20,7 @@ var WebcamCallback = {
         showResponse(response);
     },
 
-    deletewebcam: function(response) {
+    DeleteWebcam: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('webcam_datagrid').deleteItem();          
             getDG();
@@ -28,18 +28,18 @@ var WebcamCallback = {
         showResponse(response);
     },
     
-    updatewebcam: function(response) {
+    UpdateWebcam: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getDG();
         }
         showResponse(response);
     },
 
-    getwebcam: function(response) {
+    GetWebcam: function(response) {
         updateForm(response);
     },
 
-    updateproperties: function(response) {
+    UpdateProperties: function(response) {
         showResponse(response);
     }
 }
@@ -82,7 +82,7 @@ function addWebcam(form)
     }
 
     try {
-        WebcamAjax.callAsync('newwebcam', webcamTitle, webcamUrl, webcamRefresh);
+        WebcamAjax.callAsync('NewWebcam', webcamTitle, webcamUrl, webcamRefresh);
     } catch(e) {
         alert(e);
     }
@@ -99,7 +99,7 @@ function updateWebcam(form)
     var webcamUrl     = form.elements['url'].value;
     var webcamRefresh = form.elements['refresh'].value;
     
-    WebcamAjax.callAsync('updatewebcam', webcamId, webcamTitle, webcamUrl, webcamRefresh);
+    WebcamAjax.callAsync('UpdateWebcam', webcamId, webcamTitle, webcamUrl, webcamRefresh);
     cleanForm(form);
 }
 
@@ -120,7 +120,7 @@ function submitForm(form)
  */
 function deleteWebcam(id)
 {
-    WebcamAjax.callAsync('deletewebcam', id);
+    WebcamAjax.callAsync('DeleteWebcam', id);
     cleanForm($('webcam_form'));
 }
 
@@ -129,7 +129,7 @@ function deleteWebcam(id)
  */
 function editWebcam(id)
 {
-    WebcamAjax.callAsync('getwebcam', id);
+    WebcamAjax.callAsync('GetWebcam', id);
 }
 
 /**
@@ -139,7 +139,7 @@ function editWebcam(id)
 function updateProperties(form)
 {
     var limitRandom = form.elements['limit_random'].value;
-    WebcamAjax.callAsync('updateproperties', limitRandom);
+    WebcamAjax.callAsync('UpdateProperties', limitRandom);
 }
 
 var WebcamAjax = new JawsAjax('Webcam', WebcamCallback);
