@@ -46,3 +46,47 @@ $admin_actions['QuoteGroups'] = array(
     'normal' => true,
     'file'   => 'Groups',
 );
+$admin_actions['GetQuote'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetQuotes'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['InsertQuote'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateQuote'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteQuote'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['InsertGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GroupQuotesUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AddQuotesToGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
