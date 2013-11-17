@@ -194,3 +194,67 @@ $admin_actions['SaveAdditionalSettings'] = array(
     'normal' => true,
     'file'   => 'Settings',
 );
+$admin_actions['ParseText'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['SearchPosts'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['SizeOfSearch'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['SaveSettings'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetCategory'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetCategories'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AddCategory2'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateCategory2'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteCategory2'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['SearchTrackbacks'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['SizeOfTrackbacksSearch'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteEntries'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['ChangeEntryStatus'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteTrackbacks'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['TrackbackMarkAs'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AutoDraft'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
