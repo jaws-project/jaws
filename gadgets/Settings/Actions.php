@@ -36,3 +36,31 @@ $admin_actions['ProxySettings'] = array(
     'normal' => true,
     'file' => 'Proxy',
 );
+$admin_actions['Settings_Actions_Admin_Ajax'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateBasicSettings'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateAdvancedSettings'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateMetaSettings'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateMailSettings'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateFTPSettings'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateProxySettings'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
