@@ -168,37 +168,6 @@ class Jaws_Gadget_Action
 
 
     /**
-     * Ajax Admin stuff
-     *
-     * @access  public
-     * @return  string  JSON encoded string
-     */
-    public function Ajax()
-    {
-        if (JAWS_SCRIPT == 'admin') {
-            $objAjax = $this->gadget->action->loadAdmin('Ajax');
-        } else {
-            $objAjax = $this->gadget->action->load('Ajax');
-        }
-
-        $output = '';
-        $method = self::filter(jaws()->request->fetch('method', 'get'));
-        if (method_exists($objAjax, $method)) {
-            $output = $objAjax->$method();
-        } else {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, "Action $method in {$this->gadget->name}'s Ajax dosn't exist.");
-        }
-
-        // Set Headers
-        header('Content-Type: application/json; charset=utf-8');
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Pragma: no-cache');
-
-        return Jaws_UTF8::json_encode($output);
-    }
-
-
-    /**
      * Ajax the gadget adding the basic script links to build the interface
      *
      * @access  protected
