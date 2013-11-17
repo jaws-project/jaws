@@ -41,3 +41,23 @@ $admin_actions['VisitCounter'] = array(
     'normal' => true,
     'file' => 'VisitCounter'
 );
+$admin_actions['CleanEntries'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['ResetCounter'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetStartDate'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateProperties'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetData'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
