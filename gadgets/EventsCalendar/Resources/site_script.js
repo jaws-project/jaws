@@ -33,7 +33,6 @@ var ECCallback = {
  */
 function initEvents()
 {
-    ECAjax.backwardSupport();
 }
 
 /**
@@ -151,7 +150,6 @@ function deleteEvents()
  */
 function initShare()
 {
-    ECAjax.backwardSupport();
     $('sys_groups').selectedIndex = -1;
     Array.each($('event_users').options, function(opt) {
         sharedEventUsers[opt.value] = opt.text;
