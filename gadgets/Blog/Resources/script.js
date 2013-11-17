@@ -13,7 +13,7 @@
  */
 var BlogCallback = {
 
-    deleteentries: function(response) {
+    DeleteEntries: function(response) {
         if (response[0]['type'] == 'response_notice') {
             var rows = $('posts_datagrid').getSelectedRows();
             if (rows.length > 0) {
@@ -32,7 +32,7 @@ var BlogCallback = {
         showResponse(response);
     },
 
-    changeentrystatus: function(response) {
+    ChangeEntryStatus: function(response) {
         if (response[0]['type'] == 'response_notice') {
             PiwiGrid.multiSelect($('posts_datagrid'));
             resetLEForm();
@@ -45,7 +45,7 @@ var BlogCallback = {
         showResponse(response);
     },
 
-    deletetrackbacks: function(response) {
+    DeleteTrackbacks: function(response) {
         if (response[0]['type'] == 'response_notice') {
             var rows = $('trackbacks_datagrid').getSelectedRows();
             if (rows.length > 0) {
@@ -65,7 +65,7 @@ var BlogCallback = {
         showResponse(response);
     },
 
-    trackbackmarkas: function(response) {
+    TrackbackMarkAs: function(response) {
         if (response[0]['type'] == 'response_notice') {
             PiwiGrid.multiSelect($('trackbacks_datagrid'));
             resetLTBForm();
@@ -81,7 +81,7 @@ var BlogCallback = {
         showResponse(response);
     },
 
-    savesettings: function(response) {
+    SaveSettings: function(response) {
         showResponse(response);
     },
 
@@ -89,7 +89,7 @@ var BlogCallback = {
         fillCatInfoForm(response);
     },
 
-    addcategory: function(response) {
+    AddCategory: function(response) {
         showResponse(response);
         if (response[0]['type'] == 'response_notice') {
             stopAction();
@@ -97,7 +97,7 @@ var BlogCallback = {
         }
     },
 
-    updatecategory: function(response) {
+    UpdateCategory: function(response) {
         showResponse(response);
         if (response[0]['type'] == 'response_notice') {
             stopAction();
@@ -105,7 +105,7 @@ var BlogCallback = {
         }
     },
 
-    deletecategory: function(response) {
+    DeleteCategory: function(response) {
         showResponse(response);
         if (response[0]['type'] == 'response_notice') {
             stopAction();
@@ -113,7 +113,7 @@ var BlogCallback = {
         }
     },
 
-    autodraft: function(response) {
+    AutoDraft: function(response) {
         showSimpleResponse(response);
     }
 }
@@ -208,7 +208,7 @@ function parseText(form)
 {
     var title   = form.elements['title'].value;
     var content = getEditorValue('text_block');
-    content = BlogAjax.callSync('parsetext', content);
+    content = BlogAjax.callSync('ParseText', content);
 
     var preview = document.getElementById('preview');
     preview.style.display = 'block';
@@ -247,10 +247,10 @@ function searchTrackback()
  */
 function updatePostsDatagrid(period, cat, status, search, limit, resetCounter)
 {
-    var result = BlogAjax.callSync('searchposts', period, cat, status, search, limit);
+    var result = BlogAjax.callSync('SearchPosts', period, cat, status, search, limit);
     resetGrid('posts_datagrid', result);
     if (resetCounter) {
-        var size = BlogAjax.callSync('sizeofsearch', period, cat, status, search);
+        var size = BlogAjax.callSync('SizeOfSearch', period, cat, status, search);
         $('posts_datagrid').rowsSize    = size;
         $('posts_datagrid').setCurrentPage(0);
         $('posts_datagrid').updatePageCounter();
@@ -393,10 +393,10 @@ function lastValues()
  */
 function updateTrackbacksDatagrid(limit, filter, search, status, resetCounter)
 {
-    result = BlogAjax.callSync('searchtrackbacks', limit, filter, search, status);
+    result = BlogAjax.callSync('SearchTrackbacks', limit, filter, search, status);
     resetGrid('trackbacks_datagrid', result);
     if (resetCounter) {
-        var size = BlogAjax.callSync('sizeoftrackbackssearch', filter, search, status);
+        var size = BlogAjax.callSync('SizeOfTrackbacksSearch', filter, search, status);
         $('trackbacks_datagrid').rowsSize    = size;
         $('trackbacks_datagrid').setCurrentPage(0);
         $('trackbacks_datagrid').updatePageCounter();
@@ -411,7 +411,7 @@ function trackbackDelete(row_id)
 {
     var confirmation = confirm(deleteConfirm);
     if (confirmation) {
-        BlogAjax.callAsync('deletetrackbacks', row_id);
+        BlogAjax.callAsync('DeleteTrackbacks', row_id);
     }
 }
 
@@ -430,12 +430,12 @@ function trackbackDGAction(combo)
         if (selectedRows) {
             var confirmation = confirm(deleteConfirm);
             if (confirmation) {
-                BlogAjax.callAsync('deletetrackbacks', rows);
+                BlogAjax.callAsync('DeleteTrackbacks', rows);
             }
         }
     } else if (combo.value != '') {
         if (selectedRows) {
-            BlogAjax.callAsync('trackbackmarkas', rows, combo.value);
+            BlogAjax.callAsync('TrackbackMarkAs', rows, combo.value);
         }
     }
 }
@@ -455,12 +455,12 @@ function entryDGAction(combo)
         if (selectedRows) {
             var confirmation = confirm(deleteConfirm);
             if (confirmation) {
-                BlogAjax.callAsync('deleteentries', rows);
+                BlogAjax.callAsync('DeleteEntries', rows);
             }
         }
     } else if (combo.value != '') {
         if (selectedRows) {
-            BlogAjax.callAsync('changeentrystatus', rows, combo.value);
+            BlogAjax.callAsync('ChangeEntryStatus', rows, combo.value);
         }
     }
 }
@@ -483,7 +483,7 @@ function saveSettings(form)
     var trackback_status = form.elements['trackback_status'].value;
     var pingback         = form.elements['pingback'].value;
 
-    BlogAjax.callAsync('savesettings', defaultView, lastEntries, popularLimit, lastComments, recentComments, defaultCat, 
+    BlogAjax.callAsync('SaveSettings', defaultView, lastEntries, popularLimit, lastComments, recentComments, defaultCat, 
                       xmlLimit, comments, comment_status, trackback, trackback_status,
                       pingback);
 }
@@ -498,7 +498,7 @@ function editCategory(id)
 
     $('legend_title').innerHTML = editCategory_title;
     $('btn_delete').style.display = 'inline';
-    var category = BlogAjax.callSync('getcategory', id);
+    var category = BlogAjax.callSync('GetCategory', id);
 
     $('name').value             = category['name'];
     $('fast_url').value         = category['fast_url'];
@@ -521,7 +521,7 @@ function resetCategoryForm()
  */
 function resetCategoryCombo()
 {
-    var categories = BlogAjax.callSync('getcategories');
+    var categories = BlogAjax.callSync('GetCategories');
     $('category_id').innerHTML = '';
     categories.each(function (item, key){
         var newoption = new Option(item['name'], item['id']);
@@ -543,14 +543,14 @@ function saveCategory(form)
     }
 
     if (selectedCategory == null) {
-        BlogAjax.callAsync('addcategory',
+        BlogAjax.callAsync('AddCategory',
                             $('name').value,
                             $('description').value,
                             $('fast_url').value,
                             $('meta_keywords').value,
                             $('meta_desc').value);
     } else {
-        BlogAjax.callAsync('updatecategory',
+        BlogAjax.callAsync('UpdateCategory',
                             selectedCategory,
                             $('name').value,
                             $('description').value,
@@ -576,7 +576,7 @@ function fillCatInfoForm(content)
 function deleteCategory()
 {
     if (confirm(deleteMessage)) {
-        BlogAjax.callAsync('deletecategory', selectedCategory);
+        BlogAjax.callAsync('DeleteCategory', selectedCategory);
     }
 }
 
@@ -642,7 +642,7 @@ function startAutoDrafting()
                 break;
         }
 
-        BlogAjax.callAsync('autodraft', id, categories, title, summary, content, fasturl, meta_keywords, meta_desc,
+        BlogAjax.callAsync('AutoDraft', id, categories, title, summary, content, fasturl, meta_keywords, meta_desc,
                             tags, allow_comments, trackbacks, published, timestamp);
     }
     setTimeout('startAutoDrafting();', 120000);
