@@ -45,3 +45,27 @@ $admin_actions['AddLayoutElement'] = array(
     'standalone' => true,
     'file' => 'Element',
 );
+$admin_actions['MoveElement'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteElement'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['ChangeDisplayWhen2'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetGadgetActions'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AddGadget'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['EditElementAction2'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
