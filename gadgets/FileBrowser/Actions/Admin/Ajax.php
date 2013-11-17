@@ -147,7 +147,7 @@ class FileBrowser_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @internal param  string  $file   File name
      * @return   array  Response array (notice or error)
      */
-    function DeleteFile()
+    function DeleteFile2()
     {
         $this->gadget->CheckPermission('ManageFiles');
         @list($path, $file) = jaws()->request->fetchAll('post');
@@ -168,7 +168,7 @@ class FileBrowser_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @internal param  string  $dir    Directory name
      * @return   array  Response array (notice or error)
      */
-    function DeleteDir()
+    function DeleteDir2()
     {
         $this->gadget->CheckPermission('ManageDirectories');
         @list($path, $dir) = jaws()->request->fetchAll('post');

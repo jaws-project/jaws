@@ -27,7 +27,7 @@ var FileBrowserCallback = {
         showResponse(response);
     },
 
-    DeleteFile: function(response) {
+    DeleteFile2: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG('fb_datagrid');
@@ -35,7 +35,7 @@ var FileBrowserCallback = {
         showResponse(response);
     },
 
-    DeleteDir: function(response) {
+    DeleteDir2: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG('fb_datagrid');
@@ -193,7 +193,7 @@ function saveFile()
 function delFile(element, file)
 {
     if (confirm(confirmFileDelete)) {
-        FileBrowserAjax.callAsync('DeleteFile', $('path').value, file);
+        FileBrowserAjax.callAsync('DeleteFile2', $('path').value, file);
     }
 }
 
@@ -244,7 +244,7 @@ function saveDir()
 function delDir(element, dir)
 {
     if (confirm(confirmDirDelete)) {
-        FileBrowserAjax.callAsync('DeleteDir', $('path').value, dir);
+        FileBrowserAjax.callAsync('DeleteDir2', $('path').value, dir);
     }
     
 }
