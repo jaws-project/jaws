@@ -11,14 +11,14 @@
  * Use async mode, create Callback
  */
 var LanguagesCallback = {
-    savelanguage: function(response) {
+    SaveLanguage: function(response) {
         if (response[0]['type'] == 'response_notice') {
             setTimeout( "refresh()", 1000);
         }
         showResponse(response);
     },
 
-    setlangdata: function(response) {
+    SetLangData: function(response) {
         if (response[0]['type'] == 'response_notice') {
             changeColorOfTranslatedTerms();
         }
@@ -43,7 +43,7 @@ function save_lang()
         !$('lang_name').value.blank())
     {
         lang_str = $('lang_code').value.trim() + ';' + $('lang_name').value.trim();
-        LanguagesAjax.callAsync('savelanguage', lang_str);
+        LanguagesAjax.callAsync('SaveLanguage', lang_str);
     }
 }
 
@@ -137,7 +137,7 @@ function change_lang_option()
     {
         $('btn_save').style.visibility = 'visible';
         $('btn_cancel').style.visibility = 'visible';
-        $('lang_strings').innerHTML = LanguagesAjax.callSync('getlangdataui', $('component').value, $('lang').value);
+        $('lang_strings').innerHTML = LanguagesAjax.callSync('GetLangDataUI', $('component').value, $('lang').value);
         filterTranslated();
     }
 }
@@ -165,7 +165,7 @@ function save_lang_data()
         data['strings'][strings_elements[i].name] = strings_elements[i].value;
     }
 
-    LanguagesAjax.callAsync('setlangdata', component, lang, data);
+    LanguagesAjax.callAsync('SetLangData', component, lang, data);
     LangDataChanged = false;
     data = null;
 }
