@@ -148,3 +148,31 @@ $admin_actions['SelectImage'] = array(
     'standalone' => true,
     'file' => 'SelectImage',
 );
+$admin_actions['ImportImage'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdatePhoto'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AddGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetAlbums'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
