@@ -32,3 +32,15 @@ $admin_actions['EditEmblem'] = array(
     'normal' => true,
     'file'   => 'Emblems'
 );
+$admin_actions['UpdateEmblem'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteEmblem'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetData'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
