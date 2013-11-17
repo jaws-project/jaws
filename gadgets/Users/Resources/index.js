@@ -46,4 +46,3 @@ function updatePreferences(form)
 }
 
 var UsersAjax = new JawsAjax('Users', UsersCallback);
-UsersAjax.backwardSupport();
