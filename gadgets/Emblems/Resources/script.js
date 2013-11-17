@@ -12,11 +12,11 @@
  * Use async mode, create Callback
  */
 var EmblemsCallback = {
-    updateemblem: function(response) {
+    UpdateEmblem: function(response) {
         showResponse(response);
     },
 
-    deleteemblem: function(response) {
+    DeleteEmblem: function(response) {
         showResponse(response);
         if (response[0]['type'] == 'response_notice') {
             $('emblems_datagrid').deleteItem();                                  
@@ -39,7 +39,7 @@ function updateEmblem(id, el)
             url: inputs[1].value,
             published: inputs[2].checked
         };
-    EmblemsAjax.callAsync('updateemblem', id, data);
+    EmblemsAjax.callAsync('UpdateEmblem', id, data);
 }
 
 /**
@@ -48,7 +48,7 @@ function updateEmblem(id, el)
 function deleteEmblem(id)
 {
     if (confirm(confirmDelete)) {
-        EmblemsAjax.callAsync('deleteemblem', id);
+        EmblemsAjax.callAsync('DeleteEmblem', id);
     }
 }
 
