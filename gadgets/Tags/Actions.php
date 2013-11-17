@@ -53,3 +53,39 @@ $admin_actions['Properties'] = array(
     'normal' => true,
     'file' => 'Settings',
 );
+$admin_actions['SearchTags'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['SizeOfTagsSearch'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetGadgetActions'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetTag'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AddTag'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateTag'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteTags'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['MergeTags'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['SaveSettings'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
