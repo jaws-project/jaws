@@ -11,7 +11,7 @@
  * Use async mode, create Callback
  */
 var FriendsCallback = { 
-    newfriend: function(response) {
+    NewFriend: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('friends_datagrid').addItem();
             $('friends_datagrid').setCurrentPage(0);
@@ -20,7 +20,7 @@ var FriendsCallback = {
         getDG();
     },
 
-    deletefriend: function(response) {
+    DeleteFriend: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('friends_datagrid').deleteItem();          
         }
@@ -28,16 +28,16 @@ var FriendsCallback = {
         getDG();
     },
     
-    updatefriend: function(response) {
+    UpdateFriend: function(response) {
         showResponse(response);
         getDG();
     },
 
-    getfriend: function(response) {
+    GetFriend: function(response) {
         updateForm(response);
     },
 
-    updateproperties: function(response) {
+    UpdateProperties: function(response) {
         showResponse(response);
     }
 }
@@ -74,7 +74,7 @@ function addFriend(form)
     var friendName = form.elements['friend'].value;
     var friendUrl  = form.elements['url'].value;
     
-    FriendsAjax.callAsync('newfriend', friendName, friendUrl);
+    FriendsAjax.callAsync('NewFriend', friendName, friendUrl);
     cleanForm(form);
 }
 
@@ -88,7 +88,7 @@ function updateFriend(form)
     var friendUrl  = form.elements['url'].value;
     var friendId   = form.elements['id'].value;
 
-    FriendsAjax.callAsync('updatefriend', friendId, friendName, friendUrl);
+    FriendsAjax.callAsync('UpdateFriend', friendId, friendName, friendUrl);
     cleanForm(form);
 }
 
@@ -109,7 +109,7 @@ function submitForm(form)
  */
 function deleteFriend(id)
 {
-    FriendsAjax.callAsync('deletefriend', id);
+    FriendsAjax.callAsync('DeleteFriend', id);
     cleanForm($('friends_form'));
 }
 
@@ -119,7 +119,7 @@ function deleteFriend(id)
  */
 function editFriend(id)
 {
-    FriendsAjax.callAsync('getfriend', id);
+    FriendsAjax.callAsync('GetFriend', id);
 }
 
 /**
@@ -129,7 +129,7 @@ function editFriend(id)
 function updateProperties(form)
 {
     var limitRandom = form.elements['limit_random'].value;
-    FriendsAjax.callAsync('updateproperties', limitRandom);
+    FriendsAjax.callAsync('UpdateProperties', limitRandom);
 }
 
 var FriendsAjax = new JawsAjax('Friends', FriendsCallback);
