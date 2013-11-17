@@ -12,7 +12,7 @@
  * Use async mode, create Callback
  */
 var ComponentsCallback = {
-    installgadget: function (response) {
+    InstallGadget: function (response) {
         if (response[0]['type'] == 'response_notice') {
             components[selectedComponent].state =
                 components[selectedComponent].core_gadget ? 'core' : 'installed';
@@ -22,7 +22,7 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    upgradegadget: function (response) {
+    UpgradeGadget: function (response) {
         if (response[0]['type'] == 'response_notice') {
             components[selectedComponent].state =
                 components[selectedComponent].core_gadget ? 'core' : 'installed';
@@ -32,7 +32,7 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    uninstallgadget: function (response) {
+    UninstallGadget: function (response) {
         if (response[0]['type'] == 'response_notice') {
             components[selectedComponent].state = 'notinstalled';
             buildComponentList();
@@ -41,7 +41,7 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    enablegadget: function (response) {
+    EnableGadget: function (response) {
         if (response[0]['type'] == 'response_notice') {
             components[selectedComponent].state = 'installed';
             components[selectedComponent].disabled = false;
@@ -51,7 +51,7 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    disablegadget: function (response) {
+    DisableGadget: function (response) {
         if (response[0]['type'] == 'response_notice') {
             components[selectedComponent].state = 'installed';
             components[selectedComponent].disabled = true;
@@ -61,7 +61,7 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    installplugin: function (response) {
+    InstallPlugin: function (response) {
         if (response[0]['type'] == 'response_notice') {
             components[selectedComponent].state = 'installed';
             buildComponentList();
@@ -70,7 +70,7 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    uninstallplugin: function (response) {
+    UninstallPlugin: function (response) {
         if (response[0]['type'] == 'response_notice') {
             components[selectedComponent].state = 'notinstalled';
             buildComponentList();
@@ -79,7 +79,7 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    updatepluginusage: function (response) {
+    UpdatePluginUsage: function (response) {
         if (response[0]['type'] == 'response_notice') {
             usageCache = $('plugin_usage').clone(true, true);
             if (regCache) {
@@ -90,7 +90,7 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    updateregistry: function (response) {
+    UpdateRegistry: function (response) {
         if (response[0]['type'] == 'response_notice') {
             regChanges = {};
             regCache = $('component_registry').clone(true, true);
@@ -102,7 +102,7 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    updateacl: function (response) {
+    UpdateACL: function (response) {
         if (response[0]['type'] == 'response_notice') {
             aclChanges = {};
             aclCache = $('component_acl').clone(true, true);
@@ -117,8 +117,8 @@ var ComponentsCallback = {
 function init()
 {
     components = pluginsMode?
-        ComponentsAjax.callSync('getplugins'):
-        ComponentsAjax.callSync('getgadgets');
+        ComponentsAjax.callSync('GetPlugins'):
+        ComponentsAjax.callSync('GetGadgets');
     buildComponentList();
     $('tabs').getElements('li').addEvent('click', switchTab);
     $('components').getElements('h3').each(function(el, i) {
@@ -365,8 +365,8 @@ function componentInfo()
 {
     if (!$('component_info')) {
         $('component_form').set('html', pluginsMode ?
-            ComponentsAjax.callSync('getplugininfo', selectedComponent):
-            ComponentsAjax.callSync('getgadgetinfo', selectedComponent)
+            ComponentsAjax.callSync('GetPluginInfo', selectedComponent):
+            ComponentsAjax.callSync('GetGadgetInfo', selectedComponent)
         );
     }
 
@@ -383,7 +383,7 @@ function componentRegistry(reset)
 {
     if (!regCache) {
         var table = new Element('table'),
-            res = ComponentsAjax.callSync('getregistry', selectedComponent, pluginsMode),
+            res = ComponentsAjax.callSync('GetRegistry', selectedComponent, pluginsMode),
             div = new Element('div').set('html', res.ui);
         $('component_form').grab(div.getElement('div'));
         res.data.each(function(reg) {
@@ -414,7 +414,7 @@ function componentACL(reset)
 {
     if (!aclCache) {
         var table = new Element('table'),
-            res = ComponentsAjax.callSync('getacl', selectedComponent, pluginsMode),
+            res = ComponentsAjax.callSync('GetACL', selectedComponent, pluginsMode),
             div = new Element('div').set('html', res.ui);
         aclCache = div.getElement('div');
         $('component_form').grab(div.getElement('div'));
@@ -453,25 +453,25 @@ function setupComponent()
     var comp = components[selectedComponent];
     switch (comp.state) {
         case 'outdated':
-            ComponentsAjax.callAsync('upgradegadget', selectedComponent);
+            ComponentsAjax.callAsync('UpgradeGadget', selectedComponent);
             break;
         case 'notinstalled':
             if (pluginsMode) {
-                ComponentsAjax.callAsync('installplugin', selectedComponent);
+                ComponentsAjax.callAsync('InstallPlugin', selectedComponent);
             } else {
-                ComponentsAjax.callAsync('installgadget', selectedComponent);
+                ComponentsAjax.callAsync('InstallGadget', selectedComponent);
             }
             break;
         case 'installed':
             if (pluginsMode) {
                 if (confirm(confirmUninstallPlugin)) {
-                    ComponentsAjax.callAsync('uninstallplugin', selectedComponent);
+                    ComponentsAjax.callAsync('UninstallPlugin', selectedComponent);
                 }
             } else {
                 if (comp.disabled) {
-                    ComponentsAjax.callAsync('enablegadget', selectedComponent);
+                    ComponentsAjax.callAsync('EnableGadget', selectedComponent);
                 } else if (confirm(confirmUninstallGadget)) {
-                    ComponentsAjax.callAsync('uninstallgadget', selectedComponent);
+                    ComponentsAjax.callAsync('UninstallGadget', selectedComponent);
                 }
             }
             break;
@@ -483,7 +483,7 @@ function setupComponent()
  */
 function enableGadget()
 {
-    ComponentsAjax.callAsync('enablegadget', selectedComponent);
+    ComponentsAjax.callAsync('EnableGadget', selectedComponent);
 }
 
 /**
@@ -492,7 +492,7 @@ function enableGadget()
 function disableGadget()
 {
     if (confirm(confirmDisableGadget)) {
-        ComponentsAjax.callAsync('disablegadget', selectedComponent);
+        ComponentsAjax.callAsync('DisableGadget', selectedComponent);
     }
 }
 
@@ -516,7 +516,7 @@ function onValueChange(el)
  */
 function saveRegistry()
 {
-    ComponentsAjax.callAsync('updateregistry', selectedComponent, regChanges);
+    ComponentsAjax.callAsync('UpdateRegistry', selectedComponent, regChanges);
 }
 
 /**
@@ -524,7 +524,7 @@ function saveRegistry()
  */
 function saveACL()
 {
-    ComponentsAjax.callAsync('updateacl', selectedComponent, aclChanges);
+    ComponentsAjax.callAsync('UpdateACL', selectedComponent, aclChanges);
 }
 
 /**
@@ -534,7 +534,7 @@ function pluginUsage(reset)
 {
     if (!usageCache) {
         var tbody = new Element('tbody'),
-            res = ComponentsAjax.callSync('getpluginusage', selectedComponent),
+            res = ComponentsAjax.callSync('GetPluginUsage', selectedComponent),
             div = new Element('div').set('html', res.ui);
         $('component_form').grab(div.getElement('div'));
         res.usage.gadgets.each(function(gadget) {
@@ -576,7 +576,7 @@ function savePluginUsage()
         total = $('plugin_usage').getElements('input[name=frontend]').length;
     backend = (backend.length === total) ? '*' : backend.join(',');
     frontend = (frontend.length === total) ? '*' : frontend.join(',');
-    ComponentsAjax.callAsync('updatepluginusage', selectedComponent, backend, frontend);
+    ComponentsAjax.callAsync('UpdatePluginUsage', selectedComponent, backend, frontend);
 }
 
 /**
