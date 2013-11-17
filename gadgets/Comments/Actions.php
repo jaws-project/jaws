@@ -55,3 +55,31 @@ $admin_actions['Settings'] = array(
     'normal' => true,
     'file' => 'Settings',
 );
+$admin_actions['SearchComments'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['SizeOfCommentsSearch'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetComment'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateComment'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteComments'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['MarkAs'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['SaveSettings'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
