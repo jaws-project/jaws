@@ -60,3 +60,27 @@ $admin_actions['UpdateCategory'] = array(
     'normal' => true,
     'file' => 'Category',
 );
+$admin_actions['DeleteCategory'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteQuestion'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['MoveQuestion'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['MoveCategory'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['ParseText'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetCategoryGrid'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
