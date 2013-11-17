@@ -12,7 +12,7 @@
  * Use async mode, create Callback
  */
 var VisitCounterCallback = { 
-    cleanentries: function(response) {
+    CleanEntries: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('visitcounter_datagrid').setCurrentPage(0);
             $('visitcounter_datagrid').rowsSize = 0;
@@ -23,7 +23,7 @@ var VisitCounterCallback = {
         showResponse(response);
     },
     
-    resetcounter: function(response) {
+    ResetCounter: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('visitcounter_datagrid').setCurrentPage(0);
             $('visitcounter_datagrid').rowsSize = 0;
@@ -34,7 +34,7 @@ var VisitCounterCallback = {
         showResponse(response);
     }, 
 
-    updateproperties: function(response) {
+    UpdateProperties: function(response) {
         showResponse(response);
     }
 }
@@ -44,7 +44,7 @@ var VisitCounterCallback = {
  */
 function resetCounter()
 {
-    VisitCounterAjax.callAsync('resetcounter');    
+    VisitCounterAjax.callAsync('ResetCounter');    
 }
 
 /**
@@ -52,7 +52,7 @@ function resetCounter()
  */
 function cleanEntries()
 {
-    VisitCounterAjax.callAsync('cleanentries');    
+    VisitCounterAjax.callAsync('CleanEntries');    
 }
 
 /**
@@ -60,7 +60,7 @@ function cleanEntries()
  */
 function updateStats()
 {
-    $('stats_from').innerHTML  = VisitCounterAjax.callSync('getstartdate');
+    $('stats_from').innerHTML  = VisitCounterAjax.callSync('GetStartDate');
     $('visitors').innerHTML    = 0;
     $('impressions').innerHTML = 0;
 }
@@ -82,7 +82,7 @@ function updateProperties(form)
         }
     });
 
-    VisitCounterAjax.callAsync('updateproperties', counters.join(), numDays, type, mode, customText);
+    VisitCounterAjax.callAsync('UpdateProperties', counters.join(), numDays, type, mode, customText);
 }
 
 var VisitCounterAjax = new JawsAjax('VisitCounter', VisitCounterCallback);
