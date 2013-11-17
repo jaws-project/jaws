@@ -12,7 +12,7 @@
  * Use async mode, create Callback
  */
 var PolicyCallback = {
-    addiprange: function(response) {
+    AddIPRange: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('blocked_ips_datagrid').addItem();
             $('blocked_ips_datagrid').setCurrentPage(0);
@@ -22,7 +22,7 @@ var PolicyCallback = {
         showResponse(response);
     },
 
-    editiprange: function(response) {
+    EditIPRange: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG();
@@ -30,7 +30,7 @@ var PolicyCallback = {
         showResponse(response);
     },
 
-    deleteiprange: function(response) {
+    DeleteIPRange: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('blocked_ips_datagrid').deleteItem();
             getDG();
@@ -38,7 +38,7 @@ var PolicyCallback = {
         showResponse(response);
     },
 
-    addagent: function(response) {
+    AddAgent: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('blocked_agents_datagrid').addItem();
             $('blocked_agents_datagrid').setCurrentPage(0);
@@ -48,7 +48,7 @@ var PolicyCallback = {
         showResponse(response);
     },
 
-    editagent: function(response) {
+    EditAgent: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG();
@@ -56,7 +56,7 @@ var PolicyCallback = {
         showResponse(response);
     },
 
-    deleteagent: function(response) {
+    DeleteAgent: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('blocked_agents_datagrid').deleteItem();
             getDG();
@@ -64,23 +64,23 @@ var PolicyCallback = {
         showResponse(response);
     },
 
-    ipblockingblockundefined: function(response) {
+    IPBlockingBlockUndefined: function(response) {
         showResponse(response);
     },
 
-    agentblockingblockundefined: function(response) {
+    AgentBlockingBlockUndefined: function(response) {
         showResponse(response);
     },
 
-    updateencryptionsettings: function(response) {
+    UpdateEncryptionSettings: function(response) {
         showResponse(response);
     },
 
-    updateantispamsettings: function(response) {
+    UpdateAntiSpamSettings: function(response) {
         showResponse(response);
     },
 
-    updateadvancedpolicies: function(response) {
+    UpdateAdvancedPolicies: function(response) {
         showResponse(response);
     }
 }
@@ -133,14 +133,14 @@ function saveIPRange()
 
     if ($('id').value == 0) {
         PolicyAjax.callAsync(
-            'addiprange',
+            'AddIPRange',
             $('from_ipaddress').value,
             $('to_ipaddress').value,
             $('blocked').value
         );
     } else {
         PolicyAjax.callAsync(
-            'editiprange',
+            'EditIPRange',
             $('id').value,
             $('from_ipaddress').value,
             $('to_ipaddress').value,
@@ -157,7 +157,7 @@ function editIPRange(element, id)
 {
     currentAction = 'IPBlocking';
     selectDataGridRow(element.parentNode.parentNode);
-    var ipRange = PolicyAjax.callSync('getiprange', id);
+    var ipRange = PolicyAjax.callSync('GetIPRange', id);
 
     $('id').value = ipRange['id'];
     $('from_ipaddress').value = ipRange['from_ip'];
@@ -174,7 +174,7 @@ function deleteIPRange(element, id)
     selectDataGridRow(element.parentNode.parentNode);
     var answer = confirm(confirmIPRangeDelete);
     if (answer) {
-        PolicyAjax.callAsync('deleteiprange', id);
+        PolicyAjax.callAsync('DeleteIPRange', id);
     }
     unselectDataGridRow();
 }
@@ -190,9 +190,9 @@ function saveAgent()
     }
 
     if ($('id').value == 0) {
-        PolicyAjax.callAsync('addagent', $('agent').value, $('blocked').value);
+        PolicyAjax.callAsync('AddAgent', $('agent').value, $('blocked').value);
     } else {
-        PolicyAjax.callAsync('editagent', $('id').value, $('agent').value, $('blocked').value);
+        PolicyAjax.callAsync('EditAgent', $('id').value, $('agent').value, $('blocked').value);
     }
 }
 
@@ -204,7 +204,7 @@ function editAgent(element, id)
 {
     currentAction = 'AgentBlocking';
     selectDataGridRow(element.parentNode.parentNode);
-    var agent = PolicyAjax.callSync('getagent', id);
+    var agent = PolicyAjax.callSync('GetAgent', id);
 
     $('id').value    = agent['id'];
     $('agent').value = agent['agent'].defilter();
@@ -220,7 +220,7 @@ function deleteAgent(element, id)
     selectDataGridRow(element.parentNode.parentNode);
     var answer = confirm(confirmAgentDelete);
     if (answer) {
-        PolicyAjax.callAsync('deleteagent', id);
+        PolicyAjax.callAsync('DeleteAgent', id);
     }
     unselectDataGridRow();
 }
@@ -231,7 +231,7 @@ function deleteAgent(element, id)
 function setBlockUndefinedIP()
 {
     try {
-        PolicyAjax.callAsync('ipblockingblockundefined', $('block_undefined_ip').checked);
+        PolicyAjax.callAsync('IPBlockingBlockUndefined', $('block_undefined_ip').checked);
     } catch(e) {
         alert(e);
     }
@@ -244,7 +244,7 @@ function setBlockUndefinedAgent()
 {
     try {
         PolicyAjax.callAsync(
-            'agentblockingblockundefined',
+            'AgentBlockingBlockUndefined',
             $('block_undefined_agent').checked
         );
     } catch(e) {
@@ -259,7 +259,7 @@ function saveEncryptionSettings()
 {
     try {
         PolicyAjax.callAsync(
-            'updateencryptionsettings',
+            'UpdateEncryptionSettings',
             $('enabled').value,
             $('key_age').value,
             $('key_len').value
@@ -276,7 +276,7 @@ function saveAntiSpamSettings()
 {
     try {
         PolicyAjax.callAsync(
-            'updateantispamsettings',
+            'UpdateAntiSpamSettings',
             $('filter').value,
             $('default_captcha').value,
             $('default_captcha_driver').value,
@@ -294,7 +294,7 @@ function saveAdvancedPolicies()
 {
     try {
         PolicyAjax.callAsync(
-            'updateadvancedpolicies',
+            'UpdateAdvancedPolicies',
             $('passwd_complexity').value,
             $('passwd_bad_count').value,
             $('passwd_lockedout_time').value,
