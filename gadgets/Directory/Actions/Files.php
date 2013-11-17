@@ -295,10 +295,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
         $id = ($id !== null)? $id : (int)jaws()->request->fetch('id');
         $open = ($open !== null)? $open : (bool)jaws()->request->fetch('open');
         $action = $open? 'OpenFile' : 'DownloadFile';
-        return $GLOBALS['app']->Map->GetURLFor(
-            'Directory',
-            $action,
-            array('id' => $id));
+        return $this->gadget->urlMap($action, array('id' => $id));
     }
 
     /**
