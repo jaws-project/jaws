@@ -11,7 +11,7 @@
  * Use async mode, create Callback
  */
 var SearchCallback = {
-    savechanges: function(response) {
+    SaveChanges: function(response) {
         showResponse(response);
     }
 }
@@ -39,7 +39,7 @@ function saveChanges(form)
     } else {
         gadgets = '*';
     }
-    SearchAjax.callAsync('savechanges', gadgets);
+    SearchAjax.callAsync('SaveChanges', gadgets);
 }
 
 var SearchAjax = new JawsAjax('Search', SearchCallback);
