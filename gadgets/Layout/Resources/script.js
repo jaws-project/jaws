@@ -14,11 +14,11 @@
  * Use async mode, create Callback
  */
 var LayoutCallback = {
-    editelementaction: function(response) {
+    EditElementAction: function(response) {
         showResponse(response, false);
     },
 
-    changedisplaywhen: function(response) {
+    ChangeDisplayWhen: function(response) {
         showResponse(response, false);
     },
 
@@ -30,7 +30,7 @@ var LayoutCallback = {
         showResponse(response, false);
     },
 
-    addgadget: function(response) {
+    AddGadget: function(response) {
         if (response['success']) {
             //$('layout_main').appendChild(document.createTextNode(response['elementbox']));
             // Fragile!, it must be equal to LayoutItem.html template
@@ -211,7 +211,7 @@ function selectGadget(g)
     }
     $(g).setAttribute('class', 'gadget-item gadget-selected');
     $(g).setAttribute('className', 'gadget-item gadget-selected');
-    var actions = LayoutAjax.callSync('getgadgetactions', g);
+    var actions = LayoutAjax.callSync('GetGadgetActions', g);
     if (actions.length > 0) {
         actions.each (function(item, actionIndex) {
             var li = new Element('li', {'id':'action_' + item['action']});
@@ -275,7 +275,7 @@ function addGadgetToLayout(gadget, action, params)
 {
     hideDialogBox('gadgets_dialog');
     params = (params == null)? null : params.split(',');
-    LayoutAjax.callAsync('addgadget', gadget, action, params);
+    LayoutAjax.callAsync('AddGadget', gadget, action, params);
 }
 
 function getSelectedAction()
@@ -303,7 +303,7 @@ function saveElementAction(lid, gadget, action, params, title, desc)
     params = (params == null)? null : params.split(',');
     $('ea' + lid).innerHTML = title;
     $('ea' + lid).parentNode.parentNode.title = desc;
-    LayoutAjax.callAsync('editelementaction', lid, gadget, action, params);
+    LayoutAjax.callAsync('EditElementAction', lid, gadget, action, params);
 }
 
 /**
