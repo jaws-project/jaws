@@ -13,18 +13,18 @@
  */
 var GlossaryCallback = {
 
-    newterm: function(response) {
+    NewTerm: function(response) {
         if (response[0]['type'] == 'response_notice') {
             afterNewTerm(response['id']);
         }
         showResponse(response);
     },
 
-    updateterm: function(response) {
+    UpdateTerm: function(response) {
         showResponse(response);
     },
 
-    deleteterm: function(response) {
+    DeleteTerm: function(response) {
         var combo = document.getElementById('term_id');
         var auxStyle = combo.options[combo.selectedIndex].style.backgroundColor;
         selIndex = combo.selectedIndex;
@@ -52,7 +52,7 @@ var GlossaryCallback = {
         showResponse(response);
     },
 
-    parsetext: function(response) {
+    ParseText: function(response) {
         $('preview_contents').innerHTML = response;
     }
 }
@@ -92,7 +92,7 @@ function updateTerm()
         combo.options[combo.selectedIndex].text = term;
         // Call function
         loading_message = updatingMessage;
-        GlossaryAjax.callAsync('updateterm', id, term, fast_url, contents);
+        GlossaryAjax.callAsync('UpdateTerm', id, term, fast_url, contents);
     }
 }
 
@@ -103,7 +103,7 @@ function deleteTerm()
 {
     id = document.getElementById('term_id').value;
     loading_message = deletingMessage;
-    GlossaryAjax.callAsync('deleteterm', id);
+    GlossaryAjax.callAsync('DeleteTerm', id);
 }
 
 /**
@@ -177,7 +177,7 @@ function edit(id)
     previousID  = id;
     currentMode = 'edit';
     loading_message = retrievingMessage;
-    var termData = GlossaryAjax.callSync('getterm', id);
+    var termData = GlossaryAjax.callSync('GetTerm', id);
     fillEditorEntries(termData);
     editTitle  = termData['term'];
     switchTab('edit', termData['term']);
@@ -193,7 +193,7 @@ function preview()
     $('preview_title').innerHTML = $('term_title').value;
 
     // Use this if you want to use plugins
-    GlossaryAjax.callAsync('parsetext', term_contents);
+    GlossaryAjax.callAsync('ParseText', term_contents);
     //$('preview_contents').innerHTML = term_contents;
 }
 
@@ -226,7 +226,7 @@ function newTerm()
     }
 
     loading_message = savingMessage;
-    GlossaryAjax.callAsync('newterm', term, fast_url, contents);
+    GlossaryAjax.callAsync('NewTerm', term, fast_url, contents);
 }
 
 /**
@@ -259,7 +259,7 @@ function returnToEdit()
             combo.disabled = true;
         } else {
             loading_message = retrievingMessage;
-            var termData = GlossaryAjax.callSync('getterm', previousID);
+            var termData = GlossaryAjax.callSync('GetTerm', previousID);
             fillEditorEntries(termData);
             b.disabled = false;
             combo.disabled = false;
