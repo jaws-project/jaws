@@ -176,3 +176,139 @@ $admin_actions['UploadAvatar'] = array(
     'standalone' => true,
     'file' => 'Avatar',
 );
+$admin_actions['Users_Actions_Admin_Ajax'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetUser'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetUsers'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetOnlineUsers'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetUsersCount'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AddUser'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateUser'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteUser'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteSession'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['IPBlock'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AgentBlock'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateUserACL'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateGroupACL'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AddUserToGroups'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AddUsersToGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['SaveSettings'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetACLUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetACLKeys'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateMyAccount'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UserGroupsUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetUserGroups'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['PersonalUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['PreferencesUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['ContactsUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdatePersonal'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdatePreferences'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateContacts'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetGroups'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AddGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GroupUsersUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetGroupUsers'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
