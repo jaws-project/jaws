@@ -11,7 +11,7 @@
  * Use async mode, create Callback
  */
 var FileBrowserCallback = {
-    updatedbfileinfo: function(response) {
+    UpdateDBFileInfo: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG('fb_datagrid');
@@ -19,7 +19,7 @@ var FileBrowserCallback = {
         showResponse(response);
     },
 
-    updatedbdirinfo: function(response) {
+    UpdateDBDirInfo: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG('fb_datagrid');
@@ -27,7 +27,7 @@ var FileBrowserCallback = {
         showResponse(response);
     },
 
-    deletefile: function(response) {
+    DeleteFile: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG('fb_datagrid');
@@ -35,7 +35,7 @@ var FileBrowserCallback = {
         showResponse(response);
     },
 
-    deletedir: function(response) {
+    DeleteDir: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG('fb_datagrid');
@@ -152,7 +152,7 @@ function editFile(element, fname)
     switchTab('file');
     $('upload_switch').disabled = false;
 
-    var dbfile = FileBrowserAjax.callSync('dbfileinfo', $('path').value, fname);
+    var dbfile = FileBrowserAjax.callSync('DBFileInfo', $('path').value, fname);
     if (dbfile['id']) {
         $('file_title').value       = dbfile['title'].defilter();
         $('file_description').value = dbfile['description'].defilter();
@@ -176,7 +176,7 @@ function saveFile()
     {
         document.fb_form.submit();
     } else {
-        FileBrowserAjax.callAsync('updatedbfileinfo',
+        FileBrowserAjax.callAsync('UpdateDBFileInfo',
                                 $('path').value,
                                 $('filename').value,
                                 $('file_title').value,
@@ -193,7 +193,7 @@ function saveFile()
 function delFile(element, file)
 {
     if (confirm(confirmFileDelete)) {
-        FileBrowserAjax.callAsync('deletefile', $('path').value, file);
+        FileBrowserAjax.callAsync('DeleteFile', $('path').value, file);
     }
 }
 
@@ -210,7 +210,7 @@ function editDir(element, dirname)
     selectDataGridRow(element.parentNode.parentNode);
     switchTab('dir');
 
-    var dbfile = FileBrowserAjax.callSync('dbfileinfo', $('path').value, dirname);
+    var dbfile = FileBrowserAjax.callSync('DBFileInfo', $('path').value, dirname);
     if (dbfile['id']) {
         $('dir_title').value       = dbfile['title'];
         $('dir_description').value = dbfile['description'];
@@ -228,7 +228,7 @@ function saveDir()
         return false;
     }
 
-    FileBrowserAjax.callAsync('updatedbdirinfo',
+    FileBrowserAjax.callAsync('UpdateDBDirInfo',
                             $('path').value,
                             $('dirname').value,
                             $('dir_title').value,
@@ -244,7 +244,7 @@ function saveDir()
 function delDir(element, dir)
 {
     if (confirm(confirmDirDelete)) {
-        FileBrowserAjax.callAsync('deletedir', $('path').value, dir);
+        FileBrowserAjax.callAsync('DeleteDir', $('path').value, dir);
     }
     
 }
@@ -254,10 +254,10 @@ function delDir(element, dir)
  */
 function getFiles(name, offset, reset)
 {
-    var result = FileBrowserAjax.callSync('getdirectory', $('path').value, offset, $('order_type').value);
+    var result = FileBrowserAjax.callSync('GetDirectory', $('path').value, offset, $('order_type').value);
     if (reset) {
-        var total = FileBrowserAjax.callSync('getdircontentscount', $('path').value);
-        var loc   = FileBrowserAjax.callSync('getlocation', $('path').value);
+        var total = FileBrowserAjax.callSync('GetDirContentsCount', $('path').value);
+        var loc   = FileBrowserAjax.callSync('GetLocation', $('path').value);
         $('location').innerHTML = loc;
     }
     resetGrid(name, result, total);
