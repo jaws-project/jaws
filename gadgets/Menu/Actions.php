@@ -38,3 +38,59 @@ $admin_actions['LoadImage'] = array(
     'standalone' => true,
     'file' => 'Menu'
 );
+$admin_actions['GetMenusTrees'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetGroupUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetMenuUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetGroups'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetMenu'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['InsertGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['InsertMenu'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateMenu'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteMenu'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetParentMenus'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['MoveMenu'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetPublicURList'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
