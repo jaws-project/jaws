@@ -15,7 +15,7 @@ var UrlMapperCallback = {
     /**
      * Updates a map
      */
-    updatemap: function(response) {
+    UpdateMap: function(response) {
         if (response[0]['type'] == 'response_notice') {
             enableMapEditingArea(false);
             showActionMaps();
@@ -26,14 +26,14 @@ var UrlMapperCallback = {
     /**
      * Update settings
      */
-    updatesettings: function(response) {
+    UpdateSettings: function(response) {
         showResponse(response);
     },
 
     /**
      * Adds a new alias
      */
-    addalias: function(response) {
+    AddAlias: function(response) {
         if (response[0]['type'] == 'response_notice') {
             rebuildAliasCombo();
         }
@@ -43,7 +43,7 @@ var UrlMapperCallback = {
     /**
      * Updates a new alias
      */
-    updatealias: function(response) {
+    UpdateAlias: function(response) {
         if (response[0]['type'] == 'response_notice') {
             rebuildAliasCombo();
         }
@@ -53,7 +53,7 @@ var UrlMapperCallback = {
     /**
      * Deletes a new alias
      */
-    deletealias: function(response) {
+    DeleteAlias: function(response) {
         if (response[0]['type'] == 'response_notice') {
             rebuildAliasCombo();
         }
@@ -63,7 +63,7 @@ var UrlMapperCallback = {
     /**
      * Add a new error map
      */
-    adderrormap: function(response) {
+    AddErrorMap: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopErrorMapAction();
             $('errormaps_datagrid').addItem();
@@ -76,7 +76,7 @@ var UrlMapperCallback = {
     /**
      * delete an  error map
      */
-    deleteerrormaps: function(response) {
+    DeleteErrorMaps: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopErrorMapAction();
             $('errormaps_datagrid').deleteItem();
@@ -88,7 +88,7 @@ var UrlMapperCallback = {
     /**
      * update an  error map
      */
-    updateerrormap: function(response) {
+    UpdateErrorMap: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopErrorMapAction();
             getDG('errormaps_datagrid');
@@ -106,7 +106,7 @@ function rebuildAliasCombo()
     while(combo.options.length != 0) {
         combo.options[0] = null;
     }
-    var aliases = UrlMapperAjax.callSync('getaliases');
+    var aliases = UrlMapperAjax.callSync('GetAliases');
     if (aliases != false) {
         var i =0;
         aliases.each(function(value, index) {
@@ -128,7 +128,7 @@ function rebuildAliasCombo()
  */
 function editAlias(id)
 {
-    var alias = UrlMapperAjax.callSync('getalias', id);
+    var alias = UrlMapperAjax.callSync('GetAlias', id);
     $('alias_id').value   = id;
     $('custom_url').value = alias['real_url'];
     $('alias').value      = alias['alias_url'];
@@ -141,11 +141,11 @@ function editAlias(id)
 function saveAlias()
 {
     if ($('alias_id').value == '-') {
-        UrlMapperAjax.callAsync('addalias',
+        UrlMapperAjax.callAsync('AddAlias',
                                 $('alias').value,
                                 $('custom_url').value);
     } else {
-        UrlMapperAjax.callAsync('updatealias',
+        UrlMapperAjax.callAsync('UpdateAlias',
                                 $('alias_id').value,
                                 $('alias').value,
                                 $('custom_url').value);
@@ -159,7 +159,7 @@ function deleteCurrentAlias()
 {
     var aliasCombo = $('alias-combo');
     if (aliasCombo.selectedIndex != -1) {
-        UrlMapperAjax.callAsync('deletealias', aliasCombo.value);
+        UrlMapperAjax.callAsync('DeleteAlias', aliasCombo.value);
     }
     stopAction();
 }
@@ -169,7 +169,7 @@ function deleteCurrentAlias()
  */
 function updateProperties(form)
 {
-    UrlMapperAjax.callAsync('updatesettings',
+    UrlMapperAjax.callAsync('UpdateSettings',
                             form.elements['enabled'].value,
                             form.elements['use_aliases'].value,
                             form.elements['custom_precedence'].value,
@@ -181,7 +181,7 @@ function updateProperties(form)
  */
 function saveMap()
 {
-    UrlMapperAjax.callAsync('updatemap',
+    UrlMapperAjax.callAsync('UpdateMap',
                             selectedMap,
                             $('custom_map_route').value,
                             $('map_order').value);
@@ -196,7 +196,7 @@ function editErrorMap(element, emid)
     $('legend_title').innerHTML = editErrorMap_title;
     selectDataGridRow(element.parentNode.parentNode);
 
-    var errorMapInfo = UrlMapperAjax.callSync('geterrormap', selectedErrorMap);
+    var errorMapInfo = UrlMapperAjax.callSync('GetErrorMap', selectedErrorMap);
     $('url').value = errorMapInfo['url'];
     $('code').value = errorMapInfo['code'];
     $('new_url').value = errorMapInfo['new_url'];
@@ -216,7 +216,7 @@ function editMap(element, mid)
     $('legend_title').innerHTML = editMap_title;
     selectDataGridRow(element.parentNode.parentNode);
 
-    var mapInfo = UrlMapperAjax.callSync('getmap', selectedMap);
+    var mapInfo = UrlMapperAjax.callSync('GetMap', selectedMap);
     $('map_route').value  = mapInfo['map'];
     $('map_ext').value    = mapInfo['extension'];
     $('map_order').value  = mapInfo['order'];
@@ -241,7 +241,7 @@ function showActionMaps()
 
     resetGrid('maps_datagrid', '');
     //Get maps of this action and gadget
-    var result = UrlMapperAjax.callSync('getactionmaps', $('gadgets_combo').value, $('actions_combo').value);
+    var result = UrlMapperAjax.callSync('GetActionMaps', $('gadgets_combo').value, $('actions_combo').value);
     resetGrid('maps_datagrid', result);
     enableMapEditingArea(false);
 }
@@ -253,7 +253,7 @@ function rebuildActionCombo()
 {
     var combo = $('actions_combo');
     var selectedGadget = $('gadgets_combo').value;
-    var actions = UrlMapperAjax.callSync('getgadgetactions', selectedGadget);
+    var actions = UrlMapperAjax.callSync('GetGadgetActions', selectedGadget);
 
     combo.options.length = 0;
     if (actions != false) {
@@ -313,10 +313,10 @@ function changeCode()
  */
 function getErrorMaps(name, offset, reset)
 {
-    var result = UrlMapperAjax.callSync('geterrormaps', 15, offset);
+    var result = UrlMapperAjax.callSync('GetErrorMaps', 15, offset);
     if (reset) {
         $(name).setCurrentPage(0);
-        var total = UrlMapperAjax.callSync('geterrormapscount');
+        var total = UrlMapperAjax.callSync('GetErrorMapsCount');
     }
     resetGrid(name, result, total);
 }
@@ -335,7 +335,7 @@ function errorMapsDGAction(combo)
     if (combo.value == 'delete') {
         var confirmation = confirm(confirmErrorMapDelete);
         if (confirmation) {
-            UrlMapperAjax.callAsync('deleteerrormaps', rows);
+            UrlMapperAjax.callAsync('DeleteErrorMaps', rows);
         }
     }
 }
@@ -346,7 +346,7 @@ function errorMapsDGAction(combo)
 function saveErrorMap()
 {
     if (selectedErrorMap != null && selectedErrorMap > 0) {
-        UrlMapperAjax.callAsync('updateerrormap',
+        UrlMapperAjax.callAsync('UpdateErrorMap',
             selectedErrorMap,
             $('url').value,
             $('code').value,
@@ -354,7 +354,7 @@ function saveErrorMap()
             $('new_code').value);
 
     } else {
-        UrlMapperAjax.callAsync('adderrormap',
+        UrlMapperAjax.callAsync('AddErrorMap',
             $('url').value,
             $('code').value,
             $('new_url').value,
