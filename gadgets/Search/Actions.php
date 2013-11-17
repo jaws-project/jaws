@@ -40,3 +40,7 @@ $admin_actions['Settings'] = array(
     'normal' => true,
     'file' => 'Settings',
 );
+$admin_actions['SaveChanges'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
