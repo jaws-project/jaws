@@ -60,3 +60,47 @@ $admin_actions['ManageSitemap'] = array(
     'normal' => true,
     'file'   => 'ManageSitemap',
 );
+$admin_actions['Sitemap_Actions_Admin_Ajax'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetItems'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetReferences'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetStaticPageReferences'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetBlogReferences'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetLauncherReferences'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['NewItem'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateItem'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteItem'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['MoveItem'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['PingSitemap'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
