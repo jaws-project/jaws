@@ -189,11 +189,6 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             $title = _t('FORUMS_TOPICS_EDIT_TITLE');
             $btn_title = _t('FORUMS_TOPICS_EDIT_BUTTON');
         } else {
-            $forum = $fModel->GetForum($rqst['fid']);
-            if (Jaws_Error::IsError($forum) || empty($forum)) {
-                return false;
-            }
-
             $topic = array();
             $topic['id'] = 0;
             $topic['fid'] = $forum['id'];
@@ -203,6 +198,11 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             $topic['update_reason'] = '';
             $title = _t('FORUMS_TOPICS_NEW_TITLE');
             $btn_title = _t('FORUMS_TOPICS_NEW_BUTTON');
+        }
+
+        $forum = $fModel->GetForum($rqst['fid']);
+        if (Jaws_Error::IsError($forum) || empty($forum)) {
+            return false;
         }
 
         if (!$this->gadget->GetPermission('ForumAccess', $topic['fid'])) {
