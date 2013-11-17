@@ -42,3 +42,59 @@ $admin_actions['AdvancedPolicies'] = array(
     'normal' => true,
     'file' => 'AdvancedPolicies',
 );
+$admin_actions['GetIPRange'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AddIPRange'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['EditIPRange'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteIPRange'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetAgent'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AddAgent'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['EditAgent'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteAgent'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['IPBlockingBlockUndefined'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AgentBlockingBlockUndefined'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateEncryptionSettings'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateAntiSpamSettings'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateAdvancedPolicies'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetData'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
