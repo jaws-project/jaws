@@ -127,5 +127,4 @@ function saveSettings()
 }
 
 var LogsAjax = new JawsAjax('Logs', LogsCallback);
-LogsAjax.backwardSupport();
 cacheContactForm = null;
