@@ -24,3 +24,7 @@ $admin_actions['Admin'] = array(
     'normal' => true,
     'file' => 'ServerTime',
 );
+$admin_actions['UpdateProperties'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
