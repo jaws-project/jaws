@@ -184,7 +184,6 @@ function getSelectedAttachments() {
 }
 
 var PrivateMessageAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback);
-PrivateMessageAjax.backwardSupport();
 
 var uploadedFiles = new Array();
 var lastAttachment = 1;
