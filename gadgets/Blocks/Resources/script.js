@@ -13,18 +13,18 @@
  */
 var BlocksCallback = {
 
-    newblock: function(response) {
+    NewBlock: function(response) {
         if (response['type'] == 'response_notice') {
             afterNewBlock(response['data']);
         }
         showResponse(response);
     },
 
-    updateblock: function(response) {
+    UpdateBlock: function(response) {
         showResponse(response);
     },
 
-    deleteblock: function(response) {
+    DeleteBlock: function(response) {
         // Remove item from block combo
         var combo = $('block_id');
         var auxStyle = combo.options[combo.selectedIndex].style.backgroundColor;
@@ -53,7 +53,7 @@ var BlocksCallback = {
         showResponse(response);
     },
 
-    parsetext: function(response) {
+    ParseText: function(response) {
         $('preview_contents').innerHTML = response;
     }
 }
@@ -92,7 +92,7 @@ function updateBlock()
         displayTitle = document.getElementsByName('display_title[]').item(0).checked;
         // Call function
         loading_message = updatingMessage;
-        BlocksAjax.callAsync('updateblock', id, title, contents, displayTitle);
+        BlocksAjax.callAsync('UpdateBlock', id, title, contents, displayTitle);
         // Update Combo
         var combo = $('block_id');
         combo.options[combo.selectedIndex].text = title;
@@ -108,7 +108,7 @@ function deleteBlock()
     id = $('hidden_id').value;
     $('block_id').disabled = true;
     loading_message = deletingMessage;
-    BlocksAjax.callAsync('deleteblock', id);
+    BlocksAjax.callAsync('DeleteBlock', id);
 }
 
 /**
@@ -183,7 +183,7 @@ function edit(id)
     currentMode = 'edit';
     $('block_id').disabled = false;
     loading_message = retrievingMessage;
-    var block = BlocksAjax.callSync('getblock', id);
+    var block = BlocksAjax.callSync('GetBlock', id);
     fillEditorEntries(block);
     $('block_id_txt').innerHTML = id;
     switchTab('edit', block['title']);
@@ -199,7 +199,7 @@ function preview()
     $('preview_title').innerHTML = $('block_title').value;
 
     // Use this if you want to use plugins
-    BlocksAjax.callAsync('parsetext', block_contents);
+    BlocksAjax.callAsync('ParseText', block_contents);
     //$('preview_contents').innerHTML = block_contents;
 }
 
@@ -235,7 +235,7 @@ function newBlock()
     displayTitle = document.getElementsByName('display_title[]').item(0).checked;
     // Call function
     loading_message = savingMessage;
-    BlocksAjax.callAsync('newblock', title, contents, displayTitle);
+    BlocksAjax.callAsync('NewBlock', title, contents, displayTitle);
 }
 
 /**
@@ -269,7 +269,7 @@ function returnToEdit()
             combo.disabled = true;
         } else {
             loading_message = retrievingMessage;
-            var block = BlocksAjax.callSync('getblock', previousID);
+            var block = BlocksAjax.callSync('GetBlock', previousID);
             fillEditorEntries(block);
             b.disabled = false;
             combo.disabled = false;
