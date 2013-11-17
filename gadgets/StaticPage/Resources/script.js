@@ -13,21 +13,21 @@
  * Use async mode, create Callback
  */
 var StaticPageCallback = { 
-    deletepage: function(response) {
+    DeletePage: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getDG('pages_datagrid');
         }
         showResponse(response);
     }, 
 
-    deletetranslation: function(response) {
+    DeleteTranslation: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getDG('pages_datagrid');
         }
         showResponse(response);
     }, 
     
-    massivedelete: function(response) {
+    MassiveDelete: function(response) {
         if (response[0]['type'] == 'response_notice') {
             var rows = $('pages_datagrid').getSelectedRows();
             if (rows.length > 0) {
@@ -41,15 +41,15 @@ var StaticPageCallback = {
         showResponse(response);      
     },
     
-    updatesettings: function(response) {
+    UpdateSettings: function(response) {
         showResponse(response);
     }, 
 
-    autodraft: function(response) {
+    AutoDraft: function(response) {
         showSimpleResponse(response);
     },
 
-    insertgroup: function(response) {
+    InsertGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             $('groups_datagrid').addItem();
@@ -59,7 +59,7 @@ var StaticPageCallback = {
         showResponse(response);
     },
 
-    updategroup: function(response) {
+    UpdateGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG('groups_datagrid');
@@ -67,7 +67,7 @@ var StaticPageCallback = {
         showResponse(response);
     },
 
-    deletegroup: function(response) {
+    DeleteGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             $('groups_datagrid').deleteItem();
@@ -109,7 +109,7 @@ function AutoDraft()
     }
     var content   = getEditorValue('content');
 
-    StaticPageAjax.callAsync('autodraft', id, group, fasturl, showtitle, title, content, language, tags, published);
+    StaticPageAjax.callAsync('AutoDraft', id, group, fasturl, showtitle, title, content, language, tags, published);
     setTimeout('startAutoDrafting();', 120000);
 }
 
@@ -135,7 +135,7 @@ function parseText(form)
     var title   = form.elements['title'].value;
     var content = getEditorValue('content');
 
-    content = StaticPageAjax.callSync('parsetext', content);
+    content = StaticPageAjax.callSync('ParseText', content);
     $('preview').style.display   = 'table';
 
     var titlePreview   = document.getElementById('previewTitle');
@@ -153,13 +153,13 @@ function deletePage(id, redirect)
     var confirmation = confirm(confirmPageDelete);
     if (confirmation) {
         if (redirect) {
-            var response = StaticPageAjax.callSync('deletepage', id);
+            var response = StaticPageAjax.callSync('DeletePage', id);
             showResponse(response);
             if (response[0]['type'] == 'response_notice') {
                 window.location= base_script + '?gadget=StaticPage&action=Admin';
             }
         } else {
-            StaticPageAjax.callAsync('deletepage', id);
+            StaticPageAjax.callAsync('DeletePage', id);
         }
     }
 }
@@ -172,13 +172,13 @@ function deleteTranslation(id, redirect)
     var confirmation = confirm(confirmPageDelete);
     if (confirmation) {
         if (redirect) {
-            var response = StaticPageAjax.callSync('deletetranslation', id);
+            var response = StaticPageAjax.callSync('DeleteTranslation', id);
             showResponse(response);
             if (response[0]['type'] == 'response_notice') {
                 window.location= base_script + '?gadget=StaticPage&action=Admin';
             }
         } else {
-            StaticPageAjax.callAsync('deletetranslation', id);
+            StaticPageAjax.callAsync('DeleteTranslation', id);
         }
     }
 }
@@ -192,7 +192,7 @@ function massiveDelete()
     if (rows.length > 0) {
         var confirmation = confirm(confirmMassiveDelete);
         if (confirmation) {
-            StaticPageAjax.callAsync('massivedelete', rows);
+            StaticPageAjax.callAsync('MassiveDelete', rows);
         }
     }
 }
@@ -204,7 +204,7 @@ function updateSettings()
 {
     var defaultPage = $('default_page').value;
     var multiLang   = $('multilanguage').value;
-    StaticPageAjax.callAsync('updatesettings', defaultPage, multiLang);
+    StaticPageAjax.callAsync('UpdateSettings', defaultPage, multiLang);
 }
 
 /**
@@ -221,7 +221,7 @@ function searchPage()
 function getPages(name, offset, reset)
 {
     var result = StaticPageAjax.callSync(
-        'searchpages',
+        'SearchPages',
         $('group').value,
         $('status').value,
         $('search').value,
@@ -230,7 +230,7 @@ function getPages(name, offset, reset)
     );
     if (reset) {
         var total = StaticPageAjax.callSync(
-            'sizeofsearch',
+            'SizeOfSearch',
             $('group').value,
             $('status').value,
             $('search').value
@@ -244,9 +244,9 @@ function getPages(name, offset, reset)
  */
 function getPagesGroups(name, offset, reset)
 {
-    var groups = StaticPageAjax.callSync('getgroupsgrid', offset);
+    var groups = StaticPageAjax.callSync('GetGroupsGrid', offset);
     if (reset) {
-        var total = StaticPageAjax.callSync('getgroupscount');
+        var total = StaticPageAjax.callSync('GetGroupsCount');
     }
 
     resetGrid(name, groups, total);
@@ -260,7 +260,7 @@ function editGroup(rowElement, gid)
     selectedGroup = gid;
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
     $('legend_title').set('html', edit_group_title);
-    var group = StaticPageAjax.callSync('getgroup', selectedGroup);
+    var group = StaticPageAjax.callSync('GetGroup', selectedGroup);
     $('title').value     = group['title'].defilter();
     $('meta_keys').value = group['meta_keywords'].defilter();
     $('meta_desc').value = group['meta_description'].defilter();
@@ -282,7 +282,7 @@ function saveGroup()
 
     if (selectedGroup == 0) {
         StaticPageAjax.callAsync(
-            'insertgroup',
+            'InsertGroup',
             $('title').value,
             $('fast_url').value,
             $('meta_keys').value,
@@ -291,7 +291,7 @@ function saveGroup()
         );
     } else {
         StaticPageAjax.callAsync(
-            'updategroup',
+            'UpdateGroup',
             selectedGroup,
             $('title').value,
             $('fast_url').value,
@@ -309,7 +309,7 @@ function deleteGroup(rowElement, gid)
 {
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
     if (confirm(confirm_group_delete)) {
-        StaticPageAjax.callAsync('deletegroup', gid);
+        StaticPageAjax.callAsync('DeleteGroup', gid);
     }
 
     stopAction();
