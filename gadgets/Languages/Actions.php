@@ -20,3 +20,15 @@ $admin_actions['Export'] = array(
     'standalone' => true,
     'file' => 'Export'
 );
+$admin_actions['SaveLanguage'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetLangDataUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['SetLangData'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
