@@ -15,7 +15,7 @@
  */
 var MenuCallback = {
 
-    updategroup: function(response) {
+    UpdateGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('group_'+$('gid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
             stopAction();
@@ -96,7 +96,7 @@ function saveMenus()
         }
         cacheMenuForm = null;
         if (selectedGroup == null) {
-            var response = MenuAjax.callSync('insertgroup',
+            var response = MenuAjax.callSync('InsertGroup',
                                              $('title').value,
                                              $('title_view').value,
                                              $('published').value);
@@ -107,7 +107,7 @@ function saveMenus()
             }
             showResponse(response);
         } else {
-            MenuAjax.callAsync('updategroup',
+            MenuAjax.callAsync('UpdateGroup',
                                $('gid').value,
                                $('title').value,
                                $('title_view').value,
@@ -120,7 +120,7 @@ function saveMenus()
         }
         if (selectedMenu == null) {
             var response = MenuAjax.callSync(
-                'insertmenu',
+                'InsertMenu',
                 $('pid').value,
                 $('gid').value,
                 $('type').value,
@@ -140,7 +140,7 @@ function saveMenus()
             showResponse(response);
         } else {
             var response = MenuAjax.callSync(
-                'updatemenu',
+                'UpdateMenu',
                 $('mid').value,
                 $('pid').value,
                 $('gid').value,
@@ -220,7 +220,7 @@ function setRanksCombo(gid, pid, selected) {
 function addGroup()
 {
     if (cacheGroupForm == null) {
-        cacheGroupForm = MenuAjax.callSync('getgroupui');
+        cacheGroupForm = MenuAjax.callSync('GetGroupUI');
     }
     currentAction = 'Groups';
 
@@ -260,7 +260,7 @@ function mm_leave(eid)
 function addMenu(gid, pid)
 {
     if (cacheMenuForm == null) {
-        cacheMenuForm = MenuAjax.callSync('getmenuui');
+        cacheMenuForm = MenuAjax.callSync('GetMenuUI');
     }
 
     stopAction();
@@ -298,7 +298,7 @@ function editGroup(gid)
 {
     if (gid == 0) return;
     if (cacheGroupForm == null) {
-        cacheGroupForm = MenuAjax.callSync('getgroupui');
+        cacheGroupForm = MenuAjax.callSync('GetGroupUI');
     }
     currentAction = 'Groups';
     selectedGroup = gid;
@@ -311,7 +311,7 @@ function editGroup(gid)
     $('btn_add').style.display    = 'none';
     $('menus_edit').innerHTML = cacheGroupForm;  
 
-    var groupInfo = MenuAjax.callSync('getgroups', selectedGroup);
+    var groupInfo = MenuAjax.callSync('GetGroups', selectedGroup);
 
     $('gid').value         = groupInfo['id'];
     $('title').value       = groupInfo['title'].defilter();
@@ -326,7 +326,7 @@ function editMenu(mid)
 {
     if (mid == 0) return;
     if (cacheMenuForm == null) {
-        cacheMenuForm = MenuAjax.callSync('getmenuui');
+        cacheMenuForm = MenuAjax.callSync('GetMenuUI');
     }
     currentAction = 'Menus';
 
@@ -349,7 +349,7 @@ function editMenu(mid)
     $('menu_'+mid).getElementsByTagName('div')[0].style.backgroundColor = m_bg_color;
 
     selectedMenu = mid;
-    var menuInfo = MenuAjax.callSync('getmenu', selectedMenu);
+    var menuInfo = MenuAjax.callSync('GetMenu', selectedMenu);
     getParentMenus(menuInfo['gid'], mid);
 
     $('mid').value         = menuInfo['id'];
@@ -389,7 +389,7 @@ function delMenus()
         msg = msg.substr(0,  msg.indexOf('%s%')) + $('group_'+gid).getElementsByTagName('a')[0].innerHTML + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
             cacheMenuForm = null;
-            var response = MenuAjax.callSync('deletegroup', gid);
+            var response = MenuAjax.callSync('DeleteGroup', gid);
             if (response[0]['type'] == 'response_notice') {
                 Element.destroy($('group_'+gid));
             }
@@ -401,7 +401,7 @@ function delMenus()
         var msg = confirmMenuDelete;
         msg = msg.substr(0,  msg.indexOf('%s%')) + $('menu_'+mid).getElementsByTagName('a')[0].innerHTML + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
-            var response = MenuAjax.callSync('deletemenu', mid);
+            var response = MenuAjax.callSync('DeleteMenu', mid);
             if (response[0]['type'] == 'response_notice') {
                 Element.destroy($('menu_'+mid));
             }
@@ -415,7 +415,7 @@ function delMenus()
  * Get list of menu levels
  */
 function getParentMenus(gid, mid) {
-    var parents = MenuAjax.callSync('getparentmenus', gid, mid);
+    var parents = MenuAjax.callSync('GetParentMenus', gid, mid);
     $('pid').options.length = 0;
     for(var i = 0; i < parents.length; i++) {
         $('pid').options[i] = new Option(parents[i]['title'], parents[i]['pid']);
@@ -442,7 +442,7 @@ function getReferences(type)
         }
         return;
     }
-    var links = MenuAjax.callSync('getpublicurlist', type);
+    var links = MenuAjax.callSync('GetPublicURList', type);
     cacheReferences[type] = new Array();
     $('references').options.length = 0;
     for(var i = 0; i < links.length; i++) {
