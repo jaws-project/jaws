@@ -13,7 +13,7 @@
  * Use async mode, create Callback
  */
 var ContactCallback = {
-    updatecontact: function(response) {
+    UpdateContact: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getDG('contacts_datagrid');
             stopAction();
@@ -21,7 +21,7 @@ var ContactCallback = {
         showResponse(response);
     },
 
-    updatereply: function(response) {
+    UpdateReply: function(response) {
         if (response[0]['type'] == 'response_notice') {
             selectedRow.getElement('label').set({style:'font-weight:normal'});
             stopAction();
@@ -29,7 +29,7 @@ var ContactCallback = {
         showResponse(response);
     },
 
-    deleterecipient: function(response) {
+    DeleteRecipient: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('recipient_datagrid').deleteItem();          
             getDG();
@@ -38,7 +38,7 @@ var ContactCallback = {
         showResponse(response);
     },
 
-    insertrecipient: function(response) {
+    InsertRecipient: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('recipient_datagrid').addItem();
             $('recipient_datagrid').setCurrentPage(0);
@@ -48,7 +48,7 @@ var ContactCallback = {
         showResponse(response);
     },
 
-    updaterecipient: function(response) {
+    UpdateRecipient: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getDG();
             stopAction();
@@ -56,11 +56,11 @@ var ContactCallback = {
         showResponse(response);
     },
 
-    updateproperties: function(response) {
+    UpdateProperties: function(response) {
         showResponse(response);
     },
 
-    deletecontact: function(response) {
+    DeleteContact: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('contacts_datagrid').deleteItem();          
             getDG('contacts_datagrid');
@@ -69,7 +69,7 @@ var ContactCallback = {
         showResponse(response);
     },
 
-    sendemail: function(response) {
+    SendEmail: function(response) {
         if (response[0]['type'] == 'response_notice') {
             newEmail();
         }
@@ -177,7 +177,7 @@ function editContact(element, id)
 
     selectDataGridRow(element.parentNode.parentNode);
 
-    var contact = ContactAjax.callSync('getcontact', id);
+    var contact = ContactAjax.callSync('GetContact', id);
     $('id').value      = contact['id'];
     $('contact_ip').set('html', contact['ip']);
     $('name').value    = contact['name'];
@@ -216,14 +216,14 @@ function editReply(element, id)
     selectDataGridRow(element.parentNode.parentNode);
 
     if (cacheReplyForm == null) {
-        cacheReplyForm = ContactAjax.callSync('replyui');
+        cacheReplyForm = ContactAjax.callSync('ReplyUI');
     }
     currentAction = 'Reply';
 
     selectedContact = id;
     $('legend_title').innerHTML = contactReply_title;
     $('c_work_area').innerHTML = cacheReplyForm;
-    var replyData = ContactAjax.callSync('getreply', selectedContact);
+    var replyData = ContactAjax.callSync('GetReply', selectedContact);
     $('id').value      = replyData['id'];
     $('name').value    = replyData['name'];
     $('email').value   = replyData['email'];
@@ -244,7 +244,7 @@ function updateContact(send_reply)
 {
     switch(currentAction) {
     case 'Contacts':
-        ContactAjax.callAsync('updatecontact',
+        ContactAjax.callAsync('UpdateContact',
                         $('id').value,
                         $('name').value,
                         $('email').value,
@@ -259,7 +259,7 @@ function updateContact(send_reply)
                         $('message').value);
         break;
     case 'Reply':
-        ContactAjax.callAsync('updatereply',
+        ContactAjax.callAsync('UpdateReply',
                         $('id').value,
                         $('reply').value,
                         send_reply);
@@ -276,7 +276,7 @@ function deleteContact(element, id)
     stopAction();
     selectDataGridRow(element.parentNode.parentNode);
     if (confirm(confirmContactDelete)) {
-        ContactAjax.callAsync('deletecontact', id);
+        ContactAjax.callAsync('DeleteContact', id);
     }
     unselectDataGridRow();
 }
@@ -287,10 +287,10 @@ function deleteContact(element, id)
  */
 function getContacts(name, offset, reset)
 {
-    var result = ContactAjax.callSync('getcontacts', $('recipient_filter').value, offset);
+    var result = ContactAjax.callSync('GetContacts', $('recipient_filter').value, offset);
     if (reset) {
         $(name).setCurrentPage(0);
-        var total = ContactAjax.callSync('getcontactscount', $('recipient_filter').value);
+        var total = ContactAjax.callSync('GetContactsCount', $('recipient_filter').value);
     }
     resetGrid(name, result, total);
 }
@@ -303,7 +303,7 @@ function editRecipient(element, id)
 {
     currentAction = 'Recipients';
     selectDataGridRow(element.parentNode.parentNode);
-    var recipient = ContactAjax.callSync('getrecipient', id);
+    var recipient = ContactAjax.callSync('GetRecipient', id);
     $('id').value      = recipient['id'];
     $('name').value    = recipient['name'].defilter();
     $('email').value   = recipient['email'];
@@ -327,7 +327,7 @@ function updateRecipient()
     }
 
     if($('id').value == 0) {
-        ContactAjax.callAsync('insertrecipient',
+        ContactAjax.callAsync('InsertRecipient',
                         $('name').value,
                         $('email').value,
                         $('tel').value,
@@ -336,7 +336,7 @@ function updateRecipient()
                         $('inform_type').value,
                         $('visible').value);
     } else {
-        ContactAjax.callAsync('updaterecipient',
+        ContactAjax.callAsync('UpdateRecipient',
                         $('id').value,
                         $('name').value,
                         $('email').value,
@@ -356,7 +356,7 @@ function deleteRecipient(element, id)
     stopAction();
     selectDataGridRow(element.parentNode.parentNode);
     if (confirm(confirmRecipientDelete)) {
-        ContactAjax.callAsync('deleterecipient', id);
+        ContactAjax.callAsync('DeleteRecipient', id);
     }
     unselectDataGridRow();
 }
@@ -367,7 +367,7 @@ function deleteRecipient(element, id)
  */
 function updateProperties()
 {
-    ContactAjax.callAsync('updateproperties',
+    ContactAjax.callAsync('UpdateProperties',
                         $('use_antispam').value,
                         $('email_format').value,
                         $('enable_attachment').value,
@@ -402,7 +402,7 @@ function updateUsers(group)
         $('users').setValue(0);
         group = false;
     }
-    var users = ContactAjax.callSync('getusers', group);
+    var users = ContactAjax.callSync('GetUsers', group);
     $('users').options.length = 0;
     $('users').options[0] = new Option(lblAllGroupUsers, 0);
     users.each(function(user, i) {
@@ -506,7 +506,7 @@ function removeAttachment() {
  */
 function previewMessage()
 {
-    var preview  = ContactAjax.callSync('getmessagepreview', getEditorValue('message')),
+    var preview  = ContactAjax.callSync('GetMessagePreview', getEditorValue('message')),
         width    = 750,
         height   = 500,
         docDim   = document.getSize(),
@@ -559,7 +559,7 @@ function sendEmail()
         return;
     }
 
-    ContactAjax.callAsync('sendemail', target, $('subject').value, body, $('filename').value);
+    ContactAjax.callAsync('SendEmail', target, $('subject').value, body, $('filename').value);
 }
 
 var ContactAjax = new JawsAjax('Contact', ContactCallback),
