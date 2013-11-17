@@ -53,3 +53,35 @@ $admin_actions['DeleteDir'] = array(
     'standalone' => true,
     'file' => 'Directory',
 );
+$admin_actions['DBFileInfo'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetDirContentsCount'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetLocation'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetDirectory'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateDBFileInfo'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateDBDirInfo'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteFile2'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteDir2'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
