@@ -12,7 +12,7 @@
  * Use async mode, create Callback
  */
 var FeedReaderCallback = { 
-    deletefeed: function(response) {
+    DeleteFeed: function(response) {
         if (response['type'] == 'response_notice') {
             stopAction();
             $('feedsites_datagrid').deleteItem();          
@@ -21,7 +21,7 @@ var FeedReaderCallback = {
         showResponse(response);
     },
     
-    insertfeed: function(response) {
+    InsertFeed: function(response) {
         if (response['type'] == 'response_notice') {
             $('feedsites_datagrid').addItem();
             $('feedsites_datagrid').setCurrentPage(0);
@@ -31,7 +31,7 @@ var FeedReaderCallback = {
         showResponse(response);
     },
 
-    updatefeed: function(response) {
+    UpdateFeed: function(response) {
         if (response['type'] == 'response_notice') {
             getDG();
         }
@@ -39,7 +39,7 @@ var FeedReaderCallback = {
         showResponse(response);
     },
 
-    getfeed: function(response) {
+    GetFeed: function(response) {
         updateForm(response);
     }
 }
@@ -124,7 +124,7 @@ function updateFeed()
     }
 
     if($('id').value==0) {
-            FeedReaderAjax.callAsync('insertfeed',
+            FeedReaderAjax.callAsync('InsertFeed',
                                 $('title').value,
                                 $('url').value,
                                 $('cache_time').value,
@@ -133,7 +133,7 @@ function updateFeed()
                                 $('title_view').value,
                                 $('visible').value);
     } else {
-        FeedReaderAjax.callAsync('updatefeed',
+        FeedReaderAjax.callAsync('UpdateFeed',
                             $('id').value,
                             $('title').value,
                             $('url').value,
@@ -154,7 +154,7 @@ function deleteFeed(element, id)
     selectDataGridRow(element.parentNode.parentNode);
     var answer = confirm(confirmFeedDelete);
     if (answer) {
-        FeedReaderAjax.callAsync('deletefeed', id);
+        FeedReaderAjax.callAsync('DeleteFeed', id);
     }
     unselectDataGridRow();
 }
@@ -166,7 +166,7 @@ function deleteFeed(element, id)
 function editFeed(element, id)
 {
     selectDataGridRow(element.parentNode.parentNode);
-    FeedReaderAjax.callAsync('getfeed', id);
+    FeedReaderAjax.callAsync('GetFeed', id);
 }
 
 var FeedReaderAjax = new JawsAjax('FeedReader', FeedReaderCallback);
