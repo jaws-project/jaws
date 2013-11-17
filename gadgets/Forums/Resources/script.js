@@ -12,7 +12,7 @@
  */
 var ForumsCallback = {
 
-    updategroup: function(response) {
+    UpdateGroup: function(response) {
         if (response['type'] == 'response_notice') {
             $('group_'+$('gid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
             stopAction();
@@ -99,7 +99,7 @@ function saveForums()
     if (currentAction == 'Groups') {
         cacheForumForm = null;
         if ($('gid').value == 0) {
-            var response = ForumsAjax.callSync('insertgroup',
+            var response = ForumsAjax.callSync('InsertGroup',
                                     $('title').value,
                                     $('description').value,
                                     $('fast_url').value,
@@ -112,7 +112,7 @@ function saveForums()
             }
             showResponse(response);
         } else {
-            ForumsAjax.callAsync('updategroup',
+            ForumsAjax.callAsync('UpdateGroup',
                                 $('gid').value,
                                 $('title').value,
                                 $('description').value,
@@ -123,7 +123,7 @@ function saveForums()
         }
     } else {
         if ($('fid').value == 0) {
-            var response = ForumsAjax.callSync('insertforum',
+            var response = ForumsAjax.callSync('InsertForum',
                                     $('gid').value,
                                     $('title').value,
                                     $('description').value,
@@ -137,7 +137,7 @@ function saveForums()
             }
             showResponse(response);
         } else {
-            var response = ForumsAjax.callSync('updateforum',
+            var response = ForumsAjax.callSync('UpdateForum',
                                     $('fid').value,
                                     $('gid').value,
                                     $('title').value,
@@ -193,7 +193,7 @@ function forumsOrders(gid, selected) {
 function addGroup()
 {
     if (cacheGroupForm == null) {
-        cacheGroupForm = ForumsAjax.callSync('getgroupui');
+        cacheGroupForm = ForumsAjax.callSync('GetGroupUI');
     }
     currentAction = 'Groups';
 
@@ -212,7 +212,7 @@ function addGroup()
 function addForum(gid)
 {
     if (cacheForumForm == null) {
-        cacheForumForm = ForumsAjax.callSync('getforumui');
+        cacheForumForm = ForumsAjax.callSync('GetForumUI');
     }
 
     stopAction();
@@ -236,7 +236,7 @@ function editGroup(gid)
 {
     if (gid == 0) return;
     if (cacheGroupForm == null) {
-        cacheGroupForm = ForumsAjax.callSync('getgroupui');
+        cacheGroupForm = ForumsAjax.callSync('GetGroupUI');
     }
     currentAction = 'Groups';
 
@@ -247,7 +247,7 @@ function editGroup(gid)
     $('btn_add').style.display    = 'none';
     $('forums_edit').innerHTML = cacheGroupForm;  
 
-    var group = ForumsAjax.callSync('getgroup', gid);
+    var group = ForumsAjax.callSync('GetGroup', gid);
 
     $('gid').value         = group['id'];
     $('title').value       = group['title'];
@@ -266,7 +266,7 @@ function editForum(element, fid)
     if (fid == 0) return;
     selectTreeRow(element.parentNode);
     if (cacheForumForm == null) {
-        cacheForumForm = ForumsAjax.callSync('getforumui');
+        cacheForumForm = ForumsAjax.callSync('GetForumUI');
     }
     currentAction = 'Forums';
 
@@ -277,7 +277,7 @@ function editForum(element, fid)
     $('btn_add').style.display    = 'none';
     $('forums_edit').innerHTML = cacheForumForm;  
 
-    var forum = ForumsAjax.callSync('getforum', fid);
+    var forum = ForumsAjax.callSync('GetForum', fid);
     $('fid').value         = forum['id'];
     $('gid').value         = forum['gid'];
     $('title').value       = forum['title'];
@@ -301,7 +301,7 @@ function delForums()
               msg.substr(msg.indexOf('%s%') + 3);
         if (confirm(msg)) {
             cacheForumForm = null;
-            var response = ForumsAjax.callSync('deletegroup', gid);
+            var response = ForumsAjax.callSync('DeleteGroup', gid);
             if (response['type'] == 'response_notice') {
                 Element.destroy($('group_'+gid));
                 stopAction();
@@ -315,7 +315,7 @@ function delForums()
               $('forum_'+fid).getElementsByTagName('a')[0].innerHTML+
               msg.substr(msg.indexOf('%s%') + 3);
         if (confirm(msg)) {
-            var response = ForumsAjax.callSync('deleteforum', fid);
+            var response = ForumsAjax.callSync('DeleteForum', fid);
             if (response['type'] == 'response_notice') {
                 Element.destroy($('forum_'+fid));
                 stopAction();
