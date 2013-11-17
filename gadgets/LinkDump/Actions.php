@@ -40,3 +40,47 @@ $admin_actions['LinkDump'] = array(
     'normal' => true,
     'file'   => 'LinkDump'
 );
+$admin_actions['GetGroupUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetLinkUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetLink'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetGroups'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetLinksList'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['InsertGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['InsertLink'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateLink'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteLink'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
