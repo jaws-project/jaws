@@ -29,19 +29,8 @@ var JawsAjax = new Class({
         var reqValues = $(document).getElement('meta[name=application-name]').getProperty('content').split(':');
         this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
         baseScript = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
-        this.baseURL = baseScript + '?gadget=' + this.gadget + '&action=Ajax&method=';
-        this.msgBox = (this.mainRequest['gadget']+'_'+ this.mainRequest['action']+'_'+'response').toLowerCase();
-    },
-
-    /**
-     * Supports backward ajax mechanism
-     *
-     * @param   string  baseScript  Base URL
-     * @return  void
-     */
-    backwardSupport: function (baseScript) {
-        baseScript = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
         this.baseURL = baseScript + '?gadget=' + this.gadget + '&restype=json&action=';
+        this.msgBox = (this.mainRequest['gadget']+'_'+ this.mainRequest['action']+'_'+'response').toLowerCase();
     },
 
     /**
