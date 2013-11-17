@@ -17,16 +17,16 @@ var editLegend = '';
 var currentAction = 'EDIT';
 
 var SitemapCallback = {
-    getreferences: function(response) {
+    GetReferences: function(response) {
         references[currentType] = response;
         populateReferences(response);
     },
 
-    pingsitemap: function(response) {
+    PingSitemap: function(response) {
         showResponse(response);
     },
     
-    newitem: function(response) {
+    NewItem: function(response) {
         if (response[0]['type'] == 'response_notice') {
             currentID = response['id'];
             getItems();
@@ -34,14 +34,14 @@ var SitemapCallback = {
         showResponse(response);
     },
 
-    updateitem: function(response) {
+    UpdateItem: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getItems();
         }
         showResponse(response);
     },
 
-    deleteitem: function(response) {
+    DeleteItem: function(response) {
         if (response[0]['type'] == 'response_notice') {
             currentID = '';
             getItems();
@@ -49,7 +49,7 @@ var SitemapCallback = {
         showResponse(response);
     },
 
-    moveitem: function(response) {
+    MoveItem: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getItems();
         }
@@ -104,7 +104,7 @@ function createTree(data, depth) {
 }
 
 function getItems() {
-    var ssitems = SitemapAjax.callSync('getitems');
+    var ssitems = SitemapAjax.callSync('GetItems');
     // Empty parent combo
     if ($('ssparent').length>0) {
         for (i=$('ssparent').options.length-1; i>=1; i--) {
@@ -243,7 +243,7 @@ function createReference(type) {
             // Already
             populateReferences(references[type]);
         } else {
-            SitemapAjax.callAsync('getreferences', type);
+            SitemapAjax.callAsync('GetReferences', type);
         }
     }
 }
@@ -288,7 +288,7 @@ function saveCurrent() {
     changefreq = $('sschangefreq').value;
     priority   = $('sspriority').value;
     if (currentAction == 'NEW') {
-        SitemapAjax.callAsync('newitem', parent_id, title, shortname, 
+        SitemapAjax.callAsync('NewItem', parent_id, title, shortname, 
             type, reference, changefreq, priority);
     } else {
         if (id == parent_id) {
@@ -296,13 +296,13 @@ function saveCurrent() {
             $('ssparent').focus();
             return;
         }
-        SitemapAjax.callAsync('updateitem', id, parent_id, title, shortname, 
+        SitemapAjax.callAsync('UpdateItem', id, parent_id, title, shortname, 
             type, reference, changefreq, priority);
     }
 }
 
 function deleteCurrent() {
-    SitemapAjax.callAsync('deleteitem', currentID);
+    SitemapAjax.callAsync('DeleteItem', currentID);
 }
 
 function newItem() {
@@ -324,11 +324,11 @@ function newItem() {
 }
 
 function moveItem(direction) {
-    SitemapAjax.callAsync('moveitem', currentID, direction);
+    SitemapAjax.callAsync('MoveItem', currentID, direction);
 }
 
 function pingSitemap() {
-    SitemapAjax.callAsync('pingsitemap');
+    SitemapAjax.callAsync('PingSitemap');
 }
 
 var SitemapAjax = new JawsAjax('Sitemap', SitemapCallback);
