@@ -134,7 +134,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @internal param  string  $meta_desc      Meta description
      * @return   array  Response array (notice or error)
      */
-    function AddCategory()
+    function AddCategory2()
     {
         $this->gadget->CheckPermission('ManageCategories');
         @list($name, $description, $fast_url, $meta_keywords, $meta_desc) = jaws()->request->fetchAll('post');
@@ -155,7 +155,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @internal param  string  $meta_desc      Meta description
      * @return   array  Response array (notice or error)
      */
-    function UpdateCategory()
+    function UpdateCategory2()
     {
         $this->gadget->CheckPermission('ManageCategories');
         @list($id, $name, $description, $fast_url, $meta_keywords, $meta_desc) = jaws()->request->fetchAll('post');
@@ -171,7 +171,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @internal param  int     $id     ID of category
      * @return   array  Response array (notice or error)
      */
-    function DeleteCategory()
+    function DeleteCategory2()
     {
         $this->gadget->CheckPermission('ManageCategories');
         @list($id) = jaws()->request->fetchAll('post');

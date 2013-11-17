@@ -89,7 +89,7 @@ var BlogCallback = {
         fillCatInfoForm(response);
     },
 
-    AddCategory: function(response) {
+    AddCategory2: function(response) {
         showResponse(response);
         if (response[0]['type'] == 'response_notice') {
             stopAction();
@@ -97,7 +97,7 @@ var BlogCallback = {
         }
     },
 
-    UpdateCategory: function(response) {
+    UpdateCategory2: function(response) {
         showResponse(response);
         if (response[0]['type'] == 'response_notice') {
             stopAction();
@@ -105,7 +105,7 @@ var BlogCallback = {
         }
     },
 
-    DeleteCategory: function(response) {
+    DeleteCategory2: function(response) {
         showResponse(response);
         if (response[0]['type'] == 'response_notice') {
             stopAction();
@@ -543,14 +543,14 @@ function saveCategory(form)
     }
 
     if (selectedCategory == null) {
-        BlogAjax.callAsync('AddCategory',
+        BlogAjax.callAsync('AddCategory2',
                             $('name').value,
                             $('description').value,
                             $('fast_url').value,
                             $('meta_keywords').value,
                             $('meta_desc').value);
     } else {
-        BlogAjax.callAsync('UpdateCategory',
+        BlogAjax.callAsync('UpdateCategory2',
                             selectedCategory,
                             $('name').value,
                             $('description').value,
@@ -576,7 +576,7 @@ function fillCatInfoForm(content)
 function deleteCategory()
 {
     if (confirm(deleteMessage)) {
-        BlogAjax.callAsync('DeleteCategory', selectedCategory);
+        BlogAjax.callAsync('DeleteCategory2', selectedCategory);
     }
 }
 
