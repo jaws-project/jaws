@@ -24,3 +24,27 @@ $admin_actions['Friends'] = array(
     'normal' => true,
     'file' => 'Friends',
 );
+$admin_actions['GetFriend'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['NewFriend'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateFriend'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteFriend'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateProperties'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetData'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
