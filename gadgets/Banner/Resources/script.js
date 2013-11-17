@@ -8,7 +8,7 @@
  * Use async mode, create Callback
  */
 var BannerCallback = {
-    insertbanner: function(response) {
+    InsertBanner: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             $('banners_datagrid').addItem();
@@ -18,7 +18,7 @@ var BannerCallback = {
         showResponse(response);
     },
 
-    updatebanner: function(response) {
+    UpdateBanner: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             getDG('banners_datagrid');
@@ -26,7 +26,7 @@ var BannerCallback = {
         showResponse(response);
     },
 
-    deletebanner: function(response) {
+    DeleteBanner: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             $('banners_datagrid').deleteItem();
@@ -35,21 +35,21 @@ var BannerCallback = {
         showResponse(response);
     },
 
-    resetviews: function(response) {
+    ResetViews: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getDG('reports_datagrid');
         }
         showResponse(response);
     },
 
-    resetclicks: function(response) {
+    ResetClicks: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getDG('reports_datagrid');
         }
         showResponse(response);
     },
 
-    insertgroup: function(response) {
+    InsertGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getGroups();
             stopAction();
@@ -57,7 +57,7 @@ var BannerCallback = {
         showResponse(response);
     },
 
-    updategroup: function(response) {
+    UpdateGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getGroups();
             stopAction();
@@ -65,7 +65,7 @@ var BannerCallback = {
         showResponse(response);
     },
 
-    deletegroup: function(response) {
+    DeleteGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getGroups();
             stopAction();
@@ -73,7 +73,7 @@ var BannerCallback = {
         showResponse(response);
     },
 
-    addbannerstogroup: function(response) {
+    AddBannersToGroup: function(response) {
         showResponse(response);
     }
 }
@@ -114,11 +114,11 @@ function unselectDataGridRow()
  */
 function getBannersDataGrid(name, offset, reset)
 {
-    var banners = BannerAjax.callSync('getbannersdatagrid', name, offset, $('bgroup_filter').value);
+    var banners = BannerAjax.callSync('getBannersDataGrid', name, offset, $('bgroup_filter').value);
     if (reset) {
         stopAction();
         $(name).setCurrentPage(0);
-        var total = BannerAjax.callSync('getbannerscount', $('bgroup_filter').value);
+        var total = BannerAjax.callSync('GetBannersCount', $('bgroup_filter').value);
     }
 
     resetGrid(name, banners, total);
@@ -153,7 +153,7 @@ function changeThroughUpload(checked) {
 function getGroups()
 {
     resetCombo($('groups_combo'));
-    var groupList = BannerAjax.callSync('getgroups', -1, -1);
+    var groupList = BannerAjax.callSync('GetGroups', -1, -1);
     if (groupList != false) {
         var combo = $('groups_combo');
         var i = 0;
@@ -206,7 +206,7 @@ function saveBanner()
         return true;
     } else {
         if ($('bid').value == 0) {
-            BannerAjax.callAsync('insertbanner',
+            BannerAjax.callAsync('InsertBanner',
                                  $('title').value,
                                  $('url').value,
                                  $('gid').value,
@@ -219,7 +219,7 @@ function saveBanner()
                                  $('random').value,
                                  $('published').value);
         } else {
-            BannerAjax.callAsync('updatebanner',
+            BannerAjax.callAsync('UpdateBanner',
                                 $('bid').value,
                                 $('title').value,
                                 $('url').value,
@@ -247,7 +247,7 @@ function saveGroup()
         for(var i = 0; i < box.length; i++) {
             keys[i] = box.options[i].value;
         }
-        BannerAjax.callAsync('addbannerstogroup', selectedGroup, keys);
+        BannerAjax.callAsync('AddBannersToGroup', selectedGroup, keys);
     } else {
         if ($('title').value.blank()) {
             alert(incompleteGroupFields);
@@ -257,7 +257,7 @@ function saveGroup()
         if (selectedGroup == null) {
             $('gid').value = 0;
             BannerAjax.callAsync(
-                            'insertgroup',
+                            'InsertGroup',
                             $('title').value,
                             $('count').value,
                             $('show_title').value,
@@ -266,7 +266,7 @@ function saveGroup()
         } else {
             $('gid').value = selectedGroup;
             BannerAjax.callAsync(
-                            'updategroup',
+                            'UpdateGroup',
                             $('gid').value,
                             $('title').value,
                             $('count').value,
@@ -286,7 +286,7 @@ function deleteBanner(element, bid)
     selectDataGridRow(element.parentNode.parentNode);
     var answer = confirm(confirmBannerDelete);
     if (answer) {
-        BannerAjax.callAsync('deletebanner', bid);
+        BannerAjax.callAsync('DeleteBanner', bid);
     }
     unselectDataGridRow();
 }
@@ -298,7 +298,7 @@ function resetViews(bid)
 {
     var answer = confirm(confirmResetBannerViews);
     if (answer) {
-        BannerAjax.callAsync('resetviews', bid);
+        BannerAjax.callAsync('ResetViews', bid);
     }
 }
 
@@ -309,7 +309,7 @@ function resetClicks(bid)
 {
     var answer = confirm(confirmResetBannerClicks);
     if (answer) {
-        BannerAjax.callAsync('resetclicks', bid);
+        BannerAjax.callAsync('ResetClicks', bid);
     }
 }
 
@@ -320,7 +320,7 @@ function deleteGroup()
 {
     var answer = confirm(confirmGroupDelete);
     if (answer) {
-        BannerAjax.callAsync('deletegroup', selectedGroup);
+        BannerAjax.callAsync('DeleteGroup', selectedGroup);
     }
 }
 
@@ -330,7 +330,7 @@ function deleteGroup()
 function addGroup()
 {
     if (cacheMasterForm == null) {
-        cacheMasterForm = BannerAjax.callSync('getgroupui');
+        cacheMasterForm = BannerAjax.callSync('GetGroupUI');
     }
     currentAction = 'AddGroup';
 
@@ -353,7 +353,7 @@ function editBanner(element, bid)
 
     selectDataGridRow(element.parentNode.parentNode);
 
-    var banner = BannerAjax.callSync('getbanner', bid);
+    var banner = BannerAjax.callSync('GetBanner', bid);
     $('bid').value    = banner['id'];
     $('title').value  = banner['title'].defilter();
     $('url').value    = banner['url'];
@@ -380,7 +380,7 @@ function editGroup(gid)
 {
     if (gid == 0) return;
     if (cacheMasterForm == null) {
-        cacheMasterForm = BannerAjax.callSync('getgroupui');
+        cacheMasterForm = BannerAjax.callSync('GetGroupUI');
     }
 
     $('group_banners_area').innerHTML = '';
@@ -392,7 +392,7 @@ function editGroup(gid)
     $('add_group').style.display = 'none';
     $('group_area').innerHTML = cacheMasterForm;
     selectedGroup = gid;
-    var groupInfo = BannerAjax.callSync('getgroup', selectedGroup);
+    var groupInfo = BannerAjax.callSync('GetGroup', selectedGroup);
     $('gid').value   = groupInfo['id'];
     $('title').value = groupInfo['title'].defilter();
     $('count').value = groupInfo['limit_count'];
@@ -538,7 +538,7 @@ function editGroupBanners()
 {
     if (selectedGroup == null) {return;}
     if (cacheSlaveForm == null) {
-        cacheSlaveForm = BannerAjax.callSync('getgroupbannersui');
+        cacheSlaveForm = BannerAjax.callSync('GetGroupBannersUI');
     }
     $('save_group').style.display = 'inline';
     $('add_banners').style.display = 'none';
@@ -550,7 +550,7 @@ function editGroupBanners()
     $('published').disabled = true;
     //--
     currentAction = 'ManageGroupBanners';
-    var banners = BannerAjax.callSync('getbanners', -1, selectedGroup);
+    var banners = BannerAjax.callSync('GetBanners', -1, selectedGroup);
     var box = $('group_members');
     box.length = 0;
     for(var i = 0; i < banners.length; i++) {
