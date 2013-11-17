@@ -12,7 +12,7 @@
  */
 var ShoutboxCallback = {
 
-    updateproperties: function(response) {
+    UpdateProperties: function(response) {
         showResponse(response);
     }
 }
@@ -26,7 +26,7 @@ function updateProperties(form)
     var limitEntries = form.elements['limit_entries'].value;
     var max_strlen   = form.elements['max_strlen'].value;
     var authority    = form.elements['authority'].value;
-    ShoutboxAjax.callAsync('updateproperties', limitEntries, max_strlen, authority);
+    ShoutboxAjax.callAsync('UpdateProperties', limitEntries, max_strlen, authority);
 }
 
 var ShoutboxAjax = new JawsAjax('Shoutbox', ShoutboxCallback);
