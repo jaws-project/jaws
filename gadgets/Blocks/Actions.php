@@ -27,3 +27,23 @@ $admin_actions['Block'] = array(
     'normal' => true,
     'file'   => 'Block',
 );
+$admin_actions['GetBlock'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['NewBlock'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateBlock'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteBlock'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['ParseText'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
