@@ -66,7 +66,7 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @access  public
      * @return  array   Response array (notice or error)
      */
-    function InstallGadget()
+    function InstallGadget2()
     {
         @list($gadget) = jaws()->request->fetchAll('post');
         $html = $this->gadget->action->loadAdmin('GadgetInstaller');
@@ -80,7 +80,7 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @access  public
      * @return  array   Response array (notice or error)
      */
-    function UpgradeGadget()
+    function UpgradeGadget2()
     {
         @list($gadget) = jaws()->request->fetchAll('post');
         $html = $this->gadget->action->loadAdmin('GadgetInstaller');
@@ -94,7 +94,7 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @access  public
      * @return  array   Response array (notice or error)
      */
-    function UninstallGadget()
+    function UninstallGadget2()
     {
         @list($gadget) = jaws()->request->fetchAll('post');
         $html = $this->gadget->action->loadAdmin('GadgetInstaller');

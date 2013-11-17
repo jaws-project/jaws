@@ -12,7 +12,7 @@
  * Use async mode, create Callback
  */
 var ComponentsCallback = {
-    InstallGadget: function (response) {
+    InstallGadget2: function (response) {
         if (response[0]['type'] == 'response_notice') {
             components[selectedComponent].state =
                 components[selectedComponent].core_gadget ? 'core' : 'installed';
@@ -22,7 +22,7 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    UpgradeGadget: function (response) {
+    UpgradeGadget2: function (response) {
         if (response[0]['type'] == 'response_notice') {
             components[selectedComponent].state =
                 components[selectedComponent].core_gadget ? 'core' : 'installed';
@@ -32,7 +32,7 @@ var ComponentsCallback = {
         showResponse(response);
     },
 
-    UninstallGadget: function (response) {
+    UninstallGadget2: function (response) {
         if (response[0]['type'] == 'response_notice') {
             components[selectedComponent].state = 'notinstalled';
             buildComponentList();
@@ -453,13 +453,13 @@ function setupComponent()
     var comp = components[selectedComponent];
     switch (comp.state) {
         case 'outdated':
-            ComponentsAjax.callAsync('UpgradeGadget', selectedComponent);
+            ComponentsAjax.callAsync('UpgradeGadget2', selectedComponent);
             break;
         case 'notinstalled':
             if (pluginsMode) {
                 ComponentsAjax.callAsync('InstallPlugin', selectedComponent);
             } else {
-                ComponentsAjax.callAsync('InstallGadget', selectedComponent);
+                ComponentsAjax.callAsync('InstallGadget2', selectedComponent);
             }
             break;
         case 'installed':
@@ -471,7 +471,7 @@ function setupComponent()
                 if (comp.disabled) {
                     ComponentsAjax.callAsync('EnableGadget', selectedComponent);
                 } else if (confirm(confirmUninstallGadget)) {
-                    ComponentsAjax.callAsync('UninstallGadget', selectedComponent);
+                    ComponentsAjax.callAsync('UninstallGadget2', selectedComponent);
                 }
             }
             break;
