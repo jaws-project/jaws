@@ -87,3 +87,59 @@ $admin_actions['SaveEditTranslation'] = array(
     'normal' => true,
     'file'   => 'Translation',
 );
+$admin_actions['DeletePage'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteTranslation'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['MassiveDelete'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateSettings'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['ParseText'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['SizeOfSearch'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['SearchPages'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AutoDraft'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetGroupsGrid'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetGroupsCount'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['InsertGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
