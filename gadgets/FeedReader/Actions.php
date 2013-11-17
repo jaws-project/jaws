@@ -30,3 +30,27 @@ $admin_actions['ManageFeeds'] = array(
     'normal' => true,
     'file' => 'Feed',
 );
+$admin_actions['FeedReader_Actions_Admin_Ajax'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetFeed'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['InsertFeed'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateFeed'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteFeed'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetData'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
