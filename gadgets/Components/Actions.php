@@ -40,3 +40,71 @@ $admin_actions['UninstallGadget'] = array(
     'normal' => true,
     'file' => 'GadgetInstaller',
 );
+$admin_actions['GetGadgets'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetGadgetInfo'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['InstallGadget2'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpgradeGadget2'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UninstallGadget2'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['EnableGadget'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DisableGadget'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetPlugins'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetPluginInfo'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['InstallPlugin'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UninstallPlugin'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetPluginUsage'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdatePluginUsage'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetRegistry'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateRegistry'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetACL'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateACL'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
