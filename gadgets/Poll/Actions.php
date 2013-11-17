@@ -49,3 +49,71 @@ $admin_actions['Reports'] = array(
     'normal' => true,
     'file' => 'Report',
 );
+$admin_actions['GetPoll'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['InsertPoll'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdatePoll'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeletePoll'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['PollAnswersUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetPollAnswers'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdatePollAnswers'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetPollGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['InsertPollGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdatePollGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeletePollGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['PollGroupPollsUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetPollGroupPolls'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['AddPollsToPollGroup'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetGroupPolls'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['PollResultsUI'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetData'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
