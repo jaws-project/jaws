@@ -133,7 +133,11 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         $table->select('id', 'parent', 'title');
         $parent = $table->where('id', $id)->fetchRow();
         if (!empty($parent)) {
-            $path[] = array('id' => $parent['id'], 'title' => $parent['title']);
+            $path[] = array(
+                'id' => $parent['id'],
+                'title' => $parent['title'],
+                'url' => $this->gadget->urlMap('Directory', array('dirid' => $parent['id']))
+            );
             $this->GetPath($parent['parent'], $path);
         }
     }

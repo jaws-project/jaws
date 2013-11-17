@@ -10,7 +10,8 @@
  */
 $maps[] = array(
     'Directory',
-    'directory'
+    'directory[/{dirid}]',
+    array('dirid' => '[[:digit:]]+')
 );
 $maps[] = array(
     'GetFiles',

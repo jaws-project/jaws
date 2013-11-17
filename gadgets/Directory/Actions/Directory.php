@@ -51,8 +51,12 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->ParseBlock('workspace/share');
         }
 
+        $dir_id = (int)jaws()->request->fetch('dirid');
+        $tpl->SetVariable('currentDir', $dir_id);
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $tpl->SetVariable('UID', $user);
+        $tpl->SetVariable('home_title', _t('DIRECTORY_HOME'));
+        $tpl->SetVariable('home_url', $this->gadget->urlMap('Directory'));
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
         $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
@@ -71,6 +75,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         // File template
         $tpl->SetBlock('workspace/fileTemplate');
         $tpl->SetVariable('id', '{id}');
+        $tpl->SetVariable('url', '{url}');
         $tpl->SetVariable('title', '{title}');
         $tpl->SetVariable('description', '{description}');
         $tpl->SetVariable('icon', '{icon}');
@@ -105,6 +110,9 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
         $objDate = Jaws_Date::getInstance();
         foreach ($files as &$file) {
+            if ($file['is_dir']) {
+                $file['url'] = $this->gadget->urlMap('Directory', array('dirid' => $file['id']));
+            }
             $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
         }

@@ -107,7 +107,7 @@ function initDirectory()
     });
     iconByExt.folder = 'folder';
 
-    openDirectory(0);
+    updateFiles(currentDir);
 }
 
 /**
@@ -228,12 +228,12 @@ function getSelected()
 function fileOpen()
 {
     var id = idSet[0],
-        file = fileById[idSet];
+        file = fileById[id];
     if (file.is_dir) {
         if (file.foreign) {
             id = file.reference;
         }
-        openDirectory(id);
+        location.assign(file.url);
     } else {
         if (['wav', 'mp3', 'ogg'].indexOf(file.ext) !== -1) {
             openMedia(id, 'audio');
@@ -243,17 +243,6 @@ function fileOpen()
             downloadFile();
         }
     }
-}
-
-/**
- * Navigates into the directory
- */
-function openDirectory(id)
-{
-    currentDir = id;
-    idSet = null;
-    updateFiles(id);
-    cancel();
 }
 
 /**
@@ -297,9 +286,9 @@ function updatePath()
         if (i === pathArr.length - 1) {
             path.appendText(dir.title);
         } else {
-            var link = new Element('span');
+            var link = new Element('a');
             link.set('html', dir.title);
-            link.addEvent('click', openDirectory.pass(dir.id));
+            link.set('href', dir.url);
             path.grab(link);
         }
     });
@@ -788,7 +777,6 @@ var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
     usersByGroup = {},
     sharedFileUsers = {},
     cachedForms = {},
-    currentDir = 0,
     filesCount = 0,
     fileTemplate = '',
     statusTemplate = '',

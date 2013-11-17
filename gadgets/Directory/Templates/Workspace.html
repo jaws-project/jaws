@@ -5,7 +5,9 @@
     <div id="directory_directory_response" class="{type}">{text}</div>
   </div>
   <div id="dir_pathbar">
-    <img src="gadgets/Directory/Resources/images/home.png" onclick="openDirectory(0)" />
+    <a href="{home_url}" title="{home_title}">
+      <img src="gadgets/Directory/Resources/images/home.png"/>
+    </a>
     <span id="dir_path"></span>
   </div>
   <div id="dir_searchbar">
@@ -48,7 +50,7 @@
       <tr id="file_{id}" title="{description}">
         <td class="file-check"><input type="checkbox" value="{id}"></input></td>
         <td class="file-icon">{icon}<span class="file-sharing {shared} {foreign} {public}"></span></td>
-        <td class="file-title">{title}</td>
+        <td class="file-title"><a href="{url}">{title}</a></td>
         <td class="file-created">{created}</td>
         <td class="file-modified">{modified}</td>
         <td class="file-owner">{username}</td>
@@ -60,7 +62,8 @@
   <div id="form"></div>
 </div>
 <script>
-  var UID = "{UID}",
+  var UID = "{UID}",  // User ID
+      currentDir = "{currentDir}",
       site_url = "{site_url}",
       icon_url = "{icon_url}",
       imgDeleteFile = "{imgDeleteFile}",
