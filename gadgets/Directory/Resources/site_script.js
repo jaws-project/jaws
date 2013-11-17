@@ -92,7 +92,6 @@ var DirectoryCallback = {
  */
 function initDirectory()
 {
-    DirectoryAjax.backwardSupport();
     imgDeleteFile = new Element('img', {src:imgDeleteFile});
     imgDeleteFile.addEvent('click', removeFile);
     fileTemplate = $('file_arena').get('html');
