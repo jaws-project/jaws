@@ -12,7 +12,7 @@
  * Use async mode, create Callback
  */
 var WeatherCallback = {
-    deleteregion: function(response) {
+    DeleteRegion: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('weather_datagrid').deleteItem();          
             getDG();
@@ -21,7 +21,7 @@ var WeatherCallback = {
         showResponse(response);
     },
     
-    insertregion: function(response) {
+    InsertRegion: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('weather_datagrid').addItem();
             $('weather_datagrid').setCurrentPage(0);
@@ -31,7 +31,7 @@ var WeatherCallback = {
         showResponse(response);
     },
 
-    updateregion: function(response) {
+    UpdateRegion: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getDG();
             stopAction();
@@ -39,7 +39,7 @@ var WeatherCallback = {
         showResponse(response);
     },
 
-    updateproperties: function(response) {
+    UpdateProperties: function(response) {
         showResponse(response);
     }
 
@@ -84,7 +84,7 @@ function editRegion(rowElement, id)
     $('weather_datagrid').selectRow(rowElement);
     selectedRow = rowElement;
 
-    var geoPos = WeatherAjax.callSync('getregion', id);
+    var geoPos = WeatherAjax.callSync('GetRegion', id);
     $('id').value        = geoPos['id'];
     $('title').value     = geoPos['title'].defilter();
     $('fast_url').value  = geoPos['fast_url'];
@@ -109,7 +109,7 @@ function updateRegion()
 
     if ($('id').value == 0) {
         WeatherAjax.callAsync(
-                        'insertregion',
+                        'InsertRegion',
                         $('title').value,
                         $('fast_url').value,
                         $('latitude').value,
@@ -117,7 +117,7 @@ function updateRegion()
                         $('published').value);
     } else {
         WeatherAjax.callAsync(
-                        'updateregion',
+                        'UpdateRegion',
                         $('id').value,
                         $('title').value,
                         $('fast_url').value,
@@ -135,7 +135,7 @@ function deleteRegion(rowElement, id)
     stopAction();
     $('weather_datagrid').selectRow(rowElement);
     if (confirm(confirmDelete)) {
-        WeatherAjax.callAsync('deleteregion', id);
+        WeatherAjax.callAsync('DeleteRegion', id);
     } else {
         $('weather_datagrid').unselectRow(rowElement);
         selectedRow = null;
@@ -147,7 +147,7 @@ function deleteRegion(rowElement, id)
  */
 function updateProperties()
 {
-    WeatherAjax.callAsync('updateproperties',
+    WeatherAjax.callAsync('UpdateProperties',
                           $('unit').value,
                           $('update_period').value,
                           $('date_format').value,
