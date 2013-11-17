@@ -12,12 +12,12 @@
  */
 var PhooCallback = {
 
-    importimage: function(response) {
+    ImportImage: function(response) {
         currentIndex++;
         ImportImages();
     },
 
-    updatephoto: function(response) {
+    UpdatePhoto: function(response) {
         showResponse(response);
     }
 }
@@ -38,7 +38,7 @@ function ImportImages()
 
         $('percent').innerHTML = percent + '%';
         $('img_percent').setAttribute('style', 'width:' + percent + '%;');
-        PhooAjax.callAsync('importimage', items[currentIndex]['image'], items[currentIndex]['name'], album);
+        PhooAjax.callAsync('ImportImage', items[currentIndex]['image'], items[currentIndex]['name'], album);
     } else {
         if (currentIndex == howmany) {
             $('nofm').innerHTML = finished_message;
@@ -66,7 +66,7 @@ function updatePhoto()
         }
     }
 
-    PhooAjax.callAsync('updatephoto', id, title, description, allow_comments, published, albums);
+    PhooAjax.callAsync('UpdatePhoto', id, title, description, allow_comments, published, albums);
 }
 
 /**
