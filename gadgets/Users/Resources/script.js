@@ -13,7 +13,7 @@
  * Use async mode, create Callback
  */
 var UsersCallback = {
-    adduser: function(response) {
+    AddUser: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopUserAction();
             $('users_datagrid').addItem();
@@ -23,7 +23,7 @@ var UsersCallback = {
         showResponse(response);
     },
 
-    updateuser: function(response) {
+    UpdateUser: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopUserAction();
             getDG('users_datagrid');
@@ -31,38 +31,38 @@ var UsersCallback = {
         showResponse(response);
     },
 
-    updateuseracl: function(response) {
+    UpdateUserACL: function(response) {
         showResponse(response);
     },
 
-    addusertogroups: function(response) {
+    AddUserToGroups: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopUserAction();
         }
         showResponse(response);
     },
 
-    updatecontacts: function(response) {
+    UpdateContacts: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopUserAction();
         }
         showResponse(response);
     },
 
-    updatepersonal: function(response) {
+    UpdatePersonal: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopUserAction();
         }
         showResponse(response);
     },
 
-    updatemyaccount: function(response) {
+    UpdateMyAccount: function(response) {
         $('pass1').value = '';
         $('pass2').value = '';
         showResponse(response);
     },
 
-    deleteuser: function(response) {
+    DeleteUser: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopUserAction();
             $('users_datagrid').deleteItem();
@@ -71,7 +71,7 @@ var UsersCallback = {
         showResponse(response);
     },
 
-    addgroup: function(response) {
+    AddGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopGroupAction();
             $('groups_datagrid').addItem();
@@ -81,7 +81,7 @@ var UsersCallback = {
         showResponse(response);
     },
 
-    updategroup: function(response) {
+    UpdateGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopGroupAction();
             getDG('groups_datagrid');
@@ -89,7 +89,7 @@ var UsersCallback = {
         showResponse(response);
     },
 
-    deletegroup: function(response) {
+    DeleteGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopGroupAction();
             $('groups_datagrid').deleteItem();          
@@ -98,18 +98,18 @@ var UsersCallback = {
         showResponse(response);
     },
 
-    updategroupacl: function(response) {
+    UpdateGroupACL: function(response) {
         showResponse(response);
     },
 
-    adduserstogroup: function(response) {
+    AddUsersToGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopGroupAction();
         }
         showResponse(response);
     },
 
-    deletesession: function(response) {
+    DeleteSession: function(response) {
         if (response[0]['type'] == 'response_notice') {
             clearTimeout(fTimeout);
             getOnlineUsers('onlineusers_datagrid');
@@ -117,15 +117,15 @@ var UsersCallback = {
         showResponse(response);
     },
 
-    ipblock: function(response) {
+    IPBlock: function(response) {
         showResponse(response);
     },
 
-    agentblock: function(response) {
+    AgentBlock: function(response) {
         showResponse(response);
     },
 
-    savesettings: function(response) {
+    SaveSettings: function(response) {
         showResponse(response);
     }
 }
@@ -154,7 +154,7 @@ function searchUser()
  */
 function getUsers(name, offset, reset)
 {
-    var result = UsersAjax.callSync('getusers',
+    var result = UsersAjax.callSync('GetUsers',
                                     $('filter_group').value,
                                     $('filter_type').value,
                                     $('filter_status').value,
@@ -163,7 +163,7 @@ function getUsers(name, offset, reset)
                                     offset);
     if (reset) {
         $(name).setCurrentPage(0);
-        var total = UsersAjax.callSync('getuserscount',
+        var total = UsersAjax.callSync('GetUsersCount',
                                        $('filter_group').value,
                                        $('filter_type').value,
                                        $('filter_status').value,
@@ -177,7 +177,7 @@ function getUsers(name, offset, reset)
  */
 function getGroups(name, offset, reset)
 {
-    var result = UsersAjax.callSync('getgroups', offset);
+    var result = UsersAjax.callSync('GetGroups', offset);
     if (reset) {
         $(name).setCurrentPage(0);
         var total = UsersAjax.callSync('getgroupscount');
@@ -190,7 +190,7 @@ function getGroups(name, offset, reset)
  */
 function getOnlineUsers(name, offset, reset)
 {
-    var result = UsersAjax.callSync('getonlineusers', {
+    var result = UsersAjax.callSync('GetOnlineUsers', {
         'session_status': $('filter_session_status').value,
         'membership': $('filter_membership').value});
     resetGrid(name, result, result.length);
@@ -220,15 +220,15 @@ function onlineUsersDGAction(combo)
 
     if (combo.value == 'delete') {
         if (confirm(confirmThrowOut)) {
-            UsersAjax.callAsync('deletesession', rows);
+            UsersAjax.callAsync('DeleteSession', rows);
         }
     } else if (combo.value == 'block_ip') {
         if (confirm(confirmBlockIP)) {
-            UsersAjax.callAsync('ipblock', rows);
+            UsersAjax.callAsync('IPBlock', rows);
         }
     } else if (combo.value == 'block_agent') {
         if (confirm(confirmBlockAgent)) {
-            UsersAjax.callAsync('agentblock', rows);
+            UsersAjax.callAsync('AgentBlock', rows);
         }
     }
 }
@@ -268,7 +268,7 @@ function saveUser()
                 }
 
                 UsersAjax.callAsync(
-                    'adduser',
+                    'AddUser',
                     {'username': $('username').value,
                      'password': password,
                      'nickname': $('nickname').value,
@@ -281,7 +281,7 @@ function saveUser()
                 );
             } else {
                 UsersAjax.callAsync(
-                    'updateuser',
+                    'UpdateUser',
                     {'uid': $('uid').value,
                      'username': $('username').value,
                      'password': password,
@@ -306,7 +306,7 @@ function saveUser()
                 var keys = img.id.split(':');
                 return [keys[0], keys[1], img.alt];
             });
-            UsersAjax.callAsync('updateuseracl', selectedId, $('components').value, acls);
+            UsersAjax.callAsync('UpdateUserACL', selectedId, $('components').value, acls);
             break;
 
         case 'UserGroups':
@@ -324,11 +324,11 @@ function saveUser()
                 }
             }
 
-            UsersAjax.callAsync('addusertogroups', $('uid').value, keys);
+            UsersAjax.callAsync('AddUserToGroups', $('uid').value, keys);
             break;
 
         case 'UserPersonal':
-            UsersAjax.callAsync('updatepersonal',
+            UsersAjax.callAsync('UpdatePersonal',
                                 $('uid').value,
                                 $('fname').value,
                                 $('lname').value,
@@ -342,7 +342,7 @@ function saveUser()
             break;
 
         case 'UserContacts':
-            UsersAjax.callAsync('updatecontacts',
+            UsersAjax.callAsync('UpdateContacts',
                                 $('uid').value,
                                 $('country').value,
                                 $('city').value,
@@ -364,7 +364,7 @@ function deleteUser(rowElement, uid)
     stopUserAction();
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
     if (confirm(confirmUserDelete)) {
-        UsersAjax.callAsync('deleteuser', uid);
+        UsersAjax.callAsync('DeleteUser', uid);
     }
     unselectGridRow('users_datagrid');
 }
@@ -377,7 +377,7 @@ function deleteGroup(rowElement, gid)
     stopGroupAction();
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
     if (confirm(confirmGroupDelete)) {
-        UsersAjax.callAsync('deletegroup', gid);
+        UsersAjax.callAsync('DeleteGroup', gid);
     }
     unselectGridRow('groups_datagrid');
 }
@@ -394,7 +394,7 @@ function editUser(rowElement, uid)
     initDatePicker('expiry_date');
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var uInfo = UsersAjax.callSync('getuser', uid, true);
+    var uInfo = UsersAjax.callSync('GetUser', uid, true);
     $('username').value    = uInfo['username'];
     $('nickname').value    = uInfo['nickname'].defilter();
     $('email').value       = uInfo['email'];
@@ -412,7 +412,7 @@ function editACL(rowElement, id, action)
 {
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
     if (!cachedACLForm) {
-        cachedACLForm = UsersAjax.callSync('getaclui');
+        cachedACLForm = UsersAjax.callSync('GetACLUI');
     }
     $('workarea').innerHTML = cachedACLForm;
     $('legend_title').innerHTML  = editACL_title;
@@ -452,7 +452,7 @@ function getACL()
 
     var form = $('acl_form').set('html', ''),
         acls = UsersAjax.callSync(
-            'getaclkeys',
+            'GetACLKeys',
             selectedId,
             $('components').value,
             currentAction
@@ -489,12 +489,12 @@ function editUserGroups(rowElement, uid)
     currentAction = 'UserGroups';
     $('legend_title').innerHTML  = editUserGroups_title;
     if (cachedUserGroupsForm == null) {
-        cachedUserGroupsForm = UsersAjax.callSync('usergroupsui');
+        cachedUserGroupsForm = UsersAjax.callSync('UserGroupsUI');
     }
     $('workarea').innerHTML = cachedUserGroupsForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var uGroups = UsersAjax.callSync('getusergroups', uid);
+    var uGroups = UsersAjax.callSync('GetUserGroups', uid);
     uGroups.each(function(gid, index) {
         if ($('group_' + gid)) {
             $('group_' + gid).checked = true;
@@ -511,13 +511,13 @@ function editPersonal(rowElement, uid)
     currentAction = 'UserPersonal';
     $('legend_title').innerHTML  = editPersonal_title;
     if (cachedPersonalForm == null) {
-        cachedPersonalForm = UsersAjax.callSync('personalui');
+        cachedPersonalForm = UsersAjax.callSync('PersonalUI');
     }
     $('workarea').innerHTML = cachedPersonalForm;
     initDatePicker('dob');
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var uInfo = UsersAjax.callSync('getuser', uid, false, true);
+    var uInfo = UsersAjax.callSync('GetUser', uid, false, true);
     $('fname').value   = uInfo['fname'];
     $('lname').value   = uInfo['lname'];
     $('gender').value  = Number(uInfo['gender']);
@@ -539,12 +539,12 @@ function editContacts(rowElement, uid)
     currentAction = 'UserContacts';
     $('legend_title').innerHTML  = editContacts_title;
     if (cachedContactsForm == null) {
-        cachedContactsForm = UsersAjax.callSync('contactsui');
+        cachedContactsForm = UsersAjax.callSync('ContactsUI');
     }
     $('workarea').innerHTML = cachedContactsForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var uInfo = UsersAjax.callSync('getuser', uid, false, false, true);
+    var uInfo = UsersAjax.callSync('GetUser', uid, false, false, true);
     $('country').value          = uInfo['country'];
     $('city').value             = uInfo['city'];
     $('address').value          = uInfo['address'];
@@ -613,7 +613,7 @@ function editGroup(rowElement, gid)
     $('workarea').innerHTML = cachedGroupForm;
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
 
-    var gInfo = UsersAjax.callSync('getgroup', gid);
+    var gInfo = UsersAjax.callSync('GetGroup', gid);
     $('name').value        = gInfo['name'];
     $('title').value       = gInfo['title'].defilter();
     $('description').value = gInfo['description'].defilter();
@@ -629,12 +629,12 @@ function editGroupUsers(rowElement, gid)
     currentAction = 'GroupUsers';
     $('legend_title').innerHTML  = editGroupUsers_title;
     if (cachedGroupUsersForm == null) {
-        cachedGroupUsersForm = UsersAjax.callSync('groupusersui');
+        cachedGroupUsersForm = UsersAjax.callSync('GroupUsersUI');
     }
     $('workarea').innerHTML = cachedGroupUsersForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var gUsers = UsersAjax.callSync('getgroupusers', gid);
+    var gUsers = UsersAjax.callSync('GetGroupUsers', gid);
     gUsers.each(function(user, index) {
         if ($('user_' + user['id'])) {
             $('user_' + user['id']).checked = true;
@@ -655,13 +655,13 @@ function saveGroup()
             }
 
             if (selectedId == 0) {
-                UsersAjax.callAsync('addgroup', 
+                UsersAjax.callAsync('AddGroup', 
                                     $('name').value,
                                     $('title').value,
                                     $('description').value,
                                     $('enabled').value);
             } else {
-                UsersAjax.callAsync('updategroup',
+                UsersAjax.callAsync('UpdateGroup',
                                     selectedId,
                                     $('name').value,
                                     $('title').value,
@@ -679,7 +679,7 @@ function saveGroup()
                 var keys = img.id.split(':');
                 return [keys[0], keys[1], img.alt];
             });
-            UsersAjax.callAsync('updategroupacl', selectedId, $('components').value, acls);
+            UsersAjax.callAsync('UpdateGroupACL', selectedId, $('components').value, acls);
             break;
 
         case 'GroupUsers':
@@ -697,7 +697,7 @@ function saveGroup()
                 }
             }
 
-            UsersAjax.callAsync('adduserstogroup', selectedId, keys);
+            UsersAjax.callAsync('AddUsersToGroup', selectedId, keys);
             break;
     }
 
@@ -728,7 +728,7 @@ function saveSettings()
     var recover    = $('password_recovery').value;
     var dashboard  = $('dashboard_building').value;
 
-    UsersAjax.callAsync('savesettings', method, anon, repetitive, act, group, recover, dashboard);
+    UsersAjax.callAsync('SaveSettings', method, anon, repetitive, act, group, recover, dashboard);
 }
 
 /**
@@ -754,7 +754,7 @@ function updateMyAccount()
         $('pass2').value = $('pass1').value;
     }
     UsersAjax.callAsync(
-        'updatemyaccount',
+        'UpdateMyAccount',
         {'uid': $('uid').value,
          'username': $('username').value,
          'password': $('pass1').value,
