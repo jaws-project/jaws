@@ -36,3 +36,7 @@ $admin_actions['Settings'] = array(
     'normal' => true,
     'file'   => 'Settings',
 );
+$admin_actions['UpdateProperties'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
