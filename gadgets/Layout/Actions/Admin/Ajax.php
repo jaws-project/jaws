@@ -64,7 +64,7 @@ class Layout_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @access  public
      * @return  array   Response
      */
-    function ChangeDisplayWhen() 
+    function ChangeDisplayWhen2() 
     {
         @list($item, $dw) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Elements');
@@ -151,7 +151,7 @@ class Layout_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @access  public
      * @return  array   Response
      */
-    function EditElementAction() 
+    function EditElementAction2() 
     {
         $res = false;
         @list($item, $gadget, $action, $params) = jaws()->request->fetchAll('post');

@@ -14,11 +14,11 @@
  * Use async mode, create Callback
  */
 var LayoutCallback = {
-    EditElementAction: function(response) {
+    EditElementAction2: function(response) {
         showResponse(response, false);
     },
 
-    ChangeDisplayWhen: function(response) {
+    ChangeDisplayWhen2: function(response) {
         showResponse(response, false);
     },
 
@@ -303,14 +303,14 @@ function saveElementAction(lid, gadget, action, params, title, desc)
     params = (params == null)? null : params.split(',');
     $('ea' + lid).innerHTML = title;
     $('ea' + lid).parentNode.parentNode.title = desc;
-    LayoutAjax.callAsync('EditElementAction', lid, gadget, action, params);
+    LayoutAjax.callAsync('EditElementAction2', lid, gadget, action, params);
 }
 
 /**
  * Update display when 
  */
 function saveChangeDW(itemId, dw) {
-    LayoutAjax.callAsync('ChangeDisplayWhen', itemId, dw);
+    LayoutAjax.callAsync('ChangeDisplayWhen2', itemId, dw);
     if (dw == '*') {
         $('dw' + itemId).innerHTML = displayAlways;
     } else if (dw.blank()) {
