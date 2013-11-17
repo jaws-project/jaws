@@ -59,4 +59,3 @@ function init()
 
 var ControlPanelAjax = new JawsAjax('ControlPanel', ControlPanelCallback);
 var ControlPanelStorage = new JawsStorage('ControlPanel');
-ControlPanelAjax.backwardSupport();
