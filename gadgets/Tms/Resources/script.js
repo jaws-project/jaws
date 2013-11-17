@@ -108,7 +108,7 @@ function editTheme(theme)
 
     cleanWorkingArea(true);
 
-    var themeInfo = TmsAjax.callSync('getthemeinfo', theme);
+    var themeInfo = TmsAjax.callSync('GetThemeInfo', theme);
     if (themeInfo == null) {
         return false; //Check
     }
