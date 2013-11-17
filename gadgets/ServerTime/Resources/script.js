@@ -11,7 +11,7 @@
  * Use async mode, create Callback
  */
 var ServerTimeCallback = { 
-    updateproperties: function(response) {
+    UpdateProperties: function(response) {
         showResponse(response);
     }
 }
@@ -21,7 +21,7 @@ var ServerTimeCallback = {
  */
 function updateProperties(form)
 {
-    ServerTimeAjax.callAsync('updateproperties', $('date_format').value);
+    ServerTimeAjax.callAsync('UpdateProperties', $('date_format').value);
 
 }
 
