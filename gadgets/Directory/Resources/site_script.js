@@ -523,6 +523,7 @@ function editFile(id)
 function uploadFile() {
     var iframe = new Element('iframe', {id:'ifrm_upload'});
     document.body.grab(iframe);
+    $('btn_ok').set('disabled', true);
     $('frm_upload').submit();
 }
 
@@ -544,6 +545,7 @@ function onUpload(response) {
         }
     }
     $('ifrm_upload').destroy();
+    $('btn_ok').set('disabled', false);
 }
 
 /**
