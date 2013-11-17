@@ -33,7 +33,6 @@ var NotepadCallback = {
  */
 function initNotepad()
 {
-    NotepadAjax.backwardSupport();
 }
 
 /**
@@ -112,7 +111,6 @@ function deleteNotes()
  */
 function initShare()
 {
-    NotepadAjax.backwardSupport();
     $('sys_groups').selectedIndex = -1;
     Array.each($('note_users').options, function(opt) {
         sharedNoteUsers[opt.value] = opt.text;
