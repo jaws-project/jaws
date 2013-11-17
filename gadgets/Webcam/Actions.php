@@ -28,3 +28,31 @@ $admin_actions['ManageWebcams'] = array(
     'normal' => true,
     'file' => 'Webcam',
 );
+$admin_actions['GetWebcam'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['NewWebcam'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateWebcam'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['DeleteWebcam'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['UpdateProperties'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['ShowShortURL'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetData'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
