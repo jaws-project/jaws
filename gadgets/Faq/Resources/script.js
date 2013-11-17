@@ -11,14 +11,14 @@
  * Use async mode, create Callback
  */
 var FaqCallback = {
-    deletequestion: function(response) {
+    DeleteQuestion: function(response) {
         showResponse(response);
         if (response[0]['type'] == 'response_notice') {
             buildCategory(currentCategory);
         }
     },
 
-    deletecategory: function(response) {
+    DeleteCategory: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('FaqCategory_'+currentCategory).destroy();
         }
@@ -29,7 +29,7 @@ var FaqCallback = {
         showResponse(response);
     },
 
-    movequestion: function(response) {
+    MoveQuestion: function(response) {
         showResponse(response);
         if (response[0]['type'] == 'response_notice') {
             buildCategory(currentCategory);
@@ -51,7 +51,7 @@ function parseQuestionText(form)
     var answerArea   = document.getElementById('answerPreview');
     var questionArea = document.getElementById('questionPreview');
 
-    answer = FaqAjax.callSync('parsetext', answer);
+    answer = FaqAjax.callSync('ParseText', answer);
     answerArea.innerHTML   = answer;
     questionArea.innerHTML = question;
 }
@@ -70,7 +70,7 @@ function parseCategoryText(form)
     var descriptionArea = document.getElementById('descriptionPreview');
     var categoryArea    = document.getElementById('categoryPreview');
 
-    description = FaqAjax.callSync('parsetext', description);
+    description = FaqAjax.callSync('ParseText', description);
     descriptionArea.innerHTML = description;
     categoryArea.innerHTML    = category;
 }
@@ -104,7 +104,7 @@ function showCategory(form)
  */
 function deleteQuestion(id, category)
 {
-    FaqAjax.callAsync('deletequestion', id);
+    FaqAjax.callAsync('DeleteQuestion', id);
     currentCategory = category;
 }
 
@@ -113,7 +113,7 @@ function deleteQuestion(id, category)
  */
 function deleteCategory(id)
 {
-    FaqAjax.callAsync('deletecategory', id);
+    FaqAjax.callAsync('DeleteCategory', id);
     currentCategory = id;
 }
 
@@ -126,7 +126,7 @@ function moveQuestion(category, id, position, direction)
         return;
     }
 
-    FaqAjax.callAsync('movequestion', category, id, position, direction);
+    FaqAjax.callAsync('MoveQuestion', category, id, position, direction);
     currentCategory = category;
 }
 
@@ -147,7 +147,7 @@ function buildMainArea()
 function buildCategory(id)
 {
     if (id) {
-        var result = FaqAjax.callSync('getcategorygrid', id);
+        var result = FaqAjax.callSync('GetCategoryGrid', id);
         var categoryArea = $('FaqDataGridOfCategory_' + id);
         categoryArea.innerHTML = result;
         currentCategory = false;
