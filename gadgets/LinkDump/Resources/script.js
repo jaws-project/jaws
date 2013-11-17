@@ -12,7 +12,7 @@
  * Use async mode, create Callback
  */
 var LinkDumpCallback = { 
-    updategroup: function(response) {
+    UpdateGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('group_'+$('gid').value).getElementsByTagName('a')[1].innerHTML = $('title').value;
             stopAction();
@@ -64,7 +64,7 @@ function saveLink()
 
         cacheLinkForm = null;
         if (selectedGroup == null) {
-            var response = LinkDumpAjax.callSync('insertgroup',
+            var response = LinkDumpAjax.callSync('InsertGroup',
                                                  $('title').value,
                                                  $('fast_url').value,
                                                  $('limit_count').value,
@@ -77,7 +77,7 @@ function saveLink()
             }
             showResponse(response);
         } else {
-            LinkDumpAjax.callAsync('updategroup',
+            LinkDumpAjax.callAsync('UpdateGroup',
                                     $('gid').value,
                                     $('title').value,
                                     $('fast_url').value,
@@ -96,7 +96,7 @@ function saveLink()
         }
         if (selectedLink == null) {
             var response = LinkDumpAjax.callSync(
-                'insertlink',
+                'InsertLink',
                 $('gid').value,
                 $('title').value,
                 $('url').value,
@@ -113,7 +113,7 @@ function saveLink()
             showResponse(response);
         } else {
             var response = LinkDumpAjax.callSync(
-                'updatelink',
+                'UpdateLink',
                 $('lid').value,
                 $('gid').value,
                 $('title').value,
@@ -212,7 +212,7 @@ function listLinks(gid, force_open)
     gFlagimage = gNode.getElementsByTagName('img')[0];
     divSubList = $('links_group_'+gid);
     if (divSubList.innerHTML == '') {
-        var links_list = LinkDumpAjax.callSync('getlinkslist', gid);
+        var links_list = LinkDumpAjax.callSync('GetLinksList', gid);
         if (!links_list.blank()) {
             divSubList.innerHTML = links_list;
         } else {
@@ -274,7 +274,7 @@ function stopAction()
 function addGroup()
 {
     if (cacheGroupForm == null) {
-        cacheGroupForm = LinkDumpAjax.callSync('getgroupui');
+        cacheGroupForm = LinkDumpAjax.callSync('GetGroupUI');
     }
     currentAction = 'Groups';
 
@@ -296,7 +296,7 @@ function addLink(gid)
         listLinks(gid);
     }
     if (cacheLinkForm == null) {
-        cacheLinkForm = LinkDumpAjax.callSync('getlinkui');
+        cacheLinkForm = LinkDumpAjax.callSync('GetLinkUI');
     }
     stopAction();
     currentAction = 'Links';
@@ -323,7 +323,7 @@ function editGroup(gid)
     if (gid == 0) return;
     unselectTreeRow();
     if (cacheGroupForm == null) {
-        cacheGroupForm = LinkDumpAjax.callSync('getgroupui');
+        cacheGroupForm = LinkDumpAjax.callSync('GetGroupUI');
     }
     currentAction = 'Groups';
     selectedGroup = gid;
@@ -336,7 +336,7 @@ function editGroup(gid)
     $('btn_add').style.display    = 'none';
     $('links_edit').innerHTML   = cacheGroupForm;
 
-    var groupInfo = LinkDumpAjax.callSync('getgroups', selectedGroup);
+    var groupInfo = LinkDumpAjax.callSync('GetGroups', selectedGroup);
 
     $('gid').value         = groupInfo['id'];
     $('title').value       = groupInfo['title'].defilter();
@@ -354,7 +354,7 @@ function editLink(element, lid)
     if (lid == 0) return;
     selectTreeRow(element.parentNode);
     if (cacheLinkForm == null) {
-        cacheLinkForm = LinkDumpAjax.callSync('getlinkui');
+        cacheLinkForm = LinkDumpAjax.callSync('GetLinkUI');
     }
     currentAction = 'Links';
     selectedLink = lid;
@@ -367,7 +367,7 @@ function editLink(element, lid)
     $('btn_add').style.display    = 'none';
     $('links_edit').innerHTML = cacheLinkForm;
 
-    var linkInfo = LinkDumpAjax.callSync('getlink', selectedLink);
+    var linkInfo = LinkDumpAjax.callSync('GetLink', selectedLink);
 
     $('lid').value         = linkInfo['id'];
     $('gid').value         = linkInfo['gid'];
@@ -394,7 +394,7 @@ function delLinks()
         msg = msg.substr(0,  msg.indexOf('%s%')) + $('group_'+gid).getElementsByTagName('a')[1].innerHTML + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
             cacheMenuForm = null;
-            var response = LinkDumpAjax.callSync('deletegroup', gid);
+            var response = LinkDumpAjax.callSync('DeleteGroup', gid);
             if (response[0]['type'] == 'response_notice') {
                 Element.destroy($('group_'+gid));
             }
@@ -408,7 +408,7 @@ function delLinks()
               $('link_'+lid).getElementsByTagName('a')[0].innerHTML+
               msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
-            var response = LinkDumpAjax.callSync('deletelink', lid, $('gid').value, $('rank').value);
+            var response = LinkDumpAjax.callSync('DeleteLink', lid, $('gid').value, $('rank').value);
             if (response[0]['type'] == 'response_notice') {
                 link_parent = $('link_'+lid).parentNode;
                 Element.destroy($('link_'+lid));
