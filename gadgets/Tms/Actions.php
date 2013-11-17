@@ -24,3 +24,7 @@ $admin_actions['DownloadTheme'] = array(
     'standalone' => true,
     'file' => 'Themes'
 );
+$admin_actions['GetThemeInfo'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
