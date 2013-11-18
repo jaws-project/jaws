@@ -13,6 +13,36 @@
 class Jaws_ACL
 {
     /**
+     * All default ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    private $acls = array();
+
+    /**
+     * Loads the data from the DB
+     *
+     * @access  public
+     * @return  void
+     */
+    function Init()
+    {
+        $tblACL = Jaws_ORM::getInstance()->table('acl');
+        $result = $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer')
+            ->where('user', 0)->and()->where('group', 0)
+            ->orderBy('component', 'key_name', 'key_subkey')
+            ->fetchAll();
+        if (Jaws_Error::IsError($result)) {
+            return null;
+        }
+
+        foreach ($result as $acl) {
+            $this->acls[$acl['component']][$acl['key_name']][$acl['key_subkey']] = $acl['key_value'];
+        }
+    }
+
+    /**
      * Fetch the key value
      *
      * @access  public
@@ -23,18 +53,7 @@ class Jaws_ACL
      */
     function fetch($key_name, $subkey, $component)
     {
-        $tblACL = Jaws_ORM::getInstance()->table('acl');
-        $value = $tblACL->select('key_value:integer')
-            ->where('component', $component)->and()
-            ->where('key_name', $key_name)->and()
-            ->where('key_subkey', $subkey)->and()
-            ->where('user', 0)->and()->where('group', 0)
-            ->fetchOne();
-        if (Jaws_Error::IsError($value)) {
-            return null;
-        }
-
-        return $value;
+        return @$this->acls[$component][$key_name][$subkey];
     }
 
     /**
@@ -46,17 +65,7 @@ class Jaws_ACL
      */
     function fetchAll($component)
     {
-        $tblACL = Jaws_ORM::getInstance()->table('acl');
-        $result = $tblACL->select('key_name', 'key_subkey', 'key_value:integer')
-            ->where('component', $component)->and()
-            ->where('user', 0)->and()->where('group', 0)
-            ->orderBy('key_name', 'key_subkey')
-            ->fetchAll();
-        if (Jaws_Error::IsError($result)) {
-            return null;
-        }
-
-        return $result;
+        return isset($this->acls[$component])? $this->acls[$component] : array();
     }
 
     /**
@@ -191,7 +200,12 @@ class Jaws_ACL
             'group'     => 0,
         ));
         $result = $tblACL->exec();
-        return !Jaws_Error::IsError($result);
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
+
+        $this->acl[$component][$key_name][$subkey] = (int)$key_value;
+        return true;
     }
 
     /**
@@ -217,13 +231,15 @@ class Jaws_ACL
 
         $ndx = 0;
         $sqls = '';
-        $dbDriver  = $GLOBALS['db']->getDriver();
+        $tmp_acls = $this->acls;
+        $dbDriver = $GLOBALS['db']->getDriver();
         $dbVersion = $GLOBALS['db']->getDBVersion();
         foreach ($keys as $key) {
             list($key_name, $subkey, $key_value) = $key;
             $params["name_$ndx"]   = $key_name;
             $params["subkey_$ndx"] = $subkey;
             $params["value_$ndx"]  = (int)$key_value;
+            $tmp_acls[$component][$key_name][$subkey] = (int)$key_value;
 
             // Ugly hack to support all databases
             switch ($dbDriver) {
@@ -273,6 +289,9 @@ class Jaws_ACL
             }
         }
 
+        if ($user == 0 && $group == 0) {
+            $this->acls = $tmp_acls;
+        }
         return true;
     }
 
@@ -295,7 +314,12 @@ class Jaws_ACL
             ->where('key_subkey', $subkey)->and()
             ->where('user', 0)->and()->where('group', 0)
             ->exec();
-        return !Jaws_Error::IsError($result);
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
+
+        $this->acl[$component][$key_name][$subkey] = (int)$key_value;
+        return true;
     }
 
     /**
