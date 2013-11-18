@@ -40,6 +40,7 @@ class Blog_Hooks_Search extends Jaws_Gadget_Hook
                 [fast_url],
                 [summary],
                 [text],
+                [categories],
                 [createtime],
                 [updatetime]
             FROM [[blog]]
@@ -62,7 +63,17 @@ class Blog_Hooks_Search extends Jaws_Gadget_Hook
 
         $date = Jaws_Date::getInstance();
         $entries = array();
-        foreach ($result as $r) {
+        foreach ($result as $key=>$r) {
+            $permission = true;
+            foreach (explode(",", $r['categories']) as $cat) {
+                if (!$this->gadget->GetPermission('CategoryAccess', $cat)) {
+                    $permission = false;
+                }
+            }
+            if(!$permission) {
+                continue;
+            }
+
             $entry = array();
             $entry['title'] = $r['title'];
             if (empty($r['fast_url'])) {
