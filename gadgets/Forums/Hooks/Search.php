@@ -61,6 +61,10 @@ class Forums_Hooks_Search extends Jaws_Gadget_Hook
         $objDate = Jaws_Date::getInstance();
         $posts = array();
         foreach ($result as $r) {
+            if (!$this->gadget->GetPermission('ForumAccess', $r['fid'])) {
+                continue;
+            }
+
             $post = array();
             $post['title'] = $r['subject'];
             $post['url']   = $this->gadget->urlMap(

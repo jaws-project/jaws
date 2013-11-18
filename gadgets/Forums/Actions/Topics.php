@@ -179,6 +179,10 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         }
 
         $fModel = $this->gadget->model->load('Forums');
+        $forum = $fModel->GetForum($rqst['fid']);
+        if (Jaws_Error::IsError($forum) || empty($forum)) {
+            return false;
+        }
         if (!empty($rqst['tid'])) {
             $tModel = $this->gadget->model->load('Topics');
             $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
@@ -198,11 +202,6 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             $topic['update_reason'] = '';
             $title = _t('FORUMS_TOPICS_NEW_TITLE');
             $btn_title = _t('FORUMS_TOPICS_NEW_BUTTON');
-        }
-
-        $forum = $fModel->GetForum($rqst['fid']);
-        if (Jaws_Error::IsError($forum) || empty($forum)) {
-            return false;
         }
 
         if (!$this->gadget->GetPermission('ForumAccess', $topic['fid'])) {
