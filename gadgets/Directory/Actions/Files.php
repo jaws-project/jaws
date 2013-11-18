@@ -299,6 +299,27 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
     }
 
     /**
+     * Reads text file content
+     *
+     * @access  public
+     * @return  string  Textual content
+     */
+    function GetFileContent($id)
+    {
+        $model = $this->gadget->model->load('Files');
+        $file = $model->GetFile($id);
+        if (Jaws_Error::IsError($file) || empty($file) || empty($file['filename'])) {
+            return;
+        }
+        $uid = ($file['id'] === $file['reference'])? $file['user'] : $file['owner'];
+        $filename = $GLOBALS['app']->getDataURL("directory/$uid/") . $file['filename'];
+        if (!file_exists($filename)) {
+            return;
+        }
+        return file_get_contents($filename);
+    }
+
+    /**
      * Builds HTML5 audio/video tags for the file
      *
      * @access  public
@@ -308,9 +329,17 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
     {
         $id = (int)jaws()->request->fetch('id');
         $type = jaws()->request->fetch('type');
-        $url = $this->GetDownloadURL($id, true);
-        $tpl = "[$type]" . $url . "[/$type]";
-        return $this->gadget->ParseText($tpl, 'Directory', 'index');
+
+        $tpl = $this->gadget->template->load('Media.html');
+        $tpl->SetBlock($type);
+        if ($type === 'text') {
+            $tpl->SetVariable('text', $this->GetFileContent($id));
+        } else {
+            $tpl->SetVariable('url', $this->GetDownloadURL($id, true));
+        }
+        $tpl->ParseBlock($type);
+
+        return $this->gadget->ParseText($tpl->get(), 'Directory', 'index');
     }
 
     /**
@@ -391,7 +420,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
             }
         }
 
-        // Check for fie existance
+        // Check for file existance
         $uid = ($file['id'] == $file['reference'])? $file['user'] : $file['owner'];
         $filename = $GLOBALS['app']->getDataURL("directory/$uid/") . $file['filename'];
         if (!file_exists($filename)) {

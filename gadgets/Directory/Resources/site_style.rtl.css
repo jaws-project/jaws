@@ -61,6 +61,10 @@ width:100%;
 white-space:nowrap;
 }
 
+.file-image img {
+max-width:540px;
+}
+
 #dir_pathbar, #dir_searchbar{
 font-size:11px;
 }

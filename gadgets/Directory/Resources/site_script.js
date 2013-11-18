@@ -142,7 +142,7 @@ function displayFiles(files)
         var html = fileTemplate.substitute(data),
             tr = Elements.from(html)[0];
         tr.addEvent('click', fileSelect);
-        tr.addEvent('dblclick', fileOpen);
+        tr.addEvent('dblclick', fileOpen.pass(data.id));
         tr.getElement('input').addEvent('click', fileCheck);
         return tr;
     }
@@ -156,6 +156,9 @@ function displayFiles(files)
         file.icon = '<img src="' + icon_url + file.type + '.png" />';
         file.size = formatSize(file.filesize, 0);
         file.foreign = (file.user !== file.owner);
+        if (!file.is_dir) {
+            file.url = 'javascript:fileOpen(' + file.id + ');';
+        }
         fileById[file.id] = Object.clone(file);
         file.filename = (file.filename === null)? '' : file.filename;
         file.shared = file.shared? 'shared' : '';
@@ -170,7 +173,7 @@ function displayFiles(files)
  */
 function fileSelect(e)
 {
-    if (e.target.tagName === 'INPUT') {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'A') {
         return;
     }
     var ws = $('file_arena');
@@ -224,17 +227,20 @@ function getSelected()
 /**
  * Opens, plays or downloads the file/directory on dblclick
  */
-function fileOpen()
+function fileOpen(id)
 {
-    var id = idSet[0],
-        file = fileById[id];
+    var file = fileById[id];
     if (file.is_dir) {
         if (file.foreign) {
             id = file.reference;
         }
         location.assign(file.url);
     } else {
-        if (['wav', 'mp3', 'ogg'].indexOf(file.ext) !== -1) {
+        if (file.ext === 'txt') {
+            openMedia(id, 'text');
+        } else if (['jpg', 'jpeg', 'png', 'gif', 'svg'].indexOf(file.ext) !== -1) {
+            openMedia(id, 'image');
+        } else if (['wav', 'mp3', 'ogg'].indexOf(file.ext) !== -1) {
             openMedia(id, 'audio');
         } else if (['webm', 'mp4', 'ogg'].indexOf(file.ext) !== -1) {
             openMedia(id, 'video');
@@ -274,7 +280,7 @@ function downloadFile()
 }
 
 /**
- * Builds the directory path
+ * Builds directory path
  */
 function updatePath()
 {
