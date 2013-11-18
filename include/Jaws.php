@@ -152,6 +152,7 @@ class Jaws
      */
     function init()
     {
+        $this->ACL->Init();
         $this->Map->Init();
         $this->Session = Jaws_Session::factory();
         $this->Session->Init();
