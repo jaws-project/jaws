@@ -120,9 +120,9 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
         $tpl->SetVariable('lbl_acl_rules', _t('COMPONENTS_GADGETS_ACL_RULES').':');
         $acls = $GLOBALS['app']->ACL->fetchAll($gadget);
         if (!empty($acls)) {
-            foreach ($acls as $acl) {
+            foreach ($acls as $key_name => $acl) {
                 $tpl->SetBlock('info/acls/acl');
-                $tpl->SetVariable('acl', $objGadget->acl->description($acl['key_name'], $acl['key_subkey']));
+                $tpl->SetVariable('acl', $objGadget->acl->description($key_name, key($acl)));
                 $tpl->ParseBlock('info/acls/acl');
             }
         }

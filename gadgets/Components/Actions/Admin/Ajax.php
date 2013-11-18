@@ -301,11 +301,14 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $acls = $GLOBALS['app']->ACL->fetchAll($comp);
         if (!$is_plugin) {
             $info = Jaws_Gadget::getInstance($comp);
-            foreach ($acls as $k => $acl) {
-                $acls[$k]['key_desc'] = $info->acl->description($acl['key_name'], $acl['key_subkey']);
+            foreach ($acls as $key_name => $acl) {
+                $acls[$key_name]['key_name'] = $key_name;
+                $acls[$key_name]['key_subkey'] = key($acl);
+                $acls[$key_name]['key_value'] = current($acl);
+                $acls[$key_name]['key_desc'] = $info->acl->description($key_name, key($acl));
             }
         }
-        return array('ui' => $ui, 'acls' => $acls);
+        return array('ui' => $ui, 'acls' => array_values($acls));
     }
 
     /**
