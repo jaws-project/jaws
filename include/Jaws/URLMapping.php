@@ -58,11 +58,10 @@ class Jaws_URLMapping
         if (Jaws_Error::isError($this->_AliasesModel)) {
             Jaws_Error::Fatal($this->_AliasesModel->getMessage());
         }
+
         // fetch all registry keys
         $regKeys = $urlMapper->registry->fetchAll();
-        $regKeys = array_column($regKeys, 'key_value', 'key_name');
-
-        $enabled   = $regKeys['map_enabled'] == 'true';
+        $enabled = $regKeys['map_enabled'] == 'true';
         $extension = $regKeys['map_extensions'];
         $this->_enabled = $enabled && strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'iis') === false;
         $this->_use_rewrite       = $regKeys['map_use_rewrite'] == 'true';
