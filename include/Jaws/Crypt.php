@@ -45,9 +45,7 @@ class Jaws_Crypt
         }
 
         // fetch all registry keys related to crypt
-        $cryptPolicies = $GLOBALS['app']->Registry->fetchAll('Policy', false, 'crypt_%');
-        $cryptPolicies = array_column($cryptPolicies, 'key_value', 'key_name');
-
+        $cryptPolicies = $GLOBALS['app']->Registry->fetchAll('Policy', false);
         if ($cryptPolicies['crypt_enabled'] != 'true') {
             return false;
         }
