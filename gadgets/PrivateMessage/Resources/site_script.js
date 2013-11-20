@@ -31,7 +31,7 @@ function filterInbox()
         'InboxDataGridUI',
         $(document).getElement('form[name=inbox]').toQueryString().parseQueryString()
     );
-    console.log(result);
+
     $('inbox-datagrid').innerHTML = result;
     return false;
 }
