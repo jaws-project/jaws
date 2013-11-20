@@ -298,17 +298,19 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($comp, $is_plugin) = jaws()->request->fetchAll('post');
         $html = $this->gadget->action->loadAdmin('ACL');
         $ui = $html->ACLUI();
-        $acls = $GLOBALS['app']->ACL->fetchAll($comp);
-        if (!$is_plugin) {
+        $acls = array();
+        $result = $GLOBALS['app']->ACL->fetchAll($comp);
+        if (!$is_plugin && !empty($result)) {
             $info = Jaws_Gadget::getInstance($comp);
-            foreach ($acls as $key_name => $acl) {
+            foreach ($result as $key_name => $acl) {
                 $acls[$key_name]['key_name'] = $key_name;
                 $acls[$key_name]['key_subkey'] = key($acl);
                 $acls[$key_name]['key_value'] = current($acl);
                 $acls[$key_name]['key_desc'] = $info->acl->description($key_name, key($acl));
             }
+            $acls = array_values($acls);
         }
-        return array('ui' => $ui, 'acls' => array_values($acls));
+        return array('ui' => $ui, 'acls' => $acls);
     }
 
     /**
