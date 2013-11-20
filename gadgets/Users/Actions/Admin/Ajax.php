@@ -492,14 +492,18 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageUserACLs');
         @list($id, $comp, $action) = jaws()->request->fetchAll('post');
         // fetch default ACLs
-        $default_acls = $GLOBALS['app']->ACL->fetchAll($comp);
-        // set ACL keys description
-        $info = Jaws_Gadget::getInstance($comp);
-        foreach ($default_acls as $key_name => $acl) {
-            $default_acls[$key_name]['key_name'] = $key_name;
-            $default_acls[$key_name]['key_subkey'] = key($acl);
-            $default_acls[$key_name]['key_value'] = current($acl);
-            $default_acls[$key_name]['key_desc'] = $info->acl->description($key_name, key($acl));
+        $default_acls = array();
+        $result = $GLOBALS['app']->ACL->fetchAll($comp);
+        if (!empty($result)) {
+            // set ACL keys description
+            $info = Jaws_Gadget::getInstance($comp);
+            foreach ($result as $key_name => $acl) {
+                $default_acls[$key_name]['key_name'] = $key_name;
+                $default_acls[$key_name]['key_subkey'] = key($acl);
+                $default_acls[$key_name]['key_value'] = current($acl);
+                $default_acls[$key_name]['key_desc'] = $info->acl->description($key_name, key($acl));
+            }
+            $default_acls = array_values($default_acls);
         }
 
         // fetch user/group ACLs
@@ -507,7 +511,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $GLOBALS['app']->ACL->fetchAllByUser($id, $comp):
             $GLOBALS['app']->ACL->fetchAllByGroup($id, $comp);
 
-        return array('default_acls' => array_values($default_acls), 'custom_acls' => $acls);
+        return array('default_acls' => $default_acls, 'custom_acls' => $acls);
     }
 
     /**
