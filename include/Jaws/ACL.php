@@ -18,17 +18,36 @@ class Jaws_ACL
      * @var     array
      * @access  private
      */
-    private $acls = array();
+    private $default_acls = array();
+
+    /**
+     * All user's ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    private $user_acls = array();
+
+    /**
+     * All groups's ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    private $groups_acls = array();
 
     /**
      * Loads the data from the DB
      *
      * @access  public
+     * @param   string  $user   User ID
+     * @param   string  $groups Array of groups ID
      * @return  void
      */
-    function Init()
+    function Init($user = 0, $groups = array())
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
+        // fetch default ACLs
         $result = $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer')
             ->where('user', 0)->and()->where('group', 0)
             ->orderBy('component', 'key_name', 'key_subkey')
@@ -37,8 +56,42 @@ class Jaws_ACL
             return null;
         }
 
+        // store default ACLs
         foreach ($result as $acl) {
-            $this->acls[$acl['component']][$acl['key_name']][$acl['key_subkey']] = $acl['key_value'];
+            $this->default_acls[$acl['component']][$acl['key_name']][$acl['key_subkey']] = $acl['key_value'];
+        }
+
+        // fetch passed user's ACLs
+        if (!empty($user)) {
+            $result = $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer')
+                ->where('user', (int)$user)->and()->where('group', 0)
+                ->orderBy('component', 'key_name', 'key_subkey')
+                ->fetchAll();
+            if (Jaws_Error::IsError($result)) {
+                return null;
+            }
+
+            // store passed user's ACLs
+            foreach ($result as $acl) {
+                $this->user_acls[$acl['component']][$acl['key_name']][$acl['key_subkey']] = $acl['key_value'];
+            }
+        }
+
+        // fetch passed groups's ACLs
+        foreach ($groups as $group) {
+            $result = $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer')
+                ->where('user', 0)->and()->where('group', (int)$group)
+                ->orderBy('component', 'key_name', 'key_subkey')
+                ->fetchAll();
+            if (Jaws_Error::IsError($result)) {
+                return null;
+            }
+
+            // store passed group's ACLs
+            foreach ($result as $acl) {
+                $this->groups_acls[$group][$acl['component']][$acl['key_name']][$acl['key_subkey']] =
+                    $acl['key_value'];
+            }
         }
     }
 
@@ -53,7 +106,7 @@ class Jaws_ACL
      */
     function fetch($key_name, $subkey, $component)
     {
-        return @$this->acls[$component][$key_name][$subkey];
+        return @$this->default_acls[$component][$key_name][$subkey];
     }
 
     /**
@@ -65,7 +118,7 @@ class Jaws_ACL
      */
     function fetchAll($component)
     {
-        return isset($this->acls[$component])? $this->acls[$component] : array();
+        return isset($this->default_acls[$component])? $this->default_acls[$component] : array();
     }
 
     /**
@@ -231,7 +284,7 @@ class Jaws_ACL
 
         $ndx = 0;
         $sqls = '';
-        $tmp_acls = $this->acls;
+        $tmp_acls = $this->default_acls;
         $dbDriver = $GLOBALS['db']->getDriver();
         $dbVersion = $GLOBALS['db']->getDBVersion();
         foreach ($keys as $key) {
@@ -290,7 +343,7 @@ class Jaws_ACL
         }
 
         if ($user == 0 && $group == 0) {
-            $this->acls = $tmp_acls;
+            $this->default_acls = $tmp_acls;
         }
         return true;
     }
