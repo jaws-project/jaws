@@ -12,20 +12,20 @@
 class Jaws_Registry
 {
     /**
-     * Has the registry
+     * All default registry keys
      *
      * @var     array
      * @access  private
      */
-    var $_Registry = array();
+    private $regkeys = array();
 
     /**
-     * Array that has a *registry* of files that have been called
+     * All default registry keys custom attribute
      *
      * @var     array
      * @access  private
      */
-    var $_LoadedFiles = array();
+    private $customs = array();
 
     /**
      * Loads the data from the DB
@@ -35,13 +35,8 @@ class Jaws_Registry
     function Init()
     {
         $tblReg = Jaws_ORM::getInstance()->table('registry');
-        $result = $tblReg->select('component', 'key_name', 'key_value', 'custom:boolean')
-            ->where('user', 0)
-            ->and()
-            ->openWhere('key_name', 'version')
-            ->or()
-            ->closeWhere('component', '')
-            ->fetchAll('', JAWS_ERROR_NOTICE);
+        $tblReg->select('component', 'key_name', 'key_value', 'custom:boolean');
+        $result = $tblReg->where('user', 0)->fetchAll('', JAWS_ERROR_NOTICE);
         if (Jaws_Error::IsError($result)) {
             if ($result->getCode() == MDB2_ERROR_NOSUCHFIELD) {
                 // get 0.9.x jaws version
@@ -59,10 +54,13 @@ class Jaws_Registry
         }
 
         foreach ($result as $regrec) {
-            $this->_Registry[$regrec['component']][$regrec['key_name']] = $regrec;
+            $this->regkeys[$regrec['component']][$regrec['key_name']] = $regrec['key_value'];
+            if ($regrec['custom']) {
+                $this->customs[$regrec['component']][$regrec['key_name']] = $regrec['key_value'];
+            }
         }
 
-        return isset($this->_Registry['']['version'])? $this->_Registry['']['version']['key_value'] : null;
+        return @$this->regkeys['']['version'];
     }
 
     /**
@@ -75,25 +73,7 @@ class Jaws_Registry
      */
     function fetch($key_name, $component = '')
     {
-        if (!@array_key_exists($key_name, $this->_Registry[$component]) ||
-            is_null($this->_Registry[$component][$key_name]['key_value'])
-        ) {
-            $tblReg = Jaws_ORM::getInstance()->table('registry');
-            $rowVal = $tblReg->select('key_value', 'custom:boolean')
-                ->where('user', 0)
-                ->and()
-                ->where('component', $component)
-                ->and()
-                ->where('key_name', $key_name)
-                ->fetchRow();
-            if (Jaws_Error::IsError($rowVal) || empty($rowVal)) {
-                return null;
-            }
-
-            $this->_Registry[$component][$key_name] = $rowVal;
-        }
-
-        return $this->_Registry[$component][$key_name]['key_value'];
+        return @$this->regkeys[$component][$key_name];
     }
 
     /**
@@ -102,30 +82,11 @@ class Jaws_Registry
      * @access  public
      * @param   string  $component  Component name
      * @param   bool    $onlyCustom Only custom
-     * @param   string  $pattern    Key pattern
      * @return  mixed   Array of keys if successful or Jaws_Error on failure
      */
-    function fetchAll($component = '', $onlyCustom = false, $pattern = '')
+    function fetchAll($component = '', $onlyCustom = false)
     {
-        $tblReg = Jaws_ORM::getInstance()->table('registry');
-        $tblReg->select('key_name', 'key_value')
-            ->where('user', 0)
-            ->and()
-            ->where('component', $component);
-        if ($onlyCustom) {
-            $tblReg->and()->where('custom', true);
-        }
-        if (!empty($pattern)) {
-            $tblReg->and()->where('key_name', $pattern, 'like');
-        }
-
-        $tblReg->orderBy('key_name');
-        $result = $tblReg->fetchAll();
-        if (Jaws_Error::IsError($result)) {
-            return null;
-        }
-
-        return $result;
+        return $onlyCustom? @$this->customs[$component] : @$this->regkeys[$component];
     }
 
     /**
@@ -140,9 +101,9 @@ class Jaws_Registry
     function fetchByUser($user, $key_name, $component = '')
     {
         $value = $this->fetch($key_name, $component);
-        if (!is_null($value) && $this->_Registry[$component][$key_name]['custom']) {
+        if (isset($this->customs[$component][$key_name])) {
             $tblReg = Jaws_ORM::getInstance()->table('registry');
-            $uvalue  = $tblReg->select('key_value')
+            $uvalue = $tblReg->select('key_value')
                 ->where('user', (int)$user)
                 ->and()
                 ->where('component', $component)
@@ -205,7 +166,10 @@ class Jaws_Registry
         ));
         $result = $tblReg->exec();
         if (!Jaws_Error::IsError($result)) {
-            $this->_Registry[$component][$key_name] = $key_value;
+            $this->regkeys[$component][$key_name] = $key_value;
+            if ($custom) {
+                $this->customs[$component][$key_name] = $key_value;
+            }
         }
 
         return !Jaws_Error::IsError($result);
@@ -229,14 +193,26 @@ class Jaws_Registry
         $data = array();
         $user = (int)$user;
         $time = $GLOBALS['db']->Date();
+        $tmp_regkeys = $this->regkeys;
+        $tmp_customs = $this->customs;
         $columns = array('user', 'component', 'key_name', 'key_value', 'custom', 'updatetime');
         foreach ($keys  as $key) {
             @list($key_name, $key_value, $custom) = $key;
+            $tmp_regkeys[$component][$key_name] = $key_value;
+            if ($custom) {
+                $tmp_customs[$component][$key_name] = $key_value;
+            }
             $data[] = array($user, $component, $key_name, $key_value, (bool)$custom, $time);
         }
 
         $tblReg = Jaws_ORM::getInstance()->table('registry');
-        return $tblReg->insertAll($columns, $data)->exec();;
+        $result  = $tblReg->insertAll($columns, $data)->exec();
+        if (!Jaws_Error::IsError($result)) {
+            $this->regkeys = $tmp_regkeys;
+            $this->customs = $tmp_customs;
+        }
+
+        return $result;
     }
 
     /**
@@ -279,8 +255,14 @@ class Jaws_Registry
 
         // update registry cache array
         if (empty($user)) {
-            $this->_Registry[$component][$key_name] = $data;
+            $this->regkeys[$component][$key_name] = $key_value;
+            if ($custom) {
+                $this->customs[$component][$key_name] = $key_value;
+            } else {
+                unset($this->customs[$component][$key_name]);
+            }
         }
+
         return true;
     }
 
@@ -303,10 +285,16 @@ class Jaws_Registry
             return false;
         }
 
-        if (isset($this->_Registry[$component][$old_name])) {
-            $this->_Registry[$component][$new_name] = $this->_Registry[$component][$old_name];
-            unset($this->_Registry[$component][$old_name]);
+        if (isset($this->regkeys[$component][$old_name])) {
+            $this->regkeys[$component][$new_name] = $this->regkeys[$component][$old_name];
+            unset($this->regkeys[$component][$old_name]);
         }
+
+        if (isset($this->customs[$component][$old_name])) {
+            $this->customs[$component][$new_name] = $this->customs[$component][$old_name];
+            unset($this->customs[$component][$old_name]);
+        }
+
         return true;
     }
 
@@ -328,9 +316,11 @@ class Jaws_Registry
         $result = $tblReg->exec();
         if (!Jaws_Error::IsError($result)) {
             if (empty($key_name)) {
-                unset($this->_Registry[$component]);
+                unset($this->regkeys[$component]);
+                unset($this->customs[$component]);
             } else {
-                unset($this->_Registry[$component][$key_name]);
+                unset($this->regkeys[$component][$key_name]);
+                unset($this->customs[$component][$key_name]);
             }
         }
 
