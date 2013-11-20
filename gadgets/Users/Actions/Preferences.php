@@ -60,7 +60,6 @@ class Users_Actions_Preferences extends Jaws_Gadget_Action
             }
 
             $keys = $GLOBALS['app']->Registry->fetchAll('Settings', true);
-            $keys = array_column($keys, 'key_value', 'key_name');
             $customized = $this->gadget->registry->fetchAllByUser($gadget);
             $customized = array_column($customized, 'key_value', 'key_name');
 
