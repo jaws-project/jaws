@@ -97,10 +97,10 @@ class Jaws_Gadget_Registry
      * @param   string  $gadget     (Optional) Gadget name
      * @return  mixed   Returns Array of keys/values if success otherwise null
      */
-    function fetchAll($onlyCustom = false, $pattern = '', $gadget = '')
+    function fetchAll($onlyCustom = false, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->fetchAll($gadget, $onlyCustom, $pattern);
+        return $GLOBALS['app']->Registry->fetchAll($gadget, $onlyCustom);
     }
 
     /**
