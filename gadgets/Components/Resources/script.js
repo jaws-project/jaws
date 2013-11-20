@@ -386,10 +386,10 @@ function componentRegistry(reset)
             res = ComponentsAjax.callSync('GetRegistry', selectedComponent, pluginsMode),
             div = new Element('div').set('html', res.ui);
         $('component_form').grab(div.getElement('div'));
-        res.data.each(function(reg) {
-            var label = new Element('label', {html:reg.key_name, 'for':reg.key_name}),
+        Object.each(res.data, function(value, name) {
+            var label = new Element('label', {html:name, 'for':name}),
                 th = new Element('th').grab(label),
-                input = new Element('input', {'id':reg.key_name, 'value':reg.key_value}),
+                input = new Element('input', {'id':name, 'value':value}),
                 td = new Element('td').grab(input),
                 tr = new Element('tr').adopt(th, td);
             input.setProperty('onchange', 'onValueChange(this)');
