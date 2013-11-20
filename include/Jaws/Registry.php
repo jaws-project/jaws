@@ -44,8 +44,12 @@ class Jaws_Registry
             ->fetchAll('', JAWS_ERROR_NOTICE);
         if (Jaws_Error::IsError($result)) {
             if ($result->getCode() == MDB2_ERROR_NOSUCHFIELD) {
-                // get 0.8.x jaws version
-                $result = $tblReg->select('key_value')->where('key_name', '/version')->fetchOne();
+                // get 0.9.x jaws version
+                $result = $tblReg->select('key_value')
+                    ->where('key_name', 'version')
+                    ->and()
+                    ->where('component', '')
+                    ->fetchOne();
                 if (!Jaws_Error::IsError($result)) {
                     return $result;
                 }
