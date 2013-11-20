@@ -118,7 +118,7 @@ class Jaws_ACL
      */
     function fetchAll($component)
     {
-        return isset($this->default_acls[$component])? $this->default_acls[$component] : array();
+        return @$this->default_acls[$component];
     }
 
     /**
@@ -133,20 +133,7 @@ class Jaws_ACL
      */
     function fetchByUser($user, $key_name, $subkey, $component)
     {
-        if (!empty($user)) {
-            $tblACL = Jaws_ORM::getInstance()->table('acl');
-            $value  = $tblACL->select('key_value:integer')
-                ->where('component', $component)->and()
-                ->where('key_name', $key_name)->and()
-                ->where('key_subkey', $subkey)->and()
-                ->where('user', (int)$user)
-                ->fetchOne();
-            if (!Jaws_Error::IsError($value)) {
-                return $value;
-            }
-        }
-
-        return null;
+        return @$this->user_acls[$component][$key_name][$subkey];
     }
 
     /**
@@ -159,49 +146,22 @@ class Jaws_ACL
      */
     function fetchAllByUser($user, $component = '')
     {
-        if (!empty($user)) {
-            $tblACL = Jaws_ORM::getInstance()->table('acl');
-            $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer');
-            $tblACL->where('user', (int)$user);
-            if (!empty($component)) {
-                $tblACL->and()->where('component', $component);
-            }
-            $tblACL->orderBy('component', 'key_name', 'key_subkey');
-            $result = $tblACL->fetchAll();
-            if (!Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        return null;
+        return @$this->user_acls[$component];
     }
 
     /**
-     * Fetch the ACL key value by groups
+     * Fetch the ACL key value by group
      *
      * @access  public
-     * @param   array   $groups     Array of groups IDs
+     * @param   int     $group      Group ID
      * @param   string  $key_name   Key name
      * @param   string  $key_subkey Subkey name
      * @param   string  $component  Component name
-     * @return  mixed   Array of values if success otherwise Null
+     * @return  mixed   Value of the key if success otherwise Null
      */
-    function fetchByGroups($groups, $key_name, $subkey, $component)
+    function fetchByGroup($group, $key_name, $subkey, $component)
     {
-        if (!empty($groups)) {
-            $tblACL = Jaws_ORM::getInstance()->table('acl');
-            $values = $tblACL->select('key_value:integer')
-                ->where('component', $component)->and()
-                ->where('key_name', $key_name)->and()
-                ->where('key_subkey', $subkey)->and()
-                ->where('group', $groups, 'in')
-                ->fetchColumn();
-            if (!Jaws_Error::IsError($values)) {
-                return $values;
-            }
-        }
-
-        return null;
+        return @$this->groups_acls[$group][$component][$key_name][$subkey];
     }
 
     /**
@@ -214,21 +174,7 @@ class Jaws_ACL
      */
     function fetchAllByGroup($group, $component = '')
     {
-        if (!empty($group)) {
-            $tblACL = Jaws_ORM::getInstance()->table('acl');
-            $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer');
-            $tblACL->where('group', (int)$group);
-            if (!empty($component)) {
-                $tblACL->and()->where('component', $component);
-            }
-            $tblACL->orderBy('component', 'key_name', 'key_subkey');
-            $result = $tblACL->fetchAll();
-            if (!Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        return null;
+        return @$this->groups_acls[$group][$component];
     }
 
     /**
@@ -257,7 +203,7 @@ class Jaws_ACL
             return false;
         }
 
-        $this->acl[$component][$key_name][$subkey] = (int)$key_value;
+        $this->default_acls[$component][$key_name][$subkey] = (int)$key_value;
         return true;
     }
 
@@ -371,7 +317,7 @@ class Jaws_ACL
             return false;
         }
 
-        $this->acl[$component][$key_name][$subkey] = (int)$key_value;
+        $this->default_acls[$component][$key_name][$subkey] = (int)$key_value;
         return true;
     }
 
