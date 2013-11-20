@@ -368,9 +368,15 @@ class Jaws_ACL
         }
 
         // 2. Check for groups permission
-        $perm['groups'] = $this->fetchByGroups($groups, $key, $subkey, $gadget);
-        if (!empty($perm['groups'])) {
-            return @max($perm['groups']);
+        if (!empty($groups)) {
+            $perm['group'] = 0;
+            foreach ($groups as $group) {
+                $perm['group'] = max($perm['group'], $this->fetchByGroup($group, $key, $subkey, $gadget));
+            }
+
+            if (!empty($perm['group'])) {
+                return @max($perm['group']);
+            }
         }
 
         // 3. Check for default
