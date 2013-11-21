@@ -72,8 +72,10 @@ class Jaws_ACL
             }
 
             // store passed user's ACLs
+            $this->users_acls[$user] = array();
             foreach ($result as $acl) {
-                $this->users_acls[$user][$acl['component']][$acl['key_name']][$acl['key_subkey']] = $acl['key_value'];
+                $this->users_acls[$user][$acl['component']][$acl['key_name']][$acl['key_subkey']] =
+                    $acl['key_value'];
             }
         }
 
@@ -88,6 +90,7 @@ class Jaws_ACL
             }
 
             // store passed group's ACLs
+            $this->groups_acls[$group] = array();
             foreach ($result as $acl) {
                 $this->groups_acls[$group][$acl['component']][$acl['key_name']][$acl['key_subkey']] =
                     $acl['key_value'];
@@ -410,7 +413,7 @@ class Jaws_ACL
             }
 
             if (!empty($perm['group'])) {
-                return @max($perm['group']);
+                return $perm['group'];
             }
         }
 
