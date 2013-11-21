@@ -303,13 +303,17 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (!$is_plugin && !empty($result)) {
             $info = Jaws_Gadget::getInstance($comp);
             foreach ($result as $key_name => $acl) {
-                $acls[$key_name]['key_name'] = $key_name;
-                $acls[$key_name]['key_subkey'] = key($acl);
-                $acls[$key_name]['key_value'] = current($acl);
-                $acls[$key_name]['key_desc'] = $info->acl->description($key_name, key($acl));
+                foreach ($acl as $subkey => $value) {
+                    $acls[] = array(
+                        'key_name' => $key_name,
+                        'key_subkey' => $subkey,
+                        'key_value' => $value,
+                        'key_desc' => $info->acl->description($key_name, $subkey)
+                    );
+                }
             }
-            $acls = array_values($acls);
         }
+
         return array('ui' => $ui, 'acls' => $acls);
     }
 

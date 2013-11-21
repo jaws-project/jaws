@@ -121,9 +121,11 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
         $acls = $GLOBALS['app']->ACL->fetchAll($gadget);
         if (!empty($acls)) {
             foreach ($acls as $key_name => $acl) {
-                $tpl->SetBlock('info/acls/acl');
-                $tpl->SetVariable('acl', $objGadget->acl->description($key_name, key($acl)));
-                $tpl->ParseBlock('info/acls/acl');
+                foreach ($acl as $subkey => $value) {
+                    $tpl->SetBlock('info/acls/acl');
+                    $tpl->SetVariable('acl', $objGadget->acl->description($key_name, $subkey));
+                    $tpl->ParseBlock('info/acls/acl');
+                }
             }
         }
         $tpl->ParseBlock('info/acls');
