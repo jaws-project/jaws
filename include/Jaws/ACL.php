@@ -21,12 +21,12 @@ class Jaws_ACL
     private $default_acls = array();
 
     /**
-     * All user's ACLs
+     * All users's ACLs
      *
      * @var     array
      * @access  private
      */
-    private $user_acls = array();
+    private $users_acls = array();
 
     /**
      * All groups's ACLs
@@ -73,7 +73,7 @@ class Jaws_ACL
 
             // store passed user's ACLs
             foreach ($result as $acl) {
-                $this->user_acls[$acl['component']][$acl['key_name']][$acl['key_subkey']] = $acl['key_value'];
+                $this->users_acls[$user][$acl['component']][$acl['key_name']][$acl['key_subkey']] = $acl['key_value'];
             }
         }
 
@@ -133,7 +133,22 @@ class Jaws_ACL
      */
     function fetchByUser($user, $key_name, $subkey, $component)
     {
-        return @$this->user_acls[$component][$key_name][$subkey];
+        if (isset($this->users_acls[$user])) {
+            return @$this->users_acls[$user][$component][$key_name][$subkey];
+        } else {
+            $tblACL = Jaws_ORM::getInstance()->table('acl');
+            $uvalue = $tblACL->select('key_value:integer')
+                ->where('component', $component)->and()
+                ->where('key_name', $key_name)->and()
+                ->where('key_subkey', $subkey)->and()
+                ->where('user', (int)$user)
+                ->fetchOne();
+            if (!Jaws_Error::IsError($uvalue)) {
+                return $uvalue;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -146,7 +161,37 @@ class Jaws_ACL
      */
     function fetchAllByUser($user, $component = '')
     {
-        return @$this->user_acls[$component];
+        if (isset($this->users_acls[$user])) {
+            // load from cache
+            if (empty($component)) {
+                return @$this->users_acls[$user];
+            }
+
+            return @$this->users_acls[$user][$component];
+        } else {
+            // load from database
+            $tblACL = Jaws_ORM::getInstance()->table('acl');
+            $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer');
+            $tblACL->where('user', (int)$user);
+            if (!empty($component)) {
+                $tblACL->and()->where('component', $component);
+            }
+            $tblACL->orderBy('component', 'key_name', 'key_subkey');
+            $result = $tblACL->fetchAll();
+            if (!Jaws_Error::IsError($result)) {
+                // uniformed result with output of cached ACLs
+                foreach ($result as $acl) {
+                    $acls[$acl['component']][$acl['key_name']][$acl['key_subkey']] = $acl['key_value'];
+                }
+                if (empty($component)) {
+                    return $acls;
+                }
+
+                return @$acls[$component];
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -161,7 +206,22 @@ class Jaws_ACL
      */
     function fetchByGroup($group, $key_name, $subkey, $component)
     {
-        return @$this->groups_acls[$group][$component][$key_name][$subkey];
+        if (isset($this->groups_acls[$group])) {
+            return @$this->groups_acls[$group][$component][$key_name][$subkey];
+        } else {
+            $tblACL = Jaws_ORM::getInstance()->table('acl');
+            $gvalue = $tblACL->select('key_value:integer')
+                ->where('component', $component)->and()
+                ->where('key_name', $key_name)->and()
+                ->where('key_subkey', $subkey)->and()
+                ->where('group', (int)$group)
+                ->fetchColumn();
+            if (!Jaws_Error::IsError($gvalue)) {
+                return $gvalue;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -174,7 +234,37 @@ class Jaws_ACL
      */
     function fetchAllByGroup($group, $component = '')
     {
-        return @$this->groups_acls[$group][$component];
+        if (isset($this->groups_acls[$group])) {
+            // load from cache
+            if (empty($component)) {
+                return @$this->groups_acls[$group];
+            }
+
+            return @$this->groups_acls[$group][$component];
+        } else {
+            // load from database
+            $tblACL = Jaws_ORM::getInstance()->table('acl');
+            $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer');
+            $tblACL->where('group', (int)$group);
+            if (!empty($component)) {
+                $tblACL->and()->where('component', $component);
+            }
+            $tblACL->orderBy('component', 'key_name', 'key_subkey');
+            $result = $tblACL->fetchAll();
+            if (!Jaws_Error::IsError($result)) {
+                // uniformed result with output of cached ACLs
+                foreach ($result as $acl) {
+                    $acls[$acl['component']][$acl['key_name']][$acl['key_subkey']] = $acl['key_value'];
+                }
+                if (empty($component)) {
+                    return $acls;
+                }
+
+                return @$acls[$component];
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -223,75 +313,18 @@ class Jaws_ACL
             return true;
         }
 
-        $params = array();
-        $params['user']      = (int)$user;
-        $params['group']     = (int)$group;
-        $params['component'] = $component;
-
-        $ndx = 0;
-        $sqls = '';
-        $tmp_acls = $this->default_acls;
-        $dbDriver = $GLOBALS['db']->getDriver();
-        $dbVersion = $GLOBALS['db']->getDBVersion();
+        $data = array();
+        $user = (int)$user;
+        $group = (int)$group;
+        $columns = array('component', 'key_name', 'key_subkey', 'key_value', 'user', 'group');
         foreach ($keys as $key) {
             list($key_name, $subkey, $key_value) = $key;
-            $params["name_$ndx"]   = $key_name;
-            $params["subkey_$ndx"] = $subkey;
-            $params["value_$ndx"]  = (int)$key_value;
-            $tmp_acls[$component][$key_name][$subkey] = (int)$key_value;
-
-            // Ugly hack to support all databases
-            switch ($dbDriver) {
-                case 'oci8':
-                    $sqls.= (empty($sqls)? '' : "\n UNION ALL").
-                        "\n SELECT {component}, {name_$ndx}, {subkey_$ndx}, {value_$ndx}, {user}, {group} FROM DUAL";
-                    break;
-                case 'ibase':
-                    $sqls[] = " VALUES ({component}, {name_$ndx}, {subkey_$ndx}, {value_$ndx}, {user}, {group})";
-                    break;
-                case 'pgsql':
-                    if (version_compare($dbVersion, '8.2.0', '>=')) {
-                        $sqls .= (empty($sqls)? "\n VALUES" : ",").
-                                 "\n ({component}, {name_$ndx}, {subkey_$ndx}, {value_$ndx}, {user}, {group})";
-                    } else {
-                        $sqls[] = " VALUES ({component}, {name_$ndx}, {subkey_$ndx}, {value_$ndx}, {user}, {group})";
-                    }
-                    break;
-                default:
-                    $sqls .= (empty($sqls)? '' : "\n UNION ALL").
-                             "\n SELECT {component}, {name_$ndx}, {subkey_$ndx}, {value_$ndx}, {user}, {group}";
-                    break;
-            }
-
-            $ndx++;
+            $data[] = array($component, $key_name, $subkey, $key_value, $user, $group);
         }
 
-        if (is_array($sqls)) {
-            foreach ($sqls as $sql) {
-                $qsql = '
-                    INSERT INTO [[acl]]
-                        ([component], [key_name], [key_subkey], [key_value], [user], [group])
-                    '. $sql;
-                $result = $GLOBALS['db']->query($qsql, $params);
-                if (Jaws_Error::IsError($result)) {
-                    return $result;
-                }
-            }
-        } else {
-            $qsql = '
-                INSERT INTO [[acl]]
-                    ([component], [key_name], [key_subkey], [key_value], [user], [group])
-                '. $sqls;
-            $result = $GLOBALS['db']->query($qsql, $params);
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        if ($user == 0 && $group == 0) {
-            $this->default_acls = $tmp_acls;
-        }
-        return true;
+        $tblACL = Jaws_ORM::getInstance()->table('acl');
+        $result = $tblACL->insertAll($columns, $data)->exec();
+        return $result;
     }
 
     /**
