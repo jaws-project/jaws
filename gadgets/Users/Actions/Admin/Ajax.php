@@ -498,20 +498,29 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             // set ACL keys description
             $info = Jaws_Gadget::getInstance($comp);
             foreach ($result as $key_name => $acl) {
-                $default_acls[$key_name]['key_name'] = $key_name;
+                $default_acls[$key_name]['key_name']   = $key_name;
                 $default_acls[$key_name]['key_subkey'] = key($acl);
-                $default_acls[$key_name]['key_value'] = current($acl);
-                $default_acls[$key_name]['key_desc'] = $info->acl->description($key_name, key($acl));
+                $default_acls[$key_name]['key_value']  = current($acl);
+                $default_acls[$key_name]['key_desc']   = $info->acl->description($key_name, key($acl));
             }
             $default_acls = array_values($default_acls);
         }
 
         // fetch user/group ACLs
-        $acls = ($action === 'UserACL')?
+        $custom_acls = array();
+        $result = ($action === 'UserACL')?
             $GLOBALS['app']->ACL->fetchAllByUser($id, $comp):
             $GLOBALS['app']->ACL->fetchAllByGroup($id, $comp);
+        if (!empty($result)) {
+            foreach ($result as $key_name => $acl) {
+                $custom_acls[$key_name]['key_name']   = $key_name;
+                $custom_acls[$key_name]['key_subkey'] = key($acl);
+                $custom_acls[$key_name]['key_value']  = current($acl);
+            }
+            $custom_acls = array_values($custom_acls);
+        }
 
-        return array('default_acls' => $default_acls, 'custom_acls' => $acls);
+        return array('default_acls' => $default_acls, 'custom_acls' => $custom_acls);
     }
 
     /**
