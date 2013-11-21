@@ -280,14 +280,16 @@ class Jaws_ACL
     function insert($key_name, $subkey, $key_value, $component)
     {
         $tblACL = Jaws_ORM::getInstance()->table('acl');
-        $tblACL->insert(array(
-            'component' => $component,
-            'key_name'  => $key_name,
-            'key_subkey' => $subkey,
-            'key_value' => (int)$key_value,
-            'user'      => 0,
-            'group'     => 0,
-        ));
+        $tblACL->insert(
+            array(
+                'component' => $component,
+                'key_name'  => $key_name,
+                'key_subkey' => $subkey,
+                'key_value' => (int)$key_value,
+                'user'      => 0,
+                'group'     => 0,
+            )
+        );
         $result = $tblACL->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
