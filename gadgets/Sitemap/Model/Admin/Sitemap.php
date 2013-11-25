@@ -305,4 +305,29 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ITEM_MOVED'), RESPONSE_NOTICE);
         return true;
     }
+
+    /**
+     * Gets list of gadgets that have Sitemap
+     *
+     * @access  public
+     * @return  array   List of searchable gadgets
+     */
+    function GetAvailableSitemapGadgets()
+    {
+        $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
+        $gadgetList = $cmpModel->GetGadgetsList(false, true, true);
+        $gadgets = array();
+        foreach ($gadgetList as $key => $gadget) {
+            if (is_file(JAWS_PATH . 'gadgets/' . $gadget['name'] . '/hooks/Sitemap.php')) {
+                $gadget['name'] = trim($gadget['name']);
+                if ($gadget['name'] == 'Sitemap' || empty($gadget['name'])) {
+                    continue;
+                }
+
+                $gadgets[$key] = $gadget;
+            }
+        }
+        return $gadgets;
+    }
+
 }

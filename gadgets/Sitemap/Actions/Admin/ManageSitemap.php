@@ -29,146 +29,75 @@ class Sitemap_Actions_Admin_ManageSitemap extends Jaws_Gadget_Action
             return '';
         }
     }
- 
+
     /**
-     * Displays gadget administration section
+     * Administration section
      *
      * @access  public
-     * @return  string HTML template content
+     * @return  string  XHTML template content
      */
     function ManageSitemap()
     {
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('Sitemap.html');
         $tpl->SetBlock('sitemap');
-        
-        $tpl->SetVariable('empty_message', _t('SITEMAP_EMPTY'));
-        $tpl->SetVariable('new_message',   _t('GLOBAL_NEW'));
-        $tpl->SetVariable('self_parent_error', _t('SITEMAP_ERROR_SAME_PARENT'));
-        $tpl->SetVariable('shortname_error',   _t('SITEMAP_ERROR_SHORTNAME_ERROR'));
-        $tpl->SetVariable('menubar', $this->Menubar(''));
-        
-        $form =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
 
-        $parent_id =& Piwi::CreateWidget('HiddenEntry', 'id', '');
-        $parent_id->SetId('ssid');
-        $form->Add($parent_id);
+        $tpl->SetBlock('sitemap/sitemap_base');
+        $tpl->SetVariable('gadgets_tree', $this->GetGadgetUI());
 
-        include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
-        $fieldset = new Jaws_Widgets_FieldSet(_t('GLOBAL_EDIT'));
-        $fieldset->SetDirection('vertical');
-        $fieldset->SetID('ssfieldset');
+        $save_btn =& Piwi::CreateWidget('Button','btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $save_btn->SetStyle('display: none;');
+        $save_btn->AddEvent(ON_CLICK, 'javascript: saveLink();');
+        $tpl->SetVariable('save', $save_btn->Get());
 
-        $title =& Piwi::CreateWidget('Entry', 'title', '', _t('GLOBAL_TITLE'));
-        $title->SetId('sstitle');
-        $title->SetStyle('width: 330px;');
-        $fieldset->Add($title);
+        $cancel_btn =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $cancel_btn->SetStyle('display: none;');
+        $cancel_btn->AddEvent(ON_CLICK, 'javascript: stopAction();');
+        $tpl->SetVariable('cancel', $cancel_btn->Get());
 
-        $shortname =& Piwi::CreateWidget('Entry', 'shortname', '', _t('SITEMAP_SHORTNAME'));
-        $shortname->SetId('ssshortname');
-        $shortname->SetStyle('width: 330px;');
-        $fieldset->Add($shortname);
+        $tpl->SetVariable('sitemap_tree_image', 'gadgets/Sitemap/Resources/images/logo.mini.png');
+        $tpl->SetVariable('sitemap_tree_title', _t('SITEMAP_TREE_TITLE'));
+        $tpl->SetVariable('editCategoryTitle',  _t('SITEMAP_CATEGORY_EDIT'));
+        $tpl->SetVariable('editGadgetTitle',    _t('SITEMAP_GADGET_EDIT'));
+        $tpl->SetVariable('sitemapImageSrc',       'gadgets/Sitemap/Resources/images/logo.mini.png');
+        $tpl->SetVariable('sitemapListOpenImageSrc',  STOCK_ADD);
+        $tpl->SetVariable('sitemapListCloseImageSrc', STOCK_REMOVE);
+        $tpl->SetVariable('noCategoryExists',       _t('SITEMAP_CATEGORY_NOEXISTS'));
+        $tpl->SetVariable('incompleteFields',   _t('SITEMAP_INCOMPLETE_FIELDS'));
 
-        $type =& Piwi::CreateWidget('Combo', 'type');
-        $type->SetId('sstype');
-        $type->SetTitle(_t('SITEMAP_TYPE'));
-        $type->AddOption(_t('GLOBAL_URL'), 'url');
-        if (Jaws_Gadget::IsGadgetInstalled('StaticPage')) {
-            $type->AddOption(_t('SITEMAP_STATICPAGE'), 'StaticPage');
-        }
-        if (Jaws_Gadget::IsGadgetInstalled('Blog')) {
-            $type->AddOption(_t('SITEMAP_BLOG'), 'Blog');
-        }
-        if (Jaws_Gadget::IsGadgetInstalled('Launcher')) {
-            $type->AddOption(_t('SITEMAP_LAUNCHER'), 'Launcher');
-        }
-        $type->SetStyle('width: 330px;');
-        $type->AddEvent(ON_CHANGE, 'createReference(this.value);');
-        $fieldset->Add($type);
-
-        $ref =& Piwi::CreateWidget('Combo', 'reference');
-        $ref->SetTitle(_t('SITEMAP_REFERENCE'));
-        $ref->SetId('ssreference');
-        $ref->SetStyle('width: 330px;');
-        $fieldset->Add($ref);
-
-        $parent =& Piwi::CreateWidget('Combo', 'parent');
-        $parent->SetTitle(_t('SITEMAP_PARENT'));
-        $parent->AddOption(_t('SITEMAP_TOP'), 0);
-        $parent->SetId('ssparent');
-        $parent->SetStyle('width: 330px;');
-        $fieldset->Add($parent);
-
-        $changeFreq =& Piwi::CreateWidget('Combo', 'changefreq');
-        $changeFreq->SetTitle(_t('SITEMAP_CHANGE_FREQ'));
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_NONE'), 'none');
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_ALWAYS'), 'always');
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_HOURLY'), 'hourly');
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_DAILY'), 'daily');
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_WEEKLY'), 'weekly');
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_MONTHLY'), 'monthly');
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_YEARLY'), 'yearly');
-        $changeFreq->AddOption(_t('SITEMAP_CHANGE_FREQ_NEVER'), 'never');
-        $changeFreq->SetDefault('none');
-        $changeFreq->SetId('sschangefreq');
-        $changeFreq->SetStyle('width: 330px;');
-        $fieldset->Add($changeFreq);
-
-        $priority =& Piwi::CreateWidget('Combo', 'priority');
-        $priority->SetTitle(_t('SITEMAP_PRIORITY'));
-        for($i=1; $i<10; $i++) {
-            $priority->AddOption('0.'.$i, '0.'.$i);
-        }
-        $priority->AddOption('1.0', '1.0');
-        $priority->SetDefault('0.5');
-        $priority->SetId('sspriority');
-        $priority->SetStyle('width: 330px;');
-        $fieldset->Add($priority);
-
-        $form->Add($fieldset);
-
-        $hbox =& Piwi::CreateWidget('HBox');
-        $hbox->SetStyle('float: right;'); //hig style
-        $delete =& Piwi::CreateWidget('Button', 'delete', _t('GLOBAL_DELETE'), STOCK_DELETE);
-        $delete->AddEvent(ON_CLICK, 'if (confirm(\'' . _t('GLOBAL_CONFIRM_DELETE') . '\')) { deleteCurrent(); }');
-        $delete->SetId('delete_button');
-        $hbox->Add($delete);
-        $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $save->AddEvent(ON_CLICK, 'saveCurrent();');
-        $save->SetId('save_button');
-        $hbox->Add($save);
-        $form->Add($hbox);
-
-        $tpl->SetVariable('form', $form->Get());
-
-        // Buttons
-        $btns =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
-
-        $hbox2 =& Piwi::CreateWidget('HBox');
-
-        $new =& Piwi::CreateWidget('Button', 'new', _t('GLOBAL_NEW'), STOCK_NEW);
-        $new->AddEvent(ON_CLICK, 'newItem();');
-        $new->SetId('new_button');
-        $hbox2->Add($new);
-
-        $up =& Piwi::CreateWidget('Button', 'up', '', STOCK_UP);
-        $up->AddEvent (ON_CLICK, 'moveItem(\'up\');');
-        $up->SetTitle(_t('SITEMAP_MOVEUP'));
-        $up->SetId('up_button');
-        $hbox2->Add($up);
-
-        $down =& Piwi::CreateWidget('Button', 'down', '', STOCK_DOWN);
-        $down->AddEvent (ON_CLICK, 'moveItem(\'down\');');
-        $down->SetTitle(_t('SITEMAP_MOVEDOWN'));
-        $down->SetId('down_button');
-        $hbox2->Add($down);
-
-        $btns->Add($hbox2);
-
-        $tpl->SetVariable('buttons', $btns->Get());
-
+        $tpl->ParseBlock('sitemap/sitemap_base');
         $tpl->ParseBlock('sitemap');
-
         return $tpl->Get();
     }
+
+    /**
+     * Providing a list of gadgets that have Sitemap
+     *
+     * @access  public
+     * @return  string XHTML Template content
+     */
+    function GetGadgetUI()
+    {
+        $tpl = $this->gadget->template->loadAdmin('Sitemap.html');
+        $tpl->SetBlock('sitemap');
+
+        $model = $this->gadget->model->loadAdmin('Sitemap');
+        $gadgets = $model->GetAvailableSitemapGadgets();
+        foreach ($gadgets as $gadget) {
+            $tpl->SetBlock('sitemap/sitemap_gadget');
+            $tpl->SetVariable('lg_id', 'group_'.$gadget['name']);
+            $tpl->SetVariable('icon', STOCK_ADD);
+            $tpl->SetVariable('js_list_func', "listLinks({$gadget['name']})");
+            $tpl->SetVariable('title', $gadget['title']);
+            $tpl->SetVariable('js_edit_func', "editGroup({$gadget['name']})");
+            $tpl->SetVariable('add_icon', STOCK_NEW);
+            $tpl->SetVariable('js_add_func', "addLink({$gadget['name']})");
+            $tpl->SetVariable('add_title', _t('LINKDUMP_LINKS_ADD'));
+            $tpl->ParseBlock('sitemap/sitemap_gadget');
+        }
+
+        $tpl->ParseBlock('sitemap');
+        return $tpl->Get();
+    }
+
 }
