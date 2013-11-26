@@ -32,7 +32,6 @@ class Directory_Actions_Statistics extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Statistics');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $stats = $model->GetStatistics($user);
-        //_log_var_dump(print_r($stats, true));
         $tpl->SetVariable('files', $stats['files']);
         $tpl->SetVariable('dirs', $stats['dirs']);
         $tpl->SetVariable('shared', $stats['shared']);

@@ -25,6 +25,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         $tpl->SetVariable('title', _t('DIRECTORY_NAME'));
         $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
+        $tpl->SetVariable('lbl_adv_search', _t('DIRECTORY_ADVANCED_SEARCH'));
         $tpl->SetVariable('lbl_all_files', _t('DIRECTORY_FILTER_ALL_FILES'));
         $tpl->SetVariable('lbl_shared_files', _t('DIRECTORY_FILTER_SHARED_FILES'));
         $tpl->SetVariable('lbl_foreign_files', _t('DIRECTORY_FILTER_FOREIGN_FILES'));
@@ -61,7 +62,9 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
         $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
         $tpl->SetVariable('lbl_username', _t('DIRECTORY_FILE_OWNER'));
+        $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
+        $tpl->SetVariable('lbl_date', _t('DIRECTORY_FILE_DATE'));
         $tpl->SetVariable('alertShortQuery', _t('DIRECTORY_ERROR_SHORT_QUERY'));
         $tpl->SetVariable('confirmDelete', _t('DIRECTORY_CONFIRM_DELETE'));
         $tpl->SetVariable('confirmFileDelete', _t('DIRECTORY_CONFIRM_FILE_DELETE'));
@@ -71,6 +74,28 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $icon_url = is_dir($theme['url'] . 'mimetypes')?
             $theme['url'] . 'mimetypes/' : 'images/mimetypes/';
         $tpl->SetVariable('icon_url', $icon_url);
+
+        // Start date
+        $cal_type = $this->gadget->registry->fetch('calendar', 'Settings');
+        $cal_lang = $this->gadget->registry->fetch('site_language', 'Settings');
+        $datePicker =& Piwi::CreateWidget('DatePicker', 'start_date');
+        $datePicker->showTimePicker(true);
+        $datePicker->setCalType($cal_type);
+        $datePicker->setLanguageCode($cal_lang);
+        $datePicker->setDateFormat('%Y-%m-%d');
+        $datePicker->setStyle('width:80px');
+        $tpl->SetVariable('start_date', $datePicker->Get());
+
+        // End date
+        $datePicker =& Piwi::CreateWidget('DatePicker', 'end_date');
+        $datePicker->showTimePicker(true);
+        $datePicker->setDateFormat('%Y-%m-%d');
+        $datePicker->SetIncludeCSS(false);
+        $datePicker->SetIncludeJS(false);
+        $datePicker->setCalType($cal_type);
+        $datePicker->setLanguageCode($cal_lang);
+        $datePicker->setStyle('width:80px');
+        $tpl->SetVariable('end_date', $datePicker->Get());
 
         // File template
         $tpl->SetBlock('workspace/fileTemplate');
@@ -374,20 +399,36 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      */
     function Search()
     {
-        $data = jaws()->request->fetch(array('id', 'shared', 'foreign', 'query'));
-        if ($data['query'] === null || strlen($data['query']) < 2) {
-            return $GLOBALS['app']->Session->GetResponse(_t('DIRECTORY_ERROR_SEARCH'), RESPONSE_ERROR);
+        $data = jaws()->request->fetch(array('id', 'file_filter', 'file_search',
+            'file_type', 'file_size', 'start_date', 'end_date'));
+        $shared = ($data['file_filter'] === 'shared')? true : null;
+        $foreign = ($data['file_filter'] === 'foreign')? true : null;
+        $type = empty($data['file_type'])? null : $data['file_type'];
+        $size = ($data['file_size'] == '0')? null : explode(',', $data['file_size']);
+        $jdate = Jaws_Date::getInstance();
+        $start_date = $end_date = '';
+        if (!empty($data['start_date'])) {
+            $start_date = $jdate->ToBaseDate(preg_split('/[- :]/', $data['start_date']));
+            $start_date = $GLOBALS['app']->UserTime2UTC($start_date['timestamp']);
         }
+        if (!empty($data['end_date'])) {
+            $end_date = $jdate->ToBaseDate(preg_split('/[- :]/', $data['end_date'].' 23:59:59'));
+            $end_date = $GLOBALS['app']->UserTime2UTC($end_date['timestamp']);
+        }
+        $date = array($start_date, $end_date);
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Files');
-        $files = $model->GetFiles($data['id'], $user, $data['shared'], 
-            $data['foreign'], null, $data['query']);
+        $files = $model->GetFiles($data['id'], $user, $shared, $foreign,
+            null, $data['file_search'], $type, $size, $date);
         if (Jaws_Error::IsError($files)){
             return $GLOBALS['app']->Session->GetResponse($files->getMessage(), RESPONSE_ERROR);
         }
 
         $objDate = Jaws_Date::getInstance();
         foreach ($files as &$file) {
+            if ($file['is_dir']) {
+                $file['url'] = $this->gadget->urlMap('Directory', array('dirid' => $file['id']));
+            }
             $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
         }

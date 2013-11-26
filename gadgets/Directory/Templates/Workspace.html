@@ -4,6 +4,7 @@
   <div class="gadget_response">
     <div id="directory_directory_response" class="{type}">{text}</div>
   </div>
+  <div class="clearfix"></div>
   <div id="dir_pathbar">
     <a href="{home_url}" title="{home_title}">
       <img src="gadgets/Directory/Resources/images/home.png"/>
@@ -13,16 +14,6 @@
   <div id="dir_searchbar">
     <img src="gadgets/Directory/Resources/images/search.png" />
     <span id="search_res"></span>
-  </div>
-  <div id="frm_search">
-    <select id="file_filter" onchange="updateFiles()">
-      <option value="all">{lbl_all_files}</option>
-      <option value="shared">{lbl_shared_files}</option>
-      <option value="foreign">{lbl_foreign_files}</option>
-    </select>
-    <input id="file_search" onchange="onSearchChange(this)" onkeyup="onSearchChange(this)"></input>
-    <button onclick="performSearch()">{lbl_search}</button>
-    <button id="btn_search_close" onclick="closeSearch()">x</button>
   </div>
   <div id="file_actions">
     <img id="btn_new_file" src="{img_new_file}" alt="{lbl_new_file}" title="{lbl_new_file}" onclick="newFile()" />
@@ -35,6 +26,46 @@
     <img id="btn_share" src="{img_share}" alt="{lbl_share}" title="{lbl_share}" onclick="share()" />
     <!-- END share -->
     <img id="btn_dl" src="{img_dl}" alt="{lbl_dl}" title="{lbl_dl}" onclick="downloadFile()" />
+  </div>
+  <div id="frm_search">
+    <select id="file_filter" name="file_filter" onchange="updateFiles()">
+      <option value="all">{lbl_all_files}</option>
+      <option value="shared">{lbl_shared_files}</option>
+      <option value="foreign">{lbl_foreign_files}</option>
+    </select>
+    <input id="file_search" name="file_search" onchange="onSearchChange(this)" onkeyup="onSearchChange(this)"></input>
+    <table id="advanced_search" style="display:none;">
+      <tr><th>{lbl_type}:</th>
+        <td>
+          <select name="file_type">
+            <option value=""></option>
+            <option value="text">text</option>
+            <option value="image">image</option>
+            <option value="image">video</option>
+            <option value="image">application</option>
+          </select>
+        </td>
+      </tr>
+      <tr><th>{lbl_size}:</th>
+        <td>
+          <select name="file_size">
+            <option value="0"></option>
+            <option value="0,10">0 - 10 KB</option>
+            <option value="10,100">10 - 100 KB</option>
+            <option value="100,1024">100 KB - 1 MB</option>
+            <option value="1024,16384">1 MB - 16 MB</option>
+            <option value="16384,131072">16 MB - 128 MB</option>
+            <option value="131072,">&gt; 128 MB</option>
+          </select>
+        </td>
+      </tr>
+      <tr><th>{lbl_date}:</th>
+        <td>{start_date}{end_date}</td>
+      </tr>
+    </table>
+    <button onclick="performSearch()">{lbl_search}</button>
+    <button onclick="advancedSearch(this)">{lbl_adv_search}</button>
+    <button id="btn_search_close" onclick="closeSearch()">x</button>
   </div>
   <table class="files-table">
     <thead><tr>

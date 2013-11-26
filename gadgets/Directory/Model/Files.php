@@ -17,8 +17,8 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      * @param   int     $parent  Restricts results to a specified node
      * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($parent = null, $user = null, $shared = null,
-        $foreign = null, $is_dir = null, $query = null)
+    function GetFiles($parent = null, $user = null, $shared = null, $foreign = null,
+        $is_dir = null, $query = null, $type = null, $size = null, $date = null)
     {
         $access = ($user === null)? null : $this->CheckAccess($parent, $user);
         if ($access === false) {
@@ -52,6 +52,28 @@ class Directory_Model_Files extends Jaws_Gadget_Model
             $table->where('is_dir', $is_dir)->and();
         }
 
+        if ($type !== null){
+            $table->where('filetype', "%$type%", 'like')->and();
+        }
+
+        if ($size !== null){
+            if (!empty($size[0])) {
+                $table->where('filesize', $size[0] * 1024, '>=')->and();
+            }
+            if (!empty($size[1])) {
+                $table->where('filesize', $size[1] * 1024, '<=')->and();
+            }
+        }
+
+        if ($date !== null){
+            if (!empty($date[0])) {
+                $table->where('createtime', $date[0], '>=')->and();
+            }
+            if (!empty($date[1])) {
+                $table->where('createtime', $date[1], '<=')->and();
+            }
+        }
+
         if ($query !== null){
             $query = "%$query%";
             $table->openWhere('title', $query, 'like')->or();
@@ -72,10 +94,6 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     function GetFile($id)
     {
         $table = Jaws_ORM::getInstance()->table('directory as dir');
-        // $table->select('dir.id', 'parent', 'user', 'is_dir:boolean', 'title',
-            // 'description', 'filename', 'filetype', 'filesize', 'dir.url', 'shared:boolean',
-            // 'dir.public:boolean', 'owner', 'reference', 'createtime', 'updatetime', 'users.username');
-        // $table->join('users', 'owner', 'users.id');
         $table->select('id', 'parent', 'user', 'is_dir:boolean', 'title',
             'description', 'filename', 'filetype', 'filesize', 'url', 'shared:boolean',
             'public:boolean', 'owner', 'reference', 'createtime', 'updatetime');

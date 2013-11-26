@@ -79,6 +79,7 @@ var DirectoryCallback = {
         if (response.type === 'response_notice') {
             $('dir_pathbar').hide();
             $('dir_searchbar').show();
+            $('btn_search_close').show();
             $('search_res').innerHTML = ' > ' + response.text;
             displayFiles(response.data);
         } else {
@@ -110,7 +111,7 @@ function initDirectory()
 }
 
 /**
- * Re-feches files and directories
+ * Re-fetches files and directories
  */
 function updateFiles(parent)
 {
@@ -736,18 +737,18 @@ function onSearchChange(input)
  */
 function performSearch()
 {
-    var shared = ($('file_filter').value === 'shared')? true : null,
-        foreign = ($('file_filter').value === 'foreign')? true : null,
-        query = $('file_search').value;
-    if (query.length < 2) {
-        alert(alertShortQuery);
-        $('file_search').focus();
-        return;
-    }
-    DirectoryAjax.callAsync(
-        'Search',
-        {'id':currentDir, 'shared':shared, 'foreign':foreign, 'query':query}
-    );
+    var query = $('frm_search').toQueryString().parseQueryString();
+    query.id = currentDir;
+    DirectoryAjax.callAsync('Search', query);
+}
+
+/**
+ * Displays advanced search UI
+ */
+function advancedSearch(self)
+{
+    $('advanced_search').show('table');
+    self.hide();
 }
 
 /**
@@ -756,6 +757,7 @@ function performSearch()
 function closeSearch()
 {
     $('btn_search_close').hide();
+    $('advanced_search').hide();
     $('file_search').value = '';
     updateFiles();
 }

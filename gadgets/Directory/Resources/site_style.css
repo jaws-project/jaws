@@ -2,6 +2,7 @@
 .directory fieldset input:not([type=checkbox]) {width:100%;}
 .directory fieldset table {width:100%}
 .directory fieldset th {width:1%; text-align:left;}
+.directory .gadget_response {margin-top:-26px;}
 
 .files-table{
 width:100%;
@@ -63,6 +64,7 @@ max-width:540px;
 }
 
 #dir_pathbar, #dir_searchbar{
+float:left;
 font-size:11px;
 }
 #dir_pathbar img{
@@ -93,7 +95,7 @@ opacity:0.5;
 }
 
 #frm_search{
-float:left;
+clear:both;
 }
 #frm_search #file_filter{
 width:140px;
@@ -102,6 +104,12 @@ vertical-align:top;
 }
 #frm_search #btn_search_close{
 display:none;
+}
+#frm_search #file_search{
+width:180px;
+}
+#advanced_search select {
+width:130px;
 }
 
 #dir_tree{
