@@ -104,3 +104,7 @@ $admin_actions['PingSitemap'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
+$admin_actions['GetCategoriesList'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);

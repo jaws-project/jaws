@@ -25,6 +25,20 @@ class Sitemap_Actions_Admin_Ajax extends Jaws_Gadget_Action
     }
 
     /**
+     * Get Gadget Categories List
+     *
+     * @access  public
+     * @return  array   Group information array
+     */
+    function GetCategoriesList()
+    {
+        @list($gadget) = jaws()->request->fetchAll('post');
+        $action = $this->gadget->action->loadAdmin('ManageSitemap');
+        return $action->GetCategoriesList($gadget);
+    }
+
+
+    /**
      * Gets sitemaps with items
      *
      * @access  public

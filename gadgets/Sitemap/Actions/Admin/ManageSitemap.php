@@ -85,9 +85,9 @@ class Sitemap_Actions_Admin_ManageSitemap extends Jaws_Gadget_Action
         $gadgets = $model->GetAvailableSitemapGadgets();
         foreach ($gadgets as $gadget) {
             $tpl->SetBlock('sitemap/sitemap_gadget');
-            $tpl->SetVariable('lg_id', 'group_'.$gadget['name']);
+            $tpl->SetVariable('lg_id', 'gadget_'.$gadget['name']);
             $tpl->SetVariable('icon', STOCK_ADD);
-            $tpl->SetVariable('js_list_func', "listLinks({$gadget['name']})");
+            $tpl->SetVariable('js_list_func', "listCategories('" . $gadget['name'] . "')");
             $tpl->SetVariable('title', $gadget['title']);
             $tpl->SetVariable('js_edit_func', "editGroup({$gadget['name']})");
             $tpl->SetVariable('add_icon', STOCK_NEW);
@@ -100,4 +100,46 @@ class Sitemap_Actions_Admin_ManageSitemap extends Jaws_Gadget_Action
         return $tpl->Get();
     }
 
+    /**
+     * Get Gadget Categories List
+     *
+     * @access  public
+     * @param   string  $gadget   Gadget name
+     * @return  string  XHTML template content
+     */
+    function GetCategoriesList($gadget)
+    {
+        $tpl = $this->gadget->template->loadAdmin('Sitemap.html');
+        $tpl->SetBlock('sitemap');
+
+        $objGadget = Jaws_Gadget::getInstance($gadget);
+        if (Jaws_Error::IsError($objGadget)) {
+            return '';
+        }
+        $objHook = $objGadget->hook->load('Sitemap');
+        if (Jaws_Error::IsError($objHook)) {
+            return '';
+        }
+
+        $result[$gadget] = array();
+        $gResult = $objHook->Execute(0);
+        if (Jaws_Error::IsError($gResult) || empty($gResult)) {
+            return '';
+        }
+
+        foreach ($gResult as $category) {
+            $tpl->SetBlock('sitemap/category_list');
+            $tpl->SetVariable('cid', 'category_'.$category['id']);
+            $tpl->SetVariable('icon', 'gadgets/Sitemap/Resources/images/logo.mini.png');
+            $tpl->SetVariable('title', $category['name']);
+            $tpl->SetVariable('js_edit_func', "editCategory(this, '$gadget', {$category['id']})");
+            $tpl->SetVariable('add_icon', STOCK_NEW);
+            $tpl->ParseBlock('sitemap/category_list');
+        }
+
+        $tpl->ParseBlock('sitemap');
+        return $tpl->Get();
+
+
+    }
 }

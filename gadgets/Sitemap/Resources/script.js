@@ -57,6 +57,81 @@ var SitemapCallback = {
     }
 }
 
+function listCategories(gadget, force_open)
+{
+    gNode = $('gadget_' + gadget);
+    gFlagimage = gNode.getElementsByTagName('img')[0];
+    divSubList = $('sitemap_gadget_' + gadget);
+    if (divSubList.innerHTML == '') {
+        var category_list = SitemapAjax.callSync('GetCategoriesList', gadget);
+        if (!category_list.blank()) {
+            divSubList.innerHTML = category_list;
+        } else {
+            divSubList.innerHTML = noCategoryExists;
+        }
+        gFlagimage.src = sitemapListCloseImageSrc;
+    } else {
+        if (force_open == null) {
+            divSubList.innerHTML = '';
+            gFlagimage.src = sitemapListOpenImageSrc;
+        }
+    }
+    if (force_open == null) {
+//        stopAction();
+    }
+}
+
+/**
+ * Edit Category sitemap parameters
+ */
+function editCategory(element, gadget, cid)
+{
+    if (cid == 0) return;
+    selectTreeRow(element.parentNode);
+    if (cacheCategoryForm == null) {
+        cacheCategoryForm = LinkDumpAjax.callSync('GetCategoryUI');
+    }
+    currentAction = 'Category';
+    selectedCategory = cid;
+
+    $('edit_area').getElementsByTagName('span')[0].innerHTML =
+        editLinkTitle + ' - ' + $('link_'+lid).getElementsByTagName('a')[0].innerHTML;
+    $('btn_cancel').style.display = 'inline';
+    $('btn_save').style.display   = 'inline';
+    $('links_edit').innerHTML = cacheCategoryForm;
+
+    var categoryInfo = LinkDumpAjax.callSync('GetCategory', selectedCategory);
+
+    $('lid').value         = categoryInfo['id'];
+    $('gid').value         = categoryInfo['gid'];
+    $('title').value       = categoryInfo['title'].defilter();
+    $('url').value         = categoryInfo['url'];
+    $('fast_url').value    = categoryInfo['fast_url'];
+    $('description').value = categoryInfo['description'].defilter();
+    if($('tags')!=null) {
+        $('tags').value    = categoryInfo['tags'];
+    }
+    $('clicks').value      = categoryInfo['clicks'];
+    setRanksCombo($('gid').value);
+    $('rank').value = categoryInfo['rank'];
+}
+
+
+/**
+ * Select Tree row
+ *
+ */
+function selectTreeRow(rowElement)
+{
+    if (selectedRow) {
+        selectedRow.style.backgroundColor = selectedRowColor;
+    }
+    selectedRowColor = rowElement.style.backgroundColor;
+    rowElement.style.backgroundColor = '#eeeecc';
+    selectedRow = rowElement;
+}
+
+
 function createTree(data, depth) {
     strHTML = '';
     empty = true;
@@ -332,3 +407,12 @@ function pingSitemap() {
 }
 
 var SitemapAjax = new JawsAjax('Sitemap', SitemapCallback);
+
+//Current gadget
+var selectedGadget = null;
+
+//Current category
+var selectedCategory = null;
+
+//Cache for saving the category form template
+var cacheCategoryForm = null;
