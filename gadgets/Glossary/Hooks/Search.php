@@ -50,7 +50,7 @@ class Glossary_Hooks_Search extends Jaws_Gadget_Hook
         foreach ($result as $r) {
             $entry = array();
             $entry['title']   = $r['term'];
-            $entry['url']     = $GLOBALS['app']->Map->GetURLFor('Glossary', 'ViewTerm', array('term' => $r['id']));
+            $entry['url']     = $this->gadget->urlMap('ViewTerm', array('term' => $r['id']));
             $entry['image']   = 'gadgets/Glossary/Resources/images/logo.png';
             $entry['snippet'] = $r['description'];
             $entry['date']    = $date->ToISO($r['createtime']);
