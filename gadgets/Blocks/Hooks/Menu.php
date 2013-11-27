@@ -26,7 +26,7 @@ class Blocks_Hooks_Menu extends Jaws_Gadget_Hook
         if (!Jaws_Error::IsError($blocks)) {
             $max_size = 20;
             foreach ($blocks as $block) {
-                $url = $GLOBALS['app']->Map->GetURLFor('Blocks', 'Block', array('id' => $block['id']));
+                $url = $this->gadget->urlMap('Block', array('id' => $block['id']));
                 $urls[] = array('url'   => $url,
                                 'title' => ($GLOBALS['app']->UTF8->strlen($block['title']) > $max_size)?
                                             $GLOBALS['app']->UTF8->substr($block['title'], 0, $max_size) . '...' :

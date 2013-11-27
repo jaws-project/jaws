@@ -51,7 +51,7 @@ class Blocks_Hooks_Search extends Jaws_Gadget_Hook
         foreach ($result as $r) {
             $block = array();
             $block['title']   = $r['title'];
-            $block['url']     = $GLOBALS['app']->Map->GetURLFor('Blocks', 'Block', array('id' => $r['id']));
+            $block['url']     = $this->gadget->urlMap('Block', array('id' => $r['id']));
             $block['image']   = 'gadgets/Blocks/Resources/images/logo.png';
             $block['snippet'] = $r['contents'];
             $block['date']    = $date->ToISO($r['updatetime']);
