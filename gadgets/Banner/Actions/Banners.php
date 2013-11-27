@@ -100,10 +100,10 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
                 $tpl_template->SetVariable('link', 'javascript:void(0);');
                 $tpl_template->SetVariable('target', '_self');
             } else {
-                $tpl_template->SetVariable('link',
-                    $GLOBALS['app']->Map->GetURLFor('Banner', 'Click',
-                        array('id' => $banner['id']),
-                        $abs_url));
+                $tpl_template->SetVariable(
+                    'link',
+                    $this->gadget->urlMap('Click', array('id' => $banner['id']), $abs_url)
+                );
                 $tpl_template->SetVariable('target', '_blank');
             }
             $tpl_template->ParseBlock('x');
