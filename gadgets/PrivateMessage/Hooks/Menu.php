@@ -19,7 +19,7 @@ class PrivateMessage_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls   = array();
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('PrivateMessage', 'PrivateMessage'),
+        $urls[] = array('url'   => $this->gadget->urlMap('PrivateMessage'),
                         'title' => _t('PRIVATEMESSAGE_ACTIONS_PRIVATEMESSAGE'));
 
         return $urls;
