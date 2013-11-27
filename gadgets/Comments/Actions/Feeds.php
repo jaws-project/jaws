@@ -103,13 +103,17 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
         $tpl = $this->gadget->template->load('XMLLinks.html');
         if ($linkType == 'RSS') {
             $tpl->SetBlock('recentcomments_rss_link');
-            $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Comments', 'RecentCommentsRSS',
-                                                                     array('gadgetname' => $gadget)));
+            $tpl->SetVariable(
+                'url',
+                $this->gadget->urlMap('RecentCommentsRSS', array('gadgetname' => $gadget))
+            );
             $tpl->ParseBlock('recentcomments_rss_link');
         } else if ($linkType == 'Atom') {
             $tpl->SetBlock('recentcomments_atom_link');
-            $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Comments', 'RecentCommentsAtom',
-                                                                     array('gadgetname' => $gadget)));
+            $tpl->SetVariable(
+                'url',
+                $this->gadget->urlMap('RecentCommentsAtom', array('gadgetname' => $gadget))
+            );
             $tpl->ParseBlock('recentcomments_atom_link');
         }
         return $tpl->Get();
@@ -134,10 +138,11 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
 
         $commentAtom = new Jaws_AtomFeed();
         $siteURL = $GLOBALS['app']->GetSiteURL('/');
-        $url = $GLOBALS['app']->Map->GetURLFor('Comments',
+        $url = $this->gadget->urlMap(
             $feed_type == 'atom'? 'RecentCommentsAtom' : 'RecentCommentsRSS',
             array('gadgetname' => $gadget),
-            true);
+            true
+        );
 
         $commentAtom->SetTitle($this->gadget->registry->fetch('site_name', 'Settings'));
         $commentAtom->SetLink($url);
