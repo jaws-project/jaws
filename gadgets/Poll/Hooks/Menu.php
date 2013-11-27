@@ -19,9 +19,9 @@ class Poll_Hooks_Menu extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Poll', 'Poll'),
+        $urls[] = array('url'   => $this->gadget->urlMap('Poll'),
                         'title' => _t('POLL_LAYOUT_LAST'));
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Poll', 'Polls'),
+        $urls[] = array('url'   => $this->gadget->urlMap('Polls'),
                         'title' => _t('POLL_ACTIONS_POLLS'));
 
         $model  = $this->gadget->model->load('Poll');
@@ -29,7 +29,7 @@ class Poll_Hooks_Menu extends Jaws_Gadget_Hook
         if (!Jaws_Error::isError($polls)) {
             $max_size = 20;
             foreach ($polls as $poll) {
-                $url   = $GLOBALS['app']->Map->GetURLFor('Poll', 'ViewPoll', array('id' => $poll['id']));
+                $url   = $this->gadget->urlMap('ViewPoll', array('id' => $poll['id']));
                 $urls[] = array('url'   => $url,
                                 'title' => ($GLOBALS['app']->UTF8->strlen($poll['question']) > $max_size)?
                                             $GLOBALS['app']->UTF8->substr($poll['question'], 0, $max_size).'...' :
