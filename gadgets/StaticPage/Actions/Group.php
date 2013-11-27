@@ -61,7 +61,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
     {
         $get = jaws()->request->fetch(array('gid', 'order'), 'get');
         if (!empty($get['gid'])) {
-            $gid = Jaws_XSS::defilter($get['gid'], true);
+            $gid = Jaws_XSS::defilter($get['gid']);
             $orderBy = $get['order'];
         }
 

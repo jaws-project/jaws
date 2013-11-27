@@ -57,8 +57,8 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
     function Page($pid = null, $base_action = 'Page')
     {
         $post = jaws()->request->fetch(array('gid', 'pid','language'), 'get');
-        $post['gid'] = Jaws_XSS::defilter($post['gid'], true);
-        $post['pid'] = empty($pid)? Jaws_XSS::defilter($post['pid'], true) : $pid;
+        $post['gid'] = Jaws_XSS::defilter($post['gid']);
+        $post['pid'] = empty($pid)? Jaws_XSS::defilter($post['pid']) : $pid;
 
         $pModel = $this->gadget->model->load('Page');
         $gModel = $this->gadget->model->load('Group');
