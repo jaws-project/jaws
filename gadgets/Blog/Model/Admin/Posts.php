@@ -170,7 +170,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
 
         if ($this->gadget->registry->fetch('pingback') == 'true') {
             $pback =& Jaws_PingBack::getInstance();
-            $pback->sendFromString($GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $max), true),
+            $pback->sendFromString($this->gadget->urlMap('SingleView', array('id' => $max), true),
                 $params['text']);
         }
 
@@ -333,7 +333,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
 
         if ($this->gadget->registry->fetch('pingback') == 'true') {
             $pback =& Jaws_PingBack::getInstance();
-            $pback->sendFromString($GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $post_id),
+            $pback->sendFromString($this->gadget->urlMap('SingleView', array('id' => $post_id),
                 true), $params['text']);
         }
 

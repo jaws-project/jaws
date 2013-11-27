@@ -125,11 +125,11 @@ class Blog_Actions_Feeds extends Blog_Actions_Default
         $tpl = $this->gadget->template->load('XMLLinks.html');
         if ($linkType == 'RSS') {
             $tpl->SetBlock('rss_link');
-            $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'RSS'));
+            $tpl->SetVariable('url', $this->gadget->urlMap('RSS'));
             $tpl->ParseBlock('rss_link');
         } else if ($linkType == 'Atom') {
             $tpl->SetBlock('atom_link');
-            $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'Atom'));
+            $tpl->SetVariable('url', $this->gadget->urlMap('Atom'));
             $tpl->ParseBlock('atom_link');
         }
         return $tpl->Get();

@@ -131,16 +131,13 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
                 $dLimit['min_date'] = $objDate->Format($dLimit['min_date'], 'Y');
                 $pDate = $year - 1;
                 if ($pDate >= $dLimit['min_date']) {
-                    $purl  = $GLOBALS['app']->Map->GetURLFor('Blog',
-                                                             'ViewDatePage',
-                                                             array('year'  => $pDate));
+                    $purl  = $this->gadget->urlMap('ViewDatePage', array('year'  => $pDate));
                     $ptitle = $pDate;
                 }
 
                 $nDate = $year + 1;
                 if ($nDate <= $dLimit['max_date']) {
-                    $nurl = $GLOBALS['app']->Map->GetURLFor('Blog', 'ViewDatePage',
-                                                            array('year'  => $nDate));
+                    $nurl = $this->gadget->urlMap('ViewDatePage', array('year'  => $nDate));
                     $ntitle = $nDate;
                 }
             } elseif (empty($day)) {
@@ -150,10 +147,10 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
                 $pDate = $pDate['year'].'-'.$pDate['mon'];
                 if ($pDate >= $dLimit['min_date']) {
                     $pDate = explode('-', $pDate);
-                    $purl  = $GLOBALS['app']->Map->GetURLFor('Blog',
-                                                             'ViewDatePage',
-                                                             array('year'  => $pDate[0],
-                                                                   'month' => $pDate[1]));
+                    $purl  = $this->gadget->urlMap(
+                        'ViewDatePage',
+                        array('year' => $pDate[0], 'month' => $pDate[1])
+                    );
                     $ptitle = $objDate->MonthString($pDate[1]) . ' ' . $pDate[0];
                 }
 
@@ -161,9 +158,10 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
                 $nDate = $nDate['year'].'-'.$nDate['mon'];
                 if ($nDate <= $dLimit['max_date']) {
                     $nDate = explode('-', $nDate);
-                    $nurl = $GLOBALS['app']->Map->GetURLFor('Blog', 'ViewDatePage',
-                                                   array('year'  => $nDate[0],
-                                                         'month' => $nDate[1]));
+                    $nurl = $this->gadget->urlMap(
+                        'ViewDatePage',
+                        array('year' => $nDate[0], 'month' => $nDate[1])
+                    );
                     $ntitle = $objDate->MonthString($nDate[1]) . ' ' . $nDate[0];
                 }
             } else {
@@ -173,11 +171,10 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
                 $pDate = $pDate['year'].'-'.$pDate['mon'].'-'.$pDate['mday'];
                 if ($pDate >= $dLimit['min_date']) {
                     $pDate = explode('-', $pDate);
-                    $purl = $GLOBALS['app']->Map->GetURLFor('Blog',
-                                                            'ViewDatePage',
-                                                            array('year'  => $pDate[0],
-                                                                  'month' => $pDate[1],
-                                                                  'day'   => $pDate[2]));
+                    $purl = $this->gadget->urlMap(
+                        'ViewDatePage',
+                        array('year' => $pDate[0], 'month' => $pDate[1], 'day' => $pDate[2])
+                    );
                     $ptitle = $objDate->MonthString($pDate[1]) . ' ' . $pDate[2] . ', '. $pDate[0];
                 }
 
@@ -185,11 +182,10 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
                 $nDate = $nDate['year'].'-'.$nDate['mon'].'-'.$nDate['mday'];
                 if ($nDate <= $dLimit['max_date']) {
                     $nDate = explode('-', $nDate);
-                    $nurl = $GLOBALS['app']->Map->GetURLFor('Blog',
-                                                            'ViewDatePage',
-                                                            array('year'  => $nDate[0],
-                                                                  'month' => $nDate[1],
-                                                                  'day'   => $nDate[2]));
+                    $nurl = $this->gadget->urlMap(
+                        'ViewDatePage',
+                        array('year' => $nDate[0], 'month' => $nDate[1], 'day' => $nDate[2])
+                    );
                     $ntitle = $objDate->MonthString($nDate[1]) . ' ' . $nDate[2] . ', '. $nDate[0];
                 }
             }
@@ -219,11 +215,10 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
                 if ($mon_year != $aux_mon_year) {
                     if (!empty($aux_mon_year)) {
                         $tpl->SetBlock('monthly_history/item');
-                        $tpl->SetVariable('url',
-                            $GLOBALS['app']->Map->GetURLFor('Blog',
-                                'ViewDatePage',
-                                array('year'  => $year,
-                                    'month' => $month)));
+                        $tpl->SetVariable(
+                            'url',
+                            $this->gadget->urlMap('ViewDatePage', array('year'  => $year, 'month' => $month))
+                        );
                         $tpl->SetVariable('month', $date->MonthString($month) );
                         $tpl->SetVariable('year', $year);
                         $tpl->SetVariable('howmany', $howmany);
@@ -238,11 +233,10 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
 
                 if ($key == (count($entries) - 1)) {
                     $tpl->SetBlock('monthly_history/item');
-                    $tpl->SetVariable('url',
-                        $GLOBALS['app']->Map->GetURLFor('Blog',
-                            'ViewDatePage',
-                            array('year'  => $year,
-                                'month' => $month)));
+                    $tpl->SetVariable(
+                        'url',
+                        $this->gadget->urlMap('ViewDatePage', array('year'  => $year, 'month' => $month))
+                    );
                     $tpl->SetVariable('month', $date->MonthString($month) );
                     $tpl->SetVariable('year', $year);
                     $tpl->SetVariable('howmany', $howmany);
@@ -300,10 +294,7 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
         if ($lmonth < 10) {
             $lmonth = '0' . $lmonth;
         }
-        $url = $GLOBALS['app']->Map->GetURLFor('Blog', 'ViewDatePage',
-            array('year'  => $lyear,
-                'month' => $lmonth,
-            ));
+        $url = $this->gadget->urlMap('ViewDatePage', array('year'  => $lyear, 'month' => $lmonth));
         $date = Jaws_Date::getInstance();
         $cal->addArrow('left', '&laquo;' . $date->MonthString($lmonth), $url);
 
@@ -317,10 +308,7 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
         if ($rmonth < 10) {
             $rmonth = '0' . $rmonth;
         }
-        $url = $GLOBALS['app']->Map->GetURLFor('Blog', 'ViewDatePage',
-            array('year'  => $ryear,
-                'month' => $rmonth,
-            ));
+        $url = $this->gadget->urlMap('ViewDatePage', array('year'  => $ryear, 'month' => $rmonth));
         $cal->addArrow('right', $date->MonthString($rmonth) . '&raquo;', $url);
 
         $model = $this->gadget->model->load('DatePosts');
@@ -330,13 +318,16 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
         if (!Jaws_Error::IsError($entries)) {
             foreach ($entries as $e) {
                 $edt = explode('-', $objDate->Format($e['publishtime'], 'Y-m-d'));
-                $cal->AddItem($edt[0], $edt[1], $edt[2],
-                    $GLOBALS['app']->Map->GetURLFor('Blog', 'ViewDatePage',
-                        array('year'  => $edt[0],
-                            'month' => $edt[1],
-                            'day'   => $edt[2],
-                        )),
-                    $e['title']);
+                $cal->AddItem(
+                    $edt[0],
+                    $edt[1],
+                    $edt[2],
+                    $this->gadget->urlMap(
+                        'ViewDatePage',
+                        array('year' => $edt[0], 'month' => $edt[1], 'day' => $edt[2])
+                    ),
+                    $e['title']
+                );
             }
         }
 

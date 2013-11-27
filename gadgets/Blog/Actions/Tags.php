@@ -51,7 +51,7 @@ class Blog_Actions_Tags extends Blog_Actions_Default
             $tpl->SetVariable('tagname',  Jaws_UTF8::strtolower($value['name']));
             $tpl->SetVariable('frequency', $value['howmany']);
             $cid = empty($value['fast_url']) ? $value['category_id'] : $value['fast_url'];
-            $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'ShowCategory', array('id' => $cid)));
+            $tpl->SetVariable('url', $this->gadget->urlMap('ShowCategory', array('id' => $cid)));
             $tpl->SetVariable('category', $value['category_id']);
             $tpl->ParseBlock('tagcloud/tag');
         }

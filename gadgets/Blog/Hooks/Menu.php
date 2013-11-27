@@ -20,16 +20,16 @@ class Blog_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $items = array();
-        $items[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Blog', 'DefaultAction'),
+        $items[] = array('url'    => $this->gadget->urlMap('DefaultAction'),
                          'title'  => _t('BLOG_NAME'));
-        $items[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Blog', 'Archive'),
+        $items[] = array('url'    => $this->gadget->urlMap('Archive'),
                          'title'  => _t('BLOG_ARCHIVE'));
-        $items[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Blog', 'CategoriesList'),
+        $items[] = array('url'    => $this->gadget->urlMap('CategoriesList'),
                          'title'  => _t('BLOG_ACTIONS_CATEGORIESLIST'),
                          'title2' => _t('BLOG_CATEGORIES'));
-        $items[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Blog', 'PopularPosts'),
+        $items[] = array('url'    => $this->gadget->urlMap('PopularPosts'),
                          'title'  => _t('BLOG_POPULAR_POSTS'));
-        $items[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Blog', 'PostsAuthors'),
+        $items[] = array('url'    => $this->gadget->urlMap('PostsAuthors'),
                          'title'  => _t('BLOG_POSTS_AUTHORS'));
 
         //Blog model
@@ -39,11 +39,10 @@ class Blog_Hooks_Menu extends Jaws_Gadget_Hook
         if (!Jaws_Error::IsError($categories)) {
             $max_size = 32;
             foreach ($categories as $cat) {
-                $url = $GLOBALS['app']->Map->GetURLFor(
-                                            'Blog',
-                                            'ShowCategory',
-                                            array('id' => empty($cat['fast_url'])?
-                                                                $cat['id'] : $cat['fast_url']));
+                $url = $this->gadget->urlMap(
+                    'ShowCategory',
+                    array('id' => empty($cat['fast_url'])? $cat['id'] : $cat['fast_url'])
+                );
                 $items[] = array('url'   => $url,
                                  'title' => ($GLOBALS['app']->UTF8->strlen($cat['name']) > $max_size)?
                                              $GLOBALS['app']->UTF8->substr($cat['name'], 0, $max_size) . '...' :
@@ -55,11 +54,10 @@ class Blog_Hooks_Menu extends Jaws_Gadget_Hook
         if (!Jaws_Error::IsError($entries)) {
             $max_size = 32;
             foreach ($entries as $entry) {
-                $url = $GLOBALS['app']->Map->GetURLFor(
-                                            'Blog',
-                                            'SingleView',
-                                            array('id' => empty($entry['fast_url'])?
-                                                                $entry['id'] : $entry['fast_url']));
+                $url = $this->gadget->urlMap(
+                    'SingleView',
+                    array('id' => empty($entry['fast_url'])? $entry['id'] : $entry['fast_url'])
+                );
                 $items[] = array('url'   => $url,
                                  'title' => ($GLOBALS['app']->UTF8->strlen($entry['title']) > $max_size)?
                                              $GLOBALS['app']->UTF8->substr($entry['title'], 0, $max_size) . '...' :

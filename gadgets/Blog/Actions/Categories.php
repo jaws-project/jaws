@@ -101,15 +101,15 @@ class Blog_Actions_Categories extends Blog_Actions_Default
                 $tpl->SetBlock('categories_list/item');
                 $tpl->SetVariable('category', $e['name']);
                 $cid = empty($e['fast_url']) ? $e['id'] : $e['fast_url'];
-                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog', 'ShowCategory', array('id' => $cid)));
-                $tpl->SetVariable('rssfeed',
-                    $GLOBALS['app']->Map->GetURLFor('Blog',
-                        'ShowRSSCategory',
-                        array('id' => $cid)));
-                $tpl->SetVariable('atomfeed',
-                    $GLOBALS['app']->Map->GetURLFor('Blog',
-                        'ShowAtomCategory',
-                        array('id' => $cid)));
+                $tpl->SetVariable('url', $this->gadget->urlMap('ShowCategory', array('id' => $cid)));
+                $tpl->SetVariable(
+                    'rssfeed',
+                    $this->gadget->urlMap('ShowRSSCategory', array('id' => $cid))
+                );
+                $tpl->SetVariable(
+                    'atomfeed',
+                    $this->gadget->urlMap('ShowAtomCategory', array('id' => $cid))
+                );
                 $tpl->SetVariable('howmany', $e['howmany']);
                 $tpl->ParseBlock('categories_list/item');
             }

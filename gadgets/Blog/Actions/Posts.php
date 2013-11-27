@@ -27,13 +27,13 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         }
 
         $GLOBALS['app']->Layout->AddHeadLink(
-            $GLOBALS['app']->Map->GetURLFor('Blog', 'Atom'),
+            $this->gadget->urlMap('Atom'),
             'alternate',
             'application/atom+xml',
             'Atom - All'
         );
         $GLOBALS['app']->Layout->AddHeadLink(
-            $GLOBALS['app']->Map->GetURLFor('Blog', 'RSS'),
+            $this->gadget->urlMap('RSS'),
             'alternate',
             'application/rss+xml',
             'RSS 2.0 - All'
@@ -163,7 +163,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
                 $tpl->SetBlock('recent_posts/item');
 
                 $id = empty($e['fast_url']) ? $e['id'] : $e['fast_url'];
-                $perm_url = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $id));
+                $perm_url = $this->gadget->urlMap('SingleView', array('id' => $id));
 
                 $summary = $e['summary'];
                 $text    = $e['text'];
@@ -195,9 +195,10 @@ class Blog_Actions_Posts extends Blog_Actions_Default
                 $tpl->SetVariable('username', $e['username']);
                 $tpl->SetVariable('posted_by', _t('BLOG_POSTED_BY'));
                 $tpl->SetVariable('name', $e['nickname']);
-                $tpl->SetVariable('author-url', $GLOBALS['app']->Map->GetURLFor('Blog',
-                    'ViewAuthorPage',
-                    array('id' => $e['username'])));
+                $tpl->SetVariable(
+                    'author-url',
+                    $this->gadget->urlMap('ViewAuthorPage', array('id' => $e['username']))
+                );
                 $tpl->SetVariable('createtime', $date->Format($e['publishtime']));
                 $tpl->SetVariable('createtime-monthname', $date->Format($e['publishtime'], 'MN'));
                 $tpl->SetVariable('createtime-month', $date->Format($e['publishtime'], 'm'));
@@ -233,13 +234,14 @@ class Blog_Actions_Posts extends Blog_Actions_Default
 
                 $tpl->SetVariablesArray($entry);
                 $id = empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url'];
-                $perm_url = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $id));
+                $perm_url = $this->gadget->urlMap('SingleView', array('id' => $id));
                 $tpl->SetVariable('url', $perm_url);
 
                 $tpl->SetVariable('posted_by', _t('BLOG_POSTED_BY'));
-                $tpl->SetVariable('author-url', $GLOBALS['app']->Map->GetURLFor('Blog',
-                    'ViewAuthorPage',
-                    array('id' => $entry['username'])));
+                $tpl->SetVariable(
+                    'author-url',
+                    $this->gadget->urlMap('ViewAuthorPage', array('id' => $entry['username']))
+                );
                 $tpl->SetVariable('createtime-iso',       $date->ToISO($entry['publishtime']));
                 $tpl->SetVariable('createtime',           $date->Format($entry['publishtime']));
                 $tpl->SetVariable('createtime-monthname', $date->Format($entry['publishtime'], 'MN'));
@@ -278,9 +280,10 @@ class Blog_Actions_Posts extends Blog_Actions_Default
             $date = Jaws_Date::getInstance();
             foreach ($authors as $author) {
                 $tpl->SetBlock('posts_authors/item');
-                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Blog',
-                    'ViewAuthorPage',
-                    array('id' => $author['username'])));
+                $tpl->SetVariable(
+                    'url',
+                    $this->gadget->urlMap('ViewAuthorPage', array('id' => $author['username']))
+                );
                 $tpl->SetVariable('title', $author['nickname']);
                 $tpl->SetVariable('posts-count', _t('BLOG_AUTHOR_POSTS', $author['howmany']));
                 $tpl->ParseBlock('posts_authors/item');

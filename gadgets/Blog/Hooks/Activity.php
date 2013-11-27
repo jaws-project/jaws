@@ -33,7 +33,7 @@ class Blog_Hooks_Activity extends Jaws_Gadget_Hook
 
         $entity['title'] = _t('BLOG_ENTRY');
         $entity['count'] = $postCount;
-        $entity['url'] = $GLOBALS['app']->Map->GetURLFor('Blog', 'ViewAuthorPage', array('id' => $uname));
+        $entity['url'] = $this->gadget->urlMap('ViewAuthorPage', array('id' => $uname));
 
         return array($entity);
     }

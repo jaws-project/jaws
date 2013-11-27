@@ -57,7 +57,7 @@ class Blog_Actions_Archive extends Blog_Actions_Default
                 }
 
                 $id = !empty($entry['fast_url']) ? $entry['fast_url'] : $entry['id'];
-                $url = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $id));
+                $url = $this->gadget->urlMap('SingleView', array('id' => $id));
                 $tpl->SetVariable('view-link', $url);
                 $tpl->ParseBlock('archive/month/record');
             }

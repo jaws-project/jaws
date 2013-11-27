@@ -163,11 +163,11 @@ class Blog_Model_Comments extends Jaws_Gadget_Model
         $tpl->SetBlock('comment');
         $tpl->SetVariable('comment',   $comment);
         $tpl->SetVariable('lbl-url',   _t("BLOG_COMMENT_MAIL_VISIT"));
-        $entry_url =& Piwi::CreateWidget('Link',
+        $entry_url =& Piwi::CreateWidget(
+            'Link',
             $title,
-            $GLOBALS['app']->Map->GetURLFor('Blog',
-                'SingleView',
-                array('id' => $id), true));
+            $this->gadget->urlMap('SingleView', array('id' => $id), true)
+        );
         $tpl->SetVariable('url',       $entry_url->Get());
         $tpl->SetVariable('site-name', $site_name);
         $tpl->SetVariable('site-url',  $site_url);

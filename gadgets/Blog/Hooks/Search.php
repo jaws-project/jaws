@@ -77,9 +77,9 @@ class Blog_Hooks_Search extends Jaws_Gadget_Hook
             $entry = array();
             $entry['title'] = $r['title'];
             if (empty($r['fast_url'])) {
-                $url = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $r['id']));
+                $url = $this->gadget->urlMap('SingleView', array('id' => $r['id']));
             } else {
-                $url = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $r['fast_url']));
+                $url = $this->gadget->urlMap('SingleView', array('id' => $r['fast_url']));
             }
             $entry['url'] = $url;
             //FIXME: Will be great if we can get the first image in "text"

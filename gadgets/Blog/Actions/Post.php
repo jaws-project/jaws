@@ -131,9 +131,13 @@ class Blog_Actions_Post extends Blog_Actions_Default
                 $navtpl = $this->gadget->template->load('PostNavigation.html');
                 if ($prev = $model->GetNOPEntry($entry['id'], 'previous')) {
                     $navtpl->SetBlock('entry-navigation/previous');
-                    $navtpl->SetVariable('url', $this->gadget->urlMap('SingleView',
-                                                                       array('id' => empty($prev['fast_url']) ?
-                                                                             $prev['id'] : $prev['fast_url'])));
+                    $navtpl->SetVariable(
+                        'url',
+                        $this->gadget->urlMap(
+                            'SingleView',
+                            array('id' => empty($prev['fast_url'])? $prev['id'] : $prev['fast_url'])
+                        )
+                    );
                     $navtpl->SetVariable('title', $prev['title']);
                     $navtpl->SetVariable('previous', _t('GLOBAL_PREVIOUS'));
                     $navtpl->ParseBlock('entry-navigation/previous');
@@ -141,9 +145,13 @@ class Blog_Actions_Post extends Blog_Actions_Default
 
                 if ($next = $model->GetNOPEntry($entry['id'], 'next')) {
                     $navtpl->SetBlock('entry-navigation/next');
-                    $navtpl->SetVariable('url', $this->gadget->urlMap('SingleView',
-                                                                   array('id' => empty($next['fast_url']) ?
-                                                                         $next['id'] : $next['fast_url'])));
+                    $navtpl->SetVariable(
+                        'url',
+                        $this->gadget->urlMap(
+                            'SingleView',
+                            array('id' => empty($next['fast_url'])? $next['id'] : $next['fast_url'])
+                        )
+                    );
                     $navtpl->SetVariable('title', $next['title']);
                     $navtpl->SetVariable('next', _t('GLOBAL_NEXT'));
                     $navtpl->ParseBlock('entry-navigation/next');
