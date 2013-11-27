@@ -217,7 +217,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
     function FileInfo()
     {
         $id = jaws()->request->fetch('id', 'get');
-        $id = Jaws_XSS::defilter($id, true);
+        $id = Jaws_XSS::defilter($id);
 
         $fModel = $this->gadget->model->load('Files');
         $dModel = $this->gadget->model->load('Directory');
@@ -284,7 +284,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
     function Download()
     {
         $id = jaws()->request->fetch('id', 'get');
-        $id = Jaws_XSS::defilter($id, true);
+        $id = Jaws_XSS::defilter($id);
 
         $fModel = $this->gadget->model->load('Files');
         $iFile  = $fModel->DBFileInfoByIndex($id);
