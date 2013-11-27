@@ -41,26 +41,20 @@
 <!-- END sitemap_gadget -->
 
 <!-- BEGIN category_list -->
-<div id="{lid}">
+<div id="{cid}">
     <img class="icon" src="{icon}" alt="icon" /><a onclick="javascript: {js_edit_func};">{title}</a>
 </div>
 <!-- END category_list -->
 
 <!-- BEGIN categoryUI -->
 <div>
-    <input type="hidden" name="lid" id="lid" value="0" />
+    <input type="hidden" name="cid" id="cid" value="0" />
     <table id="tbl_link" border="0" cellpadding="0" cellspacing="0">
-        <tr><td><label for="gid">{lbl_gid}:</label></td><td>{gid}</td></tr>
         <tr><td colspan="2" style="border-bottom: 1px dashed #d3d7cf;"></td></tr>
-        <tr><td><label for="title">{lbl_title}:</label></td><td>{title}</td></tr>
+        <tr><td><label for="priority">{lbl_priority}:</label></td><td>{priority}</td></tr>
+        <tr><td><label for="frequency">{lbl_frequency}:</label></td><td>{frequency}</td></tr>
         <tr><td><label for="url">{lbl_url}:</label></td><td>{url}</td></tr>
-        <tr><td><label for="fast_url">{lbl_fast_url}:</label></td><td>{fast_url}</td></tr>
-        <tr><td><label for="description">{lbl_desc}:</label></td><td>{desc}</td></tr>
-        <tr><td><label for="rank">{lbl_rank}:</label></td><td>{rank}</td></tr>
-        <!-- BEGIN tags -->
-        <tr><td><label for="tags">{lbl_tag}:</label></td><td>{tag}</td></tr>
-        <!-- END tags -->
-        <tr><td><label for="clicks">{lbl_clicks}:</label></td><td>{clicks}</td></tr>
+        <tr><td><label for="status">{lbl_status}:</label></td><td>{status}</td></tr>
     </table>
 </div>
 <!-- END categoryUI -->

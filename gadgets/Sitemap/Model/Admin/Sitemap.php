@@ -306,11 +306,14 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         return true;
     }
 
+
+
+
     /**
      * Gets list of gadgets that have Sitemap
      *
      * @access  public
-     * @return  array   List of searchable gadgets
+     * @return  array   List of gadgets
      */
     function GetAvailableSitemapGadgets()
     {
@@ -330,4 +333,20 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         return $gadgets;
     }
 
+    /**
+     * Get a gadget category properties
+     *
+     * @access  public
+     * @param   string  $gadget
+     * @param   string  $category
+     * @return  array   Category data
+     */
+    function GetCategoryProperties($gadget, $category)
+    {
+        $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
+        $sitemapTable->select('id:integer', 'gadget', 'category', 'priority:float','frequency',
+                              'url', 'status', 'update_time');
+        $sitemapTable->where('gadget', $gadget);
+        return $sitemapTable->and()->where('category', $category)->fetchRow();
+    }
 }

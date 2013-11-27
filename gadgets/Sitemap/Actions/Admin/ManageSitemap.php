@@ -139,7 +139,57 @@ class Sitemap_Actions_Admin_ManageSitemap extends Jaws_Gadget_Action
 
         $tpl->ParseBlock('sitemap');
         return $tpl->Get();
+    }
 
+    /**
+     * Show a form to edit a given category properties
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function GetCategoryUI()
+    {
+        $tpl = $this->gadget->template->loadAdmin('Sitemap.html');
 
+        $tpl->SetBlock('sitemap');
+        $tpl->SetBlock('sitemap/categoryUI');
+
+        $tpl->SetVariable('lbl_priority', _t('SITEMAP_PRIORITY'));
+        $entry =& Piwi::CreateWidget('Entry', 'priority', '');
+        $entry->SetStyle('width: 356px;');
+        $tpl->SetVariable('priority', $entry->Get());
+
+        $tpl->SetVariable('lbl_frequency', _t('SITEMAP_CHANGE_FREQ'));
+        $entry =& Piwi::CreateWidget('Entry', 'frequency', '');
+        $entry->SetStyle('width: 356px;');
+        $tpl->SetVariable('frequency', $entry->Get());
+
+        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $urlEntry =& Piwi::CreateWidget('Entry', 'url', 'http://');
+        $urlEntry->SetStyle('direction: ltr;width: 356px;');
+        $tpl->SetVariable('url', $urlEntry->Get());
+
+        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
+        $entry =& Piwi::CreateWidget('Entry', 'status', '');
+        $entry->SetStyle('width: 356px;');
+        $tpl->SetVariable('status', $entry->Get());
+
+        $tpl->ParseBlock('sitemap/categoryUI');
+        $tpl->ParseBlock('sitemap');
+        return $tpl->Get();
+    }
+
+    /**
+     * Get category properties
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function GetCategory()
+    {
+        $post = jaws()->request->fetch(array('gname', 'cid'), 'post');
+        $model = $this->gadget->model->loadAdmin('Sitemap');
+        $category = $model->GetCategoryProperties($post['gname'], $post['cid']);
+        return $category;
     }
 }
