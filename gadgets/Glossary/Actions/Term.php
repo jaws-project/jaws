@@ -145,7 +145,7 @@ class Glossary_Actions_Term extends Jaws_Gadget_Action
                 $tpl->SetBlock('list_of_terms/term');
                 $tpl->SetVariable('term', $term['term']);
                 $tid = empty($term['fast_url']) ? $term['id'] : $term['fast_url'];
-                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Glossary', 'ViewTerm', array('term' => $tid)));
+                $tpl->SetVariable('url', $this->gadget->urlMap('ViewTerm', array('term' => $tid)));
                 $tpl->ParseBlock('list_of_terms/term');
             }
         }
