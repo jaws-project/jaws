@@ -135,7 +135,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
                 if ($item['rfc_type'] == 'url') {
                     $result[$index]['url'] = $item['reference'];
                 } else {
-                    $result[$index]['url'] = $GLOBALS['app']->Map->GetURLFor('Sitemap', 'Display', array('path' => $item['path']));
+                    $result[$index]['url'] = $this->gadget->urlMap('Display', array('path' => $item['path']));
                 }
                 $result[$index]['childs'] = $this->_CreateItemsArray($items, $item['id']);
             }

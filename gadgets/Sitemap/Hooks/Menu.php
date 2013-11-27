@@ -18,7 +18,7 @@ class Sitemap_Hooks_Menu extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Sitemap', 'Sitemap'),
+        $urls[] = array('url'   => $this->gadget->urlMap('Sitemap'),
                         'title' => _t('SITEMAP_SITEMAP'));
         return $urls;
     }

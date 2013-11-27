@@ -25,9 +25,7 @@ class Sitemap_Model_Ping extends Jaws_Gadget_Model
             $buildSitemap = $model->makeSitemap(true);
         }
 
-        $url = htmlentities($GLOBALS['app']->Map->GetURLFor('Sitemap', 'GetXML'),
-            ENT_QUOTES,
-            'UTF-8');
+        $url = htmlentities($this->gadget->urlMap('GetXML'), ENT_QUOTES, 'UTF-8');
         $sengines = array(
             'http://www.google.com/webmasters/sitemaps/ping?sitemap={local}' => 'get',
             'http://submissions.ask.com/ping?sitemap={local}' => 'get'
