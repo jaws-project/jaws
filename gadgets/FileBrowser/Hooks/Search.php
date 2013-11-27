@@ -69,11 +69,7 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
                 }
 
                 if (is_dir($f)) {
-                    //$entry['url'] = BASE_SCRIPT . '?gadget=FileBrowser&amp;action=Display&amp;path='.$entry['title'];
-                    $entry['url'] = $GLOBALS['app']->Map->GetURLFor(
-                                                        'FileBrowser',
-                                                        'Display',
-                                                        array('path' => $entry['title']));
+                    $entry['url'] = $this->gadget->urlMap('Display', array('path' => $entry['title']));
                     $icon = 'gadgets/FileBrowser/Resources/images/folder.png';
                 } else {
                     $entry['url'] = str_replace(JAWS_PATH, '', $f);

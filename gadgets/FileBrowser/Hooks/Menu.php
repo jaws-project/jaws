@@ -20,7 +20,7 @@ class FileBrowser_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls = array();
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('FileBrowser', 'Display'),
+        $urls[] = array('url'   => $this->gadget->urlMap('Display'),
                         'title' => _t('FILEBROWSER_NAME'));
         return $urls;
     }
