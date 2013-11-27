@@ -18,13 +18,13 @@ class Search_Hooks_Menu extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Search', 'Box'),
+        $urls[] = array('url'    => $this->gadget->urlMap('Box'),
                         'title'  => _t('SEARCH_ACTIONS_BOX'),
                         'title2' => _t('SEARCH_NAME'));
-        $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Search', 'SimpleBox'),
+        $urls[] = array('url'    => $this->gadget->urlMap('SimpleBox'),
                         'title'  => _t('SEARCH_ACTIONS_SIMPLEBOX'),
                         'title2' => _t('SEARCH_NAME'));
-        $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Search', 'AdvancedBox'),
+        $urls[] = array('url'    => $this->gadget->urlMap('AdvancedBox'),
                         'title'  => _t('SEARCH_ACTIONS_ADVANCEDBOX'),
                         'title2' => _t('SEARCH_NAME'));
         return $urls;
