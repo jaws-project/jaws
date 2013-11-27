@@ -113,7 +113,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             $tpl->SetVariable('target', ($menus[$i]['url_target']==0)? '_self': '_blank');
 
             if (!empty($menus[$i]['image'])) {
-                $src = $GLOBALS['app']->Map->GetURLFor('Menu', 'LoadImage', array('id' => $menus[$i]['id']));
+                $src = $this->gadget->urlMap('LoadImage', array('id' => $menus[$i]['id']));
                 $image =& Piwi::CreateWidget('Image', $src, $menus[$i]['title']);
                 $image->SetID('');
                 $tpl->SetVariable('image', $image->get());
