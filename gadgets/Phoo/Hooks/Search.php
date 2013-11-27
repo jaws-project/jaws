@@ -70,8 +70,7 @@ class Phoo_Hooks_Search extends Jaws_Gadget_Hook
         foreach ($result as $r) {
             $entry = array();
             $entry['title']   = $r['name'];
-            $entry['url']     = $GLOBALS['app']->Map->GetURLFor('Phoo', 'ViewAlbum',
-                                                                array('id' => $r['id']));
+            $entry['url']     = $this->gadget->urlMap('ViewAlbum', array('id' => $r['id']));
             $entry['image']   = 'gadgets/Phoo/Resources/images/logo.png';
             $entry['snippet'] = $r['description'];
             $entry['date']    = $date->ToISO($r['createtime']);
@@ -108,11 +107,11 @@ class Phoo_Hooks_Search extends Jaws_Gadget_Hook
         include_once JAWS_PATH . 'include/Jaws/Image.php';
         foreach ($result as $r) {
             $entry = array();
-            $entry['title']   = $r['title'];
-            $entry['url']     = $GLOBALS['app']->Map->GetURLFor('Phoo', 'ViewImage',
-                                                                array('albumid' => $r['phoo_album_id'],
-                                                                      'id'      => $r['id'],
-                                                                      ));
+            $entry['title'] = $r['title'];
+            $entry['url']   = $this->gadget->urlMap(
+                'ViewImage',
+                array('albumid' => $r['phoo_album_id'], 'id' => $r['id'])
+            );
             $path = substr($r['filename'], 0, strrpos($r['filename'], '/'));
             $file = basename($r['filename']);
 

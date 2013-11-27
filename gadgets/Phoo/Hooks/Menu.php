@@ -20,7 +20,7 @@ class Phoo_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls   = array();
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Phoo', 'AlbumList'),
+        $urls[] = array('url'   => $this->gadget->urlMap('AlbumList'),
                         'title' => _t('PHOO_NAME'));
 
         //Load model
@@ -29,7 +29,7 @@ class Phoo_Hooks_Menu extends Jaws_Gadget_Hook
         if (!Jaws_Error::IsError($albums) && !empty($albums)) {
             $max_size = 20;
             foreach($albums as $a) {
-                $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'ViewAlbum', array('id' => $a['id']));
+                $url = $this->gadget->urlMap('ViewAlbum', array('id' => $a['id']));
                 $urls[] = array('url'   => $url,
                                 'title' => ($GLOBALS['app']->UTF8->strlen($a['name']) > $max_size)?
                                             $GLOBALS['app']->UTF8->substr($a['name'], 0, $max_size).'...' :
@@ -43,7 +43,7 @@ class Phoo_Hooks_Menu extends Jaws_Gadget_Hook
         if (!Jaws_Error::IsError($groups) && !empty($groups)) {
             $max_size = 20;
             foreach($groups as $group) {
-                $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'AlbumList', array('group' => $group['fast_url']));
+                $url = $this->gadget->urlMap('AlbumList', array('group' => $group['fast_url']));
                 $urls[] = array('url'   => $url,
                                 'title' => ($GLOBALS['app']->UTF8->strlen($group['name']) > $max_size)?
                                             $GLOBALS['app']->UTF8->substr($group['name'], 0, $max_size).'...' :
