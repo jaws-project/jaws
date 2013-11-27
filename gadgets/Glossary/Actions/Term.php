@@ -75,7 +75,7 @@ class Glossary_Actions_Term extends Jaws_Gadget_Action
     function ViewTerm()
     {
         $term = jaws()->request->fetch('term', 'get');
-        $term = Jaws_XSS::defilter($term, true);
+        $term = Jaws_XSS::defilter($term);
 
         $model = $this->gadget->model->load('Term');
         $term = $model->GetTerm($term);
