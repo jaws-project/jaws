@@ -118,7 +118,7 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
             if ($quote['show_title'] || ($group['view_mode'] == 0)) {
                 $tpl->SetBlock("quotes/$block/quote/quote_title");
                 $tpl->SetVariable('quote_title', $quote['title']);
-                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Quotes', 'ViewQuote', array('id' => $quote['id'])));
+                $tpl->SetVariable('url', $this->gadget->urlMap('ViewQuote', array('id' => $quote['id'])));
                 $tpl->ParseBlock("quotes/$block/quote/quote_title");
             }
             if ($group['view_mode']!= 0) {
