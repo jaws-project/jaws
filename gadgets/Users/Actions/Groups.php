@@ -325,11 +325,7 @@ class Users_Actions_Groups extends Users_Actions_Default
             // user's profile
             $tpl->SetVariable(
                 'user_url',
-                $GLOBALS['app']->Map->GetURLFor(
-                    'Users',
-                    'Profile',
-                    array('user' => $user['username'])
-                )
+                $this->gadget->urlMap('Profile', array('user' => $user['username']))
             );
             $tpl->ParseBlock('manage_group/member');
         }
