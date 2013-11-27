@@ -761,4 +761,56 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         return $result;
     }
 
+    /**
+     * Get posts that match filters
+     *
+     * @access  public
+     * @param   array   $filters    Filters for limiting posts
+                (category, user, published, start_time, stop_time, offset, limit)
+     * @return  mixed   An array of posts or Jaws_Error on failure
+     */
+    function GetPosts($filters = array())
+    {
+        $blogTable = Jaws_ORM::getInstance()->table('blog');
+        $blogTable->select(
+            'id:integer', 'title', 'fast_url', 'summary', 'text',
+            'publishtime', 'updatetime', 'comments:integer', 'clicks:integer',
+            'allow_comments:boolean', 'user_id', 'categories', 'published'
+        );
+
+        // published filter
+        if (isset($filters['published']) && !empty($filters['published'])) {
+            $blogTable->and()->where('published', (bool)$published);
+        }
+        // category filter
+        if (isset($filters['category']) && !empty($filters['category'])) {
+            $blogTable->and()->where('categories', ",{$filters['category']},", 'like');
+        }
+        // user filter
+        if (isset($filters['user']) && !empty($filters['user'])) {
+            $blogTable->and()->where('user_id', (int)$filters['user']);
+        }
+        // start time filter
+        if (isset($filters['start_time']) && !empty($filters['start_time'])) {
+            $blogTable->and()->where('publishtime', $filters['start_time'], '>=');
+        }
+        // stop time filter
+        if (isset($filters['stop_time']) && !empty($filters['stop_time'])) {
+            $blogTable->and()->where('publishtime', $filters['stop_time'], '<');
+        }
+        // limit, offset
+        $blogTable->limit(@$filters['limit'], @$filters['offset']);
+        $result = $blogTable->orderBy('publishtime desc')->fetchAll();
+        // Check dynamic ACL
+        foreach ($result as $key => $post) {
+            foreach (array_filter(explode(',', $post['categories'])) as $cat) {
+                if (!$this->gadget->GetPermission('CategoryManage', $cat)) {
+                    unset($result[$key]);
+                }
+            }
+        }
+
+        return $result;
+    }
+
 }
