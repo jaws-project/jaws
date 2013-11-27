@@ -40,8 +40,8 @@ class Friends_Model_Admin_Friends extends Jaws_Gadget_Model
      */
     function NewFriend($friend, $url)
     {
-        $params['friend'] = Jaws_XSS::filter($friend, true);
-        $params['url']    = Jaws_XSS::filter($url, true);
+        $params['friend'] = Jaws_XSS::filter($friend);
+        $params['url']    = Jaws_XSS::filter($url);
         $friendTable = Jaws_ORM::getInstance()->table('friend');
         $result = $friendTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
