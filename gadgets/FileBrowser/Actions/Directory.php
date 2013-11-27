@@ -43,17 +43,13 @@ class FileBrowser_Actions_Directory extends Jaws_Gadget_Action
                 $tpl->SetVariable('title', Jaws_XSS::filter($item['title']));
                 if ($item['is_dir']) {
                     $relative = Jaws_XSS::filter($item['relative']) . '/';
-                    $url = $GLOBALS['app']->Map->GetURLFor('FileBrowser',
-                        'Display',
-                        array('path' => $relative));
+                    $url = $this->gadget->urlMap('Display', array('path' => $relative));
                 } else {
                     if (empty($item['id'])) {
                         $url = Jaws_XSS::filter($item['url']);
                     } else {
                         $fid = empty($item['fast_url']) ? $item['id'] : Jaws_XSS::filter($item['fast_url']);
-                        $url = $GLOBALS['app']->Map->GetURLFor('FileBrowser',
-                            'Download',
-                            array('id' => $fid));
+                        $url = $this->gadget->urlMap('Download', array('id' => $fid));
                     }
                 }
                 $tpl->SetVariable('url', $url);

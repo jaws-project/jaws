@@ -80,11 +80,13 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
         //Get url
         if (empty($path)) {
             $dir['relative'] = str_replace('//', '/', $dirname);
-            $url = $GLOBALS['app']->Map->GetURLFor('FileBrowser', 'Display', array('path' => $dirname));
+            $url = $this->gadget->urlMap('Display', array('path' => $dirname));
         } else {
             $dir['relative'] = str_replace('//', '/', $path.'/'.$dirname);
-            $url = $GLOBALS['app']->Map->GetURLFor('FileBrowser', 'Display',
-                array('path' => str_replace('//', '/', $path.'/'.$dirname)));
+            $url = $this->gadget->urlMap(
+                'Display',
+                array('path' => str_replace('//', '/', $path.'/'.$dirname))
+            );
         }
         $dir['url'] = $url;
 
