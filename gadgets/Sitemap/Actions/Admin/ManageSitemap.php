@@ -131,7 +131,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Jaws_Gadget_Action
             $tpl->SetBlock('sitemap/category_list');
             $tpl->SetVariable('cid', 'category_'.$category['id']);
             $tpl->SetVariable('icon', 'gadgets/Sitemap/Resources/images/logo.mini.png');
-            $tpl->SetVariable('title', $category['name']);
+            $tpl->SetVariable('title', $category['title']);
             $tpl->SetVariable('js_edit_func', "editCategory(this, '$gadget', {$category['id']})");
             $tpl->SetVariable('add_icon', STOCK_NEW);
             $tpl->ParseBlock('sitemap/category_list');
