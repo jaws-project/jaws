@@ -26,7 +26,7 @@ class Phoo_Actions_Groups extends Jaws_Gadget_Action
         $groups = $gModel->GetGroups();
         if (is_array($groups)) {
             foreach ($groups as $group) {
-                $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'AlbumList', array('group' => $group['id']));
+                $url = $this->gadget->urlMap('AlbumList', array('group' => $group['id']));
                 $tpl->SetBlock('groups/group');
                 $tpl->SetVariable('url', $url);
                 $tpl->SetVariable('name', $group['name']);

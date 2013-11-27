@@ -79,7 +79,7 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
                     $tpl->SetVariable('width',    $imgData[0]);
                     $tpl->SetVariable('height',   $imgData[1]);
                 }
-                $url = $GLOBALS['app']->Map->GetURLFor('Phoo','ViewAlbum', array('id' => $album['id']));
+                $url = $this->gadget->urlMap('ViewAlbum', array('id' => $album['id']));
                 $tpl->SetVariable('url',      $url);
                 $tpl->SetVariable('name',     $album['name']);
                 $tpl->SetVariable('filename', $album['filename']);
@@ -92,7 +92,7 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
                 $groups = $agModel->GetAlbumGroupsInfo($album['id']);
                 if (is_array($groups)) {
                     foreach ($groups as $group) {
-                        $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'AlbumList', array('group' => $group['fast_url']));
+                        $url = $this->gadget->urlMap('AlbumList', array('group' => $group['fast_url']));
                         $tpl->SetBlock('albums/item/group');
                         $tpl->SetVariable('url', $url);
                         $tpl->SetVariable('name', $group['name']);

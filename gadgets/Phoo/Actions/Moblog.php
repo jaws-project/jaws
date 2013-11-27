@@ -63,10 +63,13 @@ class Phoo_Actions_Moblog extends Jaws_Gadget_Action
                 }
 
                 $tpl->SetBlock('moblog/item');
-                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Phoo',
-                    'ViewImage',
-                    array('id' => $mb['id'],
-                        'albumid' => $mb['phoo_album_id'])));
+                $tpl->SetVariable(
+                    'url',
+                    $this->gadget->urlMap(
+                        'ViewImage',
+                        array('id' => $mb['id'], 'albumid' => $mb['phoo_album_id'])
+                    )
+                );
                 $tpl->SetVariable('name',     $mb['name']);
                 $tpl->SetVariable('img_desc', $mb['stripped_description']);
                 $tpl->SetVariable('filename', $mb['filename']);
