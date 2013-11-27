@@ -18,7 +18,7 @@ class Webcam_Hooks_Menu extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Webcam', 'Display'),
+        $urls[] = array('url'   => $this->gadget->urlMap('Display'),
                         'title' => _t('WEBCAM_NAME'));
         return $urls;
     }
