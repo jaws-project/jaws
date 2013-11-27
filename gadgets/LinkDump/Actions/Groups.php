@@ -47,7 +47,7 @@ class LinkDump_Actions_Groups extends Jaws_Gadget_Action
     {
         if (empty($gid)) {
             $gid = jaws()->request->fetch('id', 'get');
-            $gid = Jaws_XSS::defilter($gid, true);
+            $gid = Jaws_XSS::defilter($gid);
             $limit_count = null;
             $tplFile = 'Category.html';
         } else {

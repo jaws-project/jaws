@@ -19,7 +19,7 @@ class LinkDump_Actions_Link extends Jaws_Gadget_Action
     function Link()
     {
         $lid = jaws()->request->fetch('id', 'get');
-        $lid = Jaws_XSS::defilter($lid, true);
+        $lid = Jaws_XSS::defilter($lid);
 
         $model = $this->gadget->model->load('Links');
         $link = $model->GetLink($lid);
