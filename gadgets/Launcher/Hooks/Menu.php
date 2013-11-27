@@ -25,11 +25,7 @@ class Launcher_Hooks_Menu extends Jaws_Gadget_Hook
         if (!Jaws_Error::isError($scripts)) {
             foreach ($scripts as $script) {
                 $urls[] = array(
-                    'url' => $GLOBALS['app']->Map->GetURLFor(
-                        'Launcher',
-                        'Execute',
-                        array('script' => $script)
-                    ),
+                    'url' => $this->gadget->urlMap('Execute', array('script' => $script)),
                     'title' => $script
                 );
             }
