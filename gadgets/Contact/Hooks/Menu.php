@@ -19,16 +19,16 @@ class Contact_Hooks_Menu extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Contact', 'Contact'),
+        $urls[] = array('url'    => $this->gadget->urlMap('Contact'),
                         'title'  => _t('CONTACT_ACTIONS_CONTACT'),
                         'title2' => _t('CONTACT_US'));
-        $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Contact', 'ContactMini'),
+        $urls[] = array('url'    => $this->gadget->urlMap('ContactMini'),
                         'title'  => _t('CONTACT_ACTIONS_CONTACTMINI'),
                         'title2' => _t('CONTACT_US'));
-        $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Contact', 'ContactSimple'),
+        $urls[] = array('url'    => $this->gadget->urlMap('ContactSimple'),
                         'title'  => _t('CONTACT_ACTIONS_CONTACTSIMPLE'),
                         'title2' => _t('CONTACT_US'));
-        $urls[] = array('url'    => $GLOBALS['app']->Map->GetURLFor('Contact', 'ContactFull'),
+        $urls[] = array('url'    => $this->gadget->urlMap('ContactFull'),
                         'title'  => _t('CONTACT_ACTIONS_CONTACTFULL'),
                         'title2' => _t('CONTACT_US'));
         return $urls;
