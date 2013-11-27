@@ -139,8 +139,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         foreach($tags as $tag) {
             $tpl->SetBlock("$tpl_base_block/tags/tag");
             $tpl->SetVariable('name', $tag);
-            $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Tags', 'ViewTag',
-                             array('tag'=>$tag, 'gname'=>$gadget)));
+            $tpl->SetVariable('url', $this->gadget->urlMap('ViewTag', array('tag'=>$tag, 'gname'=>$gadget)));
             $tpl->ParseBlock("$tpl_base_block/tags/tag");
         }
         $tpl->ParseBlock("$tpl_base_block/tags");
