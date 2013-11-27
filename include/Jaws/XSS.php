@@ -41,20 +41,32 @@ class Jaws_XSS
         return $string;
     }
 
-    /**
-     *
-     */
-    static function filter($string, $noquotes = true)
-    {
-        return htmlspecialchars($string, $noquotes? ENT_QUOTES : ENT_NOQUOTES, 'UTF-8');
-    }
 
     /**
+     * Convert special characters to HTML entities
      *
+     * @access  public
+     * @param   string  $string     The string being converted
+     * @param   bool    $noquote    Will leave both double and single quotes unconverted
+     * @return  string  The converted string
      */
-    static function defilter($string, $noquotes = true)
+    static function filter($string, $noquotes = false)
     {
-        return htmlspecialchars_decode($string, $noquotes? ENT_QUOTES : ENT_NOQUOTES);
+        return htmlspecialchars($string, $noquotes? ENT_NOQUOTES : ENT_QUOTES, 'UTF-8');
+    }
+
+
+    /**
+     * Convert special HTML entities back to characters
+     *
+     * @access  public
+     * @param   string  $string     The string to decode
+     * @param   bool    $noquote    Will leave both double and single quotes unconverted
+     * @return  string  Returns the decoded string
+     */
+    static function defilter($string, $noquotes = false)
+    {
+        return htmlspecialchars_decode($string, $noquotes? ENT_NOQUOTES : ENT_QUOTES);
     }
 
 }
