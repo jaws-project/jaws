@@ -67,7 +67,7 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
                 foreach ($categories as $categoriy) {
                     $result[] = array(
                         'id'     => $categoriy['id'],
-                        'title'  => $categoriy['title'],
+                        'title'  => $categoriy['name'],
                     );
                 }
         }
