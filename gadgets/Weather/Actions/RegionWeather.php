@@ -88,7 +88,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         if (!PEAR::isError($rWeather)) {
             $tpl->SetVariable('title', _t('WEATHER_TITLE', $region['title']));
             $rid = empty($region['fast_url'])? $region['id'] : $region['fast_url'];
-            $url = $GLOBALS['app']->Map->GetURLFor('Weather', 'RegionWeather', array('id' => $rid));
+            $url = $this->gadget->urlMap('RegionWeather', array('id' => $rid));
             $tpl->SetVariable('url',  $url);
             $tpl->SetBlock('weather/current');
             if ($forecast) {
@@ -178,9 +178,10 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
                     $tpl->SetBlock('weather/region');
                     $tpl->SetVariable('region', $region['title']);
                     $rid = empty($region['fast_url'])? $region['id'] : $region['fast_url'];
-                    $tpl->SetVariable('url',  $GLOBALS['app']->Map->GetURLFor('Weather',
-                        'RegionWeather',
-                        array('id' => $rid)));
+                    $tpl->SetVariable(
+                        'url',
+                        $this->gadget->urlMap('RegionWeather', array('id' => $rid))
+                    );
                     $tpl->SetVariable('temp', $rWeather['temp']);
                     $tpl->SetVariable('unit', $metric? _t('WEATHER_UNIT_METRIC_TEMP') :
                         _t('WEATHER_UNIT_IMPERIAL_TEMP'));

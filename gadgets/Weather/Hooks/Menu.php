@@ -19,7 +19,7 @@ class Weather_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls   = array();
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Weather', 'AllRegionsWeather'),
+        $urls[] = array('url'   => $this->gadget->urlMap('AllRegionsWeather'),
                         'title' => _t('WEATHER_NAME'));
 
         return $urls;
