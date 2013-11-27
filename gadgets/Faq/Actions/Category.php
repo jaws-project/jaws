@@ -29,7 +29,7 @@ class Faq_Actions_Category extends Jaws_Gadget_Action
                 $tpl->SetBlock('faq_categories/item');
                 $tpl->SetVariable('id', $c['id']);
                 $id = empty($c['fast_url']) ? $c['id'] : $c['fast_url'];
-                $tpl->SetVariable('url', $GLOBALS['app']->Map->GetURLFor('Faq', 'ViewCategory', array('id' => $id)));
+                $tpl->SetVariable('url', $this->gadget->urlMap('ViewCategory', array('id' => $id)));
                 $tpl->SetVariable('category',$c['category']);
                 $tpl->ParseBlock('faq_categories/item');
             }
