@@ -62,7 +62,7 @@ class Blog_Actions_Feeds extends Blog_Actions_Default
         $model = $this->gadget->model->load('Feeds');
 
         $id = jaws()->request->fetch('id', 'get');
-        $id = Jaws_XSS::defilter($id, true);
+        $id = Jaws_XSS::defilter($id);
 
         $xml = $model->MakeCategoryRSS($id);
         if (Jaws_Error::IsError($xml)) {
@@ -84,7 +84,7 @@ class Blog_Actions_Feeds extends Blog_Actions_Default
         $model = $this->gadget->model->load('Feeds');
 
         $id = jaws()->request->fetch('id', 'get');
-        $id = Jaws_XSS::defilter($id, true);
+        $id = Jaws_XSS::defilter($id);
 
         $xml = $model->MakeCategoryAtom($id);
         if (Jaws_Error::IsError($xml)) {

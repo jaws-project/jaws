@@ -51,7 +51,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
     function SingleView($id = null, $preview_mode = false)
     {
         $g_id = jaws()->request->fetch('id', 'get');
-        $g_id = Jaws_XSS::defilter($g_id, true);
+        $g_id = Jaws_XSS::defilter($g_id);
 
         $model = $this->gadget->model->load('Posts');
         if (is_null($id)) {

@@ -31,7 +31,7 @@ class Blog_Actions_Categories extends Blog_Actions_Default
         }
 
         if (empty($cat)) {
-            $cat = Jaws_XSS::defilter($post['id'], true);
+            $cat = Jaws_XSS::defilter($post['id']);
         }
 
         // Check dynamic ACL
