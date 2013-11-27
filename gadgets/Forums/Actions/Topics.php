@@ -292,7 +292,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
         // message
         $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
-        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', Jaws_XSS::defilter($topic['message']), false);
+        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', Jaws_XSS::defilter($topic['message']));
         $message->setId('message');
         $message->TextArea->SetRows(8);
         $tpl->SetVariable('message', $message->Get());
