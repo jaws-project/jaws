@@ -71,7 +71,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
             $pageData['title'] = '<a href="'.$edit_url.$page['page_id'].'">'.$page['title'].'</a>';
 
             $param = array('pid' => !empty($page['fast_url']) ? $page['fast_url'] : $page['page_id']);
-            $furl = $GLOBALS['app']->Map->GetURLFor('StaticPage', 'Page', $param);
+            $furl = $this->gadget->urlMap('Page', $param);
             $pageData['furl']  = '<a href="'.$furl.'">'.$page['fast_url'].'</a>';
             $pageData['group'] = $page['gtitle'];
 

@@ -65,14 +65,14 @@ class StaticPage_Hooks_Search extends Jaws_Gadget_Hook
             }
             $page = array();
             $page['title'] = $p['title'];
-            $url = $GLOBALS['app']->Map->GetURLFor(
-                                            'StaticPage',
-                                            'Pages',
-                                            array('gid' => empty($p['spg_fast_url'])?
-                                                                 $p['group_id'] : $p['spg_fast_url'],
-                                                  'pid' => empty($p['fast_url'])?
-                                                                 $p['page_id'] : $p['fast_url'],
-                                                  'language'  => $p['language']));
+            $url = $this->gadget->urlMap(
+                'Pages',
+                array(
+                    'gid' => empty($p['spg_fast_url'])? $p['group_id'] : $p['spg_fast_url'],
+                    'pid' => empty($p['fast_url'])? $p['page_id'] : $p['fast_url'],
+                    'language'  => $p['language']
+                )
+            );
             $page['url']     = $url;
             $page['image']   = 'gadgets/StaticPage/Resources/images/logo.png';
             $page['snippet'] = $p['content'];

@@ -19,11 +19,11 @@ class StaticPage_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls   = array();
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('StaticPage', 'Page'),
+        $urls[] = array('url'   => $this->gadget->urlMap('Page'),
                         'title' => _t('STATICPAGE_NAME'));
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('StaticPage', 'GroupsList'),
+        $urls[] = array('url'   => $this->gadget->urlMap('GroupsList'),
                         'title' => _t('STATICPAGE_GROUPS_LIST'));
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('StaticPage', 'PagesTree'),
+        $urls[] = array('url'   => $this->gadget->urlMap('PagesTree'),
                         'title' => _t('STATICPAGE_PAGES_TREE'));
 
         //Load model
@@ -35,11 +35,10 @@ class StaticPage_Hooks_Menu extends Jaws_Gadget_Hook
             if (!$this->gadget->GetPermission('AccessGroup', $group['id'])) {
                 continue;
             }
-            $url   = $GLOBALS['app']->Map->GetURLFor(
-                                            'StaticPage',
-                                            'GroupPages',
-                                            array('gid' => empty($group['fast_url'])?
-                                                                 $group['id'] : $group['fast_url']));
+            $url = $this->gadget->urlMap(
+                'GroupPages',
+                array('gid' => empty($group['fast_url'])? $group['id'] : $group['fast_url'])
+            );
             $urls[] = array('url'    => $url,
                             'title'  => '\\'. $group['title'],
                             'title2' => ($GLOBALS['app']->UTF8->strlen($group['title']) >= $max_size)?
@@ -48,13 +47,13 @@ class StaticPage_Hooks_Menu extends Jaws_Gadget_Hook
             $pages = $pModel->GetPages($group['id']);
             foreach($pages as $page) {
                 if ($page['published'] === true) {
-                    $url   = $GLOBALS['app']->Map->GetURLFor(
-                                                    'StaticPage',
-                                                    'Pages',
-                                                    array('gid' => empty($group['fast_url'])?
-                                                                         $group['id'] : $group['fast_url'],
-                                                          'pid' => empty($page['fast_url'])?
-                                                                         $page['base_id'] : $page['fast_url']));
+                    $url = $this->gadget->urlMap(
+                        'Pages',
+                        array(
+                            'gid' => empty($group['fast_url'])? $group['id'] : $group['fast_url'],
+                            'pid' => empty($page['fast_url'])? $page['base_id'] : $page['fast_url']
+                        )
+                    );
                     $urls[] = array('url'    => $url,
                                     'title'  => '\\'. $group['title'].'\\'. $page['title'],
                                     'title2' => ($GLOBALS['app']->UTF8->strlen($page['title']) >= $max_size)?

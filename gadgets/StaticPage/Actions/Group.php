@@ -94,7 +94,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
             if ($page['published']) {
                 $param = array('gid' => empty($group['fast_url'])? $group['id'] : $group['fast_url'],
                     'pid' => empty($page['fast_url']) ? $page['base_id'] : $page['fast_url']);
-                $link = $GLOBALS['app']->Map->GetURLFor('StaticPage', 'Pages', $param);
+                $link = $this->gadget->urlMap('Pages', $param);
                 $tpl->SetBlock('group_pages/item');
                 $tpl->SetVariable('page', $page['title']);
                 $tpl->SetVariable('link',  $link);
@@ -128,7 +128,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
                 continue;
             }
             $gid = empty($group['fast_url'])? $group['id'] : $group['fast_url'];
-            $link = $GLOBALS['app']->Map->GetURLFor('StaticPage', 'GroupPages', array('gid' => $gid));
+            $link = $this->gadget->urlMap('GroupPages', array('gid' => $gid));
             $tpl->SetBlock('group_index/item');
             $tpl->SetVariable('group', $group['title']);
             $tpl->SetVariable('link',  $link);
