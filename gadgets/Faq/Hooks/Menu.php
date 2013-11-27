@@ -20,7 +20,7 @@ class Faq_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls   = array();
-        $urls[] = array('url'   => $GLOBALS['app']->Map->GetURLFor('Faq', 'View'),
+        $urls[] = array('url'   => $this->gadget->urlMap('View'),
                         'title' => _t('FAQ_NAME'));
 
         //Load model
@@ -29,7 +29,7 @@ class Faq_Hooks_Menu extends Jaws_Gadget_Hook
         if (!Jaws_Error::isError($categories)) {
             $max_size = 20;
             foreach ($categories as $category) {
-                $url = $GLOBALS['app']->Map->GetURLFor('Faq', 'ViewCategory', array('id' => $category['id']));
+                $url = $this->gadget->urlMap('ViewCategory', array('id' => $category['id']));
                 $urls[] = array('url'   => $url,
                                 'title' => ($GLOBALS['app']->UTF8->strlen($category['category']) > $max_size)?
                                             $GLOBALS['app']->UTF8->substr($category['category'], 0, $max_size).'...' :

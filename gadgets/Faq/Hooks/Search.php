@@ -57,8 +57,7 @@ class Faq_Hooks_Search extends Jaws_Gadget_Hook
         foreach ($result as $r) {
             $question = array();
             $question['title']   = $r['question'];
-            $question['url']     = $GLOBALS['app']->Map->GetURLFor('Faq', 'ViewCategory', 
-                                                                   array('id' => $r['category'])).
+            $question['url']     = $this->gadget->urlMap('ViewCategory', array('id' => $r['category'])).
                 '#Question'.$r['faq_position'];
             $question['image']   = 'gadgets/Faq/Resources/images/logo.png';
             $question['snippet'] = $r['answer'];
