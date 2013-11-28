@@ -72,6 +72,10 @@ cursor:default;
 #components a{
 display:none;
 }
+#filter{
+width:100%;
+background:url(images/search.png) 98% no-repeat;
+}
 #component_ui{
 height:434px;
 margin-left:5px;

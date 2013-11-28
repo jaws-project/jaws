@@ -135,13 +135,16 @@ function init()
  */
 function buildComponentList()
 {
-    var sections = {};
+    var sections = {},
+        filter = $('filter').value;
     sections.outdated = $('outdated').set('html', '');
     sections.notinstalled = $('notinstalled').set('html', '');
     sections.installed = $('installed').set('html', '');
     sections.core = $('core').set('html', '');
     Object.keys(components).sort().each(function(name) {
-        sections[components[name].state].grab(getComponentElement(components[name]));
+        if (components[name]['title'].test(filter, 'i')) {
+            sections[components[name].state].grab(getComponentElement(components[name]));
+        }
     });
     $('components').getElements('h3').show();
     $('components').getElements('ul:empty').getPrevious('h3').hide();
