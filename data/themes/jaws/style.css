@@ -252,6 +252,10 @@ border:1px solid #579;
 display:inline-block !important;
 background:#ace url("../../../images/loading.svg") no-repeat 2px;
 }
+div.simple-response-msg{
+display:inline-block !important;
+background:#ddd;
+}
 .gadget_section{
 padding-bottom:10px;
 }
