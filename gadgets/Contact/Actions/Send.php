@@ -18,20 +18,23 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
      */
     function Send()
     {
-        $post = jaws()->request->fetch(array('contact_name', 'contact_email', 'contact_company', 'contact_url',
-                                    'contact_tel', 'contact_fax', 'contact_mobile', 'contact_address',
-                                    'contact_recipient', 'contact_subject', 'contact_message'),
-                              'post');
+        $post = jaws()->request->fetch(
+            array(
+                'name', 'email', 'company', 'url', 'tel', 'fax',
+                'mobile', 'address', 'recipient', 'subject', 'message'
+            ),
+            'post'
+        );
 
         if ($GLOBALS['app']->Session->Logged()) {
-            $post['contact_name']  = $GLOBALS['app']->Session->GetAttribute('nickname');
-            $post['contact_email'] = $GLOBALS['app']->Session->GetAttribute('email');
-            $post['contact_url']   = $GLOBALS['app']->Session->GetAttribute('url');
+            $post['name']  = $GLOBALS['app']->Session->GetAttribute('nickname');
+            $post['email'] = $GLOBALS['app']->Session->GetAttribute('email');
+            $post['url']   = $GLOBALS['app']->Session->GetAttribute('url');
         }
 
-        if (trim($post['contact_name'])    == '' ||
-            trim($post['contact_subject']) == '' ||
-            trim($post['contact_message']) == '')
+        if (trim($post['name'])    == '' ||
+            trim($post['subject']) == '' ||
+            trim($post['message']) == '')
         {
             $GLOBALS['app']->Session->PushSimpleResponse(_t('CONTACT_INCOMPLETE_FIELDS'), 'Contact');
             $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact_Data');
@@ -47,7 +50,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         }
 
         if ($this->gadget->registry->fetch('use_antispam') == 'true') {
-            if (!preg_match("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $post['contact_email'])) {
+            if (!preg_match("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $post['email'])) {
                 $GLOBALS['app']->Session->PushSimpleResponse(_t('CONTACT_RESULT_BAD_EMAIL_ADDRESS'), 'Contact');
                 $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact_Data');
                 Jaws_Header::Referrer();
@@ -70,32 +73,34 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             }
 
             if (!empty($attach)) {
-                $attachment = $attach['contact_attachment'][0]['host_filename'];
+                $attachment = $attach['attachment'][0]['host_filename'];
             }
         }
 
         $model = $this->gadget->model->load('Contacts');
-        $result = $model->InsertContact($post['contact_name'],
-                                        $post['contact_email'],
-                                        $post['contact_company'],
-                                        $post['contact_url'],
-                                        $post['contact_tel'],
-                                        $post['contact_fax'],
-                                        $post['contact_mobile'],
-                                        $post['contact_address'],
-                                        $post['contact_recipient'],
-                                        $post['contact_subject'],
-                                        $attachment,
-                                        $post['contact_message']);
+        $result = $model->InsertContact(
+            $post['name'],
+            $post['email'],
+            $post['company'],
+            $post['url'],
+            $post['tel'],
+            $post['fax'],
+            $post['mobile'],
+            $post['address'],
+            $post['recipient'],
+            $post['subject'],
+            $attachment,
+            $post['message']
+        );
         if (Jaws_Error::IsError($result)) {
             $res_msg = _t('CONTACT_RESULT_ERROR_DB');
         } else {
             $to = '';
             $cid = $GLOBALS['db']->lastInsertID('contacts', 'id');
-            $rid = (int)$post['contact_recipient'];
+            $rid = (int)$post['recipient'];
             if (!empty($rid)) {
                 $model = $this->gadget->model->load('Recipients');
-                $recipient = $model->GetRecipient((int)$post['contact_recipient']);
+                $recipient = $model->GetRecipient((int)$post['recipient']);
                 if (Jaws_Error::IsError($recipient) || !isset($recipient['id'])) {
                     $res_msg = _t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS');
                 } elseif ($recipient['inform_type'] == 1) { //Send To Email
@@ -105,6 +110,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             $this->SendEmailToRecipient($to, $cid);
             $res_msg = _t('CONTACT_RESULT_SENT');
         }
+
         $GLOBALS['app']->Session->PushSimpleResponse($res_msg, 'Contact');
         Jaws_Header::Referrer();
     }
@@ -182,4 +188,5 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
 
         return true;
     }
+
 }
