@@ -29,14 +29,14 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
 
         $objGadget = Jaws_Gadget::getInstance($gadget);
         if (Jaws_Error::IsError($objGadget)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_ENABLE_FAILURE', $gadget), RESPONSE_ERROR);
+            $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_INSTALL_FAILURE', $gadget), RESPONSE_ERROR);
         } else {
             $installer = $objGadget->installer->load();
             $return = $installer->InstallGadget();
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_ENABLE_OK', $objGadget->title), RESPONSE_NOTICE);
+                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_INSTALL_OK', $objGadget->title), RESPONSE_NOTICE);
             }
         }
 
@@ -104,7 +104,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($return)) {
                 $GLOBALS['app']->Session->PushLastResponse($return->GetMessage(), RESPONSE_ERROR);
             } else {
-                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_DISABLE_OK', $objGadget->title), RESPONSE_NOTICE);
+                $GLOBALS['app']->Session->PushLastResponse(_t('COMPONENTS_GADGETS_UNINSTALL_OK', $objGadget->title), RESPONSE_NOTICE);
             }
         }
 
