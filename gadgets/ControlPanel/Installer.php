@@ -11,16 +11,6 @@
 class ControlPanel_Installer extends Jaws_Gadget_Installer
 {
     /**
-     * Gadget ACLs
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_ACLKeys = array(
-        'Backup',
-    );
-
-    /**
      * Installs the gadget
      *
      * @access  public
@@ -47,11 +37,10 @@ class ControlPanel_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        // Registry keys
-        $this->gadget->registry->insert(
-            'update_last_checking',
-            serialize(array('version' => '', 'time' => 0))
-        );
+        if (version_compare($old, '1.0.0', '<')) {
+            // ACLs keys
+            $this->gadget->acl->delete('Backup');
+        }
 
         return true;
     }
