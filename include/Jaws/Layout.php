@@ -196,15 +196,16 @@ class Jaws_Layout
         $this->_Template->SetBlock('layout');
 
         $direction = _t('GLOBAL_LANG_DIRECTION');
-        $dir  = $direction == 'rtl' ? '.' . $direction : '';
-        $brow = $GLOBALS['app']->GetBrowserFlag();
-        $brow = empty($brow)? '' : '.'.$brow;
+        $dir  = $direction == 'rtl' ? ".$direction" : '';
+        $browser  = $GLOBALS['app']->GetBrowserFlag();
+        $browser  = empty($browser)? '' : ".$browser";
         $base_url = $GLOBALS['app']->GetSiteURL('/');
 
-        $this->_Template->SetVariable('BASE_URL', $base_url);
+        $this->_Template->SetVariable('base_url', $base_url);
         $this->_Template->SetVariable('.dir', $dir);
-        $this->_Template->SetVariable('.browser', $brow);
+        $this->_Template->SetVariable('.browser', $browser);
         $this->_Template->SetVariable('site-url', $base_url);
+        $this->_Template->SetVariable('site-direction', $direction);
         $this->_Template->SetVariable('site-name',      $this->attributes['site_name']);
         $this->_Template->SetVariable('site-slogan',    $this->attributes['site_slogan']);
         $this->_Template->SetVariable('site-comment',   $this->attributes['site_comment']);
