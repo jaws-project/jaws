@@ -31,10 +31,10 @@ class Upgrader_Report extends JawsUpgraderStage
         $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['upgrade']['language']), false);
 
         $supportedversions = array(
-            array('version' => '0.9.0',  'stage' => '7'),
-            array('version' => '0.9.0',  'stage' => '6'),
-            array('version' => '0.9.0',  'stage' => '5'),
-            array('version' => '0.8.18', 'stage' => null),
+            array('version' => '1.0.0', 'stage' => '5'),
+            array('version' => '0.9.2', 'stage' => null),
+            array('version' => '0.9.1', 'stage' => null),
+            array('version' => '0.9.0', 'stage' => null),
         );
 
         _log(JAWS_LOG_DEBUG,"Checking/Reporting previous missed installations");
@@ -54,10 +54,10 @@ class Upgrader_Report extends JawsUpgraderStage
             $tpl->SetVariable('description', $supported['version']);
 
             $_SESSION['upgrade']['versions'][$supported['version']] = array(
-                        'version' => $supported['version'],
-                        'stage' =>   $supported['stage'],
-                        'file' =>    (isset($supported['file'])? $supported['file'] : ''),
-                        'script' =>  (isset($supported['script'])? $supported['script'] : '')
+                'version' => $supported['version'],
+                'stage' =>   $supported['stage'],
+                'file' =>    (isset($supported['file'])? $supported['file'] : ''),
+                'script' =>  (isset($supported['script'])? $supported['script'] : '')
             );
 
             if (version_compare($supported['version'], $_SESSION['upgrade']['InstalledVersion'], '<=')) {

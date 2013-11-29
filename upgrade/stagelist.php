@@ -43,22 +43,10 @@ $stages[] = array(
     'file'  => 'Report',
 );
 
-// Upgrade from 0.8 to 0.9.0 - First step
+// Upgrade from 0.9 to 1.0.0
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.18', '0.9.0', _t('UPGRADE_VER_TO_VER_STEP1')),
-    'file'  => '08To0901',
-);
-
-// Upgrade from 0.8 to 0.9.0 - Second step
-$stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.18', '0.9.0', _t('UPGRADE_VER_TO_VER_STEP2')),
-    'file'  => '08To0902',
-);
-
-// Upgrade from 0.8 to 0.9.0 - Third step
-$stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '0.8.18', '0.9.0', _t('UPGRADE_VER_TO_VER_STEP3')),
-    'file'  => '08To0903',
+    'name'  => _t('UPGRADE_VER_TO_VER', '0.9.0', '1.0.0'),
+    'file'  => '09To100',
 );
 
 // Saves the config file.
