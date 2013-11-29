@@ -22,14 +22,7 @@
             </field>
 
             <field>
-                <name>old_key_name</name>
-                <was>key_name</was>
-                <type>text</type>
-                <length>128</length>
-            </field>
-
-            <field>
-                <name>new_key_name</name>
+                <name>key_name</name>
                 <type>text</type>
                 <length>32</length>
             </field>
@@ -45,60 +38,29 @@
             </field>
 
             <index>
-                <name><variable>table_prefix</variable>reg_old_key_name</name>
+                <name><variable>table_prefix</variable>reg_cmpt_key</name>
                 <unique>true</unique>
                 <field>
-                    <name>old_key_name</name>
+                    <name>component</name>
                 </field>
-            </index>
-
-        </declaration>
-
-    </table>
-
-    <table>
-        <name><variable>table_prefix</variable>old_acl</name>
-        <was><variable>table_prefix</variable>acl</was>
-        <declaration>
-
-            <field>
-                <name>id</name>
-                <type>integer</type>
-                <notnull>true</notnull>
-                <autoincrement>true</autoincrement>
-            </field>
-
-            <field>
-                <name>key_name</name>
-                <type>text</type>
-                <length>128</length>
-                <notnull>true</notnull>
-            </field>
-
-            <field>
-                <name>key_value</name>
-                <type>text</type>
-            </field>
-
-            <field>
-                <name>updatetime</name>
-                <type>timestamp</type>
-            </field>
-
-            <index>
-                <name><variable>table_prefix</variable>acl_key_name</name>
-                <unique>true</unique>
                 <field>
                     <name>key_name</name>
                 </field>
             </index>
 
+            <index>
+                <name><variable>table_prefix</variable>reg_cmpt</name>
+                <field>
+                    <name>component</name>
+                </field>
+            </index>
+
         </declaration>
 
     </table>
 
     <table>
-        <name><variable>table_prefix</variable>new_acl</name>
+        <name><variable>table_prefix</variable>acl</name>
         <declaration>
 
             <field>
