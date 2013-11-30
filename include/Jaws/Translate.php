@@ -42,9 +42,25 @@ class Jaws_Translate
      *
      * @access  public
      */
-    function Jaws_Translate($load_user_translated = true)
+    function Jaws_Translate($load_user_translated)
     {
         $this->_load_user_translated = $load_user_translated;
+    }
+
+    /**
+     * Creates the Jaws_Translate instance if it doesn't exist else it returns the already created one
+     *
+     * @access  public
+     * @return  object returns the instance
+     */
+    static function getInstance($load_user_translated = true)
+    {
+        static $objTranslate;
+        if (!isset($objTranslate)) {
+            $objTranslate = new Jaws_Translate($load_user_translated);
+        }
+
+        return $objTranslate;
     }
 
     /**
@@ -227,54 +243,4 @@ class Jaws_Translate
         return true;
     }
 
-}
-
-/**
- * Convenience function to translate strings.
- *
- * Passes it's arguments to Jaws_Translate::Translate to do the actual translation.
- *
- * @access  public
- * @param   string        string The string to translate.
- * @return  string
- */
-function _t($string)
-{
-    $args = array();
-    if (func_num_args() > 1) {
-        $args = func_get_args();
-
-        // Argument 1 is the string to be translated.
-        array_shift($args);
-    }
-
-    return isset($GLOBALS['app']->Translate)?
-           $GLOBALS['app']->Translate->Translate(null, $string, $args) :
-           $GLOBALS['i10n']->Translate(null, $string, $args);
-}
-
-/**
- * Convenience function to translate strings.
- *
- * Passes it's arguments to Jaws_Translate::Translate to do the actual translation.
- *
- * @access  public
- * @param   string        lang The language.
- * @param   string        string The string to translate.
- * @return  string
- */
-function _t_lang($lang, $string)
-{
-    $args = array();
-    if (func_num_args() > 2) {
-        $args = func_get_args();
-
-        // Argument 1th for lang and argument 2th is the string to be translated.
-        array_shift($args);
-        array_shift($args);
-    }
-
-    return isset($GLOBALS['app']->Translate)?
-           $GLOBALS['app']->Translate->Translate($lang, $string, $args) :
-           $GLOBALS['i10n']->Translate($lang, $string, $args);
 }
