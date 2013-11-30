@@ -17,44 +17,28 @@ var editLegend = '';
 var currentAction = 'EDIT';
 
 var SitemapCallback = {
-    GetReferences: function(response) {
-        references[currentType] = response;
-        populateReferences(response);
-    },
-
-    PingSitemap: function(response) {
-        showResponse(response);
-    },
-    
-    NewItem: function(response) {
+    UpdateCategory: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            currentID = response['id'];
-            getItems();
-        }
-        showResponse(response);
-    },
-
-    UpdateItem: function(response) {
-        if (response[0]['type'] == 'response_notice') {
-            getItems();
-        }
-        showResponse(response);
-    },
-
-    DeleteItem: function(response) {
-        if (response[0]['type'] == 'response_notice') {
-            currentID = '';
-            getItems();
-        }
-        showResponse(response);
-    },
-
-    MoveItem: function(response) {
-        if (response[0]['type'] == 'response_notice') {
-            getItems();
+            stopAction();
         }
         showResponse(response);
     }
+
+}
+
+
+/**
+ * Stops doing a certain action
+ */
+function stopAction()
+{
+    $('btn_cancel').style.display = 'none';
+    $('btn_save').style.display   = 'none';
+    selectedCategory  = null;
+    currentAction = null;
+    unselectTreeRow();
+    $('category_edit').innerHTML = '';
+    $('edit_area').getElementsByTagName('span')[0].innerHTML = '';
 }
 
 function listCategories(gadget, force_open)
@@ -81,6 +65,36 @@ function listCategories(gadget, force_open)
     }
 }
 
+
+/**
+ * Edit gadget properties
+ */
+function editGadget(gadget)
+{
+    if (gadget == null) return;
+    unselectTreeRow();
+    if (cacheGadgetForm == null) {
+        cacheGadgetForm = SitemapAjax.callSync('GetGadgetUI');
+    }
+    currentAction = 'Groups';
+    selectedGadget = gadget;
+
+    $('edit_area').getElementsByTagName('span')[0].innerHTML =
+        editCategoryTitle + ' - ' + $('category_'+cid).getElementsByTagName('a')[0].innerHTML;
+    $('btn_cancel').style.display = 'inline';
+    $('btn_save').style.display   = 'inline';
+    $('gadget_edit').innerHTML = cacheGadgetForm;
+
+    var gadgetInfo = SitemapAjax.callSync('GetGadget', {'gname':gadget});
+
+    if (gadgetInfo != null) {
+        $('priority').value = gadgetInfo['priority'];
+        $('frequency').value = gadgetInfo['frequency'];
+        $('url').value = gadgetInfo['url'];
+        $('status').value = gadgetInfo['status'];
+    }
+}
+
 /**
  * Edit Category sitemap parameters
  */
@@ -93,6 +107,7 @@ function editCategory(element, gadget, cid)
     }
     currentAction = 'Category';
     selectedCategory = cid;
+    selectedGadget = gadget;
 
     $('edit_area').getElementsByTagName('span')[0].innerHTML =
         editCategoryTitle + ' - ' + $('category_'+cid).getElementsByTagName('a')[0].innerHTML;
@@ -104,20 +119,12 @@ function editCategory(element, gadget, cid)
 
     if (categoryInfo != null) {
         $('cid').value = categoryInfo['id'];
-//    $('gid').value         = categoryInfo['gid'];
-        $('title').value = categoryInfo['title'].defilter();
+        $('priority').value = categoryInfo['priority'];
+        $('frequency').value = categoryInfo['frequency'];
         $('url').value = categoryInfo['url'];
-        $('fast_url').value = categoryInfo['fast_url'];
-        $('description').value = categoryInfo['description'].defilter();
-        if ($('tags') != null) {
-            $('tags').value = categoryInfo['tags'];
-        }
-        $('clicks').value = categoryInfo['clicks'];
-        setRanksCombo($('gid').value);
-        $('rank').value = categoryInfo['rank'];
+        $('status').value = categoryInfo['status'];
     }
 }
-
 
 /**
  * Select Tree row
@@ -133,6 +140,45 @@ function selectTreeRow(rowElement)
     selectedRow = rowElement;
 }
 
+/**
+ * Unselect Tree row
+ *
+ */
+function unselectTreeRow()
+{
+    if (selectedRow) {
+        selectedRow.style.backgroundColor = selectedRowColor;
+    }
+    selectedRow = null;
+    selectedRowColor = null;
+}
+
+/**
+ * Saves category / changes
+ */
+function saveCategory()
+{
+        if ($('url').value.blank()) {
+            alert(incompleteFields);
+            return false;
+        }
+
+        cacheCategoryForm = null;
+        SitemapAjax.callAsync('UpdateCategory',
+            {
+                'gname': selectedGadget,
+                'category': selectedCategory,
+                data:{
+                'priority': $('priority').value,
+                'frequency': $('frequency').value,
+                'url': $('url').value,
+                'status': $('status').value
+                }
+            }
+        );
+}
+
+
 var SitemapAjax = new JawsAjax('Sitemap', SitemapCallback);
 
 //Current gadget
@@ -140,6 +186,9 @@ var selectedGadget = null;
 
 //Current category
 var selectedCategory = null;
+
+//Cache for saving the gadget form template
+var cacheGadgetForm = null;
 
 //Cache for saving the category form template
 var cacheCategoryForm = null;

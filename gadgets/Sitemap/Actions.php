@@ -40,11 +40,19 @@ $admin_actions['GetCategoriesList'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
+$admin_actions['GetGadgetUI'] = array(
+    'standalone' => true,
+    'file' => 'ManageSitemap',
+);
 $admin_actions['GetCategoryUI'] = array(
     'standalone' => true,
     'file' => 'ManageSitemap',
 );
 $admin_actions['GetCategory'] = array(
+    'standalone' => true,
+    'file' => 'ManageSitemap',
+);
+$admin_actions['UpdateCategory'] = array(
     'standalone' => true,
     'file' => 'ManageSitemap',
 );

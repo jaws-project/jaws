@@ -33,7 +33,7 @@
             <a href="javascript: {js_edit_func};">{title}</a>
         </div>
         <div class="sitemap_actions">
-            <a href="javascript: {js_add_func};" title="{add_title}"><img src="{add_icon}" alt="add" /></a>
+            <a href="javascript: {js_sync_func};" title="{sync_title}"><img src="{sync_icon}" alt="{sync_title}" /></a>
         </div>
     </div>
     <div class="links" id="sitemap_{lg_id}"></div>
@@ -60,16 +60,13 @@
 <!-- END categoryUI -->
 <!-- BEGIN gadgetUI -->
 <div>
-    <input type="hidden" name="gid" id="gid" value="0" />
-    <input type="hidden" name="rank" id="rank" value="0" />
-    <table id="tbl_group" border="0" cellpadding="0" cellspacing="0">
-        <tr><td><label for="title">{lbl_title}:</label></td><td>{title}</td></tr>
-        <tr><td><label for="fast_url">{lbl_fast_url}:</label></td><td>{fast_url}</td></tr>
-        <tr><td><label for="limit_count">{lbl_limit_count}:</label></td><td>
-            <table id="spin_btn"><tr><td>{btn_down}</td><td>{limit_count}</td><td>{btn_up}</td></tr></table>
-        </td></tr>
-        <tr><td><label for="links_type">{lbl_links_type}:</label></td><td>{links_type}</td></tr>
-        <tr><td><label for="order_type">{lbl_order_type}:</label></td><td>{order_type}</td></tr>
+    <input type="hidden" name="cid" id="cid" value="0" />
+    <table id="tbl_link" border="0" cellpadding="0" cellspacing="0">
+        <tr><td colspan="2" style="border-bottom: 1px dashed #d3d7cf;"></td></tr>
+        <tr><td><label for="priority">{lbl_priority}:</label></td><td>{priority}</td></tr>
+        <tr><td><label for="frequency">{lbl_frequency}:</label></td><td>{frequency}</td></tr>
+        <tr><td><label for="url">{lbl_url}:</label></td><td>{url}</td></tr>
+        <tr><td><label for="status">{lbl_status}:</label></td><td>{status}</td></tr>
     </table>
 </div>
 <!-- END gadgetUI -->

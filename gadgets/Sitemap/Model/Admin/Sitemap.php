@@ -349,4 +349,37 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         $sitemapTable->where('gadget', $gadget);
         return $sitemapTable->and()->where('category', $category)->fetchRow();
     }
+
+
+    /**
+     * Update a category properties
+     *
+     * @access  public
+     * @param   string  $gadget     Gadget name
+     * @param   string  $category   Category name
+     * @param   array   $data       Sitemap properties
+     * @return  mixed   Array of Tag info or Jaws_Error on failure
+     */
+    function UpdateCategory($gadget, $category, $data)
+    {
+        // check for exiting category properties in DB
+        $categoryProperties = $this->GetCategoryProperties($gadget, $category);
+        if(empty($categoryProperties)) {
+            // Add new record to DB
+            $table = Jaws_ORM::getInstance()->table('sitemap');
+            $data['gadget'] = $gadget;
+            $data['category'] = $category;
+            $result = $table->insert($data)->exec();
+        } else {
+            // Update exiting record in DB
+            $table = Jaws_ORM::getInstance()->table('sitemap');
+            $result = $table->update($data)->where('gadget', $gadget)->and()->where('category', $category)->exec();
+        }
+
+        return $result;
+    }
+
+
+
+
 }
