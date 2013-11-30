@@ -366,8 +366,8 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
             'Profile',
             array('user' => $GLOBALS['app']->Session->GetAttribute('username'))
         );
-        $GLOBALS['app']->Translate->LoadTranslation('Global', JAWS_COMPONENT_OTHERS, $site_language);
-        $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
+        Jaws_Translate::getInstance()->LoadTranslation('Global', JAWS_COMPONENT_OTHERS, $site_language);
+        Jaws_Translate::getInstance()->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
 
         $tpl = $this->gadget->template->load('SendReplyTo.html',
             array(
