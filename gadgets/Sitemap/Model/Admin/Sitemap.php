@@ -140,7 +140,7 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
      */
     function SyncSitemapXML($gadget)
     {
-        $tpl = $this->gadget->template->loadAdmin('XML.html');
+        $tpl = $this->gadget->template->loadAdmin('GadgetXML');
         $tpl->SetBlock('xml');
 
         // Fetch default sitemap config from registry
