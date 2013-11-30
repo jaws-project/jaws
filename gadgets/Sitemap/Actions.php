@@ -52,7 +52,23 @@ $admin_actions['GetCategory'] = array(
     'standalone' => true,
     'file' => 'ManageSitemap',
 );
+$admin_actions['GetGadget'] = array(
+    'standalone' => true,
+    'file' => 'ManageSitemap',
+);
 $admin_actions['UpdateCategory'] = array(
+    'standalone' => true,
+    'file' => 'ManageSitemap',
+);
+$admin_actions['UpdateGadget'] = array(
+    'standalone' => true,
+    'file' => 'ManageSitemap',
+);
+$admin_actions['SyncSitemapXML'] = array(
+    'standalone' => true,
+    'file' => 'ManageSitemap',
+);
+$admin_actions['SyncSitemapData'] = array(
     'standalone' => true,
     'file' => 'ManageSitemap',
 );

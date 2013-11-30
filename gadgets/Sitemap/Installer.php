@@ -11,6 +11,17 @@
 class Sitemap_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        array('sitemap_default_priority', '0.5'),
+        array('sitemap_default_frequency', 'none'),
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array
@@ -32,13 +43,9 @@ class Sitemap_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', JAWS_DATA));
         }
 
-        $new_dirs = array();
-        $new_dirs[] = JAWS_DATA . 'xml' . DIRECTORY_SEPARATOR;
-        $new_dirs[] = JAWS_DATA . 'xml' . DIRECTORY_SEPARATOR . 'sitemap';
-        foreach ($new_dirs as $new_dir) {
-            if (!Jaws_Utils::mkdir($new_dir)) {
-                return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('SITEMAP_NAME'));
-            }
+        $new_dir = JAWS_DATA . 'sitemap' . DIRECTORY_SEPARATOR;
+        if (!Jaws_Utils::mkdir($new_dir)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('SITEMAP_NAME'));
         }
 
         $result = $this->installSchema('schema.xml');

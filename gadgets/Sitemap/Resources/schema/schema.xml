@@ -30,20 +30,16 @@
 
    <field>
     <name>priority</name>
-    <type>float</type>
+    <type>decimal</type>
+    <length>3</length>
+    <scale>1</scale>
     <notnull>false</notnull>
    </field>
 
    <field>
     <name>frequency</name>
-    <type>text</type>
-    <length>10</length>
-   </field>
-
-   <field>
-    <name>url</name>
-    <type>text</type>
-    <length>255</length>
+    <type>integer</type>
+    <length>1</length>
    </field>
 
    <field>
@@ -51,13 +47,6 @@
     <type>integer</type>
     <length>1</length>
     <default>0</default>
-   </field>
-
-   <field>
-     <name>update_time</name>
-     <type>integer</type>
-     <length>8</length>
-     <default>0</default>
    </field>
 
   </declaration>

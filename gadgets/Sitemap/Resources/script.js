@@ -22,10 +22,26 @@ var SitemapCallback = {
             stopAction();
         }
         showResponse(response);
+    },
+    UpdateGadget: function(response) {
+        if (response[0]['type'] == 'response_notice') {
+            stopAction();
+        }
+        showResponse(response);
+    },
+    SyncSitemapXML: function(response) {
+        if (response[0]['type'] == 'response_notice') {
+            syncSitemapDataFile(selectedGadget);
+        }
+        showResponse(response);
+    },
+    SyncSitemapData: function(response) {
+        if (response[0]['type'] == 'response_notice') {
+            stopAction();
+        }
+        showResponse(response);
     }
-
 }
-
 
 /**
  * Stops doing a certain action
@@ -34,6 +50,7 @@ function stopAction()
 {
     $('btn_cancel').style.display = 'none';
     $('btn_save').style.display   = 'none';
+    selectedGadget  = null;
     selectedCategory  = null;
     currentAction = null;
     unselectTreeRow();
@@ -65,7 +82,6 @@ function listCategories(gadget, force_open)
     }
 }
 
-
 /**
  * Edit gadget properties
  */
@@ -76,22 +92,22 @@ function editGadget(gadget)
     if (cacheGadgetForm == null) {
         cacheGadgetForm = SitemapAjax.callSync('GetGadgetUI');
     }
-    currentAction = 'Groups';
+    currentAction = 'Gadget';
     selectedGadget = gadget;
 
     $('edit_area').getElementsByTagName('span')[0].innerHTML =
-        editCategoryTitle + ' - ' + $('category_'+cid).getElementsByTagName('a')[0].innerHTML;
+        editCategoryTitle + ' - ' + $('gadget_' + gadget).getElementsByTagName('a')[0].innerHTML;
     $('btn_cancel').style.display = 'inline';
     $('btn_save').style.display   = 'inline';
-    $('gadget_edit').innerHTML = cacheGadgetForm;
+    $('category_edit').innerHTML = cacheGadgetForm;
 
     var gadgetInfo = SitemapAjax.callSync('GetGadget', {'gname':gadget});
 
     if (gadgetInfo != null) {
         $('priority').value = gadgetInfo['priority'];
         $('frequency').value = gadgetInfo['frequency'];
-        $('url').value = gadgetInfo['url'];
         $('status').value = gadgetInfo['status'];
+        $('last_update').innerHTML = gadgetInfo['update_time_str'];
     }
 }
 
@@ -121,9 +137,28 @@ function editCategory(element, gadget, cid)
         $('cid').value = categoryInfo['id'];
         $('priority').value = categoryInfo['priority'];
         $('frequency').value = categoryInfo['frequency'];
-        $('url').value = categoryInfo['url'];
         $('status').value = categoryInfo['status'];
     }
+}
+
+/**
+ * Sync sitemap data files
+ */
+function syncSitemap(gadget)
+{
+    if (gadget == null) {
+        return;
+    }
+    selectedGadget = gadget;
+    SitemapAjax.callAsync('SyncSitemapXML', {'gname':gadget});
+}
+
+/**
+ * Sync sitemap data(user side HTML sitemap) files
+ */
+function syncSitemapDataFile(gadget)
+{
+    SitemapAjax.callAsync('SyncSitemapData', {'gname':gadget});
 }
 
 /**
@@ -154,28 +189,35 @@ function unselectTreeRow()
 }
 
 /**
- * Saves category / changes
+ * Saves category|gadget changes
  */
-function saveCategory()
-{
-        if ($('url').value.blank()) {
-            alert(incompleteFields);
-            return false;
-        }
-
+function saveProperties() {
+    if (currentAction == 'Category') {
         cacheCategoryForm = null;
         SitemapAjax.callAsync('UpdateCategory',
             {
                 'gname': selectedGadget,
                 'category': selectedCategory,
-                data:{
-                'priority': $('priority').value,
-                'frequency': $('frequency').value,
-                'url': $('url').value,
-                'status': $('status').value
+                data: {
+                    'priority': $('priority').value,
+                    'frequency': $('frequency').value,
+                    'status': $('status').value
                 }
             }
         );
+    } else if(currentAction == 'Gadget') {
+        cacheGadgetForm = null;
+        SitemapAjax.callAsync('UpdateGadget',
+            {
+                'gname': selectedGadget,
+                data: {
+                    'priority': $('priority').value,
+                    'frequency': $('frequency').value,
+                    'status': $('status').value
+                }
+            }
+        );
+    }
 }
 
 

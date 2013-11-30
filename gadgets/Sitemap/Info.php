@@ -13,19 +13,18 @@ class Sitemap_Info extends Jaws_Gadget
     /**
      * Constants
      */
-    const SITEMAP_CATEGORY_SHOW_IN_NONE = 0;
-    const SITEMAP_CATEGORY_SHOW_IN_XML = 1;
-    const SITEMAP_CATEGORY_SHOW_IN_USER_SIDE = 2;
-    const SITEMAP_CATEGORY_SHOW_IN_BOTH = 3;
+    const SITEMAP_CATEGORY_SHOW_IN_NONE = 1;
+    const SITEMAP_CATEGORY_SHOW_IN_XML = 2;
+    const SITEMAP_CATEGORY_SHOW_IN_USER_SIDE = 3;
+    const SITEMAP_CATEGORY_SHOW_IN_BOTH = 4;
 
-    const SITEMAP_CHANGE_FREQ_NONE = 'none';
-    const SITEMAP_CHANGE_FREQ_ALWAYS = 'always';
-    const SITEMAP_CHANGE_FREQ_HOURLY = 'hourly';
-    const SITEMAP_CHANGE_FREQ_DAILY = 'daily';
-    const SITEMAP_CHANGE_FREQ_WEEKLY = 'weekly';
-    const SITEMAP_CHANGE_FREQ_MONTHLY = 'monthly';
-    const SITEMAP_CHANGE_FREQ_YEARLY = 'yearly';
-    const SITEMAP_CHANGE_FREQ_NEVER = 'never';
+    const SITEMAP_CHANGE_FREQ_ALWAYS = 1;
+    const SITEMAP_CHANGE_FREQ_HOURLY = 2;
+    const SITEMAP_CHANGE_FREQ_DAILY = 3;
+    const SITEMAP_CHANGE_FREQ_WEEKLY = 4;
+    const SITEMAP_CHANGE_FREQ_MONTHLY = 5;
+    const SITEMAP_CHANGE_FREQ_YEARLY = 6;
+    const SITEMAP_CHANGE_FREQ_NEVER = 7;
 
     /**
      * Gadget version
