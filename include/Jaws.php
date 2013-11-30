@@ -119,10 +119,8 @@ class Jaws
      */
     function __construct()
     {
-        spl_autoload_register(array($this, 'loadClass'));
         $this->loadObject('Jaws_Request', 'request', true);
         $this->loadObject('Jaws_UTF8', 'UTF8');
-        $this->loadObject('Jaws_Translate', 'Translate');
         $this->loadObject('Jaws_Registry', 'Registry');
         $this->loadObject('Jaws_ACL', 'ACL');
         $this->loadObject('Jaws_Listener', 'Listener');
@@ -197,7 +195,7 @@ class Jaws
         $this->_Calendar = preg_replace('/[^[:alnum:]_]/',  '', $this->_Preferences['calendar']);
 
         // load the language translates
-        $this->Translate->Init($this->_Language);
+        Jaws_Translate::getInstance()->Init($this->_Language);
     }
 
     /**
@@ -403,7 +401,7 @@ class Jaws
             }
 
             // load plugin's language file
-            $this->Translate->LoadTranslation($plugin, JAWS_COMPONENT_PLUGIN);
+            Jaws_Translate::getInstance()->LoadTranslation($plugin, JAWS_COMPONENT_PLUGIN);
 
             $objPlugin = new $plugin_class($plugin);
             if (Jaws_Error::IsError($objPlugin)) {
@@ -496,7 +494,7 @@ class Jaws
      * @param   string  $classname  Class name
      * @return  mixed   Object if success otherwise Jaws_Error on failure
      */
-    function loadClass($classname, $property = '')
+    static function loadClass($classname, $property = '')
     {
         // filter non validate character
         $classname = preg_replace('/[^[:alnum:]_]/', '', $classname);
