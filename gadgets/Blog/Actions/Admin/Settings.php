@@ -123,7 +123,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         }
         $xmlCombo->SetDefault(isset($settings['xml_limit']) ? $settings['xml_limit'] : '');
 
-        $GLOBALS['app']->Translate->LoadTranslation('Comments', JAWS_COMPONENT_GADGET);
+        Jaws_Translate::getInstance()->LoadTranslation('Comments', JAWS_COMPONENT_GADGET);
         // Comments
         $commCombo =& Piwi::CreateWidget('Combo', 'comments');
         $commCombo->setContainerClass('oneline');
