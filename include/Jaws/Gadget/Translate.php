@@ -42,7 +42,7 @@ class Jaws_Gadget_Translate
     function insert($key_name, $key_value, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Translate->AddTranslation(
+        return Jaws_Translate::getInstance()->AddTranslation(
             $gadget,
             strtoupper($gadget.'_'.$key_name),
             $key_value,
