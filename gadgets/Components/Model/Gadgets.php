@@ -64,7 +64,7 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
 
                 // Fixed set name/description of UrlMapper gadget before session loading
                 if ($gadget == 'UrlMapper') {
-                    $GLOBALS['app']->Translate->LoadTranslation('UrlMapper', JAWS_COMPONENT_GADGET);
+                    Jaws_Translate::getInstance()->LoadTranslation('UrlMapper', JAWS_COMPONENT_GADGET);
                     $objGadget->title       = _t('URLMAPPER_NAME');
                     $objGadget->description = _t('URLMAPPER_DESCRIPTION');
                 }
