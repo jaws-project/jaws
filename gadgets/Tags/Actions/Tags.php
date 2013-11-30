@@ -26,8 +26,9 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         $gadgets = $model->GetTagRelativeGadgets();
         $tagGadgets = array();
         $tagGadgets[''] = _t('GLOBAL_ALL');
+        $objTranslate = Jaws_Translate::getInstance();
         foreach($gadgets as $gadget) {
-            $GLOBALS['app']->Translate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
+            $objTranslate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
             $tagGadgets[$gadget] = _t(strtoupper($gadget) . '_NAME');
         }
 
@@ -83,7 +84,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
 
         if(!empty($gadget)) {
             $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
-            $GLOBALS['app']->Translate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
+            Jaws_Translate::getInstance()->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
             $tpl->SetVariable('title', _t('TAGS_TAG_CLOUD', _t(strtoupper($gadget) . '_NAME')));
         } else {
             $tpl->SetVariable('title', _t('TAGS_TAG_CLOUD', _t('GLOBAL_ALL')));

@@ -28,8 +28,9 @@ class Tags_Hooks_Menu extends Jaws_Gadget_Hook
             'title' => _t('TAGS_TAG_CLOUD', _t('GLOBAL_ALL'))
         );
 
+        $objTranslate = Jaws_Translate::getInstance();
         foreach ($gadgets as $gadget) {
-            $GLOBALS['app']->Translate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
+            $objTranslate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
             $urls[] = array('url' => $this->gadget->urlMap('TagCloud', array('gname' => $gadget)),
                             'title' => _t('TAGS_TAG_CLOUD', _t(strtoupper($gadget) . '_NAME')));
         }

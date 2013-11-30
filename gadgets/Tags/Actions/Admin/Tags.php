@@ -48,8 +48,9 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
             $gadgets = $model->GetTagRelativeGadgets();
             $tagGadgets = array();
             $tagGadgets[''] = _t('GLOBAL_ALL');
+            $objTranslate = Jaws_Translate::getInstance();
             foreach($gadgets as $gadget) {
-                $GLOBALS['app']->Translate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
+                $objTranslate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
                 $gadgetsCombo->AddOption(_t(strtoupper($gadget) . '_NAME'), $gadget);
             }
 

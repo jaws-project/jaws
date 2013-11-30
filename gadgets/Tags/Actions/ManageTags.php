@@ -89,9 +89,10 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         $gadgets = $model->GetTagRelativeGadgets();
         $tagGadgets = array();
         $tagGadgets[''] = _t('GLOBAL_ALL');
+        $objTranslate = Jaws_Translate::getInstance();
         foreach ($gadgets as $gadget) {
             $tpl->SetBlock('tags/gadget');
-            $GLOBALS['app']->Translate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
+            $objTranslate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
             $tpl->SetVariable('selected', '');
             if ($gadget == $selected_gadget) {
                 $tpl->SetVariable('selected', 'selected="selected"');
