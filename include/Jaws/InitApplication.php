@@ -130,7 +130,6 @@ require JAWS_PATH . 'include/Jaws/PHPFunctions.php';
 set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');
 
 // Create application
-require_once JAWS_PATH . 'include/Jaws.php';
 $GLOBALS['app'] = jaws();
 // get an instance of Jaws_DB
 $GLOBALS['db'] = Jaws_DB::getInstance($db);
