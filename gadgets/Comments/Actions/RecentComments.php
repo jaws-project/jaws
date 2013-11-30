@@ -21,9 +21,10 @@ class Comments_Actions_RecentComments extends Comments_Actions_Default
         $result = array();
 
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
-        $GLOBALS['app']->Translate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
-        $GLOBALS['app']->Translate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
-        $GLOBALS['app']->Translate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
+        $objTranslate = Jaws_Translate::getInstance();
+        $objTranslate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
+        $objTranslate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
+        $objTranslate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
 
         $result[] = array(
             'title' => _t('COMMENTS_GADGETS'),
@@ -65,9 +66,10 @@ class Comments_Actions_RecentComments extends Comments_Actions_Default
     function RecentComments($gadget,  $orderBy = 0, $limit = 0)
     {
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
-        $GLOBALS['app']->Translate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
-        $GLOBALS['app']->Translate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
-        $GLOBALS['app']->Translate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
+        $objTranslate = Jaws_Translate::getInstance();
+        $objTranslate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
+        $objTranslate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
+        $objTranslate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
 
         $tpl = $this->gadget->template->load('RecentComments.html');
         $tpl->SetBlock('recent_comments');

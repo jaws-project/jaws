@@ -34,9 +34,10 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
 
         //load other gadget translations
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
-        $GLOBALS['app']->Translate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
-        $GLOBALS['app']->Translate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
-        $GLOBALS['app']->Translate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
+        $objTranslate = Jaws_Translate::getInstance();
+        $objTranslate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
+        $objTranslate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
+        $objTranslate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
 
         if (empty($gadget)) {
             $tpl->SetBlock('Comments/gadgets_filter');
@@ -205,9 +206,10 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         if ($gadgetColumn) {
             //load other gadget translations
             $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
-            $GLOBALS['app']->Translate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
-            $GLOBALS['app']->Translate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
-            $GLOBALS['app']->Translate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
+            $objTranslate = Jaws_Translate::getInstance();
+            $objTranslate->LoadTranslation('Blog', JAWS_COMPONENT_GADGET, $site_language);
+            $objTranslate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
+            $objTranslate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
         }
 
         $date = Jaws_Date::getInstance();
