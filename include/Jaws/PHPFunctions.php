@@ -1,14 +1,21 @@
 <?php
 /**
- * PHP support for old versions
+ * Global functions
  *
- * @category   JawsType
- * @package    Core
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    JawsType
+ * @package     Core
+ * @author      Pablo Fischer <pablo@pablo.com.mx>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2005-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
+
+/**
+ *
+ */
+require_once JAWS_PATH . 'include/Jaws.php';
+spl_autoload_register('Jaws::loadClass');
+
 /**
  * Converts the hex representation of data to binary
  * @see http://www.php.net/hex2bin
