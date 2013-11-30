@@ -92,7 +92,8 @@ class Upgrader_09To100 extends JawsUpgraderStage
             if (Jaws_Gadget::IsGadgetInstalled($gadget)) {
                 $result = $installer->UpgradeGadget();
             } else {
-                $result = $installer->InstallGadget();
+                continue;
+                //$result = $installer->InstallGadget();
             }
 
             if (Jaws_Error::IsError($result)) {
