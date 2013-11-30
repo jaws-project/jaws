@@ -87,12 +87,12 @@ if (isset($lang)) {
 }
 
 include_once JAWS_PATH . 'include/Jaws/Translate.php';
-$GLOBALS['i10n'] = new Jaws_Translate(false);
+$objTranslate = Jaws_Translate::getInstance(false);
 if (isset($_SESSION['upgrade']['language'])) {
-    $GLOBALS['i10n']->SetLanguage($_SESSION['upgrade']['language']);
+    $objTranslate->SetLanguage($_SESSION['upgrade']['language']);
 }
-$GLOBALS['i10n']->LoadTranslation('Global');
-$GLOBALS['i10n']->LoadTranslation('Upgrade', JAWS_COMPONENT_UPGRADE);
+$objTranslate->LoadTranslation('Global');
+$objTranslate->LoadTranslation('Upgrade', JAWS_COMPONENT_UPGRADE);
 
 require_once 'stagelist.php';
 require_once 'JawsUpgrader.php';
