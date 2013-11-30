@@ -682,7 +682,7 @@ class Jaws_Layout
         header('Content-Type: text/html; charset=utf-8');
         header('Cache-Control: no-cache, must-revalidate');
         header('Pragma: no-cache');
-        $this->AddHeadMeta('generator', 'Jaws Framework 0.9 (http://jaws-project.com)');
+        $this->AddHeadMeta('generator', 'Jaws Project (http://jaws-project.com)');
         $use_rewrite = $GLOBALS['app']->Registry->fetch('map_use_rewrite', 'UrlMapper') == 'true';
         $use_rewrite = $use_rewrite && (JAWS_SCRIPT == 'index');
         $this->AddHeadMeta(
