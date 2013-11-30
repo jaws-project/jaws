@@ -30,12 +30,12 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
                     return $categories;
                 }
 
-                foreach ($categories as $categoriy) {
-                    $cat = empty($categoriy['fast_url']) ? $categoriy['id'] : $categoriy['fast_url'];
+                foreach ($categories as $category) {
+                    $cat = empty($category['fast_url']) ? $category['id'] : $category['fast_url'];
                     $result[] = array(
-                        'id'     => $categoriy['id'],
-                        'parent' => $categoriy['id'],
-                        'title'  => $categoriy['title'],
+                        'id'     => $category['id'],
+                        'parent' => $category['id'],
+                        'title'  => $category['name'],
                         'url'    => $this->gadget->urlMap('ShowCategory', array('id' => $cat)),
                     );
                 }
@@ -49,9 +49,11 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
                 }
                 foreach ($posts as $post) {
                     $entry = empty($post['fast_url']) ? $post['id'] : $post['fast_url'];
+                    $categories = explode(",", $post['categories']);
                     $result[] = array(
                         'id'    => $post['id'],
                         'title' => $post['title'],
+                        'parent' => $categories[0],
                         'url'   => $this->gadget->urlMap('SingleView', array('id' => $entry)),
                     );
                 }
@@ -64,10 +66,10 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
                     return $categories;
                 }
 
-                foreach ($categories as $categoriy) {
+                foreach ($categories as $category) {
                     $result[] = array(
-                        'id'     => $categoriy['id'],
-                        'title'  => $categoriy['name'],
+                        'id'     => $category['id'],
+                        'title'  => $category['name'],
                     );
                 }
         }

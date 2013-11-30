@@ -780,7 +780,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
 
         // published filter
         if (isset($filters['published']) && !empty($filters['published'])) {
-            $blogTable->and()->where('published', (bool)$published);
+            $blogTable->and()->where('published', (bool)$filters['published']);
         }
         // category filter
         if (isset($filters['category']) && !empty($filters['category'])) {
