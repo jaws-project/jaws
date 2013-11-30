@@ -81,12 +81,12 @@ if (isset($lang)) {
 }
 
 include_once JAWS_PATH . 'include/Jaws/Translate.php';
-$GLOBALS['i10n'] = new Jaws_Translate();
+$objTranslate = Jaws_Translate::getInstance(false);
 if (isset($_SESSION['install']['language'])) {
-    $GLOBALS['i10n']->SetLanguage($_SESSION['install']['language']);
+    $objTranslate->SetLanguage($_SESSION['install']['language']);
 }
-$GLOBALS['i10n']->LoadTranslation('Global');
-$GLOBALS['i10n']->LoadTranslation('Install', JAWS_COMPONENT_INSTALL);
+$objTranslate->LoadTranslation('Global');
+$objTranslate->LoadTranslation('Install', JAWS_COMPONENT_INSTALL);
 
 require_once 'stagelist.php';
 require_once 'JawsInstaller.php';
