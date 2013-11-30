@@ -67,6 +67,11 @@ class Upgrader_09To100 extends JawsUpgraderStage
             }
         }
 
+        // Create application
+        include_once JAWS_PATH . 'include/Jaws.php';
+        $GLOBALS['app'] = jaws();
+        $GLOBALS['app']->Registry->Init();
+
         // Upgrading core gadgets
         $gadgets = array(
             'Settings', 'ControlPanel', 'Layout', 'Users', 'Comments',
