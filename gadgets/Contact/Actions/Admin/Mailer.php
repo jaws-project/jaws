@@ -203,8 +203,8 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         }
 
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
-        $GLOBALS['app']->Translate->LoadTranslation('Global',  JAWS_COMPONENT_OTHERS, $site_language);
-        $GLOBALS['app']->Translate->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
+        Jaws_Translate::getInstance()->LoadTranslation('Global',  JAWS_COMPONENT_OTHERS, $site_language);
+        Jaws_Translate::getInstance()->LoadTranslation('Contact', JAWS_COMPONENT_GADGET, $site_language);
 
         $tpl = $this->gadget->template->load('SendEmail.html',
             array(
