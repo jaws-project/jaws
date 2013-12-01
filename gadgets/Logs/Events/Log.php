@@ -22,7 +22,8 @@ class Logs_Events_Log extends Jaws_Gadget_Event
      */
     function Execute($gadget, $action, $priority = 0, $params = null)
     {
-        if ($GLOBALS['app']->Session->Logged()) {
+        $priority = empty($priority)? JAWS_INFO : (int)$priority;
+        if ($priority <= (int)$this->gadget->registry->fetch('log_priority_level')) {
             $logsModel = $this->gadget->model->load('Logs');
             return $logsModel->InsertLog($gadget, $action, $priority, $params);
         }
