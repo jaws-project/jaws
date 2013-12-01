@@ -15,35 +15,32 @@
 $admin_actions['Logs'] = array(
     'normal' => true,
     'file' => 'Logs',
-    'priority' => 3,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['GetLogs'] = array(
     'standalone' => true,
     'file' => 'Logs',
-    'priority' => 2,
 );
 $admin_actions['GetLogsCount'] = array(
     'standalone' => true,
     'file' => 'Logs',
-    'priority' => 2,
 );
 $admin_actions['GetLog'] = array(
     'standalone' => true,
     'file' => 'Logs',
-    'priority' => 2,
 );
 $admin_actions['DeleteLogs'] = array(
     'standalone' => true,
     'file' => 'Logs',
-    'priority' => 5,
+    'loglevel' => JAWS_WARNING,
 );
 $admin_actions['Settings'] = array(
     'normal' => true,
     'file' => 'Settings',
-    'priority' => 3,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['SaveSettings'] = array(
     'standalone' => true,
     'file' => 'Settings',
-    'priority' => 5,
+    'loglevel' => JAWS_WARNING,
 );
