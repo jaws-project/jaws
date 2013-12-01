@@ -60,3 +60,7 @@ $admin_actions['SyncSitemapData'] = array(
     'standalone' => true,
     'file' => 'ManageSitemap',
 );
+$admin_actions['PingSearchEngines'] = array(
+    'standalone' => true,
+    'file' => 'Ping',
+);

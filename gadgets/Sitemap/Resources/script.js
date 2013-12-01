@@ -40,6 +40,12 @@ var SitemapCallback = {
             stopAction();
         }
         showResponse(response);
+    },
+    PingSearchEngines: function(response) {
+        if (response[0]['type'] == 'response_notice') {
+            stopAction();
+        }
+        showResponse(response);
     }
 }
 
@@ -159,6 +165,14 @@ function syncSitemap(gadget)
 function syncSitemapDataFile(gadget)
 {
     SitemapAjax.callAsync('SyncSitemapData', {'gname':gadget});
+}
+
+/**
+ * Ping Search Engines
+ */
+function pingSearchEngines()
+{
+    SitemapAjax.callAsync('PingSearchEngines');
 }
 
 /**

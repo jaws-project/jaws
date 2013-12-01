@@ -2,7 +2,11 @@
 <!-- BEGIN sitemap_base -->
 <div id="main" style="width: 100%;">
     <div id="sitemap_area">
-        <div class="sitemap-titlebar"><span style="font-weight: bold;"><img src="{sitemap_tree_image}" alt="" />&nbsp;{sitemap_tree_title}</span></div>
+        <div class="sitemap-titlebar"><span style="font-weight: bold;"><img src="{sitemap_tree_image}" alt="" />&nbsp;{sitemap_tree_title}</span>
+            <div class="sitemap_actions">
+                <a href="javascript: {js_ping_func};" title="{ping_title}"><img src="{ping_icon}" alt="{ping_title}" /></a>
+            </div>
+        </div>
         <div id="gadgets_tree">{gadgets_tree}</div>
     </div>
     <div id="edit_area">

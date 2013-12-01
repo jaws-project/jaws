@@ -65,6 +65,9 @@ class Sitemap_Actions_Admin_ManageSitemap extends Jaws_Gadget_Action
         $tpl->SetVariable('sitemapListCloseImageSrc', STOCK_REMOVE);
         $tpl->SetVariable('noCategoryExists',       _t('SITEMAP_CATEGORY_NOEXISTS'));
         $tpl->SetVariable('incompleteFields',   _t('SITEMAP_INCOMPLETE_FIELDS'));
+        $tpl->SetVariable('ping_icon', STOCK_RESET);
+        $tpl->SetVariable('js_ping_func', "pingSearchEngines()");
+        $tpl->SetVariable('ping_title', _t('SITEMAP_PING_SEARCHENGINES'));
 
         $tpl->ParseBlock('sitemap/sitemap_base');
         $tpl->ParseBlock('sitemap');
