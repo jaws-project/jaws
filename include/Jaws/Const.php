@@ -20,3 +20,13 @@ define('JAWS_COMPONENT_UPGRADE', 5);
 // Version of the unpacked Jaws (not the one in registry)
 define('JAWS_VERSION', '1.0.0');
 define('JAWS_VERSION_CODENAME', "Life's too short, don't waste it");
+
+define('JAWS_EMERG',   1);  // System is unusable
+define('JAWS_ALERT',   2);  // Immediate action required
+define('JAWS_CRIT',    3);  // Critical conditions
+define('JAWS_ERR',     4);  // Error conditions
+define('JAWS_ERROR',   4);  // Error conditions
+define('JAWS_WARNING', 5);  // Warning conditions
+define('JAWS_NOTICE',  6);  // Normal but significant condition
+define('JAWS_INFO',    7);  // Informational
+define('JAWS_DEBUG',   8);  // debug-level messages
