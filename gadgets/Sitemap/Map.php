@@ -4,15 +4,13 @@
  *
  * @category   GadgetMaps
  * @package    Sitemap
- * @author     Jonathan Hernandez <ion@suavizado.com>
- * @author     Pablo Fischer <pablo@pablo.com.mx>
+ * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
  * @copyright  2007-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-$maps[] = array('Sitemap',    'sitemap');
-$maps[] = array('SitemapXML', 'sitemap/xml');
 $maps[] = array(
-    'Display',
-    'contents/{path}',
-    array('path' => '.+')
+    'SitemapXML',
+    'sitemap[/{gname}]',
+    array('gname' => '[[:lower:]-]+'),
+    'xml'
 );

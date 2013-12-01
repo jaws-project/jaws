@@ -4,7 +4,7 @@
  *
  * @category    GadgetActions
  * @package     Sitemap
- * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
  * @copyright   2004-2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
@@ -12,14 +12,6 @@
 /**
  * Index actions
  */
-$actions['Display'] = array(
-    'normal' => true,
-    'file'   => 'Sitemap'
-);
-$actions['Sitemap'] = array(
-    'normal' => true,
-    'file'   => 'Sitemap'
-);
 $actions['SitemapXML'] = array(
     'standalone' => true,
     'file'   => 'Sitemap'

@@ -11,30 +11,6 @@
 class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
 {
     /**
-     * Gets list of gadgets that have Sitemap
-     *
-     * @access  public
-     * @return  array   List of gadgets
-     */
-    function GetAvailableSitemapGadgets()
-    {
-        $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
-        $gadgetList = $cmpModel->GetGadgetsList(false, true, true);
-        $gadgets = array();
-        foreach ($gadgetList as $key => $gadget) {
-            if (is_file(JAWS_PATH . 'gadgets/' . $gadget['name'] . '/hooks/Sitemap.php')) {
-                $gadget['name'] = trim($gadget['name']);
-                if ($gadget['name'] == 'Sitemap' || empty($gadget['name'])) {
-                    continue;
-                }
-
-                $gadgets[$key] = $gadget;
-            }
-        }
-        return $gadgets;
-    }
-
-    /**
      * Get a gadget category properties
      *
      * @access  public
@@ -48,42 +24,6 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         $sitemapTable->select('id:integer', 'gadget', 'category', 'priority:float', 'frequency', 'status');
         $sitemapTable->where('gadget', $gadget);
         return $sitemapTable->and()->where('category', $category)->fetchRow();
-    }
-
-    /**
-     * Get a gadget properties
-     *
-     * @access  public
-     * @param   string  $gadget
-     * @return  array   Category data
-     */
-    function GetGadgetProperties($gadget)
-    {
-        return unserialize($this->gadget->registry->fetch($gadget));
-    }
-
-    /**
-     * Get a gadget categories properties
-     *
-     * @access  public
-     * @param   string  $gadget
-     * @return  array   Category data
-     */
-    function GetGadgetCategoryProperties($gadget)
-    {
-        $sitemapTable = Jaws_ORM::getInstance()->table('sitemap');
-        $sitemapTable->select('id:integer', 'gadget', 'category', 'priority:float','frequency', 'status');
-        $rows = $sitemapTable->where('gadget', $gadget)->fetchAll();
-        if (Jaws_Error::IsError($rows)) {
-            return false;
-        }
-
-        $result = array();
-        foreach($rows as $row) {
-            $result[$row['id']] = $row;
-        }
-
-        return $result;
     }
 
     /**
@@ -140,12 +80,12 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
      */
     function SyncSitemapXML($gadget)
     {
-        $tpl = $this->gadget->template->loadAdmin('GadgetXML');
+        $tpl = $this->gadget->template->loadAdmin('GadgetXML.html');
         $tpl->SetBlock('xml');
 
         // Fetch default sitemap config from registry
-        $defaultPriority = (int)$this->gadget->registry->fetch('sitemap_default_priority');
-        $defaultFrequency = (int)$this->gadget->registry->fetch('sitemap_default_frequency');
+        $defaultPriority = $this->gadget->registry->fetch('sitemap_default_priority');
+        $defaultFrequency = $this->gadget->registry->fetch('sitemap_default_frequency');
 
         // Fetch gadget sitemap config
         $gadgetProperties = $this->GetGadgetProperties($gadget);
@@ -193,16 +133,16 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
                 $property['priority'] = $defaultPriority;
                 $property['frequency'] = $defaultFrequency;
             }
-//            $property[] = '';
             $finalCategory[$cat['id']] = $property;
         }
 
+        $date = Jaws_Date::getInstance();
         foreach ($allItems as $item) {
             $tpl->SetBlock('xml/item');
             $tpl->SetVariable('loc', $item['url']);
-            if(!empty($category['lastmod'])) {
+            if(!empty($item['lastmod'])) {
                 $tpl->SetBlock('xml/item/lastmod');
-                $tpl->SetVariable('lastmod', $item['lastmod']);
+                $tpl->SetVariable('lastmod',  $date->ToISO($item['lastmod']));
                 $tpl->ParseBlock('xml/item/lastmod');
             }
 
@@ -248,7 +188,7 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         $xmlContent = $tpl->Get();
 
         // Check gadget directory in sitemap
-        $gadget_dir = JAWS_DATA . 'sitemap' . DIRECTORY_SEPARATOR . $gadget . DIRECTORY_SEPARATOR;
+        $gadget_dir = JAWS_DATA . 'sitemap' . DIRECTORY_SEPARATOR . strtolower($gadget) . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($gadget_dir)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $gadget_dir), _t('SITEMAP_NAME'));
         }
@@ -257,8 +197,15 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         if (!Jaws_Utils::file_put_contents($cache_file, $xmlContent)) {
             return false;
         }
-        return true;
+
+        // remove Main sitemap.xml cached file
+        $xml_file = JAWS_DATA . 'sitemap' . DIRECTORY_SEPARATOR . 'sitemap.xml';
+        if (file_exists($xml_file)) {
+            @unlink($xml_file);
+        }
+            return true;
     }
+
 
     /**
      * Sync sitemap data files

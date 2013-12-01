@@ -18,7 +18,7 @@ class Sitemap_Installer extends Jaws_Gadget_Installer
      */
     var $_RegKeys = array(
         array('sitemap_default_priority', '0.5'),
-        array('sitemap_default_frequency', 'none'),
+        array('sitemap_default_frequency', Sitemap_Info::SITEMAP_CHANGE_FREQ_WEEKLY),
     );
 
     /**

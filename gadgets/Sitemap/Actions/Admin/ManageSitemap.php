@@ -82,7 +82,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->loadAdmin('Sitemap.html');
         $tpl->SetBlock('sitemap');
 
-        $model = $this->gadget->model->loadAdmin('Sitemap');
+        $model = $this->gadget->model->load('Sitemap');
         $gadgets = $model->GetAvailableSitemapGadgets();
         foreach ($gadgets as $gadget) {
             $tpl->SetBlock('sitemap/sitemap_gadget');
