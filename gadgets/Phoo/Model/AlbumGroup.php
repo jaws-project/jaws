@@ -20,7 +20,7 @@ class Phoo_Model_AlbumGroup extends Jaws_Gadget_Model
     function GetAlbumGroups($album)
     {
         $table = Jaws_ORM::getInstance()->table('phoo_album_group');
-        $table->select('*')->where('album', $album);
+        $table->select('id', 'album', 'group')->where('album', $album);
         return $table->fetchAll();
     }
 

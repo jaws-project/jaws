@@ -19,7 +19,7 @@ class Phoo_Model_Groups extends Jaws_Gadget_Model
     function GetGroups()
     {
         $table = Jaws_ORM::getInstance()->table('phoo_group');
-        $table->select('*');
+        $table->select('id', 'name', 'fast_url', 'description', 'meta_keywords', 'meta_description');
         return $table->fetchAll();
     }
 
@@ -33,7 +33,7 @@ class Phoo_Model_Groups extends Jaws_Gadget_Model
     function GetGroup($gid)
     {
         $table = Jaws_ORM::getInstance()->table('phoo_group');
-        $table->select('*')->where('id', $gid);
+        $table->select('id', 'name', 'fast_url', 'description', 'meta_keywords', 'meta_description')->where('id', $gid);
         return $table->fetchRow();
     }
 }
