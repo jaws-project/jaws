@@ -36,10 +36,6 @@ $admin_actions['ProxySettings'] = array(
     'normal' => true,
     'file' => 'Proxy',
 );
-$admin_actions['Settings_Actions_Admin_Ajax'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
 $admin_actions['UpdateBasicSettings'] = array(
     'standalone' => true,
     'file' => 'Ajax',

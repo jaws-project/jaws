@@ -30,10 +30,6 @@ $admin_actions['ManageFeeds'] = array(
     'normal' => true,
     'file' => 'Feed',
 );
-$admin_actions['FeedReader_Actions_Admin_Ajax'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
 $admin_actions['GetFeed'] = array(
     'standalone' => true,
     'file' => 'Ajax',

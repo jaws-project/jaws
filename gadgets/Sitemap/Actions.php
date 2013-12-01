@@ -32,10 +32,6 @@ $admin_actions['ManageSitemap'] = array(
     'normal' => true,
     'file'   => 'ManageSitemap',
 );
-$admin_actions['Sitemap_Actions_Admin_Ajax'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
 $admin_actions['GetCategoriesList'] = array(
     'standalone' => true,
     'file' => 'Ajax',

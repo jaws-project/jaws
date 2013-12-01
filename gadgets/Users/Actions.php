@@ -176,10 +176,6 @@ $admin_actions['UploadAvatar'] = array(
     'standalone' => true,
     'file' => 'Avatar',
 );
-$admin_actions['Users_Actions_Admin_Ajax'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
 $admin_actions['GetUser'] = array(
     'standalone' => true,
     'file' => 'Ajax',
