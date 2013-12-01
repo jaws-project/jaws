@@ -75,13 +75,13 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         // Priority
         $priorityCombo =& Piwi::CreateWidget('Combo', 'filter_priority');
         $priorityCombo->AddOption(_t('GLOBAL_ALL'), 0, false);
-        $priorityCombo->AddOption(_t('LOGS_PRIORITY_INFO'), JAWS_INFO, false);
-        $priorityCombo->AddOption(_t('LOGS_PRIORITY_NOTICE'), JAWS_NOTICE, false);
-        $priorityCombo->AddOption(_t('LOGS_PRIORITY_WARNING'), JAWS_WARNING, false);
+        $priorityCombo->AddOption(_t('LOGS_PRIORITY_5'), JAWS_WARNING, false);
+        $priorityCombo->AddOption(_t('LOGS_PRIORITY_6'), JAWS_NOTICE, false);
+        $priorityCombo->AddOption(_t('LOGS_PRIORITY_7'), JAWS_INFO, false);
         $priorityCombo->AddEvent(ON_CHANGE, "javascript: searchLogs();");
         $priorityCombo->SetDefault(0);
         $tpl->SetVariable('filter_priority', $priorityCombo->Get());
-        $tpl->SetVariable('lbl_filter_priority', _t('LOGS_LOG_PRIORITY'));
+        $tpl->SetVariable('lbl_filter_priority', _t('LOGS_PRIORITY'));
 
         // Term
         $filterTerm =& Piwi::CreateWidget('Entry', 'filter_term', '');
@@ -131,23 +131,22 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $grid->pageBy(15);
 
         $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_GADGETS'), null, false);
-        $column1->SetStyle('width:100px; white-space:nowrap;');
+        $column1->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column1);
 
         $column2 = Piwi::CreateWidget('Column', _t('LOGS_ACTION'), null, false);
-        $column2->SetStyle('width:72px; white-space:nowrap;');
         $grid->AddColumn($column2);
 
         $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME'), null, false);
-        $column3->SetStyle('width:160px; white-space:nowrap;');
+        $column3->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column3);
 
         $column4 = Piwi::CreateWidget('Column', _t('LOGS_USER_NICKNAME'), null, false);
-        $column4->SetStyle('width:160px; white-space:nowrap;');
+        $column4->SetStyle('width:128px; white-space:nowrap;');
         $grid->AddColumn($column4);
 
         $column5 = Piwi::CreateWidget('Column', _t('GLOBAL_DATE'), null, false);
-        $column5->SetStyle('width:135px; white-space:nowrap;');
+        $column5->SetStyle('width:128px; white-space:nowrap;');
         $grid->AddColumn($column5);
 
         //Tools
@@ -191,7 +190,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $tpl->SetVariable('lbl_gadget', _t('GLOBAL_GADGETS'));
         $tpl->SetVariable('lbl_action', _t('LOGS_ACTION'));
         $tpl->SetVariable('lbl_backend', _t('LOGS_LOG_SCRIPT'));
-        $tpl->SetVariable('lbl_priority', _t('LOGS_LOG_PRIORITY'));
+        $tpl->SetVariable('lbl_priority', _t('LOGS_PRIORITY'));
         $tpl->SetVariable('lbl_status', _t('LOGS_LOG_STATUS'));
         $tpl->SetVariable('lbl_apptype', _t('LOGS_LOG_REQUEST_TYPE'));
         $tpl->SetVariable('lbl_username', _t('GLOBAL_USERNAME'));
@@ -272,21 +271,10 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             return array();
         }
 
-        switch ($log['priority']) {
-            case JAWS_NOTICE :
-                $priority = _t('LOGS_PRIORITY_NOTICE');
-                break;
-            case JAWS_WARNING :
-                $priority = _t('LOGS_PRIORITY_WARNING');
-                break;
-            default:
-                $priority = _t('LOGS_PRIORITY_INFO');
-        }
-
         $date = Jaws_Date::getInstance();
         $log['insert_time'] = $date->Format($log['insert_time'], 'DN d MN Y H:i:s');
         $log['ip'] = long2ip($log['ip']);
-        $log['priority'] = $priority;
+        $log['priority'] = _t('LOGS_PRIORITY_'. $log['priority']);
         $log['backend'] = $log['backend'] ? _t('LOGS_LOG_SCRIPT_ADMIN') : _t('LOGS_LOG_SCRIPT_SCRIPT');
 
         // user's profile

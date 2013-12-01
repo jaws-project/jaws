@@ -17,7 +17,7 @@ class Logs_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        array('log_priority_level', '0'),
+        array('log_priority_level', '6'),
         array('log_parameters', 'false'),
     );
 
