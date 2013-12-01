@@ -299,7 +299,7 @@ class Jaws_Gadget_Action
         }
 
         // Event Logging
-        if ($GLOBALS['app']->Session->Logged() && !@$this->actions[JAWS_SCRIPT][$action]['variable']) {
+        if ($GLOBALS['app']->Session->Logged() && @$this->actions[JAWS_SCRIPT][$action]['loggable']) {
             $this->gadget->event->shout('Log', array($this->gadget->name, $action));
         }
 
