@@ -26,9 +26,9 @@ class Logs_Actions_Admin_Settings extends Logs_Actions_Admin_Default
         $priority_level = (int)$this->gadget->registry->fetch('log_priority_level');
         $priorityCombo =& Piwi::CreateWidget('Combo', 'priority');
         $priorityCombo->AddOption(_t('GLOBAL_ALL'), 0, false);
-        $priorityCombo->AddOption(_t('LOGS_PRIORITY_INFO'), Logs_Info::LOGS_PRIORITY_INFO, false);
-        $priorityCombo->AddOption(_t('LOGS_PRIORITY_NOTICE'), Logs_Info::LOGS_PRIORITY_NOTICE, false);
-        $priorityCombo->AddOption(_t('LOGS_PRIORITY_WARNING'), Logs_Info::LOGS_PRIORITY_WARNING, false);
+        $priorityCombo->AddOption(_t('LOGS_PRIORITY_INFO'), JAWS_INFO, false);
+        $priorityCombo->AddOption(_t('LOGS_PRIORITY_NOTICE'), JAWS_NOTICE, false);
+        $priorityCombo->AddOption(_t('LOGS_PRIORITY_WARNING'), JAWS_WARNING, false);
         $priorityCombo->SetDefault($priority_level);
         $tpl->SetVariable('lbl_priority', _t('LOGS_SETTINGS_DEFAULT_LOG_PRIORITY'));
         $tpl->SetVariable('priority', $priorityCombo->Get());

@@ -75,9 +75,9 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         // Priority
         $priorityCombo =& Piwi::CreateWidget('Combo', 'filter_priority');
         $priorityCombo->AddOption(_t('GLOBAL_ALL'), 0, false);
-        $priorityCombo->AddOption(_t('LOGS_PRIORITY_INFO'), Logs_Info::LOGS_PRIORITY_INFO, false);
-        $priorityCombo->AddOption(_t('LOGS_PRIORITY_NOTICE'), Logs_Info::LOGS_PRIORITY_NOTICE, false);
-        $priorityCombo->AddOption(_t('LOGS_PRIORITY_WARNING'), Logs_Info::LOGS_PRIORITY_WARNING, false);
+        $priorityCombo->AddOption(_t('LOGS_PRIORITY_INFO'), JAWS_INFO, false);
+        $priorityCombo->AddOption(_t('LOGS_PRIORITY_NOTICE'), JAWS_NOTICE, false);
+        $priorityCombo->AddOption(_t('LOGS_PRIORITY_WARNING'), JAWS_WARNING, false);
         $priorityCombo->AddEvent(ON_CHANGE, "javascript: searchLogs();");
         $priorityCombo->SetDefault(0);
         $tpl->SetVariable('filter_priority', $priorityCombo->Get());
@@ -273,10 +273,10 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         }
 
         switch ($log['priority']) {
-            case Logs_Info::LOGS_PRIORITY_NOTICE :
+            case JAWS_NOTICE :
                 $priority = _t('LOGS_PRIORITY_NOTICE');
                 break;
-            case Logs_Info::LOGS_PRIORITY_WARNING :
+            case JAWS_WARNING :
                 $priority = _t('LOGS_PRIORITY_WARNING');
                 break;
             default:
