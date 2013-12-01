@@ -36,6 +36,7 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
                         'id'     => $category['id'],
                         'parent' => $category['id'],
                         'title'  => $category['name'],
+                        'lastmod'  => $category['updatetime'],
                         'url'    => $this->gadget->urlMap('ShowCategory', array('id' => $cat), true),
                     );
                 }
@@ -53,6 +54,7 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
                     $result[] = array(
                         'id'    => $post['id'],
                         'title' => $post['title'],
+                        'lastmod'  => $post['updatetime'],
                         'parent' => $categories[0],
                         'url'   => $this->gadget->urlMap('SingleView', array('id' => $entry), true),
                     );
