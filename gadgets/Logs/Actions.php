@@ -14,29 +14,33 @@
  */
 $admin_actions['Logs'] = array(
     'normal' => true,
-    'file'   => 'Logs',
+    'file' => 'Logs',
+    'loggable' => true,
 );
 $admin_actions['GetLogs'] = array(
     'standalone' => true,
-    'file'       => 'Logs',
+    'file' => 'Logs',
 );
 $admin_actions['GetLogsCount'] = array(
     'standalone' => true,
-    'file'       => 'Logs',
+    'file' => 'Logs',
 );
 $admin_actions['GetLog'] = array(
     'standalone' => true,
-    'file'       => 'Logs',
+    'file' => 'Logs',
 );
 $admin_actions['DeleteLogs'] = array(
     'standalone' => true,
-    'file'       => 'Logs',
+    'file' => 'Logs',
+    'loggable' => true,
 );
 $admin_actions['Settings'] = array(
     'normal' => true,
-    'file'   => 'Settings',
+    'file' => 'Settings',
+    'loggable' => true,
 );
 $admin_actions['SaveSettings'] = array(
     'standalone' => true,
-    'file'   => 'Settings',
+    'file' => 'Settings',
+    'loggable' => true,
 );
