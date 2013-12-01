@@ -25,7 +25,6 @@ class Phoo_Installer extends Jaws_Gadget_Installer
         array('photoblog_limit', '5'),
         array('allow_comments', 'true'),
         array('published', 'true'),
-        array('plugabble', 'true'),
         array('show_exif_info', 'false'),
         array('keep_original', 'true'),
         array('thumbnail_limit', '0'),
@@ -48,6 +47,7 @@ class Phoo_Installer extends Jaws_Gadget_Installer
         'ModifyOthersPhotos',
         'ManageComments',
         'ManageAlbums',
+        'ManageGroups',
         'Settings',
         'Import',
     );
@@ -129,12 +129,14 @@ class Phoo_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        // Update layout actions
-        $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
-        if (!Jaws_Error::isError($layoutModel)) {
-            $layoutModel->EditGadgetLayoutAction('Phoo', 'AlbumList', 'AlbumList', 'Albums');
-            $layoutModel->EditGadgetLayoutAction('Phoo', 'Random', 'Random', 'Random');
-            $layoutModel->EditGadgetLayoutAction('Phoo', 'Moblog', 'Moblog', 'Moblog');
+        if (version_compare($old, '1.0.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '0.9.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            $this->gadget->registry->delete('plugabble');
+            $this->gadget->acl->insert('ManageGroups');
         }
 
         return true;
