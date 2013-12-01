@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>database</variable></name>
+
+ <table>
+  <name><variable>table_prefix</variable>blog</name>
+  <declaration>
+
+   <field>
+    <name>id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <autoincrement>true</autoincrement>
+   </field>
+
+   <field>
+    <name>user_id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <default>0</default>
+   </field>
+
+   <field>
+    <name>title</name>
+    <type>text</type>
+    <length>240</length>
+   </field>
+
+   <field>
+    <name>summary</name>
+    <type>text</type>
+   </field>
+
+   <field>
+    <name>text</name>
+    <type>text</type>
+   </field>
+
+   <field>
+    <name>comments</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <default>0</default>
+   </field>
+
+   <field>
+    <name>clicks</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <default>0</default>
+   </field>
+
+   <field>
+    <name>allow_comments</name>
+    <type>boolean</type>
+    <notnull>true</notnull>
+    <default>true</default>
+   </field>
+
+   <field>
+    <name>trackbacks</name>
+    <type>text</type>
+   </field>
+
+   <field>
+    <name>fast_url</name>
+    <type>text</type>
+    <length>90</length>
+   </field>
+
+   <field>
+    <name>meta_keywords</name>
+    <type>text</type>
+    <length>128</length>
+   </field>
+
+   <field>
+    <name>meta_description</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>published</name>
+    <type>boolean</type>
+    <notnull>true</notnull>
+    <default>true</default>
+   </field>
+
+   <field>
+    <name>publishtime</name>
+    <type>timestamp</type>
+   </field>
+
+   <field>
+    <name>createtime</name>
+    <type>timestamp</type>
+   </field>
+
+   <field>
+    <name>updatetime</name>
+    <type>timestamp</type>
+   </field>
+
+   <index>
+     <name><variable>table_prefix</variable>blog_fu</name>
+     <field>
+       <name>fast_url</name>
+     </field>
+   </index>
+
+  </declaration>
+ </table>
+
+ <table>
+  <name><variable>table_prefix</variable>blog_trackback</name>
+  <declaration>
+
+   <field>
+    <name>id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <autoincrement>true</autoincrement>
+   </field>
+
+   <field>
+    <name>parent_id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <default>0</default>
+   </field>
+
+   <field>
+    <name>url</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>title</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>excerpt</name>
+    <type>text</type>
+   </field>
+
+   <field>
+    <name>blog_name</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>ip</name>
+    <type>text</type>
+    <length>31</length>
+   </field>
+
+   <field>
+    <name>status</name>
+    <type>text</type>
+    <length>10</length>
+    <notnull>true</notnull>
+    <default>approved</default>
+   </field>
+
+   <field>
+    <name>createtime</name>
+    <type>timestamp</type>
+   </field>
+
+   <field>
+    <name>updatetime</name>
+    <type>timestamp</type>
+   </field>
+
+  </declaration>
+ </table>
+
+ <table>
+  <name><variable>table_prefix</variable>blog_category</name>
+  <declaration>
+
+   <field>
+    <name>id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <autoincrement>true</autoincrement>
+   </field>
+
+   <field>
+    <name>name</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>description</name>
+    <type>text</type>
+   </field>
+
+   <field>
+    <name>fast_url</name>
+    <type>text</type>
+    <length>90</length>
+   </field>
+
+   <field>
+    <name>meta_keywords</name>
+    <type>text</type>
+    <length>128</length>
+   </field>
+
+   <field>
+    <name>meta_description</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>createtime</name>
+    <type>timestamp</type>
+   </field>
+
+   <field>
+    <name>updatetime</name>
+    <type>timestamp</type>
+   </field>
+
+  </declaration>
+ </table>
+
+ <table>
+     <name><variable>table_prefix</variable>blog_entrycat</name>
+     <declaration>
+
+         <field>
+             <name>entry_id</name>
+             <type>integer</type>
+             <notnull>true</notnull>
+             <default>0</default>
+         </field>
+
+         <field>
+             <name>category_id</name>
+             <type>integer</type>
+             <notnull>true</notnull>
+             <default>0</default>
+         </field>
+
+         <index>
+             <name><variable>table_prefix</variable>blog_entrycat_ec</name>
+             <unique>true</unique>
+             <field>
+                <name>entry_id</name>
+             </field>
+             <field>
+                 <name>category_id</name>
+             </field>
+      </index>
+
+     </declaration>
+ </table>
+
+</database>

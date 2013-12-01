@@ -135,19 +135,10 @@ class Blog_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.9.0', '<')) {
-            // Update layout actions
-            $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
-            if (!Jaws_Error::isError($layoutModel)) {
-                $layoutModel->EditGadgetLayoutAction('Blog', 'CategoryEntries', 'CategoryEntries', 'Posts');
-                $layoutModel->EditGadgetLayoutAction('Blog', 'EntriesByCategory', 'CategoryEntries', 'Posts');
-                $layoutModel->EditGadgetLayoutAction('Blog', 'CategoriesList', 'CategoriesList', 'Categories');
-                $layoutModel->EditGadgetLayoutAction('Blog', 'PopularPosts', 'PopularPosts', 'Posts');
-                $layoutModel->EditGadgetLayoutAction('Blog', 'PostsAuthors', 'PostsAuthors', 'Posts');
-                $layoutModel->EditGadgetLayoutAction('Blog', 'MonthlyHistory', 'MonthlyHistory', 'DatePosts');
-                $layoutModel->EditGadgetLayoutAction('Blog', 'Calendar', 'Calendar', 'DatePosts');
-                $layoutModel->EditGadgetLayoutAction('Blog', 'RecentPosts', 'RecentPosts', 'Posts');
-                $layoutModel->EditGadgetLayoutAction('Blog', 'ShowTagCloud', 'ShowTagCloud', 'Tags');
+        if (version_compare($old, '1.0.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '0.9.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
             }
         }
 
