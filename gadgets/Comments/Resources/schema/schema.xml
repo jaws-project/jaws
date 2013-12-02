@@ -34,7 +34,6 @@
 
             <field>
                 <name>reference</name>
-                <was>gadget_reference</was>
                 <type>integer</type>
                 <default>0</default>
             </field>
@@ -90,18 +89,16 @@
                 <type>integer</type>
             </field>
 
-
-            <field>
-                <name>status</name>
-                <was>new_status</was>
-                <type>integer</type>
-                <length>2</length>
-                <default>1</default>
-            </field>
-
             <field>
                 <name>createtime</name>
                 <type>timestamp</type>
+            </field>
+
+            <field>
+                <name>status</name>
+                <type>integer</type>
+                <length>2</length>
+                <default>1</default>
             </field>
 
             <index>
