@@ -115,4 +115,24 @@ class Forums_Installer extends Jaws_Gadget_Installer
         return true;
     }
 
+    /**
+     * Upgrades the gadget
+     *
+     * @access  public
+     * @param   string  $old    Current version (in registry)
+     * @param   string  $new    New version (in the $gadgetInfo file)
+     * @return  mixed   True on Success, Jaws_Error on Failure
+     */
+    function Upgrade($old, $new)
+    {
+        if (version_compare($old, '1.0.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '0.1.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
+        return true;
+    }
+
 }
