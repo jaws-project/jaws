@@ -22,7 +22,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Jaws_Gadget_Action
     {
         if ($this->gadget->GetPermission('PingSite')) {
             $menubar = new Jaws_Widgets_Menubar();
-            $menubar->AddOption('PingSite', _t('SITEMAP_PING_SITEMAP'),
+            $menubar->AddOption('PingSite', _t('SITEMAP_PING_SEARCHENGINES'),
                                 'javascript: pingSitemap();',
                                 STOCK_RESET);
             return $menubar->Get();

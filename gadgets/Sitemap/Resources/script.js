@@ -101,8 +101,7 @@ function editGadget(gadget)
     currentAction = 'Gadget';
     selectedGadget = gadget;
 
-    $('edit_area').getElementsByTagName('span')[0].innerHTML =
-        editCategoryTitle + ' - ' + $('gadget_' + gadget).getElementsByTagName('a')[0].innerHTML;
+    $('edit_area').getElementsByTagName('span')[0].innerHTML = editGadgetTitle + ' - ' + selectedGadget;
     $('btn_cancel').style.display = 'inline';
     $('btn_save').style.display   = 'inline';
     $('category_edit').innerHTML = cacheGadgetForm;
