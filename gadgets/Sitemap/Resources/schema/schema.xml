@@ -1,54 +1,58 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <database>
+    <name><variable>database</variable></name>
 
- <name><variable>database</variable></name>
+    <table>
+        <name><variable>table_prefix</variable>sitemap</name>
+        <declaration>
 
- <table>
-  <name><variable>table_prefix</variable>sitemap</name>
-  <declaration>
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
 
-   <field>
-    <name>id</name>
-    <type>integer</type>
-    <notnull>true</notnull>
-    <autoincrement>true</autoincrement>
-   </field>
+            <field>
+                <name>gadget</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
 
-   <field>
-    <name>gadget</name>
-    <type>text</type>
-    <length>255</length>
-    <notnull>false</notnull>
-   </field>
+            <field>
+                <name>category</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
 
-   <field>
-    <name>category</name>
-    <type>integer</type>
-    <notnull>true</notnull>
-    <default>0</default>
-   </field>
+            <field>
+                <name>priority</name>
+                <type>decimal</type>
+                <length>3</length>
+                <scale>1</scale>
+            </field>
 
-   <field>
-    <name>priority</name>
-    <type>decimal</type>
-    <length>3</length>
-    <scale>1</scale>
-    <notnull>false</notnull>
-   </field>
+            <field>
+                <name>frequency</name>
+                <type>integer</type>
+                <length>1</length>
+            </field>
 
-   <field>
-    <name>frequency</name>
-    <type>integer</type>
-    <length>1</length>
-   </field>
+            <field>
+                <name>status</name>
+                <type>integer</type>
+                <length>1</length>
+                <default>0</default>
+            </field>
 
-   <field>
-    <name>status</name>
-    <type>integer</type>
-    <length>1</length>
-    <default>0</default>
-   </field>
+            <index>
+                <name><variable>table_prefix</variable>sitemap_gadget</name>
+                <field>
+                    <name>gadget</name>
+                </field>
+            </index>
 
-  </declaration>
- </table>
+        </declaration>
+    </table>
+
 </database>

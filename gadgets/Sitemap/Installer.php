@@ -84,21 +84,22 @@ class Sitemap_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        $result = $this->installSchema('schema.xml', '', '0.7.0.xml');
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
+        if (version_compare($old, '1.0.0', '<')) {
+            $result = $this->installSchema('0.9.1.xml', '', '0.9.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
 
-        // Update layout actions
-        $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
-        if (!Jaws_Error::isError($layoutModel)) {
-            $layoutModel->EditGadgetLayoutAction('Sitemap', 'Show', 'Show', 'Show');
-            $layoutModel->EditGadgetLayoutAction('Sitemap', 'ShowWithoutTop', 'ShowWithoutTop', 'Show');
-            $layoutModel->EditGadgetLayoutAction('Sitemap', 'TopMenu', 'TopMenu', 'Show');
-            $layoutModel->EditGadgetLayoutAction('Sitemap', 'ShowTwoLevels', 'ShowTwoLevels', 'Show');
-            $layoutModel->EditGadgetLayoutAction('Sitemap', 'ShowThreeLevels', 'ShowThreeLevels', 'Show');
-            $layoutModel->EditGadgetLayoutAction('Sitemap', 'DisplayLevel', 'DisplayLevel', 'Show');
-            $layoutModel->EditGadgetLayoutAction('Sitemap', 'Breadcrumb', 'Breadcrumb', 'Breadcrumb');
+            $result = $this->installSchema('schema.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            // Delete old Sitemap layout actions
+            $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
+            if (!Jaws_Error::isError($layoutModel)) {
+                $layoutModel->DeleteGadgetElements($this->gadget->name);
+            }
         }
 
         return true;

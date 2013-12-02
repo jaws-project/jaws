@@ -4,7 +4,7 @@
  <name><variable>database</variable></name>
 
  <table>
-  <name><variable>table_prefix</variable>simplesite</name>
+  <name><variable>table_prefix</variable>sitemap</name>
   <declaration>
 
    <field>
@@ -37,7 +37,6 @@
 
    <field>
     <name>rfc_type</name>
-    <was>type</was>
     <type>text</type>
     <length>20</length>
     <notnull>false</notnull>
@@ -59,7 +58,6 @@
 
    <field>
     <name>rank</name>
-    <was>position</was>
     <type>integer</type>
     <notnull>true</notnull>
     <default>0</default>
