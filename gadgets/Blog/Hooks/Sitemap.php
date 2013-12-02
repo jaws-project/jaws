@@ -22,27 +22,37 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
     function Execute($data_type = 0, $updated_time = 0)
     {
         $result = array();
-        switch ($data_type) {
-            case 1:
-                $cModel = $this->gadget->model->load('Categories');
-                $categories = $cModel->GetCategories();
-                if (Jaws_Error::IsError($categories)) {
-                    return $categories;
-                }
+        if ($data_type == 0) {
+            $cModel = $this->gadget->model->load('Categories');
+            $categories = $cModel->GetCategories();
+            if (Jaws_Error::IsError($categories)) {
+                return $categories;
+            }
 
-                foreach ($categories as $category) {
-                    $cat = empty($category['fast_url']) ? $category['id'] : $category['fast_url'];
-                    $result[] = array(
-                        'id'     => $category['id'],
-                        'parent' => $category['id'],
-                        'title'  => $category['name'],
-                        'lastmod'  => $category['updatetime'],
-                        'url'    => $this->gadget->urlMap('ShowCategory', array('id' => $cat), true),
-                    );
-                }
-                break;
+            foreach ($categories as $category) {
+                $result[] = array(
+                    'id'     => $category['id'],
+                    'title'  => $category['name'],
+                );
+            }
+        } elseif ($data_type == 1 || $data_type == 2) {
+            $cModel = $this->gadget->model->load('Categories');
+            $categories = $cModel->GetCategories();
+            if (Jaws_Error::IsError($categories)) {
+                return $categories;
+            }
+            foreach ($categories as $category) {
+                $cat = empty($category['fast_url']) ? $category['id'] : $category['fast_url'];
+                $result[] = array(
+                    'id'     => $category['id'],
+                    'parent' => $category['id'],
+                    'title'  => $category['name'],
+                    'lastmod'  => $category['updatetime'],
+                    'url'    => $this->gadget->urlMap('ShowCategory', array('id' => $cat), true),
+                );
+            }
 
-            case 2:
+            if($data_type==2) {
                 $pModel = $this->gadget->model->load('Posts');
                 $posts  = $pModel->GetPosts(array('published' => true, 'stop_time' => $GLOBALS['db']->Date()));
                 if (Jaws_Error::IsError($posts)) {
@@ -53,29 +63,14 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
                     $categories = explode(",", $post['categories']);
                     $result[] = array(
                         'id'    => $post['id'],
+                        'parent' => $categories[0],
                         'title' => $post['title'],
                         'lastmod'  => $post['updatetime'],
-                        'parent' => $categories[0],
                         'url'   => $this->gadget->urlMap('SingleView', array('id' => $entry), true),
                     );
                 }
-                break;
-
-            default:
-                $cModel = $this->gadget->model->load('Categories');
-                $categories = $cModel->GetCategories();
-                if (Jaws_Error::IsError($categories)) {
-                    return $categories;
-                }
-
-                foreach ($categories as $category) {
-                    $result[] = array(
-                        'id'     => $category['id'],
-                        'title'  => $category['name'],
-                    );
-                }
+            }
         }
-
         return $result;
     }
 
