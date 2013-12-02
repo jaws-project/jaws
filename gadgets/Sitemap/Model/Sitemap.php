@@ -133,4 +133,22 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
             return $data;
         }
     }
+
+    /**
+     * Get Sitemap data
+     *
+     * @access  public
+     * @param   string  $gadget   Gadget name
+     * @return  array   sitemap data
+     */
+    function GetSitemapData($gadget)
+    {
+        $data_file = JAWS_DATA . 'sitemap' . DIRECTORY_SEPARATOR . $gadget . DIRECTORY_SEPARATOR . 'sitemap.bin';
+        if (file_exists($data_file)) {
+            if (false === $data = @file_get_contents($data_file)) {
+                return array();
+            }
+            return unserialize($data);
+        }
+    }
 }

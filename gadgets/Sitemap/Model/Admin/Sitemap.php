@@ -92,8 +92,12 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         $gadgetPriority = null;
         $gadgetFrequency = null;
         if (!empty($gadgetProperties)) {
-            $gadgetPriority = $gadgetProperties['priority'];
-            $gadgetFrequency = $gadgetProperties['frequency'];
+            if(isset($gadgetProperties['priority'])) {
+                $gadgetPriority = $gadgetProperties['priority'];
+            }
+            if(isset($gadgetProperties['frequency'])) {
+                $gadgetFrequency = $gadgetProperties['frequency'];
+            }
         }
 
         $frequencyArray = array(
@@ -203,7 +207,13 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         if (file_exists($xml_file)) {
             @unlink($xml_file);
         }
-            return true;
+
+        // Change gadget update time
+        $gadgetProperties = $this->GetGadgetProperties($gadget);
+        $gadgetProperties['update_time'] = time();
+        $this->UpdateGadget($gadget, $gadgetProperties);
+
+        return true;
     }
 
 
@@ -237,7 +247,7 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $gadget_dir), _t('SITEMAP_NAME'));
         }
 
-        $cache_file = $gadget_dir . 'data.bin';
+        $cache_file = $gadget_dir . 'sitemap.bin';
         if (!Jaws_Utils::file_put_contents($cache_file, serialize($gResult))) {
             return false;
         }

@@ -14,3 +14,4 @@ $maps[] = array(
     array('gname' => '[[:lower:]-]+'),
     'xml'
 );
+$maps[] = array('Sitemap', 'sitemap');

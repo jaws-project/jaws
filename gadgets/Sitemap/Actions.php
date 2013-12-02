@@ -16,6 +16,10 @@ $actions['SitemapXML'] = array(
     'standalone' => true,
     'file'   => 'Sitemap'
 );
+$actions['Sitemap'] = array(
+    'normal' => true,
+    'file'   => 'Sitemap'
+);
 
 /**
  * Admin actions
