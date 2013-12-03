@@ -231,7 +231,7 @@ class Column extends Misc
      * @access   public
      * @param    string  $status Visible Status
      */
-    function setVisible($visible)
+    function setVisible($visible = true)
     {
         $this->_visible = $visible;
     }
