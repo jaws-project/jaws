@@ -181,7 +181,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
                               'filesize' => Jaws_Utils::FormatSize($_FILES['attachment']['size']));
         }
 
-        $response = $GLOBALS['app']->UTF8->json_encode($response);
+        $response = Jaws_UTF8::json_encode($response);
         return "<script type='text/javascript'>parent.onUpload($response);</script>";
     }
 
