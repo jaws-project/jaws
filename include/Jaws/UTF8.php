@@ -18,7 +18,7 @@ class Jaws_UTF8
      * @access  public
      * @return  bool    True if UTF8 encoding is detected, false if not
      */
-    function IsUTF8($str)
+    static function IsUTF8($str)
     {
         return preg_match('%^(?:
             [\x09\x0A\x0D\x20-\x7E]              # ASCII
@@ -38,7 +38,7 @@ class Jaws_UTF8
      * @access  public
      * @return  string Encoded string
      */
-    function UTF8Encode($str)
+    static function UTF8Encode($str)
     {
         return utf8_encode($str);
     }
@@ -49,7 +49,7 @@ class Jaws_UTF8
      * @access  public
      * @return  string Decoded string
      */
-    function UTF8Decode($str)
+    static function UTF8Decode($str)
     {
         return utf8_decode($str);
     }
@@ -58,7 +58,7 @@ class Jaws_UTF8
      * Get string length
      * @see http://www.php.net/strlen
      */
-    function strlen($str) {
+    static function strlen($str) {
         return strlen(utf8_decode($str));
     }
 
@@ -66,7 +66,7 @@ class Jaws_UTF8
      * Split a string by string
      * @see http://www.php.net/explode
     */
-    function explode($delimiter, $str)
+    static function explode($delimiter, $str)
     {
         if ($delimiter == '') {
             return false;
@@ -78,7 +78,7 @@ class Jaws_UTF8
      * Find position of first occurrence of a string
      * @see http://www.php.net/strpos
      */
-    function strpos($haystack, $needle, $offset = 0) {
+    static function strpos($haystack, $needle, $offset = 0) {
         $comp = 0;
         while (!isset($length) || $length < $offset) {
             $pos = strpos($haystack, $needle, $offset + $comp);
@@ -96,7 +96,7 @@ class Jaws_UTF8
      * Find position of last occurrence of a char in a string
      * @see http://www.php.net/strrpos
      */
-    function strrpos($haystack, $needle) {
+    static function strrpos($haystack, $needle) {
         $pos = strrpos($haystack, $needle);
 
         if ($pos === false) {
@@ -110,7 +110,7 @@ class Jaws_UTF8
      * Return part of a string
      * @see http://www.php.net/substr
      */
-    function substr($str, $start , $length = null) {
+    static function substr($str, $start , $length = null) {
         preg_match_all('/[\x01-\x7F]|[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF][\x80-\xBF]/', $str, $arr);
         if (is_int($length)) {
             return implode('', array_slice($arr[0], $start, $length));
@@ -123,7 +123,7 @@ class Jaws_UTF8
      * Replace text within a portion of a string
      * @see http://www.php.net/substr_replace
     */
-    function substr_replace($str, $repl, $start, $length = null)
+    static function substr_replace($str, $repl, $start, $length = null)
     {
         preg_match_all('/./us', $str, $ar);
         preg_match_all('/./us', $repl, $rar);
@@ -138,7 +138,7 @@ class Jaws_UTF8
      * Convert a string to an array
      * @see http://www.php.net/str_split
     */
-    function str_split($str, $split_len = 1)
+    static function str_split($str, $split_len = 1)
     {
         if (!preg_match('/^[0-9]+$/',$split_len) || $split_len < 1) {
             return false;
@@ -155,7 +155,7 @@ class Jaws_UTF8
      * Case insensivite string comparison
      * @see http://www.php.net/strcasecmp
     */
-    function strcasecmp($str1, $str2)
+    static function strcasecmp($str1, $str2)
     {
         $str1 = Jaws_UTF8::strtolower($str1);
         $str2 = Jaws_UTF8::strtolower($str2);
@@ -166,7 +166,7 @@ class Jaws_UTF8
      * Case-insensitive strstr
      * @see http://www.php.net/stristr
      */
-    function stristr($str, $search)
+    static function stristr($str, $search)
     {
         if (strlen($search) == 0) {
             return $str;
@@ -184,7 +184,7 @@ class Jaws_UTF8
      * Make a string's first character uppercase
      * @see http://www.php.net/ucfirst
      */
-    function ucfirst($str)
+    static function ucfirst($str)
     {
         switch (Jaws_UTF8::strlen($str)) {
         case 0:
@@ -203,7 +203,7 @@ class Jaws_UTF8
      * Uppercase the first character of each word in a string
      * @see http://www.php.net/ucwords
     */
-    function ucwords($str)
+    static function ucwords($str)
     {
         if (!function_exists('utf8_ucwords_callback')) {
             /**
@@ -228,7 +228,7 @@ class Jaws_UTF8
      * Make a string lowercase
      * @see http://www.php.net/strtolower
      */
-    function strtolower($str)
+    static function strtolower($str)
     {
         static $UTF8_UPPER_TO_LOWER = null;
         if (is_null($UTF8_UPPER_TO_LOWER) ) {
@@ -350,7 +350,7 @@ class Jaws_UTF8
      * Make a string uppercase
      * @see http://www.php.net/strtoupper
      */
-    function strtoupper($str)
+    static function strtoupper($str)
     {
         static $UTF8_LOWER_TO_UPPER = null;
         if (is_null($UTF8_LOWER_TO_UPPER) ) {
@@ -478,7 +478,7 @@ class Jaws_UTF8
      * Replace all occurrences of the search string with the replacement string
      * @see http://www.php.net/str_replace
     */
-    function str_replace($search, $replace, $str)
+    static function str_replace($search, $replace, $str)
     {
         if(!is_array($search)) {
             $search = '!'.preg_quote($search,'!').'!u';
@@ -494,7 +494,7 @@ class Jaws_UTF8
      * Case-insensitive version of str_replace
      * @see http://www.php.net/str_ireplace
      */
-    function str_ireplace($search, $replace, $str, $count = null)
+    static function str_ireplace($search, $replace, $str, $count = null)
     {
         if (!is_array($search)) {
             $slen = strlen($search);
@@ -537,7 +537,7 @@ class Jaws_UTF8
      * Strip whitespace (or other characters) from the beginning of a string
      * @see http://www.php.net/ltrim
      */
-    function ltrim($str, $charlist='')
+    static function ltrim($str, $charlist='')
     {
         if($charlist == '') {
             return ltrim($str);
@@ -550,7 +550,7 @@ class Jaws_UTF8
      * Strip whitespace (or other characters) from the end of a string
      * @see http://www.php.net/rtrim
      */
-    function rtrim($str, $charlist='')
+    static function rtrim($str, $charlist='')
     {
         if($charlist == '') {
             return rtrim($str);
@@ -563,7 +563,7 @@ class Jaws_UTF8
      * Strip whitespace (or other characters) from the beginning and end of a string
      * @see http://www.php.net/trim
      */
-    function trim($str, $charlist='')
+    static function trim($str, $charlist='')
     {
         if($charlist == '') {
             return trim($str);
@@ -575,7 +575,7 @@ class Jaws_UTF8
      * Find length of initial segment not matching mask
      * @see http://www.php.net/strcspn
      */
-    function strcspn($str, $mask, $start = null, $length = null)
+    static function strcspn($str, $mask, $start = null, $length = null)
     {
         if ( empty($mask) || strlen($mask) == 0 ) {
             return null;
@@ -595,7 +595,7 @@ class Jaws_UTF8
      * Find length of initial segment matching mask
      * @see http://www.php.net/strspn
     */
-    function strspn($str, $mask, $start = null, $length = null)
+    static function strspn($str, $mask, $start = null, $length = null)
     {
         $mask = preg_replace('!([\\\\\\-\\]\\[/^])!','\\\${1}',$mask);
         if ($start !== null || $length !== null) {
@@ -612,7 +612,7 @@ class Jaws_UTF8
      * Reverse a string
      * @see http://www.php.net/strrev
     */
-    function strrev($str)
+    static function strrev($str)
     {
         preg_match_all('/./us', $str, $ar);
         return join('',array_reverse($ar[0]));
@@ -621,7 +621,7 @@ class Jaws_UTF8
     /**
      * Encode string by MIME header UTF-8 encoding
     */
-    function encode_mimeheader($str)
+    static function encode_mimeheader($str)
     {
         $length = 45; $pos = 0; $max = strlen($str);
         $buffer = '';
@@ -644,7 +644,7 @@ class Jaws_UTF8
      * Return a specific character
      * @see http://www.php.net/chr
     */
-    function chr($codes)
+    static function chr($codes)
     {
         if (is_scalar($codes)) $codes= func_get_args();
         $str= '';
@@ -671,7 +671,7 @@ class Jaws_UTF8
      * Return unicode ordinal of character
      * @see http://www.php.net/ord
      */
-    function ord($chr)
+    static function ord($chr)
     {
         $ord0 = ord($chr);
         if ( $ord0 >= 0 && $ord0 <= 127 ) {
@@ -732,7 +732,7 @@ class Jaws_UTF8
      * Convert all HTML entities to their applicable characters
      * @see http://www.php.net/strrev
      */
-    function html_entity_decode($string, $quote_style = ENT_QUOTES)
+    static function html_entity_decode($string, $quote_style = ENT_QUOTES)
     {
         return html_entity_decode($string, $quote_style, 'UTF-8');
     }
@@ -741,7 +741,7 @@ class Jaws_UTF8
      * Returns the JSON representation of a value
      * @see http://www.php.net/json_encode
      */
-    function json_encode($value = false)
+    static function json_encode($value = false)
     {
         if (is_null($value)) {
             return 'null';
@@ -797,7 +797,7 @@ class Jaws_UTF8
      * @see http://www.php.net/json_decode
      * @extracted from PEAR::Services_JSON
      */
-    function json_decode($str)
+    static function json_decode($str)
     {
         $str = preg_replace(array('#^\s*//(.+)$#m', '#^\s*/\*(.+)\*/#Us', '#/\*(.+)\*/\s*$#Us'), '', $str);
         $str = trim($str);
