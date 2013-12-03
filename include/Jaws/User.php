@@ -497,7 +497,7 @@ class Jaws_User
         $uData['username'] = strtolower($uData['username']);
 
         // nickname
-        $uData['nickname'] = $GLOBALS['app']->UTF8->trim($uData['nickname']);
+        $uData['nickname'] = Jaws_UTF8::trim($uData['nickname']);
         if (empty($uData['nickname'])) {
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
@@ -611,7 +611,7 @@ class Jaws_User
         $uData['username'] = strtolower($uData['username']);
 
         // nickname
-        $uData['nickname'] = $GLOBALS['app']->UTF8->trim($uData['nickname']);
+        $uData['nickname'] = Jaws_UTF8::trim($uData['nickname']);
         if (empty($uData['nickname'])) {
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
@@ -852,7 +852,7 @@ class Jaws_User
         $gData['owner'] = (int)$owner;
 
         // title
-        $gData['title'] = $GLOBALS['app']->UTF8->trim($gData['title']);
+        $gData['title'] = Jaws_UTF8::trim($gData['title']);
         if (empty($gData['title'])) {
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
@@ -914,7 +914,7 @@ class Jaws_User
 
         // title
         if (isset($gData['title'])) {
-            $gData['title'] = $GLOBALS['app']->UTF8->trim($gData['title']);
+            $gData['title'] = Jaws_UTF8::trim($gData['title']);
             if (empty($gData['title'])) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),

@@ -216,13 +216,13 @@ class Jaws_Gadget_Model
             $fast_url = '-' . $fast_url . '-';
         }
 
-        $fast_url = $GLOBALS['app']->UTF8->trim(Jaws_XSS::defilter($fast_url));
+        $fast_url = Jaws_UTF8::trim(Jaws_XSS::defilter($fast_url));
         $fast_url = preg_replace(
             array('#[^\p{L}[:digit:]_\.-\s]#u', '#[\s_-]#u', '#-+#u'),
             array('', '-', '-'),
-            $GLOBALS['app']->UTF8->strtolower($fast_url)
+            Jaws_UTF8::strtolower($fast_url)
         );
-        $fast_url = $GLOBALS['app']->UTF8->substr($fast_url, 0, 90);
+        $fast_url = Jaws_UTF8::substr($fast_url, 0, 90);
 
         if (!$unique_check) {
             return $fast_url;

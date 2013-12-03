@@ -120,7 +120,6 @@ class Jaws
     function __construct()
     {
         $this->loadObject('Jaws_Request', 'request', true);
-        $this->loadObject('Jaws_UTF8', 'UTF8');
         $this->loadObject('Jaws_Registry', 'Registry');
         $this->loadObject('Jaws_ACL', 'ACL');
         $this->loadObject('Jaws_Listener', 'Listener');
