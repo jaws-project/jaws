@@ -28,8 +28,8 @@ class Blocks_Hooks_Menu extends Jaws_Gadget_Hook
             foreach ($blocks as $block) {
                 $url = $this->gadget->urlMap('Block', array('id' => $block['id']));
                 $urls[] = array('url'   => $url,
-                                'title' => ($GLOBALS['app']->UTF8->strlen($block['title']) > $max_size)?
-                                            $GLOBALS['app']->UTF8->substr($block['title'], 0, $max_size) . '...' :
+                                'title' => (Jaws_UTF8::strlen($block['title']) > $max_size)?
+                                            Jaws_UTF8::substr($block['title'], 0, $max_size) . '...' :
                                             $block['title']);
             }
         }
