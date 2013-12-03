@@ -31,8 +31,8 @@ class Phoo_Hooks_Menu extends Jaws_Gadget_Hook
             foreach($albums as $a) {
                 $url = $this->gadget->urlMap('ViewAlbum', array('id' => $a['id']));
                 $urls[] = array('url'   => $url,
-                                'title' => ($GLOBALS['app']->UTF8->strlen($a['name']) > $max_size)?
-                                            $GLOBALS['app']->UTF8->substr($a['name'], 0, $max_size).'...' :
+                                'title' => (Jaws_UTF8::strlen($a['name']) > $max_size)?
+                                            Jaws_UTF8::substr($a['name'], 0, $max_size).'...' :
                                             $a['name']);
             }
         }
@@ -45,8 +45,8 @@ class Phoo_Hooks_Menu extends Jaws_Gadget_Hook
             foreach($groups as $group) {
                 $url = $this->gadget->urlMap('AlbumList', array('group' => $group['fast_url']));
                 $urls[] = array('url'   => $url,
-                                'title' => ($GLOBALS['app']->UTF8->strlen($group['name']) > $max_size)?
-                                            $GLOBALS['app']->UTF8->substr($group['name'], 0, $max_size).'...' :
+                                'title' => (Jaws_UTF8::strlen($group['name']) > $max_size)?
+                                            Jaws_UTF8::substr($group['name'], 0, $max_size).'...' :
                                             $group['name']);
             }
         }
