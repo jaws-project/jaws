@@ -41,8 +41,8 @@ class StaticPage_Hooks_Menu extends Jaws_Gadget_Hook
             );
             $urls[] = array('url'    => $url,
                             'title'  => '\\'. $group['title'],
-                            'title2' => ($GLOBALS['app']->UTF8->strlen($group['title']) >= $max_size)?
-                                         $GLOBALS['app']->UTF8->substr($group['title'], 0, $max_size).'...' :
+                            'title2' => (Jaws_UTF8::strlen($group['title']) >= $max_size)?
+                                         Jaws_UTF8::substr($group['title'], 0, $max_size).'...' :
                                          $group['title']);
             $pages = $pModel->GetPages($group['id']);
             foreach($pages as $page) {
@@ -56,8 +56,8 @@ class StaticPage_Hooks_Menu extends Jaws_Gadget_Hook
                     );
                     $urls[] = array('url'    => $url,
                                     'title'  => '\\'. $group['title'].'\\'. $page['title'],
-                                    'title2' => ($GLOBALS['app']->UTF8->strlen($page['title']) >= $max_size)?
-                                                 $GLOBALS['app']->UTF8->substr($page['title'], 0, $max_size).'...' :
+                                    'title2' => (Jaws_UTF8::strlen($page['title']) >= $max_size)?
+                                                 Jaws_UTF8::substr($page['title'], 0, $max_size).'...' :
                                                  $page['title']);
                 }
             }
