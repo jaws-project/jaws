@@ -119,7 +119,7 @@ class Jaws_Layout
         $this->attributes = $GLOBALS['app']->Registry->fetchAll('Settings', false);
         //parse default site keywords
         $this->attributes['site_keywords'] = array_map(
-            array($GLOBALS['app']->UTF8, 'trim'),
+            'Jaws_UTF8::trim',
             array_filter(explode(',', $this->attributes['site_keywords']))
         );
 
