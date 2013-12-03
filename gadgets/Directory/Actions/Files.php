@@ -361,7 +361,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
                               'filesize' => $res['file'][0]['host_filesize']);
         }
 
-        $response = $GLOBALS['app']->UTF8->json_encode($response);
+        $response = Jaws_UTF8::json_encode($response);
         return "<script>parent.onUpload($response);</script>";
     }
 
