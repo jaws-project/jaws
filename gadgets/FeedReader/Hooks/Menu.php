@@ -28,8 +28,8 @@ class FeedReader_Hooks_Menu extends Jaws_Gadget_Hook
             foreach ($feeds as $feed) {
                 $url = $this->gadget->urlMap('GetFeed', array('id' => $feed['id']));
                 $urls[] = array('url'   => $url,
-                                'title' => ($GLOBALS['app']->UTF8->strlen($feed['title']) > $max_size)?
-                                            $GLOBALS['app']->UTF8->substr($feed['title'], 0, $max_size).'...' :
+                                'title' => (Jaws_UTF8::strlen($feed['title']) > $max_size)?
+                                            Jaws_UTF8::substr($feed['title'], 0, $max_size).'...' :
                                             $feed['title']);
             }
         }
