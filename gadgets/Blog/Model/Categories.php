@@ -67,7 +67,7 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
      */
     function GetCategoryByName($name)
     {
-        $name = $GLOBALS['app']->UTF8->strtolower($name);
+        $name = Jaws_UTF8::strtolower($name);
         $catTable = Jaws_ORM::getInstance()->table('blog_category');
         $catTable->select('id:integer', 'name', 'description', 'fast_url', 'createtime', 'updatetime');
         $result = $catTable->where($catTable->lower('name'), $name)->fetchRow();

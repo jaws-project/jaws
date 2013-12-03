@@ -44,8 +44,8 @@ class Blog_Hooks_Menu extends Jaws_Gadget_Hook
                     array('id' => empty($cat['fast_url'])? $cat['id'] : $cat['fast_url'])
                 );
                 $items[] = array('url'   => $url,
-                                 'title' => ($GLOBALS['app']->UTF8->strlen($cat['name']) > $max_size)?
-                                             $GLOBALS['app']->UTF8->substr($cat['name'], 0, $max_size) . '...' :
+                                 'title' => (Jaws_UTF8::strlen($cat['name']) > $max_size)?
+                                             Jaws_UTF8::substr($cat['name'], 0, $max_size) . '...' :
                                              $cat['name']);
             }
         }
@@ -59,8 +59,8 @@ class Blog_Hooks_Menu extends Jaws_Gadget_Hook
                     array('id' => empty($entry['fast_url'])? $entry['id'] : $entry['fast_url'])
                 );
                 $items[] = array('url'   => $url,
-                                 'title' => ($GLOBALS['app']->UTF8->strlen($entry['title']) > $max_size)?
-                                             $GLOBALS['app']->UTF8->substr($entry['title'], 0, $max_size) . '...' :
+                                 'title' => (Jaws_UTF8::strlen($entry['title']) > $max_size)?
+                                             Jaws_UTF8::substr($entry['title'], 0, $max_size) . '...' :
                                              $entry['title']);
             }
         }

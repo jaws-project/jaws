@@ -227,8 +227,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                 $link = $this->gadget->urlMap('SingleView', array('id' => $id), true);
                 $title = $post['title'];
                 $text = $content['text_block'];
-                if ($GLOBALS['app']->UTF8->strlen($text) > 250) {
-                    $text = $GLOBALS['app']->UTF8->substr($text, 0, 250) . '...';
+                if (Jaws_UTF8::strlen($text) > 250) {
+                    $text = Jaws_UTF8::substr($text, 0, 250) . '...';
                 }
                 $tModel->SendTrackback($title, $text, $link, $to);
             }
@@ -510,8 +510,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                 $link = $this->gadget->urlMap('SingleView', array('id' => $id), true);
                 $title = $post['title'];
                 $text = $content['text_block'];
-                if ($GLOBALS['app']->UTF8->strlen($text) > 250) {
-                    $text = $GLOBALS['app']->UTF8->substr($text, 0, 250) . '...';
+                if (Jaws_UTF8::strlen($text) > 250) {
+                    $text = Jaws_UTF8::substr($text, 0, 250) . '...';
                 }
                 $tModel->SendTrackback($title, $text, $link, $to);
             }
