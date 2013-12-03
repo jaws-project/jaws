@@ -118,9 +118,9 @@ class SyntaxHighlight_Plugin extends Jaws_Plugin
         $lang = trim($code_information[1]);
 
         
-        $lang = $GLOBALS['app']->UTF8->html_entity_decode($lang);
+        $lang = Jaws_UTF8::html_entity_decode($lang);
         $lang = preg_replace('/[\'\"]/si', '', $lang);
-        $lang = $GLOBALS['app']->UTF8->strtolower($lang);
+        $lang = Jaws_UTF8::strtolower($lang);
 
         $valid_lang = array('php','actionscript', 'ada', 'apache',
                             'asm', 'asp', 'bash', 'applescript',
