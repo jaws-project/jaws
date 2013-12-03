@@ -18,7 +18,7 @@ class Piwi
      * @return object  A piwi object
      * @access public
      */
-    function &createWidget($widget)
+    static function &createWidget($widget)
     {
         $file = '';
         if (file_exists(PIWI_PATH."/Widget/Bin/{$widget}.php")) {
@@ -199,7 +199,7 @@ class Piwi
      * @param   string  $param  String param (can be the name or id of a widget)
      * @param   string  $action Action to do
      */
-    function managePiwiIds($param, $action)
+    static function managePiwiIds($param, $action)
     {
         static $piwi_usedIds;
 
@@ -250,7 +250,7 @@ class Piwi
      * @access  public
      * @param   string  $id ID
      */
-    function registerId($id)
+    static function registerId($id)
     {
         Piwi::managePiwiIds($id, 'REGISTER');
     }
