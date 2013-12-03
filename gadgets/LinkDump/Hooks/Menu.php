@@ -31,8 +31,8 @@ class LinkDump_Hooks_Menu extends Jaws_Gadget_Hook
                 $gid = empty($group['fast_url']) ? $group['id'] : $group['fast_url'];
                 $url = $this->gadget->urlMap('Category', array('id' => $gid));
                 $urls[] = array('url'   => $url,
-                                'title' => ($GLOBALS['app']->UTF8->strlen($title) > $max_size)?
-                                            $GLOBALS['app']->UTF8->substr($title, 0, $max_size - 3) . '...' :
+                                'title' => (Jaws_UTF8::strlen($title) > $max_size)?
+                                            Jaws_UTF8::substr($title, 0, $max_size - 3) . '...' :
                                             $title);
             }
         }
