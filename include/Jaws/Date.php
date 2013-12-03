@@ -152,7 +152,7 @@ class Jaws_Date
      * @param   string  $format Format to use
      * @return The original date with a new format
      */
-    function Format()
+    function Format($date, $format = null)
     {
     }
 
