@@ -309,7 +309,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
                               'message' => $res['upload_image'][0]['host_filename']);
         }
 
-        $response = $GLOBALS['app']->UTF8->json_encode($response);
+        $response = Jaws_UTF8::json_encode($response);
         return "<script type='text/javascript'>parent.onUpload($response);</script>";
     }
 
