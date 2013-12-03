@@ -514,7 +514,7 @@ class Jaws
      * @return  string The original path if it exists or an unknow.png path
      * @access  public
      */
-    function CheckImage($path)
+    static function CheckImage($path)
     {
         if (is_file($path)) {
             return $path;
