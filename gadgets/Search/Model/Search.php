@@ -73,7 +73,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
                                 $words = array_map('trim', $words);
                                 $words = array_filter($words , 'trim');
                                 foreach($words as $widx => $word) {
-                                    $word = $GLOBALS['app']->UTF8->trim($word);
+                                    $word = Jaws_UTF8::trim($word);
                                     switch($option) {
                                         case 'exclude':
                                             foreach($fields as $fidx => $field) {
@@ -210,17 +210,17 @@ class Search_Model_Search extends Jaws_Gadget_Model
             'least'   => '',
             'exclude' => '',
             'date'    => '');
-        $size = $GLOBALS['app']->UTF8->strlen($phrase);
+        $size = Jaws_UTF8::strlen($phrase);
         $lastKey = '';
         $tmpWord = '';
         for($i=0; $i<$size; $i++) {
-            $word = $GLOBALS['app']->UTF8->substr($phrase, $i , 1);
-            $ord  = $GLOBALS['app']->UTF8->ord($word);
+            $word = Jaws_UTF8::substr($phrase, $i , 1);
+            $ord  = Jaws_UTF8::ord($word);
             $tmpWord.= $word;
             switch($ord) {
                 case 34: // Quotes..
                     if ($lastKey == 'exact') { //Open exact was open, we are closing it
-                        $newOptions['exact'].= $GLOBALS['app']->UTF8->substr($tmpWord, 1, $GLOBALS['app']->UTF8->strlen($tmpWord) - 2);
+                        $newOptions['exact'].= Jaws_UTF8::substr($tmpWord, 1, Jaws_UTF8::strlen($tmpWord) - 2);
                         $lastKey = '';
                         $tmpWord = '';
                     } else if (empty($lastKey)) {
@@ -244,7 +244,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
                             if ($tmpWord[0] == ' ') {
                                 $substrCount = 2;
                             }
-                            $newOptions[$lastKey].= $GLOBALS['app']->UTF8->substr($tmpWord, $substrCount);
+                            $newOptions[$lastKey].= Jaws_UTF8::substr($tmpWord, $substrCount);
                         } else {
                             $newOptions[$lastKey].= $tmpWord;
                         }
@@ -272,8 +272,8 @@ class Search_Model_Search extends Jaws_Gadget_Model
 
             $content = (isset($options[$option])) ? $options[$option] : '';
             $content = $content;
-            $content = $GLOBALS['app']->UTF8->strtolower($GLOBALS['app']->UTF8->trim($content));
-            if ($GLOBALS['app']->UTF8->strlen($content) >= $min_key_len) {
+            $content = Jaws_UTF8::strtolower(Jaws_UTF8::trim($content));
+            if (Jaws_UTF8::strlen($content) >= $min_key_len) {
                 $searchable = true;
             }
 

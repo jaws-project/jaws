@@ -105,7 +105,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
                     if (!isset($item['strip_tags']) || $item['strip_tags']) {
                         $item['snippet'] = strip_tags($item['snippet']);
                     }
-                    $item['snippet'] = $GLOBALS['app']->UTF8->substr($item['snippet'], 0, $max_result_len);
+                    $item['snippet'] = Jaws_UTF8::substr($item['snippet'], 0, $max_result_len);
 
                     $tpl->SetVariable('snippet', $item['snippet']);
                     $tpl->SetVariable('date', $date->Format($item['date']));
