@@ -633,7 +633,7 @@ class Jaws_Image
             }
         }
 
-        $unknown = $GLOBALS['app']->CheckImage($unknown);
+        $unknown = Jaws::CheckImage($unknown);
         $ext = strtolower(substr($unknown, strrpos($unknown,'.')+1));
         header('Content-type: image/'.$ext);
         return file_get_contents($unknown);
