@@ -162,8 +162,8 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
         foreach ($comments as $c) {
             $entry_id = $c['reference'];
             $entry = new AtomEntry();
-            $entry->SetTitle(($GLOBALS['app']->UTF8->strlen($c['msg_txt']) >= $max_title_size)?
-                $GLOBALS['app']->UTF8->substr($c['msg_txt'], 0, $max_title_size).'...' :
+            $entry->SetTitle((Jaws_UTF8::strlen($c['msg_txt']) >= $max_title_size)?
+                Jaws_UTF8::substr($c['msg_txt'], 0, $max_title_size).'...' :
                 $c['msg_txt']);
 
             switch ($gadget) {
