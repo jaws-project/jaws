@@ -95,7 +95,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
                 $tpl->SetVariable('lastpost_date_iso', $objDate->ToISO((int)$topic['last_post_time']));
                 $tpl->SetVariable(
                     'message',
-                    $GLOBALS['app']->UTF8->substr(
+                    Jaws_UTF8::substr(
                         strip_tags($this->gadget->ParseText($topic['message'], 'Forums', 'index')),
                         0,
                         $max_size

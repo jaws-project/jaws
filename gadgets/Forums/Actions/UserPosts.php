@@ -67,7 +67,7 @@ class Forums_Actions_UserPosts extends Forums_Actions_Default
                 $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
                 $tpl->SetVariable(
                     'message',
-                    $GLOBALS['app']->UTF8->substr(
+                    Jaws_UTF8::substr(
                         strip_tags($this->gadget->ParseText($post['message'], 'Forums', 'index')),
                         0,
                         $max_size
