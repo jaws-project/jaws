@@ -33,7 +33,7 @@ class Users_Actions_Admin_Avatar extends Users_Actions_Admin_Default
                               'message' => $res['upload_avatar'][0]['host_filename']);
         }
 
-        $response = $GLOBALS['app']->UTF8->json_encode($response);
+        $response = Jaws_UTF8::json_encode($response);
         return "<script type='text/javascript'>parent.onUpload($response);</script>";
     }
 
