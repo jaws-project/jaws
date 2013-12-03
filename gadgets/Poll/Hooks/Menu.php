@@ -31,8 +31,8 @@ class Poll_Hooks_Menu extends Jaws_Gadget_Hook
             foreach ($polls as $poll) {
                 $url   = $this->gadget->urlMap('ViewPoll', array('id' => $poll['id']));
                 $urls[] = array('url'   => $url,
-                                'title' => ($GLOBALS['app']->UTF8->strlen($poll['question']) > $max_size)?
-                                            $GLOBALS['app']->UTF8->substr($poll['question'], 0, $max_size).'...' :
+                                'title' => (Jaws_UTF8::strlen($poll['question']) > $max_size)?
+                                            Jaws_UTF8::substr($poll['question'], 0, $max_size).'...' :
                                             $poll['question']);
             }
         }
