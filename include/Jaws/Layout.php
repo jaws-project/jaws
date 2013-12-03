@@ -406,7 +406,7 @@ class Jaws_Layout
     function AddToMetaKeywords($keywords)
     {
         if (!empty($keywords)) {
-            $keywords = array_map(array($GLOBALS['app']->UTF8,'trim'), explode(',', $keywords));
+            $keywords = array_map('Jaws_UTF8::trim', explode(',', $keywords));
             $this->attributes['site_keywords'] = array_merge($this->attributes['site_keywords'], $keywords);
         }
     }
