@@ -86,7 +86,7 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_Action
                 'filetype' => $file['attachment' . $file_num][0]['host_filetype']));
         }
 
-        $response = $GLOBALS['app']->UTF8->json_encode($response);
+        $response = Jaws_UTF8::json_encode($response);
         return "<script type='text/javascript'>parent.onUpload($response);</script>";
     }
 
