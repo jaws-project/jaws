@@ -11,14 +11,14 @@ class EmailEncoder
         $code = '<a  href="'. $this->encText('mailto:', true). $this->encText($email, true).'">' . $name . '</a>';
         $javacode='<script language="JavaScript" type="text/JavaScript">';
         $i = 0;
-        $code_l = $GLOBALS['app']->UTF8->strlen($code);
+        $code_l = Jaws_UTF8::strlen($code);
         while ($i < $code_l) {
             //get next part of code with random length from 15 to 20
             $len = rand(15, 20);
             if ($i + $len > $code_l) {
                 $len = $code_l - $i;
             }
-            $part = $GLOBALS['app']->UTF8->substr($code, $i, $len);
+            $part = Jaws_UTF8::substr($code, $i, $len);
             $javacode .="document.write('$part');";
             $i += $len;
         }
