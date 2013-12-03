@@ -31,7 +31,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         }
 
         if (!is_array($tags)) {
-            $tags = array_filter(array_map(array($GLOBALS['app']->UTF8, 'trim'), explode(',', $tags)));
+            $tags = array_filter(array_map('Jaws_UTF8::trim', explode(',', $tags)));
         }
 
         $oldTagsInfo = $this->GetItemTags(
@@ -88,7 +88,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         }
 
         if (!is_array($tags)) {
-            $tags = array_filter(array_map(array($GLOBALS['app']->UTF8, 'trim'), explode(',', $tags)));
+            $tags = array_filter(array_map('Jaws_UTF8::trim', explode(',', $tags)));
         }
 
         $systemTags = array();
