@@ -29,8 +29,8 @@ class Quotes_Hooks_Menu extends Jaws_Gadget_Hook
             foreach ($groups as $group) {
                 $url = $this->gadget->urlMap('ViewGroupQuotes', array('id' => $group['id']));
                 $urls[] = array('url'   => $url,
-                                'title' => ($GLOBALS['app']->UTF8->strlen($group['title']) > $max_size)?
-                                            $GLOBALS['app']->UTF8->substr($group['title'], 0, $max_size).'...' :
+                                'title' => (Jaws_UTF8::strlen($group['title']) > $max_size)?
+                                            Jaws_UTF8::substr($group['title'], 0, $max_size).'...' :
                                             $group['title']);
             }
         }
