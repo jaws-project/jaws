@@ -21,7 +21,7 @@ class Jaws_Header
      * @param   int     $status_code
      * @access  public
      */
-    function Location($url = '', $resource = '', $status_code = 302)
+    static function Location($url = '', $resource = '', $status_code = 302)
     {
         if (empty($url) || !preg_match('$^(http|https|ftp)://.*$i', $url)) {
             $url = $GLOBALS['app']->getSiteURL('/'). $url;
@@ -35,7 +35,7 @@ class Jaws_Header
      *
      * @access  public
      */
-    function Referrer()
+    static function Referrer()
     {
         if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
             $url = $_SERVER['HTTP_REFERER'];
@@ -53,7 +53,7 @@ class Jaws_Header
      * @param   int     $timeout Timeout to redirect
      * @access  public
      */
-    function Refresh($url, $timeout = 0)
+    static function Refresh($url, $timeout = 0)
     {
         $timeout = is_numeric($timeout)? $timeout : 0;
         header('Refresh: '.$timeout.'; URL='.$url);
@@ -64,7 +64,7 @@ class Jaws_Header
      *
      * @access  public
      */
-    function ChangeTo404()
+    static function ChangeTo404()
     {
         header('Status: 404 Not Found');
     }
@@ -76,7 +76,7 @@ class Jaws_Header
      * @param   string  $date Date in format: Day, day Month Year Hour:Minutes:Seconds GMT
      * @access  public
      */
-    function Expire($date)
+    static function Expire($date)
     {
         header('Expires: {$date}');
     }
@@ -86,7 +86,7 @@ class Jaws_Header
      *
      * @access  public
      */
-    function DisableCache()
+    static function DisableCache()
     {
         // HTTP/1.1
         header('Cache-Control: no-store, no-cache, must-revalidate');
@@ -103,7 +103,7 @@ class Jaws_Header
      * @param   string  $file   Filename
      * @access  public
      */
-    function ChangeContent($ctype, $file)
+    static function ChangeContent($ctype, $file)
     {
         header('Content-type: '.$ctype);
         header('Content-Disposition: attachment; filename='.$file);
