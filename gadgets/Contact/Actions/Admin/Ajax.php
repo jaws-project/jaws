@@ -333,7 +333,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @internal param  string  $grid
      * @return  array   Recipients or Contacts
      */
-    function GetData()
+    function getData()
     {
         @list($offset, $grid) = jaws()->request->fetchAll('post');
         if (!is_numeric($offset)) {
