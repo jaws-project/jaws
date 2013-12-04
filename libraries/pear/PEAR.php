@@ -202,7 +202,7 @@ class PEAR
     * @return mixed   A reference to the variable. If not set it will be
     *                 auto initialised to NULL.
     */
-    function &getStaticProperty($class, $var)
+    static function &getStaticProperty($class, $var)
     {
         static $properties;
         if (!isset($properties[$class])) {
@@ -247,7 +247,7 @@ class PEAR
      * @access  public
      * @return  bool    true if parameter is an error
      */
-    function isError($data, $code = null)
+    static function isError($data, $code = null)
     {
         if (!is_object($data)) {
              return false;
@@ -472,7 +472,7 @@ class PEAR
      * @see PEAR::setErrorHandling
      * @since PHP 4.0.5
      */
-    function &raiseError($message = null,
+    static function &raiseError($message = null,
                          $code = null,
                          $mode = null,
                          $options = null,
@@ -493,20 +493,6 @@ class PEAR
             $c = $r->getConstructor();
             $p = array_shift($c->getParameters());
             $skipmsg = ($p->getName() != 'message');
-        }
-
-        if (
-            isset($this) &&
-            isset($this->_expected_errors) &&
-            count($this->_expected_errors) > 0 &&
-            count($exp = end($this->_expected_errors))
-        ) {
-            if ($exp[0] == "*" ||
-                (is_int(reset($exp)) && in_array($code, $exp)) ||
-                (is_string(reset($exp)) && in_array($message, $exp))
-            ) {
-                $mode = PEAR_ERROR_RETURN;
-            }
         }
 
         // No mode given, try global ones
