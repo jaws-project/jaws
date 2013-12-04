@@ -187,7 +187,7 @@ function stopAction()
  */
 function export_lang()
 {
-    window.location= base_script + '?gadget=Languages&action=Export&lang=' + $('lang').value;
+    window.location= LanguagesAjax.baseScript + '?gadget=Languages&action=Export&lang=' + $('lang').value;
 }
 
 var LanguagesAjax = new JawsAjax('Languages', LanguagesCallback);
