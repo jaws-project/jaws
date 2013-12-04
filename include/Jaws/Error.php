@@ -144,7 +144,7 @@ class Jaws_Error
      * @access  public
      * @param   string  $message Message to print
      */
-    function Fatal($message, $backtrace = 0)
+    static function Fatal($message, $backtrace = 0)
     {
         // Set Headers
         header('Content-Type: text/html; charset=utf-8');
