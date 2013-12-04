@@ -76,7 +76,7 @@ class VisitCounter_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @access  public
      * @return  array   List of visits
      */
-    function GetData()
+    function getData()
     {
         @list($offset) = jaws()->request->fetchAll('post');
         if (!is_numeric($offset)) {
