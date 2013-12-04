@@ -43,7 +43,8 @@ class Jaws_Header
             $url = $GLOBALS['app']->getSiteURL('/');
         }
 
-        terminate($data = null, 302, $url);
+        $data = null;
+        terminate($data, 302, $url);
     }
 
     /**

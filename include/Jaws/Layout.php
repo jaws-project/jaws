@@ -157,8 +157,8 @@ class Jaws_Layout
            (JAWS_SCRIPT != 'admin' || $GLOBALS['app']->Session->Logged()) &&
            !$GLOBALS['app']->Session->IsSuperAdmin()
         ) {
-            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
-            terminate($data = Jaws_HTTPError::Get(503), 503);
+            $data = Jaws_HTTPError::Get(503);
+            terminate($data, 503);
         }
 
         $favicon = $this->attributes['site_favicon'];
