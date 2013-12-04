@@ -67,7 +67,7 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @access  public
      * @return  array   An array of emblems
      */
-    function GetData()
+    function getData()
     {
         @list($limit) = jaws()->request->fetchAll('post');
         $gadget = $this->gadget->action->loadAdmin('Emblems');
