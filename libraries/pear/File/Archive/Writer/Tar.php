@@ -212,7 +212,7 @@ class File_Archive_Writer_Tar extends File_Archive_Writer_Archive
     {
         if ($this->useBuffer) {
             if (!file_exists($filename)) {
-                return PEAR::raiseError("File not found: $filename.");
+                return PEAR::raiseError("File not found: $filename");
             }
             $this->buffer .= file_get_contents($filename);
         } else {
