@@ -741,7 +741,7 @@ class Jaws_DB
         }
 
         if (!isset($this->schema)) {
-            $this->schema =& MDB2_Schema::factory($this->dbc, $options);;
+            $this->schema =& MDB2_Schema::factory($this->dbc, $options);
             if (MDB2::isError($this->schema)) {
                 return $this->schema;
             }
@@ -749,7 +749,6 @@ class Jaws_DB
 
         $method = $data === true ? 'writeInitialization' : 'updateDatabase';
         $result = $this->schema->$method($file, $file_update, $variables);
-
         if (MDB2::isError($result)) {
             $this->schema->disconnect();
             unset($this->schema);
