@@ -574,7 +574,7 @@ function onUpload(response) {
         $('frm_avatar').reset();
     } else {
         var filename = response.message + '&' + (new Date()).getTime();
-        $('image').src = base_script + '?gadget=Users&action=LoadAvatar&file=' + filename;
+        $('image').src = UsersAjax.baseScript + '?gadget=Users&action=LoadAvatar&file=' + filename;
         $('avatar').value = response.message;
     }
     $('ifrm_upload').destroy();
