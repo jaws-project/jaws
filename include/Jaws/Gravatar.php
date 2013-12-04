@@ -11,7 +11,7 @@
  */
 class Jaws_Gravatar
 {
-    function GetGravatar($email = '', $size = 48)
+    static function GetGravatar($email = '', $size = 48)
     {
         $theme = $GLOBALS['app']->GetTheme();
         if (file_exists($theme['path'] . 'default_avatar.png')) {
