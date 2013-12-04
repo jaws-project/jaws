@@ -289,7 +289,7 @@ class Crypt_RSA_Key extends Crypt_RSA_ErrorHandler
      * @return object        key as Crypt_RSA_Key object
      * @access public
      */
-    function &fromString($key_str, $wrapper_name = 'default')
+    static function &fromString($key_str, $wrapper_name = 'default')
     {
         list($modulus, $exponent, $key_type) = unserialize(base64_decode($key_str));
         $obj = new Crypt_RSA_Key($modulus, $exponent, $key_type, $wrapper_name);
@@ -307,7 +307,7 @@ class Crypt_RSA_Key extends Crypt_RSA_ErrorHandler
      * @return bool        true if $key is valid, else false
      * @access public
      */
-    function isValid($key)
+    static function isValid($key)
     {
         return (is_object($key) && strtolower(get_class($key)) === strtolower(__CLASS__));
     }
