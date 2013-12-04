@@ -103,7 +103,7 @@ class Friends_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @internal param  int     $limit  limit data
      * @return   array  data array
      */
-    function GetData()
+    function getData()
     {
         @list($limit) = jaws()->request->fetchAll('post');
         if(empty($limit)) {
