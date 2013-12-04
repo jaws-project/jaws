@@ -34,7 +34,7 @@ class Jaws_String
      * @access  public
      * Based on: http://photomatt.net/scripts/autop and other sites that are using autop
      */
-    function AutoParagraph(&$text)
+    static function AutoParagraph(&$text)
     {
         // cross-platform newlines
         $text = preg_replace("/(\r\n|\r)/", "\n", $text);
