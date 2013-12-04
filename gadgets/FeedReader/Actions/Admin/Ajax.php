@@ -114,7 +114,7 @@ class FeedReader_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @access  public
      * @return  array   Feed sites
      */
-    function GetData()
+    function getData()
     {
         @list($offset) = jaws()->request->fetchAll('post');
         $gadget = $this->gadget->action->loadAdmin('Feed');

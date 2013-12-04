@@ -46,7 +46,7 @@ $admin_actions['DeleteFeed'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
-$admin_actions['GetData'] = array(
+$admin_actions['getData'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
