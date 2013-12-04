@@ -77,7 +77,7 @@ define('MDB2_SCHEMA_ERROR_WRITER',      -6);
  * @license  BSD http://www.opensource.org/licenses/bsd-license.php
  * @link     http://pear.php.net/packages/MDB2_Schema
  */
-class MDB2_Schema extends PEAR
+class MDB2_Schema
 {
     // {{{ properties
 
@@ -234,7 +234,7 @@ class MDB2_Schema extends PEAR
      * @access public
      * @see     MDB2::parseDSN
      */
-    function &factory(&$db, $options = array())
+    static function &factory(&$db, $options = array())
     {
         $obj = new MDB2_Schema();
 
