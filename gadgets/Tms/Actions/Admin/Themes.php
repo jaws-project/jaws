@@ -76,7 +76,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
                                            'download_button',
                                            _t('TMS_DOWNLOAD'), 
                                            STOCK_DOWN);
-        $btnDownload->AddEvent(ON_CLICK, 'javascript: downloadTheme();');
+        $btnDownload->AddEvent(ON_CLICK, 'javascript:downloadTheme();');
         $btnDownload->SetStyle('display: none');
         $tpl->SetVariable('btn_download', $btnDownload->Get());
 
