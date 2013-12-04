@@ -19,20 +19,6 @@ class Jaws_Gadget_Action
      */
     public $gadget = null;
 
-    /**
-     * Store actions objects for later use so we aren't running around with multiple copies
-     * @var     array
-     * @access  private
-     */
-    private $objects = array();
-
-    /**
-     * Actions attributes array
-     * @var     array
-     * @access  private
-     */
-    private $actions = array();
-
 
     /**
      * Constructor
@@ -44,17 +30,7 @@ class Jaws_Gadget_Action
     public function __construct($gadget)
     {
         $this->gadget = $gadget;
-    }
-
-
-    /**
-     * initialize object
-     *
-     * @access  public
-     * @return  void
-     */
-    public function init()
-    {
+        // fetch gadget actions
         $this->fetchAll();
     }
 
@@ -76,7 +52,7 @@ class Jaws_Gadget_Action
             return $this;
         }
 
-        if (!isset($this->objects['Actions'][$filename])) {
+        if (!isset($this->gadget->objects['Actions'][$filename])) {
             $classname = $this->gadget->name. "_Actions_$filename";
             $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/$filename.php";
 
@@ -89,11 +65,11 @@ class Jaws_Gadget_Action
                 return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
             }
 
-            $this->objects['Actions'][$filename] = new $classname($this->gadget);
+            $this->gadget->objects['Actions'][$filename] = new $classname($this->gadget);
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget action class: [$classname]");
         }
 
-        return $this->objects['Actions'][$filename];
+        return $this->gadget->objects['Actions'][$filename];
     }
 
 
@@ -114,7 +90,7 @@ class Jaws_Gadget_Action
             return $this;
         }
 
-        if (!isset($this->objects['AdminActions'][$filename])) {
+        if (!isset($this->gadget->objects['AdminActions'][$filename])) {
             $classname = $this->gadget->name. "_Actions_Admin_$filename";
             $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/Admin/$filename.php";
 
@@ -127,11 +103,11 @@ class Jaws_Gadget_Action
                 return Jaws_Error::raiseError("Class [$classname] not exists!", __FUNCTION__);
             }
 
-            $this->objects['AdminActions'][$filename] = new $classname($this->gadget);
+            $this->gadget->objects['AdminActions'][$filename] = new $classname($this->gadget);
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded gadget action class: [$classname]");
         }
 
-        return $this->objects['AdminActions'][$filename];
+        return $this->gadget->objects['AdminActions'][$filename];
     }
 
 
@@ -144,26 +120,26 @@ class Jaws_Gadget_Action
      */
     public function fetchAll($script = '')
     {
-        if (empty($this->actions)) {
+        if (empty($this->gadget->actions)) {
             $file = JAWS_PATH . 'gadgets/'. $this->gadget->name. '/Actions.php';
             if (!file_exists($file)) {
                 return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
             }
             include_once($file);
             if (isset($actions) && !empty($actions)) {
-                $this->actions['index'] = $actions;
+                $this->gadget->actions['index'] = $actions;
             } else {
-                $this->actions['index'] = array();
+                $this->gadget->actions['index'] = array();
             }
 
             if (isset($admin_actions) && !empty($admin_actions)) {
-                $this->actions['admin'] = $admin_actions;
+                $this->gadget->actions['admin'] = $admin_actions;
             } else {
-                $this->actions['admin'] = array();
+                $this->gadget->actions['admin'] = array();
             }
         }
 
-        return empty($script)? $this->actions : $this->actions[$script];
+        return empty($script)? $this->gadget->actions : $this->gadget->actions[$script];
     }
 
 
@@ -288,7 +264,7 @@ class Jaws_Gadget_Action
             $GLOBALS['app']->Layout->SetDescription($description);
         }
 
-        $file = $this->actions[JAWS_SCRIPT][$action]['file'];
+        $file = $this->gadget->actions[JAWS_SCRIPT][$action]['file'];
         if (JAWS_SCRIPT == 'index') {
             $objAction = Jaws_Gadget::getInstance($this->gadget->name)->action->load($file);
         } else {
@@ -302,7 +278,7 @@ class Jaws_Gadget_Action
         if ($GLOBALS['app']->Session->Logged()) {
             $this->gadget->event->shout(
                 'Log',
-                array($this->gadget->name, $action, @$this->actions[JAWS_SCRIPT][$action]['loglevel'])
+                array($this->gadget->name, $action, @$this->gadget->actions[JAWS_SCRIPT][$action]['loglevel'])
             );
         }
 
@@ -321,7 +297,7 @@ class Jaws_Gadget_Action
      */
     public function SetActionMode($action, $new_mode, $old_mode, $desc = null, $file = null)
     {
-        $this->actions[JAWS_SCRIPT][$action] = array(
+        $this->gadget->actions[JAWS_SCRIPT][$action] = array(
             'name' => $action,
             $new_mode => true,
             $old_mode => false,
@@ -341,8 +317,8 @@ class Jaws_Gadget_Action
     public function IsStandAlone($action)
     {
         if ($this->IsValidAction($action, 'index')) {
-            return (isset($this->actions['index'][$action]['standalone']) &&
-                    $this->actions['index'][$action]['standalone']);
+            return (isset($this->gadget->actions['index'][$action]['standalone']) &&
+                    $this->gadget->actions['index'][$action]['standalone']);
         }
         return false;
     }
@@ -358,8 +334,8 @@ class Jaws_Gadget_Action
     public function IsStandAloneAdmin($action)
     {
         if ($this->IsValidAction($action, 'admin')) {
-            return (isset($this->actions['admin'][$action]['standalone']) &&
-                    $this->actions['admin'][$action]['standalone']);
+            return (isset($this->gadget->actions['admin'][$action]['standalone']) &&
+                    $this->gadget->actions['admin'][$action]['standalone']);
         }
         return false;
     }
@@ -374,7 +350,7 @@ class Jaws_Gadget_Action
      */
     public function IsValidAction($action, $script = JAWS_SCRIPT)
     {
-        return isset($this->actions[$script][$action]);
+        return isset($this->gadget->actions[$script][$action]);
     }
 
 
