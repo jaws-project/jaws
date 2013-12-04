@@ -179,11 +179,13 @@ class Jaws_Gadget_Installer
         $this->gadget->registry->insertAll($installer->_RegKeys, $this->gadget->name);
 
         // load gadget install method
-        $result = $installer->Install($insert, $variables);
-        if (Jaws_Error::IsError($result)) {
-            // removeing gadget registry keys
-            $GLOBALS['app']->Registry->delete($this->gadget->name);
-            return $result;
+        if (method_exists($installer, 'Install')) {
+            $result = $installer->Install($insert, $variables);
+            if (Jaws_Error::IsError($result)) {
+                // removeing gadget registry keys
+                $GLOBALS['app']->Registry->delete($this->gadget->name);
+                return $result;
+            }
         }
 
         // ACL keys
@@ -251,9 +253,11 @@ class Jaws_Gadget_Installer
             return $installer;
         }
 
-        $result = $installer->Uninstall();
-        if (Jaws_Error::IsError($result)) {
-            return $result;
+        if (method_exists($installer, 'Uninstall')) {
+            $result = $installer->Uninstall();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         // removeing gadget from installed gadgets list
@@ -303,9 +307,11 @@ class Jaws_Gadget_Installer
             return $installer;
         }
 
-        $result = $installer->Upgrade($oldVersion, $newVersion);
-        if (Jaws_Error::IsError($result)) {
-            return $result;
+        if (method_exists($installer, 'Upgrade')) {
+            $result = $installer->Upgrade($oldVersion, $newVersion);
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         if (is_string($result)) {
