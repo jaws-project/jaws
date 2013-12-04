@@ -114,7 +114,7 @@ class MDB2_Schema_Parser extends XML_Parser
     ) {
         // force ISO-8859-1 due to different defaults for PHP4 and PHP5
         // todo: this probably needs to be investigated some more andcleaned up
-        parent::XML_Parser('ISO-8859-1');
+        parent::__construct('ISO-8859-1');
 
         $this->variables = $variables;
         $this->structure = $structure;
@@ -126,14 +126,7 @@ class MDB2_Schema_Parser extends XML_Parser
         );
     }
 
-    function MDB2_Schema_Parser($variables, $fail_on_invalid_names = true,
-        $structure = false, $valid_types = array(), $force_defaults = true,
-        $max_identifiers_length = null
-    ) {
-        $this->__construct($variables, $fail_on_invalid_names, $structure, $valid_types, $force_defaults);
-    }
-
-    function startHandler($xp, $element, $attribs)
+    function startHandler($xp, $element, &$attribs)
     {
         if (strtolower($element) == 'variable') {
             $this->var_mode = true;
