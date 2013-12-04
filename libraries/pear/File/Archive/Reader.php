@@ -60,7 +60,7 @@ class File_Archive_Reader
      */
     function select($filename, $close = true)
     {
-        $std = $this->getStandardURL($filename);
+        $std = self::getStandardURL($filename);
         if (substr($std, -1)=='/') {
             $std = substr($std, 0, -1);
         }
@@ -96,7 +96,7 @@ class File_Archive_Reader
      * @param string $path a valid URL that may contain . or .. and \
      * @static
      */
-    function getStandardURL($path)
+    static function getStandardURL($path)
     {
         if ($path == '.') {
             return '';

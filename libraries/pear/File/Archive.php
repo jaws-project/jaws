@@ -61,7 +61,7 @@ function File_Archive_cleanCache($file, $group)
  */
 class File_Archive
 {
-    function& _option($name)
+    static function& _option($name)
     {
         static $container = array(
             'zipCompressionLevel' => 9,
@@ -137,7 +137,7 @@ class File_Archive
     /**
      * Retrieve the value of an option
      */
-    function getOption($name)
+    static function getOption($name)
     {
         return File_Archive::_option($name);
     }
@@ -254,7 +254,7 @@ class File_Archive
      *       function may not work with
      *       URLs containing folders which name ends with such an extension
      */
-    function readSource(&$source, $URL, $symbolic = null,
+    static function readSource(&$source, $URL, $symbolic = null,
                   $uncompression = 0, $directoryDepth = -1)
     {
         return File_Archive::_readSource($source, $URL, $reachable, $baseDir,
@@ -268,7 +268,7 @@ class File_Archive
      *
      * @access private
      */
-    function _readSource(&$toConvert, $URL, &$reachable, &$baseDir, $symbolic = null,
+    static function _readSource(&$toConvert, $URL, &$reachable, &$baseDir, $symbolic = null,
                   $uncompression = 0, $directoryDepth = -1)
     {
         $source =& File_Archive::_convertToReader($toConvert);
@@ -471,7 +471,11 @@ class File_Archive
 
         return $result;
     }
-    function read($URL, $symbolic = null,
+
+    /**
+     *
+     */
+    static function read($URL, $symbolic = null,
                   $uncompression = 0, $directoryDepth = -1)
     {
         $source = null;
@@ -546,7 +550,7 @@ class File_Archive
      *        It can be a File_Archive_Reader or a string, which will be converted using the
      *        read function
      */
-    function cache(&$toConvert)
+    static function cache(&$toConvert)
     {
         $source =& File_Archive::_convertToReader($toConvert);
         if (PEAR::isError($source)) {
@@ -564,7 +568,7 @@ class File_Archive
      *
      * @access private
      */
-    function &_convertToReader(&$source)
+    static function &_convertToReader(&$source)
     {
         if (is_string($source)) {
             $cacheCondition = File_Archive::getOption('cacheCondition');
@@ -591,7 +595,7 @@ class File_Archive
      *
      * @access private
      */
-    function &_convertToWriter(&$dest)
+    static function &_convertToWriter(&$dest)
     {
         if (is_string($dest)) {
             $obj =& File_Archive::appender($dest);
@@ -618,7 +622,7 @@ class File_Archive
      *         Currently, supported extensions are tar, zip, jar, gz, tgz,
      *         tbz, bz2, bzip2, ar, deb
      */
-    function isKnownExtension($extension)
+    static function isKnownExtension($extension)
     {
         return $extension == 'tar'   ||
                $extension == 'zip'   ||
@@ -649,7 +653,7 @@ class File_Archive
      *         $source interpreting it as a $extension archive
      *         If $extension is not handled return false
      */
-    function readArchive($extension, &$toConvert, $sourceOpened = false)
+    static function readArchive($extension, &$toConvert, $sourceOpened = false)
     {
         $source =& File_Archive::_convertToReader($toConvert);
         if (PEAR::isError($source)) {
@@ -1030,7 +1034,7 @@ class File_Archive
      * @param string $message Text body of the mail
      * @see File_Archive_Writer_Mail
      */
-    function toMail($to, $headers, $message, $mail = null)
+    static function toMail($to, $headers, $message, $mail = null)
     {
         require_once "File/Archive/Writer/Mail.php";
         return new File_Archive_Writer_Mail($to, $headers, $message, $mail);
@@ -1043,7 +1047,7 @@ class File_Archive
      *        be created
      * @see   File_Archive_Writer_Files
      */
-    function toFiles($baseDir = "")
+    static function toFiles($baseDir = "")
     {
         require_once "File/Archive/Writer/Files.php";
         return new File_Archive_Writer_Files($baseDir);
@@ -1062,12 +1066,12 @@ class File_Archive
      *        File_Archive_Writer_Memory::getData() function
      * @see   File_Archive_Writer_Memory
      */
-    function toMemory()
+    static function toMemory()
     {
         $v = '';
         return File_Archive::toVariable($v);
     }
-    function toVariable(&$v)
+    static function toVariable(&$v)
     {
         require_once "File/Archive/Writer/Memory.php";
         return new File_Archive_Writer_Memory($v);
@@ -1078,7 +1082,7 @@ class File_Archive
      * @param File_Archive_Writer $a, $b writers where data will be duplicated
      * @see File_Archive_Writer_Multi
      */
-    function toMulti(&$aC, &$bC)
+    static function toMulti(&$aC, &$bC)
     {
         $a =& File_Archive::_convertToWriter($aC);
         $b =& File_Archive::_convertToWriter($bC);
@@ -1123,7 +1127,7 @@ class File_Archive
      * @param bool $autoClose If set to true, $innerWriter will be closed when
      *        the returned archive is close. Default value is true.
      */
-    function toArchive($filename, &$toConvert, $type = null,
+    static function toArchive($filename, &$toConvert, $type = null,
                        $stat = array(), $autoClose = true)
     {
         $innerWriter =& File_Archive::_convertToWriter($toConvert);
@@ -1228,7 +1232,7 @@ class File_Archive
      *        You shouldn't need to change that
      * @return null or a PEAR error if an error occured
      */
-    function extract(&$sourceToConvert, &$destToConvert, $autoClose = true, $bufferSize = 0)
+    static function extract(&$sourceToConvert, &$destToConvert, $autoClose = true, $bufferSize = 0)
     {
         $source =& File_Archive::_convertToReader($sourceToConvert);
         if (PEAR::isError($source)) {
@@ -1267,7 +1271,7 @@ class File_Archive
      *        Time (index 9) will be overwritten to current time
      * @return File_Archive_Writer a writer that you can use to append files to the reader
      */
-    function appenderFromSource(&$toConvert, $URL = null, $unique = null,
+    static function appenderFromSource(&$toConvert, $URL = null, $unique = null,
                                  $type = null, $stat = array())
     {
         $source =& File_Archive::_convertToReader($toConvert);
@@ -1359,7 +1363,7 @@ class File_Archive
      * @param File_Archive_Reader $source A reader where some files will be appended
      * @return File_Archive_Writer a writer that you can use to append files to the reader
      */
-    function appender($URL, $unique = null, $type = null, $stat = array())
+    static function appender($URL, $unique = null, $type = null, $stat = array())
     {
         $source = null;
         return File_Archive::appenderFromSource($source, $URL, $unique, $type, $stat);
@@ -1374,7 +1378,7 @@ class File_Archive
      *        (for which $pred->isTrue($source) is true) will be erased
      * @param File_Archive_Reader $source A reader that contains the files to remove
      */
-    function removeFromSource(&$pred, &$toConvert, $URL = null)
+    static function removeFromSource(&$pred, &$toConvert, $URL = null)
     {
         $source =& File_Archive::_convertToReader($toConvert);
         if (PEAR::isError($source)) {
@@ -1414,7 +1418,7 @@ class File_Archive
      *
      * @param File_Archive_Reader a reader that may contain duplicates
      */
-    function removeDuplicatesFromSource(&$toConvert, $URL = null)
+    static function removeDuplicatesFromSource(&$toConvert, $URL = null)
     {
         $source =& File_Archive::_convertToReader($toConvert);
         if (PEAR::isError($source)) {
