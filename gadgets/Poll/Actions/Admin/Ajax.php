@@ -334,7 +334,7 @@ class Poll_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @internal param  int     $grid       gid
      * @return   string The XHTML of a datagrid
      */
-    function GetData()
+    function getData()
     {
         @list($offset, $grid) = jaws()->request->fetchAll('post');
         $pGadget = $this->gadget->action->loadAdmin('Poll');
