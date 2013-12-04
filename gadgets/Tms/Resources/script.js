@@ -141,7 +141,7 @@ function cleanWorkingArea(hideButtons)
  */
 function downloadTheme()
 {
-    window.location= base_script + '?gadget=Tms&action=DownloadTheme&theme=' + selectedTheme;
+    window.location= TmsAjax.baseScript + '?gadget=Tms&action=DownloadTheme&theme=' + selectedTheme;
 }
 
 function uploadTheme()
