@@ -124,6 +124,21 @@ class Jaws_Gadget
     var $default_admin_action = false;
 
     /**
+     * Store actions/models/events objects for later use so we aren't running around with multiple copies
+     * @var     array
+     * @access  public
+     */
+    public $objects = array();
+
+    /**
+     * Actions attributes array
+     * @var     array
+     * @access  public
+     */
+    public $actions = array();
+
+
+    /**
      * Constructor
      *
      * @access  protected
@@ -554,9 +569,6 @@ class Jaws_Gadget
             case 'translate':
                 $classname = 'Jaws_Gadget_'. ucfirst($property);
                 $this->$property = new $classname($this);
-                if (method_exists($this->$property, 'init')) {
-                    $this->$property->init();
-                }
                 return $this->$property;
                 break;
         }
