@@ -110,7 +110,7 @@ $admin_actions['UpdateAdvancedPolicies'] = array(
     'file' => 'Ajax',
     'loglevel' => JAWS_WARNING,
 );
-$admin_actions['GetData'] = array(
+$admin_actions['getData'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );

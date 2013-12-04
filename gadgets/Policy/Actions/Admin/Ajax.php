@@ -249,7 +249,7 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @access  public
      * @return  array   An array of IP/Agents
      */
-    function GetData()
+    function getData()
     {
         @list($offset, $grid) = jaws()->request->fetchAll('post');
         $ipHTML = $this->gadget->action->loadAdmin('IP');
