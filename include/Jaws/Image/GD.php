@@ -177,7 +177,7 @@ class Jaws_Image_GD extends Jaws_Image
      * @param   array   $options    Optional parameters(eg. 'scaleMethod': "pixel" or "smooth")
      * @return  mixed   True on success or a Jaws_Error object on error
      */
-    function resize($new_w, $new_h, $options = null)
+    function resize($new_w = 0, $new_h = 0, $options = null)
     {
         $this->_parse_size_by_aspect_ratio($new_w, $new_h);
         $scaleMethod = $this->_getOption('scaleMethod', $options, 'smooth');
