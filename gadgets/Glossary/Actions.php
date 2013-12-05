@@ -12,25 +12,25 @@
 /**
  * Index actions
  */
-$actions['ViewTerm'] = array(
+$actions['ViewTerms'] = array(
     'normal' => true,
-    'file'   => 'Term',
+    'file'   => 'Terms',
 );
 $actions['RandomTerms'] = array(
     'layout' => true,
-    'file'   => 'Term',
+    'file'   => 'Terms',
 );
 $actions['ListOfTerms'] = array(
     'layout' => true,
-    'file'   => 'Term',
+    'file'   => 'Terms',
 );
 
 /**
  * Admin actions
  */
-$admin_actions['Term'] = array(
+$admin_actions['Terms'] = array(
     'normal' => true,
-    'file' => 'Term',
+    'file' => 'Terms',
 );
 $admin_actions['GetTerm'] = array(
     'standalone' => true,

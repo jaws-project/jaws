@@ -9,7 +9,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Glossary_Actions_Admin_Term extends Jaws_Gadget_Action
+class Glossary_Actions_Admin_Terms extends Jaws_Gadget_Action
 {
     /**
      * Manages the main functions of Glossary administration
@@ -17,7 +17,7 @@ class Glossary_Actions_Admin_Term extends Jaws_Gadget_Action
      * @access  public
      * @return  stirng  XHTML template Content
      */
-    function Term()
+    function Terms()
     {
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('Glossary.html');

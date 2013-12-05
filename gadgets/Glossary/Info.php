@@ -33,6 +33,6 @@ class Glossary_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_admin_action = 'Term';
+    var $default_admin_action = 'Terms';
 
 }
