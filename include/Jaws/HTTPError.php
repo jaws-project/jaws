@@ -11,7 +11,16 @@
  */
 class Jaws_HTTPError
 {
-    function Get($code, $title = null, $message = null)
+    /**
+     * Get HTTP status reponse
+     *
+     * @access  public
+     * @param   int     $code       Status code
+     * @param   string  $title      Reponse page title
+     * @param   string  $message    Response message
+     * @return  string  HTML template content
+     */
+    static function Get($code, $title = null, $message = null)
     {
         header('Content-Type: text/html; charset=utf-8');
         header('Cache-Control: no-cache, must-revalidate');
