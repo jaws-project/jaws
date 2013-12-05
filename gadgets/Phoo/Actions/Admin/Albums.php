@@ -115,11 +115,13 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         if (!Jaws_Error::IsError($album)) {
             $agModel = $this->gadget->model->loadAdmin('AlbumGroup');
             $groups = jaws()->request->fetch('groups:array');
-            foreach ($groups as $group) {
-                $insertData = array();
-                $insertData['album'] = $album;
-                $insertData['group'] = $group;
-                $agModel->AddAlbumGroup($insertData);
+            if (!empty($groups)) {
+                foreach ($groups as $group) {
+                    $insertData = array();
+                    $insertData['album'] = $album;
+                    $insertData['group'] = $group;
+                    $agModel->AddAlbumGroup($insertData);
+                }
             }
         }
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album='.$album);
