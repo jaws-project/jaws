@@ -169,7 +169,7 @@ class PageRank
         $url  = urlencode($url);
         $rdata = $this->getURL("http://toolbarqueries.google.com/tbr?client=navclient-auto&ch=$ch&features=Rank&q=info:$url");
         if (!empty($rdata)) {
-            $rank = trim(end(explode(':', $rdata)));
+            $rank = strrstr($rdata, ':');
         }
 
         return $rank;
