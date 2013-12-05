@@ -30,7 +30,7 @@ class Toolbar extends Container
      * @param  object $widget The widget to pack
      * @access public
      */
-    function add(&$widget)
+    function add(&$widget, $identifier = '')
     {
         //.. radio buttons or check buttons are so f* horrible that we should not use them here..
         if (!strpos($widget->getClassName(), 'buttons')) {
