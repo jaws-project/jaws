@@ -66,7 +66,7 @@ class File_Util
      * @param   array   $parts Array containing the parts to be joined
      * @param   string  $separator The directory seperator
      */
-    function buildPath($parts, $separator = DIRECTORY_SEPARATOR)
+    static function buildPath($parts, $separator = DIRECTORY_SEPARATOR)
     {
         $qs = '/^'. preg_quote($separator, '/') .'+$/';
         for ($i = 0, $c = count($parts); $i < $c; $i++) {
@@ -92,7 +92,7 @@ class File_Util
      * @param   string  $path The path to be processed
      * @return  string  The processed path or the path as is
      */
-    function skipRoot($path)
+    static function skipRoot($path)
     {
         if (File_Util::isAbsolute($path)) {
             if (FILE_WIN32) {
@@ -112,7 +112,7 @@ class File_Util
      * @access  public
      * @return  string  The system tmp directory
      */
-    function tmpDir()
+    static function tmpDir()
     {
         if (FILE_WIN32) {
             if (isset($_ENV['TEMP'])) {
@@ -158,7 +158,7 @@ class File_Util
      * @param   string  $dirname Optional directory name for the tmp file
      * @return  string  Filename and path of the tmp file
      */
-    function tmpFile($dirname = null)
+    static function tmpFile($dirname = null)
     {
         if (!isset($dirname)) {
             $dirname = File_Util::tmpDir();
@@ -174,7 +174,7 @@ class File_Util
      * @param   string  $path Given path
      * @return  boolean True if the path is absolute, false if it is not
      */
-    function isAbsolute($path)
+    static function isAbsolute($path)
     {
         if (preg_match('/(?:\/|\\\)\.\.(?=\/|$)/', $path)) {
             return false;
@@ -198,7 +198,7 @@ class File_Util
      * @access public
      * @static
      */
-    function isIncludable($file, $sep = DIRECTORY_SEPARATOR)
+    static function isIncludable($file, $sep = DIRECTORY_SEPARATOR)
     {
         foreach ((array) explode(PATH_SEPARATOR, ini_get('include_path')) as $path) {
             if (file_exists($path .= $sep . $file)) {
@@ -221,7 +221,7 @@ class File_Util
      * @param   string  $root
      * @param   string  $separator
      */
-    function relativePath($path, $root, $separator = DIRECTORY_SEPARATOR)
+    static function relativePath($path, $root, $separator = DIRECTORY_SEPARATOR)
     {
         $path = File_Util::realpath($path, $separator);
         $root = File_Util::realpath($root, $separator);
@@ -255,7 +255,7 @@ class File_Util
      * @param   string  $path
      * @param   string  $separator
      */
-    function realPath($path, $separator = DIRECTORY_SEPARATOR)
+    static function realPath($path, $separator = DIRECTORY_SEPARATOR)
     {
         if (!strlen($path)) {
             return $separator;
@@ -301,7 +301,7 @@ class File_Util
      * @param   string  $path
      * @param   string  $root
      */
-    function pathInRoot($path, $root)
+    static function pathInRoot($path, $root)
     {
         static $realPaths = array();
 
@@ -341,7 +341,7 @@ class File_Util
      * @param   int     $sort
      * @param   mixed   $cb
      */
-    function listDir($path, $list = FILE_LIST_ALL, $sort = FILE_SORT_NONE, $cb = null)
+    static function listDir($path, $list = FILE_LIST_ALL, $sort = FILE_SORT_NONE, $cb = null)
     {
         if (!strlen($path) || !is_dir($path)) {
             return null;
@@ -382,7 +382,7 @@ class File_Util
      * @param   array   $files
      * @param   int     $sort
      */
-    function sortFiles($files, $sort)
+    static function sortFiles($files, $sort)
     {
         if (!$files) {
             return array();
@@ -453,7 +453,7 @@ class File_Util
      * @param   string          $from change only files with this extension
      * @param   bool            $reverse change only files not having $from extension
      */
-    function switchExt($filename, $to, $from = null, $reverse = false)
+    static function switchExt($filename, $to, $from = null, $reverse = false)
     {
         if (is_array($filename)) {
             foreach ($filename as $key => $file) {
@@ -495,7 +495,7 @@ class File_Util
      *
      * @static
      */
-    function prefixed(
+    static function prefixed(
         $size, $decimals = 1, $long = false, $oldStyle = true,
         $useBiBytes = true
     ) {
