@@ -70,7 +70,7 @@ class File_Archive_Writer_Memory extends File_Archive_Writer
     /**
      * @see File_Archive_Writer::newFile()
      */
-    function newFile($filename, $stat, $mime = "application/octet-stream")
+    function newFile($filename, $stat = array(), $mime = "application/octet-stream")
     {
         $this->filename = $filename;
         $this->stat = $stat;
