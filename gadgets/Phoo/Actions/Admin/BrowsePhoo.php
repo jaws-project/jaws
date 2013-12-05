@@ -179,7 +179,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
                         if ((isset($album['images']) && is_array($album['images'])) &&(count($album['images']) > 0)) {
                             // Show photos
                             foreach ($album['images'] as $img) {
-                                $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $img['thumb']);
+                                $imgData = Jaws_Image::getimagesize(JAWS_DATA . 'phoo/' . $img['thumb']);
                                 $tpl->SetBlock ('phoo_browse/photos/albums/item');
                                 $tpl->SetVariable ('url',
                                                  "admin.php?gadget=Phoo&amp;action=SelectImage&amp;".

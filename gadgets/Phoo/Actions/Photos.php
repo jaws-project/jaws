@@ -61,7 +61,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             if (isset($album['images']) && is_array($album['images'])) {
                 foreach ($album['images'] as $image) {
                     if ($image['published'] === true) {
-                        $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $image['thumb']);
+                        $imgData = Jaws_Image::getimagesize(JAWS_DATA . 'phoo/' . $image['thumb']);
                         if (Jaws_Error::IsError($imgData)) {
                             continue;
                         }
@@ -168,7 +168,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(404);
         }
 
-        $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $image['medium']);
+        $imgData = Jaws_Image::getimagesize(JAWS_DATA . 'phoo/' . $image['medium']);
         if (Jaws_Error::IsError($imgData)) {
             return Jaws_HTTPError::Get(404);
         }

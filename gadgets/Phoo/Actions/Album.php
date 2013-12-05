@@ -60,7 +60,7 @@ class Phoo_Actions_Album extends Jaws_Gadget_Action
                 }
 
                 $tpl->SetBlock('albums/item');
-                $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $album['thumb']);
+                $imgData = Jaws_Image::getimagesize(JAWS_DATA . 'phoo/' . $album['thumb']);
                 if (!Jaws_Error::IsError($imgData)) {
                     $tpl->SetVariable('width',    $imgData[0]);
                     $tpl->SetVariable('height',   $imgData[1]);

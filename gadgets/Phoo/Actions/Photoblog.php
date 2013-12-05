@@ -43,7 +43,7 @@ class Phoo_Actions_Photoblog extends Jaws_Gadget_Action
         foreach ($entries as $entry) {
             if (empty($photoid)) {
                 if (!$first) {
-                    $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $entry['thumb']);
+                    $imgData = Jaws_Image::getimagesize(JAWS_DATA . 'phoo/' . $entry['thumb']);
                     if (Jaws_Error::IsError($imgData)) {
                         continue;
                     }
@@ -59,7 +59,7 @@ class Phoo_Actions_Photoblog extends Jaws_Gadget_Action
                     $tpl->SetVariable('height', $imgData[1]);
                     $tpl->ParseBlock('photoblog_portrait/item');
                 } else {
-                    $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $entry['medium']);
+                    $imgData = Jaws_Image::getimagesize(JAWS_DATA . 'phoo/' . $entry['medium']);
                     if (Jaws_Error::IsError($imgData)) {
                         continue;
                     }
@@ -77,7 +77,7 @@ class Phoo_Actions_Photoblog extends Jaws_Gadget_Action
                 $first = false;
             } else {
                 if ($photoid == $entry['id']) {
-                    $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $entry['medium']);
+                    $imgData = Jaws_Image::getimagesize(JAWS_DATA . 'phoo/' . $entry['medium']);
                     if (Jaws_Error::IsError($imgData)) {
                         continue;
                     }
@@ -92,7 +92,7 @@ class Phoo_Actions_Photoblog extends Jaws_Gadget_Action
                     $tpl->SetVariable('height', $imgData[1]);
                     $tpl->ParseBlock('photoblog_portrait/main');
                 } else {
-                    $imgData = Jaws_Image::get_image_details(JAWS_DATA . 'phoo/' . $entry['thumb']);
+                    $imgData = Jaws_Image::getimagesize(JAWS_DATA . 'phoo/' . $entry['thumb']);
                     if (Jaws_Error::IsError($imgData)) {
                         continue;
                     }
