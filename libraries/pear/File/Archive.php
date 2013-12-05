@@ -598,7 +598,7 @@ class File_Archive
     static function &_convertToWriter(&$dest)
     {
         if (is_string($dest)) {
-            $obj =& File_Archive::appender($dest);
+            $obj = File_Archive::appender($dest);
             return $obj;
         } else if (is_array($dest)) {
             require_once 'File/Archive/Writer/Multi.php';
@@ -662,13 +662,11 @@ class File_Archive
 
         switch($extension) {
         case 'tgz':
-            return File_Archive::readArchive('tar',
-                    File_Archive::readArchive('gz', $source, $sourceOpened)
-                    );
+            $reader = File_Archive::readArchive('gz', $source, $sourceOpened);
+            return File_Archive::readArchive('tar', $reader);
         case 'tbz':
-            return File_Archive::readArchive('tar',
-                    File_Archive::readArchive('bz2', $source, $sourceOpened)
-                    );
+            $reader = File_Archive::readArchive('bz2', $source, $sourceOpened);
+            return File_Archive::readArchive('tar', $reader);
         case 'tar':
             require_once 'File/Archive/Reader/Tar.php';
             return new File_Archive_Reader_Tar($source, $sourceOpened);
@@ -1283,8 +1281,6 @@ class File_Archive
         }
 
         //Do not report the fact that the archive does not exist as an error
-        PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
-
         if ($URL === null) {
             $result =& $source;
         } else {
@@ -1297,8 +1293,6 @@ class File_Archive
                           );
             }
         }
-
-        PEAR::popErrorHandling();
 
         if (!PEAR::isError($result)) {
             if ($unique) {
@@ -1322,10 +1316,7 @@ class File_Archive
                 return $writer;
             }
 
-            PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
             $result = File_Archive::toArchive($reachable, $writer, $type);
-            PEAR::popErrorHandling();
-
             if (PEAR::isError($result)) {
                 $result = File_Archive::toFiles($reachable);
             }
@@ -1339,10 +1330,7 @@ class File_Archive
                 return $writer;
             }
 
-            PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
             $result = File_Archive::toArchive($baseDir, $writer, $type);
-            PEAR::popErrorHandling();
-
             if (PEAR::isError($result)) {
                 require_once "File/Archive/Writer/AddBaseName.php";
                 $result = new File_Archive_Writer_AddBaseName(
