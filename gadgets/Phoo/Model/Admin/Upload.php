@@ -69,7 +69,7 @@ class Phoo_Model_Admin_Upload extends Jaws_Gadget_Model
                             'name'     => basename($source->getFilename()),
                             'type'     => $source->getMime(),
                             'tmp_name' => $destFile,
-                            'size'     => filesize($destFile),
+                            'size'     => @filesize($destFile),
                             'error'    => 0,
                         );
                         $counter++;
