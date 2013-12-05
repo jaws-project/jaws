@@ -71,7 +71,7 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         }
         $submit->SetSubmit();
         $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $cancel->AddEvent(ON_CLICK, "javascript: window.location = '".BASE_SCRIPT.'?gadget=Faq&amp;action=Admin'."';");
+        $cancel->AddEvent(ON_CLICK, "javascript: window.location = '".BASE_SCRIPT.'?gadget=Faq'."';");
         $preview =& Piwi::CreateWidget('Button', 'previewButton', _t('GLOBAL_PREVIEW'), STOCK_PRINT_PREVIEW);
         $preview->AddEvent(ON_CLICK, 'javascript: parseCategoryText(this.form);');
 
