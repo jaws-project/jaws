@@ -33,6 +33,6 @@ class Blocks_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_admin_action = 'Block';
+    var $default_admin_action = 'Blocks';
 
 }

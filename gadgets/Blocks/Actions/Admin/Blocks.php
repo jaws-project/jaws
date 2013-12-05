@@ -8,7 +8,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blocks_Actions_Admin_Block extends Jaws_Gadget_Action
+class Blocks_Actions_Admin_Blocks extends Jaws_Gadget_Action
 {
     /**
      * Prepares the block management view
@@ -16,7 +16,7 @@ class Blocks_Actions_Admin_Block extends Jaws_Gadget_Action
      * @access  public
      * @return  string  XHTML template content
      */
-    function Block()
+    function Blocks()
     {
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('Blocks.html');
@@ -121,4 +121,5 @@ class Blocks_Actions_Admin_Block extends Jaws_Gadget_Action
         $tpl->ParseBlock('blocks');
         return $tpl->Get();
     }
+
 }

@@ -23,9 +23,9 @@ $actions['Block'] = array(
 /**
  * Admin actions
  */
-$admin_actions['Block'] = array(
+$admin_actions['Blocks'] = array(
     'normal' => true,
-    'file'   => 'Block',
+    'file'   => 'Blocks',
 );
 $admin_actions['GetBlock'] = array(
     'standalone' => true,
