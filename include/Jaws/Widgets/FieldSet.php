@@ -112,7 +112,7 @@ class Jaws_Widgets_FieldSet extends FieldSet
      * @param   string  $comment
      * @return  void
      */
-    function add($widget, $comment = '')
+    function add(&$widget, $comment = '')
     {
         $name = $widget->getClassName();
         if ($widget->getFamilyWidget() == 'bin' || $widget->getFamilyWidget() == 'container') {
