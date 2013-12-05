@@ -222,7 +222,7 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         ///FIXME use the proper url stuff
-        $cancel->AddEvent(ON_CLICK, "javascript: window.location = '".BASE_SCRIPT.'?gadget=StaticPage&amp;action=Admin'."';");
+        $cancel->AddEvent(ON_CLICK, "javascript: window.location = '".BASE_SCRIPT.'?gadget=StaticPage'."';");
 
         $preview =& Piwi::CreateWidget('Button', 'preview', _t('GLOBAL_PREVIEW'), STOCK_PRINT_PREVIEW);
         $preview->AddEvent(ON_CLICK, 'javascript: parseText(this.form);');

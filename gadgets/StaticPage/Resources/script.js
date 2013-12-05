@@ -156,7 +156,7 @@ function deletePage(id, redirect)
             var response = StaticPageAjax.callSync('DeletePage', id);
             showResponse(response);
             if (response[0]['type'] == 'response_notice') {
-                window.location= base_script + '?gadget=StaticPage&action=Admin';
+                window.location= base_script + '?gadget=StaticPage';
             }
         } else {
             StaticPageAjax.callAsync('DeletePage', id);
@@ -175,7 +175,7 @@ function deleteTranslation(id, redirect)
             var response = StaticPageAjax.callSync('DeleteTranslation', id);
             showResponse(response);
             if (response[0]['type'] == 'response_notice') {
-                window.location= base_script + '?gadget=StaticPage&action=Admin';
+                window.location= base_script + '?gadget=StaticPage';
             }
         } else {
             StaticPageAjax.callAsync('DeleteTranslation', id);
