@@ -29,15 +29,15 @@ class Layout_Actions_Admin_Theme extends Jaws_Gadget_Action
         // Validate theme
         if (!isset($tpl->Blocks['layout'])) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout'), RESPONSE_ERROR);
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout&action=Admin');
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout');
         }
         if (!isset($tpl->Blocks['layout']->InnerBlock['head'])) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_NO_BLOCK', $theme, 'head'), RESPONSE_ERROR);
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout&action=Admin');
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout');
         }
         if (!isset($tpl->Blocks['layout']->InnerBlock['main'])) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_NO_BLOCK', $theme, 'main'), RESPONSE_ERROR);
-            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout&action=Admin');
+            Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout');
         }
 
         // Verify blocks/Reassign gadgets
