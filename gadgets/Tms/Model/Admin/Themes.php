@@ -45,11 +45,10 @@ class Tms_Model_Admin_Themes extends Jaws_Gadget_Model
         }
 
         require_once PEAR_PATH. 'File/Archive.php';
-        $res = File_Archive::extract(File_Archive::read($themeSrc, $theme),
-                                     File_Archive::toArchive($themeDest,
-                                                             File_Archive::toFiles()
-                                                            )
-                                    );
+        $reader = File_Archive::read($themeSrc, $theme);
+        $innerWriter = File_Archive::toFiles();
+        $writer = File_Archive::toArchive($themeDest, $innerWriter);
+        $res = File_Archive::extract($reader, $writer);
         if (PEAR::isError($res)) {
             return new Jaws_Error(_t('TMS_ERROR_COULD_NOT_PACK_THEME'), _t('TMS_NAME'));
         }
