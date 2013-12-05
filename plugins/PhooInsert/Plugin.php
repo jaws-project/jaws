@@ -67,7 +67,7 @@ class PhooInsert_Plugin extends Jaws_Plugin
                         $img_file = JAWS_DATA . 'phoo/' . $image['image'];
                         $img_url  = $GLOBALS['app']->getDataURL('phoo/' . $image['image']);
                     }
-                    $imgData = Jaws_Image::get_image_details($img_file);
+                    $imgData = Jaws_Image::getimagesize($img_file);
 
                     if (strtoupper($linked) == 'YES' ){
                         $img_lnk = $GLOBALS['app']->Map->GetURLFor('Phoo',
