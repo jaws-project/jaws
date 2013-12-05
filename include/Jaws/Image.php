@@ -192,7 +192,7 @@ class Jaws_Image
      * @return  mixed True or Jaws_Error
      * @access  public
      */
-    function get_image_details($image)
+    static function get_image_details($image)
     {
         $data = @getimagesize($image);
         if (!is_array($data)) {
@@ -409,7 +409,7 @@ class Jaws_Image
         $this->free();
         $this->_ifname = $filename;
 
-        $result = $this->get_image_details($filename);
+        $result = self::get_image_details($filename);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -616,7 +616,7 @@ class Jaws_Image
      * @param   string  $unkown Unknown image to return if image doesn't have a thumb
      * @return  binary  Exif thumbnail
      */
-    function get_exif_thumbnail($source, $unknown)
+    static function get_exif_thumbnail($source, $unknown)
     {
         if (strpos($source, '../')) {
             return false;
