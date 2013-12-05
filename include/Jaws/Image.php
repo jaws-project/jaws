@@ -105,7 +105,7 @@ class Jaws_Image
      *
      * @access  public
      */
-    function &factory($imgDriver = '')
+    static function &factory($imgDriver = '')
     {
         //extension_loaded
         $extensions = array(
