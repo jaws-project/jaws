@@ -10,7 +10,7 @@
  * @copyright  2004-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_Model_Admin_Albums extends Jaws_Gadget_Model
+class Phoo_Model_Admin_Albums extends Phoo_Model
 {
     /**
      * Update the Album information
@@ -83,9 +83,9 @@ class Phoo_Model_Admin_Albums extends Jaws_Gadget_Model
 
         include_once JAWS_PATH . 'include/Jaws/Image.php';
         foreach ($result as $r) {
-            @unlink(JAWS_DATA . 'phoo/' . $r['filename']);
-            @unlink(JAWS_DATA . 'phoo/' . $this->GetMediumPath($r['filename']));
-            @unlink(JAWS_DATA . 'phoo/' . $this->GetThumbPath($r['filename']));
+            Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $r['filename']);
+            Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $this->GetMediumPath($r['filename']));
+            Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $this->GetThumbPath($r['filename']));
         }
 
         // Delete images from phoo_image
