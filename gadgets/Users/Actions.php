@@ -142,6 +142,10 @@ $actions['UserGroupUI'] = array(
     'normal' => true,
     'file' => 'Groups',
 );
+$actions['EditUserGroup'] = array(
+    'normal' => true,
+    'file' => 'Groups',
+);
 $actions['AddGroup'] = array(
     'normal' => true,
     'file' => 'Groups',

@@ -77,13 +77,12 @@ class Users_Actions_Default extends Jaws_Gadget_Action
         $menubar = new Jaws_Widgets_Menubar();
         if (in_array('AddGroup', $visible_actions)) {
             $menubar->AddOption('AddGroup', _t('USERS_ADD_GROUP'),
-                $this->gadget->urlMap('UserGroupUI', array('type' => 'add')), STOCK_ADD);
+                $this->gadget->urlMap('UserGroupUI'), STOCK_ADD);
         }
 
         if (in_array('EditGroup', $visible_actions)) {
-            $action_params['type'] = 'edit';
             $menubar->AddOption('EditGroup', _t('USERS_EDIT_GROUP'),
-                $this->gadget->urlMap('UserGroupUI', $action_params), STOCK_EDIT);
+                $this->gadget->urlMap('EditUserGroup', $action_params), STOCK_EDIT);
         }
 
         if (in_array('Groups', $visible_actions)) {

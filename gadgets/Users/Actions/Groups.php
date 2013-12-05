@@ -53,7 +53,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         foreach ($groups as $group) {
             $tpl->SetBlock('groups/group');
             $tpl->SetVariable('id', $group['id']);
-            $tpl->SetVariable('url', $this->gadget->urlMap('ManageGroup', array('id' => $group['id'])));
+            $tpl->SetVariable('url', $this->gadget->urlMap('ManageGroup', array('gid' => $group['id'])));
             $tpl->SetVariable('name', $group['name']);
             $tpl->SetVariable('title', $group['title']);
             $tpl->ParseBlock('groups/group');
@@ -74,9 +74,10 @@ class Users_Actions_Groups extends Users_Actions_Default
      * User's group UI
      *
      * @access  public
+     * @param   int     $gid  Exiting group ID for editing
      * @return  string  XHTML template of a form
      */
-    function UserGroupUI()
+    function UserGroupUI($gid = null)
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             Jaws_Header::Location(
@@ -90,18 +91,16 @@ class Users_Actions_Groups extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageUserGroups');
         $this->AjaxMe('index.js');
 
-        $get = jaws()->request->fetch(array('type', 'group'), 'get');
-
         // Load the template
         $tpl = $this->gadget->template->load('Groups.html');
         $tpl->SetBlock('add_group');
 
         // edit an user group
-        if ($get['type'] == 'edit') {
+        if (!empty($gid)) {
             $jUser = new Jaws_User;
-            $group = $jUser->GetGroup((int)$get['group'], $GLOBALS['app']->Session->GetAttribute('user'));
+            $group = $jUser->GetGroup((int)$gid, $GLOBALS['app']->Session->GetAttribute('user'));
 
-            $tpl->SetVariable('gid', $get['group']);
+            $tpl->SetVariable('gid', $gid);
             $tpl->SetVariable('name', $group['name']);
             $tpl->SetVariable('group_title', $group['title']);
             $tpl->SetVariable('description', $group['description']);
@@ -120,6 +119,18 @@ class Users_Actions_Groups extends Users_Actions_Default
 
         $tpl->ParseBlock('add_group');
         return $tpl->Get();
+    }
+
+    /**
+     * Edit user's group
+     *
+     * @access  public
+     * @return  string  XHTML template of a form
+     */
+    function EditUserGroup()
+    {
+        $gid = jaws()->request->fetch('gid', 'get');
+        return $this->UserGroupUI($gid);
     }
 
     /**
@@ -226,7 +237,7 @@ class Users_Actions_Groups extends Users_Actions_Default
                 RESPONSE_ERROR
             );
         }
-        Jaws_Header::Location($this->gadget->urlMap('ManageGroup', array('id' => $post['gid'])));
+        Jaws_Header::Location($this->gadget->urlMap('ManageGroup', array('gid' => $post['gid'])));
     }
 
     /**
@@ -264,7 +275,7 @@ class Users_Actions_Groups extends Users_Actions_Default
                 RESPONSE_ERROR
             );
         }
-        Jaws_Header::Location($this->gadget->urlMap('ManageGroup', array('id' => $post['gid'])));
+        Jaws_Header::Location($this->gadget->urlMap('ManageGroup', array('gid' => $post['gid'])));
     }
 
 
@@ -287,7 +298,7 @@ class Users_Actions_Groups extends Users_Actions_Default
 
         $this->gadget->CheckPermission('ManageUserGroups');
 
-        $gid = (int) jaws()->request->fetch('id', 'get');
+        $gid = (int) jaws()->request->fetch('gid', 'get');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         // Load the template
@@ -304,7 +315,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         }
 
         $tpl->SetVariable('title', _t('USERS_MANAGE_GROUPS', $group['title']));
-        $tpl->SetVariable('menubar', $this->MenuBar('Groups', array('EditGroup', 'Groups'), array('group' => $gid)));
+        $tpl->SetVariable('menubar', $this->MenuBar('Groups', array('EditGroup', 'Groups'), array('gid' => $gid)));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
         $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));
