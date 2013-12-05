@@ -109,7 +109,6 @@ class Phoo_Actions_Admin_Upload extends Phoo_Actions_Admin_Default
         if (Jaws_Error::IsError($album_data) || empty($album_data)) {
             $GLOBALS['app']->Session->PushLastResponse($album_data->getMessage());
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
-            exit;
         }
         for ($i = 1; $i <= count($files); $i++) {
             if (!isset($files['photo'.$i])) {
