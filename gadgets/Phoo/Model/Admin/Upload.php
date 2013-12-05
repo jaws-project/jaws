@@ -35,13 +35,28 @@ class Phoo_Model_Admin_Upload extends Jaws_Gadget_Model
             if (empty($file['tmp_name'])) {
                 continue;
             }
-            $ext = ltrim(strrchr($file['name'], '.'), '.');
+
+            $ext = strrchr($file['name'], '.');
+            switch ($ext) {
+                case '.gz':
+                    $ext = '.tgz';
+                    break;
+
+                case '.bz2':
+                case '.bzip2':
+                    $ext = '.tbz';
+                    break;
+            }
+
+            $ext = strtolower(ltrim($ext, '.'));
             if (File_Archive::isKnownExtension($ext)) {
                 $tmpArchiveName = $tmpDir . DIRECTORY_SEPARATOR . $file['name'];
                 if (!move_uploaded_file($file['tmp_name'], $tmpArchiveName)) {
                     continue;
                 }
-                $source = File_Archive::readArchive($ext, File_Archive::read($tmpArchiveName));
+
+                $reader = File_Archive::read($tmpArchiveName);
+                $source = File_Archive::readArchive($ext, $reader);
                 if (!PEAR::isError($source)) {
                     while ($source->next()) {
                         $destFile   = $tmpDir . DIRECTORY_SEPARATOR . basename($source->getFilename());
@@ -50,7 +65,8 @@ class Phoo_Model_Admin_Upload extends Jaws_Gadget_Model
                         if (PEAR::IsError($extract)) {
                             continue;
                         }
-                        $cleanFiles['photo'.$counter] = array('name'     => basename($source->getFilename()),
+                        $cleanFiles['photo'.$counter] = array(
+                            'name'     => basename($source->getFilename()),
                             'type'     => $source->getMime(),
                             'tmp_name' => $destFile,
                             'size'     => filesize($destFile),
