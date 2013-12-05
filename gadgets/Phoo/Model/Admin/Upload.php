@@ -35,7 +35,7 @@ class Phoo_Model_Admin_Upload extends Jaws_Gadget_Model
             if (empty($file['tmp_name'])) {
                 continue;
             }
-            $ext = end(explode('.', $file['name']));
+            $ext = strrstr($file['name'], '.');
             if (File_Archive::isKnownExtension($ext)) {
                 $tmpArchiveName = $tmpDir . DIRECTORY_SEPARATOR . $file['name'];
                 if (!move_uploaded_file($file['tmp_name'], $tmpArchiveName)) {
