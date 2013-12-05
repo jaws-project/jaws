@@ -192,7 +192,7 @@ class Jaws_Image
      * @return  mixed True or Jaws_Error
      * @access  public
      */
-    static function get_image_details($image)
+    static function getimagesize($image)
     {
         $data = @getimagesize($image);
         if (!is_array($data)) {
@@ -200,22 +200,7 @@ class Jaws_Image
                                           __FUNCTION__);
         }
 
-        // if loaded statically return pure data
-        if (!is_subclass_of($this, 'Jaws_Image')) {
-            return $data;
-        }
-
-        if (!isset($this->_img_types[$data[2]])) {
-            return Jaws_Error::raiseError('Cannot recognize image format.',
-                                          __FUNCTION__);
-        }
-
-        $this->_img_w = $data[0];
-        $this->_img_h = $data[1];
-        $this->_itype = $this->_img_types[$data[2]];
-        $this->_itype = ($this->_itype == 'jpg')? 'jpeg' : $this->_itype;
-
-        return true;
+        return $data;
     }
 
     /**
@@ -409,14 +394,28 @@ class Jaws_Image
         $this->free();
         $this->_ifname = $filename;
 
-        $result = self::get_image_details($filename);
+        $result = self::getimagesize($filename);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
+        if (!isset($this->_img_types[$result[2]])) {
+            return Jaws_Error::raiseError(
+                'Cannot recognize image format.',
+                __FUNCTION__
+            );
+        }
+
+        $this->_img_w = $result[0];
+        $this->_img_h = $result[1];
+        $this->_itype = $this->_img_types[$result[2]];
+        $this->_itype = ($this->_itype == 'jpg')? 'jpeg' : $this->_itype;
+
         if (!$this->_typeSupported($this->_itype, 'r')) {
-            return Jaws_Error::raiseError('Image type not supported for input.',
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'Image type not supported for input.',
+                __FUNCTION__
+            );
         }
 
         $this->_iData  = '';
