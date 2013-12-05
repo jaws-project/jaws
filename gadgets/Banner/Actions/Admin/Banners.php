@@ -334,7 +334,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
             }
         }
 
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Banner&action=Admin');
+        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Banner');
     }
 
 }
