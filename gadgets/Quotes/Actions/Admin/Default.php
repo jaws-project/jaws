@@ -26,12 +26,20 @@ class Quotes_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $menubar = new Jaws_Widgets_Menubar();
         if ($this->gadget->GetPermission('ManageQuotes')) {
-            $menubar->AddOption('Quotes', _t('QUOTES_NAME'),
-                                BASE_SCRIPT . '?gadget=Quotes&amp;action=Admin', 'gadgets/Quotes/Resources/images/quotes_mini.png');
+            $menubar->AddOption(
+                'Quotes',
+                _t('QUOTES_NAME'),
+                BASE_SCRIPT . '?gadget=Quotes',
+                'gadgets/Quotes/Resources/images/quotes_mini.png'
+            );
         }
         if ($this->gadget->GetPermission('ManageQuoteGroups')) {
-            $menubar->AddOption('QuoteGroups', _t('QUOTES_GROUPS'),
-                                BASE_SCRIPT . '?gadget=Quotes&amp;action=QuoteGroups', 'gadgets/Quotes/Resources/images/groups_mini.png');
+            $menubar->AddOption(
+                'QuoteGroups',
+                _t('QUOTES_GROUPS'),
+                BASE_SCRIPT . '?gadget=Quotes&amp;action=QuoteGroups',
+                'gadgets/Quotes/Resources/images/groups_mini.png'
+            );
         }
         $menubar->Activate($action);
         return $menubar->Get();
