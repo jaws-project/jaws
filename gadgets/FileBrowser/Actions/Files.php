@@ -72,7 +72,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
             $parentPath = $_path;
             if (empty($_path)) {
                 $tpl->SetVariable('root', _t('FILEBROWSER_ROOT'));
-                $tpl->SetVariable('root-path', $this->gadget->urlMap('Display', array('path' => $_path)));
+                $tpl->SetVariable('root-path', $this->gadget->urlMap('Display'));
             } else {
                 $tpl->SetBlock('filebrowser/tree');
                 $tpl->SetVariable('dir-name', $dirTitle);
