@@ -30,7 +30,7 @@ class Policy_Model_Admin_AntiSpam extends Jaws_Gadget_Model
         $this->gadget->registry->update('obfuscator',             $obfuscator);
 
         // install captcha driver
-        $objCaptcha =& Jaws_Captcha::getInstance($default_captcha_driver);
+        $objCaptcha = Jaws_Captcha::getInstance($default_captcha_driver);
         $objCaptcha->install();
 
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ANTISPAM_UPDATED'), RESPONSE_NOTICE);

@@ -43,7 +43,7 @@ class Policy_Model_Admin_AdvancedPolicies extends Jaws_Gadget_Model
         $this->gadget->registry->update('session_remember_timeout', (int)$session_remember_timeout);
 
         // install captcha driver
-        $objCaptcha =& Jaws_Captcha::getInstance($login_captcha_driver);
+        $objCaptcha = Jaws_Captcha::getInstance($login_captcha_driver);
         $objCaptcha->install();
 
         $GLOBALS['app']->Session->PushLastResponse(_t('POLICY_RESPONSE_ADVANCED_POLICIES_UPDATED'), RESPONSE_NOTICE);
