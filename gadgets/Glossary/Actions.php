@@ -16,6 +16,10 @@ $actions['ViewTerms'] = array(
     'normal' => true,
     'file'   => 'Terms',
 );
+$actions['ViewTerm'] = array(
+    'normal' => true,
+    'file'   => 'Terms',
+);
 $actions['RandomTerms'] = array(
     'layout' => true,
     'file'   => 'Terms',

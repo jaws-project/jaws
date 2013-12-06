@@ -9,7 +9,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 $maps[] = array(
+    'ViewTerms', 
+    'glossary',
+    array('term' => '[\p{L}[:digit:]-_\.]+',)
+);
+$maps[] = array(
     'ViewTerm', 
-    'glossary[/{term}]',
+    'glossary/{term}',
     array('term' => '[\p{L}[:digit:]-_\.]+',)
 );
