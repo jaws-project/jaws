@@ -19,7 +19,7 @@ class Jaws_ArraySort
      * @return  array   Sorted array
      * @access  public
      */
-    function SortBySecondIndex($multiArray, $secondIndex, $caseSensitive = true, $reverseSort = false)
+    static function SortBySecondIndex($multiArray, $secondIndex, $caseSensitive = true, $reverseSort = false)
     {
         while (list($firstIndex, ) = each($multiArray)) {
             if ($caseSensitive) {
@@ -56,7 +56,7 @@ class Jaws_ArraySort
      * @return  bool    True if sort was ok, false if not.
      * @access  public
      */
-    function QuickSort(&$array, $firstElement = null, $lastElement = null)
+    static function QuickSort(&$array, $firstElement = null, $lastElement = null)
     {
         if (!is_array($array)) {
             return false;
@@ -107,7 +107,7 @@ class Jaws_ArraySort
      * @param  int     $b      Second element to replace
      * @access  public
      */
-    function QuickSortChangeElements(&$array, $a, $b)
+    static function QuickSortChangeElements(&$array, $a, $b)
     {
         if (isset($array[$a]) && isset($array[$b])) {
             $memory    = $array[$a];
@@ -124,7 +124,7 @@ class Jaws_ArraySort
      * @param  return array   Sorted array
      * @return public
      */
-    function BubbleSort($array)
+    static function BubbleSort($array)
     {
         $count = count($array);
         for ($i = 0; $i < $count; $i++) {
@@ -147,7 +147,7 @@ class Jaws_ArraySort
      * @param  return array   Sorted array
      * @return public
      */
-    function BubbleSortInReverse($array, $reverse)
+    static function BubbleSortInReverse($array, $reverse)
     {
         $count = count($array);
         for ($i = 0; $i < $count; $i++){
@@ -170,7 +170,7 @@ class Jaws_ArraySort
      * @param  return array   Sorted array
      * @return public
      */
-    function InsertionSort($array)
+    static function InsertionSort($array)
     {
         foreach ($array as $key => $val) {
             $val_[] = $val;
@@ -205,7 +205,7 @@ class Jaws_ArraySort
      * @param  return array   Sorted array
      * @return public
      */
-    function SortAlphabetically($array)
+    static function SortAlphabetically($array)
     {
         $multiarray = array();
         $array_out  = array();
