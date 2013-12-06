@@ -337,7 +337,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Jaws_Gadget_Action
      * @access  public
      * @return  string  XHTML content
      */
-    function UpdateGadget()
+    function UpdateGadgetProperties()
     {
         $post = jaws()->request->fetch(array('gname', 'data:array'), 'post');
         $model = $this->gadget->model->loadAdmin('Sitemap');

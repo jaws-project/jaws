@@ -52,7 +52,7 @@ $admin_actions['UpdateCategory'] = array(
     'standalone' => true,
     'file' => 'ManageSitemap',
 );
-$admin_actions['UpdateGadget'] = array(
+$admin_actions['UpdateGadgetProperties'] = array(
     'standalone' => true,
     'file' => 'ManageSitemap',
 );

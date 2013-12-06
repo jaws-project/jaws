@@ -66,7 +66,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
 
         $result = array();
         foreach($rows as $row) {
-            $result[$row['id']] = $row;
+            $result[$row['category']] = $row;
         }
 
         return $result;

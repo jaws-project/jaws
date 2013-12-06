@@ -23,7 +23,7 @@ var SitemapCallback = {
         }
         showResponse(response);
     },
-    UpdateGadget: function(response) {
+    UpdateGadgetProperties: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
         }
@@ -220,7 +220,7 @@ function saveProperties() {
         );
     } else if(currentAction == 'Gadget') {
         cacheGadgetForm = null;
-        SitemapAjax.callAsync('UpdateGadget',
+        SitemapAjax.callAsync('UpdateGadgetProperties',
             {
                 'gname': selectedGadget,
                 data: {

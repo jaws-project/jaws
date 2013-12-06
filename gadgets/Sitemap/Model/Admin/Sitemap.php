@@ -84,19 +84,24 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         $tpl->SetBlock('xml');
 
         // Fetch default sitemap config from registry
-        $defaultPriority = $this->gadget->registry->fetch('sitemap_default_priority');
-        $defaultFrequency = $this->gadget->registry->fetch('sitemap_default_frequency');
+        $defaultPriority    = $this->gadget->registry->fetch('sitemap_default_priority');
+        $defaultFrequency   = $this->gadget->registry->fetch('sitemap_default_frequency');
+        $defaultStatus      = Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_BOTH;
 
         // Fetch gadget sitemap config
         $gadgetProperties = $this->GetGadgetProperties($gadget);
         $gadgetPriority = null;
         $gadgetFrequency = null;
+        $gadgetStatus = null;
         if (!empty($gadgetProperties)) {
             if(isset($gadgetProperties['priority'])) {
                 $gadgetPriority = $gadgetProperties['priority'];
             }
             if(isset($gadgetProperties['frequency'])) {
                 $gadgetFrequency = $gadgetProperties['frequency'];
+            }
+            if(isset($gadgetProperties['status'])) {
+                $gadgetStatus = $gadgetProperties['status'];
             }
         }
 
@@ -125,23 +130,66 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         }
 
         $allCategories = $objHook->Execute(1);
-        $gadgetCategories = $this->GetGadgetCategoryProperties($gadget);
+        $gadgetCategory = $this->GetGadgetCategoryProperties($gadget);
         $finalCategory = array();
+        // Detect all gadget's categories properties(priority | frequency | status)
         foreach($allCategories as $cat) {
             $property = array();
-            if(isset($gadgetCategories[$cat['id']])) {
-                $property['priority'] = $gadgetCategories[$cat['id']]['priority'];
-                $property['frequency'] = $gadgetCategories[$cat['id']]['frequency'];
 
-            } else {
+            if (isset($gadgetCategory[$cat['id']]['priority'])) {
+                $property['priority'] = $gadgetCategory[$cat['id']]['priority'];
+            }
+            if (empty($property['priority'])) {
+                $property['priority'] = $gadgetPriority;
+            }
+            if (empty($property['priority'])) {
                 $property['priority'] = $defaultPriority;
+            }
+
+            if (isset($gadgetCategory[$cat['id']]['frequency'])) {
+                $property['frequency'] = $gadgetCategory[$cat['id']]['frequency'];
+            }
+            if (empty($property['frequency'])) {
+                $property['frequency'] = $gadgetFrequency;
+            }
+            if (empty($property['frequency'])) {
                 $property['frequency'] = $defaultFrequency;
+            }
+
+            if (isset($gadgetCategory[$cat['id']]['status'])) {
+                $property['status'] = $gadgetCategory[$cat['id']]['status'];
+            }
+            if (empty($property['status'])) {
+                $property['status'] = $gadgetStatus;
+            }
+            if (empty($property['status'])) {
+                $property['status'] = $defaultStatus;
             }
             $finalCategory[$cat['id']] = $property;
         }
 
         $date = Jaws_Date::getInstance();
         foreach ($allItems as $item) {
+            $priority = $defaultPriority;
+            if(!empty($item['parent'])) {
+                $priority = $finalCategory[$item['parent']]['priority'];
+            }
+
+            $frequency = $defaultFrequency;
+            if(!empty($item['parent'])) {
+                $frequency = $finalCategory[$item['parent']]['frequency'];
+            }
+
+            $status = $defaultStatus;
+            if(!empty($item['parent'])) {
+                $status = $finalCategory[$item['parent']]['status'];
+            }
+
+            if ($status != Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_BOTH &&
+                $status != Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_XML ) {
+                continue;
+            }
+
             $tpl->SetBlock('xml/item');
             $tpl->SetVariable('loc', $item['url']);
             if(!empty($item['lastmod'])) {
@@ -150,33 +198,10 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
                 $tpl->ParseBlock('xml/item/lastmod');
             }
 
-            // Frequency
-            $frequency = null;
-            if (!empty($item['parent'])) {
-                $frequency = $finalCategory[$item['parent']]['frequency'];
-            }
-            if (empty($frequency)) {
-                $frequency = $gadgetFrequency;
-            }
-            if (empty($frequency)) {
-                $frequency = $defaultFrequency;
-            }
             if (!empty($frequency)) {
                 $tpl->SetBlock('xml/item/changefreq');
-                $tpl->SetVariable('changefreq', $frequencyArray[$frequency]);
+                $tpl->SetVariable('changefreq', $frequency);
                 $tpl->ParseBlock('xml/item/changefreq');
-            }
-
-            // Priority
-            $priority = null;
-            if (!empty($item['parent'])) {
-                $priority = $finalCategory[$item['parent']]['priority'];
-            }
-            if ($priority == null) {
-                $priority = $gadgetPriority;
-            }
-            if ($priority == null) {
-                $priority = $defaultPriority;
             }
 
             if ($priority != null) {
@@ -215,7 +240,6 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
 
         return true;
     }
-
 
     /**
      * Sync sitemap data files
