@@ -4,18 +4,10 @@
  * @category   Ajax
  * @package    Sitemap
  * @author     Jonathan Hernandez <ion@gluch.org.mx>
+ * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-var ssitems = new Array();
-var ssitems1d = new Array();
-var references = new Array();
-var currentType = '';
-var currentID = '';
-var firstElement = '';
-var editLegend = '';
-var currentAction = 'EDIT';
-
 var SitemapCallback = {
     UpdateCategory: function(response) {
         if (response[0]['type'] == 'response_notice') {
@@ -247,6 +239,8 @@ var cacheGadgetForm = null;
 
 //Cache for saving the category form template
 var cacheCategoryForm = null;
+
+var currentAction = null;
 
 //Which row selected in Tree
 var selectedRow = null;
