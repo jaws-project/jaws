@@ -50,7 +50,7 @@ class Blog_Actions_AuthorPosts extends Blog_Actions_Default
             $tpl = $this->gadget->template->load('AuthorPosts.html');
             $tpl->SetBlock('view_author');
 
-            $title = array_shift(array_values($entries))['nickname'];
+            $title = array_values($entries)[0]['nickname'];
             $this->SetTitle($title);
             $tpl->SetVariable('title', $title);
 
