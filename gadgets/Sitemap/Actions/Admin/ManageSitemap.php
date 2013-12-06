@@ -343,7 +343,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Sitemap');
         $data = $post['data'];
         $data['update_time'] = '';
-        $res = $model->UpdateGadget($post['gname'], $data);
+        $res = $model->UpdateGadgetProperties($post['gname'], $data);
         if (Jaws_Error::IsError($res) || $res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_CANT_UPDATE_GADGET_PROPERTIES'),
                 RESPONSE_ERROR);

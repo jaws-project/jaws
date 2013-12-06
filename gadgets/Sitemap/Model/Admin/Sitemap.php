@@ -62,7 +62,7 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
      * @param   array   $data       Sitemap properties
      * @return  mixed   Array of Tag info or Jaws_Error on failure
      */
-    function UpdateGadget($gadget, $data)
+    function UpdateGadgetProperties($gadget, $data)
     {
         if($this->gadget->registry->fetch($gadget)==null) {
             return $this->gadget->registry->insert($gadget, serialize($data));
@@ -211,7 +211,7 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         // Change gadget update time
         $gadgetProperties = $this->GetGadgetProperties($gadget);
         $gadgetProperties['update_time'] = time();
-        $this->UpdateGadget($gadget, $gadgetProperties);
+        $this->UpdateGadgetProperties($gadget, $gadgetProperties);
 
         return true;
     }
