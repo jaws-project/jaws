@@ -61,74 +61,74 @@ class Search_Model_Search extends Jaws_Gadget_Model
 
                 $result[$gadget] = array();
                 $searchFields = $objHook->GetOptions();
-                if (!empty($searchFields)) {
-                    $params = array();
-                    $i = 0;
-                    $preparedSQLs = array();
-                    foreach($searchFields as $fields) {
-                        $preparedSQL  = '';
-                        foreach($options as $option => $words) {
-                            $sqlFields = '';
-                            if (is_array($words)) {
-                                $words = array_map('trim', $words);
-                                $words = array_filter($words , 'trim');
-                                foreach($words as $widx => $word) {
-                                    $word = Jaws_UTF8::trim($word);
-                                    switch($option) {
-                                        case 'exclude':
-                                            foreach($fields as $fidx => $field) {
-                                                $sqlFields .= ' '.$GLOBALS['db']->dbc->datatype->matchPattern(
-                                                    array(1 => '%', $word, '%'),
-                                                    'NOT ILIKE',
-                                                    $field);
-                                                if ($fidx != count($fields) -1)
-                                                    $sqlFields .= ' AND';
-                                            }
-                                            if ($widx !=  count($words) -1)
+                if (empty($searchFields)) {
+                    continue;
+                }
+
+                $params = array();
+                $i = 0;
+                $preparedSQLs = array();
+                foreach($searchFields as $fields) {
+                    $preparedSQL  = '';
+                    foreach($options as $option => $words) {
+                        $sqlFields = '';
+                        if (is_array($words)) {
+                            $words = array_map('trim', $words);
+                            $words = array_filter($words , 'trim');
+                            foreach($words as $widx => $word) {
+                                $word = Jaws_UTF8::trim($word);
+                                switch($option) {
+                                    case 'exclude':
+                                        foreach($fields as $fidx => $field) {
+                                            $sqlFields .= ' '.$GLOBALS['db']->dbc->datatype->matchPattern(
+                                                array(1 => '%', $word, '%'),
+                                                'NOT ILIKE',
+                                                $field);
+                                            if ($fidx != count($fields) -1)
                                                 $sqlFields .= ' AND';
-                                            break;
-                                        case 'all':
-                                        case 'exact':
-                                            foreach($fields as $fidx => $field) {
-                                                if ($fidx == 0) $sqlFields .= '(';
-                                                $sqlFields .= ' '.$GLOBALS['db']->dbc->datatype->matchPattern(
-                                                    array(1 => '%', $word, '%'),
-                                                    'ILIKE',
-                                                    $field);
-                                                if ($fidx == count($fields) -1)
-                                                    $sqlFields .= ')';
-                                                else
-                                                    $sqlFields .= ' OR';
-                                            }
-                                            if ($widx !=  count($words) -1)
-                                                $sqlFields .= ' AND';
-                                            break;
-                                        case 'least':
-                                            foreach($fields as $fidx => $field) {
-                                                $sqlFields .= ' '.$GLOBALS['db']->dbc->datatype->matchPattern(
-                                                    array(1 => '%', $word, '%'),
-                                                    'ILIKE',
-                                                    $field);
-                                                if ($fidx != count($fields) -1)
-                                                    $sqlFields .= ' OR';
-                                            }
-                                            if ($widx !=  count($words) -1)
+                                        }
+                                        if ($widx !=  count($words) -1)
+                                            $sqlFields .= ' AND';
+                                        break;
+                                    case 'all':
+                                    case 'exact':
+                                        foreach($fields as $fidx => $field) {
+                                            if ($fidx == 0) $sqlFields .= '(';
+                                            $sqlFields .= ' '.$GLOBALS['db']->dbc->datatype->matchPattern(
+                                                array(1 => '%', $word, '%'),
+                                                'ILIKE',
+                                                $field);
+                                            if ($fidx == count($fields) -1)
+                                                $sqlFields .= ')';
+                                            else
                                                 $sqlFields .= ' OR';
-                                            break;
-                                    }
-
-                                    $i++;
+                                        }
+                                        if ($widx !=  count($words) -1)
+                                            $sqlFields .= ' AND';
+                                        break;
+                                    case 'least':
+                                        foreach($fields as $fidx => $field) {
+                                            $sqlFields .= ' '.$GLOBALS['db']->dbc->datatype->matchPattern(
+                                                array(1 => '%', $word, '%'),
+                                                'ILIKE',
+                                                $field);
+                                            if ($fidx != count($fields) -1)
+                                                $sqlFields .= ' OR';
+                                        }
+                                        if ($widx !=  count($words) -1)
+                                            $sqlFields .= ' OR';
+                                        break;
                                 }
 
-                                if (!empty($sqlFields)) {
-                                    $preparedSQL.= empty($preparedSQL)? $sqlFields : ' AND ('.$sqlFields.')';
-                                }
+                                $i++;
+                            }
+
+                            if (!empty($sqlFields)) {
+                                $preparedSQL.= empty($preparedSQL)? $sqlFields : ' AND ('.$sqlFields.')';
                             }
                         }
-                        $preparedSQLs[] = $GLOBALS['db']->sqlParse($preparedSQL, $params);
                     }
-                } else {
-                    $preparedSQLs = $options;
+                    $preparedSQLs[] = $GLOBALS['db']->sqlParse($preparedSQL, $params);
                 }
 
                 if (is_array($preparedSQLs) && count($preparedSQLs) == 1) {
@@ -311,7 +311,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
     function GetSearchableGadgets()
     {
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
-        $gadgetList = $cmpModel->GetGadgetsList(false, true, true);
+        $gadgetList = $cmpModel->GetGadgetsList(null, true, true, true);
         $gadgets = array();
         foreach ($gadgetList as $key => $gadget) {
             if (is_file(JAWS_PATH . 'gadgets/' . $gadget['name'] . '/hooks/Search.php'))
