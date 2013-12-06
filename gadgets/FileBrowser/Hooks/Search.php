@@ -11,13 +11,25 @@
 class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
 {
     /**
+     * Gets the gadget's search fields
+     *
+     * @access  public
+     * @return  array   array of search fields
+     */
+    function GetOptions() {
+        return array(
+            array('[title]', '[description]'),
+        );
+    }
+
+    /**
      * Returns an array with the results of a search
      *
      * @access  public
-     * @param   string  $match  Match word
+     * @param   string  $pSql  Prepared search (WHERE) SQL
      * @return  array   An array of entries that matches a certain pattern
      */
-    function Execute($match)
+    function Execute($pSql = '')
     {
         if (!$this->gadget->GetPermission('OutputAccess')) {
             return array();
@@ -27,80 +39,49 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
             return array();
         }
 
-        $match['all'] = array_map('preg_quote', $match['all']);
-        $pattern = '';
-        if (!empty($match['all'])) {
-            $pattern = '(' . implode(').*(', $match['all']) . ')';
+        // TODO: must be converted to Jaws_ORM
+        $sql = '
+            SELECT
+                [id], [filename], [title], [description], [fast_url], [path], [updatetime]
+            FROM [[filebrowser]]
+            ';
+
+        $sql .= ' WHERE ' . $pSql;
+        $sql .= ' ORDER BY [updatetime] desc';
+
+        $files = $GLOBALS['db']->queryAll($sql);
+        if (Jaws_Error::IsError($files)) {
+            return array();
         }
 
-        $match['exact'] = array_map('preg_quote', $match['exact']);
-        if (!empty($match['exact'])) {
-            if (empty($pattern)) {
-                $pattern = '(' . implode(' ', $match['exact']) . ')';
+        $fModel = $this->gadget->model->load('Files');
+        $date = Jaws_Date::getInstance();
+        $result = array();
+        foreach ($files as $file) {
+            $item = array();
+            $item['title'] = $file['title'];
+            $filepath = ltrim($file['path']. '/'.$file['filename'], '/');
+            if (is_dir($fModel->GetFileBrowserRootDir() . $filepath)) {
+                $item['url']   = $this->gadget->urlMap('Display', array('path' => $filepath));
+                $item['image'] = 'images/mimetypes/folder.png';
             } else {
-                $pattern .= '.*(' . implode(' ', $match['exact']) . ')';
-            }
-        }
-
-        $match['least'] = array_map('preg_quote', $match['least']);
-        if (!empty($match['least'])) {
-            if (empty($pattern)) {
-                $pattern = '(' . implode(')|(', $match['least']) . ')';
-            } else {
-                $pattern .= '.*((' . implode(')|(', $match['least']) . '))';
-            }
-        }
-        //FIXME: exclude pattern
-
-        require_once PEAR_PATH. 'File/Find.php';
-        $path  = JAWS_DATA . 'files';
-        $files = &File_Find::search('$'.$pattern.'$i', $path, 'perl', false, 'both');
-
-        //Load model
-        $model = $this->gadget->model->load('Files');
-        $entries = array();
-        if (is_array($files)) {
-            $date = Jaws_Date::getInstance();
-            foreach ($files as $f) {
-                $entry['title'] = str_replace(JAWS_DATA. 'files', '', $f);
-                $entry['title'] = substr($entry['title'], 1);
-                if (empty($entry['title'])) {
-                    $entry['title'] = '/';
-                }
-
-                if (is_dir($f)) {
-                    $entry['url'] = $this->gadget->urlMap('Display', array('path' => $entry['title']));
-                    $icon = 'gadgets/FileBrowser/Resources/images/folder.png';
+                $fid = empty($file['fast_url'])? $file['id'] : $file['fast_url'];
+                $item['url'] = $this->gadget->urlMap('FileInfo', array('id' => $fid));
+                $filetype = ltrim(strrchr($file['filename'], '.'), '.');
+                $fileicon = $fModel->getExtImage($filetype);
+                if (is_file(JAWS_PATH . 'images/'. $fileicon)) {
+                    $item['image'] = 'images/'. $fileicon;
                 } else {
-                    $entry['url'] = str_replace(JAWS_PATH, '', $f);
-                    if (DIRECTORY_SEPARATOR!='/') {
-                        $entry['url'] = str_replace('\\', '/', $entry['url']);
-                    }
-                    //Get the extension
-                    $file_extension = strtolower(strrev(substr(strrev($f), 0, strpos(strrev($f), '.'))));
-                    //Get the icon
-                    $iconName = $model->getExtImage($file_extension);
-                    $icon = JAWS_PATH . 'gadgets/FileBrowser/Resources/images/'.$iconName;
-                    if (!is_file($icon)) {
-                        $icon = 'gadgets/FileBrowser/Resources/images/unknown.png';
-                    } else {
-                        $icon = 'gadgets/FileBrowser/Resources/images/'.$iconName;
-                    }
+                    $item['image'] = 'images/mimetypes/unknown.png';
                 }
-                $entry['image'] = $icon;
-                $entry['snippet'] = '';
-                $entry['parse_text'] = false;
-                $entry['strip_tags'] = false;
-                $stamp = date('Y-m-d H:i:s', filemtime($f));
-                $entry['date'] = $date->ToISO($stamp);
-                $stamp = str_replace(array('-', ':', ' '), '', $stamp);
-                if (isset($entries[$stamp])) {
-                    $stamp += 1;
-                }
-                $entries[$stamp] = $entry;
             }
+
+            $item['snippet'] = $file['description'];
+            $item['date']    = $date->ToISO($file['updatetime']);
+            $result[] = $item;
         }
 
-        return $entries;
+        return $result;
     }
+
 }
