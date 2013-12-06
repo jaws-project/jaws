@@ -160,7 +160,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Jaws_Gadget_Action
         // Priority
         $priority =& Piwi::CreateWidget('Combo', 'priority');
         $priority->SetTitle(_t('SITEMAP_PRIORITY'));
-        $priority->AddOption(_t('SITEMAP_INHERITANCE_SETTINGS'), null);
+        $priority->AddOption(_t('SITEMAP_INHERITANCE_SETTINGS'), '0');
         for($i=1; $i<10; $i++) {
             $priority->AddOption('0.'.$i, '0.'.$i);
         }

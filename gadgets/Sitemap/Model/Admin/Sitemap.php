@@ -37,13 +37,15 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
      */
     function UpdateCategory($gadget, $category, $data)
     {
+        $data['priority']  = (float)$data['priority'];
+        $data['frequency'] = (int)$data['frequency'];
         // check for exiting category properties in DB
         $categoryProperties = $this->GetCategoryProperties($gadget, $category);
         if(empty($categoryProperties)) {
             // Add new record to DB
             $table = Jaws_ORM::getInstance()->table('sitemap');
-            $data['gadget'] = $gadget;
-            $data['category'] = $category;
+            $data['gadget']    = $gadget;
+            $data['category']  = $category;
             $result = $table->insert($data)->exec();
         } else {
             // Update exiting record in DB
