@@ -108,16 +108,6 @@ function submitEvent(form)
         form.stop_date.focus();
         return;
     }
-    if (form.start_time.value === '') {
-        alert(errorIncompleteData);
-        form.start_time.focus();
-        return;
-    }
-    if (form.stop_time.value === '') {
-        alert(errorIncompleteData);
-        form.stop_time.focus();
-        return;
-    }
     form.submit();
 }
 

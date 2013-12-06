@@ -256,6 +256,9 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         if (empty($event['stop_date'])) {
             $event['stop_date'] = $event['start_date'];
         }
+        if (empty($event['start_time'])) {
+            $event['start_time'] = '00:00';
+        }
         if (empty($event['stop_time'])) {
             $event['stop_time'] = $event['start_time'];
         }
