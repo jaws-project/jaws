@@ -20,7 +20,7 @@ class Blog_Actions_Pingback extends Blog_Actions_Default
     function Pingback()
     {
         if ($this->gadget->registry->fetch('pingback') == 'true') {
-            $pback =& Jaws_PingBack::getInstance();
+            $pback = Jaws_PingBack::getInstance();
             $response = $pback->listen();
             if (is_array($response)) {
                 //Load model
