@@ -200,7 +200,7 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
 
             if (!empty($frequency)) {
                 $tpl->SetBlock('xml/item/changefreq');
-                $tpl->SetVariable('changefreq', $frequency);
+                $tpl->SetVariable('changefreq', $frequencyArray[$frequency]);
                 $tpl->ParseBlock('xml/item/changefreq');
             }
 
