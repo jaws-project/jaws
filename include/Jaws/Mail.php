@@ -252,13 +252,13 @@ class Jaws_Mail
         $mail = null;
         switch ($this->mailer) {
             case 'phpmail':
-                $mail =& Mail::factory('mail');
+                $mail = Mail::factory('mail');
                 break;
             case 'sendmail':
-                $mail =& Mail::factory('sendmail', $this->params);
+                $mail = Mail::factory('sendmail', $this->params);
                 break;
             case 'smtp':
-                $mail =& Mail::factory('smtp', $this->params);
+                $mail = Mail::factory('smtp', $this->params);
                 break;
             default:
                 return false;
