@@ -166,7 +166,7 @@ class TypePad
 
         $resRequest = $httpRequest->sendRequest();
         if (PEAR::isError($resRequest)) {
-            return new Jaws_Error($resRequest->getMessage(), 'Policy', JAWS_ERROR_ERROR);
+            return new Jaws_Error($resRequest->getMessage());
         } elseif ($httpRequest->getResponseCode() <> 200) {
             return new Jaws_Error('HTTP response error '. $httpRequest->getResponseCode(),
                                   'Policy',
