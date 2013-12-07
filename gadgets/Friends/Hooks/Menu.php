@@ -20,7 +20,7 @@ class Friends_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls[] = array('url'   => $this->gadget->urlMap('DefaultAction'),
-                        'title' => _t('FRIENDS_NAME'));
+                        'title' => $this->gadget->title);
         return $urls;
     }
 

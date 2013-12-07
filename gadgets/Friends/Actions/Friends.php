@@ -24,7 +24,7 @@ class Friends_Actions_Friends extends Jaws_Gadget_Action
         $friends = $model->GetRandomFriends();
         if (!Jaws_Error::IsError($friends)) {
             $tpl->SetBlock('friends');
-            $tpl->SetVariable('title', _t('FRIENDS_NAME'));
+            $tpl->SetVariable('title', $this->gadget->title);
             foreach ($friends as $friend) {
                 $tpl->SetBlock('friends/friend');
                 $tpl->SetVariable('name', Jaws_XSS::filter($friend['friend']));
