@@ -58,7 +58,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         foreach($quotes as $quote) {
             $comboQuotes->AddOption($quote['title'], $quote['id']);
         }
-        $tpl->SetVariable('lbl_quotes', _t('QUOTES_NAME'));
+        $tpl->SetVariable('lbl_quotes', $this->gadget->title);
         $tpl->SetVariable('combo_quotes', $comboQuotes->Get());
 
         // title

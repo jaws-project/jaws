@@ -20,7 +20,7 @@ class Quotes_Hooks_Menu extends Jaws_Gadget_Hook
     {
         $urls   = array();
         $urls[] = array('url'   => $this->gadget->urlMap('RecentQuotes'),
-                        'title' => _t('QUOTES_NAME'));
+                        'title' => $this->gadget->title);
 
         $model  = $this->gadget->model->load('Groups');
         $groups = $model->GetGroups();

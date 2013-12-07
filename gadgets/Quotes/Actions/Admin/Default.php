@@ -28,7 +28,7 @@ class Quotes_Actions_Admin_Default extends Jaws_Gadget_Action
         if ($this->gadget->GetPermission('ManageQuotes')) {
             $menubar->AddOption(
                 'Quotes',
-                _t('QUOTES_NAME'),
+                $this->gadget->title,
                 BASE_SCRIPT . '?gadget=Quotes',
                 'gadgets/Quotes/Resources/images/quotes_mini.png'
             );
