@@ -113,7 +113,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $column = array('gadget', 'action', 'reference', 'tag', 'insert_time', 'published', 'update_time');
         $res = $table->insertAll($column, $tData)->exec();
         if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
+            return new Jaws_Error($res->getMessage());
         }
 
         return $res;
@@ -143,7 +143,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table->and()->where('reference', $reference)->and()->where('tag', $tagsId, 'in');
         $res = $table->exec();
         if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
+            return new Jaws_Error($res->getMessage());
         }
 
         return $res;
@@ -173,16 +173,16 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table->select('count(id)')->where('name', $data['name'])->and()->where('user', $data['user']);
         $tag = $table->fetchOne();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
         if ($tag > 0) {
-            return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $data['name']), _t('TAGS_TITLE'));
+            return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $data['name']));
         }
 
         $table = Jaws_ORM::getInstance()->table('tags');
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
@@ -212,17 +212,17 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             $table->select('count(id)')->where('name', $data['name'])->and()->where('user', $user);
             $tag = $table->fetchOne();
             if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error($result->getMessage(), 'SQL');
+                return new Jaws_Error($result->getMessage());
             }
             if ($tag > 0) {
-                return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $data['name']), _t('TAGS_TITLE'));
+                return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $data['name']));
             }
         }
 
         $table = Jaws_ORM::getInstance()->table('tags');
         $result = $table->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
@@ -250,7 +250,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
 
         $result = $table->exec();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
@@ -274,7 +274,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('tags');
         $result = $table->delete()->where('id', $ids, 'in')->exec();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         //Commit Transaction
@@ -302,10 +302,10 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table->select('count(id)')->where('name', $newName)->and()->where('user', $user);
         $tag = $table->and()->where('id', $ids, 'not in')->fetchOne();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
         if ($tag > 0) {
-            return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $newName), _t('TAGS_TITLE'));
+            return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $newName));
         }
 
         $data = array();
@@ -322,7 +322,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         //Delete extra tags
         $result = $table->delete()->where('id', $ids, 'in')->exec();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         //Update first tag
@@ -352,7 +352,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table->and()->where('item1.id', $keepIds, 'not in');
         $items = $table->fetchColumn();
         if (Jaws_Error::IsError($items)) {
-            return new Jaws_Error($items->getMessage(), 'SQL');
+            return new Jaws_Error($items->getMessage());
         }
 
         // delete duplicated tags items
@@ -360,7 +360,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             $table = Jaws_ORM::getInstance()->table('tags_items');
             $res = $table->delete()->where('id', $items, 'in')->exec();
             if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($res->getMessage(), 'SQL');
+                return new Jaws_Error($res->getMessage());
             }
         }
 
@@ -382,7 +382,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table->select('name', 'user:integer', 'title', 'description', 'meta_keywords', 'meta_description');
         $result = $table->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
@@ -438,7 +438,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             $result = $table->fetchAll();
         }
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
@@ -493,7 +493,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
 
         $result = $table->orderBy($orderBy)->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
@@ -537,7 +537,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
 
         $result = $table->fetchOne();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return count($result);
@@ -558,7 +558,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table->join('tags_items', 'tags_items.tag', 'tags.id', 'left');
         $result = $table->groupBy('tags_items.action')->where('tags_items.gadget', $gadget)->fetchColumn();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;

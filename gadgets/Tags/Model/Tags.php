@@ -28,7 +28,7 @@ class Tags_Model_Tags extends Jaws_Gadget_Model
 
         $result = $table->orderBy('gadget asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
         return $result;
     }
@@ -64,7 +64,7 @@ class Tags_Model_Tags extends Jaws_Gadget_Model
 
         $result = $table->orderBy('name asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
         return $result;
     }
