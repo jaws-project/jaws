@@ -19,7 +19,7 @@ class Directory_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls[] = array('url' => $this->gadget->urlMap('Directory'),
-                        'title' => _t('DIRECTORY_NAME'));
+                        'title' => $this->gadget->title);
         return $urls;
     }
 }

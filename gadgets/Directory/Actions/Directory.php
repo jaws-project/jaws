@@ -23,7 +23,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('Workspace.html');
         $tpl->SetBlock('workspace');
 
-        $tpl->SetVariable('title', _t('DIRECTORY_NAME'));
+        $tpl->SetVariable('title', $this->gadget->title);
         $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('lbl_adv_search', _t('DIRECTORY_ADVANCED_SEARCH'));
         $tpl->SetVariable('lbl_all_files', _t('DIRECTORY_FILTER_ALL_FILES'));
