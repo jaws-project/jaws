@@ -31,7 +31,7 @@ class Webcam_Model_Admin_Webcam extends Jaws_Gadget_Model
 
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_ERROR_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('WEBCAM_ERROR_NOT_ADDED'), _t('WEBCAM_NAME'));
+            return new Jaws_Error(_t('WEBCAM_ERROR_NOT_ADDED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_ADDED'), RESPONSE_NOTICE);
@@ -58,7 +58,7 @@ class Webcam_Model_Admin_Webcam extends Jaws_Gadget_Model
         $result = $webcamTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_ERROR_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('WEBCAM_ERROR_NOT_UPDATED'), _t('WEBCAM_NAME'));
+            return new Jaws_Error(_t('WEBCAM_ERROR_NOT_UPDATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_UPDATED'), RESPONSE_NOTICE);
@@ -79,7 +79,7 @@ class Webcam_Model_Admin_Webcam extends Jaws_Gadget_Model
 
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_ERROR_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('WEBCAM_ERROR_NOT_UPDATED'), _t('WEBCAM_NAME'));
+            return new Jaws_Error(_t('WEBCAM_ERROR_NOT_UPDATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('WEBCAM_DELETED'), RESPONSE_NOTICE);

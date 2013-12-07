@@ -25,7 +25,7 @@ class Webcam_Model_Webcam extends Jaws_Gadget_Model
         $row = $webcamTable->where('id', $id)->fetchRow();
 
         if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error($row->getMessage(), 'SQL');
+            return new Jaws_Error($row->getMessage());
         }
 
         if (isset($row['id'])) {
@@ -48,7 +48,7 @@ class Webcam_Model_Webcam extends Jaws_Gadget_Model
         $limit = $this->gadget->registry->fetch('limit_random');
         $row = $webcamTable->limit($limit)->orderBy($webcamTable->random())->fetchRow();
         if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error($row->getMessage(), 'SQL');
+            return new Jaws_Error($row->getMessage());
         }
 
         if (isset($row['id'])) {
@@ -72,7 +72,7 @@ class Webcam_Model_Webcam extends Jaws_Gadget_Model
         $result = $webcamTable->limit($limit)->fetchAll();
 
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
