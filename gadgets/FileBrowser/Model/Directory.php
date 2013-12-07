@@ -154,7 +154,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
                 $GLOBALS['app']->Session->PushLastResponse(_t('FILEBROWSER_ERROR_CANT_OPEN_DIRECTORY', $path),
                     RESPONSE_ERROR);
             }
-            return new Jaws_Error(_t('FILEBROWSER_ERROR_CANT_OPEN_DIRECTORY', $path),  _t('FILEBROWSER_NAME'));
+            return new Jaws_Error(_t('FILEBROWSER_ERROR_CANT_OPEN_DIRECTORY', $path));
         }
 
         $files = array();

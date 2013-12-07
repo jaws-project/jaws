@@ -158,7 +158,7 @@ class FileBrowser_Model_Files extends Jaws_Gadget_Model
         $table->select('id:integer', 'path', 'filename', 'title', 'description', 'fast_url', 'hits:integer');
         $res = $table->where('path', $path)->and()->where('filename', $file)->fetchRow();
         if (Jaws_Error::isError($res)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('FILEBROWSER_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
         }
 
         return $res;
