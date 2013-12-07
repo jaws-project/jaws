@@ -149,9 +149,6 @@ class Jaws_Gadget
     {
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
         $this->name = $gadget;
-        Jaws_Translate::getInstance()->LoadTranslation($this->name, JAWS_COMPONENT_GADGET);
-        $this->title       = _t(strtoupper($gadget).'_NAME');
-        $this->description = _t(strtoupper($gadget).'_DESCRIPTION');
     }
 
     /**
