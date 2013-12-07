@@ -31,7 +31,7 @@ class UrlMapper_Model_Admin_Properties extends Jaws_Gadget_Model
 
         if ($res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_SETTINGS_NOT_SAVED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_SETTINGS_NOT_SAVED'), $this->gadget->name);
+            return new Jaws_Error(_t('URLMAPPER_ERROR_SETTINGS_NOT_SAVED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_SETTINGS_SAVED'), RESPONSE_NOTICE);
