@@ -109,7 +109,7 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
             $cam_form->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'AddWebcam'));
             $cam_form->Add(Piwi::CreateWidget('HiddenEntry', 'id', ''));
 
-            $fieldset_webcam = new Jaws_Widgets_FieldSet(_t('WEBCAM_NAME'));
+            $fieldset_webcam = new Jaws_Widgets_FieldSet($this->gadget->title);
 
             $titleentry =& Piwi::CreateWidget('Entry', 'title', '');
             $titleentry->SetTitle(_t('GLOBAL_TITLE'));
@@ -127,7 +127,7 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
             $buttonbox =& Piwi::CreateWidget('HBox');
             $buttonbox->SetStyle('float: right;'); //hig style
             $submit =& Piwi::CreateWidget('Button', 'addnewwebcam',
-                _t('GLOBAL_SAVE', _t('WEBCAM_NAME')), STOCK_SAVE);
+                _t('GLOBAL_SAVE', $this->gadget->title), STOCK_SAVE);
             $submit->AddEvent(ON_CLICK, 'javascript: submitForm(this.form);');
 
             $cancel =& Piwi::CreateWidget('Button', 'cancelform', _t('GLOBAL_CANCEL'), STOCK_CANCEL);

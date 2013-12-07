@@ -19,7 +19,7 @@ class Webcam_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls[] = array('url'   => $this->gadget->urlMap('Display'),
-                        'title' => _t('WEBCAM_NAME'));
+                        'title' => $this->gadget->title);
         return $urls;
     }
 }
