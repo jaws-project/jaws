@@ -45,7 +45,7 @@ class Languages_Installer extends Jaws_Gadget_Installer
 
         $new_dir = JAWS_DATA . 'languages' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('LANGUAGES_TITLE'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
         return true;
@@ -67,7 +67,7 @@ class Languages_Installer extends Jaws_Gadget_Installer
 
         $new_dir = JAWS_DATA . 'languages' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('LANGUAGES_TITLE'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
         // Registry keys
