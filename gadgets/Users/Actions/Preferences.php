@@ -73,6 +73,7 @@ class Users_Actions_Preferences extends Jaws_Gadget_Action
                 if (@isset($options[$key_name]['values'])) {
                     $element =& Piwi::CreateWidget('Combo', $key_name);
                     $element->SetID($key_name);
+                    $element->AddOption(_t('USERS_ADVANCED_OPTS_NOT_YET'), '');
                     foreach ($options[$key_name]['values'] as $value => $title) {
                         $element->AddOption($title, $value);
                     }
@@ -81,7 +82,7 @@ class Users_Actions_Preferences extends Jaws_Gadget_Action
                     $element->SetID($key_name);
                 }
 
-                $element->SetValue(isset($customized[$key_name])? $customized[$key_name] : $key_value);
+                $element->SetValue(isset($customized[$key_name])? $customized[$key_name] : '');
                 $tpl->SetVariable('input_value', $element->Get());
 
                 $tpl->ParseBlock('preferences/gadget/key');
@@ -107,6 +108,17 @@ class Users_Actions_Preferences extends Jaws_Gadget_Action
      */
     function UpdatePreferences()
     {
+        /**
+         * determine value isn't set?
+         *
+         * @access  private
+         * @param   mixed   $option
+         * @return  bool
+         */
+        function definedFilter($option) {
+            return $option !== '';
+        }
+
         if (!$GLOBALS['app']->Session->Logged()) {
             Jaws_Header::Location(
                 $this->gadget->urlMap(
@@ -116,11 +128,13 @@ class Users_Actions_Preferences extends Jaws_Gadget_Action
             );
         }
 
+        // check permission
         $this->gadget->CheckPermission('EditUserPreferences');
         $post = jaws()->request->fetchAll('post');
         $gadget = $post['component'];
         unset($post['gadget'], $post['action'], $post['component']);
-
+        // filter defined options
+        $post = array_filter($post, 'definedFilter');
         $this->gadget->registry->deleteByUser($gadget);
         $result = $this->gadget->registry->insertAllByUser(
             array_map(null, array_keys($post), array_values($post)),
