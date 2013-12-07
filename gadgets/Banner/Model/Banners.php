@@ -157,7 +157,7 @@ class Banner_Model_Banners extends Jaws_Gadget_Model
         )->where('id', $bid)->exec();
 
         if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
+            return new Jaws_Error($res->getMessage());
         }
 
         return true;
@@ -180,7 +180,7 @@ class Banner_Model_Banners extends Jaws_Gadget_Model
         )->where('id', $bid)->exec();
 
         if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
+            return new Jaws_Error($res->getMessage());
         }
 
         return true;
