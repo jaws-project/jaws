@@ -39,7 +39,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $result = $table->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPDATE_PHOTO'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPDATE_PHOTO'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPDATE_PHOTO'));
         }
 
         if ($albums !== null) {
@@ -63,21 +63,21 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $image = $table->select('filename')->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($image)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'));
         }
 
         $table->reset();
         $result = $table->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'));
         }
 
         $table = Jaws_ORM::getInstance()->table('phoo_image_album');
         $result = $table->delete()->where('phoo_image_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'));
         }
 
         Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $image['filename']);
@@ -105,12 +105,12 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         // check if it's really a uploaded file.
         /*if (is_uploaded_file($files['tmp_name'])) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
         }*/
 
         if (!preg_match("/\.png$|\.jpg$|\.jpeg$|\.gif$/i", $files['name'])) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO_EXT'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO_EXT'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO_EXT'));
         }
 
         // Create directories
@@ -118,7 +118,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         if (!is_dir($uploaddir)) {
             if (!Jaws_Utils::is_writable(JAWS_DATA . 'phoo/')) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), _t('PHOO_NAME'));
+                return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
             }
 
             $new_dirs = array();
@@ -128,7 +128,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
             foreach ($new_dirs as $new_dir) {
                 if (!Jaws_Utils::mkdir($new_dir)) {
                     $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
-                    return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), _t('PHOO_NAME'));
+                    return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
                 }
             }
         }
@@ -144,7 +144,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
             return new Jaws_Error($res->getMessage(), _t('PHOO_NAME'));
         } elseif (empty($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_4'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_4'));
         }
         $filename = $res[0][0]['host_filename'];
         $uploadfile = $uploaddir . $filename;
@@ -166,7 +166,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         if (Jaws_Error::IsError($res)) {
             // Return an error if image can't be resized
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_RESIZE_TO_THUMB'), RESPONSE_ERROR);
-            return new Jaws_Error($res->getMessage(), _t('PHOO_NAME'));
+            return new Jaws_Error($res->getMessage());
         }
 
         $objImage->load($uploadfile);
@@ -176,7 +176,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         if (Jaws_Error::IsError($res)) {
             // Return an error if image can't be resized
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_RESIZE_TO_MEDIUM'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_CANT_RESIZE_TO_MEDIUM'));
         }
 
         $data = array();
@@ -219,7 +219,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_CANT_UPLOAD_PHOTO'));
         }
 
         // Lets remove the original if keep_original = false
@@ -250,7 +250,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_ADD_ENTRY_TO_ALBUM'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_CANT_ADD_ENTRY_TO_ALBUM'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_CANT_ADD_ENTRY_TO_ALBUM'));
         }
 
         return true;

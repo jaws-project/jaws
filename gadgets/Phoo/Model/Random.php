@@ -32,7 +32,7 @@ class Phoo_Model_Random extends Phoo_Model
         $table->orderBy($table->random());
         $row = $table->limit(1)->fetchRow();
         if (Jaws_Error::IsError($row) || !isset($row['filename'])) {
-            return new Jaws_Error(_t('PHOO_ERROR_RANDOMIMAGE'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_RANDOMIMAGE'));
         }
 
         $row['name'] = $row['title'];

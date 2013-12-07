@@ -85,7 +85,7 @@ class Phoo_Model_Photos extends Phoo_Model
         $table->select('id', 'name', 'description', 'createtime', 'published:boolean');
         $r = $table->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($r)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETALBUM'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_GETALBUM'));
         }
 
         // The album does not exist or is hidden
@@ -141,7 +141,7 @@ class Phoo_Model_Photos extends Phoo_Model
 
         $r2 = $table->fetchAll();
         if (Jaws_Error::IsError($r2)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETALBUM'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_GETALBUM'));
         }
 
         include_once JAWS_PATH . 'include/Jaws/Image.php';
@@ -202,7 +202,7 @@ class Phoo_Model_Photos extends Phoo_Model
 
         $r = $table->fetchRow();
         if (Jaws_Error::IsError($r)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETIMAGE'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_GETIMAGE'));
         }
 
         // image does not exist or is hidden
@@ -245,7 +245,7 @@ class Phoo_Model_Photos extends Phoo_Model
 
         $items = $table->fetchColumn();
         if (Jaws_Error::IsError($items)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETIMAGE'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_GETIMAGE'));
         }
 
         $image['first']    = 0;
@@ -345,7 +345,7 @@ class Phoo_Model_Photos extends Phoo_Model
         $table->where('phoo_image.id', $id);
         $rs = $table->fetchAll();
         if (Jaws_Error::IsError($rs)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETIMAGEENTRY'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_GETIMAGEENTRY'));
         }
 
         $entry = array();

@@ -25,7 +25,7 @@ class Phoo_Model_Comments extends Jaws_Gadget_Model
         $cModel = Jaws_Gadget::getInstance('Comments')->model->load('Comments');
         $comments = $cModel->GetComments($this->gadget->name, 0, $id, 'Image', array(1), true);
         if (Jaws_Error::IsError($comments)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETCOMMENTS'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_GETCOMMENTS'));
         }
 
         $this->_AdditionalCommentsData($comments);
@@ -90,7 +90,7 @@ class Phoo_Model_Comments extends Jaws_Gadget_Model
 
         $comments = $cModel->GetFilteredComments($this->gadget->name, $filterMode, $filter);
         if (Jaws_Error::IsError($comments)) {
-            return new Jaws_Error(_t('PHOO_ERROR_FILETEREDCOMMENTS'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_FILETEREDCOMMENTS'));
         }
 
         $commentsGravatar = array();
@@ -115,7 +115,7 @@ class Phoo_Model_Comments extends Jaws_Gadget_Model
         $cModel = Jaws_Gadget::getInstance('Comments')->model->load('Comments');
         $comment = $cModel->GetComment($id, $this->gadget->name);
         if (Jaws_Error::IsError($comment)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETCOMMENT'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_GETCOMMENT'));
         }
 
         if ($comment) {

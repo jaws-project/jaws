@@ -44,7 +44,7 @@ class Phoo_Model_Photoblog extends Phoo_Model
         $table->limit($this->gadget->registry->fetch('photoblog_limit'));
         $result = $table->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('PHOO_ERROR_GETASPORTRAIT'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_GETASPORTRAIT'));
         }
 
         include_once JAWS_PATH . 'include/Jaws/Image.php';

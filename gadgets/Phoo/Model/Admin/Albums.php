@@ -35,7 +35,7 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
         $result = $table->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_UPDATED'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_UPDATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ALBUM_UPDATED'), RESPONSE_NOTICE);
@@ -59,7 +59,7 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
         $result = $table->fetchAll();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
         }
 
         $imgList = array();
@@ -78,7 +78,7 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
         $result = $table->fetchAll();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
         }
 
         include_once JAWS_PATH . 'include/Jaws/Image.php';
@@ -96,7 +96,7 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
         }
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
         }
 
         // Delete images from phoo_image_album
@@ -105,7 +105,7 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
         $result = $table->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
         }
 
         // Delete album from phoo_album
@@ -114,7 +114,7 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
         $result = $table->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_DELETED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ALBUM_DELETED'), RESPONSE_NOTICE);
@@ -144,7 +144,7 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_ALBUM_NOT_CREATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_CREATED'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_ALBUM_NOT_CREATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ALBUM_CREATED'), RESPONSE_NOTICE);

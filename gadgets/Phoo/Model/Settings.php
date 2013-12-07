@@ -42,7 +42,7 @@ class Phoo_Model_Settings extends Jaws_Gadget_Model
                 if (isset($GLOBALS['app']->Session)) {
                     $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_FETCH_SETTINGS'), RESPONSE_ERROR);
                 }
-                return new Jaws_Error(_t('PHOO_ERROR_CANT_FETCH_SETTINGS'), _t('PHOO_NAME'));
+                return new Jaws_Error(_t('PHOO_ERROR_CANT_FETCH_SETTINGS'));
             }
         }
 

@@ -37,7 +37,7 @@ class Phoo_Model_Albums extends Phoo_Model
 
         $albums = $table->fetchAll();
         if (Jaws_Error::IsError($albums)) {
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUMLIST'), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_ALBUMLIST'));
         }
 
         // Add unknown photo album to albums list
@@ -132,7 +132,7 @@ class Phoo_Model_Albums extends Phoo_Model
 
         $rows = $table->fetchAll();
         if (Jaws_Error::IsError($rows)) {
-            return new Jaws_Error(_t('PHOO_ERROR_ALBUMS', $by), _t('PHOO_NAME'));
+            return new Jaws_Error(_t('PHOO_ERROR_ALBUMS', $by));
         }
 
         $ret = array();
