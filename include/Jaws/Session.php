@@ -637,13 +637,20 @@ class Jaws_Session
      * Delete a session
      *
      * @access  public
-     * @param   int     $sid  Session ID
+     * @param   int|array   $sid  Session ID(s)
      * @return  bool    True if success, otherwise False
      */
     function Delete($sid)
     {
-        $sessTable = Jaws_ORM::getInstance()->table('session');
-        $result = $sessTable->delete()->where('sid', $sid)->exec();
+        $result = true;
+        if (!empty($sid)) {
+            $sessTable = Jaws_ORM::getInstance()->table('session');
+            if (is_array($sid)) {
+                $result = $sessTable->delete()->where('sid', $sid, 'in')->exec();
+            } else {
+                $result = $sessTable->delete()->where('sid', $sid)->exec();
+            }
+        }
         return Jaws_Error::IsError($result)? false : true;
     }
 
@@ -717,10 +724,12 @@ class Jaws_Session
      * Returns the sessions attributes
      *
      * @access  public
-     * @param   bool    $onlyActive     Only return active session
+     * @param   bool    $active Active session
+     * @param   bool    $logged Logged user's session
+                (null: all sessions, true: logged users's sessions, false: anonymous sessions)
      * @return  mixed   Sessions attributes if successfully, otherwise Jaws_Error
      */
-    function GetSessions($onlyActive = true)
+    function GetSessions($active = true, $logged = null)
     {
         // remove expired session
         $this->DeleteExpiredSessions();
@@ -733,8 +742,15 @@ class Jaws_Session
             'sid', 'domain', 'user', 'type', 'longevity', 'ip', 'agent', 'referrer',
             'data', 'checksum', 'createtime', 'updatetime:integer'
         );
-        if ($onlyActive) {
+        if ($active) {
             $sessTable->where('updatetime', $onlinetime, '>=');
+        } elseif ($active === false) {
+            $sessTable->where('updatetime', $onlinetime, '<');
+        }
+        if ($logged) {
+            $sessTable->and()->where('user', 1, '>=');
+        } elseif ($logged === false) {
+            $sessTable->and()->where('user', 1, '<');
         }
         $sessions = $sessTable->orderBy('updatetime desc')->fetchAll();
         if (Jaws_Error::isError($sessions)) {
