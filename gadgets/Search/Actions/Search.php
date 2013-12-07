@@ -29,7 +29,7 @@ class Search_Actions_Search extends Jaws_Gadget_Action
         }
         $tpl->SetBlock("$block");
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('title', _t('SEARCH_NAME'));
+        $tpl->SetVariable('title', $this->gadget->title);
 
         $model = $this->gadget->model->load('Search');
         $wordAll =& Piwi::CreateWidget('Entry', 'all', $model->implodeSearch($post));
@@ -93,7 +93,7 @@ class Search_Actions_Search extends Jaws_Gadget_Action
         $tpl->SetBlock('AdvancedBox');
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('title', _t('SEARCH_NAME'));
+        $tpl->SetVariable('title', $this->gadget->title);
         $tpl->SetVariable('lbl_word_filter', _t('SEARCH_WORD_FILTER'));
         $tpl->SetVariable('lbl_all', _t('SEARCH_WORD_FILTER_ALL'));
         $tpl->SetVariable('lbl_exact', _t('SEARCH_WORD_FILTER_EXACT'));
