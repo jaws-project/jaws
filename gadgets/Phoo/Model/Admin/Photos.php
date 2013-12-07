@@ -141,7 +141,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $res = Jaws_Utils::UploadFiles($files, $uploaddir, 'jpg,gif,png,jpeg', '', false, !$fromControlPanel);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
-            return new Jaws_Error($res->getMessage(), _t('PHOO_NAME'));
+            return new Jaws_Error($res->getMessage());
         } elseif (empty($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
             return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_4'));
@@ -153,7 +153,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         include_once JAWS_PATH . 'include/Jaws/Image.php';
         $objImage = Jaws_Image::factory();
         if (Jaws_Error::IsError($objImage)) {
-            return Jaws_Error::raiseError($objImage->getMessage(), _t('PHOO_NAME'));
+            return Jaws_Error::raiseError($objImage->getMessage());
         }
 
         $thumbSize  = explode('x', $this->gadget->registry->fetch('thumbsize'));

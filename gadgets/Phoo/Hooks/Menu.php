@@ -21,7 +21,7 @@ class Phoo_Hooks_Menu extends Jaws_Gadget_Hook
     {
         $urls   = array();
         $urls[] = array('url'   => $this->gadget->urlMap('AlbumList'),
-                        'title' => _t('PHOO_NAME'));
+                        'title' => $this->gadget->title);
 
         //Load model
         $model  = $this->gadget->model->load('Albums');
