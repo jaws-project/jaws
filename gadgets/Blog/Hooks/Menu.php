@@ -21,7 +21,7 @@ class Blog_Hooks_Menu extends Jaws_Gadget_Hook
     {
         $items = array();
         $items[] = array('url'    => $this->gadget->urlMap('DefaultAction'),
-                         'title'  => _t('BLOG_NAME'));
+                         'title'  => $this->gadget->title);
         $items[] = array('url'    => $this->gadget->urlMap('Archive'),
                          'title'  => _t('BLOG_ARCHIVE'));
         $items[] = array('url'    => $this->gadget->urlMap('CategoriesList'),
