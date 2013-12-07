@@ -131,7 +131,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             return $contact;
         }
         if (!isset($contact['id'])) {
-            return new Jaws_Error(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'), _t('CONTACT_NAME'));
+            return new Jaws_Error(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'));
         }
 
         $from_name  = $contact['name'];

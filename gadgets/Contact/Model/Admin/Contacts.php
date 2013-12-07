@@ -109,7 +109,7 @@ class Contact_Model_Admin_Contacts extends Jaws_Gadget_Model
         $result = $cntctTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
-            return new Jaws_Error($result->GetMessage(), _t('CONTACT_NAME'));
+            return new Jaws_Error($result->GetMessage());
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_CONTACTS_UPDATED'), RESPONSE_NOTICE);
@@ -134,7 +134,7 @@ class Contact_Model_Admin_Contacts extends Jaws_Gadget_Model
         $result = $cntctTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_REPLY_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error($result->GetMessage(), _t('CONTACT_NAME'));
+            return new Jaws_Error($result->GetMessage());
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_REPLY_UPDATED'), RESPONSE_NOTICE);
@@ -159,7 +159,7 @@ class Contact_Model_Admin_Contacts extends Jaws_Gadget_Model
         $result = $cntctTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_REPLY_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error($result->GetMessage(), _t('CONTACT_NAME'));
+            return new Jaws_Error($result->GetMessage());
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_REPLY_UPDATED'), RESPONSE_NOTICE);
@@ -179,7 +179,7 @@ class Contact_Model_Admin_Contacts extends Jaws_Gadget_Model
         $result = $objORM->delete()->table('contacts')->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_CONTACT_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('CONTACT_ERROR_CONTACT_NOT_DELETED'), _t('CONTACT_NAME'));
+            return new Jaws_Error(_t('CONTACT_ERROR_CONTACT_NOT_DELETED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_CONTACTS_DELETED'), RESPONSE_NOTICE);

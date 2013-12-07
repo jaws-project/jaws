@@ -320,13 +320,13 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         if (Jaws_Error::IsError($contact)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'),
                                                        RESPONSE_ERROR);
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('CONTACT_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
         }
 
         if (!isset($contact['id'])) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'),
                                                        RESPONSE_ERROR);
-            return new Jaws_Error(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'), _t('CONTACT_NAME'));
+            return new Jaws_Error(_t('CONTACT_ERROR_CONTACT_DOES_NOT_EXISTS'));
         }
 
         $from_name  = '';
@@ -339,12 +339,12 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
             if (Jaws_Error::IsError($recipient)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'),
                                                            RESPONSE_ERROR);
-                return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('CONTACT_NAME'));
+                return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
             }
             if (!isset($recipient['id'])) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'),
                                                            RESPONSE_ERROR);
-                return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'), _t('CONTACT_NAME'));
+                return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS'));
             }
             $from_name  = $recipient['name'];
             $from_email = $recipient['email'];

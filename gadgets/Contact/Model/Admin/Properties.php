@@ -32,7 +32,7 @@ class Contact_Model_Admin_Properties extends Jaws_Gadget_Model
         foreach ($rs as $r) {
             if (Jaws_Error::IsError($r) || !$r) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('CONTACT_ERROR_PROPERTIES_NOT_UPDATED'), _t('CONTACT_NAME'));
+                return new Jaws_Error(_t('CONTACT_ERROR_PROPERTIES_NOT_UPDATED'));
             }
         }
 

@@ -39,7 +39,7 @@ class Contact_Model_Admin_Recipients extends Jaws_Gadget_Model
         $result = $rcptTable->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_RECIPIENT_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_NOT_ADDED'),_t('CONTACT_NAME'));
+            return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_NOT_ADDED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_RECIPIENT_ADDED'), RESPONSE_NOTICE);
@@ -75,7 +75,7 @@ class Contact_Model_Admin_Recipients extends Jaws_Gadget_Model
         $result = $rcptTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_RECIPIENT_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_NOT_UPDATED'), _t('CONTACT_NAME'));
+            return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_NOT_UPDATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_RECIPIENT_UPDATED'), RESPONSE_NOTICE);
@@ -95,7 +95,7 @@ class Contact_Model_Admin_Recipients extends Jaws_Gadget_Model
         $result = $objORM->delete()->table('contacts_recipients')->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_ERROR_RECIPIENT_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_NOT_DELETED'), _t('CONTACT_NAME'));
+            return new Jaws_Error(_t('CONTACT_ERROR_RECIPIENT_NOT_DELETED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('CONTACT_RECIPIENT_DELETED'), RESPONSE_NOTICE);
