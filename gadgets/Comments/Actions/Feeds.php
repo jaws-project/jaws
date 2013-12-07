@@ -134,7 +134,7 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
         $cModel = $this->gadget->model->load('Comments');
         $comments = $cModel->GetComments($gadget);
         if (Jaws_Error::IsError($comments)) {
-            return new Jaws_Error(_t('COMMENTS_ERROR_GETTING_COMMENTS_ATOMSTRUCT'), _t('COMMENTS_NAME'));
+            return new Jaws_Error(_t('COMMENTS_ERROR_GETTING_COMMENTS_ATOMSTRUCT'));
         }
 
         $commentAtom = new Jaws_AtomFeed();
