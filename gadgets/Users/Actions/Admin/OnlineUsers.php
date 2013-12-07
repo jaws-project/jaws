@@ -77,12 +77,14 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
      * Prepares list of online users for datagrid
      *
      * @access  public
-     * @param   array   $filters    Grid filters
      * @return  array   Grid data
      */
-    function GetOnlineUsers($filters)
+    function GetOnlineUsers()
     {
-        $sessions = $GLOBALS['app']->Session->GetSessions(false);
+        $filters = jaws()->request->fetchAll('post');
+        $filters['active'] = ($filters['active'] == '-1')? null : (bool)$filters['active'];
+        $filters['logged'] = ($filters['logged'] == '-1')? null : (bool)$filters['logged'];
+        $sessions = $GLOBALS['app']->Session->GetSessions($filters['active'], $filters['logged']);
         if (Jaws_Error::IsError($sessions)) {
             return array();
         }
@@ -92,7 +94,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
 
         foreach ($sessions as $session) {
             $usrData = array();
-            $usrData['__KEY__']      = $session['sid'];
+            $usrData['__KEY__'] = $session['sid'];
             if (empty($session['username'])) {
                 $usrData['username'] = _t('USERS_ONLINE_ANONY');
             } else {
@@ -134,25 +136,27 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $tpl = $this->gadget->template->loadAdmin('OnlineUsers.html');
         $tpl->SetBlock('OnlineUsers');
 
-        // Session Status
-        $filterSession =& Piwi::CreateWidget('Combo', 'filter_session_status');
-        $filterSession->AddOption(_t('GLOBAL_ALL'), -1, false);
-        $filterSession->AddOption(_t('USERS_ONLINE_FILTER_SESSION_STATUS_ACTIVE'), 1);
-        $filterSession->AddOption(_t('USERS_ONLINE_FILTER_SESSION_STATUS_INACTIVE'), 0);
-        $filterSession->AddEvent(ON_CHANGE, "javascript: searchOnlineUsers();");
-        $filterSession->SetDefault(-1);
-        $tpl->SetVariable('filter_session_status', $filterSession->Get());
-        $tpl->SetVariable('lbl_filter_session_status', _t('USERS_ONLINE_FILTER_SESSION_STATUS'));
+        // Active
+        $active =& Piwi::CreateWidget('Combo', 'active');
+        $active->setID('filter_active');
+        $active->AddOption(_t('GLOBAL_ALL'), -1, false);
+        $active->AddOption(_t('USERS_ONLINE_FILTER_SESSION_STATUS_ACTIVE'), 1);
+        $active->AddOption(_t('USERS_ONLINE_FILTER_SESSION_STATUS_INACTIVE'), 0);
+        $active->AddEvent(ON_CHANGE, "javascript: searchOnlineUsers();");
+        $active->SetDefault(-1);
+        $tpl->SetVariable('filter_active', $active->Get());
+        $tpl->SetVariable('lbl_filter_active', _t('USERS_ONLINE_FILTER_SESSION_STATUS'));
 
-        // Membership
-        $filterMembership =& Piwi::CreateWidget('Combo', 'filter_membership');
-        $filterMembership->AddOption(_t('GLOBAL_ALL'), -1, false);
-        $filterMembership->AddOption(_t('USERS_ONLINE_FILTER_MEMBERSHIP_MEMBERS'), 1);
-        $filterMembership->AddOption(_t('USERS_ONLINE_FILTER_MEMBERSHIP_ANONYMOUS'), 0);
-        $filterMembership->AddEvent(ON_CHANGE, "javascript: searchOnlineUsers();");
-        $filterMembership->SetDefault(-1);
-        $tpl->SetVariable('filter_membership', $filterMembership->Get());
-        $tpl->SetVariable('lbl_filter_membership', _t('USERS_ONLINE_FILTER_MEMBERSHIP'));
+        // Logged
+        $logged =& Piwi::CreateWidget('Combo', 'logged');
+        $logged->setID('filter_logged');
+        $logged->AddOption(_t('GLOBAL_ALL'), -1, false);
+        $logged->AddOption(_t('USERS_ONLINE_FILTER_MEMBERSHIP_MEMBERS'), 1);
+        $logged->AddOption(_t('USERS_ONLINE_FILTER_MEMBERSHIP_ANONYMOUS'), 0);
+        $logged->AddEvent(ON_CHANGE, "javascript: searchOnlineUsers();");
+        $logged->SetDefault(-1);
+        $tpl->SetVariable('filter_logged', $logged->Get());
+        $tpl->SetVariable('lbl_filter_logged', _t('USERS_ONLINE_FILTER_MEMBERSHIP'));
 
         $tpl->SetVariable('online_users_datagrid', $this->OnlineUsersDataGrid());
         $tpl->SetVariable('menubar', $this->MenuBar('OnlineUsers'));

@@ -190,9 +190,12 @@ function getGroups(name, offset, reset)
  */
 function getOnlineUsers(name, offset, reset)
 {
-    var result = UsersAjax.callSync('GetOnlineUsers', {
-        'session_status': $('filter_session_status').value,
-        'membership': $('filter_membership').value});
+    var result = UsersAjax.callSync(
+        'GetOnlineUsers', {
+            'active': $('filter_active').value,
+            'logged': $('filter_logged').value
+        }
+    );
     resetGrid(name, result, result.length);
     fTimeout = setTimeout("getOnlineUsers('onlineusers_datagrid');", 30000);
 }
