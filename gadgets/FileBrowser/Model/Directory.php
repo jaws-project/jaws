@@ -27,7 +27,7 @@ class FileBrowser_Model_Directory extends Jaws_Gadget_Model
         $fModel = $this->gadget->model->load('Files');
         if (!is_dir($fModel->GetFileBrowserRootDir() . $path)) {
             return new Jaws_Error(_t('FILEBROWSER_ERROR_DIRECTORY_DOES_NOT_EXISTS'),
-                _t('FILEBROWSER_NAME'));
+                $this->gadget->title);
         }
 
         $tree = array();

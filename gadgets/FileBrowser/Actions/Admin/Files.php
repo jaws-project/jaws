@@ -240,7 +240,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->loadAdmin('BrowseFile.html');
         $tpl->SetBlock('browse');
 
-        $tpl->SetVariable('page-title', _t('FILEBROWSER_NAME'));
+        $tpl->SetVariable('page-title', $this->gadget->title);
         $tpl->SetVariable('incompleteFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('confirmFileDelete', _t('FILEBROWSER_CONFIRM_DELETE_FILE'));
         $tpl->SetVariable('confirmDirDelete', _t('FILEBROWSER_CONFIRM_DELETE_DIR'));

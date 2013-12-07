@@ -31,7 +31,7 @@ class FileBrowser_Actions_Directory extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('FileBrowser.html');
         $tpl->SetBlock('initial_folder');
-        $tpl->SetVariable('title', _t('FILEBROWSER_NAME'));
+        $tpl->SetVariable('title', $this->gadget->title);
 
         $model = $this->gadget->model->load('Directory');
         $items = $model->ReadDir($path);
