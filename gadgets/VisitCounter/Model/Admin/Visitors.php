@@ -69,7 +69,7 @@ class VisitCounter_Model_Admin_Visitors extends Jaws_Gadget_Model
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('VISITCOUNTER_ERROR_COUNTER_NOT_RESETED'), RESPONSE_ERROR);
-        return new Jaws_Error(_t('VISITCOUNTER_ERROR_COUNTER_NOT_RESETED'), _t('VISITCOUNTER_NAME'));
+        return new Jaws_Error(_t('VISITCOUNTER_ERROR_COUNTER_NOT_RESETED'));
     }
 
     /**
@@ -83,7 +83,7 @@ class VisitCounter_Model_Admin_Visitors extends Jaws_Gadget_Model
     {
         $rs = $this->gadget->registry->update('start', $date);
         if (!$rs || Jaws_Error::IsError($rs)) {
-            return new Jaws_Error(_t('VISITCOUNTER_ERROR_COULD_NOT_CHANGE_STARTDATE'), _t('VISITCOUNTER_NAME'));
+            return new Jaws_Error(_t('VISITCOUNTER_ERROR_COULD_NOT_CHANGE_STARTDATE'));
         }
         return true;
     }

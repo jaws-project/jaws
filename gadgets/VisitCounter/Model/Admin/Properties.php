@@ -36,6 +36,6 @@ class VisitCounter_Model_Admin_Properties extends Jaws_Gadget_Model
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('VISITCOUNTER_ERROR_PROPERTIES_UPDATED'), RESPONSE_ERROR);
-        return new Jaws_Error(_t('VISITCOUNTER_ERROR_PROPERTIES_UPDATED'), _t('VISITCOUNTER_NAME'));
+        return new Jaws_Error(_t('VISITCOUNTER_ERROR_PROPERTIES_UPDATED'));
     }
 }

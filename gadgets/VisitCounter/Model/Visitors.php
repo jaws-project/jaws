@@ -26,7 +26,7 @@ class VisitCounter_Model_Visitors extends Jaws_Gadget_Model
     {
         $hostname = gethostbyaddr($ip);
         if ($hostname == $ip) {
-            return new Jaws_Error(_t('VISITCOUNTER_ERROR_CANT_REVERSE_HOSTNAME', $ip), _t('VISITCOUNTER_NAME'));
+            return new Jaws_Error(_t('VISITCOUNTER_ERROR_CANT_REVERSE_HOSTNAME', $ip));
         }
 
         return $hostname;
