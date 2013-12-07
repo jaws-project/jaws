@@ -48,10 +48,10 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
             $gadgetsCombo->AddEvent(ON_CHANGE, "searchComment()");
             $gadgetsCombo->AddOption('', '');
             // TODO: Get List Of Gadget Which Use Comments
-            $gadgetsCombo->AddOption(_t('COMMENTS_NAME'), 'Comments');
-            $gadgetsCombo->AddOption(_t('BLOG_NAME'), 'Blog');
-            $gadgetsCombo->AddOption(_t('PHOO_NAME'), 'Phoo');
-            $gadgetsCombo->AddOption(_t('SHOUTBOX_NAME'), 'Shoutbox');
+            $gadgetsCombo->AddOption(_t('COMMENTS_TITLE'), 'Comments');
+            $gadgetsCombo->AddOption(_t('BLOG_TITLE'), 'Blog');
+            $gadgetsCombo->AddOption(_t('PHOO_TITLE'), 'Phoo');
+            $gadgetsCombo->AddOption(_t('SHOUTBOX_TITLE'), 'Shoutbox');
             $gadgetsCombo->SetDefault('');
             $tpl->SetVariable('lbl_gadgets_filter', _t('COMMENTS_GADGETS'));
             $tpl->SetVariable('gadgets_filter', $gadgetsCombo->Get());

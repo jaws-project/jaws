@@ -73,7 +73,7 @@ class Comments_Actions_RecentComments extends Comments_Actions_Default
 
         $tpl = $this->gadget->template->load('RecentComments.html');
         $tpl->SetBlock('recent_comments');
-        $tpl->SetVariable('title', _t('COMMENTS_RECENT_COMMENTS', _t(strtoupper($gadget) . '_NAME')));
+        $tpl->SetVariable('title', _t('COMMENTS_RECENT_COMMENTS', _t(strtoupper($gadget) . '_TITLE')));
         $tpl->SetVariable('gadget', $gadget);
 
         $cHTML = Jaws_Gadget::getInstance('Comments')->action->load('Comments');
