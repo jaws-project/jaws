@@ -48,7 +48,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         $result = $table->fetchRow();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         if($fetchAttachment && !empty($result)) {
@@ -71,7 +71,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         $result = $table->select('recipient:integer')->where('message', $id)->fetchColumn();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
@@ -94,7 +94,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $table->join('users', 'pm_recipients.recipient', 'users.id');
         $result = $table->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
@@ -123,7 +123,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         $message = $table->fetchRow();
         if (Jaws_Error::IsError($message)) {
-            return new Jaws_Error($message->getMessage(), 'SQL');
+            return new Jaws_Error($message->getMessage());
         }
 
         if($fetchAttachment) {
@@ -322,12 +322,12 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         // validation input fields
         if ($messageData['published']) {
             if (empty($recipient_users) || count($recipient_users) <= 0 || empty($messageData['subject'])) {
-                return new Jaws_Error(_t('PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS'), _t('PRIVATEMESSAGE_NAME'));
+                return new Jaws_Error(_t('PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS'));
             }
 
         } else {
             if (empty($messageData['title'])) {
-                return new Jaws_Error(_t('PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS'), _t('PRIVATEMESSAGE_NAME'));
+                return new Jaws_Error(_t('PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS'));
             }
         }
 

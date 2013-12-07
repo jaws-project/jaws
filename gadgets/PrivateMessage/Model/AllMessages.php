@@ -77,7 +77,7 @@ class PrivateMessage_Model_AllMessages extends Jaws_Gadget_Model
 
         $result = $table->orderBy('insert_time desc')->limit($limit, $offset)->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
@@ -141,7 +141,7 @@ class PrivateMessage_Model_AllMessages extends Jaws_Gadget_Model
 
         $result = $table->fetchOne();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
