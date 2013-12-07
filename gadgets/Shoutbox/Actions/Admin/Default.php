@@ -29,7 +29,7 @@ class Shoutbox_Actions_Admin_Default extends Jaws_Gadget_Action
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption(
             'Comments',
-            _t('SHOUTBOX_NAME'),
+            $this->gadget->title,
             BASE_SCRIPT . '?gadget=Shoutbox&amp;action=Comments');
         if ($this->gadget->GetPermission('Settings')) {
             $menubar->AddOption(
