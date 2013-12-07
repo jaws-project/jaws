@@ -64,7 +64,7 @@ class Tags_Installer extends Jaws_Gadget_Installer
         foreach ($tables as $table) {
             $result = $GLOBALS['db']->dropTable($table);
             if (Jaws_Error::IsError($result)) {
-                $gName  = _t('TAGS_NAME');
+                $gName  = _t('TAGS_TITLE');
                 $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);
                 return new Jaws_Error($errMsg, $gName);
             }

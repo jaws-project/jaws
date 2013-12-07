@@ -26,7 +26,7 @@ class Tags_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Tags',
-                            _t('TAGS_NAME'),
+                            _t('TAGS_TITLE'),
                             BASE_SCRIPT . '?gadget=Tags&amp;action=Tags',
                             STOCK_NEW);
         if ($this->gadget->GetPermission('ManageProperties')) {

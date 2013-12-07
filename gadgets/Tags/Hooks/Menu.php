@@ -32,7 +32,7 @@ class Tags_Hooks_Menu extends Jaws_Gadget_Hook
         foreach ($gadgets as $gadget) {
             $objTranslate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
             $urls[] = array('url' => $this->gadget->urlMap('TagCloud', array('gname' => $gadget)),
-                            'title' => _t('TAGS_TAG_CLOUD', _t(strtoupper($gadget) . '_NAME')));
+                            'title' => _t('TAGS_TAG_CLOUD', _t(strtoupper($gadget) . '_TITLE')));
         }
 
         return $urls;

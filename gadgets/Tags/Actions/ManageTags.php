@@ -98,7 +98,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
                 $tpl->SetVariable('selected', 'selected="selected"');
             }
             $tpl->SetVariable('name', $gadget);
-            $tpl->SetVariable('title', _t(strtoupper($gadget) . '_NAME'));
+            $tpl->SetVariable('title', _t(strtoupper($gadget) . '_TITLE'));
             $tpl->ParseBlock('tags/gadget');
         }
 

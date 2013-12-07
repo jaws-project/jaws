@@ -29,7 +29,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         $objTranslate = Jaws_Translate::getInstance();
         foreach($gadgets as $gadget) {
             $objTranslate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
-            $tagGadgets[$gadget] = _t(strtoupper($gadget) . '_NAME');
+            $tagGadgets[$gadget] = _t(strtoupper($gadget) . '_TITLE');
         }
 
         $result[] = array(
@@ -85,7 +85,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         if(!empty($gadget)) {
             $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
             Jaws_Translate::getInstance()->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
-            $tpl->SetVariable('title', _t('TAGS_TAG_CLOUD', _t(strtoupper($gadget) . '_NAME')));
+            $tpl->SetVariable('title', _t('TAGS_TAG_CLOUD', _t(strtoupper($gadget) . '_TITLE')));
         } else {
             $tpl->SetVariable('title', _t('TAGS_TAG_CLOUD', _t('GLOBAL_ALL')));
         }

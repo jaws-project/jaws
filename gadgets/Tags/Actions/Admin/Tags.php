@@ -51,7 +51,7 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
             $objTranslate = Jaws_Translate::getInstance();
             foreach($gadgets as $gadget) {
                 $objTranslate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
-                $gadgetsCombo->AddOption(_t(strtoupper($gadget) . '_NAME'), $gadget);
+                $gadgetsCombo->AddOption(_t(strtoupper($gadget) . '_TITLE'), $gadget);
             }
 
             $gadgetsCombo->SetDefault('');

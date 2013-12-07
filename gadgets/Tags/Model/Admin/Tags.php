@@ -176,7 +176,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
         if ($tag > 0) {
-            return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $data['name']), _t('TAGS_NAME'));
+            return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $data['name']), _t('TAGS_TITLE'));
         }
 
         $table = Jaws_ORM::getInstance()->table('tags');
@@ -215,7 +215,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
                 return new Jaws_Error($result->getMessage(), 'SQL');
             }
             if ($tag > 0) {
-                return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $data['name']), _t('TAGS_NAME'));
+                return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $data['name']), _t('TAGS_TITLE'));
             }
         }
 
@@ -305,7 +305,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             return new Jaws_Error($result->getMessage(), 'SQL');
         }
         if ($tag > 0) {
-            return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $newName), _t('TAGS_NAME'));
+            return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $newName), _t('TAGS_TITLE'));
         }
 
         $data = array();
