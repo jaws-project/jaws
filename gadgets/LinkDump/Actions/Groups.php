@@ -65,7 +65,7 @@ class LinkDump_Actions_Groups extends Jaws_Gadget_Action
         $tpl->SetBlock('category');
 
         $tpl->SetVariable('gid',   $group['id']);
-        $tpl->SetVariable('title', _t('LINKDUMP_NAME'));
+        $tpl->SetVariable('title', $this->gadget->title);
         $tpl->SetVariable('name', $group['title']);
         $tpl->SetVariable('feed', _t('LINKDUMP_LINKS_FEED'));
 
