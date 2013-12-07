@@ -97,6 +97,11 @@ class Jaws_Date_Jalali extends Jaws_Date
             $format = isset($args[1])? $args[1] : '';
         }
 
+        // type validation
+        $year  = (int)$year;
+        $month = (int)$month;
+        $day   = (int)$day;
+
         if ($month == 0) {
             $year--;
             $month = 12;
@@ -109,7 +114,7 @@ class Jaws_Date_Jalali extends Jaws_Date
 
         $year = $year - 979;
         $gregorian_day = $this->JalaliTotalDays($year, $month, $day) + 79;
-        return $this->ToGregorian($gregorian_day, 1601, $hour, $minute, $second, $format);
+        return $this->ToGregorian($gregorian_day, 1601, (int)$hour, (int)$minute, (int)$second, $format);
     }
 
     /**

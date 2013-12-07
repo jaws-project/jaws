@@ -48,7 +48,7 @@ class Jaws_Date_Gregorian extends Jaws_Date
             $format = isset($args[1])? $args[1] : '';
         }
 
-        $dt = mktime($hour, $minute, $second, $month, $day, $year);
+        $dt = mktime((int)$hour, (int)$minute, (int)$second, (int)$month, (int)$day, (int)$year);
         return !empty($format)? date($format, $dt) :
                                 array('timestamp' => $dt,
                                       'year'      => date("Y", $dt),
@@ -78,11 +78,11 @@ class Jaws_Date_Gregorian extends Jaws_Date
     {
         if (is_array(func_get_arg(0))) {
             @list($year, $month, $day, $hour, $minute, $second) = func_get_arg(0);
-            $date = mktime($hour, $minute, $second, $month, $day, $year);
+            $date = mktime((int)$hour, (int)$minute, (int)$second, (int)$month, (int)$day, (int)$year);
         } elseif (func_num_args() > 1) {
-            $date = mktime($hour, $minute, $second, $month, $day, $year);
+            $date = mktime((int)$hour, (int)$minute, (int)$second, (int)month, (int)$day, (int)$year);
         } else { // unix timestamp
-            $date = $year;
+            $date = (int)$year;
         }
 
         $date = getdate($date);
