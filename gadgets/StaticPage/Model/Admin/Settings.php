@@ -29,7 +29,7 @@ class StaticPage_Model_Admin_Settings extends Jaws_Gadget_Model
         foreach($res as $r) {
             if (!$r || Jaws_Error::IsError($r)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_SETTINGS_NOT_SAVED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('STATICPAGE_ERROR_SETTINGS_NOT_SAVED'), _t('STATICPAGE_NAME'));
+                return new Jaws_Error(_t('STATICPAGE_ERROR_SETTINGS_NOT_SAVED'));
             }
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_SETTINGS_SAVED'), RESPONSE_NOTICE);

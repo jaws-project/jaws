@@ -32,7 +32,7 @@ class StaticPage_Model_Group extends Jaws_Gadget_Model
 
         $group = $spgTable->fetchRow();
         if (Jaws_Error::IsError($group)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
         }
 
         return $group;
@@ -57,7 +57,7 @@ class StaticPage_Model_Group extends Jaws_Gadget_Model
         }
         $groups = $spgTable->fetchAll();
         if (Jaws_Error::IsError($groups)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
         }
 
         return $groups;

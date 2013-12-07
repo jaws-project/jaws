@@ -38,7 +38,7 @@ class StaticPage_Model_Admin_Group extends StaticPage_Model_Group
         $spgTable = Jaws_ORM::getInstance()->table('static_pages_groups');
         $res = $spgTable->insert($params)->exec();
         if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
         }
 
         $this->gadget->acl->insert('AccessGroup', $res, true);
@@ -72,7 +72,7 @@ class StaticPage_Model_Admin_Group extends StaticPage_Model_Group
         $spgTable = Jaws_ORM::getInstance()->table('static_pages_groups');
         $res = $spgTable->update($params)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
         }
 
         return true;
@@ -89,7 +89,7 @@ class StaticPage_Model_Admin_Group extends StaticPage_Model_Group
         $spgTable = Jaws_ORM::getInstance()->table('static_pages_groups');
         $count = $spgTable->select('count(id)')->fetchOne();
         if (Jaws_Error::IsError($count)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
         }
 
         return $count;
@@ -105,13 +105,13 @@ class StaticPage_Model_Admin_Group extends StaticPage_Model_Group
     function DeleteGroup($gid)
     {
         if ($gid == 1) {
-            return new Jaws_Error(_t('STATICPAGE_ERROR_GROUP_NOT_DELETABLE'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_GROUP_NOT_DELETABLE'));
         }
 
         $spgTable = Jaws_ORM::getInstance()->table('static_pages_groups');
         $res = $spgTable->delete()->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
         }
 
         $this->gadget->acl->delete('AccessGroup', $gid);

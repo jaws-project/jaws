@@ -122,7 +122,7 @@ class StaticPage_Model_Page extends Jaws_Gadget_Model
         $spTable->orderBy('spt.'.$orderBy);
         $result = $spTable->limit($limit, $offset)->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGES_NOT_RETRIEVED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGES_NOT_RETRIEVED'));
         }
 
         return $result;

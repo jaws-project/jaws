@@ -45,7 +45,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         $result = $spTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'));
         }
 
         $base_id = $GLOBALS['db']->lastInsertID('static_pages', 'page_id');
@@ -53,7 +53,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         $tid = $tModel->AddTranslation($base_id, $title, $content, $language, $meta_keys, $meta_desc, $tags, $published);
         if (Jaws_Error::IsError($tid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_PAGE_CREATED'), RESPONSE_NOTICE);
@@ -87,7 +87,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         $page = $this->GetPage($id);
         if (Jaws_Error::isError($page)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_FOUND'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_FOUND'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_FOUND'));
         }
 
         $params['group_id']      = (int)$group;
@@ -99,7 +99,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         $spTable = Jaws_ORM::getInstance()->table('static_pages');
         $result = $spTable->update($params)->where('page_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_UPDATED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_UPDATED'));
         }
 
         $tModel = $this->gadget->model->loadAdmin('Translation');
@@ -107,7 +107,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
                                              $meta_keys, $meta_desc, $tags, $published);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_UPDATED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_UPDATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_PAGE_UPDATED'), RESPONSE_NOTICE);
@@ -131,7 +131,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
             if (Jaws_Error::IsError($result) || ($result > 0)) {
                 // FIXME: need new language statement
                 $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_DELETED'), _t('STATICPAGE_NAME'));
+                return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_DELETED'));
             }
         }
 
@@ -149,14 +149,14 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         $result = $sptTable->delete()->where('base_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_QUERY_FAILED'));
         }
 
         $spTable = Jaws_ORM::getInstance()->table('static_pages');
         $result = $spTable->delete()->where('page_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_DELETED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_DELETED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_PAGE_DELETED'), RESPONSE_NOTICE);
@@ -174,14 +174,14 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
     {
         if (!is_array($pages)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_MASSIVE_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_MASSIVE_DELETED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_MASSIVE_DELETED'));
         }
 
         foreach ($pages as $page) {
             $res = $this->DeletePage($page);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_MASSIVE_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_MASSIVE_DELETED'), _t('STATICPAGE_NAME'));
+                return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_MASSIVE_DELETED'));
             }
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_PAGE_MASSIVE_DELETED'), RESPONSE_NOTICE);
@@ -264,7 +264,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         }
         $result = $spgTable->orderBy('spt.' . $orderBy)->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGES_NOT_RETRIEVED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_PAGES_NOT_RETRIEVED'));
         }
 
         //limit, sort, sortDirection, offset..

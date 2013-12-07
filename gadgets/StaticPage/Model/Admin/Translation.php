@@ -32,12 +32,12 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
         $language = str_replace(array('.', '/'), '', $language);
         if ($language != 'en' && !file_exists(JAWS_PATH . "languages/$language/FullName")) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_LANGUAGE_NOT_EXISTS', $language), RESPONSE_ERROR);
-            return new Jaws_Error(_t('STATICPAGE_ERROR_LANGUAGE_NOT_EXISTS', $language), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_LANGUAGE_NOT_EXISTS', $language));
         }
 
         if ($this->TranslationExists($page_id, $language)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_EXISTS', $language), RESPONSE_ERROR);
-            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_EXISTS', $language), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_EXISTS', $language));
         }
         $published = $this->gadget->GetPermission('PublishPages')? $published : false;
 
@@ -55,7 +55,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
         $tid = $sptTable->insert($params)->exec();
         if (Jaws_Error::IsError($tid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_ADDED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_ADDED'));
         }
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
@@ -63,7 +63,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
             $res = $model->AddTagsToItem('StaticPage', 'page', $tid, (bool)$published, null, $tags);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TAG_NOT_ADDED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('STATICPAGE_ERROR_TAG_NOT_ADDED'), _t('STATICPAGE_NAME'));
+                return new Jaws_Error(_t('STATICPAGE_ERROR_TAG_NOT_ADDED'));
             }
         }
 
@@ -93,13 +93,13 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
         $translation = $this->GetPageTranslation($id);
         if (Jaws_Error::isError($translation)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'));
         }
 
         if ($translation['language'] != $language) {
             if ($this->TranslationExists($translation['base_id'], $language)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_EXISTS'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_EXISTS'), _t('STATICPAGE_NAME'));
+                return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_EXISTS'));
             }
         }
 
@@ -109,7 +109,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
         {
             // FIXME: need new language statement
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'));
         }
 
         // check modify published pages ACL
@@ -118,7 +118,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
         {
             // FIXME: need new language statement
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'));
         }
 
         // Lets update it
@@ -138,7 +138,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
         $result = $sptTable->update($params)->where('translation_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_UPDATED'));
         }
 
         // Update page translation tags
@@ -170,12 +170,12 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
             $translation = $this->GetPageTranslation($id);
             if (Jaws_Error::isError($translation)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'), _t('STATICPAGE_NAME'));
+                return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_EXISTS'));
             }
 
             if ($GLOBALS['app']->Session->GetAttribute('user') != $translation['user']) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_DELETED'), _t('STATICPAGE_NAME'));
+                return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_DELETED'));
             }
         }
 
@@ -183,7 +183,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
         $result = $sptTable->delete()->where('translation_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_DELETED'), _t('STATICPAGE_NAME'));
+            return new Jaws_Error(_t('STATICPAGE_ERROR_TRANSLATION_NOT_DELETED'));
         }
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
