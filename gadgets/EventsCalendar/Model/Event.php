@@ -61,7 +61,6 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
     function InsertEvent($event)
     {
         $jdate = Jaws_Date::getInstance();
-        $startArr = preg_split('/[- :]/', $event['start_date'] . ' ' . $event['start_time']);
 
         $start_time = $jdate->ToBaseDate(
             preg_split('/[- :]/', $event['start_date'] . ' ' . $event['start_time'])
@@ -145,7 +144,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         // create recurrences
         if ($event['start_time'] != $old_event['start_time'] ||
             $event['stop_time'] != $old_event['stop_time'] ||
-            $event['recurrences'] != $old_event['recurrences'] ||
+            $event['recurrence'] != $old_event['recurrence'] ||
             $event['month'] != $old_event['month'] ||
             $event['wday'] != $old_event['wday'] ||
             $event['day'] != $old_event['day'])
