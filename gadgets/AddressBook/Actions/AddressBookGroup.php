@@ -30,7 +30,7 @@ class AddressBook_Actions_AddressBookGroup extends AddressBook_Actions_Default
         }
 
         $this->AjaxMe('site_script.js');
-        $this->SetTitle(_t('ADDRESSBOOK_NAME'));
+        $this->SetTitle($this->gadget->title);
         $tpl = $this->gadget->template->load('GroupMembers.html');
         $tpl->SetBlock("address_list");
 

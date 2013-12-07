@@ -30,11 +30,11 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
         }
 
         $this->AjaxMe('site_script.js');
-        $this->SetTitle(_t('ADDRESSBOOK_NAME'));
+        $this->SetTitle($this->gadget->title);
         $tpl = $this->gadget->template->load('AddressBook.html');
         $tpl->SetBlock("address_list");
 
-        $tpl->SetVariable('title', _t('ADDRESSBOOK_NAME'));
+        $tpl->SetVariable('title', $this->gadget->title);
         $tpl->SetVariable('confirmDelete', _t('ADDRESSBOOK_DELETE_CONFIRM'));
         // Set default delete URL for use in javascript
         $tpl->SetVariable('deleteURL', $this->gadget->urlMap('DeleteAddress', array('id' => '')));

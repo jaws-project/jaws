@@ -31,7 +31,7 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
         $tpl = $this->gadget->template->load('Groups.html');
 
         $tpl->SetBlock("group");
-        $tpl->SetVariable('title', _t('ADDRESSBOOK_NAME'));
+        $tpl->SetVariable('title', $this->gadget->title);
         $tpl->SetVariable('lbl_name',        _t('GLOBAL_TITLE'));
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
 

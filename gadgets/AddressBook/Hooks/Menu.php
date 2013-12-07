@@ -18,7 +18,7 @@ class AddressBook_Hooks_Menu extends Jaws_Gadget_Hook
         $urls   = array();
         $urls[] = array(
             'url'   => $this->gadget->urlMap('AddressBook'),
-            'title' => _t('ADDRESSBOOK_NAME')
+            'title' => $this->gadget->title
         );
 
         return $urls;

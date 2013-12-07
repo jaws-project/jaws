@@ -33,7 +33,7 @@ class AddressBook_Actions_UserAddress extends Jaws_Gadget_Action
             return $addressItems->getMessage(); // TODO: Show intelligible message
         }
 
-        $this->SetTitle(_t('ADDRESSBOOK_NAME'));
+        $this->SetTitle($this->gadget->title);
         $tpl = $this->gadget->template->load('UserAddress.html');
         $tpl->SetBlock("address_list");
         $tpl->SetVariable('title', _t('ADDRESSBOOK_USER_ADDRESS_TITLE', $user['nickname']));
