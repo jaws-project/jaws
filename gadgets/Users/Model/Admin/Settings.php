@@ -43,7 +43,7 @@ class Users_Model_Admin_Settings extends Jaws_Gadget_Model
             return true;
         }
 
-        return new Jaws_Error(_t('USERS_PROPERTIES_CANT_UPDATE'), _t('USERS_NAME'));
+        return new Jaws_Error(_t('USERS_PROPERTIES_CANT_UPDATE'), $this->gadget->name);
     }
 
 }

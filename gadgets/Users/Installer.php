@@ -71,7 +71,7 @@ class Users_Installer extends Jaws_Gadget_Installer
 
         $new_dir = JAWS_DATA . 'avatar';
         if (!Jaws_Utils::mkdir($new_dir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('USERS_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), $this->gadget->name);
         }
 
         // Create the group 'users'
