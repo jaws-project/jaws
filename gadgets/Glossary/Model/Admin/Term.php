@@ -24,7 +24,7 @@ class Glossary_Model_Admin_Term extends Jaws_Gadget_Model
         $result = $glossaryTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOSSARY_ERROR_TERM_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('GLOSSARY_ERROR_TERM_NOT_DELETED'), _t('GLOSSARY_NAME'));
+            return new Jaws_Error(_t('GLOSSARY_ERROR_TERM_NOT_DELETED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('GLOSSARY_TERM_DELETED'), RESPONSE_NOTICE);
@@ -56,7 +56,7 @@ class Glossary_Model_Admin_Term extends Jaws_Gadget_Model
         $result = $glossaryTable->update($params)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOSSARY_ERROR_TERM_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('GLOSSARY_ERROR_TERM_NOT_UPDATED'), _t('GLOSSARY_NAME'));
+            return new Jaws_Error(_t('GLOSSARY_ERROR_TERM_NOT_UPDATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('GLOSSARY_TERM_UPDATED'), RESPONSE_NOTICE);
@@ -88,7 +88,7 @@ class Glossary_Model_Admin_Term extends Jaws_Gadget_Model
         $result = $glossaryTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOSSARY_ERROR_TERM_NOT_CREATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('GLOSSARY_ERROR_TERM_NOT_CREATED'), _t('GLOSSARY_NAME'));
+            return new Jaws_Error(_t('GLOSSARY_ERROR_TERM_NOT_CREATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('GLOSSARY_TERM_ADDED'), RESPONSE_NOTICE);
@@ -97,7 +97,7 @@ class Glossary_Model_Admin_Term extends Jaws_Gadget_Model
         $row = $glossaryTable->select('id:integer')->where('createtime', $now)->fetchRow();
         if (Jaws_Error::IsError($row)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOSSARY_ERROR_TERM_NOT_CREATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('GLOSSARY_ERROR_TERM_NOT_CREATED'), _t('GLOSSARY_NAME'));
+            return new Jaws_Error(_t('GLOSSARY_ERROR_TERM_NOT_CREATED'));
         }
 
         if (isset($row['id'])) {

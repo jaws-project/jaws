@@ -26,7 +26,7 @@ class Glossary_Model_Term extends Jaws_Gadget_Model
             'id:integer', 'user_id:integer', 'term', 'fast_url', 'description', 'createtime', 'updatetime'
         )->where($exp1, $id)->fetchRow();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
@@ -62,7 +62,7 @@ class Glossary_Model_Term extends Jaws_Gadget_Model
             'id:integer', 'user_id:integer', 'term', 'fast_url', 'description', 'updatetime'
         )->orderBy($glossaryTable->random())->limit(1)->fetchRow();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
@@ -81,7 +81,7 @@ class Glossary_Model_Term extends Jaws_Gadget_Model
             'id:integer', 'user_id:integer', 'term', 'fast_url', 'description', 'updatetime'
         )->orderBy('term')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
