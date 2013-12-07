@@ -42,7 +42,7 @@ class Jaws_Translate
      *
      * @access  public
      */
-    function Jaws_Translate($load_user_translated)
+    private function __construct($load_user_translated)
     {
         $this->_load_user_translated = $load_user_translated;
     }
@@ -69,7 +69,6 @@ class Jaws_Translate
     function Init($lang = 'en')
     {
         $this->_defaultLanguage = $lang;
-        $this->LoadTranslation('Global');
     }
 
     /**
@@ -119,6 +118,11 @@ class Jaws_Translate
             default:
                 $module = $type;
                 $type = 1;
+        }
+
+        // autoload not loaded module language
+        if (!isset($this->translates[$lang][$type][$module])) {
+            $this->LoadTranslation($module, $type, $lang);
         }
 
         if (isset($this->translates[$lang][$type][$module][$string])) {
