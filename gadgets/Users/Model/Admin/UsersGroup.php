@@ -24,7 +24,7 @@ class Users_Model_Admin_UsersGroup extends Jaws_Gadget_Model
         $userModel = new Jaws_User();
         $group = $userModel->GetGroup((int)$guid);
         if (!$group) {
-            return new Jaws_Error(_t('USERS_GROUPS_GROUP_NOT_EXIST'), $this->gadget->name);
+            return new Jaws_Error(_t('USERS_GROUPS_GROUP_NOT_EXIST'));
         }
 
         $postedUsers = array();
