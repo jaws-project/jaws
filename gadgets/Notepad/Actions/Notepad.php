@@ -23,7 +23,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('Notepad.html');
         $tpl->SetBlock('notepad');
 
-        $tpl->SetVariable('title', _t('NOTEPAD_NAME'));
+        $tpl->SetVariable('title', $this->gadget->title);
         $tpl->SetVariable('lbl_title', _t('NOTEPAD_NOTE_TITLE'));
         $tpl->SetVariable('lbl_created', _t('NOTEPAD_NOTE_CREATED'));
         $tpl->SetVariable('lbl_shared', _t('NOTEPAD_SHARED'));
