@@ -23,7 +23,7 @@ class Banner_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $menubar = new Jaws_Widgets_Menubar();
         if ($this->gadget->GetPermission('ManageBanners')) {
-            $menubar->AddOption('Banners', _t('BANNER_NAME'),
+            $menubar->AddOption('Banners', $this->gadget->title,
                                 BASE_SCRIPT . '?gadget=Banner&amp;action=Banners', 'gadgets/Banner/Resources/images/banners_mini.png');
         }
         if ($this->gadget->GetPermission('ManageGroups')) {
