@@ -12,22 +12,6 @@
 class Jaws_Gadget
 {
     /**
-     * Language translate name of the gadget
-     *
-     * @var     string
-     * @access  public
-     */
-    var $title = '';
-
-    /**
-     * Language translate description of the gadget
-     *
-     * @var     string
-     * @access  public
-     */
-    var $description = '';
-
-    /**
      * Gadget version
      *
      * @var     string
@@ -554,6 +538,11 @@ class Jaws_Gadget
     function __get($property)
     {
         switch ($property) {
+            case 'title':
+            case 'description':
+                return _t(strtoupper($this->name. '_'. $property));
+                break;
+
             case 'acl':
             case 'hook':
             case 'event':
