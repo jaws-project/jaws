@@ -64,27 +64,27 @@ background-position:right;
 .response_notice{
 border:1px solid #9db029;
 background-color:#e6f0a5;
-background-image:url("../../../Resources/images/stock/info-small.png");
+background-image:url("../../../images/stock/info-small.png");
 }
 .response_warning{
 border:1px solid #fce94f;
 background-color:#fdf4a7;
-background-image:url("../../../Resources/images/stock/warning-small.png");
+background-image:url("../../../images/stock/warning-small.png");
 }
 .response_error{
 border:1px solid #cc0000;
 background-color:#fabfbf;
-background-image:url("../../../Resources/images/stock/error-small.png");
+background-image:url("../../../images/stock/error-small.png");
 }
 .working-message{
 color:#888a85;
-background-image:url("../../../Resources/images/loading.gif");
+background-image:url("../../../images/loading.gif");
 background-repeat:no-repeat;
 background-position:4px 2px;
 }
 #working_notification{
 visibility:hidden;
-background:#fafafa url("../../../Resources/images/loading.gif") no-repeat 2px center;
+background:#fafafa url("../../../images/loading.gif") no-repeat 2px center;
 color:#888a85;
 font-size:x-small;
 padding:4px;
