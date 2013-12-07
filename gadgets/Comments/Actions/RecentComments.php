@@ -29,10 +29,10 @@ class Comments_Actions_RecentComments extends Comments_Actions_Default
         $result[] = array(
             'title' => _t('COMMENTS_GADGETS'),
             'value' => array(
-                'Blog' => _t('BLOG_NAME') ,
-                'Phoo' => _t('PHOO_NAME') ,
-                'Shoutbox' => _t('SHOUTBOX_NAME') ,
-                'Comments' => _t('COMMENTS_NAME') ,
+                'Blog' => _t('BLOG_TITLE') ,
+                'Phoo' => _t('PHOO_TITLE') ,
+                'Shoutbox' => _t('SHOUTBOX_TITLE') ,
+                'Comments' => _t('COMMENTS_TITLE') ,
             )
         );
 
