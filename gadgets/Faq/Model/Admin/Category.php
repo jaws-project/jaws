@@ -53,13 +53,13 @@ class Faq_Model_Admin_Category extends Faq_Model_Category
         $result = $table->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'), _t('FAQ_NAME'));
+            return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'));
         }
 
         $cid = $GLOBALS['db']->lastInsertID('faq_category', 'id');
         if (Jaws_Error::IsError($cid) || empty($cid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'), _t('FAQ_NAME'));
+            return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_CATEGORY_ADDED'), RESPONSE_NOTICE);
@@ -90,7 +90,7 @@ class Faq_Model_Admin_Category extends Faq_Model_Category
         $result = $table->update($params)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'), _t('FAQ_NAME'));
+            return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_CATEGORY_UPDATED'), RESPONSE_NOTICE);
@@ -110,7 +110,7 @@ class Faq_Model_Admin_Category extends Faq_Model_Category
         $row = $table->select('category_position')->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($row)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'), _t('FAQ_NAME'));
+            return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'));
         }
 
         if (isset($row['category_position'])) {
@@ -121,21 +121,21 @@ class Faq_Model_Admin_Category extends Faq_Model_Category
 
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'), _t('FAQ_NAME'));
+                return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'));
             }
 
             $table = Jaws_ORM::getInstance()->table('faq_category');
             $result = $table->delete()->where('id', $id)->exec();
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), _t('FAQ_NAME'));
+                return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'));
             }
 
             $faqTable = Jaws_ORM::getInstance()->table('faq');
             $result = $faqTable->delete()->where('category', $id)->exec();
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), _t('FAQ_NAME'));
+                return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'));
             }
 
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_CATEGORY_DELETED'), RESPONSE_NOTICE);

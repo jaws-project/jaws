@@ -25,7 +25,7 @@ class Faq_Model_Category extends Jaws_Gadget_Model
         $table->select( 'id:integer', 'category', 'fast_url', 'description', 'category_position:integer', 'updatetime');
         $result = $table->orderBy('category_position asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
@@ -44,7 +44,7 @@ class Faq_Model_Category extends Jaws_Gadget_Model
         $table->select( 'id:integer', 'category', 'fast_url', 'description', 'category_position:integer', 'updatetime');
         $row = $table->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error($row->getMessage(), 'SQL');
+            return new Jaws_Error($row->getMessage());
         }
 
         if (isset($row['id'])) {

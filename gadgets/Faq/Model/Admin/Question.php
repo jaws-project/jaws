@@ -60,7 +60,7 @@ class Faq_Model_Admin_Question extends Faq_Model_Question
         $result = $faqTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_ADDED'), _t('FAQ_NAME'));
+            return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_ADDED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_QUESTION_ADDED'), RESPONSE_NOTICE);
@@ -95,7 +95,7 @@ class Faq_Model_Admin_Question extends Faq_Model_Question
         $result = $faqTable->update($params)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_UPDATED'), _t('FAQ_NAME'));
+            return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_UPDATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_QUESTION_UPDATED'), RESPONSE_NOTICE);
@@ -116,7 +116,7 @@ class Faq_Model_Admin_Question extends Faq_Model_Question
         $rid = $faqTable->select('faq_position')->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($rid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), _t('FAQ_NAME'));
+            return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_DELETED'));
         }
 
         if (isset($rid['faq_position'])) {
@@ -126,14 +126,14 @@ class Faq_Model_Admin_Question extends Faq_Model_Question
             )->where('faq_position', $rid['faq_position'], '>')->exec();
             if (Jaws_Error::IsError($rs)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), _t('FAQ_NAME'));
+                return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_DELETED'));
             }
 
             $faqTable = Jaws_ORM::getInstance()->table('faq');
             $rs = $faqTable->delete()->where('id', $id)->exec();
             if (Jaws_Error::IsError($rs)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_DELETED'), _t('FAQ_NAME'));
+                return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_DELETED'));
             }
 
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_QUESTION_DELETED'), RESPONSE_NOTICE);

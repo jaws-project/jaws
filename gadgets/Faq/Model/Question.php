@@ -45,7 +45,7 @@ class Faq_Model_Question extends Jaws_Gadget_Model
         }
         $result = $faqCategoryTable->orderBy('faq_category.category_position', 'faq.faq_position')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         $aux = '';
@@ -105,7 +105,7 @@ class Faq_Model_Question extends Jaws_Gadget_Model
 
         $row = $faqTable->fetchRow();
         if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error($row->getMessage(), 'SQL');
+            return new Jaws_Error($row->getMessage());
         }
 
         return $row;
