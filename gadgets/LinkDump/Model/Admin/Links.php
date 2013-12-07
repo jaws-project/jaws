@@ -43,7 +43,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         $lid = $linksTable->insert($lData)->exec();
         if (Jaws_Error::IsError($lid)) {
             $GLOBALS['app']->Session->PushLastResponse($lid->GetMessage(), RESPONSE_ERROR);
-            return new Jaws_Error(_t('LINKDUMP_LINKS_ADD_ERROR', 'AddLink'), _t('LINKDUMP_NAME'));
+            return new Jaws_Error(_t('LINKDUMP_LINKS_ADD_ERROR', 'AddLink'));
         }
 
         $this->MoveLink($lid, $gid, $gid, $rank, null);
@@ -84,7 +84,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         $oldLink = $model->GetLink($id);
         if (Jaws_Error::IsError($oldLink)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_UPDATE_ERROR'), RESPONSE_ERROR);
-            return new Jaws_Error($oldLink->getMessage(), 'SQL');
+            return new Jaws_Error($oldLink->getMessage());
         }
 
         $lData = array();
