@@ -21,7 +21,7 @@ class Faq_Hooks_Menu extends Jaws_Gadget_Hook
     {
         $urls   = array();
         $urls[] = array('url'   => $this->gadget->urlMap('View'),
-                        'title' => _t('FAQ_NAME'));
+                        'title' => $this->gadget->title);
 
         //Load model
         $model = $this->gadget->model->load('Category');

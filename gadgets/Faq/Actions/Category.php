@@ -52,7 +52,7 @@ class Faq_Actions_Category extends Jaws_Gadget_Action
         $cat_id = jaws()->request->fetch('id', 'get');
         $cat_id = Jaws_XSS::defilter($cat_id);
 
-        $this->SetTitle(_t('FAQ_NAME') . ' - ' . _t('FAQ_CATEGORIES'));
+        $this->SetTitle($this->gadget->title . ' - ' . _t('FAQ_CATEGORIES'));
         $questions = $model->GetQuestions($cat_id, true);
         if (is_array($questions) && count($questions) > 0) {
             $tpl = $this->gadget->template->load('Category.html');
