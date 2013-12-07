@@ -40,7 +40,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_ADDED'), _t('POLL_NAME'));
+            return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_ADDED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('POLL_GROUPS_CREATED'), RESPONSE_NOTICE);
@@ -79,7 +79,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         $result = $table->update($data)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_UPDATED'), _t('POLL_NAME'));
+            return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_UPDATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('POLL_GROUPS_UPDATED'), RESPONSE_NOTICE);
@@ -118,7 +118,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         $result = $table->delete()->where('id', $gid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_DELETED'), _t('POLL_NAME'));
+            return new Jaws_Error(_t('POLL_ERROR_GROUP_NOT_DELETED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('POLL_GROUPS_DELETED', $gid), RESPONSE_NOTICE);

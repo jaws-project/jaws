@@ -25,7 +25,7 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
         $table->update(array('votes' => $table->expr('votes + ?', 1)));
         $result = $table->where('id', $aid)->and()->where('pid', $pid)->exec();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('POLL_ERROR_VOTE_NOT_ADDED'), _t('POLL_NAME'));
+            return new Jaws_Error(_t('POLL_ERROR_VOTE_NOT_ADDED'));
         }
 
         return true;
@@ -44,7 +44,7 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
         $table->select('id', 'answer', 'rank', 'votes');
         $result = $table->where('pid', $pid)->orderBy('rank asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
@@ -116,7 +116,7 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
 
         $result = $table->orderBy('id asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;

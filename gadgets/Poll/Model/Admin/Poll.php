@@ -50,7 +50,7 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         $result = $table->insert($pollData)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_ADDED'), _t('POLL_NAME'));
+            return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_ADDED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('POLL_POLLS_ADDED'), RESPONSE_NOTICE);
@@ -97,7 +97,7 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         $result = $table->update($pollData)->where('id', (int)$pid)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_UPDATED'), _t('POLL_NAME'));
+            return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_UPDATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('POLL_POLLS_UPDATED'), RESPONSE_NOTICE);
@@ -117,14 +117,14 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         $res = $table->delete()->where('id', $pid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_DELETED'), _t('POLL_NAME'));
+            return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_DELETED'));
         }
 
         $table = Jaws_ORM::getInstance()->table('poll_answers');
         $res = $table->delete()->where('pid', $pid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_EXCEPTION_ANSWER_NOT_DELETED'), _t('POLL_NAME'));
+            return new Jaws_Error(_t('POLL_ERROR_EXCEPTION_ANSWER_NOT_DELETED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('POLL_POLLS_DELETED'), RESPONSE_NOTICE);
@@ -199,7 +199,7 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         $oldAnswers = $this->GetPollAnswers($pid);
         if (Jaws_Error::IsError($oldAnswers)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ERROR_ANSWERS_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_ANSWERS_NOT_UPDATED'), _t('POLL_NAME'));
+            return new Jaws_Error(_t('POLL_ERROR_ANSWERS_NOT_UPDATED'));
         }
 
         foreach ($oldAnswers as $oldAnswer) {

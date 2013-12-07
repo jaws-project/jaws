@@ -25,7 +25,7 @@ class Poll_Model_Group extends Jaws_Gadget_Model
         $table->select('id', 'title', 'visible')->where('id', $gid);
         $result = $table->fetchRow();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
@@ -44,7 +44,7 @@ class Poll_Model_Group extends Jaws_Gadget_Model
         if (!empty($limit)) {
             $res = $GLOBALS['db']->setLimit($limit, $offset);
             if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($res->getMessage(), 'SQL');
+                return new Jaws_Error($res->getMessage());
             }
         }
 
@@ -52,7 +52,7 @@ class Poll_Model_Group extends Jaws_Gadget_Model
         $table->select('id', 'title', 'visible')->orderBy('id asc');
         $result = $table->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;

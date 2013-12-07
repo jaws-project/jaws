@@ -30,7 +30,7 @@ class Poll_Model_Admin_Answer extends Poll_Model_Group
         $table = Jaws_ORM::getInstance()->table('poll_answers');
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('POLL_ERROR_ANSWER_NOT_ADDED'), _t('POLL_NAME'));
+            return new Jaws_Error(_t('POLL_ERROR_ANSWER_NOT_ADDED'));
         }
 
         return true;
@@ -54,7 +54,7 @@ class Poll_Model_Admin_Answer extends Poll_Model_Group
         $table = Jaws_ORM::getInstance()->table('poll_answers');
         $result = $table->update($data)->where('id', $aid)->exec();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('POLL_ERROR_ANSWER_NOT_UPDATED'), _t('POLL_NAME'));
+            return new Jaws_Error(_t('POLL_ERROR_ANSWER_NOT_UPDATED'));
         }
 
         return true;
@@ -73,7 +73,7 @@ class Poll_Model_Admin_Answer extends Poll_Model_Group
         $result = $table->delete()->where('id', $aid)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ERROR_ANSWER_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('POLL_ERROR_ANSWER_NOT_DELETED'), _t('POLL_NAME'));
+            return new Jaws_Error(_t('POLL_ERROR_ANSWER_NOT_DELETED'));
         }
 
         return true;
