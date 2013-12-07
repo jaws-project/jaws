@@ -82,7 +82,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
 
         $res = $parser->fetch($site['url']);
         if (PEAR::isError($res)) {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, '['._t('FEEDREADER_NAME').']: ',
+            $GLOBALS['log']->Log(JAWS_LOG_ERROR, '['.$this->gadget->title.']: ',
                 _t('FEEDREADER_ERROR_CANT_FETCH', Jaws_XSS::filter($site['url'])), '');
         }
 

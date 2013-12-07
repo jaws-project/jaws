@@ -19,7 +19,7 @@ class FeedReader_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls[] = array('url'   => $this->gadget->urlMap('DisplayFeeds'),
-                        'title' => _t('FEEDREADER_NAME'));
+                        'title' => $this->gadget->title);
 
         $model  = $this->gadget->model->load('Feed');
         $feeds = $model->GetFeeds();
