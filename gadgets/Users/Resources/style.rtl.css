@@ -92,15 +92,19 @@ width:200px;
 white-space:nowrap;
 margin:0 0 4px 10px;
 }
-opera:-o-prefocus, #users_filter input,#users_filter select{
-margin:0 10px 4px 0;
-}
 #users_filter table td{
 padding:2px;
 text-align:right;
 }
 #users_filter .filter_label{
 width:52px;
+}
+#online_users_filter{
+text-align:right;
+padding-bottom:4px;
+}
+#online_users_filter input,#online_users_filter select{
+margin:0 4px 0 12px;
 }
 #my_account{
 margin:auto;

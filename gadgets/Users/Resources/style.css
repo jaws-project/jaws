@@ -87,20 +87,11 @@ padding:2px;
 width:52px;
 }
 #online_users_filter{
-height:90px;
 text-align:left;
 padding-bottom:4px;
 }
 #online_users_filter input,#online_users_filter select{
-width:200px;
-white-space:nowrap;
-margin:0 10px 4px 0;
-}
-#online_users_filter table td{
-padding:2px;
-}
-#online_users_filter .filter_label{
-width:105px;
+margin:0 12px 0 4px;
 }
 #my_account{
 margin:auto;

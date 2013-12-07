@@ -2,15 +2,14 @@
 {menubar}
 <table class="full_width">
   <tr>
-    <td style="vertical-align: top;">
-        <table id="online_users_filter">
-            <tr>
-                <td class="filter_label"><label for="filter_active">{lbl_filter_active}:</label></td><td>{filter_active}</td>
-                <td class="filter_label"><label for="filter_logged">{lbl_filter_logged}:</label></td><td>{filter_logged}</td>
-            </tr>
-        </table>
-
-      {online_users_datagrid}
+    <td id="online_users_filter">
+      <label for="filter_active">{lbl_filter_active}:</label>{filter_active}
+      <label for="filter_logged">{lbl_filter_logged}:</label>{filter_logged}
+    </td>
+  </tr>
+  <tr>
+    <td>
+    {online_users_datagrid}
     </td>
   </tr>
 </table>
