@@ -23,7 +23,7 @@ class Friends_Model_Friends extends Jaws_Gadget_Model
         $friendTable = Jaws_ORM::getInstance()->table('friend');
         $row = $friendTable->select('id:integer', 'friend', 'url')->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error($row->getMessage(), 'SQL');
+            return new Jaws_Error($row->getMessage());
         }
 
         if (isset($row['friend'])) {
@@ -45,7 +45,7 @@ class Friends_Model_Friends extends Jaws_Gadget_Model
         $friendTable = Jaws_ORM::getInstance()->table('friend');
         $row = $friendTable->select('id:integer', 'friend', 'url')->where('friend', $name)->fetchRow();
         if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error($row->getMessage(), 'SQL');
+            return new Jaws_Error($row->getMessage());
         }
 
         if (isset($row['friend'])) {
@@ -67,7 +67,7 @@ class Friends_Model_Friends extends Jaws_Gadget_Model
         $friendTable = Jaws_ORM::getInstance()->table('friend');
         $result = $friendTable->select('id:integer', 'friend', 'url')->orderBy('id desc')->limit(10, $limit)->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;
@@ -89,7 +89,7 @@ class Friends_Model_Friends extends Jaws_Gadget_Model
         $friendTable->select('id:integer', 'friend', 'url')->orderBy($friendTable->random());
         $result = $friendTable->limit($limit)->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;

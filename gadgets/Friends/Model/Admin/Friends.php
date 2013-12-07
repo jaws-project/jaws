@@ -27,7 +27,7 @@ class Friends_Model_Admin_Friends extends Jaws_Gadget_Model
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('FRIENDS_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
-        return new Jaws_Error(_t('FRIENDS_ERROR_PROPERTIES_NOT_UPDATED'), _t('FRIENDS_NAME'));
+        return new Jaws_Error(_t('FRIENDS_ERROR_PROPERTIES_NOT_UPDATED'));
     }
 
     /**
@@ -46,7 +46,7 @@ class Friends_Model_Admin_Friends extends Jaws_Gadget_Model
         $result = $friendTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FRIENDS_ERROR_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FRIENDS_ERROR_NOT_ADDED'), _t('FRIENDS_NAME'));
+            return new Jaws_Error(_t('FRIENDS_ERROR_NOT_ADDED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('FRIENDS_ADDED'), RESPONSE_NOTICE);
@@ -71,7 +71,7 @@ class Friends_Model_Admin_Friends extends Jaws_Gadget_Model
         $result = $friendTable->update($params)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FRIENDS_ERROR_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FRIENDS_ERROR_NOT_UPDATED'), _t('FRIENDS_NAME'));
+            return new Jaws_Error(_t('FRIENDS_ERROR_NOT_UPDATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('FRIENDS_UPDATED'), RESPONSE_NOTICE);
@@ -91,7 +91,7 @@ class Friends_Model_Admin_Friends extends Jaws_Gadget_Model
         $result = $friendTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FRIENDS_ERROR_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FRIENDS_ERROR_NOT_UPDATED'), _t('FRIENDS_NAME'));
+            return new Jaws_Error(_t('FRIENDS_ERROR_NOT_UPDATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('FRIENDS_DELETED'), RESPONSE_NOTICE);
