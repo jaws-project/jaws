@@ -23,7 +23,7 @@ class Search_Model_Admin_Settings extends Jaws_Gadget_Model
         $res = $this->gadget->registry->update('searchable_gadgets', $list);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SEARCH_ERROR_NOT_SAVED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('SEARCH_ERROR_NOT_SAVED'), _t('SEARCH_NAME'));
+            return new Jaws_Error(_t('SEARCH_ERROR_NOT_SAVED'));
         }
         $GLOBALS['app']->Session->PushLastResponse(_t('SEARCH_SAVED'), RESPONSE_NOTICE);
         return true;
