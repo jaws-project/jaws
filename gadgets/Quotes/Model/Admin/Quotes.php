@@ -49,7 +49,7 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
         $result = $quotesTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
-            return new Jaws_Error(_t('QUOTES_QUOTE_NOT_ADDED'),_t('QUOTES_NAME'));
+            return new Jaws_Error(_t('QUOTES_QUOTE_NOT_ADDED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(
@@ -100,7 +100,7 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
         $result = $quotesTable->update($params)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('QUOTES_QUOTE_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('QUOTES_QUOTE_NOT_UPDATED'), _t('QUOTES_NAME'));
+            return new Jaws_Error(_t('QUOTES_QUOTE_NOT_UPDATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('QUOTES_QUOTE_UPDATED'), RESPONSE_NOTICE);
@@ -120,7 +120,7 @@ class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model
         $result = $quotesTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('QUOTES_QUOTE_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('QUOTES_QUOTE_NOT_DELETED'), _t('QUOTES_NAME'));
+            return new Jaws_Error(_t('QUOTES_QUOTE_NOT_DELETED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('QUOTES_QUOTE_DELETED'), RESPONSE_NOTICE);

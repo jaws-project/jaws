@@ -58,7 +58,7 @@ class Quotes_Model_Groups extends Jaws_Gadget_Model
 
         $res = $qgTable->fetchAll();
         if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
+            return new Jaws_Error($res->getMessage());
         }
 
         return $res;

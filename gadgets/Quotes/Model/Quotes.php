@@ -53,7 +53,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
         }
         $res = $quotesTable->orderBy('id asc')->limit($limit, $offset)->fetchAll();
         if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
+            return new Jaws_Error($res->getMessage());
         }
 
         return $res;
