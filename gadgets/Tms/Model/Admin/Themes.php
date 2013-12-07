@@ -30,12 +30,12 @@ class Tms_Model_Admin_Themes extends Jaws_Gadget_Model
     {
         $themeSrc = $srcDir. '/'. $theme;
         if (!is_dir($themeSrc)) {
-            return new Jaws_Error(_t('TMS_ERROR_THEME_DOES_NOT_EXISTS', $theme), _t('TMS_NAME'));
+            return new Jaws_Error(_t('TMS_ERROR_THEME_DOES_NOT_EXISTS', $theme), $this->gadget->name);
         }
 
         if (!Jaws_Utils::is_writable($destDir)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', $destDir),
-                                  _t('TMS_NAME'));
+                                  $this->gadget->name);
         }
 
         $themeDest = $destDir. '/'. $theme. '.zip';
@@ -50,7 +50,7 @@ class Tms_Model_Admin_Themes extends Jaws_Gadget_Model
         $writer = File_Archive::toArchive($themeDest, $innerWriter);
         $res = File_Archive::extract($reader, $writer);
         if (PEAR::isError($res)) {
-            return new Jaws_Error(_t('TMS_ERROR_COULD_NOT_PACK_THEME'), _t('TMS_NAME'));
+            return new Jaws_Error(_t('TMS_ERROR_COULD_NOT_PACK_THEME'), $this->gadget->name);
         }
         Jaws_Utils::chmod($themeDest);
 
