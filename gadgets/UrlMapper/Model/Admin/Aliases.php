@@ -24,7 +24,7 @@ class UrlMapper_Model_Admin_Aliases extends UrlMapper_Model_Aliases
     {
         if (trim($alias) == '' || trim($url) == '') {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ALIAS_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_ADDED'), _t('URLMAPPER_NAME'));
+            return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_ADDED'), $this->gadget->name);
         }
 
         $data['real_url']    = $url;
@@ -33,7 +33,7 @@ class UrlMapper_Model_Admin_Aliases extends UrlMapper_Model_Aliases
 
         if ($this->AliasExists($data['alias_hash'])) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ALIAS_ALREADY_EXISTS'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_ALREADY_EXISTS'), _t('URLMAPPER_NAME'));
+            return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_ALREADY_EXISTS'), $this->gadget->name);
         }
 
 
@@ -42,7 +42,7 @@ class UrlMapper_Model_Admin_Aliases extends UrlMapper_Model_Aliases
 
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ALIAS_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_ADDED'), _t('URLMAPPER_NAME'));
+            return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_ADDED'), $this->gadget->name);
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ALIAS_ADDED'), RESPONSE_NOTICE);
@@ -62,7 +62,7 @@ class UrlMapper_Model_Admin_Aliases extends UrlMapper_Model_Aliases
     {
         if (trim($alias) == '' || trim($url) == '') {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'), _t('URLMAPPER_NAME'));
+            return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'), $this->gadget->name);
         }
 
         if ($url{0} == '?') {
@@ -77,13 +77,13 @@ class UrlMapper_Model_Admin_Aliases extends UrlMapper_Model_Aliases
         $result = $aliasesTable->select('alias_hash')->where('id', $id)->fetchOne();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'), _t('URLMAPPER_NAME'));
+            return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'), $this->gadget->name);
         }
 
         if ($result != $data['alias_hash']) {
             if ($this->AliasExists($data['alias_hash'])) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ALIAS_ALREADY_EXISTS'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_ALREADY_EXISTS'), _t('URLMAPPER_NAME'));
+                return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_ALREADY_EXISTS'), $this->gadget->name);
             }
         }
 
@@ -91,7 +91,7 @@ class UrlMapper_Model_Admin_Aliases extends UrlMapper_Model_Aliases
         $result = $aliasesTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'), _t('URLMAPPER_NAME'));
+            return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_UPDATED'), $this->gadget->name);
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ALIAS_UPDATED'), RESPONSE_NOTICE);
@@ -111,7 +111,7 @@ class UrlMapper_Model_Admin_Aliases extends UrlMapper_Model_Aliases
         $result = $aliasesTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ALIAS_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_DELETED'), _t('URLMAPPER_NAME'));
+            return new Jaws_Error(_t('URLMAPPER_ERROR_ALIAS_NOT_DELETED'), $this->gadget->name);
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ALIAS_DELETED'), RESPONSE_NOTICE);

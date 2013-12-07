@@ -269,7 +269,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
         $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
         $result = $mapsTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('URLMAPPER_ERROR_MAP_NOT_ADDED'), _t('URLMAPPER_NAME'));
+            return new Jaws_Error(_t('URLMAPPER_ERROR_MAP_NOT_ADDED'), $this->gadget->name);
         }
 
         return true;
