@@ -27,7 +27,7 @@ class ServerTime_Model_Admin_Properties extends Jaws_Gadget_Model
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('SERVERTIME_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
-        return new Jaws_Error(_t('SERVERTIME_ERROR_PROPERTIES_NOT_UPDATED'), _t('SERVERTIME_NAME'));
+        return new Jaws_Error(_t('SERVERTIME_ERROR_PROPERTIES_NOT_UPDATED'));
     }
 
 }
