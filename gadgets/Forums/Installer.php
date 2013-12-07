@@ -82,7 +82,7 @@ class Forums_Installer extends Jaws_Gadget_Installer
 
         $new_dir = JAWS_DATA . 'forums';
         if (!Jaws_Utils::mkdir($new_dir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('FORUMS_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
         return true;
@@ -103,12 +103,11 @@ class Forums_Installer extends Jaws_Gadget_Installer
             'forums_groups',
             'forums_attachments'
         );
-        $gName  = _t('FORUMS_NAME');
-        $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);
+        $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $this->gadget->title);
         foreach ($tables as $table) {
             $result = $GLOBALS['db']->dropTable($table);
             if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error($errMsg, $gName);
+                return new Jaws_Error($errMsg);
             }
         }
 
