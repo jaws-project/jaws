@@ -236,12 +236,8 @@ class Jaws_Log
 
         if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $backtrace + 1);
-        } elseif (version_compare(PHP_VERSION, '5.3.6', '>=')) {
+        } else { //PHP >= 5.3.6
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        } elseif (version_compare(PHP_VERSION, '5.2.5', '>=')) {
-            $trace = debug_backtrace(false);
-        } else {
-            $trace = debug_backtrace();
         }
 
         $file = @$trace[$backtrace]['file'];
