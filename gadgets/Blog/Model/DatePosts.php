@@ -71,7 +71,7 @@ class Blog_Model_DatePosts extends Jaws_Gadget_Model
         $blogTable->where('publishtime', $endtime, '<')->and()->where('publishtime', $now, '<=');
         $result = $blogTable->orderBy('publishtime asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_ASCALENDAR'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_ASCALENDAR'));
         }
 
         return $result;
@@ -97,7 +97,7 @@ class Blog_Model_DatePosts extends Jaws_Gadget_Model
 
         $result = $blogTable->orderBy('publishtime desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_MONTH_ENTRIES'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_MONTH_ENTRIES'));
         }
 
         return $result;
@@ -116,7 +116,7 @@ class Blog_Model_DatePosts extends Jaws_Gadget_Model
         $blogTable->select('publishtime')->where('published', true)->and()->where('publishtime', $now, '<=');
         $result = $blogTable->orderBy('publishtime desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_ASHISTORY'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_ASHISTORY'));
         }
 
         return $result;

@@ -77,7 +77,7 @@ class Blog_Model_Admin_Settings extends Jaws_Gadget_Model
         foreach ($result as $r) {
             if (!$r || Jaws_Error::IsError($r)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_SETTINGS_NOT_SAVED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('BLOG_ERROR_SETTINGS_NOT_SAVE'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('BLOG_ERROR_SETTINGS_NOT_SAVE'));
             }
         }
 

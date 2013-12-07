@@ -76,7 +76,7 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
 
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_TRACKBACK_NOT_UPDATED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('BLOG_ERROR_TRACKBACK_NOT_UPDATED'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('BLOG_ERROR_TRACKBACK_NOT_UPDATED'));
             }
         }
 
@@ -101,7 +101,7 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
             $res = $this->DeleteTrackback($id);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_TRACKBACK_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('BLOG_ERROR_TRACKBACK_NOT_DELETED'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('BLOG_ERROR_TRACKBACK_NOT_DELETED'));
             }
         }
 
@@ -121,7 +121,7 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
         $result = Jaws_ORM::getInstance()->table('blog_trackback')->delete()->where('id', $id)->exec();
 
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('GLOBAL_TRACKBACKS_ERROR_NOT_DELETED'), 'CORE');
+            return new Jaws_Error(_t('GLOBAL_TRACKBACKS_ERROR_NOT_DELETED'));
         }
 
         return true;
@@ -198,7 +198,7 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
 
         $rows = $table->orderBy('createtime desc')->fetchAll();
         if (Jaws_Error::IsError($rows)) {
-            return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_FILTERED_COMMENTS'), 'CORE');
+            return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_FILTERED_COMMENTS'));
         }
 
         return $rows;
@@ -328,7 +328,7 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
 
         $howmany = $table->fetchOne();
         if (Jaws_Error::IsError($rows)) {
-            return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_FILTERED_COMMENTS'), 'CORE');
+            return new Jaws_Error(_t('GLOBAL_COMMENT_ERROR_GETTING_FILTERED_COMMENTS'));
         }
 
         return $howmany;

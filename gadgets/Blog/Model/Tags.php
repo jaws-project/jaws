@@ -26,7 +26,7 @@ class Blog_Model_Tags extends Jaws_Gadget_Model
         $res = $table->groupBy('category_id', 'name', 'fast_url')->orderBy('name')->fetchAll();
 
         if (Jaws_Error::isError($res)) {
-            return new Jaws_Error(_t('BLOG_ERROR_TAGCLOUD_CREATION_FAILED'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_TAGCLOUD_CREATION_FAILED'));
         }
 
         return $res;

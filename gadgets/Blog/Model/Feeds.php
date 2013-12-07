@@ -46,7 +46,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $blogTable->where('blog.published', true)->and()->where('blog.publishtime', $now, '<=');
         $result = $blogTable->orderBy('blog.publishtime desc')->limit($limit)->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ATOMSTRUCT'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ATOMSTRUCT'));
         }
 
         // Check dynamic ACL
@@ -148,7 +148,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
 
         if ($write) {
             if (!Jaws_Utils::is_writable(JAWS_DATA . 'xml')) {
-                return new Jaws_Error(_t('BLOG_ERROR_WRITING_ATOMFILE'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('BLOG_ERROR_WRITING_ATOMFILE'));
             }
 
             $atom->SetLink($GLOBALS['app']->getDataURL('xml/blog.atom', false));
@@ -176,7 +176,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
 
         if ($write) {
             if (!Jaws_Utils::is_writable(JAWS_DATA . 'xml')) {
-                return new Jaws_Error(_t('BLOG_ERROR_WRITING_RSSFILE'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('BLOG_ERROR_WRITING_RSSFILE'));
             }
 
             $atom->SetLink($GLOBALS['app']->getDataURL('xml/blog.rss', false));
@@ -202,7 +202,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Categories');
         $catInfo = $model->GetCategory($category);
         if (Jaws_Error::IsError($catInfo)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_CATEGORIES_ATOMSTRUCT'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_CATEGORIES_ATOMSTRUCT'));
         }
 
         $now = $GLOBALS['db']->Date();
@@ -216,7 +216,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $blogTable->and()->where('blog_entrycat.category_id', $catInfo['id']);
         $result = $blogTable->orderby('blog.publishtime desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_CATEGORIES_ATOMSTRUCT'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_CATEGORIES_ATOMSTRUCT'));
         }
 
         $cid = empty($catInfo['fast_url']) ? $catInfo['id'] : Jaws_XSS::filter($catInfo['fast_url']);
@@ -310,7 +310,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
 
         if ($writeToDisk) {
             if (!Jaws_Utils::is_writable(JAWS_DATA.'xml')) {
-                return new Jaws_Error(_t('BLOG_ERROR_WRITING_CATEGORY_ATOMFILE'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('BLOG_ERROR_WRITING_CATEGORY_ATOMFILE'));
             }
 
             $filename = basename($catAtom->Link->HRef);
@@ -344,7 +344,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
 
         if ($writeToDisk) {
             if (!Jaws_Utils::is_writable(JAWS_DATA.'xml')) {
-                return new Jaws_Error(_t('BLOG_ERROR_WRITING_CATEGORY_ATOMFILE'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('BLOG_ERROR_WRITING_CATEGORY_ATOMFILE'));
             }
 
             $filename = basename($catAtom->Link->HRef);
@@ -370,7 +370,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         $cModel = Jaws_Gadget::getInstance('Comments')->model->load('Comments');
         $comments = $cModel->GetComments($this->gadget->name, 'entry');
         if (Jaws_Error::IsError($comments)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENTS_ATOMSTRUCT'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENTS_ATOMSTRUCT'));
         }
 
         $commentAtom = new Jaws_AtomFeed();
@@ -471,7 +471,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
     {
         $comments =  $this->GetCommentsFiltered('postid', $id, 'approved', false);
         if (Jaws_Error::IsError($comments)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_POST_COMMENTS_ATOMSTRUCT'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_POST_COMMENTS_ATOMSTRUCT'));
         }
 
         $commentAtom = new Jaws_AtomFeed();
@@ -540,7 +540,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
     {
         $commAtom = $this->GetPostCommentsAtomStruct($id, 'atom');
         if (Jaws_Error::IsError($commAtom)) {
-            return new Jaws_Error(_t('BLOG_ERROR_WRITING_POST_COMMENTS_ATOMFILE'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_WRITING_POST_COMMENTS_ATOMFILE'));
         }
 
         return $commAtom->GetXML();
@@ -557,7 +557,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
     {
         $commAtom = $this->GetPostCommentsAtomStruct($id, 'rss');
         if (Jaws_Error::IsError($commAtom)) {
-            return new Jaws_Error(_t('BLOG_ERROR_WRITING_POST_COMMENTS_RSSFILE'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_WRITING_POST_COMMENTS_RSSFILE'));
         }
 
         return $commAtom->ToRSS2();

@@ -41,7 +41,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $result = $catTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'));
         }
 
         $this->gadget->acl->insert('CategoryAccess', $result, true);
@@ -83,7 +83,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $result = $catTable->update($params)->where('id', $cid)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_UPDATED'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_UPDATED'));
         }
 
         if ($this->gadget->registry->fetch('generate_category_xml') == 'true') {
@@ -112,12 +112,12 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $count = $GLOBALS['db']->queryOne($sql, $params);
         if (Jaws_Error::IsError($count)) {
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
-        return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), _t('BLOG_NAME'));
+        return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'));
         }
 
         if ($count > 0) {
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORIES_LINKED'), RESPONSE_ERROR);
-        return new Jaws_Error(_t('BLOG_ERROR_CATEGORIES_LINKED'), _t('BLOG_NAME'));
+        return new Jaws_Error(_t('BLOG_ERROR_CATEGORIES_LINKED'));
         }
          **/
 
@@ -125,14 +125,14 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $result = $entrycatTable->delete()->where('category_id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'));
         }
 
         $catTable = Jaws_ORM::getInstance()->table('blog_category');
         $result = $catTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'));
         }
 
         $this->gadget->acl->delete('CategoryAccess', $id);

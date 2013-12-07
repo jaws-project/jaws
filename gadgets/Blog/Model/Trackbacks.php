@@ -30,7 +30,7 @@ class Blog_Model_Trackbacks extends Jaws_Gadget_Model
             $result = $trackbackTable->fetchAll();
 
             if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error(_t('BLOG_ERROR_GETTING_TRACKBACKS'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('BLOG_ERROR_GETTING_TRACKBACKS'));
             }
 
             $entries = array();
@@ -59,7 +59,7 @@ class Blog_Model_Trackbacks extends Jaws_Gadget_Model
             'id:integer', 'parent_id:integer', 'url', 'title', 'excerpt', 'blog_name', 'ip', 'createtime', 'updatetime'
         )->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_TRACKBACKS'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_TRACKBACKS'));
         }
 
         $entries = array(
@@ -94,7 +94,7 @@ class Blog_Model_Trackbacks extends Jaws_Gadget_Model
         if ($this->gadget->registry->fetch('trackback') == 'true') {
             $model = $this->gadget->model->load('Posts');
             if (!$model->DoesEntryExists($parent_id)) {
-                return new Jaws_Error(_t('BLOG_ERROR_DOES_NOT_EXISTS'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('BLOG_ERROR_DOES_NOT_EXISTS'));
             }
 
             // lets only load it if it's actually needed
@@ -123,7 +123,7 @@ class Blog_Model_Trackbacks extends Jaws_Gadget_Model
 
             $result = $trackbackTable->exec();
             if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error(_t('BLOG_ERROR_TRACKBACK_NOT_ADDED'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('BLOG_ERROR_TRACKBACK_NOT_ADDED'));
             }
 
             return true;

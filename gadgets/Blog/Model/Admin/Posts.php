@@ -30,13 +30,13 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $result = $entrycatTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_CATEGORIES_NOT_ADDED'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_CATEGORIES_NOT_ADDED'));
         }
         if ($this->gadget->registry->fetch('generate_category_xml') == 'true') {
             $catAtom = $model->GetCategoryAtomStruct($category_id);
             if (Jaws_Error::IsError($catAtom)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_XML_NOT_GENERATED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_XML_NOT_GENERATED'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_XML_NOT_GENERATED'));
             } else {
                 $model->MakeCategoryAtom($category_id, $catAtom, true);
                 $model->MakeCategoryRSS($category_id, $catAtom, true);
@@ -63,7 +63,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $result = $entrycatTable->delete()->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_CATEGORIES_NOT_ADDED'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_CATEGORIES_NOT_ADDED'));
         }
 
         if ($this->gadget->registry->fetch('generate_category_xml') == 'true') {
@@ -71,7 +71,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             $catAtom = $model->GetCategoryAtomStruct($category_id);
             if (Jaws_Error::IsError($catAtom)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_XML_NOT_GENERATED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_XML_NOT_GENERATED'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_XML_NOT_GENERATED'));
             }
 
             $model->MakeCategoryAtom($category_id, $catAtom, true);
@@ -148,7 +148,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $max = $blogTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_ADDED'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_ADDED'));
         }
 
         if ($max) {
@@ -242,18 +242,18 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $e = $model->GetEntry($post_id);
         if (Jaws_Error::IsError($e)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'));
         }
 
         if ($e['published'] && !$this->gadget->GetPermission('ModifyPublishedEntries')) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'));
         }
 
         if ($GLOBALS['app']->Session->GetAttribute('user') != $e['user_id']) {
             if (!$this->gadget->GetPermission('ModifyOthersEntries')) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'));
             }
         }
 
@@ -290,7 +290,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $result = $blogTable->update($params)->where('id', $post_id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'));
         }
 
         if ($this->gadget->registry->fetch('generate_xml') == 'true') {
@@ -362,14 +362,14 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Posts');
         $e = $model->GetEntry($post_id);
         if (Jaws_Error::IsError($e)) {
-            return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_DELETED'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_DELETED'));
         }
 
         if (
             $GLOBALS['app']->Session->GetAttribute('user') != $e['user_id'] &&
             !$this->gadget->GetPermission('ModifyOthersEntries')
         ) {
-            return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_DELETED'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_DELETED'));
         }
 
         if (is_array($e['categories']) && count($e['categories']) > 0) {
@@ -380,7 +380,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
 
         $result = Jaws_ORM::getInstance()->table('blog')->delete()->where('id', $post_id)->exec();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_DELETED'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_DELETED'));
         }
 
         if ($this->gadget->registry->fetch('generate_xml') == 'true') {
@@ -436,7 +436,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             $res = $this->DeleteEntry($id);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_DELETED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_DELETED'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_DELETED'));
             }
         }
 
@@ -463,7 +463,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             $result = $blogTable->update(array('published'=>(bool) $status))->where('id', $id)->exec();
             if (Jaws_Error::IsError($result)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'), _t('BLOG_NAME'));
+                return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_UPDATED'));
             }
         }
 

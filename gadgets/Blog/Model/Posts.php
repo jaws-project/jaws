@@ -51,7 +51,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         }
         $result = $blogTable->limit($extralimit, $extraoffset)->orderBy('blog.publishtime desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES'));
         }
 
         $entries = array();
@@ -131,7 +131,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable->where('published', true)->and()->where('publishtime', $now, '<=')->orderBy('publishtime desc');
         $result = $blogTable->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_ASARCHIVE'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_ASARCHIVE'));
         }
 
         // Check dynamic ACL
@@ -166,7 +166,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $catTable->where('published', true)->and()->where('blog.publishtime', $now, '<=');
         $result = $catTable->groupBy('blog_category.id', 'name', 'blog_category.fast_url')->orderBy('name')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_ASCATEGORIES'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_ASCATEGORIES'));
         }
 
         // Check dynamic ACL
@@ -240,7 +240,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $offset = $limit * $page;
         $result = $this->GetEntries($category, null, $limit, $offset);
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_BYCATEGORY'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRIES_BYCATEGORY'));
         }
 
         return $result;
@@ -304,7 +304,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         }
         $row = $blogTable->fetchRow();
         if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRY'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_ENTRY'));
         }
 
         $entry = array();
@@ -361,7 +361,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
 
         $result = $blogTable->orderBy('blog.publishtime desc')->limit($limit)->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_LAST_ENTRIES'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_LAST_ENTRIES'));
         }
 
         foreach ($result as $key => $value) {
@@ -747,7 +747,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         }
         $result = $blogTable->orderBy('blog.publishtime desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_ADVANCED_SEARCH'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_ADVANCED_SEARCH'));
         }
 
         // Check dynamic ACL

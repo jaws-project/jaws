@@ -72,7 +72,7 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
         $catTable->select('id:integer', 'name', 'description', 'fast_url', 'createtime', 'updatetime');
         $result = $catTable->where($catTable->lower('name'), $name)->fetchRow();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error(_t('BLOG_ERROR_GETTING_CATEGORY'), _t('BLOG_NAME'));
+            return new Jaws_Error(_t('BLOG_ERROR_GETTING_CATEGORY'));
         }
 
         return $result;
