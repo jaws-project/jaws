@@ -24,7 +24,7 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('PrivateMessage.html');
         $tpl->SetBlock('PrivateMessage');
-        $tpl->SetVariable('title', _t('PRIVATEMESSAGE_NAME'));
+        $tpl->SetVariable('title', $this->gadget->title);
 
         $iModel = $this->gadget->model->load('Inbox');
         $oModel = $this->gadget->model->load('Outbox');
