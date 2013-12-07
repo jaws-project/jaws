@@ -35,7 +35,7 @@ class Directory_Installer extends Jaws_Gadget_Installer
 
         $new_dir = JAWS_DATA . 'directory';
         if (!Jaws_Utils::mkdir($new_dir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('DIRECTORY_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
         return true;
@@ -53,9 +53,8 @@ class Directory_Installer extends Jaws_Gadget_Installer
         foreach ($tables as $table) {
             $result = $GLOBALS['db']->dropTable($table);
             if (Jaws_Error::IsError($result)) {
-                $gName  = _t('CONTACT_NAME');
-                $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);
-                return new Jaws_Error($errMsg, $gName);
+                $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $this->gadget->title);
+                return new Jaws_Error($errMsg);
             }
         }
 
