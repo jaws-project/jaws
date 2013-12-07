@@ -134,7 +134,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_Action
                     if (isset($actions[$gadget['gadget_action']]) &&
                         Jaws_Gadget::IsGadgetEnabled($gadget['gadget'])
                     ) {
-                        $t_item->SetVariable('gadget', _t(strtoupper($gadget['gadget']).'_NAME'));
+                        $t_item->SetVariable('gadget', _t(strtoupper($gadget['gadget']).'_TITLE'));
                         if (isset($actions[$gadget['gadget_action']]['name'])) {
                             $t_item->SetVariable('action', $actions[$gadget['gadget_action']]['name']);
                         } else {
@@ -186,7 +186,7 @@ class Layout_Actions_Admin_Layout extends Jaws_Gadget_Action
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('admin_script', BASE_SCRIPT);
         $tpl->SetVariable('title-cp', _t('GLOBAL_CONTROLPANEL'));
-        $tpl->SetVariable('title-name', _t('LAYOUT_NAME'));
+        $tpl->SetVariable('title-name', _t('LAYOUT_TITLE'));
         $tpl->SetVariable('icon-gadget', 'gadgets/Layout/Resources/images/logo.png');
         $tpl->SetVariable('title-gadget', 'Layout');
 
