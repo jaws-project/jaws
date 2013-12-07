@@ -25,7 +25,7 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $res = $model->UpdateEmblem($id, $data);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return new Jaws_Error($res->getMessage(), 'SQL');
+            return new Jaws_Error($res->getMessage());
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('EMBLEMS_UPDATED'), RESPONSE_NOTICE);
@@ -49,7 +49,7 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $res = $model->DeleteEmblem($id);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
-            return new Jaws_Error($res->getMessage(), 'SQL');
+            return new Jaws_Error($res->getMessage());
         }
 
         // delete the file

@@ -31,7 +31,7 @@ class Emblems_Model_Emblems extends Jaws_Gadget_Model
         }
         $res = $emblemTable->orderBy('id asc')->fetchAll();
         if (Jaws_Error::IsError($res)){
-            return new Jaws_Error($res->getMessage(), 'SQL');
+            return new Jaws_Error($res->getMessage());
         }
         return $res;
     }
@@ -49,7 +49,7 @@ class Emblems_Model_Emblems extends Jaws_Gadget_Model
         $emblemTable->select('id:integer', 'title', 'image', 'url', 'type');
         $res = $emblemTable->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage(), 'SQL');
+            return new Jaws_Error($res->getMessage());
         }
         return $res;
     }
