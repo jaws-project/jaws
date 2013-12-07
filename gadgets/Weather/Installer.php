@@ -43,12 +43,12 @@ class Weather_Installer extends Jaws_Gadget_Installer
     function Install()
     {
         if (!Jaws_Utils::is_writable(JAWS_DATA)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', JAWS_DATA), _t('WEATHER_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', JAWS_DATA));
         }
 
         $new_dir = JAWS_DATA . 'weather' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir), _t('WEATHER_NAME'));
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
         $result = $this->installSchema('schema.xml');
@@ -69,9 +69,8 @@ class Weather_Installer extends Jaws_Gadget_Installer
     {
         $result = $GLOBALS['db']->dropTable('weather');
         if (Jaws_Error::IsError($result)) {
-            $gName  = _t('WEATHER_NAME');
-            $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $gName);
-            return new Jaws_Error($errMsg, $gName);
+            $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $this->gadget->title);
+            return new Jaws_Error($errMsg);
         }
 
         return true;

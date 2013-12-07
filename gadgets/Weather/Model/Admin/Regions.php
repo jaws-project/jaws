@@ -39,7 +39,7 @@ class Weather_Model_Admin_Regions extends Jaws_Gadget_Model
         $result = $weatherTable->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_ERROR_REGION_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('WEATHER_ERROR_REGION_NOT_ADDED'), _t('WEATHER_NAME'));
+            return new Jaws_Error(_t('WEATHER_ERROR_REGION_NOT_ADDED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_REGION_ADDED'), RESPONSE_NOTICE);
@@ -74,7 +74,7 @@ class Weather_Model_Admin_Regions extends Jaws_Gadget_Model
         $result = $weatherTable->update($data)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_ERROR_REGION_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('WEATHER_ERROR_REGION_NOT_UPDATED'), _t('WEATHER_NAME'));
+            return new Jaws_Error(_t('WEATHER_ERROR_REGION_NOT_UPDATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_REGION_UPDATED'), RESPONSE_NOTICE);
@@ -94,7 +94,7 @@ class Weather_Model_Admin_Regions extends Jaws_Gadget_Model
         $result = $weatherTable->delete()->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_ERROR_REGION_NOT_DELETED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('WEATHER_ERROR_REGION_NOT_DELETED'), _t('WEATHER_NAME'));
+            return new Jaws_Error(_t('WEATHER_ERROR_REGION_NOT_DELETED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_REGION_DELETED'), RESPONSE_NOTICE);

@@ -34,7 +34,7 @@ class Weather_Model_Regions extends Jaws_Gadget_Model
         $row = $weatherTable->fetchRow();
 
         if (Jaws_Error::IsError($row)) {
-            return new Jaws_Error($row->getMessage(), 'SQL');
+            return new Jaws_Error($row->getMessage());
         }
 
         return $row;
@@ -61,7 +61,7 @@ class Weather_Model_Regions extends Jaws_Gadget_Model
 
         $result = $weatherTable->limit($limit, $offset)->orderBy('id asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage(), 'SQL');
+            return new Jaws_Error($result->getMessage());
         }
 
         return $result;

@@ -34,7 +34,7 @@ class Weather_Model_Admin_Properties extends Jaws_Gadget_Model
         foreach ($res as $r) {
             if (Jaws_Error::IsError($r) || !$r) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('WEATHER_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
-                return new Jaws_Error(_t('WEATHER_ERROR_PROPERTIES_NOT_UPDATED'), _t('WEATHER_NAME'));
+                return new Jaws_Error(_t('WEATHER_ERROR_PROPERTIES_NOT_UPDATED'));
             }
         }
 
