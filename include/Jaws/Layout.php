@@ -297,7 +297,7 @@ class Jaws_Layout
             if (!Jaws_Error::isError($gInfo)) {
                 $docurl = $gInfo->GetDoc();
             }
-            $gname = _t(strtoupper($gadget) . '_NAME');
+            $gname = _t(strtoupper($gadget) . '_TITLE');
             $this->_Template->SetBlock('layout/cptitle');
             $this->_Template->SetVariable('admin_script', BASE_SCRIPT);
             $this->_Template->SetVariable('cp-title', _t('GLOBAL_CONTROLPANEL'));
