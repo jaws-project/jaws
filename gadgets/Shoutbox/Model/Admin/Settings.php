@@ -28,7 +28,7 @@ class Shoutbox_Model_Admin_Settings extends Jaws_Gadget_Model
         $res = $res && $this->gadget->registry->update('anon_post_authority', ($authority == true)? 'true' : 'false');
         if ($res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SHOUTBOX_ERROR_SETTINGS_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('SHOUTBOX_ERROR_SETTINGS_NOT_UPDATED'), _t('SHOUTBOX_NAME'));
+            return new Jaws_Error(_t('SHOUTBOX_ERROR_SETTINGS_NOT_UPDATED'));
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('SHOUTBOX_SETTINGS_UPDATED'), RESPONSE_NOTICE);
