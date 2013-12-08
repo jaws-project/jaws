@@ -15,7 +15,7 @@ var LogsCallback = {
     DeleteLogs: function(response) {
         if (response[0]['type'] == 'response_notice') {
             unselectGridRow('logs_datagrid');
-            getDG('logs_datagrid');
+            getDG('logs_datagrid', $('logs_datagrid').getCurrentPage(), true);
         }
         showResponse(response);
     },
@@ -39,7 +39,8 @@ function OnTermKeypress(element, event)
  * Get logs
  *
  */
-function getLogs(name, offset, reset) {
+function getLogs(name, offset, reset)
+{
     var result = LogsAjax.callSync('GetLogs', {
         'offset': offset,
         'filters': {
@@ -53,7 +54,6 @@ function getLogs(name, offset, reset) {
     });
 
     if (reset) {
-        $(name).setCurrentPage(0);
         var total = LogsAjax.callSync('GetLogsCount', {
             'filters': {
                 'from_date': $('from_date').value,
