@@ -305,3 +305,63 @@ function _t_lang($lang, $string)
 
     return Jaws_Translate::getInstance()->Translate($lang, $string, $args);
 }
+
+/**
+ * Terminate script
+ *
+ * @param   mixed   $data   Response data
+ * @param   bool    $sync   Synchronize session
+ * @return  void
+ */
+function terminate(&$data = null, $status_code = 200, $next_location = '', $sync = true)
+{
+    // Send content to client
+    $resType = jaws()->request->fetch('restype');
+    switch ($resType) {
+        case 'json':
+            header('Content-Type: application/json; charset=utf-8');
+            header('Cache-Control: no-cache, must-revalidate');
+            header('Pragma: no-cache');
+            if (in_array($status_code, array(301, 302))) {
+                $data = $GLOBALS['app']->Session->PopResponse($data);
+            }
+            // Sync session
+            if ($sync && isset($GLOBALS['app'])) {
+                $GLOBALS['app']->Session->Synchronize();
+            }
+
+            echo Jaws_UTF8::json_encode($data);
+            break;
+
+        case 'gzip':
+        case 'x-gzip':
+            $data = gzencode($data, COMPRESS_LEVEL, FORCE_GZIP);
+            header('Content-Length: '.strlen($data));
+            header('Content-Encoding: '. $resType);
+        default:
+            // Sync session
+            if ($sync && isset($GLOBALS['app']->Session)) {
+                $GLOBALS['app']->Session->Synchronize();
+            }
+
+            switch ($status_code) {
+                case 301:
+                    http_response_code(301);
+                    header('Location: '.$next_location);
+                    break;
+                case 302:
+                    http_response_code(302);
+                    header('Location: '.$next_location);
+                    break;
+                default:
+            }
+
+            echo $data;
+    }
+
+    if (isset($GLOBALS['log'])) {
+        $GLOBALS['log']->End();
+    }
+
+    exit;
+}
