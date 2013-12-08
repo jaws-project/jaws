@@ -284,7 +284,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $action = isset($get['action']) ? $get['action'] : null;
         $tpl->SetVariable('menubar', $this->MenuBar($action));
         // Title
-        $tpl->SetVariable('title', _t('BLOG_TITLE'));
+        $tpl->SetVariable('title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('action', 'EditEntry');
         $tpl->SetVariable('id', $id);
 
