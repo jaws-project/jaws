@@ -47,12 +47,12 @@ $actions['AboutUser'] = array(
 $actions['Login'] = array(
     'normal' => true,
     'file' => 'Login',
-    'loglevel' => JAWS_NOTICE,
+    'loglevel' => JAWS_WARNING,
 );
 $actions['Logout'] = array(
     'normal' => true,
     'file' => 'Login',
-    'loglevel' => JAWS_NOTICE,
+    'loglevel' => JAWS_WARNING,
 );
 $actions['ForgotLogin'] = array(
     'normal' => true,
