@@ -95,7 +95,7 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
 
         // Main gadget
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
-        $installedgadgets = $cmpModel->GetGadgetsList(null, true, true, null, true);
+        $installedgadgets = $cmpModel->GetGadgetsList(null, true, true, true);
         $gdt =& Piwi::CreateWidget('Combo', 'main_gadget');
         $gdt->setID('main_gadget');
 
