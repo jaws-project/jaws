@@ -272,27 +272,40 @@ class Jaws_Registry
      * @access  public
      * @param   string  $old_name   Old key name
      * @param   string  $new_name   New key name
+     * @param   bool    $custom     Customizable by user?
      * @param   string  $component  Component name
      * @return  bool    True is set otherwise False
      */
-    function rename($old_name, $new_name, $component = '')
+    function rename($old_name, $new_name, $custom = null, $component = '')
     {
+        $data['key_name'] =  $new_name;
+        if (!is_null($custom)) {
+            $data['custom'] = (bool)$custom;
+        }
         $tblReg = Jaws_ORM::getInstance()->table('registry');
-        $tblReg->update(array('key_name' => $new_name));
+        $tblReg->update($data);
         $tblReg->where('component', $component)->and()->where('key_name', $old_name);
         $result = $tblReg->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
 
+        // update internal cache
+        $key_value = null;
         if (isset($this->regkeys[$component][$old_name])) {
+            $key_value = $this->regkeys[$component][$old_name];
             $this->regkeys[$component][$new_name] = $this->regkeys[$component][$old_name];
             unset($this->regkeys[$component][$old_name]);
         }
 
+        // update internal custom cache array
         if (isset($this->customs[$component][$old_name])) {
-            $this->customs[$component][$new_name] = $this->customs[$component][$old_name];
+            if ($custom !== false) {
+                $this->customs[$component][$new_name] = $this->customs[$component][$old_name];
+            }
             unset($this->customs[$component][$old_name]);
+        } elseif ($custom) {
+            $this->customs[$component][$new_name] = $key_value;
         }
 
         return true;
