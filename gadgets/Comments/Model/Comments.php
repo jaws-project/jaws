@@ -41,10 +41,11 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
      * @param   int     $limit      How many comments
      * @param   mixed   $offset     Offset of data
      * @param   int     $orderBy    The column index which the result must be sorted by
+     * @param   int     $user       User Id
      * @return  array   Returns an array with of filtered comments or Jaws_Error on error
      */
     function GetComments($gadget = '', $action = '', $reference = '', $term = '', $status = array(),
-        $limit = 15, $offset = 0, $orderBy = 0)
+        $limit = 15, $offset = 0, $orderBy = 0, $user = null)
     {
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $commentsTable->select(
@@ -66,6 +67,9 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
         }
         if(!empty($reference)) {
             $commentsTable->and()->where('reference', (int)$reference);
+        }
+        if(!empty($user)) {
+            $commentsTable->and()->where('user', (int)$user);
         }
 
         if (!empty($status)) {
@@ -105,9 +109,10 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
      * @param   int     $reference  Gadget reference id
      * @param   string  $term       Data that will be used in the filter
      * @param   int     $status     Comment status (approved=1, waiting=2, spam=3)
+     * @param   int     $user       User Id
      * @return  array   Returns count of filtered comments or Jaws_Error on error
      */
-    function GetCommentsCount($gadget = '', $action = '', $reference = '', $term = '', $status = array())
+    function GetCommentsCount($gadget = '', $action = '', $reference = '', $term = '', $status = array(), $user = null)
     {
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $commentsTable->select('count(comments.id)');
@@ -120,6 +125,9 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
         }
         if(!empty($reference)) {
             $commentsTable->and()->where('reference', (int)$reference);
+        }
+        if(!empty($user)) {
+            $commentsTable->and()->where('user', (int)$user);
         }
 
         if (!empty($status)) {

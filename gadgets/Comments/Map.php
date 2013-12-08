@@ -25,3 +25,10 @@ $maps[] = array(
     'RecentCommentsAtom',
     'comments[/gadget/{gadgetname}]/atom'
 );
+$maps[] = array(
+    'UserComments',
+    'comments/user/{user}',
+    array(
+        'user' => '[[:digit:]]+',
+    )
+);
