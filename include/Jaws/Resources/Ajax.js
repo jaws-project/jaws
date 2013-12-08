@@ -532,7 +532,7 @@ function getDG(name, offset, reset)
 
         reset = (reset == true) || ($(name).rowsSize == 0);
         dataFunc(name, offset, reset);
-        if (reset) {
+        if (reset && offset == undefined) {
             $(name).setCurrentPage(0);
         }
     }
