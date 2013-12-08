@@ -27,7 +27,7 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
             'users.nickname', 'users.username', 'users.id as user_id:integer',
             'apptype', 'backend:boolean', 'logs.status', 'logs.insert_time'
         );
-        $logsTable->join('users', 'users.id', 'logs.user');
+        $logsTable->join('users', 'users.id', 'logs.user', 'left');
         $logsTable->orderBy('id desc');
         $logsTable->limit($limit, $offset);
 
