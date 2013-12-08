@@ -182,13 +182,14 @@ class Jaws_Gadget_Registry
      * @access  public
      * @param   string  $old_name   Old key name
      * @param   string  $new_name   New key name
+     * @param   bool    $custom     Customizable by user?
      * @param   string  $gadget     (Optional) Gadget name
      * @return  bool    Returns True or False
      */
-    function rename($old_name, $new_name, $gadget = '')
+    function rename($old_name, $new_name, $custom = null, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Registry->rename($old_name, $new_name, $gadget);
+        return $GLOBALS['app']->Registry->rename($old_name, $new_name, $custom, $gadget);
     }
 
     /**
