@@ -18,9 +18,10 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
      * @param   string  $action     Action name
      * @param   int     $priority   Priority of log
      * @param   array   $params     Action parameters
+     * @param   int     $status     Status code
      * @return  mixed   Log identity or Jaws_Error on failure
      */
-    function InsertLog($gadget, $action, $priority = 0, $params = null)
+    function InsertLog($gadget, $action, $priority = 0, $params = null, $status = 200)
     {
         // ip address
         $ip = 0;
@@ -43,7 +44,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
                 'backend'  => JAWS_SCRIPT == 'admin',
                 'ip'       => $ip,
                 'agent'    => $agent,
-                'status'   => 0,
+                'status'   => (int)$status,
                 'insert_time' => time(),
             )
         );
