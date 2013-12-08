@@ -21,7 +21,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
      * @param   int     $status     Status code
      * @return  mixed   Log identity or Jaws_Error on failure
      */
-    function InsertLog($gadget, $action, $priority = 0, $params = null, $status = 200)
+    function InsertLog($user, $gadget, $action, $priority = 0, $params = null, $status = 200)
     {
         // ip address
         $ip = 0;
@@ -35,7 +35,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->insert(
             array(
-                'user'     => (int)$GLOBALS['app']->Session->GetAttribute('user'),
+                'user'     => (int)$user,
                 'gadget'   => $gadget,
                 'action'   => $action,
                 'priority' => $priority,

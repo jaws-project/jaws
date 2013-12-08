@@ -21,12 +21,13 @@ class Logs_Events_Log extends Jaws_Gadget_Event
      * @param   int     $status     Status code
      * @return  mixed   Log identity or Jaws_Error on failure
      */
-    function Execute($gadget, $action, $priority = 0, $params = null, $status = 200)
+    function Execute($gadget, $action, $priority = 0, $params = null, $status = 200, $user = 0)
     {
         $priority = empty($priority)? JAWS_INFO : (int)$priority;
         if ($priority <= (int)$this->gadget->registry->fetch('log_priority_level')) {
             $logsModel = $this->gadget->model->load('Logs');
-            return $logsModel->InsertLog($gadget, $action, $priority, $params, $status);
+            $user = empty($user)? (int)$GLOBALS['app']->Session->GetAttribute('user') : $user;
+            return $logsModel->InsertLog($user, $gadget, $action, $priority, $params, $status);
         }
 
         return false;
