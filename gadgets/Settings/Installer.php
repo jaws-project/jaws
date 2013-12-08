@@ -144,7 +144,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->delete('cookie_precedence');
             $this->gadget->registry->update('theme', null, true);
             $this->gadget->registry->update('date_format', null, true);
-            $this->gadget->registry->rename('calendar_type', 'calendar');
+            $this->gadget->registry->rename('calendar_type', 'calendar', true);
             $this->gadget->registry->update('timezone', null, true);
             $this->gadget->registry->update('editor', null, true);
             $this->gadget->registry->update('main_gadget', null, true);
