@@ -29,6 +29,7 @@ class Comments_Actions_RecentComments extends Comments_Actions_Default
         $result[] = array(
             'title' => _t('COMMENTS_GADGETS'),
             'value' => array(
+                '' => _t('GLOBAL_ALL') ,
                 'Blog' => _t('BLOG_TITLE') ,
                 'Phoo' => _t('PHOO_TITLE') ,
                 'Shoutbox' => _t('SHOUTBOX_TITLE') ,
@@ -71,13 +72,16 @@ class Comments_Actions_RecentComments extends Comments_Actions_Default
         $objTranslate->LoadTranslation('Phoo', JAWS_COMPONENT_GADGET, $site_language);
         $objTranslate->LoadTranslation('Shoutbox', JAWS_COMPONENT_GADGET, $site_language);
 
+        $gadget_name = (empty($gadget)) ? _t('GLOBAL_ALL') : _t(strtoupper($gadget) . '_TITLE');
         $tpl = $this->gadget->template->load('RecentComments.html');
         $tpl->SetBlock('recent_comments');
-        $tpl->SetVariable('title', _t('COMMENTS_RECENT_COMMENTS', _t(strtoupper($gadget) . '_TITLE')));
-        $tpl->SetVariable('gadget', $gadget);
+        $tpl->SetVariable('title', _t('COMMENTS_RECENT_COMMENTS', $gadget_name));
+        if(!empty($gadget)) {
+            $tpl->SetVariable('gadget', $gadget);
+        }
 
         $cHTML = Jaws_Gadget::getInstance('Comments')->action->load('Comments');
-        $tpl->SetVariable('comments', $cHTML->ShowComments($gadget, '', 0, array('action' => 'RecentComments'), $limit, $orderBy));
+        $tpl->SetVariable('comments', $cHTML->ShowComments($gadget, '', 0, array('action' => 'RecentComments'), true, $limit, $orderBy));
 
         $tpl->ParseBlock('recent_comments');
 

@@ -9,8 +9,8 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 $maps[] = array(
-    'Comments',
-    'comments[/page/{page}][/order/{order}]',
+    'Guestbook',
+    'guestbook[/page/{page}][/order/{order}]',
     array(
         'page' => '[[:digit:]]+',
         'perpage' => '[[:digit:]]+',

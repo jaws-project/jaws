@@ -20,8 +20,8 @@ class Comments_Hooks_Menu extends Jaws_Gadget_Hook
     {
         $urls = array();
         $urls[] = array(
-            'url'   => $this->gadget->urlMap('Comments'),
-            'title' => _t('COMMENTS_ACTIONS_COMMENTS')
+            'url'   => $this->gadget->urlMap('Guestbook'),
+            'title' => _t('COMMENTS_GUESTBOOK')
         );
 
         return $urls;

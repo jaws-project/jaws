@@ -12,7 +12,7 @@
 /**
  * Index actions
  */
-$actions['Comments'] = array(
+$actions['Guestbook'] = array(
     'normal' => true,
     'file'   => 'Comments',
 );

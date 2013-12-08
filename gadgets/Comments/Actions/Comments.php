@@ -10,7 +10,6 @@
  */
 class Comments_Actions_Comments extends Comments_Actions_Default
 {
-
     /**
      * Displays GuestBook
      *
@@ -18,18 +17,18 @@ class Comments_Actions_Comments extends Comments_Actions_Default
      * @param   bool    $preview_mode  Show preview section?
      * @return  string  XHTML content
      */
-    function Comments($preview_mode = false)
+    function Guestbook($preview_mode = false)
     {
         $tpl = $this->gadget->template->load('Guestbook.html');
         $tpl->SetBlock('guestbook');
-        $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
+        $tpl->SetVariable('title', _t('COMMENTS_GUESTBOOK'));
 
-        $tpl->SetVariable('comments', $this->ShowComments('Comments', 'Guestbook', 0, array('action' => 'Comments')));
+        $tpl->SetVariable('comments', $this->ShowComments('Comments', 'Guestbook', 0, array('action' => 'Guestbook')));
         if ($preview_mode) {
             $tpl->SetVariable('preview', $this->ShowPreview());
         }
 
-        $redirect_to = $this->gadget->urlMap('Comments');
+        $redirect_to = $this->gadget->urlMap('Guestbook');
         $tpl->SetVariable('comment-form', $this->ShowCommentsForm('Comments', 'Guestbook', 0, $redirect_to));
 
         $tpl->ParseBlock('guestbook');
@@ -148,14 +147,16 @@ class Comments_Actions_Comments extends Comments_Actions_Default
      * @param   string  $action          Gadget action
      * @param   int     $reference
      * @param   array   $pagination_data
+     * @param   bool    $compactView    Display mode is compact?
      * @param   int     $perPage
      * @param   int     $orderBy
      * @internal param string $gadget
      * @internal param mixed $limit limit recent comments (int)
      * @return  string  XHTML content
      */
-    function ShowComments($gadget, $action, $reference, $pagination_data, $perPage = null, $orderBy = 0)
+    function ShowComments($gadget, $action, $reference, $pagination_data, $compactView = false, $perPage = null, $orderBy = 0)
     {
+        $max_size = 52;
         $rqst = jaws()->request->fetch(array('order', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
@@ -181,7 +182,11 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $comments_count = $cModel->GetCommentsCount($gadget, $action, $reference);
 
         $tpl = $this->gadget->template->load('Comments.html');
-        $tpl->SetBlock('comments');
+        $block = 'comments';
+        if ($compactView == true) {
+            $block = 'comments_compact';
+        }
+        $tpl->SetBlock($block);
 
         $tpl->SetVariable('gadget', $gadget);
 
@@ -189,15 +194,15 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $usrModel = new Jaws_User;
         if (!Jaws_Error::IsError($comments) && $comments != null) {
             foreach ($comments as $entry) {
-                $tpl->SetBlock('comments/entry');
+                $tpl->SetBlock($block . '/entry');
 
                 $tpl->SetVariable('postedby_lbl', _t('COMMENTS_POSTEDBY'));
 
                 if ($entry['user_registered_date']) {
-                    $tpl->SetBlock('comments/entry/registered_date');
+                    $tpl->SetBlock($block . '/entry/registered_date');
                     $tpl->SetVariable('registered_date_lbl', _t('COMMENTS_USERS_REGISTERED_DATE'));
                     $tpl->SetVariable('registered_date', $objDate->Format($entry['user_registered_date'], 'd MN Y'));
-                    $tpl->ParseBlock('comments/entry/registered_date');
+                    $tpl->ParseBlock($block . '/entry/registered_date');
                 }
 
                 if (!empty($entry['username'])) {
@@ -233,9 +238,19 @@ class Comments_Actions_Comments extends Comments_Actions_Default
                 $tpl->SetVariable('insert_time', $objDate->Format($entry['createtime']));
                 $tpl->SetVariable('insert_time_iso', $objDate->ToISO($entry['createtime']));
                 $tpl->SetVariable('message', Jaws_String::AutoParagraph($entry['msg_txt']));
+                $tpl->SetVariable('message_abbr', (Jaws_UTF8::strlen($entry['msg_txt']) >= $max_size)?
+                    Jaws_UTF8::substr($entry['msg_txt'], 0, $max_size).'...' :
+                    $entry['msg_txt']);
+
+                if (Jaws_UTF8::strlen($entry['msg_txt']) >= $max_size) {
+                    $tpl->SetBlock($block . '/entry/read_more');
+                    $tpl->SetVariable('read_more', _t('COMMENTS_READ_MORE'));
+                    $tpl->SetVariable('read_more_url', '');
+                    $tpl->ParseBlock($block . '/entry/read_more');
+                }
 
                 if (!empty($entry['reply'])) {
-                    $tpl->SetBlock('comments/entry/reply');
+                    $tpl->SetBlock($block . '/entry/reply');
                     $tpl->SetVariable('lbl_replier', _t('COMMENTS_REPLIER'));
                     $tpl->SetVariable('replier', $entry['replier_nickname']);
                     // user's profile
@@ -248,33 +263,34 @@ class Comments_Actions_Comments extends Comments_Actions_Default
                         )
                     );
                     $tpl->SetVariable('reply', $entry['reply']);
-                    $tpl->ParseBlock('comments/entry/reply');
+                    $tpl->ParseBlock($block . '/entry/reply');
                 }
 
                 $reply_url = & Piwi::CreateWidget('Link', _t('COMMENTS_REPLY_TO_COMMENT'),
                                                   'javascript:replyComment();');
                 $tpl->SetVariable('reply-link', $reply_url->Get());
 
-                $tpl->ParseBlock('comments/entry');
+                $tpl->ParseBlock($block . '/entry');
             }
         }
 
-        $pagination_data['params']['order'] = $orderBy;
+        if (!$compactView) {
+            $pagination_data['params']['order'] = $orderBy;
+            // page navigation
+            $this->GetPagesNavigation(
+                $tpl,
+                'comments',
+                $page,
+                $perPage,
+                $comments_count,
+                _t('COMMENTS_COMMENTS_COUNT', $comments_count),
+                $gadget,
+                $pagination_data['action'],
+                $pagination_data['params']
+            );
+        }
 
-        // page navigation
-        $this->GetPagesNavigation(
-            $tpl,
-            'comments',
-            $page,
-            $perPage,
-            $comments_count,
-            _t('COMMENTS_COMMENTS_COUNT', $comments_count),
-            $gadget,
-            $pagination_data['action'],
-            $pagination_data['params']
-        );
-
-        $tpl->ParseBlock('comments');
+        $tpl->ParseBlock($block);
         return $tpl->Get();
 
     }

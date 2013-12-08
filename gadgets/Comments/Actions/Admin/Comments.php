@@ -219,7 +219,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
             $newRow['__KEY__'] = $row['id'];
 
             if($gadgetColumn) {
-                $newRow['gadget']  = _t(strtoupper($row['gadget']).'_NAME');
+                $newRow['gadget']  = _t(strtoupper($row['gadget']).'_TITLE');
             }
 
             $newRow['name']    = $row['name'];
