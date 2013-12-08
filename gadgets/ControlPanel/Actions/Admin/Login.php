@@ -112,15 +112,4 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
         return $GLOBALS['app']->Layout->Get();
     }
 
-    /**
-     * Terminates Control Panel session and redirects to website
-     *
-     * @access  public
-     */
-    function Logout()
-    {
-        $GLOBALS['app']->Session->Logout();
-        Jaws_Header::Location(BASE_SCRIPT);
-    }
-
 }

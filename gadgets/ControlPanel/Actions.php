@@ -20,11 +20,6 @@ $admin_actions['LoginBox'] = array(
     'standalone' => true,
     'file' => 'Login',
 );
-$admin_actions['Logout'] = array(
-    'standalone' => true,
-    'file' => 'Login',
-    'loglevel' => JAWS_NOTICE,
-);
 $admin_actions['Backup'] = array(
     'standalone' => true,
     'file' => 'Backup',
