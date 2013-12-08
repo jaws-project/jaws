@@ -27,22 +27,38 @@ class Phoo_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption('Photos', _t('PHOO_PHOTOS'), BASE_SCRIPT . '?gadget=Phoo', STOCK_IMAGE);
-        if (Jaws_Gadget::IsGadgetInstalled('Comments') && $this->gadget->GetPermission('ManageComments')) {
-            $menubar->AddOption('ManageComments', _t('PHOO_COMMENTS'),
-                                BASE_SCRIPT . '?gadget=Phoo&amp;action=ManageComments', 'images/stock/stock-comments.png');
-        }
         if ($this->gadget->GetPermission('Groups')) {
-            $menubar->AddOption('Groups', _t('GLOBAL_GROUPS'),
-                                BASE_SCRIPT . '?gadget=Phoo&amp;action=Groups', 'gadgets/Phoo/Resources/images/groups_mini.png');
+            $menubar->AddOption(
+                'Groups',
+                _t('GLOBAL_GROUPS'),
+                BASE_SCRIPT . '?gadget=Phoo&amp;action=Groups',
+                'gadgets/Phoo/Resources/images/groups_mini.png'
+            );
+        }
+        if (Jaws_Gadget::IsGadgetInstalled('Comments') && $this->gadget->GetPermission('ManageComments')) {
+            $menubar->AddOption(
+                'ManageComments',
+                _t('PHOO_COMMENTS'),
+                BASE_SCRIPT . '?gadget=Phoo&amp;action=ManageComments',
+                'images/stock/stock-comments.png'
+            );
         }
         if ($this->gadget->GetPermission('Settings')) {
-            $menubar->AddOption('AdditionalSettings', _t('PHOO_ADDITIONAL_SETTINGS'),
-                                BASE_SCRIPT . '?gadget=Phoo&amp;action=AdditionalSettings', 'images/stock/properties.png');
+            $menubar->AddOption(
+                'AdditionalSettings',
+                _t('PHOO_ADDITIONAL_SETTINGS'),
+                BASE_SCRIPT . '?gadget=Phoo&amp;action=AdditionalSettings',
+                'images/stock/properties.png'
+            );
         }
 
         if ($this->gadget->GetPermission('Import')) {
-            $menubar->AddOption('Import', _t('PHOO_IMPORT'),
-                                BASE_SCRIPT . '?gadget=Phoo&amp;action=Import', STOCK_IMAGE);
+            $menubar->AddOption(
+                'Import',
+                _t('PHOO_IMPORT'),
+                BASE_SCRIPT . '?gadget=Phoo&amp;action=Import',
+                STOCK_IMAGE
+            );
         }
 
         $menubar->Activate($action_selected);
