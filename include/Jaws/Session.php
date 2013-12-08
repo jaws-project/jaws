@@ -169,6 +169,8 @@ class Jaws_Session
                         $this->DeleteAttribute('bad_login_count');
                         // create session & cookie
                         $this->Create($result, $remember);
+                        // Login event Logging
+                        $GLOBALS['app']->Listener->Shout('Log', array('Users', 'Login', JAWS_WARNING));
                         // Let everyone know a user has been logged
                         $GLOBALS['app']->Listener->Shout('LoginUser');
                         return true;
@@ -207,6 +209,7 @@ class Jaws_Session
      */
     function Logout()
     {
+        $GLOBALS['app']->Listener->Shout('Log', array('Users', 'Logout', JAWS_WARNING));
         $this->Reset();
         $this->Synchronize($this->_SessionID);
         $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session logout');
