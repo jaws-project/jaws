@@ -385,7 +385,8 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 $post['username'],
                 $post['password'],
                 $post['remember'],
-                $post['authtype']);
+                $post['authtype']
+            );
         }
         if (Jaws_Error::isError($resCheck)) {
             unset($post['password']);
