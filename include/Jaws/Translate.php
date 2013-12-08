@@ -215,18 +215,21 @@ class Jaws_Translate
                 $data_i18n = JAWS_DATA . "languages/$language/$module.ini";
         }
 
+        $tmp_orig = array();
         if (file_exists($orig_i18n)) {
-            $this->translates[$language][$type][strtoupper($module)] = parse_ini_file($orig_i18n, false, INI_SCANNER_RAW);
+            $tmp_orig = parse_ini_file($orig_i18n, false, INI_SCANNER_RAW);
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded translation for $module, language $language");
         } else {
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "No translation could be found for $module for language $language");
         }
 
+        $tmp_data = array();
         if ($this->_load_user_translated && file_exists($data_i18n)) {
-            $this->translates[$language][$type][strtoupper($module)] = parse_ini_file($data_i18n, false, INI_SCANNER_RAW);
+            $tmp_data = parse_ini_file($data_i18n, false, INI_SCANNER_RAW);
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded data translation for $module, language $language");
         }
 
+        $this->translates[$language][$type][strtoupper($module)] = array_merge($tmp_orig, $tmp_data);
     }
 
     /**
