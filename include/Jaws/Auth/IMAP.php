@@ -80,8 +80,10 @@ class Jaws_Auth_IMAP
             return $result;
         }
 
-        return Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_WRONG'),
-                                         __FUNCTION__);
+        return Jaws_Error::raiseError(
+            _t('GLOBAL_ERROR_LOGIN_WRONG'),
+            __FUNCTION__
+        );
     }
 
 }
