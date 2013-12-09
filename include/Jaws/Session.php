@@ -156,36 +156,33 @@ class Jaws_Session
             $this->_AuthModel = new $className();
             $result = $this->_AuthModel->Auth($username, $password);
             if (!Jaws_Error::isError($result)) {
-                $result = $this->_AuthModel->GetAttributes();
-                if (!Jaws_Error::isError($result)) {
-                    $existSessions = 0;
-                    if (!empty($result['concurrents'])) {
-                        $existSessions = $this->GetUserSessions($result['id'], true);
-                    }
+                $existSessions = 0;
+                if (!empty($result['concurrents'])) {
+                    $existSessions = $this->GetUserSessions($result['id'], true);
+                }
 
-                    if (empty($existSessions) || $result['concurrents'] > $existSessions)
-                    {
-                        // remove login trying count from session
-                        $this->DeleteAttribute('bad_login_count');
-                        // create session & cookie
-                        $this->Create($result, $remember);
-                        // login event logging
-                        $GLOBALS['app']->Listener->Shout('Log', array('Users', 'Login', JAWS_WARNING));
-                        // let everyone know a user has been logged
-                        $GLOBALS['app']->Listener->Shout('LoginUser');
-                        return true;
-                    } else {
-                        // login conflict event logging
-                        $GLOBALS['app']->Listener->Shout(
-                            'Log',
-                            array('Users', 'Login', JAWS_WARNING, null, 409, $result['id'])
-                        );
-                        $result = Jaws_Error::raiseError(
-                            _t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'),
-                            __FUNCTION__,
-                            JAWS_ERROR_NOTICE
-                        );
-                    }
+                if (empty($existSessions) || $result['concurrents'] > $existSessions)
+                {
+                    // remove login trying count from session
+                    $this->DeleteAttribute('bad_login_count');
+                    // create session & cookie
+                    $this->Create($result, $remember);
+                    // login event logging
+                    $GLOBALS['app']->Listener->Shout('Log', array('Users', 'Login', JAWS_WARNING));
+                    // let everyone know a user has been logged
+                    $GLOBALS['app']->Listener->Shout('LoginUser');
+                    return true;
+                } else {
+                    // login conflict event logging
+                    $GLOBALS['app']->Listener->Shout(
+                        'Log',
+                        array('Users', 'Login', JAWS_WARNING, null, 409, $result['id'])
+                    );
+                    $result = Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE
+                    );
                 }
             }
         }
