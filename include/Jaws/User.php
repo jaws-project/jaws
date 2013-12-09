@@ -23,7 +23,7 @@ class Jaws_User
      * @param   string  $salt
      * @return  string  Returns hashed password
      */
-    function GetHashedPassword($password, $salt = null)
+    static function GetHashedPassword($password, $salt = null)
     {
         if (is_null($salt)) {
             $salt = substr(md5(uniqid(rand(), true)), 0, PASSWORD_SALT_LENGTH);
@@ -35,136 +35,50 @@ class Jaws_User
     }
 
     /**
-     * Validate a user
-     *
-     * @access  public
-     * @param   string  $user      User to validate
-     * @param   string  $password  Password of the user
-     * @param   bool    $onlyAdmin Only validate for admins
-     * @return  bool    Returns true if the user is valid and false if not
-     */
-    function Valid($user, $password, $onlyAdmin = false)
-    {
-        $usersTable = Jaws_ORM::getInstance()->table('users');
-        $usersTable->select(
-            'id:integer', 'password', 'superadmin:boolean', 'bad_password_count',
-            'concurrents:integer', 'logon_hours', 'expiry_date', 'last_access', 'status:integer'
-        );
-        $result = $usersTable->where('lower(username)', Jaws_UTF8::strtolower($user))->fetchRow();
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        if (!empty($result)) {
-            // bad_password_count & lockedout time
-            if ($result['bad_password_count'] >= $GLOBALS['app']->Registry->fetch('password_bad_count', 'Policy') &&
-               ((time() - $result['last_access']) <= $GLOBALS['app']->Registry->fetch('password_lockedout_time', 'Policy')))
-            {
-                return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'),
-                    __FUNCTION__,
-                    JAWS_ERROR_NOTICE
-                );
-            }
-
-            // password
-            if ($result['password'] === Jaws_User::GetHashedPassword($password, $result['password'])) {
-                // only superadmin
-                if ($onlyAdmin && !$result['superadmin']) {
-                    return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_LOGIN_ONLY_ADMIN'),
-                        __FUNCTION__,
-                        JAWS_ERROR_NOTICE
-                    );
-                }
-
-                // status
-                if ($result['status'] !== 1) {
-                    return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_LOGIN_STATUS_'. $result['status']),
-                        __FUNCTION__,
-                        JAWS_ERROR_NOTICE
-                    );
-                }
-
-                // expiry date
-                if (!empty($result['expiry_date']) && $result['expiry_date'] <= time()) {
-                    return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_LOGIN_EXPIRED'),
-                        __FUNCTION__,
-                        JAWS_ERROR_NOTICE
-                    );
-                }
-
-                // logon hours
-                $wdhour = explode(',', $GLOBALS['app']->UTC2UserTime(time(), 'w,G', true));
-                $lhByte = hexdec($result['logon_hours']{$wdhour[0]*6 + intval($wdhour[1]/4)});
-                if ((pow(2, fmod($wdhour[1], 4)) & $lhByte) == 0) {
-                    return Jaws_Error::raiseError(
-                        _t('GLOBAL_ERROR_LOGIN_LOGON_HOURS'),
-                        __FUNCTION__,
-                        JAWS_ERROR_NOTICE
-                    );
-                }
-
-                return array('id' => $result['id'],
-                            'superadmin' => $result['superadmin'],
-                            'concurrents' => $result['concurrents']);
-
-            } else {
-                // bad_password_count + 1
-                $usersTable->update(
-                    array(
-                        'last_access' => time(),
-                        'bad_password_count' => $usersTable->expr('bad_password_count + ?', 1)
-                    )
-                )->where('id', $result['id'])->exec();
-            }
-        }
-
-        return Jaws_Error::raiseError(
-            _t('GLOBAL_ERROR_LOGIN_WRONG'),
-            __FUNCTION__,
-            JAWS_ERROR_NOTICE
-        );
-    }
-
-    /**
      * Updates the last login time for the given user
      *
-     * @param $user_id integer user id of the user being updated
+     * @param   int     $user user id of the user being updated
      * @return  bool    true if all is ok, false if error
      */
-    function updateLoginTime($user_id)
+    function updateLastAccess($user, $success = true)
     {
+        $data['last_access'] = time();
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update(array('bad_password_count' => 0))->where('id', (int)$user_id)->exec();
-        if (Jaws_Error::isError($result)) {
-            return false;
+        if ($success) {
+            $data['bad_password_count'] = 0;
+        } else {
+            // increase bad_password_count
+            $data['bad_password_count'] = $usersTable->expr('bad_password_count + ?', 1);
         }
 
-        return true;
+        $result = $usersTable->update($data)->where('id', (int)$user)->exec();
+        return !Jaws_Error::IsError($result);
     }
 
     /**
      * Get the info of an user by the username or ID
      *
      * @access  public
-     * @param   mixed   $user           The username or ID
-     * @param   bool    $account        Account information
-     * @param   bool    $personal       Personal information
-     * @param   bool    $contacts       Contacts information
+     * @param   mixed   $user       The username or ID
+     * @param   bool    $account    Account information
+     * @param   bool    $personal   Personal information
+     * @param   bool    $contacts   Contacts information
+     * @param   bool    $password   Returns password
      * @return  mixed   Returns an array with the info of the user and false on error
      */
-    function GetUser($user, $account = true, $personal = false, $contacts = false)
+    function GetUser($user, $account = true, $personal = false, $contacts = false, $password = false)
     {
         $columns = array('id:integer', 'avatar');
         // account information
         if ($account) {
             $columns = array_merge($columns, array('username', 'nickname', 'email', 'superadmin:boolean',
                 'concurrents', 'logon_hours', 'expiry_date', 'registered_date', 'status:integer',
-                'last_update',)
+                'last_update', 'bad_password_count', 'last_access',)
             );
+        }
+
+        if ($password) {
+            $columns = array_merge($columns, array('password'));
         }
 
         if ($personal) {
