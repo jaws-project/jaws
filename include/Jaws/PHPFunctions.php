@@ -317,18 +317,16 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
 {
     // Send content to client
     $resType = jaws()->request->fetch('restype');
-    // Event Logging
-    if ($GLOBALS['app']->Session->Logged()) {
-        $gadget = $GLOBALS['app']->requestedGadget;
-        $action = $GLOBALS['app']->requestedAction;
-        if (!empty($gadget)) {
-            $loglevel = @Jaws_Gadget::getInstance($gadget)->actions[JAWS_SCRIPT][$action]['loglevel'];
-            $GLOBALS['app']->Listener->Shout(
-                'Log',
-                array($gadget, $action, $loglevel, null, http_response_code())
-            );
-        }
+
+    // Event logging
+    $gadget = $GLOBALS['app']->requestedGadget;
+    $action = $GLOBALS['app']->requestedAction;
+    $loglevel = 0;
+    if (!empty($gadget) && !empty($action)) {
+        $loglevel = @Jaws_Gadget::getInstance($gadget)->actions[JAWS_SCRIPT][$action]['loglevel'];
     }
+    $GLOBALS['app']->Listener->Shout('Log', array($gadget, $action, $loglevel, null, http_response_code()));
+
     switch ($resType) {
         case 'json':
             header('Content-Type: application/json; charset=utf-8');
