@@ -32,9 +32,7 @@ $actions['RecentComments'] = array(
 );
 $actions['UserComments'] = array(
     'normal' => true,
-    'layout' => true,
-    'file'   => 'Comments',
-    'parametric' => true,
+    'file'   => 'UserComments',
 );
 $actions['FeedsLink'] = array(
     'layout' => true,

@@ -147,6 +147,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
      * @param   string  $action          Gadget action
      * @param   int     $reference
      * @param   array   $pagination_data
+     * @param   int     $user           User Id
      * @param   bool    $compactView    Display mode is compact?
      * @param   int     $perPage
      * @param   int     $orderBy
@@ -154,7 +155,8 @@ class Comments_Actions_Comments extends Comments_Actions_Default
      * @internal param mixed $limit limit recent comments (int)
      * @return  string  XHTML content
      */
-    function ShowComments($gadget, $action, $reference, $pagination_data, $compactView = false, $perPage = null, $orderBy = 0)
+    function ShowComments($gadget, $action, $reference, $pagination_data, $user = null, $compactView = false,
+                          $perPage = null, $orderBy = 0)
     {
         $max_size = 52;
         $rqst = jaws()->request->fetch(array('order', 'page'), 'get');
@@ -177,7 +179,8 @@ class Comments_Actions_Comments extends Comments_Actions_Default
             Comments_Info::COMMENTS_STATUS_APPROVED,
             $perPage,
             ($page - 1) * $perPage,
-            $orderBy
+            $orderBy,
+            $user
         );
         $comments_count = $cModel->GetCommentsCount($gadget, $action, $reference);
 

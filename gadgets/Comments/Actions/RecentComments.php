@@ -56,7 +56,7 @@ class Comments_Actions_RecentComments extends Comments_Actions_Default
 
 
     /**
-     * Displays a block of pages belongs to the specified group
+     * Displays recent comments
      *
      * @access  public
      * @param   string  $gadget
@@ -81,7 +81,7 @@ class Comments_Actions_RecentComments extends Comments_Actions_Default
         }
 
         $cHTML = Jaws_Gadget::getInstance('Comments')->action->load('Comments');
-        $tpl->SetVariable('comments', $cHTML->ShowComments($gadget, '', 0, array('action' => 'RecentComments'), true, $limit, $orderBy));
+        $tpl->SetVariable('comments', $cHTML->ShowComments($gadget, '', 0, array('action' => 'RecentComments'), null, true, $limit, $orderBy));
 
         $tpl->ParseBlock('recent_comments');
 
