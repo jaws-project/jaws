@@ -38,6 +38,8 @@ class Jaws_Auth_Default
         if ($result['bad_password_count'] >= $max_password_bad_count &&
            ((time() - $result['last_access']) <= $password_lockedout_time))
         {
+            // forbidden access event logging
+            $GLOBALS['app']->Listener->Shout('Log', array('Users', 'Login', JAWS_WARNING, null, 403, $result['id']));
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_LOCKED_OUT'),
                 __FUNCTION__,
@@ -48,6 +50,8 @@ class Jaws_Auth_Default
         // check password
         if ($result['password'] !== Jaws_User::GetHashedPassword($password, $result['password'])) {
             $userModel->updateLastAccess($result['id'], false);
+            // password incorrect event logging
+            $GLOBALS['app']->Listener->Shout('Log', array('Users', 'Login', JAWS_WARNING, null, 401, $result['id']));
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_WRONG'),
                 __FUNCTION__,
@@ -58,6 +62,8 @@ class Jaws_Auth_Default
 
         // status
         if ($result['status'] !== 1) {
+            // forbidden access event logging
+            $GLOBALS['app']->Listener->Shout('Log', array('Users', 'Login', JAWS_WARNING, null, 403, $result['id']));
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_STATUS_'. $result['status']),
                 __FUNCTION__,
@@ -67,6 +73,8 @@ class Jaws_Auth_Default
 
         // expiry date
         if (!empty($result['expiry_date']) && $result['expiry_date'] <= time()) {
+            // forbidden access event logging
+            $GLOBALS['app']->Listener->Shout('Log', array('Users', 'Login', JAWS_WARNING, null, 403, $result['id']));
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_EXPIRED'),
                 __FUNCTION__,
@@ -78,6 +86,8 @@ class Jaws_Auth_Default
         $wdhour = explode(',', $GLOBALS['app']->UTC2UserTime(time(), 'w,G', true));
         $lhByte = hexdec($result['logon_hours']{$wdhour[0]*6 + intval($wdhour[1]/4)});
         if ((pow(2, fmod($wdhour[1], 4)) & $lhByte) == 0) {
+            // forbidden access event logging
+            $GLOBALS['app']->Listener->Shout('Log', array('Users', 'Login', JAWS_WARNING, null, 403, $result['id']));
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_LOGIN_LOGON_HOURS'),
                 __FUNCTION__,
