@@ -36,6 +36,7 @@ class Logs_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_ACLKeys = array(
+        'DeleteLogs',
         'ManageSettings',
     );
 
