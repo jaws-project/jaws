@@ -41,28 +41,23 @@ function OnTermKeypress(element, event)
  */
 function getLogs(name, offset, reset)
 {
+    var filters = {
+        'from_date' : $('from_date').value,
+        'to_date'   : $('to_date').value,
+        'gadget'    : $('filter_gadget').value,
+        'user'      : $('filter_user').value,
+        'priority'  : $('filter_priority').value,
+        'status'    : $('filter_status').value
+    };
+
     var result = LogsAjax.callSync('GetLogs', {
         'offset': offset,
-        'filters': {
-            'from_date' : $('from_date').value,
-            'to_date'   : $('to_date').value,
-            'gadget'    : $('filter_gadget').value,
-            'user'      : $('filter_user').value,
-            'priority'  : $('filter_priority').value,
-            'term'      : $('filter_term').value
-        }
+        'filters': filters
     });
 
     if (reset) {
         var total = LogsAjax.callSync('GetLogsCount', {
-            'filters': {
-                'from_date': $('from_date').value,
-                'to_date': $('to_date').value,
-                'gadget': $('filter_gadget').value,
-                'user': $('filter_user').value,
-                'priority': $('filter_priority').value,
-                'term': $('filter_term').value
-            }
+            'filters': filters
         });
     }
     resetGrid(name, result, total);

@@ -83,13 +83,17 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $tpl->SetVariable('filter_priority', $priorityCombo->Get());
         $tpl->SetVariable('lbl_filter_priority', _t('LOGS_PRIORITY'));
 
-        // Term
-        $filterTerm =& Piwi::CreateWidget('Entry', 'filter_term', '');
-        $filterTerm->SetID('filter_term');
-        $filterTerm->AddEvent(ON_CHANGE, "javascript: searchLogs();");
-        $filterTerm->AddEvent(ON_KPRESS, "javascript: OnTermKeypress(this, event);");
-        $tpl->SetVariable('lbl_filter_term', _t('LOGS_SEARCH_TERM'));
-        $tpl->SetVariable('filter_term', $filterTerm->Get());
+        // Status
+        $allStatus = array (200, 301, 302, 401, 403, 404, 410, 500, 503);
+        $statusCombo =& Piwi::CreateWidget('Combo', 'filter_status');
+        $statusCombo->AddOption(_t('GLOBAL_ALL'), 0, false);
+        foreach($allStatus as $status) {
+            $statusCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_' . $status), $status, false);
+        }
+        $statusCombo->AddEvent(ON_CHANGE, "javascript: searchLogs();");
+        $statusCombo->SetDefault(0);
+        $tpl->SetVariable('filter_status', $statusCombo->Get());
+        $tpl->SetVariable('lbl_filter_status', _t('LOGS_LOG_STATUS'));
 
         //DataGrid
         $tpl->SetVariable('grid', $this->LogsDataGrid());
@@ -251,7 +255,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
      */
     function GetLogsCount()
     {
-        $filters = jaws()->request->fetchAll('post');
+        $filters = jaws()->request->fetch('filters:array', 'post');
         $model = $this->gadget->model->loadAdmin('Logs');
         return $model->GetLogsCount($filters);
     }

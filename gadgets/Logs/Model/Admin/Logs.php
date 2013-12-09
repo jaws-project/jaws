@@ -59,8 +59,8 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
             if (isset($filters['priority']) && !empty($filters['priority'])) {
                 $logsTable->and()->where('priority', $filters['priority']);
             }
-            if (isset($filters['term']) && !empty($filters['term'])) {
-                //nothing for doing
+            if (isset($filters['status']) && !empty($filters['status'])) {
+                $logsTable->and()->where('logs.status', $filters['status']);
             }
         }
         return $logsTable->fetchAll();
@@ -106,8 +106,8 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
             if (isset($filters['priority']) && !empty($filters['priority'])) {
                 $logsTable->and()->where('priority', $filters['priority']);
             }
-            if (isset($filters['term']) && !empty($filters['term'])) {
-                //nothing for doing
+            if (isset($filters['status']) && !empty($filters['status'])) {
+                $logsTable->and()->where('logs.status', $filters['status']);
             }
         }
 
