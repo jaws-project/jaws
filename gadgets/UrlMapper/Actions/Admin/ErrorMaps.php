@@ -99,7 +99,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
             $usrData = array();
             $usrData['__KEY__'] = $errorMap['id'];
             if ($this->gadget->GetPermission('ManageErrorMaps')) {
-                $errorMap['url'] =& Piwi::CreateWidget('Link',
+                $errorMap['url'] = Piwi::CreateWidget('Link',
                     $errorMap['url'],
                     "javascript: editErrorMap(this, '" . $errorMap['id'] . "');")->get();
             }
