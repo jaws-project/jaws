@@ -24,13 +24,14 @@ class Logs_Events_Log extends Jaws_Gadget_Event
     function Execute($gadget, $action, $priority = 0, $params = null, $status = 200, $user = 0)
     {
         $priority = empty($priority)? JAWS_INFO : (int)$priority;
-        if ($priority <= (int)$this->gadget->registry->fetch('log_priority_level')) {
-            $logsModel = $this->gadget->model->load('Logs');
-            $user = empty($user)? (int)$GLOBALS['app']->Session->GetAttribute('user') : $user;
-            return $logsModel->InsertLog($user, $gadget, $action, $priority, $params, $status);
+        $user = empty($user)? (int)$GLOBALS['app']->Session->GetAttribute('user') : $user;
+        // log events if user logged
+        if (empty($user) || $priority > (int)$this->gadget->registry->fetch('log_priority_level')) {
+            return false;
         }
 
-        return false;
+        $logsModel = $this->gadget->model->load('Logs');
+        return $logsModel->InsertLog($user, $gadget, $action, $priority, $params, $status);
     }
 
 }
