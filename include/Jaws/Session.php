@@ -176,7 +176,7 @@ class Jaws_Session
                     // login conflict event logging
                     $GLOBALS['app']->Listener->Shout(
                         'Log',
-                        array('Users', 'Login', JAWS_WARNING, null, 409, $result['id'])
+                        array('Users', 'Login', JAWS_WARNING, null, 403, $result['id'])
                     );
                     $result = Jaws_Error::raiseError(
                         _t('GLOBAL_ERROR_LOGIN_CONCURRENT_REACHED'),
