@@ -18,18 +18,6 @@ class Jaws_Auth_LDAP
     var $_LdapConnection;
 
     /**
-     * Authentication ID
-     * @access  private
-     */
-    var $_AuthID = '';
-
-    /**
-     * username
-     * @access  private
-     */
-    var $_User = '';
-
-    /**
      * LDAP server
      * @access  private
      */
@@ -67,8 +55,10 @@ class Jaws_Auth_LDAP
     function Auth($user, $password)
     {
         if (!function_exists('ldap_connect')) {
-            return Jaws_Error::raiseError('Undefined function ldap_connect()',
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'Undefined function ldap_connect()',
+                __FUNCTION__
+            );
         }
 
         $this->_LdapConnection = @ldap_connect($this->_Server, $this->_Port);
@@ -76,40 +66,28 @@ class Jaws_Auth_LDAP
             $rdn = "uid=" . $user . "," . $this->_DN;
             $bind = @ldap_bind($this->_LdapConnection, $rdn, $password);
             if ($bind) {
-                $this->_User   = $user;
-                $this->_AuthID = strtolower('ldap:'.$user);
-                return $this->_AuthID; 
+                $resulat = array();
+                $result['id']         = strtolower('ldap:'.$user);
+                $result['internal']   = false;
+                $result['username']   = $user;
+                $result['superadmin'] = false;
+                $result['internal']   = false;
+                $result['groups']     = array();
+                $result['nickname']   = $user;
+                $result['concurrents'] = 0;
+                $result['email']      = '';
+                $result['url']        = '';
+                $result['avatar']     = 'gadgets/Users/Resources/images/photo48px.png';
+                $result['language']   = '';
+                $result['theme']      = '';
+                $result['editor']     = '';
+                $result['timezone']   = null;
+                return $result;
             }
         }
 
         return Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_WRONG'),
                                           __FUNCTION__);
-    }
-
-    /**
-     * Attributes of logged user
-     *
-     * @access  public
-     */
-    function GetAttributes()
-    {
-        $info = array();
-        $info['id']         = $this->_AuthID;
-        $info['internal']   = false;
-        $info['username']   = $this->_User;
-        $info['superadmin'] = false;
-        $info['internal']   = false;
-        $info['groups']     = array();
-        $info['nickname']   = $this->_User;
-        $info['concurrents'] = 0;
-        $info['email']      = '';
-        $info['url']        = '';
-        $info['avatar']     = 'gadgets/Users/Resources/images/photo48px.png';
-        $info['language']   = '';
-        $info['theme']      = '';
-        $info['editor']     = '';
-        $info['timezone']   = null;
-        return $info;
     }
 
 }
