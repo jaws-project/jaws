@@ -12,18 +12,6 @@
 class Jaws_Auth_POP3
 {
     /**
-     * Authentication ID
-     * @access  private
-     */
-    var $_AuthID = '';
-
-    /**
-     * username
-     * @access  private
-     */
-    var $_User = '';
-
-    /**
      * POP3 server
      * @access  private
      */
@@ -54,48 +42,42 @@ class Jaws_Auth_POP3
     function Auth($user, $password)
     {
         if (!function_exists('imap_open')) {
-            return Jaws_Error::raiseError('Undefined function imap_open()',
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError(
+                'Undefined function imap_open()',
+                __FUNCTION__
+            );
         }
 
-        $mbox = @imap_open('{'.$this->_Server.'/pop3:'.$this->_Port.'/notls}INBOX',
-                           $user,
-                           $password);
+        $mbox = @imap_open(
+            '{'.$this->_Server.'/pop3:'.$this->_Port.'/notls}INBOX',
+            $user,
+            $password
+        );
         if ($mbox) {
             @imap_close($mbox);
-            $this->_User   = $user;
-            $this->_AuthID = strtolower('pop3:'.$user);
-            return $this->_AuthID; 
+            $result = array();
+            $result['id']         = strtolower('pop3:'.$user);
+            $result['internal']   = false;
+            $result['username']   = $user;
+            $result['superadmin'] = false;
+            $result['internal']   = false;
+            $result['groups']     = array();
+            $result['nickname']   = $user;
+            $result['concurrents'] = 0;
+            $result['email']      = '';
+            $result['url']        = '';
+            $result['avatar']     = 'gadgets/Users/Resources/images/photo48px.png';
+            $result['language']   = '';
+            $result['theme']      = '';
+            $result['editor']     = '';
+            $result['timezone']   = null;
+            return $result;
         }
 
-        return Jaws_Error::raiseError(_t('GLOBAL_ERROR_LOGIN_WRONG'),
-                                      __FUNCTION__);
-    }
-
-    /**
-     * Attributes of logged user
-     *
-     * @access  public
-     */
-    function GetAttributes()
-    {
-        $info = array();
-        $info['id']         = $this->_AuthID;
-        $info['internal']   = false;
-        $info['username']   = $this->_User;
-        $info['superadmin'] = false;
-        $info['internal']   = false;
-        $info['groups']     = array();
-        $info['nickname']   = $this->_User;
-        $info['concurrents'] = 0;
-        $info['email']      = '';
-        $info['url']        = '';
-        $info['avatar']     = 'gadgets/Users/Resources/images/photo48px.png';
-        $info['language']   = '';
-        $info['theme']      = '';
-        $info['editor']     = '';
-        $info['timezone']   = null;
-        return $info;
+        return Jaws_Error::raiseError(
+            _t('GLOBAL_ERROR_LOGIN_WRONG'),
+            __FUNCTION__
+        );
     }
 
 }
