@@ -544,6 +544,9 @@ class Jaws_Gadget
                 break;
 
             case 'acl':
+                $classname = 'Jaws_Gadget_ACL';
+                break;
+
             case 'hook':
             case 'event':
             case 'model':
@@ -554,12 +557,14 @@ class Jaws_Gadget
             case 'installer':
             case 'translate':
                 $classname = 'Jaws_Gadget_'. ucfirst($property);
-                $this->$property = new $classname($this);
-                return $this->$property;
                 break;
+
+            default:
+                return Jaws_Error::raiseError("Property '$property' not exists!", __FUNCTION__);
         }
 
-        return Jaws_Error::raiseError("Property '$property' not exists!", __FUNCTION__);
+        $this->$property = new $classname($this);
+        return $this->$property;
     }
 
 }
