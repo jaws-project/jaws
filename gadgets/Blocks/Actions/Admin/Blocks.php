@@ -57,11 +57,11 @@ class Blocks_Actions_Admin_Blocks extends Jaws_Gadget_Action
         $idHidden =& Piwi::CreateWidget('HiddenEntry', 'id');
         $idHidden->SetID('hidden_id');
         $tpl->SetVariable('hidden_id', $idHidden->Get());
-        $title =& Piwi::CreateWidget('Entry', 'title', '', _t('BLOCKS_TITLE'));
+        $title =& Piwi::CreateWidget('Entry', 'title', '', _t('GLOBAL_TITLE'));
         $title->SetID('block_title');
         $title->SetStyle('width: 99%');
         $tpl->SetVariable('lbl_block_id', _t('GLOBAL_ID'));
-        $tpl->SetVariable('block_title',  _t('BLOCKS_TITLE'));
+        $tpl->SetVariable('block_title',  _t('GLOBAL_TITLE'));
         $tpl->SetVariable('title_field', $title->Get());
 
         $contents =& $GLOBALS['app']->LoadEditor('Blocks', 'block_contents');
