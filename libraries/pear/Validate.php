@@ -380,7 +380,7 @@ class Validate
      *
      * @access public
      */
-    function uri($url, $options = null)
+    static function uri($url, $options = null)
     {
         $strict = ';/?:@$,';
         $domain_check = false;
