@@ -25,7 +25,6 @@ if (!file_exists($root . '/config/JawsConfig.php')) {
 }
 
 require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
-$GLOBALS['app']->loadClass('Jaws_ACL', 'ACL');
 
 $ReqGadget = Jaws_Gadget::filter(jaws()->request->fetch('gadget', array('post', 'get')));
 $ReqAction = Jaws_Gadget_Action::filter(jaws()->request->fetch('action', array('post', 'get')));

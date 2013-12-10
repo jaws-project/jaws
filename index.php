@@ -25,7 +25,6 @@ if (!file_exists($root . '/config/JawsConfig.php')) {
 }
 
 require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
-$GLOBALS['app']->loadObject('Jaws_ACL', 'ACL');
 
 $IsIndex   = false;
 $objGadget = null;
