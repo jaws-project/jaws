@@ -143,7 +143,7 @@ class Jaws_Request
             $this->data['post'] = $_POST;
         }
 
-        array_walk_recursive($this->data, array(&$this, 'nullstrip'));
+        array_walk_recursive($this->data, array(&$this, 'strip_null'));
 
         // Add request filters
         $this->addFilter('htmlclean', 'htmlspecialchars', array(ENT_QUOTES, 'UTF-8'));
@@ -217,7 +217,7 @@ class Jaws_Request
      * @param   string  $value  Referenced value
      * @return  void
      */
-    function nullstrip(&$value)
+    function strip_null(&$value)
     {
         if (is_string($value)) {
             $value = preg_replace(array('/\0+/', '/(\\\\0)+/'), '', $value);
@@ -236,6 +236,37 @@ class Jaws_Request
         if (is_string($value)) {
             return preg_replace('/%00/', '', $value);
         }
+    }
+
+    /**
+     * Strip not allowed tags/attributes
+     *
+     * @access  public
+     * @param   string  $text  Text
+     * @return  string  stripped text 
+     */
+    function strip_tags_attributes($text)
+    {
+        $result = '';
+        $allowed_tags = '<a><img><ol><ul><li><strong><blockquote><cite><code><i><p><pre><span><s><u><em>';
+        $allowed_atts = array('href', 'src', 'alt', 'title');
+        // 
+        $text = strip_tags($text, $allowed_tags);
+        $hxml = simplexml_load_string('<html>'. $text .'</html>', 'SimpleXMLElement');
+        if ($hxml) {
+            foreach ($hxml->xpath('descendant::*[@*]') as $tag) {
+                $attributes = array_reverse(array_keys(get_object_vars($tag->attributes())['@attributes']), true);
+                foreach ($attributes as $key => $tagname) {
+                    if (!in_array($tagname, $allowed_atts)) {
+                        unset($tag->attributes()->{$key});
+                    }
+                }
+            }
+            // remove xml tag and root tag(html)
+            $result = substr($hxml->asXML(), 28, -8);
+        }
+
+        return $result;
     }
 
     /**
@@ -275,17 +306,18 @@ class Jaws_Request
      *                                  then an array will be returned accourdingly.
      * @param   string  $method         Which super global is being fetched from
      * @param   bool    $filter         Returns filtered data or not
+     * @param   bool    $xss_strip      Returns stripped html data tags/attributes
      * @param   bool    $json_decode    Decode JSON data or not
      * @return  mixed   Null if there is no data else an string|array with the processed data
      */
-    function _fetch($keys, $method = '', $filter = true, $json_decode = false)
+    private function _fetch($keys, $method = '', $filter = true, $xss_strip = false, $json_decode = false)
     {
         $method = empty($method)? strtolower($_SERVER['REQUEST_METHOD']) : $method;
         if (is_array($keys)) {
             $result = array();
             foreach ($keys as $key) {
                 $k = strtok($key, ':');
-                $result[$k] = $this->_fetch($key, $method, $filter, $json_decode);
+                $result[$k] = $this->_fetch($key, $method, $filter, $xss_strip, $json_decode);
             }
 
             return $result;
@@ -300,6 +332,11 @@ class Jaws_Request
             if (false !== $tvalue = @unserialize($value)) {
                 $value = $tvalue;
                 unset($tvalue);
+            }
+
+            // filter not allowed html tags/attributes
+            if ($xss_strip) {
+                $value = $this->strip_tags_attributes($value);
             }
 
             if ($filter) {
@@ -320,14 +357,15 @@ class Jaws_Request
      * Fetches the data, filters it and then it returns it.
      *
      * @access  public
-     * @param   mixed   $key            The key being fetched, it can be an array with multiple keys in it to fetch and then
+     * @param   mixed   $keys           The key(s) being fetched, it can be an array with multiple keys in it to fetch and then
      *                                  an array will be returned accourdingly.
      * @param   mixed   $types          Which super global is being fetched from, it can be an array
      * @param   bool    $filter         Returns filtered data or not
+     * @param   bool    $xss_strip      Returns stripped html data tags/attributes
      * @param   bool    $json_decode    Decode JSON data or not
      * @return  mixed   Returns string or an array depending on the key, otherwise Null if key not exist
      */
-    function fetch($key, $types = '', $filter = true, $json_decode = false)
+    function fetch($keys, $types = '', $filter = true, $xss_strip = false, $json_decode = false)
     {
         $result = null;
         if (empty($types)) {
@@ -348,7 +386,7 @@ class Jaws_Request
         }
 
         foreach ($types as $type) {
-            $result = $this->_fetch($key, $type, $filter, $json_decode);
+            $result = $this->_fetch($keys, $type, $filter, $xss_strip, $json_decode);
             if (!is_null($result)) {
                 break;
             }
@@ -361,24 +399,28 @@ class Jaws_Request
      * Fetches the filtered data with out filter, it's like using the super globals straight.
      *
      * @access  public
-     * @param   string  $type   Which super global is being fetched from
-     * @param   bool    $filter Returns filtered data or not
+     * @param   string  $type       Which super global is being fetched from
+     * @param   bool    $filter     Returns filtered data
+     * @param   bool    $xss_strip  Returns stripped html data tags/attributes
      * @return  array   Filtered Data array
      */
-    function fetchAll($type = '', $filter = true)
+    function fetchAll($type = '', $filter = true, $xss_strip = false)
     {
         $type = empty($type)? strtolower($_SERVER['REQUEST_METHOD']) : $type;
         if (!isset($this->data[$type]) || empty($this->data[$type])) {
             return array();
         }
 
-        if ($filter) {
-            $keys = array_keys($this->data[$type]);
-            $values = array_map(array($this, '_fetch'), $keys);
-            return array_combine($keys, $values);
-        } else {
-            return $this->data[$type];
-        }
+        $keys = array_keys($this->data[$type]);
+        $values = array_map(
+            array($this, '_fetch'),
+            $keys,
+            array_fill(0, count($keys), ''),
+            array_fill(0, count($keys), $filter),
+            array_fill(0, count($keys), $xss_strip)
+        );
+
+        return array_combine($keys, $values);
     }
 
     /** Creates a new key or updates an old one
