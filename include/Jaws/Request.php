@@ -87,6 +87,16 @@ class Jaws_Request
     /**
      * @var array
      */
+    private $allowed_tags = '<a><img><ol><ul><li><strong><blockquote><cite><code><i><p><pre><span><s><u><em>';
+
+    /**
+     * @var array
+     */
+    private $allowed_attributes = array('href', 'src', 'alt', 'title');
+
+    /**
+     * @var array
+     */
     var $_filters;
 
     /**
@@ -248,21 +258,20 @@ class Jaws_Request
     function strip_tags_attributes($text)
     {
         $result = '';
-        $allowed_tags = '<a><img><ol><ul><li><strong><blockquote><cite><code><i><p><pre><span><s><u><em>';
-        $allowed_atts = array('href', 'src', 'alt', 'title');
-        // 
-        $text = strip_tags($text, $allowed_tags);
+        // strip not allowed tags
+        $text = strip_tags($text, $this->allowed_tags);
         $hxml = simplexml_load_string('<html>'. $text .'</html>', 'SimpleXMLElement');
         if ($hxml) {
             foreach ($hxml->xpath('descendant::*[@*]') as $tag) {
                 $attributes = array_reverse(array_keys(get_object_vars($tag->attributes())['@attributes']), true);
                 foreach ($attributes as $key => $tagname) {
-                    if (!in_array($tagname, $allowed_atts)) {
+                    if (!in_array($tagname, $this->allowed_attributes)) {
                         unset($tag->attributes()->{$key});
                     }
                 }
             }
-            // remove xml tag and root tag(html)
+
+            // remove xml/html tags
             $result = substr($hxml->asXML(), 28, -8);
         }
 
