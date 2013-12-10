@@ -19,7 +19,7 @@ $_SERVER['HTTP_REFERER']    = array_key_exists('HTTP_REFERER', $_SERVER)?
                                                $_SERVER['HTTP_REFERER']:
                                                '';
 
-// Prevent user interface redress attack(Clickjacking/Likejacking)
+// Prevent user interface redress attack(Clickjacking)
 header('X-Frame-Options: SAMEORIGIN');
 
 if (ini_get('register_globals')) {
@@ -93,6 +93,16 @@ class Jaws_Request
      * @var array
      */
     private $allowed_attributes = array('href', 'src', 'alt', 'title');
+
+    /**
+     * @var array
+     */
+    private $urlbased_attributes = array('href', 'src');
+
+    /**
+     *
+     */
+    private $allowed_url_pattern = "@(^[(http|https|ftp)://]?)(?!javascript:)([^\\\\[:space:]\"]+)$@iu";
 
     /**
      * @var array
@@ -260,13 +270,22 @@ class Jaws_Request
         $result = '';
         // strip not allowed tags
         $text = strip_tags($text, $this->allowed_tags);
-        $hxml = simplexml_load_string('<html>'. $text .'</html>', 'SimpleXMLElement');
+        $hxml = simplexml_load_string('<html>'. $text .'</html>', 'SimpleXMLElement', LIBXML_NOERROR);
         if ($hxml) {
             foreach ($hxml->xpath('descendant::*[@*]') as $tag) {
                 $attributes = array_reverse(array_keys(get_object_vars($tag->attributes())['@attributes']), true);
-                foreach ($attributes as $key => $tagname) {
-                    if (!in_array($tagname, $this->allowed_attributes)) {
+                foreach ($attributes as $key => $attrname) {
+                    // strip not allowed attributes
+                    if (!in_array(strtolower($attrname), $this->allowed_attributes)) {
                         unset($tag->attributes()->{$key});
+                        continue;
+                    }
+                    // url based attributes
+                    if (in_array(strtolower($attrname), $this->urlbased_attributes)) {
+                        if (!preg_match($this->allowed_url_pattern, (string)$tag->attributes()->{$key})) {
+                            unset($tag->attributes()->{$key});
+                            continue;
+                        }
                     }
                 }
             }
