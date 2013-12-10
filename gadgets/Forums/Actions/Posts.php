@@ -372,10 +372,11 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'message', 'update_reason'));
+        $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'update_reason'));
         if (empty($rqst['fid']) || empty($rqst['tid'])) {
             return false;
         }
+        $rqst['message'] = jaws()->request->fetch('message', 'post', false, true);
 
         if (!$this->gadget->GetPermission('ForumAccess', $rqst['fid'])) {
             return Jaws_HTTPError::Get(403);
@@ -467,7 +468,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
 
         // message
         $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
-        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', Jaws_XSS::defilter($post['message']));
+        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', $post['message'], false);
         $message->setId('message');
         $message->TextArea->SetRows(8);
         $tpl->SetVariable('message', $message->Get());
@@ -529,10 +530,8 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(
-            array('fid', 'tid', 'pid', 'subject', 'message', 'update_reason'),
-            'post'
-        );
+        $post = jaws()->request->fetch(array('fid', 'tid', 'pid', 'subject', 'update_reason'), 'post');
+        $post['message'] = jaws()->request->fetch('message', 'post', false, true);
 
         if (empty($post['fid']) || !$this->gadget->GetPermission('ForumAccess', $post['fid'])) {
             return Jaws_HTTPError::Get(403);

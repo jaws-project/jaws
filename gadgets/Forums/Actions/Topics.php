@@ -292,7 +292,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
         // message
         $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
-        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', Jaws_XSS::defilter($topic['message']));
+        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', $topic['message'], false);
         $message->setId('message');
         $message->TextArea->SetRows(8);
         $tpl->SetVariable('message', $message->Get());
@@ -365,13 +365,8 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $topic = jaws()->request->fetch(
-            array(
-                'fid', 'tid', 'target', 'subject', 'message',
-                'update_reason', 'status'
-            ),
-            'post'
-        );
+        $topic = jaws()->request->fetch(array('fid', 'tid', 'target', 'subject', 'update_reason', 'status'), 'post');
+        $topic['message'] = jaws()->request->fetch('message', 'post', false, true);
         $topic['forum_title'] = '';
 
         if (empty($topic['fid']) || !$this->gadget->GetPermission('ForumAccess', $topic['fid'])) {
