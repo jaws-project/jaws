@@ -273,17 +273,17 @@ class Jaws_Request
         $hxml = simplexml_load_string('<html>'. $text .'</html>', 'SimpleXMLElement', LIBXML_NOERROR);
         if ($hxml) {
             foreach ($hxml->xpath('descendant::*[@*]') as $tag) {
-                $attributes = array_reverse(array_keys(get_object_vars($tag->attributes())['@attributes']), true);
-                foreach ($attributes as $key => $attrname) {
+                $attributes = (array)$tag->attributes();
+                foreach ($attributes['@attributes'] as $attrname => $attrvalue) {
                     // strip not allowed attributes
                     if (!in_array(strtolower($attrname), $this->allowed_attributes)) {
-                        unset($tag->attributes()->{$key});
+                        unset($tag->attributes()->{$attrname});
                         continue;
                     }
                     // url based attributes
                     if (in_array(strtolower($attrname), $this->urlbased_attributes)) {
-                        if (!preg_match($this->allowed_url_pattern, (string)$tag->attributes()->{$key})) {
-                            unset($tag->attributes()->{$key});
+                        if (!preg_match($this->allowed_url_pattern, $attrvalue)) {
+                            unset($tag->attributes()->{$attrname});
                             continue;
                         }
                     }
