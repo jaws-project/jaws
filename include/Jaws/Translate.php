@@ -86,12 +86,12 @@ class Jaws_Translate
      * Translate a string.
      *
      * @access  public
-     * @static
-     * @param   string $string The ID of the string to translate.
-     * @param   array $replacements An array replacements to make in the string.
-     * @return  string The tranlsated string, with replacements made.
+     * @param   string  $lang       Language code
+     * @param   string  $string     The ID of the string to translate.
+     * @param   array   $parameters An array replacements to make in the string.
+     * @return  string The translated string, with replacements made.
      */
-    function Translate($lang, $string, $replacements = array())
+    function Translate($lang, $string, $parameters = array())
     {
         $lang = empty($lang)? $this->_defaultLanguage : $lang;
         @list($type, $module) = explode('_', $string);
@@ -129,20 +129,12 @@ class Jaws_Translate
             $string = $this->translates[$lang][$type][$module][$string];
         }
 
-        $count = count($replacements);
-        if ($count) {
-            for ($i = 0; $i < $count; $i++) {
-                $string = str_replace('{' . $i . '}', $replacements[$i], $string);
-            }
+        foreach ($parameters as $key => $value) {
+            $string = str_replace('{' . $key . '}', $value, $string);
         }
 
         if (strpos($string, '{') !== false) {
-            $originalString = $string;
             $string = preg_replace('/\s*{[0-9]+\}/u', '', $string);
-            if ($originalString != $string) {
-                $GLOBALS['log']->Log(JAWS_LOG_DEBUG,
-                                     'A placeholder was not replaced while trying to translate ' . $string);
-            }
         }
 
         return $string;
