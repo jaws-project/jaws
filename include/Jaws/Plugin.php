@@ -82,8 +82,8 @@ class Jaws_Plugin
         $plugin = preg_replace('/[^[:alnum:]_]/', '', $plugin);
         $this->name        = $plugin;
         $this->title       = $plugin;
-        $this->example     = _t('PLUGINS_'. _t(strtoupper($plugin).'_EXAMPLE'));
-        $this->description = _t('PLUGINS_'. _t(strtoupper($plugin).'_DESCRIPTION'));
+        $this->example     = _t('PLUGINS_'. strtoupper($plugin). '_EXAMPLE');
+        $this->description = _t('PLUGINS_'. strtoupper($plugin). '_DESCRIPTION');
     }
 
     /**
