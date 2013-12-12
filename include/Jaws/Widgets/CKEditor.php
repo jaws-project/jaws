@@ -263,7 +263,7 @@ class Jaws_Widgets_CKEditor extends Container
             }
         }
 
-        $extraToolbars = $GLOBALS['app']->Registry->fetch('editor_ckeditor_toolbar', 'Settings');
+        $extraToolbars = $GLOBALS['app']->Registry->fetch('editor_ckeditor_extra_toolbar', 'Settings');
         $extraToolbars = array_filter(explode('|', $extraToolbars));
         foreach ($extraToolbars as $key => $items) {
             $items = array_values(array_filter(array_map('trim', explode(',', $items))));
