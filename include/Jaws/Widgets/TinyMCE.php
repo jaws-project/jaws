@@ -165,7 +165,7 @@ class Jaws_Widgets_TinyMCE extends Container
         $plugins = implode($plugins, ',');
 
         $toolbars   = $this->_BaseToolbar;
-        $toolbars[] = $GLOBALS['app']->Registry->fetch('editor_tinymce_toolbar', 'Settings');
+        $toolbars[] = $GLOBALS['app']->Registry->fetch('editor_tinymce_extra_toolbar', 'Settings');
 
         $label = $this->_Label->GetValue();
         if (!empty($label)) {
