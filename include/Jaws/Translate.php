@@ -14,6 +14,22 @@
 class Jaws_Translate
 {
     /**
+     * Gadgets list array
+     *
+     * @access  private
+     * @var     array
+     */
+    private static $real_gadgets_module = array();
+
+    /**
+     * plugins list array
+     *
+     * @access  private
+     * @var     array
+     */
+    private static $real_plugins_module = array();
+
+    /**
      * Default language to use
      *
      * @access  private
@@ -44,6 +60,24 @@ class Jaws_Translate
      */
     private function __construct($load_user_translated)
     {
+        $gDir = JAWS_PATH . 'gadgets' . DIRECTORY_SEPARATOR;
+        $gadgets = scandir($gDir);
+        foreach ($gadgets as $gadget) {
+            if ($gadget{0} == '.' || !is_dir($gDir . $gadget)) {
+                continue;
+            }
+            self::$real_gadgets_module[strtoupper($gadget)] = $gadget;
+        }
+
+        $pDir = JAWS_PATH . 'plugins' . DIRECTORY_SEPARATOR;
+        $plugins = scandir($pDir);
+        foreach ($plugins as $plugin) {
+            if ($plugin{0} == '.' || !is_dir($pDir . $plugin)) {
+                continue;
+            }
+            self::$real_plugins_module[strtoupper($plugin)] = $plugin;
+        }
+
         $this->_load_user_translated = $load_user_translated;
     }
 
@@ -98,25 +132,26 @@ class Jaws_Translate
         switch ($type) {
             case 'GLOBAL':
                 $type = 0;
-                $module = 'GLOBAL';
+                $module = 'Global';
                 break;
 
             case 'PLUGINS':
                 $type = 2;
+                $module = self::$real_plugins_module[$module];
                 break;
 
             case 'INSTALL':
                 $type = 4;
-                $module = 'INSTALL';
+                $module = 'Install';
                 break;
 
             case 'UPGRADE':
                 $type = 5;
-                $module = 'UPGRADE';
+                $module = 'Upgrade';
                 break;
 
             default:
-                $module = $type;
+                $module = self::$real_gadgets_module[$type];
                 $type = 1;
         }
 
@@ -184,27 +219,27 @@ class Jaws_Translate
                 if ($language == 'en') {
                     $orig_i18n = JAWS_PATH . "install/Resources/translates.ini";
                 } else {
-                    $orig_i18n = JAWS_PATH . "languages/$language/$module.ini";
+                    $orig_i18n = JAWS_PATH . "languages/$language/Install.ini";
                 }
-                $data_i18n = JAWS_DATA . "languages/$language/$module.ini";
+                $data_i18n = JAWS_DATA . "languages/$language/Install.ini";
                 break;
 
             case JAWS_COMPONENT_UPGRADE:
                 if ($language == 'en') {
                     $orig_i18n = JAWS_PATH . "upgrade/Resources/translates.ini";
                 } else {
-                    $orig_i18n = JAWS_PATH . "languages/$language/$module.ini";
+                    $orig_i18n = JAWS_PATH . "languages/$language/Upgrade.ini";
                 }
-                $data_i18n = JAWS_DATA . "languages/$language/$module.ini";
+                $data_i18n = JAWS_DATA . "languages/$language/Upgrade.ini";
                 break;
 
             default:
                 if ($language == 'en') {
                     $orig_i18n = JAWS_PATH . "include/Jaws/Resources/translates.ini";
                 } else {
-                    $orig_i18n = JAWS_PATH . "languages/$language/$module.ini";
+                    $orig_i18n = JAWS_PATH . "languages/$language/Global.ini";
                 }
-                $data_i18n = JAWS_DATA . "languages/$language/$module.ini";
+                $data_i18n = JAWS_DATA . "languages/$language/Global.ini";
         }
 
         $tmp_orig = array();
@@ -221,7 +256,7 @@ class Jaws_Translate
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded data translation for $module, language $language");
         }
 
-        $this->translates[$language][$type][strtoupper($module)] = array_merge($tmp_orig, $tmp_data);
+        $this->translates[$language][$type][$module] = array_merge($tmp_orig, $tmp_data);
     }
 
     /**
@@ -238,7 +273,7 @@ class Jaws_Translate
     function AddTranslation($module, $key_name, $key_value, $type = JAWS_COMPONENT_OTHERS, $lang = null)
     {
         $language = empty($lang)? $this->_defaultLanguage : $lang;
-        $this->translates[$language][$type][strtoupper($module)][strtoupper($key_name)] = $key_value;
+        $this->translates[$language][$type][$module][strtoupper($key_name)] = $key_value;
         return true;
     }
 
