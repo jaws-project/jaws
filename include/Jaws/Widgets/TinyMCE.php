@@ -84,9 +84,7 @@ class Jaws_Widgets_TinyMCE extends Container
      * @var     array
      * @access  private
      */
-    var $_BaseToolbar = array(
-        ',undo,redo,|,styleselect,|,bold,italic,|,alignleft,aligncenter,alignright,alignjustify,|,bullist,numlist,outdent,indent,|,link,unlink,image,|,ltr,rtl,|,styleprops,attribs,|,fontselect,fontsizeselect,|,forecolor,backcolor,',
-    );
+    var $toolbars = array();
 
     /**
      * TinyMCE ompatibile browsers
@@ -132,6 +130,9 @@ class Jaws_Widgets_TinyMCE extends Container
         $this->_Value  = $value;
         $this->_Gadget = $gadget;
 
+        $this->toolbars[] = $GLOBALS['app']->Registry->fetch('editor_tinymce_base_toolbar', 'Settings');
+        $this->toolbars[] = $GLOBALS['app']->Registry->fetch('editor_tinymce_extra_toolbar', 'Settings');
+
         $this->TextArea =& Piwi::CreateWidget('TextArea', $name, $this->_Value, '', '14');
         $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
         $this->setClass($name);
@@ -164,9 +165,6 @@ class Jaws_Widgets_TinyMCE extends Container
         }
         $plugins = implode($plugins, ',');
 
-        $toolbars   = $this->_BaseToolbar;
-        $toolbars[] = $GLOBALS['app']->Registry->fetch('editor_tinymce_extra_toolbar', 'Settings');
-
         $label = $this->_Label->GetValue();
         if (!empty($label)) {
             $this->_Container->PackStart($this->_Label);
@@ -197,8 +195,9 @@ class Jaws_Widgets_TinyMCE extends Container
         $tpl->SetVariable('theme',    $this->_Theme);
         $tpl->SetVariable('plugins',  $plugins);
 
-        //
-        foreach ($toolbars as $key => $toolbar) {
+        // set toolbars
+        $index = 0;
+        foreach ($this->toolbars as $key => $toolbar) {
             $tpl->SetBlock('tinymce/toolbar');
             $index = $key + 1;
             $tpl->SetVariable('theme',   $this->_Theme);
@@ -273,6 +272,18 @@ class Jaws_Widgets_TinyMCE extends Container
     function setTheme($theme)
     {
         $this->_Theme = $theme;
+    }
+
+    /**
+     * Set default editor toolbar
+     *
+     * @access  public
+     * @param   string  $toolbars   Toolbars
+     * @return  void
+     */
+    function setToolbar($toolbars)
+    {
+        $this->toolbars = array($toolbars);
     }
 
     /**
