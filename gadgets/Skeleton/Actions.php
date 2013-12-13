@@ -17,3 +17,11 @@ $actions['Display'] = array(
     'layout' => true, 
     'file' => 'Display',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Display'] = array(
+    'normal' => true,
+    'file'   => 'Display',
+);
