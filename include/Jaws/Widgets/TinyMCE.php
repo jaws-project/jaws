@@ -189,7 +189,8 @@ class Jaws_Widgets_TinyMCE extends Container
         $GLOBALS['app']->Layout->AddScriptLink('libraries/tinymce/tinymce.js');
         $tpl = new Jaws_Template();
         $tpl->Load('TinyMCE.html', 'include/Jaws/Resources');
-        $tpl->SetBlock('tinymce');
+        $block = (JAWS_SCRIPT == 'admin')? 'tinymce_backend' : 'tinymce_frontend';
+        $tpl->SetBlock($block);
 
         $tpl->SetVariable('ibrowser', $ibrowser);
         $tpl->SetVariable('fbrowser', $fbrowser);
@@ -201,12 +202,12 @@ class Jaws_Widgets_TinyMCE extends Container
         // set toolbars
         $index = 0;
         foreach ($this->toolbars as $key => $toolbar) {
-            $tpl->SetBlock('tinymce/toolbar');
+            $tpl->SetBlock("$block/toolbar");
             $index = $key + 1;
             $tpl->SetVariable('theme',   $this->_Theme);
             $tpl->SetVariable('key',     $index);
             $tpl->SetVariable('toolbar', $toolbar);
-            $tpl->ParseBlock('tinymce/toolbar');
+            $tpl->ParseBlock("$block/toolbar");
         }
         $index = $index + 1;
         $tpl->SetVariable('key', $index);
@@ -217,7 +218,7 @@ class Jaws_Widgets_TinyMCE extends Container
         $tpl->SetVariable('invalid_elements', $this->_InvalidElements);
         $tpl->SetVariable('class', $this->_Class);
 
-        $tpl->ParseBlock('tinymce');
+        $tpl->ParseBlock($block);
         $this->_XHTML.= $tpl->Get();
     }
 

@@ -1,4 +1,4 @@
-<!-- BEGIN tinymce -->
+<!-- BEGIN tinymce_backend -->
 <script type="text/javascript">
     function jaws_filebrowser_callback(field_name, url, type, win)
     {
@@ -60,4 +60,42 @@
         editor_selector:  '{class}'
     });
 </script>
-<!-- END tinymce -->
+<!-- END tinymce_backend -->
+<!-- BEGIN tinymce_frontend -->
+<script type="text/javascript">
+    tinyMCE.init({
+        mode:     '{mode}',
+        language: '{lang}',
+        theme:    '{theme}',
+        plugins:  '{plugins}',
+        <!-- BEGIN toolbar -->
+        toolbar{key}: '{toolbar}',
+        <!-- END toolbar -->
+        toolbar{key}: '',
+        template_external_list_url: 'libraries/tinymce/templates.js',
+        theme_{theme}_toolbar_location: 'top',
+        theme_{theme}_toolbar_align:    'center',
+        theme_{theme}_path_location:    'bottom',
+        theme_{theme}_resizing: true,
+        theme_{theme}_resize_horizontal: false,
+        browsers:           '{browsers}',
+        directionality:     '{dir}',
+        tab_focus:          ':prev,:next',
+        dialog_type:        'window',
+        entity_encoding:    'raw',
+        relative_urls:      true,
+        remove_script_host: false,
+        force_p_newlines:   true,
+        force_br_newlines:  false,
+        remove_linebreaks:  true,
+        nowrap:             false,
+        convert_newlines_to_brs: false,
+        apply_source_formatting: true,
+        content_css: 'gadgets/ControlPanel/Resources/tinymce{.dir}.css',
+        extended_valid_elements: '{valid_elements}',
+        invalid_elements: '{invalid_elements}',
+        editor_selector:  '{class}',
+        menubar: false
+    });
+</script>
+<!-- END tinymce_frontend -->
