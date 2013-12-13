@@ -29,8 +29,10 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('use_gravatar', 'no'),
         array('gravatar_rating', 'G'),
         array('editor', 'TextArea', true),
-        array('editor_tinymce_toolbar', ''),
-        array('editor_ckeditor_toolbar', ''),
+        array('editor_tinymce_base_toolbar', ''),
+        array('editor_tinymce_extra_toolbar', ''),
+        array('editor_ckeditor_base_toolbar', ''),
+        array('editor_ckeditor_extra_toolbar', ''),
         array('browsers_flag', 'opera,firefox,ie7up,ie,safari,nav,konq,gecko,text'),
         array('show_viewsite', 'true'),
         array('robots', ''),
@@ -123,8 +125,25 @@ class Settings_Installer extends Jaws_Gadget_Installer
         $uniqueKey = md5($uniqueKey);
 
         // Registry keys
-        $this->gadget->registry->update('key', $uniqueKey);
-        $this->gadget->registry->update('robots', implode(',', $robots));
+        $this->gadget->registry->update(
+            array(
+                'key' => $uniqueKey,
+                'robots' => implode(',', $robots),
+                'editor_tinymce_base_toolbar' =>
+                    ',undo,redo,|,styleselect,|,bold,italic,|,alignleft,aligncenter,alignright'.
+                    ',alignjustify,|,bullist,numlist,outdent,indent,|,link,unlink,image,|,ltr,rtl,|'.
+                    ',styleprops,attribs,|,fontselect,fontsizeselect,|,forecolor,backcolor,',
+                'editor_ckeditor_base_toolbar' =>
+                    ',Source,-,NewPage,DocProps,Preview,Print,-,Templates,|'.
+                    ',CutCopy,Paste,PasteText,PasteFromWord,-,Undo,Redo,|,Find,Replace,-,SelectAll,|,'.
+                    ',Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,|,'.
+                    ',Bold,Italic,Underline,Strike,Subscript,Superscript,-,RemoveFormat,|,'.
+                    ',NumberedList,BulletedList,-,Outdent,Indent,-,Blockquote,CreateDiv,-,JustifyLeft'.
+                    ',JustifyCenter,JustifyRight,JustifyBlock,-,BidiLtr,BidiRtl,|,'.
+                    ',Link,Unlink,Anchor,|,Image,Flash,Table,HorizontalRule,SpecialChar,PageBreak,|,'.
+                    ',TextColor,BGColor,|,Styles,Format,Font,FontSize,|,Maximize,ShowBlocks,|,'
+            )
+        );
 
         return true;
     }
@@ -150,6 +169,25 @@ class Settings_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->update('main_gadget', null, true);
             $this->gadget->registry->update('site_language', null, true);
             $this->gadget->registry->update('admin_language', null, true);
+            $this->gadget->registry->insert(
+                'editor_tinymce_base_toolbar',
+                ',undo,redo,|,styleselect,|,bold,italic,|,alignleft,aligncenter,alignright'.
+                ',alignjustify,|,bullist,numlist,outdent,indent,|,link,unlink,image,|,ltr,rtl,|'.
+                ',styleprops,attribs,|,fontselect,fontsizeselect,|,forecolor,backcolor,'
+            );
+            $this->gadget->registry->insert(
+                'editor_ckeditor_base_toolbar',
+                ',Source,-,NewPage,DocProps,Preview,Print,-,Templates,|'.
+                ',CutCopy,Paste,PasteText,PasteFromWord,-,Undo,Redo,|,Find,Replace,-,SelectAll,|,'.
+                ',Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,|,'.
+                ',Bold,Italic,Underline,Strike,Subscript,Superscript,-,RemoveFormat,|,'.
+                ',NumberedList,BulletedList,-,Outdent,Indent,-,Blockquote,CreateDiv,-,JustifyLeft'.
+                ',JustifyCenter,JustifyRight,JustifyBlock,-,BidiLtr,BidiRtl,|,'.
+                ',Link,Unlink,Anchor,|,Image,Flash,Table,HorizontalRule,SpecialChar,PageBreak,|,'.
+                ',TextColor,BGColor,|,Styles,Format,Font,FontSize,|,Maximize,ShowBlocks,|,'
+            );
+            $this->gadget->registry->rename('editor_tinymce_toolbar', 'editor_tinymce_extra_toolbar');
+            $this->gadget->registry->rename('editor_ckeditor_toolbar', 'editor_ckeditor_extra_toolbar');
         }
 
         return true;
