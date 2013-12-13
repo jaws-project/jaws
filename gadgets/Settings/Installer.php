@@ -129,6 +129,10 @@ class Settings_Installer extends Jaws_Gadget_Installer
             array(
                 'key' => $uniqueKey,
                 'robots' => implode(',', $robots),
+                'editor_tinymce_frontend_toolbar' =>
+                    ',newdocument,undo,redo,|,ltr,rtl,|,bold,italic,underline,strikethrough,|'.
+                    ',alignleft,aligncenter,alignright,alignjustify,|,bullist,numlist,|'.
+                    ',outdent,indent,blockquote,|,link,unlink,image,|,forecolor,backcolor,',
                 'editor_tinymce_backend_toolbar' =>
                     ',undo,redo,|,styleselect,|,bold,italic,|,alignleft,aligncenter,alignright'.
                     ',alignjustify,|,bullist,numlist,outdent,indent,|,link,unlink,image,|,ltr,rtl,|'.
@@ -188,6 +192,14 @@ class Settings_Installer extends Jaws_Gadget_Installer
             );
             $this->gadget->registry->rename('editor_tinymce_toolbar', 'editor_tinymce_frontend_toolbar');
             $this->gadget->registry->rename('editor_ckeditor_toolbar', 'editor_ckeditor_frontend_toolbar');
+            $this->gadget->registry->update(
+                array(
+                    'editor_tinymce_frontend_toolbar' =>
+                        ',newdocument,undo,redo,|,ltr,rtl,|,bold,italic,underline,strikethrough,|'.
+                        ',alignleft,aligncenter,alignright,alignjustify,|,bullist,numlist,|'.
+                        ',outdent,indent,blockquote,|,link,unlink,image,|,forecolor,backcolor,',
+                )
+            );
         }
 
         return true;
