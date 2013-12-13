@@ -315,11 +315,6 @@ class Jaws_Layout
                 $this->_Template->ParseBlock('layout/cptitle/documentation');
             }
 
-            if (_t(strtoupper($gadget).'_ADMIN_MESSAGE') != strtoupper($gadget).'_ADMIN_MESSAGE') {
-                $this->_Template->SetBlock('layout/cptitle/description');
-                $this->_Template->SetVariable('title-desc', _t(strtoupper($gadget) . '_ADMIN_MESSAGE'));
-                $this->_Template->ParseBlock('layout/cptitle/description');
-            }
             $this->_Template->ParseBlock('layout/cptitle');
         }
 
