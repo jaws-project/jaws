@@ -130,8 +130,11 @@ class Jaws_Widgets_TinyMCE extends Container
         $this->_Value  = $value;
         $this->_Gadget = $gadget;
 
-        $this->toolbars[] = $GLOBALS['app']->Registry->fetch('editor_tinymce_base_toolbar', 'Settings');
-        $this->toolbars[] = $GLOBALS['app']->Registry->fetch('editor_tinymce_extra_toolbar', 'Settings');
+        if (JAWS_SCRIPT == 'admin') {
+            $this->toolbars[] = $GLOBALS['app']->Registry->fetch('editor_tinymce_backend_toolbar', 'Settings');
+        } else {
+            $this->toolbars[] = $GLOBALS['app']->Registry->fetch('editor_tinymce_frontend_toolbar', 'Settings');
+        }
 
         $this->TextArea =& Piwi::CreateWidget('TextArea', $name, $this->_Value, '', '14');
         $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
