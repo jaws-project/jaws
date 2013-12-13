@@ -87,7 +87,8 @@ class Jaws_Request
     /**
      * @var array
      */
-    private $allowed_tags = '<a><img><ol><ul><li><strong><blockquote><cite><code><i><p><pre><span><s><u><em>';
+    private $allowed_tags = '<a><img><ol><ul><li><blockquote><cite><code><div><p><pre><span><del><ins>
+        <strong><b><mark><i><s><u><em>';
 
     /**
      * @var array
