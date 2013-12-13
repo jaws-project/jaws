@@ -105,7 +105,7 @@ class Jaws_Widgets_CKEditor extends Container
      * @access  private
      * @var     string = {kama,office2003,v2}
      */
-    var $_Skin = 'newmoono';
+    var $_Skin = 'moono';
 
     /**
      * CKEditor base toolbar{Basic, Full, Array of items}
@@ -190,9 +190,9 @@ class Jaws_Widgets_CKEditor extends Container
         }
         $toolbars = array_filter(explode('|', $toolbars));
         foreach ($toolbars as $key => $items) {
-            $items = array_values(array_filter(array_map('trim', explode(',', $items))));
+            $items = array_filter(explode(',', $items));
             if (!empty($items)) {
-                $this->toolbars[] = array('name' => "base$key", 'items' => $items);
+                $this->toolbars[] = $items;
             }
         }
 
@@ -268,7 +268,6 @@ class Jaws_Widgets_CKEditor extends Container
             $this->_Config['removePlugins'] = $this->_RemovePlugins;
         }
 
-        $this->_Config['enterMode'] = 'CKEDITOR.ENTER_P';
         $this->_Config['autoParagraph'] = 'false';
 
         if ('rtl' == $this->_Direction) {
