@@ -125,28 +125,40 @@ class Settings_Installer extends Jaws_Gadget_Installer
         $uniqueKey = md5($uniqueKey);
 
         // Registry keys
+        $this->gadget->registry->update('key', $uniqueKey);
+        $this->gadget->registry->update('robots', implode(',', $robots));
+        // tinyMCE frontend toolbar
         $this->gadget->registry->update(
-            array(
-                'key' => $uniqueKey,
-                'robots' => implode(',', $robots),
-                'editor_tinymce_frontend_toolbar' =>
-                    ',newdocument,undo,redo,|,ltr,rtl,|,bold,italic,underline,strikethrough,|'.
-                    ',alignleft,aligncenter,alignright,alignjustify,|,bullist,numlist,|'.
-                    ',outdent,indent,blockquote,|,link,unlink,image,|,forecolor,backcolor,',
-                'editor_tinymce_backend_toolbar' =>
-                    ',undo,redo,|,styleselect,|,bold,italic,|,alignleft,aligncenter,alignright'.
-                    ',alignjustify,|,bullist,numlist,outdent,indent,|,link,unlink,image,|,ltr,rtl,|'.
-                    ',styleprops,attribs,|,fontselect,fontsizeselect,|,forecolor,backcolor,',
-                'editor_ckeditor_backend_toolbar' =>
-                    ',Source,-,NewPage,DocProps,Preview,Print,-,Templates,|'.
-                    ',CutCopy,Paste,PasteText,PasteFromWord,-,Undo,Redo,|,Find,Replace,-,SelectAll,|,'.
-                    ',Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,|,'.
-                    ',Bold,Italic,Underline,Strike,Subscript,Superscript,-,RemoveFormat,|,'.
-                    ',NumberedList,BulletedList,-,Outdent,Indent,-,Blockquote,CreateDiv,-,JustifyLeft'.
-                    ',JustifyCenter,JustifyRight,JustifyBlock,-,BidiLtr,BidiRtl,|,'.
-                    ',Link,Unlink,Anchor,|,Image,Flash,Table,HorizontalRule,SpecialChar,PageBreak,|,'.
-                    ',TextColor,BGColor,|,Styles,Format,Font,FontSize,|,Maximize,ShowBlocks,|,'
-            )
+            'editor_tinymce_frontend_toolbar',
+            ',newdocument,undo,redo,|,ltr,rtl,|,bold,italic,underline,strikethrough,|'.
+            ',alignleft,aligncenter,alignright,alignjustify,|,bullist,numlist,|'.
+            ',outdent,indent,blockquote,|,link,unlink,image,|,forecolor,backcolor,'
+        );
+        // tinyMCE backend toolbar
+        $this->gadget->registry->update(
+            'editor_tinymce_backend_toolbar',
+            ',undo,redo,|,styleselect,|,bold,italic,|,alignleft,aligncenter,alignright'.
+            ',alignjustify,|,bullist,numlist,outdent,indent,|,link,unlink,image,|,ltr,rtl,|'.
+            ',styleprops,attribs,|,fontselect,fontsizeselect,|,forecolor,backcolor,'
+        );
+        // CKEditor frontend toolbar
+        $this->gadget->registry->update(
+            'editor_ckeditor_frontend_toolbar',
+            ',NewPage,Undo,Redo,|,BidiLtr,BidiRtl,|,Bold,Italic,Underline,Strike,|'.
+            ',NumberedList,BulletedList,-,Outdent,Indent,-,Blockquote,-,JustifyLeft'.
+            ',JustifyCenter,JustifyRight,JustifyBlock,|,Link,Unlink,Image,|,TextColor,BGColor'
+        );
+        // CKEditor backend toolbar
+        $this->gadget->registry->update(
+            'editor_ckeditor_backend_toolbar',
+            ',Source,-,NewPage,DocProps,Preview,Print,-,Templates,|'.
+            ',CutCopy,Paste,PasteText,PasteFromWord,-,Undo,Redo,|,Find,Replace,-,SelectAll,|'.
+            ',Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,|'.
+            ',Bold,Italic,Underline,Strike,Subscript,Superscript,-,RemoveFormat,|'.
+            ',NumberedList,BulletedList,-,Outdent,Indent,-,Blockquote,CreateDiv,-,JustifyLeft'.
+            ',JustifyCenter,JustifyRight,JustifyBlock,-,BidiLtr,BidiRtl,|'.
+            ',Link,Unlink,Anchor,|,Image,Flash,Table,HorizontalRule,SpecialChar,PageBreak,|'.
+            ',TextColor,BGColor,|,Styles,Format,Font,FontSize,|,Maximize,ShowBlocks,'
         );
 
         return true;
@@ -173,12 +185,14 @@ class Settings_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->update('main_gadget', null, true);
             $this->gadget->registry->update('site_language', null, true);
             $this->gadget->registry->update('admin_language', null, true);
+            // tinyMCE backend toolbar
             $this->gadget->registry->insert(
                 'editor_tinymce_backend_toolbar',
                 ',undo,redo,|,styleselect,|,bold,italic,|,alignleft,aligncenter,alignright'.
                 ',alignjustify,|,bullist,numlist,outdent,indent,|,link,unlink,image,|,ltr,rtl,|'.
                 ',styleprops,attribs,|,fontselect,fontsizeselect,|,forecolor,backcolor,'
             );
+            // CKEditor backend toolbar
             $this->gadget->registry->insert(
                 'editor_ckeditor_backend_toolbar',
                 ',Source,-,NewPage,DocProps,Preview,Print,-,Templates,|'.
@@ -192,13 +206,19 @@ class Settings_Installer extends Jaws_Gadget_Installer
             );
             $this->gadget->registry->rename('editor_tinymce_toolbar', 'editor_tinymce_frontend_toolbar');
             $this->gadget->registry->rename('editor_ckeditor_toolbar', 'editor_ckeditor_frontend_toolbar');
+            // tinyMCE frontend toolbar
             $this->gadget->registry->update(
-                array(
-                    'editor_tinymce_frontend_toolbar' =>
-                        ',newdocument,undo,redo,|,ltr,rtl,|,bold,italic,underline,strikethrough,|'.
-                        ',alignleft,aligncenter,alignright,alignjustify,|,bullist,numlist,|'.
-                        ',outdent,indent,blockquote,|,link,unlink,image,|,forecolor,backcolor,',
-                )
+                'editor_tinymce_frontend_toolbar',
+                ',newdocument,undo,redo,|,ltr,rtl,|,bold,italic,underline,strikethrough,|'.
+                ',alignleft,aligncenter,alignright,alignjustify,|,bullist,numlist,|'.
+                ',outdent,indent,blockquote,|,link,unlink,image,|,forecolor,backcolor,'
+            );
+            // CKEditor frontend toolbar
+            $this->gadget->registry->update(
+                'editor_ckeditor_frontend_toolbar',
+                ',NewPage,Undo,Redo,|,BidiLtr,BidiRtl,|,Bold,Italic,Underline,Strike,|'.
+                ',NumberedList,BulletedList,-,Outdent,Indent,-,Blockquote,-,JustifyLeft'.
+                ',JustifyCenter,JustifyRight,JustifyBlock,|,Link,Unlink,Image,|,TextColor,BGColor'
             );
         }
 
