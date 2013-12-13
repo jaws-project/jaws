@@ -182,21 +182,17 @@ class Jaws_Widgets_CKEditor extends Container
         $this->_Value = $value;
         $this->_Gadget = $gadget;
 
-        $baseToolbars = $GLOBALS['app']->Registry->fetch('editor_ckeditor_base_toolbar', 'Settings');
-        $baseToolbars = array_filter(explode('|', $baseToolbars));
-        foreach ($baseToolbars as $key => $items) {
+        // set toolbar options
+        if (JAWS_SCRIPT == 'admin') {
+            $toolbars = $GLOBALS['app']->Registry->fetch('editor_ckeditor_backend_toolbar', 'Settings');
+        } else {
+            $toolbars = $GLOBALS['app']->Registry->fetch('editor_ckeditor_frontend_toolbar', 'Settings');
+        }
+        $toolbars = array_filter(explode('|', $toolbars));
+        foreach ($toolbars as $key => $items) {
             $items = array_values(array_filter(array_map('trim', explode(',', $items))));
             if (!empty($items)) {
                 $this->toolbars[] = array('name' => "base$key", 'items' => $items);
-            }
-        }
-
-        $extraToolbars = $GLOBALS['app']->Registry->fetch('editor_ckeditor_extra_toolbar', 'Settings');
-        $extraToolbars = array_filter(explode('|', $extraToolbars));
-        foreach ($extraToolbars as $key => $items) {
-            $items = array_values(array_filter(array_map('trim', explode(',', $items))));
-            if (!empty($items)) {
-                $this->toolbars[] = array('name' => "extra$key", 'items' => $items);
             }
         }
 
