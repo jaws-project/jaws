@@ -19,3 +19,11 @@ $actions['Execute'] = array(
     'file'   => 'Execute',
     'parametric' => true,
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Display'] = array(
+    'normal' => true,
+    'file'   => 'Display',
+);
