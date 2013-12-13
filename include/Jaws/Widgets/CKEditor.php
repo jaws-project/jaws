@@ -112,37 +112,7 @@ class Jaws_Widgets_CKEditor extends Container
      *
      * @access  private
      */
-    var $_BaseToolbar = array(
-        array('name' => 'document',
-              'items' => array('Source', '-', 'NewPage', 'DocProps', 'Preview', 'Print',
-                               '-', 'Templates')),
-        array('name' => 'clipboard',
-              'items' => array('Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord',
-                               '-', 'Undo', 'Redo')),
-        array('name' => 'editing',
-              'items' => array('Find', 'Replace', '-', 'SelectAll')),
-        array('name' => 'forms',
-              'items' => array('Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select',
-                               'Button', 'ImageButton', 'HiddenField')),
-        array('name' => 'basicstyles',
-              'items' => array('Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript',
-                               '-', 'RemoveFormat')),
-        array('name' => 'paragraph',
-              'items' => array('NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-',
-                               'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter',
-                               'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl')),
-        array('name' => 'links',
-              'items' => array('Link', 'Unlink', 'Anchor')),
-        array('name' => 'insert',
-              'items' => array('Image', 'Flash', 'Table', 'HorizontalRule', 'SpecialChar',
-                               'PageBreak')),
-        array('name' => 'colors',
-              'items' => array('TextColor', 'BGColor')),
-        array('name' => 'styles',
-              'items' => array('Styles', 'Format', 'Font', 'FontSize')),
-        array('name' => 'tools',
-              'items' => array('Maximize', 'ShowBlocks'))
-    );
+    var $toolbars = array();
 
     /**
      * @access  private
@@ -212,6 +182,24 @@ class Jaws_Widgets_CKEditor extends Container
         $this->_Value = $value;
         $this->_Gadget = $gadget;
 
+        $baseToolbars = $GLOBALS['app']->Registry->fetch('editor_ckeditor_base_toolbar', 'Settings');
+        $baseToolbars = array_filter(explode('|', $baseToolbars));
+        foreach ($baseToolbars as $key => $items) {
+            $items = array_values(array_filter(array_map('trim', explode(',', $items))));
+            if (!empty($items)) {
+                $this->toolbars[] = array('name' => "base$key", 'items' => $items);
+            }
+        }
+
+        $extraToolbars = $GLOBALS['app']->Registry->fetch('editor_ckeditor_extra_toolbar', 'Settings');
+        $extraToolbars = array_filter(explode('|', $extraToolbars));
+        foreach ($extraToolbars as $key => $items) {
+            $items = array_values(array_filter(array_map('trim', explode(',', $items))));
+            if (!empty($items)) {
+                $this->toolbars[] = array('name' => "extra$key", 'items' => $items);
+            }
+        }
+
         $this->TextArea =& Piwi::CreateWidget('TextArea', $this->_Name, $this->_Value);
         $this->TextArea->setClass($name);
         $this->TextArea->setID($this->_Name);
@@ -263,16 +251,6 @@ class Jaws_Widgets_CKEditor extends Container
             }
         }
 
-        $extraToolbars = $GLOBALS['app']->Registry->fetch('editor_ckeditor_extra_toolbar', 'Settings');
-        $extraToolbars = array_filter(explode('|', $extraToolbars));
-        foreach ($extraToolbars as $key => $items) {
-            $items = array_values(array_filter(array_map('trim', explode(',', $items))));
-            if (!empty($items)) {
-                $this->_BaseToolbar[] = array('name'  => "extra$key",
-                                              'items' => $items);
-            }
-        }
-
         // CKEditor configuration
         $this->_Config = array();
         $this->_Config['contentsLangDirection'] = $this->_Direction;
@@ -284,7 +262,7 @@ class Jaws_Widgets_CKEditor extends Container
         $this->_Config['theme'] = $this->_Theme;
         $this->_Config['readOnly'] = !$this->_IsEnabled;
         $this->_Config['resize_enabled'] = $this->_IsResizable;
-        $this->_Config['toolbar'] = $this->_BaseToolbar;
+        $this->_Config['toolbar'] = $this->toolbars;
 
         if(!empty($extraPlugins)) {
             $this->_Config['extraPlugins'] = implode(',', $extraPlugins);
@@ -495,12 +473,19 @@ class Jaws_Widgets_CKEditor extends Container
      * Set default editor toolbar
      *
      * @access  public
-     * @param   $Toolbar
+     * @param   string  $toolbars   Toolbars
      * @return  void
      */
-    function setToolbar($Toolbar)
+    function setToolbar($toolbars)
     {
-        $this->_BaseToolbar = $Toolbar;
+        $this->toolbars = array();
+        $toolbars = array_filter(explode('|', $toolbars));
+        foreach ($toolbars as $key => $items) {
+            $items = array_values(array_filter(array_map('trim', explode(',', $items))));
+            if (!empty($items)) {
+                $this->toolbars[] = array('name' => "extra$key", 'items' => $items);
+            }
+        }
     }
 
     /**
