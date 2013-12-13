@@ -753,9 +753,9 @@ class Jaws_Session
             $sessTable->where('updatetime', $onlinetime, '<');
         }
         if ($logged) {
-            $sessTable->and()->where('user', 1, '>=');
+            $sessTable->and()->where('user', '', '<>');
         } elseif ($logged === false) {
-            $sessTable->and()->where('user', 1, '<');
+            $sessTable->and()->where('user', '');
         }
         $sessions = $sessTable->orderBy('updatetime desc')->fetchAll();
         if (Jaws_Error::isError($sessions)) {
