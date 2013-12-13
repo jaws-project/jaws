@@ -111,6 +111,10 @@ class Layout_Actions_Admin_Element extends Jaws_Gadget_Action
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $gInfo = Jaws_Gadget::getInstance($layoutElement['gadget']);
+        if (Jaws_Error::isError($gInfo)) {
+            return false;
+        }
+
         $tpl->SetVariable('gadget', $layoutElement['gadget']);
         $tpl->SetVariable('gadget_name', $gInfo->title);
         $tpl->SetVariable('gadget_description', $gInfo->description);
