@@ -11,7 +11,7 @@
 class Skeleton_Actions_Admin_Display extends Jaws_Gadget_Action
 {
     /**
-     * Displays version of Jaws
+     * Displays no admin action
      *
      * @access  public
      * @return  string  Jaws version
