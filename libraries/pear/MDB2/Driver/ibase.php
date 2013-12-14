@@ -1126,10 +1126,8 @@ class MDB2_Result_ibase extends MDB2_Result_Common
         if ($mode) {
             $this->db->_fixResultArrayValues($row, $mode);
         }
-        if ($fetchmode == MDB2_FETCHMODE_ORDERED) {
-            if (!empty($this->types)) {
-                $row = $this->db->datatype->convertResultRow($this->types, $row, $rtrim);
-            }
+        if (!empty($this->types)) {
+            $row = $this->db->datatype->convertResultRow($this->types, $row, $rtrim);
         } elseif (!empty($this->types_assoc)) {
             $row = $this->db->datatype->convertResultRow($this->types_assoc, $row, $rtrim);
         }
