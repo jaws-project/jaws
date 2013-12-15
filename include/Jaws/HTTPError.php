@@ -91,7 +91,7 @@ class Jaws_HTTPError
         $site_name = $GLOBALS['app']->Registry->fetch('site_name', 'Settings');
         if (file_exists($theme['path'] . "$code.html")) {
             $tpl = new Jaws_Template();
-            $tpl->Load("$code.html");
+            $tpl->Load("$code.html", $theme['path']);
             $tpl->SetBlock($code);
 
             //set global site config
