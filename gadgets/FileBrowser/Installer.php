@@ -90,20 +90,19 @@ class FileBrowser_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.9.0', '<')) {
-            // Update layout actions
-            $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
-            if (!Jaws_Error::isError($layoutModel)) {
-                $layoutModel->EditGadgetLayoutAction('FileBrowser', 'InitialFolder', 'InitialFolder', 'Directory');
-            }
-        }
+        if (version_compare($old, '1.0.0', '<')) {
+            // removeing gadget registry keys
+            $GLOBALS['app']->Registry->delete($this->gadget->name);
 
-        $filesTable = Jaws_ORM::getInstance()->table('filebrowser');
-        $files = $filesTable->select('id', 'path')->fetchAll();
-        foreach ($files as $file) {
-            $filesTable->update(array('path' => trim($file['path'], '/')))
-                ->where('id', $file['id'])
-                ->exec();
+            // adding registry keys
+            $installer->_RegKeys = array_merge(
+                array(
+                    array('version', '1.0.0'),
+                    array('requires', ',,'),
+                ),
+                $this->_RegKeys
+            );
+            $this->gadget->registry->insertAll($installer->_RegKeys);
         }
 
         return true;
