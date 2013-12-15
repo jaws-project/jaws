@@ -139,6 +139,14 @@ class Blog_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+
+            // set dynamic ACLs of categories
+            $catModel = $this->gadget->model->load('Categories');
+            $categories = $catModel->GetCategories(false);
+            foreach ($categories as $category) {
+                $this->gadget->acl->insert('CategoryAccess', $category['id'], true);
+                $this->gadget->acl->insert('CategoryManage', $category['id'], true);
+            }
         }
 
         return true;
