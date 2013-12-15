@@ -36,7 +36,7 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
      * @param   bool    $last_topic_detail
      * @return  mixed   Array with all the available forums or Jaws_Error on error
      */
-    function GetForums($gid = false, $onlyPublished = false, $last_topic_detail = false)
+    function GetForums($gid = false, $onlyAccessible = true, $onlyPublished = false, $last_topic_detail = false)
     {
         $table = Jaws_ORM::getInstance()->table('forums');
         if ($last_topic_detail) {

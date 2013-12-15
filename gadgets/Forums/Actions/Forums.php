@@ -40,7 +40,7 @@ class Forums_Actions_Forums extends Forums_Actions_Default
         $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
         foreach ($groups as $group) {
             $fModel = $this->gadget->model->load('Forums');
-            $forums = $fModel->GetForums($group['id'], true, true);
+            $forums = $fModel->GetForums($group['id'], true, true, true);
             if (Jaws_Error::IsError($forums)) {
                 continue;
             }
