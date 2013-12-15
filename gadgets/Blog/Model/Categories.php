@@ -18,7 +18,7 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
      * @access  public
      * @return  mixed   A list of categories and Jaws_Error on error
      */
-    function GetCategories()
+    function GetCategories($onlyAccessible = true)
     {
         $catTable = Jaws_ORM::getInstance()->table('blog_category');
         $catTable->select('id', 'name', 'fast_url', 'description', 'createtime', 'updatetime');
@@ -26,11 +26,14 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
         $categories = $catTable->fetchAll();
 
         // Check dynamic ACL
-        foreach ($categories as $key => $category) {
-            if (!$this->gadget->GetPermission('CategoryManage', $category['id'])) {
-                unset($categories[$key]);
+        if ($onlyAccessible) {
+            foreach ($categories as $key => $category) {
+                if (!$this->gadget->GetPermission('CategoryAccess', $category['id'])) {
+                    unset($categories[$key]);
+                }
             }
         }
+
         return $categories;
     }
 
