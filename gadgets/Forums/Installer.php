@@ -129,6 +129,14 @@ class Forums_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+
+            // set dynamic ACLs of forums
+            $fModel = $this->gadget->model->load('Forums');
+            $forums = $fModel->GetForums(false, false);
+            foreach ($forums as $forum) {
+                $this->gadget->acl->insert('ForumAccess', $forum['id'], true);
+                $this->gadget->acl->insert('ForumManage', $forum['id'], false);
+            }
         }
 
         return true;
