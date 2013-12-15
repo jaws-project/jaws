@@ -428,7 +428,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         if ($global) {
             $table->and()->where('tags.user', 0);
         } else {
-            $table->and()->where('tags.user', $GLOBALS['app']->Session->GetAttribute('user'));
+            $table->and()->where('tags.user', (int)$GLOBALS['app']->Session->GetAttribute('user'));
         }
 
 
