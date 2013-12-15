@@ -102,16 +102,16 @@ class Jaws_Gadget_Installer
         $result = array();
         foreach ($this->_ACLKeys as $acl) {
             if (is_array($acl)) {
-                $result[] = $acl;
+                $result[] = array($acl[0], $acl[1], (int)$acl[2]);
             } else {
-                $result[] = array($acl, '', false);
+                $result[] = array($acl, '', 0);
             }
         }
 
         // Adding common ACL keys
-        $result[] = array('default', '', $this->default_acl);
-        $result[] = array('default_admin', '', false);
-        $result[] = array('default_registry', '', false);
+        $result[] = array('default', '', (int)$this->default_acl);
+        $result[] = array('default_admin', '', 0);
+        $result[] = array('default_registry', '', 0);
         return $result;
     }
 
