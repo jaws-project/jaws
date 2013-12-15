@@ -143,7 +143,7 @@ class Jaws_ACL
             $uvalue = $tblACL->select('key_value:integer')
                 ->where('component', $component)->and()
                 ->where('key_name', $key_name)->and()
-                ->where('key_subkey', $subkey)->and()
+                ->where('key_subkey', (string)$subkey)->and()
                 ->where('user', (int)$user)
                 ->fetchOne();
             if (!Jaws_Error::IsError($uvalue)) {
@@ -216,7 +216,7 @@ class Jaws_ACL
             $gvalue = $tblACL->select('key_value:integer')
                 ->where('component', $component)->and()
                 ->where('key_name', $key_name)->and()
-                ->where('key_subkey', $subkey)->and()
+                ->where('key_subkey', (string)$subkey)->and()
                 ->where('group', (int)$group)
                 ->fetchColumn();
             if (!Jaws_Error::IsError($gvalue)) {
@@ -287,7 +287,7 @@ class Jaws_ACL
             array(
                 'component' => $component,
                 'key_name'  => $key_name,
-                'key_subkey' => $subkey,
+                'key_subkey' => (string)$subkey,
                 'key_value' => (int)$key_value,
                 'user'      => 0,
                 'group'     => 0,
@@ -348,7 +348,7 @@ class Jaws_ACL
         $result = $tblACL->update(array('key_value' => (int)$key_value))
             ->where('component', $component)->and()
             ->where('key_name', $key_name)->and()
-            ->where('key_subkey', $subkey)->and()
+            ->where('key_subkey', (string)$subkey)->and()
             ->where('user', 0)->and()->where('group', 0)
             ->exec();
         if (Jaws_Error::IsError($result)) {
@@ -442,7 +442,7 @@ class Jaws_ACL
         if (!empty($key_name)) {
             $tblACL->and()->where('key_name', $key_name);
             if (!empty($subkey)) {
-                $tblACL->and()->where('key_subkey', $subkey);
+                $tblACL->and()->where('key_subkey', (string)$subkey);
             }
         }
 
