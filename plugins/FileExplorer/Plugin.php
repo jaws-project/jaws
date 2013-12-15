@@ -3,12 +3,12 @@
  * Browse your files on the server and insert file links into the content editor
  *
  * @category   Plugin
- * @package    FileBrowser
+ * @package    FileExplorer
  * @author     Mohsen Khahani <mkhahani@gmail.com>
  * @copyright  2012-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class FileBrowser_Plugin extends Jaws_Plugin
+class FileExplorer_Plugin extends Jaws_Plugin
 {
     var $friendly = true;
     var $version = "0.1.0";
@@ -22,14 +22,14 @@ class FileBrowser_Plugin extends Jaws_Plugin
      */
     function GetWebControl($textarea)
     {
-        $url = BASE_SCRIPT. '?gadget=FileBrowser&amp;action=BrowseFile';
+        $url = BASE_SCRIPT. '?gadget=FileExplorer&amp;action=BrowseFile';
         $popbutton =& Piwi::CreateWidget('Button',
                                          'popbutton',
                                          '',
-                                         'plugins/FileBrowser/images/file-browser.png');
-        $popbutton->SetTitle(_t('PLUGINS_FILEBROWSER_BROWSE_SERVER'));
+                                         'plugins/FileExplorer/images/file-explorer.png');
+        $popbutton->SetTitle(_t('PLUGINS_FILEEXPLORER_BROWSE_SERVER'));
         $popbutton->AddEvent(ON_CLICK, "browse('$textarea', '$url')");
-        $popbutton->AddFile('plugins/FileBrowser/Resources/FileBrowser.js');
+        $popbutton->AddFile('plugins/FileExplorer/Resources/file-explorer.js');
 
         return $popbutton;
     }
