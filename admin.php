@@ -120,7 +120,9 @@ if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
     if (empty($ReqAction)) {
         $ReqAction = $goGadget->gadget->default_admin_action;
     }
-    $GLOBALS['app']->SetMainRequest(false, $ReqGadget, $ReqAction);
+    // set requested gadget/action
+    $GLOBALS['app']->requestedGadget = $ReqGadget;
+    $GLOBALS['app']->requestedAction = $ReqAction;
     $IsReqActionStandAlone = $goGadget->IsStandAloneAdmin($ReqAction);
     if (!$IsReqActionStandAlone) {
         // Init layout
