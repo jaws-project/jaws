@@ -97,12 +97,12 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        // Update layout actions
-        $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
-        if (!Jaws_Error::isError($layoutModel)) {
-            $layoutModel->EditGadgetLayoutAction('StaticPage', 'GroupPages', 'GroupPages', 'Group');
-            $layoutModel->EditGadgetLayoutAction('StaticPage', 'PagesList', 'PagesList', 'Page');
-            $layoutModel->EditGadgetLayoutAction('StaticPage', 'GroupsList', 'GroupsList', 'Group');
+        // set dynamic ACLs of groups
+        $gModel = $this->gadget->model->load('Group');
+        $groups = $gModel->GetGroups();
+        foreach ($groups as $group) {
+            $this->gadget->acl->insert('AccessGroup', $group['id'], true);
+            $this->gadget->acl->insert('ManageGroup', $group['id'], true);
         }
 
         return true;
