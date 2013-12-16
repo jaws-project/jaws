@@ -35,7 +35,7 @@ class Jaws_HTTPError
         switch ($code) {
             case 401:
                 $realm = $GLOBALS['app']->Registry->fetch('realm', 'Settings');
-                http_response_code(401);
+                jaws()->http_response_code(401);
                 // using invalid authentication type for avoid popup login box
                 header('WWW-Authenticate: LoginBox realm="'. $realm. '"');
 
@@ -49,7 +49,7 @@ class Jaws_HTTPError
                 break;
 
             case 403:
-                http_response_code(403);
+                jaws()->http_response_code(403);
                 $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_403') : $title;
                 $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_403') : $message;
                 break;
@@ -59,24 +59,24 @@ class Jaws_HTTPError
                 if (empty($message)) {
                     $message = _t('GLOBAL_HTTP_ERROR_CONTENT_404', $uri);
                 }
-                http_response_code(404);
+                jaws()->http_response_code(404);
                 $title = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_404') : $title;
                 break;
 
             case 410:
-                http_response_code(410);
+                jaws()->http_response_code(410);
                 $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_410') : $title;
                 $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_410') : $message;
                 break;
 
             case 500:
-                http_response_code(500);
+                jaws()->http_response_code(500);
                 $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_500') : $title;
                 $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_500') : $message;
                 break;
 
             case 503:
-                http_response_code(503);
+                jaws()->http_response_code(503);
                 $title   = empty($title)? _t('GLOBAL_HTTP_ERROR_TITLE_503') : $title;
                 $message = empty($message)? _t('GLOBAL_HTTP_ERROR_CONTENT_503') : $message;
                 break;
