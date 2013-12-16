@@ -65,7 +65,9 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
             if (empty($ReqAction)) {
                 $ReqAction = $objGadget->gadget->default_action;
             }
-            $GLOBALS['app']->SetMainRequest($IsIndex, $ReqGadget, $ReqAction);
+            // set requested gadget/action
+            $GLOBALS['app']->requestedGadget = $ReqGadget;
+            $GLOBALS['app']->requestedAction = $ReqAction;
         } else {
             $ReqError = '404';
         }
@@ -76,8 +78,8 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
     $ReqAction = null;
 }
 
-// set main request
-$GLOBALS['app']->SetMainRequest($IsIndex, $ReqGadget, $ReqAction);
+// set requested in front-end first/home page
+$GLOBALS['app']->requestedInIndex = $IsIndex;
 // Init layout...
 $GLOBALS['app']->InstanceLayout();
 $GLOBALS['app']->Layout->Load();
