@@ -70,7 +70,8 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $model = $this->gadget->model->load('Categories');
         $categories = $model->GetCategoriesInEntries($ids);
         foreach ($categories as $cat) {
-            $entries[$cat['entry_id']]['categories'][] = array('id'       => $cat['id'],
+            $entries[$cat['entry_id']]['categories'][] = array(
+                'id'       => $cat['id'],
                 'name'     => $cat['name'],
                 'fast_url' => $cat['fast_url']);
         }
@@ -136,7 +137,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
 
         // Check dynamic ACL
         foreach ($result as $key => $entry) {
-            foreach (explode(",", $entry['categories']) as $cat) {
+            foreach (array_filter(explode(',', $entry['categories'])) as $cat) {
                 if (!$this->gadget->GetPermission('CategoryAccess', $cat)) {
                     unset($result[$key]);
                 }
@@ -210,7 +211,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
 
         // Check dynamic ACL
         foreach ($entries as $key => $entry) {
-            foreach (explode(",", $entry['categories']) as $cat) {
+            foreach (array_filter(explode(',', $entry['categories'])) as $cat) {
                 if (!$this->gadget->GetPermission('CategoryAccess', $cat)) {
                     unset($entries[$key]);
                 }
@@ -629,7 +630,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
 
         // Check dynamic ACL
         foreach ($entries as $key => $entry) {
-            foreach (explode(",", $entry['categories']) as $cat) {
+            foreach (array_filter(explode(',', $entry['categories'])) as $cat) {
                 if (!$this->gadget->GetPermission('CategoryAccess', $cat)) {
                     unset($entries[$key]);
                 }
@@ -755,7 +756,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
 
         // Check dynamic ACL
         foreach ($result as $key => $entry) {
-            foreach (explode(",", $entry['categories']) as $cat) {
+            foreach (array_filter(explode(',', $entry['categories'])) as $cat) {
                 if (!$this->gadget->GetPermission('CategoryManage', $cat)) {
                     unset($result[$key]);
                 }

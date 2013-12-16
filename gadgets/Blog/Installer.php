@@ -147,6 +147,25 @@ class Blog_Installer extends Jaws_Gadget_Installer
                 $this->gadget->acl->insert('CategoryAccess', $category['id'], true);
                 $this->gadget->acl->insert('CategoryManage', $category['id'], true);
             }
+
+            // filling categories filed
+            $blogTable = Jaws_ORM::getInstance()->table('blog');
+            $blogTable->select('blog.id:integer', 'blog_entrycat.category_id');
+            $blogTable->join('blog_entrycat', 'blog.id', 'blog_entrycat.entry_id');
+            $result = $blogTable->orderBy('blog.id desc')->fetchAll();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+            $posts = array();
+            foreach ($result as $post) {
+                $posts[$post['id']] = (isset($posts[$post['id']])?: ''). ','. $post['category_id'];
+            }
+
+            // update categories filed
+            $blogTable = Jaws_ORM::getInstance()->table('blog');
+            foreach ($posts as $id => $categories) {
+                $blogTable->update(array('categories' => $categories.','))->where('id', (int)$id)->exec();
+            }
         }
 
         return true;
