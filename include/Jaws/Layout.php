@@ -589,6 +589,7 @@ class Jaws_Layout
             return $output;
         }
 
+        jaws()->http_response_code(200);
         $goGadget = Jaws_Gadget::getInstance($gadget)->action->load($filename);
         if (!Jaws_Error::isError($goGadget)) {
             if (method_exists($goGadget, $action)) {
@@ -604,6 +605,8 @@ class Jaws_Layout
 
         if (Jaws_Error::isError($output)) {
             $GLOBALS['log']->Log(JAWS_LOG_ERROR, 'In '.$gadget.'::'.$action.','.$output->GetMessage());
+            $output = '';
+        } elseif (jaws()->http_response_code() !== 200) {
             $output = '';
         }
 
