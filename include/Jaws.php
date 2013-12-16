@@ -797,6 +797,27 @@ class Jaws
         return empty($format)? $time : date($format, $time);
     }
 
+
+    /**
+     * Manage http response code
+     *
+     * @access  public
+     * @param   int     $code   Response code
+     * @return  int     http response code
+     */
+    public function http_response_code($code = null)
+    {
+        static $response = 200;
+        if (!empty($code)) {
+            $response = (int)$code;
+            if (http_response_code() === 200) {
+                http_response_code($response);
+            }
+        }
+
+        return $response;
+    }
+
     /**
      * Overloading magic method
      *
