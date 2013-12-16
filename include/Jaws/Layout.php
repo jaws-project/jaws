@@ -553,9 +553,11 @@ class Jaws_Layout
                     $contentString .= str_replace('{ELEMENT}', $content, $currentContent)."\n\n\n";
                 }
             }
-            // restore stored title because layout action can't change title/description
+
+            // restore stored title/description because layout action can't them
             $this->_Title = $title;
             $this->_Description = $description;
+
             if (!empty($this->_Section)) {
                 $this->_Template->SetVariable('ELEMENT', $contentString);
                 $this->_Template->ParseBlock('layout/' . $this->_Section);
