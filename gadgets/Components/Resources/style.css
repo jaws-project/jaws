@@ -182,11 +182,11 @@ font-weight:bold;
 margin:0;
 }
 #component_info .acls{
-margin:0 8px;
-height:185px;
+height:190px;
 overflow-y:auto;
 overflow-x:hidden;
 list-style:square;
+margin:0 8px 0 0;
 }
 #component_info .acls li{
 line-height:1.5em;
