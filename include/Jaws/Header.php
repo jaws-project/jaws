@@ -61,16 +61,6 @@ class Jaws_Header
     }
 
     /**
-     * Change the status to 404
-     *
-     * @access  public
-     */
-    static function ChangeTo404()
-    {
-        http_response_code(404);
-    }
-
-    /**
      * Set expiration date
      *
      * Take a look at: http://www.php.net/manual/en/function.header.php for examples
