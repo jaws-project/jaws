@@ -24,7 +24,8 @@ border-bottom:1px solid #ddd;
 }
 #gadget-list, #gadget-actions{
 height:318px;
-overflow:auto;
+overflow-y:auto;
+overflow-x:hidden;
 }
 #gadget-list{
 width:240px;
