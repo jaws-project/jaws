@@ -16,21 +16,21 @@ class Jaws
      * The processed request is in index page
      *
      * @var     bool
-     * @access  protected
+     * @access  public
      */
     var $requestedInIndex = false;
 
     /**
      * The requested gadget
      * @var     string
-     * @access  protected
+     * @access  public
      */
     var $requestedGadget = '';
 
     /**
      * The requested action
      * @var     string
-     * @access  protected
+     * @access  public
      */
     var $requestedAction = '';
 
@@ -411,22 +411,6 @@ class Jaws
         }
 
         return $this->_Plugins[$plugin];
-    }
-
-    /**
-     * Set main request properties like gadget and action
-     *
-     * @access  public
-     * @param   bool    $index  Index page?
-     * @param   string  $gadget Gadget's name
-     * @param   string  $action Gadget's action
-     * @return  void
-     */
-    function SetMainRequest($index, $gadget, $action)
-    {
-        $this->requestedInIndex = $index;
-        $this->requestedGadget  = $gadget;
-        $this->requestedAction  = $action;
     }
 
     /**
