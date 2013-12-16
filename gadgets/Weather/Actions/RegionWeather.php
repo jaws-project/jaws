@@ -86,7 +86,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
             $options);
         $rWeather = $wService->getWeather($region['latitude'], $region['longitude']);
         if (!PEAR::isError($rWeather)) {
-            $tpl->SetVariable('title', _t('WEATHER_TITLE', $region['title']));
+            $tpl->SetVariable('title', _t('WEATHER_REGION', $region['title']));
             $rid = empty($region['fast_url'])? $region['id'] : $region['fast_url'];
             $url = $this->gadget->urlMap('RegionWeather', array('id' => $rid));
             $tpl->SetVariable('url',  $url);
@@ -105,7 +105,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
             $tpl->ParseBlock('weather/current');
 
             if ($forecast) {
-                $GLOBALS['app']->Layout->SetTitle(_t('WEATHER_TITLE', $region['title']));
+                $GLOBALS['app']->Layout->SetTitle(_t('WEATHER_REGION', $region['title']));
                 $GLOBALS['app']->Layout->AddToMetaKeywords($this->gadget->title. ','. $region['title']);
                 $objDate = Jaws_Date::getInstance();
                 $tpl->SetBlock('weather/forecast');
