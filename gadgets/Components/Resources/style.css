@@ -16,6 +16,8 @@ padding:5px;
 #components > div{
 height:460px;
 overflow:auto;
+overflow-y:auto;
+overflow-x:hidden;
 background-color:white;
 border:1px solid #d3d7cf;
 padding:0px;
@@ -183,6 +185,7 @@ margin:0;
 margin:0 8px;
 height:185px;
 overflow-y:auto;
+overflow-x:hidden;
 list-style:square;
 }
 #component_info .acls li{
@@ -198,6 +201,7 @@ padding:2px;
 #frm_registry{
 height:305px;
 overflow-y:auto;
+overflow-x:hidden;
 }
 #frm_registry table{
 border-collapse:collapse;
@@ -221,8 +225,9 @@ width:200px;
 /* ACL */
 #frm_acl{
 height:305px;
-overflow-y:auto;
 line-height:1.5;
+overflow-y:auto;
+overflow-x:hidden;
 }
 #frm_acl table{
 border-collapse:collapse;
@@ -256,7 +261,9 @@ text-align:center;
 background-color:#f8f8f8;
 }
 #plugin_usage .wrapper{
-height:305px;
-overflow-y:auto;
 margin:10px;
+height:305px;
+line-height:1.5;
+overflow-y:auto;
+overflow-x:hidden;
 }
