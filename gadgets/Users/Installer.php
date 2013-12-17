@@ -25,6 +25,7 @@ class Users_Installer extends Jaws_Gadget_Installer
         array('anon_repetitive_email', 'true'),
         array('anon_activation', 'user'),
         array('anon_group', ''),
+        array('groups_management', 'false'),
         array('dashboard_building', 'false'),
     );
 
@@ -150,6 +151,7 @@ class Users_Installer extends Jaws_Gadget_Installer
             }
 
             // Registry key
+            $this->gadget->registry->insert('groups_management', 'false');
             $this->gadget->registry->insert('dashboard_building', 'false');
 
             // ACL keys
