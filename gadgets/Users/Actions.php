@@ -78,6 +78,7 @@ $actions['Registered'] = array(
 $actions['ActivateUser'] = array(
     'normal' => true,
     'file' => 'Registration',
+    'temporary' => true,
     'loglevel' => JAWS_NOTICE,
 );
 $actions['Account'] = array(
