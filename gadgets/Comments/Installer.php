@@ -17,6 +17,7 @@ class Comments_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
+        array('order_type', '0'),
         array('allow_duplicate', 'no'),
         array('allow_comments', 'true'),
         array('comments_per_page', '10'),
@@ -81,6 +82,8 @@ class Comments_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
+        // Registry key
+        $this->gadget->registry->insert('order_type', '0');
         return true;
     }
 
