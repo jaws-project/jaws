@@ -252,6 +252,7 @@ class Upgrader_Database extends JawsUpgraderStage
         $keys[] = 'dbpass';
         $request =& Jaws_Request::getInstance();
         $post = $request->fetch($keys, 'post');
+        $post['dbpass'] = $request->fetch('dbpass', 'post', false);
         $request->reset();
 
         if (isset($_SESSION['upgrade']['data']['Database'])) {
