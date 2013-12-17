@@ -15,8 +15,8 @@
  */
 $actions['Captcha'] = array(
     'standalone' => true,
-    'variable' => true,
     'file' => 'Captcha',
+    'temporary' => true,
 );
 
 /**
