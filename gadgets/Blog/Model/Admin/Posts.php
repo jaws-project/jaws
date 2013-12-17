@@ -26,7 +26,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $params['category_id'] = (int)$category_id;
         $model = $this->gadget->model->load('Feeds');
 
-        $entrycatTable = Jaws_ORM::getInstance()->table('blog_entrycat');
+        $entrycatTable = Jaws_ORM::getInstance()->table('blog_entrycat', '', '');
         $result = $entrycatTable->insert($params)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
