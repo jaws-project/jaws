@@ -140,7 +140,7 @@ class Forums_Installer extends Jaws_Gadget_Installer
             // moving post attachment to separate table
             $table->select('id:integer', 'attachment_host_fname', 'attachment_user_fname', 'attachment_hits_count:integer');
             $table->where('attachment_hits_count', 0, '>');
-            $result = $table->orderBy('id desc')->fetchAll();
+            $result = $table->orderBy('id asc')->fetchAll();
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
