@@ -230,10 +230,10 @@ class Jaws_Layout
      */
     function LoadControlPanelHead()
     {
-        $this->AddScriptLink('libraries/mootools/core.js');
-        $this->AddScriptLink('include/Jaws/Resources/Ajax.js');
+        $this->AddScriptLink('libraries/mootools/core.js?'. JAWS_VERSION);
+        $this->AddScriptLink('include/Jaws/Resources/Ajax.js?'. JAWS_VERSION);
         $this->AddHeadLink(
-            'gadgets/ControlPanel/Resources/style.css',
+            'gadgets/ControlPanel/Resources/style.css?'. JAWS_VERSION,
             'stylesheet',
             'text/css'
         );
@@ -751,27 +751,27 @@ class Jaws_Layout
      */
     function AddHeadLink($link, $rel = 'stylesheet', $type = 'text/css', $title = '', $media = '')
     {
+        $version = '';
         $hashedLink = md5($link);
         if (!isset($this->_HeadLink[$hashedLink])) {
             if ($rel == 'stylesheet') {
+                $link = ltrim($link);
                 $fileName = basename($link);
-                $fileExt  = strrchr($fileName, '.');
-                $fileName = substr($fileName, 0, -strlen($fileExt));
-                if (substr($link, 0, 1) == '/') {
-                    $path = substr($link , 1, - strlen($fileName.$fileExt));
-                } else {
-                    $path = substr($link , 0, - strlen($fileName.$fileExt));
-                }
+                $filePath = substr($link , 0, - strlen($fileName));
+                $version  = strstr($fileName, '?');
+                $fileName = strstr($fileName, '?', true);
+                $fileExtn = strrchr($fileName, '.');
+                $fileName = substr($fileName, 0, -strlen($fileExtn));
 
                 $prefix = (_t('GLOBAL_LANG_DIRECTION') == 'rtl')? '.rtl' : '';
-                $link = $path. $fileName. $prefix. $fileExt;
+                $link = $filePath. $fileName. $prefix. $fileExtn;
                 if (!empty($prefix) && !@file_exists($link)) {
-                    $link = $path . $fileName . $fileExt;
+                    $link = $filePath . $fileName . $fileExtn;
                 }
             }
 
             $this->_HeadLink[$hashedLink] = array(
-                'href'  => $link,
+                'href'  => $link.$version,
                 'rel'   => $rel,
                 'type'  => $type,
                 'title' => $title,
