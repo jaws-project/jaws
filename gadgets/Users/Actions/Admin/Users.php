@@ -199,12 +199,12 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
 
         // Order types
         $orderType =& Piwi::CreateWidget('Combo', 'order_type');
-        $orderType->AddOption(_t('USERS_USERS_REGISTRATION_DATE'). ' &darr;', '[id]');
-        $orderType->AddOption(_t('USERS_USERS_REGISTRATION_DATE'). ' &uarr;', '[id] desc');
-        $orderType->AddOption(_t('USERS_USERS_USERNAME'). ' &darr;', '[username]');
-        $orderType->AddOption(_t('USERS_USERS_USERNAME'). ' &uarr;', '[username] desc');
-        $orderType->AddOption(_t('USERS_USERS_NICKNAME'). ' &darr;', '[nickname]');
-        $orderType->AddOption(_t('USERS_USERS_NICKNAME'). ' &uarr;', '[nickname] desc');
+        $orderType->AddOption(_t('USERS_USERS_REGISTRATION_DATE'). ' &darr;', 'id');
+        $orderType->AddOption(_t('USERS_USERS_REGISTRATION_DATE'). ' &uarr;', 'id desc');
+        $orderType->AddOption(_t('USERS_USERS_USERNAME'). ' &darr;', 'username');
+        $orderType->AddOption(_t('USERS_USERS_USERNAME'). ' &uarr;', 'username desc');
+        $orderType->AddOption(_t('USERS_USERS_NICKNAME'). ' &darr;', 'nickname');
+        $orderType->AddOption(_t('USERS_USERS_NICKNAME'). ' &uarr;', 'nickname desc');
         $orderType->AddEvent(ON_CHANGE, "javascript: searchUser();");
         $orderType->SetDefault(-1);
         $tpl->SetVariable('order_type', $orderType->Get());
