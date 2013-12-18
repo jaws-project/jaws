@@ -75,6 +75,12 @@ class Users_Actions_Admin_Properties extends Users_Actions_Admin_Default
         $passRecovery->AddOption(_t('GLOBAL_NO'), 'false');
         $passRecovery->SetDefault($this->gadget->registry->fetch('password_recovery'));
 
+        $groupsmanagement =& Piwi::CreateWidget('Combo', 'groups_management');
+        $groupsmanagement->SetTitle(_t('USERS_PROPERTIES_GROUPS_MANAGEMENT'));
+        $groupsmanagement->AddOption(_t('GLOBAL_YES'), 'true');
+        $groupsmanagement->AddOption(_t('GLOBAL_NO'), 'false');
+        $groupsmanagement->SetDefault($this->gadget->registry->fetch('groups_management'));
+
         $dashboard =& Piwi::CreateWidget('Combo', 'dashboard_building');
         $dashboard->SetTitle(_t('USERS_PROPERTIES_DASHBOARD_BUILDING'));
         $dashboard->AddOption(_t('GLOBAL_YES'), 'true');
@@ -91,6 +97,7 @@ class Users_Actions_Admin_Properties extends Users_Actions_Admin_Default
         $fieldset->Add($anonactivate);
         $fieldset->Add($anonGroup);
         $fieldset->Add($passRecovery);
+        $fieldset->Add($groupsmanagement);
         $fieldset->Add($dashboard);
 
         $form->Add($fieldset);

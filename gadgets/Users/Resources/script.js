@@ -729,9 +729,10 @@ function saveSettings()
     var act        = $('anon_activation').value;
     var group      = $('anon_group').value;
     var recover    = $('password_recovery').value;
+    var groups_management = $('groups_management').value;
     var dashboard  = $('dashboard_building').value;
 
-    UsersAjax.callAsync('SaveSettings', method, anon, repetitive, act, group, recover, dashboard);
+    UsersAjax.callAsync('SaveSettings', method, anon, repetitive, act, group, recover, groups_management, dashboard);
 }
 
 /**

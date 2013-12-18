@@ -276,7 +276,10 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             }
 
             // manage user groups
-            if ($this->gadget->GetPermission('ManageUserGroups')) {
+            $groups_management = $this->gadget->registry->fetch('groups_management') == 'true';
+            if ($groups_management &&
+                $this->gadget->GetPermission('ManageUserGroups')
+            ) {
                 $tpl->SetBlock('UserLinks/groups');
                 $tpl->SetVariable('user_groups', _t('USERS_MANAGE_GROUPS'));
                 $tpl->SetVariable('groups_url', $this->gadget->urlMap('Groups'));
