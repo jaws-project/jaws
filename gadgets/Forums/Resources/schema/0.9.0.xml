@@ -281,6 +281,13 @@
         </field>
 
         <field>
+            <name>attachments</name>
+            <type>integer</type>
+            <length>1</length>
+            <default>0</default>
+        </field>
+
+        <field>
             <name>ip</name>
             <type>text</type>
             <length>24</length>

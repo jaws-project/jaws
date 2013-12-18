@@ -130,8 +130,14 @@ class Forums_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
-            // moving post attachment to separate table
             $table = Jaws_ORM::getInstance()->table('forums_posts');
+            // update post attachments count filed 
+            $result = $table->update(array('attachments' => 1))->where('attachment_hits_count', 0, '>')->exec();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            // moving post attachment to separate table
             $table->select('id:integer', 'attachment_host_fname', 'attachment_user_fname', 'attachment_hits_count:integer');
             $table->where('attachment_hits_count', 0, '>');
             $result = $table->orderBy('id desc')->fetchAll();
