@@ -149,19 +149,14 @@ class Jaws_Gadget_Action
      * @access  protected
      * @param   string  $file       Optional The gadget can require a special JS file,
      *                              it should be located under gadgets/$gadget/Resources/$file
-     * @param   string  $version    Optional File version
      */
-    public function AjaxMe($file = '', $version = '')
+    public function AjaxMe($file = '')
     {
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js');
-        $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Resources/Ajax.js');
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js?'.JAWS_VERSION);
+        $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Resources/Ajax.js?'.JAWS_VERSION);
         if (!empty($file)) {
             $GLOBALS['app']->Layout->AddScriptLink(
-                'gadgets/'.
-                $this->gadget->name.
-                '/Resources/'.
-                $file.
-                (empty($version)? '' : "?$version")
+                'gadgets/'.$this->gadget->name.'/Resources/'. $file.'?'.$this->gadget->version
             );
         }
 
