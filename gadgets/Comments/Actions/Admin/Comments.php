@@ -198,7 +198,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
     function GetDataAsArray($gadget, $editAction, $term, $status, $offset, $gadgetColumn=false)
     {
         $cModel = $this->gadget->model->load('Comments');
-        $comments = $cModel->GetComments($gadget, '', '', $term, $status, 15, $offset, 0, true);
+        $comments = $cModel->GetComments($gadget, '', '', $term, $status, 15, $offset);
         if (Jaws_Error::IsError($comments)) {
             return array();
         }
