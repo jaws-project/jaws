@@ -116,8 +116,8 @@ class Forums_Actions_Posts extends Forums_Actions_Default
                     $tpl->SetVariable('user_fname', $attachment['title']);
                     $tpl->SetVariable('lbl_attachment', _t('FORUMS_POSTS_ATTACHMENT'));
                     $tpl->SetVariable(
-                        'hits_count',
-                        _t('FORUMS_POSTS_ATTACHMENT_HITS', $attachment['hits_count'])
+                        'hitcount',
+                        _t('FORUMS_POSTS_ATTACHMENT_HITS', $attachment['hitcount'])
                     );
                     $tpl->SetVariable('url_attachment',
                             $this->gadget->urlMap(

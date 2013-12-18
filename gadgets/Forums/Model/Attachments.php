@@ -47,7 +47,7 @@ class Forums_Model_Attachments extends Jaws_Gadget_Model
     {
         $attachTable = Jaws_ORM::getInstance()->table('forums_attachments');
         $attachTable->join('forums_posts', 'forums_attachments.post', 'forums_posts.id');
-        $attachTable->select('forums_attachments.id', 'post', 'title', 'filename', 'filesize', 'filetype', 'hits_count');
+        $attachTable->select('forums_attachments.id', 'post', 'title', 'filename', 'filesize', 'filetype', 'hitcount');
         return $attachTable->where('tid', $tid)->fetchAll();
     }
 
@@ -69,6 +69,7 @@ class Forums_Model_Attachments extends Jaws_Gadget_Model
                 $data['filename'] = $fileInfo['host_filename'];
                 $data['filesize'] = $fileInfo['host_filesize'];
                 $data['filetype'] = $fileInfo['host_filetype'];
+                $data['hitcount'] = isset($fileInfo['hitcount'])? (int)$fileInfo['hitcount'] : 0;
                 $result = $attachTable->insert($data)->exec();                
             }
             return true;
@@ -159,7 +160,7 @@ class Forums_Model_Attachments extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('forums_attachments');
         $res = $table->update(
             array(
-                'hits_count' => $table->expr('hits_count + ?', 1)
+                'hitcount' => $table->expr('hitcount + ?', 1)
             )
         )->where('id', $aid)->exec();
 
