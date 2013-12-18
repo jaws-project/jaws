@@ -39,7 +39,7 @@ class Phoo_Model_Admin_Settings extends Jaws_Gadget_Model
         $rs[] = $this->gadget->registry->update('default_action',    $default_action);
         $rs[] = $this->gadget->registry->update('published',         $published);
         $rs[] = $this->gadget->registry->update('allow_comments',    $allow_comments);
-        $rs[] = $this->gadget->registry->update('moblog_album',      $moblog_album);
+        $rs[] = $this->gadget->registry->update('moblog_album',      (int)$moblog_album);
         $rs[] = $this->gadget->registry->update('moblog_limit',      $moblog_limit);
         $rs[] = $this->gadget->registry->update('photoblog_album',   $photoblog_album);
         $rs[] = $this->gadget->registry->update('photoblog_limit',   $photoblog_limit);
