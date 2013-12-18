@@ -55,16 +55,16 @@ class Forums_Model_Attachments extends Jaws_Gadget_Model
      * Insert attachments file info in DB
      *
      * @access  public
-     * @param   int     $pid              Post ID
-     * @param   array   $uploadedFiles    List of upload files with jaws_utils format
+     * @param   int     $pid    Post ID
+     * @param   array   $files  List of upload files with jaws_utils format
      * @return  boolean If insert complete true else Jaws_Error on error
      */
-    function InsertAttachments($pid, $uploadedFiles)
+    function InsertAttachments($pid, $files)
     {
-        if (is_array($uploadedFiles)) {
+        if (is_array($files)) {
             $attachTable = Jaws_ORM::getInstance()->table('forums_attachments');
             $data['post'] = $pid;
-            foreach ($uploadedFiles as $fileInfo) {
+            foreach ($files as $fileInfo) {
                 $data['title'] = $fileInfo['user_filename'];
                 $data['filename'] = $fileInfo['host_filename'];
                 $data['filesize'] = $fileInfo['host_filesize'];
@@ -72,8 +72,10 @@ class Forums_Model_Attachments extends Jaws_Gadget_Model
                 $data['hitcount'] = isset($fileInfo['hitcount'])? (int)$fileInfo['hitcount'] : 0;
                 $result = $attachTable->insert($data)->exec();                
             }
+
             return true;
         }
+
         return false;
     }
 

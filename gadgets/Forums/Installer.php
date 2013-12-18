@@ -124,8 +124,38 @@ class Forums_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
+        if (version_compare($old, '0.9.0', '<')) {
+            $result = $this->installSchema('0.9.0.xml', '', '0.1.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            // moving post attachment to separate table
+            $table = Jaws_ORM::getInstance()->table('forums_posts');
+            $table->select('id:integer', 'attachment_host_fname', 'attachment_user_fname', 'attachment_hits_count:integer');
+            $table->where('attachment_hits_count', 0, '>');
+            $result = $table->orderBy('id desc')->fetchAll();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            $attachModel = $this->gadget->model->load('Attachments');
+            foreach ($result as $post) {
+                $attachModel->InsertAttachments(
+                    $post['id'],
+                    array(array(
+                        'user_filename' => $post['attachment_user_fname'],
+                        'host_filename' => $post['attachment_host_fname'],
+                        'host_filesize' => @filesize(JAWS_DATA. 'forums/'. $post['attachment_host_fname']),
+                        'host_filetype' => @mime_content_type(JAWS_DATA. 'forums/'. $post['attachment_host_fname']),
+                        'hitcount' => $post['attachment_hits_count'],
+                    ))
+                );
+            }
+        }
+
         if (version_compare($old, '1.0.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '0.1.0.xml');
+            $result = $this->installSchema('schema.xml', '', '0.9.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
