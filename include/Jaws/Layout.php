@@ -759,7 +759,7 @@ class Jaws_Layout
                 $fileName = basename($link);
                 $filePath = substr($link , 0, - strlen($fileName));
                 $version  = strstr($fileName, '?');
-                $fileName = strstr($fileName, '?', true);
+                $fileName = substr($fileName, 0, strlen($fileName)-strlen($version));
                 $fileExtn = strrchr($fileName, '.');
                 $fileName = substr($fileName, 0, -strlen($fileExtn));
 
