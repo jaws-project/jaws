@@ -72,11 +72,26 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
 
         $tpl->SetVariable('filter_button', $filterButton->Get());
 
-        //DataGrid
+        // DataGrid
         $tpl->SetVariable('datagrid', $this->getDataGrid($gadget));
-
-        //CommentUI
+        // CommentUI
         $tpl->SetVariable('comment_ui', $this->CommentUI());
+
+        // Actions
+        $actions =& Piwi::CreateWidget('Combo', 'comments_actions');
+        $actions->SetID('comments_actions_combo');
+        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
+        $actions->AddOption('&nbsp;', '');
+        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+        $actions->AddOption(_t('COMMENTS_MARK_AS_APPROVED'), Comments_Info::COMMENTS_STATUS_APPROVED);
+        $actions->AddOption(_t('COMMENTS_MARK_AS_WAITING'), Comments_Info::COMMENTS_STATUS_WAITING);
+        $actions->AddOption(_t('COMMENTS_MARK_AS_SPAM'), Comments_Info::COMMENTS_STATUS_SPAM);
+        $actions->AddOption(_t('COMMENTS_MARK_AS_PRIVATE'), Comments_Info::COMMENTS_STATUS_PRIVATE);
+        $tpl->SetVariable('actions_combo', $actions->Get());
+
+        $btnExecute =& Piwi::CreateWidget('Button', 'executeCommentAction', '', STOCK_YES);
+        $btnExecute->AddEvent(ON_CLICK, "javascript:commentDGAction($('comments_actions_combo'));");
+        $tpl->SetVariable('btn_execute', $btnExecute->Get());
 
         if ($this->gadget->GetPermission('ManageComments')) {
             $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
@@ -229,11 +244,6 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
      */
     function getDataGrid($gadget)
     {
-        $gridBox =& Piwi::CreateWidget('VBox');
-        $gridBox->SetID('comments_box');
-        $gridBox->SetStyle('width: 100%;');
-
-        //Data grid
         $grid =& Piwi::CreateWidget('DataGrid', array());
         $grid->SetID('comments_datagrid');
         $grid->SetStyle('width: 100%;');
@@ -245,44 +255,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME')), null, false);
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_CREATED')), null, false);
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_STATUS')), null, false);
-
-        //Tools
-        $gridForm =& Piwi::CreateWidget('Form');
-        $gridForm->SetID('comments_form');
-        $gridForm->SetStyle('float: right');
-
-        $gridFormBox =& Piwi::CreateWidget('HBox');
-
-        $actions =& Piwi::CreateWidget('Combo', 'comments_actions');
-        $actions->SetID('comments_actions_combo');
-        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
-        $actions->AddOption('&nbsp;', '');
-        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
-        $actions->AddOption(_t('COMMENTS_MARK_AS_APPROVED'), Comments_Info::COMMENTS_STATUS_APPROVED);
-        $actions->AddOption(_t('COMMENTS_MARK_AS_WAITING'), Comments_Info::COMMENTS_STATUS_WAITING);
-        $actions->AddOption(_t('COMMENTS_MARK_AS_SPAM'), Comments_Info::COMMENTS_STATUS_SPAM);
-        $actions->AddOption(_t('COMMENTS_MARK_AS_PRIVATE'), Comments_Info::COMMENTS_STATUS_PRIVATE);
-
-        $execute =& Piwi::CreateWidget(
-            'Button',
-            'executeCommentAction',
-            '',
-            STOCK_YES
-        );
-        $execute->AddEvent(
-            ON_CLICK,
-            "javascript:commentDGAction(document.getElementById('comments_actions_combo'));"
-        );
-
-        $gridFormBox->Add($actions);
-        $gridFormBox->Add($execute);
-        $gridForm->Add($gridFormBox);
-
-        //Pack everything
-        $gridBox->Add($grid);
-        $gridBox->Add($gridForm);
-
-        return $gridBox->Get();
+        return $grid->Get();
     }
 
 }

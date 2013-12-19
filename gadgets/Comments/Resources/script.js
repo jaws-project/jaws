@@ -16,7 +16,7 @@ var CommentsCallback = {
     UpdateComment: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopCommentAction();
-            getDG('comments_datagrid');
+            getDG('comments_datagrid', $('comments_datagrid').getCurrentPage(), true);
         }
         showResponse(response);
     },
@@ -24,7 +24,7 @@ var CommentsCallback = {
     DeleteComments: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopCommentAction();
-            getDG('comments_datagrid');
+            getDG('comments_datagrid', $('comments_datagrid').getCurrentPage(), true);
         }
         showResponse(response);
     },
@@ -32,7 +32,7 @@ var CommentsCallback = {
     MarkAs: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopCommentAction();
-            getDG('comments_datagrid');
+            getDG('comments_datagrid', $('comments_datagrid').getCurrentPage(), true);
         }
         showResponse(response);
     },
