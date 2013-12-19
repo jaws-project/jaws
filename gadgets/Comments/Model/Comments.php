@@ -88,16 +88,13 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
             $commentsTable->or()->closeWhere('msg_txt', '%'.$term.'%', 'like');
         }
 
-        $commentsTable->limit($limit, $offset);
         $orders = array(
-            'createtime asc',
-            'createtime desc',
+            1 => 'createtime asc',
+            2 => 'createtime desc',
         );
-        $orderBy = (int)$orderBy;
-        $orderBy = $orders[($orderBy > 1)? 1 : $orderBy];
-        $commentsTable->orderBy($orderBy);
-
-        return $commentsTable->fetchAll();
+        $orderBy = isset($orders[$orderBy])?: (int)$this->gadget->registry->fetch('order_type');
+        $orderBy = $orders[$orderBy];
+        return $commentsTable->limit($limit, $offset)->orderBy($orderBy)->fetchAll();
     }
 
     /**

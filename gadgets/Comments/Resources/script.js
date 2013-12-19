@@ -53,7 +53,8 @@ function getCommentsDataGrid(name, offset, reset)
         $('gadgets_filter').value,
         $('filter').value,
         $('status').value,
-        offset
+        offset,
+        2
     );
     if (reset) {
         stopCommentAction();

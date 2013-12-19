@@ -179,9 +179,10 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
      * @param   string  $term       Search term
      * @param   int     $status     Spam status (approved=1, waiting=2, spam=3)
      * @param   mixed   $offset     Data offset (numeric/boolean)
+     * @param   int     $orderBy    Data order
      * @return  array   Filtered Comments
      */
-    function GetDataAsArray($requester, $gadget, $term, $status, $offset, $orderBy = 1)
+    function GetDataAsArray($requester, $gadget, $term, $status, $offset, $orderBy)
     {
         $data = array();
         $cModel = $this->gadget->model->load('Comments');
