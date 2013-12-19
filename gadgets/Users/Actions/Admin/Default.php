@@ -52,7 +52,7 @@ class Users_Actions_Admin_Default extends Jaws_Gadget_Action
         $menubar = new Jaws_Widgets_Menubar();
         if ($this->gadget->GetPermission('ManageUsers')) {
             $menubar->AddOption('Users',
-                                $this->gadget->name,
+                                _t('USERS_TITLE'),
                                 BASE_SCRIPT . '?gadget=Users&amp;action=Users',
                                 'gadgets/Users/Resources/images/users_mini.png');
         }
