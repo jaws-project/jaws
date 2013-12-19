@@ -39,7 +39,6 @@ class Phoo_Actions_Admin_Comments extends Phoo_Actions_Admin_Default
         $cHtml = Jaws_Gadget::getInstance('Comments')->action->loadAdmin('Comments');
         return $cHtml->GetDataAsArray(
             'phoo',
-            BASE_SCRIPT . '?gadget=Phoo&amp;action=EditComment&amp;id={id}',
             $filter,
             $search,
             $status,
