@@ -201,7 +201,12 @@ function searchComment()
  */
 function SaveSettings()
 {
-    CommentsAjax.callAsync('SaveSettings', $('allow_comments').value, $('allow_duplicate').value);
+    CommentsAjax.callAsync(
+        'SaveSettings',
+        $('allow_comments').value,
+        $('allow_duplicate').value,
+        $('order_type').value
+    );
 }
 
 var CommentsAjax = new JawsAjax('Comments', CommentsCallback),

@@ -41,6 +41,14 @@ class Comments_Actions_Admin_Settings extends Comments_Actions_Admin_Default
         $tpl->SetVariable('lbl_allow_duplicate', _t('COMMENTS_ANTISPAM_ALLOWDUPLICATE'));
         $tpl->SetVariable('allow_duplicate', $allowDuplicate->Get());
 
+        //Order by option
+        $orderType =& Piwi::CreateWidget('Combo', 'order_type');
+        $orderType->AddOption(_t('GLOBAL_CREATETIME'). ' &uarr;', '1');
+        $orderType->AddOption(_t('GLOBAL_CREATETIME'). ' &darr;', '2');
+        $orderType->SetDefault($this->gadget->registry->fetch('order_type'));
+        $tpl->SetVariable('lbl_order_type', _t('GLOBAL_ORDERBY'));
+        $tpl->SetVariable('order_type', $orderType->Get());
+
         $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $save->AddEvent(ON_CLICK, 'javascript:SaveSettings();');
         $tpl->SetVariable('btn_save', $save->Get());
