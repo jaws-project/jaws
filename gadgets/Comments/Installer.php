@@ -83,7 +83,7 @@ class Comments_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         // Registry key
-        $this->gadget->registry->insert('order_type', '0');
+        $this->gadget->registry->insert('order_type', '1');
         return true;
     }
 
