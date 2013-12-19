@@ -24,7 +24,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
         $gadgetList = $cmpModel->GetGadgetsList(false, true, true);
         $gadgets = array();
         foreach ($gadgetList as $key => $gadget) {
-            if (is_file(JAWS_PATH . 'gadgets/' . $gadget['name'] . '/hooks/Sitemap.php')) {
+            if (is_file(JAWS_PATH . 'gadgets/' . $gadget['name'] . '/Hooks/Sitemap.php')) {
                 $gadget['name'] = trim($gadget['name']);
                 if ($gadget['name'] == 'Sitemap' || empty($gadget['name'])) {
                     continue;
