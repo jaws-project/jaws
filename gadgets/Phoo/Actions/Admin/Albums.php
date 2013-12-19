@@ -107,24 +107,31 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
     function SaveNewAlbum()
     {
         $this->gadget->CheckPermission('ManageAlbums');
-        $post        = jaws()->request->fetch(array('name', 'allow_comments:array', 'published'), 'post');
-        $description = jaws()->request->fetch('description', 'post', false);
-
-        $model = $this->gadget->model->loadAdmin('Albums');
-        $album = $model->NewAlbum($post['name'], $description, isset($post['allow_comments'][0]), $post['published']);
-        if (!Jaws_Error::IsError($album)) {
-            $agModel = $this->gadget->model->loadAdmin('AlbumGroup');
-            $groups = jaws()->request->fetch('groups:array');
-            if (!empty($groups)) {
-                foreach ($groups as $group) {
+        $post = jaws()->request->fetch(array('name', 'allow_comments:array', 'groups:array', 'published'), 'post');
+        if (!empty($post['groups']) && !empty($post['name'])) {
+            $description = jaws()->request->fetch('description', 'post', false);
+            $model = $this->gadget->model->loadAdmin('Albums');
+            $album = $model->NewAlbum(
+                $post['name'],
+                $description,
+                isset($post['allow_comments'][0]),
+                $post['published']
+            );
+            if (!Jaws_Error::IsError($album)) {
+                $agModel = $this->gadget->model->loadAdmin('AlbumGroup');
+                foreach ($post['groups'] as $group) {
                     $insertData = array();
                     $insertData['album'] = $album;
                     $insertData['group'] = $group;
                     $agModel->AddAlbumGroup($insertData);
                 }
+                Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album='.$album);
             }
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
         }
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&album='.$album);
+
+        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
     }
 
     /**
@@ -237,27 +244,32 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageAlbums');
 
-        $post        = jaws()->request->fetch(array('name', 'album', 'allow_comments:array', 'published'), 'post');
-        $description = jaws()->request->fetch('description', 'post', false);
-
-        $id = (int)$post['album'];
-        $model = $this->gadget->model->loadAdmin('Albums');
-        $result = $model->UpdateAlbum($id, $post['name'], $description, isset($post['allow_comments'][0]), $post['published']);
-
-        // AlbumGroup
-        if (!Jaws_Error::IsError($result)) {
-            $agModel = $this->gadget->model->loadAdmin('AlbumGroup');
-            $agModel->DeleteAlbum($id);
-            $groups = jaws()->request->fetch('groups:array');
-            foreach ($groups as $group) {
-                $insertData = array();
-                $insertData['album'] = $id;
-                $insertData['group'] = $group;
-                $agModel->AddAlbumGroup($insertData);
+        $post= jaws()->request->fetch(
+            array('name', 'album', 'allow_comments:array', 'groups:array', 'published'),
+            'post'
+        );
+        if (!empty($post['groups']) && !empty($post['name'])) {
+            $description = jaws()->request->fetch('description', 'post', false);
+            $id = (int)$post['album'];
+            $model = $this->gadget->model->loadAdmin('Albums');
+            $result = $model->UpdateAlbum($id, $post['name'], $description, isset($post['allow_comments'][0]), $post['published']);
+            if (!Jaws_Error::IsError($result)) {
+                // AlbumGroup
+                $agModel = $this->gadget->model->loadAdmin('AlbumGroup');
+                $agModel->DeleteAlbum($id);
+                foreach ($post['groups'] as $group) {
+                    $insertData = array();
+                    $insertData['album'] = $id;
+                    $insertData['group'] = $group;
+                    $agModel->AddAlbumGroup($insertData);
+                }
+                Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditAlbum&album='.$id);
             }
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_INCOMPLETE_FIELDS'), RESPONSE_ERROR);
         }
 
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo&action=EditAlbum&album='.$id);
+        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Phoo');
     }
 
     /**
