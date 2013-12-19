@@ -70,7 +70,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         $tpl->SetVariable('filter_button', $filterButton->Get());
 
         //DataGrid
-        $tpl->SetVariable('datagrid', $this->getDataGrid());
+        $tpl->SetVariable('datagrid', $this->getDataGrid($gadget));
 
         //CommentUI
         $tpl->SetVariable('comment_ui', $this->CommentUI());
@@ -179,10 +179,11 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
      */
     function GetDataAsArray($gadget, $term, $status, $offset, $orderBy = 1)
     {
+        $data = array();
         $cModel = $this->gadget->model->load('Comments');
         $comments = $cModel->GetComments($gadget, '', '', $term, $status, 15, $offset, $orderBy);
         if (Jaws_Error::IsError($comments)) {
-            return array();
+            return $data;
         }
 
         $date = Jaws_Date::getInstance();
@@ -214,23 +215,26 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
      * Builds and returns the UI
      *
      * @access  public
+     * @param   string $gadget  Caller gadget name
      * @return  string  UI XHTML
      */
-    function getDataGrid()
+    function getDataGrid($gadget)
     {
         $gridBox =& Piwi::CreateWidget('VBox');
         $gridBox->SetID('comments_box');
         $gridBox->SetStyle('width: 100%;');
 
-        //Datagrid
+        //Data grid
         $grid =& Piwi::CreateWidget('DataGrid', array());
         $grid->SetID('comments_datagrid');
         $grid->SetStyle('width: 100%;');
         $grid->useMultipleSelection();
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('COMMENTS_GADGETS')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_CREATED')));
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_STATUS')));
+        if (empty($gadget)) {
+            $grid->AddColumn(Piwi::CreateWidget('Column', _t('COMMENTS_GADGETS')), null, false);
+        }
+        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME')), null, false);
+        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_CREATED')), null, false);
+        $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_STATUS')), null, false);
 
         //Tools
         $gridForm =& Piwi::CreateWidget('Form');
@@ -249,9 +253,16 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         $actions->AddOption(_t('COMMENTS_MARK_AS_SPAM'), Comments_Info::COMMENTS_STATUS_SPAM);
         $actions->AddOption(_t('COMMENTS_MARK_AS_PRIVATE'), Comments_Info::COMMENTS_STATUS_PRIVATE);
 
-        $execute =& Piwi::CreateWidget('Button', 'executeCommentAction', '',
-                                       STOCK_YES);
-        $execute->AddEvent(ON_CLICK, "javascript:commentDGAction(document.getElementById('comments_actions_combo'));");
+        $execute =& Piwi::CreateWidget(
+            'Button',
+            'executeCommentAction',
+            '',
+            STOCK_YES
+        );
+        $execute->AddEvent(
+            ON_CLICK,
+            "javascript:commentDGAction(document.getElementById('comments_actions_combo'));"
+        );
 
         $gridFormBox->Add($actions);
         $gridFormBox->Add($execute);
