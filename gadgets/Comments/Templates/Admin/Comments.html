@@ -14,7 +14,7 @@
   </tr>
   <tr>
     <td style="vertical-align:top; text-align:left">{datagrid}</td>
-    <td class="workarea" style="vertical-align: top; width: 370px;">
+    <td class="workarea" style="vertical-align:top; width:300px;">
       <input type="hidden" name="id" id="id" value="0" />
       <input type="hidden" name="gadget" id="gadget" value="" />
       <fieldset>
@@ -42,12 +42,11 @@
 <!-- END Comments -->
 <!-- BEGIN CommentUI -->
 <table id="comment_box">
-  <tr><td><label>{lbl_ip}:</label></td><td><label id="comment_ip"></label></td></tr>
-  <tr><td><label for="name">{lbl_name}:</label></td><td>{name}</td></tr>
-  <tr><td><label for="email">{lbl_email}:</label></td><td dir="ltr">{email}</td></tr>
-  <tr><td><label for="url">{lbl_url}:</label></td><td dir="ltr">{url}</td></tr>
-  <tr><td><label for="comment_status">{lbl_status}:</label></td><td>{status}</td></tr>
-  <tr><td><label for="message">{lbl_message}:</label></td><td>{message}</td></tr>
-  <tr><td><label for="reply">{lbl_reply}:</label></td><td>{reply}</td></tr>
+  <div><label for="name">{lbl_name}:</label>{name} <small id="comment_ip" title="{lbl_ip}"></small></div>
+  <div><label for="email">{lbl_email}:</label>{email}</div>
+  <div><label for="url">{lbl_url}:</label>{url}</div>
+  <div><label for="comment_status">{lbl_status}:</label>{status}</div>
+  <div><label for="message">{lbl_message}:</label>{message}</div>
+  <div><label for="reply">{lbl_reply}:</label>{reply}</div>
 </table>
 <!-- END CommentUI -->

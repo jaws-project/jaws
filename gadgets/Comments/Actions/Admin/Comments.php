@@ -51,7 +51,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
 
         //Status
         $status =& Piwi::CreateWidget('Combo', 'status');
-        $status->AddOption('&nbsp;',0);
+        $status->AddOption(_t('GLOBAL_ALL'), 0);
         $status->AddOption(_t('COMMENTS_STATUS_APPROVED'), Comments_Info::COMMENTS_STATUS_APPROVED);
         $status->AddOption(_t('COMMENTS_STATUS_WAITING'), Comments_Info::COMMENTS_STATUS_WAITING);
         $status->AddOption(_t('COMMENTS_STATUS_SPAM'), Comments_Info::COMMENTS_STATUS_SPAM);
@@ -199,8 +199,11 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
             if ($requester == $this->gadget->name) {
                 $newRow['gadget'] = _t(strtoupper($row['gadget']).'_TITLE');
             }
-            $link =& Piwi::CreateWidget('Link', $row['name'], "javascript:editComment(this, '{$row['id']}');");
-            $newRow['name'] = $link->Get();
+            $comment = Jaws_UTF8::strlen($row['msg_txt']) > 35 ?
+                (Jaws_UTF8::substr($row['msg_txt'], 0, 32). '...') : $row['msg_txt'];
+            $link =& Piwi::CreateWidget('Link', $comment, "javascript:editComment(this, '{$row['id']}');");
+            $newRow['comment'] = $link->Get();
+            $newRow['name'] = $row['name'];
             $newRow['created'] = $date->Format($row['createtime']);
             if ($row['status'] == Comments_Info::COMMENTS_STATUS_APPROVED) {
                 $status = _t('COMMENTS_STATUS_APPROVED');
@@ -212,7 +215,6 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
                 $status = _t('COMMENTS_STATUS_PRIVATE');
             }
             $newRow['status']  = $status;
-
             $data[] = $newRow;
         }
         return $data;
@@ -239,6 +241,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         if (empty($gadget)) {
             $grid->AddColumn(Piwi::CreateWidget('Column', _t('COMMENTS_GADGETS')), null, false);
         }
+        $grid->AddColumn(Piwi::CreateWidget('Column', _t('COMMENTS_COMMENT')), null, false);
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME')), null, false);
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_CREATED')), null, false);
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_STATUS')), null, false);
