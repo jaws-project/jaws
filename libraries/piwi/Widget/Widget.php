@@ -59,7 +59,7 @@ class Widget
      * @access private
      * @see    setVisible()
      */
-    var $_visible;
+    var $_visible = true;
 
     /**
      * Gives the style of the widget
@@ -407,6 +407,10 @@ class Widget
 
         if (!empty($this->_class)) {
             $xhtml .= " class=\"".$this->_class."\"";
+        }
+
+        if (!$this->_visible) {
+            $this->_style.= 'display:none;';
         }
 
         if (!empty($this->_style)) {
