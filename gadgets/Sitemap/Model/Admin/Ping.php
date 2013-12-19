@@ -11,9 +11,8 @@
  */
 class Sitemap_Model_Admin_Ping extends Jaws_Gadget_Model
 {
-
     /**
-     * Pings the sitemap.xml file to many search engines
+     * Ping search engines to announce sitemap.xml updated
      *
      * @access  public
      * @return  bool    True
@@ -22,29 +21,20 @@ class Sitemap_Model_Admin_Ping extends Jaws_Gadget_Model
     {
         $url = $this->gadget->urlMap('SitemapXML', array(), true);
         $searchEngines = array(
-            'http://www.google.com/webmasters/tools/ping?sitemap={url}' => 'get',
-            'http://www.bing.com/ping?sitemap={url}' => 'get',
+            'google' => 'http://www.google.com/webmasters/tools/ping?sitemap={url}',
+            'bing' => 'http://www.bing.com/ping?sitemap={url}',
         );
 
-        require_once PEAR_PATH . 'HTTP/Request.php';
-
-        $httpRequest = new HTTP_Request();
-        foreach ($searchEngines as $engine => $method) {
-            $method = strtolower($method);
-            if ($method == 'post') {
-                $httpRequest->setMethod(HTTP_REQUEST_METHOD_POST);
-            } else {
-                $httpRequest->setMethod(HTTP_REQUEST_METHOD_GET);
-            }
-            $engine = str_replace('{url}', $url, $engine);
-
-            $httpRequest->setURL($engine);
-            $resRequest = $httpRequest->sendRequest();
-
-            if (PEAR::isError($resRequest) || (int)$httpRequest->getResponseCode() <> 200) {
-                $GLOBALS['log']->Log(JAWS_LOG_INFO, 'Could not ping sitemap URL to: ' . $engine);
+        $httpRequest = new Jaws_HTTPRequest();
+        $httpRequest->default_error_level = JAWS_ERROR_NOTICE;
+        foreach ($searchEngines as $engine => $pingURL) {
+            $pingURL = str_replace('{url}', $url, $pingURL);
+            $result = $httpRequest->get($pingURL, $retData);
+            if (!Jaws_Error::IsError($result) && $result != 200) {
+                $GLOBALS['log']->Log(JAWS_ERROR_NOTICE, "Could not ping search engine '$engine': $retData");
             }
         }
+
         return true;
     }
 
