@@ -28,7 +28,7 @@ class Contact_Actions_Admin_Default extends Jaws_Gadget_Action
         $menubar = new Jaws_Widgets_Menubar();
         if ($this->gadget->GetPermission('ManageContacts')) {
             $menubar->AddOption('Contacts',
-                                _t('CONTACT_NAME'),
+                                _t('CONTACT_TITLE'),
                                 BASE_SCRIPT . '?gadget=Contact&amp;action=Contacts',
                                 'gadgets/Contact/Resources/images/contact_mini.png');
         }
