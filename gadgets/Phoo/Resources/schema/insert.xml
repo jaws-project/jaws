@@ -13,6 +13,10 @@
      <value>General</value>
     </field>
     <field>
+     <name>fast_url</name>
+     <value>general</value>
+    </field>
+    <field>
      <name>description</name>
      <value></value>
     </field>

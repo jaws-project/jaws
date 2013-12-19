@@ -225,14 +225,6 @@
             <length>255</length>
         </field>
 
-        <index>
-            <name><variable>table_prefix</variable>phoo_group_name</name>
-            <unique>true</unique>
-            <field>
-                <name>name</name>
-            </field>
-        </index>
-
     </declaration>
  </table>
 

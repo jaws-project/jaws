@@ -134,6 +134,18 @@ class Phoo_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
+            // set default group for albums
+            $table = Jaws_ORM::getInstance()->table('phoo_album');
+            $albums = $table->select('id:integer')->fetchColumn();
+            if (Jaws_Error::IsError($albums)) {
+                return $albums;
+            }
+
+            $table = Jaws_ORM::getInstance()->table('phoo_album_group');
+            foreach ($albums as $album) {
+                $table->insert(array('album' => $album, 'group' => 1))->exec();
+            }
+
             $this->gadget->registry->delete('plugabble');
             $this->gadget->acl->insert('ManageGroups');
         }
