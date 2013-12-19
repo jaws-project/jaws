@@ -81,7 +81,7 @@ class Jaws_Gadget
      * @var     array
      * @access  private
      */
-    var $_Attributes = array();
+    var $attributes = array();
 
     /**
      * Name of the gadget
@@ -138,8 +138,9 @@ class Jaws_Gadget
     /**
      * Creates the Jaws_Gadget instance
      *
-     * @return  object returns the instance
      * @access  public
+     * @param   string  $gadget Gadget name
+     * @return  object returns the instance
      */
     static function getInstance($gadget)
     {
@@ -191,45 +192,37 @@ class Jaws_Gadget
     /**
      * Sets an attribute
      *
-     * @access  protected
-     * @param   string $key         Attribute name
-     * @param   string $value       Attribute value
-     * @param   string $description Attribute description
+     * @access  public
+     * @param   string $key     Attribute name
+     * @param   string $value   Attribute value
      * @return  void
      */
-    function SetAttribute($key, $value, $description = '')
+    function setAttribute($key, $value)
     {
-        $this->_Attributes[$key] = array(
-            'value'       => $value,
-            'description' => $description
-        );
+        $this->attributes[$key] = $value;
     }
 
     /**
      * Returns the value of the given attribute key
      *
-     * @access  protected
+     * @access  public
      * @param   string $key Attribute name
      * @return  mixed  value of the given attribute key
      */
-    function GetAttribute($key)
+    function getAttribute($key)
     {
-        if (array_key_exists($key, $this->_Attributes)) {
-            return $this->_Attributes[$key]['value'];
-        }
-
-        return null;
+        return @$this->attributes[$key];
     }
 
     /**
-     * Get all attributres for the gadget
+     * Get all attributes for the gadget
      *
      * @access  public
      * @return  array Attributes of the gadget
      */
-    function GetAttributes()
+    function getAttributes()
     {
-        return $this->_Attributes;
+        return $this->attributes;
     }
 
     /**
@@ -487,7 +480,7 @@ class Jaws_Gadget
     /**
      * Search in map and return its url if found
      *
-     * @access  protected
+     * @access  public
      * @param   string  $action    Action name
      * @param   array   $params    Parameters of action
      * @param   bool    $abs_url   Absolute or relative URL
