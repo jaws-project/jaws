@@ -20,13 +20,8 @@ class Shoutbox_Actions_Admin_Comments extends Shoutbox_Actions_Admin_Default
      */
     function Comments()
     {
-        $this->AjaxMe('script.js');
-        $GLOBALS['app']->Layout->AddScriptLink('gadgets/Comments/Resources/script.js');
-
         $cHTML = Jaws_Gadget::getInstance('Comments')->action->loadAdmin('Comments');
-        return $cHTML->Comments('shoutbox', $this->MenuBar('Comments'));
+        return $cHTML->Comments($this->gadget->name, $this->MenuBar('Comments'));
     }
-
-
 
 }
