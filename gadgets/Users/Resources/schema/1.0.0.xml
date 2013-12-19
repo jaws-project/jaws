@@ -23,7 +23,6 @@
 
         <field>
             <name>password</name>
-            <was>passwd</was>
             <type>text</type>
             <length>64</length>
             <notnull>true</notnull>
@@ -61,7 +60,6 @@
 
         <field>
             <name>email_verify_key</name>
-            <was>verification_key</was>
             <type>text</type>
             <length>48</length>
         </field>
@@ -120,7 +118,6 @@
 
         <field>
             <name>occupations</name>
-            <was>occupation</was>
             <type>text</type>
         </field>
 
@@ -222,7 +219,6 @@
 
         <field>
             <name>bad_password_count</name>
-            <was>bad_passwd_count</was>
             <type>integer</type>
             <length>2</length>
             <default>0</default>
@@ -230,7 +226,6 @@
 
         <field>
             <name>concurrents</name>
-            <was>concurrent_logins</was>
             <type>integer</type>
             <length>2</length>
             <default>0</default>
@@ -238,7 +233,6 @@
 
         <field>
             <name>password_changed_date</name>
-            <was>passwd_changed_date</was>
             <type>integer</type>
             <length>16</length>
             <default>0</default>
