@@ -25,28 +25,6 @@ class Phoo_Actions_Admin_Comments extends Phoo_Actions_Admin_Default
     }
 
     /**
-     * Builds the data (an array) of filtered comments
-     *
-     * @access  public
-     * @param   int     $limit   Limit of comments
-     * @param   string  $filter  Filter
-     * @param   string  $search  Search word
-     * @param   string  $status  Spam status (approved, waiting, spam)
-     * @return  array   Filtered Comments
-     */
-    function CommentsData($limit = 0, $filter = '', $search = '', $status = '')
-    {
-        $cHtml = Jaws_Gadget::getInstance('Comments')->action->loadAdmin('Comments');
-        return $cHtml->GetDataAsArray(
-            'phoo',
-            $filter,
-            $search,
-            $status,
-            $limit
-        );
-    }
-
-    /**
      * Displays blog comments manager
      *
      * @access  public
