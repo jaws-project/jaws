@@ -20,9 +20,9 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function SearchComments()
     {
         $this->gadget->CheckPermission('ManageComments');
-        @list($limit, $gadget, $search, $status) = jaws()->request->fetchAll('post');
+        @list($requester, $gadget, $search, $status, $offset) = jaws()->request->fetchAll('post');
         $cHTML = $this->gadget->action->loadAdmin('Comments');
-        return $cHTML->GetDataAsArray($gadget, $search, $status, $limit, true);
+        return $cHTML->GetDataAsArray($requester, $gadget, $search, $status, $offset, true);
     }
 
     /**

@@ -26,25 +26,28 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         //Menu bar
         $tpl->SetVariable('menubar', empty($menubar)? $this->MenuBar('Comments') : $menubar);
 
-        //Gadgets filter
-        $gadgetsCombo =& Piwi::CreateWidget('Combo', 'gadgets_filter');
-        $gadgetsCombo->SetID('gadgets_filter');
-        $gadgetsCombo->setStyle('width: 100px;');
-        $gadgetsCombo->AddEvent(ON_CHANGE, "searchComment()");
-        $gadgetsCombo->AddOption(_t('GLOBAL_ALL'), '');
-        // TODO: Get List Of Gadget Which Use Comments
-        $gadgetsCombo->AddOption(_t('COMMENTS_TITLE'), 'Comments');
-        $gadgetsCombo->AddOption(_t('BLOG_TITLE'), 'Blog');
-        $gadgetsCombo->AddOption(_t('PHOO_TITLE'), 'Phoo');
-        $gadgetsCombo->AddOption(_t('SHOUTBOX_TITLE'), 'Shoutbox');
         if (empty($gadget)) {
+            //Gadgets filter label
             $lblGadget =& Piwi::CreateWidget('Label', _t('COMMENTS_GADGETS').': ', 'gadgets_filter');
             $tpl->SetVariable('lbl_gadgets_filter', $lblGadget->Get());
+
+            //Gadgets filter
+            $filterGadgets =& Piwi::CreateWidget('Combo', 'gadgets_filter');
+            $filterGadgets->SetID('gadgets_filter');
+            $filterGadgets->setStyle('width: 100px;');
+            $filterGadgets->AddEvent(ON_CHANGE, "searchComment()");
+            $filterGadgets->AddOption(_t('GLOBAL_ALL'), '');
+            // TODO: Get List Of Gadget Which Use Comments
+            $filterGadgets->AddOption(_t('COMMENTS_TITLE'), 'Comments');
+            $filterGadgets->AddOption(_t('BLOG_TITLE'), 'Blog');
+            $filterGadgets->AddOption(_t('PHOO_TITLE'), 'Phoo');
+            $filterGadgets->AddOption(_t('SHOUTBOX_TITLE'), 'Shoutbox');
+            $filterGadgets->SetDefault('');
         } else {
-            $gadgetsCombo->setVisible(false);
+            $filterGadgets =& Piwi::CreateWidget('HiddenEntry', 'gadgets_filter', $gadget);
+            $filterGadgets->SetID('gadgets_filter');
         }
-        $gadgetsCombo->SetDefault($gadget);
-        $tpl->SetVariable('gadgets_filter', $gadgetsCombo->Get());
+        $tpl->SetVariable('gadgets_filter', $filterGadgets->Get());
 
         //Status
         $status =& Piwi::CreateWidget('Combo', 'status');
@@ -65,7 +68,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         $tpl->SetVariable('filter', $filterEntry->Get());
         $filterButton =& Piwi::CreateWidget('Button', 'filter_button',
                                             _t('COMMENTS_FILTER'), STOCK_SEARCH);
-        $filterButton->AddEvent(ON_CLICK, 'javascript:searchComment();');
+        $filterButton->AddEvent(ON_CLICK, 'searchComment();');
 
         $tpl->SetVariable('filter_button', $filterButton->Get());
 
@@ -171,13 +174,14 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
      * Build a new array with filtered data
      *
      * @access  public
+     * @param   string  $requester  Requester gadget name
      * @param   string  $gadget     Gadget name
      * @param   string  $term       Search term
      * @param   int     $status     Spam status (approved=1, waiting=2, spam=3)
      * @param   mixed   $offset     Data offset (numeric/boolean)
      * @return  array   Filtered Comments
      */
-    function GetDataAsArray($gadget, $term, $status, $offset, $orderBy = 1)
+    function GetDataAsArray($requester, $gadget, $term, $status, $offset, $orderBy = 1)
     {
         $data = array();
         $cModel = $this->gadget->model->load('Comments');
@@ -191,7 +195,9 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         foreach ($comments as $row) {
             $newRow = array();
             $newRow['__KEY__'] = $row['id'];
-            $newRow['gadget'] = _t(strtoupper($row['gadget']).'_TITLE');
+            if ($requester == $this->gadget->name) {
+                $newRow['gadget'] = _t(strtoupper($row['gadget']).'_TITLE');
+            }
             $link =& Piwi::CreateWidget('Link', $row['name'], "javascript:editComment(this, '{$row['id']}');");
             $newRow['name'] = $link->Get();
             $newRow['created'] = $date->Format($row['createtime']);

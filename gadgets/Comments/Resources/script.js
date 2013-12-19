@@ -49,10 +49,11 @@ function getCommentsDataGrid(name, offset, reset)
 {
     var comments = CommentsAjax.callSync(
         'SearchComments',
-        offset,
+        CommentsAjax.mainRequest.gadget,
         $('gadgets_filter').value,
         $('filter').value,
-        $('status').value
+        $('status').value,
+        offset
     );
     if (reset) {
         stopCommentAction();
