@@ -644,6 +644,12 @@ background:#3465a4 url(../Resources/images/collapse.png) 98% no-repeat;
 .notify_box h2.collapsed{
 background:#3465a4 url(../Resources/images/uncollapse.png) 98% no-repeat;
 }
+.notify_box li{
+padding:2px 0px;
+}
+.notify_box img{
+vertical-align:-3px;
+}
 .notify_content{
 padding:2px;
 overflow:auto;
