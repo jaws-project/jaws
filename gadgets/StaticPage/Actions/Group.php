@@ -75,6 +75,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
+        $GLOBALS['app']->Layout->SetTitle($group['title']);
         $GLOBALS['app']->Layout->AddToMetaKeywords($group['meta_keywords']);
         $GLOBALS['app']->Layout->SetDescription($group['meta_description']);
 
