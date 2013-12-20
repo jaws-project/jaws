@@ -105,6 +105,31 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
             }
         }
 
+        // login history
+        if (Jaws_Gadget::IsGadgetInstalled('Logs')) {
+            $logModel = Jaws_Gadget::getInstance('Logs')->model->loadAdmin('Logs');
+            $logs = $logModel->GetLogs(
+                array(
+                    'gadget' => 'Users',
+                    'action' => 'Login',
+                    'user'   => $GLOBALS['app']->Session->GetAttribute('user'),
+                ),
+                10
+            );
+            if (!Jaws_Error::IsError($logs) && !empty($logs)) {
+                $tpl->SetBlock('login_history');
+                $date = Jaws_Date::getInstance();
+                $tpl->SetVariable('title', _t('LOGS_LOGIN_HISTORY'));
+                foreach ($logs as $log) {
+                    $tpl->SetBlock('login_history/item');
+                    $tpl->SetVariable('date', $date->Format($log['insert_time'], 'Y-m-d H:i:s'));
+                    $tpl->SetVariable('ip', long2ip($log['ip']));
+                    $tpl->ParseBlock('login_history/item');
+                }
+                $tpl->ParseBlock('login_history');
+            }
+        }
+
         $last_checking = unserialize($this->gadget->registry->fetch('update_last_checking'));
         $do_checking = (time() - $last_checking['time']) > 86400;
         $tpl->SetBlock('versionbox');
