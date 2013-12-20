@@ -107,7 +107,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
 
         // login history
         if (Jaws_Gadget::IsGadgetInstalled('Logs')) {
-            $logModel = Jaws_Gadget::getInstance('Logs')->model->loadAdmin('Logs');
+            $logModel = Jaws_Gadget::getInstance('Logs')->model->load('Logs');
             $logs = $logModel->GetLogs(
                 array(
                     'gadget' => 'Users',
@@ -126,7 +126,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
                     $tpl->SetVariable('agent', $log['agent']);
                     $tpl->SetVariable('status_code', $log['status']);
                     $tpl->SetVariable('status_title', _t('GLOBAL_HTTP_ERROR_TITLE_'. $log['status']));
-                    $tpl->SetVariable('icon', ($log['status'] == 200)? STOCK_OK : STOCK_STOP);
+                    $tpl->SetVariable('icon', 'images/stock/'. ($log['status'] == 200 ?  'info.png' : 'stop.png'));
                     $tpl->SetVariable('date', $date->Format($log['insert_time'], 'DN d MN Y H:i'));
                     
                     $tpl->ParseBlock('login_history/item');
