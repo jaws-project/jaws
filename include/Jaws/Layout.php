@@ -202,6 +202,7 @@ class Jaws_Layout
         $base_url = $GLOBALS['app']->GetSiteURL('/');
 
         $this->_Template->SetVariable('base_url', $base_url);
+        $this->_Template->SetVariable('skip_to_content', _t('GLOBAL_SKIP_TO_CONTENT'));
         $this->_Template->SetVariable('.dir', $dir);
         $this->_Template->SetVariable('.browser', $browser);
         $this->_Template->SetVariable('site-url', $base_url);
@@ -249,6 +250,7 @@ class Jaws_Layout
 
         $base_url = $GLOBALS['app']->GetSiteURL('/');
         $this->_Template->SetVariable('BASE_URL', $base_url);
+        $this->_Template->SetVariable('skip_to_content', _t('GLOBAL_SKIP_TO_CONTENT'));
         $this->_Template->SetVariable('admin_script', BASE_SCRIPT);
         $this->_Template->SetVariable('site-name',      $this->attributes['site_name']);
         $this->_Template->SetVariable('site-slogan',    $this->attributes['site_slogan']);
