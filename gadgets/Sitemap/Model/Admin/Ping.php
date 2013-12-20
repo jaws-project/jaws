@@ -19,10 +19,11 @@ class Sitemap_Model_Admin_Ping extends Jaws_Gadget_Model
      */
     function PingSearchEngines()
     {
-        $url = $this->gadget->urlMap('SitemapXML', array(), true);
+        $url = urlencode($this->gadget->urlMap('SitemapXML', array(), true));
         $searchEngines = array(
             'google' => 'http://www.google.com/webmasters/tools/ping?sitemap={url}',
-            'bing' => 'http://www.bing.com/ping?sitemap={url}',
+            'bing'   => 'http://www.bing.com/ping?sitemap={url}',
+            'ask'    => 'http://submissions.ask.com/ping?sitemap={url}',
         );
 
         $httpRequest = new Jaws_HTTPRequest();
