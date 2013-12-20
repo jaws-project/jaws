@@ -197,6 +197,12 @@ position:relative;
 padding-top:8px;
 line-height:120%;
 }
+.accessibility{
+width:0px;
+height:0px;
+position:fixed;
+visibility:hidden;
+}
 .gadget{
 position:relative;
 margin-bottom:12px;
