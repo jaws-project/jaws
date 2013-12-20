@@ -1,12 +1,12 @@
 /**
  * Logs Javascript actions
  *
- * @category   Ajax
- * @package    Logs
- * @author     HamidReza Aboutalebi <hamid@aboutalebi.com>
- * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2005-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    Ajax
+ * @package     Logs
+ * @author      HamidReza Aboutalebi <hamid@aboutalebi.com>
+ * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
+ * @copyright   2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 /**
  * Use async mode, create Callback

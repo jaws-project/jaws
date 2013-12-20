@@ -2,11 +2,11 @@
 /**
  * Logs Gadget
  *
- * @category   GadgetInfo
- * @package    Logs
- * @author     Hamid Reza Aboutalebi <hamid@aboutalebi.com>
- * @copyright  2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    GadgetInfo
+ * @package     Logs
+ * @author      Hamid Reza Aboutalebi <hamid@aboutalebi.com>
+ * @copyright   2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Logs_Info extends Jaws_Gadget
 {
@@ -25,6 +25,14 @@ class Logs_Info extends Jaws_Gadget
      * @access  private
      */
     var $_IsCore = true;
+
+    /**
+     * Default front-end action name
+     *
+     * @var     string
+     * @access  protected
+     */
+    var $default_action = 'LoginHistory';
 
     /**
      * Default front-end action name

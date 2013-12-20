@@ -2,11 +2,12 @@
 /**
  * Logs Gadget
  *
- * @category   GadgetAdmin
- * @package    Logs
- * @author     HamidReza Aboutalebi <hamid@aboutalebi.com>
- * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2013 Jaws Development Group
+ * @category     GadgetAdmin
+ * @package     Logs
+ * @author      HamidReza Aboutalebi <hamid@aboutalebi.com>
+ * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
+ * @copyright   2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
 {

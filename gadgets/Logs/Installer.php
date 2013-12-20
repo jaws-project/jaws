@@ -2,11 +2,11 @@
 /**
  * Logs Installer
  *
- * @category   GadgetModel
- * @package    Logs
- * @author     Hamid Reza Aboutalebi <hamid@aboutalebi.com>
- * @copyright  2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    GadgetModel
+ * @package     Logs
+ * @author      Hamid Reza Aboutalebi <hamid@aboutalebi.com>
+ * @copyright   2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Logs_Installer extends Jaws_Gadget_Installer
 {

@@ -2,13 +2,21 @@
 /**
  * Logs Actions file
  *
- * @category   GadgetActions
- * @package    Logs
- * @author     Hamid Reza Aboutalebi <hamid@aboutalebi.com>
- * @copyright  2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    GadgetActions
+ * @package     Logs
+ * @author      Hamid Reza Aboutalebi <hamid@aboutalebi.com>
+ * @copyright   2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 
+/**
+ * Index actions
+ */
+$actions['LoginHistory'] = array(
+    'normal' => true,
+    'layout' => true,
+    'file' => 'History',
+);
 /**
  * Admin actions
  */
