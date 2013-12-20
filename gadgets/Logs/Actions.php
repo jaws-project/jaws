@@ -15,6 +15,7 @@
 $actions['LoginHistory'] = array(
     'normal' => true,
     'layout' => true,
+    'parametric' => true,
     'file' => 'History',
 );
 /**

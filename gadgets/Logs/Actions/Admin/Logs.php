@@ -219,7 +219,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $post = jaws()->request->fetch(array('offset', 'filters:array'), 'post');
         $filters = $post['filters'];
 
-        $model = $this->gadget->model->loadAdmin('Logs');
+        $model = $this->gadget->model->load('Logs');
         $logs = $model->GetLogs($filters, 15, $post['offset']);
         if (Jaws_Error::IsError($logs)) {
             return array();
