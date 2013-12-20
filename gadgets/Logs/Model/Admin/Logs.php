@@ -25,13 +25,14 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
         $logsTable->select(
             'logs.id:integer', 'gadget', 'action',
             'users.nickname', 'users.username', 'users.id as user_id:integer',
-            'apptype', 'backend:boolean', 'logs.status', 'logs.insert_time'
+            'apptype', 'backend:boolean', 'logs.ip', 'logs.status', 'logs.insert_time'
         );
         $logsTable->join('users', 'users.id', 'logs.user', 'left');
         $logsTable->orderBy('id desc');
         $logsTable->limit($limit, $offset);
 
         if (!empty($filters) && count($filters) > 1) {
+            // from_date
             if (isset($filters['from_date']) && !empty($filters['from_date'])) {
                 if (!is_numeric($filters['from_date'])) {
                     $objDate = Jaws_Date::getInstance();
@@ -41,6 +42,7 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
                 }
                 $logsTable->and()->where('logs.insert_time', $filters['from_date'], '>=');
             }
+            // to_date
             if (isset($filters['to_date']) && !empty($filters['to_date'])) {
                 if (!is_numeric($filters['to_date'])) {
                     $objDate = Jaws_Date::getInstance();
@@ -50,15 +52,23 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
                 }
                 $logsTable->and()->where('logs.insert_time', $filters['to_date'], '<=');
             }
+            // gadget
             if (isset($filters['gadget']) && !empty($filters['gadget'])) {
                 $logsTable->and()->where('logs.gadget', $filters['gadget']);
             }
-            if (isset($filters['user']) && !empty($filters['user'])) {
-                $logsTable->and()->where('user', $filters['user']);
+            // action
+            if (isset($filters['action']) && !empty($filters['action'])) {
+                $logsTable->and()->where('logs.action', $filters['action']);
             }
+            // user
+            if (isset($filters['user']) && !empty($filters['user'])) {
+                $logsTable->and()->where('user', (int)$filters['user']);
+            }
+            // priority
             if (isset($filters['priority']) && !empty($filters['priority'])) {
                 $logsTable->and()->where('priority', $filters['priority']);
             }
+            // status
             if (isset($filters['status']) && !empty($filters['status'])) {
                 $logsTable->and()->where('logs.status', $filters['status']);
             }
