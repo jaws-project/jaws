@@ -93,9 +93,10 @@ class StaticPage_Model_Page extends Jaws_Gadget_Model
      * @param   int     $limit      The number of pages to return (null = all pages)
      * @param   int     $orderBy    The coulmn which the result must be sorted by
      * @param   int     $offset     Starting offset
+     * @param   int     $visible    Visible?
      * @return  array   List of pages
      */
-    function GetPages($gid = null, $limit = null, $orderBy = 1, $offset = false)
+    function GetPages($gid = null, $limit = null, $orderBy = 1, $offset = false, $visible = null)
     {
         $orders = array(
             'base_id',
@@ -119,6 +120,11 @@ class StaticPage_Model_Page extends Jaws_Gadget_Model
         if (!is_null($gid)) {
             $spTable->and()->where('sp.group_id', $gid);
         }
+
+        if ($visible != null) {
+            $spTable->where('visible', (bool)$visible);
+        }
+
         $spTable->orderBy('spt.'.$orderBy);
         $result = $spTable->limit($limit, $offset)->fetchAll();
         if (Jaws_Error::IsError($result)) {
