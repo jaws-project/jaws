@@ -97,10 +97,29 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $tpl->SetVariable('lbl_filter_status', _t('LOGS_LOG_STATUS'));
 
         //DataGrid
-        $tpl->SetVariable('grid', $this->LogsDataGrid());
+        $tpl->SetVariable('datagrid', $this->LogsDataGrid());
 
         //LogUI
         $tpl->SetVariable('log_ui', $this->LogUI());
+
+        $actions =& Piwi::CreateWidget('Combo', 'logs_actions');
+        $actions->SetID('logs_actions_combo');
+        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
+        $actions->AddOption('&nbsp;', '');
+        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+
+        // Actions
+        $actions =& Piwi::CreateWidget('Combo', 'logs_actions');
+        $actions->SetID('logs_actions_combo');
+        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
+        $actions->AddOption('&nbsp;', '');
+        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+        $tpl->SetVariable('actions_combo', $actions->Get());
+
+        $btnExecute =& Piwi::CreateWidget('Button', 'executeLogsAction', '', STOCK_YES);
+        $btnExecute->AddEvent(ON_CLICK, "javascript:logsDGAction($('logs_actions_combo'));");
+        $tpl->SetVariable('btn_execute', $btnExecute->Get());
+
 
         $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'stopAction();');
@@ -122,16 +141,8 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
      */
     function LogsDataGrid()
     {
-        $model = $this->gadget->model->loadAdmin('Logs');
-        $total = $model->TotalOfData('logs');
-
-        $gridBox =& Piwi::CreateWidget('VBox');
-        $gridBox->SetID('logs_box');
-        $gridBox->SetStyle('width: 100%;');
-
         $grid =& Piwi::CreateWidget('DataGrid', array());
         $grid->SetID('logs_datagrid');
-        $grid->TotalRows($total);
         $grid->useMultipleSelection();
         $grid->pageBy(15);
 
@@ -154,31 +165,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $column5->SetStyle('width:128px; white-space:nowrap;');
         $grid->AddColumn($column5);
 
-        //Tools
-        $gridForm =& Piwi::CreateWidget('Form');
-        $gridForm->SetID('logs_form');
-        $gridForm->SetStyle('float: right');
-
-        $gridFormBox =& Piwi::CreateWidget('HBox');
-        $actions =& Piwi::CreateWidget('Combo', 'logs_actions');
-        $actions->SetID('logs_actions_combo');
-        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
-        $actions->AddOption('&nbsp;', '');
-        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
-
-        $execute =& Piwi::CreateWidget('Button', 'executeLogsAction', '',
-            STOCK_YES);
-        $execute->AddEvent(ON_CLICK, "javascript: logsDGAction(document.getElementById('logs_actions_combo'));");
-
-        $gridFormBox->Add($actions);
-        $gridFormBox->Add($execute);
-        $gridForm->Add($gridFormBox);
-
-        //Pack everything
-        $gridBox->Add($grid);
-        $gridBox->Add($gridForm);
-
-        return $gridBox->Get();
+        return $grid->Get();
     }
 
     /**
@@ -232,17 +219,20 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             $logData['__KEY__'] = $log['id'];
 
             // Gadget
-            $link =& Piwi::CreateWidget('Link', $log['gadget'], "javascript:viewLog(this, '".$log['id']."');");
-            $logData['gadget'] = $link->get();
+            $logData['gadget'] = _t(strtoupper($log['gadget'].'_TITLE'));
             // Action
             $logData['action'] = $log['action'];
-            // User - Username
+            // Username
             $logData['username'] = $log['username'];
-            // User - Nickname
+            // Nickname
             $logData['nickname'] = $log['nickname'];
             // Date
-            $logData['time'] = $date->Format($log['insert_time'], 'Y-m-d H:i:s');
-
+            $link =& Piwi::CreateWidget(
+                'Link',
+                $date->Format($log['insert_time'], 'Y-m-d H:i:s'),
+                "javascript:viewLog(this, '".$log['id']."');"
+            );
+            $logData['time'] = $link->Get();
             $newData[] = $logData;
         }
         return $newData;
@@ -280,13 +270,14 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $log['insert_time'] = $date->Format($log['insert_time'], 'DN d MN Y H:i:s');
         $log['ip'] = long2ip($log['ip']);
         $log['priority'] = _t('LOGS_PRIORITY_'. $log['priority']);
-        $log['backend'] = $log['backend'] ? _t('LOGS_LOG_SCRIPT_ADMIN') : _t('LOGS_LOG_SCRIPT_SCRIPT');
+        $log['status']   = _t('GLOBAL_HTTP_ERROR_TITLE_'. $log['status']);
+        $log['backend']  = $log['backend']? _t('LOGS_LOG_SCRIPT_ADMIN') : _t('LOGS_LOG_SCRIPT_INDEX');
 
-        // user's profile
+        // user's profile link
         $log['user_url'] = $GLOBALS['app']->Map->GetURLFor(
-                'Users',
-                'Profile',
-                array('user' => $log['username'])
+            'Users',
+            'Profile',
+            array('user' => $log['username'])
         );
 
         return $log;

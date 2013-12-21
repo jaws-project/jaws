@@ -17,7 +17,8 @@
             </tr>
         </table>
 
-        {grid}
+        {datagrid}
+        <div class="buttons">{actions_combo}{btn_execute}</div>
     </td>
     <td id="log_ui">
       <fieldset>
@@ -38,6 +39,10 @@
 <!-- END Logs -->
 <!-- BEGIN LogUI -->
 <table id="log_box">
+  <colgroup>
+    <col id="labels" />
+    <col />
+  </colgroup>
   <tr><td><label for="log_gadget">{lbl_gadget}:</label></td><td id="log_gadget"></td></tr>
   <tr><td><label for="log_action">{lbl_action}:</label></td><td id="log_action"></td></tr>
   <tr><td><label for="log_backend">{lbl_backend}:</label></td><td id="log_backend"></td></tr>

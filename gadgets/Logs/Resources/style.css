@@ -22,3 +22,15 @@ padding:2px;
 #logs_filter .filter_label{
 width:70px;
 }
+#log_box{
+width:100%;
+border-spacing:2px;
+}
+#log_box #labels{
+width:80px;
+}
+#log_box td{
+height:18px;
+padding:4px 0px;
+vertical-align:top;
+}
