@@ -41,7 +41,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
         $quotesTable = Jaws_ORM::getInstance()->table('quotes');
         $quotesTable->select(
             'id:integer', 'gid:integer', 'title', 'quotation', 'quote_type:integer',
-            'rank:integer', 'start_time', 'stop_time', 'show_title:boolean', 'published:boolean'
+            'rank:integer', 'start_time', 'stop_time', 'show_title:boolean', 'published:boolean', 'updatetime'
         );
 
         if (($id != -1) && ($gid != -1)) {

@@ -143,7 +143,8 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
     function QuotesByGroup()
     {
         header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 200 OK");
-        return $this->ViewGroupQuotes();
+        $action = $this->gadget->action->load('Groups');
+        return $action->ViewGroupQuotes();
     }
 
     /**
