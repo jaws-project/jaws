@@ -652,6 +652,9 @@ padding:2px 0px;
 .notify_box img{
 vertical-align:-3px;
 }
+.notify_box label{
+font-weight:normal;
+}
 .notify_content{
 padding:2px;
 overflow:auto;
@@ -672,9 +675,6 @@ width:32px;
 height:32px;
 margin:0 2px;
 vertical-align:middle;
-}
-.notify_components label{
-font-weight:normal;
 }
 .notify_components .notify_content{
 border-radius:0 0 2px 2px;
