@@ -113,7 +113,7 @@
         <name>published</name>
         <type>boolean</type>
         <notnull>true</notnull>
-        <default>Y</default>
+        <default>true</default>
      </field>
 
      <field>
