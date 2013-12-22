@@ -197,7 +197,7 @@ class Jaws_Gadget_Installer
         $GLOBALS['app']->Registry->update('gadgets_installed_items', $installed_gadgets);
 
         // adding gadget to autoload gadgets list
-        if (file_exists(JAWS_PATH . "gadgets/{$this->gadget->name}/Autoload.php")) {
+        if (file_exists(JAWS_PATH . "gadgets/{$this->gadget->name}/Hooks/Autoload.php")) {
             $autoload_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_autoload_items');
             $autoload_gadgets.= $this->gadget->name. ',';
             $GLOBALS['app']->Registry->update('gadgets_autoload_items', $autoload_gadgets);
