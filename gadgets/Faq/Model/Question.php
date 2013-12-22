@@ -82,6 +82,23 @@ class Faq_Model_Question extends Jaws_Gadget_Model
     }
 
     /**
+     * Get the list of questions
+     *
+     * @access  public
+     * @return  mixed   Returns an array of questions and Jaws_Error on error
+     */
+    function GetAllQuestions()
+    {
+        $faqTable = Jaws_ORM::getInstance()->table('faq');
+        $faqTable->select(
+            'id:integer', 'question', 'fast_url', 'category:integer', 'updatetime'
+        );
+        $faqTable->and()->where('published', true);
+
+        return $faqTable->fetchAll();
+    }
+
+    /**
      * Get a question in specific
      *
      * @access  public
