@@ -124,7 +124,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
      */
     function GetGadgetSitemapXML($gadget)
     {
-        $xml_file = JAWS_DATA . 'sitemap/'. strtoupper($gadget). '/sitemap.xml';
+        $xml_file = JAWS_DATA . 'sitemap/'. strtolower($gadget). '/sitemap.xml';
         if (file_exists($xml_file)) {
             if (false === $data = @file_get_contents($xml_file)) {
                 return false;
@@ -142,7 +142,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
      */
     function GetSitemapData($gadget)
     {
-        $data_file = JAWS_DATA . 'sitemap/'. strtoupper($gadget) . '/sitemap.bin';
+        $data_file = JAWS_DATA . 'sitemap/'. strtolower($gadget) . '/sitemap.bin';
         if (file_exists($data_file)) {
             if (false === $data = @file_get_contents($data_file)) {
                 return array();

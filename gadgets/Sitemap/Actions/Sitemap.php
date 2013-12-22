@@ -22,6 +22,7 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Sitemap');
 
         $gadget = jaws()->request->fetch('gname', 'get');
+        $gadget = Jaws_Gadget::filter($gadget);
         if (empty($gadget)) {
             return $model->GetSitemapXML();
         } else {
