@@ -22,7 +22,7 @@ class VisitCounter_Model_Admin_Visitors extends Jaws_Gadget_Model
     function GetVisitors($offset = null)
     {
         $table = Jaws_ORM::getInstance()->table('ipvisitor');
-        $table->select(array('ip:integer', 'visit_time:integer', 'visits:integer'));
+        $table->select(array('ip', 'visit_time:integer', 'visits:integer'));
         $table->orderBy('visit_time desc');
         $table->limit(15, $offset);
 

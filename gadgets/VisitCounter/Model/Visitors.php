@@ -44,7 +44,7 @@ class VisitCounter_Model_Visitors extends Jaws_Gadget_Model
     {
         $date = $GLOBALS['app']->UserTime2UTC($GLOBALS['app']->UTC2UserTime(time(), 'Y-m-d 00:00:00'));
         $table = Jaws_ORM::getInstance()->table('ipvisitor');
-        $table->select('ip:integer', 'visit_time:integer');
+        $table->select('ip', 'visit_time:integer');
         $table->where('ip', $ip)->and()->where('visit_time', $date, '>=');
         $visited = $table->fetchRow();
         if (Jaws_Error::IsError($visited)) {
