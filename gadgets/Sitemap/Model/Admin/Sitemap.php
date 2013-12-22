@@ -219,18 +219,18 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         $xmlContent = $tpl->Get();
 
         // Check gadget directory in sitemap
-        $gadget_dir = JAWS_DATA . 'sitemap' . DIRECTORY_SEPARATOR . strtolower($gadget) . DIRECTORY_SEPARATOR;
-        if (!Jaws_Utils::mkdir($gadget_dir)) {
+        $gadget_dir = JAWS_DATA . 'sitemap/'. strtolower($gadget);
+        if (!Jaws_Utils::mkdir($gadget_dir, 1)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $gadget_dir));
         }
 
-        $cache_file = $gadget_dir . 'sitemap.xml';
+        $cache_file = $gadget_dir . '/sitemap.xml';
         if (!Jaws_Utils::file_put_contents($cache_file, $xmlContent)) {
             return false;
         }
 
         // remove Main sitemap.xml cached file
-        $xml_file = JAWS_DATA . 'sitemap' . DIRECTORY_SEPARATOR . 'sitemap.xml';
+        $xml_file = JAWS_DATA . 'sitemap/sitemap.xml';
         if (file_exists($xml_file)) {
             @unlink($xml_file);
         }
@@ -268,12 +268,12 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         }
 
         // Check gadget directory in sitemap
-        $gadget_dir = JAWS_DATA . 'sitemap' . DIRECTORY_SEPARATOR . $gadget . DIRECTORY_SEPARATOR;
-        if (!Jaws_Utils::mkdir($gadget_dir)) {
+        $gadget_dir = JAWS_DATA . 'sitemap/'. strtolower($gadget);
+        if (!Jaws_Utils::mkdir($gadget_dir, 1)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $gadget_dir));
         }
 
-        $cache_file = $gadget_dir . 'sitemap.bin';
+        $cache_file = $gadget_dir . '/sitemap.bin';
         if (!Jaws_Utils::file_put_contents($cache_file, serialize($gResult))) {
             return false;
         }

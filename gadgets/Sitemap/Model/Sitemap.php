@@ -2,13 +2,13 @@
 /**
  * Sitemap Gadget
  *
- * @category   GadgetModel
- * @package    Sitemap
- * @author     Jonathan Hernandez <ion@suavizado.com>
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2006-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    GadgetModel
+ * @package     Sitemap
+ * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @author      Pablo Fischer <pablo@pablo.com.mx>
+ * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
+ * @copyright   2006-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
 {
@@ -80,7 +80,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
      */
     function GetSitemapXML()
     {
-        $xml_file = JAWS_DATA . 'sitemap' . DIRECTORY_SEPARATOR . 'sitemap.xml';
+        $xml_file = JAWS_DATA . 'sitemap/sitemap.xml';
         if (file_exists($xml_file)) {
             if (false === $data = @file_get_contents($xml_file)) {
                 return false;
@@ -94,8 +94,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
 
         $gadgets = $this->GetAvailableSitemapGadgets();
         foreach ($gadgets as $gadget) {
-            $gadget_xml_file = JAWS_DATA . 'sitemap' . DIRECTORY_SEPARATOR . strtolower($gadget['name']) .
-                                DIRECTORY_SEPARATOR . 'sitemap.xml';
+            $gadget_xml_file = JAWS_DATA. 'sitemap/'. strtolower($gadget['name']). '/sitemap.xml';
             if (file_exists($gadget_xml_file)) {
                 $tpl->SetBlock('xml/item');
                 $tpl->SetVariable('loc', $this->gadget->urlMap(
@@ -125,7 +124,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
      */
     function GetGadgetSitemapXML($gadget)
     {
-        $xml_file = JAWS_DATA . 'sitemap' . DIRECTORY_SEPARATOR . $gadget . DIRECTORY_SEPARATOR . 'sitemap.xml';
+        $xml_file = JAWS_DATA . 'sitemap/'. strtoupper($gadget). '/sitemap.xml';
         if (file_exists($xml_file)) {
             if (false === $data = @file_get_contents($xml_file)) {
                 return false;
@@ -143,7 +142,7 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
      */
     function GetSitemapData($gadget)
     {
-        $data_file = JAWS_DATA . 'sitemap' . DIRECTORY_SEPARATOR . $gadget . DIRECTORY_SEPARATOR . 'sitemap.bin';
+        $data_file = JAWS_DATA . 'sitemap/'. strtoupper($gadget) . '/sitemap.bin';
         if (file_exists($data_file)) {
             if (false === $data = @file_get_contents($data_file)) {
                 return array();
