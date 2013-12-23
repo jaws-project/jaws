@@ -113,9 +113,14 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $actions->SetID('logs_actions_combo');
         $actions->SetTitle(_t('GLOBAL_ACTIONS'));
         $actions->AddOption('&nbsp;', '');
-        
         if ($this->gadget->GetPermission('DeleteLogs')) {
             $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+            $actions->AddOption(_t('LOGS_DELETE_ALL'), 'deleteAll');
+            $actions->AddOption(_t('LOGS_DELETE_FILTERED'), 'deleteFiltered');
+        }
+        if ($this->gadget->GetPermission('ExportLogs')) {
+            $actions->AddOption(_t('LOGS_EXPORT_ALL'), 'export');
+            $actions->AddOption(_t('LOGS_EXPORT_FILTERED'), 'exportFiltered');
         }
         $tpl->SetVariable('actions_combo', $actions->Get());
 

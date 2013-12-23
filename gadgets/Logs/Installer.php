@@ -29,9 +29,9 @@ class Logs_Installer extends Jaws_Gadget_Installer
      */
     var $_ACLKeys = array(
         'DeleteLogs',
+        'ExportLogs',
         'ManageSettings',
     );
-
 
     /**
      * Install the gadget
