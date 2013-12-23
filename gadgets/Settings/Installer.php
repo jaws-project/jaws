@@ -137,8 +137,8 @@ class Settings_Installer extends Jaws_Gadget_Installer
         // tinyMCE backend toolbar
         $this->gadget->registry->update(
             'editor_tinymce_backend_toolbar',
-            ',undo,redo,|,styleselect,|,bold,italic,|,alignleft,aligncenter,alignright'.
-            ',alignjustify,|,bullist,numlist,outdent,indent,|,link,unlink,image,|,ltr,rtl,|'.
+            ',undo,redo,|,ltr,rtl,|,styleselect,|,bold,italic,|,alignleft,aligncenter,alignright'.
+            ',alignjustify,|,bullist,numlist,outdent,indent,|,link,unlink,image,|'.
             ',styleprops,attribs,|,fontselect,fontsizeselect,|,forecolor,backcolor,'
         );
         // CKEditor frontend toolbar
@@ -188,8 +188,8 @@ class Settings_Installer extends Jaws_Gadget_Installer
             // tinyMCE backend toolbar
             $this->gadget->registry->insert(
                 'editor_tinymce_backend_toolbar',
-                ',undo,redo,|,styleselect,|,bold,italic,|,alignleft,aligncenter,alignright'.
-                ',alignjustify,|,bullist,numlist,outdent,indent,|,link,unlink,image,|,ltr,rtl,|'.
+                ',undo,redo,|,ltr,rtl,|,styleselect,|,bold,italic,|,alignleft,aligncenter,alignright'.
+                ',alignjustify,|,bullist,numlist,outdent,indent,|,link,unlink,image,|'.
                 ',styleprops,attribs,|,fontselect,fontsizeselect,|,forecolor,backcolor,'
             );
             // CKEditor backend toolbar
