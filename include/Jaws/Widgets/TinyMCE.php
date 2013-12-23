@@ -186,7 +186,7 @@ class Jaws_Widgets_TinyMCE extends Container
             $fbrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile';
         }
 
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/tinymce/tinymce.js');
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/tinymce/tinymce.min.js');
         $tpl = new Jaws_Template();
         $tpl->Load('TinyMCE.html', 'include/Jaws/Resources');
         $block = (JAWS_SCRIPT == 'admin')? 'tinymce_backend' : 'tinymce_frontend';
