@@ -12,67 +12,67 @@
   <div class="content">
     <div class="contact_comments">{comments}</div>
 <!-- BEGIN name -->
-      <p><label>{lbl_name}:</label>
+      <div><label>{lbl_name}:</label>
          <input name="name" type="text" value="{name}" />
-      </p>
+      </div>
 <!-- END name -->
 <!-- BEGIN email -->
-      <p><label>{lbl_email}:</label>
+      <div><label>{lbl_email}:</label>
          <input name="email" type="text" value="{email}" style="direction: ltr;" />
-      </p>
+      </div>
 <!-- END email -->
 <!-- BEGIN company -->
-      <p><label>{lbl_company}:</label>
+      <div><label>{lbl_company}:</label>
          <input name="company" type="text" value="{company}" />
-      </p>
+      </div>
 <!-- END company -->
 <!-- BEGIN url -->
-      <p><label>{lbl_url}:</label>
+      <div><label>{lbl_url}:</label>
          <input name="url" type="text" value="{url}" style="direction: ltr;" />
-      </p>
+      </div>
 <!-- END url -->
 <!-- BEGIN tel -->
-      <p><label>{lbl_tel}:</label>
+      <div><label>{lbl_tel}:</label>
          <input name="tel" type="text" value="{tel}" />
-      </p>
+      </div>
 <!-- END tel -->
 <!-- BEGIN fax -->
-      <p><label>{lbl_fax}:</label>
+      <div><label>{lbl_fax}:</label>
          <input name="fax" type="text" value="{fax}" />
-      </p>
+      </div>
 <!-- END fax -->
 <!-- BEGIN mobile -->
-      <p><label>{lbl_mobile}:</label>
+      <div><label>{lbl_mobile}:</label>
          <input name="mobile" type="text" value="{mobile}" />
-      </p>
+      </div>
 <!-- END mobile -->
 <!-- BEGIN address -->
-      <p><label>{lbl_address}:</label>
+      <div><label>{lbl_address}:</label>
          <input name="address" type="text" value="{address}" />
-      </p>
+      </div>
 <!-- END address -->
 <!-- BEGIN recipient -->
-      <p><label>{lbl_recipient}:</label>
+      <div><label>{lbl_recipient}:</label>
           <select name="recipient">
           <!-- BEGIN item -->
           <option value="{recipient_id}" {selected}>{recipient_name}</option>
           <!-- END item -->
           </select>
-      </p>
+      </div>
 <!-- END recipient -->
 <!-- BEGIN subject -->
-      <p><label>{lbl_subject}:</label>
-         <input name="subject" type="text" value="{subject}" /></p>
+      <div><label>{lbl_subject}:</label>
+         <input name="subject" type="text" value="{subject}" /></div>
 <!-- END subject -->
-<!-- BEGIN attachment -->
-      <p><label>{lbl_attachment}:</label>
-         <input name="attachment" type="file" /></p>
-<!-- END attachment -->
 <!-- BEGIN message -->
-      <p><label>{lbl_message}:</label>
+      <div><label>{lbl_message}:</label>
          <textarea name="message" cols="25" rows="6">{message}</textarea>
-      </p>
+      </div>
 <!-- END message -->
+<!-- BEGIN attachment -->
+      <div><label>{lbl_attachment}:</label>
+         <input name="attachment" type="file" /></div>
+<!-- END attachment -->
 <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
   </div>
   <div class="actions">{btn_send}</div>
