@@ -63,6 +63,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
             $row = 0;
             $col = 0;
             $index = 0;
+            $tpl->SetVariable('title', _t('BLOG_RECENT_POSTS'));
             $columns = (int) $this->gadget->registry->fetch('columns');
             $columns = ($columns <= 0)? 1 : $columns;
             foreach ($entries as $entry) {
