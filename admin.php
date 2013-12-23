@@ -117,23 +117,17 @@ if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
         Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
     }
 
-    if (empty($ReqAction)) {
-        $ReqAction = $goGadget->gadget->default_admin_action;
-    }
-    // set requested gadget/action
+    // set requested gadget
     $GLOBALS['app']->requestedGadget = $ReqGadget;
-    $GLOBALS['app']->requestedAction = $ReqAction;
-    $IsReqActionStandAlone = $goGadget->IsStandAloneAdmin($ReqAction);
-    if (!$IsReqActionStandAlone) {
-        // Init layout
-        $GLOBALS['app']->InstanceLayout();
-    }
+    // Init layout
+    $GLOBALS['app']->InstanceLayout();
 
     $ReqResult = $goGadget->Execute($ReqAction);
     if (Jaws_Error::IsError($ReqResult)) {
         Jaws_Error::Fatal($ReqResult->getMessage());
     }
 
+    $IsReqActionStandAlone = $goGadget->IsStandAloneAdmin($ReqAction);
     if (!$IsReqActionStandAlone) {
         // Load ControlPanel header
         $GLOBALS['app']->Layout->LoadControlPanelHead();

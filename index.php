@@ -62,12 +62,8 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
                 $ReqError = '403';
             }
 
-            if (empty($ReqAction)) {
-                $ReqAction = $objGadget->gadget->default_action;
-            }
-            // set requested gadget/action
+            // set requested gadget
             $GLOBALS['app']->requestedGadget = $ReqGadget;
-            $GLOBALS['app']->requestedAction = $ReqAction;
         } else {
             $ReqError = '404';
         }
@@ -99,7 +95,6 @@ if (empty($ReqError)) {
         $IsReqActionStandAlone = $objGadget->IsStandAlone($ReqAction);
     }
 } else {
-    require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
     $ReqResult = Jaws_HTTPError::Get($ReqError);
 }
 
