@@ -113,7 +113,10 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $actions->SetID('logs_actions_combo');
         $actions->SetTitle(_t('GLOBAL_ACTIONS'));
         $actions->AddOption('&nbsp;', '');
-        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+        
+        if ($this->gadget->GetPermission('DeleteLogs')) {
+            $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+        }
         $tpl->SetVariable('actions_combo', $actions->Get());
 
         $btnExecute =& Piwi::CreateWidget('Button', 'executeLogsAction', '', STOCK_YES);
@@ -291,6 +294,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
      */
     function DeleteLogs()
     {
+        $this->gadget->CheckPermission('DeleteLogs');
         $logsID = jaws()->request->fetchAll();
         $model = $this->gadget->model->loadAdmin('Logs');
         $res = $model->DeleteLogs($logsID);

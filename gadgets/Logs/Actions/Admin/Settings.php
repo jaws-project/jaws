@@ -18,6 +18,7 @@ class Logs_Actions_Admin_Settings extends Logs_Actions_Admin_Default
      */
     function Settings()
     {
+        $this->gadget->CheckPermission('ManageSettings');
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('Settings.html');
         $tpl->SetBlock('Settings');
