@@ -43,6 +43,11 @@ $admin_actions['DeleteLogs'] = array(
     'file' => 'Logs',
     'loglevel' => JAWS_WARNING,
 );
+$admin_actions['ExportLogs'] = array(
+    'standalone' => true,
+    'file' => 'Logs',
+    'loglevel' => JAWS_WARNING,
+);
 $admin_actions['Settings'] = array(
     'normal' => true,
     'file' => 'Settings',

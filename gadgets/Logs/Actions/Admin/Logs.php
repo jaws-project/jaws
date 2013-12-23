@@ -313,4 +313,18 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }
+
+    /**
+     * Export Logs
+     *
+     * @access  public
+     * @return  void
+     */
+    function ExportLogs()
+    {
+        $this->gadget->CheckPermission('ExportLogs');
+
+        Jaws_Header::Referrer();
+    }
+
 }
