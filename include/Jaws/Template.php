@@ -76,7 +76,7 @@ class Jaws_Template
 
             $this->globalVariables['theme_url']  = $theme['url'];
             $this->globalVariables['data_url']   = $GLOBALS['app']->getDataURL();
-            $this->globalVariables['jaws_index'] = $GLOBALS['app']->requestedInIndex? 'jaws_index' : '';
+            $this->globalVariables['index'] = $GLOBALS['app']->requestedInIndex? 'index' : '';
             $this->globalVariables['.browser']   = empty($browser)? '' : ".$browser";
             $this->globalVariables['requested_gadget'] = strtolower($GLOBALS['app']->requestedGadget);
             $this->globalVariables['requested_action'] = strtolower($GLOBALS['app']->requestedAction);
@@ -303,9 +303,9 @@ class Jaws_Template
                         $vars[$match[1]] = $this->globalVariables['requested_url'];
                         break;
 
-                    case 'jaws_index':
+                    case 'index':
                         if (isset($GLOBALS['app'])) {
-                            $vars[$match[1]] = $this->globalVariables['jaws_index'];
+                            $vars[$match[1]] = $this->globalVariables['index'];
                         }
                         break;
 
