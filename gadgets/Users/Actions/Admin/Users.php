@@ -66,7 +66,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             $usrData['username'] = $user['username'];
 
             $actions = '';
-            if ($this->gadget->CheckPermission('ManageUsers')) {
+            if ($this->gadget->GetPermission('ManageUsers')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('GLOBAL_EDIT'),
                                             "javascript: editUser(this, '".$user['id']."');",
@@ -74,7 +74,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                 $actions.= $link->Get().'&nbsp;';
             }
 
-            if ($this->gadget->CheckPermission('ManageUserACLs')) {
+            if ($this->gadget->GetPermission('ManageUserACLs')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_ACLS'),
                                             "javascript: editACL(this, '".$user['id']."', 'UserACL');",
@@ -82,7 +82,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                 $actions.= $link->Get().'&nbsp;';
             }
 
-            if ($this->gadget->CheckPermission('ManageGroups')) {
+            if ($this->gadget->GetPermission('ManageGroups')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_USERS_GROUPS'),
                                             "javascript: editUserGroups(this, '".$user['id']."');",
@@ -90,7 +90,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                 $actions.= $link->Get().'&nbsp;';
             }
 
-            if ($this->gadget->CheckPermission('ManageUsers')) {
+            if ($this->gadget->GetPermission('ManageUsers')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_PERSONAL'),
                                             "javascript: editPersonal(this, '".$user['id']."');",
@@ -98,7 +98,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                 $actions.= $link->Get().'&nbsp;';
             }
 
-            if ($this->gadget->CheckPermission('ManageUsers')) {
+            if ($this->gadget->GetPermission('ManageUsers')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_CONTACTS'),
                                             "javascript: editContacts(this, '".$user['id']."');",
@@ -106,7 +106,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                 $actions.= $link->Get().'&nbsp;';
             }
 
-            if ($this->gadget->CheckPermission('ManageUsers')) {
+            if ($this->gadget->GetPermission('ManageUsers')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_ACCOUNT_DELETE'),
                                             "javascript: deleteUser(this, '".$user['id']."');",
