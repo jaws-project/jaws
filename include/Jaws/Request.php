@@ -271,7 +271,11 @@ class Jaws_Request
         $result = '';
         // strip not allowed tags
         $text = strip_tags($text, $this->allowed_tags);
-        $hxml = simplexml_load_string('<html>'. $text .'</html>', 'SimpleXMLElement', LIBXML_NOERROR);
+        $hxml = simplexml_load_string(
+            '<?xml version="1.0" encoding="UTF-8"?><html>'. $text .'</html>',
+            'SimpleXMLElement',
+            LIBXML_NOERROR
+        );
         if ($hxml) {
             foreach ($hxml->xpath('descendant::*[@*]') as $tag) {
                 $attributes = (array)$tag->attributes();
@@ -292,7 +296,7 @@ class Jaws_Request
             }
 
             // remove xml/html tags
-            $result = substr($hxml->asXML(), 28, -8);
+            $result = substr($hxml->asXML(), 45, -8);
         }
 
         return $result;
