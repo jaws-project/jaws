@@ -100,11 +100,13 @@ class Phoo_Model_Albums extends Phoo_Model
      * the order depends on what's passed to the function
      *
      * @access  public
-     * @param   string  $by         order by
-     * @param   string  $direction  order direction
+     * @param   string  $by order by
+     * @param   string  $direction order direction
+     * @param   int     $group
+     * @param   bool    $published
      * @return  mixed   A list of available albums and Jaws_Error on error
      */
-    function GetAlbums($by = 'name', $direction = 'asc', $group = 0)
+    function GetAlbums($by = 'name', $direction = 'asc', $group = 0, $published = null)
     {
         $directions = array('asc', 'desc');
         $direction = strtolower($direction);
@@ -128,6 +130,10 @@ class Phoo_Model_Albums extends Phoo_Model
         if (!empty($group) && $group != 0) {
             $table->join('phoo_album_group', 'phoo_album.id', 'album', 'left');
             $table->where('group', $group);
+        }
+
+        if (!empty($published)) {
+            $table->and()->where('published', $published);
         }
 
         $rows = $table->fetchAll();
