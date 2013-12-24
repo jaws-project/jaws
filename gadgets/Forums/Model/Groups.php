@@ -22,7 +22,7 @@ class Forums_Model_Groups extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('forums_groups');
         $table->select('id:integer', 'title', 'description', 'fast_url',
                        'order:integer', 'locked:boolean', 'published:boolean');
-        $result = $table->where('id', $gid)->fetchRow();
+        $result = $table->where('id', (int)$gid)->fetchRow();
         return $result;
     }
 
