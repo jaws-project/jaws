@@ -23,8 +23,13 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('forums');
         $table->select('id:integer', 'gid:integer', 'title', 'description', 'fast_url', 'topics:integer',
                        'posts:integer', 'order:integer', 'locked:boolean', 'published:boolean');
-        $result = $table->where('id', $fid)->fetchRow();
-        return $result;
+        if (is_numeric($fid)) {
+            $table->where('id', $fid);
+        } else {
+            $table->where('fast_url', $fid);
+        }
+
+        return $table->fetchRow();
     }
 
     /**
@@ -50,7 +55,7 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
 
         } else {
             $table->select('id:integer', 'title', 'description', 'fast_url', 'topics:integer',
-                           'posts:integer', 'locked:boolean', 'published:boolean');
+                           'posts:integer', 'locked:boolean', 'published:boolean', 'gid:integer');
         }
 
         if (!empty($gid)) {
