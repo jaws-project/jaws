@@ -213,7 +213,7 @@ class Jaws_Session
     {
         $GLOBALS['app']->Listener->Shout('Log', array('Users', 'Logout', JAWS_WARNING));
         $this->Reset();
-        $this->Synchronize($this->_SessionID);
+        $this->update();
         $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session logout');
     }
 
@@ -226,16 +226,6 @@ class Jaws_Session
      */
     function Load($sid)
     {
-        $max_active_sessions = (int)$GLOBALS['app']->Registry->fetch('max_active_sessions', 'Policy');
-        if (!empty($max_active_sessions)) {
-            $activeSessions = $this->GetSessionsCount(true);
-            if ($activeSessions >= $max_active_sessions) {
-                // remove expired session
-                $this->DeleteExpiredSessions();
-                Jaws_Error::Fatal(_t('GLOBAL_HTTP_ERROR_CONTENT_503_OVERLOAD'), 0, 503);
-            }
-        }
-
         $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loading session');
         $this->_SessionID = '';
         @list($sid, $salt) = explode('-', $sid);
@@ -376,7 +366,11 @@ class Jaws_Session
         $this->SetAttribute('url',        $info['url']);
         $this->SetAttribute('avatar',     $info['avatar']);
 
-        $this->_SessionID = $this->Synchronize($this->_SessionID);
+        if (empty($this->_SessionID)) {
+            $this->_SessionID = $this->insert();
+        } else {
+            $this->_SessionID = $this->update();
+        }
         return true;
     }
 
@@ -570,12 +564,12 @@ class Jaws_Session
     }
 
     /**
-     * Synchronize current session
+     * update current session
      *
      * @access  public
      * @return  mixed   Session ID if success, otherwise Jaws_Error or false
      */
-    function Synchronize()
+    function update()
     {
         // agent
         $agent = substr(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
@@ -594,35 +588,74 @@ class Jaws_Session
         }
 
         $sessTable = Jaws_ORM::getInstance()->table('session', '', 'sid');
-        if (!empty($this->_SessionID)) {
-            // Now we sync with a previous session only if has changed
-            if ($GLOBALS['app']->Session->_HasChanged) {
-                $user = $GLOBALS['app']->Session->GetAttribute('user');
-                $serialized = serialize($GLOBALS['app']->Session->_Attributes);
-                $sessTable->update(array(
-                    'user'       => $user,
-                    'data'       => $serialized,
-                    'longevity'  => $GLOBALS['app']->Session->GetAttribute('longevity'),
-                    'referrer'   => md5($referrer),
-                    'checksum'   => md5($user. $serialized),
-                    'ip'         => $ip,
-                    'agent'      => $agent,
-                    'updatetime' => time()
-                ));
-                $result = $sessTable->where('sid', $this->_SessionID)->exec();
-                if (!Jaws_Error::IsError($result)) {
-                    $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized succesfully');
-                    return $this->_SessionID;
-                }
-            } else {
-                $sessTable->update(array('updatetime' => time()));
-                $result = $sessTable->where('sid', $this->_SessionID)->exec();
-                if (!Jaws_Error::IsError($result)) {
-                    $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized succesfully(only modification time)');
-                    return $this->_SessionID;
-                }
+        // Now we sync with a previous session only if has changed
+        if ($GLOBALS['app']->Session->_HasChanged) {
+            $user = $GLOBALS['app']->Session->GetAttribute('user');
+            $serialized = serialize($GLOBALS['app']->Session->_Attributes);
+            $sessTable->update(array(
+                'user'       => $user,
+                'data'       => $serialized,
+                'longevity'  => $GLOBALS['app']->Session->GetAttribute('longevity'),
+                'referrer'   => md5($referrer),
+                'checksum'   => md5($user. $serialized),
+                'ip'         => $ip,
+                'agent'      => $agent,
+                'updatetime' => time()
+            ));
+            $result = $sessTable->where('sid', $this->_SessionID)->exec();
+            if (!Jaws_Error::IsError($result)) {
+                $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized succesfully');
+                return $this->_SessionID;
             }
-        } elseif (!empty($GLOBALS['app']->Session->_Attributes)) {
+        } else {
+            $sessTable->update(array('updatetime' => time()));
+            $result = $sessTable->where('sid', $this->_SessionID)->exec();
+            if (!Jaws_Error::IsError($result)) {
+                $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session synchronized succesfully(only modification time)');
+                return $this->_SessionID;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * insert new session
+     *
+     * @access  public
+     * @return  mixed   Session ID if success, otherwise Jaws_Error or false
+     */
+    function insert()
+    {
+        $max_active_sessions = (int)$GLOBALS['app']->Registry->fetch('max_active_sessions', 'Policy');
+        if (!empty($max_active_sessions)) {
+            $activeSessions = $this->GetSessionsCount(true);
+            if ($activeSessions >= $max_active_sessions) {
+                // remove expired session
+                $this->DeleteExpiredSessions();
+                 $GLOBALS['app']->Session->Logout();
+                Jaws_Error::Fatal(_t('GLOBAL_HTTP_ERROR_CONTENT_503_OVERLOAD'), 0, 503);
+            }
+        }
+
+        // agent
+        $agent = substr(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
+        // ip
+        $ip = 0;
+        if (preg_match('/\b(?:\d{1,3}\.){3}\d{1,3}\b/', $_SERVER['REMOTE_ADDR'])) {
+            $ip = ip2long($_SERVER['REMOTE_ADDR']);
+            $ip = ($ip < 0)? ($ip + 0xffffffff + 1) : $ip;
+        }
+        // referrer
+        $referrer = @parse_url($_SERVER['HTTP_REFERER']);
+        if ($referrer && isset($referrer['host']) && ($referrer['host'] != $_SERVER['HTTP_HOST'])) {
+            $referrer = $referrer['host'];
+        } else {
+            $referrer = '';
+        }
+
+        $sessTable = Jaws_ORM::getInstance()->table('session', '', 'sid');
+        if (!empty($GLOBALS['app']->Session->_Attributes)) {
             //A new session, we insert it to the DB
             $updatetime = time();
             $user = $GLOBALS['app']->Session->GetAttribute('user');
