@@ -315,6 +315,30 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     }
 
     /**
+     * Delete Logs Use Selected Filters
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function DeleteLogsUseFilters()
+    {
+        $this->gadget->CheckPermission('DeleteLogs');
+        $filters = jaws()->request->fetch('filters:array', 'post');
+
+        $model = $this->gadget->model->loadAdmin('Logs');
+        $res = $model->DeleteLogsUseFilters($filters);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('LOGS_ERROR_CANT_DELETE_LOGS'),
+                RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('LOGS_LOGS_DELETED'),
+                RESPONSE_NOTICE);
+        }
+
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
      * Export Logs
      *
      * @access  public

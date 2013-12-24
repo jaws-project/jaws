@@ -19,6 +19,13 @@ var LogsCallback = {
         }
         showResponse(response);
     },
+    DeleteLogsUseFilters: function(response) {
+        if (response[0]['type'] == 'response_notice') {
+            unselectGridRow('logs_datagrid');
+            getDG('logs_datagrid', $('logs_datagrid').getCurrentPage(), true);
+        }
+        showResponse(response);
+    },
     SaveSettings: function(response) {
         showResponse(response);
     }
@@ -69,14 +76,34 @@ function getLogs(name, offset, reset)
 function logsDGAction(combo)
 {
     var rows = $('logs_datagrid').getSelectedRows();
-    if (rows.length < 1) {
-        return;
-    }
 
     if (combo.value == 'delete') {
+        if (rows.length < 1) {
+            return;
+        }
+
         var confirmation = confirm(confirmLogsDelete);
         if (confirmation) {
             LogsAjax.callAsync('DeleteLogs', rows);
+        }
+    } else if (combo.value == 'deleteAll') {
+        var confirmation = confirm(confirmLogsDelete);
+        if (confirmation) {
+            LogsAjax.callAsync('DeleteLogsUseFilters', {'filters':null});
+        }
+    } else if (combo.value == 'deleteFiltered') {
+        var confirmation = confirm(confirmLogsDelete);
+        var filters = {
+            'from_date' : $('from_date').value,
+            'to_date'   : $('to_date').value,
+            'gadget'    : $('filter_gadget').value,
+            'user'      : $('filter_user').value,
+            'priority'  : $('filter_priority').value,
+            'status'    : $('filter_status').value
+        };
+
+        if (confirmation) {
+            LogsAjax.callAsync('DeleteLogsUseFilters', {'filters':filters});
         }
     }
 }
