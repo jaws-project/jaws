@@ -12,26 +12,26 @@
 /**
  * Index actions
  */
-$actions['RecentTopics'] = array(
-    'layout' => true,
-    'file'   => 'RecentTopics',
-    'parametric' => true,
-);
-$actions['UserPosts'] = array(
-    'normal' => true,
-    'file'   => 'UserPosts',
-);
-$actions['UserTopics'] = array(
-    'normal' => true,
-    'file'   => 'UserTopics',
-);
 $actions['Forums'] = array(
+    'normal' => true,
+    'file'   => 'Forums',
+);
+$actions['Group'] = array(
     'normal' => true,
     'file'   => 'Forums',
 );
 $actions['Topics'] = array(
     'normal' => true,
     'file'   => 'Topics',
+);
+$actions['RecentTopics'] = array(
+    'layout' => true,
+    'file'   => 'RecentTopics',
+    'parametric' => true,
+);
+$actions['UserTopics'] = array(
+    'normal' => true,
+    'file'   => 'UserTopics',
 );
 $actions['NewTopic'] = array(
     'normal' => true,
@@ -60,6 +60,10 @@ $actions['PublishTopic'] = array(
 $actions['Posts'] = array(
     'normal' => true,
     'file'   => 'Posts',
+);
+$actions['UserPosts'] = array(
+    'normal' => true,
+    'file'   => 'UserPosts',
 );
 $actions['Post'] = array(
     'normal' => true,

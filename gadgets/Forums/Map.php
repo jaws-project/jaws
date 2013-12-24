@@ -13,6 +13,15 @@ $maps[] = array(
     'forums'
 );
 $maps[] = array(
+    'Forums',
+    'forums/groups'
+);
+$maps[] = array(
+    'Group',
+    'forums/groups/{gid}',
+    array('gid' => '[[:alnum:]-_]+',)
+);
+$maps[] = array(
     'Forum',
     'forums/{fid}',
     array('fid' => '[[:alnum:]-_]+',)
