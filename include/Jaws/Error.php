@@ -66,11 +66,12 @@ class Jaws_Error
     /**
      * Creates the Jaws_Error instance
      *
+     * @access  public
      * @param   string  $message   Error message
      * @param   string  $code      Error code
      * @param   int     $level     The severity level of the error.
      * @param   int     $backtrace Log trace back level
-     * @access  public
+     * @return  object  Jaws_Error object
      */
     static function &raiseError($message, $code = 0, $level = JAWS_ERROR_ERROR, $backtrace = 0)
     {
@@ -142,9 +143,12 @@ class Jaws_Error
      * Prints a Fatal Error
      *
      * @access  public
-     * @param   string  $message Message to print
+     * @param   string  $message            Error message
+     * @param   int     $backtrace          Log trace back level
+     * @param   int     $http_response_code HTTP response code
+     * @return  void
      */
-    static function Fatal($message, $backtrace = 0)
+    static function Fatal($message, $backtrace = 0, $http_response_code = 500)
     {
         // Set Headers
         header('Content-Type: text/html; charset=utf-8');
@@ -158,7 +162,8 @@ class Jaws_Error
         //Get content
         $content = file_get_contents(JAWS_PATH . 'gadgets/ControlPanel/Templates/FatalError.html');
         $content = str_replace('{message}', $message, $content);
-        terminate($content, 500, '', false);
+        jaws()->http_response_code($http_response_code);
+        terminate($content, $http_response_code, '', false);
     }
 
 }
