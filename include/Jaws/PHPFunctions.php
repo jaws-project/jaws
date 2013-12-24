@@ -337,7 +337,7 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
             }
             // Sync session
             if ($sync && isset($GLOBALS['app'])) {
-                $GLOBALS['app']->Session->Synchronize();
+                $GLOBALS['app']->Session->update();
             }
 
             echo Jaws_UTF8::json_encode($data);
@@ -351,7 +351,7 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
         default:
             // Sync session
             if ($sync && isset($GLOBALS['app']->Session)) {
-                $GLOBALS['app']->Session->Synchronize();
+                $GLOBALS['app']->Session->update();
             }
 
             switch ($status_code) {
