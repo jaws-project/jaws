@@ -110,7 +110,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
                 if (preg_match_all('#{(\w+)}#si', $map[1], $matches)) {
                     foreach ($matches[1] as $m) {
                         if (!isset($vars_regexps[$m])) {
-                            $vars_regexps[$m] = '\w+';
+                            $vars_regexps[$m] = '[[:alnum:]-_]+';
                         }
                     }
                 }
@@ -156,7 +156,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
                 if (preg_match_all('#{(\w+)}#si', $map[1], $matches)) {
                     foreach ($matches[1] as $m) {
                         if (!isset($vars_regexps[$m])) {
-                            $vars_regexps[$m] = '\w+';
+                            $vars_regexps[$m] = '[[:alnum:]-_]+';
                         }
                     }
                 }
