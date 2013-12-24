@@ -64,6 +64,9 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_Action
 
             $allCategories = $items;
             $gadgetCategory = $model->GetGadgetCategoryProperties($gadget['name']);
+            if(empty($allCategories) || count($allCategories)<1) {
+                continue;
+            }
             // Detect all gadget's categories status
             foreach($allCategories as $cat) {
                 $status = null;
