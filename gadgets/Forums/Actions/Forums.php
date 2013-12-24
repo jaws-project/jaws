@@ -74,6 +74,7 @@ class Forums_Actions_Forums extends Forums_Actions_Default
             $tpl->SetVariable('findex_url', $this->gadget->urlMap('Forums'));
             $tpl->SetVariable('title', $group['title']);
             $tpl->SetVariable('url', $this->gadget->urlMap('Group', array('gid' => $group['id'])));
+            $tpl->SetVariable('description', $group['description']);
             $standalone = true;
         } else {
             $standalone = false;
