@@ -226,6 +226,14 @@ class Jaws_Session
      */
     function Load($sid)
     {
+        $max_active_sessions = (int)$GLOBALS['app']->Registry->fetch('max_active_sessions', 'Policy');
+        if (!empty($max_active_sessions)) {
+            $activeSessions = $this->GetSessionsCount(true);
+            if ($activeSessions >= $max_active_sessions) {
+                Jaws_Error::Fatal(_t('GLOBAL_HTTP_ERROR_CONTENT_503_OVERLOAD'), 0, 503);
+            }
+        }
+
         $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Loading session');
         $this->_SessionID = '';
         @list($sid, $salt) = explode('-', $sid);
@@ -777,6 +785,37 @@ class Jaws_Session
         }
 
         return $sessions;
+    }
+
+    /**
+     * Returns the count of active sessions
+     *
+     * @access  public
+     * @param   bool    $active Active session
+     * @param   bool    $logged Logged user's session
+                (null: all sessions, true: logged users's sessions, false: anonymous sessions)
+     * @return  mixed   Active sessions count if successfully, otherwise Jaws_Error
+     */
+    function GetSessionsCount($active = true, $logged = null)
+    {
+        $idle_timeout = (int)$GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy');
+        $onlinetime = time() - ($idle_timeout * 60);
+
+        $sessTable = Jaws_ORM::getInstance()->table('session');
+        $sessTable->select('count(sid):integer');
+        if ($active) {
+            $sessTable->where('updatetime', $onlinetime, '>=');
+        } elseif ($active === false) {
+            $sessTable->where('updatetime', $onlinetime, '<');
+        }
+        if ($logged) {
+            $sessTable->and()->where('user', '', '<>');
+        } elseif ($logged === false) {
+            $sessTable->and()->where('user', '');
+        }
+
+        $result = $sessTable->fetchOne();
+        return Jaws_Error::isError($result)? 0 : (int)$result;
     }
 
     /**
