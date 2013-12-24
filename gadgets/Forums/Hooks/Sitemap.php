@@ -42,13 +42,12 @@ class Forums_Hooks_Sitemap extends Jaws_Gadget_Hook
                 return $groups;
             }
             foreach ($groups as $group) {
-                $entry = empty($group['fast_url']) ? $group['id'] : $group['fast_url'];
                 $result[] = array(
                     'id'     => $group['id'],
                     'parent' => $group['id'],
                     'title'  => $group['title'],
                     'lastmod'=> null,
-                    'url'    => $this->gadget->urlMap('RecentTopics', array('gid' => $entry), true),
+                    'url'    => $this->gadget->urlMap('Group', array('gid' => $group['id']), true),
                 );
             }
 
@@ -59,13 +58,12 @@ class Forums_Hooks_Sitemap extends Jaws_Gadget_Hook
                     return $forums;
                 }
                 foreach ($forums as $forum) {
-                    $entry = empty($forum['fast_url']) ? $forum['id'] : $forum['fast_url'];
                     $result[] = array(
                         'id'        => $forum['id'],
                         'parent'    => $forum['gid'],
                         'title'     => $forum['title'],
                         'lastmod'   => null,
-                        'url'       => $this->gadget->urlMap('Topics', array('fid' => $entry), true),
+                        'url'       => $this->gadget->urlMap('Topics', array('fid' => $forum['id']), true),
                     );
                 }
             }
