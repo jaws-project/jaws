@@ -39,6 +39,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
         array('login_captcha_status', '1'),
         array('login_captcha_driver', 'Math'),
         array('xss_parsing_level', 'paranoid'),
+        array('max_active_sessions', '0'),         // 0 for unlimited
         array('session_idle_timeout', '30'),       // per minute
         array('session_remember_timeout', '720'),  // hours = 1 month
     );
@@ -92,18 +93,8 @@ class Policy_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.3.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '0.2.0.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            $this->gadget->registry->insert('default_captcha_status', $this->gadget->registry->fetch('captcha'));
-            $this->gadget->registry->insert('default_captcha_driver', $this->gadget->registry->fetch('captcha_driver'));
-            $this->gadget->registry->insert('login_captcha_status', '1');
-            $this->gadget->registry->insert('login_captcha_driver', 'Math');
-            $this->gadget->registry->delete('captcha');
-            $this->gadget->registry->delete('captcha_driver');
+        if (version_compare($old, '1.0.0', '<')) {
+            $this->gadget->registry->insert('max_active_sessions', '0');
         }
 
         return true;
