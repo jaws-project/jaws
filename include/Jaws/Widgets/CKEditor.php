@@ -190,7 +190,7 @@ class Jaws_Widgets_CKEditor extends Container
         }
         $toolbars = array_filter(explode('|', $toolbars));
         foreach ($toolbars as $key => $items) {
-            $items = array_filter(explode(',', $items));
+            $items = array_values(array_filter(explode(',', $items)));
             if (!empty($items)) {
                 $this->toolbars[] = $items;
             }
