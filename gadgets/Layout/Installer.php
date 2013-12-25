@@ -86,6 +86,7 @@ class Layout_Installer extends Jaws_Gadget_Installer
 
             // ACL keys
             $this->gadget->acl->insert('ManageLayout');
+            $this->gadget->acl->update('default', '', false);
         }
 
         return true;
