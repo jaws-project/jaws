@@ -254,7 +254,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
      * Get logs count
      *
      * @access  public
-     * @return  int     Total of tags
+     * @return  int     Total of logs
      */
     function GetLogsCount()
     {
