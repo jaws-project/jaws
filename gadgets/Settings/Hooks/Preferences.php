@@ -28,14 +28,39 @@ class Settings_Hooks_Preferences extends Jaws_Gadget_Hook
         $gadgets = array_column(array_values($gadgets), 'title', 'name');
         array_unshift($gadgets, _t('GLOBAL_NOGADGET'));
 
-        $result['admin_language']['values'] = $languages;
-        $result['site_language']['values'] = $languages;
-        $result['calendar']['values'] = $objSettings->GetCalendarList();
-        $result['date_format']['values'] = $objSettings->GetDateFormatList();
-        $result['theme']['values'] = $themes;
-        $result['main_gadget']['values'] = $gadgets;
-        $result['editor']['values'] = $objSettings->GetEditorList();
-        $result['timezone']['values'] = $objSettings->GetTimeZonesList();
+        $result['admin_language'] = array(
+            'title' => _t('SETTINGS_ADMIN_LANGUAGE'),
+            'values' => $languages,
+        );
+        $result['site_language'] = array(
+            'title' => _t('SETTINGS_DEFAULT_SITE_LANGUAGE'),
+            'values' => $languages,
+        );
+        $result['calendar'] = array(
+            'title' => _t('SETTINGS_CALENDAR'),
+            'values' => $objSettings->GetCalendarList(),
+        );
+        $result['date_format'] = array(
+            'title' => _t('SETTINGS_DATE_FORMAT'),
+            'values' => $objSettings->GetDateFormatList(),
+        );
+        $result['theme'] = array(
+            'title' => _t('SETTINGS_DEFAULT_THEME'),
+            'values' => $themes,
+        );
+        $result['main_gadget'] = array(
+            'title' => _t('SETTINGS_MAIN_GADGET'),
+            'values' => $gadgets,
+        );
+        $result['editor'] = array(
+            'title' => _t('SETTINGS_EDITOR'),
+            'values' => $objSettings->GetEditorList(),
+        );
+        $result['timezone'] = array(
+            'title' => _t('GLOBAL_TIMEZONE'),
+            'values' => $objSettings->GetTimeZonesList(),
+        );
+
         return $result;
     }
 
