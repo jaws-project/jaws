@@ -85,8 +85,6 @@ class Users_Actions_Admin_Properties extends Users_Actions_Admin_Default
         $fieldset->Add($anonactivate);
         $fieldset->Add($anonGroup);
         $fieldset->Add($passRecovery);
-        $fieldset->Add($groupsmanagement);
-        $fieldset->Add($dashboard);
 
         $form->Add($fieldset);
 
