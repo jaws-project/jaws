@@ -65,3 +65,11 @@ $actions['LayoutSwitch'] = array(
     'standalone' => true,
     'file' => 'Dashboard',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Layout'] = array(
+    'normal' => true,
+    'file' => 'Layout',
+);

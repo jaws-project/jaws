@@ -14,7 +14,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      * Returns the HTML content to manage the layout in the browser
      *
      * @access  public
-     * @return  string  XHTML template conent
+     * @return  string  XHTML template content
      */
     function Layout()
     {
