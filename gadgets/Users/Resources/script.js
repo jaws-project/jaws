@@ -192,11 +192,19 @@ function getOnlineUsers(name, offset, reset)
 {
     var result = UsersAjax.callSync(
         'GetOnlineUsers', {
+            'offset': offset,
             'active': $('filter_active').value,
             'logged': $('filter_logged').value
         }
     );
-    resetGrid(name, result, result.length);
+    if (reset) {
+        var total = UsersAjax.callSync('GetOnlineUsersCount', {
+            'active': $('filter_active').value,
+            'logged': $('filter_logged').value
+        });
+    }
+    resetGrid(name, result, total);
+
     fTimeout = setTimeout("getOnlineUsers('onlineusers_datagrid');", 30000);
 }
 

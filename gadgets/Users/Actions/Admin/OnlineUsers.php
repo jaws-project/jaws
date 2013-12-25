@@ -24,7 +24,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $gridBox->SetStyle('width: 100%;');
 
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
-        $datagrid->pageBy(1024);
+        $datagrid->pageBy(50);
         $datagrid->useMultipleSelection();
         $datagrid->SetID('onlineusers_datagrid');
         $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_USERNAME'));
@@ -84,7 +84,8 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $filters = jaws()->request->fetchAll('post');
         $filters['active'] = ($filters['active'] == '-1')? null : (bool)$filters['active'];
         $filters['logged'] = ($filters['logged'] == '-1')? null : (bool)$filters['logged'];
-        $sessions = $GLOBALS['app']->Session->GetSessions($filters['active'], $filters['logged']);
+
+        $sessions = $GLOBALS['app']->Session->GetSessions($filters['active'], $filters['logged'], 50, $filters['offset']);
         if (Jaws_Error::IsError($sessions)) {
             return array();
         }
@@ -120,6 +121,25 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         }
 
         return $retData;
+    }
+
+    /**
+     * Get online users count
+     *
+     * @access  public
+     * @return  int  Total of online users
+     */
+    function GetOnlineUsersCount()
+    {
+        $filters = jaws()->request->fetchAll('post');
+        $filters['active'] = ($filters['active'] == '-1')? null : (bool)$filters['active'];
+        $filters['logged'] = ($filters['logged'] == '-1')? null : (bool)$filters['logged'];
+        $sessionsCount = $GLOBALS['app']->Session->GetSessionsCount($filters['active'], $filters['logged']);
+        if (Jaws_Error::IsError($sessionsCount)) {
+            return array();
+        }
+
+        return $sessionsCount;
     }
 
     /**

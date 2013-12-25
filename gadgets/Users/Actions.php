@@ -206,6 +206,10 @@ $admin_actions['GetOnlineUsers'] = array(
     'standalone' => true,
     'file' => 'OnlineUsers',
 );
+$admin_actions['GetOnlineUsersCount'] = array(
+    'standalone' => true,
+    'file' => 'OnlineUsers',
+);
 $admin_actions['GetUsersCount'] = array(
     'standalone' => true,
     'file' => 'Ajax',
