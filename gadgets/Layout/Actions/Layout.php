@@ -18,6 +18,14 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      */
     function Layout()
     {
+        // fetch current layout user
+        $layout_user = $GLOBALS['app']->Session->GetAttribute('layout');
+        if (empty($layout_user)) {
+            $this->gadget->CheckPermission('ManageLayout');
+        } else {
+            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
+        }
+
         $lModel = $this->gadget->model->loadAdmin('Layout');
         $eModel = $this->gadget->model->loadAdmin('Elements');
 

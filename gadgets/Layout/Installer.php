@@ -11,6 +11,14 @@
 class Layout_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Default ACL value of front-end gadget access
+     *
+     * @var     bool
+     * @access  protected
+     */
+    var $default_acl = false;
+
+    /**
      * Gadget ACLs
      *
      * @var     array
