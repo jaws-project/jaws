@@ -67,11 +67,10 @@ class Users_Actions_Preferences extends Jaws_Gadget_Action
             $tpl->SetVariable('component', $gadget);
             $tpl->SetVariable('lbl_component', $objGadget->title);
             foreach ($keys as $key_name => $key_value) {
-                $key_title = @$options[$key_name]['title'];
                 $tpl->SetBlock('preferences/gadget/key');
                 $tpl->SetVariable('gadget', $gadget);
                 $tpl->SetVariable('key_name', $key_name);
-                $tpl->SetVariable('key_title', empty($key_title)? $key_name : $key_title);
+                $tpl->SetVariable('key_title', $options[$key_name]['title']);
                 if (@isset($options[$key_name]['values'])) {
                     $element =& Piwi::CreateWidget('Combo', $key_name);
                     $element->SetID($key_name);
