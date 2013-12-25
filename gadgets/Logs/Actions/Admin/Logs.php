@@ -347,8 +347,33 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     function ExportLogs()
     {
         $this->gadget->CheckPermission('ExportLogs');
+        header('Content-Type: text/csv; charset=utf-8');
 
-        Jaws_Header::Referrer();
+        $post = jaws()->request->fetch(array('offset', 'filters:array'), 'post');
+        $filters = $post['filters'];
+
+        $model = $this->gadget->model->load('Logs');
+        $logs = $model->GetLogs($filters);
+        if (Jaws_Error::IsError($logs)) {
+            return;
+        }
+
+        $exportData = '';
+        foreach ($logs as $log) {
+            $exportData .= $log['id'] . ',';
+            $exportData .= $log['username'] . ',';
+            $exportData .= $log['gadget'] . ',';
+            $exportData .= $log['action'] . ',';
+            $exportData .= $log['priority'] . ',';
+            $exportData .= $log['apptype'] . ',';
+            $exportData .= $log['backend'] . ',';
+            $exportData .= long2ip($log['ip']) . ',';
+            $exportData .= $log['status'] . ',';
+            $exportData .= $log['insert_time'] . ',';
+            $exportData .= PHP_EOL;
+        }
+
+        return $exportData;
     }
 
 }

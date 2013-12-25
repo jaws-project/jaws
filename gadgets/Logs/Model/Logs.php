@@ -65,7 +65,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
     {
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->select(
-            'logs.id:integer', 'gadget', 'action', 'nickname', 'username', 'users.id as user:integer',
+            'logs.id:integer', 'gadget', 'action', 'priority', 'nickname', 'username', 'users.id as user:integer',
             'apptype', 'backend:boolean', 'ip', 'agent', 'logs.status', 'logs.insert_time'
         );
         $logsTable->join('users', 'users.id', 'logs.user', 'left');

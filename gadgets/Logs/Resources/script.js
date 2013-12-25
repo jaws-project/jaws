@@ -77,6 +77,15 @@ function logsDGAction(combo)
 {
     var rows = $('logs_datagrid').getSelectedRows();
 
+    var filters = {
+        'from_date' : $('from_date').value,
+        'to_date'   : $('to_date').value,
+        'gadget'    : $('filter_gadget').value,
+        'user'      : $('filter_user').value,
+        'priority'  : $('filter_priority').value,
+        'status'    : $('filter_status').value
+    };
+
     if (combo.value == 'delete') {
         if (rows.length < 1) {
             return;
@@ -93,18 +102,13 @@ function logsDGAction(combo)
         }
     } else if (combo.value == 'deleteFiltered') {
         var confirmation = confirm(confirmLogsDelete);
-        var filters = {
-            'from_date' : $('from_date').value,
-            'to_date'   : $('to_date').value,
-            'gadget'    : $('filter_gadget').value,
-            'user'      : $('filter_user').value,
-            'priority'  : $('filter_priority').value,
-            'status'    : $('filter_status').value
-        };
-
         if (confirmation) {
             LogsAjax.callAsync('DeleteLogsUseFilters', {'filters':filters});
         }
+    } else if (combo.value == 'export') {
+        LogsAjax.callAsync('ExportLogs', {'filters': null});
+    } else if (combo.value == 'exportFiltered') {
+        LogsAjax.callAsync('ExportLogs', {'filters': filters});
     }
 }
 
