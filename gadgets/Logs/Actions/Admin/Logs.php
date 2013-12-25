@@ -351,19 +351,24 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     function ExportLogs()
     {
         $this->gadget->CheckPermission('ExportLogs');
-        header('Content-Type: text/csv; charset=utf-8');
 
-        $post = jaws()->request->fetch(array('offset', 'filters:array'), 'post');
-        $filters = $post['filters'];
+        $filters = jaws()->request->fetch(array('from_date', 'to_date', 'gname', 'user', 'priority', 'status'), 'get');
+        $filters['gadget'] = $filters['gname'];
+        unset( $filters['gname']);
 
         $model = $this->gadget->model->load('Logs');
         $logs = $model->GetLogs($filters);
-        if (Jaws_Error::IsError($logs)) {
+        if (Jaws_Error::IsError($logs) || count($logs) < 1) {
             return;
         }
 
-        $exportData = '';
+        $tmpDir = sys_get_temp_dir();
+        $tmpCSVFileName = uniqid(rand(), true) . '.csv';
+        $fp = fopen($tmpDir . DIRECTORY_SEPARATOR . $tmpCSVFileName, 'w');
+
+        $date = Jaws_Date::getInstance();
         foreach ($logs as $log) {
+            $exportData = '';
             $exportData .= $log['id'] . ',';
             $exportData .= $log['username'] . ',';
             $exportData .= $log['gadget'] . ',';
@@ -373,11 +378,24 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             $exportData .= $log['backend'] . ',';
             $exportData .= long2ip($log['ip']) . ',';
             $exportData .= $log['status'] . ',';
-            $exportData .= $log['insert_time'] . ',';
+            $exportData .= $date->Format($log['insert_time'], 'Y-m-d H:i:s');
             $exportData .= PHP_EOL;
+            fwrite($fp, $exportData);
+        }
+        fclose($fp);
+
+        require_once PEAR_PATH. 'File/Archive.php';
+        $tmpFileName = uniqid(rand(), true) . '.tar.gz';
+        $tmpArchiveName = $tmpDir. DIRECTORY_SEPARATOR. $tmpFileName;
+        $writerObj = File_Archive::toFiles();
+        $src = File_Archive::read($tmpDir . DIRECTORY_SEPARATOR . $tmpCSVFileName);
+        $dst = File_Archive::toArchive($tmpArchiveName, $writerObj);
+        $res = File_Archive::extract($src, $dst);
+        if (!PEAR::isError($res)) {
+            return Jaws_Utils::Download($tmpArchiveName, $tmpFileName);
         }
 
-        return $exportData;
+        Jaws_Header::Referrer();
     }
 
 }

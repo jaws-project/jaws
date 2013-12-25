@@ -106,9 +106,15 @@ function logsDGAction(combo)
             LogsAjax.callAsync('DeleteLogsUseFilters', {'filters':filters});
         }
     } else if (combo.value == 'export') {
-        LogsAjax.callAsync('ExportLogs', {'filters': null});
+        window.location= LogsAjax.baseScript + '?gadget=Logs&action=ExportLogs';
     } else if (combo.value == 'exportFiltered') {
-        LogsAjax.callAsync('ExportLogs', {'filters': filters});
+        var queryString = '&from_date=' + filters.from_date;
+        queryString += '&to_date=' + filters.to_date;
+        queryString += '&gname=' + filters.gadget;
+        queryString += '&user=' + filters.user;
+        queryString += '&priority=' + filters.priority;
+        queryString += '&status=' + filters.status;
+        window.location= LogsAjax.baseScript + '?gadget=Logs&action=ExportLogs' + queryString;
     }
 }
 
