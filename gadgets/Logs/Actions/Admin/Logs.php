@@ -227,7 +227,11 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
             $logData['__KEY__'] = $log['id'];
 
             // Gadget
-            $logData['gadget'] = _t(strtoupper($log['gadget'].'_TITLE'));
+            if (!empty($log['gadget'])) {
+                $logData['gadget'] = _t(strtoupper($log['gadget'] . '_TITLE'));
+            } else {
+                $logData['gadget'] = '';
+            }
             // Action
             $logData['action'] = $log['action'];
             // Username
