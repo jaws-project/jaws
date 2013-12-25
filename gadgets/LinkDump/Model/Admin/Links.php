@@ -107,7 +107,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags') && !empty($tags)) {
             $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
-            $res = $model->UpdateTagsItems('LinkDump', 'link', $id, true, null, $tags);
+            $res = $model->UpdateTagsItems('LinkDump', 'link', $id, true, time(), $tags);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('LINKDUMP_LINKS_UPDATE_TAG_ERROR'), RESPONSE_ERROR);
             }
