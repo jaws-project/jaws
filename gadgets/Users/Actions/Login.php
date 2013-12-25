@@ -354,12 +354,12 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $tpl->SetVariable('user_login', _t('USERS_LOGIN_TITLE'));
             $tpl->SetVariable('login_url', $login_url);
 
-            // registeration
+            // registration
             if ($this->gadget->registry->fetch('anon_register') == 'true') {
-                $tpl->SetBlock('LoginLinks/registeration');
+                $tpl->SetBlock('LoginLinks/registration');
                 $tpl->SetVariable('user_registeration', _t('USERS_REGISTER'));
                 $tpl->SetVariable('registeration_url',  $this->gadget->urlMap('Registration'));
-                $tpl->ParseBlock('LoginLinks/registeration');
+                $tpl->ParseBlock('LoginLinks/registration');
             }
 
             // forget user/password
