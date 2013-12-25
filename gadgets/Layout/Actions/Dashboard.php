@@ -18,17 +18,12 @@ class Layout_Actions_Dashboard extends Jaws_Gadget_Action
      */
     function Dashboard()
     {
-        $dashboard_building = $this->gadget->registry->fetch('dashboard_building', 'Users') == 'true';
-        if (!$dashboard_building ||
-            !$GLOBALS['app']->Session->GetPermission('Users', 'EditUserDashboard')
-        ) {
+        if (!$GLOBALS['app']->Session->GetPermission('Users', 'AccessDashboard')) {
             return Jaws_HTTPError::Get(403);
         }
 
-        $user = jaws()->request->fetch('user');
-        if (!$GLOBALS['app']->Session->GetPermission('Users', 'ManageUsersDashboard') || empty($user)) {
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        }
+        //$user = jaws()->request->fetch('user');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
 
         $layoutModel = $this->gadget->model->load('Layout');
         $layoutModel->layoutSwitch($user);
@@ -43,20 +38,13 @@ class Layout_Actions_Dashboard extends Jaws_Gadget_Action
      */
     function LayoutSwitch()
     {
-        $dashboard_building = $this->gadget->registry->fetch('dashboard_building') == 'true';
-        if (!$dashboard_building &&
-            !$GLOBALS['app']->Session->GetPermission('Users', 'EditUserDashboard')
-        ) {
+        if (!$GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard')) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_ACCESS_DENIED'), RESPONSE_ERROR);
             Jaws_Header::Location(BASE_SCRIPT . '?gadget=Layout');
         }
 
-        $user = jaws()->request->fetch('user');
-        if (empty($user) ||
-           !$GLOBALS['app']->Session->GetPermission('Users', 'ManageUsersDashboard')
-        ) {
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        }
+        //$user = jaws()->request->fetch('user');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
 
         $layoutModel = $this->gadget->model->load('Layout');
         $result = $layoutModel->layoutSwitch($user);

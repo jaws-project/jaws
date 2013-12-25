@@ -190,10 +190,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $tpl->SetVariable('title-gadget', 'Layout');
 
         // layouts/dashboards
-        $dashboard_building = $this->gadget->registry->fetch('dashboard_building', 'Users') == 'true';
-        if ($dashboard_building &&
-            $this->gadget->GetPermission('EditUserDashboard')
-        ) {
+        if ($GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard')) {
             $tpl->SetBlock('controls/layouts');
             $tpl->SetVariable('layouts', _t('LAYOUT_LAYOUTS'));
             $layoutsCombo =& Piwi::CreateWidget('Combo', 'layouts');
