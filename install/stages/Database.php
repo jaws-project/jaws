@@ -333,8 +333,8 @@ class Installer_Database extends JawsInstallerStage
         }
 
         $gadgets = array(
-            'Settings', 'Layout', 'ControlPanel',
-            'Components', 'UrlMapper', 'Users', 'Policy',
+            'Settings', 'ControlPanel', 'Components',
+            'UrlMapper', 'Layout', 'Users', 'Policy',
         );
 
         foreach ($gadgets as $gadget) {
