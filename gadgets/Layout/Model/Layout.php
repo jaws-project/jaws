@@ -46,20 +46,35 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
     function layoutSwitch($user = 0)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
-        $lyTable->select('count(id)')->where('user', (int)$user);
-        $exists = $lyTable->and()->where('gadget', '[REQUESTEDGADGET]')->fetchOne();
-        if (!Jaws_Error::IsError($exists)) {
-            if (empty($exists)) {
+        if (!empty($user)) {
+            // REQUESTEDGADGET/REQUESTEDACTION
+            $exists = $lyTable->select('count(id)')
+                ->where('user', (int)$user)
+                ->and()
+                ->where('gadget', '[REQUESTEDGADGET]')
+                ->fetchOne();
+            if (!Jaws_Error::IsError($exists) && empty($exists)) {
                 $elModel = $this->gadget->model->loadAdmin('Elements');
                 $elModel->NewElement('main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1, $user);
             }
 
-            $layout_user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
-            $GLOBALS['app']->Session->SetAttribute('layout', empty($layout_user)? $user : 0);
-            return true;
+            // Users/LoginBox
+            $exists = $lyTable->select('count(id)')
+                ->where('user', (int)$user)
+                ->and()
+                ->where('gadget', 'Users')
+                ->and()
+                ->where('gadget_action', 'LoginBox')
+                ->fetchOne();
+            if (!Jaws_Error::IsError($exists) && empty($exists)) {
+                $elModel = $this->gadget->model->loadAdmin('Elements');
+                $elModel->NewElement('main', 'Users', 'LoginBox', null, 'Login', 2, $user);
+            }
         }
 
-        return $exists;
+        $layout_user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
+        $GLOBALS['app']->Session->SetAttribute('layout', empty($layout_user)? $user : 0);
+        return true;
     }
 
 }
