@@ -218,15 +218,6 @@ class Jaws_Widgets_CKEditor extends Container
      */
     function buildXHTML()
     {
-        $extraPlugins = array();
-        static $alreadyLoaded;
-        $alreadyLoaded = isset($alreadyLoaded) ? true : false;
-
-        if (!$alreadyLoaded) {
-            $this->_XHTML .= '<script language="javascript" type="text/javascript" src="'.
-                $GLOBALS['app']->getSiteURL('/libraries/ckeditor/ckeditor.js', true). '"></script>'. "\n";
-        }
-
         $label = $this->_Label->GetValue();
         if (!empty($label)) {
             $this->_Container->PackStart($this->_Label);
@@ -235,6 +226,7 @@ class Jaws_Widgets_CKEditor extends Container
         $this->_Container->SetWidth($this->_Width);
         $this->_XHTML .= $this->_Container->Get();
 
+        $extraPlugins = array();
         $pluginDir = JAWS_PATH . 'libraries/ckeditor/plugins/';
         if (is_dir($pluginDir)) {
             $dirs = scandir($pluginDir);
@@ -247,72 +239,56 @@ class Jaws_Widgets_CKEditor extends Container
             }
         }
 
-        // CKEditor configuration
-        $this->_Config = array();
-        $this->_Config['contentsLangDirection'] = $this->_Direction;
-        $this->_Config['language'] = $this->_Language;
-        $this->_Config['AutoDetectLanguage'] = false;
-        $this->_Config['height'] = $this->_Height;
-        $this->_Config['width'] = $this->_Width;
-        $this->_Config['skin'] = $this->_Skin;
-        $this->_Config['theme'] = $this->_Theme;
-        $this->_Config['readOnly'] = !$this->_IsEnabled;
-        $this->_Config['resize_enabled'] = $this->_IsResizable;
-        $this->_Config['toolbar'] = $this->toolbars;
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/ckeditor/ckeditor.js');
+        $tpl = new Jaws_Template();
+        $tpl->Load('CKEditor.html', 'include/Jaws/Resources');
+        $block = (JAWS_SCRIPT == 'admin')? 'ckeditor_backend' : 'ckeditor_frontend';
+        $tpl->SetBlock($block);
 
+        $tpl->SetVariable('name', $this->_Name);
+        $tpl->SetVariable('contentsLangDirection', $this->_Direction);
+        $tpl->SetVariable('language', $this->_Language);
+        $tpl->SetVariable('AutoDetectLanguage', 'false');
+        $tpl->SetVariable('autoParagraph', 'false');
+        $tpl->SetVariable('height', $this->_Height);
+        $tpl->SetVariable('width', $this->_Width);
+        $tpl->SetVariable('skin', $this->_Skin);
+        $tpl->SetVariable('theme', $this->_Theme);
+        $tpl->SetVariable('readOnly', $this->_IsEnabled? 'false' : 'true');
+        $tpl->SetVariable('resize_enabled', $this->_IsResizable? 'true' : 'false');
+        $tpl->SetVariable('toolbar', Jaws_UTF8::json_encode($this->toolbars));
         if(!empty($extraPlugins)) {
-            $this->_Config['extraPlugins'] = implode(',', $extraPlugins);
+            $tpl->SetBlock("$block/extra");
+            $tpl->SetVariable('extraPlugins', implode(',', $extraPlugins));
+            $tpl->ParseBlock("$block/extra");
         }
-
         if(!empty($this->_RemovePlugins)) {
-            $this->_Config['removePlugins'] = $this->_RemovePlugins;
+            $tpl->SetBlock("$block/remove");
+            $tpl->SetVariable('removePlugins', $this->_RemovePlugins);
+            $tpl->ParseBlock("$block/remove");
         }
-
-        $this->_Config['autoParagraph'] = 'false';
-
+        // direction
         if ('rtl' == $this->_Direction) {
-            $this->_Config['contentsCss'] = 'gadgets/ControlPanel/Resources/ckeditor.rtl.css';
+            $tpl->SetVariable('contentsCss', 'gadgets/ControlPanel/Resources/ckeditor.rtl.css');
         } else {
-            $this->_Config['contentsCss'] = 'gadgets/ControlPanel/Resources/ckeditor.css';
+            $tpl->SetVariable('contentsCss', 'gadgets/ControlPanel/Resources/ckeditor.css');
         }
-
-        $siteURL = $GLOBALS['app']->GetSiteURL();
+        // FileBrowser
         if (Jaws_Gadget::IsGadgetInstalled('FileBrowser')) {
-            $this->_Config['filebrowserBrowseUrl'] =
-                   $siteURL. '/'. BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile';
-            $this->_Config['filebrowserFlashBrowseUrl'] =
-                   $siteURL. '/'. BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile';
+            $tpl->SetBlock("$block/filebrowser");
+            $tpl->SetVariable('filebrowserBrowseUrl', 'gadget=FileBrowser&action=BrowseFile');
+            $tpl->SetVariable('filebrowserFlashBrowseUrl', 'gadget=FileBrowser&action=BrowseFile');
+            $tpl->ParseBlock("$block/filebrowser");
         }
-
+        // Phoo
         if (Jaws_Gadget::IsGadgetInstalled('Phoo')) {
-            $this->_Config['filebrowserImageBrowseUrl'] =
-                   $siteURL. '/'. BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo';
+            $tpl->SetBlock("$block/phoo");
+            $tpl->SetVariable('filebrowserImageBrowseUrl', 'gadget=Phoo&action=BrowsePhoo');
+            $tpl->ParseBlock("$block/phoo");
         }
 
-        $sParams = '';
-        $bFirst = true;
-        foreach ($this->_Config as $sKey => $sValue) {
-            if (!$bFirst) {
-                $sParams .= ", \n";
-            } else {
-                $bFirst = false;
-            }
-            if ($sValue === true) {
-                $sParams .= $sKey . ': true';
-            } elseif ($sValue === false) {
-                $sParams .= $sKey . ': false';
-            } elseif (is_array($sValue)) {
-                $sParams .= $sKey . " : " . Jaws_UTF8::json_encode($sValue);
-            } else {
-                $sParams .= $sKey . " : '" . $sValue . "'";
-            }
-        }
-
-        $this->_XHTML .= "<script type=\"text/javascript\">\n";
-        $this->_XHTML .= "  CKEDITOR.replace( '" . $this->_Name . "',";
-        $this->_XHTML .= '{' . $sParams . '}';
-        $this->_XHTML .= "  );\n";
-        $this->_XHTML .= "</script>\n";
+        $tpl->ParseBlock($block);
+        $this->_XHTML.= $tpl->Get();
     }
 
     /**
