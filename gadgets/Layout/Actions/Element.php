@@ -2,14 +2,14 @@
 /**
  * Layout Core Gadget Admin
  *
- * @category   GadgetAdmin
- * @package    Layout
- * @author     Jonathan Hernandez <ion@suavizado.com>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2004-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    GadgetAdmin
+ * @package     Layout
+ * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2004-2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Layout_Actions_Admin_Element extends Jaws_Gadget_Action
+class Layout_Actions_Element extends Jaws_Gadget_Action
 {
     /**
      * Adds layout element

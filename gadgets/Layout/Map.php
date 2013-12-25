@@ -8,4 +8,4 @@
  * @copyright   2013 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-$maps[] = array('LayoutSwitch', 'layout[/{user}]');
+$maps[] = array('Dashboard', 'layout[/{user}]');

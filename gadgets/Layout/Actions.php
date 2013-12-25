@@ -12,60 +12,56 @@
 /**
  * Index actions
  */
-$actions['LayoutSwitch'] = array(
-    'standalone' => true,
-    'file' => 'Layout',
-);
-
-/**
- * Admin actions
- */
-$admin_actions['LayoutManager'] = array(
+$actions['LayoutManager'] = array(
     'standalone' => true,
     'normal' => true,
     'file' => 'Layout',
 );
-$admin_actions['ChangeTheme'] = array(
+$actions['ChangeTheme'] = array(
     'standalone' => true,
     'file' => 'Theme',
 );
-$admin_actions['LayoutSwitch'] = array(
-    'standalone' => true,
-    'file' => 'Layout',
-);
-$admin_actions['EditElementAction'] = array(
+$actions['EditElementAction'] = array(
     'standalone' => true,
     'file' => 'Element',
 );
-$admin_actions['ChangeDisplayWhen'] = array(
+$actions['ChangeDisplayWhen'] = array(
     'standalone' => true,
     'file' => 'When',
 );
-$admin_actions['AddLayoutElement'] = array(
+$actions['AddLayoutElement'] = array(
     'standalone' => true,
     'file' => 'Element',
 );
-$admin_actions['MoveElement'] = array(
+$actions['MoveElement'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
-$admin_actions['DeleteElement'] = array(
+$actions['DeleteElement'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
-$admin_actions['ChangeDisplayWhen2'] = array(
+$actions['ChangeDisplayWhen2'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
-$admin_actions['GetGadgetActions'] = array(
+$actions['GetGadgetActions'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
-$admin_actions['AddGadget'] = array(
+$actions['AddGadget'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
-$admin_actions['EditElementAction2'] = array(
+$actions['EditElementAction2'] = array(
     'standalone' => true,
     'file' => 'Ajax',
+);
+$actions['Dashboard'] = array(
+    'standalone' => true,
+    'file' => 'Dashboard',
+);
+$actions['LayoutSwitch'] = array(
+    'standalone' => true,
+    'file' => 'Dashboard',
 );

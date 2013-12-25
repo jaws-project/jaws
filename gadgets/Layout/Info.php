@@ -28,11 +28,11 @@ class Layout_Info extends Jaws_Gadget
     var $_IsCore = true;
 
     /**
-     * Default back-end action name
+     * Default front-end action name
      *
      * @var     string
      * @access  protected
      */
-    var $default_admin_action = 'LayoutManager';
+    var $default_action = 'LayoutManager';
 
 }
