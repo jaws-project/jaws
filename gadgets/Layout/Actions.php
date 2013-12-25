@@ -12,7 +12,7 @@
 /**
  * Index actions
  */
-$actions['LayoutManager'] = array(
+$actions['Layout'] = array(
     'standalone' => true,
     'normal' => true,
     'file' => 'Layout',

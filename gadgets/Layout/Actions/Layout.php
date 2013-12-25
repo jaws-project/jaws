@@ -16,7 +16,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      * @access  public
      * @return  string  XHTML template conent
      */
-    function LayoutManager()
+    function Layout()
     {
         $lModel = $this->gadget->model->loadAdmin('Layout');
         $eModel = $this->gadget->model->loadAdmin('Elements');

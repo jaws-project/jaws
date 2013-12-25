@@ -17,6 +17,7 @@ class Layout_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_ACLKeys = array(
+        'ManageLayout',
         'ManageThemes',
     );
 
@@ -74,6 +75,9 @@ class Layout_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+
+            // ACL keys
+            $this->gadget->acl->insert('ManageLayout');
         }
 
         return true;
