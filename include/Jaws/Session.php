@@ -775,9 +775,11 @@ class Jaws_Session
      * @param   bool    $active Active session
      * @param   bool    $logged Logged user's session
                 (null: all sessions, true: logged users's sessions, false: anonymous sessions)
+     * @param   int     $limit
+     * @param   int     $offset
      * @return  mixed   Sessions attributes if successfully, otherwise Jaws_Error
      */
-    function GetSessions($active = true, $logged = null)
+    function GetSessions($active = true, $logged = null, $limit = 0, $offset = null)
     {
         // remove expired session
         $this->DeleteExpiredSessions();
@@ -800,7 +802,7 @@ class Jaws_Session
         } elseif ($logged === false) {
             $sessTable->and()->where('user', '');
         }
-        $sessions = $sessTable->orderBy('updatetime desc')->fetchAll();
+        $sessions = $sessTable->orderBy('updatetime desc')->limit($limit, $offset)->fetchAll();
         if (Jaws_Error::isError($sessions)) {
             return $sessions;
         }
