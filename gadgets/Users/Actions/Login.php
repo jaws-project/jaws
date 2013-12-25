@@ -295,7 +295,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 $tpl->ParseBlock('UserLinks/cpanel');
             }
 
-            // Layout/Dashboard
+            // Dashboard
             $dashboard_building = $this->gadget->registry->fetch('dashboard_building') == 'true';
             if ($dashboard_building &&
                 $this->gadget->GetPermission('EditUserDashboard')
@@ -309,7 +309,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 }
                 $tpl->SetVariable(
                     'layout_url',
-                    $this->gadget->urlMap('LayoutSwitch', array(), false, 'Layout')
+                    $this->gadget->urlMap('Dashboard', array(), false, 'Layout')
                 );
                 $tpl->ParseBlock('UserLinks/layout');
             }
