@@ -275,15 +275,54 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 $tpl->ParseBlock('UserLinks/contacts');
             }
 
-            // manage user groups
-            $groups_management = $this->gadget->registry->fetch('groups_management') == 'true';
-            if ($groups_management &&
-                $this->gadget->GetPermission('ManageUserGroups')
-            ) {
+            // manage friends
+            if ($this->gadget->GetPermission('ManageFriends')) {
                 $tpl->SetBlock('UserLinks/groups');
                 $tpl->SetVariable('user_groups', _t('USERS_MANAGE_GROUPS'));
                 $tpl->SetVariable('groups_url', $this->gadget->urlMap('Groups'));
                 $tpl->ParseBlock('UserLinks/groups');
+            }
+
+            // fetch current layout user
+            $layout_user = $GLOBALS['app']->Session->GetAttribute('layout');
+            // Layout/Dashboard manager
+            if (empty($layout_user)) {
+                // global site layout
+                if ($GLOBALS['app']->Session->GetPermission('Layout', 'ManageLayout')) {
+                    $tpl->SetBlock('UserLinks/layout');
+                    $tpl->SetVariable('layout', _t('LAYOUT_TITLE'));
+                    $tpl->SetVariable(
+                        'layout_url',
+                        $this->gadget->urlMap('Layout', array(), false, 'Layout')
+                    );
+                    $tpl->ParseBlock('UserLinks/layout');
+                }
+            } else {
+                // user's dashboard layout
+                if ($this->gadget->GetPermission('ManageDashboard')) {
+                    $tpl->SetBlock('UserLinks/layout');
+                    $tpl->SetVariable('layout', _t('LAYOUT_TITLE'));
+                    $tpl->SetVariable(
+                        'layout_url',
+                        $this->gadget->urlMap('Layout', array(), false, 'Layout')
+                    );
+                    $tpl->ParseBlock('UserLinks/layout');
+                }
+            }
+
+            // Dashboard
+            if ($this->gadget->GetPermission('AccessDashboard')) {
+                $tpl->SetBlock('UserLinks/dashboard');
+                if (empty($layout_user)) {
+                    $tpl->SetVariable('dashboard', _t('USERS_DASHBOARD_USER'));
+                } else {
+                    $tpl->SetVariable('dashboard', _t('USERS_DASHBOARD_GLOBAL'));
+                }
+                $tpl->SetVariable(
+                    'dashboard_url',
+                    $this->gadget->urlMap('Dashboard', array(), false, 'Layout')
+                );
+                $tpl->ParseBlock('UserLinks/dashboard');
             }
 
             // ControlPanel
@@ -293,25 +332,6 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
                 $tpl->SetVariable('cpanel_url', empty($admin_script)? 'admin.php' : $admin_script);
                 $tpl->ParseBlock('UserLinks/cpanel');
-            }
-
-            // Dashboard
-            $dashboard_building = $this->gadget->registry->fetch('dashboard_building') == 'true';
-            if ($dashboard_building &&
-                $this->gadget->GetPermission('EditUserDashboard')
-            ) {
-                $tpl->SetBlock('UserLinks/layout');
-                $user = $GLOBALS['app']->Session->GetAttribute('layout');
-                if (empty($user)) {
-                    $tpl->SetVariable('layout', _t('USERS_DASHBOARD_USER'));
-                } else {
-                    $tpl->SetVariable('layout', _t('USERS_DASHBOARD_GLOBAL'));
-                }
-                $tpl->SetVariable(
-                    'layout_url',
-                    $this->gadget->urlMap('Dashboard', array(), false, 'Layout')
-                );
-                $tpl->ParseBlock('UserLinks/layout');
             }
 
             // Logout

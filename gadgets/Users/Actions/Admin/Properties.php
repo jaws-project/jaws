@@ -75,18 +75,6 @@ class Users_Actions_Admin_Properties extends Users_Actions_Admin_Default
         $passRecovery->AddOption(_t('GLOBAL_NO'), 'false');
         $passRecovery->SetDefault($this->gadget->registry->fetch('password_recovery'));
 
-        $groupsmanagement =& Piwi::CreateWidget('Combo', 'groups_management');
-        $groupsmanagement->SetTitle(_t('USERS_PROPERTIES_GROUPS_MANAGEMENT'));
-        $groupsmanagement->AddOption(_t('GLOBAL_YES'), 'true');
-        $groupsmanagement->AddOption(_t('GLOBAL_NO'), 'false');
-        $groupsmanagement->SetDefault($this->gadget->registry->fetch('groups_management'));
-
-        $dashboard =& Piwi::CreateWidget('Combo', 'dashboard_building');
-        $dashboard->SetTitle(_t('USERS_PROPERTIES_DASHBOARD_BUILDING'));
-        $dashboard->AddOption(_t('GLOBAL_YES'), 'true');
-        $dashboard->AddOption(_t('GLOBAL_NO'), 'false');
-        $dashboard->SetDefault($this->gadget->registry->fetch('dashboard_building'));
-
         include_once JAWS_PATH . 'include/Jaws/Widgets/FieldSet.php';
         $fieldset = new Jaws_Widgets_FieldSet('');
         $fieldset->SetTitle('vertical');

@@ -25,8 +25,6 @@ class Users_Installer extends Jaws_Gadget_Installer
         array('anon_repetitive_email', 'true'),
         array('anon_activation', 'user'),
         array('anon_group', ''),
-        array('groups_management', 'false'),
-        array('dashboard_building', 'false'),
     );
 
     /**
@@ -42,17 +40,17 @@ class Users_Installer extends Jaws_Gadget_Installer
         'ManageProperties',
         'ManageUserACLs',
         'ManageGroupACLs',
-        'ManageUsersDashboard',
+        'ManageAuthenticationMethod',
+        'ManageFriends',
+        'AccessDashboard',
+        'ManageDashboard',
         'EditUserName',
-        'EditUserNickname',
         'EditUserEmail',
+        'EditUserNickname',
         'EditUserPassword',
         'EditUserPersonal',
         'EditUserContacts',
-        'ManageUserGroups',
         'EditUserPreferences',
-        'EditUserDashboard',
-        'ManageAuthenticationMethod',
     );
 
     /**
@@ -150,13 +148,10 @@ class Users_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
-            // Registry key
-            $this->gadget->registry->insert('groups_management', 'false');
-            $this->gadget->registry->insert('dashboard_building', 'false');
-
             // ACL keys
-            $this->gadget->acl->insert('ManageUsersDashboard');
-            $this->gadget->acl->insert('EditUserDashboard');
+            $this->gadget->acl->insert('ManageFriends');
+            $this->gadget->acl->insert('AccessDashboard');
+            $this->gadget->acl->insert('ManageDashboard');
         }
 
         return true;
