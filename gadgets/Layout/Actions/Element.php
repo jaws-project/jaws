@@ -19,8 +19,14 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
      */
     function AddLayoutElement()
     {
-        // FIXME: When a gadget don't have layout actions
-        // doesn't permit to add it into layout
+        // fetch current layout user
+        $layout_user = $GLOBALS['app']->Session->GetAttribute('layout');
+        if (empty($layout_user)) {
+            $this->gadget->CheckPermission('ManageLayout');
+        } else {
+            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
+        }
+
         $tpl = $this->gadget->template->loadAdmin('AddGadget.html');
         $tpl->SetBlock('template');
 
