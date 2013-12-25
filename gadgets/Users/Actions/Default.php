@@ -45,7 +45,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
             $tpl->SetBlock('NoPermission/anon');
             $loginLink = $this->gadget->urlMap(
                 'LoginBox',
-                array('referrer' => Jaws_Utils::getRequestURL(false))
+                array('referrer' => bin2hex(Jaws_Utils::getRequestURL(false)))
             );
             $referLink = empty($_SERVER['HTTP_REFERER'])?
                 $GLOBALS['app']->getSiteURL('/') : Jaws_XSS::filter($_SERVER['HTTP_REFERER']);
