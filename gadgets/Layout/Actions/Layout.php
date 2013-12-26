@@ -29,7 +29,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $lModel = $this->gadget->model->loadAdmin('Layout');
         $eModel = $this->gadget->model->loadAdmin('Elements');
 
-        $t_item = $this->gadget->template->loadAdmin('LayoutManager.html');
+        $t_item = $this->gadget->template->load('LayoutManager.html');
         $t_item->SetBlock('working_notification');
         $t_item->SetVariable('loading-message', _t('GLOBAL_LOADING'));
         $working_box = $t_item->ParseBlock('working_notification');
@@ -188,14 +188,20 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      */
     function getLayoutControls()
     {
-        $tpl = $this->gadget->template->loadAdmin('LayoutControls.html');
+        $tpl = $this->gadget->template->load('LayoutControls.html');
         $tpl->SetBlock('controls');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('admin_script', BASE_SCRIPT);
-        $tpl->SetVariable('title-cp', _t('GLOBAL_CONTROLPANEL'));
+        $tpl->SetVariable('cp-title', _t('GLOBAL_CONTROLPANEL'));
+        $tpl->SetVariable('cp-title-separator', _t('GLOBAL_CONTROLPANEL_TITLE_SEPARATOR'));
+        if ($this->gadget->GetPermission('default_admin', '', false, 'ControlPanel')) {
+            $tpl->SetVariable('admin_script', 'admin.php');
+        } else {
+            $tpl->SetVariable('admin_script', 'javascript:void();');
+        }
         $tpl->SetVariable('title-name', _t('LAYOUT_TITLE'));
         $tpl->SetVariable('icon-gadget', 'gadgets/Layout/Resources/images/logo.png');
         $tpl->SetVariable('title-gadget', 'Layout');
+        $tpl->SetVariable('layout-url', $this->gadget->urlMap('Layout', array()));
 
         // layouts/dashboards
         if ($GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard')) {
@@ -203,7 +209,9 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
             $tpl->SetVariable('layouts', _t('LAYOUT_LAYOUTS'));
             $layoutsCombo =& Piwi::CreateWidget('Combo', 'layouts');
             $layoutsCombo->setID('layouts');
-            $layoutsCombo->AddOption(_t('LAYOUT_LAYOUTS_GLOBAL'), '0');
+            if ($this->gadget->GetPermission('ManageLayout')) {
+                $layoutsCombo->AddOption(_t('LAYOUT_LAYOUTS_GLOBAL'), '0');
+            }
             $layoutsCombo->AddOption(_t('LAYOUT_LAYOUTS_USER'), $GLOBALS['app']->Session->GetAttribute('user'));
             $layoutsCombo->SetDefault($GLOBALS['app']->Session->GetAttribute('layout'));
             $layoutsCombo->AddEvent(ON_CHANGE, "this.form.submit();");

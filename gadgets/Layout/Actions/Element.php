@@ -27,7 +27,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
             $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
         }
 
-        $tpl = $this->gadget->template->loadAdmin('AddGadget.html');
+        $tpl = $this->gadget->template->load('AddGadget.html');
         $tpl->SetBlock('template');
 
         $direction = _t('GLOBAL_LANG_DIRECTION');
@@ -102,7 +102,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
             return false;
         }
 
-        $tpl = $this->gadget->template->loadAdmin('EditGadget.html');
+        $tpl = $this->gadget->template->load('EditGadget.html');
         $tpl->SetBlock('template');
 
         $direction = _t('GLOBAL_LANG_DIRECTION');
