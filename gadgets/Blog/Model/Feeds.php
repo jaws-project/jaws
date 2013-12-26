@@ -73,9 +73,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             $GLOBALS['app']->GetSiteURL(),
             $this->gadget->registry->fetch('gate_email', 'Settings'));
         $this->_Atom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->fetch('version'));
-        $this->_Atom->SetCopyright($this->gadget->registry->fetch('copyright', 'Settings'));
-
-        $this->_Atom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/Templates/atom.xsl'), 'text/xsl');
+        $this->_Atom->SetCopyright($this->gadget->registry->fetch('site_copyright', 'Settings'));
 
         $objDate = Jaws_Date::getInstance();
         foreach ($result as $r) {
@@ -237,8 +235,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             $siteURL,
             $this->gadget->registry->fetch('gate_email', 'Settings'));
         $categoryAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->fetch('version'));
-        $categoryAtom->SetCopyright($this->gadget->registry->fetch('copyright', 'Settings'));
-        $categoryAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/Templates/atom.xsl'), 'text/xsl');
+        $categoryAtom->SetCopyright($this->gadget->registry->fetch('site_copyright', 'Settings'));
 
         $objDate = Jaws_Date::getInstance();
         foreach ($result as $r) {
@@ -388,9 +385,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             $GLOBALS['app']->GetSiteURL(),
             $this->gadget->registry->fetch('gate_email', 'Settings'));
         $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->fetch('version'));
-        $commentAtom->SetCopyright($this->gadget->registry->fetch('copyright', 'Settings'));
-
-        $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/Templates/atom.xsl'), 'text/xsl');
+        $commentAtom->SetCopyright($this->gadget->registry->fetch('site_copyright', 'Settings'));
         $commentAtom->SetTagLine(_t('BLOG_RECENT_COMMENTS'));
 
         $objDate = Jaws_Date::getInstance();
@@ -489,9 +484,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             $GLOBALS['app']->GetSiteURL(),
             $this->gadget->registry->fetch('gate_email', 'Settings'));
         $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->fetch('version'));
-        $commentAtom->SetCopyright($this->gadget->registry->fetch('copyright', 'Settings'));
-
-        $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Blog/Templates/atom.xsl'), 'text/xsl');
+        $commentAtom->SetCopyright($this->gadget->registry->fetch('site_copyright', 'Settings'));
         $commentAtom->SetTagLine(_t('BLOG_COMMENTS_ON_POST').' '.$id);
 
         $objDate = Jaws_Date::getInstance();

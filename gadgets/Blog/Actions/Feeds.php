@@ -21,7 +21,7 @@ class Blog_Actions_Feeds extends Blog_Actions_Default
      */
     function RSS($save = false)
     {
-        header('Content-type: application/rss+xml');
+        header('Content-type: application/rss+xml; charset=utf-8');
         $model = $this->gadget->model->load('Feeds');
         $rss = $model->MakeRSS($save);
         if (Jaws_Error::IsError($rss) && !$save) {
@@ -40,7 +40,7 @@ class Blog_Actions_Feeds extends Blog_Actions_Default
      */
     function Atom($save = false)
     {
-        header('Content-type: application/atom+xml');
+        header('Content-type: application/atom+xml; charset=utf-8');
         $model = $this->gadget->model->load('Feeds');
         $atom = $model->MakeAtom($save);
         if (Jaws_Error::IsError($atom) && !$save) {
