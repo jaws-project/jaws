@@ -727,7 +727,9 @@ class Jaws_Session
     {
         $expired = time() - ($GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy') * 60);
         $sessTable = Jaws_ORM::getInstance()->table('session');
-        $result = $sessTable->delete()->where('updatetime', $sessTable->expr('? - longevity', $expired))->exec();
+        $result = $sessTable->delete()
+            ->where('updatetime', $sessTable->expr('? - longevity', $expired), '<')
+            ->exec();
         return Jaws_Error::IsError($result)? false : true;
     }
 
