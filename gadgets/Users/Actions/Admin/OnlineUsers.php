@@ -19,10 +19,6 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
      */
     function OnlineUsersDataGrid()
     {
-        $gridBox =& Piwi::CreateWidget('VBox');
-        $gridBox->SetID('tags_box');
-        $gridBox->SetStyle('width: 100%;');
-
         $datagrid =& Piwi::CreateWidget('DataGrid', array());
         $datagrid->pageBy(50);
         $datagrid->useMultipleSelection();
@@ -43,34 +39,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $datagrid->AddColumn($column5);
         $datagrid->SetStyle('margin-top: 0px; width: 100%;');
 
-        //Tools
-        $gridForm =& Piwi::CreateWidget('Form');
-        $gridForm->SetID('tags_form');
-        $gridForm->SetStyle('float: right');
-
-        $gridFormBox =& Piwi::CreateWidget('HBox');
-
-        $actions =& Piwi::CreateWidget('Combo', 'online_users_actions');
-        $actions->SetID('ou_actions_combo');
-        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
-        $actions->AddOption('&nbsp;', '');
-        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
-        $actions->AddOption(_t('USERS_ONLINE_BLOCKING_IP'), 'block_ip');
-        $actions->AddOption(_t('USERS_ONLINE_BLOCKING_AGENT'), 'block_agent');
-
-        $execute =& Piwi::CreateWidget('Button', 'executeOnlineUsersAction', '',
-            STOCK_YES);
-        $execute->AddEvent(ON_CLICK, "javascript:onlineUsersDGAction(document.getElementById('ou_actions_combo'));");
-
-        $gridFormBox->Add($actions);
-        $gridFormBox->Add($execute);
-        $gridForm->Add($gridFormBox);
-
-        //Pack everything
-        $gridBox->Add($datagrid);
-        $gridBox->Add($gridForm);
-
-        return $gridBox->Get();
+        return $datagrid->Get();
     }
 
     /**
@@ -155,6 +124,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
 
         $tpl = $this->gadget->template->loadAdmin('OnlineUsers.html');
         $tpl->SetBlock('OnlineUsers');
+        $tpl->SetVariable('menubar', $this->MenuBar('OnlineUsers'));
 
         // Active
         $active =& Piwi::CreateWidget('Combo', 'active');
@@ -178,8 +148,22 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $tpl->SetVariable('filter_logged', $logged->Get());
         $tpl->SetVariable('lbl_filter_logged', _t('USERS_ONLINE_FILTER_MEMBERSHIP'));
 
+        // Datagrid
         $tpl->SetVariable('online_users_datagrid', $this->OnlineUsersDataGrid());
-        $tpl->SetVariable('menubar', $this->MenuBar('OnlineUsers'));
+
+        // Actions
+        $actions =& Piwi::CreateWidget('Combo', 'online_users_actions');
+        $actions->SetID('online_users_actions');
+        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
+        $actions->AddOption('&nbsp;', '');
+        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+        $actions->AddOption(_t('USERS_ONLINE_BLOCKING_IP'), 'block_ip');
+        $actions->AddOption(_t('USERS_ONLINE_BLOCKING_AGENT'), 'block_agent');
+        $tpl->SetVariable('actions_combo', $actions->Get());
+
+        $btnExecute =& Piwi::CreateWidget('Button', 'executeOnlineUsersAction', '', STOCK_YES);
+        $btnExecute->AddEvent(ON_CLICK, "javascript:onlineUsersDGAction($('online_users_actions'));");
+        $tpl->SetVariable('btn_execute', $btnExecute->Get());
 
         $tpl->SetVariable('confirmThrowout',   _t('USERS_ONLINE_CONFIRM_THROWOUT'));
         $tpl->SetVariable('confirmBlockIP',    _t('USERS_ONLINE_CONFIRM_BLOCKIP'));
