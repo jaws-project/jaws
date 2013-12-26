@@ -18,7 +18,7 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
      */
     function RecentCommentsAtom()
     {
-        header('Content-type: application/atom+xml');
+        header('Content-type: application/atom+xml; charset=utf-8');
         $gadget = jaws()->request->fetch('gadgetname', 'get');
         $commAtom = $this->GetRecentCommentsAtomStruct($gadget, 'atom');
         if (Jaws_Error::IsError($commAtom)) {
@@ -40,7 +40,7 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
      */
     function RecentCommentsRSS()
     {
-        header('Content-type: application/rss+xml');
+        header('Content-type: application/rss+xml; charset=utf-8');
         $gadget = jaws()->request->fetch('gadgetname', 'get');
         $commAtom = $this->GetRecentCommentsAtomStruct($gadget, 'rss');
         if (Jaws_Error::IsError($commAtom)) {
@@ -148,13 +148,13 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
         $commentAtom->SetTitle($this->gadget->registry->fetch('site_name', 'Settings'));
         $commentAtom->SetLink($url);
         $commentAtom->SetId($siteURL);
-        $commentAtom->SetAuthor($this->gadget->registry->fetch('site_author', 'Settings'),
+        $commentAtom->SetAuthor(
+            $this->gadget->registry->fetch('site_author', 'Settings'),
             $GLOBALS['app']->GetSiteURL(),
-            $this->gadget->registry->fetch('gate_email', 'Settings'));
+            $this->gadget->registry->fetch('gate_email', 'Settings')
+        );
         $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->fetch('version'));
-        $commentAtom->SetCopyright($this->gadget->registry->fetch('copyright', 'Settings'));
-
-        $commentAtom->SetStyle($GLOBALS['app']->GetSiteURL('/gadgets/Comments/Templates/atom.xsl'), 'text/xsl');
+        $commentAtom->SetCopyright($this->gadget->registry->fetch('site_copyright', 'Settings'));
         $commentAtom->SetTagLine(_t('COMMENTS_RECENT_COMMENTS', $gadget));
 
         $objDate = Jaws_Date::getInstance();
