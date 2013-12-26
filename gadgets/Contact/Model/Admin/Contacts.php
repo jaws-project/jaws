@@ -153,7 +153,7 @@ class Contact_Model_Admin_Contacts extends Jaws_Gadget_Model
     {
         $data = array();
         $data['reply_sent'] = (int)$reply_sent;
-        $data['now']        = $GLOBALS['db']->Date();
+        $data['updatetime'] = $GLOBALS['db']->Date();
 
         $cntctTable = Jaws_ORM::getInstance()->table('contacts');
         $result = $cntctTable->update($data)->where('id', $id)->exec();
