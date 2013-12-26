@@ -102,12 +102,6 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         //LogUI
         $tpl->SetVariable('log_ui', $this->LogUI());
 
-        $actions =& Piwi::CreateWidget('Combo', 'logs_actions');
-        $actions->SetID('logs_actions_combo');
-        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
-        $actions->AddOption('&nbsp;', '');
-        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
-
         // Actions
         $actions =& Piwi::CreateWidget('Combo', 'logs_actions');
         $actions->SetID('logs_actions_combo');
