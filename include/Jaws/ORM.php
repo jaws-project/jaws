@@ -851,6 +851,7 @@ class Jaws_ORM
                 // build insert values list
                 $vsql = '';
                 $dbDriver  = $this->jawsdb->getDriver();
+                $dbVersion = $this->jawsdb->getDBVersion();
                 foreach ($this->_values as $values) {
                     $values_str = implode(', ', array_map(array($this, 'quoteValue'), $values));
                     switch ($dbDriver) {
@@ -863,7 +864,12 @@ class Jaws_ORM
                             break;
 
                         case 'pgsql':
-                            $vsql.= (empty($vsql)? "\n VALUES" : ","). "\n ($values_str)";
+                            if (version_compare($dbVersion, '8.2.0', '>=')) {
+                                $vsql.= (empty($vsql)? "\n VALUES" : ","). "\n ($values_str)";
+                            } else {
+                                $vsql[] = " VALUES ($values_str)";
+                            }
+                            
                             break;
 
                         default:
@@ -872,8 +878,22 @@ class Jaws_ORM
                     }
                 }
 
-                $sql.= $vsql;
-                $result = $this->jawsdb->dbc->exec($sql);
+                if (is_array($vsql)) {
+                    $outer_transaction = self::$in_transaction;
+                    $this->beginTransaction();
+                    foreach ($vsql as $psql) {
+                        $result = $this->jawsdb->dbc->exec($sql. $psql);
+                        if (MDB2::isError($result)) {
+                            break 2;
+                        }
+                    }
+                    if (!$outer_transaction) {
+                        $this->commit();
+                    }
+                } else {
+                    $sql.= $vsql;
+                    $result = $this->jawsdb->dbc->exec($sql);
+                }
                 break;
 
             default:
