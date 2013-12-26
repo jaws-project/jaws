@@ -79,10 +79,14 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $tpl->SetVariable('lbl_group', _t('GLOBAL_GROUPS'));
         $gModel = $this->gadget->model->load('Groups');
         $groups = $gModel->GetGroups();
-        foreach ($groups as $group) {
+        foreach ($groups as $key => $group) {
             $tpl->SetBlock('edit_album/group');
             $tpl->SetVariable('gid', $group['id']);
             $tpl->SetVariable('lbl_group', $group['name']);
+            if ($key == 0) {
+                $tpl->SetBlock('edit_album/group/selected_group');
+                $tpl->ParseBlock('edit_album/group/selected_group');
+            }
             $tpl->ParseBlock('edit_album/group');
         }
 
