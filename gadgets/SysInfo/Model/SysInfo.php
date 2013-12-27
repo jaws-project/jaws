@@ -77,7 +77,7 @@ class SysInfo_Model_SysInfo extends Jaws_Gadget_Model
         $apache_modules = $this->GetApacheModules();
         return array(
             array('title' => 'Operating System',
-                'value' => php_uname()),
+                'value' => @php_uname()),
             array('title' => 'Web Server',
                 'value' => Jaws_XSS::filter($_SERVER['SERVER_SOFTWARE'])),
             array('title' => 'Server API/Loaded modules',
