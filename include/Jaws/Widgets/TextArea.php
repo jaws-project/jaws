@@ -90,7 +90,7 @@ class Jaws_Widgets_TextArea extends Container
         $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
 
         $this->_Container =& Piwi::CreateWidget('Division');
-        $this->_Container->SetClass('jaws_textarea_editor');
+        $this->_Container->SetClass('jaws_editor');
         $this->_Container->AddFile('include/Jaws/Resources/TextArea.js');
 
         parent::init();

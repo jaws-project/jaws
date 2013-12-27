@@ -141,6 +141,7 @@ class Jaws_Widgets_TinyMCE extends Container
         $this->setClass($name);
 
         $this->_Container =& Piwi::CreateWidget('Division');
+        $this->_Container->SetClass('jaws_editor');
         parent::init();
     }
 
