@@ -74,7 +74,12 @@ class Jaws_URLMapping
         $this->_extension = $extension;
 
         if (empty($request_uri)) {
-            $this->_request_uri = $this->getPathInfo();
+            // ?\d+$ for force browsers to update cached file e.g. (?12345)
+            $this->_request_uri = preg_replace(
+                array('/^index\.php[\/|\?]?/i', '/\?\d+$/'),
+                '',
+                Jaws_Utils::getRequestURL()
+            );
         } elseif (strpos($request_uri, 'http') !== false) {
             //prepare it manually
             if (false !== $strPos = stripos($request_uri, BASE_SCRIPT)) {
@@ -332,48 +337,6 @@ class Jaws_URLMapping
         }
 
         return ($abs_url? $GLOBALS['app']->getSiteURL('/') : '') . $url;
-    }
-
-    /**
-     * Returns the PATH_INFO or simulates it
-     *
-     * @access  private
-     * @return  string   PATH_INFO (empty or with a trailing dash)
-     */
-    function getPathInfo()
-    {
-        $uri = Jaws_Utils::getRequestURL();
-        if (!empty($uri)) {
-            if (!$this->_use_rewrite) {
-                if (false !== $dotPosition = stripos($uri, BASE_SCRIPT)) {
-                    $pathInfo = substr($uri, $dotPosition + strlen(BASE_SCRIPT));
-                } else {
-                    if (false !== $qsnPosition = stripos($uri, '?')) {
-                        $pathInfo = substr($uri, $qsnPosition);
-                    }
-                }
-            }
-
-            if (!isset($pathInfo)) {
-                $base_uri = $GLOBALS['app']->GetSiteURL('', true);
-                if ($base_uri == substr($uri, 0, strlen($base_uri))) {
-                    $pathInfo = substr($uri, strlen($base_uri));
-                } else {
-                    $pathInfo = $uri;
-                }
-            }
-        }
-
-        $pathInfo = isset($pathInfo)? ltrim((string)$pathInfo, '/?') : '';
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && $pathInfo == BASE_SCRIPT) {
-            $pathInfo = '';
-        }
-
-        if (false !== $qsnPosition = strripos($pathInfo, '?')) {
-            $pathInfo = substr($pathInfo, 0, $qsnPosition);
-        }
-
-        return $pathInfo;
     }
 
 }
