@@ -25,12 +25,12 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
         $fModel = $this->gadget->model->load('Forums');
         $forum  = $fModel->GetForum($rqst['fid']);
-        if (Jaws_Error::IsError($forum) || empty($forum)) {
+        if (empty($forum)) {
             return false;
         }
 
-        if (!$this->gadget->GetPermission('ForumAccess', $forum['id'])) {
-            return Jaws_HTTPError::Get(403);
+        if (Jaws_Error::IsError($forum)) {
+            return Jaws_HTTPError::Get($forum->getCode());
         }
 
         $limit = (int)$this->gadget->registry->fetch('topics_limit');
@@ -180,9 +180,13 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
         $fModel = $this->gadget->model->load('Forums');
         $forum = $fModel->GetForum($rqst['fid']);
-        if (Jaws_Error::IsError($forum) || empty($forum)) {
+        if (empty($forum)) {
             return false;
         }
+        if (Jaws_Error::IsError($forum)) {
+            return Jaws_HTTPError::Get($forum->getCode());
+        }
+
         if (!empty($rqst['tid'])) {
             $tModel = $this->gadget->model->load('Topics');
             $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);

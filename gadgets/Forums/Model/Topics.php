@@ -42,6 +42,11 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         }
 
         $result = $table->fetchRow();
+
+        if (!$this->gadget->GetPermission('ForumAccess', $result['fid'])) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
+        }
+
         return $result;
     }
 
@@ -58,6 +63,14 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function GetTopics($fid, $published = null, $uid = null, $limit = 0, $offset = null)
     {
+        $perm = $this->gadget->GetPermission('ForumAccess', $fid);
+        if(is_null($perm)) {
+            return Jaws_Error::raiseError(_t('GLOBAL_HTTP_ERROR_CONTENT_404'), 404);
+        }
+        if (!$perm) {
+            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
+        }
+
         $table = Jaws_ORM::getInstance()->table('forums_topics');
         $table->select(
                 'forums_topics.id:integer', 'fid:integer', 'subject', 'views:integer', 'replies:integer',
@@ -155,7 +168,15 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             $table->where('forums.gid', $gid);
         }
         $result = $table->orderBy('forums_topics.last_post_time desc')->limit($limit, 0)->fetchAll();
-        return $result;
+
+        $topics = array();
+        foreach ($result as $topic) {
+            if ($this->gadget->GetPermission('ForumAccess', $topic['fid'])) {
+                $topics[] = $topic;
+            }
+        }
+
+        return $topics;
     }
 
     /**
@@ -172,6 +193,10 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function InsertTopic($uid, $fid, $subject, $message, $attachment = null, $published = true)
     {
+        if (!$this->gadget->GetPermission('ForumAccess', $fid)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
+        }
+
         $data['fid']              = (int)$fid;
         $data['subject']          = $subject;
         $data['first_post_uid']   = $uid;
@@ -222,6 +247,10 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
     function UpdateTopic($target, $fid, $tid, $pid, $uid, $subject, $message, $attachment = null,
         $published = null, $update_reason = '')
     {
+        if (!$this->gadget->GetPermission('ForumAccess', $fid)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
+        }
+
         $data['fid']    = (int)$target;
         $data['subject']   = $subject;
         $data['published'] = $published;
@@ -274,6 +303,10 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function DeleteTopic($tid, $fid)
     {
+        if (!$this->gadget->GetPermission('ForumAccess', $fid)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
+        }
+
         $aModel = $this->gadget->model->load('Attachments');
         $topicAttachments = $aModel->GetTopicAttachments($tid);
         $table = Jaws_ORM::getInstance()->table('forums_posts');

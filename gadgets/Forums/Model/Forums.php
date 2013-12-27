@@ -20,6 +20,14 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
      */
     function GetForum($fid)
     {
+        $perm = $this->gadget->GetPermission('ForumAccess', $fid);
+        if(is_null($perm)) {
+            return Jaws_Error::raiseError(_t('GLOBAL_HTTP_ERROR_CONTENT_404'), 404);
+        }
+        if (!$perm) {
+            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
+        }
+
         $table = Jaws_ORM::getInstance()->table('forums');
         $table->select('id:integer', 'gid:integer', 'title', 'description', 'fast_url', 'topics:integer',
                        'posts:integer', 'order:integer', 'locked:boolean', 'published:boolean');
@@ -66,7 +74,18 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
             $table->and()->where('forums.published', true);
         }
         $result = $table->orderBy('forums.order asc')->fetchAll();
-        return $result;
+        if (Jaws_Error::isError($result)) {
+            return array();
+        }
+
+        $forums = array();
+        foreach ($result as $forum) {
+            if ($this->gadget->GetPermission('ForumAccess', $forum['id'])) {
+                $forums[] = $forum;
+            }
+        }
+
+        return $forums;
     }
 
     /**

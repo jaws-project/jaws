@@ -25,20 +25,12 @@ class Forums_Actions_Forums extends Forums_Actions_Default
         }
 
         $GLOBALS['app']->Layout->SetTitle(_t('FORUMS_FORUMS'));
-        $objDate = Jaws_Date::getInstance();
         $tpl = $this->gadget->template->load('Forums.html');
         $tpl->SetBlock('forums');
 
         $tpl->SetVariable('title', _t('FORUMS_FORUMS'));
         $tpl->SetVariable('url', $this->gadget->urlMap('Forums'));
 
-        // date format
-        $date_format = $this->gadget->registry->fetch('date_format');
-        $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
-
-        // posts per page
-        $posts_limit = $this->gadget->registry->fetch('posts_limit');
-        $posts_limit = empty($posts_limit)? 10 : (int)$posts_limit;
         foreach ($groups as $group) {
             $this->Group($group, $tpl);
         }
@@ -102,10 +94,6 @@ class Forums_Actions_Forums extends Forums_Actions_Default
         $tpl->SetVariable('lbl_posts', _t('FORUMS_POSTS'));
         $tpl->SetVariable('lbl_lastpost', _t('FORUMS_LASTPOST'));
         foreach ($forums as $forum) {
-            if (!$this->gadget->GetPermission('ForumAccess', $forum['id'])) {
-                continue;
-            }
-
             $tpl->SetBlock("$block/group/forum");
             $tpl->SetVariable('status', (int)$forum['locked']);
             $tpl->SetVariable('title', $forum['title']);

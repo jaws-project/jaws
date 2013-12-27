@@ -25,11 +25,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         $tModel = $this->gadget->model->load('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic) || empty($topic)) {
-            return false;
-        }
-
-        if (!$this->gadget->GetPermission('ForumAccess', $topic['fid'])) {
-            return Jaws_HTTPError::Get(403);
+            return Jaws_HTTPError::Get($topic->getCode());
         }
 
         $limit = (int)$this->gadget->registry->fetch('posts_limit');

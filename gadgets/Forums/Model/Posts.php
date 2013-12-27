@@ -49,6 +49,10 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         }
 
         $result = $table->fetchRow();
+        if (!$this->gadget->GetPermission('ForumAccess', $result['fid'])) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
+        }
+
         return $result;
     }
 
@@ -127,6 +131,10 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      */
     function InsertPost($uid, $tid, $fid, $message, $attachments = null, $new_topic = false)
     {
+        if (!$this->gadget->GetPermission('ForumAccess', $fid)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
+        }
+
         $data['uid']            = (int)$uid;
         $data['tid']            = (int)$tid;
         $data['insert_time']    = time();
@@ -176,6 +184,10 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      */
     function UpdatePost($pid, $uid, $message, $attachments = null, $update_reason = '')
     {
+        $post = $this->GetPost($pid);
+        if (Jaws_Error::IsError($post)) {
+            return $post;
+        }
         $data['update_uid']     = (int)$uid;
         $data['update_time']    = time();
         $data['message']        = $message;
@@ -207,6 +219,10 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      */
     function DeletePost($pid, $tid, $fid)
     {
+        if (!$this->gadget->GetPermission('ForumAccess', $fid)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
+        }
+
         $table = Jaws_ORM::getInstance()->table('forums_posts');
         $result = $table->delete()->where('id', $pid)->exec();
         if (Jaws_Error::IsError($result)) {
