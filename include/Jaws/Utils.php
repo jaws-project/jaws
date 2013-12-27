@@ -816,14 +816,16 @@ class Jaws_Utils
             $pThemes = array_flip($pThemes);
             foreach($pThemes as $theme => $key) {
                 $pThemes[$theme] = array(
-                    'name'     => $theme,
-                    'title'    => $theme,
-                    'desc'     => '',
-                    'image'    => '',
-                    'local'    => true,
-                    'version'  => '0.1',
-                    'license'  => '',
-                    'authors'  => array()
+                    'name'  => $theme,
+                    'title' => $theme,
+                    'desc'  => '',
+                    'image' => '',
+                    'local' => true,
+                    'version' => '0.1',
+                    'license' => '',
+                    'authors' => array(),
+                    'deps'      => '',
+                    'copyright' => '',
                 );
                 if (file_exists(JAWS_THEMES. $theme. '/example.png')) {
                     $pThemes[$theme]['image'] = $GLOBALS['app']->getThemeURL("$theme/example.png");
@@ -851,14 +853,16 @@ class Jaws_Utils
                     $themes = array_flip($themes);
                     foreach($themes as $theme => $key) {
                         $themes[$theme] = array(
-                            'name'     => $theme,
-                            'title'    => $theme,
-                            'desc'     => '',
-                            'image'    => '',
-                            'local'    => false,
-                            'version'  => '0.1',
-                            'license'  => '',
-                            'authors'  => array()
+                            'name'  => $theme,
+                            'title' => $theme,
+                            'desc'  => '',
+                            'image' => '',
+                            'local' => false,
+                            'version' => '0.1',
+                            'license' => '',
+                            'authors' => array(),
+                            'deps'      => '',
+                            'copyright' => '',
                         );
                         if (file_exists(JAWS_BASE_THEMES. $theme. '/example.png')) {
                             $themes[$theme]['image'] = $GLOBALS['app']->getThemeURL("$theme/example.png", true, true);
