@@ -35,26 +35,23 @@
         {message}
       </div>
       <!-- BEGIN attachment -->
-      <script type="text/javascript">
-          var lblRemoveAttachment = "{lbl_remove_attachment}";
-          var removeIconSrc = "{removeIconSrc}";
-      </script>
-      <div id="attachment_model" style="display: none;">
-        <input type="file" name="attachment[]" multiple /> <button onclick="removeAttachment(this);">{lbl_remove_attachment}</button>
-      </div>
-      <div id="attachments">
-        <label for="post_attachment">{lbl_attachment}:</label>
-        <div id="current_attachments">
-            <!-- BEGIN current_attachment -->
-            <p id="p_attach{aid}">
-              <input type="hidden" name="current_attachments[]" value="{aid}" />
-              {lbl_filename}
-              <a href="javascript:removeCurrentAttachment({aid});" title="{lbl_remove_attachment}">{lbl_remove_attachment}</a>
-            </p>
-            <!-- END current_attachment -->
+      <div>
+        <label>{lbl_attachment}:</label>
+        <div id="attachments">
+          <div id="attachment_model" style="display: none;">
+            <input type="file" name="attachment[]" multiple />
+            <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{lbl_remove_attachment}">{lbl_remove_attachment}</a>
+          </div>
+          <!-- BEGIN current_attachment -->
+          <div id="p_attach{aid}">
+            <input type="hidden" name="current_attachments[]" value="{aid}" />
+            <input type="text" name="current_attachments_filename" value="{lbl_filename}" disabled="disabled"/>
+            <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{lbl_remove_attachment}">{lbl_remove_attachment}</a>
+          </div>
+          <!-- END current_attachment -->
+          <div id="btn_add_attachment"><a href="javascript:extraAttachment();" >{lbl_extra_attachment}</a></div>
         </div>
       </div>
-      <div><a href="javascript:extraAttachment();" >{lbl_extra_attachment}</a></div>
       <!-- END attachment -->
       <!-- BEGIN update_reason -->
       <div>

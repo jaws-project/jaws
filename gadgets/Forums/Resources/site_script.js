@@ -1,11 +1,11 @@
 /**
  * Forums JS actions
  *
- * @category   Ajax
- * @package    Forums
- * @author     Hamid Reza Aboutalebi <hamid@aboutalebi.com>
- * @copyright  2012-2013 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    Ajax
+ * @package     Forums
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2013 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/gpl.html
  */
 
 /**
@@ -13,29 +13,15 @@
  */
 function extraAttachment()
 {
-    NumAttachments++;
     var div = $('attachment_model').cloneNode(true);
-    div.id = 'div_attachment' + NumAttachments
-    div.style.display = 'block';
-    $('attachments').grab(div);
+    div.style.display = 'inline-block';
+    $('btn_add_attachment').grab(div, 'before');
 }
 
 /**
  * Remove a file entry
  */
-function removeAttachment(objID)
+function removeAttachment(element)
 {
-    NumAttachments--;
-    Element.destroy($(objID).parentNode);
+    Element.destroy(element.getParent());
 }
-
-/**
- * Remove a old attach file
- */
-function removeCurrentAttachment(objID)
-{
-    NumAttachments--;
-    $('p_attach' + objID).dispose();
-}
-
-var NumAttachments = 0;
