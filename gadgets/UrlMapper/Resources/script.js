@@ -79,8 +79,7 @@ var UrlMapperCallback = {
     DeleteErrorMaps: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopErrorMapAction();
-            $('errormaps_datagrid').deleteItem();
-            getDG('errormaps_datagrid');
+            getDG('errormaps_datagrid', $('errormaps_datagrid').getCurrentPage(), true);
         }
         showResponse(response);
     },
