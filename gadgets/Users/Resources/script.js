@@ -112,7 +112,7 @@ var UsersCallback = {
     DeleteSession: function(response) {
         if (response[0]['type'] == 'response_notice') {
             clearTimeout(fTimeout);
-            getOnlineUsers('onlineusers_datagrid');
+            getDG('onlineusers_datagrid', $('onlineusers_datagrid').getCurrentPage(), true);
         }
         showResponse(response);
     },
