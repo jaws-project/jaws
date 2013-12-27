@@ -49,7 +49,7 @@ class UrlMapper_Model_Admin_ErrorMaps extends UrlMapper_Model_ErrorMaps
         $data['url_hash'] = md5($url);
         $data['code'] = $code;
         $data['new_url'] = $new_url;
-        $data['new_code'] = empty($new_code)? $code : $new_code;
+        $data['new_code'] = $new_code;
         $data['hits'] = 1;
         $data['createtime'] = $GLOBALS['db']->Date();
         $data['updatetime'] = $GLOBALS['db']->Date();
