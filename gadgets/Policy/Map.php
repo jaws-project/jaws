@@ -14,5 +14,6 @@ $maps[] = array(
     array(
         'field' => '[[:alnum:]-_]+',
         'key' => '[[:alnum:]]+',
-    )
+    ),
+    '',
 );
