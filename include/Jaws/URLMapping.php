@@ -76,7 +76,7 @@ class Jaws_URLMapping
         if (empty($request_uri)) {
             // ?\d+$ for force browsers to update cached file e.g. (?12345)
             $this->_request_uri = preg_replace(
-                array('/^index\.php[\/|\?]?/i', '/\?\d+$/'),
+                array('/^index\.php[\/|\?]?/iu', '/\?\d+$/u'),
                 '',
                 Jaws_Utils::getRequestURL()
             );
