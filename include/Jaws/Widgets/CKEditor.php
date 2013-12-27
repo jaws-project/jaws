@@ -252,7 +252,6 @@ class Jaws_Widgets_CKEditor extends Container
         $tpl->SetVariable('AutoDetectLanguage', 'false');
         $tpl->SetVariable('autoParagraph', 'false');
         $tpl->SetVariable('height', $this->_Height);
-        $tpl->SetVariable('width', $this->_Width);
         $tpl->SetVariable('skin', $this->_Skin);
         $tpl->SetVariable('theme', $this->_Theme);
         $tpl->SetVariable('readOnly', $this->_IsEnabled? 'false' : 'true');
