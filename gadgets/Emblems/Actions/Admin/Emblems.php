@@ -48,10 +48,10 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
 
         $type =& Piwi::CreateWidget('Combo', 'type');
         $type->SetTitle(_t('EMBLEMS_TYPE'));
-        $lang = strtoupper($GLOBALS['app']->GetLanguage());
         for ($i = 1; $i <= 15; $i++) {
-            if (defined('_' . $lang . "_EMBLEMS_TYPE_$i")) {
-                $type->AddOption(_t("EMBLEMS_TYPE_$i"), $i);
+            $type_str = "EMBLEMS_TYPE_$i";
+            if (_t($type_str) != $type_str) {
+                $type->AddOption(_t($type_str), $i);
             }
         }
         $fs->Add($type);
