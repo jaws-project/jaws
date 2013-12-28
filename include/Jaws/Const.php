@@ -16,5 +16,5 @@ define('JAWS_COMPONENT_PLUGIN', 2);
 define('JAWS_COMPONENT_THEMES', 3);
 
 // Version of the unpacked Jaws (not the one in registry)
-define('JAWS_VERSION', '0.9.2');
+define('JAWS_VERSION', '0.9.3');
 define('JAWS_VERSION_CODENAME', "Life's too short, don't waste it");
