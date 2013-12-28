@@ -80,6 +80,7 @@ class Jaws_Captcha_Math extends Jaws_Captcha
 
         $bg = dirname(__FILE__) . '/resources/math.bg.png';
         $im = imagecreatefrompng($bg);
+        imagecolortransparent($im, imagecolorallocate($im, 255, 255, 255));
         $font = dirname(__FILE__) . '/resources/comicbd.ttf';
         $grey = imagecolorallocate($im, 0x7f, 0x7f, 0x7f);
         // shadow
