@@ -136,7 +136,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
             $filename = time() . '_' . $files['name'];
         }
 
-        $res = Jaws_Utils::UploadFiles($files, $uploaddir, 'jpg,gif,png,jpeg', '', false, !$fromControlPanel);
+        $res = Jaws_Utils::UploadFiles($files, $uploaddir, 'jpg,gif,png,jpeg', false, !$fromControlPanel);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
             return new Jaws_Error($res->getMessage());
