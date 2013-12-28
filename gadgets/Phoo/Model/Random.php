@@ -22,24 +22,25 @@ class Phoo_Model_Random extends Phoo_Model
     function GetRandomImage($albumid = null)
     {
         $table = Jaws_ORM::getInstance()->table('phoo_image_album');
-        $table->select('phoo_album_id', 'filename', 'phoo_image.id',
+        $table->select(
+            'phoo_album_id', 'filename', 'phoo_image.id',
             'phoo_image.title', 'phoo_image.description');
         $table->join('phoo_image', 'phoo_image.id', 'phoo_image_album.phoo_image_id');
-
+        $table->join('phoo_album', 'phoo_album.id', 'phoo_image_album.phoo_album_id');
         if (is_numeric($albumid) && $albumid != 0) {
             $table->and()->where('phoo_image_album.phoo_album_id', (int)$albumid);
         }
+        $table->and()->where('phoo_image.published', true);
+        $table->and()->where('phoo_album.published', true);
         $table->orderBy($table->random());
         $row = $table->limit(1)->fetchRow();
-        if (Jaws_Error::IsError($row) || !isset($row['filename'])) {
-            return new Jaws_Error(_t('PHOO_ERROR_RANDOMIMAGE'));
+        if (!Jaws_Error::IsError($row) && !empty($row)) {
+            $row['name'] = $row['title'];
+            $row['thumb'] = $this->GetThumbPath($row['filename']);
+            $row['medium'] = $this->GetMediumPath($row['filename']);
+            $row['image'] = $this->GetOriginalPath($row['filename']);
+            $row['stripped_description'] = strip_tags($row['description']);
         }
-
-        $row['name'] = $row['title'];
-        $row['thumb'] = $this->GetThumbPath($row['filename']);
-        $row['medium'] = $this->GetMediumPath($row['filename']);
-        $row['image'] = $this->GetOriginalPath($row['filename']);
-        $row['stripped_description'] = strip_tags($row['description']);
 
         return $row;
     }
