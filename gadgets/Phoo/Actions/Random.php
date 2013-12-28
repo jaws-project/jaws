@@ -50,34 +50,34 @@ class Phoo_Actions_Random extends Jaws_Gadget_Action
      */
     function Random($albumid = null)
     {
-        $tpl = $this->gadget->template->load('Random.html');
         $model = $this->gadget->model->load('Random');
         $r = $model->GetRandomImage($albumid);
-        if (!Jaws_Error::IsError($r)) {
-            $tpl->SetBlock('random_image');
-            include_once JAWS_PATH . 'include/Jaws/Image.php';
-            $imgData = Jaws_Image::getimagesize(JAWS_DATA . 'phoo/' . $r['thumb']);
-            if (!Jaws_Error::IsError($imgData)) {
-                $tpl->SetVariable('width',  $imgData[0]);
-                $tpl->SetVariable('height', $imgData[1]);
-            }
-            $tpl->SetVariable('title',_t('PHOO_ACTIONS_RANDOM'));
-            $tpl->SetVariable(
-                'url',
-                $this->gadget->urlMap(
-                    'ViewImage',
-                    array('id' => $r['id'],'albumid' => $r['phoo_album_id'])
-                )
-            );
-            $tpl->SetVariable('name',     $r['name']);
-            $tpl->SetVariable('filename', $r['filename']);
-            $tpl->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $r['thumb']));
-            $tpl->SetVariable('medium',   $GLOBALS['app']->getDataURL('phoo/' . $r['medium']));
-            $tpl->SetVariable('image',    $GLOBALS['app']->getDataURL('phoo/' . $r['image']));
-            $tpl->SetVariable('img_desc', $r['stripped_description']);
-            $tpl->ParseBlock('random_image');
+        if (Jaws_Error::IsError($r) || empty($r)) {
+            return false;
         }
 
+        $tpl = $this->gadget->template->load('Random.html');
+        $tpl->SetBlock('random_image');
+        $imgData = Jaws_Image::getimagesize(JAWS_DATA . 'phoo/' . $r['thumb']);
+        if (!Jaws_Error::IsError($imgData)) {
+            $tpl->SetVariable('width',  $imgData[0]);
+            $tpl->SetVariable('height', $imgData[1]);
+        }
+        $tpl->SetVariable('title',_t('PHOO_ACTIONS_RANDOM'));
+        $tpl->SetVariable(
+            'url',
+            $this->gadget->urlMap(
+                'ViewImage',
+                array('id' => $r['id'],'albumid' => $r['phoo_album_id'])
+            )
+        );
+        $tpl->SetVariable('name',     $r['name']);
+        $tpl->SetVariable('filename', $r['filename']);
+        $tpl->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $r['thumb']));
+        $tpl->SetVariable('medium',   $GLOBALS['app']->getDataURL('phoo/' . $r['medium']));
+        $tpl->SetVariable('image',    $GLOBALS['app']->getDataURL('phoo/' . $r['image']));
+        $tpl->SetVariable('img_desc', $r['stripped_description']);
+        $tpl->ParseBlock('random_image');
         return $tpl->Get();
     }
 
