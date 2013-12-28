@@ -273,15 +273,13 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         //Commit Transaction
         $table->commit();
 
+        $fModel = $this->gadget->model->load('Forums');
+        $result = $fModel->UpdateForumStatistics($fid);
+        if (Jaws_Error::IsError($result)) {
+            // do nothing
+        }
         // update forums statistics if topic moved
         if ($target != $fid) {
-            $fModel = $this->gadget->model->load('Forums');
-            // old forum
-            $result = $fModel->UpdateForumStatistics($fid);
-            if (Jaws_Error::IsError($result)) {
-                // do nothing
-            }
-
             // new forum
             $result = $fModel->UpdateForumStatistics($target);
             if (Jaws_Error::IsError($result)) {
@@ -405,13 +403,19 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $tid        Topic ID
+     * @param   int     $fid        Forum ID
      * @param   bool    $published  True: Published, False: Draft
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function PublishTopic($tid, $published)
+    function PublishTopic($tid, $fid, $published)
     {
         $table = Jaws_ORM::getInstance()->table('forums_topics');
         $result = $table->update(array('published' => $published))->where('id', $tid)->exec();
+        if (!Jaws_Error::IsError($result)) {
+            $fModel = $this->gadget->model->load('Forums');
+            $result = $fModel->UpdateForumStatistics($fid);
+        }
+
         return $result;
     }
 
