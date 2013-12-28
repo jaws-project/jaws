@@ -472,9 +472,10 @@ class Jaws_Utils
      * @param   int     $max_size       max size of file
      * @return  mixed   Returns uploaded files array on success or Jaws_Error/FALSE on failure
      */
-    static function UploadFiles($files, $dest, $allow_formats = '', $deny_formats = '',
-                         $overwrite = true, $move_files = true, $max_size = null)
-    {
+    static function UploadFiles($files, $dest, $allow_formats = '',
+        $deny_formats = 'php,php3,php4,php5,php6,phtml,pl,py,cgi,pcgi,pcgi5,pcgi4,htaccess',
+        $overwrite = true, $move_files = true, $max_size = null
+    ) {
         if (empty($files) || !is_array($files)) {
             return false;
         }
@@ -514,17 +515,10 @@ class Jaws_Utils
                 }
 
                 $user_filename = isset($file['name']) ? $file['name'] : '';
-                $host_filename = strtolower(preg_replace("/[^[:alnum:]_\.-]*/", "", $user_filename));
+                $host_filename = strtolower(preg_replace('/[^[:alnum:]_\.-]*/', '', $user_filename));
+                // remove deny_formats extension, even double extension
+                $host_filename = implode('.', array_diff(array_filter(explode('.', $host_filename)), $deny_formats));
                 $fileinfo = pathinfo($host_filename);
-                if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
-                    if (in_array($fileinfo['extension'], $deny_formats) ||
-                       (!empty($allow_formats) && !in_array($fileinfo['extension'], $allow_formats)))
-                    {
-                        return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_INVALID_FORMAT', $host_filename),
-                                              __FUNCTION__);
-                    }
-                }
-
                 if (is_null($overwrite) || empty($fileinfo['filename'])) {
                     $host_filename = time(). mt_rand();
                     if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
