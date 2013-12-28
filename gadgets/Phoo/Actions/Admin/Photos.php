@@ -334,8 +334,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
 
         // Allow Comments
         $comments =& Piwi::CreateWidget('CheckButtons', 'allow_comments');
-        $selected = $allow_comments === true ? true : false;
-        $comments->AddOption(_t('PHOO_ALLOW_COMMENTS'), '1', 'allow_comments', $selected);
+        $comments->AddOption(_t('PHOO_ALLOW_COMMENTS'), '1', 'allow_comments', $allow_comments);
         $tpl->SetVariable('allow_comments_field', $comments->Get());
 
         // Status
@@ -344,8 +343,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
         $statCombo->setId('published');
         $statCombo->AddOption(_t('PHOO_HIDDEN'), '0');
         $statCombo->AddOption(_t('PHOO_PUBLISHED'), '1');
-        $published = $published === true ? true : false;
-        $statCombo->SetDefault($published);
+        $statCombo->SetDefault((int)$published);
         $tpl->SetVariable('status_field', $statCombo->Get());
 
         // Photo actions
@@ -388,7 +386,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
      */
     function SaveEditPhoto()
     {
-        $post    = jaws()->request->fetch(array('allow_comments', 'image', 'title', 'published',
+        $post = jaws()->request->fetch(array('allow_comments', 'image', 'title', 'published',
             'title', 'album', 'fromalbum'), 'post');
 
         if (isset($post['allow_comments'][0])) {
