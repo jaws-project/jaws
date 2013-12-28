@@ -746,7 +746,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
         
-        $result = $tModel->PublishTopic($topic['id'], !$topic['published']);
+        $result = $tModel->PublishTopic($topic['id'], $topic['fid'], !$topic['published']);
         if (Jaws_Error::IsError($result)) {
             // do nothing
         }
