@@ -146,6 +146,12 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             return $pid;
         }
 
+        if (!is_null($attachments)) {
+            $aModel = $this->gadget->model->load('Attachments');
+            $aModel->InsertAttachments($pid, $attachments);
+            $this->UpdatePostAttachCount($pid);
+        }
+
         $tModel = $this->gadget->model->load('Topics');
         if (!Jaws_Error::IsError($tModel)) {
             $result = $tModel->UpdateTopicStatistics($data['tid'], $new_topic? $pid : 0, $data['insert_time']);
@@ -160,12 +166,6 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
-        }
-
-        if (!is_null($attachments)) {
-            $aModel = $this->gadget->model->load('Attachments');
-            $aModel->InsertAttachments($pid, $attachments);
-            $this->UpdatePostAttachCount($pid);
         }
 
         return $pid;
