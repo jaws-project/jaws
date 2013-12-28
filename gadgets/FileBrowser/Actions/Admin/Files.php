@@ -194,10 +194,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         if (!File_Util::pathInRoot($uploaddir, $fModel->GetFileBrowserRootDir())) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD'), RESPONSE_ERROR);
         } else {
-            $res = Jaws_Utils::UploadFiles($_FILES,
-                $uploaddir,
-                '',
-                $this->gadget->registry->fetch('black_list'));
+            $res = Jaws_Utils::UploadFiles($_FILES, $uploaddir, '');
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
             } elseif (empty($res)) {
