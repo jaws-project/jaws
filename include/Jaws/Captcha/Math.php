@@ -80,20 +80,14 @@ class Jaws_Captcha_Math extends Jaws_Captcha
 
         $bg = dirname(__FILE__) . '/resources/math.bg.png';
         $im = imagecreatefrompng($bg);
-        imagecolortransparent($im, imagecolorallocate($im, 255, 255, 255));
-        // Write it in a random position..
-        $text_length = strlen($value);
-        $darkgray = imagecolorallocate($im, 0x10, 0x70, 0x70);
-        $x = 5;
-        $y = 20;
-        for ($i = 0; $i < $text_length; $i++) {
-            $fnt = rand(7,10);
-            $y = rand(6, 10);
-            imagestring($im, $fnt, $x, $y, $value{$i} , $darkgray);
-            $x = $x + rand(15, 25);
-        }
+        $font = dirname(__FILE__) . '/resources/comicbd.ttf';
+        $grey = imagecolorallocate($im, 0x7f, 0x7f, 0x7f);
+        // shadow
+        imagettftext($im, 18, 0, 8, 22, $grey, $font, $value);
+        // text
+        imagettftext($im, 18, 0, 12, 24, $grey, $font, $value);
 
-        header("Content-Type: image/png");
+        header('Content-Type: image/png');
         imagepng($im);
         imagedestroy($im);
     }
