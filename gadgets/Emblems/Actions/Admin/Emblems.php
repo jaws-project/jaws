@@ -199,8 +199,7 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
     function AddEmblem()
     {
         $post = jaws()->request->fetch(array('title', 'url', 'type', 'published'), 'post');
-        $res = Jaws_Utils::UploadFiles($_FILES, JAWS_DATA . 'emblems/', 
-            'jpg,gif,swf,png,jpeg,bmp,svg');
+        $res = Jaws_Utils::UploadFiles($_FILES, JAWS_DATA . 'emblems/', 'jpg,gif,swf,png,jpeg,bmp,svg');
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
         } elseif (empty($res)) {
