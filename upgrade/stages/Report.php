@@ -31,6 +31,7 @@ class Upgrader_Report extends JawsUpgraderStage
         $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['upgrade']['language']), false);
 
         $supportedversions = array(
+            array('version' => '0.9.3',  'stage' => '10'),
             array('version' => '0.9.2',  'stage' => '9'),
             array('version' => '0.9.1',  'stage' => '8'),
             array('version' => '0.9.0',  'stage' => '7'),

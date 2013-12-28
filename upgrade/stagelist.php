@@ -72,7 +72,11 @@ $stages[] = array(
     'name'  => _t('UPGRADE_VER_TO_VER', '0.9.1', '0.9.2'),
     'file'  => '091To092',
 );
-
+// Upgrade from 0.9.2 to 0.9.3
+$stages[] = array(
+    'name'  => _t('UPGRADE_VER_TO_VER', '0.9.2', '0.9.3'),
+    'file'  => '092To093',
+);
 // Saves the config file.
 $stages[] = array(
     'name'  => _t('UPGRADE_WRITECONFIG'),
