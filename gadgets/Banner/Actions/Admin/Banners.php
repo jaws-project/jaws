@@ -295,11 +295,12 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $post['template'] = jaws()->request->fetch('template', 'post', false);
 
         $model = $this->gadget->model->loadAdmin('Banners');
-        $res = Jaws_Utils::UploadFiles($_FILES,
+        $res = Jaws_Utils::UploadFiles(
+            $_FILES,
             JAWS_DATA . $this->gadget->DataDirectory,
             'jpg,gif,swf,png,jpeg,bmp,svg',
-            '',
-            false);
+            false
+        );
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
         } elseif (empty($res)) {
