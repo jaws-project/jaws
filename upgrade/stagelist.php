@@ -37,6 +37,12 @@ $stages[] = array(
     'options' => $db,
 );
 
+// cleanup files & directories
+$stages[] = array(
+    'name'  => _t('UPGRADE_CLEANUP'),
+    'file'  => 'Cleanup',
+);
+
 // Report.
 $stages[] = array(
     'name'  => _t('UPGRADE_REPORT'),
@@ -45,7 +51,7 @@ $stages[] = array(
 
 // Upgrade from 0.9 to 1.0.0
 $stages[] = array(
-    'name'  => _t('UPGRADE_VER_TO_VER', '0.9.0', '1.0.0'),
+    'name'  => _t('UPGRADE_VER_TO_VER', '0.9.3', '1.0.0'),
     'file'  => '09To100',
 );
 
@@ -53,12 +59,6 @@ $stages[] = array(
 $stages[] = array(
     'name'  => _t('UPGRADE_WRITECONFIG'),
     'file'  => 'WriteConfig',
-);
-
-// cleanup files & directories
-$stages[] = array(
-    'name'  => _t('UPGRADE_CLEANUP'),
-    'file'  => 'Cleanup',
 );
 
 // Everything's done! Go log in :)

@@ -31,10 +31,8 @@ class Upgrader_Report extends JawsUpgraderStage
         $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['upgrade']['language']), false);
 
         $supportedversions = array(
-            array('version' => '1.0.0', 'stage' => '5'),
-            array('version' => '0.9.2', 'stage' => null),
-            array('version' => '0.9.1', 'stage' => null),
-            array('version' => '0.9.0', 'stage' => null),
+            array('version' => '1.0.0', 'stage' => '6'),
+            array('version' => '0.9.3', 'stage' => null),
         );
 
         _log(JAWS_LOG_DEBUG,"Checking/Reporting previous missed installations");
@@ -101,7 +99,7 @@ class Upgrader_Report extends JawsUpgraderStage
      */
     function Run()
     {
-        if (version_compare($_SESSION['upgrade']['InstalledVersion'], '0.8.18' , '<')) {
+        if (version_compare($_SESSION['upgrade']['InstalledVersion'], '0.9.3' , '<')) {
             return Jaws_Error::raiseError(_t('UPGRADE_REPORT_NOT_SUPPORTED'), 0, JAWS_ERROR_WARNING);
         }
 
