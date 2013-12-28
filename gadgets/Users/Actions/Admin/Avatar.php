@@ -19,9 +19,7 @@ class Users_Actions_Admin_Avatar extends Users_Actions_Admin_Default
     function UploadAvatar()
     {
         $this->gadget->CheckPermission('EditUserPersonal');
-        $res = Jaws_Utils::UploadFiles($_FILES,
-                                       Jaws_Utils::upload_tmp_dir(),
-                                       'gif,jpg,jpeg,png');
+        $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), 'gif,jpg,jpeg,png');
         if (Jaws_Error::IsError($res)) {
             $response = array('type'    => 'error',
                               'message' => $res->getMessage());
