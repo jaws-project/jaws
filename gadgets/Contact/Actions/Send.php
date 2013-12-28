@@ -64,7 +64,6 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             $attach = Jaws_Utils::UploadFiles($_FILES,
                                               JAWS_DATA. 'contact',
                                               '',
-                                              'php,php3,php4,php5,phtml,phps,pl,py,cgi,pcgi,pcgi5,pcgi4,htaccess',
                                               false);
             if (Jaws_Error::IsError($attach)) {
                 $GLOBALS['app']->Session->PushSimpleResponse($attach->getMessage(), 'Contact');
