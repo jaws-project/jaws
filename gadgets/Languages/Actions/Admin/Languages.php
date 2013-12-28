@@ -93,6 +93,7 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
         $tpl->SetVariable('group', 'Gadgets');
         $gCompModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $gCompModel->GetGadgetsList();
+        ksort($gadgets);
         foreach ($gadgets as $gadget => $gInfo) {
             $tpl->SetBlock('Languages/group/item');
             $tpl->SetVariable('key', "1|$gadget");
