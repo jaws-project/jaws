@@ -31,11 +31,9 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $data['description'] = $description;
         $data['allow_comments'] = $allow_comments;
         $data['updatetime'] = $GLOBALS['db']->Date();
+        $data['published'] = (bool)$published;
 
         $table = Jaws_ORM::getInstance()->table('phoo_image');
-        if (is_null($published)) {
-            $data['published'] = (bool)$published;
-        }
         $result = $table->update($data)->where('id', (int)$id)->exec();
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ERROR_CANT_UPDATE_PHOTO'), RESPONSE_ERROR);
