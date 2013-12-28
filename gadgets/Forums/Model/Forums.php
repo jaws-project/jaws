@@ -100,7 +100,7 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('forums');
         $ftmTable = Jaws_ORM::getInstance()->table('forums_topics')->select('max(id)')->where('fid', $fid);
         $ftcTable = Jaws_ORM::getInstance()->table('forums_topics')->select('count(id)')->where('fid', $fid);
-        $ftsTable = Jaws_ORM::getInstance()->table('forums_topics')->select('sum(id)')->where('fid', $fid);
+        $ftsTable = Jaws_ORM::getInstance()->table('forums_topics')->select('sum(replies)')->where('fid', $fid);
         $result = $table->update(array(
                 'last_topic_id' => $ftmTable,
                 'topics' => $ftcTable,
