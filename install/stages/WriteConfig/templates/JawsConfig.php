@@ -61,6 +61,7 @@ define('LOG_ACTIVATED', {log_level});
  *        $GLOBALS['logger']['method'] = 'LogToFile';
  *        $GLOBALS['logger']['options'] = array();
  *        $GLOBALS['logger']['options']['file'] = "/tmp/jaws.log";
+ *        $GLOBALS['logger']['options']['size'] = 2097152;
  *
  *    LogToSyslog: Logs the message to the syslog, you can find the log of this blog just by looking to the tag you
  *    define
@@ -87,5 +88,5 @@ define('LOG_ACTIVATED', {log_level});
 $GLOBALS['logger']['method'] = 'LogToFile';
 $GLOBALS['logger']['options'] = array();
 $GLOBALS['logger']['options']['file'] = JAWS_DATA . 'logs/.jaws.log';
-
+$GLOBALS['logger']['options']['size'] = 2097152;
 <!-- END JawsConfig -->
