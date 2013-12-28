@@ -568,7 +568,6 @@ class Forums_Actions_Posts extends Forums_Actions_Default
                 $_FILES,
                 JAWS_DATA. 'forums',
                 '',
-                'php,php3,php4,php5,phtml,phps,pl,py,cgi,pcgi,pcgi5,pcgi4,htaccess',
                 null
             );
             if (Jaws_Error::IsError($res)) {
