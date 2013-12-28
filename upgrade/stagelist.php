@@ -37,6 +37,12 @@ $stages[] = array(
     'options' => $db,
 );
 
+// cleanup files & directories
+$stages[] = array(
+    'name'  => _t('UPGRADE_CLEANUP'),
+    'file'  => 'Cleanup',
+);
+
 // Report.
 $stages[] = array(
     'name'  => _t('UPGRADE_REPORT'),
@@ -81,12 +87,6 @@ $stages[] = array(
 $stages[] = array(
     'name'  => _t('UPGRADE_WRITECONFIG'),
     'file'  => 'WriteConfig',
-);
-
-// cleanup files & directories
-$stages[] = array(
-    'name'  => _t('UPGRADE_CLEANUP'),
-    'file'  => 'Cleanup',
 );
 
 // Everything's done! Go log in :)
