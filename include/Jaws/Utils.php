@@ -17,6 +17,14 @@ define('JAWS_OS_WIN', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
 class Jaws_Utils
 {
     /**
+     * Deny file upload extensions
+     * @var array
+     */
+    private static $deny_formats = array(
+        'php','php3','php4','php5','php6','phtml','pl','py','cgi','pcgi','pcgi5','pcgi4','htaccess'
+    );
+
+    /**
      * Change the color of a row from a given color
      *
      * @param   string  $color  Original color(so we don't return the same color)
@@ -465,7 +473,6 @@ class Jaws_Utils
      * @param   array   $files          $_FILES array
      * @param   string  $dest           destination directory(include end directory separator)
      * @param   string  $allow_formats  permitted file format
-     * @param   string  $deny_formats   not permitted file format
      * @param   bool    $overwrite      overwrite file or generate random filename
      *                                  null: random, true/false: overwrite?
      * @param   bool    $move_files     moving or only copying files. this param avail for non-uploaded files
@@ -473,9 +480,8 @@ class Jaws_Utils
      * @return  mixed   Returns uploaded files array on success or Jaws_Error/FALSE on failure
      */
     static function UploadFiles($files, $dest, $allow_formats = '',
-        $deny_formats = 'php,php3,php4,php5,php6,phtml,pl,py,cgi,pcgi,pcgi5,pcgi4,htaccess',
-        $overwrite = true, $move_files = true, $max_size = null
-    ) {
+                                $overwrite = true, $move_files = true, $max_size = null)
+    {
         if (empty($files) || !is_array($files)) {
             return false;
         }
@@ -487,7 +493,6 @@ class Jaws_Utils
 
         $dest = rtrim($dest, "\\/"). DIRECTORY_SEPARATOR;
         $allow_formats = array_filter(explode(',', $allow_formats));
-        $deny_formats  = array_filter(explode(',', $deny_formats));
         foreach($files as $key => $listFiles) {
             if (!is_array($listFiles['tmp_name'])) {
                 $listFiles = array_map(create_function('$item','return array($item);'), $listFiles);
@@ -517,7 +522,10 @@ class Jaws_Utils
                 $user_filename = isset($file['name']) ? $file['name'] : '';
                 $host_filename = strtolower(preg_replace('/[^[:alnum:]_\.-]*/', '', $user_filename));
                 // remove deny_formats extension, even double extension
-                $host_filename = implode('.', array_diff(array_filter(explode('.', $host_filename)), $deny_formats));
+                $host_filename = implode(
+                    '.',
+                    array_diff(array_filter(explode('.', $host_filename)), self::$deny_formats)
+                );
                 $fileinfo = pathinfo($host_filename);
                 if (is_null($overwrite) || empty($fileinfo['filename'])) {
                     $host_filename = time(). mt_rand();
