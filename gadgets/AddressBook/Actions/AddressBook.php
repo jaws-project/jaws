@@ -804,9 +804,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $res = Jaws_Utils::UploadFiles($_FILES,
-                                       Jaws_Utils::upload_tmp_dir(),
-                                       'gif,jpg,jpeg,png');
+        $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), 'gif,jpg,jpeg,png');
         if (Jaws_Error::IsError($res)) {
             $response = array('type'    => 'error',
                               'message' => $res->getMessage());
