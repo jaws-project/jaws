@@ -53,6 +53,7 @@ plugins/PhooInsert/languages
 plugins/SmartBridge/languages
 plugins/SpellNumber/languages
 plugins/SyntaxHighlight/languages
+install/stages/SpamTraining
 upgrade/stages/0814To0815
 upgrade/stages/0815To0816
 upgrade/stages/0816To0817
