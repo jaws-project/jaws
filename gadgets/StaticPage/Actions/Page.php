@@ -81,7 +81,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
         }
 
         $page = $pModel->GetPage($page_id,  $page_language);
-        if (Jaws_Error::IsError($page) || empty($page)) {
+        if (Jaws_Error::IsError($page) || empty($page) || !$page['published']) {
             return Jaws_HTTPError::Get(404);
         }
         if (!$this->gadget->GetPermission('AccessGroup', $page['group_id'])) {
