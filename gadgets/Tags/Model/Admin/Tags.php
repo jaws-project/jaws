@@ -30,6 +30,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             $tags = array_filter(array_map('Jaws_UTF8::trim', explode(',', $tags)));
         }
 
+        $update_time = empty($update_time)? time() : $update_time;
         $oldTagsInfo = $this->GetItemTags(
             array('gadget' => $gadget, 'action' => $action, 'reference' => $reference),
             false,
@@ -92,15 +93,26 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             return true;
         }
 
+        $user = 0;
+        if(!$global) {
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        }
         $systemTags = array();
+        $table = Jaws_ORM::getInstance()->table('tags');
         foreach($tags as $tag){
-            $table = Jaws_ORM::getInstance()->table('tags');
-            $tagId = $table->select('id:integer')->where('name', $tag)->fetchOne();
-            if(!empty($tagId)) {
+            $tagId = $table->select('id:integer')
+                ->where('name', $tag)
+                ->and()
+                ->where('user', $user)
+                ->fetchOne();
+            if (!Jaws_Error::IsError($tagId)) {
+                if (empty($tagId)) {
+                    $tagId = $this->AddTag(array('name' => $tag), $global);
+                    if (Jaws_Error::IsError($tagId)) {
+                        continue;
+                    }
+                }
                 $systemTags[$tag] = $tagId;
-            } else {
-                //Add an new tag
-                $systemTags[$tag] = $this->AddTag(array('name' => $tag), $global);
             }
         }
 
@@ -177,8 +189,8 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('tags');
         $table->select('count(id)')->where('name', $data['name'])->and()->where('user', $data['user']);
         $tag = $table->fetchOne();
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage());
+        if (Jaws_Error::IsError($tag)) {
+            return new Jaws_Error($tag->getMessage());
         }
         if ($tag > 0) {
             return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $data['name']));
