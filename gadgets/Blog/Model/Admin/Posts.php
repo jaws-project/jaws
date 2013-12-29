@@ -339,8 +339,14 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags') && !empty($tags)) {
             $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
-            $res = $model->UpdateTagsItems('Blog', 'post', $post_id, $params['published'],
-                                           strtotime($params['publishtime']), $tags);
+            $res = $model->UpdateTagsItems(
+                'Blog',
+                'post',
+                $post_id,
+                $params['published'],
+                isset($params['publishtime'])? strtotime($params['publishtime']) : time(),
+                $tags
+            );
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_TAGS_NOT_UPDATED'), RESPONSE_ERROR);
             }
