@@ -78,18 +78,10 @@ class Emblems_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.9.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '0.8.0.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            // Update layout actions
-            $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
-            if (!Jaws_Error::isError($layoutModel)) {
-                $layoutModel->EditGadgetLayoutAction('Emblems', 'Display', 'Display', 'Emblems');
-            }
-        }
+        $this->gadget->acl->delete('AddEmblem');
+        $this->gadget->acl->delete('EditEmblem');
+        $this->gadget->acl->delete('DeleteEmblem');
+        $this->gadget->acl->delete('UpdateProperties');
         return true;
     }
 }

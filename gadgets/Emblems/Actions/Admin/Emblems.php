@@ -19,8 +19,6 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
      */
     function Emblems()
     {
-        $this->gadget->CheckPermission('ManageEmblems');
-
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('Emblems.html');
         $tpl->SetBlock('emblems');

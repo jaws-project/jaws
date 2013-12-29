@@ -19,7 +19,6 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function UpdateEmblem()
     {
-        $this->gadget->CheckPermission('ManageEmblems');
         @list($id, $data) = jaws()->request->fetch(array('0', '1:array'), 'post');
         $model = $this->gadget->model->loadAdmin('Emblems');
         $res = $model->UpdateEmblem($id, $data);
@@ -40,7 +39,6 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function DeleteEmblem()
     {
-        $this->gadget->CheckPermission('ManageEmblems');
         @list($id) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->load('Emblems');
         $emblem = $model->GetEmblem($id);
