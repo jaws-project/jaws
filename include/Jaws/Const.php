@@ -19,7 +19,7 @@ define('JAWS_COMPONENT_UPGRADE', 5);
 
 // Version of the unpacked Jaws (not the one in registry)
 define('JAWS_VERSION', '1.0.0');
-define('JAWS_VERSION_CODENAME', "Relentless forward progress");
+define('JAWS_VERSION_CODENAME', 'Security, Ease of Use, Performance, Interoperability, Flexibility');
 
 define('JAWS_EMERG',   1);  // System is unusable
 define('JAWS_ALERT',   2);  // Immediate action required
