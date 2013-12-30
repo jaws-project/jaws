@@ -38,22 +38,17 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
         if (empty($gadget)) {
             $tpl->SetBlock('tags/gadgets_filter');
             //Gadgets filter
+            $model = $this->gadget->model->load('Tags');
+            $gadgets = $model->GetTagableGadgets();
+
             $gadgetsCombo =& Piwi::CreateWidget('Combo', 'gadgets_filter');
             $gadgetsCombo->SetID('gadgets_filter');
             $gadgetsCombo->setStyle('width: 150px;');
             $gadgetsCombo->AddEvent(ON_CHANGE, "searchTags()");
-            $gadgetsCombo->AddOption('', '');
-
-            $model = $this->gadget->model->load('Tags');
-            $gadgets = $model->GetTagRelativeGadgets();
-            $tagGadgets = array();
-            $tagGadgets[''] = _t('GLOBAL_ALL');
-            $objTranslate = Jaws_Translate::getInstance();
-            foreach($gadgets as $gadget) {
-                $objTranslate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
-                $gadgetsCombo->AddOption(_t(strtoupper($gadget) . '_TITLE'), $gadget);
+            $gadgetsCombo->AddOption(_t('GLOBAL_ALL'), '');
+            foreach($gadgets as $gadget => $title) {
+                $gadgetsCombo->AddOption($title, $gadget);
             }
-
             $gadgetsCombo->SetDefault('');
             $tpl->SetVariable('lbl_gadgets_filter', _t('TAGS_GADGET'));
             $tpl->SetVariable('gadgets_filter', $gadgetsCombo->Get());

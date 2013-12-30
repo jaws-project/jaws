@@ -20,28 +20,19 @@ class Tags_Actions_Tags extends Tags_Actions_Default
     function TagCloudLayoutParams()
     {
         $result = array();
-
-        $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
         $model = $this->gadget->model->load('Tags');
-        $gadgets = $model->GetTagRelativeGadgets();
-        $tagGadgets = array();
-        $tagGadgets[''] = _t('GLOBAL_ALL');
-        $objTranslate = Jaws_Translate::getInstance();
-        foreach($gadgets as $gadget) {
-            $objTranslate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
-            $tagGadgets[$gadget] = _t(strtoupper($gadget) . '_TITLE');
-        }
-
+        $gadgets = $model->GetTagableGadgets();
+        array_unshift($gadgets, _t('GLOBAL_ALL'));
         $result[] = array(
             'title' => _t('TAGS_GADGET'),
-            'value' => $tagGadgets
+            'value' => $gadgets
         );
 
         $result[] = array(
             'title' => _t('TAGS_SHOW_TAGS'),
             'value' => array(
-                1 => _t('TAGS_GLOBAL_TAGS'),
-                0 => _t('TAGS_USER_TAGS'),
+                0 => _t('TAGS_GLOBAL_TAGS'),
+                1 => _t('TAGS_USER_TAGS'),
             )
         );
 
@@ -53,18 +44,18 @@ class Tags_Actions_Tags extends Tags_Actions_Default
      *
      * @access  public
      * @param   string  $gadget Gadget name
-     * @param   bool    $global Only show global tags?
+     * @param   bool    $user   Only show user tags?
      * @return  string  XHTML template content
      */
-    function TagCloud($gadget = null, $global = true)
+    function TagCloud($gadget = null, $user = 0)
     {
         if(empty($gadget)) {
             $gadget = jaws()->request->fetch('gname', 'get');
         }
 
-        $user = $GLOBALS['app']->Session->GetAttribute('user');
+        $user = empty($user)? 0 : (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Tags');
-        $res = $model->GenerateTagCloud($gadget, $global);
+        $res = $model->GenerateTagCloud($gadget, !(bool)$user);
         $sortedTags = $res;
         sort($sortedTags);
         $minTagCount = log((isset($sortedTags[0]) ? $sortedTags[0]['howmany'] : 0));
@@ -90,7 +81,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             $tpl->SetVariable('title', _t('TAGS_TAG_CLOUD', _t('GLOBAL_ALL')));
         }
 
-        if (!$global) {
+        if ($user) {
             $tpl->SetVariable('menubar', $this->MenuBar('ManageTags', array('ManageTags')));
         }
 
@@ -106,7 +97,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             } else {
                 $param = array('tag' => $tag['name'], 'gname' => $gadget);
             }
-            if(!$global) {
+            if($user) {
                 $param['user'] = $user;
             }
             $tpl->SetVariable('url', $this->gadget->urlMap(
@@ -163,11 +154,6 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-
-        $tpl = $this->gadget->template->load('Tag.html');
-        $tpl->SetBlock('tag');
-        $tpl->SetVariable('title', _t('TAGS_VIEW_TAG', $tag));
-
         $page = $get['page'];
         if (is_null($page) || !is_numeric($page) || $page <= 0 ) {
             $page = 1;
@@ -178,7 +164,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             $limit = 10;
         }
 
-        // Detect all items count(for paging)
+        // Fetch tag references count(for paging)
         $table = Jaws_ORM::getInstance()->table('tags');
         $table->select('count(tags.id):integer');
         $table->join('tags_references', 'tags_references.tag', 'tags.id');
@@ -186,78 +172,45 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             $table->where('gadget', $gadget);
         }
         $table->and()->where('tags.name', $tag)->and()->where('tags_references.published', true);
-        $table->and()->openWhere('tags_references.update_time', time(), '<')->or();
-        $table->closeWhere('tags_references.update_time', null, 'is' );
         if(!empty($get['user'])) {
             $table->and()->where('tags.user', $get['user']);
         } else {
             $table->and()->where('tags.user', 0);
         }
-        $itemsTotal = $table->fetchOne();
-
-
-        $table = Jaws_ORM::getInstance()->table('tags');
-        $table->select(
-            'gadget', 'action', 'reference:integer'
-        );
-
-        $table->join('tags_references', 'tags_references.tag', 'tags.id');
-        if(!empty($gadget)) {
-            $table->where('gadget', $gadget);
-        }
-        $table->and()->where('tags.name', $tag)->and()->where('tags_references.published', true);
-        $table->and()->openWhere('tags_references.update_time', time(), '<')->or();
-        $table->closeWhere('tags_references.update_time', null, 'is' );
-        if(!empty($get['user'])) {
-            $table->and()->where('tags.user', $get['user']);
-        } else {
-            $table->and()->where('tags.user', 0);
-        }
-        $items = $table->orderBy('insert_time')->limit($limit, ($page - 1) * $limit)->fetchAll();
-
-        $gadgetItems = array();
-        foreach ($items as $item) {
-            $gadgetItems[$item['gadget']][$item['action']][] = $item['reference'];
+        $referencesCount = $table->fetchOne();
+        if (Jaws_Error::IsError($referencesCount)) {
+            return false;
         }
 
-
-        if(empty($gadget)) {
-            $model = $this->gadget->model->load('Tags');
-            $gadgets = $model->GetTagRelativeGadgets();
-        } else {
-            $gadgets = array($gadget);
-        }
-        if (is_array($gadgets) && count($gadgets) > 0 && $itemsTotal>0) {
-            foreach ($gadgets as $gadget) {
-                $objGadget = Jaws_Gadget::getInstance($gadget);
-                if (Jaws_Error::IsError($objGadget)) {
-                    continue;
-                }
-                $objHook = $objGadget->hook->load('Tags');
-                if (Jaws_Error::IsError($objHook)) {
-                    continue;
-                }
-
-                if(!isset($gadgetItems[$gadget])) {
-                    continue;
-                }
-
-                $result[$gadget] = array();
-                $gResult = $objHook->Execute($gadgetItems[$gadget]);
-                if (!Jaws_Error::IsError($gResult) || !$gResult) {
-                    if (is_array($gResult) && !empty($gResult)) {
-                        $result[$gadget] = $gResult;
-                    } else {
-                        unset($result[$gadget]);
-                    }
-                }
+        if ($referencesCount > 0) {
+            // Fetch tag references
+            $table = Jaws_ORM::getInstance()->table('tags');
+            $table->select('gadget', 'action', 'reference:integer');
+            $table->join('tags_references', 'tags_references.tag', 'tags.id');
+            if(!empty($gadget)) {
+                $table->where('gadget', $gadget);
             }
-
-            reset($result);
-        } else {
-            $tpl->ParseBlock('tag');
-            return $tpl->Get();
+            $table->and()->where('tags.name', $tag)->and()->where('tags_references.published', true);
+            if(!empty($get['user'])) {
+                $table->and()->where('tags.user', $get['user']);
+            } else {
+                $table->and()->where('tags.user', 0);
+            }
+            $references = $table->orderBy('insert_time')->limit($limit, ($page - 1) * $limit)->fetchAll();
+            if (Jaws_Error::IsError($references)) {
+                return false;
+            }
         }
+
+        $gadgetReferences = array();
+        // grouping references by gadget for one time call hook per gadget
+        foreach ($references as $reference) {
+            $gadgetReferences[$reference['gadget']][$reference['action']][] = $reference['reference'];
+        }
+
+        $tpl = $this->gadget->template->load('Tag.html');
+        $tpl->SetBlock('tag');
+        $tpl->SetVariable('title', _t('TAGS_VIEW_TAG', $tag));
 
         // page navigation
         $this->GetPagesNavigation(
@@ -265,56 +218,70 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             'tag',
             $page,
             $limit,
-            $itemsTotal,
-            _t('TAGS_TAG_ITEM_COUNT', $itemsTotal),
+            $referencesCount,
+            _t('TAGS_TAG_ITEM_COUNT', $referencesCount),
             'ViewTag',
             array('tag'=>$tag)
         );
 
-        if (count($result) > 2) {
+        if (count($references) > 2) {
             $tpl->SetBlock('tag/subtitle');
-            $tpl->SetVariable('text', _t('SEARCH_RESULTS_SUBTITLE',
-                $itemsTotal,
-                'TEST'));
+            $tpl->SetVariable('text', _t('SEARCH_RESULTS_SUBTITLE', $referencesCount, $tag));
             $tpl->ParseBlock('tag/subtitle');
         }
 
-        $date = Jaws_Date::getInstance();
+        $objDate = Jaws_Date::getInstance();
         $max_result_len = (int)$this->gadget->registry->fetch('max_result_len');
         if (empty($max_result_len)) {
             $max_result_len = 500;
         }
 
-        foreach ($result as $gadget => $tags) {
-            $tpl->SetBlock('tags/gadget');
-            $info = Jaws_Gadget::getInstance($gadget);
-            $tpl->SetVariable('gadget_result', _t('SEARCH_RESULTS_IN_GADGETS',
-                count($tags),
-                'TEST',
-                $info->title));
-            $tpl->ParseBlock('tags/gadget');
-            foreach ($tags as $item) {
-                $tpl->SetBlock('tag/tag_item');
-                $tpl->SetVariable('title',  $item['title']);
-                $tpl->SetVariable('url',    $item['url']);
-                $tpl->SetVariable('target', (isset($item['outer']) && $item['outer'])? '_blank' : '_self');
-                $tpl->SetVariable('image',  $item['image']);
+        // call gadget hook
+        foreach ($gadgetReferences as $gadget => $references) {
+            // load gadget
+            $objGadget = Jaws_Gadget::getInstance($gadget);
+            if (Jaws_Error::IsError($objGadget)) {
+                continue;
+            }
 
-                if (!isset($item['parse_text']) || $item['parse_text']) {
-                    $item['snippet'] = $this->gadget->ParseText($item['snippet'], $gadget);
-                }
-                if (!isset($item['strip_tags']) || $item['strip_tags']) {
-                    $item['snippet'] = strip_tags($item['snippet']);
-                }
-                $item['snippet'] = Jaws_UTF8::substr($item['snippet'], 0, $max_result_len);
+            // load hook
+            $objHook = $objGadget->hook->load('Tags');
+            if (Jaws_Error::IsError($objHook)) {
+                continue;
+            }
 
-                $tpl->SetVariable('snippet', $item['snippet']);
-                $tpl->SetVariable('date', $date->Format($item['date']));
-                $tpl->ParseBlock('tag/tag_item');
+            // call execute method
+            $result = $objHook->Execute($references);
+            if (!Jaws_Error::IsError($result) && !empty($result)) {
+                $tpl->SetBlock('tags/gadget');
+                $tpl->SetVariable('gadget_result', _t('SEARCH_RESULTS_IN_GADGETS',
+                    count($result),
+                    'TEST',
+                    $objGadget->title));
+                $tpl->ParseBlock('tags/gadget');
+                foreach ($result as $reference) {
+                    $tpl->SetBlock('tag/tag_item');
+                    $tpl->SetVariable('title',  $reference['title']);
+                    $tpl->SetVariable('url',    $reference['url']);
+                    $tpl->SetVariable('target', (@$reference['outer'])? '_blank' : '_self');
+                    $tpl->SetVariable('image',  $reference['image']);
+                    if (!isset($reference['parse_text']) || $reference['parse_text']) {
+                        $reference['snippet'] = $this->gadget->ParseText($reference['snippet'], $gadget);
+                    }
+                    if (!isset($reference['strip_tags']) || $reference['strip_tags']) {
+                        $reference['snippet'] = strip_tags($reference['snippet']);
+                    }
+                    $reference['snippet'] = Jaws_UTF8::substr($reference['snippet'], 0, $max_result_len);
+
+                    $tpl->SetVariable('snippet', $reference['snippet']);
+                    $tpl->SetVariable('date', $objDate->Format($reference['date']));
+                    $tpl->ParseBlock('tag/tag_item');
+                }
             }
         }
 
         $tpl->ParseBlock('tag');
         return $tpl->Get();
     }
+
 }

@@ -19,20 +19,18 @@ class Tags_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls = array();
-        $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
-        $model = $this->gadget->model->load('Tags');
-        $gadgets = $model->GetTagRelativeGadgets();
-
         $urls[] = array(
             'url' => $this->gadget->urlMap('TagCloud'),
             'title' => _t('TAGS_TAG_CLOUD', _t('GLOBAL_ALL'))
         );
 
-        $objTranslate = Jaws_Translate::getInstance();
-        foreach ($gadgets as $gadget) {
-            $objTranslate->LoadTranslation($gadget, JAWS_COMPONENT_GADGET, $site_language);
-            $urls[] = array('url' => $this->gadget->urlMap('TagCloud', array('gname' => $gadget)),
-                            'title' => _t('TAGS_TAG_CLOUD', _t(strtoupper($gadget) . '_TITLE')));
+        $model = $this->gadget->model->load('Tags');
+        $gadgets = $model->GetTagableGadgets();
+        foreach ($gadgets as $gadget => $title) {
+            $urls[] = array(
+                'url' => $this->gadget->urlMap('TagCloud', array('gname' => $gadget)),
+                'title' => _t('TAGS_TAG_CLOUD', $title)
+            );
         }
 
         return $urls;
