@@ -55,7 +55,11 @@ class Tags_Actions_Tags extends Tags_Actions_Default
 
         $user = empty($user)? 0 : (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Tags');
-        $res = $model->GenerateTagCloud($gadget, !(bool)$user);
+        $res = $model->GenerateTagCloud($gadget, $user);
+        if (Jaws_Error::IsError($res)) {
+            return false;
+        }
+
         $sortedTags = $res;
         sort($sortedTags);
         $minTagCount = log((isset($sortedTags[0]) ? $sortedTags[0]['howmany'] : 0));
