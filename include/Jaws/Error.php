@@ -166,4 +166,17 @@ class Jaws_Error
         terminate($content, $http_response_code, '', false);
     }
 
+    /**
+     * Overloading magic method
+     *
+     * @access  private
+     * @param   string  $method  Method name
+     * @param   string  $params  Method parameters
+     * @return  mixed   Jaws_Error object
+     */
+    function __call($method, $params)
+    {
+        return $this;
+    }
+
 }
