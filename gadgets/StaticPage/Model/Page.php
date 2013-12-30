@@ -47,9 +47,7 @@ class StaticPage_Model_Page extends Jaws_Gadget_Model
             $page['tags'] = '';
             if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
                 $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
-                $tags = $model->GetItemTags(
-                    array('gadget' => 'StaticPage', 'action' => 'page', 'reference' => $page['translation_id']),
-                    true);
+                $tags = $model->GetReferenceTags('StaticPage', 'page', $page['translation_id']);
                 $page['tags'] = implode(',', array_filter($tags));
             }
         }

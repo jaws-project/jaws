@@ -139,7 +139,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
         $tIds = $sptTable->select('translation_id:integer')->where('base_id', $id)->fetchColumn();
         $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
-        $res = $model->DeleteItemTags('StaticPage', 'page', $tIds);
+        $res = $model->DeleteReferenceTags('StaticPage', 'page', $tIds);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TAG_NOT_DELETED'), RESPONSE_ERROR);
             return $res;

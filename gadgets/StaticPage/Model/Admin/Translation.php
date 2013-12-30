@@ -60,7 +60,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
             $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
-            $res = $model->AddTagsToItem('StaticPage', 'page', $tid, (bool)$published, null, $tags);
+            $res = $model->InsertReferenceTags('StaticPage', 'page', $tid, (bool)$published, null, $tags);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TAG_NOT_ADDED'), RESPONSE_ERROR);
                 return new Jaws_Error(_t('STATICPAGE_ERROR_TAG_NOT_ADDED'));
@@ -144,7 +144,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
         // Update page translation tags
         if (Jaws_Gadget::IsGadgetInstalled('Tags') && !empty($tags)) {
             $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
-            $res = $model->UpdateTagsItems('StaticPage', 'page', $id, $params['published'], null, $tags);
+            $res = $model->UpdateReferenceTags('StaticPage', 'page', $id, $params['published'], time(), $tags);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TAG_NOT_UPDATED'), RESPONSE_ERROR);
             }
@@ -188,7 +188,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
 
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
             $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
-            $res = $model->DeleteItemTags('StaticPage', 'page', $id);
+            $res = $model->DeleteReferenceTags('StaticPage', 'page', $id);
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TAG_NOT_DELETED'), RESPONSE_ERROR);
                 return $res;
