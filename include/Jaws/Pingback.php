@@ -8,7 +8,7 @@
  * @copyright  2006-2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_PingBack
+class Jaws_Pingback
 {
     /**
      * PEAR pingback object
@@ -16,14 +16,14 @@ class Jaws_PingBack
      * @access  private
      * @type    Pingback
      */
-    var $_pingBack;
+    var $_pingback;
 
     /**
      * Public constructor
      *
      * @access  public
      */
-    function Jaws_PingBack()
+    function Jaws_Pingback()
     {
         $options = array(
             'timeout' => 5,
@@ -31,7 +31,7 @@ class Jaws_PingBack
         );
 
         require_once PEAR_PATH. 'Services/Pingback.php';
-        $this->_pingBack = new Services_Pingback(null, $options);
+        $this->_pingback = new Services_Pingback(null, $options);
     }
 
     /**
@@ -46,9 +46,9 @@ class Jaws_PingBack
             $instances = array();
         }
 
-        $signature = serialize(array('Jaws_PingBack'));
+        $signature = serialize(array('Jaws_Pingback'));
         if (!isset($instances[$signature])) {
-            $instances[$signature] = new Jaws_PingBack();
+            $instances[$signature] = new Jaws_Pingback();
         }
         return $instances[$signature];
     }
@@ -115,16 +115,16 @@ class Jaws_PingBack
      */
     function listen()
     {
-        $this->_pingBack->receive();
-        $context = $this->_pingBack->getSourceContext();
+        $this->_pingback->receive();
+        $context = $this->_pingback->getSourceContext();
         if (!is_array($context)) {
             return new Jaws_Error('Unable to listen pingback',
                                   __FUNCTION__);
         }
 
         $response = array();
-        $response['sourceURI'] = $this->_pingBack->get('sourceURI');
-        $response['targetURI'] = $this->_pingBack->get('targetURI');
+        $response['sourceURI'] = $this->_pingback->get('sourceURI');
+        $response['targetURI'] = $this->_pingback->get('targetURI');
         $response['title']     = isset($context['title']) ? $context['title'] : '';
         $response['content']   = isset($context['content']) ? $context['content'] : '';
         return $response;
@@ -144,6 +144,6 @@ class Jaws_PingBack
             'sourceURI' => $source,
             'targetURI' => $target
         );
-        $this->_pingBack->send($send);
+        $this->_pingback->send($send);
     }
 }
