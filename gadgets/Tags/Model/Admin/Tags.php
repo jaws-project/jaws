@@ -45,7 +45,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
 
         // First - Update old tag info
         if (!empty($oldTagsId)) {
-            $table = Jaws_ORM::getInstance()->table('tags_items');
+            $table = Jaws_ORM::getInstance()->table('tags_references');
             $table->update(array('published' => $published, 'update_time' => $update_time));
             $table->where('gadget', $gadget);
             $table->and()->where('action', $action);
@@ -116,7 +116,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             }
         }
 
-        $table = Jaws_ORM::getInstance()->table('tags_items');
+        $table = Jaws_ORM::getInstance()->table('tags_references');
         $tData = array();
         foreach($systemTags as $tagName=>$tagId) {
             $data = array($gadget , $action, $reference, $tagId, time(), $published, $update_time);
@@ -154,7 +154,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('tags');
         $tagsId = $table->select('id:integer')->where('name', $tags, 'in')->fetchColumn();
 
-        $table = Jaws_ORM::getInstance()->table('tags_items');
+        $table = Jaws_ORM::getInstance()->table('tags_references');
 
         $table->delete()->where('gadget', $gadget)->and()->where('action', $action);
         $table->and()->where('reference', $reference)->and()->where('tag', $tagsId, 'in');
@@ -259,7 +259,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         if(!is_array($references)) {
             $references = array($references);
         }
-        $table = Jaws_ORM::getInstance()->table('tags_items');
+        $table = Jaws_ORM::getInstance()->table('tags_references');
 
         $table->delete()->where('gadget', $gadget);
         $table->and()->where('action', $action);
@@ -282,7 +282,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      */
     function DeleteTags($ids)
     {
-        $table = Jaws_ORM::getInstance()->table('tags_items');
+        $table = Jaws_ORM::getInstance()->table('tags_references');
         //Start Transaction
         $table->beginTransaction();
 
@@ -346,20 +346,20 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $this->UpdateTag($firstID, $data, $global);
 
         //Update tag items
-        $table = Jaws_ORM::getInstance()->table('tags_items');
+        $table = Jaws_ORM::getInstance()->table('tags_references');
         $table->update(array('tag' => $firstID))->where('tag', $ids, 'in')->exec();
 
-        $keepIds = Jaws_ORM::getInstance()->table('tags_items')
-            ->select('tags_items.id:integer')->groupBy('gadget', 'action', 'reference', 'tag', 'user')
-            ->join('tags', 'tags.id', 'tags_items.tag')
-            ->having('count(tags_items.id)', '1', '>')->fetchColumn();
+        $keepIds = Jaws_ORM::getInstance()->table('tags_references')
+            ->select('tags_references.id:integer')->groupBy('gadget', 'action', 'reference', 'tag', 'user')
+            ->join('tags', 'tags.id', 'tags_references.tag')
+            ->having('count(tags_references.id)', '1', '>')->fetchColumn();
 
         //Delete duplicated items
         // We need to find all duplicated items for deleting
-        $table = Jaws_ORM::getInstance()->table('tags_items', 'item1');
+        $table = Jaws_ORM::getInstance()->table('tags_references', 'item1');
         $table->distinct();
         $table->select('item1.id:integer');
-        $table->join('tags_items as item2', 'item2.tag', 'item1.tag');
+        $table->join('tags_references as item2', 'item2.tag', 'item1.tag');
         $table->join('tags', 'tags.id', 'item1.tag');
         $table->and()->where('item1.gadget', array('item2.gadget', 'expr'));
         $table->and()->where('item1.action', array('item2.action', 'expr'));
@@ -374,7 +374,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
 
         // delete duplicated tags items
         if (count($items) > 0) {
-            $table = Jaws_ORM::getInstance()->table('tags_items');
+            $table = Jaws_ORM::getInstance()->table('tags_references');
             $res = $table->delete()->where('id', $items, 'in')->exec();
             if (Jaws_Error::IsError($res)) {
                 return new Jaws_Error($res->getMessage());
@@ -420,12 +420,12 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
 
         $columns = array('tags.name');
         if (!$justReturnName) {
-            $columns[] = 'tags_items.id as item_id:integer';
+            $columns[] = 'tags_references.id as item_id:integer';
             $columns[] = 'tags.id as tag_id:integer';
         }
 
         $table->select($columns);
-        $table->join('tags_items', 'tags_items.tag', 'tags.id');
+        $table->join('tags_references', 'tags_references.tag', 'tags.id');
 
         if (!empty($filters) && count($filters) > 0) {
             if (array_key_exists('name', $filters) && !empty($filters['name'])) {
@@ -478,8 +478,8 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('tags');
 
-        $table->select('tags.id:integer', 'name', 'title', 'count(tags_items.gadget) as usage_count:integer');
-        $table->join('tags_items', 'tags_items.tag', 'tags.id', 'left');
+        $table->select('tags.id:integer', 'name', 'title', 'count(tags_references.gadget) as usage_count:integer');
+        $table->join('tags_references', 'tags_references.tag', 'tags.id', 'left');
         $table->groupBy('tags.id')->limit($limit, $offset);
 
         if (!empty($filters) && count($filters) > 0) {
@@ -531,7 +531,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('tags');
 
         $table->select('count(tags.id):integer');
-        $table->join('tags_items', 'tags_items.tag', 'tags.id', 'left');
+        $table->join('tags_references', 'tags_references.tag', 'tags.id', 'left');
         $table->groupBy('tags.id');
 
         if (!empty($filters) && count($filters) > 0) {
@@ -571,9 +571,9 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('tags');
 
-        $table->select('tags_items.action');
-        $table->join('tags_items', 'tags_items.tag', 'tags.id', 'left');
-        $result = $table->groupBy('tags_items.action')->where('tags_items.gadget', $gadget)->fetchColumn();
+        $table->select('tags_references.action');
+        $table->join('tags_references', 'tags_references.tag', 'tags.id', 'left');
+        $result = $table->groupBy('tags_references.action')->where('tags_references.gadget', $gadget)->fetchColumn();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage());
         }

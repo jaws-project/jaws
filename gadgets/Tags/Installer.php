@@ -58,7 +58,7 @@ class Tags_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         $tables = array(
-            'tags_items',
+            'tags_references',
             'tags',
         );
         foreach ($tables as $table) {

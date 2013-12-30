@@ -181,13 +181,13 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         // Detect all items count(for paging)
         $table = Jaws_ORM::getInstance()->table('tags');
         $table->select('count(tags.id):integer');
-        $table->join('tags_items', 'tags_items.tag', 'tags.id');
+        $table->join('tags_references', 'tags_references.tag', 'tags.id');
         if(!empty($gadget)) {
             $table->where('gadget', $gadget);
         }
-        $table->and()->where('tags.name', $tag)->and()->where('tags_items.published', true);
-        $table->and()->openWhere('tags_items.update_time', time(), '<')->or();
-        $table->closeWhere('tags_items.update_time', null, 'is' );
+        $table->and()->where('tags.name', $tag)->and()->where('tags_references.published', true);
+        $table->and()->openWhere('tags_references.update_time', time(), '<')->or();
+        $table->closeWhere('tags_references.update_time', null, 'is' );
         if(!empty($get['user'])) {
             $table->and()->where('tags.user', $get['user']);
         } else {
@@ -201,13 +201,13 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             'gadget', 'action', 'reference:integer'
         );
 
-        $table->join('tags_items', 'tags_items.tag', 'tags.id');
+        $table->join('tags_references', 'tags_references.tag', 'tags.id');
         if(!empty($gadget)) {
             $table->where('gadget', $gadget);
         }
-        $table->and()->where('tags.name', $tag)->and()->where('tags_items.published', true);
-        $table->and()->openWhere('tags_items.update_time', time(), '<')->or();
-        $table->closeWhere('tags_items.update_time', null, 'is' );
+        $table->and()->where('tags.name', $tag)->and()->where('tags_references.published', true);
+        $table->and()->openWhere('tags_references.update_time', time(), '<')->or();
+        $table->closeWhere('tags_references.update_time', null, 'is' );
         if(!empty($get['user'])) {
             $table->and()->where('tags.user', $get['user']);
         } else {

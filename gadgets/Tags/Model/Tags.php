@@ -22,8 +22,8 @@ class Tags_Model_Tags extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('tags');
 
-        $table->select('tags_items.id as items_id:integer', 'gadget', 'action', 'reference:integer');
-        $table->join('tags_items', 'tags_items.tag', 'tags.id');
+        $table->select('tags_references.id as items_id:integer', 'gadget', 'action', 'reference:integer');
+        $table->join('tags_references', 'tags_references.tag', 'tags.id');
         $table->where('tags.id', $id);
 
         $result = $table->orderBy('gadget asc')->fetchAll();
@@ -45,11 +45,11 @@ class Tags_Model_Tags extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('tags');
 
-        $table->select('tags.id:integer', 'name', 'title', 'count(tags_items.gadget) as howmany:integer');
-        $table->join('tags_items', 'tags_items.tag', 'tags.id', 'left');
-        $table->where('tags_items.published', true);
-        $table->and()->openWhere('tags_items.update_time', time(), '<')->or();
-        $table->closeWhere('tags_items.update_time', null, 'is');
+        $table->select('tags.id:integer', 'name', 'title', 'count(tags_references.gadget) as howmany:integer');
+        $table->join('tags_references', 'tags_references.tag', 'tags.id', 'left');
+        $table->where('tags_references.published', true);
+        $table->and()->openWhere('tags_references.update_time', time(), '<')->or();
+        $table->closeWhere('tags_references.update_time', null, 'is');
         if ($global) {
             $table->and()->where('tags.user', 0);
         } else {

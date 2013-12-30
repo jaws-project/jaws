@@ -64,7 +64,7 @@
     </table>
 
     <table>
-        <name><variable>table_prefix</variable>tags_items</name>
+        <name><variable>table_prefix</variable>tags_references</name>
         <declaration>
 
             <field>
@@ -115,6 +115,23 @@
                 <type>boolean</type>
                 <default>true</default>
             </field>
+
+            <index>
+                <name><variable>table_prefix</variable>tags_references_gart</name>
+                <unique>true</unique>
+                <field>
+                    <name>gadget</name>
+                </field>
+                <field>
+                    <name>action</name>
+                </field>
+                <field>
+                    <name>reference</name>
+                </field>
+                <field>
+                    <name>tag</name>
+                </field>
+            </index>
 
         </declaration>
     </table>
