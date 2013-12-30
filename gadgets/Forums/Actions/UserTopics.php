@@ -18,14 +18,14 @@ class Forums_Actions_UserTopics extends Forums_Actions_Default
      */
     function UserTopics()
     {
-        $rqst = jaws()->request->fetch(array('uid', 'page'), 'get');
-        $uid = (int) $rqst['uid'];
-        if(empty($uid)) {
-            return;
+        $rqst = jaws()->request->fetch(array('user', 'page'), 'get');
+        $user = $rqst['user'];
+        if (empty($user)) {
+            return false;
         }
 
         $userModel = new Jaws_User();
-        $user = $userModel->GetUser($uid);
+        $user = $userModel->GetUser($user);
 
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
@@ -35,9 +35,7 @@ class Forums_Actions_UserTopics extends Forums_Actions_Default
 
         $tpl = $this->gadget->template->load('UserTopics.html');
         $tModel = $this->gadget->model->load('Topics');
-        $topics = $tModel->GetUserTopics($uid, $limit, ($page - 1) * $limit);
-        $topicCounts = $tModel->GetUserTopicCount($uid);
-
+        $topics = $tModel->GetUserTopics($user['id'], $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($topics)) {
             // date format
             $date_format = $this->gadget->registry->fetch('date_format');
@@ -107,6 +105,7 @@ class Forums_Actions_UserTopics extends Forums_Actions_Default
                 $tpl->ParseBlock('topics/topic');
             }
 
+            $topicCounts = $tModel->GetUserTopicCount($user['id']);
             // page navigation
             $this->GetPagesNavigation(
                 $tpl,
@@ -116,7 +115,7 @@ class Forums_Actions_UserTopics extends Forums_Actions_Default
                 $topicCounts,
                 _t('FORUMS_POSTS_COUNT', $topicCounts),
                 'UserTopics',
-                array('uid' => $uid)
+                array('user' => $user['username'])
             );
 
             $tpl->ParseBlock('topics');

@@ -18,15 +18,14 @@ class Forums_Actions_UserPosts extends Forums_Actions_Default
      */
     function UserPosts()
     {
-        $rqst = jaws()->request->fetch(array('uid', 'page'), 'get');
-        $uid = (int) $rqst['uid'];
-        if(empty($uid)) {
-            return;
+        $rqst = jaws()->request->fetch(array('user', 'page'), 'get');
+        $user = $rqst['user'];
+        if (empty($user)) {
+            return false;
         }
 
         $userModel = new Jaws_User();
-        $user = $userModel->GetUser($uid);
-
+        $user = $userModel->GetUser($user);
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
         // posts per page
@@ -35,8 +34,7 @@ class Forums_Actions_UserPosts extends Forums_Actions_Default
 
         $tpl = $this->gadget->template->load('UserPosts.html');
         $pModel = $this->gadget->model->load('Posts');
-        $posts = $pModel->GetUserPosts($uid, $posts_limit, ($page - 1) * $posts_limit);
-        $post_counts = $pModel->GetUserPostsCount($uid);
+        $posts = $pModel->GetUserPosts($user['id'], $posts_limit, ($page - 1) * $posts_limit);
         if (!Jaws_Error::IsError($posts)) {
             // date format
             $date_format = $this->gadget->registry->fetch('date_format');
@@ -85,6 +83,7 @@ class Forums_Actions_UserPosts extends Forums_Actions_Default
                 $tpl->ParseBlock('userposts/post');
             }
 
+            $post_counts = $pModel->GetUserPostsCount($user['id']);
             // page navigation
             $this->GetPagesNavigation(
                 $tpl,
@@ -94,7 +93,7 @@ class Forums_Actions_UserPosts extends Forums_Actions_Default
                 $post_counts,
                 _t('FORUMS_POSTS_COUNT', $post_counts),
                 'UserPosts',
-                array('uid' => $uid)
+                array('user' => $user['username'])
             );
 
             $tpl->ParseBlock('userposts');

@@ -35,6 +35,14 @@ $maps[] = array(
     )
 );
 $maps[] = array(
+    'UserTopics',
+    'forums/users/{user}/topics[/page/{page}]',
+    array(
+        'user' => '[[:alnum:]-_]+',
+        'page' => '[[:digit:]]+',
+    )
+);
+$maps[] = array(
     'NewTopic',
     'forums/{fid}/topics/new',
     array('fid' => '[[:alnum:]-_]+',)
@@ -106,6 +114,14 @@ $maps[] = array(
     )
 );
 $maps[] = array(
+    'UserPosts',
+    'forums/users/{user}/posts[/page/{page}]',
+    array(
+        'user' => '[[:alnum:]-_]+',
+        'page' => '[[:digit:]]+',
+    )
+);
+$maps[] = array(
     'EditPost',
     'forums/{fid}/topics/{tid}/posts/{pid}/edit',
     array(
@@ -140,13 +156,5 @@ $maps[] = array(
         'fid' => '[[:alnum:]-_]+',
         'tid' => '[[:alnum:]-_]+',
         'pid' => '[[:alnum:]-_]+',
-    )
-);
-$maps[] = array(
-    'UserPosts',
-    'forums/user/{uid}/posts[/page/{page}]',
-    array(
-        'uid' => '[[:alnum:]-_]+',
-        'page' => '[[:digit:]]+',
     )
 );
