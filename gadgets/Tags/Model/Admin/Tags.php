@@ -10,9 +10,8 @@
  */
 class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
 {
-
     /**
-     * Update a gadget's tags item
+     * Update a gadget reference tags
      *
      * @access  public
      * @param   string          $gadget         gadget name
@@ -21,58 +20,48 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      * @param   bool            $published      reference published?
      * @param   int             $update_time    reference update time
      * @param   string/array    $tags           comma separated of tags name (tag1, tag2, tag3, ...)
-     * @param   bool            $global         is global tags?
-     * @return  mixed       Array of Tag info or Jaws_Error on failure
+     * @param   int             $user           User owner of tag(0: for global tags)
+     * @return  mixed           Array of Tag info or Jaws_Error on failure
      */
-    function UpdateTagsItems($gadget, $action , $reference, $published, $update_time, $tags, $global = true)
+    function UpdateReferenceTags($gadget, $action , $reference, $published, $update_time, $tags, $user = 0)
     {
+        $update_time = empty($update_time)? time() : $update_time;
+        // First - Update old tag info
+        $table = Jaws_ORM::getInstance()->table('tags_references');
+        $table->update(array('published' => $published, 'update_time' => $update_time));
+        $table->where('gadget', $gadget);
+        $table->and()->where('action', $action);
+        $table->and()->where('reference', $reference);
+        $table->exec();
+
+        $oldTags = $this->GetReferenceTags($gadget, $action, $reference, $user);
+        if (Jaws_Error::IsError($oldTags)) {
+            return $oldTags;
+        }
+
         if (!is_array($tags)) {
             $tags = array_filter(array_map('Jaws_UTF8::trim', explode(',', $tags)));
         }
-
-        $update_time = empty($update_time)? time() : $update_time;
-        $oldTagsInfo = $this->GetItemTags(
-            array('gadget' => $gadget, 'action' => $action, 'reference' => $reference),
-            false,
-            $global
-        );
-        $oldTags = array();
-        $oldTagsId = array();
-        foreach ($oldTagsInfo as $tagInfo) {
-            $oldTags[] = $tagInfo['name'];
-            $oldTagsId[] = $tagInfo['item_id'];
-        }
-
-        // First - Update old tag info
-        if (!empty($oldTagsId)) {
-            $table = Jaws_ORM::getInstance()->table('tags_references');
-            $table->update(array('published' => $published, 'update_time' => $update_time));
-            $table->where('gadget', $gadget);
-            $table->and()->where('action', $action);
-            $table->and()->where('reference', $reference);
-            $table->and()->where('id', $oldTagsId, 'in');
-            $table->exec();
-        }
-
         $to_be_added_tags = array_diff($tags, $oldTags);
-        $res = $this->AddTagsToItem(
+        $res = $this->InsertReferenceTags(
             $gadget, $action, $reference, $published,
-            $update_time, $to_be_added_tags, $global
+            $update_time, $to_be_added_tags, $user
         );
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
 
         $to_be_removed_tags = array_diff($oldTags, $tags);
-        $res = $this->RemoveTagsFromItem($gadget, $action, $reference, $to_be_removed_tags);
+        $res = $this->DeleteReferenceTags($gadget, $action, $reference, $to_be_removed_tags);
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
 
+        return true;
     }
 
     /**
-     * Add tags to item
+     * Inserts gadget reference tags
      *
      * @access  public
      * @param   string          $gadget         gadget name
@@ -81,10 +70,10 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      * @param   bool            $published      reference published?
      * @param   int             $update_time    reference update time
      * @param   string/array    $tagsString     comma separated of tags name (tag1, tag2, tag3, ...)
-     * @param   bool            $global         is global tag?
+     * @param   int             $user           User owner of tag(0: for global tags)
      * @return  mixed           Array of Tag info or Jaws_Error on failure
      */
-    function AddTagsToItem($gadget, $action, $reference, $published, $update_time, $tags, $global = true)
+    function InsertReferenceTags($gadget, $action, $reference, $published, $update_time, $tags, $user = 0)
     {
         if (!is_array($tags)) {
             $tags = array_filter(array_map('Jaws_UTF8::trim', explode(',', $tags)));
@@ -93,10 +82,6 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             return true;
         }
 
-        $user = 0;
-        if(!$global) {
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        }
         $systemTags = array();
         $table = Jaws_ORM::getInstance()->table('tags');
         foreach($tags as $tag){
@@ -107,7 +92,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
                 ->fetchOne();
             if (!Jaws_Error::IsError($tagId)) {
                 if (empty($tagId)) {
-                    $tagId = $this->AddTag(array('name' => $tag), $global);
+                    $tagId = $this->AddTag(array('name' => $tag), $user == 0);
                     if (Jaws_Error::IsError($tagId)) {
                         continue;
                     }
@@ -116,14 +101,13 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             }
         }
 
-        $table = Jaws_ORM::getInstance()->table('tags_references');
         $tData = array();
-        foreach($systemTags as $tagName=>$tagId) {
-            $data = array($gadget , $action, $reference, $tagId, time(), $published, $update_time);
-            $tData[] = $data;
+        foreach($systemTags as $tagName => $tagId) {
+            $tData[] = array($gadget , $action, $reference, $tagId, time(), $published, $update_time);
         }
 
         $column = array('gadget', 'action', 'reference', 'tag', 'insert_time', 'published', 'update_time');
+        $table = Jaws_ORM::getInstance()->table('tags_references');
         $res = $table->insertAll($column, $tData)->exec();
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage());
@@ -133,37 +117,42 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
     }
 
     /**
-     * Remove tags from item
+     * Delete gadget reference tags
      *
      * @access  public
-     * @param   string  $gadget     gadget name
-     * @param   string  $action     action name
-     * @param   int     $reference  reference
-     * @param   array   $tags       array of tags name
-     * @return  mixed   Array of Tag info or Jaws_Error on failure
+     * @param   string          $gadget     gadget name
+     * @param   string          $action     action name
+     * @param   int|array       $references references
+     * @param   string|array    $tags       array|string of tags names
+     * @return  mixed           Array of Tag info or Jaws_Error on failure
      */
-    function RemoveTagsFromItem($gadget, $action ,$reference, $tags)
+    function DeleteReferenceTags($gadget, $action ,$references, $tags = null)
     {
-        if (!is_array($tags)) {
-            $tags = array_filter(array_map('Jaws_UTF8::trim', explode(',', $tags)));
-        }
-        if(empty($tags)) {
-            return true;
-        }
-
-        $table = Jaws_ORM::getInstance()->table('tags');
-        $tagsId = $table->select('id:integer')->where('name', $tags, 'in')->fetchColumn();
-
-        $table = Jaws_ORM::getInstance()->table('tags_references');
-
-        $table->delete()->where('gadget', $gadget)->and()->where('action', $action);
-        $table->and()->where('reference', $reference)->and()->where('tag', $tagsId, 'in');
-        $res = $table->exec();
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage());
+        if (!is_null($tags)) {
+            if (!is_array($tags)) {
+                $tags = array_filter(array_map('Jaws_UTF8::trim', explode(',', $tags)));
+            }
+            if (empty($tags)) {
+                return false;
+            }
         }
 
-        return $res;
+        if (!is_array($references)) {
+            $references = array((int)$references);
+        }
+
+        $table = Jaws_ORM::getInstance()->table('tags_references')->delete()
+            ->where('gadget', $gadget)
+            ->and()
+            ->where('action', $action)
+            ->and()
+            ->where('reference', $references, 'in');
+        if (!is_null($tags)) {
+            $table->join('tags', 'tags.id', 'tags_references.tag');
+            $table->and()->where('tags.name', $tags, 'in');
+        }
+
+        return $table->exec();
     }
 
     /**
@@ -246,34 +235,6 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
     }
 
     /**
-     * Delete Item(s) tags
-     *
-     * @access  public
-     * @param   string      $gadget         gadget name
-     * @param   string      $action         action name
-     * @param   int/array   $references     references
-     * @return  mixed   True/False or Jaws_Error on failure
-     */
-    function DeleteItemTags($gadget, $action, $references)
-    {
-        if(!is_array($references)) {
-            $references = array($references);
-        }
-        $table = Jaws_ORM::getInstance()->table('tags_references');
-
-        $table->delete()->where('gadget', $gadget);
-        $table->and()->where('action', $action);
-        $table->and()->where('reference', $references, 'in');
-
-        $result = $table->exec();
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage());
-        }
-
-        return $result;
-    }
-
-    /**
      * Delete tags
      *
      * @access  public
@@ -291,7 +252,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('tags');
         $result = $table->delete()->where('id', $ids, 'in')->exec();
         if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage());
+            return $result;
         }
 
         //Commit Transaction
@@ -406,61 +367,26 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
     }
 
     /**
-     * Get tags
+     * Get reference tags
      *
      * @access  public
-     * @param   array   $filters           Data that will be used in the filter
-     * @param   bool    $justReturnName    Data that will be used in the filter
-     * @param   bool    $global            Just fetch global tags?
+     * @param   string  $gadget     Gadget name
+     * @param   string  $action     Action name
+     * @param   int     $reference  Reference
+     * @param   int     $user       User owner of tag(0: for global tags)
      * @return  mixed   Array of Tags info or Jaws_Error on failure
      */
-    function GetItemTags($filters = array(), $justReturnName = false, $global = true)
+    function GetReferenceTags($gadget, $action, $reference, $user = 0)
     {
         $table = Jaws_ORM::getInstance()->table('tags');
-
-        $columns = array('tags.name');
-        if (!$justReturnName) {
-            $columns[] = 'tags_references.id as item_id:integer';
-            $columns[] = 'tags.id as tag_id:integer';
-        }
-
-        $table->select($columns);
+        $table->select('tags.name');
         $table->join('tags_references', 'tags_references.tag', 'tags.id');
-
-        if (!empty($filters) && count($filters) > 0) {
-            if (array_key_exists('name', $filters) && !empty($filters['name'])) {
-                $table->and()->where('name', '%' . $filters['name'] . '%', 'like');
-            }
-            if (array_key_exists('gadget', $filters) && !empty($filters['gadget'])) {
-                $table->and()->where('gadget', $filters['gadget']);
-            }
-            if (array_key_exists('action', $filters) && !empty($filters['action'])) {
-                $table->and()->where('action', $filters['action']);
-            }
-            if (array_key_exists('reference', $filters) && !empty($filters['reference'])) {
-                $table->and()->where('reference', $filters['reference']);
-            }
-        }
-
-        if ($global) {
-            $table->and()->where('tags.user', 0);
-        } else {
-            $table->and()->where('tags.user', (int)$GLOBALS['app']->Session->GetAttribute('user'));
-        }
-
-
-        if ($justReturnName) {
-            $result = $table->fetchColumn();
-        } else {
-            $result = $table->fetchAll();
-        }
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage());
-        }
-
-        return $result;
+        return $table->where('tags.user', (int)$user)
+            ->and()->where('gadget', $gadget)
+            ->and()->where('action', $action)
+            ->and()->where('reference', (int)$reference)
+            ->fetchColumn();
     }
-
 
     /**
      * Get tags

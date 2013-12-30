@@ -132,7 +132,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
     function ViewItemTags($gadget, $action, $reference, &$tpl, $tpl_base_block)
     {
         $model = $this->gadget->model->loadAdmin('Tags');
-        $tags = $model->GetItemTags(array('gadget' => $gadget, 'action' => $action, 'reference' => $reference), true);
+        $tags = $model->GetReferenceTags($gadget, $action, $reference);
 
         $tpl->SetBlock("$tpl_base_block/tags");
         $tpl->SetVariable('lbl_tags', _t('GLOBAL_TAGS'));

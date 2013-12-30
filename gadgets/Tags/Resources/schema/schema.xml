@@ -118,7 +118,6 @@
 
             <index>
                 <name><variable>table_prefix</variable>tags_references_gart</name>
-                <unique>true</unique>
                 <field>
                     <name>gadget</name>
                 </field>
