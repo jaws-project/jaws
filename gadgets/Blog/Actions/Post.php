@@ -72,7 +72,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
             $entry['clicks']++;
 
             if ($this->gadget->registry->fetch('pingback') == 'true') {
-                $pback = Jaws_PingBack::getInstance();
+                $pback = Jaws_Pingback::getInstance();
                 $pback->showHeaders($this->gadget->urlMap('Pingback', array(), true));
             }
 

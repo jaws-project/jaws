@@ -683,7 +683,7 @@ $rpc_methods = array(
     'metaWeblog.getTemplate'   => array('function' => 'metaWeblog_getTemplate'),
     'metaWeblog.setTemplate'   => array('function' => 'metaWeblog_setTemplate'),
 
-    // PingBack
+    // Pingback
     'pingback.ping'                    => array('function' => 'pingback_ping'),
     'pingback.extensions.getPingbacks' => array('function' => 'pingback_extensions_getPingbacks'),
 );
