@@ -469,18 +469,16 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      * @param   array   $filters    Data that will be used in the filter
      * @param   int     $limit      How many tags
      * @param   mixed   $offset     Offset of data
-     * @param   int     $orderBy    The column index which the result must be sorted by
      * @param   bool    $global     just get global tags?
      *                              (null : get all tags, true : just get global tags, false : just get user tags)
      * @return  mixed   Array of Tags info or Jaws_Error on failure
      */
-    function GetTags($filters = array(), $limit = null, $offset = 0, $orderBy = 0, $global = null)
+    function GetTags($filters = array(), $limit = null, $offset = 0, $global = null)
     {
         $table = Jaws_ORM::getInstance()->table('tags');
-
         $table->select('tags.id:integer', 'name', 'title', 'count(tags_references.gadget) as usage_count:integer');
         $table->join('tags_references', 'tags_references.tag', 'tags.id', 'left');
-        $table->groupBy('tags.id')->limit($limit, $offset);
+        $table->groupBy('tags.id', 'name', 'title')->limit($limit, $offset);
 
         if (!empty($filters) && count($filters) > 0) {
             if (array_key_exists('name', $filters) && !empty($filters['name'])) {
@@ -501,14 +499,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             $table->and()->where('tags.user', $GLOBALS['app']->Session->GetAttribute('user'));
         }
 
-        $orders = array(
-            'insert_time asc',
-            'insert_time desc',
-        );
-        $orderBy = (int)$orderBy;
-        $orderBy = $orders[($orderBy > 1)? 1 : $orderBy];
-
-        $result = $table->orderBy($orderBy)->fetchAll();
+        $result = $table->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage());
         }
