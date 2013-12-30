@@ -109,7 +109,7 @@ class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
             $links = $model->GetGroupLinks($gid);
             $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             foreach ($links as $link) {
-                $res = $model->DeleteItemTags('LinkDump', 'link', $link['id']);
+                $res = $model->DeleteReferenceTags('LinkDump', 'link', $link['id']);
                 if (Jaws_Error::IsError($res)) {
                     $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                     return false;
