@@ -49,6 +49,10 @@ class Tags_Actions_Tags extends Tags_Actions_Default
      */
     function TagCloud($gadget = null, $user = 0)
     {
+        if (!empty($user) && !$GLOBALS['app']->Session->Logged()) {
+            return false;
+        }
+
         if(empty($gadget)) {
             $gadget = jaws()->request->fetch('gname', 'get');
         }
