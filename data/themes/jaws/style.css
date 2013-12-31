@@ -390,6 +390,51 @@ float:left;
 .navigator .navigator_next{
 float:right;
 }
+/* tag cloud */
+.tags-cloud .content{
+text-align:justify;
+}
+.tags-cloud .content li{
+padding:0 2px;
+display:inline;
+}
+.tag-link-0{
+font-size:80%;
+}
+.tag-link-1{
+font-size:85%;
+}
+.tag-link-2{
+font-size:90%;
+}
+.tag-link-3{
+font-size:95%;
+font-weight:bold;
+}
+.tag-link-4{
+font-size:100%;
+font-weight:bold;
+}
+.tag-link-5{
+font-size:105%;
+font-weight:bold;
+}
+.tag-link-6{
+font-size:110%;
+font-weight:bold;
+}
+.tag-link-7{
+font-size:120%;
+font-weight:bold;
+}
+.tag-link-8{
+font-size:130%;
+font-weight:bold;
+}
+.tag-link-9{
+font-size:140%;
+font-weight:bold;
+}
 /* users style */
 .users.preferences input,.users.preferences textarea,.users.preferences select{
 float:right;
