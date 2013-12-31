@@ -59,9 +59,10 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         }
         $tpl->SetVariable('opt_page_item_' . $limit, 'selected="selected"');
 
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->loadAdmin('Tags');
-        $tags = $model->GetTags($filters, $limit, ($page - 1) * $limit, 0, false);
-        $tagsTotal = $model->GetTagsCount($filters, false);
+        $tags = $model->GetTags($filters, $limit, ($page - 1) * $limit, 0, $user);
+        $tagsTotal = $model->GetTagsCount($filters, $user);
 
         $tpl->SetVariable('txt_term', $post['term']);
         $tpl->SetVariable('lbl_gadgets', _t('GLOBAL_GADGETS'));
@@ -149,7 +150,7 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         $this->AjaxMe('index.js');
 
         $tag_id = jaws()->request->fetch('tag', 'get');
-        $user = $GLOBALS['app']->Session->GetAttribute('user');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->loadAdmin('Tags');
         $tag = $model->GetTag($tag_id);
         if ($tag['user'] != $user) {
@@ -280,8 +281,9 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
                 RESPONSE_ERROR
             );
         }
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->loadAdmin('Tags');
-        $res = $model->MergeTags($ids, $post['new_tag_name'], false);
+        $res = $model->MergeTags($ids, $post['new_tag_name'], $user);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
                 $res->getMessage(),

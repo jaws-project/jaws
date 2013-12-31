@@ -234,17 +234,13 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      * Merge tags
      *
      * @access  public
-     * @param   array       $ids        Tags id
-     * @param   string      $newName    New tag name
-     * @param   bool        $global     Is global?
+     * @param   array   $ids        Tags id
+     * @param   string  $newName    New tag name
+     * @param   int     $user       User owner of tag(0: for global tags)
      * @return  array   Response array (notice or error)
      */
-    function MergeTags($ids, $newName, $global = true)
+    function MergeTags($ids, $newName, $user = 0)
     {
-        $user = 0;
-        if (!$global) {
-            $user = $GLOBALS['app']->Session->GetAttribute('user');
-        }
         $objORM = Jaws_ORM::getInstance()->table('tags');
         $newTag = $objORM->select('id:integer')->where('name', $newName)->and()->where('user', $user)->fetchOne();
         if (Jaws_Error::IsError($newTag)) {
@@ -342,17 +338,16 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      * @param   array   $filters    Data that will be used in the filter
      * @param   int     $limit      How many tags
      * @param   mixed   $offset     Offset of data
-     * @param   bool    $global     just get global tags?
-     *                              (null : get all tags, true : just get global tags, false : just get user tags)
+     * @param   int     $user       User owner of tag(0: for global tags)
      * @return  mixed   Array of Tags info or Jaws_Error on failure
      */
-    function GetTags($filters = array(), $limit = null, $offset = 0, $global = null)
+    function GetTags($filters = array(), $limit = null, $offset = 0, $user = 0)
     {
         $table = Jaws_ORM::getInstance()->table('tags');
         $table->select('tags.id:integer', 'name', 'title', 'count(tags_references.gadget) as usage_count:integer');
         $table->join('tags_references', 'tags_references.tag', 'tags.id', 'left');
         $table->groupBy('tags.id', 'name', 'title')->limit($limit, $offset);
-
+        $table->where('tags.user', (int)$user);
         if (!empty($filters) && count($filters) > 0) {
             if (array_key_exists('name', $filters) && !empty($filters['name'])) {
                 $table->and()->openWhere('name', '%' . $filters['name'] . '%', 'like')->or();
@@ -366,18 +361,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             }
         }
 
-        if($global===true) {
-            $table->and()->where('tags.user', 0);
-        } elseif ($global===false) {
-            $table->and()->where('tags.user', $GLOBALS['app']->Session->GetAttribute('user'));
-        }
-
-        $result = $table->fetchAll();
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage());
-        }
-
-        return $result;
+        return $table->fetchAll();
     }
 
     /**
@@ -385,11 +369,10 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   array   $filters    Data that will be used in the filter
-     * @param   bool    $global     just get global tags?
-     *                              (null : get all tags, true : just get global tags, false : just get user tags)\
+     * @param   int     $user       User owner of tag(0: for global tags)
      * @return  mixed   Array of Tags info or Jaws_Error on failure
      */
-    function GetTagsCount($filters = array(), $global = null)
+    function GetTagsCount($filters = array(), $user = 0)
     {
         //TODO: we must improve performance!
         $table = Jaws_ORM::getInstance()->table('tags');
@@ -397,7 +380,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table->select('count(tags.id):integer');
         $table->join('tags_references', 'tags_references.tag', 'tags.id', 'left');
         $table->groupBy('tags.id');
-
+        $table->where('tags.user', (int)$user);
         if (!empty($filters) && count($filters) > 0) {
             if (array_key_exists('name', $filters) && !empty($filters['name'])) {
                 $table->and()->where('name', '%' . $filters['name'] . '%', 'like');
@@ -410,18 +393,8 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             }
         }
 
-        if($global===true) {
-            $table->and()->where('tags.user', 0);
-        } elseif ($global===false) {
-            $table->and()->where('tags.user', $GLOBALS['app']->Session->GetAttribute('user'));
-        }
-
         $result = $table->fetchOne();
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage());
-        }
-
-        return count($result);
+        return Jaws_Error::IsError($result)? 0 : $result;
     }
 
     /**
