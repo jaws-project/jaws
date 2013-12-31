@@ -53,8 +53,8 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             return false;
         }
 
-        if(empty($gadget)) {
-            $gadget = jaws()->request->fetch('gadget', 'get');
+        if (($GLOBALS['app']->requestedAction == __FUNCTION__) && empty($gadget)) {
+            $gadget = $this->gadget->request->fetch('gadget', 'get');
         }
 
         $user = empty($user)? 0 : (int)$GLOBALS['app']->Session->GetAttribute('user');
