@@ -430,7 +430,11 @@ class Jaws_ORM
         switch ($opt) {
             case 'in':
             case 'not in':
-                $value = '('. implode(', ', array_map(array($this, 'quoteValue'), $value)). ')';
+                if (is_object($value)) {
+                    $value = $this->quoteValue($value);
+                } else {
+                    $value = '('. implode(', ', array_map(array($this, 'quoteValue'), $value)). ')';
+                }
                 break;
 
             case 'between':
