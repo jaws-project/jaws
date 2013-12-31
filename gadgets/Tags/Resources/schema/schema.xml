@@ -117,6 +117,13 @@
             </field>
 
             <index>
+                <name><variable>table_prefix</variable>tags_references_tag</name>
+                <field>
+                    <name>tag</name>
+                </field>
+            </index>
+
+            <index>
                 <name><variable>table_prefix</variable>tags_references_gart</name>
                 <field>
                     <name>gadget</name>
