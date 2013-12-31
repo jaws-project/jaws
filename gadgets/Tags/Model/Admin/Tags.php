@@ -263,7 +263,21 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             ->and()
             ->where('tag', $ids, 'in')
             ->exec();
-        $result = $objORM->where($objInternal, '', 'is not null')->exec();
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        // Delete duplocate resource tags
+        $objInternal = Jaws_ORM::getInstance()->table('tags_references')
+            ->select('min(id)')
+            ->where('user', (int)$user)
+            ->groupBy('user', 'gadget', 'action', 'reference', 'tag');
+        $result = $objORM->table('tags_references')
+            ->delete()
+            ->where('user', (int)$user)
+            ->and()
+            ->where('id', $objInternal, 'not in')
+            ->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
