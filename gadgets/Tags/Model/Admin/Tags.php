@@ -82,13 +82,13 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             return true;
         }
 
-        $systemTags = array();
+        $references = array();
         $table = Jaws_ORM::getInstance()->table('tags');
         foreach($tags as $tag){
             $tagId = $table->select('id:integer')
                 ->where('name', $tag)
                 ->and()
-                ->where('user', $user)
+                ->where('user', (int)$user)
                 ->fetchOne();
             if (!Jaws_Error::IsError($tagId)) {
                 if (empty($tagId)) {
@@ -99,16 +99,14 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
                 }
                 $systemTags[$tag] = $tagId;
             }
+            $references[] = array($user, $gadget , $action, $reference, $tagId, time(), $published, $update_time);
         }
 
-        $tData = array();
-        foreach($systemTags as $tagName => $tagId) {
-            $tData[] = array($gadget , $action, $reference, $tagId, time(), $published, $update_time);
-        }
-
-        $column = array('gadget', 'action', 'reference', 'tag', 'insert_time', 'published', 'update_time');
         $table = Jaws_ORM::getInstance()->table('tags_references');
-        $res = $table->insertAll($column, $tData)->exec();
+        $res = $table->insertAll(
+            array('user', 'gadget', 'action', 'reference', 'tag', 'insert_time', 'published', 'update_time'),
+            $references
+        )->exec();
         if (Jaws_Error::IsError($res)) {
             return new Jaws_Error($res->getMessage());
         }
@@ -259,15 +257,12 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         }
 
         // Replacing tag of references with new tag
-        $objInternal = Jaws_ORM::getInstance()->table('tags');
-        $objInternal->select('tags.id')
-            ->where('tags.id', $ids, 'in')
-            ->and()
-            ->where('user', $user)
-            ->and()
-            ->where('tags.id', array('tags_references.tag', 'expr'));
         $objORM->table('tags_references');
-        $objORM->update(array('tag' => (int)$newTag));
+        $result = $objORM->update(array('tag' => (int)$newTag))
+            ->where('user', (int)$user)
+            ->and()
+            ->where('tag', $ids, 'in')
+            ->exec();
         $result = $objORM->where($objInternal, '', 'is not null')->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
