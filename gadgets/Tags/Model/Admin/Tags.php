@@ -174,24 +174,8 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         }
         $data['name'] = $this->GetRealFastUrl($data['name'], null, false);
 
-        // check duplicated tag
         $table = Jaws_ORM::getInstance()->table('tags');
-        $table->select('count(id)')->where('name', $data['name'])->and()->where('user', $data['user']);
-        $tag = $table->fetchOne();
-        if (Jaws_Error::IsError($tag)) {
-            return new Jaws_Error($tag->getMessage());
-        }
-        if ($tag > 0) {
-            return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $data['name']));
-        }
-
-        $table = Jaws_ORM::getInstance()->table('tags');
-        $result = $table->insert($data)->exec();
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage());
-        }
-
-        return $result;
+        return $table->insert($data)->exec();
     }
 
     /**
@@ -218,20 +202,16 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             $table->select('count(id)')->where('name', $data['name'])->and()->where('user', $user);
             $tag = $table->fetchOne();
             if (Jaws_Error::IsError($result)) {
-                return new Jaws_Error($result->getMessage());
+                return $result;
             }
             if ($tag > 0) {
+                $table->rollback();
                 return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $data['name']));
             }
         }
 
         $table = Jaws_ORM::getInstance()->table('tags');
-        $result = $table->update($data)->where('id', $id)->exec();
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage());
-        }
-
-        return $result;
+        return $table->update($data)->where('id', $id)->exec();
     }
 
     /**
@@ -271,80 +251,63 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      */
     function MergeTags($ids, $newName, $global = true)
     {
-        // check duplicated tag
         $user = 0;
         if (!$global) {
             $user = $GLOBALS['app']->Session->GetAttribute('user');
         }
-        $table = Jaws_ORM::getInstance()->table('tags');
-        $table->select('count(id)')->where('name', $newName)->and()->where('user', $user);
-        $tag = $table->and()->where('id', $ids, 'not in')->fetchOne();
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage());
-        }
-        if ($tag > 0) {
-            return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $newName));
+        $objORM = Jaws_ORM::getInstance()->table('tags');
+        $newTag = $objORM->select('id:integer')->where('name', $newName)->and()->where('user', $user)->fetchOne();
+        if (Jaws_Error::IsError($newTag)) {
+            return $newTag;
         }
 
-        $data = array();
-        $data['title'] = $newName;
-        $data['name'] = $this->GetRealFastUrl($newName, null, false);
-
-        $table = Jaws_ORM::getInstance()->table('tags');
         //Start Transaction
-        $table->beginTransaction();
+        $objORM->beginTransaction();
 
-        $firstID = $ids[0];
-        unset($ids[0]);
-
-        //Delete extra tags
-        $result = $table->delete()->where('id', $ids, 'in')->exec();
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage());
-        }
-
-        //Update first tag
-        $this->UpdateTag($firstID, $data, $global);
-
-        //Update tag items
-        $table = Jaws_ORM::getInstance()->table('tags_references');
-        $table->update(array('tag' => $firstID))->where('tag', $ids, 'in')->exec();
-
-        $keepIds = Jaws_ORM::getInstance()->table('tags_references')
-            ->select('tags_references.id:integer')->groupBy('gadget', 'action', 'reference', 'tag', 'user')
-            ->join('tags', 'tags.id', 'tags_references.tag')
-            ->having('count(tags_references.id)', '1', '>')->fetchColumn();
-
-        //Delete duplicated items
-        // We need to find all duplicated items for deleting
-        $table = Jaws_ORM::getInstance()->table('tags_references', 'item1');
-        $table->distinct();
-        $table->select('item1.id:integer');
-        $table->join('tags_references as item2', 'item2.tag', 'item1.tag');
-        $table->join('tags', 'tags.id', 'item1.tag');
-        $table->and()->where('item1.gadget', array('item2.gadget', 'expr'));
-        $table->and()->where('item1.action', array('item2.action', 'expr'));
-        $table->and()->where('item1.reference', array('item2.reference', 'expr'));
-        $table->and()->where('item1.id', array('item2.id', 'expr'), '<>');
-        $table->and()->where('tags.user', $user);
-        $table->and()->where('item1.id', $keepIds, 'not in');
-        $items = $table->fetchColumn();
-        if (Jaws_Error::IsError($items)) {
-            return new Jaws_Error($items->getMessage());
-        }
-
-        // delete duplicated tags items
-        if (count($items) > 0) {
-            $table = Jaws_ORM::getInstance()->table('tags_references');
-            $res = $table->delete()->where('id', $items, 'in')->exec();
-            if (Jaws_Error::IsError($res)) {
-                return new Jaws_Error($res->getMessage());
+        // Adding new tag if not exists
+        if (empty($newTag)) {
+            $newTag = $this->AddTag(
+                array(
+                    'title' => $newName,
+                    'name' => $this->GetRealFastUrl($newName, null, false)
+                ),
+                $global
+            );
+            if (Jaws_Error::IsError($newTag)) {
+                return $newTag;
             }
         }
 
+        // Replacing tag of references with new tag
+        $objInternal = Jaws_ORM::getInstance()->table('tags');
+        $objInternal->select('tags.id')
+            ->where('tags.id', $ids, 'in')
+            ->and()
+            ->where('user', $user)
+            ->and()
+            ->where('tags.id', array('tags_references.tag', 'expr'));
+        $objORM->table('tags_references');
+        $objORM->update(array('tag' => (int)$newTag));
+        $result = $objORM->where($objInternal, '', 'is not null')->exec();
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        // Delete old tags
+        $result = $objORM->table('tags')->delete()
+            ->where('id', $ids, 'in')
+            ->and()
+            ->where('id', $newTag, '<>')
+            ->and()
+            ->where('user', $user)
+            ->exec();
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
         //Commit Transaction
-        $table->commit();
-        return $result;
+        $objORM->commit();
+        return true;
     }
 
     /**
