@@ -59,23 +59,26 @@ class Tags_Actions_Tags extends Tags_Actions_Default
 
         $user = empty($user)? 0 : (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Tags');
-        $res = $model->GenerateTagCloud($gadget, $user);
-        if (Jaws_Error::IsError($res)) {
+        $tags = $model->GenerateTagCloud($gadget, $user);
+        if (Jaws_Error::IsError($tags) || empty($tags)) {
             return false;
         }
 
-        $sortedTags = $res;
-        sort($sortedTags);
-        $minTagCount = log((isset($sortedTags[0]) ? $sortedTags[0]['howmany'] : 0));
-        $maxTagCount = log(((count($res) != 0)? $sortedTags[count($res) - 1]['howmany'] : 0));
-        unset($sortedTags);
+        // find minimum/maximum frequencies
+        $frequencies = array_column($tags, 'howmany');
+        sort($frequencies);
+        $minTagCount = log($frequencies[0]);
+        $maxTagCount = log(end($frequencies));
+        unset($frequencies);
+
+        // calculate font-size step
         if ($minTagCount == $maxTagCount) {
             $tagCountRange = 1;
         } else {
             $tagCountRange = $maxTagCount - $minTagCount;
         }
-        $minFontSize = 1;
-        $maxFontSize = 10;
+        $minFontSize = 0;
+        $maxFontSize = 9;
         $fontSizeRange = $maxFontSize - $minFontSize;
 
         $tpl = $this->gadget->template->load('TagCloud.html');
@@ -93,7 +96,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             $tpl->SetVariable('menubar', $this->MenuBar('ManageTags', array('ManageTags')));
         }
 
-        foreach ($res as $tag) {
+        foreach ($tags as $tag) {
             $count  = $tag['howmany'];
             $fsize = $minFontSize + $fontSizeRange * (log($count) - $minTagCount)/$tagCountRange;
             $tpl->SetBlock('tagcloud/tag');

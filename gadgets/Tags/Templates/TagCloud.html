@@ -1,13 +1,15 @@
 <!-- BEGIN tagcloud -->
-<div class="gadget tag">
-    <div class="gadget_header"><h2>{title}</h2><div class="gadget_menubar">{menubar}</div></div>
-
-    <div class="tags-cloud">
-        <ul>
-            <!-- BEGIN tag -->
-            <li><span class="tag-cloud-{size}"><a href="{url}" title="{frequency}">{tagname}</a></span></li>
-            <!-- END tag -->
-        </ul>
-    </div>
+<div class="gadget tags tags-cloud">
+  <div class="gadget_header">
+    <h2>{title}</h2>
+    <div class="gadget_menubar">{menubar}</div>
+  </div>
+  <div class="content">
+    <ul>
+    <!-- BEGIN tag -->
+      <li><a class="tag-link-{size}" href="{url}" title="{frequency}">{tagname}</a>,</li>
+    <!-- END tag -->
+    </ul>
+  </div>
 </div>
 <!-- END tagcloud -->
