@@ -52,7 +52,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         }
 
         $to_be_removed_tags = array_diff($oldTags, $tags);
-        $res = $this->DeleteReferenceTags($gadget, $action, $reference, $to_be_removed_tags);
+        $res = $this->DeleteReferenceTags($gadget, $action, $reference, $to_be_removed_tags, $user);
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
@@ -124,9 +124,10 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      * @param   string          $action     action name
      * @param   int|array       $references references
      * @param   string|array    $tags       array|string of tags names
+     * @param   int             $user           User owner of tag(0: for global tags)
      * @return  mixed           Array of Tag info or Jaws_Error on failure
      */
-    function DeleteReferenceTags($gadget, $action ,$references, $tags = null)
+    function DeleteReferenceTags($gadget, $action ,$references, $tags = null, $user = 0)
     {
         if (!is_null($tags)) {
             if (!is_array($tags)) {
@@ -148,8 +149,15 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             ->and()
             ->where('reference', $references, 'in');
         if (!is_null($tags)) {
-            $table->join('tags', 'tags.id', 'tags_references.tag');
-            $table->and()->where('tags.name', $tags, 'in');
+            // internal query
+            $objInternal = Jaws_ORM::getInstance()->table('tags');
+            $objInternal->select('tags.id')
+                ->where('user', (int)$user)
+                ->and()
+                ->where('tags.name', $tags, 'in')
+                ->and()
+                ->where('tags.id', array('tags_references.tag', 'expr'));
+            $table->and()->where($objInternal, '', 'is not null');
         }
 
         return $table->exec();
