@@ -54,7 +54,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         }
 
         if(empty($gadget)) {
-            $gadget = jaws()->request->fetch('gname', 'get');
+            $gadget = jaws()->request->fetch('gadget', 'get');
         }
 
         $user = empty($user)? 0 : (int)$GLOBALS['app']->Session->GetAttribute('user');
@@ -106,7 +106,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             if (empty($gadget)) {
                 $param = array('tag' => $tag['name']);
             } else {
-                $param = array('tag' => $tag['name'], 'gname' => $gadget);
+                $param = array('tag' => $tag['name'], 'gadget' => $gadget);
             }
             if($user) {
                 $param['user'] = $user;
@@ -142,7 +142,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         foreach($tags as $tag) {
             $tpl->SetBlock("$tpl_base_block/tags/tag");
             $tpl->SetVariable('name', $tag);
-            $tpl->SetVariable('url', $this->gadget->urlMap('ViewTag', array('tag'=>$tag, 'gname'=>$gadget)));
+            $tpl->SetVariable('url', $this->gadget->urlMap('ViewTag', array('tag'=>$tag, 'gadget'=>$gadget)));
             $tpl->ParseBlock("$tpl_base_block/tags/tag");
         }
         $tpl->ParseBlock("$tpl_base_block/tags");
@@ -158,9 +158,9 @@ class Tags_Actions_Tags extends Tags_Actions_Default
      */
     function ViewTag()
     {
-        $get = jaws()->request->fetch(array('tag', 'gname', 'page', 'user'), 'get');
+        $get = jaws()->request->fetch(array('tag', 'gadget', 'page', 'user'), 'get');
         $tag = $get['tag'];
-        $gadget = $get['gname'];
+        $gadget = $get['gadget'];
         if (!empty($get['user']) && ($get['user'] != $GLOBALS['app']->Session->GetAttribute('user'))) {
             return Jaws_HTTPError::Get(403);
         }
@@ -193,6 +193,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             return false;
         }
 
+        $references = array();
         if ($referencesCount > 0) {
             // Fetch tag references
             $table = Jaws_ORM::getInstance()->table('tags');

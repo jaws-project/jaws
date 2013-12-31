@@ -8,7 +8,19 @@
  * @copyright  2013 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-$maps[] = array('ViewTag', 'tag/{tag}[/user/{user}][/gname/{gname}][/page/{page}]');
-$maps[] = array('TagCloud', 'tagcloud/[/gname/{gname}]');
-$maps[] = array('ManageTags', 'tags/manage[/page/{page}][/gadgets_filter/{gadgets_filter}][/term/{term}][/pageitem/{page_item}]');
-$maps[] = array('EditTagUI', 'tags/edit/tag/{tag}');
+$maps[] = array(
+    'ViewTag',
+    'tags/tags[/users/{user}]/{tag}[/gadgets/{gadget}][/pages/{page}]'
+);
+$maps[] = array(
+    'TagCloud',
+    'tags/cloud[/users/{user}][/gadgets/{gadget}]'
+);
+$maps[] = array(
+    'ManageTags',
+    'tags/manage[/page/{page}][/gadgets_filter/{gadgets_filter}][/term/{term}][/pageitem/{page_item}]'
+);
+$maps[] = array(
+    'EditTagUI',
+    'tags/tags/{tag}/edit'
+);
