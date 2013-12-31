@@ -932,6 +932,8 @@ class Jaws_ORM
             self::$auto_rollback_on_error = $auto_rollback;
             $this->jawsdb->dbc->beginTransaction();
         }
+
+        return $this;
     }
 
     /**
@@ -946,6 +948,8 @@ class Jaws_ORM
             self::$in_transaction = false;
             $this->jawsdb->dbc->rollback();
         }
+
+        return $this;
     }
 
     /**
@@ -961,6 +965,8 @@ class Jaws_ORM
             self::$auto_rollback_on_error = true;
             $this->jawsdb->dbc->commit();
         }
+
+        return $this;
     }
 
     /**
