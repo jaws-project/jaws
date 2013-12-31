@@ -175,7 +175,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
     {
         $data['user'] = (int)$user;
         $data['name'] = $this->GetRealFastUrl($data['name'], null, false);
-        return Jaws_ORM::getInstance()->table('tags')->insert($data)->exec();
+        return Jaws_ORM::getInstance()->table('tags')->insert($data)->exec(JAWS_ERROR_NOTICE);
     }
 
     /**
@@ -249,21 +249,13 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      */
     function MergeTags($ids, $newName, $user = 0)
     {
-        $objORM = Jaws_ORM::getInstance()->table('tags');
-        $newTag = $objORM->select('id:integer')->where('name', $newName)->and()->where('user', $user)->fetchOne();
+        //Start Transaction
+        $objORM = Jaws_ORM::getInstance()->beginTransaction();
+
+        // Adding new tag
+        $newTag = $this->AddTag(array('name' => $newName, 'title' => $newName), $user);
         if (Jaws_Error::IsError($newTag)) {
             return $newTag;
-        }
-
-        //Start Transaction
-        $objORM->beginTransaction();
-
-        // Adding new tag if not exists
-        if (empty($newTag)) {
-            $newTag = $this->AddTag(array('name' => $newName, 'title' => $newName), $user);
-            if (Jaws_Error::IsError($newTag)) {
-                return $newTag;
-            }
         }
 
         // Replacing tag of references with new tag
