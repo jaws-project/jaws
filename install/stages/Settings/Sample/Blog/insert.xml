@@ -88,5 +88,21 @@
         </initialization>
     </table>
 
+    <table>
+        <name><variable>table_prefix</variable>blog_entrycat</name>
+        <initialization>
+            <insert>
+                <field>
+                    <name>entry_id</name>
+                    <value>1</value>
+                </field>
+
+                <field>
+                    <name>category_id</name>
+                    <value>1</value>
+                </field>
+            </insert>
+        </initialization>
+    </table>
 
 </database>
