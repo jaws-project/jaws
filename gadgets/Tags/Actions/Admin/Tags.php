@@ -76,6 +76,19 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
         //TagUI
         $tpl->SetVariable('tag_ui', $this->TagUI());
 
+        // Actions
+        $actions =& Piwi::CreateWidget('Combo', 'tags_actions_combo');
+        $actions->SetID('tags_actions_combo');
+        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
+        $actions->AddOption('&nbsp;', '');
+        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
+        $actions->AddOption(_t('TAGS_MERGE'), 'merge');
+        $tpl->SetVariable('actions_combo', $actions->Get());
+
+        $btnExecute =& Piwi::CreateWidget('Button', 'executeTagAction', '', STOCK_YES);
+        $btnExecute->AddEvent(ON_CLICK, "javascript:tagsDGAction($('tags_actions_combo'));");
+        $tpl->SetVariable('btn_execute', $btnExecute->Get());
+
         if ($this->gadget->GetPermission('ManageTags')) {
             $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
             $btnCancel->AddEvent(ON_CLICK, 'stopTagAction();');
@@ -195,51 +208,15 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
      */
     function GetDataGrid()
     {
-        $tModel = $this->gadget->model->load();
-        $total = $tModel->TotalOfData('tags');
-
-        $gridBox =& Piwi::CreateWidget('VBox');
-        $gridBox->SetID('tags_box');
-        $gridBox->SetStyle('width: 100%;');
-
-        //Datagrid
         $grid =& Piwi::CreateWidget('DataGrid', array());
         $grid->SetID('tags_datagrid');
         $grid->SetStyle('width: 100%;');
-        $grid->TotalRows($total);
         $grid->useMultipleSelection();
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('TAGS_TAG_NAME')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('TAGS_TAG_TITLE')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('TAGS_TAG_USAGE_COUNT')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS')));
-
-        //Tools
-        $gridForm =& Piwi::CreateWidget('Form');
-        $gridForm->SetID('tags_form');
-        $gridForm->SetStyle('float: right');
-
-        $gridFormBox =& Piwi::CreateWidget('HBox');
-
-        $actions =& Piwi::CreateWidget('Combo', 'tags_actions');
-        $actions->SetID('tags_actions_combo');
-        $actions->SetTitle(_t('GLOBAL_ACTIONS'));
-        $actions->AddOption('&nbsp;', '');
-        $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
-        $actions->AddOption(_t('TAGS_MERGE'), 'merge');
-
-        $execute =& Piwi::CreateWidget('Button', 'executeTagAction', '',
-            STOCK_YES);
-        $execute->AddEvent(ON_CLICK, "javascript: tagsDGAction(document.getElementById('tags_actions_combo'));");
-
-        $gridFormBox->Add($actions);
-        $gridFormBox->Add($execute);
-        $gridForm->Add($gridFormBox);
-
-        //Pack everything
-        $gridBox->Add($grid);
-        $gridBox->Add($gridForm);
-
-        return $gridBox->Get();
+        return $grid->Get();
     }
 
 }
