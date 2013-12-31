@@ -92,7 +92,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
                 ->fetchOne();
             if (!Jaws_Error::IsError($tagId)) {
                 if (empty($tagId)) {
-                    $tagId = $this->AddTag(array('name' => $tag), $user == 0);
+                    $tagId = $this->AddTag(array('name' => $tag, 'title' => $tag), $user);
                     if (Jaws_Error::IsError($tagId)) {
                         continue;
                     }
@@ -160,22 +160,14 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   array   $data   Tag data
-     * @param   bool    $global Is global tag?
+     * @param   int     $user   User owner of tag(0: for global tags)
      * @return  mixed   Array of Tag info or Jaws_Error on failure
      */
-    function AddTag($data, $global = true)
+    function AddTag($data, $user = 0)
     {
-        $data['user'] = 0;
-        if(!$global) {
-            $data['user'] = $GLOBALS['app']->Session->GetAttribute('user');
-        }
-        if (empty($data['title'])) {
-            $data['title'] = $data['name'];
-        }
+        $data['user'] = (int)$user;
         $data['name'] = $this->GetRealFastUrl($data['name'], null, false);
-
-        $table = Jaws_ORM::getInstance()->table('tags');
-        return $table->insert($data)->exec();
+        return Jaws_ORM::getInstance()->table('tags')->insert($data)->exec();
     }
 
     /**
@@ -184,32 +176,13 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      * @access  public
      * @param   int     $id     Tag id
      * @param   array   $data   Tag data
-     * @param   bool    $global Is global tag?
+     * @param   int     $user   User owner of tag(0: for global tags)
      * @return  mixed   Array of Tag info or Jaws_Error on failure
      */
-    function UpdateTag($id, $data, $global = true)
+    function UpdateTag($id, $data, $user = 0)
     {
+        $data['user'] = (int)$user;
         $data['name'] = $this->GetRealFastUrl($data['name'], null, false);
-
-        // check duplicated tag
-        $oldTag = $this->GetTag($id);
-        if ($oldTag['name'] != $data['name']) {
-            $user = 0;
-            if(!$global) {
-                $user = $GLOBALS['app']->Session->GetAttribute('user');
-            }
-            $table = Jaws_ORM::getInstance()->table('tags');
-            $table->select('count(id)')->where('name', $data['name'])->and()->where('user', $user);
-            $tag = $table->fetchOne();
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-            if ($tag > 0) {
-                $table->rollback();
-                return new Jaws_Error(_t('TAGS_ERROR_TAG_ALREADY_EXIST', $data['name']));
-            }
-        }
-
         $table = Jaws_ORM::getInstance()->table('tags');
         return $table->update($data)->where('id', $id)->exec();
     }
@@ -219,25 +192,42 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   array   $ids    Tags id
+     * @param   int     $user   User owner of tag(0: for global tags)
      * @return  mixed   True/False or Jaws_Error on failure
      */
-    function DeleteTags($ids)
+    function DeleteTags($ids, $user = 0)
     {
-        $table = Jaws_ORM::getInstance()->table('tags_references');
-        //Start Transaction
-        $table->beginTransaction();
+        // start Transaction
+        $objORM = Jaws_ORM::getInstance()->beginTransaction();
 
-        $table->delete()->where('tag', $ids, 'in')->exec();
+        // internal query
+        $objInternal = Jaws_ORM::getInstance()->table('tags');
+        $objInternal->select('tags.id')
+            ->where('tags.id', $ids, 'in')
+            ->and()
+            ->where('user', (int)$user)
+            ->and()
+            ->where('tags.id', array('tags_references.tag', 'expr'));
 
-        $table = Jaws_ORM::getInstance()->table('tags');
-        $result = $table->delete()->where('id', $ids, 'in')->exec();
+        // delete references
+        $result = $objORM->table('tags_references')->delete()->where($objInternal, '', 'is not null')->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
-        //Commit Transaction
-        $table->commit();
-        return $result;
+        // delete tags
+        $result = $objORM->table('tags')->delete()
+            ->where('id', $ids, 'in')
+            ->and()
+            ->where('user', $user)
+            ->exec();
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        // commit Transaction
+        $objORM->commit();
+        return true;
     }
 
     /**
@@ -266,13 +256,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
 
         // Adding new tag if not exists
         if (empty($newTag)) {
-            $newTag = $this->AddTag(
-                array(
-                    'title' => $newName,
-                    'name' => $this->GetRealFastUrl($newName, null, false)
-                ),
-                $global
-            );
+            $newTag = $this->AddTag(array('name' => $newName, 'title' => $newName), $user);
             if (Jaws_Error::IsError($newTag)) {
                 return $newTag;
             }

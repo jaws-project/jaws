@@ -195,12 +195,13 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         $post = jaws()->request->fetch(array('tid', 'name', 'title', 'description'), 'post');
         $id = $post['tid'];
         unset($post['tid']);
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->loadAdmin('Tags');
         $tag = $model->GetTag($id);
-        if ($tag['user'] != $GLOBALS['app']->Session->GetAttribute('user')) {
+        if ($tag['user'] != $user) {
             return Jaws_HTTPError::Get(403);
         }
-        $res = $model->UpdateTag($id, $post, false);
+        $res = $model->UpdateTag($id, $post, $user);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('TAGS_ERROR_CANT_UPDATE_TAG'),
@@ -231,8 +232,9 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         }
 
         $ids = jaws()->request->fetch('tags_checkbox:array', 'post');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->loadAdmin('Tags');
-        $res = $model->DeleteTags($ids);
+        $res = $model->DeleteTags($ids, $user);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushResponse(
                 _t('TAGS_ERROR_CANT_DELETE_TAG'),
