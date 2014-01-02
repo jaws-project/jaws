@@ -136,6 +136,9 @@ class Tags_Actions_Tags extends Tags_Actions_Default
     {
         $model = $this->gadget->model->loadAdmin('Tags');
         $tags = $model->GetReferenceTags($gadget, $action, $reference);
+        if (Jaws_Error::IsError($tags) || empty($tags)) {
+            return false;
+        }
 
         $tpl->SetBlock("$tpl_base_block/tags");
         $tpl->SetVariable('lbl_tags', _t('GLOBAL_TAGS'));
