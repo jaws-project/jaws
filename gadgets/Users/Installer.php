@@ -101,45 +101,6 @@ class Users_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '1.0.0', '<')) {
-            $variables = array();
-            $variables['logon_hours'] = str_pad('', 42, 'F');
-            $result = $this->installSchema('schema.xml', $variables, '0.8.9.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
-            $sql = "UPDATE [[users]] SET [registered_date] = {now}";
-            $result = $GLOBALS['db']->query($sql, array('now'=> time()));
-            if (Jaws_Error::IsError($result)) {
-                //return $result;
-            }
-
-            // Update layout actions
-            $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
-            if (!Jaws_Error::isError($layoutModel)) {
-                $layoutModel->EditGadgetLayoutAction('Users', 'LoginBox', 'LoginBox', 'Login');
-                $layoutModel->EditGadgetLayoutAction('Users', 'LoginLinks', 'LoginLinks', 'Login');
-            }
-
-            // Registry key
-            $this->gadget->registry->insert('latest_limit', '10');
-
-            // ACL keys
-            $this->gadget->acl->insert('ManageOnlineUsers');
-            $this->gadget->acl->insert('EditUserName');
-            $this->gadget->acl->insert('EditUserNickname');
-            $this->gadget->acl->insert('EditUserEmail');
-            $this->gadget->acl->insert('EditUserPassword');
-            $this->gadget->acl->insert('EditUserPersonal');
-            $this->gadget->acl->insert('EditUserPreferences');
-            $this->gadget->acl->insert('EditUserContacts');
-            $this->gadget->acl->delete('EditAccountPassword');
-            $this->gadget->acl->delete('EditAccountInformation');
-            $this->gadget->acl->delete('EditAccountProfile');
-            $this->gadget->acl->delete('EditAccountPreferences');
-        }
-
         if (version_compare($old, '2.0.0', '<')) {
             $variables = array();
             $variables['logon_hours'] = str_pad('', 42, 'F');
@@ -147,6 +108,11 @@ class Users_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+
+            $usersTable = Jaws_ORM::getInstance()->table('users');
+            $usersTable->update(
+                array('password' => $usersTable->concat(array('{SSHA1}', 'text'), 'password'))
+            )->exec();
 
             // ACL keys
             $this->gadget->acl->insert('ManageFriends');
