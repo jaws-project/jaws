@@ -7,7 +7,7 @@
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2006-2013 Jaws Development Group
+ * @copyright  2006-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Sitemap_Actions_Admin_ManageSitemap extends Jaws_Gadget_Action

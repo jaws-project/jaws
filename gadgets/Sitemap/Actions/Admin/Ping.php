@@ -5,7 +5,7 @@
  * @category   GadgetAdmin
  * @package    Sitemap
  * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2013 Jaws Development Group
+ * @copyright  2013-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Sitemap_Actions_Admin_Ping extends Jaws_Gadget_Action
