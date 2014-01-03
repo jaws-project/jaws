@@ -34,18 +34,17 @@ require_once JAWS_PATH . 'include/Jaws/Utils.php';
 // Get our error bling bling going.
 require JAWS_PATH . 'include/Jaws/Error.php';
 
-if (!defined('JAWS_BASE_DATA')) {
-    define('JAWS_BASE_DATA',
-           defined('JAWS_DATA')? JAWS_DATA : (JAWS_PATH . 'data'. DIRECTORY_SEPARATOR));
-}
 if (!defined('JAWS_DATA')) {
-    define('JAWS_DATA', JAWS_BASE_DATA);
+    define('JAWS_DATA', JAWS_PATH . 'data'. DIRECTORY_SEPARATOR);
 }
-if (!defined('JAWS_BASE_THEMES')) {
-    define('JAWS_BASE_THEMES', JAWS_BASE_DATA. 'themes'. DIRECTORY_SEPARATOR);
+if (!defined('JAWS_BASE_DATA')) {
+    define('JAWS_BASE_DATA', JAWS_DATA);
 }
 if (!defined('JAWS_THEMES')) {
-    define('JAWS_THEMES', JAWS_BASE_THEMES);
+    define('JAWS_THEMES', JAWS_DATA. 'themes'. DIRECTORY_SEPARATOR);
+}
+if (!defined('JAWS_BASE_THEMES')) {
+    define('JAWS_BASE_THEMES', JAWS_THEMES);
 }
 if (!defined('JAWS_CACHE')) {
     define('JAWS_CACHE', JAWS_DATA. 'cache'. DIRECTORY_SEPARATOR);
