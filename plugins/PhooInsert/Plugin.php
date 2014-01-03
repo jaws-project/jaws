@@ -7,7 +7,7 @@
  * @package    PhooInsert
  * @author     Jose Francisco Garcia Martinez <jfgarcia.net>
  * @author     Mohsen Khahani <mkhahani@gmail.com>
- * @copyright  2004-2013 Jaws Development Group
+ * @copyright  2004-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class PhooInsert_Plugin extends Jaws_Plugin
