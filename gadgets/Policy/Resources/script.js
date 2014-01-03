@@ -5,7 +5,7 @@
  * @package    Policy
  * @author     Amir Mohammad Saied <amir@gluegadget.com>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2007-2013 Jaws Development Group
+ * @copyright  2007-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 /**
