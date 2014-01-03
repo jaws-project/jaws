@@ -7,7 +7,7 @@ define('MIN_PHP_VERSION', '5.3.20');
  * @package    UpgradeStage
  * @author     Ali Fazelzadeh <afz@php.net>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2007-2013 Jaws Development Group
+ * @copyright  2007-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Upgrader_Requirements extends JawsUpgraderStage
