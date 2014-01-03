@@ -1,5 +1,4 @@
 <?php
-define('PASSWORD_SALT_LENGTH', 24);
 define('AVATAR_PATH', JAWS_DATA. 'avatar'. DIRECTORY_SEPARATOR);
 
 /**
@@ -25,13 +24,23 @@ class Jaws_User
      */
     static function GetHashedPassword($password, $salt = null)
     {
+        $result = '';
         if (is_null($salt)) {
-            $salt = substr(md5(uniqid(rand(), true)), 0, PASSWORD_SALT_LENGTH);
+            $salt = substr(md5(uniqid(mt_rand(), true)), 0, mt_rand(8, 20));
+            $result = '{SSHA512}'. base64_encode(hash('sha512', $password. $salt, true). $salt);
         } else {
-            $salt = substr($salt, 0, PASSWORD_SALT_LENGTH);
+            if (substr($salt, 0, 9) === '{SSHA512}') {
+                $salt = substr(base64_decode(substr($salt, 9)), 64);
+                $result = '{SSHA512}'. base64_encode(hash('sha512', $password. $salt, true). $salt);
+            } elseif (substr($salt, 0, 7) === '{SSHA1}') {
+                $salt = substr($salt, 7, 24);
+                $result = '{SSHA1}'. $salt . sha1($salt . $password);
+            } else {
+                $result = '{MD5}'. md5($password);
+            }
         }
 
-        return $salt . sha1($salt . $password);
+        return $result;
     }
 
     /**
