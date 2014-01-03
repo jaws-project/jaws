@@ -5,7 +5,7 @@
  * @category    Gadget
  * @package     Comments
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2013 Jaws Development Group
+ * @copyright   2013-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Comments_Actions_Default extends Jaws_Gadget_Action

@@ -5,7 +5,7 @@
  * @category    GadgetHook
  * @package     Comments
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2013 Jaws Development Group
+ * @copyright   2013-2014 Jaws Development Group
  */
 class Comments_Hooks_Activity extends Jaws_Gadget_Hook
 {

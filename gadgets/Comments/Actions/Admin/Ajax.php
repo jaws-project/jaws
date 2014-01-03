@@ -6,7 +6,7 @@
  * @package     Comments
  * @author      Ali Fazelzadeh <afz@php.net>
  * @author      HamidReza Aboutalebi <hamid@aboutalebi.com>
- * @copyright   2012-2013 Jaws Development Group
+ * @copyright   2012-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
