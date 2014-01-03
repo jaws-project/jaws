@@ -6,7 +6,7 @@
  * @package     Components
  * @author      Ali Fazelzadeh <afz@php.net>
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013 Jaws Development Group
+ * @copyright   2013-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Components_Actions_Admin_Registry extends Jaws_Gadget_Action

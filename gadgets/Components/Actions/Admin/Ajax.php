@@ -5,7 +5,7 @@
  * @category   Ajax
  * @package    Components
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2005-2013 Jaws Development Group
+ * @copyright  2005-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
