@@ -5,7 +5,7 @@
  * @category    GadgetHook
  * @package     Tags
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2013 Jaws Development Group
+ * @copyright   2013-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Tags_Hooks_Menu extends Jaws_Gadget_Hook
