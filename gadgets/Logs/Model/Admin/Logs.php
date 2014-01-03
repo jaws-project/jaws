@@ -6,7 +6,7 @@
  * @package     Logs
  * @author      Hamid Reza Aboutalebi <hamid@aboutalebi.com>
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2013 Jaws Development Group
+ * @copyright   2013-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
