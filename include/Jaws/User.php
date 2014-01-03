@@ -33,9 +33,11 @@ class Jaws_User
                 $salt = substr(base64_decode(substr($salt, 9)), 64);
                 $result = '{SSHA512}'. base64_encode(hash('sha512', $password. $salt, true). $salt);
             } elseif (substr($salt, 0, 7) === '{SSHA1}') {
+                // old salted sha1 password
                 $salt = substr($salt, 7, 24);
                 $result = '{SSHA1}'. $salt . sha1($salt . $password);
             } else {
+                // very old md5ed password
                 $result = '{MD5}'. md5($password);
             }
         }
