@@ -15,6 +15,12 @@
         </field>
 
         <field>
+            <name>domain</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
             <name>username</name>
             <type>text</type>
             <length>32</length>
@@ -24,7 +30,7 @@
         <field>
             <name>password</name>
             <type>text</type>
-            <length>64</length>
+            <length>128</length>
             <notnull>true</notnull>
         </field>
 
@@ -98,6 +104,11 @@
         <field>
             <name>dob</name>
             <type>timestamp</type>
+        </field>
+
+        <field>
+            <name>pgpkey</name>
+            <type>text</type>
         </field>
 
         <field>
@@ -243,6 +254,39 @@
         </field>
 
         <field>
+            <name>internal_domain</name>
+            <type>integer</type>
+        </field>
+
+        <field>
+            <name>internal_email</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>internal_maildir</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>internal_mailquota</name>
+            <type>integer</type>
+        </field>
+
+        <field>
+            <name>internal_ftpdir</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>internal_ftpquota</name>
+            <type>integer</type>
+        </field>
+
+        <field>
             <name>status</name>
             <type>integer</type>
             <length>1</length>
@@ -257,8 +301,11 @@
         </field>
 
         <index>
-            <name><variable>table_prefix</variable>users_username</name>
+            <name><variable>table_prefix</variable>users_domain_username</name>
             <unique>true</unique>
+            <field>
+                <name>domain</name>
+            </field>
             <field>
                 <name>username</name>
             </field>
@@ -268,6 +315,20 @@
             <name><variable>table_prefix</variable>users_email</name>
             <field>
                 <name>email</name>
+            </field>
+        </index>
+
+        <index>
+            <name><variable>table_prefix</variable>users_internal_domain</name>
+            <field>
+                <name>internal_domain</name>
+            </field>
+        </index>
+
+        <index>
+            <name><variable>table_prefix</variable>users_internal_email</name>
+            <field>
+                <name>internal_email</name>
             </field>
         </index>
 
