@@ -5,7 +5,7 @@
  * @category   PackageConfig
  * @package    ControlPanel
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2007-2013 Jaws Development Group
+ * @copyright  2007-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 $info = array(           
