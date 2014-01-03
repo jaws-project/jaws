@@ -5,7 +5,7 @@
  * @category   GadgetAdmin
  * @package    Phoo
  * @author     Hamid Reza Aboutalebi <hamid@aboutalebi.com>
- * @copyright  2013 Jaws Development Group
+ * @copyright  2013-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Phoo_Actions_Admin_Groups extends Phoo_Actions_Admin_Default

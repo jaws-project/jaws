@@ -5,7 +5,7 @@
  * @category   GadgetHook
  * @package    Phoo
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2007-2013 Jaws Development Group
+ * @copyright  2007-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Phoo_Hooks_Search extends Jaws_Gadget_Hook

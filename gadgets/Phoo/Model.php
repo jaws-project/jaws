@@ -7,7 +7,7 @@
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Raul Murciano <raul@murciano.net>
- * @copyright  2004-2013 Jaws Development Group
+ * @copyright  2004-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Phoo_Model extends Jaws_Gadget_Model
