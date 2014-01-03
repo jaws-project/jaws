@@ -1,10 +1,10 @@
-#sysinfo{
-width: 100%;
-}#sysinfo td{
-vertical-align:top;
+#sysinfo_sidebar {
+float:right;
+width:220px;
 }
 #sysinfo fieldset{
-width:728px;
+float:left;
+width:726px;
 margin-top:-11px;
 }
 #gadget_sidebar-sysinfo{
@@ -13,7 +13,8 @@ padding-left:6px;
 }
 #info_section table{
 width:100%;
-text-align:right;
+direction:ltr;
+text-align:left;
 font-size:smaller;
 border-spacing:2px;
 }
