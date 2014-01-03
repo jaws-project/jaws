@@ -5,7 +5,7 @@
  * @category    Gadget
  * @package     Users
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2013 Jaws Development Group
+ * @copyright   2013-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Users_Actions_Contacts extends Jaws_Gadget_Action

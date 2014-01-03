@@ -5,7 +5,7 @@
  * @category   GadgetAdmin
  * @package    Users
  * @author     Mohsen Khahani <mkhahani@gmail.com>
- * @copyright  2013 Jaws Development Group
+ * @copyright  2013-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Users_Actions_Admin_ACL extends Users_Actions_Admin_Default
