@@ -5,7 +5,7 @@
  * @category   GadgetHook
  * @package    LinkDump
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2008-2013 Jaws Development Group
+ * @copyright  2008-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class LinkDump_Hooks_Search extends Jaws_Gadget_Hook

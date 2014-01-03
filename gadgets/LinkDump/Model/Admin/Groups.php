@@ -6,7 +6,7 @@
  * @package    LinkDump
  * @author     Amir Mohammad Saied <amirsaied@gmail.com>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2013 Jaws Development Group
+ * @copyright  2005-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class LinkDump_Model_Admin_Groups extends Jaws_Gadget_Model
