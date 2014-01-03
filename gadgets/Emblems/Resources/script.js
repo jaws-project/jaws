@@ -5,7 +5,7 @@
  * @package    Emblems
  * @author     Amir Mohammad Saied <amirsaied@gmail.com>
  * @author     Mohsen Khahani <mkhahani@gmail.com>
- * @copyright  2005-2013 Jaws Development Group
+ * @copyright  2005-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 /**
