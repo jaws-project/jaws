@@ -109,10 +109,16 @@ class Users_Installer extends Jaws_Gadget_Installer
                 return $result;
             }
 
+            // update users passwords
             $usersTable = Jaws_ORM::getInstance()->table('users');
             $usersTable->update(
                 array('password' => $usersTable->concat(array('{SSHA1}', 'text'), 'password'))
-            )->exec();
+            )->where($usersTable->length('password'), 32, '>')
+            ->exec();
+            $usersTable->update(
+                array('password' => $usersTable->concat(array('{MD5}', 'text'), 'password'))
+            )->where($usersTable->length('password'), 32)
+            ->exec();
 
             // ACL keys
             $this->gadget->acl->insert('ManageFriends');
