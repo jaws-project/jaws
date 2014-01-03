@@ -68,12 +68,14 @@ vertical-align:middle;
 }
 #components span{
 display:inline-block;
-width:200px;
+width:180px;
 padding-right:5px;
 cursor:default;
 }
 #components a{
+float:left;
 display:none;
+margin:6px 2px 0;
 }
 #filter{
 width:100%;
