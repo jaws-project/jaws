@@ -7,7 +7,7 @@
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Jon Wood <jon@jellybob.co.uk>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2004-2013 Jaws Development Group
+ * @copyright  2004-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Shoutbox_Info extends Jaws_Gadget
