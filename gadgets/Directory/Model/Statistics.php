@@ -5,7 +5,7 @@
  * @category    GadgetModel
  * @package     Directory
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013 Jaws Development Group
+ * @copyright   2013-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Directory_Model_Statistics extends Jaws_Gadget_Model
