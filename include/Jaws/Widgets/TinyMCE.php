@@ -8,7 +8,7 @@ require_once JAWS_PATH . 'libraries/piwi/Widget/Container/Container.php';
  * @package    Core
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2013 Jaws Development Group
+ * @copyright  2005-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Widgets_TinyMCE extends Container

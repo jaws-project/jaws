@@ -5,7 +5,7 @@
  * @category    Captcha
  * @package     Core
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2012-2013 Jaws Development Group
+ * @copyright   2012-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Captcha_TextMath extends Jaws_Captcha

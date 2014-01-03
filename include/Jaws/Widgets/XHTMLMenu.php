@@ -5,7 +5,7 @@
  * @category   Widget
  * @package    Core
  * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
- * @copyright  2007-2013 Jaws Development Group
+ * @copyright  2007-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Widgets_XHTMLMenu
