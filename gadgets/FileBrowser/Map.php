@@ -6,7 +6,7 @@
  * @package    FileBrowser
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2006-2013 Jaws Development Group
+ * @copyright  2006-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 $maps[] = array('Display', 'files');
