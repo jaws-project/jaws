@@ -6,7 +6,7 @@
  * @package    Core
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2006-2013 Jaws Development Group
+ * @copyright  2006-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Layout_Model_Layout extends Jaws_Gadget_Model
