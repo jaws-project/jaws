@@ -5,7 +5,7 @@
  * @category   GadgetHook
  * @package    Blog
  * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2013 Jaws Development Group
+ * @copyright  2013-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Blog_Hooks_Activity extends Jaws_Gadget_Hook
