@@ -141,10 +141,15 @@ class Jaws_ACL
         } else {
             $tblACL = Jaws_ORM::getInstance()->table('acl');
             $uvalue = $tblACL->select('key_value:integer')
-                ->where('component', $component)->and()
-                ->where('key_name', $key_name)->and()
-                ->where('key_subkey', (string)$subkey)->and()
+                ->where('component', $component)
+                ->and()
+                ->where('key_name', $key_name)
+                ->and()
+                ->where('key_subkey', (string)$subkey)
+                ->and()
                 ->where('user', (int)$user)
+                ->and()
+                ->where('group', 0)
                 ->fetchOne();
             if (!Jaws_Error::IsError($uvalue)) {
                 return $uvalue;
@@ -175,7 +180,7 @@ class Jaws_ACL
             // load from database
             $tblACL = Jaws_ORM::getInstance()->table('acl');
             $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer');
-            $tblACL->where('user', (int)$user);
+            $tblACL->where('user', (int)$user)->and()->where('group', 0);
             if (!empty($component)) {
                 $tblACL->and()->where('component', $component);
             }
@@ -214,9 +219,14 @@ class Jaws_ACL
         } else {
             $tblACL = Jaws_ORM::getInstance()->table('acl');
             $gvalue = $tblACL->select('key_value:integer')
-                ->where('component', $component)->and()
-                ->where('key_name', $key_name)->and()
-                ->where('key_subkey', (string)$subkey)->and()
+                ->where('component', $component)
+                ->and()
+                ->where('key_name', $key_name)
+                ->and()
+                ->where('key_subkey', (string)$subkey)
+                ->and()
+                ->where('user', 0)
+                ->and()
                 ->where('group', (int)$group)
                 ->fetchColumn();
             if (!Jaws_Error::IsError($gvalue)) {
@@ -248,7 +258,7 @@ class Jaws_ACL
             // load from database
             $tblACL = Jaws_ORM::getInstance()->table('acl');
             $tblACL->select('component', 'key_name', 'key_subkey', 'key_value:integer');
-            $tblACL->where('group', (int)$group);
+            $tblACL->where('user', 0)->and()->where('group', (int)$group);
             if (!empty($component)) {
                 $tblACL->and()->where('component', $component);
             }
