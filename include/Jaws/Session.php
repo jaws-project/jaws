@@ -327,7 +327,7 @@ class Jaws_Session
     function Create($info = array(), $remember = false)
     {
         if (empty($info)) {
-            $info['id']          = '';
+            $info['id']          = 0;
             $info['internal']    = false;
             $info['username']    = '';
             $info['superadmin']  = false;
@@ -383,7 +383,7 @@ class Jaws_Session
     function Reset()
     {
         $this->_Attribute = array();
-        $this->SetAttribute('user',        '');
+        $this->SetAttribute('user',        0);
         $this->SetAttribute('salt',        uniqid(mt_rand(), true));
         $this->SetAttribute('type',        JAWS_APPTYPE);
         $this->SetAttribute('internal',    false);
