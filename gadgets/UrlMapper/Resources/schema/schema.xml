@@ -205,13 +205,17 @@
         </field>
 
         <field>
-            <name>createtime</name>
-            <type>timestamp</type>
+            <name>insert_time</name>
+            <type>integer</type>
+            <length>8</length>
+            <default>0</default>
         </field>
 
         <field>
-            <name>updatetime</name>
-            <type>timestamp</type>
+            <name>update_time</name>
+            <type>integer</type>
+            <length>8</length>
+            <default>0</default>
         </field>
 
         <index>

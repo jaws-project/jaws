@@ -85,6 +85,17 @@ var UrlMapperCallback = {
     },
 
     /**
+     * delete error maps using filters
+     */
+    DeleteErrorMapsFilters: function(response) {
+        if (response[0]['type'] == 'response_notice') {
+            stopErrorMapAction();
+            getDG('errormaps_datagrid', $('errormaps_datagrid').getCurrentPage(), true);
+        }
+        showResponse(response);
+    },
+
+    /**
      * update an  error map
      */
     UpdateErrorMap: function(response) {
@@ -200,6 +211,7 @@ function editErrorMap(element, emid)
     $('code').value = errorMapInfo['code'];
     $('new_url').value = errorMapInfo['new_url'];
     $('new_code').value = errorMapInfo['new_code'];
+    $('insert_time').value = errorMapInfo['insert_time'];
 
     $('btn_cancel').style.visibility = 'visible';
 }
@@ -312,14 +324,36 @@ function changeCode()
  */
 function getErrorMaps(name, offset, reset)
 {
-    var result = UrlMapperAjax.callSync('GetErrorMaps', 15, offset);
+    var filters = {
+        'from_date' : $('filter_from_date').value,
+        'to_date'   : $('filter_to_date').value,
+        'code'      : $('filter_code').value,
+        'new_code'  : $('filter_new_code').value
+    };
+
+    var result = UrlMapperAjax.callSync('GetErrorMaps', {
+        'offset': offset,
+        'order': $('order_type').value,
+        'filters': filters
+    });
+
     if (reset) {
         $(name).setCurrentPage(0);
-        var total = UrlMapperAjax.callSync('GetErrorMapsCount');
+        var total = UrlMapperAjax.callSync('GetErrorMapsCount', {
+            'filters': filters
+        });
+
     }
     resetGrid(name, result, total);
 }
 
+/**
+ * Search logs
+ */
+function searchErrorMaps()
+{
+    getErrorMaps('errormaps_datagrid', 0, true);
+}
 
 /**
  * Executes an action on error maps
@@ -327,14 +361,28 @@ function getErrorMaps(name, offset, reset)
 function errorMapsDGAction(combo)
 {
     var rows = $('errormaps_datagrid').getSelectedRows();
-    if (rows.length < 1) {
-        return;
-    }
+
+    var filters = {
+        'from_date' : $('filter_from_date').value,
+        'to_date'   : $('filter_to_date').value,
+        'code'      : $('filter_code').value,
+        'new_code'  : $('filter_new_code').value
+    };
+
+    var confirmation = confirm(confirmErrorMapDelete);
 
     if (combo.value == 'delete') {
-        var confirmation = confirm(confirmErrorMapDelete);
+        if (rows.length < 1) {
+            return;
+        }
+        UrlMapperAjax.callAsync('DeleteErrorMaps', rows);
+    } else if (combo.value == 'deleteAll') {
         if (confirmation) {
-            UrlMapperAjax.callAsync('DeleteErrorMaps', rows);
+            UrlMapperAjax.callAsync('DeleteErrorMapsFilters', {'filters': null});
+        }
+    } else if (combo.value == 'deleteFiltered') {
+        if (confirmation) {
+            UrlMapperAjax.callAsync('DeleteErrorMapsFilters', {'filters': filters});
         }
     }
 }
@@ -387,6 +435,7 @@ function stopErrorMapAction()
     $('code').selectedIndex = -1;
     $('new_url').value = '';
     $('new_code').selectedIndex = -1;
+    $('insert_time').value = '';
 }
 
 /**

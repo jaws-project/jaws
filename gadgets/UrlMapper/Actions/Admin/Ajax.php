@@ -19,6 +19,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetGadgetActions()
     {
+        $this->gadget->CheckPermission('ManageMaps');
         @list($gadget) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Maps');
         $actions = $model->GetGadgetActions($gadget);
@@ -37,6 +38,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetActionMaps()
     {
+        $this->gadget->CheckPermission('ManageMaps');
         @list($gadget, $action) = jaws()->request->fetchAll('post');
         //Now get the custom maps
         $gHTML = $this->gadget->action->loadAdmin('Maps');
@@ -51,6 +53,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function UpdateMap()
     {
+        $this->gadget->CheckPermission('ManageMaps');
         @list($id, $map, $order) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Maps');
         $res = $model->UpdateMap($id, $map, null, $order);
@@ -71,6 +74,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetMap()
     {
+        $this->gadget->CheckPermission('ManageMaps');
         @list($id) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Maps');
         return $model->GetMap($id);
@@ -84,6 +88,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function UpdateSettings()
     {
+        $this->gadget->CheckPermission('ManageProperties');
         @list($enabled, $use_aliases, $precedence, $extension) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Properties');
         $model->SaveSettings($enabled == 'true',
@@ -101,6 +106,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetAliases()
     {
+        $this->gadget->CheckPermission('ManageAliases');
         $model = $this->gadget->model->load('Aliases');
         $aliases = $model->GetAliases();
         if (count($aliases) > 0) {
@@ -117,6 +123,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetAlias()
     {
+        $this->gadget->CheckPermission('ManageAliases');
         @list($id) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->load('Aliases');
         return $model->GetAlias($id);
@@ -130,6 +137,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function AddAlias()
     {
+        $this->gadget->CheckPermission('ManageAliases');
         @list($alias, $url) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Aliases');
         $model->AddAlias($alias, $url);
@@ -144,6 +152,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function UpdateAlias()
     {
+        $this->gadget->CheckPermission('ManageAliases');
         @list($id, $alias, $url) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Aliases');
         $model->UpdateAlias($id, $alias, $url);
@@ -158,6 +167,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function DeleteAlias()
     {
+        $this->gadget->CheckPermission('ManageAliases');
         @list($id) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Aliases');
         $model->DeleteAlias($id);
@@ -172,13 +182,10 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetErrorMaps()
     {
-        @list($limit, $offset) = jaws()->request->fetchAll('post');
-        if (!is_numeric($limit)) {
-            $limit = 0;
-        }
-
+        $this->gadget->CheckPermission('ManageErrorMaps');
+        $post = jaws()->request->fetch(array('offset', 'order', 'filters:array'), 'post');
         $gadgetHTML = $this->gadget->action->loadAdmin('ErrorMaps');
-        return $gadgetHTML->GetErrorMaps($limit, $offset);
+        return $gadgetHTML->GetErrorMaps($post['filters'], 15, $post['offset'], $post['order']);
     }
 
     /**
@@ -189,8 +196,10 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetErrorMapsCount()
     {
+        $this->gadget->CheckPermission('ManageErrorMaps');
+        $filters = jaws()->request->fetch('filters:array', 'post');
         $model = $this->gadget->model->loadAdmin('ErrorMaps');
-        $res = $model->GetErrorMapsCount();
+        $res = $model->GetErrorMapsCount($filters);
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -206,6 +215,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function AddErrorMap()
     {
+        $this->gadget->CheckPermission('ManageErrorMaps');
         @list($url, $code, $new_url, $new_code) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('ErrorMaps');
         $res = $model->AddErrorMap($url, $code, $new_url, $new_code);
@@ -226,6 +236,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function UpdateErrorMap()
     {
+        $this->gadget->CheckPermission('ManageErrorMaps');
         @list($id, $url, $code, $new_url, $new_code) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('ErrorMaps');
         $model->UpdateErrorMap($id, $url, $code, $new_url, $new_code);
@@ -240,9 +251,13 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function GetErrorMap()
     {
+        $this->gadget->CheckPermission('ManageErrorMaps');
         @list($id) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('ErrorMaps');
-        return $model->GetErrorMap($id);
+        $errorMaps = $model->GetErrorMap($id);
+        $objDate = Jaws_Date::getInstance();
+        $errorMaps['insert_time'] = $objDate->Format($errorMaps['insert_time'], 'Y-m-d H:i:s');
+        return $errorMaps;
     }
 
     /**
@@ -253,9 +268,25 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function DeleteErrorMaps()
     {
+        $this->gadget->CheckPermission('ManageErrorMaps');
         $ids = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('ErrorMaps');
         $model->DeleteErrorMaps($ids);
+        return $GLOBALS['app']->Session->PopLastResponse();
+    }
+
+    /**
+     * Deletes the error map with filters
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function DeleteErrorMapsFilters()
+    {
+        $this->gadget->CheckPermission('ManageErrorMaps');
+        $filters = jaws()->request->fetch('filters:array', 'post');
+        $model = $this->gadget->model->loadAdmin('ErrorMaps');
+        $model->DeleteErrorMapsFilters($filters);
         return $GLOBALS['app']->Session->PopLastResponse();
     }
 

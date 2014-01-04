@@ -92,3 +92,7 @@ $admin_actions['DeleteErrorMaps'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
+$admin_actions['DeleteErrorMapsFilters'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);

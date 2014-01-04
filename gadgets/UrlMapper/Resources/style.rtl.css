@@ -25,3 +25,19 @@ margin:0 auto;
 #main table td{
 vertical-align: top;
 }
+#errormaps_filter{
+height:70px;
+text-align:right;
+padding-bottom:4px;
+}
+#errormaps_filter input,#errormaps_filter select{
+width:130px;
+white-space:nowrap;
+margin:0 10px 4px 0;
+}
+#errormaps_filter table td{
+padding:2px;
+}
+#errormaps_filter .filter_label{
+width:70px;
+}

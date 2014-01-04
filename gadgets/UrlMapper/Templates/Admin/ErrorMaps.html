@@ -4,10 +4,23 @@
 <table style="width: 100%; border: 0px solid #ccc; padding: 0px; border-spacing: 0.1px;">
   <!-- big work area -->
   <tr>
-    <td style="width: 600px;">
-      <label>{lbl_maps}:</label>
-      <br />
-      {datagrid}
+    <td style="width: 700px;">
+        <table id="errormaps_filter">
+            <tr>
+                <td class="filter_label"><label for="filter_from_date">{lbl_filter_from_date}:</label></td><td>{filter_from_date}</td>
+                <td class="filter_label"><label for="filter_code">{lbl_filter_code}:</label></td><td>{filter_code}</td>
+                <td class="filter_label" colspan="2"></td>
+            </tr>
+            <tr>
+                <td class="filter_label"><label for="filter_to_date">{lbl_filter_to_date}:</label></td><td>{filter_to_date}</td>
+                <td class="filter_label"><label for="filter_new_code">{lbl_filter_new_code}:</label></td><td>{filter_new_code}</td>
+                <td class="filter_label"><label for="order_type">{lbl_order_type}:</label></td><td>{order_type}</td>
+            </tr>
+        </table>
+
+        {datagrid}
+      <div class="buttons">{actions_combo}{btn_execute}</div>
+
     </td>
     <td class="workarea">
       <fieldset id="map_area">
@@ -16,6 +29,7 @@
         <label for="code">{lbl_code}:</label><br/>{code}<br />
         <label for="new_url">{lbl_new_url}:</label><br/>{new_url}<br />
         <label for="new_code">{lbl_new_code}:</label><br/>{new_code}<br />
+        <label for="insert_time">{lbl_insert_time}:</label><br/>{insert_time}<br />
       </fieldset>
       <div class="actions">{btn_cancel}{btn_save}</div>
     </td>

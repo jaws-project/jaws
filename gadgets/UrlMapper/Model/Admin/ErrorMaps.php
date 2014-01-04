@@ -21,11 +21,9 @@ class UrlMapper_Model_Admin_ErrorMaps extends UrlMapper_Model_ErrorMaps
      */
     function GetErrorMap($id)
     {
-        $params = array();
-        $params['id'] = $id;
-
         $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
-        $result = $errorsTable->select('url', 'code', 'new_url', 'new_code')->where('id', $id)->fetchRow();
+        $result = $errorsTable->select('url', 'code:integer', 'new_url', 'new_code:integer', 'insert_time:integer')
+                                ->where('id', $id)->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -51,8 +49,8 @@ class UrlMapper_Model_Admin_ErrorMaps extends UrlMapper_Model_ErrorMaps
         $data['new_url'] = $new_url;
         $data['new_code'] = $new_code;
         $data['hits'] = 1;
-        $data['createtime'] = $GLOBALS['db']->Date();
-        $data['updatetime'] = $GLOBALS['db']->Date();
+        $data['insert_time'] = time();
+        $data['update_time'] = time();
 
         $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
         $result = $errorsTable->insert($data)->exec();
@@ -85,7 +83,7 @@ class UrlMapper_Model_Admin_ErrorMaps extends UrlMapper_Model_ErrorMaps
         $data['code'] = $code;
         $data['new_url'] = $new_url;
         $data['new_code'] = $new_code;
-        $data['updatetime'] = $GLOBALS['db']->Date();
+        $data['update_time'] = time();
 
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_UPDATED'), RESPONSE_ERROR);
@@ -131,20 +129,106 @@ class UrlMapper_Model_Admin_ErrorMaps extends UrlMapper_Model_ErrorMaps
     }
 
     /**
+     * Deletes the error maps using filters
+     *
+     * @access  public
+     * @param   array   $filters
+     * @return  array   Response array (notice or error)
+     */
+    function DeleteErrorMapsFilters($filters)
+    {
+        $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
+        $errorsTable->delete();
+        if (!empty($filters) && count($filters) > 1) {
+            // from_date
+            if (isset($filters['from_date']) && !empty($filters['from_date'])) {
+                if (!is_numeric($filters['from_date'])) {
+                    $objDate = Jaws_Date::getInstance();
+                    $filters['from_date'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['from_date']), 'U')
+                    );
+                }
+                $errorsTable->and()->where('insert_time', $filters['from_date'], '>=');
+            }
+            // to_date
+            if (isset($filters['to_date']) && !empty($filters['to_date'])) {
+                if (!is_numeric($filters['to_date'])) {
+                    $objDate = Jaws_Date::getInstance();
+                    $filters['to_date'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['to_date']), 'U')
+                    );
+                }
+                $errorsTable->and()->where('insert_time', $filters['to_date'], '<=');
+            }
+            // code
+            if (isset($filters['code']) && !empty($filters['code'])) {
+                $errorsTable->and()->where('code', $filters['code']);
+            }
+            // new code
+            if (isset($filters['new_code']) && !empty($filters['new_code'])) {
+                $errorsTable->and()->where('new_code', $filters['new_code']);
+            }
+        }
+
+        $result = $errorsTable->exec();
+        if (Jaws_Error::IsError($result)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERROR_ERRORMAP_NOT_DELETED'), RESPONSE_ERROR);
+            return new Jaws_Error(_t('URLMAPPER_ERROR_ERRORMAP_NOT_DELETED'));
+        }
+
+        $GLOBALS['app']->Session->PushLastResponse(_t('URLMAPPER_ERRORMAP_DELETED'), RESPONSE_NOTICE);
+        return true;
+    }
+
+    /**
      * Get list of error maps
      *
      * @access  public
+     * @param   array   $filters
      * @param   int     $limit
      * @param   int     $offset
+     * @param   string  $order
      * @return  array   Grid data
      */
-    function GetErrorMaps($limit, $offset)
+    function GetErrorMaps($filters, $limit, $offset, $order)
     {
         $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
         $errorsTable->select(
             'id:integer', 'url', 'code:integer', 'new_url', 'new_code', 'hits:integer',
-            'createtime', 'updatetime');
-        $result = $errorsTable->limit($limit, $offset)->orderBy('createtime')->fetchAll();
+            'insert_time', 'update_time');
+
+        if (!empty($filters) && count($filters) > 1) {
+            // from_date
+            if (isset($filters['from_date']) && !empty($filters['from_date'])) {
+                if (!is_numeric($filters['from_date'])) {
+                    $objDate = Jaws_Date::getInstance();
+                    $filters['from_date'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['from_date']), 'U')
+                    );
+                }
+                $errorsTable->and()->where('insert_time', $filters['from_date'], '>=');
+            }
+            // to_date
+            if (isset($filters['to_date']) && !empty($filters['to_date'])) {
+                if (!is_numeric($filters['to_date'])) {
+                    $objDate = Jaws_Date::getInstance();
+                    $filters['to_date'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['to_date']), 'U')
+                    );
+                }
+                $errorsTable->and()->where('insert_time', $filters['to_date'], '<=');
+            }
+            // code
+            if (isset($filters['code']) && !empty($filters['code'])) {
+                $errorsTable->and()->where('code', $filters['code']);
+            }
+            // new code
+            if (isset($filters['new_code']) && !empty($filters['new_code'])) {
+                $errorsTable->and()->where('new_code', $filters['new_code']);
+            }
+        }
+
+        $result = $errorsTable->limit($limit, $offset)->orderBy($order)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return array();
         }
@@ -156,17 +240,45 @@ class UrlMapper_Model_Admin_ErrorMaps extends UrlMapper_Model_ErrorMaps
      * Gets records count for error maps datagrid
      *
      * @access  public
-     * @return  int   ErrorMaps row counts
+     * @param   array   $filters
+     * @return  int     ErrorMaps row counts
      */
-    function GetErrorMapsCount()
+    function GetErrorMapsCount($filters)
     {
         $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
-        $res = $errorsTable->select('count([id]):integer')->fetchOne();
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage());
+        $errorsTable->select('count([id]):integer');
+        if (!empty($filters) && count($filters) > 1) {
+            // from_date
+            if (isset($filters['from_date']) && !empty($filters['from_date'])) {
+                if (!is_numeric($filters['from_date'])) {
+                    $objDate = Jaws_Date::getInstance();
+                    $filters['from_date'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['from_date']), 'U')
+                    );
+                }
+                $errorsTable->and()->where('insert_time', $filters['from_date'], '>=');
+            }
+            // to_date
+            if (isset($filters['to_date']) && !empty($filters['to_date'])) {
+                if (!is_numeric($filters['to_date'])) {
+                    $objDate = Jaws_Date::getInstance();
+                    $filters['to_date'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['to_date']), 'U')
+                    );
+                }
+                $errorsTable->and()->where('insert_time', $filters['to_date'], '<=');
+            }
+            // code
+            if (isset($filters['code']) && !empty($filters['code'])) {
+                $errorsTable->and()->where('code', $filters['code']);
+            }
+            // new code
+            if (isset($filters['new_code']) && !empty($filters['new_code'])) {
+                $errorsTable->and()->where('new_code', $filters['new_code']);
+            }
         }
 
-        return $res;
+        return $errorsTable->fetchOne();
     }
 
     /**
