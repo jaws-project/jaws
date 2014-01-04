@@ -295,11 +295,11 @@ function saveAdvancedPolicies()
     try {
         PolicyAjax.callAsync(
             'UpdateAdvancedPolicies',
-            $('passwd_complexity').value,
-            $('passwd_bad_count').value,
-            $('passwd_lockedout_time').value,
-            $('passwd_max_age').value,
-            $('passwd_min_length').value,
+            $('password_complexity').value,
+            $('password_bad_count').value,
+            $('password_lockedout_time').value,
+            $('password_max_age').value,
+            $('password_min_length').value,
             $('login_captcha').value,
             $('login_captcha_driver').value,
             $('xss_parsing_level').value,

@@ -31,11 +31,11 @@ class Policy_Installer extends Jaws_Gadget_Installer
         array('crypt_key_len', '128'),
         array('crypt_key_age', '86400'),
         array('crypt_key_start_date', '0'),
-        array('passwd_bad_count', '7'),
-        array('passwd_lockedout_time', '60'),      // per second
-        array('passwd_max_age', '0'),              // per day  0 = resistant
-        array('passwd_min_length', '0'),
-        array('passwd_complexity', 'no'),
+        array('password_bad_count', '7'),
+        array('password_lockedout_time', '60'),      // per second
+        array('password_max_age', '0'),              // per day  0 = resistant
+        array('password_min_length', '0'),
+        array('password_complexity', 'no'),
         array('login_captcha_status', '1'),
         array('login_captcha_driver', 'Math'),
         array('xss_parsing_level', 'paranoid'),
@@ -95,6 +95,11 @@ class Policy_Installer extends Jaws_Gadget_Installer
     {
         if (version_compare($old, '1.0.0', '<')) {
             $this->gadget->registry->insert('max_active_sessions', '0');
+            $this->gadget->registry->rename('passwd_bad_count',      'password_bad_count');
+            $this->gadget->registry->rename('passwd_lockedout_time', 'password_lockedout_time');
+            $this->gadget->registry->rename('passwd_max_age',        'password_max_age');
+            $this->gadget->registry->rename('passwd_min_length',     'password_min_length');
+            $this->gadget->registry->rename('passwd_complexity',     'password_complexity');
         }
 
         return true;
