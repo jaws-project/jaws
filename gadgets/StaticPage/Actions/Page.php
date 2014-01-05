@@ -144,7 +144,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
         // Show Tags
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
             $tagsHTML = Jaws_Gadget::getInstance('Tags')->action->load('Tags');
-            $tagsHTML->ViewItemTags('StaticPage', 'page', $page['translation_id'], $tpl, 'page');
+            $tagsHTML->loadReferenceTags('StaticPage', 'page', $page['translation_id'], $tpl, 'page');
         }
 
         $tpl->ParseBlock('page');
