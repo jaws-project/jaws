@@ -136,14 +136,17 @@ class Jaws_URLMapping
         }
 
         //Lets check HTTP headers to see if user is trying to login
-        if (jaws()->request->fetch('gadget', 'post') == 'ControlPanel' && jaws()->request->fetch('action', 'post') == 'Login') {
+        if (jaws()->request->fetch('gadget', 'post') == 'ControlPanel' &&
+            jaws()->request->fetch('action', 'post') == 'Login'
+        ) {
             jaws()->request->update('gadget', 'ControlPanel', 'get');
             jaws()->request->update('action', 'Login', 'get');
             return true;
         }
 
+        $request = Jaws_Request::getInstance();
         //If no path info is given but count($_POST) > 0?
-        if (empty($this->_request_uri) && count($_POST) > 0) {
+        if (empty($this->_request_uri) && count($request->fetchAll('post')) > 0) {
             return true;
         }
 
