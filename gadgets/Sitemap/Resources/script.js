@@ -104,7 +104,7 @@ function editGadget(gadget)
         $('priority').value = gadgetInfo['priority'];
         $('frequency').value = gadgetInfo['frequency'];
         $('status').value = gadgetInfo['status'];
-        $('last_update').innerHTML = gadgetInfo['update_time_str'];
+        $('last_update').innerHTML = gadgetInfo['update_time'];
     }
 }
 

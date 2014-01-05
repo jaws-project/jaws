@@ -302,9 +302,9 @@ class Sitemap_Actions_Admin_ManageSitemap extends Jaws_Gadget_Action
         $properties = $model->GetGadgetProperties($gadget);
         $date = Jaws_Date::getInstance();
         if(!empty($properties['update_time'])) {
-            $properties['update_time_str'] = $date->format($properties['update_time']);
+            $properties['update_time'] = $date->format($properties['update_time']);
         } else {
-            $properties['update_time_str'] = _t('SITEMAP_NEVER');
+            $properties['update_time'] = _t('SITEMAP_NEVER');
         }
         return $properties;
     }
