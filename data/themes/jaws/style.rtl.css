@@ -266,6 +266,15 @@ background:#ddd;
 .gadget_section{
 padding-bottom:10px;
 }
+.gadget_meta_tags{
+padding:2px 4px;
+margin-top:4px;
+background:#eee;
+border-bottom:1px solid #ccc;
+}
+.gadget_meta_tags ul,.gadget_meta_tags ul li{
+display:inline;
+}
 .actions{
 text-align:left;
 padding-top:4px;
