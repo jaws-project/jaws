@@ -44,7 +44,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
      *
      * @access  public
      * @param   string  $gadget Gadget name
-     * @param   bool    $user   Only show user tags?
+     * @param   int     $user   Only show user tags?
      * @return  string  XHTML template content
      */
     function TagCloud($gadget = null, $user = 0)
