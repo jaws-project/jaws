@@ -10,11 +10,11 @@
  */
 $maps[] = array(
     'ViewTag',
-    'tags/tags[/users/{user}]/{tag}[/gadgets/{gadget}][/pages/{page}]'
+    'tags/tags[/users/{user}]/{tag}[/gadgets/{tagged_gadget}][/pages/{page}]'
 );
 $maps[] = array(
     'TagCloud',
-    'tags/cloud[/users/{user}][/gadgets/{gadget}]'
+    'tags/cloud[/users/{user}][/gadgets/{tagged_gadget}]'
 );
 $maps[] = array(
     'ManageTags',
