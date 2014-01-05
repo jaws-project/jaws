@@ -276,7 +276,7 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
         // Show Tags
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
             $tagsHTML = Jaws_Gadget::getInstance('Tags')->action->load('Tags');
-            $tagsHTML->ViewItemTags('Blog', 'post', $entry['id'], $tpl, 'single_view/entry');
+            $tagsHTML->loadReferenceTags('Blog', 'post', $entry['id'], $tpl, 'single_view/entry');
         }
 
 
