@@ -1,76 +1,5 @@
 <?php
 /**
- * Get rid of register_globals things if active
- *
- * @author Richard Heyes
- * @author Stefan Esser
- * @url http://www.phpguru.org/article.php?ne_id=60
- */
-$_SERVER['REQUEST_METHOD']  = array_key_exists('REQUEST_METHOD', $_SERVER)?
-                                               strtoupper($_SERVER['REQUEST_METHOD']):
-                                               'GET';
-$_SERVER['CONTENT_TYPE']    = array_key_exists('CONTENT_TYPE', $_SERVER)?
-                                               $_SERVER['CONTENT_TYPE']:
-                                               '';
-$_SERVER['HTTP_USER_AGENT'] = array_key_exists('HTTP_USER_AGENT', $_SERVER)?
-                                               $_SERVER['HTTP_USER_AGENT']:
-                                               '';
-$_SERVER['HTTP_REFERER']    = array_key_exists('HTTP_REFERER', $_SERVER)?
-                                               $_SERVER['HTTP_REFERER']:
-                                               '';
-
-// Prevent user interface redress attack(Clickjacking)
-header('X-Frame-Options: SAMEORIGIN');
-
-if (ini_get('register_globals')) {
-    // Might want to change this perhaps to a nicer error
-    if (isset($_REQUEST['GLOBALS'])) {
-        Jaws_Error::Fatal('GLOBALS overwrite attempt detected');
-    }
-
-    // Variables that shouldn't be unset
-    $noUnset = array('GLOBALS',  '_GET',
-                     '_POST',    '_COOKIE',
-                     '_REQUEST', '_SERVER',
-                     '_ENV',     '_FILES');
-
-    $input = array_merge($_GET,    $_POST,
-                         $_COOKIE, $_SERVER,
-                         $_ENV,    $_FILES,
-                         isset($_SESSION) ? $_SESSION : array());
-
-    foreach ($input as $k => $v) {
-        if (!in_array($k, $noUnset) && isset($GLOBALS[$k])) {
-            unset($GLOBALS[$k]);
-        }
-    }
-}
-
-/**
- * We don't like magic_quotes, so we disable it ;-)
- *
- * Basis of the code were gotten from the book
- * php archs guid to PHP Security
- * @auhor Illia Alshanetsky <ilia@php.net>
- */
-@set_magic_quotes_runtime(0);
-if (get_magic_quotes_gpc()) {
-    $input = array(&$_GET, &$_POST, &$_REQUEST, &$_COOKIE, &$_ENV, &$_SERVER);
-
-    while (list($k, $v) = each($input)) {
-        foreach ($v as $key => $val) {
-            if (!is_array($val)) {
-                $key = stripslashes($key);
-                $input[$k][$key] = stripslashes($val);
-                continue;
-            }
-            $input[] =& $input[$k][$key];
-        }
-    }
-    unset($input);
-}
-
-/**
  * Short description
  *
  * Long description
@@ -150,6 +79,19 @@ class Jaws_Request
      */
     function Jaws_Request()
     {
+        // initialize some server options
+        $_SERVER['REQUEST_METHOD'] =
+            array_key_exists('REQUEST_METHOD', $_SERVER)? strtoupper($_SERVER['REQUEST_METHOD']): 'GET';
+        $_SERVER['CONTENT_TYPE'] =
+            array_key_exists('CONTENT_TYPE', $_SERVER)? $_SERVER['CONTENT_TYPE']: '';
+        $_SERVER['HTTP_USER_AGENT'] =
+            array_key_exists('HTTP_USER_AGENT', $_SERVER)? $_SERVER['HTTP_USER_AGENT']: '';
+        $_SERVER['HTTP_REFERER'] =
+            array_key_exists('HTTP_REFERER', $_SERVER)? $_SERVER['HTTP_REFERER']: '';
+
+        // Prevent user interface redress attack(Click-jacking)
+        header('X-Frame-Options: SAMEORIGIN');
+
         $this->_filters  = array();
         $this->_params   = array();
         $this->_priority = array();
@@ -171,14 +113,10 @@ class Jaws_Request
         $this->addFilter('ambiguous', array($this, 'strip_ambiguous'));
 
         // Strict mode
-        /*
-        if (true) {
-            unset($_GET);
-            unset($_POST);
-            unset($_REQUEST);
-            unset($_COOKIE);
-        }
-        */
+        unset($_GET);
+        unset($_POST);
+        unset($_REQUEST);
+        unset($_COOKIE);
     }
 
     /**
@@ -198,21 +136,21 @@ class Jaws_Request
     }
 
     /**
-     * @param   string  $type
+     * @param   string  $method
      * @return  mixed
      */
-    function isTypeValid($type)
+    function isTypeValid($method)
     {
-        $type = strtolower($type);
-        if (in_array($type, $this->_allowedMethods)) {
-            return $type;
+        $method = strtolower($method);
+        if (in_array($method, $this->_allowedMethods)) {
+            return $method;
         }
 
         return false;
     }
 
     /**
-     * Adds a filter that will be runned on output requested data
+     * Adds a filter that will be run on output requested data
      *
      * @access  public
      * @param   string  $name       Name of the filter
@@ -391,35 +329,35 @@ class Jaws_Request
      *
      * @access  public
      * @param   mixed   $keys           The key(s) being fetched, it can be an array with multiple keys in it to fetch and then
-     *                                  an array will be returned accourdingly.
-     * @param   mixed   $types          Which super global is being fetched from, it can be an array
+     *                                  an array will be returned accordingly.
+     * @param   mixed   $methods        Which request type is being fetched from, it can be an array
      * @param   bool    $filter         Returns filtered data or not
      * @param   bool    $xss_strip      Returns stripped html data tags/attributes
      * @param   bool    $json_decode    Decode JSON data or not
      * @return  mixed   Returns string or an array depending on the key, otherwise Null if key not exist
      */
-    function fetch($keys, $types = '', $filter = true, $xss_strip = false, $json_decode = false)
+    function fetch($keys, $methods = '', $filter = true, $xss_strip = false, $json_decode = false)
     {
         $result = null;
-        if (empty($types)) {
+        if (empty($methods)) {
             switch (strtolower($_SERVER['REQUEST_METHOD'])) {
                 case 'get':
-                    $types = array('get', 'post');
+                    $methods = array('get', 'post');
                     break;
 
                 case 'post':
-                    $types = array('post', 'get');
+                    $methods = array('post', 'get');
                     break;
 
                 default:
                     return null;
             }
-        } elseif (!is_array($types)) {
-            $types = array($types);
+        } elseif (!is_array($methods)) {
+            $methods = array($methods);
         }
 
-        foreach ($types as $type) {
-            $result = $this->_fetch($keys, $type, $filter, $xss_strip, $json_decode);
+        foreach ($methods as $method) {
+            $result = $this->_fetch($keys, $method, $filter, $xss_strip, $json_decode);
             if (!is_null($result)) {
                 break;
             }
@@ -432,19 +370,19 @@ class Jaws_Request
      * Fetches the filtered data with out filter, it's like using the super globals straight.
      *
      * @access  public
-     * @param   string  $type       Which super global is being fetched from
+     * @param   string  $method     Request method type
      * @param   bool    $filter     Returns filtered data
      * @param   bool    $xss_strip  Returns stripped html data tags/attributes
      * @return  array   Filtered Data array
      */
-    function fetchAll($type = '', $filter = true, $xss_strip = false)
+    function fetchAll($method = '', $filter = true, $xss_strip = false)
     {
-        $type = empty($type)? strtolower($_SERVER['REQUEST_METHOD']) : $type;
-        if (!isset($this->data[$type]) || empty($this->data[$type])) {
+        $method = empty($method)? strtolower($_SERVER['REQUEST_METHOD']) : $method;
+        if (!isset($this->data[$method]) || empty($this->data[$method])) {
             return array();
         }
 
-        $keys = array_keys($this->data[$type]);
+        $keys = array_keys($this->data[$method]);
         $values = array_map(
             array($this, '_fetch'),
             $keys,
@@ -458,15 +396,15 @@ class Jaws_Request
 
     /** Creates a new key or updates an old one
      *
-     * @param   string  $key
-     * @param   mixed   $value
-     * @param   string  $type
+     * @param   string  $key        Key name
+     * @param   mixed   $value      Key value
+     * @param   string  $method     Request method
      * @return  bool    True
      */
-    function update($key, $value, $type = '')
+    function update($key, $value, $method = '')
     {
-        $type = empty($type)? strtolower($_SERVER['REQUEST_METHOD']) : $type;
-        $this->data[$type][$key] = $value;
+        $method = empty($method)? strtolower($_SERVER['REQUEST_METHOD']) : $method;
+        $this->data[$method][$key] = $value;
         return true;
     }
 
@@ -474,14 +412,13 @@ class Jaws_Request
      * Reset super global request variables
      *
      * @access  public
-     * @param   string  $type   Which super global is being reset,
-     *                          if no passed value reset all super global request vaiables
+     * @param   string  $method Which method is being reset, if no passed value reset all method variables
      * @return  bool    True
      */
-    function reset($type = '')
+    function reset($method = '')
     {
-        $type = $this->isTypeValid($type);
-        switch ($type) {
+        $method = $this->isTypeValid($method);
+        switch ($method) {
             case 'get':
                 unset($_GET);
                 $this->data['get'] = array();
