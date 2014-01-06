@@ -261,6 +261,14 @@ function metaWeblog_newPost($params)
     }
     $publish  = getScalarValue($params, 4);
 
+    // publish time
+    $timestamp = null;
+    if (isset($struct['dateCreated'])) {
+        $date = date_parse_from_format('Ymd\TH:i:s', $struct['dateCreated']);
+        $date = mktime($date['hour'], $date['minute'], $date['second'], $date['month'], $date['day'], $date['year']);
+        $timestamp = date('Y-m-d H:i:s', $date);
+    }
+
     $postsModel = Jaws_Gadget::getInstance('Blog')->model->loadAdmin('Posts');
     $post_id = $postsModel->NewEntry(
         $userInfo['id'],
@@ -274,7 +282,8 @@ function metaWeblog_newPost($params)
         '',
         $allow_c,
         '',
-        $publish
+        $publish,
+        $timestamp
     );
     if (Jaws_Error::IsError($post_id)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $post_id->GetMessage());
@@ -298,6 +307,7 @@ function metaWeblog_editPost($params)
     $password = getScalarValue($params, 2);
 
     $struct  = XML_RPC_decode($params->getParam(3));
+
     $title   = $struct['title'];
     $cats    = $struct['categories'];
     $summary = '';
@@ -348,6 +358,14 @@ function metaWeblog_editPost($params)
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
     }
 
+    // publish time
+    $timestamp = null;
+    if (isset($struct['dateCreated'])) {
+        $date = date_parse_from_format('Ymd\TH:i:s', $struct['dateCreated']);
+        $date = mktime($date['hour'], $date['minute'], $date['second'], $date['month'], $date['day'], $date['year']);
+        $timestamp = date('Y-m-d H:i:s', $date);
+    }
+
     $postModel = Jaws_Gadget::getInstance('Blog')->model->loadAdmin('Posts');
     $blog_result = $postModel->UpdateEntry(
         $post_id,
@@ -361,7 +379,8 @@ function metaWeblog_editPost($params)
         '',
         $allow_c,
         '',
-        $publish
+        $publish,
+        $timestamp
     );
     if (Jaws_Error::IsError($blog_result)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $blog_result->GetMessage());
@@ -685,6 +704,12 @@ $rpc_methods = array(
         'function'  => 'metaWeblog_getUserInfo',
         'signature' => array(
             array('struct', 'string', 'string', 'string'),
+        ),
+    ),
+    'blogger.deletePost' => array(
+        'function'  => 'metaWeblog_deletePost',
+        'signature' => array(
+            array('boolean', 'string', 'string', 'string', 'string', 'boolean'),
         ),
     ),
 
