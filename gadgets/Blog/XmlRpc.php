@@ -21,22 +21,59 @@ require_once JAWS_PATH . 'include/Jaws/User.php';
 require_once PEAR_PATH . 'XML/RPC/Server.php';
 
 /**
+ * User authentication
+ *
+ * @access  public
+ * @param   string  $user       username
+ * @param   string  $password   password
+ * @return  mixed   True or Jaws_Error
+ */
+function userAuthentication($username, $password)
+{
+    $authType = $GLOBALS['app']->Registry->fetch('authtype', 'Users');
+    $authType = preg_replace('/[^[:alnum:]_-]/', '', $authType);
+    $authFile = JAWS_PATH . 'include/Jaws/Auth/' . $authType . '.php';
+    if (empty($authType) || !file_exists($authFile)) {
+        $GLOBALS['log']->Log(
+            JAWS_LOG_NOTICE,
+            $authFile. ' file doesn\'t exists, using default authentication type'
+        );
+        $authType = 'Default';
+    }
+
+    if ($username === '' && $password === '') {
+        $result = Jaws_Error::raiseError(
+            _t('GLOBAL_ERROR_LOGIN_WRONG'),
+            __FUNCTION__,
+            JAWS_ERROR_NOTICE
+        );
+    }
+
+    require_once JAWS_PATH . 'include/Jaws/Auth/' . $authType . '.php';
+    $className = 'Jaws_Auth_' . $authType;
+    $objAuth = new $className();
+    $result = $objAuth->Auth($username, $password);
+    if (!Jaws_Error::IsError($result)) {
+        $GLOBALS['app']->Session->SetAttribute('logged', true);
+        $GLOBALS['app']->Session->SetAttribute('user', $result['id']);
+        $GLOBALS['app']->Session->SetAttribute('groups', $result['groups']);
+        $GLOBALS['app']->Session->SetAttribute('superadmin', $result['superadmin']);
+    }
+
+    return $result;
+}
+
+/**
  * Get Blog ACL permission for a specified user
  *
  * @access  public
  * @param   string  $user           username
  * @param   string  $task           task to use
- * @param   bool    $superadmin     is super admin
  * @return  bool    Graned (true) or Denied (false)    
  */
-function GetBlogPermission($user, $task, $superadmin)
+function GetBlogPermission($user, $task)
 {
-    $groups = Jaws_User::GetGroupsOfUser($user);
-    if (Jaws_Error::IsError($groups)) {
-        return false;
-    }
-
-    return $GLOBALS['app']->ACL->GetFullPermission($user, array_keys($groups), 'Blog', $task, $superadmin);
+    return $GLOBALS['app']->Session->GetPermission('Blog', $task);
 }
 
 /**
@@ -88,13 +125,11 @@ function metaWeblog_getUsersBlogs($params)
     $user     = getScalarValue($params, 1);
     $password = getScalarValue($params, 2);
 
-    if (Jaws_Error::IsError($userInfo = Jaws_User::Valid($user, $password))) {
+    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3,  _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
-    $GLOBALS['app']->Session->SetAttribute('user', $userInfo['id']);
-    $GLOBALS['app']->Session->SetAttribute('superadmin', $userInfo['superadmin']);
-    if (!GetBlogPermission($user, 'default_admin', $userInfo['superadmin'])) {
+    if (!GetBlogPermission('Blog', 'default_admin')) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
     }
 
@@ -130,13 +165,11 @@ function metaWeblog_getUserInfo($params)
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, 'fubar user param');
     }
 
-    if (Jaws_Error::IsError($userInfo = Jaws_User::Valid($user, $password))) {
+    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
-    $GLOBALS['app']->Session->SetAttribute('user', $userInfo['id']);
-    $GLOBALS['app']->Session->SetAttribute('superadmin', $userInfo['superadmin']);
-    if (!GetBlogPermission($user, 'default_admin', $userInfo['superadmin'])) {
+    if (!GetBlogPermission($user, 'default_admin')) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
     }
 
@@ -168,13 +201,11 @@ function metaWeblog_newPost($params)
     $user       = getScalarValue($params, 1);
     $password   = getScalarValue($params, 2);
 
-    if (Jaws_Error::IsError($userInfo = Jaws_User::Valid($user, $password))) {
+    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
-    $GLOBALS['app']->Session->SetAttribute('user', $userInfo['id']);
-    $GLOBALS['app']->Session->SetAttribute('superadmin', $userInfo['superadmin']);
-    if (!GetBlogPermission($user, 'AddEntries', $userInfo['superadmin'])) {
+    if (!GetBlogPermission($user, 'AddEntries')) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
     }
 
@@ -189,14 +220,14 @@ function metaWeblog_newPost($params)
         $content = Jaws_UTF8::substr_replace($content, '', 0, $more_pos + 11);
     }
 
-    $model = $this->gadget->model->loadAdmin('Categories');
-    if (Jaws_Error::isError($model)) {
-        return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $model->GetMessage());
+    $catsModel = Jaws_Gadget::getInstance('Blog')->model->loadAdmin('Categories');
+    if (Jaws_Error::isError($catsModel)) {
+        return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $catsModel->GetMessage());
     }
 
     $categories = array();
     foreach ($cats as $cat) {
-        $catInfo = $model->GetCategoryByName($cat);
+        $catInfo = $catsModel->GetCategoryByName($cat);
         if (Jaws_Error::IsError($catInfo)) {
             return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $catInfo->GetMessage());
         }
@@ -218,16 +249,30 @@ function metaWeblog_newPost($params)
     if (!empty($data['mt_allow_comments'])) {
         $allow_c = $data['mt_allow_comments'];
     } else {
-        $allow_c = $this->registry->fetch('allow_comments');
+        $allow_c = $GLOBALS['app']->Registry->fetch('allow_comments');
         $allow_c = $allow_c == 'true' ? 1 : 0;
     }
 
     if (empty($categories)) {
-        $categories = array($this->registry->fetch('default_category'));
+        $categories = array($GLOBALS['app']->Registry->fetch('default_category'));
     }
     $publish  = getScalarValue($params, 4);
 
-    $post_id = $model->NewEntry($userInfo['id'], $categories, $title, $summary, $content, $title, '', '', $allow_c, '', $publish);
+    $postsModel = Jaws_Gadget::getInstance('Blog')->model->loadAdmin('Posts');
+    $post_id = $postsModel->NewEntry(
+        $userInfo['id'],
+        $categories,
+        $title,
+        $summary,
+        $content,
+        $title,
+        '',
+        '',
+        '',
+        $allow_c,
+        '',
+        $publish
+    );
     if (Jaws_Error::IsError ($post_id)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $post_id->GetMessage());
     }
@@ -260,7 +305,7 @@ function metaWeblog_editPost($params)
         $content = Jaws_UTF8::substr_replace($content, '', 0, $more_pos + 11);
     }
 
-    $model = $this->gadget->model->loadAdmin('Categories');
+    $model = Jaws_Gadget::getInstance('Blog')->model->loadAdmin('Categories');
     if (Jaws_Error::isError($model)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $model->GetMessage());
     }
@@ -278,7 +323,7 @@ function metaWeblog_editPost($params)
     }
 
     // Allow Comments ?
-    $allow_c = $this->registry->fetch('allow_comments');
+    $allow_c = $GLOBALS['app']->Registry->fetch('allow_comments');
     $allow_c = $allow_c == 'true' ? 1 : 0;
 
     $publish = getScalarValue($params, 4);
@@ -291,13 +336,11 @@ function metaWeblog_editPost($params)
 //     $allow_ping     = $data['mt_allow_ping'];
 //     $convert_breaks = $data['mt_convert_breaks'];
 
-    if (Jaws_Error::IsError($userInfo = Jaws_User::Valid($user, $password))) {
+    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
-    $GLOBALS['app']->Session->SetAttribute('user', $userInfo['id']);
-    $GLOBALS['app']->Session->SetAttribute('superadmin', $userInfo['superadmin']);
-    if (!GetBlogPermission($user, 'AddEntries', $userInfo['superadmin'])) {
+    if (!GetBlogPermission($user, 'AddEntries')) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
     }
 
@@ -324,17 +367,15 @@ function metaWeblog_deletePost($params)
     $password = getScalarValue($params, 3);
     $publish  = getScalarValue($params, 4);
 
-    if (Jaws_Error::IsError($userInfo = Jaws_User::Valid($user, $password))) {
+    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
-    $GLOBALS['app']->Session->SetAttribute('user', $userInfo['id']);
-    $GLOBALS['app']->Session->SetAttribute('superadmin', $userInfo['superadmin']);
-    if (!GetBlogPermission($user, 'DeleteEntries', $userInfo['superadmin'])) {
+    if (!GetBlogPermission($user, 'DeleteEntries')) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
     }
 
-    $model = $this->gadget->model->loadAdmin('Posts');
+    $model = Jaws_Gadget::getInstance('Blog')->model->loadAdmin('Posts');
     if (Jaws_Error::isError($model)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $model->GetMessage());
     }
@@ -361,17 +402,15 @@ function metaWeblog_getCategories($params)
     $user     = getScalarValue($params, 1);
     $password = getScalarValue($params, 2);
 
-    if (Jaws_Error::IsError($userInfo = Jaws_User::Valid($user, $password))) {
+    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
-    $GLOBALS['app']->Session->SetAttribute('user', $userInfo['id']);
-    $GLOBALS['app']->Session->SetAttribute('superadmin', $userInfo['superadmin']);
-    if (!GetBlogPermission($user, 'default_admin', $userInfo['superadmin'])) {
+    if (!GetBlogPermission($user, 'default_admin')) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, $categories->GetMessage());
     }
 
-    $model = $this->gadget->model->load('Categories');
+    $model = Jaws_Gadget::getInstance('Blog')->model->load('Categories');
     if (Jaws_Error::isError($model)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $model->GetMessage());
     }
@@ -414,22 +453,20 @@ function metaWeblog_getPost($params)
     $user     = getScalarValue($params, 1);
     $password = getScalarValue($params, 2);
 
-    if (Jaws_Error::IsError($userInfo = Jaws_User::Valid($user, $password))) {
+    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
-    $GLOBALS['app']->Session->SetAttribute('user', $userInfo['id']);
-    $GLOBALS['app']->Session->SetAttribute('superadmin', $userInfo['superadmin']);
-    if (!GetBlogPermission($user, 'default_admin', $userInfo['superadmin'])) {
+    if (!GetBlogPermission($user, 'default_admin')) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
     }
 
-    $model = $this->gadget->model->load('Posts');
-    if (Jaws_Error::isError($model)) {
-        return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $model->GetMessage());
+    $postsModel = Jaws_Gadget::getInstance('Blog')->model->load('Posts');
+    if (Jaws_Error::isError($postsModel)) {
+        return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $postsModel->GetMessage());
     }
 
-    $entry = $model->GetEntry($post_id);
+    $entry = $postsModel->GetEntry($post_id);
     if (Jaws_Error::IsError($entry)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $entry->GetMessage());
     }
@@ -440,7 +477,8 @@ function metaWeblog_getPost($params)
     $content = stripslashes($entry['text']);
 
     $categories = array();
-    $cats = $model->GetCategoriesInEntry($post_id);
+    $categoriesModel = Jaws_Gadget::getInstance('Blog')->model->load('Categories');
+    $cats = $categoriesModel->GetCategoriesInEntry($post_id);
     if (!Jaws_Error::isError($cats)) {
         foreach ($cats as $cat) {
             $categories[] = new XML_RPC_Value($cat['name']);
@@ -482,17 +520,15 @@ function metaWeblog_getRecentPosts($params)
     $password      = getScalarValue($params, 2);
     $entries_limit = getScalarValue($params,3);
 
-    if (Jaws_Error::IsError($userInfo = Jaws_User::Valid($user, $password))) {
+    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
-    $GLOBALS['app']->Session->SetAttribute('user', $userInfo['id']);
-    $GLOBALS['app']->Session->SetAttribute('superadmin', $userInfo['superadmin']);
-    if (!GetBlogPermission($user, 'default_admin', $userInfo['superadmin'])) {
+    if (!GetBlogPermission($user, 'default_admin')) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
     }
 
-    $model = $this->gadget->model->load('Posts');
+    $model = Jaws_Gadget::getInstance('Blog')->model->load('Posts');
     if (Jaws_Error::isError($model)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $model->GetMessage());
     }
@@ -515,9 +551,10 @@ function metaWeblog_getRecentPosts($params)
 
         // Fetch categories for this post
         $categories = array();
-        $cats = $model->GetCategoriesInEntry($entry['id']);
+        $categoriesModel = Jaws_Gadget::getInstance('Blog')->model->load('Categories');
+        $cats = $categoriesModel->GetCategoriesInEntry($entry['id']);
         if (!Jaws_Error::isError($cats)) {
-            foreach ($cats as $cat) {
+            foreach ($cats as &$cat) {
                 $categories[] = new XML_RPC_Value($cat['name']);
             }
         }
