@@ -125,7 +125,8 @@ function metaWeblog_getUsersBlogs($params)
     $user     = getScalarValue($params, 1);
     $password = getScalarValue($params, 2);
 
-    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
+    $userInfo = userAuthentication($user, $password);
+    if (Jaws_Error::IsError($userInfo)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3,  _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
@@ -165,7 +166,8 @@ function metaWeblog_getUserInfo($params)
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, 'fubar user param');
     }
 
-    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
+    $userInfo = userAuthentication($user, $password);
+    if (Jaws_Error::IsError($userInfo)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
@@ -201,7 +203,8 @@ function metaWeblog_newPost($params)
     $user       = getScalarValue($params, 1);
     $password   = getScalarValue($params, 2);
 
-    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
+    $userInfo = userAuthentication($user, $password);
+    if (Jaws_Error::IsError($userInfo)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
@@ -220,7 +223,7 @@ function metaWeblog_newPost($params)
         $content = Jaws_UTF8::substr_replace($content, '', 0, $more_pos + 11);
     }
 
-    $catsModel = Jaws_Gadget::getInstance('Blog')->model->loadAdmin('Categories');
+    $catsModel = Jaws_Gadget::getInstance('Blog')->model->load('Categories');
     if (Jaws_Error::isError($catsModel)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $catsModel->GetMessage());
     }
@@ -273,7 +276,7 @@ function metaWeblog_newPost($params)
         '',
         $publish
     );
-    if (Jaws_Error::IsError ($post_id)) {
+    if (Jaws_Error::IsError($post_id)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $post_id->GetMessage());
     }
 
@@ -305,14 +308,14 @@ function metaWeblog_editPost($params)
         $content = Jaws_UTF8::substr_replace($content, '', 0, $more_pos + 11);
     }
 
-    $model = Jaws_Gadget::getInstance('Blog')->model->loadAdmin('Categories');
-    if (Jaws_Error::isError($model)) {
-        return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $model->GetMessage());
+    $catsModel = Jaws_Gadget::getInstance('Blog')->model->load('Categories');
+    if (Jaws_Error::isError($catsModel)) {
+        return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $catsModel->GetMessage());
     }
 
     $categories = array();
     foreach ($cats as $cat) {
-        $catInfo = $model->GetCategoryByName($cat);
+        $catInfo = $catsModel->GetCategoryByName($cat);
         if (Jaws_Error::IsError($catInfo)) {
             return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $catInfo->GetMessage());
         }
@@ -336,7 +339,8 @@ function metaWeblog_editPost($params)
 //     $allow_ping     = $data['mt_allow_ping'];
 //     $convert_breaks = $data['mt_convert_breaks'];
 
-    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
+    $userInfo = userAuthentication($user, $password);
+    if (Jaws_Error::IsError($userInfo)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
@@ -344,8 +348,22 @@ function metaWeblog_editPost($params)
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
     }
 
-    $blog_result = $model->UpdateEntry($post_id, $categories, $title, $summary, $content, '', '', '', $allow_c, '', $publish);
-    if (Jaws_Error::IsError ($blog_result)) {
+    $postModel = Jaws_Gadget::getInstance('Blog')->model->loadAdmin('Posts');
+    $blog_result = $postModel->UpdateEntry(
+        $post_id,
+        $categories,
+        $title,
+        $summary,
+        $content,
+        '',
+        '',
+        '',
+        '',
+        $allow_c,
+        '',
+        $publish
+    );
+    if (Jaws_Error::IsError($blog_result)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $blog_result->GetMessage());
     }
 
@@ -367,7 +385,8 @@ function metaWeblog_deletePost($params)
     $password = getScalarValue($params, 3);
     $publish  = getScalarValue($params, 4);
 
-    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
+    $userInfo = userAuthentication($user, $password);
+    if (Jaws_Error::IsError($userInfo)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
@@ -402,7 +421,8 @@ function metaWeblog_getCategories($params)
     $user     = getScalarValue($params, 1);
     $password = getScalarValue($params, 2);
 
-    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
+    $userInfo = userAuthentication($user, $password);
+    if (Jaws_Error::IsError($userInfo)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
@@ -416,7 +436,7 @@ function metaWeblog_getCategories($params)
     }
 
     $categories = $model->GetCategories();
-    if (Jaws_Error::IsError ($categories)) {
+    if (Jaws_Error::IsError($categories)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $categories->GetMessage());
     }
 
@@ -453,7 +473,8 @@ function metaWeblog_getPost($params)
     $user     = getScalarValue($params, 1);
     $password = getScalarValue($params, 2);
 
-    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
+    $userInfo = userAuthentication($user, $password);
+    if (Jaws_Error::IsError($userInfo)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
@@ -520,7 +541,8 @@ function metaWeblog_getRecentPosts($params)
     $password      = getScalarValue($params, 2);
     $entries_limit = getScalarValue($params,3);
 
-    if (Jaws_Error::IsError($userInfo = userAuthentication($user, $password))) {
+    $userInfo = userAuthentication($user, $password);
+    if (Jaws_Error::IsError($userInfo)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
     }
 
@@ -645,7 +667,6 @@ function pingback_ping($params)
  */
 function pingback_extensions_getPingbacks($params)
 {
-
 }
 
 /*
