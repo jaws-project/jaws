@@ -158,7 +158,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $orderType->AddEvent(ON_CHANGE, "javascript: searchErrorMaps();");
         $orderType->SetDefault(-1);
         $tpl->SetVariable('order_type', $orderType->Get());
-        $tpl->SetVariable('lbl_order_type', _t('USERS_USERS_ORDER_TYPE'));
+        $tpl->SetVariable('lbl_order_type', _t('URLMAPPER_ORDER_TYPE'));
 
         // Actions
         $actions =& Piwi::CreateWidget('Combo', 'errormaps_actions');
