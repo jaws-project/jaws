@@ -383,13 +383,15 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
      */
     function GetTagsCount($filters = array(), $user = 0)
     {
-        $table = Jaws_ORM::getInstance()->table('tags_references');
-        $table->select('count(tags_references.id):integer');
-        $table->join('tags', 'tags.id', 'tags_references.tag');
-        $table->where('tags_references.user', (int)$user);
+        $table = Jaws_ORM::getInstance()->table('tags');
+        $table->select('tags.id', 'count(tags.id):integer');
+        $table->join('tags_references', 'tags_references.tag', 'tags.id', 'left');
+        $table->groupBy('tags.id');
+        $table->where('tags.user', (int)$user);
         if (!empty($filters) && count($filters) > 0) {
             if (array_key_exists('name', $filters) && !empty($filters['name'])) {
-                $table->and()->where('name', '%' . $filters['name'] . '%', 'like');
+                $table->and()->openWhere('name', '%' . $filters['name'] . '%', 'like')->or();
+                $table->closeWhere('title', '%' . $filters['name'] . '%', 'like');
             }
             if (array_key_exists('gadget', $filters) && !empty($filters['gadget'])) {
                 $table->and()->where('gadget', $filters['gadget']);
@@ -399,8 +401,8 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             }
         }
 
-        $result = $table->fetchOne();
-        return Jaws_Error::IsError($result)? 0 : $result;
+        $result = $table->fetchColumn();
+        return Jaws_Error::IsError($result)? 0 : count($result);
     }
 
     /**
