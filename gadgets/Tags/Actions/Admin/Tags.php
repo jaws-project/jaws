@@ -100,7 +100,7 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
             $tpl->SetVariable('btn_save', $btnSave->Get());
         }
 
-        $tpl->SetVariable('incompleteTagFields',    _t('TAGS_INCOMPLETE_FIELDS'));
+        $tpl->SetVariable('incompleteTagFields',    _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('confirmTagDelete',       _t('TAGS_CONFIRM_DELETE'));
         $tpl->SetVariable('selectMoreThanOneTags',  _t('TAGS_SELECT_MORE_THAN_ONE_TAG_FOR_MERGE'));
         $tpl->SetVariable('legend_title',           _t('TAGS_ADD_TAG'));
@@ -168,7 +168,7 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
     function GetDataAsArray($editAction, $filters, $offset)
     {
         $cModel = $this->gadget->model->loadAdmin('Tags');
-        $tags = $cModel->GetTags($filters, 10, $offset);
+        $tags = $cModel->GetTags($filters, 15, $offset);
         if (Jaws_Error::IsError($tags)) {
             return array();
         }
@@ -212,6 +212,7 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
         $grid->SetID('tags_datagrid');
         $grid->SetStyle('width: 100%;');
         $grid->useMultipleSelection();
+        $grid->pageBy(15);
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('TAGS_TAG_NAME')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('TAGS_TAG_TITLE')));
         $grid->AddColumn(Piwi::CreateWidget('Column', _t('TAGS_TAG_USAGE_COUNT')));

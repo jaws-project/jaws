@@ -10,7 +10,6 @@
  */
 class Tags_Actions_Tags extends Tags_Actions_Default
 {
-
     /**
      * Get then TagsCloud action params
      *

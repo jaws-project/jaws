@@ -14,6 +14,7 @@ var TagsCallback = {
     AddTag: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopTagAction();
+            $('tags_datagrid').addItem();
             getDG('tags_datagrid');
         }
         showResponse(response);
@@ -30,7 +31,7 @@ var TagsCallback = {
     DeleteTags: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopTagAction();
-            getDG('tags_datagrid');
+            getDG('tags_datagrid', $('tags_datagrid').getCurrentPage(), true);
         }
         showResponse(response);
     },
@@ -38,7 +39,7 @@ var TagsCallback = {
     MergeTags: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopTagAction();
-            getDG('tags_datagrid');
+            getDG('tags_datagrid', $('tags_datagrid').getCurrentPage(), true);
         }
         showResponse(response);
     },
@@ -115,9 +116,14 @@ function editTag(rowElement, id)
 /**
  * Update a tag
  */
-function updateTag() {
+function updateTag()
+{
+    if ($('name').value.blank()) {
+        alert(incompleteTafFields);
+        return false;
+    }
 
-    if($('id').value==0) {
+    if ($('id').value==0) {
         TagsAjax.callAsync('AddTag',
             {'name':$('name').value,
             'title':$('title').value,
