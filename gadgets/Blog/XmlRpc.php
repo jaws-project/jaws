@@ -213,7 +213,6 @@ function metaWeblog_newPost($params)
     }
 
     $struct  = XML_RPC_decode($params->getParam(3));
-    _log_var_dump($struct);
     $title   = $struct['title'];
     $cats    = $struct['categories'];
     $summary = '';
