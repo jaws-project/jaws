@@ -74,7 +74,7 @@ class Upgrader_09To100 extends JawsUpgraderStage
 
         // Upgrading core gadgets
         $gadgets = array(
-            'Settings', 'ControlPanel', 'Policy', 'Layout', 'Users', 'Comments',
+            'UrlMapper', 'Settings', 'ControlPanel', 'Policy', 'Layout', 'Users', 'Comments',
         );
         foreach ($gadgets as $gadget) {
             $objGadget = Jaws_Gadget::getInstance($gadget);
