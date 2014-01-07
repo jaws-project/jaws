@@ -314,13 +314,13 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             $entry = $row;
             $entry['avatar_source'] = Jaws_Gravatar::GetGravatar($row['email']);
             $entry['categories']    = $model->GetCategoriesInEntry($row['id']);
-        }
 
-        $entry['tags'] = array();
-        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
-            $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
-            $tags = $model->GetReferenceTags('Blog', 'post', $row['id']);
-            $entry['tags'] = array_filter($tags);
+            $entry['tags'] = array();
+            if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+                $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
+                $tags = $model->GetReferenceTags('Blog', 'post', $row['id']);
+                $entry['tags'] = array_filter($tags);
+            }
         }
 
         return $entry;
