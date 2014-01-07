@@ -316,6 +316,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             $entry['categories']    = $model->GetCategoriesInEntry($row['id']);
         }
 
+        $entry['tags'] = array();
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
             $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             $tags = $model->GetReferenceTags('Blog', 'post', $row['id']);
