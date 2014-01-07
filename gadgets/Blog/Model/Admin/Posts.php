@@ -116,23 +116,14 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $params['text']             = str_replace("\r\n", "\n", $content);
         $params['summary']          = str_replace("\r\n", "\n", $summary);
         $params['trackbacks']       = $trackbacks;
-        $params['published']        = $this->gadget->GetPermission('PublishEntries')? $publish : false;
+        $params['published']        = $this->gadget->GetPermission('PublishEntries')? (bool)$publish : false;
         $params['fast_url']         = $fast_url;
         $params['meta_keywords']    = $meta_keywords;
         $params['meta_description'] = $meta_desc;
-        $params['allow_comments']   = $allow_comments;
+        $params['allow_comments']   = (bool)$allow_comments;
         $params['categories']       = implode(',', $categories);
         $params['createtime']       = $now;
         $params['updatetime']       = $now;
-
-        // Switch out for the MDB2 way
-        if (!is_bool($params['allow_comments'])) {
-            $params['allow_comments'] = $params['allow_comments'] == '1' ? true : false;
-        }
-
-        if (!is_bool($params['published'])) {
-            $params['published'] = $params['published'] == '1' ? true : false;
-        }
 
         if (!is_null($timestamp)) {
             // Maybe we need to not allow crazy dates, e.g. 100 years ago
