@@ -806,9 +806,6 @@ $rpc_methods = array(
     ),
     'blogger.deletePost' => array(
         'function'  => 'metaWeblog_deletePost',
-        'signature' => array(
-            array('boolean', 'string', 'string', 'string', 'string', 'boolean'),
-        ),
     ),
 
     // metaWeblog API
