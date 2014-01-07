@@ -29,11 +29,11 @@ class Blog_Installer extends Jaws_Gadget_Installer
         array('last_recentcomments_limit', '20'),
         array('generate_xml', 'true'),
         array('generate_category_xml', 'true'),
-        array('trackback', 'true'),
+        array('trackback', 'false'),
         array('trackback_status', 'approved'),
         array('plugabble', 'true'),
         array('use_antispam', 'true'),
-        array('pingback', 'true'),
+        array('pingback', 'false'),
     );
 
     /**
