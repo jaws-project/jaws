@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>database</variable></name>
+
+ <table>
+    <name><variable>table_prefix</variable>url_maps</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>gadget</name>
+            <type>text</type>
+            <length>32</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>action</name>
+            <type>text</type>
+            <length>32</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>map</name>
+            <type>text</type>
+            <length>120</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>regexp</name>
+            <type>text</type>
+            <length>255</length>
+            <notnull>true</notnull>
+        </field>
+   
+        <field>
+            <name>extension</name>
+            <type>text</type>
+            <length>16</length>
+        </field>
+
+        <field>
+            <name>vars_regexps</name>
+            <type>text</type>
+        </field>
+
+        <field>
+            <name>custom_map</name>
+            <type>text</type>
+            <length>120</length>
+        </field>
+
+        <field>
+            <name>custom_regexp</name>
+            <type>text</type>
+            <length>255</length>
+        </field>
+   
+        <field>
+            <name>order</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>createtime</name>
+            <type>timestamp</type>
+        </field>
+
+        <field>
+            <name>updatetime</name>
+            <type>timestamp</type>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>url_maps_game</name>
+            <unique>true</unique>
+            <field>
+                <name>gadget</name>
+            </field>
+            <field>
+                <name>action</name>
+            </field>
+            <field>
+                <name>map</name>
+            </field>
+            <field>
+                <name>extension</name>
+            </field>
+        </index>
+
+        <index>
+            <name><variable>table_prefix</variable>url_maps_go</name>
+            <field>
+                <name>gadget</name>
+            </field>
+            <field>
+                <name>order</name>
+            </field>
+        </index>
+
+    </declaration>
+ </table>
+
+ <table>
+    <name><variable>table_prefix</variable>url_aliases</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>real_url</name>
+            <type>text</type>
+            <length>120</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>alias_url</name>
+            <type>text</type>
+            <length>120</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>alias_hash</name>
+            <type>text</type>
+            <length>32</length>
+            <notnull>true</notnull>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>url_aliases_hash</name>
+            <unique>true</unique>
+            <field>
+                <name>alias_hash</name>
+            </field>
+        </index>
+
+        </declaration>
+ </table>
+
+ <table>
+    <name><variable>table_prefix</variable>url_errors</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>url</name>
+            <type>text</type>
+            <length>255</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>url_hash</name>
+            <type>text</type>
+            <length>32</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>code</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>new_url</name>
+            <type>text</type>
+            <length>255</length>
+        </field>
+
+        <field>
+            <name>new_code</name>
+            <type>integer</type>
+            <length>4</length>
+        </field>
+
+        <field>
+            <name>hits</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>createtime</name>
+            <type>timestamp</type>
+        </field>
+
+        <field>
+            <name>updatetime</name>
+            <type>timestamp</type>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>url_url_hash</name>
+            <unique>true</unique>
+            <field>
+                <name>url_hash</name>
+            </field>
+        </index>
+
+        </declaration>
+ </table>
+
+</database>
