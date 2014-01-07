@@ -110,7 +110,7 @@ box-sizing:border-box;
 input:focus,textarea:focus,select:focus{
 border:1px solid #5279b4;
 }
-label+input,label+textarea,label+select,.jaws_textarea_editor textarea{
+label+input,label+textarea,label+select,.jaws_editor textarea{
 width:100%;
 display:block;
 }
