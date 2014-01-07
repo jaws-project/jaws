@@ -213,16 +213,7 @@ function metaWeblog_newPost($params)
     }
 
     $struct  = XML_RPC_decode($params->getParam(3));
-    $title   = $struct['title'];
     $cats    = $struct['categories'];
-    $summary = '';
-    $content = parseContent($struct['description']);
-    $more_pos = Jaws_UTF8::strpos($content, '<!--more-->');
-    if ($more_pos !== false) {
-        $summary = Jaws_UTF8::substr($content, 0, $more_pos);
-        $content = Jaws_UTF8::substr_replace($content, '', 0, $more_pos + 11);
-    }
-
     $catsModel = Jaws_Gadget::getInstance('Blog')->model->load('Categories');
     if (Jaws_Error::isError($catsModel)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $catsModel->GetMessage());
@@ -240,22 +231,29 @@ function metaWeblog_newPost($params)
         }
     }
 
-    // Not used yet
-//     $extended       = $data['mt_text_more'];
-//     $excerpt        = $data['mt_excerpt'];
-//     $keywords       = $data['mt_keywords'];
-//     $allow_ping     = $data['mt_allow_ping'];
-//     $convert_breaks = $data['mt_convert_breaks'];
-//     $tb_ping_urls   = $data['mt_tb_ping_urls'];
-
-    // Allow Comments ?
-    if (!empty($data['mt_allow_comments'])) {
-        $allow_c = $data['mt_allow_comments'];
+    $title = $struct['title'];
+    if (!isset($struct['mt_text_more'])) {
+        if (false !== $more_pos = Jaws_UTF8::strpos($struct['description'], '<!--more-->')) {
+            $summary = Jaws_UTF8::substr($struct['description'], 0, $more_pos);
+            $content = Jaws_UTF8::substr($struct['description'], $more_pos + 11);
+        } else {
+            $summary = $struct['description'];
+            $content = '';
+        }
     } else {
-        $allow_c = $GLOBALS['app']->Registry->fetch('allow_comments');
-        $allow_c = $allow_c == 'true' ? 1 : 0;
+        $summary = $struct['description'];
+        $content = $struct['mt_text_more'];
     }
+    $summary = parseContent($summary);
+    $content = parseContent($content);
 
+    // allow comments
+    if (isset($struct['mt_allow_comments'])) {
+        $allow_c = (bool)$struct['mt_allow_comments'];
+    } else {
+        $allow_c = (bool)$GLOBALS['app']->Registry->fetch('allow_comments');
+    }
+    // categories
     if (empty($categories)) {
         $categories = array($GLOBALS['app']->Registry->fetch('default_category'));
     }
@@ -323,16 +321,7 @@ function metaWeblog_editPost($params)
     }
 
     $struct  = XML_RPC_decode($params->getParam(3));
-    $title   = $struct['title'];
     $cats    = $struct['categories'];
-    $summary = '';
-    $content = parseContent($struct['description']);
-    $more_pos = Jaws_UTF8::strpos($content, '<!--more-->');
-    if ($more_pos !== false) {
-        $summary = Jaws_UTF8::substr($content, 0, $more_pos);
-        $content = Jaws_UTF8::substr_replace($content, '', 0, $more_pos + 11);
-    }
-
     $catsModel = Jaws_Gadget::getInstance('Blog')->model->load('Categories');
     if (Jaws_Error::isError($catsModel)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $catsModel->GetMessage());
@@ -350,20 +339,30 @@ function metaWeblog_editPost($params)
         }
     }
 
-    // Allow Comments ?
-    $allow_c = $GLOBALS['app']->Registry->fetch('allow_comments');
-    $allow_c = $allow_c == 'true' ? 1 : 0;
+    $title = $struct['title'];
+    if (!isset($struct['mt_text_more'])) {
+        if (false !== $more_pos = Jaws_UTF8::strpos($struct['description'], '<!--more-->')) {
+            $summary = Jaws_UTF8::substr($struct['description'], 0, $more_pos);
+            $content = Jaws_UTF8::substr($struct['description'], $more_pos + 11);
+        } else {
+            $summary = $struct['description'];
+            $content = '';
+        }
+    } else {
+        $summary = $struct['description'];
+        $content = $struct['mt_text_more'];
+    }
+    $summary = parseContent($summary);
+    $content = parseContent($content);
 
+    // allow comments
+    if (isset($struct['mt_allow_comments'])) {
+        $allow_c = (bool)$struct['mt_allow_comments'];
+    } else {
+        $allow_c = (bool)$GLOBALS['app']->Registry->fetch('allow_comments');
+    }
+    // published
     $publish = getScalarValue($params, 4);
-
-    // Not used yet
-//     $extended       = $data['mt_text_more'];
-//     $excerpt        = $data['mt_excerpt'];
-//     $keywords       = $data['mt_keywords'];
-//     $allow_c        = $data['mt_allow_comments'];
-//     $allow_ping     = $data['mt_allow_ping'];
-//     $convert_breaks = $data['mt_convert_breaks'];
-
     // tags
     $tags = isset($struct['mt_keywords'])? $struct['mt_keywords'] : '';
     // publish time
