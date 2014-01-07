@@ -213,6 +213,7 @@ function metaWeblog_newPost($params)
     }
 
     $struct  = XML_RPC_decode($params->getParam(3));
+    _log_var_dump($struct);
     $title   = $struct['title'];
     $cats    = $struct['categories'];
     $summary = '';
@@ -259,14 +260,21 @@ function metaWeblog_newPost($params)
     if (empty($categories)) {
         $categories = array($GLOBALS['app']->Registry->fetch('default_category'));
     }
+    // published
     $publish  = getScalarValue($params, 4);
-
+    // tags
+    $tags = isset($struct['mt_keywords'])? $struct['mt_keywords'] : '';
     // publish time
     $timestamp = null;
-    if (isset($struct['dateCreated'])) {
-        $date = date_parse_from_format('Ymd\TH:i:s', $struct['dateCreated']);
+    if (isset($struct['date_created_gmt'])) {
+        $date = date_parse_from_format('Ymd\TH:i:s', $struct['date_created_gmt']);
         $date = mktime($date['hour'], $date['minute'], $date['second'], $date['month'], $date['day'], $date['year']);
         $timestamp = date('Y-m-d H:i:s', $date);
+    }
+
+    $trackbacks = '';
+    if (isset($struct['mt_tb_ping_urls'])) {
+        $trackbacks = implode("\n", $struct['mt_tb_ping_urls']);
     }
 
     $postsModel = Jaws_Gadget::getInstance('Blog')->model->loadAdmin('Posts');
@@ -279,9 +287,9 @@ function metaWeblog_newPost($params)
         $title,
         '',
         '',
-        '',
+        $tags,
         $allow_c,
-        '',
+        $trackbacks,
         $publish,
         $timestamp
     );
@@ -306,8 +314,16 @@ function metaWeblog_editPost($params)
     $user     = getScalarValue($params, 1);
     $password = getScalarValue($params, 2);
 
-    $struct  = XML_RPC_decode($params->getParam(3));
+    $userInfo = userAuthentication($user, $password);
+    if (Jaws_Error::IsError($userInfo)) {
+        return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
+    }
 
+    if (!GetBlogPermission($user, 'AddEntries')) {
+        return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
+    }
+
+    $struct  = XML_RPC_decode($params->getParam(3));
     $title   = $struct['title'];
     $cats    = $struct['categories'];
     $summary = '';
@@ -349,21 +365,19 @@ function metaWeblog_editPost($params)
 //     $allow_ping     = $data['mt_allow_ping'];
 //     $convert_breaks = $data['mt_convert_breaks'];
 
-    $userInfo = userAuthentication($user, $password);
-    if (Jaws_Error::IsError($userInfo)) {
-        return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
-    }
-
-    if (!GetBlogPermission($user, 'AddEntries')) {
-        return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
-    }
-
+    // tags
+    $tags = isset($struct['mt_keywords'])? $struct['mt_keywords'] : '';
     // publish time
     $timestamp = null;
-    if (isset($struct['dateCreated'])) {
-        $date = date_parse_from_format('Ymd\TH:i:s', $struct['dateCreated']);
+    if (isset($struct['date_created_gmt'])) {
+        $date = date_parse_from_format('Ymd\TH:i:s', $struct['date_created_gmt']);
         $date = mktime($date['hour'], $date['minute'], $date['second'], $date['month'], $date['day'], $date['year']);
         $timestamp = date('Y-m-d H:i:s', $date);
+    }
+    // trackbacks
+    $trackbacks = '';
+    if (isset($struct['mt_tb_ping_urls'])) {
+        $trackbacks = implode("\n", $struct['mt_tb_ping_urls']);
     }
 
     $postModel = Jaws_Gadget::getInstance('Blog')->model->loadAdmin('Posts');
@@ -376,9 +390,9 @@ function metaWeblog_editPost($params)
         '',
         '',
         '',
-        '',
+        $tags,
         $allow_c,
-        '',
+        $trackbacks,
         $publish,
         $timestamp
     );
@@ -402,7 +416,6 @@ function metaWeblog_deletePost($params)
     $post_id  = getScalarValue($params, 1);
     $user     = getScalarValue($params, 2);
     $password = getScalarValue($params, 3);
-    $publish  = getScalarValue($params, 4);
 
     $userInfo = userAuthentication($user, $password);
     if (Jaws_Error::IsError($userInfo)) {
@@ -413,6 +426,7 @@ function metaWeblog_deletePost($params)
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('GLOBAL_ERROR_NO_PRIVILEGES'));
     }
 
+    $publish  = getScalarValue($params, 4);
     $model = Jaws_Gadget::getInstance('Blog')->model->loadAdmin('Posts');
     if (Jaws_Error::isError($model)) {
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $model->GetMessage());
@@ -465,7 +479,7 @@ function metaWeblog_getCategories($params)
         $htmlurl = $GLOBALS['app']->Map->GetURLFor('Blog', 'ShowCategory', array('id' => $cid));
         $rssurl  = $GLOBALS['app']->Map->GetURLFor('Blog', 'ShowRSSCategory', array('id' => $category['id']));
         $data = array(
-            'categoryid'   => new XML_RPC_Value($category['id']),
+            'categoryId'   => new XML_RPC_Value($category['id']),
             'categoryName' => new XML_RPC_Value($category['name']),
             'title'        => new XML_RPC_Value($category['name']),
             'description'  => new XML_RPC_Value($category['description']),
@@ -511,8 +525,8 @@ function metaWeblog_getPost($params)
         return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $entry->GetMessage());
     }
 
-    $publishtime = strtotime($entry['publishtime']);
-    $publishtime = date('Ymd', $publishtime) . 'T' . date('H:i:s', $publishtime);
+    $publishtime = date('Ymd\TH:i:s', strtotime($entry['publishtime']));
+    $updatedtime = date('Ymd\TH:i:s', strtotime($entry['updatetime']));
     $summary = stripslashes($entry['summary']);
     $content = stripslashes($entry['text']);
 
@@ -529,21 +543,95 @@ function metaWeblog_getPost($params)
     $link = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $pid));
 
     $data = array(
-        'categories'  => new XML_RPC_Value($categories, 'array'),
-        'dateCreated' => new XML_RPC_Value($publishtime, 'dateTime.iso8601'),
-        'description' => new XML_RPC_Value($summary),
-        'link'        => new XML_RPC_Value($link),
-        'permLink'    => new XML_RPC_Value($link),
+        'blogid'      => new XML_RPC_Value('1'),
         'postid'      => new XML_RPC_Value($entry['id'], 'int'),
         'title'       => new XML_RPC_Value($entry['title']),
+        'description' => new XML_RPC_Value($summary),
+        'link'        => new XML_RPC_Value($link),
         'userid'      => new XML_RPC_Value($entry['user_id'], 'int'),
-        'blogid'      => new XML_RPC_Value('1'),
+        'date_created_gmt'  => new XML_RPC_Value($publishtime),
+        'date_modified_gmt' => new XML_RPC_Value($updatedtime),
+        'permaLink'   => new XML_RPC_Value($link),
+        'categories'  => new XML_RPC_Value($categories, 'array'),
+        'mt_excerpt'  => new XML_RPC_Value(''),
+        'mt_keywords' => new XML_RPC_Value(implode(',', $entry['tags'])),
+        'mt_text_more'      => new XML_RPC_Value($content),
         'mt_allow_comments' => new XML_RPC_Value($entry['allow_comments'], 'boolean'),
-        'mt_text_more'      => new XML_RPC_Value($content)
+        'mt_allow_pings'    => new XML_RPC_Value($entry['allow_comments'], false),
+        'mt_tb_ping_urls'   => new XML_RPC_Value(explode("\n", $entry['trackbacks']), 'array'),
     );
 
     $struct = new XML_RPC_Value($data, 'struct');
     return new XML_RPC_Response($struct);
+}
+
+/**
+ * metaWeblog.getPostCategories
+ *
+ * @access  public
+ * @param   array   $params     array of params
+ * @return  XML_RPC_Response object
+ */
+function metaWeblog_getPostCategories($params)
+{
+    $post_id  = getScalarValue($params, 0);
+    $user     = getScalarValue($params, 1);
+    $password = getScalarValue($params, 2);
+
+    $userInfo = userAuthentication($user, $password);
+    if (Jaws_Error::IsError($userInfo)) {
+        return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
+    }
+
+    if (!GetBlogPermission($user, 'default_admin')) {
+        return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, $categories->GetMessage());
+    }
+
+    $categoriesModel = Jaws_Gadget::getInstance('Blog')->model->load('Categories');
+    $categories = $categoriesModel->GetCategoriesInEntry($post_id);
+    if (Jaws_Error::isError($categories)) {
+        return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+2, $categories->GetMessage());
+    }
+
+    $struct = array();
+    foreach ($categories as $category) {
+        $data = array(
+            'categoryId'   => new XML_RPC_Value($category['id']),
+            'categoryName' => new XML_RPC_Value($category['name']),
+            'isPrimary'    => new XML_RPC_Value(false),
+        );
+        $struct[] = new XML_RPC_Value($data, 'struct');
+    }
+
+    $val = new XML_RPC_Value($struct, 'array');
+    return new XML_RPC_Response($val);
+}
+
+
+/**
+ * metaWeblog.getPostCategories
+ *
+ * @access  public
+ * @param   array   $params     array of params
+ * @return  XML_RPC_Response object
+ */
+function metaWeblog_setPostCategories($params)
+{
+    $post_id  = getScalarValue($params, 0);
+    $user     = getScalarValue($params, 1);
+    $password = getScalarValue($params, 2);
+
+    $userInfo = userAuthentication($user, $password);
+    if (Jaws_Error::IsError($userInfo)) {
+        return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+4, _t('GLOBAL_ERROR_LOGIN_WRONG'));
+    }
+
+    if (!GetBlogPermission($user, 'default_admin')) {
+        return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, $categories->GetMessage());
+    }
+
+    $categories = getScalarValue($params, 3);
+    return new XML_RPC_Response(new XML_RPC_Value('1', 'boolean'));
 }
 
 /**
@@ -657,6 +745,18 @@ function metaWeblog_setTemplate($params)
     return new XML_RPC_Response(0, $GLOBALS['XML_RPC_erruser']+3, _t('BLOG_ERROR_XMLRPC_NO_SETTEMPLATE_SUPPORT'));
 }
 
+/**
+ * metaWeblog.setTemplate
+ *
+ * @access  public
+ * @param   array   $params     array of params
+ * @return  XML_RPC_Response object
+ */
+function metaWeblog_setPostPublish($params)
+{
+    return new XML_RPC_Response(new XML_RPC_Value('1', 'boolean'));
+}
+
 /* PingBack functions
  * specs on www.hixie.ch/specs/pingback/pingback
  */
@@ -734,9 +834,6 @@ $rpc_methods = array(
     ),
     'metaWeblog.editPost' => array(
         'function'  => 'metaWeblog_editPost',
-        'signature' => array(
-            array('boolean', 'string', 'string', 'string', 'struct', 'boolean'),
-        ),
     ),
     'metaWeblog.getPost' => array(
         'function'  => 'metaWeblog_getPost',
@@ -765,6 +862,19 @@ $rpc_methods = array(
     ),
     'metaWeblog.getTemplate'   => array('function' => 'metaWeblog_getTemplate'),
     'metaWeblog.setTemplate'   => array('function' => 'metaWeblog_setTemplate'),
+    // MovableType API
+    'mt.getCategoryList' => array(
+        'function'  => 'metaWeblog_getCategories',
+    ),
+    'mt.getPostCategories' => array(
+        'function'  => 'metaWeblog_getPostCategories',
+    ),
+    'mt.setPostCategories' => array(
+        'function'  => 'metaWeblog_setPostCategories',
+    ),
+    'mt.publishPost' => array(
+        'function'  => 'metaWeblog_setPostPublish',
+    ),
 
     // Pingback
     'pingback.ping'                    => array('function' => 'pingback_ping'),
