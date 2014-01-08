@@ -597,6 +597,9 @@ class Jaws_Layout
         $goGadget = Jaws_Gadget::getInstance($gadget)->action->load($filename);
         if (!Jaws_Error::isError($goGadget)) {
             if (method_exists($goGadget, $action)) {
+                $GLOBALS['app']->requestedGadget = $gadget;
+                $GLOBALS['app']->requestedAction = $action;
+                $GLOBALS['app']->requestedActionMode = ACTION_MODE_LAYOUT;
                 if (is_null($params)) {
                     $output = $goGadget->$action();
                 } else {
