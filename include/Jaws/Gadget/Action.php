@@ -244,7 +244,7 @@ class Jaws_Gadget_Action
         }
 
         // set requested action
-        $GLOBALS['app']->requestedAction = $action;
+        $GLOBALS['app']->mainAction = $action;
 
         if (false === $action) {
             return Jaws_Error::raiseError(_t('GLOBAL_ACTION_NO_DEFAULT'), __FUNCTION__);

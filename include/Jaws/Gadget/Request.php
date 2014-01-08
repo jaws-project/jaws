@@ -42,7 +42,7 @@ class Jaws_Gadget_Request
      */
     function fetch($key, $types = '', $filter = true, $json_decode = false)
     {
-        if ($this->gadget->name == $GLOBALS['app']->requestedGadget) {
+        if ($this->gadget->name == $GLOBALS['app']->mainGadget) {
             return jaws()->request->fetch($key, $types, $filter, $json_decode);
         } else {
             return null;
@@ -59,7 +59,7 @@ class Jaws_Gadget_Request
      */
     function fetchAll($type = '', $filter = true)
     {
-        if ($this->gadget->name == $GLOBALS['app']->requestedGadget) {
+        if ($this->gadget->name == $GLOBALS['app']->mainGadget) {
             return jaws()->request->fetchAll($type, $filter);
         } else {
             return null;
