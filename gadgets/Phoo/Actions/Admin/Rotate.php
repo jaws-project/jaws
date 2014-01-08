@@ -90,7 +90,7 @@ class Phoo_Actions_Admin_Rotate extends Phoo_Actions_Admin_Default
         include_once JAWS_PATH . 'include/Jaws/Image.php';
         $objImage = Jaws_Image::factory();
         if (Jaws_Error::IsError($objImage)) {
-            $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            $GLOBALS['app']->Session->PushLastResponse($objImage->getMessage(), RESPONSE_ERROR);
         } else {
             // thumb
             $objImage->load(JAWS_DATA. 'phoo/'. rawurldecode($image['thumb']));
