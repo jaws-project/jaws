@@ -74,12 +74,12 @@ class Jaws_Template
             $theme   = $GLOBALS['app']->GetTheme();
             $browser = $GLOBALS['app']->GetBrowserFlag();
 
-            $this->globalVariables['theme_url']  = $theme['url'];
-            $this->globalVariables['data_url']   = $GLOBALS['app']->getDataURL();
-            $this->globalVariables['index'] = $GLOBALS['app']->requestedInIndex? 'index' : '';
-            $this->globalVariables['.browser']   = empty($browser)? '' : ".$browser";
-            $this->globalVariables['requested_gadget'] = strtolower($GLOBALS['app']->requestedGadget);
-            $this->globalVariables['requested_action'] = strtolower($GLOBALS['app']->requestedAction);
+            $this->globalVariables['theme_url']   = $theme['url'];
+            $this->globalVariables['data_url']    = $GLOBALS['app']->getDataURL();
+            $this->globalVariables['.browser']    = empty($browser)? '' : ".$browser";
+            $this->globalVariables['main_index']  = $GLOBALS['app']->mainIndex? 'index' : '';
+            $this->globalVariables['main_gadget'] = strtolower($GLOBALS['app']->mainGadget);
+            $this->globalVariables['main_action'] = strtolower($GLOBALS['app']->mainAction);
         }
 
     }
@@ -303,9 +303,9 @@ class Jaws_Template
                         $vars[$match[1]] = $this->globalVariables['requested_url'];
                         break;
 
-                    case 'index':
+                    case 'main_index':
                         if (isset($GLOBALS['app'])) {
-                            $vars[$match[1]] = $this->globalVariables['index'];
+                            $vars[$match[1]] = $this->globalVariables['main_index'];
                         }
                         break;
 
@@ -323,15 +323,15 @@ class Jaws_Template
                         $vars[$match[1]] = $this->globalVariables['base_script'];
                         break;
 
-                    case 'requested_gadget':
+                    case 'main_gadget':
                         if (isset($GLOBALS['app'])) {
-                            $vars[$match[1]] = $this->globalVariables['requested_gadget'];
+                            $vars[$match[1]] = $this->globalVariables['main_gadget'];
                         }
                         break;
 
-                    case 'requested_action':
+                    case 'main_action':
                         if (isset($GLOBALS['app'])) {
-                            $vars[$match[1]] = $this->globalVariables['requested_action'];
+                            $vars[$match[1]] = $this->globalVariables['main_action'];
                         }
                         break;
 
