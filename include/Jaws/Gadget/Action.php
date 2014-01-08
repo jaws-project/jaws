@@ -276,6 +276,9 @@ class Jaws_Gadget_Action
             return $objAction;
         }
 
+        $GLOBALS['app']->requestedGadget = $this->gadget->name;
+        $GLOBALS['app']->requestedAction = $action;
+        $GLOBALS['app']->requestedActionMode = ACTION_MODE_NORMAL;
         return $objAction->$action();
     }
 
