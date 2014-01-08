@@ -52,7 +52,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             return false;
         }
 
-        if (($GLOBALS['app']->mainAction == __FUNCTION__) && empty($gadget)) {
+        if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
             $gadget = $this->gadget->request->fetch('tagged_gadget', 'get');
         }
 
