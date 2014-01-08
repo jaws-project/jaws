@@ -13,26 +13,26 @@
 class Jaws
 {
     /**
-     * The processed request is in index page
+     * The processed main request is in index page
      *
      * @var     bool
      * @access  public
      */
-    var $requestedInIndex = false;
+    var $mainIndex = false;
 
     /**
-     * The requested gadget
+     * The main gadget
      * @var     string
      * @access  public
      */
-    var $requestedGadget = '';
+    var $mainGadget = '';
 
     /**
-     * The requested action
+     * The main action
      * @var     string
      * @access  public
      */
-    var $requestedAction = '';
+    var $mainAction = '';
 
     /**
      * Default preferences
