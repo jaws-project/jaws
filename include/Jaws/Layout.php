@@ -505,7 +505,7 @@ class Jaws_Layout
      *
      * @access  public
      */
-    function Populate($req_result = '', $onlyRequestedAction = false)
+    function Populate($req_result = '', $onlyMainAction = false)
     {
         $default_acl = (JAWS_SCRIPT == 'index')? 'default' : 'default_admin';
         $items = $this->GetLayoutItems();
@@ -534,11 +534,11 @@ class Jaws_Layout
                 $content = '';
                 if ($item['gadget'] == '[REQUESTEDGADGET]') {
                     $content = $req_result;
-                } elseif (!$onlyRequestedAction) {
-                    if ($this->IsDisplayable($GLOBALS['app']->requestedGadget,
-                                             $GLOBALS['app']->requestedAction,
+                } elseif (!$onlyMainAction) {
+                    if ($this->IsDisplayable($GLOBALS['app']->mainGadget,
+                                             $GLOBALS['app']->mainAction,
                                              $item['display_when'],
-                                             $GLOBALS['app']->requestedInIndex))
+                                             $GLOBALS['app']->mainIndex))
                     {
                         if ($GLOBALS['app']->Session->GetPermission($item['gadget'], $default_acl)) {
                             $content = $this->PutGadget(
@@ -690,8 +690,8 @@ class Jaws_Layout
         $this->AddHeadMeta(
             'application-name',
             ($use_rewrite? '' : BASE_SCRIPT).':'.
-            $GLOBALS['app']->requestedGadget.':'.
-            $GLOBALS['app']->requestedAction
+            $GLOBALS['app']->mainGadget.':'.
+            $GLOBALS['app']->mainAction
         );
         $headContent = $this->GetHeaderContent($this->_HeadLink, $this->_ScriptLink, $this->_HeadMeta, $this->_HeadOther);
 
