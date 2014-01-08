@@ -484,12 +484,12 @@ div.user_avatar img{
 max-width:128px;
 }
 /* forums style */
-#requested_gadget_forums #mainbar,
-#requested_gadget_eventscalendar #mainbar{
+#main_gadget_forums #mainbar,
+#main_gadget_eventscalendar #mainbar{
 width:775px;
 }
-#requested_gadget_forums #bar2,
-#requested_gadget_eventscalendar #bar2{
+#main_gadget_forums #bar2,
+#main_gadget_eventscalendar #bar2{
 display:none;
 }
 .forums_group{
