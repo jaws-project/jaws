@@ -35,6 +35,27 @@ class Jaws
     var $mainAction = '';
 
     /**
+     * The requested gadget
+     * @var     string
+     * @access  public
+     */
+    var $requestedGadget = '';
+
+    /**
+     * The requested action
+     * @var     string
+     * @access  public
+     */
+    var $requestedAction = '';
+
+    /**
+     * The requested action mode
+     * @var     string
+     * @access  public
+     */
+    var $requestedActionMode = '';
+
+    /**
      * Default preferences
      * @var     array
      * @access  private
