@@ -319,8 +319,8 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
     $resType = jaws()->request->fetch('restype');
 
     // Event logging
-    $gadget = $GLOBALS['app']->requestedGadget;
-    $action = $GLOBALS['app']->requestedAction;
+    $gadget = $GLOBALS['app']->mainGadget;
+    $action = $GLOBALS['app']->mainAction;
     $loglevel = 0;
     if (!empty($gadget) && !empty($action)) {
         $loglevel = @Jaws_Gadget::getInstance($gadget)->actions[JAWS_SCRIPT][$action]['loglevel'];
