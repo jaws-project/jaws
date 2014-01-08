@@ -63,7 +63,7 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
             }
 
             // set requested gadget
-            $GLOBALS['app']->requestedGadget = $ReqGadget;
+            $GLOBALS['app']->mainGadget = $ReqGadget;
         } else {
             $ReqError = '404';
         }
@@ -75,7 +75,7 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
 }
 
 // set requested in front-end first/home page
-$GLOBALS['app']->requestedInIndex = $IsIndex;
+$GLOBALS['app']->mainIndex = $IsIndex;
 // Init layout...
 $GLOBALS['app']->InstanceLayout();
 $GLOBALS['app']->Layout->Load();
