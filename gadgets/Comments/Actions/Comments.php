@@ -533,7 +533,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
 
         if (trim($post['message']) == ''|| trim($post['name']) == '') {
             $GLOBALS['app']->Session->PushResponse(
-                _t('COMMENTS_DONT_SEND_EMPTY_MESSAGES'),
+                _t('COMMENTS_COMMENT_INCOMPLETE_FIELDS'),
                 'Comments',
                 RESPONSE_ERROR,
                 $post
