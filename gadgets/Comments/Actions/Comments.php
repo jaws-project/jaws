@@ -124,14 +124,12 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $tpl->SetVariable('url2', _t('GLOBAL_SPAMCHECK_EMPTY'));
         $tpl->SetVariable('url2_value', '');
         $tpl->SetVariable('preview', _t('GLOBAL_PREVIEW'));
+        $tpl->SetVariable('bookmark', $gadget. '_'. $action);
 
         $response = $GLOBALS['app']->Session->PopResponse('Comments');
         if (!empty($response)) {
-            $tpl->SetBlock('comment_form/response');
-            $tpl->SetVariable('bookmark', $gadget. '_'. $action);
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('comment_form/response');
         }
 
         $tpl->ParseBlock('comment_form');
