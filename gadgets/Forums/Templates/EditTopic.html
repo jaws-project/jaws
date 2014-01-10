@@ -5,17 +5,13 @@
     <a href="{forum_url}">{forum_title}</a> &rsaquo;
     {title}
   </h2>
-  <!-- BEGIN response -->
-  <div class="gadget_response">
-    <div class="simple-response-msg">{msg}</div>
-  </div>
-  <!-- END response -->
+  <div class="gadget_response"><div class="simple-response-msg">{msg}</div></div>
   <form name="edittopic" action="{requested_url}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="gadget" value="Forums" />
     <input type="hidden" name="action" value="UpdateTopic" />
     <input type="hidden" name="fid" value="{fid}" />
     <input type="hidden" name="tid" value="{tid}" />
-    <div class="content">
+    <div class="gadget_content content">
       <!-- BEGIN post_meta -->
       <div class="post_meta">
         <label>{postedby_lbl}:</label> <a href="{user_url}" title="{username}">{nickname}</a>
@@ -84,7 +80,7 @@
       <!-- END update_reason -->
       <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
     </div>
-    <div class="actions">
+    <div class="gadget_actions actions">
       <button type="button" name="cancel" onclick="window.location='{forum_url}'">{btn_cancel_title}</button>
       <button type="button" name="preview" onclick="this.form.elements['action'].value='EditTopic'; this.form.submit();">{btn_preview_title}</button>
       <button type="submit" name="update">{btn_update_title}</button>

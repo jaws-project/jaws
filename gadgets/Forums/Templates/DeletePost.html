@@ -6,18 +6,14 @@
     <a href="{topic_url}">{topic_title}</a> &rsaquo;
     {title}
   </h2>
-  <!-- BEGIN response -->
-  <div class="gadget_response">
-    <div class="simple-response-msg">{msg}</div>
-  </div>
-  <!-- END response -->
+  <div class="gadget_response"><div class="simple-response-msg">{msg}</div></div>
   <form name="deletepost" action="{requested_url}" method="post">
     <input type="hidden" name="gadget" value="Forums" />
     <input type="hidden" name="action" value="DeletePost" />
     <input type="hidden" name="fid" value="{fid}" />
     <input type="hidden" name="tid" value="{tid}" />
     <input type="hidden" name="pid" value="{pid}" />
-    <div class="content">
+    <div class="gadget_content content">
       <div class="post_meta">
         {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
         &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
@@ -31,7 +27,7 @@
       <label for="delete_reason">{lbl_delete_reason}:</label>
       <textarea id="delete_reason" name="delete_reason" rows="2">{delete_reason}</textarea>
     </div>
-    <div class="actions">
+    <div class="gadget_actions actions">
       <button type="submit" name="cancel" >{btn_cancel_title}</button>
       <button type="submit" name="confirm">{btn_submit_title}</button>
     </div>
