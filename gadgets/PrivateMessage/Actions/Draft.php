@@ -71,10 +71,8 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_Actions_Default
         $mModel = $this->gadget->model->load('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
-            $tpl->SetBlock('outbox/response');
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('outbox/response');
         }
 
         $messages = $oModel->GetOutbox($user, array('published' => false), $limit, ($page - 1) * $limit);

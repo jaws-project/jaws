@@ -73,10 +73,8 @@ class PrivateMessage_Actions_Announcement extends PrivateMessage_Actions_Default
         $model = $this->gadget->model->load('Inbox');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
-            $tpl->SetBlock('inbox/response');
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('inbox/response');
         }
 
         $post['archived'] = false;

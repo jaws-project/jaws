@@ -91,10 +91,8 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_Actions_Default
         $model = $this->gadget->model->load('Inbox');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
-            $tpl->SetBlock('inbox/response');
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('inbox/response');
         }
 
         $messages = $model->GetInbox($user, $post, $limit, ($page - 1) * $limit);
