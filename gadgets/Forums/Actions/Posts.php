@@ -439,9 +439,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         }
 
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('UpdatePost')) {
-            $tpl->SetBlock('post/response');
             $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('post/response');
         }
 
         if (!empty($post['id'])) {
@@ -784,9 +782,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
 
             // error response
             if ($response = $GLOBALS['app']->Session->PopSimpleResponse('DeletePost')) {
-                $tpl->SetBlock('post/response');
                 $tpl->SetVariable('msg', $response);
-                $tpl->ParseBlock('post/response');
             }
 
             // date format

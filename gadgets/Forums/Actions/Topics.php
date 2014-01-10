@@ -242,9 +242,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
         // response
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('UpdateTopic')) {
-            $tpl->SetBlock('topic/response');
             $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('topic/response');
         }
 
         // first post meta
@@ -637,9 +635,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
             // error response
             if ($response = $GLOBALS['app']->Session->PopSimpleResponse('DeleteTopic')) {
-                $tpl->SetBlock('topic/response');
                 $tpl->SetVariable('msg', $response);
-                $tpl->ParseBlock('topic/response');
             }
 
             // date format
