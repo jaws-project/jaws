@@ -1,11 +1,7 @@
 <!-- BEGIN all -->
 <div class="gadget privateMessage allMessages">
     <div class="gadget_header"><h2>{title}</h2><div class="gadget_menubar">{menubar}</div></div>
-    <!-- BEGIN response -->
-    <div class="gadget_response">
-        <div id="simple_response" class="{type}">{text}</div>
-    </div>
-    <!-- END response -->
+    <div class="gadget_response"><div id="simple_response" class="{type}">{text}</div></div>
 
     <form name="privatemessage" id="privatemessage" action="{requested_url}" method="post">
         <input type="hidden" name="gadget" value="PrivateMessage"/>
@@ -22,7 +18,7 @@
             </button>
         </div>
 
-        <div class="content">
+        <div class="gadget_content content">
             <table>
                 <thead>
                 <tr>
