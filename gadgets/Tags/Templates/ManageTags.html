@@ -1,12 +1,7 @@
 <!-- BEGIN tags -->
 <div class="gadget tag">
     <div class="gadget_header"><h2>{title}</h2><div class="gadget_menubar">{menubar}</div></div>
-    <!-- BEGIN response -->
-    <div class="gadget_response">
-        <div id="simple_response" class="{type}">{text}</div>
-    </div>
-    <!-- END response -->
-
+    <div class="gadget_response"><div id="simple_response" class="{type}">{text}</div></div>
 
     <form name="tags" id="tags" action="{requested_url}" method="post">
         <input type="hidden" name="gadget" value="Tags"/>
@@ -30,7 +25,7 @@
             </button>
         </div>
 
-        <div class="content">
+        <div class="gadget_content content">
             <table>
                 <thead>
                 <tr>
@@ -72,7 +67,7 @@
             </table>
             <!-- INCLUDE PageNavigation.html -->
 
-            <div class="actions">
+            <div class="gadget_actions actions">
                 <label for="tags_actions_combo">{lbl_actions}:&nbsp;</label>
                 <select title="{lbl_actions}" id="tags_actions_combo" name="tags_actions_combo">
                     <option value="">{lbl_no_action}</option>
@@ -131,7 +126,7 @@
         <input type="hidden" name="action" value="UpdateTag"/>
         <input type="hidden" name="tid" value="{tid}"/>
 
-        <div class="content">
+        <div class="gadget_content content">
             <fieldset>
                 <div><label for="name">{lbl_name}:</label>
                     <input name="name" id="name" value="{name}" type="text"/>
@@ -144,7 +139,7 @@
                 </div>
             </fieldset>
         </div>
-        <div class="actions">
+        <div class="gadget_actions actions">
             <button type="submit" value="{save}">{save}</button>
         </div>
     </form>
