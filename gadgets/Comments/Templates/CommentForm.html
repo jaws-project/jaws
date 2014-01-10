@@ -1,11 +1,7 @@
 <!-- BEGIN comment_form -->
 <div class="gadget comments guestbook">
     <div class="gadget_header"><h2>{title}</h2></div>
-    <!-- BEGIN response -->
-    <div class="gadget_response">
-      <div class="{type}"><a id="{bookmark}"></a>{text}</div>
-    </div>
-    <!-- END response -->
+    <div class="gadget_response"><div class="{type}"><a id="{bookmark}"></a>{text}</div></div>
     <form action="{base_script}" method="post">
         <input type="hidden" name="gadget" value="Comments"/>
         <input type="hidden" name="action" value="PostMessage"/>
@@ -42,7 +38,7 @@
                 <label for="private_comments{rand}">{private}</label>
             </p>
         </div>
-        <div class="actions">
+        <div class="gadget_actions actions">
             <button type="button" name="preview" id="preview" value="{preview}"
                     onclick="this.form.action.value='Preview';this.form.gadget.value='{gadget}'; this.form.submit();">{preview}</button>
             <button type="submit" value="{send}">{send}</button>
