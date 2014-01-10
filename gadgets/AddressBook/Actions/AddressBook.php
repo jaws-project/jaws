@@ -151,9 +151,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
         $tpl->SetBlock("address");
         $tpl->SetVariable('top_title', _t('ADDRESSBOOK_ITEMS_ADD_NEW_TITLE'));
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
-            $tpl->SetBlock('address/response');
             $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('address/response');
         }
 
         $tpl->SetVariable('id', 0);
@@ -278,9 +276,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
         $tpl->SetBlock("address");
         $tpl->SetVariable('top_title', _t('ADDRESSBOOK_ITEMS_EDIT_TITLE'));
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
-            $tpl->SetBlock('address/response');
             $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('address/response');
         }
 
         $tpl->SetVariable('id', $info['id']);
