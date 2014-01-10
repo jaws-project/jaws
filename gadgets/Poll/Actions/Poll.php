@@ -66,9 +66,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
         $tpl->SetVariable('title', _t('POLL_ACTION_POLL_TITLE'));
 
         if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Poll')) {
-            $tpl->SetBlock('poll/response');
             $tpl->SetVariable('msg', $response);
-            $tpl->ParseBlock('poll/response');
         }
 
         $tpl->SetVariable('question', $poll['question']);
