@@ -1,11 +1,7 @@
 <!-- BEGIN LoginBox -->
 <div class="gadget loginbox">
   <div class="gadget_header"><h2>{title}</h2></div>
-  <!-- BEGIN response -->
-  <div class="gadget_response">
-    <div class="{type}">{text}</div>
-  </div>
-  <!-- END response -->
+  <div class="gadget_response"><div class="{type}">{text}</div></div>
   <form name="loginBox"
         action="{base_script}"
         <!-- BEGIN onsubmit --> onsubmit="return encryptedElement(this.password,
@@ -21,7 +17,7 @@
   <input type="hidden" name="modulus" value="{modulus}" />
   <input type="hidden" name="exponent" value="{exponent}" />
   <!-- END encryption -->
-  <div class="content">
+  <div class="gadget_content content">
     <p><label for="login_username">{lbl_username}:</label>
        <input name="username" id="login_username" type="text" style="direction: ltr;" value="{username}" />
     </p>
@@ -57,7 +53,7 @@
     </p>
     <!-- END usecrypt -->
   </div>
-  <div class="actions">
+  <div class="gadget_actions actions">
     <button type="submit" value="{login}">{login}</button>
     <div>{forgot-password}</div>
     <div>{user-register}</div>

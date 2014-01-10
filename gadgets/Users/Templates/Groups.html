@@ -33,7 +33,7 @@
             </tbody>
         </table>
 
-        <div class="actions">
+        <div class="gadget_actions actions">
             <label for="groups_actions_combo">{lbl_actions}:&nbsp;</label>
             <select title="{lbl_actions}" id="groups_actions_combo" name="groups_actions_combo">
                 <option value="">{lbl_no_action}</option>
@@ -87,7 +87,7 @@
         <input type="hidden" name="action" value="AddGroup"/>
         <input type="hidden" name="gid" value="{gid}"/>
 
-        <div class="content">
+        <div class="gadget_content content">
             <fieldset>
                 <div><label for="name">{lbl_name}:</label>
                     <input name="name" id="name" value="{name}" type="text"/>
@@ -100,7 +100,7 @@
                 </div>
             </fieldset>
         </div>
-        <div class="actions">
+        <div class="gadget_actions actions">
             <button type="submit" value="{save}">{save}</button>
         </div>
     </form>
@@ -120,7 +120,7 @@
         <input type="hidden" name="action" value="AddUserToGroup"/>
         <input type="hidden" name="gid" value="{gid}"/>
 
-        <div class="content">
+        <div class="gadget_content content">
             <div>{lbl_members}</div>
             <table>
                 <thead>
@@ -144,7 +144,7 @@
                 </tbody>
             </table>
 
-            <div class="actions">
+            <div class="gadget_actions actions">
                 <label for="member_actions_combo">{lbl_actions}:&nbsp;</label>
                 <select title="{lbl_actions}" id="member_actions_combo" name="inbox_actions_combo">
                     <option value="">{lbl_no_action}</option>
