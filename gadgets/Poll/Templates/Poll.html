@@ -1,12 +1,8 @@
 <!-- BEGIN poll -->
 <div class="gadget poll">
   <div class="gadget_header"><h2>{title}</h2></div>
-  <!-- BEGIN response -->
-  <div class="gadget_response">
-    <div class="simple-response-msg">{msg}</div>
-  </div>
-  <!-- END response -->
-  <div class="content">
+  <div class="gadget_response"><div class="simple-response-msg">{msg}</div></div>
+  <div class="gadget_content content">
     <h3>{question}</h3>
     <!-- BEGIN voting -->
     <form action="{base_script}" name="poll_form_{pid}" method="post">
@@ -18,7 +14,7 @@
       {input}<label for="poll_answer_input_{aid}">{answer}</label>
     </div>
     <!-- END answer -->
-    <div class="actions">{result_link} {btn_vote}</div>
+    <div class="gadget_actions actions">{result_link} {btn_vote}</div>
     </form>
     <!-- END voting -->
     <!-- BEGIN result -->
