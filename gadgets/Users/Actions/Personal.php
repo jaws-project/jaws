@@ -109,10 +109,8 @@ class Users_Actions_Personal extends Jaws_Gadget_Action
         $tpl->SetVariable('interests',     $personal['interests']);
 
         if (!empty($response)) {
-            $tpl->SetBlock('personal/response');
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('personal/response');
         }
 
         $tpl->ParseBlock('personal');

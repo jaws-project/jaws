@@ -82,10 +82,8 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         $mPolicy->loadCaptcha($tpl, 'forgot');
 
         if ($response = $GLOBALS['app']->Session->PopResponse('Users.ForgotLogin')) {
-            $tpl->SetBlock('forgot/response');
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('forgot/response');
         }
         $tpl->ParseBlock('forgot');
         return $tpl->Get();
@@ -202,10 +200,8 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         }
 
         if (!empty($response)) {
-            $tpl->SetBlock('LoginBox/response');
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
-            $tpl->ParseBlock('LoginBox/response');
         }
 
         $tpl->ParseBlock('LoginBox');
