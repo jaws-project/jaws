@@ -641,6 +641,19 @@ class Jaws_DB
     }
 
     /**
+     * Quote a string so it can be safely used as a table or column name
+     *
+     * @access  public
+     * @param   string|array    $statement  Statement text
+     * @return  string  parsed sql string with [[table]] and {field} replaced
+     */
+    function quoteIdentifier($statement)
+    {
+        $statement = is_array($statement)? $statement[1] : $statement;
+        return $this->dbc->quoteIdentifier($this->_prefix. $statement);
+    }
+
+    /**
      * Executes a query
      *
      * @access  public
@@ -650,12 +663,16 @@ class Jaws_DB
      */
     function sqlParse($sql, $params = null)
     {
-        $sql = preg_replace('@\[\[(.*?)\]\]@sme',
-                            "\$this->dbc->quoteIdentifier(\$this->GetPrefix().'$1')",
-                            $sql);
-        $sql = preg_replace('@\[(.*?)\]@sme',
-                            "\$this->dbc->quoteIdentifier('$1')",
-                            $sql);
+        $sql = preg_replace_callback(
+            '@\[\[(.*?)\]\]@sm',
+            array($this, 'quoteIdentifier'),
+            $sql
+        );
+        $sql = preg_replace_callback(
+            '@\[(.*?)\]@sm',
+            array($this, 'quoteIdentifier'),
+            $sql
+        );
 
         if (is_array($params)) {
             foreach ($params as $key => $param) {
