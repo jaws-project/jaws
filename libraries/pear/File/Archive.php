@@ -331,7 +331,7 @@ class File_Archive
         }
 
         //If the URL can be interpreted as a directory, and we are reading from the file system
-        if ((empty($URL) || is_dir($URL)) && $source === null) {
+        if ((empty($URL) || @is_dir($URL)) && $source === null) {
             require_once "File/Archive/Reader/Directory.php";
 
             if ($uncompressionLevel != 0) {
@@ -369,7 +369,7 @@ class File_Archive
             }
 
         //If the URL can be interpreted as a file, and we are reading from the file system
-        } else if (is_file($URL) && substr($URL, -1)!='/' && $source === null) {
+        } else if (@is_file($URL) && substr($URL, -1)!='/' && $source === null) {
             require_once "File/Archive/Reader/File.php";
             $result = new File_Archive_Reader_File($URL, $realSymbolic);
 
