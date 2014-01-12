@@ -715,7 +715,7 @@ class DataGrid extends Container
                             $this->_XHTML .= ' style="' . $column->_style . '"';
                         }
                         $this->_XHTML .= '>';
-                        $col_name = preg_replace("/\{(\w+)\}/e", "\$1", $column->getColumnName());
+                        $col_name = $column->getColumnName();
                         if ($column->isVisible ()) {
                             if (array_key_exists($col_name, $data)) {
                                 if ($column->hasUrl()) {
