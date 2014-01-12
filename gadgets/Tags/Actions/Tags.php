@@ -49,7 +49,12 @@ class Tags_Actions_Tags extends Tags_Actions_Default
     function TagCloud($gadget = null, $user = 0)
     {
         if (!empty($user) && !$GLOBALS['app']->Session->Logged()) {
-            return false;
+            Jaws_Header::Location(
+                $this->gadget->urlMap(
+                    'LoginBox',
+                    array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
+                )
+            );
         }
 
         if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL) {
