@@ -32,7 +32,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
             if (!$this->gadget->GetPermission('AccessGroup', $page['group_id'])) {
                 continue;
             }
-            if ($page['published'] === true) {
+            if ($page['published']) {
                 $param = array('pid' => empty($page['fast_url']) ? $page['base_id'] : $page['fast_url']);
                 $link = $this->gadget->urlMap('Page', $param);
                 $tpl->SetBlock('index/item');
@@ -109,7 +109,7 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
             $this->SetDescription($page['meta_description']);
             $text = $this->gadget->ParseText($page['content']);
             $tpl->SetVariable('content', $text, false);
-            if ($page['show_title'] === true) {
+            if ($page['show_title']) {
                 $tpl->SetBlock('page/title');
                 $tpl->SetVariable('title', $page['title']);
                 $tpl->ParseBlock('page/title');
