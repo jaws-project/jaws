@@ -215,7 +215,7 @@ function getOnlineUsers(name, offset, reset)
 function searchOnlineUsers()
 {
     clearTimeout(fTimeout);
-    getOnlineUsers('onlineusers_datagrid');
+    getOnlineUsers('onlineusers_datagrid', 0, true);
 }
 
 
