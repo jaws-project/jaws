@@ -21,8 +21,13 @@ class Phoo_Events_UpdateComment extends Jaws_Gadget_Event
         }
 
         $cModel = Jaws_Gadget::getInstance('Comments')->model->load('Comments');
-        $howManyComment = $cModel->GetCommentsCount('Phoo', $action, $reference, '',
-            Comments_Info::COMMENTS_STATUS_APPROVED);
+        $howManyComment = $cModel->GetCommentsCount(
+            $this->gadget->name,
+            $action,
+            $reference,
+            '',
+            Comments_Info::COMMENTS_STATUS_APPROVED
+        );
         $pModel = $this->gadget->model->loadAdmin('Comments');
         return $pModel->UpdateImageCommentsCount($reference, $howManyComment);
     }
