@@ -11,6 +11,7 @@ gadgets\Blog\AdminActions.php
 gadgets\Blog\AdminAjax.php
 gadgets\Blog\AdminHTML.php
 gadgets\Blog\HTML.php
+gadgets\Phoo\Model\Comments.php
 gadgets\Comments\AdminActions.php
 gadgets\Comments\AdminAjax.php
 gadgets\Comments\AdminHTML.php
@@ -58,8 +59,8 @@ gadgets\Menu\AdminAjax.php
 gadgets\Phoo\AdminActions.php
 gadgets\Phoo\AdminAjax.php
 gadgets\Phoo\AdminHTML.php
-gadgets\Phoo\Model\Comments.php
 gadgets\Phoo\HTML.php
+gadgets\Phoo\Model\Comments.php
 gadgets\Policy\AdminActions.php
 gadgets\Policy\AdminAjax.php
 gadgets\Policy\AdminHTML.php
