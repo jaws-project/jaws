@@ -427,16 +427,22 @@ class Comments_Actions_Comments extends Comments_Actions_Default
 
         $model = $this->gadget->model->load('Comments');
         $comments = $model->GetComments(
-            'comments',
-            $perPage,
-            null,
-            null,
+            $this->gadget->name,
+            '',
+            '',
+            '',
             array(Comments_Info::COMMENTS_STATUS_APPROVED),
-            false,
+            $perPage,
             ($page - 1) * $perPage,
             $orderBy
         );
-        $comments_count = $model->HowManyFilteredComments('comments', '', 1);
+        $comments_count = $model->GetCommentsCount(
+            $this->gadget->name,
+            '',
+            '',
+            '',
+            array(Comments_Info::COMMENTS_STATUS_APPROVED)
+        );
 
         $tpl = $this->gadget->template->load('Comments.html');
         $tpl->SetBlock('comments');
