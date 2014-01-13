@@ -280,7 +280,10 @@ class Underground_Weather
             if (PEAR::isError($resRequest)) {
                 return $resRequest;
             } elseif ($httpRequest->getResponseCode() <> 200) {
-                return PEAR::raiseError('HTTP response error', HTTP_REQUEST_ERROR_RESPONSE);
+                return PEAR::raiseError(
+                    'HTTP response error: '. $httpRequest->getResponseCode(),
+                    HTTP_REQUEST_ERROR_RESPONSE
+                );
             }
 
             $data = trim($httpRequest->getResponseBody());
