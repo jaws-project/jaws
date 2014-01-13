@@ -365,7 +365,16 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
     function GetRecentCommentsAtomStruct($feed_type = 'atom')
     {
         $cModel = Jaws_Gadget::getInstance('Comments')->model->load('Comments');
-        $comments = $cModel->GetComments($this->gadget->name, 'entry');
+        $cModel = Jaws_Gadget::getInstance('Comments')->model->load('Comments');
+        $comments = $cModel->GetComments(
+            $this->gadget->name,
+            '',
+            '',
+            '',
+            Comments_Info::COMMENTS_STATUS_APPROVED,
+            10
+        );
+        $comments = $cModel->GetComments($this->gadget->name);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_COMMENTS_ATOMSTRUCT'));
         }
@@ -464,7 +473,14 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
      */
     function GetPostCommentsAtomStruct($id, $feed_type = 'atom')
     {
-        $comments =  $this->GetCommentsFiltered('postid', $id, 'approved', false);
+        $cModel = Jaws_Gadget::getInstance('Comments')->model->load('Comments');
+        $comments = $cModel->GetComments(
+            $this->gadget->name,
+            '',
+            $id,
+            '',
+            Comments_Info::COMMENTS_STATUS_APPROVED
+        );
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_POST_COMMENTS_ATOMSTRUCT'));
         }

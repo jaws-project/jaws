@@ -56,7 +56,7 @@ class Blog_Model_Summary extends Jaws_Gadget_Model
             // total comments
             $summary['CommentsQty'] = $cModel->GetCommentsCount($this->gadget->name);
             // recent comments
-            $comments = $cModel->GetComments($this->gadget->name, 10);
+            $comments = $cModel->GetComments($this->gadget->name, '', '', '', array(), 10);
             if (Jaws_Error::IsError($comments)) {
                 return $comments;
             }
