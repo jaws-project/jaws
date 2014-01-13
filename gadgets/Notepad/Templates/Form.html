@@ -4,7 +4,7 @@
   <div class="gadget_response">
     <div id="notepad_{action}_response" class="{type}">{text}</div>
   </div>
-  <div>
+  <div class="gadget_content content">
     <form id="frm_note" name="frm_note" action="{base_script}" method="post">
       <input type="hidden" name="gadget" value="Notepad" />
       <input type="hidden" name="action" value="{form_action}" />
@@ -19,6 +19,7 @@
       </div>
     </form>
   </div>
+  <div class="gadget_footer"></div>
 </div>
 <script>
 var errorIncompleteData = "{errorIncompleteData}";

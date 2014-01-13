@@ -4,7 +4,7 @@
   <div class="gadget_response">
     <div id="notepad_notepad_response" class="{type}">{text}</div>
   </div>
-  <div>
+  <div class="gadget_content content">
     <form id="frm_search" action="{base_script}" method="post">
       <input type="hidden" name="gadget" value="Notepad" />
       <input type="hidden" name="action" value="Search" />
@@ -36,6 +36,7 @@
       <button id="btn_del_note" onclick="deleteNotes()">{lbl_del_note}</button>
     </div>
   </div>
+  <div class="gadget_footer"></div>
 </div>
 <script>
 var notepad_url = "{notepad_url}",
