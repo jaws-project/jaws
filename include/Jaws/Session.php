@@ -803,9 +803,9 @@ class Jaws_Session
             $sessTable->where('updatetime', $onlinetime, '<');
         }
         if ($logged) {
-            $sessTable->and()->where('user', '', '<>');
+            $sessTable->and()->where('user', '0', '<>');
         } elseif ($logged === false) {
-            $sessTable->and()->where('user', '');
+            $sessTable->and()->where('user', '0');
         }
         $sessions = $sessTable->orderBy('updatetime desc')->limit($limit, $offset)->fetchAll();
         if (Jaws_Error::isError($sessions)) {
@@ -851,9 +851,9 @@ class Jaws_Session
             $sessTable->where('updatetime', $onlinetime, '<');
         }
         if ($logged) {
-            $sessTable->and()->where('user', '', '<>');
+            $sessTable->and()->where('user', '0', '<>');
         } elseif ($logged === false) {
-            $sessTable->and()->where('user', '');
+            $sessTable->and()->where('user', '0');
         }
 
         $result = $sessTable->fetchOne();
