@@ -4,7 +4,7 @@
   <div class="gadget_response">
     <div id="eventscalendar_events_response" class="{type}">{text}</div>
   </div>
-  <div>
+  <div class="gadget_content content">
     <form id="frm_search" action="{base_script}" method="post">
       <input type="hidden" name="gadget" value="EventsCalendar" />
       <input type="hidden" name="action" value="Search" />
@@ -38,6 +38,7 @@
       <button id="btn_del_event" onclick="deleteEvents()">{lbl_del_event}</button>
     </div>
   </div>
+  <div class="gadget_footer"></div>
 </div>
 <script>
 var events_url = "{events_url}",
