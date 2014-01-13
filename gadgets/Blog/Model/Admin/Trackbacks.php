@@ -281,9 +281,7 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
         }
 
         $table = Jaws_ORM::getInstance()->table('blog_trackback');
-        $table->select('count(*) as howmany');
-
-
+        $table->select('count(id) as howmany:integer');
         switch ($filterMode) {
             case 'postid':
                 $table->and()->where('parent_id', $filterData);
