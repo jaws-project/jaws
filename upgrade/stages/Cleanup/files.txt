@@ -58,6 +58,7 @@ gadgets\Menu\AdminAjax.php
 gadgets\Phoo\AdminActions.php
 gadgets\Phoo\AdminAjax.php
 gadgets\Phoo\AdminHTML.php
+gadgets\Phoo\Model\Comments.php
 gadgets\Phoo\HTML.php
 gadgets\Policy\AdminActions.php
 gadgets\Policy\AdminAjax.php
