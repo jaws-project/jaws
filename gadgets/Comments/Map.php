@@ -19,11 +19,11 @@ $maps[] = array(
 );
 $maps[] = array(
     'RecentCommentsRSS',
-    'comments[/gadget/{gadgetname}]/rss'
+    'comments[/gadget/{gadgetname}][/action/{actionname}][/reference/{reference}]/rss'
 );
 $maps[] = array(
     'RecentCommentsAtom',
-    'comments[/gadget/{gadgetname}]/atom'
+    'comments[/gadget/{gadgetname}][/action/{actionname}][/reference/{reference}]/atom'
 );
 $maps[] = array(
     'UserComments',

@@ -19,8 +19,8 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
     function RecentCommentsAtom()
     {
         header('Content-type: application/atom+xml; charset=utf-8');
-        $gadget = jaws()->request->fetch('gadgetname', 'get');
-        $commAtom = $this->GetRecentCommentsAtomStruct($gadget, 'atom');
+        $get = $this->gadget->request->fetch(array('gadgetname', 'actionname', 'reference'), 'get');
+        $commAtom = $this->GetRecentCommentsAtomStruct($get['gadgetname'], $get['actionname'], $get['reference'], 'atom');
         if (Jaws_Error::IsError($commAtom)) {
             return $commAtom;
         }
@@ -41,8 +41,8 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
     function RecentCommentsRSS()
     {
         header('Content-type: application/rss+xml; charset=utf-8');
-        $gadget = jaws()->request->fetch('gadgetname', 'get');
-        $commAtom = $this->GetRecentCommentsAtomStruct($gadget, 'rss');
+        $get = $this->gadget->request->fetch(array('gadgetname', 'actionname', 'reference'), 'get');
+        $commAtom = $this->GetRecentCommentsAtomStruct($get['gadgetname'], $get['actionname'], $get['reference'], 'rss');
         if (Jaws_Error::IsError($commAtom)) {
             return $commAtom;
         }
@@ -125,23 +125,32 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
      *
      * @access  private
      * @param   string  $gadget     Gadget name
-     * @param   string  $feed_type  feed type
+     * @param   string  $action     Action name
+     * @param   int     $reference  Reference Id
+     * @param   string  $feed_type feed type
      * @return  object  Can return the Atom Object
      */
-    function GetRecentCommentsAtomStruct($gadget, $feed_type = 'atom')
+    function GetRecentCommentsAtomStruct($gadget, $action = null, $reference = null, $feed_type = 'atom')
     {
         $max_title_size = 40;
         $cModel = $this->gadget->model->load('Comments');
-        $comments = $cModel->GetComments($gadget);
+        $comments = $cModel->GetComments($gadget, $action, $reference);
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('COMMENTS_ERROR_GETTING_COMMENTS_ATOMSTRUCT'));
         }
 
         $commentAtom = new Jaws_AtomFeed();
         $siteURL = $GLOBALS['app']->GetSiteURL('/');
+        $params = array('gadgetname' => $gadget);
+        if (!empty($action)) {
+            $params['actionname'] = $action;
+        }
+        if (!empty($reference)) {
+            $params['reference'] = $reference;
+        }
         $url = $this->gadget->urlMap(
             $feed_type == 'atom'? 'RecentCommentsAtom' : 'RecentCommentsRSS',
-            array('gadgetname' => $gadget),
+            $params,
             true
         );
 
