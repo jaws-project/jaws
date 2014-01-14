@@ -1,6 +1,7 @@
 <!-- BEGIN comment_form -->
 <div class="gadget comments guestbook">
     <div class="gadget_header"><h2>{title}</h2></div>
+  <div class="gadget_container">
     <div class="gadget_response"><div class="{type}"><a id="{bookmark}"></a>{text}</div></div>
     <form action="{base_script}" method="post">
         <input type="hidden" name="gadget" value="Comments"/>
@@ -49,6 +50,7 @@
     <!-- BEGIN unregistered -->
     <div class="simple-response-msg">{msg}</div>
     <!-- END unregistered -->
-    <div class="gadget_footer"></div>
+  </div>
+  <div class="gadget_footer"></div>
 </div>
 <!-- END comment_form -->
