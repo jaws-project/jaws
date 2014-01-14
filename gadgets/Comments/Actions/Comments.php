@@ -159,17 +159,16 @@ class Comments_Actions_Comments extends Comments_Actions_Default
      * @param   int     $reference
      * @param   array   $pagination_data
      * @param   int     $user           User Id
-     * @param   bool    $compactView    Display mode is compact?
      * @param   int     $perPage
      * @param   int     $orderBy
      * @internal param string $gadget
      * @internal param mixed $limit limit recent comments (int)
      * @return  string  XHTML content
      */
-    function ShowComments($gadget, $action, $reference, $pagination_data, $user = null, $compactView = false,
-                          $perPage = null, $orderBy = 0)
+    function ShowComments($gadget, $action, $reference, $pagination_data, $user = null, $perPage = null, $orderBy = 0)
     {
         $max_size = 52;
+        $compactView = $GLOBALS['app']->requestedActionMode == ACTION_MODE_LAYOUT;
         $rqst = jaws()->request->fetch(array('order', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 

@@ -81,10 +81,19 @@ class Comments_Actions_RecentComments extends Comments_Actions_Default
         }
 
         $cHTML = Jaws_Gadget::getInstance('Comments')->action->load('Comments');
-        $tpl->SetVariable('comments', $cHTML->ShowComments($gadget, '', 0, array('action' => 'RecentComments'), null, true, $limit, $orderBy));
+        $tpl->SetVariable(
+            'comments', $cHTML->ShowComments(
+                $gadget,
+                '',
+                0,
+                array('action' => 'RecentComments'),
+                null,
+                $limit,
+                $orderBy
+            )
+        );
 
         $tpl->ParseBlock('recent_comments');
-
         return $tpl->Get();
     }
 
