@@ -1,11 +1,14 @@
 <!-- BEGIN post -->
 <div class="gadget forums deletepost">
-  <h2>
-    <a href="{findex_url}">{findex_title}</a> &rsaquo;
-    <a href="{forum_url}">{forum_title}</a> &rsaquo;
-    <a href="{topic_url}">{topic_title}</a> &rsaquo;
-    {title}
-  </h2>
+  <div class="gadget_header">
+    <h2>
+      <a href="{findex_url}">{findex_title}</a> &rsaquo;
+      <a href="{forum_url}">{forum_title}</a> &rsaquo;
+      <a href="{topic_url}">{topic_title}</a> &rsaquo;
+      {title}
+    </h2>
+  </div>
+  <div class="gadget_container">
   <div class="gadget_response"><div class="simple-response-msg">{msg}</div></div>
   <form name="deletepost" action="{requested_url}" method="post">
     <input type="hidden" name="gadget" value="Forums" />
@@ -32,6 +35,7 @@
       <button type="submit" name="confirm">{btn_submit_title}</button>
     </div>
   </form>
+  </div>
   <div class="gadget_footer"></div>
 </div>
 <!-- END post -->
