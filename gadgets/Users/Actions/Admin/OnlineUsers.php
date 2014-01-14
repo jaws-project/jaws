@@ -50,9 +50,10 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
      */
     function GetOnlineUsers()
     {
-        $filters = jaws()->request->fetchAll('post');
+        $filters = jaws()->request->fetch(array('active', 'logged', 'offset'), 'post');
         $filters['active'] = ($filters['active'] == '-1')? null : (bool)$filters['active'];
         $filters['logged'] = ($filters['logged'] == '-1')? null : (bool)$filters['logged'];
+        $filters['offset'] = (int)$filters['offset'];
 
         $sessions = $GLOBALS['app']->Session->GetSessions($filters['active'], $filters['logged'], 50, $filters['offset']);
         if (Jaws_Error::IsError($sessions)) {
@@ -61,7 +62,6 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
 
         $retData = array();
         $objDate = Jaws_Date::getInstance();
-
         foreach ($sessions as $session) {
             $usrData = array();
             $usrData['__KEY__'] = $session['sid'];
