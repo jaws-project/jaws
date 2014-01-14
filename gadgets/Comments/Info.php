@@ -40,7 +40,7 @@ class Comments_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_action = 'Comments';
+    var $default_action = 'RecentComments';
 
     /**
      * Default back-end action name

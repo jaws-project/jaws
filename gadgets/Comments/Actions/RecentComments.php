@@ -64,7 +64,7 @@ class Comments_Actions_RecentComments extends Comments_Actions_Default
      * @param   mixed   $limit    limit recent comments (int)
      * @return  string  XHTML content
      */
-    function RecentComments($gadget,  $orderBy = 0, $limit = 0)
+    function RecentComments($gadget = '', $orderBy = 0, $limit = 0)
     {
         $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
         $objTranslate = Jaws_Translate::getInstance();
