@@ -1,11 +1,10 @@
 <!-- BEGIN day -->
 <div class="gadget events-calendar view-day">
-  <h2>
-    <a href="{year_url}">{year}</a> /
-    <a href="{month_url}">{month}</a> /
-    {day}
-  </h2>
-  <div class="gadget_menubar">{menubar}</div>
+  <div class="gadget_header">
+    <h2><a href="{year_url}">{year}</a> / <a href="{month_url}">{month}</a> / {day}</h2>
+    <div class="gadget_menubar">{menubar}</div>
+  </div>
+  <div class="gadget_container">
   <div class="gadget_content content">
     <div class="nav">
       <a href="{prev_url}" class="float-left">&laquo; {prev}</a>
@@ -37,6 +36,7 @@
         <!-- END hour -->
       </tbody>
     </table>
+  </div>
   </div>
   <div class="gadget_footer"></div>
 </div>
