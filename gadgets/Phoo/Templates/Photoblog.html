@@ -1,7 +1,8 @@
 <!-- BEGIN photoblog_portrait -->
 <div class="gadget phoo_blog">
   <!-- BEGIN main -->
-  <h2>{title} / {createtime}</h2>
+  <div class="gadget_header"><h2>{title} / {createtime}</h2></div>
+  <div class="gadget_container">
   <div class="gadget_content content">
     <a href="{url}" target="_blank"><img src="{medium}" alt="{title}" width="{width}" height="{height}" /></a>
     <p>{description}</p>
@@ -11,6 +12,7 @@
     <!-- BEGIN item -->
     <a href="{url}"><img src="{thumb}" alt="{title} | {createtime}" width="{width}" height="{height}" /></a>
     <!-- END item -->
+  </div>
   </div>
   <div class="gadget_footer"></div>
 </div>
