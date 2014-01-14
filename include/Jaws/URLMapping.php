@@ -28,7 +28,8 @@ class Jaws_URLMapping
      */
     var $_AliasesModel;
 
-    var $_map = array();
+    var $_maps = array();
+    var $_actions_maps = array();
     var $_delimiter = '@';
     var $_enabled;
     var $_request_uri = '';
@@ -110,14 +111,16 @@ class Jaws_URLMapping
             }
 
             foreach ($maps as $map) {
-                $this->_map[$map['gadget']][$map['action']][] = array(
-                                    'map'         => $map['map'],
-                                    'params'      => null,
-                                    'regexp'      => $map['regexp'],
-                                    'extension'   => $map['extension'],
-                                    'regexp_vars' => array_keys(unserialize($map['vars_regexps'])),
-                                    'custom_map'       => $map['custom_map'],
-                                    'custom_regexp'    => $map['custom_regexp'],
+                $this->_actions_maps[$map['gadget']][$map['action']][] = $map['map'];
+                $this->_maps[$map['gadget']][$map['map']] = array(
+                    'params'      => null,
+                    'action'      => $map['action'],
+                    'map'         => $map['map'],
+                    'regexp'      => $map['regexp'],
+                    'extension'   => $map['extension'],
+                    'regexp_vars' => array_keys(unserialize($map['vars_regexps'])),
+                    'custom_map'    => $map['custom_map'],
+                    'custom_regexp' => $map['custom_regexp'],
                 );
             }
         }
@@ -131,7 +134,7 @@ class Jaws_URLMapping
      */
     function Parse()
     {
-        if (!$this->_enabled && !is_array($this->_map)) {
+        if (!$this->_enabled && !is_array($this->_maps)) {
             return false;
         }
 
@@ -147,86 +150,84 @@ class Jaws_URLMapping
 
         $params = explode('/', $this->_request_uri);
         $matched_but_ignored = false;
-        foreach ($this->_map as $gadget => $actions) {
-            foreach ($actions as $action => $maps) {
-                foreach ($maps as $map) {
-                    $use_custom = !$this->_custom_precedence;
-                    $has_custom = !empty($map['custom_map']);
-                    for ($i = 1; $i <= 2; $i++) {
-                        $use_custom = !$use_custom;
-                        if ($use_custom) {
-                            if (!$has_custom) {
+        foreach ($this->_maps as $gadget => $maps) {
+            foreach ($maps as $map) {
+                $use_custom = !$this->_custom_precedence;
+                $has_custom = !empty($map['custom_map']);
+                for ($i = 1; $i <= 2; $i++) {
+                    $use_custom = !$use_custom;
+                    if ($use_custom) {
+                        if (!$has_custom) {
+                            continue;
+                        }
+
+                        $route  = $map['custom_map'];
+                        $regexp = $map['custom_regexp'];
+                        $custom = true;
+                    } else {
+                        $route  = $map['map'];
+                        $regexp = $map['regexp'];
+                        $custom = false;
+                    }
+
+                    $url = $this->_request_uri;
+                    $ext = $map['extension'];
+                    $ext = ($ext == '.')? $this->_extension : $ext;
+                    if (substr($url, - strlen($ext)) == $ext) {
+                        $url = substr($url, 0, - strlen($ext));
+                    }
+
+                    if (preg_match($regexp, $url, $matches) == 1) {
+                        if ($this->_restrict_multimap) {
+                            if ($this->_custom_precedence && $has_custom && !$custom) {
+                                $matched_but_ignored = true;
                                 continue;
                             }
-
-                            $route  = $map['custom_map'];
-                            $regexp = $map['custom_regexp'];
-                            $custom = true;
-                        } else {
-                            $route  = $map['map'];
-                            $regexp = $map['regexp'];
-                            $custom = false;
+                            if (!$this->_custom_precedence && $custom) {
+                                $matched_but_ignored = true;
+                                continue;
+                            }
                         }
 
-                        $url = $this->_request_uri;
-                        $ext = $map['extension'];
-                        $ext = ($ext == '.')? $this->_extension : $ext;
-                        if (substr($url, - strlen($ext)) == $ext) {
-                            $url = substr($url, 0, - strlen($ext));
+                        // Gadget/Action
+                        $request->update('gadget', $gadget, 'get');
+                        $request->update('action', $map['action'], 'get');
+
+                        // Params
+                        if (isset($map['params']) && is_array($map['params'])) {
+                            foreach ($map['params'] as $key => $value) {
+                                $request->update($key, $value, 'get');
+                            }
                         }
 
-                        if (preg_match($regexp, $url, $matches) == 1) {
-                            if ($this->_restrict_multimap) {
-                                if ($this->_custom_precedence && $has_custom && !$custom) {
-                                    $matched_but_ignored = true;
-                                    continue;
-                                }
-                                if (!$this->_custom_precedence && $custom) {
-                                    $matched_but_ignored = true;
-                                    continue;
-                                }
+                        // Variables
+                        preg_match_all('#{(\w+)}#si', $route, $matches_vars);
+                        if (is_array($matches_vars)) {
+                            array_shift($matches);
+                            foreach ($matches as $key => $value) {
+                                $request->update($matches_vars[1][$key], rawurldecode($value), 'get');
                             }
-
-                            // Gadget/Action
-                            $request->update('gadget', $gadget, 'get');
-                            $request->update('action', $action, 'get');
-
-                            // Params
-                            if (isset($map['params']) && is_array($map['params'])) {
-                                foreach ($map['params'] as $key => $value) {
-                                    $request->update($key, $value, 'get');
-                                }
-                            }
-
-                            // Variables
-                            preg_match_all('#{(\w+)}#si', $route, $matches_vars);
-                            if (is_array($matches_vars)) {
-                                array_shift($matches);
-                                foreach ($matches as $key => $value) {
-                                    $request->update($matches_vars[1][$key], rawurldecode($value), 'get');
-                                }
-                            }
-
-                            return true;
                         }
-                    } // for
-                } //foreach maps
-            } // foreach actions
-        }
+
+                        return true;
+                    }
+                } // for
+            } //foreach maps
+        } // foreach gadgets
 
         if ($matched_but_ignored) {
             return false;
         }
 
         /**
-         * Ok, no alias and map found, so lets parse the path directly.
+         * OK, no alias and map found, so lets parse the path directly.
          * The first rule: it should have at least one value (the gadget name)
          */
         $params_count = count($params);
         if ($params_count >= 1) {
             if (!$this->_restrict_multimap ||
                 !$this->_enabled || !isset($params[1]) ||
-                !isset($this->_map[$params[0]][$params[1]]))
+                !isset($this->_actions_maps[$params[0]][$params[1]]))
             {
                 $request->update('gadget', $params[0], 'get');
                 if (isset($params[1])) {
@@ -271,8 +272,9 @@ class Jaws_URLMapping
     function GetURLFor($gadget, $action='', $params = array(), $abs_url = false)
     {
         $params_vars = array_keys($params);
-        if ($this->_enabled && isset($this->_map[$gadget][$action])) {
-            foreach ($this->_map[$gadget][$action] as $map) {
+        if ($this->_enabled && isset($this->_actions_maps[$gadget][$action])) {
+            foreach ($this->_actions_maps[$gadget][$action] as $map) {
+                $map = $this->_maps[$gadget][$map];
                 if ($this->_custom_precedence && !empty($map['custom_map'])) {
                     $url = $map['custom_map'];
                 } else {
