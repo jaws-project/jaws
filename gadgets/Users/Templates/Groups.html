@@ -1,6 +1,7 @@
 <!-- BEGIN groups -->
 <div class="gadget users groups">
     <div class="gadget_header"><h2>{title}</h2><div class="gadget_menubar">{menubar}</div></div>
+  <div class="gadget_container">
 
     <div class="gadget_response">
         <div id="users_contacts_response" class="{type}">{text}</div>
@@ -47,6 +48,7 @@
 
     </form>
     
+  </div>
   <div class="gadget_footer"></div>
 </div>
 
@@ -83,6 +85,7 @@
 <!-- BEGIN add_group -->
 <div class="gadget users groups">
     <div class="gadget_header"><h2>{title}</h2><div class="gadget_menubar">{menubar}</div></div>
+  <div class="gadget_container">
     <form name="groups" id="groups" action="{base_script}" method="post">
         <input type="hidden" name="gadget" value="Users"/>
         <input type="hidden" name="action" value="AddGroup"/>
@@ -105,13 +108,15 @@
             <button type="submit" value="{save}">{save}</button>
         </div>
     </form>
-    <div class="gadget_footer"></div>
+  </div>
+  <div class="gadget_footer"></div>
 </div>
 <!-- END add_group -->
 
 <!-- BEGIN manage_group -->
 <div class="gadget users groups">
     <div class="gadget_header"><h2>{title}</h2><div class="gadget_menubar">{menubar}</div></div>
+  <div class="gadget_container">
 
     <div class="gadget_response">
         <div id="users_managegroup_response" class="{type}">{text}</div>
@@ -174,7 +179,8 @@
 
         </div>
     </form>
-    <div class="gadget_footer"></div>
+  </div>
+  <div class="gadget_footer"></div>
 </div>
 
 <script type="text/javascript">
