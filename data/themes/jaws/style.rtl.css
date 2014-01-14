@@ -76,6 +76,9 @@ background:url("../../../images/stock/minus.png") no-repeat right 2px;
 a:link,a:visited{
 color:#325994;
 }
+abbr{
+display:inline-block;
+}
 table{
 width:100%;
 border-spacing:1px;
@@ -485,12 +488,12 @@ div.user_avatar img{
 max-width:128px;
 }
 /* forums style */
-#requested_gadget_forums #mainbar,
-#requested_gadget_eventscalendar #mainbar{
+#main_gadget_forums #mainbar,
+#main_gadget_eventscalendar #mainbar{
 width:775px;
 }
-#requested_gadget_forums #bar2,
-#requested_gadget_eventscalendar #bar2{
+#main_gadget_forums #bar2,
+#main_gadget_eventscalendar #bar2{
 display:none;
 }
 .forums_group{
@@ -620,6 +623,10 @@ width:100%;
 visibility:hidden;
 }
 .comments_post .post_body{
+float:left;
+padding:0 10px;
+}
+#mainbar .comments_post .post_body{
 float:left;
 width:390px;
 padding:0 10px;

@@ -76,6 +76,9 @@ background:url("../../../images/stock/minus.png") no-repeat 2px;
 a:link,a:visited{
 color:#325994;
 }
+abbr{
+display:inline-block;
+}
 table{
 width:100%;
 border-spacing:1px;
@@ -619,6 +622,10 @@ width:100%;
 visibility:hidden;
 }
 .comments_post .post_body{
+float:right;
+padding:0 10px;
+}
+#mainbar .comments_post .post_body{
 float:right;
 width:390px;
 padding:0 10px;
