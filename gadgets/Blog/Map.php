@@ -71,15 +71,6 @@ $maps[] = array(
     array('id' => '[\p{L}[:digit:]-_\.]+',)
 );
 $maps[] = array(
-    'RecentCommentsRSS',
-    'blog/rss/comments'
-);
-$maps[] = array(
-    'CommentsRSS',
-    'blog/rss/comment/{id}',
-    array('id' => '[\p{L}[:digit:]-_\.]+',)
-);
-$maps[] = array(
     'Atom',
     'blog/atom',
     array(),
@@ -88,15 +79,6 @@ $maps[] = array(
 $maps[] = array(
     'ShowAtomCategory',
     'blog/atom/category/{id}',
-    array('id' => '[\p{L}[:digit:]-_\.]+',)
-);
-$maps[] = array(
-    'RecentCommentsAtom',
-    'blog/atom/comments'
-);
-$maps[] = array(
-    'CommentsAtom',
-    'blog/atom/comment/{id}',
     array('id' => '[\p{L}[:digit:]-_\.]+',)
 );
 $maps[] = array(
