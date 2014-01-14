@@ -125,19 +125,20 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $tpl->SetVariable('preview', _t('GLOBAL_PREVIEW'));
         $tpl->SetVariable('bookmark', $gadget. '_'. $action);
         $tpl->SetVariable('lbl_feeds', _t('COMMENTS_COMMENTS_XML'));
-        $tpl->SetVariable('atom_url',
-            $this->gadget->urlMap('RecentCommentsAtom',
-            array('gadgetname' => $gadget,
-                  'actionname' => $action,
-                  'reference' => $reference))
+        $tpl->SetVariable(
+            'atom_url',
+            $this->gadget->urlMap(
+                'RecentCommentsAtom',
+                array('gadgetname' => $gadget, 'actionname' => $action, 'reference' => $reference)
+            )
         );
-        $tpl->SetVariable('rss_url',
-            $this->gadget->urlMap('RecentCommentsRSS',
-            array('gadgetname' => $gadget,
-                  'actionname' => $action,
-                  'reference' => $reference))
+        $tpl->SetVariable(
+            'rss_url',
+            $this->gadget->urlMap(
+                'RecentCommentsRSS',
+                array('gadgetname' => $gadget, 'actionname' => $action, 'reference' => $reference)
+            )
         );
-
         $response = $GLOBALS['app']->Session->PopResponse('Comments');
         if (!empty($response)) {
             $tpl->SetVariable('type', $response['type']);

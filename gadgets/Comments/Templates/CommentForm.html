@@ -11,39 +11,39 @@
         <input type="hidden" name="reference" value="{reference}"/>
         <input type="hidden" name="redirect_to" value="{redirect_to}"/>
 
-        <div class="fieldset">
+        <div class="gadget_content">
             <!-- BEGIN info-box -->
-            <p><label for="name_comments{rand}">{name}:</label>
+            <div><label for="name_comments{rand}">{name}:</label>
                 <input name="name" id="name_comments{rand}" type="text" maxlength="20" value="{namevalue}"/>
-            </p>
+            </div>
 
-            <p><label for="email_comments{rand}">{email}:</label>
+            <div><label for="email_comments{rand}">{email}:</label>
                 <input name="email" id="email_comments{rand}" type="text" value="{emailvalue}" style="direction: ltr;"/>
-            </p>
+            </div>
 
-            <p><label for="url_comments{rand}">{url}:</label>
+            <div><label for="url_comments{rand}">{url}:</label>
                 <input name="url" id="url_comments{rand}" type="text" maxlength="100" value="{urlvalue}"
                        style="direction: ltr;"/>
-            </p>
+            </div>
             <!-- END info-box -->
 
-            <p class="spam_check"><label for="comment_url2">{url2}:</label>
+            <div class="spam_check"><label for="comment_url2">{url2}:</label>
                 <input name="url2" id="comment_url2" value="{url2_value}" type="text" />
-            </p>
+            </div>
             <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
-            <p><label for="message{rand}">{lbl_message}:</label>
+            <div><label for="message{rand}">{lbl_message}:</label>
                 <textarea id="message{rand}" cols="20" rows="7" name="message">{message}</textarea>
-            </p>
-            <p>
+            </div>
+            <div>
                 <input name="is_private" id="private_comments{rand}" type="checkbox" value="1" />
                 <label for="private_comments{rand}">{private}</label>
-            </p>
+            </div>
         </div>
         <div class="gadget_actions actions">
+            <span class="comments_feed">{lbl_feeds}: <a href="{rss_url}">RSS</a> | <a href="{atom_url}">Atom</a></span>
             <button type="button" name="preview" id="preview" value="{preview}"
                     onclick="this.form.action.value='Preview';this.form.gadget.value='{gadget}'; this.form.submit();">{preview}</button>
             <button type="submit" value="{send}">{send}</button>
-            <p class="comments_feed">{lbl_feeds}: <a href="{rss_url}">RSS</a> | <a href="{atom_url}">Atom</a></p>
         </div>
     </form>
 
