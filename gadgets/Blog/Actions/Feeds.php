@@ -58,12 +58,11 @@ class Blog_Actions_Feeds extends Blog_Actions_Default
      */
     function ShowRSSCategory()
     {
-        header('Content-type: application/rss+xml');
-        $model = $this->gadget->model->load('Feeds');
-
+        header('Content-type: application/rss+xml; charset=utf-8');
         $id = jaws()->request->fetch('id', 'get');
         $id = Jaws_XSS::defilter($id);
 
+        $model = $this->gadget->model->load('Feeds');
         $xml = $model->MakeCategoryRSS($id);
         if (Jaws_Error::IsError($xml)) {
             return '';
@@ -80,12 +79,11 @@ class Blog_Actions_Feeds extends Blog_Actions_Default
      */
     function ShowAtomCategory()
     {
-        header('Content-type: application/atom+xml');
-        $model = $this->gadget->model->load('Feeds');
-
+        header('Content-type: application/atom+xml; charset=utf-8');
         $id = jaws()->request->fetch('id', 'get');
         $id = Jaws_XSS::defilter($id);
 
+        $model = $this->gadget->model->load('Feeds');
         $xml = $model->MakeCategoryAtom($id);
         if (Jaws_Error::IsError($xml)) {
             return '';
