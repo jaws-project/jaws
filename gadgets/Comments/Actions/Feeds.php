@@ -159,12 +159,12 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
         $commentAtom->SetId($siteURL);
         $commentAtom->SetAuthor(
             $this->gadget->registry->fetch('site_author', 'Settings'),
-            $GLOBALS['app']->GetSiteURL(),
+            $GLOBALS['app']->GetSiteURL('/'),
             $this->gadget->registry->fetch('gate_email', 'Settings')
         );
         $commentAtom->SetGenerator('JAWS '.$GLOBALS['app']->Registry->fetch('version'));
         $commentAtom->SetCopyright($this->gadget->registry->fetch('site_copyright', 'Settings'));
-        $commentAtom->SetTagLine(_t('COMMENTS_RECENT_COMMENTS', $gadget));
+        $commentAtom->SetTagLine(_t('COMMENTS_RECENT_COMMENTS', _t(strtoupper($gadget).'_TITLE')));
 
         $objDate = Jaws_Date::getInstance();
         $site = preg_replace('/(.*)\/.*/i', '\\1', $commentAtom->Link->HRef);
@@ -174,41 +174,26 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
             $entry->SetTitle((Jaws_UTF8::strlen($c['msg_txt']) >= $max_title_size)?
                 Jaws_UTF8::substr($c['msg_txt'], 0, $max_title_size).'...' :
                 $c['msg_txt']);
+            $entry->SetId("urn:gadget:$gadget:action:$action:reference:$reference:comment:{$c['id']}");
 
             switch ($gadget) {
                 case 'Blog':
                     // So we can use the UrlMapping feature.
-                    $url = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView',
-                        array('id' => $entry_id),
-                        true);
-
+                    $url = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $entry_id), true);
                     $url = $url . htmlentities('#comment' . $c['id']);
                     $entry->SetLink($url);
-
-                    $id = $site . '/blog/' . $entry_id . '/' . $c['id'];
-                    $entry->SetId($id);
                     break;
 
                 case 'Phoo':
-                    $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'ViewImage',
-                        array('id' => $entry_id),
-                        true);
+                    $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'ViewImage', array('id' => $entry_id), true);
                     $url = $url . htmlentities('#comment' . $c['id']);
                     $entry->SetLink($url);
-
-                    $id = $site . '/phoo/' . $entry_id . '/' . $c['id'];
-                    $entry->SetId($id);
                     break;
 
                 case 'Shoutbox':
-                    $url = $GLOBALS['app']->Map->GetURLFor('Shoutbox', 'Comments',
-                        array(),
-                        true);
+                    $url = $GLOBALS['app']->Map->GetURLFor('Shoutbox', 'Comments', array(), true);
                     $url = $url . htmlentities('#comment' . $c['id']);
                     $entry->SetLink($url);
-
-                    $id = $site . '/shoutbox/' . $entry_id . '/' . $c['id'];
-                    $entry->SetId($id);
                     break;
             }
 
