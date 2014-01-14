@@ -1,6 +1,7 @@
 <!-- BEGIN filebrowser -->
 <div class="gadget filebrowser">
   <div class="gadget_header"><h2>{title}</h2></div>
+  <div class="gadget_container">
   <div class="path-location-bar">
     <label>{location}:</label>
     <a href="{root-path}">{root}</a>
@@ -20,6 +21,7 @@
     </div>
     <!-- END item -->
   </div>
+  </div>
   <div class="gadget_footer"></div>
 </div>
 {navigation}
@@ -28,6 +30,7 @@
 <!-- BEGIN initial_folder -->
 <div class="gadget filebrowser_initial">
   <div class="gadget_header"><h2>{title}</h2></div>
+  <div class="gadget_container">
   <div class="gadget_content content">
     <ul>
     <!-- BEGIN item -->
@@ -35,13 +38,15 @@
     <!-- END item -->
     </ul>
   </div>
+  </div>
   <div class="gadget_footer"></div>
 </div>
 <!-- END initial_folder -->
 
 <!-- BEGIN fileinfo -->
 <div class="gadget filebrowser fileinfo">
-  <h2><img src="{icon}" alt="{title}" /><a href="{url}">{title}</a></h2>
+  <div class="gadget_header"><h2><img src="{icon}" alt="{title}" /><a href="{url}">{title}</a></h2></div>
+  <div class="gadget_container">
   <div class="path-location-bar">
     <label>{location}:</label>
     <a href="{root-path}">{root}</a>
@@ -51,6 +56,7 @@
   <div class="file-meta">
     <span class="file-date">{date}</span>
     <span class="file-size">{size}</span>
+  </div>
   </div>
   <div class="gadget_footer"></div>
 </div>
