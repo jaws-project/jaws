@@ -30,9 +30,18 @@ class Comments_Actions_UserComments extends Comments_Actions_Default
         $tpl->SetVariable('title', _t('COMMENTS_USER_COMMENTS', $userInfo['nickname']));
 
         $cHTML = Jaws_Gadget::getInstance('Comments')->action->load('Comments');
-        $tpl->SetVariable('comments', $cHTML->ShowComments('', '', 0,
-                            array('action' => 'RecentComments', 'params' => array('user'=>$user)),
-                            $user, false, 0, 0));
+        $tpl->SetVariable(
+            'comments',
+            $cHTML->ShowComments(
+                '', // gadget
+                '', // action
+                0,  // reference
+                array('action' => 'RecentComments', 'params' => array('user'=>$user)),
+                $user,
+                0,  // limit
+                0   // order
+            )
+        );
 
         $tpl->ParseBlock('recent_comments');
 
