@@ -24,24 +24,23 @@ class Blog_Actions_Categories extends Blog_Actions_Default
         $cModel = $this->gadget->model->load('Categories');
         $pModel = $this->gadget->model->load('Posts');
 
-        $post = jaws()->request->fetch(array('id', 'page'), 'get');
-        $page = $post['page'];
+        $rqst = jaws()->request->fetch(array('id', 'page'), 'get');
+        $page = $rqst['page'];
         if (is_null($page) || $page <= 0 ) {
             $page = 1;
         }
 
         if (empty($cat)) {
-            $cat = Jaws_XSS::defilter($post['id']);
-        }
-
-        // Check dynamic ACL
-        if (!$this->gadget->GetPermission('CategoryAccess', $cat)) {
-            return Jaws_HTTPError::Get(403);
+            $cat = Jaws_XSS::defilter($rqst['id']);
         }
 
         $catInfo = $cModel->GetCategory($cat);
-
         if (!Jaws_Error::IsError($catInfo) && isset($catInfo['id'])) {
+            // Check dynamic ACL
+            if (!$this->gadget->GetPermission('CategoryAccess', $catInfo['id'])) {
+                return Jaws_HTTPError::Get(403);
+            }
+
             $name = $catInfo['name'];
             $tpl = $this->gadget->template->load('CategoryPosts.html');
 
