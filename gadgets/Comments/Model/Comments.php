@@ -92,7 +92,7 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
             1 => 'createtime asc',
             2 => 'createtime desc',
         );
-        $orderBy = isset($orders[$orderBy])?: (int)$this->gadget->registry->fetch('order_type');
+        $orderBy = isset($orders[$orderBy])? $orderBy : (int)$this->gadget->registry->fetch('order_type');
         $orderBy = $orders[$orderBy];
         return $commentsTable->limit($limit, $offset)->orderBy($orderBy)->fetchAll();
     }
