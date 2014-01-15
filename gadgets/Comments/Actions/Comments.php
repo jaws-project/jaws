@@ -172,7 +172,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $rqst = jaws()->request->fetch(array('order', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
-        if(!empty($rqst['order'])) {
+        if ($GLOBALS['app']->requestedActionMode == ACTION_MODE_NORMAL && !empty($rqst['order'])) {
             $orderBy = (int)$rqst['order'];
         }
 
