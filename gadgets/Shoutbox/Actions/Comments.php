@@ -21,14 +21,22 @@ class Shoutbox_Actions_Comments extends Jaws_Gadget_Action
     function Comments($preview = false)
     {
         $this->AjaxMe('site_script.js');
+        $limit = (int)$this->gadget->registry->fetch('limit');
         $tpl = $this->gadget->template->load('Shoutbox.html');
         $tpl->SetBlock('shoutbox');
         $tpl->SetVariable('title', _t('SHOUTBOX_SHOUTBOX'));
         $cHTML = Jaws_Gadget::getInstance('Comments')->action->load('Comments');
-
         $tpl->SetVariable(
             'comments',
-            $cHTML->ShowComments('Shoutbox', '', 0, array('action' => 'Comments', 'params' => array()))
+            $cHTML->ShowComments(
+                'Shoutbox',
+                '',
+                0,
+                array('action' => 'Comments', 'params' => array()),
+                null,
+                $limit,
+                2
+            )
         );
 
         if ($preview) {
