@@ -44,7 +44,7 @@ class XML_Feed extends XML_Parser
      */
     function XML_Feed()
     {
-        $this->XML_Parser();
+        parent::__construct();
     }
 
     /**
@@ -187,7 +187,7 @@ class XML_Feed extends XML_Parser
      * @param   array       $attrs     The attributes
      * @return  mixed       False if feed type not valid, void otherwise
      */
-    function startHandler($parser, $tagName, $attrs)
+    function startHandler($parser, $tagName, &$attrs)
     {
         if (substr($tagName, 0, 4) == "RSS:" || substr($tagName, 0, 4) == "RDF:") {
             $tagName = substr($tagName, 4);
