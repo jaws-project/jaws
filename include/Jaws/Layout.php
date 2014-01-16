@@ -350,6 +350,17 @@ class Jaws_Layout
     }
 
     /**
+     * Gets the site-title
+     *
+     * @access  public
+     * @return  string  site-title
+     */
+    function GetTitle()
+    {
+        return $this->_Title;
+    }
+
+    /**
      * Assign the right head's title
      *
      * @access  public
