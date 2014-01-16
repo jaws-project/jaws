@@ -25,13 +25,23 @@ class Emblems_Actions_Emblems extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Emblems');
         $emblems = $model->GetEmblems(true);
         if (!Jaws_Error::IsError($emblems)) {
-            $siteURL = Jaws_Utils::getRequestURL(false);
+            $site   = urlencode(Jaws_Utils::getBaseURL('/', false));
+            $page   = urlencode(Jaws_Utils::getRequestURL(false));
+            $name   = urlencode($this->gadget->registry->fetch('site_name', 'Settings'));
+            $slogan = urlencode($this->gadget->registry->fetch('site_slogan', 'Settings'));
+            $title  = $GLOBALS['app']->Layout->GetTitle();
+
             foreach ($emblems as $e) {
+                $e['url'] = str_replace(
+                    array('{url}', '{site}', '{page}', '{name}', '{slogan}', '{title}'),
+                    array($page, $site, $page, $name, $slogan, $title),
+                    $e['url']
+                );
                 $tpl->SetBlock('emblems/emblem');
                 $tpl->SetVariable('id', $e['id']);
                 $tpl->SetVariable('title', _t('EMBLEMS_TYPE_' . $e['type'], $e['title']));
                 $tpl->SetVariable('image', $GLOBALS['app']->getDataURL('emblems/' . $e['image']));
-                $tpl->SetVariable('url', str_replace('{url}', rawurlencode($siteURL), $e['url']));
+                $tpl->SetVariable('url',   $e['url']);
                 $tpl->ParseBlock('emblems/emblem');
             }
         }
