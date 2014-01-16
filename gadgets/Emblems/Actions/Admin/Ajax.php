@@ -20,6 +20,7 @@ class Emblems_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateEmblem()
     {
         @list($id, $data) = jaws()->request->fetch(array('0', '1:array'), 'post');
+        $data['url'] = Jaws_XSS::defilter($data['url']);
         $model = $this->gadget->model->loadAdmin('Emblems');
         $res = $model->UpdateEmblem($id, $data);
         if (Jaws_Error::IsError($res)) {
