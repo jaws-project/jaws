@@ -126,14 +126,11 @@ class Jaws_Plugin
      * Enable the plugin (creates the registry keys)
      *
      * @access  public
-     * @return  bool     True if everything is OK or Jaws_Error on failure
+     * @param   string  $plugin Plugin name
+     * @return  mixed   True if everything is OK or Jaws_Error on failure
      */
-    function InstallPlugin($plugin = null)
+    static function InstallPlugin($plugin)
     {
-        if (is_null($plugin)) {
-            $plugin = $this->name;
-        }
-
         $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
         if (Jaws_Error::IsError($result)) {
             return $objPlugin;
@@ -177,15 +174,13 @@ class Jaws_Plugin
 
     /**
      * This function disables a plugin
-     * @param   string $plugin The name of the plugin to disable
+     *
      * @access  public
+     * @param   string  $plugin Plugin name
+     * @return  mixed   True if everything is OK or Jaws_Error on failure
      */
-    function UninstallPlugin($plugin = null)
+    static function UninstallPlugin($plugin)
     {
-        if (is_null($plugin)) {
-            $plugin = $this->name;
-        }
-
         $objPlugin = $GLOBALS['app']->LoadPlugin($plugin);
         if (Jaws_Error::IsError($result)) {
             return $objPlugin;
