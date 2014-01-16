@@ -33,7 +33,7 @@ class Emblems_Actions_Emblems extends Jaws_Gadget_Action
 
             foreach ($emblems as $e) {
                 $e['url'] = str_replace(
-                    array('{url}', '{site}', '{page}', '{name}', '{slogan}', '{title}'),
+                    array('{url}', '{base_url}', '{requested_url}', '{site_name}', '{site_slogan}', '{title}'),
                     array($page, $site, $page, $name, $slogan, $title),
                     $e['url']
                 );
