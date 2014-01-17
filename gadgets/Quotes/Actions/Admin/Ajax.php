@@ -69,7 +69,7 @@ class Quotes_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($title, $quotation, $gid, $start_time, $stop_time,
             $show_title, $published
         ) = jaws()->request->fetchAll('post');
-        $quotation = jaws()->request->fetch(1, 'post', false);
+        $quotation = jaws()->request->fetch(1, 'post', 'strip_crlf');
         $model = $this->gadget->model->loadAdmin('Quotes');
         $model->InsertQuote($title, $quotation, $gid, $start_time, $stop_time, $show_title, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -87,7 +87,7 @@ class Quotes_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id, $title, $quotation, $gid, $start_time, $stop_time,
             $show_title, $published
         ) = jaws()->request->fetchAll('post');
-        $quotation = jaws()->request->fetch(2, 'post', false);
+        $quotation = jaws()->request->fetch(2, 'post', 'strip_crlf');
         $model = $this->gadget->model->loadAdmin('Quotes');
         $model->UpdateQuote($id, $title, $quotation, $gid, $start_time, $stop_time, $show_title, $published);
         return $GLOBALS['app']->Session->PopLastResponse();
