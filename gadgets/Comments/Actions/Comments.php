@@ -258,7 +258,25 @@ class Comments_Actions_Comments extends Comments_Actions_Default
                 if (Jaws_UTF8::strlen($entry['msg_txt']) >= $max_size) {
                     $tpl->SetBlock($block . '/entry/read_more');
                     $tpl->SetVariable('read_more', _t('COMMENTS_READ_MORE'));
-                    $tpl->SetVariable('read_more_url', '');
+
+                    switch ($entry['gadget']) {
+                        case 'Blog':
+                            $url = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $entry['reference']), true);
+                            $url = $url . htmlentities('#comment' . $entry['id']);
+                            break;
+
+                        case 'Phoo':
+                            $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'ViewImage', array('id' => $entry['reference']), true);
+                            $url = $url . htmlentities('#comment' . $entry['id']);
+                            break;
+
+                        case 'Shoutbox':
+                            $url = $GLOBALS['app']->Map->GetURLFor('Shoutbox', 'Comments', array(), true);
+                            $url = $url . htmlentities('#comment' . $entry['id']);
+                            break;
+                    }
+
+                    $tpl->SetVariable('read_more_url', $url);
                     $tpl->ParseBlock($block . '/entry/read_more');
                 }
 
