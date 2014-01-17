@@ -27,7 +27,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageAlbums');
 
         $action      = jaws()->request->fetch('action', 'get');
-        $description = jaws()->request->fetch('description', 'post', false);
+        $description = jaws()->request->fetch('description', 'post', 'strip_crlf');
 
         $tpl = $this->gadget->template->loadAdmin('EditAlbum.html');
         $tpl->SetBlock('edit_album');
@@ -113,7 +113,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageAlbums');
         $post = jaws()->request->fetch(array('name', 'allow_comments:array', 'groups:array', 'published'), 'post');
         if (!empty($post['groups']) && !empty($post['name'])) {
-            $description = jaws()->request->fetch('description', 'post', false);
+            $description = jaws()->request->fetch('description', 'post', 'strip_crlf');
             $model = $this->gadget->model->loadAdmin('Albums');
             $album = $model->NewAlbum(
                 $post['name'],
@@ -253,7 +253,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
             'post'
         );
         if (!empty($post['groups']) && !empty($post['name'])) {
-            $description = jaws()->request->fetch('description', 'post', false);
+            $description = jaws()->request->fetch('description', 'post', 'strip_crlf');
             $id = (int)$post['album'];
             $model = $this->gadget->model->loadAdmin('Albums');
             $result = $model->UpdateAlbum($id, $post['name'], $description, isset($post['allow_comments'][0]), $post['published']);

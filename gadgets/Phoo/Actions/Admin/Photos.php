@@ -401,7 +401,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
             $published = false;
         }
 
-        $description = jaws()->request->fetch('description', 'post', false);
+        $description = jaws()->request->fetch('description', 'post', 'strip_crlf');
         // Update photo
         $model = $this->gadget->model->loadAdmin('Photos');
         $res = $model->UpdateEntry($post['image'], $post['title'],
