@@ -201,7 +201,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                          'fasturl', 'allow_comments:array', 'published',
                          'trackback_to', 'meta_keywords', 'meta_desc', 'tags');
         $post    = jaws()->request->fetch($names, 'post');
-        $content = jaws()->request->fetch(array('summary_block', 'text_block'), 'post', false);
+        $content = jaws()->request->fetch(array('summary_block', 'text_block'), 'post', 'strip_crlf');
         $post['trackback_to'] = str_replace("\r\n", "\n", $post['trackback_to']);
 
         $pubdate = null;
@@ -481,7 +481,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                          'fasturl', 'meta_keywords', 'meta_desc', 'tags',
                          'allow_comments:array', 'published', 'trackback_to');
         $post    = jaws()->request->fetch($names, 'post');
-        $content = jaws()->request->fetch(array('summary_block', 'text_block'), 'post', false);
+        $content = jaws()->request->fetch(array('summary_block', 'text_block'), 'post', 'strip_crlf');
 
         $post['trackback_to'] = str_replace("\r\n", "\n", $post['trackback_to']);
 

@@ -21,7 +21,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function ParseText()
     {
-        $text = jaws()->request->fetch(0, 'post', false);
+        $text = jaws()->request->fetch(0, 'post', 'strip_crlf');
         return $this->gadget->ParseText($text);
     }
 
@@ -311,8 +311,8 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Posts');
 
         $categories = jaws()->request->fetch('1:array', 'post');
-        $summary = jaws()->request->fetch(3, 'post', false);
-        $text    = jaws()->request->fetch(4, 'post', false);
+        $summary = jaws()->request->fetch(3, 'post', 'strip_crlf');
+        $text    = jaws()->request->fetch(4, 'post', 'strip_crlf');
 
         if ($id == 'NEW') {
             $res = $model->NewEntry($GLOBALS['app']->Session->GetAttribute('user'),

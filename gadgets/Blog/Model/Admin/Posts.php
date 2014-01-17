@@ -113,8 +113,8 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
 
         $params['user_id']          = $user;
         $params['title']            = $title;
-        $params['text']             = str_replace("\r\n", "\n", $content);
-        $params['summary']          = str_replace("\r\n", "\n", $summary);
+        $params['text']             = $content;
+        $params['summary']          = $summary;
         $params['trackbacks']       = $trackbacks;
         $params['published']        = $this->gadget->GetPermission('PublishEntries')? (bool)$publish : false;
         $params['fast_url']         = $fast_url;
@@ -210,8 +210,8 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog', false);
 
         $params['title']            = $title;
-        $params['text']             = str_replace("\r\n", "\n", $content);
-        $params['summary']          = str_replace("\r\n", "\n", $summary);
+        $params['text']             = $content;
+        $params['summary']          = $summary;
         $params['trackbacks']       = $trackbacks;
         $params['published']        = $publish;
         $params['allow_comments']   = $allow_comments;
