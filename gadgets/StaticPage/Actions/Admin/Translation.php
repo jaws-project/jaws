@@ -47,7 +47,7 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
         $model = $this->gadget->model->loadAdmin('Translation');
         $fetch   = array('page', 'title', 'content', 'language', 'meta_keys', 'meta_desc', 'tags', 'published');
         $post    = jaws()->request->fetch($fetch, 'post');
-        $post['content'] = jaws()->request->fetch('content', 'post', false);
+        $post['content'] = jaws()->request->fetch('content', 'post', 'strip_crlf');
         $page    = (int)$post['page'];
 
         $result = $model->AddTranslation($page, $post['title'], $post['content'], $post['language'],
@@ -100,7 +100,7 @@ class StaticPage_Actions_Admin_Translation extends StaticPage_Actions_Admin_Defa
         $model = $this->gadget->model->loadAdmin('Translation');
         $fetch   = array('trans_id', 'title', 'language', 'meta_keys', 'meta_desc', 'tags', 'published');
         $post    = jaws()->request->fetch($fetch, 'post');
-        $post['content'] = jaws()->request->fetch('content', 'post', false);
+        $post['content'] = jaws()->request->fetch('content', 'post', 'strip_crlf');
         $trans   = (int)$post['trans_id'];
         $result = $model->UpdateTranslation($trans, $post['title'], $post['content'], $post['language'],
             $post['meta_keys'], $post['meta_desc'], $post['tags'], $post['published']);

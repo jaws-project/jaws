@@ -43,7 +43,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
 
         $params['base_id'] = $page_id;
         $params['title'] = $title;
-        $params['content'] = str_replace("\r\n", "\n", $content);
+        $params['content'] = $content;
         $params['language'] = $language;
         $params['user'] = $GLOBALS['app']->Session->GetAttribute('user');
         $params['meta_keywords'] = $meta_keys;
@@ -123,7 +123,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
 
         // Lets update it
         $params['title']            = $title;
-        $params['content']          = str_replace("\r\n", "\n", $content);
+        $params['content']          = $content;
         $params['language']         = $language;
         $params['meta_keywords']    = $meta_keys;
         $params['meta_description'] = $meta_desc;

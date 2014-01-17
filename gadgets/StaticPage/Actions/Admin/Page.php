@@ -248,7 +248,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         $fetch = array('title', 'fast_url', 'meta_keys', 'meta_desc', 'tags',
                        'group_id', 'language', 'published', 'show_title');
         $post  = jaws()->request->fetch($fetch, 'post');
-        $post['content'] = jaws()->request->fetch('content', 'post', false);
+        $post['content'] = jaws()->request->fetch('content', 'post', 'strip_crlf');
 
         $model->AddPage($post['title'], $post['group_id'], $post['show_title'], $post['content'], $post['language'],
             $post['fast_url'], $post['meta_keys'], $post['meta_desc'], $post['tags'], $post['published']);
@@ -293,7 +293,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         $fetch   = array('page', 'title', 'group_id', 'language', 'fast_url', 'meta_keys',
                          'meta_desc', 'tags', 'published', 'show_title');
         $post    = jaws()->request->fetch($fetch, 'post');
-        $post['content'] = jaws()->request->fetch('content', 'post', false);
+        $post['content'] = jaws()->request->fetch('content', 'post', 'strip_crlf');
         $id      = (int)$post['page'];
 
         $model->UpdatePage($id, $post['group_id'], $post['show_title'], $post['title'],
