@@ -98,7 +98,7 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Category');
 
         $post    = jaws()->request->fetch(array('category', 'fast_url'), 'post');
-        $post['description'] = jaws()->request->fetch('description', 'post', false);
+        $post['description'] = jaws()->request->fetch('description', 'post', 'strip_crlf');
 
         $id = $model->AddCategory($post['category'], $post['fast_url'], $post['description']);
 
@@ -116,7 +116,7 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Category');
 
         $post    = jaws()->request->fetch(array('id', 'category', 'fast_url'), 'post');
-        $post['description'] = jaws()->request->fetch('description', 'post', false);
+        $post['description'] = jaws()->request->fetch('description', 'post', 'strip_crlf');
 
         $model->UpdateCategory($post['id'], $post['category'], $post['fast_url'], $post['description']);
 

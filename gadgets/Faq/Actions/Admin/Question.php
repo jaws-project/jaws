@@ -296,7 +296,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Question');
 
         $post = jaws()->request->fetch(array('question', 'fast_url', 'category', 'status'), 'post');
-        $post['answer'] = jaws()->request->fetch('answer', 'post', false);
+        $post['answer'] = jaws()->request->fetch('answer', 'post', 'strip_crlf');
 
         $model->AddQuestion($post['question'], $post['fast_url'], $post['answer'],
             $post['category'], ($post['status'] == 'yes'));
@@ -316,7 +316,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $model = $this->gadget->model->loadAdmin('Question');
 
         $post    = jaws()->request->fetch(array('id', 'question', 'fast_url', 'category', 'status'), 'post');
-        $post['answer'] = jaws()->request->fetch('answer', 'post', false);
+        $post['answer'] = jaws()->request->fetch('answer', 'post', 'strip_crlf');
 
         $model->UpdateQuestion($post['id'], $post['question'], $post['fast_url'],
             $post['answer'], $post['category'], ($post['status'] == 'yes'));

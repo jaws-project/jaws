@@ -97,7 +97,7 @@ class Faq_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function ParseText()
     {
-        $text = jaws()->request->fetch(0, 'post', false);
+        $text = jaws()->request->fetch(0, 'post', 'strip_crlf');
 
         $gadget = $this->gadget->action->loadAdmin('Question');
         return $gadget->gadget->ParseText($text);
