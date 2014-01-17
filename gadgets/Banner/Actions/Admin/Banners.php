@@ -292,7 +292,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $post = jaws()->request->fetch(array('bid', 'title', 'url', 'gid', 'type', 'banner',
             'views_limit', 'clicks_limit', 'start_time',
             'stop_time', 'random', 'published'), 'post');
-        $post['template'] = jaws()->request->fetch('template', 'post', false);
+        $post['template'] = jaws()->request->fetch('template', 'post', 'strip_crlf');
 
         $model = $this->gadget->model->loadAdmin('Banners');
         $res = Jaws_Utils::UploadFiles(

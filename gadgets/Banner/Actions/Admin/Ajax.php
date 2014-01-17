@@ -109,7 +109,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($title, $url, $gid, $banner, $template, $views_limit,
             $clicks_limit, $start_time, $stop_time, $random, $published
         ) = jaws()->request->fetchAll('post');
-        $template = jaws()->request->fetch(4, 'post', false);
+        $template = jaws()->request->fetch(4, 'post', 'strip_crlf');
         $model = $this->gadget->model->loadAdmin('Banners');
         $model->InsertBanner($title, $url, $gid, $banner, $template, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
@@ -129,7 +129,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($bid, $title, $url, $gid, $banner, $template, $views_limit,
             $clicks_limit, $start_time, $stop_time, $random, $published
         ) = jaws()->request->fetchAll('post');
-        $template = jaws()->request->fetch(5, 'post', false);
+        $template = jaws()->request->fetch(5, 'post', 'strip_crlf');
         $model = $this->gadget->model->loadAdmin('Banners');
         $model->UpdateBanner($bid, $title, $url, $gid, $banner, $template, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
