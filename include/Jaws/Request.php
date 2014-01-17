@@ -170,6 +170,24 @@ class Jaws_Request
     }
 
     /**
+     * Strip CRLF/CR/0x00A0 by replace LF/LF/0x20
+     *
+     * @access  public
+     * @param   string  $value  Referenced value
+     * @return  void
+     */
+    function strip_crlf(&$value)
+    {
+        if (is_string($value)) {
+            $value = preg_replace(
+                array("@\r\n@smu", "@\r@smu", "@\x{00a0}@smu"),
+                array("\n", "\n", ' '),
+                $value
+            );
+        }
+    }
+
+    /**
      * Strip null character
      *
      * @access  public
@@ -311,10 +329,11 @@ class Jaws_Request
             }
 
             if ($filter) {
+                $filter = is_bool($filter)? 'filter' : $filter;
                 if (is_array($value)) {
                     array_walk_recursive($value, array(&$this, 'filter'));
                 } else {
-                    $this->filter($value);
+                    $this->$filter($value);
                 }
             }
 
