@@ -158,13 +158,14 @@ class Blog_Installer extends Jaws_Gadget_Installer
             }
             $posts = array();
             foreach ($result as $post) {
-                $posts[$post['id']] = (isset($posts[$post['id']])?: ''). ','. $post['category_id'];
+                $posts[$post['id']] = (isset($posts[$post['id']])?
+                    ($posts[$post['id']].',') : '') . $post['category_id'];
             }
 
             // update categories filed
             $blogTable = Jaws_ORM::getInstance()->table('blog');
             foreach ($posts as $id => $categories) {
-                $blogTable->update(array('categories' => $categories.','))->where('id', (int)$id)->exec();
+                $blogTable->update(array('categories' => $categories))->where('id', (int)$id)->exec();
             }
         }
 
