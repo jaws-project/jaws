@@ -36,10 +36,11 @@ h4{
 font-weight:normal;
 }
 ul{
-list-style-type:none;
+list-style-type:circle;
+list-style-position:inside;
 }
-ul li{
-padding:0 5px;
+ul ul{
+margin-left:1em;
 }
 fieldset{
 clear:both;
@@ -318,6 +319,7 @@ margin-top:32px;
 #headbar .menu ul{
 padding:0px;
 background:#325994;
+list-style-type:none;
 }
 #headbar .menu li{
 float:left;
