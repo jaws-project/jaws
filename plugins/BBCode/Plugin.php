@@ -152,7 +152,7 @@ class BBCode_Plugin extends Jaws_Plugin
                         break;
 
                     case 'code':
-                        $replacement = "<pre>$innertext</pre>";
+                        $replacement = "<pre><code>$innertext</code></pre>";
                         break;
 
                     case 'list':
