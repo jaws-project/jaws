@@ -156,7 +156,10 @@ class Jaws_DB
     {
         $options = array(
             'debug' => false,
-            'portability' => (MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_EMPTY_TO_NULL ^ MDB2_PORTABILITY_FIX_CASE),
+            'portability' => (
+                MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_EMPTY_TO_NULL ^
+                MDB2_PORTABILITY_FIX_CASE ^ MDB2_PORTABILITY_RTRIM
+            ),
             'quote_identifier' => true,
         );
 
@@ -543,7 +546,10 @@ class Jaws_DB
         $options = array(
             'debug' => false,
             'log_line_break' => '<br />',
-            'portability' => (MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_EMPTY_TO_NULL ^ MDB2_PORTABILITY_FIX_CASE),
+            'portability' => (
+                MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_EMPTY_TO_NULL ^
+                MDB2_PORTABILITY_FIX_CASE ^ MDB2_PORTABILITY_RTRIM
+            ),
             'quote_identifier' => true
         );
 
@@ -726,7 +732,10 @@ class Jaws_DB
         $options = array(
             'debug' => false,
             'log_line_break' => '<br />',
-            'portability' => (MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_EMPTY_TO_NULL ^ MDB2_PORTABILITY_FIX_CASE),
+            'portability' => (
+                MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_EMPTY_TO_NULL ^
+                MDB2_PORTABILITY_FIX_CASE ^ MDB2_PORTABILITY_RTRIM
+            ),
             'quote_identifier' => true,
             'force_defaults' => false,
             //'dtd_file' => '',
