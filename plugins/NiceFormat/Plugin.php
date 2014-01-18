@@ -136,8 +136,11 @@ class NiceFormat_Plugin extends Jaws_Plugin
         $html = preg_replace ('/===(.+?)===/s','<h5>\1</h5>', $html);  //h5
 
         //Lists
-        $html = preg_replace("/(\n( {2,}|\t)[\*\-][^\n]+)(\n( {2,}|\t)[^\n]*)*/se",
-                             "\"\\n\".\$this->BuildList('\\0')",$html);
+        $html = preg_replace_callback(
+            '/\n([\s|\t]+[\*|\-]\s*[^\n]+\n)+/smu',
+            array($this, 'BuildList'),
+            $html
+        );
 
         return $html;
     }
@@ -151,33 +154,27 @@ class NiceFormat_Plugin extends Jaws_Plugin
      */
     function BuildList($block)
     {
-        //remove 1st newline
-        $block = substr($block,1);
-        //unescape
-        $block = str_replace('\\"','"',$block);
+        //remove newline at first and end of block
+        $block = Jaws_UTF8::substr($block[0], 1, -1);
 
         //walk line by line
-        $ret = '';
+        $ret = "\n";
         $lvl = 0;
-        $lines = preg_split("/\n/", $block);
+        $lines = preg_split("/\n/u", $block);
 
         //build an item array
         $cnt=0;
         $items = array();
         foreach ($lines as $line) {
             //get intendion level
-            $lvl  = 0;
-            $lvl += floor(strspn($line,' ')/2);
-            $lvl += strspn($line,"\t");
+            $lvl = floor(strspn($line, ' ')/2);
+            $lvl+= strspn($line, "\t");
             //remove indents
-            $line = preg_replace('/^[ \t]+/','',$line);
+            $line = preg_replace('/^[\s|\t]+/smu', '', $line);
             //get type of list
-            if (substr($line,0,1) == '-')
-                $type='ol';
-            else
-                $type='ul';
+            $type = $line[0] == '-'? 'ol' : 'ul';
             // remove bullet and following spaces
-            $line = preg_replace('/^[*\-]\s*/','',$line);
+            $line = preg_replace('/^[\*|\-]\s*/smu','',$line);
             //add item to the list
             $items[$cnt]['level'] = $lvl;
             $items[$cnt]['type']  = $type;
@@ -188,7 +185,6 @@ class NiceFormat_Plugin extends Jaws_Plugin
 
         $level = 0;
         $opens = array();
-
         foreach ($items as $item) {
             if ($item['level'] > $level ) {
                 //open new list
@@ -224,6 +220,7 @@ class NiceFormat_Plugin extends Jaws_Plugin
             $ret .= "</li>\n";
             $ret .= '</'.$open.">\n";
         }
+
         return $ret;
     }
 
