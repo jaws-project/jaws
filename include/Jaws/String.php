@@ -40,8 +40,8 @@ class Jaws_String
         $text = preg_replace("/(\r\n|\r)/", "\n", $text);
 
         // All block level tags
-        $block = '(?:table|thead|tfoot|caption|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|address|p|h[1-6]|hr)';
-        $parts = preg_split('@(</?(?:pre|script|style|object)[^>]*>)@i', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $block = '(?:table|thead|tfoot|caption|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|code|select|form|blockquote|address|p|h[1-6]|hr)';
+        $parts = preg_split('@(</?(?:pre|code|script|style|object)[^>]*>)@i', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
         $ignore = false;
         $ignoretag = '';
         $text = '';
