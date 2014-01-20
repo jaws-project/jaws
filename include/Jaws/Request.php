@@ -109,9 +109,9 @@ class Jaws_Request
         array_walk_recursive($this->data, array(&$this, 'strip_null'));
 
         // Add request filters
-        $this->addFilter('htmlclean', 'htmlspecialchars', array(ENT_QUOTES, 'UTF-8'));
-        $this->addFilter('ambiguous', array($this, 'strip_ambiguous'));
-        $this->addFilter('ambiguous', array($this, 'strip_crlf'));
+        $this->addFilter('htmlclean',  'htmlspecialchars', array(ENT_QUOTES, 'UTF-8'));
+        $this->addFilter('ambiguous',  array($this, 'strip_ambiguous'));
+        $this->addFilter('strip_crlf', array($this, 'strip_crlf'));
 
         // Strict mode
         unset($_GET);
