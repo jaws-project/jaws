@@ -23,6 +23,7 @@ font-size:75%;
 }
 code{
 display:block;
+white-space:pre;
 }
 h1{
 font-size:150%;

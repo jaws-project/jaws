@@ -24,6 +24,7 @@ font-size:75%;
 code{
 display:block;
 direction:ltr;
+white-space:pre;
 }
 h1{
 font-size:150%;
