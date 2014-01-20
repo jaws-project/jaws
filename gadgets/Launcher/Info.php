@@ -2,11 +2,11 @@
 /**
  * Launcher Gadget
  *
- * @category   GadgetInfo
- * @package    Launcher
- * @author     Jonathan Hernandez <ion@suavizado.com>
- * @copyright  2006-2014 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    GadgetInfo
+ * @package     Launcher
+ * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @copyright   2006-2014 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Launcher_Info extends Jaws_Gadget
 {
@@ -16,7 +16,7 @@ class Launcher_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '0.9.0';
+    var $version = '1.0.0';
 
     /**
      * Default front-end action name
@@ -24,7 +24,7 @@ class Launcher_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_action = 'Execute';
+    var $default_action = 'Script';
 
     /**
      * Default back-end action name

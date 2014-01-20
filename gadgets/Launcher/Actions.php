@@ -13,10 +13,10 @@
 /**
  * Index actions
  */
-$actions['Execute'] = array(
+$actions['Script'] = array(
     'normal' => true,
     'layout' => true,
-    'file'   => 'Execute',
+    'file'   => 'Script',
     'parametric' => true,
 );
 

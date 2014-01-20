@@ -2,14 +2,14 @@
 /**
  * Launcher execute script
  *
- * @category   Gadget
- * @package    Launcher
- * @author     Jonathan Hernandez <ion@suavizado.com>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2006-2014 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    Gadget
+ * @package     Launcher
+ * @author      Jonathan Hernandez <ion@suavizado.com>
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2006-2014 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Launcher_Actions_Execute extends Jaws_Gadget_Action
+class Launcher_Actions_Script extends Jaws_Gadget_Action
 {
     /**
      * Get Execute action params(scripts list)
@@ -17,7 +17,7 @@ class Launcher_Actions_Execute extends Jaws_Gadget_Action
      * @access  public
      * @return  array   Actions array
      */
-    function ExecuteLayoutParams()
+    function ScriptLayoutParams()
     {
         $result = array();
         $model = $this->gadget->model->load('Scripts');
@@ -44,7 +44,7 @@ class Launcher_Actions_Execute extends Jaws_Gadget_Action
      * @param   string  $script     script name
      * @return  string  Script output content
      */
-    function Execute($script = 'defaultscript')
+    function Script($script = 'defaultscript')
     {
         $params = null;
         if (empty($script)) {
