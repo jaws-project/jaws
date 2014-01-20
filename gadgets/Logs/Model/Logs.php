@@ -69,7 +69,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
             'apptype', 'backend:boolean', 'ip', 'agent', 'logs.status', 'logs.insert_time'
         );
         $logsTable->join('users', 'users.id', 'logs.user', 'left');
-        $logsTable->orderBy('id desc');
+        $logsTable->orderBy('logs.id desc');
         $logsTable->limit((int)$limit, $offset);
 
         if (!empty($filters) && count($filters) > 1) {
