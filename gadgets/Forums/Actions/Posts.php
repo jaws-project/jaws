@@ -373,7 +373,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         if (empty($rqst['fid']) || empty($rqst['tid'])) {
             return false;
         }
-        $rqst['message'] = jaws()->request->fetch('message', 'post', false, true);
+        $rqst['message'] = jaws()->request->fetch('message', 'post');
 
         if (!$this->gadget->GetPermission('ForumAccess', $rqst['fid'])) {
             return Jaws_HTTPError::Get(403);
@@ -526,7 +526,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         }
 
         $post = jaws()->request->fetch(array('fid', 'tid', 'pid', 'subject', 'update_reason'), 'post');
-        $post['message'] = jaws()->request->fetch('message', 'post', false, true);
+        $post['message'] = jaws()->request->fetch('message', 'post');
 
         if (empty($post['fid']) || !$this->gadget->GetPermission('ForumAccess', $post['fid'])) {
             return Jaws_HTTPError::Get(403);

@@ -368,7 +368,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         }
 
         $topic = jaws()->request->fetch(array('fid', 'tid', 'target', 'subject', 'update_reason', 'status'), 'post');
-        $topic['message'] = jaws()->request->fetch('message', 'post', false, true);
+        $topic['message'] = jaws()->request->fetch('message', 'post');
         $topic['forum_title'] = '';
 
         if (empty($topic['fid']) || !$this->gadget->GetPermission('ForumAccess', $topic['fid'])) {
