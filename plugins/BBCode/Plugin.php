@@ -102,9 +102,9 @@ class BBCode_Plugin extends Jaws_Plugin
      */
     function ParseText($html)
     {
-        $tags = 'media|video|audio|size|url|img|code|list|color|left|center|justify|right|quote|';
-        $tags.= 'table|tr|th|td|ul|ol|li|hr|b|i|s|u|h|\*';
-        while (preg_match_all('#\[('.$tags.')(.*?)\](.+?)\[/\1\]#isu', $html, $matches)) {
+        $tags = 'media|video|audio|size|url|img|code|noparse|list|color|left|center|justify|right|';
+        $tags.= 'quote|table|tr|th|td|ul|ol|li|hr|b|i|s|u|h|\*';
+        while (preg_match_all('#\[('.$tags.')(.*?)\][\n]?(.+?)\[/\1\]#isu', $html, $matches)) {
             foreach ($matches[0] as $key => $match) {
                 list($tag, $params, $innertext) = array(
                     $matches[1][$key],
@@ -152,7 +152,11 @@ class BBCode_Plugin extends Jaws_Plugin
                         break;
 
                     case 'code':
-                        $replacement = "<pre><code>$innertext</code></pre>";
+                    case 'noparse':
+                        $replacement =
+                            '<pre><code>'.
+                            str_replace(array('[', ']'), array('&#91;', '&#93;'), $innertext).
+                            '</code></pre>';
                         break;
 
                     case 'list':
