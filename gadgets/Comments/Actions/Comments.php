@@ -192,7 +192,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
             $orderBy,
             $user
         );
-        $comments_count = $cModel->GetCommentsCount($gadget, $action, $reference);
+        $comments_count = $cModel->GetCommentsCount($gadget, $action, $reference, '', '', $user);
 
         $tpl = $this->gadget->template->load('Comments.html');
         $block = 'comments';
