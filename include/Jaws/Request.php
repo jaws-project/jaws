@@ -47,7 +47,7 @@ class Jaws_Request
     /**
      * @var array
      */
-    var $_priority;
+    var $_filtersPriority;
 
     /**
      * @var array
@@ -111,6 +111,7 @@ class Jaws_Request
         // Add request filters
         $this->addFilter('htmlclean', 'htmlspecialchars', array(ENT_QUOTES, 'UTF-8'));
         $this->addFilter('ambiguous', array($this, 'strip_ambiguous'));
+        $this->addFilter('ambiguous', array($this, 'strip_crlf'));
 
         // Strict mode
         unset($_GET);
@@ -163,27 +164,9 @@ class Jaws_Request
     {
         $this->_filters[$name] = $function;
         $this->_params[$name]  = $params;
-        $this->_priority[]     = $name;
+        $this->_filtersPriority[] = $name;
         if ($include != '') {
             $this->_includes[$name] = $include;
-        }
-    }
-
-    /**
-     * Strip CRLF/CR/0x00A0 by replace LF/LF/0x20
-     *
-     * @access  public
-     * @param   string  $value  Referenced value
-     * @return  void
-     */
-    function strip_crlf(&$value)
-    {
-        if (is_string($value)) {
-            $value = preg_replace(
-                array("@\r\n@smu", "@\r@smu", "@\x{00a0}@smu"),
-                array("\n", "\n", ' '),
-                $value
-            );
         }
     }
 
@@ -213,6 +196,26 @@ class Jaws_Request
         if (is_string($value)) {
             return preg_replace('/%00/', '', $value);
         }
+    }
+
+    /**
+     * Strip CRLF/CR/0x00A0 by replace LF/LF/0x20
+     *
+     * @access  public
+     * @param   string  $value
+     * @return  string  The striped data
+     */
+    function strip_crlf($value)
+    {
+        if (is_string($value)) {
+            $value = preg_replace(
+                array("@\r\n@smu", "@\r@smu", "@\x{00a0}@smu"),
+                array("\n", "\n", ' '),
+                $value
+            );
+        }
+
+        return $value;
     }
 
     /**
@@ -262,13 +265,14 @@ class Jaws_Request
      * Filter data with added filter functions
      *
      * @access  public
-     * @param   string  $value Referenced value
+     * @param   string  $value      Referenced value
+     * @param   mixed   $filters    Filter(s) name
      * @return  string  The filtered data
      */
-    function filter(&$value)
+    function filter(&$value, $filters)
     {
-        if (is_string($value)) {
-            foreach ($this->_priority as $filter) {
+        if (is_string($value) && !empty($filters)) {
+            foreach ($filters as $filter) {
                 $function = $this->_filters[$filter];
                 if (isset($this->_includes[$filter]) && file_exists($this->_includes[$filter])) {
                     include_once $this->_includes[$filter];
@@ -299,14 +303,14 @@ class Jaws_Request
      * @param   bool    $json_decode    Decode JSON data or not
      * @return  mixed   Null if there is no data else an string|array with the processed data
      */
-    private function _fetch($keys, $method = '', $filter = true, $xss_strip = false, $json_decode = false)
+    private function _fetch($keys, $method = '', $filters = true, $xss_strip = false, $json_decode = false)
     {
         $method = empty($method)? strtolower($_SERVER['REQUEST_METHOD']) : $method;
         if (is_array($keys)) {
             $result = array();
             foreach ($keys as $key) {
                 $k = strtok($key, ':');
-                $result[$k] = $this->_fetch($key, $method, $filter, $xss_strip, $json_decode);
+                $result[$k] = $this->_fetch($key, $method, $filters, $xss_strip, $json_decode);
             }
 
             return $result;
@@ -328,13 +332,16 @@ class Jaws_Request
                 $value = $this->strip_tags_attributes($value);
             }
 
-            if ($filter) {
-                $filter = is_bool($filter)? 'filter' : $filter;
-                if (is_array($value)) {
-                    array_walk_recursive($value, array(&$this, 'filter'));
-                } else {
-                    $this->$filter($value);
-                }
+            if ($filters === true) {
+                $filters = $this->_filtersPriority;
+            } elseif (!empty($filters)) {
+                $filters = array($filters);
+            }
+
+            if (is_array($value)) {
+                array_walk_recursive($value, array(&$this, 'filter'), $filters);
+            } else {
+                $this->filter($value, $filters);
             }
 
             return $this->func_type_check[$type]($value)? $value : null;
