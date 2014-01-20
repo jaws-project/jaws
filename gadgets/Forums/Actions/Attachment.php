@@ -20,7 +20,6 @@ class Forums_Actions_Attachment extends Forums_Actions_Default
     function Attachment()
     {
         $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'attach'), 'get');
-
         $pModel = $this->gadget->model->load('Posts');
         $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($post)) {

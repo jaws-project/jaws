@@ -294,7 +294,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
         // message
         $tpl->SetVariable('lbl_message', _t('FORUMS_POSTS_MESSAGE'));
-        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', $topic['message'], false);
+        $message =& $GLOBALS['app']->LoadEditor('Forums', 'message', Jaws_XSS::defilter($topic['message']), false);
         $message->setId('message');
         $message->TextArea->SetRows(8);
         $tpl->SetVariable('message', $message->Get());
@@ -367,8 +367,10 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $topic = jaws()->request->fetch(array('fid', 'tid', 'target', 'subject', 'update_reason', 'status'), 'post');
-        $topic['message'] = jaws()->request->fetch('message', 'post');
+        $topic = jaws()->request->fetch(
+            array('fid', 'tid', 'target', 'subject', 'message', 'update_reason', 'status'),
+            'post'
+        );
         $topic['forum_title'] = '';
 
         if (empty($topic['fid']) || !$this->gadget->GetPermission('ForumAccess', $topic['fid'])) {
@@ -560,7 +562,6 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         }
 
         $rqst = jaws()->request->fetch(array('fid', 'tid', 'confirm'));
-
         $tModel = $this->gadget->model->load('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic) || empty($topic)) {
@@ -675,7 +676,6 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         }
 
         $rqst = jaws()->request->fetch(array('fid', 'tid'), 'get');
-
         $tModel = $this->gadget->model->load('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic)) {
