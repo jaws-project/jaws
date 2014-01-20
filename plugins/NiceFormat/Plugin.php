@@ -160,7 +160,7 @@ class NiceFormat_Plugin extends Jaws_Plugin
         //walk line by line
         $ret = "\n";
         $lvl = 0;
-        $lines = preg_split("/\n/u", $block);
+        $lines = array_filter(preg_split("/\n/u", $block));
 
         //build an item array
         $cnt=0;
