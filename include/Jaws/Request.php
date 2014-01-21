@@ -269,7 +269,7 @@ class Jaws_Request
      * @param   mixed   $filters    Filter(s) name
      * @return  string  The filtered data
      */
-    function filter(&$value, $filters)
+    function filter(&$value, $key, $filters)
     {
         if (is_string($value) && !empty($filters)) {
             foreach ($filters as $filter) {
@@ -341,7 +341,7 @@ class Jaws_Request
             if (is_array($value)) {
                 array_walk_recursive($value, array(&$this, 'filter'), $filters);
             } else {
-                $this->filter($value, $filters);
+                $this->filter($value, $key, $filters);
             }
 
             return $this->func_type_check[$type]($value)? $value : null;
