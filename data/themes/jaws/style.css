@@ -531,6 +531,9 @@ border-left:1px solid #ccc;
 border:1px solid #ccc;
 border-top:none;
 }
+ul.forums_list{
+list-style:none;
+}
 .forums_list li{
 padding:5px;
 border-bottom:1px solid #ccc;
