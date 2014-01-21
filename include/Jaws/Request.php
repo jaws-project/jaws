@@ -106,9 +106,8 @@ class Jaws_Request
             $this->data['post'] = $_POST;
         }
 
-        array_walk_recursive($this->data, array(&$this, 'strip_null'));
-
         // Add request filters
+        $this->addFilter('strip_null', array($this, 'strip_null'));
         $this->addFilter('htmlclean',  'htmlspecialchars', array(ENT_QUOTES, 'UTF-8'));
         $this->addFilter('ambiguous',  array($this, 'strip_ambiguous'));
         $this->addFilter('strip_crlf', array($this, 'strip_crlf'));
@@ -174,14 +173,12 @@ class Jaws_Request
      * Strip null character
      *
      * @access  public
-     * @param   string  $value  Referenced value
-     * @return  void
+     * @param   string  $value
+     * @return  string  The striped data
      */
-    function strip_null(&$value)
+    function strip_null($value)
     {
-        if (is_string($value)) {
-            $value = preg_replace(array('/\0+/', '/(\\\\0)+/'), '', $value);
-        }
+        return preg_replace(array('/\0+/', '/(\\\\0)+/'), '', $value);
     }
 
     /**
@@ -193,9 +190,7 @@ class Jaws_Request
      */
     function strip_ambiguous($value)
     {
-        if (is_string($value)) {
-            return preg_replace('/%00/', '', $value);
-        }
+        return preg_replace('/%00/', '', $value);
     }
 
     /**
@@ -207,15 +202,7 @@ class Jaws_Request
      */
     function strip_crlf($value)
     {
-        if (is_string($value)) {
-            $value = preg_replace(
-                array("@\r\n@smu", "@\r@smu", "@\x{00a0}@smu"),
-                array("\n", "\n", ' '),
-                $value
-            );
-        }
-
-        return $value;
+        return preg_replace(array("@\r\n@smu", "@\r@smu", "@\x{00a0}@smu"), array("\n", "\n", ' '), $value);
     }
 
     /**
@@ -271,7 +258,7 @@ class Jaws_Request
      */
     function filter(&$value, $key, $filters)
     {
-        if (is_string($value) && !empty($filters)) {
+        if (is_string($value)) {
             foreach ($filters as $filter) {
                 $function = $this->_filters[$filter];
                 if (isset($this->_includes[$filter]) && file_exists($this->_includes[$filter])) {
@@ -335,7 +322,9 @@ class Jaws_Request
             if ($filters === true) {
                 $filters = $this->_filtersPriority;
             } elseif (!empty($filters)) {
-                $filters = array($filters);
+                $filters = array('strip_null', $filters);
+            } else {
+                $filters = array('strip_null');
             }
 
             if (is_array($value)) {
