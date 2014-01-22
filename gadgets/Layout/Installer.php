@@ -79,7 +79,7 @@ class Layout_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         if (version_compare($old, '2.0.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '1.0.0.xml');
+            $result = $this->installSchema('2.0.0.xml', '', '1.0.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -87,6 +87,13 @@ class Layout_Installer extends Jaws_Gadget_Installer
             // ACL keys
             $this->gadget->acl->insert('ManageLayout');
             $this->gadget->acl->update('default', '', false);
+        }
+
+        if (version_compare($old, '3.0.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '2.0.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         return true;

@@ -17,7 +17,7 @@ class Layout_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '2.0.0';
+    var $version = '3.0.0';
 
     /**
      * Is this gadget core gadget?

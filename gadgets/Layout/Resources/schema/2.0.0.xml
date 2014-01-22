@@ -19,12 +19,6 @@
         </field>
 
         <field>
-            <name>index</name>
-            <type>boolean</type>
-            <default>false</default>
-        </field>
-
-        <field>
             <name>section</name>
             <type>text</type>
             <length>32</length>
@@ -75,21 +69,6 @@
             <name><variable>table_prefix</variable>layout_user</name>
             <field>
                 <name>user</name>
-            </field>
-        </index>
-
-        <index>
-            <name><variable>table_prefix</variable>layout_user_index</name>
-            <field>
-                <name>user</name>
-            </field>
-
-            <field>
-                <name>index</name>
-            </field>
-
-            <field>
-                <name>published</name>
             </field>
         </index>
 
