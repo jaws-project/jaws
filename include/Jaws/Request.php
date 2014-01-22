@@ -398,6 +398,8 @@ class Jaws_Request
         }
 
         $keys = array_keys($this->data[$method]);
+        $keys = preg_replace('/[^[:alnum:]_\.-]/', '', $keys);
+
         $values = array_map(
             array($this, '_fetch'),
             $keys,
