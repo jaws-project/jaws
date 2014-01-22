@@ -59,7 +59,7 @@ class Logs_Actions_History extends Jaws_Gadget_Action
             $tpl->SetVariable('ip', long2ip($log['ip']));
             $tpl->SetVariable('agent', $log['agent']);
             $tpl->SetVariable('status_title', _t('GLOBAL_HTTP_ERROR_TITLE_'. $log['status']));
-            $tpl->SetVariable('date', $date->Format($log['insert_time'], 'DN d MN Y H:i'));
+            $tpl->SetVariable('date', $date->Format($log['insert_time'], 'd MN Y H:i'));
             
             $tpl->ParseBlock('history/'. $log['status']);
         }
