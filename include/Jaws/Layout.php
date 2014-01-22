@@ -12,14 +12,6 @@
 class Jaws_Layout
 {
     /**
-     * Model that will be used to get data
-     *
-     * @var    LayoutJaws_Model
-     * @access  private
-     */
-    var $_Model;
-
-    /**
      * Template that will be used to print the data
      *
      * @var    Jaws_Template
@@ -61,22 +53,6 @@ class Jaws_Layout
     var $_HeadOther = array();
 
     /**
-     * Current section
-     *
-     * @access  private
-     * @var string
-     */
-    var $_Section = '';
-
-    /**
-     * Returns the current URI location (without BASE_SCRIPT's value)
-     *
-     * @access  private
-     * @var     string
-     */
-    var $_CurrentLocation;
-
-    /**
      * Page title
      *
      * @access  private
@@ -99,6 +75,14 @@ class Jaws_Layout
      * @var     array
      */
     var $_Languages = array();
+
+    /**
+     * Index layout
+     *
+     * @access  private
+     * @var     bool
+     */
+    private $IndexLayout = false;
 
     /**
      * Site attributes
@@ -125,22 +109,6 @@ class Jaws_Layout
 
         // set default site language
         $this->_Languages[] = $GLOBALS['app']->GetLanguage();
-
-        $this->_Model = Jaws_Gadget::getInstance('Layout')->model->load('Layout');
-        if (Jaws_Error::isError($this->_Model)) {
-            Jaws_Error::Fatal("Can't load layout model");
-        }
-    }
-
-    /**
-     * Gets the current section
-     *
-     * @access  public
-     * @return  string Current section
-     */
-    function GetSectionName()
-    {
-        return $this->_Section;
     }
 
     /**
@@ -189,10 +157,12 @@ class Jaws_Layout
             }
 
             $layout_path = $theme['path'];
+            $this->IndexLayout = $GLOBALS['app']->mainIndex && $theme['index'];
+            $layout_file = $this->IndexLayout? 'index.html' : 'layout.html';
         }
 
         $this->_Template = new Jaws_Template();
-        $this->_Template->Load(empty($layout_file)? 'layout.html' : $layout_file, $layout_path);
+        $this->_Template->Load($layout_file, $layout_path);
         $this->_Template->SetBlock('layout');
 
         $direction = _t('GLOBAL_LANG_DIRECTION');
@@ -469,18 +439,26 @@ class Jaws_Layout
     function GetLayoutItems()
     {
         if (JAWS_SCRIPT == 'index') {
-            return $this->_Model->GetLayoutItems(
+            $layoutModel = Jaws_Gadget::getInstance('Layout')->model->load('Layout');
+            if (Jaws_Error::isError($layoutModel)) {
+                Jaws_Error::Fatal("Can't load layout model");
+            }
+
+            return $layoutModel->GetLayoutItems(
                 $GLOBALS['app']->Session->GetAttribute('layout'),
+                $this->IndexLayout,
                 true
             );
         }
+
         $items = array();
-        $items[] = array('id'            => null,
-                         'gadget'        => '[REQUESTEDGADGET]',
-                         'gadget_action' => '[REQUESTEDACTION]',
-                         'display_when'  => '*',
-                         'section'       => 'main',
-                         );
+        $items[] = array(
+            'id'            => null,
+            'gadget'        => '[REQUESTEDGADGET]',
+            'gadget_action' => '[REQUESTEDACTION]',
+            'display_when'  => '*',
+            'section'       => 'main',
+        );
         return $items;
     }
 
@@ -525,18 +503,19 @@ class Jaws_Layout
             $title = $this->_Title;
             $description = $this->_Description;
 
+            $section = '';
             foreach ($items as $item) {
-                if ($this->_Section != $item['section']) {
-                    if (!empty($this->_Section)) {
+                if ($section != $item['section']) {
+                    if (!empty($section)) {
                         $this->_Template->SetVariable('ELEMENT', $contentString);
-                        $this->_Template->ParseBlock('layout/' . $this->_Section);
-                        $this->_Section = '';
+                        $this->_Template->ParseBlock('layout/' . $section);
+                        $section = '';
                     }
                     if (!$this->_Template->BlockExists('layout/' . $item['section'])) {
                         continue;
                     }
-                    $this->_Section = $item['section'];
-                    $this->_Template->SetBlock('layout/' . $this->_Section);
+                    $section = $item['section'];
+                    $this->_Template->SetBlock('layout/' . $section);
                     $currentContent = $this->_Template->GetCurrentBlockContent();
                     $this->_Template->SetCurrentBlockContent('{ELEMENT}');
                     $contentString  = '';
@@ -571,9 +550,9 @@ class Jaws_Layout
             $this->_Title = $title;
             $this->_Description = $description;
 
-            if (!empty($this->_Section)) {
+            if (!empty($section)) {
                 $this->_Template->SetVariable('ELEMENT', $contentString);
-                $this->_Template->ParseBlock('layout/' . $this->_Section);
+                $this->_Template->ParseBlock('layout/' . $section);
             }
         }
     }
@@ -707,7 +686,12 @@ class Jaws_Layout
             $GLOBALS['app']->mainGadget.':'.
             $GLOBALS['app']->mainAction
         );
-        $headContent = $this->GetHeaderContent($this->_HeadLink, $this->_ScriptLink, $this->_HeadMeta, $this->_HeadOther);
+        $headContent = $this->GetHeaderContent(
+            $this->_HeadLink,
+            $this->_ScriptLink,
+            $this->_HeadMeta,
+            $this->_HeadOther
+        );
 
         if (!empty($headContent)) {
             $this->_Template->SetBlock('layout/head');
