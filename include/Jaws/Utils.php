@@ -520,7 +520,7 @@ class Jaws_Utils
                 }
 
                 $user_filename = isset($file['name']) ? $file['name'] : '';
-                $host_filename = strtolower(preg_replace('/[^[:alnum:]_\.-]*/', '', $user_filename));
+                $host_filename = strtolower(preg_replace('/[^[:alnum:]_\.-]/', '', $user_filename));
                 // remove deny_formats extension, even double extension
                 $host_filename = implode(
                     '.',
