@@ -14,12 +14,13 @@
             </field>
 
             <field>
-                <name>parent</name>
+                <name>from</name>
                 <type>integer</type>
+                <notnull>true</notnull>
             </field>
 
             <field>
-                <name>user</name>
+                <name>to</name>
                 <type>integer</type>
                 <notnull>true</notnull>
             </field>
@@ -31,20 +32,13 @@
             </field>
 
             <field>
-                <name>label</name>
-                <type>integer</type>
-                <default>0</default>
-            </field>
-
-            <field>
                 <name>body</name>
                 <type>text</type>
             </field>
 
             <field>
-                <name>published</name>
-                <type>boolean</type>
-                <default>false</default>
+                <name>folder</name>
+                <type>integer</type>
             </field>
 
             <field>
@@ -55,16 +49,9 @@
             </field>
 
             <field>
-                <name>archived</name>
+                <name>read</name>
                 <type>boolean</type>
                 <default>false</default>
-            </field>
-
-            <field>
-                <name>type</name>
-                <type>integer</type>
-                <length>1</length>
-                <default>0</default>
             </field>
 
             <field>
@@ -78,7 +65,6 @@
                 <type>text</type>
                 <length>255</length>
             </field>
-
 
             <field>
                 <name>insert_time</name>
@@ -107,7 +93,7 @@
             </field>
 
             <field>
-                <name>message</name>
+                <name>link</name>
                 <type>integer</type>
             </field>
 
@@ -138,15 +124,8 @@
     </table>
 
     <table>
-        <name><variable>table_prefix</variable>pm_recipients</name>
+        <name><variable>table_prefix</variable>pm_message_attachment</name>
         <declaration>
-
-            <field>
-                <name>id</name>
-                <type>integer</type>
-                <notnull>true</notnull>
-                <autoincrement>true</autoincrement>
-            </field>
 
             <field>
                 <name>message</name>
@@ -155,60 +134,9 @@
             </field>
 
             <field>
-                <name>recipient</name>
+                <name>attachment</name>
                 <type>integer</type>
                 <notnull>true</notnull>
-            </field>
-
-            <field>
-                <name>read</name>
-                <type>boolean</type>
-                <default>false</default>
-            </field>
-
-            <field>
-                <name>archived</name>
-                <type>boolean</type>
-                <default>false</default>
-            </field>
-
-            <field>
-                <name>update_time</name>
-                <type>integer</type>
-                <length>8</length>
-            </field>
-
-            <index>
-                <name><variable>table_prefix</variable>pm_recipients_message</name>
-                <field>
-                    <name>message</name>
-                </field>
-            </index>
-
-        </declaration>
-    </table>
-
-    <table>
-        <name><variable>table_prefix</variable>pm_labels</name>
-        <declaration>
-
-            <field>
-                <name>id</name>
-                <type>integer</type>
-                <notnull>true</notnull>
-                <autoincrement>true</autoincrement>
-            </field>
-
-            <field>
-                <name>user</name>
-                <type>integer</type>
-                <notnull>true</notnull>
-            </field>
-
-            <field>
-                <name>title</name>
-                <type>text</type>
-                <length>64</length>
             </field>
 
         </declaration>
