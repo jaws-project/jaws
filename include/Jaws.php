@@ -265,25 +265,22 @@ class Jaws
         static $theme;
         if (!isset($theme)) {
             // Check if valid theme name
-            if (strpos($this->_Theme, '..') !== false ||
-                strpos($this->_Theme, '%') !== false ||
-                strpos($this->_Theme, '\\') !== false ||
-                strpos($this->_Theme, '/') !== false) {
-                    return new Jaws_Error(_t('GLOBAL_ERROR_INVALID_NAME', 'GetTheme'),
-                                          'Getting theme name');
+            if (!preg_match('/^[[:alnum:]_\.-]+$/', $this->_Theme)) {
+                return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_NAME', 'Theme'));
             }
 
             $theme = array();
             $theme['name'] = $this->_Theme;
             $theme['path'] = JAWS_THEMES. $this->_Theme . '/';
-            if (!is_dir($theme['path'])) {
+            if (!is_file($theme['path']. 'layout.html')) {
                 $theme['url']    = $this->getThemeURL($this->_Theme . '/', $rel_url, true);
                 $theme['path']   = JAWS_BASE_THEMES. $this->_Theme . '/';
-                $theme['exists'] = is_dir($theme['path']);
+                $theme['exists'] = @is_file($theme['path']. 'layout.html');
             } else {
                 $theme['url']    = $this->getThemeURL($this->_Theme . '/', $rel_url);
                 $theme['exists'] = true;
             }
+            $theme['index']  = @is_file($theme['path']. 'index.html');
         }
 
         return $theme;
