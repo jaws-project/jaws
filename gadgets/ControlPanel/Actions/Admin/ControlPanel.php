@@ -127,7 +127,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
                     $tpl->SetVariable('status_code', $log['status']);
                     $tpl->SetVariable('status_title', _t('GLOBAL_HTTP_ERROR_TITLE_'. $log['status']));
                     $tpl->SetVariable('icon', 'images/stock/'. ($log['status'] == 200 ?  'info.png' : 'stop.png'));
-                    $tpl->SetVariable('date', $date->Format($log['insert_time'], 'DN d MN Y H:i'));
+                    $tpl->SetVariable('date', $date->Format($log['insert_time'], 'd MN Y H:i'));
                     
                     $tpl->ParseBlock('login_history/item');
                 }
