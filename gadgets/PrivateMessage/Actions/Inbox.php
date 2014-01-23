@@ -37,14 +37,12 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_Actions_Default
 
 
         if ($view == 'archived') {
-            $post['archived'] = true;
+            $post['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED;
             // Menubar
             $tpl->SetVariable('menubar', $this->MenuBar('Archived'));
             $tpl->SetVariable('title', _t('PRIVATEMESSAGE_ARCHIVE'));
         } else {
-            $post['archived'] = false;
-            // Just show inbox normal message (not announcement)
-            $post['type'] = PrivateMessage_Info::PRIVATEMESSAGE_TYPE_MESSAGE;
+            $post['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX;
             // Menubar
             $tpl->SetVariable('menubar', $this->MenuBar('Inbox'));
             $tpl->SetVariable('title', _t('PRIVATEMESSAGE_INBOX'));
@@ -102,7 +100,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_Actions_Default
                 $i++;
                 $tpl->SetBlock('inbox/message');
                 $tpl->SetVariable('rownum', $i);
-                $tpl->SetVariable('id',  $message['message_recipient_id']);
+                $tpl->SetVariable('id',  $message['id']);
                 $tpl->SetVariable('from', $message['from_nickname']);
                 if($message['read']) {
                     $subject = $message['subject'];
@@ -114,9 +112,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('subject', $subject);
                 $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
 
-                $tpl->SetVariable('message_url', $this->gadget->urlMap(
-                    'InboxMessage',
-                    array('id' => $message['message_recipient_id'])));
+                $tpl->SetVariable('message_url', $this->gadget->urlMap('Message', array('id' => $message['id'])));
 
                 if ($message['attachments'] > 0) {
                     $tpl->SetBlock('inbox/message/have_attachment');

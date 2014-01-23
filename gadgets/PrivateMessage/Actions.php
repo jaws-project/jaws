@@ -37,37 +37,33 @@ $actions['DraftMessage'] = array(
     'standalone' => true,
     'file' => 'Draft',
 );
-$actions['InboxMessage'] = array(
-    'normal' => true,
-    'file' => 'InboxMessage',
-);
-$actions['OutboxMessage'] = array(
-    'normal' => true,
-    'file' => 'OutboxMessage',
-);
-$actions['PublishMessage'] = array(
-    'standalone' => true,
-    'file' => 'OutboxMessage',
-);
-$actions['MessageHistory'] = array(
+$actions['Message'] = array(
     'normal' => true,
     'file' => 'Message',
 );
-$actions['DeleteInboxMessage'] = array(
+$actions['PublishMessage'] = array(
     'standalone' => true,
-    'file' => 'InboxMessage',
+    'file' => 'Message',
 );
-$actions['ArchiveInboxMessage'] = array(
+$actions['DeleteMessage'] = array(
     'standalone' => true,
-    'file' => 'InboxMessage',
+    'file' => 'Message',
 );
-$actions['DeleteOutboxMessage'] = array(
+$actions['ArchiveMessage'] = array(
     'standalone' => true,
-    'file' => 'OutboxMessage',
+    'file' => 'Message',
+);
+$actions['TrashMessage'] = array(
+    'standalone' => true,
+    'file' => 'Message',
+);
+$actions['DeleteMessage'] = array(
+    'standalone' => true,
+    'file' => 'Message',
 );
 $actions['ChangeMessageRead'] = array(
     'standalone' => true,
-    'file' => 'InboxMessage',
+    'file' => 'Message',
 );
 $actions['Reply'] = array(
     'normal' => true,

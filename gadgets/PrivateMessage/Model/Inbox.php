@@ -22,58 +22,43 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
      */
     function GetInbox($user, $filters = null, $limit = 0, $offset = null)
     {
-        $table = Jaws_ORM::getInstance()->table('pm_messages', 'message');
+        $table = Jaws_ORM::getInstance()->table('pm_messages');
         $table->select(
-            'message.id:integer','message.subject', 'message.body', 'message.insert_time',
-            'users.nickname as from_nickname', 'pm_recipients.read:boolean', 'users.username as from_username',
-            'message.attachments:integer', 'pm_recipients.id as message_recipient_id:integer'
+            'pm_messages.id:integer','pm_messages.subject', 'pm_messages.body', 'pm_messages.insert_time',
+            'users.nickname as from_nickname', 'pm_messages.read:boolean', 'users.username as from_username',
+            'pm_messages.attachments:integer'
         );
-        $table->join('users', 'message.user', 'users.id');
-        $table->join('pm_recipients', 'message.id', 'pm_recipients.message');
-        $table->and()->where('pm_recipients.recipient', $user);
-        $table->and()->where('message.published', true);
+        $table->join('users', 'pm_messages.from', 'users.id');
+        $table->and()->where('pm_messages.to', (int)$user);
+        $table->and()->where('pm_messages.folder', PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX);
 
         if (!empty($filters)) {
-
-            if (isset($filters['type']) && ($filters['type'] !== "")) {
-                $table->and()->where('message.type', $filters['type']);
-            }
-
-            if (isset($filters['archived']) && ($filters['archived'] !== "")) {
-                $table->and()->where('pm_recipients.archived', $filters['archived']);
+            if (isset($filters['folder']) && ($filters['folder'] !== "")) {
+                $table->and()->where('pm_messages.folder', $filters['folder']);
             }
 
             if (isset($filters['read']) && !empty($filters['read'])) {
                 if ($filters['read'] == 'yes') {
-                    $table->and()->where('pm_recipients.read', true);
+                    $table->and()->where('pm_messages.read', true);
                 } else {
-                    $table->and()->where('pm_recipients.read', false);
-                }
-            }
-            if (isset($filters['replied']) && !empty($filters['replied'])) {
-//                $subTable = Jaws_ORM::getInstance()->table('pm_messages')->select('count(id):integer')->where('parent', $table->expr('message.id'));
-                $subTable = Jaws_ORM::getInstance()->table('pm_messages')->select('count(id):integer')->where('parent', array('message.id', 'expr'));
-                if ($filters['replied'] == 'yes') {
-                    $table->and()->where($subTable, 0, '>');
-                } else {
-                    $table->and()->where($subTable, 0);
+                    $table->and()->where('pm_messages.read', false);
                 }
             }
             if (isset($filters['attachment']) && !empty($filters['attachment'])) {
                 if ($filters['attachment'] == 'yes') {
-                    $table->and()->where('message.attachments', 0, '>');
+                    $table->and()->where('pm_messages.attachments', 0, '>');
                 } else {
-                    $table->and()->where('message.attachments', 0);
+                    $table->and()->where('pm_messages.attachments', 0);
                 }
             }
             if (isset($filters['term']) && !empty($filters['term'])) {
                 $filters['term'] = '%' . $filters['term'] . '%';
-                $table->and()->openWhere('message.subject', $filters['term'] , 'like')->or();
-                $table->closeWhere('message.body', $filters['term'] , 'like');
+                $table->and()->openWhere('pm_messages.subject', $filters['term'] , 'like')->or();
+                $table->closeWhere('pm_messages.body', $filters['term'] , 'like');
             }
         }
 
-        $result = $table->orderBy('insert_time desc')->limit($limit, $offset)->fetchAll();
+        $result = $table->orderBy('pm_messages.insert_time desc')->limit($limit, $offset)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage());
         }
@@ -91,16 +76,13 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
      */
     function GetInboxStatistics($user, $filters = null)
     {
-        $table = Jaws_ORM::getInstance()->table('pm_messages', 'message');
-        $table->select('count(message.id):integer');
-        $table->join('pm_recipients', 'message.id', 'pm_recipients.message');
-        $table->and()->where('pm_recipients.recipient', $user);
-        $table->and()->where('message.published', true);
+        $table = Jaws_ORM::getInstance()->table('pm_messages');
+        $table->select('count(id):integer');
+        $table->and()->where('to', $user)->and()->where('folder', PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX);
 
         if (!empty($filters)) {
-
-            if (isset($filters['type']) && ($filters['type'] !== "")) {
-                $table->and()->where('message.type', $filters['type']);
+            if (isset($filters['folder']) && ($filters['folder'] !== "")) {
+                $table->and()->where('folder', $filters['folder']);
             }
 
             if (isset($filters['archived']) && ($filters['archived'] !== "")) {
@@ -109,25 +91,16 @@ class PrivateMessage_Model_Inbox extends Jaws_Gadget_Model
 
             if (isset($filters['read']) && !empty($filters['read'])) {
                 if ($filters['read'] == 'yes') {
-                    $table->and()->where('pm_recipients.read', true);
+                    $table->and()->where('read', true);
                 } else {
-                    $table->and()->where('pm_recipients.read', false);
-                }
-            }
-            if (isset($filters['replied']) && !empty($filters['replied'])) {
-                $subTable = Jaws_ORM::getInstance()->table('pm_messages')->select('count(id):integer')->where(
-                    'parent', array('message.id', 'expr'));
-                if ($filters['replied'] == 'yes') {
-                    $table->and()->where($subTable, 0, '>');
-                } else {
-                    $table->and()->where($subTable, 0);
+                    $table->and()->where('read', false);
                 }
             }
             if (isset($filters['attachment']) && !empty($filters['attachment'])) {
                 if ($filters['attachment'] == 'yes') {
-                    $table->and()->where('message.attachments', 0, '>');
+                    $table->and()->where('attachments', 0, '>');
                 } else {
-                    $table->and()->where('message.attachments', 0);
+                    $table->and()->where('attachments', 0);
                 }
             }
             if (isset($filters['term']) && !empty($filters['term'])) {

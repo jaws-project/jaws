@@ -74,8 +74,7 @@ class PrivateMessage_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         $tables = array(
-            'pm_labels',
-            'pm_recipients',
+            'pm_message_attachment',
             'pm_messages',
             'pm_attachments',
         );

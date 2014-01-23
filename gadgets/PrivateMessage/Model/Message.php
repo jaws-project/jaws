@@ -23,10 +23,11 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('pm_messages');
         $columns = array(
-            'pm_messages.id:integer', 'parent:integer', 'pm_messages.subject', 'pm_messages.body', 'published:boolean',
+            'pm_messages.id:integer', 'pm_messages.subject', 'pm_messages.body', 'from:integer', 'to:integer',
             'users.nickname as from_nickname', 'users.username as from_username', 'users.avatar', 'users.email',
-            'user:integer', 'pm_messages.insert_time', 'pm_messages.type:integer', 'recipient_users', 'recipient_groups');
-        if($getRecipients) {
+            'pm_messages.insert_time', 'pm_messages.folder:integer', 'recipient_users', 'recipient_groups',
+            'pm_messages.read:boolean');
+/*        if($getRecipients) {
             $columns[] = 'pm_recipients.recipient:integer';
             $columns[] = 'pm_recipients.read:boolean';
             $columns[] = 'pm_recipients.archived:boolean';
@@ -35,27 +36,42 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             $subTable = Jaws_ORM::getInstance()->table('pm_recipients');
             $subTable->select('count(id)')->where('read', true)->and()->where('message', (int)$id)->alias('read_count');
             $columns[] = $subTable;
-        }
+        }*/
 
         $table->select($columns);
-        $table->join('users', 'pm_messages.user', 'users.id');
-        if($getRecipients) {
-            $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message');
-            $table->where('pm_recipients.id', (int)$id);
-        } else {
-            $table->where('pm_messages.id', (int)$id);
+        $table->join('users', 'pm_messages.from', 'users.id');
+        $message = $table->where('pm_messages.id', (int)$id)->fetchRow();
+        if (Jaws_Error::IsError($message)) {
+            return new Jaws_Error($message->getMessage());
         }
 
-        $result = $table->fetchRow();
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage());
+        // fetch recipients info
+        if ($getRecipients) {
+            $usersId = (empty($message['recipient_users'])) ? '' : explode(',', $message['recipient_users']);
+            $groupsId = (empty($message['recipient_groups'])) ? '' : explode(',', $message['recipient_groups']);
+
+            $users = '';
+            $groups = '';
+            if (!empty($usersId)) {
+                $table = Jaws_ORM::getInstance()->table('users');
+                $users = $table->select('id:integer', 'nickname', 'username')->where('id', $usersId, 'in')->fetchAll();
+            }
+
+            if (!empty($groupsId)) {
+                $table = Jaws_ORM::getInstance()->table('groups');
+                $groups = $table->select('id:integer', 'name', 'title')->where('id', $groupsId, 'in')->fetchAll();
+            }
+
+            $message['users'] = $users;
+            $message['groups'] = $groups;
         }
 
+        // fetch attachments
         if($fetchAttachment && !empty($result)) {
             $model = $this->gadget->model->load('Attachment');
-            $result['attachments'] = $model->GetMessageAttachments($result['id']);
+            $message['attachments'] = $model->GetMessageAttachments($result['id']);
         }
-        return $result;
+        return $message;
     }
 
     /**
@@ -275,9 +291,9 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             $ids = array($ids);
         }
 
-        $table = Jaws_ORM::getInstance()->table('pm_recipients');
+        $table = Jaws_ORM::getInstance()->table('pm_messages');
         $table->update(array('read' => $read, 'update_time' => time()));
-        $res = $table->where('id', $ids, 'in')->and()->where('recipient', $user)->exec();
+        $res = $table->where('id', $ids, 'in')->and()->where('to', $user)->exec();
         if (Jaws_Error::IsError($res)) {
             return false;
         }
@@ -294,12 +310,10 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      */
     function ComposeMessage($user, $messageData)
     {
-        $messageData['type'] = PrivateMessage_Info::PRIVATEMESSAGE_TYPE_MESSAGE;
         // merge recipient users & groups to an array
         $recipient_users = array();
         if (trim($messageData['recipient_users']) == '0' || !empty($messageData['recipient_users'])) {
             if (trim($messageData['recipient_users']) == '0') {
-                $messageData['type'] = PrivateMessage_Info::PRIVATEMESSAGE_TYPE_ANNOUNCEMENT;
                 $table = Jaws_ORM::getInstance()->table('users');
                 $recipient_users = $table->select('id:integer')->fetchColumn();
             } else {
@@ -326,7 +340,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             }
 
         } else {
-            if (empty($messageData['title'])) {
+            if (empty($messageData['subject'])) {
                 return new Jaws_Error(_t('PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS'));
             }
         }
@@ -336,38 +350,62 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $mTable->beginTransaction();
 
         $data = array();
-        // compose a draft message
-        if (!empty($messageData['id']) && $messageData['id'] > 0) {
-            $data['subject']            = $messageData['subject'];
-            $data['body']               = $messageData['body'];
-            $data['published']          = $messageData['published'];
-            $data['type']               = $messageData['type'];
-            $data['attachments']        = count($messageData['attachments']);
-            $data['recipient_users']    = $messageData['recipient_users'];
-            $data['recipient_groups']   = $messageData['recipient_groups'];
-            $data['update_time']        = time();
-            $res = $mTable->update($data)->where('id', $messageData['id'])->exec();
-            $message_id = $messageData['id'];
-            if (Jaws_Error::IsError($res)) {
-                return false;
+        $data['subject']            = $messageData['subject'];
+        $data['body']               = $messageData['body'];
+        $data['attachments']        = count($messageData['attachments']);
+        $data['recipient_users']    = $messageData['recipient_users'];
+        $data['recipient_groups']   = $messageData['recipient_groups'];
+        $data['update_time']        = time();
+
+        // Detect draft or publish?
+        if($messageData['published']) {
+            $data['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX;
+            // Send new message
+            if(empty($messageData['id'])) {
+                // First we must insert a record to messages table for sender
+                $data['from'] = $user;
+                $data['to'] = 0;
+                $data['insert_time'] = time();
+                $senderMessageId = $mTable->insert($data)->exec();
+            // Send old message
+            } else {
+                $mTable->update($data)->where('id', $messageData['id'])->exec();
+                $senderMessageId = $messageData['id'];
             }
+
+            // Insert records for every recipient users
+            if (!empty($recipient_users) && count($recipient_users) > 0) {
+                $table = Jaws_ORM::getInstance()->table('pm_messages');
+                $rData = array();
+                foreach ($recipient_users as $recipient_user) {
+                    $rData[] = array($data['subject'], $data['body'], $data['attachments'],
+                                     $user, $recipient_user, PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX,
+                                     $data['recipient_users'], $data['recipient_groups'], time(), time());
+                }
+                $res = $table->insertAll(
+                                array('subject', 'body', 'attachments', 'from', 'to', 'folder',
+                                      'recipient_users', 'recipient_groups', 'insert_time', 'update_time'),
+                                $rData)->exec();
+
+                if (Jaws_Error::IsError($res)) {
+                    return false;
+                }
+            }
+
         } else {
-            $data['user']               = $user;
-            if(!empty($messageData['parent'])) {
-                $data['parent']         = $messageData['parent'];
+            $data['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT;
+            // save new draft message
+            if(empty($messageData['id'])) {
+                $data['from'] = $user;
+                $data['to'] = 0;
+                $data['insert_time'] = time();
+                $senderMessageId = $mTable->insert($data)->exec();
+
+                // update old message info
+            } else {
+                $mTable->update($data)->where('id', $messageData['id'])->exec();
             }
-            $data['subject']            = $messageData['subject'];
-            $data['body']               = $messageData['body'];
-            $data['published']          = $messageData['published'];
-            $data['type']               = $messageData['type'];
-            $data['attachments']        = count($messageData['attachments']);
-            $data['recipient_users']    = $messageData['recipient_users'];
-            $data['recipient_groups']   = $messageData['recipient_groups'];
-            $data['insert_time']        = time();
-            $message_id = $mTable->insert($data)->exec();
-            if (Jaws_Error::IsError($message_id)) {
-                return false;
-            }
+
         }
 
         // Insert attachments info
@@ -387,7 +425,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                     $attachment = $aModel->GetMessageAttachment($attachment);
                     $message_info = $this->GetMessage($attachment['message'], false, false);
                     $src_filepath = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $message_info['user'] .
-                        DIRECTORY_SEPARATOR . $attachment['filename'];
+                                    DIRECTORY_SEPARATOR . $attachment['filename'];
                     $dest_filepath = $pm_dir . $attachment['filename'];
                 }
 
@@ -409,30 +447,24 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                         'filename'      => $attachment['filename'],
                         'filesize'      => $attachment['filesize'],
                         'filetype'      => $attachment['filetype'],
-                        'message_id'    => $message_id,
                     );
                 }
 
             }
 
-            if (!empty($messageData['id']) && $messageData['id'] > 0) {
+/*            if (!empty($messageData['id']) && $messageData['id'] > 0) {
                 // delete message's recipients and attachments before insert new items
                 $this->DeleteOutboxMessage($messageData['id'], array('attachments', 'recipients'));
-            }
+            }*/
 
             $table = Jaws_ORM::getInstance()->table('pm_attachments');
             $res = $table->insertAll(array('title', 'filename', 'filesize', 'filetype', 'message'), $aData)->exec();
             if (Jaws_Error::IsError($res)) {
                 return false;
             }
-        } else {
-            if (!empty($messageData['id']) && $messageData['id'] > 0) {
-                // delete message's recipients and attachments before insert new items
-                $this->DeleteOutboxMessage($messageData['id'], array('attachments', 'recipients'));
-            }
         }
 
-        // Insert recipients info
+/*        // Insert recipients info
         if (!empty($recipient_users) && count($recipient_users) > 0) {
             $table = Jaws_ORM::getInstance()->table('pm_recipients');
             $rData = array();
@@ -447,11 +479,11 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             if (Jaws_Error::IsError($res)) {
                 return false;
             }
-        }
+        }*/
 
         //Commit Transaction
         $mTable->commit();
-        return $message_id;
+        return $senderMessageId;
     }
 
  }

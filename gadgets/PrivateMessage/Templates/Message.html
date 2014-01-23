@@ -1,4 +1,13 @@
 <!-- BEGIN message -->
+<div class="gadget privateMessage message">
+    <div class="gadget_header"><h2>{title}</h2></div>
+  <div class="gadget_container">
+
+    <form name="pm" action="{requested_url}" method="post">
+        <input type="hidden" name="gadget" value="PrivateMessage"/>
+        <input type="hidden" name="action" id="action" value=""/>
+        <input type="hidden" name="id" id="id" value="{id}"/>
+
         <div class="gadget_content content">
             <div class="user_avatar">
                 <img src="{avatar}" alt="{username}" title="{nickname}"/>
@@ -6,10 +15,6 @@
 
             <div><b>{lbl_from}:</b> <a href="{user_url}">{from}</a></div>
             <div><b>{lbl_send_time}:</b> {send_time}</div>
-
-            <!-- BEGIN announcement -->
-            <div><b>{lbl_message_is_announcement}</b></div>
-            <!-- END announcement -->
 
             <div class="gadget_actions actions">
                 <!-- BEGIN back -->
@@ -96,4 +101,21 @@
         <!-- BEGIN splitter -->
         <hr>
         <!-- END splitter -->
+
+    </form>
+  </div>
+  <div class="gadget_footer"></div>
+</div>
+
+<script type="text/javascript">
+    /**
+     * Delete Message
+     */
+    function deleteMessage() {
+        if (confirm('{confirmDelete}')) {
+            window.location.href = "{delete_url}";
+        }
+    }
+
+</script>
 <!-- END message -->

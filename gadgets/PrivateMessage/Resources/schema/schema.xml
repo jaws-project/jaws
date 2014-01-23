@@ -93,11 +93,6 @@
             </field>
 
             <field>
-                <name>link</name>
-                <type>integer</type>
-            </field>
-
-            <field>
                 <name>title</name>
                 <type>text</type>
                 <length>128</length>

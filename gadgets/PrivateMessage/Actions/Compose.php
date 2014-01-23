@@ -35,7 +35,6 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         // Menubar
         $tpl->SetVariable('menubar', $this->MenuBar('Compose'));
 
-        $tpl->SetVariable('selectAnnouncementChk', 'false');
         $body_value = "";
         $recipient_users = array();
         $recipient_groups = array();
@@ -58,10 +57,6 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('id', $id);
                 $recipient_users = explode(",", $message['recipient_users']);
                 $recipient_groups = explode(",", $message['recipient_groups']);
-                // check message type is announcement?
-                if ($message['type'] == PrivateMessage_Info::PRIVATEMESSAGE_TYPE_ANNOUNCEMENT) {
-                    $tpl->SetVariable('selectAnnouncementChk', 'true');
-                }
                 $body_value = $message['body'];
                 $tpl->SetVariable('subject', $message['subject']);
 
@@ -170,13 +165,6 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
 
         $userModel = new Jaws_User();
         if ($show_recipient) {
-            if($this->gadget->GetPermission('ComposeAnnouncement')) {
-                // Announcement
-                $tpl->SetBlock('compose/announcement');
-                $tpl->SetVariable('lbl_announcement', _t('PRIVATEMESSAGE_MESSAGE_TYPE_ANNOUNCEMENT'));
-                $tpl->ParseBlock('compose/announcement');
-            }
-
             $tpl->SetBlock('compose/recipients');
             $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
 
@@ -301,14 +289,9 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         }
         $this->gadget->CheckPermission('ComposeMessage');
 
-        $post = jaws()->request->fetch(array('id', 'parent', 'published', 'recipient_users', 'recipient_groups',
-                                             'subject', 'body', 'attachments:array'), 'post');
-
-        // Check permission for sending announcement
-        $recipient_users = explode(",", $post['recipient_users']);
-        if (in_array('0', $recipient_users)) {
-            $this->gadget->CheckPermission('ComposeAnnouncement');
-        }
+        $post = jaws()->request->fetch(array('id', 'published', 'recipient_users', 'recipient_groups',
+                                             'subject', 'attachments:array'), 'post');
+        $post['body'] = jaws()->request->fetch('body', 'post', 'strip_crlf');
 
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Message');

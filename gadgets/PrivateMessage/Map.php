@@ -64,15 +64,8 @@ $maps[] = array(
     array('id' => '[\p{L}[:digit:]-_\.]+',)
 );
 $maps[] = array(
-    'InboxMessage',
-    'pm/inbox/message/{id}',
-    array(
-        'id' => '[\p{L}[:digit:]-_\.]+',
-    )
-);
-$maps[] = array(
-    'OutboxMessage',
-    'pm/outbox/message/{id}',
+    'Message',
+    'pm/message/{id}',
     array(
         'id' => '[\p{L}[:digit:]-_\.]+',
     )
@@ -93,27 +86,22 @@ $maps[] = array(
     )
 );
 $maps[] = array(
-    'MessageHistory',
-    'pm/message/history/{id}',
-    array('id' => '[\p{L}[:digit:]-_\.]+',)
-);
-$maps[] = array(
-    'DeleteInboxMessage',
-    'pm/inbox/message/delete/{id}',
+    'TrashMessage',
+    'pm/message/delete/{id}',
     array(
         'id' => '[\p{L}[:digit:]-_\.]+',
     )
 );
 $maps[] = array(
-    'ArchiveInboxMessage',
-    'pm/inbox/message/archive/{id}',
+    'DeleteMessage',
+    'pm/message/delete/{id}',
     array(
         'id' => '[\p{L}[:digit:]-_\.]+',
     )
 );
 $maps[] = array(
-    'DeleteOutboxMessage',
-    'pm/outbox/message/delete/{id}',
+    'ArchiveMessage',
+    'pm/message/archive/{id}',
     array(
         'id' => '[\p{L}[:digit:]-_\.]+',
     )

@@ -12,7 +12,6 @@
         <input type="hidden" name="gadget" value="PrivateMessage"/>
         <input type="hidden" name="action" value="ComposeMessage"/>
         <input type="hidden" name="id" id="id" value="{id}"/>
-        <input type="hidden" name="parent" id="parent" value="{parent}"/>
 
         <!-- BEGIN parent_message -->
         <div class="parent-message">
@@ -20,16 +19,6 @@
             <hr>
         </div>
         <!-- END parent_message -->
-
-        <!-- BEGIN announcement -->
-        <div>
-            <label for="announcement">
-                <input type="checkbox" value="comments" id="announcement" name="announcement"
-                       onclick="toggleAnnouncementChk(this)">
-                {lbl_announcement}
-            </label>
-        </div>
-        <!-- END announcement -->
 
         <div class="gadget_content content">
             <!-- BEGIN recipients -->
@@ -97,12 +86,6 @@
     var toggleMax = "{icon_add}";
     var toggleMin = "{icon_remove}";
     var recipient_user = "{recipient_user}";
-    var selectAnnouncementChk = {selectAnnouncementChk};
-    if (selectAnnouncementChk) {
-        $('announcement').set('checked', 'checked');
-        $('recipient_users').set('disabled', true);
-        $('recipient_groups').set('disabled', true);
-    }
 
     $('attachment1').show();
     $('attach_loading').hide();

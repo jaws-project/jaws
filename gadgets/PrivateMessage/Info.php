@@ -13,8 +13,11 @@ class PrivateMessage_Info extends Jaws_Gadget
     /**
      * Constants
      */
-    const PRIVATEMESSAGE_TYPE_MESSAGE = 0;
-    const PRIVATEMESSAGE_TYPE_ANNOUNCEMENT = 1;
+    const PRIVATEMESSAGE_FOLDER_INBOX = 1;
+    const PRIVATEMESSAGE_FOLDER_DRAFT = 2;
+    const PRIVATEMESSAGE_FOLDER_OUTBOX = 3;
+    const PRIVATEMESSAGE_FOLDER_ARCHIVED = 4;
+    const PRIVATEMESSAGE_FOLDER_TRASH = 5;
 
     /**
      * Gadget version

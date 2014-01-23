@@ -29,17 +29,12 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
         $iModel = $this->gadget->model->load('Inbox');
         $oModel = $this->gadget->model->load('Outbox');
         $user_id = $GLOBALS['app']->Session->GetAttribute('user');
-        $unreadAnnouncementCount = $iModel->GetInboxStatistics(
-                                                $user_id,
-                                                array('read' => 'no',
-                                                      'archived' => false,
-                                                      'type' => PrivateMessage_Info::PRIVATEMESSAGE_TYPE_ANNOUNCEMENT));
         $unreadInboxCount = $iModel->GetInboxStatistics(
                                                 $user_id,
-                                                array('read' => 'no',
-                                                      'archived' => false,
-                                                      'type' => PrivateMessage_Info::PRIVATEMESSAGE_TYPE_MESSAGE));
-        $draftMessageCount = $oModel->GetOutboxStatistics($user_id, array('published' => false));
+                                                array('read' => 'no'));
+        $draftMessageCount = $oModel->GetOutboxStatistics(
+                                                 $user_id,
+                                                 array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT));
         if ($unreadInboxCount > 0) {
             $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX', '(' . $unreadInboxCount . ')'));
         } else {
@@ -57,13 +52,6 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
         $tpl->SetVariable('all_messages', _t('PRIVATEMESSAGE_ALL_MESSAGES'));
         $tpl->SetVariable('all_messages_url', $this->gadget->urlMap('AllMessages'));
 
-        if ($unreadAnnouncementCount > 0) {
-            $tpl->SetVariable('announcement', _t('PRIVATEMESSAGE_ANNOUNCEMENT', '(' . $unreadAnnouncementCount . ')'));
-        } else {
-            $tpl->SetVariable('announcement', _t('PRIVATEMESSAGE_ANNOUNCEMENT'));
-        }
-        $tpl->SetVariable('announcement_url', $this->gadget->urlMap('Announcement'));
-
         $tpl->SetVariable('inbox_url', $this->gadget->urlMap('Inbox'));
         $tpl->SetVariable('archived_url', $this->gadget->urlMap('Inbox', array('view' => 'archived')));
         $tpl->SetVariable('draft_url', $this->gadget->urlMap('Draft'));
@@ -71,6 +59,8 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
         $tpl->SetVariable('outbox', _t('PRIVATEMESSAGE_OUTBOX'));
         $tpl->SetVariable('outbox_url', $this->gadget->urlMap('Outbox'));
 
+        $tpl->SetVariable('trash', _t('PRIVATEMESSAGE_TRASH'));
+        $tpl->SetVariable('trash_url', $this->gadget->urlMap('Trash'));
 
         $tpl->SetVariable('compose_message', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
         $tpl->SetVariable('compose_message_url', $this->gadget->urlMap('Compose'));

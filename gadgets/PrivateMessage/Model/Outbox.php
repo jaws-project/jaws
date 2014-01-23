@@ -27,23 +27,10 @@ class PrivateMessage_Model_Outbox extends Jaws_Gadget_Model
             'pm_messages.id:integer','pm_messages.subject', 'pm_messages.body', 'pm_messages.insert_time',
             'users.nickname as from_nickname','attachments:integer'
         );
-        $table->join('users', 'pm_messages.user', 'users.id');
-        $table->where('pm_messages.user', $user);
+        $table->join('users', 'pm_messages.from', 'users.id');
+        $table->where('pm_messages.from', $user)->and()->where('folder', PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX);
 
         if (!empty($filters)) {
-            if (isset($filters['published']) && ($filters['published'] !== "")) {
-                $table->and()->where('published', $filters['published']);
-            }
-            if (isset($filters['replied']) && !empty($filters['replied'])) {
-                $subTable = Jaws_ORM::getInstance()->table('pm_messages');
-                $subTable->select('count(id)')->where('parent', 'pm_messages.id');
-
-                if ($filters['replied'] == 'yes') {
-                    $table->and()->where($subTable, 0, '>');
-                } else {
-                    $table->and()->where($subTable, 0);
-                }
-            }
             if (isset($filters['attachment']) && !empty($filters['attachment'])) {
                 if ($filters['attachment'] == 'yes') {
                     $table->and()->where('pm_messages.attachments', 0, '>');
@@ -77,33 +64,24 @@ class PrivateMessage_Model_Outbox extends Jaws_Gadget_Model
     function GetOutboxStatistics($user, $filters)
     {
         $table = Jaws_ORM::getInstance()->table('pm_messages');
-        $table->select('count(id):integer')->where('user', $user);
+        $table->select('count(id):integer');
+        $table->and()->where('from', $user)->and()->where('folder', PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX);
 
         if (!empty($filters)) {
-            if (isset($filters['published']) && ($filters['published'] !== "")) {
-                $table->and()->where('published', $filters['published']);
-            }
-            if (isset($filters['replied']) && !empty($filters['replied'])) {
-                $subTable = Jaws_ORM::getInstance()->table('pm_messages');
-                $subTable->select('count(id)')->where('parent', 'pm_messages.id');
-
-                if ($filters['replied'] == 'yes') {
-                    $table->and()->where($subTable, 0, '>');
-                } else {
-                    $table->and()->where($subTable, 0);
-                }
+            if (isset($filters['folder']) && ($filters['folder'] !== "")) {
+                $table->and()->where('folder', $filters['folder']);
             }
             if (isset($filters['attachment']) && !empty($filters['attachment'])) {
                 if ($filters['attachment'] == 'yes') {
-                    $table->and()->where('pm_messages.attachments', 0, '>');
+                    $table->and()->where('attachments', 0, '>');
                 } else {
-                    $table->and()->where('pm_messages.attachments', 0);
+                    $table->and()->where('attachments', 0);
                 }
             }
             if (isset($filters['term']) && !empty($filters['term'])) {
                 $filters['term'] = '%' . $filters['term'] . '%';
-                $table->and()->openWhere('pm_messages.subject', $filters['term'] , 'like')->or();
-                $table->closeWhere('pm_messages.body', $filters['term'] , 'like');
+                $table->and()->openWhere('subject', $filters['term'] , 'like')->or();
+                $table->closeWhere('body', $filters['term'] , 'like');
             }
         }
 

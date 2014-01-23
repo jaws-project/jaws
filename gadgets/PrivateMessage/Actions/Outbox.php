@@ -74,7 +74,6 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_Actions_Default
             $tpl->SetVariable('text', $response['text']);
         }
 
-        $post['published'] = true;
         $messages = $oModel->GetOutbox($user, $post, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
@@ -83,26 +82,23 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_Actions_Default
                 $tpl->SetBlock('outbox/message');
                 $tpl->SetVariable('rownum', $i);
 
-                $recipients = $mModel->GetMessageRecipientsInfo($message['id']);
-                $recipients_str = _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_ALL_USERS');
-                if (count($recipients) > 0) {
-                    // user's profile
-                    $user_url = $GLOBALS['app']->Map->GetURLFor(
-                        'Users',
-                        'Profile',
-                        array('user' => $recipients[0]['username']));
-                    $recipients_str = '<a href=' . $user_url . '>' . $recipients[0]['nickname'] . '<a/>';
-                    if (count($recipients) > 1) {
-                        $recipients_str .= ' , ...';
-                    }
+                $messageInfo = $mModel->GetMessage($message['id']);
+
+                // user's profile
+                $user_url = $GLOBALS['app']->Map->GetURLFor(
+                    'Users',
+                    'Profile',
+                    array('user' => $messageInfo['users'][0]['username']));
+                $recipients_str = '<a href=' . $user_url . '>' . $messageInfo['users'][0]['nickname'] . '<a/>';
+                if (count($messageInfo['users']) > 1) {
+                    $recipients_str .= ' , ...';
                 }
                 $tpl->SetVariable('recipients', $recipients_str);
 
                 $tpl->SetVariable('subject', $message['subject']);
                 $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
 
-                $tpl->SetVariable('message_url', $this->gadget->urlMap(
-                    'OutboxMessage', array('id' => $message['id'])));
+                $tpl->SetVariable('message_url', $this->gadget->urlMap('Message', array('id' => $message['id'])));
 
                 if ($message['attachments'] > 0) {
                     $tpl->SetBlock('outbox/message/have_attachment');
