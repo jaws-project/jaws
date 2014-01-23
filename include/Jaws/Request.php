@@ -89,6 +89,10 @@ class Jaws_Request
         $_SERVER['HTTP_REFERER'] =
             array_key_exists('HTTP_REFERER', $_SERVER)? $_SERVER['HTTP_REFERER']: '';
 
+        if (strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'iis')) {
+            $_SERVER['REQUEST_URI'] = $_SERVER['UNENCODED_URL'];
+        }
+
         // Prevent user interface redress attack(Click-jacking)
         header('X-Frame-Options: SAMEORIGIN');
 
