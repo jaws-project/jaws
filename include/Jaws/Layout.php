@@ -158,7 +158,9 @@ class Jaws_Layout
 
             $layout_path = $theme['path'];
             $this->IndexLayout = $GLOBALS['app']->mainIndex && $theme['index'];
-            $layout_file = $this->IndexLayout? 'index.html' : 'layout.html';
+            if (empty($layout_file)) {
+                $layout_file = $this->IndexLayout? 'index.html' : 'layout.html';
+            }
         }
 
         $this->_Template = new Jaws_Template();
