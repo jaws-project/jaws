@@ -38,7 +38,7 @@ $maps[] = array(
     'UserTopics',
     'forums/users/{user}/topics[/page/{page}]',
     array(
-        'user' => '[[:alnum:]-_]+',
+        'user' => '[[:alnum:]-_.@]+',
         'page' => '[[:digit:]]+',
     )
 );
@@ -117,7 +117,7 @@ $maps[] = array(
     'UserPosts',
     'forums/users/{user}/posts[/page/{page}]',
     array(
-        'user' => '[[:alnum:]-_]+',
+        'user' => '[[:alnum:]-_.@]+',
         'page' => '[[:digit:]]+',
     )
 );
