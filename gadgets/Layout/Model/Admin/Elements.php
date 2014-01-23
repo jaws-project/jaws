@@ -15,6 +15,7 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      * Add a new element to the layout
      *
      * @access  public
+     * @param   bool    $index           Index layout
      * @param   string  $section         The section where it should appear
      * @param   string  $gadget          Gadget name
      * @param   string  $action          A ction name
@@ -24,7 +25,7 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      * @param   int     $user            (Optional) User's ID
      * @return  bool    Returns true if gadget was added without problems, if not, returns false
      */
-    function NewElement($section, $gadget, $action, $action_params, $action_filename, $pos = '', $user = 0)
+    function NewElement($index, $section, $gadget, $action, $action_params, $action_filename, $pos = '', $user = 0)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         if (empty($pos)) {
@@ -59,11 +60,12 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $id         Element ID
+     * @param   bool    $index      Index layout
      * @param   string  $section    Section name
      * @param   int     $position   Position of item in section
      * @return  bool    Returns true if element was removed otherwise it returns Jaws_Error
      */
-    function DeleteElement($id, $section, $position)
+    function DeleteElement($id, $index, $section, $position)
     {
         $user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
         $lyTable = Jaws_ORM::getInstance()->table('layout');
@@ -93,13 +95,14 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $item           Item ID
+     * @param   bool    $index          Index layout
      * @param   string  $old_section    Old section name
      * @param   int     $old_position   Position of item in old section
      * @param   string  $new_section    Old section name
      * @param   int     $new_position   Position of item in new section
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function MoveElement($item, $old_section, $old_position, $new_section, $new_position)
+    function MoveElement($item, $index, $old_section, $old_position, $new_section, $new_position)
     {
         $user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
         $lyTable = Jaws_ORM::getInstance()->table('layout');

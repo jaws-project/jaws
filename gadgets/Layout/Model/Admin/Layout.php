@@ -36,19 +36,21 @@ class Layout_Model_Admin_Layout extends Jaws_Gadget_Model
      * Get the gadgets that are in a section
      *
      * @access  public
-     * @param   int     $id     Section to search
+     * @param   bool    $index      Elements in index layout
+     * @param   string  $section    Section to search
      * @return  array   Returns an array of gadgets that are in a section and false on error
      */
-    function GetGadgetsInSection($id)
+    function GetGadgetsInSection($index, $section)
     {
         $user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
         $lyTable = Jaws_ORM::getInstance()->table('layout');
-        $lyTable->select('id', 'gadget', 'gadget_action', 'display_when', 'layout_position', 'published');
-        return $lyTable->where('section', $id)
-            ->and()
+        $lyTable->select('id', 'gadget', 'gadget_action', 'display_when', 'layout_position', 'published')
             ->where('user', $user)
-            ->orderBy('layout_position')
-            ->fetchAll();
+            ->and()
+            ->where('index', (bool)$index)
+            ->and()
+            ->where('section', $section);
+        return $lyTable->orderBy('layout_position')->fetchAll();
     }
 
     /**
