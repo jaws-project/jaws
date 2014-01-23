@@ -40,7 +40,7 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
 
         // referrer page link
         $reqURL = Jaws_Utils::getRequestURL();
-        $reqURL.= ($reqURL == BASE_SCRIPT)? '?checksess' : '&checksess';
+        $reqURL = (empty($reqURL) || $reqURL == BASE_SCRIPT)? (BASE_SCRIPT. '?checksess') : "$reqURL&checksess";
         $redirect_to = is_null($reqpost['redirect_to'])? bin2hex($reqURL) : $reqpost['redirect_to'];
         $ltpl->SetVariable('redirect_to', $redirect_to);
 
