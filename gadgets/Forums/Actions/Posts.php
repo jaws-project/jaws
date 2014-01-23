@@ -24,7 +24,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
 
         $tModel = $this->gadget->model->load('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
-        if (Jaws_Error::IsError($topic) || empty($topic)) {
+        if (Jaws_Error::IsError($topic)) {
             return Jaws_HTTPError::Get($topic->getCode());
         }
 

@@ -20,8 +20,12 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * @param   int     $fid    Forum ID
      * @return  mixed   Array of topic info or Jaws_Error on failure
      */
-    function GetTopic($tid, $fid = null)
+    function GetTopic($tid, $fid)
     {
+        if (!$this->gadget->GetPermission('ForumAccess', (int)$fid)) {
+            return Jaws_Error::raiseError(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
+        }
+
         $table = Jaws_ORM::getInstance()->table('forums_topics');
         $table->select(
                 'forums_topics.id:integer', 'fid:integer', 'subject', 'views:integer', 'replies:integer',
@@ -36,15 +40,10 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         $table->join('forums_posts', 'forums_topics.first_post_id', 'forums_posts.id', 'left');
         $table->join('users', 'forums_posts.uid', 'users.id', 'left');
         $table->where('forums_topics.id', $tid);
-
-        if (!empty($fid)) {
-            $table->and()->where('fid', $fid);
-        }
-
+        $table->and()->where('fid', (int)$fid);
         $result = $table->fetchRow();
-
-        if (!$this->gadget->GetPermission('ForumAccess', $result['fid'])) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
+        if (empty($result)) {
+            return Jaws_Error::raiseError(_t('GLOBAL_HTTP_ERROR_CONTENT_404'), 404);
         }
 
         return $result;
