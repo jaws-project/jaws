@@ -62,9 +62,8 @@ class Jaws_URLMapping
 
         // fetch all registry keys
         $regKeys = $urlMapper->registry->fetchAll();
-        $enabled = $regKeys['map_enabled'] == 'true';
         $extension = $regKeys['map_extensions'];
-        $this->_enabled = $enabled && strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'iis') === false;
+        $this->_enabled           = $regKeys['map_enabled'] == 'true';
         $this->_use_rewrite       = $regKeys['map_use_rewrite'] == 'true';
         $this->_use_aliases       = $regKeys['map_use_aliases'] == 'true';
         $this->_custom_precedence = $regKeys['map_custom_precedence'] == 'true';
