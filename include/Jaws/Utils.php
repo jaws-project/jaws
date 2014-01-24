@@ -818,6 +818,7 @@ class Jaws_Utils
             $pThemes = array_flip($pThemes);
             foreach($pThemes as $theme => $key) {
                 $pThemes[$theme] = array(
+                    'index' => @is_file(JAWS_THEMES. $theme. '/index.html'),
                     'name'  => $theme,
                     'title' => $theme,
                     'desc'  => '',
@@ -855,6 +856,7 @@ class Jaws_Utils
                     $themes = array_flip($themes);
                     foreach($themes as $theme => $key) {
                         $themes[$theme] = array(
+                            'index' => @is_file(JAWS_BASE_THEMES. $theme. '/index.html'),
                             'name'  => $theme,
                             'title' => $theme,
                             'desc'  => '',
