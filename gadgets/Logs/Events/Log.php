@@ -23,6 +23,10 @@ class Logs_Events_Log extends Jaws_Gadget_Event
      */
     function Execute($gadget, $action, $priority = 0, $params = null, $status = 200, $user = 0)
     {
+        if (!isset($GLOBALS['app']->Session)) {
+            return false;
+        }
+
         $priority = empty($priority)? JAWS_INFO : (int)$priority;
         $user = empty($user)? (int)$GLOBALS['app']->Session->GetAttribute('user') : $user;
         // log events if user logged
