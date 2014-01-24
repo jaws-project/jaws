@@ -186,7 +186,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      *
      *
      */
-    function getLayoutControls($default_dashboard = 0, $default_layout = 'layout')
+    function getLayoutControls($default_dashboard = 0, $index_layout = false)
     {
         $tpl = $this->gadget->template->load('LayoutControls.html');
         $tpl->SetBlock('controls');
@@ -245,11 +245,11 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_layout', _t('LAYOUT_LAYOUTS'));
         $layoutsCombo =& Piwi::CreateWidget('Combo', 'layout');
         $layoutsCombo->setID('layout');
-        $layoutsCombo->AddOption(_t('LAYOUT_LAYOUTS_DEFAULT'), 'layout');
+        $layoutsCombo->AddOption(_t('LAYOUT_LAYOUTS_DEFAULT'), 0);
         if (isset($themes[$default_theme]) && $themes[$default_theme]['index']) {
-            $layoutsCombo->AddOption(_t('LAYOUT_LAYOUTS_INDEX'), 'index');
+            $layoutsCombo->AddOption(_t('LAYOUT_LAYOUTS_INDEX'), 1);
         }
-        $layoutsCombo->SetDefault($default_layout);
+        $layoutsCombo->SetDefault((int)$index_layout);
         $tpl->SetVariable('layouts_combo', $layoutsCombo->Get());
 
         $add =& Piwi::CreateWidget('Button', 'add', _t('LAYOUT_NEW'), STOCK_ADD);
