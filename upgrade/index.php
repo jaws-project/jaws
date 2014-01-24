@@ -78,7 +78,7 @@ if (!isset($_SESSION['upgrade'])) {
 
 // Lets handle our requests
 require JAWS_PATH . 'include/Jaws/Request.php';
-$request =& Jaws_Request::getInstance();
+$request = Jaws_Request::getInstance();
 $lang = $request->fetch('language', 'post');
 if (isset($lang)) {
     $_SESSION['upgrade']['language'] = urlencode($lang);
