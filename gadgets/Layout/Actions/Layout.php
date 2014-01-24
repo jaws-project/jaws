@@ -98,7 +98,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
             $fakeLayout->_Template->SetBlock('layout/'.$name);
             $js_section_array = '<script type="text/javascript">items[\''.$name.'\'] = new Array(); sections.push(\''.$name.'\');</script>';
-            $gadgets = $lModel->GetGadgetsInSection($name);
+            $gadgets = $lModel->GetGadgetsInSection(false, $name);
             if (!is_array($gadgets)) {
                 continue;
             }
