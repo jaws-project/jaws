@@ -21,14 +21,6 @@ $maps[] = array(
     )
 );
 $maps[] = array(
-    'Announcement',
-    'pm/announcement[/view/{view}][/page/{page}][/read/{read}][/replied/{replied}][/term/{term}][/pageitem/{page_item}]',
-    array(
-        'page' => '[[:digit:]]+',
-        'view' => '[[:lower:]-]+',
-    )
-);
-$maps[] = array(
     'AllMessages',
     'pm/all/messages[/view/{view}][/page/{page}][/read/{read}][/replied/{replied}][/term/{term}][/pageitem/{page_item}]',
     array(
@@ -46,6 +38,13 @@ $maps[] = array(
 $maps[] = array(
     'Draft',
     'pm/draft[/page/{page}][/term/{term}][/pageitem/{page_item}]',
+    array(
+        'page' => '[[:digit:]]+',
+    )
+);
+$maps[] = array(
+    'Trash',
+    'pm/trash[/page/{page}][/term/{term}][/pageitem/{page_item}]',
     array(
         'page' => '[[:digit:]]+',
     )

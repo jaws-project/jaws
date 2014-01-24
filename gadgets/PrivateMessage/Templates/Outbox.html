@@ -10,15 +10,6 @@
         <input type="hidden" name="page" value="{page}"/>
 
         <div class="filters">
-            <!-- BEGIN replied_filter -->
-            <label for="replied">{lbl_replied}</label>
-            <select id="replied" name="replied">
-                <option {opt_replied_} value="">{lbl_all}</option>
-                <option {opt_replied_yes} value="yes">{lbl_yes}</option>
-                <option {opt_replied_no} value="no">{lbl_no}</option>
-            </select>
-            <!-- END replied_filter -->
-
             <input type="text" id="term" name="term" size="20" value="{txt_term}">
 
             <button value="{filter}" id="filter_button" name="filter_button"

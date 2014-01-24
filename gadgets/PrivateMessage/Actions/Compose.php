@@ -39,17 +39,18 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $recipient_users = array();
         $recipient_groups = array();
         $show_recipient = true;
-        if (!empty($id) && $id > 0) {
+        if (!empty($id)) {
             $message = $model->GetMessage($id, true, false);
 
-            // Check permissions
-            $messageRecipients = $model->GetMessageRecipients($id);
-            if (!in_array($user, $messageRecipients) &&
-                !in_array('0', $messageRecipients) && $message['user'] != $user) {
-                return Jaws_HTTPError::Get(403);
+            // Check draft status
+            if ($message['folder'] != PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT) {
+                return Jaws_HTTPError::Get(404);
             }
 
-            $tpl->SetVariable('parent', $message['parent']);
+            // Check permissions
+            if ($message['from'] != $user || $message['from'] = 0) {
+                return Jaws_HTTPError::Get(403);
+            }
 
             // edit draft
             if (empty($get['reply'])) {
@@ -252,23 +253,25 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         if ($loadAttachments && !empty($message_id)) {
             $message = $model->GetMessage($message_id, true, false);
 
-            foreach ($message['attachments'] as $file) {
-                $tpl->SetBlock('attachments/file');
-                $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
-                $tpl->SetVariable('file_name', $file['title']);
-                $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['filesize']));
-                $tpl->SetVariable('file_id', $file['id']);
+            if (isset($message['attachments'])) {
+                foreach ($message['attachments'] as $file) {
+                    $tpl->SetBlock('attachments/file');
+                    $tpl->SetVariable('lbl_file_size', _t('PRIVATEMESSAGE_MESSAGE_FILE_SIZE'));
+                    $tpl->SetVariable('file_name', $file['title']);
+                    $tpl->SetVariable('file_size', Jaws_Utils::FormatSize($file['filesize']));
+                    $tpl->SetVariable('file_id', $file['id']);
 
-                $tpl->SetVariable('file_download_link', $file['title']);
-                $file_url = $this->gadget->urlMap('Attachment',
-                    array(
-                        'uid' => $message['user'],
-                        'mid' => $message_id,
-                        'aid' => $file['id'],
-                    ));
-                $tpl->SetVariable('file_download_link', $file_url);
+                    $tpl->SetVariable('file_download_link', $file['title']);
+                    $file_url = $this->gadget->urlMap('Attachment',
+                        array(
+                            'uid' => $message['user'],
+                            'mid' => $message_id,
+                            'aid' => $file['id'],
+                        ));
+                    $tpl->SetVariable('file_download_link', $file_url);
 
-                $tpl->ParseBlock('attachments/file');
+                    $tpl->ParseBlock('attachments/file');
+                }
             }
         }
         $tpl->ParseBlock('attachments');

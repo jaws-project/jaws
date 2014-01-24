@@ -54,19 +54,10 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_Actions_Default
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
         $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
 
-        $tpl->SetBlock('outbox/replied_filter');
-        $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
-        $tpl->SetVariable('opt_replied_' . $post['replied'], 'selected="selected"');
-        $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
-        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
-        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
-        $tpl->ParseBlock('outbox/replied_filter');
-
         $tpl->SetBlock('outbox/table_number');
         $tpl->ParseBlock('outbox/table_number');
 
         $date = Jaws_Date::getInstance();
-        $oModel = $this->gadget->model->load('Outbox');
         $mModel = $this->gadget->model->load('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
@@ -74,7 +65,13 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_Actions_Default
             $tpl->SetVariable('text', $response['text']);
         }
 
-        $messages = $oModel->GetOutbox($user, $post, $limit, ($page - 1) * $limit);
+        $messages = $mModel->GetMessages(
+            $user,
+            PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX,
+            $post,
+            $limit,
+            ($page - 1) * $limit);
+
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
             foreach ($messages as $message) {
@@ -119,7 +116,7 @@ class PrivateMessage_Actions_Outbox extends PrivateMessage_Actions_Default
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
 
         $post['published'] = true;
-        $outboxTotal = $oModel->GetOutboxStatistics($user, $post);
+        $outboxTotal = $mModel->GetMessagesStatistics($user, PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX, $post);
 
         $params = array();
         if (!empty($post['replied'])) {

@@ -26,15 +26,15 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
         $tpl->SetBlock('PrivateMessage');
         $tpl->SetVariable('title', $this->gadget->title);
 
-        $iModel = $this->gadget->model->load('Inbox');
-        $oModel = $this->gadget->model->load('Outbox');
+        $model = $this->gadget->model->load('Message');
         $user_id = $GLOBALS['app']->Session->GetAttribute('user');
-        $unreadInboxCount = $iModel->GetInboxStatistics(
+        $unreadInboxCount = $model->GetMessagesStatistics(
                                                 $user_id,
+                                                PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX,
                                                 array('read' => 'no'));
-        $draftMessageCount = $oModel->GetOutboxStatistics(
+        $draftMessageCount = $model->GetMessagesStatistics(
                                                  $user_id,
-                                                 array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT));
+                                                 PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT);
         if ($unreadInboxCount > 0) {
             $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX', '(' . $unreadInboxCount . ')'));
         } else {

@@ -37,12 +37,12 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_Actions_Default
 
 
         if ($view == 'archived') {
-            $post['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED;
+            $folder = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED;
             // Menubar
             $tpl->SetVariable('menubar', $this->MenuBar('Archived'));
             $tpl->SetVariable('title', _t('PRIVATEMESSAGE_ARCHIVE'));
         } else {
-            $post['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX;
+            $folder = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX;
             // Menubar
             $tpl->SetVariable('menubar', $this->MenuBar('Inbox'));
             $tpl->SetVariable('title', _t('PRIVATEMESSAGE_INBOX'));
@@ -86,14 +86,20 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_Actions_Default
         $tpl->SetVariable('icon_ok', STOCK_OK);
 
         $date = Jaws_Date::getInstance();
-        $model = $this->gadget->model->load('Inbox');
+        $model = $this->gadget->model->load('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
         }
 
-        $messages = $model->GetInbox($user, $post, $limit, ($page - 1) * $limit);
+        $messages = $model->GetMessages(
+            $user,
+            $folder,
+            $post,
+            $limit,
+            ($page - 1) * $limit);
+
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
             foreach ($messages as $message) {
@@ -142,8 +148,7 @@ class PrivateMessage_Actions_Inbox extends PrivateMessage_Actions_Default
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
 
-        $iModel = $this->gadget->model->load('Inbox');
-        $inboxTotal = $iModel->GetInboxStatistics($user, $post);
+        $inboxTotal = $model->GetMessagesStatistics($user, PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX, $post);
 
         $params = array();
         if(!empty($post['read'])) {

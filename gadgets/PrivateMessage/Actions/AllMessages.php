@@ -64,11 +64,10 @@ class PrivateMessage_Actions_AllMessages extends PrivateMessage_Actions_Default
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
 
         $date = Jaws_Date::getInstance();
-        $model = $this->gadget->model->load('AllMessages');
-        $mModel = $this->gadget->model->load('Message');
+        $model = $this->gadget->model->load('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
-        $messages = $model->GetAllMessages($user, $post, $limit, ($page - 1) * $limit);
+        $messages = $model->GetMessages($user, null, $post, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
             foreach ($messages as $message) {
@@ -78,7 +77,7 @@ class PrivateMessage_Actions_AllMessages extends PrivateMessage_Actions_Default
 
                 $subject = $message['subject'];
                 // check inbox or outbox
-                if ($message['recipient'] == $user) {
+                if ($message['to'] == $user) {
                     $tpl->SetVariable('in_out', _t('PRIVATEMESSAGE_IN'));
                     $tpl->SetVariable('id',  $message['message_recipient_id']);
 
@@ -101,20 +100,20 @@ class PrivateMessage_Actions_AllMessages extends PrivateMessage_Actions_Default
                         array('id' => $message['id'])));
                 }
 
-                $recipients = $mModel->GetMessageRecipientsInfo($message['id']);
-                $recipients_str = _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_ALL_USERS');
-                if (count($recipients) > 0) {
-                    // user's profile
-                    $user_url = $GLOBALS['app']->Map->GetURLFor(
-                        'Users',
-                        'Profile',
-                        array('user' => $recipients[0]['username']));
-                    $recipients_str = '<a href=' . $user_url . '>' . $recipients[0]['nickname'] . '<a/>';
-                    if (count($recipients) > 1) {
-                        $recipients_str .= ' , ...';
-                    }
-                }
-                $tpl->SetVariable('recipients', $recipients_str);
+//                $recipients = $model->GetMessageRecipientsInfo($message['id']);
+//                $recipients_str = _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_ALL_USERS');
+//                if (count($recipients) > 0) {
+//                    // user's profile
+//                    $user_url = $GLOBALS['app']->Map->GetURLFor(
+//                        'Users',
+//                        'Profile',
+//                        array('user' => $recipients[0]['username']));
+//                    $recipients_str = '<a href=' . $user_url . '>' . $recipients[0]['nickname'] . '<a/>';
+//                    if (count($recipients) > 1) {
+//                        $recipients_str .= ' , ...';
+//                    }
+//                }
+//                $tpl->SetVariable('recipients', $recipients_str);
 
 
                 $tpl->SetVariable('from', $message['from_nickname']);
@@ -150,7 +149,7 @@ class PrivateMessage_Actions_AllMessages extends PrivateMessage_Actions_Default
         $tpl->SetVariable('lbl_recipients', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
-        $total = $model->GetAllMessagesStatistics($user, $post);
+        $total = $model->GetMessagesStatistics($user, null, $post);
 
         $params = array();
         if(!empty($post['read'])) {

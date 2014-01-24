@@ -67,7 +67,6 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_Actions_Default
         $tpl->ParseBlock('outbox/actions');
 
         $date = Jaws_Date::getInstance();
-        $oModel = $this->gadget->model->load('Outbox');
         $mModel = $this->gadget->model->load('Message');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         if ($response = $GLOBALS['app']->Session->PopResponse('PrivateMessage.Message')) {
@@ -75,7 +74,13 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_Actions_Default
             $tpl->SetVariable('text', $response['text']);
         }
 
-        $messages = $oModel->GetOutbox($user, array('published' => false), $limit, ($page - 1) * $limit);
+        $messages = $mModel->GetMessages(
+            $user,
+            PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT,
+            null,
+            $limit,
+            ($page - 1) * $limit);
+
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
             foreach ($messages as $message) {
@@ -85,21 +90,17 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('id', $message['id']);
                 $tpl->ParseBlock('outbox/message/checkbox');
 
-                $recipients = $mModel->GetMessageRecipientsInfo($message['id']);
-                $recipients_str = _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_ALL_USERS');
-                if (count($recipients) > 0) {
-                    // user's profile
-                    $user_url = $GLOBALS['app']->Map->GetURLFor(
-                        'Users',
-                        'Profile',
-                        array('user' => $recipients[0]['username']));
-                    $recipients_str = '<a href=' . $user_url . '>' . $recipients[0]['nickname'] . '<a/>';
-                    if (count($recipients) > 1) {
-                        $recipients_str .= ' , ...';
-                    }
+                $messageInfo = $mModel->GetMessage($message['id']);
+                // user's profile
+                $user_url = $GLOBALS['app']->Map->GetURLFor(
+                    'Users',
+                    'Profile',
+                    array('user' => $messageInfo['users'][0]['username']));
+                $recipients_str = '<a href=' . $user_url . '>' . $messageInfo['users'][0]['nickname'] . '<a/>';
+                if (count($messageInfo['users']) > 1) {
+                    $recipients_str .= ' , ...';
                 }
                 $tpl->SetVariable('recipients', $recipients_str);
-
 
                 $tpl->SetVariable('subject', $message['subject']);
                 $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
@@ -128,7 +129,7 @@ class PrivateMessage_Actions_Draft extends PrivateMessage_Actions_Default
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
 
-        $draftTotal = $oModel->GetOutboxStatistics($user, array('published' => false));
+        $draftTotal = $mModel->GetMessagesStatistics($user, PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT);
 
         $params = array();
         if (!empty($post['term'])) {

@@ -164,7 +164,6 @@ function sendMessage(published) {
     }
 
     var attachments = uploadedFiles.concat(getSelectedAttachments());
-    console.log($('body').value);
     PrivateMessageAjax.callAsync('ComposeMessage', {'id': $('id').value, 'published':published,
                      'recipient_users':recipient_users, 'recipient_groups':recipient_groups,
                      'subject':$('subject').value, 'body':getEditorValue('body'), 'attachments':attachments

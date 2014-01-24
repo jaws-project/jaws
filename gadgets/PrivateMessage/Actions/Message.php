@@ -126,7 +126,7 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_Action
                 $tpl->SetBlock('message/archive');
                 $tpl->SetVariable('icon_archive', 'gadgets/PrivateMessage/Resources/images/archive-mini.png');
                 $tpl->SetVariable('archive', _t('PRIVATEMESSAGE_ARCHIVE'));
-                $tpl->SetVariable('archive_url', $this->gadget->urlMap('ArchiveInboxMessage', array('id' => $id)));
+                $tpl->SetVariable('archive_url', $this->gadget->urlMap('ArchiveMessage', array('id' => $id)));
                 $tpl->ParseBlock('message/archive');
             }
         }
@@ -151,6 +151,56 @@ class PrivateMessage_Actions_Message extends Jaws_Gadget_Action
 
         $tpl->ParseBlock('message');
         return $tpl->Get();
+    }
+
+    /**
+     * Archive message
+     *
+     * @access  public
+     * @return  void
+     */
+    function ArchiveMessage()
+    {
+        $this->gadget->CheckPermission('ArchiveMessage');
+
+        $ids = jaws()->request->fetch('id', 'get');
+        $post = jaws()->request->fetch(array('message_checkbox:array', 'status'), 'post');
+        $status = $post['status'];
+        if ($status == 'retrieve') {
+            $status = false;
+        } else {
+            $status = true;
+        }
+
+        if(!empty($post['message_checkbox']) && count($post['message_checkbox'])>0) {
+            $ids = $post['message_checkbox'];
+        }
+
+        $model = $this->gadget->model->load('Message');
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
+        $res = $model->ArchiveMessage($ids, $user, $status);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushResponse(
+                $res->getMessage(),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        }
+
+        if ($res == true) {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_MESSAGE_ARCHIVED'),
+                'PrivateMessage.Message',
+                RESPONSE_NOTICE
+            );
+        } else {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_ARCHIVED'),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        }
+        Jaws_Header::Location($this->gadget->urlMap('Inbox'));
     }
 
 }
