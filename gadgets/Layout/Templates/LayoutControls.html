@@ -12,20 +12,25 @@
           <!-- END documentation -->
           </span></td>
         <td></td>
-        <td id="layout-combo">
-          <!-- BEGIN layouts -->
+        <td id="dashboards-combo">
           <form name="controls" id="controls" method="post" action="{base_script}">
           <input type="hidden" name="gadget" value="Layout" />
-          <input type="hidden" name="action" value="LayoutSwitch" />
-          {layouts}: {layouts_combo}
+          <input type="hidden" name="action" value="DashboardSwitch" />
+          {lbl_dashboard}: {dashboards_combo}
           </form>
-          <!-- END layouts -->
         </td>
-        <td id="theme-combo">
+        <td id="themes-combo">
           <form name="controls" id="controls" method="post" action="{base_script}">
           <input type="hidden" name="gadget" value="Layout" />
           <input type="hidden" name="action" value="ChangeTheme" />
           {theme}: {theme_combo}
+          </form>
+        </td>
+        <td id="layouts-combo">
+          <form name="controls" id="controls" method="post" action="{base_script}">
+          <input type="hidden" name="gadget" value="Layout" />
+          <input type="hidden" name="action" value="LayoutSwitch" />
+          {lbl_layout}: {layouts_combo}
           </form>
         </td>
         <td id="add-gadget-btn">{add_gadget}</td>

@@ -44,7 +44,7 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
      * @param   int     $user   User's ID
      * @return  void
      */
-    function layoutSwitch($user = 0)
+    function dashboardSwitch($user = 0)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         if (!empty($user)) {

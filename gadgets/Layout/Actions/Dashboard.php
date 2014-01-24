@@ -26,7 +26,7 @@ class Layout_Actions_Dashboard extends Jaws_Gadget_Action
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
 
         $layoutModel = $this->gadget->model->load('Layout');
-        $layoutModel->layoutSwitch($user);
+        $layoutModel->dashboardSwitch($user);
         Jaws_Header::Location('');
     }
 
@@ -36,7 +36,7 @@ class Layout_Actions_Dashboard extends Jaws_Gadget_Action
      * @access  public
      * @return  void
      */
-    function LayoutSwitch()
+    function DashboardSwitch()
     {
         if (!$GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard')) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_ACCESS_DENIED'), RESPONSE_ERROR);
@@ -47,7 +47,7 @@ class Layout_Actions_Dashboard extends Jaws_Gadget_Action
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
 
         $layoutModel = $this->gadget->model->load('Layout');
-        $result = $layoutModel->layoutSwitch($user);
+        $result = $layoutModel->dashboardSwitch($user);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
         } else {

@@ -61,7 +61,7 @@ $actions['Dashboard'] = array(
     'standalone' => true,
     'file' => 'Dashboard',
 );
-$actions['LayoutSwitch'] = array(
+$actions['DashboardSwitch'] = array(
     'standalone' => true,
     'file' => 'Dashboard',
 );

@@ -186,7 +186,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      *
      *
      */
-    function getLayoutControls()
+    function getLayoutControls($default_dashboard = 0, $default_layout = 'layout')
     {
         $tpl = $this->gadget->template->load('LayoutControls.html');
         $tpl->SetBlock('controls');
@@ -203,23 +203,30 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $tpl->SetVariable('title-gadget', 'Layout');
         $tpl->SetVariable('layout-url', $this->gadget->urlMap('Layout', array()));
 
-        // layouts/dashboards
+        // dashboards
+        $tpl->SetVariable('lbl_dashboard', _t('LAYOUT_DASHBOARD'));
+        $dashboards =& Piwi::CreateWidget('Combo', 'dashboard');
+        $dashboards->setID('dashboard');
+        if ($this->gadget->GetPermission('ManageLayout')) {
+            $dashboards->AddOption(_t('LAYOUT_LAYOUTS_GLOBAL'), 0);
+        }
         if ($GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard')) {
-            $tpl->SetBlock('controls/layouts');
-            $tpl->SetVariable('layouts', _t('LAYOUT_LAYOUTS'));
-            $layoutsCombo =& Piwi::CreateWidget('Combo', 'layouts');
-            $layoutsCombo->setID('layouts');
-            if ($this->gadget->GetPermission('ManageLayout')) {
-                $layoutsCombo->AddOption(_t('LAYOUT_LAYOUTS_GLOBAL'), '0');
-            }
-            $layoutsCombo->AddOption(_t('LAYOUT_LAYOUTS_USER'), $GLOBALS['app']->Session->GetAttribute('user'));
-            $layoutsCombo->SetDefault($GLOBALS['app']->Session->GetAttribute('layout'));
-            $layoutsCombo->AddEvent(ON_CHANGE, "this.form.submit();");
-            $tpl->SetVariable('layouts_combo', $layoutsCombo->Get());
-            $tpl->ParseBlock('controls/layouts');
+            $dashboards->AddOption(
+                _t('LAYOUT_LAYOUTS_USER'),
+                (int)$GLOBALS['app']->Session->GetAttribute('user')
+            );
         }
 
+        $dashboards->SetDefault($default_dashboard);
+        $dashboards->AddEvent(ON_CHANGE, "this.form.submit();");
+        $tpl->SetVariable('dashboards_combo', $dashboards->Get());
+
         // themes
+        $default_theme = $this->gadget->registry->fetchByUser(
+            'theme',
+            'Settings',
+            $GLOBALS['app']->Session->GetAttribute('layout')
+        );
         $tpl->SetVariable('theme', _t('LAYOUT_THEME'));
         $themeCombo =& Piwi::CreateWidget('ComboGroup', 'theme');
         $themeCombo->setID('theme');
@@ -229,16 +236,21 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         foreach ($themes as $theme => $tInfo) {
             $themeCombo->AddOption($tInfo['local']? 'local' : 'remote', $tInfo['name'], $theme);
         }
-        $themeCombo->SetDefault(
-            $this->gadget->registry->fetchByUser(
-                'theme',
-                'Settings',
-                $GLOBALS['app']->Session->GetAttribute('layout')
-            )
-        );
+        $themeCombo->SetDefault($default_theme);
         $themeCombo->AddEvent(ON_CHANGE, "this.form.submit();");
         $themeCombo->SetEnabled($this->gadget->GetPermission('ManageThemes'));
         $tpl->SetVariable('theme_combo', $themeCombo->Get());
+
+        // layouts
+        $tpl->SetVariable('lbl_layout', _t('LAYOUT_LAYOUTS'));
+        $layoutsCombo =& Piwi::CreateWidget('Combo', 'layout');
+        $layoutsCombo->setID('layout');
+        $layoutsCombo->AddOption(_t('LAYOUT_LAYOUTS_DEFAULT'), 'layout');
+        if (isset($themes[$default_theme]) && $themes[$default_theme]['index']) {
+            $layoutsCombo->AddOption(_t('LAYOUT_LAYOUTS_INDEX'), 'index');
+        }
+        $layoutsCombo->SetDefault($default_layout);
+        $tpl->SetVariable('layouts_combo', $layoutsCombo->Get());
 
         $add =& Piwi::CreateWidget('Button', 'add', _t('LAYOUT_NEW'), STOCK_ADD);
         $url = $GLOBALS['app']->getSiteURL().'/'.BASE_SCRIPT.'?gadget=Layout&amp;action=AddLayoutElement&amp;mode=new';
