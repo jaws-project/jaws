@@ -143,7 +143,6 @@ function sendMessage(published) {
 
     // detect pre load users or groups list
     if (recipient_user == "" || recipient_user.length == 0) {
-        // check Announcement checkbox
         var recipient_users_array = new Array();
         var recipient_groups_array = new Array();
         $$('#recipient_users').getSelected()[0].each(function (i) {

@@ -40,30 +40,38 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
         } else {
             $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX'));
         }
-
-        $tpl->SetVariable('archived', _t('PRIVATEMESSAGE_ARCHIVED'));
-
         if ($draftMessageCount > 0) {
             $tpl->SetVariable('draft', _t('PRIVATEMESSAGE_DRAFT', '(' . $draftMessageCount . ')'));
         } else {
             $tpl->SetVariable('draft', _t('PRIVATEMESSAGE_DRAFT'));
         }
 
-        $tpl->SetVariable('all_messages', _t('PRIVATEMESSAGE_ALL_MESSAGES'));
-        $tpl->SetVariable('all_messages_url', $this->gadget->urlMap('AllMessages'));
-
-        $tpl->SetVariable('inbox_url', $this->gadget->urlMap('Inbox'));
-        $tpl->SetVariable('archived_url', $this->gadget->urlMap('Inbox', array('view' => 'archived')));
-        $tpl->SetVariable('draft_url', $this->gadget->urlMap('Draft'));
-
+        $tpl->SetVariable('archived', _t('PRIVATEMESSAGE_ARCHIVED'));
         $tpl->SetVariable('outbox', _t('PRIVATEMESSAGE_OUTBOX'));
-        $tpl->SetVariable('outbox_url', $this->gadget->urlMap('Outbox'));
-
         $tpl->SetVariable('trash', _t('PRIVATEMESSAGE_TRASH'));
-        $tpl->SetVariable('trash_url', $this->gadget->urlMap('Trash'));
-
         $tpl->SetVariable('compose_message', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
+        $tpl->SetVariable('all_messages', _t('PRIVATEMESSAGE_ALL_MESSAGES'));
+
         $tpl->SetVariable('compose_message_url', $this->gadget->urlMap('Compose'));
+        $tpl->SetVariable('all_messages_url', $this->gadget->urlMap('Messages'));
+        $tpl->SetVariable('inbox_url', $this->gadget->urlMap(
+                                            'Messages',
+                                            array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX)));
+        $tpl->SetVariable('inbox_url', $this->gadget->urlMap(
+                                            'Messages',
+                                            array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX)));
+        $tpl->SetVariable('archived_url', $this->gadget->urlMap(
+                                            'Messages',
+                                            array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED)));
+        $tpl->SetVariable('draft_url', $this->gadget->urlMap(
+                                            'Messages',
+                                            array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT)));
+        $tpl->SetVariable('outbox_url', $this->gadget->urlMap(
+                                            'Messages',
+                                            array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX)));
+        $tpl->SetVariable('trash_url', $this->gadget->urlMap(
+                                            'Messages',
+                                            array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_TRASH)));
 
         $tpl->ParseBlock('PrivateMessage');
         return $tpl->Get();

@@ -34,9 +34,6 @@ class PrivateMessage_Actions_Default extends Jaws_Gadget_Action
         $menubar->AddOption('Draft',_t('PRIVATEMESSAGE_DRAFT'),
             $this->gadget->urlMap('Draft'), 'gadgets/PrivateMessage/Resources/images/draft.png');
 
-        $menubar->AddOption('Announcement',_t('PRIVATEMESSAGE_ANNOUNCEMENT'),
-            $this->gadget->urlMap('Announcement'), 'gadgets/PrivateMessage/Resources/images/inbox.png');
-
         $menubar->AddOption('Archived',_t('PRIVATEMESSAGE_ARCHIVED'),
             $this->gadget->urlMap('Inbox', array('view' => 'archived')), 'gadgets/PrivateMessage/Resources/images/archive.png');
 

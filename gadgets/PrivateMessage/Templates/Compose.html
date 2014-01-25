@@ -92,17 +92,6 @@
     $('btn_attach1').hide();
     $('attachment_area').toggle();
 
-    function toggleAnnouncementChk(cb)
-    {
-        if(cb.checked) {
-            $('recipient_users').set('disabled', true);
-            $('recipient_groups').set('disabled', true);
-        } else {
-            $('recipient_users').set('disabled', false);
-            $('recipient_groups').set('disabled', false);
-        }
-    }
-
     function ChangeToggleIcon(obj)
     {
         if ($(obj).get('toggle-status') == 'min') {

@@ -17,21 +17,9 @@ $actions['PrivateMessage'] = array(
     'layout' => true,
     'file' => 'PrivateMessage',
 );
-$actions['AllMessages'] = array(
+$actions['Messages'] = array(
     'normal' => true,
-    'file' => 'AllMessages',
-);
-$actions['Announcement'] = array(
-    'normal' => true,
-    'file' => 'Announcement',
-);
-$actions['Inbox'] = array(
-    'normal' => true,
-    'file' => 'Inbox',
-);
-$actions['Draft'] = array(
-    'normal' => true,
-    'file' => 'Draft',
+    'file' => 'Message',
 );
 $actions['DraftMessage'] = array(
     'standalone' => true,
@@ -50,6 +38,10 @@ $actions['DeleteMessage'] = array(
     'file' => 'Message',
 );
 $actions['ArchiveMessage'] = array(
+    'standalone' => true,
+    'file' => 'Message',
+);
+$actions['UnArchiveMessage'] = array(
     'standalone' => true,
     'file' => 'Message',
 );
@@ -72,10 +64,6 @@ $actions['Reply'] = array(
 $actions['ReplyMessage'] = array(
     'standalone' => true,
     'file' => 'Reply',
-);
-$actions['Outbox'] = array(
-    'normal' => true,
-    'file' => 'Outbox',
 );
 $actions['Compose'] = array(
     'normal' => true,
