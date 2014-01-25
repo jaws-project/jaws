@@ -263,7 +263,7 @@ class Jaws
     function GetTheme($rel_url = true)
     {
         static $theme;
-        if (!isset($theme)) {
+        if (!isset($theme) || ($theme['name'] != $this->_Theme)) {
             // Check if valid theme name
             if (!preg_match('/^[[:alnum:]_\.-]+$/', $this->_Theme)) {
                 return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_NAME', 'Theme'));
@@ -284,6 +284,18 @@ class Jaws
         }
 
         return $theme;
+    }
+
+    /**
+     * Set default theme
+     *
+     * @access  public
+     * @param   string  $theme  Theme name
+     * @return  void
+     */
+    function SetTheme($theme)
+    {
+        $this->_Theme = $theme;
     }
 
     /**
