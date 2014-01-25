@@ -132,7 +132,14 @@ function deleteElement(itemId)
     if (answer) {
         itemDiv.fade('out');
         (function(){this.destroy();}).delay(500, itemDiv);
-        LayoutAjax.callAsync('DeleteElement', itemId, section, position + 1);
+        LayoutAjax.callAsync(
+            'DeleteElement',
+            itemId,
+            $('index_layout').value,
+            section,
+            position + 1,
+            $('dashboard_user').value
+        );
     }
 }
 
@@ -168,10 +175,12 @@ function initUI()
                 LayoutAjax.callAsync(
                     'MoveElement',
                     el.id.replace('item_', ''),               /* item id */
+                    $('index_layout').value,                  /* index or default layout */
                     el.getProperty('old_section'),            /* old section name */
                     parseInt(el.getProperty('old_position')), /* position in old section */
                     new_section,                              /* new section name */
-                    new_position                              /* position in new section */
+                    new_position,                             /* position in new section */
+                    $('dashboard_user').value                 /* dashboard of user or global layout */
                 );
             }
             el.removeProperties('old_section', 'old_position');
@@ -275,7 +284,7 @@ function addGadgetToLayout(gadget, action, params)
 {
     hideDialogBox('gadgets_dialog');
     params = (params == null)? null : params.split(',');
-    LayoutAjax.callAsync('AddGadget', gadget, action, params);
+    LayoutAjax.callAsync('AddGadget', gadget, action, params, $('index_layout').value, $('dashboard_user').value);
 }
 
 function getSelectedAction()

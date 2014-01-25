@@ -18,14 +18,15 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      */
     function Layout()
     {
-        $rqst = jaws()->request->fetch(array('user', 'theme', 'index'), 'post');
-        // user
-        if (empty($rqst['user']) && $this->gadget->GetPermission('ManageLayout')) {
+        $rqst = jaws()->request->fetch(array('dashboard_user', 'theme', 'index_layout'), 'post');
+        // dashboard_user
+        if (empty($rqst['dashboard_user']) && $this->gadget->GetPermission('ManageLayout')) {
             $dashboard_user = 0;
         } else {
             $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
             $dashboard_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         }
+
         // theme
         $default_theme = $this->gadget->registry->fetchByUser('theme', 'Settings', $dashboard_user);
         if (empty($rqst['theme']) || $rqst['theme'] == $default_theme) {
@@ -34,10 +35,11 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
             $this->gadget->CheckPermission('ManageThemes');
             $this->UpdateTheme($dashboard_user, $rqst['theme']);
             $theme = $this->gadget->registry->fetchByUser('theme', 'Settings', $dashboard_user);
-            $GLOBALS['app']->SetTheme($theme);
         }
+        $GLOBALS['app']->SetTheme($theme);
+
         // index_layout
-        $index_layout = (bool)$rqst['index'];
+        $index_layout = (bool)$rqst['index_layout'];
 
         $lModel = $this->gadget->model->loadAdmin('Layout');
         $eModel = $this->gadget->model->loadAdmin('Elements');
@@ -218,8 +220,8 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         // dashboards
         $tpl->SetVariable('lbl_dashboard', _t('LAYOUT_DASHBOARD'));
-        $dashboards =& Piwi::CreateWidget('Combo', 'user');
-        $dashboards->setID('user');
+        $dashboards =& Piwi::CreateWidget('Combo', 'dashboard_user');
+        $dashboards->setID('dashboard_user');
         if ($this->gadget->GetPermission('ManageLayout')) {
             $dashboards->AddOption(_t('LAYOUT_LAYOUTS_GLOBAL'), 0);
         }
@@ -230,7 +232,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
             );
         }
         $dashboards->SetDefault($dashboard_user);
-        $dashboards->AddEvent(ON_CHANGE, "this.form.submit();");
+        $dashboards->AddEvent(ON_CHANGE, "layoutControlsSubmit(this);");
         $tpl->SetVariable('dashboards_combo', $dashboards->Get());
 
         // themes
@@ -244,20 +246,20 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
             $themeCombo->AddOption($tInfo['local']? 'local' : 'remote', $tInfo['name'], $theme);
         }
         $themeCombo->SetDefault($default_theme);
-        $themeCombo->AddEvent(ON_CHANGE, "this.form.submit();");
+        $themeCombo->AddEvent(ON_CHANGE, "layoutControlsSubmit(this);");
         $themeCombo->SetEnabled($this->gadget->GetPermission('ManageThemes'));
         $tpl->SetVariable('theme_combo', $themeCombo->Get());
 
         // layouts
         $tpl->SetVariable('lbl_layout', _t('LAYOUT_LAYOUTS'));
-        $layouts =& Piwi::CreateWidget('Combo', 'index');
-        $layouts->setID('index');
+        $layouts =& Piwi::CreateWidget('Combo', 'index_layout');
+        $layouts->setID('index_layout');
         $layouts->AddOption(_t('LAYOUT_LAYOUTS_DEFAULT'), 0);
         if (isset($themes[$default_theme]) && $themes[$default_theme]['index']) {
             $layouts->AddOption(_t('LAYOUT_LAYOUTS_INDEX'), 1);
         }
         $layouts->SetDefault((int)$index_layout);
-        $layouts->AddEvent(ON_CHANGE, "this.form.submit();");
+        $layouts->AddEvent(ON_CHANGE, "layoutControlsSubmit(this);");
         $tpl->SetVariable('layouts_combo', $layouts->Get());
 
         $add =& Piwi::CreateWidget('Button', 'add', _t('LAYOUT_NEW'), STOCK_ADD);

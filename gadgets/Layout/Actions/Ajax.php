@@ -20,14 +20,18 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
      */
     function MoveElement()
     {
-        @list($item, $old_section, $old_position, $new_section, $new_position) = jaws()->request->fetchAll('post');
+        @list($item, $index_layout, $old_section, $old_position,
+            $new_section, $new_position, $dashboard_user
+        ) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Elements');
         $result = $model->MoveElement(
             $item,
+            $index_layout,
             $old_section,
             (int)$old_position,
             $new_section,
-            (int)$new_position
+            (int)$new_position,
+            $dashboard_user
         );
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
@@ -46,9 +50,9 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
      */
     function DeleteElement()
     {
-        @list($item, $section, $position) = jaws()->request->fetchAll('post');
+        @list($item, $index_layout, $section, $position, $dashboard_user) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Elements');
-        $result = $model->DeleteElement($item, $section, $position);
+        $result = $model->DeleteElement($item, $index_layout, $section, $position, $dashboard_user);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
         } else {
@@ -100,25 +104,25 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
     {
         $res = array();
         $id = false;
-        @list($gadget, $action, $params, $index, $user) = jaws()->request->fetchAll('post');
+        @list($gadget, $action, $params, $index_layout, $dashboard_user) = jaws()->request->fetchAll('post');
         $params = jaws()->request->fetch('2:array', 'post');
         $model = $this->gadget->model->loadAdmin('Elements');
         $actions = $model->GetGadgetLayoutActions($gadget, true);
         if (isset($actions[$action])) {
-            $user = (int)$user;
+            $dashboard_user = (int)$dashboard_user;
             $loggedUser = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            if (($user == 0 && $this->gadget->GetPermission('ManageLayout')) ||
-                ($user == $loggedUser && $GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard'))
+            if (($dashboard_user == 0 && $this->gadget->GetPermission('ManageLayout')) ||
+                ($dashboard_user == $loggedUser && $GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard'))
             ) {
                 $id = $model->NewElement(
-                    $index,
+                    $index_layout,
                     'main',
                     $gadget,
                     $action,
                     $params,
                     $actions[$action]['file'],
                     '',
-                    $user
+                    $dashboard_user
                 );
                 $id = Jaws_Error::IsError($id)? false : $id;
             }
@@ -128,7 +132,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_ADDED'), RESPONSE_ERROR);
             $res['success'] = false;
         } else {
-            $el = $model->GetElement($id);
+            $el = $model->GetElement($id, $dashboard_user);
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_ADDED'), RESPONSE_NOTICE);
             $info = Jaws_Gadget::getInstance($gadget);
             $el['tname'] = $info->title;
