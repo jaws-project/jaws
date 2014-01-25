@@ -49,6 +49,10 @@ $actions['TrashMessage'] = array(
     'standalone' => true,
     'file' => 'Message',
 );
+$actions['RestoreTrashMessage'] = array(
+    'standalone' => true,
+    'file' => 'Message',
+);
 $actions['DeleteMessage'] = array(
     'standalone' => true,
     'file' => 'Message',

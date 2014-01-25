@@ -35,9 +35,9 @@
                 <tr>
                     <th><input type="checkbox" onclick="toggleCheckboxes();"></th>
 
-                    <!-- BEGIN in_out_lbl -->
-                    <th>{lbl_in_out}</th>
-                    <!-- END in_out_lbl -->
+                    <!-- BEGIN folder_th -->
+                    <th>{lbl_folder}</th>
+                    <!-- END folder_th -->
 
                     <th>{lbl_subject}</th>
                     <th>&nbsp;</th>
@@ -54,9 +54,9 @@
                         <input type="checkbox" name="message_checkbox[]" value="{id}" class="table-checkbox">
                     </td>
 
-                    <!-- BEGIN in_out -->
-                    <td>{in_out}</td>
-                    <!-- END in_out -->
+                    <!-- BEGIN folder -->
+                    <td>{folder}</td>
+                    <!-- END folder -->
 
                     <td><a href="{message_url}">{subject}</a></td>
 
@@ -76,7 +76,7 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td colspan="5">
+                    <td colspan="7">
                         {lbl_page_item}
                         <select id="page_item" name="page_item" onchange="this.form.submit();">
                             <option {opt_page_item_5} value="5">5</option>

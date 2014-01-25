@@ -42,18 +42,19 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         if (!empty($id)) {
             $message = $model->GetMessage($id, true, false);
 
-            // Check draft status
-            if ($message['folder'] != PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT) {
-                return Jaws_HTTPError::Get(404);
-            }
-
             // Check permissions
-            if ($message['from'] != $user || $message['from'] = 0) {
+            if (!($message['from'] == $user && $message['to'] == 0) && $message['to'] != $user) {
                 return Jaws_HTTPError::Get(403);
             }
 
             // edit draft
             if (empty($get['reply'])) {
+
+                // Check draft status
+                if ($message['folder'] != PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT) {
+                    return Jaws_HTTPError::Get(404);
+                }
+
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
                 $tpl->SetVariable('id', $id);
                 $recipient_users = explode(",", $message['recipient_users']);
@@ -138,8 +139,8 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('parent', $id);
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_REPLY'));
                 $tpl->SetVariable('subject', _t('PRIVATEMESSAGE_REPLY_ON', $message['subject']));
-                $tpl->SetVariable('recipient_user', $message['user']);
-                $recipient_users = array($message['user']);
+                $tpl->SetVariable('recipient_user', $message['to']);
+                $recipient_users = array($message['to']);
 
                 $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
                 $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id, false));
@@ -221,7 +222,9 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $tpl->SetVariable('lbl_file', _t('PRIVATEMESSAGE_FILE'));
         $tpl->SetVariable('lbl_add_file', _t('PRIVATEMESSAGE_ADD_ANOTHER_FILE'));
 
-        $tpl->SetVariable('back_url', $this->gadget->urlMap('Inbox'));
+        $tpl->SetVariable('back_url', $this->gadget->urlMap(
+            'Messages',
+            array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX)));
 
         $tpl->SetVariable('icon_add', STOCK_ADD);
         $tpl->SetVariable('icon_remove', STOCK_REMOVE);
@@ -300,7 +303,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $model = $this->gadget->model->load('Message');
 
         $message_id = $model->ComposeMessage($user, $post);
-        $url = $this->gadget->urlMap('Outbox');
+        $url = $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX));
         if (is_numeric($message_id) && $message_id > 0) {
             if($post['published']==true) {
                 $GLOBALS['app']->Session->PushResponse(
@@ -332,8 +335,9 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             }
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('Outbox'), 'PrivateMessage.Compose');
-
+        Jaws_Header::Location(
+            $this->gadget->urlMap('Messages', array('folder'=>PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX)),
+            'PrivateMessage.Compose');
     }
 
 }

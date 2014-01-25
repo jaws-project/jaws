@@ -25,17 +25,36 @@ class PrivateMessage_Actions_Default extends Jaws_Gadget_Action
         }
 
         $menubar = new Jaws_Widgets_Menubar();
-        $menubar->AddOption('Inbox',_t('PRIVATEMESSAGE_INBOX'),
-            $this->gadget->urlMap('Inbox'), 'gadgets/PrivateMessage/Resources/images/inbox.png');
 
-        $menubar->AddOption('Outbox',_t('PRIVATEMESSAGE_OUTBOX'),
-            $this->gadget->urlMap('Outbox'), 'gadgets/PrivateMessage/Resources/images/outbox.png');
+        $menubar->AddOption('Inbox', _t('PRIVATEMESSAGE_INBOX'),
+            $this->gadget->urlMap(
+                'Messages',
+                array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX)),
+                'gadgets/PrivateMessage/Resources/images/inbox.png');
 
-        $menubar->AddOption('Draft',_t('PRIVATEMESSAGE_DRAFT'),
-            $this->gadget->urlMap('Draft'), 'gadgets/PrivateMessage/Resources/images/draft.png');
+        $menubar->AddOption('Outbox', _t('PRIVATEMESSAGE_OUTBOX'),
+            $this->gadget->urlMap(
+                'Messages',
+                array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX)),
+                'gadgets/PrivateMessage/Resources/images/outbox.png');
 
-        $menubar->AddOption('Archived',_t('PRIVATEMESSAGE_ARCHIVED'),
-            $this->gadget->urlMap('Inbox', array('view' => 'archived')), 'gadgets/PrivateMessage/Resources/images/archive.png');
+        $menubar->AddOption('Draft', _t('PRIVATEMESSAGE_DRAFT'),
+            $this->gadget->urlMap(
+                'Messages',
+                array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT)),
+                'gadgets/PrivateMessage/Resources/images/draft.png');
+
+        $menubar->AddOption('Archive', _t('PRIVATEMESSAGE_ARCHIVED'),
+            $this->gadget->urlMap(
+                'Messages',
+                array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED)),
+                'gadgets/PrivateMessage/Resources/images/archive.png');
+
+        $menubar->AddOption('Trash', _t('PRIVATEMESSAGE_TRASH'),
+            $this->gadget->urlMap(
+                'Messages',
+                array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_TRASH)),
+                'gadgets/PrivateMessage/Resources/images/trash.png');
 
         $menubar->AddOption('Compose',_t('PRIVATEMESSAGE_COMPOSE_MESSAGE'),
             $this->gadget->urlMap('Compose'), 'gadgets/PrivateMessage/Resources/images/compose.png');

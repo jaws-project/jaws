@@ -279,6 +279,71 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
     }
 
     /**
+     * Trash message
+     *
+     * @access  public
+     * @param   array    $ids     Message ids
+     * @param   integer  $user    User id
+     * @param   bool     $status  Trash status(true=trash, false=restore trash)
+     * @return  mixed    True or Jaws_Error on failure
+     */
+    function TrashMessage($ids, $user, $status)
+    {
+        if (!is_array($ids) && $ids > 0) {
+            $ids = array($ids);
+        }
+
+        if ($status) {
+            $table = Jaws_ORM::getInstance()->table('pm_messages');
+            $table->update(array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_TRASH))->where('id', $ids, 'in');
+
+            if ($user != null) {
+                $table->and()->openWhere('from', $user)->or();
+                $table->closeWhere('to', $user);
+            }
+            $res = $table->exec();
+
+        } else {
+            $table = Jaws_ORM::getInstance()->table('pm_messages');
+            //Start Transaction
+            $table->beginTransaction();
+
+            $table->update(array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX));
+            $table->where('id', $ids, 'in')->and()->where('to', 0, '>');
+            if ($user != null) {
+                $table->and()->openWhere('from', $user)->or();
+                $table->closeWhere('to', $user);
+            }
+            $res1 = $table->exec();
+            if(Jaws_Error::IsError($res1)) {
+                //Rollback Transaction
+                $table->rollback();
+                return false;
+            }
+
+            $table = Jaws_ORM::getInstance()->table('pm_messages');
+            $table->update(array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX));
+            $table->where('id', $ids, 'in')->and()->where('to', 0);
+
+            if ($user != null) {
+                $table->and()->openWhere('from', $user)->or();
+                $table->closeWhere('to', $user);
+            }
+            $res2 = $table->exec();
+            if(Jaws_Error::IsError($res2)) {
+                //Rollback Transaction
+                $table->rollback();
+                return false;
+            }
+
+            //Commit Transaction
+            $table->commit();
+            $res = ($res1 || $res2);
+        }
+        return $res;
+    }
+
+    /**
      * Delete inbox message
      *
      * @access  public
@@ -546,7 +611,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $table->select(
             'pm_messages.id:integer','pm_messages.subject', 'pm_messages.body', 'pm_messages.insert_time',
             'users.nickname as from_nickname', 'pm_messages.read:boolean', 'users.username as from_username',
-            'pm_messages.attachments:integer', 'from:integer', 'to:integer'
+            'pm_messages.attachments:integer', 'from:integer', 'to:integer', 'folder:integer'
         );
         $table->join('users', 'pm_messages.from', 'users.id');
         if (!empty($folder)) {
@@ -555,18 +620,18 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         switch ($folder) {
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX :
-                $table->and()->where('pm_messages.to', (int)$user);
+                $table->and()->where('pm_messages.to', (int)$user)->and()->where('pm_messages.to', 0);
                 break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX :
-                $table->and()->where('pm_messages.from', (int)$user);
+                $table->and()->where('pm_messages.from', (int)$user)->and()->where('pm_messages.to', 0);
                 break;
-            case null :
-//                $table->and()->openWhere('pm_messages.from', (int)$user)->or()
-//                             ->closeWhere('pm_messages.to', 0);
-//                $table->and()->where('pm_messages.to', (int)$user);
-//                $table->and()->open()->openWhere('pm_messages.from', (int)$user)->and()
-//                             ->closeWhere('pm_messages.to', 0);
-//                $table->close()->or()->where('pm_messages.to', (int)$user);
+            case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT :
+                $table->and()->where('pm_messages.from', (int)$user)->and()->where('pm_messages.to', 0);
+                break;
+            default :
+                $table->and()->openWhere()->openWhere('pm_messages.from', (int)$user)->and()
+                             ->closeWhere('pm_messages.to', 0);
+                $table->or()->where('pm_messages.to', (int)$user)->closeWhere();
                 break;
         }
 
@@ -616,16 +681,24 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         if (!empty($folder)) {
             $table->and()->where('pm_messages.folder', $folder);
-
-            switch ($folder) {
-                case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX :
-                    $table->and()->where('pm_messages.to', (int)$user);
-                    break;
-                case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX :
-                    $table->and()->where('pm_messages.from', (int)$user);
-                    break;
-            }
         }
+        switch ($folder) {
+            case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX :
+                $table->and()->where('pm_messages.to', (int)$user)->and()->where('pm_messages.to', 0);
+                break;
+            case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX :
+                $table->and()->where('pm_messages.from', (int)$user)->and()->where('pm_messages.to', 0);
+                break;
+            case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT :
+                $table->and()->where('pm_messages.from', (int)$user)->and()->where('pm_messages.to', 0);
+                break;
+            default :
+                $table->and()->openWhere()->openWhere('pm_messages.from', (int)$user)->and()
+                    ->closeWhere('pm_messages.to', 0);
+                $table->or()->where('pm_messages.to', (int)$user)->closeWhere();
+                break;
+        }
+
 
         if (!empty($filters)) {
             if (isset($filters['archived']) && ($filters['archived'] !== "")) {

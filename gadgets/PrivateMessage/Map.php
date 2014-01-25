@@ -57,7 +57,7 @@ $maps[] = array(
 );
 $maps[] = array(
     'TrashMessage',
-    'pm/message/delete/{id}',
+    'pm/message/trash/{id}',
     array(
         'id' => '[\p{L}[:digit:]-_\.]+',
     )
