@@ -17,10 +17,6 @@ $actions['Layout'] = array(
     'normal' => true,
     'file' => 'Layout',
 );
-$actions['ChangeTheme'] = array(
-    'standalone' => true,
-    'file' => 'Theme',
-);
 $actions['EditElementAction'] = array(
     'standalone' => true,
     'file' => 'Element',
