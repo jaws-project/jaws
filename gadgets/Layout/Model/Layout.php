@@ -23,18 +23,16 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
     function GetLayoutItems($user = 0, $index = false, $published = null)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
-        $items = $lyTable->select(
+        $lyTable->select(
             'id', 'gadget', 'gadget_action', 'action_params',
             'action_filename', 'display_when', 'section'
         );
-
-        $items->where('user', (int)$user)->and()->where('index', (bool)$index);
+        $lyTable->where('user', (int)$user)->and()->where('index', (bool)$index);
         if (!is_null($published)) {
-            $items->and()->where('published', (bool)$published);
+            $lyTable->and()->where('published', (bool)$published);
         }
 
-        $lyTable->orderBy('layout_position asc');
-        return $items->fetchAll();
+        return $lyTable->orderBy('layout_position asc')->fetchAll();
     }
 
     /**
