@@ -30,9 +30,11 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         if (empty($pos)) {
             $pos = $lyTable->select('max(layout_position)')
-                ->where('section', $section)
-                ->and()
                 ->where('user', $user)
+                ->and()
+                ->where('index', (bool)$index)
+                ->and()
+                ->where('section', $section)
                 ->fetchOne();
             if (Jaws_Error::IsError($pos)) {
                 return false;
@@ -42,6 +44,7 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
 
         $lyTable->insert(array(
             'user'            => $user,
+            'index'           => (bool)$index,
             'section'         => $section,
             'gadget'          => $gadget,
             'gadget_action'   => $action,

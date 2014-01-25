@@ -18,12 +18,11 @@ class Layout_Model_Admin_Sections extends Layout_Model_Layout
      * @param   bool    $index  Index layout
      * @return  array   Returns an array of layout mode sections and Jaws_Error on error
      */
-    function GetLayoutSections($index = false)
+    function GetLayoutSections($user = 0, $index = false)
     {
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         return $lyTable->select('section')
-            ->where('user', $user)
+            ->where('user', (int)$user)
             ->and()
             ->where('index', (bool)$index)
             ->orderBy('section')
