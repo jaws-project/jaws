@@ -100,15 +100,30 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
     {
         $res = array();
         $id = false;
-        @list($gadget, $action, $params) = jaws()->request->fetchAll('post');
+        @list($gadget, $action, $params, $index, $user) = jaws()->request->fetchAll('post');
         $params = jaws()->request->fetch('2:array', 'post');
         $model = $this->gadget->model->loadAdmin('Elements');
         $actions = $model->GetGadgetLayoutActions($gadget, true);
         if (isset($actions[$action])) {
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
-            $id = $model->NewElement('main', $gadget, $action, $params, $actions[$action]['file'], '', $user);
-            $id = Jaws_Error::IsError($id)? false : $id;
+            $user = (int)$user;
+            $loggedUser = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            if (($user == 0 && $this->gadget->GetPermission('ManageLayout')) ||
+                ($user == $loggedUser && $GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard'))
+            ) {
+                $id = $model->NewElement(
+                    $index,
+                    'main',
+                    $gadget,
+                    $action,
+                    $params,
+                    $actions[$action]['file'],
+                    '',
+                    $user
+                );
+                $id = Jaws_Error::IsError($id)? false : $id;
+            }
         }
+
         if ($id === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_ADDED'), RESPONSE_ERROR);
             $res['success'] = false;

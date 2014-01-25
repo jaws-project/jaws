@@ -1,6 +1,9 @@
 <!-- BEGIN controls -->
 <div id="layout-controls">
   <div id="layout-controls-items">
+    <form name="controls" id="controls" method="post" action="{base_script}">
+      <input type="hidden" name="gadget" value="Layout" />
+      <input type="hidden" name="action" value="Layout" />
       <table style="width: 100%;border-collapse:collapse; border-spacing: 0;">
       <tr>
         <td><span id="layout-title"><img alt="{title-gadget}" style="vertical-align: middle;" src="{icon-gadget}" />
@@ -13,29 +16,18 @@
           </span></td>
         <td></td>
         <td id="dashboards-combo">
-          <form name="controls" id="controls" method="post" action="{base_script}">
-          <input type="hidden" name="gadget" value="Layout" />
-          <input type="hidden" name="action" value="DashboardSwitch" />
           {lbl_dashboard}: {dashboards_combo}
-          </form>
         </td>
         <td id="themes-combo">
-          <form name="controls" id="controls" method="post" action="{base_script}">
-          <input type="hidden" name="gadget" value="Layout" />
-          <input type="hidden" name="action" value="ChangeTheme" />
-          {theme}: {theme_combo}
-          </form>
+          {lbl_theme}: {theme_combo}
         </td>
         <td id="layouts-combo">
-          <form name="controls" id="controls" method="post" action="{base_script}">
-          <input type="hidden" name="gadget" value="Layout" />
-          <input type="hidden" name="action" value="LayoutSwitch" />
           {lbl_layout}: {layouts_combo}
-          </form>
         </td>
         <td id="add-gadget-btn">{add_gadget}</td>
       </tr>
       </table>
+    </form>
   </div>
 </div>
 <!-- END controls -->

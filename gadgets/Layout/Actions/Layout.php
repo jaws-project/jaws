@@ -18,13 +18,26 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      */
     function Layout()
     {
-        // fetch current layout user
-        $layout_user = $GLOBALS['app']->Session->GetAttribute('layout');
-        if (empty($layout_user)) {
-            $this->gadget->CheckPermission('ManageLayout');
+        $rqst = jaws()->request->fetch(array('user', 'theme', 'index'), 'post');
+        // user
+        if (empty($rqst['user']) && $this->gadget->GetPermission('ManageLayout')) {
+            $dashboard_user = 0;
         } else {
             $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
+            $dashboard_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         }
+        // theme
+        $default_theme = $this->gadget->registry->fetchByUser('theme', 'Settings', $dashboard_user);
+        if (empty($rqst['theme']) || $rqst['theme'] == $default_theme) {
+            $theme = $default_theme;
+        } else {
+            $this->gadget->CheckPermission('ManageThemes');
+            $this->UpdateTheme($dashboard_user, $rqst['theme']);
+            $theme = $this->gadget->registry->fetchByUser('theme', 'Settings', $dashboard_user);
+            $GLOBALS['app']->SetTheme($theme);
+        }
+        // index_layout
+        $index_layout = (bool)$rqst['index'];
 
         $lModel = $this->gadget->model->loadAdmin('Layout');
         $eModel = $this->gadget->model->loadAdmin('Elements');
@@ -72,7 +85,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $layoutContent = $fakeLayout->_Template->Blocks['layout']->Content;
         $layoutContent = preg_replace(
             '$<body([^>]*)>$i',
-            '<body\1>' . $working_box . $msg_box . $this->getLayoutControls(),
+            '<body\1>' . $working_box . $msg_box . $this->LayoutBar($theme, $dashboard_user, $index_layout),
             $layoutContent);
         $layoutContent = preg_replace('$</body([^>]*)>$i', $dragdrop . '</body\1>', $layoutContent);
         $fakeLayout->_Template->Blocks['layout']->Content = $layoutContent;
@@ -98,7 +111,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
             $fakeLayout->_Template->SetBlock('layout/'.$name);
             $js_section_array = '<script type="text/javascript">items[\''.$name.'\'] = new Array(); sections.push(\''.$name.'\');</script>';
-            $gadgets = $lModel->GetGadgetsInSection(false, $name);
+            $gadgets = $lModel->GetGadgetsInSection($index_layout, $name, $dashboard_user);
             if (!is_array($gadgets)) {
                 continue;
             }
@@ -183,10 +196,10 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
     }
 
     /**
-     *
+     * Layout controls bar 
      *
      */
-    function getLayoutControls($default_dashboard = 0, $index_layout = false)
+    function LayoutBar($default_theme, $dashboard_user = 0, $index_layout = false)
     {
         $tpl = $this->gadget->template->load('LayoutControls.html');
         $tpl->SetBlock('controls');
@@ -205,8 +218,8 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         // dashboards
         $tpl->SetVariable('lbl_dashboard', _t('LAYOUT_DASHBOARD'));
-        $dashboards =& Piwi::CreateWidget('Combo', 'dashboard');
-        $dashboards->setID('dashboard');
+        $dashboards =& Piwi::CreateWidget('Combo', 'user');
+        $dashboards->setID('user');
         if ($this->gadget->GetPermission('ManageLayout')) {
             $dashboards->AddOption(_t('LAYOUT_LAYOUTS_GLOBAL'), 0);
         }
@@ -216,18 +229,12 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                 (int)$GLOBALS['app']->Session->GetAttribute('user')
             );
         }
-
-        $dashboards->SetDefault($default_dashboard);
+        $dashboards->SetDefault($dashboard_user);
         $dashboards->AddEvent(ON_CHANGE, "this.form.submit();");
         $tpl->SetVariable('dashboards_combo', $dashboards->Get());
 
         // themes
-        $default_theme = $this->gadget->registry->fetchByUser(
-            'theme',
-            'Settings',
-            $GLOBALS['app']->Session->GetAttribute('layout')
-        );
-        $tpl->SetVariable('theme', _t('LAYOUT_THEME'));
+        $tpl->SetVariable('lbl_theme', _t('LAYOUT_THEME'));
         $themeCombo =& Piwi::CreateWidget('ComboGroup', 'theme');
         $themeCombo->setID('theme');
         $themeCombo->addGroup('local', _t('LAYOUT_THEME_LOCAL'));
@@ -243,14 +250,15 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         // layouts
         $tpl->SetVariable('lbl_layout', _t('LAYOUT_LAYOUTS'));
-        $layoutsCombo =& Piwi::CreateWidget('Combo', 'layout');
-        $layoutsCombo->setID('layout');
-        $layoutsCombo->AddOption(_t('LAYOUT_LAYOUTS_DEFAULT'), 0);
+        $layouts =& Piwi::CreateWidget('Combo', 'index');
+        $layouts->setID('index');
+        $layouts->AddOption(_t('LAYOUT_LAYOUTS_DEFAULT'), 0);
         if (isset($themes[$default_theme]) && $themes[$default_theme]['index']) {
-            $layoutsCombo->AddOption(_t('LAYOUT_LAYOUTS_INDEX'), 1);
+            $layouts->AddOption(_t('LAYOUT_LAYOUTS_INDEX'), 1);
         }
-        $layoutsCombo->SetDefault((int)$index_layout);
-        $tpl->SetVariable('layouts_combo', $layoutsCombo->Get());
+        $layouts->SetDefault((int)$index_layout);
+        $layouts->AddEvent(ON_CHANGE, "this.form.submit();");
+        $tpl->SetVariable('layouts_combo', $layouts->Get());
 
         $add =& Piwi::CreateWidget('Button', 'add', _t('LAYOUT_NEW'), STOCK_ADD);
         $url = $GLOBALS['app']->getSiteURL().'/'.BASE_SCRIPT.'?gadget=Layout&amp;action=AddLayoutElement&amp;mode=new';
@@ -268,6 +276,49 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         $tpl->ParseBlock('controls');
         return $tpl->Get();
+    }
+
+    /**
+     *
+     *
+     */
+    function UpdateTheme($dashboard_user, $theme)
+    {
+        $theme = preg_replace('/[^[:alnum:]_-]/', '', $theme);
+        $layout_path = JAWS_THEMES. $theme;
+        if (!file_exists($layout_path. '/layout.html')) {
+            $layout_path = JAWS_BASE_THEMES. $theme;
+        }
+        $tpl = $this->gadget->template->load("$layout_path/layout.html");
+
+        // Validate theme
+        if (!isset($tpl->Blocks['layout'])) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_NO_BLOCK', $theme, 'layout'), RESPONSE_ERROR);
+            return false;
+        }
+        if (!isset($tpl->Blocks['layout']->InnerBlock['head'])) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_NO_BLOCK', $theme, 'head'), RESPONSE_ERROR);
+            return false;
+        }
+        if (!isset($tpl->Blocks['layout']->InnerBlock['main'])) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_NO_BLOCK', $theme, 'main'), RESPONSE_ERROR);
+            return false;
+        }
+
+        // Verify blocks/Reassign gadgets
+        $model = $this->gadget->model->loadAdmin('Sections');
+        // FIXME: moved elements in index layout too
+        $sections = $model->GetLayoutSections($dashboard_user, false);
+        foreach ($sections as $section) {
+            if (isset($tpl->Blocks['layout']->InnerBlock[$section])) {
+                $model->MoveSection(false, $section, $section);
+            } else {
+                $model->MoveSection(false, $section, 'main');
+            }
+        }
+
+        $this->gadget->registry->updateByUser('theme', $theme, 'Settings', $dashboard_user);
+        $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_THEME_CHANGED'), RESPONSE_NOTICE);
     }
 
 }
