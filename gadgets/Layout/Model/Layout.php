@@ -31,8 +31,23 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
         if (!is_null($published)) {
             $lyTable->and()->where('published', (bool)$published);
         }
+        $items = $lyTable->orderBy('layout_position asc')->fetchAll();
+        if (!Jaws_Error::isError($items) && $index) {
+            array_unshift(
+                $items,
+                array(
+                    'id'              => null,
+                    'gadget'          => '[REQUESTEDGADGET]',
+                    'gadget_action'   => '[REQUESTEDACTION]',
+                    'action_params'   => '',
+                    'action_filename' => '',
+                    'display_when'    => '*',
+                    'section'         => 'main',
+                )
+            );
+        }
 
-        return $lyTable->orderBy('layout_position asc')->fetchAll();
+        return $items;
     }
 
     /**
