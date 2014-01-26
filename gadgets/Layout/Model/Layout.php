@@ -54,7 +54,7 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
                 ->fetchOne();
             if (!Jaws_Error::IsError($exists) && empty($exists)) {
                 $elModel = $this->gadget->model->loadAdmin('Elements');
-                $elModel->NewElement('main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1, $user);
+                $elModel->NewElement(false, 'main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1, $user);
             }
 
             // Users/LoginBox
@@ -67,7 +67,7 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
                 ->fetchOne();
             if (!Jaws_Error::IsError($exists) && empty($exists)) {
                 $elModel = $this->gadget->model->loadAdmin('Elements');
-                $elModel->NewElement('main', 'Users', 'LoginBox', null, 'Login', 2, $user);
+                $elModel->NewElement(false, 'main', 'Users', 'LoginBox', null, 'Login', 2, $user);
             }
         }
 
