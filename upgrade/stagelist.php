@@ -55,6 +55,12 @@ $stages[] = array(
     'file'  => '09To100',
 );
 
+// Upgrade from 1.0.0 to 1.1.0
+$stages[] = array(
+    'name'  => _t('UPGRADE_VER_TO_VER', '1.0.0', '1.1.0'),
+    'file'  => '1009To110',
+);
+
 // Saves the config file.
 $stages[] = array(
     'name'  => _t('UPGRADE_WRITECONFIG'),
