@@ -22,11 +22,12 @@ class Layout_Model_Admin_Sections extends Layout_Model_Layout
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         return $lyTable->select('section')
+            ->distinct()
             ->where('user', (int)$user)
             ->and()
             ->where('index', (bool)$index)
             ->orderBy('section')
-            ->fetchRow();
+            ->fetchColumn();
     }
 
     /**
@@ -36,33 +37,51 @@ class Layout_Model_Admin_Sections extends Layout_Model_Layout
      * @param   bool    $index  Index layout
      * @param   string  $from   Which section to move
      * @param   string  $to     The destination
+     * @param   int     $user   (Optional) User's ID
      * @return  bool    True if the section was moved without problems, if not it returns false
      */
-    function MoveSection($index, $from, $to)
+    function MoveSection($index, $from, $to, $user = 0)
     {
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $maxpos = $lyTable->select('max(layout_position)')
-            ->where('user', $user)
+            ->where('user', (int)$user)
             ->and()
             ->where('index', (bool)$index)
             ->and()
             ->where('section', $to)
             ->fetchOne();
         if (Jaws_Error::IsError($maxpos) || empty($maxpos)) {
-            $maxpos = '0';
+            $maxpos = 0;
         }
 
         $lyTable->update(array(
                 'section' => $to,
-                'layout_position' => $lyTable->expr('layout_position + ?', $maxpos)
+                'layout_position' => $lyTable->expr('layout_position + ?', (int)$maxpos)
         ));
-        return $lyTable->where('user', $user)
+        return $lyTable->where('user', (int)$user)
             ->and()
             ->where('index', (bool)$index)
             ->and()
             ->where('section', $from)
             ->exec();
+    }
+
+    /**
+     * Delete user's layouts
+     *
+     * @access  public
+     * @param   int     $user   User's ID
+     * @param   bool    $index  Index layout
+     * @return  bool    Returns true if layouts was removed otherwise it returns Jaws_Error
+     */
+    function DeleteUserLayouts($user, $index = null)
+    {
+        $lyTable = Jaws_ORM::getInstance()->table('layout');
+        $lyTable->delete()->where('user', (int)$user);
+        if (!is_null($index)) {
+            $lyTable->and()->where('index', (bool)$index);
+        }
+        return $lyTable->exec();
     }
 
 }

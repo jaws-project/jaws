@@ -311,15 +311,31 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         // Verify blocks/Reassign gadgets
         $model = $this->gadget->model->loadAdmin('Sections');
-        // FIXME: moved elements in index layout too
+        // default layout
         $sections = $model->GetLayoutSections($user, false);
         foreach ($sections as $section) {
             if (isset($tpl->Blocks['layout']->InnerBlock[$section])) {
-                $model->MoveSection(false, $section, $section);
+                $model->MoveSection(false, $section, $section, $user);
             } else {
-                $model->MoveSection(false, $section, 'main');
+                $model->MoveSection(false, $section, 'main', $user);
             }
         }
+
+        // index layout
+        if (!file_exists($layout_path. '/index.html')) {
+            $model->DeleteUserLayouts($user, true);
+        } else {
+            $tpl = $this->gadget->template->load("$layout_path/index.html");
+            $sections = $model->GetLayoutSections($user, true);
+            foreach ($sections as $section) {
+                if (isset($tpl->Blocks['layout']->InnerBlock[$section])) {
+                    $model->MoveSection(true, $section, $section, $user);
+                } else {
+                    $model->MoveSection(true, $section, 'main', $user);
+                }
+            }
+        }
+        
 
         $this->gadget->registry->updateByUser('theme', $theme, 'Settings', $user);
         $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_THEME_CHANGED'), RESPONSE_NOTICE);
