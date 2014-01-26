@@ -19,8 +19,9 @@ class PrivateMessage_Model_Attachment extends Jaws_Gadget_Model
      */
     function GetMessageAttachments($id)
     {
-        $table = Jaws_ORM::getInstance()->table('pm_attachments');
-        $table->select('id:integer', 'filename', 'title', 'filesize', 'filetype');
+        $table = Jaws_ORM::getInstance()->table('pm_message_attachment');
+        $table->select('pm_attachments.id:integer', 'filename', 'title', 'filesize', 'filetype');
+        $table->join('pm_attachments', 'pm_attachments.id', 'pm_message_attachment.attachment');
         $result = $table->where('message', $id)->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return array();

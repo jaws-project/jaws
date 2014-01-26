@@ -22,7 +22,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $this->gadget->CheckPermission('ComposeMessage');
+        $this->gadget->CheckPermission('SendMessage');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $this->AjaxMe('site_script.js');
         $get = jaws()->request->fetch(array('id', 'reply'), 'get');
@@ -71,6 +71,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 $date = Jaws_Date::getInstance();
                 $usrModel = new Jaws_User;
                 $show_recipient = false;
+                $body_value = '[quote]' . $message['body'] . "[/quote]\r\n";
 
                 // show parent message
                 $tpl->SetBlock('compose/parent_message');
@@ -149,7 +150,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             } else if (!empty($get['reply']) && $get['reply'] == 'false') {
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_FORWARD_MESSAGE'));
                 $body_value = $message['body'];
-                $tpl->SetVariable('subject', $message['subject']);
+                $tpl->SetVariable('subject', _t('PRIVATEMESSAGE_FORWARD_ABBREVIATION') . ' ' .$message['subject']);
 
                 $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
                 $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id));
@@ -243,7 +244,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
      */
     function GetMessageAttachmentUI($message_id = null, $loadAttachments = true)
     {
-        $this->gadget->CheckPermission('ComposeMessage');
+        $this->gadget->CheckPermission('SendMessage');
 
         if(empty($message_id)) {
             $message_id = jaws()->request->fetch('id', 'post');
@@ -283,17 +284,17 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
     }
 
     /**
-     * Compose a message
+     * Send a message
      *
      * @access  public
      * @return  void
      */
-    function ComposeMessage()
+    function SendMessage()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             return Jaws_HTTPError::Get(403);
         }
-        $this->gadget->CheckPermission('ComposeMessage');
+        $this->gadget->CheckPermission('SendMessage');
 
         $post = jaws()->request->fetch(array('id', 'published', 'recipient_users', 'recipient_groups',
                                              'subject', 'attachments:array'), 'post');
@@ -302,7 +303,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Message');
 
-        $message_id = $model->ComposeMessage($user, $post);
+        $message_id = $model->SendMessage($user, $post);
         $url = $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX));
         if (is_numeric($message_id) && $message_id > 0) {
             if($post['published']==true) {

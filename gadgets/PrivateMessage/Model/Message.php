@@ -299,14 +299,14 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
     }
 
     /**
-     * Compose message
+     * Send message
      *
      * @access  public
      * @param   integer $user           User id
      * @param   array   $messageData    Message data
      * @return  mixed   Message Id or Jaws_Error on failure
      */
-    function ComposeMessage($user, $messageData)
+    function SendMessage($user, $messageData)
     {
         // merge recipient users & groups to an array
         $recipient_users = array();
@@ -412,13 +412,13 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             $aModel = $this->gadget->model->load('Attachment');
 
             $aData = array();
-            $pm_dir = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $user . DIRECTORY_SEPARATOR;
+            $pm_dir = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . 'attachments' . DIRECTORY_SEPARATOR;
             foreach ($messageData['attachments'] as $attachment) {
 
                 // check new attachments file -- we must copy tmp files to correct location
                 if (is_array($attachment)) {
                     $src_filepath = Jaws_Utils::upload_tmp_dir() . '/' . $attachment['filename'];
-                    $dest_filepath = $pm_dir . DIRECTORY_SEPARATOR . $attachment['filename'];
+                    $dest_filepath = $pm_dir . $attachment['filename'];
                 } else {
                     // check exist attachments -- we just need to copy it!
                     $attachment = $aModel->GetMessageAttachment($attachment);
@@ -457,7 +457,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             }*/
 
             $table = Jaws_ORM::getInstance()->table('pm_attachments');
-            $res = $table->insertAll(array('title', 'filename', 'filesize', 'filetype', 'message'), $aData)->exec();
+            $res = $table->insertAll(array('title', 'filename', 'filesize', 'filetype'), $aData)->exec();
             if (Jaws_Error::IsError($res)) {
                 return false;
             }

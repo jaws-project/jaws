@@ -8,7 +8,7 @@
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 var PrivateMessageCallback = {
-    ComposeMessage: function (response) {
+    SendMessage: function (response) {
         if (response.type == 'response_notice') {
             if(response.data.published==true) {
                 window.location.href = response.data.url;
@@ -163,7 +163,7 @@ function sendMessage(published) {
     }
 
     var attachments = uploadedFiles.concat(getSelectedAttachments());
-    PrivateMessageAjax.callAsync('ComposeMessage', {'id': $('id').value, 'published':published,
+    PrivateMessageAjax.callAsync('SendMessage', {'id': $('id').value, 'published':published,
                      'recipient_users':recipient_users, 'recipient_groups':recipient_groups,
                      'subject':$('subject').value, 'body':getEditorValue('body'), 'attachments':attachments
     });

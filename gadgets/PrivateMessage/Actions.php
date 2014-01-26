@@ -65,7 +65,7 @@ $actions['Compose'] = array(
     'normal' => true,
     'file' => 'Compose',
 );
-$actions['ComposeMessage'] = array(
+$actions['SendMessage'] = array(
     'standalone' => true,
     'file' => 'Compose',
 );

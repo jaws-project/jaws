@@ -32,7 +32,7 @@ class PrivateMessage_Installer extends Jaws_Gadget_Installer
         'DeleteMessage',
         'ArchiveMessage',
         'ReplyMessage',
-        'ComposeMessage',
+        'SendMessage',
     );
 
     /**
@@ -57,6 +57,11 @@ class PrivateMessage_Installer extends Jaws_Gadget_Installer
         }
 
         $new_dir = JAWS_DATA . 'pm';
+        if (!Jaws_Utils::mkdir($new_dir)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
+        }
+
+        $new_dir = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . 'attachments';
         if (!Jaws_Utils::mkdir($new_dir)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
         }
