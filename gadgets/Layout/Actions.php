@@ -57,10 +57,6 @@ $actions['Dashboard'] = array(
     'standalone' => true,
     'file' => 'Dashboard',
 );
-$actions['DashboardSwitch'] = array(
-    'standalone' => true,
-    'file' => 'Dashboard',
-);
 
 /**
  * Admin actions
