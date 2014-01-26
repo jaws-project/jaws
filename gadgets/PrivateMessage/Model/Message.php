@@ -46,7 +46,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }
 
         // fetch recipients info
-        if ($getRecipients) {
+        if ($getRecipients && !empty($message)) {
             $usersId = (empty($message['recipient_users'])) ? '' : explode(',', $message['recipient_users']);
             $groupsId = (empty($message['recipient_groups'])) ? '' : explode(',', $message['recipient_groups']);
 
@@ -67,103 +67,22 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }
 
         // fetch attachments
-        if($fetchAttachment && !empty($result)) {
+        if($fetchAttachment && !empty($message)) {
             $model = $this->gadget->model->load('Attachment');
-            $message['attachments'] = $model->GetMessageAttachments($result['id']);
+            $message['attachments'] = $model->GetMessageAttachments($message['id']);
         }
         return $message;
     }
 
     /**
-     * Get a message recipients
+     * Delete message permanently
      *
      * @access  public
-     * @param   integer $id   Message id
-     * @return  mixed   Inbox count or Jaws_Error on failure
-     */
-    function GetMessageRecipients($id)
-    {
-        $table = Jaws_ORM::getInstance()->table('pm_recipients');
-
-        $result = $table->select('recipient:integer')->where('message', $id)->fetchColumn();
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage());
-        }
-
-        return $result;
-    }
-
-    /**
-     * Get a message recipients info
-     *
-     * @access  public
-     * @param   integer $id   Message id
-     * @return  mixed   Inbox count or Jaws_Error on failure
-     */
-    function GetMessageRecipientsInfo($id)
-    {
-        $table = Jaws_ORM::getInstance()->table('pm_recipients');
-
-        $table->select(array('recipient:integer', 'users.nickname as nickname',
-                             'users.username as username', 'users.avatar', 'users.email', 'update_time'
-        ))->where('message', $id);
-        $table->join('users', 'pm_recipients.recipient', 'users.id');
-        $result = $table->fetchAll();
-        if (Jaws_Error::IsError($result)) {
-            return new Jaws_Error($result->getMessage());
-        }
-
-        return $result;
-    }
-
-    /**
-     * Get parent messages info
-     *
-     * @access  public
-     * @param   integer   $id                 Message id
-     * @param   bool      $fetchAttachment    Fetch message's attachment info?
-     * @param   $result
-     * @return  mixed    Inbox count or Jaws_Error on failure
-     */
-    function GetParentMessages($id, $fetchAttachment, &$result)
-    {
-        $table = Jaws_ORM::getInstance()->table('pm_messages');
-        $table->select(
-            'pm_messages.id:integer', 'parent:integer', 'pm_messages.subject', 'pm_messages.body',
-            'users.nickname as from_nickname', 'users.username as from_username', 'users.avatar', 'users.email',
-            'pm_recipients.read:boolean', 'user:integer', 'pm_messages.insert_time'
-        );
-        $table->join('users', 'pm_messages.user', 'users.id');
-        $table->join('pm_recipients', 'pm_messages.id', 'pm_recipients.message');
-        $table->where('pm_messages.id', $id);
-
-        $message = $table->fetchRow();
-        if (Jaws_Error::IsError($message)) {
-            return new Jaws_Error($message->getMessage());
-        }
-
-        if($fetchAttachment) {
-            $model = $this->gadget->model->load('Attachment');
-            $message['attachments'] = $model->GetMessageAttachments($id);
-        }
-
-        $result[] = $message;
-        if(!empty($message['parent'])) {
-            $this->GetParentMessages($message['parent'], $fetchAttachment, $result);
-        }
-
-        return true;
-    }
-
-    /**
-     * Delete outbox message
-     *
-     * @access  public
-     * @param   array    $ids           Message ids
-     * @param   array    $justDelete    What items need delete?(attachments, recipients)
+     * @param   array    $ids    Message ids
+     * @param   int      $user   User id
      * @return  mixed    True or False or Jaws_Error on failure
      */
-    function DeleteOutboxMessage($ids, $justDelete = array())
+    function DeleteMessage($ids, $user)
     {
         $result = false;
         if(empty($ids)) {
@@ -174,42 +93,31 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }
 
         // Delete message's recipients
-        $rTable = Jaws_ORM::getInstance()->table('pm_recipients');
+        $table = Jaws_ORM::getInstance()->table('pm_messages');
         //Start Transaction
-        $rTable->beginTransaction();
+        $table->beginTransaction();
 
-        // Delete attachments
-        if (count($justDelete) == 0 || in_array('attachments', $justDelete)) {
-            $aModel = $this->gadget->model->load('Attachment');
-            foreach ($ids as $id) {
-                $message = $this->GetMessage($id, true, false);
-                foreach ($message['attachments'] as $attachment) {
-                    $filepath = $aModel->GetMessageAttachmentFilePath($message['user'], $attachment['filename']);
-                    if (!Jaws_Utils::delete($filepath)) {
-                        //Rollback Transaction
-                        $rTable->rollback();
-                        return false;
-                    }
-                }
-            }
+        $table->delete()->where('id', $ids, 'in');
+        $table->and()->openWhere()->openWhere('pm_messages.from', (int)$user)->and()
+            ->closeWhere('pm_messages.to', 0);
+        $table->or()->where('pm_messages.to', (int)$user)->closeWhere();
+        $result = $table->exec();
 
-            // Delete message's attachments
-            $aTable = Jaws_ORM::getInstance()->table('pm_attachments');
-            $result = $aTable->delete()->where('message', $ids, 'in')->exec();
-        }
+//        $table = $table->table('pm_message_attachment');
+//        $table->select('count(id)')->where('')
 
-        if (count($justDelete) == 0 || in_array('recipients', $justDelete)) {
-            $result = $rTable->delete()->where('message', $ids, 'in')->exec();
-        }
 
-        if (count($justDelete) == 0) {
-            // Delete message
-            $mTable = Jaws_ORM::getInstance()->table('pm_messages');
-            $result = $mTable->delete()->where('id', $ids, 'in')->exec();
-        }
+//                        $table->rollback();
+
+
+//        if (count($justDelete) == 0) {
+//            // Delete message
+//            $mTable = Jaws_ORM::getInstance()->table('pm_messages');
+//            $result = $mTable->delete()->where('id', $ids, 'in')->exec();
+//        }
 
         //Commit Transaction
-        $rTable->commit();
+        $table->commit();
         return $result;
     }
 
@@ -341,23 +249,6 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             $res = ($res1 || $res2);
         }
         return $res;
-    }
-
-    /**
-     * Delete inbox message
-     *
-     * @access  public
-     * @param   array    $ids     Message ids
-     * @return  mixed    True or Jaws_Error on failure
-     */
-    function DeleteInboxMessage($ids)
-    {
-        if (!is_array($ids) && $ids > 0) {
-            $ids = array($ids);
-        }
-        $table = Jaws_ORM::getInstance()->table('pm_recipients');
-        $result = $table->delete()->where('id', $ids, 'in')->exec();
-        return $result;
     }
 
     /**
@@ -620,7 +511,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         switch ($folder) {
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX :
-                $table->and()->where('pm_messages.to', (int)$user)->and()->where('pm_messages.to', 0);
+                $table->and()->where('pm_messages.to', (int)$user);
                 break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX :
                 $table->and()->where('pm_messages.from', (int)$user)->and()->where('pm_messages.to', 0);
@@ -652,8 +543,8 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             }
             if (isset($filters['term']) && !empty($filters['term'])) {
                 $filters['term'] = '%' . $filters['term'] . '%';
-                $table->and()->openWhere('pm_messages.subject', $filters['term'] , 'like')->or();
-                $table->closeWhere('pm_messages.body', $filters['term'] , 'like');
+                $table->and()->openWhere('pm_messages.subject', $filters['term'], 'like')->or();
+                $table->closeWhere('pm_messages.body', $filters['term'], 'like');
             }
         }
 
@@ -684,7 +575,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }
         switch ($folder) {
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX :
-                $table->and()->where('pm_messages.to', (int)$user)->and()->where('pm_messages.to', 0);
+                $table->and()->where('pm_messages.to', (int)$user);
                 break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX :
                 $table->and()->where('pm_messages.from', (int)$user)->and()->where('pm_messages.to', 0);
@@ -701,28 +592,24 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
 
         if (!empty($filters)) {
-            if (isset($filters['archived']) && ($filters['archived'] !== "")) {
-                $table->and()->where('pm_recipients.archived', $filters['archived']);
-            }
-
             if (isset($filters['read']) && !empty($filters['read'])) {
                 if ($filters['read'] == 'yes') {
-                    $table->and()->where('read', true);
+                    $table->and()->where('pm_messages.read', true);
                 } else {
-                    $table->and()->where('read', false);
+                    $table->and()->where('pm_messages.read', false);
                 }
             }
             if (isset($filters['attachment']) && !empty($filters['attachment'])) {
                 if ($filters['attachment'] == 'yes') {
-                    $table->and()->where('attachments', 0, '>');
+                    $table->and()->where('pm_messages.attachments', 0, '>');
                 } else {
-                    $table->and()->where('attachments', 0);
+                    $table->and()->where('pm_messages.attachments', 0);
                 }
             }
             if (isset($filters['term']) && !empty($filters['term'])) {
                 $filters['term'] = '%' . $filters['term'] . '%';
-                $table->and()->openWhere('message.subject', $filters['term'] , 'like')->or();
-                $table->closeWhere('message.body', $filters['term'] , 'like');
+                $table->and()->openWhere('pm_messages.subject', $filters['term'], 'like')->or();
+                $table->closeWhere('pm_messages.body', $filters['term'], 'like');
             }
         }
 

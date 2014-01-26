@@ -18,7 +18,7 @@ class PrivateMessage_Hooks_Search extends Jaws_Gadget_Hook
      */
     function GetOptions() {
         return array(
-                    array('m.[subject]', 'm.[body]'),
+                    array('[subject]', '[body]'),
                     );
     }
 
@@ -42,15 +42,14 @@ class PrivateMessage_Hooks_Search extends Jaws_Gadget_Hook
 
         $sql = '
             SELECT
-               m.[id] as m_id ,m.[user], m.[subject], m.[body], m.[insert_time], r.[id] as r_id
-            FROM [[pm_messages]] m
-            INNER JOIN [[pm_recipients]] r ON r.[message] = m.[id]
+               [id], [from], [folder], [subject], [body], [insert_time]
+            FROM [[pm_messages]]
             WHERE
-                (m.[user] = {user} OR ((r.[recipient] = {user} OR r.[recipient] = 0) AND m.[published] = {published}))
+                (([from] = {user} and [to] = 0) OR ([to] = {user}))
             ';
 
         $sql .= ' AND ' . $pSql;
-        $sql .= ' ORDER BY m.[insert_time] desc';
+        $sql .= ' ORDER BY [insert_time] desc';
 
         $result = $GLOBALS['db']->queryAll($sql, $params);
         if (Jaws_Error::IsError($result)) {
@@ -62,13 +61,12 @@ class PrivateMessage_Hooks_Search extends Jaws_Gadget_Hook
             $message = array();
             $message['title'] = $m['subject'];
 
-            if($m['user']==$user) {
-                $url =  $this->gadget->urlMap('Compose', array('id' => $m['m_id']));
+            if ($m['from'] == $user && $m['folder'] == PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT) {
+                $url = $this->gadget->urlMap('Compose', array('id' => $m['id']));
             } else {
                 $url = $this->gadget->urlMap(
-                    'PrivateMessage',
-                    'InboxMessage',
-                    array('id'  => $m['r_id']));
+                    'Message',
+                    array('id'  => $m['id']));
             }
 
             $message['url']     = $url;

@@ -25,14 +25,6 @@ $actions['DraftMessage'] = array(
     'standalone' => true,
     'file' => 'Draft',
 );
-$actions['Message'] = array(
-    'normal' => true,
-    'file' => 'Message',
-);
-$actions['PublishMessage'] = array(
-    'standalone' => true,
-    'file' => 'Message',
-);
 $actions['DeleteMessage'] = array(
     'standalone' => true,
     'file' => 'Message',
@@ -50,10 +42,6 @@ $actions['TrashMessage'] = array(
     'file' => 'Message',
 );
 $actions['RestoreTrashMessage'] = array(
-    'standalone' => true,
-    'file' => 'Message',
-);
-$actions['DeleteMessage'] = array(
     'standalone' => true,
     'file' => 'Message',
 );
@@ -88,12 +76,4 @@ $actions['Attachment'] = array(
 $actions['UploadFile'] = array(
     'standalone' => true,
     'file' => 'Attachment'
-);
-
-/**
- * Admin actions
- */
-$admin_actions['Properties'] = array(
-    'normal' => true,
-    'file' => 'Properties',
 );

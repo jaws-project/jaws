@@ -82,8 +82,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $title = _t('PRIVATEMESSAGE_TRASH');
 
                 $tpl->SetBlock('messages/trash_action');
-                $tpl->SetVariable('lbl_restore', _t('PRIVATEMESSAGE_RESTORE'));
-                $tpl->SetVariable('lbl_delete', _t('PRIVATEMESSAGE_DELETE'));
+                $tpl->SetVariable('lbl_restore_trash', _t('PRIVATEMESSAGE_RESTORE_TRASH'));
+                $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
                 $tpl->ParseBlock('messages/trash_action');
                 break;
             default:
@@ -415,6 +415,53 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         return $tpl->Get();
     }
 
+
+    /**
+     * Change message read status
+     *
+     * @access  public
+     * @return  void
+     */
+    function ChangeMessageRead()
+    {
+        $get = jaws()->request->fetch(array('id', 'status'), 'get');
+        $post = jaws()->request->fetch(array('message_checkbox:array', 'status'), 'post');
+        $status = $post['status'];
+        if ($status == 'read') {
+            $status = true;
+        } else {
+            $status = false;
+        }
+
+        if(!empty($post['message_checkbox']) && count($post['message_checkbox'])>0) {
+            $ids = $post['message_checkbox'];
+        } else {
+            $ids = $get['id'];
+        }
+
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
+
+        $model = $this->gadget->model->load('Message');
+        $res = $model->MarkMessages($ids, $status, $user);
+        if ($res === true) {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_MESSAGE_READ_MESSAGE_STATUS_CHANGED'),
+                'PrivateMessage.Message',
+                RESPONSE_NOTICE
+            );
+        } else {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_ERROR_MESSAGE_READ_STATUS_NOT_CHANGED'),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        }
+        Jaws_Header::Location(
+            $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX))
+        );
+    }
+
+
     /**
      * Archive message
      *
@@ -456,7 +503,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
             );
         }
         Jaws_Header::Location(
-            $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED)));
+            $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED))
+        );
     }
 
 
@@ -544,7 +592,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
             );
         }
         Jaws_Header::Location(
-            $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_TRASH)));
+            $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_TRASH))
+        );
     }
 
     /**
@@ -589,5 +638,49 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
         Jaws_Header::Location($this->gadget->urlMap('Messages'));
     }
+
+    /**
+     * Delete message permanently
+     *
+     * @access  public
+     * @return  void
+     */
+    function DeleteMessage()
+    {
+        $this->gadget->CheckPermission('DeleteMessage');
+
+        $ids = jaws()->request->fetch('id', 'get');
+        $messagesSelected = jaws()->request->fetch('message_checkbox:array', 'post');
+        if (!empty($messagesSelected) && count($messagesSelected) > 0) {
+            $ids = $messagesSelected;
+        }
+
+        $model = $this->gadget->model->load('Message');
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
+        $res = $model->DeleteMessage($ids, $user);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushResponse(
+                $res->getMessage(),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        }
+
+        if ($res == true) {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_MESSAGE_DELETED'),
+                'PrivateMessage.Message',
+                RESPONSE_NOTICE
+            );
+        } else {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('PRIVATEMESSAGE_MESSAGE_NOT_DELETED'),
+                'PrivateMessage.Message',
+                RESPONSE_ERROR
+            );
+        }
+        Jaws_Header::Location($this->gadget->urlMap('Messages'));
+    }
+
 
 }

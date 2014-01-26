@@ -116,7 +116,7 @@ function addFileEntry() {
     lastAttachment++;
     var id = lastAttachment;
 
-    entry = '<div id="btn_attach' + id + '"> <img src="gadgets/Contact/Resources/images/attachment.png"/> <a id="file_link' + id + '"></a> ' +
+    entry = '<div id="btn_attach' + id + '"> <img src="gadgets/PrivateMessage/Resources/images/attachment.png"/> <a id="file_link' + id + '"></a> ' +
         ' <small id="file_size' + id + '"></small> <a onclick="javascript:removeAttachment(' + id + ');" href="javascript:void(0);">' +
         '<img border="0" title="Remove" alt="Remove" src="images/stock/cancel.png"></a></div>';
     entry += ' <input type="file" onchange="uploadFile();" id="attachment' + lastAttachment + '" name="attachment' + lastAttachment + '" size="1" style="display: block;">';

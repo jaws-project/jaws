@@ -118,7 +118,7 @@
                     <!-- END archive_action -->
 
                     <!-- BEGIN trash_action -->
-                    <option value="restore">{lbl_restore}</option>
+                    <option value="restore_trash">{lbl_restore_trash}</option>
                     <option value="delete">{lbl_delete}</option>
                     <!-- END trash_action -->
 
@@ -156,6 +156,8 @@
             document.privatemessage.status.value = 'unread';
         } else if(action == 'trash') {
             document.privatemessage.action.value = 'TrashMessage';
+        } else if(action == 'restore_trash') {
+            document.privatemessage.action.value = 'RestoreTrashMessage';
         } else if(action == 'delete') {
             document.privatemessage.action.value = 'DeleteMessage';
         }

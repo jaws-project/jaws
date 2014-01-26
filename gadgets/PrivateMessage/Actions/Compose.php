@@ -139,8 +139,8 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('parent', $id);
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_REPLY'));
                 $tpl->SetVariable('subject', _t('PRIVATEMESSAGE_REPLY_ON', $message['subject']));
-                $tpl->SetVariable('recipient_user', $message['to']);
-                $recipient_users = array($message['to']);
+                $tpl->SetVariable('recipient_user', $message['from']);
+                $recipient_users = array($message['from']);
 
                 $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
                 $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id, false));
