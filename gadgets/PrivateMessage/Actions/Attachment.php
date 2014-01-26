@@ -33,22 +33,19 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_Action
         }
 
         // Check permissions
-        $messageRecipients = $mModel->GetMessageRecipients($rqst['mid']);
-        if ($message['user'] != $rqst['uid'] || ($message['user'] != $user && !in_array($user, $messageRecipients)
-                && !in_array($rqst['uid'], $messageRecipients))
+        if ((!($message['from'] == $user && $message['to'] == 0) && $message['to'] != $user) ||
+            $user != $rqst['uid']
         ) {
             return Jaws_HTTPError::Get(403);
         }
 
-        $attachment = $aModel->GetMessageAttachment($rqst['aid']);
-        if (!empty($attachment) && ($attachment['message'] == $rqst['mid'])) {
-            $filepath = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $rqst['uid'] . DIRECTORY_SEPARATOR .
-                $attachment['filename'];
+        $attachment = $aModel->GetAttachment($rqst['aid'], $rqst['mid']);
+        if (!empty($attachment)) {
+            $filepath = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . 'attachments' . DIRECTORY_SEPARATOR . $attachment['filename'];
             if (file_exists($filepath)) {
                 if (Jaws_Utils::Download($filepath, $attachment['title'], $attachment['filetype'])) {
                     return;
                 }
-
                 return Jaws_HTTPError::Get(500);
             }
         }

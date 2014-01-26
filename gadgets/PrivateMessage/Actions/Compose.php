@@ -250,6 +250,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             $message_id = jaws()->request->fetch('id', 'post');
         }
 
+        $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Message');
         $tpl = $this->gadget->template->load('Compose.html');
         $tpl->SetBlock('attachments');
@@ -268,7 +269,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                     $tpl->SetVariable('file_download_link', $file['title']);
                     $file_url = $this->gadget->urlMap('Attachment',
                         array(
-                            'uid' => $message['user'],
+                            'uid' => $user,
                             'mid' => $message_id,
                             'aid' => $file['id'],
                         ));

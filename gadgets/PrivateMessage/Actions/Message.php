@@ -334,7 +334,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('file_download_link', $file['title']);
                 $file_url = $this->gadget->urlMap('Attachment',
                     array(
-                        'uid' => $message['user'],
+                        'uid' => $user,
                         'mid' => $message['id'],
                         'aid' => $file['id'],
                     ));

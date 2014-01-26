@@ -67,7 +67,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }
 
         // fetch attachments
-        if($fetchAttachment && !empty($message)) {
+        if ($fetchAttachment && !empty($message)) {
             $model = $this->gadget->model->load('Attachment');
             $message['attachments'] = $model->GetMessageAttachments($message['id']);
         }
@@ -84,41 +84,75 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      */
     function DeleteMessage($ids, $user)
     {
-        $result = false;
-        if(empty($ids)) {
+        if (empty($ids)) {
             return false;
         }
         if (!is_array($ids) && $ids > 0) {
             $ids = array($ids);
         }
 
-        // Delete message's recipients
-        $table = Jaws_ORM::getInstance()->table('pm_messages');
+        // Get all attachments that will deleted
+        $table = Jaws_ORM::getInstance()->table('pm_message_attachment');
+        $attachments = $table->select('attachment')->distinct()->where('message', $ids, 'in')->fetchColumn();
+        if (Jaws_Error::IsError($attachments)) {
+            return false;
+        }
+
+        // Delete messages attachments relation
+        $table = $table->table('pm_message_attachment');
         //Start Transaction
         $table->beginTransaction();
+
+        $result = $table->delete()->where('message', $ids, 'in')->exec();
+        if (Jaws_Error::IsError($result)) {
+            //Rollback Transaction
+            $table->rollback();
+            return false;
+        }
+
+        // Delete messages
+        $table = $table->table('pm_messages');
 
         $table->delete()->where('id', $ids, 'in');
         $table->and()->openWhere()->openWhere('pm_messages.from', (int)$user)->and()
             ->closeWhere('pm_messages.to', 0);
         $table->or()->where('pm_messages.to', (int)$user)->closeWhere();
         $result = $table->exec();
+        if (Jaws_Error::IsError($result)) {
+            //Rollback Transaction
+            $table->rollback();
+            return false;
+        }
 
-//        $table = $table->table('pm_message_attachment');
-//        $table->select('count(id)')->where('')
+        // Delete Message attachment(s)
+        // Check if it is last attachment so delete the attachment file from disk and database
+        foreach ($attachments as $attachment) {
+            $table = $table->table('pm_message_attachment');
+            $attachmentCount = $table->select('count(message)')->where('attachment', $attachment)->fetchOne();
+            if ($attachmentCount == 0) {
+                $model = $this->gadget->model->load('Attachment');
+                $attachmentInfo = $model->GetAttachment($attachment);
+                $filepath = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . 'attachments' .
+                    DIRECTORY_SEPARATOR . $attachmentInfo['filename'];
+                if (!Jaws_Utils::delete($filepath)) {
+                    //Rollback Transaction
+                    $table->rollback();
+                    return false;
+                }
 
-
-//                        $table->rollback();
-
-
-//        if (count($justDelete) == 0) {
-//            // Delete message
-//            $mTable = Jaws_ORM::getInstance()->table('pm_messages');
-//            $result = $mTable->delete()->where('id', $ids, 'in')->exec();
-//        }
+                // Delete attachment from main table
+                $result = $table->table('pm_attachments')->delete()->where('id', $attachment)->exec();
+                if (Jaws_Error::IsError($result)) {
+                    //Rollback Transaction
+                    $table->rollback();
+                    return false;
+                }
+            }
+        }
 
         //Commit Transaction
         $table->commit();
-        return $result;
+        return true;
     }
 
     /**
@@ -373,20 +407,22 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
             // Insert records for every recipient users
             if (!empty($recipient_users) && count($recipient_users) > 0) {
+                $messageIds = array();
                 $table = Jaws_ORM::getInstance()->table('pm_messages');
-                $rData = array();
                 foreach ($recipient_users as $recipient_user) {
-                    $rData[] = array($data['subject'], $data['body'], $data['attachments'],
-                                     $user, $recipient_user, PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX,
-                                     $data['recipient_users'], $data['recipient_groups'], time(), time());
-                }
-                $res = $table->insertAll(
-                                array('subject', 'body', 'attachments', 'from', 'to', 'folder',
-                                      'recipient_users', 'recipient_groups', 'insert_time', 'update_time'),
-                                $rData)->exec();
+                    $data['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX;
+                    $data['insert_time'] = time();
+                    $data['from'] = $user;
+                    $data['to'] = $recipient_user;
+                    $messageId = $table->insert($data)->exec();
+                    if (Jaws_Error::IsError($messageId)) {
+                        //Rollback Transaction
+                        $table->rollback();
 
-                if (Jaws_Error::IsError($res)) {
-                    return false;
+                        return false;
+                    }
+
+                    $messageIds[] = $messageId;
                 }
             }
 
@@ -409,9 +445,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         // Insert attachments info
         if (!empty($messageData['attachments']) && count($messageData['attachments']) > 0) {
-            $aModel = $this->gadget->model->load('Attachment');
-
-            $aData = array();
+            $maData = array();
             $pm_dir = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . 'attachments' . DIRECTORY_SEPARATOR;
             foreach ($messageData['attachments'] as $attachment) {
 
@@ -419,66 +453,63 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                 if (is_array($attachment)) {
                     $src_filepath = Jaws_Utils::upload_tmp_dir() . '/' . $attachment['filename'];
                     $dest_filepath = $pm_dir . $attachment['filename'];
+
+                    if (!file_exists($src_filepath)) {
+                        continue;
+                    }
+
+                    if (!file_exists($pm_dir)) {
+                        if (!Jaws_Utils::mkdir($pm_dir)) {
+                            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', JAWS_DATA));
+                        }
+                    }
+
+                    $cres = Jaws_Utils::rename($src_filepath, $dest_filepath);
+                    Jaws_Utils::delete($src_filepath);
+
+                    if ($cres) {
+                        $aData = array(
+                            'title'         => $attachment['title'],
+                            'filename'      => $attachment['filename'],
+                            'filesize'      => $attachment['filesize'],
+                            'filetype'      => $attachment['filetype'],
+                        );
+
+                        $table = $table->table('pm_attachments');
+                        $attachmentId = $table->insert($aData)->exec();
+                        if (Jaws_Error::IsError($attachmentId)) {
+                            //Rollback Transaction
+                            $table->rollback();
+                            return false;
+                        }
+
+                        // Add sender message Id to pm_message_attachment table
+                        $maData[] = array('message' => $senderMessageId, 'attachment' => $attachmentId);
+                        // Add recipient message Id to pm_message_attachment table
+                        foreach($messageIds as $messageId) {
+                            $maData[] = array('message' => $messageId, 'attachment' => $attachmentId);
+                        }
+                    }
+
                 } else {
-                    // check exist attachments -- we just need to copy it!
-                    $attachment = $aModel->GetMessageAttachment($attachment);
-                    $message_info = $this->GetMessage($attachment['message'], false, false);
-                    $src_filepath = JAWS_DATA . 'pm' . DIRECTORY_SEPARATOR . $message_info['user'] .
-                                    DIRECTORY_SEPARATOR . $attachment['filename'];
-                    $dest_filepath = $pm_dir . $attachment['filename'];
-                }
-
-                if (!file_exists($src_filepath)) {
-                    continue;
-                }
-
-                if (!file_exists($pm_dir)) {
-                    if (!Jaws_Utils::mkdir($pm_dir)) {
-                        return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', JAWS_DATA));
+                    // Add sender message Id to pm_message_attachment table
+                    $maData[] = array('message' => $senderMessageId, 'attachment' => $attachment);
+                    // Add recipient message Id to pm_message_attachment table
+                    foreach($messageIds as $messageId) {
+                        $maData[] = array('message' => $messageId, 'attachment' => $attachment);
                     }
                 }
 
-                $cres = Jaws_Utils::rename($src_filepath, $dest_filepath);
-                if ($cres) {
-                    Jaws_Utils::delete($src_filepath);
-                    $aData[] = array(
-                        'title'         => $attachment['title'],
-                        'filename'      => $attachment['filename'],
-                        'filesize'      => $attachment['filesize'],
-                        'filetype'      => $attachment['filetype'],
-                    );
-                }
-
             }
 
-/*            if (!empty($messageData['id']) && $messageData['id'] > 0) {
-                // delete message's recipients and attachments before insert new items
-                $this->DeleteOutboxMessage($messageData['id'], array('attachments', 'recipients'));
-            }*/
-
-            $table = Jaws_ORM::getInstance()->table('pm_attachments');
-            $res = $table->insertAll(array('title', 'filename', 'filesize', 'filetype'), $aData)->exec();
+            $table = $table->table('pm_message_attachment');
+            $res = $table->insertAll(array('message', 'attachment'), $maData)->exec();
             if (Jaws_Error::IsError($res)) {
+                //Rollback Transaction
+                $table->rollback();
                 return false;
             }
         }
-
-/*        // Insert recipients info
-        if (!empty($recipient_users) && count($recipient_users) > 0) {
-            $table = Jaws_ORM::getInstance()->table('pm_recipients');
-            $rData = array();
-            foreach ($recipient_users as $recipient_user) {
-                $read = false;
-                if ($recipient_user == 0) {
-                    $read = true;
-                }
-                $rData[] = array($message_id, $recipient_user, $read);
-            }
-            $res = $table->insertAll(array('message', 'recipient', 'read'), $rData)->exec();
-            if (Jaws_Error::IsError($res)) {
-                return false;
-            }
-        }*/
 
         //Commit Transaction
         $mTable->commit();
@@ -620,5 +651,4 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         return $result;
     }
-
 }
