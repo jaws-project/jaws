@@ -74,9 +74,10 @@ class Layout_Model_Admin_Layout extends Jaws_Gadget_Model
      * @params  string  $gadget_action   Action's name
      * @param   string  $action_params   Action's params
      * @param   string  $action_filename Filename that contant action method
+     * @param   int     $user            (Optional) User's ID
      * @return  array   Response
      */
-    function EditElementAction($item, $gadget_action, $action_params, $action_filename)
+    function UpdateElementAction($item, $gadget_action, $action_params, $action_filename, $user = 0)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->update(array(
@@ -84,7 +85,7 @@ class Layout_Model_Admin_Layout extends Jaws_Gadget_Model
             'action_params'   => serialize($action_params),
             'action_filename' => (string)$action_filename
         ));
-        return $lyTable->where('id', $item)->exec();
+        return $lyTable->where('id', $item)->and()->where('user', (int)$user)->exec();
     }
 
     /**

@@ -14,7 +14,7 @@
  * Use async mode, create Callback
  */
 var LayoutCallback = {
-    EditElementAction2: function(response) {
+    UpdateElementAction: function(response) {
         showResponse(response, false);
     },
 
@@ -193,7 +193,7 @@ function addGadget(url, title)
     showDialogBox('gadgets_dialog', title, url, 400, 800);
 }
 
-function editElementAction(url)
+function elementAction(url)
 {
     showDialogBox('actions_dialog', actionsTitle, url, 435, 555);
 }
@@ -312,7 +312,7 @@ function saveElementAction(lid, gadget, action, params, title, desc)
     params = (params == null)? null : params.split(',');
     $('ea' + lid).innerHTML = title;
     $('ea' + lid).parentNode.parentNode.title = desc;
-    LayoutAjax.callAsync('EditElementAction2', lid, gadget, action, params);
+    LayoutAjax.callAsync('UpdateElementAction', lid, gadget, action, params, $('dashboard_user').value);
 }
 
 /**

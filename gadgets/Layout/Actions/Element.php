@@ -93,14 +93,23 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
      * @access  public
      * @return  XHTML template content
      */
-    function EditElementAction()
+    function ElementAction()
     {
-        $id = jaws()->request->fetch('id', 'get');
+        $rqst = jaws()->request->fetch(array('id', 'dashboard_user'), 'get');
+        // dashboard_user
+        if (empty($rqst['dashboard_user']) && $this->gadget->GetPermission('ManageLayout')) {
+            $dashboard_user = 0;
+        } else {
+            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
+            $dashboard_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        }
+
         $model = $this->gadget->model->loadAdmin('Elements');
-        $layoutElement = $model->GetElement($id);
+        $layoutElement = $model->GetElement($rqst['id'], $dashboard_user);
         if (!$layoutElement || !isset($layoutElement['id'])) {
             return false;
         }
+        $id = $layoutElement['id'];
 
         $tpl = $this->gadget->template->load('EditGadget.html');
         $tpl->SetBlock('template');
@@ -199,6 +208,32 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
 
         $tpl->ParseBlock('template');
         return $tpl->Get();
+    }
+
+    /**
+     * Update layout's element action
+     * 
+     * @access  public
+     * @return  array   Response
+     */
+    function UpdateElementAction() 
+    {
+        $res = false;
+        @list($item, $gadget, $action, $params, $dashboard_user) = jaws()->request->fetchAll('post');
+        $params = jaws()->request->fetch('3:array', 'post');
+        $eModel = $this->gadget->model->loadAdmin('Elements');
+        $lModel = $this->gadget->model->loadAdmin('Layout');
+        $actions = $eModel->GetGadgetLayoutActions($gadget, true);
+        if (isset($actions[$action])) {
+            $res = $lModel->UpdateElementAction($item, $action, $params, $actions[$action]['file'], $dashboard_user);
+            $res = Jaws_Error::IsError($res)? false : true;
+        }
+        if ($res === false) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_UPDATED'), RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_UPDATED'), RESPONSE_NOTICE);
+        }
+        return $GLOBALS['app']->Session->PopLastResponse();
     }
 
 }

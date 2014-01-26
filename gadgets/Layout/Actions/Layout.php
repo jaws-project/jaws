@@ -123,6 +123,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                     $t_item->SetBlock('item');
                     $t_item->SetVariable('section_id', $name);
                     $t_item->SetVariable('item_id', $gadget['id']);
+                    $t_item->SetVariable('dashboard_user', $dashboard_user);
                     $t_item->SetVariable('pos', $gadget['layout_position']);
                     $t_item->SetVariable('gadget', _t('LAYOUT_REQUESTED_GADGET'));
                     $t_item->SetVariable('action', '&nbsp;');

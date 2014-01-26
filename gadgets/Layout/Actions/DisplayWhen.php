@@ -19,6 +19,15 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
      */
     function DisplayWhen()
     {
+        $rqst = jaws()->request->fetch(array('id', 'dashboard_user'), 'get');
+        // dashboard_user
+        if (empty($rqst['dashboard_user']) && $this->gadget->GetPermission('ManageLayout')) {
+            $dashboard_user = 0;
+        } else {
+            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
+            $dashboard_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        }
+
         // fetch current layout user
         $layout_user = $GLOBALS['app']->Session->GetAttribute('layout');
         if (empty($layout_user)) {
@@ -43,8 +52,7 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('display_when', _t('LAYOUT_DISPLAY'));
 
-        $id = jaws()->request->fetch('id', 'get');
-        $layoutElement = $model->GetElement($id);
+        $layoutElement = $model->GetElement($rqst['id'], $dashboard_user);
         if (is_array($layoutElement) && !empty($layoutElement)) {
             $dw_value = $layoutElement['display_when'];
         }

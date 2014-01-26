@@ -17,10 +17,6 @@ $actions['Layout'] = array(
     'normal' => true,
     'file' => 'Layout',
 );
-$actions['EditElementAction'] = array(
-    'standalone' => true,
-    'file' => 'Element',
-);
 $actions['AddLayoutElement'] = array(
     'standalone' => true,
     'file' => 'Element',
@@ -49,9 +45,13 @@ $actions['AddGadget'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
-$actions['EditElementAction2'] = array(
+$actions['ElementAction'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Element',
+);
+$actions['UpdateElementAction'] = array(
+    'standalone' => true,
+    'file' => 'Element',
 );
 $actions['Dashboard'] = array(
     'standalone' => true,

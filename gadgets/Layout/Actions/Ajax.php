@@ -126,8 +126,8 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             }
 
             $el['eaid'] = 'ea'.$id;
-            $url_ea = BASE_SCRIPT. '?gadget=Layout&action=EditElementAction&id='.$id;
-            $el['eaonclick'] = "editElementAction('$url_ea');";
+            $url_ea = BASE_SCRIPT. '?gadget=Layout&action=ElementAction&id='.$id.'&dashboard_user='.$dashboard_user;
+            $el['eaonclick'] = "elementAction('$url_ea');";
             unset($info);
             $el['icon']      = 'gadgets/'.$gadget.'/Resources/images/logo.png';
             $el['delete']    = "deleteElement('{$id}');";
@@ -136,39 +136,13 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             $el['dwtitle']   = _t('LAYOUT_CHANGE_DW');
             $el['dwdisplay'] = _t('LAYOUT_DISPLAY_IN') . ': ';
             $el['dwid'] = 'dw'.$id;
-            $url_dw = BASE_SCRIPT. '?gadget=Layout&action=DisplayWhen&id='.$id;
+            $url_dw = BASE_SCRIPT. '?gadget=Layout&action=DisplayWhen&id='.$id.'&dashboard_user='.$dashboard_user;
             $el['dwonclick'] = "displayWhen('$url_dw');";
             $res = $el;
             $res['success'] = true;
         }
         $res['message'] = $GLOBALS['app']->Session->PopLastResponse();
         return $res;
-    }
-
-    /**
-     * Edit layout's element action
-     * 
-     * @access  public
-     * @return  array   Response
-     */
-    function EditElementAction2() 
-    {
-        $res = false;
-        @list($item, $gadget, $action, $params) = jaws()->request->fetchAll('post');
-        $params = jaws()->request->fetch('3:array', 'post');
-        $eModel = $this->gadget->model->loadAdmin('Elements');
-        $lModel = $this->gadget->model->loadAdmin('Layout');
-        $actions = $eModel->GetGadgetLayoutActions($gadget, true);
-        if (isset($actions[$action])) {
-            $res = $lModel->EditElementAction($item, $action, $params, $actions[$action]['file']);
-            $res = Jaws_Error::IsError($res)? false : true;
-        }
-        if ($res === false) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_UPDATED'), RESPONSE_ERROR);
-        } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_UPDATED'), RESPONSE_NOTICE);
-        }
-        return $GLOBALS['app']->Session->PopLastResponse();
     }
 
 }

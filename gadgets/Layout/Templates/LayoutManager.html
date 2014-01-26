@@ -30,13 +30,13 @@
     <div class="item-gadget">{gadget}</div>
     <div class="item-action">
         <a id="ea{item_id}" name="ea{item_id}" href="javascript:void(0);"
-           onclick="{void_link}editElementAction('{base_script_url}?gadget=Layout&amp;action=EditElementAction&amp;id={item_id}');">
+           onclick="{void_link}elementAction('{base_script_url}?gadget=Layout&amp;action=ElementAction&amp;id={item_id}&amp;dashboard_user={dashboard_user}');">
            {action}</a>
     </div>
     <div class="item-dw">
         <label>{lbl_display_when}:</label>
         <a id="dw{item_id}" name="dw{item_id}" href="javascript:void(0);"
-           onclick="{void_link}displayWhen('{base_script_url}?gadget=Layout&amp;action=DisplayWhen&amp;id={item_id}');">
+           onclick="{void_link}displayWhen('{base_script_url}?gadget=Layout&amp;action=DisplayWhen&amp;id={item_id}&amp;dashboard_user={dashboard_user}');">
            {display_when}</a>
     </div>
 </div>
