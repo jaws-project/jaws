@@ -21,6 +21,10 @@ $actions['Messages'] = array(
     'normal' => true,
     'file' => 'Message',
 );
+$actions['Message'] = array(
+    'normal' => true,
+    'file' => 'Message',
+);
 $actions['DraftMessage'] = array(
     'standalone' => true,
     'file' => 'Draft',
