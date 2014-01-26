@@ -19,13 +19,13 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
      */
     function DisplayWhen()
     {
-        $rqst = jaws()->request->fetch(array('id', 'dashboard_user'), 'get');
+        $rqst = jaws()->request->fetch(array('id', 'user'), 'get');
         // dashboard_user
-        if (empty($rqst['dashboard_user']) && $this->gadget->GetPermission('ManageLayout')) {
-            $dashboard_user = 0;
+        if (empty($rqst['user']) && $this->gadget->GetPermission('ManageLayout')) {
+            $user = 0;
         } else {
             $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
-            $dashboard_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         }
 
         // fetch current layout user
@@ -52,7 +52,7 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('display_when', _t('LAYOUT_DISPLAY'));
 
-        $layoutElement = $model->GetElement($rqst['id'], $dashboard_user);
+        $layoutElement = $model->GetElement($rqst['id'], $user);
         if (is_array($layoutElement) && !empty($layoutElement)) {
             $dw_value = $layoutElement['display_when'];
         }
@@ -99,9 +99,17 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
      */
     function UpdateDisplayWhen() 
     {
-        @list($item, $dw, $dashboard_user) = jaws()->request->fetchAll('post');
+        @list($item, $dw, $user) = jaws()->request->fetchAll('post');
+        // dashboard_user
+        if (empty($user) && $this->gadget->GetPermission('ManageLayout')) {
+            $user = 0;
+        } else {
+            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        }
+
         $model = $this->gadget->model->loadAdmin('Elements');
-        $res = $model->UpdateDisplayWhen($item, $dw, $dashboard_user);
+        $res = $model->UpdateDisplayWhen($item, $dw, $user);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_CHANGE_WHEN'), RESPONSE_ERROR);
         } else {

@@ -19,12 +19,13 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
      */
     function AddLayoutElement()
     {
-        // fetch current layout user
-        $layout_user = $GLOBALS['app']->Session->GetAttribute('layout');
-        if (empty($layout_user)) {
-            $this->gadget->CheckPermission('ManageLayout');
+        $user = jaws()->request->fetch('user', 'get');
+        // dashboard_user
+        if (empty($user) && $this->gadget->GetPermission('ManageLayout')) {
+            $user = 0;
         } else {
             $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         }
 
         $tpl = $this->gadget->template->load('AddGadget.html');
@@ -95,17 +96,17 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
      */
     function ElementAction()
     {
-        $rqst = jaws()->request->fetch(array('id', 'dashboard_user'), 'get');
+        $rqst = jaws()->request->fetch(array('id', 'user'), 'get');
         // dashboard_user
-        if (empty($rqst['dashboard_user']) && $this->gadget->GetPermission('ManageLayout')) {
-            $dashboard_user = 0;
+        if (empty($rqst['user']) && $this->gadget->GetPermission('ManageLayout')) {
+            $user = 0;
         } else {
             $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
-            $dashboard_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         }
 
         $model = $this->gadget->model->loadAdmin('Elements');
-        $layoutElement = $model->GetElement($rqst['id'], $dashboard_user);
+        $layoutElement = $model->GetElement($rqst['id'], $user);
         if (!$layoutElement || !isset($layoutElement['id'])) {
             return false;
         }
@@ -219,13 +220,21 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
     function UpdateElementAction() 
     {
         $res = false;
-        @list($item, $gadget, $action, $params, $dashboard_user) = jaws()->request->fetchAll('post');
+        @list($item, $gadget, $action, $params, $user) = jaws()->request->fetchAll('post');
         $params = jaws()->request->fetch('3:array', 'post');
+        // dashboard_user
+        if (empty($user) && $this->gadget->GetPermission('ManageLayout')) {
+            $user = 0;
+        } else {
+            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        }
+
         $eModel = $this->gadget->model->loadAdmin('Elements');
         $lModel = $this->gadget->model->loadAdmin('Layout');
         $actions = $eModel->GetGadgetLayoutActions($gadget, true);
         if (isset($actions[$action])) {
-            $res = $lModel->UpdateElementAction($item, $action, $params, $actions[$action]['file'], $dashboard_user);
+            $res = $lModel->UpdateElementAction($item, $action, $params, $actions[$action]['file'], $user);
             $res = Jaws_Error::IsError($res)? false : true;
         }
         if ($res === false) {

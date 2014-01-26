@@ -138,7 +138,7 @@ function deleteElement(itemId)
             $('index_layout').value,
             section,
             position + 1,
-            $('dashboard_user').value
+            $('user').value
         );
     }
 }
@@ -180,7 +180,7 @@ function initUI()
                     parseInt(el.getProperty('old_position')), /* position in old section */
                     new_section,                              /* new section name */
                     new_position,                             /* position in new section */
-                    $('dashboard_user').value                 /* dashboard of user or global layout */
+                    $('user').value                           /* dashboard of user or global layout */
                 );
             }
             el.removeProperties('old_section', 'old_position');
@@ -284,7 +284,7 @@ function addGadgetToLayout(gadget, action, params)
 {
     hideDialogBox('gadgets_dialog');
     params = (params == null)? null : params.split(',');
-    LayoutAjax.callAsync('AddGadget', gadget, action, params, $('index_layout').value, $('dashboard_user').value);
+    LayoutAjax.callAsync('AddGadget', gadget, action, params, $('index_layout').value, $('user').value);
 }
 
 function getSelectedAction()
@@ -312,14 +312,14 @@ function saveElementAction(lid, gadget, action, params, title, desc)
     params = (params == null)? null : params.split(',');
     $('ea' + lid).innerHTML = title;
     $('ea' + lid).parentNode.parentNode.title = desc;
-    LayoutAjax.callAsync('UpdateElementAction', lid, gadget, action, params, $('dashboard_user').value);
+    LayoutAjax.callAsync('UpdateElementAction', lid, gadget, action, params, $('user').value);
 }
 
 /**
  * Update display when 
  */
 function saveChangeDW(itemId, dw) {
-    LayoutAjax.callAsync('UpdateDisplayWhen', itemId, dw, $('dashboard_user').value);
+    LayoutAjax.callAsync('UpdateDisplayWhen', itemId, dw, $('user').value);
     if (dw == '*') {
         $('dw' + itemId).innerHTML = displayAlways;
     } else if (dw.blank()) {
