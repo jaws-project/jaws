@@ -170,21 +170,21 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
     }
 
     /**
-     * Change when to display a gadget
+     * Update when to display a gadget
      *
      * @access  public
      * @param   int     $item   Item ID
      * @param   string  $dw     Display in these gadgets
+     * @param   int     $user   (Optional) User's ID
      * @return  array   Response
      */
-    function ChangeDisplayWhen($item, $dw)
+    function UpdateDisplayWhen($item, $dw, $user = 0)
     {
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         return $lyTable->update(array('display_when' => $dw))
             ->where('id', $item)
             ->and()
-            ->where('user', $user)
+            ->where('user', (int)$user)
             ->exec();
     }
 

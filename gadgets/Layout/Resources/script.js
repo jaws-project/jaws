@@ -18,7 +18,7 @@ var LayoutCallback = {
         showResponse(response, false);
     },
 
-    ChangeDisplayWhen2: function(response) {
+    UpdateDisplayWhen: function(response) {
         showResponse(response, false);
     },
 
@@ -198,7 +198,7 @@ function editElementAction(url)
     showDialogBox('actions_dialog', actionsTitle, url, 435, 555);
 }
 
-function changeDisplayWhen(url)
+function displayWhen(url)
 {
     showDialogBox('dw_dialog', displayWhenTitle, url, 300, 250);
 }
@@ -319,7 +319,7 @@ function saveElementAction(lid, gadget, action, params, title, desc)
  * Update display when 
  */
 function saveChangeDW(itemId, dw) {
-    LayoutAjax.callAsync('ChangeDisplayWhen2', itemId, dw);
+    LayoutAjax.callAsync('UpdateDisplayWhen', itemId, dw, $('dashboard_user').value);
     if (dw == '*') {
         $('dw' + itemId).innerHTML = displayAlways;
     } else if (dw.blank()) {

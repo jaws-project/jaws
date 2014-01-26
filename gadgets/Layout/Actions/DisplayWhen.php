@@ -9,7 +9,7 @@
  * @copyright   2004-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Layout_Actions_When extends Jaws_Gadget_Action
+class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
 {
     /**
      * Changes when to display a given gadget
@@ -17,7 +17,7 @@ class Layout_Actions_When extends Jaws_Gadget_Action
      * @access  public
      * @return  XHTML template content
      */
-    function ChangeDisplayWhen()
+    function DisplayWhen()
     {
         // fetch current layout user
         $layout_user = $GLOBALS['app']->Session->GetAttribute('layout');
@@ -81,6 +81,25 @@ class Layout_Actions_When extends Jaws_Gadget_Action
 
         $tpl->ParseBlock('template');
         return $tpl->Get();
+    }
+
+    /**
+     * Change when to display a gadget
+     * 
+     * @access  public
+     * @return  array   Response
+     */
+    function UpdateDisplayWhen() 
+    {
+        @list($item, $dw, $dashboard_user) = jaws()->request->fetchAll('post');
+        $model = $this->gadget->model->loadAdmin('Elements');
+        $res = $model->UpdateDisplayWhen($item, $dw, $dashboard_user);
+        if (Jaws_Error::IsError($res)) {
+            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_CHANGE_WHEN'), RESPONSE_ERROR);
+        } else {
+            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_CHANGE_WHEN'), RESPONSE_NOTICE);
+        }
+        return $GLOBALS['app']->Session->PopLastResponse();
     }
 
 }

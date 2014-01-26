@@ -63,25 +63,6 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
     }
 
     /**
-     * Change when to display a gadget
-     * 
-     * @access  public
-     * @return  array   Response
-     */
-    function ChangeDisplayWhen2() 
-    {
-        @list($item, $dw) = jaws()->request->fetchAll('post');
-        $model = $this->gadget->model->loadAdmin('Elements');
-        $res = $model->ChangeDisplayWhen($item, $dw);
-        if (Jaws_Error::IsError($res)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_CHANGE_WHEN'), RESPONSE_ERROR);
-        } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_CHANGE_WHEN'), RESPONSE_NOTICE);
-        }
-        return $GLOBALS['app']->Session->PopLastResponse();
-    }
-
-    /**
      * Get actions of a given gadget
      *
      * @access  public
@@ -155,8 +136,8 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             $el['dwtitle']   = _t('LAYOUT_CHANGE_DW');
             $el['dwdisplay'] = _t('LAYOUT_DISPLAY_IN') . ': ';
             $el['dwid'] = 'dw'.$id;
-            $url_dw = BASE_SCRIPT. '?gadget=Layout&action=ChangeDisplayWhen&id='.$id;
-            $el['dwonclick'] = "changeDisplayWhen('$url_dw');";
+            $url_dw = BASE_SCRIPT. '?gadget=Layout&action=DisplayWhen&id='.$id;
+            $el['dwonclick'] = "displayWhen('$url_dw');";
             $res = $el;
             $res['success'] = true;
         }

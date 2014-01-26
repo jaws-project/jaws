@@ -21,10 +21,6 @@ $actions['EditElementAction'] = array(
     'standalone' => true,
     'file' => 'Element',
 );
-$actions['ChangeDisplayWhen'] = array(
-    'standalone' => true,
-    'file' => 'When',
-);
 $actions['AddLayoutElement'] = array(
     'standalone' => true,
     'file' => 'Element',
@@ -37,9 +33,13 @@ $actions['DeleteElement'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
-$actions['ChangeDisplayWhen2'] = array(
+$actions['DisplayWhen'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'DisplayWhen',
+);
+$actions['UpdateDisplayWhen'] = array(
+    'standalone' => true,
+    'file' => 'DisplayWhen',
 );
 $actions['GetGadgetActions'] = array(
     'standalone' => true,
