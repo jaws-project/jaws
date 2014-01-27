@@ -91,6 +91,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      * @param   string  $title          Title of the entry
      * @param   string  $summary        post summary
      * @param   string  $content        Content of the entry
+     * @param   string  $image          Image file name
      * @param   string  $fast_url       FastURL
      * @param   string  $meta_keywords  Meta keywords
      * @param   string  $meta_desc      Meta description
@@ -102,7 +103,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      * @param   bool    $autodraft      Does it comes from an autodraft action?
      * @return  mixed   Returns the ID of the new post or Jaws_Error on failure
      */
-    function NewEntry($user, $categories, $title, $summary, $content, $fast_url, $meta_keywords, $meta_desc, $tags,
+    function NewEntry($user, $categories, $title, $summary, $content, $image, $fast_url, $meta_keywords, $meta_desc, $tags,
                       $allow_comments, $trackbacks, $publish, $timestamp = null, $autoDraft = false)
     {
         $fast_url = empty($fast_url) ? $title : $fast_url;
@@ -115,6 +116,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $params['title']            = $title;
         $params['text']             = $content;
         $params['summary']          = $summary;
+        $params['image']            = $image;
         $params['trackbacks']       = $trackbacks;
         $params['published']        = $this->gadget->GetPermission('PublishEntries')? (bool)$publish : false;
         $params['fast_url']         = $fast_url;
@@ -192,6 +194,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      * @param   string  $title          Title of the Entry
      * @param   string  $summary        entry summary
      * @param   string  $content        Content of the Entry
+     * @param   string  $image          Image file name
      * @param   string  $fast_url       FastURL
      * @param   string  $meta_keywords  Meta keywords
      * @param   string  $meta_desc      Meta description
@@ -203,8 +206,8 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
      * @param   bool    $autodraft      Does it comes from an autodraft action?
      * @return  mixed   Returns the ID of the post or Jaws_Error on failure
      */
-    function UpdateEntry($post_id, $categories, $title, $summary, $content, $fast_url, $meta_keywords, $meta_desc,
-                         $tags, $allow_comments, $trackbacks, $publish, $timestamp = null, $autoDraft = false)
+    function UpdateEntry($post_id, $categories, $title, $summary, $content, $image, $fast_url, $meta_keywords,
+                         $meta_desc, $tags, $allow_comments, $trackbacks, $publish, $timestamp = null, $autoDraft = false)
     {
         $fast_url = empty($fast_url) ? $title : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog', false);
@@ -220,6 +223,9 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $params['meta_keywords']    = $meta_keywords;
         $params['meta_description'] = $meta_desc;
         $params['updatetime']       = $GLOBALS['db']->Date();
+        if ($image != 'no_change') {
+            $params['image']        = $image;
+        }
 
         if (!is_bool($params['published'])) {
             $params['published'] = $params['published'] == '1' ? true : false;

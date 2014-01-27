@@ -68,6 +68,11 @@ class Blog_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_DIRECTORY_UNWRITABLE', JAWS_DATA));
         }
 
+        $new_dir = JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'images';
+        if (!Jaws_Utils::mkdir($new_dir, 1)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
+        }
+
         $new_dir = JAWS_DATA . 'xml' . DIRECTORY_SEPARATOR;
         if (!Jaws_Utils::mkdir($new_dir)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));

@@ -35,9 +35,16 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('action', 'NewEntry');
         $tpl->SetVariable('id', 0);
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', '');
-        $titleEntry->SetStyle('width: 95%');
+        $titleEntry->SetStyle('width: 750px');
         $titleEntry->setId('title');
         $tpl->SetVariable('title_field', $titleEntry->Get());
+
+        // Image
+        $imageUrl = $GLOBALS['app']->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
+        $blogImage =& Piwi::CreateWidget('Image', $imageUrl);
+        $blogImage->SetID('blog_image');
+        $tpl->SetVariable('blog_image', $blogImage->Get());
+        $tpl->SetVariable('lbl_delete_image', _t('BLOG_ENTRY_IMAGE_DELETE'));
 
         $model = $this->gadget->model->load('Categories');
         // Category
@@ -70,7 +77,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $summary =& $GLOBALS['app']->LoadEditor('Blog', 'summary_block', '', false);
         $summary->setId('summary_block');
         $summary->TextArea->SetRows(8);
-        $summary->TextArea->SetStyle('width: 100%;');
+        $summary->TextArea->SetStyle('width: 750px;');
         $summary->SetWidth('96%');
         $tpl->SetVariable('summary', $summary->Get());
 
@@ -215,11 +222,29 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             }
         }
 
+        // Upload blog image
+        $image = null;
+        if (count($_FILES) > 0 && !empty($_FILES['image_file']['name'])) {
+            $res = Jaws_Utils::UploadFiles(
+                $_FILES,
+                JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR,
+                'jpg,gif,png,jpeg,bmp',
+                false
+            );
+            if (Jaws_Error::IsError($res)) {
+                $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+            } elseif (empty($res)) {
+                $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
+            } else {
+                $image = $res['image_file'][0]['host_filename'];
+            }
+        }
+
         $id = $pModel->NewEntry($GLOBALS['app']->Session->GetAttribute('user') , $post['categories'],
-                               $post['title'], $content['summary_block'], $content['text_block'],
-                               $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
-                               $post['tags'], isset($post['allow_comments'][0]), $post['trackback_to'],
-                               $post['published'], $pubdate);
+                           $post['title'], $content['summary_block'], $content['text_block'], $image,
+                           $post['fasturl'], $post['meta_keywords'], $post['meta_desc'],
+                           $post['tags'], isset($post['allow_comments'][0]), $post['trackback_to'],
+                           $post['published'], $pubdate);
 
         if (!Jaws_Error::IsError($id)) {
             if ($this->gadget->registry->fetch('trackback') == 'true') {
@@ -289,8 +314,18 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('id', $id);
 
         $titleEntry =& Piwi::CreateWidget('Entry', 'title', $entry['title']);
-        $titleEntry->SetStyle('width: 95%');
+        $titleEntry->SetStyle('width: 750px');
         $tpl->SetVariable('title_field', $titleEntry->Get());
+
+        // Image
+        $imageUrl = $GLOBALS['app']->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
+        if (!empty($entry['image'])) {
+            $imageUrl = $GLOBALS['app']->getDataURL() . 'blog/images/'. $entry['image'];
+        }
+        $blogImage =& Piwi::CreateWidget('Image', $imageUrl);
+        $blogImage->SetID('blog_image');
+        $tpl->SetVariable('blog_image', $blogImage->Get());
+        $tpl->SetVariable('lbl_delete_image', _t('BLOG_ENTRY_IMAGE_DELETE'));
 
         // Category
         $catChecks =& Piwi::CreateWidget('CheckButtons', 'categories', 'vertical');
@@ -329,7 +364,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $summary =& $GLOBALS['app']->LoadEditor('Blog', 'summary_block', $entry['summary'], false);
         $summary->setId('summary_block');
         $summary->TextArea->SetRows(8);
-        $summary->TextArea->SetStyle('width: 100%;');
+        $summary->TextArea->SetStyle('width: 750px;');
         $summary->SetWidth('96%');
         $tpl->SetVariable('summary', $summary->Get());
 
@@ -478,7 +513,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
     function SaveEditEntry()
     {
         $names   = array('id', 'edit_timestamp:array', 'pubdate', 'categories:array', 'title',
-                         'fasturl', 'meta_keywords', 'meta_desc', 'tags',
+                         'fasturl', 'meta_keywords', 'meta_desc', 'tags', 'delete_image',
                          'allow_comments:array', 'published', 'trackback_to');
         $post    = jaws()->request->fetch($names, 'post');
         $content = jaws()->request->fetch(array('summary_block', 'text_block'), 'post', 'strip_crlf');
@@ -501,8 +536,45 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
             }
         }
 
+        // Upload blog image
+        $image = null;
+        if (empty($post['delete_image'])) {
+            $image = 'no_change';
+            if (count($_FILES) > 0 && !empty($_FILES['image_file']['name'])) {
+                $targetDir = JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
+                $res = Jaws_Utils::UploadFiles(
+                    $_FILES,
+                    $targetDir,
+                    'jpg,gif,png,jpeg,bmp',
+                    false
+                );
+                if (Jaws_Error::IsError($res)) {
+                    $GLOBALS['app']->Session->PushLastResponse($res->getMessage(), RESPONSE_ERROR);
+                } elseif (empty($res)) {
+                    $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
+                } else {
+                    $image = $res['image_file'][0]['host_filename'];
+
+                    // Delete old image
+                    $model = $this->gadget->model->load('Posts');
+                    $blogEntry = $model->GetEntry($id);
+                    if (!empty($blogEntry['image'])) {
+                        Jaws_Utils::Delete($targetDir . $blogEntry['image']);
+                    }
+                }
+            }
+        } else {
+            // Delete old image
+            $model = $this->gadget->model->load('Posts');
+            $blogEntry = $model->GetEntry($id);
+            if (!empty($blogEntry['image'])) {
+                $targetDir = JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
+                Jaws_Utils::Delete($targetDir . $blogEntry['image']);
+            }
+        }
+
         $pModel->UpdateEntry($id, $post['categories'], $post['title'], $content['summary_block'], $content['text_block'],
-                            $post['fasturl'], $post['meta_keywords'], $post['meta_desc'], $post['tags'],
+                            $image, $post['fasturl'], $post['meta_keywords'], $post['meta_desc'], $post['tags'],
                             isset($post['allow_comments'][0]), $post['trackback_to'], $post['published'], $pubdate);
         if (!Jaws_Error::IsError($id)) {
             if ($this->gadget->registry->fetch('trackback') == 'true') {

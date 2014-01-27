@@ -285,7 +285,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
             'blog.id:integer', 'blog.user_id:integer', 'username', 'email', 'nickname', 'blog.title', 'summary',
-            'text', 'fast_url', 'meta_keywords', 'meta_description', 'trackbacks', 'published:boolean',
+            'text', 'fast_url', 'meta_keywords', 'meta_description', 'trackbacks', 'published:boolean', 'image',
             'blog.publishtime', 'blog.updatetime', 'comments:integer', 'clicks:integer', 'allow_comments:boolean'
         )->join('users', 'blog.user_id', 'users.id', 'left');
 

@@ -38,6 +38,12 @@
    </field>
 
    <field>
+    <name>image</name>
+    <type>text</type>
+    <length>128</length>
+   </field>
+
+   <field>
     <name>comments</name>
     <type>integer</type>
     <notnull>true</notnull>
