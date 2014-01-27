@@ -102,14 +102,12 @@ class BBCode_Plugin extends Jaws_Plugin
      */
     function ParseText($html)
     {
-        $tags = 'media|video|audio|size|url|img|code|noparse|list|color|left|center|justify|right|';
-        $tags.= 'quote|table|tr|th|td|ul|ol|li|hr|b|i|s|u|h|\*';
-        while (preg_match_all('#\[((\w+)|(\*))(.*?)\][\n]?(.+?)(?(3)(\[/\*\]|\n)|(\[/\1\]))#isu', $html, $matches)) {
+        while (preg_match_all('#\[(\w+|\*)(.*?)\][\n]?(.+?)\[/\1\]#isu', $html, $matches)) {
             foreach ($matches[0] as $key => $match) {
                 list($tag, $params, $innertext) = array(
                     $matches[1][$key],
-                    $matches[4][$key],
-                    $matches[5][$key]
+                    $matches[2][$key],
+                    $matches[3][$key]
                 );
 
                 $params = trim($params, '=');
@@ -154,8 +152,8 @@ class BBCode_Plugin extends Jaws_Plugin
                     case 'code':
                     case 'noparse':
                         $replacement = '<pre><code>'. str_replace(
-                                array('[', ']', '{', '}'),
-                                array('&lsqb;', '&rsqb;', '&lcub;', '&rcub;'),
+                                array('[', ']'),
+                                array('&lsqb;', '&rsqb;'),
                                 $innertext
                             ). '</code></pre>';
                         break;
@@ -255,11 +253,7 @@ class BBCode_Plugin extends Jaws_Plugin
                         break;
 
                     default:
-                        $replacement = str_replace(
-                                array('[', ']', '{', '}'),
-                                array('&lsqb;', '&rsqb;', '&lcub;', '&rcub;'),
-                                $match
-                            );
+                        $replacement = str_replace(array('[', ']'), array('&lsqb;', '&rsqb;'), $match);
                 }
 
                 $html = str_replace($match, $replacement, $html);
