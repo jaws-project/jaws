@@ -104,12 +104,12 @@ class BBCode_Plugin extends Jaws_Plugin
     {
         $tags = 'media|video|audio|size|url|img|code|noparse|list|color|left|center|justify|right|';
         $tags.= 'quote|table|tr|th|td|ul|ol|li|hr|b|i|s|u|h|\*';
-        while (preg_match_all('#\[('.$tags.')(.*?)\][\n]?(.+?)\[/\1\]#isu', $html, $matches)) {
+        while (preg_match_all('#\[((\w+)|(\*))(.*?)\][\n]?(.+?)(?(3)(\[/\*\]|\n)|(\[/\1\]))#isu', $html, $matches)) {
             foreach ($matches[0] as $key => $match) {
                 list($tag, $params, $innertext) = array(
                     $matches[1][$key],
-                    $matches[2][$key],
-                    $matches[3][$key]
+                    $matches[4][$key],
+                    $matches[5][$key]
                 );
 
                 $params = trim($params, '=');
@@ -253,6 +253,13 @@ class BBCode_Plugin extends Jaws_Plugin
                         $replacement.= 'Your browser does not support the HTML5 audio tag.';
                         $replacement.= '</audio>';
                         break;
+
+                    default:
+                        $replacement = str_replace(
+                                array('[', ']', '{', '}'),
+                                array('&lsqb;', '&rsqb;', '&lcub;', '&rcub;'),
+                                $match
+                            );
                 }
 
                 $html = str_replace($match, $replacement, $html);
