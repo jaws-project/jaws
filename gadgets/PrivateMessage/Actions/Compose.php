@@ -307,7 +307,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $message_id = $model->SendMessage($user, $post);
         $url = $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX));
         if (is_numeric($message_id) && $message_id > 0) {
-            if($post['published']==true) {
+            if ($post['published'] == true) {
                 $GLOBALS['app']->Session->PushResponse(
                     _t('PRIVATEMESSAGE_MESSAGE_SEND'),
                     'PrivateMessage.Message',
@@ -322,15 +322,15 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 array('published' => $post['published'], 'url' => $url, 'message_id' => $message_id)
             );
         } else {
-            if($post['published']==true) {
+            if ($post['published'] == true) {
                 $GLOBALS['app']->Session->PushResponse(
-                    $message_id->getMessage(),
+                    _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_SEND'),
                     'PrivateMessage.Compose',
                     RESPONSE_ERROR
                 );
             } else {
                 $GLOBALS['app']->Session->PushResponse(
-                    $message_id->getMessage(),
+                    _t('PRIVATEMESSAGE_DRAFT_NOT_SAVED'),
                     'PrivateMessage.Compose',
                     RESPONSE_ERROR
                 );

@@ -12,6 +12,7 @@
         <input type="hidden" name="status" value=""/>
 
         <div class="filters">
+            <!-- BEGIN filter_read -->
             <label for="read">{lbl_read}</label>
             <select id="read" name="read">
                 <option
@@ -21,6 +22,7 @@
                 <option
                 {opt_read_no} value="no">{lbl_no}</option>
             </select>
+            <!-- END filter_read -->
 
             <input type="text" id="term" name="term" size="20" value="{txt_term}">
 
@@ -109,7 +111,7 @@
                     <!-- END outbox_action -->
 
                     <!-- BEGIN draft_action -->
-                    <option value="trash">{lbl_trash}</option>
+                    <option value="delete">{lbl_delete}</option>
                     <!-- END draft_action -->
 
                     <!-- BEGIN archive_action -->
@@ -121,6 +123,10 @@
                     <option value="restore_trash">{lbl_restore_trash}</option>
                     <option value="delete">{lbl_delete}</option>
                     <!-- END trash_action -->
+
+                    <!-- BEGIN all_action -->
+                    <option value="delete">{lbl_delete}</option>
+                    <!-- END all_action -->
 
                 </select>
 
@@ -159,7 +165,12 @@
         } else if(action == 'restore_trash') {
             document.privatemessage.action.value = 'RestoreTrashMessage';
         } else if(action == 'delete') {
-            document.privatemessage.action.value = 'DeleteMessage';
+            if (confirm('{confirmDelete}')) {
+                document.privatemessage.action.value = 'DeleteMessage';
+            } else {
+                return false;
+            }
+
         }
         document.getElementById("privatemessage").submit();
         return true;

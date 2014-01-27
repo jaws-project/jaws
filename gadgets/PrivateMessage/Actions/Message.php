@@ -31,18 +31,28 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $page = $post['page'];
         $folder = $post['folder'];
 
-        $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
         $tpl->SetVariable('txt_term', $post['term']);
 
         $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
         $tpl->SetVariable('lbl_subject', _t('PRIVATEMESSAGE_MESSAGE_SUBJECT'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
         $tpl->SetVariable('lbl_recipients', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
+        $tpl->SetVariable('confirmDelete', _t('PRIVATEMESSAGE_MESSAGE_CONFIRM_DELETE'));
 
         switch ($folder) {
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX:
                 $menubar = $this->MenuBar('Inbox');
                 $title = _t('PRIVATEMESSAGE_INBOX');
+
+                $tpl->SetBlock('messages/filter_read');
+                $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
+                $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
+                $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
+                $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
+                $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
+
+                $tpl->ParseBlock('messages/filter_read');
+
 
                 $tpl->SetBlock('messages/inbox_action');
                 $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
@@ -65,7 +75,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $title = _t('PRIVATEMESSAGE_DRAFT');
 
                 $tpl->SetBlock('messages/draft_action');
-                $tpl->SetVariable('lbl_trash', _t('PRIVATEMESSAGE_TRASH'));
+                $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
                 $tpl->ParseBlock('messages/draft_action');
                 break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED:
@@ -95,7 +105,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $tpl->ParseBlock('messages/folder_th');
 
                 $tpl->SetBlock('messages/all_action');
-                $tpl->SetVariable('lbl_trash', _t('PRIVATEMESSAGE_TRASH'));
+                $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
                 $tpl->ParseBlock('messages/all_action');
         }
         $tpl->SetVariable('menubar', $menubar);
@@ -114,11 +124,6 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 
         $tpl->SetVariable('page', $page);
         $tpl->SetVariable('folder', $folder);
-        $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
-        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
-        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
-        $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
-        $tpl->SetVariable('lbl_replied', _t('PRIVATEMESSAGE_MESSAGE_REPLIED'));
         $tpl->SetVariable('filter', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('lbl_page_item', _t('PRIVATEMESSAGE_ITEMS_PER_PAGE'));
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
@@ -681,6 +686,4 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
         Jaws_Header::Location($this->gadget->urlMap('Messages'));
     }
-
-
 }

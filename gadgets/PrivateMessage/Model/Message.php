@@ -342,11 +342,12 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
      */
     function SendMessage($user, $messageData)
     {
+        $table = Jaws_ORM::getInstance();
         // merge recipient users & groups to an array
         $recipient_users = array();
         if (trim($messageData['recipient_users']) == '0' || !empty($messageData['recipient_users'])) {
             if (trim($messageData['recipient_users']) == '0') {
-                $table = Jaws_ORM::getInstance()->table('users');
+                $table = $table->table('users');
                 $recipient_users = $table->select('id:integer')->fetchColumn();
             } else {
                 $recipient_users = explode(",", $messageData['recipient_users']);
@@ -354,7 +355,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }
         if (!empty($messageData['recipient_groups'])) {
             $recipient_groups = explode(",", $messageData['recipient_groups']);
-            $table = Jaws_ORM::getInstance()->table('users_groups');
+            $table = $table->table('users_groups');
             $table->select('user_id:integer');
             $table->join('groups', 'groups.id', 'users_groups.group_id');
             $table->where('group_id', $recipient_groups, 'in');
@@ -377,10 +378,11 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             }
         }
 
-        $mTable = Jaws_ORM::getInstance()->table('pm_messages');
+        $mTable = $table->table('pm_messages');
         //Start Transaction
         $mTable->beginTransaction();
 
+        $messageIds = array();
         $data = array();
         $data['subject']            = $messageData['subject'];
         $data['body']               = $messageData['body'];
@@ -407,8 +409,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
             // Insert records for every recipient users
             if (!empty($recipient_users) && count($recipient_users) > 0) {
-                $messageIds = array();
-                $table = Jaws_ORM::getInstance()->table('pm_messages');
+                $table = $table->table('pm_messages');
                 foreach ($recipient_users as $recipient_user) {
                     $data['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX;
                     $data['insert_time'] = time();
@@ -502,9 +503,15 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
             }
 
-            $table = $table->table('pm_message_attachment');
-            $res = $table->insertAll(array('message', 'attachment'), $maData)->exec();
-            if (Jaws_Error::IsError($res)) {
+            if (!empty($maData) && count($maData) > 0) {
+                $table = $table->table('pm_message_attachment');
+                $res = $table->insertAll(array('message', 'attachment'), $maData)->exec();
+                if (Jaws_Error::IsError($res)) {
+                    //Rollback Transaction
+                    $table->rollback();
+                    return false;
+                }
+            } else {
                 //Rollback Transaction
                 $table->rollback();
                 return false;
