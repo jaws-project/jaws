@@ -16,11 +16,12 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      * Get topic info
      *
      * @access  public
-     * @param   int     $tid    Topic ID
-     * @param   int     $fid    Forum ID
+     * @param   int     $tid        Topic ID
+     * @param   int     $fid        Forum ID
+     * @param   int     $published  Is Published ?
      * @return  mixed   Array of topic info or Jaws_Error on failure
      */
-    function GetTopic($tid, $fid)
+    function GetTopic($tid, $fid, $published = null)
     {
         if (!$this->gadget->GetPermission('ForumAccess', (int)$fid)) {
             return Jaws_Error::raiseError(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
@@ -41,6 +42,11 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         $table->join('users', 'forums_posts.uid', 'users.id', 'left');
         $table->where('forums_topics.id', $tid);
         $table->and()->where('fid', (int)$fid);
+
+        if (!empty($published)) {
+            $table->and()->where('forums_topics.published', $published);
+        }
+
         $result = $table->fetchRow();
         if (empty($result)) {
             return Jaws_Error::raiseError(_t('GLOBAL_HTTP_ERROR_CONTENT_404'), 404);

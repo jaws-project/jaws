@@ -37,19 +37,19 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         $tModel = $this->gadget->model->load('Topics');
 
         $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $published = null;
-        if (empty($uid)) {
-            $published = true;
-        } else {
+        $published = true;
+        if (!empty($uid)) {
             if ($this->gadget->GetPermission('EditOthersTopic') &&
                 $this->gadget->GetPermission('ForumManage', $forum['id'])) {
                 $uid = null;
-            }
-            if (!empty($rqst['status'])) {
-                if ($rqst['status'] == 'published') {
-                    $published = true;
-                } else {
-                    $published = false;
+                $published = null;
+
+                if (!empty($rqst['status'])) {
+                    if ($rqst['status'] == 'published') {
+                        $published = true;
+                    } else {
+                        $published = false;
+                    }
                 }
             }
         }

@@ -22,8 +22,14 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         $rqst = jaws()->request->fetch(array('fid', 'tid', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
+        $published = true;
+        if ($this->gadget->GetPermission('EditOthersTopic') &&
+            $this->gadget->GetPermission('ForumManage', $rqst['fid'])) {
+            $published = null;
+        }
+
         $tModel = $this->gadget->model->load('Topics');
-        $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
+        $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid'], $published);
         if (Jaws_Error::IsError($topic)) {
             return Jaws_HTTPError::Get($topic->getCode());
         }
