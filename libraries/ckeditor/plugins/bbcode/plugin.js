@@ -26,10 +26,10 @@
 		}
 	} );
 
-	var bbcodeMap = { b: 'strong', u: 'u', i: 'em', color: 'span', size: 'span', quote: 'blockquote', code: 'code', url: 'a', email: 'span', img: 'span', '*': 'li', list: 'ol' },
+	var bbcodeMap = { b: 'strong', u: 'u', i: 'em', color: 'span', size: 'span', quote: 'blockquote', code: 'code', url: 'a', email: 'span', img: 'span', '*': 'li', list: 'ol', align: 'p' },  // jaws project
 		convertMap = { strong: 'b', b: 'b', u: 'u', em: 'i', i: 'i', code: 'code', li: '*' },
 		tagnameMap = { strong: 'b', em: 'i', u: 'u', li: '*', ul: 'list', ol: 'list', code: 'code', a: 'link', img: 'img', blockquote: 'quote' },
-		stylesMap = { color: 'color', size: 'font-size' },
+		stylesMap = { color: 'color', size: 'font-size', align: 'text-align' }, // jaws project
 		attributesMap = { url: 'href', email: 'mailhref', quote: 'cite', list: 'listType' };
 
 	// List of block-like tags.
@@ -662,6 +662,10 @@
 									tagName = 'size';
 								}
 							}
+						} else if ( tagName == 'p' ) {  // jaws project
+							if ( ( value = style[ 'text-align' ] ) ) {
+                                tagName = 'align';
+							}
 						} else if ( tagName == 'ol' || tagName == 'ul' ) {
 							if ( ( value = style[ 'list-style-type' ] ) ) {
 								switch ( value ) {
@@ -770,6 +774,9 @@
 								name = 'size';
 							else if ( element.getStyle( 'color' ) )
 								name = 'color';
+						} else if ( htmlName == 'p' ) { // jaws project
+							if ( element.getStyle( 'text-align' ) )
+								name = 'align';
 						} else if ( name == 'img' ) {
 							var src = element.data( 'cke-saved-src' ) || element.getAttribute( 'src' );
 							if ( src && src.indexOf( editor.config.smiley_path ) === 0 )
