@@ -39,14 +39,27 @@ class Jaws_String
         // cross-platform newlines
         $text = preg_replace("/(\r\n|\r)/", "\n", $text);
 
-        // All block level tags
-        $block = '(?:table|thead|tfoot|caption|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|code|select|form|blockquote|address|p|h[1-6]|hr)';
-        $parts = preg_split('@(</?(?:pre|code|script|style|object)[^>]*>)@i', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
+        // All blocks level tags
+        $blocks = '(?:table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|code|select|';
+        $blocks.= 'option|form|map|area|blockquote|address|math|style|p|h[1-6]|hr|fieldset|noscript|legend|section|';
+        $blocks.= 'article|aside|hgroup|header|footer|nav|figure|figcaption|details|menu|summary)';
+        $parts = preg_split(
+            '@(</?(?:pre|code|script|style|object|iframe|!--)[^>]*>|<!--.*?-->)@i',
+            $text,
+            -1,
+            PREG_SPLIT_DELIM_CAPTURE
+        );
         $ignore = false;
         $ignoretag = '';
         $text = '';
         foreach ($parts as $i => $part) {
             if ($i % 2) {
+                // skip comments
+                $comment = (substr($part, 0, 4) == '<!--');
+                if ($comment) {
+                    $output .= $part;
+                    continue;
+                }
                 // Opening or closing tag?
                 $open = ($part[1] != '/');
                 list($tag) = preg_split('/[ >]/', substr($part, 2 - $open), 2);
@@ -62,9 +75,9 @@ class Jaws_String
             } elseif (!$ignore) {
                 $part = preg_replace('|<br />\s*<br />|', "\n\n", $part);
                 // Space things out a little
-                //$part = preg_replace('!(<' . $block . '[^>]*>)!', "\n$1", $part);
+                //$part = preg_replace('!(<' . $blocks . '[^>]*>)!', "\n$1", $part);
                 // Space things out a little
-                //$part = preg_replace('!(</' . $block . '>)!', "$1\n", $part);
+                //$part = preg_replace('!(</' . $blocks . '>)!', "$1\n", $part);
                 // take care of duplicates
                 //$part = preg_replace("/\n\n+/", "\n\n", $part);
                 // make paragraphs, including one at the end
@@ -75,13 +88,16 @@ class Jaws_String
                 $part = str_replace('</blockquote></p>', '</p></blockquote>', $part);
                 // under certain strange conditions it could create a P of entirely whitespace
                 $part = preg_replace('|<p>[\s,\t,\xa0]*</p>\n*|u', '', $part);
-                $part = preg_replace('!<p>\s*(</?' . $block . '[^>]*>)!', "<p>$1", $part);
-                $part = preg_replace('!(</?' . $block . '[^>]*>)\s*</p>!', "$1</p>", $part);
+                $part = preg_replace('!<p>\s*(</?' . $blocks . '[^>]*>)!', "<p>$1", $part);
+                $part = preg_replace('!(</?' . $blocks . '[^>]*>)\s*</p>!', "$1</p>", $part);
                 // make line breaks
                 $part = preg_replace('|(?<!<br />)\n|', "<br />\n", $part);
-                $part = preg_replace('!(</?' . $block . '[^>]*>)\s*<br />!', "$1", $part);
-                $part = preg_replace('!<br />(\s*</?(?:p|li|div|th|pre|td|tr|ul|ol)>)!', '$1', $part);
-                $part = preg_replace('!(</?(?:p|li|div|th|pre|td|tr|ul|ol)>\s*)<br />!', '$1', $part);
+                $part = preg_replace('!(</?' . $blocks . '[^>]*>)\s*<br />!', "$1", $part);
+                $part = preg_replace(
+                    '!(<br />)?(\s*</?(?:p|li|div|dl|dd|dt|th|pre|tr|td|ul|ol)[^>]*>\s*)(<br />)?!',
+                    '$2',
+                    $part
+                );
                 $part = preg_replace('/&([^#])(?![A-Za-z0-9]{1,8};)/', '&amp;$1', $part);
             }
             $text .= $part;
