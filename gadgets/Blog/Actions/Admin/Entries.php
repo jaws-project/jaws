@@ -44,7 +44,25 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $blogImage =& Piwi::CreateWidget('Image', $imageUrl);
         $blogImage->SetID('blog_image');
         $tpl->SetVariable('blog_image', $blogImage->Get());
-        $tpl->SetVariable('lbl_delete_image', _t('BLOG_ENTRY_IMAGE_DELETE'));
+
+        $imageFile =& Piwi::CreateWidget('FileEntry', 'image_file', '');
+        $imageFile->SetID('image_file');
+        $imageFile->SetSize(1);
+        $imageFile->SetStyle('width:110px; padding:0;');
+        $imageFile->AddEvent(ON_CHANGE, 'previewImage(this);');
+        $tpl->SetVariable('upload_image', $imageFile->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_upload', '', STOCK_ADD);
+        $tpl->SetVariable('btn_upload', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_remove', '', STOCK_DELETE);
+        $button->AddEvent(ON_CLICK, 'removeImage()');
+        $tpl->SetVariable('btn_remove', $button->Get());
+
+        $imageUrl = $GLOBALS['app']->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
+        $blogImage =& Piwi::CreateWidget('Image', $imageUrl);
+        $blogImage->SetID('blog_image');
+        $tpl->SetVariable('blog_image', $blogImage->Get());
 
         $model = $this->gadget->model->load('Categories');
         // Category
@@ -325,7 +343,20 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $blogImage =& Piwi::CreateWidget('Image', $imageUrl);
         $blogImage->SetID('blog_image');
         $tpl->SetVariable('blog_image', $blogImage->Get());
-        $tpl->SetVariable('lbl_delete_image', _t('BLOG_ENTRY_IMAGE_DELETE'));
+
+        $imageFile =& Piwi::CreateWidget('FileEntry', 'image_file', '');
+        $imageFile->SetID('image_file');
+        $imageFile->SetSize(1);
+        $imageFile->SetStyle('width:110px; padding:0;');
+        $imageFile->AddEvent(ON_CHANGE, 'previewImage(this);');
+        $tpl->SetVariable('upload_image', $imageFile->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_upload', '', STOCK_ADD);
+        $tpl->SetVariable('btn_upload', $button->Get());
+
+        $button =& Piwi::CreateWidget('Button', 'btn_remove', '', STOCK_DELETE);
+        $button->AddEvent(ON_CLICK, 'removeImage()');
+        $tpl->SetVariable('btn_remove', $button->Get());
 
         // Category
         $catChecks =& Piwi::CreateWidget('CheckButtons', 'categories', 'vertical');
@@ -513,7 +544,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
     function SaveEditEntry()
     {
         $names   = array('id', 'edit_timestamp:array', 'pubdate', 'categories:array', 'title',
-                         'fasturl', 'meta_keywords', 'meta_desc', 'tags', 'delete_image',
+                         'fasturl', 'meta_keywords', 'meta_desc', 'tags', 'deleteImage',
                          'allow_comments:array', 'published', 'trackback_to');
         $post    = jaws()->request->fetch($names, 'post');
         $content = jaws()->request->fetch(array('summary_block', 'text_block'), 'post', 'strip_crlf');
@@ -537,9 +568,9 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         }
 
         // Upload blog image
-        $image = null;
-        if (empty($post['delete_image'])) {
-            $image = 'no_change';
+        $image = false;
+        if ($post['deleteImage'] == 'false') {
+            $image = null;
             if (count($_FILES) > 0 && !empty($_FILES['image_file']['name'])) {
                 $targetDir = JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
                 $res = Jaws_Utils::UploadFiles(

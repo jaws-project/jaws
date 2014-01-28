@@ -223,8 +223,12 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $params['meta_keywords']    = $meta_keywords;
         $params['meta_description'] = $meta_desc;
         $params['updatetime']       = $GLOBALS['db']->Date();
-        if ($image != 'no_change') {
-            $params['image']        = $image;
+        if ($image !== null) {
+            if ($image == false) {
+                $params['image']    = null;
+            } else {
+                $params['image']    = $image;
+            }
         }
 
         if (!is_bool($params['published'])) {

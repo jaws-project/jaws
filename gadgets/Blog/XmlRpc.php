@@ -386,7 +386,7 @@ function metaWeblog_editPost($params)
         $title,
         $summary,
         $content,
-        'no_change',
+        null,
         '',
         '',
         '',

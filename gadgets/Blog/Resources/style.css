@@ -115,3 +115,26 @@ height: 23px;
 padding: 0;
 width: 128px;
 }
+#blog_image_box .actions{
+position:relative;
+width:55px;
+margin:0px auto;
+}
+#blog_image_box .actions button{
+width:24px;
+height:24px;
+margin:0;
+}
+#blog_image_box .wrapper{
+position:absolute;
+top:0;
+width:24px;
+height:24px;
+overflow:hidden;
+}
+#blog_image_box .wrapper input{
+margin:0;
+font-size:30px;
+opacity:0;
+filter:alpha(opacity=0);
+}

@@ -346,7 +346,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
                                        $title,
                                        $summary,
                                        $text,
-                                       'no_change',
+                                       null,
                                        $fasturl,
                                        $meta_keywords,
                                        $meta_desc,

@@ -23,6 +23,7 @@
    <input id="action" type="hidden" name="action" value="Save{action}" />
    <input type="hidden" name="gadget" value="Blog" />
    <input id="id" type="hidden" name="id" value="{id}" />
+   <input type="hidden" name="deleteImage" id="deleteImage" value="false" />
 
       <div id="image_area">
           <div id="blog_image_beside">
@@ -31,9 +32,7 @@
           </div>
           <div id="blog_image_box">
               {blog_image}
-              <input type="file" name="image_file" id="image_file" onchange="previewImage(this);">
-              <input type="checkbox" name="delete_image" id="delete_image" value="1">
-              <label for="delete_image">{lbl_delete_image}</label>
+              <div class="gadget_actions actions">{btn_upload} {btn_remove}<div class="wrapper">{upload_image}</div></div>
           </div>
       </div>
 
@@ -89,11 +88,22 @@
   setTimeout('startAutoDrafting();', 120000);
 
   function previewImage(fileElement) {
+      $('deleteImage').value = 'false';
       var fReader = new FileReader();
       fReader.readAsDataURL(fileElement.files[0]);
       fReader.onload = function (event) {
           document.getElementById('blog_image').src = event.target.result;
       }
   }
+
+  /**
+   * Removes the image
+   */
+  function removeImage() {
+      $('image_file').value = '';
+      $('deleteImage').value = 'true';
+      $('blog_image').src = 'gadgets/Blog/Resources/images/no-image.gif?' + (new Date()).getTime();
+  }
+
 </script>
 <!-- END edit_entry -->
