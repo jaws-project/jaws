@@ -247,6 +247,7 @@ class Jaws_Widgets_CKEditor extends Container
         $tpl->SetBlock($block);
 
         $tpl->SetVariable('name', $this->_Name);
+        $tpl->SetVariable('baseUrl', Jaws_Utils::getBaseURL('/', true));
         $tpl->SetVariable('contentsLangDirection', $this->_Direction);
         $tpl->SetVariable('language', $this->_Language);
         $tpl->SetVariable('AutoDetectLanguage', 'false');
