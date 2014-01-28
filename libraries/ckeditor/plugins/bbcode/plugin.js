@@ -26,7 +26,7 @@
 		}
 	} );
 
-	var bbcodeMap = { b: 'strong', u: 'u', i: 'em', color: 'span', size: 'span', quote: 'blockquote', code: 'code', url: 'a', email: 'span', img: 'span', '*': 'li', list: 'ol', align: 'p' },  // jaws project
+	var bbcodeMap = { b: 'strong', u: 'u', i: 'em', color: 'span', size: 'span', quote: 'blockquote', code: 'code', url: 'a', email: 'span', img: 'span', '*': 'li', list: 'ol', align: 'div' },  // jaws project
 		convertMap = { strong: 'b', b: 'b', u: 'u', em: 'i', i: 'i', code: 'code', li: '*' },
 		tagnameMap = { strong: 'b', em: 'i', u: 'u', li: '*', ul: 'list', ol: 'list', code: 'code', a: 'link', img: 'img', blockquote: 'quote' },
 		stylesMap = { color: 'color', size: 'font-size', align: 'text-align' }, // jaws project
@@ -662,7 +662,7 @@
 									tagName = 'size';
 								}
 							}
-						} else if ( tagName == 'p' ) {  // jaws project
+						} else if ( tagName == 'div' ) {  // jaws project
 							if ( ( value = style[ 'text-align' ] ) ) {
                                 tagName = 'align';
 							}
@@ -774,7 +774,7 @@
 								name = 'size';
 							else if ( element.getStyle( 'color' ) )
 								name = 'color';
-						} else if ( htmlName == 'p' ) { // jaws project
+						} else if ( htmlName == 'div' ) { // jaws project
 							if ( element.getStyle( 'text-align' ) )
 								name = 'align';
 						} else if ( name == 'img' ) {
