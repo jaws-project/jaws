@@ -192,6 +192,12 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
         $tpl->SetVariable('createtime-time',      $date->Format($entry['publishtime'], 'g:ia'));
         $tpl->SetVariable('entry-visits',         _t('BLOG_ENTRY_VISITS', $entry['clicks']));
 
+        $imageUrl = $GLOBALS['app']->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif');
+        if(!empty($entry['image'])) {
+            $imageUrl = $GLOBALS['app']->getDataURL() . 'blog/images/'. $entry['image'];
+        }
+        $tpl->SetVariable('image_src',            $imageUrl);
+
         $id = empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url'];
         $perm_url = $this->gadget->urlMap('SingleView', array('id' => $id));
 

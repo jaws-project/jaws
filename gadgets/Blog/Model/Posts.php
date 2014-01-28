@@ -30,7 +30,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable->select(
             'blog.id:integer', 'username', 'email', 'nickname', 'blog.title', 'blog.fast_url',
             'summary', 'text', 'blog.publishtime', 'blog.updatetime', 'comments:integer',
-            'clicks:integer', 'allow_comments:boolean'
+            'clicks:integer', 'allow_comments:boolean', 'image'
         );
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
 

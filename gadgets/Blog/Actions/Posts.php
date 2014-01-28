@@ -74,7 +74,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
 
                 $tpl->SetBlock('view/entryrow/column');
                 $tpl->SetVariable('col', $col);
-                $res = $this->ShowEntry($tpl, 'view/entryrow/column', $entry);
+                $this->ShowEntry($tpl, 'view/entryrow/column', $entry);
                 $tpl->ParseBlock('view/entryrow/column');
 
                 $index++;

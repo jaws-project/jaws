@@ -68,7 +68,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
             }
 
             //increase entry's visits counter
-            $res = $model->ViewEntry($entry['id']);
+            $model->ViewEntry($entry['id']);
             $entry['clicks']++;
 
             if ($this->gadget->registry->fetch('pingback') == 'true') {
@@ -81,7 +81,7 @@ class Blog_Actions_Post extends Blog_Actions_Default
             $this->SetDescription($entry['meta_description']);
             $tpl = $this->gadget->template->load('Post.html');
             $tpl->SetBlock('single_view');
-            $res = $this->ShowEntry($tpl, 'single_view', $entry, false);
+            $this->ShowEntry($tpl, 'single_view', $entry, false);
 
             $trbkHTML = $this->gadget->action->load('Trackbacks');
             if (!Jaws_Error::IsError($trbkHTML)) {
