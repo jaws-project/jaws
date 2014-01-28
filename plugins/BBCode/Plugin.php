@@ -26,39 +26,42 @@ class BBCode_Plugin extends Jaws_Plugin
         $buttonbox =& Piwi::CreateWidget('Division');
 
         $bold =& Piwi::CreateWidget('Button', 'bold', '<strong>B</strong>');
-        $bold->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[b]','[/b]','');");
+        $bold->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[b]','[/b]','');");
         $bold->SetTitle(_t('PLUGINS_BBCODE_BOLD_SAMPLE'));
 
         $italic =& Piwi::CreateWidget('Button', 'italic', '<em>i</em>');
-        $italic->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[i]','[/i]','');");
+        $italic->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[i]','[/i]','');");
         $italic->SetTitle(_t('PLUGINS_BBCODE_ITALIC_SAMPLE'));
 
         $underline =& Piwi::CreateWidget('Button', 'underline', '<u>u</u>');
-        $underline->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[u]','[/u]','');");
+        $underline->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[u]','[/u]','');");
         $underline->SetTitle(_t('PLUGINS_BBCODE_UNDERLINE_SAMPLE'));
 
         $strike =& Piwi::CreateWidget('Button', 'strike', '<s>s</s>');
-        $strike->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[s]','[/s]','');");
+        $strike->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[s]','[/s]','');");
         $strike->SetTitle(_t('PLUGINS_BBCODE_STRIKE_SAMPLE'));
 
         $quote =& Piwi::CreateWidget('Button', 'quote', 'Quote');
-        $quote->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[quote]','[/quote]','');");
+        $quote->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[quote]','[/quote]','');");
         $quote->SetTitle(_t('PLUGINS_BBCODE_QUOTE_SAMPLE'));
 
         $code =& Piwi::CreateWidget('Button', 'code', 'Code');
-        $code->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[code]','[/code]','');");
+        $code->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[code]','[/code]','');");
         $code->SetTitle(_t('PLUGINS_BBCODE_CODE_SAMPLE'));
 
         $image =& Piwi::CreateWidget('Button', 'image', 'Image');
-        $image->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[img]','[/img]','');");
+        $image->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[img]','[/img]','');");
         $image->SetTitle(_t('PLUGINS_BBCODE_IMAGE_SAMPLE'));
 
         $url =& Piwi::CreateWidget('Button', 'url', 'URL');
-        $url->AddEvent(ON_CLICK, "javascript: insertTags('$textarea', '[url]','[/url]','');");
+        $url->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[url]','[/url]','');");
         $url->SetTitle(_t('PLUGINS_BBCODE_URL_SAMPLE'));
 
         $size =& Piwi::CreateWidget('Combo', 'size');
-        $size->AddEvent(ON_CHANGE, "javascript: insertTags('$textarea', '[size='+this[this.selectedIndex].value+']','[/size]','');");
+        $size->AddEvent(
+            ON_CHANGE,
+            "javascript:insertTags('$textarea', '[size='+this[this.selectedIndex].value+']','[/size]','');"
+        );
         $size->SetTitle(_t('PLUGINS_BBCODE_SIZE_SAMPLE'));
         $size->AddOption(_t('PLUGINS_BBCODE_SIZE_TINY'),    8);
         $size->AddOption(_t('PLUGINS_BBCODE_SIZE_SMALL'),   11);
@@ -68,7 +71,10 @@ class BBCode_Plugin extends Jaws_Plugin
         $size->SetDefault(13);
 
         $color =& Piwi::CreateWidget('Combo', 'color');
-        $color->AddEvent(ON_CHANGE, "javascript: insertTags('$textarea', '[color='+this[this.selectedIndex].value+']','[/color]','');");
+        $color->AddEvent(
+            ON_CHANGE,
+            "javascript:insertTags('$textarea', '[color='+this[this.selectedIndex].value+']','[/color]','');"
+        );
         $color->SetTitle(_t('PLUGINS_BBCODE_COLOR_SAMPLE'));
         $color->AddOption(_t('PLUGINS_BBCODE_COLOR_000000'), '#000000');
         $color->AddOption(_t('PLUGINS_BBCODE_COLOR_0000FF'), '#0000FF');
@@ -114,6 +120,10 @@ class BBCode_Plugin extends Jaws_Plugin
                 $params = explode(' =', $params);
                 $first  = array_shift($params);
                 switch ($tag) {
+                    case 'dir':
+                        $replacement = "<bdo dir=\"$first\">$innertext</bdo>";
+                        break;
+
                     case 'h':
                         $first = ((int)$first == 0)? 3 : (int)$first;
                         $replacement = "<h$first>$innertext</h$first>";
@@ -139,8 +149,6 @@ class BBCode_Plugin extends Jaws_Plugin
                     case 'h6':
                     case 's':
                     case 'u':
-                    case 'ol':
-                    case 'ul':
                     case 'li':
                     case 'tr':
                     case 'th':
@@ -159,7 +167,28 @@ class BBCode_Plugin extends Jaws_Plugin
                         break;
 
                     case 'list':
-                        $replacement = "<ul>$innertext</ul>";
+                        $tag = empty($first)? 'ul' : 'ol';
+                    case 'ul':
+                    case 'ol':
+                        switch ($first) {
+                            case '1':
+                                $replacement = "<ol style=\"list-style-type:decimal;\">$innertext</ol>";
+                                break;
+                            case 'a':
+                                $replacement = "<ol style=\"list-style-type:lower-alpha;\">$innertext</ol>";
+                                break;
+                            case 'A':
+                                $replacement = "<ol style=\"list-style-type:upper-alpha;\">$innertext</ol>";
+                                break;
+                            case 'i':
+                                $replacement = "<ol style=\"list-style-type:lower-roman;\">$innertext</ol>";
+                                break;
+                            case 'I':
+                                $replacement = "<ol style=\"list-style-type:upper-roman;\">$innertext</ol>";
+                                break;
+                            default:
+                                $replacement = "<$tag>$innertext</$tag>";
+                        }
                         break;
 
                     case '*':
@@ -184,7 +213,15 @@ class BBCode_Plugin extends Jaws_Plugin
                         break;
 
                     case 'url':
-                        $replacement = '<a href="' . ($first? $first : $innertext) . "\" rel=\"nofollow\">$innertext</a>";
+                        $replacement = '<a href="'.
+                            ($first? $first : $innertext).
+                            "\" rel=\"nofollow\">$innertext</a>";
+                        break;
+
+                    case 'email':
+                        $replacement = '<a href="mailto:'.
+                            ($first? $first : $innertext).
+                            "\">$innertext</a>";
                         break;
 
                     case 'img':
