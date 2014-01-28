@@ -396,6 +396,12 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $model = $this->gadget->model->loadAdmin('Comments');
         $model->DeleteCommentsIn($post_id);
 
+        // Remove entry image
+        if (!empty($e['image'])) {
+            $imageDir = JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
+            Jaws_Utils::Delete($imageDir . $e['image']);
+        }
+
         if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
             $model = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
             $res = $model->DeleteReferenceTags('Blog', 'post', $post_id);
