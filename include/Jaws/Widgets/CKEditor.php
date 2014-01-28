@@ -262,11 +262,9 @@ class Jaws_Widgets_CKEditor extends Container
             $tpl->SetVariable('extraPlugins', implode(',', $extraPlugins));
             $tpl->ParseBlock("$block/extra");
         }
-        if(!empty($this->_RemovePlugins)) {
-            $tpl->SetBlock("$block/remove");
-            $tpl->SetVariable('removePlugins', $this->_RemovePlugins);
-            $tpl->ParseBlock("$block/remove");
-        }
+
+        // removed plugins
+        $tpl->SetVariable('removePlugins', $this->_RemovePlugins);
         // direction
         if ('rtl' == $this->_Direction) {
             $tpl->SetVariable('contentsCss', 'gadgets/ControlPanel/Resources/ckeditor.rtl.css');
