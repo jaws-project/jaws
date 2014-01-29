@@ -26,11 +26,11 @@
 		}
 	} );
 
-	var bbcodeMap = { b: 'strong', u: 'u', i: 'em', s: 's', sup: 'sup', sub: 'sub', color: 'span', size: 'span', quote: 'blockquote', code: 'code', url: 'a', email: 'span', img: 'span', '*': 'li', list: 'ol', align: 'div', h1: 'h1', h2: 'h2', h3: 'h3', h4: 'h4', h5: 'h5', h6: 'h6' },  // jaws project
+	var bbcodeMap = { b: 'strong', u: 'u', i: 'em', s: 's', sup: 'sup', sub: 'sub', color: 'span', size: 'span', quote: 'blockquote', code: 'code', url: 'a', email: 'span', img: 'span', '*': 'li', list: 'ol', align: 'div', dir: 'div', h1: 'h1', h2: 'h2', h3: 'h3', h4: 'h4', h5: 'h5', h6: 'h6' },  // jaws project
 		convertMap = { strong: 'b', em: 'i', li: '*' },   // jaws project
 		tagnameMap = { strong: 'b', em: 'i', u: 'u', s: 's', sup: 'sup', sub: 'sub', li: '*', ul: 'list', ol: 'list', code: 'code', a: 'link', img: 'img', blockquote: 'quote', h1: 'h1', h2: 'h2', h3: 'h3', h4: 'h4', h5: 'h5', h6: 'h6' },   // jaws project
 		stylesMap = { color: 'color', size: 'font-size', align: 'text-align' }, // jaws project
-		attributesMap = { url: 'href', email: 'mailhref', quote: 'cite', list: 'listType' };
+		attributesMap = { url: 'href', email: 'mailhref', quote: 'cite', list: 'listType', dir: 'dir' };    // jaws project
 
 	// List of block-like tags.
 	var dtd = CKEDITOR.dtd,
@@ -676,9 +676,10 @@
 								}
 							}
 						} else if ( tagName == 'div' ) {  // jaws project
-							if ( ( value = style[ 'text-align' ] ) ) {
+							if ( ( value = attributes.dir ) )
+								tagName = 'dir';
+							else if ( ( value = style[ 'text-align' ] ) )
 								tagName = 'align';
-							}
 						} else if ( tagName == 'ol' || tagName == 'ul' ) {
 							if ( ( value = style[ 'list-style-type' ] ) ) {
 								switch ( value ) {
@@ -797,7 +798,9 @@
 							else if ( element.getStyle( 'color' ) )
 								name = 'color';
 						} else if ( htmlName == 'div' ) { // jaws project
-							if ( element.getStyle( 'text-align' ) )
+							if ( element.getAttribute( 'dir' ) )
+								name = 'dir';
+							else if ( element.getStyle( 'text-align' ) )
 								name = 'align';
 						} else if ( name == 'img' ) {
 							var src = element.data( 'cke-saved-src' ) || element.getAttribute( 'src' );
