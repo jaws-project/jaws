@@ -153,6 +153,8 @@ class BBCode_Plugin extends Jaws_Plugin
                     case 'tr':
                     case 'th':
                     case 'td':
+                    case 'sup':
+                    case 'sub':
                     case 'table':
                         $replacement = "<$tag>$innertext</$tag>";
                         break;
