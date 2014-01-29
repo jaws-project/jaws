@@ -205,6 +205,10 @@ class BBCode_Plugin extends Jaws_Plugin
                         $replacement = "<span style=\"color:$first;\">$innertext</span>";
                         break;
 
+                    case 'bgcolor':
+                        $replacement = "<span style=\"background-color:$first;\">$innertext</span>";
+                        break;
+
                     case 'align':
                         $replacement = "<div style=\"text-align:$first;\">$innertext</div>";
                         break;
