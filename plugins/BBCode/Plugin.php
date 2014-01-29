@@ -121,7 +121,7 @@ class BBCode_Plugin extends Jaws_Plugin
                 $first  = array_shift($params);
                 switch ($tag) {
                     case 'dir':
-                        $replacement = "<bdo dir=\"$first\">$innertext</bdo>";
+                        $replacement = "<div dir=\"$first\">$innertext</div>";
                         break;
 
                     case 'h':
