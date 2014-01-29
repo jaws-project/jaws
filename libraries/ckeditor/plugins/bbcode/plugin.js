@@ -140,10 +140,10 @@
 								optionPart = 'upper-roman';
 						}
 
-						if ( stylesMap[ part ] ) {
+						if ( stylesMap[ part ] ) {  // jaws project
 							// Font size represents percentage.
-							if ( part == 'size' )
-								optionPart += '%';
+							//if ( part == 'size' )
+							//	optionPart += '%';
 
 							styles[ stylesMap[ part ] ] = optionPart;
 							attribs.style = serializeStyleText( styles );
@@ -672,11 +672,12 @@
 								tagName = 'bgcolor';
 								value = CKEDITOR.tools.convertRgbToHex( value );
 							} else if ( ( value = style[ 'font-size' ] ) ) {
-								var percentValue = value.match( /(\d+)%$/ );
-								if ( percentValue ) {
-									value = percentValue[ 1 ];
-									tagName = 'size';
-								}
+								tagName = 'size';   // jaws project
+								//var percentValue = value.match( /(\d+)%$/ );
+								//if ( percentValue ) {
+								//	value = percentValue[ 1 ];
+								//	tagName = 'size';
+								//}
 							}
 						} else if ( tagName == 'div' ) {  // jaws project
 							if ( ( value = attributes.dir ) )
