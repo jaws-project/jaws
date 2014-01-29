@@ -124,6 +124,12 @@ class BBCode_Plugin extends Jaws_Plugin
                         $replacement = "<div dir=\"$first\">$innertext</div>";
                         break;
 
+                    case 'indent':
+                        $first = floatval($first);
+                        $style = 'margin-'. (!empty($params)? $params : 'left');
+                        $replacement = "<div style=\"$style:{$first}em;\">$innertext</div>";
+                        break;
+
                     case 'h':
                         $first = ((int)$first == 0)? 3 : (int)$first;
                         $replacement = "<h$first>$innertext</h$first>";
