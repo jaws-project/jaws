@@ -108,7 +108,7 @@ class BBCode_Plugin extends Jaws_Plugin
      */
     function ParseText($html)
     {
-        while (preg_match_all('#\[(\w+|\*)(.*?)\][\n]?(.+?)\[/\1\]#isu', $html, $matches)) {
+        while (preg_match_all('#\[(\w+|\*)[=]?(.*?)\][\n]?(.+?)\[/\1\]#isu', $html, $matches)) {
             foreach ($matches[0] as $key => $match) {
                 list($tag, $params, $innertext) = array(
                     $matches[1][$key],
@@ -116,9 +116,9 @@ class BBCode_Plugin extends Jaws_Plugin
                     $matches[3][$key]
                 );
 
-                $params = trim($params, '=');
-                $params = explode(' =', $params);
+                $params = explode(' ', $params);
                 $first  = array_shift($params);
+                $params = implode(' ', $params);
                 switch ($tag) {
                     case 'dir':
                         $replacement = "<div dir=\"$first\">$innertext</div>";
@@ -236,7 +236,7 @@ class BBCode_Plugin extends Jaws_Plugin
                         $replacement = "<img src=\"$innertext\" ";
                         $replacement.= is_numeric($width)? "width=\"$width\" " : '';
                         $replacement.= is_numeric($height)? "height=\"$height\" " : '';
-                        $replacement.= !empty($params)? "alt=\"$params[0]\" " : '';
+                        $replacement.= !empty($params)? "alt=\"$params\" " : '';
                         $replacement.= '/>';
                         break;
 
@@ -244,7 +244,7 @@ class BBCode_Plugin extends Jaws_Plugin
                         @list($width, $height) = preg_split('#x#i', $first);
                         $mSource = 'youtube';
                         if (!empty($params)) {
-                            $mSource = preg_replace('/[^[:alnum:]_-]/', '', $params[0]);
+                            $mSource = preg_replace('/[^[:alnum:]_-]/', '', $params);
                         }
                         $replacement = '';
                         $mSourcePath = JAWS_PATH. "plugins/BBCode/Templates/$mSource.html";
@@ -285,7 +285,7 @@ class BBCode_Plugin extends Jaws_Plugin
                         @list($width, $height) = preg_split('#x#i', $first);
                         $size = is_numeric($width)? "style='width:{$width}px;' " : '';
 
-                        $replacement = "<audio $size". implode(' ', $params).' controls>';
+                        $replacement = "<audio $size". $params. ' controls>';
                         $replacement.= "<source src=\"$innertext.ogg\" type=\"audio/ogg\">";
                         $replacement.= "<source src=\"$innertext.mp3\" type=\"audio/mpeg\">";
                         $replacement.= "<source src=\"$innertext.wav\" type=\"audio/wav\">";
