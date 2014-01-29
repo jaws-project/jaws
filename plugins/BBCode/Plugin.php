@@ -198,7 +198,8 @@ class BBCode_Plugin extends Jaws_Plugin
                         break;
 
                     case 'size':
-                        $replacement = "<span style=\"font-size:{$first}px;\">$innertext</span>";
+                        $first.= is_numeric($first)? 'px' : '';
+                        $replacement = "<span style=\"font-size:{$first};\">$innertext</span>";
                         break;
 
                     case 'color':
