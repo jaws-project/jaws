@@ -26,9 +26,9 @@
 		}
 	} );
 
-	var bbcodeMap = { b: 'strong', u: 'u', i: 'em', s: 's', sup: 'sup', sub: 'sub', color: 'span', size: 'span', quote: 'blockquote', code: 'code', url: 'a', email: 'span', img: 'span', '*': 'li', list: 'ol', align: 'div' },  // jaws project
-		convertMap = { strong: 'b', b: 'b', u: 'u', em: 'i', i: 'i', s: 's', sup: 'sup', sub: 'sub', code: 'code', li: '*' },   // jaws project
-		tagnameMap = { strong: 'b', em: 'i', u: 'u', s: 's', sup: 'sup', sub: 'sub', li: '*', ul: 'list', ol: 'list', code: 'code', a: 'link', img: 'img', blockquote: 'quote' },   // jaws project
+	var bbcodeMap = { b: 'strong', u: 'u', i: 'em', s: 's', sup: 'sup', sub: 'sub', color: 'span', size: 'span', quote: 'blockquote', code: 'code', url: 'a', email: 'span', img: 'span', '*': 'li', list: 'ol', align: 'div', h1: 'h1', h2: 'h2', h3: 'h3', h4: 'h4', h5: 'h5', h6: 'h6' },  // jaws project
+		convertMap = { strong: 'b', em: 'i', li: '*' },   // jaws project
+		tagnameMap = { strong: 'b', em: 'i', u: 'u', s: 's', sup: 'sup', sub: 'sub', li: '*', ul: 'list', ol: 'list', code: 'code', a: 'link', img: 'img', blockquote: 'quote', h1: 'h1', h2: 'h2', h3: 'h3', h4: 'h4', h5: 'h5', h6: 'h6' },   // jaws project
 		stylesMap = { color: 'color', size: 'font-size', align: 'text-align' }, // jaws project
 		attributesMap = { url: 'href', email: 'mailhref', quote: 'cite', list: 'listType' };
 
@@ -87,7 +87,7 @@
 
 	CKEDITOR.BBCodeParser = function() {
 		this._ = {
-			bbcPartsRegex: /(?:\[([^\/\]=]*?)(?:=([^\]]*?))?\])|(?:\[\/([a-z\*]{1,16})\])/ig // jaws project
+			bbcPartsRegex: /(?:\[([^\/\]=]*?)(?:=([^\]]*?))?\])|(?:\[\/([a-z0-9\*]{1,16})\])/ig // jaws project
 		};
 	};
 
@@ -431,6 +431,15 @@
 				breakBeforeClose: 0,
 				breakAfterClose: 1
 			} );
+
+            // jaws project
+            this.setRules( 'h1', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
+            this.setRules( 'h2', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
+            this.setRules( 'h3', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
+            this.setRules( 'h4', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
+            this.setRules( 'h5', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
+            this.setRules( 'h6', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
+
 		},
 
 		proto: {
