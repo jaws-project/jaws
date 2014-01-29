@@ -130,10 +130,14 @@
 						if ( part == 'list' ) {
 							if ( !isNaN( optionPart ) )
 								optionPart = 'decimal';
-							else if ( /^[a-z]+$/.test( optionPart ) )
+							else if (optionPart === 'a')    // jaws project
 								optionPart = 'lower-alpha';
-							else if ( /^[A-Z]+$/.test( optionPart ) )
+							else if (optionPart === 'A' )   // jaws project
 								optionPart = 'upper-alpha';
+							else if (optionPart === 'i' )   // jaws project
+								optionPart = 'lower-roman';
+							else if (optionPart === 'I' )   // jaws project
+								optionPart = 'upper-roman';
 						}
 
 						if ( stylesMap[ part ] ) {
@@ -664,16 +668,25 @@
 							}
 						} else if ( tagName == 'div' ) {  // jaws project
 							if ( ( value = style[ 'text-align' ] ) ) {
-                                tagName = 'align';
+								tagName = 'align';
 							}
 						} else if ( tagName == 'ol' || tagName == 'ul' ) {
 							if ( ( value = style[ 'list-style-type' ] ) ) {
 								switch ( value ) {
+									case 'decimal':
+										value = '1';
+										break;
 									case 'lower-alpha':
 										value = 'a';
 										break;
 									case 'upper-alpha':
 										value = 'A';
+										break;
+									case 'lower-roman': // jaws project
+										value = 'i';
+										break;
+									case 'upper-roman': // jaws project
+										value = 'I';
 										break;
 								}
 							} else if ( tagName == 'ol' )
