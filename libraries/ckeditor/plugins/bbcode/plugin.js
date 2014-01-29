@@ -26,7 +26,7 @@
 		}
 	} );
 
-	var bbcodeMap = { b: 'strong', u: 'u', i: 'em', s: 's', sup: 'sup', sub: 'sub', color: 'span', bgcolor: 'span',size: 'span', quote: 'blockquote', code: 'code', url: 'a', email: 'span', img: 'span', '*': 'li', list: 'ol', align: 'div', dir: 'div', h1: 'h1', h2: 'h2', h3: 'h3', h4: 'h4', h5: 'h5', h6: 'h6' },  // jaws project
+	var bbcodeMap = { b: 'strong', u: 'u', i: 'em', s: 's', sup: 'sup', sub: 'sub', color: 'span', bgcolor: 'span',size: 'span', quote: 'blockquote', code: 'code', url: 'a', email: 'span', img: 'span', '*': 'li', list: 'ol', align: 'div', dir: 'div', indent: 'div', h1: 'h1', h2: 'h2', h3: 'h3', h4: 'h4', h5: 'h5', h6: 'h6' },  // jaws project
 		convertMap = { strong: 'b', em: 'i', li: '*' },   // jaws project
 		tagnameMap = { strong: 'b', em: 'i', u: 'u', s: 's', sup: 'sup', sub: 'sub', li: '*', ul: 'list', ol: 'list', code: 'code', a: 'link', img: 'img', blockquote: 'quote', h1: 'h1', h2: 'h2', h3: 'h3', h4: 'h4', h5: 'h5', h6: 'h6' },   // jaws project
 		stylesMap = { color: 'color', bgcolor: 'background-color', size: 'font-size', align: 'text-align' }, // jaws project
@@ -92,7 +92,7 @@
 	};
 
 	CKEDITOR.BBCodeParser.prototype = {
-		parse: function( bbcode ) {
+		parse: function( bbcode, config ) { // jaws project
 			var parts, part,
 				lastIndex = 0;
 
@@ -147,8 +147,15 @@
 
 							styles[ stylesMap[ part ] ] = optionPart;
 							attribs.style = serializeStyleText( styles );
-						} else if ( attributesMap[ part ] )
+						} else if ( attributesMap[ part ] ) {
 							attribs[ attributesMap[ part ] ] = optionPart;
+						} else {    // jaws project
+							if ( part == 'indent' ) {
+								optionPart = optionPart.split(" ");
+								styles[ 'margin-' + (optionPart[1] || 'left') ] = parseFloat(optionPart[0]) + config.indentUnit;
+								attribs.style = serializeStyleText( styles );
+							}
+						}
 					}
 
 					// Two special handling - image and email, protect them
@@ -180,7 +187,7 @@
 	 * @param {String} source The HTML to be parsed, filling the fragment.
 	 * @returns {CKEDITOR.htmlParser.fragment} The fragment created.
 	 */
-	CKEDITOR.htmlParser.fragment.fromBBCode = function( source ) {
+	CKEDITOR.htmlParser.fragment.fromBBCode = function( source, config ) {  // jaws project
 		var parser = new CKEDITOR.BBCodeParser(),
 			fragment = new CKEDITOR.htmlParser.fragment(),
 			pendingInline = [],
@@ -394,7 +401,7 @@
 		};
 
 		// Parse it.
-		parser.parse( CKEDITOR.tools.htmlEncode( source ) );
+		parser.parse( CKEDITOR.tools.htmlEncode( source ), config );    // jaws project
 
 		// Close all hanging nodes.
 		while ( currentNode.type != CKEDITOR.NODE_DOCUMENT_FRAGMENT ) {
@@ -432,13 +439,13 @@
 				breakAfterClose: 1
 			} );
 
-            // jaws project
-            this.setRules( 'h1', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
-            this.setRules( 'h2', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
-            this.setRules( 'h3', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
-            this.setRules( 'h4', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
-            this.setRules( 'h5', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
-            this.setRules( 'h6', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
+			// jaws project
+			this.setRules( 'h1', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
+			this.setRules( 'h2', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
+			this.setRules( 'h3', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
+			this.setRules( 'h4', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
+			this.setRules( 'h5', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
+			this.setRules( 'h6', { breakBeforeOpen: 1, breakAfterOpen: 0, breakBeforeClose: 0, breakAfterClose: 1 } );
 
 		},
 
@@ -587,7 +594,7 @@
 			var config = editor.config;
 
 			function BBCodeToHtml( code ) {
-				var fragment = CKEDITOR.htmlParser.fragment.fromBBCode( code ),
+				var fragment = CKEDITOR.htmlParser.fragment.fromBBCode( code, config ), // jaws project
 					writer = new CKEDITOR.htmlParser.basicWriter();
 
 				fragment.writeHtml( writer, bbcodeFilter );
@@ -684,6 +691,13 @@
 								tagName = 'dir';
 							else if ( ( value = style[ 'text-align' ] ) )
 								tagName = 'align';
+							else if ( ( value = style[ 'margin-left' ] ) ) {    // jaws project
+								value+= ' left';
+								tagName = 'indent';
+							} else if ( ( value = style[ 'margin-right' ] ) ) { // jaws project
+								value+= ' right';
+								tagName = 'indent';
+							}
 						} else if ( tagName == 'ol' || tagName == 'ul' ) {
 							if ( ( value = style[ 'list-style-type' ] ) ) {
 								switch ( value ) {
