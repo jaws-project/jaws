@@ -57,7 +57,7 @@ class Jaws_String
                 // skip comments
                 $comment = (substr($part, 0, 4) == '<!--');
                 if ($comment) {
-                    $output .= $part;
+                    $text .= $part;
                     continue;
                 }
                 // Opening or closing tag?
