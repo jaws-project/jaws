@@ -9,6 +9,7 @@ font-size:1em;
 line-height:1.25em;
 letter-spacing:0;
 }
+input,textarea,select{white-space:pre;}
 body{
 color:#000;
 background:#fff url(data:image/png;base64\,iVBORw0KGgoAAAANSUhEUgAAAAEAAABoCAIAAAC/jA1MAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsSAAALEgHS3X78AAAAH3RFWHRTb2Z0d2FyZQBNYWNyb21lZGlhIEZpcmV3b3JrcyA4tWjSeAAAAEBJREFUGJVjMIqcwsTAwDCKEZjh1pNTTCdv/Wb4//8/051nL5kYGRmhmAFCMyD4THA+A6o6qBomDH2Y6jDVwPkAG1cNCSp8pbMAAAAASUVORK5CYII=) repeat-x;
