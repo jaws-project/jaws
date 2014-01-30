@@ -16,6 +16,7 @@ ol{list-style-type:decimal;list-style-position:inside;}
 ul{list-style-type:circle;list-style-position:inside;}
 ul ul,ul ol,ol ol,ol ul{margin-right:1em;}
 h1,h2,h3,h4,h5,h6,b,strong{font-weight:bold;}
+input,textarea,select{white-space:pre;}
 html{
 color:#666;
 height:100%;
