@@ -159,7 +159,6 @@ class NiceFormat_Plugin extends Jaws_Plugin
 
         //walk line by line
         $ret = "\n";
-        $lvl = 0;
         $lines = array_filter(preg_split("/\n/u", $block));
 
         //build an item array
@@ -171,6 +170,9 @@ class NiceFormat_Plugin extends Jaws_Plugin
             $lvl+= strspn($line, "\t");
             //remove indents
             $line = preg_replace('/^[\s|\t]+/smu', '', $line);
+            if (empty($line)) {
+                continue;
+            }
             //get type of list
             $type = $line[0] == '-'? 'ol' : 'ul';
             // remove bullet and following spaces
