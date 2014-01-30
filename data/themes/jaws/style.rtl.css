@@ -15,6 +15,7 @@ sup{vertical-align:super;font-size:75%;}
 ol{list-style-type:decimal;list-style-position:inside;}
 ul{list-style-type:circle;list-style-position:inside;}
 ul ul,ul ol,ol ol,ol ul{margin-right:1em;}
+h1,h2,h3,h4,h5,h6,b,strong{font-weight:bold;}
 html{
 color:#666;
 height:100%;
@@ -28,24 +29,16 @@ padding:0;
 background:#fff url(data:image/png;base64\,iVBORw0KGgoAAAANSUhEUgAAAAEAAABoCAIAAAC/jA1MAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsSAAALEgHS3X78AAAAH3RFWHRTb2Z0d2FyZQBNYWNyb21lZGlhIEZpcmV3b3JrcyA4tWjSeAAAAEBJREFUGJVjMIqcwsTAwDCKEZjh1pNTTCdv/Wb4//8/051nL5kYGRmhmAFCMyD4THA+A6o6qBomDH2Y6jDVwPkAG1cNCSp8pbMAAAAASUVORK5CYII=) repeat-x;
 font-size:75%;
 }
+h1{font-size:145%;}
+h2{font-size:130%;}
+h3{font-size:115%;}
+h4{font-size:100%;}
+h5{font-size:85%;}
+h6{font-size:70%;}
 code{
 display:block;
 direction:ltr;
 white-space:pre;
-}
-h1{
-font-size:150%;
-}
-h2{
-color:#325994;
-font-size:110%;
-line-height:140%;
-}
-h3{
-font-size:100%;
-}
-h4{
-font-weight:normal;
 }
 fieldset{
 clear:both;
