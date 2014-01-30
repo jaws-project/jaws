@@ -137,7 +137,7 @@ class NiceFormat_Plugin extends Jaws_Plugin
 
         //Lists
         $html = preg_replace_callback(
-            '/\n([\s|\t]+[\*|\-]\s*[^\n]+\n)+/smu',
+            '/\n([\s\t]+[\*\-]\s*[^\n]+\n)+/smu',
             array($this, 'BuildList'),
             $html
         );
@@ -183,7 +183,7 @@ class NiceFormat_Plugin extends Jaws_Plugin
             $cnt++;
         }
 
-        $level = 0;
+        $level = -1;
         $opens = array();
         foreach ($items as $item) {
             if ($item['level'] > $level ) {
