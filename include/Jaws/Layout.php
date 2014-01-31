@@ -525,6 +525,14 @@ class Jaws_Layout
 
                 $content = '';
                 if ($item['gadget'] == '[REQUESTEDGADGET]') {
+                    if (JAWS_SCRIPT == 'index') {
+                        // increase one level value of heading for requested action
+                        $req_result = str_replace(
+                            array('<h3>', '</h3>', '<h4>', '</h4>', '<h5>', '</h5>', '<h6>', '</h6>'),
+                            array('<h2>', '</h2>', '<h3>', '</h3>', '<h4>', '</h4>', '<h5>', '</h5>'),
+                            $req_result
+                        );
+                    }
                     $content = $req_result;
                 } elseif (!$onlyMainAction) {
                     if ($this->IsDisplayable($GLOBALS['app']->mainGadget,
