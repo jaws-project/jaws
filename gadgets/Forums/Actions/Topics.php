@@ -40,7 +40,8 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         $published = true;
         if (!empty($uid)) {
             if ($this->gadget->GetPermission('EditOthersTopic') &&
-                $this->gadget->GetPermission('ForumManage', $forum['id'])) {
+                $this->gadget->GetPermission('ForumManage', $forum['id'])
+            ) {
                 $uid = null;
                 $published = null;
 

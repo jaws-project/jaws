@@ -22,16 +22,19 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         $rqst = jaws()->request->fetch(array('fid', 'tid', 'page'), 'get');
         $page = empty($rqst['page'])? 1 : (int)$rqst['page'];
 
-        $published = true;
-        if ($this->gadget->GetPermission('EditOthersTopic') &&
-            $this->gadget->GetPermission('ForumManage', $rqst['fid'])) {
-            $published = null;
-        }
-
         $tModel = $this->gadget->model->load('Topics');
-        $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid'], $published);
+        $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic)) {
             return Jaws_HTTPError::Get($topic->getCode());
+        }
+
+        if (!$topic['published']) {
+            $logged_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            if ($logged_user != $topic['first_post_uid'] &&
+                !$this->gadget->GetPermission('ForumManage', $rqst['fid'])
+            ) {
+                return Jaws_HTTPError::Get(403);
+            }
         }
 
         $limit = (int)$this->gadget->registry->fetch('posts_limit');
