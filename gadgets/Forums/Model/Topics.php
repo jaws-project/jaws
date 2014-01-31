@@ -22,7 +22,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function GetTopic($tid, $fid)
     {
-        if (!$this->gadget->GetPermission('ForumAccess', (int)$fid)) {
+        if (!$this->gadget->GetPermission('ForumPublic', (int)$fid)) {
             return Jaws_Error::raiseError(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
         }
 
@@ -62,7 +62,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function GetTopics($fid, $published = null, $uid = null, $limit = 0, $offset = null)
     {
-        $perm = $this->gadget->GetPermission('ForumAccess', $fid);
+        $perm = $this->gadget->GetPermission('ForumPublic', $fid);
         if(is_null($perm)) {
             return Jaws_Error::raiseError(_t('GLOBAL_HTTP_ERROR_CONTENT_404'), 404);
         }
@@ -170,7 +170,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
 
         $topics = array();
         foreach ($result as $topic) {
-            if ($this->gadget->GetPermission('ForumAccess', $topic['fid'])) {
+            if ($this->gadget->GetPermission('ForumPublic', $topic['fid'])) {
                 $topics[] = $topic;
             }
         }
@@ -192,7 +192,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function InsertTopic($uid, $fid, $subject, $message, $attachment = null, $published = true)
     {
-        if (!$this->gadget->GetPermission('ForumAccess', $fid)) {
+        if (!$this->gadget->GetPermission('ForumPublic', $fid)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
         }
 
@@ -246,7 +246,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
     function UpdateTopic($target, $fid, $tid, $pid, $uid, $subject, $message, $attachment = null,
         $published = null, $update_reason = '')
     {
-        if (!$this->gadget->GetPermission('ForumAccess', $fid)) {
+        if (!$this->gadget->GetPermission('ForumPublic', $fid)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
         }
 
@@ -300,7 +300,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
      */
     function DeleteTopic($tid, $fid)
     {
-        if (!$this->gadget->GetPermission('ForumAccess', $fid)) {
+        if (!$this->gadget->GetPermission('ForumPublic', $fid)) {
             return new Jaws_Error(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403);
         }
 

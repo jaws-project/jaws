@@ -20,7 +20,7 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
      */
     function GetForum($fid)
     {
-        $perm = $this->gadget->GetPermission('ForumAccess', $fid);
+        $perm = $this->gadget->GetPermission('ForumPublic', $fid);
         if(is_null($perm)) {
             return Jaws_Error::raiseError(_t('GLOBAL_HTTP_ERROR_CONTENT_404'), 404, JAWS_ERROR_NOTICE);
         }
@@ -80,7 +80,7 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
 
         $forums = array();
         foreach ($result as $forum) {
-            if ($this->gadget->GetPermission('ForumAccess', $forum['id'])) {
+            if ($this->gadget->GetPermission('ForumPublic', $forum['id'])) {
                 $forums[] = $forum;
             }
         }

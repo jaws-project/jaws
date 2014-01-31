@@ -23,8 +23,12 @@ class Forums_Hooks_ACL extends Jaws_Gadget_Hook
         if (!Jaws_Error::IsError($items)) {
             foreach ($items as $item) {
                 $this->gadget->translate->insert(
-                    'ACL_FORUMACCESS_'. $item['id'],
-                    _t('FORUMS_ACL_FORUM_ACCESS', $item['title'])
+                    'ACL_FORUMPUBLIC_'. $item['id'],
+                    _t('FORUMS_ACL_FORUM_PUBLIC', $item['title'])
+                );
+                $this->gadget->translate->insert(
+                    'ACL_FORUMMEMBER_'. $item['id'],
+                    _t('FORUMS_ACL_FORUM_MEMBER', $item['title'])
                 );
                 $this->gadget->translate->insert(
                     'ACL_FORUMMANAGE_'. $item['id'],

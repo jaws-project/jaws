@@ -61,7 +61,7 @@ class Forums_Hooks_Search extends Jaws_Gadget_Hook
         $objDate = Jaws_Date::getInstance();
         $posts = array();
         foreach ($result as $r) {
-            if (!$this->gadget->GetPermission('ForumAccess', $r['fid'])) {
+            if (!$this->gadget->GetPermission('ForumPublic', $r['fid'])) {
                 continue;
             }
 

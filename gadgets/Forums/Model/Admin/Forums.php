@@ -42,7 +42,8 @@ class Forums_Model_Admin_Forums extends Jaws_Gadget_Model
             return $res;
         }
 
-        $this->gadget->acl->insert('ForumAccess', $res, true);
+        $this->gadget->acl->insert('ForumPublic', $res, true);
+        $this->gadget->acl->insert('ForumMember', $res, false);
         $this->gadget->acl->insert('ForumManage', $res, false);
         return $res;
     }
@@ -99,7 +100,8 @@ class Forums_Model_Admin_Forums extends Jaws_Gadget_Model
             return $res;
         }
 
-        $this->gadget->acl->delete('ForumAccess', $fid);
+        $this->gadget->acl->delete('ForumPublic', $fid);
+        $this->gadget->acl->delete('ForumMember', $fid);
         $this->gadget->acl->delete('ForumManage', $fid);
         return (bool)$res;
     }

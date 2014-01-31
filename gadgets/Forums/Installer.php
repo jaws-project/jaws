@@ -40,26 +40,12 @@ class Forums_Installer extends Jaws_Gadget_Installer
         'AddTopic',
         'PublishTopic',
         'EditTopic',
-        'MoveTopic',
-        'EditOthersTopic',
-        'EditLockedTopic',
-        'EditOutdatedTopic',
-        'LockTopic',
         'DeleteTopic',
-        'DeleteOthersTopic',
-        'DeleteOutdatedTopic',
         'AddPost',
         'PublishPost',
         'AddPostAttachment',
-        'AddPostToLockedTopic',
         'EditPost',
-        'EditOthersPost',
-        'EditPostInLockedTopic',
-        'EditOutdatedPost',
         'DeletePost',
-        'DeleteOthersPost',
-        'DeleteOutdatedPost',
-        'DeletePostInLockedTopic',
     );
 
     /**
@@ -172,6 +158,33 @@ class Forums_Installer extends Jaws_Gadget_Installer
             foreach ($forums as $forum) {
                 $this->gadget->acl->insert('ForumAccess', $forum['id'], true);
                 $this->gadget->acl->insert('ForumManage', $forum['id'], false);
+            }
+        }
+
+        if (version_compare($old, '1.2.0', '<')) {
+            // delete old ACL keys
+            $this->gadget->acl->delete('MoveTopic');
+            $this->gadget->acl->delete('LockTopic');
+            $this->gadget->acl->delete('EditOthersTopic');
+            $this->gadget->acl->delete('EditOutdatedTopic');
+            $this->gadget->acl->delete('EditLockedTopic');
+            $this->gadget->acl->delete('DeleteOthersTopic');
+            $this->gadget->acl->delete('DeleteOutdatedTopic');
+            $this->gadget->acl->delete('AddPostToLockedTopic');
+            $this->gadget->acl->delete('EditOthersPost');
+            $this->gadget->acl->delete('EditPostInLockedTopic');
+            $this->gadget->acl->delete('EditOutdatedPost');
+            $this->gadget->acl->delete('DeleteOthersPost');
+            $this->gadget->acl->delete('DeleteOutdatedPost');
+            $this->gadget->acl->delete('DeletePostInLockedTopic');
+            // rename old ACL keys
+            $this->gadget->acl->rename('ForumAccess', 'ForumPublic');
+
+            // set dynamic ACLs of forums
+            $fModel = $this->gadget->model->load('Forums');
+            $forums = $fModel->GetForums(false, false);
+            foreach ($forums as $forum) {
+                $this->gadget->acl->insert('ForumMember', $forum['id'], false);
             }
         }
 
