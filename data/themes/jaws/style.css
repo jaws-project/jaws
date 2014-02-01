@@ -294,7 +294,16 @@ display:none;
 .actions div{
 text-align:left;
 }
+.blog .gadget_content img:first-child{
+float:left;
+margin-right:8px;
+vertical-align:top;
+}
+.blog .gadget_content img:first-child[src^="data:image"]{
+display:none;
+}
 .blog_post_meta{
+clear:both;
 padding:2px 4px;
 margin-top:4px;
 background:#eee;
