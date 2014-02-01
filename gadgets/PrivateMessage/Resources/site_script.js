@@ -5,7 +5,7 @@
  * @package     PrivateMessage
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
  * @copyright   2013-2014 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/lesser.html
+ * @license     http://www.gnu.org/copyleft/gpl.html
  */
 var PrivateMessageCallback = {
     SendMessage: function (response) {

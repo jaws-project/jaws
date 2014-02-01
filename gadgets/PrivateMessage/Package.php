@@ -2,11 +2,11 @@
 /**
  * (PEAR) Package configuration file to define dependencies, authors and license
  *
- * @category   PackageConfig
- * @package    PrivateMessage
- * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2013-2014 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    PackageConfig
+ * @package     PrivateMessage
+ * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
+ * @copyright   2013-2014 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/gpl.html
  */
 $info = array(           
               'license' => 'LGPL',
