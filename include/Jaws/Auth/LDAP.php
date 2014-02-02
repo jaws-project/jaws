@@ -13,32 +13,41 @@ class Jaws_Auth_LDAP
 {
     /**
      * LDAP connection
+     *
+     * @var     string
      * @access  private
      */
-    var $_LdapConnection;
+    private $_LdapConnection;
 
     /**
      * LDAP server
+     *
+     * @var     string
      * @access  private
      */
-    var $_Server = 'localhost';
+    private $_Server = 'localhost';
 
     /**
      * LDAP port
+     *
+     * @var     string
      * @access  private
      */
-    var $_Port = '389';
+    private $_Port = '389';
 
     /**
-     * LDAP domain name string
+     * LDAP domain name
+     *
+     * @var     string
      * @access  private
      */
-    var $_DN = 'dc=foobar,dc=org';
+    private $_DN = 'dc=foobar,dc=org';
 
     /**
      * Constructor
      *
      * @access  public
+     * @return  void
      */
     function Jaws_Auth_LDAP()
     {
@@ -51,6 +60,9 @@ class Jaws_Auth_LDAP
      * Authenticate user/password
      *
      * @access  public
+     * @param   string  $user       User's name or email
+     * @param   string  $password   User's password
+     * @return  mixed   Array of user's information otherwise Jaws_Error
      */
     function Auth($user, $password)
     {
