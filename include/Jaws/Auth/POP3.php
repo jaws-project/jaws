@@ -15,18 +15,19 @@ class Jaws_Auth_POP3
      * POP3 server
      * @access  private
      */
-    var $_Server = 'localhost';
+    private $_Server = 'localhost';
 
     /**
      * POP3 port
      * @access  private
      */
-    var $_Port = '110';
+    private $_Port = '110';
 
     /**
      * Constructor
      *
      * @access  public
+     * @return  void
      */
     function Jaws_Auth_POP3()
     {
@@ -38,6 +39,9 @@ class Jaws_Auth_POP3
      * Authenticate user/password
      *
      * @access  public
+     * @param   string  $user       User's name or email
+     * @param   string  $password   User's password
+     * @return  mixed   Array of user's information otherwise Jaws_Error
      */
     function Auth($user, $password)
     {
