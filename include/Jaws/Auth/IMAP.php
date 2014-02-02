@@ -12,26 +12,33 @@ class Jaws_Auth_IMAP
 {
     /**
      * IMAP server
+     *
+     * @var     string
      * @access  private
      */
-    var $_Server = 'localhost';
+    private $_Server = 'localhost';
 
     /**
      * IMAP port
+     *
+     * @var     string
      * @access  private
      */
-    var $_Port = '143';
+    private $_Port = '143';
 
     /**
      * Using SSL
+     *
+     * @var     bool
      * @access  private
      */
-    var $_SSL = false;
+    private $_SSL = false;
 
     /**
      * Constructor
      *
      * @access  public
+     * @return  void
      */
     function Jaws_Auth_IMAP()
     {
@@ -44,6 +51,9 @@ class Jaws_Auth_IMAP
      * Authenticate user/password
      *
      * @access  public
+     * @param   string  $user       User's name or email
+     * @param   string  $password   User's password
+     * @return  mixed   Array of user's information otherwise Jaws_Error
      */
     function Auth($user, $password)
     {
