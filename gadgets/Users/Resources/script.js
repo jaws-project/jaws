@@ -733,12 +733,11 @@ function saveSettings()
 {
     var method     = $('authtype').value;
     var anon       = $('anon_register').value;
-    var repetitive = $('anon_repetitive_email').value;
     var act        = $('anon_activation').value;
     var group      = $('anon_group').value;
     var recover    = $('password_recovery').value;
 
-    UsersAjax.callAsync('SaveSettings', method, anon, repetitive, act, group, recover);
+    UsersAjax.callAsync('SaveSettings', method, anon, act, group, recover);
 }
 
 /**

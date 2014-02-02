@@ -43,12 +43,6 @@ class Users_Actions_Admin_Properties extends Users_Actions_Admin_Default
         $anonRegister->AddOption(_t('GLOBAL_NO'), 'false');
         $anonRegister->SetDefault($this->gadget->registry->fetch('anon_register'));
 
-        $anonEmail =& Piwi::CreateWidget('Combo', 'anon_repetitive_email');
-        $anonEmail->SetTitle(_t('USERS_PROPERTIES_ANON_REPETITIVE_EMAIL'));
-        $anonEmail->AddOption(_t('GLOBAL_YES'), 'true');
-        $anonEmail->AddOption(_t('GLOBAL_NO'), 'false');
-        $anonEmail->SetDefault($this->gadget->registry->fetch('anon_repetitive_email'));
-
         $anonactivate =& Piwi::CreateWidget('Combo', 'anon_activation');
         $anonactivate->SetTitle(_t('USERS_PROPERTIES_ANON_ACTIVATION'));
         $anonactivate->AddOption(_t('USERS_PROPERTIES_ACTIVATION_AUTO'), 'auto');
@@ -81,7 +75,6 @@ class Users_Actions_Admin_Properties extends Users_Actions_Admin_Default
 
         $fieldset->Add($authtype);
         $fieldset->Add($anonRegister);
-        $fieldset->Add($anonEmail);
         $fieldset->Add($anonactivate);
         $fieldset->Add($anonGroup);
         $fieldset->Add($passRecovery);

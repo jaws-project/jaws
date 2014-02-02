@@ -22,7 +22,6 @@ class Users_Installer extends Jaws_Gadget_Installer
         array('register_notification', 'true'),
         array('authtype', 'Default'),
         array('anon_register', 'false'),
-        array('anon_repetitive_email', 'true'),
         array('anon_activation', 'user'),
         array('anon_group', ''),
     );
@@ -124,6 +123,10 @@ class Users_Installer extends Jaws_Gadget_Installer
             $this->gadget->acl->insert('ManageFriends');
             $this->gadget->acl->insert('AccessDashboard');
             $this->gadget->acl->insert('ManageDashboard');
+        }
+
+        if (version_compare($old, '2.1.0', '<')) {
+            $this->gadget->registry->delete('anon_repetitive_email');
         }
 
         return true;

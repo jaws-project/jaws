@@ -49,10 +49,8 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             return _t('USERS_USERS_ALREADY_EXISTS', $username);
         }
 
-        if ($this->gadget->registry->fetch('anon_repetitive_email') == 'false') {
-            if ($jUser->UserEmailExists($user_email)) {
-                return _t('USERS_EMAIL_ALREADY_EXISTS', $user_email);
-            }
+        if ($jUser->UserEmailExists($user_email)) {
+            return _t('USERS_EMAIL_ALREADY_EXISTS', $user_email);
         }
 
         $user_enabled = ($this->gadget->registry->fetch('anon_activation') == 'auto')? 1 : 2;
