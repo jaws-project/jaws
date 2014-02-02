@@ -36,7 +36,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
         array('password_max_age', '0'),              // per day  0 = resistant
         array('password_min_length', '0'),
         array('password_complexity', 'no'),
-        array('login_captcha_status', '1'),
+        array('login_captcha_status', '3'),
         array('login_captcha_driver', 'Math'),
         array('xss_parsing_level', 'paranoid'),
         array('max_active_sessions', '0'),         // 0 for unlimited
