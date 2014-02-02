@@ -17,8 +17,8 @@ class Weather_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        array('unit', 'metric'),
-        array('date_format', 'DN d MN'),
+        array('unit', 'metric', true),
+        array('date_format', 'DN d MN', true),
         array('update_period', '3600'),
         array('api_key', ''),
     );
@@ -86,14 +86,21 @@ class Weather_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        // Registry keys
-        $this->gadget->registry->insert('api_key', '');
+        if (version_compare($old, '0.9.0', '<')) {
+            // Registry keys
+            $this->gadget->registry->insert('api_key', '');
 
-        // Update layout actions
-        $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
-        if (!Jaws_Error::isError($layoutModel)) {
-            $layoutModel->EditGadgetLayoutAction('Weather', 'RegionWeather', 'RegionWeather', 'RegionWeather');
-            $layoutModel->EditGadgetLayoutAction('Weather', 'AllRegionsWeather', 'AllRegionsWeather', 'RegionWeather');
+            // Update layout actions
+            $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
+            if (!Jaws_Error::isError($layoutModel)) {
+                $layoutModel->EditGadgetLayoutAction('Weather', 'RegionWeather', 'RegionWeather', 'RegionWeather');
+                $layoutModel->EditGadgetLayoutAction('Weather', 'AllRegionsWeather', 'AllRegionsWeather', 'RegionWeather');
+            }
+        }
+
+        if (version_compare($old, '1.0.0', '<')) {
+            $this->gadget->registry->update('unit', null, true);
+            $this->gadget->registry->update('date_format', null, true);
         }
 
         return true;

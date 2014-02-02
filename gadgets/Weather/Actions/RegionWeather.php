@@ -77,7 +77,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         }
 
         require_once JAWS_PATH . 'gadgets/Weather/include/Underground.php';
-        $metric = $this->gadget->registry->fetch('unit') == 'metric';
+        $metric = $this->gadget->registry->fetchByUser('unit') == 'metric';
         $wService = new Underground_Weather(
             $this->gadget->registry->fetch('api_key'),
             $metric,
@@ -110,7 +110,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
                 $objDate = Jaws_Date::getInstance();
                 $tpl->SetBlock('weather/forecast');
                 $tpl->SetVariable('lbl_forecast', _t('WEATHER_FORECAST'));
-                $dFormat = $this->gadget->registry->fetch('date_format');
+                $dFormat = $this->gadget->registry->fetchByUser('date_format');
                 foreach ($rWeather['forecast'] as $dayIndex => $fWeather) {
                     $tpl->SetBlock('weather/forecast/item');
                     //86400 = 3600 * 24
