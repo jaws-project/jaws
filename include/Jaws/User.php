@@ -17,7 +17,7 @@ class Jaws_User
     /**
      * Get hashed password
      *
-     * @access  private
+     * @access  public
      * @param   string  $password
      * @param   string  $salt
      * @return  string  Returns hashed password
@@ -87,7 +87,7 @@ class Jaws_User
         }
 
         // check password
-        if ($result['password'] !== $this->GetHashedPassword($password, $result['password'])) {
+        if ($result['password'] !== Jaws_User::GetHashedPassword($password, $result['password'])) {
             $this->updateLastAccess($result['id'], false);
             // password incorrect event logging
             $GLOBALS['app']->Listener->Shout('Log', array('Users', 'Login', JAWS_WARNING, null, 401, $result['id']));
