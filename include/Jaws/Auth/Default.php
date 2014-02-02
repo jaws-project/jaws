@@ -12,9 +12,12 @@
 class Jaws_Auth_Default
 {
     /**
-     * Authenticate user/password
+     * Authenticate user|email/password
      *
      * @access  public
+     * @param   string  $user       User's name or email
+     * @param   string  $password   User's password
+     * @return  mixed   Array of user's information otherwise Jaws_Error
      */
     function Auth($user, $password)
     {
