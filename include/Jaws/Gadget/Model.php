@@ -153,36 +153,6 @@ class Jaws_Gadget_Model
 
 
     /**
-     * Return an array with the Search Results
-     * This method must be implemented by each model
-     *
-     * Struct spec:
-     * title - Title of the resource
-     * url - URL to resource found
-     * image - URL to image(can be relative or absolute, suggested size: 133x100)
-     * snippet - Snippet of the result(can be null)
-     * date - Insert or update date(can be null)
-     */
-    public function Search($string)
-    {
-        return false;
-    }
-
-
-    /**
-     * Returns the fast URL of an entry
-     *
-     * @access  public
-     * @param   string   $fastUrl  FastUrl string
-     * @return  array    Entry info or false
-     */
-    public function GetFastURL($fastUrl)
-    {
-        return false;
-    }
-
-
-    /**
      * Get the total of data we have in a table
      *
      * @access  public
