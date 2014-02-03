@@ -13,21 +13,25 @@ class Jaws_Captcha_Math extends Jaws_Captcha
 {
     /**
      * Captcha entry label
-     * @var string
+     *
+     * @var     string
+     * @access  private
      */
     var $_label = 'GLOBAL_CAPTCHA_QUESTION';
 
     /**
      * Captcha entry description
-     * @var string
+     *
+     * @var     string
+     * @access  private
      */
     var $_description = 'GLOBAL_CAPTCHA_QUESTION_DESC';
 
     /**
-     * Generate a random mathematic equation
+     * Generate a random mathematics equation
      *
      * @access  private
-     * @return  string  random mathematic equation
+     * @return  string  random mathematics equation
      */
     function randomEquation()
     {
