@@ -14,6 +14,8 @@ class Jaws_Captcha_Complex extends Jaws_Captcha
      * Displays the captcha image
      *
      * @access  public
+     * @param   int     $key    Captcha key
+     * @return  mixed   Captcha raw image data
      */
     function image($key)
     {
@@ -23,7 +25,6 @@ class Jaws_Captcha_Complex extends Jaws_Captcha
             $value = '';
         }
 
-        //--------------------------------------------------------------------------
         $contrast      = 100; // A value between 0 and 100
         $contrast      = 1.3 * (255 * ($contrast / 100.0));
         $num_polygons  = 3;  // Number of triangles to draw
@@ -35,7 +36,6 @@ class Jaws_Captcha_Complex extends Jaws_Captcha
         $min_radius    = 10; // Minimum radius in pixels of ellipses
         $max_radius    = 30; // Maximum radius in pixels of ellipses
         $object_alpha  = 95; // A value between 0 and 127
-        //--------------------------------------------------------------------------
 
         $width = 15 * imagefontwidth (5);
         $height = 2.5 * imagefontheight (5);
