@@ -1,4 +1,10 @@
 <?php
+define('JAWS_ERROR_INFO',    7); //LOG_INFO    = 7
+define('JAWS_ERROR_NOTICE',  6); //LOG_NOTICE  = 6
+define('JAWS_ERROR_WARNING', 5); //LOG_WARNING = 5
+define('JAWS_ERROR_ERROR',   4); //LOG_ERR     = 4
+define('JAWS_ERROR_FATAL',   3); //LOG_CRIT    = 3
+
 /**
  * Manage Jaws Errors
  *
@@ -9,48 +15,44 @@
  * @copyright  2005-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-define('JAWS_ERROR_INFO',    7); //LOG_INFO    = 7
-define('JAWS_ERROR_NOTICE',  6); //LOG_NOTICE  = 6
-define('JAWS_ERROR_WARNING', 5); //LOG_WARNING = 5
-define('JAWS_ERROR_ERROR',   4); //LOG_ERR     = 4
-define('JAWS_ERROR_FATAL',   3); //LOG_CRIT    = 3
-
 class Jaws_Error
 {
     /**
      * Error message
      *
-     * @access  protected
+     * @access  private
      * @var     string
      * @see     GetMessage()
      */
-    var $_Message;
+    private $_Message;
 
     /**
      * Error code
      *
-     * @access  protected
+     * @access  private
      * @var     string
      * @see     GetCode()
      */
-    var $_Code;
+    private $_Code;
 
     /**
      * The severity of the error.
      *
-     * @access  protected
+     * @access  private
      * @var     string
      * @see     GetLevel()
      */
-    var $_Level;
+    private $_Level;
 
     /**
      * Constructor
      *
-     * @param   string  $message  Error message
-     * @param   string  $code     Error code
-     * @param   int     $level    The severity level of the error.
      * @access  public
+     * @param   string  $message    Error message
+     * @param   string  $code       Error code
+     * @param   int     $level      The severity level of the error.
+     * @param   int     $backtrace  Log trace back level
+     * @return  void
      */
     function Jaws_Error($message, $code = 0, $level = JAWS_ERROR_ERROR, $backtrace = 0)
     {
