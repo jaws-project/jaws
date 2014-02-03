@@ -2,37 +2,42 @@
 /**
  * ImageMagick implementation for Jaws_Image
  *
- * @category   Image
- * @package    Core
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2012-2014 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
- * @link       http://pear.php.net/package/Image_Transform
+ * @category    Image
+ * @package     Core
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2012-2014 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
+ * @see         http://pear.php.net/package/Image_Transform
  */
 class Jaws_Image_Imagick extends Jaws_Image
 {
     /**
-     * Class constructor
+     * Constructor
+     *
+     * @access  public
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function Jaws_Image_Imagick()
     {
         if (!extension_loaded('imagick')) {
             return Jaws_Error::raiseError('Imagick library is not available.',
                                           __FUNCTION__);
-        } else {
-            $this->_supported_image_types = array(
-                    'bmp'  => 'rw',
-                    'gif'  => 'rw',
-                    'ico'  => 'r',
-                    'jp2'  => 'rw',
-                    'jpc'  => 'rw',
-                    'jpg'  => 'rw',
-                    'png'  => 'rw',
-                    'psd'  => 'rw',
-                    'tiff' => 'rw',
-                    'wbmp' => 'rw',
-                    'xbm'  => 'rw');
         }
+        $this->_supported_image_types = array(
+            'bmp'  => 'rw',
+            'gif'  => 'rw',
+            'ico'  => 'r',
+            'jp2'  => 'rw',
+            'jpc'  => 'rw',
+            'jpg'  => 'rw',
+            'png'  => 'rw',
+            'psd'  => 'rw',
+            'tiff' => 'rw',
+            'wbmp' => 'rw',
+            'xbm'  => 'rw'
+        );
+
+        return true;
     }
 
     /**
@@ -206,7 +211,7 @@ class Jaws_Image_Imagick extends Jaws_Image
      * @access  public
      * @param   float   $gamma
      * @return  mixed   True on success or a Jaws_Error on error
-     **/
+     */
     function gamma($gamma = 1.0)
     {
         try {
@@ -224,7 +229,7 @@ class Jaws_Image_Imagick extends Jaws_Image
      *
      * @access  public
      * @return  mixed   True on success or a Jaws_Error object on error
-     **/
+     */
     function mirror()
     {
         try {
@@ -240,9 +245,9 @@ class Jaws_Image_Imagick extends Jaws_Image
     /**
      * Vertical mirroring
      *
-     * @return  mixed True or Jaws_Error on error
      * @access  public
-     **/
+     * @return  mixed True or Jaws_Error on error
+     */
     function flip()
     {
         try {
@@ -258,8 +263,9 @@ class Jaws_Image_Imagick extends Jaws_Image
     /**
      * Converts an image into grayscale colors
      *
+     * @access  public
      * @return  mixed True or Jaws_Error on error
-     **/
+     */
     function grayscale()
     {
         try {
@@ -379,6 +385,7 @@ class Jaws_Image_Imagick extends Jaws_Image
      * Destroys image handle
      *
      * @access  public
+     * @return  void
      */
     function free()
     {
