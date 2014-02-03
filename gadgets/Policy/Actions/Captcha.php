@@ -43,7 +43,7 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
         }
 
         $dCaptcha = $this->gadget->registry->fetch($field. '_captcha_driver');
-        $objCaptcha = Jaws_Captcha::getInstance($dCaptcha, $field);
+        $objCaptcha = Jaws_Captcha::getInstance($dCaptcha);
 
         $resCaptcha = $objCaptcha->get();
         if (empty($resCaptcha['key'])) {
@@ -104,7 +104,7 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
         }
 
         $dCaptcha = $this->gadget->registry->fetch($field. '_captcha_driver');
-        $objCaptcha = Jaws_Captcha::getInstance($dCaptcha, $field);
+        $objCaptcha = Jaws_Captcha::getInstance($dCaptcha);
         if (!$objCaptcha->check()) {
             return Jaws_Error::raiseError(_t('GLOBAL_CAPTCHA_ERROR_DOES_NOT_MATCH'),
                 'Jaws_Captcha',
@@ -122,9 +122,8 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
     function Captcha()
     {
         $get = jaws()->request->fetch(array('field', 'key'), 'get');
-
         $dCaptcha = $this->gadget->registry->fetch($get['field']. '_captcha_driver');
-        $objCaptcha = Jaws_Captcha::getInstance($dCaptcha, $get['field']);
+        $objCaptcha = Jaws_Captcha::getInstance($dCaptcha);
         return $objCaptcha->image($get['key']);
     }
 }
