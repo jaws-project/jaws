@@ -31,6 +31,7 @@ class Jaws_Registry
      * Loads the data from the DB
      *
      * @access  public
+     * @return  string  Jaws version
      */
     function Init()
     {
