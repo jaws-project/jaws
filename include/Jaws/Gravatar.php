@@ -11,6 +11,14 @@
  */
 class Jaws_Gravatar
 {
+    /**
+     * Gets gravatar avatar address
+     *
+     * @access  public
+     * @param   string  $email  Email address
+     * @param   int     $size   Avatar size
+     * @return  string  Avatar image address
+     */
     static function GetGravatar($email = '', $size = 48)
     {
         $theme = $GLOBALS['app']->GetTheme();
