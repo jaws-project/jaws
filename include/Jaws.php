@@ -182,7 +182,8 @@ class Jaws
      * Load the default application preferences(language, theme, ...)
      *
      * @access  public
-     * @param   array   $preferences    default preferences
+     * @param   array   $preferences        Default preferences
+     * @param   bool    $loadFromDatabase   Load preferences from database
      * @return  void
      */
     function loadPreferences($preferences = array(), $loadFromDatabase = true)
@@ -475,11 +476,12 @@ class Jaws
     }
 
     /**
-     * Loads a class object
+     * Loads/creates a class object
      *
      * @access  public
      * @param   string  $classname  Class name
      * @param   string  $property   Jaws app property name
+     * @param   bool    $singleton  Get instance of singleton pattern class
      * @return  mixed   Object if success otherwise Jaws_Error on failure
      */
     function loadObject($classname, $property = '', $singleton = false)
@@ -498,13 +500,13 @@ class Jaws
     }
 
     /**
-     * Loads a class from within the Jaws dir
+     * Loads a class from within the Jaws or gadgets directories
      *
      * @access  public
      * @param   string  $classname  Class name
-     * @return  mixed   Object if success otherwise Jaws_Error on failure
+     * @return  void
      */
-    static function loadClass($classname, $property = '')
+    static function loadClass($classname)
     {
         // filter non validate character
         $classname = preg_replace('/[^[:alnum:]_]/', '', $classname);
