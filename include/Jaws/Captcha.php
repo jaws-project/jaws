@@ -12,28 +12,33 @@ class Jaws_Captcha
 {
     /**
      * Captcha driver name
-     * @var string
+     *
+     * @var     string
+     * @access  private
      */
-    var $_driver;
+    private $_driver;
 
     /**
      * Captcha entry label
-     * @var string
+     *
+     * @var     string
+     * @access  private
      */
-    var $_label = 'GLOBAL_CAPTCHA_CODE';
+    private $_label = 'GLOBAL_CAPTCHA_CODE';
 
     /**
      * Captcha entry description
-     * @var string
+     *
+     * @var     string
+     * @access  private
      */
-    var $_description = 'GLOBAL_CAPTCHA_CODE_DESC';
+    private $_description = 'GLOBAL_CAPTCHA_CODE_DESC';
 
     /**
      * Constructor
      *
      * @access  public
      * @param   string  $driver Captcha driver name
-     * @param   string  $field  Captcha field
      * @return  void
      */
     function Jaws_Captcha($driver)
@@ -46,10 +51,9 @@ class Jaws_Captcha
      *
      * @access  public
      * @param   string  $driver Captcha driver name
-     * @param   string  $field  Captcha field
      * @return  object  Jaws_Captcha instance
      */
-    static function getInstance($driver, $field = 'default')
+    static function getInstance($driver)
     {
         static $instances;
         if (!isset($instances)) {
@@ -58,7 +62,7 @@ class Jaws_Captcha
 
         if (!isset($instances[$driver])) {
             $className = 'Jaws_Captcha_'. $driver;
-            $instances[$driver] = new $className($driver, $field);
+            $instances[$driver] = new $className($driver);
         }
 
         return $instances[$driver];
@@ -68,6 +72,7 @@ class Jaws_Captcha
      * Install captcha driver
      *
      * @access  public
+     * @return  mixed   True on success otherwise Jaws_Error on failure
      */
     function install()
     {
@@ -75,7 +80,7 @@ class Jaws_Captcha
     }
 
     /**
-     * Returns an array with the captcha image field and a text entry so user can type
+     * Returns an array with the captcha image field and a text entry
      *
      * @access  public
      * @return  array    Array indexed by captcha (the image entry) and entry (the input)
@@ -96,7 +101,7 @@ class Jaws_Captcha
      * Check if a captcha key is valid
      *
      * @access  public
-     * @param   bool     Valid/Not Valid
+     * @return  bool    Valid/Not Valid
      */
     function check()
     {
@@ -118,7 +123,7 @@ class Jaws_Captcha
      *
      * @access  protected
      * @param   string  $key    Captcha key
-     * @return  string  Captcha value
+     * @return  Mixed   Captcha value on success otherwise Jaws_Error on failure
      */
     function fetch($key)
     {
@@ -137,8 +142,7 @@ class Jaws_Captcha
     {
         $tblCaptcha = Jaws_ORM::getInstance()->table('captcha');
         $tblCaptcha->insert(array('result' => $value, 'updatetime' => time()));
-        $key = $tblCaptcha->exec();
-        return $key;
+        return $tblCaptcha->exec();
     }
 
     /**
@@ -153,28 +157,29 @@ class Jaws_Captcha
     {
         $tblCaptcha = Jaws_ORM::getInstance()->table('captcha');
         $tblCaptcha->update(array('result' => $value, 'updatetime' => time()))->where('id', (int)$key);
-        $key = $tblCaptcha->exec();
-        return $key;
+        return $tblCaptcha->exec();
     }
 
     /**
      * Delete captcha record or outdated captchas
      *
      * @access  protected
-     * @param   string  $key  Captcha key
-     * @return  void
+     * @param   int     $key    Captcha key
+     * @return  mixed   Deleted rows count on success or Jaws_Error on failure
      */
     function delete($key = 0)
     {
         $tblCaptcha = Jaws_ORM::getInstance()->table('captcha');
         $tblCaptcha->delete()->where('id', $key)->or()->where('updatetime', time() - 600, '<');
-        $result = $tblCaptcha->exec();
+        return $tblCaptcha->exec();
     }
 
     /**
      * Displays the captcha image
      *
      * @access  public
+     * @param   int     $key    Captcha key
+     * @return  mixed   Captcha raw image data or Jaws_Error if this method not supported
      */
     function image($key)
     {
