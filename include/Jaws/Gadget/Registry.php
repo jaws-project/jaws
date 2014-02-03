@@ -93,7 +93,6 @@ class Jaws_Gadget_Registry
      *
      * @access  public
      * @param   bool    $onlyCustom Only custom
-     * @param   string  $pattern    Key pattern
      * @param   string  $gadget     (Optional) Gadget name
      * @return  mixed   Returns Array of keys/values if success otherwise null
      */
