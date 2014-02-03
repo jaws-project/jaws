@@ -73,7 +73,6 @@ class Jaws_Gadget_Template
      * @access  public
      * @param   string  $filename   Template file name
      * @param   string  $options    Load template options(e.g. loadFromTheme, loadRTLDirection)
-     * @param   bool    $backend    Admin template file?
      * @return  object  Jaws_Template object
      */
     function &loadAdmin($filename, $options = array())
