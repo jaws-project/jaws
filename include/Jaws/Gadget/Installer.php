@@ -71,7 +71,6 @@ class Jaws_Gadget_Installer
      * of the same instance around in our code.
      *
      * @access  public
-     * @param   string  $type   Model type
      * @return  mixed   Model class object on successful, Jaws_Error otherwise
      */
     public function &loadInstaller()
@@ -144,9 +143,11 @@ class Jaws_Gadget_Installer
      * Install a gadget
      *
      * @access  public
+     * @param   string  $input_schema       Schema file path
+     * @param   array   $input_variables    Schema variables
      * @return  mixed   True if success or Jaws_Error on error
      */
-    public function InstallGadget($insert = '', $variables = array())
+    public function InstallGadget($input_schema = '', $input_variables = array())
     {
         if (Jaws_Gadget::IsGadgetInstalled($this->gadget->name)) {
             return true;
@@ -180,7 +181,7 @@ class Jaws_Gadget_Installer
 
         // load gadget install method
         if (method_exists($installer, 'Install')) {
-            $result = $installer->Install($insert, $variables);
+            $result = $installer->Install($input_schema, $input_variables);
             if (Jaws_Error::IsError($result)) {
                 // removeing gadget registry keys
                 $GLOBALS['app']->Registry->delete($this->gadget->name);
@@ -468,19 +469,24 @@ class Jaws_Gadget_Installer
     }
 
     /**
+     * Installs table(s)/data schema into database
+     *
      * @access  public
-     * @return  bool    True on success and Jaws_Error on failure
+     * @param   string  $new_schema     New schema file path/name
+     * @param   array   $variables      Schema variables
+     * @param   string  $old_schema     Old schema file path/name
+     * @param   string  $init_data      Schema is include initialization data
+     * @return  mixed   True on success and Jaws_Error on failure
      */
-    public function InstallSchema($main_schema, $variables = array(),
-        $base_schema = false, $data = false, $create = true, $debug = false)
+    public function InstallSchema($new_schema, $variables = array(), $old_schema = false, $init_data = false)
     {
-        $main_file = $main_schema;
-        if (!preg_match('@\\\\|/@', $main_schema)) {
-            $main_file = JAWS_PATH. "gadgets/{$this->gadget->name}/Resources/schema/$main_schema";
+        $main_file = $new_schema;
+        if (!preg_match('@\\\\|/@', $new_schema)) {
+            $main_file = JAWS_PATH. "gadgets/{$this->gadget->name}/Resources/schema/$new_schema";
         }
         if (!file_exists($main_file)) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $main_schema),
+                _t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $new_schema),
                 __FUNCTION__,
                 JAWS_ERROR_ERROR,
                 1
@@ -488,14 +494,14 @@ class Jaws_Gadget_Installer
         }
 
         $base_file = false;
-        if (!empty($base_schema)) {
-                $base_file = $base_schema;
-            if (!preg_match('@\\\\|/@', $base_schema)) {
-                $base_file = JAWS_PATH. "gadgets/{$this->gadget->name}/Resources/schema/$base_schema";
+        if (!empty($old_schema)) {
+                $base_file = $old_schema;
+            if (!preg_match('@\\\\|/@', $old_schema)) {
+                $base_file = JAWS_PATH. "gadgets/{$this->gadget->name}/Resources/schema/$old_schema";
             }
             if (!file_exists($base_file)) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $base_schema),
+                    _t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', $old_schema),
                     __FUNCTION__,
                     JAWS_ERROR_ERROR,
                     1
@@ -503,10 +509,10 @@ class Jaws_Gadget_Installer
             }
         }
 
-        $result = $GLOBALS['db']->installSchema($main_file, $variables, $base_file, $data, $create, $debug);
+        $result = $GLOBALS['db']->installSchema($main_file, $variables, $base_file, $init_data);
         if (Jaws_Error::IsError($result)) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_FAILED_QUERY_FILE',$main_schema . (empty($base_schema)? '': "/$base_schema")),
+                _t('GLOBAL_ERROR_FAILED_QUERY_FILE',$new_schema . (empty($old_schema)? '': "/$old_schema")),
                 __FUNCTION__,
                 JAWS_ERROR_ERROR,
                 1
