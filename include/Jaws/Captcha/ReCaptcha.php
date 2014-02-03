@@ -20,6 +20,7 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
      * Install captcha driver
      *
      * @access  public
+     * @return  mixed   True on success otherwise Jaws_Error on failure
      */
     function install()
     {
@@ -54,10 +55,10 @@ class Jaws_Captcha_ReCaptcha extends Jaws_Captcha
     }
 
     /**
-     * Check if a captcha key is valid
+     * Check if a captcha value is valid
      *
      * @access  public
-     * @param   bool     Valid/Not Valid
+     * @return  bool    return validity of captcha value
      */
     function check()
     {
