@@ -17,9 +17,11 @@ class Jaws_Header
     /**
      * Redirects the browser to another url via HTTP Location method
      *
-     * @param   string  $url            URL to move the location
-     * @param   int     $status_code
      * @access  public
+     * @param   string  $url            URL to move the location
+     * @param   mixed   $resource       Returning data
+     * @param   int     $status_code    HTTP return status code
+     * @return  void
      */
     static function Location($url = '', $resource = '', $status_code = 302)
     {
@@ -34,6 +36,7 @@ class Jaws_Header
      * Redirect to referrer page
      *
      * @access  public
+     * @return  void
      */
     static function Referrer()
     {
@@ -50,9 +53,10 @@ class Jaws_Header
     /**
      * Redirects the browser to another url via HTTP Refresh method
      *
-     * @param   string  $url     Url to redirect
-     * @param   int     $timeout Timeout to redirect
      * @access  public
+     * @param   string  $url        Url to redirect
+     * @param   int     $timeout    Timeouts to redirect
+     * @return  void
      */
     static function Refresh($url, $timeout = 0)
     {
@@ -63,9 +67,10 @@ class Jaws_Header
     /**
      * Set expiration date
      *
-     * Take a look at: http://www.php.net/manual/en/function.header.php for examples
-     * @param   string  $date Date in format: Day, day Month Year Hour:Minutes:Seconds GMT
      * @access  public
+     * @param   string  $date Date in format: Day, day Month Year Hour:Minutes:Seconds GMT
+     * @return  void
+     * @see     http://www.php.net/manual/en/function.header.php
      */
     static function Expire($date)
     {
@@ -76,6 +81,7 @@ class Jaws_Header
      * Disables the cache of browser
      *
      * @access  public
+     * @return  void
      */
     static function DisableCache()
     {
@@ -90,9 +96,10 @@ class Jaws_Header
     /**
      * Change the content disposition of the file and change its filename
      *
+     * @access  public
      * @param   string  $ctype  Content type
      * @param   string  $file   Filename
-     * @access  public
+     * @return  void
      */
     static function ChangeContent($ctype, $file)
     {
