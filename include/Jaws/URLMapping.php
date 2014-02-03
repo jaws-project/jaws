@@ -13,36 +13,99 @@
 class Jaws_URLMapping
 {
     /**
-     * Model that will be used to get data
+     * UrlMapper Maps Model
      *
-     * @var    UrlMapper Maps Model
+     * @var     object
      * @access  private
      */
-    var $_MapsModel;
+    private $_MapsModel;
 
     /**
-     * Model that will be used to get data
+     * UrlMapper Aliases Model
      *
-     * @var    UrlMapper Aliases Model
+     * @var     object
      * @access  private
      */
-    var $_AliasesModel;
+    private $_AliasesModel;
 
-    var $_maps = array();
-    var $_actions_maps = array();
-    var $_delimiter = '@';
-    var $_enabled;
-    var $_request_uri = '';
-    var $_use_rewrite;
-    var $_custom_precedence;
-    var $_restrict_multimap;
-    var $_use_aliases;
-    var $_extension;
+    /**
+     * cashed maps
+     *
+     * @var     array
+     * @access  private
+     */
+    private $_maps = array();
+
+    /**
+     * cashed actions maps
+     *
+     * @var     array
+     * @access  private
+     */
+    private $_actions_maps = array();
+
+    /**
+     * URL mapping enabled?
+     *
+     * @var     bool
+     * @access  private
+     */
+    private $_enabled;
+
+    /**
+     * Requested URI
+     *
+     * @var     string
+     * @access  private
+     */
+    private $_request_uri = '';
+
+    /**
+     * URL rewriting enabled?
+     *
+     * @var     bool
+     * @access  private
+     */
+    private $_use_rewrite;
+
+    /**
+     * custom precedence over original?
+     *
+     * @var     bool
+     * @access  private
+     */
+    private $_custom_precedence;
+
+    /**
+     * restrict access to a resource by multi maps?
+     *
+     * @var     bool
+     * @access  private
+     */
+    private $_restrict_multimap;
+
+    /**
+     * using url aliases?
+     *
+     * @var     bool
+     * @access  private
+     */
+    private $_use_aliases;
+
+    /**
+     * Default url extension
+     *
+     * @var     string
+     * @access  private
+     */
+    private $_extension;
 
     /**
      * Initializes the Jaws URL Mapping
      *
      * @access  public
+     * @param   string  $request_uri    Requested URL
+     * @return  bool    True on success, or False on failure
      */
     function Init($request_uri = '')
     {
@@ -123,13 +186,16 @@ class Jaws_URLMapping
                 );
             }
         }
+
+        return true;
     }
 
     /**
      * Parses a QUERY URI and if its valid it extracts the values from
      * it and creates $_GET variables for each value.
      *
-     * @param   string  $path   Query URI
+     * @access  public
+     * @return  bool    True on success, or False on failure
      */
     function Parse()
     {
