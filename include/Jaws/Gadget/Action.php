@@ -149,6 +149,7 @@ class Jaws_Gadget_Action
      * @access  protected
      * @param   string  $file       Optional The gadget can require a special JS file,
      *                              it should be located under gadgets/$gadget/Resources/$file
+     * @return  void
      */
     public function AjaxMe($file = '')
     {
@@ -177,6 +178,7 @@ class Jaws_Gadget_Action
      *
      * @access  public
      * @param   string  $title  Browser's title
+     * @return  void
      */
     public function SetTitle($title)
     {
@@ -192,6 +194,7 @@ class Jaws_Gadget_Action
      *
      * @access  public
      * @param   string  $title  Browser's title
+     * @return  void
      */
     public function SetDescription($desc)
     {
@@ -207,6 +210,7 @@ class Jaws_Gadget_Action
      *
      * @access  public
      * @param   string  $keywords
+     * @return  void
      */
     public function AddToMetaKeywords($keywords)
     {
@@ -222,6 +226,7 @@ class Jaws_Gadget_Action
      *
      * @access  public
      * @param   string  $language  Language
+     * @return  void
      */
     public function AddToMetaLanguages($language)
     {
@@ -236,6 +241,8 @@ class Jaws_Gadget_Action
      * Execute the action
      *
      * @access  public
+     * @param   string  $action     Action name
+     * @return  mixed   Actions output on success otherwise Jaws_Error on failure
      */
     public function Execute(&$action)
     {
@@ -291,6 +298,8 @@ class Jaws_Gadget_Action
      * @param   string  $new_mode   Action's new mode
      * @param   string  $old_mode   Action's old mode
      * @param   string  $desc       Action's description
+     * @param   string  $file       Action's filename
+     * @return  void
      */
     public function SetActionMode($action, $new_mode, $old_mode, $desc = null, $file = null)
     {
@@ -342,7 +351,8 @@ class Jaws_Gadget_Action
      * Validates if an action is valid
      *
      * @access  public
-     * @param   string  $action Action to validate
+     * @param   string  $action     Action to validate
+     * @param   string  $script     Action belongs to index or admin
      * @return  mixed   Action mode if action is valid, otherwise false
      */
     public function IsValidAction($action, $script = JAWS_SCRIPT)
@@ -355,7 +365,7 @@ class Jaws_Gadget_Action
      * Filter non validate character
      *
      * @access  public
-     * @param   string  $action Action name
+     * @param   string  $action     Action name
      * @return  string  Filtered action name
      */
     public static function filter($action)
