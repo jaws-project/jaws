@@ -93,6 +93,7 @@ class Jaws_Gadget_Event
      *
      * @access  public
      * @param   string  $event  Event name
+     * @param   string  $gadget (Optional) Gadget name
      * @return  bool    True if listener was added, otherwise returns Jaws_Error
      */
     public function insert($event, $gadget = '')
