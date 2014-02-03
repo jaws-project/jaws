@@ -33,12 +33,13 @@ class Jaws_Session_Web extends Jaws_Session
     }
 
     /**
-     * @see Jaws_Session::Create
+     * Create a new session for a given data
      *
      * @access  public
      * @param   array   $info       User attributes
      * @param   bool    $remember   Remember me
      * @return  void
+     * @see     Jaws_Session::Create
      */
     function Create($info = array(), $remember = false)
     {
