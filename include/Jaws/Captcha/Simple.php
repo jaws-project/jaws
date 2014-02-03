@@ -15,6 +15,8 @@ class Jaws_Captcha_Simple extends Jaws_Captcha
      * Displays the captcha image
      *
      * @access  public
+     * @param   int     $key    Captcha key
+     * @return  mixed   Captcha raw image data
      */
     function image($key)
     {
