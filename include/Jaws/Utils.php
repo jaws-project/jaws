@@ -18,7 +18,9 @@ class Jaws_Utils
 {
     /**
      * Deny file upload extensions
-     * @var array
+     *
+     * @var     array
+     * @access  private
      */
     private static $deny_formats = array(
         'php','php3','php4','php5','php6','phtml','pl','py','cgi','pcgi','pcgi5','pcgi4','htaccess'
@@ -27,9 +29,9 @@ class Jaws_Utils
     /**
      * Change the color of a row from a given color
      *
+     * @access  public
      * @param   string  $color  Original color(so we don't return the same color)
      * @return  string  New color
-     * @access  public
      */
     static function RowColor($color)
     {
@@ -202,7 +204,12 @@ class Jaws_Utils
     /**
      * Write a string to a file
      * @access  public
-     * @see http://www.php.net/file_put_contents
+     * @param   string      $file               file path
+     * @param   string      $data               file content
+     * @param   int         $flags              file opening flag
+     * @param   resource    $resource_context   context resource 
+     * @return  mixed       returns the number of bytes that were written to the file, or FALSE on failure
+     * @see     http://www.php.net/file_put_contents
      */
     static function file_put_contents($file, $data, $flags = null, $resource_context = null)
     {
@@ -459,6 +466,7 @@ class Jaws_Utils
     /**
      * get upload temp directory
      *
+     * @return  string  upload temp directory path
      */
     static function upload_tmp_dir()
     {
