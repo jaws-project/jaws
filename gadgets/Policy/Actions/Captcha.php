@@ -125,6 +125,6 @@ class Policy_Actions_Captcha extends Jaws_Gadget_Action
 
         $dCaptcha = $this->gadget->registry->fetch($get['field']. '_captcha_driver');
         $objCaptcha = Jaws_Captcha::getInstance($dCaptcha, $get['field']);
-        $objCaptcha->image($get['key']);
+        return $objCaptcha->image($get['key']);
     }
 }
