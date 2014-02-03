@@ -16,7 +16,7 @@ class Jaws_FTP
      * @access  private
      * @var     string
      */
-    var $_hostname;
+    private $_hostname;
 
     /**
      * The port for ftp-connection (standard is 21)
@@ -24,7 +24,7 @@ class Jaws_FTP
      * @access  private
      * @var     int
      */
-    var $_port = 21;
+    private $_port = 21;
 
     /**
      * The username for login
@@ -32,7 +32,7 @@ class Jaws_FTP
      * @access  private
      * @var     string
      */
-    var $_username;
+    private $_username;
 
     /**
      * The password for login
@@ -40,7 +40,7 @@ class Jaws_FTP
      * @access  private
      * @var     string
      */
-    var $_password;
+    private $_password;
 
     /**
      * The base dir
@@ -48,7 +48,7 @@ class Jaws_FTP
      * @access  private
      * @var     string
      */
-    var $_root;
+    private $_root;
 
     /**
      * Determine whether to use passive-mode (true) or active-mode (false)
@@ -56,7 +56,7 @@ class Jaws_FTP
      * @access  private
      * @var     bool
      */
-    var $_passive;
+    private $_passive;
 
     /**
      * This holds the Net_FTP instance
@@ -64,40 +64,33 @@ class Jaws_FTP
      * @access  private
      * @var     resource
      */
-    var $_ftp;
-
-    function Jaws_FTP()
-    {
-        require_once PEAR_PATH. 'Net/FTP.php';
-
-        $this->LoadFTPSettings();
-        $this->_ftp = new Net_FTP();
-    }
+    private $_ftp;
 
     /**
-     * This function loads the ftp settings from
-     * the registry.
+     * Constructor
      *
-     * @access  protected
+     * @access  public
+     * @return  void
      */
-    function LoadFTPSettings()
+    function Jaws_FTP()
     {
-        $this->_hostname  = $GLOBALS['app']->Registry->fetch('ftp_host', 'Settings');
-        $this->_port      = $GLOBALS['app']->Registry->fetch('ftp_port', 'Settings');
-        $this->_passive   = $GLOBALS['app']->Registry->fetch('ftp_mode', 'Settings') == 'passive';
-        $this->_username  = $GLOBALS['app']->Registry->fetch('ftp_user', 'Settings');
-        $this->_password  = $GLOBALS['app']->Registry->fetch('ftp_pass', 'Settings');
-        $this->_root      = $GLOBALS['app']->Registry->fetch('ftp_root', 'Settings');
+        $this->_hostname = $GLOBALS['app']->Registry->fetch('ftp_host', 'Settings');
+        $this->_port     = $GLOBALS['app']->Registry->fetch('ftp_port', 'Settings');
+        $this->_passive  = $GLOBALS['app']->Registry->fetch('ftp_mode', 'Settings') == 'passive';
+        $this->_username = $GLOBALS['app']->Registry->fetch('ftp_user', 'Settings');
+        $this->_password = $GLOBALS['app']->Registry->fetch('ftp_pass', 'Settings');
+        $this->_root     = $GLOBALS['app']->Registry->fetch('ftp_root', 'Settings');
 
-        return true;
+        require_once PEAR_PATH. 'Net/FTP.php';
+        $this->_ftp = new Net_FTP();
     }
 
     /**
      * This function generates the FTP-connection
      *
      * @access  public
-     * @param   string $host    (optional) The Hostname
-     * @param   int    $port    (optional) The Port
+     * @param   string $host    (optional) The hostname
+     * @param   int    $port    (optional) The port
      * @return  mixed           True on success, otherwise Jaws_Error
      */
     function connect($host = null, $port = null)
