@@ -12,18 +12,22 @@ class Jaws_Captcha_TextMath extends Jaws_Captcha
 {
     /**
      * Captcha entry label
-     * @var string
+     *
+     * @var     string
+     * @access  private
      */
     var $_label = 'GLOBAL_CAPTCHA_QUESTION';
 
     /**
      * Captcha entry description
-     * @var string
+     *
+     * @var     string
+     * @access  private
      */
     var $_description = 'GLOBAL_CAPTCHA_QUESTION_DESC';
 
     /**
-     * Returns an array with the captcha text entry so user can type
+     * Returns an array with the captcha text entry
      *
      * @access  public
      * @return  array    Array indexed by captcha (the text entry) and entry (the input)
@@ -45,12 +49,12 @@ class Jaws_Captcha_TextMath extends Jaws_Captcha
     }
 
     /**
-     * Generate a random mathematic equation
+     * Generate a random mathematics equation
      *
      * @access  private
-     * @return  string  random mathematic equation
+     * @return  string  random mathematics equation
      */
-    function randomEquation()
+    private function randomEquation()
     {
         $fnum = mt_rand(1, 9);
         $snum = mt_rand(1, 9);
