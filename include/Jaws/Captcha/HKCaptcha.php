@@ -15,9 +15,11 @@ class Jaws_Captcha_HKCaptcha extends Jaws_Captcha
      * Get a distorted image
      *
      * @access  private
+     * @param   resource    $tmpimg Temporary image resource
+     * @return  resource    $img    Image resource
      * @return  void
      */
-    function warpedImage($tmpimg, $img)
+    private function warpedImage(&$tmpimg, &$img)
     {
         $numpoles = 3;
         $height = imagesy($img);
@@ -79,6 +81,8 @@ class Jaws_Captcha_HKCaptcha extends Jaws_Captcha
      * Displays the captcha image
      *
      * @access  public
+     * @param   int     $key    Captcha key
+     * @return  mixed   Captcha raw image data
      */
     function image($key = null)
     {
