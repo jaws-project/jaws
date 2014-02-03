@@ -12,50 +12,55 @@
 class Jaws_Image_GD extends Jaws_Image
 {
     /**
-     * Class constructor
+     * Constructor
+     *
+     * @access  public
+     * @return  mixed   True on success or Jaws_Error on failure
      */
     function Jaws_Image_GD()
     {
         if (!extension_loaded('gd')) {
             return Jaws_Error::raiseError('GD library is not available.',
                                           __FUNCTION__);
-        } else {
-            $types = imagetypes();
-            if ($types & IMG_PNG) {
-                $this->_supported_image_types['png'] = 'rw';
-            }
-            if (($types & IMG_GIF) ||
-                function_exists('imagegif') ||
-                function_exists('imagecreatefromgif'))
-            {
-                $this->_supported_image_types['gif'] = 'rw';
-            }
-            if ($types & IMG_JPG) {
-                $this->_supported_image_types['jpeg'] = 'rw';
-            }
-            if ($types & IMG_WBMP) {
-                $this->_supported_image_types['wbmp'] = 'rw';
-            }
-            if ($types & IMG_XPM) {
-                $this->_supported_image_types['xpm'] = 'r';
-            }
-            if (empty($this->_supported_image_types)) {
-                return Jaws_Error::raiseError('No supported image types available.',
-                                              __FUNCTION__);
-            }
         }
+
+        $types = imagetypes();
+        if ($types & IMG_PNG) {
+            $this->_supported_image_types['png'] = 'rw';
+        }
+        if (($types & IMG_GIF) ||
+            function_exists('imagegif') ||
+            function_exists('imagecreatefromgif'))
+        {
+            $this->_supported_image_types['gif'] = 'rw';
+        }
+        if ($types & IMG_JPG) {
+            $this->_supported_image_types['jpeg'] = 'rw';
+        }
+        if ($types & IMG_WBMP) {
+            $this->_supported_image_types['wbmp'] = 'rw';
+        }
+        if ($types & IMG_XPM) {
+            $this->_supported_image_types['xpm'] = 'r';
+        }
+        if (empty($this->_supported_image_types)) {
+            return Jaws_Error::raiseError('No supported image types available.',
+                                          __FUNCTION__);
+        }
+
+        return true;
     }
 
     /**
      * Returns a new image for temporary processing
      *
-     * @access  protected
-     * @param   int     $width      Width of the new image
-     * @param   int     $height     Height of the new image
-     * @param   bool    $trueColor  Force which type of image to create
+     * @access  private
+     * @param   int         $width      Width of the new image
+     * @param   int         $height     Height of the new image
+     * @param   bool        $trueColor  Force which type of image to create
      * @return  resource    A GD image resource
      */
-    function _createImage($width = -1, $height = -1, $trueColor = null)
+    private function _createImage($width = -1, $height = -1, $trueColor = null)
     {
         if ($width == -1) {
             $width = $this->_img_w;
@@ -156,8 +161,8 @@ class Jaws_Image_GD extends Jaws_Image
     /**
      * Returns the GD image handle
      *
-     * @return resource
      * @access  public
+     * @return  resource    Image resource
      */
     function &getHandle()
     {
@@ -290,7 +295,7 @@ class Jaws_Image_GD extends Jaws_Image
      * @access  public
      * @param   float   $gamma
      * @return  mixed   True if success or a Jaws_Error on error
-     **/
+     */
     function gamma($gamma = 1.0)
     {
         $res = imagegammacorrect($this->_hImage, 1.0, $gamma);
@@ -307,7 +312,7 @@ class Jaws_Image_GD extends Jaws_Image
      *
      * @access  public
      * @return  mixed   True if success or a Jaws_Error on error
-     **/
+     */
     function mirror()
     {
         $new_img = $this->_createImage();
@@ -325,7 +330,7 @@ class Jaws_Image_GD extends Jaws_Image
      *
      * @access  public
      * @return  mixed   True if success or a Jaws_Error on error
-     **/
+     */
     function flip()
     {
         $new_img = $this->_createImage();
@@ -341,8 +346,9 @@ class Jaws_Image_GD extends Jaws_Image
     /**
      * Converts an image into grayscale colors
      *
+     * @access  public
      * @return  mixed True or Jaws_Error on error
-     **/
+     */
     function grayscale()
     {
         $res = imagecopymergegray($this->_hImage,
