@@ -78,6 +78,14 @@ class Jaws_DB
      */
      var $_dsn;
 
+
+    /**
+     * Constructor
+     *
+     * @access  public
+     * @param   array  $options  Database connection options
+     * @return  void
+     */
     function Jaws_DB($options)
     {
         $options['driver'] = strtolower($options['driver']);
@@ -151,6 +159,7 @@ class Jaws_DB
      * Connect to database
      *
      * @access  public
+     * @return  mixed   True if connected successfully otherwise Jaws_Error on failure
      */
     function connect()
     {
@@ -196,6 +205,8 @@ class Jaws_DB
                 __FUNCTION__
             );
         }
+
+        return true;
     }
 
     /**
@@ -533,8 +544,9 @@ class Jaws_DB
     /**
      * gives you a dump of the table
      *
-     * @param $type the type of data/structure you want to dump
-     *              allowed options are 'all', 'structure' and 'content'
+     * @param   string  $file   Sump file path
+     * @param   string  $type   Type of data/structure to dump('all', 'structure', 'content')
+     * @return  string  Dumped file path
      */
     function Dump($file, $type = '')
     {
@@ -555,7 +567,7 @@ class Jaws_DB
 
         $schema =& MDB2_Schema::factory($dsn, $options);
         if (MDB2::isError($schema)) {
-            return $schema->getMessage();
+            return Jaws_Error::raiseError($schema->getMessage());
         }
 
         switch ($type) {
@@ -577,12 +589,12 @@ class Jaws_DB
 
         $DBDef = $schema->getDefinitionFromDatabase();
         if (MDB2::isError($DBDef)) {
-            return $DBDef->getMessage();
+            return Jaws_Error::raiseError($DBDef->getMessage());
         }
 
         $res = $schema->dumpDatabase($DBDef, $config, $dump_what);
         if (MDB2::isError($res)) {
-            return $res->getMessage();
+            return Jaws_Error::raiseError($res->getMessage());
         }
 
         return $file;
@@ -707,11 +719,17 @@ class Jaws_DB
     }
 
     /**
-     *
+     * Installs table(s)/data schema into database
      *
      * @access  public
+     * @param   string  $new_schema     New schema file path/name
+     * @param   array   $variables      Schema variables
+     * @param   string  $old_schema     Old schema file path/name
+     * @param   string  $init_data      Schema is include initialization data
+     * @param   string  $create         If the database should be created
+     * @return  mixed   True on success and Jaws_Error on failure
      */
-    function installSchema($file, $variables = array(), $file_update = false, $data = false, $create = true)
+    function installSchema($new_schema, $variables = array(), $old_schema = false, $init_data = false, $create = true)
     {
         MDB2::loadFile('Schema');
 
@@ -773,8 +791,8 @@ class Jaws_DB
             }
         }
 
-        $method = $data === true ? 'writeInitialization' : 'updateDatabase';
-        $result = $this->schema->$method($file, $file_update, $variables);
+        $method = $init_data === true ? 'writeInitialization' : 'updateDatabase';
+        $result = $this->schema->$method($new_schema, $old_schema, $variables);
         if (MDB2::isError($result)) {
             $this->schema->disconnect();
             unset($this->schema);
@@ -791,12 +809,13 @@ class Jaws_DB
     /**
      * return the current datetime
      *
-     * @return  string current datetime in the MDB2 format
      * @access  public
+     * @param   int     $timestamp  Time stamp
+     * @return  string  current datetime in the MDB2 format
      */
-    function Date($timestamp = '')
+    function Date($timestamp = 0)
     {
-        return empty($timestamp)? gmdate('Y-m-d H:i:s') : date('Y-m-d H:i:s', (int) $timestamp);
+        return empty($timestamp)? gmdate('Y-m-d H:i:s') : date('Y-m-d H:i:s', (int)$timestamp);
     }
 
     /**
