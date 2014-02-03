@@ -3,11 +3,11 @@ require_once PEAR_PATH. 'HTTP/Request.php';
 /**
  * Class that deals like a wrapper between Jaws and pear/HTTP_Request
  *
- * @category   Application
- * @package    Core
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2013-2014 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
+ * @category    Application
+ * @package     Core
+ * @author      Ali Fazelzadeh <afz@php.net>
+ * @copyright   2013-2014 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_HTTPRequest
 {
@@ -33,8 +33,8 @@ class Jaws_HTTPRequest
      * Constructor
      *
      * @access  protected
-     * @param   array   $options Assocated Request options
-     * @return  object  instance of Jaws_HTTPRequest
+     * @param   array   $options    Associated request options
+     * @return  void
      */
     function Jaws_HTTPRequest($options = array())
     {
@@ -83,8 +83,9 @@ class Jaws_HTTPRequest
      * Posts data to the URL
      *
      * @access  public
-     * @param   string  $url    URL address
-     * @param   array   $params Associated name/data values
+     * @param   string  $url        URL address
+     * @param   array   $params     Associated name/data values
+     * @param   string  $response   Response body
      * @return  mixed   Response code on success, otherwise Jaws_Error
      */
     function post($url, $params = array(), &$response)
