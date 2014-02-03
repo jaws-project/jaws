@@ -108,8 +108,14 @@ class Jaws_Captcha_Complex extends Jaws_Captcha
         }
 
         header("Content-Type: image/png");
+
+        ob_start();
         imagepng($im);
+        $content = ob_get_contents();
+        ob_end_clean();
+
         imagedestroy($im);
+        return $content;
     }
 
 }

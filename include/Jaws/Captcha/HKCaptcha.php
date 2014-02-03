@@ -118,9 +118,15 @@ class Jaws_Captcha_HKCaptcha extends Jaws_Captcha
         $this->warpedImage($tmpimg, $img);
 
         header("Content-Type: image/png");
+
+        ob_start();
         imagepng($img);
+        $content = ob_get_contents();
+        ob_end_clean();
+
         imagedestroy($img);
         imagedestroy($tmpimg);
+        return $content;
     }
 
 }
