@@ -370,6 +370,32 @@ class Jaws_ACL
     }
 
     /**
+     * Renames a ACL key
+     *
+     * @access  public
+     * @param   string  $old_name   Old key name
+     * @param   string  $new_name   New key name
+     * @param   string  $component  Component name
+     * @return  bool    True is set otherwise False
+     */
+    function rename($old_name, $new_name, $component = '')
+    {
+        $tblACL = Jaws_ORM::getInstance()->table('acl');
+        $result = $tblACL->update(array('key_name' => $new_name))
+            ->where('component', $component)
+            ->and()
+            ->where('key_name', $old_name)
+            ->exec();
+        if (Jaws_Error::IsError($result)) {
+            return false;
+        }
+
+        $this->default_acls[$component][$new_name] = $this->default_acls[$component][$old_name];
+        unset($this->default_acls[$component][$old_name]);
+        return true;
+    }
+
+    /**
      * Get the real/full permission of a gadget (and group if it has) for a certain key/subkey
      *
      * @access  public
