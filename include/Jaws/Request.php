@@ -14,55 +14,85 @@
 class Jaws_Request
 {
     /**
-     * @var array
+     * Allowed HTML tags
+     *
+     * @var     array
+     * @access  private
      */
     private $allowed_tags = '<a><img><ol><ul><li><blockquote><cite><code><div><p><pre><span><del><ins>
         <strong><b><mark><i><s><u><em>';
 
     /**
+     * Allowed HTML tag attributes
+     *
      * @var array
+     * @access  private
      */
     private $allowed_attributes = array('href', 'src', 'alt', 'title');
 
     /**
-     * @var array
+     *  URL based HTML tag attributes
+     *
+     * @var     array
+     * @access  private
      */
     private $urlbased_attributes = array('href', 'src');
 
     /**
+     * Allowed URL pattern
      *
+     * @var     string
+     * @access  private
      */
     private $allowed_url_pattern = "@(^[(http|https|ftp)://]?)(?!javascript:)([^\\\\[:space:]\"]+)$@iu";
 
     /**
-     * @var array
+     * Request filters
+     *
+     * @var     array
+     * @access  private
      */
-    var $_filters;
+    private $_filters;
 
     /**
-     * @var array
+     * Request filters parameters
+     *
+     * @var     array
+     * @access  private
      */
-    var $_params;
+    private $_params;
 
     /**
+     * Request filters priority
+     *
      * @var array
+     * @access  private
      */
-    var $_filtersPriority;
+    private $_filtersPriority;
 
     /**
-     * @var array
+     * Request filters include files
+     *
+     * @var     array
+     * @access  private
      */
-    var $_includes;
+    private $_includes;
 
     /**
-     * @var array
+     * Allowed request types
+     *
+     * @var     array
+     * @access  private
      */
-    var $_allowedMethods = array('get', 'post', 'cookie');
+    private $_allowedMethods = array('get', 'post', 'cookie');
 
     /**
-     * @var array
+     * variable type check functions
+     *
+     * @var     array
+     * @access  private
      */
-    var $func_type_check = array(
+    private $func_type_check = array(
         '0'      => 'is_scalar',
         'int'    => 'is_numeric',
         'float'  => 'is_float',
@@ -137,20 +167,6 @@ class Jaws_Request
         }
 
         return $objRequest;
-    }
-
-    /**
-     * @param   string  $method
-     * @return  mixed
-     */
-    function isTypeValid($method)
-    {
-        $method = strtolower($method);
-        if (in_array($method, $this->_allowedMethods)) {
-            return $method;
-        }
-
-        return false;
     }
 
     /**
@@ -257,6 +273,7 @@ class Jaws_Request
      *
      * @access  public
      * @param   string  $value      Referenced value
+     * @param   mixed   $key        Reserved for array item key
      * @param   mixed   $filters    Filter(s) name
      * @return  string  The filtered data
      */
@@ -438,7 +455,6 @@ class Jaws_Request
      */
     function reset($method = '')
     {
-        $method = $this->isTypeValid($method);
         switch ($method) {
             case 'get':
                 unset($_GET);
