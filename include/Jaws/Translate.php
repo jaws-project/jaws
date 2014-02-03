@@ -56,7 +56,9 @@ class Jaws_Translate
     /**
      * Constructor
      *
-     * @access  public
+     * @access  private
+     * @param   bool    $load_user_translated   Loaded user customized translated statements
+     * @return  void
      */
     private function __construct($load_user_translated)
     {
@@ -85,7 +87,8 @@ class Jaws_Translate
      * Creates the Jaws_Translate instance if it doesn't exist else it returns the already created one
      *
      * @access  public
-     * @return  object returns the instance
+     * @param   bool    $load_user_translated   Loaded user customized translated statements
+     * @return  object  returns the instance
      */
     static function getInstance($load_user_translated = true)
     {
@@ -99,6 +102,10 @@ class Jaws_Translate
 
     /**
      * Initializes the Translate
+     *
+     * @access  public
+     * @param   bool    $load_user_translated   Loaded user customized translated statements
+     * @return  void
      */
     function Init($lang = 'en')
     {
@@ -110,6 +117,7 @@ class Jaws_Translate
      *
      * @access  public
      * @param   string  $lang  Language to use
+     * @return  void
      */
     function SetLanguage($lang)
     {
