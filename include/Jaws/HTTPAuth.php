@@ -16,7 +16,7 @@ class Jaws_HTTPAuth
      * @access  private
      * @var     string
      */
-    var $username = '';
+    private $username = '';
 
     /**
      * Password
@@ -24,8 +24,14 @@ class Jaws_HTTPAuth
      * @access  private
      * @var     string
      */
-    var $password = '';
+    private $password = '';
 
+    /**
+     * Fetch WWW-Authentication data
+     *
+     * @access  public
+     * @return  void
+     */
     function AssignData()
     {
         if (!empty($_SERVER['PHP_AUTH_USER'])) {
@@ -42,16 +48,34 @@ class Jaws_HTTPAuth
         }
     }
 
+    /**
+     * Gets username
+     *
+     * @access  public
+     * @return  string  Username
+     */
     function getUsername()
     {
         return $this->username;
     }
 
+    /**
+     * Gets password
+     *
+     * @access  public
+     * @return  string  Password
+     */
     function getPassword()
     {
         return $this->password;
     }
 
+    /**
+     * Popup login box
+     *
+     * @access  public
+     * @return  void
+     */
     function showLoginBox()
     {
         $realm = $GLOBALS['app']->Registry->fetch('realm', 'Settings');
@@ -63,4 +87,5 @@ class Jaws_HTTPAuth
         $data = _t('GLOBAL_ERROR_ACCESS_DENIED');
         terminate($data, 401);
     }
+
 }
