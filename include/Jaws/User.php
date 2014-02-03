@@ -143,7 +143,8 @@ class Jaws_User
     /**
      * Updates the last login time for the given user
      *
-     * @param   int     $user user id of the user being updated
+     * @param   int     $user       user id of the user being updated
+     * @param   bool    $success    successfully accessed
      * @return  bool    true if all is ok, false if error
      */
     function updateLastAccess($user, $success = true)
