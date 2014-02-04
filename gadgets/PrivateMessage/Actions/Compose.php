@@ -342,4 +342,17 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             'PrivateMessage.Compose');
     }
 
+    /**
+     * Search users
+     *
+     * @access  public
+     * @return  void
+     */
+    function GetUsers()
+    {
+        $term = jaws()->request->fetch('term', 'post');
+        $userModel = new Jaws_User();
+        $users = $userModel->GetUsers(false, null, null, $term);
+        return $users;
+    }
 }
