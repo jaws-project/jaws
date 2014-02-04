@@ -1,4 +1,19 @@
 <style type="text/css">
+    #userSearchResult {
+        border: 1px solid #00007F;
+        position:relative;
+        display: none;
+    }
+
+    #userSearchResult .delete{
+        background: url("gadgets/PrivateMessage/Resources/images/close-mini.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+        height: 15px;
+        position: absolute;
+        right: -7px;
+        top: -7px;
+        width: 15px;
+    }
+
     .ajaxResultBox div{
         background-color: #ffffff;
         color: #000000;
@@ -43,7 +58,9 @@
                 <div id="userBox" class="ajaxResultBox">
                     <input type="text" id="userSearch" name="userSearch" onkeyup="searchUsers(this.value)">
 
-                    <div id="userSearchResult"></div>
+                    <div id="userSearchResult">
+
+                    </div>
                 </div>
 
                 <select multiple="multiple" id="recipient_users" name="recipient_users">

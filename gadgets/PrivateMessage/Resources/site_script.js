@@ -186,7 +186,8 @@ function searchUsers(term) {
     console.info(users);
 
 //    $('userSearchResult').dispose();
-    $('userSearchResult').innerHTML = '';
+    $('userSearchResult').show();
+    $('userSearchResult').innerHTML = '<a class="delete" href="javascript:clearUsersSearch();"></a>';
     for (var i = 0; i < users.length; i++) {
         new Element('div#searchResult' + users[i]['id'], {
             'html': users[i]['nickname'] + '(' +users[i]['username'] + ')',
@@ -194,6 +195,15 @@ function searchUsers(term) {
             'onClick': 'addUserToList(' + users[i]['id'] + ',\'' + users[i]['nickname'] +'\')'
         }).inject('userSearchResult');
     }
+}
+
+
+/**
+ * Clear users search result
+ */
+function clearUsersSearch() {
+    $('userSearchResult').innerHTML = '<a class="delete" href="javascript:clearUsersSearch();"></a>';
+    $('userSearchResult').hide();
 }
 
 
