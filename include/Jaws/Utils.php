@@ -46,13 +46,13 @@ class Jaws_Utils
      * Get a random text
      *
      * @access  public
-     * @param   int     $lenght     String length
+     * @param   int     $length     String length
      * @param   bool    $use_lower  Include lower characters
      * @param   bool    $use_upper  Include upper characters
      * @param   bool    $use_number Include numbers
      * @return  string  Random text
      */
-    static function RandomText($lenght = 5, $use_lower = true, $use_upper = true, $use_number = false)
+    static function RandomText($length = 5, $use_lower = true, $use_upper = true, $use_number = false)
     {
         $lower_case = 'abcdefghijklmnopqrstuvwxyz';
         $upper_case = 'ABCDEFGHIJKLMNPQRSTUVWXYZ';
@@ -69,7 +69,7 @@ class Jaws_Utils
         }
 
         $string = '';
-        for ($i = 1; $i <= $lenght; $i++) {
+        for ($i = 1; $i <= $length; $i++) {
             $string.= substr($possible, mt_rand(0, strlen($possible)-1), 1);
         }
         return $string;
