@@ -57,7 +57,7 @@ class Jaws_WebSocket_Server extends Jaws_WebSocket
 
             // looping all readable sockets
             foreach($readSocks as $sock) {
-                if($sock == $this->socket){
+                if ($sock == $this->socket){
                     // accepting new connection
                     if($client = socket_accept($this->socket)) {
                         $this->liveSocks[intval($client)] = $client;
@@ -66,7 +66,7 @@ class Jaws_WebSocket_Server extends Jaws_WebSocket
                 } else {
                     $keySock = intval($sock);
                     // trying receive data
-                    if(!socket_recv($sock, $buffer, 4096, 0)) {
+                    if (!socket_recv($sock, $buffer, 4096, 0)) {
                         unset($readySocks[$keySock], $this->liveSocks[$keySock]);
                         socket_close($sock);
                         continue;
