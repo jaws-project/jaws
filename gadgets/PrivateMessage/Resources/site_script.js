@@ -177,6 +177,35 @@ function getSelectedAttachments() {
     return files;
 }
 
+/**
+ * Search users
+ */
+function searchUsers(term) {
+    console.log(term);
+    var users = PrivateMessageAjax.callSync('GetUsers', {'term': term});
+    console.info(users);
+
+//    $('userSearchResult').dispose();
+    $('userSearchResult').innerHTML = '';
+    for (var i = 0; i < users.length; i++) {
+        new Element('div#searchResult' + users[i]['id'], {
+            'html': users[i]['nickname'] + '(' +users[i]['username'] + ')',
+            'data-user-id': users[i]['id'],
+            'onClick': 'addUserToList(' + users[i]['id'] + ',\'' + users[i]['nickname'] +'\')'
+        }).inject('userSearchResult');
+    }
+}
+
+
+
+/**
+ * Add a user to recipient List
+ */
+function addUserToList(userId, title) {
+    var box = $('recipient_users');
+    box.options[box.options.length] = new Option(title, userId);
+}
+
 var PrivateMessageAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback);
 
 var uploadedFiles = new Array();

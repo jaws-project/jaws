@@ -1,3 +1,15 @@
+<style type="text/css">
+    .ajaxResultBox div{
+        background-color: #ffffff;
+        color: #000000;
+        cursor: default;
+    }
+    .ajaxResultBox div:hover{
+        background-color: #d3d3d3;
+        color: #0000ff;
+        cursor: pointer;
+    }
+</style>
 <!-- BEGIN compose -->
 <div class="gadget privateMessage message" id="compose">
     <div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
@@ -27,7 +39,17 @@
             </div>
             <div id="recipient_users_area">
                 <label for="recipient_users"><b>{lbl_recipient_users}:</b></label>
-                {recipient_users_opt}
+
+                <div id="userBox" class="ajaxResultBox">
+                    <input type="text" id="userSearch" name="userSearch" onkeyup="searchUsers(this.value)">
+
+                    <div id="userSearchResult"></div>
+                </div>
+
+                <select multiple="multiple" id="recipient_users" name="recipient_users">
+                </select>
+
+                <!--{recipient_users_opt}-->
             </div>
 
             <div id="recipient_groups_area">
