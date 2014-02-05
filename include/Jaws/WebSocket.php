@@ -13,26 +13,26 @@ class Jaws_WebSocket
     /**
      * Network address
      *
-     * @access  private
+     * @access  protected
      * @var     string
      */
-    private $address;
+    protected $address;
 
     /**
      * Network port
      *
-     * @access  private
+     * @access  protected
      * @var     int
      */
-    private $port = 2048;
+    protected $port = 2048;
 
     /**
      * Server socket
      *
-     * @access  private
+     * @access  protected
      * @var     resource
      */
-    private $socket;
+    protected $socket;
 
     /**
      * socket send timeout
@@ -143,15 +143,21 @@ class Jaws_WebSocket
      * Close the socket
      *
      * @access  public
-     * @param   int $errno  (Optional) Error code
-     * @return  mixed   True on success or Jaws_Error on failure
+     * @param   resource    $socket socket resource
+     * @param   string      $errstr optional error message
+     * @return  mixed       True on success or Jaws_Error for socket last error
      */
-    public function close($errno = 0)
+    public function close($socket = null, $errstr = '')
     {
-        $errno = empty($errno)? socket_last_error() : $errno;
-        socket_close($this->socket);
-        if (!empty($errno)) {
-            return Jaws_Error::raiseError($errno == 255? 'Response header not valid' : socket_strerror($errno));
+        if (!empty($socket)) {
+            $errno = socket_last_error($socket);
+            socket_close($socket);
+        } else {
+            $errno = socket_last_error();
+        }
+
+        if (!empty($errno) || !empty($errstr)) {
+            return Jaws_Error::raiseError(empty($errno)? $errstr : socket_strerror($errno));
         }
 
         return true;
