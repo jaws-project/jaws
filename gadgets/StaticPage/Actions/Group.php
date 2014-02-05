@@ -59,8 +59,8 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
      */
     function GroupPages($gid = 0, $orderBy = 1)
     {
-        $get = jaws()->request->fetch(array('gid', 'order'), 'get');
-        if (!empty($get['gid'])) {
+        if (empty($gid)) {
+            $get = $this->gadget->request->fetch(array('gid', 'order'), 'get');
             $gid = Jaws_XSS::defilter($get['gid']);
             $orderBy = $get['order'];
         }
