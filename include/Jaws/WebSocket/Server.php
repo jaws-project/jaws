@@ -155,52 +155,6 @@ class Jaws_WebSocket_Server extends Jaws_WebSocket
 
 
     /**
-     * Decodes WebSocket received data
-     *
-     * @access  private
-     * @param   string  $data   Received data
-     * @return  string  Decoded data
-     */
-    private function decode($data)
-    {
-        $length = ord($data[1]) & 127;
-        $posMasks = ($length == 126) ? 4 : (($length == 127)? 10 : 2);
-        $masks = substr($data, $posMasks, 4);
-        $data = substr($data, $posMasks + 4);
-
-        $result = '';
-        for ($i = 0; $i < strlen($data); ++$i) {
-            $result.= $data[$i] ^ $masks[$i%4];
-        }
-
-        return $result;
-    }
-
-
-    /**
-     * Encodes WebSocket sending data
-     *
-     * @access  private
-     * @param   string  $data   Sending data
-     * @return  string  Encoded data
-     */
-    private function encode($data)
-    {
-        $firstByte = 0x80 | (0x1 & 0x0f);
-        $length = strlen($data);
-        if($length <= 125) {
-            $header = pack('CC', $firstByte, $length);
-        } elseif ($length > 125 && $length < 65536) {
-            $header = pack('CCS', $firstByte, 126, $length);
-        } elseif ($length >= 65536) {
-            $header = pack('CCN', $firstByte, 127, $length);
-        }
-
-        return $header . $data;
-    }
-
-
-    /**
      * Verifies WebSocket received data
      *
      * @access  private
