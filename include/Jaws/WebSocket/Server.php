@@ -36,13 +36,11 @@ class Jaws_WebSocket_Server extends Jaws_WebSocket
         socket_set_option($this->socket, SOL_SOCKET, SO_REUSEADDR, 1);
         // trying to bind socket
         if (!socket_bind($this->socket, $this->address, $this->port)) {
-            $this->close();
-            return Jaws_Error::raiseError(socket_strerror(socket_last_error()));
+            return $this->close($this->socket);
         }
         // trying to listen on given address:port
         if (!socket_listen($this->socket)) {
-            $this->close();
-            return Jaws_Error::raiseError(socket_strerror(socket_last_error()));
+            return $this->close($this->socket);
         }
 
         // no time limit
@@ -108,7 +106,7 @@ class Jaws_WebSocket_Server extends Jaws_WebSocket
             }
         }
 
-        $this->close();
+        $this->close($this->socket);
         return true;
     }
 
