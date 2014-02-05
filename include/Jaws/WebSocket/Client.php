@@ -33,8 +33,8 @@ class Jaws_WebSocket_Client extends Jaws_WebSocket
             array('sec' => $this->send_timeout,  'usec' => 0)
         );
         // trying connect to WebSocket server
-        if (false === socket_connect($this->socket, $this->address, $this->port)) {
-            return $this->close();
+        if (false === @socket_connect($this->socket, $this->address, $this->port)) {
+            return $this->close($this->socket);
         }
 
         $randomKey = base64_encode(Jaws_Utils::RandomText(16, true, true, true));                
@@ -48,12 +48,16 @@ class Jaws_WebSocket_Client extends Jaws_WebSocket
         }
         $header.= "Sec-WebSocket-Version: 13\r\n";            
 
-        if (false === socket_write($this->socket, $header)) {
-            return $this->close();
+        // send hand-shake header
+        if (false === @socket_write($this->socket, $header)) {
+            return $this->close($this->socket);
         }
 
-        if (false === socket_recv($this->socket, $response, 1024, 0)) {
-            return $this->close();
+        // trying receive hand-shake response
+        if (false === @socket_recv($this->socket, $response, 1024, 0)) {
+            $last_error = error_get_last();
+            $last_error = trim(substr($last_error['message'], 73)); // 73 is end of socket_recv function information
+            return $this->close($this->socket, $last_error);
         }
 
         $expectedKey = $randomKey.'258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
@@ -66,7 +70,8 @@ class Jaws_WebSocket_Client extends Jaws_WebSocket
             }
         }
 
-        return $this->close(255);
+        $this->close($this->socket);
+        return Jaws_Error::raiseError('Response header not valid');
     }
 
 
@@ -81,7 +86,7 @@ class Jaws_WebSocket_Client extends Jaws_WebSocket
     public function recv($length, $flags = 0)
     {
         if (false === socket_recv($this->socket, $buffer, $length, $flags)) {
-            return $this->close();
+            return $this->close($this->socket);
         }
 
         return $this->decode($buffer);
@@ -98,7 +103,7 @@ class Jaws_WebSocket_Client extends Jaws_WebSocket
     public function send(&$buffer)
     {
         if (false === socket_write($this->socket, $this->encode($buffer))) {
-            return $this->close();
+            return $this->close($this->socket);
         }
 
         return true;
