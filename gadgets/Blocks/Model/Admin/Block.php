@@ -25,7 +25,7 @@ class Blocks_Model_Admin_Block extends Jaws_Gadget_Model
         $data = array();
         $data['title'] = $title;
         $data['contents'] = $contents;
-        $data['display_title'] = $display_title ? true : false;
+        $data['display_title'] = (bool)$display_title;
         $data['created_by'] = $data['modified_by'] = $user;
         $data['createtime'] = $data['updatetime'] = $GLOBALS['db']->Date();
 
@@ -33,10 +33,9 @@ class Blocks_Model_Admin_Block extends Jaws_Gadget_Model
         $result = $blocksTable->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
             $result->SetMessage(_t('BLOCKS_ERROR_NOT_ADDED'));
-            return $result;
         }
 
-        return $GLOBALS['db']->lastInsertID('blocks', 'id');
+        return $result;
     }
 
     /**
