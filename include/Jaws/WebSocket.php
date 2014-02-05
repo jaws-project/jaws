@@ -72,10 +72,14 @@ class Jaws_WebSocket
      * @param   string  $address    Network address
      * @param   int     $port       Network port
      * @param   string  $instance   Instance name
-     * @return  object returns the instance
+     * @return  object  returns the instance of Jaws_WebSocket or Jaws_Error on failure
      */
     static function getInstance($address = '', $port = 0, $instance = 'default')
     {
+        if (!extension_loaded('sockets')) {
+            return Jaws_Error::raiseError('sockets extension is not available');
+        }
+
         static $objWebSocket = array();
         if (!isset($objWebSocket[$instance])) {
             $calssname = get_called_class();
