@@ -14,10 +14,12 @@ class Jaws_WebSocket_Client extends Jaws_WebSocket
      * Listen network port over given address
      *
      * @access  public
-     * @param   mixed   $callback Callback function loaded when data received
+     * @param   string  $path       path of web socket server
+     * @param   string  $origin     indicates the origin of the script establishing the connection
+     * @param   mixed   $callback   callback function loaded when data received
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    public function open($path, $origin = false, $callback = null)
+    public function open($path, $origin = '', $callback = null)
     {
         if (!$this->socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) {
             return $this->close();
