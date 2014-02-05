@@ -34,6 +34,22 @@ class Jaws_WebSocket
      */
     private $socket;
 
+    /**
+     * socket send timeout
+     *
+     * @access  protected
+     * @var     int
+     */
+    protected $send_timeout = 5;
+
+    /**
+     * socket receive timeout
+     *
+     * @access  protected
+     * @var     int
+     */
+    protected $receive_timeout = 15;
+
 
     /**
      * Constructor
@@ -71,14 +87,74 @@ class Jaws_WebSocket
 
 
     /**
+     * Encodes WebSocket sending data
+     *
+     * @access  protected
+     * @param   string  $data   Sending data
+     * @return  string  Encoded data
+     */
+    protected function encode($data)
+    {
+        $firstByte = 0x80 | (0x1 & 0x0f);
+        $length = strlen($data);
+        if($length <= 125) {
+            $header = pack('CC', $firstByte, $length);
+        } elseif ($length > 125 && $length < 65536) {
+            $header = pack('CCS', $firstByte, 126, $length);
+        } elseif ($length >= 65536) {
+            $header = pack('CCN', $firstByte, 127, $length);
+        }
+
+        return $header . $data;
+    }
+
+
+    /**
+     * Decodes WebSocket received data
+     *
+     * @access  protected
+     * @param   string  $data   Received data
+     * @return  string  Decoded data
+     */
+    protected function decode($data)
+    {
+        $result = '';
+        if (!empty($data)) {
+            $length = ord($data[1]) & 127;
+            $dataPos = ($length == 126) ? 4 : (($length == 127)? 10 : 2);
+
+            if ($masked = (bool)(ord($data[1]) >> 7)) {
+                $mask = substr($data, $dataPos, 4);
+                $data = substr($data, $dataPos + 4);
+
+                for ($i = 0; $i < strlen($data); ++$i) {
+                    $result.= $data[$i] ^ $mask[$i%4];
+                }
+            } else {
+                $result = substr($data, $dataPos);
+            }
+        }
+
+        return $result;
+    }
+
+
+    /**
      * Close the socket
      *
      * @access  public
-     * @return  void
+     * @param   int $errno  (Optional) Error code
+     * @return  mixed   True on success or Jaws_Error on failure
      */
-    public function close()
+    public function close($errno = 0)
     {
+        $errno = empty($errno)? socket_last_error() : $errno;
         socket_close($this->socket);
+        if (!empty($errno)) {
+            return Jaws_Error::raiseError($errno == 255? 'Response header not valid' : socket_strerror($errno));
+        }
+
+        return true;
     }
 
 }
