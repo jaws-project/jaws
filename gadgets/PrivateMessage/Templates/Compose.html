@@ -96,7 +96,12 @@
             <div class="recipient_users">
                 <div>
                     <select multiple="multiple" id="recipient_users" name="recipient_users"
-                            ondblclick="removeUserFromList()"></select>
+                            ondblclick="removeUserFromList()">
+                        <!-- BEGIN user -->
+                        <option value="{value}">{title}</option>
+                        <!-- END user -->
+
+                    </select>
                 </div>
 
                 <div id="userBox" class="ajaxResultBox">

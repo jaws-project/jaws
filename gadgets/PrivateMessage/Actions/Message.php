@@ -154,6 +154,11 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('rownum', $i);
                 $tpl->SetVariable('id',  $message['id']);
                 $tpl->SetVariable('from', $message['from_nickname']);
+                $from_url = $GLOBALS['app']->Map->GetURLFor(
+                    'Users',
+                    'Profile',
+                    array('user' => $message['from_username']));
+                $tpl->SetVariable('from_url', $from_url);
 
                 // Message is In or Out
                 if (empty($folder)) {

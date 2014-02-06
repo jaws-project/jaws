@@ -145,7 +145,7 @@ function sendMessage(published) {
     if (recipient_user == "" || recipient_user.length == 0) {
         var recipient_users_array = new Array();
         var recipient_groups_array = new Array();
-        $$('#recipient_users').getSelected()[0].each(function (i) {
+        $$('#recipient_users option').each(function (i) {
             if (i.get('value').length > 0) {
                 recipient_users_array.push(i.get('value'));
             }
@@ -218,7 +218,7 @@ function addUserToList(userId, title) {
 }
 
 /**
- * Remove user from list
+ * Remove selected user from recipient list
  */
 function removeUserFromList() {
     $('recipient_users').options[$('recipient_users').selectedIndex] = null;

@@ -22,7 +22,7 @@ $maps[] = array(
 );
 $maps[] = array(
     'Compose',
-    'pm/compose[/id/{id}][/reply/{reply}]',
+    'pm/compose[/id/{id}][/user/{user}][/reply/{reply}]',
     array(
         'id' => '[\p{L}[:digit:]-_\.]+',
         'reply' => '[[:lower:]-]+',

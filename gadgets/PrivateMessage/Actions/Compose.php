@@ -25,9 +25,10 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $this->gadget->CheckPermission('SendMessage');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $this->AjaxMe('site_script.js');
-        $get = jaws()->request->fetch(array('id', 'reply'), 'get');
+        $get = jaws()->request->fetch(array('id', 'user', 'reply'), 'get');
         $id = $get['id'];
 
+        $userModel = new Jaws_User();
         $model = $this->gadget->model->load('Message');
         $tpl = $this->gadget->template->load('Compose.html');
         $tpl->SetBlock('compose');
@@ -156,6 +157,10 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id));
             }
         } else {
+            if (!empty($get['user'])) {
+                $recipient_users = array($get['user']);
+            }
+
             $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
             $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI());
         }
@@ -166,11 +171,20 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $body->SetWidth('100%');
         $tpl->SetVariable('body', $body->Get());
 
-        $userModel = new Jaws_User();
         if ($show_recipient) {
             $tpl->SetBlock('compose/recipients');
             $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
             $tpl->SetVariable('lbl_recipient_users', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS'));
+
+            if (!empty($recipient_users)) {
+                foreach ($recipient_users as $userId) {
+                    $user_info = $userModel->GetUser((int)$userId, true);
+                    $tpl->SetBlock('compose/recipients/user');
+                    $tpl->SetVariable('title', $user_info['nickname']);
+                    $tpl->SetVariable('value', $userId);
+                    $tpl->ParseBlock('compose/recipients/user');
+                }
+            }
 
             // Group List
             $bGroups =& Piwi::CreateWidget('Combo', 'recipient_groups');
