@@ -789,7 +789,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             $tpl->SetVariable('lbl_delete_reason', _t('FORUMS_POSTS_DELETE_REASON'));
 
             // message
-            $tpl->SetVariable('message', $post['message']);
+            $tpl->SetVariable('message', $this->gadget->ParseText($post['message']));
 
             $tpl->SetVariable('btn_submit_title', _t('FORUMS_POSTS_DELETE_BUTTON'));
             $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));

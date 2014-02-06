@@ -650,7 +650,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$topic['first_post_time']));
 
             // message
-            $tpl->SetVariable('message', $topic['message']);
+            $tpl->SetVariable('message', $this->gadget->ParseText($topic['message']));
 
             $tpl->SetVariable('btn_submit_title', _t('FORUMS_TOPICS_DELETE_BUTTON'));
             $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));
