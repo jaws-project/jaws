@@ -241,11 +241,6 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             $tpl->ParseBlock('topic/preview');
         }
 
-        // response
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('UpdateTopic')) {
-            $tpl->SetVariable('msg', $response);
-        }
-
         // first post meta
         if (!empty($topic['id'])) {
             // date format
@@ -286,6 +281,15 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             $tpl->ParseBlock('topic/target');
         }
 
+        // response
+        if ($response = $GLOBALS['app']->Session->PopResponse('UpdateTopic')) {
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
+            $topic['subject'] = $response['data']['subject'];
+            $topic['message'] = $response['data']['message'];
+            $topic['update_reason'] =  $response['data']['update_reason'];
+        }
+
         // subject
         $tpl->SetBlock('topic/subject');
         $tpl->SetVariable('subject', $topic['subject']);
@@ -301,7 +305,8 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
         // status (published or draft)
         if ($this->gadget->GetPermission('PublishTopic') && 
-           $this->gadget->GetPermission('ForumManage', $forum['id'])) {
+            $this->gadget->GetPermission('ForumManage', $forum['id'])
+        ) {
             $tpl->SetBlock('topic/status');
             $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
             $tpl->SetVariable('lbl_draft', _t('GLOBAL_DRAFT'));
@@ -345,6 +350,10 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         if ($this->gadget->GetPermission('ForumManage', $topic['fid'])) {
             $tpl->SetBlock('topic/notification');
             $tpl->SetVariable('lbl_send_notification', _t('FORUMS_NOTIFICATION_MESSAGE'));
+            if ((bool)$rqst['notification']) {
+                $tpl->SetBlock('topic/notification/checked');
+                $tpl->ParseBlock('topic/notification/checked');
+            }
             $tpl->ParseBlock('topic/notification');
         }
 
@@ -378,16 +387,17 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             array('fid', 'tid', 'target', 'subject', 'message', 'update_reason', 'notification', 'status'),
             'post'
         );
-        $topic['forum_title'] = '';
 
         if (empty($topic['fid']) || !$this->gadget->GetPermission('ForumPublic', $topic['fid'])) {
             return Jaws_HTTPError::Get(403);
         }
 
         if (empty($topic['subject']) ||  empty($topic['message'])) {
-            $GLOBALS['app']->Session->PushSimpleResponse(
+            $GLOBALS['app']->Session->PushResponse(
                 _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
-                'UpdateTopic'
+                'UpdateTopic',
+                RESPONSE_ERROR,
+                $topic
             );
             // redirect to referrer page
             Jaws_Header::Referrer();
@@ -398,7 +408,12 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
             $resCheck = $htmlPolicy->checkCaptcha();
             if (Jaws_Error::IsError($resCheck)) {
-                $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'UpdateTopic');
+                $GLOBALS['app']->Session->PushResponse(
+                    $resCheck->getMessage(),
+                    'UpdateTopic',
+                    RESPONSE_ERROR,
+                    $topic
+                );
                 Jaws_Header::Referrer();
             }
         }
@@ -432,6 +447,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         $edit_min_limit_time = (int)$this->gadget->registry->fetch('edit_min_limit_time');
         $edit_max_limit_time = (int)$this->gadget->registry->fetch('edit_max_limit_time');
 
+        $topic['forum_title'] = '';
         $tModel = $this->gadget->model->load('Topics');
         if (empty($topic['tid'])) {
             $fModel = $this->gadget->model->load('Forums');
