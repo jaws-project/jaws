@@ -182,7 +182,8 @@ function getSelectedAttachments() {
  */
 function searchUsers(term) {
     var users = PrivateMessageAjax.callSync('GetUsers', {'term': term});
-    if(users.length<1){
+    if (users.length < 1) {
+        clearUsersSearch();
         return;
     }
     $('userSearchResult').show();
