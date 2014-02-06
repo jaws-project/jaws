@@ -281,6 +281,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             $tpl->ParseBlock('topic/target');
         }
 
+        $rqst['notification'] = true;
         // response
         if ($response = $GLOBALS['app']->Session->PopResponse('UpdateTopic')) {
             $tpl->SetVariable('type', $response['type']);
@@ -288,6 +289,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             $topic['subject'] = $response['data']['subject'];
             $topic['message'] = $response['data']['message'];
             $topic['update_reason'] =  $response['data']['update_reason'];
+            $rqst['notification'] = $response['data']['notification'];
         }
 
         // subject

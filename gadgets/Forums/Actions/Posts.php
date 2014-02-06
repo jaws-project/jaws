@@ -449,10 +449,12 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             $tpl->ParseBlock('post/post_meta');
         }
 
+        $rqst['notification'] = true;
         if ($response = $GLOBALS['app']->Session->PopResponse('UpdatePost')) {
             $tpl->SetVariable('type', $response['type']);
             $tpl->SetVariable('text', $response['text']);
             $post['message'] = $response['data']['message'];
+            $rqst['notification'] = $response['data']['notification'];
         }
 
         // message
@@ -497,6 +499,10 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         if ($this->gadget->GetPermission('ForumManage', $post['fid'])) {
             $tpl->SetBlock('post/notification');
             $tpl->SetVariable('lbl_send_notification', _t('FORUMS_NOTIFICATION_MESSAGE'));
+            if ((bool)$rqst['notification']) {
+                $tpl->SetBlock('post/notification/checked');
+                $tpl->ParseBlock('post/notification/checked');
+            }
             $tpl->ParseBlock('post/notification');
         }
 
