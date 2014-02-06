@@ -1,11 +1,43 @@
 <style type="text/css">
-    #userSearchResult {
-        border: 1px solid #00007F;
-        position:relative;
-        display: none;
+    .recipient_users::after {
+        content: '';
+        display: block;
+        clear: both
     }
 
-    #userSearchResult .delete{
+    .recipient_users select {
+        width: 100%;
+    }
+
+    .recipient_users input {
+        width: 80%;
+    }
+
+    .recipient_users > div:nth-child(1) {
+        width: 48%;
+        padding-right: 2%;
+        float: left;
+    }
+
+    .recipient_users > div:nth-child(2) {
+        width: 48%;
+        padding-right: 2%;
+        float: right;
+    }
+
+    .recipient_groups_area {
+        width: 48%;
+    }
+
+    #userSearchResult {
+        border: 1px solid #00007F;
+        position: relative;
+        display: none;
+        float: left;
+        width: 80%;
+    }
+
+    #userSearchResult .delete {
         background: url("gadgets/PrivateMessage/Resources/images/close-mini.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
         height: 15px;
         position: absolute;
@@ -14,17 +46,19 @@
         width: 15px;
     }
 
-    .ajaxResultBox div{
+    .ajaxResultBox div {
         background-color: #ffffff;
         color: #000000;
         cursor: default;
     }
-    .ajaxResultBox div:hover{
+
+    .ajaxResultBox div:hover {
         background-color: #d3d3d3;
         color: #0000ff;
         cursor: pointer;
     }
 </style>
+
 <!-- BEGIN compose -->
 <div class="gadget privateMessage message" id="compose">
     <div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
@@ -52,8 +86,12 @@
             <div>
                 <b>{lbl_recipient}:</b>
             </div>
-            <div id="recipient_users_area">
-                <label for="recipient_users"><b>{lbl_recipient_users}:</b></label>
+
+            <label for="recipient_users"><b>{lbl_recipient_users}:</b></label>
+            <div class="recipient_users">
+                <div>
+                    <select multiple="multiple" id="recipient_users" name="recipient_users"></select>
+                </div>
 
                 <div id="userBox" class="ajaxResultBox">
                     <input type="text" id="userSearch" name="userSearch" onkeyup="searchUsers(this.value)">
@@ -63,13 +101,9 @@
                     </div>
                 </div>
 
-                <select multiple="multiple" id="recipient_users" name="recipient_users">
-                </select>
-
-                <!--{recipient_users_opt}-->
             </div>
 
-            <div id="recipient_groups_area">
+            <div class="recipient_groups_area">
                 <label for="recipient_groups"><b>{lbl_recipient_groups}:</b></label>
                 {recipient_groups_opt}
             </div>

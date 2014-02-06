@@ -181,10 +181,7 @@ function getSelectedAttachments() {
  * Search users
  */
 function searchUsers(term) {
-    console.log(term);
     var users = PrivateMessageAjax.callSync('GetUsers', {'term': term});
-    console.info(users);
-
 //    $('userSearchResult').dispose();
     $('userSearchResult').show();
     $('userSearchResult').innerHTML = '<a class="delete" href="javascript:clearUsersSearch();"></a>';
@@ -206,12 +203,13 @@ function clearUsersSearch() {
     $('userSearchResult').hide();
 }
 
-
-
 /**
  * Add a user to recipient List
  */
 function addUserToList(userId, title) {
+    if ($$('#recipient_users option[value=' + userId + ']').length > 0) {
+        return;
+    }
     var box = $('recipient_users');
     box.options[box.options.length] = new Option(title, userId);
 }

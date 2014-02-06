@@ -170,18 +170,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         if ($show_recipient) {
             $tpl->SetBlock('compose/recipients');
             $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
-
-            // User List
-            $bUsers =& Piwi::CreateWidget('Combo', 'recipient_users');
-            $bUsers->SetID('recipient_users');
-            $bUsers->setMultiple(true);
-            $users = $userModel->GetUsers();
-            foreach ($users as $u) {
-                $bUsers->AddOption($u['nickname'], $u['id']);
-            }
-            $bUsers->setDefault($recipient_users);
             $tpl->SetVariable('lbl_recipient_users', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS'));
-            $tpl->SetVariable('recipient_users_opt', $bUsers->Get());
 
             // Group List
             $bGroups =& Piwi::CreateWidget('Combo', 'recipient_groups');
@@ -352,7 +341,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
     {
         $term = jaws()->request->fetch('term', 'post');
         $userModel = new Jaws_User();
-        $users = $userModel->GetUsers(false, null, null, $term);
+        $users = $userModel->GetUsers(false, null, null, $term, 'nickname', 10);
         return $users;
     }
 }
