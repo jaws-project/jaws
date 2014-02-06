@@ -431,7 +431,12 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             );
 
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushSimpleResponse($res->getMessage(), 'UpdateTopic');
+                $GLOBALS['app']->Session->PushResponse(
+                    $res->getMessage(),
+                    'UpdateTopic',
+                    RESPONSE_ERROR,
+                    $topic
+                );
                 // redirect to referrer page
                 Jaws_Header::Referrer();
             }
@@ -543,7 +548,12 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         }
 
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($error_message, 'UpdateTopic');
+            $GLOBALS['app']->Session->PushResponse(
+                $error_message,
+                'UpdateTopic',
+                RESPONSE_ERROR,
+                $topic
+            );
             // redirect to referrer page
             Jaws_Header::Referrer();
         }

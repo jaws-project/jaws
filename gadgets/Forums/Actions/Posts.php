@@ -430,10 +430,6 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             $tpl->ParseBlock('post/preview');
         }
 
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('UpdatePost')) {
-            $tpl->SetVariable('msg', $response);
-        }
-
         if (!empty($post['id'])) {
             // date format
             $date_format = $this->gadget->registry->fetch('date_format');
@@ -451,6 +447,12 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
             $tpl->ParseBlock('post/post_meta');
+        }
+
+        if ($response = $GLOBALS['app']->Session->PopResponse('UpdatePost')) {
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
+            $post['message'] = $response['data']['message'];
         }
 
         // message
@@ -533,9 +535,11 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         }
 
         if (empty($post['message'])) {
-            $GLOBALS['app']->Session->PushSimpleResponse(
+            $GLOBALS['app']->Session->PushResponse(
                 _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'),
-                'UpdatePost'
+                'UpdatePost',
+                RESPONSE_ERROR,
+                $post
             );
             // redirect to referrer page
             Jaws_Header::Referrer();
@@ -546,7 +550,12 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
             $resCheck = $htmlPolicy->checkCaptcha();
             if (Jaws_Error::IsError($resCheck)) {
-                $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'UpdatePost');
+                $GLOBALS['app']->Session->PushResponse(
+                    $resCheck->getMessage(),
+                    'UpdatePost',
+                    RESPONSE_ERROR,
+                    $post
+                );
                 Jaws_Header::Referrer();
             }
         }
@@ -570,7 +579,12 @@ class Forums_Actions_Posts extends Forums_Actions_Default
                 null
             );
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushSimpleResponse($res->getMessage(), 'UpdatePost');
+                $GLOBALS['app']->Session->PushResponse(
+                    $res->getMessage(),
+                    'UpdatePost',
+                    RESPONSE_ERROR,
+                    $post
+                );
                 // redirect to referrer page
                 Jaws_Header::Referrer();
             }
@@ -655,7 +669,12 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         }
 
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($error_message, 'UpdatePost');
+            $GLOBALS['app']->Session->PushResponse(
+                $error_message,
+                'UpdatePost',
+                RESPONSE_ERROR,
+                $post
+            );
             // redirect to referrer page
             Jaws_Header::Referrer();
         }
