@@ -638,7 +638,8 @@ class Forums_Actions_Topics extends Forums_Actions_Default
                     $topic['forum_title'],
                     $forum_link,
                     $topic['subject'],
-                    $this->gadget->ParseText($topic['message'], 'Forums', 'index')
+                    $this->gadget->ParseText($topic['message'], 'Forums', 'index'),
+                    $this->gadget->ParseText($rqst['delete_reason'], 'Forums', 'index')
                 );
                 if (Jaws_Error::IsError($result)) {
                     // do nothing
@@ -686,6 +687,8 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             $objDate = Jaws_Date::getInstance();
             $tpl->SetVariable('insert_time', $objDate->Format($topic['first_post_time'], $date_format));
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$topic['first_post_time']));
+
+            $tpl->SetVariable('lbl_delete_reason', _t('FORUMS_POSTS_DELETE_REASON'));
 
             // message
             $tpl->SetVariable('message', $this->gadget->ParseText($topic['message']));

@@ -258,9 +258,11 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * @param   string  $post_link      Link of the post
      * @param   string  $topic_subject  Topic subject
      * @param   string  $post_message   Post message content
+     * @param   string  $reason         Reason of doing action
      * @return  mixed   True on successfully or Jaws_Error on failure
      */
-    function PostNotification($email, $event_type, $forum_title, $post_link, $topic_subject, $post_message, $reason = null)
+    function PostNotification($email, $event_type, $forum_title,
+        $post_link, $topic_subject, $post_message, $reason = null)
     {
         $site_url   = $GLOBALS['app']->getSiteURL('/');
         $site_name  = $this->gadget->registry->fetch('site_name', 'Settings');
@@ -292,14 +294,12 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $tpl->SetVariable('url',          $post_link);
         $tpl->SetVariable('site_name',    $site_name);
         $tpl->SetVariable('site_url',     $site_url);
-
         if (!empty($reason)) {
             $tpl->SetBlock('notification/reason');
             $tpl->SetVariable('lbl_reason',  _t('FORUMS_POSTS_REASON'));
             $tpl->SetVariable('lbl_reason',  $reason);
             $tpl->ParseBlock('notification/reason');
         }
-
         $tpl->ParseBlock('notification');
         $template = $tpl->Get();
 
