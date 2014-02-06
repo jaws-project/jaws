@@ -102,6 +102,7 @@ input,textarea,select{
 color:#666;
 padding:2px;
 border:1px solid #ccc;
+vertical-align:middle;
 box-sizing:border-box;
 -ms-box-sizing:border-box;
 -moz-box-sizing:border-box;

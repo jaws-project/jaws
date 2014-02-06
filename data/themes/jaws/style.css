@@ -100,6 +100,7 @@ padding:2px 4px;
 input,textarea,select{
 color:#666;
 padding:2px;
+vertical-align:middle;
 border:1px solid #ccc;
 box-sizing:border-box;
 -ms-box-sizing:border-box;
