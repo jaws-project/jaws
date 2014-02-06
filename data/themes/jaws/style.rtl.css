@@ -9,8 +9,8 @@ letter-spacing:0;
 a{text-decoration:none;}
 sub{vertical-align:sub;font-size:75%;}
 sup{vertical-align:super;font-size:75%;}
-ol{list-style-type:decimal;list-style-position:inside;}
-ul{list-style-type:circle;list-style-position:inside;}
+ol{list-style-type:decimal;list-style-position:inside;margin:0 4px;}
+ul{list-style-type:circle;list-style-position:inside;margin:0 4px;}
 ul ul,ul ol,ol ol,ol ul{margin-right:1em;}
 h1,h2,h3,h4,h5,h6,b,strong{font-weight:bold;}
 html{
@@ -564,6 +564,9 @@ background:#eee;
 float:right;
 width:128px;
 border-left:1px solid #fff;
+}
+.forum_post .post_profile ul{
+list-style-type:none;
 }
 .forum_post .post_profile li:last-child span{
 display:block;
