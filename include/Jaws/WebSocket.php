@@ -91,6 +91,20 @@ class Jaws_WebSocket
 
 
     /**
+     * Set send/receive timeouts
+     *
+     * @access  public
+     * @param   int     $send_timeout       send timeout
+     * @param   int     $receive_timeout    receive timeout
+     * @return  void
+     */
+    public function setTimeouts($send_timeout = null, $receive_timeout = null)
+    {
+        $this->send_timeout = is_null($send_timeout)? $this->send_timeout : $send_timeout;
+        $this->receive_timeout = is_null($receive_timeout)? $this->receive_timeout : $receive_timeout;
+    }
+
+    /**
      * Encodes WebSocket sending data
      *
      * @access  protected
