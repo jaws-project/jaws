@@ -341,7 +341,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
     {
         $term = jaws()->request->fetch('term', 'post');
         $userModel = new Jaws_User();
-        $users = $userModel->GetUsers(false, null, null, $term, 'nickname', 10);
+        $users = $userModel->GetUsers(false, null, null, $term, 'nickname', 5);
         return $users;
     }
 }
