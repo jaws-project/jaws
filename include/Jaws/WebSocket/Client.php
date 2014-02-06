@@ -39,7 +39,7 @@ class Jaws_WebSocket_Client extends Jaws_WebSocket
             return $this->close($this->socket);
         }
 
-        $randomKey = base64_encode(Jaws_Utils::RandomText(16, true, true, true));                
+        $randomKey = base64_encode(Jaws_Utils::RandomText(16, true, true, true));
         $header = "GET $path HTTP/1.1\r\n";
         $header.= "Host: {$this->address}:{$this->port}\r\n";
         $header.= "Upgrade: websocket\r\n";
@@ -48,7 +48,8 @@ class Jaws_WebSocket_Client extends Jaws_WebSocket
         if (!empty($origin)) {
             $header.= "Sec-WebSocket-Origin: {$origin}\r\n";
         }
-        $header.= "Sec-WebSocket-Version: 13\r\n";            
+        $header.= "Sec-WebSocket-Version: 13\r\n";
+        $header.= "\r\n";
 
         // send hand-shake header
         if (false === @socket_write($this->socket, $header)) {
@@ -58,8 +59,7 @@ class Jaws_WebSocket_Client extends Jaws_WebSocket
         // trying receive hand-shake response
         if (false === @socket_recv($this->socket, $response, 1024, 0)) {
             $last_error = error_get_last();
-            $last_error = trim(substr($last_error['message'], 73)); // 73 is end of socket_recv function information
-            return $this->close($this->socket, $last_error);
+            return $this->close($this->socket, $last_error['message']);
         }
 
         $expectedKey = $randomKey.'258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
