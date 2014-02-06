@@ -217,6 +217,13 @@ function addUserToList(userId, title) {
     box.options[box.options.length] = new Option(title, userId);
 }
 
+/**
+ * Remove user from list
+ */
+function removeUserFromList() {
+    $('recipient_users').options[$('recipient_users').selectedIndex] = null;
+}
+
 var PrivateMessageAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback);
 
 var uploadedFiles = new Array();

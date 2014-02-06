@@ -95,7 +95,8 @@
             <label for="recipient_users"><b>{lbl_recipient_users}:</b></label>
             <div class="recipient_users">
                 <div>
-                    <select multiple="multiple" id="recipient_users" name="recipient_users"></select>
+                    <select multiple="multiple" id="recipient_users" name="recipient_users"
+                            ondblclick="removeUserFromList()"></select>
                 </div>
 
                 <div id="userBox" class="ajaxResultBox">
