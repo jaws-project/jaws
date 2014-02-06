@@ -362,7 +362,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'message', 'update_reason'));
+        $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'message', 'update_reason', 'notification'));
         if (empty($rqst['fid']) || empty($rqst['tid'])) {
             return false;
         }
@@ -491,7 +491,14 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             $tpl->ParseBlock('post/update_reason');
         }
 
-        // chack captcha only in new post action
+        // notification
+        if ($this->gadget->GetPermission('ForumManage', $post['fid'])) {
+            $tpl->SetBlock('post/notification');
+            $tpl->SetVariable('lbl_send_notification', _t('FORUMS_NOTIFICATION_MESSAGE'));
+            $tpl->ParseBlock('post/notification');
+        }
+
+        // check captcha only in new post action
         if (empty($rqst['pid'])) {
             $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
             $htmlPolicy->loadCaptcha($tpl, 'post');
@@ -517,7 +524,10 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $post = jaws()->request->fetch(array('fid', 'tid', 'pid', 'subject', 'message', 'update_reason'), 'post');
+        $post = jaws()->request->fetch(
+            array('fid', 'tid', 'pid', 'subject', 'message', 'update_reason', 'notification'),
+            'post'
+        );
         if (empty($post['fid']) || !$this->gadget->GetPermission('ForumPublic', $post['fid'])) {
             return Jaws_HTTPError::Get(403);
         }
@@ -531,7 +541,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             Jaws_Header::Referrer();
         }
 
-        // chack captcha only in new post action
+        // check captcha only in new post action
         if (empty($post['pid'])) {
             $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
             $resCheck = $htmlPolicy->checkCaptcha();
@@ -570,7 +580,8 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             }
         }
 
-        $send_notification = true;
+        $send_notification =
+            $this->gadget->GetPermission('ForumManage', $post['fid'])? (bool)$post['notification'] : true;
         // edit min/max limit time
         $edit_min_limit_time = (int)$this->gadget->registry->fetch('edit_min_limit_time');
         $edit_max_limit_time = (int)$this->gadget->registry->fetch('edit_max_limit_time');
@@ -686,7 +697,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'confirm', 'delete_reason'));
+        $rqst = jaws()->request->fetch(array('fid', 'tid', 'pid', 'delete_reason', 'notification', 'confirm'));
         $pModel = $this->gadget->model->load('Posts');
         $post = $pModel->GetPost($rqst['pid'], $rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($post) || empty($post) || $post['id'] == $post['topic_first_post_id']) {

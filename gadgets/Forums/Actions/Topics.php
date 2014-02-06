@@ -172,7 +172,9 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $rqst = jaws()->request->fetch(array('fid', 'tid', 'target', 'subject', 'message', 'update_reason'));
+        $rqst = jaws()->request->fetch(
+            array('fid', 'tid', 'target', 'subject', 'message', 'update_reason', 'notification')
+        );
         if (empty($rqst['fid'])) {
             return false;
         }
@@ -339,6 +341,13 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             $tpl->ParseBlock('topic/update_reason');
         }
 
+        // notification
+        if ($this->gadget->GetPermission('ForumManage', $topic['fid'])) {
+            $tpl->SetBlock('topic/notification');
+            $tpl->SetVariable('lbl_send_notification', _t('FORUMS_NOTIFICATION_MESSAGE'));
+            $tpl->ParseBlock('topic/notification');
+        }
+
         // check captcha only in new topic action
         if (empty($topic['id'])) {
             $htmlPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
@@ -366,7 +375,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         }
 
         $topic = jaws()->request->fetch(
-            array('fid', 'tid', 'target', 'subject', 'message', 'update_reason', 'status'),
+            array('fid', 'tid', 'target', 'subject', 'message', 'update_reason', 'notification', 'status'),
             'post'
         );
         $topic['forum_title'] = '';
@@ -417,7 +426,8 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             }
         }
 
-        $send_notification = true;
+        $send_notification =
+            $this->gadget->GetPermission('ForumManage', $topic['fid'])? (bool)$topic['notification'] : true;
         // edit min/max limit time
         $edit_min_limit_time = (int)$this->gadget->registry->fetch('edit_min_limit_time');
         $edit_max_limit_time = (int)$this->gadget->registry->fetch('edit_max_limit_time');
@@ -557,7 +567,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $rqst = jaws()->request->fetch(array('fid', 'tid', 'confirm'));
+        $rqst = jaws()->request->fetch(array('fid', 'tid', 'delete_reason', 'notification', 'confirm'));
         $tModel = $this->gadget->model->load('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic) || empty($topic)) {
@@ -670,7 +680,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             return Jaws_HTTPError::Get(403);
         }
 
-        $rqst = jaws()->request->fetch(array('fid', 'tid'), 'get');
+        $rqst = jaws()->request->fetch(array('fid', 'tid', 'notification'), 'get');
         $tModel = $this->gadget->model->load('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic)) {
@@ -721,7 +731,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
         $this->gadget->CheckPermission('PublishTopic');
 
-        $rqst = jaws()->request->fetch(array('fid', 'tid'), 'get');
+        $rqst = jaws()->request->fetch(array('fid', 'tid', 'notification'), 'get');
         $tModel = $this->gadget->model->load('Topics');
         $topic = $tModel->GetTopic($rqst['tid'], $rqst['fid']);
         if (Jaws_Error::IsError($topic)) {
