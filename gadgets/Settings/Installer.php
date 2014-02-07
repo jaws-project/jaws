@@ -130,9 +130,9 @@ class Settings_Installer extends Jaws_Gadget_Installer
         // tinyMCE frontend toolbar
         $this->gadget->registry->update(
             'editor_tinymce_frontend_toolbar',
-            ',newdocument,undo,redo,|,ltr,rtl,|,bold,italic,underline,strikethrough,|'.
-            ',alignleft,aligncenter,alignright,alignjustify,|,bullist,numlist,|'.
-            ',outdent,indent,blockquote,|,link,unlink,image,|,forecolor,backcolor,'
+            ',code,undo,redo,|,ltr,rtl,|,bold,italic,underline,strikethrough,|'.
+            ',blockquote,outdent,indent,|,alignleft,aligncenter,alignright,alignjustify,|,bullist,numlist,|'.
+            ',link,unlink,image,|,forecolor,backcolor,|,formatselect,fontselect,fontsizeselect,'
         );
         // tinyMCE backend toolbar
         $this->gadget->registry->update(
@@ -144,9 +144,9 @@ class Settings_Installer extends Jaws_Gadget_Installer
         // CKEditor frontend toolbar
         $this->gadget->registry->update(
             'editor_ckeditor_frontend_toolbar',
-            ',NewPage,Undo,Redo,|,BidiLtr,BidiRtl,|,Bold,Italic,Underline,Strike,|'.
-            ',NumberedList,BulletedList,-,Outdent,Indent,-,Blockquote,-,JustifyLeft'.
-            ',JustifyCenter,JustifyRight,JustifyBlock,|,Link,Unlink,Image,|,TextColor,BGColor'
+            ',Source,-,Undo,Redo,|,BidiLtr,BidiRtl,|,Bold,Italic,Underline,Strike,|'.
+            ',Blockquote,-,Outdent,Indent,|,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,|'.
+            ',NumberedList,BulletedList,|,Link,Unlink,Anchor,Image,|,TextColor,BGColor,|,Format,Font,FontSize,'
         );
         // CKEditor backend toolbar
         $this->gadget->registry->update(
@@ -219,6 +219,23 @@ class Settings_Installer extends Jaws_Gadget_Installer
                 ',NewPage,Undo,Redo,|,BidiLtr,BidiRtl,|,Bold,Italic,Underline,Strike,|'.
                 ',NumberedList,BulletedList,-,Outdent,Indent,-,Blockquote,-,JustifyLeft'.
                 ',JustifyCenter,JustifyRight,JustifyBlock,|,Link,Unlink,Image,|,TextColor,BGColor'
+            );
+        }
+
+        if (version_compare($old, '1.1.0', '<')) {
+            // tinyMCE frontend toolbar
+            $this->gadget->registry->update(
+                'editor_tinymce_frontend_toolbar',
+                ',code,undo,redo,|,ltr,rtl,|,bold,italic,underline,strikethrough,|'.
+                ',blockquote,outdent,indent,|,alignleft,aligncenter,alignright,alignjustify,|,bullist,numlist,|'.
+                ',link,unlink,image,|,forecolor,backcolor,|,formatselect,fontselect,fontsizeselect,'
+            );
+            // CKEditor frontend toolbar
+            $this->gadget->registry->update(
+                'editor_ckeditor_frontend_toolbar',
+                ',Source,-,Undo,Redo,|,BidiLtr,BidiRtl,|,Bold,Italic,Underline,Strike,|'.
+                ',Blockquote,-,Outdent,Indent,|,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,|'.
+                ',NumberedList,BulletedList,|,Link,Unlink,Anchor,Image,|,TextColor,BGColor,|,Format,Font,FontSize,'
             );
         }
 
