@@ -252,7 +252,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * Mails add/edit post notification to the admins and topic creator
      *
      * @access  public
-     * @param   string  $email          Topic creator's email 
+     * @param   string  $email          Topic creator's email
      * @param   string  $event_type     Event type
      * @param   string  $forum_title    Forum title
      * @param   string  $post_link      Link of the post

@@ -764,18 +764,22 @@ class Forums_Actions_Posts extends Forums_Actions_Default
                     Jaws_Header::Referrer();
                 }
 
-                $event_type = 'delete';
-                $result = $pModel->PostNotification(
-                    '',
-                    $event_type,
-                    $post['forum_title'],
-                    $topic_link,
-                    $post['subject'],
-                    $this->gadget->ParseText($post['message'], 'Forums', 'index', 'index'),
-                    $this->gadget->ParseText($rqst['delete_reason'], 'Forums', 'index')
-                );
-                if (Jaws_Error::IsError($result)) {
-                    // do nothing
+                $send_notification =
+                    $this->gadget->GetPermission('ForumManage', $post['fid'])? (bool)$rqst['notification'] : true;
+                // send delete notification
+                if ($send_notification) {
+                    $result = $pModel->PostNotification(
+                        '',         // Topic creator's email
+                        'delete',   // event_type
+                        $post['forum_title'],
+                        $topic_link,
+                        $post['subject'],
+                        $this->gadget->ParseText($post['message'], 'Forums', 'index', 'index'),
+                        $this->gadget->ParseText($rqst['delete_reason'], 'Forums', 'index')
+                    );
+                    if (Jaws_Error::IsError($result)) {
+                        // do nothing
+                    }
                 }
             }
 
@@ -822,10 +826,20 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
             
-            $tpl->SetVariable('lbl_delete_reason', _t('FORUMS_POSTS_DELETE_REASON'));
-
             // message
             $tpl->SetVariable('message', $this->gadget->ParseText($post['message']));
+
+            // delete reason
+            $tpl->SetVariable('lbl_delete_reason', _t('FORUMS_POSTS_DELETE_REASON'));
+
+            // notification
+            if ($this->gadget->GetPermission('ForumManage', $post['fid'])) {
+                $tpl->SetBlock('post/notification');
+                $tpl->SetVariable('lbl_send_notification', _t('FORUMS_NOTIFICATION_MESSAGE'));
+                $tpl->SetBlock('post/notification/checked');
+                $tpl->ParseBlock('post/notification/checked');
+                $tpl->ParseBlock('post/notification');
+            }
 
             $tpl->SetVariable('btn_submit_title', _t('FORUMS_POSTS_DELETE_BUTTON'));
             $tpl->SetVariable('btn_cancel_title', _t('GLOBAL_CANCEL'));
