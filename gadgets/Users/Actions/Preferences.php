@@ -73,14 +73,12 @@ class Users_Actions_Preferences extends Jaws_Gadget_Action
                 $tpl->SetVariable('key_title', $options[$key_name]['title']);
                 if (@isset($options[$key_name]['values'])) {
                     $element =& Piwi::CreateWidget('Combo', $key_name);
-                    $element->SetID($key_name);
                     $element->AddOption(_t('USERS_ADVANCED_OPTS_NOT_YET'), '');
                     foreach ($options[$key_name]['values'] as $value => $title) {
                         $element->AddOption($title, $value);
                     }
                 } else {
                     $element =& Piwi::CreateWidget('Entry', $key_name);
-                    $element->SetID($key_name);
                 }
 
                 $element->SetValue(isset($customized[$key_name])? $customized[$key_name] : '');
