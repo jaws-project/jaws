@@ -167,7 +167,7 @@ class Jaws_Widgets_TinyMCE extends Container
                 }
             }
         }
-        $plugins = implode($plugins, ',');
+        $plugins = implode(',', $plugins);
 
         $label = $this->_Label->GetValue();
         if (!empty($label)) {
@@ -187,10 +187,15 @@ class Jaws_Widgets_TinyMCE extends Container
             $fbrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile';
         }
 
+        if (JAWS_SCRIPT == 'admin') {
+            $plugins = str_replace(',bbcode,', ',', $plugins);
+            $block = 'tinymce_backend';
+        } else {
+            $block = 'tinymce_frontend';
+        }
         $GLOBALS['app']->Layout->AddScriptLink('libraries/tinymce/tinymce.min.js');
         $tpl = new Jaws_Template();
         $tpl->Load('TinyMCE.html', 'include/Jaws/Resources');
-        $block = (JAWS_SCRIPT == 'admin')? 'tinymce_backend' : 'tinymce_frontend';
         $tpl->SetBlock($block);
 
         $tpl->SetVariable('ibrowser', $ibrowser);
