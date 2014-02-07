@@ -455,6 +455,9 @@ font-size:140%;
 font-weight:bold;
 }
 /* users style */
+.users.preferences fieldset div div{
+clear:both;
+}
 .users.preferences input,.users.preferences textarea,.users.preferences select{
 float:left;
 width:380px;
@@ -529,6 +532,7 @@ background:#eee;
 border-right:1px solid #ccc;
 }
 .forums_list{
+margin:0;
 border:1px solid #ccc;
 border-top:none;
 }
