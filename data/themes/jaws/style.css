@@ -136,7 +136,7 @@ content:".";
 visibility:hidden;
 }
 .wrapper{
-width:980px;
+width:1000px;
 margin:0 auto;
 }
 #container{
@@ -148,7 +148,7 @@ height:68px;
 }
 #header #title{
 float:left;
-width:540px;
+width:560px;
 margin-top:24px;
 }
 #header a{
@@ -167,13 +167,13 @@ height:26px;
 margin-top:42px;
 }
 #content{
-width:980px;
+width:1000px;
 padding-top:20px;
 padding-bottom:30px;
 }
 #mainbar{
 float:left;
-width:540px;
+width:560px;
 }
 #bar1{
 width:190px;
