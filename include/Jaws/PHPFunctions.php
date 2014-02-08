@@ -319,13 +319,22 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
     $resType = jaws()->request->fetch('restype');
 
     // Event logging
-    $gadget = $GLOBALS['app']->mainGadget;
-    $action = $GLOBALS['app']->mainAction;
-    $loglevel = 0;
-    if (!empty($gadget) && !empty($action)) {
-        $loglevel = @Jaws_Gadget::getInstance($gadget)->actions[JAWS_SCRIPT][$action]['loglevel'];
+    if (isset($GLOBALS['app'])) {
+        $gadget = $GLOBALS['app']->mainGadget;
+        $action = $GLOBALS['app']->mainAction;
+        $sync = isset($GLOBALS['app']->Session)? $sync : false;
+
+        $loglevel = 0;
+        if (!empty($gadget) && !empty($action)) {
+            $loglevel = @Jaws_Gadget::getInstance($gadget)->actions[JAWS_SCRIPT][$action]['loglevel'];
+        }
+        // shout log event
+        $GLOBALS['app']->Listener->Shout('Log', array($gadget, $action, $loglevel, null, http_response_code()));
+    } else {
+        $gadget = '';
+        $action = '';
+        $sync = false;
     }
-    $GLOBALS['app']->Listener->Shout('Log', array($gadget, $action, $loglevel, null, http_response_code()));
 
     switch ($resType) {
         case 'json':
@@ -336,7 +345,7 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
                 $data = $GLOBALS['app']->Session->PopResponse($data);
             }
             // Sync session
-            if ($sync && isset($GLOBALS['app'])) {
+            if ($sync) {
                 $GLOBALS['app']->Session->update();
             }
 
@@ -350,7 +359,7 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
             header('Content-Encoding: '. $resType);
         default:
             // Sync session
-            if ($sync && isset($GLOBALS['app']->Session)) {
+            if ($sync) {
                 $GLOBALS['app']->Session->update();
             }
 
