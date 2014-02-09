@@ -342,14 +342,18 @@ left:0;
 top:26px;
 height:0;
 z-index:99;
-width:220px;
+width:222px;
+margin-left:0;
 position:absolute;
 visibility:hidden;
 }
-#headbar .menu ul li:hover ul,#headbar .menu ul a:hover ul{
+#headbar .menu ul li:hover>ul,#headbar .menu ul a:hover+ul{
 height:auto;
-visibility:visible;
-padding-bottom:2px;
+visibility:visible !important;
+}
+#headbar .menu ul ul ul{
+top:-2px;
+margin-left:200px;
 }
 #headbar .menu ul:hover ul ul{
 visibility:hidden;
@@ -358,6 +362,7 @@ visibility:hidden;
 visibility:hidden;
 }
 #headbar .menu ul ul li{
+margin:2px;
 display:block;
 position:relative;
 }
