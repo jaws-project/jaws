@@ -168,6 +168,9 @@ width:425px;
 height:26px;
 margin-top:42px;
 }
+#main_gadget_layout #headbar{
+margin-top:4px;
+}
 #content{
 width:1000px;
 padding-top:20px;
