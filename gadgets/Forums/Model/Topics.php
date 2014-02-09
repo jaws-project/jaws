@@ -157,14 +157,15 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         $table->select(
                 'forums_topics.id:integer', 'fid:integer', 'subject', 'forums_posts.message',
                 'replies', 'last_post_id:integer', 'last_post_uid:integer', 'last_post_time:integer',
-                'users.username', 'users.nickname'
+                'forums_topics.published:boolean', 'users.username', 'users.nickname'
         );
         $table->join('forums_posts', 'forums_topics.last_post_id', 'forums_posts.id', 'left');
         $table->join('forums', 'forums_topics.fid', 'forums.id', 'left');
         $table->join('users', 'forums_topics.last_post_uid', 'users.id', 'left');
+        $table->where('forums_topics.published', true);
 
         if (!empty($gid)) {
-            $table->where('forums.gid', $gid);
+            $table->and()->where('forums_topics.gid', $gid);
         }
         $result = $table->orderBy('forums_topics.last_post_time desc')->limit($limit, 0)->fetchAll();
 
