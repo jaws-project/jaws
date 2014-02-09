@@ -306,9 +306,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         $tpl->SetVariable('message', $message->Get());
 
         // status (published or draft)
-        if ($this->gadget->GetPermission('PublishTopic') && 
-            $this->gadget->GetPermission('ForumManage', $forum['id'])
-        ) {
+        if ($this->gadget->GetPermission('PublishTopic')) {
             $tpl->SetBlock('topic/status');
             $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
             $tpl->SetVariable('lbl_draft', _t('GLOBAL_DRAFT'));
