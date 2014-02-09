@@ -104,6 +104,7 @@ class Jaws_WebSocket_Server extends Jaws_WebSocket
                     }
                 }
             }
+            usleep(1000);
         }
 
         $this->close($this->socket);
