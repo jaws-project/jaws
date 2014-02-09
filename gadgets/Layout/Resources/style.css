@@ -261,6 +261,9 @@ min-height:5em;
 line-height:1.4em;
 min-width:100px;
 }
+.layout-section:last-child{
+padding-bottom:8px;
+}
 .layout-section-hover{
  border:1px dashed #f00;
 }
