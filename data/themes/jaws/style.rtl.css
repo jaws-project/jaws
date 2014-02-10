@@ -193,6 +193,7 @@ width:220px;
 float:left;
 }
 #footer{
+clear:both;
 height:28px;
 margin-top:-28px;
 line-height:28px;
