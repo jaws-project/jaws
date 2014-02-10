@@ -47,7 +47,7 @@ class Blocks_Actions_Block extends Jaws_Gadget_Action
     function Block($id = 0)
     {
         if (empty($id)) {
-            $id = jaws()->request->fetch('id', 'get');
+            $id = $this->gadget->request->fetch('id', 'get');
         }
 
         $tpl = $this->gadget->template->load('Blocks.html');
