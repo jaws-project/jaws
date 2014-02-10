@@ -69,4 +69,17 @@ class Jaws_XSS
         return htmlspecialchars_decode($string, $noquotes? ENT_NOQUOTES : ENT_QUOTES);
     }
 
+    /**
+     * Convert special characters to HTML entities
+     *
+     * @access  public
+     * @param   string  $string     The string to decode
+     * @param   bool    $noquotes   Will leave both double and single quotes unconverted
+     * @return  string  Returns the decoded string
+     */
+    static function refilter($string, $noquotes = false)
+    {
+        return self::filter(self::defilter($string, $noquotes), $noquotes);
+    }
+
 }
