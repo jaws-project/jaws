@@ -19,7 +19,7 @@ class Upgrader_100To110 extends JawsUpgraderStage
     function Display()
     {
         $tpl = new Jaws_Template(false);
-        $tpl->Load('display.html', 'stages/09To100/templates');
+        $tpl->Load('display.html', 'stages/100To110/templates');
         $tpl->SetBlock('100To110');
 
         $tpl->setVariable('lbl_info',  _t('UPGRADE_VER_INFO', '1.0.0', '1.1.0'));
