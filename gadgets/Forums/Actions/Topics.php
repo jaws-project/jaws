@@ -36,21 +36,13 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         $limit = (int)$this->gadget->registry->fetch('topics_limit');
         $tModel = $this->gadget->model->load('Topics');
 
-        $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $published = true;
-        if (!empty($uid)) {
-            if ($this->gadget->GetPermission('ForumManage', $forum['id'])) {
-                $uid = null;
-                $published = null;
-
-                if (!empty($rqst['status'])) {
-                    if ($rqst['status'] == 'published') {
-                        $published = true;
-                    } else {
-                        $published = false;
-                    }
-                }
-            }
+        $published = is_null($rqst['status'])? null : ($rqst['status'] == 'published');
+        if ($this->gadget->GetPermission('ForumManage', $forum['id'])) {
+            $uid = null;
+        } else {
+            $uid = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            // anonymous users
+            $published = empty($uid)? true : $published;
         }
 
         $topics = $tModel->GetTopics($forum['id'], $published, $uid, $limit, ($page - 1) * $limit);

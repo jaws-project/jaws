@@ -84,21 +84,15 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         $table->where('fid', $fid)->orderBy('last_post_time desc')->limit($limit, $offset);
 
         if (empty($uid)) {
-            if ($published !== null) {
-                $table->and()->where('published', $published);
+            if (!is_null($published)) {
+                $table->and()->where('published', (bool)$published);
             }
         } else {
-            if ($published === null) {
-                $table->and()->openWhere('published', true)->or()->closeWhere('first_post_uid', $uid);
-            } else if ($published === true){
-                $table->and()->where('published', $published);
-            } else {
-                $table->and()->where('published', $published)->and('first_post_uid', $uid);
-            }
+            $published = is_null($published)? true : (bool)$published;
+            $table->and()->openWhere('first_post_uid', (int)$uid)->or()->closeWhere('published', $published);
         }
 
-        $result = $table->fetchAll();
-        return $result;
+        return $table->fetchAll();
     }
 
     /**
