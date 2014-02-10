@@ -17,6 +17,7 @@ html{
 color:#666;
 height:100%;
 line-height:140%;
+overflow-x:hidden;
 vertical-align:baseline;
 }
 body{
@@ -146,6 +147,7 @@ min-height:100%;
 }
 #header{
 color:#fff;
+clear:both;
 height:68px;
 }
 #header #title{
@@ -172,6 +174,7 @@ margin-top:42px;
 margin-top:4px;
 }
 #content{
+clear:both;
 width:1000px;
 padding-top:20px;
 padding-bottom:30px;
