@@ -51,7 +51,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
         $params['published'] = (bool)$published;
         $params['updated'] = $GLOBALS['db']->Date();
 
-        $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
+        $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation', '', 'translation_id');
         $tid = $sptTable->insert($params)->exec();
         if (Jaws_Error::IsError($tid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_TRANSLATION_NOT_ADDED'), RESPONSE_ERROR);

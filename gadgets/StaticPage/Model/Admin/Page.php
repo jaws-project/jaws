@@ -41,14 +41,13 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         $params['fast_url']         = $fast_url;
         $params['show_title']       = (bool)$show_title;
         $params['updated']          = $GLOBALS['db']->Date();
-        $spTable = Jaws_ORM::getInstance()->table('static_pages');
-        $result = $spTable->insert($params)->exec();
-        if (Jaws_Error::IsError($result)) {
+        $spTable = Jaws_ORM::getInstance()->table('static_pages', '', 'page_id');
+        $base_id = $spTable->insert($params)->exec();
+        if (Jaws_Error::IsError($base_id)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'));
         }
 
-        $base_id = $GLOBALS['db']->lastInsertID('static_pages', 'page_id');
         $tModel = $this->gadget->model->loadAdmin('Translation');
         $tid = $tModel->AddTranslation($base_id, $title, $content, $language, $meta_keys, $meta_desc, $tags, $published);
         if (Jaws_Error::IsError($tid)) {
@@ -57,7 +56,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_PAGE_CREATED'), RESPONSE_NOTICE);
-        return true;
+        return $base_id;
     }
 
     /**

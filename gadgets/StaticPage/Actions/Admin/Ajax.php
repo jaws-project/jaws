@@ -130,9 +130,8 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Page');
 
         if ($id == 'NEW') {
-            $model->AddPage($title, $group, $showtitle, $content, $language,
+            $newid = $model->AddPage($title, $group, $showtitle, $content, $language,
                                    $fast_url, $meta_keys, $meta_desc, $tags, $published, true);
-            $newid    = $GLOBALS['db']->lastInsertID('static_pages', 'id');
             $response['id'] = $newid;
             $response['message'] = _t('STATICPAGE_PAGE_AUTOUPDATED',
                                       date('H:i:s'),
