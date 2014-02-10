@@ -80,6 +80,6 @@ class Contact_Model_Contacts extends Jaws_Gadget_Model
         $GLOBALS['app']->Session->SetCookie('visitor_email', $email, 60*24*150);
         $GLOBALS['app']->Session->SetCookie('visitor_url',   $url,   60*24*150);
 
-        return true;
+        return $result;
     }
 }

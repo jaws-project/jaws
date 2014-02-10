@@ -95,7 +95,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             $res_msg = _t('CONTACT_RESULT_ERROR_DB');
         } else {
             $to = '';
-            $cid = $GLOBALS['db']->lastInsertID('contacts', 'id');
+            $cid = $result;
             $rid = (int)$post['recipient'];
             if (!empty($rid)) {
                 $model = $this->gadget->model->load('Recipients');
