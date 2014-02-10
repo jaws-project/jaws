@@ -32,7 +32,7 @@ class Upgrader_Authentication extends JawsUpgraderStage
      */
     function Display()
     {
-        $request =& Jaws_Request::getInstance();
+        $request = Jaws_Request::getInstance();
         $use_log = $request->fetch('use_log', 'post');
         //Set main session-log vars
         if (isset($use_log)) {
@@ -65,7 +65,7 @@ class Upgrader_Authentication extends JawsUpgraderStage
      */
     function Validate()
     {
-        $request =& Jaws_Request::getInstance();
+        $request = Jaws_Request::getInstance();
         $secure = $request->fetch('secure', 'post');
         $_SESSION['secure'] = !empty($secure);
 
