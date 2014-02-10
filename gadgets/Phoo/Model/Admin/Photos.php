@@ -225,9 +225,8 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
             Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $data['filename']);
         }
 
-        // Get last id...
         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_PHOTO_ADDED'), RESPONSE_NOTICE);
-        return $GLOBALS['db']->lastInsertID('phoo_image', 'id');
+        return $result;
     }
 
     /**

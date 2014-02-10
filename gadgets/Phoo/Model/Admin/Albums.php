@@ -148,7 +148,7 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_ALBUM_CREATED'), RESPONSE_NOTICE);
-        return $GLOBALS['db']->lastInsertID('phoo_album', 'id');
+        return $result;
     }
 
 }
