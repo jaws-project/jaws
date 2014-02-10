@@ -18,7 +18,7 @@ define('JAWS_COMPONENT_INSTALL', 4);
 define('JAWS_COMPONENT_UPGRADE', 5);
 
 // Version of the unpacked Jaws (not the one in registry)
-define('JAWS_VERSION', '1.1.0');
+define('JAWS_VERSION', '1.1.1');
 define('JAWS_VERSION_CODENAME', 'Security, Ease of Use, Performance, Interoperability, Flexibility');
 
 define('JAWS_EMERG',   1);  // System is unusable
