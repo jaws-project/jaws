@@ -42,7 +42,7 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
      */
     function Banners($gid = 0)
     {
-        $id = (int)jaws()->request->fetch('id', 'get');
+        $id = (int)$this->gadget->request->fetch('id', 'get');
         $abs_url = false;
 
         if(!empty($id)) {
