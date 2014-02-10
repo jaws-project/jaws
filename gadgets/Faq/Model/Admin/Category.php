@@ -50,14 +50,13 @@ class Faq_Model_Admin_Category extends Faq_Model_Category
         $params['updatetime']           = $GLOBALS['db']->Date();
 
         $table = Jaws_ORM::getInstance()->table('faq_category');
-        $result = $table->insert($params)->exec();
-        if (Jaws_Error::IsError($result)) {
+        $cid = $table->insert($params)->exec();
+        if (Jaws_Error::IsError($cid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'));
         }
 
-        $cid = $GLOBALS['db']->lastInsertID('faq_category', 'id');
-        if (Jaws_Error::IsError($cid) || empty($cid)) {
+        if (empty($cid)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'));
         }
