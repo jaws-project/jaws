@@ -27,7 +27,7 @@ class Jaws_XSS
         if (!isset($safe_xss)) {
             $xss_parsing_level = $GLOBALS['app']->Registry->fetch('xss_parsing_level', 'Policy');
 
-            //Create safehtml object
+            //Create safe html object
             require_once PEAR_PATH. 'HTML/Safe.php';
             $safe_xss = new HTML_Safe();
         }
@@ -47,7 +47,7 @@ class Jaws_XSS
      *
      * @access  public
      * @param   string  $string     The string being converted
-     * @param   bool    $noquote    Will leave both double and single quotes unconverted
+     * @param   bool    $noquotes   Will leave both double and single quotes unconverted
      * @return  string  The converted string
      */
     static function filter($string, $noquotes = false)
@@ -61,7 +61,7 @@ class Jaws_XSS
      *
      * @access  public
      * @param   string  $string     The string to decode
-     * @param   bool    $noquote    Will leave both double and single quotes unconverted
+     * @param   bool    $noquotes   Will leave both double and single quotes unconverted
      * @return  string  Returns the decoded string
      */
     static function defilter($string, $noquotes = false)
