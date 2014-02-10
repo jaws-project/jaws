@@ -300,9 +300,14 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         }
         $this->gadget->CheckPermission('SendMessage');
 
-        $post = jaws()->request->fetch(array('id', 'published', 'recipient_users', 'recipient_groups',
-                                             'subject', 'attachments:array'), 'post');
-        $post['body'] = jaws()->request->fetch('body', 'post', 'strip_crlf');
+        $post = jaws()->request->fetch(
+            array(
+                'id', 'recipient_users', 'recipient_groups',
+                'subject', 'body', 'attachments:array', 'published'
+            ),
+            'post'
+        );
+        $post['body'] = jaws()->request->strip_crlf($post['body']);
 
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Message');
