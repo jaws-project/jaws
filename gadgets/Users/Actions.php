@@ -37,7 +37,6 @@ $actions['LatestRegistered'] = array(
 $actions['Profile'] = array(
     'normal' => true,
     'file' => 'Profile',
-    'parametric' => true,
 );
 $actions['AboutUser'] = array(
     'layout' => true,
