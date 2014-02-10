@@ -48,8 +48,8 @@ class Launcher_Actions_Script extends Jaws_Gadget_Action
     {
         $params = null;
         if (empty($script)) {
-            $script = jaws()->request->fetch('script', 'get');
-            $params = jaws()->request->fetch('params', 'get');
+            $script = $this->gadget->request->fetch('script', 'get');
+            $params = $this->gadget->request->fetch('params', 'get');
         }
 
         if (!empty($script)) {
