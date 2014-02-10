@@ -55,7 +55,7 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Albums');
 
         if (empty($gid)) {
-            $gid = jaws()->request->fetch('group', 'get');
+            $gid = $this->gadget->request->fetch('group', 'get');
         }
         if (is_null($gid)) {
             $group = (int)$this->gadget->request->fetch('group');
