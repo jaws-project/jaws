@@ -332,7 +332,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
                                            true);
             if (!Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PopLastResponse(); // emptying all responses message
-                $newid          = $GLOBALS['db']->lastInsertID('blog', 'id');
+                $newid          = $res;
                 $response['id'] = $newid;
                 $response['message'] = _t('BLOG_ENTRY_AUTOUPDATED',
                                           date('H:i:s'),
