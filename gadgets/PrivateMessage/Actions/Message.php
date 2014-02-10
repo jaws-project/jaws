@@ -139,13 +139,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
             $tpl->SetVariable('text', $response['text']);
         }
 
-        $messages = $model->GetMessages(
-            $user,
-            $folder,
-            $post,
-            $limit,
-            ($page - 1) * $limit);
-
+        $messages = $model->GetMessages($user, $folder, $post, $limit, ($page - 1) * $limit);
         if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
             foreach ($messages as $message) {
