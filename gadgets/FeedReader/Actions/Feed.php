@@ -83,7 +83,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $res = $parser->fetch($site['url']);
         if (PEAR::isError($res)) {
             $GLOBALS['log']->Log(JAWS_LOG_ERROR, '['.$this->gadget->title.']: ',
-                _t('FEEDREADER_ERROR_CANT_FETCH', Jaws_XSS::filter($site['url'])), '');
+                _t('FEEDREADER_ERROR_CANT_FETCH', Jaws_XSS::refilter($site['url'])), '');
         }
 
         if (!isset($parser->feed)) {
@@ -96,14 +96,20 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
 
         switch ($site['title_view']) {
             case 1:
-                $tpl->SetVariable('feed_title', Jaws_XSS::filter($parser->feed['channel']['title']));
+                $tpl->SetVariable('feed_title', Jaws_XSS::refilter($parser->feed['channel']['title']));
                 $tpl->SetVariable('feed_link',
-                    Jaws_XSS::filter((isset($parser->feed['channel']['link']) ? $parser->feed['channel']['link'] : '')));
+                    Jaws_XSS::refilter(
+                        isset($parser->feed['channel']['link']) ? $parser->feed['channel']['link'] : ''
+                    )
+                );
                 break;
             case 2:
-                $tpl->SetVariable('feed_title', Jaws_XSS::filter($site['title']));
+                $tpl->SetVariable('feed_title', Jaws_XSS::refilter($site['title']));
                 $tpl->SetVariable('feed_link',
-                    Jaws_XSS::filter((isset($parser->feed['channel']['link']) ? $parser->feed['channel']['link'] : '')));
+                    Jaws_XSS::refilter(
+                        isset($parser->feed['channel']['link']) ? $parser->feed['channel']['link'] : ''
+                    )
+                );
                 break;
             default:
         }
@@ -113,8 +119,8 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         if (isset($parser->feed['items'])) {
             foreach($parser->feed['items'] as $index => $item) {
                 $tpl->SetBlock("feedreader/$block/item");
-                $tpl->SetVariable('title', Jaws_XSS::filter($item['title']));
-                $tpl->SetVariable('href', isset($item['link'])? Jaws_XSS::filter($item['link']) : '');
+                $tpl->SetVariable('title', Jaws_XSS::refilter($item['title']));
+                $tpl->SetVariable('href', isset($item['link'])? Jaws_XSS::refilter($item['link']) : '');
                 $tpl->ParseBlock("feedreader/$block/item");
                 if (($site['count_entry'] > 0) && ($site['count_entry'] <= ($index + 1))) {
                     break;
