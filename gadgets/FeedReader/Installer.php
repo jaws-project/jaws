@@ -72,26 +72,28 @@ class FeedReader_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        $result = $this->installSchema('schema.xml', '', '0.8.0.xml');
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
+        if (version_compare($old, '0.9.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '0.8.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
 
-        $new_feed_dir = JAWS_DATA. 'feedcache'. DIRECTORY_SEPARATOR;
-        $old_feed_dir = JAWS_DATA. 'rsscache'.  DIRECTORY_SEPARATOR;
-        if (!Jaws_Utils::mkdir($new_feed_dir)) {
-            return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_feed_dir));
-        }
+            $new_feed_dir = JAWS_DATA. 'feedcache'. DIRECTORY_SEPARATOR;
+            $old_feed_dir = JAWS_DATA. 'rsscache'.  DIRECTORY_SEPARATOR;
+            if (!Jaws_Utils::mkdir($new_feed_dir)) {
+                return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_feed_dir));
+            }
 
-        Jaws_Utils::delete($old_feed_dir);
+            Jaws_Utils::delete($old_feed_dir);
 
-        // ACL keys
-        $this->gadget->acl->delete('ManageRSSSite');
+            // ACL keys
+            $this->gadget->acl->delete('ManageRSSSite');
 
-        // Update layout actions
-        $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
-        if (!Jaws_Error::isError($layoutModel)) {
-            $layoutModel->EditGadgetLayoutAction('FeedReader', 'Display', 'DisplayFeeds', 'Feed');
+            // Update layout actions
+            $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
+            if (!Jaws_Error::isError($layoutModel)) {
+                $layoutModel->EditGadgetLayoutAction('FeedReader', 'Display', 'DisplayFeeds', 'Feed');
+            }
         }
 
         return true;

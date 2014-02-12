@@ -80,7 +80,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
             $parser->cache_dir = JAWS_DATA . 'feedcache';
         }
 
-        $res = $parser->fetch($site['url']);
+        $res = $parser->fetch(Jaws_XSS::defilter($site['url']));
         if (PEAR::isError($res)) {
             $GLOBALS['log']->Log(JAWS_LOG_ERROR, '['.$this->gadget->title.']: ',
                 _t('FEEDREADER_ERROR_CANT_FETCH', Jaws_XSS::refilter($site['url'])), '');

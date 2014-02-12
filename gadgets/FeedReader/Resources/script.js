@@ -101,7 +101,7 @@ function updateForm(feed)
 {
     $('id').value          = feed['id'];
     $('title').value       = feed['title'].defilter();
-    $('url').value         = feed['url'];
+    $('url').value         = feed['url'].defilter();
     $('cache_time').value  = feed['cache_time'];
     $('view_type').value   = feed['view_type'];
     $('count_entry').value = feed['count_entry'];
