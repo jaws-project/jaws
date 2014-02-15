@@ -108,7 +108,7 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
         // Requires
         $tpl->SetBlock('info/requires');
         $tpl->SetVariable('lbl_requires', _t('COMPONENTS_GADGETS_DEPENDENCIES').':');
-        foreach ($objGadget->GetRequirements() as $rqGadget) {
+        foreach ($objGadget->requirement as $rqGadget) {
             $tpl->SetBlock('info/requires/item');
             $tpl->SetVariable('gadget', $rqGadget);
             $tpl->ParseBlock('info/requires/item');
