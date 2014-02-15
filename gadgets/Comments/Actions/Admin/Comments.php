@@ -14,11 +14,11 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
      * Show comments list
      *
      * @access  public
-     * @param   string $gadget  Gadget name
-     * @param   string $menubar Menubar
+     * @param   string $req_gadget  Gadget name
+     * @param   string $menubar     Menubar
      * @return  string XHTML template content
      */
-    function Comments($gadget = '', $menubar = '')
+    function Comments($req_gadget = '', $menubar = '')
     {
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('Comments.html');
@@ -26,7 +26,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         //Menu bar
         $tpl->SetVariable('menubar', empty($menubar)? $this->MenuBar('Comments') : $menubar);
 
-        if (empty($gadget)) {
+        if (empty($req_gadget)) {
             //Gadgets filter label
             $lblGadget =& Piwi::CreateWidget('Label', _t('COMMENTS_GADGETS').': ', 'gadgets_filter');
             $tpl->SetVariable('lbl_gadgets_filter', $lblGadget->Get());
@@ -37,14 +37,16 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
             $filterGadgets->setStyle('width: 100px;');
             $filterGadgets->AddEvent(ON_CHANGE, "searchComment()");
             $filterGadgets->AddOption(_t('GLOBAL_ALL'), '');
-            // TODO: Get List Of Gadget Which Use Comments
             $filterGadgets->AddOption(_t('COMMENTS_TITLE'), 'Comments');
-            $filterGadgets->AddOption(_t('BLOG_TITLE'), 'Blog');
-            $filterGadgets->AddOption(_t('PHOO_TITLE'), 'Phoo');
-            $filterGadgets->AddOption(_t('SHOUTBOX_TITLE'), 'Shoutbox');
+            $gadgets = $this->gadget->model->load()->recommendedfor();
+            if (!Jaws_Error::IsError($gadgets)) {
+                foreach ($gadgets as $gadget) {
+                    $filterGadgets->AddOption(_t(strtoupper($gadget.'_TITLE')), $gadget);
+                }
+            }
             $filterGadgets->SetDefault('');
         } else {
-            $filterGadgets =& Piwi::CreateWidget('HiddenEntry', 'gadgets_filter', $gadget);
+            $filterGadgets =& Piwi::CreateWidget('HiddenEntry', 'gadgets_filter', $req_gadget);
             $filterGadgets->SetID('gadgets_filter');
         }
         $tpl->SetVariable('gadgets_filter', $filterGadgets->Get());
@@ -73,7 +75,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         $tpl->SetVariable('filter_button', $filterButton->Get());
 
         // DataGrid
-        $tpl->SetVariable('datagrid', $this->getDataGrid($gadget));
+        $tpl->SetVariable('datagrid', $this->getDataGrid($req_gadget));
         // CommentUI
         $tpl->SetVariable('comment_ui', $this->CommentUI());
 
