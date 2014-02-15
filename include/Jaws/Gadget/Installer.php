@@ -115,30 +115,6 @@ class Jaws_Gadget_Installer
     }
 
     /**
-     * Gets gadgets that requires the given gadget
-     *
-     * @access  public
-     * @return  mixed   Array of gadgets otherwise Jaws_Error
-     */
-    public function requirements()
-    {
-        $params = array();
-        $params['name']  = 'requirement';
-        $params['value'] = '%,'. $this->gadget->name. ',%';
-
-        $sql = '
-            SELECT
-                [component]
-            FROM [[registry]]
-            WHERE
-                [key_name] = {name}
-              AND
-                [key_value] LIKE {value}';
-
-        return $GLOBALS['db']->queryCol($sql, $params);
-    }
-
-    /**
      * Install a gadget
      *
      * @access  public
@@ -237,7 +213,8 @@ class Jaws_Gadget_Installer
             );
         }
 
-        $dependent_gadgets = $this->requirements();
+        $gModel = $this->gadget->model->load();
+        $dependent_gadgets = $gModel->requirements();
         if (!empty($dependent_gadgets)) {
             if (Jaws_Error::IsError($dependent_gadgets)) {
                 return $dependent_gadgets;
@@ -410,7 +387,8 @@ class Jaws_Gadget_Installer
         }
 
         // check depend on gadgets status
-        $dependent_gadgets = $this->requirements();
+        $gModel = $this->gadget->model->load();
+        $dependent_gadgets = $gModel->requirements();
         if (Jaws_Error::IsError($dependent_gadgets)) {
             return $dependent_gadgets;
         }

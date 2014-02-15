@@ -128,6 +128,23 @@ class Jaws_Gadget_Model
 
 
     /**
+     * Gets requirements gadgets
+     *
+     * @access  public
+     * @return  mixed   Array of gadgets otherwise Jaws_Error
+     */
+    public function requirements()
+    {
+        $tblReg = Jaws_ORM::getInstance()->table('registry');
+        return $tblReg->select('component')
+            ->where('key_name', 'requirement')
+            ->and()
+            ->where('key_value', '%,'. $this->gadget->name. ',%', 'like')
+            ->fetchColumn();
+    }
+
+
+    /**
      * Performs any actions required to finish installing a gadget.
      * Gadgets should override this method only if they need to perform actions to install.
      *
