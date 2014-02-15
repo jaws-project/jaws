@@ -26,7 +26,7 @@ class Shoutbox_Info extends Jaws_Gadget
      * @var     array
      * @access  private
      */
-    var $_Requires = array(
+    var $requirement = array(
         'Comments',
     );
 
