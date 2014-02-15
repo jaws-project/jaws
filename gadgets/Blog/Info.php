@@ -25,9 +25,7 @@ class Blog_Info extends Jaws_Gadget
      * @var     array
      * @access  public
      */
-    var $recommended = array(
-        'Comments',
-    );
+    var $recommended = array('Comments', 'Tags');
 
     /**
      * Default front-end action name
