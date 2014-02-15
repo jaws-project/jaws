@@ -150,6 +150,10 @@ class Phoo_Installer extends Jaws_Gadget_Installer
             $this->gadget->acl->insert('ManageGroups');
         }
 
+        if (version_compare($old, '1.1.0', '<')) {
+            $this->gadget->registry->insert('recommended', ',Comments,');
+        }
+
         return true;
     }
 
