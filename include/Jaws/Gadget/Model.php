@@ -128,12 +128,12 @@ class Jaws_Gadget_Model
 
 
     /**
-     * Gets requirements gadgets
+     * Gets gadgets bases on this gadget
      *
      * @access  public
      * @return  mixed   Array of gadgets otherwise Jaws_Error
      */
-    public function requirements()
+    public function requirementfor()
     {
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         return $tblReg->select('component')
@@ -141,6 +141,24 @@ class Jaws_Gadget_Model
             ->and()
             ->where('key_value', '%,'. $this->gadget->name. ',%', 'like')
             ->fetchColumn();
+    }
+
+
+    /**
+     * Gets gadgets recommended this gadget
+     *
+     * @access  public
+     * @return  mixed   Array of gadgets otherwise Jaws_Error
+     */
+    public function recommendedfor()
+    {
+        $tblReg = Jaws_ORM::getInstance()->table('registry');
+        $result = $tblReg->select('component')
+            ->openWhere('key_name', 'requirement')->or()->closeWhere('key_name', 'recommended')
+            ->and()
+            ->where('key_value', '%,'. $this->gadget->name. ',%', 'like')
+            ->fetchColumn();
+        return Jaws_Error::IsError($result)? $result : array_unique($result);
     }
 
 
