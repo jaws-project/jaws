@@ -99,12 +99,17 @@ class LinkDump_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        // Update layout actions
-        $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
-        if (!Jaws_Error::isError($layoutModel)) {
-            $layoutModel->EditGadgetLayoutAction('LinkDump', 'Display', 'Category', 'Groups');
-            $layoutModel->EditGadgetLayoutAction('LinkDump', 'ShowCategories', 'Categories', 'Groups');
-            $layoutModel->EditGadgetLayoutAction('LinkDump', 'ShowTagCloud', 'ShowTagCloud', 'TagCloud');
+        if (version_compare($old, '0.9.0', '<')) {
+            $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
+            if (!Jaws_Error::isError($layoutModel)) {
+                $layoutModel->EditGadgetLayoutAction('LinkDump', 'Display', 'Category', 'Groups');
+                $layoutModel->EditGadgetLayoutAction('LinkDump', 'ShowCategories', 'Categories', 'Groups');
+                $layoutModel->EditGadgetLayoutAction('LinkDump', 'ShowTagCloud', 'ShowTagCloud', 'TagCloud');
+            }
+        }
+
+        if (version_compare($old, '1.0.0', '<')) {
+            $this->gadget->registry->insert('recommended', ',Tags,');
         }
 
         return true;
