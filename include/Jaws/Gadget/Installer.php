@@ -123,7 +123,7 @@ class Jaws_Gadget_Installer
     public function requirements()
     {
         $params = array();
-        $params['name']  = 'requires';
+        $params['name']  = 'requirement';
         $params['value'] = '%,'. $this->gadget->name. ',%';
 
         $sql = '
@@ -135,8 +135,7 @@ class Jaws_Gadget_Installer
               AND
                 [key_value] LIKE {value}';
 
-        $requires = $GLOBALS['db']->queryCol($sql, $params);
-        return $requires;
+        return $GLOBALS['db']->queryCol($sql, $params);
     }
 
     /**
@@ -169,11 +168,13 @@ class Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $requires = ','. implode($this->gadget->requirement, ','). ',';
+        $requirement = ','. implode($this->gadget->requirement, ','). ',';
+        $recommended = ','. implode($this->gadget->recommended, ','). ',';
         $installer->_RegKeys = array_merge(
             array(
                 array('version', $this->gadget->version),
-                array('requires', $requires),
+                array('requirement', $requirement),
+                array('recommended', $recommended),
             ),
             $installer->_RegKeys
         );
