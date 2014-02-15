@@ -68,12 +68,20 @@ class Jaws_Gadget
     var $_Wiki_Format = JAWS_WIKI_FORMAT;
 
     /**
-     * Required gadgets
+     * Requirement gadgets
      *
      * @var     array
-     * @access  private
+     * @access  public
      */
-    var $_Requires = array();
+    public $requirement = array();
+
+    /**
+     * Recommended/Optional gadgets
+     *
+     * @var     array
+     * @access  public
+     */
+    public $recommended = array();
 
     /**
      * Attributes of the gadget
@@ -288,29 +296,6 @@ class Jaws_Gadget
                            array($this->_Wiki_URL, $lang, $this->name, strtolower($this->name),
                                  'Gadget', 'gadget', 'Gadgets', 'gadgets'),
                            $this->_Wiki_Format);
-    }
-
-    /**
-     * Register required gadgets
-     *
-     * @access  public
-     * @param   mixed   $argv Optional variable list of required gadgets
-     * @return  void
-     */
-    function Requires($argv)
-    {
-        $this->_Requires = func_get_args();
-    }
-
-    /**
-     * Get the requirements of the gadget
-     *
-     * @access  public
-     * @return  array Gadget's Requirements
-     */
-    function GetRequirements()
-    {
-        return $this->_Requires;
     }
 
     /**
