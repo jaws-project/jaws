@@ -151,7 +151,7 @@ class Phoo_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.1.0', '<')) {
-            $this->gadget->registry->insert('recommended', ',Comments,');
+            $this->gadget->registry->insert('recommended', ',Comments,Tags,');
         }
 
         return true;
