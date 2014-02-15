@@ -115,12 +115,12 @@ class Jaws_Gadget_Installer
     }
 
     /**
-     * Gets gadgets that depend on a given gadget
+     * Gets gadgets that requires the given gadget
      *
      * @access  public
      * @return  mixed   Array of gadgets otherwise Jaws_Error
      */
-    public function dependOnGadgets()
+    public function requirements()
     {
         $params = array();
         $params['name']  = 'requires';
@@ -159,7 +159,7 @@ class Jaws_Gadget_Installer
         }
 
         // all required gadgets, must be installed
-        foreach ($this->gadget->_Requires as $req) {
+        foreach ($this->gadget->requirement as $req) {
             if (!Jaws_Gadget::IsGadgetInstalled($req)) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_GI_GADGET_REQUIRES', $req, $this->gadget->name),
@@ -169,7 +169,7 @@ class Jaws_Gadget_Installer
         }
 
         // Registry keys
-        $requires = ','. implode($this->gadget->_Requires, ','). ',';
+        $requires = ','. implode($this->gadget->requirement, ','). ',';
         $installer->_RegKeys = array_merge(
             array(
                 array('version', $this->gadget->version),
@@ -236,7 +236,7 @@ class Jaws_Gadget_Installer
             );
         }
 
-        $dependent_gadgets = $this->dependOnGadgets();
+        $dependent_gadgets = $this->requirements();
         if (!empty($dependent_gadgets)) {
             if (Jaws_Error::IsError($dependent_gadgets)) {
                 return $dependent_gadgets;
@@ -363,7 +363,7 @@ class Jaws_Gadget_Installer
         }
 
         // all required gadgets, must be enabled
-        foreach ($this->gadget->_Requires as $req) {
+        foreach ($this->gadget->requirement as $req) {
             if (!Jaws_Gadget::IsGadgetEnabled($req)) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_GI_GADGET_REQUIRES', $req, $this->gadget->name),
@@ -409,7 +409,7 @@ class Jaws_Gadget_Installer
         }
 
         // check depend on gadgets status
-        $dependent_gadgets = $this->dependOnGadgets();
+        $dependent_gadgets = $this->requirements();
         if (Jaws_Error::IsError($dependent_gadgets)) {
             return $dependent_gadgets;
         }
