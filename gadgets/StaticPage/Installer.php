@@ -97,12 +97,18 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        // set dynamic ACLs of groups
-        $gModel = $this->gadget->model->load('Group');
-        $groups = $gModel->GetGroups();
-        foreach ($groups as $group) {
-            $this->gadget->acl->insert('AccessGroup', $group['id'], true);
-            $this->gadget->acl->insert('ManageGroup', $group['id'], true);
+        if (version_compare($old, '1.0.0', '<')) {
+            // set dynamic ACLs of groups
+            $gModel = $this->gadget->model->load('Group');
+            $groups = $gModel->GetGroups();
+            foreach ($groups as $group) {
+                $this->gadget->acl->insert('AccessGroup', $group['id'], true);
+                $this->gadget->acl->insert('ManageGroup', $group['id'], true);
+            }
+        }
+
+        if (version_compare($old, '1.1.0', '<')) {
+            $this->gadget->registry->insert('recommended', ',Tags,');
         }
 
         return true;
