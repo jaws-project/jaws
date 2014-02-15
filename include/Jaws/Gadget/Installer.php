@@ -214,7 +214,7 @@ class Jaws_Gadget_Installer
         }
 
         $gModel = $this->gadget->model->load();
-        $dependent_gadgets = $gModel->requirements();
+        $dependent_gadgets = $gModel->requirementfor();
         if (!empty($dependent_gadgets)) {
             if (Jaws_Error::IsError($dependent_gadgets)) {
                 return $dependent_gadgets;
@@ -388,7 +388,7 @@ class Jaws_Gadget_Installer
 
         // check depend on gadgets status
         $gModel = $this->gadget->model->load();
-        $dependent_gadgets = $gModel->requirements();
+        $dependent_gadgets = $gModel->requirementfor();
         if (Jaws_Error::IsError($dependent_gadgets)) {
             return $dependent_gadgets;
         }
