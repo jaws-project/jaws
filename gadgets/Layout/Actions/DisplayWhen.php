@@ -84,7 +84,7 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         $tpl->SetVariable('selected_gadgets', $gadget_field->Get());
 
         $saveButton =& Piwi::CreateWidget('Button', 'ok',_t('GLOBAL_SAVE'), STOCK_SAVE);
-        $saveButton->AddEvent(ON_CLICK, "parent.parent.saveChangeDW(".$id.", getSelectedGadgets());");
+        $saveButton->AddEvent(ON_CLICK, "parent.parent.saveChangeDW(".$layoutElement['id'].", getSelectedGadgets());");
         $tpl->SetVariable('save', $saveButton->Get());
 
         $tpl->ParseBlock('template');
