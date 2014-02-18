@@ -29,7 +29,7 @@ require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
 $IsIndex   = false;
 $objGadget = null;
 $IsReqActionStandAlone = false;
-// Only registerd user can access not global website
+// Only registered user can access not global website
 $AccessToWebsiteDenied = !$GLOBALS['app']->Session->Logged() &&
                          $GLOBALS['app']->Registry->fetch('global_website', 'Settings') == 'false';
 
