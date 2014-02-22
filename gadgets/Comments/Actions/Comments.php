@@ -261,19 +261,37 @@ class Comments_Actions_Comments extends Comments_Actions_Default
 
                     switch ($entry['gadget']) {
                         case 'Blog':
-                            $url = $GLOBALS['app']->Map->GetURLFor('Blog', 'SingleView', array('id' => $entry['reference']), true);
-                            $url = $url . htmlentities('#comment' . $entry['id']);
+                            $url = $GLOBALS['app']->Map->GetURLFor(
+                                'Blog',
+                                'SingleView',
+                                array('id' => $entry['reference']),
+                                true
+                            );
+                            $url = $url. '#comment'. $entry['id'];
                             break;
 
                         case 'Phoo':
-                            $url = $GLOBALS['app']->Map->GetURLFor('Phoo', 'ViewImage', array('id' => $entry['reference']), true);
-                            $url = $url . htmlentities('#comment' . $entry['id']);
+                            $url = $GLOBALS['app']->Map->GetURLFor(
+                                'Phoo',
+                                'ViewImage',
+                                array('id' => $entry['reference']),
+                                true
+                            );
+                            $url = $url. '#comment'. $entry['id'];
                             break;
 
                         case 'Shoutbox':
-                            $url = $GLOBALS['app']->Map->GetURLFor('Shoutbox', 'Comments', array(), true);
-                            $url = $url . htmlentities('#comment' . $entry['id']);
+                            $url = $GLOBALS['app']->Map->GetURLFor(
+                                'Shoutbox',
+                                'Comments',
+                                array(),
+                                true
+                            );
+                            $url = $url. '#comment'. $entry['id'];
                             break;
+
+                        default:
+                            $url = '';
                     }
 
                     $tpl->SetVariable('read_more_url', $url);
