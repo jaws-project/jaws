@@ -178,9 +178,20 @@ function getSelectedAttachments() {
 }
 
 /**
- * Search users
+ * Search users step 1
+ */
+function searchUsersStart(term) {
+    if (searchTimeout !== null) {
+        clearTimeout(searchTimeout);
+    }
+    searchTimeout = setTimeout("searchUsers('" + term + "');", 1000);
+}
+
+/**
+ * Search users step 2
  */
 function searchUsers(term) {
+    searchTimeout = null;
     var users = PrivateMessageAjax.callSync('GetUsers', {'term': term});
     if (users.length < 1) {
         clearUsersSearch();
@@ -196,7 +207,6 @@ function searchUsers(term) {
         }).inject('userSearchResult');
     }
 }
-
 
 /**
  * Clear users search result
@@ -228,3 +238,4 @@ var PrivateMessageAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback);
 
 var uploadedFiles = new Array();
 var lastAttachment = 1;
+var searchTimeout = null;
