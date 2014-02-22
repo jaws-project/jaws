@@ -139,7 +139,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         //Start Transaction
         $blogTable->beginTransaction();
         $max = $blogTable->insert($params)->exec();
-        if (Jaws_Error::IsError($result)) {
+        if (Jaws_Error::IsError($max)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_ENTRY_NOT_ADDED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('BLOG_ERROR_ENTRY_NOT_ADDED'));
         }
