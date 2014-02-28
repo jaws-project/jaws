@@ -66,4 +66,16 @@ class Jaws_Gadget_Request
         }
     }
 
+
+    /**
+     * Gets request method type
+     *
+     * @access  public
+     * @return  string  Request method type(get/post)
+     */
+    function method()
+    {
+        return jaws()->request->method();
+    }
+
 }
