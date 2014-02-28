@@ -269,6 +269,17 @@ class Jaws_Request
     }
 
     /**
+     * Gets request method type
+     *
+     * @access  public
+     * @return  string  Returns request method type
+     */
+    function method()
+    {
+        return strtolower($_SERVER['REQUEST_METHOD']);
+    }
+
+    /**
      * Filter data with added filter functions
      *
      * @access  public
