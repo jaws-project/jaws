@@ -352,10 +352,12 @@ class Jaws_URLMapping
                     continue;
                 }
 
-                // set map variables by params values 
+                // set map variables by params values
                 foreach ($params as $key => $value) {
-                    $value = implode('/', array_map('rawurlencode', explode('/', $value)));
-                    $url = str_replace('{' . $key . '}', $value, $url);
+                    if (!is_null($value)) {
+                        $value = implode('/', array_map('rawurlencode', explode('/', $value)));
+                        $url = str_replace('{' . $key . '}', $value, $url);
+                    }
                 }
 
                 // remove not fill optional part of map
