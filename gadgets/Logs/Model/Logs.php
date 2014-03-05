@@ -72,7 +72,7 @@ class Logs_Model_Logs extends Jaws_Gadget_Model
         $logsTable->orderBy('logs.id desc');
         $logsTable->limit((int)$limit, $offset);
 
-        if (!empty($filters) && count($filters) > 1) {
+        if (!empty($filters) && count($filters) > 0) {
             // from_date
             if (isset($filters['from_date']) && !empty($filters['from_date'])) {
                 if (!is_numeric($filters['from_date'])) {

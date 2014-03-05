@@ -23,7 +23,7 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->select('count(id):integer');
 
-        if (!empty($filters) && count($filters) > 1) {
+        if (!empty($filters) && count($filters) > 0) {
             if (isset($filters['from_date']) && !empty($filters['from_date'])) {
                 if (!is_numeric($filters['from_date'])) {
                     $objDate = Jaws_Date::getInstance();
@@ -104,7 +104,7 @@ class Logs_Model_Admin_Logs extends Jaws_Gadget_Model
         $logsTable = Jaws_ORM::getInstance()->table('logs');
         $logsTable->delete();
 
-        if (!empty($filters) && count($filters) > 1) {
+        if (!empty($filters) && count($filters) > 0) {
             // from_date
             if (isset($filters['from_date']) && !empty($filters['from_date'])) {
                 if (!is_numeric($filters['from_date'])) {
