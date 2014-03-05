@@ -139,7 +139,7 @@ class UrlMapper_Model_Admin_ErrorMaps extends UrlMapper_Model_ErrorMaps
     {
         $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
         $errorsTable->delete();
-        if (!empty($filters) && count($filters) > 1) {
+        if (!empty($filters) && count($filters) > 0) {
             // from_date
             if (isset($filters['from_date']) && !empty($filters['from_date'])) {
                 if (!is_numeric($filters['from_date'])) {
@@ -197,7 +197,7 @@ class UrlMapper_Model_Admin_ErrorMaps extends UrlMapper_Model_ErrorMaps
             'id:integer', 'url', 'code:integer', 'new_url', 'new_code', 'hits:integer',
             'insert_time', 'update_time');
 
-        if (!empty($filters) && count($filters) > 1) {
+        if (!empty($filters) && count($filters) > 0) {
             // from_date
             if (isset($filters['from_date']) && !empty($filters['from_date'])) {
                 if (!is_numeric($filters['from_date'])) {
@@ -247,7 +247,7 @@ class UrlMapper_Model_Admin_ErrorMaps extends UrlMapper_Model_ErrorMaps
     {
         $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
         $errorsTable->select('count([id]):integer');
-        if (!empty($filters) && count($filters) > 1) {
+        if (!empty($filters) && count($filters) > 0) {
             // from_date
             if (isset($filters['from_date']) && !empty($filters['from_date'])) {
                 if (!is_numeric($filters['from_date'])) {
