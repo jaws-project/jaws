@@ -53,6 +53,7 @@ class Forums_Hooks_Sitemap extends Jaws_Gadget_Hook
 
             if ($data_type == 2) {
                 $pModel = $this->gadget->model->load('Forums');
+                $tModel = $this->gadget->model->load('Topics');
                 $forums  = $pModel->GetForums(false, true, true);
                 if (Jaws_Error::IsError($forums)) {
                     return $forums;
@@ -65,6 +66,18 @@ class Forums_Hooks_Sitemap extends Jaws_Gadget_Hook
                         'lastmod'   => null,
                         'url'       => $this->gadget->urlMap('Topics', array('fid' => $forum['id']), true),
                     );
+
+                    // Get all published topics
+                    $topics = $tModel->GetTopics($forum['id'], true);
+                    foreach ($topics as $topic) {
+                        $result[] = array(
+                            'id'        => $topic['id'],
+                            'parent'    => $forum['gid'],
+                            'title'     => $topic['subject'],
+                            'lastmod'   => null,
+                            'url'       => $this->gadget->urlMap('Posts', array('fid' => $forum['id'], 'tid' => $topic['id']), true),
+                        );
+                    }
                 }
             }
         }
