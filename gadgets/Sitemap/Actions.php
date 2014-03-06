@@ -34,7 +34,7 @@ $admin_actions['ManageSitemap'] = array(
 );
 $admin_actions['GetCategoriesList'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'ManageSitemap',
 );
 $admin_actions['GetGadgetUI'] = array(
     'standalone' => true,

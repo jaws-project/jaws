@@ -91,11 +91,12 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
      * Get Gadget Categories List
      *
      * @access  public
-     * @param   string  $gadget   Gadget name
      * @return  string  XHTML template content
      */
-    function GetCategoriesList($gadget)
+    function GetCategoriesList()
     {
+        @list($gadget) = jaws()->request->fetchAll('post');
+
         $tpl = $this->gadget->template->loadAdmin('Sitemap.html');
         $tpl->SetBlock('sitemap');
 
