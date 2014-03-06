@@ -129,3 +129,11 @@ margin:0px;
 #links_type, #order_type{
 width:105px;
 }
+#robots_area{
+    width: 300px;
+    margin: 0 auto;
+    text-align: right;
+}
+#robots_area textarea{
+    margin-top: 5px;
+}

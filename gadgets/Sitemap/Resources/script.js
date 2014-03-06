@@ -38,6 +38,9 @@ var SitemapCallback = {
             stopAction();
         }
         showResponse(response);
+    },
+    UpdateRobots: function(response) {
+        showResponse(response);
     }
 }
 
@@ -225,6 +228,12 @@ function saveProperties() {
     }
 }
 
+/**
+ * Update robots
+ */
+function updateRobots() {
+    SitemapAjax.callAsync('UpdateRobots', {'robots': $('robots').value });
+}
 
 var SitemapAjax = new JawsAjax('Sitemap', SitemapCallback);
 

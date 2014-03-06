@@ -19,6 +19,7 @@ class Sitemap_Installer extends Jaws_Gadget_Installer
     var $_RegKeys = array(
         array('sitemap_default_priority', '0.5'),
         array('sitemap_default_frequency', Sitemap_Info::SITEMAP_CHANGE_FREQ_WEEKLY),
+        array('robots_txt', "User-agent: * \nDisallow: /config/ \nDisallow: /data/ \nDisallow: /gadgets/ \nDisallow: /images/ \nDisallow: /include/\nDisallow: /languages/\nDisallow: /libraries/\nDisallow: /plugins/"),
     );
 
     /**

@@ -20,6 +20,10 @@ $actions['Sitemap'] = array(
     'normal' => true,
     'file'   => 'Sitemap'
 );
+$actions['Robots'] = array(
+    'standalone' => true,
+    'file'   => 'Robots',
+);
 
 /**
  * Admin actions
@@ -67,4 +71,12 @@ $admin_actions['SyncSitemapData'] = array(
 $admin_actions['PingSearchEngines'] = array(
     'standalone' => true,
     'file' => 'Ping',
+);
+$admin_actions['Robots'] = array(
+    'normal' => true,
+    'file'   => 'Robots',
+);
+$admin_actions['UpdateRobots'] = array(
+    'standalone' => true,
+    'file'   => 'Robots',
 );

@@ -129,3 +129,11 @@ table#spin_btn button img{
 #links_type, #order_type{
     width:105px;
 }
+#robots_area{
+    width: 300px;
+    margin: 0 auto;
+    text-align: left;
+}
+#robots_area textarea{
+    margin-top: 5px;
+}

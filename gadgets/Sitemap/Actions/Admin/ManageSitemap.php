@@ -10,27 +10,8 @@
  * @copyright  2006-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Sitemap_Actions_Admin_ManageSitemap extends Jaws_Gadget_Action
+class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
 {
-    /**
-     * Prepares the menubar
-     *
-     * @access  public
-     * @return  string  XHTML menubar
-     */
-    function Menubar()
-    {
-        if ($this->gadget->GetPermission('PingSite')) {
-            $menubar = new Jaws_Widgets_Menubar();
-            $menubar->AddOption('PingSite', _t('SITEMAP_PING_SEARCHENGINES'),
-                                'javascript: pingSitemap();',
-                                STOCK_RESET);
-            return $menubar->Get();
-        } else {
-            return '';
-        }
-    }
-
     /**
      * Administration section
      *
@@ -44,6 +25,8 @@ class Sitemap_Actions_Admin_ManageSitemap extends Jaws_Gadget_Action
         $tpl->SetBlock('sitemap');
 
         $tpl->SetBlock('sitemap/sitemap_base');
+        $tpl->SetVariable('menubar', $this->MenuBar('Sitemap'));
+
         $tpl->SetVariable('gadgets_tree', $this->GetGadgetTreeUI());
 
         $save_btn =& Piwi::CreateWidget('Button','btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);

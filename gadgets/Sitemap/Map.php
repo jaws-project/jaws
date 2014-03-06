@@ -15,3 +15,9 @@ $maps[] = array(
     'xml'
 );
 $maps[] = array('Sitemap', 'sitemap');
+$maps[] = array(
+    'Robots',
+    'robots',
+    array(),
+    'txt'
+);
