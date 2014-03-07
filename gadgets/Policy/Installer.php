@@ -42,6 +42,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
         array('max_active_sessions', '0'),         // 0 for unlimited
         array('session_idle_timeout', '30'),       // per minute
         array('session_remember_timeout', '720'),  // hours = 1 month
+        array('blocked_domains', ''),
     );
 
     /**
@@ -100,6 +101,10 @@ class Policy_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->rename('passwd_max_age',        'password_max_age');
             $this->gadget->registry->rename('passwd_min_length',     'password_min_length');
             $this->gadget->registry->rename('passwd_complexity',     'password_complexity');
+        }
+
+        if (version_compare($old, '1.1.0', '<')) {
+            $this->gadget->registry->insert('blocked_domains', '');
         }
 
         return true;
