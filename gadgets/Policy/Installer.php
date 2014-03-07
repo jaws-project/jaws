@@ -25,6 +25,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
         array('obfuscator', 'DISABLED'),
         array('akismet_key', ''),
         array('typepad_key', ''),
+        array('blocked_domains', ''),
         array('crypt_enabled', 'false'),
         array('crypt_pub_key', ''),
         array('crypt_pvt_key', ''),
@@ -42,7 +43,6 @@ class Policy_Installer extends Jaws_Gadget_Installer
         array('max_active_sessions', '0'),         // 0 for unlimited
         array('session_idle_timeout', '30'),       // per minute
         array('session_remember_timeout', '720'),  // hours = 1 month
-        array('blocked_domains', ''),
     );
 
     /**
@@ -66,7 +66,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
      * Installs the gadget
      *
      * @access    public
-     * @return    boolean Returns true on a successfull attempt and Jaws Error otherwise
+     * @return    boolean Returns true on a successful attempt and Jaws Error otherwise
     */
     function Install()
     {
@@ -80,6 +80,10 @@ class Policy_Installer extends Jaws_Gadget_Installer
         $this->gadget->registry->update('crypt_pub_key', $_SESSION['pub_key']);
         $this->gadget->registry->update('crypt_pvt_key', $_SESSION['pvt_key']);
         $this->gadget->registry->update('crypt_key_start_date', $_SESSION['secure']? time() : '0');
+        $this->gadget->registry->update(
+            'blocked_domains',
+            @file_get_contents(JAWS_PATH. 'gadgets/Policy/blocked.domains.txt')
+        );
 
         return true;
     }
@@ -104,7 +108,10 @@ class Policy_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.1.0', '<')) {
-            $this->gadget->registry->insert('blocked_domains', '');
+            $this->gadget->registry->insert(
+                'blocked_domains',
+                @file_get_contents(JAWS_PATH. 'gadgets/Policy/blocked.domains.txt')
+            );
         }
 
         return true;
