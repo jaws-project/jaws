@@ -82,8 +82,16 @@ class Jaws_Mail
     var $mail_mime;
 
     /**
+     * Blocked domains
+     *
+     * @access  private
+     * @param   string  $blocked_domains
+     */
+    private $blocked_domains;
+
+    /**
      * This creates the mail object that will
-     * add recipient, send emails to destinated
+     * add recipient, send emails to destination
      * email addresses calling functions.
      *
      * @access constructor
@@ -112,7 +120,10 @@ class Jaws_Mail
                                   __FUNCTION__);
         }
 
-        // Get the Mail settings data from Registry
+        // Get blocked domains name from registry
+        $this->blocked_domains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
+
+        // Get the mail settings data from registry
         $this->mailer     = $GLOBALS['app']->Registry->fetch('mailer', 'Settings');
         $this->gate_email = $GLOBALS['app']->Registry->fetch('gate_email', 'Settings');
         $this->gate_title = $GLOBALS['app']->Registry->fetch('gate_title', 'Settings');
@@ -138,36 +149,56 @@ class Jaws_Mail
     /**
      * This adds a recipient to the mail to send.
      *
-     * @param   string $recipient     The recipient to add.
-     * @param   string $inform_type   Inform type(To, Bcc, Cc)
      * @access  public
-     * @return  string recipients
+     * @param   string  $recipients    The recipients to add.
+     * @param   string  $inform_type   Inform type(To, Bcc, Cc)
+     * @return  bool    True
      */
-    function AddRecipient($recipient = '', $inform_type = 'To')
+    function AddRecipient($recipients = '', $inform_type = 'To')
     {
-        if (empty($recipient)) {
-            $recipient = $this->site_email;
+        $valid_recipients = array();
+        $recipients = array_filter(array_map('Jaws_UTF8::trim', explode(',', $recipients)));
+        foreach ($recipients as $key => $recipient) {
+            if (false !== $ltPos = Jaws_UTF8::strpos($recipient, '<')) {
+                $ename = Jaws_UTF8::encode_mimeheader(Jaws_UTF8::substr($recipient, 0, $ltPos));
+                $email = Jaws_UTF8::substr($recipient, $ltPos + 1, -1);
+                $recipients[$key] = $ename. "<$email>";
+            } else {
+                $ename = '';
+                $email = $recipient;
+                $recipients[$key] =  $email;
+            }
+
+            // check blocked domains
+            if (false !== strpos($this->blocked_domains, substr(strrchr($email, '@'), 1))) {
+                continue;
+            }
+
+            $valid_recipients[] = $recipients[$key];
+        }
+
+        if (empty($valid_recipients)) {
             if (!empty($this->site_name)) {
-               $recipient = $this->site_name . ' <'. $recipient. '>';
+                $valid_recipients[] = $this->site_name . ' <'. $this->site_email. '>';
+            } else {
+                $valid_recipients[] = $this->site_email;
             }
         }
 
         switch (strtolower($inform_type)) {
             case 'to':
-                $this->headers['To'] = (array_key_exists('To', $this->headers)? ($this->headers['To']. ', ') : ''). $recipient;
+                $this->headers['To'] =
+                    (array_key_exists('To', $this->headers)? ($this->headers['To']. ',') : '').
+                    implode(',', $valid_recipients);
                 break;
             case 'cc':
-                $this->headers['Cc'] = (array_key_exists('Cc', $this->headers)? ($this->headers['Cc']. ', ') : ''). $recipient;
+                $this->headers['Cc'] =
+                    (array_key_exists('Cc', $this->headers)? ($this->headers['Cc']. ',') : '').
+                    implode(',', $valid_recipients);
                 break;
         }
 
-        if (substr($recipient, -1) == '>' && substr($recipient, 0, 1) != '<') {
-            $parts = array_filter(explode('<', $recipient));
-            $parts[0] = Jaws_UTF8::encode_mimeheader(Jaws_UTF8::trim($parts[0]));
-            $recipient = implode('<', $parts);
-        }
-
-        $this->recipient[] = $recipient;
+        $this->recipient = array_merge($this->recipient, $valid_recipients);
         return true;
     }
 
@@ -189,7 +220,7 @@ class Jaws_Mail
      * @param   string $from_email    Who the email is from(E-mail address).
      * @param   string $from_name     Who the email is from(name).
      * @access  public
-     * @return  voild
+     * @return  void
      */
     function SetFrom($from_email = '', $from_name = '')
     {
@@ -264,14 +295,16 @@ class Jaws_Mail
                 return false;
         }
 
-        $realbody = $this->mail_mime->get(array('html_encoding' => '8bit',
-                                                'text_encoding' => '8bit',
-                                                'head_encoding' => 'base64',
-                                                'html_charset'  => 'utf-8',
-                                                'text_charset'  => 'utf-8',
-                                                'head_charset'  => 'utf-8',
-                                                ));
-
+        $realbody = $this->mail_mime->get(
+            array(
+                'html_encoding' => '8bit',
+                'text_encoding' => '8bit',
+                'head_encoding' => 'base64',
+                'html_charset'  => 'utf-8',
+                'text_charset'  => 'utf-8',
+                'head_charset'  => 'utf-8',
+            )
+        );
         if (empty($this->recipient)) {
             $this->AddRecipient();
         }
