@@ -53,6 +53,8 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
             return false; //we need to handle errors on ajax
         }
 
+        $date = Jaws_Date::getInstance();
+        $comment['insert_time'] = $date->Format($comment['createtime'], 'Y-m-d H:i:s');
         return $comment;
     }
 

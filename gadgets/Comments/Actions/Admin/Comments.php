@@ -136,6 +136,9 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         //IP
         $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
 
+        //Date
+        $tpl->SetVariable('lbl_date', _t('GLOBAL_DATE'));
+
         //name
         $nameEntry =& Piwi::CreateWidget('Entry', 'name', '');
         $nameEntry->setStyle('width: 160px;');
@@ -216,8 +219,9 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
             if ($requester == $this->gadget->name) {
                 $newRow['gadget'] = _t(strtoupper($row['gadget']).'_TITLE');
             }
-            $comment = Jaws_UTF8::strlen($row['msg_txt']) > 35 ?
-                (Jaws_UTF8::substr($row['msg_txt'], 0, 32). '...') : $row['msg_txt'];
+            $comment = Jaws_UTF8::strlen($row['msg_txt']) > 25 ?
+                (Jaws_UTF8::substr($row['msg_txt'], 0, 22). '...') : $row['msg_txt'];
+            $comment = "<abbr title='" . $row['msg_txt'] . "'>$comment</abbr>";
             $link =& Piwi::CreateWidget('Link', $comment, "javascript:editComment(this, '{$row['id']}');");
             $newRow['comment'] = $link->Get();
             $newRow['name'] = $row['name'];

@@ -83,6 +83,7 @@ function stopCommentAction()
     $('id').value                      = 0;
     $('gadget').value                  = '';
     $('comment_ip').set('html', '');
+    $('insert_time').innerHTML         = '';
     $('name').value                    = '';
     $('email').value                   = '';
     $('url').value                     = '';
@@ -119,6 +120,7 @@ function editComment(rowElement, id)
     $('id').value                 = comment['id'];
     $('gadget').value             = comment['gadget'];
     $('comment_ip').set('html', comment['ip']);
+    $('insert_time').innerHTML    = comment['insert_time'];
     $('name').value               = comment['name'];
     $('email').value              = comment['email'];
     $('url').value                = comment['url'];
