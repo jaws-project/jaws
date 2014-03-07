@@ -21,13 +21,13 @@ class Policy_Model_Admin_AntiSpam extends Jaws_Gadget_Model
      * @param   bool    $obfuscator
      * @return  bool    True on success and Jaws error on failure
      */
-    function UpdateAntiSpamSettings($filter,
-                                    $default_captcha, $default_captcha_driver, $obfuscator)
+    function UpdateAntiSpamSettings($filter, $default_captcha, $default_captcha_driver, $obfuscator, $blocked_domains)
     {
         $this->gadget->registry->update('filter',                 $filter);
         $this->gadget->registry->update('default_captcha_status', $default_captcha);
         $this->gadget->registry->update('default_captcha_driver', $default_captcha_driver);
         $this->gadget->registry->update('obfuscator',             $obfuscator);
+        $this->gadget->registry->update('blocked_domains',        $blocked_domains);
 
         // install captcha driver
         $objCaptcha = Jaws_Captcha::getInstance($default_captcha_driver);

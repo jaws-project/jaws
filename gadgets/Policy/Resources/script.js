@@ -280,7 +280,8 @@ function saveAntiSpamSettings()
             $('filter').value,
             $('default_captcha').value,
             $('default_captcha_driver').value,
-            $('obfuscator').value
+            $('obfuscator').value,
+            $('blocked_domains').value
         );
     } catch(e) {
         alert(e);

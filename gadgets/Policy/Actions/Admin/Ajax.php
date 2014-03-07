@@ -210,13 +210,16 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateAntiSpamSettings()
     {
         $this->gadget->CheckPermission('AntiSpam');
-        @list($filter, $default_captcha, $default_captcha_driver, $obfuscator) = jaws()->request->fetchAll('post');
+        @list($filter, $default_captcha, $default_captcha_driver,
+            $obfuscator, $blocked_domains
+        ) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('AntiSpam');
         $model->UpdateAntiSpamSettings(
             $filter,
             $default_captcha,
             $default_captcha_driver,
-            $obfuscator
+            $obfuscator,
+            $blocked_domains
         );
         return $GLOBALS['app']->Session->PopLastResponse();
     }
