@@ -236,7 +236,7 @@ class Jaws_User
     function GetUserByEmailVerifyKey($key)
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
-        $usersTable->select('id:integer', 'username', 'nickname', 'email', 'status:integer');
+        $usersTable->select('id:integer', 'username', 'nickname', 'email', 'new_email', 'status:integer');
         $usersTable->where('email_verify_key', trim($key));
         return $usersTable->fetchRow();
     }
@@ -620,7 +620,7 @@ class Jaws_User
         // unset invalid keys
         $invalids = array_diff(
             array_keys($uData),
-            array('username', 'nickname', 'email', 'password',
+            array('username', 'nickname', 'email', 'new_email', 'password',
                 'superadmin', 'status', 'concurrents', 'logon_hours', 'expiry_date',
             )
         );
@@ -666,6 +666,27 @@ class Jaws_User
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
+        }
+
+        // new email
+        if (isset($uData['new_email']) && !empty($uData['new_email'])) {
+            $uData['new_email'] = trim($uData['new_email']);
+            if (!preg_match("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $uData['new_email'])) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_INVALID_EMAIL_ADDRESS'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+            $uData['new_email'] = strtolower($uData['new_email']);
+            $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
+            if (false !== strpos($blockedDomains, substr(strrchr($uData['new_email'], '@'), 1))) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
         }
 
         // password & complexity
