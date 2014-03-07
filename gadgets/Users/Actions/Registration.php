@@ -244,6 +244,56 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
     }
 
     /**
+     * Activates the user
+     *
+     * @access  public
+     * @return  string  Appropriate notice or error message
+     */
+    function ReplaceUserEmail()
+    {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $this->gadget->CheckPermission('EditUserEmail');
+        $key = jaws()->request->fetch('key', 'get');
+
+        $jUser = new Jaws_User;
+        $user = $jUser->GetUserByEmailVerifyKey($key);
+        if (Jaws_Error::IsError($user) || empty($user)) {
+            return _t('USERS_ACTIVATION_KEY_NOT_VALID');
+        }
+
+        $result = $jUser->UpdateUser(
+            $user['id'],
+            array(
+                'username'  => $user['username'],
+                'nickname'  => $user['nickname'],
+                'email'     => $user['new_email'],
+                'new_email' => '',
+                'status'    => 1
+            )
+        );
+        $user['email'] = $user['new_email'];
+
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        $anon_activation = $this->gadget->registry->fetch('anon_activation');
+        $result = $this->ActivateNotification($user, $anon_activation);
+        if (Jaws_Error::IsError($result)) {
+            // do nothing
+        }
+
+        if ($anon_activation == 'user') {
+            return _t('USERS_ACTIVATE_ACTIVATED_BY_USER_MSG', $this->gadget->urlMap('LoginBox'));
+        } else {
+            return _t('USERS_ACTIVATE_ACTIVATED_BY_ADMIN_MSG');
+        }
+    }
+
+    /**
      * Mails activate notification to the user
      *
      * @access  public

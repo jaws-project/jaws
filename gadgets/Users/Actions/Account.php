@@ -114,6 +114,14 @@ class Users_Actions_Account extends Jaws_Gadget_Action
             {
                 $post['email'] = $GLOBALS['app']->Session->GetAttribute('email');
             }
+
+            // set new email
+            $post['new_email'] = '';
+            if ($post['email'] != $GLOBALS['app']->Session->GetAttribute('email')) {
+                $post['new_email'] = $post['email'];
+                $post['email'] = $GLOBALS['app']->Session->GetAttribute('email');
+            }
+
             // check edit password permission
             if (empty($post['password']) ||
                 !$this->gadget->GetPermission('EditUserPassword'))
@@ -127,9 +135,17 @@ class Users_Actions_Account extends Jaws_Gadget_Action
                 $post['username'],
                 $post['nickname'],
                 $post['email'],
+                $post['new_email'],
                 $post['password']
             );
             if (!Jaws_Error::IsError($result)) {
+                if (!empty($post['new_email'])) {
+                    $this->ReplaceEmailNotification(
+                        $GLOBALS['app']->Session->GetAttribute('user'),
+                        $post['nickname'],
+                        $post['new_email']
+                    );
+                }
                 $GLOBALS['app']->Session->PushResponse(
                     _t('USERS_MYACCOUNT_UPDATED'),
                     'Users.Account.Response'
@@ -182,6 +198,70 @@ class Users_Actions_Account extends Jaws_Gadget_Action
         }
 
         return _t($result? 'USERS_FORGOT_PASSWORD_CHANGED' : 'USERS_FORGOT_KEY_NOT_VALID');
+    }
+
+    /**
+     * Sends replace email notification to user
+     *
+     * @access  public
+     * @param   int     $user_id    User's ID
+     * @param   string  $nickname   User's nickname
+     * @param   string  $user_email User's new email
+     * @return  mixed   True on success otherwise Jaws_Error on failure
+     */
+    function ReplaceEmailNotification($user_id, $nickname, $user_email)
+    {
+        $tpl = $this->gadget->template->load('UserNotification.txt');
+        $tpl->SetBlock('Notification');
+        $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $nickname));
+        $tpl->SetVariable('message', _t('USERS_REGISTER_ACTIVATION_MAIL_MSG'));
+
+        $tpl->SetBlock('Notification/IP');
+        $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
+        $tpl->SetVariable('ip', $_SERVER['REMOTE_ADDR']);
+        $tpl->ParseBlock('Notification/IP');
+
+        $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
+        $tpl->SetVariable('username', $username);
+
+        $verifyKey = $jUser->UpdateEmailVerifyKey($user_id);
+        if (Jaws_Error::IsError($verifyKey)) {
+            return $verifyKey;
+        } else {
+            $tpl->SetBlock('Notification/Activation');
+            $tpl->SetVariable('lbl_activation_link', _t('USERS_ACTIVATE_ACTIVATION_LINK'));
+            $tpl->SetVariable(
+                'activation_link',
+                $this->gadget->urlMap(
+                    'ReplaceUserEmail',
+                    array('key' => $verifyKey),
+                    true
+                )
+            );
+            $tpl->ParseBlock('Notification/Activation');
+        }
+
+        $site_url  = $GLOBALS['app']->getSiteURL('/');
+        $site_name = $this->gadget->registry->fetch('site_name', 'Settings');
+        $tpl->SetVariable('site-name', $site_name);
+        $tpl->SetVariable('site-url',  $site_url);
+        $tpl->SetVariable('thanks',    _t('GLOBAL_THANKS'));
+
+        $tpl->ParseBlock('Notification');
+        $body = $tpl->Get();
+
+        $subject = _t('USERS_REGISTER_SUBJECT', $site_name);
+        $mail = new Jaws_Mail;
+        $mail->SetFrom();
+        $mail->AddRecipient($user_email);
+        $mail->SetSubject($subject);
+        $mail->SetBody($this->gadget->ParseText($body));
+        $mresult = $mail->send();
+        if (Jaws_Error::IsError($mresult)) {
+            return $mresult;
+        }
+
+        return true;
     }
 
 }

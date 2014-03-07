@@ -28,6 +28,7 @@ $maps[] = array('ManageGroup', 'users/groups/{gid}/manage');
 $maps[] = array('ForgotLogin', 'users/forget');
 $maps[] = array('ChangePassword', 'users/recover[/{key}]');
 $maps[] = array('ActivateUser', 'users/activate[/{key}]');
+$maps[] = array('ReplaceUserEmail', 'users/replace_email[/{key}]');
 $maps[] = array(
     'Profile',
     'users/{user}',

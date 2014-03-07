@@ -80,6 +80,12 @@ $actions['ActivateUser'] = array(
     'temporary' => true,
     'loglevel' => JAWS_NOTICE,
 );
+$actions['ReplaceUserEmail'] = array(
+    'normal' => true,
+    'file' => 'Registration',
+    'temporary' => true,
+    'loglevel' => JAWS_NOTICE,
+);
 $actions['Account'] = array(
     'normal' => true,
     'file' => 'Account',
