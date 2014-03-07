@@ -82,7 +82,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
         $this->gadget->registry->update('crypt_key_start_date', $_SESSION['secure']? time() : '0');
         $this->gadget->registry->update(
             'blocked_domains',
-            @file_get_contents(JAWS_PATH. 'gadgets/Policy/blocked.domains.txt')
+            @file_get_contents(JAWS_PATH. 'gadgets/Policy/Resources/blocked.domains.txt')
         );
 
         return true;
@@ -110,7 +110,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '1.1.0', '<')) {
             $this->gadget->registry->insert(
                 'blocked_domains',
-                @file_get_contents(JAWS_PATH. 'gadgets/Policy/blocked.domains.txt')
+                @file_get_contents(JAWS_PATH. 'gadgets/Policy/Resources/blocked.domains.txt')
             );
         }
 

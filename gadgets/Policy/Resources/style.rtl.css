@@ -30,13 +30,17 @@ margin-left:10px;
 text-align:left;
 }
 #policy_encryption select{
-width:100px;
+width:110px;
 }
-#policy_spam select{
+#policy_spam select,#policy_spam textarea{
 width:170px;
 }
+#policy_spam textarea{
+width:274px;
+direction:ltr;
+}
 #policy_advanced select{
-width:110px;
+width:120px;
 }
 select#default_captcha_driver{
 width:100px;

@@ -30,7 +30,10 @@ text-align:right;
 width:110px;
 }
 #policy_spam select{
-width:160px;
+width:170px;
+}
+#policy_spam textarea{
+width:274px;
 }
 #policy_advanced select{
 width:120px;
@@ -39,7 +42,7 @@ select#default_captcha_driver{
 width:100px;
 }
 select#login_captcha{
-width:200px;
+width:220px;
 }
 select#login_captcha_driver{
 width:100px;

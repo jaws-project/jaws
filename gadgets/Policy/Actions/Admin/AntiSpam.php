@@ -76,6 +76,17 @@ class Policy_Actions_Admin_AntiSpam extends Policy_Actions_Admin_Default
         $tpl->SetVariable('lbl_obfuscator', _t('POLICY_ANTISPAM_PROTECTEMAIL'));
         $tpl->SetVariable('obfuscator', $useEmailProtector->Get());
 
+        // Blocked domains
+        $blockedDomains =& Piwi::CreateWidget(
+            'TextArea',
+            'blocked_domains',
+            $this->gadget->registry->fetch('blocked_domains')
+        );
+        $blockedDomains->SetRows(10);
+        $blockedDomains->setID('blocked_domains');
+        $tpl->SetVariable('lbl_blocked_domains', _t('POLICY_ANTISPAM_BLOCKED_DOMAINS'));
+        $tpl->SetVariable('blocked_domains', $blockedDomains->Get());
+
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, 'javascript: saveAntiSpamSettings();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
