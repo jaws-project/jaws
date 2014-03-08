@@ -57,6 +57,10 @@ class Tms_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
+        if (version_compare($old, '1.0.0', '<')) {
+            $this->gadget->acl->insert('DeleteTheme', '', false);
+        }
+
         return true;
     }
 
