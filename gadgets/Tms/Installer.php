@@ -18,7 +18,8 @@ class Tms_Installer extends Jaws_Gadget_Installer
      */
     var $_ACLKeys = array(
         'UploadTheme',
-        'DownloadTheme'
+        'DownloadTheme',
+        'DeleteTheme'
     );
 
     /**

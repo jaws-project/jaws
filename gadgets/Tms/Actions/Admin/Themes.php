@@ -42,11 +42,11 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
     {
         $this->AjaxMe('script.js');
 
-        $model = $this->gadget->model->load();
         $tpl = $this->gadget->template->loadAdmin('Themes.html');
         $tpl->SetBlock('Tms');
 
         $tpl->SetVariable('confirmUninstallTheme', _t('TMS_THEMES_UNINSTALL_CONFIRM'));
+        $tpl->SetVariable('confirmDeleteTheme', _t('TMS_THEMES_DELETE_CONFIRM'));
         $tpl->SetVariable('noAvailableData', _t('TMS_THEMES_NOTHING'));
 
         $themesCombo =& Piwi::CreateWidget('ComboGroup', 'themes_combo');
@@ -80,6 +80,14 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
         $btnDownload->SetStyle('display: none');
         $tpl->SetVariable('btn_download', $btnDownload->Get());
 
+        $btnDelete =& Piwi::CreateWidget('Button',
+                                           'delete_button',
+                                           _t('GLOBAL_DELETE'),
+                                           STOCK_DELETE);
+        $btnDelete->AddEvent(ON_CLICK, 'javascript:deleteTheme();');
+        $btnDelete->SetStyle('display: none');
+        $tpl->SetVariable('btn_delete', $btnDelete->Get());
+
         $tpl->SetVariable('menubar', $this->Menubar('Admin'));
         $tpl->ParseBlock('Tms');
 
@@ -105,7 +113,10 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
             $tpl->SetVariable('theme_name', $tInfo['name']);
             $tpl->SetVariable('download',
                               ($tInfo['local'] ||
-                               (isset($tInfo['download']) && (bool)$tInfo['download']))? 'true' : 'false');
+                              (isset($tInfo['download']) && (bool)$tInfo['download']))? 'true' : 'false');
+            $defaultTheme = $GLOBALS['app']->Registry->fetch('theme', 'Settings');
+            $tpl->SetVariable('delete', ($tInfo['local'] && $theme != $defaultTheme) ? 'true' : 'false');
+
             $tpl->SetVariable('theme_image', $tInfo['image']);
             $tpl->SetBlock('ThemeInfo/section');
             $tpl->SetVariable('name', _t('TMS_THEME_INFO_DESCRIPTION'));
@@ -188,4 +199,22 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
         }
     }
 
+    /**
+     * Delete the theme
+     *
+     * @access  public
+     * @param   string  $theme
+     * @returns boolean
+     */
+    function DeleteTheme($theme)
+    {
+        $this->gadget->CheckPermission('DeleteTheme');
+        $defaultTheme = $GLOBALS['app']->Registry->fetch('theme', 'Settings');
+        // Check is default theme?
+        if ($theme == $defaultTheme || empty($theme) || !file_exists(JAWS_THEMES . $theme)) {
+            return false;
+        }
+
+        return Jaws_Utils::delete(JAWS_THEMES . $theme);
+    }
 }

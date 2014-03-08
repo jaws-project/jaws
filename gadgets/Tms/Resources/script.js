@@ -78,7 +78,14 @@ var TmsCallback = {
         showResponse(response);
         getDG();
     },
-    
+
+    DeleteTheme: function(response) {
+        if (response[0]['type'] == 'response_notice') {
+            $('themes_combo').options[$('themes_combo').selectedIndex].remove();
+        }
+        showResponse(response);
+    },
+
     savesettings: function(response) {
         showResponse(response);
     }
@@ -91,9 +98,14 @@ var TmsCallback = {
 function showButtons()
 {
     if ($('download').value == 'true') {
-        $('download_button').style.display = 'block';
+        $('download_button').style.display = 'inline';
     } else {
         $('download_button').style.display = 'none';
+    }
+    if ($('delete').value == 'true') {
+        $('delete_button').style.display = 'inline';
+    } else {
+        $('delete_button').style.display = 'none';
     }
 }
 
@@ -115,6 +127,21 @@ function editTheme(theme)
     selectedTheme = theme;
     $('theme_area').innerHTML = themeInfo;
     showButtons();
+}
+
+/**
+ * Delete selected theme
+ */
+function deleteTheme()
+{
+    if (selectedTheme.blank()) {
+        return false;
+    }
+    if (!confirm(confirmDeleteTheme)) {
+        return false;
+    }
+
+    TmsAjax.callAsync('DeleteTheme', selectedTheme);
 }
 
 /**
