@@ -47,6 +47,26 @@ class Upgrader_111To120 extends JawsUpgraderStage
             return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
+        // upgrade core database schema
+        $old_schema = JAWS_PATH . 'upgrade/Resources/schema/1.0.0.xml';
+        $new_schema = JAWS_PATH . 'upgrade/Resources/schema/schema.xml';
+        if (!file_exists($old_schema)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', '1.0.0.xml'),0 , JAWS_ERROR_ERROR);
+        }
+
+        if (!file_exists($new_schema)) {
+            return new Jaws_Error(_t('GLOBAL_ERROR_SQLFILE_NOT_EXISTS', 'schema.xml'),0 , JAWS_ERROR_ERROR);
+        }
+
+        _log(JAWS_LOG_DEBUG,"Upgrading core schema");
+        $result = $GLOBALS['db']->installSchema($new_schema, '', $old_schema);
+        if (Jaws_Error::isError($result)) {
+            _log(JAWS_LOG_ERROR, $result->getMessage());
+            if ($result->getCode() !== MDB2_ERROR_ALREADY_EXISTS) {
+                return new Jaws_Error($result->getMessage(), 0, JAWS_ERROR_ERROR);
+            }
+        }
+
         // replace requires key name with requirement key name
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         $result = $tblReg->update(array('key_name' => 'requirement'))->where('key_name', 'requires')->exec();

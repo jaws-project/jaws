@@ -213,12 +213,6 @@
             </field>
 
             <field>
-                <name>hidden</name>
-                <type>boolean</type>
-                <default>false</default>
-            </field>
-
-            <field>
                 <name>longevity</name>
                 <type>integer</type>
                 <length>16</length>
@@ -276,20 +270,6 @@
 
                 <field>
                     <name>domain</name>
-                </field>
-            </index>
-
-            <index>
-                <name><variable>table_prefix</variable>session_hidden</name>
-                <field>
-                    <name>hidden</name>
-                </field>
-            </index>
-
-            <index>
-                <name><variable>table_prefix</variable>session_updatetime</name>
-                <field>
-                    <name>updatetime</name>
                 </field>
             </index>
 
