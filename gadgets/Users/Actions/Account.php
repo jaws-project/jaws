@@ -29,7 +29,7 @@ class Users_Actions_Account extends Jaws_Gadget_Action
         }
 
        $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', '', false);
-        $response = $GLOBALS['app']->Session->PopResponse('Users.Account.Data');
+        $response = $GLOBALS['app']->Session->PopResponse('Users.Account.Response');
         if (!isset($response['data'])) {
             $jUser = new Jaws_User;
             $account = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), true, true);
@@ -69,7 +69,8 @@ class Users_Actions_Account extends Jaws_Gadget_Action
         $avatar->SetID('avatar');
         $account['avatar'] = $avatar->Get();
 
-        $account['response'] = $GLOBALS['app']->Session->PopResponse('Users.Account.Response');
+        $account['type'] = $response['type'];
+        $account['text'] = $response['text'];
 
         // Load the template
         $tpl = $this->gadget->template->load('Account.html');
@@ -138,10 +139,13 @@ class Users_Actions_Account extends Jaws_Gadget_Action
                 $post['new_email'],
                 $post['password']
             );
+            // unset unnecessary account data
+            unset($post['password'], $post['chkpassword']);
             if (!Jaws_Error::IsError($result)) {
                 if (!empty($post['new_email'])) {
                     $this->ReplaceEmailNotification(
                         $GLOBALS['app']->Session->GetAttribute('user'),
+                        $post['username'],
                         $post['nickname'],
                         $post['new_email']
                     );
@@ -154,25 +158,21 @@ class Users_Actions_Account extends Jaws_Gadget_Action
                 $GLOBALS['app']->Session->PushResponse(
                     $result->GetMessage(),
                     'Users.Account.Response',
-                    RESPONSE_ERROR
+                    RESPONSE_ERROR,
+                    $post
                 );
             }
         } else {
+            // unset unnecessary account data
+            unset($post['password'], $post['chkpassword']);
             $GLOBALS['app']->Session->PushResponse(
                 _t('USERS_USERS_PASSWORDS_DONT_MATCH'),
                 'Users.Account.Response',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                $post
             );
         }
 
-        // unset unnecessary account data
-        unset($post['password'], $post['chkpassword']);
-        $GLOBALS['app']->Session->PushResponse(
-            '',
-            'Users.Account.Data',
-            RESPONSE_NOTICE,
-            $post
-        );
         Jaws_Header::Location($this->gadget->urlMap('Account'));
     }
 
@@ -209,7 +209,7 @@ class Users_Actions_Account extends Jaws_Gadget_Action
      * @param   string  $user_email User's new email
      * @return  mixed   True on success otherwise Jaws_Error on failure
      */
-    function ReplaceEmailNotification($user_id, $nickname, $user_email)
+    function ReplaceEmailNotification($user_id, $username, $nickname, $user_email)
     {
         $tpl = $this->gadget->template->load('UserNotification.txt');
         $tpl->SetBlock('Notification');
@@ -224,6 +224,7 @@ class Users_Actions_Account extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
         $tpl->SetVariable('username', $username);
 
+        $jUser = new Jaws_User;
         $verifyKey = $jUser->UpdateEmailVerifyKey($user_id);
         if (Jaws_Error::IsError($verifyKey)) {
             return $verifyKey;
