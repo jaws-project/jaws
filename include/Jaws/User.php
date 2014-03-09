@@ -540,7 +540,7 @@ class Jaws_User
         $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
         if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN'),
+                _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -662,7 +662,7 @@ class Jaws_User
         $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
         if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
             return Jaws_Error::raiseError(
-                _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN'),
+                _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['email'], '@'), 1)),
                 __FUNCTION__,
                 JAWS_ERROR_NOTICE
             );
@@ -679,10 +679,9 @@ class Jaws_User
                 );
             }
             $uData['new_email'] = strtolower($uData['new_email']);
-            $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
             if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['new_email'], '@'), 1))) {
                 return Jaws_Error::raiseError(
-                    _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN'),
+                    _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN', substr(strrchr($uData['new_email'], '@'), 1)),
                     __FUNCTION__,
                     JAWS_ERROR_NOTICE
                 );
