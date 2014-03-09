@@ -125,14 +125,14 @@
         <field>
             <name>real_url</name>
             <type>text</type>
-            <length>2048</length>
+            <length>120</length>
             <notnull>true</notnull>
         </field>
 
         <field>
             <name>alias_url</name>
             <type>text</type>
-            <length>2048</length>
+            <length>120</length>
             <notnull>true</notnull>
         </field>
 
@@ -168,7 +168,7 @@
         <field>
             <name>url</name>
             <type>text</type>
-            <length>2048</length>
+            <length>255</length>
             <notnull>true</notnull>
         </field>
 
@@ -188,7 +188,7 @@
         <field>
             <name>new_url</name>
             <type>text</type>
-            <length>2048</length>
+            <length>255</length>
         </field>
 
         <field>
