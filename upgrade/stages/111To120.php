@@ -75,6 +75,34 @@ class Upgrader_111To120 extends JawsUpgraderStage
             return $result;
         }
 
+        // Upgrading core gadgets
+        $gadgets = array('Settings', 'Policy');
+        foreach ($gadgets as $gadget) {
+            $objGadget = Jaws_Gadget::getInstance($gadget);
+            if (Jaws_Error::IsError($objGadget)) {
+                _log(JAWS_LOG_DEBUG,"There was a problem loading core gadget: ".$gadget);
+                return $objGadget;
+            }
+
+            $installer = $objGadget->installer->load();
+            if (Jaws_Error::IsError($installer)) {
+                _log(JAWS_LOG_DEBUG,"There was a problem loading installer of core gadget: $gadget");
+                return $installer;
+            }
+
+            if (Jaws_Gadget::IsGadgetInstalled($gadget)) {
+                $result = $installer->UpgradeGadget();
+            } else {
+                continue;
+                //$result = $installer->InstallGadget();
+            }
+
+            if (Jaws_Error::IsError($result)) {
+                _log(JAWS_LOG_DEBUG,"There was a problem installing/upgrading core gadget: $gadget");
+                return $result;
+            }
+        }
+
         return true;
     }
 
