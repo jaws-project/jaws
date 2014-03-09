@@ -98,7 +98,7 @@ class Menu_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         if (version_compare($old, '1.0.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '0.7.2.xml');
+            $result = $this->installSchema('1.0.0.xml', '', '0.7.2.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -115,6 +115,13 @@ class Menu_Installer extends Jaws_Gadget_Installer
             $this->gadget->event->insert('UninstallGadget');
             $this->gadget->event->insert('EnableGadget');
             $this->gadget->event->insert('DisableGadget');
+        }
+
+        if (version_compare($old, '1.1.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '1.0.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         return true;

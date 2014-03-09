@@ -45,7 +45,7 @@
         <field>
             <name>url</name>
             <type>text</type>
-            <length>2048</length>
+            <length>255</length>
         </field>
 
         <field>
