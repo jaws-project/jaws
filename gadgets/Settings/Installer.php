@@ -21,7 +21,8 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('http_auth', 'false'),
         array('realm', 'Jaws Control Panel'),
         array('key', ''),
-        array('theme', 'jaws', true),
+        array('theme', 'jaws'),
+        array('theme_variables', ''),
         array('date_format', 'd MN Y', true),
         array('calendar', 'Gregorian', true),
         array('timezone', 'UTC', true),
@@ -237,6 +238,11 @@ class Settings_Installer extends Jaws_Gadget_Installer
                 ',Blockquote,-,Outdent,Indent,|,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,|'.
                 ',NumberedList,BulletedList,|,Link,Unlink,Anchor,Image,|,TextColor,BGColor,|,Format,Font,FontSize,'
             );
+        }
+
+        if (version_compare($old, '1.2.0', '<')) {
+            $this->gadget->registry->update('theme', null, false);
+            $this->gadget->registry->insert('theme_variables', '');
         }
 
         return true;
