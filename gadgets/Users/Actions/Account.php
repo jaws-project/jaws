@@ -151,10 +151,10 @@ class Users_Actions_Account extends Jaws_Gadget_Action
                         $post['new_email'],
                         $post['email']
                     );
-                    if (!Jaws_Error::IsError($mResult)) {
-                        $message = $message. "\n" . _t('USERS_EMAIL_REPLACEMENT_SENT');
-                    } else {
+                    if (Jaws_Error::IsError($mResult)) {
                         $message = $message. "\n" . $mResult->getMessage();
+                    } else {
+                        $message = $message. "\n" . _t('USERS_EMAIL_REPLACEMENT_SENT');
                     }
                 }
                 $GLOBALS['app']->Session->PushResponse(

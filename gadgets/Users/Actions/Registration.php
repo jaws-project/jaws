@@ -274,23 +274,11 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
                 'status'    => 1
             )
         );
-        $user['email'] = $user['new_email'];
-
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
-        $anon_activation = $this->gadget->registry->fetch('anon_activation');
-        $result = $this->ActivateNotification($user, $anon_activation);
-        if (Jaws_Error::IsError($result)) {
-            // do nothing
-        }
-
-        if ($anon_activation == 'user') {
-            return _t('USERS_ACTIVATE_ACTIVATED_BY_USER_MSG', $this->gadget->urlMap('LoginBox'));
-        } else {
-            return _t('USERS_ACTIVATE_ACTIVATED_BY_ADMIN_MSG');
-        }
+        return _t('USERS_EMAIL_REPLACEMENT_REPLACED');
     }
 
     /**
