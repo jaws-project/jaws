@@ -80,7 +80,7 @@ class Policy_Actions_Admin_AntiSpam extends Policy_Actions_Admin_Default
         $blockedDomains =& Piwi::CreateWidget(
             'TextArea',
             'blocked_domains',
-            $this->gadget->registry->fetch('blocked_domains')
+            trim($this->gadget->registry->fetch('blocked_domains'))
         );
         $blockedDomains->SetRows(10);
         $blockedDomains->setID('blocked_domains');

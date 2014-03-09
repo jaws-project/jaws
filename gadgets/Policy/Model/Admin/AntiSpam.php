@@ -27,7 +27,7 @@ class Policy_Model_Admin_AntiSpam extends Jaws_Gadget_Model
         $this->gadget->registry->update('default_captcha_status', $default_captcha);
         $this->gadget->registry->update('default_captcha_driver', $default_captcha_driver);
         $this->gadget->registry->update('obfuscator',             $obfuscator);
-        $this->gadget->registry->update('blocked_domains',        $blocked_domains);
+        $this->gadget->registry->update('blocked_domains',        "\n". trim($blocked_domains));
 
         // install captcha driver
         $objCaptcha = Jaws_Captcha::getInstance($default_captcha_driver);
