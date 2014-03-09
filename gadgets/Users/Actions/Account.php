@@ -142,17 +142,23 @@ class Users_Actions_Account extends Jaws_Gadget_Action
             // unset unnecessary account data
             unset($post['password'], $post['chkpassword']);
             if (!Jaws_Error::IsError($result)) {
+                $message = _t('USERS_MYACCOUNT_UPDATED');
                 if (!empty($post['new_email'])) {
-                    $this->ReplaceEmailNotification(
+                    $mResult = $this->ReplaceEmailNotification(
                         $GLOBALS['app']->Session->GetAttribute('user'),
                         $post['username'],
                         $post['nickname'],
                         $post['new_email'],
                         $post['email']
                     );
+                    if (!Jaws_Error::IsError($mResult)) {
+                        $message = $message. "\n" . _t('USERS_EMAIL_REPLACEMENT_SENT');
+                    } else {
+                        $message = $message. "\n" . $mResult->getMessage();
+                    }
                 }
                 $GLOBALS['app']->Session->PushResponse(
-                    _t('USERS_MYACCOUNT_UPDATED'),
+                    $message,
                     'Users.Account.Response'
                 );
             } else {
