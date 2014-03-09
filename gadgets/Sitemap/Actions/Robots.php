@@ -19,7 +19,7 @@ class Sitemap_Actions_Robots extends Jaws_Gadget_Action
     function Robots()
     {
         header('Content-Type: text/plain; charset=utf-8');
-        $robots = $this->gadget->registry->fetch('robots_txt');
+        $robots = $this->gadget->registry->fetch('robots.txt');
         return $robots;
     }
 }

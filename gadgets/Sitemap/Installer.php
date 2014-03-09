@@ -19,7 +19,7 @@ class Sitemap_Installer extends Jaws_Gadget_Installer
     var $_RegKeys = array(
         array('sitemap_default_priority', '0.5'),
         array('sitemap_default_frequency', Sitemap_Info::SITEMAP_CHANGE_FREQ_WEEKLY),
-        array('robots_txt', "User-agent: * \nDisallow: /config/ \nDisallow: /data/ \nDisallow: /gadgets/ \nDisallow: /images/ \nDisallow: /include/\nDisallow: /languages/\nDisallow: /libraries/\nDisallow: /plugins/"),
+        array('robots.txt', ''),
     );
 
     /**
@@ -53,6 +53,11 @@ class Sitemap_Installer extends Jaws_Gadget_Installer
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
+
+        $this->gadget->registry->update(
+            'robots.txt',
+            @file_get_contents(JAWS_PATH. 'gadgets/Sitemap/Resources/robots.txt')
+        );
 
         return true;
     }
@@ -100,6 +105,13 @@ class Sitemap_Installer extends Jaws_Gadget_Installer
             if (!Jaws_Error::isError($layoutModel)) {
                 $layoutModel->DeleteGadgetElements($this->gadget->name);
             }
+        }
+
+        if (version_compare($old, '1.1.0', '<')) {
+            $this->gadget->registry->insert(
+                'robots.txt',
+                @file_get_contents(JAWS_PATH. 'gadgets/Sitemap/Resources/robots.txt')
+            );
         }
 
         return true;

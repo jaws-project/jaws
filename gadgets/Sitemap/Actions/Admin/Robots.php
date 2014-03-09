@@ -24,7 +24,7 @@ class Sitemap_Actions_Admin_Robots extends Sitemap_Actions_Admin_Default
 
         $tpl->SetVariable('menubar', $this->MenuBar('Robots'));
 
-        $currentRobots = $this->gadget->registry->fetch('robots_txt');
+        $currentRobots = $this->gadget->registry->fetch('robots.txt');
         $robots =& Piwi::CreateWidget('TextArea', 'robots', $currentRobots);
         $robots->SetRows(12);
         $robots->SetStyle('width:300px');
@@ -52,7 +52,7 @@ class Sitemap_Actions_Admin_Robots extends Sitemap_Actions_Admin_Default
     function UpdateRobots()
     {
         $robots = jaws()->request->fetch('robots', 'post');
-        $result = $this->gadget->registry->update('robots_txt', $robots);
+        $result = $this->gadget->registry->update('robots.txt', $robots);
         if (!$result || Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('SITEMAP_ERROR_ROBOTS_NOT_SAVED'), RESPONSE_ERROR);
         } else {
