@@ -192,7 +192,7 @@ class Users_Actions_Account extends Jaws_Gadget_Action
      */
     function ChangePassword()
     {
-        if ($this->gadget->GetRegistry('password_recovery') !== 'true') {
+        if ($this->gadget->registry->fetch('password_recovery') !== 'true') {
             return Jaws_HTTPError::Get(404);
         }
 
