@@ -170,7 +170,7 @@ class Jaws_Mail
             }
 
             // check blocked domains
-            if (false !== strpos($this->blocked_domains, substr(strrchr($email, '@'), 1))) {
+            if (false !== strpos($this->blocked_domains, "\n".substr(strrchr($email, '@'), 1))) {
                 continue;
             }
 

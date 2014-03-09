@@ -538,7 +538,7 @@ class Jaws_User
         }
         $uData['email'] = strtolower($uData['email']);
         $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
-        if (false !== strpos($blockedDomains, substr(strrchr($uData['email'], '@'), 1))) {
+        if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN'),
                 __FUNCTION__,
@@ -660,7 +660,7 @@ class Jaws_User
         }
         $uData['email'] = strtolower($uData['email']);
         $blockedDomains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
-        if (false !== strpos($blockedDomains, substr(strrchr($uData['email'], '@'), 1))) {
+        if (false !== strpos($blockedDomains, "\n".substr(strrchr($uData['email'], '@'), 1))) {
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_INVALID_EMAIL_DOMAIN'),
                 __FUNCTION__,
