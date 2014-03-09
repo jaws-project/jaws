@@ -20,7 +20,9 @@ class Forums_Model_Attachments extends Jaws_Gadget_Model
     function GetAttachments($pid)
     {
         $attachTable = Jaws_ORM::getInstance()->table('forums_attachments');
-        return $attachTable->select('*')->where('post', $pid)->fetchAll();
+        return $attachTable->select('id', 'post', 'title', 'filename', 'filesize', 'filetype', 'hitcount')
+            ->where('post', $pid)
+            ->fetchAll();
     }
 
     /**
@@ -33,7 +35,9 @@ class Forums_Model_Attachments extends Jaws_Gadget_Model
     function GetAttachmentInfo($aid)
     {
         $attachTable = Jaws_ORM::getInstance()->table('forums_attachments');
-        return $attachTable->select('*')->where('id', $aid)->fetchRow();
+        return $attachTable->select('id', 'post', 'title', 'filename', 'filesize', 'filetype', 'hitcount')
+            ->where('id', $aid)
+            ->fetchRow();
     }
 
     /**
