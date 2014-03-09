@@ -78,7 +78,14 @@ if (Jaws_Error::IsError($GLOBALS['db'])) {
 $db_jaws_version = $GLOBALS['app']->Registry->Init();
 if ($db_jaws_version != JAWS_VERSION) {
     if (strrstr(JAWS_VERSION, '.', true) != strrstr($db_jaws_version, '.', true)) {
-        Jaws_Header::Location('upgrade/index.php');
+        //require_once JAWS_PATH . 'upgrade/JawsUpgrader.php';
+        //require_once JAWS_PATH . 'upgrade/JawsUpgraderStage.php';
+        //require_once JAWS_PATH . 'upgrade/stages/111To120.php';
+        //$objStage = new Upgrader_111To120;
+        //$result = $objStage->Run();
+        //if (Jaws_Error::IsError($result)) {
+            Jaws_Header::Location('upgrade/index.php');
+        //}
     }
 
     $GLOBALS['app']->Registry->update('version', JAWS_VERSION);
