@@ -20,8 +20,6 @@ class Settings_Hooks_Preferences extends Jaws_Gadget_Hook
     {
         $result = array();
         $languages = Jaws_Utils::GetLanguagesList();
-        $themes = Jaws_Utils::GetThemesList();
-        $themes = array_column(array_values($themes), 'title', 'name');
         $objSettings = $this->gadget->model->loadAdmin('Settings');
         $objComponents = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $objComponents->GetGadgetsList(null, true, true, null, true);
@@ -43,10 +41,6 @@ class Settings_Hooks_Preferences extends Jaws_Gadget_Hook
         $result['date_format'] = array(
             'title' => _t('SETTINGS_DATE_FORMAT'),
             'values' => $objSettings->GetDateFormatList(),
-        );
-        $result['theme'] = array(
-            'title' => _t('SETTINGS_DEFAULT_THEME'),
-            'values' => $themes,
         );
         $result['main_gadget'] = array(
             'title' => _t('SETTINGS_MAIN_GADGET'),
