@@ -21,7 +21,7 @@ class Forums_Model_Attachments extends Jaws_Gadget_Model
     {
         $attachTable = Jaws_ORM::getInstance()->table('forums_attachments');
         return $attachTable->select('id', 'post', 'title', 'filename', 'filesize', 'filetype', 'hitcount')
-            ->where('post', $pid)
+            ->where('post', (int)$pid)
             ->fetchAll();
     }
 
@@ -36,7 +36,7 @@ class Forums_Model_Attachments extends Jaws_Gadget_Model
     {
         $attachTable = Jaws_ORM::getInstance()->table('forums_attachments');
         return $attachTable->select('id', 'post', 'title', 'filename', 'filesize', 'filetype', 'hitcount')
-            ->where('id', $aid)
+            ->where('id', (int)$aid)
             ->fetchRow();
     }
 
