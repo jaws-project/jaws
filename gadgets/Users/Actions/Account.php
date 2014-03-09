@@ -147,7 +147,8 @@ class Users_Actions_Account extends Jaws_Gadget_Action
                         $GLOBALS['app']->Session->GetAttribute('user'),
                         $post['username'],
                         $post['nickname'],
-                        $post['new_email']
+                        $post['new_email'],
+                        $post['email']
                     );
                 }
                 $GLOBALS['app']->Session->PushResponse(
@@ -206,15 +207,16 @@ class Users_Actions_Account extends Jaws_Gadget_Action
      * @access  public
      * @param   int     $user_id    User's ID
      * @param   string  $nickname   User's nickname
-     * @param   string  $user_email User's new email
+     * @param   string  $new_email  User's new email
+     * @param   string  $old_email  User's old email
      * @return  mixed   True on success otherwise Jaws_Error on failure
      */
-    function ReplaceEmailNotification($user_id, $username, $nickname, $user_email)
+    function ReplaceEmailNotification($user_id, $username, $nickname, $new_email, $old_email)
     {
-        $tpl = $this->gadget->template->load('UserNotification.txt');
+        $tpl = $this->gadget->template->load('NewEmail.txt');
         $tpl->SetBlock('Notification');
-        $tpl->SetVariable('say_hello', _t('USERS_REGISTER_HELLO', $nickname));
-        $tpl->SetVariable('message', _t('USERS_REGISTER_ACTIVATION_MAIL_MSG'));
+        $tpl->SetVariable('say_hello', _t('USERS_EMAIL_REPLACEMENT_HELLO', $nickname));
+        $tpl->SetVariable('message', _t('USERS_EMAIL_REPLACEMENT_MSG'));
 
         $tpl->SetBlock('Notification/IP');
         $tpl->SetVariable('lbl_ip', _t('GLOBAL_IP'));
@@ -223,6 +225,9 @@ class Users_Actions_Account extends Jaws_Gadget_Action
 
         $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
         $tpl->SetVariable('username', $username);
+
+        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
+        $tpl->SetVariable('email', $old_email);
 
         $jUser = new Jaws_User;
         $verifyKey = $jUser->UpdateEmailVerifyKey($user_id);
@@ -251,10 +256,10 @@ class Users_Actions_Account extends Jaws_Gadget_Action
         $tpl->ParseBlock('Notification');
         $body = $tpl->Get();
 
-        $subject = _t('USERS_REGISTER_SUBJECT', $site_name);
+        $subject = _t('USERS_EMAIL_REPLACEMENT_SUBJECT', $site_name);
         $mail = new Jaws_Mail;
         $mail->SetFrom();
-        $mail->AddRecipient($user_email);
+        $mail->AddRecipient($new_email);
         $mail->SetSubject($subject);
         $mail->SetBody($this->gadget->ParseText($body));
         $mresult = $mail->send();

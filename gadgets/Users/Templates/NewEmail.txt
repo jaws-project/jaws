@@ -1,0 +1,20 @@
+<!-- BEGIN Notification -->
+{say_hello},
+
+{message}
+
+<!-- BEGIN IP -->
+{lbl_ip}: {ip}
+<!-- END IP -->
+{lbl_username}: {username}
+{lbl_email}: {email}
+
+<!-- BEGIN Activation -->
+{lbl_activation_link}: {activation_link}
+<!-- END Activation -->
+
+{thanks},
+-------------------
+{site-name}
+{site-url}
+<!-- END Notification -->
