@@ -1,54 +1,56 @@
 <!-- BEGIN comment_form -->
-<div class="gadget_header"><h3>{title}</h3></div>
-<div class="gadget_container">
-  <div class="gadget_response"><div class="{type}"><a id="{bookmark}"></a>{text}</div></div>
-  <form action="{base_script}" method="post">
-      <input type="hidden" name="gadget" value="Comments"/>
-      <input type="hidden" name="action" value="PostMessage"/>
-      <input type="hidden" name="requested_gadget" value="{gadget}"/>
-      <input type="hidden" name="requested_action" value="{action}"/>
-      <input type="hidden" name="reference" value="{reference}"/>
-      <input type="hidden" name="redirect_to" value="{redirect_to}"/>
+<div class="gadget_section comments_form">
+  <div class="gadget_header"><h3>{title}</h3></div>
+  <div class="gadget_container">
+    <div class="gadget_response"><div class="{type}"><a id="{bookmark}"></a>{text}</div></div>
+    <form action="{base_script}" method="post">
+        <input type="hidden" name="gadget" value="Comments"/>
+        <input type="hidden" name="action" value="PostMessage"/>
+        <input type="hidden" name="requested_gadget" value="{gadget}"/>
+        <input type="hidden" name="requested_action" value="{action}"/>
+        <input type="hidden" name="reference" value="{reference}"/>
+        <input type="hidden" name="redirect_to" value="{redirect_to}"/>
 
-      <div class="gadget_content">
-          <!-- BEGIN info-box -->
-          <div><label for="name_comments{rand}">{name}:</label>
-              <input name="name" id="name_comments{rand}" type="text" maxlength="20" value="{namevalue}"/>
-          </div>
+        <div class="gadget_content">
+            <!-- BEGIN info-box -->
+            <div><label for="name_comments{rand}">{name}:</label>
+                <input name="name" id="name_comments{rand}" type="text" maxlength="20" value="{namevalue}"/>
+            </div>
 
-          <div><label for="email_comments{rand}">{email}:</label>
-              <input name="email" id="email_comments{rand}" type="text" value="{emailvalue}" style="direction: ltr;"/>
-          </div>
+            <div><label for="email_comments{rand}">{email}:</label>
+                <input name="email" id="email_comments{rand}" type="text" value="{emailvalue}" style="direction: ltr;"/>
+            </div>
 
-          <div><label for="url_comments{rand}">{url}:</label>
-              <input name="url" id="url_comments{rand}" type="text" maxlength="100" value="{urlvalue}"
-                     style="direction: ltr;"/>
-          </div>
-          <!-- END info-box -->
+            <div><label for="url_comments{rand}">{url}:</label>
+                <input name="url" id="url_comments{rand}" type="text" maxlength="100" value="{urlvalue}"
+                       style="direction: ltr;"/>
+            </div>
+            <!-- END info-box -->
 
-          <div class="spam_check"><label for="comment_url2">{url2}:</label>
-              <input name="url2" id="comment_url2" value="{url2_value}" type="text" />
-          </div>
-          <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
-          <div><label for="message{rand}">{lbl_message}:</label>
-              <textarea id="message{rand}" cols="20" rows="7" name="message">{message}</textarea>
-          </div>
-          <div>
-              <input name="is_private" id="private_comments{rand}" type="checkbox" value="1" />
-              <label for="private_comments{rand}">{private}</label>
-          </div>
-      </div>
-      <div class="gadget_actions actions">
-          <span class="comments_feed">{lbl_feeds}: <a href="{rss_url}">RSS</a> | <a href="{atom_url}">Atom</a></span>
-          <button type="button" name="preview" id="preview" value="{preview}"
-                  onclick="this.form.action.value='Preview';this.form.gadget.value='{gadget}'; this.form.submit();">{preview}</button>
-          <button type="submit" value="{send}">{send}</button>
-      </div>
-  </form>
+            <div class="spam_check"><label for="comment_url2">{url2}:</label>
+                <input name="url2" id="comment_url2" value="{url2_value}" type="text" />
+            </div>
+            <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
+            <div><label for="message{rand}">{lbl_message}:</label>
+                <textarea id="message{rand}" cols="20" rows="7" name="message">{message}</textarea>
+            </div>
+            <div>
+                <input name="is_private" id="private_comments{rand}" type="checkbox" value="1" />
+                <label for="private_comments{rand}">{private}</label>
+            </div>
+        </div>
+        <div class="gadget_actions actions">
+            <span class="comments_feed">{lbl_feeds}: <a href="{rss_url}">RSS</a> | <a href="{atom_url}">Atom</a></span>
+            <button type="button" name="preview" id="preview" value="{preview}"
+                    onclick="this.form.action.value='Preview';this.form.gadget.value='{gadget}'; this.form.submit();">{preview}</button>
+            <button type="submit" value="{send}">{send}</button>
+        </div>
+    </form>
 
-  <!-- BEGIN unregistered -->
-  <div class="simple-response-msg">{msg}</div>
-  <!-- END unregistered -->
+    <!-- BEGIN unregistered -->
+    <div class="simple-response-msg">{msg}</div>
+    <!-- END unregistered -->
+  </div>
+  <div class="gadget_footer"></div>
 </div>
-<div class="gadget_footer"></div>
 <!-- END comment_form -->
