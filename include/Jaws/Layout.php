@@ -545,17 +545,20 @@ class Jaws_Layout
                 }
 
                 if (!empty($content)) {
+                    // set gadget,action and first parameter for more customizable view
                     $this->_Template->SetVariable('gadget', strtolower($item['gadget']));
                     $this->_Template->SetVariable(
-                        'gadget_action',
-                        strtolower($item['gadget']. '_'. $item['gadget_action'])
+                      'gadget_action',
+                      strtolower($item['gadget']. '_'. $item['gadget_action'])
                     );
                     if (!empty($item['action_params'])) {
                       $this->_Template->SetVariable(
-                          'gadget_action_params',
-                          strtolower($item['gadget']. '_'. $item['gadget_action']. '_'. $item['action_params'][0])
-                      );
+                        'gadget_action_params',
+                        strtolower($item['gadget']. '_'. $item['gadget_action']. '_'. $item['action_params'][0]));
                     }
+                    // set position in section
+                    $this->_Template->SetVariable('position', $item['layout_position']);
+                    // set action content
                     $this->_Template->SetVariable('ELEMENT', $content."\n");
                 }
                 $this->_Template->ParseBlock($block, $ignore = empty($content));
