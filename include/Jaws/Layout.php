@@ -522,6 +522,8 @@ class Jaws_Layout
                             $req_result
                         );
                     }
+                    $item['gadget'] = $GLOBALS['app']->mainGadget;
+                    $item['gadget_action'] = $GLOBALS['app']->mainAction;
                     $content = $req_result;
                 } elseif (!$onlyMainAction) {
                     if ($this->IsDisplayable($GLOBALS['app']->mainGadget,
