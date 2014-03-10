@@ -264,7 +264,7 @@ class Jaws_Layout
         $this->_Template->SetVariable('logout-url', $GLOBALS['app']->Map->GetURLFor('Users', 'Logout'));
         $this->_Template->ParseBlock('layout/login-info');
 
-        // Set the header thingie for each gadget and the response box
+        // Set the header items for each gadget and the response box
         if (isset($gadget) && ($gadget != 'ControlPanel')){
             $gInfo  = Jaws_Gadget::getInstance($gadget);
             $docurl = null;
@@ -524,6 +524,7 @@ class Jaws_Layout
                     }
                     $item['gadget'] = $GLOBALS['app']->mainGadget;
                     $item['gadget_action'] = $GLOBALS['app']->mainAction;
+                    $item['action_params'] = array();
                     $content = $req_result;
                 } elseif (!$onlyMainAction) {
                     if ($this->IsDisplayable($GLOBALS['app']->mainGadget,
@@ -532,10 +533,11 @@ class Jaws_Layout
                                              $GLOBALS['app']->mainIndex))
                     {
                         if ($GLOBALS['app']->Session->GetPermission($item['gadget'], $default_acl)) {
+                            $item['action_params'] = unserialize($item['action_params']);
                             $content = $this->PutGadget(
                                 $item['gadget'],
                                 $item['gadget_action'],
-                                unserialize($item['action_params']),
+                                $item['action_params'],
                                 $item['action_filename']
                             );
                         }
@@ -543,14 +545,17 @@ class Jaws_Layout
                 }
 
                 if (!empty($content)) {
-                    $this->_Template->SetVariable(
-                        'gadget',
-                        strtolower($item['gadget'])
-                    );
+                    $this->_Template->SetVariable('gadget', strtolower($item['gadget']));
                     $this->_Template->SetVariable(
                         'gadget_action',
                         strtolower($item['gadget']. '_'. $item['gadget_action'])
                     );
+                    if (!empty($item['action_params'])) {
+                      $this->_Template->SetVariable(
+                          'gadget_action_params',
+                          strtolower($item['gadget']. '_'. $item['gadget_action']. '_'. $item['action_params'][0])
+                      );
+                    }
                     $this->_Template->SetVariable('ELEMENT', $content."\n");
                 }
                 $this->_Template->ParseBlock($block, $ignore = empty($content));
