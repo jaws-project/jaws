@@ -455,11 +455,12 @@ class Jaws_Layout
 
         $items = array();
         $items[] = array(
-            'id'            => null,
-            'gadget'        => '[REQUESTEDGADGET]',
-            'gadget_action' => '[REQUESTEDACTION]',
-            'display_when'  => '*',
-            'section'       => 'main',
+            'id'              => null,
+            'gadget'          => '[REQUESTEDGADGET]',
+            'gadget_action'   => '[REQUESTEDACTION]',
+            'display_when'    => '*',
+            'section'         => 'main',
+            'layout_position' => 0
         );
         return $items;
     }
