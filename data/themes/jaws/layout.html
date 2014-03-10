@@ -22,14 +22,36 @@
       </div>
       <div id="headbar">
         <a class="accessibility" href="#mainbar"><img src="images/blank.gif" width="0" height="0" alt="{skip_to_content}" /></a>
-        <!-- BEGIN header -->{ELEMENT}<!-- END header -->
+        <!-- BEGIN header -->
+          <div class="gadget {gadget} {gadget_action} {gadget_action_params}">
+          {ELEMENT}
+          </div>
+        <!-- END header -->
       </div>
     </div>
 
     <div id="content">
-      <div id="mainbar"><!-- BEGIN main -->{ELEMENT}<!-- END main --></div>
-      <div id="bar1" class="sidebar"><!-- BEGIN bar1 -->{ELEMENT}<!-- END bar1 --></div>
-      <div id="bar2" class="sidebar"><!-- BEGIN bar2 -->{ELEMENT}<!-- END bar2 --></div>
+      <div id="mainbar">
+        <!-- BEGIN main -->
+        <div class="gadget {gadget} {gadget_action} {gadget_action_params}">
+          {ELEMENT}
+        </div>
+        <!-- END main -->
+      </div>
+      <div id="bar1" class="sidebar">
+        <!-- BEGIN bar1 -->
+        <div class="gadget {gadget} {gadget_action} {gadget_action_params}">
+          {ELEMENT}
+        </div>
+        <!-- END bar1 -->
+      </div>
+      <div id="bar2" class="sidebar">
+        <!-- BEGIN bar2 -->
+        <div class="gadget {gadget} {gadget_action} {gadget_action_params}">
+          {ELEMENT}
+        </div>
+        <!-- END bar2 -->
+      </div>
     </div>
   </div>
 
