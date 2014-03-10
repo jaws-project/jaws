@@ -1,7 +1,6 @@
 <!-- BEGIN events -->
-<div class="gadget events-calendar">
-  <div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
-  <div class="gadget_container">
+<div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
+<div class="gadget_container">
   <div class="gadget_response">
     <div id="eventscalendar_events_response" class="{type}">{text}</div>
   </div>
@@ -39,9 +38,8 @@
       <button id="btn_del_event" onclick="deleteEvents()">{lbl_del_event}</button>
     </div>
   </div>
-  </div>
-  <div class="gadget_footer"></div>
 </div>
+<div class="gadget_footer"></div>
 <script>
 var events_url = "{events_url}",
     confirmDelete = "{confirmDelete}",
