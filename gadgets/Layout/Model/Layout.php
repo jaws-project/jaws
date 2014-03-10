@@ -25,7 +25,7 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->select(
             'id', 'gadget', 'gadget_action', 'action_params',
-            'action_filename', 'display_when', 'section'
+            'action_filename', 'display_when', 'section', 'layout_position'
         );
         $lyTable->where('user', (int)$user)->and()->where('index', (bool)$index);
         if (!is_null($published)) {
