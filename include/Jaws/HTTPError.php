@@ -116,7 +116,8 @@ class Jaws_HTTPError
             return $tpl->Get();
         }
 
-        return "<div class=\"gadget\"><h2>{$title}</h2><div class=\"content\">{$message}</div></div>";
+        return "<div class=\"gadget_header\"><h3>{$title}</h3></div>".
+               "<div class=\"gadget_container\"><div class=\"content\">{$message}</div></div>";
     }
 
 }
