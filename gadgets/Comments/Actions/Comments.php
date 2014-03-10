@@ -201,7 +201,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         }
         $tpl->SetBlock($block);
 
-        $tpl->SetVariable('gadget', $gadget);
+        $tpl->SetVariable('gadget', strtolower($gadget));
 
         $objDate = Jaws_Date::getInstance();
         $usrModel = new Jaws_User;
@@ -494,6 +494,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
 
         $tpl = $this->gadget->template->load('Comments.html');
         $tpl->SetBlock('comments');
+        $tpl->SetVariable('gadget', strtolower($this->gadget->name));
 
         $objDate = Jaws_Date::getInstance();
         $usrModel = new Jaws_User;
