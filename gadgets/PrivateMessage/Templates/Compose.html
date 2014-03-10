@@ -1,99 +1,96 @@
 <!-- BEGIN compose -->
-<div class="gadget privateMessage message" id="compose">
-    <div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
-  <div class="gadget_container">
+<div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
+<div class="gadget_container">
 
-    <div class="gadget_response">
-      <div id="privatemessage_compose_response" class="{type}">{text}</div>
-    </div>
-
-    <form name="compose" action="{base_script}" method="post" enctype="multipart/form-data">
-        <input type="hidden" value="15000000" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE">
-        <input type="hidden" name="gadget" value="PrivateMessage"/>
-        <input type="hidden" name="action" value="SendMessage"/>
-        <input type="hidden" name="id" id="id" value="{id}"/>
-
-        <!-- BEGIN parent_message -->
-        <div class="parent-message">
-            <!-- INCLUDE Message.html -->
-            <hr>
-        </div>
-        <!-- END parent_message -->
-
-        <div class="gadget_content content">
-            <!-- BEGIN recipients -->
-            <div>
-                <b>{lbl_recipient}:</b>
-            </div>
-
-            <label for="recipient_users"><b>{lbl_recipient_users}:</b></label>
-            <div class="recipient_users">
-                <div>
-                    <select multiple="multiple" id="recipient_users" name="recipient_users" ondblclick="removeUserFromList()">
-                        <!-- BEGIN user -->
-                        <option value="{value}">{title}</option>
-                        <!-- END user -->
-                    </select>
-                </div>
-
-                <div id="userBox" class="ajaxResultBox">
-                    <input type="text" id="userSearch" name="userSearch" onkeyup="searchUsersStart(this.value)">
-                    <div id="userSearchResult"></div>
-                </div>
-
-            </div>
-
-            <div class="recipient_groups_area">
-                <label for="recipient_groups"><b>{lbl_recipient_groups}:</b></label>
-                {recipient_groups_opt}
-            </div>
-            <!-- END recipients -->
-
-             <!-- BEGIN recipient -->
-            <div>
-                <label for="recipient">{lbl_recipient}:</label>
-                <a href="{recipient_user_url}">{recipient_user}</a>
-            </div>
-            <!-- END recipient -->
-
-            <div>
-                <label for="subject"><b>{lbl_subject}:</b></label>
-                <input name="subject" id="subject" type="text" value="{subject}"/>
-            </div>
-
-            <div>
-                <label for="body"><b>{lbl_body}:</b></label>
-                {body}
-            </div>
-        </div>
-    </form>
-
-    <form id="frm_file" name="frm_file" method="post" target="ifrm_upload" action="{requested_url}"
-          enctype="multipart/form-data" onsubmit="return true">
-        <input type="hidden" name="gadget" value="PrivateMessage"/>
-        <input type="hidden" name="action" value="UploadFile"/>
-        <input type="hidden" name="attachment_number" id="attachment_number" value="1"/>
-        <fieldset>
-            <legend id="legend_attachments" toggle-status="min">
-                <span>
-                    <img alt="toggle attachments maximize" src="{icon_add}">
-                    {lbl_attachments}
-                </span>
-            </legend>
-
-            {attachment_ui}
-        </fieldset>
-    </form>
-
-    <div class="gadget_actions actions">
-        <a href="{back_url}" class="button" id="btn_back">{lbl_back}</a>
-        <a class="button" href="javascript:sendMessage(false)" id="btn_save_draft">{lbl_save_draft}</a>
-        <a class="button" href="javascript:sendMessage(true)" id="btn_send">{lbl_send}</a>
-    </div>
+  <div class="gadget_response">
+    <div id="privatemessage_compose_response" class="{type}">{text}</div>
   </div>
-  <div class="gadget_footer"></div>
 
+  <form name="compose" action="{base_script}" method="post" enctype="multipart/form-data">
+      <input type="hidden" value="15000000" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE">
+      <input type="hidden" name="gadget" value="PrivateMessage"/>
+      <input type="hidden" name="action" value="SendMessage"/>
+      <input type="hidden" name="id" id="id" value="{id}"/>
+
+      <!-- BEGIN parent_message -->
+      <div class="parent-message">
+          <!-- INCLUDE Message.html -->
+          <hr>
+      </div>
+      <!-- END parent_message -->
+
+      <div class="gadget_content content">
+          <!-- BEGIN recipients -->
+          <div>
+              <b>{lbl_recipient}:</b>
+          </div>
+
+          <label for="recipient_users"><b>{lbl_recipient_users}:</b></label>
+          <div class="recipient_users">
+              <div>
+                  <select multiple="multiple" id="recipient_users" name="recipient_users" ondblclick="removeUserFromList()">
+                      <!-- BEGIN user -->
+                      <option value="{value}">{title}</option>
+                      <!-- END user -->
+                  </select>
+              </div>
+
+              <div id="userBox" class="ajaxResultBox">
+                  <input type="text" id="userSearch" name="userSearch" onkeyup="searchUsersStart(this.value)">
+                  <div id="userSearchResult"></div>
+              </div>
+
+          </div>
+
+          <div class="recipient_groups_area">
+              <label for="recipient_groups"><b>{lbl_recipient_groups}:</b></label>
+              {recipient_groups_opt}
+          </div>
+          <!-- END recipients -->
+
+           <!-- BEGIN recipient -->
+          <div>
+              <label for="recipient">{lbl_recipient}:</label>
+              <a href="{recipient_user_url}">{recipient_user}</a>
+          </div>
+          <!-- END recipient -->
+
+          <div>
+              <label for="subject"><b>{lbl_subject}:</b></label>
+              <input name="subject" id="subject" type="text" value="{subject}"/>
+          </div>
+
+          <div>
+              <label for="body"><b>{lbl_body}:</b></label>
+              {body}
+          </div>
+      </div>
+  </form>
+
+  <form id="frm_file" name="frm_file" method="post" target="ifrm_upload" action="{requested_url}"
+        enctype="multipart/form-data" onsubmit="return true">
+      <input type="hidden" name="gadget" value="PrivateMessage"/>
+      <input type="hidden" name="action" value="UploadFile"/>
+      <input type="hidden" name="attachment_number" id="attachment_number" value="1"/>
+      <fieldset>
+          <legend id="legend_attachments" toggle-status="min">
+              <span>
+                  <img alt="toggle attachments maximize" src="{icon_add}">
+                  {lbl_attachments}
+              </span>
+          </legend>
+
+          {attachment_ui}
+      </fieldset>
+  </form>
+
+  <div class="gadget_actions actions">
+      <a href="{back_url}" class="button" id="btn_back">{lbl_back}</a>
+      <a class="button" href="javascript:sendMessage(false)" id="btn_save_draft">{lbl_save_draft}</a>
+      <a class="button" href="javascript:sendMessage(true)" id="btn_send">{lbl_send}</a>
+  </div>
 </div>
+<div class="gadget_footer"></div>
 
 <script type="text/javascript">
     var toggleMax = "{icon_add}";

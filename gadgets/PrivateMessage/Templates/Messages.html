@@ -1,145 +1,143 @@
 <!-- BEGIN messages -->
-<div class="gadget privateMessage messages">
-    <div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
-  <div class="gadget_container">
-    <div class="gadget_response"><div id="simple_response" class="{type}">{text}</div></div>
+<div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
+<div class="gadget_container">
+  <div class="gadget_response"><div id="simple_response" class="{type}">{text}</div></div>
 
-    <form name="privatemessage" id="privatemessage" action="{requested_url}" method="post">
-        <input type="hidden" name="gadget" value="PrivateMessage"/>
-        <input type="hidden" name="action" value="Messages"/>
-        <input type="hidden" name="page" value="{page}"/>
-        <input type="hidden" name="folder" value="{folder}"/>
-        <input type="hidden" name="status" value=""/>
+  <form name="privatemessage" id="privatemessage" action="{requested_url}" method="post">
+      <input type="hidden" name="gadget" value="PrivateMessage"/>
+      <input type="hidden" name="action" value="Messages"/>
+      <input type="hidden" name="page" value="{page}"/>
+      <input type="hidden" name="folder" value="{folder}"/>
+      <input type="hidden" name="status" value=""/>
 
-        <div class="filters">
-            <!-- BEGIN filter_read -->
-            <label for="read">{lbl_read}</label>
-            <select id="read" name="read">
-                <option
-                {opt_read_} value="">{lbl_all}</option>
-                <option
-                {opt_read_yes} value="yes">{lbl_yes}</option>
-                <option
-                {opt_read_no} value="no">{lbl_no}</option>
-            </select>
-            <!-- END filter_read -->
+      <div class="filters">
+          <!-- BEGIN filter_read -->
+          <label for="read">{lbl_read}</label>
+          <select id="read" name="read">
+              <option
+              {opt_read_} value="">{lbl_all}</option>
+              <option
+              {opt_read_yes} value="yes">{lbl_yes}</option>
+              <option
+              {opt_read_no} value="no">{lbl_no}</option>
+          </select>
+          <!-- END filter_read -->
 
-            <input type="text" id="term" name="term" size="20" value="{txt_term}">
+          <input type="text" id="term" name="term" size="20" value="{txt_term}">
 
-            <button value="{filter}" id="filter_button" name="filter_button"
-                    type="submit"><img src="{icon_filter}" alt="{filter}"/>&nbsp;{filter}
-            </button>
-        </div>
+          <button value="{filter}" id="filter_button" name="filter_button"
+                  type="submit"><img src="{icon_filter}" alt="{filter}"/>&nbsp;{filter}
+          </button>
+      </div>
 
-        <div class="gadget_content content">
-            <table>
-                <thead>
-                <tr>
-                    <th><input type="checkbox" onclick="toggleCheckboxes();"></th>
+      <div class="gadget_content content">
+          <table>
+              <thead>
+              <tr>
+                  <th><input type="checkbox" onclick="toggleCheckboxes();"></th>
 
-                    <!-- BEGIN folder_th -->
-                    <th>{lbl_folder}</th>
-                    <!-- END folder_th -->
+                  <!-- BEGIN folder_th -->
+                  <th>{lbl_folder}</th>
+                  <!-- END folder_th -->
 
-                    <th>{lbl_subject}</th>
-                    <th>&nbsp;</th>
-                    <th>{lbl_from}</th>
-                    <th>{lbl_recipients}</th>
-                    <th>{lbl_send_time}</th>
-                </tr>
-                </thead>
+                  <th>{lbl_subject}</th>
+                  <th>&nbsp;</th>
+                  <th>{lbl_from}</th>
+                  <th>{lbl_recipients}</th>
+                  <th>{lbl_send_time}</th>
+              </tr>
+              </thead>
 
-                <tbody>
-                <!-- BEGIN message -->
-                <tr>
-                    <td>
-                        <input type="checkbox" name="message_checkbox[]" value="{id}" class="table-checkbox">
-                    </td>
+              <tbody>
+              <!-- BEGIN message -->
+              <tr>
+                  <td>
+                      <input type="checkbox" name="message_checkbox[]" value="{id}" class="table-checkbox">
+                  </td>
 
-                    <!-- BEGIN folder -->
-                    <td>{folder}</td>
-                    <!-- END folder -->
+                  <!-- BEGIN folder -->
+                  <td>{folder}</td>
+                  <!-- END folder -->
 
-                    <td><a href="{message_url}">{subject}</a></td>
+                  <td><a href="{message_url}">{subject}</a></td>
 
-                    <!-- BEGIN have_attachment -->
-                    <td><img src="{icon_attachment}" alt="{attachment}"/></td>
-                    <!-- END have_attachment -->
-                    <!-- BEGIN no_attachment -->
-                    <td>&nbsp;</td>
-                    <!-- END no_attachment -->
+                  <!-- BEGIN have_attachment -->
+                  <td><img src="{icon_attachment}" alt="{attachment}"/></td>
+                  <!-- END have_attachment -->
+                  <!-- BEGIN no_attachment -->
+                  <td>&nbsp;</td>
+                  <!-- END no_attachment -->
 
-                    <td><a href="{from_url}">{from}</a></td>
-                    <td>{recipients}</td>
-                    <td>{send_time}</td>
+                  <td><a href="{from_url}">{from}</a></td>
+                  <td>{recipients}</td>
+                  <td>{send_time}</td>
 
-                </tr>
-                <!-- END message -->
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="7">
-                        {lbl_page_item}
-                        <select id="page_item" name="page_item" onchange="this.form.submit();">
-                            <option {opt_page_item_5} value="5">5</option>
-                            <option {opt_page_item_10} value="10">10</option>
-                            <option {opt_page_item_20} value="20">20</option>
-                            <option {opt_page_item_50} value="50">50</option>
-                            <option {opt_page_item_100} value="100">100</option>
-                        </select>
-                    </td>
-                </tr>
-                </tfoot>
-            </table>
+              </tr>
+              <!-- END message -->
+              </tbody>
+              <tfoot>
+              <tr>
+                  <td colspan="7">
+                      {lbl_page_item}
+                      <select id="page_item" name="page_item" onchange="this.form.submit();">
+                          <option {opt_page_item_5} value="5">5</option>
+                          <option {opt_page_item_10} value="10">10</option>
+                          <option {opt_page_item_20} value="20">20</option>
+                          <option {opt_page_item_50} value="50">50</option>
+                          <option {opt_page_item_100} value="100">100</option>
+                      </select>
+                  </td>
+              </tr>
+              </tfoot>
+          </table>
 
-            <!-- INCLUDE PageNavigation.html -->
-            <div class="gadget_actions actions">
-                <label for="messages_actions_combo">{lbl_actions}:&nbsp;</label>
-                <select title="{lbl_actions}" id="messages_actions_combo" name="messages_actions_combo">
-                    <option value="">{lbl_no_action}</option>
+          <!-- INCLUDE PageNavigation.html -->
+          <div class="gadget_actions actions">
+              <label for="messages_actions_combo">{lbl_actions}:&nbsp;</label>
+              <select title="{lbl_actions}" id="messages_actions_combo" name="messages_actions_combo">
+                  <option value="">{lbl_no_action}</option>
 
-                    <!-- BEGIN inbox_action -->
-                    <option value="archive">{lbl_archive}</option>
-                    <option value="trash">{lbl_trash}</option>
-                    <option value="read">{lbl_mark_as_read}</option>
-                    <option value="unread">{lbl_mark_as_unread}</option>
-                    <!-- END inbox_action -->
+                  <!-- BEGIN inbox_action -->
+                  <option value="archive">{lbl_archive}</option>
+                  <option value="trash">{lbl_trash}</option>
+                  <option value="read">{lbl_mark_as_read}</option>
+                  <option value="unread">{lbl_mark_as_unread}</option>
+                  <!-- END inbox_action -->
 
-                    <!-- BEGIN outbox_action -->
-                    <option value="archive">{lbl_archive}</option>
-                    <option value="trash">{lbl_trash}</option>
-                    <!-- END outbox_action -->
+                  <!-- BEGIN outbox_action -->
+                  <option value="archive">{lbl_archive}</option>
+                  <option value="trash">{lbl_trash}</option>
+                  <!-- END outbox_action -->
 
-                    <!-- BEGIN draft_action -->
-                    <option value="delete">{lbl_delete}</option>
-                    <!-- END draft_action -->
+                  <!-- BEGIN draft_action -->
+                  <option value="delete">{lbl_delete}</option>
+                  <!-- END draft_action -->
 
-                    <!-- BEGIN archive_action -->
-                    <option value="unarchive">{lbl_unarchive}</option>
-                    <option value="trash">{lbl_trash}</option>
-                    <!-- END archive_action -->
+                  <!-- BEGIN archive_action -->
+                  <option value="unarchive">{lbl_unarchive}</option>
+                  <option value="trash">{lbl_trash}</option>
+                  <!-- END archive_action -->
 
-                    <!-- BEGIN trash_action -->
-                    <option value="restore_trash">{lbl_restore_trash}</option>
-                    <option value="delete">{lbl_delete}</option>
-                    <!-- END trash_action -->
+                  <!-- BEGIN trash_action -->
+                  <option value="restore_trash">{lbl_restore_trash}</option>
+                  <option value="delete">{lbl_delete}</option>
+                  <!-- END trash_action -->
 
-                    <!-- BEGIN all_action -->
-                    <option value="delete">{lbl_delete}</option>
-                    <!-- END all_action -->
+                  <!-- BEGIN all_action -->
+                  <option value="delete">{lbl_delete}</option>
+                  <!-- END all_action -->
 
-                </select>
+              </select>
 
-                <button value="{lbl_actions}" id="action_button" name="action_button"
-                        onclick="javascript: return messagesDGAction();" ><img src="{icon_ok}" alt="{lbl_actions}"/>
-                </button>
-            </div>
+              <button value="{lbl_actions}" id="action_button" name="action_button"
+                      onclick="javascript: return messagesDGAction();" ><img src="{icon_ok}" alt="{lbl_actions}"/>
+              </button>
+          </div>
 
-        </div>
-    </form>
-  </div>
-  <div class="gadget_footer"></div>
+      </div>
+  </form>
 </div>
+<div class="gadget_footer"></div>
 
 <script type="text/javascript">
     function toggleCheckboxes(){
