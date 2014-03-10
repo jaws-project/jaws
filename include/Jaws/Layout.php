@@ -507,23 +507,12 @@ class Jaws_Layout
 
             $section = '';
             foreach ($items as $item) {
-                if ($section != $item['section']) {
-                    if (!empty($section)) {
-                        $this->_Template->SetVariable('ELEMENT', $contentString);
-                        $this->_Template->ParseBlock('layout/' . $section);
-                        $section = '';
-                    }
-                    if (!$this->_Template->BlockExists('layout/' . $item['section'])) {
-                        continue;
-                    }
-                    $section = $item['section'];
-                    $this->_Template->SetBlock('layout/' . $section);
-                    $currentContent = $this->_Template->GetCurrentBlockContent();
-                    $this->_Template->SetCurrentBlockContent('{ELEMENT}');
-                    $contentString  = '';
+                $block = 'layout/' . $item['section'];
+                if (!$this->_Template->BlockExists($block)) {
+                    continue;
                 }
-
                 $content = '';
+                $this->_Template->SetBlock($block);
                 if ($item['gadget'] == '[REQUESTEDGADGET]') {
                     if (JAWS_SCRIPT == 'index') {
                         // increase one level value of heading for requested action
@@ -552,18 +541,22 @@ class Jaws_Layout
                 }
 
                 if (!empty($content)) {
-                    $contentString .= str_replace('{ELEMENT}', $content, $currentContent)."\n\n\n";
+                    $this->_Template->SetVariable(
+                        'gadget',
+                        strtolower($item['gadget'])
+                    );
+                    $this->_Template->SetVariable(
+                        'gadget_action',
+                        strtolower($item['gadget']. '_'. $item['gadget_action'])
+                    );
+                    $this->_Template->SetVariable('ELEMENT', $content."\n");
                 }
+                $this->_Template->ParseBlock($block, $ignore = empty($content));
             }
 
             // restore stored title/description because layout action can't them
             $this->_Title = $title;
             $this->_Description = $description;
-
-            if (!empty($section)) {
-                $this->_Template->SetVariable('ELEMENT', $contentString);
-                $this->_Template->ParseBlock('layout/' . $section);
-            }
         }
     }
 
