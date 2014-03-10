@@ -417,10 +417,12 @@ class Jaws_Template
     /**
      * Parse a given block, replacing its variables and parsed subblocks
      *
-     * @param   $blockString Block string
      * @access  public
+     * @param   $blockString    Block string
+     * @param   $ignore         Ignore block parsed content
+     * @return  string          Parsed content
      */
-    function ParseBlock($blockString = '')
+    function ParseBlock($blockString = '', $ignore = false)
     {
         $result = '';
         $block = &$this->GetBlockObject($blockString);
@@ -440,7 +442,7 @@ class Jaws_Template
                     $result = str_replace($search, $replace , $result);
                 }
             }
-            $block->Parsed .= $result;
+            $block->Parsed .= ($ignore? '' : $result);
         }
 
         $blockString = substr($blockString, 0, strrpos($blockString, '/'));
