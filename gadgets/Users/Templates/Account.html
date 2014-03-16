@@ -8,22 +8,22 @@
     <fieldset>
       <div class="user_avatar">{avatar}</div>
       <div><label for="username">{lbl_username}:</label>
-        <input name="username" id="username" value="{username}" type="text" {username_disabled} style="direction: ltr;" />
+        <input name="username" class="large username ltr" id="username" value="{username}" type="text" {username_disabled} />
       </div>
       <hr/>
       <div><label for="nickname">{lbl_nickname}:</label>
-        <input name="nickname" id="nickname" value="{nickname}" type="text" {nickname_disabled} />
+        <input name="nickname" class="large name" id="nickname" value="{nickname}" type="text" {nickname_disabled} />
       </div>
       <div><label for="email">{lbl_email}:</label>
-        <input name="email" id="email" value="{email}" type="text" style="direction: ltr;" {email_disabled} />
+        <input name="email" class="large email ltr" id="email" value="{email}" type="text" {email_disabled} />
       </div>
       <hr/>
       <div><label for="password">{lbl_password}:</label>
-        <input name="password" id="password" type="password" value="" autocomplete="off" {password_disabled} style="direction: ltr;" />
+        <input name="password" class="large password ltr" id="password" type="password" value="" autocomplete="off" {password_disabled} />
         <span><small>{emptypassword}</small></span>
       </div>
       <div><label for="chkpassword">{lbl_chkpassword}:</label>
-        <input name="chkpassword" id="chkpassword" type="password" value="" autocomplete="off" {password_disabled} style="direction: ltr;" />
+        <input name="chkpassword" class="large password ltr" id="chkpassword" type="password" value="" autocomplete="off" {password_disabled} />
       </div>
     </fieldset>
   </div>

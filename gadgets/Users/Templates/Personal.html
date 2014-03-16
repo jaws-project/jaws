@@ -24,15 +24,15 @@
       </div>
       <div>
         <label for="personal_fname">{lbl_fname}:</label>
-        <input name="fname" id="personal_fname" value="{fname}" type="text" />
+        <input name="fname" class="large name" id="personal_fname" value="{fname}" type="text" />
       </div>
       <div>
         <label for="personal_lname">{lbl_lname}:</label>
-        <input name="lname" id="personal_lname" value="{lname}" type="text" />
+        <input name="lname" class="large name" id="personal_lname" value="{lname}" type="text" />
       </div>
       <div>
         <label for="user_gender">{lbl_gender}:</label>
-        <select name="gender" id="user_gender">
+        <select name="gender" class="large" id="user_gender">
           <option value="0" {selected_gender_0}>{gender_0}</option>
           <option value="1" {selected_gender_1}>{gender_1}</option>
           <option value="2" {selected_gender_2}>{gender_2}</option>
@@ -40,38 +40,38 @@
       </div>
       <div>
         <label for="personal_ssn">{lbl_ssn}:</label>
-        <input name="ssn" id="personal_ssn" value="{ssn}" type="text" />
+        <input name="ssn" class="large ltr" id="personal_ssn" value="{ssn}" type="text" />
       </div>
       <div id="user_dob">
         <label for="user_dob_year">{lbl_dob}:</label>
-        <input name="dob_year"  id="user_dob_year"  value="{dob_year}"  type="text" />
-        <input name="dob_month" id="user_dob_month" value="{dob_month}" type="text" />
-        <input name="dob_day"   id="user_dob_day"   value="{dob_day}"   type="text" />
+        <input name="dob_year"  class="x-small ltr" id="user_dob_year"  value="{dob_year}"  type="text" />
+        <input name="dob_month" class="x-small ltr" id="user_dob_month" value="{dob_month}" type="text" />
+        <input name="dob_day"   class="x-small ltr" id="user_dob_day"   value="{dob_day}"   type="text" />
         <span><small>{dob_sample}</small></span>
       </div>
       <div>
         <label for="personal_url">{lbl_url}:</label>
-        <input name="url" id="personal_url" value="{url}" type="text" style="direction: ltr;" />
+        <input name="url" class="large url ltr" id="personal_url" value="{url}" type="text" />
       </div>
       <div>
         <label for="personal_signature">{lbl_signature}:</label>
-        <textarea name="signature" id="personal_signature" cols="45" rows="4">{signature}</textarea>
+        <textarea name="signature" class="x-large" id="personal_signature" cols="45" rows="4">{signature}</textarea>
       </div>
       <div>
         <label for="personal_about">{lbl_about}:</label>
-        <textarea name="about" id="personal_about" cols="45" rows="4">{about}</textarea>
+        <textarea name="about" class="x-large" id="personal_about" cols="45" rows="4">{about}</textarea>
       </div>
       <div>
         <label for="personal_experiences">{lbl_experiences}:</label>
-        <textarea name="experiences" id="personal_experiences" cols="45" rows="4">{experiences}</textarea>
+        <textarea name="experiences" class="x-large" id="personal_experiences" cols="45" rows="4">{experiences}</textarea>
       </div>
       <div>
         <label for="personal_occupations">{lbl_occupations}:</label>
-        <textarea name="occupations" id="personal_occupations" cols="45" rows="4">{occupations}</textarea>
+        <textarea name="occupations" class="x-large" id="personal_occupations" cols="45" rows="4">{occupations}</textarea>
       </div>
       <div>
         <label for="personal_interests">{lbl_interests}:</label>
-        <textarea name="interests" id="personal_interests" cols="45" rows="4">{interests}</textarea>
+        <textarea name="interests" class="x-large" id="personal_interests" cols="45" rows="4">{interests}</textarea>
       </div>
     </fieldset>
   </div>

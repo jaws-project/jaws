@@ -11,29 +11,29 @@
     <fieldset>
       <div class="user_avatar">{avatar}</div>
       <div><label for="country">{lbl_country}:</label>
-        <select name="country" id="country">
+        <select name="country" class="large ltr" id="country">
           <!-- BEGIN country -->
           <option value="{code}" <!-- BEGIN selected -->selected="selected"<!-- END selected -->>{name}</option>
           <!-- END country -->
         </select>
       </div>
       <div><label for="city">{lbl_city}:</label>
-        <input name="city" id="city" value="{city}" type="text" />
+        <input name="city" class="large name" id="city" value="{city}" type="text" />
       </div>
       <div><label for="postal_code">{lbl_postal_code}:</label>
-        <input name="postal_code" id="postal_code" value="{postal_code}" type="text" style="direction: ltr;" />
+        <input name="postal_code" class="large ltr" id="postal_code" value="{postal_code}" type="text" />
       </div>
       <div><label for="address">{lbl_address}:</label>
-        <textarea name="address" id="address" cols="45" rows="4">{address}</textarea>
+        <textarea name="address" class="large address" id="address" cols="45" rows="4">{address}</textarea>
       </div>
       <div><label for="phone_number">{lbl_phone_number}:</label>
-        <input name="phone_number" id="phone_number" value="{phone_number}" type="text" style="direction: ltr;" />
+        <input name="phone_number" class="large tel ltr" id="phone_number" value="{phone_number}" type="text" />
       </div>
       <div><label for="mobile_number">{lbl_mobile_number}:</label>
-        <input name="mobile_number" id="mobile_number" value="{mobile_number}" type="text" style="direction: ltr;" />
+        <input name="mobile_number" class="large tel ltr" id="mobile_number" value="{mobile_number}" type="text" />
       </div>
       <div><label for="fax_number">{lbl_fax_number}:</label>
-        <input name="fax_number" id="fax_number" value="{fax_number}" type="text" style="direction: ltr;" />
+        <input name="fax_number" class="large tel ltr" id="fax_number" value="{fax_number}" type="text" />
       </div>
     </fieldset>
   </div>
