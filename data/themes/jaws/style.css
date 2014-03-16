@@ -386,37 +386,38 @@ position:relative;
 vertical-align:middle;
 }
 /* pager style */
-.pager{
+.gadget_paginator{
 padding:4px;
 margin:3px auto;
 line-height:180%;
 text-align:center;
 }
-.pager span{
+.gadget_paginator span{
 padding:0px 4px;
 border-radius:2px;
 display:inline-block;
 border:1px solid #ccc;
 }
-.pager span.page_inactive{
+.gadget_paginator span.inactive{
 color:#ccc;
 }
-.pager span.pager_current{
+.gadget_paginator span.current{
 font-weight:bold;
 }
-.pager div.pager_total{
+.gadget_paginator div.total{
 margin:4px auto 0px;
+display:inline-block;
 }
 /* navigator */
-.navigator{
+.gadget_navigator{
 clear:both;
 display:block;
 min-height:2em;
 }
-.navigator .navigator_prev{
+.gadget_navigator .prev{
 float:left;
 }
-.navigator .navigator_next{
+.gadget_navigator .next{
 float:right;
 }
 /* tag cloud */
