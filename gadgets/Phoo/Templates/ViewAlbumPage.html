@@ -10,34 +10,34 @@
   </div>
   <!-- END photos -->
   <!-- BEGIN pager -->
-  <div class="pager">
-    <!-- BEGIN item -->
-      <!-- BEGIN next -->
-      <span class="page_next"><a href="{url_next}">{lbl_next}</a></span>
-      <!-- END next -->
-      <!-- BEGIN no_next -->
-      <span class="page_next page_inactive">{lbl_next}</span>
-      <!-- END no_next -->
+<div class="gadget_paginator">
+  <!-- BEGIN item -->
+    <!-- BEGIN next -->
+    <span class="next"><a href="{url_next}">{lbl_next}</a></span>
+    <!-- END next -->
+    <!-- BEGIN no_next -->
+    <span class="next inactive">{lbl_next}</span>
+    <!-- END no_next -->
 
-      <!-- BEGIN page_number -->
-        <span><a href="{url_page}">{lbl_page}</a></span>
-      <!-- END page_number -->
-      <!-- BEGIN page_current -->
-        <span class="pager_current"><a href="{url_page}">{lbl_page}</a></span>
-      <!-- END page_current -->
-      <!-- BEGIN page_separator -->
-        <span class="pager_separator">...</span>
-      <!-- END page_separator -->
+    <!-- BEGIN page_number -->
+      <span><a href="{url_page}">{lbl_page}</a></span>
+    <!-- END page_number -->
+    <!-- BEGIN page_current -->
+      <span class="current"><a href="{url_page}">{lbl_page}</a></span>
+    <!-- END page_current -->
+    <!-- BEGIN page_separator -->
+      <span class="separator">...</span>
+    <!-- END page_separator -->
 
-      <!-- BEGIN previous -->
-      <span class="page_previous"><a href="{url_previous}">{lbl_previous}</a></span>
-      <!-- END previous -->
-      <!-- BEGIN no_previous -->
-      <span class="page_previous page_inactive">{lbl_previous}</span>
-      <!-- END no_previous -->
-    <!-- END item -->
-    <div class="pager_total"><span class="page_inactive">{total}</span></div>
-  </div>
+    <!-- BEGIN previous -->
+    <span class="prev"><a href="{url_previous}">{lbl_previous}</a></span>
+    <!-- END previous -->
+    <!-- BEGIN no_previous -->
+    <span class="prev inactive">{lbl_previous}</span>
+    <!-- END no_previous -->
+  <!-- END item -->
+  <div><span class="total">{total}</span></div>
+</div>
   <!-- END pager -->
 </div>
 <div class="gadget_footer"></div>
