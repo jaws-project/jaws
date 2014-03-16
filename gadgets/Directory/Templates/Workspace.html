@@ -33,7 +33,7 @@
       <option value="shared">{lbl_shared_files}</option>
       <option value="foreign">{lbl_foreign_files}</option>
     </select>
-    <input id="file_search" name="file_search" onchange="onSearchChange(this)" onkeyup="onSearchChange(this)"></input>
+    <input id="file_search" name="file_search" onchange="onSearchChange(this)" onkeyup="onSearchChange(this)" class="large">
     <table id="advanced_search" style="display:none;">
       <tr><th>{lbl_type}:</th>
         <td>
@@ -69,7 +69,7 @@
   </div>
   <table class="files-table">
     <thead><tr>
-      <th><input type="checkbox" id="chk_all_files" onchange="checkAll(this.checked)"></input></th>
+      <th><input type="checkbox" id="chk_all_files" onchange="checkAll(this.checked)"></th>
       <th colspan="2">{lbl_title}</th>
       <th>{lbl_created}</th>
       <th>{lbl_modified}</th>
@@ -79,7 +79,7 @@
     <tbody id="file_arena" style="display:none;">
       <!-- BEGIN fileTemplate -->
       <tr id="file_{id}" title="{description}">
-        <td class="file-check"><input type="checkbox" value="{id}"></input></td>
+        <td class="file-check"><input type="checkbox" value="{id}"></td>
         <td class="file-icon">{icon}<span class="file-sharing {shared} {foreign} {public}"></span></td>
         <td class="file-title"><a href="{url}">{title}</a></td>
         <td class="file-created">{created}</td>
