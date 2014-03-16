@@ -18,7 +18,7 @@
               <img height="16" width="16" id="btn_remove_stockimage" alt="" src="{delete_icon}">
             </button>
             <div class="wrapper1">
-              <input type="file" onchange="upload();" id="upload_image" name="upload_image" size="1">
+              <input type="file" onchange="upload();" id="upload_image" name="upload_image" size="1" class="large file">
             </div>
           </div>
         </form>
@@ -54,11 +54,11 @@
           <div style="float: left; width: 410px;">
            <div style="float: left;">
             <label for="addressbook_lastname" >{lbl_lastname}:</label>
-            <input id="addressbook_lastname" name="name[0]" type="text" value="{name0}" />
+            <input id="addressbook_lastname" name="name[0]" type="text" value="{name0}" class="large"/>
            </div>
            <div style="float: right;">
             <label for="addressbook_firstname" >{lbl_firstname}:</label>
-            <input id="addressbook_firstname" name="name[1]" type="text" value="{name1}" />
+            <input id="addressbook_firstname" name="name[1]" type="text" value="{name1}" class="large"/>
            </div>
           <input type="hidden" name="name[2]" value="" />
           <input type="hidden" name="name[3]" value="" />
@@ -66,11 +66,11 @@
           </div>
           <div>
             <label for="addressbook_nickname" >{lbl_nickname}:</label>
-            <input id="addressbook_nickname" name="nickname" type="text" value="{nickname}" />
+            <input id="addressbook_nickname" name="nickname" type="text" value="{nickname}" class="large"/>
           </div>
           <div style="width: 410px; margin-bottom: 10px;">
             <label for="addressbook_title" >{lbl_title}:</label>
-            <input id="addressbook_title" name="title" type="text" value="{title}" />
+            <input id="addressbook_title" name="title" type="text" value="{title}" class="large"/>
           </div>
         <fieldset>
           <legend id="legend_tel" toggle-status="min" >
@@ -84,7 +84,7 @@
               <option value="{type_id}" {selected}>{type_name}</option>
               <!-- END item -->
             </select>
-            <input name="tel_number[]" type="text" value="{value}" />
+            <input name="tel_number[]" type="text" value="{value}" class="large ltr"/>
             <button onclick="AddTellItem(this);" value="" id="addTelButton" name="addTelButton" type="button">
               <img alt="{lbl_add_tell}" src="{icon_add}">
             </button>
@@ -107,7 +107,7 @@
               <option value="{type_id}" {selected}>{type_name}</option>
               <!-- END item -->
             </select>
-            <input name="email[]" type="text" value="{value}" />
+            <input name="email[]" type="text" value="{value}" class="large ltr email"/>
             <button onclick="AddEmailItem(this);" value="" id="addEmailButton" name="addEmailButton" type="button">
               <img alt="{lbl_add_email}" src="{icon_add}">
             </button>
@@ -136,7 +136,7 @@
             <button onclick="RemoveItem(this);" value="" id="removeAdrButton" name="removeAdrButton" type="button">
               <img alt="{lbl_remove_adr}" src="{icon_remove}">
             </button>
-            <textarea name="adr[]" cols="25" rows="6" style="width: 100%;">{value}</textarea>
+            <textarea name="adr[]" cols="25" rows="6" style="width: 100%;" class="x-large">{value}</textarea>
            </div>
            <!-- END adr -->
           </div>
@@ -149,7 +149,7 @@
            <!-- BEGIN url -->
            <div id="url_{index}" class="url">
             <label>{lbl_url}:</label>
-            <input name="url[]" type="text" value="{value}" style="width: 350px; display: inline;"/>
+            <input name="url[]" type="text" value="{value}" style="width: 350px; display: inline;" class="large ltr url"/>
             <button onclick="AddUrlItem(this);" value="" id="addUrlButton" name="addUrlButton" type="button">
               <img alt="{lbl_add_Url}" src="{icon_add}">
             </button>
@@ -166,7 +166,7 @@
           </legend>
           <div id="other_p">
             <label for="addressbook_notes" >{lbl_notes}: </label>
-            <textarea id="addressbook_notes" name="notes" cols="25" rows="6">{notes}</textarea>
+            <textarea id="addressbook_notes" name="notes" cols="25" rows="6" class="x-large">{notes}</textarea>
           </div>
         </fieldset>
         <fieldset>
