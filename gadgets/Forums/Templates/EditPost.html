@@ -39,13 +39,13 @@
         <label>{lbl_attachment}:</label>
         <div id="attachments">
           <div id="attachment_model" style="display: none;">
-            <input type="file" name="attachment[]" multiple />
+            <input type="file" name="attachment[]" multiple class="file"/>
             <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{lbl_remove_attachment}">{lbl_remove_attachment}</a>
           </div>
           <!-- BEGIN current_attachment -->
           <div id="p_attach{aid}">
             <input type="hidden" name="current_attachments[]" value="{aid}" />
-            <input type="text" name="current_attachments_filename" value="{lbl_filename}" disabled="disabled"/>
+            <input type="text" name="current_attachments_filename" value="{lbl_filename}" disabled="disabled" class="large ltr"/>
             <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{lbl_remove_attachment}">{lbl_remove_attachment}</a>
           </div>
           <!-- END current_attachment -->
