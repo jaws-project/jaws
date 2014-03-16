@@ -700,7 +700,7 @@ white-space:nowrap;
 float:left;
 }
 /* Photo Organizer */
-.phoo_image .content{
+.phoo .content{
 text-align:center;
 }
 

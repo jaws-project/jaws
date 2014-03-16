@@ -702,10 +702,9 @@ white-space:nowrap;
 float:right;
 }
 /* Photo Organizer */
-.phoo_image .content{
+.phoo .content{
 text-align:center;
 }
-
 
 /* PrivateMessage */
 .privateMessage  .actions{
