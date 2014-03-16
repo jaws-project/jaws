@@ -14,16 +14,15 @@
         <div class="gadget_content">
             <!-- BEGIN info-box -->
             <div><label for="name_comments{rand}">{name}:</label>
-                <input name="name" id="name_comments{rand}" type="text" maxlength="20" value="{namevalue}"/>
+                <input name="name" class="large name" id="name_comments{rand}" type="text" maxlength="20" value="{namevalue}"/>
             </div>
 
             <div><label for="email_comments{rand}">{email}:</label>
-                <input name="email" id="email_comments{rand}" type="text" value="{emailvalue}" style="direction: ltr;"/>
+                <input name="email" class="large email ltr" id="email_comments{rand}" type="text" value="{emailvalue}"/>
             </div>
 
             <div><label for="url_comments{rand}">{url}:</label>
-                <input name="url" id="url_comments{rand}" type="text" maxlength="100" value="{urlvalue}"
-                       style="direction: ltr;"/>
+                <input name="url" class="large url ltr" id="url_comments{rand}" type="text" maxlength="100" value="{urlvalue}" />
             </div>
             <!-- END info-box -->
 
@@ -32,7 +31,7 @@
             </div>
             <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
             <div><label for="message{rand}">{lbl_message}:</label>
-                <textarea id="message{rand}" cols="20" rows="7" name="message">{message}</textarea>
+                <textarea id="message{rand}" class="x-large" rows="7" name="message">{message}</textarea>
             </div>
             <div>
                 <input name="is_private" id="private_comments{rand}" type="checkbox" value="1" />
