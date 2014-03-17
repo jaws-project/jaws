@@ -1,52 +1,52 @@
 <!-- BEGIN Languages -->
 <div id="main" style="width: 100%;">
   <div id="lang_box">
-    <div class="titles">{language}:</div>
+    <div class="titles">{{language}}:</div>
     <select name="lang" id="lang" onchange="change_lang_option();">
       <!-- BEGIN lang -->
-      <option value="{code}" {selected}>{fullname}</option>
+      <option value="{{code}}" {{selected}}>{{fullname}}</option>
       <!-- END lang -->
     </select>
-    <div class="buttons">{btn_export}</div>
+    <div class="buttons">{{btn_export}}</div>
     <br/>
-    <div class="titles">{component}:</div>
+    <div class="titles">{{component}}:</div>
     <select name="component" id="component" size="16" onchange="change_lang_option();">
       <!-- BEGIN component -->
-      <option value="{key}">{value}</option>
+      <option value="{{key}}">{{value}}</option>
       <!-- END component -->
       <!-- BEGIN group -->
-      <optgroup label="{group}">
+      <optgroup label="{{group}}">
         <!-- BEGIN item -->
-        <option value="{key}">{value}</option>
+        <option value="{{key}}">{{value}}</option>
         <!-- END item -->
       </optgroup>
       <!-- END group -->
     </select>
     <!-- BEGIN properties -->
     <div id="add_lang">
-      <label for="lang_code">{lbl_lang_code}:</label><br/>{lang_code}<br />
-      <label for="lang_name">{lbl_lang_name}:</label><br/>{lang_name}<br />
-      <div class="buttons">{btn_lang}</div>
+      <label for="lang_code">{{lbl_lang_code}}:</label><br/>{{lang_code}}<br />
+      <label for="lang_name">{{lbl_lang_name}}:</label><br/>{{lang_name}}<br />
+      <div class="buttons">{{btn_lang}}</div>
     </div>
     <!-- END properties -->
   </div>
   <div id="set_box">
-    <div class="titles">{settings}:</div>
+    <div class="titles">{{settings}}:</div>
       <table id="head_strings">
-        <tr><th id="th_from">{from}</th><th>{to}</th></tr>
+        <tr><th id="th_from">{{from}}</th><th>{{to}}</th></tr>
       </table>
     <div id="lang_strings">
     </div>
     <!-- BEGIN buttons -->
-    <div class="filter">{checkbox_filter}</div>
-    <div class="buttons">{cancel} {save}</div>
+    <div class="filter">{{checkbox_filter}}</div>
+    <div class="buttons">{{cancel}} {{save}}</div>
     <!-- END buttons -->
   </div>
   <script type="text/javascript">
-    var base_script         = "{base_script}";
-    var confirmSaveData     = "{confirmSaveData}";
-    var add_language_title  = "{add_language_title}";
-    var save_language_title = "{save_language_title}";
+    var base_script         = "{{base_script}}";
+    var confirmSaveData     = "{{confirmSaveData}}";
+    var add_language_title  = "{{add_language_title}}";
+    var save_language_title = "{{save_language_title}}";
     change_lang_option();
     $('component').selectedIndex = -1;
   </script>
