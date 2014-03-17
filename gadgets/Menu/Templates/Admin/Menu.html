@@ -2,65 +2,65 @@
 <!-- BEGIN menus_base -->
 <div id="main" style="width: 100%;">
   <div id="menus_area">
-    <div class="menu-titlebar"><span style="font-weight: bold;"><img src="{menu_tree_image}" />&nbsp;{menu_tree_title}</span></div>
-    <div id="menus_trees">{menus_trees}</div>
+    <div class="menu-titlebar"><span style="font-weight: bold;"><img src="{{menu_tree_image}}" />&nbsp;{{menu_tree_title}}</span></div>
+    <div id="menus_trees">{{menus_trees}}</div>
   </div>
   <div id="edit_area">
     <div class="menu-titlebar"><span style="font-weight: bold;"></span></div>
     <div id="menus_edit"></div>
   </div>
-  <div class="buttons">{cancel} {del} {save} {add}</div>
+  <div class="buttons">{{cancel}} {{del}} {{save}} {{add}}</div>
 </div>
 <script type="text/javascript">
-  var addMenuTitle   = "{addMenuTitle}",
-      editMenuTitle  = "{editMenuTitle}",
-      delMenuTitle   = "{delMenuTitle}",
-      addGroupTitle  = "{addGroupTitle}",
-      editGroupTitle = "{editGroupTitle}",
-      delGroupTitle  = "{delGroupTitle}",
-      menuImageSrc   = "{menuImageSrc}",
-      incompleteFields   = "{incompleteFields}",
-      confirmGroupDelete = "{confirmDeleteGroup}",
-      confirmMenuDelete  = "{confirmDeleteMenu}",
-      base_script        = "{base_script}";
+  var addMenuTitle   = "{{addMenuTitle}}",
+      editMenuTitle  = "{{editMenuTitle}}",
+      delMenuTitle   = "{{delMenuTitle}}",
+      addGroupTitle  = "{{addGroupTitle}}",
+      editGroupTitle = "{{editGroupTitle}}",
+      delGroupTitle  = "{{delGroupTitle}}",
+      menuImageSrc   = "{{menuImageSrc}}",
+      incompleteFields   = "{{incompleteFields}}",
+      confirmGroupDelete = "{{confirmDeleteGroup}}",
+      confirmMenuDelete  = "{{confirmDeleteMenu}}",
+      base_script        = "{{base_script}}";
 </script>
 <!-- END menus_base -->
 <!-- BEGIN menus_tree -->
-<div class="{class_name}" id="{mg_id}"><div class="menu_tree_items" onmouseover="mm_enter(this);" onmouseout="mm_leave(this);">
-  <div class="title"><img class="icon" src="{icon}" alt="icon" /><a href="javascript: {js_edit_func};">{title}</a></div>
-  <div class="menu_actions"><a href="javascript: {js_add_func};" title="{add_title}"><img src="{add_icon}" alt="{add_title}" /></a></div>
-</div>{sub_menus}</div><!-- END menus_tree -->
+<div class="{{class_name}}" id="{{mg_id}}"><div class="menu_tree_items" onmouseover="mm_enter(this);" onmouseout="mm_leave(this);">
+  <div class="title"><img class="icon" src="{{icon}}" alt="icon" /><a href="javascript: {{js_edit_func}};">{{title}}</a></div>
+  <div class="menu_actions"><a href="javascript: {{js_add_func}};" title="{{add_title}}"><img src="{{add_icon}}" alt="{{add_title}}" /></a></div>
+</div>{{sub_menus}}</div><!-- END menus_tree -->
 <!-- BEGIN MenusUI -->
 <div>
   <input type="hidden" name="mid" id="mid" value="0" />
   <input type="hidden" name="imagename" id="imagename" value="" />
   <table id="tbl_menu" border="0" cellpadding="0" cellspacing="0">
-    <tr><td><label for="gid">{lbl_gid}:</label></td><td colspan="2">{gid}</td></tr>
-    <tr><td><label for="pid">{lbl_pid}:</label></td><td colspan="2">{pid}</td></tr>
+    <tr><td><label for="gid">{{lbl_gid}}:</label></td><td colspan="2">{{gid}}</td></tr>
+    <tr><td><label for="pid">{{lbl_pid}}:</label></td><td colspan="2">{{pid}}</td></tr>
     <tr><td colspan="3" style="border-bottom: 1px dashed #d3d7cf;"></td></tr>
-    <tr><td><label for="type">{lbl_type}:</label></td><td colspan="2">{type}</td></tr>
-    <tr><td><label for="references">{lbl_references}:</label></td><td colspan="2">{references}</td></tr>
-    <tr><td><label for="title">{lbl_title}:</label></td><td colspan="2">{title}</td></tr>
-    <tr><td><label for="url">{lbl_url}:</label></td><td colspan="2">{url}</td></tr>
+    <tr><td><label for="type">{{lbl_type}}:</label></td><td colspan="2">{{type}}</td></tr>
+    <tr><td><label for="references">{{lbl_references}}:</label></td><td colspan="2">{{references}}</td></tr>
+    <tr><td><label for="title">{{lbl_title}}:</label></td><td colspan="2">{{title}}</td></tr>
+    <tr><td><label for="url">{{lbl_url}}:</label></td><td colspan="2">{{url}}</td></tr>
     <tr>
-      <td><label for="url_target">{lbl_url_target}:</label></td>
-      <td>{url_target}</td>
+      <td><label for="url_target">{{lbl_url_target}}:</label></td>
+      <td>{{url_target}}</td>
       <td rowspan="3" id="menu_image">
         <img name="image" id="image" src="gadgets/Menu/Resources/images/no-image.png" />
       </td>
     </tr>
-    <tr><td><label for="rank">{lbl_rank}:</label></td><td>{rank}</td></tr>
-    <tr><td><label for="published">{lbl_published}:</label></td><td>{published}</td></tr>
+    <tr><td><label for="rank">{{lbl_rank}}:</label></td><td>{{rank}}</td></tr>
+    <tr><td><label for="published">{{lbl_published}}:</label></td><td>{{published}}</td></tr>
     <tr>
       <td></td>
       <td></td>
       <td id="image-action">
         <form id="frm_image" name="frm_image" method="post"
-              target="ifrm_upload" action="{base_script}"
+              target="ifrm_upload" action="{{base_script}}"
               enctype="multipart/form-data" onsubmit="return true">
           <input type="hidden" name="gadget" value="Menu" />
           <input type="hidden" name="action" value="UploadImage" />
-          <div class="gadget_actions actions">{btn_upload} {btn_remove}<div class="wrapper">{upload_image}</div></div>
+          <div class="gadget_actions actions">{{btn_upload}} {{btn_remove}}<div class="wrapper">{{upload_image}}</div></div>
         </form>
       </td>
     </tr>
@@ -72,9 +72,9 @@
   <input type="hidden" name="gid" id="gid" value="0" />
   <input type="hidden" name="rank" id="rank" value="0" />
   <table id="tbl_group" border="0" cellpadding="0" cellspacing="0">
-    <tr><td><label for="title">{lbl_title}:</label></td><td>{title}</td></tr>
-    <tr><td><label for="title_view">{lbl_title_view}:</label></td><td>{title_view}</td></tr>
-    <tr><td><label for="published">{lbl_published}:</label></td><td>{published}</td></tr>
+    <tr><td><label for="title">{{lbl_title}}:</label></td><td>{{title}}</td></tr>
+    <tr><td><label for="title_view">{{lbl_title_view}}:</label></td><td>{{title_view}}</td></tr>
+    <tr><td><label for="published">{{lbl_published}}:</label></td><td>{{published}}</td></tr>
   </table>
 </div>
 <!-- END GroupsUI -->

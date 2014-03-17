@@ -1,8 +1,8 @@
 <!-- BEGIN menu -->
-<!-- BEGIN group_title --><div class="gadget_header"><h3>{title}</h3></div><!-- END group_title -->
+<!-- BEGIN group_title --><div class="gadget_header"><h3>{{title}}</h3></div><!-- END group_title -->
 <div class="gadget_container">
   <div class="gadget_content content">
-    {menus_tree}
+    {{menus_tree}}
   </div>
 </div>
 <div class="gadget_footer"></div>
@@ -11,7 +11,7 @@
 <ul>
 <!-- BEGIN menu_item -->
   <li class="menu_item<!-- BEGIN current --> menu_current<!-- END current --><!-- BEGIN super --> menu_super<!-- END super --><!-- BEGIN first --> menu_first<!-- END first --><!-- BEGIN last --> menu_last<!-- END last -->">
-    <a href="{url}" target="{target}">{image}<span>{title}</span></a>{sub_menu}
+    <a href="{{url}}" target="{{target}}">{{image}}<span>{{title}}</span></a>{{sub_menu}}
   </li><!-- END menu_item -->
 </ul>
 <!-- END levels -->
