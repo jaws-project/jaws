@@ -1,23 +1,23 @@
 <!-- BEGIN phoo -->
-{menubar}
+{{menubar}}
 <div id="main" align="center">
 <!-- BEGIN noalbums -->
   <div id="no-albums">
-    {message}<br /><br />{form}
+    {{message}}<br /><br />{{form}}
   </div>
 <!-- END noalbums -->
 
 <!-- BEGIN photos -->
   <script type="text/javascript">
   function selectAllAlbums()
-  {
+  {{
     c = document.getElementById('albums_list');
-    for (i = c.options.length - 1; i >= 0; i--) {
+    for (i = c.options.length - 1; i >= 0; i--) {{
         c.options[i].selected = true;
-    }
-  }
+    }}
+  }}
   </script>
-  <form name="AdminPhotos" action="{base_action}" method="post">
+  <form name="AdminPhotos" action="{{base_action}}" method="post">
     <input type="hidden" name="gadget" value="Phoo" />
     <input type="hidden" name="action" value="AdminPhotos" />
     <table id="phoo-table">
@@ -26,54 +26,54 @@
             <table>
                 <tr>
                     <td>
-                        <label>{lbl_group}:</label>
+                        <label>{{lbl_group}}:</label>
                         <select id="group" name="group" style="width: 200px;" onchange="javascript: filterAlbums(this.value);">
-                         <option value="">{lbl_all}</option>
-                         <!-- BEGIN group --><option value="{gid}" 
+                         <option value="">{{lbl_all}}</option>
+                         <!-- BEGIN group --><option value="{{gid}}" 
                                                 <!-- BEGIN selected_group -->selected="selected"<!-- END selected_group -->
-                                                        >{group}</option><!-- END group -->
+                                                        >{{group}}</option><!-- END group -->
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                    <label>{date}:</label>
-                    {date_combo}
+                    <label>{{date}}:</label>
+                    {{date_combo}}
                     </td>
                 </tr>
                 <tr>
                     <td>
-                    <label>{albums}:</label>
-                    {albums_combo}
+                    <label>{{albums}}:</label>
+                    {{albums_combo}}
                     </td>
                 </tr>
                 <tr>
-                    <td>{new_album}</td>
+                    <td>{{new_album}}</td>
                 </tr>
             </table>
         </td>
         <td>
         <!-- BEGIN failures -->
-        <center><div class="error-message" style="margin-bottom: 1.4em;">{message}</div></center>
+        <center><div class="error-message" style="margin-bottom: 1.4em;">{{message}}</div></center>
         <!-- END failures -->
         <div id="albums-area">
             <!-- BEGIN albums -->
             <div class="phoo-album">
-                <span class="phoo-album-date">{createtime}</span>
-                <h2>{title}</h2>
-                <div class="phoo-album-description">{description}</div>
-                <div class="phoo-album-actions">{actions}</div>
+                <span class="phoo-album-date">{{createtime}}</span>
+                <h2>{{title}}</h2>
+                <div class="phoo-album-description">{{description}}</div>
+                <div class="phoo-album-actions">{{actions}}</div>
             </div>
             <div class="clearfix">
                 <!-- BEGIN item -->
                 <span class="phoo-album-item">
-                <a href="{url}">
-                 <img class="phoo-image phoo-square" src="{thumb}" title="{name}" width="{width}" height="{height}" alt="{name}" />
+                <a href="{{url}}">
+                 <img class="phoo-image phoo-square" src="{{thumb}}" title="{{name}}" width="{{width}}" height="{{height}}" alt="{{name}}" />
                 <!-- BEGIN notfound -->
-                <br /><span class="not-found">{notfound}</span>
+                <br /><span class="not-found">{{notfound}}</span>
                 <!-- END notfound -->
                 <!-- BEGIN notpublished -->
-                <br /><span class="not-published">{notpublished}</span>
+                <br /><span class="not-published">{{notpublished}}</span>
                 <!-- END notpublished -->
                 </a>
                 </span>
@@ -81,7 +81,7 @@
             </div>
             <br />
             <!-- BEGIN nophotos -->
-            <div class="no-photos"><div class="notice-message">{message}</div></div>
+            <div class="no-photos"><div class="notice-message">{{message}}</div></div>
             <!-- END nophotos -->
             <!-- END albums -->
         </div>

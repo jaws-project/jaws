@@ -3,42 +3,42 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-  <title>{page-title}</title>
+  <title>{{page-title}}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="stylesheet" type="text/css" href="gadgets/ControlPanel/Resources/style{.dir}.css" />
-  <link rel="stylesheet" type="text/css" href="gadgets/Phoo/Resources/style{.dir}.css" />
+  <link rel="stylesheet" type="text/css" href="gadgets/ControlPanel/Resources/style{{.dir}}.css" />
+  <link rel="stylesheet" type="text/css" href="gadgets/Phoo/Resources/style{{.dir}}.css" />
 </head>
 <body>
   <div id="image_select_container">
     <div id="image_select">
       <!-- BEGIN selected -->
-      <form name="AdminPhotos" action="{base_script}" method="POST">
+      <form name="AdminPhotos" action="{{base_script}}" method="POST">
         <input type="hidden" name="gadget" value="Phoo" />
         <input type="hidden" name="action" value="BrowsePhoo" />
-        <input type="hidden" name="album" value="{album}" />
-        <input type="hidden" name="extra_params" id="extra_params" value="{extra_params}"/>
+        <input type="hidden" name="album" value="{{album}}" />
+        <input type="hidden" name="extra_params" id="extra_params" value="{{extra_params}}"/>
         <div class="image-box"><table class="image-box_">
             <tr>
               <td class="phoo-image">
-                <img src="{s_image}" title="{s_name}" />
+                <img src="{{s_image}}" title="{{s_name}}" />
               </td>
               <td style="vertical-align: top;">
                 <table class="image-porperties">
                   <tr>
-                    <td><label for="s_title">{t_title}:</label></td>
-                    <td><input id="s_title" name="s_title" type="text" value="{s_name}" size="35" maxlength="50"></td>
+                    <td><label for="s_title">{{t_title}}:</label></td>
+                    <td><input id="s_title" name="s_title" type="text" value="{{s_name}}" size="35" maxlength="50"></td>
                   </tr>
                   <tr>
-                    <td><label for="s_desc">{t_desc}:</label></td>
-                    <td><input id="s_desc" name="s_desc" type="text" value="{s_desc}" size="35" maxlength="50"></td>
+                    <td><label for="s_desc">{{t_desc}}:</label></td>
+                    <td><input id="s_desc" name="s_desc" type="text" value="{{s_desc}}" size="35" maxlength="50"></td>
                   </tr>
                   <tr>
-                    <td><label for="thumb">{t_size}:</label></td>
+                    <td><label for="thumb">{{t_size}}:</label></td>
                     <td>
-                      <input id="thumb" name="size" type="radio" value="Thumb" checked onClick="javascript:this.form.s_size.value ='Thumb'" ><label for="thumb">{t_thumb}</label>
-                      <input id="medium" name="size" type="radio" value="Medium" onClick="javascript:this.form.s_size.value='Medium'"><label for="medium">{t_medium}</label>
+                      <input id="thumb" name="size" type="radio" value="Thumb" checked onClick="javascript:this.form.s_size.value ='Thumb'" ><label for="thumb">{{t_thumb}}</label>
+                      <input id="medium" name="size" type="radio" value="Medium" onClick="javascript:this.form.s_size.value='Medium'"><label for="medium">{{t_medium}}</label>
                       <!-- BEGIN original -->
-                      <input id="original" name="size" type="radio" value="Original" onClick="javascript:this.form.s_size.value='Original'"><label for="original">{t_original}</label>
+                      <input id="original" name="size" type="radio" value="Original" onClick="javascript:this.form.s_size.value='Original'"><label for="original">{{t_original}}</label>
                       <!-- END original -->
                     </td>
                   </tr>
@@ -47,7 +47,7 @@
                     <td>&nbsp;</td>
                     <td>
                       <input type="checkbox" id="s_linked" name="s_linked" value="Yes" onClick="javascript: this.form.linked.value = this.form.s_linked.checked;">
-                      <label for="s_linked">{include_link}</label>
+                      <label for="s_linked">{{include_link}}</label>
                     </td>
                   </tr>
                   <!-- END linked -->
@@ -61,52 +61,52 @@
               </td>
             </tr>
         </table></div>
-        {button_bar}
+        {{button_bar}}
       </form>
       <!-- END selected -->
 
       <!-- BEGIN not_published -->
-      <form name="AdminPhotos" action="{base_script}" method="POST">
+      <form name="AdminPhotos" action="{{base_script}}" method="POST">
         <input type="hidden" name="gadget" value="Phoo" />
         <input type="hidden" name="action" value="BrowsePhoo" />
-        <input type="hidden" name="album" value="{album}" />
+        <input type="hidden" name="album" value="{{album}}" />
         <div class="image-box">
-          <div class="notice-message">{not_published_label}</div> 
+          <div class="notice-message">{{not_published_label}}</div> 
         </div>
-        {button_bar}
+        {{button_bar}}
       </form>
       <!-- END not_published -->
     </div>
   </div>
 </body>
 <script type="text/JavaScript">
-    function insertImage(filename, title, desc, size, linked, editor) {
+    function insertImage(filename, title, desc, size, linked, editor) {{
         var src = getImagePath(filename, size);
-        switch (editor) {
+        switch (editor) {{
             case 'TinyMCE':
                 top.tinymce.activeEditor.windowManager.getParams().oninsert(src, title);
                 top.tinyMCE.activeEditor.windowManager.close();
                 break;
             case 'CKEditor':
-                var ckFuncIndex = '{ckFuncIndex}';
+                var ckFuncIndex = '{{ckFuncIndex}}';
                 window.opener.CKEDITOR.tools.callFunction(ckFuncIndex, src, setImageAlt(title));
                 close();
                 break;
             case 'TextArea':
                 var img = '<img src="' + src + '" title="' + title + '" alt="' + desc + '" />';
-                if (linked === 'true') {
+                if (linked === 'true') {{
                     img = '<a href="' + filename + '">' + img + '</a>';
-                }
+                }}
                 opener.insertTags(opener.the_textarea, img, '', '');
                 close();
                 break;
-        }
+        }}
 
-        function getImagePath(filename, size) {
+        function getImagePath(filename, size) {{
             var path = filename.substring(0, filename.lastIndexOf('/')),
                 file = filename.substring(filename.lastIndexOf('/'));
 
-            switch(size) {
+            switch(size) {{
                 case 'Thumb':
                     return path + '/thumb' + file;
                     break;
@@ -115,16 +115,16 @@
                     break;
                 default:
                     return filename;
-            }
-        }
+            }}
+        }}
 
-        function setImageAlt(title) {
+        function setImageAlt(title) {{
             var dialog = window.opener.CKEDITOR.dialog.getCurrent();
-            if (dialog.getName() == 'image') {
+            if (dialog.getName() == 'image') {{
                 var txtAltField = dialog.getContentElement( 'info', 'txtAlt' );
                 txtAltField.setValue(title);
-            }
-        }
-    }
+            }}
+        }}
+    }}
 </script>
 <!-- END ImageSelect -->

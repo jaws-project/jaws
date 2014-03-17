@@ -3,29 +3,29 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-  <title>{page-title}</title>
+  <title>{{page-title}}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="stylesheet" type="text/css" href="gadgets/ControlPanel/Resources/style{.dir}.css" />
-  <link rel="stylesheet" type="text/css" href="gadgets/Phoo/Resources/style{.dir}.css" />
+  <link rel="stylesheet" type="text/css" href="gadgets/ControlPanel/Resources/style{{.dir}}.css" />
+  <link rel="stylesheet" type="text/css" href="gadgets/Phoo/Resources/style{{.dir}}.css" />
 </head>
 <body>
   <div id="phoo_browse">
       <!-- BEGIN upload_photo -->
-      <div id="photo_upload_title">{lbl_file_upload}</div>
+      <div id="photo_upload_title">{{lbl_file_upload}}</div>
       <form id="phoo_form" name="phoo_form" method="post"
-            action="{base_script}"
+            action="{{base_script}}"
             enctype="multipart/form-data">
           <input type="hidden" name="gadget" value="Phoo"/>
           <input type="hidden" name="action" id="action" value="UploadPhotosStep2"/>
-          <input type="hidden" name="album" id="album" value="{album}"/>
-          <input type="hidden" name="extra_params" id="extra_params" value="{extra_params}"/>
+          <input type="hidden" name="album" id="album" value="{{album}}"/>
+          <input type="hidden" name="extra_params" id="extra_params" value="{{extra_params}}"/>
 
           <div class="files">
               <table>
                   <tr>
-                      <td>{lbl_filename}:</td>
-                      <td>{uploadfile}</td>
-                      <td>{btn_upload_file}</td>
+                      <td>{{lbl_filename}}:</td>
+                      <td>{{uploadfile}}</td>
+                      <td>{{btn_upload_file}}</td>
                   </tr>
               </table>
 
@@ -35,69 +35,69 @@
 
     <!-- BEGIN noalbums -->
     <div class="no-album">
-      <div class="notice-message">{message}</div>
+      <div class="notice-message">{{message}}</div>
     </div>
     <!-- END noalbums -->
 
     <!-- BEGIN photos -->
     <script language="JavaScript">
-        var incompleteFields = "{incompleteFields}";
-        function selectAllAlbums() {
+        var incompleteFields = "{{incompleteFields}}";
+        function selectAllAlbums() {{
             var combo, i;
             combo = document.getElementById('albums');
-            for (i = combo.options.length - 1; i >= 0; i--) {
+            for (i = combo.options.length - 1; i >= 0; i--) {{
                 combo.options[i].selected = true;
-            }
-        }
+            }}
+        }}
 
         /**
          * Upload photo
          */
         function uploadPhoto()
-        {
-            var defaultAlbum = "{defaultAlbum}";
+        {{
+            var defaultAlbum = "{{defaultAlbum}}";
             var photo1 = document.getElementById('photo1').value;
-            if (photo1 == null || photo1 == "") {
+            if (photo1 == null || photo1 == "") {{
                 alert(incompleteFields);
                 return false;
-            }
+            }}
             document.getElementById('album').value = defaultAlbum;
             document.phoo_form.submit();
-        }
+        }}
     </script>
 
-    <form id="album_form" name="album_form" action="{base_script}" method="post">
+    <form id="album_form" name="album_form" action="{{base_script}}" method="post">
       <input type="hidden" name="gadget" value="Phoo" />
       <input type="hidden" name="action" value="BrowsePhoo" />
-      <input type="hidden" name="extra_params" id="extra_params" value="{extra_params}"/>
+      <input type="hidden" name="extra_params" id="extra_params" value="{{extra_params}}"/>
       <table id="phoo-table">
         <tr>
           <td id="albums-combo-cell">
-            <div><label for="date">{date}:</label></div>
-            <div>{date_combo}</div><br/>
-            <div><label for="albums">{albums}:</label></div>
-            <div>{albums_combo}</div>
+            <div><label for="date">{{date}}:</label></div>
+            <div>{{date_combo}}</div><br/>
+            <div><label for="albums">{{albums}}:</label></div>
+            <div>{{albums_combo}}</div>
           </td>
           <td>
             <!-- BEGIN failures -->
-            <center><div class="error-message" style="margin-bottom: 1.4em;">{message}</div><center>
+            <center><div class="error-message" style="margin-bottom: 1.4em;">{{message}}</div><center>
             <!-- END failures -->
             <div id="albums-area">
               <!-- BEGIN albums -->
               <div class="phoo-album">
-                <span class="phoo-album-date">{createtime}</span>
-                <h2>{title}</h2>
-                <div class="phoo-album-description">{description}</div>
+                <span class="phoo-album-date">{{createtime}}</span>
+                <h2>{{title}}</h2>
+                <div class="phoo-album-description">{{description}}</div>
                 <div class="phoo-album-items clearfix">
                   <!-- BEGIN item -->
                   <span class="phoo-album-item">
-                    <a href="{url}">
-                      <img class="phoo-image phoo-square" src="{thumb}" title="{name}" width="{width}" height="{height}" alt="{name}" />
+                    <a href="{{url}}">
+                      <img class="phoo-image phoo-square" src="{{thumb}}" title="{{name}}" width="{{width}}" height="{{height}}" alt="{{name}}" />
                       <!-- BEGIN notfound -->
-                      <span class="not-found">{notfound}</span>
+                      <span class="not-found">{{notfound}}</span>
                       <!-- END notfound -->
                       <!-- BEGIN notpublished -->
-                      <span class="not-published">{notpublished}</span>
+                      <span class="not-published">{{notpublished}}</span>
                       <!-- END notpublished -->
                     </a>
                   </span>
@@ -105,7 +105,7 @@
                 </div>
                 <!-- BEGIN nophotos -->
                 <div class="no-photos">
-                  <div class="notice-message">{message}</div>
+                  <div class="notice-message">{{message}}</div>
                 </div>
                 <!-- END nophotos -->
               </div>

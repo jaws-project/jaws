@@ -1,25 +1,25 @@
 <!-- BEGIN finishimport -->
-{menubar}
-<h1 class="message">{importing}</h1>
+{{menubar}}
+<h1 class="message">{{importing}}</h1>
 <script>
-var album = "{album}";
-var howmany = {howmany};
+var album = "{{album}}";
+var howmany = {{howmany}};
 var items = new Array();
-var indicator_image = "{indicator_image}";
-var ok_image = "{ok_image}";
-var finished_message = "{finished}";
+var indicator_image = "{{indicator_image}}";
+var ok_image = "{{ok_image}}";
+var finished_message = "{{finished}}";
 <!-- BEGIN items -->
-items[{counter}] = new Array();
-items[{counter}]['image'] = "{image}";
-items[{counter}]['name'] = "{name}";
+items[{{counter}}] = new Array();
+items[{{counter}}]['image'] = "{{image}}";
+items[{{counter}}]['name'] = "{{name}}";
 <!-- END items -->
 setTimeout('ImportImages();', 1000);
 </script>
 <div id="main" align="center">
-<div id="warning" class="warning-message">{import_warning}</div><br/><br/>
+<div id="warning" class="warning-message">{{import_warning}}</div><br/><br/>
 <table style="width: 500px;">
  <tr>
-  <td style="width: 18px;"><img src="{indicator_image}" alt="" id="indicator" /></td>
+  <td style="width: 18px;"><img src="{{indicator_image}}" alt="" id="indicator" /></td>
   <td id="td_img_percent" style="padding: 2px; border: 1px solid #d3d7cf; min-width: 250px; max-width: 250px; width: 250px;">
    <img height="16" src="gadgets/Phoo/Resources/images/percent.png" style="width:0%;" alt="percent" id="img_percent" />
   </td>

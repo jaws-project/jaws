@@ -1,23 +1,23 @@
 <!-- BEGIN albums -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_content content">
     <!-- BEGIN item -->
     <table>
     <tr>
       <td style="vertical-align: top">
-        <h4><a href="{url}">{name}</a></h4>
-        {description}
-        <div class="album-info">{createtime}<br />{howmany}</div>
+        <h4><a href="{{url}}">{{name}}</a></h4>
+        {{description}}
+        <div class="album-info">{{createtime}}<br />{{howmany}}</div>
       </td>
       <td style="vertical-align: top; width: 1%">
-        <a href="{url}" title="{name}"><img src="{thumb}" width="{width}" height="{height}" alt="{filename}" /></a>
+        <a href="{{url}}" title="{{name}}"><img src="{{thumb}}" width="{{width}}" height="{{height}}" alt="{{filename}}" /></a>
       </td>
     </tr>
     </table>
     <div class="album_group">
       <!-- BEGIN group -->
-      <a href="{url}" rel="tag">{name}</a> {separator}
+      <a href="{{url}}" rel="tag">{{name}}</a> {{separator}}
       <!-- END group -->
     </div>
     <!-- END item -->

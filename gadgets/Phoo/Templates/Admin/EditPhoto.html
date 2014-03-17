@@ -1,35 +1,35 @@
 <!-- BEGIN edit_photo -->
-{menubar}
+{{menubar}}
 <script type="text/javascript">
-  var base_script = "{base_script}";
+  var base_script = "{{base_script}}";
 </script>
 <div id="main" align="center">
-  <form name="EditPhoto" method="post" action="{base_script}">
+  <form name="EditPhoto" method="post" action="{{base_script}}">
   <input type="hidden" name="gadget" value="Phoo" />
   <input type="hidden" name="action" value="SaveEditPhoto" />
-  {imageid}
-  {filterby} {filter}
-  {albumid}
+  {{imageid}}
+  {{filterby}} {{filter}}
+  {{albumid}}
   <table id="photo-info" border="0" cellpadding="2" cellspacing="2">
   <tr><td id="photo-edit" style="vertical-align: top;" rowspan="4">
-        <img class="phoo-image" alt="{photo_name}" src="{image_thumb}" title="{photo_name}"/>
-        <div id="image-controls">{rotate_left} {rotate_right} {comments} {delete}</div>
+        <img class="phoo-image" alt="{{photo_name}}" src="{{image_thumb}}" title="{{photo_name}}"/>
+        <div id="image-controls">{{rotate_left}} {{rotate_right}} {{comments}} {{delete}}</div>
       </td>
       <td colspan="2">
-        <label for="title">{name}:</label>{name_field}
+        <label for="title">{{name}}:</label>{{name_field}}
       </td>
   </tr>
-  <tr><td colspan="2">{description}</td></tr>
-  <tr><td id="allow-comments-cell">{allow_comments_field}</td>
-      <td id="published-cell"><label for="published">{status}</label> {status_field}</td>
+  <tr><td colspan="2">{{description}}</td></tr>
+  <tr><td id="allow-comments-cell">{{allow_comments_field}}</td>
+      <td id="published-cell"><label for="published">{{status}}</label> {{status_field}}</td>
   </tr>
   <tr><td colspan="2">
-        <label>{album}</label>
-        <div id="album-checkboxes">{album_field}</div>
+        <label>{{album}}</label>
+        <div id="album-checkboxes">{{album_field}}</div>
       </td>
   </tr>
   </table>
-  <div id="buttons" style="padding-top: 15px;">{cancel} {save}</div>
+  <div id="buttons" style="padding-top: 15px;">{{cancel}} {{save}}</div>
   </form>
 </div>
 <!-- END edit_photo -->

@@ -1,35 +1,35 @@
 <!-- BEGIN import -->
-{menubar}
+{{menubar}}
 <div id="main" align="center">
-<form action="{base_script}" method="post">
+<form action="{{base_script}}" method="post">
 <!-- BEGIN noitems -->
-<h2 class="message">{no_items_to_import}</h2>
-<p class="message">{message}</p>
+<h2 class="message">{{no_items_to_import}}</h2>
+<p class="message">{{message}}</p>
 <!-- END noitems -->
 <!-- BEGIN pictures -->
-{gadget_hidden} {action_hidden}
-<h1 class="message">{ready_to_import}</h1>
+{{gadget_hidden}} {{action_hidden}}
+<h1 class="message">{{ready_to_import}}</h1>
 <!-- BEGIN item -->
 <div class="import_image_list" style="width: 200px; height: 160px; display: block; margin: 5px; text-align: center; vertical-align: bottom;">
-<img src="{thumb}" alt="{filename}" title="{filename}" style="max-height: 120px;" id="img_{counter}" /><br/>
-<input type="checkbox" name="images[]" id="chk_{counter}" checked="checked" onclick="toggleChk(this, {counter})" value="{filename}"/>
-<input type="text" value="{filename}" name="{entryname}" id="entry_{counter}" style="width: 100px;"/>
+<img src="{{thumb}}" alt="{{filename}}" title="{{filename}}" style="max-height: 120px;" id="img_{{counter}}" /><br/>
+<input type="checkbox" name="images[]" id="chk_{{counter}}" checked="checked" onclick="toggleChk(this, {{counter}})" value="{{filename}}"/>
+<input type="text" value="{{filename}}" name="{{entryname}}" id="entry_{{counter}}" style="width: 100px;"/>
 </div>
 <!-- END item -->
 <script type="text/javascript">
-function toggleChk(el, id) {
-    if (el.checked) {
+function toggleChk(el, id) {{
+    if (el.checked) {{
         document.getElementById('entry_' + id).disabled = false;
         document.getElementById('img_' + id).setAttribute('style', 'filter:alpha(opacity=100);-moz-opacity:1;opacity:1;');
-    } else {
+    }} else {{
         document.getElementById('entry_' + id).disabled = true;
         document.getElementById('img_' + id).setAttribute('style', 'filter:alpha(opacity=50);-moz-opacity:.50;opacity:.50;');
-    }
-}
+    }}
+}}
 </script>
 <div class="clearfix"></div>
 <div align="center" class="clearfix" style="padding: 10px; border: 1px solid #d3d7cf; background-color: #fafafa;">
-{import_message} {albums_combo} {import_button}
+{{import_message}} {{albums_combo}} {{import_button}}
 </div>
 <!-- END pictures -->
 </form>

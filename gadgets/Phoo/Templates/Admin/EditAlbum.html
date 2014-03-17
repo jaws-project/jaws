@@ -1,40 +1,40 @@
 <!-- BEGIN edit_album -->
-{menubar}
+{{menubar}}
 <script type="text/javascript">
-  var base_script = "{base_script}";
+  var base_script = "{{base_script}}";
 </script>
 <div id="main" align="center">
-  <form name="EditPhoto" method="post" action="{base_script}">
+  <form name="EditPhoto" method="post" action="{{base_script}}">
   <input type="hidden" name="gadget" value="Phoo" />
-  <input type="hidden" name="action" value="{action}" />
-  {album}
+  <input type="hidden" name="action" value="{{action}}" />
+  {{album}}
   <table class="widetable">
   <tr><td>
    <table width="100%">
     <tr>
-     <td class="message"><label for="title">{name}:</label>{name_field}</td>
+     <td class="message"><label for="title">{{name}}:</label>{{name_field}}</td>
     </tr>
     <tr>
-     <td>{description}</td>
+     <td>{{description}}</td>
     </tr>
     <tr>
      <td colspan="2" class="extra" align="right">
       <table style="width: 100%;">
        <tr>
         <td id="group-cell">
-         <label>{lbl_group}</label><br />
+         <label>{{lbl_group}}</label><br />
           <!-- BEGIN group -->
-            <input type="checkbox" name="groups[]" id="group_{gid}"
+            <input type="checkbox" name="groups[]" id="group_{{gid}}"
                   <!-- BEGIN selected_group -->checked="checked"<!-- END selected_group -->
-                  value="{gid}" />
-            <label for="group_{gid}">{lbl_group}</label>
+                  value="{{gid}}" />
+            <label for="group_{{gid}}">{{lbl_group}}</label>
           <!-- END group -->
         </td>
         <td id="allow-comments-cell">
-         {allow_comments_field}
+         {{allow_comments_field}}
         </td>
         <td id="published-cell">
-         <label for="published">{status}</label> {status_field}
+         <label for="published">{{status}}</label> {{status_field}}
         </td>
        </tr>
       </table>
@@ -42,7 +42,7 @@
     </tr>
    </table>
   </td></tr>
-  <tr><td class="buttons">{cancel} {save}</td></tr>
+  <tr><td class="buttons">{{cancel}} {{save}}</td></tr>
   </table>
   </form>
 </div>

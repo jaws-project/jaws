@@ -1,43 +1,43 @@
 <!-- BEGIN ViewImage -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <!-- BEGIN navigation -->
   <div class="gadget_paginator">
   <!-- BEGIN first-photo -->
-    <span class="prev inactive">{lbl_first}</span>
-    <span class="prev inactive">{lbl_prev}</span>
+    <span class="prev inactive">{{lbl_first}}</span>
+    <span class="prev inactive">{{lbl_prev}}</span>
   <!-- END first-photo -->
   <!-- BEGIN no-first-photo -->
-    <span class="prev"><a href="{url_first}">{lbl_first}</a></span>
-    <span class="prev"><a href="{url_prev}">{lbl_prev}</a></span>
+    <span class="prev"><a href="{{url_first}}">{{lbl_first}}</a></span>
+    <span class="prev"><a href="{{url_prev}}">{{lbl_prev}}</a></span>
   <!-- END no-first-photo -->
   <!-- BEGIN last-photo -->
-    <span class="next inactive">{lbl_next}</span>
-    <span class="next inactive">{lbl_last}</span>
+    <span class="next inactive">{{lbl_next}}</span>
+    <span class="next inactive">{{lbl_last}}</span>
   <!-- END last-photo -->
   <!-- BEGIN no-last-photo -->
-    <span class="next"><a href="{url_next}">{lbl_next}</a></span>
-    <span class="next"><a href="{url_last}">{lbl_last}</a></span>
+    <span class="next"><a href="{{url_next}}">{{lbl_next}}</a></span>
+    <span class="next"><a href="{{url_last}}">{{lbl_last}}</a></span>
   <!-- END no-last-photo -->
-    <span><a href="{url_thumbs}">{lbl_thumbs}</a></span>
-    <div><span class="total">{lbl_page_counter}</span></div>
+    <span><a href="{{url_thumbs}}">{{lbl_thumbs}}</a></span>
+    <div><span class="total">{{lbl_page_counter}}</span></div>
   </div>
   <!-- END navigation -->
   <div class="gadget_content content">
-    <a href="{url}" title="{img_desc}" target="_blank">
-      <img src="{medium}" width="{width}" height="{height}" title="{name}" alt="{filename}" /></a>
-    <p>{description}</p>
+    <a href="{{url}}" title="{{img_desc}}" target="_blank">
+      <img src="{{medium}}" width="{{width}}" height="{{height}}" title="{{name}}" alt="{{filename}}" /></a>
+    <p>{{description}}</p>
     <!-- BEGIN exif -->
     <div>
-      <h4>{exif_info}</h4>
-      <p><img src="{cameraimg}" title="{camera}" width="48" alt="{camera}" height="48" />
-         <span><strong>{camera}</strong><br />{data}</span></p>
+      <h4>{{exif_info}}</h4>
+      <p><img src="{{cameraimg}}" title="{{camera}}" width="48" alt="{{camera}}" height="48" />
+         <span><strong>{{camera}}</strong><br />{{data}}</span></p>
     </div>
     <!-- END exif -->
   </div>
 </div>
 <div class="gadget_footer"></div>
-{comments}
-{preview}
-{comment-form}
+{{comments}}
+{{preview}}
+{{comment-form}}
 <!-- END ViewImage -->
