@@ -1,26 +1,26 @@
 <!-- BEGIN share -->
 <fieldset>
-  <div><label>{lbl_shared_for}:</label></div>
+  <div><label>{{lbl_shared_for}}:</label></div>
   <select id="share_users" size="10"></select>
   <div></div>
   <!-- BEGIN edit -->
   <form id="frm_share">
-    <div><label>{lbl_groups}:</label></div>
-    {groups}
-    <div><label>{lbl_users}:</label></div>
+    <div><label>{{lbl_groups}}:</label></div>
+    {{groups}}
+    <div><label>{{lbl_users}}:</label></div>
     <div id="users"></div>
   </form>
   <!-- END edit -->
-  <div id="public_ui"><label>{lbl_public}:</label>
-    <button id="btn_public" onclick="publishFile(true)">{lbl_make_public}</button>
+  <div id="public_ui"><label>{{lbl_public}}:</label>
+    <button id="btn_public" onclick="publishFile(true)">{{lbl_make_public}}</button>
     <a id="public_url"></a>
     <button id="btn_unpublic" title="Remove" onclick="publishFile(false)"> X </button>
   </div>
 </fieldset>
 <!-- BEGIN actions -->
 <div class="gadget_actions actions">
-  <button type="button" onclick="cancel()">{lbl_cancel}</button>
-  <button type="button" onclick="submitShare()">{lbl_ok}</button>
+  <button type="button" onclick="cancel()">{{lbl_cancel}}</button>
+  <button type="button" onclick="submitShare()">{{lbl_ok}}</button>
 </div>
 <!-- END actions -->
 <!-- END share -->

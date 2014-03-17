@@ -1,12 +1,12 @@
 <!-- BEGIN workspace -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_response">
-    <div id="directory_directory_response" class="{type}">{text}</div>
+    <div id="directory_directory_response" class="{{type}}">{{text}}</div>
   </div>
   <div class="clearfix"></div>
   <div id="dir_pathbar">
-    <a href="{home_url}" title="{home_title}">
+    <a href="{{home_url}}" title="{{home_title}}">
       <img src="gadgets/Directory/Resources/images/home.png"/>
     </a>
     <span id="dir_path"></span>
@@ -16,26 +16,26 @@
     <span id="search_res"></span>
   </div>
   <div id="file_actions">
-    <img id="btn_new_file" src="{img_new_file}" alt="{lbl_new_file}" title="{lbl_new_file}" onclick="newFile()" />
-    <img id="btn_new_dir" src="{img_new_dir}" alt="{lbl_new_dir}" title="{lbl_new_dir}" onclick="newDirectory()" />
-    <img id="btn_props" src="{img_props}" alt="{lbl_props}" title="{lbl_props}" onclick="props()" />
-    <img id="btn_edit" src="{img_edit}" alt="{lbl_edit}" title="{lbl_edit}" onclick="edit()" />
-    <img id="btn_move" src="{img_move}" alt="{lbl_move}" title="{lbl_move}" onclick="move()" />
-    <img id="btn_delete" src="{img_delete}" alt="{lbl_delete}" title="{lbl_delete}" onclick="del()" />
+    <img id="btn_new_file" src="{{img_new_file}}" alt="{{lbl_new_file}}" title="{{lbl_new_file}}" onclick="newFile()" />
+    <img id="btn_new_dir" src="{{img_new_dir}}" alt="{{lbl_new_dir}}" title="{{lbl_new_dir}}" onclick="newDirectory()" />
+    <img id="btn_props" src="{{img_props}}" alt="{{lbl_props}}" title="{{lbl_props}}" onclick="props()" />
+    <img id="btn_edit" src="{{img_edit}}" alt="{{lbl_edit}}" title="{{lbl_edit}}" onclick="edit()" />
+    <img id="btn_move" src="{{img_move}}" alt="{{lbl_move}}" title="{{lbl_move}}" onclick="move()" />
+    <img id="btn_delete" src="{{img_delete}}" alt="{{lbl_delete}}" title="{{lbl_delete}}" onclick="del()" />
     <!-- BEGIN share -->
-    <img id="btn_share" src="{img_share}" alt="{lbl_share}" title="{lbl_share}" onclick="share()" />
+    <img id="btn_share" src="{{img_share}}" alt="{{lbl_share}}" title="{{lbl_share}}" onclick="share()" />
     <!-- END share -->
-    <img id="btn_dl" src="{img_dl}" alt="{lbl_dl}" title="{lbl_dl}" onclick="downloadFile()" />
+    <img id="btn_dl" src="{{img_dl}}" alt="{{lbl_dl}}" title="{{lbl_dl}}" onclick="downloadFile()" />
   </div>
   <div id="frm_search">
     <select id="file_filter" name="file_filter" onchange="updateFiles()">
-      <option value="all">{lbl_all_files}</option>
-      <option value="shared">{lbl_shared_files}</option>
-      <option value="foreign">{lbl_foreign_files}</option>
+      <option value="all">{{lbl_all_files}}</option>
+      <option value="shared">{{lbl_shared_files}}</option>
+      <option value="foreign">{{lbl_foreign_files}}</option>
     </select>
     <input id="file_search" name="file_search" onchange="onSearchChange(this)" onkeyup="onSearchChange(this)" class="large">
     <table id="advanced_search" style="display:none;">
-      <tr><th>{lbl_type}:</th>
+      <tr><th>{{lbl_type}}:</th>
         <td>
           <select name="file_type">
             <option value=""></option>
@@ -46,7 +46,7 @@
           </select>
         </td>
       </tr>
-      <tr><th>{lbl_size}:</th>
+      <tr><th>{{lbl_size}}:</th>
         <td>
           <select name="file_size">
             <option value="0"></option>
@@ -59,33 +59,33 @@
           </select>
         </td>
       </tr>
-      <tr><th>{lbl_date}:</th>
-        <td>{start_date}{end_date}</td>
+      <tr><th>{{lbl_date}}:</th>
+        <td>{{start_date}}{{end_date}}</td>
       </tr>
     </table>
-    <button onclick="performSearch()">{lbl_search}</button>
-    <button onclick="advancedSearch(this)">{lbl_adv_search}</button>
+    <button onclick="performSearch()">{{lbl_search}}</button>
+    <button onclick="advancedSearch(this)">{{lbl_adv_search}}</button>
     <button id="btn_search_close" onclick="closeSearch()">x</button>
   </div>
   <table class="files-table">
     <thead><tr>
       <th><input type="checkbox" id="chk_all_files" onchange="checkAll(this.checked)"></th>
-      <th colspan="2">{lbl_title}</th>
-      <th>{lbl_created}</th>
-      <th>{lbl_modified}</th>
-      <th>{lbl_username}</th>
-      <th>{lbl_size}</th>
+      <th colspan="2">{{lbl_title}}</th>
+      <th>{{lbl_created}}</th>
+      <th>{{lbl_modified}}</th>
+      <th>{{lbl_username}}</th>
+      <th>{{lbl_size}}</th>
     </tr></thead>
     <tbody id="file_arena" style="display:none;">
       <!-- BEGIN fileTemplate -->
-      <tr id="file_{id}" title="{description}">
-        <td class="file-check"><input type="checkbox" value="{id}"></td>
-        <td class="file-icon">{icon}<span class="file-sharing {shared} {foreign} {public}"></span></td>
-        <td class="file-title"><a href="{url}">{title}</a></td>
-        <td class="file-created">{created}</td>
-        <td class="file-modified">{modified}</td>
-        <td class="file-owner">{username}</td>
-        <td class="file-size">{size}</td>
+      <tr id="file_{{id}}" title="{{description}}">
+        <td class="file-check"><input type="checkbox" value="{{id}}"></td>
+        <td class="file-icon">{{icon}}<span class="file-sharing {{shared}} {{foreign}} {{public}}"></span></td>
+        <td class="file-title"><a href="{{url}}">{{title}}</a></td>
+        <td class="file-created">{{created}}</td>
+        <td class="file-modified">{{modified}}</td>
+        <td class="file-owner">{{username}}</td>
+        <td class="file-size">{{size}}</td>
       </tr>
       <!-- END fileTemplate -->
     </tbody>
@@ -94,13 +94,13 @@
 </div>
 <div class="gadget_footer"></div>
 <script>
-  var UID = "{UID}",  // User ID
-      currentDir = "{currentDir}",
-      site_url = "{site_url}",
-      icon_url = "{icon_url}",
-      imgDeleteFile = "{imgDeleteFile}",
-      alertShortQuery = "{alertShortQuery}",
-      confirmDelete = "{confirmDelete}";
+  var UID = "{{UID}}",  // User ID
+      currentDir = "{{currentDir}}",
+      site_url = "{{site_url}}",
+      icon_url = "{{icon_url}}",
+      imgDeleteFile = "{{imgDeleteFile}}",
+      alertShortQuery = "{{alertShortQuery}}",
+      confirmDelete = "{{confirmDelete}}";
   initDirectory();
 </script>
 <!-- END workspace -->
