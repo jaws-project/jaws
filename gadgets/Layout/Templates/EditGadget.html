@@ -8,32 +8,32 @@
 <link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style2{{.dir}}.css" />
 <script type="text/javascript" src="libraries/mootools/core.js"></script>
 <script type="text/javascript">
-  function getAction(lid, gadget) {{
+  function getAction(lid, gadget) {
     var action = $('form_actions_list').getElement('input[type="radio"][name="action"]:checked');
-    if (!action) {{
+    if (!action) {
         alert('!!!!!!!!!!');
         return;
-    }}
+    }
 
     title = $('action_'+action.value).getElementsByTagName('label')[0].innerHTML;
     desc = $('action_'+action.value).getElementsByTagName('span')[0].innerHTML;
 
     var params = null;
     var paramElemets = Array.from($('action_'+action.value).getElements('select,input:not([type=radio])'));
-    if (paramElemets.length > 0) {{
+    if (paramElemets.length > 0) {
         params = new Array();
-        paramElemets.each(function(elParam, index) {{
-            if (elParam.type == 'checkbox') {{
+        paramElemets.each(function(elParam, index) {
+            if (elParam.type == 'checkbox') {
                 params[index] = Number(elParam.checked);
-            }} else {{
+            } else {
                 params[index] = elParam.value;
-            }}
-        }});
+            }
+        });
         params = params.join();
-    }}
+    }
 
     parent.parent.saveElementAction(lid, gadget, action.value, params, title, desc);
-  }}
+  }
 </script>
 </head>
 <body>

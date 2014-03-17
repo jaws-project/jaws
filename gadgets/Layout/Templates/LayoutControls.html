@@ -2,12 +2,12 @@
 <div id="layout-controls">
   <div id="layout-controls-items">
     <script type="text/javascript">
-      function layoutControlsSubmit(sender) {{
-        if (sender.id != 'theme') {{
+      function layoutControlsSubmit(sender) {
+        if (sender.id != 'theme') {
             $('theme').selectedIndex = -1;
-        }}
+        }
         sender.form.submit();
-      }}
+      }
     </script>
     <form name="controls" id="controls" method="post" action="{{requested_url}}">
       <input type="hidden" name="gadget" value="Layout" />

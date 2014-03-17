@@ -8,27 +8,27 @@
 <link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style2{{.dir}}.css" />
 <script type="text/javascript" src="libraries/mootools/core.js"></script>
 <script type="text/javascript">
-function showGadgets () {{
+function showGadgets () {
     $('selected_gadgets').toggle();
-}}
+}
 
-function getSelectedGadgets() {{
-    if ($('display_in').value == 'always') {{
+function getSelectedGadgets() {
+    if ($('display_in').value == 'always') {
         return '*';
-    }} else {{
+    } else {
         var res = '';
         var items = $$('#selected_gadgets input[type=checkbox]');
-        for (i = 0; i < items.length; i++) {{
-            if (items[i].checked) {{
+        for (i = 0; i < items.length; i++) {
+            if (items[i].checked) {
                 res += items[i].value + ',';    
-            }}
-        }}
-        if (res.length > 0) {{
+            }
+        }
+        if (res.length > 0) {
             res = res.substr(0, res.lastIndexOf(','));
-        }}
+        }
         return res;
-    }}
-}}
+    }
+}
 </script>
 </head>
 <body>
