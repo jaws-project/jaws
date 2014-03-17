@@ -1,22 +1,22 @@
 <!-- BEGIN visitcounter -->
-{menubar}
+{{menubar}}
 <table id="main">
   <tr>
     <td>
       <fieldset id="statistics">
-        <legend><span>{visitor_stats}</span></legend>
+        <legend><span>{{visitor_stats}}</span></legend>
         <table>
           <!-- BEGIN item -->
-          <tr><th>{label}</th><td>{value}</td></tr>
+          <tr><th>{{label}}</th><td>{{value}}</td></tr>
           <!-- END item -->
         </table>
       </fieldset>
     </td>
     <td rowspan="2" valign="top" width="100%">
-      {grid}
+      {{grid}}
     </td>
   </tr>
-  <tr><td id="configuration">{config_form}</td></tr>
+  <tr><td id="configuration">{{config_form}}</td></tr>
 </table>
 <script type="text/javascript">
   initDataGrid('visitcounter_datagrid', VisitCounterAjax);
