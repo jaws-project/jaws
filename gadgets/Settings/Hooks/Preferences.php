@@ -29,10 +29,12 @@ class Settings_Hooks_Preferences extends Jaws_Gadget_Hook
         $result['admin_language'] = array(
             'title' => _t('SETTINGS_ADMIN_LANGUAGE'),
             'values' => $languages,
+            'ltr' => true,
         );
         $result['site_language'] = array(
             'title' => _t('SETTINGS_DEFAULT_SITE_LANGUAGE'),
             'values' => $languages,
+            'ltr' => true,
         );
         $result['calendar'] = array(
             'title' => _t('SETTINGS_CALENDAR'),
@@ -53,6 +55,7 @@ class Settings_Hooks_Preferences extends Jaws_Gadget_Hook
         $result['timezone'] = array(
             'title' => _t('GLOBAL_TIMEZONE'),
             'values' => $objSettings->GetTimeZonesList(),
+            'ltr' => true,
         );
 
         return $result;
