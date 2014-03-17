@@ -1,49 +1,49 @@
 <!-- BEGIN events -->
-<div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
+<div class="gadget_header"><h3>{{title}}</h3><div class="gadget_menubar">{{menubar}}</div></div>
 <div class="gadget_container">
   <div class="gadget_response">
-    <div id="eventscalendar_events_response" class="{type}">{text}</div>
+    <div id="eventscalendar_events_response" class="{{type}}">{{text}}</div>
   </div>
   <div class="gadget_content content">
-    <form id="frm_search" action="{base_script}" method="post">
+    <form id="frm_search" action="{{base_script}}" method="post">
       <input type="hidden" name="gadget" value="EventsCalendar" />
       <input type="hidden" name="action" value="Search" />
-      {filter} {lbl_from}{start} {lbl_to}{stop} {query} {btn_search} {btn_reset}
+      {{filter}} {{lbl_from}}{{start}} {{lbl_to}}{{stop}} {{query}} {{btn_search}} {{btn_reset}}
     </form>
     <table>
       <thead><tr>
         <th class="th-check"><input type="checkbox" id="chk_all" onchange="checkAll()"/></th>
-        <th class="event-subject">{lbl_subject}</th>
-        <th>{lbl_date}</th>
-        <th>{lbl_time}</th>
-        <th>{lbl_shared}</th>
-        <th>{lbl_owner}</th>
+        <th class="event-subject">{{lbl_subject}}</th>
+        <th>{{lbl_date}}</th>
+        <th>{{lbl_time}}</th>
+        <th>{{lbl_shared}}</th>
+        <th>{{lbl_owner}}</th>
       </tr></thead>
       <tbody id="grid_events">
         <!-- BEGIN event -->
-        <tr id="event_{id}">
-          <td><input type="checkbox" value="{id}"/></td>
-          <td><a href="{url}">{subject}</a></td>
-          <td>{date}</td>
-          <td>{time}</td>
-          <td>{shared}</td>
-          <td class="event-owner" title="{username}">{nickname}</td>
+        <tr id="event_{{id}}">
+          <td><input type="checkbox" value="{{id}}"/></td>
+          <td><a href="{{url}}">{{subject}}</a></td>
+          <td>{{date}}</td>
+          <td>{{time}}</td>
+          <td>{{shared}}</td>
+          <td class="event-owner" title="{{username}}">{{nickname}}</td>
         </tr>
         <!-- END event -->
       </tbody>
     </table>
     <!-- INCLUDE PageNavigation.html -->
     <div class="gadget_actions actions">
-      <button onclick="location.assign('{url_new}')">{lbl_new_event}</button>
-      <button id="btn_del_event" onclick="deleteEvents()">{lbl_del_event}</button>
+      <button onclick="location.assign('{{url_new}}')">{{lbl_new_event}}</button>
+      <button id="btn_del_event" onclick="deleteEvents()">{{lbl_del_event}}</button>
     </div>
   </div>
 </div>
 <div class="gadget_footer"></div>
 <script>
-var events_url = "{events_url}",
-    confirmDelete = "{confirmDelete}",
-    errorShortQuery = "{errorShortQuery}";
+var events_url = "{{events_url}}",
+    confirmDelete = "{{confirmDelete}}",
+    errorShortQuery = "{{errorShortQuery}}";
 initEvents();
 </script>
 <!-- END events -->

@@ -1,55 +1,55 @@
 <!-- BEGIN form -->
-<div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
+<div class="gadget_header"><h3>{{title}}</h3><div class="gadget_menubar">{{menubar}}</div></div>
 <div class="gadget_container">
   <div class="gadget_response">
-    <div id="eventscalendar_{action}_response" class="{resp_type}">{resp_text}</div>
+    <div id="eventscalendar_{{action}}_response" class="{{resp_type}}">{{resp_text}}</div>
   </div>
   <div class="gadget_content content">
-    <form id="frm_event" name="frm_event" action="{base_script}" method="post">
+    <form id="frm_event" name="frm_event" action="{{base_script}}" method="post">
       <input type="hidden" name="gadget" value="EventsCalendar" />
-      <input type="hidden" name="action" value="{form_action}" />
-      <input type="hidden" name="id" value="{id}" />
+      <input type="hidden" name="action" value="{{form_action}}" />
+      <input type="hidden" name="id" value="{{id}}" />
       <table>
-        <tr><th><label for="event_subject">{lbl_subject}:</label></th>
-          <td><input id="event_subject" name="subject" value="{subject}" /></td></tr>
-        <tr><th><label for="event_location">{lbl_location}:</label></th>
-          <td><input id="event_location" name="location" value="{location}" /></td></tr>
-        <tr><th><label for="event_desc">{lbl_desc}:</label></th>
-          <td><textarea id="event_desc" name="description">{description}</textarea></td></tr>
-        <tr><th><label for="event_start_date">{lbl_date}:</label></th>
-          <td>{start_date} {lbl_to} {stop_date}</td></tr>
-        <tr><th><label for="event_start_time">{lbl_time}:</label></th>
+        <tr><th><label for="event_subject">{{lbl_subject}}:</label></th>
+          <td><input id="event_subject" name="subject" value="{{subject}}" /></td></tr>
+        <tr><th><label for="event_location">{{lbl_location}}:</label></th>
+          <td><input id="event_location" name="location" value="{{location}}" /></td></tr>
+        <tr><th><label for="event_desc">{{lbl_desc}}:</label></th>
+          <td><textarea id="event_desc" name="description">{{description}}</textarea></td></tr>
+        <tr><th><label for="event_start_date">{{lbl_date}}:</label></th>
+          <td>{{start_date}} {{lbl_to}} {{stop_date}}</td></tr>
+        <tr><th><label for="event_start_time">{{lbl_time}}:</label></th>
           <td>
-            <input type="time" name="start_time" id="event_start_time" value="{start_time}"
+            <input type="time" name="start_time" id="event_start_time" value="{{start_time}}"
               pattern="(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])" placeholder="00:00"
-              oninvalid="setCustomValidity('{error_time_value}')"
-              onchange="try{setCustomValidity('')}catch(e){}" />
-            {lbl_to}
-            <input type="time" name="stop_time" id="event_stop_time" value="{stop_time}"
+              oninvalid="setCustomValidity('{{error_time_value}}')"
+              onchange="try{{setCustomValidity('')}}catch(e){{}}" />
+            {{lbl_to}}
+            <input type="time" name="stop_time" id="event_stop_time" value="{{stop_time}}"
               pattern="(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])" placeholder="00:00"
-              oninvalid="setCustomValidity('{error_time_value}')"
-              onchange="try{setCustomValidity('')}catch(e){}" />
+              oninvalid="setCustomValidity('{{error_time_value}}')"
+              onchange="try{{setCustomValidity('')}}catch(e){{}}" />
           </td></tr>
-        <tr><th><label for="event_type">{lbl_type}:</label></th>
-          <td>{type}</td></tr>
-        <tr><th><label for="event_priority">{lbl_priority}:</label></th>
-          <td>{priority}</td></tr>
-        <tr><th><label for="event_reminder">{lbl_reminder}:</label></th>
-          <td>{reminder}</td></tr>
-        <tr><th><label for="event_recurrence">{lbl_recurrence}:</label></th>
-          <td>{recurrence} {month} {day} {wday} </td></tr>
+        <tr><th><label for="event_type">{{lbl_type}}:</label></th>
+          <td>{{type}}</td></tr>
+        <tr><th><label for="event_priority">{{lbl_priority}}:</label></th>
+          <td>{{priority}}</td></tr>
+        <tr><th><label for="event_reminder">{{lbl_reminder}}:</label></th>
+          <td>{{reminder}}</td></tr>
+        <tr><th><label for="event_recurrence">{{lbl_recurrence}}:</label></th>
+          <td>{{recurrence}} {{month}} {{day}} {{wday}} </td></tr>
       </table>
       <div class="gadget_actions actions">
-        <button type="button" onclick="window.location.assign('{url_back}')">{lbl_cancel}</button>
-        <button type="button" onclick="submitEvent(this.form)">{lbl_ok}</button>
+        <button type="button" onclick="window.location.assign('{{url_back}}')">{{lbl_cancel}}</button>
+        <button type="button" onclick="submitEvent(this.form)">{{lbl_ok}}</button>
       </div>
     </form>
   </div>
 </div>
 <div class="gadget_footer"></div>
 <script>
-var errorIncompleteData = "{errorIncompleteData}";
+var errorIncompleteData = "{{errorIncompleteData}}";
 $('event_subject').focus();
-switchRepeatUI('{recurrence_value}');
+switchRepeatUI('{{recurrence_value}}');
 </script>
 <!-- END form -->

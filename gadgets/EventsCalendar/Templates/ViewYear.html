@@ -1,16 +1,16 @@
 <!-- BEGIN year -->
-<div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
+<div class="gadget_header"><h3>{{title}}</h3><div class="gadget_menubar">{{menubar}}</div></div>
 <div class="gadget_container">
   <div class="gadget_content content">
     <div class="nav">
-      <a href="{prev_url}" class="float-left">&laquo; {prev}</a>
-      <a href="{next_url}" class="float-right">{next} &raquo;</a>
+      <a href="{{prev_url}}" class="float-left">&laquo; {{prev}}</a>
+      <a href="{{next_url}}" class="float-right">{{next}} &raquo;</a>
     </div>
     <table class="months">
       <!-- BEGIN season -->
       <tr>
         <!-- BEGIN month -->
-        <td><a href="{month_url}">{month} ({events_count})</a></td>
+        <td><a href="{{month_url}}">{{month}} ({{events_count}})</a></td>
         <!-- END month -->
       </tr>
       <!-- END season -->

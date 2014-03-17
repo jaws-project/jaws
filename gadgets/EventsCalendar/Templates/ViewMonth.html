@@ -1,27 +1,27 @@
 <!-- BEGIN month -->
 <div class="gadget_header">
-  <h3><a href="{year_url}">{year}</a> / {month}</h3>
-  <div class="gadget_menubar">{menubar}</div>
+  <h3><a href="{{year_url}}">{{year}}</a> / {{month}}</h3>
+  <div class="gadget_menubar">{{menubar}}</div>
 </div>
 <div class="gadget_container">
   <div class="gadget_content content">
     <div class="nav">
-      <a href="{prev_url}" class="float-left">&laquo; {prev}</a>
-      <a href="{next_url}" class="float-right">{next} &raquo;</a>
+      <a href="{{prev_url}}" class="float-left">&laquo; {{prev}}</a>
+      <a href="{{next_url}}" class="float-right">{{next}} &raquo;</a>
     </div>
     <table>
       <thead><tr>
-        <th width="20%">{lbl_day}</th>
-        <th>{lbl_events}</th>
+        <th width="20%">{{lbl_day}}</th>
+        <th>{{lbl_events}}</th>
       </tr></thead>
       <tbody>
         <!-- BEGIN day -->
         <tr>
-          <td><a href="{day_url}">{day}</a></td>
+          <td><a href="{{day_url}}">{{day}}</a></td>
           <td>
             <!-- BEGIN event -->
-            <div class="event type_{type} {priority}">
-              <a href="{event_url}">{event}</a>
+            <div class="event type_{{type}} {{priority}}">
+              <a href="{{event_url}}">{{event}}</a>
               <!-- BEGIN shared -->
               <img src="gadgets/EventsCalendar/Resources/images/shared.png" alt="shared" />
               <!-- END shared -->

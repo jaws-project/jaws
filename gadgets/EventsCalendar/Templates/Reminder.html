@@ -1,12 +1,12 @@
 <!-- BEGIN reminder -->
-<div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
+<div class="gadget_header"><h3>{{title}}</h3><div class="gadget_menubar">{{menubar}}</div></div>
 <div class="gadget_container">
   <div class="gadget_content content">
     <!-- BEGIN event -->
-    <div class="type_{type} {priority}">
-      <a href="{event_url}">{event}</a>
-      <!-- BEGIN owner -->({owner})<!-- END owner -->
-      {datetime}
+    <div class="type_{{type}} {{priority}}">
+      <a href="{{event_url}}">{{event}}</a>
+      <!-- BEGIN owner -->({{owner}})<!-- END owner -->
+      {{datetime}}
     </div>
     <!-- END event -->
   </div>
