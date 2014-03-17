@@ -1,26 +1,26 @@
 <!-- BEGIN results -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_section search_result_summary">
-    <!-- BEGIN subtitle -->{text}<!-- END subtitle -->
-    <!-- BEGIN gadget --><h4>{gadget_result}</h4><!-- END gadget -->
+    <!-- BEGIN subtitle -->{{text}}<!-- END subtitle -->
+    <!-- BEGIN gadget --><h4>{{gadget_result}}</h4><!-- END gadget -->
   </div>
   <div class="gadget_content content">
     <ul>
     <!-- BEGIN item -->
     <li class="gadget_section">
       <div class="search_result_meta">
-        <img src="{image}" width="48" alt="{title}"/>
-        <h4><a href="{url}" target="{target}">{title}</a></h4>
-        <span>{date}</span>
+        <img src="{{image}}" width="48" alt="{{title}}"/>
+        <h4><a href="{{url}}" target="{{target}}">{{title}}</a></h4>
+        <span>{{date}}</span>
       </div>
-      <p>{snippet}</p>
+      <p>{{snippet}}</p>
     </li>
     <!-- END item -->
     </ul>
-  <!-- BEGIN notfound -->{message}<!-- END notfound -->
+  <!-- BEGIN notfound -->{{message}}<!-- END notfound -->
   </div>
-  {navigation}
+  {{navigation}}
 </div>
 <div class="gadget_footer"></div>
 <!-- END results -->

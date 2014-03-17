@@ -1,51 +1,51 @@
 <!-- BEGIN SimpleBox -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
-  <form name="search_form" method="get" action="{base_script}">
+  <form name="search_form" method="get" action="{{base_script}}">
   <input type="hidden" name="gadget" value="Search" />
   <input type="hidden" name="action" value="Results" />
   <div class="gadget_content content">
-    {all}{btn_search}
+    {{all}}{{btn_search}}
   </div>
   </form> 
 </div>
 <div class="gadget_footer"></div>
 <!-- END SimpleBox -->
 <!-- BEGIN Box -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
-  <form name="search_form" method="get" action="{base_script}">
+  <form name="search_form" method="get" action="{{base_script}}">
   <input type="hidden" name="gadget" value="Search" />
   <input type="hidden" name="action" value="Results" />
   <div class="gadget_content content">
-      <p>{all}</p>
-      <p><label>{lbl_search_in}</label>{gadgets_combo}</p>
+      <p>{{all}}</p>
+      <p><label>{{lbl_search_in}}</label>{{gadgets_combo}}</p>
   </div>
-  <div class="gadget_actions actions">{btn_search}</div>
+  <div class="gadget_actions actions">{{btn_search}}</div>
   </form> 
 </div>
 <div class="gadget_footer"></div>
 <!-- END Box -->
 <!-- BEGIN AdvancedBox -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
-  <form name="search_form" method="get" action="{base_script}">
+  <form name="search_form" method="get" action="{{base_script}}">
   <input type="hidden" name="gadget" value="Search" />
   <input type="hidden" name="action" value="Results" />
   <div class="gadget_content content">
     <fieldset>
-      <legend><span>{lbl_word_filter}</span></legend>
-      <p><label>{lbl_all}</label>{all}</p>
-      <p><label>{lbl_exact}</label>{exact}</p>
-      <p><label>{lbl_least}</label>{least}</p>
-      <p><label>{lbl_exclude}</label>{exclude}</p>
+      <legend><span>{{lbl_word_filter}}</span></legend>
+      <p><label>{{lbl_all}}</label>{{all}}</p>
+      <p><label>{{lbl_exact}}</label>{{exact}}</p>
+      <p><label>{{lbl_least}}</label>{{least}}</p>
+      <p><label>{{lbl_exclude}}</label>{{exclude}}</p>
     </fieldset>
     <fieldset>
-      <legend><span>{lbl_data_filter}</span></legend>
-      <p><label>{lbl_search_in}</label>{gadgets_combo}</p>
+      <legend><span>{{lbl_data_filter}}</span></legend>
+      <p><label>{{lbl_search_in}}</label>{{gadgets_combo}}</p>
     </fieldset>
   </div>
-  <div class="gadget_actions actions">{btn_search}</div>
+  <div class="gadget_actions actions">{{btn_search}}</div>
   </form>
 </div>
 <div class="gadget_footer"></div>
