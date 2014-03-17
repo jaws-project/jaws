@@ -1,10 +1,10 @@
 <!-- BEGIN tinymce_backend -->
 <script type="text/javascript">
     function jaws_filebrowser_callback(field_name, url, type, win)
-    {{
+    {
         var browser = (type === 'image')? '{{ibrowser}}' : '{{fbrowser}}';
-        if (browser != '') {{
-            tinyMCE.activeEditor.windowManager.open({{
+        if (browser != '') {
+            tinyMCE.activeEditor.windowManager.open({
                     file: browser,
                     title: 'Jaws File Browser',
                     width: 640,
@@ -13,19 +13,19 @@
                     scrollbars: 'yes',
                     inline: 'yes',
                     close_previous: 'no'
-                }}, {{
-                    oninsert: function(source, description) {{
+                }, {
+                    oninsert: function(source, description) {
                         var elements = win.document.getElements('input.mce-textbox');
                         elements[0].value = source;
                         elements[1].value = description;
-                    }}
-                }}
+                    }
+                }
             );
-        }}
+        }
         return false;
-    }}
+    }
 
-    tinyMCE.init({{
+    tinyMCE.init({
         mode:     '{{mode}}',
         language: '{{lang}}',
         theme:    '{{theme}}',
@@ -60,12 +60,12 @@
         invalid_elements: '{{invalid_elements}}',
         editor_selector:  '{{class}}',
         document_base_url: '{{base_url}}'
-    }});
+    });
 </script>
 <!-- END tinymce_backend -->
 <!-- BEGIN tinymce_frontend -->
 <script type="text/javascript">
-    tinyMCE.init({{
+    tinyMCE.init({
         mode:     '{{mode}}',
         language: '{{lang}}',
         theme:    '{{theme}}',
@@ -100,6 +100,6 @@
         editor_selector:  '{{class}}',
         document_base_url: '{{base_url}}',
         menubar: false
-    }});
+    });
 </script>
 <!-- END tinymce_frontend -->
