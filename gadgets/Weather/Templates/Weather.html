@@ -1,26 +1,26 @@
 <!-- BEGIN weather -->
-<div class="gadget_header"><h3><a href="{url}">{title}</a></h3></div>
+<div class="gadget_header"><h3><a href="{{url}}">{{title}}</a></h3></div>
 <div class="gadget_container">
   <div class="gadget_content content">
     <!-- BEGIN current -->
     <div class="current">
-      <!-- BEGIN head --><h4>{lbl_current}</h4><!-- END head -->
-      <a href="{url}">
-        <img src="{icon}" alt="{alt}" width="48" height="48" />&nbsp;
-        <strong><span class="temp">{temp}{unit}</span></strong>
+      <!-- BEGIN head --><h4>{{lbl_current}}</h4><!-- END head -->
+      <a href="{{url}}">
+        <img src="{{icon}}" alt="{{alt}}" width="48" height="48" />&nbsp;
+        <strong><span class="temp">{{temp}}{{unit}}</span></strong>
       </a>
     </div>
     <!-- END current -->
     <!-- BEGIN forecast -->
     <div class="forecast">
-      <h4>{lbl_forecast}</h4>
+      <h4>{{lbl_forecast}}</h4>
       <!-- BEGIN item -->
       <div class="clearfix">
         <div class="forecast_temp">
-          <div><span class="date">{forecast_date}</span></div>
-          <p><span class="low">{low_temp}{unit}</span> | <span class="high">{high_temp}{unit}</span></p>
+          <div><span class="date">{{forecast_date}}</span></div>
+          <p><span class="low">{{low_temp}}{{unit}}</span> | <span class="high">{{high_temp}}{{unit}}</span></p>
         </div>
-        <div class="forecast_state"><img src="{icon}" alt="{alt}" width="48" height="48" /></div>
+        <div class="forecast_state"><img src="{{icon}}" alt="{{alt}}" width="48" height="48" /></div>
       </div>
       <!-- END item -->
     </div>

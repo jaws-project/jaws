@@ -1,16 +1,16 @@
 <!-- BEGIN Weather -->
-{menubar}
+{{menubar}}
 <div id="main" align="left">
 <table width="100%" cellpadding="0" cellspacing="0">
   <tr>
     <td valign="top" align="left">
-      <div id="datagrid">{datagrid}</div>
+      <div id="datagrid">{{datagrid}}</div>
     </td>
     <td style="width:380px; vertical-align:top; padding-left:5px;">
       <fieldset>
-        <legend><span id="legend_title">{legend_title}</span></legend>
+        <legend><span id="legend_title">{{legend_title}}</span></legend>
         <div id="gmap_box">
-          <img id="gmap" onclick="javascript:getGoogleMap(event, this)" src="gadgets/Weather/Resources/images/gmap.png" title="{map_title}" />
+          <img id="gmap" onclick="javascript:getGoogleMap(event, this)" src="gadgets/Weather/Resources/images/gmap.png" title="{{map_title}}" />
           <div id="zoom_box">
             <a href="javascript:zoomMap(-1)"><img alt="-" src="gadgets/Weather/Resources/images/zoomout.png" /></a>
             <a href="javascript:zoomMap(+1)"><img alt="+" src="gadgets/Weather/Resources/images/zoomin.png" /></a>
@@ -18,22 +18,22 @@
         </div>
         <input type="hidden" name="id" id="id" value="0" />
         <table id="geo_position" cellpadding="0" cellspacing="2">
-          <tr><th><label for="title">{lbl_title}:</label></th><td>{title}</td></tr>
-          <tr><td><label for="fast_url">{lbl_fast_url}:</label></td><td>{fast_url}</td></tr>
-          <tr><th><label for="latitude">{lbl_latitude}:</label></th><td>{latitude}</td></tr>
-          <tr><th><label for="longitude">{lbl_longitude}:</label></th><td>{longitude}</td></tr>
-          <tr><th><label for="published">{lbl_published}:</label></th><td>{published}</td></tr>
+          <tr><th><label for="title">{{lbl_title}}:</label></th><td>{{title}}</td></tr>
+          <tr><td><label for="fast_url">{{lbl_fast_url}}:</label></td><td>{{fast_url}}</td></tr>
+          <tr><th><label for="latitude">{{lbl_latitude}}:</label></th><td>{{latitude}}</td></tr>
+          <tr><th><label for="longitude">{{lbl_longitude}}:</label></th><td>{{longitude}}</td></tr>
+          <tr><th><label for="published">{{lbl_published}}:</label></th><td>{{published}}</td></tr>
         </table>
       </fieldset>
     </td>
   </tr>
-  <tr><td class="buttons" colspan="2">{btn_cancel}{btn_save}</td></tr>
+  <tr><td class="buttons" colspan="2">{{btn_cancel}}{{btn_save}}</td></tr>
 </table>
 </div>
 <script type="text/javascript">
-  var base_script      = "{base_script}",
-      confirmDelete    = "{confirmDelete}",
-      incompleteFields = "{incompleteFields}";
+  var base_script      = "{{base_script}}",
+      confirmDelete    = "{{confirmDelete}}",
+      incompleteFields = "{{incompleteFields}}";
   initWeather();
 </script>
 <!-- END Weather -->
