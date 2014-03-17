@@ -210,54 +210,54 @@
   var baseSiteUrl = "{{baseSiteUrl}}";
 
   remain = $('removeTelButton').parentNode.parentNode.getElementsByTagName('div').length;
-  if (remain == 1) {{
+  if (remain == 1) {
       $('removeTelButton').style.display = 'none';
-  }}
+  }
 
   remain = $('removeEmailButton').parentNode.parentNode.getElementsByTagName('div').length;
-  if (remain == 1) {{
+  if (remain == 1) {
       $('removeEmailButton').style.display = 'none';
-  }}
+  }
 
   remain = $('removeAdrButton').parentNode.parentNode.getElementsByTagName('div').length;
-  if (remain == 1) {{
+  if (remain == 1) {
       $('removeAdrButton').style.display = 'none';
-  }}
+  }
 
   remain = $('removeUrlButton').parentNode.parentNode.getElementsByTagName('div').length;
-  if (remain == 1) {{
+  if (remain == 1) {
       $('removeUrlButton').style.display = 'none';
-  }}
+  }
 
   ReloadToggle();
-  window.addEvent('domready', function() {{
+  window.addEvent('domready', function() {
 
-    $('legend_tel').addEvent('click', function(){{
+    $('legend_tel').addEvent('click', function(){
       $('tel_p').toggle();
       ChangeToggleIcon(this);
-    }});
-    $('legend_email').addEvent('click', function(){{
+    });
+    $('legend_email').addEvent('click', function(){
       $('email_p').toggle();
       ChangeToggleIcon(this);
-    }});
-    $('legend_adr').addEvent('click', function(){{
+    });
+    $('legend_adr').addEvent('click', function(){
       $('adr_p').toggle();
       ChangeToggleIcon(this);
-    }});
-    $('legend_groups').addEvent('click', function(){{
+    });
+    $('legend_groups').addEvent('click', function(){
       $('group_p').toggle();
       ChangeToggleIcon(this);
-    }});
-    $('legend_urls').addEvent('click', function(){{
+    });
+    $('legend_urls').addEvent('click', function(){
       $('url_p').toggle();
       ChangeToggleIcon(this);
-    }});
-    $('legend_other').addEvent('click', function(){{
+    });
+    $('legend_other').addEvent('click', function(){
       $('other_p').toggle();
       ChangeToggleIcon(this);
-    }});
+    });
 
-  }});
+  });
 
 </script>
 <!-- END address -->
