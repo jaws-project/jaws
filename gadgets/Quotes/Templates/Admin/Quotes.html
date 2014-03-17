@@ -1,29 +1,29 @@
 <!-- BEGIN quotes -->
-{menubar}
+{{menubar}}
 <!-- BEGIN quotes_section -->
 <table id="quotes"><tr>
     <td id="td_quotes">
-      <div><label for="group_filter">{lbl_group_filter}</label>{group_filter}</div>
-      <div><label for="quotes_combo">{lbl_quotes}:</label>{combo_quotes}</div>
+      <div><label for="group_filter">{{lbl_group_filter}}</label>{{group_filter}}</div>
+      <div><label for="quotes_combo">{{lbl_quotes}}:</label>{{combo_quotes}}</div>
     </td>
     <td id="td_form">
       <input type="hidden" name="id" id="id" value="0" />
       <table width="100%">
-        <tr><th><label for="title">{lbl_title}:</label></th><td>{title}</td></tr>
-        <tr><th><label for="gid">{lbl_group}:</label></th><td>{group}</td></tr>
-        <tr><th><label for="start_time">{lbl_start_time}:</label></th><td>{start_time}</td></tr>
-        <tr><th><label for="stop_time">{lbl_stop_time}:</label></th><td>{stop_time}</td></tr>
-        <tr><th><label for="show_title">{lbl_show_title}:</label></th><td>{show_title}</td></tr>
-        <tr><th><label for="published">{lbl_published}:</label></th><td>{published}</td></tr>
-        <tr><td colspan="2"><label for="quotation">{lbl_quotation}:</label><br />{quotation}</td></tr>
+        <tr><th><label for="title">{{lbl_title}}:</label></th><td>{{title}}</td></tr>
+        <tr><th><label for="gid">{{lbl_group}}:</label></th><td>{{group}}</td></tr>
+        <tr><th><label for="start_time">{{lbl_start_time}}:</label></th><td>{{start_time}}</td></tr>
+        <tr><th><label for="stop_time">{{lbl_stop_time}}:</label></th><td>{{stop_time}}</td></tr>
+        <tr><th><label for="show_title">{{lbl_show_title}}:</label></th><td>{{show_title}}</td></tr>
+        <tr><th><label for="published">{{lbl_published}}:</label></th><td>{{published}}</td></tr>
+        <tr><td colspan="2"><label for="quotation">{{lbl_quotation}}:</label><br />{{quotation}}</td></tr>
       </table>
     </td>
 </tr></table>
-<div class="buttons">{btn_cancel}{btn_del}{btn_save}</div>
+<div class="buttons">{{btn_cancel}}{{btn_del}}{{btn_save}}</div>
 <script type="text/javascript">
   var currentAction = 'Quotes',
-      incompleteQuoteFields = "{incompleteQuoteFields}",
-      confirmQuoteDelete = "{confirmQuoteDelete}";
+      incompleteQuoteFields = "{{incompleteQuoteFields}}",
+      confirmQuoteDelete = "{{confirmQuoteDelete}}";
   $('group_filter').selectedIndex = 0;
   stopAction();
 </script>
@@ -31,33 +31,33 @@
 <!-- BEGIN groups_section -->
 <table id="quotes_groups">
   <tr>
-    <td id="td_groups">{combo_groups}</td>
+    <td id="td_groups">{{combo_groups}}</td>
     <td id="td_form">
       <input type="hidden" name="gid" id="gid" value="0" />
       <div id="work_area">
         <table width="100%;">
-          <tr><th><label for="title">{lbl_title}:</label></th><td>{title}</td></tr>
-          <tr><th><label for="view_mode">{lbl_view_mode}:</label></th><td>{view_mode}</td></tr>
-          <tr><th><label for="view_type">{lbl_view_type}:</label></th><td>{view_type}</td></tr>
-          <tr><th><label for="limit_count">{lbl_limit_count}:</label></th><td>{limit_count}</td></tr>
-          <tr><th><label for="show_title">{lbl_show_title}:</label></th><td>{show_title}</td></tr>
-          <tr><th><label for="random">{lbl_random}:</label></th><td>{random}</td></tr>
-          <tr><th><label for="published">{lbl_published}:</label></th><td>{published}</td></tr>
+          <tr><th><label for="title">{{lbl_title}}:</label></th><td>{{title}}</td></tr>
+          <tr><th><label for="view_mode">{{lbl_view_mode}}:</label></th><td>{{view_mode}}</td></tr>
+          <tr><th><label for="view_type">{{lbl_view_type}}:</label></th><td>{{view_type}}</td></tr>
+          <tr><th><label for="limit_count">{{lbl_limit_count}}:</label></th><td>{{limit_count}}</td></tr>
+          <tr><th><label for="show_title">{{lbl_show_title}}:</label></th><td>{{show_title}}</td></tr>
+          <tr><th><label for="random">{{lbl_random}}:</label></th><td>{{random}}</td></tr>
+          <tr><th><label for="published">{{lbl_published}}:</label></th><td>{{published}}</td></tr>
         </table>
       </div>
     </td>
   </tr>
 </table>
-<div class="buttons">{btn_cancel}{btn_del}{add_quotes}{btn_save}</div>
+<div class="buttons">{{btn_cancel}}{{btn_del}}{{add_quotes}}{{btn_save}}</div>
 <script type="text/javascript">
   var currentAction = 'Groups',
-      incompleteGroupFields = "{incompleteGroupFields}",
-      confirmGroupDelete = "{confirmGroupDelete}";
+      incompleteGroupFields = "{{incompleteGroupFields}}",
+      confirmGroupDelete = "{{confirmGroupDelete}}";
   stopAction();
 </script>
 <!-- END groups_section -->
 <!-- BEGIN quotes_groups_ui_section -->
-<div id="group_quotes_title">{title}</div>
-{group_quotes_combo}
+<div id="group_quotes_title">{{title}}</div>
+{{group_quotes_combo}}
 <!-- END quotes_groups_ui_section -->
 <!-- END quotes -->

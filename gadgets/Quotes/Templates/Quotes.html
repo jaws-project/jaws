@@ -1,29 +1,29 @@
 <!-- BEGIN quotes -->
-<!-- BEGIN title --><div class="gadget_header"><h3>{title}</h3></div><!-- END title -->
+<!-- BEGIN title --><div class="gadget_header"><h3>{{title}}</h3></div><!-- END title -->
 <div class="gadget_container">
   <div class="gadget_content content">
   <!-- BEGIN simple -->
     <ul>
     <!-- BEGIN quote -->
     <li><!-- BEGIN quote_title -->
-        <a href="{url}">{quote_title}</a>
+        <a href="{{url}}">{{quote_title}}</a>
         <!-- END quote_title -->
         <!-- BEGIN full_mode -->
-        <p>{quotation}</p>
+        <p>{{quotation}}</p>
         <!-- END full_mode -->
     </li>
     <!-- END quote -->
     </ul>
   <!-- END simple -->
   <!-- BEGIN marquee -->
-    <marquee behavior="scroll" direction="{marquee_direction}" scrolldelay="100" scrollamount="1" onmouseover="this.stop()" onmouseout="this.start()">
+    <marquee behavior="scroll" direction="{{marquee_direction}}" scrolldelay="100" scrollamount="1" onmouseover="this.stop()" onmouseout="this.start()">
     <ul>
     <!-- BEGIN quote -->
     <li><!-- BEGIN quote_title -->
-        <a href="{url}">{quote_title}</a>
+        <a href="{{url}}">{{quote_title}}</a>
         <!-- END quote_title -->
         <!-- BEGIN full_mode -->
-        <p>{quotation}</p>
+        <p>{{quotation}}</p>
         <!-- END full_mode -->
     </li>
     <!-- END quote -->
