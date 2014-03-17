@@ -1,13 +1,13 @@
 <!-- BEGIN Groups -->
-{menubar}
+{{menubar}}
 <script type="text/javascript">
-  var incompleteGroupFields = "{incompleteGroupFields}";
-  var confirmGroupDelete    = "{confirmGroupDelete}";
+  var incompleteGroupFields = "{{incompleteGroupFields}}";
+  var confirmGroupDelete    = "{{confirmGroupDelete}}";
 </script>
 <table style="width: 100%; border: 1px solid #ccc; padding: 0px; border-spacing: 0.1px; height: 415px;">
   <tr>
     <td class="top-align">
-      {combo_groups}
+      {{combo_groups}}
     </td>
     <td style="width: 100%; height: 360px; overflow: auto; vertical-align: top">
       <!-- work area -->
@@ -16,7 +16,7 @@
     </td>
   </tr>
 </table>
-<div class="buttons" style="padding-top:4px;">{cancel} {delete_group} {add_banners} {save_group} {add_group}</div>
+<div class="buttons" style="padding-top:4px;">{{cancel}} {{delete_group}} {{add_banners}} {{save_group}} {{add_group}}</div>
 <script type="text/javascript">
 $('groups_combo').selectedIndex = -1;
 </script>
@@ -24,22 +24,22 @@ $('groups_combo').selectedIndex = -1;
 <!-- BEGIN GroupInfo -->
 <input type="hidden" name="gid" id="gid" value="0" />
 <table id="tbl_group">
-  <tr><td><label for="title">{lbl_title}:</label></td><td>{title}</td></tr>
-  <tr><td><label for="count">{lbl_count}:</label></td><td>{count}</td></tr>
-  <tr><td><label for="show_title">{lbl_show_title}:</label></td><td>{show_title}</td></tr>
-  <tr><td><label for="show_type">{lbl_show_type}:</label></td><td>{show_type}</td></tr>
-  <tr><td><label for="published">{lbl_published}:</label></td><td>{published}</td></tr>
+  <tr><td><label for="title">{{lbl_title}}:</label></td><td>{{title}}</td></tr>
+  <tr><td><label for="count">{{lbl_count}}:</label></td><td>{{count}}</td></tr>
+  <tr><td><label for="show_title">{{lbl_show_title}}:</label></td><td>{{show_title}}</td></tr>
+  <tr><td><label for="show_type">{{lbl_show_type}}:</label></td><td>{{show_type}}</td></tr>
+  <tr><td><label for="published">{{lbl_published}}:</label></td><td>{{published}}</td></tr>
 </table>
 <!-- END GroupInfo -->
 <!-- BEGIN GroupBanners -->
 <table id="group_banners">
-  <tr><td colspan="2"><label for="banners_combo">{lbl_banners}:</label></td>
+  <tr><td colspan="2"><label for="banners_combo">{{lbl_banners}}:</label></td>
       <td width="16" rowspan="4"></td>
   </tr>
-  <tr><td>{banners_combo}</td><td>{btn_add}</td></tr>
-  <tr><td colspan="2"><label for="group_members">{lbl_list}:</label></td></tr>
-  <tr><td>{group_members}</td>
-      <td width="10" style="vertical-align:top;">{btn_del}{btn_up}{btn_down}</td>
+  <tr><td>{{banners_combo}}</td><td>{{btn_add}}</td></tr>
+  <tr><td colspan="2"><label for="group_members">{{lbl_list}}:</label></td></tr>
+  <tr><td>{{group_members}}</td>
+      <td width="10" style="vertical-align:top;">{{btn_del}}{{btn_up}}{{btn_down}}</td>
   </tr>
 </table>
 <!-- END GroupBanners -->

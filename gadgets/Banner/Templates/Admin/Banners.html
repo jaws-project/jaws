@@ -1,40 +1,40 @@
 <!-- BEGIN Banners -->
-{menubar}
+{{menubar}}
 <table class="main">
   <tr>
     <td id="b_datagrid" rowspan="2">
       <div style="text-align: right; padding-bottom: 5px;">
-        <label for="bgroup_filter">{lbl_bgroup}:</label>{bgroup_filter}
+        <label for="bgroup_filter">{{lbl_bgroup}}:</label>{{bgroup_filter}}
       </div>
-      {grid}
+      {{grid}}
     </td>
     <td class="top-align" style="padding: 0 4px 0 4px;">
-      <form id="banner_info" name="banner_info" method="post" action="{base_script}"
+      <form id="banner_info" name="banner_info" method="post" action="{{base_script}}"
             enctype="multipart/form-data" onsubmit="return submit_banner()">
       <input type="hidden" name="gadget" value="Banner" />
       <input type="hidden" name="action" value="UploadBanner" />
       <input type="hidden" name="bid" id="bid" value="0" />
       <fieldset>
-        <legend><span id="legend_title">{legend_title}</span></legend>
-        <div id="b_work_area">{banner_ui}</div>
+        <legend><span id="legend_title">{{legend_title}}</span></legend>
+        <div id="b_work_area">{{banner_ui}}</div>
       </fieldset>
       </form>
     </td>
   </tr>
   <tr>
-    <td class="buttons">{btn_cancel} {btn_save}</td>
+    <td class="buttons">{{btn_cancel}} {{btn_save}}</td>
   </tr>
 </table>
 <script type="text/javascript">
   $('bgroup_filter').selectedIndex = 0;
   initDataGrid('banners_datagrid', BannerAjax, getBannersDataGrid);
-  var incompleteBannerFields = "{incompleteBannerFields}";
-  var confirmBannerDelete    = "{confirmBannerDelete}";
-  var addBanner_title        = "{addBanner_title}";
-  var editBanner_title       = "{editBanner_title}";
-  var textTemplate           = "{textTemplate}";
-  var imageTemplate          = "{imageTemplate}";
-  var flashTemplate          = "{flashTemplate}";
+  var incompleteBannerFields = "{{incompleteBannerFields}}";
+  var confirmBannerDelete    = "{{confirmBannerDelete}}";
+  var addBanner_title        = "{{addBanner_title}}";
+  var editBanner_title       = "{{editBanner_title}}";
+  var textTemplate           = "{{textTemplate}}";
+  var imageTemplate          = "{{imageTemplate}}";
+  var flashTemplate          = "{{flashTemplate}}";
   var defaultTemplate        = "";
 
   currentAction = 'Banners';
@@ -43,31 +43,31 @@
 <!-- END Banners -->
 <!-- BEGIN BannerInfo -->
 <table id="banner_box">
-  <tr><td><label for="title">{lbl_title}:</label></td><td>{title}</td></tr>
-  <tr><td><label for="url">{lbl_url}:</label></td><td dir="ltr">{url}</td></tr>
-  <tr><td><label for="gid">{lbl_gid}:</label></td><td>{gid}</td></tr>
-  <tr><td></td><td>{th_upload}</td></tr>
-  <tr><td><label for="banner">{lbl_banner}:</label></td><td dir="ltr">{banner}{upload_banner}</td></tr>
-  <tr><td><label for="template">{lbl_template}:</label></td>
+  <tr><td><label for="title">{{lbl_title}}:</label></td><td>{{title}}</td></tr>
+  <tr><td><label for="url">{{lbl_url}}:</label></td><td dir="ltr">{{url}}</td></tr>
+  <tr><td><label for="gid">{{lbl_gid}}:</label></td><td>{{gid}}</td></tr>
+  <tr><td></td><td>{{th_upload}}</td></tr>
+  <tr><td><label for="banner">{{lbl_banner}}:</label></td><td dir="ltr">{{banner}}{{upload_banner}}</td></tr>
+  <tr><td><label for="template">{{lbl_template}}:</label></td>
       <td><table><tr>
-            <td dir="ltr">{template}</td>
-            <td id="side_button">{btn_text}{btn_image}{btn_flash}{btn_reset}</td>
+            <td dir="ltr">{{template}}</td>
+            <td id="side_button">{{btn_text}}{{btn_image}}{{btn_flash}}{{btn_reset}}</td>
           </tr></table>
       </td>
   </tr>
-  <tr><td><label>{lbl_limits}:</label></td>
+  <tr><td><label>{{lbl_limits}}:</label></td>
       <td><table><tr>
-            <td><label for="views_limit">{lbl_views_limit}:</label><br />{views_limit}</td>
-            <td><label for="clicks_limit">{lbl_clicks_limit}:</label><br />{clicks_limit}</td>
+            <td><label for="views_limit">{{lbl_views_limit}}:</label><br />{{views_limit}}</td>
+            <td><label for="clicks_limit">{{lbl_clicks_limit}}:</label><br />{{clicks_limit}}</td>
           </tr></table>
       </td>
   </tr>
-  <tr><td><label for="start_time">{lbl_start_time}:</label></td><td>{start_time}</td></tr>
-  <tr><td><label for="stop_time">{lbl_stop_time}:</label></td><td>{stop_time}</td></tr>
-  <tr><td><label>{lbl_status}:</label></td>
+  <tr><td><label for="start_time">{{lbl_start_time}}:</label></td><td>{{start_time}}</td></tr>
+  <tr><td><label for="stop_time">{{lbl_stop_time}}:</label></td><td>{{stop_time}}</td></tr>
+  <tr><td><label>{{lbl_status}}:</label></td>
       <td><table><tr>
-            <td><label for="random">{lbl_random}:</label><br />{random}</td>
-            <td><label for="published">{lbl_published}:</label><br />{published}</td>
+            <td><label for="random">{{lbl_random}}:</label><br />{{random}}</td>
+            <td><label for="published">{{lbl_published}}:</label><br />{{published}}</td>
           </tr></table>
       </td>
   </tr>
@@ -75,16 +75,16 @@
 <!-- END BannerInfo -->
 <!-- BEGIN text_banner -->
 <div>
-<a href="{link}" target="{target}" rel="external">{banner}</a>
+<a href="{{link}}" target="{{target}}" rel="external">{{banner}}</a>
 </div>
 <!-- END text_banner -->
 <!-- BEGIN image_banner -->
 <div>
-<a href="{link}" target="{target}" rel="external"><img src="{banner}" alt="{title}" title="{title}"/></a>
+<a href="{{link}}" target="{{target}}" rel="external"><img src="{{banner}}" alt="{{title}}" title="{{title}}"/></a>
 </div>
 <!-- END image_banner -->
 <!-- BEGIN flash_banner -->
 <div>
-<embed src="{banner}" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash"></embed>
+<embed src="{{banner}}" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash"></embed>
 </div>
 <!-- END flash_banner -->
