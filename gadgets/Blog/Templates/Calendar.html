@@ -1,29 +1,29 @@
 <!-- BEGIN calendar -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_content content">
     <table>
      <tr>
       <td id="cal-header" colspan="7">
-       {month} {year}
+       {{month}} {{year}}
       </td>
      </tr>
      <tr>
       <!-- BEGIN weekday -->
-      <td class="weekday">{weekday}</td>
+      <td class="weekday">{{weekday}}</td>
       <!-- END weekday -->
      </tr>
      <!-- BEGIN week -->
      <tr>
       <!-- BEGIN day -->
-      <td class="{style}">{day}</td>
+      <td class="{{style}}">{{day}}</td>
       <!-- END day -->
      </tr>
      <!-- END week -->
      <tr>
       <td id="cal-footer" colspan="7">
-       <div id="arrow-left">{left_arrow}</div>
-       <div id="arrow-right">{right_arrow}</div>
+       <div id="arrow-left">{{left_arrow}}</div>
+       <div id="arrow-right">{{right_arrow}}</div>
       </td>
      </tr>
     </table>

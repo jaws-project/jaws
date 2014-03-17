@@ -1,22 +1,22 @@
 <!-- BEGIN delete_entry -->
-{menubar}
+{{menubar}}
 <div id="main" align="center">
- <form method="post" action="{base_script}">
+ <form method="post" action="{{base_script}}">
  <input type="hidden" name="gadget" value="Blog"/>
  <input type="hidden" name="action" value="DeleteEntry"/>
  <input type="hidden" name="step" value="delete" />
- {id}
- <strong>{delete_message}</strong>
+ {{id}}
+ <strong>{{delete_message}}</strong>
  <br /><br />
- <div style="vertical-align: middle;">{cancel_button} {delete_button}</div>
+ <div style="vertical-align: middle;">{{cancel_button}} {{delete_button}}</div>
  <br /><br />
  <div class="blog-preview">
-  <h1>{title}</h1>
+  <h1>{{title}}</h1>
   <div class="entry">
-   {text}
+   {{text}}
   </div>
   <div class="addinfo">
-   [ {user} | {category} | {createtime} ]
+   [ {{user}} | {{category}} | {{createtime}} ]
   </div>
  </div>
  </form>

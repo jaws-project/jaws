@@ -1,19 +1,19 @@
 <!-- BEGIN manage_trackbacks -->
-{menubar}
+{{menubar}}
 <div id="main">
-  <form action="{base_script}" name="ListTrackbacks" onsubmit="return searchTrackback();" method="post">
+  <form action="{{base_script}}" name="ListTrackbacks" onsubmit="return searchTrackback();" method="post">
     <input type="hidden" name="gadget" value="Blog" />
     <input type="hidden" id="action" name="action" value="ManageTrackbacks" />
     <table style="width: 100%">
       <tr>
-        <td align="right" nowrap="nowrap">{status_label} {status} {trackbacks_where} {filter_by} {filter} {filter_button}</td>
+        <td align="right" nowrap="nowrap">{{status_label}} {{status}} {{trackbacks_where}} {{filter_by}} {{filter}} {{filter_button}}</td>
       </tr>
     </table>
   </form>
-  {trackbacks}
+  {{trackbacks}}
 </div>
 <script type="text/javascript">
-var deleteConfirm = "{deleteConfirm}";
+var deleteConfirm = "{{deleteConfirm}}";
 getData();
 </script>
 <!-- END manage_trackbacks -->

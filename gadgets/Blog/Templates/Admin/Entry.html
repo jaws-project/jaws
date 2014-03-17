@@ -1,5 +1,5 @@
 <!-- BEGIN edit_entry -->
-{menubar}
+{{menubar}}
 <div id="preview" class="editor-preview">
  <h1 id="previewTitle"></h1>
  <div id="previewContent" class="entry">
@@ -7,72 +7,72 @@
 </div>
 <div id="main">
   <script type="text/javascript">
-    function updateEditorsText(entryForm) {
-        if (entryForm.elements['title'].value == '') {
-            alert('{missing_title}');
+    function updateEditorsText(entryForm) {{
+        if (entryForm.elements['title'].value == '') {{
+            alert('{{missing_title}}');
             entryForm.elements['title'].focus(); 
             return false;
-        }
+        }}
 
         $('summary_block').value = getEditorValue('summary_block');
         $('text_block').value = getEditorValue('text_block');
         return true;
-    }
+    }}
   </script>
-  <form name="edit_entry" method="post" action="{base_script}" enctype="multipart/form-data" onsubmit="return updateEditorsText(this);">
-   <input id="action" type="hidden" name="action" value="Save{action}" />
+  <form name="edit_entry" method="post" action="{{base_script}}" enctype="multipart/form-data" onsubmit="return updateEditorsText(this);">
+   <input id="action" type="hidden" name="action" value="Save{{action}}" />
    <input type="hidden" name="gadget" value="Blog" />
-   <input id="id" type="hidden" name="id" value="{id}" />
+   <input id="id" type="hidden" name="id" value="{{id}}" />
    <input type="hidden" name="deleteImage" id="deleteImage" value="false" />
 
       <div id="image_area">
           <div id="blog_image_beside">
-              <div class="blog_field"><label for="title">{title}</label><br/>{title_field}</div>
-              <div class="blog_field"><label for="summary_block">{lbl_summary}</label><br/>{summary}</div>
+              <div class="blog_field"><label for="title">{{title}}</label><br/>{{title_field}}</div>
+              <div class="blog_field"><label for="summary_block">{{lbl_summary}}</label><br/>{{summary}}</div>
           </div>
           <div id="blog_image_box">
-              {blog_image}
-              <div class="gadget_actions actions">{btn_upload} {btn_remove}<div class="wrapper">{upload_image}</div></div>
+              {{blog_image}}
+              <div class="gadget_actions actions">{{btn_upload}} {{btn_remove}}<div class="wrapper">{{upload_image}}</div></div>
           </div>
       </div>
 
-   <div class="blog_field"><label for="text_block">{text}</label><br/>{editor}</div>
+   <div class="blog_field"><label for="text_block">{{text}}</label><br/>{{editor}}</div>
    <div class="blog_category">
-      <div class="blog_field"><label>{category}</label><br />
+      <div class="blog_field"><label>{{category}}</label><br />
       <div style="overflow: auto; max-height: 200px;">
-      {category_field}
+      {{category_field}}
       </div>
       </div>
    </div>
    <div class="blog_advanced">
-    <div class="blog_field">{allow_comments_field}</div>
-    <div class="blog_field"><label for="published">{status}</label> {status_field}</div>
+    <div class="blog_field">{{allow_comments_field}}</div>
+    <div class="blog_field"><label for="published">{{status}}</label> {{status_field}}</div>
     <!-- BEGIN advanced -->
     <div style="margin-top: 20px; width: 100%; border-top: 1px solid #ddd;">
-    {advanced_field}
-    <div id="advanced" style="padding: 5px; {advanced_style}">
+    {{advanced_field}}
+    <div id="advanced" style="padding: 5px; {{advanced_style}}">
         <div class="blog_field" style="border-bottom: 1px solid #eee;">
-          {timestamp_check}<label for="edit_timestamp">{timestamp_label}:</label>
-          {pubdate}
+          {{timestamp_check}}<label for="edit_timestamp">{{timestamp_label}}:</label>
+          {{pubdate}}
         </div>
         <div class="blog_field">
-          <label for="fasturl">{fasturl}</label>: {fasturl_field}
+          <label for="fasturl">{{fasturl}}</label>: {{fasturl_field}}
         </div>
         <div class="blog_field">
-          <label for="meta_keywords">{meta_keywords_label}</label>: {meta_keywords}
+          <label for="meta_keywords">{{meta_keywords_label}}</label>: {{meta_keywords}}
         </div>
         <div class="blog_field">
-          <label for="meta_desc">{meta_desc_label}</label>: {meta_desc}
+          <label for="meta_desc">{{meta_desc_label}}</label>: {{meta_desc}}
         </div>
         <!-- BEGIN tags -->
         <div class="blog_field">
-          <label for="tags">{tags_label}</label>: {tags}
+          <label for="tags">{{tags_label}}</label>: {{tags}}
         </div>
         <!-- END tags -->
         <!-- BEGIN trackback -->
        <div class="blog_field" style="border-bottom: 1px solid #eee;">
-       <label for="trackback_to">{trackback_to}</label><br />
-       {trackbackTextArea}
+       <label for="trackback_to">{{trackback_to}}</label><br />
+       {{trackbackTextArea}}
        </div>
        <!-- END trackback -->
     </div>
@@ -80,30 +80,30 @@
     <!-- END advanced -->
    </div>
    <div class="clearfix"></div>
-   <div class="buttons">{preview_button} {save_button}</div>
+   <div class="buttons">{{preview_button}} {{save_button}}</div>
   </form>
 </div>
 <script type="text/javascript">
   toggleUpdate(false);
   setTimeout('startAutoDrafting();', 120000);
 
-  function previewImage(fileElement) {
+  function previewImage(fileElement) {{
       $('deleteImage').value = 'false';
       var fReader = new FileReader();
       fReader.readAsDataURL(fileElement.files[0]);
-      fReader.onload = function (event) {
+      fReader.onload = function (event) {{
           document.getElementById('blog_image').src = event.target.result;
-      }
-  }
+      }}
+  }}
 
   /**
    * Removes the image
    */
-  function removeImage() {
+  function removeImage() {{
       $('image_file').value = '';
       $('deleteImage').value = 'true';
       $('blog_image').src = 'gadgets/Blog/Resources/images/no-image.gif?' + (new Date()).getTime();
-  }
+  }}
 
 </script>
 <!-- END edit_entry -->

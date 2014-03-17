@@ -1,17 +1,17 @@
 <!-- BEGIN categories -->
-{menubar}
+{{menubar}}
 <div id="main">
   <table>
     <tr><td class="category_title">
-      <b>{categories}</b>
+      <b>{{categories}}</b>
       <table style="width: 100%">
         <tr>
           <td style="width: 220px;">
-            <form name="frmcat" method="post" action="{base_script}">
-            <div id="categoriesComboTable">{combo}</div>
+            <form name="frmcat" method="post" action="{{base_script}}">
+            <div id="categoriesComboTable">{{combo}}</div>
             <table style="margin-top: 0px; padding: 0px;width: 100%">
               <tr>
-                <td style="text-align: right; align: right;">{new_button}</td>
+                <td style="text-align: right; align: right;">{{new_button}}</td>
               </tr>
             </table>
             </form>
@@ -23,24 +23,24 @@
     <td id="catinfoform">
       <input type="hidden" name="catid" id="catid" value="0" />
       <fieldset>
-        <legend><span id="legend_title">{legend_title}</span></legend>
+        <legend><span id="legend_title">{{legend_title}}</span></legend>
         <div id="work_area">
-          <div><label for="name">{lbl_name}</label><br/>{name}</div>
-          <div><label for="fast_url">{lbl_fast_url}</label><br/>{fast_url}</div>
-          <div><label for="meta_keywords">{lbl_meta_keywords}</label><br/>{meta_keywords}</div>
-          <div><label for="meta_desc">{lbl_meta_desc}</label><br/>{meta_desc}</div>
-          <div><label for="description">{lbl_description}</label><br/>{description}</div>
+          <div><label for="name">{{lbl_name}}</label><br/>{{name}}</div>
+          <div><label for="fast_url">{{lbl_fast_url}}</label><br/>{{fast_url}}</div>
+          <div><label for="meta_keywords">{{lbl_meta_keywords}}</label><br/>{{meta_keywords}}</div>
+          <div><label for="meta_desc">{{lbl_meta_desc}}</label><br/>{{meta_desc}}</div>
+          <div><label for="description">{{lbl_description}}</label><br/>{{description}}</div>
         </div>
       </fieldset>
-      <div>{btn_delete}{btn_cancel}{btn_save}</div>
+      <div>{{btn_delete}}{{btn_cancel}}{{btn_save}}</div>
     </td></tr>
   </table>
 </div>
 <script type="text/javascript">
-    var deleteMessage = "{delete_message}";
-    var incompleteCategoryFields = "{incompleteCategoryFields}";
-    var addCategory_title = "{addCategory_title}";
-    var editCategory_title = "{editCategory_title}";
+    var deleteMessage = "{{delete_message}}";
+    var incompleteCategoryFields = "{{incompleteCategoryFields}}";
+    var addCategory_title = "{{addCategory_title}}";
+    var editCategory_title = "{{editCategory_title}}";
 
     $('legend_title').innerHTML = addCategory_title;
 </script>

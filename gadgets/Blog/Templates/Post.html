@@ -1,37 +1,37 @@
 <!-- BEGIN single_view -->
 <!-- BEGIN entry -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_content content">
-    <!-- <img src="{url_image}" height="100" width="100" alt="{image}" /> -->
-    {text}
+    <!-- <img src="{{url_image}}" height="100" width="100" alt="{{image}}" /> -->
+    {{text}}
   </div>
   <div class="blog_post_meta">
-    <span class="entry-author vcard author"><a href="{author-url}" class="fn url">{nickname}</a></span>
+    <span class="entry-author vcard author"><a href="{{author-url}}" class="fn url">{{nickname}}</a></span>
     <span class="separator">|</span>
-    <span class="entry-date"><abbr class="published" title="{createtime-iso}">{createtime}</abbr></span>
+    <span class="entry-date"><abbr class="published" title="{{createtime-iso}}">{{createtime}}</abbr></span>
     <span class="separator">|</span>
-    <span class="entry-category"><!-- BEGIN category --><a href="{url}" rel="tag">{name}</a>{separator} <!-- END category --></span>
+    <span class="entry-category"><!-- BEGIN category --><a href="{{url}}" rel="tag">{{name}}</a>{{separator}} <!-- END category --></span>
     <!-- BEGIN read-more -->
     <span class="separator">|</span>
-    <span class="entry-read-more"><a href="{url}">{read_more}</a></span>
+    <span class="entry-read-more"><a href="{{url}}">{{read_more}}</a></span>
     <!-- END read-more -->
     <!-- BEGIN comment-link -->
     <span class="separator">|</span>
-    <span class="entry-comment-link"><a href="{url}">{text_comments}</a></span>
+    <span class="entry-comment-link"><a href="{{url}}">{{text_comments}}</a></span>
     <!-- END comment-link -->
     <!-- BEGIN comments-statistic -->
     <span class="separator">|</span>
-    <span class="entry-comments-statistic"><a>{text_comments}</a></span>
+    <span class="entry-comments-statistic"><a>{{text_comments}}</a></span>
     <!-- END comments-statistic -->
   </div>
   <!-- INCLUDE ReferenceTags.html gadgets/Tags/Templates -->
   <!-- END entry -->
-  {navigation}
-  {trackbacks}
+  {{navigation}}
+  {{trackbacks}}
 </div>
 <div class="gadget_footer"></div>
-{comments}
-{preview}
-{comment-form}
+{{comments}}
+{{preview}}
+{{comment-form}}
 <!-- END single_view -->

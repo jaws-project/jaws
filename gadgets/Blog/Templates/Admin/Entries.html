@@ -1,19 +1,19 @@
 <!-- BEGIN list_entries -->
-{menubar}
+{{menubar}}
 <div id="main">
-<form action="{base_script}" name="ListEntries" onsubmit="return searchPost();" method="post">
+<form action="{{base_script}}" name="ListEntries" onsubmit="return searchPost();" method="post">
 <input type="hidden" name="gadget" value="Blog" />
 <input type="hidden" id="action" name="action" value="ListEntries" />
 <table style="width: 100%">
   <tr>
-    <td class="filters" nowrap="nowrap">{show} {show_field} {category} {category_field} {status} {status_field} {search_field} {search}</td>
+    <td class="filters" nowrap="nowrap">{{show}} {{show_field}} {{category}} {{category_field}} {{status}} {{status_field}} {{search_field}} {{search}}</td>
   </tr>
 </table>
 </form>
-{entries}
+{{entries}}
 </div>
 <script type="text/javascript">
-var deleteConfirm = "{deleteConfirm}";
+var deleteConfirm = "{{deleteConfirm}}";
 getData();
 </script>
 <!-- END list_entries -->
