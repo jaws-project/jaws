@@ -21,13 +21,7 @@ class Blog_Actions_Comments extends Blog_Actions_Default
      */
     function Preview()
     {
-        $names = array(
-            'name', 'email', 'url', 'title', 'message', 'createtime',
-            'ip_address', 'reference'
-        );
-        $post = jaws()->request->fetch($names, 'post');
-        $id   = (int)$post['reference'];
-
+        $id = (int)jaws()->request->fetch('reference', 'post');
         $model = $this->gadget->model->load('Posts');
         $entry = $model->GetEntry($id, true);
         if (Jaws_Error::isError($entry)) {
