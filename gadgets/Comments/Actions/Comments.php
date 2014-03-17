@@ -250,10 +250,11 @@ class Comments_Actions_Comments extends Comments_Actions_Default
                 );
                 $tpl->SetVariable('insert_time', $objDate->Format($entry['createtime']));
                 $tpl->SetVariable('insert_time_iso', $objDate->ToISO($entry['createtime']));
-                $tpl->SetVariable('message', Jaws_String::AutoParagraph($entry['msg_txt']));
+                $tpl->SetVariable('message', $this->gadget->ParseText($entry['msg_txt'], 'Comments', 'index'));
                 $tpl->SetVariable('message_abbr', (Jaws_UTF8::strlen($entry['msg_txt']) >= $max_size)?
                     Jaws_UTF8::substr($entry['msg_txt'], 0, $max_size).'...' :
-                    $entry['msg_txt']);
+                    $entry['msg_txt']
+                );
 
                 if (Jaws_UTF8::strlen($entry['msg_txt']) >= $max_size) {
                     $tpl->SetBlock($block . '/entry/read_more');
@@ -390,7 +391,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         if (is_null($post['ip_address'])) {
             $post['ip_address'] = $_SERVER['REMOTE_ADDR'];
         }
-        $tpl->SetVariable('message', Jaws_String::AutoParagraph($post['message']));
+        $tpl->SetVariable('message', $this->gadget->ParseText($post['message'], 'Comments', 'index'));
         if (!isset($post['createtime'])) {
             $date = Jaws_Date::getInstance();
             $post['createtime'] = $date->Format(time());
