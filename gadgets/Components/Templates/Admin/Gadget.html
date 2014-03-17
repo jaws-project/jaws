@@ -1,25 +1,25 @@
 <!-- BEGIN info -->
 <div id="component_info">
   <div class="gadget">
-      <div><h2>{lbl_version}</h2> <span>{version}</span></div>
-      <div><h2>{lbl_jaws_version}</h2> <span>{jaws_version}</span></div>
-      <div><h2>{lbl_section}</h2> <span>{section}</span></div>
+      <div><h2>{{lbl_version}}</h2> <span>{{version}}</span></div>
+      <div><h2>{{lbl_jaws_version}}</h2> <span>{{jaws_version}}</span></div>
+      <div><h2>{{lbl_section}}</h2> <span>{{section}}</span></div>
 
       <!-- BEGIN requires -->
       <div>
-      <h2>{lbl_requires}{gadget}</h2>
-      <ul><!-- BEGIN item --><li>{gadget}</li><!-- END item --></ul>
+      <h2>{{lbl_requires}}{{gadget}}</h2>
+      <ul><!-- BEGIN item --><li>{{gadget}}</li><!-- END item --></ul>
       </div>
       <!-- END requires -->
 
       <!-- BEGIN acls -->
       <div>
-      <h2>{lbl_acl_rules}</h2>
-      <ul class="acls"><!-- BEGIN acl --><li>{acl}</li><!-- END acl --></ul>
+      <h2>{{lbl_acl_rules}}</h2>
+      <ul class="acls"><!-- BEGIN acl --><li>{{acl}}</li><!-- END acl --></ul>
       </div>
       <!-- END acls -->
     </div>
 
-  <div class="gadget_actions actions">{update}{install}{enable}{uninstall}{disable}</div>
+  <div class="gadget_actions actions">{{update}}{{install}}{{enable}}{{uninstall}}{{disable}}</div>
 </div>
 <!-- END info -->

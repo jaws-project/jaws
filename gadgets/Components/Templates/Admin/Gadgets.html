@@ -1,45 +1,45 @@
 <!-- BEGIN components -->
-{menubar}
+{{menubar}}
 <table>
   <tr>
     <td id="components">
       <div>
         <input id="filter" onkeyup="buildComponentList()">
-        <h3 title="{outdated_desc}">{lbl_outdated}</h3>
+        <h3 title="{{outdated_desc}}">{{lbl_outdated}}</h3>
         <ul id="outdated"></ul>
-        <h3 title="{notinstalled_desc}">{lbl_notinstalled}</h3>
+        <h3 title="{{notinstalled_desc}}">{{lbl_notinstalled}}</h3>
         <ul id="notinstalled"></ul>
-        <h3 title="{installed_desc}">{lbl_installed}</h3>
+        <h3 title="{{installed_desc}}">{{lbl_installed}}</h3>
         <ul id="installed"></ul>
-        <h3 title="{core_desc}">{lbl_core}</h3>
+        <h3 title="{{core_desc}}">{{lbl_core}}</h3>
         <ul id="core"></ul>
       </div>
     </td>
     <td id="component_ui">
-      <div id="summary">{summary}</div>
+      <div id="summary">{{summary}}</div>
       <div id="component" style="display:none">
         <div id="component_head"></div>
         <div id="component_form"></div>
         <ul id="tabs">
-          <li id="tab_info" class="active">{lbl_info}</li>
-          <li id="tab_registry">{lbl_registry}</li>
-          <li id="tab_acl">{lbl_acl}</li>
+          <li id="tab_info" class="active">{{lbl_info}}</li>
+          <li id="tab_registry">{{lbl_registry}}</li>
+          <li id="tab_acl">{{lbl_acl}}</li>
         </ul>
-        {close}
+        {{close}}
       </div>
     </td>
   </tr>
 </table>
 <script type="text/javascript">
-  var actions = {
-      outdated: "{lbl_update}",
-      disabled: "{lbl_enable}",
-      installed: "{lbl_uninstall}",
-      notinstalled: "{lbl_install}"
-    },
+  var actions = {{
+      outdated: "{{lbl_update}}",
+      disabled: "{{lbl_enable}}",
+      installed: "{{lbl_uninstall}}",
+      notinstalled: "{{lbl_install}}"
+    }},
     pluginsMode = false,
-    confirmUninstallGadget = "{confirmUninstallGadget}",
-    confirmDisableGadget = "{confirmDisableGadget}";
+    confirmUninstallGadget = "{{confirmUninstallGadget}}",
+    confirmDisableGadget = "{{confirmDisableGadget}}";
   init();
 </script>
 <!-- END components -->
