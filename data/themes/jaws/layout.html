@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <!-- BEGIN layout -->
-<html lang="{site-languages}">
+<html lang="{{site-languages}}">
 <head>
-  <base href="{base_url}" />
-  <title>{site-title}</title>
-  <meta name="author" content="{site-author}" />
-  <meta name="keywords" content="{site-keywords}" />
-  <meta name="description" content="{site-description}" />
+  <base href="{{base_url}}" />
+  <title>{{site-title}}</title>
+  <meta name="author" content="{{site-author}}" />
+  <meta name="keywords" content="{{site-keywords}}" />
+  <meta name="description" content="{{site-description}}" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, maximum-scale=2.0, initial-scale=1.0"/>
-  <link rel="stylesheet" type="text/css" href="{theme_url}style{.dir}.css?100" media="screen" />
-  <!-- BEGIN head -->{ELEMENT}<!-- END head -->
+  <link rel="stylesheet" type="text/css" href="{{theme_url}}style{{.dir}}.css?100" media="screen" />
+  <!-- BEGIN head -->{{ELEMENT}}<!-- END head -->
 </head>
-<body id="main_gadget_{main_gadget}">
+<body id="main_gadget_{{main_gadget}}">
 
   <div id="container" class="wrapper">
     <div id="header">
       <div id="title">
-        <h1><a href="{site-url}">{site-name}</a></h1>
-        <p>{site-slogan}</p>
+        <h1><a href="{{site-url}}">{{site-name}}</a></h1>
+        <p>{{site-slogan}}</p>
       </div>
       <div id="headbar">
-        <a class="accessibility" href="#mainbar"><img src="images/blank.gif" width="0" height="0" alt="{skip_to_content}" /></a>
+        <a class="accessibility" href="#mainbar"><img src="images/blank.gif" width="0" height="0" alt="{{skip_to_content}}" /></a>
         <!-- BEGIN header -->
-          <div class="gadget {gadget} {gadget_action} {gadget_action_params}">
-          {ELEMENT}
+          <div class="gadget {{gadget}} {{gadget_action}} {{gadget_action_params}}">
+          {{ELEMENT}}
           </div>
         <!-- END header -->
       </div>
@@ -33,22 +33,22 @@
     <div id="content">
       <div id="mainbar">
         <!-- BEGIN main -->
-        <div class="gadget {gadget} {gadget_action} {gadget_action_params}">
-          {ELEMENT}
+        <div class="gadget {{gadget}} {{gadget_action}} {{gadget_action_params}}">
+          {{ELEMENT}}
         </div>
         <!-- END main -->
       </div>
       <div id="bar1" class="sidebar">
         <!-- BEGIN bar1 -->
-        <div class="gadget {gadget} {gadget_action} {gadget_action_params}">
-          {ELEMENT}
+        <div class="gadget {{gadget}} {{gadget_action}} {{gadget_action_params}}">
+          {{ELEMENT}}
         </div>
         <!-- END bar1 -->
       </div>
       <div id="bar2" class="sidebar">
         <!-- BEGIN bar2 -->
-        <div class="gadget {gadget} {gadget_action} {gadget_action_params}">
-          {ELEMENT}
+        <div class="gadget {{gadget}} {{gadget_action}} {{gadget_action_params}}">
+          {{ELEMENT}}
         </div>
         <!-- END bar2 -->
       </div>
@@ -57,7 +57,7 @@
 
   <div id="footer">
     <div class="wrapper">
-      {site-copyright} Powered by <a href="http://jaws-project.com" rel="external">Jaws Project</a>
+      {{site-copyright}} Powered by <a href="http://jaws-project.com" rel="external">Jaws Project</a>
     </div>
   </div>
 
