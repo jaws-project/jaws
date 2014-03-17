@@ -7,17 +7,17 @@
 </div>
 <div id="main">
   <script type="text/javascript">
-    function updateEditorsText(entryForm) {{
-        if (entryForm.elements['title'].value == '') {{
+    function updateEditorsText(entryForm) {
+        if (entryForm.elements['title'].value == '') {
             alert('{{missing_title}}');
             entryForm.elements['title'].focus(); 
             return false;
-        }}
+        }
 
         $('summary_block').value = getEditorValue('summary_block');
         $('text_block').value = getEditorValue('text_block');
         return true;
-    }}
+    }
   </script>
   <form name="edit_entry" method="post" action="{{base_script}}" enctype="multipart/form-data" onsubmit="return updateEditorsText(this);">
    <input id="action" type="hidden" name="action" value="Save{{action}}" />
@@ -87,23 +87,23 @@
   toggleUpdate(false);
   setTimeout('startAutoDrafting();', 120000);
 
-  function previewImage(fileElement) {{
+  function previewImage(fileElement) {
       $('deleteImage').value = 'false';
       var fReader = new FileReader();
       fReader.readAsDataURL(fileElement.files[0]);
-      fReader.onload = function (event) {{
+      fReader.onload = function (event) {
           document.getElementById('blog_image').src = event.target.result;
-      }}
-  }}
+      }
+  }
 
   /**
    * Removes the image
    */
-  function removeImage() {{
+  function removeImage() {
       $('image_file').value = '';
       $('deleteImage').value = 'true';
       $('blog_image').src = 'gadgets/Blog/Resources/images/no-image.gif?' + (new Date()).getTime();
-  }}
+  }
 
 </script>
 <!-- END edit_entry -->
