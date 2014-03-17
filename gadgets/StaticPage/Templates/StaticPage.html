@@ -1,10 +1,10 @@
 <!-- BEGIN index -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_content content">
     <ul>
     <!-- BEGIN item -->
-      <li><a href="{link}">{title}</a></li>
+      <li><a href="{{link}}">{{title}}</a></li>
     <!-- END item -->
     </ul>
   </div>
@@ -14,14 +14,14 @@
 
 <!-- BEGIN page -->
 <!-- BEGIN title -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <!-- END title -->
   <!-- BEGIN translations -->
-  <p><label>{avail_trans}:</label><!-- BEGIN language -->&nbsp;<a href="{url}">{lang}</a><!-- END language --></p>
+  <p><label>{{avail_trans}}:</label><!-- BEGIN language -->&nbsp;<a href="{{url}}">{{lang}}</a><!-- END language --></p>
   <!-- END translations -->
   <div class="gadget_content content">
-    {content}
+    {{content}}
   </div>
   <!-- INCLUDE ReferenceTags.html gadgets/Tags/Templates -->
 </div>
@@ -29,12 +29,12 @@
 <!-- END page -->
 
 <!-- BEGIN group_index -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_content content">
     <ul>
     <!-- BEGIN item -->
-      <li><a href="{link}">{group}</a></li>
+      <li><a href="{{link}}">{{group}}</a></li>
     <!-- END item -->
     </ul>
   </div>
@@ -43,12 +43,12 @@
 <!-- END group_index -->
 
 <!-- BEGIN group_pages -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_content content">
     <ul>
     <!-- BEGIN item -->
-      <li><a href="{link}">{page}</a></li>
+      <li><a href="{{link}}">{{page}}</a></li>
     <!-- END item -->
     </ul>
   </div>
@@ -57,16 +57,16 @@
 <!-- END group_pages -->
 
 <!-- BEGIN pages_tree -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_content content">
     <ul>
       <!-- BEGIN g_item -->
       <li>
-        <h4><a href="{glink}">{group}</a></h4>
+        <h4><a href="{{glink}}">{{group}}</a></h4>
         <ul>
         <!-- BEGIN p_item -->
-          <li><a href="{plink}">{page}</a></li>
+          <li><a href="{{plink}}">{{page}}</a></li>
         <!-- END p_item -->
         </ul>
       </li>

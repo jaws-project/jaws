@@ -1,31 +1,31 @@
 <!-- BEGIN Groups -->
-{menubar}
+{{menubar}}
 <div id="main">
 <table id="PageGroups">
   <tr>
     <td id="groups_datagrid">
-    {grid}
+    {{grid}}
     </td>
     <td id="group_ui">
       <fieldset>
-      <legend><span id="legend_title">{legend_title}</span></legend>
+      <legend><span id="legend_title">{{legend_title}}</span></legend>
         <table width="100%">
-          <tr><th><label for="title">{lbl_title}</label></th><td>{title}</td></tr>
-          <tr><th><label for="fast_url">{lbl_fast_url}</label></th><td>{fast_url}</td></tr>
-          <tr><th><label for="meta_keys">{lbl_meta_keys}</label></th><td>{meta_keys}</td></tr>
-          <tr><th><label for="meta_desc">{lbl_meta_desc}</label></th><td>{meta_desc}</td></tr>
-          <tr><th><label for="visible">{lbl_visible}</label></th><td>{visible}</td></tr>
+          <tr><th><label for="title">{{lbl_title}}</label></th><td>{{title}}</td></tr>
+          <tr><th><label for="fast_url">{{lbl_fast_url}}</label></th><td>{{fast_url}}</td></tr>
+          <tr><th><label for="meta_keys">{{lbl_meta_keys}}</label></th><td>{{meta_keys}}</td></tr>
+          <tr><th><label for="meta_desc">{{lbl_meta_desc}}</label></th><td>{{meta_desc}}</td></tr>
+          <tr><th><label for="visible">{{lbl_visible}}</label></th><td>{{visible}}</td></tr>
         </table>
       </fieldset>
-      <div class="buttons">{btn_cancel}{btn_save}</div>
+      <div class="buttons">{{btn_cancel}}{{btn_save}}</div>
     </td>
   </tr>
 </table>
 <script type="text/javascript">
-  var incomplete_fields       = "{incomplete_fields}";
-  var add_group_title         = "{add_group_title}";
-  var edit_group_title        = "{edit_group_title}";
-  var confirm_group_delete    = "{confirm_group_delete}";
+  var incomplete_fields       = "{{incomplete_fields}}";
+  var add_group_title         = "{{add_group_title}}";
+  var edit_group_title        = "{{edit_group_title}}";
+  var confirm_group_delete    = "{{confirm_group_delete}}";
   stopAction();
   initDataGrid('groups_datagrid', StaticPageAjax, 'getPagesGroups');
 </script>
