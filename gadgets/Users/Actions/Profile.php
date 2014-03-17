@@ -210,8 +210,13 @@ class Users_Actions_Profile extends Jaws_Gadget_Action
             $tpl->ParseBlock('profile/public');
         }
 
+        $tpl->SetBlock('profile/activity');
+        $tpl->SetVariable('lbl_activities', _t('USERS_USER_ACTIVITIES'));
+        $this->Activity($tpl, $user['id'], $user['username']);
+        $tpl->ParseBlock('profile/activity');
+
         $tpl->ParseBlock('profile');
-        return $tpl->Get().$this->Activity($user['id'], $user['username']);
+        return $tpl->Get();
     }
 
     /**
@@ -222,12 +227,8 @@ class Users_Actions_Profile extends Jaws_Gadget_Action
      * @param   int     $uname  User's name
      * @return  string  XHTML template content
      */
-    function Activity($uid, $uname)
+    function Activity(&$tpl, $uid, $uname)
     {
-        $tpl = $this->gadget->template->load('Profile.html');
-        $tpl->SetBlock('activity');
-        $tpl->SetVariable('title', _t('USERS_USER_ACTIVITY'));
-
         $activity = false;
         $gDir = JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
@@ -251,27 +252,24 @@ class Users_Actions_Profile extends Jaws_Gadget_Action
                 continue;
             }
 
-            $tpl->SetBlock('activity/gadget');
-            $tpl->SetVariable('gadget', _t('USERS_USER_ACTIVITY_IN_GADGET', $gInfo['title']));
+            $tpl->SetBlock('profile/activity/gadget');
+            $tpl->SetVariable('gadget', _t('USERS_USER_ACTIVITIES_IN_GADGET', $gInfo['title']));
             foreach ($activities as $activity) {
-                $tpl->SetBlock('activity/gadget/item');
+                $tpl->SetBlock('profile/activity/gadget/item');
                 $tpl->SetVariable('count', $activity['count']);
                 $tpl->SetVariable('title', $activity['title']);
                 $tpl->SetVariable('url',   $activity['url']);
-                $tpl->ParseBlock('activity/gadget/item');
+                $tpl->ParseBlock('profile/activity/gadget/item');
             }
             $activity = true;
-            $tpl->ParseBlock('activity/gadget');
+            $tpl->ParseBlock('profile/activity/gadget');
         }
 
         if (!$activity) {
-            $tpl->SetBlock('activity/no_activity');
-            $tpl->SetVariable('message', _t('USERS_USER_NOT_HAVE_ACTIVITY'));
-            $tpl->ParseBlock('activity/no_activity');
+            $tpl->SetBlock('profile/activity/no_activity');
+            $tpl->SetVariable('message', _t('USERS_USER_ACTIVITIES_EMPTY'));
+            $tpl->ParseBlock('profile/activity/no_activity');
         }
-
-        $tpl->ParseBlock('activity');
-        return $tpl->Get();
     }
 
 }
