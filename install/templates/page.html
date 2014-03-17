@@ -1,23 +1,23 @@
 <!-- BEGIN page -->
-<h1><img src="stages/{stage}/icon.png" alt="{STAGE}" width="48" height="48" />{title}</h1>
+<h1><img src="stages/{{stage}}/icon.png" alt="{{STAGE}}" width="48" height="48" />{{title}}</h1>
 <ol class="stagelist">
 <!-- BEGIN completed_stage -->
- <li class="complete">{name}</li>
+ <li class="complete">{{name}}</li>
 <!-- END completed_stage -->
 <!-- BEGIN current_stage -->
- <li class="current">{name}</li>
+ <li class="current">{{name}}</li>
 <!-- END current_stage -->
 <!-- BEGIN stage -->
- <li>{name}</li>
+ <li>{{name}}</li>
 <!-- END stage -->
 </ol>
 
 <div class="content">
 <!-- BEGIN message -->
- <div class="msg_{type}">
-  <span class="message_text">{text}</span>
+ <div class="msg_{{type}}">
+  <span class="message_text">{{text}}</span>
  </div>
 <!-- END message -->
- {body}
+ {{body}}
 </div>
 <!-- END page -->

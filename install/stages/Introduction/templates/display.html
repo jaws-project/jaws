@@ -1,21 +1,21 @@
 <!-- BEGIN Introduction -->
-<p>{welcome}</p>
-<p>{title_info}:</p>
+<p>{{welcome}}</p>
+<p>{{title_info}}:</p>
 
 <ul>
- <li>{db_info}</li>
- <li>{ftp_info}</li>
- <li>{mail_info}</li>
+ <li>{{db_info}}</li>
+ <li>{{ftp_info}}</li>
+ <li>{{mail_info}}</li>
 </ul>
 
 <form method="post">
   <table>
     <tr>
-      <td><label for="language">{language}:</label></td>
+      <td><label for="language">{{language}}:</label></td>
       <td>
         <select name="language" id="language" onchange="this.form.submit();">
 <!-- BEGIN lang -->
-          <option value="{code}" {selected}>{fullname}</option>
+          <option value="{{code}}" {{selected}}>{{fullname}}</option>
 <!-- END lang -->
         </select>
       </td>
@@ -29,11 +29,11 @@
 <!-- BEGIN logcheckbox -->
       <td><input type="checkbox" name="use_log" value="yes" /></td>
 <!-- END logcheckbox -->
-      <td style="font-size: 10px; text-align: justify;">{log_use}</td>
+      <td style="font-size: 10px; text-align: justify;">{{log_use}}</td>
     </tr>
   </table>
   <div class="buttons">
-    <input type="submit" name="Introduction_complete" value="{next} &gt;" />
+    <input type="submit" name="Introduction_complete" value="{{next}} &gt;" />
   </div>
 </form>
 <!-- END Introduction -->

@@ -1,15 +1,15 @@
 <!-- BEGIN Authentication -->
-<p>{key_path_info}</p>
-<p>{auth_upload}</p>
-<p>{key_file_info}</p>
-<div class="key">{key}</div>
+<p>{{key_path_info}}</p>
+<p>{{auth_upload}}</p>
+<p>{{key_file_info}}</p>
+<div class="key">{{key}}</div>
 <div>
  <form method="post">
   <label style="display: block;">
-    <input type="checkbox" name="secure" id="secure" {checked} value="true"/>
-    {rsa_security}
+    <input type="checkbox" name="secure" id="secure" {{checked}} value="true"/>
+    {{rsa_security}}
   </label>
-  <div class="buttons"><input type="submit" name="Authentication_complete" value="{next} &gt;" /></div>
+  <div class="buttons"><input type="submit" name="Authentication_complete" value="{{next}} &gt;" /></div>
  </form>
 </div>
 <!-- END Authentication -->

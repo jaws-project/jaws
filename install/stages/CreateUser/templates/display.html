@@ -1,55 +1,55 @@
 <!-- BEGIN CreateUser -->
-<p>{lbl_info}</p>
-<p>{lbl_notice}</p>
+<p>{{lbl_info}}</p>
+<p>{{lbl_notice}}</p>
 <script type="text/javascript">
-function EncryptPassword() {
+function EncryptPassword() {{
     setMaxDigits(128);
     var pub_key = new RSAPublicKey(document.getElementById('exponent').value, document.getElementById('modulus').value, 128);
     document.getElementById('password').value = encryptedString(pub_key, document.getElementById('password').value);
     document.getElementById('repeat').value = encryptedString(pub_key, document.getElementById('repeat').value);
     return true;
-}
+}}
 </script>
-<form method="post" onsubmit="return {func_onsubmit};">
- <input type="hidden" name="modulus" id="modulus" value="{pub_modulus}" />
- <input type="hidden" name="exponent" id="exponent" value="{pub_exponent}" />
+<form method="post" onsubmit="return {{func_onsubmit}};">
+ <input type="hidden" name="modulus" id="modulus" value="{{pub_modulus}}" />
+ <input type="hidden" name="exponent" id="exponent" value="{{pub_exponent}}" />
  <table>
   <tr>
-   <td><label for="username">{lbl_user}:</label></td>
-   <td><input type="text" name="username" size="30" value="{username}" style="direction: ltr;" /></td>
+   <td><label for="username">{{lbl_user}}:</label></td>
+   <td><input type="text" name="username" size="30" value="{{username}}" style="direction: ltr;" /></td>
   </tr>
   <tr>
    <td></td>
-   <td class="form_comment">{user_info}</td>
+   <td class="form_comment">{{user_info}}</td>
   </tr>
   <tr>
-   <td><label for="password">{lbl_pass}:</label></td>
-   <td><input type="password" value="{password}" name="password" id="password" size="30" style="direction: ltr;" /></td>
+   <td><label for="password">{{lbl_pass}}:</label></td>
+   <td><input type="password" value="{{password}}" name="password" id="password" size="30" style="direction: ltr;" /></td>
   </tr>
   <tr>
-   <td><label for="repeat">{lbl_repeat}:</label></td>
-   <td><input type="password" value="{repeat}" name="repeat" id="repeat" size="30" style="direction: ltr;" /></td>
-  </tr>
-  <tr>
-   <td></td>
-   <td class="form_comment">{repeat_info}</td>
-  </tr>
-  <tr>
-   <td><label for="nickname">{lbl_nickname}:</label></td>
-   <td><input type="text" name="nickname" value="{nickname}" size="30" /></td>
+   <td><label for="repeat">{{lbl_repeat}}:</label></td>
+   <td><input type="password" value="{{repeat}}" name="repeat" id="repeat" size="30" style="direction: ltr;" /></td>
   </tr>
   <tr>
    <td></td>
-   <td class="form_comment">{name_info}</td>
+   <td class="form_comment">{{repeat_info}}</td>
   </tr>
   <tr>
-   <td><label for="email">{lbl_email}:</label></td>
-   <td><input type="text" name="email" value="{email}" size="30" style="direction: ltr;" /></td>
+   <td><label for="nickname">{{lbl_nickname}}:</label></td>
+   <td><input type="text" name="nickname" value="{{nickname}}" size="30" /></td>
+  </tr>
+  <tr>
+   <td></td>
+   <td class="form_comment">{{name_info}}</td>
+  </tr>
+  <tr>
+   <td><label for="email">{{lbl_email}}:</label></td>
+   <td><input type="text" name="email" value="{{email}}" size="30" style="direction: ltr;" /></td>
   </tr>
  </table>
 
  <div class="buttons">
-  <input type="submit" name="CreateUser_complete" value="{next} &gt;" />
+  <input type="submit" name="CreateUser_complete" value="{{next}} &gt;" />
  </div>
 </form>
 <!-- END CreateUser -->
