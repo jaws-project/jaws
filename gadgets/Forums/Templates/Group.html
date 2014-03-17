@@ -1,36 +1,36 @@
 <!-- BEGIN groups -->
 <div class="gadget_header">
-  <h3><a href="{findex_url}">{findex_title}</a> &rsaquo; <a href="{url}">{title}</a></h3>
+  <h3><a href="{{findex_url}}">{{findex_title}}</a> &rsaquo; <a href="{{url}}">{{title}}</a></h3>
 </div>
 <div class="gadget_container">
   <div class="gadget_content content">
-    {description}
+    {{description}}
     <!-- BEGIN group -->
     <div class="forums_group">
       <div class="forums_header">
         <dl>
-          <dt><a href="{url}">{title}</a></dt>
-          <dd class="forums_stat">{lbl_topics}</dd>
-          <dd class="forums_stat">{lbl_posts}</dd>
-          <dd class="forums_lastpost">{lbl_lastpost}</dd>
+          <dt><a href="{{url}}">{{title}}</a></dt>
+          <dd class="forums_stat">{{lbl_topics}}</dd>
+          <dd class="forums_stat">{{lbl_posts}}</dd>
+          <dd class="forums_lastpost">{{lbl_lastpost}}</dd>
         </dl>
       </div>
       <ul class="forums_list">
       <!-- BEGIN forum -->
         <li>
           <dl>
-            <dt class="forum_status_{status}">
-              <a href="{url}">{title}</a>
-              <span>{description}</span>
+            <dt class="forum_status_{{status}}">
+              <a href="{{url}}">{{title}}</a>
+              <span>{{description}}</span>
             </dt>
-            <dd class="forums_stat">{topics}</dd>
-            <dd class="forums_stat">{posts}</dd>
+            <dd class="forums_stat">{{topics}}</dd>
+            <dd class="forums_stat">{{posts}}</dd>
             <dd class="forums_lastpost">
             <!-- BEGIN lastpost -->
-            {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
-            <br/><abbr title="{lastpost_date_iso}">{lastpost_date}</abbr>
-            <a href="{lastpost_url}" title="{lastpost_lbl}">
-              <img width="16" height="16" src="gadgets/Forums/Resources/images/topic_latest{.dir}.png" alt="{lastpost_lbl}"/>
+            {{postedby_lbl}}: <a href="{{user_url}}" title="{{username}}">{{nickname}}</a>
+            <br/><abbr title="{{lastpost_date_iso}}">{{lastpost_date}}</abbr>
+            <a href="{{lastpost_url}}" title="{{lastpost_lbl}}">
+              <img width="16" height="16" src="gadgets/Forums/Resources/images/topic_latest{{.dir}}.png" alt="{{lastpost_lbl}}"/>
             </a>
             <!-- END lastpost -->
             </dd>

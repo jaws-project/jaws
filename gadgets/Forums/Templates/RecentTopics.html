@@ -1,17 +1,17 @@
 <!-- BEGIN recenttopics -->
-<div class="gadget_header"><h3>{action_title} - {group_title}</h3></div>
+<div class="gadget_header"><h3>{{action_title}} - {{group_title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_content content">
     <ul>
       <!-- BEGIN topic -->
       <li>
-        <h4><a href="{url_topic}">{lbl_topic}</a></h4>
-        <div class="post_content_partly">{message}</div>
+        <h4><a href="{{url_topic}}">{{lbl_topic}}</a></h4>
+        <div class="post_content_partly">{{message}}</div>
         <div class="post_meta">
-          {lbl_postedby}: <a href="{url_user}" title="{username}">{nickname}</a>
-          <br/><abbr title="{lastpost_date_iso}">{lastpost_date}</abbr>
-          <a href="{lastpost_url}" title="{lbl_topic}">
-            <img width="16" height="16" src="gadgets/Forums/Resources/images/topic_latest{.dir}.png" alt="{lbl_topic}"/>
+          {{lbl_postedby}}: <a href="{{url_user}}" title="{{username}}">{{nickname}}</a>
+          <br/><abbr title="{{lastpost_date_iso}}">{{lastpost_date}}</abbr>
+          <a href="{{lastpost_url}}" title="{{lbl_topic}}">
+            <img width="16" height="16" src="gadgets/Forums/Resources/images/topic_latest{{.dir}}.png" alt="{{lbl_topic}}"/>
           </a>
         </div>
       </li>

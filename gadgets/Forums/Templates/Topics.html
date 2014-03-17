@@ -1,34 +1,34 @@
 <!-- BEGIN topics -->
-<div class="gadget_header"><h3><a href="{findex_url}">{findex_title}</a> &rsaquo; <a href="{url}">{title}</a></h3></div>
+<div class="gadget_header"><h3><a href="{{findex_url}}">{{findex_title}}</a> &rsaquo; <a href="{{url}}">{{title}}</a></h3></div>
 <div class="gadget_container">
   <div class="gadget_content content">
     <div class="forums_header">
       <dl>
-        <dt>{lbl_topics}</dt>
-        <dd class="forums_stat">{lbl_replies}</dd>
-        <dd class="forums_stat">{lbl_views}</dd>
-        <dd class="forums_lastpost">{lbl_lastpost}</dd>
+        <dt>{{lbl_topics}}</dt>
+        <dd class="forums_stat">{{lbl_replies}}</dd>
+        <dd class="forums_stat">{{lbl_views}}</dd>
+        <dd class="forums_lastpost">{{lbl_lastpost}}</dd>
       </dl>
     </div>
     <ul class="forums_list">
       <!-- BEGIN topic -->
       <li>
         <dl>
-          <dt class="topic_status_{status} topic_{published_status}">
-            <a href="{url}">{title}</a><br/>
+          <dt class="topic_status_{{status}} topic_{{published_status}}">
+            <a href="{{url}}">{{title}}</a><br/>
             <span>
-              {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a> &raquo;
-              <abbr title="{firstpost_date_iso}">{firstpost_date}</abbr>
+              {{postedby_lbl}}: <a href="{{user_url}}" title="{{username}}">{{nickname}}</a> &raquo;
+              <abbr title="{{firstpost_date_iso}}">{{firstpost_date}}</abbr>
             </span>
           </dt>
-          <dd class="forums_stat">{replies}</dd>
-          <dd class="forums_stat">{views}</dd>
+          <dd class="forums_stat">{{replies}}</dd>
+          <dd class="forums_stat">{{views}}</dd>
           <dd class="forums_lastpost">
             <!-- BEGIN lastpost -->
-            {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
-            <br/><abbr title="{lastpost_date_iso}">{lastpost_date}</abbr>
-            <a href="{lastpost_url}" title="{lastpost_lbl}">
-              <img width="16" height="16" src="gadgets/Forums/Resources/images/topic_latest{.dir}.png" alt="{lastpost_lbl}"/>
+            {{postedby_lbl}}: <a href="{{user_url}}" title="{{username}}">{{nickname}}</a>
+            <br/><abbr title="{{lastpost_date_iso}}">{{lastpost_date}}</abbr>
+            <a href="{{lastpost_url}}" title="{{lastpost_lbl}}">
+              <img width="16" height="16" src="gadgets/Forums/Resources/images/topic_latest{{.dir}}.png" alt="{{lastpost_lbl}}"/>
             </a>
             <!-- END lastpost -->
           </dd>
@@ -40,7 +40,7 @@
   <!-- INCLUDE PageNavigation.html -->
   <div class="gadget_actions actions">
     <!-- BEGIN action -->
-    <a class="button" href="{action_url}" title="{action_lbl}">{action_lbl}</a>
+    <a class="button" href="{{action_url}}" title="{{action_lbl}}">{{action_lbl}}</a>
     <!-- END action -->
   </div>
 </div>

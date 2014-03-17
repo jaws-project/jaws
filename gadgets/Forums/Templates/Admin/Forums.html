@@ -2,18 +2,18 @@
 <div id="main" style="width: 100%;">
   <div id="forums_area">
     <div class="titlebar">
-      <span style="font-weight: bold;"><img src="gadgets/Forums/Resources/images/menu-item.png" />&nbsp;{forum_tree_title}</span>
+      <span style="font-weight: bold;"><img src="gadgets/Forums/Resources/images/menu-item.png" />&nbsp;{{forum_tree_title}}</span>
     </div>
     <div id="forums_tree">
       <!-- BEGIN group -->
-      <div class="forums_group_area" id="group_{gid}">
+      <div class="forums_group_area" id="group_{{gid}}">
         <div class="forums_group">
-          <div class="title"><img class="icon" src="{icon}" alt="icon" /><a href="javascript: {js_edit_func};">{title}</a></div>
-          <div class="forum_actions"><a href="javascript: {js_add_func};" title="{add_title}"><img src="{add_icon}" alt="add" /></a></div>
+          <div class="title"><img class="icon" src="{{icon}}" alt="icon" /><a href="javascript: {{js_edit_func}};">{{title}}</a></div>
+          <div class="forum_actions"><a href="javascript: {{js_add_func}};" title="{{add_title}}"><img src="{{add_icon}}" alt="add" /></a></div>
         </div>
         <!-- BEGIN forum -->
-        <div class="forums_group_item" id="forum_{fid}">
-          <img class="icon" src="{icon}" alt="icon" /><a onclick="javascript: {js_edit_func};">{title}</a>
+        <div class="forums_group_item" id="forum_{{fid}}">
+          <img class="icon" src="{{icon}}" alt="icon" /><a onclick="javascript: {{js_edit_func}};">{{title}}</a>
         </div>
         <!-- END forum -->
       </div>
@@ -24,17 +24,17 @@
     <div class="titlebar"><span id="work_area_title" style="font-weight: bold;"></span></div>
     <div id="forums_edit"></div>
   </div>
-  <div class="buttons">{cancel} {del} {save} {add}</div>
+  <div class="buttons">{{cancel}} {{del}} {{save}} {{add}}</div>
 </div>
 <script type="text/javascript">
-  var addGroupTitle  = "{addGroupTitle}";
-  var editGroupTitle = "{editGroupTitle}";
-  var addForumTitle  = "{addForumTitle}";
-  var editForumTitle = "{editForumTitle}";
-  var delForumTitle  = "{delForumTitle}";
-  var forumImageSrc   = "{forumImageSrc}";
-  var incompleteFields   = "{incompleteFields}";
-  var confirmForumDelete = "{confirmForumDelete}";
-  var confirmGroupDelete = "{confirmGroupDelete}";
+  var addGroupTitle  = "{{addGroupTitle}}";
+  var editGroupTitle = "{{editGroupTitle}}";
+  var addForumTitle  = "{{addForumTitle}}";
+  var editForumTitle = "{{editForumTitle}}";
+  var delForumTitle  = "{{delForumTitle}}";
+  var forumImageSrc   = "{{forumImageSrc}}";
+  var incompleteFields   = "{{incompleteFields}}";
+  var confirmForumDelete = "{{confirmForumDelete}}";
+  var confirmGroupDelete = "{{confirmGroupDelete}}";
 </script>
 <!-- END forums -->

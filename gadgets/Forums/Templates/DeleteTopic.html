@@ -1,38 +1,38 @@
 <!-- BEGIN topic -->
 <div class="gadget_header">
   <h3>
-    <a href="{findex_url}">{findex_title}</a> &rsaquo;
-    <a href="{forum_url}">{forum_title}</a> &rsaquo;
-    {title}
+    <a href="{{findex_url}}">{{findex_title}}</a> &rsaquo;
+    <a href="{{forum_url}}">{{forum_title}}</a> &rsaquo;
+    {{title}}
   </h3>
 </div>
 <div class="gadget_container">
-  <div class="gadget_response"><div class="simple-response-msg">{msg}</div></div>
-  <form name="deletetopic" action="{requested_url}" method="post">
+  <div class="gadget_response"><div class="simple-response-msg">{{msg}}</div></div>
+  <form name="deletetopic" action="{{requested_url}}" method="post">
     <input type="hidden" name="gadget" value="Forums" />
     <input type="hidden" name="action" value="DeleteTopic" />
-    <input type="hidden" name="fid" value="{fid}" />
-    <input type="hidden" name="tid" value="{tid}" />
+    <input type="hidden" name="fid" value="{{fid}}" />
+    <input type="hidden" name="tid" value="{{tid}}" />
     <div class="gadget_content content">
       <div class="post_meta">
-        {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
-        &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
+        {{postedby_lbl}}: <a href="{{user_url}}" title="{{username}}">{{nickname}}</a>
+        &raquo; <abbr title="{{insert_time_iso}}">{{insert_time}}</abbr>
       </div>
-      <div class="post_content">{message}</div>
+      <div class="post_content">{{message}}</div>
     </div>
     <div>
-      <label for="delete_reason">{lbl_delete_reason}:</label>
-      <textarea id="delete_reason" name="delete_reason" rows="2" class="x-large">{delete_reason}</textarea>
+      <label for="delete_reason">{{lbl_delete_reason}}:</label>
+      <textarea id="delete_reason" name="delete_reason" rows="2" class="x-large">{{delete_reason}}</textarea>
     </div>
     <!-- BEGIN notification -->
     <div>
       <input type="checkbox" id="notification" name="notification" value="1" <!-- BEGIN checked -->checked="checked" <!-- END checked -->/>
-      <label for="notification">{lbl_send_notification}</label>
+      <label for="notification">{{lbl_send_notification}}</label>
     </div>
     <!-- END notification -->
     <div class="gadget_actions actions">
-      <button type="submit" name="cancel" >{btn_cancel_title}</button>
-      <button type="submit" name="confirm">{btn_submit_title}</button>
+      <button type="submit" name="cancel" >{{btn_cancel_title}}</button>
+      <button type="submit" name="confirm">{{btn_submit_title}}</button>
     </div>
   </form>
 </div>

@@ -1,76 +1,76 @@
 <!-- BEGIN post -->
 <div class="gadget_header">
   <h3>
-    <a href="{findex_url}">{findex_title}</a> &rsaquo;
-    <a href="{forum_url}">{forum_title}</a> &rsaquo;
-    <a href="{topic_url}">{topic_title}</a> &rsaquo;
-    {title}
+    <a href="{{findex_url}}">{{findex_title}}</a> &rsaquo;
+    <a href="{{forum_url}}">{{forum_title}}</a> &rsaquo;
+    <a href="{{topic_url}}">{{topic_title}}</a> &rsaquo;
+    {{title}}
   </h3>
 </div>
 <div class="gadget_container">
   <div class="gadget_response">
-    <div id="forums_editpost_response" class="{type}">{text}</div>
+    <div id="forums_editpost_response" class="{{type}}">{{text}}</div>
   </div>
-  <form name="editpost" action="{requested_url}" method="post" enctype="multipart/form-data">
+  <form name="editpost" action="{{requested_url}}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="gadget" value="Forums" />
     <input type="hidden" name="action" value="UpdatePost" />
-    <input type="hidden" name="fid" value="{fid}" />
-    <input type="hidden" name="tid" value="{tid}" />
-    <input type="hidden" name="pid" value="{pid}" />
+    <input type="hidden" name="fid" value="{{fid}}" />
+    <input type="hidden" name="tid" value="{{tid}}" />
+    <input type="hidden" name="pid" value="{{pid}}" />
     <div class="gadget_content content">
       <!-- BEGIN post_meta -->
       <div class="post_meta">
-        <label>{postedby_lbl}:</label> <a href="{user_url}" title="{username}">{nickname}</a>
-        &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
+        <label>{{postedby_lbl}}:</label> <a href="{{user_url}}" title="{{username}}">{{nickname}}</a>
+        &raquo; <abbr title="{{insert_time_iso}}">{{insert_time}}</abbr>
       </div>
       <!-- END post_meta -->
       <!-- BEGIN preview -->
       <div>
-        <label>{lbl_preview}:</label>
-        <div class="post_preview">{message}</div>
+        <label>{{lbl_preview}}:</label>
+        <div class="post_preview">{{message}}</div>
       </div>
       <!-- END preview -->
       <div>
-        <label for="message">{lbl_message}:</label>
-        {message}
+        <label for="message">{{lbl_message}}:</label>
+        {{message}}
       </div>
       <!-- BEGIN attachment -->
       <div>
-        <label>{lbl_attachment}:</label>
+        <label>{{lbl_attachment}}:</label>
         <div id="attachments">
           <div id="attachment_model" style="display: none;">
             <input type="file" name="attachment[]" multiple class="file"/>
-            <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{lbl_remove_attachment}">{lbl_remove_attachment}</a>
+            <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{{lbl_remove_attachment}}">{{lbl_remove_attachment}}</a>
           </div>
           <!-- BEGIN current_attachment -->
-          <div id="p_attach{aid}">
-            <input type="hidden" name="current_attachments[]" value="{aid}" />
-            <input type="text" name="current_attachments_filename" value="{lbl_filename}" disabled="disabled" class="large ltr"/>
-            <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{lbl_remove_attachment}">{lbl_remove_attachment}</a>
+          <div id="p_attach{{aid}}">
+            <input type="hidden" name="current_attachments[]" value="{{aid}}" />
+            <input type="text" name="current_attachments_filename" value="{{lbl_filename}}" disabled="disabled" class="large ltr"/>
+            <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{{lbl_remove_attachment}}">{{lbl_remove_attachment}}</a>
           </div>
           <!-- END current_attachment -->
-          <div id="btn_add_attachment"><a href="javascript:extraAttachment();" >{lbl_extra_attachment}</a></div>
+          <div id="btn_add_attachment"><a href="javascript:extraAttachment();" >{{lbl_extra_attachment}}</a></div>
         </div>
       </div>
       <!-- END attachment -->
       <!-- BEGIN update_reason -->
       <div>
-        <label for="update_reason">{lbl_update_reason}:</label>
-        <textarea id="update_reason" name="update_reason" rows="2">{update_reason}</textarea>
+        <label for="update_reason">{{lbl_update_reason}}:</label>
+        <textarea id="update_reason" name="update_reason" rows="2">{{update_reason}}</textarea>
       </div>
       <!-- END update_reason -->
       <!-- BEGIN notification -->
       <div>
         <input type="checkbox" id="notification" name="notification" value="1" <!-- BEGIN checked -->checked="checked" <!-- END checked -->/>
-        <label for="notification">{lbl_send_notification}</label>
+        <label for="notification">{{lbl_send_notification}}</label>
       </div>
       <!-- END notification -->
       <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
     </div>
     <div class="gadget_actions actions">
-      <button type="button" name="cancel" onclick="window.location='{topic_url}'">{btn_cancel_title}</button>
-      <button type="button" name="preview" onclick="this.form.elements['action'].value='EditPost'; this.form.submit();">{btn_preview_title}</button>
-      <button type="submit" name="update">{btn_update_title}</button>
+      <button type="button" name="cancel" onclick="window.location='{{topic_url}}'">{{btn_cancel_title}}</button>
+      <button type="button" name="preview" onclick="this.form.elements['action'].value='EditPost'; this.form.submit();">{{btn_preview_title}}</button>
+      <button type="submit" name="update">{{btn_update_title}}</button>
     </div>
   </form>
 </div>

@@ -1,49 +1,49 @@
 <!-- BEGIN posts -->
 <div class="gadget_header">
   <h3>
-    <a href="{findex_url}">{findex_title}</a> &rsaquo;
-    <a href="{forum_url}">{forum_title}</a> &rsaquo;
-    <a href="{url}">{title}</a>
+    <a href="{{findex_url}}">{{findex_title}}</a> &rsaquo;
+    <a href="{{forum_url}}">{{forum_title}}</a> &rsaquo;
+    <a href="{{url}}">{{title}}</a>
   </h3>
 </div>
 <div class="gadget_container">
   <div class="gadget_content content">
     <!-- BEGIN post -->
-    <div id="p{post_id}" class="forum_post">
+    <div id="p{{post_id}}" class="forum_post">
       <div class="post_profile">
         <ul>
-          <li><a href="{user_url}" title="{username}">{nickname}</a></li>
-          <li><img src="{avatar}" alt="{username}" title="{nickname}" /></li>
-          <li>{posts_count_lbl}: <span><a href="{user_posts}">{posts_count}</a></span></li>
-          <li>{registered_date_lbl}: <span>{registered_date}</span></li>
+          <li><a href="{{user_url}}" title="{{username}}">{{nickname}}</a></li>
+          <li><img src="{{avatar}}" alt="{{username}}" title="{{nickname}}" /></li>
+          <li>{{posts_count_lbl}}: <span><a href="{{user_posts}}">{{posts_count}}</a></span></li>
+          <li>{{registered_date_lbl}}: <span>{{registered_date}}</span></li>
         </ul>
       </div>
       <div class="post_body">
         <div class="post_meta">
-          <a href="{requested_url}#p{post_id}">#{post_number}</a>
-          {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
-          &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
+          <a href="{{requested_url}}#p{{post_id}}">#{{post_number}}</a>
+          {{postedby_lbl}}: <a href="{{user_url}}" title="{{username}}">{{nickname}}</a>
+          &raquo; <abbr title="{{insert_time_iso}}">{{insert_time}}</abbr>
         </div>
-        <div class="post_content">{message}</div>
+        <div class="post_content">{{message}}</div>
         <!-- BEGIN attachment -->
         <div class="post_attachment">
-          {lbl_attachment}: <a href="{url_attachment}" title="{user_fname}">{user_fname}</a>
-          &raquo; <span>{hitcount}</span>
+          {{lbl_attachment}}: <a href="{{url_attachment}}" title="{{user_fname}}">{{user_fname}}</a>
+          &raquo; <span>{{hitcount}}</span>
         </div>
         <!-- END attachment -->
         <!-- BEGIN update -->
         <div class="post_update">
-          {updatedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
-          &raquo; <abbr title="{update_time_iso}">{update_time}</abbr>
+          {{updatedby_lbl}}: <a href="{{user_url}}" title="{{username}}">{{nickname}}</a>
+          &raquo; <abbr title="{{update_time_iso}}">{{update_time}}</abbr>
           <!-- BEGIN reason -->
-          <div><label>{lbl_update_reason}:</label> <span>{update_reason}</span></div>
+          <div><label>{{lbl_update_reason}}:</label> <span>{{update_reason}}</span></div>
           <!-- END reason -->
         </div>
         <!-- END update -->
       </div>
       <div class="post_actions">
         <!-- BEGIN action -->
-        <a href="{action_url}" title="{action_title}">{action_lbl}</a>
+        <a href="{{action_url}}" title="{{action_title}}">{{action_lbl}}</a>
         <!-- END action -->
       </div>
     </div>
@@ -53,7 +53,7 @@
   <!-- INCLUDE PageNavigation.html -->
   <div class="gadget_actions actions">
     <!-- BEGIN action -->
-    <a class="button" href="{action_url}" title="{action_lbl}">{action_lbl}</a>
+    <a class="button" href="{{action_url}}" title="{{action_lbl}}">{{action_lbl}}</a>
     <!-- END action -->
   </div>
 </div>

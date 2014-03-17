@@ -1,99 +1,99 @@
 <!-- BEGIN topic -->
 <div class="gadget_header">
   <h3>
-    <a href="{findex_url}">{findex_title}</a> &rsaquo;
-    <a href="{forum_url}">{forum_title}</a> &rsaquo;
-    {title}
+    <a href="{{findex_url}}">{{findex_title}}</a> &rsaquo;
+    <a href="{{forum_url}}">{{forum_title}}</a> &rsaquo;
+    {{title}}
   </h3>
 </div>
 <div class="gadget_container">
   <div class="gadget_response">
-    <div id="forums_edittopic_response" class="{type}">{text}</div>
+    <div id="forums_edittopic_response" class="{{type}}">{{text}}</div>
   </div>
-  <form name="edittopic" action="{requested_url}" method="post" enctype="multipart/form-data">
+  <form name="edittopic" action="{{requested_url}}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="gadget" value="Forums" />
     <input type="hidden" name="action" value="UpdateTopic" />
-    <input type="hidden" name="fid" value="{fid}" />
-    <input type="hidden" name="tid" value="{tid}" />
+    <input type="hidden" name="fid" value="{{fid}}" />
+    <input type="hidden" name="tid" value="{{tid}}" />
     <div class="gadget_content content">
       <!-- BEGIN post_meta -->
       <div class="post_meta">
-        <label>{postedby_lbl}:</label> <a href="{user_url}" title="{username}">{nickname}</a>
-        &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
+        <label>{{postedby_lbl}}:</label> <a href="{{user_url}}" title="{{username}}">{{nickname}}</a>
+        &raquo; <abbr title="{{insert_time_iso}}">{{insert_time}}</abbr>
       </div>
       <!-- END post_meta -->
       <!-- BEGIN preview -->
       <div>
-        <label>{lbl_preview}:</label>
-        <div class="post_preview">{message}</div>
+        <label>{{lbl_preview}}:</label>
+        <div class="post_preview">{{message}}</div>
       </div>
       <!-- END preview -->
       <!-- BEGIN target -->
       <div>
-        <label for="target">{lbl_target}:</label>
+        <label for="target">{{lbl_target}}:</label>
         <select name="target" id="target">
           <!-- BEGIN item -->
-          <option value="{fid}" {selected}>{title}</option>
+          <option value="{{fid}}" {{selected}}>{{title}}</option>
           <!-- END item -->
         </select>
       </div>
       <!-- END target -->
       <!-- BEGIN subject -->
       <div>
-        <label for="subject">{lbl_subject}:</label>
-        <input id="subject" name="subject" type="text" value="{subject}" class="x-large"/>
+        <label for="subject">{{lbl_subject}}:</label>
+        <input id="subject" name="subject" type="text" value="{{subject}}" class="x-large"/>
       </div>
       <!-- END subject -->
       <div>
-        <label for="message">{lbl_message}:</label>
-        {message}
+        <label for="message">{{lbl_message}}:</label>
+        {{message}}
       </div>
       <!-- BEGIN status -->
       <div>
-        <label for="status">{lbl_status}:</label>
+        <label for="status">{{lbl_status}}:</label>
         <select id="status" name="status">
-          <option value="published" selected>{lbl_published}</option>
-          <option value="draft">{lbl_draft}</option>
+          <option value="published" selected>{{lbl_published}}</option>
+          <option value="draft">{{lbl_draft}}</option>
         </select>
       </div>
       <!-- END status -->
       <!-- BEGIN attachment -->
       <div>
-        <label>{lbl_attachment}:</label>
+        <label>{{lbl_attachment}}:</label>
         <div id="attachments">
           <div id="attachment_model" style="display: none;">
             <input type="file" name="attachment[]" multiple class="file" />
-            <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{lbl_remove_attachment}">{lbl_remove_attachment}</a>
+            <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{{lbl_remove_attachment}}">{{lbl_remove_attachment}}</a>
           </div>
           <!-- BEGIN current_attachment -->
-          <div id="p_attach{aid}">
-            <input type="hidden" name="current_attachments[]" value="{aid}" />
-            <input type="text" name="current_attachments_filename" value="{lbl_filename}" disabled="disabled" class="file ltr"/>
-            <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{lbl_remove_attachment}">{lbl_remove_attachment}</a>
+          <div id="p_attach{{aid}}">
+            <input type="hidden" name="current_attachments[]" value="{{aid}}" />
+            <input type="text" name="current_attachments_filename" value="{{lbl_filename}}" disabled="disabled" class="file ltr"/>
+            <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{{lbl_remove_attachment}}">{{lbl_remove_attachment}}</a>
           </div>
           <!-- END current_attachment -->
-          <div id="btn_add_attachment"><a href="javascript:extraAttachment();" >{lbl_extra_attachment}</a></div>
+          <div id="btn_add_attachment"><a href="javascript:extraAttachment();" >{{lbl_extra_attachment}}</a></div>
         </div>
       </div>
       <!-- END attachment -->
       <!-- BEGIN update_reason -->
       <div>
-        <label for="update_reason">{lbl_update_reason}:</label>
-        <textarea id="update_reason" name="update_reason" rows="2" class="x-large">{update_reason}</textarea>
+        <label for="update_reason">{{lbl_update_reason}}:</label>
+        <textarea id="update_reason" name="update_reason" rows="2" class="x-large">{{update_reason}}</textarea>
       </div>
       <!-- END update_reason -->
       <!-- BEGIN notification -->
       <div>
         <input type="checkbox" id="notification" name="notification" value="1" <!-- BEGIN checked -->checked="checked" <!-- END checked -->/>
-        <label for="notification">{lbl_send_notification}</label>
+        <label for="notification">{{lbl_send_notification}}</label>
       </div>
       <!-- END notification -->
       <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
     </div>
     <div class="gadget_actions actions">
-      <button type="button" name="cancel" onclick="window.location='{forum_url}'">{btn_cancel_title}</button>
-      <button type="button" name="preview" onclick="this.form.elements['action'].value='EditTopic'; this.form.submit();">{btn_preview_title}</button>
-      <button type="submit" name="update">{btn_update_title}</button>
+      <button type="button" name="cancel" onclick="window.location='{{forum_url}}'">{{btn_cancel_title}}</button>
+      <button type="button" name="preview" onclick="this.form.elements['action'].value='EditTopic'; this.form.submit();">{{btn_preview_title}}</button>
+      <button type="submit" name="update">{{btn_update_title}}</button>
     </div>
   </form>
 </div>
