@@ -1,34 +1,34 @@
 <!-- BEGIN Comments -->
-{menubar}
+{{menubar}}
 <div id="main">
 <table style="width: 100%">
   <tr>
     <td colspan="2" style="vertical-align: top">
       <div>
-        {lbl_gadgets_filter}{gadgets_filter}
-        <label for="status">{lbl_status}: </label>{status}
-        {filter}
-        {filter_button}
+        {{lbl_gadgets_filter}}{{gadgets_filter}}
+        <label for="status">{{lbl_status}}: </label>{{status}}
+        {{filter}}
+        {{filter_button}}
       </div>
     </td>
   </tr>
   <tr>
     <td style="vertical-align:top; text-align:left">
-        {datagrid}
-        <div class="buttons">{actions_combo}{btn_execute}</div>
+        {{datagrid}}
+        <div class="buttons">{{actions_combo}}{{btn_execute}}</div>
     </td>
     <td class="workarea" style="vertical-align:top; width:300px;">
       <input type="hidden" name="id" id="id" value="0" />
       <input type="hidden" name="gadget" id="gadget" value="" />
       <fieldset>
-        <legend><span id="legend_title">{legend_title}</span></legend>
-        <div id="c_work_area">{comment_ui}</div>
+        <legend><span id="legend_title">{{legend_title}}</span></legend>
+        <div id="c_work_area">{{comment_ui}}</div>
       </fieldset>
     </td>
   </tr>
   <tr>
     <td></td>
-    <td class="buttons">{btn_cancel}{btn_save}{btn_reply}</td>
+    <td class="buttons">{{btn_cancel}}{{btn_save}}{{btn_reply}}</td>
   </tr>
 </table>
 
@@ -36,21 +36,21 @@
   currentAction = 'Comments';
   $('gadgets_filter').selectedIndex = 0;
   initDataGrid('comments_datagrid', CommentsAjax, getCommentsDataGrid);
-  var incompleteCommentFields = "{incompleteCommentFields}";
-  var confirmCommentDelete    = "{confirmCommentDelete}";
-  var messageDetail_title     = "{messageDetail_title}";
+  var incompleteCommentFields = "{{incompleteCommentFields}}";
+  var confirmCommentDelete    = "{{confirmCommentDelete}}";
+  var messageDetail_title     = "{{messageDetail_title}}";
 </script>
 
 </div>
 <!-- END Comments -->
 <!-- BEGIN CommentUI -->
 <table id="comment_box">
-  <div><label for="name">{lbl_name}:</label>{name} <small id="comment_ip" title="{lbl_ip}"></small></div>
-  <div><label for="email">{lbl_email}:</label>{email}</div>
-  <div><label for="url">{lbl_url}:</label>{url}</div>
-  <div><label for="comment_status">{lbl_status}:</label>{status}</div>
-  <div style="margin:5px 0"><label style="display: inline">{lbl_date}: </label><span id="insert_time">{date}</span></div>
-  <div><label for="message">{lbl_message}:</label>{message}</div>
-  <div><label for="reply">{lbl_reply}:</label>{reply}</div>
+  <div><label for="name">{{lbl_name}}:</label>{{name}} <small id="comment_ip" title="{{lbl_ip}}"></small></div>
+  <div><label for="email">{{lbl_email}}:</label>{{email}}</div>
+  <div><label for="url">{{lbl_url}}:</label>{{url}}</div>
+  <div><label for="comment_status">{{lbl_status}}:</label>{{status}}</div>
+  <div style="margin:5px 0"><label style="display: inline">{{lbl_date}}: </label><span id="insert_time">{{date}}</span></div>
+  <div><label for="message">{{lbl_message}}:</label>{{message}}</div>
+  <div><label for="reply">{{lbl_reply}}:</label>{{reply}}</div>
 </table>
 <!-- END CommentUI -->

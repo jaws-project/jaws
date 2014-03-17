@@ -1,31 +1,31 @@
 <!-- BEGIN comments -->
-<div class="gadget_section {gadget}_comments">
+<div class="gadget_section {{gadget}}_comments">
     <!-- BEGIN entry -->
     <div class="comments_post">
 
         <div class="post_profile">
             <ul>
-                <li><span class="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></span></li>
+                <li><span class="user_avatar"><img src="{{avatar}}" alt="{{username}}" title="{{nickname}}"/></span></li>
                 <!-- BEGIN registered_date -->
-                <li><span class="user_register_date">{registered_date_lbl}: <span>{registered_date}</span></span></li>
+                <li><span class="user_register_date">{{registered_date_lbl}}: <span>{{registered_date}}</span></span></li>
                 <!-- END registered_date -->
             </ul>
         </div>
 
         <div class="post_body">
             <div class="post_meta">
-                {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
-                &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
+                {{postedby_lbl}}: <a href="{{user_url}}" title="{{username}}">{{nickname}}</a>
+                &raquo; <abbr title="{{insert_time_iso}}">{{insert_time}}</abbr>
             </div>
-            <div class="post_content">{message}</div>
+            <div class="post_content">{{message}}</div>
             <!-- BEGIN reply -->
             <div class="reply_content" id="reply_content">
-                <blockquote> <cite>{lbl_replier} <a href='{replier_url}'>{replier}</a> : </cite><div>{reply}</div></blockquote>
+                <blockquote> <cite>{{lbl_replier}} <a href='{{replier_url}}'>{{replier}}</a> : </cite><div>{{reply}}</div></blockquote>
             </div>
             <!-- END reply -->
         </div>
 
-        <div class="post_actions">[ {reply-link} ]</div>
+        <div class="post_actions">[ {{reply-link}} ]</div>
     </div>
 
     <hr style="clear: both; visibility: hidden;"/>
@@ -34,7 +34,7 @@
     <hr style="clear: both; visibility: hidden;"/>
     <div class="gadget_actions actions">
         <!-- BEGIN action -->
-        <a class="button" href="{action_url}" title="{action_lbl}">{action_lbl}</a>
+        <a class="button" href="{{action_url}}" title="{{action_lbl}}">{{action_lbl}}</a>
         <!-- END action -->
     </div>
 
@@ -42,17 +42,17 @@
 <!-- END comments -->
 
 <!-- BEGIN comments_compact -->
-<div class="{gadget}_comments">
+<div class="{{gadget}}_comments">
     <!-- BEGIN entry -->
     <div class="comments_post">
 
          <div class="post_body">
             <div class="post_meta">
-                <a href="{user_url}" title="{username}">{nickname}</a> &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr> :
+                <a href="{{user_url}}" title="{{username}}">{{nickname}}</a> &raquo; <abbr title="{{insert_time_iso}}">{{insert_time}}</abbr> :
             </div>
-            <div class="post_content">{message_abbr}
+            <div class="post_content">{{message_abbr}}
                 <!-- BEGIN read_more -->
-                <a href="{read_more_url}" title="{read_more}">{read_more}</a>
+                <a href="{{read_more_url}}" title="{{read_more}}">{{read_more}}</a>
                 <!-- END read_more -->
             </div>
         </div>
@@ -69,19 +69,19 @@
 
     <div class="post_profile">
         <ul>
-            <li><span class="user_avatar"><img src="{avatar}" alt="{username}" title="{nickname}"/></span></li>
+            <li><span class="user_avatar"><img src="{{avatar}}" alt="{{username}}" title="{{nickname}}"/></span></li>
             <!-- BEGIN registered_date -->
-            <li><span id="user_register_date">{registered_date_lbl}: <span>{registered_date}</span></span></li>
+            <li><span id="user_register_date">{{registered_date_lbl}}: <span>{{registered_date}}</span></span></li>
             <!-- END registered_date -->
         </ul>
     </div>
 
     <div class="post_body">
         <div class="post_meta">
-            {postedby_lbl}: <a href="{user_url}" title="{username}">{nickname}</a>
-            &raquo; <abbr title="{insert_time_iso}">{insert_time}</abbr>
+            {{postedby_lbl}}: <a href="{{user_url}}" title="{{username}}">{{nickname}}</a>
+            &raquo; <abbr title="{{insert_time_iso}}">{{insert_time}}</abbr>
         </div>
-        <div class="post_content">{message}</div>
+        <div class="post_content">{{message}}</div>
     </div>
 
 </div>
