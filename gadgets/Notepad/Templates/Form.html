@@ -1,28 +1,28 @@
 <!-- BEGIN form -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_response">
-    <div id="notepad_{action}_response" class="{type}">{text}</div>
+    <div id="notepad_{{action}}_response" class="{{type}}">{{text}}</div>
   </div>
   <div class="gadget_content content">
-    <form id="frm_note" name="frm_note" action="{base_script}" method="post">
+    <form id="frm_note" name="frm_note" action="{{base_script}}" method="post">
       <input type="hidden" name="gadget" value="Notepad" />
-      <input type="hidden" name="action" value="{form_action}" />
-      <input type="hidden" name="id" value="{id}" />
-      <div><label for="note_title">{lbl_title}:</label></div>
-      <div><input id="note_title" name="title" value="{note_title}" class="x-large"/></div>
-      <div><label for="note_content">{lbl_content}:</label></div>
-      <div>{note_content}</div>
+      <input type="hidden" name="action" value="{{form_action}}" />
+      <input type="hidden" name="id" value="{{id}}" />
+      <div><label for="note_title">{{lbl_title}}:</label></div>
+      <div><input id="note_title" name="title" value="{{note_title}}" class="x-large"/></div>
+      <div><label for="note_content">{{lbl_content}}:</label></div>
+      <div>{{note_content}}</div>
       <div class="gadget_actions actions">
-        <button type="button" onclick="location.href='{url_back}'">{lbl_cancel}</button>
-        <button type="button" onclick="submitNote(this.form)">{lbl_ok}</button>
+        <button type="button" onclick="location.href='{{url_back}}'">{{lbl_cancel}}</button>
+        <button type="button" onclick="submitNote(this.form)">{{lbl_ok}}</button>
       </div>
     </form>
   </div>
 </div>
 <div class="gadget_footer"></div>
 <script>
-var errorIncompleteData = "{errorIncompleteData}";
+var errorIncompleteData = "{{errorIncompleteData}}";
 $('note_title').focus();
 </script>
 <!-- END form -->

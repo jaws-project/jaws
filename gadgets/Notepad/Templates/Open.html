@@ -1,24 +1,24 @@
 <!-- BEGIN note -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_content content">
-    <h4>{note_title}</h4>
-    <div class="note-content">{note_content}</div>
+    <h4>{{note_title}}</h4>
+    <div class="note-content">{{note_content}}</div>
     <div class="note-properties">
     </div>
     <!-- BEGIN actions -->
     <div class="gadget_actions actions">
-      <button type="button" onclick="deleteNote({id})">{lbl_delete}</button>
-      <button type="button" onclick="location.href='{url_share}'">{lbl_share}</button>
-      <button type="button" onclick="location.href='{url_edit}'">{lbl_edit}</button>
+      <button type="button" onclick="deleteNote({{id}})">{{lbl_delete}}</button>
+      <button type="button" onclick="location.href='{{url_share}}'">{{lbl_share}}</button>
+      <button type="button" onclick="location.href='{{url_edit}}'">{{lbl_edit}}</button>
     </div>
     <!-- END actions -->
   </div>
 </div>
 <div class="gadget_footer"></div>
 <script>
-var notepad_url = "{notepad_url}",
-    confirmDelete = "{confirmDelete}";
+var notepad_url = "{{notepad_url}}",
+    confirmDelete = "{{confirmDelete}}";
 initNotepad();
 </script>
 <!-- END note -->

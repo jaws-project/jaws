@@ -1,27 +1,27 @@
 <!-- BEGIN share -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_response">
-    <div id="notepad_sharenote_response" class="{type}">{text}</div>
+    <div id="notepad_sharenote_response" class="{{type}}">{{text}}</div>
   </div>
-  <h4>{note_title}</h4>
+  <h4>{{note_title}}</h4>
   <div id="note_share">
-    <div><label>{lbl_note_users}:</label></div>
-    {note_users}
-    <div><label>{lbl_groups}:</label></div>
-    {groups}
-    <div><label>{lbl_users}:</label></div>
+    <div><label>{{lbl_note_users}}:</label></div>
+    {{note_users}}
+    <div><label>{{lbl_groups}}:</label></div>
+    {{groups}}
+    <div><label>{{lbl_users}}:</label></div>
     <div id="sys_users"></div>
     <div class="gadget_actions actions">
-      <button type="button" onclick="location.href='{url_back}'">{lbl_cancel}</button>
-      <button type="button" onclick="submitShare({id})">{lbl_ok}</button>
+      <button type="button" onclick="location.href='{{url_back}}'">{{lbl_cancel}}</button>
+      <button type="button" onclick="submitShare({{id}})">{{lbl_ok}}</button>
     </div>
   </div>
 </div>
 <div class="gadget_footer"></div>
 <script>
-var UID = "{UID}",
-    notepad_url = "{notepad_url}";
+var UID = "{{UID}}",
+    notepad_url = "{{notepad_url}}";
 initShare();
 </script>
 <!-- END share -->
