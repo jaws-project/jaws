@@ -1,43 +1,43 @@
 <!-- BEGIN template -->
 <html>
 <head>
-<base href="{BASE_URL}" />
+<base href="{{BASE_URL}}" />
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" media="screen" type="text/css" href="gadgets/ControlPanel/Resources/style{.dir}.css" />
-<link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style{.dir}.css" />
-<link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style2{.dir}.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="gadgets/ControlPanel/Resources/style{{.dir}}.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style{{.dir}}.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style2{{.dir}}.css" />
 <script type="text/javascript" src="libraries/mootools/core.js"></script>
 <script type="text/javascript">
-function showGadgets () {
+function showGadgets () {{
     $('selected_gadgets').toggle();
-}
+}}
 
-function getSelectedGadgets() {
-    if ($('display_in').value == 'always') {
+function getSelectedGadgets() {{
+    if ($('display_in').value == 'always') {{
         return '*';
-    } else {
+    }} else {{
         var res = '';
         var items = $$('#selected_gadgets input[type=checkbox]');
-        for (i = 0; i < items.length; i++) {
-            if (items[i].checked) {
+        for (i = 0; i < items.length; i++) {{
+            if (items[i].checked) {{
                 res += items[i].value + ',';    
-            }
-        }
-        if (res.length > 0) {
+            }}
+        }}
+        if (res.length > 0) {{
             res = res.substr(0, res.lastIndexOf(','));
-        }
+        }}
         return res;
-    }
-}
+    }}
+}}
 </script>
 </head>
 <body>
-<form id="form_gadgets_list" name="form1" action="{base_script}" method="post">
-<label><strong>{display_when}</strong></label>{display_in_combo}
-<div id="selected_gadgets" style="display: {selected_display}">
-{selected_gadgets}
+<form id="form_gadgets_list" name="form1" action="{{base_script}}" method="post">
+<label><strong>{{display_when}}</strong></label>{{display_in_combo}}
+<div id="selected_gadgets" style="display: {{selected_display}}">
+{{selected_gadgets}}
 </div>
-<div id="footer"><div id="buttons">{save}</div></div>
+<div id="footer"><div id="buttons">{{save}}</div></div>
 </form>
 </body>
 </html>

@@ -1,58 +1,58 @@
 <!-- BEGIN working_notification -->
 <div id="working_notification"></div>
 <script type="text/javascript">
-    default_loading_message = "{loading-message}";
+    default_loading_message = "{{loading-message}}";
     var loading_message = default_loading_message;
 </script>
 <!-- END working_notification -->
 <!-- BEGIN msgbox-wrapper -->
 <div id="msgbox-wrapper">
   <!-- BEGIN msgbox -->
-  <div id="msgbox_{msg-id}" class="{type}">{text}</div>
+  <div id="msgbox_{{msg-id}}" class="{{type}}">{{text}}</div>
   <script type="text/javascript">
-    var msgbox = $('msgbox_{msg-id}');
+    var msgbox = $('msgbox_{{msg-id}}');
     if ((msgbox.className != 'response_error') &&
         (msgbox.className != 'response_warning') &&
         (window.hideResponseBox)
-    ) {
+    ) {{
         hideResponseBox(msgbox);
-    }
+    }}
   </script>
   <!-- END msgbox -->
 </div>
 <!-- END msgbox-wrapper -->
 <!-- BEGIN item -->
-<div class="item" id="item_{item_id}" title="{description}" style="text-decoration: {item_status};">
-    <div class="item_icon"><img src="{icon}" width="48" alt="icon"/></div>
+<div class="item" id="item_{{item_id}}" title="{{description}}" style="text-decoration: {{item_status}};">
+    <div class="item_icon"><img src="{{icon}}" width="48" alt="icon"/></div>
     <div class="item-delete">
-      <a href="javascript:void(0);" onclick="{delete}"><img src="{delete-img}" alt="{lbl_delete}"/></a>
+      <a href="javascript:void(0);" onclick="{{delete}}"><img src="{{delete-img}}" alt="{{lbl_delete}}"/></a>
     </div>
-    <div class="item-gadget">{gadget}</div>
+    <div class="item-gadget">{{gadget}}</div>
     <div class="item-action">
-        <a id="ea{item_id}" name="ea{item_id}" href="javascript:void(0);"
-           onclick="{void_link}elementAction('{base_script_url}?gadget=Layout&amp;action=ElementAction&amp;id={item_id}&amp;user={user}');">
-           {action}</a>
+        <a id="ea{{item_id}}" name="ea{{item_id}}" href="javascript:void(0);"
+           onclick="{{void_link}}elementAction('{{base_script_url}}?gadget=Layout&amp;action=ElementAction&amp;id={{item_id}}&amp;user={{user}}');">
+           {{action}}</a>
     </div>
     <div class="item-dw">
-        <label>{lbl_display_when}:</label>
-        <a id="dw{item_id}" name="dw{item_id}" href="javascript:void(0);"
-           onclick="{void_link}displayWhen('{base_script_url}?gadget=Layout&amp;action=DisplayWhen&amp;id={item_id}&amp;user={user}');">
-           {display_when}</a>
+        <label>{{lbl_display_when}}:</label>
+        <a id="dw{{item_id}}" name="dw{{item_id}}" href="javascript:void(0);"
+           onclick="{{void_link}}displayWhen('{{base_script_url}}?gadget=Layout&amp;action=DisplayWhen&amp;id={{item_id}}&amp;user={{user}}');">
+           {{display_when}}</a>
     </div>
 </div>
 <script type="text/javascript">
-  items['{section_id}']['item_{item_id}'] = true;
+  items['{{section_id}}']['item_{{item_id}}'] = true;
 </script>
 <!-- END item -->
 <!-- BEGIN drag_drop -->
     <div id="testbox"></div><div id="layout_fake_drop"><div id="layout_fake"></div></div>
     <script type="text/javascript">
-        var noItemsMsg       = "{empty_section}";
-        var displayAlways    = "{display_always}";
-        var displayNever     = "{display_never}";
-        var actionsTitle     = "{actionsTitle}";
-        var displayWhenTitle = "{displayWhenTitle}";
-        var confirmDelete    = "{confirmDelete}";
+        var noItemsMsg       = "{{empty_section}}";
+        var displayAlways    = "{{display_always}}";
+        var displayNever     = "{{display_never}}";
+        var actionsTitle     = "{{actionsTitle}}";
+        var displayWhenTitle = "{{displayWhenTitle}}";
+        var confirmDelete    = "{{confirmDelete}}";
         initUI();
     </script>
 <!-- END drag_drop -->

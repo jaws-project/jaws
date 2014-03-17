@@ -1,67 +1,67 @@
 <!-- BEGIN template -->
 <html>
 <head>
-<base href="{BASE_URL}" />
+<base href="{{BASE_URL}}" />
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" media="screen" type="text/css" href="gadgets/ControlPanel/Resources/style{.dir}.css" />
-<link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style{.dir}.css" />
-<link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style2{.dir}.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="gadgets/ControlPanel/Resources/style{{.dir}}.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style{{.dir}}.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style2{{.dir}}.css" />
 <script type="text/javascript" src="libraries/mootools/core.js"></script>
 <script type="text/javascript">
-  function getAction(lid, gadget) {
+  function getAction(lid, gadget) {{
     var action = $('form_actions_list').getElement('input[type="radio"][name="action"]:checked');
-    if (!action) {
+    if (!action) {{
         alert('!!!!!!!!!!');
         return;
-    }
+    }}
 
     title = $('action_'+action.value).getElementsByTagName('label')[0].innerHTML;
     desc = $('action_'+action.value).getElementsByTagName('span')[0].innerHTML;
 
     var params = null;
     var paramElemets = Array.from($('action_'+action.value).getElements('select,input:not([type=radio])'));
-    if (paramElemets.length > 0) {
+    if (paramElemets.length > 0) {{
         params = new Array();
-        paramElemets.each(function(elParam, index) {
-            if (elParam.type == 'checkbox') {
+        paramElemets.each(function(elParam, index) {{
+            if (elParam.type == 'checkbox') {{
                 params[index] = Number(elParam.checked);
-            } else {
+            }} else {{
                 params[index] = elParam.value;
-            }
-        });
+            }}
+        }});
         params = params.join();
-    }
+    }}
 
     parent.parent.saveElementAction(lid, gadget, action.value, params, title, desc);
-  }
+  }}
 </script>
 </head>
 <body>
 <div id="g-info">
-  <img src="gadgets/{gadget}/Resources/images/logo.png" alt="{gadget}"/>
-  <label>{gadget_name}</label>{gadget_description}
+  <img src="gadgets/{{gadget}}/Resources/images/logo.png" alt="{{gadget}}"/>
+  <label>{{gadget_name}}</label>{{gadget_description}}
 </div>
 <br />
-<form id="form_actions_list" name="form1" action="{base_script}" method="post">
+<form id="form_actions_list" name="form1" action="{{base_script}}" method="post">
   <div id="gadget-actions">
     <input type="hidden" id="gadget" name="gadget" value="" />
     <ul id="actions-list">
     <!-- BEGIN no_action -->
-    <li><strong>{no_gadget_desc}</strong></li>
+    <li><strong>{{no_gadget_desc}}</strong></li>
     <!-- END no_action -->
     <!-- BEGIN gadget_action -->
-      <li id="action_{action}">
-        <input type="radio" name="action" id="action_{aindex}" {action_checked} value="{action}"/>
-        <label for="action_{aindex}">{name}</label>
-        <span>{desc}</span>
+      <li id="action_{{action}}">
+        <input type="radio" name="action" id="action_{{aindex}}" {{action_checked}} value="{{action}}"/>
+        <label for="action_{{aindex}}">{{name}}</label>
+        <span>{{desc}}</span>
         <!-- BEGIN action_param -->
-        <div class="action_param"><label for="action_{aindex}_param_{pindex}">{ptitle}</label>{param}</div>
+        <div class="action_param"><label for="action_{{aindex}}_param_{{pindex}}">{{ptitle}}</label>{{param}}</div>
         <!-- END action_param -->
       </li>
     <!-- END gadget_action -->
     </ul>
   </div>
-<div id="footer"><div id="buttons">{save}</div></div>
+<div id="footer"><div id="buttons">{{save}}</div></div>
 </form>
 </body>
 </html>

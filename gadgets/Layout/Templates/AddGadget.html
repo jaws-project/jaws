@@ -1,12 +1,12 @@
 <!-- BEGIN template -->
 <html>
 <head>
-<base href="{BASE_URL}" />
+<base href="{{BASE_URL}}" />
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="application-name" content="index.php:Layout:LayoutManager" />
-<link rel="stylesheet" media="screen" type="text/css" href="gadgets/ControlPanel/Resources/style{.dir}.css" />
-<link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style{.dir}.css" />
-<link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style2{.dir}.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="gadgets/ControlPanel/Resources/style{{.dir}}.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style{{.dir}}.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style2{{.dir}}.css" />
 <script type="text/javascript" src="libraries/mootools/core.js"></script>
 <script type="text/javascript" src="include/Jaws/Resources/Ajax.js"></script>
 <script type="text/javascript" src="gadgets/Layout/Resources/script.js"></script>
@@ -15,42 +15,42 @@
 <!-- BEGIN working_notification -->
 <div id="working_notification"></div>
 <script type="text/javascript">
-  default_loading_message = "{loading-message}";
+  default_loading_message = "{{loading-message}}";
   var loading_message = default_loading_message;
-  function getAction() {
+  function getAction() {{
     var gadget = $('gadget').value;
     var action = $('form_actions_list').getElement('input[type="radio"][name="action"]:checked');
-    if (!action) {
+    if (!action) {{
         alert('!!!!!!!!!!');
         return;
-    }
+    }}
 
     var params = null;
     var paramElemets = Array.from($('action_'+action.value).getElements('select,input:not([type=radio])'));
-    if (paramElemets.length > 0) {
+    if (paramElemets.length > 0) {{
         params = new Array();
-        paramElemets.each(function(elParam, index) {
-            if (elParam.type == 'checkbox') {
+        paramElemets.each(function(elParam, index) {{
+            if (elParam.type == 'checkbox') {{
                 params[index] = Number(elParam.checked);
-            } else {
+            }} else {{
                 params[index] = elParam.value;
-            }
-        });
+            }}
+        }});
         params = params.join();
-    }
+    }}
 
     parent.parent.addGadgetToLayout(gadget, action.value, params);
-  }
+  }}
 </script>
 <!-- END working_notification -->
-<form id="form_actions_list" name="form1" action="{base_script}" method="post">
+<form id="form_actions_list" name="form1" action="{{base_script}}" method="post">
 <input type="hidden" id="gadget" name="gadget" value="" />
 <table id="controls">
-    <tr><th>{gadgets}</th><th>{actions}</tr>
+    <tr><th>{{gadgets}}</th><th>{{actions}}</tr>
     <tr><td>
         <div id="gadget-list">
         <!-- BEGIN gadget -->
-        <div class="gadget-item" id="{id}" title="{desc}" onclick="selectGadget('{id}')"><img src="{icon}" width="48" alt="icon"/>{gadget}</div>
+        <div class="gadget-item" id="{{id}}" title="{{desc}}" onclick="selectGadget('{{id}}')"><img src="{{icon}}" width="48" alt="icon"/>{{gadget}}</div>
         <!-- END gadget -->
         </div></td>
         <td><div id="gadget-actions">
@@ -59,11 +59,11 @@
         </td>
     </tr>
 </table>
-<div id="footer"><div id="buttons">{add_button}</div></div>
+<div id="footer"><div id="buttons">{{add_button}}</div></div>
 </form>
 <script type="text/javascript">
-   var noActionsMsg = "{no_actions_msg}";
-   selectGadget('{first}');
+   var noActionsMsg = "{{no_actions_msg}}";
+   selectGadget('{{first}}');
 </script>
 </body>
 </html>

@@ -2,37 +2,37 @@
 <div id="layout-controls">
   <div id="layout-controls-items">
     <script type="text/javascript">
-      function layoutControlsSubmit(sender) {
-        if (sender.id != 'theme') {
+      function layoutControlsSubmit(sender) {{
+        if (sender.id != 'theme') {{
             $('theme').selectedIndex = -1;
-        }
+        }}
         sender.form.submit();
-      }
+      }}
     </script>
-    <form name="controls" id="controls" method="post" action="{requested_url}">
+    <form name="controls" id="controls" method="post" action="{{requested_url}}">
       <input type="hidden" name="gadget" value="Layout" />
       <input type="hidden" name="action" value="Layout" />
       <table style="width: 100%;border-collapse:collapse; border-spacing: 0;">
       <tr>
-        <td><span id="layout-title"><img alt="{title-gadget}" style="vertical-align: middle;" src="{icon-gadget}" />
-          <a href="{admin_script}">{cp-title}</a>
-          {cp-title-separator}
-          <a href="{layout-url}">{title-name}</a>
+        <td><span id="layout-title"><img alt="{{title-gadget}}" style="vertical-align: middle;" src="{{icon-gadget}}" />
+          <a href="{{admin_script}}">{{cp-title}}</a>
+          {{cp-title-separator}}
+          <a href="{{layout-url}}">{{title-name}}</a>
           <!-- BEGIN documentation -->
-          <a href="{url}" target="_blank"><img src="{src}" alt="{alt}" title="{alt}" style="vertical-align: top; height: 16px; width: 16px;"/></a>
+          <a href="{{url}}" target="_blank"><img src="{{src}}" alt="{{alt}}" title="{{alt}}" style="vertical-align: top; height: 16px; width: 16px;"/></a>
           <!-- END documentation -->
           </span></td>
         <td></td>
         <td id="dashboards-combo">
-          {lbl_dashboard}: {dashboards_combo}
+          {{lbl_dashboard}}: {{dashboards_combo}}
         </td>
         <td id="themes-combo">
-          {lbl_theme}: {theme_combo}
+          {{lbl_theme}}: {{theme_combo}}
         </td>
         <td id="layouts-combo">
-          {lbl_layout}: {layouts_combo}
+          {{lbl_layout}}: {{layouts_combo}}
         </td>
-        <td id="add-gadget-btn">{add_gadget}</td>
+        <td id="add-gadget-btn">{{add_gadget}}</td>
       </tr>
       </table>
     </form>
