@@ -2,17 +2,17 @@
 <div id="policy">
   <table id="policy_ipblock">
     <tr>
-      <td id="policy_sidebar">{sidebar}</td>
-      <td id="datagrid">{blocked_ips_datagrid}</td>
+      <td id="policy_sidebar">{{sidebar}}</td>
+      <td id="datagrid">{{blocked_ips_datagrid}}</td>
       <td id="policy_form">
-        <div id="policy_options">{enabled_option}</div>
+        <div id="policy_options">{{enabled_option}}</div>
         <input type="hidden" name="id" id="id" value="0" />
-        <fieldset><legend><span id="legend_title">{legend_title}</span></legend>
+        <fieldset><legend><span id="legend_title">{{legend_title}}</span></legend>
           <table style="width: 100%">
-            <tr><td style="direction: ltr;"><label for="from_ipaddress">{lbl_from_ipaddress}</label>{from_ipaddress}</td></tr>
-            <tr><td style="direction: ltr;"><label for="to_ipaddress">{lbl_to_ipaddress}</label>{to_ipaddress}</td></tr>
-            <tr><td><label for="blocked">{lbl_blocked}</label>{blocked}</td></tr>
-            <tr><td class="buttons">{btn_cancel} {btn_save}</td></tr>
+            <tr><td style="direction: ltr;"><label for="from_ipaddress">{{lbl_from_ipaddress}}</label>{{from_ipaddress}}</td></tr>
+            <tr><td style="direction: ltr;"><label for="to_ipaddress">{{lbl_to_ipaddress}}</label>{{to_ipaddress}}</td></tr>
+            <tr><td><label for="blocked">{{lbl_blocked}}</label>{{blocked}}</td></tr>
+            <tr><td class="buttons">{{btn_cancel}} {{btn_save}}</td></tr>
           </table>
         </fieldset>
       </td>
@@ -20,8 +20,8 @@
   </table>
 <script type="text/javascript">
   currentAction = 'IPBlocking';
-  var incompleteFields     = "{incompleteFields}";
-  var confirmIPRangeDelete = "{confirmIPRangeDelete}";
+  var incompleteFields     = "{{incompleteFields}}";
+  var confirmIPRangeDelete = "{{confirmIPRangeDelete}}";
   initDataGrid('blocked_ips_datagrid', PolicyAjax);
 </script>
 </div>

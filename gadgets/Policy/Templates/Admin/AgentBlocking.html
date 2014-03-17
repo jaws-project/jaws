@@ -2,16 +2,16 @@
 <div id="policy">
   <table id="policy_agentblock">
     <tr>
-      <td id="policy_sidebar">{sidebar}</td>
-      <td id="datagrid">{blocked_agents_datagrid}</td>
+      <td id="policy_sidebar">{{sidebar}}</td>
+      <td id="datagrid">{{blocked_agents_datagrid}}</td>
       <td id="policy_form">
-        <div id="policy_options">{enabled_option}</div>
+        <div id="policy_options">{{enabled_option}}</div>
         <input type="hidden" name="id" id="id" value="0" />
-        <fieldset><legend><span id="legend_title">{legend_title}</span></legend>
+        <fieldset><legend><span id="legend_title">{{legend_title}}</span></legend>
           <table style="width: 100%">
-            <tr><td style="direction: ltr;"><label for="agent">{lbl_agent}</label>{agent}</td></tr>
-            <tr><td><label for="blocked">{lbl_blocked}</label>{blocked}</td></tr>
-            <tr><td class="buttons">{btn_cancel} {btn_save}</td></tr>
+            <tr><td style="direction: ltr;"><label for="agent">{{lbl_agent}}</label>{{agent}}</td></tr>
+            <tr><td><label for="blocked">{{lbl_blocked}}</label>{{blocked}}</td></tr>
+            <tr><td class="buttons">{{btn_cancel}} {{btn_save}}</td></tr>
           </table>
         </fieldset>
       </td>
@@ -19,8 +19,8 @@
   </table>
 <script type="text/javascript">
   currentAction = 'AgentBlocking';
-  var incompleteFields   = "{incompleteFields}";
-  var confirmAgentDelete = "{confirmAgentDelete}";
+  var incompleteFields   = "{{incompleteFields}}";
+  var confirmAgentDelete = "{{confirmAgentDelete}}";
   initDataGrid('blocked_agents_datagrid', PolicyAjax);
 </script>
 </div>
