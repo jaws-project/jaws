@@ -66,18 +66,12 @@ class Users_Actions_Personal extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_ssn',    _t('USERS_USERS_SSN'));
         $tpl->SetVariable('ssn',        $personal['ssn']);
 
-        if (empty($personal['dob'])) {
-            $dob = array('', '', '');
-        } else {
-            $date = Jaws_Date::getInstance();
-            $dob = $date->Format($personal['dob'], 'Y-m-d');
-            $dob = explode('-', $dob);
+        if (!empty($personal['dob'])) {
+            $personal['dob'] = Jaws_Date::getInstance()->Format($personal['dob'], 'Y-m-d');
         }
 
-        $tpl->SetVariable('lbl_dob',    _t('USERS_USERS_BIRTHDAY'));
-        $tpl->SetVariable('dob_year',   $dob[0]);
-        $tpl->SetVariable('dob_month',  $dob[1]);
-        $tpl->SetVariable('dob_day',    $dob[2]);
+        $tpl->SetVariable('lbl_dob', _t('USERS_USERS_BIRTHDAY'));
+        $tpl->SetVariable('dob',     $personal['dob']);
         $tpl->SetVariable('dob_sample', _t('USERS_USERS_BIRTHDAY_SAMPLE'));
 
         // website
@@ -136,19 +130,17 @@ class Users_Actions_Personal extends Jaws_Gadget_Action
 
         $this->gadget->CheckPermission('EditUserPersonal');
         $post = jaws()->request->fetch(
-            array('fname', 'lname', 'gender', 'ssn', 'dob_year', 'dob_month', 'dob_day', 'url', 'signature',
+            array('fname', 'lname', 'gender', 'ssn', 'dob', 'url', 'signature',
                   'about', 'avatar', 'delete_avatar', 'experiences', 'occupations', 'interests'),
             'post'
         );
 
-        $post['dob'] = null;
-        if (!empty($post['dob_year']) && !empty($post['dob_year']) && !empty($post['dob_year'])) {
-            $date = Jaws_Date::getInstance();
-            $dob  = $date->ToBaseDate($post['dob_year'], $post['dob_month'], $post['dob_day']);
-            $post['dob'] = date('Y-m-d H:i:s', $dob['timestamp']);
+        if (!empty($post['dob'])) {
+            $post['dob'] = Jaws_Date::getInstance()->ToBaseDate(explode('-', $post['dob']), 'Y-m-d');
+            $post['dob'] = $GLOBALS['app']->UserTime2UTC($post['dob'], 'Y-m-d');
+        } else {
+            $post['dob'] = null;
         }
-        // unset unnecessary personal data
-        unset($post['dob_day'], $post['dob_month'], $post['dob_year']);
 
         // validate url
         if (!preg_match('|^\S+://\S+\.\S+.+$|i', $post['url'])) {

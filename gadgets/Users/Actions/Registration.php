@@ -56,8 +56,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $post = jaws()->request->fetch(
             array(
                 'username', 'email', 'nickname', 'password', 'password_check',
-                'fname', 'lname', 'gender', 'ssn', 'dob_year', 'dob_month', 'dob_day',
-                'url'
+                'fname', 'lname', 'gender', 'ssn', 'dob', 'url'
             ),
             'post'
         );
@@ -77,11 +76,11 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             if ($post['password'] !== $post['password_check']) {
                 $result = _t('USERS_USERS_PASSWORDS_DONT_MATCH');
             } else {
-                $dob  = null;
-                if (!empty($post['dob_year']) && !empty($post['dob_year']) && !empty($post['dob_year'])) {
-                    $date = Jaws_Date::getInstance();
-                    $dob  = $date->ToBaseDate($post['dob_year'], $post['dob_month'], $post['dob_day']);
-                    $dob  = date('Y-m-d H:i:s', $dob['timestamp']);
+                if (!empty($post['dob'])) {
+                    $dob = Jaws_Date::getInstance()->ToBaseDate(explode('-', $post['dob']), 'Y-m-d');
+                    $dob = $GLOBALS['app']->UserTime2UTC($dob, 'Y-m-d');
+                } else {
+                    $dob = null;
                 }
 
                 $uModel = $this->gadget->model->load('Registration');
@@ -159,7 +158,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $tpl->SetVariable('dob_sample',        _t('USERS_USERS_BIRTHDAY_SAMPLE'));
 
         $response = $GLOBALS['app']->Session->PopResponse('Users.Registration');
-        if (!isset($response['data'])) {
+        if (isset($response['data'])) {
             $post_data = $response['data'];
             $tpl->SetVariable('username',  $post_data['username']);
             $tpl->SetVariable('email',     $post_data['email']);
@@ -168,9 +167,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
             $tpl->SetVariable('fname',     $post_data['fname']);
             $tpl->SetVariable('lname',     $post_data['lname']);
             $tpl->SetVariable('ssn',       $post_data['ssn']);
-            $tpl->SetVariable('dob_year',  $post_data['dob_year']);
-            $tpl->SetVariable('dob_month', $post_data['dob_month']);
-            $tpl->SetVariable('dob_day',   $post_data['dob_day']);
+            $tpl->SetVariable('dob',       $post_data['dob']);
             $tpl->SetVariable("selected_gender_{$post_data['gender']}", 'selected="selected"');
         } else {
             $tpl->SetVariable('url', 'http://');

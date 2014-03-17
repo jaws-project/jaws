@@ -42,12 +42,8 @@
         <label for="personal_ssn">{{lbl_ssn}}:</label>
         <input name="ssn" class="large ltr" id="personal_ssn" value="{{ssn}}" type="text" />
       </div>
-      <div id="user_dob">
-        <label for="user_dob_year">{{lbl_dob}}:</label>
-        <input name="dob_year"  class="x-small ltr" id="user_dob_year"  value="{{dob_year}}"  type="text" />
-        <input name="dob_month" class="x-small ltr" id="user_dob_month" value="{{dob_month}}" type="text" />
-        <input name="dob_day"   class="x-small ltr" id="user_dob_day"   value="{{dob_day}}"   type="text" />
-        <span><small>{{dob_sample}}</small></span>
+      <div><label for="personal_dob">{{lbl_dob}}: ({{dob_sample}})</label>
+        <input name="dob" class="large ltr" id="personal_dob" value="{{dob}}" type="text" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" title="{{dob_sample}}" />
       </div>
       <div>
         <label for="personal_url">{{lbl_url}}:</label>
