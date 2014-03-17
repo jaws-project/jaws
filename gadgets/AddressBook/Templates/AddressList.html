@@ -4,16 +4,16 @@
   <tr>
     <th style="width: 15px;"><input type="checkbox" id="chk_all_rows" onchange="toggleCheckboxes(this.checked)" /></th>
     <th style="width: 15px;"></th>
-    <th style="width: 270px;">{lbl_name}</th>
-    <th>{lbl_title}</th>
+    <th style="width: 270px;">{{lbl_name}}</th>
+    <th>{{lbl_title}}</th>
   </tr>
  </thead>
   <!-- BEGIN item1 -->
   <tr>
-    <td><input type="checkbox" name="adr[]" id="adr_{index}" value="{index}" class="table-checkbox"/></td>
-    <td><!-- BEGIN is_public --><img src="{icon_public}" alt="public" /><!-- END is_public --></td>
-    <td><a href="{view_url}" id="aid_{index}">{name}</a></td>
-    <td>{title}</td>
+    <td><input type="checkbox" name="adr[]" id="adr_{{index}}" value="{{index}}" class="table-checkbox"/></td>
+    <td><!-- BEGIN is_public --><img src="{{icon_public}}" alt="public" /><!-- END is_public --></td>
+    <td><a href="{{view_url}}" id="aid_{{index}}">{{name}}</a></td>
+    <td>{{title}}</td>
   </tr>
   <!-- END item1 -->
 </table>

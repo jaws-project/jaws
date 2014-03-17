@@ -1,19 +1,19 @@
 <!-- BEGIN vcard -->
-<div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
+<div class="gadget_header"><h3>{{title}}</h3><div class="gadget_menubar">{{menubar}}</div></div>
 <div class="gadget_container">
-  <div class="gadget_response"><div class="{type}">{text}</div></div>
+  <div class="gadget_response"><div class="{{type}}">{{text}}</div></div>
   <div class="gadget_content content">
-    <form name="import_vcard" action="{base_script}" method="post" enctype="multipart/form-data" id="import_vcard">
+    <form name="import_vcard" action="{{base_script}}" method="post" enctype="multipart/form-data" id="import_vcard">
       <input type="hidden" name="gadget" value="AddressBook" />
       <input type="hidden" name="action" value="VCardImportFile" />
       <div>
-        <p>{upload_vcard_file_desc}</p>
+        <p>{{upload_vcard_file_desc}}</p>
         <input type="file" name="vcard_file" id="vcard_file" class="file">
       </div>
       <div class="gadget_actions actions">
-          <button value="{lbl_save}" id="btn_import_vcard" name="btn_import_vcard" type="submit">{lbl_save}</button>
+          <button value="{{lbl_save}}" id="btn_import_vcard" name="btn_import_vcard" type="submit">{{lbl_save}}</button>
           <!-- BEGIN actions -->
-          <a class="button" href="{action_url}" title="{action_lbl}">{action_lbl}</a>
+          <a class="button" href="{{action_url}}" title="{{action_lbl}}">{{action_lbl}}</a>
           <!-- END actions -->
       </div>
     </form>

@@ -1,24 +1,24 @@
 <!-- BEGIN group -->
-<div class="gadget_header"><h3>{top_title}</h3><div class="gadget_menubar">{menubar}</div></div>
+<div class="gadget_header"><h3>{{top_title}}</h3><div class="gadget_menubar">{{menubar}}</div></div>
 <div class="gadget_container">
   <div class="gadget_response">
-    <div id="addressbook_managegroups_response" class="{type}">{text}</div>
+    <div id="addressbook_managegroups_response" class="{{type}}">{{text}}</div>
   </div>
-  <form name="addressbook_group" action="{base_script}" method="post" enctype="multipart/form-data">
+  <form name="addressbook_group" action="{{base_script}}" method="post" enctype="multipart/form-data">
   <input type="hidden" name="gadget" value="AddressBook" />
-  <input type="hidden" name="action" value="{action}" />
-  <input type="hidden" name="gid" value="{gid}" />
+  <input type="hidden" name="action" value="{{action}}" />
+  <input type="hidden" name="gid" value="{{gid}}" />
   <div class="gadget_content content">
-      <div><label>{lbl_name}:</label>
-         <input name="name" type="text" value="{name}" class="large"/>
+      <div><label>{{lbl_name}}:</label>
+         <input name="name" type="text" value="{{name}}" class="large"/>
       </div>
-      <div><label>{lbl_desc}:</label>
-         <textarea name="description" cols="25" rows="6" class="x-large">{desc}</textarea>
+      <div><label>{{lbl_desc}}:</label>
+         <textarea name="description" cols="25" rows="6" class="x-large">{{desc}}</textarea>
       </div>
   </div>
   <div class="gadget_actions actions">
-    <a class="button" href="{cancel_url}" title="{cancel_lbl}">{cancel_lbl}</a>
-    {btn_save}
+    <a class="button" href="{{cancel_url}}" title="{{cancel_lbl}}">{{cancel_lbl}}</a>
+    {{btn_save}}
   </div>
   </form>
 </div>

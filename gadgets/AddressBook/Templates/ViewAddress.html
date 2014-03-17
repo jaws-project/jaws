@@ -1,21 +1,21 @@
 <!-- BEGIN address -->
-<div class="gadget_header"><h3>{top_title}</h3><div class="gadget_menubar">{menubar}</div></div>
+<div class="gadget_header"><h3>{{top_title}}</h3><div class="gadget_menubar">{{menubar}}</div></div>
 <div class="gadget_container">
   <div class="gadget_content content">
-    <div class="addressbook_image"><img id="person_image" src="{image_src}" alt="person image" width="128" /></div>
-    <p><label>{lbl_name0}: </label>{name0}</p>
-    <p><label>{lbl_name1}: </label>{name1}</p>
-    <p><label>{lbl_nickname}: </label>{nickname}</p>
-    <p><label>{lbl_title}: </label>{title}</p>
-    <!-- BEGIN item --><p><label>{lbl_item}: </label>{item}</p><!-- END item -->
-    <p><label>{lbl_notes}: </label>{notes}</p>
-    <!-- BEGIN selected --><p><label for="addressbook_public">{lbl_is_public}</label></p><!-- END selected -->
-    <!-- BEGIN group --><p><label for="group_{gid}">{lbl_group}</label></p><!-- END group -->
+    <div class="addressbook_image"><img id="person_image" src="{{image_src}}" alt="person image" width="128" /></div>
+    <p><label>{{lbl_name0}}: </label>{{name0}}</p>
+    <p><label>{{lbl_name1}}: </label>{{name1}}</p>
+    <p><label>{{lbl_nickname}}: </label>{{nickname}}</p>
+    <p><label>{{lbl_title}}: </label>{{title}}</p>
+    <!-- BEGIN item --><p><label>{{lbl_item}}: </label>{{item}}</p><!-- END item -->
+    <p><label>{{lbl_notes}}: </label>{{notes}}</p>
+    <!-- BEGIN selected --><p><label for="addressbook_public">{{lbl_is_public}}</label></p><!-- END selected -->
+    <!-- BEGIN group --><p><label for="group_{{gid}}">{{lbl_group}}</label></p><!-- END group -->
 
     <!-- BEGIN actions -->
     <div class="gadget_actions actions">
        <!-- BEGIN action -->
-        <a class="button" href="{action_url}" title="{action_lbl}">{action_lbl}</a>
+        <a class="button" href="{{action_url}}" title="{{action_lbl}}">{{action_lbl}}</a>
        <!-- END action -->
     </div>
     <!-- END actions -->

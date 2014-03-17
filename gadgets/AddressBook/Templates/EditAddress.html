@@ -1,21 +1,21 @@
 <!-- BEGIN address -->
-<div class="gadget_header"><h3>{top_title}</h3><div class="gadget_menubar">{menubar}</div></div>
+<div class="gadget_header"><h3>{{top_title}}</h3><div class="gadget_menubar">{{menubar}}</div></div>
 <div class="gadget_container">
-  <div class="gadget_response"><div class="simple-response-msg">{msg}</div></div>
+  <div class="gadget_response"><div class="simple-response-msg">{{msg}}</div></div>
   <div class="gadget_content content">
       <div class="addressbook_image" id="addressbook_image" style="height: 170px;">
-        <div style="height: 129px;"><img id="person_image" src="{image_src}" alt="person image" width="128" /></div>
+        <div style="height: 129px;"><img id="person_image" src="{{image_src}}" alt="person image" width="128" /></div>
         <form id="frm_person_image" name="frm_person_image" method="post"
-            target="ifrm_upload" action="{base_script}"
+            target="ifrm_upload" action="{{base_script}}"
             enctype="multipart/form-data" onsubmit="return true">
           <input type="hidden" name="gadget" value="AddressBook" />
           <input type="hidden" name="action" value="UploadImage" />
           <div class="actions" style="margin: 0 auto; position: relative; width: 55px;">
             <button id="btn_upload" name="btn_upload" type="button">
-              <img height="16" width="16" id="btn_upload_stockimage" alt="" src="{upload_icon}">
+              <img height="16" width="16" id="btn_upload_stockimage" alt="" src="{{upload_icon}}">
             </button>
             <button onclick="removeImage();" id="btn_remove" name="btn_remove" type="button">
-              <img height="16" width="16" id="btn_remove_stockimage" alt="" src="{delete_icon}">
+              <img height="16" width="16" id="btn_remove_stockimage" alt="" src="{{delete_icon}}">
             </button>
             <div class="wrapper1">
               <input type="file" onchange="upload();" id="upload_image" name="upload_image" size="1" class="large file">
@@ -23,73 +23,73 @@
           </div>
         </form>
       </div>
-      <form name="addressbook" action="{base_script}" method="post" enctype="multipart/form-data" id="edit_addressbook">
+      <form name="addressbook" action="{{base_script}}" method="post" enctype="multipart/form-data" id="edit_addressbook">
       <input type="hidden" name="gadget" value="AddressBook" />
-      <input type="hidden" name="action" value="{action}" />
-      <input type="hidden" name="id" value="{id}" />
+      <input type="hidden" name="action" value="{{action}}" />
+      <input type="hidden" name="id" value="{{id}}" />
       <input type="hidden" name="image" id="image" value="" />
       <input type="hidden" name="last_refreh_user_link" id="last_refreh_user_link" value="-1" />
           <div style="float: left; width: 410px;">
            <div style="float: left;">
-            <label for="addressbook_user_link" style="display: block;" >{lbl_user_link}:</label>
+            <label for="addressbook_user_link" style="display: block;" >{{lbl_user_link}}:</label>
             <select id="addressbook_user_link" name="user_link" style="width: 170px; display: inline;" >
               <!-- BEGIN user_item -->
-              <option value="{user_id}" {selected}>{user_name}</option>
+              <option value="{{user_id}}" {{selected}}>{{user_name}}</option>
               <!-- END user_item -->
             </select>
             <button onclick="GetUserInfo();" value="" id="LoadUserInfo" name="LoadUserInfo" type="button">
-              <img alt="" src="{icon_load}">
+              <img alt="" src="{{icon_load}}">
             </button>
           </div>
           <div style="float: right;">
-            <label for="addressbook_related" >{lbl_related}:</label>
+            <label for="addressbook_related" >{{lbl_related}}:</label>
             <select id="addressbook_related" name="related" style="width: 190px;" >
-              <option value="0" {selected}>{fn}</option>
+              <option value="0" {{selected}}>{{fn}}</option>
               <!-- BEGIN relation_item -->
-              <option value="{address_id}" {selected}>{fn}</option>
+              <option value="{{address_id}}" {{selected}}>{{fn}}</option>
               <!-- END relation_item -->
             </select>
            </div>
           </div>
           <div style="float: left; width: 410px;">
            <div style="float: left;">
-            <label for="addressbook_lastname" >{lbl_lastname}:</label>
-            <input id="addressbook_lastname" name="name[0]" type="text" value="{name0}" class="large"/>
+            <label for="addressbook_lastname" >{{lbl_lastname}}:</label>
+            <input id="addressbook_lastname" name="name[0]" type="text" value="{{name0}}" class="large"/>
            </div>
            <div style="float: right;">
-            <label for="addressbook_firstname" >{lbl_firstname}:</label>
-            <input id="addressbook_firstname" name="name[1]" type="text" value="{name1}" class="large"/>
+            <label for="addressbook_firstname" >{{lbl_firstname}}:</label>
+            <input id="addressbook_firstname" name="name[1]" type="text" value="{{name1}}" class="large"/>
            </div>
           <input type="hidden" name="name[2]" value="" />
           <input type="hidden" name="name[3]" value="" />
           <input type="hidden" name="name[4]" value="" />
           </div>
           <div>
-            <label for="addressbook_nickname" >{lbl_nickname}:</label>
-            <input id="addressbook_nickname" name="nickname" type="text" value="{nickname}" class="large"/>
+            <label for="addressbook_nickname" >{{lbl_nickname}}:</label>
+            <input id="addressbook_nickname" name="nickname" type="text" value="{{nickname}}" class="large"/>
           </div>
           <div style="width: 410px; margin-bottom: 10px;">
-            <label for="addressbook_title" >{lbl_title}:</label>
-            <input id="addressbook_title" name="title" type="text" value="{title}" class="large"/>
+            <label for="addressbook_title" >{{lbl_title}}:</label>
+            <input id="addressbook_title" name="title" type="text" value="{{title}}" class="large"/>
           </div>
         <fieldset>
           <legend id="legend_tel" toggle-status="min" >
-            <span><img src="{toggle_max}" alt="toggle phone maximize" /> {tel_title}</span>
+            <span><img src="{{toggle_max}}" alt="toggle phone maximize" /> {{tel_title}}</span>
           </legend>
           <div id="tel_p">
            <!-- BEGIN tel -->
-           <div id="tel_{index}" class="tel">
+           <div id="tel_{{index}}" class="tel">
             <select name="tel_type[]" style="width: 150px;" >
               <!-- BEGIN item -->
-              <option value="{type_id}" {selected}>{type_name}</option>
+              <option value="{{type_id}}" {{selected}}>{{type_name}}</option>
               <!-- END item -->
             </select>
-            <input name="tel_number[]" type="text" value="{value}" class="large ltr"/>
+            <input name="tel_number[]" type="text" value="{{value}}" class="large ltr"/>
             <button onclick="AddTellItem(this);" value="" id="addTelButton" name="addTelButton" type="button">
-              <img alt="{lbl_add_tell}" src="{icon_add}">
+              <img alt="{{lbl_add_tell}}" src="{{icon_add}}">
             </button>
             <button onclick="RemoveItem(this);" value="" id="removeTelButton" name="removeTelButton" type="button">
-              <img alt="{lbl_remove_tell}" src="{icon_remove}">
+              <img alt="{{lbl_remove_tell}}" src="{{icon_remove}}">
             </button>
            </div>
            <!-- END tel -->
@@ -97,22 +97,22 @@
         </fieldset>
         <fieldset>
           <legend id="legend_email" toggle-status="min" >
-            <span><img src="{toggle_max}" alt="toggle email maximize" /> {email_title}</span>
+            <span><img src="{{toggle_max}}" alt="toggle email maximize" /> {{email_title}}</span>
           </legend>
           <div id="email_p">
            <!-- BEGIN email -->
-           <div id="email_{index}" class="email">
+           <div id="email_{{index}}" class="email">
             <select name="email_type[]" style="width: 150px;" >
               <!-- BEGIN item -->
-              <option value="{type_id}" {selected}>{type_name}</option>
+              <option value="{{type_id}}" {{selected}}>{{type_name}}</option>
               <!-- END item -->
             </select>
-            <input name="email[]" type="text" value="{value}" class="large ltr email"/>
+            <input name="email[]" type="text" value="{{value}}" class="large ltr email"/>
             <button onclick="AddEmailItem(this);" value="" id="addEmailButton" name="addEmailButton" type="button">
-              <img alt="{lbl_add_email}" src="{icon_add}">
+              <img alt="{{lbl_add_email}}" src="{{icon_add}}">
             </button>
             <button onclick="RemoveItem(this);" value="" id="removeEmailButton" name="removeEmailButton" type="button">
-              <img alt="{lbl_remove_email}" src="{icon_remove}">
+              <img alt="{{lbl_remove_email}}" src="{{icon_remove}}">
             </button>
            </div>
            <!-- END email -->
@@ -120,41 +120,41 @@
         </fieldset>
         <fieldset>
           <legend id="legend_adr" toggle-status="min" >
-            <span><img src="{toggle_max}" alt="toggle address maximize" /> {adr_title}</span>
+            <span><img src="{{toggle_max}}" alt="toggle address maximize" /> {{adr_title}}</span>
           </legend>
           <div id="adr_p">
            <!-- BEGIN adr -->
-           <div id="adr_{index}" class="adr">
+           <div id="adr_{{index}}" class="adr">
             <select name="adr_type[]" style="width: 150px;" >
               <!-- BEGIN item -->
-              <option value="{type_id}" {selected}>{type_name}</option>
+              <option value="{{type_id}}" {{selected}}>{{type_name}}</option>
               <!-- END item -->
             </select>
             <button onclick="AddAdrItem(this);" value="" id="addAdrButton" name="addAdrButton" type="button">
-              <img alt="{lbl_add_adr}" src="{icon_add}">
+              <img alt="{{lbl_add_adr}}" src="{{icon_add}}">
             </button>
             <button onclick="RemoveItem(this);" value="" id="removeAdrButton" name="removeAdrButton" type="button">
-              <img alt="{lbl_remove_adr}" src="{icon_remove}">
+              <img alt="{{lbl_remove_adr}}" src="{{icon_remove}}">
             </button>
-            <textarea name="adr[]" cols="25" rows="6" style="width: 100%;" class="x-large">{value}</textarea>
+            <textarea name="adr[]" cols="25" rows="6" style="width: 100%;" class="x-large">{{value}}</textarea>
            </div>
            <!-- END adr -->
           </div>
         </fieldset>
         <fieldset>
           <legend id="legend_urls" toggle-status="min" >
-            <span><img src="{toggle_max}" alt="toggle urls maximize" /> {url_title}</span>
+            <span><img src="{{toggle_max}}" alt="toggle urls maximize" /> {{url_title}}</span>
           </legend>
           <div id="url_p">
            <!-- BEGIN url -->
-           <div id="url_{index}" class="url">
-            <label>{lbl_url}:</label>
-            <input name="url[]" type="text" value="{value}" style="width: 350px; display: inline;" class="large ltr url"/>
+           <div id="url_{{index}}" class="url">
+            <label>{{lbl_url}}:</label>
+            <input name="url[]" type="text" value="{{value}}" style="width: 350px; display: inline;" class="large ltr url"/>
             <button onclick="AddUrlItem(this);" value="" id="addUrlButton" name="addUrlButton" type="button">
-              <img alt="{lbl_add_Url}" src="{icon_add}">
+              <img alt="{{lbl_add_Url}}" src="{{icon_add}}">
             </button>
             <button onclick="RemoveItem(this);" value="" id="removeUrlButton" name="removeUrlButton" type="button">
-              <img alt="{lbl_remove_Url}" src="{icon_remove}">
+              <img alt="{{lbl_remove_Url}}" src="{{icon_remove}}">
             </button>
            </div>
            <!-- END url -->
@@ -162,33 +162,33 @@
         </fieldset>
         <fieldset>
           <legend id="legend_other" toggle-status="min" >
-            <span><img src="{toggle_max}" alt="toggle other details maximize" /> {other_details}</span>
+            <span><img src="{{toggle_max}}" alt="toggle other details maximize" /> {{other_details}}</span>
           </legend>
           <div id="other_p">
-            <label for="addressbook_notes" >{lbl_notes}: </label>
-            <textarea id="addressbook_notes" name="notes" cols="25" rows="6" class="x-large">{notes}</textarea>
+            <label for="addressbook_notes" >{{lbl_notes}}: </label>
+            <textarea id="addressbook_notes" name="notes" cols="25" rows="6" class="x-large">{{notes}}</textarea>
           </div>
         </fieldset>
         <fieldset>
-          <legend><span>{public_title}</span></legend>
+          <legend><span>{{public_title}}</span></legend>
           <div>
             <input type="checkbox" name="public" id="addressbook_public"
                 <!-- BEGIN selected -->checked="checked"<!-- END selected -->
                 value="true" />
-            <label for="addressbook_public">{lbl_public}</label>
+            <label for="addressbook_public">{{lbl_public}}</label>
           </div>
         </fieldset>
         <fieldset>
           <legend id="legend_groups" toggle-status="min" >
-            <span><img src="{toggle_max}" alt="toggle groups maximize" /> {group_title}</span>
+            <span><img src="{{toggle_max}}" alt="toggle groups maximize" /> {{group_title}}</span>
           </legend>
           <div id="group_p">
           <!-- BEGIN group -->
             <div>
-              <input type="checkbox" name="groups[]" id="group_{gid}"
+              <input type="checkbox" name="groups[]" id="group_{{gid}}"
                     <!-- BEGIN selected_group -->checked="checked"<!-- END selected_group -->
-                    value="{gid}" />
-              <label for="group_{gid}">{lbl_group}</label>
+                    value="{{gid}}" />
+              <label for="group_{{gid}}">{{lbl_group}}</label>
             </div>
           <!-- END group -->
           </div>
@@ -196,68 +196,68 @@
     </form>
   </div>
   <div class="gadget_actions actions">
-    <a class="button" href="{cancel_url}" title="{cancel_lbl}">{cancel_lbl}</a>
-    <a class="button" href="javascript:SaveAddress();" title="{lbl_save}">{lbl_save}</a>
+    <a class="button" href="{{cancel_url}}" title="{{cancel_lbl}}">{{cancel_lbl}}</a>
+    <a class="button" href="javascript:SaveAddress();" title="{{lbl_save}}">{{lbl_save}}</a>
   </div>
 </div>
 <div class="gadget_footer"></div>
 <script type="text/javascript">
-  var lastID = {lastID};
-  var nameEmptyWarning = "{nameEmptyWarning}";
-  var toggleMax = "{toggle_max}";
-  var toggleMin = "{toggle_min}";
-  var loadImageUrl = "{loadImageUrl}";
-  var baseSiteUrl = "{baseSiteUrl}";
+  var lastID = {{lastID}};
+  var nameEmptyWarning = "{{nameEmptyWarning}}";
+  var toggleMax = "{{toggle_max}}";
+  var toggleMin = "{{toggle_min}}";
+  var loadImageUrl = "{{loadImageUrl}}";
+  var baseSiteUrl = "{{baseSiteUrl}}";
 
   remain = $('removeTelButton').parentNode.parentNode.getElementsByTagName('div').length;
-  if (remain == 1) {
+  if (remain == 1) {{
       $('removeTelButton').style.display = 'none';
-  }
+  }}
 
   remain = $('removeEmailButton').parentNode.parentNode.getElementsByTagName('div').length;
-  if (remain == 1) {
+  if (remain == 1) {{
       $('removeEmailButton').style.display = 'none';
-  }
+  }}
 
   remain = $('removeAdrButton').parentNode.parentNode.getElementsByTagName('div').length;
-  if (remain == 1) {
+  if (remain == 1) {{
       $('removeAdrButton').style.display = 'none';
-  }
+  }}
 
   remain = $('removeUrlButton').parentNode.parentNode.getElementsByTagName('div').length;
-  if (remain == 1) {
+  if (remain == 1) {{
       $('removeUrlButton').style.display = 'none';
-  }
+  }}
 
   ReloadToggle();
-  window.addEvent('domready', function() {
+  window.addEvent('domready', function() {{
 
-    $('legend_tel').addEvent('click', function(){
+    $('legend_tel').addEvent('click', function(){{
       $('tel_p').toggle();
       ChangeToggleIcon(this);
-    });
-    $('legend_email').addEvent('click', function(){
+    }});
+    $('legend_email').addEvent('click', function(){{
       $('email_p').toggle();
       ChangeToggleIcon(this);
-    });
-    $('legend_adr').addEvent('click', function(){
+    }});
+    $('legend_adr').addEvent('click', function(){{
       $('adr_p').toggle();
       ChangeToggleIcon(this);
-    });
-    $('legend_groups').addEvent('click', function(){
+    }});
+    $('legend_groups').addEvent('click', function(){{
       $('group_p').toggle();
       ChangeToggleIcon(this);
-    });
-    $('legend_urls').addEvent('click', function(){
+    }});
+    $('legend_urls').addEvent('click', function(){{
       $('url_p').toggle();
       ChangeToggleIcon(this);
-    });
-    $('legend_other').addEvent('click', function(){
+    }});
+    $('legend_other').addEvent('click', function(){{
       $('other_p').toggle();
       ChangeToggleIcon(this);
-    });
+    }});
 
-  });
+  }});
 
 </script>
 <!-- END address -->
