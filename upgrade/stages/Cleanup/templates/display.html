@@ -1,14 +1,14 @@
 <!-- BEGIN cleanup -->
-<p>{lbl_info}</p>
+<p>{{lbl_info}}</p>
 <div id="cleanup_area">
   <table class="cleanup_table">
   <!-- BEGIN item -->
-    <tr><td class="cleanup_item_{type}"></td><td>{item_path}</td></tr>
+    <tr><td class="cleanup_item_{{type}}"></td><td>{{item_path}}</td></tr>
   <!-- END item -->
   </table>
 </div>
 <!-- BEGIN not_required -->
-<div class="msg_info">{message}</div>
+<div class="msg_info">{{message}}</div>
 <!-- END not_required -->
 <div class="buttons">
  <form method="post">
@@ -16,7 +16,7 @@
   <a href="stages/Cleanup/clean.sh">cleanup batch file(linux)<img src="stages/Cleanup/linux.png"/></a>&nbsp;
   <a href="stages/Cleanup/clean.bat">cleanup batch file(windows)<img src="stages/Cleanup/windows.png" /></a>
  </div>
- <input type="submit" name="Cleanup_complete" value="{next} &gt;" />
+ <input type="submit" name="Cleanup_complete" value="{{next}} &gt;" />
  </form>
 </div>
 <!-- END cleanup -->

@@ -1,34 +1,34 @@
 <!-- BEGIN Database -->
-<p>{db_info}</p>
+<p>{{db_info}}</p>
 <script type="text/javascript">
-function EncryptPassword() {
+function EncryptPassword() {{
     setMaxDigits(128);
     var pub_key = new RSAPublicKey(document.getElementById('exponent').value, document.getElementById('modulus').value, 128);
     document.getElementById('dbpass').value = encryptedString(pub_key, document.getElementById('dbpass').value);
     return true;
-}
+}}
 </script>
-<form method="post" onsubmit="return {func_onsubmit};">
- <input type="hidden" name="modulus" id="modulus" value="{pub_modulus}" />
- <input type="hidden" name="exponent" id="exponent" value="{pub_exponent}" />
+<form method="post" onsubmit="return {{func_onsubmit}};">
+ <input type="hidden" name="modulus" id="modulus" value="{{pub_modulus}}" />
+ <input type="hidden" name="exponent" id="exponent" value="{{pub_exponent}}" />
  <table>
   <!-- BEGIN host -->
   <tr>
-   <td width="100px"><label for="host">{lbl_host}:</label></td>
-   <td><input type="text" name="host" id="host" value="{host}" size="30" style="direction: ltr;" /></td>
+   <td width="100px"><label for="host">{{lbl_host}}:</label></td>
+   <td><input type="text" name="host" id="host" value="{{host}}" size="30" style="direction: ltr;" /></td>
   </tr>
   <tr>
    <td></td>
-   <td class="form_comment">{host_info}</td>
+   <td class="form_comment">{{host_info}}</td>
   </tr>
   <!-- END host -->
   <!-- BEGIN drivers -->
   <tr>
-   <td><label for="driver">{lbl_driver}:</label></td>
+   <td><label for="driver">{{lbl_driver}}:</label></td>
    <td>
     <select name="driver" id="driver" size="1" style="direction: ltr; width: 200px;">
      <!-- BEGIN driver -->
-      <option value="{d_name}"{d_selected}>{d_realname}</option>
+      <option value="{{d_name}}"{{d_selected}}>{{d_realname}}</option>
      <!-- END driver -->
     </select>
    </td>
@@ -36,12 +36,12 @@ function EncryptPassword() {
   <!-- END drivers -->
   <!-- BEGIN user -->
   <tr>
-   <td><label for="user">{lbl_user}:</label></td>
+   <td><label for="user">{{lbl_user}}:</label></td>
    <td>
     <table cellpadding="0" cellspacing="0">
       <tr>
-        <td><input type="text" name="user" id="user" value="{user}" size="30" style="direction: ltr;" /></td>
-        <td>&nbsp;<label><input type="checkbox" name="isdba" id="isdba" {isdba_checked} value="true"/>{is_db_admin}</label></td>
+        <td><input type="text" name="user" id="user" value="{{user}}" size="30" style="direction: ltr;" /></td>
+        <td>&nbsp;<label><input type="checkbox" name="isdba" id="isdba" {{isdba_checked}} value="true"/>{{is_db_admin}}</label></td>
       </tr>
     </table>
    </td>
@@ -49,50 +49,50 @@ function EncryptPassword() {
   <!-- END user -->
   <!-- BEGIN password -->
   <tr>
-   <td><label for="dbpass">{lbl_pass}:</label></td>
-   <td><input type="password" name="dbpass" id="dbpass" value="{dbpass}" size="30" style="direction: ltr;" /></td>
+   <td><label for="dbpass">{{lbl_pass}}:</label></td>
+   <td><input type="password" name="dbpass" id="dbpass" value="{{dbpass}}" size="30" style="direction: ltr;" /></td>
   </tr>
   <!-- END password -->
   <!-- BEGIN name -->
   <tr>
-   <td><label for="name">{lbl_db_name}:</label></td>
-   <td><input type="text" name="name" id="name" value="{name}" size="30" style="direction: ltr;" /></td>
+   <td><label for="name">{{lbl_db_name}}:</label></td>
+   <td><input type="text" name="name" id="name" value="{{name}}" size="30" style="direction: ltr;" /></td>
   </tr>
   <!-- END name -->
   <!-- BEGIN path -->
   <tr>
-   <td><label for="path">{lbl_db_path}:</label></td>
-   <td><input type="text" name="path" id="path" value="{path}" size="30" style="direction: ltr;" /></td>
+   <td><label for="path">{{lbl_db_path}}:</label></td>
+   <td><input type="text" name="path" id="path" value="{{path}}" size="30" style="direction: ltr;" /></td>
   </tr>
   <tr>
    <td></td>
-   <td class="form_comment">{path_info}</td>
+   <td class="form_comment">{{path_info}}</td>
   </tr>
   <!-- END path -->
   <!-- BEGIN port -->
   <tr>
-   <td><label for="port">{lbl_port}:</label></td>
-   <td><input type="text" name="port" id="port" value="{port}" size="5" style="direction: ltr;" /></td>
+   <td><label for="port">{{lbl_port}}:</label></td>
+   <td><input type="text" name="port" id="port" value="{{port}}" size="5" style="direction: ltr;" /></td>
   </tr>
   <tr>
    <td></td>
-   <td class="form_comment">{port_info}</td>
+   <td class="form_comment">{{port_info}}</td>
   </tr>
   <!-- END port -->
   <!-- BEGIN prefix -->
   <tr>
-   <td><label for="prefix">{lbl_prefix}:</label></td>
-   <td><input type="text" name="prefix" id="prefix" value="{prefix}" size="30" style="direction: ltr;" /></td>
+   <td><label for="prefix">{{lbl_prefix}}:</label></td>
+   <td><input type="text" name="prefix" id="prefix" value="{{prefix}}" size="30" style="direction: ltr;" /></td>
   </tr>
   <tr>
     <td></td>
-    <td class="form_comment">{prefix_info}</td>
+    <td class="form_comment">{{prefix_info}}</td>
   </tr>
   <!-- END prefix -->
  </table>
 
  <div class="buttons">
-  <input type="submit" value="{next} &gt;" name="Database_complete" />
+  <input type="submit" value="{{next}} &gt;" name="Database_complete" />
  </div>
 </form>
 <!-- END Database -->

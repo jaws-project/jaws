@@ -3,25 +3,25 @@
 <!-- BEGIN layout -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <base href="{BASE_URL}" />
-  <title>{site-title}</title>
-  <meta http-equiv="content-language" content="{site-languages}" />
+  <base href="{{BASE_URL}}" />
+  <title>{{site-title}}</title>
+  <meta http-equiv="content-language" content="{{site-languages}}" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <link rel="stylesheet" type="text/css" href="Resources/upgrade{.dir}.css" media="screen" />
-  <!-- BEGIN head -->{ELEMENT}<!-- END head -->
+  <link rel="stylesheet" type="text/css" href="Resources/upgrade{{.dir}}.css" media="screen" />
+  <!-- BEGIN head -->{{ELEMENT}}<!-- END head -->
 </head>
 <body>
   <div id="container" class="clearfix">
-    <div id="top_header"><h1><a href="{site-url}">{site-name}</a></h1>
-      <p>{site-slogan}</p>
+    <div id="top_header"><h1><a href="{{site-url}}">{{site-name}}</a></h1>
+      <p>{{site-slogan}}</p>
     </div>
     <div id="main-section" class="clearfix">
       <div id="main" class="wide">
-      <!-- BEGIN main -->{ELEMENT}<!-- END main -->
+      <!-- BEGIN main -->{{ELEMENT}}<!-- END main -->
       </div>
     </div>
     <div id="sub_footer">
-      <p><strong>{site-name}</strong><br />{site-slogan}</p>
+      <p><strong>{{site-name}}</strong><br />{{site-slogan}}</p>
       <p>Powered by the <a href="http://jaws-project.com" rel="external">Jaws Project</a></p>
     </div>
   </div>
