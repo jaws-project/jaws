@@ -1,14 +1,14 @@
 <!-- BEGIN faq -->
-<div class="gadget_header"><h3>{title}<a id="topfaq">&nbsp;</a></h3></div>
+<div class="gadget_header"><h3>{{title}}<a id="topfaq">&nbsp;</a></h3></div>
 <div class="gadget_container">
   <!-- BEGIN summary -->
   <div class="summary">
     <ul>
     <!-- BEGIN category -->
-      <li><h4><a href="{url}">{category}</a></h4>
+      <li><h4><a href="{{url}}">{{category}}</a></h4>
         <ol>
         <!-- BEGIN item -->
-          <li><a href="{url}#question{id}">{question}</a></li>
+          <li><a href="{{url}}#question{{id}}">{{question}}</a></li>
         <!-- END item -->
         </ol>
       </li>
@@ -20,15 +20,15 @@
   <div class="gadget_content content">
     <ul>
     <!-- BEGIN category -->
-      <li><h4>{category}</h4>
+      <li><h4>{{category}}</h4>
         <ol>
         <!-- BEGIN question -->
           <li>
-            <h5><a href="{url}" id="question{id}">{question}</a></h5>
+            <h5><a href="{{url}}" id="question{{id}}">{{question}}</a></h5>
             <div class="faq_answer">
-              {answer}
+              {{answer}}
             </div>
-            <div class="gadget_actions actions"><a href="{top_link}">{top_label}</a></div>
+            <div class="gadget_actions actions"><a href="{{top_link}}">{{top_label}}</a></div>
           </li>
         <!-- END question -->
         </ol>

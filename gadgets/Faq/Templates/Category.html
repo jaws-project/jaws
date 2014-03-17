@@ -1,11 +1,11 @@
 <!-- BEGIN faq_category -->
-<div class="gadget_header"><h3>{title} - {category}<a id="topfaq">&nbsp;</a></h3></div>
+<div class="gadget_header"><h3>{{title}} - {{category}}<a id="topfaq">&nbsp;</a></h3></div>
 <div class="gadget_container">
   <div class="summary">
-    <p>{description}</p>
+    <p>{{description}}</p>
     <ol>
       <!-- BEGIN question -->
-      <li><a href="{url}#question{pos}">{question}</a></li>
+      <li><a href="{{url}}#question{{pos}}">{{question}}</a></li>
       <!-- END question -->
     </ol>
   </div>
@@ -13,11 +13,11 @@
     <ol>
       <!-- BEGIN item -->
       <li>
-        <h4><a href="{url}" id="question{pos}">{question}</a></h4>
+        <h4><a href="{{url}}" id="question{{pos}}">{{question}}</a></h4>
         <div class="faq_answer">
-          {answer}
+          {{answer}}
         </div>
-        <div class="gadget_actions actions"><a href="{top_link}">{top_label}</a></div>
+        <div class="gadget_actions actions"><a href="{{top_link}}">{{top_label}}</a></div>
       </li>
       <!-- END item -->
     </ol>
