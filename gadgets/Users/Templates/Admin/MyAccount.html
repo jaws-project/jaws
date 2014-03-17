@@ -1,24 +1,24 @@
 <!-- BEGIN MyAccount -->
 <script type="text/javascript">
-  var incompleteUserFields  = "{incompleteUserFields}";
-  var wrongPassword         = "{wrongPassword}";
+  var incompleteUserFields  = "{{incompleteUserFields}}";
+  var wrongPassword         = "{{wrongPassword}}";
 </script>
-<input type="hidden" name="uid" id="uid" value="{uid}" />
-<!-- BEGIN encryption -->{modulus}{exponent}<!-- END encryption -->
+<input type="hidden" name="uid" id="uid" value="{{uid}}" />
+<!-- BEGIN encryption -->{{modulus}}{{exponent}}<!-- END encryption -->
 <div id="my_account">
   <fieldset>
-    <legend><span id="legend_title">{legend_title}</span></legend>
+    <legend><span id="legend_title">{{legend_title}}</span></legend>
     <table>
       <tr>
-        <td><label for="username">{lbl_username}:</label><br />{username}</td>
-        <td rowspan="3" id="user_avatar">{avatar}</td>
+        <td><label for="username">{{lbl_username}}:</label><br />{{username}}</td>
+        <td rowspan="3" id="user_avatar">{{avatar}}</td>
       </tr>
-      <tr><td><label for="nickname">{lbl_nickname}:</label><br />{nickname}</td></tr>
-      <tr><td><label for="email">{lbl_email}:</label><br />{email}</td></tr>
-      <tr><td colspan="2"><label for="pass1">{lbl_pass1}:</label><br />{pass1}</td></tr>
-      <tr><td colspan="2"><label for="pass2">{lbl_pass2}:</label><br />{pass2}</td></tr>
+      <tr><td><label for="nickname">{{lbl_nickname}}:</label><br />{{nickname}}</td></tr>
+      <tr><td><label for="email">{{lbl_email}}:</label><br />{{email}}</td></tr>
+      <tr><td colspan="2"><label for="pass1">{{lbl_pass1}}:</label><br />{{pass1}}</td></tr>
+      <tr><td colspan="2"><label for="pass2">{{lbl_pass2}}:</label><br />{{pass2}}</td></tr>
     </table>
   </fieldset>
-  <div class="buttons">{save}</div>
+  <div class="buttons">{{save}}</div>
 </div>
 <!-- END MyAccount -->

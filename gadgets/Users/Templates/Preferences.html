@@ -1,26 +1,26 @@
 <!-- BEGIN preferences -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_response">
-    <div id="users_preferences_response" class="{type}">{text}</div>
+    <div id="users_preferences_response" class="{{type}}">{{text}}</div>
   </div>
   <div class="gadget_content content">
     <!-- BEGIN gadget -->
-    <form name="preferencesBox" action="{base_script}" method="post" onsubmit="return updatePreferences(this);">
+    <form name="preferencesBox" action="{{base_script}}" method="post" onsubmit="return updatePreferences(this);">
       <input type="hidden" name="gadget" value="Users" />
       <input type="hidden" name="action" value="UpdatePreferences" />
-      <input type="hidden" name="component" value="{component}" />
+      <input type="hidden" name="component" value="{{component}}" />
       <fieldset>
         <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
-          <span>{lbl_component}</span>
+          <span>{{lbl_component}}</span>
         </legend>
         <div>
           <!-- BEGIN key -->
           <div>
-            <label>{key_title}:</label>{input_value}
+            <label>{{key_title}}:</label>{{input_value}}
           </div>
           <!-- END key -->
-          <div class="gadget_actions actions"><button type="submit" value="{update}">{update}</button></div>
+          <div class="gadget_actions actions"><button type="submit" value="{{update}}">{{update}}</button></div>
         </div>
       </fieldset>
     </form>

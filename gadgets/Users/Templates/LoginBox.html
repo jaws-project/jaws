@@ -1,9 +1,9 @@
 <!-- BEGIN LoginBox -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
-  <div class="gadget_response"><div class="{type}">{text}</div></div>
+  <div class="gadget_response"><div class="{{type}}">{{text}}</div></div>
   <form name="loginBox"
-        action="{base_script}"
+        action="{{base_script}}"
         <!-- BEGIN onsubmit --> onsubmit="return encryptedElement(this.password,
                                                                  this.exponent.value,
                                                                  this.modulus.value,
@@ -12,23 +12,23 @@
         method="post">
   <input type="hidden" name="gadget" value="Users" />
   <input type="hidden" name="action" value="Login" />
-  <input type="hidden" name="referrer" value="{referrer}" />
+  <input type="hidden" name="referrer" value="{{referrer}}" />
   <!-- BEGIN encryption -->
-  <input type="hidden" name="modulus" value="{modulus}" />
-  <input type="hidden" name="exponent" value="{exponent}" />
+  <input type="hidden" name="modulus" value="{{modulus}}" />
+  <input type="hidden" name="exponent" value="{{exponent}}" />
   <!-- END encryption -->
   <div class="gadget_content content">
-    <div><label for="login_username">{lbl_username}:</label>
-       <input name="username" class="large username ltr" id="login_username" type="text" value="{username}" />
+    <div><label for="login_username">{{lbl_username}}:</label>
+       <input name="username" class="large username ltr" id="login_username" type="text" value="{{username}}" />
     </div>
-    <div><label for="login_password">{lbl_password}:</label>
+    <div><label for="login_password">{{lbl_password}}:</label>
        <input name="password" class="large password ltr" id="login_password" type="password" autocomplete="off" value="" />
     </div>
     <!-- BEGIN authtype -->
-    <div><label for="authtype">{lbl_authtype}:</label>
+    <div><label for="authtype">{{lbl_authtype}}:</label>
       <select name="authtype" id="authtype">
       <!-- BEGIN item -->
-      <option value="{method}" {selected}>{method}</option>
+      <option value="{{method}}" {{selected}}>{{method}}</option>
       <!-- END item -->
       </select>
     </div>
@@ -40,7 +40,7 @@
               id="login_remember"
               <!-- BEGIN selected -->checked="checked"<!-- END selected -->
               value="true" />
-       <label for="login_remember">{lbl_remember}</label>
+       <label for="login_remember">{{lbl_remember}}</label>
     </div>
     <!-- END remember -->
     <!-- BEGIN usecrypt -->
@@ -49,14 +49,14 @@
               id="login_usecrypt"
               <!-- BEGIN selected --> checked="checked"<!-- END selected -->
               value="true" />
-       <label for="login_usecrypt">{lbl_usecrypt}</label>
+       <label for="login_usecrypt">{{lbl_usecrypt}}</label>
     </div>
     <!-- END usecrypt -->
   </div>
   <div class="gadget_actions actions">
-    <button type="submit" value="{login}">{login}</button>
-    <div>{forgot-password}</div>
-    <div>{user-register}</div>
+    <button type="submit" value="{{login}}">{{login}}</button>
+    <div>{{forgot-password}}</div>
+    <div>{{user-register}}</div>
   </div>
   </form>
 </div>

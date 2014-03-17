@@ -1,33 +1,33 @@
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
-  <div class="gadget_response"><div class="{type}">{text}</div></div>
-  <form name="account" action="{base_script}" method="post">
+  <div class="gadget_response"><div class="{{type}}">{{text}}</div></div>
+  <form name="account" action="{{base_script}}" method="post">
   <input type="hidden" name="gadget" value="Users" />
   <input type="hidden" name="action" value="UpdateAccount" />
   <div class="gadget_content content">
     <fieldset>
-      <div class="user_avatar">{avatar}</div>
-      <div><label for="username">{lbl_username}:</label>
-        <input name="username" class="large username ltr" id="username" value="{username}" type="text" {username_disabled} />
+      <div class="user_avatar">{{avatar}}</div>
+      <div><label for="username">{{lbl_username}}:</label>
+        <input name="username" class="large username ltr" id="username" value="{{username}}" type="text" {{username_disabled}} />
       </div>
       <hr/>
-      <div><label for="nickname">{lbl_nickname}:</label>
-        <input name="nickname" class="large name" id="nickname" value="{nickname}" type="text" {nickname_disabled} />
+      <div><label for="nickname">{{lbl_nickname}}:</label>
+        <input name="nickname" class="large name" id="nickname" value="{{nickname}}" type="text" {{nickname_disabled}} />
       </div>
-      <div><label for="email">{lbl_email}:</label>
-        <input name="email" class="large email ltr" id="email" value="{email}" type="text" {email_disabled} />
+      <div><label for="email">{{lbl_email}}:</label>
+        <input name="email" class="large email ltr" id="email" value="{{email}}" type="text" {{email_disabled}} />
       </div>
       <hr/>
-      <div><label for="password">{lbl_password}:</label>
-        <input name="password" class="large password ltr" id="password" type="password" value="" autocomplete="off" {password_disabled} />
-        <span><small>{emptypassword}</small></span>
+      <div><label for="password">{{lbl_password}}:</label>
+        <input name="password" class="large password ltr" id="password" type="password" value="" autocomplete="off" {{password_disabled}} />
+        <span><small>{{emptypassword}}</small></span>
       </div>
-      <div><label for="chkpassword">{lbl_chkpassword}:</label>
-        <input name="chkpassword" class="large password ltr" id="chkpassword" type="password" value="" autocomplete="off" {password_disabled} />
+      <div><label for="chkpassword">{{lbl_chkpassword}}:</label>
+        <input name="chkpassword" class="large password ltr" id="chkpassword" type="password" value="" autocomplete="off" {{password_disabled}} />
       </div>
     </fieldset>
   </div>
-  <div class="gadget_actions actions"><button type="submit" value="{update}">{update}</button></div>
+  <div class="gadget_actions actions"><button type="submit" value="{{update}}">{{update}}</button></div>
   </form>
 </div>
 <div class="gadget_footer"></div>

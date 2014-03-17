@@ -2,26 +2,26 @@
 <input type="hidden" name="avatar" id="avatar" value="" />
 <table>
   <tr>
-    <td><label for="privacy">{lbl_privacy}:</label><br />{privacy}</td>
+    <td><label for="privacy">{{lbl_privacy}}:</label><br />{{privacy}}</td>
     <td rowspan="3" id="user_avatar"><img name="image" id="image" src="" /></td>
   </tr>
-  <tr><td colspan="2"><label for="fname">{lbl_fname}:</label><br />{fname}</td></tr>
-  <tr><td colspan="2"><label for="lname">{lbl_lname}:</label><br />{lname}</td></tr>
+  <tr><td colspan="2"><label for="fname">{{lbl_fname}}:</label><br />{{fname}}</td></tr>
+  <tr><td colspan="2"><label for="lname">{{lbl_lname}}:</label><br />{{lname}}</td></tr>
   <tr>
-    <td><label for="gender">{lbl_gender}:</label><br />{gender}</td>
+    <td><label for="gender">{{lbl_gender}}:</label><br />{{gender}}</td>
     <td id="avatar_actions">
       <form id="frm_avatar" name="frm_avatar" method="post"
-            target="ifrm_upload" action="{base_script}"
+            target="ifrm_upload" action="{{base_script}}"
             enctype="multipart/form-data" onsubmit="return true">
         <input type="hidden" name="gadget" value="Users" />
         <input type="hidden" name="action" value="UploadAvatar" />
-        <div class="gadget_actions actions">{btn_upload} {btn_remove}<div class="wrapper">{upload_avatar}</div></div>
+        <div class="gadget_actions actions">{{btn_upload}} {{btn_remove}}<div class="wrapper">{{upload_avatar}}</div></div>
       </form>
     </td>
   </tr>
-    <tr><td colspan="2"><label for="ssn">{lbl_ssn}:</label><br />{ssn}</td></tr>
-  <tr><td colspan="2"><label for="dob">{lbl_dob}:</label><br />{dob}</td></tr>
-  <tr><td colspan="2"><label for="url">{lbl_url}:</label><br />{url}</td></tr>
-  <tr><td colspan="2"><label for="about">{lbl_about}:</label><br />{about}</td></tr>
+    <tr><td colspan="2"><label for="ssn">{{lbl_ssn}}:</label><br />{{ssn}}</td></tr>
+  <tr><td colspan="2"><label for="dob">{{lbl_dob}}:</label><br />{{dob}}</td></tr>
+  <tr><td colspan="2"><label for="url">{{lbl_url}}:</label><br />{{url}}</td></tr>
+  <tr><td colspan="2"><label for="about">{{lbl_about}}:</label><br />{{about}}</td></tr>
 </table>
 <!-- END personal -->

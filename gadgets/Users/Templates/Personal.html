@@ -1,81 +1,81 @@
 <!-- BEGIN personal -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
-  <div class="gadget_response"><div class="{type}">{text}</div></div>
-  <form name="personalbox" action="{base_script}" method="post" enctype="multipart/form-data">
+  <div class="gadget_response"><div class="{{type}}">{{text}}</div></div>
+  <form name="personalbox" action="{{base_script}}" method="post" enctype="multipart/form-data">
   <input type="hidden" name="gadget" value="Users" />
   <input type="hidden" name="action" value="UpdatePersonal" />
   <input type="hidden" name="MAX_FILE_SIZE" value="524288" />
   <div class="gadget_content content">
     <fieldset>
-      <div class="user_avatar">{avatar}
+      <div class="user_avatar">{{avatar}}
         <input type="file" name="avatar" id="personal_avatar" onchange="previewImage(this);">
         <input type="checkbox" name="delete_avatar" id="delete_avatar" value="1">
-        <label for="delete_avatar">{lbl_delete_avatar}</label>
+        <label for="delete_avatar">{{lbl_delete_avatar}}</label>
         <script type="text/javascript">
-        function previewImage(fileElement) {
+        function previewImage(fileElement) {{
             var fReader = new FileReader();
             fReader.readAsDataURL(fileElement.files[0]);
-            fReader.onload = function (event) {
+            fReader.onload = function (event) {{
                 document.getElementById('avatar').src = event.target.result;
-            }
-        }
+            }}
+        }}
         </script>
       </div>
       <div>
-        <label for="personal_fname">{lbl_fname}:</label>
-        <input name="fname" class="large name" id="personal_fname" value="{fname}" type="text" />
+        <label for="personal_fname">{{lbl_fname}}:</label>
+        <input name="fname" class="large name" id="personal_fname" value="{{fname}}" type="text" />
       </div>
       <div>
-        <label for="personal_lname">{lbl_lname}:</label>
-        <input name="lname" class="large name" id="personal_lname" value="{lname}" type="text" />
+        <label for="personal_lname">{{lbl_lname}}:</label>
+        <input name="lname" class="large name" id="personal_lname" value="{{lname}}" type="text" />
       </div>
       <div>
-        <label for="user_gender">{lbl_gender}:</label>
+        <label for="user_gender">{{lbl_gender}}:</label>
         <select name="gender" class="large" id="user_gender">
-          <option value="0" {selected_gender_0}>{gender_0}</option>
-          <option value="1" {selected_gender_1}>{gender_1}</option>
-          <option value="2" {selected_gender_2}>{gender_2}</option>
+          <option value="0" {{selected_gender_0}}>{{gender_0}}</option>
+          <option value="1" {{selected_gender_1}}>{{gender_1}}</option>
+          <option value="2" {{selected_gender_2}}>{{gender_2}}</option>
         </select>
       </div>
       <div>
-        <label for="personal_ssn">{lbl_ssn}:</label>
-        <input name="ssn" class="large ltr" id="personal_ssn" value="{ssn}" type="text" />
+        <label for="personal_ssn">{{lbl_ssn}}:</label>
+        <input name="ssn" class="large ltr" id="personal_ssn" value="{{ssn}}" type="text" />
       </div>
       <div id="user_dob">
-        <label for="user_dob_year">{lbl_dob}:</label>
-        <input name="dob_year"  class="x-small ltr" id="user_dob_year"  value="{dob_year}"  type="text" />
-        <input name="dob_month" class="x-small ltr" id="user_dob_month" value="{dob_month}" type="text" />
-        <input name="dob_day"   class="x-small ltr" id="user_dob_day"   value="{dob_day}"   type="text" />
-        <span><small>{dob_sample}</small></span>
+        <label for="user_dob_year">{{lbl_dob}}:</label>
+        <input name="dob_year"  class="x-small ltr" id="user_dob_year"  value="{{dob_year}}"  type="text" />
+        <input name="dob_month" class="x-small ltr" id="user_dob_month" value="{{dob_month}}" type="text" />
+        <input name="dob_day"   class="x-small ltr" id="user_dob_day"   value="{{dob_day}}"   type="text" />
+        <span><small>{{dob_sample}}</small></span>
       </div>
       <div>
-        <label for="personal_url">{lbl_url}:</label>
-        <input name="url" class="large url ltr" id="personal_url" value="{url}" type="text" />
+        <label for="personal_url">{{lbl_url}}:</label>
+        <input name="url" class="large url ltr" id="personal_url" value="{{url}}" type="text" />
       </div>
       <div>
-        <label for="personal_signature">{lbl_signature}:</label>
-        <textarea name="signature" class="x-large" id="personal_signature" cols="45" rows="4">{signature}</textarea>
+        <label for="personal_signature">{{lbl_signature}}:</label>
+        <textarea name="signature" class="x-large" id="personal_signature" cols="45" rows="4">{{signature}}</textarea>
       </div>
       <div>
-        <label for="personal_about">{lbl_about}:</label>
-        <textarea name="about" class="x-large" id="personal_about" cols="45" rows="4">{about}</textarea>
+        <label for="personal_about">{{lbl_about}}:</label>
+        <textarea name="about" class="x-large" id="personal_about" cols="45" rows="4">{{about}}</textarea>
       </div>
       <div>
-        <label for="personal_experiences">{lbl_experiences}:</label>
-        <textarea name="experiences" class="x-large" id="personal_experiences" cols="45" rows="4">{experiences}</textarea>
+        <label for="personal_experiences">{{lbl_experiences}}:</label>
+        <textarea name="experiences" class="x-large" id="personal_experiences" cols="45" rows="4">{{experiences}}</textarea>
       </div>
       <div>
-        <label for="personal_occupations">{lbl_occupations}:</label>
-        <textarea name="occupations" class="x-large" id="personal_occupations" cols="45" rows="4">{occupations}</textarea>
+        <label for="personal_occupations">{{lbl_occupations}}:</label>
+        <textarea name="occupations" class="x-large" id="personal_occupations" cols="45" rows="4">{{occupations}}</textarea>
       </div>
       <div>
-        <label for="personal_interests">{lbl_interests}:</label>
-        <textarea name="interests" class="x-large" id="personal_interests" cols="45" rows="4">{interests}</textarea>
+        <label for="personal_interests">{{lbl_interests}}:</label>
+        <textarea name="interests" class="x-large" id="personal_interests" cols="45" rows="4">{{interests}}</textarea>
       </div>
     </fieldset>
   </div>
-  <div class="gadget_actions actions"><button type="submit" value="{update}">{update}</button></div>
+  <div class="gadget_actions actions"><button type="submit" value="{{update}}">{{update}}</button></div>
   </form>
 </div>
 <div class="gadget_footer"></div>

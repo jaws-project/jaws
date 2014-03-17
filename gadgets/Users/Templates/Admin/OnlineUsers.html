@@ -1,23 +1,23 @@
 <!-- BEGIN OnlineUsers -->
-{menubar}
+{{menubar}}
 <table class="full_width">
   <tr>
     <td id="online_users_filter">
-      <label for="filter_active">{lbl_filter_active}:</label>{filter_active}
-      <label for="filter_logged">{lbl_filter_logged}:</label>{filter_logged}
+      <label for="filter_active">{{lbl_filter_active}}:</label>{{filter_active}}
+      <label for="filter_logged">{{lbl_filter_logged}}:</label>{{filter_logged}}
     </td>
   </tr>
   <tr>
     <td>
-    {online_users_datagrid}
-    <div class="buttons">{actions_combo}{btn_execute}</div>
+    {{online_users_datagrid}}
+    <div class="buttons">{{actions_combo}}{{btn_execute}}</div>
     </td>
   </tr>
 </table>
 <script type="text/javascript">
-  var confirmThrowOut   = "{confirmThrowout}";
-  var confirmBlockIP    = "{confirmBlockIP}";
-  var confirmBlockAgent = "{confirmBlockAgent}";
+  var confirmThrowOut   = "{{confirmThrowout}}";
+  var confirmBlockIP    = "{{confirmBlockIP}}";
+  var confirmBlockAgent = "{{confirmBlockAgent}}";
   initDataGrid('onlineusers_datagrid', UsersAjax, getOnlineUsers);
 </script>
 <!-- END OnlineUsers -->

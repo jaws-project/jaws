@@ -1,48 +1,48 @@
 <!-- BEGIN Users -->
-{menubar}
+{{menubar}}
 <table class="full_width">
   <tr>
     <td style="vertical-align: top;">
       <table id="users_filter">
         <tr>
-          <td class="filter_label"><label>{lbl_filter_group}:</label></td><td>{filter_group}</td>
+          <td class="filter_label"><label>{{lbl_filter_group}}:</label></td><td>{{filter_group}}</td>
           <td class="filter_label"></td><td></td>
         </tr>
         <tr>
-          <td class="filter_label"><label>{lbl_filter_type}:</label></td><td>{filter_type}</td>
-          <td class="filter_label"><label>{lbl_filter_status}:</label></td><td>{filter_status}</td>
+          <td class="filter_label"><label>{{lbl_filter_type}}:</label></td><td>{{filter_type}}</td>
+          <td class="filter_label"><label>{{lbl_filter_status}}:</label></td><td>{{filter_status}}</td>
         </tr>
         <tr>
-          <td class="filter_label"><label>{lbl_filter_term}:</label></td><td>{filter_term}</td>
-          <td class="filter_label"><label>{lbl_order_type}:</label></td><td>{order_type}</td>
+          <td class="filter_label"><label>{{lbl_filter_term}}:</label></td><td>{{filter_term}}</td>
+          <td class="filter_label"><label>{{lbl_order_type}}:</label></td><td>{{order_type}}</td>
         </tr>
       </table>
-      {users_datagrid}
+      {{users_datagrid}}
     </td>
     <td class="workarea">
       <input type="hidden" name="uid" id="uid" value="0" />
       <fieldset>
-        <legend><span id="legend_title">{legend_title}</span></legend>
-        <div id="workarea">{workarea}</div>
+        <legend><span id="legend_title">{{legend_title}}</span></legend>
+        <div id="workarea">{{workarea}}</div>
       </fieldset>
     </td>
   </tr>
-  <tr><td class="buttons" colspan="2">{cancel}{save}</td></tr>
+  <tr><td class="buttons" colspan="2">{{cancel}}{{save}}</td></tr>
 </table>
 <script type="text/javascript">
-  var noGroup               = "{noGroup}";
-  var wrongPassword         = "{wrongPassword}";
-  var incompleteUserFields  = "{incompleteUserFields}";
-  var confirmUserDelete     = "{confirmUserDelete}";
-  var addUser_title         = "{addUser_title}";
-  var editUser_title        = "{editUser_title}";
-  var editACL_title         = "{editACL_title}";
-  var editUserGroups_title  = "{editUserGroups_title}";
-  var editPersonal_title    = "{editPersonal_title}";
-  var editContacts_title    = "{editContacts_title}";
+  var noGroup               = "{{noGroup}}";
+  var wrongPassword         = "{{wrongPassword}}";
+  var incompleteUserFields  = "{{incompleteUserFields}}";
+  var confirmUserDelete     = "{{confirmUserDelete}}";
+  var addUser_title         = "{{addUser_title}}";
+  var editUser_title        = "{{editUser_title}}";
+  var editACL_title         = "{{editACL_title}}";
+  var editUserGroups_title  = "{{editUserGroups_title}}";
+  var editPersonal_title    = "{{editPersonal_title}}";
+  var editContacts_title    = "{{editContacts_title}}";
   var currentAction         = 'UserAccount';
   var cachedUserForm        = $('workarea').innerHTML;
-  var base_script           = "{base_script}";
+  var base_script           = "{{base_script}}";
   $('filter_term').value    = '';
   $('filter_group').selectedIndex  = 0;
   $('filter_type').selectedIndex   = 0;

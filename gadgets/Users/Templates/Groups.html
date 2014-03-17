@@ -1,10 +1,10 @@
 <!-- BEGIN groups -->
-<div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
+<div class="gadget_header"><h3>{{title}}</h3><div class="gadget_menubar">{{menubar}}</div></div>
 <div class="gadget_container">
   <div class="gadget_response">
-    <div id="users_contacts_response" class="{type}">{text}</div>
+    <div id="users_contacts_response" class="{{type}}">{{text}}</div>
   </div>
-  <form name="groups" id="groups" action="{requested_url}" method="post">
+  <form name="groups" id="groups" action="{{requested_url}}" method="post">
     <input type="hidden" name="gadget" value="Users"/>
     <input type="hidden" name="action" value="Groups"/>
     <input type="hidden" name="status" value=""/>
@@ -13,8 +13,8 @@
           <thead>
           <tr>
               <th><input type="checkbox" onclick="toggleCheckboxes();"></th>
-              <th>{lbl_name}</th>
-              <th>{lbl_title}</th>
+              <th>{{lbl_name}}</th>
+              <th>{{lbl_title}}</th>
           </tr>
           </thead>
 
@@ -22,24 +22,24 @@
           <!-- BEGIN group -->
           <tr>
               <td>
-                  <input type="checkbox" name="group_checkbox[]" value="{id}" class="table-checkbox">
+                  <input type="checkbox" name="group_checkbox[]" value="{{id}}" class="table-checkbox">
               </td>
-              <td><a href="{url}" title="{name}">{name}</a></td>
-              <td>{title}</td>
+              <td><a href="{{url}}" title="{{name}}">{{name}}</a></td>
+              <td>{{title}}</td>
           </tr>
           <!-- END group -->
           </tbody>
       </table>
   </div>
   <div class="gadget_actions actions">
-      <label for="groups_actions_combo">{lbl_actions}:&nbsp;</label>
-      <select title="{lbl_actions}" id="groups_actions_combo" name="groups_actions_combo">
-          <option value="">{lbl_no_action}</option>
-          <option value="delete">{lbl_delete}</option>
+      <label for="groups_actions_combo">{{lbl_actions}}:&nbsp;</label>
+      <select title="{{lbl_actions}}" id="groups_actions_combo" name="groups_actions_combo">
+          <option value="">{{lbl_no_action}}</option>
+          <option value="delete">{{lbl_delete}}</option>
       </select>
 
-      <button value="{lbl_actions}" id="action_button" name="action_button"
-              onclick="javascript: return doDGAction();"><img src="{icon_ok}" alt="{lbl_actions}"/>
+      <button value="{{lbl_actions}}" id="action_button" name="action_button"
+              onclick="javascript: return doDGAction();"><img src="{{icon_ok}}" alt="{{lbl_actions}}"/>
       </button>
   </div>
 
@@ -49,58 +49,58 @@
 <div class="gadget_footer"></div>
 
 <script type="text/javascript">
-    function toggleCheckboxes() {
+    function toggleCheckboxes() {{
         do_check = !do_check;
-        $$('.table-checkbox').each(function (el) {
+        $$('.table-checkbox').each(function (el) {{
             el.checked = do_check;
-        });
-    }
+        }});
+    }}
     var do_check = false;
 
-    function doDGAction() {
+    function doDGAction() {{
         var action = document.getElementById("groups_actions_combo").value;
-        if(action=="") {
+        if(action=="") {{
             return false;
-        }
+        }}
 
-        if(action == 'delete') {
+        if(action == 'delete') {{
             document.groups.action.value = 'DeleteGroups';
-        } else if(action == 'disable') {
+        }} else if(action == 'disable') {{
             document.groups.action.value = 'EnableGroups';
             document.groups.status.value = 'no';
-        } else if(action == 'enable') {
+        }} else if(action == 'enable') {{
             document.groups.action.value = 'EnableGroups';
             document.groups.status.value = 'yes';
-        }
+        }}
         document.getElementById("groups").submit();
         return true;
-    }
+    }}
 </script>
 <!-- END groups -->
 
 <!-- BEGIN add_group -->
-<div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
+<div class="gadget_header"><h3>{{title}}</h3><div class="gadget_menubar">{{menubar}}</div></div>
 <div class="gadget_container">
-  <form name="groups" id="groups" action="{base_script}" method="post">
+  <form name="groups" id="groups" action="{{base_script}}" method="post">
       <input type="hidden" name="gadget" value="Users"/>
       <input type="hidden" name="action" value="AddGroup"/>
-      <input type="hidden" name="gid" value="{gid}"/>
+      <input type="hidden" name="gid" value="{{gid}}"/>
 
       <div class="gadget_content content">
           <fieldset>
-              <div><label for="name">{lbl_name}:</label>
-                  <input name="name" id="name" value="{name}" type="text"/>
+              <div><label for="name">{{lbl_name}}:</label>
+                  <input name="name" id="name" value="{{name}}" type="text"/>
               </div>
-              <div><label for="title">{lbl_title}:</label>
-                  <input name="title" id="title" value="{group_title}" type="text"/>
+              <div><label for="title">{{lbl_title}}:</label>
+                  <input name="title" id="title" value="{{group_title}}" type="text"/>
               </div>
-              <div><label for="description">{lbl_description}:</label>
-                  <textarea name="description" id="description" cols="45" rows="4">{description}</textarea>
+              <div><label for="description">{{lbl_description}}:</label>
+                  <textarea name="description" id="description" cols="45" rows="4">{{description}}</textarea>
               </div>
           </fieldset>
       </div>
       <div class="gadget_actions actions">
-          <button type="submit" value="{save}">{save}</button>
+          <button type="submit" value="{{save}}">{{save}}</button>
       </div>
   </form>
 </div>
@@ -108,24 +108,24 @@
 <!-- END add_group -->
 
 <!-- BEGIN manage_group -->
-<div class="gadget_header"><h3>{title}</h3><div class="gadget_menubar">{menubar}</div></div>
+<div class="gadget_header"><h3>{{title}}</h3><div class="gadget_menubar">{{menubar}}</div></div>
 <div class="gadget_container">
   <div class="gadget_response">
-      <div id="users_managegroup_response" class="{type}">{text}</div>
+      <div id="users_managegroup_response" class="{{type}}">{{text}}</div>
   </div>
-  <form name="group_members" id="group_members" action="{base_script}" method="post">
+  <form name="group_members" id="group_members" action="{{base_script}}" method="post">
       <input type="hidden" name="gadget" value="Users"/>
       <input type="hidden" name="action" value="AddUserToGroup"/>
-      <input type="hidden" name="gid" value="{gid}"/>
+      <input type="hidden" name="gid" value="{{gid}}"/>
 
       <div class="gadget_content content">
-          <div>{lbl_members}</div>
+          <div>{{lbl_members}}</div>
           <table>
               <thead>
               <tr>
                   <th><input type="checkbox" onclick="toggleCheckboxes();"></th>
-                  <th>{lbl_username}</th>
-                  <th>{lbl_nickname}</th>
+                  <th>{{lbl_username}}</th>
+                  <th>{{lbl_nickname}}</th>
               </tr>
               </thead>
 
@@ -133,36 +133,36 @@
               <!-- BEGIN member -->
               <tr>
                   <td>
-                      <input type="checkbox" name="member_checkbox[]" value="{id}">
+                      <input type="checkbox" name="member_checkbox[]" value="{{id}}">
                   </td>
-                  <td><a href="{user_url}">{username}</a></td>
-                  <td>{nickname}</td>
+                  <td><a href="{{user_url}}">{{username}}</a></td>
+                  <td>{{nickname}}</td>
               </tr>
               <!-- END member -->
               </tbody>
           </table>
 
           <div class="gadget_actions actions">
-              <label for="member_actions_combo">{lbl_actions}:&nbsp;</label>
-              <select title="{lbl_actions}" id="member_actions_combo" name="inbox_actions_combo">
-                  <option value="">{lbl_no_action}</option>
-                  <option value="delete">{lbl_delete}</option>
+              <label for="member_actions_combo">{{lbl_actions}}:&nbsp;</label>
+              <select title="{{lbl_actions}}" id="member_actions_combo" name="inbox_actions_combo">
+                  <option value="">{{lbl_no_action}}</option>
+                  <option value="delete">{{lbl_delete}}</option>
               </select>
 
-              <button value="{lbl_actions}" id="action_button" name="action_button"
-                      onclick="javascript: return doDGAction();" ><img src="{icon_ok}" alt="{lbl_actions}"/>
+              <button value="{{lbl_actions}}" id="action_button" name="action_button"
+                      onclick="javascript: return doDGAction();" ><img src="{{icon_ok}}" alt="{{lbl_actions}}"/>
               </button>
           </div>
 
 
           <!-- BEGIN all_users -->
-          <div><label for="users">{lbl_users}:</label>
+          <div><label for="users">{{lbl_users}}:</label>
               <select name="users" id="users">
                   <!-- BEGIN user -->
-                  <option value="{user}">{username} - {nickname}</option>
+                  <option value="{{user}}">{{username}} - {{nickname}}</option>
                   <!-- END user -->
               </select>
-              <button type="submit" value="{lbl_add_user_to_group}">{lbl_add_user_to_group}</button>
+              <button type="submit" value="{{lbl_add_user_to_group}}">{{lbl_add_user_to_group}}</button>
 
           </div>
           <!-- END all_users -->
@@ -174,21 +174,21 @@
 <div class="gadget_footer"></div>
 
 <script type="text/javascript">
-    function toggleCheckboxes(){
+    function toggleCheckboxes(){{
         do_check = !do_check;
-        $$("input[name='member_checkbox[]']").each(function(el) { el.checked = do_check; });
-    }
+        $$("input[name='member_checkbox[]']").each(function(el) {{ el.checked = do_check; }});
+    }}
     var do_check = false;
 
-    function doDGAction() {
+    function doDGAction() {{
         var action = document.getElementById("member_actions_combo").value;
-        if(action == 'delete') {
+        if(action == 'delete') {{
             document.group_members.action.value = 'RemoveUserFromGroup';
-        } else {
+        }} else {{
             return false;
-        }
+        }}
         document.getElementById("group_members").submit();
         return true;
-    }
+    }}
 </script>
 <!-- END manage_group -->

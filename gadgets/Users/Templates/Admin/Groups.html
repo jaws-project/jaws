@@ -1,25 +1,25 @@
 <!-- BEGIN Groups -->
-{menubar}
+{{menubar}}
 <table class="full_width">
   <tr>
-    <td style="vertical-align:top;">{groups_datagrid}</td>
+    <td style="vertical-align:top;">{{groups_datagrid}}</td>
     <td class="workarea">
       <fieldset>
-        <legend><span id="legend_title">{legend_title}</span></legend>
-        <div id="workarea">{workarea}</div>
+        <legend><span id="legend_title">{{legend_title}}</span></legend>
+        <div id="workarea">{{workarea}}</div>
       </fieldset>
     </td>
   </tr>
-  <tr><td class="buttons" colspan="2">{cancel}{save}</td></tr>
+  <tr><td class="buttons" colspan="2">{{cancel}}{{save}}</td></tr>
 </table>
 <script type="text/javascript">
-  var incompleteGroupFields = "{incompleteGroupFields}";
-  var users                 = "{users}";
-  var confirmGroupDelete    = "{confirmGroupDelete}";
-  var addGroup_title        = "{addGroup_title}";
-  var editGroup_title       = "{editGroup_title}";
-  var editACL_title         = "{editACL_title}";
-  var editGroupUsers_title  = "{editGroupUsers_title}";
+  var incompleteGroupFields = "{{incompleteGroupFields}}";
+  var users                 = "{{users}}";
+  var confirmGroupDelete    = "{{confirmGroupDelete}}";
+  var addGroup_title        = "{{addGroup_title}}";
+  var editGroup_title       = "{{editGroup_title}}";
+  var editACL_title         = "{{editACL_title}}";
+  var editGroupUsers_title  = "{{editGroupUsers_title}}";
   var currentAction         = 'UserAccount';
   var cachedGroupForm       = $('workarea').innerHTML;
   stopGroupAction();
