@@ -88,7 +88,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                         $rb = '<input type="checkbox" name="answers[]" id="poll_answer_input_'.
                               $answer['id'].'" value="' .$answer['id']. '"/>';
                     } else {
-                        $rb = '<input type="radio" name="answers[]" id="poll_answer_input-'.
+                        $rb = '<input type="radio" name="answers[]" id="poll_answer_input_'.
                               $answer['id'].'" value="' .$answer['id']. '"/>';
                     }
 
