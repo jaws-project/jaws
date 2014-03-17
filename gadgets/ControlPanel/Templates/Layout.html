@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <!-- BEGIN layout -->
-<html lang="{site_languages}">
+<html lang="{{site_languages}}">
 <head>
-  <base href="{base_url}" />
-  <title>{site-name}: {control-panel}</title>
+  <base href="{{base_url}}" />
+  <title>{{site-name}}: {{control-panel}}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <!-- BEGIN head -->{ELEMENT}<!-- END head -->
+  <!-- BEGIN head -->{{ELEMENT}}<!-- END head -->
 </head>
-<body id="requested_gadget_{requested_gadget}" onload="hideWorkingNotification();">
+<body id="requested_gadget_{{requested_gadget}}" onload="hideWorkingNotification();">
   <div id="working_notification"></div>
   <script type="text/javascript">
-    default_loading_message = "{loading-message}";
-    var navigate_away_message = "{navigate-away-message}";
+    default_loading_message = "{{loading-message}}";
+    var navigate_away_message = "{{navigate-away-message}}";
     showWorkingNotification();
   </script>
 
   <div id="header">
     <div id="site-info">
-      <h1><a href="{admin_script}">{site-name}: {control-panel}</a></h1>
-      <p>{site-slogan}</p>
+      <h1><a href="{{admin_script}}">{{site-name}}: {{control-panel}}</a></h1>
+      <p>{{site-slogan}}</p>
     </div>
     <div id="login-info">
       <!-- BEGIN login-info -->
-      <img alt="{name}" width="48" height="48" src="{avatar}" />
-      <div class="name">{my-account}</div>
+      <img alt="{{name}}" width="48" height="48" src="{{avatar}}" />
+      <div class="name">{{my-account}}</div>
       <div class="logout">
-        <a href="{logout-url}">{logout}</a> - 
-        <a href="{site-url}">{view-site}</a>
+        <a href="{{logout-url}}">{{logout}}</a> - 
+        <a href="{{site-url}}">{{view-site}}</a>
       </div>
       <!-- END login-info -->
     </div>
     <div class="clearfix"></div>
-    <!-- BEGIN warning --><div id="warning-wrapper"><div class="warning">{warning}</div></div><!-- END warning -->
+    <!-- BEGIN warning --><div id="warning-wrapper"><div class="warning">{{warning}}</div></div><!-- END warning -->
   </div>
   <div class="clearfix" style="margin-bottom: 8px;"></div>
 
@@ -39,33 +39,33 @@
     <div id="main-section" class="clearfix">
       <!-- BEGIN cptitle -->
       <div id="control-panel-title">
-        <img alt="{title-gadget}" style="vertical-align: middle;" src="{icon-gadget}" />
-        <a href="{admin_script}">{cp-title}</a> {cp-title-separator} <a href="{admin_script}?gadget={title-gadget}">{title-name}</a>
+        <img alt="{{title-gadget}}" style="vertical-align: middle;" src="{{icon-gadget}}" />
+        <a href="{{admin_script}}">{{cp-title}}</a> {{cp-title-separator}} <a href="{{admin_script}}?gadget={{title-gadget}}">{{title-name}}</a>
         <span id="cpsubtitle"></span>
         <!-- BEGIN documentation -->
-        <a href="{url}" target="_blank"><img src="{src}" width="16" alt="{alt}" title="{alt}"/></a>
+        <a href="{{url}}" target="_blank"><img src="{{src}}" width="16" alt="{{alt}}" title="{{alt}}"/></a>
         <!-- END documentation -->
       </div>
       <!-- END cptitle -->
       <div id="msgbox-wrapper">
         <!-- BEGIN msgbox -->
-        <div id="msgbox_{msg-id}" class="{type}">{text}</div>
+        <div id="msgbox_{{msg-id}}" class="{{type}}">{{text}}</div>
         <script type="text/javascript">
-          var msgbox = $('msgbox_{msg-id}');
+          var msgbox = $('msgbox_{{msg-id}}');
           if ((msgbox.className != 'response_error') &&
               (msgbox.className != 'response_warning') &&
               (window.hideResponseBox)
-          ) {
+          ) {{
             hideResponseBox(msgbox);
-          }
+          }}
         </script>
         <!-- END msgbox -->
       </div>
-      <!-- BEGIN main -->{ELEMENT}<!-- END main -->
+      <!-- BEGIN main -->{{ELEMENT}}<!-- END main -->
     </div>
 
     <div id="footer">
-      <p><strong>{site-name}</strong><br />{site-slogan}</p>
+      <p><strong>{{site-name}}</strong><br />{{site-slogan}}</p>
       <p>Powered by the <a href="http://jaws-project.com" rel="external">Jaws Project</a></p>
     </div>
   </div>

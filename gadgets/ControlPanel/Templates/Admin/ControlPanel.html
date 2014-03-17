@@ -1,14 +1,14 @@
 <div id="sidebar">
   <!-- BEGIN notifybox -->
   <div class="notify_box notify_components">
-    <h2>{title}</h2>
+    <h2>{{title}}</h2>
     <div class="notify_content">
       <ul>
         <!-- BEGIN item -->
         <li>
           <div>
-            <img width="32" height="32" title="{title}" alt="{name}" src="{icon}" />
-            <label>{name}</label><a class="install" title="{title}" href="{url}">{install}</a>
+            <img width="32" height="32" title="{{title}}" alt="{{name}}" src="{{icon}}" />
+            <label>{{name}}</label><a class="install" title="{{title}}" href="{{url}}">{{install}}</a>
           </div>
         </li>
         <!-- END item -->
@@ -18,14 +18,14 @@
   <!-- END notifybox -->
   <!-- BEGIN login_history -->
   <div class="notify_box notify_logs">
-    <h2>{title}</h2>
+    <h2>{{title}}</h2>
     <div class="notify_content">
       <ul>
         <!-- BEGIN item -->
         <li>
           <div>
-            <img width="16" height="16" title="{status_title}" alt="{status_code}" src="{icon}" />
-            <label title="{agent}">{date} - {ip}</label>
+            <img width="16" height="16" title="{{status_title}}" alt="{{status_code}}" src="{{icon}}" />
+            <label title="{{agent}}">{{date}} - {{ip}}</label>
           </div>
         </li>
         <!-- END item -->
@@ -35,24 +35,24 @@
   <!-- END login_history -->
   <!-- BEGIN versionbox -->
   <div class="notify_box notify_version">
-    <input type="hidden" id="do_checking" name="do_checking" value="{do_checking}" />
-    <input type="hidden" id="jaws_version" name="jaws_version" value="{jaws_version}" />
+    <input type="hidden" id="do_checking" name="do_checking" value="{{do_checking}}" />
+    <input type="hidden" id="jaws_version" name="jaws_version" value="{{jaws_version}}" />
     <div class="notify_content">
-      <label><strong>{lbl_latest_jaws_version}: </strong></label>
-      <span id="latest_jaws_version">{latest_jaws_version}</span>
+      <label><strong>{{lbl_latest_jaws_version}}: </strong></label>
+      <span id="latest_jaws_version">{{latest_jaws_version}}</span>
     </div>
   </div>
   <!-- END versionbox -->
 </div>
 <div id="mainbar">
-  <!-- BEGIN message --><div class="{class}">{message}</div><!-- END message -->
+  <!-- BEGIN message --><div class="{{class}}">{{message}}</div><!-- END message -->
   <!-- BEGIN main -->
   <div class="main-menu">
-    <h2 class="main-menu-header">{title}</h2>
+    <h2 class="main-menu-header">{{title}}</h2>
     <!-- BEGIN item -->
-    <a class="main-item" href= "{url}" title="{desc}" >
-      <img width="48" height="48" class="main-item-icon" src="{icon}" title="{desc}" alt="{name}" />
-      {name}
+    <a class="main-item" href= "{{url}}" title="{{desc}}" >
+      <img width="48" height="48" class="main-item-icon" src="{{icon}}" title="{{desc}}" alt="{{name}}" />
+      {{name}}
     </a>
     <!-- END item -->
   </div>

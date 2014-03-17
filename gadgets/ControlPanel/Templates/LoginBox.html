@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <!-- BEGIN layout -->
-<html lang="{site_languages}">
+<html lang="{{site_languages}}">
  <head>
-  <title>{site-name}</title>
+  <title>{{site-name}}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <base href="{BASE_URL}" />
-<!-- BEGIN head -->{ELEMENT}<!-- END head -->
+  <base href="{{BASE_URL}}" />
+<!-- BEGIN head -->{{ELEMENT}}<!-- END head -->
   <link rel="icon" type="image/png" href="images/jaws.png" />
 
   <script type="text/javascript">
   function focusOnLoad(focusObject)
-  {
+  {{
     document.getElementById('username').focus();
     document.getElementById('username').select();
-  }
+  }}
   </script>
  </head>
  <body onload="javascript:focusOnLoad()">
   <div id="header">
-   <h1><a href="{admin_script}">{site-name}: {control-panel}</a></h1>
-   <p>{site-slogan}</p>
+   <h1><a href="{{admin_script}}">{{site-name}}: {{control-panel}}</a></h1>
+   <p>{{site-slogan}}</p>
   </div>
   <hr />
   <div id="container" class="clearfix">
@@ -27,36 +27,36 @@
     <div id="login">
       <div id="msgbox-wrapper">
         <!-- BEGIN message -->
-        <div class="response_warning">{message}</div>
+        <div class="response_warning">{{message}}</div>
         <!-- END message -->
       </div>
       <form name="loginbox"
-            action="{base_script}"
+            action="{{base_script}}"
             <!-- BEGIN onsubmit -->
             onsubmit="return encryptedElement(this.password, this.exponent.value, this.modulus.value, this.elements['usecrypt'].checked);"
             <!-- END onsubmit -->
             method="post">
       <input type="hidden" name="gadget" value="ControlPanel" />
       <input type="hidden" name="action" value="Login" />
-      <input type="hidden" name="redirect_to" value="{redirect_to}" />
+      <input type="hidden" name="redirect_to" value="{{redirect_to}}" />
       <!-- BEGIN encryption -->
-      <input type="hidden" name="modulus" value="{modulus}" />
-      <input type="hidden" name="exponent" value="{exponent}" />
+      <input type="hidden" name="modulus" value="{{modulus}}" />
+      <input type="hidden" name="exponent" value="{{exponent}}" />
       <!-- END encryption -->
       <fieldset id="loginbox">
-        <legend><span>{legend_title}</span></legend>
-        <div><label for="username">{lbl_username}:</label>
-           <input name="username" id="username" type="text" style="direction: ltr;" value="{username}" />
+        <legend><span>{{legend_title}}</span></legend>
+        <div><label for="username">{{lbl_username}}:</label>
+           <input name="username" id="username" type="text" style="direction: ltr;" value="{{username}}" />
         </div>
-        <div><label for="password">{lbl_password}:</label>
+        <div><label for="password">{{lbl_password}}:</label>
            <input name="password" id="password" type="password" autocomplete="off" style="direction: ltr;" value="" />
         </div>
         <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
         <!-- BEGIN authtype -->
-        <div><label for="authtype">{lbl_authtype}:</label>
+        <div><label for="authtype">{{lbl_authtype}}:</label>
           <select name="authtype" id="authtype">
           <!-- BEGIN item -->
-          <option value="{method}" {selected}>{method}</option>
+          <option value="{{method}}" {{selected}}>{{method}}</option>
           <!-- END item -->
           </select>
         </div>
@@ -69,7 +69,7 @@
                   checked="checked"
                   <!-- END selected -->
                   value="true" />
-           <label for="login_remember">{lbl_remember}</label>
+           <label for="login_remember">{{lbl_remember}}</label>
         </div>
         <!-- END remember -->
         <!-- BEGIN usecrypt -->
@@ -80,21 +80,21 @@
                   checked="checked"
                   <!-- END selected -->
                   value="true" />
-           <label for="login_usecrypt">{lbl_usecrypt}</label>
+           <label for="login_usecrypt">{{lbl_usecrypt}}</label>
         </div>
         <!-- END usecrypt -->
         <div class="buttons">
-          <button type="submit" value="{login}">{login}</button>
+          <button type="submit" value="{{login}}">{{login}}</button>
         </div>
       </fieldset>
       </form>
-      <div class="login-footer"><a href="{base_url}">{back}</a></div>
+      <div class="login-footer"><a href="{{base_url}}">{{back}}</a></div>
     </div>
    </div>
    <hr />
    <div id="footer" style="margin-top: 100px;">
-    <p><strong>{site-name}</strong><br />
-    {site-slogan}</p>
+    <p><strong>{{site-name}}</strong><br />
+    {{site-slogan}}</p>
     <p>Powered by the <a href="http://jaws-project.com" rel="external">Jaws Project</a></p>
    </div>
   </div>
