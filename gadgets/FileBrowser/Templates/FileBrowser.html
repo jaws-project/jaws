@@ -1,37 +1,37 @@
 <!-- BEGIN filebrowser -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="path-location-bar">
-    <label>{location}:</label>
-    <a href="{root-path}">{root}</a>
-    <!-- BEGIN tree --> &#187; <a href="{dir-path}">{dir-name}</a><!-- END tree -->
+    <label>{{location}}:</label>
+    <a href="{{root-path}}">{{root}}</a>
+    <!-- BEGIN tree --> &#187; <a href="{{dir-path}}">{{dir-name}}</a><!-- END tree -->
   </div>
-  <div class="gadget_content content">{text}</div>
+  <div class="gadget_content content">{{text}}</div>
   <div class="dir-content">
     <!-- BEGIN item -->
     <div>
-      <img src="{icon}" alt="{title}" />
-      <a href="{url}">{title}</a>
-      <span>{date}</span>
-      <small>{size}</small>
+      <img src="{{icon}}" alt="{{title}}" />
+      <a href="{{url}}">{{title}}</a>
+      <span>{{date}}</span>
+      <small>{{size}}</small>
       <!-- BEGIN info -->
-      <a href="{info_url}">{lbl_info}</a>
+      <a href="{{info_url}}">{{lbl_info}}</a>
       <!-- END info -->
     </div>
     <!-- END item -->
   </div>
 </div>
 <div class="gadget_footer"></div>
-{navigation}
+{{navigation}}
 <!-- END filebrowser -->
 
 <!-- BEGIN initial_folder -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_content content">
     <ul>
     <!-- BEGIN item -->
-    <li><div><img src="{icon}" alt="{title}" /><a href="{url}">{title}</a></div></li>
+    <li><div><img src="{{icon}}" alt="{{title}}" /><a href="{{url}}">{{title}}</a></div></li>
     <!-- END item -->
     </ul>
   </div>
@@ -40,17 +40,17 @@
 <!-- END initial_folder -->
 
 <!-- BEGIN fileinfo -->
-<div class="gadget_header"><h3><img src="{icon}" alt="{title}" /><a href="{url}">{title}</a></h3></div>
+<div class="gadget_header"><h3><img src="{{icon}}" alt="{{title}}" /><a href="{{url}}">{{title}}</a></h3></div>
 <div class="gadget_container">
   <div class="path-location-bar">
-    <label>{location}:</label>
-    <a href="{root-path}">{root}</a>
-    <!-- BEGIN tree --> &#187; <a href="{dir-path}">{dir-name}</a><!-- END tree -->
+    <label>{{location}}:</label>
+    <a href="{{root-path}}">{{root}}</a>
+    <!-- BEGIN tree --> &#187; <a href="{{dir-path}}">{{dir-name}}</a><!-- END tree -->
   </div>
-  <div class="gadget_content content">{text}</div>
+  <div class="gadget_content content">{{text}}</div>
   <div class="file-meta">
-    <span class="file-date">{date}</span>
-    <span class="file-size">{size}</span>
+    <span class="file-date">{{date}}</span>
+    <span class="file-size">{{size}}</span>
   </div>
 </div>
 <div class="gadget_footer"></div>

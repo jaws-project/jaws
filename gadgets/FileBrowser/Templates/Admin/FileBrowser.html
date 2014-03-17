@@ -3,57 +3,57 @@
   <tr>
     <td style="height: 25px;">
       <div id="loc">
-        <label>{lbl_location}:</label> <span id="location">{location_link}</span>
+        <label>{{lbl_location}}:</label> <span id="location">{{location_link}}</span>
       </div>
       <div id="order">
-        <label>{lbl_order}:</label> {order_type}
+        <label>{{lbl_order}}:</label> {{order_type}}
       </div>
     </td>
     <td style="padding: 0 4px; vertical-align: top; width: 300px;" rowspan="2">
-      <form id="fb_form" name="fb_form" method="post" action="{base_script}" enctype="multipart/form-data">
+      <form id="fb_form" name="fb_form" method="post" action="{{base_script}}" enctype="multipart/form-data">
         <input type="hidden" name="gadget" value="FileBrowser" />
         <input type="hidden" name="action" value="UploadFile" />
-        <input type="hidden" name="path" id="path" value="{path}"/>
-        <input type="hidden" name="oldname" id="oldname" value="{path}"/>
+        <input type="hidden" name="path" id="path" value="{{path}}"/>
+        <input type="hidden" name="oldname" id="oldname" value="{{path}}"/>
         <ul id="tabs">
-          <li><span id="fileTab" onclick="stopAction('file');">{lbl_file}</span></li>
-          <li><span id="dirTab"  onclick="stopAction('dir');">{lbl_directory}</span></li>
+          <li><span id="fileTab" onclick="stopAction('file');">{{lbl_file}}</span></li>
+          <li><span id="dirTab"  onclick="stopAction('dir');">{{lbl_directory}}</span></li>
         </ul>
-        <div id="f_work_area">{fui}</div>
-        <div id="d_work_area" >{dui}</div>
+        <div id="f_work_area">{{fui}}</div>
+        <div id="d_work_area" >{{dui}}</div>
       </form>
     </td>
   </tr>
   <tr>
-    <td id="datagrid_box" valign="top">{grid}</td>
+    <td id="datagrid_box" valign="top">{{grid}}</td>
   </tr>
 </table>
 <script type="text/javascript">
-  $('path').value = "{path}";
+  $('path').value = "{{path}}";
   stopAction('file');
-  var confirmFileDelete = "{confirmFileDelete}";
-  var confirmDirDelete  = "{confirmDirDelete}";
-  var incompleteFields  = "{incompleteFields}";
+  var confirmFileDelete = "{{confirmFileDelete}}";
+  var confirmDirDelete  = "{{confirmDirDelete}}";
+  var incompleteFields  = "{{incompleteFields}}";
   initDataGrid('fb_datagrid', FileBrowserAjax, 'getFiles');
 </script>
 <!-- END filebrowser -->
 <!-- BEGIN file_ui -->
 <table id="file_box" border="0" cellpadding="0" cellspacing="0">
-  <tr><td>{upload_switch}</td></tr>
-  <tr id="edit_entry" style="display: none;"><td><label for="filename">{lbl_filename}:</label><br />{filename}</td></tr>
-  <tr id="file_entry"><td><label for="uploadfile">{lbl_filename}:</label><br />{uploadfile}</td></tr>
-  <tr><td><label for="file_title">{lbl_title}:</label><br />{title}</td></tr>
-  <tr><td><label for="file_description">{lbl_description}:</label><br />{description}</td></tr>
-  <tr><td><label for="file_fast_url">{lbl_fast_url}:</label><br />{fast_url}</td></tr>
-  <tr><td class="buttons">{btn_cancel}{btn_save}</td></tr>
+  <tr><td>{{upload_switch}}</td></tr>
+  <tr id="edit_entry" style="display: none;"><td><label for="filename">{{lbl_filename}}:</label><br />{{filename}}</td></tr>
+  <tr id="file_entry"><td><label for="uploadfile">{{lbl_filename}}:</label><br />{{uploadfile}}</td></tr>
+  <tr><td><label for="file_title">{{lbl_title}}:</label><br />{{title}}</td></tr>
+  <tr><td><label for="file_description">{{lbl_description}}:</label><br />{{description}}</td></tr>
+  <tr><td><label for="file_fast_url">{{lbl_fast_url}}:</label><br />{{fast_url}}</td></tr>
+  <tr><td class="buttons">{{btn_cancel}}{{btn_save}}</td></tr>
 </table>
 <!-- END file_ui -->
 <!-- BEGIN dir_ui -->
 <table id="dir_box" border="0" cellpadding="0" cellspacing="0">
-  <tr><td><label for="dirname">{lbl_dirname}:</label><br />{dirname}</td></tr>
-  <tr><td><label for="dir_title">{lbl_title}:</label><br />{title}</td></tr>
-  <tr><td><label for="dir_description">{lbl_description}:</label><br />{description}</td></tr>
-  <tr><td><label for="dir_fast_url">{lbl_fast_url}:</label><br />{fast_url}</td></tr>
-  <tr><td class="buttons">{btn_cancel}{btn_save}</td></tr>
+  <tr><td><label for="dirname">{{lbl_dirname}}:</label><br />{{dirname}}</td></tr>
+  <tr><td><label for="dir_title">{{lbl_title}}:</label><br />{{title}}</td></tr>
+  <tr><td><label for="dir_description">{{lbl_description}}:</label><br />{{description}}</td></tr>
+  <tr><td><label for="dir_fast_url">{{lbl_fast_url}}:</label><br />{{fast_url}}</td></tr>
+  <tr><td class="buttons">{{btn_cancel}}{{btn_save}}</td></tr>
 </table>
 <!-- END dir_ui -->

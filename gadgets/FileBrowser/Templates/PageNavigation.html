@@ -2,10 +2,10 @@
 <!-- BEGIN simple-navigation -->
 <div class="gadget_navigator">
 <!-- BEGIN previous -->
-    <div class="prev"><a href="{url}">&laquo; {title}</a></div>
+    <div class="prev"><a href="{{url}}">&laquo; {{title}}</a></div>
 <!-- END previous -->
 <!-- BEGIN next -->
-    <div class="next"><a href="{url}">{title} &raquo;</a></div>
+    <div class="next"><a href="{{url}}">{{title}} &raquo;</a></div>
 <!-- END next -->
 </div>
 <!-- END simple-navigation -->
@@ -14,30 +14,30 @@
 <div class="gadget_paginator">
   <!-- BEGIN item -->
     <!-- BEGIN next -->
-    <span class="next"><a href="{url_next}">{lbl_next}</a></span>
+    <span class="next"><a href="{{url_next}}">{{lbl_next}}</a></span>
     <!-- END next -->
     <!-- BEGIN no_next -->
-    <span class="next inactive">{lbl_next}</span>
+    <span class="next inactive">{{lbl_next}}</span>
     <!-- END no_next -->
 
     <!-- BEGIN page_number -->
-      <span><a href="{url_page}">{lbl_page}</a></span>
+      <span><a href="{{url_page}}">{{lbl_page}}</a></span>
     <!-- END page_number -->
     <!-- BEGIN page_current -->
-      <span class="current"><a href="{url_page}">{lbl_page}</a></span>
+      <span class="current"><a href="{{url_page}}">{{lbl_page}}</a></span>
     <!-- END page_current -->
     <!-- BEGIN page_separator -->
       <span class="separator">...</span>
     <!-- END page_separator -->
 
     <!-- BEGIN previous -->
-    <span class="prev"><a href="{url_previous}">{lbl_previous}</a></span>
+    <span class="prev"><a href="{{url_previous}}">{{lbl_previous}}</a></span>
     <!-- END previous -->
     <!-- BEGIN no_previous -->
-    <span class="prev inactive">{lbl_previous}</span>
+    <span class="prev inactive">{{lbl_previous}}</span>
     <!-- END no_previous -->
   <!-- END item -->
-  <div><span class="total">{total}</span></div>
+  <div><span class="total">{{total}}</span></div>
 </div>
 <!-- END numbered-navigation -->
 <!-- END pager -->

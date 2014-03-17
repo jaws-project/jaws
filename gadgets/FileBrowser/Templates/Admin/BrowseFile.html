@@ -3,32 +3,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-  <title>{page-title}</title>
+  <title>{{page-title}}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="stylesheet" type="text/css" href="gadgets/ControlPanel/Resources/style{.dir}.css" />
-  <link rel="stylesheet" type="text/css" href="gadgets/FileBrowser/Resources/style{.dir}.css" />
+  <link rel="stylesheet" type="text/css" href="gadgets/ControlPanel/Resources/style{{.dir}}.css" />
+  <link rel="stylesheet" type="text/css" href="gadgets/FileBrowser/Resources/style{{.dir}}.css" />
 </head>
 <body>
   <div id="file_browser">
     <!-- BEGIN upload_file -->
-    <div id="file_upload_title">{lbl_file_upload}</div>
+    <div id="file_upload_title">{{lbl_file_upload}}</div>
     <form id="fb_form" name="fb_form" method="post"
-          action="{base_script}"
+          action="{{base_script}}"
           enctype="multipart/form-data">
         <input type="hidden" name="gadget" value="FileBrowser"/>
         <input type="hidden" name="action" id="action" value="UploadFile"/>
-        <input type="hidden" name="path" id="path" value="{path}"/>
-        <input type="hidden" name="extra_params" id="extra_params" value="{extra_params}"/>
+        <input type="hidden" name="path" id="path" value="{{path}}"/>
+        <input type="hidden" name="extra_params" id="extra_params" value="{{extra_params}}"/>
         <input type="hidden" name="selected_item" id="selected_item" value=""/>
 
         <div class="files">
             <table>
                 <tr>
-                    <td>{lbl_file_title}:</td>
-                    <td>{file_title}</td>
-                    <td>{lbl_filename}:</td>
-                    <td>{uploadfile}</td>
-                    <td>{btn_upload_file}</td>
+                    <td>{{lbl_file_title}}:</td>
+                    <td>{{file_title}}</td>
+                    <td>{{lbl_filename}}:</td>
+                    <td>{{uploadfile}}</td>
+                    <td>{{btn_upload_file}}</td>
                 </tr>
             </table>
 
@@ -37,32 +37,32 @@
     <!-- END upload_file -->
 
     <div class="navigation">
-      <label>{lbl_location}:</label>
-      {root}<!-- BEGIN path --> &#187; {directory}<!-- END path -->
+      <label>{{lbl_location}}:</label>
+      {{root}}<!-- BEGIN path --> &#187; {{directory}}<!-- END path -->
     </div>
     <div class="files">
       <table>
-        <tr><th class="col-icon">&nbsp;</th><th>{lbl_file_name}</th><th>{lbl_file_size}</th><th>{lbl_action}</th></tr>
+        <tr><th class="col-icon">&nbsp;</th><th>{{lbl_file_name}}</th><th>{{lbl_file_size}}</th><th>{{lbl_action}}</th></tr>
         <!-- BEGIN file -->
-        <tr><td>{icon}</td><td>{file_name}</td><td>{file_size}</td><td>{action}</td></tr>
+        <tr><td>{{icon}}</td><td>{{file_name}}</td><td>{{file_size}}</td><td>{{action}}</td></tr>
         <!-- END file -->
       </table>
     </div>
   </div>
 
 <script type="text/javascript">
-    var incompleteFields = "{incompleteFields}";
-    var confirmFileDelete = "{confirmFileDelete}";
-    var confirmDirDelete  = "{confirmDirDelete}";
+    var incompleteFields = "{{incompleteFields}}";
+    var confirmFileDelete = "{{confirmFileDelete}}";
+    var confirmDirDelete  = "{{confirmDirDelete}}";
 
-function selectFile(url, title, editor) {
-    switch (editor) {
+function selectFile(url, title, editor) {{
+    switch (editor) {{
         case 'TinyMCE':
             top.tinymce.activeEditor.windowManager.getParams().oninsert(url, title);
             top.tinyMCE.activeEditor.windowManager.close();
             break;
         case 'CKEditor':
-            var ckFuncIndex = '{ckFuncIndex}';
+            var ckFuncIndex = '{{ckFuncIndex}}';
             window.opener.CKEDITOR.tools.callFunction(ckFuncIndex, url, setLinkTitle(title));
             close();
             break;
@@ -71,57 +71,57 @@ function selectFile(url, title, editor) {
             opener.insertTags(opener.the_textarea, a, '', '');
             close();
             break;
-    }
+    }}
 
-    function setLinkTitle(title) {
+    function setLinkTitle(title) {{
         var dialog = window.opener.CKEDITOR.dialog.getCurrent();
-        if (dialog.getName() == 'link') {
+        if (dialog.getName() == 'link') {{
             // title
             var element = dialog.getContentElement('advanced', 'advTitle');
             element.setValue(title);
             // protocol
             var element = dialog.getContentElement('info', 'protocol');
             element.setValue('');
-        }
-    }
-}
+        }}
+    }}
+}}
 
     /**
      * Save/Upload file
      */
     function saveFile()
-    {
+    {{
         var uploadfile = document.getElementById('uploadfile').value;
         if (uploadfile == null || uploadfile == "")
-        {
+        {{
             alert(incompleteFields);
             return false;
-        }
+        }}
         document.fb_form.submit();
-    }
+    }}
 
     /**
      * Delete a file
      */
-    function deleteFile(file) {
-        if (confirm(confirmFileDelete)) {
+    function deleteFile(file) {{
+        if (confirm(confirmFileDelete)) {{
             document.getElementById('action').value = 'DeleteFile';
             document.getElementById('selected_item').value = file;
             document.fb_form.submit();
 
-        }
-    }
+        }}
+    }}
 
     /**
      * Delete a directory
      */
-    function deleteDir(dir) {
-        if (confirm(confirmDirDelete)) {
+    function deleteDir(dir) {{
+        if (confirm(confirmDirDelete)) {{
             document.getElementById('action').value = 'DeleteDir';
             document.getElementById('selected_item').value = dir;
             document.fb_form.submit();
 
-        }
-    }
+        }}
+    }}
 </script>
 <!-- END browse -->
