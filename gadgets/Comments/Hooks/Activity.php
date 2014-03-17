@@ -23,7 +23,7 @@ class Comments_Hooks_Activity extends Jaws_Gadget_Hook
         $model = $this->gadget->model->load('Comments');
         $commentsCount = $model->GetCommentsCount('', '', '', '', array(), $uid);
         if ($commentsCount > 0) {
-            $entity[0]['title'] = _t('COMMENTS_COMMENTS');
+            $entity[0]['title'] = _t('COMMENTS_COMMENT');
             $entity[0]['count'] = $commentsCount;
             $entity[0]['url'] = $this->gadget->urlMap('UserComments', array('user' => $uid));
         }
