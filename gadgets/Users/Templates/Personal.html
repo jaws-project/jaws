@@ -6,20 +6,45 @@
   <input type="hidden" name="gadget" value="Users" />
   <input type="hidden" name="action" value="UpdatePersonal" />
   <input type="hidden" name="MAX_FILE_SIZE" value="524288" />
+  <input type="hidden" name="delete_avatar" value="">
   <div class="gadget_content content">
     <fieldset>
       <div class="user_avatar">{{avatar}}
-        <input type="file" name="avatar" id="personal_avatar" onchange="previewImage(this);">
-        <input type="checkbox" name="delete_avatar" id="delete_avatar" value="1">
-        <label for="delete_avatar">{{lbl_delete_avatar}}</label>
+        <input type="file" name="avatar" onchange="previewImage(this);" style="display:none;">
+        <button type="button" title="{{lbl_browse_avatar}}" onclick="browseImage(this);">
+          <img src="images/stock/up.png" alt="upload" />
+        </button>
+        <button type="button" title="{{lbl_delete_avatar}}" onclick="removeImage(this);" >
+          <img src="images/stock/delete.png" alt="delete" />
+        </button>
+        <button type="button" title="{{lbl_reload_avatar}}" onclick="reloadImage(this);" >
+          <img src="images/stock/reload.png" alt="reload" />
+        </button>
         <script type="text/javascript">
-        function previewImage(fileElement) {{
+        var original_avatar = document.getElementById('avatar').src;
+        function previewImage(fileElement) {
             var fReader = new FileReader();
             fReader.readAsDataURL(fileElement.files[0]);
             fReader.onload = function (event) {{
                 document.getElementById('avatar').src = event.target.result;
             }}
-        }}
+        };
+
+        function browseImage(btnElement) {
+            btnElement.form.avatar.click();
+        };
+
+        function removeImage(btnElement) {
+            btnElement.form.avatar.value = '';
+            btnElement.form.delete_avatar.value = 1;
+            document.getElementById('avatar').src = 'gadgets/Users/Resources/images/photo128px.png';
+        };
+
+        function reloadImage(btnElement) {
+            btnElement.form.avatar.value = '';
+            btnElement.form.delete_avatar.value = '';
+            document.getElementById('avatar').src = original_avatar;
+        };
         </script>
       </div>
       <div>
