@@ -2,32 +2,32 @@
 <div id="main">
 <table width="100%">
   <tr>
-    <td valign="top"><div id="datagrid">{grid}</div></td>
+    <td valign="top"><div id="datagrid">{{grid}}</div></td>
     <td width="300" style="vertical-align: top;">
       <input type="hidden" name="id" id="id" value="0" />
       <fieldset>
-        <legend><span id="legend_title">{legend_title}</span></legend>
+        <legend><span id="legend_title">{{legend_title}}</span></legend>
         <table id="FeedProperties" border="0" cellpadding="0" cellspacing="0">
-          <tr><td colspan="2"><label for="title">{lbl_title}:</label><br />{title}</td></tr>
-          <tr><td dir="ltr" colspan="2"><label dir="{dir}" for="url">{lbl_url}:</label><br />{url}</td></tr>
+          <tr><td colspan="2"><label for="title">{{lbl_title}}:</label><br />{{title}}</td></tr>
+          <tr><td dir="ltr" colspan="2"><label dir="{{dir}}" for="url">{{lbl_url}}:</label><br />{{url}}</td></tr>
           <tr>
-              <td><label for="cache_time">{lbl_cache_time}:</label><br />{cache_time}</td>
-              <td><label for="view_type">{lbl_view_type}:</label><br />{view_type}</td>
+              <td><label for="cache_time">{{lbl_cache_time}}:</label><br />{{cache_time}}</td>
+              <td><label for="view_type">{{lbl_view_type}}:</label><br />{{view_type}}</td>
           </tr>
           <tr>
-              <td><label for="title_view">{lbl_title_view}:</label><br />{title_view}</td>
-              <td><label for="count_entry">{lbl_count_entry}:</label><br />{count_entry}</td>
+              <td><label for="title_view">{{lbl_title_view}}:</label><br />{{title_view}}</td>
+              <td><label for="count_entry">{{lbl_count_entry}}:</label><br />{{count_entry}}</td>
           </tr>
-          <tr><td><label for="visible">{lbl_visible}:</label><br />{visible}</td></tr>
+          <tr><td><label for="visible">{{lbl_visible}}:</label><br />{{visible}}</td></tr>
         </table>
       </fieldset>
     </td>
   </tr>
-  <tr><td class="buttons" colspan="2">{btn_cancel} {btn_save}</td></tr>
+  <tr><td class="buttons" colspan="2">{{btn_cancel}} {{btn_save}}</td></tr>
 </table>
 <script type="text/javascript">
-  var incompleteFeedFields = "{incompleteFeedFields}";
-  var confirmFeedDelete    = "{confirmFeedDelete}";
+  var incompleteFeedFields = "{{incompleteFeedFields}}";
+  var confirmFeedDelete    = "{{confirmFeedDelete}}";
   initDataGrid('feedsites_datagrid', FeedReaderAjax);
 </script>
 </div>
