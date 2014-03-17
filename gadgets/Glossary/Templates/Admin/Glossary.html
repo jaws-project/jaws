@@ -2,56 +2,56 @@
 <table style="width: 100%;" cellpadding="0" cellspacing="0">
 <tr>
 <td style="width: 250px; vertical-align: top;">
-<form name="TermList" method="post" action="{base_script}">
+<form name="TermList" method="post" action="{{base_script}}">
 <input type="hidden" name="gadget" value="Glossary" />
 <input type="hidden" name="action" value="Term" />
 <table style="width: 250px;" cellpadding="0" cellspacing="0">
-<tr><td>{term_list}</td></tr> 
-<tr><td class="buttons">{new_button}</td></tr> 
+<tr><td>{{term_list}}</td></tr> 
+<tr><td class="buttons">{{new_button}}</td></tr> 
 </table> 
 </form>
 </td>
 <td style="vertical-align: top; padding: 0px 5px 0px 5px;">
 
 <ul id="tabs">
- <li><span id="editTab" class="current" onclick="switchTab('edit');">{edit}</span></li>
- <li><span id="previewTab" onclick="preview();">{preview}</span></li>
+ <li><span id="editTab" class="current" onclick="switchTab('edit');">{{edit}}</span></li>
+ <li><span id="previewTab" onclick="preview();">{{preview}}</span></li>
 </ul>
 
 <div id="working_area">
  <div id="edit">
-  <form name="EditForm" method="post" action="{base_script}">
-   {hidden_id}
+  <form name="EditForm" method="post" action="{{base_script}}">
+   {{hidden_id}}
    <table style="width: 100%;">
     <tr>
      <td>
-      <label for="term_title">{term_title}:</label>
-      {title_field}
+      <label for="term_title">{{term_title}}:</label>
+      {{title_field}}
      </td>
     </tr>
     <tr>
      <td>
-      <label for="fast_url">{lbl_fast_url}:</label>
-      {fast_url}
+      <label for="fast_url">{{lbl_fast_url}}:</label>
+      {{fast_url}}
      </td>
     </tr>
     <tr>
      <td>
-      <label for="term_contents">{contents}:</label>
-      {contents_field}
+      <label for="term_contents">{{contents}}:</label>
+      {{contents_field}}
      </td>
     </tr>
    </table>
-   <div class="floatbtns">{delete}</div>
-   <div class="buttons">{preview_button} {cancel} {save}</div>
+   <div class="floatbtns">{{delete}}</div>
+   <div class="buttons">{{preview_button}} {{cancel}} {{save}}</div>
   </form>
  </div>
  
  <div id="preview">
-  <form name="EditForm" method="post" action="{base_script}">
+  <form name="EditForm" method="post" action="{{base_script}}">
    <div id="preview_title"></div>
    <div id="preview_contents"></div>
-   <div class="buttons">{edit_button} {save}</div>
+   <div class="buttons">{{edit_button}} {{save}}</div>
   </form>
  </div>
 
@@ -61,15 +61,15 @@
 </tr>
 </table>
 <script type="text/javascript">
-var incompleteGlossaryFields = "{incompleteGlossaryFields}";
-var retrievingMessage        = "{retrieving_message}";
-var savingMessage     = "{saving_message}";
-var deletingMessage   = "{deleting_message}";
-var updatingMessage   = "{updating_message}";
-var sendingMessage    = "{sending_message}";
-var aclEditTerm       = {acl_edit};
-var aclDeleteTerm     = {acl_delete};
-var aclAddTerm        = {acl_add};
+var incompleteGlossaryFields = "{{incompleteGlossaryFields}}";
+var retrievingMessage        = "{{retrieving_message}}";
+var savingMessage     = "{{saving_message}}";
+var deletingMessage   = "{{deleting_message}}";
+var updatingMessage   = "{{updating_message}}";
+var sendingMessage    = "{{sending_message}}";
+var aclEditTerm       = {{acl_edit}};
+var aclDeleteTerm     = {{acl_delete}};
+var aclAddTerm        = {{acl_add}};
 getFirst();
 </script>
 <div id="notifications"></div>
