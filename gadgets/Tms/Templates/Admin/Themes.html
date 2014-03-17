@@ -1,15 +1,15 @@
 <!-- BEGIN Tms -->
-{menubar}
+{{menubar}}
 <script type="text/javascript">
-  var base_script = "{base_script}";
-  var confirmUninstallTheme = "{confirmUninstallTheme}";
-  var confirmDeleteTheme = "{confirmDeleteTheme}";
-  var noAvailableData       = "{noAvailableData}";
+  var base_script = "{{base_script}}";
+  var confirmUninstallTheme = "{{confirmUninstallTheme}}";
+  var confirmDeleteTheme = "{{confirmDeleteTheme}}";
+  var noAvailableData       = "{{noAvailableData}}";
 </script>
 <table style="width: 100%; padding: 0px; border-spacing: 0.1px;">
   <tr>
     <td id="themes_list_area">
-      {themes_combo}
+      {{themes_combo}}
     </td>
     <td id="themes_info_area" rowspan="2">
       <div id="theme_area"></div>
@@ -18,16 +18,16 @@
   <tr>
     <td id="extra_options">
       <!-- BEGIN UploadTheme -->
-      <form id="theme_upload_form" name="theme_upload_form" action="{base_script}" method="post" enctype="multipart/form-data">
+      <form id="theme_upload_form" name="theme_upload_form" action="{{base_script}}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="gadget" value="Tms" />
         <input type="hidden" name="action" value="UploadTheme" />
-        <label for="theme_upload">{lbl_theme_upload}:</label><br />{theme_upload}
+        <label for="theme_upload">{{lbl_theme_upload}}:</label><br />{{theme_upload}}
       </form>
       <!-- END UploadTheme -->
     </td>
   </tr>
 </table>
-<div id="buttons_area">{btn_delete}{btn_download}</div>
+<div id="buttons_area">{{btn_delete}}{{btn_download}}</div>
 <script type="text/javascript">
 $('themes_combo').selectedIndex = -1;
 </script>
