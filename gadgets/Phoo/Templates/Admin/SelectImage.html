@@ -80,9 +80,9 @@
   </div>
 </body>
 <script type="text/JavaScript">
-    function insertImage(filename, title, desc, size, linked, editor) {{
+    function insertImage(filename, title, desc, size, linked, editor) {
         var src = getImagePath(filename, size);
-        switch (editor) {{
+        switch (editor) {
             case 'TinyMCE':
                 top.tinymce.activeEditor.windowManager.getParams().oninsert(src, title);
                 top.tinyMCE.activeEditor.windowManager.close();
@@ -94,19 +94,19 @@
                 break;
             case 'TextArea':
                 var img = '<img src="' + src + '" title="' + title + '" alt="' + desc + '" />';
-                if (linked === 'true') {{
+                if (linked === 'true') {
                     img = '<a href="' + filename + '">' + img + '</a>';
-                }}
+                }
                 opener.insertTags(opener.the_textarea, img, '', '');
                 close();
                 break;
-        }}
+        }
 
-        function getImagePath(filename, size) {{
+        function getImagePath(filename, size) {
             var path = filename.substring(0, filename.lastIndexOf('/')),
                 file = filename.substring(filename.lastIndexOf('/'));
 
-            switch(size) {{
+            switch(size) {
                 case 'Thumb':
                     return path + '/thumb' + file;
                     break;
@@ -115,16 +115,16 @@
                     break;
                 default:
                     return filename;
-            }}
-        }}
+            }
+        }
 
-        function setImageAlt(title) {{
+        function setImageAlt(title) {
             var dialog = window.opener.CKEDITOR.dialog.getCurrent();
-            if (dialog.getName() == 'image') {{
+            if (dialog.getName() == 'image') {
                 var txtAltField = dialog.getContentElement( 'info', 'txtAlt' );
                 txtAltField.setValue(title);
-            }}
-        }}
-    }}
+            }
+        }
+    }
 </script>
 <!-- END ImageSelect -->

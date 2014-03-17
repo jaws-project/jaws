@@ -42,28 +42,28 @@
     <!-- BEGIN photos -->
     <script language="JavaScript">
         var incompleteFields = "{{incompleteFields}}";
-        function selectAllAlbums() {{
+        function selectAllAlbums() {
             var combo, i;
             combo = document.getElementById('albums');
-            for (i = combo.options.length - 1; i >= 0; i--) {{
+            for (i = combo.options.length - 1; i >= 0; i--) {
                 combo.options[i].selected = true;
-            }}
-        }}
+            }
+        }
 
         /**
          * Upload photo
          */
         function uploadPhoto()
-        {{
+        {
             var defaultAlbum = "{{defaultAlbum}}";
             var photo1 = document.getElementById('photo1').value;
-            if (photo1 == null || photo1 == "") {{
+            if (photo1 == null || photo1 == "") {
                 alert(incompleteFields);
                 return false;
-            }}
+            }
             document.getElementById('album').value = defaultAlbum;
             document.phoo_form.submit();
-        }}
+        }
     </script>
 
     <form id="album_form" name="album_form" action="{{base_script}}" method="post">
