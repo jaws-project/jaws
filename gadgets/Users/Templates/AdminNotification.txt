@@ -1,19 +1,19 @@
 <!-- BEGIN Notification -->
-{say_hello},
+{{say_hello}},
 
-{message}
+{{message}}
 
-{lbl_username}: {username}
-{lbl_nickname}: {nickname}
-{lbl_email}: {email}
-{lbl_ip}: {ip}
+{{lbl_username}}: {{username}}
+{{lbl_nickname}}: {{nickname}}
+{{lbl_email}}: {{email}}
+{{lbl_ip}}: {{ip}}
 
 <!-- BEGIN Activation -->
-{lbl_activation_link}: {activation_link}
+{{lbl_activation_link}}: {{activation_link}}
 <!-- END Activation -->
 
-{thanks},
+{{thanks}},
 -------------------
-{site-name}
-{site-url}
+{{site-name}}
+{{site-url}}
 <!-- END Notification -->
