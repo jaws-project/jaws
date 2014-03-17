@@ -4,18 +4,18 @@
   <tr>
     <td valign="top" align="center" width="70%">
       <div id="datagrid">
-      {grid}
+      {{grid}}
       </div>
     </td>
     <td valign="top">
-      {config_form}
-      {webcam_form}
+      {{config_form}}
+      {{webcam_form}}
     </td>
   </tr>
 </table>
 </div>
 <script type="text/javascript">
-    var incompleteWebcamFields = "{incompleteWebcamFields}";
+    var incompleteWebcamFields = "{{incompleteWebcamFields}}";
     initDataGrid('webcam_datagrid', WebcamAjax);
 </script>
 <!-- END webcam -->

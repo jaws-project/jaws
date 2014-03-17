@@ -1,17 +1,17 @@
 <!-- BEGIN webcam -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_content content">
     <!-- BEGIN item -->
-    <h4>{title}</h4>
-    <div><img id="cam{id}" alt="{title}" src="{url}" /></div>
+    <h4>{{title}}</h4>
+    <div><img id="cam{{id}}" alt="{{title}}" src="{{url}}" /></div>
     <script type="text/javascript">
-        setTimeout ("refresh_cam{id}()",({refresh}*1000));
-        function refresh_cam{id}() 
-        {
-            document.cam{id}.src = "{url}?" + Math.random();
-            setTimeout ("refresh_cam{id}()",({refresh}*1000));
-        }
+        setTimeout ("refresh_cam{{id}}()",({{refresh}}*1000));
+        function refresh_cam{{id}}() 
+        {{
+            document.cam{{id}}.src = "{{url}}?" + Math.random();
+            setTimeout ("refresh_cam{{id}}()",({{refresh}}*1000));
+        }}
     </script>
     <!-- END item -->
   </div>
