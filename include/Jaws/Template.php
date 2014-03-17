@@ -10,7 +10,7 @@
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 /**
- * Struct for a block
+ * Structure for a block
  */
 class Jaws_TemplateBlock
 {
@@ -56,7 +56,7 @@ class Jaws_Template
     {
         $this->IdentifierRegExp = '[\.[:digit:][:lower:]_-]+';
         $this->BlockRegExp = '@<!--\s+begin\s+('.$this->IdentifierRegExp.')\s+([^>]*)-->(.*)<!--\s+end\s+\1\s+-->@sim';
-        $this->VarsRegExp = '@{\s*('.$this->IdentifierRegExp.')\s*}@sim';
+        $this->VarsRegExp = '@{{\s*('.$this->IdentifierRegExp.')\s*}}@sim';
         $this->IsBlockRegExp = '@##\s*('.$this->IdentifierRegExp.')\s*##@sim';
         $namexp = '[[:digit:][:lower:]_]+';
         $this->NewBlockRegExp = '@<!--\s+begin\s+('.$namexp.')\s+'.
@@ -85,7 +85,7 @@ class Jaws_Template
     }
 
     /**
-     * Returns template without any proccess
+     * Returns template without any process
      *
      * @access  public
      */
@@ -153,7 +153,7 @@ class Jaws_Template
     /**
      * Loads a template from a string
      *
-     * @param   $tplString String that contains a template struct
+     * @param   $tplString String that contains a template structure
      * @access  public
      */
     function loadFromString($tplString)
@@ -165,7 +165,7 @@ class Jaws_Template
     }
 
     /**
-     * Returns the main block, subblocks are replaced with ##subblock##
+     * Returns the main block, sub-blocks are replaced with ##subblock##
      *
      * @access  public
      */
@@ -180,7 +180,7 @@ class Jaws_Template
     }
 
     /**
-     * Return the subblocks struct for a given block
+     * Return the sub-blocks structure for a given block
      *
      * @param   $contentString Block string
      * @access  public
@@ -262,7 +262,7 @@ class Jaws_Template
         // set variables
         foreach($vars as $key => $value) {
             if (!is_array($value)) {
-                $content = str_replace('{'.$key.'}', $value, $content);
+                $content = str_replace('{{'.$key.'}}', $value, $content);
             }
         }
 
@@ -415,7 +415,7 @@ class Jaws_Template
     }
 
     /**
-     * Parse a given block, replacing its variables and parsed subblocks
+     * Parse a given block, replacing its variables and parsed sub-blocks
      *
      * @access  public
      * @param   $blockString    Block string
@@ -431,7 +431,7 @@ class Jaws_Template
             foreach ($block->Vars as $k => $v) {
                 if (!is_array($v)) {
                     $v = str_replace('\\', '\\\\', $v);
-                    $result = str_replace('{'.$k.'}', $v, $result);
+                    $result = str_replace('{{'.$k.'}}', $v, $result);
                 }
             }
 
@@ -602,7 +602,7 @@ class Jaws_Template
      */
     function VariableExists($variable)
     {
-        return stristr($this->CurrentBlock->Content, '{'.$variable.'}');
+        return stristr($this->CurrentBlock->Content, '{{'.$variable.'}}');
     }
 
     /**
