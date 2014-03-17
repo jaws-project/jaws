@@ -2,53 +2,53 @@
 <table style="width: 100%;">
 <tr>
 <td style="width: 196px; vertical-align: top;">
-<form name="BlockList" method="post" action="{base_script}">
+<form name="BlockList" method="post" action="{{base_script}}">
 <input type="hidden" name="gadget" value="Blocks" />
 <input type="hidden" name="action" value="Blocks" />
 <table style="width: 196px;">
-<tr><td>{block_list}</td></tr>
-<tr><td class="buttons">{new_button}</td></tr>
+<tr><td>{{block_list}}</td></tr>
+<tr><td class="buttons">{{new_button}}</td></tr>
 </table>
 </form>
 </td>
 <td style="vertical-align: top; padding: 0px 5px 0px 5px;">
 
 <ul id="tabs">
- <li><span id="editTab" class="current" onclick="switchTab('edit');">{edit}</span></li>
- <li><span id="previewTab" onclick="preview();">{preview}</span></li>
- <li><span><label>{lbl_block_id}:</label><label id="block_id_txt"></label></span></li>
+ <li><span id="editTab" class="current" onclick="switchTab('edit');">{{edit}}</span></li>
+ <li><span id="previewTab" onclick="preview();">{{preview}}</span></li>
+ <li><span><label>{{lbl_block_id}}:</label><label id="block_id_txt"></label></span></li>
 </ul>
 
 <div id="working_area">
  <div id="edit">
-  <form name="EditForm" method="post" action="{base_script}">
-   {hidden_id}
+  <form name="EditForm" method="post" action="{{base_script}}">
+   {{hidden_id}}
    <table style="width: 100%;">
     <tr>
      <td>
-      <label for="block_title">{block_title}:</label>
-      {title_field}
+      <label for="block_title">{{block_title}}:</label>
+      {{title_field}}
      </td>
     </tr>
     <tr>
      <td>
-      <label for="block_contents">{contents}:</label>
-      {contents_field}
+      <label for="block_contents">{{contents}}:</label>
+      {{contents_field}}
      </td>
     </tr>
    </table>
-   <div class="floatbtns">{display_title}</div>
-   <div class="buttons">{delete} {preview_button} {cancel} {save}</div>
+   <div class="floatbtns">{{display_title}}</div>
+   <div class="buttons">{{delete}} {{preview_button}} {{cancel}} {{save}}</div>
   </form>
  </div>
 
  <div id="preview">
-  <form name="EditForm" method="post" action="{base_script}">
+  <form name="EditForm" method="post" action="{{base_script}}">
    <div id="preview_title"></div>
    <div id="preview_contents"></div>
    <input type="hidden" name="gadget" value="Blocks" />
    <input type="hidden" name="action" value="Admin" />
-   <div class="buttons">{edit_button}</div>
+   <div class="buttons">{{edit_button}}</div>
   </form>
  </div>
 
@@ -58,15 +58,15 @@
 </tr>
 </table>
 <script type="text/javascript">
-var incompleteBlockFields = "{incompleteBlockFields}";
-var retrievingMessage     = "{retrieving_message}";
-var savingMessage     = "{saving_message}";
-var deletingMessage   = "{deleting_message}";
-var updatingMessage   = "{updating_message}";
-var sendingMessage    = "{sending_message}";
-var aclEditBlock      = {acl_edit};
-var aclDeleteBlock    = {acl_delete};
-var aclAddBlock       = {acl_add};
+var incompleteBlockFields = "{{incompleteBlockFields}}";
+var retrievingMessage     = "{{retrieving_message}}";
+var savingMessage     = "{{saving_message}}";
+var deletingMessage   = "{{deleting_message}}";
+var updatingMessage   = "{{updating_message}}";
+var sendingMessage    = "{{sending_message}}";
+var aclEditBlock      = {{acl_edit}};
+var aclDeleteBlock    = {{acl_delete}};
+var aclAddBlock       = {{acl_add}};
 getFirst();
 </script>
 <!-- END blocks -->
