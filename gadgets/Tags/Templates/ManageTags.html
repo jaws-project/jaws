@@ -86,34 +86,34 @@
 <div class="gadget_footer"></div>
 
 <script type="text/javascript">
-    function toggleCheckboxes(){{
+    function toggleCheckboxes(){
         do_check = !do_check;
-        $$("input[name='tags_checkbox[]']").each(function(el) {{ el.checked = do_check; }});
-    }}
+        $$("input[name='tags_checkbox[]']").each(function(el) { el.checked = do_check; });
+    }
     var do_check = false;
 
-    function doDGAction() {{
+    function doDGAction() {
         var action = document.getElementById("tags_actions_combo").value;
-        if(action == 'delete') {{
+        if(action == 'delete') {
             document.tags.action.value = 'DeleteTags';
-        }} else if(action == 'merge') {{
-            if($$("input[name='tags_checkbox[]']:checked").length<2) {{
+        } else if(action == 'merge') {
+            if($$("input[name='tags_checkbox[]']:checked").length<2) {
                 alert("{{selectMoreThanOneTags}}");
                 return false;
-            }}
+            }
             var newName = prompt("{{enterNewTagName}}:");
-            if (newName.trim() == "") {{
+            if (newName.trim() == "") {
                 return false;
-            }}
+            }
 
             document.tags.action.value = 'MergeTags';
             document.tags.new_tag_name.value = newName;
-        }} else {{
+        } else {
             return false;
-        }}
+        }
         document.getElementById("tags").submit();
         return true;
-    }}
+    }
 </script>
 <!-- END tags -->
 
