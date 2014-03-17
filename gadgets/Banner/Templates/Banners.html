@@ -19,16 +19,16 @@
 <div class="gadget_footer"></div>
 <script type="text/javascript">
   function doVScroll(el)
-  {{
+  {
       var elParent = el.parentNode;
-      if (parseInt(el.style.top) > -el.offsetHeight) {{
+      if (parseInt(el.style.top) > -el.offsetHeight) {
           el.style.top = parseInt(el.style.top) - 1 + "px";
-      }} else {{
+      } else {
           el.style.top = elParent.offsetHeight + "px";
-      }}
+      }
 
-      el.timer = setTimeout(function(){{doVScroll(el)}}, 25);
-  }}
+      el.timer = setTimeout(function(){doVScroll(el)}, 25);
+  }
 
   var el = document.getElementById('banners_{{gid}}');
   var elParent = el.parentNode;
@@ -55,16 +55,16 @@
 <div class="gadget_footer"></div>
 <script type="text/javascript">
   function doHScroll(el)
-  {{
+  {
       var elParent = el.parentNode;
-      if (parseInt(el.style.left) > -el.offsetWidth) {{
+      if (parseInt(el.style.left) > -el.offsetWidth) {
           el.style.left = parseInt(el.style.left) - 1 + "px";
-      }} else {{
+      } else {
           el.style.left = elParent.offsetWidth + "px";
-      }}
+      }
 
-      el.timer = setTimeout(function(){{doHScroll(el)}}, 25);
-  }}
+      el.timer = setTimeout(function(){doHScroll(el)}, 25);
+  }
 
   var el = document.getElementById('banners_{{gid}}');
   var elParent = el.parentNode;
