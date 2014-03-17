@@ -8,10 +8,10 @@
     <script type="text/javascript">
         setTimeout ("refresh_cam{{id}}()",({{refresh}}*1000));
         function refresh_cam{{id}}() 
-        {{
+        {
             document.cam{{id}}.src = "{{url}}?" + Math.random();
             setTimeout ("refresh_cam{{id}}()",({{refresh}}*1000));
-        }}
+        }
     </script>
     <!-- END item -->
   </div>
