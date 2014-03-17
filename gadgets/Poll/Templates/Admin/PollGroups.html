@@ -1,36 +1,36 @@
 <!-- BEGIN PollGroups -->
-{menubar}
+{{menubar}}
 <table width="100%"><tr>
-  <td id="pg_datagrid">{grid}</td>
+  <td id="pg_datagrid">{{grid}}</td>
   <td width="1%" valign="top">
     <input type="hidden" name="gid" id="gid" value="0" />
     <fieldset>
-      <legend><span id="legend_title">{legend_title}</span></legend>
-      <div id="pg_work_area">{pollgroup_ui}</div>
+      <legend><span id="legend_title">{{legend_title}}</span></legend>
+      <div id="pg_work_area">{{pollgroup_ui}}</div>
     </fieldset>
-    <div class="buttons">{btn_cancel}{btn_save}</div>
+    <div class="buttons">{{btn_cancel}}{{btn_save}}</div>
   </td>
 </tr></table>
 <script type="text/javascript">
   var currentAction = 'PollGroups',
-      incompleteGroupsFields = "{incompleteGroupsFields}",
-      confirmPollGroupDelete = "{confirmPollGroupDelete}",
-      addPollGroup_title = "{addPollGroup_title}",
-      editPollGroup_title = "{editPollGroup_title}",
-      editPollGroupPolls_title = "{editPollGroupPolls_title}";
+      incompleteGroupsFields = "{{incompleteGroupsFields}}",
+      confirmPollGroupDelete = "{{confirmPollGroupDelete}}",
+      addPollGroup_title = "{{addPollGroup_title}}",
+      editPollGroup_title = "{{editPollGroup_title}}",
+      editPollGroupPolls_title = "{{editPollGroupPolls_title}}";
   initDataGrid('pollgroups_datagrid', PollAjax);
   stopAction();
 </script>
 <!-- END PollGroups -->
 <!-- BEGIN PollGroupUI -->
 <table id="groups_box">
-  <tr><td><label for="title">{lbl_title}:</label><br />{title}</td></tr>
-  <tr><td><label for="visible">{lbl_visible}:</label><br />{visible}</td></tr>
+  <tr><td><label for="title">{{lbl_title}}:</label><br />{{title}}</td></tr>
+  <tr><td><label for="visible">{{lbl_visible}}:</label><br />{{visible}}</td></tr>
 </table>
 <!-- END PollGroupUI -->
 <!-- BEGIN PollGroupPollsUI -->
 <div id="PollGroupPolls">
-  <label for="title">{lbl_title}:</label><br />{title}<br />
-  {pg_polls_combo}
+  <label for="title">{{lbl_title}}:</label><br />{{title}}<br />
+  {{pg_polls_combo}}
 </div>
 <!-- END PollGroupPollsUI -->

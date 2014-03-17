@@ -1,9 +1,9 @@
 <!-- BEGIN Reports -->
-{menubar}
+{{menubar}}
 <table width="100%"><tr>
   <td id="polls_box">
-    <div><label for="pollgroups">{lbl_pollgroups}:</label>{pollgroups_combo}</div>
-    <div><label for="grouppolls">{lbl_grouppolls}:</label>{grouppolls_combo}</div>
+    <div><label for="pollgroups">{{lbl_pollgroups}}:</label>{{pollgroups_combo}}</div>
+    <div><label for="grouppolls">{{lbl_grouppolls}}:</label>{{grouppolls_combo}}</div>
     <script type="text/javascript">
       $('pollgroups').selectedIndex = 0;
     </script>
@@ -20,18 +20,18 @@
 <table id="poll_results">
   <!-- BEGIN answer -->
   <tr>
-    <td>{answer}</td>
-    <td width="1%">{percent}</td>
+    <td>{{answer}}</td>
+    <td width="1%">{{percent}}</td>
     <td width="150" >
-      <img src="gadgets/Poll/Resources/images/vote.png" width="{image_width}" alt="{percent}" />
+      <img src="gadgets/Poll/Resources/images/vote.png" width="{{image_width}}" alt="{{percent}}" />
     </td>
-    <td width="1%">{votes}</td>
+    <td width="1%">{{votes}}</td>
   </tr>
   <!-- END answer -->
   <tr class="poll_resume">
     <td></td>
-    <td colspan="2">{lbl_total_votes}:</td>
-    <td>{total_votes}</td>
+    <td colspan="2">{{lbl_total_votes}}:</td>
+    <td>{{total_votes}}</td>
   </tr>
 </table>
 <!-- END PollResults -->

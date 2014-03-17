@@ -1,38 +1,38 @@
 <!-- BEGIN poll -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
-  <div class="gadget_response"><div class="simple-response-msg">{msg}</div></div>
+  <div class="gadget_response"><div class="simple-response-msg">{{msg}}</div></div>
   <div class="gadget_content content">
-    <h4>{question}</h4>
+    <h4>{{question}}</h4>
     <!-- BEGIN voting -->
-    <form action="{base_script}" name="poll_form_{pid}" method="post">
+    <form action="{{base_script}}" name="poll_form_{{pid}}" method="post">
     <input type="hidden" name="gadget" value="Poll" />
     <input type="hidden" name="action" value="Vote" />
-    <input type="hidden" name="pid" value="{pid}" />
+    <input type="hidden" name="pid" value="{{pid}}" />
     <!-- BEGIN answer -->
     <div class="poll_answer">
-      {input}<label for="poll_answer_input_{aid}">{answer}</label>
+      {{input}}<label for="poll_answer_input_{{aid}}">{{answer}}</label>
     </div>
     <!-- END answer -->
-    <div class="gadget_actions actions">{result_link} {btn_vote}</div>
+    <div class="gadget_actions actions">{{result_link}} {{btn_vote}}</div>
     </form>
     <!-- END voting -->
     <!-- BEGIN result -->
     <ul>
       <!-- BEGIN answer -->
-      <li class="poll_answer_result poll_answer_{rank}">
-        <label>{answer}</label>
-        <div style="width: {percent}%;">{txt_percent}({votes})</div>
+      <li class="poll_answer_result poll_answer_{{rank}}">
+        <label>{{answer}}</label>
+        <div style="width: {{percent}}%;">{{txt_percent}}({{votes}})</div>
       </li>
       <!-- END answer -->
       <li class="poll_total_votes">
-        <label>{lbl_total_votes}: {total_votes}</label>
+        <label>{{lbl_total_votes}}: {{total_votes}}</label>
       </li>
     </ul>
     <!-- END result -->
   </div>
-  <div class="poll_message">{already_message}</div>
-  <div class="poll_message">{disabled_message}</div>
+  <div class="poll_message">{{already_message}}</div>
+  <div class="poll_message">{{disabled_message}}</div>
 </div>
 <div class="gadget_footer"></div>
 <!-- END poll -->

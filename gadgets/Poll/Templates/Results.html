@@ -1,17 +1,17 @@
 <!-- BEGIN results -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
   <div class="gadget_content content">
-    <h4>{question}</h4>
+    <h4>{{question}}</h4>
     <ul>
       <!-- BEGIN answer -->
-      <li class="poll_answer_result poll_answer_{aid}">
-        <label>{answer}</label>
-        <div style="width: {percent}%;">{txt_percent}({votes})</div>
+      <li class="poll_answer_result poll_answer_{{aid}}">
+        <label>{{answer}}</label>
+        <div style="width: {{percent}}%;">{{txt_percent}}({{votes}})</div>
       </li>
       <!-- END answer -->
       <li class="poll_total_votes">
-        <label>{lbl_total_votes}: {total_votes}</label>
+        <label>{{lbl_total_votes}}: {{total_votes}}</label>
       </li>
     </ul>
   </div>
