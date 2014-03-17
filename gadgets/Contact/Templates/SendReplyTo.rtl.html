@@ -1,33 +1,33 @@
 <!-- BEGIN html -->
 <table border="1" style="direction: rtl;">
-  <tr><td>{lbl_name}:</td><td>{name}</td></tr>
-  <tr><td>{lbl_email}:</td><td>{email}</td></tr>
-  <tr><td colspan="2">{lbl_message}:</td></tr>
-  <tr><td colspan="2">{message}</td></tr>
-  <tr><td colspan="2">{createtime}</td></tr>
-  <tr><td colspan="2">{lbl_reply}:</td></tr>
-  <tr><td colspan="2">{reply}</td></tr>
+  <tr><td>{{lbl_name}}:</td><td>{{name}}</td></tr>
+  <tr><td>{{lbl_email}}:</td><td>{{email}}</td></tr>
+  <tr><td colspan="2">{{lbl_message}}:</td></tr>
+  <tr><td colspan="2">{{message}}</td></tr>
+  <tr><td colspan="2">{{createtime}}</td></tr>
+  <tr><td colspan="2">{{lbl_reply}}:</td></tr>
+  <tr><td colspan="2">{{reply}}</td></tr>
 </table>
 <br/>
 -------------------
 <br/>
-<a href="{profile_url}">{nickname}</a>
+<a href="{{profile_url}}">{{nickname}}</a>
 <br/>
-<a href="{site-url}">{site-name}</a>
+<a href="{{site-url}}">{{site-name}}</a>
 <!-- END html -->
 <!-- BEGIN text -->
-{lbl_name}: {name}
-{lbl_email}: {email}
-{lbl_message}:
-{message}
-{createtime}
-{lbl_reply}:
-{reply}
+{{lbl_name}}: {{name}}
+{{lbl_email}}: {{email}}
+{{lbl_message}}:
+{{message}}
+{{createtime}}
+{{lbl_reply}}:
+{{reply}}
 
 -------------------
-{nickname}
-{profile_url}
+{{nickname}}
+{{profile_url}}
 
-{site-name}
-{site-url}
+{{site-name}}
+{{site-url}}
 <!-- END text -->

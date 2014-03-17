@@ -1,22 +1,22 @@
 <!-- BEGIN Contacts -->
-{menubar}
+{{menubar}}
 <div id="main">
 <table width="100%">
   <tr>
     <td id="c_datagrid" valign="top">
-      <div><label for="recipient_filter">{lbl_recipient_filter}: </label>{recipient_filter}</div>
-      {grid}
+      <div><label for="recipient_filter">{{lbl_recipient_filter}}: </label>{{recipient_filter}}</div>
+      {{grid}}
     </td>
     <td id="contact_ui">
       <input type="hidden" name="id" id="id" value="0" />
       <fieldset>
-        <legend><span id="legend_title">{legend_title}</span></legend>
-        <div id="c_work_area">{contact_ui}</div>
+        <legend><span id="legend_title">{{legend_title}}</span></legend>
+        <div id="c_work_area">{{contact_ui}}</div>
       </fieldset>
     </td>
   </tr>
   <tr>
-    <td class="buttons" colspan="2">{btn_cancel}{btn_save}{btn_save_send}</td>
+    <td class="buttons" colspan="2">{{btn_cancel}}{{btn_save}}{{btn_save_send}}</td>
   </tr>
 </table>
 
@@ -24,29 +24,29 @@
   currentAction = 'Contacts';
   $('recipient_filter').selectedIndex = 0;
   initDataGrid('contacts_datagrid', ContactAjax, getContacts);
-  var incompleteContactFields = "{incompleteContactFields}";
-  var confirmContactDelete    = "{confirmContactDelete}";
-  var messageDetail_title     = "{messageDetail_title}";
-  var contactReply_title      = "{contactReply_title}";
-  var dataURL                 = "{dataURL}";
+  var incompleteContactFields = "{{incompleteContactFields}}";
+  var confirmContactDelete    = "{{confirmContactDelete}}";
+  var messageDetail_title     = "{{messageDetail_title}}";
+  var contactReply_title      = "{{contactReply_title}}";
+  var dataURL                 = "{{dataURL}}";
 </script>
 
 </div>
 <!-- END Contacts -->
 <!-- BEGIN ContactUI -->
 <table id="contact_box">
-  <tr><td><label>{lbl_ip}:</label></td><td id="contact_ip"></td></tr>
-  <tr><td><label for="name">{lbl_name}:</label></td><td>{name}</td></tr>
-  <tr><td><label for="email">{lbl_email}:</label></td><td dir="ltr">{email}</td></tr>
-  <tr><td><label for="company">{lbl_company}:</label></td><td>{company}</td></tr>
-  <tr><td><label for="url">{lbl_url}:</label></td><td dir="ltr">{url}</td></tr>
-  <tr><td><label for="tel">{lbl_tel}:</label></td><td dir="ltr">{tel}</td></tr>
-  <tr><td><label for="fax">{lbl_fax}:</label></td><td dir="ltr">{fax}</td></tr>
-  <tr><td><label for="mobile">{lbl_mobile}:</label></td><td dir="ltr">{mobile}</td></tr>
-  <tr><td><label for="address">{lbl_address}:</label></td><td>{address}</td></tr>
-  <tr><td><label for="rid">{lbl_recipient}:</label></td><td>{recipient}</td></tr>
-  <tr><td><label for="subject">{lbl_subject}:</label></td><td>{subject}</td></tr>
-  <tr><td><label for="message">{lbl_message}:</label></td><td>{message}</td></tr>
+  <tr><td><label>{{lbl_ip}}:</label></td><td id="contact_ip"></td></tr>
+  <tr><td><label for="name">{{lbl_name}}:</label></td><td>{{name}}</td></tr>
+  <tr><td><label for="email">{{lbl_email}}:</label></td><td dir="ltr">{{email}}</td></tr>
+  <tr><td><label for="company">{{lbl_company}}:</label></td><td>{{company}}</td></tr>
+  <tr><td><label for="url">{{lbl_url}}:</label></td><td dir="ltr">{{url}}</td></tr>
+  <tr><td><label for="tel">{{lbl_tel}}:</label></td><td dir="ltr">{{tel}}</td></tr>
+  <tr><td><label for="fax">{{lbl_fax}}:</label></td><td dir="ltr">{{fax}}</td></tr>
+  <tr><td><label for="mobile">{{lbl_mobile}}:</label></td><td dir="ltr">{{mobile}}</td></tr>
+  <tr><td><label for="address">{{lbl_address}}:</label></td><td>{{address}}</td></tr>
+  <tr><td><label for="rid">{{lbl_recipient}}:</label></td><td>{{recipient}}</td></tr>
+  <tr><td><label for="subject">{{lbl_subject}}:</label></td><td>{{subject}}</td></tr>
+  <tr><td><label for="message">{{lbl_message}}:</label></td><td>{{message}}</td></tr>
   <tr id="tr_attachment" style="display:none"><td></td><td>
     <img src="gadgets/Contact/Resources/images/attachment.png" />
     <a id="attachment" target="_blank"></a>
@@ -55,10 +55,10 @@
 <!-- END ContactUI -->
 <!-- BEGIN ReplyUI -->
 <table id="reply_box">
-  <tr><td><label for="name">{lbl_name}:</label></td><td>{name}</td></tr>
-  <tr><td><label for="email">{lbl_email}:</label></td><td dir="ltr">{email}</td></tr>
-  <tr><td><label for="subject">{lbl_subject}:</label></td><td>{subject}</td></tr>
-  <tr><td><label for="message">{lbl_message}:</label></td><td>{message}</td></tr>
-  <tr><td><label for="reply">{lbl_reply}:</label></td><td>{reply}</td></tr>
+  <tr><td><label for="name">{{lbl_name}}:</label></td><td>{{name}}</td></tr>
+  <tr><td><label for="email">{{lbl_email}}:</label></td><td dir="ltr">{{email}}</td></tr>
+  <tr><td><label for="subject">{{lbl_subject}}:</label></td><td>{{subject}}</td></tr>
+  <tr><td><label for="message">{{lbl_message}}:</label></td><td>{{message}}</td></tr>
+  <tr><td><label for="reply">{{lbl_reply}}:</label></td><td>{{reply}}</td></tr>
 </table>
 <!-- END ReplyUI -->

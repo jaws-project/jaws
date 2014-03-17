@@ -1,51 +1,51 @@
 <!-- BEGIN mailer -->
-{menubar}
+{{menubar}}
 <div id="mailer">
-  <div class="options">{options}</div>
+  <div class="options">{{options}}</div>
   <table width="100%">
     <tbody id="batch_mail">
-      <tr><th>{lbl_group}:</th><td>{groups}</td></tr>
-      <tr><th>{lbl_user}:</th><td>{users}</td></tr>
+      <tr><th>{{lbl_group}}:</th><td>{{groups}}</td></tr>
+      <tr><th>{{lbl_user}}:</th><td>{{users}}</td></tr>
     </tbody>
     <tbody id="free_mail" style="display:none;">
-      <tr><th>{lbl_to}:</th><td dir="ltr">{to}</td></tr>
-      <tr><th>{lbl_cc}:</th><td dir="ltr">{cc}</td></tr>
-      <tr><th>{lbl_bcc}:</th><td dir="ltr">{bcc}</td></tr>
+      <tr><th>{{lbl_to}}:</th><td dir="ltr">{{to}}</td></tr>
+      <tr><th>{{lbl_cc}}:</th><td dir="ltr">{{cc}}</td></tr>
+      <tr><th>{{lbl_bcc}}:</th><td dir="ltr">{{bcc}}</td></tr>
     </tbody>
     <tbody>
-      <tr><th>{lbl_from}:</th><td>{from}</td></tr>
-      <tr><th>{lbl_subject}:</th><td>{subject}</td></tr>
+      <tr><th>{{lbl_from}}:</th><td>{{from}}</td></tr>
+      <tr><th>{{lbl_subject}}:</th><td>{{subject}}</td></tr>
       <tr><th></th><td>
           <input type="hidden" name="filename" id="filename" value="" />
           <form id="frm_file" name="frm_file" method="post"
-                target="ifrm_upload" action="{base_script}"
+                target="ifrm_upload" action="{{base_script}}"
                 enctype="multipart/form-data" onsubmit="return true">
             <input type="hidden" name="gadget" value="Contact" />
             <input type="hidden" name="action" value="UploadFile" />
             <div class="attach_actions">
-              {btn_upload}
+              {{btn_upload}}
               <img id="attach_loading" src="images/loading.gif" />
               <div id="btn_attach">
                 <img src="gadgets/Contact/Resources/images/attachment.png" />
                 <a id="file_link"></a> <small id="file_size"></small>
-                {remove}
+                {{remove}}
               </div>
               <div class="wrapper" 
                    onmouseover="$('btn_upload').style.textDecoration='underline'"
-                   onmouseout ="$('btn_upload').style.textDecoration='none'">{attachment}</div>
+                   onmouseout ="$('btn_upload').style.textDecoration='none'">{{attachment}}</div>
             </div>
           </form>
       </td></tr>
-      <tr><th colspan="2">{lbl_message}:</th></tr>
-      <tr><td colspan="2">{message}</td></tr>
+      <tr><th colspan="2">{{lbl_message}}:</th></tr>
+      <tr><td colspan="2">{{message}}</td></tr>
     </tbody>
   </table>
-  <div class="buttons" colspan="2">{btn_new}{btn_preview}{btn_send}</div>
+  <div class="buttons" colspan="2">{{btn_new}}{{btn_preview}}{{btn_send}}</div>
 </div>
 <script type="text/javascript">
-  var lblAllGroupUsers       = "{lblAllGroupUsers}",
-      groupHasNoUser         = "{groupHasNoUser}",
-      incompleteMailerFields = "{incompleteMailerFields}";
+  var lblAllGroupUsers       = "{{lblAllGroupUsers}}",
+      groupHasNoUser         = "{{groupHasNoUser}}",
+      incompleteMailerFields = "{{incompleteMailerFields}}";
   newEmail();
   $('options_1').checked = true;
   switchEmailTarget(1);
