@@ -49,32 +49,32 @@
 <div class="gadget_footer"></div>
 
 <script type="text/javascript">
-    function toggleCheckboxes() {{
+    function toggleCheckboxes() {
         do_check = !do_check;
-        $$('.table-checkbox').each(function (el) {{
+        $$('.table-checkbox').each(function (el) {
             el.checked = do_check;
-        }});
-    }}
+        });
+    }
     var do_check = false;
 
-    function doDGAction() {{
+    function doDGAction() {
         var action = document.getElementById("groups_actions_combo").value;
-        if(action=="") {{
+        if(action=="") {
             return false;
-        }}
+        }
 
-        if(action == 'delete') {{
+        if(action == 'delete') {
             document.groups.action.value = 'DeleteGroups';
-        }} else if(action == 'disable') {{
+        } else if(action == 'disable') {
             document.groups.action.value = 'EnableGroups';
             document.groups.status.value = 'no';
-        }} else if(action == 'enable') {{
+        } else if(action == 'enable') {
             document.groups.action.value = 'EnableGroups';
             document.groups.status.value = 'yes';
-        }}
+        }
         document.getElementById("groups").submit();
         return true;
-    }}
+    }
 </script>
 <!-- END groups -->
 
@@ -174,21 +174,21 @@
 <div class="gadget_footer"></div>
 
 <script type="text/javascript">
-    function toggleCheckboxes(){{
+    function toggleCheckboxes(){
         do_check = !do_check;
-        $$("input[name='member_checkbox[]']").each(function(el) {{ el.checked = do_check; }});
-    }}
+        $$("input[name='member_checkbox[]']").each(function(el) { el.checked = do_check; });
+    }
     var do_check = false;
 
-    function doDGAction() {{
+    function doDGAction() {
         var action = document.getElementById("member_actions_combo").value;
-        if(action == 'delete') {{
+        if(action == 'delete') {
             document.group_members.action.value = 'RemoveUserFromGroup';
-        }} else {{
+        } else {
             return false;
-        }}
+        }
         document.getElementById("group_members").submit();
         return true;
-    }}
+    }
 </script>
 <!-- END manage_group -->

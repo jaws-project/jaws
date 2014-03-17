@@ -25,9 +25,9 @@
         function previewImage(fileElement) {
             var fReader = new FileReader();
             fReader.readAsDataURL(fileElement.files[0]);
-            fReader.onload = function (event) {{
+            fReader.onload = function (event) {
                 document.getElementById('avatar').src = event.target.result;
-            }}
+            }
         };
 
         function browseImage(btnElement) {
