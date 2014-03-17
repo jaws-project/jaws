@@ -1,39 +1,39 @@
 <!-- BEGIN UrlMapper -->
-{menubar}
+{{menubar}}
 <div id="main">
 <table style="width: 100%; border: 0px solid #ccc; padding: 0px; border-spacing: 0.1px;">
   <!-- big work area -->
   <tr>
     <td style="width: 200px;">
-      <label for="gadgets_combo">{lbl_gadgets}:</label>
+      <label for="gadgets_combo">{{lbl_gadgets}}:</label>
       <br/>
-      {combo_gadgets}
-      <label for="actions_combo">{lbl_actions}:</label>
+      {{combo_gadgets}}
+      <label for="actions_combo">{{lbl_actions}}:</label>
       <br/>
-      {combo_actions}
+      {{combo_actions}}
     </td>
     <td style="width: 520px;">
-      <label>{lbl_maps}:</label>
+      <label>{{lbl_maps}}:</label>
       <br />
-      {datagrid}
+      {{datagrid}}
     </td>
     <td class="workarea">
       <fieldset id="map_area">
-      <legend><span id="legend_title">{legend_title}</span></legend>
-        {map_order}
-        <label for="map_route">{lbl_map_route}:</label><br/>{map_route}<br />
-        <label for="map_ext">{lbl_map_ext}:</label><br/>{map_ext}<br />
-        <label for="custom_map_route">{lbl_custom_map_route}:</label><br/>{custom_map_route}<br />
+      <legend><span id="legend_title">{{legend_title}}</span></legend>
+        {{map_order}}
+        <label for="map_route">{{lbl_map_route}}:</label><br/>{{map_route}}<br />
+        <label for="map_ext">{{lbl_map_ext}}:</label><br/>{{map_ext}}<br />
+        <label for="custom_map_route">{{lbl_custom_map_route}}:</label><br/>{{custom_map_route}}<br />
       </fieldset>
-      <div class="gadget_actions actions">{btn_cancel}{btn_save}</div>
+      <div class="gadget_actions actions">{{btn_cancel}}{{btn_save}}</div>
     </td>
   </tr>
 </table>
 </div>
 <script type="text/javascript">
-  var addMap_title     = "{addMap_title}";
-  var editMap_title    = "{editMap_title}";
-  var confirmMapDelete = "{confirmMapDelete}";
+  var addMap_title     = "{{addMap_title}}";
+  var editMap_title    = "{{editMap_title}}";
+  var confirmMapDelete = "{{confirmMapDelete}}";
   JawsDataGrid.name = 'maps_datagrid';
   $('legend_title').innerHTML   = addMap_title;
   $('maps_datagrid').objectName = UrlMapperAjax;

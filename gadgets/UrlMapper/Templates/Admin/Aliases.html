@@ -1,25 +1,25 @@
 <!-- BEGIN Aliases -->
-{menubar}
+{{menubar}}
 <div id="main">
 <table>
 <tr><td>
-<form name="menu_form" method="post" action="{base_script}" onclick="return false;">
+<form name="menu_form" method="post" action="{{base_script}}" onclick="return false;">
 <select id="alias-combo" size="10" onchange="editAlias(this.value)" style="width: 270px; max-width: 270px; min-width: 270px;">
  <!-- BEGIN alias -->
-<option id="alias-{id}" value="{id}"> + {alias_value}</option>
+<option id="alias-{{id}}" value="{{id}}"> + {{alias_value}}</option>
 <!-- END alias -->
 </select><br />
 <div id="buttons">
-{new}
+{{new}}
 </div>
 </form>
 </td><td>
-{edit_form}
+{{edit_form}}
 </td></tr>
 </table>
 </div>
 <script type="text/javascript">
-var selectGadget = "{selectGadget}";
+var selectGadget = "{{selectGadget}}";
 $('alias_id').value = '-';
 $('custom_url').value   = '';
 $('alias').value = '';
