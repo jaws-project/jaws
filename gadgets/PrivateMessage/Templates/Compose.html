@@ -103,23 +103,23 @@
     $('attachment_area').toggle();
 
     function ChangeToggleIcon(obj)
-    {{
-        if ($(obj).get('toggle-status') == 'min') {{
+    {
+        if ($(obj).get('toggle-status') == 'min') {
             $(obj).getElementsByTagName('img')[0].src = toggleMin;
             $(obj).set('toggle-status', 'max');
-        }} else {{
+        } else {
             $(obj).getElementsByTagName('img')[0].src = toggleMax;
             $(obj).set('toggle-status', 'min');
-        }}
-    }}
+        }
+    }
 
-    window.addEvent('domready', function() {{
+    window.addEvent('domready', function() {
 
-        $('legend_attachments').addEvent('click', function(){{
+        $('legend_attachments').addEvent('click', function(){
             $('attachment_area').toggle();
             ChangeToggleIcon(this);
-        }});
-    }});
+        });
+    });
 
     // auto draft message
     setInterval('autoDraftMessage();', 120000);

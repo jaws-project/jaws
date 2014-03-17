@@ -140,38 +140,38 @@
 <div class="gadget_footer"></div>
 
 <script type="text/javascript">
-    function toggleCheckboxes(){{
+    function toggleCheckboxes(){
         do_check = !do_check;
-        $$('.table-checkbox').each(function(el) {{ el.checked = do_check; }});
-    }}
+        $$('.table-checkbox').each(function(el) { el.checked = do_check; });
+    }
     var do_check = false;
 
-    function messagesDGAction() {{
+    function messagesDGAction() {
         var action = document.getElementById("messages_actions_combo").value;
-        if(action == 'unarchive') {{
+        if(action == 'unarchive') {
             document.privatemessage.action.value = 'UnArchiveMessage';
-        }} else if(action == 'archive') {{
+        } else if(action == 'archive') {
             document.privatemessage.action.value = 'ArchiveMessage';
-        }} else if(action == 'read') {{
+        } else if(action == 'read') {
             document.privatemessage.action.value = 'ChangeMessageRead';
             document.privatemessage.status.value = 'read';
-        }} else if(action == 'unread') {{
+        } else if(action == 'unread') {
             document.privatemessage.action.value = 'ChangeMessageRead';
             document.privatemessage.status.value = 'unread';
-        }} else if(action == 'trash') {{
+        } else if(action == 'trash') {
             document.privatemessage.action.value = 'TrashMessage';
-        }} else if(action == 'restore_trash') {{
+        } else if(action == 'restore_trash') {
             document.privatemessage.action.value = 'RestoreTrashMessage';
-        }} else if(action == 'delete') {{
-            if (confirm('{{confirmDelete}}')) {{
+        } else if(action == 'delete') {
+            if (confirm('{{confirmDelete}}')) {
                 document.privatemessage.action.value = 'DeleteMessage';
-            }} else {{
+            } else {
                 return false;
-            }}
+            }
 
-        }}
+        }
         document.getElementById("privatemessage").submit();
         return true;
-    }}
+    }
 </script>
 <!-- END messages -->
