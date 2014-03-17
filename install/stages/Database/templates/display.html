@@ -2,12 +2,12 @@
 <p>{{db_info}}</p>
 <p>{{db_notice}}</p>
 <script type="text/javascript">
-function EncryptPassword() {{
+function EncryptPassword() {
     setMaxDigits(128);
     var pub_key = new RSAPublicKey(document.getElementById('exponent').value, document.getElementById('modulus').value, 128);
     document.getElementById('dbpass').value = encryptedString(pub_key, document.getElementById('dbpass').value);
     return true;
-}}
+}
 </script>
 <form method="post" onsubmit="return {{func_onsubmit}};">
  <input type="hidden" name="modulus" id="modulus" value="{{pub_modulus}}" />
