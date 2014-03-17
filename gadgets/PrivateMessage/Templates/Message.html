@@ -1,67 +1,67 @@
 <!-- BEGIN message -->
-<div class="gadget_header"><h3>{title}</h3></div>
+<div class="gadget_header"><h3>{{title}}</h3></div>
 <div class="gadget_container">
 
-  <form name="pm" action="{requested_url}" method="post">
+  <form name="pm" action="{{requested_url}}" method="post">
       <input type="hidden" name="gadget" value="PrivateMessage"/>
       <input type="hidden" name="action" id="action" value=""/>
-      <input type="hidden" name="id" id="id" value="{id}"/>
+      <input type="hidden" name="id" id="id" value="{{id}}"/>
 
       <div class="gadget_content content">
           <div class="user_avatar">
-              <img src="{avatar}" alt="{username}" title="{nickname}"/>
+              <img src="{{avatar}}" alt="{{username}}" title="{{nickname}}"/>
           </div>
 
-          <div><b>{lbl_from}:</b> <a href="{user_url}">{from}</a></div>
-          <div><b>{lbl_send_time}:</b> {send_time}</div>
+          <div><b>{{lbl_from}}:</b> <a href="{{user_url}}">{{from}}</a></div>
+          <div><b>{{lbl_send_time}}:</b> {{send_time}}</div>
 
           <div class="gadget_actions actions">
               <!-- BEGIN back -->
-              <a href="{back_url}" class="button" title="{back}"><img src="{icon_back}" alt="{back}"/></a>
+              <a href="{{back_url}}" class="button" title="{{back}}"><img src="{{icon_back}}" alt="{{back}}"/></a>
               <!-- END back -->
 
               <!-- BEGIN reply -->
-              <a href="{reply_url}" class="button" title="{reply}"><img src="{icon_reply}" alt="{reply}"/></a>
+              <a href="{{reply_url}}" class="button" title="{{reply}}"><img src="{{icon_reply}}" alt="{{reply}}"/></a>
               <!-- END reply -->
 
               <!-- BEGIN forward -->
-              <a href="{forward_url}" class="button" title="{forward}"><img src="{icon_forward}" alt="{forward}"/></a>
+              <a href="{{forward_url}}" class="button" title="{{forward}}"><img src="{{icon_forward}}" alt="{{forward}}"/></a>
               <!-- END forward -->
 
               <!-- BEGIN archive -->
-              <a href="{archive_url}" class="button" title="{archive}"><img src="{icon_archive}" alt="{archive}"/></a>
+              <a href="{{archive_url}}" class="button" title="{{archive}}"><img src="{{icon_archive}}" alt="{{archive}}"/></a>
               <!-- END archive -->
 
               <!-- BEGIN restore_archive -->
-              <a href="{restore_archive_url}" class="button" title="{restore_archive}"><img src="{icon_restore_archive}" alt="{restore_archive}"/></a>
+              <a href="{{restore_archive_url}}" class="button" title="{{restore_archive}}"><img src="{{icon_restore_archive}}" alt="{{restore_archive}}"/></a>
               <!-- END restore_archive -->
 
               <!-- BEGIN trash -->
-              <a href="javascript:trashMessage()" class="button" title="{trash}"><img src="{icon_trash}" alt="{trash}"/></a>
+              <a href="javascript:trashMessage()" class="button" title="{{trash}}"><img src="{{icon_trash}}" alt="{{trash}}"/></a>
               <!-- END trash -->
 
               <!-- BEGIN restore_trash -->
-              <a href="{restore_trash_url}" class="button" title="{restore_trash}"><img src="{icon_restore_trash}" alt="{restore_trash}"/></a>
+              <a href="{{restore_trash_url}}" class="button" title="{{restore_trash}}"><img src="{{icon_restore_trash}}" alt="{{restore_trash}}"/></a>
               <!-- END restore_trash -->
 
               <!-- BEGIN delete -->
-              <a href="javascript:deleteMessage()" class="button" title="{delete}"><img src="{icon_delete}" alt="{delete}"/></a>
+              <a href="javascript:deleteMessage()" class="button" title="{{delete}}"><img src="{{icon_delete}}" alt="{{delete}}"/></a>
               <!-- END delete -->
           </div>
 
-          <div><b>{lbl_subject}:</b> {subject}</div>
+          <div><b>{{lbl_subject}}:</b> {{subject}}</div>
           <div>
-              <div><b>{lbl_body}:</b></div>
-              <div>{body}</div>
+              <div><b>{{lbl_body}}:</b></div>
+              <div>{{body}}</div>
           </div>
 
           <!-- BEGIN attachment -->
           <div>&nbsp;</div>
           <fieldset>
-              <legend><span>{lbl_attachments}</span></legend>
+              <legend><span>{{lbl_attachments}}</span></legend>
 
               <!-- BEGIN file -->
-              <div><a href="{file_download_link}" target="_blank">{file_name}</a> ({lbl_file_size}: {file_size})
+              <div><a href="{{file_download_link}}" target="_blank">{{file_name}}</a> ({{lbl_file_size}}: {{file_size}})
               </div>
               <!-- END file -->
 
@@ -69,14 +69,14 @@
           <!-- END attachment -->
 
           <!-- BEGIN recipients -->
-          <b>{lbl_recipients}:</b> {lbl_all_users}
+          <b>{{lbl_recipients}}:</b> {{lbl_all_users}}
 
           <!-- BEGIN recipients_list -->
           <table>
               <thead>
               <tr>
-                  <th>{lbl_recipient}</th>
-                  <th>{lbl_view_time}</th>
+                  <th>{{lbl_recipient}}</th>
+                  <th>{{lbl_view_time}}</th>
               </tr>
               </thead>
 
@@ -84,8 +84,8 @@
 
               <!-- BEGIN recipient -->
               <tr>
-                  <td><a href="{user_url}">{recipient}</a></td>
-                  <td>{view_time}</td>
+                  <td><a href="{{user_url}}">{{recipient}}</a></td>
+                  <td>{{view_time}}</td>
               </tr>
               <!-- END recipient -->
 
@@ -109,20 +109,20 @@
     /**
      * Trash Message
      */
-    function trashMessage() {
-        if (confirm('{confirmDelete}')) {
-            window.location.href = "{trash_url}";
-        }
-    }
+    function trashMessage() {{
+        if (confirm('{{confirmDelete}}')) {{
+            window.location.href = "{{trash_url}}";
+        }}
+    }}
 
     /**
      * Delete Message
      */
-    function deleteMessage() {
-        if (confirm('{confirmDelete}')) {
-            window.location.href = "{delete_url}";
-        }
-    }
+    function deleteMessage() {{
+        if (confirm('{{confirmDelete}}')) {{
+            window.location.href = "{{delete_url}}";
+        }}
+    }}
 
 </script>
 <!-- END message -->
