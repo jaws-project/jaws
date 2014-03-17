@@ -1,26 +1,26 @@
 <!-- BEGIN settings -->
 <div id="settings">
-  <div id="settings_sidebar">{sidebar}</div>
+  <div id="settings_sidebar">{{sidebar}}</div>
   <fieldset>
-    <legend><span>{legend}</span></legend>
-    <form id="settingsForm" name="settingsForm" method="post" action="{base_script}" onsubmit="return false;">
+    <legend><span>{{legend}}</span></legend>
+    <form id="settingsForm" name="settingsForm" method="post" action="{{base_script}}" onsubmit="return false;">
       <!-- BEGIN item -->
-      <div class="fields"><label for="{field-name}">{label}</label>{field}</div>
+      <div class="fields"><label for="{{field-name}}">{{label}}</label>{{field}}</div>
       <!-- END item -->
     </form>
     <div id="customMeta">
       <!-- BEGIN custom -->
-      <div class="fields"><label>{label}</label>{name}{value}</div>
+      <div class="fields"><label>{{label}}</label>{{name}}{{value}}</div>
       <!-- END custom -->
     </div>
-    <div class="add-button">{addButton}</div>
+    <div class="add-button">{{addButton}}</div>
   </fieldset>
-  <div class="buttons">{saveButton}</div>
+  <div class="buttons">{{saveButton}}</div>
 </div>
 <script type="text/javascript">
-  var custom_meta = "{custom_meta}";
-  if ($('mailer')) {
+  var custom_meta = "{{custom_meta}}";
+  if ($('mailer')) {{
     changeMailer();
-  }
+  }}
 </script>
 <!-- END settings -->
