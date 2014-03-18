@@ -40,18 +40,18 @@ class Emoticons_Plugin extends Jaws_Plugin
             ">:-)" => 'face-devil-grin.png',  // >:-)
         );
 
-        $combo =& Piwi::CreateWidget('ComboImage', 'emoticons');
+        $combo =& Piwi::CreateWidget('Combo', 'emoticons');
         $combo->SetTitle(_t('PLUGINS_EMOTICONS_ADD'));
         $combo->AddEvent(ON_CHANGE, "javascript: insertTags('$textarea', this[this.selectedIndex].value,'','');");
 
         $theme = $GLOBALS['app']->GetTheme();
         $image_path = $theme['path'] . $this->_ImagePath;
         foreach ($iconsmap as $icon => $file) {
-            $icons_dir_url = '';
+            $icons_file_url = $this->_ImagePath . '/' . $file;
             if (is_file($image_path . '/' . $file)) {
-                $icons_dir_url = $theme['url'];
+                $icons_file_url = $theme['url']. $icons_file_url;
             }
-            $combo->AddOption($icon, $icon, $icons_dir_url . $this->_ImagePath . '/' . $file);
+            $combo->AddOption($icon, $icon);
         }
 
         return $combo;
