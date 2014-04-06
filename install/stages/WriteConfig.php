@@ -46,7 +46,7 @@ class Installer_WriteConfig extends JawsInstallerStage
      */
     function Display()
     {
-        _log(JAWS_LOG_DEBUG,"Preparing configuaration file");
+        _log(JAWS_LOG_DEBUG,"Preparing configuration file");
         $tpl = new Jaws_Template(false);
         $tpl->Load('display.html', 'stages/WriteConfig/templates');
         $tpl->SetBlock('WriteConfig');
