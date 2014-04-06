@@ -18,15 +18,15 @@ $db = array(); //DONT RENAME/DELETE THIS VARIABLE!!
  * username, password, name, host and driver.
  * The prefix is optional, just make sure it has an empty value
  */
-$db['driver']   = '{db_driver}';
-$db['host']     = '{db_host}';
-$db['port']     = '{db_port}';
-$db['user']     = '{db_user}';
-$db['password'] = '{db_pass}';
-$db['isdba']    = '{db_isdba}';
-$db['path']     = '{db_path}';
-$db['name']     = '{db_name}';
-$db['prefix']   = '{db_prefix}';
+$db['driver']   = '{{db_driver}}';
+$db['host']     = '{{db_host}}';
+$db['port']     = '{{db_port}}';
+$db['user']     = '{{db_user}}';
+$db['password'] = '{{db_pass}}';
+$db['isdba']    = '{{db_isdba}}';
+$db['path']     = '{{db_path}}';
+$db['name']     = '{{db_name}}';
+$db['prefix']   = '{{db_prefix}}';
 
 /**
  * Logs
@@ -45,7 +45,7 @@ $db['prefix']   = '{db_prefix}';
  *        7     Info log and utmost levels
  *        8     Debug log and utmost levels
  */
-define('LOG_ACTIVATED', {log_level});
+define('LOG_ACTIVATED', {{log_level}});
 
 /**
  * Log Method
