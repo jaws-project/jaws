@@ -193,7 +193,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable->select(
             'blog.id:integer', 'user_id:integer', 'username', 'users.nickname', 'title', 'summary',
             'text', 'fast_url', 'blog.publishtime', 'blog.updatetime', 'comments:integer',
-            'clicks:integer', 'allow_comments:boolean', 'published:boolean', 'categories'
+            'clicks:integer', 'allow_comments:boolean', 'published:boolean', 'categories', 'image'
         );
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
 
@@ -620,7 +620,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable->select(
             'blog.id:integer', 'blog.user_id:integer', 'blog.title', 'blog.fast_url', 'summary',
             'text', 'clicks:integer', 'comments:integer', 'allow_comments', 'username', 'nickname',
-            'blog.publishtime:timestamp', 'blog.updatetime:timestamp', 'categories'
+            'blog.publishtime:timestamp', 'blog.updatetime:timestamp', 'categories', 'image'
         );
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
         $blogTable->where('published', true)->and()->where('publishtime', $GLOBALS['db']->Date(), '<=');

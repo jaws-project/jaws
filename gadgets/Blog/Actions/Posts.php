@@ -209,6 +209,15 @@ class Blog_Actions_Posts extends Blog_Actions_Default
             $tpl->SetVariable('createtime-day', $date->Format($e['publishtime'], 'd'));
             $tpl->SetVariable('createtime-year', $date->Format($e['publishtime'], 'Y'));
             $tpl->SetVariable('createtime-time', $date->Format($e['publishtime'], 'g:ia'));
+
+            if(empty($e['image'])) {
+                $tpl->SetVariable('image', _t('GLOBAL_NOIMAGE'));
+                $tpl->SetVariable('url_image', 'data:image/png;base64,');
+            } else {
+                $tpl->SetVariable('image', $e['image']);
+                $tpl->SetVariable('url_image', $GLOBALS['app']->getDataURL(). 'blog/images/'. $e['image']);
+            }
+
             $tpl->ParseBlock('recent_posts/item');
         }
 
@@ -256,6 +265,14 @@ class Blog_Actions_Posts extends Blog_Actions_Default
                 $tpl->SetVariable('createtime-year',      $date->Format($entry['publishtime'], 'Y'));
                 $tpl->SetVariable('createtime-time',      $date->Format($entry['publishtime'], 'g:ia'));
                 $tpl->SetVariable('entry-visits',         _t('BLOG_ENTRY_VISITS', $entry['clicks']));
+
+                if(empty($entry['image'])) {
+                    $tpl->SetVariable('image', _t('GLOBAL_NOIMAGE'));
+                    $tpl->SetVariable('url_image', 'data:image/png;base64,');
+                } else {
+                    $tpl->SetVariable('image', $entry['image']);
+                    $tpl->SetVariable('url_image', $GLOBALS['app']->getDataURL(). 'blog/images/'. $entry['image']);
+                }
 
                 $tpl->ParseBlock('popular_posts/item');
             }
