@@ -138,7 +138,12 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
         $blogTable->select('count(blog.id)');
         $blogTable->join('blog_entrycat', 'blog.id', 'blog_entrycat.entry_id', 'left');
         $blogTable->where('published', true)->and()->where('publishtime', $GLOBALS['db']->Date(), '<=');
-        $blogTable->and()->where('blog_entrycat.category_id', $category);
+        if (empty($category)) {
+            $blogTable->and()->where('blog_entrycat.category_id', null, 'is null');
+        } else {
+            $blogTable->and()->where('blog_entrycat.category_id', (int)$category);
+        }
+
         $howmany = $blogTable->fetchOne();
         return Jaws_Error::IsError($howmany)? 0 : $howmany;
     }

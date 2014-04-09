@@ -34,9 +34,13 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         );
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
 
-        if (!empty($cat)) {
-            $blogTable->join('blog_entrycat', 'blog.id', 'blog_entrycat.entry_id');
-            $blogTable->where('blog_entrycat.category_id', (int)$cat);
+        if (!is_null($cat)) {
+            $blogTable->join('blog_entrycat', 'blog.id', 'blog_entrycat.entry_id', 'left');
+            if (empty($cat)) {
+                $blogTable->where('blog_entrycat.category_id', null, 'is null');
+            } else {
+                $blogTable->where('blog_entrycat.category_id', (int)$cat);
+            }
         }
 
         $blogTable->and()->where('published', true)->and()->where('blog.publishtime', $now, '<=');
@@ -73,14 +77,23 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             $entries[$cat['entry_id']]['categories'][] = array(
                 'id'       => $cat['id'],
                 'name'     => $cat['name'],
-                'fast_url' => $cat['fast_url']);
+                'fast_url' => $cat['fast_url'],
+            );
         }
         $categories = null;
 
         foreach ($entries as $key => $entry) {
-            foreach ($entry['categories'] as $cat) {
-                if (!$this->gadget->GetPermission('CategoryAccess', $cat['id'])) {
-                    unset($entries[$key]);
+            if (empty($entry['categories'])) {
+                $entries[$key]['categories'][] = array(
+                    'id'       => 0,
+                    'name'     => _t('BLOG_UNCATEGORIZED'),
+                    'fast_url' => '',
+                );
+            } else {
+                foreach ($entry['categories'] as $cat) {
+                    if (!$this->gadget->GetPermission('CategoryAccess', $cat['id'])) {
+                        unset($entries[$key]);
+                    }
                 }
             }
         }

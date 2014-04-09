@@ -30,56 +30,68 @@ class Blog_Actions_Categories extends Blog_Actions_Default
             $page = 1;
         }
 
-        if (empty($cat)) {
-            $cat = Jaws_XSS::defilter($rqst['id']);
-        }
+        if (is_null($cat)) {
+            if (empty($rqst['id'])) {
+                $catInfo = array(
+                    'id'                => 0,
+                    'name'              => _t('BLOG_UNCATEGORIZED'),
+                    'fast_url'          => '',
+                    'description'       => '',
+                    'meta_keywords'     => '',
+                    'meta_description'  => '',
+                );
+            } else {
+                $cat = Jaws_XSS::defilter($rqst['id']);
+                $catInfo = $cModel->GetCategory($cat);
+                if (Jaws_Error::IsError($catInfo) || empty($catInfo)) {
+                    return Jaws_HTTPError::Get(404);
+                }
 
-        $catInfo = $cModel->GetCategory($cat);
-        if (!Jaws_Error::IsError($catInfo) && isset($catInfo['id'])) {
-            // Check dynamic ACL
-            if (!$this->gadget->GetPermission('CategoryAccess', $catInfo['id'])) {
-                return Jaws_HTTPError::Get(403);
-            }
-
-            $name = $catInfo['name'];
-            $tpl = $this->gadget->template->load('CategoryPosts.html');
-
-            $GLOBALS['app']->Layout->AddHeadLink(
-                $this->gadget->urlMap('ShowAtomCategory', array('id' => $cat)),
-                'alternate',
-                'application/atom+xml',
-                'Atom - '. $name
-            );
-            $GLOBALS['app']->Layout->AddHeadLink(
-                $this->gadget->urlMap('ShowRSSCategory', array('id' => $cat)),
-                'alternate',
-                'application/rss+xml',
-                'RSS 2.0 - '. $name
-            );
-
-            $this->SetTitle($name);
-            $this->AddToMetaKeywords($catInfo['meta_keywords']);
-            $this->SetDescription($catInfo['meta_description']);
-            $tpl->SetBlock('view_category');
-            $tpl->SetVariable('title', $name);
-
-            $total  = $cModel->GetCategoryNumberOfPages($catInfo['id']);
-            $limit  = $this->gadget->registry->fetch('last_entries_limit');
-            $params = array('id'  => $cat);
-            $tpl->SetVariable('navigation',
-                              $this->GetNumberedPageNavigation($page, $limit, $total, 'ShowCategory', $params));
-            $entries = $pModel->GetEntriesByCategory($catInfo['id'], $page);
-            if (!Jaws_Error::IsError($entries)) {
-                foreach ($entries as $entry) {
-                    $this->ShowEntry($tpl, 'view_category', $entry);
+                // Check dynamic ACL
+                if (!$this->gadget->GetPermission('CategoryAccess', $catInfo['id'])) {
+                    return Jaws_HTTPError::Get(403);
                 }
             }
-
-            $tpl->ParseBlock('view_category');
-            return $tpl->Get();
-        } else {
-            return Jaws_HTTPError::Get(404);
         }
+
+        $name = $catInfo['name'];
+        $tpl = $this->gadget->template->load('CategoryPosts.html');
+
+        $GLOBALS['app']->Layout->AddHeadLink(
+            $this->gadget->urlMap('ShowAtomCategory', array('id' => $cat)),
+            'alternate',
+            'application/atom+xml',
+            'Atom - '. $name
+        );
+        $GLOBALS['app']->Layout->AddHeadLink(
+            $this->gadget->urlMap('ShowRSSCategory', array('id' => $cat)),
+            'alternate',
+            'application/rss+xml',
+            'RSS 2.0 - '. $name
+        );
+
+        $this->SetTitle($name);
+        $this->AddToMetaKeywords($catInfo['meta_keywords']);
+        $this->SetDescription($catInfo['meta_description']);
+        $tpl->SetBlock('view_category');
+        $tpl->SetVariable('title', $name);
+
+        $total  = $cModel->GetCategoryNumberOfPages($catInfo['id']);
+        $limit  = $this->gadget->registry->fetch('last_entries_limit');
+        $params = array('id'  => $cat);
+        $tpl->SetVariable(
+            'navigation',
+            $this->GetNumberedPageNavigation($page, $limit, $total, 'ShowCategory', $params)
+        );
+        $entries = $pModel->GetEntriesByCategory($catInfo['id'], $page);
+        if (!Jaws_Error::IsError($entries)) {
+            foreach ($entries as $entry) {
+                $this->ShowEntry($tpl, 'view_category', $entry);
+            }
+        }
+
+        $tpl->ParseBlock('view_category');
+        return $tpl->Get();
     }
 
     /**
@@ -93,9 +105,20 @@ class Blog_Actions_Categories extends Blog_Actions_Default
         $tpl = $this->gadget->template->load('Categories.html');
         $tpl->SetBlock('categories_list');
         $tpl->SetVariable('title', _t('BLOG_CATEGORIES'));
-        $model = $this->gadget->model->load('Posts');
-        $entries = $model->GetEntriesAsCategories();
+        $pModel = $this->gadget->model->load('Posts');
+        $entries = $pModel->GetEntriesAsCategories();
         if (!Jaws_Error::IsError($entries)) {
+            $cModel = $this->gadget->model->load('Categories');
+            $howmany = $cModel->GetCategoryNumberOfPages(0);
+            if (!empty($howmany)) {
+                $entries[] = array(
+                    'id'        =>  0,
+                    'name'      =>  _t('BLOG_UNCATEGORIZED'),
+                    'fast_url'  => '',
+                    'howmany'   => $howmany,
+                );
+            }
+
             foreach ($entries as $e) {
                 $tpl->SetBlock('categories_list/item');
                 $tpl->SetVariable('category', $e['name']);
