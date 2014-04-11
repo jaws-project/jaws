@@ -254,8 +254,6 @@ class Users_Actions_Groups extends Users_Actions_Default
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         $jUser = new Jaws_User;
-        $res = $jUser->AddUserToGroup($post['users'], $post['gid'], $user);
-
         // TODO: improve performance
         $res = false;
         foreach ($post['member_checkbox'] as $member) {
