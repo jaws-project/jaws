@@ -40,13 +40,11 @@ class Upgrader_111To120 extends JawsUpgraderStage
     function Run()
     {
         // Connect to database
-        if (!isset($GLOBALS['db'])) {
-            require_once JAWS_PATH . 'include/Jaws/DB.php';
-            $GLOBALS['db'] = new Jaws_DB($_SESSION['upgrade']['Database']);
-            if (Jaws_Error::IsError($GLOBALS['db'])) {
-                _log(JAWS_LOG_DEBUG,"There was a problem connecting to the database, please check the details and try again");
-                return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
-            }
+        require_once JAWS_PATH . 'include/Jaws/DB.php';
+        $GLOBALS['db'] = Jaws_DB::getInstance($_SESSION['upgrade']['Database']);
+        if (Jaws_Error::IsError($GLOBALS['db'])) {
+            _log(JAWS_LOG_DEBUG,"There was a problem connecting to the database, please check the details and try again");
+            return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
         // upgrade core database schema
@@ -76,6 +74,11 @@ class Upgrader_111To120 extends JawsUpgraderStage
             _log(JAWS_LOG_ERROR, $result->getMessage());
             return $result;
         }
+
+        // Create application
+        include_once JAWS_PATH . 'include/Jaws.php';
+        $GLOBALS['app'] = jaws();
+        $GLOBALS['app']->Registry->Init();
 
         // Upgrading core gadgets
         $gadgets = array('UrlMapper', 'Settings', 'Policy');
