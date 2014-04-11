@@ -2,11 +2,11 @@
 /**
  * Browse your files on the server and insert file links into the content editor
  *
- * @category   Plugin
- * @package    FileExplorer
- * @author     Mohsen Khahani <mkhahani@gmail.com>
- * @copyright  2012-2014 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @category    Plugin
+ * @package     FileExplorer
+ * @author      Mohsen Khahani <mkhahani@gmail.com>
+ * @copyright   2012-2014 Jaws Development Group
+ * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class FileExplorer_Plugin extends Jaws_Plugin
 {
@@ -22,7 +22,7 @@ class FileExplorer_Plugin extends Jaws_Plugin
      */
     function GetWebControl($textarea)
     {
-        $url = BASE_SCRIPT. '?gadget=FileExplorer&amp;action=BrowseFile';
+        $url = BASE_SCRIPT. '?gadget=FileBrowser&amp;action=BrowseFile';
         $popbutton =& Piwi::CreateWidget('Button',
                                          'popbutton',
                                          '',
