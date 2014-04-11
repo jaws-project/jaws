@@ -8,7 +8,7 @@ require JAWS_PATH . 'include/Jaws/ORM.php';
  * @category   Database
  * @package    Core
  * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
- * @autho      Ali Fazelzadeh <afz@php.net>
+ * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2005-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
@@ -25,7 +25,7 @@ class Jaws_DB
     /**
      * The MDB2_Schmae object
      *
-     * @var     objejct
+     * @var     object
      * @access  private
      */
     var $schema;
@@ -55,7 +55,7 @@ class Jaws_DB
     var $_charset;
 
     /**
-     * This user is DB sdministrator?
+     * This user is DB administrator?
      *
      * @var     bool
      * @access  private
