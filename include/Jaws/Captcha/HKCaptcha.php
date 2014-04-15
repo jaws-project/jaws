@@ -93,7 +93,7 @@ class Jaws_Captcha_HKCaptcha extends Jaws_Captcha
         }
 
         $width  = 15 * imagefontwidth(5);
-        $height = 4 * imagefontheight(5);
+        $height = 3 * imagefontheight(5);
         $font = dirname(__FILE__) . '/resources/comicbd.ttf';
 
         $tmpimg  = imagecreate($width*2, $height*2);
