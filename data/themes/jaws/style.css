@@ -316,12 +316,12 @@ display:none;
 .actions div{
 text-align:left;
 }
-.blog .gadget_content img:first-child{
+.blog .gadget_content img.blog_post_image{
 float:left;
 margin-right:8px;
 vertical-align:top;
 }
-.blog .gadget_content img:first-child[src^="data:image"]{
+.blog .gadget_content img.blog_post_image[src^="data:image"]{
 display:none;
 }
 .blog_post_meta{
