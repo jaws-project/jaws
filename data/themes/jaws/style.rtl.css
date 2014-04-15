@@ -129,6 +129,19 @@ box-sizing:border-box;
 button img,.button img{
 vertical-align:-3px;
 }
+.ltr{direction:ltr;}
+.rtl{direction:rtl;}
+.xx-small{width:24px;}
+.x-small{width:20%;}
+.small{width:40%;}
+.medium{width:50%;}
+.large{width:60%;}
+.x-large{width:80%;}
+.xx-large{width:100%;}
+.clear{clear:both;}
+.hidden{display:none;}
+.invisible{visibility:hidden;}
+
 .clearfix:after{
 display:block;
 clear:both;
@@ -284,7 +297,7 @@ border-bottom:1px solid #ccc;
 display:inline;
 }
 .actions{
-text-align:left;
+text-align:right;
 padding-top:4px;
 }
 .actions label+input,.actions label+textarea,.actions label+select{
@@ -468,39 +481,6 @@ font-size:140%;
 font-weight:bold;
 }
 /* users style */
-.users.preferences fieldset div div{
-clear:both;
-}
-.users.preferences input,.users.preferences textarea,.users.preferences select{
-float:left;
-width:380px;
-display:inline;
-}
-.users #personal_fname,.users #personal_lname,
-.users #username,.users #nickname,.users #personal_ssn,.users #email,
-.users #country,.users #city,.users #postal_code,
-.users #user_language,.users #user_theme,.users #user_editor{
-width:380px;
-}
-.users #personal_avatar{
-width:128px;
-height:23px;
-padding:0px;
-}
-.users #user_gender{
-width:148px;
-}
-.users #user_dob label{
-display:block;
-}
-.users #user_dob input{
-width:40px;
-display:inline-block;
-}
-.users #user_dob span{
-display:inline;
-padding-right:5px;
-}
 div.user_avatar{
 float:left;
 width:132px;
