@@ -327,6 +327,13 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             $entry = $row;
             $entry['avatar_source'] = Jaws_Gravatar::GetGravatar($row['email']);
             $entry['categories']    = $model->GetCategoriesInEntry($row['id']);
+            if (empty($entry['categories'])) {
+                $entry['categories'][] = array(
+                    'id'       => 0,
+                    'name'     => _t('BLOG_UNCATEGORIZED'),
+                    'fast_url' => '',
+                );
+            }
 
             $entry['tags'] = array();
             if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
