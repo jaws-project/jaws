@@ -1,31 +1,35 @@
 <!-- BEGIN image_captcha -->
-<div class="captcha image-captcha">
+<div class="captcha captcha_image">
   <input type="hidden" name="captcha_key" id="captcha_key_{{key}}" value="{{key}}" />
   <label for="entry_value_{{key}}">{{lbl_captcha}}:</label>
-  <div class="captcha-value">
-    <img id="captcha_image_{{key}}" class="captcha" alt="" title="{{captcha_title}}" src="{{url}}" />
+  <div class="captcha_value">
+    <img id="captcha_image_{{key}}" class="captcha" alt="" width="128" height="48" title="{{captcha_title}}" src="{{url}}" />
     <button type="button" onclick="javascript:document.getElementById('captcha_image_{{key}}').src = '{{url}}?'+ new Date().getTime();">
       <img alt="reload" src="images/stock/reload.png"/>
     </button>
-    <small>{{description}}</small>
   </div>
-  <input type="text" name="entry_value" id="entry_value_{{key}}" title="{{entry_title}}" dir="ltr" value="" autocomplete="off" class="large ltr"/>
+  <div>
+    <label>{{description}}:</label>
+    <input type="text" name="entry_value" id="entry_value_{{key}}" title="{{entry_title}}" dir="ltr" value="" autocomplete="off" class="large ltr"/>
+  </div>
 </div>
 <!-- END image_captcha -->
 <!-- BEGIN text_captcha -->
-<div class="captcha text-captcha">
+<div class="captcha captcha_text">
   <input type="hidden" name="captcha_key" id="captcha_key_{{key}}" value="{{key}}" />
   <label for="entry_value_{{key}}">{{lbl_captcha}}:</label>
-  <div class="captcha-value">
+  <div class="captcha_value">
     <strong title="{{captcha_title}}" dir="ltr">{{captcha_text}}</strong>
-    <small>{{description}}</small>
   </div>
-  <input type="text" name="entry_value" id="entry_value_{{key}}" title="{{entry_title}}" dir="ltr" value="" autocomplete="off" />
+  <div>
+    <label>{{description}}:</label>
+    <input type="text" name="entry_value" id="entry_value_{{key}}" title="{{entry_title}}" dir="ltr" value="" autocomplete="off" />
+  </div>
 </div>
 <!-- END text_captcha -->
 <!-- BEGIN block_captcha -->
-<div class="captcha block-captcha">
+<div class="captcha captcha_block">
   <label>{{lbl_captcha}}:</label>
-  <div class="captcha-value">{{captcha_text}}</div>
+  <div class="captcha_value">{{captcha_text}}</div>
 </div>
 <!-- END block_captcha -->
