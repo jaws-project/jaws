@@ -5,7 +5,8 @@
   <input type="hidden" name="gadget" value="Search" />
   <input type="hidden" name="action" value="Results" />
   <div class="gadget_content content">
-    {{all}}{{btn_search}}
+    <input type="text" name="all" class="large" value="{{all}}" title="{{ttl_all}}">
+    <button type="submit" value="search">{{search}}</button>
   </div>
   </form> 
 </div>
@@ -18,10 +19,22 @@
   <input type="hidden" name="gadget" value="Search" />
   <input type="hidden" name="action" value="Results" />
   <div class="gadget_content content">
-      <p>{{all}}</p>
-      <p><label>{{lbl_search_in}}</label>{{gadgets_combo}}</p>
+    <div>
+      <label>{{lbl_all}}:</label>
+      <input type="text" name="all" class="large" value="{{all}}" title="{{ttl_all}}">
+    </div>
+    <div>
+      <label>{{lbl_search_in}}:</label>
+      <select name="gadgets" class="large">
+      <!-- BEGIN gadget -->
+      <option value="{{gadget}}" {{selected}}>{{title}}</option>
+      <!-- END gadget -->
+      </select>
+    </div>
   </div>
-  <div class="gadget_actions actions">{{btn_search}}</div>
+  <div class="gadget_actions actions">
+    <button type="submit" value="search">{{search}}</button>
+  </div>
   </form> 
 </div>
 <div class="gadget_footer"></div>

@@ -31,37 +31,35 @@ class Search_Actions_Search extends Jaws_Gadget_Action
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('title', $this->gadget->title);
 
-        $model = $this->gadget->model->load('Search');
-        $wordAll =& Piwi::CreateWidget('Entry', 'all', $model->implodeSearch($post));
-        $wordAll->SetTitle(_t('SEARCH_WORD_FILTER_ALL'));
         $tpl->SetVariable('lbl_all', _t('SEARCH_WORD_FILTER_ALL'));
-        $tpl->SetVariable('all', $wordAll->Get());
+        $tpl->SetVariable('ttl_all', _t('SEARCH_WORD_FILTER_ALL'));
 
-        // Create Select box.
+        $model = $this->gadget->model->load('Search');
+        $tpl->SetVariable('all', $model->implodeSearch($post));
+
+        // gadgets select box
         if ($gadgets_combo) {
+            $tpl->SetVariable('lbl_search_in', _t('SEARCH_SEARCH_IN'));
             $gadgetList = $model->GetSearchableGadgets();
             $gSearchable = $this->gadget->registry->fetch('searchable_gadgets');
             $searchableGadgets = ($gSearchable=='*')? array_keys($gadgetList) : explode(', ', $gSearchable);
+            array_push($searchableGadgets, _t('GLOBAL_ALL'));
 
-            $gchk =& Piwi::CreateWidget('Combo', 'gadgets');
-            $gchk->addOption(_t('GLOBAL_ALL'), '');
             foreach ($searchableGadgets as $gadget) {
                 $info = Jaws_Gadget::getInstance($gadget);
                 if (Jaws_Error::IsError($info)) {
                     continue;
                 }
-                $gchk->AddOption($info->title, $gadget);
+
+                $tpl->SetBlock("$block/gadget");
+                $tpl->SetVariable('gadget', $gadget);
+                $tpl->SetVariable('title', $info->title);
+                $tpl->SetVariable('selected', ($post['gadgets'] == $gadget)? 'selected="selected"' : '');
+                $tpl->ParseBlock("$block/gadget");
             }
-            $default = !is_null($post['gadgets']) ? $post['gadgets'] : '';
-            $gchk->SetDefault($default);
-            $tpl->SetVariable('lbl_search_in', _t('SEARCH_SEARCH_IN'));
-            $tpl->SetVariable('gadgets_combo', $gchk->Get());
         }
 
-        $btnSearch =& Piwi::CreateWidget('Button', '', _t('SEARCH_BUTTON'));
-        $btnSearch->SetID('btn_search');
-        $btnSearch->SetSubmit(true);
-        $tpl->SetVariable('btn_search', $btnSearch->Get());
+        $tpl->SetVariable('search', _t('SEARCH_BUTTON'));
         $tpl->ParseBlock("$block");
 
         return $tpl->Get();
