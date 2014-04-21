@@ -651,19 +651,18 @@ function startAutoDrafting()
 /**
  * Auto Draft response
  */
-function showSimpleResponse(message)
+function showSimpleResponse(reponse)
 {
     if (!autoDraftDone) {
         var actioni   = $('action').value;
-        if (actioni == 'SaveNewEntry' && message[0]['type'] == 'response_notice') {
+        if (actioni == 'SaveNewEntry' && reponse[0]['type'] == 'response_notice') {
             $('published').value = '0';
-            $('id').value        = message[0]['message']['id'];
+            $('id').value        = reponse[0]['data'];
             $('action').value    = 'SaveEditEntry';
-            message[0]['message'] = message[0]['message']['message'];
         }
         autoDraftDone = true;
     }
-    showResponse(message, false);
+    showResponse(reponse, false);
 }
 
 /**

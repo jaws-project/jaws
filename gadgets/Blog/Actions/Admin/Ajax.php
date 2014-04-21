@@ -315,47 +315,50 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $text    = jaws()->request->fetch(4, 'post', 'strip_crlf');
 
         if ($id == 'NEW') {
-            $res = $model->NewEntry($GLOBALS['app']->Session->GetAttribute('user'),
-                                           $categories,
-                                           $title,
-                                           $summary,
-                                           $text,
-                                           '',
-                                           $fasturl,
-                                           $meta_keywords,
-                                           $meta_desc,
-                                           $tags,
-                                           $allow_comments,
-                                           $trackbacks,
-                                           false,
-                                           $timestamp,
-                                           true);
+            $res = $model->NewEntry(
+               $GLOBALS['app']->Session->GetAttribute('user'),
+               $categories,
+               $title,
+               $summary,
+               $text,
+               '',
+               $fasturl,
+               $meta_keywords,
+               $meta_desc,
+               $tags,
+               $allow_comments,
+               $trackbacks,
+               false,
+               $timestamp,
+               true
+            );
             if (!Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PopLastResponse(); // emptying all responses message
-                $newid          = $res;
-                $response['id'] = $newid;
-                $response['message'] = _t('BLOG_ENTRY_AUTOUPDATED',
-                                          date('H:i:s'),
-                                          (int)$id,
-                                          date('D, d'));
-                $GLOBALS['app']->Session->PushLastResponse($response, RESPONSE_NOTICE);
+                $newid = $res;
+                $GLOBALS['app']->Session->PushLastResponse(
+                    _t('BLOG_ENTRY_AUTOUPDATED', date('H:i:s'), (int)$id, date('D, d')),
+                    RESPONSE_NOTICE,
+                    $newid
+                );
             }
         } else {
-            $model->UpdateEntry($id,
-                                       $categories,
-                                       $title,
-                                       $summary,
-                                       $text,
-                                       null,
-                                       $fasturl,
-                                       $meta_keywords,
-                                       $meta_desc,
-                                       $tags,
-                                       $allow_comments,
-                                       $trackbacks,
-                                       $published,
-                                       $timestamp,
-                                       true);
+            $model->UpdateEntry(
+                $id,
+               $categories,
+               $title,
+               $summary,
+               $text,
+               null,
+               $fasturl,
+               $meta_keywords,
+               $meta_desc,
+               $tags,
+               $allow_comments,
+               $trackbacks,
+               $published,
+               $timestamp,
+               true
+            );
         }
         return $GLOBALS['app']->Session->PopLastResponse();
     }
