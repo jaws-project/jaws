@@ -171,7 +171,7 @@ class Jaws_Session
                     $GLOBALS['app']->Listener->Shout('Log', array('Users', 'Login', JAWS_WARNING));
                     // let everyone know a user has been logged
                     $GLOBALS['app']->Listener->Shout('LoginUser');
-                    return true;
+                    return $result;
                 } else {
                     // login conflict event logging
                     $GLOBALS['app']->Listener->Shout(
