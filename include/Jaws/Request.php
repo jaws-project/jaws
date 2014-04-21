@@ -130,6 +130,24 @@ class Jaws_Request
         $this->_params   = array();
         $this->_priority = array();
         $this->_includes = array();
+
+        // We don't like magic_quotes, so we disable it ;-)
+        @set_magic_quotes_runtime(0);
+        if (@get_magic_quotes_gpc()) {
+            $input = array(&$_GET, &$_POST, &$_REQUEST, &$_COOKIE, &$_ENV, &$_SERVER);
+            while (list($k, $v) = each($input)) {
+                foreach ($v as $key => $val) {
+                    if (!is_array($val)) {
+                        $key = stripslashes($key);
+                        $input[$k][$key] = stripslashes($val);
+                        continue;
+                    }
+                    $input[] =& $input[$k][$key];
+                }
+            }
+            unset($input);
+        }
+
         $this->data['get']    = $_GET;
         $this->data['cookie'] = $_COOKIE;
         // support json encoded posted data
