@@ -223,7 +223,7 @@ class Jaws_Gadget_Model
 
         $fast_url = Jaws_UTF8::trim(Jaws_XSS::defilter($fast_url));
         $fast_url = preg_replace(
-            array('#[^\p{L}[:digit:]_\.-\s]#u', '#[\s_-]#u', '#-+#u'),
+            array('#[^\p{L}[:digit:]_\.\-\s]#u', '#[\s_\-]#u', '#\-\+#u'),
             array('', '-', '-'),
             Jaws_UTF8::strtolower($fast_url)
         );
