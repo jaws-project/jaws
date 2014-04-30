@@ -233,20 +233,13 @@ class Jaws_Gadget_Model
             return $fast_url;
         }
 
-        $params = array();
-        $params['fast_url'] = $fast_url.'%';
-
-        $sql = "
-             SELECT [$field]
-             FROM [[$table]]
-             WHERE [$field] LIKE {fast_url}";
-
-        $urlList = $GLOBALS['db']->queryAll($sql, $params);
-        if (Jaws_Error::IsError($urlList) || empty($urlList)) {
+        $tblReg = Jaws_ORM::getInstance()->table($table);
+        $result = $tblReg->select("count($field)")->where($field, $fast_url.'%', 'like')->fetchOne();
+        if (Jaws_Error::IsError($result) || empty($result)) {
             return $fast_url;
         }
 
-        return $fast_url. '-'. (count($urlList) + 1);
+        return $fast_url. '-'. $result;
     }
 
 }
