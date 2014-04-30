@@ -229,6 +229,9 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $tpl->SetVariable('username',  $uInfo['username']);
             // nickname
             $tpl->SetVariable('nickname',  $uInfo['nickname']);
+            // avatar
+            $tpl->SetVariable('avatar', $uInfo['avatar']);
+
             // profile link
             $tpl->SetVariable(
                 'profile_url',
