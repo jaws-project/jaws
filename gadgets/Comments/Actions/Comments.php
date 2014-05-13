@@ -291,6 +291,16 @@ class Comments_Actions_Comments extends Comments_Actions_Default
                             $url = $url. '#comment'. $entry['id'];
                             break;
 
+                        case 'Comments':
+                            $url = $GLOBALS['app']->Map->GetURLFor(
+                                'Comments',
+                                'Guestbook',
+                                array(),
+                                true
+                            );
+                            $url = $url. '#comment'. $entry['id'];
+                            break;
+
                         default:
                             $url = '';
                     }
