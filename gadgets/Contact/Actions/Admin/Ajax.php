@@ -319,6 +319,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('AccessToMailer');
         @list($target, $subject, $message, $attachment) = jaws()->request->fetchAll('post');
         $message = jaws()->request->fetch(2, 'post', 'strip_crlf');
+        $target = jaws()->request->fetch('0:array', 'post');
 
         $gadget = $this->gadget->action->loadAdmin('Mailer');
         $gadget->SendEmail($target, $subject, $message, $attachment);
