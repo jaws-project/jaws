@@ -76,14 +76,15 @@ class Phoo_Actions_Albums extends Jaws_Gadget_Action
                 $tpl->SetBlock('albums/item');
                 $imgData = Jaws_Image::getimagesize(JAWS_DATA . 'phoo/' . $album['thumb']);
                 if (!Jaws_Error::IsError($imgData)) {
-                    $tpl->SetVariable('width',    $imgData[0]);
-                    $tpl->SetVariable('height',   $imgData[1]);
+                    $tpl->SetVariable('width', $imgData[0]);
+                    $tpl->SetVariable('height', $imgData[1]);
                 }
                 $url = $this->gadget->urlMap('ViewAlbum', array('id' => $album['id']));
                 $tpl->SetVariable('url',      $url);
                 $tpl->SetVariable('name',     $album['name']);
                 $tpl->SetVariable('filename', $album['filename']);
                 $tpl->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $album['thumb']));
+                $tpl->SetVariable('medium',   $GLOBALS['app']->getDataURL('phoo/' . $album['medium']));
                 $tpl->SetVariable('howmany',  _t('PHOO_NUM_PHOTOS_ALBUM', $album['qty']));
                 $tpl->SetVariable('description', $this->gadget->ParseText($album['description']));
                 $tpl->SetVariable('createtime', $date->Format($album['createtime']));

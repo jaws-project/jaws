@@ -72,7 +72,8 @@ class Phoo_Model_Albums extends Phoo_Model
                 $albums[$i]['qty']      = count($images);
                 $albums[$i]['filename'] = $images[0]['filename'];
                 $albums[$i]['thumb']    = $this->GetThumbPath($images[0]['filename']);
-                unset($images);
+                $albums[$i]['medium']   = $this->GetMediumPath($images[0]['filename']);
+             unset($images);
             }
         }
 
