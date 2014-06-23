@@ -50,7 +50,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
     function GetGroups($enabled, $offset = null)
     {
         $uModel = new Jaws_User();
-        $groups = $uModel->GetGroups($enabled, 'title', 12, $offset);
+        $groups = $uModel->GetGroups(0, $enabled, 'title', 12, $offset);
         if (Jaws_Error::IsError($groups)) {
             return array();
         }
