@@ -201,6 +201,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         }
         $tpl->SetBlock($block);
 
+        $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
         $tpl->SetVariable('gadget', strtolower($gadget));
 
         $objDate = Jaws_Date::getInstance();
