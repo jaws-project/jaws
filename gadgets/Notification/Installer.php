@@ -31,6 +31,9 @@ class Notification_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
+        // Installs listener for Jaws notifications
+        $this->gadget->event->insert('Notify');
+
         return true;
     }
 
