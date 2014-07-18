@@ -552,7 +552,7 @@ class Jaws_Session
                 ' don\'t have permission to execute '.$gadget.'::'.$key. (empty($subkey)? '' : "($subkey)");
         }
 
-        Jaws_Error::Fatal($errorMessage);
+        Jaws_Error::Fatal($errorMessage, 1, 403);
     }
 
     /**
