@@ -636,20 +636,24 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $dob = $GLOBALS['app']->UserTime2UTC($dob, 'Y-m-d H:i:s');
         }
 
-        $res = $this->_UserModel->UpdatePersonal(
-            $uid,
-            array(
-                'fname'   => $fname,
-                'lname'   => $lname,
-                'gender'  => $gender,
-                'ssn'     => $ssn,
-                'dob'     => $dob,
-                'url'     => $url,
-                'about'   => $about,
-                'avatar'  => ($avatar == 'false')? null : $avatar,
-                'privacy' => (bool)$privacy
-            )
+        $pData = array(
+            'fname'   => $fname,
+            'lname'   => $lname,
+            'gender'  => $gender,
+            'ssn'     => $ssn,
+            'dob'     => $dob,
+            'url'     => $url,
+            'about'   => $about,
+            'avatar'  => $avatar,
+            'privacy' => (bool)$privacy
         );
+
+        // don't touch user's avatar
+        if ($avatar == 'false') {
+            unset($pData['avatar']);
+        }
+
+        $res = $this->_UserModel->UpdatePersonal($uid, $pData);
         if ($res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_PERSONALINFO_NOT_UPDATED'),
                                                        RESPONSE_ERROR);
