@@ -230,6 +230,13 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_type', _t('MENU_TYPE'));
         $tpl->SetVariable('type', $typeCombo->Get());
 
+        $aclCombo =& Piwi::CreateWidget('Combo', 'acl');
+        $aclCombo->SetID('acl');
+        $aclCombo->setStyle('width: 256px;');
+        $aclCombo->AddOption(_t('MENU_ACL_NONE'), '');
+        $tpl->SetVariable('lbl_acl', _t('MENU_ACL'));
+        $tpl->SetVariable('acl', $aclCombo->Get());
+
         $rfcCombo =& Piwi::CreateWidget('Combo', 'references');
         $rfcCombo->SetID('references');
         $rfcCombo->setStyle('width: 256px;');

@@ -104,6 +104,15 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
         $len = count($menus);
         static $level = -1;
         for ($i = 0; $i < $len; $i++) {
+
+            // check ACL
+            if ($menus[$i]['menu_type'] != 'url' &&
+                !empty($menus[$i]['key_name']) &&
+                !$GLOBALS['app']->Session->GetPermission($menus[$i]['menu_type'], $menus[$i]['key_name'], $menus[$i]['key_subkey'])
+            ) {
+                continue;
+            }
+
             $level++;
             $tpl->SetVariable('level', $level);
             $tpl->SetBlock('levels/menu_item');

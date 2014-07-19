@@ -20,6 +20,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      * @param    int     $pid
      * @param    int     $gid           Group ID
      * @param    string  $type
+     * @param    string  $acl
      * @param    string  $title
      * @param    string  $url
      * @param    string  $url_target
@@ -28,7 +29,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      * @param    string  $image
      * @return   bool    True on success or False on failure
      */
-    function InsertMenu($pid, $gid, $type, $title, $url, $url_target, $rank, $published, $image)
+    function InsertMenu($pid, $gid, $type, $acl, $title, $url, $url_target, $rank, $published, $image)
     {
         $mData['pid']        = $pid;
         $mData['gid']        = $gid;
@@ -44,6 +45,14 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             $image = preg_replace("/[^[:alnum:]_\.-]*/i", "", $image);
             $filename = Jaws_Utils::upload_tmp_dir(). '/'. $image;
             $mData['image']  = array('File://' . $filename, 'blob');
+        }
+
+        // ACL
+        if (!empty($acl)) {
+            $aclInfo = explode(':', $acl);
+
+            $mData['key_name'] = $aclInfo[0];
+            $mData['key_subkey'] = $aclInfo[1];
         }
 
         $menusTable = Jaws_ORM::getInstance()->table('menus');
@@ -72,6 +81,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      * @param    int     $pid
      * @param    int     $gid        group ID
      * @param    string  $type
+     * @param    string  $acl
      * @param    string  $title
      * @param    string  $url
      * @param    string  $url_target
@@ -80,7 +90,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      * @param    string  $image
      * @return   bool    True on success or False on failure
      */
-    function UpdateMenu($mid, $pid, $gid, $type, $title, $url, $url_target, $rank, $published, $image)
+    function UpdateMenu($mid, $pid, $gid, $type, $acl, $title, $url, $url_target, $rank, $published, $image)
     {
         $model = $this->gadget->model->load('Menu');
         $oldMenu = $model->GetMenu($mid);
@@ -105,6 +115,16 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
                 $filename = Jaws_Utils::upload_tmp_dir(). '/'. $image;
                 $mData['image'] = array('File://' . $filename, 'blob');
             }
+        }
+
+        // ACL
+        if (!empty($acl)) {
+            $aclInfo = explode(':', $acl);
+            $mData['key_name'] = $aclInfo[0];
+            $mData['key_subkey'] = $aclInfo[1];
+        } else {
+            $mData['key_name'] = null;
+            $mData['key_subkey'] = null;
         }
 
         $menusTable = Jaws_ORM::getInstance()->table('menus');
