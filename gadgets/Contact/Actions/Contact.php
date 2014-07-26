@@ -99,9 +99,10 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
         $btnSend->SetSubmit();
         $tpl->SetVariable('btn_send', $btnSend->Get());
 
-        $last_message = $GLOBALS['app']->Session->PopSimpleResponse('Contact_Data');
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Contact')) {
-            $tpl->SetVariable('msg', $response);
+        $last_message = $GLOBALS['app']->Session->PopSimpleResponse('Contact.Data');
+        if ($response = $GLOBALS['app']->Session->PopResponse('Contact.Response')) {
+            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('type', $response['type']);
         }
 
         if (!$GLOBALS['app']->Session->Logged()) {

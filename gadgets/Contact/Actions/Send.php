@@ -36,23 +36,35 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
             trim($post['subject']) == '' ||
             trim($post['message']) == '')
         {
-            $GLOBALS['app']->Session->PushSimpleResponse(_t('CONTACT_INCOMPLETE_FIELDS'), 'Contact');
-            $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact_Data');
+            $GLOBALS['app']->Session->PushResponse(
+                _t('CONTACT_INCOMPLETE_FIELDS'),
+                'Contact.Response',
+                RESPONSE_ERROR
+            );
+            $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact.Data');
             Jaws_Header::Referrer();
         }
 
         $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
         $resCheck = $mPolicy->checkCaptcha();
         if (Jaws_Error::IsError($resCheck)) {
-            $GLOBALS['app']->Session->PushSimpleResponse($resCheck->getMessage(), 'Contact');
-            $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact_Data');
+            $GLOBALS['app']->Session->PushResponse(
+                $resCheck->getMessage(),
+                'Contact.Response',
+                RESPONSE_ERROR
+            );
+            $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact.Data');
             Jaws_Header::Referrer();
         }
 
         if ($this->gadget->registry->fetch('use_antispam') == 'true') {
             if (!preg_match("/^[[:alnum:]-_.]+\@[[:alnum:]-_.]+\.[[:alnum:]-_]+$/", $post['email'])) {
-                $GLOBALS['app']->Session->PushSimpleResponse(_t('CONTACT_RESULT_BAD_EMAIL_ADDRESS'), 'Contact');
-                $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact_Data');
+                $GLOBALS['app']->Session->PushResponse(
+                    _t('CONTACT_RESULT_BAD_EMAIL_ADDRESS'),
+                    'Contact.Response',
+                    RESPONSE_ERROR
+                );
+                $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact.Data');
                 Jaws_Header::Referrer();
             }
         }
@@ -66,8 +78,12 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
                                               '',
                                               false);
             if (Jaws_Error::IsError($attach)) {
-                $GLOBALS['app']->Session->PushSimpleResponse($attach->getMessage(), 'Contact');
-                $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact_Data');
+                $GLOBALS['app']->Session->PushResponse(
+                    $attach->getMessage(),
+                    'Contact.Response',
+                    RESPONSE_ERROR
+                );
+                $GLOBALS['app']->Session->PushSimpleResponse($post, 'Contact.Data');
                 Jaws_Header::Referrer();
             }
 
@@ -93,6 +109,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         );
         if (Jaws_Error::IsError($result)) {
             $res_msg = _t('CONTACT_RESULT_ERROR_DB');
+            $res_type = RESPONSE_ERROR;
         } else {
             $to = '';
             $cid = $result;
@@ -102,15 +119,21 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
                 $recipient = $model->GetRecipient((int)$post['recipient']);
                 if (Jaws_Error::IsError($recipient) || !isset($recipient['id'])) {
                     $res_msg = _t('CONTACT_ERROR_RECIPIENT_DOES_NOT_EXISTS');
+                    $res_type = RESPONSE_ERROR;
                 } elseif ($recipient['inform_type'] == 1) { //Send To Email
                     $to = $recipient['email'];
                 }
             }
             $this->SendEmailToRecipient($to, $cid);
             $res_msg = _t('CONTACT_RESULT_SENT');
+            $res_type = RESPONSE_NOTICE;
         }
 
-        $GLOBALS['app']->Session->PushSimpleResponse($res_msg, 'Contact');
+        $GLOBALS['app']->Session->PushResponse(
+            $res_msg,
+            'Contact.Response',
+            $res_type
+        );
         Jaws_Header::Referrer();
     }
 
