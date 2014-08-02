@@ -28,34 +28,50 @@ class BBCode_Plugin extends Jaws_Plugin
         $bold =& Piwi::CreateWidget('Button', 'bold', '<strong>B</strong>');
         $bold->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[b]','[/b]','');");
         $bold->SetTitle(_t('PLUGINS_BBCODE_BOLD_SAMPLE'));
+        $bold->SetId('');
+        $bold->SetName('');
 
         $italic =& Piwi::CreateWidget('Button', 'italic', '<em>i</em>');
         $italic->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[i]','[/i]','');");
         $italic->SetTitle(_t('PLUGINS_BBCODE_ITALIC_SAMPLE'));
+        $italic->SetId('');
+        $italic->SetName('');
 
         $underline =& Piwi::CreateWidget('Button', 'underline', '<u>u</u>');
         $underline->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[u]','[/u]','');");
         $underline->SetTitle(_t('PLUGINS_BBCODE_UNDERLINE_SAMPLE'));
+        $underline->SetId('');
+        $underline->SetName('');
 
         $strike =& Piwi::CreateWidget('Button', 'strike', '<s>s</s>');
         $strike->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[s]','[/s]','');");
         $strike->SetTitle(_t('PLUGINS_BBCODE_STRIKE_SAMPLE'));
+        $strike->SetId('');
+        $strike->SetName('');
 
         $quote =& Piwi::CreateWidget('Button', 'quote', 'Quote');
         $quote->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[quote]','[/quote]','');");
         $quote->SetTitle(_t('PLUGINS_BBCODE_QUOTE_SAMPLE'));
+        $quote->SetId('');
+        $quote->SetName('');
 
         $code =& Piwi::CreateWidget('Button', 'code', 'Code');
         $code->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[code]','[/code]','');");
         $code->SetTitle(_t('PLUGINS_BBCODE_CODE_SAMPLE'));
+        $code->SetId('');
+        $code->SetName('');
 
         $image =& Piwi::CreateWidget('Button', 'image', 'Image');
         $image->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[img]','[/img]','');");
         $image->SetTitle(_t('PLUGINS_BBCODE_IMAGE_SAMPLE'));
+        $image->SetId('');
+        $image->SetName('');
 
         $url =& Piwi::CreateWidget('Button', 'url', 'URL');
         $url->AddEvent(ON_CLICK, "javascript:insertTags('$textarea', '[url]','[/url]','');");
         $url->SetTitle(_t('PLUGINS_BBCODE_URL_SAMPLE'));
+        $url->SetId('');
+        $url->SetName('');
 
         $size =& Piwi::CreateWidget('Combo', 'size');
         $size->AddEvent(
@@ -69,6 +85,8 @@ class BBCode_Plugin extends Jaws_Plugin
         $size->AddOption(_t('PLUGINS_BBCODE_SIZE_LARGE'),   16);
         $size->AddOption(_t('PLUGINS_BBCODE_SIZE_HUGE'),    18);
         $size->SetDefault(13);
+        $size->SetId('');
+        $size->SetName('');
 
         $color =& Piwi::CreateWidget('Combo', 'color');
         $color->AddEvent(
@@ -85,6 +103,8 @@ class BBCode_Plugin extends Jaws_Plugin
         $color->AddOption(_t('PLUGINS_BBCODE_COLOR_FF00FF'), '#FF00FF');
         $color->AddOption(_t('PLUGINS_BBCODE_COLOR_FFFFFF'), '#FFFFFF');
         $color->SetDefault('#0000FF');
+        $color->SetId('');
+        $color->SetName('');
 
         $buttonbox->PackStart($bold);
         $buttonbox->PackStart($italic);
