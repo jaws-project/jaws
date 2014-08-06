@@ -316,6 +316,25 @@ class Jaws_Gadget_Installer
             }
         }
 
+        // Apply registry changes
+        $cur_keys = $GLOBALS['app']->Registry->fetchAll($this->gadget->name);
+        unset($cur_keys['version'], $cur_keys['requirement'], $cur_keys['recommended']);
+        $cur_keys = array_keys($cur_keys);
+        $all_keys = array();
+        $new_keys = array();
+        foreach ($installer->_RegKeys as $index => $key) {
+            $all_keys[] = $key = $key[0];
+            if (!in_array($key, $cur_keys)) {
+                $new_keys[] = $installer->_RegKeys[$index];
+            }
+        }
+        foreach ($cur_keys as $index => $key) {
+            if (!in_array($key, $all_keys)) {
+                $GLOBALS['app']->Registry->delete($this->gadget->name, $key);
+            }
+        }
+        $this->gadget->registry->insertAll($new_keys, $this->gadget->name);
+
         // end upgrade gadget event
         $result = $this->gadget->event->shout('UpgradeGadget', $this->gadget->name);
         if (Jaws_Error::IsError($result)) {
