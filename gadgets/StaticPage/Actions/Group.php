@@ -44,6 +44,12 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
                     5 => _t('GLOBAL_UPDATETIME'). ' &darr;',
                 )
             );
+
+            $result[] = array(
+                'title' => _t('GLOBAL_COUNT'),
+                'value' => $this->gadget->registry->fetch('show_pages_limit')
+            );
+
         }
 
         return $result;
@@ -55,9 +61,10 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
      * @access  public
      * @param   mixed   $gid    ID or fast_url of the group (int/string)
      * @param   int     $orderBy
+     * @param   int     $limit    limit show pages
      * @return  string  XHTML content
      */
-    function GroupPages($gid = 0, $orderBy = 1)
+    function GroupPages($gid = 0, $orderBy = 1, $limit = 0)
     {
         if (empty($gid)) {
             $get = $this->gadget->request->fetch(array('gid', 'order'), 'get');
@@ -83,7 +90,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
             $gid = $group['id'];
         }
 
-        $pages = $pModel->GetPages($gid, null, $orderBy);
+        $pages = $pModel->GetPages($gid, $limit, $orderBy);
         if (Jaws_Error::IsError($pages)) {
             return false;
         }
