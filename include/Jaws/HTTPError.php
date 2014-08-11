@@ -27,7 +27,7 @@ class Jaws_HTTPError
         header('Pragma: no-cache');
 
         // Let everyone know a HTTP error has been happened
-        $result = $GLOBALS['app']->Listener->Shout('HTTPError', $code, 'UrlMapper');
+        $result = $GLOBALS['app']->Listener->Shout('HTTPError', 'HTTPError', $code, 'UrlMapper');
         if (!Jaws_Error::IsError($result) && !empty($result)) {
             $code = empty($result['code'])? $code : $result['code'];
         }

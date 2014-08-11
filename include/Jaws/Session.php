@@ -168,13 +168,14 @@ class Jaws_Session
                     // create session & cookie
                     $this->Create($result, $remember);
                     // login event logging
-                    $GLOBALS['app']->Listener->Shout('Log', array('Users', 'Login', JAWS_WARNING));
+                    $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Login', JAWS_WARNING));
                     // let everyone know a user has been logged
-                    $GLOBALS['app']->Listener->Shout('LoginUser');
+                    $GLOBALS['app']->Listener->Shout('Session', 'LoginUser');
                     return $result;
                 } else {
                     // login conflict event logging
                     $GLOBALS['app']->Listener->Shout(
+                        'Session',
                         'Log',
                         array('Users', 'Login', JAWS_WARNING, null, 403, $result['id'])
                     );
@@ -211,7 +212,7 @@ class Jaws_Session
      */
     function Logout()
     {
-        $GLOBALS['app']->Listener->Shout('Log', array('Users', 'Logout', JAWS_WARNING));
+        $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Logout', JAWS_WARNING));
         $this->Reset();
         $this->update();
         $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session logout');

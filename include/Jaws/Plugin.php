@@ -164,7 +164,7 @@ class Jaws_Plugin
         );
 
         // Everything is done
-        $res = $GLOBALS['app']->Listener->Shout('InstallPlugin', $plugin);
+        $res = $GLOBALS['app']->Listener->Shout('Plugin', 'InstallPlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }
@@ -201,7 +201,7 @@ class Jaws_Plugin
         }
 
         // Everything is done
-        $res = $GLOBALS['app']->Listener->Shout('UninstallPlugin', $plugin);
+        $res = $GLOBALS['app']->Listener->Shout('Plugin', 'UninstallPlugin', $plugin);
         if (Jaws_Error::IsError($res) || !$res) {
             return $res;
         }
