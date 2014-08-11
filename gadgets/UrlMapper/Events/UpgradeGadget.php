@@ -14,7 +14,7 @@ class UrlMapper_Events_UpgradeGadget extends Jaws_Gadget_Event
      * Event execute method
      *
      */
-    function Execute($gadget)
+    function Execute($shouter, $gadget)
     {
         $uModel = $this->gadget->model->loadAdmin('Maps');
         $res = $uModel->UpdateGadgetMaps($gadget);

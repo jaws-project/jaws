@@ -14,7 +14,7 @@ class UrlMapper_Events_HTTPError extends Jaws_Gadget_Event
      * Event execute method
      *
      */
-    function Execute($code)
+    function Execute($shouter, $code)
     {
         $reqURL = Jaws_Utils::getRequestURL(true);
         $uModel = $this->gadget->model->loadAdmin('ErrorMaps');
