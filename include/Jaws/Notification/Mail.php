@@ -38,10 +38,11 @@ class Jaws_Notification_Mail
      * @access  public
      * @param   array   $user           User's properties associated array
      * @param   string  $title          Notification title
+     * @param   string  $summary        Notification summary
      * @param   string  $description    Notification description
      * @return  mixed   Jaws_Error on failure
      */
-    function notify($user, $title, $description)
+    function notify($user, $title, $summary, $description)
     {
         $this->object->AddRecipient($user['email']);
         $this->object->SetSubject($title);
