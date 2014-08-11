@@ -14,8 +14,9 @@ class Blog_Events_UpdateComment extends Jaws_Gadget_Event
      * Event execute method
      *
      */
-    function Execute($gadget, $action, $reference)
+    function Execute($shouter, $params)
     {
+        @list($gadget, $action, $reference) = $params;
         if ($gadget != 'Blog') {
             return;
         }
