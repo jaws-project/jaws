@@ -14,6 +14,7 @@ class Logs_Events_Log extends Jaws_Gadget_Event
      * Event execute method
      *
      * @access  public
+     * @param   string  $shouter    Shouter name
      * @param   string  $gadget     Gadget name
      * @param   string  $action     Action name
      * @param   int     $priority   Priority of log
@@ -21,8 +22,12 @@ class Logs_Events_Log extends Jaws_Gadget_Event
      * @param   int     $status     Status code
      * @return  mixed   Log identity or Jaws_Error on failure
      */
-    function Execute($gadget, $action, $priority = 0, $params = null, $status = 200, $user = 0)
+    function Execute($shouter, $params)
     {
+        @list($gadget, $action, $priority, $params, $status, $user) = $params;
+        $user = (int)$user;
+        $priority = (int)$priority;
+        $status = empty($status)? 200 : (int)$status;
         if (!isset($GLOBALS['app']->Session)) {
             return false;
         }
