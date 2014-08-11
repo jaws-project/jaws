@@ -14,7 +14,7 @@ class Layout_Events_DisableGadget extends Jaws_Gadget_Event
      * Event execute method
      *
      */
-    function Execute($gadget)
+    function Execute($shouter, $gadget)
     {
         $lModel = $this->gadget->model->loadAdmin('Layout');
         $res = $lModel->PublishGadgetElements($gadget, false);

@@ -14,7 +14,7 @@ class Layout_Events_UninstallGadget extends Jaws_Gadget_Event
      * Event execute method
      *
      */
-    function Execute($gadget)
+    function Execute($shouter, $gadget)
     {
         $lModel = $this->gadget->model->loadAdmin('Layout');
         return $lModel->DeleteGadgetElements($gadget);
