@@ -14,7 +14,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
      * Stores and sends the notification
      *
      */
-    function Execute($gadget, $action, $user, $title, $desc, $priority = 3, $send = true)
+    function Execute($shouter, $gadget, $action, $user, $title, $desc, $priority = 3, $send = true)
     {
         $notification = array(
             'gadget' => $gadget,
