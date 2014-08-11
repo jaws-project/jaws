@@ -18,6 +18,7 @@ class PrivateMessage_Info extends Jaws_Gadget
     const PRIVATEMESSAGE_FOLDER_OUTBOX = 3;
     const PRIVATEMESSAGE_FOLDER_ARCHIVED = 4;
     const PRIVATEMESSAGE_FOLDER_TRASH = 5;
+    const PRIVATEMESSAGE_FOLDER_NOTIFICATIONS = 6;
 
     /**
      * Gadget version

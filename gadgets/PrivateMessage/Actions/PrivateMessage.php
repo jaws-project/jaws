@@ -28,6 +28,10 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
 
         $model = $this->gadget->model->load('Message');
         $user_id = $GLOBALS['app']->Session->GetAttribute('user');
+        $unreadNotifyCount = $model->GetMessagesStatistics(
+                                                $user_id,
+                                                PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS,
+                                                array('read' => 'no'));
         $unreadInboxCount = $model->GetMessagesStatistics(
                                                 $user_id,
                                                 PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX,
@@ -35,6 +39,11 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
         $draftMessageCount = $model->GetMessagesStatistics(
                                                  $user_id,
                                                  PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT);
+        if ($unreadNotifyCount > 0) {
+            $tpl->SetVariable('notifications', _t('PRIVATEMESSAGE_NOTIFICATIONS', '(' . $unreadNotifyCount . ')'));
+        } else {
+            $tpl->SetVariable('notifications', _t('PRIVATEMESSAGE_NOTIFICATIONS'));
+        }
         if ($unreadInboxCount > 0) {
             $tpl->SetVariable('inbox', _t('PRIVATEMESSAGE_INBOX', '(' . $unreadInboxCount . ')'));
         } else {
@@ -54,9 +63,9 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
 
         $tpl->SetVariable('compose_message_url', $this->gadget->urlMap('Compose'));
         $tpl->SetVariable('all_messages_url', $this->gadget->urlMap('Messages'));
-        $tpl->SetVariable('inbox_url', $this->gadget->urlMap(
+        $tpl->SetVariable('notifications_url', $this->gadget->urlMap(
                                             'Messages',
-                                            array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX)));
+                                            array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS)));
         $tpl->SetVariable('inbox_url', $this->gadget->urlMap(
                                             'Messages',
                                             array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX)));

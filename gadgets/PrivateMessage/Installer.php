@@ -66,6 +66,8 @@ class PrivateMessage_Installer extends Jaws_Gadget_Installer
             return new Jaws_Error(_t('GLOBAL_ERROR_FAILED_CREATING_DIR', $new_dir));
         }
 
+        $this->gadget->event->insert('Notify');
+
         return true;
     }
 

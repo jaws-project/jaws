@@ -39,7 +39,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         }*/
 
         $table->select($columns);
-        $table->join('users', 'pm_messages.from', 'users.id');
+        $table->join('users', 'pm_messages.from', 'users.id', 'left');
         $message = $table->where('pm_messages.id', (int)$id)->fetchRow();
         if (Jaws_Error::IsError($message)) {
             return new Jaws_Error($message->getMessage());
@@ -386,21 +386,28 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $data = array();
         $data['subject']            = $messageData['subject'];
         $data['body']               = $messageData['body'];
-        $data['attachments']        = count($messageData['attachments']);
+        $data['attachments']        = isset($messageData['attachments'])? count($messageData['attachments']) : 0;
         $data['recipient_users']    = $messageData['recipient_users'];
-        $data['recipient_groups']   = $messageData['recipient_groups'];
+        $data['recipient_groups']   = isset($messageData['recipient_groups'])? $messageData['recipient_groups'] : null;
         $data['update_time']        = time();
 
-        // Detect draft or publish?
+        // Detect notification, draft or publish?
+        $is_notification = ($messageData['folder'] == PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS);
         if($messageData['published']) {
-            $data['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX;
+            $data['folder'] = $is_notification?
+                PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS :
+                PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX;
             // Send new message
             if(empty($messageData['id'])) {
                 // First we must insert a record to messages table for sender
-                $data['from'] = $user;
-                $data['to'] = 0;
-                $data['insert_time'] = time();
-                $senderMessageId = $mTable->insert($data)->exec();
+                if ($is_notification) {
+                    $senderMessageId = 0;
+                } else {
+                    $data['from'] = $user;
+                    $data['to'] = 0;
+                    $data['insert_time'] = time();
+                    $senderMessageId = $mTable->insert($data)->exec();
+                }
             // Send old message
             } else {
                 $mTable->update($data)->where('id', $messageData['id'])->exec();
@@ -410,10 +417,14 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             // Insert records for every recipient users
             if (!empty($recipient_users) && count($recipient_users) > 0) {
                 $table = $table->table('pm_messages');
+                $target_folder = $is_notification?
+                    PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS :
+                    PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX;
+                $from = $is_notification? 0 : $user;
                 foreach ($recipient_users as $recipient_user) {
-                    $data['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX;
+                    $data['folder'] = $target_folder;
                     $data['insert_time'] = time();
-                    $data['from'] = $user;
+                    $data['from'] = $from;
                     $data['to'] = $recipient_user;
                     $messageId = $table->insert($data)->exec();
                     if (Jaws_Error::IsError($messageId)) {
@@ -542,12 +553,15 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             'users.nickname as from_nickname', 'pm_messages.read:boolean', 'users.username as from_username',
             'pm_messages.attachments:integer', 'from:integer', 'to:integer', 'folder:integer'
         );
-        $table->join('users', 'pm_messages.from', 'users.id');
+        $table->join('users', 'pm_messages.from', 'users.id', 'left');
         if (!empty($folder)) {
             $table->and()->where('pm_messages.folder', $folder);
         }
 
         switch ($folder) {
+            case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS :
+                $table->and()->where('pm_messages.to', (int)$user);
+                break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX :
                 $table->and()->where('pm_messages.to', (int)$user);
                 break;
@@ -612,6 +626,9 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             $table->and()->where('pm_messages.folder', $folder);
         }
         switch ($folder) {
+            case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS :
+                $table->and()->where('pm_messages.to', (int)$user);
+                break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX :
                 $table->and()->where('pm_messages.to', (int)$user);
                 break;

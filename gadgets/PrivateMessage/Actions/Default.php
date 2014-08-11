@@ -19,12 +19,18 @@ class PrivateMessage_Actions_Default extends Jaws_Gadget_Action
      */
     function MenuBar($action_selected)
     {
-        $actions = array('Inbox', 'Outbox', 'Draft', 'Archived', 'Compose');
+        $actions = array('Notifications', 'Inbox', 'Outbox', 'Draft', 'Archived', 'Compose');
         if (!in_array($action_selected, $actions)) {
-            $action_selected = 'Inbox';
+            $action_selected = 'Notifications';
         }
 
         $menubar = new Jaws_Widgets_Menubar();
+
+        $menubar->AddOption('Notifications', _t('PRIVATEMESSAGE_NOTIFICATIONS'),
+            $this->gadget->urlMap(
+                'Messages',
+                array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS)),
+                'gadgets/PrivateMessage/Resources/images/notify.png');
 
         $menubar->AddOption('Inbox', _t('PRIVATEMESSAGE_INBOX'),
             $this->gadget->urlMap(

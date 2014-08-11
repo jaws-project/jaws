@@ -40,6 +40,27 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $tpl->SetVariable('confirmDelete', _t('PRIVATEMESSAGE_MESSAGE_CONFIRM_DELETE'));
 
         switch ($folder) {
+            case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS:
+                $menubar = $this->MenuBar('Notifications');
+                $title = _t('PRIVATEMESSAGE_NOTIFICATIONS');
+
+                $tpl->SetBlock('messages/filter_read');
+                $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
+                $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
+                $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
+                $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
+                $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
+
+                $tpl->ParseBlock('messages/filter_read');
+
+
+                $tpl->SetBlock('messages/notifications_action');
+                $tpl->SetVariable('lbl_archive', _t('PRIVATEMESSAGE_ARCHIVE'));
+                $tpl->SetVariable('lbl_mark_as_read', _t('PRIVATEMESSAGE_MARK_AS_READ'));
+                $tpl->SetVariable('lbl_mark_as_unread', _t('PRIVATEMESSAGE_MARK_AS_UNREAD'));
+                $tpl->SetVariable('lbl_trash', _t('PRIVATEMESSAGE_TRASH'));
+                $tpl->ParseBlock('messages/notifications_action');
+                break;
             case PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX:
                 $menubar = $this->MenuBar('Inbox');
                 $title = _t('PRIVATEMESSAGE_INBOX');
