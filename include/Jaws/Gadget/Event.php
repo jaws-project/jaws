@@ -73,7 +73,7 @@ class Jaws_Gadget_Event
 
 
     /**
-     * Shouts a call to the listener object that will act inmediatly.
+     * Shouts a call to the listener object that will act immediately.
      *
      * @access  public
      * @param   string  $event      Event name
@@ -84,7 +84,7 @@ class Jaws_Gadget_Event
      */
     public function shout($event, $params = array(), $gadget = '', $broadcast = true)
     {
-        return $GLOBALS['app']->Listener->Shout($event, $params, $gadget, $broadcast);
+        return $GLOBALS['app']->Listener->Shout($this->gadget->name, $event, $params, $gadget, $broadcast);
     }
 
 
