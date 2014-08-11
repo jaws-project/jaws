@@ -11,7 +11,7 @@
 class Notification_Installer extends Jaws_Gadget_Installer
 {
     /**
-     * Default ACL value of frontend gadget access
+     * Default ACL value of the gadget frontend
      *
      * @var     bool
      * @access  protected
@@ -26,12 +26,6 @@ class Notification_Installer extends Jaws_Gadget_Installer
      */
     function Install()
     {
-        $result = $this->installSchema('schema.xml');
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        // Installs listener for Jaws notifications
         $this->gadget->event->insert('Notify');
 
         return true;
@@ -45,15 +39,6 @@ class Notification_Installer extends Jaws_Gadget_Installer
      */
     function Uninstall()
     {
-        $tables = array('notification');
-        foreach ($tables as $table) {
-            $result = $GLOBALS['db']->dropTable($table);
-            if (Jaws_Error::IsError($result)) {
-                $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $this->gadget->title);
-                return new Jaws_Error($errMsg);
-            }
-        }
-
         return true;
     }
 
