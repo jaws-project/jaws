@@ -27,16 +27,17 @@ class Jaws_Listener
     }
 
     /**
-     * Shouts a call to the listener object that will act inmediatly.
+     * Shouts a call to the listener object that will act immediately.
      *
      * @access  public
+     * @param   string  $shouter    Shouter class|gadget name
      * @param   string  $event      Event name
      * @param   mixed   $params     Event param(s)
      * @param   string  $gadget     If set, returns listener result of this gadget
      * @param   bool    $broadcast  Broadcast event to all listeners
      * @return  mixed   True if successfully, otherwise returns Jaws_Error
      */
-    function Shout($event, $params = array(), $gadget = '', $broadcast = true)
+    function Shout($shouter, $event, $params = array(), $gadget = '', $broadcast = true)
     {
         $listeners = $this->GetEventListeners($event);
         if (Jaws_Error::IsError($listeners)) {
@@ -60,12 +61,7 @@ class Jaws_Listener
                     continue;
                 }
 
-                if (is_array($params)) {
-                    $response = call_user_func_array(array($objEvent, 'Execute'), $params);
-                } else {
-                    $response = $objEvent->Execute($params);
-                }
-
+                $response = $objEvent->Execute($shouter, $params);
                 // return listener result
                 if ($gadget == $listener['gadget']) {
                     $result = $response;
