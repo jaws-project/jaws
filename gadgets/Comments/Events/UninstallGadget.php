@@ -14,7 +14,7 @@ class Comments_Events_UninstallGadget extends Jaws_Gadget_Event
      * Event execute method
      *
      */
-    function Execute($gadget)
+    function Execute($shouter, $gadget)
     {
         $mModel = $this->gadget->model->load('DeleteComments');
         $res = $mModel->DeleteGadgetComments($gadget);
