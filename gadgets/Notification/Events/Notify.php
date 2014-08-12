@@ -22,13 +22,13 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
             return;
         }
 
-        $files = glob(JAWS_PATH . 'include/Jaws/Notification/*.php');
-        $drivers = array_map('basename', $files, array_fill(0, count($files), '.php'));
+        $drivers = glob(JAWS_PATH . 'include/Jaws/Notification/*.php');
 
         $jUser = new Jaws_User;
         $user = $jUser->GetUser($params['user'], false, false, true);
 
         foreach ($drivers as $driver) {
+            $driver = basename($driver, '.php');
             $options = unserialize($this->gadget->registry->fetch($driver . '_options'));
             $driverObj = Jaws_Notification::getInstance($driver, $options);
             $driverObj->notify(
