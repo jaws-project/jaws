@@ -334,8 +334,8 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $to  = $contact['email'];
         $rid = $contact['recipient'];
         if ($rid != 0) {
-            $model = $this->gadget->model->load('Recipients');
-            $recipient = $model->GetRecipient($rid);
+            $rModel = $this->gadget->model->load('Recipients');
+            $recipient = $rModel->GetRecipient($rid);
             if (Jaws_Error::IsError($recipient)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'),
                                                            RESPONSE_ERROR);
