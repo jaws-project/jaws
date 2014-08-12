@@ -51,8 +51,8 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         if (!empty($acl)) {
             $aclInfo = explode(':', $acl);
 
-            $mData['key_name'] = $aclInfo[0];
-            $mData['key_subkey'] = $aclInfo[1];
+            $mData['acl_key_name'] = $aclInfo[0];
+            $mData['acl_key_subkey'] = $aclInfo[1];
         }
 
         $menusTable = Jaws_ORM::getInstance()->table('menus');
@@ -120,11 +120,11 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         // ACL
         if (!empty($acl)) {
             $aclInfo = explode(':', $acl);
-            $mData['key_name'] = $aclInfo[0];
-            $mData['key_subkey'] = $aclInfo[1];
+            $mData['acl_key_name'] = $aclInfo[0];
+            $mData['acl_key_subkey'] = $aclInfo[1];
         } else {
-            $mData['key_name'] = null;
-            $mData['key_subkey'] = null;
+            $mData['acl_key_name'] = null;
+            $mData['acl_key_subkey'] = null;
         }
 
         $menusTable = Jaws_ORM::getInstance()->table('menus');

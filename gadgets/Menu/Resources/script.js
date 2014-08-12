@@ -374,7 +374,7 @@ function editMenu(mid)
     }
 
     getACLs($('type').value);
-    $('acl').value = menuInfo['key_name'] + ':' + menuInfo['key_subkey'];
+    $('acl').value = menuInfo['acl_key_name'] + ':' + menuInfo['acl_key_subkey'];
     if ($('type').value == 'url' && $('acl').selectedIndex == -1) {
         $('acl').selectedIndex = 0;
     }

@@ -108,7 +108,11 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             // check ACL
             if ($menus[$i]['menu_type'] != 'url' &&
                 !empty($menus[$i]['key_name']) &&
-                !$GLOBALS['app']->Session->GetPermission($menus[$i]['menu_type'], $menus[$i]['key_name'], $menus[$i]['key_subkey'])
+                !$GLOBALS['app']->Session->GetPermission(
+                    $menus[$i]['menu_type'],
+                    $menus[$i]['acl_key_name'],
+                    $menus[$i]['acl_key_subkey']
+                )
             ) {
                 continue;
             }

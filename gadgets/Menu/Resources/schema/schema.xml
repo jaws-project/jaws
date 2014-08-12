@@ -36,13 +36,13 @@
         </field>
 
         <field>
-            <name>key_name</name>
+            <name>acl_key_name</name>
             <type>text</type>
             <length>32</length>
         </field>
 
         <field>
-            <name>key_subkey</name>
+            <name>acl_key_subkey</name>
             <type>text</type>
             <length>32</length>
             <default></default>
