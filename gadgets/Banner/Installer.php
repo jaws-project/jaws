@@ -85,10 +85,22 @@ class Banner_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        // Update layout actions
-        $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
-        if (!Jaws_Error::isError($layoutModel)) {
-            $layoutModel->EditGadgetLayoutAction('Banner', 'Display', 'Banners', 'Banners');
+        if (version_compare($old, '0.9.0', '<')) {
+            // Update layout actions
+            $layoutModel = Jaws_Gadget::getInstance('Layout')->model->loadAdmin('Layout');
+            if (!Jaws_Error::isError($layoutModel)) {
+                $layoutModel->EditGadgetLayoutAction('Banner', 'Display', 'Banners', 'Banners');
+            }
+        }
+
+        if (version_compare($old, '1.0.0', '<')) {
+            // Update stored templates in database
+            $bannersTable = Jaws_ORM::getInstance()->table('banners');
+            $banners = $bannersTable->select('id:integer', 'template')->fetchAll();
+            foreach ($banners as $banner) {
+                $banner['template'] = str_replace(array('{', '}'), array('{{', '}}'), $banner['template']);
+                $bannersTable->update(array('template'=>$banner['template']))->where('id', $banner['id'])->exec();
+            }
         }
 
         return true;
