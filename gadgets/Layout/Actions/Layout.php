@@ -288,7 +288,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      */
     function UpdateTheme($theme, $user)
     {
-        $theme = preg_replace('/[^[:alnum:]_-]/', '', $theme);
+        $theme = preg_replace('/[^[:alnum:]_\-]/', '', $theme);
         $layout_path = JAWS_THEMES. $theme;
         if (!file_exists($layout_path. '/layout.html')) {
             $layout_path = JAWS_BASE_THEMES. $theme;
