@@ -221,6 +221,7 @@ class Users_Actions_Account extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('NewEmail.txt');
         $tpl->SetBlock('Notification');
+        $tpl->SetVariable('nickname', $nickname);
         $tpl->SetVariable('say_hello', _t('USERS_EMAIL_REPLACEMENT_HELLO', $nickname));
         $tpl->SetVariable('message', _t('USERS_EMAIL_REPLACEMENT_MSG'));
 

@@ -274,6 +274,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
             $tpl->SetVariable('username', $info['username']);
             $tpl->SetVariable('nickname', $info['nickname']);
+            $tpl->SetVariable('say_hello', _t('USERS_EMAIL_REPLACEMENT_HELLO', $info['nickname']));
             $tpl->SetVariable('message', _t('USERS_FORGOT_MAIL_MESSAGE'));
             $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
             $tpl->SetVariable(

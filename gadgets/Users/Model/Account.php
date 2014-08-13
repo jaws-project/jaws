@@ -74,6 +74,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
 
         $tpl = $this->gadget->template->load('NewPassword.txt');
         $tpl->SetBlock('NewPassword');
+        $tpl->SetVariable('say_hello', _t('USERS_EMAIL_REPLACEMENT_HELLO', $user['nickname']));
         $tpl->SetVariable('username', $user['username']);
         $tpl->SetVariable('nickname', $user['nickname']);
         $tpl->SetVariable('password', $password);
