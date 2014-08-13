@@ -158,13 +158,6 @@ class Jaws_Mail
     {
         $valid_recipients = array();
         $recipients = array_filter(array_map('Jaws_UTF8::trim', explode(',', $recipients)));
-        if (empty($recipients)) {
-            if (!empty($this->site_name)) {
-                $recipients[] = $this->site_name . ' <'. $this->site_email. '>';
-            } else {
-                $recipients[] = $this->site_email;
-            }
-        }
         foreach ($recipients as $key => $recipient) {
             if (false !== $ltPos = Jaws_UTF8::strpos($recipient, '<')) {
                 $ename = Jaws_UTF8::encode_mimeheader(Jaws_UTF8::substr($recipient, 0, $ltPos));
@@ -182,6 +175,14 @@ class Jaws_Mail
             }
 
             $valid_recipients[] = $recipients[$key];
+        }
+
+        if (empty($valid_recipients)) {
+            if (!empty($this->site_name)) {
+                $valid_recipients[] = Jaws_UTF8::encode_mimeheader($this->site_name) . ' <'. $this->site_email. '>';
+            } else {
+                $valid_recipients[] = $this->site_email;
+            }
         }
 
         switch (strtolower($inform_type)) {
