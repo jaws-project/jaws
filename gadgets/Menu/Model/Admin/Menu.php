@@ -42,7 +42,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         if (empty($image)) {
             $mData['image']  = null;
         } else {
-            $image = preg_replace("/[^[:alnum:]_\.-]*/i", "", $image);
+            $image = preg_replace("/[^[:alnum:]_\.\-]*/i", "", $image);
             $filename = Jaws_Utils::upload_tmp_dir(). '/'. $image;
             $mData['image']  = array('File://' . $filename, 'blob');
         }
@@ -111,7 +111,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             if (empty($image)) {
                 $mData['image'] = null;
             } else {
-                $image = preg_replace("/[^[:alnum:]_\.-]*/i", "", $image);
+                $image = preg_replace("/[^[:alnum:]_\.\-]*/i", "", $image);
                 $filename = Jaws_Utils::upload_tmp_dir(). '/'. $image;
                 $mData['image'] = array('File://' . $filename, 'blob');
             }

@@ -332,7 +332,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
                     $result = $objImage->setData($result, true);
                 }
             } else {
-                $params['file'] = preg_replace("/[^[:alnum:]_\.-]*/i", "", $params['file']);
+                $params['file'] = preg_replace("/[^[:alnum:]_\.\-]*/i", "", $params['file']);
                 $result = $objImage->load(Jaws_Utils::upload_tmp_dir(). '/'. $params['file'], true);
             }
 
