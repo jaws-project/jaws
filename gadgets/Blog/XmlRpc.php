@@ -31,7 +31,7 @@ require_once PEAR_PATH . 'XML/RPC/Server.php';
 function userAuthentication($username, $password)
 {
     $authType = $GLOBALS['app']->Registry->fetch('authtype', 'Users');
-    $authType = preg_replace('/[^[:alnum:]_-]/', '', $authType);
+    $authType = preg_replace('/[^[:alnum:]_\-]/', '', $authType);
     $authFile = JAWS_PATH . 'include/Jaws/Auth/' . $authType . '.php';
     if (empty($authType) || !file_exists($authFile)) {
         $GLOBALS['log']->Log(
