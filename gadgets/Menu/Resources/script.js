@@ -124,7 +124,7 @@ function saveMenus()
                 $('pid').value,
                 $('gid').value,
                 $('type').value,
-                $('acl').value,
+                aclInfo,
                 $('title').value,
                 encodeURI($('url').value),
                 $('url_target').value,
@@ -146,7 +146,7 @@ function saveMenus()
                 $('pid').value,
                 $('gid').value,
                 $('type').value,
-                $('acl').value,
+                aclInfo,
                 $('title').value,
                 encodeURI($('url').value),
                 $('url_target').value,
@@ -290,7 +290,6 @@ function addMenu(gid, pid)
     setRanksCombo(gid, pid);
 
     getReferences($('type').value);
-    getACLs($('type').value);
     $('references').selectedIndex = -1;
 }
 
@@ -362,6 +361,7 @@ function editMenu(mid)
     $('title').value       = menuInfo['title'].defilter();
     $('url').value         = decodeURI(menuInfo['url']);
     $('url_target').value  = menuInfo['url_target'];
+    aclInfo                = menuInfo['acl_key_name'] + ':' + menuInfo['acl_key_subkey'];
 
     setRanksCombo($('gid').value, $('pid').value);
     $('rank').value        = menuInfo['rank'];
@@ -371,12 +371,6 @@ function editMenu(mid)
     $('references').value = menuInfo['url'];
     if ($('type').value == 'url' && $('references').selectedIndex == -1) {
         $('references').selectedIndex = 0;
-    }
-
-    getACLs($('type').value);
-    $('acl').value = menuInfo['acl_key_name'] + ':' + menuInfo['acl_key_subkey'];
-    if ($('type').value == 'url' && $('acl').selectedIndex == -1) {
-        $('acl').selectedIndex = 0;
     }
 
     $('imagename').value  = 'true';
@@ -437,9 +431,6 @@ function getParentMenus(gid, mid) {
 function changeType(type) {
     getReferences(type);
     $('references').selectedIndex = -1;
-
-    getACLs(type);
-    $('acl').selectedIndex = 0;
 }
 
 /**
@@ -465,35 +456,8 @@ function getReferences(type)
         if (links[i]['title2']) {
             cacheReferences[type][i]['title2'] = links[i]['title2'];
         }
-    }
-}
-
-/**
- * Get a list of ACLs
- */
-function getACLs(type) {
-    if (cacheACLs[type]) {
-        $('acl').options.length = 1;
-        for (var i = 1; i <= cacheACLs[type].length; i++) {
-            $('acl').options[i] = new Option(cacheACLs[type][i - 1]['title'], cacheACLs[type][i - 1]['value']);
-        }
-        return;
-    }
-
-    var acls = MenuAjax.callSync('GetACLKeys', {'comp': $('type').value});
-    cacheACLs[type] = new Array();
-    $('acl').options.length = 1;
-    if (acls.length > 0) {
-        var box = $('acl');
-        acls.each(function (acl) {
-            box.options[box.options.length] = new Option(acl.key_desc.defilter(), acl.key_name + ':' + acl.key_subkey);
-
-            var aclInfo = new Array();
-            aclInfo['value'] = acl.key_name + ':' + acl.key_subkey;
-            aclInfo['title'] = acl.key_desc.defilter();
-            cacheACLs[type].push(aclInfo);
-
-        });
+        cacheReferences[type][i]['acl_key'] = links[i]['acl_key'];
+        cacheReferences[type][i]['acl_subkey'] = links[i]['acl_subkey'];
     }
 }
 
@@ -508,6 +472,9 @@ function changeReferences() {
             $('title').value = cacheReferences[type][selIndex]['title2'];
         } else {
             $('title').value = $('references').options[selIndex].text;
+        }
+        if (cacheReferences[type][selIndex]['acl_key']) {
+            aclInfo = cacheReferences[type][selIndex]['acl_key'] + ":" + cacheReferences[type][selIndex]['acl_subkey'];
         }
     }
 
@@ -533,6 +500,7 @@ function stopAction()
 
     selectedMenu  = null;
     selectedGroup = null;
+    aclInfo = null;
     currentAction = null;
     $('menus_edit').innerHTML = '';
     $('edit_area').getElementsByTagName('span')[0].innerHTML = '';
@@ -592,4 +560,5 @@ var m_bg_color = null;
 var org_m_bg_color = null;
 
 var cacheReferences = new Array();
-var cacheACLs = new Array();
+
+var aclInfo = null;
