@@ -24,7 +24,7 @@ class Jaws_Cache
     function &factory()
     {
         $this->_Driver = $this->Registry->fetch('cache_driver', 'Settings');
-        $this->_Driver = preg_replace('/[^[:alnum:]_-]/', '', $this->_Driver);
+        $this->_Driver = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Driver);
         $driverFile = JAWS_PATH . 'include/Jaws/Cache/'. $this->_Driver . '.php';
         if (!file_exists($driverFile)) {
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loading cache driver $driverFile failed.");

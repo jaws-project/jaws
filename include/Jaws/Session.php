@@ -107,7 +107,7 @@ class Jaws_Session
     function Init()
     {
         $this->_AuthType = $GLOBALS['app']->Registry->fetch('authtype', 'Users');
-        $this->_AuthType = preg_replace('/[^[:alnum:]_-]/', '', $this->_AuthType);
+        $this->_AuthType = preg_replace('/[^[:alnum:]_\-]/', '', $this->_AuthType);
         $authFile = JAWS_PATH . 'include/Jaws/Auth/' . $this->_AuthType . '.php';
         if (empty($this->_AuthType) || !file_exists($authFile)) {
             $GLOBALS['log']->Log(
@@ -146,7 +146,7 @@ class Jaws_Session
             );
         } else {
             if (!empty($authtype)) {
-                $authtype = preg_replace('/[^[:alnum:]_-]/', '', $authtype);
+                $authtype = preg_replace('/[^[:alnum:]_\-]/', '', $authtype);
             } else {
                 $authtype = $this->_AuthType;
             }

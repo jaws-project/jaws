@@ -30,7 +30,7 @@ class Jaws_Notification
     static function getInstance($driver, $options)
     {
         static $instances = array();
-        $driver = preg_replace('/[^[:alnum:]_-]/', '', $driver);
+        $driver = preg_replace('/[^[:alnum:]_\-]/', '', $driver);
         if (!isset($instances[$driver])) {
             $driverFile = JAWS_PATH . "include/Jaws/Notification/$driver.php";
             if (!file_exists($driverFile)) {

@@ -363,7 +363,7 @@ class Jaws_URLMapping
                 // remove not fill optional part of map
                 do {
                     $rpl_url = $url;
-                    $url = preg_replace('$\[[[:alnum:]\./-]*{\w+}[[:alnum:]\./-]*\]$u', '', $url);
+                    $url = preg_replace('$\[[[:alnum:]\./\-]*{\w+}[[:alnum:]\./\-]*\]$u', '', $url);
                 } while ($rpl_url != $url);
                 $url = str_replace(array('[', ']'), '', $url);
 

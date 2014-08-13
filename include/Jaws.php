@@ -209,9 +209,9 @@ class Jaws
         $this->_Preferences = array_merge($this->_Preferences, $preferences);
 
         // filter non validate character
-        $this->_Theme    = preg_replace('/[^[:alnum:]_-]/', '', $this->_Preferences['theme']);
-        $this->_Language = preg_replace('/[^[:alnum:]_-]/', '', $this->_Preferences['language']);
-        $this->_Editor   = preg_replace('/[^[:alnum:]_-]/', '', $this->_Preferences['editor']);
+        $this->_Theme    = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Preferences['theme']);
+        $this->_Language = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Preferences['language']);
+        $this->_Editor   = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Preferences['editor']);
         $this->_Timezone = $this->_Preferences['timezone'];
         $this->_Calendar = preg_replace('/[^[:alnum:]_]/',  '', $this->_Preferences['calendar']);
 
