@@ -200,7 +200,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
             } elseif (empty($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_UPLOAD_4'), RESPONSE_ERROR);
             } else {
-                $post['oldname'] = preg_replace('/[^[:alnum:]_\.-]*/', '', $post['oldname']);
+                $post['oldname'] = preg_replace('/[^[:alnum:]_\.\-]*/', '', $post['oldname']);
                 if (!empty($post['oldname']) && ($res['uploadfile'][0]['host_filename'] != $post['oldname'])) {
                     $fModelAdmin->Delete($post['path'], $post['oldname']);
                 }
