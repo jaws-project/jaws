@@ -827,7 +827,7 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
         $objImage = Jaws_Image::factory();
         if (!Jaws_Error::IsError($objImage)) {
             if (!empty($file)) {
-                $file = preg_replace("/[^[:alnum:]_\.-]*/i", "", $file);
+                $file = preg_replace("/[^[:alnum:]_\.\-]*/i", "", $file);
                 $result = $objImage->load(Jaws_Utils::upload_tmp_dir(). '/'. $file, true);
                 if (!Jaws_Error::IsError($result)) {
                     $result = $objImage->display();
