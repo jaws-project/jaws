@@ -21,7 +21,7 @@ class ControlPanel_Actions_Admin_Backup extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('Backup');
         $tmpDir = sys_get_temp_dir();
-        $domain = preg_replace("/^(www.)|(:{$_SERVER['SERVER_PORT']})$|[^a-z0-9-.]/", '', strtolower($_SERVER['HTTP_HOST']));
+        $domain = preg_replace("/^(www.)|(:{$_SERVER['SERVER_PORT']})$|[^a-z0-9\-\.]/", '', strtolower($_SERVER['HTTP_HOST']));
         $nameArchive = $domain . '-' . date('Y-m-d') . '.tar.gz';
         $pathArchive = $tmpDir . DIRECTORY_SEPARATOR . $nameArchive;
 
