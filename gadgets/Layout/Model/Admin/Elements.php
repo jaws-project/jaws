@@ -165,7 +165,7 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
         }
 
         // commit transaction
-        $GLOBALS['db']->dbc->commit();
+        Jaws_DB::getInstance()->dbc->commit();
         return true;
     }
 
