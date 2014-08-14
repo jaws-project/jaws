@@ -30,7 +30,7 @@ class Banner_Model_Admin_Reports extends Jaws_Gadget_Model
         }
 
         $bgData['views']        = 0;
-        $bgData['updatetime']   = $GLOBALS['db']->Date();
+        $bgData['updatetime']   = Jaws_DB::getInstance()->date();
 
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
         $result = $bannersTable->update($bgData)->where('id', $bid)->exec();
@@ -66,7 +66,7 @@ class Banner_Model_Admin_Reports extends Jaws_Gadget_Model
         }
 
         $bgData['clicks']       = 0;
-        $bgData['updatetime']   = $GLOBALS['db']->Date();
+        $bgData['updatetime']   = Jaws_DB::getInstance()->date();
 
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
         $result = $bannersTable->update($bgData)->where('id', $bid)->exec();

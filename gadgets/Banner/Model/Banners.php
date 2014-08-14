@@ -83,9 +83,9 @@ class Banner_Model_Banners extends Jaws_Gadget_Model
         $bannersTable->openWhere('clicks_limitation', 0)->or();
         $bannersTable->closeWhere('clicks', $bannersTable->expr('clicks_limitation'), '<')->and();
         $bannersTable->openWhere('start_time', '', 'is null')->or();
-        $bannersTable->closeWhere('start_time', $GLOBALS['db']->Date(), '<=')->and();
+        $bannersTable->closeWhere('start_time', Jaws_DB::getInstance()->date(), '<=')->and();
         $bannersTable->openWhere('stop_time', '', 'is null')->or();
-        $bannersTable->closeWhere('stop_time', $GLOBALS['db']->Date(), '>=');
+        $bannersTable->closeWhere('stop_time', Jaws_DB::getInstance()->date(), '>=');
 
         if ($gid == 0) {
             $bannersTable->orderBy('id asc');

@@ -50,8 +50,8 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
             $bData['stop_time']     = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
         }
 
-        $bData['createtime']        = $GLOBALS['db']->Date();
-        $bData['updatetime']        = $GLOBALS['db']->Date();
+        $bData['createtime']        = Jaws_DB::getInstance()->date();
+        $bData['updatetime']        = Jaws_DB::getInstance()->date();
         $bData['random']            = $random;
         $bData['published']         = (bool)$published;
 
@@ -108,7 +108,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
             $bData['stop_time']     = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
         }
 
-        $bData['updatetime']        = $GLOBALS['db']->Date();
+        $bData['updatetime']        = Jaws_DB::getInstance()->date();
         $bData['random']            = $random;
         $bData['published']         = (bool)$published;
 
@@ -194,7 +194,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
 
         $bgData['gid']     = $new_gid;
         $bgData['rank']    = $rank;
-        $bgData['updatetime']     = $GLOBALS['db']->Date();
+        $bgData['updatetime']     = Jaws_DB::getInstance()->date();
 
         $result = $bannersTable->update($bgData)->exec();
         if (Jaws_Error::IsError($result)) {
