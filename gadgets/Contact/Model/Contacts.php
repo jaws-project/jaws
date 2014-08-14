@@ -49,7 +49,7 @@ class Contact_Model_Contacts extends Jaws_Gadget_Model
     function InsertContact($name, $email, $company, $url, $tel, $fax, $mobile,
                            $address, $recipient, $subject, $attachment, $message)
     {
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
         $data = array();
         $data['[user]']     = $GLOBALS['app']->Session->GetAttribute('user');
         $data['ip']         = $_SERVER['REMOTE_ADDR'];

@@ -103,7 +103,7 @@ class Contact_Model_Admin_Contacts extends Jaws_Gadget_Model
         $data['recipient']  = (int)$recipient;
         $data['subject']    = $subject;
         $data['msg_txt']    = $message;
-        $data['updatetime'] = $GLOBALS['db']->Date();
+        $data['updatetime'] = Jaws_DB::getInstance()->date();
 
         $cntctTable = Jaws_ORM::getInstance()->table('contacts');
         $result = $cntctTable->update($data)->where('id', $id)->exec();
@@ -128,7 +128,7 @@ class Contact_Model_Admin_Contacts extends Jaws_Gadget_Model
     {
         $data               = array();
         $data['reply']      = $reply;
-        $data['updatetime'] = $GLOBALS['db']->Date();
+        $data['updatetime'] = Jaws_DB::getInstance()->date();
 
         $cntctTable = Jaws_ORM::getInstance()->table('contacts');
         $result = $cntctTable->update($data)->where('id', $id)->exec();
@@ -153,7 +153,7 @@ class Contact_Model_Admin_Contacts extends Jaws_Gadget_Model
     {
         $data = array();
         $data['reply_sent'] = (int)$reply_sent;
-        $data['updatetime'] = $GLOBALS['db']->Date();
+        $data['updatetime'] = Jaws_DB::getInstance()->date();
 
         $cntctTable = Jaws_ORM::getInstance()->table('contacts');
         $result = $cntctTable->update($data)->where('id', $id)->exec();
