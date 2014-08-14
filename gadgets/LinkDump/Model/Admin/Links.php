@@ -36,8 +36,8 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         $lData['fast_url']    = $fast_url;
         $lData['gid']         = $gid;
         $lData['rank']        = $rank;
-        $lData['createtime']  = $GLOBALS['db']->Date();
-        $lData['updatetime']  = $GLOBALS['db']->Date();
+        $lData['createtime']  = Jaws_DB::getInstance()->date();
+        $lData['updatetime']  = Jaws_DB::getInstance()->date();
 
         $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
         $lid = $linksTable->insert($lData)->exec();
@@ -93,7 +93,7 @@ class LinkDump_Model_Admin_Links extends Jaws_Gadget_Model
         $lData['description'] = $desc;
         $lData['url']         = $url;
         $lData['fast_url']    = $fast_url;
-        $lData['updatetime']  = $GLOBALS['db']->Date();
+        $lData['updatetime']  = Jaws_DB::getInstance()->date();
         $lData['rank']        = $rank;
 
         $linksTable = Jaws_ORM::getInstance()->table('linkdump_links');
