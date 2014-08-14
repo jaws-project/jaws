@@ -144,7 +144,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
         $file = JAWS_PATH. "gadgets/$gadget/Map.php";
         $maps = array();
         if (@include($file)) {
-            $now = $GLOBALS['db']->Date();
+            $now = Jaws_DB::getInstance()->date();
             foreach ($maps as $order => $map) {
                 $eMap = $this->GetMapByParams($gadget, $map[0], $map[1]);
                 if (Jaws_Error::IsError($eMap)) {
@@ -263,7 +263,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
         $params['extension'] = $extension;
         $params['vars_regexps'] = serialize($vars_regexps);
         $params['order']      = $order;
-        $params['createtime'] = empty($time)? $GLOBALS['db']->Date() : $time;
+        $params['createtime'] = empty($time)? Jaws_DB::getInstance()->date() : $time;
         $params['updatetime'] = $params['createtime'];
 
         $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
@@ -318,7 +318,7 @@ class UrlMapper_Model_Admin_Maps extends UrlMapper_Model_Maps
         $params['custom_regexp'] = $this->GetMapRegExp($custom_map, $vars_regexps);
         $params['vars_regexps']  = serialize($vars_regexps);
         $params['order']         = $order;
-        $params['updatetime']    = empty($time)? $GLOBALS['db']->Date() : $time;
+        $params['updatetime']    = empty($time)? Jaws_DB::getInstance()->date() : $time;
 
         $mapsTable = Jaws_ORM::getInstance()->table('url_maps');
         return $mapsTable->update($params)->where('id', (int)$id)->exec();
