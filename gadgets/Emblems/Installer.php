@@ -40,7 +40,7 @@ class Emblems_Installer extends Jaws_Gadget_Installer
         }
 
         $variables = array();
-        $variables['timestamp'] = $GLOBALS['db']->Date();
+        $variables['timestamp'] = Jaws_DB::getInstance()->date();
 
         // Dump database data
         $result = $this->installSchema('insert.xml', $variables, 'schema.xml', true);
@@ -59,7 +59,7 @@ class Emblems_Installer extends Jaws_Gadget_Installer
      */
     function Uninstall()
     {
-        $result = $GLOBALS['db']->dropTable('emblem');
+        $result = Jaws_DB::getInstance()->dropTable('emblem');
         if (Jaws_Error::IsError($result)) {
             $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $this->gadget->title);
             return new Jaws_Error($errMsg);
