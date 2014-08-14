@@ -148,8 +148,8 @@ class Installer_CreateUser extends JawsInstallerStage
         );
 
         require_once JAWS_PATH . 'include/Jaws/DB.php';
-        $GLOBALS['db'] = new Jaws_DB($_SESSION['install']['Database']);
-        #if (Jaws_Error::IsError($GLOBALS['db'])) {
+        $objDatabase = Jaws_DB::getInstance('default', $_SESSION['install']['Database']);
+        #if (Jaws_Error::IsError($objDatabase)) {
         #   return new Jaws_Error("There was a problem connecting to the database, please check the details and try again.", 0, JAWS_ERROR_WARNING);
         #}
 

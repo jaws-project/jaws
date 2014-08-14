@@ -37,7 +37,7 @@ class Installer_Settings extends JawsInstallerStage
         if (!isset($GLOBALS['app'])) {
             // Connect to the database and setup registry and similar.
             require_once JAWS_PATH . 'include/Jaws/DB.php';
-            $GLOBALS['db'] = new Jaws_DB($_SESSION['install']['Database']);
+            $objDatabase = Jaws_DB::getInstance('default', $_SESSION['install']['Database']);
             // Create application
             include_once JAWS_PATH . 'include/Jaws.php';
             $GLOBALS['app'] = jaws();
@@ -173,24 +173,24 @@ class Installer_Settings extends JawsInstallerStage
 
         $variables = array();
         $variables['Blog'] = array (
-            'timestamp' => $GLOBALS['db']->Date(),
+            'timestamp' => Jaws_DB::getInstance()->date(),
             'blog_content1_title' => _t('INSTALL_SAMPLE_BLOG_CONTENT1_TITLE'),
             'blog_content1_summary' => _t('INSTALL_SAMPLE_BLOG_CONTENT1_SUMMARY'),
         );
         $variables['Phoo'] = array (
-            'timestamp' => $GLOBALS['db']->Date(),
+            'timestamp' => Jaws_DB::getInstance()->date(),
             'folder-path' => gmdate('Y_m_d'),
             'siteurl' => Jaws_Utils::getBaseURL('/', false),
         );
         $variables['LinkDump'] = array (
-            'timestamp' => $GLOBALS['db']->Date(),
+            'timestamp' => Jaws_DB::getInstance()->date(),
             'linkdump_title1' => _t('INSTALL_SAMPLE_LINKDUMP_TITLE1'),
             'linkdump_title2' => _t('INSTALL_SAMPLE_LINKDUMP_TITLE2'),
             'linkdump_title3' => _t('INSTALL_SAMPLE_LINKDUMP_TITLE3'),
         );
         $variables['Contact'] = array ();
         $variables['Menu'] = array (
-            'timestamp' => $GLOBALS['db']->Date(),
+            'timestamp' => Jaws_DB::getInstance()->date(),
             'siteurl'   => Jaws_Utils::getBaseURL('/', false),
             'menu_title1' => _t('INSTALL_SAMPLE_MENU_TITLE1'),
             'menu_title2' => _t('INSTALL_SAMPLE_MENU_TITLE2'),
