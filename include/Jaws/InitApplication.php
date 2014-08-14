@@ -70,9 +70,9 @@ set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');
 // Create application
 $GLOBALS['app'] = jaws();
 // get an instance of Jaws_DB
-$GLOBALS['db'] = Jaws_DB::getInstance('default', $db);
-if (Jaws_Error::IsError($GLOBALS['db'])) {
-    Jaws_Error::Fatal($GLOBALS['db']->getMessage());
+$objDatabase = Jaws_DB::getInstance('default', $db);
+if (Jaws_Error::IsError($objDatabase)) {
+    Jaws_Error::Fatal($objDatabase->getMessage());
 }
 
 $db_jaws_version = $GLOBALS['app']->Registry->Init();
