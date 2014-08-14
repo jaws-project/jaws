@@ -27,7 +27,7 @@ class Blocks_Model_Admin_Block extends Jaws_Gadget_Model
         $data['contents'] = $contents;
         $data['display_title'] = (bool)$display_title;
         $data['created_by'] = $data['modified_by'] = $user;
-        $data['createtime'] = $data['updatetime'] = $GLOBALS['db']->Date();
+        $data['createtime'] = $data['updatetime'] = Jaws_DB::getInstance()->date();
 
         $blocksTable = Jaws_ORM::getInstance()->table('blocks');
         $result = $blocksTable->insert($data)->exec();
@@ -56,7 +56,7 @@ class Blocks_Model_Admin_Block extends Jaws_Gadget_Model
         $data['contents'] = $contents;
         $data['display_title'] = ($display_title ? true : false);
         $data['modified_by'] = $user;
-        $data['updatetime'] = $GLOBALS['db']->Date();
+        $data['updatetime'] = Jaws_DB::getInstance()->date();
 
         $blocksTable = Jaws_ORM::getInstance()->table('blocks');
         $result = $blocksTable->update($data)->where('id', (int)$id)->exec();
