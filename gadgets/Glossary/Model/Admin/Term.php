@@ -50,7 +50,7 @@ class Glossary_Model_Admin_Term extends Jaws_Gadget_Model
         $params['term']         = $term;
         $params['fast_url']     = $fast_url;
         $params['description']  = $desc;
-        $params['updatetime']   = $GLOBALS['db']->Date();
+        $params['updatetime']   = Jaws_DB::getInstance()->date();
 
         $glossaryTable = Jaws_ORM::getInstance()->table('glossary');
         $result = $glossaryTable->update($params)->where('id', $id)->exec();
@@ -77,7 +77,7 @@ class Glossary_Model_Admin_Term extends Jaws_Gadget_Model
         $fast_url = empty($fast_url) ? $term : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'glossary');
 
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
         $params['term']         = $term;
         $params['fast_url']     = $fast_url;
         $params['description']  = $desc;
