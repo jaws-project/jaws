@@ -43,7 +43,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
         }
 
         if (is_array($gadgets) && count($gadgets) > 0) {
-            $GLOBALS['db']->dbc->loadModule('Function', null, true);
+            Jaws_DB::getInstance()->dbc->loadModule('Function', null, true);
             foreach ($gadgets as $gadget) {
                 $gadget = trim($gadget);
                 if ($gadget == 'Search' || empty($gadget)) {
@@ -80,7 +80,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
                                 switch($option) {
                                     case 'exclude':
                                         foreach($fields as $fidx => $field) {
-                                            $sqlFields .= ' '.$GLOBALS['db']->dbc->datatype->matchPattern(
+                                            $sqlFields .= ' '.Jaws_DB::getInstance()->dbc->datatype->matchPattern(
                                                 array(1 => '%', $word, '%'),
                                                 'NOT ILIKE',
                                                 $field);
@@ -94,7 +94,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
                                     case 'exact':
                                         foreach($fields as $fidx => $field) {
                                             if ($fidx == 0) $sqlFields .= '(';
-                                            $sqlFields .= ' '.$GLOBALS['db']->dbc->datatype->matchPattern(
+                                            $sqlFields .= ' '.Jaws_DB::getInstance()->dbc->datatype->matchPattern(
                                                 array(1 => '%', $word, '%'),
                                                 'ILIKE',
                                                 $field);
@@ -108,7 +108,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
                                         break;
                                     case 'least':
                                         foreach($fields as $fidx => $field) {
-                                            $sqlFields .= ' '.$GLOBALS['db']->dbc->datatype->matchPattern(
+                                            $sqlFields .= ' '.Jaws_DB::getInstance()->dbc->datatype->matchPattern(
                                                 array(1 => '%', $word, '%'),
                                                 'ILIKE',
                                                 $field);
@@ -128,7 +128,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
                             }
                         }
                     }
-                    $preparedSQLs[] = $GLOBALS['db']->sqlParse($preparedSQL, $params);
+                    $preparedSQLs[] = Jaws_DB::getInstance()->sqlParse($preparedSQL, $params);
                 }
 
                 if (is_array($preparedSQLs) && count($preparedSQLs) == 1) {
