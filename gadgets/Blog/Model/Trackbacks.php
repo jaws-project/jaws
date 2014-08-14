@@ -98,7 +98,7 @@ class Blog_Model_Trackbacks extends Jaws_Gadget_Model
             }
 
             // lets only load it if it's actually needed
-            $now = $GLOBALS['db']->Date();
+            $now = Jaws_DB::getInstance()->date();
 
             $trackbackTable = Jaws_ORM::getInstance()->table('blog_trackback');
             $trackbackTable->select('id:integer')->where('parent_id', $parent_id);

@@ -54,7 +54,7 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
 
             if($data_type==2) {
                 $pModel = $this->gadget->model->load('Posts');
-                $posts  = $pModel->GetPosts(array('published' => true, 'stop_time' => $GLOBALS['db']->Date()));
+                $posts  = $pModel->GetPosts(array('published' => true, 'stop_time' => Jaws_DB::getInstance()->date()));
                 if (Jaws_Error::IsError($posts)) {
                     return $posts;
                 }

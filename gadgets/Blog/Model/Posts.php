@@ -25,7 +25,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
      */
     function GetEntries($cat = null, $conditions = null, $extralimit = null, $extraoffset = null)
     {
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
             'blog.id:integer', 'username', 'email', 'nickname', 'blog.title', 'blog.fast_url',
@@ -139,7 +139,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
      */
     function GetEntriesAsArchive()
     {
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select('id:integer', 'publishtime', 'updatetime', 'title', 'fast_url', 'comments', 'categories');
         $blogTable->where('published', true)->and()->where('publishtime', $now, '<=')->orderBy('publishtime desc');
@@ -169,7 +169,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
      */
     function GetEntriesAsCategories()
     {
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
         $catTable = Jaws_ORM::getInstance()->table('blog_category');
         $catTable->select(
             'blog_category.id:integer', 'name', 'blog_category.fast_url',
@@ -201,7 +201,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
      */
     function GetRecentEntries($cat = null, $limit = 0)
     {
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
             'blog.id:integer', 'user_id:integer', 'username', 'users.nickname', 'title', 'summary',
@@ -310,7 +310,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
 
         if ($published) {
             // entry's author can get/show drafted entries
-            $now = $GLOBALS['db']->Date();
+            $now = Jaws_DB::getInstance()->date();
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
             $blogTable->and()->openWhere('blog.user_id', $user)->or();
             $blogTable->openWhere('published', $published)->and()->closewhere('blog.publishtime', $now, '<=');
@@ -354,7 +354,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
      */
     function GetLatestPublishedEntryID()
     {
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select('id:integer')->where('published', true)->and()->where('publishtime', $now, '<=');
         $result = $blogTable->orderBy('publishtime desc')->limit(1)->fetchOne();
@@ -444,7 +444,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             $option = $options[$direction];
         }
 
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select('id:integer', 'title', 'fast_url');
         $blogTable->where('id', $id, $option['sign'])->and()->where('published', true);
@@ -517,7 +517,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             $blogTable->where('blog_entrycat.category_id', (int)$category)->and();
         }
 
-        $blogTable->where('published', true)->and()->where('publishtime', $GLOBALS['db']->Date(), '<=');
+        $blogTable->where('published', true)->and()->where('publishtime', Jaws_DB::getInstance()->date(), '<=');
         $howmany = $blogTable->fetchOne();
         return Jaws_Error::IsError($howmany)? 0 : $howmany;
     }
@@ -643,7 +643,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             'blog.publishtime:timestamp', 'blog.updatetime:timestamp', 'categories', 'image'
         );
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
-        $blogTable->where('published', true)->and()->where('publishtime', $GLOBALS['db']->Date(), '<=');
+        $blogTable->where('published', true)->and()->where('publishtime', Jaws_DB::getInstance()->date(), '<=');
         $entries = $blogTable->orderBy('clicks desc')->fetchAll();
 
         // Check dynamic ACL
@@ -671,7 +671,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable->select('user_id', 'username', 'nickname', 'count(blog.id) as howmany');
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
         $blogTable->groupBy('user_id', 'username', 'nickname');
-        $blogTable->where('published', true)->and()->where('publishtime', $GLOBALS['db']->Date(), '<=');
+        $blogTable->where('published', true)->and()->where('publishtime', Jaws_DB::getInstance()->date(), '<=');
         $blogTable->orderBy('user_id');
         return $blogTable->fetchAll();
     }

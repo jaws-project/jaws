@@ -24,7 +24,7 @@ class Blog_Model_AuthorPosts extends Jaws_Gadget_Model
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select('count(blog.id)');
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
-        $blogTable->where('published', true)->and()->where('publishtime', $GLOBALS['db']->Date(), '<=');
+        $blogTable->where('published', true)->and()->where('publishtime', Jaws_DB::getInstance()->date(), '<=');
         if (is_numeric($user)) {
             $blogTable->and()->where('users.id', $user);
         } else {

@@ -137,7 +137,7 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select('count(blog.id)');
         $blogTable->join('blog_entrycat', 'blog.id', 'blog_entrycat.entry_id', 'left');
-        $blogTable->where('published', true)->and()->where('publishtime', $GLOBALS['db']->Date(), '<=');
+        $blogTable->where('published', true)->and()->where('publishtime', Jaws_DB::getInstance()->date(), '<=');
         if (empty($category)) {
             $blogTable->and()->where('blog_entrycat.category_id', null, 'is null');
         } else {

@@ -64,7 +64,7 @@ class Blog_Model_DatePosts extends Jaws_Gadget_Model
      */
     function GetEntriesAsCalendar($begintime, $endtime)
     {
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select('title', 'fast_url', 'publishtime');
         $blogTable->where('published', true)->and()->where('publishtime', $begintime, '>=')->and();
@@ -111,7 +111,7 @@ class Blog_Model_DatePosts extends Jaws_Gadget_Model
      */
     function GetEntriesAsHistory()
     {
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select('publishtime')->where('published', true)->and()->where('publishtime', $now, '<=');
         $result = $blogTable->orderBy('publishtime desc')->fetchAll();

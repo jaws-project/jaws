@@ -34,7 +34,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
         }
 
         $this->_Atom = new Jaws_AtomFeed();
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
         $limit = $this->gadget->registry->fetch('xml_limit');
 
         $blogTable = Jaws_ORM::getInstance()->table('blog');
@@ -202,7 +202,7 @@ class Blog_Model_Feeds extends Jaws_Gadget_Model
             return new Jaws_Error(_t('BLOG_ERROR_GETTING_CATEGORIES_ATOMSTRUCT'));
         }
 
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
             'blog.id:integer', 'user_id:integer', 'blog_entrycat.category_id:integer', 'username', 'email',

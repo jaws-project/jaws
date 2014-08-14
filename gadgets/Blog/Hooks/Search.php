@@ -53,10 +53,10 @@ class Blog_Hooks_Search extends Jaws_Gadget_Hook
         $sql .= ' AND ' . $pSql;
         $sql .= ' ORDER BY [createtime] desc';
 
-        $params['now']       = $GLOBALS['db']->Date();
+        $params['now']       = Jaws_DB::getInstance()->date();
         $params['published'] = true;
 
-        $result = $GLOBALS['db']->queryAll($sql, $params);
+        $result = Jaws_DB::getInstance()->queryAll($sql, $params);
         if (Jaws_Error::IsError($result)) {
             return array();
         }

@@ -110,7 +110,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog', $autoDraft === false);
 
         $date = Jaws_Date::getInstance();
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
 
         $params['user_id']          = $user;
         $params['title']            = $title;
@@ -222,7 +222,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
         $params['fast_url']         = $fast_url;
         $params['meta_keywords']    = $meta_keywords;
         $params['meta_description'] = $meta_desc;
-        $params['updatetime']       = $GLOBALS['db']->Date();
+        $params['updatetime']       = Jaws_DB::getInstance()->date();
         if (!is_null($image)) {
             $params['image'] = empty($image)? null : $image;
         }

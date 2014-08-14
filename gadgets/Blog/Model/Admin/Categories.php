@@ -28,7 +28,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $fast_url = empty($fast_url) ? $name : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'blog_category');
 
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
         $params['name']             = $name;
         $params['description']      = $description;
         $params['fast_url']         = $fast_url;
@@ -77,7 +77,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         $params['fast_url']         = $fast_url;
         $params['meta_keywords']    = $meta_keywords;
         $params['meta_description'] = $meta_desc;
-        $params['updatetime']       = $GLOBALS['db']->Date();
+        $params['updatetime']       = Jaws_DB::getInstance()->date();
 
         $catTable = Jaws_ORM::getInstance()->table('blog_category');
         $result = $catTable->update($params)->where('id', $cid)->exec();
@@ -109,7 +109,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         /**
          * Uncomment if you want don't want a category associated with a post
         $sql = "SELECT COUNT([entry_id]) FROM [[blog_entrycat]] WHERE [category_id] = {id}";
-        $count = $GLOBALS['db']->queryOne($sql, $params);
+        $count = Jaws_DB::getInstance()->queryOne($sql, $params);
         if (Jaws_Error::IsError($count)) {
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
         return new Jaws_Error(_t('BLOG_ERROR_CATEGORY_NOT_DELETED'));
