@@ -208,9 +208,9 @@ class Jaws_ORM
      * @access  public
      * @return  void
      */
-    function __construct()
+    function __construct($db_instance)
     {
-        $this->jawsdb = &$GLOBALS['db'];
+        $this->jawsdb = Jaws_DB::getInstance($db_instance);
         $this->_tbl_prefix = $this->jawsdb->GetPrefix();
         $this->_identifier_quoting = $this->jawsdb->dbc->identifier_quoting;
     }
@@ -221,9 +221,9 @@ class Jaws_ORM
      * @return  object returns the instance
      * @access  public
      */
-    static function getInstance()
+    static function getInstance($db_instance = 'default')
     {
-        return new Jaws_ORM();
+        return new Jaws_ORM($db_instance);
     }
 
     /**
