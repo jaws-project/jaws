@@ -42,7 +42,7 @@ class Poll_Model_Group extends Jaws_Gadget_Model
     function GetPollGroups($limit = 0, $offset = null)
     {
         if (!empty($limit)) {
-            $res = $GLOBALS['db']->setLimit($limit, $offset);
+            $res = Jaws_DB::getInstance()->setLimit($limit, $offset);
             if (Jaws_Error::IsError($res)) {
                 return new Jaws_Error($res->getMessage());
             }

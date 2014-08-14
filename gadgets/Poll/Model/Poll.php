@@ -74,7 +74,7 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
      */
     function GetLastPoll()
     {
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
         $table = Jaws_ORM::getInstance()->table('poll');
         $table->select(
                     'id', 'gid', 'question', 'select_type', 'poll_type',

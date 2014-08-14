@@ -55,8 +55,8 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
         }
 
         if (Jaws_Error::IsError($poll) || empty($poll) || ($poll['visible'] == 0) || 
-            (!empty($poll['start_time']) && ($GLOBALS['db']->Date() < $poll['start_time'])) ||
-            (!empty($poll['stop_time']) && ($GLOBALS['db']->Date() > $poll['stop_time'])))
+            (!empty($poll['start_time']) && (Jaws_DB::getInstance()->date() < $poll['start_time'])) ||
+            (!empty($poll['stop_time']) && (Jaws_DB::getInstance()->date() > $poll['stop_time'])))
         {
             return '';
         }
