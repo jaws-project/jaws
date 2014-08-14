@@ -91,7 +91,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         $cData['msg_key']       = $message_key;
         $cData['ip']            = $ip;
         $cData['user']          = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $cData['createtime']    = $GLOBALS['db']->Date();
+        $cData['createtime']    = Jaws_DB::getInstance()->date();
 
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $res = $commentsTable->insert($cData)->exec();
