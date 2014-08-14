@@ -51,7 +51,7 @@ class Tags_Hooks_Search extends Jaws_Gadget_Hook
         $sql .= ' ORDER BY [id] desc';
 
         $types = array('integer', 'text', 'text', 'text', 'text', 'text');
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $result = Jaws_DB::getInstance()->queryAll($sql, $params, $types);
         if (Jaws_Error::IsError($result)) {
             return array();
         }
