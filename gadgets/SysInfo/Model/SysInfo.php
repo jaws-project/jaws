@@ -21,7 +21,7 @@ class SysInfo_Model_SysInfo extends Jaws_Gadget_Model
     {
         static $dbInfo;
         if (!isset($dbInfo)) {
-            $dbInfo = $GLOBALS['db']->getDatabaseInfo();
+            $dbInfo = Jaws_DB::getInstance()->getDatabaseInfo();
         }
 
         switch ($iType) {
