@@ -47,7 +47,7 @@ class Faq_Model_Admin_Category extends Faq_Model_Category
         $params['fast_url']             = $fast_url;
         $params['description']          = $description;
         $params['category_position']    = $this->GetMaxCategoryPosition() + 1;
-        $params['updatetime']           = $GLOBALS['db']->Date();
+        $params['updatetime']           = Jaws_DB::getInstance()->date();
 
         $table = Jaws_ORM::getInstance()->table('faq_category');
         $cid = $table->insert($params)->exec();
@@ -83,7 +83,7 @@ class Faq_Model_Admin_Category extends Faq_Model_Category
         $params['category']    = $category;
         $params['fast_url']    = $fast_url;
         $params['description'] = $description;
-        $params['updatetime']  = $GLOBALS['db']->Date();
+        $params['updatetime']  = Jaws_DB::getInstance()->date();
 
         $table = Jaws_ORM::getInstance()->table('faq_category');
         $result = $table->update($params)->where('id', $id)->exec();

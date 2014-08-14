@@ -46,7 +46,7 @@ class Faq_Model_Admin_Question extends Faq_Model_Question
         $fast_url = empty($fast_url) ? $question : $fast_url;
         $fast_url = $this->GetRealFastUrl($fast_url, 'faq');
 
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
         $params['question']     = $question;
         $params['fast_url']     = $fast_url;
         $params['answer']       = $answer;
@@ -89,7 +89,7 @@ class Faq_Model_Admin_Question extends Faq_Model_Question
         $params['answer']       = $answer;
         $params['category']     = $category;
         $params['published']    = $active;
-        $params['updatetime']   = $GLOBALS['db']->Date();
+        $params['updatetime']   = Jaws_DB::getInstance()->date();
 
         $faqTable = Jaws_ORM::getInstance()->table('faq');
         $result = $faqTable->update($params)->where('id', $id)->exec();
