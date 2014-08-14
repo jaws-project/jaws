@@ -6,6 +6,7 @@
  * @category   Plugins
  * @package    Core
  * @author     Pablo Fischer <pablo@pablo.com.mx>
+ * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2004-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
@@ -87,7 +88,43 @@ class Jaws_Plugin
     }
 
     /**
-     * Get the accesskey of the plugin
+     * Creates the Jaws_Plugin instance
+     *
+     * @access  public
+     * @param   string  $plugin Plugin name
+     * @return  object returns the instance
+     */
+    static function getInstance($plugin)
+    {
+        static $instances = array();
+        $plugin = preg_replace('/[^[:alnum:]_]/', '', $plugin);
+        if (!isset($instances[$plugin])) {
+            if (!is_dir(JAWS_PATH . "plugins/$plugin")) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', $plugin),
+                    __FUNCTION__
+                );
+            }
+
+            $file = JAWS_PATH . "plugins/$plugin/Plugin.php.php";
+            if (!file_exists($file)) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', $plugin),
+                    __FUNCTION__
+                );
+            }
+
+            require_once $file;
+            $classname = $plugin. '_Plugin';
+            $instances[$plugin] = new $classname($plugin);
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Loaded plugin: $plugin");
+        }
+
+        return $instances[$plugin];
+    }
+
+    /**
+     * Get the access-key of the plugin
      *
      * @access  public
      * @return  string Value of $_Accesskey
@@ -112,7 +149,7 @@ class Jaws_Plugin
 
     /**
      *
-     * Get the webcontrol of the plugin, usefull for the JawsEditor
+     * Get the web-control of the plugin, useful for the JawsEditor
      * @access  public
      * @return  string
      */
@@ -120,6 +157,19 @@ class Jaws_Plugin
     {
         //Returns an empty text by default
         return '';
+    }
+
+    /**
+     * Returns is plugin installed
+     *
+     * @access  public
+     * @param   string  $plugin Plugin name
+     * @return  bool    True or false, depends of the plugin status
+     */
+    public static function IsPluginInstalled($plugin)
+    {
+        $installed_plugins = $GLOBALS['app']->Registry->fetch('plugins_installed_items');
+        return (false !== strpos($installed_plugins, ",$plugin,"));
     }
 
     /**
@@ -214,7 +264,7 @@ class Jaws_Plugin
      * Plugins should override this method only if they need to perform actions to install
      *
      * @access  public
-     * @return  bool    True on successfull install and Jaws_Error on failure
+     * @return  bool    True on successful install and Jaws_Error on failure
      */
     function Install()
     {
