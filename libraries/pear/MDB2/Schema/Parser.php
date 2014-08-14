@@ -521,7 +521,7 @@ class MDB2_Schema_Parser extends XML_Parser
 
             $error .= "\n";
 
-            $this->error =& MDB2_Schema::raiseError($ecode, null, null, $error);
+            $this->error = MDB2_Schema::raiseError($ecode, null, null, $error);
         }
         return $this->error;
     }

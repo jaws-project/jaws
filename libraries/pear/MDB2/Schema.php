@@ -2666,7 +2666,7 @@ class MDB2_Schema
      * @return  string  error message, or false if the error code was not recognized
      * @access public
      */
-    function errorMessage($value = null)
+    static function errorMessage($value = null)
     {
         static $errorMessages;
         if (is_array($value)) {
@@ -2718,7 +2718,7 @@ class MDB2_Schema
      * @access  public
      * @see PEAR_Error
      */
-    function &raiseError($code = null, $mode = null, $options = null, $userinfo = null)
+    static function raiseError($code = null, $mode = null, $options = null, $userinfo = null)
     {
         $err =& PEAR::raiseError(null, $code, $mode, $options,
                                 $userinfo, 'MDB2_Schema_Error', true);

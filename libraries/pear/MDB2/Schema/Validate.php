@@ -103,7 +103,7 @@ class MDB2_Schema_Validate
 
     function &raiseError($ecode, $msg = null)
     {
-        $error =& MDB2_Schema::raiseError($ecode, null, null, $msg);
+        $error = MDB2_Schema::raiseError($ecode, null, null, $msg);
         return $error;
     }
 
