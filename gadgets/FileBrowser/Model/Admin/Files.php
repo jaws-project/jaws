@@ -36,7 +36,7 @@ class FileBrowser_Model_Admin_Files extends Jaws_Gadget_Model
         $params['filename']    = $file;
         $params['title']       = $title;
         $params['description'] = $description;
-        $params['updatetime']  = $GLOBALS['db']->Date();
+        $params['updatetime']  = Jaws_DB::getInstance()->date();
 
         $oldname = empty($oldname)? $params['filename'] : $oldname;
         $fModel = $this->gadget->model->load('Files');

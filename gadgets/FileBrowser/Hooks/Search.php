@@ -49,7 +49,7 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
         $sql .= ' WHERE ' . $pSql;
         $sql .= ' ORDER BY [updatetime] desc';
 
-        $files = $GLOBALS['db']->queryAll($sql);
+        $files = Jaws_DB::getInstance()->queryAll($sql);
         if (Jaws_Error::IsError($files)) {
             return array();
         }
