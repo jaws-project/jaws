@@ -60,7 +60,7 @@ class Phoo_Hooks_Search extends Jaws_Gadget_Hook
         $sql .= ' AND ' . $pSql[0];
         $sql .= ' ORDER BY pa.['.$orderType .']';
 
-        $result = $GLOBALS['db']->queryAll($sql, $params);
+        $result = Jaws_DB::getInstance()->queryAll($sql, $params);
         if (Jaws_Error::isError($result)) {
             return array();
         }
@@ -99,7 +99,7 @@ class Phoo_Hooks_Search extends Jaws_Gadget_Hook
         $sql .= ' AND ' . $pSql[1];
         $sql .= ' ORDER BY pi.[createtime] desc';
 
-        $result = $GLOBALS['db']->queryAll($sql, $params);
+        $result = Jaws_DB::getInstance()->queryAll($sql, $params);
         if (Jaws_Error::isError($result)) {
             return array();
         }

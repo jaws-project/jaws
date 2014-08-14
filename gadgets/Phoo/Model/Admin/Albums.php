@@ -138,7 +138,7 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
         $data['description'] = $description;
         $data['allow_comments'] = $comments;
         $data['published'] = (bool)$published;
-        $data['createtime'] = $GLOBALS['db']->Date();
+        $data['createtime'] = Jaws_DB::getInstance()->date();
 
         $table = Jaws_ORM::getInstance()->table('phoo_album');
         $result = $table->insert($data)->exec();

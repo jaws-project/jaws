@@ -30,7 +30,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         $data['title'] = $title;
         $data['description'] = $description;
         $data['allow_comments'] = $allow_comments;
-        $data['updatetime'] = $GLOBALS['db']->Date();
+        $data['updatetime'] = Jaws_DB::getInstance()->date();
         $data['published'] = (bool)$published;
 
         $table = Jaws_ORM::getInstance()->table('phoo_image');
@@ -200,7 +200,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
         }
 
         $jDate = Jaws_Date::getInstance();
-        $createtime = $GLOBALS['db']->Date();
+        $createtime = Jaws_DB::getInstance()->date();
         if (function_exists('exif_read_data') &&
             (preg_match("/\.jpg$|\.jpeg$/i", $files['name'])) &&
             ($exifData = @exif_read_data($uploadfile, 1, true))
