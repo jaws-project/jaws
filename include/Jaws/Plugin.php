@@ -106,10 +106,17 @@ class Jaws_Plugin
                 );
             }
 
-            $file = JAWS_PATH . "plugins/$plugin/Plugin.php.php";
+            $file = JAWS_PATH . "plugins/$plugin/Plugin.php";
             if (!file_exists($file)) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_PLUGIN_DOES_NOT_EXIST', $plugin),
+                    __FUNCTION__
+                );
+            }
+
+            if (!self::IsPluginInstalled($plugin)) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_PLUGIN_NOT_INSTALLED', $plugin),
                     __FUNCTION__
                 );
             }
