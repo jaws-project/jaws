@@ -43,7 +43,7 @@ class Jaws_Captcha_TextMath extends Jaws_Captcha
         $res['key']   = $key;
         $res['text']  = $value;
         $res['label'] = _t($this->_label);
-        $res['title'] = '';
+        $res['title'] = $title;
         $res['description'] = _t($this->_description);
         return $res;
     }
@@ -59,11 +59,22 @@ class Jaws_Captcha_TextMath extends Jaws_Captcha
         $fnum = mt_rand(1, 9);
         $snum = mt_rand(1, 9);
         $oprt = mt_rand(0, 2);
+
+        // string numbers
+        $objPlugin = Jaws_Plugin::getInstance('SpellNumber');
+        if (!Jaws_Error::isError($objPlugin)) {
+            $fsnum = $objPlugin->ParseText("[number]{$fnum}[/number]");
+            $ssnum = $objPlugin->ParseText("[number]{$snum}[/number]");
+        } else {
+            $fsnum = $fnum;
+            $ssnum = $snum;
+        }
+
         switch ($oprt) {
             case 0:
                 $result = $fnum + $snum;
                 $equation = $fnum. '+'. $snum;
-                $title = _t('POLICY_CAPTCHA_MATH_PLUS', $fnum, $snum);
+                $title = _t('POLICY_CAPTCHA_MATH_PLUS', $fsnum, $ssnum);
                 break;
 
             case 1:
@@ -78,13 +89,13 @@ class Jaws_Captcha_TextMath extends Jaws_Captcha
                 }
                 $result = $fnum - $snum;
                 $equation = $fnum. '-'. $snum;
-                $title = _t('POLICY_CAPTCHA_MATH_MINUS', $fnum, $snum);
+                $title = _t('POLICY_CAPTCHA_MATH_MINUS', $fsnum, $ssnum);
                 break;
 
             case 2:
                 $result = $fnum * $snum;
                 $equation = $fnum. '*'. $snum;
-                $title = _t('POLICY_CAPTCHA_MATH_MULTIPLY', $fnum, $snum);
+                $title = _t('POLICY_CAPTCHA_MATH_MULTIPLY', $fsnum, $ssnum);
         }
 
         return array($equation, $result, $title);
