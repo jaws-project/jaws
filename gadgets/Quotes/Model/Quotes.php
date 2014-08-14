@@ -70,7 +70,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
      */
     function GetPublishedQuotes($gid, $limit = null, $randomly = false)
     {
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
 
         $quotesTable = Jaws_ORM::getInstance()->table('quotes');
         $quotesTable->select('id:integer', 'title', 'quotation', 'rank:integer', 'show_title:boolean');
@@ -103,7 +103,7 @@ class Quotes_Model_Quotes extends Jaws_Gadget_Model
      */
     function GetRecentQuotes($limit = null, $randomly = false)
     {
-        $now = $GLOBALS['db']->Date();
+        $now = Jaws_DB::getInstance()->date();
 
         $quotesTable = Jaws_ORM::getInstance()->table('quotes');
         $quotesTable->select('id:integer', 'title', 'quotation', 'rank:integer', 'show_title:boolean');

@@ -44,7 +44,7 @@ class Quotes_Hooks_Search extends Jaws_Gadget_Hook
         $params = array();
         $params['published'] = true;
 
-        $result = $GLOBALS['db']->queryAll($sql, $params);
+        $result = Jaws_DB::getInstance()->queryAll($sql, $params);
         if (Jaws_Error::IsError($result)) {
             return array();
         }
