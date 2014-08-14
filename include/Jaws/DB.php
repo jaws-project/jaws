@@ -127,7 +127,7 @@ class Jaws_DB
      * @param   string $instance Jaws_DB instance name
      * @return  object Jaws_DB instance
      */
-    static function getInstance($options = array(), $instance = 'default')
+    static function getInstance($instance = 'default', $options = array())
     {
         static $instances;
         if (!isset($instances)) {
@@ -813,7 +813,7 @@ class Jaws_DB
      * @param   int     $timestamp  Time stamp
      * @return  string  current datetime in the MDB2 format
      */
-    function Date($timestamp = 0)
+    function date($timestamp = 0)
     {
         return empty($timestamp)? gmdate('Y-m-d H:i:s') : date('Y-m-d H:i:s', (int)$timestamp);
     }
