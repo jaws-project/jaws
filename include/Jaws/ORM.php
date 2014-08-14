@@ -857,7 +857,7 @@ class Jaws_ORM
                 $dbDriver  = $this->jawsdb->getDriver();
                 $dbVersion = $this->jawsdb->getDBVersion();
                 foreach ($this->_values as $values) {
-                    $values_str = implode(', ', array_map(array($this, 'quoteValue'), $values));
+                    $values_str = implode(', ', array_map(array($this, 'quoteValue'), array_values($values)));
                     switch ($dbDriver) {
                         case 'oci8':
                             $vsql.= (empty($vsql)? '' : "\n UNION ALL"). "\n SELECT $values_str FROM DUAL";
