@@ -108,14 +108,11 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
 
         // Connect to database
         require_once JAWS_PATH . 'include/Jaws/DB.php';
-        $GLOBALS['db'] = new Jaws_DB($_SESSION['upgrade']['Database']);
-        if (Jaws_Error::IsError($GLOBALS['db'])) {
+        $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
+        if (Jaws_Error::IsError($objDatabase)) {
             _log(JAWS_LOG_DEBUG,"There was a problem connecting to the database, please check the details and try again");
             return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
-
-        require_once JAWS_PATH . 'include/Jaws/DB.php';
-        $GLOBALS['db'] = new Jaws_DB($_SESSION['upgrade']['Database']);
 
         // Create application
         include_once JAWS_PATH . 'include/Jaws.php';

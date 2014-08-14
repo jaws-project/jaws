@@ -301,15 +301,15 @@ class Upgrader_Database extends JawsUpgraderStage
 
         // Connect to database
         require_once JAWS_PATH . 'include/Jaws/DB.php';
-        $GLOBALS['db'] = new Jaws_DB($_SESSION['upgrade']['Database']);
-        if (Jaws_Error::IsError($GLOBALS['db'])) {
+        $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
+        if (Jaws_Error::IsError($objDatabase)) {
             _log(JAWS_LOG_DEBUG,"There was a problem connecting to the database, please check the details and try again");
             return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
 
         _log(JAWS_LOG_DEBUG,"Checking current database");
         $sql = "SELECT * FROM [[registry]]";
-        $result = $GLOBALS['db']->queryRow($sql);
+        $result = Jaws_DB::getInstance()->queryRow($sql);
         if (Jaws_Error::isError($result)) {
             _log(JAWS_LOG_DEBUG,"Something wrong happened while checking the current database, error is:");
             _log(JAWS_LOG_DEBUG,$result->getMessage());

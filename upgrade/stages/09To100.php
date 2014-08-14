@@ -41,8 +41,8 @@ class Upgrader_09To100 extends JawsUpgraderStage
     {
         // Connect to database
         require_once JAWS_PATH . 'include/Jaws/DB.php';
-        $GLOBALS['db'] = new Jaws_DB($_SESSION['upgrade']['Database']);
-        if (Jaws_Error::IsError($GLOBALS['db'])) {
+        $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
+        if (Jaws_Error::IsError($objDatabase)) {
             _log(JAWS_LOG_DEBUG,"There was a problem connecting to the database, please check the details and try again");
             return new Jaws_Error(_t('UPGRADE_DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
         }
@@ -59,7 +59,7 @@ class Upgrader_09To100 extends JawsUpgraderStage
         }
 
         _log(JAWS_LOG_DEBUG,"Upgrading core schema");
-        $result = $GLOBALS['db']->installSchema($new_schema, '', $old_schema);
+        $result = Jaws_DB::getInstance()->installSchema($new_schema, '', $old_schema);
         if (Jaws_Error::isError($result)) {
             _log(JAWS_LOG_ERROR, $result->getMessage());
             if ($result->getCode() !== MDB2_ERROR_ALREADY_EXISTS) {

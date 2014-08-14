@@ -21,7 +21,7 @@ class Upgrader_Report extends JawsUpgraderStage
     function Display()
     {
         include_once JAWS_PATH.'include/Jaws/DB.php';
-        $GLOBALS['db'] = new Jaws_DB($_SESSION['upgrade']['Database']);
+        $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
 
         require_once JAWS_PATH . 'include/Jaws.php';
         $GLOBALS['app'] = jaws();
