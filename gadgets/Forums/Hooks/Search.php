@@ -53,7 +53,7 @@ class Forums_Hooks_Search extends Jaws_Gadget_Hook
         $sql .= '
             ORDER BY fp.[insert_time] desc';
 
-        $result = $GLOBALS['db']->queryAll($sql);
+        $result = Jaws_DB::getInstance()->queryAll($sql);
         if (Jaws_Error::IsError($result)) {
             return array();
         }

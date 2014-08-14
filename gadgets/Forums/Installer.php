@@ -91,7 +91,7 @@ class Forums_Installer extends Jaws_Gadget_Installer
         );
         $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $this->gadget->title);
         foreach ($tables as $table) {
-            $result = $GLOBALS['db']->dropTable($table);
+            $result = Jaws_DB::getInstance()->dropTable($table);
             if (Jaws_Error::IsError($result)) {
                 return new Jaws_Error($errMsg);
             }
