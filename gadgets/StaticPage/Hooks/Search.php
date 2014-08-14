@@ -52,7 +52,7 @@ class StaticPage_Hooks_Search extends Jaws_Gadget_Hook
         $sql .= ' ORDER BY sp.[page_id] desc';
 
         $types = array('integer', 'integer', 'text', 'text', 'text', 'text', 'text', 'timestamp');
-        $result = $GLOBALS['db']->queryAll($sql, $params, $types);
+        $result = Jaws_DB::getInstance()->queryAll($sql, $params, $types);
         if (Jaws_Error::IsError($result)) {
             return array();
         }

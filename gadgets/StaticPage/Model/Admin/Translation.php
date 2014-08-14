@@ -49,7 +49,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
         $params['meta_keywords'] = $meta_keys;
         $params['meta_description'] = $meta_desc;
         $params['published'] = (bool)$published;
-        $params['updated'] = $GLOBALS['db']->Date();
+        $params['updated'] = Jaws_DB::getInstance()->date();
 
         $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation', '', 'translation_id');
         $tid = $sptTable->insert($params)->exec();
@@ -127,7 +127,7 @@ class StaticPage_Model_Admin_Translation extends StaticPage_Model_Translation
         $params['language']         = $language;
         $params['meta_keywords']    = $meta_keys;
         $params['meta_description'] = $meta_desc;
-        $params['updated']          = $GLOBALS['db']->Date();
+        $params['updated']          = Jaws_DB::getInstance()->date();
         if ($this->gadget->GetPermission('PublishPages')) {
             $params['published'] = (bool)$published;
         } else {

@@ -40,7 +40,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         $params['base_language']    = $language;
         $params['fast_url']         = $fast_url;
         $params['show_title']       = (bool)$show_title;
-        $params['updated']          = $GLOBALS['db']->Date();
+        $params['updated']          = Jaws_DB::getInstance()->date();
         $spTable = Jaws_ORM::getInstance()->table('static_pages', '', 'page_id');
         $base_id = $spTable->insert($params)->exec();
         if (Jaws_Error::IsError($base_id)) {
@@ -93,7 +93,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         $params['base_language'] = $language;
         $params['fast_url']      = $fast_url;
         $params['show_title']    = (bool)$show_title;
-        $params['updated']       = $GLOBALS['db']->Date();
+        $params['updated']       = Jaws_DB::getInstance()->date();
 
         $spTable = Jaws_ORM::getInstance()->table('static_pages');
         $result = $spTable->update($params)->where('page_id', $id)->exec();
