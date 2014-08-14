@@ -488,7 +488,7 @@ class Jaws_Gadget_Installer
             }
         }
 
-        $result = $GLOBALS['db']->installSchema($main_file, $variables, $base_file, $init_data);
+        $result = Jaws_DB::getInstance()->installSchema($main_file, $variables, $base_file, $init_data);
         if (Jaws_Error::IsError($result)) {
             return Jaws_Error::raiseError(
                 _t('GLOBAL_ERROR_FAILED_QUERY_FILE',$new_schema . (empty($old_schema)? '': "/$old_schema")),

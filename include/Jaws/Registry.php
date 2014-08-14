@@ -163,7 +163,7 @@ class Jaws_Registry
             'key_name'   => $key_name,
             'key_value'  => $key_value,
             'custom'     => (bool)$custom,
-            'updatetime' => $GLOBALS['db']->Date(),
+            'updatetime' => Jaws_DB::getInstance()->date(),
         ));
         $result = $tblReg->exec();
         if (!Jaws_Error::IsError($result)) {
@@ -193,7 +193,7 @@ class Jaws_Registry
 
         $data = array();
         $user = (int)$user;
-        $time = $GLOBALS['db']->Date();
+        $time = Jaws_DB::getInstance()->date();
         $tmp_regkeys = $this->regkeys;
         $tmp_customs = $this->customs;
         $columns = array('user', 'component', 'key_name', 'key_value', 'custom', 'updatetime');
