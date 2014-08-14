@@ -57,7 +57,7 @@ class Friends_Installer extends Jaws_Gadget_Installer
      */
     function Uninstall()
     {
-        $result = $GLOBALS['db']->dropTable('friend');
+        $result = Jaws_DB::getInstance()->dropTable('friend');
         if (Jaws_Error::IsError($result)) {
             $errMsg = _t('GLOBAL_ERROR_GADGET_NOT_UNINSTALLED', $this->gadget->title);
             return new Jaws_Error($errMsg);
