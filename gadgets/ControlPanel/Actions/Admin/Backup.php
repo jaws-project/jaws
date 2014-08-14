@@ -28,7 +28,7 @@ class ControlPanel_Actions_Admin_Backup extends Jaws_Gadget_Action
         //Dump database data
         $dbFileName = 'dbdump.xml';
         $dbFilePath = $tmpDir . DIRECTORY_SEPARATOR . $dbFileName;
-        $GLOBALS['db']->Dump($dbFilePath);
+        Jaws_DB::getInstance()->Dump($dbFilePath);
 
         $files = array();
         require_once PEAR_PATH. 'File/Archive.php'; 
