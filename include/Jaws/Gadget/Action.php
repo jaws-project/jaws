@@ -112,7 +112,7 @@ class Jaws_Gadget_Action
 
 
     /**
-     * fetchs all actions of gadget
+     * fetches all actions of gadget
      *
      * @access  public
      * @param   string  $script Action belongs to index or admin
@@ -331,11 +331,11 @@ class Jaws_Gadget_Action
 
 
     /**
-     * Verifies if action is a standalone of controlpanel
+     * Verifies if action is a standalone of control-panel
      *
      * @access  public
      * @param   string  $action to Verify
-     * @return  bool    True if action is standalone of the controlpanel if not, returns false
+     * @return  bool    True if action is standalone of the control-panel if not, returns false
      */
     public function IsStandAloneAdmin($action)
     {
@@ -344,6 +344,21 @@ class Jaws_Gadget_Action
                     $this->gadget->actions['admin'][$action]['standalone']);
         }
         return false;
+    }
+
+
+    /**
+     * Verifies if action is a global action
+     *
+     * @access  public
+     * @param   string  $action Action name
+     * @return  bool    True if action is global action, otherwise False
+     */
+    public function isGlobal($action)
+    {
+        return $this->IsValidAction($action, 'index') && 
+               isset($this->gadget->actions['index'][$action]['global']) &&
+               $this->gadget->actions['index'][$action]['global'];
     }
 
 
