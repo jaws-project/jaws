@@ -16,6 +16,7 @@
 $actions['LoginBox'] = array(
     'normal' => true,
     'layout' => true,
+    'global' => true,
     'file' => 'Login',
 );
 $actions['LoginLinks'] = array(
@@ -45,6 +46,7 @@ $actions['AboutUser'] = array(
 );
 $actions['Login'] = array(
     'normal' => true,
+    'global' => true,
     'file' => 'Login',
 );
 $actions['Logout'] = array(
@@ -53,29 +55,35 @@ $actions['Logout'] = array(
 );
 $actions['ForgotLogin'] = array(
     'normal' => true,
+    'global' => true,
     'file' => 'Login',
 );
 $actions['SendRecoverKey'] = array(
     'normal' => true,
+    'global' => true,
     'file' => 'Login',
     'loglevel' => JAWS_NOTICE,
 );
 $actions['Registration'] = array(
     'normal' => true,
+    'global' => true,
     'file' => 'Registration',
 );
 $actions['DoRegister'] = array(
     'normal' => true,
+    'global' => true,
     'file' => 'Registration',
     'loglevel' => JAWS_NOTICE,
 );
 $actions['Registered'] = array(
     'normal' => true,
+    'global' => true,
     'file' => 'Registration',
     'loglevel' => JAWS_NOTICE,
 );
 $actions['ActivateUser'] = array(
     'normal' => true,
+    'global' => true,
     'file' => 'Registration',
     'temporary' => true,
     'loglevel' => JAWS_NOTICE,
