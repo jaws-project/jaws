@@ -27,7 +27,7 @@ if (!file_exists($root . '/config/JawsConfig.php')) {
 require_once JAWS_PATH . 'include/Jaws/InitApplication.php';
 
 $IsIndex   = false;
-$objGadget = null;
+$objAction = null;
 $IsReqActionStandAlone = false;
 // Only registered user can access not global website
 $AccessToWebsiteDenied = !$GLOBALS['app']->Session->Logged() &&
@@ -39,10 +39,7 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
     $ReqGadget = Jaws_Gadget::filter(jaws()->request->fetch('gadget'));
     $ReqAction = Jaws_Gadget_Action::filter(jaws()->request->fetch('action'));
 
-    if ($AccessToWebsiteDenied && $ReqGadget !== 'Users') {
-        $ReqGadget = 'Users';
-        $ReqAction = 'LoginBox';
-    } elseif (empty($ReqGadget)) {
+    if (empty($ReqGadget)) {
         $IsIndex = true;
         $ReqGadget = $GLOBALS['app']->Registry->fetchByUser(
             $GLOBALS['app']->Session->GetAttribute('layout'),
@@ -53,8 +50,8 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
 
     if (!empty($ReqGadget)) {
         if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
-            $objGadget = Jaws_Gadget::getInstance($ReqGadget)->action->load();
-            if (Jaws_Error::IsError($objGadget)) {
+            $objAction = Jaws_Gadget::getInstance($ReqGadget)->action->load();
+            if (Jaws_Error::IsError($objAction)) {
                 Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
             }
 
@@ -67,6 +64,21 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
         } else {
             $ReqError = '404';
         }
+    }
+
+    // if action not a global action and site is protected, so request redirected to login page
+    if ($AccessToWebsiteDenied && (empty($ReqGadget) || !$objAction->isGlobal($ReqAction))) {
+        $ReqGadget = 'Users';
+        $ReqAction = 'LoginBox';
+        $objAction = Jaws_Gadget::getInstance($ReqGadget)->action->load();
+        if (Jaws_Error::IsError($objAction)) {
+            Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
+        }
+
+        $ReqError = '';
+        // set requested gadget
+        $GLOBALS['app']->mainGadget = $ReqGadget;
+
     }
 } else {
     $ReqError = empty($ReqError)? '404' : $ReqError;
@@ -85,14 +97,14 @@ $GLOBALS['app']->RunAutoload();
 
 if (empty($ReqError)) {
     $ReqResult = '';
-    if (!empty($objGadget)) {
-        $ReqResult = $objGadget->Execute($ReqAction);
+    if (!empty($objAction)) {
+        $ReqResult = $objAction->Execute($ReqAction);
         if (Jaws_Error::isError($ReqResult)) {
             $ReqResult = $ReqResult->GetMessage();
         }
 
         // we must check type of action after execute, because gadget can change it at runtime
-        $IsReqActionStandAlone = $objGadget->IsStandAlone($ReqAction);
+        $IsReqActionStandAlone = $objAction->IsStandAlone($ReqAction);
     }
 } else {
     $ReqResult = Jaws_HTTPError::Get($ReqError);
