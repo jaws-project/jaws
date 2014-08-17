@@ -24,7 +24,7 @@ var BlogCallback = {
             PiwiGrid.multiSelect($('posts_datagrid'));
             var limit = $('posts_datagrid').getCurrentPage();
             var formData = getDataOfLEForm();
-            updatePostsDatagrid(formData['period'], formData['category'],
+            updatePostsDatagrid(formData['category'],
                                 formData['status'], formData['search'], 0, true);
         } else {
             PiwiGrid.multiSelect($('posts_datagrid'));
@@ -37,7 +37,7 @@ var BlogCallback = {
             PiwiGrid.multiSelect($('posts_datagrid'));
             resetLEForm();
             var formData = getDataOfLEForm();
-            updatePostsDatagrid(formData['period'], formData['category'],
+            updatePostsDatagrid(formData['category'],
                                 formData['status'], formData['search'], 0, true);
         } else {
             PiwiGrid.multiSelect($('posts_datagrid'));
@@ -161,7 +161,6 @@ function getDataOfLEForm()
 
     var data = new Array();
 
-    data['period']   = form.elements['show'].value;
     data['category'] = form.elements['category'].value;
     data['status']   = form.elements['status'].value;
     data['search']   = form.elements['search'].value;
@@ -226,7 +225,7 @@ function parseText(form)
 function searchPost()
 {
     var formData = getDataOfLEForm();
-    updatePostsDatagrid(formData['period'], formData['category'],
+    updatePostsDatagrid(formData['category'],
                         formData['status'], formData['search'], 0, true);
 
     return false;
@@ -245,12 +244,12 @@ function searchTrackback()
 /**
  * Update post datagrid
  */
-function updatePostsDatagrid(period, cat, status, search, limit, resetCounter)
+function updatePostsDatagrid(cat, status, search, limit, resetCounter)
 {
-    var result = BlogAjax.callSync('SearchPosts', period, cat, status, search, limit);
+    var result = BlogAjax.callSync('SearchPosts', cat, status, search, limit);
     resetGrid('posts_datagrid', result);
     if (resetCounter) {
-        var size = BlogAjax.callSync('SizeOfSearch', period, cat, status, search);
+        var size = BlogAjax.callSync('SizeOfSearch', cat, status, search);
         $('posts_datagrid').rowsSize    = size;
         $('posts_datagrid').setCurrentPage(0);
         $('posts_datagrid').updatePageCounter();
@@ -268,7 +267,7 @@ function getData(limit)
             limit = $('posts_datagrid').getCurrentPage();
         }
         var formData = getDataOfLEForm();
-        updatePostsDatagrid(formData['period'], formData['category'],
+        updatePostsDatagrid(formData['category'],
                             formData['status'], formData['search'],
                             limit, false);
         break;

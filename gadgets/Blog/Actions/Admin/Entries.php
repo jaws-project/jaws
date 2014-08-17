@@ -718,29 +718,8 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('menubar', $this->MenuBar('ListEntries'));
 
         // Filtering
-        // Show past n days etc.
-        $showCombo =& Piwi::CreateWidget('Combo', 'show');
-        $showCombo->setId('show');
-        $showCombo->AddOption('&nbsp;', 'NOTHING');
-        $showCombo->AddOption(_t('BLOG_RECENT_POSTS'), 'RECENT');
-
         $pModel = $this->gadget->model->loadAdmin('Posts');
-        $dpModel = $this->gadget->model->load('DatePosts');
         $cModel = $this->gadget->model->load('Categories');
-        $monthentries = $dpModel->GetMonthsEntries();
-        if (!Jaws_Error::IsError($monthentries) && is_array($monthentries)) {
-            $date = Jaws_Date::getInstance();
-            foreach ($monthentries as $e) {
-                $showCombo->AddOption($date->MonthString($e['month']).' '.$e['year'],
-                                      $e['month'].':'.$e['year']);
-            }
-        }
-        $showCombo->AddEvent(ON_CHANGE, 'javascript: searchPost();');
-        $show = 'NOTHING';
-        $showCombo->SetDefault('NOTHING');
-
-        $tpl->SetVariable('show', _t('BLOG_SHOW'));
-        $tpl->SetVariable('show_field', $showCombo->Get());
 
         // Category filter
         $category = '';
@@ -839,19 +818,18 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
      * Prepares the data of an advanced search on blog posts
      *
      * @access  public
-     * @param   string  $period     Period to look for
      * @param   int     $cat        Category
      * @param   int     $status     Status (0=Draft, 1=Published)
      * @param   string  $search     Search word
      * @param   int     $limit      Limit data
      * @return  array   An array with all the data
      */
-    function PostsData($period, $cat, $status, $search, $limit = 0)
+    function PostsData($cat, $status, $search, $limit = 0)
     {
         $common_url = BASE_SCRIPT . '?gadget=Blog';
 
         $model = $this->gadget->model->load('Posts');
-        $entries = $model->AdvancedSearch($limit, $period, $cat, $status, $search,
+        $entries = $model->AdvancedSearch($limit, $cat, $status, $search,
                                           $GLOBALS['app']->Session->GetAttribute('user'));
 
         if (Jaws_Error::IsError($entries)) {

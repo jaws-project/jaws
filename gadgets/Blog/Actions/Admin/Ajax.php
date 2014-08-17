@@ -38,12 +38,12 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function SearchPosts()
     {
-        @list($period, $cat, $status, $search, $limit) = jaws()->request->fetchAll('post');
+        @list($cat, $status, $search, $limit) = jaws()->request->fetchAll('post');
         if(empty($limit)) {
             $limit = 0;
         }
         $gadget = $this->gadget->action->loadAdmin('Entries');
-        return $gadget->PostsData($period, $cat, $status, $search, $limit);
+        return $gadget->PostsData($cat, $status, $search, $limit);
     }
 
     /**
@@ -58,9 +58,9 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function SizeOfSearch()
     {
-        @list($period, $cat, $status, $search) = jaws()->request->fetchAll('post');
+        @list($cat, $status, $search) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->load('Posts');
-        $entries = $model->AdvancedSearch(false, $period, $cat, $status, $search,
+        $entries = $model->AdvancedSearch(false, $cat, $status, $search,
                                                  $GLOBALS['app']->Session->GetAttribute('user'));
         return count($entries);
     }

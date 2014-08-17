@@ -697,30 +697,19 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $limit    Limit of data
-     * @param   string  $filter   First filter it can be: NOTHING, RECENT or MM:YYYY</param>
      * @param   string  $category Category id
      * @param   string  $status   Status of the entry, 0 = Draft, 1 = Published
      * @param   string  $match    Match word
      * @param   string  $user_id  User id
      * @return  mixed   An array of entries and Jaws_Error on error
      */
-    function AdvancedSearch($limit, $filter, $category, $status, $match, $user_id)
+    function AdvancedSearch($limit, $category, $status, $match, $user_id)
     {
         // Removed until ACLs are in place.
         /*$sql = 'SELECT [[blog]].[id], [user_id], [username], [nickname],
                 [category_id], [title], [publishtime], [published]
             FROM [[blog]] INNER JOIN [[users]]
             ON [[blog]].[user_id] = [[users]].[id] ';*/
-
-        if (!is_bool($status)) {
-            if (is_numeric($status)) {
-                $status = $status == 1 ? true : false;
-            } elseif (is_string($status)) {
-                $status = $status == 'Y' ? true : false;
-            }
-        } else {
-            $status = $status;
-        }
 
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
@@ -745,17 +734,11 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         }
 
         if (trim($status) != '') {
-            $blogTable->and()->where('published', $status);
+            $blogTable->and()->where('published', (bool)$status);
         }
 
         if (trim($category) != '') {
             $blogTable->and()->where('blog_entrycat.category_id', $category);
-        }
-
-        if (!in_array($filter, array('NOTHING', 'RECENT'))) {
-            $date = explode(':', $filter);
-            $blogTable->and()->where($blogTable->substring('blog.publishtime', 1, 4), $date[1]);
-            $blogTable->and()->where($blogTable->substring('blog.publishtime', 6, 2), $date[0]);
         }
 
         if (is_numeric($limit)) {

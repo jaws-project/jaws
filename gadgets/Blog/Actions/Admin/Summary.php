@@ -20,96 +20,57 @@ class Blog_Actions_Admin_Summary extends Blog_Actions_Admin_Default
      */
     function Summary()
     {
-        $model = $this->gadget->model->load('Summary');
-        $summary = $model->GetSummary();
-        if (Jaws_Error::IsError($summary)) {
-            $summary = array();
-        }
+    
+        // get table definition
+        MDB2::loadFile('Schema');
+        $valid_default_values = array(
+            'text'      => '',
+            'boolean'   => true,
+            'integer'   => 0,
+            'decimal'   => 0.0,
+            'float'     => 0.0,
+            'timestamp' => '1970-01-01 00:00:00',
+            'time'      => '00:00:00',
+            'date'      => '1970-01-01',
+            'clob'      => '',
+            'blob'      => '',
+        );
+        require_once PEAR_PATH. 'MDB2/Schema/Parser.php';
 
-        $tpl = $this->gadget->template->loadAdmin('Summary.html');
-        $tpl->SetBlock('summary');
-        $tpl->SetVariable('menubar', $this->MenuBar('Summary'));
-
-        // Ok, start the stats!
-        $tpl->SetVariable('blog_stats', _t('BLOG_STATS'));
-        // First entry
-
-        $tpl->SetBlock('summary/item');
-        $bg = Jaws_Utils::RowColor(null);
-        $tpl->SetVariable('bgcolor', $bg);
-        $tpl->SetVariable('label', _t('BLOG_FIRST_ENTRY'));
-        if (isset($summary['min_date'])) {
-            $date = Jaws_Date::getInstance();
-            $tpl->SetVariable('value', $date->Format($summary['min_date']));
-        } else {
-            $tpl->SetVariable('value', '');
-        }
-        $tpl->ParseBlock('summary/item');
-
-        // Last entry
-        $tpl->SetBlock('summary/item');
-        $bg = Jaws_Utils::RowColor($bg);
-        $tpl->SetVariable('bgcolor', $bg);
-        $tpl->SetVariable('label', _t('BLOG_LAST_ENTRY'));
-        if (isset($summary['max_date'])) {
-            $date = Jaws_Date::getInstance();
-            $tpl->SetVariable('value', $date->Format($summary['max_date']));
-        } else {
-            $tpl->SetVariable('value', '');
-        }
-        $tpl->ParseBlock('summary/item');
-
-
-        // Blog entries
-        $tpl->SetBlock('summary/item');
-        $bg = Jaws_Utils::RowColor($bg);
-        $tpl->SetVariable('bgcolor', $bg);
-        $tpl->SetVariable('label', _t('BLOG_TOTAL_ENTRIES'));
-        $tpl->SetVariable('value', isset($summary['qty_posts']) ? $summary['qty_posts'] : '');
-        $tpl->ParseBlock('summary/item');
-
-        // Avg. entries per week
-        $tpl->SetBlock('summary/item');
-        $bg = Jaws_Utils::RowColor($bg);
-        $tpl->SetVariable('bgcolor', $bg);
-        $tpl->SetVariable('label', _t('BLOG_AVERAGE_ENTRIES'));
-        $tpl->SetVariable('value', isset($summary['AvgEntriesPerWeek']) ? $summary['AvgEntriesPerWeek'] : '');
-        $tpl->ParseBlock('summary/item');
-
-
-        // Comments
-        $tpl->SetBlock('summary/item');
-        $bg = Jaws_Utils::RowColor($bg);
-        $tpl->SetVariable('bgcolor', $bg);
-        $tpl->SetVariable('label', _t('BLOG_COMMENTS_RECEIVED'));
-        $tpl->SetVariable('value', isset($summary['CommentsQty']) ? $summary['CommentsQty'] : '');
-        $tpl->ParseBlock('summary/item');
-
-        // Recent entries
-        if (isset($summary['Entries']) && count($summary['Entries']) > 0) {
-            $tpl->SetBlock('summary/recent');
-            $tpl->SetVariable('title', _t('BLOG_RECENT_ENTRIES'));
-
-            $date = Jaws_Date::getInstance();
-            foreach ($summary['Entries'] as $e) {
-                $tpl->SetBlock('summary/recent/link');
-                $url = BASE_SCRIPT . '?gadget=Blog&action=EditEntry&id='.$e['id'];
-                if ($e['published'] === false) {
-                    $extra = '<span style="color: #999; font-size: 10px;"> [' . _t('BLOG_DRAFT') . '] </span>';
-                } else {
-                    $extra = '';
-                }
-                $tpl->SetVariable('url',   $url);
-                $tpl->SetVariable('title', $e['title']);
-                $tpl->SetVariable('extra', $extra);
-                $tpl->SetVariable('date',  $date->Format($e['publishtime']));
-                $tpl->ParseBlock('summary/recent/link');
+        $model = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
+        $gadgets = $model->GetGadgetsList(null, true, true, null, true);
+        foreach($gadgets as $gadget) {
+            $input_file = JAWS_PATH. "gadgets/{$gadget['name']}/Resources/schema/schema.xml";
+            if (!file_exists($input_file)) {
+                continue;
             }
-            $tpl->ParseBlock('summary/recent');
+            $parser = new MDB2_Schema_Parser(array(), true, false, $valid_default_values, true, 64);
+            $result = $parser->setInputString(file_get_contents($input_file));
+            if (MDB2::isError($result)) {
+                return $result;
+            }
+
+            $result = $parser->parse();
+            if (MDB2::isError($result)) {
+                return $result;
+            }
+            if (MDB2::isError($parser->error)) {
+                return $parser->error;
+            }
+
+            $tables  = array_keys($parser->database_definition['tables']);
+
+            // fetch/insert data
+            foreach ($tables as $table) {
+                $sql = "SELECT setval('{$table}_id_seq', (SELECT MAX(id) FROM {$table}))";
+                $result = Jaws_DB::getInstance()->query($sql);
+                if (Jaws_Error::IsError($result)) {
+                   //-------------
+                }
+            }
+
         }
 
-        $tpl->ParseBlock('summary');
-        return $tpl->Get();
     }
 
 }
