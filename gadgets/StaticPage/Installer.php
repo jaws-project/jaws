@@ -18,7 +18,7 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
      */
     var $_RegKeys = array(
         array('hide_title', 'true'),
-        array('show_pages_limit', 10),
+        array('group_pages_limit', 10),
         array('default_page', '1'),
         array('multilanguage', 'yes'),
     );
@@ -110,6 +110,10 @@ class StaticPage_Installer extends Jaws_Gadget_Installer
 
         if (version_compare($old, '1.1.0', '<')) {
             $this->gadget->registry->insert('recommended', ',Tags,');
+        }
+
+        if (version_compare($old, '1.2.0', '<')) {
+            $this->gadget->registry->insert('group_pages_limit', 10);
         }
 
         return true;

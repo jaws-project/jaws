@@ -47,7 +47,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
 
             $result[] = array(
                 'title' => _t('GLOBAL_COUNT'),
-                'value' => $this->gadget->registry->fetch('show_pages_limit')
+                'value' => $this->gadget->registry->fetch('group_pages_limit')
             );
 
         }

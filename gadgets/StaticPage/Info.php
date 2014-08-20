@@ -16,7 +16,7 @@ class StaticPage_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '1.1.0';
+    var $version = '1.2.0';
 
     /**
      * Recommended gadgets
