@@ -16,6 +16,7 @@
 $actions['Captcha'] = array(
     'standalone' => true,
     'file' => 'Captcha',
+    'global' => true,
     'temporary' => true,
 );
 
