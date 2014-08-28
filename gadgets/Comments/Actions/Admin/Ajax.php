@@ -55,6 +55,19 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
         $date = Jaws_Date::getInstance();
         $comment['insert_time'] = $date->Format($comment['createtime'], 'Y-m-d H:i:s');
+
+        $comment['reference_title'] = '';
+        $comment['reference_url'] = '';
+        $objGadget = Jaws_Gadget::getInstance($comment['gadget']);
+        if (!Jaws_Error::IsError($objGadget)) {
+            $objHook = $objGadget->hook->load('Comments');
+            if (!Jaws_Error::IsError($objHook)) {
+                $referenceInfo = $objHook->Execute($comment['action'], $comment['reference']);
+                $comment['reference_title'] = $referenceInfo['title'];
+                $comment['reference_url'] = $referenceInfo['url'];
+            }
+        }
+
         return $comment;
     }
 

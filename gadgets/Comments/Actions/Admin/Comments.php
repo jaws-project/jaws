@@ -139,6 +139,9 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         //Date
         $tpl->SetVariable('lbl_date', _t('GLOBAL_DATE'));
 
+        //Reference Date
+        $tpl->SetVariable('lbl_reference_url', _t('COMMENTS_REFERENCE_URL'));
+
         //name
         $nameEntry =& Piwi::CreateWidget('Entry', 'name', '');
         $nameEntry->setStyle('width: 160px;');

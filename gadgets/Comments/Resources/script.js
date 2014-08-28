@@ -126,6 +126,9 @@ function editComment(rowElement, id)
     $('url').value                = comment['url'];
     $('message').value            = comment['msg_txt'].defilter();
     $('comment_status').value     = comment['status'];
+    if (comment['reference_url'] != '') {
+        $('reference_url').innerHTML = '<a href="' + comment['reference_url'] + '">' + comment['reference_title'] + '</a>';
+    }
     $('btn_save').style.display   = 'inline';
     $('btn_reply').style.display  = 'inline';
     $('btn_cancel').style.display = 'inline';
