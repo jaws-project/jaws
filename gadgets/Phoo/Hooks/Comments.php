@@ -11,7 +11,7 @@
 class Phoo_Hooks_Comments extends Jaws_Gadget_Hook
 {
     /**
-     * Returns an array about a blog entry
+     * Returns an array about a phoo entry
      *
      * @access  public
      * @param   string  $action     Action name
