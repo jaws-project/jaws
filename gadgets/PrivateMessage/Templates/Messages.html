@@ -154,6 +154,10 @@
     var do_check = false;
 
     function messagesDGAction() {
+        if($$('input[type=checkbox][name=message_checkbox[]]:checked').length<1) {
+            return false;
+        }
+
         var action = document.getElementById("messages_actions_combo").value;
         if(action == 'unarchive') {
             document.privatemessage.action.value = 'UnArchiveMessage';

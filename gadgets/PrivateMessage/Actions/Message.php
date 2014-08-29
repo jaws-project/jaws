@@ -255,7 +255,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
             $limit,
             $inboxTotal,
             _t('PRIVATEMESSAGE_MESSAGE_COUNT', $inboxTotal),
-            'Inbox',
+            'Messages',
             $params
         );
 
@@ -616,9 +616,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 RESPONSE_ERROR
             );
         }
-        Jaws_Header::Location(
-            $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_TRASH))
-        );
+        Jaws_Header::Referrer();
     }
 
     /**

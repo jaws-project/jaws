@@ -419,7 +419,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                 $table = $table->table('pm_messages');
                 $target_folder = $is_notification?
                     PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS :
-                    PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX;
+                    PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX;
                 $from = $is_notification? 0 : $user;
                 foreach ($recipient_users as $recipient_user) {
                     $data['folder'] = $target_folder;
