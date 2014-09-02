@@ -3,11 +3,6 @@
 <div class="gadget_container">
   <div class="gadget_response"><div id="simple_response" class="{{type}}">{{text}}</div></div>
   <div class="gadget_content content">
-    <!-- BEGIN no_message -->
-    <div class="no-message">{{no_message}}</div>
-    <!-- END no_message -->
-
-    <!-- BEGIN datagrid -->
     <form name="privatemessage" id="privatemessage" action="{{requested_url}}" method="post">
       <input type="hidden" name="gadget" value="PrivateMessage"/>
       <input type="hidden" name="action" value="Messages"/>
@@ -145,7 +140,6 @@
           </button>
       </div>
     </form>
-    <!-- END datagrid -->
   </div>
 </div>
 <div class="gadget_footer"></div>

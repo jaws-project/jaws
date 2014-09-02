@@ -44,14 +44,14 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $menubar = $this->MenuBar('Notifications');
                 $title = _t('PRIVATEMESSAGE_NOTIFICATIONS');
 
-                $tpl->SetBlock('messages/datagrid/filter_read');
+                $tpl->SetBlock('messages/filter_read');
                 $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
                 $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
                 $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
                 $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
                 $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
 
-                $tpl->ParseBlock('messages/datagrid/filter_read');
+                $tpl->ParseBlock('messages/filter_read');
 
 
                 $tpl->SetBlock('messages/notifications_action');
@@ -65,14 +65,14 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $menubar = $this->MenuBar('Inbox');
                 $title = _t('PRIVATEMESSAGE_INBOX');
 
-                $tpl->SetBlock('messages/datagrid/filter_read');
+                $tpl->SetBlock('messages/filter_read');
                 $tpl->SetVariable('lbl_all', _t('GLOBAL_ALL'));
                 $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
                 $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
                 $tpl->SetVariable('lbl_read', _t('PRIVATEMESSAGE_STATUS_READ'));
                 $tpl->SetVariable('opt_read_' . $post['read'], 'selected="selected"');
 
-                $tpl->ParseBlock('messages/datagrid/filter_read');
+                $tpl->ParseBlock('messages/filter_read');
 
 
                 $tpl->SetBlock('messages/inbox_action');
@@ -121,9 +121,9 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $menubar = $this->MenuBar('AllMessages');
                 $title = _t('PRIVATEMESSAGE_ALL_MESSAGES');
 
-                $tpl->SetBlock('messages/datagrid/folder_th');
+                $tpl->SetBlock('messages/folder_th');
                 $tpl->SetVariable('lbl_folder', _t('PRIVATEMESSAGE_MESSAGE_FOLDER'));
-                $tpl->ParseBlock('messages/datagrid/folder_th');
+                $tpl->ParseBlock('messages/folder_th');
 
                 $tpl->SetBlock('messages/all_action');
                 $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
@@ -161,16 +161,11 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
 
         $messages = $model->GetMessages($user, $folder, $post, $limit, ($page - 1) * $limit);
-        if (Jaws_Error::IsError($messages) || empty($messages)) {
-            $tpl->SetBlock('messages/no_message');
-            $tpl->SetVariable('no_message', _t('PRIVATEMESSAGE_NO_MESSAGE'));
-            $tpl->ParseBlock('messages/no_message');
-        } else {
-            $tpl->SetBlock('messages/datagrid');
+        if (!Jaws_Error::IsError($messages) && !empty($messages)) {
             $i = 0;
             foreach ($messages as $message) {
                 $i++;
-                $tpl->SetBlock('messages/datagrid/message');
+                $tpl->SetBlock('messages/message');
                 $tpl->SetVariable('rownum', $i);
                 $tpl->SetVariable('id',  $message['id']);
                 $tpl->SetVariable('from', $message['from_nickname']);
@@ -182,9 +177,9 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 
                 // Message is In or Out
                 if (empty($folder)) {
-                    $tpl->SetBlock('messages/datagrid/message/folder');
+                    $tpl->SetBlock('messages/message/folder');
                     $tpl->SetVariable('folder', _t('PRIVATEMESSAGE_MESSAGE_FOLDER_' . $message['folder']));
-                    $tpl->ParseBlock('messages/datagrid/message/folder');
+                    $tpl->ParseBlock('messages/message/folder');
                 }
 
                 $subject = $message['subject'];
@@ -204,13 +199,13 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('send_time', $date->Format($message['insert_time'], $date_format));
 
                 if ($message['attachments'] > 0) {
-                    $tpl->SetBlock('messages/datagrid/message/have_attachment');
+                    $tpl->SetBlock('messages/message/have_attachment');
                     $tpl->SetVariable('attachment', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENT'));
                     $tpl->SetVariable('icon_attachment', STOCK_ATTACH);
-                    $tpl->ParseBlock('messages/datagrid/message/have_attachment');
+                    $tpl->ParseBlock('messages/message/have_attachment');
                 } else {
-                    $tpl->SetBlock('messages/datagrid/message/no_attachment');
-                    $tpl->ParseBlock('messages/datagrid/message/no_attachment');
+                    $tpl->SetBlock('messages/message/no_attachment');
+                    $tpl->ParseBlock('messages/message/no_attachment');
                 }
 
                 $messageInfo = $model->GetMessage($message['id']);
@@ -228,9 +223,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 }
                 $tpl->SetVariable('recipients', $recipients_str);
 
-                $tpl->ParseBlock('messages/datagrid/message');
+                $tpl->ParseBlock('messages/message');
             }
-            $tpl->ParseBlock('messages/datagrid');
         }
 
         // Statistics
