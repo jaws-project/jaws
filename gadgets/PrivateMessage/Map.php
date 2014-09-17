@@ -17,70 +17,70 @@ $maps[] = array(
     'pm/messages[/folder/{folder}][/page/{page}][/read/{read}][/replied/{replied}][/term/{term}][/pageitem/{page_item}]',
     array(
         'page' => '[[:digit:]]+',
-        'folder' => '[[:digit:]-]+',
+        'folder' => '[[:digit:]\-]+',
     )
 );
 $maps[] = array(
     'Compose',
     'pm/compose[/id/{id}][/user/{user}][/reply/{reply}]',
     array(
-        'id' => '[\p{L}[:digit:]-_\.]+',
+        'id' => '[\p{L}[:digit:]\-_\.]+',
         'reply' => '[[:lower:]-]+',
     )
 );
 $maps[] = array(
     'Reply',
     'pm/reply/{id}',
-    array('id' => '[\p{L}[:digit:]-_\.]+',)
+    array('id' => '[\p{L}[:digit:]\-_\.]+',)
 );
 $maps[] = array(
     'Message',
     'pm/message/{id}',
     array(
-        'id' => '[\p{L}[:digit:]-_\.]+',
+        'id' => '[\p{L}[:digit:]\-_\.]+',
     )
 );
 $maps[] = array(
     'PublishMessage',
     'pm/publish/message/{id}',
     array(
-        'id' => '[\p{L}[:digit:]-_\.]+',
+        'id' => '[\p{L}[:digit:]\-_\.]+',
     )
 );
 $maps[] = array(
     'ChangeMessageRead',
     'pm/change/read/status/{status}/message/{id}',
     array(
-        'id' => '[\p{L}[:digit:]-_\.]+',
-        'status' => '[[:lower:]-]+',
+        'id' => '[\p{L}[:digit:]\-_\.]+',
+        'status' => '[[:lower:]\-]+',
     )
 );
 $maps[] = array(
     'TrashMessage',
     'pm/message/trash/{id}',
     array(
-        'id' => '[\p{L}[:digit:]-_\.]+',
+        'id' => '[\p{L}[:digit:]\-_\.]+',
     )
 );
 $maps[] = array(
     'DeleteMessage',
     'pm/message/delete/{id}',
     array(
-        'id' => '[\p{L}[:digit:]-_\.]+',
+        'id' => '[\p{L}[:digit:]\-_\.]+',
     )
 );
 $maps[] = array(
     'ArchiveMessage',
     'pm/message/archive/{id}',
     array(
-        'id' => '[\p{L}[:digit:]-_\.]+',
+        'id' => '[\p{L}[:digit:]\-_\.]+',
     )
 );
 $maps[] = array(
     'UnArchiveMessage',
     'pm/message/unarchive/{id}',
     array(
-        'id' => '[\p{L}[:digit:]-_\.]+',
+        'id' => '[\p{L}[:digit:]\-_\.]+',
     )
 );
 
@@ -88,9 +88,9 @@ $maps[] = array(
     'Attachment',
     'pm/{uid}/message/{mid}/attachment/{aid}',
     array(
-        'uid' => '[[:alnum:]-_]+',
-        'mid' => '[[:alnum:]-_]+',
-        'aid' => '[[:alnum:]-_]+',
+        'uid' => '[[:alnum:]\-_]+',
+        'mid' => '[[:alnum:]\-_]+',
+        'aid' => '[[:alnum:]\-_]+',
     ),
     ''
 );

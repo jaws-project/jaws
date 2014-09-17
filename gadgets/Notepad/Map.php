@@ -13,7 +13,7 @@ $maps[] = array(
     'notepad[/filter/{filter}][/query/{query}][/page/{page}]',
     array(
         'filter' => '[[:digit:]]+',
-        'query' => '[[:alnum:]-_]+',
+        'query' => '[[:alnum:]\-_]+',
         'page' => '[[:digit:]]+'
     )
 );

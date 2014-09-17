@@ -11,10 +11,10 @@
 $maps[] = array(
     'ViewTerms', 
     'glossary',
-    array('term' => '[\p{L}[:digit:]-_\.]+',)
+    array('term' => '[\p{L}[:digit:]\-_\.]+',)
 );
 $maps[] = array(
     'ViewTerm', 
     'glossary/{term}',
-    array('term' => '[\p{L}[:digit:]-_\.]+',)
+    array('term' => '[\p{L}[:digit:]\-_\.]+',)
 );

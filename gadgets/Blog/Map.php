@@ -68,7 +68,7 @@ $maps[] = array(
 $maps[] = array(
     'ShowRSSCategory',
     'blog/rss/category/{id}',
-    array('id' => '[\p{L}[:digit:]-_\.]+',)
+    array('id' => '[\p{L}[:digit:]\-_\.]+',)
 );
 $maps[] = array(
     'Atom',
@@ -79,23 +79,23 @@ $maps[] = array(
 $maps[] = array(
     'ShowAtomCategory',
     'blog/atom/category/{id}',
-    array('id' => '[\p{L}[:digit:]-_\.]+',)
+    array('id' => '[\p{L}[:digit:]\-_\.]+',)
 );
 $maps[] = array(
     'SingleView', 
     'blog/show/{id}[/page/{page}][/order/{order}]',
-    array('id' => '[\p{L}[:digit:]-_\.]+',)
+    array('id' => '[\p{L}[:digit:]\-_\.]+',)
 );
 $maps[] = array(
     'ViewAuthorPage',
     'blog/author/{id}/page/{page}',
-    array('id'   => '[\p{L}[:digit:]-_\.]+',
+    array('id'   => '[\p{L}[:digit:]\-_\.]+',
           'page' => '[[:digit:]]+',)
 );
 $maps[] = array(
     'ViewAuthorPage',
     'blog/author/{id}',
-    array('id' => '[\p{L}[:digit:]-_\.]+',)
+    array('id' => '[\p{L}[:digit:]\-_\.]+',)
 );
 $maps[] = array(
     'ViewPage',
@@ -104,13 +104,13 @@ $maps[] = array(
 $maps[] = array(
     'ShowCategory',
     'blog/category/{id}/page/{page}',
-    array('id'   => '[\p{L}[:digit:]-_\.]+',
+    array('id'   => '[\p{L}[:digit:]\-_\.]+',
           'page' => '[[:digit:]]+',)
 );
 $maps[] = array(
     'ShowCategory',
     'blog/category/{id}',
-    array('id' => '[\p{L}[:digit:]-_\.]+',)
+    array('id' => '[\p{L}[:digit:]\-_\.]+',)
 );
 $maps[] = array(
     'CategoriesList',

@@ -14,16 +14,16 @@ $maps[] = array('Categories', 'links/groups');
 $maps[] = array(
     'Category',
     'links/groups/{id}',
-    array('id' =>  '[\p{L}[:digit:]-_\.]+',)
+    array('id' =>  '[\p{L}[:digit:]\-_\.]+',)
 );
 $maps[] = array(
     'Link', 
     'links/{id}',
-    array('id' => '[\p{L}[:digit:]-_\.]+',)
+    array('id' => '[\p{L}[:digit:]\-_\.]+',)
 );
 $maps[] = array(
     'RSS',
     'links/{id}/rss',
-    array('id' => '[\p{L}[:digit:]-_\.]+',),
+    array('id' => '[\p{L}[:digit:]\-_\.]+',),
     'xml'
 );

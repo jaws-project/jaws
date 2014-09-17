@@ -18,7 +18,7 @@ $maps[] = array(
     'UserAddress',
     'addressbook[/{uid}][/page/{page}]',
     array(
-        'uid'  => '[\p{L}[:digit:]-_\.]+',
+        'uid'  => '[\p{L}[:digit:]\-_\.]+',
         'page' => '[[:digit:]]+',
     )
 );

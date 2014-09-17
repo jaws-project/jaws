@@ -12,5 +12,5 @@ $maps[] = array('AllRegionsWeather', 'weather');
 $maps[] = array(
     'RegionWeather',
     'weather/{id}',
-    array('id' =>  '[\p{L}[:digit:]-_\.]+',)
+    array('id' =>  '[\p{L}[:digit:]\-_\.]+',)
 );

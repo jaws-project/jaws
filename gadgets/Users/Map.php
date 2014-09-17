@@ -32,5 +32,5 @@ $maps[] = array('ReplaceUserEmail', 'users/replace_email[/{key}]');
 $maps[] = array(
     'Profile',
     'users/{user}',
-    array('user' => '[[:alnum:]-_.@]+')
+    array('user' => '[[:alnum:]\-_.@]+')
 );

@@ -26,12 +26,12 @@ $maps[] = array(
 $maps[] = array(
     'FileInfo',
     'file/info/{id}',
-    array('id' =>  '[\p{L}[:digit:]-_\.]+',),
+    array('id' =>  '[\p{L}[:digit:]\-_\.]+',),
     '',
 );
 $maps[] = array(
     'Download',
     'download/{id}',
-    array('id' =>  '[\p{L}[:digit:]-_\.]+',),
+    array('id' =>  '[\p{L}[:digit:]\-_\.]+',),
     '',
 );
