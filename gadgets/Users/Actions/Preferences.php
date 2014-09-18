@@ -67,6 +67,9 @@ class Users_Actions_Preferences extends Jaws_Gadget_Action
             $tpl->SetVariable('component', $gadget);
             $tpl->SetVariable('lbl_component', $objGadget->title);
             foreach ($keys as $key_name => $key_value) {
+                if (!array_key_exists($key_name, $options)) {
+                    continue;
+                }
                 $tpl->SetBlock('preferences/gadget/key');
                 $tpl->SetVariable('gadget', $gadget);
                 $tpl->SetVariable('key_name', $key_name);
