@@ -82,6 +82,7 @@ var TmsCallback = {
     DeleteTheme: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('themes_combo').options[$('themes_combo').selectedIndex].remove();
+            cleanWorkingArea(true);
         }
         showResponse(response);
     },

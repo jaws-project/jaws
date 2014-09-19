@@ -52,12 +52,15 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
         $themesCombo =& Piwi::CreateWidget('ComboGroup', 'themes_combo');
         $themesCombo->SetID('themes_combo');
         $themesCombo->SetSize(24);
-        $themesCombo->addGroup('local', _t('LAYOUT_THEME_LOCAL'));
-        $themesCombo->addGroup('remote', _t('LAYOUT_THEME_REMOTE'));
+        $themesCombo->addGroup(0, _t('LAYOUT_THEME_LOCAL'));
+        $themesCombo->addGroup(1, _t('LAYOUT_THEME_REMOTE'));
         $themesCombo->AddEvent(ON_CHANGE, 'javascript: editTheme(this.value);');
-        $themes = Jaws_Utils::GetThemesList();
-        foreach ($themes as $theme => $tInfo) {
-            $themesCombo->AddOption($tInfo['local']? 'local' : 'remote', $tInfo['name'], $theme);
+        $themes = Jaws_Utils::GetThemesInfo();
+        foreach ($themes[0] as $theme => $tInfo) {
+            $themesCombo->AddOption(0, $tInfo['name'], "$theme,0");
+        }
+        foreach ($themes[1] as $theme => $tInfo) {
+            $themesCombo->AddOption(1, $tInfo['name'], "$theme,1");
         }
         $tpl->SetVariable('themes_combo', $themesCombo->Get());
 
@@ -107,15 +110,18 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
         $tpl->SetBlock('ThemeInfo');
         $tpl->SetVariable('theme_str', _t('TMS_THEME_INFO_NAME'));
 
-        $themes = Jaws_Utils::GetThemesList();
-        if (isset($themes[$theme])) {
-            $tInfo = $themes[$theme];
+        @list($theme, $locality) = explode(',', $theme);
+        $tInfo = Jaws_Utils::GetThemesInfo($locality, $theme);
+        if (!empty($tInfo)) {
             $tpl->SetVariable('theme_name', $tInfo['name']);
-            $tpl->SetVariable('download',
-                              ($tInfo['local'] ||
-                              (isset($tInfo['download']) && (bool)$tInfo['download']))? 'true' : 'false');
-            $defaultTheme = $GLOBALS['app']->Registry->fetch('theme', 'Settings');
-            $tpl->SetVariable('delete', ($tInfo['local'] && $theme != $defaultTheme) ? 'true' : 'false');
+            $tpl->SetVariable('download', (bool)$tInfo['download']? 'true' : 'false');
+            // get default theme
+            $defaultTheme = unserialize($GLOBALS['app']->Registry->fetch('theme', 'Settings'));
+
+            $tpl->SetVariable(
+                'delete',
+                ($locality == 0 && ($defaultTheme['locality']!=0 || $theme != $defaultTheme['name']))? 'true' : 'false'
+            );
 
             $tpl->SetVariable('theme_image', $tInfo['image']);
             $tpl->SetBlock('ThemeInfo/section');
@@ -141,7 +147,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
         } else {
             $tpl->SetVariable('downloadable', 'false');
             $tpl->SetBlock('ThemeInfo/error');
-            $tpl->SetVariable('msg', $tInfo->getMessage());
+            $tpl->SetVariable('msg', _t('TMS_ERROR_THEME_DOES_NOT_EXISTS'));
             $tpl->ParseBlock('ThemeInfo/error');
         }
 
@@ -178,24 +184,28 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
     function DownloadTheme()
     {
         $theme = jaws()->request->fetch('theme', 'get');
-        $themes = Jaws_Utils::GetThemesList();
-        if (isset($themes[$theme])) {
-            $locally = $themes[$theme]['local'];
-            if (!$locally) {
-                if (!isset($themes[$theme]['download']) || !(bool)$themes[$theme]['download']) {
-                    echo Jaws_HTTPError::Get(403);
-                    exit;
-                }
+        @list($theme, $locality) = explode(',', $theme);
+
+        $tInfo = Jaws_Utils::GetThemesInfo($locality, $theme);
+        if (!empty($tInfo)) {
+            if (!$tInfo['download']) {
+                return Jaws_HTTPError::Get(403);
             }
+
             $tmpDir = sys_get_temp_dir();
             $tmsModel = $this->gadget->model->loadAdmin('Themes');
-            $res = $tmsModel->packTheme($theme,
-                                        ($locally? JAWS_DATA : JAWS_BASE_DATA) . 'themes',
-                                        $tmpDir,
-                                        false);
+            $res = $tmsModel->packTheme(
+                $tInfo['name'],
+                ($locality == 0? JAWS_DATA : JAWS_BASE_DATA) . 'themes',
+                $tmpDir,
+                false
+            );
             if (!Jaws_Error::isError($res)) {
                 Jaws_Utils::Download($res, "$theme.zip");
+                return;
             }
+        } else {
+            return Jaws_HTTPError::Get(404);
         }
     }
 
@@ -209,12 +219,18 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
     function DeleteTheme($theme)
     {
         $this->gadget->CheckPermission('DeleteTheme');
-        $defaultTheme = $GLOBALS['app']->Registry->fetch('theme', 'Settings');
-        // Check is default theme?
-        if ($theme == $defaultTheme || empty($theme) || !file_exists(JAWS_THEMES . $theme)) {
-            return false;
+        @list($theme, $locality) = explode(',', $theme);
+
+        $tInfo = Jaws_Utils::GetThemesInfo($locality, $theme);
+        if (!empty($tInfo) && $locality == 0) {
+            // get default theme
+            $defaultTheme = unserialize($GLOBALS['app']->Registry->fetch('theme', 'Settings'));
+            // Check is default theme?
+            if (($defaultTheme['locality'] != 0) || ($theme != $defaultTheme['name'])) {
+                return Jaws_Utils::delete(JAWS_THEMES . $theme);
+            }
         }
 
-        return Jaws_Utils::delete(JAWS_THEMES . $theme);
+        return false;
     }
 }
