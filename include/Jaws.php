@@ -61,7 +61,7 @@ class Jaws
      * @access  private
      */
     var $_Preferences = array(
-        'theme'    => 'jaws',
+        'theme'    => array('name' => 'jaws', 'locality' => 0),
         'language' => 'en',
         'editor'   => null,
         'timezone' => null,
