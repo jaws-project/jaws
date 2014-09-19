@@ -28,15 +28,22 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         }
 
         // theme
-        $default_theme = $this->gadget->registry->fetchByUser('theme', 'Settings', $user);
-        if (empty($rqst['theme']) || $rqst['theme'] == $default_theme) {
-            $theme = $default_theme;
+        @list($rqst['theme'], $rqst['locality']) = explode(',', $rqst['theme']);
+        $default_theme = unserialize($this->gadget->registry->fetchByUser('theme', 'Settings', $user));
+
+        if (empty($rqst['theme']) ||
+            ($rqst['locality'] == $default_theme['locality'] && $rqst['theme'] == $default_theme['name'])
+        ) {
+            $theme = $default_theme['name'];
+            $theme_locality = $default_theme['locality'];
         } else {
             $this->gadget->CheckPermission('ManageThemes');
-            $this->UpdateTheme($rqst['theme'], $user);
-            $theme = $this->gadget->registry->fetchByUser('theme', 'Settings', $user);
+            $this->UpdateTheme($rqst['theme'], $rqst['locality'], $user);
+            $default_theme = unserialize($this->gadget->registry->fetchByUser('theme', 'Settings', $user));
+            $theme = $default_theme['name'];
+            $theme_locality = $default_theme['locality'];
         }
-        $GLOBALS['app']->SetTheme($theme);
+        $GLOBALS['app']->SetTheme($theme, $theme_locality);
 
         // index_layout
         $index_layout = (bool)$rqst['index_layout'];
@@ -87,7 +94,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $layoutContent = $fakeLayout->_Template->Blocks['layout']->Content;
         $layoutContent = preg_replace(
             '$<body([^>]*)>$i',
-            '<body\1>' . $working_box . $msg_box . $this->LayoutBar($theme, $user, $index_layout),
+            '<body\1>' . $working_box . $msg_box . $this->LayoutBar($theme, $theme_locality, $user, $index_layout),
             $layoutContent);
         $layoutContent = preg_replace('$</body([^>]*)>$i', $dragdrop . '</body\1>', $layoutContent);
         $fakeLayout->_Template->Blocks['layout']->Content = $layoutContent;
@@ -202,7 +209,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      * Layout controls bar 
      *
      */
-    function LayoutBar($default_theme, $user = 0, $index_layout = false)
+    function LayoutBar($theme_name, $theme_locality, $user = 0, $index_layout = false)
     {
         $tpl = $this->gadget->template->load('LayoutControls.html');
         $tpl->SetBlock('controls');
@@ -240,13 +247,16 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_theme', _t('LAYOUT_THEME'));
         $themeCombo =& Piwi::CreateWidget('ComboGroup', 'theme');
         $themeCombo->setID('theme');
-        $themeCombo->addGroup('local', _t('LAYOUT_THEME_LOCAL'));
-        $themeCombo->addGroup('remote', _t('LAYOUT_THEME_REMOTE'));
-        $themes = Jaws_Utils::GetThemesList();
-        foreach ($themes as $theme => $tInfo) {
-            $themeCombo->AddOption($tInfo['local']? 'local' : 'remote', $tInfo['name'], $theme);
+        $themeCombo->addGroup(0, _t('LAYOUT_THEME_LOCAL'));
+        $themeCombo->addGroup(1, _t('LAYOUT_THEME_REMOTE'));
+        $themes = Jaws_Utils::GetThemesInfo();
+        foreach ($themes[0] as $theme => $tInfo) {
+            $themeCombo->AddOption(0, $tInfo['name'], "$theme,0");
         }
-        $themeCombo->SetDefault($default_theme);
+        foreach ($themes[1] as $theme => $tInfo) {
+            $themeCombo->AddOption(1, $tInfo['name'], "$theme,1");
+        }
+        $themeCombo->SetDefault("$theme_name,$theme_locality");
         $themeCombo->AddEvent(ON_CHANGE, "layoutControlsSubmit(this);");
         $themeCombo->SetEnabled($this->gadget->GetPermission('ManageThemes'));
         $tpl->SetVariable('theme_combo', $themeCombo->Get());
@@ -256,7 +266,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $layouts =& Piwi::CreateWidget('Combo', 'index_layout');
         $layouts->setID('index_layout');
         $layouts->AddOption(_t('LAYOUT_LAYOUT_DEFAULT'), 0);
-        if (isset($themes[$default_theme]) && $themes[$default_theme]['index']) {
+        if (isset($themes[$theme_locality][$theme_name]) && $themes[$theme_locality][$theme_name]['index']) {
             $layouts->AddOption(_t('LAYOUT_LAYOUT_INDEX'), 1);
         }
         $layouts->SetDefault((int)$index_layout);
@@ -286,13 +296,10 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      *
      *
      */
-    function UpdateTheme($theme, $user)
+    function UpdateTheme($theme, $theme_locality, $user)
     {
         $theme = preg_replace('/[^[:alnum:]_\-]/', '', $theme);
-        $layout_path = JAWS_THEMES. $theme;
-        if (!file_exists($layout_path. '/layout.html')) {
-            $layout_path = JAWS_BASE_THEMES. $theme;
-        }
+        $layout_path = ($theme_locality == 0? JAWS_THEMES : JAWS_BASE_THEMES). $theme;
         $tpl = $this->gadget->template->load("$layout_path/layout.html");
 
         // Validate theme
@@ -337,7 +344,12 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         }
         
 
-        $this->gadget->registry->updateByUser('theme', $theme, 'Settings', $user);
+        $this->gadget->registry->updateByUser(
+            'theme',
+            serialize(array('name' => $theme, 'locality' => $theme_locality)),
+            'Settings',
+            $user
+        );
         $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_THEME_CHANGED'), RESPONSE_NOTICE);
     }
 
