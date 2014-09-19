@@ -801,10 +801,11 @@ class Jaws_Utils
      * Get a list of the available themes
      *
      * @access  public
-     * @param   bool    $include_base_themes    Include themes existing in base theme directory
-     * @return  array   A list of themes(filenames)
+     * @param   int     $locality   Theme locality(0: native theme, 1: unnative theme)
+     * @param   string  $theme      Theme name
+     * @return  array   An array of themes information
      */
-    static function GetThemesList($include_base_themes = true)
+    static function GetThemesInfo($locality = null, $theme = null)
     {
         if (!function_exists('is_vaild_theme')) {
             /**
@@ -812,94 +813,82 @@ class Jaws_Utils
              */
             function is_vaild_theme(&$item, $key, $path)
             {
-                if ($item{0} == '.' ||
-                    !is_dir($path . $item) ||
-                    !file_exists($path . $item . DIRECTORY_SEPARATOR. 'layout.html'))
-                {
+                if (!file_exists($path . $item . DIRECTORY_SEPARATOR. 'layout.html')) {
                     $item = '';
                 }
                 return true;
             }
         }
 
-        static $pThemes;
-        if (!isset($pThemes)) {
-            $pThemes = scandir(JAWS_THEMES);
-            array_walk($pThemes, 'is_vaild_theme', JAWS_THEMES);
-            $pThemes = array_filter($pThemes);
-            sort($pThemes);
-            $pThemes = array_flip($pThemes);
-            foreach($pThemes as $theme => $key) {
-                $pThemes[$theme] = array(
-                    'index' => @is_file(JAWS_THEMES. $theme. '/index.html'),
-                    'name'  => $theme,
-                    'title' => $theme,
+        static $themes;
+        if (!isset($themes)) {
+            $themes = array(0 => array(), 1 => array());
+            $lThemes = array_map('basename', glob(JAWS_THEMES. '*', GLOB_ONLYDIR));
+            array_walk($lThemes, 'is_vaild_theme', JAWS_THEMES);
+            $lThemes = array_flip(array_filter($lThemes));
+            foreach($lThemes as $tname => $key) {
+                $themes[0][$tname] = array(
+                    'index' => @is_file(JAWS_THEMES. $tname. '/index.html'),
+                    'name'  => $tname,
+                    'title' => $tname,
                     'desc'  => '',
                     'image' => '',
-                    'local' => true,
                     'version' => '0.1',
                     'license' => '',
                     'authors' => array(),
                     'deps'      => '',
                     'copyright' => '',
+                    'download'  => 1,
                 );
-                if (file_exists(JAWS_THEMES. $theme. '/example.png')) {
-                    $pThemes[$theme]['image'] = $GLOBALS['app']->getThemeURL("$theme/example.png");
+                if (file_exists(JAWS_THEMES. $tname. '/example.png')) {
+                    $themes[0][$tname]['image'] = $GLOBALS['app']->getThemeURL("$tname/example.png");
                 }
 
-                $iniFile = JAWS_THEMES. $theme. '/Info.ini';
+                $iniFile = JAWS_THEMES. $tname. '/Info.ini';
                 if (file_exists($iniFile)) {
                     $tInfo = @parse_ini_file($iniFile, true);
                     if (!empty($tInfo) && array_key_exists('info', $tInfo)) {
-                        $pThemes[$theme] = array_merge($pThemes[$theme], $tInfo['info']);
+                        $themes[0][$tname] = array_merge($themes[0][$tname], $tInfo['info']);
                     }
                 }
             }
-        }
+            unset($lThemes);
 
-        if ($include_base_themes) {
-            static $themes;
-            if (!isset($themes)) {
-                $themes = array();
-                if (JAWS_THEMES != JAWS_BASE_THEMES) {
-                    $themes = scandir(JAWS_BASE_THEMES);
-                    array_walk($themes, 'is_vaild_theme', JAWS_BASE_THEMES);
-                    $themes = array_filter($themes);
-                    sort($themes);
-                    $themes = array_flip($themes);
-                    foreach($themes as $theme => $key) {
-                        $themes[$theme] = array(
-                            'index' => @is_file(JAWS_BASE_THEMES. $theme. '/index.html'),
-                            'name'  => $theme,
-                            'title' => $theme,
-                            'desc'  => '',
-                            'image' => '',
-                            'local' => false,
-                            'version' => '0.1',
-                            'license' => '',
-                            'authors' => array(),
-                            'deps'      => '',
-                            'copyright' => '',
-                        );
-                        if (file_exists(JAWS_BASE_THEMES. $theme. '/example.png')) {
-                            $themes[$theme]['image'] = $GLOBALS['app']->getThemeURL("$theme/example.png", true, true);
-                        }
-                        $iniFile = JAWS_BASE_THEMES. $theme. '/Info.ini';
-                        if (file_exists($iniFile)) {
-                            $tInfo = @parse_ini_file($iniFile, true);
-                            if (!empty($tInfo) && array_key_exists('info', $tInfo)) {
-                                $themes[$theme] = array_merge($themes[$theme], $tInfo['info']);
-                            }
+            if (JAWS_THEMES != JAWS_BASE_THEMES) {
+                $rThemes = array_map('basename', glob(JAWS_BASE_THEMES. '*', GLOB_ONLYDIR));
+                array_walk($rThemes, 'is_vaild_theme', JAWS_BASE_THEMES);
+                $rThemes = array_flip(array_filter($rThemes));
+                foreach($rThemes as $tname => $key) {
+                    $themes[1][$tname] = array(
+                        'index' => @is_file(JAWS_BASE_THEMES. $tname. '/index.html'),
+                        'name'  => $tname,
+                        'title' => $tname,
+                        'desc'  => '',
+                        'image' => '',
+                        'version' => '0.1',
+                        'license' => '',
+                        'authors' => array(),
+                        'deps'      => '',
+                        'copyright' => '',
+                        'download'  => 0,
+                    );
+                    if (file_exists(JAWS_BASE_THEMES. $tname. '/example.png')) {
+                        $themes[1][$tname]['image'] = $GLOBALS['app']->getThemeURL("$tname/example.png");
+                    }
+
+                    $iniFile = JAWS_BASE_THEMES. $tname. '/Info.ini';
+                    if (file_exists($iniFile)) {
+                        $tInfo = @parse_ini_file($iniFile, true);
+                        if (!empty($tInfo) && array_key_exists('info', $tInfo)) {
+                            $themes[1][$tname] = array_merge($themes[1][$tname], $tInfo['info']);
                         }
                     }
                 }
-                $themes = array_merge($pThemes, $themes);
+                unset($rThemes);
             }
-
-            return $themes;
         }
 
-        return $pThemes;
+        return is_null($locality)? $themes : (is_null($theme)? $themes[$locality] : @$themes[$locality][$theme]);
     }
 
     /**
