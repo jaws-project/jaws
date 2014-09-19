@@ -243,6 +243,26 @@ class Settings_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.2.0', '<')) {
+            $tblReg = Jaws_ORM::getInstance()->table('registry');
+            $result = $tblReg->select('id', 'key_value')
+                ->where('component', 'Settings')
+                ->and()
+                ->where('key_name', 'theme')
+                ->fetchAll();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            foreach ($result as $rec) {
+                $result = $tblReg->update(
+                    array('key_value' => serialize(array('name' => $rec['key_value'], 'locality' => 0)))
+                )->where('id', (int)$rec['id'])
+                ->exec();
+                if (Jaws_Error::IsError($result)) {
+                    return $result;
+                }
+            }
+
             $this->gadget->registry->insert('theme_variables', '', true);
         }
 
