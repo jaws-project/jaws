@@ -73,7 +73,10 @@ class Jaws
      * @var     string
      * @access  protected
      */
-    var $_Theme = 'jaws';
+    var $theme = array(
+        'name' => 'jaws',
+        'locality' => 0,
+    );
 
     /**
      * The language the application is running in.
@@ -192,7 +195,7 @@ class Jaws
             $user   = $this->Session->GetAttribute('user');
             $layout = $this->Session->GetAttribute('layout');
             $this->_Preferences = array(
-                'theme'    => $this->Registry->fetchByUser($layout, 'theme',    'Settings'),
+                'theme'    => unserialize($this->Registry->fetchByUser($layout, 'theme',    'Settings')),
                 'editor'   => $this->Registry->fetchByUser($user,   'editor',   'Settings'),
                 'timezone' => $this->Registry->fetchByUser($user,   'timezone', 'Settings'),
                 'calendar' => $this->Registry->fetchByUser($layout, 'calendar', 'Settings'),
@@ -209,7 +212,8 @@ class Jaws
         $this->_Preferences = array_merge($this->_Preferences, $preferences);
 
         // filter non validate character
-        $this->_Theme    = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Preferences['theme']);
+        $this->theme['name']     = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Preferences['theme']['name']);
+        $this->theme['locality'] = (int)$this->_Preferences['theme']['locality'];
         $this->_Language = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Preferences['language']);
         $this->_Editor   = preg_replace('/[^[:alnum:]_\-]/', '', $this->_Preferences['editor']);
         $this->_Timezone = $this->_Preferences['timezone'];
@@ -264,21 +268,25 @@ class Jaws
     function GetTheme($rel_url = true)
     {
         static $theme;
-        if (!isset($theme) || ($theme['name'] != $this->_Theme)) {
+        if (!isset($theme) ||
+            $theme['locality'] != $this->theme['locality'] ||
+            $theme['name'] != $this->theme['name']
+        ) {
             // Check if valid theme name
-            if (!preg_match('/^[[:alnum:]_\.-]+$/', $this->_Theme)) {
+            if (!preg_match('/^[[:alnum:]_\.-]+$/', $this->theme['name'])) {
                 return Jaws_Error::raiseError(_t('GLOBAL_ERROR_INVALID_NAME', 'Theme'));
             }
 
             $theme = array();
-            $theme['name'] = $this->_Theme;
-            $theme['path'] = JAWS_THEMES. $this->_Theme . '/';
+            $theme['name'] = $this->theme['name'];
+            $theme['locality'] = $this->theme['locality'];
+            $theme['path'] = JAWS_THEMES. $this->theme['name'] . '/';
             if (!is_file($theme['path']. 'layout.html')) {
-                $theme['url']    = $this->getThemeURL($this->_Theme . '/', $rel_url, true);
-                $theme['path']   = JAWS_BASE_THEMES. $this->_Theme . '/';
+                $theme['url']    = $this->getThemeURL($this->theme['name'] . '/', $rel_url, true);
+                $theme['path']   = JAWS_BASE_THEMES. $this->theme['name'] . '/';
                 $theme['exists'] = @is_file($theme['path']. 'layout.html');
             } else {
-                $theme['url']    = $this->getThemeURL($this->_Theme . '/', $rel_url);
+                $theme['url']    = $this->getThemeURL($this->theme['name'] . '/', $rel_url);
                 $theme['exists'] = true;
             }
             $theme['index']  = @is_file($theme['path']. 'index.html');
@@ -291,12 +299,13 @@ class Jaws
      * Set default theme
      *
      * @access  public
-     * @param   string  $theme  Theme name
+     * @param   string  $theme      Theme name
+     * @param   int     $locality   Theme locality(0,1)
      * @return  void
      */
-    function SetTheme($theme)
+    function SetTheme($theme, $locality = 0)
     {
-        $this->_Theme = $theme;
+        $this->theme = array('name' => $theme, 'locality' => (int)$locality);
     }
 
     /**
