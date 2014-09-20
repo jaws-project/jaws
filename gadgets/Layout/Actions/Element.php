@@ -167,7 +167,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
                                 $element =& Piwi::CreateWidget('Entry', $param_name, $param['value']);
                                 $element->SetID($param_name);
                                 $element->SetStyle('width:120px;');
-                                if ($action_selected) {
+                                if ($action_selected && isset($action_params[$pIndex])) {
                                     $element->SetValue($action_params[$pIndex]);
                                 }
                                 break;
@@ -175,7 +175,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
                             case 'boolean':
                                 $element =& Piwi::CreateWidget('CheckButtons', $param_name);
                                 $element->AddOption('', 1, $param_name);
-                                if ($action_selected && $action_params[$pIndex]) {
+                                if ($action_selected && isset($action_params[$pIndex]) && $action_params[$pIndex]) {
                                     $element->setDefault($action_params[$pIndex]);
                                 }
                                 break;
@@ -186,7 +186,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
                                 foreach ($param['value'] as $value => $title) {
                                     $element->AddOption($title, $value);
                                 }
-                                if ($action_selected) {
+                                if ($action_selected && isset($action_params[$pIndex])) {
                                     $element->SetDefault($action_params[$pIndex]);
                                 }
                         }
