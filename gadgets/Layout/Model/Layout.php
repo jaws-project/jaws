@@ -43,6 +43,7 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
                     'action_filename' => '',
                     'display_when'    => '*',
                     'section'         => 'main',
+                    'layout_position' => 0,
                 )
             );
         }
