@@ -32,6 +32,11 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
                 'title' => _t('FORUMS_GROUPS'),
                 'value' => $pgroups
             );
+
+            $result[] = array(
+                'title' => _t('GLOBAL_COUNT'),
+                'value' => 5
+            );
         }
 
         return $result;
@@ -44,7 +49,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
      * @param   mixed   $gid Group ID
      * @return  string  XHTML content
      */
-    function RecentTopics($gid = '')
+    function RecentTopics($gid = '', $recent_limit = 5)
     {
         $gModel = $this->gadget->model->load('Groups');
         $group = $gModel->GetGroup($gid);
@@ -53,10 +58,6 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
             $group['id']    = 0;
             $group['title'] = _t('FORUMS_GROUPS_ALL');
         }
-
-        // recent posts limit
-        $recent_limit = $this->gadget->registry->fetch('recent_limit');
-        $recent_limit = empty($recent_limit)? 5 : (int)$recent_limit;
 
         $tpl = $this->gadget->template->load('RecentTopics.html');
         $tModel = $this->gadget->model->load('Topics');

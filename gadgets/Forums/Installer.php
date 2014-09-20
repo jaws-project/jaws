@@ -19,7 +19,6 @@ class Forums_Installer extends Jaws_Gadget_Installer
     var $_RegKeys = array(
         array('topics_limit', '15'),
         array('posts_limit',  '10'),
-        array('recent_limit',  '5'),
         array('date_format', 'd MN Y G:i'),
         array('edit_min_limit_time', '300'),
         array('edit_max_limit_time', '900'),
@@ -186,6 +185,10 @@ class Forums_Installer extends Jaws_Gadget_Installer
             foreach ($forums as $forum) {
                 $this->gadget->acl->insert('ForumMember', $forum['id'], false);
             }
+        }
+
+        if (version_compare($old, '1.3.0', '<')) {
+            $this->gadget->registry->delete('recent_limit');
         }
 
         return true;
