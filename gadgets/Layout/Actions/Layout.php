@@ -85,7 +85,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $GLOBALS['app']->InstanceLayout();
 
         $fakeLayout = new Jaws_Layout();
-        $fakeLayout->Load();
+        $fakeLayout->Load('', $index_layout? 'index.html' : 'layout.html');
         $fakeLayout->AddScriptLink('libraries/mootools/core.js');
         $fakeLayout->AddScriptLink('libraries/mootools/more.js');
         $fakeLayout->AddScriptLink('include/Jaws/Resources/Ajax.js');
