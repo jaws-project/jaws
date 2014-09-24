@@ -153,17 +153,19 @@ class Jaws_URLMapping
             $this->_request_uri = $request_uri;
         }
 
-        //Moment.. first check if we are running on aliases_mode
-        if ($this->_use_aliases && $realURI = $this->_AliasesModel->GetAliasPath($this->_request_uri)) {
-            $this->_request_uri = str_ireplace(BASE_SCRIPT, '', $realURI);
-        }
-
+        // fetch apptype
         $params = explode('/', $this->_request_uri);
         if (false !== $apptype_key = array_search('apptype', $params)) {
             jaws()->request->update('apptype', $params[$apptype_key + 1], 'get');
             unset($params[$apptype_key], $params[$apptype_key+1]);
         }
+        // decode url parts
         $this->_request_uri = implode('/', array_map('rawurldecode', $params));
+
+        //Moment.. first check if we are running on aliases_mode
+        if ($this->_use_aliases && $realURI = $this->_AliasesModel->GetAliasPath($this->_request_uri)) {
+            $this->_request_uri = str_ireplace(BASE_SCRIPT, '', $realURI);
+        }
 
         // load maps
         if ($this->_enabled) {
