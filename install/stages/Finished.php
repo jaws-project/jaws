@@ -29,6 +29,10 @@ class Installer_Finished extends JawsInstallerStage
         $tpl->SetVariable('move_log',    _t('INSTALL_FINISH_MOVE_LOG'));
 
         $tpl->ParseBlock('Finished');
+
+        // Kill the session
+        session_destroy();
+
         return $tpl->Get();
     }
 }
