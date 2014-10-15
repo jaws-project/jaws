@@ -31,13 +31,16 @@ class Installer_Customize extends JawsInstallerStage
         $tpl->SetBlock('Customize');
 
         $tpl->SetVariable('customize_info', _t('INSTALL_CUSTOMIZE_INFO'));
-        $tpl->SetVariable('jaws_data',        JAWS_DATA);
-        $tpl->SetVariable('jaws_base_data',   JAWS_BASE_DATA);
-        $tpl->SetVariable('jaws_themes',      JAWS_THEMES);
-        $tpl->SetVariable('jaws_base_themes', JAWS_BASE_THEMES);
-        $tpl->SetVariable('jaws_cache',       JAWS_CACHE);
-        $tpl->SetVariable('next', _t('GLOBAL_NEXT'));
 
+        $paths = array('jaws_data', 'jaws_base_data', 'jaws_themes', 'jaws_base_themes', 'jaws_cache');
+        foreach ($paths as $path) {
+            $upper_path = strtoupper($path);
+            $tpl->SetVariable($path, constant($upper_path));
+            $tpl->SetVariable("checked_$path", isset($_SESSION[$upper_path])? 'checked="checked"' : '');
+            $tpl->SetVariable("disabled_$path", isset($_SESSION[$upper_path])? '' : 'disabled="disabled"');
+        }
+
+        $tpl->SetVariable('next', _t('GLOBAL_NEXT'));
         $tpl->ParseBlock('Customize');
         return $tpl->Get();
     }
@@ -59,6 +62,8 @@ class Installer_Customize extends JawsInstallerStage
         foreach ($paths as $path) {
             if (isset($postedData[$path])) {
                 $_SESSION[strtoupper($path)] = $postedData[$path];
+            } else {
+                unset($_SESSION[strtoupper($path)]);
             }
         }
 

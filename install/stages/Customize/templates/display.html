@@ -11,38 +11,46 @@
         <td><label for="jaws_data">JAWS_DATA:</label></td>
         <td>
           <input type="hidden" name="default_jaws_data" id="default_jaws_data" value="{{jaws_data}}" />
-          <input type="checkbox" name="chk_jaws_data" id="chk_jaws_data" onchange="toggleEnabled(this);" value="true"/>
-          <input type="text" name="jaws_data" id="jaws_data" value="{{jaws_data}}" disabled="disabled"
-            size="32" onchange="jawsDataChange();" style="direction: ltr;" />
+          <input type="checkbox" name="chk_jaws_data" id="chk_jaws_data" onchange="toggleEnabled(this);"
+            {{checked_jaws_data}} value="true"/>
+          <input type="text" name="jaws_data" id="jaws_data" value="{{jaws_data}}"
+            {{disabled_jaws_data}} size="32" onchange="jawsDataChange();" style="direction: ltr;" />
         </td>
       </tr>
       <tr>
         <td><label for="jaws_base_data">JAWS_BASE_DATA:</label></td>
         <td>
-          <input type="checkbox" name="chk_jaws_base_data" id="chk_jaws_base_data" onchange="toggleEnabled(this);" value="true"/>
-          <input type="text" name="jaws_base_data" id="jaws_base_data" value="{{jaws_base_data}}" disabled="disabled"
-            size="32" onchange="jawsBaseDataChange();" style="direction: ltr;" />
+          <input type="checkbox" name="chk_jaws_base_data" id="chk_jaws_base_data" onchange="toggleEnabled(this);"
+            {{checked_jaws_base_data}} value="true"/>
+          <input type="text" name="jaws_base_data" id="jaws_base_data" value="{{jaws_base_data}}"
+            {{disabled_jaws_base_data}} size="32" onchange="jawsBaseDataChange();" style="direction: ltr;" />
         </td>
       </tr>
       <tr>
         <td><label for="jaws_themes">JAWS_THEMES:</label></td>
         <td>
-          <input type="checkbox" name="chk_jaws_themes" id="chk_jaws_themes" onchange="toggleEnabled(this);" value="true"/>
-          <input type="text" name="jaws_themes" id="jaws_themes" value="{{jaws_themes}}" disabled="disabled" size="32" style="direction: ltr;" />
+          <input type="checkbox" name="chk_jaws_themes" id="chk_jaws_themes" onchange="toggleEnabled(this);"
+            {{checked_jaws_themes}} value="true"/>
+          <input type="text" name="jaws_themes" id="jaws_themes" value="{{jaws_themes}}" {{disabled_jaws_themes}}
+            size="32" style="direction: ltr;" />
         </td>
       </tr>
       <tr>
         <td><label for="jaws_base_themes">JAWS_BASE_THEMES:</label></td>
         <td>
-          <input type="checkbox" name="chk_jaws_base_themes" id="chk_jaws_base_themes" onchange="toggleEnabled(this);" value="true"/>
-          <input type="text" name="jaws_base_themes" id="jaws_base_themes" value="{{jaws_base_themes}}" disabled="disabled" size="32" style="direction: ltr;" />
+          <input type="checkbox" name="chk_jaws_base_themes" id="chk_jaws_base_themes" onchange="toggleEnabled(this);"
+            {{checked_jaws_base_themes}} value="true"/>
+          <input type="text" name="jaws_base_themes" id="jaws_base_themes" value="{{jaws_base_themes}}"
+            {{disabled_jaws_base_themes}} size="32" style="direction: ltr;" />
         </td>
       </tr>
       <tr>
         <td><label for="jaws_cache">JAWS_CACHE:</label></td>
         <td>
-          <input type="checkbox" name="chk_jaws_cache" id="chk_jaws_cache" onchange="toggleEnabled(this);" value="true"/>
-          <input type="text" name="jaws_cache" id="jaws_cache" value="{{jaws_cache}}" disabled="disabled" size="32" style="direction: ltr;" />
+          <input type="checkbox" name="chk_jaws_cache" id="chk_jaws_cache" onchange="toggleEnabled(this);"
+            {{checked_jaws_cache}} value="true"/>
+          <input type="text" name="jaws_cache" id="jaws_cache" value="{{jaws_cache}}" {{disabled_jaws_cache}}
+            size="32" style="direction: ltr;" />
         </td>
       </tr>
     </table> 

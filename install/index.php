@@ -44,12 +44,12 @@ set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');
 
 // this variables currently temporary until we complete multiple instance installing
 define(
-    'JAWS_BASE_DATA',
-    isset($_SESSION['JAWS_BASE_DATA'])? $_SESSION['JAWS_BASE_DATA'] : (JAWS_PATH . 'data'. DIRECTORY_SEPARATOR)
+    'JAWS_DATA',
+    isset($_SESSION['JAWS_DATA'])? $_SESSION['JAWS_DATA'] : (JAWS_PATH . 'data'. DIRECTORY_SEPARATOR)
 );
 define(
-    'JAWS_DATA',
-    isset($_SESSION['JAWS_DATA'])? $_SESSION['JAWS_DATA'] : JAWS_BASE_DATA
+    'JAWS_BASE_DATA',
+    isset($_SESSION['JAWS_BASE_DATA'])? $_SESSION['JAWS_BASE_DATA'] : JAWS_DATA
 );
 define(
     'JAWS_THEMES',
