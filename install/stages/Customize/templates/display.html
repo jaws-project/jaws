@@ -1,0 +1,97 @@
+<!-- BEGIN Customize -->
+<p>{{customize_info}}</p>
+<div>
+  <form id="customize_form" method="post" onsubmit="return false;">
+    <table>
+      <colgroup>
+        <col style="width:150px;"/>
+        <col style="width:350px;"/>
+      </colgroup>
+      <tr>
+        <td><label for="jaws_data">JAWS_DATA:</label></td>
+        <td>
+          <input type="hidden" name="default_jaws_data" id="default_jaws_data" value="{{jaws_data}}" />
+          <input type="checkbox" name="chk_jaws_data" id="chk_jaws_data" onchange="toggleEnabled(this);" value="true"/>
+          <input type="text" name="jaws_data" id="jaws_data" value="{{jaws_data}}" disabled="disabled"
+            size="32" onchange="jawsDataChange();" style="direction: ltr;" />
+        </td>
+      </tr>
+      <tr>
+        <td><label for="jaws_base_data">JAWS_BASE_DATA:</label></td>
+        <td>
+          <input type="checkbox" name="chk_jaws_base_data" id="chk_jaws_base_data" onchange="toggleEnabled(this);" value="true"/>
+          <input type="text" name="jaws_base_data" id="jaws_base_data" value="{{jaws_base_data}}" disabled="disabled"
+            size="32" onchange="jawsBaseDataChange();" style="direction: ltr;" />
+        </td>
+      </tr>
+      <tr>
+        <td><label for="jaws_themes">JAWS_THEMES:</label></td>
+        <td>
+          <input type="checkbox" name="chk_jaws_themes" id="chk_jaws_themes" onchange="toggleEnabled(this);" value="true"/>
+          <input type="text" name="jaws_themes" id="jaws_themes" value="{{jaws_themes}}" disabled="disabled" size="32" style="direction: ltr;" />
+        </td>
+      </tr>
+      <tr>
+        <td><label for="jaws_base_themes">JAWS_BASE_THEMES:</label></td>
+        <td>
+          <input type="checkbox" name="chk_jaws_base_themes" id="chk_jaws_base_themes" onchange="toggleEnabled(this);" value="true"/>
+          <input type="text" name="jaws_base_themes" id="jaws_base_themes" value="{{jaws_base_themes}}" disabled="disabled" size="32" style="direction: ltr;" />
+        </td>
+      </tr>
+      <tr>
+        <td><label for="jaws_cache">JAWS_CACHE:</label></td>
+        <td>
+          <input type="checkbox" name="chk_jaws_cache" id="chk_jaws_cache" onchange="toggleEnabled(this);" value="true"/>
+          <input type="text" name="jaws_cache" id="jaws_cache" value="{{jaws_cache}}" disabled="disabled" size="32" style="direction: ltr;" />
+        </td>
+      </tr>
+    </table> 
+
+    <input type="hidden" name="Customize_next" value="1" />
+    <div class="buttons"><input type="button" value="{{next}} &gt;" onclick="doSubmit();" /></div>
+  </form>
+  <script type="text/javascript">
+  function doSubmit(el) {
+    $('customize_form').submit()
+  }
+
+  function $(name) {
+    return document.getElementById(name);
+  }
+
+  function toggleEnabled(el) {
+    el.nextSibling.nextSibling.disabled = !el.nextSibling.nextSibling.disabled;
+    jawsDataChange();
+    jawsBaseDataChange();
+  }
+
+  function jawsDataChange() {
+    // jaws data
+    if (!$('chk_jaws_data').checked) {
+        $('jaws_data').value = $('default_jaws_data').value;
+        jawsBaseDataChange();
+    }
+    // jaws base data
+    if (!$('chk_jaws_base_data').checked) {
+        $('jaws_base_data').value = $('jaws_data').value;
+        jawsBaseDataChange();
+    }
+    // jaws themes
+    if (!$('chk_jaws_themes').checked) {
+        $('jaws_themes').value = $('jaws_data').value+ 'themes' + $('jaws_themes').value.slice(-1);
+    }
+    // jaws cache
+    if (!$('chk_jaws_cache').checked) {
+        $('jaws_cache').value = $('jaws_data').value+ 'cache' + $('jaws_cache').value.slice(-1);
+    }
+  }
+
+  function jawsBaseDataChange() {
+    if (!$('chk_jaws_base_themes').checked) {
+        $('jaws_base_themes').value = $('jaws_base_data').value+ 'themes' + $('jaws_base_data').value.slice(-1);
+    }
+  }
+
+  </script>
+</div>
+<!-- END Customize -->

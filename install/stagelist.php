@@ -24,6 +24,12 @@ $stages[] = array(
     'file'  => 'Authentication',
 );
 
+// Customize install directories
+$stages[] = array(
+    'name'  => _t('INSTALL_CUSTOMIZE'),
+    'file'  => 'Customize',
+);
+
 // Filesystem permission checks.
 $stages[] = array(
     'name'  => _t('INSTALL_REQUIREMENTS'),

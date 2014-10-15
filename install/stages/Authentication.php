@@ -34,14 +34,6 @@ class Installer_Authentication extends JawsInstallerStage
      */
     function Display()
     {
-        $request = Jaws_Request::getInstance();
-        $use_log = $request->fetch('use_log', 'post');
-        //Set main session-log vars
-        if (isset($use_log)) {
-            $_SESSION['use_log'] = $use_log === 'yes'? JAWS_LOG_DEBUG : false;
-        }
-        _log(JAWS_LOG_DEBUG,"Generating new installation key");
-
         $tpl = new Jaws_Template(false);
         $tpl->Load('display.html', 'stages/Authentication/templates');
         $tpl->SetBlock('Authentication');
@@ -53,6 +45,7 @@ class Installer_Authentication extends JawsInstallerStage
         $tpl->SetVariable('next',          _t('GLOBAL_NEXT'));
         $tpl->SetVariable('key', $_SESSION['install']['Authentication']['key']);
         $tpl->SetVariable('checked',  $_SESSION['secure']? 'checked="checked"' : '');
+        $tpl->SetVariable('custom_installation', _t('INSTALL_AUTH_CUSTOM_INSTALL'));
 
         $tpl->ParseBlock('Authentication');
         return $tpl->Get();
@@ -111,4 +104,23 @@ class Installer_Authentication extends JawsInstallerStage
         _log(JAWS_LOG_DEBUG,"Your key file was not found, please make sure you created it, and the web server is able to read it.");
         return new Jaws_Error(_t('INSTALL_AUTH_ERROR_KEY_FILE', 'key.txt'), 0, JAWS_ERROR_WARNING);
     }
+
+    /**
+     * Does any actions required to finish the stage
+     *
+     * @access  public
+     * @return  bool|Jaws_Error  Either true on success, or a Jaws_Error
+     *                          containing the reason for failure.
+     */
+    function Run()
+    {
+        $request = Jaws_Request::getInstance();
+        $customize = $request->fetch('customize', 'post');
+        if (empty($customize)) {
+            $_SESSION['install']['stage']++;
+        }
+
+        return true;
+    }
+
 }

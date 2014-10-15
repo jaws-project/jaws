@@ -42,12 +42,27 @@ define('PEAR_PATH', JAWS_PATH . 'libraries/pear/');
 // lets setup the include_path
 set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');
 
-// this variables currently temporary util we complete multible instance installing
-define('JAWS_BASE_DATA', JAWS_PATH . 'data'. DIRECTORY_SEPARATOR);
-define('JAWS_DATA', JAWS_BASE_DATA);
-define('JAWS_THEMES', JAWS_DATA. 'themes'. DIRECTORY_SEPARATOR);
-define('JAWS_BASE_THEMES', JAWS_THEMES);
-define('JAWS_CACHE', JAWS_DATA. 'cache'. DIRECTORY_SEPARATOR);
+// this variables currently temporary until we complete multiple instance installing
+define(
+    'JAWS_BASE_DATA',
+    isset($_SESSION['JAWS_BASE_DATA'])? $_SESSION['JAWS_BASE_DATA'] : (JAWS_PATH . 'data'. DIRECTORY_SEPARATOR)
+);
+define(
+    'JAWS_DATA',
+    isset($_SESSION['JAWS_DATA'])? $_SESSION['JAWS_DATA'] : JAWS_BASE_DATA
+);
+define(
+    'JAWS_THEMES',
+    isset($_SESSION['JAWS_THEMES'])? $_SESSION['JAWS_THEMES'] : (JAWS_DATA. 'themes'. DIRECTORY_SEPARATOR)
+);
+define(
+    'JAWS_BASE_THEMES',
+    isset($_SESSION['JAWS_BASE_THEMES'])? $_SESSION['JAWS_BASE_THEMES'] : JAWS_THEMES
+);
+define(
+    'JAWS_CACHE',
+    isset($_SESSION['JAWS_CACHE'])? $_SESSION['JAWS_CACHE'] : (JAWS_DATA. 'cache'. DIRECTORY_SEPARATOR)
+);
 define('INSTALL_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
 // Lets support older PHP versions so we can use spanking new functions
@@ -113,24 +128,32 @@ if (
     $auto_next_step = true;
 }
 
-$go_next_step = $request->fetch($stage['file'] . '_complete', 'post');
-// Only attempt to validate if the next button has been hit.
-if (isset($go_next_step) || isset($auto_next_step)) {
-    $result = $stageobj->validate();
-    if (!Jaws_Error::isError($result)) {
-        $result = $stageobj->run();
-
+$go_prev_step = $request->fetch($stage['file'] . '_prev', 'post');
+if (isset($go_prev_step)) {
+    // Go to back if the previous button has been hit
+    $_SESSION['install']['stage']--;
+    $stageobj = $installer->loadStage($stages[$_SESSION['install']['stage']]);
+    $GLOBALS['message'] = null;
+} else {
+    $go_next_step = $request->fetch($stage['file'] . '_next', 'post');
+    // Only attempt to validate if the next button has been hit
+    if (isset($go_next_step) || isset($auto_next_step)) {
+        $result = $stageobj->validate();
         if (!Jaws_Error::isError($result)) {
-            if ($_SESSION['install']['stage'] < $stages_count - 1) {
-                $_SESSION['install']['stage']++;
-                $stageobj = $installer->loadStage($stages[$_SESSION['install']['stage']]);
+            $result = $stageobj->run();
+
+            if (!Jaws_Error::isError($result)) {
+                if ($_SESSION['install']['stage'] < $stages_count - 1) {
+                    $_SESSION['install']['stage']++;
+                    header('Location: index.php');
+                }
+
+                $result = null;
             }
-
-            $result = null;
         }
-    }
 
-    $GLOBALS['message'] = $result;
+        $GLOBALS['message'] = $result;
+    }
 }
 
 // Mark the stage as having been run.
@@ -212,10 +235,4 @@ $layout->ParseBlock('layout/main');
 $layout->ParseBlock('layout');
 
 echo $layout->Get();
-
-// Check if we are on the last stage, Key + 1 because an array starts with 0 :-)
-if (($_SESSION['install']['stage'] + 1) == $stages_count) {
-    // Kill of the session cookie (path cookie in FF)
-    unset($_SESSION['install']);
-}
 exit;
