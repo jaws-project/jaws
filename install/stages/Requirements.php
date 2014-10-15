@@ -40,7 +40,16 @@ class Installer_Requirements extends JawsInstallerStage
         $tpl->setVariable('directive',    _t('INSTALL_REQ_DIRECTIVE'));
         $tpl->setVariable('actual',       _t('INSTALL_REQ_ACTUAL'));
         $tpl->setVariable('result',       _t('INSTALL_REQ_RESULT'));
+        $tpl->SetVariable('prev',         _t('GLOBAL_PREVIOUS'));
         $tpl->SetVariable('next',         _t('GLOBAL_NEXT'));
+        if ($this->_check_path(JAWS_DATA. 'logs', 'rw', '')) {
+            $tpl->SetVariable('log_use', _t('INSTALL_INTRO_LOG', JAWS_DATA.'logs/install.txt'));
+            $tpl->SetBlock('Requirements/logcheckbox');
+            $tpl->SetVariable('checked', !empty($_SESSION['use_log'])? 'checked="checked"' : '');
+            $tpl->ParseBlock('Requirements/logcheckbox');
+        } else {
+            $tpl->SetVariable('log_use', _t('INSTALL_INTRO_LOG_ERROR', 'data/logs'));
+        }
 
         $modules = get_loaded_extensions();
         $modules = array_map('strtolower', $modules);
@@ -79,10 +88,10 @@ class Installer_Requirements extends JawsInstallerStage
 
         // data directory
         $tpl->setBlock('Requirements/req_item');
-        $result = $this->_check_path('data', 'rw');
+        $result = $this->_check_path(JAWS_DATA, 'rw', '');
         $tpl->setVariable('item', _t('INSTALL_REQ_DIRECTORY', 'data'));
         $tpl->setVariable('item_requirement', _t('INSTALL_REQ_WRITABLE'));
-        $tpl->setVariable('item_actual', $this->_get_perms('data'));
+        $tpl->setVariable('item_actual', $this->_get_perms(JAWS_DATA, ''));
         if ($result) {
             _log(JAWS_LOG_DEBUG,"data directory has read and write permission privileges");
             $result_txt = '<span style="color: #0b0;">'._t('INSTALL_REQ_OK').'</span>';
@@ -206,6 +215,16 @@ class Installer_Requirements extends JawsInstallerStage
      */
     function Validate()
     {
+        $request = Jaws_Request::getInstance();
+        $use_log = $request->fetch('use_log', 'post');
+        //Set main session-log vars
+        if (isset($use_log)) {
+            $_SESSION['use_log'] = $use_log === 'yes'? JAWS_LOG_DEBUG : false;
+        } else {
+            unset($_SESSION['use_log']);
+        }
+        _log(JAWS_LOG_DEBUG,"Validating install requirements...");
+
         if (version_compare(PHP_VERSION, MIN_PHP_VERSION, '<') == 1) {
             $text = _t('INSTALL_REQ_RESPONSE_PHP_VERSION', MIN_PHP_VERSION);
             $type = JAWS_ERROR_ERROR;
@@ -218,7 +237,7 @@ class Installer_Requirements extends JawsInstallerStage
             $type = JAWS_ERROR_ERROR;
         }
 
-        if (!$this->_check_path('data', 'rw')) {
+        if (!$this->_check_path(JAWS_DATA, 'rw', '')) {
             if (isset($text)) {
                 $text = _t('INSTALL_REQ_RESPONSE_DIR_PERMISSION', _t('INSTALL_REQ_BAD'));
             } else {
@@ -264,11 +283,11 @@ class Installer_Requirements extends JawsInstallerStage
      * @param   string   $properties    Properties to use when checking the path
      * @return  boolean  If properties  match the given path(s) we return true, otherwise false
      */
-    function _check_path($paths, $properties)
+    function _check_path($paths, $properties, $basePath = JAWS_PATH)
     {
         $paths = !is_array($paths)? array($paths) : $paths;
         foreach ($paths as $path) {
-            $path = JAWS_PATH . $path;
+            $path = $basePath . $path;
             if ($properties == 'rw') {
                 if (!is_readable($path) || !Jaws_Utils::is_writable($path)) {
                     return false;
@@ -294,12 +313,12 @@ class Installer_Requirements extends JawsInstallerStage
      * @param   string  $paths         Path(s) to check
      * @return  string  permissions string
      */
-    function _get_perms($paths)
+    function _get_perms($paths, $basePath = JAWS_PATH)
     {
         $paths = !is_array($paths)? array($paths) : $paths;
         $paths_perms = array();
         foreach ($paths as $path) {
-            $path = JAWS_PATH . $path;
+            $path = $basePath . $path;
             $perms = @decoct(@fileperms($path) & 0777);
             if (strlen($perms) < 3) {
                 $paths_perms[] = '---------';

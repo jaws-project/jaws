@@ -31,7 +31,16 @@
 
 <div class="buttons">
     <form method="post">
-        <input type="submit" name="Requirements_complete" value="{{next}} &gt;" />
+      <table>
+        <tr>
+          <!-- BEGIN logcheckbox -->
+          <td><input type="checkbox" name="use_log" {{checked}} value="yes" /></td>
+          <!-- END logcheckbox -->
+          <td style="font-size: 10px; text-align: justify;">{{log_use}}</td>
+        </tr>
+      </table>
+      <input type="submit" name="Requirements_prev" value="&lt; {{prev}}" />
+      <input type="submit" name="Requirements_next" value="{{next}} &gt;" />
     </form>
 </div>
 <!-- END Requirements -->
