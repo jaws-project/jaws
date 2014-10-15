@@ -9,7 +9,10 @@
     <input type="checkbox" name="secure" id="secure" {{checked}} value="true"/>
     {{rsa_security}}
   </label>
-  <div class="buttons"><input type="submit" name="Authentication_complete" value="{{next}} &gt;" /></div>
+  <div class="buttons">
+    <label><input type="checkbox" name="customize" id="customize" value="true"/>{{custom_installation}}</label>
+    <input type="submit" name="Authentication_next" value="{{next}} &gt;" />
+  </div>
  </form>
 </div>
 <!-- END Authentication -->
