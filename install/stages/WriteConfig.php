@@ -23,6 +23,16 @@ class Installer_WriteConfig extends JawsInstallerStage
         $tpl->Load('JawsConfig.php', 'stages/WriteConfig/templates');
 
         $tpl->SetBlock('JawsConfig');
+        $tpl->SetVariable('jaws_data', isset($_SESSION['JAWS_DATA'])? $_SESSION['JAWS_DATA'] : JAWS_DATA);
+        $paths = array('jaws_base_data', 'jaws_themes', 'jaws_base_themes', 'jaws_cache');
+        foreach ($paths as $path) {
+            if (isset($_SESSION[strtoupper($path)])) {
+                $tpl->SetBlock("JawsConfig/$path");
+                $tpl->SetVariable($path, addslashes($_SESSION[strtoupper($path)]));
+                $tpl->ParseBlock("JawsConfig/$path");
+            }
+        }
+
         $tpl->SetVariable('db_driver',  $_SESSION['install']['Database']['driver']);
         $tpl->SetVariable('db_host',    $_SESSION['install']['Database']['host']);
         $tpl->setVariable('db_port',    $_SESSION['install']['Database']['port']);
