@@ -29,13 +29,6 @@ class Installer_Introduction extends JawsInstallerStage
         $tpl->SetVariable('mail_info',  _t('INSTALL_INTRO_MAIL'));
         $tpl->SetVariable('language',   _t('GLOBAL_LANGUAGE'));
         $tpl->SetVariable('next',       _t('GLOBAL_NEXT'));
-        if (is_writable(JAWS_PATH . 'data/logs') && is_dir(JAWS_PATH . 'data/logs')) {
-            $tpl->SetVariable('log_use', _t('INSTALL_INTRO_LOG', 'data/logs/install.txt'));
-            $tpl->SetBlock('Introduction/logcheckbox');
-            $tpl->ParseBlock('Introduction/logcheckbox');
-        } else {
-            $tpl->SetVariable('log_use', _t('INSTALL_INTRO_LOG_ERROR', 'data/logs'));
-        }
 
         $langs = Jaws_Utils::GetLanguagesList();
         $selected_lang = isset($_SESSION['install']['language'])? $_SESSION['install']['language'] : 'en';
