@@ -78,7 +78,7 @@ $GLOBALS['_PEAR_error_handler_stack']    = array();
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    Release: @package_version@
+ * @version    Release: 1.9.5
  * @link       http://pear.php.net/package/PEAR
  * @see        PEAR_Error
  * @since      Class available since PHP 4.0.2
@@ -403,7 +403,7 @@ class PEAR
     }
 
     /**
-     * This method deletes all occurrences of the specified element from
+     * This method deletes all occurences of the specified element from
      * the expected error codes stack.
      *
      * @param  mixed $error_code error code that should be deleted
@@ -487,12 +487,20 @@ class PEAR
             $error_class = $message->getType();
             $message->error_message_prefix = '';
             $message     = $message->getMessage();
+        }
 
-            // Make sure right data gets passed.
-            $r = new ReflectionClass($error_class);
-            $c = $r->getConstructor();
-            $p = array_shift($c->getParameters());
-            $skipmsg = ($p->getName() != 'message');
+        if (
+            isset($this) &&
+            isset($this->_expected_errors) &&
+            count($this->_expected_errors) > 0 &&
+            count($exp = end($this->_expected_errors))
+        ) {
+            if ($exp[0] == "*" ||
+                (is_int(reset($exp)) && in_array($code, $exp)) ||
+                (is_string(reset($exp)) && in_array($message, $exp))
+            ) {
+                $mode = PEAR_ERROR_RETURN;
+            }
         }
 
         // No mode given, try global ones
@@ -684,7 +692,7 @@ class PEAR
     }
 
     /**
-    * OS independant PHP extension load. Remember to take care
+    * OS independent PHP extension load. Remember to take care
     * on the correct extension name for case sensitive OSes.
     *
     * @param string $ext The extension name
@@ -783,7 +791,7 @@ function _PEAR_call_destructors()
  * @author     Gregory Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    Release: @package_version@
+ * @version    Release: 1.9.5
  * @link       http://pear.php.net/manual/en/core.pear.pear-error.php
  * @see        PEAR::raiseError(), PEAR::throwError()
  * @since      Class available since PHP 4.0.2
