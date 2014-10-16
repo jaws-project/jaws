@@ -29,8 +29,8 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
                 break;
 
             case 'monthly':
-                $model = $this->gadget->model->load('Posts');
-                $dates = $model->GetPostsDateLimitation(true);
+                $dpModel = $this->gadget->model->load('DatePosts');
+                $dates = $dpModel->GetPostsDateLimitation(true);
                 $date = Jaws_Date::getInstance();
                 $mDate = $date->Format($dates['max_date'], 'Y-m');
                 $mDate = explode('-', $mDate);
