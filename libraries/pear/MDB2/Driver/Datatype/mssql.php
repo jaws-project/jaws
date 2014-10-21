@@ -176,6 +176,18 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
             }
             return 'IMAGE';
         case 'integer':
+            if (!empty($field['length'])) {
+                $length = $field['length'];
+                if ($length <= 1) {
+                    return 'TINYINT';
+                } elseif ($length == 2) {
+                    return 'SMALLINT';
+                } elseif ($length <= 4) {
+                    return 'INT';
+                } elseif ($length > 4) {
+                    return 'BIGINT';
+                }
+            }
             return 'INT';
         case 'boolean':
             return 'BIT';
