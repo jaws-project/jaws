@@ -56,18 +56,18 @@ class Jaws_Session_Web extends Jaws_Session
      * Logout from session
      *
      * @access  public
+     * @param   bool    $prepare_new_session Preparing new session for incoming request
      * @return  void
      * @see Jaws_Session::Logout
      */
-    function Logout()
+    function Logout($prepare_new_session = true)
     {
-        parent::Logout();
-        $this->SetCookie(
-            JAWS_SESSION_NAME,
-            $this->_SessionID.'-'.$this->GetAttribute('salt'),
-            0,
-            true
-        );
+        parent::Logout($prepare_new_session);
+        if ($prepare_new_session) {
+            $this->SetCookie(JAWS_SESSION_NAME, $this->_SessionID.'-'.$this->GetAttribute('salt'), 0, true);
+        } else {
+            $this->DestroyCookie(JAWS_SESSION_NAME);
+        }
     }
 
     /**

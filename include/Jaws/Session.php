@@ -170,7 +170,7 @@ class Jaws_Session
                     // login event logging
                     $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Login', JAWS_WARNING));
                     // let everyone know a user has been logged
-                    $GLOBALS['app']->Listener->Shout('Session', 'LoginUser');
+                    $GLOBALS['app']->Listener->Shout('Session', 'LoginUser', $this->_Attributes);
                     return $result;
                 } else {
                     // login conflict event logging
@@ -208,13 +208,22 @@ class Jaws_Session
      * Logout from session and reset session values
      *
      * @access  public
+     * @param   bool    $prepare_new_session Preparing new session for incoming request
      * @return  void
      */
-    function Logout()
+    function Logout($prepare_new_session)
     {
+        // logout event logging
         $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Logout', JAWS_WARNING));
-        $this->Reset();
-        $this->update();
+        // let everyone know a user has been logout
+        $GLOBALS['app']->Listener->Shout('Session', 'LogoutUser', $this->_Attributes);
+        if ($prepare_new_session) {
+            $this->Reset($this->_SessionID);
+            $this->update();
+        } else {
+            $this->delete($this->_SessionID);
+            $this->Reset();
+        }
         $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session logout');
     }
 
@@ -379,9 +388,10 @@ class Jaws_Session
      * Reset current session
      *
      * @access  protected
+     * @param   int     $sid  Session ID
      * @return  bool    True if can reset it
      */
-    function Reset()
+    function Reset($sid = '')
     {
         $this->_Attribute = array();
         $this->SetAttribute('user',        0);
@@ -401,6 +411,7 @@ class Jaws_Session
         $this->SetAttribute('email',       '');
         $this->SetAttribute('url',         '');
         $this->SetAttribute('avatar',      '');
+        $this->_SessionID = $sid;
         return true;
     }
 
@@ -575,6 +586,10 @@ class Jaws_Session
      */
     function update()
     {
+        if (empty($this->_SessionID)) {
+            return true;
+        }
+
         // agent
         $agent = substr(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
         // ip
@@ -692,7 +707,7 @@ class Jaws_Session
      * @param   int|array   $sid  Session ID(s)
      * @return  bool    True if success, otherwise False
      */
-    function Delete($sid)
+    function delete($sid)
     {
         $result = true;
         if (!empty($sid)) {
