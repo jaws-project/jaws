@@ -14,9 +14,9 @@ class Blog_Actions_Posts extends Blog_Actions_Default
 {
     /**
      * Generates XHTML template
-     * 
+     *
      * @access  public
-     * @param   int     $cat    
+     * @param   int     $cat
      * @return  string  XHTML template content
      */
     function ViewPage($cat = null)
@@ -53,6 +53,8 @@ class Blog_Actions_Posts extends Blog_Actions_Default
             }
         }
         */
+
+        $this->setTitle(_t('BLOG_TITLE'));
 
         $tpl = $this->gadget->template->load('Posts.html');
         $tpl->SetBlock('view');
