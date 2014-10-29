@@ -23,7 +23,6 @@ class Sitemap_Model_Admin_Ping extends Jaws_Gadget_Model
         $searchEngines = array(
             'google' => 'http://www.google.com/webmasters/tools/ping?sitemap={url}',
             'bing'   => 'http://www.bing.com/ping?sitemap={url}',
-            'ask'    => 'http://submissions.ask.com/ping?sitemap={url}',
         );
 
         $httpRequest = new Jaws_HTTPRequest();
