@@ -54,7 +54,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         }
         */
 
-        $this->setTitle(_t('BLOG_TITLE'));
+        $this->setTitle(_t('BLOG_RECENT_POSTS'));
 
         $tpl = $this->gadget->template->load('Posts.html');
         $tpl->SetBlock('view');
