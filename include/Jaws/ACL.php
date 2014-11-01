@@ -228,7 +228,7 @@ class Jaws_ACL
                 ->where('user', 0)
                 ->and()
                 ->where('group', (int)$group)
-                ->fetchColumn();
+                ->fetchOne();
             if (!Jaws_Error::IsError($gvalue)) {
                 return $gvalue;
             }
@@ -238,7 +238,7 @@ class Jaws_ACL
     }
 
     /**
-     * Fetch all ACL keys/values releated to the group
+     * Fetch all ACL keys/values related to the group
      *
      * @access  public
      * @param   int     $group      Group ID
@@ -445,10 +445,19 @@ class Jaws_ACL
         if (!empty($groups)) {
             $perm['group'] = 0;
             foreach ($groups as $group) {
-                $perm['group'] = max($perm['group'], $this->fetchByGroup($group, $key, $subkey, $gadget));
+                $permGroup = $this->fetchByGroup($group, $key, $subkey, $gadget);
+                if (is_null($permGroup)) {
+                    if ($perm['group'] === 0) {
+                        $perm['group'] = null;
+                    }
+                } elseif (is_null($perm['group'])) {
+                    $perm['group'] = $permGroup === 0? null : $permGroup;
+                } else {
+                    $perm['group'] = max($perm['group'], $permGroup);
+                }
             }
 
-            if (!empty($perm['group'])) {
+            if (!is_null($perm['group'])) {
                 return $perm['group'];
             }
         }
