@@ -99,14 +99,14 @@ class Tags_Model_Tags extends Jaws_Gadget_Model
     {
         return Jaws_ORM::getInstance()
             ->table('tags_references')
-            ->select('tags.name')
+            ->select('tags.name', 'tags.title')
             ->join('tags', 'tags.id', 'tags_references.tag')
             ->where('tags_references.user', (int)$user)
             ->and()->where('gadget', $gadget)
             ->and()->where('action', $action)
             ->and()->where('reference', (int)$reference)
             ->and()->where('published', true)
-            ->orderBy('insert_time')->fetchColumn();
+            ->orderBy('insert_time')->fetchAll();
     }
 
     /**

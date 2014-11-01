@@ -143,8 +143,12 @@ class Tags_Actions_Tags extends Tags_Actions_Default
             $tpl->SetVariable('lbl_tags', _t('GLOBAL_TAGS'));
             foreach($tags as $tag) {
                 $tpl->SetBlock("$tpl_base_block/tags/tag");
-                $tpl->SetVariable('name', $tag);
-                $tpl->SetVariable('url', $this->gadget->urlMap('ViewTag', array('tag'=>$tag, 'tagged_gadget'=>$gadget)));
+                $tpl->SetVariable('name', $tag['name']);
+                $tpl->SetVariable('title', $tag['title']);
+                $tpl->SetVariable(
+                    'url',
+                    $this->gadget->urlMap('ViewTag', array('tag'=>$tag['name'], 'tagged_gadget'=>$gadget))
+                );
                 $tpl->ParseBlock("$tpl_base_block/tags/tag");
             }
             $tpl->ParseBlock("$tpl_base_block/tags");
