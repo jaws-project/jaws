@@ -477,13 +477,12 @@ function saveSettings(form)
     var defaultCat       = form.elements['default_category'].value;
     var xmlLimit         = form.elements['xml_limit'].value;
     var comments         = form.elements['comments'].value;
-    var comment_status   = form.elements['comment_status'].value;
     var trackback        = form.elements['trackback'].value;
     var trackback_status = form.elements['trackback_status'].value;
     var pingback         = form.elements['pingback'].value;
 
     BlogAjax.callAsync('SaveSettings', defaultView, lastEntries, popularLimit, lastComments, recentComments, defaultCat, 
-                      xmlLimit, comments, comment_status, trackback, trackback_status,
+                      xmlLimit, comments, trackback, trackback_status,
                       pingback);
 }
 

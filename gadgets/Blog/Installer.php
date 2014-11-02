@@ -24,7 +24,6 @@ class Blog_Installer extends Jaws_Gadget_Installer
         array('xml_limit', '10'),
         array('default_category', '1'),
         array('allow_comments', 'true'),
-        array('comment_status', 'approved'),
         array('last_comments_limit', '20'),
         array('last_recentcomments_limit', '20'),
         array('generate_xml', 'true'),
@@ -182,6 +181,7 @@ class Blog_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.2.0', '<')) {
+            $this->gadget->registry->delete('comment_status');
             $this->gadget->registry->insert('recommended', ',Comments,Tags,');
 
             $new_dir = JAWS_DATA . 'blog' . DIRECTORY_SEPARATOR . 'images';

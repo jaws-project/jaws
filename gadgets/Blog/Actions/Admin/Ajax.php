@@ -86,11 +86,11 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function SaveSettings()
     {
         @list($view, $limit, $popularLimit, $commentsLimit, $recentcommentsLimit, $category,
-            $xml_limit, $comments, $comment_status, $trackback, $trackback_status, $pingback
+            $xml_limit, $comments, $trackback, $trackback_status, $pingback
         ) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Settings');
         $model->SaveSettings($view, $limit, $popularLimit, $commentsLimit, $recentcommentsLimit, $category,
-                                    $xml_limit, $comments, $comment_status, $trackback, $trackback_status,
+                                    $xml_limit, $comments, $trackback, $trackback_status,
                                     $pingback);
         return $GLOBALS['app']->Session->PopLastResponse();
     }

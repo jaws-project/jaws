@@ -32,7 +32,6 @@ class Blog_Model_Admin_Settings extends Jaws_Gadget_Model
         $settings['trackback_status']           = $this->gadget->registry->fetch('trackback_status');
         $settings['last_comments_limit']        = $this->gadget->registry->fetch('last_comments_limit');
         $settings['last_recentcomments_limit']  = $this->gadget->registry->fetch('last_recentcomments_limit');
-        $settings['comment_status']             = $this->gadget->registry->fetch('comment_status');
         $settings['pingback']                   = $this->gadget->registry->fetch('pingback');
 
         return $settings;
@@ -50,14 +49,13 @@ class Blog_Model_Admin_Settings extends Jaws_Gadget_Model
      * @param   string  $category               The default category for blog entries
      * @param   int     $xml_limit              xml limit
      * @param   bool    $comments               If comments should appear
-     * @param   string  $comment_status         Default comment status
      * @param   bool    $trackback              If Trackback should be used
      * @param   string  $trackback_status       Default trackback status
      * @param   bool    $pingback               If Pingback should be used
      * @return  mixed   Return True if settings were saved without problems, else Jaws_Error
      */
     function SaveSettings($view, $limit, $popularLimit, $commentsLimit, $recentcommentsLimit, $category,
-                          $xml_limit, $comments, $comment_status, $trackback, $trackback_status,
+                          $xml_limit, $comments, $trackback, $trackback_status,
                           $pingback)
     {
         $result = array();
@@ -67,7 +65,6 @@ class Blog_Model_Admin_Settings extends Jaws_Gadget_Model
         $result[] = $this->gadget->registry->update('default_category', $category);
         $result[] = $this->gadget->registry->update('xml_limit', $xml_limit);
         $result[] = $this->gadget->registry->update('allow_comments', $comments);
-        $result[] = $this->gadget->registry->update('comment_status', $comment_status);
         $result[] = $this->gadget->registry->update('trackback', $trackback);
         $result[] = $this->gadget->registry->update('trackback_status', $trackback_status);
         $result[] = $this->gadget->registry->update('last_comments_limit', $commentsLimit);

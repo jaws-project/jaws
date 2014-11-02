@@ -132,14 +132,6 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         $commCombo->AddOption(_t('GLOBAL_DISABLED'), 'false');
         $commCombo->SetDefault(isset($settings['comments']) ? $settings['comments'] : '');
 
-        // Comment status
-        $commStatusCombo =& Piwi::CreateWidget('Combo', 'comment_status');
-        $commStatusCombo->setContainerClass('oneline');
-        $commStatusCombo->SetTitle(_t('BLOG_DEFAULT_STATUS', _t('BLOG_COMMENTS')));
-        $commStatusCombo->AddOption(_t('COMMENTS_STATUS_APPROVED'), 'approved');
-        $commStatusCombo->AddOption(_t('COMMENTS_STATUS_WAITING'), 'waiting');
-        $commStatusCombo->SetDefault($settings['comment_status']);
-
         // Trackback
         $tbCombo =& Piwi::CreateWidget('Combo', 'trackback');
         $tbCombo->setContainerClass('oneline');
@@ -174,7 +166,6 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
         }
         $fieldset->Add($xmlCombo);
         $fieldset->Add($commCombo);
-        $fieldset->Add($commStatusCombo);
         $fieldset->Add($tbCombo);
         $fieldset->Add($tbStatusCombo);
         $fieldset->Add($pbCombo);
