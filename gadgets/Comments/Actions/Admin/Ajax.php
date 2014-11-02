@@ -83,10 +83,22 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($gadget, $id, $name, $email, $url, $message, $reply, $status, $sendEmail) = jaws()->request->fetchAll('post');
         // TODO: Fill permalink In New Versions, Please!!
         $cModel = $this->gadget->model->load('EditComments');
-        $res = $cModel->updateComment($gadget, $id, $name, $email, $url, $message, $reply, '', $status, $sendEmail);
+        $res = $cModel->updateComment($gadget, $id, $name, $email, $url, $message, $reply, '', $status);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
+            if (!empty($reply) && !empty($email) && $sendEmail) {
+                $cHTML = $this->gadget->action->load('Comments');
+                $result = $cHTML->EmailReply(
+                    $email,
+                    $message,
+                    $reply,
+                    $GLOBALS['app']->Session->GetAttribute('nickname')
+                );
+                if (Jaws_Error::IsError($result)) {
+                    $GLOBALS['app']->Session->PushLastResponse($result->GetMessage(), RESPONSE_ERROR);
+                }
+            }
             $GLOBALS['app']->Session->PushLastResponse(_t('COMMENTS_COMMENT_UPDATED'), RESPONSE_NOTICE);
         }
 

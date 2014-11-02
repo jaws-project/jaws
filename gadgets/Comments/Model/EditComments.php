@@ -115,11 +115,10 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
      * @param   string  $reply      Comment's reply
      * @param   string  $permalink  Permanent link to resource
      * @param   string  $status     Comment status
-     * @param   bool   $emailReply  Send replay as email to comment owner
      * @return  bool    True if success or Jaws_Error on any error
      * @access  public
      */
-    function updateComment($gadget, $id, $name, $email, $url, $message, $reply, $permalink, $status, $emailReply = false)
+    function updateComment($gadget, $id, $name, $email, $url, $message, $reply, $permalink, $status)
     {
         $cData = array();
         $cData['name']    = $name;
@@ -160,53 +159,7 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
                 $comment['reference']));
         }
 
-        if (!empty($cData['reply']) && !empty($email) && $emailReply) {
-            $this->EmailReply($email, $message, $cData['reply'], $cData['replier']);
-        }
-
         return true;
-    }
-
-
-    /**
-     * Mails reply to the sender
-     *
-     * @access  public
-     * @param   string  $email      Comment sender's email
-     * @param   string  $message    Message
-     * @param   string  $reply      Reply message
-     * @param   int     $replier    Replier Id
-     * @return  mixed   True on successfully or Jaws_Error on failure
-     */
-    function EmailReply($email, $message, $reply, $replier)
-    {
-        $site_url   = $GLOBALS['app']->getSiteURL('/');
-        $site_name  = $this->gadget->registry->fetch('site_name', 'Settings');
-
-        $tpl = $this->gadget->template->loadAdmin('EmailReply.html');
-        $tpl->SetBlock('notification');
-        $tpl->SetVariable('lbl_message',  _t('COMMENTS_MESSAGE'));
-        $tpl->SetVariable('message',      $message);
-        $tpl->SetVariable('replier',      _t('COMMENTS_REPLY_BY', $replier));
-        $tpl->SetVariable('lbl_reply',    _t('COMMENTS_REPLY'));
-        $tpl->SetVariable('reply',        $reply);
-        $tpl->SetVariable('site_name',    $site_name);
-        $tpl->SetVariable('site_url',     $site_url);
-
-        $tpl->ParseBlock('notification');
-        $template = $tpl->Get();
-
-        $ObjMail = new Jaws_Mail;
-        $ObjMail->SetFrom();
-        if (empty($email)) {
-            $ObjMail->AddRecipient('', 'to');
-        } else {
-            $ObjMail->AddRecipient($email);
-            $ObjMail->AddRecipient('', 'cc');
-        }
-        $ObjMail->SetSubject(_t('COMMENTS_YOU_GET_REPLY'));
-        $ObjMail->SetBody($template, 'html');
-        return $ObjMail->send();
     }
 
     /**

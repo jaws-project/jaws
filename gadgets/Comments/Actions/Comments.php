@@ -656,4 +656,49 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         Jaws_Header::Location($redirectTo);
     }
 
+    /**
+     * Mails reply to the sender
+     *
+     * @access  public
+     * @param   string  $email      Comment sender's email
+     * @param   string  $message    Message
+     * @param   string  $reply      Reply message
+     * @param   int     $replier    Replier Id
+     * @return  mixed   True on successfully or Jaws_Error on failure
+     */
+    function EmailReply($email, $message, $reply, $replier)
+    {
+        $site_url   = $GLOBALS['app']->getSiteURL('/');
+        $site_name  = $this->gadget->registry->fetch('site_name', 'Settings');
+
+        $site_language = $this->gadget->registry->fetch('site_language', 'Settings');
+        Jaws_Translate::getInstance()->LoadTranslation('Global', JAWS_COMPONENT_OTHERS, $site_language);
+        Jaws_Translate::getInstance()->LoadTranslation('Comments', JAWS_COMPONENT_GADGET, $site_language);
+
+        $tpl = $this->gadget->template->load('EmailReply.html');
+        $tpl->SetBlock('notification');
+        $tpl->SetVariable('lbl_message',  _t_lang($site_language, 'COMMENTS_MESSAGE'));
+        $tpl->SetVariable('message',      $message);
+        $tpl->SetVariable('replier',      _t_lang($site_language, 'COMMENTS_REPLY_BY', $replier));
+        $tpl->SetVariable('lbl_reply',    _t_lang($site_language, 'COMMENTS_REPLY'));
+        $tpl->SetVariable('reply',        $reply);
+        $tpl->SetVariable('site_name',    $site_name);
+        $tpl->SetVariable('site_url',     $site_url);
+
+        $tpl->ParseBlock('notification');
+        $template = $tpl->Get();
+
+        $ObjMail = new Jaws_Mail;
+        $ObjMail->SetFrom();
+        if (empty($email)) {
+            $ObjMail->AddRecipient('', 'to');
+        } else {
+            $ObjMail->AddRecipient($email);
+            $ObjMail->AddRecipient('', 'cc');
+        }
+        $ObjMail->SetSubject(_t('COMMENTS_YOU_GET_REPLY'));
+        $ObjMail->SetBody($template, 'html');
+        return $ObjMail->send();
+    }
+
 }
