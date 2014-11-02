@@ -51,6 +51,7 @@ $actions['Login'] = array(
 );
 $actions['Logout'] = array(
     'normal' => true,
+    'internal' => true,
     'file' => 'Login',
 );
 $actions['ForgotLogin'] = array(
@@ -104,6 +105,7 @@ $actions['ChangePassword'] = array(
 );
 $actions['UpdateAccount'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Account',
     'loglevel' => JAWS_NOTICE,
 );
@@ -113,6 +115,7 @@ $actions['Personal'] = array(
 );
 $actions['UpdatePersonal'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Personal',
     'loglevel' => JAWS_NOTICE,
 );
@@ -122,6 +125,7 @@ $actions['Preferences'] = array(
 );
 $actions['UpdatePreferences'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Preferences',
     'loglevel' => JAWS_NOTICE,
 );
@@ -131,6 +135,7 @@ $actions['Contacts'] = array(
 );
 $actions['UpdateContacts'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Contacts',
     'loglevel' => JAWS_NOTICE,
 );
@@ -140,14 +145,17 @@ $actions['Groups'] = array(
 );
 $actions['DeleteGroups'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Groups',
 );
 $actions['AddUserToGroup'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Groups',
 );
 $actions['RemoveUserFromGroup'] = array(
     'standalone' => true,
+    'internal' => true,
     'file' => 'Groups',
 );
 $actions['UserGroupUI'] = array(
@@ -160,6 +168,7 @@ $actions['EditUserGroup'] = array(
 );
 $actions['AddGroup'] = array(
     'normal' => true,
+    'internal' => true,
     'file' => 'Groups',
 );
 $actions['ManageGroup'] = array(
@@ -168,6 +177,7 @@ $actions['ManageGroup'] = array(
 );
 $actions['UpdateGroup'] = array(
     'normal' => true,
+    'internal' => true,
     'file' => 'Groups',
 );
 
