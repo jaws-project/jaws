@@ -348,17 +348,31 @@ class Jaws_Gadget_Action
 
 
     /**
-     * Verifies if action is a global action
+     * Get action attribute
      *
      * @access  public
      * @param   string  $action Action name
-     * @return  bool    True if action is global action, otherwise False
+     * @param   string  $attr   Attribute name
+     * @return  mixed   Action attribute value otherwise NULL
      */
-    public function isGlobal($action)
+    public function getAttribute($action, $attr)
     {
-        return $this->IsValidAction($action, 'index') && 
-               isset($this->gadget->actions['index'][$action]['global']) &&
-               $this->gadget->actions['index'][$action]['global'];
+        return @$this->gadget->actions[JAWS_SCRIPT][$action][$attr];
+    }
+
+
+    /**
+     * Set action attribute value
+     *
+     * @access  public
+     * @param   string  $action Action name
+     * @param   string  $attr   Attribute name
+     * @param   mixed   $value  Attribute value
+     * @return  void
+     */
+    public function setAttribute($action, $attr, $value)
+    {
+        $this->gadget->actions[JAWS_SCRIPT][$action][$attr] = $value;
     }
 
 
