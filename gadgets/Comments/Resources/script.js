@@ -210,6 +210,7 @@ function SaveSettings()
         'SaveSettings',
         $('allow_comments').value,
         $('allow_duplicate').value,
+        $('default_comment_status').value,
         $('order_type').value
     );
 }

@@ -144,9 +144,9 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function SaveSettings()
     {
         $this->gadget->CheckPermission('Settings');
-        @list($allowComments, $allowDuplicate, $orderType) = jaws()->request->fetchAll('post');
+        @list($allowComments, $allowDuplicate, $defaultStatus, $orderType) = jaws()->request->fetchAll('post');
         $cModel = $this->gadget->model->loadAdmin('Settings');
-        $res = $cModel->SaveSettings($allowComments, $allowDuplicate, $orderType);
+        $res = $cModel->SaveSettings($allowComments, $allowDuplicate, $defaultStatus, $orderType);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {

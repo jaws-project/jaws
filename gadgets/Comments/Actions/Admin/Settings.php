@@ -41,6 +41,15 @@ class Comments_Actions_Admin_Settings extends Comments_Actions_Admin_Default
         $tpl->SetVariable('lbl_allow_duplicate', _t('COMMENTS_ANTISPAM_ALLOWDUPLICATE'));
         $tpl->SetVariable('allow_duplicate', $allowDuplicate->Get());
 
+        // comment default status
+        $status =& Piwi::CreateWidget('Combo', 'default_comment_status');
+        $status->setID('default_comment_status');
+        $status->AddOption(_t('COMMENTS_STATUS_APPROVED'), 1);
+        $status->AddOption(_t('COMMENTS_STATUS_WAITING'), 2);
+        $status->SetDefault($this->gadget->registry->fetch('default_comment_status'));
+        $tpl->SetVariable('lbl_default_comment_status', _t('COMMENTS_STATUS_DEFAULT'));
+        $tpl->SetVariable('default_comment_status', $status->Get());
+
         //Order by option
         $orderType =& Piwi::CreateWidget('Combo', 'order_type');
         $orderType->AddOption(_t('GLOBAL_CREATETIME'). ' &uarr;', '1');
