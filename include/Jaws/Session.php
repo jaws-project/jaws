@@ -247,6 +247,7 @@ class Jaws_Session
             $this->_SessionID  = $session['sid'];
             $this->_Attributes = unserialize($session['data']);
             $this->SetAttribute('sid', $this->_SessionID, true);
+            $this->referrer    = $session['referrer'];
 
             // check session longevity
             if ($session['updatetime'] < ($expTime - $session['longevity'])) {
@@ -301,25 +302,8 @@ class Jaws_Session
                 return false;
             }
 
-            // check referrer of request
-            $referrer = @parse_url($_SERVER['HTTP_REFERER']);
-            if ($referrer && isset($referrer['host'])) {
-                $referrer = $referrer['host'];
-            } else {
-                $referrer = $_SERVER['HTTP_HOST'];
-            }
-
-            if ($_SERVER['REQUEST_METHOD'] == 'GET' ||
-                $referrer == $_SERVER['HTTP_HOST'] ||
-                $session['referrer'] === md5($referrer))
-            {
-                $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session was OK');
-                return true;
-            } else {
-                $GLOBALS['app']->Session->Logout();
-                $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Session found but referrer changed');
-                return false;
-            }
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session was OK');
+            return true;
         }
 
         $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'No previous session exists');
@@ -381,7 +365,29 @@ class Jaws_Session
         } else {
             $this->_SessionID = $this->update();
         }
+
+        $this->referrer = Jaws_Utils::getHostReferrer();
         return true;
+    }
+
+    /**
+     * Extra session check
+     *
+     * @access  public
+     * @return  bool    True if can create session
+     */
+    function extraCheck()
+    {
+        // referrer
+        $referrer = Jaws_Utils::getHostReferrer();
+
+        if ($referrer == $_SERVER['HTTP_HOST'] || $this->referrer === md5($referrer)) {
+            $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session referrer OK');
+            return true;
+        } else {
+            $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Session referrer changed');
+            return false;
+        }
     }
 
     /**
@@ -598,13 +604,9 @@ class Jaws_Session
             $ip = ip2long($_SERVER['REMOTE_ADDR']);
             $ip = ($ip < 0)? ($ip + 0xffffffff + 1) : $ip;
         }
+
         // referrer
-        $referrer = @parse_url($_SERVER['HTTP_REFERER']);
-        if ($referrer && isset($referrer['host']) && ($referrer['host'] != $_SERVER['HTTP_HOST'])) {
-            $referrer = $referrer['host'];
-        } else {
-            $referrer = '';
-        }
+        $referrer = Jaws_Utils::getHostReferrer();
 
         $sessTable = Jaws_ORM::getInstance()->table('session', '', 'sid');
         // Now we sync with a previous session only if has changed
@@ -665,13 +667,9 @@ class Jaws_Session
             $ip = ip2long($_SERVER['REMOTE_ADDR']);
             $ip = ($ip < 0)? ($ip + 0xffffffff + 1) : $ip;
         }
+
         // referrer
-        $referrer = @parse_url($_SERVER['HTTP_REFERER']);
-        if ($referrer && isset($referrer['host']) && ($referrer['host'] != $_SERVER['HTTP_HOST'])) {
-            $referrer = $referrer['host'];
-        } else {
-            $referrer = '';
-        }
+        $referrer = Jaws_Utils::getHostReferrer();
 
         $sessTable = Jaws_ORM::getInstance()->table('session', '', 'sid');
         if (!empty($GLOBALS['app']->Session->_Attributes)) {
