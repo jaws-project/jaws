@@ -47,8 +47,8 @@ class Blog_Hooks_Menu extends Jaws_Gadget_Hook
                                  'title' => (Jaws_UTF8::strlen($cat['name']) > $max_size)?
                                              Jaws_UTF8::substr($cat['name'], 0, $max_size) . '...' :
                                              $cat['name'],
-                                             'acl_key' => 'CategoryAccess',
-                                             'acl_subkey' => $cat['id']);
+                                 'acl_key' => 'CategoryAccess',
+                                 'acl_subkey' => $cat['id']);
             }
         }
 
