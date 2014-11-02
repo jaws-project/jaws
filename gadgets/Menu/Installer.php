@@ -125,6 +125,13 @@ class Menu_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+
+            // set dynamic access ACL for groups
+            $gModel = $this->gadget->model->load('Group');
+            $groups = $gModel->GetGroups();
+            foreach ($groups as $group) {
+                $this->gadget->acl->insert('GroupAccess', $group['id'], true);
+            }
         }
 
         return true;
