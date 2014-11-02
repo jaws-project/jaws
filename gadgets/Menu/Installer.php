@@ -63,6 +63,9 @@ class Menu_Installer extends Jaws_Gadget_Installer
         $this->gadget->event->insert('EnableGadget');
         $this->gadget->event->insert('DisableGadget');
 
+        // Add dynamic ACL for menu group
+        $this->gadget->acl->insert('GroupAccess', 1, true);
+
         return true;
     }
 

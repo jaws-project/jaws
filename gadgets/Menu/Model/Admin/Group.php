@@ -45,6 +45,7 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
             return false;
         }
 
+        $this->gadget->acl->insert('GroupAccess', $gid, true);
         $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_GROUP_CREATED'), RESPONSE_NOTICE, $gid);
         return true;
     }
@@ -125,7 +126,9 @@ class Menu_Model_Admin_Group extends Jaws_Gadget_Model
             return false;
         }
 
+        $this->gadget->acl->delete('GroupAccess', $gid);
         $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_GROUP_DELETED', $gid), RESPONSE_NOTICE);
         return true;
     }
+
 }
