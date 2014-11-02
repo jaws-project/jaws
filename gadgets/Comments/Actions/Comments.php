@@ -52,10 +52,17 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $tpl->SetBlock('comment_form');
         $tpl->SetVariable('title', _t('COMMENTS_COMMENTS'));
 
-        // check for posting value
-        $post = jaws()->request->fetch(array('name', 'email', 'url', 'title', 'message'), 'post');
-        if(isset($post['message'])) {
-            $tpl->SetVariable('message', $post['message']);
+        $response = $GLOBALS['app']->Session->PopResponse('Comments');
+        if (isset($response['data'])) {
+            $data = $response['data'];
+        } else {
+            $data = array(
+                'name'    => '',
+                'email'   => '',
+                'url'     => '',
+                'url2'    => '',
+                'message' => '',
+            );
         }
 
         $tpl->SetVariable('gadget', $gadget);
@@ -79,32 +86,18 @@ class Comments_Actions_Comments extends Comments_Actions_Default
             $tpl->SetVariable('lbl_message', _t('COMMENTS_MESSAGE'));
             $tpl->SetVariable('send', _t('COMMENTS_SEND'));
 
-            $name  = $GLOBALS['app']->Session->GetCookie('visitor_name');
-            $email = $GLOBALS['app']->Session->GetCookie('visitor_email');
-            $url   = $GLOBALS['app']->Session->GetCookie('visitor_url');
-
-            if(isset($post['name'])) {
-                $name =  $post['name'];
-            }
-            if(isset($post['email'])) {
-                $email =  $post['email'];
-            }
-            if(isset($post['url'])) {
-                $url =  $post['url'];
-            }
-
             $rand = rand();
             $tpl->SetVariable('rand', $rand);
             if (!$GLOBALS['app']->Session->Logged()) {
                 $tpl->SetBlock('comment_form/info-box');
-                $url_value = empty($url)? 'http://' : Jaws_XSS::filter($url);
+                $url_value = empty($data['url'])? 'http://' : $data['url'];
                 $tpl->SetVariable('url', _t('GLOBAL_URL'));
                 $tpl->SetVariable('urlvalue', $url_value);
                 $tpl->SetVariable('rand', $rand);
                 $tpl->SetVariable('name', _t('GLOBAL_NAME'));
-                $tpl->SetVariable('namevalue', isset($name) ? Jaws_XSS::filter($name) : '');
+                $tpl->SetVariable('namevalue', $data['name']);
                 $tpl->SetVariable('email', _t('GLOBAL_EMAIL'));
-                $tpl->SetVariable('emailvalue', isset($email) ? Jaws_XSS::filter($email) : '');
+                $tpl->SetVariable('emailvalue', $data['email']);
                 $tpl->ParseBlock('comment_form/info-box');
             }
 
@@ -121,7 +114,9 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         }
 
         $tpl->SetVariable('url2', _t('GLOBAL_SPAMCHECK_EMPTY'));
-        $tpl->SetVariable('url2_value', '');
+        $tpl->SetVariable('url2_value', $data['url2']);
+        $tpl->SetVariable('message', $data['message']);
+
         $tpl->SetVariable('preview', _t('GLOBAL_PREVIEW'));
         $tpl->SetVariable('bookmark', $gadget. '_'. $action);
         $tpl->SetVariable('lbl_feeds', _t('COMMENTS_COMMENTS_XML'));
