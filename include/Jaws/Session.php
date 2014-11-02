@@ -605,9 +605,6 @@ class Jaws_Session
             $ip = ($ip < 0)? ($ip + 0xffffffff + 1) : $ip;
         }
 
-        // referrer
-        $referrer = Jaws_Utils::getHostReferrer();
-
         $sessTable = Jaws_ORM::getInstance()->table('session', '', 'sid');
         // Now we sync with a previous session only if has changed
         if ($GLOBALS['app']->Session->_HasChanged) {
@@ -617,7 +614,6 @@ class Jaws_Session
                 'user'       => $user,
                 'data'       => $serialized,
                 'longevity'  => $GLOBALS['app']->Session->GetAttribute('longevity'),
-                'referrer'   => md5($referrer),
                 'checksum'   => md5($user. $serialized),
                 'ip'         => $ip,
                 'agent'      => $agent,
