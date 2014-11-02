@@ -684,6 +684,24 @@ class Jaws_Utils
     }
 
     /**
+     * Get host referrer
+     *
+     * @access  public
+     * @return  string  Referrer host
+     */
+    static function getHostReferrer()
+    {
+        $referrer = @parse_url($_SERVER['HTTP_REFERER']);
+        if ($referrer && isset($referrer['host']) && ($referrer['host'] != $_SERVER['HTTP_HOST'])) {
+            $referrer = $referrer['host'];
+        } else {
+            $referrer = '';
+        }
+
+        return $referrer;
+    }
+
+    /**
      * Get information of remote IP address
      *
      * @access  public
