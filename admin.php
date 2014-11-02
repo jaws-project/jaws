@@ -122,9 +122,14 @@ if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
     // Init layout
     $GLOBALS['app']->InstanceLayout();
 
-    $ReqResult = $goGadget->Execute($ReqAction);
-    if (Jaws_Error::IsError($ReqResult)) {
-        Jaws_Error::Fatal($ReqResult->getMessage());
+    // check referrer host
+    if (!$GLOBALS['app']->Session->extraCheck()) {
+        $ReqResult = Jaws_HTTPError::Get(403);
+    } else {
+        $ReqResult = $goGadget->Execute($ReqAction);
+        if (Jaws_Error::IsError($ReqResult)) {
+            Jaws_Error::Fatal($ReqResult->getMessage());
+        }
     }
 
     $IsReqActionStandAlone = $goGadget->IsStandAloneAdmin($ReqAction);
