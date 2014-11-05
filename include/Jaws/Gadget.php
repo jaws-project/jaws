@@ -158,7 +158,9 @@ class Jaws_Gadget
             if (!is_dir(JAWS_PATH . "gadgets/$gadget")) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', $gadget),
-                    __FUNCTION__
+                    __FUNCTION__,
+                    JAWS_ERROR_ERROR,
+                    1
                 );
             }
 
@@ -166,7 +168,9 @@ class Jaws_Gadget
             if (!file_exists($file)) {
                 return Jaws_Error::raiseError(
                     _t('GLOBAL_ERROR_GADGET_DOES_NOT_EXIST', $gadget),
-                    __FUNCTION__
+                    __FUNCTION__,
+                    JAWS_ERROR_ERROR,
+                    1
                 );
             }
 
@@ -503,7 +507,7 @@ class Jaws_Gadget
      */
     function __call($method, $arguments)
     {
-        return Jaws_Error::raiseError("Method '$method' not exists!", __FUNCTION__);
+        return Jaws_Error::raiseError("Method '$method' not exists!", __FUNCTION__, JAWS_ERROR_ERROR, 1);
     }
 
     /**
