@@ -7,7 +7,7 @@
  * @author      Ali Fazelzadeh <afz@php.net>
  * @author      Mohsen Khahani <mkhahani@gmail.com>
  * @copyright   2012-2014 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/gpl.html
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
