@@ -6,7 +6,7 @@
  * @package    Comments
  * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
  * @copyright  2012-2014 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
+ * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Comments_Actions_Feeds extends Comments_Actions_Default
 {
