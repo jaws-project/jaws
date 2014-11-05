@@ -28,7 +28,10 @@ class Phoo_Hooks_Comments extends Jaws_Gadget_Hook
                 $url = $this->gadget->urlMap('ViewImage', array('id' => $image['id']));
                 $result = array(
                     'title' => $image['title'],
-                    'url' => $url
+                    'url' => $url,
+                    'author_name'     => '',
+                    'author_nickname' => '',
+                    'author_email'    => '',
                 );
             }
         }
