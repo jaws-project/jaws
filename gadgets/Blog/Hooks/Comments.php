@@ -25,13 +25,25 @@ class Blog_Hooks_Comments extends Jaws_Gadget_Hook
             $pModel = $this->gadget->model->load('Posts');
             $post = $pModel->GetEntry($reference);
             if (!Jaws_Error::IsError($post) && !empty($post)) {
+                $uModel = new Jaws_User;
+                $author = $uModel->GetUser($post['user_id']);
+                if (empty($author)) {
+                    $author = array(
+                        'name'     => '',
+                        'nickname' => '',
+                        'email'    => '',
+                    );
+                }
                 $url = $this->gadget->urlMap(
                     'SingleView',
                     array('id' => empty($post['fast_url']) ? $post['id'] : $post['fast_url'])
                 );
                 $result = array(
                     'title' => $post['title'],
-                    'url' => $url
+                    'url'   => $url,
+                    'author_name'     => $author['username'],
+                    'author_nickname' => $author['nickname'],
+                    'author_email'    => $author['email'],
                 );
             }
         }
