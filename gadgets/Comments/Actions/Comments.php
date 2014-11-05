@@ -581,10 +581,14 @@ class Comments_Actions_Comments extends Comments_Actions_Default
      */
     function PostMessage()
     {
-        $post  = jaws()->request->fetch(array('message', 'name', 'email', 'url', 'url2', 'requested_gadget',
-                                              'requested_action', 'reference', 'redirect_to', 'is_private'), 'post');
+        $post  = jaws()->request->fetch(
+            array(
+                'message', 'name', 'email', 'url', 'url2', 'requested_gadget',
+                'requested_action', 'reference', 'is_private'
+            ),
+            'post'
+        );
 
-        $redirectTo = str_replace('&amp;', '&', $post['redirect_to']);
         if ($GLOBALS['app']->Session->Logged()) {
             $post['name']  = $GLOBALS['app']->Session->GetAttribute('nickname');
             $post['email'] = $GLOBALS['app']->Session->GetAttribute('email');
@@ -598,7 +602,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
                 RESPONSE_ERROR,
                 $post
             );
-            Jaws_Header::Location($redirectTo);
+            Jaws_Header::Referrer();
         }
 
         /* lets check if it's spam
@@ -614,7 +618,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
                 RESPONSE_ERROR,
                 $post
             );
-            Jaws_Header::Location($redirectTo);
+            Jaws_Header::Referrer();
         }
 
         $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
@@ -626,7 +630,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
                 RESPONSE_ERROR,
                 $post
             );
-            Jaws_Header::Location($redirectTo);
+            Jaws_Header::Referrer();
         }
 
         $permalink = $GLOBALS['app']->GetSiteURL();
@@ -635,13 +639,33 @@ class Comments_Actions_Comments extends Comments_Actions_Default
             $status = Comments_Info::COMMENTS_STATUS_APPROVED;
         }
 
-        $model = $this->gadget->model->load('EditComments');
-        $res = $model->insertComment(
+        $objHook = Jaws_Gadget::getInstance($post['requested_gadget'])->hook->load('Comments');
+        if (Jaws_Error::IsError($objHook)) {
+            $GLOBALS['app']->Session->PushResponse(
+                $objHook->getMessage(),
+                'Comments',
+                RESPONSE_ERROR,
+                $post
+            );
+            Jaws_Header::Referrer();
+        }
+
+        $reference = $objHook->Execute($post['requested_action'], $post['reference']);
+        if (empty($reference)) {
+            $GLOBALS['app']->Session->PushResponse(
+                _t('COMMENTS_ERROR_REFERENCE_EXISTS'),
+                'Comments',
+                RESPONSE_ERROR,
+                $post
+            );
+            Jaws_Header::Referrer();
+        }
+
+        $res = $this->gadget->model->load('EditComments')->insertComment(
             $post['requested_gadget'], $post['reference'], $post['requested_action'], $post['name'],
             $post['email'], $post['url'], $post['message'], $_SERVER['REMOTE_ADDR'],
             $permalink, $status, $post['is_private']
         );
-
         if (Jaws_Error::isError($res)) {
             $GLOBALS['app']->Session->PushResponse(
                 $res->getMessage(),
@@ -650,10 +674,50 @@ class Comments_Actions_Comments extends Comments_Actions_Default
                 $post
             );
         } else {
+            $this->EmailComment($reference, $post['message']);
             $GLOBALS['app']->Session->PushResponse(_t('COMMENTS_MESSAGE_SENT'), 'Comments');
         }
 
-        Jaws_Header::Location($redirectTo);
+        Jaws_Header::Location($reference['url']);
+    }
+
+    /**
+     * Mails the comments to the owner and author
+     *
+     * @access  public
+     * @param   array   $reference  Reference information
+     * @param   string  $message    Message content
+     * @return  mixed   True if successful otherwise Jaws_Error
+     */
+    function EmailComment($reference, $message)
+    {
+        $site_url   = $GLOBALS['app']->getSiteURL('/');
+        $site_name  = $this->gadget->registry->fetch('site_name', 'Settings');
+
+        $tpl = $this->gadget->template->load('EmailComment.html');
+        $tpl->SetBlock('notification');
+        $tpl->SetVariable('comment', $message);
+        $tpl->SetVariable('lbl-url', _t("GLOBAL_URL"));
+
+        $tpl->SetVariable('url',   $reference['url']);
+        $tpl->SetVariable('title', $reference['title']);
+        $tpl->SetVariable('site-name', $site_name);
+        $tpl->SetVariable('site-url',  $site_url);
+        $tpl->ParseBlock('notification');
+        $template = $tpl->Get();
+
+        $ObjMail = new Jaws_Mail;
+        $ObjMail->SetFrom();
+        if (empty($reference['author_email'])) {
+            $ObjMail->AddRecipient('', 'to');
+        } else {
+            $ObjMail->AddRecipient($reference['author_email']);
+            $ObjMail->AddRecipient('', 'cc');
+        }
+
+        $ObjMail->SetSubject(_t('COMMENTS_COMMENT_NOTIFICATION', $reference['title']));
+        $ObjMail->SetBody($template, 'html');
+        return $ObjMail->send();
     }
 
     /**
