@@ -22,7 +22,11 @@ class Shoutbox_Hooks_Comments extends Jaws_Gadget_Hook
     {
         return array(
             'title' => '',
-            'url' => ''
+            'url' => '',
+            'author_name'     => '',
+            'author_nickname' => '',
+            'author_email'    => '',
+
         );
     }
 }
