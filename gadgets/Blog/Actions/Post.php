@@ -45,10 +45,9 @@ class Blog_Actions_Post extends Blog_Actions_Default
      *
      * @access  public
      * @param   int     $id                 Post id (optional, null by default)
-     * @param   bool    $preview_mode       Display comments flag (optional, false by default)
      * @return  string  XHTML template content
      */
-    function SingleView($id = null, $preview_mode = false)
+    function SingleView($id = null)
     {
         $g_id = jaws()->request->fetch('id', 'get');
         $g_id = Jaws_XSS::defilter($g_id);
@@ -112,10 +111,6 @@ class Blog_Actions_Post extends Blog_Actions_Default
 
 
                 if ($allow_comments) {
-                    if ($preview_mode) {
-                        $tpl->SetVariable('preview', $cHTML->ShowPreview());
-                    }
-
                     $redirect_to = $this->gadget->urlMap('SingleView', array('id' =>
                                           empty($entry['fast_url']) ? $entry['id'] : $entry['fast_url']));
                     $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Blog', 'Post', $entry['id'], $redirect_to));

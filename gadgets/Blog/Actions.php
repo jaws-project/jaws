@@ -37,10 +37,6 @@ $actions['ViewAuthorPage'] = array(
     'normal' => true,
     'file'   => 'AuthorPosts',
 );
-$actions['Preview'] = array(
-    'normal' => true,
-    'file'   => 'Comments',
-);
 $actions['Archive'] = array(
     'normal' => true,
     'file'   => 'Archive',
