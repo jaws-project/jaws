@@ -14,20 +14,18 @@ class Comments_Actions_Comments extends Comments_Actions_Default
      * Displays GuestBook
      *
      * @access  public
-     * @param   bool    $preview_mode  Show preview section?
      * @return  string  XHTML content
      */
-    function Guestbook($preview_mode = false)
+    function Guestbook()
     {
         $tpl = $this->gadget->template->load('Guestbook.html');
         $tpl->SetBlock('guestbook');
         $tpl->SetVariable('title', _t('COMMENTS_GUESTBOOK'));
 
-        $tpl->SetVariable('comments', $this->ShowComments('Comments', 'Guestbook', 0, array('action' => 'Guestbook')));
-        if ($preview_mode) {
-            $tpl->SetVariable('preview', $this->ShowPreview());
-        }
-
+        $tpl->SetVariable(
+            'comments',
+            $this->ShowComments('Comments', 'Guestbook', 0, array('action' => 'Guestbook'))
+        );
         $redirect_to = $this->gadget->urlMap('Guestbook');
         $tpl->SetVariable('comment-form', $this->ShowCommentsForm('Comments', 'Guestbook', 0, $redirect_to));
 
@@ -117,7 +115,6 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $tpl->SetVariable('url2_value', $data['url2']);
         $tpl->SetVariable('message', $data['message']);
 
-        $tpl->SetVariable('preview', _t('GLOBAL_PREVIEW'));
         $tpl->SetVariable('bookmark', $gadget. '_'. $action);
         $tpl->SetVariable('lbl_feeds', _t('COMMENTS_COMMENTS_XML'));
         $tpl->SetVariable(
@@ -349,116 +346,6 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $tpl->ParseBlock($block);
         return $tpl->Get();
 
-    }
-
-    /**
-     * Displays a preview of the given comment
-     *
-     * @access       public
-     * @return       template content
-     */
-    function Preview()
-    {
-        return $this->Comments(true);
-    }
-
-    /**
-     * Displays a preview of the given comment
-     *
-     * @access  public
-     * @return  string XHTML template content
-     */
-    function ShowPreview()
-    {
-        $names = array(
-            'name', 'email', 'url', 'title', 'message', 'createtime',
-            'ip_address', 'reference'
-        );
-        $post = jaws()->request->fetch($names, 'post');
-        if(empty($post['message'])) {
-            return;
-        }
-
-        if ($GLOBALS['app']->Session->Logged()) {
-            $post['name'] = $GLOBALS['app']->Session->GetAttribute('nickname');
-            $post['email'] = $GLOBALS['app']->Session->GetAttribute('email');
-            $post['url'] = $GLOBALS['app']->Session->GetAttribute('url');
-        }
-
-        $tpl = $this->gadget->template->load('Comments.html');
-        $tpl->SetBlock('comment-preview');
-
-        $usrModel = new Jaws_User;
-        $objDate = Jaws_Date::getInstance();
-
-        $tpl->SetVariable('name', $post['name']);
-        $tpl->SetVariable('email', $post['email']);
-        $tpl->SetVariable('url', $post['url']);
-        if (is_null($post['ip_address'])) {
-            $post['ip_address'] = $_SERVER['REMOTE_ADDR'];
-        }
-        $tpl->SetVariable('message', $this->gadget->ParseText($post['message'], 'Comments', 'index'));
-        if (!isset($post['createtime'])) {
-            $date = Jaws_Date::getInstance();
-            $post['createtime'] = $date->Format(time());
-        }
-
-        $tpl->SetVariable('postedby_lbl', _t('COMMENTS_POSTEDBY'));
-
-        $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
-        if (!empty($currentUser)) {
-            $userInfo = $usrModel->GetUser($currentUser);
-            $nickname = $userInfo['nickname'];
-            $email = $userInfo['email'];
-            $username = $userInfo['username'];
-            $avatar = "";
-            if(isset($userInfo['avatar'])) {
-                $avatar = $userInfo['avatar'];
-            }
-
-            $tpl->SetBlock('comment-preview/registered_date');
-            $tpl->SetVariable('registered_date_lbl', _t('COMMENTS_USERS_REGISTERED_DATE'));
-            $tpl->SetVariable('registered_date', $objDate->Format($userInfo['registered_date'], 'd MN Y'));
-            $tpl->ParseBlock('comment-preview/registered_date');
-
-            // user's profile
-            $tpl->SetVariable(
-                'user_url',
-                $GLOBALS['app']->Map->GetURLFor(
-                    'Users',
-                    'Profile',
-                    array('user' => $username)
-                )
-            );
-
-        } else {
-            $nickname = $post['name'];
-            $email = $post['email'];
-            $username = '';
-            $avatar = '';
-
-            $tpl->SetVariable('user_url', $post['url']);
-        }
-
-        $tpl->SetVariable('nickname', $nickname);
-        $tpl->SetVariable('email', $email);
-        $tpl->SetVariable('username', $username);
-        // user's avatar
-        $tpl->SetVariable(
-            'avatar',
-            $usrModel->GetAvatar(
-                $avatar,
-                $email,
-                80
-            )
-        );
-
-        $tpl->SetVariable('insert_time', $post['createtime']);
-        $tpl->SetVariable('insert_time_iso', $objDate->ToISO($post['createtime']));
-        $tpl->SetVariable('ip_address', $post['ip_address']);
-
-        $tpl->ParseBlock('comment-preview');
-        return $tpl->Get();
     }
 
     /**
