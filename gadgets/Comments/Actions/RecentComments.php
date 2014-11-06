@@ -42,7 +42,7 @@ class Comments_Actions_RecentComments extends Comments_Actions_Default
             'title' => _t('GLOBAL_ORDERBY'),
             'value' => array(
                 1 => _t('GLOBAL_CREATETIME'). ' &uarr;',
-                0 => _t('GLOBAL_CREATETIME'). ' &darr;',
+                2 => _t('GLOBAL_CREATETIME'). ' &darr;',
             )
         );
 
