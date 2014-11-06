@@ -34,10 +34,6 @@ $actions['ViewImage'] = array(
     'normal' => true,
     'file' => 'Photos',
 );
-$actions['Preview'] = array(
-    'normal' => true,
-    'file' => 'Comments',
-);
 $actions['Random'] = array(
     'layout' => true,
     'file' => 'Random',

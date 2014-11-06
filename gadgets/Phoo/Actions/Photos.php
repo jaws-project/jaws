@@ -150,10 +150,9 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
      * @access  public
      * @param   int     $id                 image ID
      * @param   int     $albumid            album ID
-     * @param   bool    $preview_mode       preview mode
      * @return  string   XHTML template content
      */
-    function ViewImage($id = null, $albumid = null, $preview_mode = false)
+    function ViewImage($id = null, $albumid = null)
     {
         $tpl = $this->gadget->template->load('ViewImage.html');
 
@@ -222,9 +221,6 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
                     'params' => array('albumid' => $albumid, 'id' => $image['id']))));
 
             if ($allow_comments) {
-                if ($preview_mode) {
-                    $tpl->SetVariable('preview', $cHTML->ShowPreview());
-                }
                 $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Phoo', 'Image', $image['id'], $redirect_to));
             } elseif ($restricted) {
                 $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
