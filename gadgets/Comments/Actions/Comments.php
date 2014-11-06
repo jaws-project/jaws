@@ -697,7 +697,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $tpl = $this->gadget->template->load('EmailComment.html');
         $tpl->SetBlock('notification');
         $tpl->SetVariable('comment', $message);
-        $tpl->SetVariable('lbl-url', _t("GLOBAL_URL"));
+        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
 
         $tpl->SetVariable('url',   $reference['url']);
         $tpl->SetVariable('title', $reference['title']);
@@ -760,7 +760,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
             $ObjMail->AddRecipient($email);
             $ObjMail->AddRecipient('', 'cc');
         }
-        $ObjMail->SetSubject(_t('COMMENTS_YOU_GET_REPLY'));
+        $ObjMail->SetSubject(_t_lang('COMMENTS_YOU_GET_REPLY'));
         $ObjMail->SetBody($template, 'html');
         return $ObjMail->send();
     }
