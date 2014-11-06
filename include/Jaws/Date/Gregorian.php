@@ -133,6 +133,9 @@ class Jaws_Date_Gregorian extends Jaws_Date
                         $i = $i + 2;
                     }
                     break;
+                case 'F':
+                    $return .= $this->DayString(date('w', $date));
+                    break;
                 case 'D':
                     if (substr($format, $i, 2) == 'DN') {
                         $return .= $this->DayString(date('w', $date));
@@ -140,6 +143,9 @@ class Jaws_Date_Gregorian extends Jaws_Date
                     } else {
                         $return .= $this->DayShortString(date('w', $date));
                     }
+                    break;
+                case 'l':
+                    $return .= $this->DayString(date('w', $date));
                     break;
                 case 'M':
                     if (substr($format, $i, 2) == 'MN') {

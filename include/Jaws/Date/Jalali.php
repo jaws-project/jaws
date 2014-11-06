@@ -282,7 +282,6 @@ class Jaws_Date_Jalali extends Jaws_Date
                     $return .= $date['day'];
                     break;
                 case 'D':
-                case 'l':
                     if (substr($format, $i, 2) == 'DN') {
                         $return .= $this->DayString($date['weekDay']);
                         $i++;
@@ -290,10 +289,15 @@ class Jaws_Date_Jalali extends Jaws_Date
                         $return .= $this->DayShortString($date['weekDay']);
                     }
                     break;
+                case 'l':
+                    $return .= $this->DayString($date['weekDay']);
+                    break;
                 case 'e':
                     $return .= date('e', $date['date']);
                     break;
                 case 'F':
+                    $return .= $this->MonthString($date['month']);
+                    break;
                 case 'M':
                     if (substr($format, $i, 2) == 'MN') {
                         $return .= $this->MonthString($date['month']);
