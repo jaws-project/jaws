@@ -15,10 +15,9 @@ class Shoutbox_Actions_Comments extends Jaws_Gadget_Action
      * Get the shoutbox comments full interface
      *
      * @access  public
-     * @param   bool    $preview    preview mode
      * @return  string  XHTML template content
      */
-    function Comments($preview = false)
+    function Comments()
     {
         $this->AjaxMe('site_script.js');
         $limit = (int)$this->gadget->registry->fetch('limit');
@@ -39,26 +38,11 @@ class Shoutbox_Actions_Comments extends Jaws_Gadget_Action
             )
         );
 
-        if ($preview) {
-            $tpl->SetVariable('preview', $cHTML->ShowPreview());
-        }
-
         $redirect_to = $this->gadget->urlMap('Comments', array());
         $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Shoutbox', '', 0, $redirect_to));
 
         $tpl->ParseBlock('shoutbox');
         return $tpl->Get();
-    }
-
-    /**
-     * Displays a preview of the given shoutbox message
-     *
-     * @access  public
-     * @return  string  XHTML template content
-     */
-    function Preview()
-    {
-        return $this->Comments(true);
     }
 
     /**

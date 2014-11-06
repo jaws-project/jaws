@@ -16,10 +16,6 @@ $actions['Comments'] = array(
     'layout' => true,
     'file'   => 'Comments',
 );
-$actions['Preview'] = array(
-    'normal' => true,
-    'file'   => 'Comments',
-);
 $actions['GetComments'] = array(
     'standalone' => true,
     'file'   => 'Comments',
