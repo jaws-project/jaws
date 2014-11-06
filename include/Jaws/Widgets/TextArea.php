@@ -87,6 +87,7 @@ class Jaws_Widgets_TextArea extends Container
         $this->_ToolbarControl->SetID('toolbar_'.$name);
 
         $this->TextArea =& Piwi::CreateWidget('TextArea', $name, $value);
+        $this->TextArea->SetClass('xx-large');
         $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
 
         $this->_Container =& Piwi::CreateWidget('Division');
