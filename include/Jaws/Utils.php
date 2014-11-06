@@ -499,6 +499,10 @@ class Jaws_Utils
             $files = array($files);
         }
 
+        $finfo = false;
+        if (extension_loaded('fileinfo')) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE); // return mime type of file extension
+        }
         $dest = rtrim($dest, "\\/"). DIRECTORY_SEPARATOR;
         $allow_formats = array_filter(explode(',', $allow_formats));
         foreach($files as $key => $listFiles) {
@@ -510,7 +514,7 @@ class Jaws_Utils
                 $file = array();
                 $file['name']     = $listFiles['name'][$i];
                 $file['tmp_name'] = $listFiles['tmp_name'][$i];
-                $file['type']     = $listFiles['type'][$i];
+                $file['type']     = $finfo? finfo_file($finfo, $file['tmp_name']) : '';
                 $file['size']     = $listFiles['size'][$i];
                 if (isset($listFiles['error'])) {
                     $file['error'] = $listFiles['error'][$i];
