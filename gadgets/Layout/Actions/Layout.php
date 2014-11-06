@@ -321,9 +321,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         // default layout
         $sections = $model->GetLayoutSections($user, false);
         foreach ($sections as $section) {
-            if (isset($tpl->Blocks['layout']->InnerBlock[$section])) {
-                $model->MoveSection(false, $section, $section, $user);
-            } else {
+            if (!isset($tpl->Blocks['layout']->InnerBlock[$section])) {
                 $model->MoveSection(false, $section, 'main', $user);
             }
         }
