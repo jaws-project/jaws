@@ -71,7 +71,7 @@ class Jaws_Image
      */
     private $_img_types = array(
         1 => 'gif',
-        2 => 'jpg',
+        2 => 'jpeg',
         3 => 'png',
         4 => 'swf',
         5 => 'psd',
