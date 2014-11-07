@@ -9,7 +9,7 @@
  * @copyright   2004-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Preferences extends Jaws_Gadget_Action
+class Users_Actions_Preferences extends Users_Actions_Common
 {
     /**
      * Prepares a simple form to update user's data (name, email, password)
@@ -35,6 +35,9 @@ class Users_Actions_Preferences extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('Preferences.html');
         $tpl->SetBlock('preferences');
         $tpl->SetVariable('title', _t('USERS_PREFERENCES_INFO'));
+
+        // Menubar
+        $tpl->SetVariable('menubar', $this->MenuBar('Preferences'));
 
         $gDir = JAWS_PATH. 'gadgets'. DIRECTORY_SEPARATOR;
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');

@@ -9,7 +9,7 @@
  * @copyright   2004-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Account extends Jaws_Gadget_Action
+class Users_Actions_Account extends Users_Actions_Common
 {
     /**
      * Builds a simple form to update user account info(nickname, email, password)
@@ -28,7 +28,7 @@ class Users_Actions_Account extends Jaws_Gadget_Action
             );
         }
 
-       $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', '', false);
+        $this->gadget->CheckPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', '', false);
         $response = $GLOBALS['app']->Session->PopResponse('Users.Account.Response');
         if (!isset($response['data'])) {
             $jUser = new Jaws_User;
@@ -36,6 +36,9 @@ class Users_Actions_Account extends Jaws_Gadget_Action
         } else {
             $account = $response['data'];
         }
+
+        // Menubar
+        $account['menubar'] = $this->MenuBar('Account');
 
         $account['title']  = _t('USERS_ACCOUNT_INFO');
         $account['update'] = _t('USERS_USERS_ACCOUNT_UPDATE');

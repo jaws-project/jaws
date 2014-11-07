@@ -9,7 +9,7 @@
  * @copyright   2004-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Personal extends Jaws_Gadget_Action
+class Users_Actions_Personal extends Users_Actions_Common
 {
     /**
      * Builds a simple form to update user personal (fname, lname, gender, ...)
@@ -43,6 +43,9 @@ class Users_Actions_Personal extends Jaws_Gadget_Action
         $tpl->SetVariable('title', _t('USERS_PERSONAL_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
+
+        // Menubar
+        $tpl->SetVariable('menubar', $this->MenuBar('Personal'));
 
         if (empty($personal['avatar'])) {
             $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');

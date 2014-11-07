@@ -8,7 +8,7 @@
  * @copyright   2013-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Contacts extends Jaws_Gadget_Action
+class Users_Actions_Contacts extends Users_Actions_Common
 {
     /**
      * Prepares a simple form to update user's contacts information (country, city, ...)
@@ -40,10 +40,13 @@ class Users_Actions_Contacts extends Jaws_Gadget_Action
         // Load the template
         $tpl = $this->gadget->template->load('Contacts.html');
         $tpl->SetBlock('contacts');
-        
+
         $tpl->SetVariable('title', _t('USERS_CONTACTS_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
+
+        // Menubar
+        $tpl->SetVariable('menubar', $this->MenuBar('Contacts'));
 
         $tpl->SetVariable('lbl_country', _t('USERS_CONTACTS_COUNTRY'));
         $tpl->SetVariable('lbl_city', _t('USERS_CONTACTS_CITY'));
