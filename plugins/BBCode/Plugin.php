@@ -188,8 +188,8 @@ class BBCode_Plugin extends Jaws_Plugin
                     case 'code':
                     case 'noparse':
                         $replacement = '<pre><code>'. str_replace(
-                                array('[', ']'),
-                                array('&lsqb;', '&rsqb;'),
+                                array('[', ']', '{', '}'),
+                                array('&lsqb;', '&rsqb;', '&lcub;', '&rcub;'),
                                 $innertext
                             ). '</code></pre>';
                         break;
