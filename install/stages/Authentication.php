@@ -21,8 +21,11 @@ class Installer_Authentication extends JawsInstallerStage
         if (!isset($_SESSION['install']['Authentication']) && 
            (!isset($_SESSION['install']['predefined']) || !$_SESSION['install']['predefined']))
         {
-            $_SESSION['secure']= false;
-            $_SESSION['install']['Authentication'] = array('key' => md5(uniqid('installer')) . time() . floor(microtime()*1000));
+            $_SESSION['secure'] = false;
+            $_SESSION['customize'] = false;
+            $_SESSION['install']['Authentication'] = array(
+                'key' => md5(uniqid('installer')) . time() . floor(microtime()*1000)
+            );
         }
     }
 
@@ -44,7 +47,8 @@ class Installer_Authentication extends JawsInstallerStage
         $tpl->SetVariable('key_file_info', _t('INSTALL_AUTH_KEY_INFO'));
         $tpl->SetVariable('next',          _t('GLOBAL_NEXT'));
         $tpl->SetVariable('key', $_SESSION['install']['Authentication']['key']);
-        $tpl->SetVariable('checked',  $_SESSION['secure']? 'checked="checked"' : '');
+        $tpl->SetVariable('checked_secure', $_SESSION['secure']? 'checked="checked"' : '');
+        $tpl->SetVariable('checked_customize', $_SESSION['customize']? 'checked="checked"' : '');
         $tpl->SetVariable('custom_installation', _t('INSTALL_AUTH_CUSTOM_INSTALL'));
 
         $tpl->ParseBlock('Authentication');
@@ -65,8 +69,9 @@ class Installer_Authentication extends JawsInstallerStage
         }
  
         $request = Jaws_Request::getInstance();
-        $secure = $request->fetch('secure', 'post');
-        $_SESSION['secure'] = !empty($secure);
+        $postReq = $request->fetch(array('secure', 'customize'), 'post');
+        $_SESSION['secure'] = !empty($postReq['secure']);
+        $_SESSION['customize'] = !empty($postReq['customize']);
 
         // try to entering to secure transformation mode 
         if ($_SESSION['secure'] && (!isset($_SESSION['pub_key']) || empty($_SESSION['pub_key']))) {
@@ -114,9 +119,7 @@ class Installer_Authentication extends JawsInstallerStage
      */
     function Run()
     {
-        $request = Jaws_Request::getInstance();
-        $customize = $request->fetch('customize', 'post');
-        if (empty($customize)) {
+        if (empty($_SESSION['customize'])) {
             $_SESSION['install']['stage']++;
         }
 
