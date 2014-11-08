@@ -298,6 +298,7 @@ float: left;
 }
 .fs_table {
 text-align: center;
+margin-bottom:10px;
 border: 1px solid #d3d7cf;
 }
 
@@ -318,4 +319,12 @@ border: 1px solid #d3d7cf;
 
 .fs_table .title {
 text-align: left;
+}
+#log_install {
+text-align:left;
+margin-bottom:10px;
+}
+#log_install label{
+font-size:10px;
+font-weight:normal;
 }
