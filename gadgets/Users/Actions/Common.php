@@ -6,7 +6,7 @@
  * @package     Users
  * @author      Mohsen Khahani <mkhahani@gmail.com>
  * @copyright   2014 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/gpl.html
+ * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Users_Actions_Common extends Jaws_Gadget_Action
 {
@@ -58,4 +58,5 @@ class Users_Actions_Common extends Jaws_Gadget_Action
 
         return $menubar->Get();
     }
+
 }
