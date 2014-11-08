@@ -45,14 +45,35 @@ define('PEAR_PATH', JAWS_PATH . 'libraries/pear/');
 
 // lets setup the include_path
 set_include_path('.' . PATH_SEPARATOR . JAWS_PATH . 'libraries/pear');
-if (!defined('JAWS_BASE_DATA')) {
-    define('JAWS_BASE_DATA', JAWS_PATH . 'data'. DIRECTORY_SEPARATOR);
-}
+// JAWS_DATA
 if (!defined('JAWS_DATA')) {
-    define('JAWS_DATA', JAWS_BASE_DATA);
+    define('JAWS_DATA', JAWS_PATH . 'data'. DIRECTORY_SEPARATOR);
+} else {
+    $_SESSION['JAWS_BASE_DATA'] = JAWS_DATA;
 }
+// JAWS_BASE_DATA
+if (!defined('JAWS_BASE_DATA')) {
+    define('JAWS_BASE_DATA', JAWS_DATA);
+} else {
+    $_SESSION['JAWS_BASE_DATA'] = JAWS_BASE_DATA;
+}
+// JAWS_THEMES
+if (!defined('JAWS_THEMES')) {
+    define('JAWS_THEMES', JAWS_DATA. 'themes'. DIRECTORY_SEPARATOR);
+} else {
+    $_SESSION['JAWS_THEMES'] = JAWS_THEMES;
+}
+// JAWS_BASE_THEMES
+if (!defined('JAWS_BASE_THEMES')) {
+    define('JAWS_BASE_THEMES', JAWS_THEMES);
+} else {
+    $_SESSION['JAWS_BASE_THEMES'] = JAWS_BASE_THEMES;
+}
+// JAWS_CACHE
 if (!defined('JAWS_CACHE')) {
     define('JAWS_CACHE', JAWS_DATA. 'cache'. DIRECTORY_SEPARATOR);
+} else {
+    $_SESSION['JAWS_CACHE'] = JAWS_CACHE;
 }
 define('UPGRADE_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 

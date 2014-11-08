@@ -24,6 +24,16 @@ class Upgrader_WriteConfig extends JawsUpgraderStage
         $tpl->Load('JawsConfig.php', 'stages/WriteConfig/templates');
 
         $tpl->SetBlock('JawsConfig');
+        $_SESSION['JAWS_DATA'] = isset($_SESSION['JAWS_DATA'])? $_SESSION['JAWS_DATA'] : JAWS_DATA;
+        $paths = array('jaws_data', 'jaws_base_data', 'jaws_themes', 'jaws_base_themes', 'jaws_cache');
+        foreach ($paths as $path) {
+            if (isset($_SESSION[strtoupper($path)])) {
+                $tpl->SetBlock("JawsConfig/$path");
+                $tpl->SetVariable($path, addslashes($_SESSION[strtoupper($path)]));
+                $tpl->ParseBlock("JawsConfig/$path");
+            }
+        }
+
         $tpl->SetVariable('db_driver',  $_SESSION['upgrade']['Database']['driver']);
         $tpl->SetVariable('db_host',    $_SESSION['upgrade']['Database']['host']);
         $tpl->setVariable('db_port',    $_SESSION['upgrade']['Database']['port']);

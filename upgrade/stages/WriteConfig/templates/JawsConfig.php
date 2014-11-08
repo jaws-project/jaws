@@ -8,7 +8,21 @@
  */
 // Path where Jaws is installed
 define('JAWS_PATH', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
-define('JAWS_DATA', JAWS_PATH . 'data'. DIRECTORY_SEPARATOR);
+<!-- BEGIN jaws_data -->
+define('JAWS_DATA', '{{jaws_data}}');
+<!-- END jaws_data -->
+<!-- BEGIN jaws_base_data -->
+define('JAWS_BASE_DATA', '{{jaws_base_data}}');
+<!-- END jaws_base_data -->
+<!-- BEGIN jaws_themes -->
+define('JAWS_THEMES', '{{jaws_themes}}');
+<!-- END jaws_themes -->
+<!-- BEGIN jaws_base_themes -->
+define('JAWS_BASE_THEMES', '{{jaws_base_themes}}');
+<!-- END jaws_base_themes -->
+<!-- BEGIN jaws_cache -->
+define('JAWS_CACHE', '{{jaws_cache}}');
+<!-- END jaws_cache -->
 
 $db = array(); //DONT RENAME/DELETE THIS VARIABLE!!
 /**
@@ -89,5 +103,4 @@ $GLOBALS['logger']['method'] = 'LogToFile';
 $GLOBALS['logger']['options'] = array();
 $GLOBALS['logger']['options']['file'] = JAWS_DATA . 'logs/.jaws.log';
 $GLOBALS['logger']['options']['size'] = 2097152;
-
 <!-- END JawsConfig -->
