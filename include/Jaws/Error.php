@@ -163,7 +163,7 @@ class Jaws_Error
         }
         //Get content
         $content = file_get_contents(JAWS_PATH . 'gadgets/ControlPanel/Templates/FatalError.html');
-        $content = str_replace('{message}', $message, $content);
+        $content = str_replace('{{message}}', $message, $content);
         jaws()->http_response_code($http_response_code);
         terminate($content, $http_response_code, '', false);
     }
