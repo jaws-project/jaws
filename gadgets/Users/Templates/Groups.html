@@ -1,5 +1,9 @@
 <!-- BEGIN groups -->
-<div class="gadget_header"><h3>{{title}}</h3><div class="gadget_menubar">{{menubar}}</div></div>
+<div class="gadget_header">
+  <h3>{{title}}</h3>
+  <div class="gadget_menubar">{{menubar}}</div>
+  <div class="gadget_submenubar">{{submenubar}}</div>
+</div>
 <div class="gadget_container">
   <div class="gadget_response">
     <div id="users_contacts_response" class="{{type}}">{{text}}</div>
@@ -83,7 +87,11 @@
 <!-- END groups -->
 
 <!-- BEGIN add_group -->
-<div class="gadget_header"><h3>{{title}}</h3><div class="gadget_menubar">{{menubar}}</div></div>
+<div class="gadget_header">
+  <h3>{{title}}</h3>
+  <div class="gadget_menubar">{{menubar}}</div>
+  <div class="gadget_submenubar">{{submenubar}}</div>
+</div>
 <div class="gadget_container">
   <form name="groups" id="groups" action="{{base_script}}" method="post">
       <input type="hidden" name="gadget" value="Users"/>
@@ -112,7 +120,11 @@
 <!-- END add_group -->
 
 <!-- BEGIN manage_group -->
-<div class="gadget_header"><h3>{{title}}</h3><div class="gadget_menubar">{{menubar}}</div></div>
+<div class="gadget_header">
+  <h3>{{title}}</h3>
+  <div class="gadget_menubar">{{menubar}}</div>
+  <div class="gadget_submenubar">{{submenubar}}</div>
+</div>
 <div class="gadget_container">
   <div class="gadget_response">
       <div id="users_managegroup_response" class="{{type}}">{{text}}</div>
@@ -123,7 +135,6 @@
       <input type="hidden" name="gid" value="{{gid}}"/>
 
       <div class="gadget_content content">
-          <div>{{lbl_members}}</div>
           <table>
             <colgroup>
               <col class="xx-small" />

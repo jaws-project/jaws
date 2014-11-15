@@ -39,6 +39,7 @@ class Users_Actions_Account extends Users_Actions_Default
 
         // Menubar
         $account['menubar'] = $this->MenuBar('Account');
+        $account['submenubar'] = $this->SubMenuBar('Account', array('Account', 'Personal', 'Preferences', 'Contacts'));
 
         $account['title']  = _t('USERS_ACCOUNT_INFO');
         $account['update'] = _t('USERS_USERS_ACCOUNT_UPDATE');

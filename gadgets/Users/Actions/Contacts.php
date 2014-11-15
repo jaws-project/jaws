@@ -46,7 +46,11 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
 
         // Menubar
-        $tpl->SetVariable('menubar', $this->MenuBar('Contacts'));
+        $tpl->SetVariable('menubar', $this->MenuBar('Account'));
+        $tpl->SetVariable(
+            'submenubar',
+            $this->SubMenuBar('Contacts', array('Account', 'Personal', 'Preferences', 'Contacts'))
+        );
 
         $tpl->SetVariable('lbl_country', _t('USERS_CONTACTS_COUNTRY'));
         $tpl->SetVariable('lbl_city', _t('USERS_CONTACTS_CITY'));

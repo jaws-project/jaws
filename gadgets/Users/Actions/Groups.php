@@ -44,7 +44,8 @@ class Users_Actions_Groups extends Users_Actions_Default
         }
 
         $tpl->SetVariable('title', _t('USERS_GROUPS'));
-        $tpl->SetVariable('menubar', $this->MenuBar('AddGroup', array('AddGroup', 'Groups')));
+        $tpl->SetVariable('menubar', $this->MenuBar('Groups'));
+        $tpl->SetVariable('submenubar', $this->SubMenuBar('Groups', array('Groups', 'AddGroup')));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
@@ -108,9 +109,20 @@ class Users_Actions_Groups extends Users_Actions_Default
             $tpl->SetVariable('description', $group['description']);
         }
 
-        $tpl->SetVariable('title', _t('USERS_ADD_GROUP'));
-        $tpl->SetVariable('menubar', $this->MenuBar('AddGroup', array('AddGroup', 'Groups')));
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
+        $tpl->SetVariable('menubar', $this->MenuBar('Groups'));
+        if (empty($gid)) {
+            $tpl->SetVariable('title', _t('USERS_ADD_GROUP'));
+            $tpl->SetVariable(
+                'submenubar',
+                $this->SubMenuBar('AddGroup', array('Groups', 'AddGroup'))
+            );
+        } else {
+            $tpl->SetVariable('title', _t('USERS_EDIT_GROUP'));
+            $tpl->SetVariable(
+                'submenubar',
+                $this->SubMenuBar('EditGroup', array('Members', 'EditGroup'), array('gid' => $gid))
+            );
+        }
 
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
@@ -323,7 +335,11 @@ class Users_Actions_Groups extends Users_Actions_Default
         }
 
         $tpl->SetVariable('title', _t('USERS_MANAGE_GROUPS', $group['title']));
-        $tpl->SetVariable('menubar', $this->MenuBar('Groups', array('EditGroup', 'Groups'), array('gid' => $gid)));
+        $tpl->SetVariable('menubar', $this->MenuBar('Groups'));
+        $tpl->SetVariable(
+            'submenubar',
+            $this->SubMenuBar('Members', array('Members', 'EditGroup'), array('gid' => $gid))
+        );
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
         $tpl->SetVariable('lbl_no_action', _t('GLOBAL_NO_ACTION'));

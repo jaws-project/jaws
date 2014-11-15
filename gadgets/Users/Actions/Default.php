@@ -67,7 +67,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
      */
     function MenuBar($selected)
     {
-        $actions = array('Groups', 'Account', 'Personal', 'Preferences', 'Contacts');
+        $actions = array('Groups', 'Account');
         if (!in_array($selected, $actions)) {
             $selected = 'Account';
         }
@@ -87,28 +87,96 @@ class Users_Actions_Default extends Jaws_Gadget_Action
                 STOCK_EDIT);
         }
 
-        if ($this->gadget->GetPermission('EditUserPersonal')) {
-            $menubar->AddOption('Personal',
-                _t('USERS_EDIT_PERSONAL'),
-                $this->gadget->urlMap('Personal'),
-                STOCK_EDIT);
+        $menubar->Activate($selected);
+        return $menubar->Get();
+    }
+
+    /**
+     * Displays sub-menu bar according to selected action
+     *
+     * @access  public
+     * @param   string  $selected   selected action
+     * @param   array   $actions    visible actions
+     * @param   array   $params     action params
+     * @return  string  XHTML template content
+     */
+    function SubMenuBar($selected, $actions, $params = null)
+    {
+        $default_actions = array('Members', 'EditGroup', 'AddGroup', 'Account', 'Personal', 'Preferences', 'Contacts');
+        if (!in_array($selected, $default_actions)) {
+            $action_selected = 'Account';
         }
 
-        if ($this->gadget->GetPermission('EditUserPreferences')) {
-            $menubar->AddOption('Preferences',
-                _t('USERS_EDIT_PREFERENCES'),
-                $this->gadget->urlMap('Preferences'),
-                STOCK_EDIT);
+        $menubar = new Jaws_Widgets_Menubar('gadget_submenubar');
+        if (in_array('Groups', $actions)) {
+            $menubar->AddOption(
+                'Groups',
+                _t('USERS_MANAGE_GROUPS'),
+                $this->gadget->urlMap('Groups')
+            );
         }
 
-        if ($this->gadget->GetPermission('EditUserContacts')) {
-            $menubar->AddOption('Contacts',
-                _t('USERS_EDIT_CONTACTS'),
-                $this->gadget->urlMap('Contacts'),
-                STOCK_EDIT);
+        if (in_array('AddGroup', $actions)) {
+            $menubar->AddOption('AddGroup', _t('USERS_ADD_GROUP'),
+                $this->gadget->urlMap('UserGroupUI'), STOCK_ADD);
+        }
+
+        if (in_array('Members', $actions)) {
+            $menubar->AddOption(
+                'Members',
+                _t('USERS_GROUPS_MEMBERS'),
+                $this->gadget->urlMap('ManageGroup', $params),
+                STOCK_EDIT
+            );
+        }
+
+        if (in_array('EditGroup', $actions)) {
+            $menubar->AddOption('EditGroup', _t('USERS_EDIT_GROUP'),
+                $this->gadget->urlMap('EditUserGroup', $params), STOCK_EDIT);
+        }
+
+        if (in_array('Account', $actions)) {
+            if ($this->gadget->GetPermission(
+                'EditUserName,EditUserNickname,EditUserEmail,EditUserPassword',
+                '',
+                false
+            )) {
+                $menubar->AddOption('Account',
+                    _t('USERS_EDIT_ACCOUNT'),
+                    $this->gadget->urlMap('Account'),
+                    STOCK_EDIT);
+            }
+        }
+
+        if (in_array('Personal', $actions)) {
+            if ($this->gadget->GetPermission('EditUserPersonal')) {
+                $menubar->AddOption('Personal',
+                    _t('USERS_EDIT_PERSONAL'),
+                    $this->gadget->urlMap('Personal'),
+                    STOCK_EDIT);
+            }
+        }
+
+        if (in_array('Preferences', $actions)) {
+            if ($this->gadget->GetPermission('EditUserPreferences')) {
+                $menubar->AddOption('Preferences',
+                    _t('USERS_EDIT_PREFERENCES'),
+                    $this->gadget->urlMap('Preferences'),
+                    STOCK_EDIT);
+            }
+        }
+
+        if (in_array('Contacts', $actions)) {
+            if ($this->gadget->GetPermission('EditUserContacts')) {
+                $menubar->AddOption('Contacts',
+                    _t('USERS_EDIT_CONTACTS'),
+                    $this->gadget->urlMap('Contacts'),
+                    STOCK_EDIT);
+            }
         }
 
         $menubar->Activate($selected);
         return $menubar->Get();
     }
+
 }
