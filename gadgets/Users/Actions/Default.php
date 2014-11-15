@@ -62,36 +62,53 @@ class Users_Actions_Default extends Jaws_Gadget_Action
      * Displays menu bar according to selected action
      *
      * @access  public
-     * @param   string    $action_selected    selected action
-     * @param   array     $visible_actions    visible actions
-     * @param   array     $action_params      action params
-     * @return  string    XHTML template content
+     * @param   string  $selected   selected action
+     * @return  string  XHTML template content
      */
-    function MenuBar($action_selected, $visible_actions, $action_params = null)
+    function MenuBar($selected)
     {
-        $actions = array('EditGroup', 'AddGroup', 'Groups');
-        if (!in_array($action_selected, $actions)) {
-            $action_selected = 'Groups';
+        $actions = array('Groups', 'Account', 'Personal', 'Preferences', 'Contacts');
+        if (!in_array($selected, $actions)) {
+            $selected = 'Account';
         }
 
         $menubar = new Jaws_Widgets_Menubar();
-        if (in_array('AddGroup', $visible_actions)) {
-            $menubar->AddOption('AddGroup', _t('USERS_ADD_GROUP'),
-                $this->gadget->urlMap('UserGroupUI'), STOCK_ADD);
+        $menubar->AddOption(
+            'Groups',
+            _t('USERS_MANAGE_GROUPS'),
+            $this->gadget->urlMap('Groups'),
+            'gadgets/Users/Resources/images/groups_mini.png'
+        );
+
+        if ($this->gadget->GetPermission('EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', '', false)) {
+            $menubar->AddOption('Account',
+                _t('USERS_EDIT_ACCOUNT'),
+                $this->gadget->urlMap('Account'),
+                STOCK_EDIT);
         }
 
-        if (in_array('EditGroup', $visible_actions)) {
-            $menubar->AddOption('EditGroup', _t('USERS_EDIT_GROUP'),
-                $this->gadget->urlMap('EditUserGroup', $action_params), STOCK_EDIT);
+        if ($this->gadget->GetPermission('EditUserPersonal')) {
+            $menubar->AddOption('Personal',
+                _t('USERS_EDIT_PERSONAL'),
+                $this->gadget->urlMap('Personal'),
+                STOCK_EDIT);
         }
 
-        if (in_array('Groups', $visible_actions)) {
-            $menubar->AddOption('Groups', _t('USERS_MANAGE_GROUPS'),
-                $this->gadget->urlMap('Groups'), 'gadgets/Users/Resources/images/groups_mini.png');
+        if ($this->gadget->GetPermission('EditUserPreferences')) {
+            $menubar->AddOption('Preferences',
+                _t('USERS_EDIT_PREFERENCES'),
+                $this->gadget->urlMap('Preferences'),
+                STOCK_EDIT);
         }
 
-        $menubar->Activate($action_selected);
+        if ($this->gadget->GetPermission('EditUserContacts')) {
+            $menubar->AddOption('Contacts',
+                _t('USERS_EDIT_CONTACTS'),
+                $this->gadget->urlMap('Contacts'),
+                STOCK_EDIT);
+        }
 
+        $menubar->Activate($selected);
         return $menubar->Get();
     }
 }

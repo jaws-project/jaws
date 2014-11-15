@@ -8,7 +8,7 @@
  * @copyright   2013-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Contacts extends Users_Actions_Common
+class Users_Actions_Contacts extends Users_Actions_Default
 {
     /**
      * Prepares a simple form to update user's contacts information (country, city, ...)

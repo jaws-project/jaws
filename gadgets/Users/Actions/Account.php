@@ -9,7 +9,7 @@
  * @copyright   2004-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Account extends Users_Actions_Common
+class Users_Actions_Account extends Users_Actions_Default
 {
     /**
      * Builds a simple form to update user account info(nickname, email, password)

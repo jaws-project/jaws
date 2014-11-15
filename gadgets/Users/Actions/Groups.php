@@ -65,6 +65,8 @@ class Users_Actions_Groups extends Users_Actions_Default
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
         $tpl->SetVariable('icon_ok', STOCK_OK);
+        $tpl->SetVariable('lbl_add_group', _t('USERS_ADD_GROUP'));
+        $tpl->SetVariable('url_add_group', $this->gadget->urlMap('UserGroupUI'));
 
         $tpl->ParseBlock('groups');
         return $tpl->Get();
@@ -185,25 +187,30 @@ class Users_Actions_Groups extends Users_Actions_Default
         $ids = jaws()->request->fetch('group_checkbox:array', 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
-        $jUser = new Jaws_User;
-        foreach($ids as $id) {
-            // TODO: improve performance
-            $res= $jUser->DeleteGroup($id, $user);
+        if (!empty($ids)) {
+            $jUser = new Jaws_User;
+            foreach($ids as $id) {
+                // TODO: improve performance
+                $res= $jUser->DeleteGroup($id, $user);
+                if (Jaws_Error::IsError($res)) {
+                    $GLOBALS['app']->Session->PushResponse(
+                        $res->getMessage(),
+                        'Users.Groups',
+                        RESPONSE_ERROR
+                    );
+                    break;
+                }
+            }
+
+            if (!isset($res)) {
+                $GLOBALS['app']->Session->PushResponse(
+                    _t('USERS_GROUP_DELETED'),
+                    'Users.Groups',
+                    RESPONSE_NOTICE
+                );
+            }
         }
 
-        if ($res == true) {
-            $GLOBALS['app']->Session->PushResponse(
-                _t('USERS_GROUP_DELETED'),
-                'Users.Groups',
-                RESPONSE_NOTICE
-            );
-        } else {
-            $GLOBALS['app']->Session->PushResponse(
-                _t('USERS_GROUPS_CANT_DELETE'),
-                'Users.Groups',
-                RESPONSE_ERROR
-            );
-        }
         Jaws_Header::Location($this->gadget->urlMap('Groups'));
     }
 
@@ -253,26 +260,29 @@ class Users_Actions_Groups extends Users_Actions_Default
         $post = jaws()->request->fetch(array('gid', 'member_checkbox:array'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
-        $jUser = new Jaws_User;
-        // TODO: improve performance
-        $res = false;
-        foreach ($post['member_checkbox'] as $member) {
-            $res = $jUser->DeleteUserFromGroup($member, $post['gid'], $user);
+        if (!empty($post['member_checkbox'])) {
+            $jUser = new Jaws_User;
+            // TODO: improve performance
+            foreach ($post['member_checkbox'] as $member) {
+                $res = $jUser->DeleteUserFromGroup($member, $post['gid'], $user);
+                if (Jaws_Error::IsError($res)) {
+                    $GLOBALS['app']->Session->PushResponse(
+                        $res->getMessage(),
+                        'Users.GroupMember',
+                        RESPONSE_ERROR
+                    );
+                }
+            }
+
+            if (!isset($res)) {
+                $GLOBALS['app']->Session->PushResponse(
+                    _t('USERS_GROUP_REMOVED_USER'),
+                    'Users.GroupMember',
+                    RESPONSE_NOTICE
+                );
+            }
         }
 
-        if ($res == true) {
-            $GLOBALS['app']->Session->PushResponse(
-                _t('USERS_GROUP_REMOVED_USER'),
-                'Users.GroupMember',
-                RESPONSE_NOTICE
-            );
-        } else {
-            $GLOBALS['app']->Session->PushResponse(
-                _t('USERS_GROUP_CANNOT_REMOVE_USER'),
-                'Users.GroupMember',
-                RESPONSE_ERROR
-            );
-        }
         Jaws_Header::Location($this->gadget->urlMap('ManageGroup', array('gid' => $post['gid'])));
     }
 
@@ -320,21 +330,23 @@ class Users_Actions_Groups extends Users_Actions_Default
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('icon_ok', STOCK_OK);
         $tpl->SetVariable('gid', $gid);
+        $tpl->SetVariable('lbl_edit_group', _t('USERS_EDIT_GROUP'));
+        $tpl->SetVariable('url_edit_group', $this->gadget->urlMap('EditUserGroup', array('gid' => $gid)));
 
         $members = $jUser->GetUsers($gid);
         $tpl->SetVariable('lbl_members', _t('USERS_GROUPS_MEMBERS'));
         $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
         $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
-        foreach($members as $user) {
+        foreach($members as $member) {
             $tpl->SetBlock('manage_group/member');
-            $tpl->SetVariable('id', $user['id']);
-            $tpl->SetVariable('username', $user['username']);
-            $tpl->SetVariable('nickname', $user['nickname']);
+            $tpl->SetVariable('id', $member['id']);
+            $tpl->SetVariable('username', $member['username']);
+            $tpl->SetVariable('nickname', $member['nickname']);
 
             // user's profile
             $tpl->SetVariable(
                 'user_url',
-                $this->gadget->urlMap('Profile', array('user' => $user['username']))
+                $this->gadget->urlMap('Profile', array('user' => $member['username']))
             );
             $tpl->ParseBlock('manage_group/member');
         }

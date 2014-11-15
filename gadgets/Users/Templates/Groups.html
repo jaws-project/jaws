@@ -26,9 +26,7 @@
         <tbody>
         <!-- BEGIN group -->
         <tr>
-          <td>
-              <input type="checkbox" name="group_checkbox[]" value="{{id}}" class="table-checkbox">
-          </td>
+          <td><input type="checkbox" name="group_checkbox[]" value="{{id}}"></td>
           <td><a href="{{url}}" title="{{name}}">{{name}}</a></td>
           <td>{{title}}</td>
         </tr>
@@ -46,6 +44,7 @@
       <button value="{{lbl_actions}}" id="action_button" name="action_button"
               onclick="javascript: return doDGAction();"><img src="{{icon_ok}}" alt="{{lbl_actions}}"/>
       </button>
+      <a href="{{url_add_group}}" class="button">{{lbl_add_group}}</a>
   </div>
 
   </form>
@@ -142,9 +141,7 @@
               <tbody>
               <!-- BEGIN member -->
               <tr>
-                  <td>
-                      <input type="checkbox" name="member_checkbox[]" value="{{id}}">
-                  </td>
+                  <td><input type="checkbox" name="member_checkbox[]" value="{{id}}"></td>
                   <td><a href="{{user_url}}">{{username}}</a></td>
                   <td>{{nickname}}</td>
               </tr>
@@ -163,6 +160,7 @@
                 <button value="{{lbl_actions}}" id="action_button" name="action_button" onclick="javascript: return doDGAction();" >
                 <img src="{{icon_ok}}" alt="{{lbl_actions}}"/>
                 </button>
+                <a href="{{url_edit_group}}" class="button">{{lbl_edit_group}}</a>
               </div>
               <!-- BEGIN all_users -->
               <div><label for="users">{{lbl_users}}:</label>
