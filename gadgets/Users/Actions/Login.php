@@ -224,6 +224,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
             // welcome
             $tpl->SetVariable('welcome', _t('USERS_WELCOME'));
+            $tpl->SetVariable('profile', _t('USERS_PROFILE'));
             $uInfo = $GLOBALS['app']->Session->GetAttributes('username', 'nickname', 'avatar', 'email');
             // username
             $tpl->SetVariable('username',  $uInfo['username']);
@@ -239,40 +240,6 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             );
             // email
             $tpl->SetVariable('email',  $uInfo['email']);
-
-            // edit account information
-            if ($this->gadget->GetPermission(
-                    'EditUserName,EditUserNickname,EditUserEmail,EditUserPassword', '', false)
-            ) {
-                $tpl->SetBlock('UserLinks/account');
-                $tpl->SetVariable('user_account', _t('USERS_EDIT_ACCOUNT'));
-                $tpl->SetVariable('account_url', $this->gadget->urlMap('Account'));
-                $tpl->ParseBlock('UserLinks/account');
-            }
-
-            // edit account personal
-            if ($this->gadget->GetPermission('EditUserPersonal')) {
-                $tpl->SetBlock('UserLinks/personal');
-                $tpl->SetVariable('user_personal', _t('USERS_EDIT_PERSONAL'));
-                $tpl->SetVariable('personal_url', $this->gadget->urlMap('Personal'));
-                $tpl->ParseBlock('UserLinks/personal');
-            }
-
-            // edit account preferences
-            if ($this->gadget->GetPermission('EditUserPreferences')) {
-                $tpl->SetBlock('UserLinks/preferences');
-                $tpl->SetVariable('user_preferences', _t('USERS_EDIT_PREFERENCES'));
-                $tpl->SetVariable('preferences_url', $this->gadget->urlMap('Preferences'));
-                $tpl->ParseBlock('UserLinks/preferences');
-            }
-
-            // edit account contacts
-            if ($this->gadget->GetPermission('EditUserContacts')) {
-                $tpl->SetBlock('UserLinks/contacts');
-                $tpl->SetVariable('user_contacts', _t('USERS_EDIT_CONTACTS'));
-                $tpl->SetVariable('contacts_url', $this->gadget->urlMap('Contacts'));
-                $tpl->ParseBlock('UserLinks/contacts');
-            }
 
             // manage friends
             if ($this->gadget->GetPermission('ManageFriends')) {

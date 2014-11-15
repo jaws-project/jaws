@@ -8,7 +8,7 @@
  * @copyright  2012-2014 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Profile extends Jaws_Gadget_Action
+class Users_Actions_Profile extends Users_Actions_Default
 {
     /**
      * Get AboutUser action params(superadmin users list)
@@ -160,6 +160,11 @@ class Users_Actions_Profile extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('Profile.html');
         $tpl->SetBlock('profile');
         $tpl->SetVariable('title',  _t('USERS_PROFILE_INFO'));
+        $tpl->SetVariable('menubar', $this->MenuBar('Profile'));
+        $tpl->SetVariable(
+            'submenubar',
+            $this->SubMenuBar('Profile', array('Profile', 'Account', 'Personal', 'Preferences', 'Contacts'))
+        );
         $tpl->SetVariable('avatar', $user['avatar']);
         // username
         $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
