@@ -352,3 +352,6 @@ margin-bottom:10px;
 font-size:10px;
 font-weight:normal;
 }
+#log_install input{
+vertical-align:-3px;
+}
