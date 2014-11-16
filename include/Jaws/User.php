@@ -232,6 +232,51 @@ class Jaws_User
     }
 
     /**
+     * Get the info of an user by the username or ID
+     *
+     * @access  public
+     * @param   mixed   $group      Group ID
+     * @param   bool    $account    Account information
+     * @param   bool    $personal   Personal information
+     * @param   bool    $contacts   Contacts information
+     * @param   bool    $password   Returns password
+     * @return  mixed   Returns an array with the info of the user and false on error
+     */
+    function GetGroupUsers($group, $account = true, $personal = false, $contacts = false, $password = false)
+    {
+        $columns = array('users.id:integer', 'avatar');
+        // account information
+        if ($account) {
+            $columns = array_merge($columns, array('username', 'nickname', 'email', 'superadmin:boolean',
+                'concurrents', 'logon_hours', 'expiry_date', 'registered_date', 'status:integer',
+                'last_update', 'bad_password_count', 'last_access',)
+            );
+        }
+
+        if ($password) {
+            $columns = array_merge($columns, array('password'));
+        }
+
+        if ($personal) {
+            $columns = array_merge($columns, array('fname', 'lname', 'gender', 'ssn', 'dob', 'url',
+                'public:boolean', 'privacy:boolean', 'signature', 'about', 'experiences', 'occupations',
+                'interests',)
+            );
+        }
+
+        if ($contacts) {
+            $columns = array_merge($columns, array('country', 'city', 'address', 'postal_code', 'phone_number',
+                'mobile_number', 'fax_number'));
+        }
+
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $usersTable->select($columns);
+        $usersTable->join('users_groups', 'users_groups.user_id', 'users.id');
+        $usersTable->where('group_id', (int)$group);
+        return $usersTable->fetchAll();
+    }
+
+    /**
      * Get the info of an user(s) by the email address
      *
      * @access  public
