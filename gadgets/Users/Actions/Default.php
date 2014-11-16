@@ -110,7 +110,8 @@ class Users_Actions_Default extends Jaws_Gadget_Action
             $action_selected = 'Profile';
         }
 
-        $menubar = new Jaws_Widgets_Menubar('gadget_submenubar');
+        $menubar = new Jaws_Widgets_Menubar();
+        $menubar->setClass('gadget_submenubar');
         if (in_array('Profile', $actions)) {
             $menubar->AddOption('Profile',
                 _t('USERS_PROFILE'),
