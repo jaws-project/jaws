@@ -2,7 +2,7 @@
 <form action="{{base_script}}" name="Admin" onsubmit="return searchPage();" method="post">
 <input type="hidden" name="gadget" value="StaticPage" />
 <input type="hidden" name="action" value="ManagePages" />
-{{menubar}}
+<div class="gadget_menubar">{{menubar}}</div>
 <div id="main">
 <table style="width: 100%;">
   <tr>
@@ -30,7 +30,7 @@
 <!-- END static_page -->
 
 <!-- BEGIN pageform -->
-{{menubar}}
+<div class="gadget_menubar">{{menubar}}</div>
 {{autodraft}}
 <div id="preview" class="editor-preview">
 <fieldset>
@@ -50,7 +50,7 @@
 <!-- END pageform -->
 
 <!-- BEGIN Properties -->
-{{menubar}}
+<div class="gadget_menubar">{{menubar}}</div>
 <div id="main">
 <center>{{form}}</center>
 </div>
