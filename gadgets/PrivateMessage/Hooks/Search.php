@@ -38,7 +38,6 @@ class PrivateMessage_Hooks_Search extends Jaws_Gadget_Hook
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $params = array();
         $params['user'] = $user;
-        $params['published'] = true;
 
         $sql = '
             SELECT

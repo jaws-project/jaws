@@ -6,7 +6,7 @@
     <div id="privatemessage_compose_response" class="{{type}}">{{text}}</div>
   </div>
 
-  <form name="compose" action="{{base_script}}" method="post" enctype="multipart/form-data">
+  <form id="compose" name="compose" action="{{base_script}}" method="post" enctype="multipart/form-data">
       <input type="hidden" value="15000000" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE">
       <input type="hidden" name="gadget" value="PrivateMessage"/>
       <input type="hidden" name="action" value="SendMessage"/>
@@ -86,8 +86,8 @@
 
   <div class="gadget_actions actions">
       <a href="{{back_url}}" class="button" id="btn_back">{{lbl_back}}</a>
-      <a class="button" href="javascript:sendMessage(false)" id="btn_save_draft">{{lbl_save_draft}}</a>
-      <a class="button" href="javascript:sendMessage(true)" id="btn_send">{{lbl_send}}</a>
+      <a class="button" href="javascript:sendMessage(true)" id="btn_save_draft">{{lbl_save_draft}}</a>
+      <a class="button" href="javascript:sendMessage(false)" id="btn_send">{{lbl_send}}</a>
   </div>
 </div>
 <div class="gadget_footer"></div>
@@ -120,10 +120,6 @@
             ChangeToggleIcon(this);
         });
     });
-
-    // auto draft message
-    setInterval('autoDraftMessage();', 120000);
-
 </script>
 
 <!-- END compose -->

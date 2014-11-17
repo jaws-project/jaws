@@ -10,12 +10,12 @@
 var PrivateMessageCallback = {
     SendMessage: function (response) {
         if (response.type == 'response_notice') {
-            if(response.data.published==true) {
+            if (response.data['is_draft']) {
+                document.id('id').value = response.data.message_id;
+                resetAttachments(response.data.message_id);
+            } else {
                 window.location.href = response.data.url;
                 return;
-            } else {
-                $('id').value = response.data.message_id;
-                resetAttachments(response.data.message_id);
             }
         }
         PrivateMessageAjax.showResponse(response);
@@ -29,10 +29,10 @@ function filterInbox()
 {
     var result = PrivateMessageAjax.callSync(
         'InboxDataGridUI',
-        $(document).getElement('form[name=inbox]').toQueryString().parseQueryString()
+        document.id(document).getElement('form[name=inbox]').toQueryString().parseQueryString()
     );
 
-    $('inbox-datagrid').innerHTML = result;
+    document.id('inbox-datagrid').innerHTML = result;
     return false;
 }
 
@@ -42,23 +42,23 @@ function filterInbox()
  */
 function resetAttachments(message_id) {
     var ui = PrivateMessageAjax.callSync('GetMessageAttachmentUI', {'id': message_id});
-    $('attachment_area').set('html', ui);
+    document.id('attachment_area').set('html', ui);
     uploadedFiles = new Array();
     lastAttachment = 1;
-    $('attachment1').show();
-    $('attach_loading').hide();
-    $('btn_attach1').hide();
+    document.id('attachment1').show();
+    document.id('attach_loading').hide();
+    document.id('btn_attach1').hide();
 }
 
 /**
  * Removes the attachment
  */
 function removeAttachment(id) {
-    $('frm_file').reset();
-    $('btn_attach' + id).hide();
-    $('file_link' + id).set('html', '');
-    $('file_size' + id).set('html', '');
-    $('attachment' + lastAttachment).show();
+    document.id('frm_file').reset();
+    document.id('btn_attach' + id).hide();
+    document.id('file_link' + id).set('html', '');
+    document.id('file_size' + id).set('html', '');
+    document.id('attachment' + lastAttachment).show();
     uploadedFiles[id] = false;
 }
 
@@ -67,11 +67,11 @@ function removeAttachment(id) {
  */
 function toggleDisableForm(disabled)
 {
-    $('subject').disabled           = disabled;
-    $('body').disabled              = disabled;
-    $('btn_back').disabled          = disabled;
-    $('btn_save_draft').disabled    = disabled;
-    $('btn_send').disabled          = disabled;
+    document.id('subject').disabled           = disabled;
+    document.id('body').disabled              = disabled;
+    document.id('btn_back').disabled          = disabled;
+    document.id('btn_save_draft').disabled    = disabled;
+    document.id('btn_send').disabled          = disabled;
 }
 
 
@@ -80,12 +80,12 @@ function toggleDisableForm(disabled)
  */
 function uploadFile() {
     var iframe = new Element('iframe', {id:'ifrm_upload', name:'ifrm_upload'});
-    $('compose').adopt(iframe);
-    $('attachment_number').value = lastAttachment;
-    $('attachment' + lastAttachment).hide();
-    $('attach_loading').show();
+    document.id('compose').adopt(iframe);
+    document.id('attachment_number').value = lastAttachment;
+    document.id('attachment' + lastAttachment).hide();
+    document.id('attach_loading').show();
     toggleDisableForm(true);
-    $('frm_file').submit();
+    document.id('frm_file').submit();
 }
 
 /**
@@ -96,17 +96,17 @@ function onUpload(response) {
     uploadedFiles[lastAttachment] = response.file_info;
     if (response.type === 'error') {
         alert(response.message);
-        $('frm_file').reset();
-        $('attachment' + lastAttachment).show();
+        document.id('frm_file').reset();
+        document.id('attachment' + lastAttachment).show();
     } else {
-        $('file_link' + lastAttachment).set('html', response.file_info.title);
-        $('file_size' + lastAttachment).set('html', response.file_info.filesize_format);
-        $('btn_attach' + lastAttachment).show();
-        $('attachment' + lastAttachment).dispose();
+        document.id('file_link' + lastAttachment).set('html', response.file_info.title);
+        document.id('file_size' + lastAttachment).set('html', response.file_info.filesize_format);
+        document.id('btn_attach' + lastAttachment).show();
+        document.id('attachment' + lastAttachment).dispose();
         addFileEntry();
     }
-    $('attach_loading').hide();
-    $('ifrm_upload').destroy();
+    document.id('attach_loading').hide();
+    document.id('ifrm_upload').destroy();
 }
 
 /**
@@ -121,25 +121,16 @@ function addFileEntry() {
         '<img border="0" title="Remove" alt="Remove" src="images/stock/cancel.png"></a></div>';
     entry += ' <input type="file" onchange="uploadFile();" id="attachment' + lastAttachment + '" name="attachment' + lastAttachment + '" size="1" style="display: block;">';
 
-    $('attachment_addentry' + id).innerHTML = entry + '<span id="attachment_addentry' + (id + 1) + '">' + $('attachment_addentry' + id).innerHTML + '</span>';
+    document.id('attachment_addentry' + id).innerHTML = entry + '<span id="attachment_addentry' + (id + 1) + '">' + document.id('attachment_addentry' + id).innerHTML + '</span>';
 
-    $('attach_loading').hide();
-    $('btn_attach' + id).hide();
-}
-
-/**
- * auto save draft message
- */
-function autoDraftMessage() {
-    if($('body').value.trim()!=='') {
-        sendMessage(false);
-    }
+    document.id('attach_loading').hide();
+    document.id('btn_attach' + id).hide();
 }
 
 /**
  * send a message
  */
-function sendMessage(published) {
+function sendMessage(isDraft) {
 
     // detect pre load users or groups list
     if (recipient_user == "" || recipient_user.length == 0) {
@@ -163,9 +154,9 @@ function sendMessage(published) {
     }
 
     var attachments = uploadedFiles.concat(getSelectedAttachments());
-    PrivateMessageAjax.callAsync('SendMessage', {'id': $('id').value, 'published':published,
+    PrivateMessageAjax.callAsync('SendMessage', {'id': document.id('id').value, 'is_draft':isDraft,
                      'recipient_users':recipient_users, 'recipient_groups':recipient_groups,
-                     'subject':$('subject').value, 'body':getEditorValue('body'), 'attachments':attachments
+                     'subject':document.id('subject').value, 'body':getEditorValue('body'), 'attachments':attachments
     });
 }
 
@@ -197,8 +188,8 @@ function searchUsers(term) {
         clearUsersSearch();
         return;
     }
-    $('userSearchResult').show();
-    $('userSearchResult').innerHTML = '<a class="delete" href="javascript:clearUsersSearch();"></a>';
+    document.id('userSearchResult').show();
+    document.id('userSearchResult').innerHTML = '<a class="delete" href="javascript:clearUsersSearch();"></a>';
     for (var i = 0; i < users.length; i++) {
         new Element('div#searchResult' + users[i]['id'], {
             'html': users[i]['nickname'] + '(' +users[i]['username'] + ')',
@@ -212,8 +203,8 @@ function searchUsers(term) {
  * Clear users search result
  */
 function clearUsersSearch() {
-    $('userSearchResult').innerHTML = '<a class="delete" href="javascript:clearUsersSearch();"></a>';
-    $('userSearchResult').hide();
+    document.id('userSearchResult').innerHTML = '<a class="delete" href="javascript:clearUsersSearch();"></a>';
+    document.id('userSearchResult').hide();
 }
 
 /**
@@ -223,7 +214,7 @@ function addUserToList(userId, title) {
     if ($$('#recipient_users option[value=' + userId + ']').length > 0) {
         return;
     }
-    var box = $('recipient_users');
+    var box = document.id('recipient_users');
     box.options[box.options.length] = new Option(title, userId);
 }
 
@@ -231,7 +222,7 @@ function addUserToList(userId, title) {
  * Remove selected user from recipient list
  */
 function removeUserFromList() {
-    $('recipient_users').options[$('recipient_users').selectedIndex] = null;
+    document.id('recipient_users').options[document.id('recipient_users').selectedIndex] = null;
 }
 
 var PrivateMessageAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback);

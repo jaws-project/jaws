@@ -55,11 +55,11 @@ $actions['ChangeMessageRead'] = array(
 );
 $actions['Reply'] = array(
     'normal' => true,
-    'file' => 'Reply',
+    'file' => 'Compose',
 );
 $actions['ReplyMessage'] = array(
     'standalone' => true,
-    'file' => 'Reply',
+    'file' => 'Compose',
 );
 $actions['Compose'] = array(
     'normal' => true,

@@ -28,7 +28,6 @@ class PrivateMessage_Events_Notify extends Jaws_Gadget_Event
         $message['body'] = $params['description'];
         $message['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS;
         $message['recipient_users'] = $params['user'];
-        $message['published'] = true;
         $message['read'] = false;
 
         $model = $this->gadget->model->load('Message');

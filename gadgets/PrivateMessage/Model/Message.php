@@ -286,29 +286,6 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
     }
 
     /**
-     * Change messages publish status
-     *
-     * @access  public
-     * @param   integer  $ids           Messages id
-     * @param   bool     $published     Published status
-     * @return  bool    True or False
-     */
-    function MarkMessagesPublishStatus($ids, $published)
-    {
-        if(!is_array($ids) && is_numeric($ids)) {
-            $ids = array($ids);
-        }
-
-        $table = Jaws_ORM::getInstance()->table('pm_messages');
-        $table->update(array('published' => $published, 'update_time' => time()));
-        $res = $table->where('id', $ids, 'in')->exec();
-        if (Jaws_Error::IsError($res)) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * Mark messages read
      *
      * @access  public
@@ -367,15 +344,11 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $recipient_users = array_unique($recipient_users);
 
         // validation input fields
-        if ($messageData['published']) {
-            if (empty($recipient_users) || count($recipient_users) <= 0 || empty($messageData['subject'])) {
-                return new Jaws_Error(_t('PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS'));
-            }
-
-        } else {
-            if (empty($messageData['subject'])) {
-                return new Jaws_Error(_t('PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS'));
-            }
+        if (empty($messageData['subject']) ||
+            ($messageData['folder'] != PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT &&
+            (empty($recipient_users) || count($recipient_users) <= 0)))
+        {
+            return new Jaws_Error(_t('PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS'));
         }
 
         $mTable = $table->table('pm_messages');
@@ -384,45 +357,53 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
 
         $messageIds = array();
         $data = array();
-        $data['subject']            = $messageData['subject'];
-        $data['body']               = $messageData['body'];
-        $data['attachments']        = isset($messageData['attachments'])? count($messageData['attachments']) : 0;
-        $data['recipient_users']    = $messageData['recipient_users'];
-        $data['recipient_groups']   = isset($messageData['recipient_groups'])? $messageData['recipient_groups'] : null;
-        $data['update_time']        = time();
+        $data['folder']           = $messageData['folder'];
+        $data['subject']          = $messageData['subject'];
+        $data['body']             = $messageData['body'];
+        $data['attachments']      = isset($messageData['attachments'])? count($messageData['attachments']) : 0;
+        $data['recipient_users']  = $messageData['recipient_users'];
+        $data['recipient_groups'] = isset($messageData['recipient_groups'])? $messageData['recipient_groups'] : null;
+        $data['update_time']      = time();
 
         // Detect notification, draft or publish?
         $is_notification = ($messageData['folder'] == PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS);
-        if($messageData['published']) {
-            $data['folder'] = $is_notification?
-                PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS :
-                PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX;
-            // Send new message
-            if(empty($messageData['id'])) {
-                // First we must insert a record to messages table for sender
+        if ($messageData['folder'] == PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT) {
+            if (empty($messageData['id'])) {
+                // save new draft message
+                $data['from'] = $user;
+                $data['to'] = 0;
+                $data['insert_time'] = time();
+                $senderMessageId = $mTable->insert($data)->exec();
+            } else {
+                // update old message info
+                $senderMessageId = $messageData['id'];
+                $mTable->update($data)->where('id', $senderMessageId)->exec();
+            }
+        } else {
+            // First insert a message in sender's outbox
+            if (empty($messageData['id'])) {
+                // new message
                 if ($is_notification) {
                     $senderMessageId = 0;
                 } else {
+                    $data['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX;
                     $data['from'] = $user;
                     $data['to'] = 0;
                     $data['insert_time'] = time();
                     $senderMessageId = $mTable->insert($data)->exec();
                 }
-            // Send old message
             } else {
+                // update message
                 $mTable->update($data)->where('id', $messageData['id'])->exec();
                 $senderMessageId = $messageData['id'];
             }
 
-            // Insert records for every recipient users
+            // Insert message for every recipient
             if (!empty($recipient_users) && count($recipient_users) > 0) {
                 $table = $table->table('pm_messages');
-                $target_folder = $is_notification?
-                    PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS :
-                    PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX;
                 $from = $is_notification? 0 : $user;
+                $data['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX;
                 foreach ($recipient_users as $recipient_user) {
-                    $data['folder'] = $target_folder;
                     $data['insert_time'] = time();
                     $data['from'] = $from;
                     $data['to'] = $recipient_user;
@@ -430,29 +411,11 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                     if (Jaws_Error::IsError($messageId)) {
                         //Rollback Transaction
                         $table->rollback();
-
                         return false;
                     }
-
                     $messageIds[] = $messageId;
                 }
             }
-
-        } else {
-            $data['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT;
-            // save new draft message
-            if(empty($messageData['id'])) {
-                $data['from'] = $user;
-                $data['to'] = 0;
-                $data['insert_time'] = time();
-                $senderMessageId = $mTable->insert($data)->exec();
-
-                // update old message info
-            } else {
-                $senderMessageId = $messageData['id'];
-                $mTable->update($data)->where('id', $senderMessageId)->exec();
-            }
-
         }
 
         // Insert attachments info

@@ -492,9 +492,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 RESPONSE_ERROR
             );
         }
-        Jaws_Header::Location(
-            $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX))
-        );
+        Jaws_Header::Referrer();
     }
 
 
@@ -538,9 +536,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 RESPONSE_ERROR
             );
         }
-        Jaws_Header::Location(
-            $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED))
-        );
+        Jaws_Header::Referrer();
     }
 
 
@@ -584,7 +580,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 RESPONSE_ERROR
             );
         }
-        Jaws_Header::Location($this->gadget->urlMap('Messages'));
+        Jaws_Header::Referrer();
     }
 
     /**
@@ -670,7 +666,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 RESPONSE_ERROR
             );
         }
-        Jaws_Header::Location($this->gadget->urlMap('Messages'));
+        Jaws_Header::Referrer();
     }
 
     /**
@@ -713,6 +709,12 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 RESPONSE_ERROR
             );
         }
-        Jaws_Header::Location($this->gadget->urlMap('Messages'));
-    }
+        if (count($messagesSelected) > 0) {
+            Jaws_Header::Referrer();
+        } else {
+            Jaws_Header::Location(
+                $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX))
+            );
+        }
+   }
 }

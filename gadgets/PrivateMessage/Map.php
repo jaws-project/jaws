@@ -17,7 +17,7 @@ $maps[] = array(
     'pm/messages[/folder/{folder}][/page/{page}][/read/{read}][/replied/{replied}][/term/{term}][/pageitem/{page_item}]',
     array(
         'page' => '[[:digit:]]+',
-        'folder' => '[[:digit:]\-]+',
+        'folder' => '[[:digit:]]+',
     )
 );
 $maps[] = array(
@@ -25,13 +25,9 @@ $maps[] = array(
     'pm/compose[/id/{id}][/user/{user}][/reply/{reply}]',
     array(
         'id' => '[\p{L}[:digit:]\-_\.]+',
+        'user' => '[[:alnum:]\-_.@]+',
         'reply' => '[[:lower:]-]+',
     )
-);
-$maps[] = array(
-    'Reply',
-    'pm/reply/{id}',
-    array('id' => '[\p{L}[:digit:]\-_\.]+',)
 );
 $maps[] = array(
     'Message',

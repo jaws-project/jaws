@@ -40,6 +40,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $recipient_users = array();
         $recipient_groups = array();
         $show_recipient = true;
+        // draft or reply
         if (!empty($id)) {
             $message = $model->GetMessage($id, true, false);
 
@@ -48,7 +49,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 return Jaws_HTTPError::Get(403);
             }
 
-            // edit draft
+            // open draft
             if (empty($get['reply'])) {
 
                 // Check draft status
@@ -58,11 +59,10 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
 
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
                 $tpl->SetVariable('id', $id);
-                $recipient_users = explode(",", $message['recipient_users']);
-                $recipient_groups = explode(",", $message['recipient_groups']);
+                $recipient_users = array_map('intval', explode(',', $message['recipient_users']));
+                $recipient_groups = array_map('intval', explode(',', $message['recipient_groups']));
                 $body_value = $message['body'];
                 $tpl->SetVariable('subject', $message['subject']);
-
                 $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
                 $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id));
 
@@ -178,10 +178,10 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
 
             if (!empty($recipient_users)) {
                 foreach ($recipient_users as $userId) {
-                    $user_info = $userModel->GetUser((int)$userId, true);
+                    $user_info = $userModel->GetUser($userId, true);
                     $tpl->SetBlock('compose/recipients/user');
                     $tpl->SetVariable('title', $user_info['nickname']);
-                    $tpl->SetVariable('value', $userId);
+                    $tpl->SetVariable('value', $user_info['id']);
                     $tpl->ParseBlock('compose/recipients/user');
                 }
             }
@@ -302,8 +302,8 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
 
         $post = jaws()->request->fetch(
             array(
-                'id', 'recipient_users', 'recipient_groups',
-                'subject', 'body', 'attachments:array', 'published'
+                'id', 'recipient_users', 'recipient_groups', 'folder',
+                'subject', 'body', 'attachments:array', 'is_draft:bool'
             ),
             'post'
         );
@@ -312,42 +312,46 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Message');
 
+        if (empty($post['folder'])) {
+            $post['folder'] = $post['is_draft']?
+                PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT:
+                PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX;
+        }
         $message_id = $model->SendMessage($user, $post);
-        $url = $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX));
+
+        $url = $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX));
         if (is_numeric($message_id) && $message_id > 0) {
-            if ($post['published'] == true) {
+            if ($post['is_draft']) {
                 $GLOBALS['app']->Session->PushResponse(
-                    _t('PRIVATEMESSAGE_MESSAGE_SEND'),
-                    'PrivateMessage.Message',
+                    _t('PRIVATEMESSAGE_DRAFT_SAVED'),
+                    'PrivateMessage.Compose',
                     RESPONSE_NOTICE
                 );
-            }
-
-            $GLOBALS['app']->Session->PushResponse(
-                _t('PRIVATEMESSAGE_DRAFT_SAVED'),
-                'PrivateMessage.Compose',
-                RESPONSE_NOTICE,
-                array('published' => $post['published'], 'url' => $url, 'message_id' => $message_id)
-            );
-        } else {
-            if ($post['published'] == true) {
+            } else {
                 $GLOBALS['app']->Session->PushResponse(
-                    _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_SEND'),
+                    _t('PRIVATEMESSAGE_MESSAGE_SEND'),
+                    'PrivateMessage.Compose',
+                    RESPONSE_NOTICE,
+                    array('is_draft' => false, 'url' => $url, 'message_id' => $message_id)
+                );
+            }
+        } else {
+            if ($post['is_draft']) {
+                $GLOBALS['app']->Session->PushResponse(
+                    _t('PRIVATEMESSAGE_DRAFT_NOT_SAVED'),
                     'PrivateMessage.Compose',
                     RESPONSE_ERROR
                 );
             } else {
                 $GLOBALS['app']->Session->PushResponse(
-                    _t('PRIVATEMESSAGE_DRAFT_NOT_SAVED'),
+                    _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_SEND'),
                     'PrivateMessage.Compose',
                     RESPONSE_ERROR
                 );
             }
         }
 
-        Jaws_Header::Location(
-            $this->gadget->urlMap('Messages', array('folder'=>PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX)),
-            'PrivateMessage.Compose');
+        Jaws_Header::Location($url, 'PrivateMessage.Compose');
     }
 
     /**
