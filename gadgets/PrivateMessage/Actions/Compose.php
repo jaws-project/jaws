@@ -320,33 +320,26 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $message_id = $model->SendMessage($user, $post);
 
         $url = $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX));
-        if (is_numeric($message_id) && $message_id > 0) {
+        if (Jaws_Error::IsError($message_id)) {
+            $GLOBALS['app']->Session->PushResponse(
+                $message_id->getMessage(),
+                'PrivateMessage.Compose',
+                RESPONSE_ERROR
+            );
+        } else {
             if ($post['is_draft']) {
                 $GLOBALS['app']->Session->PushResponse(
                     _t('PRIVATEMESSAGE_DRAFT_SAVED'),
                     'PrivateMessage.Compose',
-                    RESPONSE_NOTICE
+                    RESPONSE_NOTICE,
+                    array('is_draft' => true, 'message_id' => $message_id)
                 );
             } else {
                 $GLOBALS['app']->Session->PushResponse(
                     _t('PRIVATEMESSAGE_MESSAGE_SEND'),
                     'PrivateMessage.Compose',
                     RESPONSE_NOTICE,
-                    array('is_draft' => false, 'url' => $url, 'message_id' => $message_id)
-                );
-            }
-        } else {
-            if ($post['is_draft']) {
-                $GLOBALS['app']->Session->PushResponse(
-                    _t('PRIVATEMESSAGE_DRAFT_NOT_SAVED'),
-                    'PrivateMessage.Compose',
-                    RESPONSE_ERROR
-                );
-            } else {
-                $GLOBALS['app']->Session->PushResponse(
-                    _t('PRIVATEMESSAGE_ERROR_MESSAGE_NOT_SEND'),
-                    'PrivateMessage.Compose',
-                    RESPONSE_ERROR
+                    array('url' => $url)
                 );
             }
         }

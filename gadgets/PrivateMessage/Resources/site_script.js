@@ -10,12 +10,11 @@
 var PrivateMessageCallback = {
     SendMessage: function (response) {
         if (response.type == 'response_notice') {
-            if (response.data['is_draft']) {
+            if (response.data && response.data.is_draft) {
                 document.id('id').value = response.data.message_id;
                 resetAttachments(response.data.message_id);
             } else {
-                window.location.href = response.data.url;
-                return;
+                setTimeout(function() {window.location.href = response.data.url;}, 1000);
             }
         }
         PrivateMessageAjax.showResponse(response);
