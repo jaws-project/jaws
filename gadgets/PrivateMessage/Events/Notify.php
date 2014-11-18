@@ -27,10 +27,13 @@ class PrivateMessage_Events_Notify extends Jaws_Gadget_Event
         $message['subject'] = $params['title'];
         $message['body'] = $params['description'];
         $message['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS;
-        $message['recipient_users'] = $params['user'];
         $message['read'] = false;
+        $message['recipient_users'] = isset($params['user'])? $params['user'] : '';
+        if (isset($params['group'])) {
+            $message['recipient_groups'] = $params['group'];
+        }
 
         $model = $this->gadget->model->load('Message');
-        $model->SendMessage(0, $message);
+        $res = $model->SendMessage(0, $message);
     }
 }
