@@ -389,6 +389,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                     $data['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX;
                     $data['from'] = $user;
                     $data['to'] = 0;
+                    $data['read'] = true;
                     $data['insert_time'] = time();
                     $senderMessageId = $mTable->insert($data)->exec();
                 }
@@ -414,6 +415,15 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                         return false;
                     }
                     $messageIds[] = $messageId;
+
+                    // send notification on new private message
+                    // if ($post['folder'] != PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS) {
+                        // $params = array();
+                        // $params['title'] = _t('FARAMOOZ_NOTIFY_COURSE_ENROLL_TITLE');
+                        // $params['description'] = _t('FARAMOOZ_NOTIFY_COURSE_ENROLL_COMPLETED_USER', $link);
+                        // $params['user'] = $uid;
+                        // $this->gadget->event->shout('Notify', $params);
+                    // }
                 }
             }
         }
