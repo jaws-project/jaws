@@ -322,6 +322,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 
         $tpl->SetBlock('message');
 
+        $tpl->SetVariable('confirmTrash', _t('PRIVATEMESSAGE_MESSAGE_CONFIRM_TRASH'));
         $tpl->SetVariable('confirmDelete', _t('PRIVATEMESSAGE_MESSAGE_CONFIRM_DELETE'));
         $tpl->SetVariable('lbl_from', _t('PRIVATEMESSAGE_MESSAGE_FROM'));
         $tpl->SetVariable('lbl_send_time', _t('PRIVATEMESSAGE_MESSAGE_SEND_TIME'));
