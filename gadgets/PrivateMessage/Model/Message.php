@@ -402,7 +402,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             if (!empty($recipient_users) && count($recipient_users) > 0) {
                 $table = $table->table('pm_messages');
                 $from = $is_notification? 0 : $user;
-                $data['folder'] = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX;
+                $data['folder'] = $messageData['folder'];
                 foreach ($recipient_users as $recipient_user) {
                     $data['insert_time'] = time();
                     $data['from'] = $from;
