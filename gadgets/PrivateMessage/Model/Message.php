@@ -372,6 +372,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                 // save new draft message
                 $data['from'] = $user;
                 $data['to'] = 0;
+                $data['read'] = true;
                 $data['insert_time'] = time();
                 $senderMessageId = $mTable->insert($data)->exec();
             } else {
@@ -408,6 +409,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                     $data['insert_time'] = time();
                     $data['from'] = $from;
                     $data['to'] = $recipient_user;
+                    $data['read'] = false;
                     $messageId = $table->insert($data)->exec();
                     if (Jaws_Error::IsError($messageId)) {
                         //Rollback Transaction
