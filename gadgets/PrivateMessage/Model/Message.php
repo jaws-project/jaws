@@ -419,13 +419,13 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                     $messageIds[] = $messageId;
 
                     // send notification on new private message
-                    // if ($post['folder'] != PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS) {
-                        // $params = array();
-                        // $params['title'] = _t('FARAMOOZ_NOTIFY_COURSE_ENROLL_TITLE');
-                        // $params['description'] = _t('FARAMOOZ_NOTIFY_COURSE_ENROLL_COMPLETED_USER', $link);
-                        // $params['user'] = $uid;
-                        // $this->gadget->event->shout('Notify', $params);
-                    // }
+                    if (!$is_notification) {
+                        $params = array();
+                        $params['title'] = _t('PRIVATEMESSAGE_NEW_MESSAGE_NOTIFICATION_TITLE');
+                        $params['description'] = _t('PRIVATEMESSAGE_NEW_MESSAGE_NOTIFICATION_DESC', $data['subject']);
+                        $params['user'] = (int)$recipient_user;
+                        $this->gadget->event->shout('Notify', $params);
+                    }
                 }
             }
         }
