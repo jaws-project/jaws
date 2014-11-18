@@ -536,7 +536,13 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 RESPONSE_ERROR
             );
         }
-        Jaws_Header::Referrer();
+        if (count($messagesSelected) > 0) {
+            Jaws_Header::Referrer();
+        } else {
+            Jaws_Header::Location(
+                $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX))
+            );
+        }
     }
 
 
@@ -623,7 +629,13 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
                 RESPONSE_ERROR
             );
         }
-        Jaws_Header::Referrer();
+        if (count($messagesSelected) > 0) {
+            Jaws_Header::Referrer();
+        } else {
+            Jaws_Header::Location(
+                $this->gadget->urlMap('Messages', array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX))
+            );
+        }
     }
 
     /**
