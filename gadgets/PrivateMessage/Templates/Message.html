@@ -1,89 +1,59 @@
 <!-- BEGIN message -->
-<div class="row profile">
-  <h1 class="hidden">{{title}}</h1>
-  <div class="col-md-12">
-    <!-- TABS -->
-    <div class="tabbable tabbable-custom tabbable-full-width">
-      <ul class="nav nav-tabs">
-        <li><a href="users/account">پروفایل <i class="fa fa-user"></i></a></li>
-        <li><a href="my">آموزش <i class="fa fa-graduation-cap"></i></a></li>
-        <li class="active"><a href="pm/notifications">پیام ها<i class="fa fa-bell-o"></i></a></li>
-        <li><a href="payment/invoices">مالی <i class="fa fa-credit-card"></i></a></li>
-        <li><a href="#tab-inactive" data-toggle="tab">ایمیل <i class="fa fa-envelope-o"></i></a></li>
-        <li><a href="#tab-inactive" data-toggle="tab">پیامک <i class="fa fa-mobile"></i></a></li>
-      </ul>
-      <div class="tab-content">
-        <div class="tab-pane active">
-          <div class="row user-account">
-            <div class="col-lg-3 col-md-4 col-sm-5 col-xs-5 col-xxs-12">
-              <ul class="ver-inline-menu tabbable profile-nav margin-bottom-10">
-                <li class="folder-6">
-                  <a href="pm/notifications">
-                  <i class="fa fa-bell-o"></i>اطلاعیه ها 
-                </li>
-                <li class="folder-1">
-                  <a href="pm/inbox">
-                  <i class="fa fa-arrow-circle-o-down"></i>پیام های دریافتی 
-                </li>
-                <li class="folder-3">
-                  <a href="pm/sent">
-                  <i class="fa fa-arrow-circle-o-up"></i>پیام های ارسالی</a>
-                </li>
-                <li class="folder-2">
-                  <a href="pm/draft">
-                  <i class="fa fa-edit"></i>پیش نویس 
-                </li>
-                <li class="folder-4">
-                  <a href="pm/archive">
-                  <i class="fa fa-archive"></i>بایگانی</a>
-                </li>
-                <li class="folder-5">
-                  <a href="pm/trash">
-                  <i class="fa fa-trash-o"></i>سطل زباله</a>
-                </li>
-                <li>
-                  <a href="pm/compose">
-                  <i class="fa fa-pencil"></i>ارسال پیام</a>
-                </li>
-              </ul>
-            </div>
-            <div class="col-md-9 content-form-page">
-              <div class="gadget_response"><div id="simple_response" class="{{type}} fa">{{text}}</div></div>
-              <div class="tab-content">
-                <div class="tab-pane active">
-          <div class="portlet light bordered pm-message">
-						<div class="portlet-title">
-              <h3>{{subject}}</h3>
-							<div class="caption">
-								<span class="user_avatar"><img src="{{avatar}}" alt="{{username}}" title="{{nickname}}"/></span>
-                <span class="caption-helper bold"><a href="{{user_url}}">{{from}}</a></span>
-								<span class="caption-helper">{{send_time}}</span>
-							</div>
-              <div class="tools">
-                <!-- BEGIN reply --><a href="{{reply_url}}" title="{{reply}}"><i class="fa fa-mail-forward"></i></a><!-- END reply -->
-                <!-- BEGIN forward --><a href="{{forward_url}}" title="{{forward}}"><i class="fa fa-arrow-left"></i></a><!-- END forward -->
-                <!-- BEGIN archive --><a href="{{archive_url}}" title="{{archive}}"><i class="fa fa-archive"></i></a><!-- END archive -->
-                <!-- BEGIN trash --><a href="javascript:trashMessage()" title="{{trash}}"><i class="fa fa-trash-o"></i></a><!-- END trash -->
-                <!-- BEGIN delete --><a href="javascript:deleteMessage()" title="{{delete}}"><i class="fa fa-times"></i></a><!-- END delete -->
-							</div>
-						</div>
-						<div class="portlet-body">
-							<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;"><div class="scroller" style="overflow: hidden; width: auto; height: 200px;" data-always-visible="1" data-rail-visible="1" data-rail-color="red" data-handle-color="green" data-initialized="1">
-								<p>{{body}}</p>
-							</div><div class="slimScrollBar" style="width: 7px; position: absolute; opacity: 0.4; border-top-left-radius: 7px; border-top-right-radius: 7px; border-bottom-right-radius: 7px; border-bottom-left-radius: 7px; z-index: 99; left: 1px; top: 100px; height: 100px; display: block; background: green;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: block; border-top-left-radius: 7px; border-top-right-radius: 7px; border-bottom-right-radius: 7px; border-bottom-left-radius: 7px; opacity: 0.2; z-index: 90; left: 1px; background: red;"></div></div>
-						</div>
-					</div>
-    <form name="pm" action="{{requested_url}}" method="post">
+<div class="gadget_header"><h3>{{title}}</h3></div>
+<div class="gadget_container">
+
+  <form name="pm" action="{{requested_url}}" method="post">
       <input type="hidden" name="gadget" value="PrivateMessage"/>
       <input type="hidden" name="action" id="action" value=""/>
       <input type="hidden" name="id" id="id" value="{{id}}"/>
 
       <div class="gadget_content content">
           <div class="user_avatar">
-              
+              <img src="{{avatar}}" alt="{{username}}" title="{{nickname}}"/>
           </div>
 
-          <div></div>
+          <div><b>{{lbl_from}}:</b> <a href="{{user_url}}">{{from}}</a></div>
+          <div><b>{{lbl_send_time}}:</b> {{send_time}}</div>
+
+          <div class="gadget_actions actions">
+              <!-- BEGIN back -->
+              <a href="{{back_url}}" class="button" title="{{back}}"><img src="{{icon_back}}" alt="{{back}}"/></a>
+              <!-- END back -->
+
+              <!-- BEGIN reply -->
+              <a href="{{reply_url}}" class="button" title="{{reply}}"><img src="{{icon_reply}}" alt="{{reply}}"/></a>
+              <!-- END reply -->
+
+              <!-- BEGIN forward -->
+              <a href="{{forward_url}}" class="button" title="{{forward}}"><img src="{{icon_forward}}" alt="{{forward}}"/></a>
+              <!-- END forward -->
+
+              <!-- BEGIN archive -->
+              <a href="{{archive_url}}" class="button" title="{{archive}}"><img src="{{icon_archive}}" alt="{{archive}}"/></a>
+              <!-- END archive -->
+
+              <!-- BEGIN restore_archive -->
+              <a href="{{restore_archive_url}}" class="button" title="{{restore_archive}}"><img src="{{icon_restore_archive}}" alt="{{restore_archive}}"/></a>
+              <!-- END restore_archive -->
+
+              <!-- BEGIN trash -->
+              <a href="javascript:trashMessage()" class="button" title="{{trash}}"><img src="{{icon_trash}}" alt="{{trash}}"/></a>
+              <!-- END trash -->
+
+              <!-- BEGIN restore_trash -->
+              <a href="{{restore_trash_url}}" class="button" title="{{restore_trash}}"><img src="{{icon_restore_trash}}" alt="{{restore_trash}}"/></a>
+              <!-- END restore_trash -->
+
+              <!-- BEGIN delete -->
+              <a href="javascript:deleteMessage()" class="button" title="{{delete}}"><img src="{{icon_delete}}" alt="{{delete}}"/></a>
+              <!-- END delete -->
+          </div>
+
+          <div><b>{{lbl_subject}}:</b> {{subject}}</div>
+          <div>
+              <div><b>{{lbl_body}}:</b></div>
+              <div>{{body}}</div>
+          </div>
 
           <!-- BEGIN attachment -->
           <div>&nbsp;</div>
@@ -132,36 +102,27 @@
       <!-- END splitter -->
 
   </form>
-                </div>
-              </div>
-            </div>
-            <!--end col-md-9-->
-          </div>
-        </div>
-        <!--end tab-pane-->
-        <div class="tab-pane" id="tab-inactive" style="margin:100px 0; text-align:center;">این بخش در حال حاضر غیر فعال می باشد.</div>
-      </div>
-    </div>
-    <!-- TABS -->
-  </div>
 </div>
-<script type="text/javascript">
-/**
- * Trash Message
- */
-function trashMessage() {
-    if (confirm('{{confirmTrash}}')) {
-        window.location.href = "{{trash_url}}";
-    }
-}
+<div class="gadget_footer"></div>
 
-/**
- * Delete Message
- */
-function deleteMessage() {
-    if (confirm('{{confirmDelete}}')) {
-        window.location.href = "{{delete_url}}";
+<script type="text/javascript">
+    /**
+     * Trash Message
+     */
+    function trashMessage() {
+        if (confirm('{{confirmDelete}}')) {
+            window.location.href = "{{trash_url}}";
+        }
     }
-}
+
+    /**
+     * Delete Message
+     */
+    function deleteMessage() {
+        if (confirm('{{confirmDelete}}')) {
+            window.location.href = "{{delete_url}}";
+        }
+    }
+
 </script>
 <!-- END message -->

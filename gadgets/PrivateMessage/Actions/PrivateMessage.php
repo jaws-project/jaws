@@ -19,7 +19,7 @@ class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action
     function PrivateMessage()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            return Jaws_HTTPError::Get(403);
+            return Jaws_HTTPError::Get(401);
         }
 
         $tpl = $this->gadget->template->load('PrivateMessage.html');

@@ -19,7 +19,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
     function Compose()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            return Jaws_HTTPError::Get(403);
+            return Jaws_HTTPError::Get(401);
         }
 
         $this->gadget->CheckPermission('SendMessage');
@@ -296,7 +296,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
     function SendMessage()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            return Jaws_HTTPError::Get(403);
+            return Jaws_HTTPError::Get(401);
         }
         $this->gadget->CheckPermission('SendMessage');
 

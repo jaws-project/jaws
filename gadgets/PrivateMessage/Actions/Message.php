@@ -19,7 +19,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
     function Messages()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            return Jaws_HTTPError::Get(403);
+            return Jaws_HTTPError::Get(401);
         }
 
         $this->AjaxMe('site_script.js');
@@ -284,7 +284,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
     function Message()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            return Jaws_HTTPError::Get(403);
+            return Jaws_HTTPError::Get(401);
         }
 
         $id = jaws()->request->fetch('id', 'get');

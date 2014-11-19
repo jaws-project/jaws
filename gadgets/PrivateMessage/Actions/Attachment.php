@@ -19,7 +19,7 @@ class PrivateMessage_Actions_Attachment extends Jaws_Gadget_Action
     function Attachment()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            return Jaws_HTTPError::Get(403);
+            return Jaws_HTTPError::Get(401);
         }
 
         $rqst = jaws()->request->fetch(array('uid', 'mid', 'aid'), 'get');
