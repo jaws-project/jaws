@@ -50,13 +50,13 @@ class Jaws_Notification
      * Sends notify to user
      *
      * @access  public
-     * @param   array   $user           User's properties associated array
+     * @param   array   $users          Users properties associated array
      * @param   string  $title          Notification title
      * @param   string  $summary        Notification summary
      * @param   string  $description    Notification description
      * @return  mixed   Jaws_Error on failure
      */
-    function notify($user, $title, $summary, $description)
+    function notify($users, $title, $summary, $description)
     {
         return Jaws_Error::raiseError('notify() method not supported by this driver.', __CLASS__);
     }
