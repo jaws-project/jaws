@@ -25,8 +25,8 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $this->gadget->CheckPermission('SendMessage');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $this->AjaxMe('site_script.js');
-        $get = jaws()->request->fetch(array('id', 'user', 'reply'), 'get');
-        $id = $get['id'];
+        $data = jaws()->request->fetch(array('id', 'user', 'reply', 'users:array'));
+        $id = $data['id'];
 
         $userModel = new Jaws_User();
         $model = $this->gadget->model->load('Message');
@@ -50,7 +50,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             }
 
             // open draft
-            if (empty($get['reply'])) {
+            if (empty($data['reply'])) {
 
                 // Check draft status
                 if ($message['folder'] != PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT) {
@@ -67,7 +67,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id));
 
             // reply a message
-            } else if (!empty($get['reply']) && $get['reply'] == 'true') {
+            } else if (!empty($data['reply']) && $data['reply'] == 'true') {
                 $date_format = $this->gadget->registry->fetch('date_format');
                 $date = Jaws_Date::getInstance();
                 $usrModel = new Jaws_User;
@@ -148,7 +148,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id, false));
 
             // forward a message
-            } else if (!empty($get['reply']) && $get['reply'] == 'false') {
+            } else if (!empty($data['reply']) && $data['reply'] == 'false') {
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_FORWARD_MESSAGE'));
                 $body_value = $message['body'];
                 $tpl->SetVariable('subject', _t('PRIVATEMESSAGE_FORWARD_ABBREVIATION') . ' ' .$message['subject']);
@@ -157,8 +157,10 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('attachment_ui', $this->GetMessageAttachmentUI($id));
             }
         } else {
-            if (!empty($get['user'])) {
-                $recipient_users = array($get['user']);
+            if (!empty($data['users'])) {
+                $recipient_users = $data['users'];
+            } else if (!empty($data['user'])) {
+                $recipient_users = array($data['user']);
             }
 
             $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
