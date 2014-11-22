@@ -304,7 +304,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
 
         // Detect message folder
-        if($message['from']==$user) {
+        if ($message['from'] == $user && $message['to'] != $user) {
             $folder = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX;
         } else {
             $folder = PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX;
