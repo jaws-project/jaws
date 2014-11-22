@@ -25,7 +25,7 @@ var JawsAjax = new Class({
     initialize: function (gadget, callback, baseScript) {
         this.gadget = gadget;
         this.callback = callback;
-        this.loadingMessage = 'Loading...';
+        this.loadingMessage = '...';
         var reqValues = $(document).getElement('meta[name=application-name]').getProperty('content').split(':');
         this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
         this.baseScript  = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
