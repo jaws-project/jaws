@@ -540,7 +540,7 @@ class Jaws_Utils
                 );
 
                 $fileinfo = pathinfo($host_filename);
-                if (isset($fileinfo['extension']) && !empty($fileinfo['extension'])) {
+                if (isset($fileinfo['extension'])) {
                     if (!empty($allow_formats) && !in_array($fileinfo['extension'], $allow_formats)) {
                         return new Jaws_Error(
                             _t('GLOBAL_ERROR_UPLOAD_INVALID_FORMAT', $host_filename),
@@ -548,12 +548,14 @@ class Jaws_Utils
                         );
                     }
                     $fileinfo['extension'] = '.'. $fileinfo['extension'];
+                } else {
+                    $fileinfo['extension'] = '';
                 }
 
                 if (is_null($overwrite) || empty($fileinfo['filename'])) {
-                    $host_filename = time(). mt_rand() . '.'. $fileinfo['extension'];
-                   } elseif (!$overwrite && file_exists($dest . $host_filename)) {
-                    $host_filename.= $fileinfo['filename']. '_'. time(). mt_rand(). '.'. $fileinfo['extension'];
+                    $host_filename = time(). mt_rand() . $fileinfo['extension'];
+                } elseif (!$overwrite && file_exists($dest . $host_filename)) {
+                    $host_filename.= $fileinfo['filename']. '_'. time(). mt_rand(). $fileinfo['extension'];
                 }
 
                 $uploadfile = $dest . $host_filename;
