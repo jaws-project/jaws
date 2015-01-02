@@ -90,7 +90,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
             $gid = $group['id'];
         }
 
-        $pages = $pModel->GetPages($gid, $limit, $orderBy);
+        $pages = $pModel->GetPages($gid, $limit, $orderBy, null, true);
         if (Jaws_Error::IsError($pages)) {
             return false;
         }
@@ -99,15 +99,13 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
         $tpl->SetBlock('group_pages');
         $tpl->SetVariable('title', $group['title']);
         foreach ($pages as $page) {
-            if ($page['published']) {
-                $param = array('gid' => empty($group['fast_url'])? $group['id'] : $group['fast_url'],
-                    'pid' => empty($page['fast_url']) ? $page['base_id'] : $page['fast_url']);
-                $link = $this->gadget->urlMap('Pages', $param);
-                $tpl->SetBlock('group_pages/item');
-                $tpl->SetVariable('page', $page['title']);
-                $tpl->SetVariable('link',  $link);
-                $tpl->ParseBlock('group_pages/item');
-            }
+            $param = array('gid' => empty($group['fast_url'])? $group['id'] : $group['fast_url'],
+                'pid' => empty($page['fast_url']) ? $page['base_id'] : $page['fast_url']);
+            $link = $this->gadget->urlMap('Pages', $param);
+            $tpl->SetBlock('group_pages/item');
+            $tpl->SetVariable('page', $page['title']);
+            $tpl->SetVariable('link',  $link);
+            $tpl->ParseBlock('group_pages/item');
         }
         $tpl->ParseBlock('group_pages');
 
