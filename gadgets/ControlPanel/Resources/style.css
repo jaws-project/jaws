@@ -394,6 +394,10 @@ border-top:1px solid #999;
 border-bottom:1px solid #ddd;
 border-radius:2px;
 }
+input[disabled],select[disabled],textarea[disabled]{
+color:#999;
+background-color:#eee;
+}
 input[type=checkbox],input[type=radio]{
 border:none;
 vertical-align:middle;
@@ -401,16 +405,12 @@ vertical-align:middle;
 input[type=checkbox]:focus,input[type=radio]:focus{
 border:none;
 }
-input + label{
-vertical-align:middle;
-margin-left:2px;
-}
 input:focus,textarea:focus,select:focus{
 border:1px solid #5279b4;
 }
-input[disabled],select[disabled],textarea[disabled]{
-color:#999;
-background-color:#eee;
+input + label{
+vertical-align:middle;
+margin-left:2px;
 }
 button,.button{
 padding:3px;
@@ -429,11 +429,17 @@ button:hover,.button:hover{
 color:#333;
 box-shadow:inset 0 -15px 20px #eee;
 }
-button > img,.button > img{
-float:left;
-}
 button:active,input[type="button"]:active,input[type="submit"]:active{
 color:#555;
+}
+button[disabled],.button[disabled] {
+color:#babdb6;
+border:1px solid #d3d7cf;
+background:#e8e8e8;
+box-shadow:none;
+}
+button > img,.button > img{
+float:left;
 }
 optgroup{
 color:#fff;
@@ -449,10 +455,6 @@ width:100%;
 }
 table.tableform .button{
 text-align:center;
-}
-input[disabled],select[disabled]{
-color:#999;
-background-color:#eee;
 }
 fieldset{
 padding:12px;
