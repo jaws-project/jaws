@@ -236,4 +236,5 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $tpl->ParseBlock('ErrorMaps');
         return $tpl->Get();
     }
+
 }
