@@ -13,7 +13,7 @@ class Jaws_ORM
     /**
      * Jaws_DB  object
      *
-     * @var     pbject
+     * @var     object
      * @access  public
      */
     var $jawsdb;
@@ -218,8 +218,9 @@ class Jaws_ORM
     /**
      * Creates the Jaws_ORM instance
      *
-     * @return  object returns the instance
      * @access  public
+     * @param   string  $db_instance    Instance name
+     * @return  object returns the instance
      */
     static function getInstance($db_instance = 'default')
     {
