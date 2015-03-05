@@ -29,7 +29,7 @@ class Installer_Requirements extends JawsInstallerStage
      */
     function Display()
     {
-        $tpl = new Jaws_Template(false);
+        $tpl = new Jaws_Template(false, false);
         $tpl->load('display.html', 'stages/Requirements/templates');
         $tpl->setBlock('Requirements');
 

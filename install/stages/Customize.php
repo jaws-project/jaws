@@ -26,7 +26,7 @@ class Installer_Customize extends JawsInstallerStage
         }
         _log(JAWS_LOG_DEBUG,"Generating new installation key");
 
-        $tpl = new Jaws_Template(false);
+        $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/Customize/templates');
         $tpl->SetBlock('Customize');
 

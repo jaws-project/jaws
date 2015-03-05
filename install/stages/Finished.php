@@ -18,7 +18,7 @@ class Installer_Finished extends JawsInstallerStage
      */
     function Display()
     {
-        $tpl = new Jaws_Template(false);
+        $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/Finished/templates');
         $tpl->SetBlock('Finished');
 

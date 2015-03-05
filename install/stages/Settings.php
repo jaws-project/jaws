@@ -70,7 +70,7 @@ class Installer_Settings extends JawsInstallerStage
             $data = $_SESSION['install']['data']['Settings'];
         }
 
-        $tpl = new Jaws_Template(false);
+        $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/Settings/templates');
         $tpl->SetBlock('Settings');
 

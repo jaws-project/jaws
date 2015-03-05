@@ -43,7 +43,7 @@ class Installer_CreateUser extends JawsInstallerStage
             }
         }
 
-        $tpl = new Jaws_Template(false);
+        $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/CreateUser/templates');
         $tpl->SetBlock('CreateUser');
 
