@@ -395,7 +395,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
         $template = $tpl->Get();
         $subject = _t_lang($site_language, 'CONTACT_REPLY_TO', Jaws_XSS::defilter($contact['subject']));
 
-        $mail = new Jaws_Mail;
+        $mail = Jaws_Mail::getInstance();
         $mail->SetFrom($from_email, $from_name);
         $mail->AddRecipient($to);
         $mail->AddRecipient('', 'cc');

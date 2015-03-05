@@ -198,7 +198,7 @@ class Contact_Actions_Send extends Jaws_Gadget_Action
         $tpl->ParseBlock($format);
         $template = $tpl->Get();
 
-        $mail = new Jaws_Mail;
+        $mail = Jaws_Mail::getInstance();
         $mail->SetFrom($from_email, $from_name);
         $mail->AddRecipient($to);
         $mail->SetSubject(Jaws_XSS::defilter($contact['subject']));

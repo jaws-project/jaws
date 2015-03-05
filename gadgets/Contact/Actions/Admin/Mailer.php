@@ -238,7 +238,7 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
     function SendEmail($target, $subject, $message, $attachment)
     {
         $this->gadget->CheckPermission('AccessToMailer');
-        $mail = new Jaws_Mail;
+        $mail = Jaws_Mail::getInstance();
         $mail->SetFrom();
         $mail->SetSubject(Jaws_XSS::defilter($subject));
 
