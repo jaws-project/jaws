@@ -28,7 +28,6 @@ class Jaws_Notification_Mail
     public function __construct($options)
     {
         $this->object = Jaws_Mail::getInstance('notification');
-        $this->object->SetFrom();
     }
 
 
@@ -44,6 +43,8 @@ class Jaws_Notification_Mail
      */
     function notify($users, $title, $summary, $description)
     {
+        $this->object->reset();
+        $this->object->SetFrom();
         foreach ($users as $user) {
             $this->object->AddRecipient($user['email']);
         }
