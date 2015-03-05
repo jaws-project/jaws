@@ -180,7 +180,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         }
 
         //Send an email to website owner
-        $mail->ResetValues();
+        $mail->reset();
         if (!$delete_user && ($notification == 'true' || $activation == 'admin')) {
             $tpl = $this->gadget->template->load('AdminNotification.txt');
             $tpl->SetBlock('Notification');
