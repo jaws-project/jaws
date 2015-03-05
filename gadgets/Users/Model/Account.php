@@ -89,7 +89,7 @@ class Users_Model_Account extends Jaws_Gadget_Model
         $message = $tpl->Get();            
         $subject = _t('USERS_FORGOT_PASSWORD_CHANGED_SUBJECT');
 
-        $mail = new Jaws_Mail;
+        $mail = Jaws_Mail::getInstance();
         $mail->SetFrom();
         $mail->AddRecipient($user['email']);
         $mail->SetSubject($subject);

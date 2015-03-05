@@ -86,7 +86,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $jUser->AddUserToGroup($user_id, $group);
         }
 
-        $mail = new Jaws_Mail;
+        $mail = Jaws_Mail::getInstance();
         $site_url     = $GLOBALS['app']->getSiteURL('/');
         $site_name    = $this->gadget->registry->fetch('site_name', 'Settings');
         $site_author  = $this->gadget->registry->fetch('site_author', 'Settings');
@@ -295,7 +295,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $message = $tpl->Get();            
             $subject = _t('USERS_FORGOT_REMEMBER', $site_name);
 
-            $mail = new Jaws_Mail;
+            $mail = Jaws_Mail::getInstance();
             $mail->SetFrom();
             $mail->AddRecipient($user_email);
             $mail->SetSubject($subject);

@@ -313,7 +313,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $body = $tpl->Get();
         $subject = _t('USERS_REGISTER_SUBJECT', $site_name);
 
-        $mail = new Jaws_Mail;
+        $mail = Jaws_Mail::getInstance();
         $mail->SetFrom();
         $mail->AddRecipient($user['email']);
         $mail->SetSubject($subject);

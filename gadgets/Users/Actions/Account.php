@@ -268,7 +268,7 @@ class Users_Actions_Account extends Users_Actions_Default
         $body = $tpl->Get();
 
         $subject = _t('USERS_EMAIL_REPLACEMENT_SUBJECT', $site_name);
-        $mail = new Jaws_Mail;
+        $mail = Jaws_Mail::getInstance();
         $mail->SetFrom();
         $mail->AddRecipient($new_email);
         $mail->SetSubject($subject);
