@@ -27,7 +27,7 @@ class Jaws_Notification_Mail
      */
     public function __construct($options)
     {
-        $this->object = new Jaws_Mail;
+        $this->object = Jaws_Mail::getInstance('notification');
         $this->object->SetFrom();
     }
 
