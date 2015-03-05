@@ -67,7 +67,7 @@ class Jaws_Notification_Mail
         }
         $this->object->SetSubject($title);
 
-        $tpl = new Jaws_Template();
+        $tpl = new Jaws_Template(true);
         $tpl->loadRTLDirection = $this->attributes['site_direction'] == 'rtl';
         $tpl->Load('Notification.html', 'include/Jaws/Resources');
         $tpl->SetBlock('notification');
