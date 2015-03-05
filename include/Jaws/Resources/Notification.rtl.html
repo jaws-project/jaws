@@ -1,0 +1,28 @@
+<!-- BEGIN notification -->
+<style type="text/css">
+.wrapper{width:1000px; margin:0 auto;}
+#container{direction:rtl; margin:0; padding:0; background:#fff url(data:image/png;base64\,iVBORw0KGgoAAAANSUhEUgAAAAEAAABoCAIAAAC/jA1MAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsSAAALEgHS3X78AAAAH3RFWHRTb2Z0d2FyZQBNYWNyb21lZGlhIEZpcmV3b3JrcyA4tWjSeAAAAEBJREFUGJVjMIqcwsTAwDCKEZjh1pNTTCdv/Wb4//8/051nL5kYGRmhmAFCMyD4THA+A6o6qBomDH2Y6jDVwPkAG1cNCSp8pbMAAAAASUVORK5CYII=) repeat-x;font-size:75%;}
+#header{color:#fff; clear:both; height:68px; padding:0 20px 0 0;}
+#header #title{float:right; margin-top:24px;}
+#header h1{font-size:150%; margin:0;}
+#header a{color:#fff; text-decoration: none;}
+#header p{font-size:110%; margin:0;}
+#content{clear:both; width:1000px; padding:20px 20px 0 0; padding-bottom:30px;}
+#footer{clear:both; height:28px; margin-top:-28px; line-height:28px; background:#fff url(data:image/png;base64\,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAcCAIAAAAvP0KbAAAABGdBTUEAALGPC/xhBQAAAGJJREFUGFcFwbcVwjAAQMG//xrsQUfDCGDic1DOkuVKvuMx37lcb4wxeC6CaZW8NsVbKD5S85WGn7L8tWU2jsV4VuvZXED4iAwRFRI6ZmwquFzwpRJKI9ZGajt575Teqf04AYkzTSrYjbl3AAAAAElFTkSuQmCC) repeat-x; position:relative;}
+#footer{direction:ltr;padding:8px 0 0 20px;line-height:120%;}
+</style>
+<div id="container" class="wrapper">
+  <div id="header">
+    <div id="title">
+      <h1><a href="{{site-url}}">{{site-name}}</a></h1>
+      <p>{{site-slogan}}</p>
+    </div>
+  </div>
+  <div id="content">
+    {{content}}
+  </div>
+  <div id="footer">
+    {{site-copyright}} Powered by <a href="http://jaws-project.com" rel="external">Jaws Project</a>
+  </div>
+</div>
+<!-- END notification -->
