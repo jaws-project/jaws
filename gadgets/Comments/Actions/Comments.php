@@ -595,7 +595,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $tpl->ParseBlock('notification');
         $template = $tpl->Get();
 
-        $ObjMail = new Jaws_Mail;
+        $ObjMail = Jaws_Mail::getInstance();
         $ObjMail->SetFrom();
         if (empty($reference['author_email'])) {
             $ObjMail->AddRecipient('', 'to');
@@ -641,7 +641,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $tpl->ParseBlock('notification');
         $template = $tpl->Get();
 
-        $ObjMail = new Jaws_Mail;
+        $ObjMail = Jaws_Mail::getInstance();
         $ObjMail->SetFrom();
         if (empty($email)) {
             $ObjMail->AddRecipient('', 'to');
