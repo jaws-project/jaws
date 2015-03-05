@@ -48,9 +48,9 @@ class Jaws_Gadget_Template
 
         $filepath = dirname($filename);
         $filename = basename($filename);
-        // if dirname returned dot ('.'), indicating no slashes in path
+        $loadFromTheme = isset($options['loadFromTheme'])? $options['loadFromTheme'] : (JAWS_SCRIPT == 'index');
+        // if dirname returned dot ('.'), indicating no slashes in path(current directory)
         if ($filepath == '.') {
-            $loadFromTheme = isset($options['loadFromTheme'])? $options['loadFromTheme'] : (JAWS_SCRIPT == 'index');
             if ($loadFromTheme && file_exists($theme['path']. $this->gadget->name. '/'. $filename)) {
                 $filepath = $theme['path']. $this->gadget->name;
             } else {
@@ -58,7 +58,7 @@ class Jaws_Gadget_Template
             }
         }
 
-        $tpl = new Jaws_Template();
+        $tpl = new Jaws_Template($loadFromTheme);
         foreach ($options as $option => $value) {
             $tpl->$option = $value;
         }
