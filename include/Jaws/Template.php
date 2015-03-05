@@ -40,20 +40,20 @@ class Jaws_Template
     var $globalVariables = array();
 
     var $rawStore = null;
+    var $loadFromTheme = false;
     var $loadRTLDirection = null;
 
     /**
      * Class constructor
      *
      * @access  public
-     * @param   string $base_path   Template base path(gadget or plugin name or template base path)
-     * @param   string $base_type   Template base type(JAWS_COMPONENT_OTHERS,
-     *                                                 JAWS_COMPONENT_GADGET,
-     *                                                 JAWS_COMPONENT_PLUGIN)
+     * @param   bool    $loadFromTheme          Try to load template from theme
+     * @param   bool    $loadGlobalVariables    Fetch and set global variables 
      * @return  void
      */
-    function Jaws_Template($loadGlobalVariables = true)
+    function Jaws_Template($loadFromTheme = false, $loadGlobalVariables = true)
     {
+        $this->loadFromTheme = $loadFromTheme;
         $this->IdentifierRegExp = '[\.[:digit:][:lower:]_-]+';
         $this->BlockRegExp = '@<!--\s+begin\s+('.$this->IdentifierRegExp.')\s+([^>]*)-->(.*)<!--\s+end\s+\1\s+-->@sim';
         $this->VarsRegExp = '@{{\s*('.$this->IdentifierRegExp.')\s*}}@sim';
