@@ -42,7 +42,7 @@ class Upgrader_Report extends JawsUpgraderStage
         );
 
         _log(JAWS_LOG_DEBUG,"Checking/Reporting previous missed installations");
-        $tpl = new Jaws_Template(false);
+        $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/Report/templates');
         $tpl->SetBlock('Report');
 

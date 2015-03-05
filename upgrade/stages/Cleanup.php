@@ -23,7 +23,7 @@ class Upgrader_Cleanup extends JawsUpgraderStage
         $GLOBALS['app'] = jaws();
         $GLOBALS['app']->loadPreferences(array('language' => $_SESSION['upgrade']['language']), false);
 
-        $tpl = new Jaws_Template(false);
+        $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/Cleanup/templates');
 
         _log(JAWS_LOG_DEBUG,"Preparing cleanup stage");

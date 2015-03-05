@@ -18,7 +18,7 @@ class Upgrader_111To120 extends JawsUpgraderStage
      */
     function Display()
     {
-        $tpl = new Jaws_Template(false);
+        $tpl = new Jaws_Template(false, false);
         $tpl->Load('display.html', 'stages/111To120/templates');
         $tpl->SetBlock('111To120');
 
