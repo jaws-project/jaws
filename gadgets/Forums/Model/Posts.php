@@ -303,7 +303,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $tpl->ParseBlock('notification');
         $template = $tpl->Get();
 
-        $ObjMail = new Jaws_Mail;
+        $ObjMail = Jaws_Mail::getInstance();
         $ObjMail->SetFrom();
         if (empty($email)) {
             $ObjMail->AddRecipient('', 'to');

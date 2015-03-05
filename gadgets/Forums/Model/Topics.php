@@ -485,7 +485,7 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
         $tpl->ParseBlock('notification');
         $template = $tpl->Get();
 
-        $ObjMail = new Jaws_Mail;
+        $ObjMail = Jaws_Mail::getInstance();
         $ObjMail->SetFrom();
         $ObjMail->AddRecipient('', 'to');
         $ObjMail->SetSubject($event_subject);
