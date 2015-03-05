@@ -94,57 +94,67 @@ class Jaws_Mail
      * add recipient, send emails to destination
      * email addresses calling functions.
      *
-     * @access constructor
+     * @access  private
+     * @param   array  $options  Mail options
+     * @return  void
      */
-    function Jaws_Mail($init = true)
+    private function __construct($options = array())
     {
         require_once PEAR_PATH. 'Mail.php';
         require_once PEAR_PATH. 'Mail/mime.php';
         $this->mail_mime = new Mail_Mime($this->crlf);
         $this->headers['Subject'] = '';
-        if ($init) {
-            $this->Init();
-        }
+
+        $this->mailer     = $options['mailer'];
+        $this->gate_email = $options['gate_email'];
+        $this->gate_title = $options['gate_title'];
+        $this->smtp_vrfy  = $options['smtp_vrfy'] == 'true';
+        $this->site_email = $options['site_email'];
+        $this->site_name  = $options['site_name'];
+        $this->blocked_domains = $options['blocked_domains'];
+
+        $this->params = array(
+            'sendmail_path' => $options['sendmail_path'],
+            'sendmail_args' => $options['sendmail_args'],
+            'host'          => $options['smtp_host'],
+            'port'          => $options['smtp_port'],
+            'auth'          => $options['smtp_auth']  == 'true',
+            'pipelining'    => $options['pipelining'] == 'true',
+            'username'      => $options['smtp_user'],
+            'password'      => $options['smtp_pass'],
+        );
     }
+
 
     /**
-     * This function loads the mail settings from
-     * the registry.
+     * Creates the Jaws_Mail instance if it doesn't exist else it returns the already created one
      *
      * @access  public
+     * @param   string  $instance   Instance name
+     * @return  mixed   returns the instance of Jaws_Mail or Jaws_Error on failure
      */
-    function Init()
+    static function getInstance($instance = 'default')
     {
         if (!isset($GLOBALS['app'])) {
-            return new Jaws_Error('$GLOBALS[\'app\'] not available',
-                                  __FUNCTION__);
+            return Jaws_Error::raiseError('$GLOBALS[\'app\'] not available', __FUNCTION__);
         }
 
-        // Get blocked domains name from registry
-        $this->blocked_domains = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
+        static $objInstance = array();
+        static $defaultOptions = array();
+        // initialize default options
+        if (empty($defaultOptions)) {
+            $defaultOptions = $GLOBALS['app']->Registry->fetchAll('Settings');
+            // Get blocked domains name from registry
+            $defaultOptions['blocked_domains'] = $GLOBALS['app']->Registry->fetch('blocked_domains', 'Policy');
+        }
 
-        // Get the mail settings data from registry
-        $this->mailer     = $GLOBALS['app']->Registry->fetch('mailer', 'Settings');
-        $this->gate_email = $GLOBALS['app']->Registry->fetch('gate_email', 'Settings');
-        $this->gate_title = $GLOBALS['app']->Registry->fetch('gate_title', 'Settings');
-        $this->smtp_vrfy  = $GLOBALS['app']->Registry->fetch('smtp_vrfy', 'Settings') == 'true';
+        if (!isset($objInstance[$instance])) {
+            $objInstance[$instance] = new Jaws_Mail($defaultOptions);
+        }
 
-        $this->site_email = $GLOBALS['app']->Registry->fetch('site_email', 'Settings');
-        $this->site_name  = $GLOBALS['app']->Registry->fetch('site_name', 'Settings');
-
-        $params = array();
-        $params['sendmail_path'] = $GLOBALS['app']->Registry->fetch('sendmail_path', 'Settings');
-        $params['sendmail_args'] = $GLOBALS['app']->Registry->fetch('sendmail_args', 'Settings');
-        $params['host']          = $GLOBALS['app']->Registry->fetch('smtp_host', 'Settings');
-        $params['port']          = $GLOBALS['app']->Registry->fetch('smtp_port', 'Settings');
-        $params['auth']          = $GLOBALS['app']->Registry->fetch('smtp_auth', 'Settings')  == 'true';
-        $params['pipelining']    = $GLOBALS['app']->Registry->fetch('pipelining', 'Settings') == 'true';
-        $params['username']      = $GLOBALS['app']->Registry->fetch('smtp_user', 'Settings');
-        $params['password']      = $GLOBALS['app']->Registry->fetch('smtp_pass', 'Settings');
-
-        $this->params = $params;
-        return $this->params;
+        return $objInstance[$instance];
     }
+
 
     /**
      * This adds a recipient to the mail to send.
@@ -312,8 +322,7 @@ class Jaws_Mail
         $headers  = $this->mail_mime->headers($this->headers);
         $res = $mail->send($this->recipient, $headers, $realbody);
         if (PEAR::isError($res)) {
-            return new Jaws_Error($res->getMessage(),
-                                  __FUNCTION__);
+            return Jaws_Error::raiseError($res->getMessage(), __FUNCTION__);
         }
 
         return true;
