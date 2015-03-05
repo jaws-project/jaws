@@ -333,7 +333,7 @@ class Jaws_Mail
      *
      * @access  public
      */
-    function ResetValues()
+    function reset()
     {
         $this->headers = array();
         $this->headers['Subject'] = '';
