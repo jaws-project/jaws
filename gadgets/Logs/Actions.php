@@ -24,7 +24,6 @@ $actions['LoginHistory'] = array(
 $admin_actions['Logs'] = array(
     'normal' => true,
     'file' => 'Logs',
-    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['GetLogs'] = array(
     'standalone' => true,
@@ -51,12 +50,11 @@ $admin_actions['DeleteLogsUseFilters'] = array(
 $admin_actions['ExportLogs'] = array(
     'standalone' => true,
     'file' => 'Logs',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['Settings'] = array(
     'normal' => true,
     'file' => 'Settings',
-    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['SaveSettings'] = array(
     'standalone' => true,
