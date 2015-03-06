@@ -41,23 +41,15 @@ class Jaws_Gadget_Template
      */
     function &load($filename, $options = array(), $backend = false)
     {
-        $theme = $GLOBALS['app']->GetTheme();
-        if (!$theme['exists']) {
-            Jaws_Error::Fatal('Theme '. $theme['name']. ' doesn\'t exists.');
-        }
-
         $filepath = dirname($filename);
         $filename = basename($filename);
         $loadFromTheme = isset($options['loadFromTheme'])? $options['loadFromTheme'] : (JAWS_SCRIPT == 'index');
         // if dirname returned dot ('.'), indicating no slashes in path(current directory)
         if ($filepath == '.') {
-            if ($loadFromTheme && file_exists($theme['path']. $this->gadget->name. '/'. $filename)) {
-                $filepath = $theme['path']. $this->gadget->name;
-            } else {
-                $filepath = 'gadgets/'. $this->gadget->name. '/Templates/'. ($backend? 'Admin': '');
-            }
+            $filepath = 'gadgets/'. $this->gadget->name. '/Templates/'. ($backend? 'Admin': '');
         }
 
+        unset($options['loadFromTheme']);
         $tpl = new Jaws_Template($loadFromTheme);
         foreach ($options as $option => $value) {
             $tpl->$option = $value;
