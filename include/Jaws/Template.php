@@ -39,6 +39,7 @@ class Jaws_Template
     var $tplString = '';
     var $globalVariables = array();
 
+    var $theme = null;
     var $rawStore = null;
     var $loadFromTheme = false;
     var $loadRTLDirection = null;
@@ -53,7 +54,6 @@ class Jaws_Template
      */
     function Jaws_Template($loadFromTheme = false, $loadGlobalVariables = true)
     {
-        $this->loadFromTheme = $loadFromTheme;
         $this->IdentifierRegExp = '[\.[:digit:][:lower:]_-]+';
         $this->BlockRegExp = '@<!--\s+begin\s+('.$this->IdentifierRegExp.')\s+([^>]*)-->(.*)<!--\s+end\s+\1\s+-->@sim';
         $this->VarsRegExp = '@{{\s*('.$this->IdentifierRegExp.')\s*}}@sim';
@@ -71,15 +71,18 @@ class Jaws_Template
         $this->globalVariables['base_script']   = BASE_SCRIPT;
 
         if ($loadGlobalVariables) {
-            $theme   = $GLOBALS['app']->GetTheme();
+            $this->loadFromTheme = $loadFromTheme;
+            $this->theme = $GLOBALS['app']->GetTheme();
             $browser = $GLOBALS['app']->GetBrowserFlag();
 
-            $this->globalVariables['theme_url']   = $theme['url'];
+            $this->globalVariables['theme_url']   = $this->theme['url'];
             $this->globalVariables['data_url']    = $GLOBALS['app']->getDataURL();
             $this->globalVariables['.browser']    = empty($browser)? '' : ".$browser";
             $this->globalVariables['main_index']  = $GLOBALS['app']->mainIndex? 'index' : '';
             $this->globalVariables['main_gadget'] = strtolower($GLOBALS['app']->mainGadget);
             $this->globalVariables['main_action'] = strtolower($GLOBALS['app']->mainAction);
+        } else {
+            $this->loadFromTheme = false;
         }
 
     }
@@ -105,9 +108,15 @@ class Jaws_Template
      */
     function Load($fname, $fpath = '', $return = false)
     {
-        $fpath   = rtrim($fpath, '/');
-        $extFile = strrchr($fname, '.');
-        $nmeFile = substr($fname, 0, -strlen($extFile));
+        $filePath = rtrim($fpath, '/');
+        $fileExtn = strrchr($fname, '.');
+        $fileName = substr($fname, 0, -strlen($fileExtn));
+
+        // load from theme
+        if ($this->loadFromTheme && file_exists($this->theme['path']. $filePath. '/'. $fname)) {
+            $filePath = $this->theme['path']. $filePath;
+        }
+
         $prefix  = '';
         if ($this->loadRTLDirection ||
            (is_null($this->loadRTLDirection) && function_exists('_t') && _t('GLOBAL_LANG_DIRECTION') == 'rtl'))
@@ -115,10 +124,10 @@ class Jaws_Template
             $prefix = '.rtl';
         }
 
-        $tplFile = $fpath. '/'. $nmeFile. $prefix. $extFile;
+        $tplFile = $filePath. '/'. $fileName. $prefix. $fileExtn;
         $tplExists = file_exists($tplFile);
         if (!$tplExists && !empty($prefix)) {
-            $tplFile = $fpath. '/'. $nmeFile. $extFile;
+            $tplFile = $filePath. '/'. $fileName. $fileExtn;
             $tplExists = file_exists($tplFile);
         }
 
