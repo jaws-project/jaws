@@ -168,7 +168,7 @@ class Jaws_Session
                     // create session & cookie
                     $this->Create($result, $remember);
                     // login event logging
-                    $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Login', JAWS_WARNING));
+                    $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Login', JAWS_NOTICE));
                     // let everyone know a user has been logged
                     $GLOBALS['app']->Listener->Shout('Session', 'LoginUser', $this->_Attributes);
                     return $result;
@@ -214,7 +214,7 @@ class Jaws_Session
     function Logout($prepare_new_session)
     {
         // logout event logging
-        $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Logout', JAWS_WARNING));
+        $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Logout', JAWS_NOTICE));
         // let everyone know a user has been logout
         $GLOBALS['app']->Listener->Shout('Session', 'LogoutUser', $this->_Attributes);
         if ($prepare_new_session) {
