@@ -63,7 +63,6 @@ $actions['SendRecoverKey'] = array(
     'normal' => true,
     'global' => true,
     'file' => 'Login',
-    'loglevel' => JAWS_NOTICE,
 );
 $actions['Registration'] = array(
     'normal' => true,
@@ -74,26 +73,22 @@ $actions['DoRegister'] = array(
     'normal' => true,
     'global' => true,
     'file' => 'Registration',
-    'loglevel' => JAWS_NOTICE,
 );
 $actions['Registered'] = array(
     'normal' => true,
     'global' => true,
     'file' => 'Registration',
-    'loglevel' => JAWS_NOTICE,
 );
 $actions['ActivateUser'] = array(
     'normal' => true,
     'global' => true,
     'file' => 'Registration',
     'temporary' => true,
-    'loglevel' => JAWS_NOTICE,
 );
 $actions['ReplaceUserEmail'] = array(
     'normal' => true,
     'file' => 'Registration',
     'temporary' => true,
-    'loglevel' => JAWS_NOTICE,
 );
 $actions['Account'] = array(
     'normal' => true,
@@ -117,7 +112,6 @@ $actions['UpdatePersonal'] = array(
     'standalone' => true,
     'internal' => true,
     'file' => 'Personal',
-    'loglevel' => JAWS_NOTICE,
 );
 $actions['Preferences'] = array(
     'normal' => true,
@@ -127,7 +121,6 @@ $actions['UpdatePreferences'] = array(
     'standalone' => true,
     'internal' => true,
     'file' => 'Preferences',
-    'loglevel' => JAWS_NOTICE,
 );
 $actions['Contacts'] = array(
     'normal' => true,
@@ -137,7 +130,6 @@ $actions['UpdateContacts'] = array(
     'standalone' => true,
     'internal' => true,
     'file' => 'Contacts',
-    'loglevel' => JAWS_NOTICE,
 );
 $actions['Groups'] = array(
     'normal' => true,
@@ -187,27 +179,22 @@ $actions['UpdateGroup'] = array(
 $admin_actions['Users'] = array(
     'normal' => true,
     'file' => 'Users',
-    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['MyAccount'] = array(
     'normal' => true,
     'file' => 'MyAccount',
-    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['Groups'] = array(
     'normal' => true,
     'file' => 'Groups',
-    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['OnlineUsers'] = array(
     'normal' => true,
     'file' => 'OnlineUsers',
-    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['Properties'] = array(
     'normal' => true,
     'file' => 'Properties',
-    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['LoadAvatar'] = array(
     'standalone' => true,
@@ -240,12 +227,12 @@ $admin_actions['GetUsersCount'] = array(
 $admin_actions['AddUser'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['UpdateUser'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['DeleteUser'] = array(
     'standalone' => true,
@@ -255,37 +242,36 @@ $admin_actions['DeleteUser'] = array(
 $admin_actions['DeleteSession'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['IPBlock'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['AgentBlock'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['UpdateUserACL'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['UpdateGroupACL'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['AddUserToGroups'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['AddUsersToGroup'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['SaveSettings'] = array(
     'standalone' => true,
@@ -328,17 +314,14 @@ $admin_actions['ContactsUI'] = array(
 $admin_actions['UpdatePersonal'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['UpdatePreferences'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['UpdateContacts'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['GetGroup'] = array(
     'standalone' => true,
@@ -351,17 +334,17 @@ $admin_actions['GetGroups'] = array(
 $admin_actions['AddGroup'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['UpdateGroup'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['DeleteGroup'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['GroupUsersUI'] = array(
     'standalone' => true,
