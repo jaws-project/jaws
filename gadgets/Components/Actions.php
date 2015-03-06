@@ -23,27 +23,25 @@ $actions['Version'] = array(
 $admin_actions['Gadgets'] = array(
     'normal' => true,
     'file' => 'Gadgets',
-    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['Plugins'] = array(
     'normal' => true,
     'file' => 'Plugins',
-    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['InstallGadget'] = array(
     'normal' => true,
     'file' => 'GadgetInstaller',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['UpgradeGadget'] = array(
     'normal' => true,
     'file' => 'GadgetInstaller',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['UninstallGadget'] = array(
     'normal' => true,
     'file' => 'GadgetInstaller',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['GetGadgets'] = array(
     'standalone' => true,
@@ -56,27 +54,27 @@ $admin_actions['GetGadgetInfo'] = array(
 $admin_actions['InstallGadget2'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['UpgradeGadget2'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['UninstallGadget2'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['EnableGadget'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['DisableGadget'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['GetPlugins'] = array(
     'standalone' => true,
@@ -89,12 +87,12 @@ $admin_actions['GetPluginInfo'] = array(
 $admin_actions['InstallPlugin'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['UninstallPlugin'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['GetPluginUsage'] = array(
     'standalone' => true,
@@ -103,7 +101,7 @@ $admin_actions['GetPluginUsage'] = array(
 $admin_actions['UpdatePluginUsage'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['GetRegistry'] = array(
     'standalone' => true,
@@ -112,7 +110,7 @@ $admin_actions['GetRegistry'] = array(
 $admin_actions['UpdateRegistry'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
 $admin_actions['GetACL'] = array(
     'standalone' => true,
@@ -121,5 +119,5 @@ $admin_actions['GetACL'] = array(
 $admin_actions['UpdateACL'] = array(
     'standalone' => true,
     'file' => 'Ajax',
-    'loglevel' => JAWS_WARNING,
+    'loglevel' => JAWS_NOTICE,
 );
