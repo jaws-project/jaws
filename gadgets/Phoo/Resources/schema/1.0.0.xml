@@ -154,12 +154,6 @@
  <table>
   <name><variable>table_prefix</variable>phoo_image_album</name>
   <declaration>
-   <field>
-    <name>id</name>
-    <type>integer</type>
-    <notnull>true</notnull>
-    <autoincrement>true</autoincrement>
-   </field>
 
    <field>
     <name>phoo_image_id</name>
