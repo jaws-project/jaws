@@ -121,12 +121,6 @@
     <table>
         <name><variable>table_prefix</variable>pm_message_attachment</name>
         <declaration>
-            <field>
-                <name>id</name>
-                <type>integer</type>
-                <notnull>true</notnull>
-                <autoincrement>true</autoincrement>
-            </field>
 
             <field>
                 <name>message</name>
