@@ -151,11 +151,6 @@ class Phoo_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.1.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '1.0.0.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-
             $this->gadget->registry->insert('recommended', ',Comments,Tags,');
         }
 
