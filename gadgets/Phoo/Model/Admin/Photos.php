@@ -78,9 +78,11 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
             return new Jaws_Error(_t('PHOO_IMPOSSIBLE_DELETE_IMAGE'));
         }
 
-        Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $image['filename']);
-        Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $this->GetMediumPath($image['filename']));
-        Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $this->GetThumbPath($image['filename']));
+        if (!empty($image['filename'])) {
+            Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $image['filename']);
+            Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $this->GetMediumPath($image['filename']));
+            Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $this->GetThumbPath($image['filename']));
+        }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_PHOTO_DELETED'), RESPONSE_NOTICE);
         return true;
@@ -222,7 +224,9 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
 
         // Lets remove the original if keep_original = false
         if ($this->gadget->registry->fetch('keep_original') == 'false') {
-            Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $data['filename']);
+            if (!empty($data['filename'])) {
+                Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $data['filename']);
+            }
         }
 
         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_PHOTO_ADDED'), RESPONSE_NOTICE);

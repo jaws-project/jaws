@@ -83,9 +83,11 @@ class Phoo_Model_Admin_Albums extends Phoo_Model
 
         include_once JAWS_PATH . 'include/Jaws/Image.php';
         foreach ($result as $r) {
-            Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $r['filename']);
-            Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $this->GetMediumPath($r['filename']));
-            Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $this->GetThumbPath($r['filename']));
+            if (!empty($r['filename'])) {
+                Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $r['filename']);
+                Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $this->GetMediumPath($r['filename']));
+                Jaws_Utils::delete(JAWS_DATA . 'phoo/' . $this->GetThumbPath($r['filename']));
+            }
         }
 
         // Delete images from phoo_image
