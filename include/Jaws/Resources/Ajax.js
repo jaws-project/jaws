@@ -7,7 +7,7 @@
  * @author      Jonathan Hernandez <ion@suavizado.com>
  * @author      Ali Fazelzadeh <afz@php.net>
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2004-2013 Jaws Development Group
+ * @copyright   2004-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 /**
@@ -25,8 +25,8 @@ var JawsAjax = new Class({
     initialize: function (gadget, callback, baseScript) {
         this.gadget = gadget;
         this.callback = callback;
-        this.loadingMessage = 'Loading...';
-        var reqValues = $(document).getElement('meta[name=application-name]').getProperty('content').split(':');
+        this.loadingMessage = '...';
+        var reqValues = document.id(document).getElement('meta[name=application-name]').getProperty('content').split(':');
         this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
         this.baseScript  = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
         this.baseURL = this.baseScript + '?gadget=' + this.gadget + '&restype=json&action=';
@@ -113,23 +113,23 @@ var JawsAjax = new Class({
     },
 
     showResponse: function (response) {
-        $(this.msgBox).getParent().setStyles({'position': 'absolute', 'display': 'block'});
-        $(this.msgBox).set({'html': response.text, 'class': response.type});
-        $(this.msgBox).fade('show');
+        // document.id(this.msgBox).getParent().setStyles({'position': 'absolute', 'display': 'block'});
+        document.id(this.msgBox).set({'html': response.text, 'class': response.type});
+        document.id(this.msgBox).fade('show');
         (function(){
             this.fade('out');
             (function(){this.set('class', '')}).delay(500, this);
-        }).delay(4000, $(this.msgBox));
+        }).delay(4000, document.id(this.msgBox));
     },
 
     showLoading: function (show) {
-        if ($(this.msgBox)) {
+        if (document.id(this.msgBox)) {
             if (show) {
-                $(this.msgBox).getParent().setStyles({'position': 'absolute', 'display': 'block'});
-                $(this.msgBox).set({'html': this.loadingMessage, 'class': 'response_loading'});
-                $(this.msgBox).fade('show');
+                // document.id(this.msgBox).getParent().setStyles({'position': 'absolute', 'display': 'block'});
+                document.id(this.msgBox).set({'html': this.loadingMessage, 'class': 'response_loading'});
+                document.id(this.msgBox).fade('show');
             } else {
-                $(this.msgBox).set('class', '');
+                document.id(this.msgBox).set('class', '');
             }
         }
     }
@@ -236,17 +236,17 @@ function changeEditorValue(name, value)
         if (editor) {
             editor.setContent(value);
          } else {
-            $(name).value = value;
+            document.id(name).value = value;
          }
     } else if (usingCKE) {
         var editor = CKEDITOR.instances[name];
         if (editor.status == 'unloaded') {
-            $(name).value = value;
+            document.id(name).value = value;
         } else {
             editor.setData(value);
         }
     } else {
-        $(name).value = value;
+        document.id(name).value = value;
     }
 }
 
@@ -267,7 +267,7 @@ function getEditorValue(name)
         }
     }
 
-    return $(name).value;
+    return document.id(name).value;
 }
 
 /**
@@ -341,13 +341,13 @@ String.prototype.defilter = function(quote_style) {
  */
 function resetGrid(name, data, rowsSize)
 {
-    $(name).reset();
-    $(name).fillWithArray(data);
+    document.id(name).reset();
+    document.id(name).fillWithArray(data);
     if (rowsSize != undefined) {
-        $(name).rowsSize = rowsSize;
+        document.id(name).rowsSize = rowsSize;
     }
-    $(name).updatePageCounter();
-    $(name).repaint();
+    document.id(name).updatePageCounter();
+    document.id(name).repaint();
 }
 
 //Which row selected in DataGrid
@@ -363,7 +363,7 @@ function selectGridRow(name, rowElement)
         if (typeof(selectedRows[name]) == 'object') {
             selectedRows[name].style.backgroundColor = selectedRowsColor[name];
         } else {
-            $(selectedRows[name]).style.backgroundColor = selectedRowsColor[name];
+            document.id(selectedRows[name]).style.backgroundColor = selectedRowsColor[name];
         }
     }
 
@@ -371,8 +371,8 @@ function selectGridRow(name, rowElement)
         selectedRowsColor[name] = rowElement.style.backgroundColor;
         rowElement.style.backgroundColor = '#ffffcc';
     } else {
-        selectedRowsColor[name] = $(rowElement).style.backgroundColor;
-        $(rowElement).style.backgroundColor = '#ffffcc';
+        selectedRowsColor[name] = document.id(rowElement).style.backgroundColor;
+        document.id(rowElement).style.backgroundColor = '#ffffcc';
     }
 
     selectedRows[name] = rowElement;
@@ -388,7 +388,7 @@ function unselectGridRow(name)
         if (typeof(selectedRows[name]) == 'object') {
             selectedRows[name].style.backgroundColor = selectedRowsColor[name];
         } else {
-            $(selectedRows[name]).style.backgroundColor = selectedRowsColor[name];
+            document.id(selectedRows[name]).style.backgroundColor = selectedRowsColor[name];
         }
     }
 
@@ -405,54 +405,54 @@ var JawsDataGrid = {
      * Get the first Values and prepares the datagrid
      */
     getFirstValues: function() {
-        var firstValues = $(this.name).getFirstPagerValues();
-        var ajaxObject  = $(this.name).objectName;
-        var result      = ajaxObject.callSync('getData', firstValues, $(this.name).id);
-        resetGrid($(this.name), result);
-        $(this.name).firstPage();
+        var firstValues = document.id(this.name).getFirstPagerValues();
+        var ajaxObject  = document.id(this.name).objectName;
+        var result      = ajaxObject.callSync('getData', firstValues, document.id(this.name).id);
+        resetGrid(document.id(this.name), result);
+        document.id(this.name).firstPage();
     },
 
     /**
      * Get the previous Values and prepares the datagrid
      */
     getPreviousValues: function() {
-        var previousValues = $(this.name).getPreviousPagerValues();
-        var ajaxObject     = $(this.name).objectName;
-        var result         = ajaxObject.callSync('getData', previousValues, $(this.name).id);
-        resetGrid($(this.name), result);
-        $(this.name).previousPage();
+        var previousValues = document.id(this.name).getPreviousPagerValues();
+        var ajaxObject     = document.id(this.name).objectName;
+        var result         = ajaxObject.callSync('getData', previousValues, document.id(this.name).id);
+        resetGrid(document.id(this.name), result);
+        document.id(this.name).previousPage();
     },
 
     /**
      * Get the next Values and prepares the datagrid
      */
     getNextValues: function() {
-        var nextValues     = $(this.name).getNextPagerValues();
-        var ajaxObject     = $(this.name).objectName;
-        var result         = ajaxObject.callSync('getData', nextValues, $(this.name).id);
-        resetGrid($(this.name), result);
-        $(this.name).nextPage();
+        var nextValues     = document.id(this.name).getNextPagerValues();
+        var ajaxObject     = document.id(this.name).objectName;
+        var result         = ajaxObject.callSync('getData', nextValues, document.id(this.name).id);
+        resetGrid(document.id(this.name), result);
+        document.id(this.name).nextPage();
     },
 
     /**
      * Get the last Values and prepares the datagrid
      */
     getLastValues: function() {
-        var lastValues = $(this.name).getLastPagerValues();
-        var ajaxObject = $(this.name).objectName;
-        var result     = ajaxObject.callSync('getData', lastValues, $(this.name).id);
-        resetGrid($(this.name), result);
-        $(this.name).lastPage();
+        var lastValues = document.id(this.name).getLastPagerValues();
+        var ajaxObject = document.id(this.name).objectName;
+        var result     = ajaxObject.callSync('getData', lastValues, document.id(this.name).id);
+        resetGrid(document.id(this.name), result);
+        document.id(this.name).lastPage();
     },
 
     /**
      * Only retrieves information with the current page the pager has and prepares the datagrid
      */
     getData: function() {
-        var currentPage = $(this.name).getCurrentPage();
-        var ajaxObject  = $(this.name).objectName;
-        var result      = ajaxObject.callSync('getData', currentPage, $(this.name).id);
-        resetGrid($(this.name), result);
+        var currentPage = document.id(this.name).getCurrentPage();
+        var ajaxObject  = document.id(this.name).objectName;
+        var result      = ajaxObject.callSync('getData', currentPage, document.id(this.name).id);
+        resetGrid(document.id(this.name), result);
     }
 };
 
@@ -461,55 +461,55 @@ var JawsDataGrid = {
  */
 function initDataGrid(name, objectName, dataFunc)
 {
-    if ($(name) == undefined || objectName == undefined) {
+    if (document.id(name) == undefined || objectName == undefined) {
         return true;
     }
 
-    $(name).objectName = objectName;
+    document.id(name).objectName = objectName;
     if (dataFunc == undefined) {
         JawsDataGrid.name = name;
-        $(name + '_pagerFirstAnchor').onclick = function() {
+        document.id(name + '_pagerFirstAnchor').onclick = function() {
             JawsDataGrid.getFirstValues();
         };
 
-        $(name + '_pagerPreviousAnchor').onclick = function() {
+        document.id(name + '_pagerPreviousAnchor').onclick = function() {
             JawsDataGrid.getPreviousValues();
         };
 
-        $(name + '_pagerNextAnchor').onclick = function() {
+        document.id(name + '_pagerNextAnchor').onclick = function() {
                 JawsDataGrid.getNextValues();
         };
 
-        $(name + '_pagerLastAnchor').onclick = function() {
+        document.id(name + '_pagerLastAnchor').onclick = function() {
                 JawsDataGrid.getLastValues();
         };
 
         getDG();
     } else {
-        $(name).dataFunc = dataFunc;
+        document.id(name).dataFunc = dataFunc;
 
-        $(name + '_pagerFirstAnchor').onclick = function() {
-            var offset = $(name).getFirstPagerValues();
+        document.id(name + '_pagerFirstAnchor').onclick = function() {
+            var offset = document.id(name).getFirstPagerValues();
             getDG(name, offset);
-            $(name).firstPage();
+            document.id(name).firstPage();
         };
 
-        $(name + '_pagerPreviousAnchor').onclick = function() {
-            var offset = $(name).getPreviousPagerValues();
+        document.id(name + '_pagerPreviousAnchor').onclick = function() {
+            var offset = document.id(name).getPreviousPagerValues();
             getDG(name, offset);
-            $(name).previousPage();
+            document.id(name).previousPage();
         };
 
-        $(name + '_pagerNextAnchor').onclick = function() {
-            var offset = $(name).getNextPagerValues();
+        document.id(name + '_pagerNextAnchor').onclick = function() {
+            var offset = document.id(name).getNextPagerValues();
             getDG(name, offset);
-            $(name).nextPage();
+            document.id(name).nextPage();
         };
 
-        $(name + '_pagerLastAnchor').onclick = function() {
-            var offset = $(name).getLastPagerValues();
+        document.id(name + '_pagerLastAnchor').onclick = function() {
+            var offset = document.id(name).getLastPagerValues();
             getDG(name, offset);
-            $(name).lastPage();
+            document.id(name).lastPage();
         };
 
         getDG(name);
@@ -524,16 +524,16 @@ function getDG(name, offset, reset)
     if (name == undefined) {
         JawsDataGrid.getData();
     } else {
-        dataFunc = eval($(name).dataFunc);
+        dataFunc = eval(document.id(name).dataFunc);
 
         if (offset == undefined) {
-            var offset = $(name).getCurrentPage();
+            var offset = document.id(name).getCurrentPage();
         }
 
-        reset = (reset == true) || ($(name).rowsSize == 0);
+        reset = (reset == true) || (document.id(name).rowsSize == 0);
         dataFunc(name, offset, reset);
         if (reset && offset == undefined) {
-            $(name).setCurrentPage(0);
+            document.id(name).setCurrentPage(0);
         }
     }
 }
@@ -577,7 +577,7 @@ function createImageLink(imgSrc, link, text, space)
  */
 function initDatePicker(name)
 {
-    dpTable = $(name + '_table');
+    dpTable = document.id(name + '_table');
     var script = dpTable.nextSibling;
     var newScript = document.createElement('script');
     newScript.type = "text/javascript";
@@ -595,7 +595,7 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
     var dLeft = (dWidth  > dRect.x )? 0 : Math.round(dRect.x  / 2 - dWidth  / 2) + 'px';
     var dTop  = (dHeight > dRect.y)? 0 : Math.round(dRect.y / 2 - dHeight / 2) + 'px';
 
-    if ($(name) == undefined) {
+    if (document.id(name) == undefined) {
         var overlay = new Element('div', {'id':name+'_overlay', 'class':'dialog_box_overlay'}).hide();
         var iframe  = new IFrame({
             src : url,
@@ -640,17 +640,17 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
                 hideDialogBox(dialog.id);
             }
         });
-        $(document.body).adopt(overlay);
+        document.id(document.body).adopt(overlay);
         document.body.adopt(dialog);
         dialog.setStyles({left:dLeft, top:dTop});
     }
 
-    $(name+'_overlay').show('block');
+    document.id(name+'_overlay').show('block');
     showWorkingNotification();
-    if ($(name+'_iframe').src == url) {
-        $(name+'_iframe').fireEvent('load');
+    if (document.id(name+'_iframe').src == url) {
+        document.id(name+'_iframe').fireEvent('load');
     } else {
-        $(name+'_iframe').src = url;
+        document.id(name+'_iframe').src = url;
     }
 }
 
@@ -659,8 +659,8 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
  */
 function hideDialogBox(name)
 {
-    $(name).hide();
-    $(name+'_overlay').hide();
+    document.id(name).hide();
+    document.id(name+'_overlay').hide();
 }
 
 /**
@@ -700,7 +700,7 @@ function Jaws_Ajax_ServerError(error)
 function showResponse(text, goTop)
 {
     if (typeof(goTop) == 'undefined' || goTop) {
-        $(document.body).scrollTo(0, 0);
+        document.id(document.body).scrollTo(0, 0);
     }
 
     var messages = [];
@@ -710,13 +710,13 @@ function showResponse(text, goTop)
         messages = text;
     }
 
-    $('msgbox-wrapper').innerHTML = '';
+    document.id('msgbox-wrapper').innerHTML = '';
     for(var i = 0; i < messages.length; i++) {
         var messageDiv  = new Element(
             'div',
             {'id':'msgbox_'+i, 'class':messages[i]['type']}
         ).appendText(messages[i]['text']);
-        $('msgbox-wrapper').appendChild(messageDiv);
+        document.id('msgbox-wrapper').appendChild(messageDiv);
         messageDiv.fade('show');
         hideResponseBox(messageDiv);
     }
@@ -739,7 +739,7 @@ function hideResponseBox(name, timehide)
  */
 function hideResponseBoxCallback(name)
 {
-    $(name).fade('out');
+    document.id(name).fade('out');
 }
 
 /**
@@ -750,8 +750,8 @@ function showWorkingNotification(msg)
     if (!msg) {
         msg = default_loading_message;
     }
-    $('working_notification').innerHTML = msg;
-    $('working_notification').style.visibility = 'visible';
+    document.id('working_notification').innerHTML = msg;
+    document.id('working_notification').style.visibility = 'visible';
 }
 
 /**
@@ -759,7 +759,7 @@ function showWorkingNotification(msg)
  */
 function hideWorkingNotification()
 {
-    $('working_notification').style.visibility = 'hidden';
+    document.id('working_notification').style.visibility = 'hidden';
 }
 
 /* Copyright (c) 2005 JSON.org */
