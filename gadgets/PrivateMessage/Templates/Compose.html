@@ -92,54 +92,33 @@
 <!--</div>-->
 
 <script type="text/javascript">
-    var toggleMax = "{icon_add}";
-    var toggleMin = "{icon_remove}";
-    var recipient_user = "{recipient_user}";
-    var selectAnnouncementChk = {selectAnnouncementChk};
-    if (selectAnnouncementChk) {
-        $('announcement').set('checked', 'checked');
-        $('recipient_users').set('disabled', true);
-        $('recipient_groups').set('disabled', true);
-    }
+    var toggleMax = "{{icon_add}}";
+    var toggleMin = "{{icon_remove}}";
+    var recipient_user = "{{recipient_user}}";
 
-    $('attachment1').show();
-    $('attach_loading').hide();
-    $('btn_attach1').hide();
-    $('attachment_area').toggle();
-
-    function toggleAnnouncementChk(cb)
-    {
-        if(cb.checked) {
-            $('recipient_users').set('disabled', true);
-            $('recipient_groups').set('disabled', true);
-        } else {
-            $('recipient_users').set('disabled', false);
-            $('recipient_groups').set('disabled', false);
-        }
-    }
+    document.id('attachment1').show();
+    document.id('attach_loading').hide();
+    document.id('btn_attach1').hide();
+    document.id('attachment_area').toggle();
 
     function ChangeToggleIcon(obj)
     {
-        if ($(obj).get('toggle-status') == 'min') {
-            $(obj).getElementsByTagName('img')[0].src = toggleMin;
-            $(obj).set('toggle-status', 'max');
+        if (document.id(obj).get('toggle-status') == 'min') {
+            document.id(obj).getElementsByTagName('img')[0].src = toggleMin;
+            document.id(obj).set('toggle-status', 'max');
         } else {
-            $(obj).getElementsByTagName('img')[0].src = toggleMax;
-            $(obj).set('toggle-status', 'min');
+            document.id(obj).getElementsByTagName('img')[0].src = toggleMax;
+            document.id(obj).set('toggle-status', 'min');
         }
     }
 
     window.addEvent('domready', function() {
 
-        $('legend_attachments').addEvent('click', function(){
-            $('attachment_area').toggle();
+        document.id('legend_attachments').addEvent('click', function(){
+            document.id('attachment_area').toggle();
             ChangeToggleIcon(this);
         });
     });
-
-    // auto draft message
-    setInterval('autoDraftMessage();', 120000);
-
 </script>
 
 <!-- END compose -->
