@@ -388,6 +388,11 @@ class Jaws_Session
             $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Session referrer changed');
             return false;
         }
+
+        if (isset($_SERVER['ORIGIN'])) {
+            $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'cross-origin resource sharing detected');
+            return false;
+        }
     }
 
     /**
