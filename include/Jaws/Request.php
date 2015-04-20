@@ -119,7 +119,7 @@ class Jaws_Request
         $_SERVER['HTTP_REFERER'] =
             array_key_exists('HTTP_REFERER', $_SERVER)? $_SERVER['HTTP_REFERER']: '';
 
-        if (strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'iis')) {
+        if (strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'iis') && isset($_SERVER['UNENCODED_URL'])) {
             $_SERVER['REQUEST_URI'] = $_SERVER['UNENCODED_URL'];
         }
 
