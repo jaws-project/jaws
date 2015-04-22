@@ -72,22 +72,11 @@ class Upgrader_Authentication extends JawsUpgraderStage
         // try to entering to secure transformation mode 
         if ($_SESSION['secure'] && (!isset($_SESSION['pub_key']) || empty($_SESSION['pub_key']))) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
-            $JCrypt = new Jaws_Crypt();
-            $result = $JCrypt->Generate_RSA_KeyPair(128);
-            if (!Jaws_Error::isError($result)) {
-                $pub_key = $JCrypt->pub_key;
-                $pvt_key = $JCrypt->pvt_key;
-                if (Crypt_RSA_Key::isValid($pub_key) && Crypt_RSA_Key::isValid($pvt_key)) {
-                    $_SESSION['pub_mod'] = $JCrypt->math->bin2int($pub_key->getModulus());
-                    $_SESSION['pub_exp'] = $JCrypt->math->bin2int($pub_key->getExponent());
-                    $_SESSION['pub_key'] = $pub_key->toString();
-                    $_SESSION['pvt_key'] = $pvt_key->toString();
-                }
-            } elseif (CRYPT_RSA_ERROR_NO_WRAPPERS == $result->GetCode()) {
-                return new Jaws_Error(_t('UPGRADE_AUTH_ERROR_NO_MATH_EXTENSION'), 0, JAWS_ERROR_WARNING);
-            }
-
-            if (!isset($_SESSION['pub_key'])) {
+            $pkey = Jaws_Crypt::Generate_RSA_KeyPair(512);
+            if (!Jaws_Error::isError($pkey)) {
+                $_SESSION['pub_key'] = $pkey['pub_key'];
+                $_SESSION['pvt_key'] = $pkey['pvt_key'];
+            } else {
                 return new Jaws_Error(_t('UPGRADE_AUTH_ERROR_RSA_KEY_GENERATION'), 0, JAWS_ERROR_WARNING);
             }
         }
