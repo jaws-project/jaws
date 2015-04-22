@@ -126,13 +126,9 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageUsers');
         $uData = jaws()->request->fetchAll('post');
-        if ($this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true') {
-            $JCrypt = new Jaws_Crypt();
-            $JCrypt->Init();
+        $JCrypt = Jaws_Crypt::getInstance();
+        if (!Jaws_Error::IsError($JCrypt)) {
             $uData['password'] = $JCrypt->decrypt($uData['password']);
-            if (($uData['password'] === false) || Jaws_Error::isError($uData['password'])) {
-                $uData['password'] = '';
-            }
         }
 
         $uData['status'] = (int)$uData['status'];
@@ -165,13 +161,9 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $uData = jaws()->request->fetchAll('post');
         $uid = $uData['uid'];
 
-        if ($this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true') {
-            $JCrypt = new Jaws_Crypt();
-            $JCrypt->Init();
+        $JCrypt = Jaws_Crypt::getInstance();
+        if (!Jaws_Error::IsError($JCrypt)) {
             $uData['password'] = $JCrypt->decrypt($uData['password']);
-            if (($uData['password'] === false) || Jaws_Error::isError($uData['password'])) {
-                unset($uData['password']);
-            }
         }
 
         if ($uid == $GLOBALS['app']->Session->GetAttribute('user')) {
@@ -532,13 +524,9 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             unset($uData[$invalid]);
         }
 
-        if ($this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true') {
-            $JCrypt = new Jaws_Crypt();
-            $JCrypt->Init();
+        $JCrypt = Jaws_Crypt::getInstance();
+        if (!Jaws_Error::IsError($JCrypt)) {
             $uData['password'] = $JCrypt->decrypt($uData['password']);
-            if (($uData['password'] === false) || Jaws_Error::isError($uData['password'])) {
-                unset($uData['password']);
-            }
         }
 
         $res = $this->_UserModel->UpdateUser($uid, $uData);

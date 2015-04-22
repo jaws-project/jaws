@@ -265,9 +265,13 @@ function saveUser()
             }
 
             if ($('exponent')) {
-                setMaxDigits(128);
-                var pub_key = new RSAPublicKey($('exponent').value, $('modulus').value, 128);
-                var password = encryptedString(pub_key, $('pass1').value);
+                setMaxDigits(256);
+                var pub_key = new RSAKeyPair(
+                    $('exponent').value,
+                    '10001', $('modulus').value,
+                    parseInt($('length').value)
+                );
+                var password = encryptedString(pub_key, $('pass1').value, RSAAPP.PKCS1Padding);
             } else {
                 var password = $('pass1').value;
             }
@@ -759,7 +763,13 @@ function updateMyAccount()
     }
 
     if ($('exponent')) {
-        encryptedElement($('pass1'), $('exponent').value, $('modulus').value, true, 128);
+        encryptedElement(
+            $('pass1'),
+            $('exponent').value,
+            $('modulus').value,
+            true,
+            $('length').value
+        );
         $('pass2').value = $('pass1').value;
     }
     UsersAjax.callAsync(
