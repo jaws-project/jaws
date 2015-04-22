@@ -5,169 +5,221 @@
  * @category   Crypt
  * @package    Core
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2007-2014 Jaws Development Group
+ * @copyright  2007-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Crypt
 {
-    var $wrapper = '';   // if empty try to load the most suitable wrapper
-    var $math    = null; // instance of math wrapper class
-    var $pvt_key = '';   // private key
-    var $pub_key = '';   // public key
-    var $key_len = 128;  // key length
-    var $rsa     = null; // instance of Crypt_RSA
+    /**
+     * RSA private key
+     *
+     * @access  private
+     * @var     resource
+     */
+    private $pvt_key = null;
 
     /**
-     * @access constructor
+     * RSA public key
+     *
+     * @access  private
+     * @var     resource
      */
-    function Jaws_Crypt()
-    {
-        require_once PEAR_PATH. 'Crypt/RSA.php';
-        if (empty($this->wrapper) || !extension_loaded(strtolower($this->wrapper))) {
-            $this->wrapper = extension_loaded('bcmath')? 'BCMath' : '';
-            //$this->wrapper = extension_loaded('gmp')? 'GMP' : (extension_loaded('bcmath')? 'BCMath' : '');
-        }
+    private $pub_key = '';
 
-        if (!empty($this->wrapper)) {
-            $this->rsa = new Crypt_RSA(null, $this->wrapper);
-            $this->math = Crypt_RSA_MathLoader::loadWrapper($this->wrapper);
-        }
+    /**
+     * Constructor
+     *
+     * @access  private
+     * @param   array   $pkey   RSA key pair array
+     * @return  void
+     */
+    private function __construct($pkey = array())
+    {
+        $this->pvt_key = openssl_pkey_get_private($pkey['pvt_key']);
+        $this->pub_key = openssl_pkey_get_public($pkey['pub_key']);
     }
 
+
     /**
+     * Creates the Jaws_Crypt instance if it doesn't exist else it returns the already created one
+     *
      * @access  public
+     * @param   array   $pkey   RSA key pair array
+     * @return  mixed   Jaws_Error on failure otherwise instance of Jaws_Crypt
      */
-    function Init()
+    static function getInstance($pkey = array())
     {
-        if (!isset($GLOBALS['app'])) {
-            return Jaws_Error::raiseError('$GLOBALS[\'app\'] not available',
-                                          __FUNCTION__);
+        if (!extension_loaded('openssl')) {
+            return Jaws_Error::raiseError(
+                'openssl extension is not available.',
+                __FUNCTION__,
+                JAWS_ERROR_INFO
+            );
         }
 
+        static $objInstance = array();
+        $instance = md5(serialize($pkey));
+        if (!isset($objInstance[$instance])) {
+            if (empty($pkey)) {
+                $pkey = self::internalKey();
+                if (Jaws_Error::IsError($pkey)) {
+                    return $pkey;
+                }
+            }
+
+            $objInstance[$instance] = new Jaws_Crypt($pkey);
+        }
+
+        return $objInstance[$instance];
+    }
+
+
+    /**
+     * Get internal RSA key pair
+     *
+     * @access  private
+     * @return  mixed   Jaws_Error on failure otherwise RSA key detail array
+     */
+    private static function internalKey() {
         // fetch all registry keys related to crypt
         $cryptPolicies = $GLOBALS['app']->Registry->fetchAll('Policy', false);
         if ($cryptPolicies['crypt_enabled'] != 'true') {
-            return false;
+            return Jaws_Error::raiseError(
+                'RSA encryption is not enabled.',
+                __FUNCTION__,
+                JAWS_ERROR_INFO
+            );
         }
 
-        $pvt_key = $cryptPolicies['crypt_pvt_key'];
-        $pub_key = $cryptPolicies['crypt_pub_key'];
-        $key_len = $cryptPolicies['crypt_key_len'];
-        $key_age = $cryptPolicies['crypt_key_age'];
-        $key_start_date = $cryptPolicies['crypt_key_start_date'];
-        if (time() > ($key_start_date + $key_age)) {
-            $result = $this->Generate_RSA_KeyPair($key_len);
+        if (time() > ($cryptPolicies['crypt_key_start_date'] + $cryptPolicies['crypt_key_age'])) {
+            // generate new key pair
+            $result = self::Generate_RSA_KeyPair($cryptPolicies['crypt_key_len']);
             if (Jaws_Error::isError($result)) {
-                $GLOBALS['app']->Registry->update('crypt_enabled', 'false', false, 'Policy');
-                $GLOBALS['log']->Log(JAWS_LOG_DEBUG, "Error in RSA key generation..");
-                return false;
+                return result;
             }
 
-            $GLOBALS['app']->Registry->update('crypt_pvt_key', $this->pvt_key->toString(), false, 'Policy');
-            $GLOBALS['app']->Registry->update('crypt_pub_key', $this->pub_key->toString(), false, 'Policy');
+            $GLOBALS['app']->Registry->update('crypt_pvt_key', $result['pvt_key'], false, 'Policy');
+            $GLOBALS['app']->Registry->update('crypt_pub_key', $result['pub_key'], false, 'Policy');
             $GLOBALS['app']->Registry->update('crypt_key_start_date', time(), false, 'Policy');
-        } else {
-            $this->pvt_key = Crypt_RSA_Key::fromString($pvt_key, $this->wrapper);
-            $this->pub_key = Crypt_RSA_Key::fromString($pub_key, $this->wrapper);
+            $cryptPolicies['crypt_pvt_key'] = $result['pvt_key'];
+            $cryptPolicies['crypt_pub_key'] = $result['pub_key'];
         }
 
-        return true;
+        return array(
+            'key_len' => $cryptPolicies['crypt_key_len'],
+            'pvt_key' => $cryptPolicies['crypt_pvt_key'],
+            'pub_key' => $cryptPolicies['crypt_pub_key'],
+        );
+    }
+
+
+    /**
+     * Generate new RSA key pair
+     *
+     * @access  public
+     * @param   int     $key_len    RSA key length
+     * @return  mixed   Jaws_Error on failure otherwise RSA key detail array
+     */
+    static function Generate_RSA_KeyPair($key_len)
+    {
+        $config = array(
+            'digest_alg'  => 'sha512',
+            'encrypt_key' => false,
+            'private_key_bits' => (int)$key_len,
+            'private_key_type' => OPENSSL_KEYTYPE_RSA
+        );
+        if (false === $pkey = openssl_pkey_new($config)) {
+            return Jaws_Error::raiseError(openssl_error_string(),  __FUNCTION__);
+        }
+
+        if (false === openssl_pkey_export($pkey, $pvt_key)) {
+            return Jaws_Error::raiseError(openssl_error_string(),  __FUNCTION__);
+        }
+
+        if (false === $pkey_details = openssl_pkey_get_details($pkey)) {
+            return Jaws_Error::raiseError(openssl_error_string(),  __FUNCTION__);
+        }
+        
+        return array(
+            'key_len' => $key_len,
+            'pvt_key' => $pvt_key,
+            'pub_key' => $pkey_details['key'],
+        );
+    }
+
+
+    /**
+     * Get RSA key length
+     *
+     * @access  public
+     * @return  mixed   RSA key length or False on failure
+     */
+    function length()
+    {
+        if (false !== $pub_details = openssl_pkey_get_details($this->pub_key)) {
+            return $pub_details['bits'];
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Get RSA key modulus
+     *
+     * @access  public
+     * @return  mixed   RSA key modulus or False on failure
+     */
+    function modulus()
+    {
+        if (false !== $pub_details = openssl_pkey_get_details($this->pub_key)) {
+            return bin2hex($pub_details['rsa']['n']);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Get RSA key exponent
+     *
+     * @access  public
+     * @return  mixed   RSA key exponent or False on failure
+     */
+    function exponent()
+    {
+        if (false !== $pub_details = openssl_pkey_get_details($this->pub_key)) {
+            return bin2hex($pub_details['rsa']['e']);
+        }
+
+        return false;
     }
 
     /**
-     * @access  private
+     * Encrypt text by RSA algorithm
+     *
+     * @access  public
+     * @param   string  $text   Plain text
+     * @return  string  Encrypted text
      */
-    function Generate_RSA_KeyPair($key_len = 128)
+    function encrypt($text)
     {
-        if (empty($this->wrapper)) {
-            return Jaws_Error::raiseError("can't load any wrapper for existing math libraries",
-                                          __FUNCTION__);
-        }
-
-        if (empty($key_len)) {
-            $key_len = $this->key_len;
-        }
-
-        $key_pair = new Crypt_RSA_KeyPair($key_len, $this->wrapper);
-        if (PEAR::IsError($key_pair)) {
-            return Jaws_Error::raiseError($key_pair->getMessage(),
-                                          __FUNCTION__);
-        }
-
-        $this->pvt_key = $key_pair->getPrivateKey();
-        $this->pub_key = $key_pair->getPublicKey();
-
-        unset($key_pair);
+        openssl_public_encrypt($text, $result, $this->pub_key, OPENSSL_PKCS1_PADDING);
+        return bin2hex($result);
     }
 
-    /**
-     * @access  private
-     */
-    function CreateSignature($doc, $pvt_key = null, $hash_func = null)
-    {
-        if (is_null($pvt_key)) {
-            $pvt_key = $this->pvt_key;
-        }
-        $sign = $this->rsa->createSign($doc, $pvt_key, $hash_func);
-        if (PEAR::IsError($sign)) {
-            return Jaws_Error::raiseError($sign->getMessage(),
-                                          __FUNCTION__);
-        }
-        return $sign;
-    }
 
     /**
-     * @access  private
+     * Decrypt text by RSA algorithm
+     *
+     * @access  public
+     * @param   string  $text   Encrypted text
+     * @return  string  Plain text
      */
-    function ValidateSignature($doc, $sign, $pub_key = null)
+    function decrypt($text)
     {
-        if (is_null($pub_key)) {
-            $pub_key = $this->pub_key;
-        }
-
-        $result = $this->rsa->validateSign($doc, $sign, $pub_key);
-        if (PEAR::IsError($result)) {
-            return Jaws_Error::raiseError($result->getMessage(),
-                                          __FUNCTION__);
-        }
-
+        openssl_private_decrypt(hex2bin($text), $result, $this->pvt_key, OPENSSL_PKCS1_PADDING);
         return $result;
     }
 
-    /**
-     * @access  public
-     */
-    function encrypt($plain_text, $pub_key = null)
-    {
-        if (is_null($pub_key)) {
-            $pub_key = $this->pub_key;
-        }
-
-        $plain_text = base64_encode($plain_text);
-        $result = $this->rsa->encryptBinary($plain_text, $pub_key);
-        if (PEAR::IsError($result)) {
-            return Jaws_Error::raiseError($result->getMessage(),
-                                          __FUNCTION__);
-        }
-
-        return $this->math->bin2int($result);
-    }
-
-    /**
-     * @access  public
-     */
-    function decrypt($enc_text, $pvt_key = null)
-    {
-        if (is_null($pvt_key)) {
-            $pvt_key = $this->pvt_key;
-        }
-
-        $result = $this->rsa->decryptBinary($this->math->int2bin($enc_text), $pvt_key);
-        if (PEAR::IsError($result)) {
-            return Jaws_Error::raiseError($result->getMessage(),
-                                          __FUNCTION__);
-        }
-
-        return base64_decode($result);
-    }
 }
