@@ -66,9 +66,21 @@ class Installer_Database extends JawsInstallerStage
         $tpl->SetVariable('next',      _t('GLOBAL_NEXT'));
 
         if ($_SESSION['secure']) {
-            $tpl->SetVariable('pub_modulus',  $_SESSION['pub_mod']);
-            $tpl->SetVariable('pub_exponent', $_SESSION['pub_exp']);
-            $tpl->SetVariable('func_onsubmit', 'EncryptPassword(this)');
+            $JCrypt = Jaws_Crypt::getInstance(
+                array(
+                    'pvt_key' => $_SESSION['pvt_key'],
+                    'pub_key' => $_SESSION['pub_key'],
+                )
+            );
+            if (!Jaws_Error::IsError($JCrypt)) {
+                $tpl->SetVariable('length',   $JCrypt->length());
+                $tpl->SetVariable('modulus',  $JCrypt->modulus());
+                $tpl->SetVariable('exponent', $JCrypt->exponent());
+                $tpl->SetVariable('func_onsubmit', 'EncryptPassword(this)');
+            } else {
+                $_SESSION['secure'] = false;
+                $tpl->SetVariable('func_onsubmit', 'true');
+            }
         } else {
             $_SESSION['pub_key'] = '';
             $_SESSION['pvt_key'] = '';
@@ -254,12 +266,16 @@ class Installer_Database extends JawsInstallerStage
 
         if ($_SESSION['secure']) {
             require_once JAWS_PATH . 'include/Jaws/Crypt.php';
-            $JCrypt = new Jaws_Crypt();
-            $pvt_key = Crypt_RSA_Key::fromString($_SESSION['pvt_key'], $JCrypt->wrapper);
-            $post['dbpass'] = $JCrypt->decrypt($post['dbpass'], $pvt_key);
-            if (Jaws_Error::isError($post['dbpass'])) {
-                _log(JAWS_LOG_DEBUG,$post['dbpass']->getMessage());
-                return new Jaws_Error($post['dbpass']->getMessage(), 0, JAWS_ERROR_ERROR);
+            $JCrypt =  Jaws_Crypt::getInstance(
+                array(
+                    'pvt_key' => $_SESSION['pvt_key'],
+                    'pub_key' => $_SESSION['pub_key'],
+                )
+            );
+            if (!Jaws_Error::isError($JCrypt)) {
+                $post['dbpass'] = $JCrypt->decrypt($post['dbpass']);
+            } else {
+                return $JCrypt;
             }
         }
 
