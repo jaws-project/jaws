@@ -33,21 +33,26 @@ class Users_Actions_Admin_MyAccount extends Users_Actions_Admin_Default
         $tpl->SetVariable('uid', $uInfo['id']);
         $tpl->SetVariable('legend_title', _t('USERS_USERS_ACCOUNT'));
 
-        $JCrypt = Jaws_Crypt::getInstance();
-        if (!Jaws_Error::IsError($JCrypt)) {
+        $use_crypt = $this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true';
+        if ($use_crypt) {
+            $JCrypt = new Jaws_Crypt();
+            $use_crypt = $JCrypt->Init();
+        }
+
+        if ($use_crypt) {
             $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js');
 
             $tpl->SetBlock('MyAccount/encryption');
-            // key length
-            $length =& Piwi::CreateWidget('HiddenEntry', 'length', $JCrypt->length());
-            $length->SetID('length');
-            $tpl->SetVariable('length', $length->Get());
             // modulus
-            $modulus =& Piwi::CreateWidget('HiddenEntry', 'modulus', $JCrypt->modulus());
+            $modulus =& Piwi::CreateWidget('HiddenEntry',
+                                           'modulus',
+                                           $JCrypt->math->bin2int($JCrypt->pub_key->getModulus()));
             $modulus->SetID('modulus');
             $tpl->SetVariable('modulus', $modulus->Get());
             //exponent
-            $exponent =& Piwi::CreateWidget('HiddenEntry', 'exponent', $JCrypt->exponent());
+            $exponent =& Piwi::CreateWidget('HiddenEntry',
+                                            'exponent',
+                                            $JCrypt->math->bin2int($JCrypt->pub_key->getExponent()));
             $modulus->SetID('exponent');
             $tpl->SetVariable('exponent', $exponent->Get());
             $tpl->ParseBlock('MyAccount/encryption');

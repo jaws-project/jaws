@@ -7,15 +7,13 @@
         <!-- BEGIN onsubmit --> onsubmit="return encryptedElement(this.password,
                                                                  this.exponent.value,
                                                                  this.modulus.value,
-                                                                 this.elements['usecrypt'].checked,
-                                                                 this.length.value);"
+                                                                 this.elements['usecrypt'].checked);"
         <!-- END onsubmit -->
         method="post">
   <input type="hidden" name="gadget" value="Users" />
   <input type="hidden" name="action" value="Login" />
   <input type="hidden" name="referrer" value="{{referrer}}" />
   <!-- BEGIN encryption -->
-  <input type="hidden" name="length" value="{{length}}" />
   <input type="hidden" name="modulus" value="{{modulus}}" />
   <input type="hidden" name="exponent" value="{{exponent}}" />
   <!-- END encryption -->

@@ -20,6 +20,12 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
      */
     function LoginBox($message = '')
     {
+        $use_crypt = $this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true';
+        if ($use_crypt) {
+            $JCrypt = new Jaws_Crypt();
+            $use_crypt = $JCrypt->Init();
+        }
+
         // Init layout
         $GLOBALS['app']->Layout->Load('gadgets/ControlPanel/Templates', 'LoginBox.html');
         $ltpl =& $GLOBALS['app']->Layout->_Template;
@@ -38,15 +44,13 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
         $redirect_to = is_null($reqpost['redirect_to'])? bin2hex($reqURL) : $reqpost['redirect_to'];
         $ltpl->SetVariable('redirect_to', $redirect_to);
 
-        $JCrypt = Jaws_Crypt::getInstance();
-        if (!Jaws_Error::IsError($JCrypt)) {
+        if ($use_crypt) {
             $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js');
             $ltpl->SetBlock('layout/onsubmit');
             $ltpl->ParseBlock('layout/onsubmit');
             $ltpl->SetBlock('layout/encryption');
-            $ltpl->SetVariable('length',   $JCrypt->length());
-            $ltpl->SetVariable('modulus',  $JCrypt->modulus());
-            $ltpl->SetVariable('exponent', $JCrypt->exponent());
+            $ltpl->SetVariable('modulus',  $JCrypt->math->bin2int($JCrypt->pub_key->getModulus()));
+            $ltpl->SetVariable('exponent', $JCrypt->math->bin2int($JCrypt->pub_key->getExponent()));
             $ltpl->ParseBlock('layout/encryption');
 
             // usecrypt
