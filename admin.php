@@ -56,12 +56,9 @@ if (!$GLOBALS['app']->Session->Logged())
             $crypted = jaws()->request->fetch('usecrypt', 'post');
 
             if (isset($crypted)) {
-                require_once JAWS_PATH . 'include/Jaws/Crypt.php';
-                $JCrypt = new Jaws_Crypt();
-                $JCrypt->Init();
-                $passwd = $JCrypt->decrypt($passwd);
-                if (Jaws_Error::IsError($passwd)) {
-                    $passwd = '';
+                $JCrypt = Jaws_Crypt::getInstance();
+                if (!Jaws_Error::IsError($JCrypt)) {
+                    $passwd = $JCrypt->decrypt($passwd);
                 }
             }
         }
