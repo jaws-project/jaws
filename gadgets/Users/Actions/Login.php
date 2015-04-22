@@ -102,13 +102,6 @@ class Users_Actions_Login extends Jaws_Gadget_Action
         }
 
         $tpl = $this->gadget->template->load('LoginBox.html');
-
-        $use_crypt = $this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true';
-        if ($use_crypt) {
-            $JCrypt = new Jaws_Crypt();
-            $use_crypt = $JCrypt->Init();
-        }
-
         $tpl->SetBlock('LoginBox');
         $tpl->SetVariable('title', _t('USERS_LOGIN_TITLE'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
@@ -125,13 +118,15 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $reqpost = $response['data'];
         }
 
-        if ($use_crypt) {
+        $JCrypt = Jaws_Crypt::getInstance();
+        if (!Jaws_Error::IsError($JCrypt)) {
             $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js');
             $tpl->SetBlock('LoginBox/onsubmit');
             $tpl->ParseBlock('LoginBox/onsubmit');
             $tpl->SetBlock('LoginBox/encryption');
-            $tpl->SetVariable('modulus',  $JCrypt->math->bin2int($JCrypt->pub_key->getModulus()));
-            $tpl->SetVariable('exponent', $JCrypt->math->bin2int($JCrypt->pub_key->getExponent()));
+            $tpl->SetVariable('length',  $JCrypt->length());
+            $tpl->SetVariable('modulus',  $JCrypt->modulus());
+            $tpl->SetVariable('exponent', $JCrypt->exponent());
             $tpl->ParseBlock('LoginBox/encryption');
 
             // usecrypt
@@ -356,12 +351,10 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             'post'
         );
 
-        if ($this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true' && isset($post['usecrypt'])) {
-            $JCrypt = new Jaws_Crypt();
-            $JCrypt->Init();
-            $post['password'] = $JCrypt->decrypt($post['password']);
-            if (Jaws_Error::isError($post['password'])) {
-                $post['password'] = '';
+        if (isset($post['usecrypt'])) {
+            $JCrypt = Jaws_Crypt::getInstance();
+            if (!Jaws_Error::IsError($JCrypt)) {
+                $post['password'] = $JCrypt->decrypt($post['password']);
             }
         }
 

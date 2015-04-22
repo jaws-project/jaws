@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+    <name><variable>database</variable></name>
+
+    <table>
+        <name><variable>table_prefix</variable>pm_messages</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>from</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+            </field>
+
+            <field>
+                <name>to</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+            </field>
+
+            <field>
+                <name>subject</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
+            <field>
+                <name>body</name>
+                <type>text</type>
+            </field>
+
+            <field>
+                <name>folder</name>
+                <type>integer</type>
+            </field>
+
+            <field>
+                <name>attachments</name>
+                <type>integer</type>
+                <length>1</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>read</name>
+                <type>boolean</type>
+                <default>false</default>
+            </field>
+
+            <field>
+                <name>recipient_users</name>
+                <type>text</type>
+                <length>255</length>
+            </field>
+
+            <field>
+                <name>recipient_groups</name>
+                <type>text</type>
+                <length>255</length>
+            </field>
+
+            <field>
+                <name>insert_time</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <field>
+                <name>update_time</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+        </declaration>
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>pm_attachments</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>title</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
+            <field>
+                <name>filename</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
+            <field>
+                <name>filesize</name>
+                <type>integer</type>
+            </field>
+
+            <field>
+                <name>filetype</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
+        </declaration>
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>pm_message_attachment</name>
+        <declaration>
+
+            <field>
+                <name>message</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+            </field>
+
+            <field>
+                <name>attachment</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+            </field>
+
+        </declaration>
+    </table>
+
+</database>

@@ -33,13 +33,14 @@
       <form name="loginbox"
             action="{{base_script}}"
             <!-- BEGIN onsubmit -->
-            onsubmit="return encryptedElement(this.password, this.exponent.value, this.modulus.value, this.elements['usecrypt'].checked);"
+            onsubmit="return encryptedElement(this.password, this.exponent.value, this.modulus.value, this.elements['usecrypt'].checked, this.length.value);"
             <!-- END onsubmit -->
             method="post">
       <input type="hidden" name="gadget" value="ControlPanel" />
       <input type="hidden" name="action" value="Login" />
       <input type="hidden" name="redirect_to" value="{{redirect_to}}" />
       <!-- BEGIN encryption -->
+      <input type="hidden" name="length" value="{{length}}" />
       <input type="hidden" name="modulus" value="{{modulus}}" />
       <input type="hidden" name="exponent" value="{{exponent}}" />
       <!-- END encryption -->
