@@ -245,6 +245,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         $tpl->SetVariable('draft_count', ($draftCount > 0)? $draftCount : '');
 
         $params = array();
+        $params['folder'] = $folder;
         if (!empty($post['read'])) {
             $params['read'] = $post['read'];
         }
