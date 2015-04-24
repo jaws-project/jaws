@@ -29,7 +29,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
 
         $post = jaws()->request->fetch(array('folder', 'page', 'read', 'term', 'page_item'));
         $page = $post['page'];
-        $folder = $post['folder'];
+        $folder = (int)$post['folder'];
 
         $tpl->SetVariable('txt_term', $post['term']);
 
