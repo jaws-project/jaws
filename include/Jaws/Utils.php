@@ -514,7 +514,6 @@ class Jaws_Utils
                 $file = array();
                 $file['name']     = $listFiles['name'][$i];
                 $file['tmp_name'] = $listFiles['tmp_name'][$i];
-                $file['type']     = $finfo? finfo_file($finfo, $file['tmp_name']) : '';
                 $file['size']     = $listFiles['size'][$i];
                 if (isset($listFiles['error'])) {
                     $file['error'] = $listFiles['error'][$i];
@@ -531,6 +530,7 @@ class Jaws_Utils
                     continue;
                 }
 
+                $file['type']  = $finfo? finfo_file($finfo, $file['tmp_name']) : '';
                 $user_filename = isset($file['name']) ? $file['name'] : '';
                 $host_filename = strtolower(preg_replace('/[^[:alnum:]_\.\-]/', '', $user_filename));
                 // remove deny_formats extension, even double extension
