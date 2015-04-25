@@ -144,7 +144,6 @@ class Users_Actions_Personal extends Users_Actions_Default
 
         if (!empty($post['dob'])) {
             $post['dob'] = Jaws_Date::getInstance()->ToBaseDate(explode('-', $post['dob']), 'Y-m-d');
-            $post['dob'] = $GLOBALS['app']->UserTime2UTC($post['dob'], 'Y-m-d');
         } else {
             $post['dob'] = null;
         }
