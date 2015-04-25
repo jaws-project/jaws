@@ -85,51 +85,8 @@ class Settings_Model_Admin_Settings extends Jaws_Gadget_Model
      */
     function GetTimeZonesList()
     {
-        $timezones = array();
-        if (function_exists('timezone_identifiers_list')) {
-            $timezones = timezone_identifiers_list();
-            $timezones = array_combine($timezones, $timezones);
-        } else {
-            $timezones['-12']   = '[UTC - 12] Baker Island, Howland Island';
-            $timezones['-11']   = '[UTC - 11] Midway Island, Samoa';
-            $timezones['-10']   = '[UTC - 10] Hawaii';
-            $timezones['-9.5']  = '[UTC - 9:30] Marquesa Islands, Taiohae';
-            $timezones['-9']    = '[UTC - 9] Alaska';
-            $timezones['-8']    = '[UTC - 8] Pacific Time (US &amp; Canada), Tijuana';
-            $timezones['-7']    = '[UTC - 7] Mountain Time (US &amp; Canada), Arizona';
-            $timezones['-6']    = '[UTC - 6] Central Time (US &amp; Canada), Mexico City';
-            $timezones['-5']    = '[UTC - 5] Eastern Time (US &amp; Canada), Bogota, Lima, Quito';
-            $timezones['-4']    = '[UTC - 4] Atlantic Time (Canada), Caracas, La Paz, Santiago';
-            $timezones['-3.5']  = '[UTC - 3:30] Newfoundland';
-            $timezones['-3']    = '[UTC - 3] Brasilia, Buenos Aires, Georgetown, Greenland';
-            $timezones['-2']    = '[UTC - 2] Mid-Atlantic, Ascension Islands, St. Helena';
-            $timezones['-1']    = '[UTC - 1] Azores, Cape Verde Islands';
-            $timezones['0']     = '[UTC] Western European, Casablanca, Lisbon, London';
-            $timezones['1']     = '[UTC + 1] Amsterdam, Berlin, Brussels, Madrid, Paris, Rome';
-            $timezones['2']     = '[UTC + 2] Cairo, Helsinki, Kaliningrad, South Africa';
-            $timezones['3']     = '[UTC + 3] Baghdad, Riyadh, Moscow, St. Petersburg, Nairobi';
-            $timezones['3.5']   = '[UTC + 3:30] Tehran';
-            $timezones['4']     = '[UTC + 4] Abu Dhabi, Baku, Muscat, Tbilisi';
-            $timezones['4.5']   = '[UTC + 4:30] Kabul';
-            $timezones['5']     = '[UTC + 5] Ekaterinburg, Islamabad, Karachi, Tashkent';
-            $timezones['5.5']   = '[UTC + 5:30] Bombay, Calcutta, Madras, New Delhi';
-            $timezones['5.75']  = '[UTC + 5:45] Kathmandu';
-            $timezones['6']     = '[UTC + 6] Almaty, Colombo, Dhaka, Novosibirsk';
-            $timezones['6.5']   = '[UTC + 6:30] Rangoon, Cocos Islands';
-            $timezones['7']     = '[UTC + 7] Bangkok, Hanoi, Jakarta, Krasnoyarsk';
-            $timezones['8']     = '[UTC + 8] Beijing, Hong Kong, Perth, Singapore, Taipei';
-            $timezones['8.75']  = '[UTC + 8:45] Western Australia';
-            $timezones['9']     = '[UTC + 9] Osaka, Sapporo, Seoul, Tokyo, Yakutsk';
-            $timezones['9.5']   = '[UTC + 9:30] Adelaide, Darwin, Yakutsk';
-            $timezones['10']    = '[UTC + 10] Canberra, Guam, Melbourne, Sydney, Vladivostok';
-            $timezones['10.5']  = '[UTC + 10:30] Lord Howe Island, South Australia';
-            $timezones['11']    = '[UTC + 11] Magadan, New Caledonia, Solomon Islands';
-            $timezones['11.5']  = '[UTC + 11:30] Norfolk Island';
-            $timezones['12']    = '[UTC + 12] Auckland, Fiji, Kamchatka, Marshall Islands';
-            $timezones['12.75'] = '[UTC + 12:45] Chatham Islands';
-            $timezones['13']    = '[UTC + 13] Tonga, Phoenix Islands';
-            $timezones['14']    = '[UTC + 14] Kiribati';
-        }
+        $timezones = timezone_identifiers_list();
+        $timezones = array_combine($timezones, $timezones);
         return $timezones;
     }
 
