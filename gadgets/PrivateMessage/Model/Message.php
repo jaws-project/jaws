@@ -348,7 +348,11 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
             ($messageData['folder'] != PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT &&
             (empty($recipient_users) || count($recipient_users) <= 0)))
         {
-            return new Jaws_Error(_t('PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS'));
+            return Jaws_Error::raiseError(
+                _t('PRIVATEMESSAGE_MESSAGE_INCOMPLETE_FIELDS'),
+                __FUNCTION__,
+                JAWS_ERROR_NOTICE
+            );
         }
 
         $mTable = $table->table('pm_messages');
