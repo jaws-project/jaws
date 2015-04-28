@@ -43,7 +43,7 @@
  * @author     gERD Schaufelberger <gerd@php-tools.net>
  * @copyright  2010 gERD Schaufelberger
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    CVS: $Id: smtpmx.php 307487 2011-01-14 18:53:33Z alec $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Mail/
  */
 
@@ -56,7 +56,7 @@ require_once 'Net/SMTP.php';
  * @access public
  * @author  gERD Schaufelberger <gerd@php-tools.net>
  * @package Mail
- * @version $Revision: 307487 $
+ * @version $Revision$
  */
 class Mail_smtpmx extends Mail {
 

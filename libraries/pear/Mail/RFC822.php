@@ -40,7 +40,7 @@
  * @author      Chuck Hagenbuch <chuck@horde.org
  * @copyright   2001-2010 Richard Heyes
  * @license     http://opensource.org/licenses/bsd-license.php New BSD License
- * @version     CVS: $Id: RFC822.php 307491 2011-01-14 19:34:55Z alec $
+ * @version     CVS: $Id$
  * @link        http://pear.php.net/package/Mail/
  */
 
@@ -63,7 +63,7 @@
  *
  * @author  Richard Heyes <richard@phpguru.org>
  * @author  Chuck Hagenbuch <chuck@horde.org>
- * @version $Revision: 307491 $
+ * @version $Revision$
  * @license BSD
  * @package Mail
  */

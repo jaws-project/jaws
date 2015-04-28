@@ -40,7 +40,7 @@
  * @author      Chuck Hagenbuch <chuck@horde.org>
  * @copyright   2010 Chuck Hagenbuch
  * @license     http://opensource.org/licenses/bsd-license.php New BSD License
- * @version     CVS: $Id: smtp.php 307488 2011-01-14 19:00:54Z alec $
+ * @version     CVS: $Id$
  * @link        http://pear.php.net/package/Mail/
  */
 
@@ -69,7 +69,7 @@ define('PEAR_MAIL_SMTP_ERROR_DATA', 10006);
  * SMTP implementation of the PEAR Mail interface. Requires the Net_SMTP class.
  * @access public
  * @package Mail
- * @version $Revision: 307488 $
+ * @version $Revision$
  */
 class Mail_smtp extends Mail {
 
@@ -163,6 +163,8 @@ class Mail_smtp extends Mail {
      */
     var $pipelining;
 
+    var $socket_options = array();
+
     /**
      * Constructor.
      *
@@ -200,7 +202,7 @@ class Mail_smtp extends Mail {
         if (isset($params['debug'])) $this->debug = (bool)$params['debug'];
         if (isset($params['persist'])) $this->persist = (bool)$params['persist'];
         if (isset($params['pipelining'])) $this->pipelining = (bool)$params['pipelining'];
-
+        if (isset($params['socket_options'])) $this->socket_options = $params['socket_options'];
         // Deprecated options
         if (isset($params['verp'])) {
             $this->addServiceExtensionParameter('XVERP', is_bool($params['verp']) ? null : $params['verp']);
@@ -349,7 +351,9 @@ class Mail_smtp extends Mail {
         $this->_smtp = new Net_SMTP($this->host,
                                      $this->port,
                                      $this->localhost,
-                                     $this->pipelining);
+                                     $this->pipelining,
+                                     0,
+                                     $this->socket_options);
 
         /* If we still don't have an SMTP object at this point, fail. */
         if (is_object($this->_smtp) === false) {
