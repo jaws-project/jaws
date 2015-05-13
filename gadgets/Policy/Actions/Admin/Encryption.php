@@ -51,10 +51,9 @@ class Policy_Actions_Admin_Encryption extends Policy_Actions_Admin_Default
 
         $keyLen =& Piwi::CreateWidget('Combo', 'key_len');
         $keyLen->setID('key_len');
-        $keyLen->AddOption(_t('POLICY_ENCRYPTION_128BIT'),  '128');
-        $keyLen->AddOption(_t('POLICY_ENCRYPTION_256BIT'),  '256');
         $keyLen->AddOption(_t('POLICY_ENCRYPTION_512BIT'),  '512');
         $keyLen->AddOption(_t('POLICY_ENCRYPTION_1024BIT'), '1024');
+        $keyLen->AddOption(_t('POLICY_ENCRYPTION_2048BIT'), '2048');
         $keyLen->SetDefault($this->gadget->registry->fetch('crypt_key_len'));
         $keyLen->SetEnabled($this->gadget->GetPermission('ManageEncryptionKey'));
         $tpl->SetVariable('lbl_key_len', _t('POLICY_ENCRYPTION_KEY_LEN'));
