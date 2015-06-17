@@ -95,7 +95,7 @@ class Jaws_Crypt
             // generate new key pair
             $result = self::Generate_RSA_KeyPair($cryptPolicies['crypt_key_len']);
             if (Jaws_Error::isError($result)) {
-                return result;
+                return $result;
             }
 
             $GLOBALS['app']->Registry->update('crypt_pvt_key', $result['pvt_key'], false, 'Policy');
