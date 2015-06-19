@@ -29,7 +29,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
         array('crypt_enabled', 'false'),
         array('crypt_pub_key', ''),
         array('crypt_pvt_key', ''),
-        array('crypt_key_len', '128'),
+        array('crypt_key_len', '512'),
         array('crypt_key_age', '86400'),
         array('crypt_key_start_date', '0'),
         array('password_bad_count', '7'),
@@ -108,6 +108,8 @@ class Policy_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.1.0', '<')) {
+            $this->gadget->registry->update('crypt_key_len', 512);
+            $this->gadget->registry->update('crypt_key_start_date', 0);
             $this->gadget->registry->insert(
                 'blocked_domains',
                 @file_get_contents(JAWS_PATH. 'gadgets/Policy/Resources/blocked.domains.txt')
