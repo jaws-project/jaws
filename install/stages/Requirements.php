@@ -203,6 +203,21 @@ class Installer_Requirements extends JawsInstallerStage
         $tpl->setVariable('result', $result_txt);
         $tpl->parseBlock('Requirements/rec_item');
 
+        // OpenSSL extension
+        $tpl->setBlock('Requirements/rec_item');
+        $tpl->setVariable('item', _t('INSTALL_REQ_EXTENSION', 'OpenSSL'));
+        $tpl->setVariable('item_requirement', _t('GLOBAL_YES'));
+        $tpl->setVariable('item_actual', (in_array('openssl', $modules)? _t('GLOBAL_YES') : _t('GLOBAL_NO')));
+        if (in_array('openssl', $modules)) {
+            _log(JAWS_LOG_DEBUG,"openssl extension is loaded");
+            $result_txt = '<span style="color: #0b0;">'._t('INSTALL_REQ_OK').'</span>';
+        } else {
+            _log(JAWS_LOG_DEBUG,"openssl extension is not loaded");
+            $result_txt = '<span style="color: #b00;">'._t('INSTALL_REQ_BAD').'</span>';
+        }
+        $tpl->setVariable('result', $result_txt);
+        $tpl->parseBlock('Requirements/rec_item');
+
         $tpl->parseBlock('Requirements');
         return $tpl->get();
     }
