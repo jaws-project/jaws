@@ -48,22 +48,24 @@ var CommentsCallback = {
 function getCommentsDataGrid(name, offset, reset)
 {
     var comments = CommentsAjax.callSync(
-        'SearchComments',
-        CommentsAjax.mainRequest.gadget,
-        $('gadgets_filter').value,
-        $('filter').value,
-        $('status').value,
-        offset,
-        2
+        'SearchComments', [
+            CommentsAjax.mainRequest.gadget,
+            $('gadgets_filter').value,
+            $('filter').value,
+            $('status').value,
+            offset,
+            2
+        ]
     );
     if (reset) {
         stopCommentAction();
         $(name).setCurrentPage(0);
         var total = CommentsAjax.callSync(
-            'SizeOfCommentsSearch',
-            $('gadgets_filter').value,
-            $('filter').value,
-            $('status').value
+            'SizeOfCommentsSearch', [
+                $('gadgets_filter').value,
+                $('filter').value,
+                $('status').value
+            ]
         );
     }
 
@@ -142,16 +144,19 @@ function editComment(rowElement, id)
  * Update a Comment
  */
 function updateComment(sendEmail) {
-    CommentsAjax.callAsync('UpdateComment',
-        $('gadget').value,
-        $('id').value,
-        $('name').value,
-        $('email').value,
-        $('url').value,
-        $('message').value,
-        $('reply').value,
-        $('comment_status').value,
-        sendEmail);
+    CommentsAjax.callAsync(
+        'UpdateComment', [
+            $('gadget').value,
+            $('id').value,
+            $('name').value,
+            $('email').value,
+            $('url').value,
+            $('message').value,
+            $('reply').value,
+            $('comment_status').value,
+            sendEmail
+        ]
+    );
 }
 
 /**
@@ -188,7 +193,7 @@ function commentDGAction(combo)
         }
     } else if (combo.value != '') {
         if (selectedRows) {
-            CommentsAjax.callAsync('MarkAs', $('gadget').value, rows, combo.value);
+            CommentsAjax.callAsync('MarkAs', [$('gadget').value, rows, combo.value]);
         }
     }
 }
@@ -207,11 +212,12 @@ function searchComment()
 function SaveSettings()
 {
     CommentsAjax.callAsync(
-        'SaveSettings',
-        $('allow_comments').value,
-        $('allow_duplicate').value,
-        $('default_comment_status').value,
-        $('order_type').value
+        'SaveSettings', [
+            $('allow_comments').value,
+            $('allow_duplicate').value,
+            $('default_comment_status').value,
+            $('order_type').value
+        ]
     );
 }
 
