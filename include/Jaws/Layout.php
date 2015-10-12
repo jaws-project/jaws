@@ -203,7 +203,7 @@ class Jaws_Layout
      */
     function LoadControlPanelHead()
     {
-        $this->AddScriptLink('libraries/mootools/core.js?'. JAWS_VERSION);
+        $this->AddScriptLink('libraries/jquery/jquery.js?'. JAWS_VERSION);
         $this->AddScriptLink('include/Jaws/Resources/Ajax.js?'. JAWS_VERSION);
         $this->AddHeadLink(
             'gadgets/ControlPanel/Resources/style.css?'. JAWS_VERSION,
