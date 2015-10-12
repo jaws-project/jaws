@@ -39,8 +39,8 @@ function refresh()
  */
 function save_lang()
 {
-    if (!$('lang_code').value.blank() &&
-        !$('lang_name').value.blank())
+    if ($('lang_code').val() &&
+        $('lang_name').val())
     {
         lang_str = $('lang_code').value.trim() + ';' + $('lang_name').value.trim();
         LanguagesAjax.callAsync('SaveLanguage', lang_str);
@@ -132,12 +132,14 @@ function change_lang_option()
     lang = $('lang').value;
     component = $('component').value;
 
-    if (!$('lang').value.blank() && 
-        !$('component').value.blank())
+    if ($('lang').val() && 
+        $('component').val())
     {
         $('btn_save').style.visibility = 'visible';
         $('btn_cancel').style.visibility = 'visible';
-        $('lang_strings').innerHTML = LanguagesAjax.callSync('GetLangDataUI', $('component').value, $('lang').value);
+        $('lang_strings').innerHTML = LanguagesAjax.callSync(
+            'GetLangDataUI', [$('component').value, $('lang').value]
+        );
         filterTranslated();
     }
 }
@@ -165,7 +167,7 @@ function save_lang_data()
         data['strings'][strings_elements[i].name] = strings_elements[i].value;
     }
 
-    LanguagesAjax.callAsync('SetLangData', component, lang, data);
+    LanguagesAjax.callAsync('SetLangData', [component, lang, data]);
     LangDataChanged = false;
     data = null;
 }
