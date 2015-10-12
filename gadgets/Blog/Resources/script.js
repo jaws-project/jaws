@@ -246,10 +246,10 @@ function searchTrackback()
  */
 function updatePostsDatagrid(cat, status, search, limit, resetCounter)
 {
-    var result = BlogAjax.callSync('SearchPosts', cat, status, search, limit);
+    var result = BlogAjax.callSync('SearchPosts', [cat, status, search, limit]);
     resetGrid('posts_datagrid', result);
     if (resetCounter) {
-        var size = BlogAjax.callSync('SizeOfSearch', cat, status, search);
+        var size = BlogAjax.callSync('SizeOfSearch', [cat, status, search]);
         $('posts_datagrid').rowsSize    = size;
         $('posts_datagrid').setCurrentPage(0);
         $('posts_datagrid').updatePageCounter();
@@ -392,10 +392,10 @@ function lastValues()
  */
 function updateTrackbacksDatagrid(limit, filter, search, status, resetCounter)
 {
-    result = BlogAjax.callSync('SearchTrackbacks', limit, filter, search, status);
+    result = BlogAjax.callSync('SearchTrackbacks', [limit, filter, search, status]);
     resetGrid('trackbacks_datagrid', result);
     if (resetCounter) {
-        var size = BlogAjax.callSync('SizeOfTrackbacksSearch', filter, search, status);
+        var size = BlogAjax.callSync('SizeOfTrackbacksSearch', [filter, search, status]);
         $('trackbacks_datagrid').rowsSize    = size;
         $('trackbacks_datagrid').setCurrentPage(0);
         $('trackbacks_datagrid').updatePageCounter();
@@ -434,7 +434,7 @@ function trackbackDGAction(combo)
         }
     } else if (combo.value != '') {
         if (selectedRows) {
-            BlogAjax.callAsync('TrackbackMarkAs', rows, combo.value);
+            BlogAjax.callAsync('TrackbackMarkAs', [rows, combo.value]);
         }
     }
 }
@@ -459,7 +459,7 @@ function entryDGAction(combo)
         }
     } else if (combo.value != '') {
         if (selectedRows) {
-            BlogAjax.callAsync('ChangeEntryStatus', rows, combo.value);
+            BlogAjax.callAsync('ChangeEntryStatus', [rows, combo.value]);
         }
     }
 }
@@ -481,9 +481,13 @@ function saveSettings(form)
     var trackback_status = form.elements['trackback_status'].value;
     var pingback         = form.elements['pingback'].value;
 
-    BlogAjax.callAsync('SaveSettings', defaultView, lastEntries, popularLimit, lastComments, recentComments, defaultCat, 
-                      xmlLimit, comments, trackback, trackback_status,
-                      pingback);
+    BlogAjax.callAsync(
+        'SaveSettings', [
+            defaultView, lastEntries, popularLimit,
+            lastComments, recentComments, defaultCat, 
+            xmlLimit, comments, trackback, trackback_status, pingback
+        ]
+    );
 }
 
 /**
@@ -510,7 +514,7 @@ function editCategory(id)
  */
 function resetCategoryForm()
 {
-    BlogAjax.callAsync('getcategoryform', 'new', 0);
+    BlogAjax.callAsync('getcategoryform', ['new', 0]);
     $('category_id').selectedIndex = -1;
 }
 
@@ -534,27 +538,33 @@ function resetCategoryCombo()
  */
 function saveCategory(form)
 {
-    if ($('name').value.blank())
+    if (!$('name').val())
     {
         alert(incompleteCategoryFields);
         return false;
     }
 
     if (selectedCategory == null) {
-        BlogAjax.callAsync('AddCategory2',
-                            $('name').value,
-                            $('description').value,
-                            $('fast_url').value,
-                            $('meta_keywords').value,
-                            $('meta_desc').value);
+        BlogAjax.callAsync(
+            'AddCategory2', [
+                $('name').value,
+                $('description').value,
+                $('fast_url').value,
+                $('meta_keywords').value,
+                $('meta_desc').value
+            ]
+        );
     } else {
-        BlogAjax.callAsync('UpdateCategory2',
-                            selectedCategory,
-                            $('name').value,
-                            $('description').value,
-                            $('fast_url').value,
-                            $('meta_keywords').value,
-                            $('meta_desc').value);
+        BlogAjax.callAsync(
+            'UpdateCategory2', [
+                selectedCategory,
+                $('name').value,
+                $('description').value,
+                $('fast_url').value,
+                $('meta_keywords').value,
+                $('meta_desc').value
+            ]
+        );
     }
 }
 
@@ -640,8 +650,13 @@ function startAutoDrafting()
                 break;
         }
 
-        BlogAjax.callAsync('AutoDraft', id, categories, title, summary, content, fasturl, meta_keywords, meta_desc,
-                            tags, allow_comments, trackbacks, published, timestamp);
+        BlogAjax.callAsync(
+            'AutoDraft', [
+                id, categories, title, summary,
+                content, fasturl, meta_keywords, meta_desc,
+                tags, allow_comments, trackbacks, published, timestamp
+            ]
+        );
     }
     setTimeout('startAutoDrafting();', 120000);
 }
