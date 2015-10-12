@@ -115,8 +115,8 @@ function updateForm(feed)
  */
 function updateFeed()
 {
-    if ($('title').value.blank() ||
-        $('url').value.blank() ||
+    if (!$('title').val() ||
+        !$('url').val() ||
         !isValidURL($('url').value.trim()))
     {
         alert(incompleteFeedFields);
@@ -124,24 +124,30 @@ function updateFeed()
     }
 
     if($('id').value==0) {
-            FeedReaderAjax.callAsync('InsertFeed',
-                                $('title').value,
-                                $('url').value,
-                                $('cache_time').value,
-                                $('view_type').value,
-                                $('count_entry').value,
-                                $('title_view').value,
-                                $('visible').value);
+            FeedReaderAjax.callAsync(
+                'InsertFeed', [
+                    $('title').value,
+                    $('url').value,
+                    $('cache_time').value,
+                    $('view_type').value,
+                    $('count_entry').value,
+                    $('title_view').value,
+                    $('visible').value
+                ]
+            );
     } else {
-        FeedReaderAjax.callAsync('UpdateFeed',
-                            $('id').value,
-                            $('title').value,
-                            $('url').value,
-                            $('cache_time').value,
-                            $('view_type').value,
-                            $('count_entry').value,
-                            $('title_view').value,
-                            $('visible').value);
+        FeedReaderAjax.callAsync(
+            'UpdateFeed', [
+                $('id').value,
+                $('title').value,
+                $('url').value,
+                $('cache_time').value,
+                $('view_type').value,
+                $('count_entry').value,
+                $('title_view').value,
+                $('visible').value
+            ]
+        );
     }
 }
 
