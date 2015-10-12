@@ -231,34 +231,40 @@ function savePoll()
             answers[i]['id']     = box.options[i].value;
             answers[i]['answer'] = box.options[i].text;
         }
-        PollAjax.callAsync('UpdatePollAnswers', selectedPoll, answers);
+        PollAjax.callAsync('UpdatePollAnswers', [selectedPoll, answers]);
     } else {
-        if ($('question').value.blank()) {
+        if (!$('question').val()) {
             alert(incompletePollsFields);
             return false;
         }
 
         if (selectedPoll == null) {
-            PollAjax.callAsync('InsertPoll',
-                                $('question').value,
-                                $('gid').value,
-                                $('start_time').value,
-                                $('stop_time').value,
-                                $('select_type').value,
-                                $('poll_type').value,
-                                $('result_view').value,
-                                $('visible').value);
+            PollAjax.callAsync(
+                'InsertPoll', [
+                    $('question').value,
+                    $('gid').value,
+                    $('start_time').value,
+                    $('stop_time').value,
+                    $('select_type').value,
+                    $('poll_type').value,
+                    $('result_view').value,
+                    $('visible').value
+                ]
+            );
         } else {
-            PollAjax.callAsync('UpdatePoll',
-                                selectedPoll,
-                                $('question').value,
-                                $('gid').value,
-                                $('start_time').value,
-                                $('stop_time').value,
-                                $('select_type').value,
-                                $('poll_type').value,
-                                $('result_view').value,
-                                $('visible').value);
+            PollAjax.callAsync(
+                'UpdatePoll', [
+                    selectedPoll,
+                    $('question').value,
+                    $('gid').value,
+                    $('start_time').value,
+                    $('stop_time').value,
+                    $('select_type').value,
+                    $('poll_type').value,
+                    $('result_view').value,
+                    $('visible').value
+                ]
+            );
         }
     }
 }
@@ -451,24 +457,30 @@ function savePollGroup()
                     counter++;
                 }
             }
-            PollAjax.callAsync('AddPollsToPollGroup', selectedPollGroup, keys);
+            PollAjax.callAsync('AddPollsToPollGroup', [selectedPollGroup, keys]);
 
         }
     } else {
-        if ($('title').value.blank()) {
+        if (!$('title').val()) {
             alert(incompleteGroupsFields);
             return false;
         }
 
         if (selectedPollGroup == null) {
-            PollAjax.callAsync('InsertPollGroup',
-                                $('title').value,
-                                $('visible').value);
+            PollAjax.callAsync(
+                'InsertPollGroup', [
+                    $('title').value,
+                    $('visible').value
+                ]
+            );
         } else {
-            PollAjax.callAsync('UpdatePollGroup',
-                                selectedPollGroup,
-                                $('title').value,
-                                $('visible').value);
+            PollAjax.callAsync(
+                'UpdatePollGroup', [
+                    selectedPollGroup,
+                    $('title').value,
+                    $('visible').value
+                ]
+            );
         }
     }
 }
