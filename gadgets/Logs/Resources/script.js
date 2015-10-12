@@ -152,10 +152,12 @@ function searchLogs()
  */
 function saveSettings()
 {
-    LogsAjax.callAsync('SaveSettings', {
-        'log_priority_level': $('priority').value,
-        'log_parameters': $('log_parameters').value
-    });
+    LogsAjax.callAsync(
+        'SaveSettings', {
+            'log_priority_level': $('priority').value,
+            'log_parameters': $('log_parameters').value
+        }
+    );
 }
 
 var LogsAjax = new JawsAjax('Logs', LogsCallback);
