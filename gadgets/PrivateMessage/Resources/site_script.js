@@ -28,7 +28,7 @@ function filterInbox()
 {
     var result = PrivateMessageAjax.callSync(
         'InboxDataGridUI',
-        document.id(document).getElement('form[name=inbox]').toQueryString().parseQueryString()
+        $.unserialize($('form[name=inbox]').serialize())
     );
 
     document.id('inbox-datagrid').innerHTML = result;
@@ -153,10 +153,17 @@ function sendMessage(isDraft) {
     }
 
     var attachments = uploadedFiles.concat(getSelectedAttachments());
-    PrivateMessageAjax.callAsync('SendMessage', {'id': document.id('id').value, 'is_draft':isDraft,
-                     'recipient_users':recipient_users, 'recipient_groups':recipient_groups,
-                     'subject':document.id('subject').value, 'body':getEditorValue('body'), 'attachments':attachments
-    });
+    PrivateMessageAjax.callAsync(
+        'SendMessage', {
+            'id': document.id('id').value,
+            'is_draft':isDraft,
+            'recipient_users':recipient_users,
+            'recipient_groups':recipient_groups,
+            'subject':document.id('subject').value,
+            'body':getEditorValue('body'),
+            'attachments':attachments
+        }
+    );
 }
 
 function getSelectedAttachments() {
