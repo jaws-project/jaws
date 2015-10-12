@@ -11,8 +11,8 @@ var BannerCallback = {
     InsertBanner: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('banners_datagrid').addItem();
-            $('banners_datagrid').setCurrentPage(0);
+            $('#banners_datagrid')[0].addItem();
+            $('#banners_datagrid')[0].setCurrentPage(0);
             getDG('banners_datagrid');
         }
         showResponse(response);
@@ -29,7 +29,7 @@ var BannerCallback = {
     DeleteBanner: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('banners_datagrid').deleteItem();
+            $('#banners_datagrid')[0].deleteItem();
             getDG('banners_datagrid');
         }
         showResponse(response);
@@ -114,11 +114,11 @@ function unselectDataGridRow()
  */
 function getBannersDataGrid(name, offset, reset)
 {
-    var banners = BannerAjax.callSync('getBannersDataGrid', name, offset, $('bgroup_filter').value);
+    var banners = BannerAjax.callSync('getBannersDataGrid', [name, offset, $('#bgroup_filter').val()]);
     if (reset) {
         stopAction();
-        $(name).setCurrentPage(0);
-        var total = BannerAjax.callSync('GetBannersCount', $('bgroup_filter').value);
+        $('#'+name)[0].setCurrentPage(0);
+        var total = BannerAjax.callSync('GetBannersCount', $('#bgroup_filter').val());
     }
 
     resetGrid(name, banners, total);
@@ -126,24 +126,23 @@ function getBannersDataGrid(name, offset, reset)
 
 function makeBigBannerEntry()
 {
-    var height = parseInt($('banner').style.height.substr(0, $('banner').style.height.length-2));
-    height += 10;
-    $('banner').style.height = height + 'px';
+    var height = $('#banner').height() + 10;
+    $('#banner').css('height', height + 'px');
 }
 
 function setTemplate(template)
 {
-    $('template').value = template;
-    $('template').focus();
+    $('#template').val(template);
+    $('#template').focus();
 }
 
 function changeThroughUpload(checked) {
     if (checked) {
-        $('banner').style.display = 'none';
-        $('upload_banner').style.display = 'inline';
+        $('#banner').css('display', 'none');
+        $('#upload_banner').css('display', 'inline');
     } else {
-        $('upload_banner').style.display = 'none';
-        $('banner').style.display = 'inline';
+        $('#upload_banner').css('display', 'none');
+        $('#banner').css('display', 'inline');
     }
 }
 
@@ -152,10 +151,10 @@ function changeThroughUpload(checked) {
  */
 function getGroups()
 {
-    resetCombo($('groups_combo'));
-    var groupList = BannerAjax.callSync('GetGroups', -1, -1);
+    resetCombo($('#groups_combo')[0]);
+    var groupList = BannerAjax.callSync('GetGroups', [-1, -1]);
     if (groupList != false) {
-        var combo = $('groups_combo');
+        var combo = $('#groups_combo')[0];
         var i = 0;
         groupList.each(function(value, index) {
             var op = new Option(value['title'].defilter(), value['id']);
@@ -192,9 +191,9 @@ function submit_banner()
  */
 function saveBanner()
 {
-    if ($('title').value.blank() ||
-        $('template').value.blank() ||
-        $('gid').value == 0)
+    if (!$('#title').val() ||
+        !$('#template').val() ||
+        $('#gid').val() == 0)
     {
         alert(incompleteBannerFields);
         return false;
@@ -205,33 +204,39 @@ function saveBanner()
         document.banner_info.submit();
         return true;
     } else {
-        if ($('bid').value == 0) {
-            BannerAjax.callAsync('InsertBanner',
-                                 $('title').value,
-                                 $('url').value,
-                                 $('gid').value,
-                                 $('banner').value,
-                                 $('template').value,
-                                 $('views_limit').value,
-                                 $('clicks_limit').value,
-                                 $('start_time').value,
-                                 $('stop_time').value,
-                                 $('random').value,
-                                 $('published').value);
+        if ($('#bid').val() == 0) {
+            BannerAjax.callAsync(
+                'InsertBanner', [
+                    $('#title').val(),
+                    $('#url').val(),
+                    $('#gid').val(),
+                    $('#banner').val(),
+                    $('#template').val(),
+                    $('#views_limit').val(),
+                    $('#clicks_limit').val(),
+                    $('#start_time').val(),
+                    $('#stop_time').val(),
+                    $('#random').val(),
+                    $('#published').val()
+                ]
+            );
         } else {
-            BannerAjax.callAsync('UpdateBanner',
-                                $('bid').value,
-                                $('title').value,
-                                $('url').value,
-                                $('gid').value,
-                                $('banner').value,
-                                $('template').value,
-                                $('views_limit').value,
-                                $('clicks_limit').value,
-                                $('start_time').value,
-                                $('stop_time').value,
-                                $('random').value,
-                                $('published').value);
+            BannerAjax.callAsync(
+                'UpdateBanner', [
+                    $('#bid').val(),
+                    $('#title').val(),
+                    $('#url').val(),
+                    $('#gid').val(),
+                    $('#banner').val(),
+                    $('#template').val(),
+                    $('#views_limit').val(),
+                    $('#clicks_limit').val(),
+                    $('#start_time').val(),
+                    $('#stop_time').val(),
+                    $('#random').val(),
+                    $('#published').val()
+                ]
+            );
         }
     }
 }
@@ -242,37 +247,41 @@ function saveBanner()
 function saveGroup()
 {
     if (currentAction == 'ManageGroupBanners') {
-        var box  = $('group_members');
+        var box  = $('#group_members')[0];
         var keys = new Array();
         for(var i = 0; i < box.length; i++) {
             keys[i] = box.options[i].value;
         }
-        BannerAjax.callAsync('AddBannersToGroup', selectedGroup, keys);
+        BannerAjax.callAsync('AddBannersToGroup', [selectedGroup, keys]);
     } else {
-        if ($('title').value.blank()) {
+        if (!$('#title').val()) {
             alert(incompleteGroupFields);
             return false;
         }
 
         if (selectedGroup == null) {
-            $('gid').value = 0;
+            $('#gid').val(0);
             BannerAjax.callAsync(
-                            'InsertGroup',
-                            $('title').value,
-                            $('count').value,
-                            $('show_title').value,
-                            $('show_type').value,
-                            $('published').value);
+                'InsertGroup',[
+                    $('#title').val(),
+                    $('#count').val(),
+                    $('#show_title').val(),
+                    $('#show_type').val(),
+                    $('#published').val()
+                ]
+            );
         } else {
-            $('gid').value = selectedGroup;
+            $('#gid').val() = selectedGroup;
             BannerAjax.callAsync(
-                            'UpdateGroup',
-                            $('gid').value,
-                            $('title').value,
-                            $('count').value,
-                            $('show_title').value,
-                            $('show_type').value,
-                            $('published').value);
+                'UpdateGroup', [
+                    $('#gid').val(),
+                    $('#title').val(),
+                    $('#count').val(),
+                    $('#show_title').val(),
+                    $('#show_type').val(),
+                    $('#published').val()
+                ]
+            );
         }
     }
 }
@@ -334,11 +343,11 @@ function addGroup()
     }
     currentAction = 'AddGroup';
 
-    $('cancel_action').style.display = 'inline';
-    $('save_group').style.display = 'inline';
-    $('add_banners').style.display = 'none';
-    $('add_group').style.display = 'none';
-    $('group_area').innerHTML = cacheMasterForm;
+    $('#cancel_action').css('display', 'inline');
+    $('#save_group').css('display', 'inline');
+    $('#add_banners').css('display', 'none');
+    $('#add_group').css('display', 'none');
+    $('#group_area').html(cacheMasterForm);
     selectedGroup = null;
 }
 
@@ -349,28 +358,28 @@ function editBanner(element, bid)
 {
     if (bid == 0) return;
     currentAction = 'Banners';
-    $('legend_title').innerHTML = editBanner_title;
+    $('#legend_title').html(editBanner_title);
 
     selectDataGridRow(element.parentNode.parentNode);
 
     var banner = BannerAjax.callSync('GetBanner', bid);
-    $('bid').value    = banner['id'];
-    $('title').value  = banner['title'].defilter();
-    $('url').value    = banner['url'];
-    $('gid').value    = banner['gid'];
+    $('#bid').val(banner['id']);
+    $('#title').val(banner['title'].defilter());
+    $('#url').val(banner['url']);
+    $('#gid').val(banner['gid']);
     document.getElementsByName('through_upload[]').item(0).checked = false;
-    $('banner').value       = banner['banner'].defilter();
-    defaultTemplate         = banner['template'];
-    $('template').value     = defaultTemplate;
+    $('#banner').val(banner['banner'].defilter());
     defaultTemplate = banner['template'];
-    $('views_limit').value  = banner['views_limitation'];
-    $('clicks_limit').value = banner['clicks_limitation'];
+    $('#template').val(defaultTemplate);
+    defaultTemplate = banner['template'];
+    $('#views_limit').val(banner['views_limitation']);
+    $('#clicks_limit').val(banner['clicks_limitation']);
     if (banner['start_time'] == null) banner['start_time'] = '';
     if (banner['stop_time']  == null) banner['stop_time']  = '';
-    $('start_time').value   = banner['start_time'];
-    $('stop_time').value    = banner['stop_time'];
-    $('random').selectedIndex  = banner['random'];
-    $('published').selectedIndex = banner['published']? 1 : 0;
+    $('#start_time').val(banner['start_time']);
+    $('#stop_time').val(banner['stop_time']);
+    $('#random').prop('selectedIndex', banner['random']);
+    $('#published').prop('selectedIndex', banner['published']? 1 : 0);
 }
 
 /**
@@ -485,20 +494,20 @@ function stopAction()
 {
     switch(currentAction) {
     case 'Banners':
-        $('legend_title').innerHTML = addBanner_title;
-        defaultTemplate         = '';
-        $('bid').value          = 0;
-        $('title').value        = '';
-        $('url').value          = 'http://';
-        $('banner').value       = '';
-        $('upload_banner').value= '';
-        $('template').value     = '';
-        $('views_limit').value  = '';
-        $('clicks_limit').value = '';
-        $('start_time').value   = '';
-        $('stop_time').value    = '';
-        $('random').value       = 0;
-        $('published').value    = 1;
+        $('#legend_title').html(addBanner_title);
+        defaultTemplate = '';
+        $('#bid').val(0);
+        $('#title').val('');
+        $('#url').val('http://');
+        $('#banner').val('');
+        $('#upload_banner').val('');
+        $('#template').val('');
+        $('#views_limit').val('');
+        $('#clicks_limit').val('');
+        $('#start_time').val('');
+        $('#stop_time').val('');
+        $('#random').val(0);
+        $('#published').val(1);
         unselectDataGridRow();
         break;
     case 'EditGroup':
@@ -550,7 +559,7 @@ function editGroupBanners()
     $('published').disabled = true;
     //--
     currentAction = 'ManageGroupBanners';
-    var banners = BannerAjax.callSync('GetBanners', -1, selectedGroup);
+    var banners = BannerAjax.callSync('GetBanners', [-1, selectedGroup]);
     var box = $('group_members');
     box.length = 0;
     for(var i = 0; i < banners.length; i++) {

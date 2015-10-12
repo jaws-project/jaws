@@ -26,7 +26,7 @@
   </tr>
 </table>
 <script type="text/javascript">
-  $('bgroup_filter').selectedIndex = 0;
+  $('#bgroup_filter').prop('selectedIndex', 0);
   initDataGrid('banners_datagrid', BannerAjax, getBannersDataGrid);
   var incompleteBannerFields = "{{incompleteBannerFields}}";
   var confirmBannerDelete    = "{{confirmBannerDelete}}";
