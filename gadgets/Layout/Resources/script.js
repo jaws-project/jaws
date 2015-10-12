@@ -133,12 +133,13 @@ function deleteElement(itemId)
         itemDiv.fade('out');
         (function(){this.destroy();}).delay(500, itemDiv);
         LayoutAjax.callAsync(
-            'DeleteElement',
-            itemId,
-            $('index_layout').value,
-            section,
-            position + 1,
-            $('user').value
+            'DeleteElement', [
+                itemId,
+                $('index_layout').value,
+                section,
+                position + 1,
+                $('user').value
+            ]
         );
     }
 }
@@ -173,14 +174,15 @@ function initUI()
                  new_position != el.getProperty('old_position'))
             ) {
                 LayoutAjax.callAsync(
-                    'MoveElement',
-                    el.id.replace('item_', ''),               /* item id */
-                    $('index_layout').value,                  /* index or default layout */
-                    el.getProperty('old_section'),            /* old section name */
-                    parseInt(el.getProperty('old_position')), /* position in old section */
-                    new_section,                              /* new section name */
-                    new_position,                             /* position in new section */
-                    $('user').value                           /* dashboard of user or global layout */
+                    'MoveElement', [
+                        el.id.replace('item_', ''),               /* item id */
+                        $('index_layout').value,                  /* index or default layout */
+                        el.getProperty('old_section'),            /* old section name */
+                        parseInt(el.getProperty('old_position')), /* position in old section */
+                        new_section,                              /* new section name */
+                        new_position,                             /* position in new section */
+                        $('user').value                           /* dashboard of user or global layout */
+                    ]
                 );
             }
             el.removeProperties('old_section', 'old_position');
@@ -284,7 +286,10 @@ function addGadgetToLayout(gadget, action, params)
 {
     hideDialogBox('gadgets_dialog');
     params = (params == null)? null : params.split(',');
-    LayoutAjax.callAsync('AddGadget', gadget, action, params, $('index_layout').value, $('user').value);
+    LayoutAjax.callAsync(
+        'AddGadget',
+        [gadget, action, params, $('index_layout').value, $('user').value]
+    );
 }
 
 function getSelectedAction()
@@ -312,14 +317,17 @@ function saveElementAction(lid, gadget, action, params, title, desc)
     params = (params == null)? null : params.split(',');
     $('ea' + lid).innerHTML = title;
     $('ea' + lid).parentNode.parentNode.title = desc;
-    LayoutAjax.callAsync('UpdateElementAction', lid, gadget, action, params, $('user').value);
+    LayoutAjax.callAsync(
+        'UpdateElementAction',
+        [lid, gadget, action, params, $('user').value]
+    );
 }
 
 /**
  * Update display when 
  */
 function saveChangeDW(itemId, dw) {
-    LayoutAjax.callAsync('UpdateDisplayWhen', itemId, dw, $('user').value);
+    LayoutAjax.callAsync('UpdateDisplayWhen', [itemId, dw, $('user').value]);
     if (dw == '*') {
         $('dw' + itemId).innerHTML = displayAlways;
     } else if (dw.blank()) {
