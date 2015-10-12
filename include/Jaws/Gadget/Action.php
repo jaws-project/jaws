@@ -153,7 +153,7 @@ class Jaws_Gadget_Action
      */
     public function AjaxMe($file = '')
     {
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/core.js?'.JAWS_VERSION);
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/jquery/jquery.js?'.JAWS_VERSION);
         $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Resources/Ajax.js?'.JAWS_VERSION);
         if (!empty($file)) {
             $GLOBALS['app']->Layout->AddScriptLink(
