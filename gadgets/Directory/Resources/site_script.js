@@ -620,7 +620,7 @@ function removeFile()
 function submitDirectory()
 {
     var action = (idSet.length === 0)? 'CreateDirectory' : 'UpdateDirectory';
-    DirectoryAjax.callAsync(action, $('frm_dir').toQueryString().parseQueryString());
+    DirectoryAjax.callAsync(action, $.unserialize($('#frm_dir').serialize()));
 }
 
 /**
@@ -629,7 +629,7 @@ function submitDirectory()
 function submitFile()
 {
     var action = (idSet.length === 0)? 'CreateFile' : 'UpdateFile';
-    DirectoryAjax.callAsync(action, $('frm_file').toQueryString().parseQueryString());
+    DirectoryAjax.callAsync(action, $.unserialize($('#frm_file').serialize()));
 }
 
 /**
@@ -737,7 +737,7 @@ function onSearchChange(input)
  */
 function performSearch()
 {
-    var query = $('frm_search').toQueryString().parseQueryString();
+    var query = $.unserialize($('#frm_search').serialize());
     query.id = currentDir;
     DirectoryAjax.callAsync('Search', query);
 }
