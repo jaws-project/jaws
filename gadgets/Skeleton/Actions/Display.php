@@ -10,6 +10,13 @@
  */
 class Skeleton_Actions_Display extends Jaws_Gadget_Action
 {
+    var $objServer = null;
+
+    function getData($keySock, $buffer) {
+        _log_var_dump($buffer);
+        $this->objServer->sendAll($buffer);
+    }
+
     /**
      * Displays version of Jaws
      *
@@ -18,6 +25,8 @@ class Skeleton_Actions_Display extends Jaws_Gadget_Action
      */
     function Display()
     {
+        $this->objServer = Jaws_WebSocket_Server::getInstance('127.0.0.1', 3434);
+        $this->objServer->open(array($this, 'getData'));
         $model   = $this->gadget->model->load();
         $version = $model->GetJawsVersion();
         return _t('SKELETON_DISPLAY_MESSAGE', $version);
