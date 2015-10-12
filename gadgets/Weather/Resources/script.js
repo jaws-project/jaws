@@ -99,9 +99,9 @@ function editRegion(rowElement, id)
  */
 function updateRegion()
 {
-    if ($('title').value.blank() ||
-        $('latitude').value.blank() ||
-        $('longitude').value.blank())
+    if (!$('title').val() ||
+        !$('latitude').val() ||
+        !$('longitude').val())
     {
         alert(incompleteFields);
         return;
@@ -109,21 +109,25 @@ function updateRegion()
 
     if ($('id').value == 0) {
         WeatherAjax.callAsync(
-                        'InsertRegion',
-                        $('title').value,
-                        $('fast_url').value,
-                        $('latitude').value,
-                        $('longitude').value,
-                        $('published').value);
+            'InsertRegion', [
+                $('title').value,
+                $('fast_url').value,
+                $('latitude').value,
+                $('longitude').value,
+                $('published').value
+            ]
+        );
     } else {
         WeatherAjax.callAsync(
-                        'UpdateRegion',
-                        $('id').value,
-                        $('title').value,
-                        $('fast_url').value,
-                        $('latitude').value,
-                        $('longitude').value,
-                        $('published').value);
+            'UpdateRegion', [
+                $('id').value,
+                $('title').value,
+                $('fast_url').value,
+                $('latitude').value,
+                $('longitude').value,
+                $('published').value
+            ]
+        );
     }
 }
 
@@ -147,11 +151,14 @@ function deleteRegion(rowElement, id)
  */
 function updateProperties()
 {
-    WeatherAjax.callAsync('UpdateProperties',
-                          $('unit').value,
-                          $('update_period').value,
-                          $('date_format').value,
-                          $('api_key').value);
+    WeatherAjax.callAsync(
+        'UpdateProperties', [
+            $('unit').value,
+            $('update_period').value,
+            $('date_format').value,
+            $('api_key').value
+        ]
+    );
 }
 
 /**
