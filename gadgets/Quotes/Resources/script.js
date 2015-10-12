@@ -23,7 +23,7 @@ function fillQuotesCombo()
 {
     var box = $('quotes_combo');
     box.options.length = 0;
-    var quotes = QuotesAjax.callSync('GetQuotes', -1, $('group_filter').value);
+    var quotes = QuotesAjax.callSync('GetQuotes', [-1, $('group_filter').value]);
     if (quotes.length > 0) {
         quotes.each(function(value, index) {
             box.options[box.options.length] = new Option(value['title'].defilter(), value['id']);
@@ -75,7 +75,7 @@ function stopAction()
  */
 function saveQuote()
 {
-    if ($('title').value.blank() ||
+    if (!$('title').val() ||
         getEditorValue('quotation').blank() ||
         $('gid').value == 0)
     {
@@ -194,7 +194,7 @@ function editGroup(gid)
 function saveGroup()
 {
     if (currentAction == 'Groups') {
-        if ($('title').value.blank()) {
+        if (!$('title').val()) {
             alert(incompleteGroupFields);
             return false;
         }
@@ -246,7 +246,7 @@ function saveGroup()
                 counter++;
             }
         }
-        QuotesAjax.callAsync('AddQuotesToGroup', $('gid').value, keys);
+        QuotesAjax.callAsync('AddQuotesToGroup', [$('gid').value, keys]);
     }
 }
 
@@ -286,7 +286,7 @@ function editGroupQuotes()
     $('work_area').innerHTML = cacheGroupQuotesForm;
 
     currentAction = 'GroupQuotes';
-    var quotesList = QuotesAjax.callSync('GetQuotes', -1, $('gid').value);
+    var quotesList = QuotesAjax.callSync('GetQuotes', [-1, $('gid').value]);
     var inputs  = $('work_area').getElementsByTagName('input');
 
     if (quotesList) {
