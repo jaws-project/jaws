@@ -90,16 +90,19 @@ function AddNewMenuItem(gid, pid, mid, rank)
 function saveMenus()
 {
     if (currentAction == 'Groups') {
-        if ($('title').value.blank()) {
+        if (!$('title').val()) {
             alert(incompleteFields);
             return false;
         }
         cacheMenuForm = null;
         if (selectedGroup == null) {
-            var response = MenuAjax.callSync('InsertGroup',
-                                             $('title').value,
-                                             $('title_view').value,
-                                             $('published').value);
+            var response = MenuAjax.callSync(
+                'InsertGroup', [
+                    $('title').value,
+                    $('title_view').value,
+                    $('published').value
+                ]
+            );
             if (response[0]['type'] == 'response_notice') {
                 var gid = response[0]['data'];
                 AddNewMenuGroup(gid);
@@ -107,30 +110,34 @@ function saveMenus()
             }
             showResponse(response);
         } else {
-            MenuAjax.callAsync('UpdateGroup',
-                               $('gid').value,
-                               $('title').value,
-                               $('title_view').value,
-                               $('published').value);
+            MenuAjax.callAsync(
+                'UpdateGroup', [
+                    $('gid').value,
+                    $('title').value,
+                    $('title_view').value,
+                    $('published').value
+                ]
+            );
         }
     } else {
-        if ($('title').value.blank() || ($('references').selectedIndex == -1)) {
+        if (!$('title').val() || ($('references').selectedIndex == -1)) {
             alert(incompleteFields);
             return false;
         }
         if (selectedMenu == null) {
             var response = MenuAjax.callSync(
-                'InsertMenu',
-                $('pid').value,
-                $('gid').value,
-                $('type').value,
-                aclInfo,
-                $('title').value,
-                encodeURI($('url').value),
-                $('url_target').value,
-                $('rank').value,
-                $('published').value,
-                $('imagename').value
+                'InsertMenu', [
+                    $('pid').value,
+                    $('gid').value,
+                    $('type').value,
+                    aclInfo,
+                    $('title').value,
+                    encodeURI($('url').value),
+                    $('url_target').value,
+                    $('rank').value,
+                    $('published').value,
+                    $('imagename').value
+                ]
             );
             if (response[0]['type'] == 'response_notice') {
                 var mid = response[0]['text'].substr(0, response[0]['text'].indexOf('%%'));
@@ -141,18 +148,19 @@ function saveMenus()
             showResponse(response);
         } else {
             var response = MenuAjax.callSync(
-                'UpdateMenu',
-                $('mid').value,
-                $('pid').value,
-                $('gid').value,
-                $('type').value,
-                aclInfo,
-                $('title').value,
-                encodeURI($('url').value),
-                $('url_target').value,
-                $('rank').value,
-                $('published').value,
-                $('imagename').value
+                'UpdateMenu', [
+                    $('mid').value,
+                    $('pid').value,
+                    $('gid').value,
+                    $('type').value,
+                    aclInfo,
+                    $('title').value,
+                    encodeURI($('url').value),
+                    $('url_target').value,
+                    $('rank').value,
+                    $('published').value,
+                    $('imagename').value
+                ]
             );
             if (response[0]['type'] == 'response_notice') {
                 $('menu_'+$('mid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
@@ -418,7 +426,7 @@ function delMenus()
  * Get list of menu levels
  */
 function getParentMenus(gid, mid) {
-    var parents = MenuAjax.callSync('GetParentMenus', gid, mid);
+    var parents = MenuAjax.callSync('GetParentMenus', [gid, mid]);
     $('pid').options.length = 0;
     for(var i = 0; i < parents.length; i++) {
         $('pid').options[i] = new Option(parents[i]['title'], parents[i]['pid']);
