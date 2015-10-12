@@ -82,7 +82,7 @@ function addWebcam(form)
     }
 
     try {
-        WebcamAjax.callAsync('NewWebcam', webcamTitle, webcamUrl, webcamRefresh);
+        WebcamAjax.callAsync('NewWebcam', [webcamTitle, webcamUrl, webcamRefresh]);
     } catch(e) {
         alert(e);
     }
@@ -99,7 +99,7 @@ function updateWebcam(form)
     var webcamUrl     = form.elements['url'].value;
     var webcamRefresh = form.elements['refresh'].value;
     
-    WebcamAjax.callAsync('UpdateWebcam', webcamId, webcamTitle, webcamUrl, webcamRefresh);
+    WebcamAjax.callAsync('UpdateWebcam', [webcamId, webcamTitle, webcamUrl, webcamRefresh]);
     cleanForm(form);
 }
 
