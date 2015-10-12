@@ -130,12 +130,23 @@ function ExAction()
 {
     var action = $('addressbook_gaction').value;
     if (action == 'DeleteAddress') {
-        AddressBookAjax.callAsync('DeleteAddress', $(document).getElement('form[name=AddressBookAction]').toQueryString().parseQueryString());
+        AddressBookAjax.callAsync(
+            'DeleteAddress',
+            $.unserialize($('form[name=AddressBookAction]').serialize())
+        );
     } else if (action == 'VCardBuild') {
-        //AddressBookAjax.callSync('VCardBuild', $(document).getElement('form[name=AddressBookAction]').toQueryString().parseQueryString());
+        /*
+        AddressBookAjax.callSync(
+            'VCardBuild',
+            $.unserialize($('form[name=AddressBookAction]').serialize())
+        );
+        */
         $('AddressBookAction').submit();
     } else if (action == 'DeleteGroup') {
-        AddressBookAjax.callAsync('DeleteGroup', $(document).getElement('form[name=AddressBookAction]').toQueryString().parseQueryString());
+        AddressBookAjax.callAsync(
+            'DeleteGroup', 
+            $.unserialize($('form[name=AddressBookAction]').serialize())
+        );
     }
     return false;
 }
