@@ -56,7 +56,7 @@ function getTagsDataGrid(name, offset, reset)
 {
     var tags = TagsAjax.callSync(
         'SearchTags',
-        { 'gadget': $('gadgets_filter').value, 'name': $('filter').value},
+        {'gadget': $('gadgets_filter').value, 'name': $('filter').value},
         offset
     );
 
@@ -66,7 +66,7 @@ function getTagsDataGrid(name, offset, reset)
 
         var total = TagsAjax.callSync(
             'SizeOfTagsSearch',
-            { 'gadgets_filter': $('gadgets_filter').value, 'name': $('filter').value}
+            {'gadgets_filter': $('gadgets_filter').value, 'name': $('filter').value}
         );
 
     }
@@ -118,28 +118,30 @@ function editTag(rowElement, id)
  */
 function updateTag()
 {
-    if ($('name').value.blank()) {
+    if (!$('name').val()) {
         alert(incompleteTafFields);
         return false;
     }
 
     if ($('id').value==0) {
-        TagsAjax.callAsync('AddTag',
-            {'name':$('name').value,
-            'title':$('title').value,
-            'description':$('description').value,
-            'meta_keywords':$('meta_keywords').value,
-            'meta_description':$('meta_description').value
+        TagsAjax.callAsync(
+            'AddTag', {
+                'name':$('name').value,
+                'title':$('title').value,
+                'description':$('description').value,
+                'meta_keywords':$('meta_keywords').value,
+                'meta_description':$('meta_description').value
             }
         );
     } else {
-        TagsAjax.callAsync('UpdateTag',
-            $('id').value,
-            {'name':$('name').value,
-             'title':$('title').value,
-             'description':$('description').value,
-             'meta_keywords':$('meta_keywords').value,
-             'meta_description':$('meta_description').value
+        TagsAjax.callAsync(
+            'UpdateTag', {
+                0: $('id').value,
+                'name':$('name').value,
+                'title':$('title').value,
+                'description':$('description').value,
+                'meta_keywords':$('meta_keywords').value,
+                'meta_description':$('meta_description').value
             }
         );
     }
@@ -183,7 +185,7 @@ function tagsDGAction(combo)
         if (newName.trim() == "") {
             return;
         }
-        TagsAjax.callAsync('MergeTags', rows, newName);
+        TagsAjax.callAsync('MergeTags', [rows, newName]);
     }
 }
 
