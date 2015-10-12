@@ -124,7 +124,7 @@ class Settings_Model_Admin_Settings extends Jaws_Gadget_Model
 
             $this->gadget->registry->update($settingKey, $settingValue);
         }
-        $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
+
         return true;
     }
 
@@ -165,7 +165,7 @@ class Settings_Model_Admin_Settings extends Jaws_Gadget_Model
             }
             $this->gadget->registry->update($settingKey, $settingValue);
         }
-        $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
+
         return true;
     }
 
@@ -200,7 +200,7 @@ class Settings_Model_Admin_Settings extends Jaws_Gadget_Model
             }
             $this->gadget->registry->update($settingKey, $settingValue);
         }
-        $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
+
         return true;
     }
 
@@ -244,7 +244,7 @@ class Settings_Model_Admin_Settings extends Jaws_Gadget_Model
 
             $this->gadget->registry->update($settingKey, $settingValue);
         }
-        $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
+
         return true;
     }
 
@@ -285,7 +285,7 @@ class Settings_Model_Admin_Settings extends Jaws_Gadget_Model
 
             $this->gadget->registry->update($settingKey, $settingValue);
         }
-        $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
+
         return true;
     }
 
@@ -325,7 +325,7 @@ class Settings_Model_Admin_Settings extends Jaws_Gadget_Model
 
             $this->gadget->registry->update($settingKey, $settingValue);
         }
-        $GLOBALS['app']->Session->PushLastResponse(_t('SETTINGS_SAVED'), RESPONSE_NOTICE);
+
         return true;
     }
 
