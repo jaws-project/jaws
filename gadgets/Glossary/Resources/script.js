@@ -92,7 +92,7 @@ function updateTerm()
         combo.options[combo.selectedIndex].text = term;
         // Call function
         loading_message = updatingMessage;
-        GlossaryAjax.callAsync('UpdateTerm', id, term, fast_url, contents);
+        GlossaryAjax.callAsync('UpdateTerm', [id, term, fast_url, contents]);
     }
 }
 
@@ -226,7 +226,7 @@ function newTerm()
     }
 
     loading_message = savingMessage;
-    GlossaryAjax.callAsync('NewTerm', term, fast_url, contents);
+    GlossaryAjax.callAsync('NewTerm', [term, fast_url, contents]);
 }
 
 /**
