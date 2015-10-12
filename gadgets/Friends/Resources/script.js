@@ -74,7 +74,7 @@ function addFriend(form)
     var friendName = form.elements['friend'].value;
     var friendUrl  = form.elements['url'].value;
     
-    FriendsAjax.callAsync('NewFriend', friendName, friendUrl);
+    FriendsAjax.callAsync('NewFriend', [friendName, friendUrl]);
     cleanForm(form);
 }
 
@@ -88,7 +88,7 @@ function updateFriend(form)
     var friendUrl  = form.elements['url'].value;
     var friendId   = form.elements['id'].value;
 
-    FriendsAjax.callAsync('UpdateFriend', friendId, friendName, friendUrl);
+    FriendsAjax.callAsync('UpdateFriend', [friendId, friendName, friendUrl]);
     cleanForm(form);
 }
 
