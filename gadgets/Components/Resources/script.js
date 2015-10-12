@@ -386,7 +386,7 @@ function componentRegistry(reset)
 {
     if (!regCache) {
         var table = new Element('table'),
-            res = ComponentsAjax.callSync('GetRegistry', selectedComponent, pluginsMode),
+            res = ComponentsAjax.callSync('GetRegistry', [selectedComponent, pluginsMode]),
             div = new Element('div').set('html', res.ui);
         $('component_form').grab(div.getElement('div'));
         Object.each(res.data, function(value, name) {
@@ -417,7 +417,7 @@ function componentACL(reset)
 {
     if (!aclCache) {
         var table = new Element('table'),
-            res = ComponentsAjax.callSync('GetACL', selectedComponent, pluginsMode),
+            res = ComponentsAjax.callSync('GetACL', [selectedComponent, pluginsMode]),
             div = new Element('div').set('html', res.ui);
         aclCache = div.getElement('div');
         $('component_form').grab(div.getElement('div'));
@@ -519,7 +519,7 @@ function onValueChange(el)
  */
 function saveRegistry()
 {
-    ComponentsAjax.callAsync('UpdateRegistry', selectedComponent, regChanges);
+    ComponentsAjax.callAsync('UpdateRegistry', [selectedComponent, regChanges]);
 }
 
 /**
@@ -527,7 +527,7 @@ function saveRegistry()
  */
 function saveACL()
 {
-    ComponentsAjax.callAsync('UpdateACL', selectedComponent, aclChanges);
+    ComponentsAjax.callAsync('UpdateACL', [selectedComponent, aclChanges]);
 }
 
 /**
@@ -579,7 +579,7 @@ function savePluginUsage()
         total = $('plugin_usage').getElements('input[name=frontend]').length;
     backend = (backend.length === total) ? '*' : backend.join(',');
     frontend = (frontend.length === total) ? '*' : frontend.join(',');
-    ComponentsAjax.callAsync('UpdatePluginUsage', selectedComponent, backend, frontend);
+    ComponentsAjax.callAsync('UpdatePluginUsage', [selectedComponent, backend, frontend]);
 }
 
 /**
