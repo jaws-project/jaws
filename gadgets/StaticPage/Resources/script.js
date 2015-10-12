@@ -109,7 +109,10 @@ function AutoDraft()
     }
     var content   = getEditorValue('content');
 
-    StaticPageAjax.callAsync('AutoDraft', id, group, fasturl, showtitle, title, content, language, tags, published);
+    StaticPageAjax.callAsync(
+        'AutoDraft',
+        [id, group, fasturl, showtitle, title, content, language, tags, published]
+    );
     setTimeout('startAutoDrafting();', 120000);
 }
 
@@ -204,7 +207,7 @@ function updateSettings()
 {
     var defaultPage = $('default_page').value;
     var multiLang   = $('multilanguage').value;
-    StaticPageAjax.callAsync('UpdateSettings', defaultPage, multiLang);
+    StaticPageAjax.callAsync('UpdateSettings', [defaultPage, multiLang]);
 }
 
 /**
@@ -221,19 +224,21 @@ function searchPage()
 function getPages(name, offset, reset)
 {
     var result = StaticPageAjax.callSync(
-        'SearchPages',
-        $('group').value,
-        $('status').value,
-        $('search').value,
-        $('orderby').value,
-        offset
+        'SearchPages', [
+            $('group').value,
+            $('status').value,
+            $('search').value,
+            $('orderby').value,
+            offset
+        ]
     );
     if (reset) {
         var total = StaticPageAjax.callSync(
-            'SizeOfSearch',
-            $('group').value,
-            $('status').value,
-            $('search').value
+            'SizeOfSearch', [
+                $('group').value,
+                $('status').value,
+                $('search').value
+            ]
         );
     }
     resetGrid(name, result, total);
@@ -274,7 +279,7 @@ function editGroup(rowElement, gid)
  */
 function saveGroup()
 {
-    if ($('title').value.blank()) {
+    if (!$('title').val()) {
         alert(incomplete_fields);
         $('title').focus();
         return false;
@@ -282,22 +287,24 @@ function saveGroup()
 
     if (selectedGroup == 0) {
         StaticPageAjax.callAsync(
-            'InsertGroup',
-            $('title').value,
-            $('fast_url').value,
-            $('meta_keys').value,
-            $('meta_desc').value,
-            $('visible').value
+            'InsertGroup', [
+                $('title').value,
+                $('fast_url').value,
+                $('meta_keys').value,
+                $('meta_desc').value,
+                $('visible').value
+            ]
         );
     } else {
         StaticPageAjax.callAsync(
-            'UpdateGroup',
-            selectedGroup,
-            $('title').value,
-            $('fast_url').value,
-            $('meta_keys').value,
-            $('meta_desc').value,
-            $('visible').value
+            'UpdateGroup', [
+                selectedGroup,
+                $('title').value,
+                $('fast_url').value,
+                $('meta_keys').value,
+                $('meta_desc').value,
+                $('visible').value
+            ]
         );
     }
 }
