@@ -126,7 +126,7 @@ function moveQuestion(category, id, position, direction)
         return;
     }
 
-    FaqAjax.callAsync('MoveQuestion', category, id, position, direction);
+    FaqAjax.callAsync('MoveQuestion', [category, id, position, direction]);
     currentCategory = category;
 }
 
@@ -228,10 +228,11 @@ function initUI()
                 new_position != el.getProperty('old_position'))
             {
                 FaqAjax.callAsync(
-                    'MoveCategory',
-                    el.id.replace('FaqCategory_', ''),
-                    el.getProperty('old_position'),
-                    new_position
+                    'MoveCategory', [
+                        el.id.replace('FaqCategory_', ''),
+                        el.getProperty('old_position'),
+                        new_position
+                    ]
                 );
             }
             el.removeProperty('old_position');
