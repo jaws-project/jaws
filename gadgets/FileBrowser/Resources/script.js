@@ -152,7 +152,7 @@ function editFile(element, fname)
     switchTab('file');
     $('upload_switch').disabled = false;
 
-    var dbfile = FileBrowserAjax.callSync('DBFileInfo', $('path').value, fname);
+    var dbfile = FileBrowserAjax.callSync('DBFileInfo', [$('path').value, fname]);
     if (dbfile['id']) {
         $('file_title').value       = dbfile['title'].defilter();
         $('file_description').value = dbfile['description'].defilter();
@@ -165,25 +165,27 @@ function editFile(element, fname)
  */
 function saveFile()
 {
-    if ($('uploadfile').value.blank() && 
-        $('filename').value.blank())
+    if (!$('uploadfile').val() && 
+        !$('filename').val())
     {
         alert(incompleteFields);
         return false;
     }
     if ($('upload_switch').checked && 
-       !$('uploadfile').value.blank())
+       $('uploadfile').val())
     {
         document.fb_form.submit();
     } else {
-        FileBrowserAjax.callAsync('UpdateDBFileInfo',
-                                $('path').value,
-                                $('filename').value,
-                                $('file_title').value,
-                                $('file_description').value,
-                                $('file_fast_url').value,
-                                $('oldname').value
-                                );
+        FileBrowserAjax.callAsync(
+            'UpdateDBFileInfo', [
+                $('path').value,
+                $('filename').value,
+                $('file_title').value,
+                $('file_description').value,
+                $('file_fast_url').value,
+                $('oldname').value
+            ]
+        );
     }
 }
 
@@ -193,7 +195,7 @@ function saveFile()
 function delFile(element, file)
 {
     if (confirm(confirmFileDelete)) {
-        FileBrowserAjax.callAsync('DeleteFile2', $('path').value, file);
+        FileBrowserAjax.callAsync('DeleteFile2', [$('path').value, file]);
     }
 }
 
@@ -210,7 +212,7 @@ function editDir(element, dirname)
     selectDataGridRow(element.parentNode.parentNode);
     switchTab('dir');
 
-    var dbfile = FileBrowserAjax.callSync('DBFileInfo', $('path').value, dirname);
+    var dbfile = FileBrowserAjax.callSync('DBFileInfo', [$('path').value, dirname]);
     if (dbfile['id']) {
         $('dir_title').value       = dbfile['title'];
         $('dir_description').value = dbfile['description'];
@@ -223,19 +225,21 @@ function editDir(element, dirname)
  */
 function saveDir()
 {
-    if ($('dirname').value.blank()) {
+    if (!$('dirname').val()) {
         alert(incompleteFields);
         return false;
     }
 
-    FileBrowserAjax.callAsync('UpdateDBDirInfo',
-                            $('path').value,
-                            $('dirname').value,
-                            $('dir_title').value,
-                            $('dir_description').value,
-                            $('dir_fast_url').value,
-                            $('oldname').value
-                            );
+    FileBrowserAjax.callAsync(
+        'UpdateDBDirInfo', [
+            $('path').value,
+            $('dirname').value,
+            $('dir_title').value,
+            $('dir_description').value,
+            $('dir_fast_url').value,
+            $('oldname').value
+        ]
+    );
 }
 
 /**
@@ -244,7 +248,7 @@ function saveDir()
 function delDir(element, dir)
 {
     if (confirm(confirmDirDelete)) {
-        FileBrowserAjax.callAsync('DeleteDir2', $('path').value, dir);
+        FileBrowserAjax.callAsync('DeleteDir2', [$('path').value, dir]);
     }
     
 }
@@ -254,7 +258,10 @@ function delDir(element, dir)
  */
 function getFiles(name, offset, reset)
 {
-    var result = FileBrowserAjax.callSync('GetDirectory', $('path').value, offset, $('order_type').value);
+    var result = FileBrowserAjax.callSync(
+        'GetDirectory',
+        [$('path').value, offset, $('order_type').value]
+    );
     if (reset) {
         var total = FileBrowserAjax.callSync('GetDirContentsCount', $('path').value);
         var loc   = FileBrowserAjax.callSync('GetLocation', $('path').value);
