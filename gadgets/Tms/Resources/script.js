@@ -207,7 +207,7 @@ function addRepository(form)
     var name = form.elements['name'].value;
     var url  = form.elements['url'].value;
     
-    TmsAjax.callAsync('newrepository', name, url);
+    TmsAjax.callAsync('newrepository', [name, url]);
     cleanForm(form);
 }
 
@@ -220,7 +220,7 @@ function updateRepository(form)
     var url  = form.elements['url'].value;
     var id   = form.elements['id'].value;
 
-    TmsAjax.callAsync('updaterepository', id, name, url);
+    TmsAjax.callAsync('updaterepository', [id, name, url]);
     cleanForm(form);
 }
 
