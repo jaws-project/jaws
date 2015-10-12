@@ -10,151 +10,144 @@
  * @copyright   2004-2014 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
+
+/*!
+ * Extra plugins for jquery
+ */
+jQuery.extend({
+    unserialize: function(str) {
+        return decodeURIComponent((str || document.location.search).replace(/\+/gi, " ")).replace(/(^\?)/,'').split("&").map(function(n){return n=n.split("="),this[n[0]]=n[1],this;}.bind({}))[0];
+  }
+
+});
+
 /**
  * Ajax base class
+ *
+ * @param   string  gadget      Gadget Name
+ * @param   object  callback    Callback functions
+ * @param   string  baseScript  Base URL
+ * @return  void
  */
-var JawsAjax = new Class({
+function JawsAjax(gadget, callback, baseScript)
+{
+    this.gadget = gadget;
+    this.callback = callback;
+    this.loadingMessage = '...';
+    var reqValues = $('meta[name=application-name]').attr('content').split(':');
+    this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
+    this.baseScript  = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
+    this.baseURL = this.baseScript + '?gadget=' + this.gadget + '&restype=json&action=';
+    this.msgBox  = "#"+(this.mainRequest['gadget']+'_'+ this.mainRequest['action']+'_'+'response').toLowerCase();
+
     /**
-     * Initiates the Ajax
+     * Supports backward ajax mechanism
      *
-     * @param   string  gadget      Gadget Name
-     * @param   object  callback    Callback functions
      * @param   string  baseScript  Base URL
      * @return  void
      */
-    initialize: function (gadget, callback, baseScript) {
-        this.gadget = gadget;
-        this.callback = callback;
-        this.loadingMessage = '...';
-        var reqValues = $(document).getElement('meta[name=application-name]').getProperty('content').split(':');
-        this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
-        this.baseScript  = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
-        this.baseURL = this.baseScript + '?gadget=' + this.gadget + '&restype=json&action=';
-        this.msgBox  = (this.mainRequest['gadget']+'_'+ this.mainRequest['action']+'_'+'response').toLowerCase();
-    },
-
-    /**
-     * Set message/response box
-     *
-     * @param   string  msgBox  Message box ID
-     * @return  void
-     */
-    setMessageBox: function (msgBox) {
-        this.msgBox = msgBox.toLowerCase();
-    },
+    this.backwardSupport = function (baseScript) {
+        baseScript = (baseScript === undefined)?$('meta[name=script]').attr('content') : baseScript;
+        this.baseURL = baseScript + '?gadget=' + this.gadget + '&restype=json&action=';
+    };
 
     /**
      * Performs asynchronous Ajax request
      *
      * @param   string  action  Name of the new JawsAjax( to be executed
-     * @param   object  params  Parameters passed to the function (optional)
+     * @param   object  data    Parameters passed to the function (optional)
      * @return  void
      */
-    callAsync: function (action, params) {
-        var options = {};
-        options.url = this.baseURL + action;
+    this.callAsync = function (action, data) {
+        var options  = {};
+        options.url  = this.baseURL + action;
+        options.type = 'POST';
+        options.async  = true;
         options.action = action;
-        options.async = true;
-        if (arguments.length > 2 || (typeOf(arguments[1]) != 'object' && typeOf(arguments[1]) != 'array')) {
-            params = Array.prototype.slice.call(arguments, 1);
-        }
-        options.data = toJSON(params);
-        options.urlEncoded = false;
-        options.headers = {'content-type' : 'application/json; charset=utf-8'};
-        options.onRequest  = this.onRequest.bind(this);
-        options.onSuccess  = this.onSuccess.bind(this, options);
-        options.onFailure  = this.onFailure.bind(this, options);
-        options.onComplete = this.onComplete.bind(this, options);
-        new Request(options).send();
-    },
+        options.data = $.encodeJSON(data);
+        options.contentType = 'application/json; charset=utf-8';
+        options.beforeSend = this.onSend.bind(this, options);
+        options.success = this.onSuccess.bind(this, options);
+        options.error = this.onError.bind(this, options);
+        options.complete = this.onComplete.bind(this, options);
+        $.ajax(options);
+    };
 
     /**
      * Performs synchronous Ajax request
      *
      * @param   string  action  Name of the action to be executed
-     * @param   object  params  Parameters passed to the function (optional)
+     * @param   object  data    Parameters passed to the function (optional)
      * @return  mixed   Response text on synchronous mode or void otherwise
      */
-    callSync: function (action, params) {
+    this.callSync = function (action, data) {
         var options = {};
-        options.async = false;
         options.url = this.baseURL + action;
+        options.type = 'POST';
+        options.async = false;
         options.action = action;
-        if (arguments.length > 2 || (typeOf(arguments[1]) != 'object' && typeOf(arguments[1]) != 'array')) {
-            params = Array.prototype.slice.call(arguments, 1);
-        }
-        options.data = toJSON(params);
-        options.urlEncoded = false;
-        options.headers = {'content-type' : 'application/json; charset=utf-8'};
-        options.onRequest = this.onRequest.bind(this);
-        options.onComplete = this.onComplete.bind(this, options);
-        var req = new Request(options).send();
-        return eval('(' + req.response.text + ')');
-    },
+        options.data = $.encodeJSON(data);
+        options.contentType = 'application/json; charset=utf-8';
+        options.beforeSend = this.onSend.bind(this, options);
+        options.complete = this.onComplete.bind(this, options);
+        var result = $.ajax(options);
+        return eval('(' + result.responseText + ')');
+    };
 
-    onRequest: function () {
-        this.showLoading(true);
-    },
+    this.onSend = function () {
+        // TODO: start loading..
+    };
 
-    onSuccess: function (reqOptions, responseText) {
-        responseText = eval('(' + responseText + ')');
+    this.onSuccess = function (reqOptions, response, status, result) {
+        response = eval('(' + result.responseText + ')');
         var reqMethod = this.callback[reqOptions.action];
         if (reqMethod) {
-            reqMethod(responseText);
+            reqMethod(response);
         }
-    },
+    };
 
-    onFailure: function () {
-        // TODO: alert failure message
-    },
+    this.onError = function () {
+        // TODO: alert error message
+    };
 
-    onComplete: function () {
-        this.showLoading(false);
-    },
+    this.onComplete = function () {
+        // TODO: stop loading..
+    };
 
-    showResponse: function (response) {
-        $(this.msgBox).getParent().setStyles({'position': 'absolute', 'display': 'block'});
-        $(this.msgBox).set({'html': response.text, 'class': response.type});
-        $(this.msgBox).fade('show');
-        (function(){
-            this.fade('out');
-            (function(){this.set('class', '')}).delay(500, this);
-        }).delay(4000, $(this.msgBox));
-    },
+    this.showResponse = function (response) {
+        $(this.msgBox).parent().css({'position': 'absolute', 'display': 'block'});
+        $(this.msgBox).html(response.text).attr('class', response.type);
+        $(this.msgBox).fadeIn().delay(4000).fadeOut(1000, function() {$(this).removeClass();});
+    };
 
-    showLoading: function (show) {
+    this.showLoading = function (show) {
         if ($(this.msgBox)) {
             if (show) {
-                $(this.msgBox).getParent().setStyles({'position': 'absolute', 'display': 'block'});
-                $(this.msgBox).set({'html': this.loadingMessage, 'class': 'response_loading'});
-                $(this.msgBox).fade('show');
+                $(this.msgBox).parent().css({'position': 'absolute', 'display': 'block'});
+                $(this.msgBox).html(this.loadingMessage).attr('class', 'response_loading');
+                $(this.msgBox).fadeIn();
             } else {
-                $(this.msgBox).set('class', '');
+                $(this.msgBox).removeClass();
             }
         }
-    }
-
-});
+    };
+}
 
 /**
  * Jaws HTML5 wrapper of local storage
+ *
+ * @param   string  gadget  Gadget Name
+ * @return  void
  */
-var JawsStorage = new Class({
-    /**
-     * Initiates the storage
-     *
-     * @param   string  gadget  Gadget Name
-     * @return  void
-     */
-    initialize: function (gadget) {
-        this.gadget = gadget;
-        this.html5Support = 'localStorage' in window;
-        if (this.html5Support) {
-            this.storage = localStorage;
-        } else {
-            this.storage = window.Cookie;
-        }
-    },
+function JawsStorage(gadget)
+{
+    this.gadget = gadget;
+    this.html5Support = 'localStorage' in window;
+    if (this.html5Support) {
+        this.storage = localStorage;
+    } else {
+        this.storage = window.Cookie;
+    }
 
     /**
      * Updates the storage key value
@@ -163,7 +156,7 @@ var JawsStorage = new Class({
      * @param   mixed   value   Key value
      * @return  void
      */
-    update: function (key, value, section) {
+    this.update = function (key, value, section) {
         key = (section? section : this.gadget) + '_' + key;
         if (this.html5Support) {
             this.storage.setItem(key, JSON.encode(value));
@@ -178,7 +171,7 @@ var JawsStorage = new Class({
      * @param   string  key     Key name
      * @return  mixed   Stored value of key
      */
-    fetch: function (key, section) {
+    this.fetch = function (key, section) {
         key = (section? section : this.gadget) + '_' + key;
         if (this.html5Support) {
             return JSON.decode(this.storage.getItem(key));
@@ -193,7 +186,7 @@ var JawsStorage = new Class({
      * @param   string  key     Key name
      * @return  void
      */
-    'delete': function (key, section) {
+    this.delete = function (key, section) {
         key = (section? section : this.gadget) + '_' + key;
         if (this.html5Support) {
             this.storage.removeItem(key);
@@ -202,7 +195,7 @@ var JawsStorage = new Class({
         }
     }
 
-});
+};
 
 /**
  * Repaints a combo
@@ -236,17 +229,17 @@ function changeEditorValue(name, value)
         if (editor) {
             editor.setContent(value);
          } else {
-            $(name).value = value;
+            $('#'+name)[0].value = value;
          }
     } else if (usingCKE) {
         var editor = CKEDITOR.instances[name];
         if (editor.status == 'unloaded') {
-            $(name).value = value;
+            $('#'+name)[0].value = value;
         } else {
             editor.setData(value);
         }
     } else {
-        $(name).value = value;
+        $('#'+name)[0].value = value;
     }
 }
 
@@ -267,7 +260,7 @@ function getEditorValue(name)
         }
     }
 
-    return $(name).value;
+    return $('#'+name)[0].value;
 }
 
 /**
@@ -341,13 +334,13 @@ String.prototype.defilter = function(quote_style) {
  */
 function resetGrid(name, data, rowsSize)
 {
-    $(name).reset();
-    $(name).fillWithArray(data);
+    $('#'+name)[0].reset();
+    $('#'+name)[0].fillWithArray(data);
     if (rowsSize != undefined) {
-        $(name).rowsSize = rowsSize;
+        $('#'+name)[0].rowsSize = rowsSize;
     }
-    $(name).updatePageCounter();
-    $(name).repaint();
+    $('#'+name)[0].updatePageCounter();
+    $('#'+name)[0].repaint();
 }
 
 //Which row selected in DataGrid
@@ -461,55 +454,55 @@ var JawsDataGrid = {
  */
 function initDataGrid(name, objectName, dataFunc)
 {
-    if ($(name) == undefined || objectName == undefined) {
+    if ($('#'+name)[0] == undefined || objectName == undefined) {
         return true;
     }
 
-    $(name).objectName = objectName;
+    $('#'+name)[0].objectName = objectName;
     if (dataFunc == undefined) {
         JawsDataGrid.name = name;
-        $(name + '_pagerFirstAnchor').onclick = function() {
+        $('#' + name + '_pagerFirstAnchor')[0].onclick = function() {
             JawsDataGrid.getFirstValues();
         };
 
-        $(name + '_pagerPreviousAnchor').onclick = function() {
+        $('#' + name + '_pagerPreviousAnchor')[0].onclick = function() {
             JawsDataGrid.getPreviousValues();
         };
 
-        $(name + '_pagerNextAnchor').onclick = function() {
+        $('#' + name + '_pagerNextAnchor')[0].onclick = function() {
                 JawsDataGrid.getNextValues();
         };
 
-        $(name + '_pagerLastAnchor').onclick = function() {
+        $('#' + name + '_pagerLastAnchor')[0].onclick = function() {
                 JawsDataGrid.getLastValues();
         };
 
         getDG();
     } else {
-        $(name).dataFunc = dataFunc;
+        $('#'+name)[0].dataFunc = dataFunc;
 
-        $(name + '_pagerFirstAnchor').onclick = function() {
-            var offset = $(name).getFirstPagerValues();
+        $('#' + name + '_pagerFirstAnchor')[0].onclick = function() {
+            var offset = $('#'+name)[0].getFirstPagerValues();
             getDG(name, offset);
-            $(name).firstPage();
+            $('#'+name)[0].firstPage();
         };
 
-        $(name + '_pagerPreviousAnchor').onclick = function() {
-            var offset = $(name).getPreviousPagerValues();
+        $('#' + name + '_pagerPreviousAnchor')[0].onclick = function() {
+            var offset = $('#'+name)[0].getPreviousPagerValues();
             getDG(name, offset);
-            $(name).previousPage();
+            $('#'+name)[0].previousPage();
         };
 
-        $(name + '_pagerNextAnchor').onclick = function() {
-            var offset = $(name).getNextPagerValues();
+        $('#' + name + '_pagerNextAnchor')[0].onclick = function() {
+            var offset = $('#'+name)[0].getNextPagerValues();
             getDG(name, offset);
-            $(name).nextPage();
+            $('#'+name)[0].nextPage();
         };
 
-        $(name + '_pagerLastAnchor').onclick = function() {
-            var offset = $(name).getLastPagerValues();
+        $('#' + name + '_pagerLastAnchor')[0].onclick = function() {
+            var offset = $('#'+name)[0].getLastPagerValues();
             getDG(name, offset);
-            $(name).lastPage();
+            $('#'+name)[0].lastPage();
         };
 
         getDG(name);
@@ -524,16 +517,16 @@ function getDG(name, offset, reset)
     if (name == undefined) {
         JawsDataGrid.getData();
     } else {
-        dataFunc = eval($(name).dataFunc);
+        dataFunc = eval($('#'+name)[0].dataFunc);
 
         if (offset == undefined) {
-            var offset = $(name).getCurrentPage();
+            var offset = $('#'+name)[0].getCurrentPage();
         }
 
-        reset = (reset == true) || ($(name).rowsSize == 0);
+        reset = (reset == true) || ($('#'+name)[0].rowsSize == 0);
         dataFunc(name, offset, reset);
         if (reset && offset == undefined) {
-            $(name).setCurrentPage(0);
+            $('#'+name)[0].setCurrentPage(0);
         }
     }
 }
@@ -750,8 +743,8 @@ function showWorkingNotification(msg)
     if (!msg) {
         msg = default_loading_message;
     }
-    $('working_notification').innerHTML = msg;
-    $('working_notification').style.visibility = 'visible';
+    $('#working_notification').html(msg);
+    $('#working_notification').css('visibility', 'visible');
 }
 
 /**
@@ -759,11 +752,11 @@ function showWorkingNotification(msg)
  */
 function hideWorkingNotification()
 {
-    $('working_notification').style.visibility = 'hidden';
+    $('#working_notification').css('visibility', 'hidden');
 }
 
 /* Copyright (c) 2005 JSON.org */
-function toJSON(v) {
+$.encodeJSON = function(v) {
     var m = {
             '\b': '\\b',
             '\t': '\\t',
