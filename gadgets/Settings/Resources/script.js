@@ -14,27 +14,27 @@
  */
 var SettingsCallback = {
     UpdateBasicSettings: function(response) {
-        showResponse(response);
+        SettingsAjax.showResponse(response);
     },
 
     UpdateAdvancedSettings: function(response) {
-        showResponse(response);
+        SettingsAjax.showResponse(response);
     },
 
     UpdateMetaSettings: function(response) {
-        showResponse(response);
+        SettingsAjax.showResponse(response);
     },
 
     UpdateMailSettings: function(response) {
-        showResponse(response);
+        SettingsAjax.showResponse(response);
     },
 
     UpdateFTPSettings: function(response) {
-        showResponse(response);
+        SettingsAjax.showResponse(response);
     },
 
     UpdateProxySettings: function(response) {
-        showResponse(response);
+        SettingsAjax.showResponse(response);
     }
 }
 
@@ -43,7 +43,10 @@ var SettingsCallback = {
  */
 function submitBasicForm()
 {
-    SettingsAjax.callAsync('UpdateBasicSettings', $('settingsForm').toQueryString().parseQueryString());
+    SettingsAjax.callAsync(
+        'UpdateBasicSettings',
+        $.unserialize($('#settingsForm input,select,textarea').serialize())
+    );
 }
 
 /**
@@ -51,7 +54,10 @@ function submitBasicForm()
  */
 function submitAdvancedForm()
 {
-    SettingsAjax.callAsync('UpdateAdvancedSettings', $('settingsForm').toQueryString().parseQueryString());
+    SettingsAjax.callAsync(
+        'UpdateAdvancedSettings',
+        $.unserialize($('#settingsForm input,select,textarea').serialize())
+    );
 }
 
 /**
@@ -59,15 +65,15 @@ function submitAdvancedForm()
  */
 function addCustomMeta()
 {
-    var div = new Element('div', {'class':'fields'}),
-        label = new Element('label').set('html', custom_meta),
-        inputName  = new Element('input', {type:'text', title:'Meta Name', 'class':'meta-name'}),
-        inputValue = new Element('input', {type:'text', title:'Meta Content', 'class':'meta-value'});
+    var div = $('<div>', {'class': 'fields'}),
+        label = $('<label>').html(custom_meta),
+        inputName  = $('<input>', {type:'text', title:'Meta Name', 'class':'meta-name'}),
+        inputValue = $('<input>', {type:'text', title:'Meta Content', 'class':'meta-value'});
 
-    div.adopt(label);
-    div.adopt(inputName);
-    div.adopt(inputValue);
-    $('customMeta').adopt(div);
+    div.append(label);
+    div.append(inputName);
+    div.append(inputValue);
+    $('#customMeta').append(div);
 }
 
 /**
@@ -76,34 +82,41 @@ function addCustomMeta()
 function submitMetaForm()
 {
     var customMeta   = [],
-        customInputs = $$('#customMeta input.meta-name');
-    customInputs.each(function(input) {
-        if (input.value.blank()) {
-            input.getParent().destroy();
+        customInputs = $('#customMeta input.meta-name');
+
+    customInputs.each(function(index, input) {
+        if (!$(input).val()) {
+            $(input).parent().empty();
             return;
         }
-        customMeta.include([input.value, input.getNext().value]);
+        customMeta[index] = [$(input).val(), $(input).next().val()];
     });
 
-    var settings = $('settingsForm').toQueryString().parseQueryString();
-    settings['site_custom_meta'] = customMeta;
+    var settings = $.unserialize($('#settingsForm input,select,textarea').serialize());
+    settings["site_custom_meta"] = customMeta;
     SettingsAjax.callAsync('UpdateMetaSettings', settings);
 }
 
 /**
- * Update mailserver settings
+ * Update mail-server settings
  */
 function submitMailSettingsForm()
 {
-    SettingsAjax.callAsync('UpdateMailSettings', $('settingsForm').toQueryString().parseQueryString());
+    SettingsAjax.callAsync(
+        'UpdateMailSettings',
+        $.unserialize($('#settingsForm input,select,textarea').serialize())
+    );
 }
 
 /**
- * Update ftpserver settings
+ * Update ftp-server settings
  */
 function submitFTPSettingsForm()
 {
-    SettingsAjax.callAsync('UpdateFTPSettings', $('settingsForm').toQueryString().parseQueryString());
+    SettingsAjax.callAsync(
+        'UpdateFTPSettings',
+        $.unserialize($('#settingsForm input,select,textarea').serialize())
+    );
 }
 
 /**
@@ -111,61 +124,35 @@ function submitFTPSettingsForm()
  */
 function submitProxySettingsForm()
 {
-    SettingsAjax.callAsync('UpdateProxySettings', $('settingsForm').toQueryString().parseQueryString());
+    SettingsAjax.callAsync(
+        'UpdateProxySettings',
+        $.unserialize($('#settingsForm input,select,textarea').serialize())
+    );
 }
 
 function toggleGR() 
 {
-    if ($('use_gravatar').value == 'yes') {
-        $('gravatar_rating').disabled = false;
+    if ($('#use_gravatar').val() == 'yes') {
+        $('#gravatar_rating').prop('disabled', false);
     } else {
-        $('gravatar_rating').disabled = true;
+        $('#gravatar_rating').prop('disabled', true);
     }
 }
 
 function changeMailer()
 {
-    switch($('mailer').value) {
-    case 'DISABLED':
-        $('gate_email').disabled = true;
-        $('gate_title').disabled = true;
-        $('sendmail_path').disabled = true;
-        $('smtp_host').disabled  = true;
-        $('smtp_port').disabled  = true;
-        $('smtp_auth').disabled  = true;
-        $('smtp_user').disabled  = true;
-        $('smtp_pass').disabled  = true;
-        break;
-    case 'phpmail':
-        $('gate_email').disabled = false;
-        $('gate_title').disabled = false;
-        $('sendmail_path').disabled = true;
-        $('smtp_host').disabled  = true;
-        $('smtp_port').disabled  = true;
-        $('smtp_auth').disabled  = true;
-        $('smtp_user').disabled  = true;
-        $('smtp_pass').disabled  = true;
-        break;
-    case 'sendmail':
-        $('gate_email').disabled = false;
-        $('gate_title').disabled = false;
-        $('sendmail_path').disabled = false;
-        $('smtp_host').disabled  = true;
-        $('smtp_port').disabled  = true;
-        $('smtp_auth').disabled  = true;
-        $('smtp_user').disabled  = true;
-        $('smtp_pass').disabled  = true;
-        break;
-    case 'smtp':
-        $('gate_email').disabled = false;
-        $('gate_title').disabled = false;
-        $('sendmail_path').disabled = true;
-        $('smtp_host').disabled  = false;
-        $('smtp_port').disabled  = false;
-        $('smtp_auth').disabled  = false;
-        $('smtp_user').disabled  = false;
-        $('smtp_pass').disabled  = false;
-        break;
+    $('#settingsForm input,select,textarea').not('#mailer').prop("disabled", true);
+    switch($('#mailer').val()) {
+        case 'phpmail':
+            $('#settingsForm #gate_email,#gate_title').prop("disabled", false);
+            break;
+        case 'sendmail':
+            $('#settingsForm #gate_email,#gate_title,#sendmail_path').prop("disabled", false);
+            break;
+        case 'smtp':
+            $('#settingsForm input,select,textarea').not('#mailer').prop("disabled", false);
+            $('#settingsForm #sendmail_path').prop("disabled", true);
+            break;
     }
 }
 
