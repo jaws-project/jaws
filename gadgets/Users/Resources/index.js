@@ -28,7 +28,7 @@ function updateContacts()
 {
     var result = UsersAjax.callAsync(
         'UpdateContacts',
-        $(document).getElement('form[name=contacts]').toQueryString().parseQueryString()
+        $.unserialize($('form[name=contacts]').serialize())
     );
     return false;
 }
@@ -40,7 +40,7 @@ function updatePreferences(form)
 {
     var result = UsersAjax.callAsync(
         'UpdatePreferences',
-        form.toQueryString().parseQueryString()
+        $.unserialize($(form).serialize())
     );
     return false;
 }

@@ -154,13 +154,16 @@ function searchUser()
  */
 function getUsers(name, offset, reset)
 {
-    var result = UsersAjax.callSync('GetUsers',
-                                    $('filter_group').value,
-                                    $('filter_type').value,
-                                    $('filter_status').value,
-                                    $('filter_term').value,
-                                    $('order_type').value,
-                                    offset);
+    var result = UsersAjax.callSync(
+        'GetUsers', [
+            $('filter_group').value,
+            $('filter_type').value,
+            $('filter_status').value,
+            $('filter_term').value,
+            $('order_type').value,
+            offset
+        ]
+    );
     if (reset) {
         $(name).setCurrentPage(0);
         var total = UsersAjax.callSync('GetUsersCount',
@@ -198,10 +201,12 @@ function getOnlineUsers(name, offset, reset)
         }
     );
     if (reset) {
-        var total = UsersAjax.callSync('GetOnlineUsersCount', {
-            'active': $('filter_active').value,
-            'logged': $('filter_logged').value
-        });
+        var total = UsersAjax.callSync(
+            'GetOnlineUsersCount', {
+                'active': $('filter_active').value,
+                'logged': $('filter_logged').value
+            }
+        );
     }
     resetGrid(name, result, total);
 
@@ -256,9 +261,9 @@ function saveUser()
                 return false;
             }
 
-            if ($('username').value.blank() ||
-                $('nickname').value.blank() ||
-                $('email').value.blank())
+            if (!$('username').val() ||
+                !$('nickname').val() ||
+                !$('email').val())
             {
                 alert(incompleteUserFields);
                 return false;
@@ -277,36 +282,36 @@ function saveUser()
             }
 
             if ($('uid').value == 0) {
-                if ($('pass1').value.blank()) {
+                if (!$('pass1').val()) {
                     alert(incompleteUserFields);
                     return false;
                 }
 
                 UsersAjax.callAsync(
-                    'AddUser',
-                    {'username': $('username').value,
-                     'password': password,
-                     'nickname': $('nickname').value,
-                     'email'   : $('email').value,
-                     'status'  : $('status').value,
-                     'superadmin' : $('superadmin').value,
-                     'concurrents': $('concurrents').value,
-                     'expiry_date': $('expiry_date').value
+                    'AddUser', {
+                        'username': $('username').value,
+                        'password': password,
+                        'nickname': $('nickname').value,
+                        'email'   : $('email').value,
+                        'status'  : $('status').value,
+                        'superadmin' : $('superadmin').value,
+                        'concurrents': $('concurrents').value,
+                        'expiry_date': $('expiry_date').value
                     }
                 );
             } else {
                 UsersAjax.callAsync(
-                    'UpdateUser',
-                    {'uid': $('uid').value,
-                     'username': $('username').value,
-                     'password': password,
-                     'nickname': $('nickname').value,
-                     'email'   : $('email').value,
-                     'status'  : $('status').value,
-                     'prev_status': $('prev_status').value,
-                     'superadmin' : $('superadmin').value,
-                     'concurrents': $('concurrents').value,
-                     'expiry_date': $('expiry_date').value
+                    'UpdateUser', {
+                        'uid': $('uid').value,
+                        'username': $('username').value,
+                        'password': password,
+                        'nickname': $('nickname').value,
+                        'email'   : $('email').value,
+                        'status'  : $('status').value,
+                        'prev_status': $('prev_status').value,
+                        'superadmin' : $('superadmin').value,
+                        'concurrents': $('concurrents').value,
+                        'expiry_date': $('expiry_date').value
                     }
                 );
             }
@@ -321,7 +326,7 @@ function saveUser()
                 var keys = img.id.split(':');
                 return [keys[0], keys[1], img.alt];
             });
-            UsersAjax.callAsync('UpdateUserACL', selectedId, $('components').value, acls);
+            UsersAjax.callAsync('UpdateUserACL', [selectedId, $('components').value, acls]);
             break;
 
         case 'UserGroups':
@@ -339,33 +344,39 @@ function saveUser()
                 }
             }
 
-            UsersAjax.callAsync('AddUserToGroups', $('uid').value, keys);
+            UsersAjax.callAsync('AddUserToGroups', [$('uid').value, keys]);
             break;
 
         case 'UserPersonal':
-            UsersAjax.callAsync('UpdatePersonal',
-                                $('uid').value,
-                                $('fname').value,
-                                $('lname').value,
-                                $('gender').value,
-                                $('ssn').value,
-                                $('dob').value,
-                                $('url').value,
-                                $('about').value,
-                                $('avatar').value,
-                                $('privacy').value);
+            UsersAjax.callAsync(
+                'UpdatePersonal', [
+                    $('uid').value,
+                    $('fname').value,
+                    $('lname').value,
+                    $('gender').value,
+                    $('ssn').value,
+                    $('dob').value,
+                    $('url').value,
+                    $('about').value,
+                    $('avatar').value,
+                    $('privacy').value
+                ]
+            );
             break;
 
         case 'UserContacts':
-            UsersAjax.callAsync('UpdateContacts',
-                                $('uid').value,
-                                $('country').value,
-                                $('city').value,
-                                $('address').value,
-                                $('postal_code').value,
-                                $('phone_number').value,
-                                $('mobile_number').value,
-                                $('fax_number').value);
+            UsersAjax.callAsync(
+                'UpdateContacts', [
+                    $('uid').value,
+                    $('country').value,
+                    $('city').value,
+                    $('address').value,
+                    $('postal_code').value,
+                    $('phone_number').value,
+                    $('mobile_number').value,
+                    $('fax_number').value
+                ]
+            );
             break;
     }
 
@@ -409,7 +420,7 @@ function editUser(rowElement, uid)
     initDatePicker('expiry_date');
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var uInfo = UsersAjax.callSync('GetUser', uid, true);
+    var uInfo = UsersAjax.callSync('GetUser', [uid, true]);
     $('username').value    = uInfo['username'];
     $('nickname').value    = uInfo['nickname'].defilter();
     $('email').value       = uInfo['email'];
@@ -468,9 +479,7 @@ function getACL()
     var form = $('acl_form').set('html', ''),
         acls = UsersAjax.callSync(
             'GetACLKeys',
-            selectedId,
-            $('components').value,
-            currentAction
+            [selectedId, $('components').value, currentAction]
         );
     acls.default_acls.each(function (acl) {
         var key_unique = acl.key_name + ':' + acl.key_subkey;
@@ -532,7 +541,7 @@ function editPersonal(rowElement, uid)
     initDatePicker('dob');
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var uInfo = UsersAjax.callSync('GetUser', uid, false, true);
+    var uInfo = UsersAjax.callSync('GetUser', [uid, false, true]);
     $('fname').value   = uInfo['fname'];
     $('lname').value   = uInfo['lname'];
     $('gender').value  = Number(uInfo['gender']);
@@ -559,7 +568,7 @@ function editContacts(rowElement, uid)
     $('workarea').innerHTML = cachedContactsForm;
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var uInfo = UsersAjax.callSync('GetUser', uid, false, false, true);
+    var uInfo = UsersAjax.callSync('GetUser', [uid, false, false, true]);
     $('country').value          = uInfo['country'];
     $('city').value             = uInfo['city'];
     $('address').value          = uInfo['address'];
@@ -664,24 +673,30 @@ function saveGroup()
 {
     switch(currentAction) {
         case 'Group':
-            if ($('name').value.blank() || $('title').value.blank()) {
+            if (!$('name').val() || !$('title').val()) {
                 alert(incompleteGroupFields);
                 return false;
             }
 
             if (selectedId == 0) {
-                UsersAjax.callAsync('AddGroup', 
-                                    $('name').value,
-                                    $('title').value,
-                                    $('description').value,
-                                    $('enabled').value);
+                UsersAjax.callAsync(
+                    'AddGroup', [
+                        $('name').value,
+                        $('title').value,
+                        $('description').value,
+                        $('enabled').value
+                    ]
+                );
             } else {
-                UsersAjax.callAsync('UpdateGroup',
-                                    selectedId,
-                                    $('name').value,
-                                    $('title').value,
-                                    $('description').value,
-                                    $('enabled').value);
+                UsersAjax.callAsync(
+                    'UpdateGroup', [
+                        selectedId,
+                        $('name').value,
+                        $('title').value,
+                        $('description').value,
+                        $('enabled').value
+                    ]
+                );
             }
 
             break;
@@ -694,7 +709,7 @@ function saveGroup()
                 var keys = img.id.split(':');
                 return [keys[0], keys[1], img.alt];
             });
-            UsersAjax.callAsync('UpdateGroupACL', selectedId, $('components').value, acls);
+            UsersAjax.callAsync('UpdateGroupACL', [selectedId, $('components').value, acls]);
             break;
 
         case 'GroupUsers':
@@ -712,7 +727,7 @@ function saveGroup()
                 }
             }
 
-            UsersAjax.callAsync('AddUsersToGroup', selectedId, keys);
+            UsersAjax.callAsync('AddUsersToGroup', [selectedId, keys]);
             break;
     }
 
@@ -741,7 +756,7 @@ function saveSettings()
     var group      = $('anon_group').value;
     var recover    = $('password_recovery').value;
 
-    UsersAjax.callAsync('SaveSettings', method, anon, act, group, recover);
+    UsersAjax.callAsync('SaveSettings', [method, anon, act, group, recover]);
 }
 
 /**
@@ -754,9 +769,9 @@ function updateMyAccount()
         return false;
     }
 
-    if ($('username').value.blank() ||
-        $('nickname').value.blank() ||
-        $('email').value.blank())
+    if (!$('username').val() ||
+        !$('nickname').val() ||
+        !$('email').val())
     {
         alert(incompleteUserFields);
         return false;
