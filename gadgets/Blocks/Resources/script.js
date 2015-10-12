@@ -92,7 +92,7 @@ function updateBlock()
         displayTitle = document.getElementsByName('display_title[]').item(0).checked;
         // Call function
         loading_message = updatingMessage;
-        BlocksAjax.callAsync('UpdateBlock', id, title, contents, displayTitle);
+        BlocksAjax.callAsync('UpdateBlock', [id, title, contents, displayTitle]);
         // Update Combo
         var combo = $('block_id');
         combo.options[combo.selectedIndex].text = title;
@@ -235,7 +235,7 @@ function newBlock()
     displayTitle = document.getElementsByName('display_title[]').item(0).checked;
     // Call function
     loading_message = savingMessage;
-    BlocksAjax.callAsync('NewBlock', title, contents, displayTitle);
+    BlocksAjax.callAsync('NewBlock', [title, contents, displayTitle]);
 }
 
 /**
