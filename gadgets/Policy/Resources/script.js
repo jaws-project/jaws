@@ -126,25 +126,27 @@ function toggleCaptcha(field)
  */
 function saveIPRange()
 {
-    if ($('from_ipaddress').value.blank()) {
+    if (!$('from_ipaddress').val()) {
         alert(incompleteFields);
         return false;
     }
 
     if ($('id').value == 0) {
         PolicyAjax.callAsync(
-            'AddIPRange',
-            $('from_ipaddress').value,
-            $('to_ipaddress').value,
-            $('blocked').value
+            'AddIPRange', [
+                $('from_ipaddress').value,
+                $('to_ipaddress').value,
+                $('blocked').value
+            ]
         );
     } else {
         PolicyAjax.callAsync(
-            'EditIPRange',
-            $('id').value,
-            $('from_ipaddress').value,
-            $('to_ipaddress').value,
-            $('blocked').value
+            'EditIPRange', [
+                $('id').value,
+                $('from_ipaddress').value,
+                $('to_ipaddress').value,
+                $('blocked').value
+            ]
         );
     }
 }
@@ -184,15 +186,18 @@ function deleteIPRange(element, id)
  */
 function saveAgent()
 {
-    if ($('agent').value.blank()) {
+    if (!$('agent').val()) {
         alert(incompleteFields);
         return false;
     }
 
     if ($('id').value == 0) {
-        PolicyAjax.callAsync('AddAgent', $('agent').value, $('blocked').value);
+        PolicyAjax.callAsync('AddAgent', [$('agent').value, $('blocked').value]);
     } else {
-        PolicyAjax.callAsync('EditAgent', $('id').value, $('agent').value, $('blocked').value);
+        PolicyAjax.callAsync(
+            'EditAgent',
+            [$('id').value, $('agent').value, $('blocked').value]
+        );
     }
 }
 
@@ -259,10 +264,11 @@ function saveEncryptionSettings()
 {
     try {
         PolicyAjax.callAsync(
-            'UpdateEncryptionSettings',
-            $('enabled').value,
-            $('key_age').value,
-            $('key_len').value
+            'UpdateEncryptionSettings', [
+                $('enabled').value,
+                $('key_age').value,
+                $('key_len').value
+            ]
         );
     } catch(e) {
         alert(e);
@@ -276,12 +282,13 @@ function saveAntiSpamSettings()
 {
     try {
         PolicyAjax.callAsync(
-            'UpdateAntiSpamSettings',
-            $('filter').value,
-            $('default_captcha').value,
-            $('default_captcha_driver').value,
-            $('obfuscator').value,
-            $('blocked_domains').value
+            'UpdateAntiSpamSettings', [
+                $('filter').value,
+                $('default_captcha').value,
+                $('default_captcha_driver').value,
+                $('obfuscator').value,
+                $('blocked_domains').value
+            ]
         );
     } catch(e) {
         alert(e);
@@ -295,17 +302,18 @@ function saveAdvancedPolicies()
 {
     try {
         PolicyAjax.callAsync(
-            'UpdateAdvancedPolicies',
-            $('password_complexity').value,
-            $('password_bad_count').value,
-            $('password_lockedout_time').value,
-            $('password_max_age').value,
-            $('password_min_length').value,
-            $('login_captcha').value,
-            $('login_captcha_driver').value,
-            $('xss_parsing_level').value,
-            $('session_idle_timeout').value,
-            $('session_remember_timeout').value
+            'UpdateAdvancedPolicies', [
+                $('password_complexity').value,
+                $('password_bad_count').value,
+                $('password_lockedout_time').value,
+                $('password_max_age').value,
+                $('password_min_length').value,
+                $('login_captcha').value,
+                $('login_captcha_driver').value,
+                $('xss_parsing_level').value,
+                $('session_idle_timeout').value,
+                $('session_remember_timeout').value
+            ]
         );
     } catch(e) {
         alert(e);
