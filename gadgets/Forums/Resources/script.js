@@ -99,53 +99,65 @@ function saveForums()
     if (currentAction == 'Groups') {
         cacheForumForm = null;
         if ($('gid').value == 0) {
-            var response = ForumsAjax.callSync('InsertGroup',
-                                    $('title').value,
-                                    $('description').value,
-                                    $('fast_url').value,
-                                    $('order').value,
-                                    $('locked').value,
-                                    $('published').value);
+            var response = ForumsAjax.callSync(
+                'InsertGroup', [
+                    $('title').value,
+                    $('description').value,
+                    $('fast_url').value,
+                    $('order').value,
+                    $('locked').value,
+                    $('published').value
+                ]
+            );
             if (response['type'] == 'response_notice') {
                 AddNewForumGroup(response['data']);
                 stopAction();
             }
             showResponse(response);
         } else {
-            ForumsAjax.callAsync('UpdateGroup',
-                                $('gid').value,
-                                $('title').value,
-                                $('description').value,
-                                $('fast_url').value,
-                                $('order').value,
-                                $('locked').value,
-                                $('published').value);
+            ForumsAjax.callAsync(
+                'UpdateGroup', [
+                    $('gid').value,
+                    $('title').value,
+                    $('description').value,
+                    $('fast_url').value,
+                    $('order').value,
+                    $('locked').value,
+                    $('published').value
+                ]
+            );
         }
     } else {
         if ($('fid').value == 0) {
-            var response = ForumsAjax.callSync('InsertForum',
-                                    $('gid').value,
-                                    $('title').value,
-                                    $('description').value,
-                                    $('fast_url').value,
-                                    $('order').value,
-                                    $('locked').value,
-                                    $('published').value);
+            var response = ForumsAjax.callSync(
+                'InsertForum', [
+                    $('gid').value,
+                    $('title').value,
+                    $('description').value,
+                    $('fast_url').value,
+                    $('order').value,
+                    $('locked').value,
+                    $('published').value
+                ]
+            );
             if (response['type'] == 'response_notice') {
                 AddNewForumItem($('gid').value, response['data'], $('order').value);
                 stopAction();
             }
             showResponse(response);
         } else {
-            var response = ForumsAjax.callSync('UpdateForum',
-                                    $('fid').value,
-                                    $('gid').value,
-                                    $('title').value,
-                                    $('description').value,
-                                    $('fast_url').value,
-                                    $('order').value,
-                                    $('locked').value,
-                                    $('published').value);
+            var response = ForumsAjax.callSync(
+                'UpdateForum', [
+                    $('fid').value,
+                    $('gid').value,
+                    $('title').value,
+                    $('description').value,
+                    $('fast_url').value,
+                    $('order').value,
+                    $('locked').value,
+                    $('published').value
+                ]
+            );
             if (response['type'] == 'response_notice') {
                 $('forum_'+$('fid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
                 var new_parentNode = $('group_'+$('gid').value);
