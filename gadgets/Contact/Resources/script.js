@@ -244,25 +244,31 @@ function updateContact(send_reply)
 {
     switch(currentAction) {
     case 'Contacts':
-        ContactAjax.callAsync('UpdateContact',
-                        $('id').value,
-                        $('name').value,
-                        $('email').value,
-                        $('company').value,
-                        $('url').value,
-                        $('tel').value,
-                        $('fax').value,
-                        $('mobile').value,
-                        $('address').value,
-                        $('rid').value,
-                        $('subject').value,
-                        $('message').value);
+        ContactAjax.callAsync(
+            'UpdateContact', [
+                $('id').value,
+                $('name').value,
+                $('email').value,
+                $('company').value,
+                $('url').value,
+                $('tel').value,
+                $('fax').value,
+                $('mobile').value,
+                $('address').value,
+                $('rid').value,
+                $('subject').value,
+                $('message').value
+            ]
+        );
         break;
     case 'Reply':
-        ContactAjax.callAsync('UpdateReply',
-                        $('id').value,
-                        $('reply').value,
-                        send_reply);
+        ContactAjax.callAsync(
+            'UpdateReply', [
+                $('id').value,
+                $('reply').value,
+                send_reply
+            ]
+        );
         break;
     }
 }
@@ -287,7 +293,7 @@ function deleteContact(element, id)
  */
 function getContacts(name, offset, reset)
 {
-    var result = ContactAjax.callSync('GetContacts', $('recipient_filter').value, offset);
+    var result = ContactAjax.callSync('GetContacts', [$('recipient_filter').value, offset]);
     if (reset) {
         $(name).setCurrentPage(0);
         var total = ContactAjax.callSync('GetContactsCount', $('recipient_filter').value);
@@ -319,32 +325,38 @@ function editRecipient(element, id)
  */
 function updateRecipient()
 {
-    if ($('name').value.blank() ||
-        $('email').value.blank() ||
+    if (!$('name').val() ||
+        !$('email').val() ||
         !isValidEmail($('email').value.trim())) {
         alert(incompleteRecipientFields);
         return;
     }
 
     if($('id').value == 0) {
-        ContactAjax.callAsync('InsertRecipient',
-                        $('name').value,
-                        $('email').value,
-                        $('tel').value,
-                        $('fax').value,
-                        $('mobile').value,
-                        $('inform_type').value,
-                        $('visible').value);
+        ContactAjax.callAsync(
+            'InsertRecipient', [
+                $('name').value,
+                $('email').value,
+                $('tel').value,
+                $('fax').value,
+                $('mobile').value,
+                $('inform_type').value,
+                $('visible').value
+            ]
+        );
     } else {
-        ContactAjax.callAsync('UpdateRecipient',
-                        $('id').value,
-                        $('name').value,
-                        $('email').value,
-                        $('tel').value,
-                        $('fax').value,
-                        $('mobile').value,
-                        $('inform_type').value,
-                        $('visible').value);
+        ContactAjax.callAsync(
+            'UpdateRecipient', [
+                $('id').value,
+                $('name').value,
+                $('email').value,
+                $('tel').value,
+                $('fax').value,
+                $('mobile').value,
+                $('inform_type').value,
+                $('visible').value
+            ]
+        );
     }
 }
 
@@ -367,11 +379,14 @@ function deleteRecipient(element, id)
  */
 function updateProperties()
 {
-    ContactAjax.callAsync('UpdateProperties',
-                        $('use_antispam').value,
-                        $('email_format').value,
-                        $('enable_attachment').value,
-                        getEditorValue('comments'));
+    ContactAjax.callAsync(
+        'UpdateProperties', [
+            $('use_antispam').value,
+            $('email_format').value,
+            $('enable_attachment').value,
+            getEditorValue('comments')
+        ]
+    );
 }
 
 /**
@@ -533,9 +548,9 @@ function sendEmail()
     } else {
         // Already we have isValidEmail() but validation becomes 
         // too complicated in case of 3 fields (to, cc, bcc) so let server do the job
-        if ($('to').value.blank() &&
-            $('cc').value.blank() &&
-            $('bcc').value.blank())
+        if (!$('to').val() &&
+            !$('cc').val() &&
+            !$('bcc').val())
         {
             alert(incompleteMailerFields);
             $('to').focus();
@@ -546,7 +561,7 @@ function sendEmail()
                       'bcc': $('bcc').value};
     }
 
-    if ($('subject').value.blank()) {
+    if (!$('subject').val()) {
         alert(incompleteMailerFields);
         $('subject').focus();
         return;
@@ -559,7 +574,10 @@ function sendEmail()
         return;
     }
 
-    ContactAjax.callAsync('SendEmail', target, $('subject').value, body, $('filename').value);
+    ContactAjax.callAsync(
+        'SendEmail',
+        [target, $('subject').value, body, $('filename').value]
+    );
 }
 
 var ContactAjax = new JawsAjax('Contact', ContactCallback),
