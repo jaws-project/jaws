@@ -7,12 +7,11 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <!-- BEGIN head -->{{ELEMENT}}<!-- END head -->
 </head>
-<body id="requested_gadget_{{requested_gadget}}" onload="hideWorkingNotification();">
+<body id="requested_gadget_{{requested_gadget}}">
   <div id="working_notification"></div>
   <script type="text/javascript">
     default_loading_message = "{{loading-message}}";
     var navigate_away_message = "{{navigate-away-message}}";
-    showWorkingNotification();
   </script>
 
   <div id="header">
@@ -47,6 +46,9 @@
         <!-- END documentation -->
       </div>
       <!-- END cptitle -->
+      <div class="gadget_response">
+        <div id="{{main_gadget}}_{{main_action}}_response" class="{{type}}">{{text}}</div>
+      </div>
       <div id="msgbox-wrapper">
         <!-- BEGIN msgbox -->
         <div id="msgbox_{{msg-id}}" class="{{type}}">{{text}}</div>
