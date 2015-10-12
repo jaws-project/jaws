@@ -39,7 +39,7 @@ function updateEmblem(id, el)
             url: inputs[1].value,
             published: inputs[2].checked
         };
-    EmblemsAjax.callAsync('UpdateEmblem', id, data);
+    EmblemsAjax.callAsync('UpdateEmblem', [id, data]);
 }
 
 /**
