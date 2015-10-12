@@ -15,7 +15,7 @@
 function GetComments()
 {
     var comments = ShoutboxAjax.callSync('GetComments');
-    $$('.shoutbox_comments').innerHTML = comments;
+    $('.shoutbox_comments').html(comments);
 }
 
 var ShoutboxAjax = new JawsAjax('Shoutbox');
