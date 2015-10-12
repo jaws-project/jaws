@@ -150,6 +150,9 @@ class Jaws_Layout
             }
         }
 
+        $this->AddScriptLink('libraries/jquery/jquery.js?'. JAWS_VERSION);
+        $this->AddScriptLink('include/Jaws/Resources/Ajax.js?'. JAWS_VERSION);
+
         if (empty($layout_path)) {
             $theme = $GLOBALS['app']->GetTheme();
             if (!$theme['exists']) {
