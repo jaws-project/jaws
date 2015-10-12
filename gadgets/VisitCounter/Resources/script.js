@@ -82,7 +82,10 @@ function updateProperties(form)
         }
     });
 
-    VisitCounterAjax.callAsync('UpdateProperties', counters.join(), numDays, type, mode, customText);
+    VisitCounterAjax.callAsync(
+        'UpdateProperties',
+        [counters.join(), numDays, type, mode, customText]
+    );
 }
 
 var VisitCounterAjax = new JawsAjax('VisitCounter', VisitCounterCallback);
