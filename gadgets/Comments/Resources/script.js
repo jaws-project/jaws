@@ -16,7 +16,7 @@ var CommentsCallback = {
     UpdateComment: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopCommentAction();
-            getDG('comments_datagrid', $('comments_datagrid').getCurrentPage(), true);
+            getDG('comments_datagrid', $('comments_datagrid')[0].getCurrentPage(), true);
         }
         showResponse(response);
     },
@@ -24,7 +24,7 @@ var CommentsCallback = {
     DeleteComments: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopCommentAction();
-            getDG('comments_datagrid', $('comments_datagrid').getCurrentPage(), true);
+            getDG('comments_datagrid', $('comments_datagrid')[0].getCurrentPage(), true);
         }
         showResponse(response);
     },
@@ -32,7 +32,7 @@ var CommentsCallback = {
     MarkAs: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopCommentAction();
-            getDG('comments_datagrid', $('comments_datagrid').getCurrentPage(), true);
+            getDG('comments_datagrid', $('comments_datagrid')[0].getCurrentPage(), true);
         }
         showResponse(response);
     },
@@ -59,7 +59,7 @@ function getCommentsDataGrid(name, offset, reset)
     );
     if (reset) {
         stopCommentAction();
-        $(name).setCurrentPage(0);
+        $(name)[0].setCurrentPage(0);
         var total = CommentsAjax.callSync(
             'SizeOfCommentsSearch', [
                 $('gadgets_filter').value,
@@ -178,7 +178,7 @@ function commentDelete(id)
  */
 function commentDGAction(combo)
 {
-    var rows = $('comments_datagrid').getSelectedRows();
+    var rows = $('comments_datagrid')[0].getSelectedRows();
     var selectedRows = false;
     if (rows.length > 0) {
         selectedRows = true;
