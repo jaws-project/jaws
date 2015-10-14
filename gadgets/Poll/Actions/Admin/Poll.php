@@ -39,17 +39,17 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
             $actions = '';
             if ($this->gadget->GetPermission('ManagePolls')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                    "javascript: editPoll(this, '".$poll['id']."');",
+                    "javascript:editPoll(this, '".$poll['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
 
                 $link =& Piwi::CreateWidget('Link', _t('POLL_POLLS_ANSWERS'),
-                    "javascript: editPollAnswers(this, '" . $poll['id'] . "');",
+                    "javascript:editPollAnswers(this, '" . $poll['id'] . "');",
                     'gadgets/Poll/Resources/images/polls_mini.png');
                 $actions.= $link->Get().'&nbsp;';
 
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                    "javascript: deletePoll(this, '".$poll['id']."');",
+                    "javascript:deletePoll(this, '".$poll['id']."');",
                     STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
             }
@@ -105,11 +105,11 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $tpl->SetVariable('poll_ui', $this->PollUI());
 
         $btnSave =& Piwi::CreateWidget('Button','btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, 'javascript: savePoll();');
+        $btnSave->AddEvent(ON_CLICK, 'javascript:savePoll();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $btnCancel->AddEvent(ON_CLICK, 'javascript: stopAction();');
+        $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
         $tpl->SetVariable('incompletePollsFields', _t('POLL_POLLS_INCOMPLETE_FIELDS'));
@@ -221,33 +221,33 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $tpl->SetVariable('question', $question->Get());
 
         $answer =& Piwi::CreateWidget('Entry', 'answer', '');
-        $answer->AddEvent(ON_KPRESS, 'javascript: keypressOnAnswer(event);');
+        $answer->AddEvent(ON_KPRESS, 'javascript:keypressOnAnswer(event);');
         $tpl->SetVariable('lbl_answer', _t('POLL_POLLS_ANSWER'));
         $tpl->SetVariable('answer', $answer->Get());
 
         $answersCombo =& Piwi::CreateWidget('Combo', 'answers_combo');
         $answersCombo->SetSize(12);
-        $answersCombo->AddEvent(ON_CHANGE, 'javascript: editAnswer();');
+        $answersCombo->AddEvent(ON_CHANGE, 'javascript:editAnswer();');
         $tpl->SetVariable('answers_combo', $answersCombo->Get());
 
         $btnAdd =& Piwi::CreateWidget('Button','btn_add', '', STOCK_ADD);
-        $btnAdd->AddEvent(ON_CLICK, 'javascript: addAnswer();');
+        $btnAdd->AddEvent(ON_CLICK, 'javascript:addAnswer();');
         $tpl->SetVariable('btn_add', $btnAdd->Get());
 
         $btnStop =& Piwi::CreateWidget('Button','btn_stop', '', STOCK_CANCEL);
-        $btnStop->AddEvent(ON_CLICK, 'javascript: stopAnswer();');
+        $btnStop->AddEvent(ON_CLICK, 'javascript:stopAnswer();');
         $tpl->SetVariable('btn_stop', $btnStop->Get());
 
         $btnDel =& Piwi::CreateWidget('Button','btn_del', '', STOCK_DELETE);
-        $btnDel->AddEvent(ON_CLICK, 'javascript: delAnswer();');
+        $btnDel->AddEvent(ON_CLICK, 'javascript:delAnswer();');
         $tpl->SetVariable('btn_del', $btnDel->Get());
 
         $btnUp =& Piwi::CreateWidget('Button','btn_up', '', STOCK_UP);
-        $btnUp->AddEvent(ON_CLICK, 'javascript: upAnswer();');
+        $btnUp->AddEvent(ON_CLICK, 'javascript:upAnswer();');
         $tpl->SetVariable('btn_up', $btnUp->Get());
 
         $btnDown =& Piwi::CreateWidget('Button','btn_down', '', STOCK_DOWN);
-        $btnDown->AddEvent(ON_CLICK, 'javascript: downAnswer();');
+        $btnDown->AddEvent(ON_CLICK, 'javascript:downAnswer();');
         $tpl->SetVariable('btn_down', $btnDown->Get());
 
         $tpl->ParseBlock('PollAnswersUI');

@@ -38,17 +38,17 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
             $actions = '';
             if ($this->gadget->GetPermission('ManageGroups')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                    "javascript: editPollGroup(this, '" . $group['id'] . "');",
+                    "javascript:editPollGroup(this, '" . $group['id'] . "');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
 
                 $link =& Piwi::CreateWidget('Link', _t('POLL_GROUPS_POLLS_TITLE'),
-                    "javascript: editPollGroupPolls(this, '" . $group['id'] . "');",
+                    "javascript:editPollGroupPolls(this, '" . $group['id'] . "');",
                     'gadgets/Poll/Resources/images/polls_mini.png');
                 $actions.= $link->Get().'&nbsp;';
 
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                    "javascript: deletePollGroup(this, '". $group['id'] ."');",
+                    "javascript:deletePollGroup(this, '". $group['id'] ."');",
                     STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
             }
@@ -104,11 +104,11 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
         $tpl->SetVariable('pollgroup_ui', $this->PollGroupUI());
 
         $btnSave =& Piwi::CreateWidget('Button','btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, 'javascript: savePollGroup();');
+        $btnSave->AddEvent(ON_CLICK, 'javascript:savePollGroup();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $btnCancel->AddEvent(ON_CLICK, 'javascript: stopAction();');
+        $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
         $tpl->SetVariable('incompleteGroupsFields',   _t('POLL_POLLS_INCOMPLETE_FIELDS'));

@@ -33,7 +33,7 @@ class Poll_Actions_Admin_Report extends Poll_Actions_Admin_Default
         $tpl->SetVariable('lbl_pollgroups', _t('POLL_GROUPS'));
         $groupsCombo =& Piwi::CreateWidget('Combo', 'pollgroups');
         $groupsCombo->SetID('pollgroups');
-        $groupsCombo->AddEvent(ON_CHANGE, "javascript: getGroupPolls(this.value);");
+        $groupsCombo->AddEvent(ON_CHANGE, "javascript:getGroupPolls(this.value);");
         $groups = $model->GetPollGroups();
         $groupsCombo->AddOption('', 0);
         foreach($groups as $group) {
@@ -45,7 +45,7 @@ class Poll_Actions_Admin_Report extends Poll_Actions_Admin_Default
         $pollsCombo =& Piwi::CreateWidget('Combo', 'grouppolls');
         $pollsCombo->SetID('grouppolls');
         $pollsCombo->SetSize(15);
-        $pollsCombo->AddEvent(ON_CHANGE, 'javascript: showResult(this.value);');
+        $pollsCombo->AddEvent(ON_CHANGE, 'javascript:showResult(this.value);');
         $tpl->SetVariable('grouppolls_combo', $pollsCombo->Get());
 
         $tpl->ParseBlock('Reports');
