@@ -14,7 +14,7 @@ var TagsCallback = {
     AddTag: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopTagAction();
-            $('tags_datagrid').addItem();
+            $('tags_datagrid')[0].addItem();
             getDG('tags_datagrid');
         }
         showResponse(response);
@@ -31,7 +31,7 @@ var TagsCallback = {
     DeleteTags: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopTagAction();
-            getDG('tags_datagrid', $('tags_datagrid').getCurrentPage(), true);
+            getDG('tags_datagrid', $('tags_datagrid')[0].getCurrentPage(), true);
         }
         showResponse(response);
     },
@@ -39,7 +39,7 @@ var TagsCallback = {
     MergeTags: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopTagAction();
-            getDG('tags_datagrid', $('tags_datagrid').getCurrentPage(), true);
+            getDG('tags_datagrid', $('tags_datagrid')[0].getCurrentPage(), true);
         }
         showResponse(response);
     },
@@ -61,7 +61,7 @@ function getTagsDataGrid(name, offset, reset)
     );
 
     if (reset) {
-        $(name).setCurrentPage(0);
+        $(name)[0].setCurrentPage(0);
         stopTagAction();
 
         var total = TagsAjax.callSync(
@@ -166,7 +166,7 @@ function deleteTag(id)
  */
 function tagsDGAction(combo)
 {
-    var rows = $('tags_datagrid').getSelectedRows();
+    var rows = $('tags_datagrid')[0].getSelectedRows();
     if (rows.length < 1) {
         return;
     }
