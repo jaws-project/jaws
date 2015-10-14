@@ -16,7 +16,7 @@ var UsersCallback = {
     AddUser: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopUserAction();
-            $('users_datagrid').addItem();
+            $('users_datagrid')[0].addItem();
             $('users_datagrid').lastPage();
             getDG('users_datagrid');
         }
@@ -65,7 +65,7 @@ var UsersCallback = {
     DeleteUser: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopUserAction();
-            $('users_datagrid').deleteItem();
+            $('users_datagrid')[0].deleteItem();
             getDG('users_datagrid');
         }
         showResponse(response);
@@ -74,7 +74,7 @@ var UsersCallback = {
     AddGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopGroupAction();
-            $('groups_datagrid').addItem();
+            $('groups_datagrid')[0].addItem();
             $('groups_datagrid').lastPage();
             getDG('groups_datagrid');
         }
@@ -92,7 +92,7 @@ var UsersCallback = {
     DeleteGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopGroupAction();
-            $('groups_datagrid').deleteItem();          
+            $('groups_datagrid')[0].deleteItem();          
             getDG('groups_datagrid');
         }
         showResponse(response);
@@ -112,7 +112,7 @@ var UsersCallback = {
     DeleteSession: function(response) {
         if (response[0]['type'] == 'response_notice') {
             clearTimeout(fTimeout);
-            getDG('onlineusers_datagrid', $('onlineusers_datagrid').getCurrentPage(), true);
+            getDG('onlineusers_datagrid', $('onlineusers_datagrid')[0].getCurrentPage(), true);
         }
         showResponse(response);
     },
@@ -165,7 +165,7 @@ function getUsers(name, offset, reset)
         ]
     );
     if (reset) {
-        $(name).setCurrentPage(0);
+        $(name)[0].setCurrentPage(0);
         var total = UsersAjax.callSync('GetUsersCount',
                                        $('filter_group').value,
                                        $('filter_type').value,
@@ -182,7 +182,7 @@ function getGroups(name, offset, reset)
 {
     var result = UsersAjax.callSync('GetGroups', offset);
     if (reset) {
-        $(name).setCurrentPage(0);
+        $(name)[0].setCurrentPage(0);
         var total = UsersAjax.callSync('getgroupscount');
     }
     resetGrid(name, result, total);
@@ -229,7 +229,7 @@ function searchOnlineUsers()
  */
 function onlineUsersDGAction(combo)
 {
-    var rows = $('onlineusers_datagrid').getSelectedRows();
+    var rows = $('onlineusers_datagrid')[0].getSelectedRows();
     if (rows.length < 1) {
         return;
     }
