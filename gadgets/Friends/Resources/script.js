@@ -13,8 +13,8 @@
 var FriendsCallback = { 
     NewFriend: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('friends_datagrid').addItem();
-            $('friends_datagrid').setCurrentPage(0);
+            $('friends_datagrid')[0].addItem();
+            $('friends_datagrid')[0].setCurrentPage(0);
         }
         showResponse(response);
         getDG();
@@ -22,7 +22,7 @@ var FriendsCallback = {
 
     DeleteFriend: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('friends_datagrid').deleteItem();          
+            $('friends_datagrid')[0].deleteItem();          
         }
         showResponse(response);
         getDG();
