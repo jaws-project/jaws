@@ -338,7 +338,7 @@ function selectComponent()
     $('component_head').innerHTML = '';
     $('component_form').innerHTML = '';
     $('component_head').adopt(img, h1);
-    $$('#components li.selected').removeClass('selected');
+    $('#components li.selected').removeClass('selected');
     this.addClass('selected');
 
     selectedComponent = comp;
@@ -355,7 +355,7 @@ function selectComponent()
 function closeUI()
 {
     selectedComponent = null;
-    $$('#components li.selected').removeClass('selected');
+    $('#components li.selected').removeClass('selected');
     $('summary').show();
     $('component').hide();
     updateSummary();
