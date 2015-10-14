@@ -14,7 +14,7 @@
 var WeatherCallback = {
     DeleteRegion: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('weather_datagrid').deleteItem();          
+            $('weather_datagrid')[0].deleteItem();          
             getDG();
             stopAction();
         }
@@ -23,8 +23,8 @@ var WeatherCallback = {
     
     InsertRegion: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('weather_datagrid').addItem();
-            $('weather_datagrid').setCurrentPage(0);
+            $('weather_datagrid')[0].addItem();
+            $('weather_datagrid')[0].setCurrentPage(0);
             getDG();
             stopAction();
         }
@@ -63,7 +63,7 @@ function initWeather()
 function stopAction() 
 {
     if (selectedRow) {
-        $('weather_datagrid').unselectRow(selectedRow);
+        $('weather_datagrid')[0].unselectRow(selectedRow);
         selectedRow = null;
     }
     $('id').value = '';
@@ -79,9 +79,9 @@ function stopAction()
 function editRegion(rowElement, id)
 {
     if (selectedRow) {
-        $('weather_datagrid').unselectRow(selectedRow);
+        $('weather_datagrid')[0].unselectRow(selectedRow);
     }
-    $('weather_datagrid').selectRow(rowElement);
+    $('weather_datagrid')[0].selectRow(rowElement);
     selectedRow = rowElement;
 
     var geoPos = WeatherAjax.callSync('GetRegion', id);
@@ -137,11 +137,11 @@ function updateRegion()
 function deleteRegion(rowElement, id)
 {
     stopAction();
-    $('weather_datagrid').selectRow(rowElement);
+    $('weather_datagrid')[0].selectRow(rowElement);
     if (confirm(confirmDelete)) {
         WeatherAjax.callAsync('DeleteRegion', id);
     } else {
-        $('weather_datagrid').unselectRow(rowElement);
+        $('weather_datagrid')[0].unselectRow(rowElement);
         selectedRow = null;
     }
 }
