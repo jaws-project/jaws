@@ -15,8 +15,8 @@ var PollCallback = {
     InsertPoll: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('polls_datagrid').addItem();
-            $('polls_datagrid').setCurrentPage(0);
+            $('polls_datagrid')[0].addItem();
+            $('polls_datagrid')[0].setCurrentPage(0);
             getDG();
         }
         showResponse(response);
@@ -33,7 +33,7 @@ var PollCallback = {
     DeletePoll: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('polls_datagrid').deleteItem();
+            $('polls_datagrid')[0].deleteItem();
             getDG();
         }
         showResponse(response);
@@ -49,8 +49,8 @@ var PollCallback = {
     InsertPollGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('pollgroups_datagrid').addItem();
-            $('pollgroups_datagrid').setCurrentPage(0);
+            $('pollgroups_datagrid')[0].addItem();
+            $('pollgroups_datagrid')[0].setCurrentPage(0);
             getDG();
         }
         showResponse(response);
@@ -67,7 +67,7 @@ var PollCallback = {
     DeletePollGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('pollgroups_datagrid').deleteItem();
+            $('pollgroups_datagrid')[0].deleteItem();
             getDG();
         }
         showResponse(response);
