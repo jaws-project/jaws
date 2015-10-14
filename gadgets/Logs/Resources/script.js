@@ -15,14 +15,14 @@ var LogsCallback = {
     DeleteLogs: function(response) {
         if (response[0]['type'] == 'response_notice') {
             unselectGridRow('logs_datagrid');
-            getDG('logs_datagrid', $('logs_datagrid').getCurrentPage(), true);
+            getDG('logs_datagrid', $('logs_datagrid')[0].getCurrentPage(), true);
         }
         showResponse(response);
     },
     DeleteLogsUseFilters: function(response) {
         if (response[0]['type'] == 'response_notice') {
             unselectGridRow('logs_datagrid');
-            getDG('logs_datagrid', $('logs_datagrid').getCurrentPage(), true);
+            getDG('logs_datagrid', $('logs_datagrid')[0].getCurrentPage(), true);
         }
         showResponse(response);
     },
@@ -75,7 +75,7 @@ function getLogs(name, offset, reset)
  */
 function logsDGAction(combo)
 {
-    var rows = $('logs_datagrid').getSelectedRows();
+    var rows = $('logs_datagrid')[0].getSelectedRows();
 
     var filters = {
         'from_date' : $('from_date').value,
