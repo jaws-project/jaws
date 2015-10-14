@@ -172,13 +172,13 @@ class Emblems_Actions_Admin_Emblems extends Jaws_Gadget_Action
             $link =& Piwi::CreateWidget(
                 'Link',
                 _t('GLOBAL_SAVE'),
-                "javascript: updateEmblem({$e['id']}, this);",
+                "javascript:updateEmblem({$e['id']}, this);",
                 STOCK_SAVE);
             $actions .= $link->Get().'&nbsp;';
 
             $link =& Piwi::CreateWidget(
                 'Link', _t('GLOBAL_DELETE'),
-                "javascript: deleteEmblem({$e['id']});",
+                "javascript:deleteEmblem({$e['id']});",
                 STOCK_DELETE);
             $actions .= $link->Get().'&nbsp;';
             $item['actions'] = $actions;
