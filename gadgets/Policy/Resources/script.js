@@ -14,8 +14,8 @@
 var PolicyCallback = {
     AddIPRange: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('blocked_ips_datagrid').addItem();
-            $('blocked_ips_datagrid').setCurrentPage(0);
+            $('blocked_ips_datagrid')[0].addItem();
+            $('blocked_ips_datagrid')[0].setCurrentPage(0);
             getDG();
             stopAction();
         }
@@ -32,7 +32,7 @@ var PolicyCallback = {
 
     DeleteIPRange: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('blocked_ips_datagrid').deleteItem();
+            $('blocked_ips_datagrid')[0].deleteItem();
             getDG();
         }
         showResponse(response);
@@ -40,8 +40,8 @@ var PolicyCallback = {
 
     AddAgent: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('blocked_agents_datagrid').addItem();
-            $('blocked_agents_datagrid').setCurrentPage(0);
+            $('blocked_agents_datagrid')[0].addItem();
+            $('blocked_agents_datagrid')[0].setCurrentPage(0);
             getDG();
             stopAction();
         }
@@ -58,7 +58,7 @@ var PolicyCallback = {
 
     DeleteAgent: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('blocked_agents_datagrid').deleteItem();
+            $('blocked_agents_datagrid')[0].deleteItem();
             getDG();
         }
         showResponse(response);
