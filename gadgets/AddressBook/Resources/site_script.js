@@ -250,7 +250,7 @@ function removeImage()
 
 function toggleCheckboxes(checkStatus)
 {
-    $$('.table-checkbox').each(function(el) { el.checked = checkStatus; });
+    $('.table-checkbox').each(function(el) { el.checked = checkStatus; });
 }
 
 
