@@ -29,7 +29,7 @@ class Settings_Actions_Admin_FTP extends Settings_Actions_Admin_Default
         $tpl->SetVariable('legend', _t('SETTINGS_FTP_SETTINGS'));
 
         $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $saveButton->AddEvent(ON_CLICK, 'javascript: submitFTPSettingsForm();');
+        $saveButton->AddEvent(ON_CLICK, 'javascript:submitFTPSettingsForm();');
         $tpl->SetVariable('saveButton', $saveButton->Get());
 
         // Use Enabled?

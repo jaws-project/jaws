@@ -29,7 +29,7 @@ class Settings_Actions_Admin_Proxy extends Settings_Actions_Admin_Default
         $tpl->SetVariable('legend', _t('SETTINGS_PROXY_SETTINGS'));
 
         $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $saveButton->AddEvent(ON_CLICK, 'javascript: submitProxySettingsForm();');
+        $saveButton->AddEvent(ON_CLICK, 'javascript:submitProxySettingsForm();');
         $tpl->SetVariable('saveButton', $saveButton->Get());
 
         // Use Enabled?

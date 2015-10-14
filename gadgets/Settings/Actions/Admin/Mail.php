@@ -29,7 +29,7 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         $tpl->SetVariable('legend', _t('SETTINGS_MAIL_SETTINGS'));
 
         $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $saveButton->AddEvent(ON_CLICK, 'javascript: submitMailSettingsForm();');
+        $saveButton->AddEvent(ON_CLICK, 'javascript:submitMailSettingsForm();');
         $tpl->SetVariable('saveButton', $saveButton->Get());
 
         // Mailer
@@ -39,7 +39,7 @@ class Settings_Actions_Admin_Mail extends Settings_Actions_Admin_Default
         $mailer->AddOption('PHP mail()', 'phpmail');
         $mailer->AddOption('sendmail',   'sendmail');
         $mailer->AddOption('SMTP',       'smtp');
-        $mailer->AddEvent(ON_CHANGE, 'javascript: changeMailer();');
+        $mailer->AddEvent(ON_CHANGE, 'javascript:changeMailer();');
         $mailer->SetDefault($this->gadget->registry->fetch('mailer'));
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'mailer');

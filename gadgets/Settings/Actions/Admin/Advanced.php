@@ -29,7 +29,7 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         $tpl->SetVariable('legend', _t('SETTINGS_ADVANCED_SETTINGS'));
 
         $saveButton =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $saveButton->AddEvent(ON_CLICK, 'javascript: submitAdvancedForm();');
+        $saveButton->AddEvent(ON_CLICK, 'javascript:submitAdvancedForm();');
         $tpl->SetVariable('saveButton', $saveButton->Get());
 
         $model = $this->gadget->model->loadAdmin('Settings');
@@ -73,7 +73,7 @@ class Settings_Actions_Admin_Advanced extends Settings_Actions_Admin_Default
         $gravatar->AddOption(_t('GLOBAL_YES'), 'yes');
         $gravatar->AddOption(_t('GLOBAL_NO'), 'no');
         $gravatar->SetDefault($use_gravatar);
-        $gravatar->AddEvent(ON_CHANGE, 'javascript: toggleGR();');
+        $gravatar->AddEvent(ON_CHANGE, 'javascript:toggleGR();');
         $tpl->SetBlock('settings/item');
         $tpl->SetVariable('field-name', 'use_gravatar');
         $tpl->SetVariable('label', _t('SETTINGS_USE_GRAVATAR'));
