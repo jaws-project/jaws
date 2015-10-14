@@ -66,7 +66,7 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
         $tpl->SetVariable('filter', $filterEntry->Get());
         $filterButton =& Piwi::CreateWidget('Button', 'filter_button',
             _t('GLOBAL_SEARCH'), STOCK_SEARCH);
-        $filterButton->AddEvent(ON_CLICK, 'javascript: searchTags();');
+        $filterButton->AddEvent(ON_CLICK, 'javascript:searchTags();');
 
         $tpl->SetVariable('filter_button', $filterButton->Get());
 
@@ -190,7 +190,7 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
             $actions= $link->Get().'&nbsp;';
 
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                "javascript: deleteTag('".$row['id']."');",
+                "javascript:deleteTag('".$row['id']."');",
                 STOCK_DELETE);
             $actions.= $link->Get().'&nbsp;';
             $newRow['actions'] = $actions;
