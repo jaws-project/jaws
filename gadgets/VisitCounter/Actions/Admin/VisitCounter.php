@@ -99,7 +99,7 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_Action
             $config_form->Add($fieldset_config);
             $submit_config =& Piwi::CreateWidget('Button', 'saveproperties',
                                                  _t('VISITCOUNTER_UPDATE_PROPS'), STOCK_SAVE);
-            $submit_config->AddEvent(ON_CLICK, 'javascript: updateProperties(this.form);');
+            $submit_config->AddEvent(ON_CLICK, 'javascript:updateProperties(this.form);');
             $config_form->Add($submit_config);
 
             //$tpl->SetVariable('menubar', $this->menubar(''));
@@ -183,13 +183,13 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_Action
 
         if ($this->gadget->GetPermission('ResetCounter')) {
             $menubar->AddOption('ResetCounter', _t('VISITCOUNTER_RESET_COUNTER_ACTION'),
-                                "javascript: if (confirm('"._t("VISITCOUNTER_RESET_COUNTER_CONFIRM")."')) ".
+                                "javascript:if (confirm('"._t("VISITCOUNTER_RESET_COUNTER_CONFIRM")."')) ".
                                 "resetCounter(); return false;");
         }
 
         if ($this->gadget->GetPermission('CleanEntries')) {
             $menubar->AddOption('CleanEntries', _t('VISITCOUNTER_CLEAN_COUNTER'),
-                                "javascript: if (confirm('"._t("VISITCOUNTER_CLEAN_COUNTER_CONFIRM")."')) ".
+                                "javascript:if (confirm('"._t("VISITCOUNTER_CLEAN_COUNTER_CONFIRM")."')) ".
                                 "cleanEntries(); return false;");
         }
         $menubar->Activate($selected);
