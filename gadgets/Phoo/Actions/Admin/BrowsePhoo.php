@@ -60,7 +60,7 @@ class Phoo_Actions_Admin_BrowsePhoo extends Phoo_Actions_Admin_Default
             $tpl->SetVariable('uploadfile', $uploadfile->Get());
 
             $btnSave =& Piwi::CreateWidget('Button', 'btn_upload_file', _t('PHOO_UPLOAD_PHOTOS'), STOCK_SAVE);
-            $btnSave->AddEvent(ON_CLICK, "javascript: uploadPhoto();");
+            $btnSave->AddEvent(ON_CLICK, "javascript:uploadPhoto();");
             $tpl->SetVariable('btn_upload_file', $btnSave->Get());
             $tpl->ParseBlock("phoo_browse/upload_photo");
         }

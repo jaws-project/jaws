@@ -192,7 +192,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
         if ($settings['keep_original'] == 'true') {
             $tpl->SetVariable('url', $GLOBALS['app']->getDataURL('phoo/' . $image['image']));
         } else {
-            $tpl->SetVariable('url', 'javascript: void();');
+            $tpl->SetVariable('url', 'javascript:void();');
         }
 
         if (Jaws_Gadget::IsGadgetInstalled('Comments')) {

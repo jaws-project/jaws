@@ -74,7 +74,7 @@ class Phoo_Actions_Admin_Groups extends Phoo_Actions_Admin_Default
         //Fill the groups combo..
         $comboGroups =& Piwi::CreateWidget('Combo', 'groups_combo');
         $comboGroups->SetSize(14);
-        $comboGroups->AddEvent(ON_CHANGE, 'javascript: editGroup(this.value);');
+        $comboGroups->AddEvent(ON_CHANGE, 'javascript:editGroup(this.value);');
         $comboGroups->SetStyle('width: 100%;');
         $model = $this->gadget->model->load('Groups');
         $groups = $model->GetGroups();
