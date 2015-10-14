@@ -67,11 +67,11 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, "javascript: saveBanner();");
+        $btnSave->AddEvent(ON_CLICK, "javascript:saveBanner();");
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $btnCancel->AddEvent(ON_CLICK, "javascript: stopAction();");
+        $btnCancel->AddEvent(ON_CLICK, "javascript:stopAction();");
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
         $tpl->SetVariable('incompleteBannerFields', _t('BANNER_BANNERS_INCOMPLETE_FIELDS'));
@@ -121,7 +121,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $tpl->SetVariable('gid', $group_combo->Get());
 
         $check_upload =& Piwi::CreateWidget('CheckButtons', 'through_upload');
-        $check_upload->AddEvent(ON_CLICK, 'javascript: changeThroughUpload(this.checked);');
+        $check_upload->AddEvent(ON_CLICK, 'javascript:changeThroughUpload(this.checked);');
         $check_upload->AddOption(_t('BANNER_BANNERS_THROUGH_UPLOADING'), '0');
         $tpl->SetVariable('th_upload', $check_upload->Get());
 
@@ -145,21 +145,21 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
 
         $btnText =& Piwi::CreateWidget('Button','btn_text', '', 'gadgets/Banner/Resources/images/text.png');
         $btnText->SetTitle(_t('BANNER_BANNERS_BANNERTYPE_TEXT'));
-        $btnText->AddEvent(ON_CLICK, 'javascript: setTemplate(textTemplate);');
+        $btnText->AddEvent(ON_CLICK, 'javascript:setTemplate(textTemplate);');
         $tpl->SetVariable('btn_text', $btnText->Get());
 
         $btnImage =& Piwi::CreateWidget('Button','btn_image', '', 'gadgets/Banner/Resources/images/image.png');
         $btnImage->SetTitle(_t('BANNER_BANNERS_BANNERTYPE_IMAGE'));
-        $btnImage->AddEvent(ON_CLICK, 'javascript: setTemplate(imageTemplate);');
+        $btnImage->AddEvent(ON_CLICK, 'javascript:setTemplate(imageTemplate);');
         $tpl->SetVariable('btn_image', $btnImage->Get());
 
         $btnFlash =& Piwi::CreateWidget('Button','btn_flash', '', 'gadgets/Banner/Resources/images/flash.png');
         $btnFlash->SetTitle(_t('BANNER_BANNERS_BANNERTYPE_FLASH'));
-        $btnFlash->AddEvent(ON_CLICK, 'javascript: setTemplate(flashTemplate);');
+        $btnFlash->AddEvent(ON_CLICK, 'javascript:setTemplate(flashTemplate);');
         $tpl->SetVariable('btn_flash', $btnFlash->Get());
 
         $btnReset =& Piwi::CreateWidget('Button','btn_reset', '', STOCK_UNDO);
-        $btnReset->AddEvent(ON_CLICK, 'javascript: setTemplate(defaultTemplate);');
+        $btnReset->AddEvent(ON_CLICK, 'javascript:setTemplate(defaultTemplate);');
         $tpl->SetVariable('btn_reset', $btnReset->Get());
 
         $tpl->SetVariable('lbl_limits', _t('BANNER_BANNERS_LIMITATIONS'));
@@ -241,12 +241,12 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
             $actions = '';
             if ($this->gadget->GetPermission('ManageBanners')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                    "javascript: editBanner(this, '".$banner['id']."');",
+                    "javascript:editBanner(this, '".$banner['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
 
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                    "javascript: deleteBanner(this, '".$banner['id']."');",
+                    "javascript:deleteBanner(this, '".$banner['id']."');",
                     STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
             }

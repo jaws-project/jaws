@@ -50,12 +50,12 @@ class Banner_Actions_Admin_Reports extends Banner_Actions_Admin_Default
             $actions = '';
             if ($this->gadget->GetPermission('ManageBanners')) {
                 $link =& Piwi::CreateWidget('Link', _t('BANNER_BANNERS_RESET_VIEWS'),
-                    "javascript: resetViews('".$banner['id']."');",
+                    "javascript:resetViews('".$banner['id']."');",
                     STOCK_REFRESH);
                 $actions.= $link->Get().'&nbsp;';
 
                 $link =& Piwi::CreateWidget('Link', _t('BANNER_BANNERS_RESET_CLICKS'),
-                    "javascript: resetClicks('".$banner['id']."');",
+                    "javascript:resetClicks('".$banner['id']."');",
                     STOCK_RESET);
                 $actions.= $link->Get().'&nbsp;';
             }

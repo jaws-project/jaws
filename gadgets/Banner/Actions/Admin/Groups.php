@@ -23,26 +23,26 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $tpl->SetBlock('Groups');
 
         $addGroup =& Piwi::CreateWidget('Button', 'add_group', _t('BANNER_GROUPS_ADD'), STOCK_NEW);
-        $addGroup->AddEvent(ON_CLICK, "javascript: addGroup();");
+        $addGroup->AddEvent(ON_CLICK, "javascript:addGroup();");
         $tpl->SetVariable('add_group', $addGroup->Get());
 
         $saveGroup =& Piwi::CreateWidget('Button', 'save_group', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $saveGroup->AddEvent(ON_CLICK, "javascript: saveGroup();");
+        $saveGroup->AddEvent(ON_CLICK, "javascript:saveGroup();");
         $saveGroup->SetStyle('display: none;');
         $tpl->SetVariable('save_group', $saveGroup->Get());
 
         $GroupBanners =& Piwi::CreateWidget('Button', 'add_banners', _t('BANNER_GROUPS_ADD_BANNERS'), STOCK_EDIT);
-        $GroupBanners->AddEvent(ON_CLICK, "javascript: editGroupBanners();");
+        $GroupBanners->AddEvent(ON_CLICK, "javascript:editGroupBanners();");
         $GroupBanners->SetStyle('display: none;');
         $tpl->SetVariable('add_banners', $GroupBanners->Get());
 
         $cancelAction =& Piwi::CreateWidget('Button', 'cancel_action', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $cancelAction->AddEvent(ON_CLICK, "javascript: stopAction();");
+        $cancelAction->AddEvent(ON_CLICK, "javascript:stopAction();");
         $cancelAction->SetStyle('display: none;');
         $tpl->SetVariable('cancel', $cancelAction->Get());
 
         $deleteGroup =& Piwi::CreateWidget('Button', 'delete_group', _t('BANNER_GROUPS_DELETE'), STOCK_DELETE);
-        $deleteGroup->AddEvent(ON_CLICK, "javascript: deleteGroup();");
+        $deleteGroup->AddEvent(ON_CLICK, "javascript:deleteGroup();");
         $deleteGroup->SetStyle('display: none;');
         $tpl->SetVariable('delete_group', $deleteGroup->Get());
 
@@ -53,7 +53,7 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $comboGroups =& Piwi::CreateWidget('Combo', 'groups_combo');
         $comboGroups->SetID('groups_combo');
         $comboGroups->SetSize(20);
-        $comboGroups->AddEvent(ON_CHANGE, 'javascript: editGroup(this.value);');
+        $comboGroups->AddEvent(ON_CHANGE, 'javascript:editGroup(this.value);');
 
         $model = $this->gadget->model->load('Groups');
         $groups = $model->GetGroups(-1);
@@ -146,7 +146,7 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $tpl->SetVariable('banners_combo', $bannersCombo->Get());
 
         $btnAdd =& Piwi::CreateWidget('Button', 'btn_add', '', STOCK_ADD);
-        $btnAdd->AddEvent(ON_CLICK, "javascript: addBannerToList();");
+        $btnAdd->AddEvent(ON_CLICK, "javascript:addBannerToList();");
         $tpl->SetVariable('btn_add', $btnAdd->Get());
 
         $tpl->SetVariable('lbl_list', _t('BANNER_GROUPS_MEMBERS'));
@@ -157,15 +157,15 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $tpl->SetVariable('group_members', $bannersList->Get());
 
         $btnDel =& Piwi::CreateWidget('Button','btn_del', '', STOCK_CANCEL);
-        $btnDel->AddEvent(ON_CLICK, 'javascript: delBannerFromList();');
+        $btnDel->AddEvent(ON_CLICK, 'javascript:delBannerFromList();');
         $tpl->SetVariable('btn_del', $btnDel->Get());
 
         $btnUp =& Piwi::CreateWidget('Button','btn_up', '', STOCK_UP);
-        $btnUp->AddEvent(ON_CLICK, 'javascript: upBannerRank();');
+        $btnUp->AddEvent(ON_CLICK, 'javascript:upBannerRank();');
         $tpl->SetVariable('btn_up', $btnUp->Get());
 
         $btnDown =& Piwi::CreateWidget('Button','btn_down', '', STOCK_DOWN);
-        $btnDown->AddEvent(ON_CLICK, 'javascript: downBannerRank();');
+        $btnDown->AddEvent(ON_CLICK, 'javascript:downBannerRank();');
         $tpl->SetVariable('btn_down', $btnDown->Get());
 
         $tpl->ParseBlock('GroupBanners');
