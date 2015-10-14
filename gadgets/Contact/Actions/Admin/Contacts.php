@@ -157,17 +157,17 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
             $actions = '';
             if ($this->gadget->GetPermission('ManageContacts')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                                            "javascript: editContact(this, '".$contact['id']."');",
+                                            "javascript:editContact(this, '".$contact['id']."');",
                                             STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
 
                 $link =& Piwi::CreateWidget('Link', _t('CONTACT_CONTACTS_MESSAGE_REPLY'),
-                                            "javascript: editReply(this, '" . $contact['id'] . "');",
+                                            "javascript:editReply(this, '" . $contact['id'] . "');",
                                             'gadgets/Contact/Resources/images/contact_mini.png');
                 $actions.= $link->Get().'&nbsp;';
 
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                                            "javascript: deleteContact(this, '".$contact['id']."');",
+                                            "javascript:deleteContact(this, '".$contact['id']."');",
                                             STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
             }

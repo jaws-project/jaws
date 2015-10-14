@@ -137,11 +137,11 @@ class Contact_Actions_Admin_Recipients extends Contact_Actions_Admin_Default
             $actions = '';
             if ($this->gadget->GetPermission('ManageRecipients')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                                            "javascript: editRecipient(this, '".$recipient['id']."');",
+                                            "javascript:editRecipient(this, '".$recipient['id']."');",
                                             STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                                            "javascript: deleteRecipient(this, '".$recipient['id']."');",
+                                            "javascript:deleteRecipient(this, '".$recipient['id']."');",
                                             STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
             }
