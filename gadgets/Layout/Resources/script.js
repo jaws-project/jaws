@@ -105,7 +105,7 @@ function getAddedChanges()
 {
     for(var i=0; i<sections.length; i++) {
         var section       = sections[i];
-        var divsOfSection = $$('#layout_' + section+ ' .item');
+        var divsOfSection = $('#layout_' + section+ ' .item');
 
         if (divsOfSection.length > items[section].length) {
             for(var j=0; j<divsOfSection.length; j++) {
