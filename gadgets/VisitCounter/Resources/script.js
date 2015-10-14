@@ -14,9 +14,9 @@
 var VisitCounterCallback = { 
     CleanEntries: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('visitcounter_datagrid').setCurrentPage(0);
-            $('visitcounter_datagrid').rowsSize = 0;
-            $('visitcounter_datagrid').updatePageCounter();
+            $('visitcounter_datagrid')[0].setCurrentPage(0);
+            $('visitcounter_datagrid')[0].rowsSize = 0;
+            $('visitcounter_datagrid')[0].updatePageCounter();
             getDG();
             updateStats();
         }
@@ -25,9 +25,9 @@ var VisitCounterCallback = {
     
     ResetCounter: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('visitcounter_datagrid').setCurrentPage(0);
-            $('visitcounter_datagrid').rowsSize = 0;
-            $('visitcounter_datagrid').updatePageCounter();
+            $('visitcounter_datagrid')[0].setCurrentPage(0);
+            $('visitcounter_datagrid')[0].rowsSize = 0;
+            $('visitcounter_datagrid')[0].updatePageCounter();
             getDG();
             updateStats();
         }
