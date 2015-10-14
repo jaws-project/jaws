@@ -73,7 +73,7 @@ class Shoutbox_Actions_Admin_Settings extends Shoutbox_Actions_Admin_Default
 
             $form->Add($fieldset);
             $submit =& Piwi::CreateWidget('Button', 'saveproperties', _t('GLOBAL_SAVE'), STOCK_SAVE);
-            $submit->AddEvent(ON_CLICK, 'javascript: updateProperties(this.form);');
+            $submit->AddEvent(ON_CLICK, 'javascript:updateProperties(this.form);');
 
             $form->Add($submit);
             $tpl->SetVariable('config_form', $form->Get());
