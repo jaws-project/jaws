@@ -15,14 +15,14 @@ var BlogCallback = {
 
     DeleteEntries: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            var rows = $('posts_datagrid').getSelectedRows();
+            var rows = $('posts_datagrid')[0].getSelectedRows();
             if (rows.length > 0) {
                 for(var i=0; i<rows.length; i++) {
-                    $('posts_datagrid').deleteItem();
+                    $('posts_datagrid')[0].deleteItem();
                 }
             }
             PiwiGrid.multiSelect($('posts_datagrid'));
-            var limit = $('posts_datagrid').getCurrentPage();
+            var limit = $('posts_datagrid')[0].getCurrentPage();
             var formData = getDataOfLEForm();
             updatePostsDatagrid(formData['category'],
                                 formData['status'], formData['search'], 0, true);
@@ -47,14 +47,14 @@ var BlogCallback = {
 
     DeleteTrackbacks: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            var rows = $('trackbacks_datagrid').getSelectedRows();
+            var rows = $('trackbacks_datagrid')[0].getSelectedRows();
             if (rows.length > 0) {
                 for(var i=0; i<rows.length; i++) {
-                    $('trackbacks_datagrid').deleteItem();
+                    $('trackbacks_datagrid')[0].deleteItem();
                 }
             }
             PiwiGrid.multiSelect($('trackbacks_datagrid'));
-            var limit = $('trackbacks_datagrid').getCurrentPage();
+            var limit = $('trackbacks_datagrid')[0].getCurrentPage();
             var formData = getDataOfLTBForm();
             updateTrackbacksDatagrid(limit, formData['filter'],
                                    formData['search'], formData['status'],
@@ -250,9 +250,9 @@ function updatePostsDatagrid(cat, status, search, limit, resetCounter)
     resetGrid('posts_datagrid', result);
     if (resetCounter) {
         var size = BlogAjax.callSync('SizeOfSearch', [cat, status, search]);
-        $('posts_datagrid').rowsSize    = size;
-        $('posts_datagrid').setCurrentPage(0);
-        $('posts_datagrid').updatePageCounter();
+        $('posts_datagrid')[0].rowsSize = size;
+        $('posts_datagrid')[0].setCurrentPage(0);
+        $('posts_datagrid')[0].updatePageCounter();
     }
 }
 
@@ -264,7 +264,7 @@ function getData(limit)
     switch($('action').value) {
     case 'ListEntries':
         if (limit == undefined) {
-            limit = $('posts_datagrid').getCurrentPage();
+            limit = $('posts_datagrid')[0].getCurrentPage();
         }
         var formData = getDataOfLEForm();
         updatePostsDatagrid(formData['category'],
@@ -273,14 +273,14 @@ function getData(limit)
         break;
     case 'ManageComments':
         if (limit == undefined) {
-            limit = $('comments_datagrid').getCurrentPage();
+            limit = $('comments_datagrid')[0].getCurrentPage();
         }
         var formData = getDataOfLCForm();
         updateCommentsDatagrid(limit, formData['search'], formData['status'], false);
         break;
     case 'ManageTrackbacks':
         if (limit == undefined) {
-            limit = $('trackbacks_datagrid').getCurrentPage();
+            limit = $('trackbacks_datagrid')[0].getCurrentPage();
         }
         var formData = getDataOfLTBForm();
         updateTrackbacksDatagrid(limit, formData['filter'],
@@ -297,19 +297,19 @@ function firstValues()
 {
     switch($('action').value) {
     case 'ListEntries':
-        var firstValues = $('posts_datagrid').getFirstPagerValues();
+        var firstValues = $('posts_datagrid')[0].getFirstPagerValues();
         getData(firstValues);
-        $('posts_datagrid').firstPage();
+        $('posts_datagrid')[0].firstPage();
         break;
     case 'ManageComments':
-        var firstValues = $('comments_datagrid').getFirstPagerValues();
+        var firstValues = $('comments_datagrid')[0].getFirstPagerValues();
         getData(firstValues);
-        $('comments_datagrid').firstPage();
+        $('comments_datagrid')[0].firstPage();
         break;
     case 'ManageTrackbacks':
-        var firstValues = $('trackbacks_datagrid').getFirstPagerValues();
+        var firstValues = $('trackbacks_datagrid')[0].getFirstPagerValues();
         getData(firstValues);
-        $('trackbacks_datagrid').firstPage();
+        $('trackbacks_datagrid')[0].firstPage();
         break;
     }
 }
@@ -321,19 +321,19 @@ function previousValues()
 {
     switch($('action').value) {
     case 'ListEntries':
-        var previousValues = $('posts_datagrid').getPreviousPagerValues();
+        var previousValues = $('posts_datagrid')[0].getPreviousPagerValues();
         getData(previousValues);
-        $('posts_datagrid').previousPage();
+        $('posts_datagrid')[0].previousPage();
         break;
     case 'ManageComments':
-        var previousValues = $('comments_datagrid').getPreviousPagerValues();
+        var previousValues = $('comments_datagrid')[0].getPreviousPagerValues();
         getData(previousValues);
-        $('comments_datagrid').previousPage();
+        $('comments_datagrid')[0].previousPage();
         break;
     case 'ManageTrackbacks':
-        var previousValues = $('trackbacks_datagrid').getPreviousPagerValues();
+        var previousValues = $('trackbacks_datagrid')[0].getPreviousPagerValues();
         getData(previousValues);
-        $('trackbacks_datagrid').previousPage();
+        $('trackbacks_datagrid')[0].previousPage();
         break;
     }
 }
@@ -345,19 +345,19 @@ function nextValues()
 {
     switch($('action').value) {
     case 'ListEntries':
-        var nextValues = $('posts_datagrid').getNextPagerValues();
+        var nextValues = $('posts_datagrid')[0].getNextPagerValues();
         getData(nextValues);
-        $('posts_datagrid').nextPage();
+        $('posts_datagrid')[0].nextPage();
         break;
     case 'ManageComments':
-        var nextValues = $('comments_datagrid').getNextPagerValues();
+        var nextValues = $('comments_datagrid')[0].getNextPagerValues();
         getData(nextValues);
-        $('comments_datagrid').nextPage();
+        $('comments_datagrid')[0].nextPage();
         break;
     case 'ManageTrackbacks':
-        var nextValues = $('trackbacks_datagrid').getNextPagerValues();
+        var nextValues = $('trackbacks_datagrid')[0].getNextPagerValues();
         getData(nextValues);
-        $('trackbacks_datagrid').nextPage();
+        $('trackbacks_datagrid')[0].nextPage();
         break;
     }
 }
@@ -369,19 +369,19 @@ function lastValues()
 {
     switch($('action').value) {
     case 'ListEntries':
-        var lastValues = $('posts_datagrid').getLastPagerValues();
+        var lastValues = $('posts_datagrid')[0].getLastPagerValues();
         getData(lastValues);
-        $('posts_datagrid').lastPage();
+        $('posts_datagrid')[0].lastPage();
         break;
     case 'ManageComments':
-        var lastValues = $('comments_datagrid').getLastPagerValues();
+        var lastValues = $('comments_datagrid')[0].getLastPagerValues();
         getData(lastValues);
-        $('comments_datagrid').lastPage();
+        $('comments_datagrid')[0].lastPage();
         break;
     case 'ManageTrackbacks':
-        var lastValues = $('trackbacks_datagrid').getLastPagerValues();
+        var lastValues = $('trackbacks_datagrid')[0].getLastPagerValues();
         getData(lastValues);
-        $('trackbacks_datagrid').lastPage();
+        $('trackbacks_datagrid')[0].lastPage();
         break;
     }
 }
@@ -396,9 +396,9 @@ function updateTrackbacksDatagrid(limit, filter, search, status, resetCounter)
     resetGrid('trackbacks_datagrid', result);
     if (resetCounter) {
         var size = BlogAjax.callSync('SizeOfTrackbacksSearch', [filter, search, status]);
-        $('trackbacks_datagrid').rowsSize    = size;
-        $('trackbacks_datagrid').setCurrentPage(0);
-        $('trackbacks_datagrid').updatePageCounter();
+        $('trackbacks_datagrid')[0].rowsSize    = size;
+        $('trackbacks_datagrid')[0].setCurrentPage(0);
+        $('trackbacks_datagrid')[0].updatePageCounter();
     }
 }
 
@@ -419,7 +419,7 @@ function trackbackDelete(row_id)
  */
 function trackbackDGAction(combo)
 {
-    var rows = $('trackbacks_datagrid').getSelectedRows();
+    var rows = $('trackbacks_datagrid')[0].getSelectedRows();
     var selectedRows = false;
     if (rows.length > 0) {
         selectedRows = true;
@@ -444,7 +444,7 @@ function trackbackDGAction(combo)
  */
 function entryDGAction(combo)
 {
-    var rows = $('posts_datagrid').getSelectedRows();
+    var rows = $('posts_datagrid')[0].getSelectedRows();
     var selectedRows = false;
     if (rows.length > 0) {
         selectedRows = true;
@@ -528,8 +528,8 @@ function resetCategoryCombo()
     categories.each(function (item, key){
         var newoption = new Option(item['name'], item['id']);
         $('category_id').add(newoption);
-        $$('#category_id > option:even').addClass('piwi_option_odd');
-        $$('#category_id > option:odd').addClass('piwi_option_even');
+        $('#category_id > option:even').addClass('piwi_option_odd');
+        $('#category_id > option:odd').addClass('piwi_option_even');
     });
 }
 
