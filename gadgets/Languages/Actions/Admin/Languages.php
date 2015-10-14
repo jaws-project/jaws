@@ -31,7 +31,7 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
 
         $btnExport =& Piwi::CreateWidget('Button','btn_export',
                                          _t('LANGUAGES_LANGUAGE_EXPORT'), STOCK_DOWN);
-        $btnExport->AddEvent(ON_CLICK, 'javascript: export_lang();');
+        $btnExport->AddEvent(ON_CLICK, 'javascript:export_lang();');
         $tpl->SetVariable('btn_export', $btnExport->Get());
 
         $tpl->SetBlock('Languages/properties');
@@ -45,7 +45,7 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
 
         if ($this->gadget->GetPermission('ModifyLanguageProperties')) {
             $btnLang =& Piwi::CreateWidget('Button','btn_lang', '', STOCK_SAVE);
-            $btnLang->AddEvent(ON_CLICK, 'javascript: save_lang();');
+            $btnLang->AddEvent(ON_CLICK, 'javascript:save_lang();');
             $tpl->SetVariable('btn_lang', $btnLang->Get());
         }
         $tpl->ParseBlock('Languages/properties');
@@ -118,19 +118,19 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
         $tpl->SetBlock('Languages/buttons');
         //checkbox_filter
         $check_filter =& Piwi::CreateWidget('CheckButtons', 'checkbox_filter');
-        $check_filter->AddEvent(ON_CLICK, 'javascript: filterTranslated();');
+        $check_filter->AddEvent(ON_CLICK, 'javascript:filterTranslated();');
         $check_filter->AddOption(_t('LANGUAGES_NOT_SHOW_TRANSLATED'), '', 'checkbox_filter');
         $tpl->SetVariable('checkbox_filter', $check_filter->Get());
 
         $cancel_btn =& Piwi::CreateWidget('Button','btn_cancel',
                                         _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $cancel_btn->AddEvent(ON_CLICK, 'javascript: stopAction();');
+        $cancel_btn->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $cancel_btn->SetStyle('visibility: hidden;');
         $tpl->SetVariable('cancel', $cancel_btn->Get());
 
         $save_btn =& Piwi::CreateWidget('Button','btn_save',
                                         _t('GLOBAL_SAVE', _t('LANGUAGES_CHANGES')), STOCK_SAVE);
-        $save_btn->AddEvent(ON_CLICK, 'javascript: save_lang_data();');
+        $save_btn->AddEvent(ON_CLICK, 'javascript:save_lang_data();');
         $save_btn->SetStyle('visibility: hidden;');
         $tpl->SetVariable('save', $save_btn->Get());
         $tpl->ParseBlock('Languages/buttons');
