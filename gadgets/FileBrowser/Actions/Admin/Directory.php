@@ -43,20 +43,20 @@ class FileBrowser_Actions_Admin_Directory extends Jaws_Gadget_Action
 
             $actions = '';
             if ($file['is_dir']) {
-                $link =& Piwi::CreateWidget('Link', $file['filename'], "javascript: cwd('{$file['relative']}');");
+                $link =& Piwi::CreateWidget('Link', $file['filename'], "javascript:cwd('{$file['relative']}');");
                 $link->setStyle('float: left;');
                 $item['name'] = $link->Get();
 
                 if ($this->gadget->GetPermission('ManageDirectories')) {
                     //edit directory properties
                     $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                        "javascript: editDir(this, '{$file['filename']}');",
+                        "javascript:editDir(this, '{$file['filename']}');",
                         STOCK_EDIT);
                     $actions.= $link->Get().'&nbsp;';
 
                     //delete directory
                     $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                        "javascript: delDir(this, '{$file['filename']}');",
+                        "javascript:delDir(this, '{$file['filename']}');",
                         STOCK_DELETE);
                     $actions.= $link->Get().'&nbsp;';
                 }
@@ -75,13 +75,13 @@ class FileBrowser_Actions_Admin_Directory extends Jaws_Gadget_Action
                 if ($this->gadget->GetPermission('ManageFiles')) {
                     //edit file properties
                     $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                        "javascript: editFile(this, '{$file['filename']}');",
+                        "javascript:editFile(this, '{$file['filename']}');",
                         STOCK_EDIT);
                     $actions.= $link->Get().'&nbsp;';
 
                     //delete file
                     $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                        "javascript: delFile(this, '{$file['filename']}');",
+                        "javascript:delFile(this, '{$file['filename']}');",
                         STOCK_DELETE);
                     $actions.= $link->Get().'&nbsp;';
                 }
@@ -134,12 +134,12 @@ class FileBrowser_Actions_Admin_Directory extends Jaws_Gadget_Action
 
         if ($this->gadget->GetPermission('ManageDirectories')) {
             $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-            $btnSave->AddEvent(ON_CLICK, "javascript: saveDir();");
+            $btnSave->AddEvent(ON_CLICK, "javascript:saveDir();");
             $tpl->SetVariable('btn_save', $btnSave->Get());
         }
 
         $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $btnCancel->AddEvent(ON_CLICK, "javascript: stopAction('dir');");
+        $btnCancel->AddEvent(ON_CLICK, "javascript:stopAction('dir');");
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
         $tpl->ParseBlock('dir_ui');

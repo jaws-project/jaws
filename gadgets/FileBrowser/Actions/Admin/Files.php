@@ -43,7 +43,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         $orderType->AddOption(_t('GLOBAL_DATE') . ' &darr;', 'date, false');
         $orderType->AddOption(_t('GLOBAL_DATE') . ' &uarr;', 'date, true');
         $orderType->SetDefault('filename, false');
-        $orderType->AddEvent(ON_CHANGE, 'javascript: reOrderFiles();');
+        $orderType->AddEvent(ON_CHANGE, 'javascript:reOrderFiles();');
         $tpl->SetVariable('lbl_order', _t('FILEBROWSER_ORDER_BY'));
         $tpl->SetVariable('order_type', $orderType->Get());
 
@@ -73,7 +73,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         $tpl->SetBlock('file_ui');
 
         $upload_switch =& Piwi::CreateWidget('CheckButtons', 'upload_switch');
-        $upload_switch->AddEvent(ON_CLICK, 'javascript: uploadswitch(this.checked);');
+        $upload_switch->AddEvent(ON_CLICK, 'javascript:uploadswitch(this.checked);');
         $upload_switch->AddOption(_t('FILEBROWSER_UPLOAD_FILE'), '0', 'upload_switch', true);
         $tpl->SetVariable('upload_switch', $upload_switch->Get());
 
@@ -107,12 +107,12 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
 
         if ($this->gadget->GetPermission('ManageFiles')) {
             $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-            $btnSave->AddEvent(ON_CLICK, "javascript: saveFile();");
+            $btnSave->AddEvent(ON_CLICK, "javascript:saveFile();");
             $tpl->SetVariable('btn_save', $btnSave->Get());
         }
 
         $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $btnCancel->AddEvent(ON_CLICK, "javascript: stopAction('file');");
+        $btnCancel->AddEvent(ON_CLICK, "javascript:stopAction('file');");
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
         $tpl->ParseBlock('file_ui');
@@ -164,7 +164,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         $location_link = '';
         foreach ($dir_array as $d) {
             $path_link .= $d . (($d != '/')? '/' : '');
-            $link =& Piwi::CreateWidget('Link', $d, "javascript: cwd('{$path_link}');");
+            $link =& Piwi::CreateWidget('Link', $d, "javascript:cwd('{$path_link}');");
             $location_link .= $link->Get() . '&nbsp;';
         }
 
@@ -277,7 +277,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
             $tpl->SetVariable('uploadfile', $uploadfile->Get());
 
             $btnSave =& Piwi::CreateWidget('Button', 'btn_upload_file', _t('FILEBROWSER_UPLOAD_FILE'), STOCK_SAVE);
-            $btnSave->AddEvent(ON_CLICK, "javascript: saveFile();");
+            $btnSave->AddEvent(ON_CLICK, "javascript:saveFile();");
             $tpl->SetVariable('btn_upload_file', $btnSave->Get());
 
             $tpl->ParseBlock("browse/upload_file");
@@ -334,7 +334,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
 
                     if ($this->gadget->GetPermission('ManageDirectories')) {
                         $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                            "javascript: deleteDir('" . $file['filename'] . "');",
+                            "javascript:deleteDir('" . $file['filename'] . "');",
                             STOCK_DELETE);
                         $tpl->SetVariable('action', $link->Get());
                     }
@@ -354,7 +354,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
 
                     if ($this->gadget->GetPermission('ManageFiles')) {
                         $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                            "javascript: deleteFile('" . $file['filename'] . "');",
+                            "javascript:deleteFile('" . $file['filename'] . "');",
                             STOCK_DELETE);
                         $tpl->SetVariable('action', $link->Get());
                     }
