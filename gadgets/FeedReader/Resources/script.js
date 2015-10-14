@@ -15,7 +15,7 @@ var FeedReaderCallback = {
     DeleteFeed: function(response) {
         if (response['type'] == 'response_notice') {
             stopAction();
-            $('feedsites_datagrid').deleteItem();          
+            $('feedsites_datagrid')[0].deleteItem();          
             getDG();
         }
         showResponse(response);
@@ -23,8 +23,8 @@ var FeedReaderCallback = {
     
     InsertFeed: function(response) {
         if (response['type'] == 'response_notice') {
-            $('feedsites_datagrid').addItem();
-            $('feedsites_datagrid').setCurrentPage(0);
+            $('feedsites_datagrid')[0].addItem();
+            $('feedsites_datagrid')[0].setCurrentPage(0);
             getDG();
         }
         stopAction();
