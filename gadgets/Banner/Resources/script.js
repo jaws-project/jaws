@@ -392,22 +392,22 @@ function editGroup(gid)
         cacheMasterForm = BannerAjax.callSync('GetGroupUI');
     }
 
-    $('group_banners_area').innerHTML = '';
+    $('#group_banners_area').html('');
     currentAction = 'EditGroup';
-    $('cancel_action').style.display = 'inline';
-    $('save_group').style.display = 'inline';
-    $('add_banners').style.display = 'inline';
-    $('delete_group').style.display = 'inline';
-    $('add_group').style.display = 'none';
-    $('group_area').innerHTML = cacheMasterForm;
+    $('#cancel_action').css('display', 'inline');
+    $('#save_group').css('display', 'inline');
+    $('#add_banners').css('display', 'inline');
+    $('#delete_group').css('display', 'inline');
+    $('#add_group').css('display', 'none');
+    $('#group_area').html(cacheMasterForm);
     selectedGroup = gid;
     var groupInfo = BannerAjax.callSync('GetGroup', selectedGroup);
-    $('gid').value   = groupInfo['id'];
-    $('title').value = groupInfo['title'].defilter();
-    $('count').value = groupInfo['limit_count'];
-    $('show_title').value = groupInfo['show_title']? 1 : 0;
-    $('show_type').value  = groupInfo['show_type'];
-    $('published').selectedIndex = groupInfo['published']? 1 : 0;
+    $('#gid').val(groupInfo['id']);
+    $('#title').val(groupInfo['title'].defilter());
+    $('#count').val(groupInfo['limit_count']);
+    $('#show_title').val(groupInfo['show_title']? 1 : 0);
+    $('#show_type').val(groupInfo['show_type']);
+    $('#published').prop('selectedIndex', groupInfo['published']? 1 : 0);
 }
 
 /**
@@ -415,10 +415,10 @@ function editGroup(gid)
  */
 function AddableBanner()
 {
-    var banners = $('banners_combo');
+    var banners = $('#banners_combo')[0];
     if (banners.selectedIndex == -1) return false;
 
-    var box = $('group_members');
+    var box = $('#group_members')[0];
     if (box.options.length == 0) return true;
 
     var value = banners.options[banners.selectedIndex].value;
@@ -436,10 +436,10 @@ function AddableBanner()
 function addBannerToList()
 {
     if (!AddableBanner()) return;
-    var banners = $('banners_combo');
+    var banners = $('#banners_combo')[0];
     var title = banners.options[banners.selectedIndex].text;
     var value = banners.options[banners.selectedIndex].value;
-    var box = $('group_members');
+    var box = $('#group_members')[0];
     box.options[box.options.length] = new Option(title, value);
 }
 
@@ -448,7 +448,7 @@ function addBannerToList()
  */
 function delBannerFromList()
 {
-    var box = $('group_members');
+    var box = $('#group_members')[0];
     if (box.selectedIndex != -1) {
         box.options[box.selectedIndex] = null;
     }
@@ -459,7 +459,7 @@ function delBannerFromList()
  */
 function upBannerRank()
 {
-    var box = $('group_members');
+    var box = $('#group_members')[0];
     if (box.selectedIndex < 1) return;
     var tmpText  = box.options[box.selectedIndex - 1].text;
     var tmpValue = box.options[box.selectedIndex - 1].value;
@@ -475,7 +475,7 @@ function upBannerRank()
  */
 function downBannerRank()
 {
-    var box = $('group_members');
+    var box = $('#group_members')[0];
     if (box.selectedIndex == -1) return;
     if (box.selectedIndex > box.length-2) return;
     var tmpText  = box.options[box.selectedIndex + 1].text;
@@ -512,27 +512,27 @@ function stopAction()
         break;
     case 'EditGroup':
     case 'AddGroup':
-        $('add_group').style.display = 'inline';
-        $('save_group').style.display = 'none';
-        $('add_banners').style.display = 'none';
-        $('delete_group').style.display = 'none';
-        $('groups_combo').selectedIndex = -1;
-        $('group_area').innerHTML = '';
-        $('cancel_action').style.display = 'none';
+        $('#add_group').css('display', 'inline');
+        $('#save_group').css('display', 'none');
+        $('#add_banners').css('display', 'none');
+        $('#delete_group').css('display', 'none');
+        $('#groups_combo').prop('selectedIndex', -1);
+        $('#group_area').html('');
+        $('#cancel_action').css('display', 'none');
         selectedGroup = null;
         break;
     case 'ManageGroupBanners':
         currentAction = 'EditGroup';
-        $('cancel_action').style.display = 'inline';
-        $('save_group').style.display = 'inline';
-        $('add_banners').style.display = 'inline';
-        $('delete_group').style.display = 'inline';
-        $('add_group').style.display = 'none';
-        $('group_banners_area').innerHTML = '';
+        $('#cancel_action').css('display', 'inline');
+        $('#save_group').css('display', 'inline');
+        $('#add_banners').css('display', 'inline');
+        $('#delete_group').css('display', 'inline');
+        $('#add_group').css('display', 'none');
+        $('#group_banners_area').html('');
         //--
-        $('title').disabled   = false;
-        $('count').disabled   = false;
-        $('published').disabled = false;
+        $('#title').prop('disabled', false);
+        $('#count').prop('disabled', false);
+        $('#published').prop('disabled', false);
         //--
         break;
     case 'ViewReports':
@@ -549,18 +549,18 @@ function editGroupBanners()
     if (cacheSlaveForm == null) {
         cacheSlaveForm = BannerAjax.callSync('GetGroupBannersUI');
     }
-    $('save_group').style.display = 'inline';
-    $('add_banners').style.display = 'none';
-    $('delete_group').style.display = 'none';
-    $('group_banners_area').innerHTML = cacheSlaveForm;
+    $('#save_group').css('display', 'inline');
+    $('#add_banners').css('display', 'none');
+    $('#delete_group').css('display', 'none');
+    $('#group_banners_area').html(cacheSlaveForm);
     //--
-    $('title').disabled   = true;
-    $('count').disabled   = true;
-    $('published').disabled = true;
+    $('#title').prop('disabled', true);
+    $('#count').prop('disabled', true);
+    $('#published').prop('disabled', true);
     //--
     currentAction = 'ManageGroupBanners';
     var banners = BannerAjax.callSync('GetBanners', [-1, selectedGroup]);
-    var box = $('group_members');
+    var box = $('#group_members')[0];
     box.length = 0;
     for(var i = 0; i < banners.length; i++) {
         box.options[i] = new Option(banners[i]['title'] +' '+'('+banners[i]['url']+')', banners[i]['id']);
@@ -585,7 +585,7 @@ var cacheMasterForm = null;
 //Cache for group-banner management
 var cacheBannerGroupForm = null;
 
-//Which action are we runing?
+//Which action are we running?
 var currentAction = null;
 
 //Which row selected in DataGrid
