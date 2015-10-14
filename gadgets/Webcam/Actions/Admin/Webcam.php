@@ -50,13 +50,13 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
             $actions = '';
             if ($this->gadget->GetPermission('EditWebcam')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                    "javascript: editWebcam('".$webcam['id']."');",
+                    "javascript:editWebcam('".$webcam['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
             }
             if ($this->gadget->GetPermission('DeleteWebcam')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                    "javascript: if (confirm('"._t('WEBCAM_CONFIRM_DELETE_WEBCAM')."')) ".
+                    "javascript:if (confirm('"._t('WEBCAM_CONFIRM_DELETE_WEBCAM')."')) ".
                     "deleteWebcam('".$webcam['id']."');",
                     STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
@@ -128,10 +128,10 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
             $buttonbox->SetStyle('float: right;'); //hig style
             $submit =& Piwi::CreateWidget('Button', 'addnewwebcam',
                 _t('GLOBAL_SAVE', $this->gadget->title), STOCK_SAVE);
-            $submit->AddEvent(ON_CLICK, 'javascript: submitForm(this.form);');
+            $submit->AddEvent(ON_CLICK, 'javascript:submitForm(this.form);');
 
             $cancel =& Piwi::CreateWidget('Button', 'cancelform', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-            $cancel->AddEvent(ON_CLICK, 'javascript: cleanForm(this.form);');
+            $cancel->AddEvent(ON_CLICK, 'javascript:cleanForm(this.form);');
 
             $buttonbox->Add($cancel);
             $buttonbox->Add($submit);
@@ -171,7 +171,7 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
             $submit_config =& Piwi::CreateWidget('Button', 'saveproperties',
                 _t('GLOBAL_UPDATE', _t('GLOBAL_PROPERTIES')), STOCK_SAVE);
             $submit_config->SetStyle('float: right;');
-            $submit_config->AddEvent(ON_CLICK, 'javascript: updateProperties(this.form);');
+            $submit_config->AddEvent(ON_CLICK, 'javascript:updateProperties(this.form);');
 
             $config_form->Add($submit_config);
             $tpl->SetVariable('config_form', $config_form->Get());
