@@ -54,7 +54,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
         $themesCombo->SetSize(24);
         $themesCombo->addGroup(0, _t('LAYOUT_THEME_LOCAL'));
         $themesCombo->addGroup(1, _t('LAYOUT_THEME_REMOTE'));
-        $themesCombo->AddEvent(ON_CHANGE, 'javascript: editTheme(this.value);');
+        $themesCombo->AddEvent(ON_CHANGE, 'javascript:editTheme(this.value);');
         $themes = Jaws_Utils::GetThemesInfo();
         foreach ($themes[0] as $theme => $tInfo) {
             $themesCombo->AddOption(0, $tInfo['name'], "$theme,0");
@@ -69,7 +69,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
             $tpl->SetBlock('Tms/UploadTheme');
             $fileEntry =& Piwi::CreateWidget('FileEntry', 'theme_upload');
             $fileEntry->SetStyle('width: 250px;');
-            $fileEntry->AddEvent(ON_CHANGE, 'javascript: uploadTheme();');
+            $fileEntry->AddEvent(ON_CHANGE, 'javascript:uploadTheme();');
             $tpl->SetVariable('lbl_theme_upload', _t('TMS_UPLOAD_THEME'));
             $tpl->SetVariable('theme_upload', $fileEntry->Get());
             $tpl->ParseBlock('Tms/UploadTheme');
