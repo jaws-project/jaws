@@ -61,14 +61,14 @@ class Friends_Actions_Admin_Friends extends Jaws_Gadget_Action
             $actions = '';
             if ($this->gadget->GetPermission('EditFriend')) {
                 $link = Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                    "javascript: editFriend('".$friend['id']."');",
+                    "javascript:editFriend('".$friend['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
             }
             if ($this->gadget->GetPermission('DeleteFriend')) {
                 $actions = (empty($actions)) ? $actions : $actions . '|&nbsp;';
                 $link = Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                    "javascript: if (confirm('"._t("FRIENDS_CONFIRM_DELETE_FRIEND")."')) ".
+                    "javascript:if (confirm('"._t("FRIENDS_CONFIRM_DELETE_FRIEND")."')) ".
                     "deleteFriend('".$friend['id']."');",
                     STOCK_DELETE);
                 $actions.= $link->Get();
@@ -122,7 +122,7 @@ class Friends_Actions_Admin_Friends extends Jaws_Gadget_Action
             $submit_config =& Piwi::CreateWidget('Button', 'saveproperties',
                 _t('GLOBAL_UPDATE', _t('GLOBAL_PROPERTIES')), STOCK_SAVE);
             $submit_config->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
-            $submit_config->AddEvent(ON_CLICK, 'javascript: updateProperties(this.form);');
+            $submit_config->AddEvent(ON_CLICK, 'javascript:updateProperties(this.form);');
 
 
             $config_form->Add($submit_config);
@@ -160,7 +160,7 @@ class Friends_Actions_Admin_Friends extends Jaws_Gadget_Action
             $buttonbox =& Piwi::CreateWidget('HBox');
             $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;'); //hig style
             $submit =& Piwi::CreateWidget('Button', 'addnewfriend', _t('GLOBAL_SAVE'), STOCK_SAVE);
-            $submit->AddEvent(ON_CLICK, 'javascript: submitForm(this.form);');
+            $submit->AddEvent(ON_CLICK, 'javascript:submitForm(this.form);');
 
             $cancel =& Piwi::CreateWidget('Button', 'cancelform', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
             $cancel->AddEvent(ON_CLICK, "cleanForm(this.form);");
