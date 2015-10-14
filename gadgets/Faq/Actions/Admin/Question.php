@@ -53,18 +53,18 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $grid->AddColumn(Piwi::CreateWidget(
                 'ActionColumn',
                 _t('FAQ_MOVEUP'),
-                "javascript: moveQuestion({category}, {id}, {position}, -1); return false;",
+                "javascript:moveQuestion({category}, {id}, {position}, -1); return false;",
                 STOCK_UP)
         );
         $grid->AddColumn(Piwi::CreateWidget(
                 'ActionColumn',
                 _t('FAQ_MOVEDOWN'),
-                "javascript: moveQuestion({category}, {id}, {position}, 1); return false;",
+                "javascript:moveQuestion({category}, {id}, {position}, 1); return false;",
                 STOCK_DOWN)
         );
         if ($this->gadget->GetPermission('DeleteQuestion')) {
             $grid->AddColumn(Piwi::CreateWidget('ActionColumn', _t('GLOBAL_DELETE'),
-                "javascript: if (confirm('"._t('FAQ_CONFIRM_DELETE_QUESTION').
+                "javascript:if (confirm('"._t('FAQ_CONFIRM_DELETE_QUESTION').
                 "')) deleteQuestion('{id}', '{category}'); return false;",
                 STOCK_DELETE));
         }
@@ -105,7 +105,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
             $catCombo->SetDefault('*');
         }
 
-        $catCombo->AddEvent(ON_CHANGE, 'javascript: showCategory(this.form);');
+        $catCombo->AddEvent(ON_CHANGE, 'javascript:showCategory(this.form);');
         $manageTpl->SetVariable('category', _t('FAQ_CATEGORY'));
         $manageTpl->SetVariable('category_combo', $catCombo->Get());
 
@@ -140,7 +140,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
 
                 if ($this->gadget->GetPermission('ManageCategories')) {
                     $edit_url = BASE_SCRIPT . '?gadget=Faq&amp;action=EditCategory&amp;category='.$cat['id'];
-                    $delete_url = "javascript: if (confirm('"._t('FAQ_CONFIRM_DELETE_CATEGORY').
+                    $delete_url = "javascript:if (confirm('"._t('FAQ_CONFIRM_DELETE_CATEGORY').
                         "')) deleteCategory('".$cat['id']."'); return false;";
                     $tpl->SetVariable('edit', "<a href=\"{$edit_url}\">"._t('FAQ_EDIT_CATEGORY')."</a>");
                     $tpl->SetVariable('delete', "<a href=\"javascript:void(0);\" onclick=\"{$delete_url}\">"._t('FAQ_DELETE_CATEGORY')."</a>");
@@ -269,9 +269,9 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
 
         $submit->SetSubmit();
         $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $cancel->AddEvent(ON_CLICK, "javascript: window.location = '".BASE_SCRIPT . '?gadget=Faq'."';");
+        $cancel->AddEvent(ON_CLICK, "javascript:window.location = '".BASE_SCRIPT . '?gadget=Faq'."';");
         $preview =& Piwi::CreateWidget('Button', 'previewButton', _t('GLOBAL_PREVIEW'), STOCK_PRINT_PREVIEW);
-        $preview->AddEvent(ON_CLICK, 'javascript: parseQuestionText(this.form);');
+        $preview->AddEvent(ON_CLICK, 'javascript:parseQuestionText(this.form);');
 
         $buttonbox =& Piwi::CreateWidget('HBox');
         $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
