@@ -31,7 +31,7 @@ var ContactCallback = {
 
     DeleteRecipient: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('recipient_datagrid').deleteItem();          
+            $('recipient_datagrid')[0].deleteItem();          
             getDG();
             stopAction();
         }
@@ -40,8 +40,8 @@ var ContactCallback = {
 
     InsertRecipient: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('recipient_datagrid').addItem();
-            $('recipient_datagrid').setCurrentPage(0);
+            $('recipient_datagrid')[0].addItem();
+            $('recipient_datagrid')[0].setCurrentPage(0);
             getDG();
             stopAction();
         }
@@ -62,7 +62,7 @@ var ContactCallback = {
 
     DeleteContact: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('contacts_datagrid').deleteItem();          
+            $('contacts_datagrid')[0].deleteItem();          
             getDG('contacts_datagrid');
             stopAction();
         }
@@ -295,7 +295,7 @@ function getContacts(name, offset, reset)
 {
     var result = ContactAjax.callSync('GetContacts', [$('recipient_filter').value, offset]);
     if (reset) {
-        $(name).setCurrentPage(0);
+        $(name)[0].setCurrentPage(0);
         var total = ContactAjax.callSync('GetContactsCount', $('recipient_filter').value);
     }
     resetGrid(name, result, total);
