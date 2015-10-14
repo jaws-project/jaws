@@ -59,7 +59,7 @@ class LinkDump_Actions_Admin_Groups extends Jaws_Gadget_Action
         $tpl->SetVariable('title', $titleEntry->Get());
 
         $btnDown =& Piwi::CreateWidget('Button','btn_down', '', STOCK_DOWN);
-        $btnDown->AddEvent(ON_CLICK, 'javascript: downCount();');
+        $btnDown->AddEvent(ON_CLICK, 'javascript:downCount();');
         $tpl->SetVariable('btn_down', $btnDown->Get());
 
         $tpl->SetVariable('lbl_limit_count', _t('LINKDUMP_GROUPS_LIMIT_COUNT'));
@@ -68,7 +68,7 @@ class LinkDump_Actions_Admin_Groups extends Jaws_Gadget_Action
         $tpl->SetVariable('limit_count', $limitCount->Get());
 
         $btnUp =& Piwi::CreateWidget('Button','btn_up', '', STOCK_UP);
-        $btnUp->AddEvent(ON_CLICK, 'javascript: upCount();');
+        $btnUp->AddEvent(ON_CLICK, 'javascript:upCount();');
         $tpl->SetVariable('btn_up', $btnUp->Get());
 
         $linksType =& Piwi::CreateWidget('Combo', 'links_type');
