@@ -69,7 +69,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             if ($this->gadget->GetPermission('ManageUsers')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('GLOBAL_EDIT'),
-                                            "javascript: editUser(this, '".$user['id']."');",
+                                            "javascript:editUser(this, '".$user['id']."');",
                                             STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
             }
@@ -77,7 +77,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             if ($this->gadget->GetPermission('ManageUserACLs')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_ACLS'),
-                                            "javascript: editACL(this, '".$user['id']."', 'UserACL');",
+                                            "javascript:editACL(this, '".$user['id']."', 'UserACL');",
                                             'gadgets/Users/Resources/images/acls.png');
                 $actions.= $link->Get().'&nbsp;';
             }
@@ -85,7 +85,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             if ($this->gadget->GetPermission('ManageGroups')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_USERS_GROUPS'),
-                                            "javascript: editUserGroups(this, '".$user['id']."');",
+                                            "javascript:editUserGroups(this, '".$user['id']."');",
                                             'gadgets/Users/Resources/images/groups_mini.png');
                 $actions.= $link->Get().'&nbsp;';
             }
@@ -93,7 +93,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             if ($this->gadget->GetPermission('ManageUsers')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_PERSONAL'),
-                                            "javascript: editPersonal(this, '".$user['id']."');",
+                                            "javascript:editPersonal(this, '".$user['id']."');",
                                             'gadgets/Users/Resources/images/user_mini.png');
                 $actions.= $link->Get().'&nbsp;';
             }
@@ -101,7 +101,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             if ($this->gadget->GetPermission('ManageUsers')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_CONTACTS'),
-                                            "javascript: editContacts(this, '".$user['id']."');",
+                                            "javascript:editContacts(this, '".$user['id']."');",
                                             'gadgets/Users/Resources/images/mail.png');
                 $actions.= $link->Get().'&nbsp;';
             }
@@ -109,7 +109,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             if ($this->gadget->GetPermission('ManageUsers')) {
                 $link =& Piwi::CreateWidget('Link',
                                             _t('USERS_ACCOUNT_DELETE'),
-                                            "javascript: deleteUser(this, '".$user['id']."');",
+                                            "javascript:deleteUser(this, '".$user['id']."');",
                                             STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
             }
@@ -163,7 +163,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                 $filterGroup->AddOption($group['title'], $group['id']);
             }
         }
-        $filterGroup->AddEvent(ON_CHANGE, "javascript: searchUser();");
+        $filterGroup->AddEvent(ON_CHANGE, "javascript:searchUser();");
         $filterGroup->SetDefault(-1);
         $tpl->SetVariable('filter_group', $filterGroup->Get());
         $tpl->SetVariable('lbl_filter_group', _t('USERS_GROUPS_GROUP'));
@@ -173,7 +173,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $filterType->AddOption(_t('GLOBAL_ALL'), -1, false);
         $filterType->AddOption(_t('USERS_USERS_TYPE_SUPERADMIN'), 1);
         $filterType->AddOption(_t('USERS_USERS_TYPE_NORMAL'),     0);
-        $filterType->AddEvent(ON_CHANGE, "javascript: searchUser();");
+        $filterType->AddEvent(ON_CHANGE, "javascript:searchUser();");
         $filterType->SetDefault(-1);
         $tpl->SetVariable('filter_type', $filterType->Get());
         $tpl->SetVariable('lbl_filter_type', _t('USERS_USERS_TYPE'));
@@ -184,7 +184,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $filterStatus->AddOption(_t('USERS_USERS_STATUS_0'), 0);
         $filterStatus->AddOption(_t('USERS_USERS_STATUS_1'), 1);
         $filterStatus->AddOption(_t('USERS_USERS_STATUS_2'), 2);
-        $filterStatus->AddEvent(ON_CHANGE, "javascript: searchUser();");
+        $filterStatus->AddEvent(ON_CHANGE, "javascript:searchUser();");
         $filterStatus->SetDefault(-1);
         $tpl->SetVariable('filter_status', $filterStatus->Get());
         $tpl->SetVariable('lbl_filter_status', _t('GLOBAL_STATUS'));
@@ -192,8 +192,8 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         // Term
         $filterTerm =& Piwi::CreateWidget('Entry', 'filter_term', '');
         $filterTerm->SetID('filter_term');
-        $filterTerm->AddEvent(ON_CHANGE, "javascript: searchUser();");
-        $filterTerm->AddEvent(ON_KPRESS, "javascript: OnTermKeypress(this, event);");
+        $filterTerm->AddEvent(ON_CHANGE, "javascript:searchUser();");
+        $filterTerm->AddEvent(ON_KPRESS, "javascript:OnTermKeypress(this, event);");
         $tpl->SetVariable('lbl_filter_term', _t('USERS_USERS_SEARCH_TERM'));
         $tpl->SetVariable('filter_term', $filterTerm->Get());
 
@@ -205,7 +205,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $orderType->AddOption(_t('USERS_USERS_USERNAME'). ' &uarr;', 'username desc');
         $orderType->AddOption(_t('USERS_USERS_NICKNAME'). ' &darr;', 'nickname');
         $orderType->AddOption(_t('USERS_USERS_NICKNAME'). ' &uarr;', 'nickname desc');
-        $orderType->AddEvent(ON_CHANGE, "javascript: searchUser();");
+        $orderType->AddEvent(ON_CHANGE, "javascript:searchUser();");
         $orderType->SetDefault(-1);
         $tpl->SetVariable('order_type', $orderType->Get());
         $tpl->SetVariable('lbl_order_type', _t('USERS_USERS_ORDER_TYPE'));
@@ -218,14 +218,14 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                                     'save',
                                     _t('GLOBAL_SAVE'),
                                     STOCK_SAVE);
-        $save->AddEvent(ON_CLICK, "javascript: saveUser();");
+        $save->AddEvent(ON_CLICK, "javascript:saveUser();");
         $tpl->SetVariable('save', $save->Get());
 
         $cancel =& Piwi::CreateWidget('Button',
                                       'cancel',
                                       _t('GLOBAL_CANCEL'),
                                       STOCK_CANCEL);
-        $cancel->AddEvent(ON_CLICK, "javascript: stopUserAction();");
+        $cancel->AddEvent(ON_CLICK, "javascript:stopUserAction();");
         $tpl->SetVariable('cancel', $cancel->Get());
 
         $tpl->SetVariable('addUser_title', _t('USERS_USERS_ADD'));

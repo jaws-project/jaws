@@ -85,7 +85,7 @@ class Users_Actions_Admin_Properties extends Users_Actions_Admin_Default
         $buttons->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
 
         $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $save->AddEvent(ON_CLICK, 'javascript: saveSettings();');
+        $save->AddEvent(ON_CLICK, 'javascript:saveSettings();');
 
         $buttons->Add($save);
         $form->Add($buttons);

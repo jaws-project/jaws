@@ -132,7 +132,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $active->AddOption(_t('GLOBAL_ALL'), -1, false);
         $active->AddOption(_t('USERS_ONLINE_FILTER_SESSION_STATUS_ACTIVE'), 1);
         $active->AddOption(_t('USERS_ONLINE_FILTER_SESSION_STATUS_INACTIVE'), 0);
-        $active->AddEvent(ON_CHANGE, "javascript: searchOnlineUsers();");
+        $active->AddEvent(ON_CHANGE, "javascript:searchOnlineUsers();");
         $active->SetDefault(-1);
         $tpl->SetVariable('filter_active', $active->Get());
         $tpl->SetVariable('lbl_filter_active', _t('USERS_ONLINE_FILTER_SESSION_STATUS'));
@@ -143,7 +143,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $logged->AddOption(_t('GLOBAL_ALL'), -1, false);
         $logged->AddOption(_t('USERS_ONLINE_FILTER_MEMBERSHIP_MEMBERS'), 1);
         $logged->AddOption(_t('USERS_ONLINE_FILTER_MEMBERSHIP_ANONYMOUS'), 0);
-        $logged->AddEvent(ON_CHANGE, "javascript: searchOnlineUsers();");
+        $logged->AddEvent(ON_CHANGE, "javascript:searchOnlineUsers();");
         $logged->SetDefault(-1);
         $tpl->SetVariable('filter_logged', $logged->Get());
         $tpl->SetVariable('lbl_filter_logged', _t('USERS_ONLINE_FILTER_MEMBERSHIP'));
