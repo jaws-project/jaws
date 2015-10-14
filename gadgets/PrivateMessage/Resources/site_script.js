@@ -135,12 +135,12 @@ function sendMessage(isDraft) {
     if (recipient_user == "" || recipient_user.length == 0) {
         var recipient_users_array = new Array();
         var recipient_groups_array = new Array();
-        $$('#recipient_users option').each(function (i) {
+        $('#recipient_users option').each(function (i) {
             if (i.get('value').length > 0) {
                 recipient_users_array.push(i.get('value'));
             }
         });
-        $$('#recipient_groups').getSelected()[0].each(function (i) {
+        $('#recipient_groups').getSelected()[0].each(function (i) {
             if (i.get('value') != "") {
                 recipient_groups_array.push(i.get('value'));
             }
@@ -168,7 +168,7 @@ function sendMessage(isDraft) {
 
 function getSelectedAttachments() {
     var files = [];
-    $$("input[type=checkbox][name=selected_files[]]:checked").each(function(i){
+    $("input[type=checkbox][name=selected_files[]]:checked").each(function(i){
         files.push( i.value );
     });
     return files;
@@ -217,7 +217,7 @@ function clearUsersSearch() {
  * Add a user to recipient List
  */
 function addUserToList(userId, title) {
-    if ($$('#recipient_users option[value=' + userId + ']').length > 0) {
+    if ($('#recipient_users option[value=' + userId + ']').length > 0) {
         return;
     }
     var box = document.id('recipient_users');
