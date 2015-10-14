@@ -58,7 +58,7 @@ class UrlMapper_Actions_Admin_Aliases extends UrlMapper_Actions_Admin_Default
         $hbox->Add($cancel);
         $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $save->SetId('save_button');
-        $save->AddEvent(ON_CLICK, 'javascript: saveAlias();');
+        $save->AddEvent(ON_CLICK, 'javascript:saveAlias();');
 
         $hbox->Add($save);
 

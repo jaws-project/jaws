@@ -74,7 +74,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
             if ($this->gadget->GetPermission('ManageErrorMaps')) {
                 $errorMap['url'] = Piwi::CreateWidget('Link',
                     $errorMap['url'],
-                    "javascript: editErrorMap(this, '" . $errorMap['id'] . "');")->get();
+                    "javascript:editErrorMap(this, '" . $errorMap['id'] . "');")->get();
             }
             $usrData['url']         = $errorMap['url'];
             $usrData['code']        = $errorMap['code'];
@@ -112,7 +112,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $fromDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $fromDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $fromDate->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $fromDate->AddEvent(ON_CHANGE, "javascript: searchErrorMaps();");
+        $fromDate->AddEvent(ON_CHANGE, "javascript:searchErrorMaps();");
         $tpl->SetVariable('filter_from_date', $fromDate->Get());
         $tpl->SetVariable('lbl_filter_from_date', _t('LOGS_FROM_DATE'));
 
@@ -122,7 +122,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $toDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $toDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $toDate->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $toDate->AddEvent(ON_CHANGE, "javascript: searchErrorMaps();");
+        $toDate->AddEvent(ON_CHANGE, "javascript:searchErrorMaps();");
         $tpl->SetVariable('filter_to_date', $toDate->Get());
         $tpl->SetVariable('lbl_filter_to_date', _t('LOGS_TO_DATE'));
 
@@ -131,7 +131,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $codeCombo->SetID('filter_code');
         $codeCombo->SetStyle('width: 150px;');
         $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_404'), 404);
-        $codeCombo->AddEvent(ON_CHANGE, "javascript: searchErrorMaps();");
+        $codeCombo->AddEvent(ON_CHANGE, "javascript:searchErrorMaps();");
         $tpl->SetVariable('lbl_filter_code', _t('URLMAPPER_ERRORMAPS_CODE'));
         $tpl->SetVariable('filter_code', $codeCombo->Get());
 
@@ -145,7 +145,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_404'), 404);
         $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_410'), 410);
         $codeCombo->SetDefault(0);
-        $codeCombo->AddEvent(ON_CHANGE, "javascript: searchErrorMaps();");
+        $codeCombo->AddEvent(ON_CHANGE, "javascript:searchErrorMaps();");
         $tpl->SetVariable('lbl_filter_new_code', _t('URLMAPPER_ERRORMAPS_NEW_CODE'));
         $tpl->SetVariable('filter_new_code', $codeCombo->Get());
 
@@ -155,7 +155,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $orderType->AddOption(_t('GLOBAL_CREATETIME'). ' &uarr;', 'id desc');
         $orderType->AddOption(_t('URLMAPPER_ERRORMAPS_HITS'). ' &darr;', 'hits');
         $orderType->AddOption(_t('URLMAPPER_ERRORMAPS_HITS'). ' &uarr;', 'hits desc');
-        $orderType->AddEvent(ON_CHANGE, "javascript: searchErrorMaps();");
+        $orderType->AddEvent(ON_CHANGE, "javascript:searchErrorMaps();");
         $orderType->SetDefault(-1);
         $tpl->SetVariable('order_type', $orderType->Get());
         $tpl->SetVariable('lbl_order_type', _t('URLMAPPER_ORDER_TYPE'));
@@ -206,7 +206,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_404'), 404);
         $codeCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_410'), 410);
         $codeCombo->SetDefault(404);
-        $codeCombo->AddEvent(ON_CHANGE, "javascript: changeCode();");
+        $codeCombo->AddEvent(ON_CHANGE, "javascript:changeCode();");
         $tpl->SetVariable('lbl_new_code', _t('URLMAPPER_ERRORMAPS_NEW_CODE'));
         $tpl->SetVariable('new_code', $codeCombo->Get());
 
@@ -221,11 +221,11 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $btnCancel->SetID('btn_cancel');
         $btnCancel->SetStyle('visibility: hidden;');
-        $btnCancel->AddEvent(ON_CLICK, "javascript: stopErrorMapAction();");
+        $btnCancel->AddEvent(ON_CLICK, "javascript:stopErrorMapAction();");
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, "javascript: saveErrorMap();");
+        $btnSave->AddEvent(ON_CLICK, "javascript:saveErrorMap();");
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->SetVariable('addErrorMap_title',     _t('URLMAPPER_ERRORMAPS_ADD_TITLE'));

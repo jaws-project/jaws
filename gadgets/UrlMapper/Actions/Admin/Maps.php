@@ -35,7 +35,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
             $actions = '';
             if ($this->gadget->GetPermission('ManageMaps')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                    "javascript: editMap(this, '".$map['id']."');",
+                    "javascript:editMap(this, '".$map['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
             }
@@ -88,7 +88,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
         foreach($gadgets as $gadget) {
             $comboGadgets->AddOption($gadget['title'], $gadget['name']);
         }
-        $comboGadgets->AddEvent(ON_CHANGE, 'javascript: rebuildActionCombo();');
+        $comboGadgets->AddEvent(ON_CHANGE, 'javascript:rebuildActionCombo();');
         $tpl->SetVariable('lbl_gadgets', _t('GLOBAL_GADGETS'));
         $tpl->SetVariable('combo_gadgets', $comboGadgets->Get());
 
@@ -96,7 +96,7 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
         $comboActions =& Piwi::CreateWidget('Combo', 'actions_combo');
         $comboActions->SetSize(20);
         $comboActions->SetStyle('width: 200px; height: 280px;');
-        $comboActions->AddEvent(ON_CHANGE, 'javascript: showActionMaps();');
+        $comboActions->AddEvent(ON_CHANGE, 'javascript:showActionMaps();');
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_GADGET_ACTIONS'));
         $tpl->SetVariable('combo_actions', $comboActions->Get());
 
@@ -134,12 +134,12 @@ class UrlMapper_Actions_Admin_Maps extends UrlMapper_Actions_Admin_Default
 
         $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $btnCancel->SetEnabled(false);
-        $btnCancel->AddEvent(ON_CLICK, "javascript: enableMapEditingArea(false);");
+        $btnCancel->AddEvent(ON_CLICK, "javascript:enableMapEditingArea(false);");
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $btnSave->SetEnabled(false);
-        $btnSave->AddEvent(ON_CLICK, "javascript: saveMap();");
+        $btnSave->AddEvent(ON_CLICK, "javascript:saveMap();");
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->SetVariable('addMap_title',     _t('URLMAPPER_MAPS_ADD_TITLE'));

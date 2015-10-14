@@ -59,7 +59,7 @@ class UrlMapper_Actions_Admin_Properties extends UrlMapper_Actions_Admin_Default
         $fieldset->Add($extension);
 
         $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $save->AddEvent(ON_CLICK, 'javascript: updateProperties(this.form);');
+        $save->AddEvent(ON_CLICK, 'javascript:updateProperties(this.form);');
 
         $buttonbox =& Piwi::CreateWidget('HBox');
         $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
