@@ -38,11 +38,11 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
 
             $actions = '';
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                "javascript: editFeed(this, '".$site['id']."');",
+                "javascript:editFeed(this, '".$site['id']."');",
                 STOCK_EDIT);
             $actions.= $link->Get().'&nbsp;';
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                "javascript: deleteFeed(this, '".$site['id']."');",
+                "javascript:deleteFeed(this, '".$site['id']."');",
                 STOCK_DELETE);
             $actions.= $link->Get().'&nbsp;';
 
