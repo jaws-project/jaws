@@ -123,11 +123,11 @@ class Weather_Actions_Admin_Regions extends Weather_Actions_Admin_Default
             $actions = '';
             if ($this->gadget->GetPermission('ManageRegions')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                    "javascript: editRegion(this, '".$region['id']."');",
+                    "javascript:editRegion(this, '".$region['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                    "javascript: deleteRegion(this, '".$region['id']."');",
+                    "javascript:deleteRegion(this, '".$region['id']."');",
                     STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
             }
