@@ -29,7 +29,7 @@ class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
         //Fill the groups combo..
         $comboGroups =& Piwi::CreateWidget('Combo', 'groups_combo');
         $comboGroups->SetSize(14);
-        $comboGroups->AddEvent(ON_CHANGE, 'javascript: editGroup(this.value);');
+        $comboGroups->AddEvent(ON_CHANGE, 'javascript:editGroup(this.value);');
         $model = $this->gadget->model->load('Groups');
         $groups = $model->GetGroups(-1);
         foreach($groups as $group) {
@@ -82,20 +82,20 @@ class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
         $tpl->SetVariable('published', $published->Get());
 
         $saveGroup =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $saveGroup->AddEvent(ON_CLICK, "javascript: saveGroup();");
+        $saveGroup->AddEvent(ON_CLICK, "javascript:saveGroup();");
         $tpl->SetVariable('btn_save', $saveGroup->Get());
 
         $GroupQuotes =& Piwi::CreateWidget('Button', 'add_quotes', _t('QUOTES_ADD_QUOTES'), STOCK_EDIT);
-        $GroupQuotes->AddEvent(ON_CLICK, "javascript: editGroupQuotes();");
+        $GroupQuotes->AddEvent(ON_CLICK, "javascript:editGroupQuotes();");
         $GroupQuotes->SetStyle('display:none;');
         $tpl->SetVariable('add_quotes', $GroupQuotes->Get());
 
         $cancelAction =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $cancelAction->AddEvent(ON_CLICK, "javascript: stopAction();");
+        $cancelAction->AddEvent(ON_CLICK, "javascript:stopAction();");
         $tpl->SetVariable('btn_cancel', $cancelAction->Get());
 
         $deleteGroup =& Piwi::CreateWidget('Button', 'btn_del', _t('GLOBAL_DELETE', _t('QUOTES_GROUP')), STOCK_DELETE);
-        $deleteGroup->AddEvent(ON_CLICK, "javascript: deleteGroup();");
+        $deleteGroup->AddEvent(ON_CLICK, "javascript:deleteGroup();");
         $deleteGroup->SetStyle('display:none;');
         $tpl->SetVariable('btn_del', $deleteGroup->Get());
 

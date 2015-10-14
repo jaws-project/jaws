@@ -40,7 +40,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
 
         //Group Filter
         $combo =& Piwi::CreateWidget('Combo', 'group_filter');
-        $combo->AddEvent(ON_CHANGE, 'javascript: fillQuotesCombo();');
+        $combo->AddEvent(ON_CHANGE, 'javascript:fillQuotesCombo();');
         $combo->AddOption('', -1);
         foreach($groups as $group) {
             $combo->AddOption($group['title'], $group['id']);
@@ -51,7 +51,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         //Fill the quotes combo..
         $comboQuotes =& Piwi::CreateWidget('Combo', 'quotes_combo');
         $comboQuotes->SetSize(24);
-        $comboQuotes->AddEvent(ON_CHANGE, 'javascript: editQuote(this.value);');
+        $comboQuotes->AddEvent(ON_CHANGE, 'javascript:editQuote(this.value);');
 
         $model = $this->gadget->model->load('Quotes');
         $quotes = $model->GetQuotes(-1);
@@ -118,16 +118,16 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         $tpl->SetVariable('quotation', $quotation->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, "javascript: saveQuote();");
+        $btnSave->AddEvent(ON_CLICK, "javascript:saveQuote();");
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $btnDel =& Piwi::CreateWidget('Button', 'btn_del', _t('GLOBAL_DELETE', _t('QUOTES_QUOTE')), STOCK_DELETE);
-        $btnDel->AddEvent(ON_CLICK, "javascript: deleteQuote();");
+        $btnDel->AddEvent(ON_CLICK, "javascript:deleteQuote();");
         $btnDel->SetStyle('display:none;');
         $tpl->SetVariable('btn_del', $btnDel->Get());
 
         $cancelAction =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $cancelAction->AddEvent(ON_CLICK, "javascript: stopAction();");
+        $cancelAction->AddEvent(ON_CLICK, "javascript:stopAction();");
         $tpl->SetVariable('btn_cancel', $cancelAction->Get());
 
         $tpl->SetVariable('incompleteQuoteFields', _t('QUOTES_INCOMPLETE_FIELDS'));
