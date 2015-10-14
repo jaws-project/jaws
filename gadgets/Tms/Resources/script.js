@@ -55,8 +55,8 @@ var TmsCallback = {
 
     newrepository: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('repositories_datagrid').addItem();
-            $('repositories_datagrid').setCurrentPage(0);
+            $('repositories_datagrid')[0].addItem();
+            $('repositories_datagrid')[0].setCurrentPage(0);
         }
         showResponse(response);
         getDG();
@@ -64,7 +64,7 @@ var TmsCallback = {
 
     deleterepository: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('repositories_datagrid').deleteItem();          
+            $('repositories_datagrid')[0].deleteItem();          
         }
         showResponse(response);
         getDG();
