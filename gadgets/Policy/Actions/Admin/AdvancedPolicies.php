@@ -141,7 +141,7 @@ class Policy_Actions_Admin_AdvancedPolicies extends Policy_Actions_Admin_Default
         $tpl->SetVariable('session_remember_timeout', $rememberTimeout->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, 'javascript: saveAdvancedPolicies();');
+        $btnSave->AddEvent(ON_CLICK, 'javascript:saveAdvancedPolicies();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->ParseBlock('AdvancedPolicies');

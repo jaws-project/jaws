@@ -34,13 +34,13 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
             $actions = '';
             if ($this->gadget->GetPermission('ManageAgents')) {
                 $ipWidget =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                    "javascript: editAgent(this, '".$agent['id']."');",
+                    "javascript:editAgent(this, '".$agent['id']."');",
                     STOCK_EDIT);
                 $actions.= $ipWidget->Get().'&nbsp;';
 
                 $agWidget =& Piwi::CreateWidget('Link',
                     _t('GLOBAL_DELETE' ,_t('POLICY_AGENT')),
-                    "javascript: deleteAgent(this, '".$agent['id']."');",
+                    "javascript:deleteAgent(this, '".$agent['id']."');",
                     STOCK_DELETE);
                 $actions .= $agWidget->Get();
             }
@@ -99,7 +99,7 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
             'true',
             'block_undefined_agent',
             $default);
-        $blockUndefined->AddEvent(ON_CLICK, 'javascript: setBlockUndefinedAgent();');
+        $blockUndefined->AddEvent(ON_CLICK, 'javascript:setBlockUndefinedAgent();');
         $tpl->SetVariable('enabled_option', $blockUndefined->Get());
 
         $tpl->SetVariable('legend_title', _t('POLICY_AGENT'));
@@ -119,11 +119,11 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
 
         if ($this->gadget->GetPermission('ManageAgents')) {
             $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-            $btnSave->AddEvent(ON_CLICK, 'javascript: saveAgent();');
+            $btnSave->AddEvent(ON_CLICK, 'javascript:saveAgent();');
             $tpl->SetVariable('btn_save', $btnSave->Get());
 
             $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-            $btnCancel->AddEvent(ON_CLICK, 'javascript: stopAction();');
+            $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
             $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
             $tpl->SetVariable('incompleteFields',   _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));

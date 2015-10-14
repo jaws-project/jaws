@@ -88,7 +88,7 @@ class Policy_Actions_Admin_AntiSpam extends Policy_Actions_Admin_Default
         $tpl->SetVariable('blocked_domains', $blockedDomains->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, 'javascript: saveAntiSpamSettings();');
+        $btnSave->AddEvent(ON_CLICK, 'javascript:saveAntiSpamSettings();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->ParseBlock('AntiSpam');
