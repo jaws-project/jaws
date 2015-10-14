@@ -31,7 +31,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $fromDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $fromDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $fromDate->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $fromDate->AddEvent(ON_CHANGE, "javascript: searchLogs();");
+        $fromDate->AddEvent(ON_CHANGE, "javascript:searchLogs();");
         $tpl->SetVariable('filter_from_date', $fromDate->Get());
         $tpl->SetVariable('lbl_filter_from_date', _t('LOGS_FROM_DATE'));
 
@@ -41,7 +41,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $toDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $toDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $toDate->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $toDate->AddEvent(ON_CHANGE, "javascript: searchLogs();");
+        $toDate->AddEvent(ON_CHANGE, "javascript:searchLogs();");
         $tpl->SetVariable('filter_to_date', $toDate->Get());
         $tpl->SetVariable('lbl_filter_to_date', _t('LOGS_TO_DATE'));
 
@@ -53,7 +53,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         foreach ($gadgetList as $gadget) {
             $gadgetsCombo->AddOption($gadget['title'], $gadget['name']);
         }
-        $gadgetsCombo->AddEvent(ON_CHANGE, "javascript: searchLogs();");
+        $gadgetsCombo->AddEvent(ON_CHANGE, "javascript:searchLogs();");
         $gadgetsCombo->SetDefault(-1);
         $tpl->SetVariable('filter_gadget', $gadgetsCombo->Get());
         $tpl->SetVariable('lbl_filter_gadget', _t('GLOBAL_GADGETS'));
@@ -68,7 +68,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
                 $usersCombo->AddOption($user['username'] . ' - ' . $user['nickname'], $user['id']);
             }
         }
-        $usersCombo->AddEvent(ON_CHANGE, "javascript: searchLogs();");
+        $usersCombo->AddEvent(ON_CHANGE, "javascript:searchLogs();");
         $usersCombo->SetDefault(-1);
         $tpl->SetVariable('filter_user', $usersCombo->Get());
         $tpl->SetVariable('lbl_filter_user', _t('LOGS_USERS'));
@@ -79,7 +79,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $priorityCombo->AddOption(_t('LOGS_PRIORITY_5'), JAWS_WARNING, false);
         $priorityCombo->AddOption(_t('LOGS_PRIORITY_6'), JAWS_NOTICE, false);
         $priorityCombo->AddOption(_t('LOGS_PRIORITY_7'), JAWS_INFO, false);
-        $priorityCombo->AddEvent(ON_CHANGE, "javascript: searchLogs();");
+        $priorityCombo->AddEvent(ON_CHANGE, "javascript:searchLogs();");
         $priorityCombo->SetDefault(0);
         $tpl->SetVariable('filter_priority', $priorityCombo->Get());
         $tpl->SetVariable('lbl_filter_priority', _t('LOGS_PRIORITY'));
@@ -91,7 +91,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         foreach($allStatus as $status) {
             $statusCombo->AddOption(_t('GLOBAL_HTTP_ERROR_TITLE_' . $status), $status, false);
         }
-        $statusCombo->AddEvent(ON_CHANGE, "javascript: searchLogs();");
+        $statusCombo->AddEvent(ON_CHANGE, "javascript:searchLogs();");
         $statusCombo->SetDefault(0);
         $tpl->SetVariable('filter_status', $statusCombo->Get());
         $tpl->SetVariable('lbl_filter_status', _t('LOGS_LOG_STATUS'));
