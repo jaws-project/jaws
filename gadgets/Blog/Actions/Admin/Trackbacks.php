@@ -79,7 +79,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
         $tpl->SetVariable('filter', $filterEntry->Get());
         $filterButton =& Piwi::CreateWidget('Button', 'filter_button',
                                             _t('BLOG_FILTER'), STOCK_SEARCH);
-        $filterButton->AddEvent(ON_CLICK, 'javascript: searchTrackback();');
+        $filterButton->AddEvent(ON_CLICK, 'javascript:searchTrackback();');
 
         $tpl->SetVariable('filter_button', $filterButton->Get());
 
@@ -120,7 +120,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
 
         $execute =& Piwi::CreateWidget('Button', 'executeTrackbackAction', '',
                                        STOCK_YES);
-        $execute->AddEvent(ON_CLICK, "javascript: trackbackDGAction(document.getElementById('trackbacks_actions_combo'));");
+        $execute->AddEvent(ON_CLICK, "javascript:trackbackDGAction(document.getElementById('trackbacks_actions_combo'));");
 
         $gridFormBox->Add($actions);
         $gridFormBox->Add($execute);

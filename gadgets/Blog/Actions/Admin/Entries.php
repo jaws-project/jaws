@@ -137,7 +137,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         // Preview
         // TODO: We need a different stock icon for this.
         $previewButton =& Piwi::CreateWidget('Button', 'previewButton', _t('GLOBAL_PREVIEW'), STOCK_PRINT_PREVIEW);
-        $previewButton->AddEvent(ON_CLICK, "javascript: parseText(this.form);");
+        $previewButton->AddEvent(ON_CLICK, "javascript:parseText(this.form);");
 
         $tpl->SetVariable('preview_button', $previewButton->Get());
 
@@ -445,7 +445,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $previewButton =& Piwi::CreateWidget('Button', 'preview',
                                                 _t('GLOBAL_PREVIEW'), STOCK_PRINT_PREVIEW);
         $previewButton->SetID('preview_button');
-        $previewButton->AddEvent(ON_CLICK, "javascript: parseText(this.form);");
+        $previewButton->AddEvent(ON_CLICK, "javascript:parseText(this.form);");
         $tpl->SetVariable('preview_button', $previewButton->Get());
 
         $tpl->SetBlock('edit_entry/advanced');
@@ -673,7 +673,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         // Cancel
         $cancelButton =& Piwi::CreateWidget('Button', 'cancel',
                                             _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $cancelButton->AddEvent(ON_CLICK, "javascript: this.form.action.value = 'ListEntries'; this.form.submit(); ");
+        $cancelButton->AddEvent(ON_CLICK, "javascript:this.form.action.value = 'ListEntries'; this.form.submit(); ");
         $tpl->SetVariable('cancel_button', $cancelButton->Get());
 
         // ID
@@ -737,7 +737,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         }
 
         $catCombo->SetDefault($category);
-        $catCombo->AddEvent(ON_CHANGE, 'javascript: searchPost();');
+        $catCombo->AddEvent(ON_CHANGE, 'javascript:searchPost();');
         $tpl->SetVariable('category', _t('BLOG_CATEGORY'));
         $tpl->SetVariable('category_field', $catCombo->Get());
 
@@ -749,18 +749,18 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $statusCombo->AddOption(_t('BLOG_PUBLISHED'), '1');
         $statusCombo->AddOption(_t('BLOG_DRAFT'), '0');
         $statusCombo->SetDefault($status);
-        $statusCombo->AddEvent(ON_CHANGE, 'javascript: searchPost();');
+        $statusCombo->AddEvent(ON_CHANGE, 'javascript:searchPost();');
         $tpl->SetVariable('status', _t('GLOBAL_STATUS'));
         $tpl->SetVariable('status_field', $statusCombo->Get());
 
         $catCombo->SetDefault($category);
-        $catCombo->AddEvent(ON_CHANGE, 'javascript: searchPost();');
+        $catCombo->AddEvent(ON_CHANGE, 'javascript:searchPost();');
         $tpl->SetVariable('category', _t('BLOG_CATEGORY'));
         $tpl->SetVariable('category_field', $catCombo->Get());
 
         // Free text search
         $searchButton =& Piwi::CreateWidget('Button', 'searchButton', _t('GLOBAL_SEARCH'), STOCK_SEARCH);
-        $searchButton->AddEvent(ON_CLICK, 'javascript: searchPost();');
+        $searchButton->AddEvent(ON_CLICK, 'javascript:searchPost();');
         $tpl->SetVariable('search', $searchButton->Get());
 
         $search = '';
@@ -799,7 +799,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $actions->AddOption(_t('BLOG_PUBLISHED'), '1');
 
         $execute =& Piwi::CreateWidget('Button', 'executeEntryAction', '', STOCK_YES);
-        $execute->AddEvent(ON_CLICK, "javascript: entryDGAction(document.getElementById('entries_actions_combo'));");
+        $execute->AddEvent(ON_CLICK, "javascript:entryDGAction(document.getElementById('entries_actions_combo'));");
 
         $gridFormBox->Add($actions);
         $gridFormBox->Add($execute);

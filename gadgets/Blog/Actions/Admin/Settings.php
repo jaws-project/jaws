@@ -39,7 +39,7 @@ class Blog_Actions_Admin_Settings extends Blog_Actions_Admin_Default
 
         // Save Button
         $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $save->AddEvent(ON_CLICK, 'javascript: saveSettings(this.form);');
+        $save->AddEvent(ON_CLICK, 'javascript:saveSettings(this.form);');
 
         $sModel = $this->gadget->model->loadAdmin('Settings');
         $cModel = $this->gadget->model->load('Categories');

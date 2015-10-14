@@ -248,7 +248,7 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
             $actions= $link->Get().'&nbsp;';
 
             $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                "javascript: trackbackDelete('".$row['id']."');",
+                "javascript:trackbackDelete('".$row['id']."');",
                 STOCK_DELETE);
             $actions.= $link->Get().'&nbsp;';
             $newRow['actions'] = $actions;

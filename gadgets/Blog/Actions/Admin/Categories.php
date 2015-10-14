@@ -74,11 +74,11 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
         $tpl->SetVariable('btn_delete', $btnDelete->Get());
 
         $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $btnCancel->AddEvent(ON_CLICK, 'javascript: stopAction();');
+        $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save',_t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, 'javascript: saveCategory(this.form);');
+        $btnSave->AddEvent(ON_CLICK, 'javascript:saveCategory(this.form);');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->SetVariable('delete_message',_t('BLOG_DELETE_CONFIRM_CATEGORY'));
