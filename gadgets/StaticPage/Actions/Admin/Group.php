@@ -58,11 +58,11 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
         $tpl->SetVariable('lbl_visible', _t('GLOBAL_VISIBLE').':');
 
         $btnSave =& Piwi::CreateWidget('Button','btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, 'javascript: saveGroup();');
+        $btnSave->AddEvent(ON_CLICK, 'javascript:saveGroup();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $btnCancel->AddEvent(ON_CLICK, 'javascript: stopAction();');
+        $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
         $tpl->SetVariable('legend_title',         _t('STATICPAGE_GROUP_ADD'));
@@ -126,12 +126,12 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
             $actions = '';
             if ($this->gadget->GetPermission('ManageGroups')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
-                    "javascript: editGroup(this, '".$group['id']."');",
+                    "javascript:editGroup(this, '".$group['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
 
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                    "javascript: deleteGroup(this, '".$group['id']."');",
+                    "javascript:deleteGroup(this, '".$group['id']."');",
                     STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
             }

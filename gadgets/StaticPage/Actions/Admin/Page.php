@@ -110,7 +110,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
 
             if ($this->gadget->GetPermission('DeletePage')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
-                    "javascript: deletePage('{$page['page_id']}');",
+                    "javascript:deletePage('{$page['page_id']}');",
                     STOCK_DELETE);
                 $actions.= $link->Get().'&nbsp;';
             }

@@ -61,7 +61,7 @@ class StaticPage_Actions_Admin_Settings extends StaticPage_Actions_Admin_Default
 
         // Save Button
         $save =& Piwi::CreateWidget('Button', 'save', _t('GLOBAL_SAVE'), STOCK_SAVE);
-        $save->AddEvent(ON_CLICK, 'javascript: updateSettings(this.form);');
+        $save->AddEvent(ON_CLICK, 'javascript:updateSettings(this.form);');
 
         $buttonbox =& Piwi::CreateWidget('HBox');
         $buttonbox->SetClass('actions');
