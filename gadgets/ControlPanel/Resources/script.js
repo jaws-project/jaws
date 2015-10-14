@@ -14,7 +14,7 @@ var ControlPanelCallback = {
     JawsVersion: function(response) {
         $('latest_jaws_version').set('html', response);
         if (!response.blank() && response !== $('jaws_version').value) {
-            $$('div.notify_version').setStyle('display', 'block');
+            $('div.notify_version').css('display', 'block');
         }
     }
 }
@@ -48,7 +48,7 @@ function init()
     if (!$('latest_jaws_version').get('text').blank() &&
         $('latest_jaws_version').get('text') !== $('jaws_version').value)
     {
-        $$('div.notify_version').setStyle('display', 'block');
+        $('div.notify_version').css('display', 'block');
     }
 
     // check jaws project website for latest version
