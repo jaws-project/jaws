@@ -31,12 +31,12 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
 
         $save_btn =& Piwi::CreateWidget('Button','btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $save_btn->SetStyle('display: none;');
-        $save_btn->AddEvent(ON_CLICK, 'javascript: saveProperties();');
+        $save_btn->AddEvent(ON_CLICK, 'javascript:saveProperties();');
         $tpl->SetVariable('save', $save_btn->Get());
 
         $cancel_btn =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $cancel_btn->SetStyle('display: none;');
-        $cancel_btn->AddEvent(ON_CLICK, 'javascript: stopAction();');
+        $cancel_btn->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('cancel', $cancel_btn->Get());
 
         $tpl->SetVariable('sitemap_tree_image', 'gadgets/Sitemap/Resources/images/logo.mini.png');
