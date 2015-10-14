@@ -29,10 +29,10 @@ var StaticPageCallback = {
     
     MassiveDelete: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            var rows = $('pages_datagrid').getSelectedRows();
+            var rows = $('pages_datagrid')[0].getSelectedRows();
             if (rows.length > 0) {
                 for(var i=0; i<rows.length; i++) {
-                    $('pages_datagrid').deleteItem();
+                    $('pages_datagrid')[0].deleteItem();
                 }
             }
             PiwiGrid.multiSelect($('pages_datagrid'));
@@ -52,8 +52,8 @@ var StaticPageCallback = {
     InsertGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('groups_datagrid').addItem();
-            $('groups_datagrid').setCurrentPage(0);
+            $('groups_datagrid')[0].addItem();
+            $('groups_datagrid')[0].setCurrentPage(0);
             getDG('groups_datagrid');
         }
         showResponse(response);
@@ -70,7 +70,7 @@ var StaticPageCallback = {
     DeleteGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('groups_datagrid').deleteItem();
+            $('groups_datagrid')[0].deleteItem();
             getDG('groups_datagrid');
         }
         showResponse(response);
@@ -191,7 +191,7 @@ function deleteTranslation(id, redirect)
  */
 function massiveDelete() 
 {
-    var rows = $('pages_datagrid').getSelectedRows();
+    var rows = $('pages_datagrid')[0].getSelectedRows();
     if (rows.length > 0) {
         var confirmation = confirm(confirmMassiveDelete);
         if (confirmation) {
