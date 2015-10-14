@@ -29,22 +29,22 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
 
         $tpl->SetVariable('menus_trees', $this->GetMenusTrees());
         $add_btn =& Piwi::CreateWidget('Button','btn_add', _t('MENU_ADD_GROUP'), STOCK_NEW);
-        $add_btn->AddEvent(ON_CLICK, 'javascript: addGroup();');
+        $add_btn->AddEvent(ON_CLICK, 'javascript:addGroup();');
         $tpl->SetVariable('add', $add_btn->Get());
 
         $save_btn =& Piwi::CreateWidget('Button','btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $save_btn->SetStyle('display: none;');
-        $save_btn->AddEvent(ON_CLICK, 'javascript: saveMenus();');
+        $save_btn->AddEvent(ON_CLICK, 'javascript:saveMenus();');
         $tpl->SetVariable('save', $save_btn->Get());
 
         $del_btn =& Piwi::CreateWidget('Button','btn_del', _t('GLOBAL_DELETE'), STOCK_DELETE);
         $del_btn->SetStyle('display: none;');
-        $del_btn->AddEvent(ON_CLICK, 'javascript: delMenus();');
+        $del_btn->AddEvent(ON_CLICK, 'javascript:delMenus();');
         $tpl->SetVariable('del', $del_btn->Get());
 
         $cancel_btn =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $cancel_btn->SetStyle('display: none;');
-        $cancel_btn->AddEvent(ON_CLICK, 'javascript: stopAction();');
+        $cancel_btn->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('cancel', $cancel_btn->Get());
 
         $tpl->SetVariable('menu_tree_image', 'gadgets/Menu/Resources/images/menu-item.png');
