@@ -17,11 +17,11 @@ var GlossaryCallback = {
         if (response[0]['type'] == 'response_notice') {
             afterNewTerm(response['id']);
         }
-        showResponse(response);
+        GlossaryAjax.showResponse(response);
     },
 
     UpdateTerm: function(response) {
-        showResponse(response);
+        GlossaryAjax.showResponse(response);
     },
 
     DeleteTerm: function(response) {
@@ -49,7 +49,7 @@ var GlossaryCallback = {
         } else {
             createNewTerm();
         }
-        showResponse(response);
+        GlossaryAjax.showResponse(response);
     },
 
     ParseText: function(response) {
