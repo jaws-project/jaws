@@ -19,7 +19,7 @@ var PolicyCallback = {
             getDG();
             stopAction();
         }
-        showResponse(response);
+        PolicyAjax.showResponse(response);
     },
 
     EditIPRange: function(response) {
@@ -27,7 +27,7 @@ var PolicyCallback = {
             stopAction();
             getDG();
         }
-        showResponse(response);
+        PolicyAjax.showResponse(response);
     },
 
     DeleteIPRange: function(response) {
@@ -35,7 +35,7 @@ var PolicyCallback = {
             $('blocked_ips_datagrid')[0].deleteItem();
             getDG();
         }
-        showResponse(response);
+        PolicyAjax.showResponse(response);
     },
 
     AddAgent: function(response) {
@@ -45,7 +45,7 @@ var PolicyCallback = {
             getDG();
             stopAction();
         }
-        showResponse(response);
+        PolicyAjax.showResponse(response);
     },
 
     EditAgent: function(response) {
@@ -53,7 +53,7 @@ var PolicyCallback = {
             stopAction();
             getDG();
         }
-        showResponse(response);
+        PolicyAjax.showResponse(response);
     },
 
     DeleteAgent: function(response) {
@@ -61,27 +61,27 @@ var PolicyCallback = {
             $('blocked_agents_datagrid')[0].deleteItem();
             getDG();
         }
-        showResponse(response);
+        PolicyAjax.showResponse(response);
     },
 
     IPBlockingBlockUndefined: function(response) {
-        showResponse(response);
+        PolicyAjax.showResponse(response);
     },
 
     AgentBlockingBlockUndefined: function(response) {
-        showResponse(response);
+        PolicyAjax.showResponse(response);
     },
 
     UpdateEncryptionSettings: function(response) {
-        showResponse(response);
+        PolicyAjax.showResponse(response);
     },
 
     UpdateAntiSpamSettings: function(response) {
-        showResponse(response);
+        PolicyAjax.showResponse(response);
     },
 
     UpdateAdvancedPolicies: function(response) {
-        showResponse(response);
+        PolicyAjax.showResponse(response);
     }
 }
 
