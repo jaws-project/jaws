@@ -64,7 +64,7 @@ function JawsAjax(gadget, callback, baseScript)
         options.type = 'POST';
         options.async  = true;
         options.action = action;
-        options.data = $.encodeJSON(data);
+        options.data = $.encodeJSON((/boolean|number|string/).test(typeof data)? [data] : data);
         options.contentType = 'application/json; charset=utf-8';
         options.beforeSend = this.onSend.bind(this, options);
         options.success = this.onSuccess.bind(this, options);
@@ -86,7 +86,7 @@ function JawsAjax(gadget, callback, baseScript)
         options.type = 'POST';
         options.async = false;
         options.action = action;
-        options.data = $.encodeJSON(data);
+        options.data = $.encodeJSON((/boolean|number|string/).test(typeof data)? [data] : data);
         options.contentType = 'application/json; charset=utf-8';
         options.beforeSend = this.onSend.bind(this, options);
         options.complete = this.onComplete.bind(this, options);
