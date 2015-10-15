@@ -16,7 +16,7 @@ var FriendsCallback = {
             $('friends_datagrid')[0].addItem();
             $('friends_datagrid')[0].setCurrentPage(0);
         }
-        showResponse(response);
+        FriendsAjax.showResponse(response);
         getDG();
     },
 
@@ -24,12 +24,12 @@ var FriendsCallback = {
         if (response[0]['type'] == 'response_notice') {
             $('friends_datagrid')[0].deleteItem();          
         }
-        showResponse(response);
+        FriendsAjax.showResponse(response);
         getDG();
     },
     
     UpdateFriend: function(response) {
-        showResponse(response);
+        FriendsAjax.showResponse(response);
         getDG();
     },
 
@@ -38,7 +38,7 @@ var FriendsCallback = {
     },
 
     UpdateProperties: function(response) {
-        showResponse(response);
+        FriendsAjax.showResponse(response);
     }
 }
 
