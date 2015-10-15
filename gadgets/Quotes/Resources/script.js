@@ -12,7 +12,7 @@
  */
 var QuotesCallback = {
     AddQuotesToGroup: function(response) {
-        showResponse(response);
+        QuotesAjax.showResponse(response);
     }
 }
 
@@ -99,7 +99,7 @@ function saveQuote()
             }
             stopAction();
         }
-        showResponse(response);
+        QuotesAjax.showResponse(response);
     } else {
         var box = $('quotes_combo');
         var quoteIndex = box.selectedIndex;
@@ -116,7 +116,7 @@ function saveQuote()
             box.options[quoteIndex].text = $('title').value;
             stopAction();
         }
-        showResponse(response);
+        QuotesAjax.showResponse(response);
     }
 }
 
@@ -134,7 +134,7 @@ function deleteQuote()
             box.options[quoteIndex] = null;
             stopAction();
         }
-        showResponse(response);
+        QuotesAjax.showResponse(response);
     }
 }
 
@@ -213,7 +213,7 @@ function saveGroup()
                 box.options[box.options.length] = new Option(response[0]['data']['title'], response[0]['data']['id']);
                 stopAction();
             }
-            showResponse(response);
+            QuotesAjax.showResponse(response);
         } else {
             var box = $('groups_combo');
             var groupIndex = box.selectedIndex;
@@ -230,7 +230,7 @@ function saveGroup()
                 box.options[groupIndex].text = $('title').value;
                 stopAction();
             }
-            showResponse(response);
+            QuotesAjax.showResponse(response);
         }
     } else {
         var inputs  = $('work_area').getElementsByTagName('input');
@@ -264,7 +264,7 @@ function deleteGroup()
             box.options[quoteIndex] = null;
             stopAction();
         }
-        showResponse(response);
+        QuotesAjax.showResponse(response);
     }
 }
 
