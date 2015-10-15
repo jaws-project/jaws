@@ -18,7 +18,7 @@ var FeedReaderCallback = {
             $('feedsites_datagrid')[0].deleteItem();          
             getDG();
         }
-        showResponse(response);
+        FeedReaderAjax.showResponse(response);
     },
     
     InsertFeed: function(response) {
@@ -28,7 +28,7 @@ var FeedReaderCallback = {
             getDG();
         }
         stopAction();
-        showResponse(response);
+        FeedReaderAjax.showResponse(response);
     },
 
     UpdateFeed: function(response) {
@@ -36,7 +36,7 @@ var FeedReaderCallback = {
             getDG();
         }
         stopAction();
-        showResponse(response);
+        FeedReaderAjax.showResponse(response);
     },
 
     GetFeed: function(response) {
