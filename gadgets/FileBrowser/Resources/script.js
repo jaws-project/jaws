@@ -16,7 +16,7 @@ var FileBrowserCallback = {
             stopAction();
             getDG('fb_datagrid');
         }
-        showResponse(response);
+        FileBrowserAjax.showResponse(response);
     },
 
     UpdateDBDirInfo: function(response) {
@@ -24,7 +24,7 @@ var FileBrowserCallback = {
             stopAction();
             getDG('fb_datagrid');
         }
-        showResponse(response);
+        FileBrowserAjax.showResponse(response);
     },
 
     DeleteFile2: function(response) {
@@ -32,7 +32,7 @@ var FileBrowserCallback = {
             stopAction();
             getDG('fb_datagrid');
         }
-        showResponse(response);
+        FileBrowserAjax.showResponse(response);
     },
 
     DeleteDir2: function(response) {
@@ -40,7 +40,7 @@ var FileBrowserCallback = {
             stopAction();
             getDG('fb_datagrid');
         }
-        showResponse(response);
+        FileBrowserAjax.showResponse(response);
     }
 
 };
