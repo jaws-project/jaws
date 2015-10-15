@@ -15,14 +15,14 @@ var LanguagesCallback = {
         if (response[0]['type'] == 'response_notice') {
             setTimeout( "refresh()", 1000);
         }
-        showResponse(response);
+        LanguagesAjax.showResponse(response);
     },
 
     SetLangData: function(response) {
         if (response[0]['type'] == 'response_notice') {
             changeColorOfTranslatedTerms();
         }
-        showResponse(response);
+        LanguagesAjax.showResponse(response);
     }
 }
 
