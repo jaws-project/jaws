@@ -12,7 +12,7 @@
  */
 var SearchCallback = {
     SaveChanges: function(response) {
-        showResponse(response);
+        SearchAjax.showResponse(response);
     }
 }
 
