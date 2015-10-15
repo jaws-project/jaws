@@ -12,7 +12,7 @@
  */
 var ServerTimeCallback = { 
     UpdateProperties: function(response) {
-        showResponse(response);
+        ServerTimeAjax.showResponse(response);
     }
 }
 
