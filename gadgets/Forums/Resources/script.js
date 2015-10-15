@@ -17,7 +17,7 @@ var ForumsCallback = {
             $('group_'+$('gid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
             stopAction();
         }
-        showResponse(response);
+        ForumsAjax.showResponse(response);
     }
 }
 
@@ -113,7 +113,7 @@ function saveForums()
                 AddNewForumGroup(response['data']);
                 stopAction();
             }
-            showResponse(response);
+            ForumsAjax.showResponse(response);
         } else {
             ForumsAjax.callAsync(
                 'UpdateGroup', [
@@ -144,7 +144,7 @@ function saveForums()
                 AddNewForumItem($('gid').value, response['data'], $('order').value);
                 stopAction();
             }
-            showResponse(response);
+            ForumsAjax.showResponse(response);
         } else {
             var response = ForumsAjax.callSync(
                 'UpdateForum', [
@@ -166,7 +166,7 @@ function saveForums()
                 }
                 stopAction();
             }
-            showResponse(response);
+            ForumsAjax.showResponse(response);
         }
     }
 }
@@ -318,7 +318,7 @@ function delForums()
                 Element.destroy($('group_'+gid));
                 stopAction();
             }
-            showResponse(response);
+            ForumsAjax.showResponse(response);
         }
     } else {
         var fid = $('fid').value;
@@ -332,7 +332,7 @@ function delForums()
                 Element.destroy($('forum_'+fid));
                 stopAction();
             }
-            showResponse(response);
+            ForumsAjax.showResponse(response);
         }
     }
 }
