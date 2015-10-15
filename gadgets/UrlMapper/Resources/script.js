@@ -20,14 +20,14 @@ var UrlMapperCallback = {
             enableMapEditingArea(false);
             showActionMaps();
         }
-        showResponse(response);
+        UrlMapperAjax.showResponse(response);
     },
 
     /**
      * Update settings
      */
     UpdateSettings: function(response) {
-        showResponse(response);
+        UrlMapperAjax.showResponse(response);
     },
 
     /**
@@ -37,7 +37,7 @@ var UrlMapperCallback = {
         if (response[0]['type'] == 'response_notice') {
             rebuildAliasCombo();
         }
-        showResponse(response);
+        UrlMapperAjax.showResponse(response);
     },
 
     /**
@@ -47,7 +47,7 @@ var UrlMapperCallback = {
         if (response[0]['type'] == 'response_notice') {
             rebuildAliasCombo();
         }
-        showResponse(response);
+        UrlMapperAjax.showResponse(response);
     },
 
     /**
@@ -57,7 +57,7 @@ var UrlMapperCallback = {
         if (response[0]['type'] == 'response_notice') {
             rebuildAliasCombo();
         }
-        showResponse(response);
+        UrlMapperAjax.showResponse(response);
     },
 
     /**
@@ -70,7 +70,7 @@ var UrlMapperCallback = {
             $('errormaps_datagrid').lastPage();
             getDG('errormaps_datagrid');
         }
-        showResponse(response);
+        UrlMapperAjax.showResponse(response);
     },
 
     /**
@@ -81,7 +81,7 @@ var UrlMapperCallback = {
             stopErrorMapAction();
             getDG('errormaps_datagrid', $('errormaps_datagrid')[0].getCurrentPage(), true);
         }
-        showResponse(response);
+        UrlMapperAjax.showResponse(response);
     },
 
     /**
@@ -92,7 +92,7 @@ var UrlMapperCallback = {
             stopErrorMapAction();
             getDG('errormaps_datagrid', $('errormaps_datagrid')[0].getCurrentPage(), true);
         }
-        showResponse(response);
+        UrlMapperAjax.showResponse(response);
     },
 
     /**
@@ -103,7 +103,7 @@ var UrlMapperCallback = {
             stopErrorMapAction();
             getDG('errormaps_datagrid');
         }
-        showResponse(response);
+        UrlMapperAjax.showResponse(response);
     }
 }
 
