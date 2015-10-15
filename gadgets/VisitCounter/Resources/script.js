@@ -20,7 +20,7 @@ var VisitCounterCallback = {
             getDG();
             updateStats();
         }
-        showResponse(response);
+        VisitCounterAjax.showResponse(response);
     },
     
     ResetCounter: function(response) {
@@ -31,11 +31,11 @@ var VisitCounterCallback = {
             getDG();
             updateStats();
         }
-        showResponse(response);
+        VisitCounterAjax.showResponse(response);
     }, 
 
     UpdateProperties: function(response) {
-        showResponse(response);
+        VisitCounterAjax.showResponse(response);
     }
 }
 
