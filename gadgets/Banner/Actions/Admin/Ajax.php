@@ -175,7 +175,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @access  public
      * @return  array   Response array (notice or error)
      */
-    function AddBannersToGroup($gid, $banners)
+    function AddBannersToGroup()
     {
         $this->gadget->CheckPermission('BannersGrouping');
         @list($gid, $banners) = jaws()->request->fetch(array('0', '1:array'), 'post');

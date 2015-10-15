@@ -156,7 +156,7 @@ function getGroups()
     if (groupList != false) {
         var combo = $('#groups_combo')[0];
         var i = 0;
-        groupList.each(function(value, index) {
+        $.each(groupList, function(index, value) {
             var op = new Option(value['title'].defilter(), value['id']);
             if (i % 2 == 0) {
                 op.style.backgroundColor = evenColor;
@@ -271,7 +271,7 @@ function saveGroup()
                 ]
             );
         } else {
-            $('#gid').val() = selectedGroup;
+            $('#gid').val(selectedGroup);
             BannerAjax.callAsync(
                 'UpdateGroup', [
                     $('#gid').val(),
