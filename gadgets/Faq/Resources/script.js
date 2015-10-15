@@ -12,7 +12,7 @@
  */
 var FaqCallback = {
     DeleteQuestion: function(response) {
-        showResponse(response);
+        FaqAjax.showResponse(response);
         if (response[0]['type'] == 'response_notice') {
             buildCategory(currentCategory);
         }
@@ -22,15 +22,15 @@ var FaqCallback = {
         if (response[0]['type'] == 'response_notice') {
             $('FaqCategory_'+currentCategory).destroy();
         }
-        showResponse(response);
+        FaqAjax.showResponse(response);
     },
 
     MoveCategory: function(response) {
-        showResponse(response);
+        FaqAjax.showResponse(showResponse(response);
     },
 
     MoveQuestion: function(response) {
-        showResponse(response);
+        FaqAjax.showResponse(response);
         if (response[0]['type'] == 'response_notice') {
             buildCategory(currentCategory);
         }
