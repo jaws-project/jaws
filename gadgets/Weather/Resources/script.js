@@ -18,7 +18,7 @@ var WeatherCallback = {
             getDG();
             stopAction();
         }
-        showResponse(response);
+        WeatherAjax.showResponse(response);
     },
     
     InsertRegion: function(response) {
@@ -28,7 +28,7 @@ var WeatherCallback = {
             getDG();
             stopAction();
         }
-        showResponse(response);
+        WeatherAjax.showResponse(response);
     },
 
     UpdateRegion: function(response) {
@@ -36,11 +36,11 @@ var WeatherCallback = {
             getDG();
             stopAction();
         }
-        showResponse(response);
+        WeatherAjax.showResponse(response);
     },
 
     UpdateProperties: function(response) {
-        showResponse(response);
+        WeatherAjax.showResponse(response);
     }
 
 }
