@@ -166,7 +166,7 @@ function JawsStorage(gadget)
     },
 
     /**
-     * fetchs value of the storage key
+     * fetches value of the storage key
      *
      * @param   string  key     Key name
      * @return  mixed   Stored value of key
@@ -174,9 +174,9 @@ function JawsStorage(gadget)
     this.fetch = function (key, section) {
         key = (section? section : this.gadget) + '_' + key;
         if (this.html5Support) {
-            return JSON.decode(this.storage.getItem(key));
+            return $.parseJSON(this.storage.getItem(key));
         } else {
-            return JSON.decode(this.storage.read(key));
+            return $.parseJSON(this.storage.read(key));
         }
     },
 
