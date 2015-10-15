@@ -17,7 +17,7 @@ var WebcamCallback = {
             $('webcam_datagrid')[0].setCurrentPage(0);
             getDG();
         }
-        showResponse(response);
+        WebcamAjax.showResponse(response);
     },
 
     DeleteWebcam: function(response) {
@@ -25,14 +25,14 @@ var WebcamCallback = {
             $('webcam_datagrid')[0].deleteItem();          
             getDG();
         }
-        showResponse(response);
+        WebcamAjax.showResponse(response);
     },
     
     UpdateWebcam: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getDG();
         }
-        showResponse(response);
+        WebcamAjax.showResponse(response);
     },
 
     GetWebcam: function(response) {
@@ -40,7 +40,7 @@ var WebcamCallback = {
     },
 
     UpdateProperties: function(response) {
-        showResponse(response);
+        WebcamAjax.showResponse(response);
     }
 }
 
