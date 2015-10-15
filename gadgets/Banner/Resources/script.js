@@ -15,7 +15,7 @@ var BannerCallback = {
             $('#banners_datagrid')[0].setCurrentPage(0);
             getDG('banners_datagrid');
         }
-        showResponse(response);
+        BannerAjax.showResponse(response);
     },
 
     UpdateBanner: function(response) {
@@ -23,7 +23,7 @@ var BannerCallback = {
             stopAction();
             getDG('banners_datagrid');
         }
-        showResponse(response);
+        BannerAjax.showResponse(response);
     },
 
     DeleteBanner: function(response) {
@@ -32,21 +32,21 @@ var BannerCallback = {
             $('#banners_datagrid')[0].deleteItem();
             getDG('banners_datagrid');
         }
-        showResponse(response);
+        BannerAjax.showResponse(response);
     },
 
     ResetViews: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getDG('reports_datagrid');
         }
-        showResponse(response);
+        BannerAjax.showResponse(response);
     },
 
     ResetClicks: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getDG('reports_datagrid');
         }
-        showResponse(response);
+        BannerAjax.showResponse(response);
     },
 
     InsertGroup: function(response) {
@@ -54,7 +54,7 @@ var BannerCallback = {
             getGroups();
             stopAction();
         }
-        showResponse(response);
+        BannerAjax.showResponse(response);
     },
 
     UpdateGroup: function(response) {
@@ -62,7 +62,7 @@ var BannerCallback = {
             getGroups();
             stopAction();
         }
-        showResponse(response);
+        BannerAjax.showResponse(response);
     },
 
     DeleteGroup: function(response) {
@@ -70,11 +70,11 @@ var BannerCallback = {
             getGroups();
             stopAction();
         }
-        showResponse(response);
+        BannerAjax.showResponse(response);
     },
 
     AddBannersToGroup: function(response) {
-        showResponse(response);
+        BannerAjax.showResponse(response);
     }
 }
 
