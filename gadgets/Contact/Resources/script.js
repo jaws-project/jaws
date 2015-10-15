@@ -18,7 +18,7 @@ var ContactCallback = {
             getDG('contacts_datagrid');
             stopAction();
         }
-        showResponse(response);
+        ContactAjax.showResponse(response);
     },
 
     UpdateReply: function(response) {
@@ -26,7 +26,7 @@ var ContactCallback = {
             selectedRow.getElement('label').set({style:'font-weight:normal'});
             stopAction();
         }
-        showResponse(response);
+        ContactAjax.showResponse(response);
     },
 
     DeleteRecipient: function(response) {
@@ -35,7 +35,7 @@ var ContactCallback = {
             getDG();
             stopAction();
         }
-        showResponse(response);
+        ContactAjax.showResponse(response);
     },
 
     InsertRecipient: function(response) {
@@ -45,7 +45,7 @@ var ContactCallback = {
             getDG();
             stopAction();
         }
-        showResponse(response);
+        ContactAjax.showResponse(response);
     },
 
     UpdateRecipient: function(response) {
@@ -53,11 +53,11 @@ var ContactCallback = {
             getDG();
             stopAction();
         }
-        showResponse(response);
+        ContactAjax.showResponse(response);
     },
 
     UpdateProperties: function(response) {
-        showResponse(response);
+        ContactAjax.showResponse(response);
     },
 
     DeleteContact: function(response) {
@@ -66,14 +66,14 @@ var ContactCallback = {
             getDG('contacts_datagrid');
             stopAction();
         }
-        showResponse(response);
+        ContactAjax.showResponse(response);
     },
 
     SendEmail: function(response) {
         if (response[0]['type'] == 'response_notice') {
             newEmail();
         }
-        showResponse(response);
+        ContactAjax.showResponse(response);
     }
 }
 
