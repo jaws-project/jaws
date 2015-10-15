@@ -13,7 +13,7 @@
 var ShoutboxCallback = {
 
     UpdateProperties: function(response) {
-        showResponse(response);
+        ShoutboxAjax.showResponse(response);
     }
 }
 
