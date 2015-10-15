@@ -159,9 +159,9 @@ function JawsStorage(gadget)
     this.update = function (key, value, section) {
         key = (section? section : this.gadget) + '_' + key;
         if (this.html5Support) {
-            this.storage.setItem(key, JSON.encode(value));
+            this.storage.setItem(key, $.encodeJSON(value));
         } else {
-            this.storage.write(key, JSON.encode(value));
+            this.storage.write(key, $.encodeJSON(value));
         }
     },
 
