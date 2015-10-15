@@ -20,7 +20,7 @@ var MenuCallback = {
             $('group_'+$('gid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
             stopAction();
         }
-        showResponse(response);
+        MenuAjax.showResponse(response);
     }
 }
 
@@ -108,7 +108,7 @@ function saveMenus()
                 AddNewMenuGroup(gid);
                 stopAction();
             }
-            showResponse(response);
+            MenuAjax.showResponse(response);
         } else {
             MenuAjax.callAsync(
                 'UpdateGroup', [
@@ -145,7 +145,7 @@ function saveMenus()
                 AddNewMenuItem($('gid').value, $('pid').value, mid, $('rank').value);
                 stopAction();
             }
-            showResponse(response);
+            MenuAjax.showResponse(response);
         } else {
             var response = MenuAjax.callSync(
                 'UpdateMenu', [
@@ -196,7 +196,7 @@ function saveMenus()
                 }
                 stopAction();
             }
-            showResponse(response);
+            MenuAjax.showResponse(response);
         }
     }
 }
@@ -405,7 +405,7 @@ function delMenus()
                 Element.destroy($('group_'+gid));
             }
             stopAction();
-            showResponse(response);
+            MenuAjax.showResponse(response);
         }
     } else {
         var mid = selectedMenu;
@@ -417,7 +417,7 @@ function delMenus()
                 Element.destroy($('menu_'+mid));
             }
             stopAction();
-            showResponse(response);
+            MenuAjax.showResponse(response);
         }
     }
 }
