@@ -19,7 +19,7 @@ var PollCallback = {
             $('polls_datagrid')[0].setCurrentPage(0);
             getDG();
         }
-        showResponse(response);
+        PollAjax.showResponse(response);
     },
 
     UpdatePoll: function(response) {
@@ -36,14 +36,14 @@ var PollCallback = {
             $('polls_datagrid')[0].deleteItem();
             getDG();
         }
-        showResponse(response);
+        PollAjax.showResponse(response);
     },
 
     UpdatePollAnswers: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
         }
-        showResponse(response);
+        PollAjax.showResponse(response);
     },
 
     InsertPollGroup: function(response) {
@@ -53,7 +53,7 @@ var PollCallback = {
             $('pollgroups_datagrid')[0].setCurrentPage(0);
             getDG();
         }
-        showResponse(response);
+        PollAjax.showResponse(response);
     },
 
     UpdatePollGroup: function(response) {
@@ -61,7 +61,7 @@ var PollCallback = {
             stopAction();
             getDG();
         }
-        showResponse(response);
+        PollAjax.showResponse(response);
     },
 
     DeletePollGroup: function(response) {
@@ -70,12 +70,12 @@ var PollCallback = {
             $('pollgroups_datagrid')[0].deleteItem();
             getDG();
         }
-        showResponse(response);
+        PollAjax.showResponse(response);
     },
 
     AddPollsToPollGroup: function(response) {
         stopAction();
-        showResponse(response);
+        PollAjax.showResponse(response);
     }
 }
 
