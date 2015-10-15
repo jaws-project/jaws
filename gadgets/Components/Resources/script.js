@@ -19,7 +19,7 @@ var ComponentsCallback = {
             buildComponentList();
             closeUI();
         }
-        showResponse(response);
+        ComponentsAjax.showResponse(response);
     },
 
     UpgradeGadget2: function (response) {
@@ -29,7 +29,7 @@ var ComponentsCallback = {
             buildComponentList();
             closeUI();
         }
-        showResponse(response);
+        ComponentsAjax.showResponse(response);
     },
 
     UninstallGadget2: function (response) {
@@ -38,7 +38,7 @@ var ComponentsCallback = {
             buildComponentList();
             closeUI();
         }
-        showResponse(response);
+        ComponentsAjax.showResponse(response);
     },
 
     EnableGadget: function (response) {
@@ -48,7 +48,7 @@ var ComponentsCallback = {
             buildComponentList();
             closeUI();
         }
-        showResponse(response);
+        ComponentsAjax.showResponse(response);
     },
 
     DisableGadget: function (response) {
@@ -58,7 +58,7 @@ var ComponentsCallback = {
             buildComponentList();
             closeUI();
         }
-        showResponse(response);
+        ComponentsAjax.showResponse(response);
     },
 
     InstallPlugin: function (response) {
@@ -67,7 +67,7 @@ var ComponentsCallback = {
             buildComponentList();
             closeUI();
         }
-        showResponse(response);
+        ComponentsAjax.showResponse(response);
     },
 
     UninstallPlugin: function (response) {
@@ -76,7 +76,7 @@ var ComponentsCallback = {
             buildComponentList();
             closeUI();
         }
-        showResponse(response);
+        ComponentsAjax.showResponse(response);
     },
 
     UpdatePluginUsage: function (response) {
@@ -87,7 +87,7 @@ var ComponentsCallback = {
                 $('component_registry').remove();
             }
         }
-        showResponse(response);
+        ComponentsAjax.showResponse(response);
     },
 
     UpdateRegistry: function (response) {
@@ -99,7 +99,7 @@ var ComponentsCallback = {
                 $('plugin_usage').remove();
             }
         }
-        showResponse(response);
+        ComponentsAjax.showResponse(response);
     },
 
     UpdateACL: function (response) {
@@ -107,7 +107,7 @@ var ComponentsCallback = {
             aclChanges = {};
             aclCache = $('component_acl').clone(true, true);
         }
-        showResponse(response);
+        ComponentsAjax.showResponse(response);
     }
 };
 
