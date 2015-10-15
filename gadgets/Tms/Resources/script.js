@@ -22,7 +22,7 @@ var TmsCallback = {
             $('unshare_button').style.display = 'none';
             $('share_button').style.display   = 'block';
         }
-        showResponse(response);
+        TmsAjax.showResponse(response);
     },
     
     unsharetheme: function(response) {
@@ -36,7 +36,7 @@ var TmsCallback = {
             $('unshare_button').style.display = 'block';
             $('share_button').style.display   = 'none';
         }
-        showResponse(response);
+        TmsAjax.showResponse(response);
     },    
     
     installtheme: function(response) {
@@ -44,13 +44,13 @@ var TmsCallback = {
             $('themes_combo').value = selectedTheme;
             editTheme(selectedTheme);
         }
-        showResponse(response);
+        TmsAjax.showResponse(response);
     },
 
     uninstalltheme: function(response) {
         if (response[0]['type'] == 'response_notice') {
         }
-        showResponse(response);
+        TmsAjax.showResponse(response);
     },
 
     newrepository: function(response) {
@@ -58,7 +58,7 @@ var TmsCallback = {
             $('repositories_datagrid')[0].addItem();
             $('repositories_datagrid')[0].setCurrentPage(0);
         }
-        showResponse(response);
+        TmsAjax.showResponse(response);
         getDG();
     },
 
@@ -66,7 +66,7 @@ var TmsCallback = {
         if (response[0]['type'] == 'response_notice') {
             $('repositories_datagrid')[0].deleteItem();          
         }
-        showResponse(response);
+        TmsAjax.showResponse(response);
         getDG();
     },
 
@@ -75,7 +75,7 @@ var TmsCallback = {
     },
 
     updaterepository: function(response) {
-        showResponse(response);
+        TmsAjax.showResponse(response);
         getDG();
     },
 
@@ -84,11 +84,11 @@ var TmsCallback = {
             $('themes_combo').options[$('themes_combo').selectedIndex].remove();
             cleanWorkingArea(true);
         }
-        showResponse(response);
+        TmsAjax.showResponse(response);
     },
 
     savesettings: function(response) {
-        showResponse(response);
+        TmsAjax.showResponse(response);
     }
 }
 
