@@ -12,24 +12,11 @@
  */
 var ControlPanelCallback = {
     JawsVersion: function(response) {
-        $('latest_jaws_version').set('html', response);
-        if (!response.blank() && response !== $('jaws_version').value) {
-            $('div.notify_version').css('display', 'block');
+        $('#latest_jaws_version').html(response);
+        if (!response.blank() && response !== $('#jaws_version').val()) {
+            $('#div.notify_version').css('display', 'block');
         }
     }
-}
-
-/**
- * collapse/uncollapse notify boxes
- */
-function toggleCollapse()
-{
-    this.toggleClass('collapsed');
-    ControlPanelStorage.update(
-        $('sidebar').getChildren().indexOf(this.getParent()),
-        this.getProperty('class')
-    );
-    this.getNext('div').toggle();
 }
 
 /**
@@ -37,22 +24,29 @@ function toggleCollapse()
  */
 function init()
 {
-    $('sidebar').getElements('h2').addEvent('click', toggleCollapse);
-    $('sidebar').getChildren().each(function(el, i) {
+    $('#sidebar h2').on('click', function () {
+        $(this).toggleClass('collapsed');
+        ControlPanelStorage.update(
+            $('#sidebar').children().index($(this).parent()),
+            $(this).attr('class')
+        );
+        $(this).next('div').toggle();
+    });
+    $('#sidebar').children().each(function(i) {
         if (ControlPanelStorage.fetch(i)) {
-            el.getChildren('h2').fireEvent('click');
+            $(this).children('h2').trigger('click');
         }
     });
 
     // compare current version with latest jaws version
-    if (!$('latest_jaws_version').get('text').blank() &&
-        $('latest_jaws_version').get('text') !== $('jaws_version').value)
+    if (!$('#latest_jaws_version').text() &&
+        $('#latest_jaws_version').text() !== $('#jaws_version').val())
     {
-        $('div.notify_version').css('display', 'block');
+        $('#div.notify_version').css('display', 'block');
     }
 
     // check jaws project website for latest version
-    if ($('do_checking').value == 1) {
+    if ($('#do_checking').val() == 1) {
         ControlPanelAjax.callAsync('JawsVersion');
     }
 }
