@@ -18,7 +18,7 @@ var PhooCallback = {
     },
 
     UpdatePhoto: function(response) {
-        showResponse(response);
+        PhooAjax.showResponse(response);
     }
 }
 
@@ -114,7 +114,7 @@ function saveGroup()
             response[0]['text'] = response[0]['text']['message'];
             stopAction();
         }
-        showResponse(response);
+        PhooAjax.showResponse(response);
     } else {
         var box = $('groups_combo');
         var groupIndex = box.selectedIndex;
@@ -124,7 +124,7 @@ function saveGroup()
             box.options[groupIndex].text = $('name').value;
             stopAction();
         }
-        showResponse(response);
+        PhooAjax.showResponse(response);
     }
 }
 
@@ -159,7 +159,7 @@ function deleteGroup()
             box.options[quoteIndex] = null;
             stopAction();
         }
-        showResponse(response);
+        PhooAjax.showResponse(response);
     }
 }
 
