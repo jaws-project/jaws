@@ -15,19 +15,19 @@
  */
 var LayoutCallback = {
     UpdateElementAction: function(response) {
-        showResponse(response, false);
+        LayoutAjax.showResponse(response, false);
     },
 
     UpdateDisplayWhen: function(response) {
-        showResponse(response, false);
+        LayoutAjax.showResponse(response, false);
     },
 
     MoveElement: function(response) {
-        showResponse(response, false);
+        LayoutAjax.showResponse(response, false);
     },
 
     DeleteElement: function(response) {
-        showResponse(response, false);
+        LayoutAjax.showResponse(response, false);
     },
 
     AddGadget: function(response) {
@@ -93,7 +93,7 @@ var LayoutCallback = {
             items['main']['item_' + response['id']] = true;
             layoutSortable.addItems(dItem);
         }
-        showResponse(response['message'], false);
+        LayoutAjax.showResponse(response, false);
     }
 }
 
