@@ -17,14 +17,14 @@ var StaticPageCallback = {
         if (response[0]['type'] == 'response_notice') {
             getDG('pages_datagrid');
         }
-        showResponse(response);
+        StaticPageAjax.showResponse(response);
     }, 
 
     DeleteTranslation: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getDG('pages_datagrid');
         }
-        showResponse(response);
+        StaticPageAjax.showResponse(response);
     }, 
     
     MassiveDelete: function(response) {
@@ -38,11 +38,11 @@ var StaticPageCallback = {
             PiwiGrid.multiSelect($('pages_datagrid'));
             getDG('pages_datagrid');
         }
-        showResponse(response);      
+        StaticPageAjax.showResponse(response);      
     },
     
     UpdateSettings: function(response) {
-        showResponse(response);
+        StaticPageAjax.showResponse(response);
     }, 
 
     AutoDraft: function(response) {
@@ -56,7 +56,7 @@ var StaticPageCallback = {
             $('groups_datagrid')[0].setCurrentPage(0);
             getDG('groups_datagrid');
         }
-        showResponse(response);
+        StaticPageAjax.showResponse(response);
     },
 
     UpdateGroup: function(response) {
@@ -64,7 +64,7 @@ var StaticPageCallback = {
             stopAction();
             getDG('groups_datagrid');
         }
-        showResponse(response);
+        StaticPageAjax.showResponse(response);
     },
 
     DeleteGroup: function(response) {
@@ -73,7 +73,7 @@ var StaticPageCallback = {
             $('groups_datagrid')[0].deleteItem();
             getDG('groups_datagrid');
         }
-        showResponse(response);
+        StaticPageAjax.showResponse(response);
     }
 
 };
@@ -157,7 +157,7 @@ function deletePage(id, redirect)
     if (confirmation) {
         if (redirect) {
             var response = StaticPageAjax.callSync('DeletePage', id);
-            showResponse(response);
+            StaticPageAjax.showResponse(response);
             if (response[0]['type'] == 'response_notice') {
                 window.location= base_script + '?gadget=StaticPage';
             }
@@ -176,7 +176,7 @@ function deleteTranslation(id, redirect)
     if (confirmation) {
         if (redirect) {
             var response = StaticPageAjax.callSync('DeleteTranslation', id);
-            showResponse(response);
+            StaticPageAjax.showResponse(response);
             if (response[0]['type'] == 'response_notice') {
                 window.location= base_script + '?gadget=StaticPage';
             }
@@ -336,7 +336,7 @@ function showSimpleResponse(response)
         }
         autoDraftDone = true;
     }
-    showResponse(response);
+    StaticPageAjax.showResponse(response);
 }
 
 /**
