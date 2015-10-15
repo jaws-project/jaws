@@ -17,17 +17,17 @@ var LogsCallback = {
             unselectGridRow('logs_datagrid');
             getDG('logs_datagrid', $('logs_datagrid')[0].getCurrentPage(), true);
         }
-        showResponse(response);
+        LogsAjax.showResponse(response);
     },
     DeleteLogsUseFilters: function(response) {
         if (response[0]['type'] == 'response_notice') {
             unselectGridRow('logs_datagrid');
             getDG('logs_datagrid', $('logs_datagrid')[0].getCurrentPage(), true);
         }
-        showResponse(response);
+        LogsAjax.showResponse(response);
     },
     SaveSettings: function(response) {
-        showResponse(response);
+        LogsAjax.showResponse(response);
     }
 }
 
