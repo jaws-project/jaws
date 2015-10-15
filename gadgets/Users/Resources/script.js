@@ -20,7 +20,7 @@ var UsersCallback = {
             $('users_datagrid').lastPage();
             getDG('users_datagrid');
         }
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     UpdateUser: function(response) {
@@ -28,38 +28,38 @@ var UsersCallback = {
             stopUserAction();
             getDG('users_datagrid');
         }
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     UpdateUserACL: function(response) {
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     AddUserToGroups: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopUserAction();
         }
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     UpdateContacts: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopUserAction();
         }
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     UpdatePersonal: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopUserAction();
         }
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     UpdateMyAccount: function(response) {
         $('pass1').value = '';
         $('pass2').value = '';
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     DeleteUser: function(response) {
@@ -68,7 +68,7 @@ var UsersCallback = {
             $('users_datagrid')[0].deleteItem();
             getDG('users_datagrid');
         }
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     AddGroup: function(response) {
@@ -78,7 +78,7 @@ var UsersCallback = {
             $('groups_datagrid').lastPage();
             getDG('groups_datagrid');
         }
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     UpdateGroup: function(response) {
@@ -86,7 +86,7 @@ var UsersCallback = {
             stopGroupAction();
             getDG('groups_datagrid');
         }
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     DeleteGroup: function(response) {
@@ -95,18 +95,18 @@ var UsersCallback = {
             $('groups_datagrid')[0].deleteItem();          
             getDG('groups_datagrid');
         }
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     UpdateGroupACL: function(response) {
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     AddUsersToGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopGroupAction();
         }
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     DeleteSession: function(response) {
@@ -114,19 +114,19 @@ var UsersCallback = {
             clearTimeout(fTimeout);
             getDG('onlineusers_datagrid', $('onlineusers_datagrid')[0].getCurrentPage(), true);
         }
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     IPBlock: function(response) {
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     AgentBlock: function(response) {
-        showResponse(response);
+        UsersAjax.showResponse(response);
     },
 
     SaveSettings: function(response) {
-        showResponse(response);
+        UsersAjax.showResponse(response);
     }
 }
 
