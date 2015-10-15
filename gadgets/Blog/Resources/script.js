@@ -29,7 +29,7 @@ var BlogCallback = {
         } else {
             PiwiGrid.multiSelect($('posts_datagrid'));
         }
-        showResponse(response);
+        BlogAjax.showResponse(response);
     },
 
     ChangeEntryStatus: function(response) {
@@ -42,7 +42,7 @@ var BlogCallback = {
         } else {
             PiwiGrid.multiSelect($('posts_datagrid'));
         }
-        showResponse(response);
+        BlogAjax.showResponse(response);
     },
 
     DeleteTrackbacks: function(response) {
@@ -62,7 +62,7 @@ var BlogCallback = {
         } else {
             PiwiGrid.multiSelect($('trackbacks_datagrid'));
         }
-        showResponse(response);
+        BlogAjax.showResponse(response);
     },
 
     TrackbackMarkAs: function(response) {
@@ -78,11 +78,11 @@ var BlogCallback = {
         } else {
             PiwiGrid.multiSelect($('trackbacks_datagrid'));
         }
-        showResponse(response);
+        BlogAjax.showResponse(response);
     },
 
     SaveSettings: function(response) {
-        showResponse(response);
+        BlogAjax.showResponse(response);
     },
 
     getcategoryform: function(response) {
@@ -90,7 +90,7 @@ var BlogCallback = {
     },
 
     AddCategory2: function(response) {
-        showResponse(response);
+        BlogAjax.showResponse(response);
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             resetCategoryCombo();
@@ -98,7 +98,7 @@ var BlogCallback = {
     },
 
     UpdateCategory2: function(response) {
-        showResponse(response);
+        BlogAjax.showResponse(response);
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             resetCategoryCombo();
@@ -106,7 +106,7 @@ var BlogCallback = {
     },
 
     DeleteCategory2: function(response) {
-        showResponse(response);
+        BlogAjax.showResponse(response);
         if (response[0]['type'] == 'response_notice') {
             stopAction();
             resetCategoryCombo();
@@ -675,7 +675,7 @@ function showSimpleResponse(reponse)
         }
         autoDraftDone = true;
     }
-    showResponse(reponse, false);
+    BlogAjax.showResponse(reponse, false);
 }
 
 /**
