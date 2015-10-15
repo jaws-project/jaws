@@ -18,7 +18,7 @@ var CommentsCallback = {
             stopCommentAction();
             getDG('comments_datagrid', $('comments_datagrid')[0].getCurrentPage(), true);
         }
-        showResponse(response);
+        CommentsAjax.showResponse(response);
     },
 
     DeleteComments: function(response) {
@@ -26,7 +26,7 @@ var CommentsCallback = {
             stopCommentAction();
             getDG('comments_datagrid', $('comments_datagrid')[0].getCurrentPage(), true);
         }
-        showResponse(response);
+        CommentsAjax.showResponse(response);
     },
 
     MarkAs: function(response) {
@@ -34,11 +34,11 @@ var CommentsCallback = {
             stopCommentAction();
             getDG('comments_datagrid', $('comments_datagrid')[0].getCurrentPage(), true);
         }
-        showResponse(response);
+        CommentsAjax.showResponse(response);
     },
 
     SaveSettings: function(response) {
-        showResponse(response);
+        CommentsAjax.showResponse(response);
     }
 }
 
