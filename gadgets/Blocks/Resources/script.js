@@ -54,7 +54,7 @@ var BlocksCallback = {
     },
 
     ParseText: function(response) {
-        $('preview_contents').innerHTML = response;
+        $('preview_contents').html(response);
     }
 }
 
@@ -185,7 +185,7 @@ function edit(id)
     loading_message = retrievingMessage;
     var block = BlocksAjax.callSync('GetBlock', id);
     fillEditorEntries(block);
-    $('block_id_txt').innerHTML = id;
+    $('block_id_txt').html(id);
     switchTab('edit', block['title']);
 }
 
@@ -196,11 +196,11 @@ function preview()
 {
     switchTab('preview');
     var block_contents = getEditorValue('block_contents');
-    $('preview_title').innerHTML = $('block_title').value;
+    $('preview_title').html($('block_title').val());
 
     // Use this if you want to use plugins
     BlocksAjax.callAsync('ParseText', block_contents);
-    //$('preview_contents').innerHTML = block_contents;
+    //$('preview_contents').html(block_contents);
 }
 
 
