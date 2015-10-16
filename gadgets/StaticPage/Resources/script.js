@@ -139,7 +139,7 @@ function parseText(form)
     var content = getEditorValue('content');
 
     content = StaticPageAjax.callSync('ParseText', content);
-    $('preview').style.display   = 'table';
+    $('preview').css('display', 'table');
 
     var titlePreview   = document.getElementById('previewTitle');
     var contentPreview = document.getElementById('previewContent');
@@ -264,7 +264,7 @@ function editGroup(rowElement, gid)
 {
     selectedGroup = gid;
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
-    $('legend_title').set('html', edit_group_title);
+    $('legend_title').html(edit_group_title);
     var group = StaticPageAjax.callSync('GetGroup', selectedGroup);
     $('title').value     = group['title'].defilter();
     $('meta_keys').value = group['meta_keywords'].defilter();
@@ -345,7 +345,7 @@ function showSimpleResponse(response)
 function stopAction()
 {
     selectedGroup = 0;
-    $('legend_title').set('html', add_group_title);
+    $('legend_title').html(add_group_title);
     $('title').value     = '';
     $('fast_url').value  = '';
     $('meta_keys').value = '';
