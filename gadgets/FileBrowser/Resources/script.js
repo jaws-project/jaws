@@ -110,11 +110,11 @@ function switchTab(tab, hideTabs)
 function uploadswitch(checked)
 {
     if (checked) {
-        $('edit_entry').style.display = 'none';
-        $('file_entry').style.display = 'block';
+        $('edit_entry').css('display', 'none');
+        $('file_entry').css('display', 'block');
     } else {
-        $('edit_entry').style.display = 'block';
-        $('file_entry').style.display = 'none';
+        $('edit_entry').css('display', 'block');
+        $('file_entry').css('display', 'none');
     }
 }
 
@@ -265,7 +265,7 @@ function getFiles(name, offset, reset)
     if (reset) {
         var total = FileBrowserAjax.callSync('GetDirContentsCount', $('path').value);
         var loc   = FileBrowserAjax.callSync('GetLocation', $('path').value);
-        $('location').innerHTML = loc;
+        $('location').html(loc);
     }
     resetGrid(name, result, total);
 }
