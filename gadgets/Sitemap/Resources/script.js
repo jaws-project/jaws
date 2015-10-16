@@ -49,13 +49,13 @@ var SitemapCallback = {
  */
 function stopAction()
 {
-    $('btn_cancel').style.display = 'none';
-    $('btn_save').style.display   = 'none';
+    $('btn_cancel').css('display', 'none');
+    $('btn_save').css('display', 'none');
     selectedGadget  = null;
     selectedCategory  = null;
     currentAction = null;
     unselectTreeRow();
-    $('category_edit').innerHTML = '';
+    $('category_edit').html('');
     $('edit_area').getElementsByTagName('span')[0].innerHTML = '';
 }
 
@@ -97,9 +97,9 @@ function editGadget(gadget)
     selectedGadget = gadget;
 
     $('edit_area').getElementsByTagName('span')[0].innerHTML = editGadgetTitle + ' - ' + selectedGadget;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_save').style.display   = 'inline';
-    $('category_edit').innerHTML = cacheGadgetForm;
+    $('btn_cancel').css('display', 'inline');
+    $('btn_save').css('display', 'inline');
+    $('category_edit').html(cacheGadgetForm);
 
     var gadgetInfo = SitemapAjax.callSync('GetGadget', {'gname':gadget});
 
@@ -107,7 +107,7 @@ function editGadget(gadget)
         $('priority').value = gadgetInfo['priority'];
         $('frequency').value = gadgetInfo['frequency'];
         $('status').value = gadgetInfo['status'];
-        $('last_update').innerHTML = gadgetInfo['update_time'];
+        $('last_update').html(gadgetInfo['update_time']);
     }
 }
 
@@ -127,9 +127,9 @@ function editCategory(element, gadget, cid)
 
     $('edit_area').getElementsByTagName('span')[0].innerHTML =
         editCategoryTitle + ' - ' + $('category_'+cid).getElementsByTagName('a')[0].innerHTML;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_save').style.display   = 'inline';
-    $('category_edit').innerHTML = cacheCategoryForm;
+    $('btn_cancel').css('display', 'inline');
+    $('btn_save').css('display', 'inline');
+    $('category_edit').html(cacheCategoryForm);
 
     var categoryInfo = SitemapAjax.callSync('GetCategory', {'gname':gadget, 'cid':cid});
 
