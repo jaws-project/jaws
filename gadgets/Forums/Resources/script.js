@@ -209,12 +209,12 @@ function addGroup()
     }
     currentAction = 'Groups';
 
-    $('work_area_title').innerHTML = addGroupTitle;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'none';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('forums_edit').innerHTML = cacheGroupForm;
+    $('work_area_title').html(addGroupTitle);
+    $('btn_cancel').css('display', 'inline');
+    $('btn_del').css('display', 'none');
+    $('btn_save').css('display', 'inline');
+    $('btn_add').css('display', 'none');
+    $('forums_edit').html(cacheGroupForm);
     groupsOrders();
 }
 
@@ -229,13 +229,13 @@ function addForum(gid)
 
     stopAction();
     currentAction = 'Forums';
-    $('work_area_title').innerHTML = addForumTitle + ' - ' + $('group_'+gid).getElementsByTagName('a')[0].innerHTML;
+    $('work_area_title').html(addForumTitle + ' - ' + $('#group_'+gid + 'a').first().html());
 
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'none';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('forums_edit').innerHTML = cacheForumForm;
+    $('btn_cancel').css('display', 'inline');
+    $('btn_del').css('display', 'none');
+    $('btn_save').css('display', 'inline');
+    $('btn_add').css('display', 'none');
+    $('forums_edit').html(cacheForumForm);
     $('gid').value = gid;
 
     forumsOrders($('gid').value);
@@ -252,12 +252,12 @@ function editGroup(gid)
     }
     currentAction = 'Groups';
 
-    $('work_area_title').innerHTML = editGroupTitle + ' - ' + $('group_'+gid).getElementsByTagName('a')[0].innerHTML;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'inline';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('forums_edit').innerHTML = cacheGroupForm;  
+    $('work_area_title').html(editGroupTitle + ' - ' + $('#group_'+gid + 'a').first().html());
+    $('btn_cancel').css('display', 'inline');
+    $('btn_del').css('display', 'inline');
+    $('btn_save').css('display', 'inline');
+    $('btn_add').css('display', 'none');
+    $('forums_edit').html(cacheGroupForm);  
 
     var group = ForumsAjax.callSync('GetGroup', gid);
 
@@ -282,12 +282,12 @@ function editForum(element, fid)
     }
     currentAction = 'Forums';
 
-    $('work_area_title').innerHTML = editForumTitle + ' - ' + $('forum_'+fid).getElementsByTagName('a')[0].innerHTML;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'inline';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('forums_edit').innerHTML = cacheForumForm;  
+    $('work_area_title').html(editForumTitle + ' - ' + $('#forum_'+fid + 'a').first().html());
+    $('btn_cancel').css('display', 'inline');
+    $('btn_del').css('display', 'inline');
+    $('btn_save').css('display', 'inline');
+    $('btn_add').css('display', 'none');
+    $('forums_edit').html(cacheForumForm);  
 
     var forum = ForumsAjax.callSync('GetForum', fid);
     $('fid').value         = forum['id'];
@@ -342,10 +342,10 @@ function delForums()
  */
 function stopAction()
 {
-    $('btn_cancel').style.display = 'none';
-    $('btn_del').style.display    = 'none';
-    $('btn_save').style.display   = 'none';
-    $('btn_add').style.display    = 'inline';
+    $('btn_cancel').css('display', 'none');
+    $('btn_del').css('display', 'none');
+    $('btn_save').css('display', 'none');
+    $('btn_add').css('display', 'inline');
 
     switch(currentAction) {
         case 'Forums':
@@ -358,8 +358,8 @@ function stopAction()
 
     currentAction = null;
     unselectTreeRow();
-    $('forums_edit').innerHTML = '';
-    $('work_area_title').innerHTML = '';
+    $('forums_edit').html('');
+    $('work_area_title').html('');
 }
 
 var ForumsAjax = new JawsAjax('Forums', ForumsCallback);
