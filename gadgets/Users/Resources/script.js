@@ -171,7 +171,7 @@ function getUsers(name, offset, reset)
                 $('#filter_group').val(),
                 $('#filter_type').val(),
                 $('#filter_status').val(),
-                $('#filter_term').value
+                $('#filter_term').val()
             ]
         );
     }
@@ -547,7 +547,7 @@ function editPersonal(rowElement, uid)
     var uInfo = UsersAjax.callSync('GetUser', [uid, false, true]);
     $('#fname').val(uInfo['fname']);
     $('#lname').val(uInfo['lname']);
-    $('#gender').value  = Number(uInfo['gender']));
+    $('#gender').val(Number(uInfo['gender']));
     $('#ssn').val(uInfo['ssn']);
     $('#dob').val(uInfo['dob']);
     $('#url').val(uInfo['url']);
