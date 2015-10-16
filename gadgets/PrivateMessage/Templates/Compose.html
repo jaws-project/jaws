@@ -97,13 +97,21 @@
     var toggleMin = "{{icon_remove}}";
     var recipient_user = "{{recipient_user}}";
 
-    $('attachment1').show();
-    $('attach_loading').hide();
-    $('btn_attach1').hide();
-    $('attachment_area').toggle();
+    $('#attachment1').show();
+    $('#attach_loading').hide();
+    $('#btn_attach1').hide();
+    $('#attachment_area').toggle();
 
     function ChangeToggleIcon(obj)
     {
+        if ($(obj).data('toggle-status') == 'min') {
+            $(obj).img[0].src = toggleMin;
+            $(obj).data('toggle-status', 'max');
+        } else {
+            $(obj).img[0].src = toggleMax;
+            $(obj).data('toggle-status', 'min');
+        }
+/*
         if ($(obj).get('toggle-status') == 'min') {
             $(obj).getElementsByTagName('img')[0].src = toggleMin;
             $(obj).set('toggle-status', 'max');
@@ -111,12 +119,13 @@
             $(obj).getElementsByTagName('img')[0].src = toggleMax;
             $(obj).set('toggle-status', 'min');
         }
+*/
     }
 
-    window.addEvent('domready', function() {
+    $( document ).ready(function() {
 
-        $('legend_attachments').addEvent('click', function(){
-            $('attachment_area').toggle();
+        $( "#legend_attachments" ).click(function() {
+            $('#attachment_area').toggle();
             ChangeToggleIcon(this);
         });
     });

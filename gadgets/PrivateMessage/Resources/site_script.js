@@ -11,7 +11,7 @@ var PrivateMessageCallback = {
     SendMessage: function (response) {
         if (response.type == 'response_notice') {
             if (response.data && response.data.is_draft) {
-                document.id('id').value = response.data.message_id;
+                $('#id').val(response.data.message_id);
                 resetAttachments(response.data.message_id);
             } else {
                 setTimeout(function() {window.location.href = response.data.url;}, 1000);
@@ -31,7 +31,7 @@ function filterInbox()
         $.unserialize($('form[name=inbox]').serialize())
     );
 
-    document.id('inbox-datagrid').innerHTML = result;
+    $('#inbox-datagrid').html(result);
     return false;
 }
 
@@ -41,23 +41,23 @@ function filterInbox()
  */
 function resetAttachments(message_id) {
     var ui = PrivateMessageAjax.callSync('GetMessageAttachmentUI', {'id': message_id});
-    document.id('attachment_area').set('html', ui);
+    $('#attachment_area').set('html', ui);
     uploadedFiles = new Array();
     lastAttachment = 1;
-    document.id('attachment1').show();
-    document.id('attach_loading').hide();
-    document.id('btn_attach1').hide();
+    $('#attachment1').show();
+    $('#attach_loading').hide();
+    $('#btn_attach1').hide();
 }
 
 /**
  * Removes the attachment
  */
 function removeAttachment(id) {
-    document.id('frm_file').reset();
-    document.id('btn_attach' + id).hide();
-    document.id('file_link' + id).set('html', '');
-    document.id('file_size' + id).set('html', '');
-    document.id('attachment' + lastAttachment).show();
+    $('#frm_file').reset();
+    $('#btn_attach' + id).hide();
+    $('#file_link' + id).set('html', '');
+    $('#file_size' + id).set('html', '');
+    $('#attachment' + lastAttachment).show();
     uploadedFiles[id] = false;
 }
 
@@ -66,11 +66,11 @@ function removeAttachment(id) {
  */
 function toggleDisableForm(disabled)
 {
-    document.id('subject').disabled           = disabled;
-    document.id('body').disabled              = disabled;
-    document.id('btn_back').disabled          = disabled;
-    document.id('btn_save_draft').disabled    = disabled;
-    document.id('btn_send').disabled          = disabled;
+    $('#subject').disabled           = disabled;
+    $('#body').disabled              = disabled;
+    $('#btn_back').disabled          = disabled;
+    $('#btn_save_draft').disabled    = disabled;
+    $('#btn_send').disabled          = disabled;
 }
 
 
@@ -79,12 +79,12 @@ function toggleDisableForm(disabled)
  */
 function uploadFile() {
     var iframe = new Element('iframe', {id:'ifrm_upload', name:'ifrm_upload'});
-    document.id('compose').adopt(iframe);
-    document.id('attachment_number').value = lastAttachment;
-    document.id('attachment' + lastAttachment).hide();
-    document.id('attach_loading').show();
+    $('#compose').adopt(iframe);
+    $('#attachment_number').val(lastAttachment);
+    $('#attachment' + lastAttachment).hide();
+    $('#attach_loading').show();
     toggleDisableForm(true);
-    document.id('frm_file').submit();
+    $('#frm_file').submit();
 }
 
 /**
@@ -95,17 +95,17 @@ function onUpload(response) {
     uploadedFiles[lastAttachment] = response.file_info;
     if (response.type === 'error') {
         alert(response.message);
-        document.id('frm_file').reset();
-        document.id('attachment' + lastAttachment).show();
+        $('#frm_file').reset();
+        $('#attachment' + lastAttachment).show();
     } else {
-        document.id('file_link' + lastAttachment).set('html', response.file_info.title);
-        document.id('file_size' + lastAttachment).set('html', response.file_info.filesize_format);
-        document.id('btn_attach' + lastAttachment).show();
-        document.id('attachment' + lastAttachment).dispose();
+        $('#file_link' + lastAttachment).set('html', response.file_info.title);
+        $('#file_size' + lastAttachment).set('html', response.file_info.filesize_format);
+        $('#btn_attach' + lastAttachment).show();
+        $('#attachment' + lastAttachment).dispose();
         addFileEntry();
     }
-    document.id('attach_loading').hide();
-    document.id('ifrm_upload').destroy();
+    $('#attach_loading').hide();
+    $('#ifrm_upload').destroy();
 }
 
 /**
@@ -120,10 +120,10 @@ function addFileEntry() {
         '<img border="0" title="Remove" alt="Remove" src="images/stock/cancel.png"></a></div>';
     entry += ' <input type="file" onchange="uploadFile();" id="attachment' + lastAttachment + '" name="attachment' + lastAttachment + '" size="1" style="display: block;">';
 
-    document.id('attachment_addentry' + id).innerHTML = entry + '<span id="attachment_addentry' + (id + 1) + '">' + document.id('attachment_addentry' + id).innerHTML + '</span>';
+    $('#attachment_addentry' + id).html( entry + '<span id="attachment_addentry' + (id + 1) + '">' + $('#attachment_addentry' + id).html() + '</span>');
 
-    document.id('attach_loading').hide();
-    document.id('btn_attach' + id).hide();
+    $('#attach_loading').hide();
+    $('#btn_attach' + id).hide();
 }
 
 /**
@@ -135,16 +135,19 @@ function sendMessage(isDraft) {
     if (recipient_user == "" || recipient_user.length == 0) {
         var recipient_users_array = new Array();
         var recipient_groups_array = new Array();
-        $('#recipient_users option').each(function (i) {
-            if (i.get('value').length > 0) {
-                recipient_users_array.push(i.get('value'));
+
+        $("#recipient_users > option").each(function () {
+            if (this.value.length > 0) {
+                recipient_users_array.push(this.value);
             }
         });
-        $('#recipient_groups').getSelected()[0].each(function (i) {
-            if (i.get('value') != "") {
-                recipient_groups_array.push(i.get('value'));
+
+        $("#recipient_groups > option").each(function () {
+            if (this.value!="") {
+                recipient_groups_array.push(this.value);
             }
         });
+
         var recipient_users = recipient_users_array.join(',');
         var recipient_groups = recipient_groups_array.join(',');
     } else {
@@ -153,13 +156,14 @@ function sendMessage(isDraft) {
     }
 
     var attachments = uploadedFiles.concat(getSelectedAttachments());
+    //console.log($('#subject').val());
     PrivateMessageAjax.callAsync(
         'SendMessage', {
-            'id': document.id('id').value,
+            'id': $('#id').val(),
             'is_draft':isDraft,
             'recipient_users':recipient_users,
             'recipient_groups':recipient_groups,
-            'subject':document.id('subject').value,
+            'subject':$('#subject').val(),
             'body':getEditorValue('body'),
             'attachments':attachments
         }
@@ -168,8 +172,8 @@ function sendMessage(isDraft) {
 
 function getSelectedAttachments() {
     var files = [];
-    $("input[type=checkbox][name=selected_files[]]:checked").each(function(i){
-        files.push( i.value );
+    $('input[name=selected_files[]]] :selected').each(function(i, selected){
+        files.push($(selected).text() );
     });
     return files;
 }
@@ -194,14 +198,13 @@ function searchUsers(term) {
         clearUsersSearch();
         return;
     }
-    document.id('userSearchResult').show();
-    document.id('userSearchResult').innerHTML = '<a class="delete" href="javascript:clearUsersSearch();"></a>';
+    $('#userSearchResult').show();
+    $('#userSearchResult').html('<a class="delete" href="javascript:clearUsersSearch();"></a>');
     for (var i = 0; i < users.length; i++) {
-        new Element('div#searchResult' + users[i]['id'], {
-            'html': users[i]['nickname'] + '(' +users[i]['username'] + ')',
-            'data-user-id': users[i]['id'],
-            'onClick': 'addUserToList(' + users[i]['id'] + ',\'' + users[i]['nickname'] +'\')'
-        }).inject('userSearchResult');
+        $("#userSearchResult").append('<div id="searchResult' + users[i]['id'] +
+            '" data-user-id="' + users[i]['id'] +
+            '" onclick="' + 'addUserToList(' + users[i]['id'] + ',\'' + users[i]['nickname'] +'\')' + '">' +
+            users[i]['nickname'] + '(' +users[i]['username'] + ')'+ '</div>');
     }
 }
 
@@ -209,8 +212,8 @@ function searchUsers(term) {
  * Clear users search result
  */
 function clearUsersSearch() {
-    document.id('userSearchResult').innerHTML = '<a class="delete" href="javascript:clearUsersSearch();"></a>';
-    document.id('userSearchResult').hide();
+    $('#userSearchResult').html('<a class="delete" href="javascript:clearUsersSearch();"></a>');
+    $('#userSearchResult').hide();
 }
 
 /**
@@ -220,15 +223,21 @@ function addUserToList(userId, title) {
     if ($('#recipient_users option[value=' + userId + ']').length > 0) {
         return;
     }
-    var box = document.id('recipient_users');
-    box.options[box.options.length] = new Option(title, userId);
+
+    $('#recipient_users')
+        .append($("<option></option>")
+            .attr("value",userId)
+            .text(title));
+
+    //var box = $('#recipient_users');
+    //box.options[box.options.length] = new Option(title, userId);
 }
 
 /**
  * Remove selected user from recipient list
  */
 function removeUserFromList() {
-    document.id('recipient_users').options[document.id('recipient_users').selectedIndex] = null;
+    $('#recipient_users').options[$('#recipient_users').selectedIndex] = null;
 }
 
 var PrivateMessageAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback);
