@@ -114,7 +114,7 @@ function stopAction()
     switch(currentAction) {
     case 'Polls':
         selectedPoll = null;
-        $('legend_title').innerHTML = addPoll_title;
+        $('legend_title').html(addPoll_title);
         $('question').value    = '';
         $('gid').selectedIndex = 0;
         $('start_time').value  = '';
@@ -129,15 +129,15 @@ function stopAction()
     case 'PollAnswers':
         selectedPoll = null;
         currentAction = 'Polls';
-        $('legend_title').innerHTML = addPoll_title;
-        $('p_work_area').innerHTML = cachePollForm;
+        $('legend_title').html(addPoll_title);
+        $('p_work_area').html(cachePollForm);
         initDatePicker('start_time');
         initDatePicker('stop_time');
         unselectDataGridRow();
         break;
     case 'PollGroups':
         selectedPollGroup = null;
-        $('legend_title').innerHTML = addPollGroup_title;
+        $('legend_title').html(addPollGroup_title);
         $('title').value   = '';
         $('visible').value = 1;
         unselectDataGridRow();
@@ -146,8 +146,8 @@ function stopAction()
     case 'PollGroupPolls':
         selectedPollGroup = null;
         currentAction = 'PollGroups';
-        $('legend_title').innerHTML = addPollGroup_title;
-        $('pg_work_area').innerHTML = cachePollGroupsForm;
+        $('legend_title').html(addPollGroup_title);
+        $('pg_work_area').html(cachePollGroupsForm);
         unselectDataGridRow();
         break;
     }
@@ -160,9 +160,9 @@ function editPoll(element, pid)
 {
     currentAction = 'Polls';
     selectedPoll = pid;
-    $('legend_title').innerHTML = editPoll_title;
+    $('legend_title').html(editPoll_title);
     if (cachePollForm != null) {
-        $('p_work_area').innerHTML = cachePollForm;
+        $('p_work_area').html(cachePollForm);
         initDatePicker('start_time');
         initDatePicker('stop_time');
     }
@@ -189,7 +189,7 @@ function editPoll(element, pid)
 function editPollAnswers(element, pid)
 {
     if (cachePollForm == null) {
-        cachePollForm = $('p_work_area').innerHTML;
+        cachePollForm = $('p_work_area').html();
     }
 
     selectDataGridRow(element.parentNode.parentNode);
@@ -200,8 +200,8 @@ function editPollAnswers(element, pid)
     currentAction = 'PollAnswers';
 
     selectedPoll = pid;
-    $('legend_title').innerHTML = editAnswers_title;
-    $('p_work_area').innerHTML = cachePollAnswersForm;
+    $('legend_title').html(editAnswers_title);
+    $('p_work_area').html(cachePollAnswersForm);
     var answersData = PollAjax.callSync('GetPollAnswers', selectedPoll);
     var answers  = answersData['Answers'];
     $('question').value  = answersData['question'].defilter();
@@ -391,9 +391,9 @@ function editPollGroup(element, gid)
 
     currentAction = 'PollGroups';
     selectedPollGroup = gid;
-    $('legend_title').innerHTML = editPollGroup_title;
+    $('legend_title').html(editPollGroup_title);
     if (cachePollGroupsForm != null) {
-        $('pg_work_area').innerHTML = cachePollGroupsForm;
+        $('pg_work_area').html(cachePollGroupsForm);
     }
 
     selectDataGridRow(element.parentNode.parentNode);
@@ -411,7 +411,7 @@ function editPollGroup(element, gid)
 function editPollGroupPolls(element, gid)
 {
     if (cachePollGroupsForm == null) {
-        cachePollGroupsForm = $('pg_work_area').innerHTML;
+        cachePollGroupsForm = $('pg_work_area').html();
     }
 
     selectDataGridRow(element.parentNode.parentNode);
@@ -422,8 +422,8 @@ function editPollGroupPolls(element, gid)
 
     currentAction = 'PollGroupPolls';
     selectedPollGroup = gid;
-    $('legend_title').innerHTML = editPollGroupPolls_title;
-    $('pg_work_area').innerHTML = cachePollGroupPollsForm;
+    $('legend_title').html(editPollGroupPolls_title);
+    $('pg_work_area').html(cachePollGroupPollsForm);
 
     var pollsData = PollAjax.callSync('GetPollGroupPolls', selectedPollGroup);
     var pollsList  = pollsData['Polls'];
@@ -502,8 +502,8 @@ function getGroupPolls(gid)
 {
     var box = $('grouppolls');
     box.length = 0;
-    $('result_area').innerHTML = '';
-    $('legend_title').innerHTML = '';
+    $('result_area').html('');
+    $('legend_title').html('');
     if (gid == 0) return;
     var polls = PollAjax.callSync('GetGroupPolls', gid);
     for(var i = 0; i < polls.length; i++) {
@@ -521,8 +521,8 @@ function getGroupPolls(gid)
 function showResult(pid)
 {
     var box = $('grouppolls');
-    $('legend_title').innerHTML = box.options[box.selectedIndex].text;
-    $('result_area').innerHTML = PollAjax.callSync('PollResultsUI', pid);
+    $('legend_title').html(box.options[box.selectedIndex].text);
+    $('result_area').html(PollAjax.callSync('PollResultsUI', pid));
 }
 
 var PollAjax = new JawsAjax('Poll', PollCallback);
