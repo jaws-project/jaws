@@ -21,7 +21,7 @@
   var editACL_title         = "{{editACL_title}}";
   var editGroupUsers_title  = "{{editGroupUsers_title}}";
   var currentAction         = 'UserAccount';
-  var cachedGroupForm       = $('workarea').innerHTML;
+  var cachedGroupForm       = $('#workarea').html();
   stopGroupAction();
   initDataGrid('groups_datagrid', UsersAjax, getGroups);
 </script>

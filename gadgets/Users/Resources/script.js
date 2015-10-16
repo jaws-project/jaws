@@ -522,9 +522,9 @@ function editUserGroups(rowElement, uid)
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
     var uGroups = UsersAjax.callSync('GetUserGroups', uid);
-    uGroups.each(function(gid, index) {
+    $.each(uGroups, function(index, gid) {
         if ($('#group_' + gid).length) {
-            $('#group_' + gid).checked = true;
+            $('#group_' + gid).prop('checked', true);
         }
     });
 }
@@ -664,7 +664,7 @@ function editGroupUsers(rowElement, gid)
     var gUsers = UsersAjax.callSync('GetGroupUsers', gid);
     $.each(gUsers, function(index, user) {
         if ($('#user_' + user['id']).length) {
-            $('#user_' + user['id']).prop('checked');
+            $('#user_' + user['id']).prop('checked', true);
         }
     });
 }

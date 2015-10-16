@@ -323,6 +323,8 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $dExpiry =& Piwi::CreateWidget('DatePicker', 'expiry_date', '');
         $dExpiry->SetId('expiry_date');
         $dExpiry->showTimePicker(true);
+        $dExpiry->SetIncludeCSS(false);
+        $dExpiry->SetIncludeJS(false);
         $dExpiry->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $dExpiry->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $dExpiry->setDateFormat('%Y-%m-%d %H:%M:%S');
@@ -438,6 +440,8 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $dob =& Piwi::CreateWidget('DatePicker', 'dob', '');
         $dob->SetId('dob');
         $dob->showTimePicker(true);
+        $dob->SetIncludeCSS(false);
+        $dob->SetIncludeJS(false);
         $dob->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $dob->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $dob->setDateFormat('%Y-%m-%d');

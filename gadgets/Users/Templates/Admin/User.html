@@ -1,4 +1,5 @@
 <!-- BEGIN user -->
+<form id="userForm" name="userForm" method="post" action="{{base_script}}" onsubmit="return false;">
 <!-- BEGIN encryption -->{{length}}{{modulus}}{{exponent}}<!-- END encryption -->
 <input type="hidden" name="prev_status" id="prev_status" value="0" />
 <table>
@@ -12,4 +13,5 @@
   <tr><td><label for="expiry_date">{{lbl_expiry_date}}:</label><br />{{expiry_date}}</td></tr>
   <tr><td><label for="status">{{lbl_status}}:</label><br />{{status}}</td></tr>
 </table>
+</form>
 <!-- END user -->
