@@ -498,8 +498,8 @@ function editCategory(id)
     if (id == 0) return;
     selectedCategory = id;
 
-    $('legend_title').innerHTML = editCategory_title;
-    $('btn_delete').style.display = 'inline';
+    $('legend_title').html(editCategory_title);
+    $('btn_delete').css('display', 'inline');
     var category = BlogAjax.callSync('GetCategory', id);
 
     $('name').value             = category['name'];
@@ -524,7 +524,7 @@ function resetCategoryForm()
 function resetCategoryCombo()
 {
     var categories = BlogAjax.callSync('GetCategories');
-    $('category_id').innerHTML = '';
+    $('category_id').html('');
     categories.each(function (item, key){
         var newoption = new Option(item['name'], item['id']);
         $('category_id').add(newoption);
@@ -684,9 +684,9 @@ function showSimpleResponse(reponse)
 function toggleAdvanced(checked)
 {
     if (checked) {
-        $('advanced').style.display = 'block';
+        $('advanced').css('display', 'block');
     } else {
-        $('advanced').style.display = 'none';
+        $('advanced').css('display', 'none');
     }
 }
 
@@ -708,8 +708,8 @@ function toggleUpdate(checked)
  * Stops doing a certain action
  */
 function stopAction() {
-    ('legend_title').innerHTML = addCategory_title;
-    $('btn_delete').style.display = 'none';
+    ('legend_title').html(addCategory_title);
+    $('btn_delete').css('display', 'none');
     selectedCategory = null;
 
     $('category_id').selectedIndex  = -1;
