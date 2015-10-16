@@ -129,7 +129,7 @@ function stopAction()
         break;
     case 'Contacts':
         $('id').value      = 0;
-        $('contact_ip').set('html', '');
+        $('contact_ip').html('');
         $('name').value    = '';
         $('email').value   = '';
         $('company').value = '';
@@ -170,16 +170,16 @@ function stopAction()
 function editContact(element, id)
 {
     currentAction = 'Contacts';
-    $('legend_title').innerHTML = messageDetail_title;
+    $('legend_title').html(messageDetail_title);
     if (cacheContactForm != null) {
-        $('c_work_area').innerHTML = cacheContactForm;
+        $('c_work_area').html(cacheContactForm);
     }
 
     selectDataGridRow(element.parentNode.parentNode);
 
     var contact = ContactAjax.callSync('GetContact', id);
     $('id').value      = contact['id'];
-    $('contact_ip').set('html', contact['ip']);
+    $('contact_ip').html(contact['ip']);
     $('name').value    = contact['name'];
     $('email').value   = contact['email'];
     $('company').value = contact['company'];
@@ -197,7 +197,7 @@ function editContact(element, id)
 
     if (contact['attachment']) {
         $('attachment').href = dataURL + contact['attachment'];
-        $('attachment').set('html', contact['attachment']);
+        $('attachment').html(contact['attachment']);
         $('tr_attachment').show();
     } else {
         $('tr_attachment').hide();
@@ -210,7 +210,7 @@ function editContact(element, id)
 function editReply(element, id)
 {
     if (cacheContactForm == null) {
-        cacheContactForm = $('c_work_area').innerHTML;
+        cacheContactForm = $('c_work_area').html();
     }
 
     selectDataGridRow(element.parentNode.parentNode);
@@ -221,8 +221,8 @@ function editReply(element, id)
     currentAction = 'Reply';
 
     selectedContact = id;
-    $('legend_title').innerHTML = contactReply_title;
-    $('c_work_area').innerHTML = cacheReplyForm;
+    $('legend_title').html(contactReply_title);
+    $('c_work_area').html(cacheReplyForm);
     var replyData = ContactAjax.callSync('GetReply', selectedContact);
     $('id').value      = replyData['id'];
     $('name').value    = replyData['name'];
@@ -494,8 +494,8 @@ function onUpload(response) {
         $('attachment').show();
     } else {
         $('filename').value = response.filename;
-        $('file_link').set('html', response.filename);
-        $('file_size').set('html', response.filesize);
+        $('file_link').html(response.filename);
+        $('file_size').html(response.filesize);
         $('btn_attach').show();
         $('attachment').hide();
     }
@@ -510,8 +510,8 @@ function removeAttachment() {
     $('filename').value = '';
     $('frm_file').reset();
     $('btn_attach').hide();
-    $('file_link').set('html', '');
-    $('file_size').set('html', '');
+    $('file_link').html('');
+    $('file_size').html('');
     $('btn_upload').show();
     $('attachment').show();
 }
