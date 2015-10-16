@@ -325,9 +325,10 @@ function saveUser()
             if ($('#components').val() === '') {
                 return;
             }
-            var acls = $('#acl_form img[alt!=-1]').map(function (img) {
-                var keys = img.id.split(':');
-                return [keys[0], keys[1], img.alt];
+            var acls = [];
+            $.each($('#acl_form img[alt!=-1]'), function(index, aclTag) {
+                var keys = $(aclTag).attr('id').split(':');
+                acls[index] = [keys[0], keys[1], $(aclTag).attr('alt')];
             });
             UsersAjax.callAsync('UpdateUserACL', [selectedId, $('#components').val(), acls]);
             break;
@@ -447,7 +448,9 @@ function editACL(rowElement, id, action)
     $('#legend_title').html(editACL_title);
     selectedId = id;
     currentAction = action;
-    chkImages = $('#acl img').attr('src');
+    chkImages = $('#acl img').map(function() {
+        return $(this).attr('src');
+    }).toArray();
     chkImages[-1] = chkImages[2];
     delete chkImages[2];
 }
@@ -460,7 +463,7 @@ function getACL()
     function getValue(key, subkey) {
         var res = -1;
         try {
-            acls.custom_acls.each(function (acl) {
+            $.each(acls.custom_acls, function (index, acl) {
                 if (acl.key_name === key && acl.key_subkey == subkey) {
                     res = acl.key_value;
                     //there is no way to break each() in MooTools
@@ -484,26 +487,26 @@ function getACL()
             'GetACLKeys',
             [selectedId, $('#components').val(), currentAction]
         );
-    acls.default_acls.each(function (acl) {
+    $.each(acls.default_acls, function(index, acl) {
         var key_unique = acl.key_name + ':' + acl.key_subkey;
-        var check = new Element('img', {id: key_unique}),
-            label = new Element('label', {'for': key_unique}),
-            div = new Element('div').adopt(check, label),
+        var check = $('<img/>').attr('id', key_unique),
+            label = $('<label></label>').attr('for', key_unique),
+            div = $('<div></div>').append(check, label),
             value = getValue(acl.key_name, acl.key_subkey);
-        label.set('html', acl.key_desc);
-        check.set('alt', value);
-        check.set('src', chkImages[value]);
-        label.addEvent('click', function () {
-            var check = this.getPrevious('img'),
-                value = parseInt(check.alt);
-            check.alt = (value == -1)? 1 : value - 1;
-            check.src = chkImages[check.alt];
+        label.html(acl.key_desc);
+        check.attr('alt', value);
+        check.attr('src', chkImages[value]);
+        label.on('click', function () {
+            var check = $(this).prev('img'),
+                value = parseInt(check.attr('alt'));
+            check.attr('alt', (value == -1)? 1 : value - 1);
+            check.attr('src', chkImages[check.attr('alt')]);
         });
-        check.addEvent('click', function () {
-            this.alt = (this.alt == -1)? 1 : parseInt(this.alt) - 1;
-            this.src = chkImages[this.alt];
+        check.on('click', function () {
+            $(this).attr('alt', (this.alt == -1)? 1 : parseInt($(this).attr('alt')) - 1);
+            $(this).attr('src', chkImages[$(this).attr('alt')]);
         });
-        form.grab(div);
+        form.append(div);
     });
 }
 
@@ -585,10 +588,8 @@ function editContacts(rowElement, uid)
  * Uploads the avatar
  */
 function upload() {
-    showWorkingNotification();
-    var iframe = new Element('iframe', {id:'ifrm_upload', name:'ifrm_upload'});
-    $('workarea').adopt(iframe);
-    $('frm_avatar').submit();
+    $('#workarea').append($('<iframe></iframe>').attr({'id': 'ifrm_upload', 'name':'ifrm_upload'}));
+    $('#frm_avatar').submit();
 }
 
 /**
@@ -598,7 +599,7 @@ function onUpload(response) {
     hideWorkingNotification();
     if (response.type === 'error') {
         alert(response.message);
-        $('#frm_avatar').reset();
+        $('#frm_avatar')[0].reset();
     } else {
         var filename = response.message + '&' + (new Date()).getTime();
         $('#image').attr('src', UsersAjax.baseScript + '?gadget=Users&action=LoadAvatar&file=' + filename);
@@ -708,9 +709,10 @@ function saveGroup()
             if ($('components').val() === '') {
                 return;
             }
-            var acls = $('#acl_form img[alt!=-1]').map(function (img) {
-                var keys = img.id.split(':');
-                return [keys[0], keys[1], img.alt];
+            var acls = [];
+            $.each($('#acl_form img[alt!=-1]'), function(index, aclTag) {
+                var keys = $(aclTag).attr('id').split(':');
+                acls[index] = [keys[0], keys[1], $(aclTag).attr('alt')];
             });
             UsersAjax.callAsync('UpdateGroupACL', [selectedId, $('#components').val(), acls]);
             break;
