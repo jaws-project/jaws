@@ -84,17 +84,17 @@ function stopCommentAction()
 {
     $('id').value                      = 0;
     $('gadget').value                  = '';
-    $('comment_ip').set('html', '');
-    $('insert_time').innerHTML         = '';
+    $('comment_ip').html('');
+    $('insert_time').html('');
     $('name').value                    = '';
     $('email').value                   = '';
     $('url').value                     = '';
     $('message').value                 = '';
     $('reply').value                   = '';
     $('comment_status').selectedIndex  = 0;
-    $('btn_save').style.display        = 'none';
-    $('btn_reply').style.display       = 'none';
-    $('btn_cancel').style.display      = 'none';
+    $('btn_save').css('display', 'none');
+    $('btn_reply').css('display', 'none');
+    $('btn_cancel').css('display', 'none');
     $('name').disabled                 = false;
     $('email').disabled                = false;
     $('url').disabled                  = false;
@@ -121,19 +121,25 @@ function editComment(rowElement, id)
     $('comment_status').disabled  = false;
     $('id').value                 = comment['id'];
     $('gadget').value             = comment['gadget'];
-    $('comment_ip').set('html', comment['ip']);
-    $('insert_time').innerHTML    = comment['insert_time'];
+    $('comment_ip').html(comment['ip']);
+    $('insert_time').html(comment['insert_time']);
     $('name').value               = comment['name'];
     $('email').value              = comment['email'];
     $('url').value                = comment['url'];
     $('message').value            = comment['msg_txt'].defilter();
     $('comment_status').value     = comment['status'];
     if (comment['reference_url'] != '') {
-        $('reference_url').innerHTML = '<a href="' + comment['reference_url'] + '">' + comment['reference_title'] + '</a>';
+        $('reference_url').html(
+            '<a href="'
+            + comment['reference_url']
+            + '">'
+            + comment['reference_title']
+            + '</a>'
+        );
     }
-    $('btn_save').style.display   = 'inline';
-    $('btn_reply').style.display  = 'inline';
-    $('btn_cancel').style.display = 'inline';
+    $('btn_save').css('display', 'inline');
+    $('btn_reply').css('display', 'inline');
+    $('btn_cancel').css('display', 'inline');
 
     if(comment['reply']!=null) {
         $('reply').value          = comment['reply'].defilter();
