@@ -67,7 +67,7 @@ var UrlMapperCallback = {
         if (response[0]['type'] == 'response_notice') {
             stopErrorMapAction();
             $('errormaps_datagrid')[0].addItem();
-            $('errormaps_datagrid').lastPage();
+            $('errormaps_datagrid')[0].lastPage();
             getDG('errormaps_datagrid');
         }
         UrlMapperAjax.showResponse(response);
@@ -142,7 +142,7 @@ function editAlias(id)
     $('alias_id').value   = id;
     $('custom_url').value = alias['real_url'];
     $('alias').value      = alias['alias_url'];
-    $('delete_button').style.visibility = 'visible';
+    $('delete_button').css('visibility', 'visible');
 }
 
 /**
@@ -215,7 +215,7 @@ function saveMap()
 function editErrorMap(element, emid)
 {
     selectedErrorMap = emid;
-    $('legend_title').innerHTML = editErrorMap_title;
+    $('legend_title').html(editErrorMap_title);
     selectDataGridRow(element.parentNode.parentNode);
 
     var errorMapInfo = UrlMapperAjax.callSync('GetErrorMap', selectedErrorMap);
@@ -225,7 +225,7 @@ function editErrorMap(element, emid)
     $('new_code').value = errorMapInfo['new_code'];
     $('insert_time').value = errorMapInfo['insert_time'];
 
-    $('btn_cancel').style.visibility = 'visible';
+    $('btn_cancel').css('visibility', 'visible');
 }
 
 /**
@@ -236,7 +236,7 @@ function editMap(element, mid)
     enableMapEditingArea(true);
 
     selectedMap = mid;
-    $('legend_title').innerHTML = editMap_title;
+    $('legend_title').html(editMap_title);
     selectDataGridRow(element.parentNode.parentNode);
 
     var mapInfo = UrlMapperAjax.callSync('GetMap', selectedMap);
@@ -437,7 +437,7 @@ function stopAction()
     $('alias_id').value = '-';     
     $('alias').value    = '';
     $('custom_url').value = '';
-    $('delete_button').style.visibility = 'hidden';
+    $('delete_button').css('visibility', 'hidden');
     $('alias-combo').selectedIndex = -1;
 }
 
@@ -446,8 +446,8 @@ function stopAction()
  */
 function stopErrorMapAction()
 {
-    $('legend_title').innerHTML = addErrorMap_title;
-    $('btn_cancel').style.visibility = 'hidden';
+    $('legend_title').html(addErrorMap_title);
+    $('btn_cancel').css('visibility', 'hidden');
     unselectDataGridRow();
     selectedErrorMap = null;
 
