@@ -60,9 +60,9 @@ function cleanEntries()
  */
 function updateStats()
 {
-    $('stats_from').innerHTML  = VisitCounterAjax.callSync('GetStartDate');
-    $('visitors').innerHTML    = 0;
-    $('impressions').innerHTML = 0;
+    $('stats_from')).html(VisitCounterAjax.callSync('GetStartDate'));
+    $('visitors').html(0);
+    $('impressions').html(0);
 }
 
 /**
