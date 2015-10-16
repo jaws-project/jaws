@@ -570,12 +570,12 @@ function createImageLink(imgSrc, link, text, space)
  */
 function initDatePicker(name)
 {
-    dpTable = $(name + '_table');
+    dpTable = $('#' + name + '_table')[0];
     var script = dpTable.nextSibling;
     var newScript = document.createElement('script');
     newScript.type = "text/javascript";
     newScript.text = script.text;
-    Element.destroy(script);
+    $(script).remove();
     dpTable.parentNode.appendChild(newScript);
 }
 
@@ -684,34 +684,6 @@ function Jaws_Ajax_ServerError(error)
             window.location = 'admin.php';
             break;            
         }
-    }
-}
-
-/**
- * Show the response
- */
-function showResponse(text, goTop)
-{
-    if (typeof(goTop) == 'undefined' || goTop) {
-        $(document.body).scrollTo(0, 0);
-    }
-
-    var messages = [];
-    if (text[0] == undefined) {
-        messages[0] = text;
-    } else {
-        messages = text;
-    }
-
-    $('msgbox-wrapper').innerHTML = '';
-    for(var i = 0; i < messages.length; i++) {
-        var messageDiv  = new Element(
-            'div',
-            {'id':'msgbox_'+i, 'class':messages[i]['type']}
-        ).appendText(messages[i]['text']);
-        $('msgbox-wrapper').appendChild(messageDiv);
-        messageDiv.fade('show');
-        hideResponseBox(messageDiv);
     }
 }
 
