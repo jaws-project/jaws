@@ -84,7 +84,7 @@ function setButtonTitle(title)
 {
     imgBtn = $('btn_lang').getElementsByTagName('img')[0];
     text = document.createTextNode(' ' + title);
-    $('btn_lang').innerHTML = '';
+    $('btn_lang').html('');
     $('btn_lang').appendChild(imgBtn);
     $('btn_lang').appendChild(text);
 }
@@ -135,10 +135,10 @@ function change_lang_option()
     if ($('lang').val() && 
         $('component').val())
     {
-        $('btn_save').style.visibility = 'visible';
-        $('btn_cancel').style.visibility = 'visible';
-        $('lang_strings').innerHTML = LanguagesAjax.callSync(
-            'GetLangDataUI', [$('component').value, $('lang').value]
+        $('btn_save').css('visibility', 'visible');
+        $('btn_cancel').css('visibility', 'visible');
+        $('lang_strings').html(
+            LanguagesAjax.callSync('GetLangDataUI', [$('component').value, $('lang').value])
         );
         filterTranslated();
     }
@@ -177,10 +177,10 @@ function save_lang_data()
  */
 function stopAction()
 {
-    $('btn_save').style.visibility   = 'hidden';
-    $('btn_cancel').style.visibility = 'hidden';
+    $('btn_save').css('visibility', 'hidden');
+    $('btn_cancel').css('visibility', 'hidden');
     $('component').selectedIndex = -1;
-    $('lang_strings').innerHTML = '';
+    $('lang_strings').html('');
     LangDataChanged = false;
 }
 
