@@ -49,8 +49,8 @@ function stopAction()
         $('published').value   = 'true';
         $('groups_combo').selectedIndex = -1;
 
-        $('add_quotes').style.display = 'none';
-        $('btn_del').style.display    = 'none';
+        $('add_quotes').css('display', 'none');
+        $('btn_del').css('display', 'none');
         break;
     case 'GroupQuotes':
         editGroup($('gid').value);
@@ -65,7 +65,7 @@ function stopAction()
         $('stop_time').value   = '';
         changeEditorValue('quotation', '');
         $('quotes_combo').selectedIndex = -1;
-        $('btn_del').style.display = 'none';
+        $('btn_del').css('display', 'none');
         break;
     }
 }
@@ -160,7 +160,7 @@ function editQuote(id)
     $('show_title').value  = quoteInfo['show_title'];
     $('published').value   = quoteInfo['published'];
 
-    $('btn_del').style.display = 'inline';
+    $('btn_del').css('display', 'inline');
 }
 
 /**
@@ -170,7 +170,7 @@ function editGroup(gid)
 {
     if (gid == 0) return;
     if (currentAction == 'GroupQuotes') {
-        $('work_area').innerHTML = cacheGroupForm;
+        $('work_area').html(cacheGroupForm);
     }
 
     currentAction = 'Groups';
@@ -184,8 +184,8 @@ function editGroup(gid)
     $('random').value      = groupInfo['random'];
     $('published').value   = groupInfo['published'];
 
-    $('add_quotes').style.display = 'inline';
-    $('btn_del').style.display    = 'inline';
+    $('add_quotes').css('display', 'inline');
+    $('btn_del').css('display', 'inline');
 }
 
 /**
@@ -278,12 +278,12 @@ function editGroupQuotes()
         cacheGroupQuotesForm = QuotesAjax.callSync('GroupQuotesUI');
     }
 
-    $('add_quotes').style.display = 'none';
-    $('btn_del').style.display    = 'none';
+    $('add_quotes').css('display', 'none');
+    $('btn_del').css('display', 'none');
     if (cacheGroupForm == null) {
-        cacheGroupForm = $('work_area').innerHTML;
+        cacheGroupForm = $('work_area').html();
     }
-    $('work_area').innerHTML = cacheGroupQuotesForm;
+    $('work_area').html(cacheGroupQuotesForm);
 
     currentAction = 'GroupQuotes';
     var quotesList = QuotesAjax.callSync('GetQuotes', [-1, $('gid').value]);
