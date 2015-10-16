@@ -53,7 +53,7 @@ var GlossaryCallback = {
     },
 
     ParseText: function(response) {
-        $('preview_contents').innerHTML = response;
+        $('preview_contents').html(response);
     }
 }
 
@@ -190,11 +190,11 @@ function preview()
 {
     switchTab('preview');
     var term_contents = getEditorValue('term_contents');
-    $('preview_title').innerHTML = $('term_title').value;
+    $('preview_title').html($('term_title').value);
 
     // Use this if you want to use plugins
     GlossaryAjax.callAsync('ParseText', term_contents);
-    //$('preview_contents').innerHTML = term_contents;
+    //$('preview_contents').html(term_contents);
 }
 
 /**
