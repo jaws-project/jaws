@@ -137,10 +137,10 @@ function buildComponentList()
 {
     var sections = {},
         filter = $('filter').value;
-    sections.outdated = $('outdated').set('html', '');
-    sections.notinstalled = $('notinstalled').set('html', '');
-    sections.installed = $('installed').set('html', '');
-    sections.core = $('core').set('html', '');
+    sections.outdated = $('outdated').html('');
+    sections.notinstalled = $('notinstalled').html('');
+    sections.installed = $('installed').html('');
+    sections.core = $('core').html('');
     Object.keys(components).sort().each(function(name) {
         if (components[name]['title'].test(filter, 'i')) {
             sections[components[name].state].grab(getComponentElement(components[name]));
@@ -215,14 +215,14 @@ function updateSummary()
         }
         count.total++;
     });
-    $('sum_installed').innerHTML = count.installed;
-    $('sum_notinstalled').innerHTML = count.notinstalled;
+    $('sum_installed').html(count.installed);
+    $('sum_notinstalled').html(count.notinstalled);
 
-    $('sum_total').innerHTML = count.total;
+    $('sum_total').html(count.total);
     if (!pluginsMode) {
-        $('sum_disabled').innerHTML = count.disabled;
-        $('sum_outdated').innerHTML = count.outdated;
-        $('sum_core').innerHTML = count.core;
+        $('sum_disabled').html(count.disabled);
+        $('sum_outdated').html(count.outdated);
+        $('sum_core').html(count.core);
     }
 }
 
@@ -335,8 +335,8 @@ function selectComponent()
         'gadgets/' + components[comp].name + '/Resources/images/logo.png';
     img.alt = components[comp].title;
     h1.innerHTML = components[comp].title + ': ' + components[comp].description;
-    $('component_head').innerHTML = '';
-    $('component_form').innerHTML = '';
+    $('component_head').html('');
+    $('component_form').html('');
     $('component_head').adopt(img, h1);
     $('#components li.selected').removeClass('selected');
     this.addClass('selected');
@@ -367,7 +367,7 @@ function closeUI()
 function componentInfo()
 {
     if (!$('component_info')) {
-        $('component_form').set('html', pluginsMode ?
+        $('component_form').html(pluginsMode ?
             ComponentsAjax.callSync('GetPluginInfo', selectedComponent):
             ComponentsAjax.callSync('GetGadgetInfo', selectedComponent)
         );
