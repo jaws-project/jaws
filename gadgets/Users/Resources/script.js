@@ -165,7 +165,7 @@ function getUsers(name, offset, reset)
         ]
     );
     if (reset) {
-        $(name)[0].setCurrentPage(0);
+        $('#' + name)[0].setCurrentPage(0);
         var total = UsersAjax.callSync(
             'GetUsersCount', [
                 $('#filter_group').val(),
@@ -185,7 +185,7 @@ function getGroups(name, offset, reset)
 {
     var result = UsersAjax.callSync('GetGroups', offset);
     if (reset) {
-        $(name)[0].setCurrentPage(0);
+        $('#' + name)[0].setCurrentPage(0);
         var total = UsersAjax.callSync('getgroupscount');
     }
     resetGrid(name, result, total);
@@ -598,22 +598,22 @@ function onUpload(response) {
     hideWorkingNotification();
     if (response.type === 'error') {
         alert(response.message);
-        $('frm_avatar').reset();
+        $('#frm_avatar').reset();
     } else {
         var filename = response.message + '&' + (new Date()).getTime();
-        $('image').src = UsersAjax.baseScript + '?gadget=Users&action=LoadAvatar&file=' + filename;
-        $('avatar').value = response.message;
+        $('#image').attr('src', UsersAjax.baseScript + '?gadget=Users&action=LoadAvatar&file=' + filename);
+        $('#avatar').val(response.message);
     }
-    $('ifrm_upload').destroy();
+    $('#ifrm_upload').remove();
 }
 
 /**
  * Removes the avatar
  */
 function removeAvatar() {
-    $('avatar').value = '';
-    $('frm_avatar').reset();
-    $('image').src = 'gadgets/Users/Resources/images/photo128px.png';
+    $('#avatar').val('');
+    $('#frm_avatar').reset();
+    $('#image').attr('src', 'gadgets/Users/Resources/images/photo128px.png');
 }
 
 /**
@@ -641,10 +641,10 @@ function editGroup(rowElement, gid)
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
 
     var gInfo = UsersAjax.callSync('GetGroup', gid);
-    $('name').value        = gInfo['name'];
-    $('title').value       = gInfo['title'].defilter();
-    $('description').value = gInfo['description'].defilter();
-    $('enabled').value     = Number(gInfo['enabled']);
+    $('#name').val(gInfo['name']);
+    $('#title').val(gInfo['title'].defilter());
+    $('#description').val(gInfo['description'].defilter());
+    $('#enabled').val(Number(gInfo['enabled']));
 }
 
 /**
@@ -662,9 +662,9 @@ function editGroupUsers(rowElement, gid)
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
     var gUsers = UsersAjax.callSync('GetGroupUsers', gid);
-    gUsers.each(function(user, index) {
+    $.each(gUsers, function(index, user) {
         if ($('#user_' + user['id']).length) {
-            $('#user_' + user['id']).checked = true;
+            $('#user_' + user['id']).prop('checked');
         }
     });
 }
@@ -716,7 +716,7 @@ function saveGroup()
             break;
 
         case 'GroupUsers':
-            var inputs  = $('workarea').getElementsByTagName('input');
+            var inputs  = $('#workarea input');
             var keys    = new Array();
             var counter = 0;
             for (var i=0; i<inputs.length; i++) {
