@@ -315,7 +315,7 @@ function saveElementAction(lid, gadget, action, params, title, desc)
 {
     hideDialogBox('actions_dialog');
     params = (params == null)? null : params.split(',');
-    $('ea' + lid).innerHTML = title;
+    $('ea' + lid).html(title);
     $('ea' + lid).parentNode.parentNode.title = desc;
     LayoutAjax.callAsync(
         'UpdateElementAction',
@@ -329,11 +329,11 @@ function saveElementAction(lid, gadget, action, params, title, desc)
 function saveChangeDW(itemId, dw) {
     LayoutAjax.callAsync('UpdateDisplayWhen', [itemId, dw, $('user').value]);
     if (dw == '*') {
-        $('dw' + itemId).innerHTML = displayAlways;
+        $('dw' + itemId).html(displayAlways);
     } else if (dw.blank()) {
-        $('dw' + itemId).innerHTML = displayNever;
+        $('dw' + itemId).html(displayNever);
     } else {
-        $('dw' + itemId).innerHTML = dw.replace(/,/g, ', ');
+        $('dw' + itemId).html(dw.replace(/,/g, ', '));
     }
     hideDialogBox('dw_dialog');
 }
