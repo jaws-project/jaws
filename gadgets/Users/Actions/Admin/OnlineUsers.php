@@ -162,7 +162,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $tpl->SetVariable('actions_combo', $actions->Get());
 
         $btnExecute =& Piwi::CreateWidget('Button', 'executeOnlineUsersAction', '', STOCK_YES);
-        $btnExecute->AddEvent(ON_CLICK, "javascript:onlineUsersDGAction($('online_users_actions'));");
+        $btnExecute->AddEvent(ON_CLICK, "javascript:onlineUsersDGAction($('#online_users_actions'));");
         $tpl->SetVariable('btn_execute', $btnExecute->Get());
 
         $tpl->SetVariable('confirmThrowout',   _t('USERS_ONLINE_CONFIRM_THROWOUT'));

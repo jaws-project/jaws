@@ -237,15 +237,15 @@ function onlineUsersDGAction(combo)
         return;
     }
 
-    if (combo.value == 'delete') {
+    if (combo.val() == 'delete') {
         if (confirm(confirmThrowOut)) {
             UsersAjax.callAsync('DeleteSession', rows);
         }
-    } else if (combo.value == 'block_ip') {
+    } else if (combo.val() == 'block_ip') {
         if (confirm(confirmBlockIP)) {
             UsersAjax.callAsync('IPBlock', rows);
         }
-    } else if (combo.value == 'block_agent') {
+    } else if (combo.val() == 'block_agent') {
         if (confirm(confirmBlockAgent)) {
             UsersAjax.callAsync('AgentBlock', rows);
         }
