@@ -33,10 +33,10 @@ function gotoLocation(album)
 function ImportImages()
 {
     if (((currentIndex + 1) <= howmany) && (items[currentIndex]['image'])) {
-        $('nofm').innerHTML = (currentIndex + 1) + ' / ' + howmany;
+        $('nofm').html((currentIndex + 1) + ' / ' + howmany);
         var percent = Math.round(((currentIndex + 1) * 100) / howmany);
 
-        $('percent').innerHTML = percent + '%';
+        $('percent').html(percent + '%');
         $('img_percent').setAttribute('style', 'width:' + percent + '%;');
         PhooAjax.callAsync(
             'ImportImage', [
@@ -46,7 +46,7 @@ function ImportImages()
         );
     } else {
         if (currentIndex == howmany) {
-            $('nofm').innerHTML = finished_message;
+            $('nofm').html(finished_message);
             $('indicator').src = ok_image;
             $('warning').fade('out');
         }
@@ -86,7 +86,7 @@ function addEntry(title)
     id = num_entries;
     entry = '<label id="photo' + id + '_label" for="photo' + id + '">' + title + ' ' + id + ':&nbsp;</label>';
     entry += '<input type="file" name="photo' + id + '" id="photo' + id + '" title="Photo ' + id + '" /><br />';
-    $('phoo_addentry' + id).innerHTML = entry + '<span id="phoo_addentry' + (id + 1) + '">' + $('phoo_addentry' + id).innerHTML + '</span>';
+    $('phoo_addentry' + id).html(entry + '<span id="phoo_addentry' + (id + 1) + '">' + $('phoo_addentry' + id).html() + '</span>');
 }
 
 /**
@@ -141,8 +141,8 @@ function editGroup(id)
     $('meta_keywords').value = groupInfo['meta_keywords'].defilter();
     $('meta_description').value = groupInfo['meta_description'].defilter();
     $('description').value = groupInfo['description'].defilter();
-    $('btn_delete').style.display = 'inline';
-    $('legend_title').innerHTML = editGroupTitle;
+    $('btn_delete').css('display', 'inline');
+    $('legend_title').html(editGroupTitle);
 }
 
 /**
@@ -175,8 +175,8 @@ function stopAction()
     $('meta_description').value     = '';
     $('description').value          = '';
     $('groups_combo').selectedIndex = -1;
-    $('btn_delete').style.display   = 'none';
-    $('legend_title').innerHTML     = addGroupTitle;
+    $('btn_delete').css('display', 'none');
+    $('legend_title').html(addGroupTitle);
 }
 
 /**
