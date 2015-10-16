@@ -264,15 +264,15 @@ function setRanksCombo(pid, selected) {
  */
 function stopAction()
 {
-    $('btn_cancel').style.display = 'none';
-    $('btn_del').style.display    = 'none';
-    $('btn_save').style.display   = 'none';
-    $('btn_add').style.display    = 'inline';
+    $('btn_cancel').css('display', 'none');
+    $('btn_del').css('display', 'none');
+    $('btn_save').css('display', 'none');
+    $('btn_add').css('display', 'inline');
     selectedLink  = null;
     selectedGroup = null;
     currentAction = null;
     unselectTreeRow();
-    $('links_edit').innerHTML = '';
+    $('links_edit').html('');
     $('edit_area').getElementsByTagName('span')[0].innerHTML = '';
 }
 
@@ -288,11 +288,11 @@ function addGroup()
 
     $('edit_area').getElementsByTagName('span')[0].innerHTML = addGroupTitle;
     selectedGroup = null;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'none';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('links_edit').innerHTML = cacheGroupForm;
+    $('btn_cancel').css('display', 'inline');
+    $('btn_del').css('display', 'none');
+    $('btn_save').css('display', 'inline');
+    $('btn_add').css('display', 'none');
+    $('links_edit').html(cacheGroupForm);
 }
 
 /**
@@ -300,7 +300,7 @@ function addGroup()
  */
 function addLink(gid)
 {
-    if ($('links_group_'+gid).innerHTML == '') {
+    if ($('links_group_'+gid).html() == '') {
         listLinks(gid);
     }
     if (cacheLinkForm == null) {
@@ -313,11 +313,11 @@ function addLink(gid)
         addLinkTitle + ' - ' + $('group_'+gid).getElementsByTagName('a')[1].innerHTML;
 
     selectedLink = null;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'none';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('links_edit').innerHTML = cacheLinkForm;
+    $('btn_cancel').css('display', 'inline');
+    $('btn_del').css('display', 'none');
+    $('btn_save').css('display', 'inline');
+    $('btn_add').css('display', 'none');
+    $('links_edit').html(cacheLinkForm);
 
     $('gid').value = gid;
     setRanksCombo($('gid').value);
@@ -338,11 +338,11 @@ function editGroup(gid)
 
     $('edit_area').getElementsByTagName('span')[0].innerHTML =
         editGroupTitle + ' - ' + $('group_'+gid).getElementsByTagName('a')[1].innerHTML;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'inline';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('links_edit').innerHTML   = cacheGroupForm;
+    $('btn_cancel').css('display', 'inline');
+    $('btn_del').css('display', 'inline');
+    $('btn_save').css('display', 'inline');
+    $('btn_add').css('display', 'none');
+    $('links_edit').html(cacheGroupForm);
 
     var groupInfo = LinkDumpAjax.callSync('GetGroups', selectedGroup);
 
@@ -369,11 +369,11 @@ function editLink(element, lid)
 
     $('edit_area').getElementsByTagName('span')[0].innerHTML =
         editLinkTitle + ' - ' + $('link_'+lid).getElementsByTagName('a')[0].innerHTML;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'inline';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('links_edit').innerHTML = cacheLinkForm;
+    $('btn_cancel').css('display', 'inline');
+    $('btn_del').css('display', 'inline');
+    $('btn_save').css('display', 'inline');
+    $('btn_add').css('display', 'none');
+    $('links_edit').html(cacheLinkForm);
 
     var linkInfo = LinkDumpAjax.callSync('GetLink', selectedLink);
 
