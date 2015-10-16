@@ -236,11 +236,11 @@ function addGroup()
 
     $('edit_area').getElementsByTagName('span')[0].innerHTML = addGroupTitle;
     selectedGroup = null;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'none';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('menus_edit').innerHTML = cacheGroupForm;
+    $('btn_cancel').css('display', 'inline');
+    $('btn_del').css('display', 'none');
+    $('btn_save').css('display', 'inline');
+    $('btn_add').css('display', 'none');
+    $('menus_edit').html(cacheGroupForm);
 }
 
 /**
@@ -286,11 +286,11 @@ function addMenu(gid, pid)
     }
 
     selectedMenu = null;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'none';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('menus_edit').innerHTML = cacheMenuForm;
+    $('btn_cancel').css('display', 'inline');
+    $('btn_del').css('display', 'none');
+    $('btn_save').css('display', 'inline');
+    $('btn_add').css('display', 'none');
+    $('menus_edit').html(cacheMenuForm);
 
     $('gid').value = gid;
     getParentMenus(gid, 0);
@@ -315,11 +315,11 @@ function editGroup(gid)
 
     $('edit_area').getElementsByTagName('span')[0].innerHTML =
         editGroupTitle + ' - ' + $('group_'+gid).getElementsByTagName('a')[0].innerHTML;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'inline';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('menus_edit').innerHTML = cacheGroupForm;  
+    $('btn_cancel').css('display', 'inline');
+    $('btn_del').css('display', 'inline');
+    $('btn_save').css('display', 'inline');
+    $('btn_add').css('display', 'none');
+    $('menus_edit').html(cacheGroupForm);  
 
     var groupInfo = MenuAjax.callSync('GetGroups', selectedGroup);
 
@@ -342,11 +342,11 @@ function editMenu(mid)
 
     $('edit_area').getElementsByTagName('span')[0].innerHTML =
         editMenuTitle + ' - ' + $('menu_'+mid).getElementsByTagName('a')[0].innerHTML;
-    $('btn_cancel').style.display = 'inline';
-    $('btn_del').style.display    = 'inline';
-    $('btn_save').style.display   = 'inline';
-    $('btn_add').style.display    = 'none';
-    $('menus_edit').innerHTML = cacheMenuForm;  
+    $('btn_cancel').css('display', 'inline');
+    $('btn_del').css('display', 'inline');
+    $('btn_save').css('display', 'inline');
+    $('btn_add').css('display', 'none');
+    $('menus_edit').html(cacheMenuForm);  
 
     //highlight selected menu
     if (selectedMenu != mid) {
@@ -496,10 +496,10 @@ function changeReferences() {
  */
 function stopAction()
 {
-    $('btn_cancel').style.display = 'none';
-    $('btn_del').style.display    = 'none';
-    $('btn_save').style.display   = 'none';
-    $('btn_add').style.display    = 'inline';
+    $('btn_cancel').css('display', 'none');
+    $('btn_del').css('display', 'none');
+    $('btn_save').css('display', 'none');
+    $('btn_add').css('display', 'inline');
 
     var old_selected_menu = $('menu_'+selectedMenu);
     if (old_selected_menu) {
@@ -510,7 +510,7 @@ function stopAction()
     selectedGroup = null;
     aclInfo = null;
     currentAction = null;
-    $('menus_edit').innerHTML = '';
+    $('menus_edit').html('');
     $('edit_area').getElementsByTagName('span')[0].innerHTML = '';
 }
 
