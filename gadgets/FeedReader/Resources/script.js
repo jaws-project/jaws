@@ -90,7 +90,7 @@ function stopAction()
     $('title_view').value  = '0';
     $('visible').value     = '1';
     unselectDataGridRow();
-    $('btn_cancel').style.visibility = 'hidden';
+    $('btn_cancel').css('visibility', 'hidden');
 }
 
 /**
@@ -107,7 +107,7 @@ function updateForm(feed)
     $('count_entry').value = feed['count_entry'];
     $('title_view').value  = feed['title_view'];
     $('visible').value     = feed['visible'];
-    $('btn_cancel').style.visibility = 'visible';
+    $('btn_cancel').css('visibility', 'visible');
 }
 
 /**
