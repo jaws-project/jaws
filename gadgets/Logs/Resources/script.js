@@ -126,17 +126,17 @@ function viewLog(rowElement, id)
 {
     selectGridRow('contacts_datagrid', rowElement.parentNode.parentNode);
     var result = LogsAjax.callSync('GetLog', {'id': id});
-    $('log_gadget').innerHTML = result['gadget'];
-    $('log_action').innerHTML = result['action'];
-    $('log_backend').innerHTML = result['backend'];
-    $('log_priority').innerHTML = result['priority'];
-    $('log_status').innerHTML = result['status'];
-    $('log_apptype').innerHTML = result['apptype'];
-    $('log_username').innerHTML = '<a href = "' + result['user_url'] + '">' + result['username'] + '</a>';
-    $('log_nickname').innerHTML = result['nickname'];
-    $('log_ip').innerHTML = result['ip'];
-    $('log_agent').innerHTML = result['agent'];
-    $('log_date').innerHTML = result['insert_time'];
+    $('log_gadget').html(result['gadget']);
+    $('log_action').html(result['action']);
+    $('log_backend').html(result['backend']);
+    $('log_priority').html(result['priority']);
+    $('log_status').html(result['status']);
+    $('log_apptype').html(result['apptype']);
+    $('log_username').html('<a href = "' + result['user_url'] + '">' + result['username'] + '</a>');
+    $('log_nickname').html(result['nickname']);
+    $('log_ip').html(result['ip']);
+    $('log_agent').html(result['agent']);
+    $('log_date').html(result['insert_time']);
 }
 
 /**
