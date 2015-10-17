@@ -64,8 +64,8 @@ var BlocksCallback = {
 function fillEditorEntries(block_data)
 {
     $('block_id').disabled    = false;
-    $('hidden_id').value      = block_data['id'];
-    $('block_title').value    = block_data['title'].defilter();
+    $('#hidden_id').val(block_data['id']);
+    $('#block_title').val(block_data['title'].defilter());
     changeEditorValue('block_contents', block_data['contents']);
     document.getElementsByName('display_title[]').item(0).checked = block_data['display_title'] == '1';
     currentMode = 'edit';
