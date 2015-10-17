@@ -14,7 +14,7 @@ var TagsCallback = {
     AddTag: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopTagAction();
-            $('tags_datagrid')[0].addItem();
+            $('#tags_datagrid')[0].addItem();
             getDG('tags_datagrid');
         }
         TagsAjax.showResponse(response);
@@ -31,7 +31,7 @@ var TagsCallback = {
     DeleteTags: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopTagAction();
-            getDG('tags_datagrid', $('tags_datagrid')[0].getCurrentPage(), true);
+            getDG('tags_datagrid', $('#tags_datagrid')[0].getCurrentPage(), true);
         }
         TagsAjax.showResponse(response);
     },
@@ -39,7 +39,7 @@ var TagsCallback = {
     MergeTags: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopTagAction();
-            getDG('tags_datagrid', $('tags_datagrid')[0].getCurrentPage(), true);
+            getDG('tags_datagrid', $('#tags_datagrid')[0].getCurrentPage(), true);
         }
         TagsAjax.showResponse(response);
     },
@@ -56,12 +56,11 @@ function getTagsDataGrid(name, offset, reset)
 {
     var tags = TagsAjax.callSync(
         'SearchTags',
-        {'gadget': $('#gadgets_filter').val(), 'name': $('#filter').val()},
-        offset
+        {'gadgets_filter': $('#gadgets_filter').val(), 'name': $('#filter').val(), 'offset': offset}
     );
 
     if (reset) {
-        $(name)[0].setCurrentPage(0);
+        $('#' + name)[0].setCurrentPage(0);
         stopTagAction();
 
         var total = TagsAjax.callSync(
@@ -108,7 +107,6 @@ function editTag(rowElement, id)
     $('#description').val(tag['description']);
     $('#meta_keywords').val(tag['meta_keywords']);
     $('#meta_description').val(tag['meta_description']);
-//    $('#btn_save').css('display', 'inline');
     $('#btn_cancel').css('display', 'inline');
     $('#legend_title').html(editTagTitle);
 }
@@ -118,12 +116,12 @@ function editTag(rowElement, id)
  */
 function updateTag()
 {
-    if (!$('name').val()) {
+    if (!$('#name').val()) {
         alert(incompleteTafFields);
         return false;
     }
 
-    if ($('id').value==0) {
+    if ($('#id').value==0) {
         TagsAjax.callAsync(
             'AddTag', {
                 'name':$('#name').val(),
@@ -166,7 +164,7 @@ function deleteTag(id)
  */
 function tagsDGAction(combo)
 {
-    var rows = $('tags_datagrid')[0].getSelectedRows();
+    var rows = $('#tags_datagrid')[0].getSelectedRows();
     if (rows.length < 1) {
         return;
     }
@@ -195,14 +193,14 @@ function tagsDGAction(combo)
 function changeGadget(gadget)
 {
     var actions = TagsAjax.callSync('GetGadgetActions', gadget);
-    $('actions').empty();
+    $('#actions').empty();
 
     var newoption = new Option("", "");
-    $('actions').add(newoption);
+    $('#actions').add(newoption);
     for (var i=0;i<actions.length;i++)
     {
         var newoption = new Option(actions[i], actions[i]);
-        $('actions').add(newoption);
+        $('#actions').add(newoption);
     }
 }
 
@@ -219,7 +217,7 @@ function searchTags()
  */
 function saveSettings()
 {
-    TagsAjax.callAsync('SaveSettings', $('tag_results_limit').value);
+    TagsAjax.callAsync('SaveSettings', $('#tag_results_limit').value);
 }
 
 var TagsAjax = new JawsAjax('Tags', TagsCallback),

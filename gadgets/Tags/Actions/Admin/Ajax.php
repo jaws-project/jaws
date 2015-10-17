@@ -18,8 +18,11 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function SearchTags()
     {
-        @list($filters, $offset) = jaws()->request->fetchAll('post');
-        $filters = jaws()->request->fetch('0:array', 'post');
+        $filters = jaws()->request->fetchAll('post');
+        $filters['gadget'] = $filters['gadgets_filter'];
+        unset($filters['gadgets_filter']);
+        $offset = $filters['offset'];
+        unset($filters['offset']);
         $tHTML = $this->gadget->action->loadAdmin('Tags');
         return $tHTML->GetDataAsArray("javascript:editTag(this, '{id}')", $filters, $offset);
     }

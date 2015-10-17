@@ -86,7 +86,7 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
         $tpl->SetVariable('actions_combo', $actions->Get());
 
         $btnExecute =& Piwi::CreateWidget('Button', 'executeTagAction', '', STOCK_YES);
-        $btnExecute->AddEvent(ON_CLICK, "javascript:tagsDGAction($('tags_actions_combo'));");
+        $btnExecute->AddEvent(ON_CLICK, "javascript:tagsDGAction($('#tags_actions_combo'));");
         $tpl->SetVariable('btn_execute', $btnExecute->Get());
 
         if ($this->gadget->GetPermission('ManageTags')) {
