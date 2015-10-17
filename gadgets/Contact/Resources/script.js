@@ -116,31 +116,31 @@ function stopAction()
 {
     switch(currentAction) {
     case 'Recipients':
-        $('id').value      = 0;
-        $('name').value    = '';
-        $('email').value   = '';
-        $('tel').value     = '';
-        $('fax').value     = '';
-        $('mobile').value  = '';
-        $('inform_type').value  = 0;
-        $('visible').value = 1;
+        $('#id').val(0);
+        $('#name').val('');
+        $('#email').val('');
+        $('#tel').val('');
+        $('#fax').val('');
+        $('#mobile').val('');
+        $('#inform_type').val(0);
+        $('#visible').val(1);
         unselectDataGridRow();
         $('name').focus();
         break;
     case 'Contacts':
-        $('id').value      = 0;
+        $('#id').val(0);
         $('contact_ip').html('');
-        $('name').value    = '';
-        $('email').value   = '';
-        $('company').value = '';
-        $('url').value     = '';
-        $('tel').value     = '';
-        $('fax').value     = '';
-        $('mobile').value  = '';
-        $('address').value = '';
+        $('#name').val('');
+        $('#email').val('');
+        $('#company').val('');
+        $('#url').val('');
+        $('#tel').val('');
+        $('#fax').val('');
+        $('#mobile').val('');
+        $('#address').val('');
         $('rid').selectedIndex = -1;
-        $('subject').value = '';
-        $('message').value = '';
+        $('#subject').val('');
+        $('#message').val('');
         $('btn_save_send').hide();
         $('tr_attachment').hide();
         $('btn_save').hide();
@@ -149,12 +149,12 @@ function stopAction()
         $('name').focus();
         break;
     case 'Reply':
-        $('id').value      = 0;
-        $('name').value    = '';
-        $('email').value   = '';
-        $('subject').value = '';
-        $('message').value = '';
-        $('reply').value   = '';
+        $('#id').val(0);
+        $('#name').val('');
+        $('#email').val('');
+        $('#subject').val('');
+        $('#message').val('');
+        $('#reply').val('');
         $('reply').readOnly = true;
         $('btn_save_send').hide();
         $('btn_save').hide();
@@ -178,19 +178,19 @@ function editContact(element, id)
     selectDataGridRow(element.parentNode.parentNode);
 
     var contact = ContactAjax.callSync('GetContact', id);
-    $('id').value      = contact['id'];
+    $('#id').val(contact['id']);
     $('contact_ip').html(contact['ip']);
-    $('name').value    = contact['name'];
-    $('email').value   = contact['email'];
-    $('company').value = contact['company'];
-    $('url').value     = contact['url'];
-    $('tel').value     = contact['tel'];
-    $('fax').value     = contact['fax'];
-    $('mobile').value  = contact['mobile'];
-    $('address').value = contact['address'];
-    $('rid').value     = contact['recipient'];
-    $('subject').value = contact['subject'].defilter();
-    $('message').value = contact['msg_txt'].defilter();
+    $('#name').val(contact['name']);
+    $('#email').val(contact['email']);
+    $('#company').val(contact['company']);
+    $('#url').val(contact['url']);
+    $('#tel').val(contact['tel']);
+    $('#fax').val(contact['fax']);
+    $('#mobile').val(contact['mobile']);
+    $('#address').val(contact['address']);
+    $('#rid').val(contact['recipient']);
+    $('#subject').val(contact['subject'].defilter());
+    $('#message').val(contact['msg_txt'].defilter());
     $('btn_save_send').hide();
     $('btn_save').show('inline');
     $('btn_cancel').show('inline');
@@ -224,12 +224,12 @@ function editReply(element, id)
     $('legend_title').html(contactReply_title);
     $('c_work_area').html(cacheReplyForm);
     var replyData = ContactAjax.callSync('GetReply', selectedContact);
-    $('id').value      = replyData['id'];
-    $('name').value    = replyData['name'];
-    $('email').value   = replyData['email'];
-    $('subject').value = replyData['subject'].defilter();
-    $('message').value = replyData['msg_txt'].defilter();
-    $('reply').value   = replyData['reply'].defilter();
+    $('#id').val(replyData['id']);
+    $('#name').val(replyData['name']);
+    $('#email').val(replyData['email']);
+    $('#subject').val(replyData['subject'].defilter());
+    $('#message').val(replyData['msg_txt'].defilter());
+    $('#reply').val(replyData['reply'].defilter());
     $('btn_save').show('inline');
     $('btn_cancel').show('inline');
     $('btn_save_send').show('inline');
@@ -310,14 +310,14 @@ function editRecipient(element, id)
     currentAction = 'Recipients';
     selectDataGridRow(element.parentNode.parentNode);
     var recipient = ContactAjax.callSync('GetRecipient', id);
-    $('id').value      = recipient['id'];
-    $('name').value    = recipient['name'].defilter();
-    $('email').value   = recipient['email'];
-    $('tel').value     = recipient['tel'];
-    $('fax').value     = recipient['fax'];
-    $('mobile').value  = recipient['mobile'];
-    $('inform_type').value = recipient['inform_type'];
-    $('visible').value = recipient['visible'];
+    $('#id').val(recipient['id']);
+    $('#name').val(recipient['name'].defilter());
+    $('#email').val(recipient['email']);
+    $('#tel').val(recipient['tel']);
+    $('#fax').val(recipient['fax']);
+    $('#mobile').val(recipient['mobile']);
+    $('#inform_type').val(recipient['inform_type']);
+    $('#visible').val(recipient['visible']);
 }
 
 /**
@@ -430,15 +430,15 @@ function updateUsers(group)
  */
 function newEmail()
 {
-    $('groups').value = 0;
-    $('users').value = 0;
-    $('to').value = '';
-    $('cc').value = '';
-    $('bcc').value = '';
-    $('from').value = '';
-    $('subject').value = '';
-    $('message').value = '';
-    $('filename').value = '';
+    $('#groups').val(0);
+    $('#users').val(0);
+    $('#to').val('');
+    $('#cc').val('');
+    $('#bcc').val('');
+    $('#from').val('');
+    $('#subject').val('');
+    $('#message').val('');
+    $('#filename').val('');
     $('frm_file').reset();
 
     $('attachment').show();
@@ -493,7 +493,7 @@ function onUpload(response) {
         $('btn_upload').show();
         $('attachment').show();
     } else {
-        $('filename').value = response.filename;
+        $('#filename').val(response.filename);
         $('file_link').html(response.filename);
         $('file_size').html(response.filesize);
         $('btn_attach').show();
@@ -507,7 +507,7 @@ function onUpload(response) {
  * Removes the attachment
  */
 function removeAttachment() {
-    $('filename').value = '';
+    $('#filename').val('');
     $('frm_file').reset();
     $('btn_attach').hide();
     $('file_link').html('');
