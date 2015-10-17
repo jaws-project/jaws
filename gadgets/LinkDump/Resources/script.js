@@ -286,7 +286,7 @@ function addGroup()
     }
     currentAction = 'Groups';
 
-    $('edit_area span').first().html(addGroupTitle);
+    $('#edit_area span').first().html(addGroupTitle);
     selectedGroup = null;
     $('#btn_cancel').css('display', 'inline');
     $('#btn_del').css('display', 'none');
