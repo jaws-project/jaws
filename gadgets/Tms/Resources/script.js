@@ -126,7 +126,7 @@ function editTheme(theme)
         return false; //Check
     }
     selectedTheme = theme;
-    $('theme_area').html(themeInfo);
+    $('#theme_area').html(themeInfo);
     showButtons();
 }
 
@@ -150,7 +150,7 @@ function deleteTheme()
  */
 function cleanWorkingArea(hideButtons)
 {
-    $('theme_area').html('');
+    $('#theme_area').html('');
     if (hideButtons != undefined) {
         if (hideButtons == true) {
             var buttons = new Array('uninstall_button', 'share_button', 
