@@ -116,7 +116,7 @@ function stopAction()
         selectedPoll = null;
         $('legend_title').html(addPoll_title);
         $('#question').val('');
-        $('gid').selectedIndex = 0;
+        $('#gid').prop('selectedIndex', 0);
         $('#start_time').val('');
         $('#stop_time').val('');
         $('#select_type').val(0);
@@ -521,8 +521,8 @@ function getGroupPolls(gid)
 function showResult(pid)
 {
     var box = $('grouppolls');
-    $('legend_title').html(box.options[box.selectedIndex].text);
-    $('result_area').html(PollAjax.callSync('PollResultsUI', pid));
+    $('#legend_title').html(box.options[box.selectedIndex].text);
+    $('#result_area').html(PollAjax.callSync('PollResultsUI', pid));
 }
 
 var PollAjax = new JawsAjax('Poll', PollCallback);
