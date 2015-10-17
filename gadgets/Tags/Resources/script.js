@@ -121,7 +121,7 @@ function updateTag()
         return false;
     }
 
-    if ($('#id').value==0) {
+    if ($('#id').val() == 0) {
         TagsAjax.callAsync(
             'AddTag', {
                 'name':$('#name').val(),
@@ -169,12 +169,12 @@ function tagsDGAction(combo)
         return;
     }
 
-    if (combo.value == 'delete') {
+    if (combo.val() == 'delete') {
         var confirmation = confirm(confirmTagDelete);
         if (confirmation) {
             TagsAjax.callAsync('DeleteTags', rows);
         }
-    } else if (combo.value == 'merge') {
+    } else if (combo.val() == 'merge') {
         if(rows.length<2) {
             alert(selectMoreThanOneTags);
             return;
@@ -217,7 +217,7 @@ function searchTags()
  */
 function saveSettings()
 {
-    TagsAjax.callAsync('SaveSettings', $('#tag_results_limit').value);
+    TagsAjax.callAsync('SaveSettings', $('#tag_results_limit').val());
 }
 
 var TagsAjax = new JawsAjax('Tags', TagsCallback),
