@@ -142,7 +142,7 @@ function editAlias(id)
     $('#alias_id').val(id);
     $('#custom_url').val(alias['real_url']);
     $('#alias').val(alias['alias_url']);
-    $('delete_button').css('visibility', 'visible');
+    $('#delete_button').css('visibility', 'visible');
 }
 
 /**
@@ -214,7 +214,7 @@ function saveMap()
 function editErrorMap(element, emid)
 {
     selectedErrorMap = emid;
-    $('legend_title').html(editErrorMap_title);
+    $('#legend_title').html(editErrorMap_title);
     selectDataGridRow(element.parentNode.parentNode);
 
     var errorMapInfo = UrlMapperAjax.callSync('GetErrorMap', selectedErrorMap);
@@ -223,8 +223,7 @@ function editErrorMap(element, emid)
     $('#new_url').val(errorMapInfo['new_url']);
     $('#new_code').val(errorMapInfo['new_code']);
     $('#insert_time').val(errorMapInfo['insert_time']);
-
-    $('btn_cancel').css('visibility', 'visible');
+    $('#btn_cancel').css('visibility', 'visible');
 }
 
 /**
@@ -235,7 +234,7 @@ function editMap(element, mid)
     enableMapEditingArea(true);
 
     selectedMap = mid;
-    $('legend_title').html(editMap_title);
+    $('#legend_title').html(editMap_title);
     selectDataGridRow(element.parentNode.parentNode);
 
     var mapInfo = UrlMapperAjax.callSync('GetMap', selectedMap);
@@ -436,8 +435,8 @@ function stopAction()
     $('#alias_id').val('-');     
     $('#alias').val('');
     $('#custom_url').val('');
-    $('delete_button').css('visibility', 'hidden');
-    $('alias-combo').prop('selectedIndex', -1);
+    $('#delete_button').css('visibility', 'hidden');
+    $('#alias-combo').prop('selectedIndex', -1);
 }
 
 /**
@@ -445,8 +444,8 @@ function stopAction()
  */
 function stopErrorMapAction()
 {
-    $('legend_title').html(addErrorMap_title);
-    $('btn_cancel').css('visibility', 'hidden');
+    $('#legend_title').html(addErrorMap_title);
+    $('#btn_cancel').css('visibility', 'hidden');
     unselectDataGridRow();
     selectedErrorMap = null;
 
