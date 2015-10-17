@@ -47,10 +47,10 @@ function stopAction()
         $('#limit_count').val('0');
         $('#random').val('false');
         $('#published').val('true');
-        $('groups_combo').selectedIndex = -1;
+        $('#groups_combo').prop('selectedIndex', -1);
 
-        $('add_quotes').css('display', 'none');
-        $('btn_del').css('display', 'none');
+        $('#add_quotes').css('display', 'none');
+        $('#btn_del').css('display', 'none');
         break;
     case 'GroupQuotes':
         editGroup($('gid').value);
@@ -60,12 +60,12 @@ function stopAction()
         $('#title').val('');
         $('#show_title').val('true');
         $('#published').val('true');
-        $('gid').selectedIndex = $('group_filter').selectedIndex -1;
+        $('#gid').prop('selectedIndex', $('#group_filter').prop('selectedIndex') - 1);
         $('#start_time').val('');
         $('#stop_time').val('');
         changeEditorValue('quotation', '');
-        $('quotes_combo').selectedIndex = -1;
-        $('btn_del').css('display', 'none');
+        $('#quotes_combo').prop('selectedIndex', -1);
+        $('#btn_del').css('display', 'none');
         break;
     }
 }
@@ -158,7 +158,7 @@ function editQuote(id)
     changeEditorValue('quotation', quoteInfo['quotation']);
     $('#gid').val(quoteInfo['gid']);
     if (quoteInfo['gid'] == 0) {
-        $('gid').selectedIndex= -1;
+        $('gid').prop('selectedIndex', -1);
     }
 
     $('#start_time').val((quoteInfo['start_time'] == null)? '': quoteInfo['start_time']);
@@ -176,7 +176,7 @@ function editGroup(gid)
 {
     if (gid == 0) return;
     if (currentAction == 'GroupQuotes') {
-        $('work_area').html(cacheGroupForm);
+        $('#work_area').html(cacheGroupForm);
     }
 
     currentAction = 'Groups';
@@ -190,8 +190,8 @@ function editGroup(gid)
     $('#random').val(groupInfo['random']);
     $('#published').val(groupInfo['published']);
 
-    $('add_quotes').css('display', 'inline');
-    $('btn_del').css('display', 'inline');
+    $('#add_quotes').css('display', 'inline');
+    $('#btn_del').css('display', 'inline');
 }
 
 /**
@@ -285,17 +285,17 @@ function deleteGroup()
  */
 function editGroupQuotes()
 {
-    if ($('#gid').val(= 0) return);
+    if ($('#gid').val() == 0) return;
     if (cacheGroupQuotesForm == null) {
         cacheGroupQuotesForm = QuotesAjax.callSync('GroupQuotesUI');
     }
 
-    $('add_quotes').css('display', 'none');
-    $('btn_del').css('display', 'none');
+    $('#add_quotes').css('display', 'none');
+    $('#btn_del').css('display', 'none');
     if (cacheGroupForm == null) {
-        cacheGroupForm = $('work_area').html();
+        cacheGroupForm = $('#work_area').html();
     }
-    $('work_area').html(cacheGroupQuotesForm);
+    $('#work_area').html(cacheGroupQuotesForm);
 
     currentAction = 'GroupQuotes';
     var quotesList = QuotesAjax.callSync('GetQuotes', [-1, $('gid').value]);
