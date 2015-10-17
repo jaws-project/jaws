@@ -498,8 +498,8 @@ function editCategory(id)
     if (id == 0) return;
     selectedCategory = id;
 
-    $('legend_title').html(editCategory_title);
-    $('btn_delete').css('display', 'inline');
+    $('#legend_title').html(editCategory_title);
+    $('#btn_delete').css('display', 'inline');
     var category = BlogAjax.callSync('GetCategory', id);
 
     $('#name').val(category['name']);
@@ -515,7 +515,7 @@ function editCategory(id)
 function resetCategoryForm()
 {
     BlogAjax.callAsync('getcategoryform', ['new', 0]);
-    $('category_id').selectedIndex = -1;
+    $('#category_id').prop('selectedIndex', -1);
 }
 
 /**
@@ -684,9 +684,9 @@ function showSimpleResponse(reponse)
 function toggleAdvanced(checked)
 {
     if (checked) {
-        $('advanced').css('display', 'block');
+        $('#advanced').css('display', 'block');
     } else {
-        $('advanced').css('display', 'none');
+        $('#advanced').css('display', 'none');
     }
 }
 
@@ -696,11 +696,11 @@ function toggleAdvanced(checked)
 function toggleUpdate(checked)
 {
     if (checked) {
-        $('pubdate').disabled = false;
-        $('pubdate_button').disabled = false;
+        $('#pubdate').prop('disabled', false);
+        $('#pubdate_button').prop('disabled', false);
     } else {
-        $('pubdate').disabled = true;
-        $('pubdate_button').disabled = true;
+        $('#pubdate').prop('disabled', true);
+        $('#pubdate_button').prop('disabled', true);
     }
 }
 
@@ -708,11 +708,11 @@ function toggleUpdate(checked)
  * Stops doing a certain action
  */
 function stopAction() {
-    ('legend_title').html(addCategory_title);
-    $('btn_delete').css('display', 'none');
+    ('#legend_title').html(addCategory_title);
+    $('#btn_delete').css('display', 'none');
     selectedCategory = null;
 
-    $('category_id').selectedIndex  = -1;
+    $('#category_id').prop('selectedIndex', -1);
 
     $('#name').val('');
     $('#fast_url').val('');
