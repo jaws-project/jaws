@@ -524,7 +524,7 @@ function resetCategoryForm()
 function resetCategoryCombo()
 {
     var categories = BlogAjax.callSync('GetCategories');
-    $('category_id').html('');
+    $('#category_id').html('');
     categories.each(function (item, key){
         var newoption = new Option(item['name'], item['id']);
         $('category_id').add(newoption);
@@ -628,7 +628,7 @@ function startAutoDrafting()
             timestamp = $('pubdate').value;
         }
 
-        var categoriesNode = $('categories').getElementsByTagName('input');
+        var categoriesNode = $('#categories input');
         var categories     = new Array();
         var catCounter     = 0;
         for(var i = 0; i < categoriesNode.length; i++) {
