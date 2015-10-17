@@ -56,7 +56,7 @@ function getTagsDataGrid(name, offset, reset)
 {
     var tags = TagsAjax.callSync(
         'SearchTags',
-        {'gadget': $('gadgets_filter').value, 'name': $('filter').value},
+        {'gadget': $('#gadgets_filter').val(), 'name': $('#filter').val()},
         offset
     );
 
@@ -66,7 +66,7 @@ function getTagsDataGrid(name, offset, reset)
 
         var total = TagsAjax.callSync(
             'SizeOfTagsSearch',
-            {'gadgets_filter': $('gadgets_filter').value, 'name': $('filter').value}
+            {'gadgets_filter': $('#gadgets_filter').val(), 'name': $('#filter').val()}
         );
 
     }
@@ -126,22 +126,22 @@ function updateTag()
     if ($('id').value==0) {
         TagsAjax.callAsync(
             'AddTag', {
-                'name':$('name').value,
-                'title':$('title').value,
-                'description':$('description').value,
-                'meta_keywords':$('meta_keywords').value,
-                'meta_description':$('meta_description').value
+                'name':$('#name').val(),
+                'title':$('#title').val(),
+                'description':$('#description').val(),
+                'meta_keywords':$('#meta_keywords').val(),
+                'meta_description':$('#meta_description').val()
             }
         );
     } else {
         TagsAjax.callAsync(
             'UpdateTag', {
-                0: $('id').value,
-                'name':$('name').value,
-                'title':$('title').value,
-                'description':$('description').value,
-                'meta_keywords':$('meta_keywords').value,
-                'meta_description':$('meta_description').value
+                0: $('#id').val(),
+                'name':$('#name').val(),
+                'title':$('#title').val(),
+                'description':$('#description').val(),
+                'meta_keywords':$('#meta_keywords').val(),
+                'meta_description':$('#meta_description').val()
             }
         );
     }
