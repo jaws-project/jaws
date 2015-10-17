@@ -114,7 +114,7 @@ function stopAction()
     switch(currentAction) {
     case 'Polls':
         selectedPoll = null;
-        $('legend_title').html(addPoll_title);
+        $('#legend_title').html(addPoll_title);
         $('#question').val('');
         $('#gid').prop('selectedIndex', 0);
         $('#start_time').val('');
@@ -129,15 +129,15 @@ function stopAction()
     case 'PollAnswers':
         selectedPoll = null;
         currentAction = 'Polls';
-        $('legend_title').html(addPoll_title);
-        $('p_work_area').html(cachePollForm);
+        $('#legend_title').html(addPoll_title);
+        $('#p_work_area').html(cachePollForm);
         initDatePicker('start_time');
         initDatePicker('stop_time');
         unselectDataGridRow();
         break;
     case 'PollGroups':
         selectedPollGroup = null;
-        $('legend_title').html(addPollGroup_title);
+        $('#legend_title').html(addPollGroup_title);
         $('#title').val('');
         $('#visible').val(1);
         unselectDataGridRow();
@@ -146,8 +146,8 @@ function stopAction()
     case 'PollGroupPolls':
         selectedPollGroup = null;
         currentAction = 'PollGroups';
-        $('legend_title').html(addPollGroup_title);
-        $('pg_work_area').html(cachePollGroupsForm);
+        $('#legend_title').html(addPollGroup_title);
+        $('#pg_work_area').html(cachePollGroupsForm);
         unselectDataGridRow();
         break;
     }
@@ -160,9 +160,9 @@ function editPoll(element, pid)
 {
     currentAction = 'Polls';
     selectedPoll = pid;
-    $('legend_title').html(editPoll_title);
+    $('#legend_title').html(editPoll_title);
     if (cachePollForm != null) {
-        $('p_work_area').html(cachePollForm);
+        $('#p_work_area').html(cachePollForm);
         initDatePicker('start_time');
         initDatePicker('stop_time');
     }
@@ -189,7 +189,7 @@ function editPoll(element, pid)
 function editPollAnswers(element, pid)
 {
     if (cachePollForm == null) {
-        cachePollForm = $('p_work_area').html();
+        cachePollForm = $('#p_work_area').html();
     }
 
     selectDataGridRow(element.parentNode.parentNode);
@@ -200,8 +200,8 @@ function editPollAnswers(element, pid)
     currentAction = 'PollAnswers';
 
     selectedPoll = pid;
-    $('legend_title').html(editAnswers_title);
-    $('p_work_area').html(cachePollAnswersForm);
+    $('#legend_title').html(editAnswers_title);
+    $('#p_work_area').html(cachePollAnswersForm);
     var answersData = PollAjax.callSync('GetPollAnswers', selectedPoll);
     var answers  = answersData['Answers'];
     $('#question').val(answersData['question'].defilter());
@@ -391,9 +391,9 @@ function editPollGroup(element, gid)
 
     currentAction = 'PollGroups';
     selectedPollGroup = gid;
-    $('legend_title').html(editPollGroup_title);
+    $('#legend_title').html(editPollGroup_title);
     if (cachePollGroupsForm != null) {
-        $('pg_work_area').html(cachePollGroupsForm);
+        $('#pg_work_area').html(cachePollGroupsForm);
     }
 
     selectDataGridRow(element.parentNode.parentNode);
@@ -411,7 +411,7 @@ function editPollGroup(element, gid)
 function editPollGroupPolls(element, gid)
 {
     if (cachePollGroupsForm == null) {
-        cachePollGroupsForm = $('pg_work_area').html();
+        cachePollGroupsForm = $('#pg_work_area').html();
     }
 
     selectDataGridRow(element.parentNode.parentNode);
@@ -422,14 +422,14 @@ function editPollGroupPolls(element, gid)
 
     currentAction = 'PollGroupPolls';
     selectedPollGroup = gid;
-    $('legend_title').html(editPollGroupPolls_title);
-    $('pg_work_area').html(cachePollGroupPollsForm);
+    $('#legend_title').html(editPollGroupPolls_title);
+    $('#pg_work_area').html(cachePollGroupPollsForm);
 
     var pollsData = PollAjax.callSync('GetPollGroupPolls', selectedPollGroup);
     var pollsList  = pollsData['Polls'];
     $('#title').val(pollsData['title']);
-    if ($('pg_polls_combo')) {
-        var inputs  = $('pg_polls_combo').getElementsByTagName('input');
+    if ($('#pg_polls_combo').length) {
+        var inputs  = $('#pg_polls_combo input');
         pollsList.each(function(value, index) {
             for (var i=0; i<inputs.length; i++) {
                 if (value['id'] == inputs[i].value) {
@@ -447,8 +447,8 @@ function editPollGroupPolls(element, gid)
 function savePollGroup()
 {
     if (currentAction == 'PollGroupPolls') {
-        if ($('pg_polls_combo')) {
-            var inputs  = $('pg_polls_combo').getElementsByTagName('input');
+        if ($('#pg_polls_combo').length) {
+            var inputs  = $('#pg_polls_combo input');
             var keys    = new Array();
             var counter = 0;
             for (var i=0; i<inputs.length; i++) {
@@ -502,8 +502,8 @@ function getGroupPolls(gid)
 {
     var box = $('grouppolls');
     box.length = 0;
-    $('result_area').html('');
-    $('legend_title').html('');
+    $('#result_area').html('');
+    $('#legend_title').html('');
     if (gid == 0) return;
     var polls = PollAjax.callSync('GetGroupPolls', gid);
     for(var i = 0; i < polls.length; i++) {
