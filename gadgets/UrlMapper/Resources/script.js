@@ -150,19 +150,19 @@ function editAlias(id)
  */
 function saveAlias()
 {
-    if ($('alias_id').value == '-') {
+    if ($('#alias_id').val() == '-') {
         UrlMapperAjax.callAsync(
             'AddAlias', [
-                $('alias').value,
-                $('custom_url').value
+                $('#alias').val(),
+                $('#custom_url').val()
             ]
         );
     } else {
         UrlMapperAjax.callAsync(
             'UpdateAlias', [
-                $('alias_id').value,
-                $('alias').value,
-                $('custom_url').value
+                $('#alias_id').val(),
+                $('#alias').val(),
+                $('#custom_url').val()
             ]
         );
     }
@@ -203,8 +203,8 @@ function saveMap()
     UrlMapperAjax.callAsync(
         'UpdateMap', [
             selectedMap,
-            $('custom_map_route').value,
-            $('map_order').value
+            $('#custom_map_route').val(),
+            $('#map_order').val()
         ]
     );
 }
@@ -266,7 +266,7 @@ function showActionMaps()
     //Get maps of this action and gadget
     var result = UrlMapperAjax.callSync(
         'GetActionMaps',
-        [$('gadgets_combo').value, $('actions_combo').value]
+        [$('#gadgets_combo').val(), $('#actions_combo').val()]
     );
     resetGrid('maps_datagrid', result);
     enableMapEditingArea(false);
@@ -340,15 +340,15 @@ function changeCode()
 function getErrorMaps(name, offset, reset)
 {
     var filters = {
-        'from_date' : $('filter_from_date').value,
-        'to_date'   : $('filter_to_date').value,
-        'code'      : $('filter_code').value,
-        'new_code'  : $('filter_new_code').value
+        'from_date' : $('#filter_from_date').val(),
+        'to_date'   : $('#filter_to_date').val(),
+        'code'      : $('#filter_code').val(),
+        'new_code'  : $('#filter_new_code').val()
     };
 
     var result = UrlMapperAjax.callSync('GetErrorMaps', {
         'offset': offset,
-        'order': $('order_type').value,
+        'order': $('#order_type').val(),
         'filters': filters
     });
 
@@ -378,10 +378,10 @@ function errorMapsDGAction(combo)
     var rows = $('errormaps_datagrid')[0].getSelectedRows();
 
     var filters = {
-        'from_date' : $('filter_from_date').value,
-        'to_date'   : $('filter_to_date').value,
-        'code'      : $('filter_code').value,
-        'new_code'  : $('filter_new_code').value
+        'from_date' : $('#filter_from_date').val(),
+        'to_date'   : $('#filter_to_date').val(),
+        'code'      : $('#filter_code').val(),
+        'new_code'  : $('#filter_new_code').val()
     };
 
     var confirmation = confirm(confirmErrorMapDelete);
@@ -411,19 +411,19 @@ function saveErrorMap()
         UrlMapperAjax.callAsync(
             'UpdateErrorMap', [
                 selectedErrorMap,
-                $('url').value,
-                $('code').value,
-                $('new_url').value,
-                $('new_code').value
+                $('#url').val(),
+                $('#code').val(),
+                $('#new_url').val(),
+                $('#new_code').val()
             ]
         );
     } else {
         UrlMapperAjax.callAsync(
             'AddErrorMap', [
-                $('url').value,
-                $('code').value,
-                $('new_url').value,
-                $('new_code').value
+                $('#url').val(),
+                $('#code').val(),
+                $('#new_url').val(),
+                $('#new_code').val()
             ]
         );
     }
