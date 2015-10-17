@@ -358,8 +358,8 @@ function stopAction()
 
     currentAction = null;
     unselectTreeRow();
-    $('forums_edit').html('');
-    $('work_area_title').html('');
+    $('#forums_edit').html('');
+    $('#work_area_title').html('');
 }
 
 var ForumsAjax = new JawsAjax('Forums', ForumsCallback);
