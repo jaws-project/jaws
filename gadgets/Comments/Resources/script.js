@@ -84,8 +84,8 @@ function stopCommentAction()
 {
     $('#id').val(0);
     $('#gadget').val('');
-    $('comment_ip').html('');
-    $('insert_time').html('');
+    $('#comment_ip').html('');
+    $('#insert_time').html('');
     $('#name').val('');
     $('#email').val('');
     $('#url').val('');
