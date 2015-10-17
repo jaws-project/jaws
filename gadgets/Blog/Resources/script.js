@@ -547,22 +547,22 @@ function saveCategory(form)
     if (selectedCategory == null) {
         BlogAjax.callAsync(
             'AddCategory2', [
-                $('name').value,
-                $('description').value,
-                $('fast_url').value,
-                $('meta_keywords').value,
-                $('meta_desc').value
+                $('#name').val(),
+                $('#description').val(),
+                $('#fast_url').val(),
+                $('#meta_keywords').val(),
+                $('#meta_desc').val()
             ]
         );
     } else {
         BlogAjax.callAsync(
             'UpdateCategory2', [
                 selectedCategory,
-                $('name').value,
-                $('description').value,
-                $('fast_url').value,
-                $('meta_keywords').value,
-                $('meta_desc').value
+                $('#name').val(),
+                $('#description').val(),
+                $('#fast_url').val(),
+                $('#meta_keywords').val(),
+                $('#meta_desc').val()
             ]
         );
     }
