@@ -134,18 +134,18 @@ function saveIPRange()
     if ($('id').value == 0) {
         PolicyAjax.callAsync(
             'AddIPRange', [
-                $('from_ipaddress').value,
-                $('to_ipaddress').value,
-                $('blocked').value
+                $('#from_ipaddress').val(),
+                $('#to_ipaddress').val(),
+                $('#blocked').val()
             ]
         );
     } else {
         PolicyAjax.callAsync(
             'EditIPRange', [
-                $('id').value,
-                $('from_ipaddress').value,
-                $('to_ipaddress').value,
-                $('blocked').value
+                $('#id').val(),
+                $('#from_ipaddress').val(),
+                $('#to_ipaddress').val(),
+                $('#blocked').val()
             ]
         );
     }
@@ -192,11 +192,11 @@ function saveAgent()
     }
 
     if ($('id').value == 0) {
-        PolicyAjax.callAsync('AddAgent', [$('agent').value, $('blocked').value]);
+        PolicyAjax.callAsync('AddAgent', [$('#agent').val(), $('#blocked').val()]);
     } else {
         PolicyAjax.callAsync(
             'EditAgent',
-            [$('id').value, $('agent').value, $('blocked').value]
+            [$('#id').val(), $('#agent').val(), $('#blocked').val()]
         );
     }
 }
@@ -265,9 +265,9 @@ function saveEncryptionSettings()
     try {
         PolicyAjax.callAsync(
             'UpdateEncryptionSettings', [
-                $('enabled').value,
-                $('key_age').value,
-                $('key_len').value
+                $('#enabled').val(),
+                $('#key_age').val(),
+                $('#key_len').val()
             ]
         );
     } catch(e) {
@@ -283,11 +283,11 @@ function saveAntiSpamSettings()
     try {
         PolicyAjax.callAsync(
             'UpdateAntiSpamSettings', [
-                $('filter').value,
-                $('default_captcha').value,
-                $('default_captcha_driver').value,
-                $('obfuscator').value,
-                $('blocked_domains').value
+                $('#filter').val(),
+                $('#default_captcha').val(),
+                $('#default_captcha_driver').val(),
+                $('#obfuscator').val(),
+                $('#blocked_domains').val()
             ]
         );
     } catch(e) {
@@ -303,16 +303,16 @@ function saveAdvancedPolicies()
     try {
         PolicyAjax.callAsync(
             'UpdateAdvancedPolicies', [
-                $('password_complexity').value,
-                $('password_bad_count').value,
-                $('password_lockedout_time').value,
-                $('password_max_age').value,
-                $('password_min_length').value,
-                $('login_captcha').value,
-                $('login_captcha_driver').value,
-                $('xss_parsing_level').value,
-                $('session_idle_timeout').value,
-                $('session_remember_timeout').value
+                $('#password_complexity').val(),
+                $('#password_bad_count').val(),
+                $('#password_lockedout_time').val(),
+                $('#password_max_age').val(),
+                $('#password_min_length').val(),
+                $('#login_captcha').val(),
+                $('#login_captcha_driver').val(),
+                $('#xss_parsing_level').val(),
+                $('#session_idle_timeout').val(),
+                $('#session_remember_timeout').val()
             ]
         );
     } catch(e) {
