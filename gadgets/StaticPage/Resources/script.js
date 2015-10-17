@@ -266,11 +266,11 @@ function editGroup(rowElement, gid)
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
     $('legend_title').html(edit_group_title);
     var group = StaticPageAjax.callSync('GetGroup', selectedGroup);
-    $('title').value     = group['title'].defilter();
-    $('meta_keys').value = group['meta_keywords'].defilter();
-    $('meta_desc').value = group['meta_description'].defilter();
-    $('fast_url').value  = group['fast_url'];
-    $('visible').value   = group['visible'];
+    $('#title').val(group['title'].defilter());
+    $('#meta_keys').val(group['meta_keywords'].defilter());
+    $('#meta_desc').val(group['meta_description'].defilter());
+    $('#fast_url').val(group['fast_url']);
+    $('#visible').val(group['visible']);
     $('title').focus();
 }
 
@@ -346,11 +346,11 @@ function stopAction()
 {
     selectedGroup = 0;
     $('legend_title').html(add_group_title);
-    $('title').value     = '';
-    $('fast_url').value  = '';
-    $('meta_keys').value = '';
-    $('meta_desc').value = '';
-    $('visible').value   = 'true';
+    $('#title').val('');
+    $('#fast_url').val('');
+    $('#meta_keys').val('');
+    $('#meta_desc').val('');
+    $('#visible').val('true');
     unselectGridRow('groups_datagrid');
     $('title').focus();
 }
