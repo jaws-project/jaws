@@ -245,7 +245,7 @@ function saveGroup()
             QuotesAjax.showResponse(response);
         }
     } else {
-        var inputs  = $('work_area').getElementsByTagName('input');
+        var inputs  = $('#work_area input');
         var keys    = new Array();
         var counter = 0;
         for (var i=0; i<inputs.length; i++) {
@@ -299,7 +299,7 @@ function editGroupQuotes()
 
     currentAction = 'GroupQuotes';
     var quotesList = QuotesAjax.callSync('GetQuotes', [-1, $('gid').value]);
-    var inputs  = $('work_area').getElementsByTagName('input');
+    var inputs  = $('#work_area input');
 
     if (quotesList) {
         quotesList.each(function(value, index) {
