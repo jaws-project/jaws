@@ -182,7 +182,7 @@ function groupsOrders(selected) {
         $('order').options[i] = new Option(i+1, i+1);
     }
 
-    $('order').value = (selected == null)? order : selected;
+    $('#order').val((selected == null)? order : selected);
 }
 
 /**
@@ -196,7 +196,7 @@ function forumsOrders(gid, selected) {
         $('order').options[i] = new Option(i+1, i+1);
     }
 
-    $('order').value = (selected == null)? order : selected;
+    $('#order').val((selected == null)? order : selected);
 }
 
 /**
@@ -236,7 +236,7 @@ function addForum(gid)
     $('btn_save').css('display', 'inline');
     $('btn_add').css('display', 'none');
     $('forums_edit').html(cacheForumForm);
-    $('gid').value = gid;
+    $('#gid').val(gid);
 
     forumsOrders($('gid').value);
 }
@@ -261,12 +261,12 @@ function editGroup(gid)
 
     var group = ForumsAjax.callSync('GetGroup', gid);
 
-    $('gid').value         = group['id'];
-    $('title').value       = group['title'];
-    $('description').value = group['description'];
-    $('fast_url').value    = group['fast_url'];
-    $('locked').value      = Number(group['locked']);
-    $('published').value   = Number(group['published']);
+    $('#gid').val(group['id']);
+    $('#title').val(group['title']);
+    $('#description').val(group['description']);
+    $('#fast_url').val(group['fast_url']);
+    $('#locked').val(Number(group['locked']));
+    $('#published').val(Number(group['published']));
     groupsOrders(group['order'])
 }
 
@@ -290,13 +290,13 @@ function editForum(element, fid)
     $('forums_edit').html(cacheForumForm);  
 
     var forum = ForumsAjax.callSync('GetForum', fid);
-    $('fid').value         = forum['id'];
-    $('gid').value         = forum['gid'];
-    $('title').value       = forum['title'];
-    $('description').value = forum['description'];
-    $('fast_url').value    = forum['fast_url'];
-    $('locked').value      = Number(forum['locked']);
-    $('published').value   = Number(forum['published']);
+    $('#fid').val(forum['id']);
+    $('#gid').val(forum['gid']);
+    $('#title').val(forum['title']);
+    $('#description').val(forum['description']);
+    $('#fast_url').val(forum['fast_url']);
+    $('#locked').val(Number(forum['locked']));
+    $('#published').val(Number(forum['published']));
     forumsOrders(forum['gid'], forum['order']);
 }
 
@@ -349,10 +349,10 @@ function stopAction()
 
     switch(currentAction) {
         case 'Forums':
-            $('fid').value = 0;
+            $('#fid').val(0);
             break;
         case 'Groups':
-            $('gid').value = 0;
+            $('#gid').val(0);
             break;
     }
 
