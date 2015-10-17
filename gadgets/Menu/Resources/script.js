@@ -218,9 +218,9 @@ function setRanksCombo(gid, pid, selected) {
         $('rank').options[i] = new Option(i+1, i+1);
     }
     if (selected == null) {
-        $('rank').value = rank;
+        $('#rank').val(rank);
     } else {
-        $('rank').value = selected;
+        $('#rank').val(selected);
     }
 }
 
@@ -292,9 +292,9 @@ function addMenu(gid, pid)
     $('btn_add').css('display', 'none');
     $('menus_edit').html(cacheMenuForm);
 
-    $('gid').value = gid;
+    $('#gid').val(gid);
     getParentMenus(gid, 0);
-    $('pid').value = pid;
+    $('#pid').val(pid);
     setRanksCombo(gid, pid);
 
     getReferences($('type').value);
@@ -323,10 +323,10 @@ function editGroup(gid)
 
     var groupInfo = MenuAjax.callSync('GetGroups', selectedGroup);
 
-    $('gid').value         = groupInfo['id'];
-    $('title').value       = groupInfo['title'].defilter();
-    $('title_view').value  = groupInfo['title_view'];
-    $('published').value   = Number(groupInfo['published']);
+    $('#gid').val(groupInfo['id']);
+    $('#title').val(groupInfo['title'].defilter());
+    $('#title_view').val(groupInfo['title_view']);
+    $('#published').val(Number(groupInfo['published']));
 }
 
 /**
@@ -362,26 +362,26 @@ function editMenu(mid)
     var menuInfo = MenuAjax.callSync('GetMenu', selectedMenu);
     getParentMenus(menuInfo['gid'], mid);
 
-    $('mid').value         = menuInfo['id'];
-    $('pid').value         = menuInfo['pid'];
-    $('gid').value         = menuInfo['gid'];
-    $('type').value        = menuInfo['menu_type'];
-    $('title').value       = menuInfo['title'].defilter();
-    $('url').value         = decodeURI(menuInfo['url']);
-    $('url_target').value  = menuInfo['url_target'];
+    $('#mid').val(menuInfo['id']);
+    $('#pid').val(menuInfo['pid']);
+    $('#gid').val(menuInfo['gid']);
+    $('#type').val(menuInfo['menu_type']);
+    $('#title').val(menuInfo['title'].defilter());
+    $('#url').val(decodeURI(menuInfo['url']));
+    $('#url_target').val(menuInfo['url_target']);
     aclInfo                = menuInfo['acl_key_name'] + ':' + menuInfo['acl_key_subkey'];
 
     setRanksCombo($('#gid').val(), $('#pid').val());
-    $('rank').value        = menuInfo['rank'];
+    $('#rank').val(menuInfo['rank']);
 
-    $('published').value   = Number(menuInfo['published']);
+    $('#published').val(Number(menuInfo['published']));
     getReferences($('type').value);
-    $('references').value = menuInfo['url'];
+    $('#references').val(menuInfo['url']);
     if ($('type').value == 'url' && $('references').selectedIndex == -1) {
         $('references').selectedIndex = 0;
     }
 
-    $('imagename').value  = 'true';
+    $('#imagename').val('true');
     if (!menuInfo['image']) {
         $('image').src = 'gadgets/Menu/Resources/images/no-image.png?' + (new Date()).getTime();
     } else {
@@ -477,9 +477,9 @@ function changeReferences() {
     var selIndex = $('references').selectedIndex;
     if (type != 'url') {
         if (cacheReferences[type][selIndex]['title2']) {
-            $('title').value = cacheReferences[type][selIndex]['title2'];
+            $('#title').val(cacheReferences[type][selIndex]['title2']);
         } else {
-            $('title').value = $('references').options[selIndex].text;
+            $('#title').val($('references').options[selIndex].text);
         }
         if (cacheReferences[type][selIndex]['acl_key']) {
             aclInfo = cacheReferences[type][selIndex]['acl_key'] + ":" + cacheReferences[type][selIndex]['acl_subkey'];
@@ -487,7 +487,7 @@ function changeReferences() {
     }
 
     if ($('references').value !='') {
-        $('url').value = decodeURI($('references').value);
+        $('#url').val(decodeURI($('references').value));
     }
 }
 
@@ -535,7 +535,7 @@ function onUpload(response) {
     } else {
         var filename = encodeURIComponent(response.message) + '&' + (new Date()).getTime();
         $('image').src = base_script + '?gadget=Menu&action=LoadImage&file=' + filename;
-        $('imagename').value = response.message;
+        $('#imagename').val(response.message);
     }
     $('ifrm_upload').destroy();
 }
@@ -544,7 +544,7 @@ function onUpload(response) {
  * Removes the image
  */
 function removeImage() {
-    $('imagename').value = '';
+    $('#imagename').val('');
     $('frm_image').reset();
     $('image').src = 'gadgets/Menu/Resources/images/no-image.png?' + (new Date()).getTime();
 }
