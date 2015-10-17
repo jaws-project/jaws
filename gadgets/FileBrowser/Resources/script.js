@@ -131,7 +131,7 @@ function reOrderFiles()
  */
 function cwd(dir)
 {
-    $('path').value = dir;
+    $('#path').val(dir);
     getDG('fb_datagrid', 0, true);
     stopAction('dir');
 }
@@ -141,11 +141,11 @@ function cwd(dir)
  */
 function editFile(element, fname)
 {
-    $('oldname').value          = fname;
-    $('filename').value         = fname;
-    $('file_title').value       = '';
-    $('file_description').value = '';
-    $('file_fast_url').value    = '';
+    $('#oldname').val(fname);
+    $('#filename').val(fname);
+    $('#file_title').val('');
+    $('#file_description').val('');
+    $('#file_fast_url').val('');
     selectDataGridRow(element.parentNode.parentNode);
     $('upload_switch').checked = false;
     uploadswitch(false);
@@ -204,11 +204,11 @@ function delFile(element, file)
  */
 function editDir(element, dirname)
 {
-    $('oldname').value         = dirname;
-    $('dirname').value         = dirname;
-    $('dir_title').value       = '';
-    $('dir_description').value = '';
-    $('dir_fast_url').value    = '';
+    $('#oldname').val(dirname);
+    $('#dirname').val(dirname);
+    $('#dir_title').val('');
+    $('#dir_description').val('');
+    $('#dir_fast_url').val('');
     selectDataGridRow(element.parentNode.parentNode);
     switchTab('dir');
 
@@ -281,18 +281,18 @@ function stopAction(tab)
     uploadswitch(true);
     $('upload_switch').disabled = true;
     switchTab(tab);
-    $('oldname').value          = '';
+    $('#oldname').val('');
 
-    $('filename').value         = '';
-    $('uploadfile').value       = '';
-    $('file_title').value       = '';
-    $('file_description').value = '';
-    $('file_fast_url').value    = '';
+    $('#filename').val('');
+    $('#uploadfile').val('');
+    $('#file_title').val('');
+    $('#file_description').val('');
+    $('#file_fast_url').val('');
 
-    $('dirname').value          = '';
-    $('dir_title').value        = '';
-    $('dir_description').value  = '';
-    $('dir_fast_url').value     = '';
+    $('#dirname').val('');
+    $('#dir_title').val('');
+    $('#dir_description').val('');
+    $('#dir_fast_url').val('');
 }
 
 var FileBrowserAjax = new JawsAjax('FileBrowser', FileBrowserCallback);
