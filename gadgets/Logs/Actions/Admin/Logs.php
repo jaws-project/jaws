@@ -119,7 +119,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $tpl->SetVariable('actions_combo', $actions->Get());
 
         $btnExecute =& Piwi::CreateWidget('Button', 'executeLogsAction', '', STOCK_YES);
-        $btnExecute->AddEvent(ON_CLICK, "javascript:logsDGAction($('logs_actions_combo'));");
+        $btnExecute->AddEvent(ON_CLICK, "javascript:logsDGAction($('#logs_actions_combo'));");
         $tpl->SetVariable('btn_execute', $btnExecute->Get());
 
 

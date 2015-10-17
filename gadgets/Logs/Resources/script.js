@@ -15,14 +15,14 @@ var LogsCallback = {
     DeleteLogs: function(response) {
         if (response[0]['type'] == 'response_notice') {
             unselectGridRow('logs_datagrid');
-            getDG('logs_datagrid', $('logs_datagrid')[0].getCurrentPage(), true);
+            getDG('logs_datagrid', $('#logs_datagrid')[0].getCurrentPage(), true);
         }
         LogsAjax.showResponse(response);
     },
     DeleteLogsUseFilters: function(response) {
         if (response[0]['type'] == 'response_notice') {
             unselectGridRow('logs_datagrid');
-            getDG('logs_datagrid', $('logs_datagrid')[0].getCurrentPage(), true);
+            getDG('logs_datagrid', $('#logs_datagrid')[0].getCurrentPage(), true);
         }
         LogsAjax.showResponse(response);
     },
@@ -75,7 +75,7 @@ function getLogs(name, offset, reset)
  */
 function logsDGAction(combo)
 {
-    var rows = $('logs_datagrid')[0].getSelectedRows();
+    var rows = $('#logs_datagrid')[0].getSelectedRows();
 
     var filters = {
         'from_date' : $('#from_date').val(),
@@ -86,7 +86,7 @@ function logsDGAction(combo)
         'status'    : $('#filter_status').val()
     };
 
-    if (combo.value == 'delete') {
+    if (combo.val() == 'delete') {
         if (rows.length < 1) {
             return;
         }
@@ -95,19 +95,19 @@ function logsDGAction(combo)
         if (confirmation) {
             LogsAjax.callAsync('DeleteLogs', rows);
         }
-    } else if (combo.value == 'deleteAll') {
+    } else if (combo.val() == 'deleteAll') {
         var confirmation = confirm(confirmLogsDelete);
         if (confirmation) {
             LogsAjax.callAsync('DeleteLogsUseFilters', {'filters':null});
         }
-    } else if (combo.value == 'deleteFiltered') {
+    } else if (combo.val() == 'deleteFiltered') {
         var confirmation = confirm(confirmLogsDelete);
         if (confirmation) {
             LogsAjax.callAsync('DeleteLogsUseFilters', {'filters':filters});
         }
-    } else if (combo.value == 'export') {
+    } else if (combo.val() == 'export') {
         window.location= LogsAjax.baseScript + '?gadget=Logs&action=ExportLogs';
-    } else if (combo.value == 'exportFiltered') {
+    } else if (combo.val() == 'exportFiltered') {
         var queryString = '&from_date=' + filters.from_date;
         queryString += '&to_date=' + filters.to_date;
         queryString += '&gname=' + filters.gadget;
@@ -126,17 +126,17 @@ function viewLog(rowElement, id)
 {
     selectGridRow('contacts_datagrid', rowElement.parentNode.parentNode);
     var result = LogsAjax.callSync('GetLog', {'id': id});
-    $('log_gadget').html(result['gadget']);
-    $('log_action').html(result['action']);
-    $('log_backend').html(result['backend']);
-    $('log_priority').html(result['priority']);
-    $('log_status').html(result['status']);
-    $('log_apptype').html(result['apptype']);
-    $('log_username').html('<a href = "' + result['user_url'] + '">' + result['username'] + '</a>');
-    $('log_nickname').html(result['nickname']);
-    $('log_ip').html(result['ip']);
-    $('log_agent').html(result['agent']);
-    $('log_date').html(result['insert_time']);
+    $('#log_gadget').html(result['gadget']);
+    $('#log_action').html(result['action']);
+    $('#log_backend').html(result['backend']);
+    $('#log_priority').html(result['priority']);
+    $('#log_status').html(result['status']);
+    $('#log_apptype').html(result['apptype']);
+    $('#log_username').html('<a href = "' + result['user_url'] + '">' + result['username'] + '</a>');
+    $('#log_nickname').html(result['nickname']);
+    $('#log_ip').html(result['ip']);
+    $('#log_agent').html(result['agent']);
+    $('#log_date').html(result['insert_time']);
 }
 
 /**
