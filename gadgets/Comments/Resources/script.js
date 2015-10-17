@@ -50,9 +50,9 @@ function getCommentsDataGrid(name, offset, reset)
     var comments = CommentsAjax.callSync(
         'SearchComments', [
             CommentsAjax.mainRequest.gadget,
-            $('gadgets_filter').value,
-            $('filter').value,
-            $('status').value,
+            $('#gadgets_filter').val(),
+            $('#filter').val(),
+            $('#status').val(),
             offset,
             2
         ]
@@ -62,9 +62,9 @@ function getCommentsDataGrid(name, offset, reset)
         $(name)[0].setCurrentPage(0);
         var total = CommentsAjax.callSync(
             'SizeOfCommentsSearch', [
-                $('gadgets_filter').value,
-                $('filter').value,
-                $('status').value
+                $('#gadgets_filter').val(),
+                $('#filter').val(),
+                $('#status').val()
             ]
         );
     }
@@ -152,14 +152,14 @@ function editComment(rowElement, id)
 function updateComment(sendEmail) {
     CommentsAjax.callAsync(
         'UpdateComment', [
-            $('gadget').value,
-            $('id').value,
-            $('name').value,
-            $('email').value,
-            $('url').value,
-            $('message').value,
-            $('reply').value,
-            $('comment_status').value,
+            $('#gadget').val(),
+            $('#id').val(),
+            $('#name').val(),
+            $('#email').val(),
+            $('#url').val(),
+            $('#message').val(),
+            $('#reply').val(),
+            $('#comment_status').val(),
             sendEmail
         ]
     );
@@ -199,7 +199,7 @@ function commentDGAction(combo)
         }
     } else if (combo.value != '') {
         if (selectedRows) {
-            CommentsAjax.callAsync('MarkAs', [$('gadget').value, rows, combo.value]);
+            CommentsAjax.callAsync('MarkAs', [$('#gadget').val(), rows, combo.val()]);
         }
     }
 }
@@ -219,10 +219,10 @@ function SaveSettings()
 {
     CommentsAjax.callAsync(
         'SaveSettings', [
-            $('allow_comments').value,
-            $('allow_duplicate').value,
-            $('default_comment_status').value,
-            $('order_type').value
+            $('#allow_comments').val(),
+            $('#allow_duplicate').val(),
+            $('#default_comment_status').val(),
+            $('#order_type').val()
         ]
     );
 }
