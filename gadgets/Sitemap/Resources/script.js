@@ -207,9 +207,9 @@ function saveProperties() {
                 'gname': selectedGadget,
                 'category': selectedCategory,
                 data: {
-                    'priority': $('priority').value,
-                    'frequency': $('frequency').value,
-                    'status': $('status').value
+                    'priority': $('#priority').val(),
+                    'frequency': $('#frequency').val(),
+                    'status': $('#status').val()
                 }
             }
         );
@@ -219,9 +219,9 @@ function saveProperties() {
             {
                 'gname': selectedGadget,
                 data: {
-                    'priority': $('priority').value,
-                    'frequency': $('frequency').value,
-                    'status': $('status').value
+                    'priority': $('#priority').val(),
+                    'frequency': $('#frequency').val(),
+                    'status': $('#status').val()
                 }
             }
         );
