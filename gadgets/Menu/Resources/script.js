@@ -35,7 +35,7 @@ function changeMenuGroup(gid, mid) {
 }
 
 function changeMenuParent(pid) {
-    setRanksCombo($('gid').value, pid);
+    setRanksCombo($('#gid').val(), pid);
 }
 
 function AddNewMenuGroup(gid) {
@@ -98,9 +98,9 @@ function saveMenus()
         if (selectedGroup == null) {
             var response = MenuAjax.callSync(
                 'InsertGroup', [
-                    $('title').value,
-                    $('title_view').value,
-                    $('published').value
+                    $('#title').val(),
+                    $('#title_view').val(),
+                    $('#published').val()
                 ]
             );
             if (response[0]['type'] == 'response_notice') {
@@ -112,10 +112,10 @@ function saveMenus()
         } else {
             MenuAjax.callAsync(
                 'UpdateGroup', [
-                    $('gid').value,
-                    $('title').value,
-                    $('title_view').value,
-                    $('published').value
+                    $('#gid').val(),
+                    $('#title').val(),
+                    $('#title_view').val(),
+                    $('#published').val()
                 ]
             );
         }
@@ -127,39 +127,39 @@ function saveMenus()
         if (selectedMenu == null) {
             var response = MenuAjax.callSync(
                 'InsertMenu', [
-                    $('pid').value,
-                    $('gid').value,
-                    $('type').value,
+                    $('#pid').val(),
+                    $('#gid').val(),
+                    $('#type').val(),
                     aclInfo,
-                    $('title').value,
-                    encodeURI($('url').value),
-                    $('url_target').value,
-                    $('rank').value,
-                    $('published').value,
-                    $('imagename').value
+                    $('#title').val(),
+                    encodeURI($('#url').val()),
+                    $('#url_target').val(),
+                    $('#rank').val(),
+                    $('#published').val(),
+                    $('#imagename').val()
                 ]
             );
             if (response[0]['type'] == 'response_notice') {
                 var mid = response[0]['text'].substr(0, response[0]['text'].indexOf('%%'));
                 response[0]['text'] = response[0]['text'].substr(response[0]['text'].indexOf('%%')+2);
-                AddNewMenuItem($('gid').value, $('pid').value, mid, $('rank').value);
+                AddNewMenuItem($('#gid').val(), $('#pid').val(), mid, $('#rank').val());
                 stopAction();
             }
             MenuAjax.showResponse(response);
         } else {
             var response = MenuAjax.callSync(
                 'UpdateMenu', [
-                    $('mid').value,
-                    $('pid').value,
-                    $('gid').value,
-                    $('type').value,
+                    $('#mid').val(),
+                    $('#pid').val(),
+                    $('#gid').val(),
+                    $('#type').val(),
                     aclInfo,
-                    $('title').value,
-                    encodeURI($('url').value),
-                    $('url_target').value,
-                    $('rank').value,
-                    $('published').value,
-                    $('imagename').value
+                    $('#title').val(),
+                    encodeURI($('#url').val()),
+                    $('#url_target').val(),
+                    $('#rank').val(),
+                    $('#published').val(),
+                    $('#imagename').val()
                 ]
             );
             if (response[0]['type'] == 'response_notice') {
@@ -371,7 +371,7 @@ function editMenu(mid)
     $('url_target').value  = menuInfo['url_target'];
     aclInfo                = menuInfo['acl_key_name'] + ':' + menuInfo['acl_key_subkey'];
 
-    setRanksCombo($('gid').value, $('pid').value);
+    setRanksCombo($('#gid').val(), $('#pid').val());
     $('rank').value        = menuInfo['rank'];
 
     $('published').value   = Number(menuInfo['published']);
