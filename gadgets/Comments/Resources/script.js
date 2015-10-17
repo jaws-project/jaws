@@ -82,15 +82,15 @@ function isValidEmail(email) {
  */
 function stopCommentAction()
 {
-    $('id').value                      = 0;
-    $('gadget').value                  = '';
+    $('#id').val(0);
+    $('#gadget').val('');
     $('comment_ip').html('');
     $('insert_time').html('');
-    $('name').value                    = '';
-    $('email').value                   = '';
-    $('url').value                     = '';
-    $('message').value                 = '';
-    $('reply').value                   = '';
+    $('#name').val('');
+    $('#email').val('');
+    $('#url').val('');
+    $('#message').val('');
+    $('#reply').val('');
     $('comment_status').selectedIndex  = 0;
     $('btn_save').css('display', 'none');
     $('btn_reply').css('display', 'none');
@@ -119,15 +119,15 @@ function editComment(rowElement, id)
     $('url').disabled             = false;
     $('message').disabled         = false;
     $('comment_status').disabled  = false;
-    $('id').value                 = comment['id'];
-    $('gadget').value             = comment['gadget'];
+    $('#id').val(comment['id']);
+    $('#gadget').val(comment['gadget']);
     $('comment_ip').html(comment['ip']);
     $('insert_time').html(comment['insert_time']);
-    $('name').value               = comment['name'];
-    $('email').value              = comment['email'];
-    $('url').value                = comment['url'];
-    $('message').value            = comment['msg_txt'].defilter();
-    $('comment_status').value     = comment['status'];
+    $('#name').val(comment['name']);
+    $('#email').val(comment['email']);
+    $('#url').val(comment['url']);
+    $('#message').val(comment['msg_txt'].defilter());
+    $('#comment_status').val(comment['status']);
     if (comment['reference_url'] != '') {
         $('reference_url').html(
             '<a href="'
@@ -142,7 +142,7 @@ function editComment(rowElement, id)
     $('btn_cancel').css('display', 'inline');
 
     if(comment['reply']!=null) {
-        $('reply').value          = comment['reply'].defilter();
+        $('#reply').val(comment['reply'].defilter());
     }
 }
 
