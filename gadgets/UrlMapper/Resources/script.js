@@ -173,9 +173,8 @@ function saveAlias()
  */
 function deleteCurrentAlias()
 {
-    var aliasCombo = $('alias-combo');
-    if (aliasCombo.selectedIndex != -1) {
-        UrlMapperAjax.callAsync('DeleteAlias', aliasCombo.value);
+    if ($('#alias-combo').prop('selectedIndex') != -1) {
+        UrlMapperAjax.callAsync('DeleteAlias', $('#alias-combo').val());
     }
     stopAction();
 }
@@ -306,9 +305,9 @@ function rebuildActionCombo()
 function enableMapEditingArea(status)
 {
     if (status) {
-        $('custom_map_route').disabled  = false;
-        $('btn_save').disabled   = false;
-        $('btn_cancel').disabled = false;
+        $('#custom_map_route').prop('disabled', false);
+        $('#btn_save').prop('disabled', false);
+        $('#btn_cancel').prop('disabled', false);
     } else {
         selectedMap = null;
         unselectDataGridRow();
@@ -316,9 +315,9 @@ function enableMapEditingArea(status)
         $('#map_route').val('');
         $('#map_ext').val('');
         $('#custom_map_route').val('');
-        $('custom_map_route').disabled  = true;
-        $('btn_save').disabled   = true;
-        $('btn_cancel').disabled = true;
+        $('#custom_map_route').prop('disabled', true);
+        $('#btn_save').prop('disabled', true);
+        $('#btn_cancel').prop('disabled', true);
     }
 }
 
@@ -328,9 +327,9 @@ function enableMapEditingArea(status)
 function changeCode()
 {
     if ($('new_code').value == 410) {
-        $('new_url').disabled = true;
+        $('#new_url').prop('disabled', true);
     } else {
-        $('new_url').disabled = false;
+        $('#new_url').prop('disabled', false);
     }
 }
 
@@ -438,7 +437,7 @@ function stopAction()
     $('#alias').val('');
     $('#custom_url').val('');
     $('delete_button').css('visibility', 'hidden');
-    $('alias-combo').selectedIndex = -1;
+    $('alias-combo').prop('selectedIndex', -1);
 }
 
 /**
@@ -452,9 +451,9 @@ function stopErrorMapAction()
     selectedErrorMap = null;
 
     $('#url').val('');
-    $('code').selectedIndex = -1;
+    $('#code').prop('selectedIndex', -1);
     $('#new_url').val('');
-    $('new_code').selectedIndex = -1;
+    $('#new_code').prop('selectedIndex', -1);
     $('#insert_time').val('');
 }
 
