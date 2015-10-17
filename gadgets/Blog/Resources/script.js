@@ -502,11 +502,11 @@ function editCategory(id)
     $('btn_delete').css('display', 'inline');
     var category = BlogAjax.callSync('GetCategory', id);
 
-    $('name').value             = category['name'];
-    $('fast_url').value         = category['fast_url'];
-    $('meta_keywords').value    = category['meta_keywords'];
-    $('meta_desc').value        = category['meta_description'];
-    $('description').value      = category['description'];
+    $('#name').val(category['name']);
+    $('#fast_url').val(category['fast_url']);
+    $('#meta_keywords').val(category['meta_keywords']);
+    $('#meta_desc').val(category['meta_description']);
+    $('#description').val(category['description']);
 }
 
 /**
@@ -575,7 +575,7 @@ function fillCatInfoForm(content)
 {
     var catInfo = document.getElementById('catinfoform');
     catInfo.innerHTML = content;
-    $('description').value = content.evalScripts().toString().defilter();
+    $('#description').val(content.evalScripts().toString().defilter());
 }
 
 /**
@@ -669,9 +669,9 @@ function showSimpleResponse(reponse)
     if (!autoDraftDone) {
         var actioni   = $('action').value;
         if (actioni == 'SaveNewEntry' && reponse[0]['type'] == 'response_notice') {
-            $('published').value = '0';
-            $('id').value        = reponse[0]['data'];
-            $('action').value    = 'SaveEditEntry';
+            $('#published').val('0');
+            $('#id').val(reponse[0]['data']);
+            $('#action').val('SaveEditEntry');
         }
         autoDraftDone = true;
     }
@@ -714,11 +714,11 @@ function stopAction() {
 
     $('category_id').selectedIndex  = -1;
 
-    $('name').value             = '';
-    $('fast_url').value         = '';
-    $('meta_keywords').value    = '';
-    $('meta_desc').value        = '';
-    $('description').value      = '';
+    $('#name').val('');
+    $('#fast_url').val('');
+    $('#meta_keywords').val('');
+    $('#meta_desc').val('');
+    $('#description').val('');
 }
 
 var BlogAjax = new JawsAjax('Blog', BlogCallback);
