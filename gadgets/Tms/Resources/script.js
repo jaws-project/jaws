@@ -41,7 +41,7 @@ var TmsCallback = {
     
     installtheme: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('themes_combo').value = selectedTheme;
+            $('#themes_combo').val(selectedTheme);
             editTheme(selectedTheme);
         }
         TmsAjax.showResponse(response);
