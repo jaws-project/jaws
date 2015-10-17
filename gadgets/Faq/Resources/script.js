@@ -20,7 +20,7 @@ var FaqCallback = {
 
     DeleteCategory: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('FaqCategory_'+currentCategory).destroy();
+            $('#FaqCategory_'+currentCategory).remove();
         }
         FaqAjax.showResponse(response);
     },
