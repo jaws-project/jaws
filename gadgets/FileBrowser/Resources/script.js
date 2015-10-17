@@ -265,7 +265,7 @@ function getFiles(name, offset, reset)
     if (reset) {
         var total = FileBrowserAjax.callSync('GetDirContentsCount', $('#path').val());
         var loc   = FileBrowserAjax.callSync('GetLocation', $('#path').val());
-        $('location').html(loc);
+        $('#location').html(loc);
     }
     resetGrid(name, result, total);
 }
