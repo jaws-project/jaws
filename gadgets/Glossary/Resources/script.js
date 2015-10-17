@@ -62,9 +62,9 @@ var GlossaryCallback = {
  */
 function fillEditorEntries(term_data)
 {
-    $('hidden_id').value  = term_data['id'];
-    $('term_title').value = term_data['term'].defilter();
-    $('fast_url').value   = term_data['fast_url'];
+    $('#hidden_id').val(term_data['id']);
+    $('#term_title').val(term_data['term'].defilter());
+    $('#fast_url').val(term_data['fast_url']);
     changeEditorValue('term_contents', term_data['description']);
     currentMode = 'edit';
 }
@@ -205,9 +205,9 @@ function createNewTerm(title)
     currentMode = 'new';
     switchTab('edit', title);
     $('term_id').disabled = true;
-    $('term_title').value = '';
+    $('#term_title').val('');
     $('term_title').focus();
-    $('fast_url').value = '';
+    $('#fast_url').val('');
     changeEditorValue('term_contents', '');   
 }
 
