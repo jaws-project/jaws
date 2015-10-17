@@ -126,26 +126,26 @@ function updateFeed()
     if($('id').value==0) {
             FeedReaderAjax.callAsync(
                 'InsertFeed', [
-                    $('title').value,
-                    $('url').value,
-                    $('cache_time').value,
-                    $('view_type').value,
-                    $('count_entry').value,
-                    $('title_view').value,
-                    $('visible').value
+                    $('#title').val(),
+                    $('#url').val(),
+                    $('#cache_time').val(),
+                    $('#view_type').val(),
+                    $('#count_entry').val(),
+                    $('#title_view').val(),
+                    $('#visible').val()
                 ]
             );
     } else {
         FeedReaderAjax.callAsync(
             'UpdateFeed', [
-                $('id').value,
-                $('title').value,
-                $('url').value,
-                $('cache_time').value,
-                $('view_type').value,
-                $('count_entry').value,
-                $('title_view').value,
-                $('visible').value
+                $('#id').val(),
+                $('#title').val(),
+                $('#url').val(),
+                $('#cache_time').val(),
+                $('#view_type').val(),
+                $('#count_entry').val(),
+                $('#title_view').val(),
+                $('#visible').val()
             ]
         );
     }
