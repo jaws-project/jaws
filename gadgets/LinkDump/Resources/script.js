@@ -60,7 +60,7 @@ function saveLink()
         }
 
         lc = parseInt($('limit_count').value);
-        $('limit_count').value = (lc < 1)? '1' : ((lc > max_limit_count)? max_limit_count : lc);
+        $('#limit_count').val((lc < 1)? '1' : ((lc > max_limit_count)? max_limit_count : lc));
 
         cacheLinkForm = null;
         if (selectedGroup == null) {
@@ -253,9 +253,9 @@ function setRanksCombo(pid, selected) {
         $('rank').options[i] = new Option(i+1, i+1);
     }
     if (selected == null) {
-        $('rank').value = rank;
+        $('#rank').val(rank);
     } else {
-        $('rank').value = selected;
+        $('#rank').val(selected);
     }
 }
 
@@ -319,7 +319,7 @@ function addLink(gid)
     $('btn_add').css('display', 'none');
     $('links_edit').html(cacheLinkForm);
 
-    $('gid').value = gid;
+    $('#gid').val(gid);
     setRanksCombo($('gid').value);
 }
 
@@ -346,12 +346,12 @@ function editGroup(gid)
 
     var groupInfo = LinkDumpAjax.callSync('GetGroups', selectedGroup);
 
-    $('gid').value         = groupInfo['id'];
-    $('title').value       = groupInfo['title'].defilter();
-    $('fast_url').value    = groupInfo['fast_url'];
-    $('limit_count').value = groupInfo['limit_count'];
-    $('links_type').value  = groupInfo['link_type'];
-    $('order_type').value  = groupInfo['order_type'];
+    $('#gid').val(groupInfo['id']);
+    $('#title').val(groupInfo['title'].defilter());
+    $('#fast_url').val(groupInfo['fast_url']);
+    $('#limit_count').val(groupInfo['limit_count']);
+    $('#links_type').val(groupInfo['link_type']);
+    $('#order_type').val(groupInfo['order_type']);
 }
 
 /**
@@ -377,18 +377,18 @@ function editLink(element, lid)
 
     var linkInfo = LinkDumpAjax.callSync('GetLink', selectedLink);
 
-    $('lid').value         = linkInfo['id'];
-    $('gid').value         = linkInfo['gid'];
-    $('title').value       = linkInfo['title'].defilter();
-    $('url').value         = linkInfo['url'];
-    $('fast_url').value    = linkInfo['fast_url'];
-    $('description').value = linkInfo['description'].defilter();
+    $('#lid').val(linkInfo['id']);
+    $('#gid').val(linkInfo['gid']);
+    $('#title').val(linkInfo['title'].defilter());
+    $('#url').val(linkInfo['url']);
+    $('#fast_url').val(linkInfo['fast_url']);
+    $('#description').val(linkInfo['description'].defilter());
     if($('tags')!=null) {
-        $('tags').value    = linkInfo['tags'];
+        $('#tags').val(linkInfo['tags']);
     }
-    $('clicks').value      = linkInfo['clicks'];
+    $('#clicks').val(linkInfo['clicks']);
     setRanksCombo($('gid').value);
-    $('rank').value = linkInfo['rank'];
+    $('#rank').val(linkInfo['rank']);
 }
 
 /**
@@ -436,7 +436,7 @@ function upCount()
     lc = isNaN(lc)? 0 : lc;
     lc++;
     lc = (lc < 1)? 1 : ((lc > max_limit_count)? max_limit_count : lc);
-    $('limit_count').value = lc;
+    $('#limit_count').val(lc);
 }
 
 function downCount()
@@ -445,7 +445,7 @@ function downCount()
     lc = isNaN(lc)? 0 : lc;
     lc--;
     lc = (lc < 1)? 1 : ((lc > max_limit_count)? max_limit_count : lc);
-    $('limit_count').value = lc;
+    $('#limit_count').val(lc);
 }
 
 var LinkDumpAjax = new JawsAjax('LinkDump', LinkDumpCallback);
