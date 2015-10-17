@@ -49,12 +49,12 @@ function OnTermKeypress(element, event)
 function getLogs(name, offset, reset)
 {
     var filters = {
-        'from_date' : $('from_date').value,
-        'to_date'   : $('to_date').value,
-        'gadget'    : $('filter_gadget').value,
-        'user'      : $('filter_user').value,
-        'priority'  : $('filter_priority').value,
-        'status'    : $('filter_status').value
+        'from_date' : $('#from_date').val(),
+        'to_date'   : $('#to_date').val(),
+        'gadget'    : $('#filter_gadget').val(),
+        'user'      : $('#filter_user').val(),
+        'priority'  : $('#filter_priority').val(),
+        'status'    : $('#filter_status').val()
     };
 
     var result = LogsAjax.callSync('GetLogs', {
@@ -78,12 +78,12 @@ function logsDGAction(combo)
     var rows = $('logs_datagrid')[0].getSelectedRows();
 
     var filters = {
-        'from_date' : $('from_date').value,
-        'to_date'   : $('to_date').value,
-        'gadget'    : $('filter_gadget').value,
-        'user'      : $('filter_user').value,
-        'priority'  : $('filter_priority').value,
-        'status'    : $('filter_status').value
+        'from_date' : $('#from_date').val(),
+        'to_date'   : $('#to_date').val(),
+        'gadget'    : $('#filter_gadget').val(),
+        'user'      : $('#filter_user').val(),
+        'priority'  : $('#filter_priority').val(),
+        'status'    : $('#filter_status').val()
     };
 
     if (combo.value == 'delete') {
@@ -154,8 +154,8 @@ function saveSettings()
 {
     LogsAjax.callAsync(
         'SaveSettings', {
-            'log_priority_level': $('priority').value,
-            'log_parameters': $('log_parameters').value
+            'log_priority_level': $('#priority').val(),
+            'log_parameters': $('#log_parameters').val()
         }
     );
 }
