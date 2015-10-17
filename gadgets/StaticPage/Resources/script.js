@@ -264,7 +264,7 @@ function editGroup(rowElement, gid)
 {
     selectedGroup = gid;
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
-    $('legend_title').html(edit_group_title);
+    $('#legend_title').html(edit_group_title);
     var group = StaticPageAjax.callSync('GetGroup', selectedGroup);
     $('#title').val(group['title'].defilter());
     $('#meta_keys').val(group['meta_keywords'].defilter());
@@ -345,7 +345,7 @@ function showSimpleResponse(response)
 function stopAction()
 {
     selectedGroup = 0;
-    $('legend_title').html(add_group_title);
+    $('#legend_title').html(add_group_title);
     $('#title').val('');
     $('#fast_url').val('');
     $('#meta_keys').val('');
