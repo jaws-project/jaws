@@ -246,26 +246,26 @@ function updateContact(send_reply)
     case 'Contacts':
         ContactAjax.callAsync(
             'UpdateContact', [
-                $('id').value,
-                $('name').value,
-                $('email').value,
-                $('company').value,
-                $('url').value,
-                $('tel').value,
-                $('fax').value,
-                $('mobile').value,
-                $('address').value,
-                $('rid').value,
-                $('subject').value,
-                $('message').value
+                $('#id').val(),
+                $('#name').val(),
+                $('#email').val(),
+                $('#company').val(),
+                $('#url').val(),
+                $('#tel').val(),
+                $('#fax').val(),
+                $('#mobile').val(),
+                $('#address').val(),
+                $('#rid').val(),
+                $('#subject').val(),
+                $('#message').val()
             ]
         );
         break;
     case 'Reply':
         ContactAjax.callAsync(
             'UpdateReply', [
-                $('id').value,
-                $('reply').value,
+                $('#id').val(),
+                $('#reply').val(),
                 send_reply
             ]
         );
@@ -293,10 +293,10 @@ function deleteContact(element, id)
  */
 function getContacts(name, offset, reset)
 {
-    var result = ContactAjax.callSync('GetContacts', [$('recipient_filter').value, offset]);
+    var result = ContactAjax.callSync('GetContacts', [$('#recipient_filter').val(), offset]);
     if (reset) {
         $(name)[0].setCurrentPage(0);
-        var total = ContactAjax.callSync('GetContactsCount', $('recipient_filter').value);
+        var total = ContactAjax.callSync('GetContactsCount', $('#recipient_filter').val());
     }
     resetGrid(name, result, total);
 }
@@ -335,26 +335,26 @@ function updateRecipient()
     if($('id').value == 0) {
         ContactAjax.callAsync(
             'InsertRecipient', [
-                $('name').value,
-                $('email').value,
-                $('tel').value,
-                $('fax').value,
-                $('mobile').value,
-                $('inform_type').value,
-                $('visible').value
+                $('#name').val(),
+                $('#email').val(),
+                $('#tel').val(),
+                $('#fax').val(),
+                $('#mobile').val(),
+                $('#inform_type').val(),
+                $('#visible').val()
             ]
         );
     } else {
         ContactAjax.callAsync(
             'UpdateRecipient', [
-                $('id').value,
-                $('name').value,
-                $('email').value,
-                $('tel').value,
-                $('fax').value,
-                $('mobile').value,
-                $('inform_type').value,
-                $('visible').value
+                $('#id').val(),
+                $('#name').val(),
+                $('#email').val(),
+                $('#tel').val(),
+                $('#fax').val(),
+                $('#mobile').val(),
+                $('#inform_type').val(),
+                $('#visible').val()
             ]
         );
     }
@@ -381,9 +381,9 @@ function updateProperties()
 {
     ContactAjax.callAsync(
         'UpdateProperties', [
-            $('use_antispam').value,
-            $('email_format').value,
-            $('enable_attachment').value,
+            $('#use_antispam').val(),
+            $('#email_format').val(),
+            $('#enable_attachment').val(),
             getEditorValue('comments')
         ]
     );
@@ -543,27 +543,27 @@ function sendEmail()
             $('groups').focus();
             return;
         }
-        var target = {'group': $('groups').value,
-                      'user' : $('users').value};
+        var target = {'group': $('#groups').val(),
+                      'user' : $('#users').val()};
     } else {
         // Already we have isValidEmail() but validation becomes 
         // too complicated in case of 3 fields (to, cc, bcc) so let server do the job
-        if (!$('to').val() &&
-            !$('cc').val() &&
-            !$('bcc').val())
+        if (!$('#to').val() &&
+            !$('#cc').val() &&
+            !$('#bcc').val())
         {
             alert(incompleteMailerFields);
-            $('to').focus();
+            $('#to').focus();
             return;
         }
-        var target = {'to' : $('to').value,
-                      'cc' : $('cc').value,
-                      'bcc': $('bcc').value};
+        var target = {'to' : $('#to').val(),
+                      'cc' : $('#cc').val(),
+                      'bcc': $('#bcc').val()};
     }
 
-    if (!$('subject').val()) {
+    if (!$('#subject').val()) {
         alert(incompleteMailerFields);
-        $('subject').focus();
+        $('#subject').focus();
         return;
     }
 
@@ -576,7 +576,7 @@ function sendEmail()
 
     ContactAjax.callAsync(
         'SendEmail',
-        [target, $('subject').value, body, $('filename').value]
+        [target, $('#subject').val(), body, $('#filename').val()]
     );
 }
 
