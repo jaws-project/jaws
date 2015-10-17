@@ -136,18 +136,18 @@ function init()
 function buildComponentList()
 {
     var sections = {},
-        filter = $('filter').value;
-    sections.outdated = $('outdated').html('');
-    sections.notinstalled = $('notinstalled').html('');
-    sections.installed = $('installed').html('');
-    sections.core = $('core').html('');
+        filter = $('#filter').val();
+    sections.outdated = $('#outdated').html('');
+    sections.notinstalled = $('#notinstalled').html('');
+    sections.installed = $('#installed').html('');
+    sections.core = $('#core').html('');
     Object.keys(components).sort().each(function(name) {
         if (components[name]['title'].test(filter, 'i')) {
             sections[components[name].state].grab(getComponentElement(components[name]));
         }
     });
-    $('components').getElements('h3').show();
-    $('components').getElements('ul:empty').getPrevious('h3').hide();
+    $('#components h3').show();
+    $('#components ul:empty').prev('h3').hide();
 }
 
 /**
@@ -215,14 +215,14 @@ function updateSummary()
         }
         count.total++;
     });
-    $('sum_installed').html(count.installed);
-    $('sum_notinstalled').html(count.notinstalled);
+    $('s#um_installed').html(count.installed);
+    $('#sum_notinstalled').html(count.notinstalled);
 
-    $('sum_total').html(count.total);
+    $('#sum_total').html(count.total);
     if (!pluginsMode) {
-        $('sum_disabled').html(count.disabled);
-        $('sum_outdated').html(count.outdated);
-        $('sum_core').html(count.core);
+        $('#sum_disabled').html(count.disabled);
+        $('#sum_outdated').html(count.outdated);
+        $('#sum_core').html(count.core);
     }
 }
 
@@ -245,17 +245,17 @@ function toggleCollapse()
 function showHideTabs()
 {
     var comp = components[selectedComponent];
-    $('tabs').getElements('li').hide();
-    $('tab_info').show();
+    $('#tabs li').hide();
+    $('#tab_info').show();
     if (comp.state === 'core' || (comp.state === 'installed' && !comp.disabled)) {
         if (comp.manage_reg) {
-            $('tab_registry').show();
+            $('#tab_registry').show();
         }
         if (comp.manage_acl) {
-            $('tab_acl').show();
+            $('#tab_acl').show();
         }
         if (pluginsMode) {
-            $('tab_usage').show();
+            $('#tab_usage').show();
         }
     }
 }
@@ -266,30 +266,30 @@ function showHideTabs()
 function showHideButtons()
 {
     var comp = components[selectedComponent];
-    $('component_info').getElements('button').hide();
+    $('#component_info button').hide();
     if (pluginsMode) {
         switch(comp.state) {
         case 'notinstalled':
-            $('btn_install').show('inline');
+            $('#btn_install').css('display', 'inline');
             break;
         case 'installed':
-            $('btn_uninstall').show('inline');
+            $('#btn_uninstall').css('display', 'inline');
             break;
         }
     } else {
         switch(comp.state) {
         case 'outdated':
-            $('btn_update').show('inline');
+            $('#btn_update').css('display', 'inline');
             break;
         case 'notinstalled':
-            $('btn_install').show('inline');
+            $('#btn_install').css('display', 'inline');
             break;
         case 'installed':
-            $('btn_uninstall').show('inline');
+            $('#btn_uninstall').css('display', 'inline');
             if (comp.disabled) {
-                $('btn_enable').show('inline');
+                $('#btn_enable').css('display', 'inline');
             } else {
-                $('btn_disable').show('inline');
+                $('#btn_disable').css('display', 'inline');
             }
             break;
         }
@@ -303,9 +303,9 @@ function switchTab(tab)
 {
     tab = (typeof tab === 'string') ? tab : this.id;
     tab = $(tab).isVisible() ? tab : 'tab_info';
-    $('tabs').getElement('li.active').removeClass('active');
+    $('#tabs li.active').removeClass('active');
     $(tab).addClass('active');
-    $('component_form').getChildren().hide();
+    $('#component_form').children().hide();
     switch (tab) {
         case 'tab_info':
             componentInfo();
@@ -335,9 +335,9 @@ function selectComponent()
         'gadgets/' + components[comp].name + '/Resources/images/logo.png';
     img.alt = components[comp].title;
     h1.innerHTML = components[comp].title + ': ' + components[comp].description;
-    $('component_head').html('');
-    $('component_form').html('');
-    $('component_head').adopt(img, h1);
+    $('#component_head').html('');
+    $('#component_form').html('');
+    $('#component_head').adopt(img, h1);
     $('#components li.selected').removeClass('selected');
     this.addClass('selected');
 
@@ -356,8 +356,8 @@ function closeUI()
 {
     selectedComponent = null;
     $('#components li.selected').removeClass('selected');
-    $('summary').show();
-    $('component').hide();
+    $('#summary').show();
+    $('#component').hide();
     updateSummary();
 }
 
@@ -366,16 +366,16 @@ function closeUI()
  */
 function componentInfo()
 {
-    if (!$('component_info')) {
-        $('component_form').html(pluginsMode ?
+    if (!$('#component_info').length) {
+        $('#component_form').html(pluginsMode ?
             ComponentsAjax.callSync('GetPluginInfo', selectedComponent):
             ComponentsAjax.callSync('GetGadgetInfo', selectedComponent)
         );
     }
 
-    $('summary').hide();
-    $('component').show();
-    $('component_info').show();
+    $('#summary').hide();
+    $('#component').show();
+    $('#component_info').show();
     showHideButtons();
 }
 
@@ -405,9 +405,9 @@ function componentRegistry(reset)
         regCache.clone(true, true).replaces($('component_registry'));
         regChanges = {};
     }
-    $('summary').hide();
-    $('component').show();
-    $('component_registry').show();
+    $('#summary').hide();
+    $('#component').show();
+    $('#component_registry').show();
 }
 
 /**
@@ -443,9 +443,9 @@ function componentACL(reset)
         aclCache.clone(true, true).replaces($('component_acl'));
         aclChanges = {};
     }
-    $('summary').hide();
-    $('component').show();
-    $('component_acl').show();
+    $('#summary').hide();
+    $('#component').show();
+    $('#component_acl').show();
 }
 
 /**
@@ -559,14 +559,14 @@ function pluginUsage(reset)
         $('plugin_usage').getElement('table').grab(tbody);
         $('all_backend').checked = (res.usage.backend === '*') ? true : false;
         $('all_frontend').checked = (res.usage.frontend === '*') ? true : false;
-        usageCache = $('plugin_usage').clone(true, true);
+        usageCache = $('#plugin_usage').clone(true, true);
     }
     if (reset) {
         usageCache.clone(true, true).replaces($('plugin_usage'));
     }
-    $('summary').hide();
-    $('component').show();
-    $('plugin_usage').show();
+    $('#summary').hide();
+    $('#component').show();
+    $('#plugin_usage').show();
 }
 
 /**
