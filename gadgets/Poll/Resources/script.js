@@ -115,14 +115,14 @@ function stopAction()
     case 'Polls':
         selectedPoll = null;
         $('legend_title').html(addPoll_title);
-        $('question').value    = '';
+        $('#question').val('');
         $('gid').selectedIndex = 0;
-        $('start_time').value  = '';
-        $('stop_time').value   = '';
-        $('select_type').value = 0;
-        $('poll_type').value   = 0;
-        $('result_view').value = 1;
-        $('visible').value     = 1;
+        $('#start_time').val('');
+        $('#stop_time').val('');
+        $('#select_type').val(0);
+        $('#poll_type').val(0);
+        $('#result_view').val(1);
+        $('#visible').val(1);
         unselectDataGridRow();
         $('question').focus();
         break;
@@ -138,8 +138,8 @@ function stopAction()
     case 'PollGroups':
         selectedPollGroup = null;
         $('legend_title').html(addPollGroup_title);
-        $('title').value   = '';
-        $('visible').value = 1;
+        $('#title').val('');
+        $('#visible').val(1);
         unselectDataGridRow();
         $('title').focus();
         break;
@@ -171,16 +171,16 @@ function editPoll(element, pid)
 
     var pollInfo = PollAjax.callSync('GetPoll', selectedPoll);
 
-    $('question').value    = pollInfo['question'].defilter();
-    $('gid').value         = pollInfo['gid'];
+    $('#question').val(pollInfo['question'].defilter());
+    $('#gid').val(pollInfo['gid']);
     if (pollInfo['start_time'] == null) pollInfo['start_time'] = '';
     if (pollInfo['stop_time']  == null) pollInfo['stop_time']  = '';
-    $('start_time').value  = pollInfo['start_time'];
-    $('stop_time').value   = pollInfo['stop_time'];
-    $('select_type').value = pollInfo['select_type'];
-    $('poll_type').value   = pollInfo['poll_type'];
-    $('result_view').value = pollInfo['result_view'];
-    $('visible').value     = pollInfo['visible'];
+    $('#start_time').val(pollInfo['start_time']);
+    $('#stop_time').val(pollInfo['stop_time']);
+    $('#select_type').val(pollInfo['select_type']);
+    $('#poll_type').val(pollInfo['poll_type']);
+    $('#result_view').val(pollInfo['result_view']);
+    $('#visible').val(pollInfo['visible']);
 }
 
 /**
@@ -204,7 +204,7 @@ function editPollAnswers(element, pid)
     $('p_work_area').html(cachePollAnswersForm);
     var answersData = PollAjax.callSync('GetPollAnswers', selectedPoll);
     var answers  = answersData['Answers'];
-    $('question').value  = answersData['question'].defilter();
+    $('#question').val(answersData['question'].defilter());
 
     var box = $('answers_combo');
     box.length = 0;
@@ -299,7 +299,7 @@ function keypressOnAnswer(event)
 function addAnswer()
 {
     var answer = $('answer').value;
-    $('answer').value = '';
+    $('#answer').val('');
     $('answer').focus();
     if (answer.blank()) return false;
 
@@ -334,7 +334,7 @@ function editAnswer()
     var answer = box.options[box.selectedIndex].text;
     if (answer.blank()) return false;
 
-    $('answer').value = answer;
+    $('#answer').val(answer);
     $('answer').focus();
 }
 
@@ -344,7 +344,7 @@ function editAnswer()
 function stopAnswer()
 {
     var box = $('answers_combo');
-    $('answer').value = '';
+    $('#answer').val('');
     box.selectedIndex = -1;
     $('answer').focus();
 }
@@ -400,8 +400,8 @@ function editPollGroup(element, gid)
 
     var groupInfo = PollAjax.callSync('GetPollGroup', selectedPollGroup);
 
-    $('gid').value = groupInfo['id'];
-    $('title').value  = groupInfo['title'].defilter();
+    $('#gid').val(groupInfo['id']);
+    $('#title').val(groupInfo['title'].defilter());
     $('visible').selectedIndex = groupInfo['visible'];
 }
 
@@ -427,7 +427,7 @@ function editPollGroupPolls(element, gid)
 
     var pollsData = PollAjax.callSync('GetPollGroupPolls', selectedPollGroup);
     var pollsList  = pollsData['Polls'];
-    $('title').value  = pollsData['title'];
+    $('#title').val(pollsData['title']);
     if ($('pg_polls_combo')) {
         var inputs  = $('pg_polls_combo').getElementsByTagName('input');
         pollsList.each(function(value, index) {
