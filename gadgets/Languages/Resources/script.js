@@ -106,8 +106,8 @@ function change_lang_option()
         $('btn_export').disabled = true;
         $('lang_code').disabled  = false;
         $('component').disabled  = true;
-        $('lang_code').value = '';
-        $('lang_name').value = '';
+        $('#lang_code').val('');
+        $('#lang_name').val('');
         if ($('btn_lang')) {
             setButtonTitle(add_language_title);
         } else {
@@ -120,8 +120,8 @@ function change_lang_option()
         $('btn_export').disabled = false;
         $('lang_code').disabled  = true;
         $('component').disabled  = false;
-        $('lang_code').value = $('lang').options[$('lang').selectedIndex].value;
-        $('lang_name').value = $('lang').options[$('lang').selectedIndex].text;
+        $('#lang_code').val($('lang').options[$('lang').selectedIndex].value);
+        $('#lang_name').val($('lang').options[$('lang').selectedIndex].text);
         if ($('btn_lang')) {
             setButtonTitle(save_language_title);
         } else {
