@@ -129,7 +129,7 @@ function stopAction()
         break;
     case 'Contacts':
         $('#id').val(0);
-        $('contact_ip').html('');
+        $('#contact_ip').html('');
         $('#name').val('');
         $('#email').val('');
         $('#company').val('');
@@ -155,7 +155,7 @@ function stopAction()
         $('#subject').val('');
         $('#message').val('');
         $('#reply').val('');
-        $('#reply').readOnly = true;
+        $('#reply').prop('readonly', true);
         $('#btn_save_send').hide();
         $('#btn_save').hide();
         $('#btn_cancel').hide();
@@ -170,16 +170,16 @@ function stopAction()
 function editContact(element, id)
 {
     currentAction = 'Contacts';
-    $('legend_title').html(messageDetail_title);
+    $('#legend_title').html(messageDetail_title);
     if (cacheContactForm != null) {
-        $('c_work_area').html(cacheContactForm);
+        $('#c_work_area').html(cacheContactForm);
     }
 
     selectDataGridRow(element.parentNode.parentNode);
 
     var contact = ContactAjax.callSync('GetContact', id);
     $('#id').val(contact['id']);
-    $('contact_ip').html(contact['ip']);
+    $('#contact_ip').html(contact['ip']);
     $('#name').val(contact['name']);
     $('#email').val(contact['email']);
     $('#company').val(contact['company']);
@@ -191,16 +191,16 @@ function editContact(element, id)
     $('#rid').val(contact['recipient']);
     $('#subject').val(contact['subject'].defilter());
     $('#message').val(contact['msg_txt'].defilter());
-    $('btn_save_send').hide();
-    $('btn_save').show('inline');
-    $('btn_cancel').show('inline');
+    $('#btn_save_send').hide();
+    $('#btn_save').css('display', 'inline');
+    $('#btn_cancel').css('display', 'inline');
 
     if (contact['attachment']) {
-        $('attachment').href = dataURL + contact['attachment'];
-        $('attachment').html(contact['attachment']);
-        $('tr_attachment').show();
+        $('#attachment').href = dataURL + contact['attachment'];
+        $('#attachment').html(contact['attachment']);
+        $('#tr_attachment').show();
     } else {
-        $('tr_attachment').hide();
+        $('#tr_attachment').hide();
     }
 }
 
@@ -210,7 +210,7 @@ function editContact(element, id)
 function editReply(element, id)
 {
     if (cacheContactForm == null) {
-        cacheContactForm = $('c_work_area').html();
+        cacheContactForm = $('#c_work_area').html();
     }
 
     selectDataGridRow(element.parentNode.parentNode);
@@ -221,8 +221,8 @@ function editReply(element, id)
     currentAction = 'Reply';
 
     selectedContact = id;
-    $('legend_title').html(contactReply_title);
-    $('c_work_area').html(cacheReplyForm);
+    $('#legend_title').html(contactReply_title);
+    $('#c_work_area').html(cacheReplyForm);
     var replyData = ContactAjax.callSync('GetReply', selectedContact);
     $('#id').val(replyData['id']);
     $('#name').val(replyData['name']);
@@ -230,11 +230,11 @@ function editReply(element, id)
     $('#subject').val(replyData['subject'].defilter());
     $('#message').val(replyData['msg_txt'].defilter());
     $('#reply').val(replyData['reply'].defilter());
-    $('btn_save').show('inline');
-    $('btn_cancel').show('inline');
-    $('btn_save_send').show('inline');
-    $('reply').readOnly = Boolean(replyData['readonly']);
-    $('reply').focus();
+    $('#btn_save').css('display', 'inline');
+    $('#btn_cancel').css('display', 'inline');
+    $('#btn_save_send').css('display', 'inline');
+    $('#reply').prop('readonly', Boolean(replyData['readonly']));
+    $('#reply').focus();
 }
 
 /**
@@ -396,14 +396,18 @@ function switchEmailTarget(value)
 {
     switch (value) {
         case '1':
-            if ($('batch_mail').isDisplayed()) break;
-            $('free_mail').hide();
-            $('batch_mail').show();
+            if ($('#batch_mail').css('display') != 'none') {
+                break;
+            }
+            $('#free_mail').hide();
+            $('#batch_mail').show();
             break;
         case '2':
-            if ($('free_mail').isDisplayed()) break;
-            $('batch_mail').hide();
-            $('free_mail').show();
+            if ($('#free_mail').css('display') != 'none') {
+                break;
+            }
+            $('#batch_mail').hide();
+            $('#free_mail').show();
             break;
     }
 }
@@ -441,10 +445,10 @@ function newEmail()
     $('#filename').val('');
     $('frm_file').reset();
 
-    $('attachment').show();
-    $('btn_upload').show();
-    $('attach_loading').hide();
-    $('btn_attach').hide();
+    $('#attachment').show();
+    $('#btn_upload').show();
+    $('#attach_loading').hide();
+    $('#btn_attach').hide();
     toggleDisableForm(false);
 }
 
@@ -473,12 +477,12 @@ function toggleDisableForm(disabled)
 function uploadFile() {
     showWorkingNotification();
     var iframe = new Element('iframe', {id:'ifrm_upload', name:'ifrm_upload'});
-    $('mailer').adopt(iframe);
-    $('attachment').hide();
-    $('btn_upload').hide();
-    $('attach_loading').show();
+    $('#mailer').append(iframe);
+    $('#attachment').hide();
+    $('#btn_upload').hide();
+    $('#attach_loading').show();
     toggleDisableForm(true);
-    $('frm_file').submit();
+    $('#frm_file').submit();
 }
 
 /**
@@ -489,18 +493,18 @@ function onUpload(response) {
     toggleDisableForm(false);
     if (response.type === 'error') {
         alert(response.message);
-        $('frm_file').reset();
-        $('btn_upload').show();
-        $('attachment').show();
+        $('#frm_file').reset();
+        $('#btn_upload').show();
+        $('#attachment').show();
     } else {
         $('#filename').val(response.filename);
-        $('file_link').html(response.filename);
-        $('file_size').html(response.filesize);
-        $('btn_attach').show();
-        $('attachment').hide();
+        $('#file_link').html(response.filename);
+        $('#file_size').html(response.filesize);
+        $('#btn_attach').show();
+        $('#attachment').hide();
     }
-    $('attach_loading').hide();
-    $('ifrm_upload').destroy();
+    $('#attach_loading').hide();
+    $('#ifrm_upload').remove();
 }
 
 /**
@@ -508,12 +512,12 @@ function onUpload(response) {
  */
 function removeAttachment() {
     $('#filename').val('');
-    $('frm_file').reset();
-    $('btn_attach').hide();
-    $('file_link').html('');
-    $('file_size').html('');
-    $('btn_upload').show();
-    $('attachment').show();
+    $('#frm_file')[0].reset();
+    $('#btn_attach').hide();
+    $('#file_link').html('');
+    $('#file_size').html('');
+    $('#btn_upload').show();
+    $('#attachment').show();
 }
 
 /**
