@@ -101,12 +101,12 @@ function saveForums()
         if ($('gid').value == 0) {
             var response = ForumsAjax.callSync(
                 'InsertGroup', [
-                    $('title').value,
-                    $('description').value,
-                    $('fast_url').value,
-                    $('order').value,
-                    $('locked').value,
-                    $('published').value
+                    $('#title').val(),
+                    $('#description').val(),
+                    $('#fast_url').val(),
+                    $('#order').val(),
+                    $('#locked').val(),
+                    $('#published').val()
                 ]
             );
             if (response['type'] == 'response_notice') {
@@ -117,13 +117,13 @@ function saveForums()
         } else {
             ForumsAjax.callAsync(
                 'UpdateGroup', [
-                    $('gid').value,
-                    $('title').value,
-                    $('description').value,
-                    $('fast_url').value,
-                    $('order').value,
-                    $('locked').value,
-                    $('published').value
+                    $('#gid').val(),
+                    $('#title').val(),
+                    $('#description').val(),
+                    $('#fast_url').val(),
+                    $('#order').val(),
+                    $('#locked').val(),
+                    $('#published').val()
                 ]
             );
         }
@@ -131,31 +131,31 @@ function saveForums()
         if ($('fid').value == 0) {
             var response = ForumsAjax.callSync(
                 'InsertForum', [
-                    $('gid').value,
-                    $('title').value,
-                    $('description').value,
-                    $('fast_url').value,
-                    $('order').value,
-                    $('locked').value,
-                    $('published').value
+                    $('#gid').val(),
+                    $('#title').val(),
+                    $('#description').val(),
+                    $('#fast_url').val(),
+                    $('#order').val(),
+                    $('#locked').val(),
+                    $('#published').val()
                 ]
             );
             if (response['type'] == 'response_notice') {
-                AddNewForumItem($('gid').value, response['data'], $('order').value);
+                AddNewForumItem($('#gid').val(), response['data'], $('#order').val());
                 stopAction();
             }
             ForumsAjax.showResponse(response);
         } else {
             var response = ForumsAjax.callSync(
                 'UpdateForum', [
-                    $('fid').value,
-                    $('gid').value,
-                    $('title').value,
-                    $('description').value,
-                    $('fast_url').value,
-                    $('order').value,
-                    $('locked').value,
-                    $('published').value
+                    $('#fid').val(),
+                    $('#gid').val(),
+                    $('#title').val(),
+                    $('#description').val(),
+                    $('#fast_url').val(),
+                    $('#order').val(),
+                    $('#locked').val(),
+                    $('#published').val()
                 ]
             );
             if (response['type'] == 'response_notice') {
