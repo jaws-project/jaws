@@ -135,12 +135,12 @@ function editGroup(id)
 {
     if (id == 0) return;
     var groupInfo = PhooAjax.callSync('GetGroup', {'gid': id});
-    $('gid').value    = groupInfo['id'];
-    $('name').value   = groupInfo['name'].defilter();
-    $('fast_url').value  = groupInfo['fast_url'];
-    $('meta_keywords').value = groupInfo['meta_keywords'].defilter();
-    $('meta_description').value = groupInfo['meta_description'].defilter();
-    $('description').value = groupInfo['description'].defilter();
+    $('#gid').val(groupInfo['id']);
+    $('#name').val(groupInfo['name'].defilter());
+    $('#fast_url').val(groupInfo['fast_url']);
+    $('#meta_keywords').val(groupInfo['meta_keywords'].defilter());
+    $('#meta_description').val(groupInfo['meta_description'].defilter());
+    $('#description').val(groupInfo['description'].defilter());
     $('btn_delete').css('display', 'inline');
     $('legend_title').html(editGroupTitle);
 }
@@ -168,12 +168,12 @@ function deleteGroup()
  */
 function stopAction() 
 {
-    $('gid').value                  = 0;
-    $('name').value                 = '';
-    $('fast_url').value             = '';
-    $('meta_keywords').value     = '';
-    $('meta_description').value     = '';
-    $('description').value          = '';
+    $('#gid').val(0);
+    $('#name').val('');
+    $('#fast_url').val('');
+    $('#meta_keywords').val('');
+    $('#meta_description').val('');
+    $('#description').val('');
     $('groups_combo').selectedIndex = -1;
     $('btn_delete').css('display', 'none');
     $('legend_title').html(addGroupTitle);
