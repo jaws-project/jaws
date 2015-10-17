@@ -208,7 +208,7 @@ function displayWhen(url)
 var prevGadget = '';
 function selectGadget(g)
 {
-    $('gadget').value = g;
+    $('#gadget').val(g);
 
     // Remove all actions 
     while ($('actions-list').firstChild)
