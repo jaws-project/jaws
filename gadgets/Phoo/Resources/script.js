@@ -99,18 +99,18 @@ function saveGroup()
         return false;
     }
     var groupData = {
-        'name': $('name').value,
-        'fast_url': $('fast_url').value,
-        'meta_keywords': $('meta_keywords').value,
-        'meta_description': $('meta_description').value,
-        'description': $('description').value
+        'name': $('#name').val(),
+        'fast_url': $('#fast_url').val(),
+        'meta_keywords': $('#meta_keywords').val(),
+        'meta_description': $('#meta_description').val(),
+        'description': $('#description').val()
     };
 
     if($('gid').value==0) {
         var response = PhooAjax.callSync('AddGroup', groupData);
         if (response[0]['type'] == 'response_notice') {
             var box = $('groups_combo');
-            box.options[box.options.length] = new Option($('name').value, response[0]['text']['id']);
+            box.options[box.options.length] = new Option($('#name').val(), response[0]['text']['id']);
             response[0]['text'] = response[0]['text']['message'];
             stopAction();
         }
@@ -119,9 +119,9 @@ function saveGroup()
         var box = $('groups_combo');
         var groupIndex = box.selectedIndex;
         var response = PhooAjax.callSync('UpdateGroup',
-                            {'id': $('gid').value, data: groupData});
+                            {'id': $('#gid').val(), data: groupData});
         if (response[0]['type'] == 'response_notice') {
-            box.options[groupIndex].text = $('name').value;
+            box.options[groupIndex].text = $('#name').val();
             stopAction();
         }
         PhooAjax.showResponse(response);
