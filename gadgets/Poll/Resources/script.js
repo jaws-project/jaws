@@ -241,28 +241,28 @@ function savePoll()
         if (selectedPoll == null) {
             PollAjax.callAsync(
                 'InsertPoll', [
-                    $('question').value,
-                    $('gid').value,
-                    $('start_time').value,
-                    $('stop_time').value,
-                    $('select_type').value,
-                    $('poll_type').value,
-                    $('result_view').value,
-                    $('visible').value
+                    $('#question').val(),
+                    $('#gid').val(),
+                    $('#start_time').val(),
+                    $('#stop_time').val(),
+                    $('#select_type').val(),
+                    $('#poll_type').val(),
+                    $('#result_view').val(),
+                    $('#visible').val()
                 ]
             );
         } else {
             PollAjax.callAsync(
                 'UpdatePoll', [
                     selectedPoll,
-                    $('question').value,
-                    $('gid').value,
-                    $('start_time').value,
-                    $('stop_time').value,
-                    $('select_type').value,
-                    $('poll_type').value,
-                    $('result_view').value,
-                    $('visible').value
+                    $('#question').val(),
+                    $('#gid').val(),
+                    $('#start_time').val(),
+                    $('#stop_time').val(),
+                    $('#select_type').val(),
+                    $('#poll_type').val(),
+                    $('#result_view').val(),
+                    $('#visible').val()
                 ]
             );
         }
@@ -469,16 +469,16 @@ function savePollGroup()
         if (selectedPollGroup == null) {
             PollAjax.callAsync(
                 'InsertPollGroup', [
-                    $('title').value,
-                    $('visible').value
+                    $('title').val(),
+                    $('visible').val()
                 ]
             );
         } else {
             PollAjax.callAsync(
                 'UpdatePollGroup', [
                     selectedPollGroup,
-                    $('title').value,
-                    $('visible').value
+                    $('#title').val(),
+                    $('#visible').val()
                 ]
             );
         }
