@@ -39,14 +39,14 @@ function stopAction()
 {
     switch(currentAction) {
     case 'Groups':
-        $('gid').value         = 0;
-        $('title').value       = '';
-        $('view_mode').value   = '0';
-        $('view_type').value   = '0';
-        $('show_title').value  = 'true';
-        $('limit_count').value = '0';
-        $('random').value      = 'false';
-        $('published').value   = 'true';
+        $('#gid').val(0);
+        $('#title').val('');
+        $('#view_mode').val('0');
+        $('#view_type').val('0');
+        $('#show_title').val('true');
+        $('#limit_count').val('0');
+        $('#random').val('false');
+        $('#published').val('true');
         $('groups_combo').selectedIndex = -1;
 
         $('add_quotes').css('display', 'none');
@@ -56,13 +56,13 @@ function stopAction()
         editGroup($('gid').value);
         break;
     case 'Quotes':
-        $('id').value          = 0;
-        $('title').value       = '';
-        $('show_title').value  = 'true';
-        $('published').value   = 'true';
+        $('#id').val(0);
+        $('#title').val('');
+        $('#show_title').val('true');
+        $('#published').val('true');
         $('gid').selectedIndex = $('group_filter').selectedIndex -1;
-        $('start_time').value  = '';
-        $('stop_time').value   = '';
+        $('#start_time').val('');
+        $('#stop_time').val('');
         changeEditorValue('quotation', '');
         $('quotes_combo').selectedIndex = -1;
         $('btn_del').css('display', 'none');
@@ -153,18 +153,18 @@ function editQuote(id)
     if (id == 0) return;
     var quoteInfo = QuotesAjax.callSync('GetQuote', id);
     currentAction = 'Quotes';
-    $('id').value    = quoteInfo['id'];
-    $('title').value = quoteInfo['title'].defilter();
+    $('#id').val(quoteInfo['id']);
+    $('#title').val(quoteInfo['title'].defilter());
     changeEditorValue('quotation', quoteInfo['quotation']);
-    $('gid').value = quoteInfo['gid'];
+    $('#gid').val(quoteInfo['gid']);
     if (quoteInfo['gid'] == 0) {
         $('gid').selectedIndex= -1;
     }
 
-    $('start_time').value  = (quoteInfo['start_time'] == null)? '': quoteInfo['start_time'];
-    $('stop_time').value   = (quoteInfo['stop_time'] == null)? '': quoteInfo['stop_time'];
-    $('show_title').value  = quoteInfo['show_title'];
-    $('published').value   = quoteInfo['published'];
+    $('#start_time').val((quoteInfo['start_time'] == null)? '': quoteInfo['start_time']);
+    $('#stop_time').val((quoteInfo['stop_time'] == null)? '': quoteInfo['stop_time']);
+    $('#show_title').val(quoteInfo['show_title']);
+    $('#published').val(quoteInfo['published']);
 
     $('btn_del').css('display', 'inline');
 }
@@ -181,14 +181,14 @@ function editGroup(gid)
 
     currentAction = 'Groups';
     var groupInfo = QuotesAjax.callSync('GetGroup', gid);
-    $('gid').value         = groupInfo['id'];
-    $('title').value       = groupInfo['title'].defilter();
-    $('view_mode').value   = groupInfo['view_mode'];
-    $('view_type').value   = groupInfo['view_type'];
-    $('show_title').value  = groupInfo['show_title'];
-    $('limit_count').value = groupInfo['limit_count'];
-    $('random').value      = groupInfo['random'];
-    $('published').value   = groupInfo['published'];
+    $('#gid').val(groupInfo['id']);
+    $('#title').val(groupInfo['title'].defilter());
+    $('#view_mode').val(groupInfo['view_mode']);
+    $('#view_type').val(groupInfo['view_type']);
+    $('#show_title').val(groupInfo['show_title']);
+    $('#limit_count').val(groupInfo['limit_count']);
+    $('#random').val(groupInfo['random']);
+    $('#published').val(groupInfo['published']);
 
     $('add_quotes').css('display', 'inline');
     $('btn_del').css('display', 'inline');
@@ -285,7 +285,7 @@ function deleteGroup()
  */
 function editGroupQuotes()
 {
-    if ($('gid').value == 0) return;
+    if ($('#gid').val(= 0) return);
     if (cacheGroupQuotesForm == null) {
         cacheGroupQuotesForm = QuotesAjax.callSync('GroupQuotesUI');
     }
