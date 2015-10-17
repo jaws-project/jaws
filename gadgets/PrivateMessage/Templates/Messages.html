@@ -147,38 +147,39 @@
 <script type="text/javascript">
     function toggleCheckboxes(){
         do_check = !do_check;
-        $$('.table-checkbox').each(function(el) { el.checked = do_check; });
+        $('.table-checkbox').each(function(el, data) { data.checked = do_check; });
     }
     var do_check = false;
 
     function messagesDGAction() {
-        var action = document.getElementById("messages_actions_combo").value;
-        if (action == '' || $$('input[type=checkbox][name=message_checkbox[]]:checked').length < 1) {
+        var action = $("#messages_actions_combo").val();
+        if (action == '' || $("input[type=checkbox][name='message_checkbox[]']:checked").length < 1) {
             return false;
         }
 
         if(action == 'unarchive') {
-            document.privatemessage.action.value = 'UnArchiveMessage';
+            $("#privatemessage input[type=hidden][name=action]").val('UnArchiveMessage');
         } else if(action == 'archive') {
-            document.privatemessage.action.value = 'ArchiveMessage';
+            $("#privatemessage input[type=hidden][name=action]").val('ArchiveMessage');
         } else if(action == 'read') {
-            document.privatemessage.action.value = 'ChangeMessageRead';
-            document.privatemessage.status.value = 'read';
+            $("#privatemessage input[type=hidden][name=action]").val('ChangeMessageRead');
+            $("#privatemessage input[type=hidden][name=status]").val('read');
         } else if(action == 'unread') {
-            document.privatemessage.action.value = 'ChangeMessageRead';
-            document.privatemessage.status.value = 'unread';
+            $("#privatemessage input[type=hidden][name=action]").val('ChangeMessageRead');
+            $("#privatemessage input[type=hidden][name=status]").val('unread');
         } else if(action == 'trash') {
-            document.privatemessage.action.value = 'TrashMessage';
+            $("#privatemessage input[type=hidden][name=action]").val('TrashMessage');
         } else if(action == 'restore_trash') {
-            document.privatemessage.action.value = 'RestoreTrashMessage';
+            $("#privatemessage input[type=hidden][name=action]").val('RestoreTrashMessage');
         } else if(action == 'delete') {
             if (confirm('{{confirmDelete}}')) {
-                document.privatemessage.action.value = 'DeleteMessage';
+                $("#privatemessage input[type=hidden][name=action]").val('DeleteMessage');
             } else {
                 return false;
             }
         }
-        document.getElementById("privatemessage").submit();
+
+       $("#privatemessage").submit();
         return true;
     }
 </script>

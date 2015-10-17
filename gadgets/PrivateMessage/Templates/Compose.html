@@ -105,21 +105,12 @@
     function ChangeToggleIcon(obj)
     {
         if ($(obj).data('toggle-status') == 'min') {
-            $(obj).img[0].src = toggleMin;
+            $(obj).find("img").attr('src', toggleMin);
             $(obj).data('toggle-status', 'max');
         } else {
-            $(obj).img[0].src = toggleMax;
+            $(obj).find("img").attr('src', toggleMax);
             $(obj).data('toggle-status', 'min');
         }
-/*
-        if ($(obj).get('toggle-status') == 'min') {
-            $(obj).getElementsByTagName('img')[0].src = toggleMin;
-            $(obj).set('toggle-status', 'max');
-        } else {
-            $(obj).getElementsByTagName('img')[0].src = toggleMax;
-            $(obj).set('toggle-status', 'min');
-        }
-*/
     }
 
     $( document ).ready(function() {

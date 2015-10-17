@@ -41,7 +41,7 @@ function filterInbox()
  */
 function resetAttachments(message_id) {
     var ui = PrivateMessageAjax.callSync('GetMessageAttachmentUI', {'id': message_id});
-    $('#attachment_area').set('html', ui);
+    $('#attachment_area').html(ui);
     uploadedFiles = new Array();
     lastAttachment = 1;
     $('#attachment1').show();
@@ -55,8 +55,8 @@ function resetAttachments(message_id) {
 function removeAttachment(id) {
     $('#frm_file').reset();
     $('#btn_attach' + id).hide();
-    $('#file_link' + id).set('html', '');
-    $('#file_size' + id).set('html', '');
+    $('#file_link' + id).html('');
+    $('#file_size' + id).html('');
     $('#attachment' + lastAttachment).show();
     uploadedFiles[id] = false;
 }
@@ -64,13 +64,12 @@ function removeAttachment(id) {
 /**
  * Disables/Enables form elements
  */
-function toggleDisableForm(disabled)
-{
-    $('#subject').disabled           = disabled;
-    $('#body').disabled              = disabled;
-    $('#btn_back').disabled          = disabled;
-    $('#btn_save_draft').disabled    = disabled;
-    $('#btn_send').disabled          = disabled;
+function toggleDisableForm(disabled) {
+    $("#subject").prop('disabled', disabled);
+    $("#body").prop('disabled', disabled);
+    $("#btn_back").prop('disabled', disabled);
+    $("#btn_save_draft").prop('disabled', disabled);
+    $("#btn_send").prop('disabled', disabled);
 }
 
 
@@ -78,8 +77,7 @@ function toggleDisableForm(disabled)
  * Uploads the attachment file
  */
 function uploadFile() {
-    var iframe = new Element('iframe', {id:'ifrm_upload', name:'ifrm_upload'});
-    $('#compose').adopt(iframe);
+    $("#compose").append('<iframe id="' + 'ifrm_upload' + '" name=" ' + 'ifrm_upload' +  ' "></iframe>');
     $('#attachment_number').val(lastAttachment);
     $('#attachment' + lastAttachment).hide();
     $('#attach_loading').show();
@@ -98,8 +96,8 @@ function onUpload(response) {
         $('#frm_file').reset();
         $('#attachment' + lastAttachment).show();
     } else {
-        $('#file_link' + lastAttachment).set('html', response.file_info.title);
-        $('#file_size' + lastAttachment).set('html', response.file_info.filesize_format);
+        $('#file_link' + lastAttachment).html(response.file_info.title);
+        $('#file_size' + lastAttachment).html(response.file_info.filesize_format);
         $('#btn_attach' + lastAttachment).show();
         $('#attachment' + lastAttachment).dispose();
         addFileEntry();
@@ -172,7 +170,7 @@ function sendMessage(isDraft) {
 
 function getSelectedAttachments() {
     var files = [];
-    $('input[name=selected_files[]]] :selected').each(function(i, selected){
+    $('input[name=selected_files\\[\\]] :checked').each(function(i, selected){
         files.push($(selected).text() );
     });
     return files;
