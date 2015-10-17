@@ -91,7 +91,7 @@ function stopCommentAction()
     $('#url').val('');
     $('#message').val('');
     $('#reply').val('');
-    $('#comment_status').prop('selectedIndex',0);
+    $('#comment_status').prop('selectedIndex', 0);
     $('#btn_save').css('display', 'none');
     $('#btn_reply').css('display', 'none');
     $('#btn_cancel').css('display', 'none');

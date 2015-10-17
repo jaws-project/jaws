@@ -204,7 +204,7 @@ function createNewTerm(title)
 {
     currentMode = 'new';
     switchTab('edit', title);
-    $('term_id').disabled = true;
+    $('#term_id').prop('disabled', true);
     $('#term_title').val('');
     $('term_title').focus();
     $('#fast_url').val('');

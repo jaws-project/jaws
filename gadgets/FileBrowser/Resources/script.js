@@ -110,11 +110,11 @@ function switchTab(tab, hideTabs)
 function uploadswitch(checked)
 {
     if (checked) {
-        $('edit_entry').css('display', 'none');
-        $('file_entry').css('display', 'block');
+        $('#edit_entry').css('display', 'none');
+        $('#file_entry').css('display', 'block');
     } else {
-        $('edit_entry').css('display', 'block');
-        $('file_entry').css('display', 'none');
+        $('#edit_entry').css('display', 'block');
+        $('#file_entry').css('display', 'none');
     }
 }
 
@@ -150,7 +150,7 @@ function editFile(element, fname)
     $('upload_switch').checked = false;
     uploadswitch(false);
     switchTab('file');
-    $('upload_switch').disabled = false;
+    $('#upload_switch').prop('disabled', false);
 
     var dbfile = FileBrowserAjax.callSync('DBFileInfo', [$('#path').val(), fname]);
     if (dbfile['id']) {
@@ -279,7 +279,7 @@ function stopAction(tab)
     unselectDataGridRow();
     $('upload_switch').checked = true;
     uploadswitch(true);
-    $('upload_switch').disabled = true;
+    $('#upload_switch').prop('disabled', true);
     switchTab(tab);
     $('#oldname').val('');
 

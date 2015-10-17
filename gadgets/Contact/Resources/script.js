@@ -138,15 +138,15 @@ function stopAction()
         $('#fax').val('');
         $('#mobile').val('');
         $('#address').val('');
-        $('rid').selectedIndex = -1;
+        $('#rid').prop('selectedIndex', -1);
         $('#subject').val('');
         $('#message').val('');
-        $('btn_save_send').hide();
-        $('tr_attachment').hide();
-        $('btn_save').hide();
-        $('btn_cancel').hide();
+        $('#btn_save_send').hide();
+        $('#tr_attachment').hide();
+        $('#btn_save').hide();
+        $('#btn_cancel').hide();
         unselectDataGridRow();
-        $('name').focus();
+        $('#name').focus();
         break;
     case 'Reply':
         $('#id').val(0);
@@ -155,10 +155,10 @@ function stopAction()
         $('#subject').val('');
         $('#message').val('');
         $('#reply').val('');
-        $('reply').readOnly = true;
-        $('btn_save_send').hide();
-        $('btn_save').hide();
-        $('btn_cancel').hide();
+        $('#reply').readOnly = true;
+        $('#btn_save_send').hide();
+        $('#btn_save').hide();
+        $('#btn_cancel').hide();
         unselectDataGridRow();
     }
 }
@@ -453,18 +453,18 @@ function newEmail()
  */
 function toggleDisableForm(disabled)
 {
-    $('options_1').disabled   = disabled;
-    $('options_2').disabled   = disabled;
-    $('to').disabled          = disabled;
-    $('cc').disabled          = disabled;
-    $('bcc').disabled         = disabled;
-    $('groups').disabled      = disabled;
-    $('users').disabled       = disabled;
-    $('subject').disabled     = disabled;
-    $('message').disabled     = disabled;
-    $('btn_send').disabled    = disabled;
-    $('btn_preview').disabled = disabled;
-    $('btn_new').disabled     = disabled;
+    $('#options_1').prop('disabled', disabled);
+    $('#options_2').prop('disabled', disabled);
+    $('#to').prop('disabled', disabled);
+    $('#cc').prop('disabled', disabled);
+    $('#bcc').prop('disabled', disabled);
+    $('#groups').prop('disabled', disabled);
+    $('#users').prop('disabled', disabled);
+    $('#subject').prop('disabled', disabled);
+    $('#message').prop('disabled', disabled);
+    $('#btn_send').prop('disabled', disabled);
+    $('#btn_preview').prop('disabled', disabled);
+    $('#btn_new').prop('disabled', disabled);
 }
 
 /**

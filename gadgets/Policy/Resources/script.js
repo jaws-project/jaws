@@ -164,7 +164,7 @@ function editIPRange(element, id)
     $('#id').val(ipRange['id']);
     $('#from_ipaddress').val(ipRange['from_ip']);
     $('#to_ipaddress').val(ipRange['to_ip']);
-    $('blocked').selectedIndex = ipRange['blocked']? 1 : 0;
+    $('#blocked').prop('selectedIndex', ipRange['blocked']? 1 : 0);
 }
 
 /**
@@ -213,7 +213,7 @@ function editAgent(element, id)
 
     $('#id').val(agent['id']);
     $('#agent').val(agent['agent'].defilter());
-    $('blocked').selectedIndex = agent['blocked']? 1 : 0;
+    $('#blocked').prop('selectedIndex', agent['blocked']? 1 : 0);
 }
 
 /**

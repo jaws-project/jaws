@@ -12,29 +12,29 @@
  */
 var TmsCallback = {
     sharetheme: function(response) {
-        var optionSelected = $('themes_combo').options[$('themes_combo').selectedIndex];
+        var optionSelected = $('themes_combo').options[$('#themes_combo').prop('selectedIndex')];
         if (response[0]['type'] == 'response_notice') {
             optionSelected.className = 'isshared';
-            $('unshare_button').css('display', 'block');
-            $('share_button').css('display', 'none');
+            $('#unshare_button').css('display', 'block');
+            $('#share_button').css('display', 'none');
         } else {
             optionSelected.className = 'isnotshared';
-            $('unshare_button').css('display', 'none');
-            $('share_button').css('display', 'block');
+            $('#unshare_button').css('display', 'none');
+            $('#share_button').css('display', 'block');
         }
         TmsAjax.showResponse(response);
     },
     
     unsharetheme: function(response) {
-        var optionSelected = $('themes_combo').options[$('themes_combo').selectedIndex];
+        var optionSelected = $('themes_combo').options[$('#themes_combo').prop('selectedIndex')];
         if (response[0]['type'] == 'response_notice') {
             optionSelected.className = 'isnotshared';
-            $('unshare_button').css('display', 'none');
-            $('share_button').css('display', 'block');
+            $('#unshare_button').css('display', 'none');
+            $('#share_button').css('display', 'block');
         } else {
             optionSelected.className = 'isshared';
-            $('unshare_button').css('display', 'block');
-            $('share_button').css('display', 'none');
+            $('#unshare_button').css('display', 'block');
+            $('#share_button').css('display', 'none');
         }
         TmsAjax.showResponse(response);
     },    
@@ -81,7 +81,7 @@ var TmsCallback = {
 
     DeleteTheme: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('themes_combo').options[$('themes_combo').selectedIndex].remove();
+            $('themes_combo').options[$('#themes_combo').prop('selectedIndex')].remove();
             cleanWorkingArea(true);
         }
         TmsAjax.showResponse(response);
@@ -98,15 +98,15 @@ var TmsCallback = {
  */
 function showButtons()
 {
-    if ($('download').value == 'true') {
-        $('download_button').css('display', 'inline');
+    if ($('#download').val() == 'true') {
+        $('#download_button').css('display', 'inline');
     } else {
-        $('download_button').css('display', 'none');
+        $('#download_button').css('display', 'none');
     }
-    if ($('delete').value == 'true') {
-        $('delete_button').css('display', 'inline');
+    if ($('#delete').val() == 'true') {
+        $('#delete_button').css('display', 'inline');
     } else {
-        $('delete_button').css('display', 'none');
+        $('#delete_button').css('display', 'none');
     }
 }
 

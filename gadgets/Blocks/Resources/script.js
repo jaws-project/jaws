@@ -63,7 +63,7 @@ var BlocksCallback = {
  */
 function fillEditorEntries(block_data)
 {
-    $('block_id').disabled    = false;
+    $('#block_id').prop('disabled', false);
     $('#hidden_id').val(block_data['id']);
     $('#block_title').val(block_data['title'].defilter());
     changeEditorValue('block_contents', block_data['contents']);
@@ -79,7 +79,7 @@ function updateBlock()
     if (currentMode == 'new') {
         newBlock();
     } else {
-        $('block_id').disabled = true;
+        $('#block_id').prop('disabled', true);
         id       = $('hidden_id').value;
         title    = $('block_title').value;
         contents = getEditorValue('block_contents');
@@ -96,7 +96,7 @@ function updateBlock()
         // Update Combo
         var combo = $('block_id');
         combo.options[combo.selectedIndex].text = title;
-        $('block_id').disabled    = false;
+        $('#block_id').prop('disabled', false);
     }
 }
 
@@ -106,7 +106,7 @@ function updateBlock()
 function deleteBlock()
 {
     id = $('hidden_id').value;
-    $('block_id').disabled = true;
+    $('#block_id').prop('disabled', true);
     loading_message = deletingMessage;
     BlocksAjax.callAsync('DeleteBlock', id);
 }
@@ -181,7 +181,7 @@ function edit(id)
 {
     previousID  = id;
     currentMode = 'edit';
-    $('block_id').disabled = false;
+    $('#block_id').prop('disabled', false);
     loading_message = retrievingMessage;
     var block = BlocksAjax.callSync('GetBlock', id);
     fillEditorEntries(block);

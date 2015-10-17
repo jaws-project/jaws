@@ -174,9 +174,9 @@ function stopAction()
     $('#meta_keywords').val('');
     $('#meta_description').val('');
     $('#description').val('');
-    $('groups_combo').selectedIndex = -1;
-    $('btn_delete').css('display', 'none');
-    $('legend_title').html(addGroupTitle);
+    $('#groups_combo').prop('selectedIndex', -1);
+    $('#btn_delete').css('display', 'none');
+    $('#legend_title').html(addGroupTitle);
 }
 
 /**

@@ -49,14 +49,14 @@ var SitemapCallback = {
  */
 function stopAction()
 {
-    $('btn_cancel').css('display', 'none');
-    $('btn_save').css('display', 'none');
+    $('#btn_cancel').css('display', 'none');
+    $('#btn_save').css('display', 'none');
     selectedGadget  = null;
     selectedCategory  = null;
     currentAction = null;
     unselectTreeRow();
-    $('category_edit').html('');
-    $('edit_area').getElementsByTagName('span')[0].innerHTML = '';
+    $('#category_edit').html('');
+    $('#edit_area span').first().html('');
 }
 
 function listCategories(gadget, force_open)
@@ -96,10 +96,10 @@ function editGadget(gadget)
     currentAction = 'Gadget';
     selectedGadget = gadget;
 
-    $('edit_area').getElementsByTagName('span')[0].innerHTML = editGadgetTitle + ' - ' + selectedGadget;
-    $('btn_cancel').css('display', 'inline');
-    $('btn_save').css('display', 'inline');
-    $('category_edit').html(cacheGadgetForm);
+    $('#edit_area span').first().html(editGadgetTitle + ' - ' + selectedGadget);
+    $('#btn_cancel').css('display', 'inline');
+    $('#btn_save').css('display', 'inline');
+    $('#category_edit').html(cacheGadgetForm);
 
     var gadgetInfo = SitemapAjax.callSync('GetGadget', {'gname':gadget});
 
@@ -125,11 +125,10 @@ function editCategory(element, gadget, cid)
     selectedCategory = cid;
     selectedGadget = gadget;
 
-    $('edit_area').getElementsByTagName('span')[0].innerHTML =
-        editCategoryTitle + ' - ' + $('category_'+cid).getElementsByTagName('a')[0].innerHTML;
-    $('btn_cancel').css('display', 'inline');
-    $('btn_save').css('display', 'inline');
-    $('category_edit').html(cacheCategoryForm);
+    $('#edit_area span').first().html(editCategoryTitle + ' - ' + $('#category_'+cid+' a').first().html());
+    $('#btn_cancel').css('display', 'inline');
+    $('#btn_save').css('display', 'inline');
+    $('#category_edit').html(cacheCategoryForm);
 
     var categoryInfo = SitemapAjax.callSync('GetCategory', {'gname':gadget, 'cid':cid});
 

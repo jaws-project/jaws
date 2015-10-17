@@ -86,12 +86,12 @@ function stopTagAction()
     $('#description').val('');
     $('#meta_keywords').val('');
     $('#meta_description').val('');
-    $('btn_cancel').css('display', 'none');
-    $('name').disabled                 = false;
-    $('legend_title').html(addNewTagTitle);
+    $('#btn_cancel').css('display', 'none');
+    $('#name').prop('disabled', false);
+    $('#legend_title').html(addNewTagTitle);
 
     unselectGridRow('tags_datagrid');
-    $('name').focus();
+    $('#name').focus();
 }
 
 /**
@@ -108,9 +108,9 @@ function editTag(rowElement, id)
     $('#description').val(tag['description']);
     $('#meta_keywords').val(tag['meta_keywords']);
     $('#meta_description').val(tag['meta_description']);
-//    $('btn_save').css('display', 'inline');
-    $('btn_cancel').css('display', 'inline');
-    $('legend_title').html(editTagTitle);
+//    $('#btn_save').css('display', 'inline');
+    $('#btn_cancel').css('display', 'inline');
+    $('#legend_title').html(editTagTitle);
 }
 
 /**
