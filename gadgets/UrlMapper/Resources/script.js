@@ -139,9 +139,9 @@ function rebuildAliasCombo()
 function editAlias(id)
 {
     var alias = UrlMapperAjax.callSync('GetAlias', id);
-    $('alias_id').value   = id;
-    $('custom_url').value = alias['real_url'];
-    $('alias').value      = alias['alias_url'];
+    $('#alias_id').val(id);
+    $('#custom_url').val(alias['real_url']);
+    $('#alias').val(alias['alias_url']);
     $('delete_button').css('visibility', 'visible');
 }
 
@@ -219,11 +219,11 @@ function editErrorMap(element, emid)
     selectDataGridRow(element.parentNode.parentNode);
 
     var errorMapInfo = UrlMapperAjax.callSync('GetErrorMap', selectedErrorMap);
-    $('url').value = errorMapInfo['url'];
-    $('code').value = errorMapInfo['code'];
-    $('new_url').value = errorMapInfo['new_url'];
-    $('new_code').value = errorMapInfo['new_code'];
-    $('insert_time').value = errorMapInfo['insert_time'];
+    $('#url').val(errorMapInfo['url']);
+    $('#code').val(errorMapInfo['code']);
+    $('#new_url').val(errorMapInfo['new_url']);
+    $('#new_code').val(errorMapInfo['new_code']);
+    $('#insert_time').val(errorMapInfo['insert_time']);
 
     $('btn_cancel').css('visibility', 'visible');
 }
@@ -240,14 +240,14 @@ function editMap(element, mid)
     selectDataGridRow(element.parentNode.parentNode);
 
     var mapInfo = UrlMapperAjax.callSync('GetMap', selectedMap);
-    $('map_route').value  = mapInfo['map'];
-    $('map_ext').value    = mapInfo['extension'];
-    $('map_order').value  = mapInfo['order'];
+    $('#map_route').val(mapInfo['map']);
+    $('#map_ext').val(mapInfo['extension']);
+    $('#map_order').val(mapInfo['order']);
 
     if (mapInfo['custom_map'] == null || mapInfo['custom_map'] == '') {
-        $('custom_map_route').value  = mapInfo['map'];
+        $('#custom_map_route').val(mapInfo['map']);
     } else {
-        $('custom_map_route').value  = mapInfo['custom_map'];
+        $('#custom_map_route').val(mapInfo['custom_map']);
     }
 }
 
@@ -312,10 +312,10 @@ function enableMapEditingArea(status)
     } else {
         selectedMap = null;
         unselectDataGridRow();
-        $('map_order').value  = '';
-        $('map_route').value  = '';
-        $('map_ext').value    = '';
-        $('custom_map_route').value  = '';
+        $('#map_order').val('');
+        $('#map_route').val('');
+        $('#map_ext').val('');
+        $('#custom_map_route').val('');
         $('custom_map_route').disabled  = true;
         $('btn_save').disabled   = true;
         $('btn_cancel').disabled = true;
@@ -434,9 +434,9 @@ function saveErrorMap()
  */
 function stopAction()
 {
-    $('alias_id').value = '-';     
-    $('alias').value    = '';
-    $('custom_url').value = '';
+    $('#alias_id').val('-');     
+    $('#alias').val('');
+    $('#custom_url').val('');
     $('delete_button').css('visibility', 'hidden');
     $('alias-combo').selectedIndex = -1;
 }
@@ -451,11 +451,11 @@ function stopErrorMapAction()
     unselectDataGridRow();
     selectedErrorMap = null;
 
-    $('url').value = '';
+    $('#url').val('');
     $('code').selectedIndex = -1;
-    $('new_url').value = '';
+    $('#new_url').val('');
     $('new_code').selectedIndex = -1;
-    $('insert_time').value = '';
+    $('#insert_time').val('');
 }
 
 /**
