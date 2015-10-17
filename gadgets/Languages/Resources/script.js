@@ -102,30 +102,30 @@ function change_lang_option()
         LangDataChanged = false;
     }
 
-    if ($('lang').selectedIndex == 0) {
-        $('btn_export').disabled = true;
-        $('lang_code').disabled  = false;
-        $('component').disabled  = true;
+    if ($('#lang').prop('selectedIndex') == 0) {
+        $('#btn_export').prop('disabled', true);
+        $('#lang_code').prop('disabled', false);
+        $('#component').prop('disabled', true);
         $('#lang_code').val('');
         $('#lang_name').val('');
         if ($('btn_lang')) {
             setButtonTitle(add_language_title);
         } else {
-            $('lang_name').disabled  = true;
+            $('#lang_name').prop('disabled', true);
         }
         $('lang_code').focus();
         stopAction();
         return;
     } else {
-        $('btn_export').disabled = false;
-        $('lang_code').disabled  = true;
-        $('component').disabled  = false;
-        $('#lang_code').val($('lang').options[$('lang').selectedIndex].value);
-        $('#lang_name').val($('lang').options[$('lang').selectedIndex].text);
+        $('#btn_export').prop('disabled', false);
+        $('#lang_code').prop('disabled', true);
+        $('#component').prop('disabled', false);
+        $('#lang_code').val($('lang').options[$('#lang').prop('selectedIndex')].value);
+        $('#lang_name').val($('lang').options[$('#lang').prop('selectedIndex')].text);
         if ($('btn_lang')) {
             setButtonTitle(save_language_title);
         } else {
-            $('lang_name').disabled  = true;
+            $('#lang_name').prop('disabled', true);
         }
     }
 
@@ -177,10 +177,10 @@ function save_lang_data()
  */
 function stopAction()
 {
-    $('btn_save').css('visibility', 'hidden');
-    $('btn_cancel').css('visibility', 'hidden');
-    $('component').selectedIndex = -1;
-    $('lang_strings').html('');
+    $('#btn_save').css('visibility', 'hidden');
+    $('#btn_cancel').css('visibility', 'hidden');
+    $('#component').prop('selectedIndex', -1);
+    $('#lang_strings').html('');
     LangDataChanged = false;
 }
 
