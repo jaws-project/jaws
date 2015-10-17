@@ -15,7 +15,7 @@ var FeedReaderCallback = {
     DeleteFeed: function(response) {
         if (response['type'] == 'response_notice') {
             stopAction();
-            $('feedsites_datagrid')[0].deleteItem();          
+            $('#feedsites_datagrid')[0].deleteItem();          
             getDG();
         }
         FeedReaderAjax.showResponse(response);
@@ -23,8 +23,8 @@ var FeedReaderCallback = {
     
     InsertFeed: function(response) {
         if (response['type'] == 'response_notice') {
-            $('feedsites_datagrid')[0].addItem();
-            $('feedsites_datagrid')[0].setCurrentPage(0);
+            $('#feedsites_datagrid')[0].addItem();
+            $('#feedsites_datagrid')[0].setCurrentPage(0);
             getDG();
         }
         stopAction();
@@ -81,16 +81,16 @@ function unselectDataGridRow()
  */
 function stopAction() 
 {
-    $('id').value          = '0';
-    $('title').value       = '';
-    $('url').value         = 'http://';
-    $('cache_time').value  = '3600';
-    $('view_type').value   = '0';
-    $('count_entry').value = '';
-    $('title_view').value  = '0';
-    $('visible').value     = '1';
+    $('#id').val('0');
+    $('#title').val('');
+    $('#url').val('http://');
+    $('#cache_time').val('3600');
+    $('#view_type').val('0');
+    $('#count_entry').val('');
+    $('#title_view').val('0');
+    $('#visible').val('1');
     unselectDataGridRow();
-    $('btn_cancel').css('visibility', 'hidden');
+    $('#btn_cancel').css('visibility', 'hidden');
 }
 
 /**
@@ -99,15 +99,15 @@ function stopAction()
  */
 function updateForm(feed)
 {
-    $('id').value          = feed['id'];
-    $('title').value       = feed['title'].defilter();
-    $('url').value         = feed['url'].defilter();
-    $('cache_time').value  = feed['cache_time'];
-    $('view_type').value   = feed['view_type'];
-    $('count_entry').value = feed['count_entry'];
-    $('title_view').value  = feed['title_view'];
-    $('visible').value     = feed['visible'];
-    $('btn_cancel').css('visibility', 'visible');
+    $('#id').val(feed['id']);
+    $('#title').val(feed['title'].defilter());
+    $('#url').val(feed['url'].defilter());
+    $('#cache_time').val(feed['cache_time']);
+    $('#view_type').val(feed['view_type']);
+    $('#count_entry').val(feed['count_entry']);
+    $('#title_view').val(feed['title_view']);
+    $('#visible').val(feed['visible']);
+    $('#btn_cancel').css('visibility', 'visible');
 }
 
 /**
@@ -115,9 +115,9 @@ function updateForm(feed)
  */
 function updateFeed()
 {
-    if (!$('title').val() ||
-        !$('url').val() ||
-        !isValidURL($('url').value.trim()))
+    if (!$('#title').val() ||
+        !$('#url').val() ||
+        !isValidURL($.trim($('#url').val()))
     {
         alert(incompleteFeedFields);
         return;
