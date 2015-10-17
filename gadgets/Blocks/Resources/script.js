@@ -245,7 +245,7 @@ function afterNewBlock(id)
 {
     combo = $('block_id');
     combo.disabled = false;
-    combo.options[combo.length] = new Option($('block_title').value, id);
+    combo.options[combo.length] = new Option($('#block_title').val(), id);
     combo.options[combo.length - 1].selected = true;
     edit(id);
 }
