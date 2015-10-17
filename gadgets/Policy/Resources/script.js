@@ -161,9 +161,9 @@ function editIPRange(element, id)
     selectDataGridRow(element.parentNode.parentNode);
     var ipRange = PolicyAjax.callSync('GetIPRange', id);
 
-    $('id').value = ipRange['id'];
-    $('from_ipaddress').value = ipRange['from_ip'];
-    $('to_ipaddress').value   = ipRange['to_ip'];
+    $('#id').val(ipRange['id']);
+    $('#from_ipaddress').val(ipRange['from_ip']);
+    $('#to_ipaddress').val(ipRange['to_ip']);
     $('blocked').selectedIndex = ipRange['blocked']? 1 : 0;
 }
 
@@ -211,8 +211,8 @@ function editAgent(element, id)
     selectDataGridRow(element.parentNode.parentNode);
     var agent = PolicyAjax.callSync('GetAgent', id);
 
-    $('id').value    = agent['id'];
-    $('agent').value = agent['agent'].defilter();
+    $('#id').val(agent['id']);
+    $('#agent').val(agent['agent'].defilter());
     $('blocked').selectedIndex = agent['blocked']? 1 : 0;
 }
 
@@ -347,14 +347,14 @@ function stopAction()
 {
     switch (currentAction) {
         case 'IPBlocking':
-            $('id').value = 0;
-            $('from_ipaddress').value = '';
-            $('to_ipaddress').value   = '';
+            $('#id').val(0);
+            $('#from_ipaddress').val('');
+            $('#to_ipaddress').val('');
             unselectDataGridRow();
             break;
         case 'AgentBlocking':
-            $('id').value = 0;
-            $('agent').value = '';
+            $('#id').val(0);
+            $('#agent').val('');
             unselectDataGridRow();
             break;
         default:
