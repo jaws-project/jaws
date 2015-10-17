@@ -16,7 +16,7 @@ var CommentsCallback = {
     UpdateComment: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopCommentAction();
-            getDG('comments_datagrid', $('comments_datagrid')[0].getCurrentPage(), true);
+            getDG('comments_datagrid', $('#comments_datagrid')[0].getCurrentPage(), true);
         }
         CommentsAjax.showResponse(response);
     },
@@ -24,7 +24,7 @@ var CommentsCallback = {
     DeleteComments: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopCommentAction();
-            getDG('comments_datagrid', $('comments_datagrid')[0].getCurrentPage(), true);
+            getDG('comments_datagrid', $('#comments_datagrid')[0].getCurrentPage(), true);
         }
         CommentsAjax.showResponse(response);
     },
@@ -32,7 +32,7 @@ var CommentsCallback = {
     MarkAs: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopCommentAction();
-            getDG('comments_datagrid', $('comments_datagrid')[0].getCurrentPage(), true);
+            getDG('comments_datagrid', $('#comments_datagrid')[0].getCurrentPage(), true);
         }
         CommentsAjax.showResponse(response);
     },
@@ -59,7 +59,7 @@ function getCommentsDataGrid(name, offset, reset)
     );
     if (reset) {
         stopCommentAction();
-        $(name)[0].setCurrentPage(0);
+        $('#' + name)[0].setCurrentPage(0);
         var total = CommentsAjax.callSync(
             'SizeOfCommentsSearch', [
                 $('#gadgets_filter').val(),
@@ -92,17 +92,17 @@ function stopCommentAction()
     $('#message').val('');
     $('#reply').val('');
     $('comment_status').selectedIndex  = 0;
-    $('btn_save').css('display', 'none');
-    $('btn_reply').css('display', 'none');
-    $('btn_cancel').css('display', 'none');
-    $('name').disabled                 = false;
-    $('email').disabled                = false;
-    $('url').disabled                  = false;
-    $('message').disabled              = false;
-    $('comment_status').disabled       = false;
+    $('#btn_save').css('display', 'none');
+    $('#btn_reply').css('display', 'none');
+    $('#btn_cancel').css('display', 'none');
+    $("#name").prop('disabled', false);
+    $("#email").prop('disabled', false);
+    $("#url").prop('disabled', false);
+    $("#message").prop('disabled', false);
+    $("#comment_status").prop('disabled', false);
 
     unselectGridRow('comments_datagrid');
-    $('name').focus();
+    $('#name').focus();
 }
 
 /**
@@ -114,22 +114,22 @@ function editComment(rowElement, id)
     stopCommentAction();
     selectGridRow('comments_datagrid', rowElement.parentNode.parentNode);
     var comment = CommentsAjax.callSync('GetComment', id);
-    $('name').disabled            = false;
-    $('email').disabled           = false;
-    $('url').disabled             = false;
-    $('message').disabled         = false;
-    $('comment_status').disabled  = false;
+    $("#name").prop('disabled', false);
+    $("#email").prop('disabled', false);
+    $("#url").prop('disabled', false);
+    $("#message").prop('disabled', false);
+    $("#comment_status").prop('disabled', false);
     $('#id').val(comment['id']);
     $('#gadget').val(comment['gadget']);
-    $('comment_ip').html(comment['ip']);
-    $('insert_time').html(comment['insert_time']);
+    $('#comment_ip').html(comment['ip']);
+    $('#insert_time').html(comment['insert_time']);
     $('#name').val(comment['name']);
     $('#email').val(comment['email']);
     $('#url').val(comment['url']);
     $('#message').val(comment['msg_txt'].defilter());
     $('#comment_status').val(comment['status']);
     if (comment['reference_url'] != '') {
-        $('reference_url').html(
+        $('#reference_url').html(
             '<a href="'
             + comment['reference_url']
             + '">'
@@ -137,9 +137,9 @@ function editComment(rowElement, id)
             + '</a>'
         );
     }
-    $('btn_save').css('display', 'inline');
-    $('btn_reply').css('display', 'inline');
-    $('btn_cancel').css('display', 'inline');
+    $('#btn_save').css('display', 'inline');
+    $('#btn_reply').css('display', 'inline');
+    $('#btn_cancel').css('display', 'inline');
 
     if(comment['reply']!=null) {
         $('#reply').val(comment['reply'].defilter());
@@ -184,7 +184,7 @@ function commentDelete(id)
  */
 function commentDGAction(combo)
 {
-    var rows = $('comments_datagrid')[0].getSelectedRows();
+    var rows = $('#comments_datagrid')[0].getSelectedRows();
     var selectedRows = false;
     if (rows.length > 0) {
         selectedRows = true;
