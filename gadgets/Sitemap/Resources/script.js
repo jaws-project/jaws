@@ -104,9 +104,9 @@ function editGadget(gadget)
     var gadgetInfo = SitemapAjax.callSync('GetGadget', {'gname':gadget});
 
     if (gadgetInfo != null) {
-        $('priority').value = gadgetInfo['priority'];
-        $('frequency').value = gadgetInfo['frequency'];
-        $('status').value = gadgetInfo['status'];
+        $('#priority').val(gadgetInfo['priority']);
+        $('#frequency').val(gadgetInfo['frequency']);
+        $('#status').val(gadgetInfo['status']);
         $('last_update').html(gadgetInfo['update_time']);
     }
 }
@@ -134,10 +134,10 @@ function editCategory(element, gadget, cid)
     var categoryInfo = SitemapAjax.callSync('GetCategory', {'gname':gadget, 'cid':cid});
 
     if (categoryInfo != null) {
-        $('cid').value = categoryInfo['id'];
-        $('priority').value = categoryInfo['priority'];
-        $('frequency').value = categoryInfo['frequency'];
-        $('status').value = categoryInfo['status'];
+        $('#cid').val(categoryInfo['id']);
+        $('#priority').val(categoryInfo['priority']);
+        $('#frequency').val(categoryInfo['frequency']);
+        $('#status').val(categoryInfo['status']);
     }
 }
 
