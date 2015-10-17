@@ -52,7 +52,7 @@ function save_lang()
  */
 function changeColorOfTranslatedTerms()
 {
-    var strings_elements = $('tbl_strings').getElementsByTagName('textarea');
+    var strings_elements = $('#tbl_strings textarea');
     for(var i = 0; i < strings_elements.length; i++) {
         if (strings_elements[i].value != "") {
             strings_elements[i].parentNode.parentNode.getElementsByTagName('span')[0].style.color="#000";
@@ -66,7 +66,7 @@ function changeColorOfTranslatedTerms()
 function filterTranslated()
 {
     if ($('tbl_strings')) {
-        var strings_elements = $('tbl_strings').getElementsByTagName('textarea');
+        var strings_elements = $('#tbl_strings textarea');
         for(var i = 0; i < strings_elements.length; i++) {
             if ($('checkbox_filter').checked && strings_elements[i].value != "") {
                 strings_elements[i].parentNode.parentNode.style.display = 'none';
@@ -82,11 +82,11 @@ function filterTranslated()
  */
 function setButtonTitle(title)
 {
-    imgBtn = $('btn_lang').getElementsByTagName('img')[0];
+    imgBtn = $('#btn_lang img').first();
     text = document.createTextNode(' ' + title);
-    $('btn_lang').html('');
-    $('btn_lang').appendChild(imgBtn);
-    $('btn_lang').appendChild(text);
+    $('#btn_lang').html('');
+    $('#btn_lang').appendChild(imgBtn);
+    $('#btn_lang').appendChild(text);
 }
 
 /**
@@ -129,15 +129,15 @@ function change_lang_option()
         }
     }
 
-    lang = $('lang').value;
-    component = $('component').value;
+    lang = $('#lang').val();
+    component = $('#component').val();
 
-    if ($('lang').val() && 
-        $('component').val())
+    if ($('#lang').val() && 
+        $('#component').val())
     {
-        $('btn_save').css('visibility', 'visible');
-        $('btn_cancel').css('visibility', 'visible');
-        $('lang_strings').html(
+        $('#btn_save').css('visibility', 'visible');
+        $('#btn_cancel').css('visibility', 'visible');
+        $('#lang_strings').html(
             LanguagesAjax.callSync('GetLangDataUI', [$('#component').val(), $('#lang').val()])
         );
         filterTranslated();
@@ -155,13 +155,13 @@ function save_lang_data()
     }
 
     var data = new Array();
-    var meta_elements = $('meta_lang').getElementsByTagName('input');
+    var meta_elements = $('#meta_lang input');
     data['meta'] = new Array();
     for(var i = 0; i < meta_elements.length; i++) {
         data['meta'][meta_elements[i].name] = meta_elements[i].value;
     }
 
-    var strings_elements = $('tbl_strings').getElementsByTagName('textarea');
+    var strings_elements = $('#tbl_strings textarea');
     data['strings'] = new Array();
     for(var i = 0; i < strings_elements.length; i++) {
         data['strings'][strings_elements[i].name] = strings_elements[i].value;
