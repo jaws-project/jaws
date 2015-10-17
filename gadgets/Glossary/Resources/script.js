@@ -236,7 +236,7 @@ function afterNewTerm(id)
 {
     combo = $('term_id');
     combo.disabled = false;
-    combo.options[combo.length] = new Option($('term_title').value, id);
+    combo.options[combo.length] = new Option($('#term_title').val(), id);
     combo.options[combo.length - 1].selected = true;
     edit(id);
 }
