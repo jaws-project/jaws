@@ -51,8 +51,8 @@ var WeatherCallback = {
 function initWeather()
 {
     stopAction();
-    $('latitude').value = '51.30';
-    $('longitude').value = '00.08';
+    $('#latitude').val('51.30');
+    $('#longitude').val('00.08');
     initDataGrid('weather_datagrid', WeatherAjax);
     setGoogleMapImage();
 }
@@ -66,11 +66,11 @@ function stopAction()
         $('weather_datagrid')[0].unselectRow(selectedRow);
         selectedRow = null;
     }
-    $('id').value = '';
-    $('title').value = '';
-    $('fast_url').value = '';
-    $('published').value = 1;
-    $('title').focus();
+    $('#id').val('');
+    $('#title').val('');
+    $('#fast_url').val('');
+    $('#published').val(1);
+    $('#title').focus();
 }
 
 /**
@@ -85,12 +85,12 @@ function editRegion(rowElement, id)
     selectedRow = rowElement;
 
     var geoPos = WeatherAjax.callSync('GetRegion', id);
-    $('id').value        = geoPos['id'];
-    $('title').value     = geoPos['title'].defilter();
-    $('fast_url').value  = geoPos['fast_url'];
-    $('latitude').value  = geoPos['latitude'];
-    $('longitude').value = geoPos['longitude'];
-    $('published').value = geoPos['published']? 1 : 0;
+    $('#id').val(geoPos['id']);
+    $('#title').val(geoPos['title'].defilter());
+    $('#fast_url').val(geoPos['fast_url']);
+    $('#latitude').val(geoPos['latitude']);
+    $('#longitude').val(geoPos['longitude']);
+    $('#published').val(geoPos['published']? 1 : 0);
     setGoogleMapImage();
 }
 
@@ -107,25 +107,25 @@ function updateRegion()
         return;
     }
 
-    if ($('id').value == 0) {
+    if ($('#id').val() == 0) {
         WeatherAjax.callAsync(
             'InsertRegion', [
-                $('title').value,
-                $('fast_url').value,
-                $('latitude').value,
-                $('longitude').value,
-                $('published').value
+                $('#title').val(),
+                $('#fast_url').val(),
+                $('#latitude').val(),
+                $('#longitude').val(),
+                $('#published').val()
             ]
         );
     } else {
         WeatherAjax.callAsync(
             'UpdateRegion', [
-                $('id').value,
-                $('title').value,
-                $('fast_url').value,
-                $('latitude').value,
-                $('longitude').value,
-                $('published').value
+                $('#id').val(),
+                $('#title').val(),
+                $('#fast_url').val(),
+                $('#latitude').val(),
+                $('#longitude').val(),
+                $('#published').val()
             ]
         );
     }
@@ -153,10 +153,10 @@ function updateProperties()
 {
     WeatherAjax.callAsync(
         'UpdateProperties', [
-            $('unit').value,
-            $('update_period').value,
-            $('date_format').value,
-            $('api_key').value
+            $('#unit').val(),
+            $('#update_period').val(),
+            $('#date_format').val(),
+            $('#api_key').val()
         ]
     );
 }
@@ -223,8 +223,8 @@ function getGoogleMap(ev, element)
                             element.height,
                             parseFloat($('latitude').value),
                             parseFloat($('longitude').value));
-    $('latitude').value  = geoPos[0];
-    $('longitude').value = geoPos[1];
+    $('#latitude').val(geoPos[0]);
+    $('#longitude').val(geoPos[1]);
     setGoogleMapImage();
 }
 
@@ -234,7 +234,7 @@ function getGoogleMap(ev, element)
 function setGoogleMapImage()
 {
     $('gmap').src = base_script + '?gadget=Weather&action=GetGoogleMapImage' +
-                    '&latitude=' + $('latitude').value + '&longitude=' + $('longitude').value +
+                    '&latitude=' + $('#latitude').val() + '&longitude=' + $('#longitude').val() +
                     '&zoom=' + ZoomLevel + '&size='  + ImageSize;
 }
 
