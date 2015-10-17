@@ -135,10 +135,10 @@ function deleteElement(itemId)
         LayoutAjax.callAsync(
             'DeleteElement', [
                 itemId,
-                $('index_layout').value,
+                $('#index_layout').val(),
                 section,
                 position + 1,
-                $('user').value
+                $('#user').val()
             ]
         );
     }
@@ -176,12 +176,12 @@ function initUI()
                 LayoutAjax.callAsync(
                     'MoveElement', [
                         el.id.replace('item_', ''),               /* item id */
-                        $('index_layout').value,                  /* index or default layout */
+                        $('#index_layout').val(),                 /* index or default layout */
                         el.getProperty('old_section'),            /* old section name */
                         parseInt(el.getProperty('old_position')), /* position in old section */
                         new_section,                              /* new section name */
                         new_position,                             /* position in new section */
-                        $('user').value                           /* dashboard of user or global layout */
+                        $('#user').val()                          /* dashboard of user or global layout */
                     ]
                 );
             }
@@ -288,7 +288,7 @@ function addGadgetToLayout(gadget, action, params)
     params = (params == null)? null : params.split(',');
     LayoutAjax.callAsync(
         'AddGadget',
-        [gadget, action, params, $('index_layout').value, $('user').value]
+        [gadget, action, params, $('#index_layout').val(), $('#user').val()]
     );
 }
 
