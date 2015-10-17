@@ -225,19 +225,19 @@ function getPages(name, offset, reset)
 {
     var result = StaticPageAjax.callSync(
         'SearchPages', [
-            $('group').value,
-            $('status').value,
-            $('search').value,
-            $('orderby').value,
+            $('#group').val(),
+            $('#status').val(),
+            $('#search').val(),
+            $('#orderby').val(),
             offset
         ]
     );
     if (reset) {
         var total = StaticPageAjax.callSync(
             'SizeOfSearch', [
-                $('group').value,
-                $('status').value,
-                $('search').value
+                $('#group').val(),
+                $('#status').val(),
+                $('#search').val()
             ]
         );
     }
@@ -288,22 +288,22 @@ function saveGroup()
     if (selectedGroup == 0) {
         StaticPageAjax.callAsync(
             'InsertGroup', [
-                $('title').value,
-                $('fast_url').value,
-                $('meta_keys').value,
-                $('meta_desc').value,
-                $('visible').value
+                $('#title').val(),
+                $('#fast_url').val(),
+                $('#meta_keys').val(),
+                $('#meta_desc').val(),
+                $('#visible').val()
             ]
         );
     } else {
         StaticPageAjax.callAsync(
             'UpdateGroup', [
                 selectedGroup,
-                $('title').value,
-                $('fast_url').value,
-                $('meta_keys').value,
-                $('meta_desc').value,
-                $('visible').value
+                $('#title').val(),
+                $('#fast_url').val(),
+                $('#meta_keys').val(),
+                $('#meta_desc').val(),
+                $('#visible').val()
             ]
         );
     }
