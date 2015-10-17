@@ -33,11 +33,11 @@ function gotoLocation(album)
 function ImportImages()
 {
     if (((currentIndex + 1) <= howmany) && (items[currentIndex]['image'])) {
-        $('nofm').html((currentIndex + 1) + ' / ' + howmany);
+        $('#nofm').html((currentIndex + 1) + ' / ' + howmany);
         var percent = Math.round(((currentIndex + 1) * 100) / howmany);
 
-        $('percent').html(percent + '%');
-        $('img_percent').setAttribute('style', 'width:' + percent + '%;');
+        $('#percent').html(percent + '%');
+        $('#img_percent').css('width', percent + '%');
         PhooAjax.callAsync(
             'ImportImage', [
                 items[currentIndex]['image'],
@@ -46,9 +46,9 @@ function ImportImages()
         );
     } else {
         if (currentIndex == howmany) {
-            $('nofm').html(finished_message);
-            $('indicator').src = ok_image;
-            $('warning').fade('out');
+            $('#nofm').html(finished_message);
+            $('#indicator').attr('src', ok_image);
+            $('#warning').fade('out');
         }
     }
 }
@@ -61,7 +61,7 @@ function updatePhoto()
     var published      = $('published').value;
     var description    = getEditorValue('description');
 
-    var albumsNode  = $('album-checkboxes').getElementsByTagName('input');
+    var albumsNode  = $('#album-checkboxes input');
     var albums      = new Array();
     var albmCounter = 0;
     for(var i = 0; i < albumsNode.length; i++) {
@@ -86,7 +86,7 @@ function addEntry(title)
     id = num_entries;
     entry = '<label id="photo' + id + '_label" for="photo' + id + '">' + title + ' ' + id + ':&nbsp;</label>';
     entry += '<input type="file" name="photo' + id + '" id="photo' + id + '" title="Photo ' + id + '" /><br />';
-    $('phoo_addentry' + id).html(entry + '<span id="phoo_addentry' + (id + 1) + '">' + $('phoo_addentry' + id).html() + '</span>');
+    $('#phoo_addentry' + id).html(entry + '<span id="phoo_addentry' + (id + 1) + '">' + $('#phoo_addentry' + id).html() + '</span>');
 }
 
 /**
@@ -141,8 +141,8 @@ function editGroup(id)
     $('#meta_keywords').val(groupInfo['meta_keywords'].defilter());
     $('#meta_description').val(groupInfo['meta_description'].defilter());
     $('#description').val(groupInfo['description'].defilter());
-    $('btn_delete').css('display', 'inline');
-    $('legend_title').html(editGroupTitle);
+    $('#btn_delete').css('display', 'inline');
+    $('#legend_title').html(editGroupTitle);
 }
 
 /**
