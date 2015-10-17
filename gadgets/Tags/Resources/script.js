@@ -80,12 +80,12 @@ function getTagsDataGrid(name, offset, reset)
  */
 function stopTagAction()
 {
-    $('id').value                      = 0;
-    $('name').value                    = '';
-    $('title').value                   = '';
-    $('description').value             = '';
-    $('meta_keywords').value           = '';
-    $('meta_description').value        = '';
+    $('#id').val(0);
+    $('#name').val('');
+    $('#title').val('');
+    $('#description').val('');
+    $('#meta_keywords').val('');
+    $('#meta_description').val('');
     $('btn_cancel').css('display', 'none');
     $('name').disabled                 = false;
     $('legend_title').html(addNewTagTitle);
@@ -102,12 +102,12 @@ function editTag(rowElement, id)
 {
     selectGridRow('tags_datagrid', rowElement.parentNode.parentNode);
     var tag = TagsAjax.callSync('GetTag', id);
-    $('id').value                 = id;
-    $('name').value               = tag['name'];
-    $('title').value              = tag['title'];
-    $('description').value        = tag['description'];
-    $('meta_keywords').value      = tag['meta_keywords'];
-    $('meta_description').value   = tag['meta_description'];
+    $('#id').val(id);
+    $('#name').val(tag['name']);
+    $('#title').val(tag['title']);
+    $('#description').val(tag['description']);
+    $('#meta_keywords').val(tag['meta_keywords']);
+    $('#meta_description').val(tag['meta_description']);
 //    $('btn_save').css('display', 'inline');
     $('btn_cancel').css('display', 'inline');
     $('legend_title').html(editTagTitle);
