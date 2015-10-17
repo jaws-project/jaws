@@ -92,7 +92,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         $tpl->SetVariable('actions_combo', $actions->Get());
 
         $btnExecute =& Piwi::CreateWidget('Button', 'executeCommentAction', '', STOCK_YES);
-        $btnExecute->AddEvent(ON_CLICK, "javascript:commentDGAction($('comments_actions_combo'));");
+        $btnExecute->AddEvent(ON_CLICK, "javascript:commentDGAction($('#comments_actions_combo'));");
         $tpl->SetVariable('btn_execute', $btnExecute->Get());
 
         if ($this->gadget->GetPermission('ManageComments')) {
