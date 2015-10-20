@@ -5,7 +5,7 @@
  * @package    Components
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Mohsen Khahani <mkhahani@gmail.com>
- * @copyright  2004-2014 Jaws Development Group
+ * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 /**
@@ -120,34 +120,35 @@ function init()
         ComponentsAjax.callSync('GetPlugins'):
         ComponentsAjax.callSync('GetGadgets');
     buildComponentList();
-    $('tabs').getElements('li').addEvent('click', switchTab);
-    $('components').getElements('h3').each(function(el, i) {
-        el.addEvent('click', toggleCollapse);
+    $('#tabs').find('li').on('click', switchTab);
+    $('#components').find('h3').each(function(i) {
+        // FIXME: does not remember last state
         if (ComponentsStorage[Number(pluginsMode)].fetch(i)) {
-            el.fireEvent('click');
+            $(this).trigger('click');
         }
-    });
+    }).on('click', toggleCollapse);
     updateSummary();
 }
 
 /**
- * Builds gadgets/plugins listbox
+ * Builds gadgets/plugins list box
  */
 function buildComponentList()
 {
     var sections = {},
         filter = $('#filter').val();
-    sections.outdated = $('#outdated').html('');
-    sections.notinstalled = $('#notinstalled').html('');
-    sections.installed = $('#installed').html('');
-    sections.core = $('#core').html('');
-    Object.keys(components).sort().each(function(name) {
-        if (components[name]['title'].test(filter, 'i')) {
-            sections[components[name].state].grab(getComponentElement(components[name]));
+    sections.outdated = $('#outdated').empty();
+    sections.notinstalled = $('#notinstalled').empty();
+    sections.installed = $('#installed').empty();
+    sections.core = $('#core').empty();
+    $.each(Object.keys(components).sort(), function() {
+        if (components[this].title.toLowerCase().indexOf(filter.toLowerCase()) >= 0) {
+            sections[components[this].state].append(getComponentElement(components[this]));
         }
     });
-    $('#components h3').show();
-    $('#components ul:empty').prev('h3').hide();
+    var componentsEl = $('#components');
+    componentsEl.find('h3').show();
+    componentsEl.find('ul:empty').prev('h3').hide();
 }
 
 /**
@@ -155,30 +156,31 @@ function buildComponentList()
  */
 function getComponentElement(comp)
 {
-    var li = new Element('li', {id:comp.name}),
-        span = new Element('span').set('html', comp.title),
-        img = new Element('img', {alt:comp.name}),
-        a = new Element('a').set('html', actions[comp.state]);
+    var li = $('<li>').attr('id', comp.name),
+        span = $('<span>').html(comp.title),
+        img = $('<img>').attr('alt', comp.name),
+        a = $('<a>').html(actions[comp.state]);
     if (comp.disabled) {
-        a.set('html', actions.disabled);
+        a.html(actions.disabled);
     }
-    li.adopt(img, span);
-    img.src = pluginsMode?
+    li.append(img, span);
+    img.attr('src', pluginsMode?
         'gadgets/Components/Resources/images/plugin.png' :
-        'gadgets/' + comp.name + '/Resources/images/logo.png';
+        'gadgets/' + comp.name + '/Resources/images/logo.png');
     if (comp.state !== 'core') {
-        a.set('href', 'javascript:void(0);');
-        a.addEvent('click', function(e) {
-            e.stop();
+        a.attr('href', 'javascript:void(0);');
+        a.on('click', function(e) {
+            // TODO: check it again
+            //e.stop();
             selectedComponent = comp.name;
             setupComponent();
         });
-        li.grab(a);
+        li.append(a);
     }
     if (comp.disabled) {
         li.addClass('disabled');
     }
-    li.addEvent('click', selectComponent);
+    li.on('click', selectComponent);
     return li;
 }
 
@@ -195,7 +197,7 @@ function updateSummary()
         core: 0,
         total: 0
     };
-    Object.keys(components).each(function(comp) {
+    $.each(Object.keys(components), function(i, comp) {
         switch (components[comp].state) {
             case 'outdated':
                 count.outdated++;
@@ -215,7 +217,7 @@ function updateSummary()
         }
         count.total++;
     });
-    $('s#um_installed').html(count.installed);
+    $('#sum_installed').html(count.installed);
     $('#sum_notinstalled').html(count.notinstalled);
 
     $('#sum_total').html(count.total);
@@ -231,12 +233,12 @@ function updateSummary()
  */
 function toggleCollapse()
 {
-    this.toggleClass('collapsed');
+    $(this).toggleClass('collapsed');
     ComponentsStorage[Number(pluginsMode)].update(
-        $('components').getElements('h3').indexOf(this),
-        this.getProperty('class')
+        $('#components').find('h3').index(),
+        $(this).attr('class')
     );
-    this.getNext('ul').toggle();
+    $(this).next('ul').toggle();
 }
 
 /**
@@ -245,7 +247,7 @@ function toggleCollapse()
 function showHideTabs()
 {
     var comp = components[selectedComponent];
-    $('#tabs li').hide();
+    $('#tabs').find('li').hide();
     $('#tab_info').show();
     if (comp.state === 'core' || (comp.state === 'installed' && !comp.disabled)) {
         if (comp.manage_reg) {
@@ -266,7 +268,7 @@ function showHideTabs()
 function showHideButtons()
 {
     var comp = components[selectedComponent];
-    $('#component_info button').hide();
+    $('#component_info').find('button').hide();
     if (pluginsMode) {
         switch(comp.state) {
         case 'notinstalled':
@@ -297,16 +299,19 @@ function showHideButtons()
 }
 
 /**
- * Switches between Info/Regsitry/ACL UIs
+ * Switches between Info/Registry/ACL UIs
  */
 function switchTab(tab)
 {
-    tab = (typeof tab === 'string') ? tab : this.id;
-    tab = $(tab).isVisible() ? tab : 'tab_info';
-    $('#tabs li.active').removeClass('active');
-    $(tab).addClass('active');
-    $('#component_form').children().hide();
-    switch (tab) {
+    tab = (typeof tab === 'string')? $('#' + tab) : $('#' + this.id);
+    if (!tab.is(':visible')) {
+        tab = $('#tab_info');
+    }
+    $('#tabs').find('li.active').removeClass('active');
+    tab.addClass('active');
+    $('#component_form').find('> div').hide();
+
+    switch (tab.attr('id')) {
         case 'tab_info':
             componentInfo();
             break;
@@ -328,25 +333,24 @@ function switchTab(tab)
 function selectComponent()
 {
     var comp = this.id,
-        img = new Element('img'),
-        h1 = new Element('h1');
-    img.src = pluginsMode ? 
-        'gadgets/Components/Resources/images/plugin.png': 
-        'gadgets/' + components[comp].name + '/Resources/images/logo.png';
-    img.alt = components[comp].title;
-    h1.innerHTML = components[comp].title + ': ' + components[comp].description;
-    $('#component_head').html('');
-    $('#component_form').html('');
-    $('#component_head').adopt(img, h1);
-    $('#components li.selected').removeClass('selected');
-    this.addClass('selected');
+        img = $('<img>'),
+        h1 = $('<h1>');
+    img.attr('src', pluginsMode ?
+        'gadgets/Components/Resources/images/plugin.png':
+        'gadgets/' + components[comp].name + '/Resources/images/logo.png');
+    img.attr('alt', components[comp].title);
+    h1.html(components[comp].title + ': ' + components[comp].description);
+    $('#component_head').empty().append(img, h1);
+    $('#component_form').empty();
+    $('#components').find('li.selected').removeClass('selected');
+    $(this).addClass('selected');
 
     selectedComponent = comp;
     regCache = null;
     aclCache = null;
     usageCache = null;
     showHideTabs();
-    switchTab($('tabs').getElement('li.active').id);
+    switchTab($('#tabs').find('li.active').attr('id'));
 }
 
 /**
@@ -355,7 +359,7 @@ function selectComponent()
 function closeUI()
 {
     selectedComponent = null;
-    $('#components li.selected').removeClass('selected');
+    $('#components').find('li.selected').removeClass('selected');
     $('#summary').show();
     $('#component').hide();
     updateSummary();
@@ -366,16 +370,16 @@ function closeUI()
  */
 function componentInfo()
 {
-    if (!$('#component_info').length) {
+    var infoEl = $('#component_info').show();
+    if (!infoEl.length) {
         $('#component_form').html(pluginsMode ?
             ComponentsAjax.callSync('GetPluginInfo', selectedComponent):
             ComponentsAjax.callSync('GetGadgetInfo', selectedComponent)
         );
     }
-
     $('#summary').hide();
     $('#component').show();
-    $('#component_info').show();
+
     showHideButtons();
 }
 
@@ -385,29 +389,31 @@ function componentInfo()
 function componentRegistry(reset)
 {
     if (!regCache) {
-        var table = new Element('table'),
+        var table = $('<table>'),
             res = ComponentsAjax.callSync('GetRegistry', [selectedComponent, pluginsMode]),
-            div = new Element('div').set('html', res.ui);
-        $('component_form').grab(div.getElement('div'));
-        Object.each(res.data, function(value, name) {
-            var label = new Element('label', {html:name, 'for':name}),
-                th = new Element('th').grab(label),
-                input = new Element('input', {'id':name, 'value':value}),
-                td = new Element('td').grab(input),
-                tr = new Element('tr').adopt(th, td);
-            input.setProperty('onchange', 'onValueChange(this)');
-            table.grab(tr);
+            div = $('<div>').html(res.ui);
+        $('#component_form').append(div.find('div'));
+        $.each(res.data, function(name, value) {
+            var label = $('<label>').html(name).attr('for', name),
+                th = $('<th>').append(label),
+                input = $('<input>').attr('id', name).val(value),
+                td = $('<td>').append(input),
+                tr = $('<tr>').append(th, td);
+            input.on('change', onValueChange);
+            table.append(tr);
         });
-        $('frm_registry').grab(table);
-        regCache = $('component_registry').clone(true, true);
+        $('#frm_registry').append(table);
+        regCache = $('#component_registry').clone(true, true);
     }
+
+    var regEl = $('#component_registry');
     if (reset) {
-        regCache.clone(true, true).replaces($('component_registry'));
+        regEl.html(regCache.clone(true, true));
         regChanges = {};
     }
     $('#summary').hide();
     $('#component').show();
-    $('#component_registry').show();
+    regEl.show();
 }
 
 /**
@@ -416,36 +422,37 @@ function componentRegistry(reset)
 function componentACL(reset)
 {
     if (!aclCache) {
-        var table = new Element('table'),
+        var table = $('<table>'),
             res = ComponentsAjax.callSync('GetACL', [selectedComponent, pluginsMode]),
-            div = new Element('div').set('html', res.ui);
-        aclCache = div.getElement('div');
-        $('component_form').grab(div.getElement('div'));
-        res.acls.each(function(acl) {
-            var key_unique = acl.key_name + ':' + acl.key_subkey;
-            var label = new Element('label', {html:acl.key_desc, 'for':key_unique}),
-                th = new Element('th').grab(label),
-                input = new Element('input', {
+            div = $('<div>').html(res.ui);
+        aclCache = div.first('div');
+        $('#component_form').append(div.first('div'));
+        $.each(res.acls, function(i, acl) {
+            var key_unique = acl.key_name + ':' + acl.key_subkey,
+                label = $('<label>').html(acl.key_desc).attr('for', key_unique),
+                th = $('<th>').append(label),
+                input = $('<input>').attr({
                     'id': key_unique,
                     'type': 'checkbox',
-                    'value': acl.key_value,
                     'checked': acl.key_value
-                }),
-                td = new Element('td').grab(input),
-                tr = new Element('tr').adopt(td, th);
-            input.setProperty('onchange', 'onValueChange(this)');
-            table.grab(tr);
+                }).val(acl.key_value),
+                td = $('<td>').append(input),
+                tr = $('<tr>').append(td, th);
+            input.on('change', onValueChange);
+            table.append(tr);
         });
-        $('frm_acl').grab(table);
-        aclCache = $('component_acl').clone(true, true);
+        $('#frm_acl').append(table);
+        aclCache = $('#component_acl').clone(true, true);
     }
+
+    var aclEl = $('#component_acl');
     if (reset) {
-        aclCache.clone(true, true).replaces($('component_acl'));
+        aclEl.replaceWith(aclCache.clone(true, true));
         aclChanges = {};
     }
     $('#summary').hide();
     $('#component').show();
-    $('#component_acl').show();
+    aclEl.show();
 }
 
 /**
@@ -502,14 +509,14 @@ function disableGadget()
 /**
  * Stores changed Registry/ACL value
  */
-function onValueChange(el)
+function onValueChange()
 {
-    switch ($('tabs').getElement('li.active').get('id')) {
+    switch ($('#tabs').find('li.active').attr('id')) {
         case 'tab_registry':
-            regChanges[el.id] = el.value;
+            regChanges[this.id] = this.value;
             break;
         case 'tab_acl':
-            aclChanges[el.id] = el.checked;
+            aclChanges[this.id] = this.checked;
             break;
     }
 }
@@ -536,33 +543,33 @@ function saveACL()
 function pluginUsage(reset)
 {
     if (!usageCache) {
-        var tbody = new Element('tbody'),
+        var tbody = $('<tbody>'),
             res = ComponentsAjax.callSync('GetPluginUsage', selectedComponent),
-            div = new Element('div').set('html', res.ui);
-        $('component_form').grab(div.getElement('div'));
-        res.usage.gadgets.each(function(gadget) {
-            var label = new Element('label', {html:gadget.title}),
-                th = new Element('th').grab(label),
-                b_input = new Element('input', {type:'checkbox', name:'backend', value:gadget.name}),
-                b_td = new Element('td').grab(b_input),
-                f_input = new Element('input', {type:'checkbox', name:'frontend', value:gadget.name}),
-                f_td = new Element('td').grab(f_input),
-                tr = new Element('tr').adopt(th, b_td, f_td);
+            div = $('<div>').html(res.ui);
+        $('#component_form').append(div.first('div'));
+        $.each(res.usage.gadgets, function(i, gadget) {
+            var label = $('<label>').html(gadget.title),
+                th = $('<th>').append(label),
+                b_input = $('<input>').attr('type', 'checkbox').attr('name', 'backend').val(gadget.name),
+                b_td = $('<td>').append(b_input),
+                f_input = $('<input>').attr('type', 'checkbox').attr('name', 'frontend').val(gadget.name),
+                f_td = $('<td>').append(f_input),
+                tr = $('<tr>').append(th, b_td, f_td);
             if (res.usage.backend === '*' || res.usage.backend.indexOf(gadget.name) !== -1) {
-                b_input.checked = true;
+                b_input.attr('checked', true);
             }
             if (res.usage.frontend === '*' || res.usage.frontend.indexOf(gadget.name) !== -1) {
-                f_input.checked = true;
+                f_input.attr('checked', true);
             }
-            tbody.grab(tr);
+            tbody.append(tr);
         });
-        $('plugin_usage').getElement('table').grab(tbody);
-        $('all_backend').checked = (res.usage.backend === '*') ? true : false;
-        $('all_frontend').checked = (res.usage.frontend === '*') ? true : false;
+        $('#plugin_usage').find('table').append(tbody);
+        $('#all_backend').attr('checked', (res.usage.backend === '*'));
+        $('#all_frontend').attr('checked', (res.usage.frontend === '*'));
         usageCache = $('#plugin_usage').clone(true, true);
     }
     if (reset) {
-        usageCache.clone(true, true).replaces($('plugin_usage'));
+        $('#plugin_usage').html(usageCache.clone(true, true));
     }
     $('#summary').hide();
     $('#component').show();
@@ -574,9 +581,10 @@ function pluginUsage(reset)
  */
 function savePluginUsage()
 {
-    var backend = $('plugin_usage').getElements('input:checked[name=backend]').get('value'),
-        frontend = $('plugin_usage').getElements('input:checked[name=frontend]').get('value'),
-        total = $('plugin_usage').getElements('input[name=frontend]').length;
+    var usageEl = $('#plugin_usage'),
+        backend = usageEl.find('input:checked[name=backend]').map(function() { return this.value; }).toArray(),
+        frontend = usageEl.find('input:checked[name=frontend]').map(function() { return this.value; }).toArray(),
+        total = usageEl.find('input[name=frontend]').length;
     backend = (backend.length === total) ? '*' : backend.join(',');
     frontend = (frontend.length === total) ? '*' : frontend.join(',');
     ComponentsAjax.callAsync('UpdatePluginUsage', [selectedComponent, backend, frontend]);
@@ -587,12 +595,13 @@ function savePluginUsage()
  */
 function usageCheckAll(el)
 {
+    var usageEl = $('#plugin_usage');
     switch (el.id) {
         case 'all_backend':
-            $('plugin_usage').getElements('input[name=backend]').set('checked', el.checked);
+            usageEl.find('input[name=backend]').attr('checked', el.checked);
             break;
         case 'all_frontend':
-            $('plugin_usage').getElements('input[name=frontend]').set('checked', el.checked);
+            usageEl.find('input[name=frontend]').attr('checked', el.checked);
             break;
     }
 }
