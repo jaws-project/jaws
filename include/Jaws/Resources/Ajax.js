@@ -133,8 +133,8 @@ function JawsAjax(gadget, callback, baseScript)
         // TODO: start loading..
     };
 
-    this.onSuccess = function (reqOptions, response, status, result) {
-        response = eval('(' + result.responseText + ')');
+    this.onSuccess = function (reqOptions, data, textStatus, jqXHR) {
+        response = eval('(' + jqXHR.responseText + ')');
         // call inline user define function
         if (reqOptions.userOptions.success) {
             reqOptions.userOptions.success(response);
@@ -145,7 +145,7 @@ function JawsAjax(gadget, callback, baseScript)
         }
     };
 
-    this.onError = function () {
+    this.onError = function (reqOptions, jqXHR, textStatus, errorThrown) {
         // TODO: alert error message
         // call inline user define function
         if (reqOptions.userOptions.error) {
@@ -153,10 +153,10 @@ function JawsAjax(gadget, callback, baseScript)
         }
     };
 
-    this.onComplete = function () {
+    this.onComplete = function (reqOptions, jqXHR, textStatus) {
         // TODO: stop loading..
         // call inline user define function
-        if (reqOptions.userOptions.complete) {
+         if (reqOptions.userOptions.complete) {
             reqOptions.userOptions.complete();
         }
     };
