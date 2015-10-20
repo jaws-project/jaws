@@ -90,9 +90,9 @@ function JawsAjax(gadget, callback, baseScript)
      * @param   object  data    Parameters passed to the function (optional)
      * @return  void
      */
-    this.callAsync = function (action, data, userOptions) {
+    this.callAsync = function (action, data, done) {
         var options  = {};
-        options.userOptions = userOptions || {};
+        options.done = done;
         options.url  = this.baseURL + action;
         options.type = 'POST';
         options.async  = true;
@@ -114,9 +114,9 @@ function JawsAjax(gadget, callback, baseScript)
      * @param   object  data    Parameters passed to the function (optional)
      * @return  mixed   Response text on synchronous mode or void otherwise
      */
-    this.callSync = function (action, data, userOptions) {
+    this.callSync = function (action, data, done) {
         var options = {};
-        options.userOptions = userOptions || {};
+        options.done = done;
         options.url = this.baseURL + action;
         options.type = 'POST';
         options.async = false;
@@ -136,8 +136,8 @@ function JawsAjax(gadget, callback, baseScript)
     this.onSuccess = function (reqOptions, data, textStatus, jqXHR) {
         response = eval('(' + jqXHR.responseText + ')');
         // call inline user define function
-        if (reqOptions.userOptions.success) {
-            reqOptions.userOptions.success(response);
+        if (reqOptions.done) {
+            reqOptions.done(response);
         }
         var reqMethod = this.callback[reqOptions.action];
         if (reqMethod) {
@@ -147,18 +147,10 @@ function JawsAjax(gadget, callback, baseScript)
 
     this.onError = function (reqOptions, jqXHR, textStatus, errorThrown) {
         // TODO: alert error message
-        // call inline user define function
-        if (reqOptions.userOptions.error) {
-            reqOptions.userOptions.error();
-        }
     };
 
     this.onComplete = function (reqOptions, jqXHR, textStatus) {
         // TODO: stop loading..
-        // call inline user define function
-         if (reqOptions.userOptions.complete) {
-            reqOptions.userOptions.complete();
-        }
     };
 
     this.showResponse = function (response) {
