@@ -35,6 +35,24 @@ jQuery.extend({
     }
 });
 
+(function($){
+    var loadedScripts = {};
+    jQuery.loadScript = function(path, fn) {
+        if (loadedScripts[path]) {
+            fn();
+            return;
+        }
+
+        $('<script>').appendTo('head').on('load readystatechange', function() {
+            $(this).off('load readystatechange');
+            loadedScripts[path] = true;
+            fn();
+        }).on('errot', function() {
+            //on error
+        }).prop('async', true).attr('src', path);
+    }
+})(jQuery);
+
 /**
  * Ajax base class
  *
