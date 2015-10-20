@@ -16,9 +16,23 @@
  */
 jQuery.extend({
     unserialize: function(str) {
-        return decodeURIComponent((str || document.location.search).replace(/\+/gi, " ")).replace(/(^\?)/,'').split("&").map(function(n){return n=n.split("="),this[n[0]]=n[1],this;}.bind({}))[0];
-  }
-
+        str = decodeURIComponent((str || document.location.search).replace(/\+/gi, " ")).replace(/(^\?)/,'');
+        return str.split("&").map(function(n) {
+            n=n.split("=");
+            switch($.type(this[n[0]])) {
+                case "undefined":
+                    this[n[0]] = n[1];
+                    break;
+                case "array":
+                    this[n[0]].push(n[1]);
+                    break;
+                default:
+                    this[n[0]] = [this[n[0]]];
+                    this[n[0]].push(n[1]);
+            }
+            return this;
+        }.bind({}))[0];
+    }
 });
 
 /**
