@@ -22,7 +22,7 @@
 
 <script type="text/javascript">
   currentAction = 'Contacts';
-  $('recipient_filter').selectedIndex = 0;
+  $('#recipient_filter')[0].selectedIndex = 0;
   initDataGrid('contacts_datagrid', ContactAjax, getContacts);
   var incompleteContactFields = "{{incompleteContactFields}}";
   var confirmContactDelete    = "{{confirmContactDelete}}";

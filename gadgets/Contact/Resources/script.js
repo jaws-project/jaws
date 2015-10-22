@@ -422,10 +422,9 @@ function updateUsers(group)
         group = false;
     }
     var users = ContactAjax.callSync('GetUsers', group);
-    $('#users')[0].options.length = 0;
-    $('#users')[0].options[0] = new Option(lblAllGroupUsers, 0);
-    users.each(function(user, i) {
-        $('#users')[0].options[$('#users')[0].options.length] = $('<option>').html(user['nickname']).attr('id', user['id']);
+    $('#users').empty().append($('<option>').html(lblAllGroupUsers).val(0));
+    $.each(users, function(i, user) {
+        $('#users').append($('<option>').html(user['nickname']).val(user['id']));
     });
 }
 
@@ -528,9 +527,8 @@ function previewMessage()
     var preview  = ContactAjax.callSync('GetMessagePreview', getEditorValue('message')),
         width    = 750,
         height   = 500,
-        docDim   = document.getSize(),
-        left     = (docDim.x - width) / 2,
-        top      = (docDim.y - height) / 2,
+        left     = ($(document).width() - width) / 2,
+        top      = ($(document).height() - height) / 2,
         specs    = 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top,
         popup    = window.open('about:blank', '', specs, true);
     popup.document.write(preview);

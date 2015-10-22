@@ -30,9 +30,9 @@
                 <a id="file_link"></a> <small id="file_size"></small>
                 {{remove}}
               </div>
-              <div class="wrapper" 
-                   onmouseover="$('btn_upload').style.textDecoration='underline'"
-                   onmouseout ="$('btn_upload').style.textDecoration='none'">{{attachment}}</div>
+              <div class="wrapper"
+                   onmouseover="$('#btn_upload').css('text-decoration', 'underline')"
+                   onmouseout ="$('#btn_upload').css('text-decoration', 'none')">{{attachment}}</div>
             </div>
           </form>
       </td></tr>
@@ -47,7 +47,7 @@
       groupHasNoUser         = "{{groupHasNoUser}}",
       incompleteMailerFields = "{{incompleteMailerFields}}";
   newEmail();
-  $('options_1').checked = true;
+  $('#options_1').prop('checked', true);
   switchEmailTarget(1);
 </script>
 <!-- END mailer -->
