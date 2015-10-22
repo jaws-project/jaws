@@ -623,66 +623,48 @@ function initDatePicker(name)
  */
 function showDialogBox(name, dTitle, url, dHeight, dWidth)
 {
-    var dRect = document.getSize();
+    var dRect = {x: $(document).width(), y: $(document).height()};
     var dLeft = (dWidth  > dRect.x )? 0 : Math.round(dRect.x  / 2 - dWidth  / 2) + 'px';
     var dTop  = (dHeight > dRect.y)? 0 : Math.round(dRect.y / 2 - dHeight / 2) + 'px';
 
-    if ($(name) == undefined) {
-        var overlay = new Element('div', {'id':name+'_overlay', 'class':'dialog_box_overlay'}).hide();
-        var iframe  = new IFrame({
-            src : url,
-            id: name + '_iframe',
+    if ($('#' + name).length == 0) {
+        var overlay = $('<div>')
+            .attr({'id':name+'_overlay', 'class':'dialog_box_overlay'})
+            .hide()
+            .on('click', function() {hideDialogBox(name);});
+        var iframe  = $('<iframe>')
+            .attr({'src': url, 'id': name + '_iframe'})
+            .css({'height': dHeight+'px', 'width': dWidth+'px', 'border': 'none'})
+            .on('load', function() {
+                hideWorkingNotification();
+                $(this).parent().css('display', 'block');
+                $(this).contents().keypress($.proxy(function(e) {
+                    if (e.keyCode == 27) {
+                        hideDialogBox(this.attr('id'));
+                    }
+                }, $(this).parent()));
+            });
 
-            styles: {
-                height: dHeight+'px',
-                width: dWidth+'px',
-                border: 'none'
-            },
-
-            events: {
-                load: function(){
-                    hideWorkingNotification();
-                    this.getParent().show('block');
-                }
+        var close   = $('<span>').addClass('dialog_box_close').on('click', function() {hideDialogBox(name);});
+        var title   = $('<div>').addClass('dialog_box_title').text(dTitle).append(close);
+        var dialog  = $('<div>').attr({'id':name, 'class':'dialog_box'}).append(title).append(iframe).hide();
+        
+        $(document).keypress($.proxy(function(e) {
+            if (e.keyCode == 27) {
+                hideDialogBox(this.attr('id'));
             }
-        });
-
-        //var iframe  = new Element('iframe', {'id':name+'_iframe', frameborder:0});
-        var close   = new Element('span', {'class': 'dialog_box_close'});
-        var title   = new Element('div', {'class':'dialog_box_title'}).appendText(dTitle).adopt(close);
-        var dialog  = new Element('div', {'id':name, 'class':'dialog_box'}).adopt(title).adopt(iframe).hide();
-        // iframe.addEvent('load', function() {
-            // hideWorkingNotification();
-            // this.getParent().show('block');
-            // Event.addEvent(iframe.contentWindow.document, 'keydown', function(e) {
-                // if (e.keyCode == Event.KEY_ESC) {
-                    // hideDialogBox(this.getParent());
-                // }
-            // });
-        // });
-        // iframe.addEvent('cached:load', function() {
-            // hideWorkingNotification();
-            // dialog.show('block');
-        // });
-        close.addEvent('click', function() {hideDialogBox(name);});
-        overlay.addEvent('mousedown', function(e) {e.stop();});
-         document.addEvent('keydown', function(e) {
-            var dialog = document.body.getLast();
-            if (e.keyCode == Event.KEY_ESC && dialog.isVisible()) {
-                hideDialogBox(dialog.id);
-            }
-        });
-        $(document.body).adopt(overlay);
-        document.body.adopt(dialog);
-        dialog.setStyles({left:dLeft, top:dTop});
+        }, dialog));
+        $('body').append(overlay);
+        $('body').append(dialog);
+        dialog.css({'left': dLeft, 'top': dTop});
     }
 
-    $(name+'_overlay').show('block');
+    $('#' + name + '_overlay').css('display', 'block');
     showWorkingNotification();
-    if ($(name+'_iframe').src == url) {
-        $(name+'_iframe').fireEvent('load');
+    if ($('#' + name + '_iframe').attr('src') == url) {
+        $('#' + name + '_iframe').trigger('load');
     } else {
-        $(name+'_iframe').src = url;
+        $('#' + name + '_iframe').attr('src', url);
     }
 }
 
@@ -691,8 +673,8 @@ function showDialogBox(name, dTitle, url, dHeight, dWidth)
  */
 function hideDialogBox(name)
 {
-    $(name).hide();
-    $(name+'_overlay').hide();
+    $('#' + name).hide();
+    $('#' + name + '_overlay').hide();
 }
 
 /**
