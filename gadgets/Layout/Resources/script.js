@@ -124,14 +124,13 @@ function getAddedChanges()
  */
 function deleteElement(itemId)
 {
-    var itemDiv  = $('item_' + itemId),
-        section  = itemDiv.getParent().id.replace('layout_', ''),
-        position = itemDiv.getParent().getElements('div.item[id]').indexOf(itemDiv);
+    var itemDiv  = $('#item_' + itemId),
+        section  = itemDiv.parent().attr('id').replace('layout_', ''),
+        position = itemDiv.parent().children('div').index(itemDiv);
 
     var answer = confirm(confirmDelete);
     if (answer) {
-        itemDiv.fade('out');
-        (function(){this.destroy();}).delay(500, itemDiv);
+        itemDiv.fadeOut(500, function() {$(this).remove();})
         LayoutAjax.callAsync(
             'DeleteElement', [
                 itemId,
@@ -206,73 +205,68 @@ function selectGadget(g)
     $('#gadget').val(g);
 
     // Remove all actions 
-    while ($('actions-list').firstChild)
-    {
-        $('actions-list').removeChild($('actions-list').firstChild);
-    };
-
-    if ($(prevGadget)) {
-        $(prevGadget).setAttribute('class', 'gadget-item');
-        $(prevGadget).setAttribute('className', 'gadget-item');
+    $('#actions-list').empty();
+    if ($('#' + prevGadget).length) {
+        $('#' + prevGadget).attr('class', 'gadget-item');
     }
-    $(g).setAttribute('class', 'gadget-item gadget-selected');
-    $(g).setAttribute('className', 'gadget-item gadget-selected');
+    $('#' + g).attr('class', 'gadget-item gadget-selected');
     var actions = LayoutAjax.callSync('GetGadgetActions', g);
     if (actions.length > 0) {
-        actions.each (function(item, actionIndex) {
-            var li = new Element('li', {'id':'action_' + item['action']});
-            li.adopt(new Element('input', {'id':'action_'+actionIndex,
-                                            'name':'action',
-                                            'type':'radio',
-                                            'value':item['action'],
-                                            'checked': actionIndex == 0}));
+        $.each(actions, function(actionIndex, item) {
+            var li = $('<li>').attr('id', 'action_' + item['action']);
+            li.append($('<input>').attr({
+                'id':'action_'+actionIndex,
+                'name':'action',
+                'type':'radio',
+                'value':item['action'],
+                'checked': actionIndex == 0
+            }));
             // action label
-            li.adopt(new Element('label', {'for':'action_' + actionIndex}).set('html', item['name']));
+            li.append($('<label>').attr('for', 'action_' + actionIndex).html(item['name']));
             // action description
-            li.adopt(new Element('span', {}).set('html', item['desc']));
+            li.append($('<span>').html(item['desc']));
             // action params
             if (typeof(item['params']) === 'object') {
-                item['params'].each(function(param, paramIndex) {
+                $.each(item['params'], function(paramIndex, param) {
                     var paramID = 'action_' + actionIndex+'_param_'+paramIndex;
-                    var divElement = new Element('div', {'class':'action_param'});
-                    var lblElement = new Element('label', {'for':paramID}).set('html', param['title']+':');
-                    divElement.adopt(lblElement);
+                    var divElement = $('<div>').attr('class', 'action_param');
+                    var lblElement = $('<label>').attr('for', paramID).html(param['title']+':');
+                    divElement.append(lblElement);
                     switch (typeof param['value']) {
                         case 'string':
                         case 'number':
-                            paramElement = new Element(
-                                'input',
-                                {'type':'text', 'name':paramID, 'id':paramID, 'value':param['value']}
-                            );
+                            paramElement = $('<input>').attr({
+                                'type': 'text',
+                                'name':paramID,
+                                'id': paramID,
+                                'value': param['value']
+                            });
                             break;
 
                         case 'boolean':
-                            paramElement = new Element(
-                                'input', {'type':'checkbox', 'name':paramID, 'id':paramID, 'checked':param['value']}
-                            );
+                            paramElement = $('<input>').attr({
+                                'type': 'checkbox',
+                                'name': paramID,
+                                'id':paramID,
+                                'checked': param['value']
+                            });
                             break;
 
                         default:
-                            paramElement = new Element('select', {'name':paramID, 'id':paramID});
-                            Object.keys(param['value']).each(function(value) {
-                                paramElement.adopt(
-                                    new Element(
-                                        'option',
-                                        {'value': value}
-                                    ).set('html', param['value'][value])
-                                );
+                            paramElement = $('<select>').attr({'name': paramID, 'id': paramID});
+                            $.each(param.value, function(key, value) {
+                                paramElement.append($('<option>').val(key).html(value));
                             });
                             break;
                     }
-                    divElement.adopt(paramElement);
-                    li.adopt(divElement);
+                    divElement.append(paramElement);
+                    li.append(divElement);
                 });
             }
-            $('actions-list').appendChild(li);
+            $('#actions-list').append(li);
         });
     } else {
-        var li = new Element('li', {'class':'action-msg'}).set('html', noActionsMsg);
-        $('actions-list').appendChild(li);
+        $('<li>').attr('class', 'action-msg').html(noActionsMsg).appendTo($('#actions-list'));
     }
     prevGadget = g;
 }
@@ -322,7 +316,7 @@ function saveElementAction(lid, gadget, action, params, title, desc)
  * Update display when 
  */
 function saveChangeDW(itemId, dw) {
-    LayoutAjax.callAsync('UpdateDisplayWhen', [itemId, dw, $('user').value]);
+    LayoutAjax.callAsync('UpdateDisplayWhen', [itemId, dw, $('#user').val()]);
     if (dw == '*') {
         $('#dw' + itemId).html(displayAlways);
     } else if (dw.blank()) {

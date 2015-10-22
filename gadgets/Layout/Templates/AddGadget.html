@@ -7,7 +7,7 @@
 <link rel="stylesheet" media="screen" type="text/css" href="gadgets/ControlPanel/Resources/style{{.dir}}.css" />
 <link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style{{.dir}}.css" />
 <link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style2{{.dir}}.css" />
-<script type="text/javascript" src="libraries/mootools/core.js"></script>
+<script type="text/javascript" src="libraries/jquery/jquery.js"></script>
 <script type="text/javascript" src="include/Jaws/Resources/Ajax.js"></script>
 <script type="text/javascript" src="gadgets/Layout/Resources/script.js"></script>
 </head>
@@ -18,18 +18,18 @@
   default_loading_message = "{{loading-message}}";
   var loading_message = default_loading_message;
   function getAction() {
-    var gadget = $('gadget').value;
-    var action = $('form_actions_list').getElement('input[type="radio"][name="action"]:checked');
-    if (!action) {
+    var gadget = $('#gadget').val();
+    var action = $('#form_actions_list input[type="radio"][name="action"]:checked');
+    if (action.length == 0) {
         alert('!!!!!!!!!!');
         return;
     }
 
     var params = null;
-    var paramElemets = Array.from($('action_'+action.value).getElements('select,input:not([type=radio])'));
+    var paramElemets = $('#action_'+action.val()).find('select,input:not([type=radio])');
     if (paramElemets.length > 0) {
         params = new Array();
-        paramElemets.each(function(elParam, index) {
+        $.each(paramElemets, function(index, elParam) {
             if (elParam.type == 'checkbox') {
                 params[index] = Number(elParam.checked);
             } else {
@@ -39,7 +39,7 @@
         params = params.join();
     }
 
-    parent.parent.addGadgetToLayout(gadget, action.value, params);
+    parent.parent.addGadgetToLayout(gadget, action.val(), params);
   }
 </script>
 <!-- END working_notification -->
