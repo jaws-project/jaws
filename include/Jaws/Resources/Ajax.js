@@ -437,54 +437,54 @@ var JawsDataGrid = {
      * Get the first Values and prepares the datagrid
      */
     getFirstValues: function() {
-        var firstValues = $(this.name).getFirstPagerValues();
-        var ajaxObject  = $(this.name).objectName;
-        var result      = ajaxObject.callSync('getData', firstValues, $(this.name).id);
-        resetGrid($(this.name), result);
-        $(this.name).firstPage();
+        var firstValues = $('#' + this.name)[0].getFirstPagerValues();
+        var ajaxObject  = $('#' + this.name)[0].objectName;
+        var result      = ajaxObject.callSync('getData', firstValues, $('#' + this.name)[0].id);
+        resetGrid(this.name, result);
+        $('#' + this.name)[0].firstPage();
     },
 
     /**
      * Get the previous Values and prepares the datagrid
      */
     getPreviousValues: function() {
-        var previousValues = $(this.name).getPreviousPagerValues();
-        var ajaxObject     = $(this.name).objectName;
-        var result         = ajaxObject.callSync('getData', previousValues, $(this.name).id);
-        resetGrid($(this.name), result);
-        $(this.name).previousPage();
+        var previousValues = $('#' + this.name)[0].getPreviousPagerValues();
+        var ajaxObject     = $('#' + this.name)[0].objectName;
+        var result         = ajaxObject.callSync('getData', previousValues, $('#' + this.name)[0].id);
+        resetGrid(this.name, result);
+        $('#' + this.name)[0].previousPage();
     },
 
     /**
      * Get the next Values and prepares the datagrid
      */
     getNextValues: function() {
-        var nextValues     = $(this.name).getNextPagerValues();
-        var ajaxObject     = $(this.name).objectName;
-        var result         = ajaxObject.callSync('getData', nextValues, $(this.name).id);
-        resetGrid($(this.name), result);
-        $(this.name).nextPage();
+        var nextValues     = $('#' + this.name)[0].getNextPagerValues();
+        var ajaxObject     = $('#' + this.name)[0].objectName;
+        var result         = ajaxObject.callSync('getData', nextValues, $('#' + this.name)[0].id);
+        resetGrid(this.name, result);
+        $('#' + this.name)[0].nextPage();
     },
 
     /**
      * Get the last Values and prepares the datagrid
      */
     getLastValues: function() {
-        var lastValues = $(this.name).getLastPagerValues();
-        var ajaxObject = $(this.name).objectName;
-        var result     = ajaxObject.callSync('getData', lastValues, $(this.name).id);
-        resetGrid($(this.name), result);
-        $(this.name).lastPage();
+        var lastValues = $('#' + this.name)[0].getLastPagerValues();
+        var ajaxObject = $('#' + this.name)[0].objectName;
+        var result     = ajaxObject.callSync('getData', lastValues, $('#' + this.name)[0].id);
+        resetGrid(this.name, result);
+        $('#' + this.name)[0].lastPage();
     },
 
     /**
      * Only retrieves information with the current page the pager has and prepares the datagrid
      */
     getData: function() {
-        var currentPage = $(this.name).getCurrentPage();
-        var ajaxObject  = $(this.name).objectName;
-        var result      = ajaxObject.callSync('getData', currentPage, $(this.name).id);
-        resetGrid($(this.name), result);
+        var currentPage = $('#' + this.name)[0].getCurrentPage();
+        var ajaxObject  = $('#' + this.name)[0].objectName;
+        var result      = ajaxObject.callSync('getData', currentPage, $('#' + this.name)[0].id);
+        resetGrid(this.name, result);
     }
 };
 
