@@ -6,7 +6,7 @@
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @author     Mohsen Khahani <mkhahani@gmail.com>
- * @copyright  2005-2014 Jaws Development Group
+ * @copyright  2005-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 /**
@@ -23,7 +23,7 @@ var ContactCallback = {
 
     UpdateReply: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            selectedRow.getElement('label').set({style:'font-weight:normal'});
+            selectedRow.find('label').css('font-weight', 'normal');
             stopAction();
         }
         ContactAjax.showResponse(response);
@@ -31,7 +31,7 @@ var ContactCallback = {
 
     DeleteRecipient: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('recipient_datagrid')[0].deleteItem();          
+            $('recipient_datagrid')[0].deleteItem();
             getDG();
             stopAction();
         }
@@ -62,7 +62,7 @@ var ContactCallback = {
 
     DeleteContact: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('contacts_datagrid')[0].deleteItem();          
+            $('#contacts_datagrid')[0].deleteItem();
             getDG('contacts_datagrid');
             stopAction();
         }
@@ -75,7 +75,7 @@ var ContactCallback = {
         }
         ContactAjax.showResponse(response);
     }
-}
+};
 
 function isValidEmail(email) {
     return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email));
@@ -88,10 +88,10 @@ function isValidEmail(email) {
 function selectDataGridRow(rowElement)
 {
     if (selectedRow) {
-        selectedRow.style.backgroundColor = selectedRowColor;
+        $(selectedRow).css('background-color', selectedRowColor);
     }
-    selectedRowColor = rowElement.style.backgroundColor;
-    rowElement.style.backgroundColor = '#ffffcc';
+    selectedRowColor = $(rowElement).css('background-color');
+    $(rowElement).css('background-color', '#ffffcc');
     selectedRow = rowElement;
 }
 
@@ -102,7 +102,7 @@ function selectDataGridRow(rowElement)
 function unselectDataGridRow()
 {
     if (selectedRow) {
-        selectedRow.style.backgroundColor = selectedRowColor;
+        $(selectedRow).css('background-color', selectedRowColor);
     }
     selectedRow = null;
     selectedRowColor = null;
@@ -112,7 +112,7 @@ function unselectDataGridRow()
  * Clean the form
  *
  */
-function stopAction() 
+function stopAction()
 {
     switch(currentAction) {
     case 'Recipients':
@@ -125,7 +125,7 @@ function stopAction()
         $('#inform_type').val(0);
         $('#visible').val(1);
         unselectDataGridRow();
-        $('name').focus();
+        $('#name').focus();
         break;
     case 'Contacts':
         $('#id').val(0);
@@ -196,7 +196,7 @@ function editContact(element, id)
     $('#btn_cancel').css('display', 'inline');
 
     if (contact['attachment']) {
-        $('#attachment').href = dataURL + contact['attachment'];
+        $('#attachment').attr('href', dataURL + contact['attachment']);
         $('#attachment').html(contact['attachment']);
         $('#tr_attachment').show();
     } else {
@@ -280,7 +280,7 @@ function updateContact(send_reply)
 function deleteContact(element, id)
 {
     stopAction();
-    selectDataGridRow(element.parentNode.parentNode);
+    selectDataGridRow($(element).parent().parent());
     if (confirm(confirmContactDelete)) {
         ContactAjax.callAsync('DeleteContact', id);
     }
@@ -295,7 +295,7 @@ function getContacts(name, offset, reset)
 {
     var result = ContactAjax.callSync('GetContacts', [$('#recipient_filter').val(), offset]);
     if (reset) {
-        $(name)[0].setCurrentPage(0);
+        $('#' + name)[0].setCurrentPage(0);
         var total = ContactAjax.callSync('GetContactsCount', $('#recipient_filter').val());
     }
     resetGrid(name, result, total);
@@ -325,14 +325,14 @@ function editRecipient(element, id)
  */
 function updateRecipient()
 {
-    if (!$('name').val() ||
-        !$('email').val() ||
-        !isValidEmail($('email').value.trim())) {
+    if (!$('#name').val() ||
+        !$('#email').val() ||
+        !isValidEmail($('email')[0].value.trim())) {
         alert(incompleteRecipientFields);
         return;
     }
 
-    if($('id').value == 0) {
+    if ($('#id').val() == 0) {
         ContactAjax.callAsync(
             'InsertRecipient', [
                 $('#name').val(),
@@ -366,7 +366,7 @@ function updateRecipient()
 function deleteRecipient(element, id)
 {
     stopAction();
-    selectDataGridRow(element.parentNode.parentNode);
+    selectDataGridRow($(element).parent().parent());
     if (confirm(confirmRecipientDelete)) {
         ContactAjax.callAsync('DeleteRecipient', id);
     }
@@ -418,14 +418,14 @@ function switchEmailTarget(value)
 function updateUsers(group)
 {
     if (group == '0') {
-        $('users').setValue(0);
+        $('#users').val(0);
         group = false;
     }
     var users = ContactAjax.callSync('GetUsers', group);
-    $('users').options.length = 0;
-    $('users').options[0] = new Option(lblAllGroupUsers, 0);
+    $('#users')[0].options.length = 0;
+    $('#users')[0].options[0] = new Option(lblAllGroupUsers, 0);
     users.each(function(user, i) {
-        $('users').options[$('users').options.length] = new Option(user['nickname'], user['id']);
+        $('#users')[0].options[$('#users')[0].options.length] = $('<option>').html(user['nickname']).attr('id', user['id']);
     });
 }
 
@@ -443,7 +443,7 @@ function newEmail()
     $('#subject').val('');
     $('#message').val('');
     $('#filename').val('');
-    $('frm_file').reset();
+    $('#frm_file')[0].reset();
 
     $('#attachment').show();
     $('#btn_upload').show();
@@ -476,13 +476,13 @@ function toggleDisableForm(disabled)
  */
 function uploadFile() {
     showWorkingNotification();
-    var iframe = new Element('iframe', {id:'ifrm_upload', name:'ifrm_upload'});
+    var iframe = $('<iframe>').attr({id:'ifrm_upload', name:'ifrm_upload'});
     $('#mailer').append(iframe);
     $('#attachment').hide();
     $('#btn_upload').hide();
     $('#attach_loading').show();
     toggleDisableForm(true);
-    $('#frm_file').submit();
+    $('#frm_file')[0].submit();
 }
 
 /**
@@ -493,7 +493,7 @@ function onUpload(response) {
     toggleDisableForm(false);
     if (response.type === 'error') {
         alert(response.message);
-        $('#frm_file').reset();
+        $('#frm_file')[0].reset();
         $('#btn_upload').show();
         $('#attachment').show();
     } else {
@@ -541,16 +541,16 @@ function previewMessage()
  */
 function sendEmail()
 {
-    if ($('options_1').checked) {
-        if ($('users').options.length <= 1) {
+    if ($('#options_1').prop('checked')) {
+        if ($('#users')[0].options.length <= 1) {
             alert(groupHasNoUser);
-            $('groups').focus();
+            $('#groups')[0].focus();
             return;
         }
         var target = {'group': $('#groups').val(),
                       'user' : $('#users').val()};
     } else {
-        // Already we have isValidEmail() but validation becomes 
+        // Already we have isValidEmail() but validation becomes
         // too complicated in case of 3 fields (to, cc, bcc) so let server do the job
         if (!$('#to').val() &&
             !$('#cc').val() &&
@@ -567,14 +567,14 @@ function sendEmail()
 
     if (!$('#subject').val()) {
         alert(incompleteMailerFields);
-        $('#subject').focus();
+        $('#subject')[0].focus();
         return;
     }
 
     var body = getEditorValue('message');
-    if (body.blank()) {
+    if (body == '') {
         alert(incompleteMailerFields);
-        $('message').focus();
+        $('#message')[0].focus();
         return;
     }
 
