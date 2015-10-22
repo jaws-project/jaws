@@ -149,44 +149,39 @@ function deleteElement(itemId)
  */
 function initUI()
 {
-    var sections_selector = '';
-    for(var i=0; i<sections.length; i++) {
-        sections_selector += '#layout_' + sections[i] + ', ';
-    }
+    $.loadScript('libraries/js/jquery-ui.js', function() {
+        layoutSortable = $(".layout-section").sortable({
+            revert: true,
+            opacity: 0.75,
+            helper: "original",
+            connectWith: ".layout-section",
 
-    layoutSortable = new Sortables( sections_selector, {
-        clone: true,
-        revert: true,
-        opacity: 0.7,
-        onStart: function(el) {
-            el.setProperties({
-                old_section  : el.getParent().id.replace('layout_', ''),
-                old_position : el.getParent().getElements('div.item[id]').indexOf(el) + 1
-            });
-        },
+            start: function(event, ui) {
+                $.data(ui.item[0], 'old_section',  ui.item.parent().attr('id').replace('layout_', ''));
+                $.data(ui.item[0], 'old_position', ui.item.parent().children('div').index(ui.item) + 1);
+            },
 
-        onComplete: function(el) {
-            var new_section  = el.getParent().id.replace('layout_', ''),
-                new_position = el.getParent().getElements('div.item[id]').indexOf(el) + 1;
-
-            if (el.getProperty('old_section') &&
-                (new_section != el.getProperty('old_section') ||
-                 new_position != el.getProperty('old_position'))
-            ) {
-                LayoutAjax.callAsync(
-                    'MoveElement', [
-                        el.id.replace('item_', ''),               /* item id */
-                        $('#index_layout').val(),                 /* index or default layout */
-                        el.getProperty('old_section'),            /* old section name */
-                        parseInt(el.getProperty('old_position')), /* position in old section */
-                        new_section,                              /* new section name */
-                        new_position,                             /* position in new section */
-                        $('#user').val()                          /* dashboard of user or global layout */
-                    ]
-                );
+            stop: function(event, ui) {
+                var new_section  = ui.item.parent().attr('id').replace('layout_', '');
+                    new_position = ui.item.parent().children('div').index(ui.item) + 1;
+                if ((new_section  != $.data(ui.item[0], 'old_section')) ||
+                    (new_position != $.data(ui.item[0], 'old_position'))
+                ) {
+                    LayoutAjax.callAsync(
+                        'MoveElement', [
+                            ui.item.attr('id').replace('item_', ''),      // item id
+                            $('#index_layout').val(),                     // index or default layout
+                            $.data(ui.item[0], 'old_section'),            // old section name
+                            parseInt($.data(ui.item[0], 'old_position')), // position in old section
+                            new_section,                                  // new section name
+                            new_position,                                 // position in new section
+                            $('#user').val()                              // dashboard of user or global layout
+                        ]
+                    );
+                }
+                $.removeData(ui.item[0]);
             }
-            el.removeProperties('old_section', 'old_position');
-        }
+        });
     });
 }
 
