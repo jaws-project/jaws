@@ -31,7 +31,7 @@ var ContactCallback = {
 
     DeleteRecipient: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('recipient_datagrid')[0].deleteItem();
+            $('#recipient_datagrid')[0].deleteItem();
             getDG();
             stopAction();
         }
@@ -40,8 +40,8 @@ var ContactCallback = {
 
     InsertRecipient: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('recipient_datagrid')[0].addItem();
-            $('recipient_datagrid')[0].setCurrentPage(0);
+            $('#recipient_datagrid')[0].addItem();
+            $('#recipient_datagrid')[0].setCurrentPage(0);
             getDG();
             stopAction();
         }
@@ -327,7 +327,7 @@ function updateRecipient()
 {
     if (!$('#name').val() ||
         !$('#email').val() ||
-        !isValidEmail($('email')[0].value.trim())) {
+        !isValidEmail($('#email')[0].value.trim())) {
         alert(incompleteRecipientFields);
         return;
     }
