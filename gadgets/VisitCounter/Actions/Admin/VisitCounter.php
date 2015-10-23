@@ -87,7 +87,7 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_Action
             $mode->AddOption(_t('VISITCOUNTER_MODE_TEXT'), 'text');
             $mode->AddOption(_t('VISITCOUNTER_MODE_IMAGE'), 'image');
             $mode->SetDefault($mode_reg);
-            $mode->SetId('custom');
+            $mode->SetId('mode');
             $fieldset_config->Add($mode);
 
             $custom_reg = stripslashes($this->gadget->registry->fetch('custom_text'));
