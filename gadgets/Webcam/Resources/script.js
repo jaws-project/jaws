@@ -4,9 +4,10 @@
  * @category   Ajax
  * @package    Webcam
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2005-2014 Jaws Development Group
+ * @copyright  2005-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
+
 /**
  * Use async mode, create Callback
  */
@@ -46,7 +47,6 @@ var WebcamCallback = {
 
 /**
  * Clean the form
- *
  */
 function cleanForm(form) 
 {
@@ -56,7 +56,6 @@ function cleanForm(form)
 
 /**
  * Update form with new values
- *
  */
 function updateForm(webcamInfo) {
     var webcamFormObj = $('#webcam_form');
@@ -135,7 +134,6 @@ function editWebcam(id)
 
 /**
  * Update the properties
- *
  */
 function updateProperties(form)
 {
