@@ -5,7 +5,7 @@
  * @package    Policy
  * @author     Amir Mohammad Saied <amir@gluegadget.com>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2007-2014 Jaws Development Group
+ * @copyright  2007-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 /**
@@ -14,8 +14,8 @@
 var PolicyCallback = {
     AddIPRange: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('blocked_ips_datagrid')[0].addItem();
-            $('blocked_ips_datagrid')[0].setCurrentPage(0);
+            $('#blocked_ips_datagrid')[0].addItem();
+            $('#blocked_ips_datagrid')[0].setCurrentPage(0);
             getDG();
             stopAction();
         }
@@ -32,7 +32,7 @@ var PolicyCallback = {
 
     DeleteIPRange: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('blocked_ips_datagrid')[0].deleteItem();
+            $('#blocked_ips_datagrid')[0].deleteItem();
             getDG();
         }
         PolicyAjax.showResponse(response);
@@ -40,8 +40,8 @@ var PolicyCallback = {
 
     AddAgent: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('blocked_agents_datagrid')[0].addItem();
-            $('blocked_agents_datagrid')[0].setCurrentPage(0);
+            $('#blocked_agents_datagrid')[0].addItem();
+            $('#blocked_agents_datagrid')[0].setCurrentPage(0);
             getDG();
             stopAction();
         }
@@ -58,7 +58,7 @@ var PolicyCallback = {
 
     DeleteAgent: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('blocked_agents_datagrid')[0].deleteItem();
+            $('#blocked_agents_datagrid')[0].deleteItem();
             getDG();
         }
         PolicyAjax.showResponse(response);
@@ -83,7 +83,7 @@ var PolicyCallback = {
     UpdateAdvancedPolicies: function(response) {
         PolicyAjax.showResponse(response);
     }
-}
+};
 
 /**
  * Select DataGrid row
@@ -112,12 +112,12 @@ function unselectDataGridRow()
     selectedRowColor = null;
 }
 
-function toggleCaptcha(field) 
+function toggleCaptcha(field)
 {
-    if ($(field + '_captcha').value == 'DISABLED') {
-        $(field + '_captcha_driver').disabled = true;
+    if ($('#' + field + '_captcha').val() == 'DISABLED') {
+        $('#' + field + '_captcha_driver').prop('disabled', true);
     } else {
-        $(field + '_captcha_driver').disabled = false;
+        $('#' + field + '_captcha_driver').prop('disabled', false);
     }
 }
 
@@ -126,12 +126,12 @@ function toggleCaptcha(field)
  */
 function saveIPRange()
 {
-    if (!$('from_ipaddress').val()) {
+    if (!$('#from_ipaddress').val()) {
         alert(incompleteFields);
         return false;
     }
 
-    if ($('id').value == 0) {
+    if ($('#id').val() == 0) {
         PolicyAjax.callAsync(
             'AddIPRange', [
                 $('#from_ipaddress').val(),
@@ -158,7 +158,7 @@ function saveIPRange()
 function editIPRange(element, id)
 {
     currentAction = 'IPBlocking';
-    selectDataGridRow(element.parentNode.parentNode);
+    selectDataGridRow($(element).parent().parent()[0]);
     var ipRange = PolicyAjax.callSync('GetIPRange', id);
 
     $('#id').val(ipRange['id']);
@@ -173,7 +173,7 @@ function editIPRange(element, id)
 function deleteIPRange(element, id)
 {
     stopAction();
-    selectDataGridRow(element.parentNode.parentNode);
+    selectDataGridRow($(element).parent().parent()[0]);
     var answer = confirm(confirmIPRangeDelete);
     if (answer) {
         PolicyAjax.callAsync('DeleteIPRange', id);
@@ -186,12 +186,12 @@ function deleteIPRange(element, id)
  */
 function saveAgent()
 {
-    if (!$('agent').val()) {
+    if (!$('#agent').val()) {
         alert(incompleteFields);
         return false;
     }
 
-    if ($('id').value == 0) {
+    if ($('#id').val() == 0) {
         PolicyAjax.callAsync('AddAgent', [$('#agent').val(), $('#blocked').val()]);
     } else {
         PolicyAjax.callAsync(
@@ -208,7 +208,7 @@ function saveAgent()
 function editAgent(element, id)
 {
     currentAction = 'AgentBlocking';
-    selectDataGridRow(element.parentNode.parentNode);
+    selectDataGridRow($(element).parent().parent()[0]);
     var agent = PolicyAjax.callSync('GetAgent', id);
 
     $('#id').val(agent['id']);
@@ -222,7 +222,7 @@ function editAgent(element, id)
 function deleteAgent(element, id)
 {
     stopAction();
-    selectDataGridRow(element.parentNode.parentNode);
+    selectDataGridRow($(element).parent().parent()[0]);
     var answer = confirm(confirmAgentDelete);
     if (answer) {
         PolicyAjax.callAsync('DeleteAgent', id);
@@ -236,7 +236,7 @@ function deleteAgent(element, id)
 function setBlockUndefinedIP()
 {
     try {
-        PolicyAjax.callAsync('IPBlockingBlockUndefined', $('block_undefined_ip').checked);
+        PolicyAjax.callAsync('IPBlockingBlockUndefined', $('#block_undefined_ip').prop('checked'));
     } catch(e) {
         alert(e);
     }
@@ -250,7 +250,7 @@ function setBlockUndefinedAgent()
     try {
         PolicyAjax.callAsync(
             'AgentBlockingBlockUndefined',
-            $('block_undefined_agent').checked
+            $('#block_undefined_agent').prop('checked')
         );
     } catch(e) {
         alert(e);
@@ -364,7 +364,7 @@ function stopAction()
 
 var PolicyAjax = new JawsAjax('Policy', PolicyCallback);
 
-//Which action are we runing?
+//Which action are we running?
 var currentAction = null;
 
 //Which row selected in DataGrid

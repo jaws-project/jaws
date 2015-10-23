@@ -3,7 +3,7 @@
  * Policy Ajax API
  *
  * @category   Ajax
- * @package    Policy 
+ * @package    Policy
  * @author     Amir Mohammad Saied <amir@gluegadget.com>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @copyright  2007-2014 Jaws Development Group
@@ -67,7 +67,7 @@ class Policy_Actions_Admin_Ajax extends Jaws_Gadget_Action
 
     /**
      * Delete an IP range
-     * 
+     *
      * @access  public
      * @return  string  Response
      */
