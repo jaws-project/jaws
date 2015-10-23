@@ -439,7 +439,7 @@ var JawsDataGrid = {
     getFirstValues: function() {
         var firstValues = $('#' + this.name)[0].getFirstPagerValues();
         var ajaxObject  = $('#' + this.name)[0].objectName;
-        var result      = ajaxObject.callSync('getData', firstValues, $('#' + this.name)[0].id);
+        var result      = ajaxObject.callSync('getData', [firstValues, $('#' + this.name)[0].id]);
         resetGrid(this.name, result);
         $('#' + this.name)[0].firstPage();
     },
@@ -450,7 +450,7 @@ var JawsDataGrid = {
     getPreviousValues: function() {
         var previousValues = $('#' + this.name)[0].getPreviousPagerValues();
         var ajaxObject     = $('#' + this.name)[0].objectName;
-        var result         = ajaxObject.callSync('getData', previousValues, $('#' + this.name)[0].id);
+        var result         = ajaxObject.callSync('getData', [previousValues, $('#' + this.name)[0].id]);
         resetGrid(this.name, result);
         $('#' + this.name)[0].previousPage();
     },
@@ -461,7 +461,7 @@ var JawsDataGrid = {
     getNextValues: function() {
         var nextValues     = $('#' + this.name)[0].getNextPagerValues();
         var ajaxObject     = $('#' + this.name)[0].objectName;
-        var result         = ajaxObject.callSync('getData', nextValues, $('#' + this.name)[0].id);
+        var result         = ajaxObject.callSync('getData', [nextValues, $('#' + this.name)[0].id]);
         resetGrid(this.name, result);
         $('#' + this.name)[0].nextPage();
     },
@@ -472,7 +472,7 @@ var JawsDataGrid = {
     getLastValues: function() {
         var lastValues = $('#' + this.name)[0].getLastPagerValues();
         var ajaxObject = $('#' + this.name)[0].objectName;
-        var result     = ajaxObject.callSync('getData', lastValues, $('#' + this.name)[0].id);
+        var result     = ajaxObject.callSync('getData', [lastValues, $('#' + this.name)[0].id]);
         resetGrid(this.name, result);
         $('#' + this.name)[0].lastPage();
     },
@@ -483,7 +483,7 @@ var JawsDataGrid = {
     getData: function() {
         var currentPage = $('#' + this.name)[0].getCurrentPage();
         var ajaxObject  = $('#' + this.name)[0].objectName;
-        var result      = ajaxObject.callSync('getData', currentPage, $('#' + this.name)[0].id);
+        var result      = ajaxObject.callSync('getData', [currentPage, $('#' + this.name)[0].id]);
         resetGrid(this.name, result);
     }
 };
