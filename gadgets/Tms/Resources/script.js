@@ -4,7 +4,7 @@
  * @category   Ajax
  * @package    Tms
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2007-2014 Jaws Development Group
+ * @copyright  2007-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 /**
@@ -12,33 +12,33 @@
  */
 var TmsCallback = {
     sharetheme: function(response) {
-        var optionSelected = $('themes_combo').options[$('#themes_combo').prop('selectedIndex')];
+        var optionSelected = $('#themes_combo').find('option:selected');
         if (response[0]['type'] == 'response_notice') {
-            optionSelected.className = 'isshared';
+            optionSelected.addClass('isshared');
             $('#unshare_button').css('display', 'block');
             $('#share_button').css('display', 'none');
         } else {
-            optionSelected.className = 'isnotshared';
+            optionSelected.addClass('isnotshared');
             $('#unshare_button').css('display', 'none');
             $('#share_button').css('display', 'block');
         }
         TmsAjax.showResponse(response);
     },
-    
+
     unsharetheme: function(response) {
-        var optionSelected = $('themes_combo').options[$('#themes_combo').prop('selectedIndex')];
+        var optionSelected = $('#themes_combo').find('option:selected');
         if (response[0]['type'] == 'response_notice') {
-            optionSelected.className = 'isnotshared';
+            optionSelected.addClass('isnotshared');
             $('#unshare_button').css('display', 'none');
             $('#share_button').css('display', 'block');
         } else {
-            optionSelected.className = 'isshared';
+            optionSelected.addClass('isshared');
             $('#unshare_button').css('display', 'block');
             $('#share_button').css('display', 'none');
         }
         TmsAjax.showResponse(response);
-    },    
-    
+    },
+
     installtheme: function(response) {
         if (response[0]['type'] == 'response_notice') {
             $('#themes_combo').val(selectedTheme);
@@ -55,8 +55,8 @@ var TmsCallback = {
 
     newrepository: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('repositories_datagrid')[0].addItem();
-            $('repositories_datagrid')[0].setCurrentPage(0);
+            $('#repositories_datagrid')[0].addItem();
+            $('#repositories_datagrid')[0].setCurrentPage(0);
         }
         TmsAjax.showResponse(response);
         getDG();
@@ -64,7 +64,7 @@ var TmsCallback = {
 
     deleterepository: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('repositories_datagrid')[0].deleteItem();          
+            $('#repositories_datagrid')[0].deleteItem();
         }
         TmsAjax.showResponse(response);
         getDG();
@@ -81,7 +81,7 @@ var TmsCallback = {
 
     DeleteTheme: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('themes_combo').options[$('#themes_combo').prop('selectedIndex')].remove();
+            $('#themes_combo').find('option:selected').remove();
             cleanWorkingArea(true);
         }
         TmsAjax.showResponse(response);
@@ -90,7 +90,7 @@ var TmsCallback = {
     savesettings: function(response) {
         TmsAjax.showResponse(response);
     }
-}
+};
 
 /**
  * Show the buttons depending on the current tab and
@@ -115,7 +115,7 @@ function showButtons()
  */
 function editTheme(theme)
 {
-    if (theme.blank()) {
+    if (theme == '') {
         return false;
     }
 
@@ -135,7 +135,7 @@ function editTheme(theme)
  */
 function deleteTheme()
 {
-    if (selectedTheme.blank()) {
+    if (selectedTheme == '') {
         return false;
     }
     if (!confirm(confirmDeleteTheme)) {
@@ -150,14 +150,13 @@ function deleteTheme()
  */
 function cleanWorkingArea(hideButtons)
 {
-    $('#theme_area').html('');
+    $('#theme_area').empty();
     if (hideButtons != undefined) {
         if (hideButtons == true) {
-            var buttons = new Array('uninstall_button', 'share_button', 
-                                    'unshare_button', 'install_button');
-            for(var i=0; i<buttons.length; i++) {
-                if ($(buttons[i]) != undefined) {
-                    $(buttons[i]).css('display', 'none');
+            var buttons = ['uninstall_button', 'share_button', 'unshare_button', 'install_button'];
+            for (var i=0; i<buttons.length; i++) {
+                if ($('#' + buttons[i]) != undefined) {
+                    $('#' + buttons[i]).css('display', 'none');
                 }
             }
         }
@@ -180,23 +179,24 @@ function uploadTheme()
 /**
  * Cleans the form
  */
-function cleanForm(form) 
+function cleanForm(form)
 {
-    form.elements['name'].value   = '';
-    form.elements['url'].value    = 'http://';  
-    form.elements['id'].value     = '';    
-    form.elements['action'].value = 'AddRepository';
+    form['name'].value   = '';
+    form['url'].value    = 'http://';
+    form['id'].value     = '';
+    form['action'].value = 'AddRepository';
 }
 
 /**
  * Updates form with new values
  */
-function updateForm(repositoryInfo) 
+function updateForm(repositoryInfo)
 {
-    $('repositories_form').elements['name'].value   = repositoryInfo['name'];
-    $('repositories_form').elements['url'].value    = repositoryInfo['url'];
-    $('repositories_form').elements['id'].value     = repositoryInfo['id'];
-    $('repositories_form').elements['action'].value = 'UpdateRepository';
+    var form = $('#repositories_form');
+    form['name'].value   = repositoryInfo['name'];
+    form['url'].value    = repositoryInfo['url'];
+    form['id'].value     = repositoryInfo['id'];
+    form['action'].value = 'UpdateRepository';
 }
 
 /**
@@ -204,9 +204,9 @@ function updateForm(repositoryInfo)
  */
 function addRepository(form)
 {
-    var name = form.elements['name'].value;
-    var url  = form.elements['url'].value;
-    
+    var name = form['name'].value,
+        url  = form['url'].value;
+
     TmsAjax.callAsync('newrepository', [name, url]);
     cleanForm(form);
 }
@@ -216,20 +216,20 @@ function addRepository(form)
  */
 function updateRepository(form)
 {
-    var name = form.elements['name'].value;
-    var url  = form.elements['url'].value;
-    var id   = form.elements['id'].value;
+    var name = form['name'].value,
+        url  = form['url'].value,
+        id   = form['id'].value;
 
     TmsAjax.callAsync('updaterepository', [id, name, url]);
     cleanForm(form);
 }
 
 /**
- * Submit the 
+ * Submit the
  */
 function submitForm(form)
 {
-    if (form.elements['action'].value == 'UpdateRepository') {
+    if (form['action'].value == 'UpdateRepository') {
         updateRepository(form);
     } else {
         addRepository(form);
@@ -242,7 +242,7 @@ function submitForm(form)
 function deleteRepository(id)
 {
     TmsAjax.callAsync('deleterepository', id);
-    cleanForm($('repositories_form'));
+    cleanForm($('#repositories_form')[0]);
 }
 
 /**
@@ -258,7 +258,7 @@ function editRepository(id)
  */
 function saveSettings()
 {
-    TmsAjax.callAsync('savesettings', $('share_themes').value);
+    TmsAjax.callAsync('savesettings', $('#share_themes').val());
 }
 
 var TmsAjax = new JawsAjax('Tms', TmsCallback),
