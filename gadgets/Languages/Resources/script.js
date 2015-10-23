@@ -39,10 +39,10 @@ function refresh()
  */
 function save_lang()
 {
-    if ($('lang_code').val() &&
-        $('lang_name').val())
+    if ($('#lang_code').val() &&
+        $('#lang_name').val())
     {
-        lang_str = $('lang_code').value.trim() + ';' + $('lang_name').value.trim();
+        lang_str = $('#lang_code').val().trim() + ';' + $('#lang_name').val().trim();
         LanguagesAjax.callAsync('SaveLanguage', lang_str);
     }
 }
@@ -65,10 +65,10 @@ function changeColorOfTranslatedTerms()
  */
 function filterTranslated()
 {
-    if ($('tbl_strings')) {
+    if ($('#tbl_strings')) {
         var strings_elements = $('#tbl_strings textarea');
         for(var i = 0; i < strings_elements.length; i++) {
-            if ($('checkbox_filter').checked && strings_elements[i].value != "") {
+            if ($('#checkbox_filter').checked && strings_elements[i].value != "") {
                 strings_elements[i].parentNode.parentNode.style.display = 'none';
             } else {
                 strings_elements[i].parentNode.parentNode.style.display = 'inline';
@@ -108,21 +108,21 @@ function change_lang_option()
         $('#component').prop('disabled', true);
         $('#lang_code').val('');
         $('#lang_name').val('');
-        if ($('btn_lang')) {
+        if ($('#btn_lang')) {
             setButtonTitle(add_language_title);
         } else {
             $('#lang_name').prop('disabled', true);
         }
-        $('lang_code').focus();
+        $('#lang_code').focus();
         stopAction();
         return;
     } else {
         $('#btn_export').prop('disabled', false);
         $('#lang_code').prop('disabled', true);
         $('#component').prop('disabled', false);
-        $('#lang_code').val($('lang').options[$('#lang').prop('selectedIndex')].value);
-        $('#lang_name').val($('lang').options[$('#lang').prop('selectedIndex')].text);
-        if ($('btn_lang')) {
+        $('#lang_code').val($('#lang').options[$('#lang').prop('selectedIndex')].value);
+        $('#lang_name').val($('#lang').options[$('#lang').prop('selectedIndex')].text);
+        if ($('#btn_lang')) {
             setButtonTitle(save_language_title);
         } else {
             $('#lang_name').prop('disabled', true);
@@ -189,7 +189,7 @@ function stopAction()
  */
 function export_lang()
 {
-    window.location= LanguagesAjax.baseScript + '?gadget=Languages&action=Export&lang=' + $('lang').value;
+    window.location= LanguagesAjax.baseScript + '?gadget=Languages&action=Export&lang=' + $('#lang').val();
 }
 
 var LanguagesAjax = new JawsAjax('Languages', LanguagesCallback);
