@@ -5,7 +5,7 @@
  * @package    StaticPage
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2014 Jaws Development Group
+ * @copyright  2005-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -29,13 +29,13 @@ var StaticPageCallback = {
     
     MassiveDelete: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            var rows = $('pages_datagrid')[0].getSelectedRows();
+            var rows = $('#pages_datagrid')[0].getSelectedRows();
             if (rows.length > 0) {
                 for(var i=0; i<rows.length; i++) {
-                    $('pages_datagrid')[0].deleteItem();
+                    $('#pages_datagrid')[0].deleteItem();
                 }
             }
-            PiwiGrid.multiSelect($('pages_datagrid'));
+            PiwiGrid.multiSelect($('#pages_datagrid'));
             getDG('pages_datagrid');
         }
         StaticPageAjax.showResponse(response);      
@@ -52,8 +52,8 @@ var StaticPageCallback = {
     InsertGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('groups_datagrid')[0].addItem();
-            $('groups_datagrid')[0].setCurrentPage(0);
+            $('#groups_datagrid')[0].addItem();
+            $('#groups_datagrid')[0].setCurrentPage(0);
             getDG('groups_datagrid');
         }
         StaticPageAjax.showResponse(response);
@@ -70,7 +70,7 @@ var StaticPageCallback = {
     DeleteGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('groups_datagrid')[0].deleteItem();
+            $('#groups_datagrid')[0].deleteItem();
             getDG('groups_datagrid');
         }
         StaticPageAjax.showResponse(response);
@@ -191,7 +191,7 @@ function deleteTranslation(id, redirect)
  */
 function massiveDelete() 
 {
-    var rows = $('pages_datagrid')[0].getSelectedRows();
+    var rows = $('#pages_datagrid')[0].getSelectedRows();
     if (rows.length > 0) {
         var confirmation = confirm(confirmMassiveDelete);
         if (confirmation) {
@@ -205,8 +205,8 @@ function massiveDelete()
  */
 function updateSettings()
 {
-    var defaultPage = $('default_page').value;
-    var multiLang   = $('multilanguage').value;
+    var defaultPage = $('#default_page').val(),
+        multiLang   = $('#multilanguage').val();
     StaticPageAjax.callAsync('UpdateSettings', [defaultPage, multiLang]);
 }
 
@@ -270,8 +270,9 @@ function editGroup(rowElement, gid)
     $('#meta_keys').val(group['meta_keywords'].defilter());
     $('#meta_desc').val(group['meta_description'].defilter());
     $('#fast_url').val(group['fast_url']);
-    $('#visible').val(group['visible']);
-    $('title').focus();
+    // @FIXME: Actually Why We Didn't Used 'yes' or 'no' Instead of true or false (Boolean Type) as Routine?
+    $('#visible').val(String(group['visible']));
+    $('#title').focus();
 }
 
 /**
@@ -279,9 +280,9 @@ function editGroup(rowElement, gid)
  */
 function saveGroup()
 {
-    if (!$('title').val()) {
+    if (!$('#title').val()) {
         alert(incomplete_fields);
-        $('title').focus();
+        $('#title').focus();
         return false;
     }
 
@@ -329,7 +330,7 @@ function deleteGroup(rowElement, gid)
 function showSimpleResponse(response)
 {
     if (!autoDraftDone) {
-        var actioni   = document.forms[0].elements['action'].value;
+        var actioni = document.forms[0].elements['action'].value;
         if (actioni == 'AddPage' && response[0]['type'] == 'response_notice') {
             document.forms[0].elements['action'].value = 'SaveEditPage';
             document.forms[0].elements['id'].value     = response[0]['data'];
@@ -352,7 +353,7 @@ function stopAction()
     $('#meta_desc').val('');
     $('#visible').val('true');
     unselectGridRow('groups_datagrid');
-    $('title').focus();
+    $('#title').focus();
 }
 
 var StaticPageAjax = new JawsAjax('StaticPage', StaticPageCallback);
