@@ -10,12 +10,12 @@
   <!-- BEGIN msgbox -->
   <div id="msgbox_{{msg-id}}" class="{{type}}">{{text}}</div>
   <script type="text/javascript">
-    var msgbox = $('msgbox_{{msg-id}}');
-    if ((msgbox.className != 'response_error') &&
-        (msgbox.className != 'response_warning') &&
+    var msgbox = $('#msgbox_{{msg-id}}');
+    if ((msgbox.attr('class') != 'response_error') &&
+        (msgbox.attr('class') != 'response_warning') &&
         (window.hideResponseBox)
     ) {
-        hideResponseBox(msgbox);
+        hideResponseBox('msgbox_{{msg-id}}');
     }
   </script>
   <!-- END msgbox -->

@@ -4,7 +4,7 @@
     <script type="text/javascript">
       function layoutControlsSubmit(sender) {
         if (sender.id != 'theme') {
-            $('theme').selectedIndex = -1;
+            $('#theme').prop('selectedIndex', -1);
         }
         sender.form.submit();
       }

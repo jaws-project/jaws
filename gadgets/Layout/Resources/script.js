@@ -32,91 +32,53 @@ var LayoutCallback = {
 
     AddGadget: function(response) {
         if (response['success']) {
-            //$('layout_main').appendChild(document.createTextNode(response['elementbox']));
-            // Fragile!, it must be equal to LayoutItem.html template
-            var dItem = document.createElement('div');
-            dItem.setAttribute('class', 'item');
-            dItem.setAttribute('className', 'item');
-            dItem.setAttribute('id', 'item_' + response['id']);
-            dItem.setAttribute('title', response['tactiondesc']);
+            var dItem = $('<div>').attr({
+                'id': 'item_' + response['id'],
+                'class': 'item',
+                'title': response['tactiondesc']
+            });
+            dItem.append(
+                $('<div>').attr('class', 'item_icon').append(
+                    $('<img>').attr({'alt': 'icon', 'src': response['icon']})
+                )
+            );
+            dItem.append(
+                $('<div>').attr('class', 'item-delete').append(
+                    $('<a>').attr('href', 'javascript:void(0);').on('click', response['delete']).append(
+                        $('<img>').attr('src', response['deleteimg'])
+                    )
+                )
+            );
+            dItem.append(
+                $('<div>').attr('class', 'item-gadget').text(response['tname'])
+            );
+            dItem.append(
+                $('<div>').attr('class', 'item-action').append(
+                    $('<a>').attr({
+                        'id': response['eaid'],
+                        'name': response['eaid'],
+                        'href': 'javascript:void(0);',
+                        'title': response['tactiondesc']
+                    }).on('click', response['eaonclick'])
+                )
+            );
+            dItem.append(
+                $('<div>').attr('class', 'item-dw').text(response['dwalways']).append(
+                    $('<a>').attr({
+                        'id': response['dwid'],
+                        'name': response['dwid'],
+                        'href': 'javascript:void(0);',
+                        'title': response['dwtitle']
+                    }).on('click', response['dwonclick'])
+                )
+            );
 
-            var dItemIcon = dItem.appendChild(document.createElement('div'));
-            dItemIcon.setAttribute('class', 'item_icon');
-            dItemIcon.setAttribute('className', 'item_icon');
-            var imgIcon = document.createElement('img');
-            imgIcon.setAttribute('alt', 'icon');
-            imgIcon.setAttribute('src', response['icon']);
-            dItemIcon.appendChild(imgIcon);
-
-            var dItemDelete = dItem.appendChild(document.createElement('div'));
-            dItemDelete.setAttribute('class', 'item-delete');
-            dItemDelete.setAttribute('className', 'item-delete');
-            var adel = document.createElement('a');
-            adel.setAttribute('href', 'javascript:void(0);');
-            adel.setAttribute('onclick', response['delete']);
-            imgdel = document.createElement('img');
-            imgdel.setAttribute('src', response['deleteimg']);
-            adel.appendChild(imgdel);
-            dItemDelete.appendChild(adel);
-
-            var dItemGadget = dItem.appendChild(document.createElement('div'));
-            dItemGadget.setAttribute('class', 'item-gadget');
-            dItemGadget.setAttribute('className', 'item-gadget');
-            dItemGadget.appendChild(document.createTextNode(response['tname']));
-
-            var dItemAction = dItem.appendChild(document.createElement('div'));
-            dItemAction.setAttribute('class', 'item-action');
-            dItemAction.setAttribute('className', 'item-action');
-            aea = document.createElement('a');
-            aea.setAttribute('href', 'javascript:void(0);');
-            aea.setAttribute('onclick', response['eaonclick']);
-            aea.setAttribute('id', response['eaid']);
-            aea.setAttribute('name', response['eaid']);
-            aea.setAttribute('title', response['tactiondesc']);
-            aea.appendChild(document.createTextNode(response['taction']));
-            dItemAction.appendChild(aea);
-
-            var dItemDw = dItem.appendChild(document.createElement('div'));
-            dItemDw.setAttribute('class', 'item-dw');
-            dItemDw.setAttribute('className', 'item-dw');
-            adw = document.createElement('a');
-            adw.setAttribute('href', 'javascript:void(0);');
-            adw.setAttribute('onclick', response['dwonclick']);
-            adw.setAttribute('id', response['dwid']);
-            adw.setAttribute('name', response['dwid']);
-            adw.setAttribute('title', response['dwtitle']);
-            adw.appendChild(document.createTextNode(response['dwalways']));
-            dItemDw.appendChild(document.createTextNode(response['dwdisplay']));
-            dItemDw.appendChild(adw);
-
-            $('layout_main').appendChild(dItem);
+            $('#layout_main').append(dItem);
             items['main']['item_' + response['id']] = true;
-            layoutSortable.addItems(dItem);
+            $(".layout-section").sortable('refresh');
         }
         LayoutAjax.showResponse(response, false);
     }
-}
-
-/**
- * Returns in an array the item that has been changed, the section (where it is now)
- * and the position that it use
- */
-function getAddedChanges()
-{
-    for(var i=0; i<sections.length; i++) {
-        var section       = sections[i];
-        var divsOfSection = $('#layout_' + section+ ' .item');
-
-        if (divsOfSection.length > items[section].length) {
-            for(var j=0; j<divsOfSection.length; j++) {
-                var item = divsOfSection[j].id;
-                if (items[section][item] == undefined) {
-                    return new Array(item, section, j+1);
-                }
-            }
-        }
-    }
-    return null;
 }
 
 /**
@@ -140,6 +102,7 @@ function deleteElement(itemId)
                 $('#user').val()
             ]
         );
+        $(".layout-section").sortable('refresh');
     }
 }
 
@@ -149,7 +112,7 @@ function deleteElement(itemId)
 function initUI()
 {
     $.loadScript('libraries/js/jquery-ui.js', function() {
-        layoutSortable = $(".layout-section").sortable({
+        $(".layout-section").sortable({
             revert: true,
             opacity: 0.75,
             helper: "original",
@@ -305,7 +268,7 @@ function saveElementAction(lid, gadget, action, params, title, desc)
     hideDialogBox('actions_dialog');
     params = (params == null)? null : params.split(',');
     $('#ea' + lid).html(title);
-    $('#ea' + lid).parentNode.parentNode.title = desc;
+    $('#ea' + lid).parent().parent().attr('title', desc);
     LayoutAjax.callAsync(
         'UpdateElementAction',
         [lid, gadget, action, params, $('#user').val()]
@@ -328,8 +291,6 @@ function saveChangeDW(itemId, dw) {
 }
 
 var LayoutAjax = new JawsAjax('Layout', LayoutCallback);
-
-var layoutSortable = null;
 
 var items = new Array();
 var newdrags = new Array();

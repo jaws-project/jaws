@@ -6,23 +6,24 @@
 <link rel="stylesheet" media="screen" type="text/css" href="gadgets/ControlPanel/Resources/style{{.dir}}.css" />
 <link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style{{.dir}}.css" />
 <link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style2{{.dir}}.css" />
-<script type="text/javascript" src="libraries/mootools/core.js"></script>
+<script type="text/javascript" src="libraries/jquery/jquery.js"></script>
 <script type="text/javascript">
 function showGadgets () {
-    $('selected_gadgets').toggle();
+    $('#selected_gadgets').toggle();
 }
 
 function getSelectedGadgets() {
-    if ($('display_in').value == 'always') {
+    if ($('#display_in').val() == 'always') {
         return '*';
     } else {
         var res = '';
-        var items = $$('#selected_gadgets input[type=checkbox]');
-        for (i = 0; i < items.length; i++) {
-            if (items[i].checked) {
-                res += items[i].value + ',';    
+        var items = $('#selected_gadgets input[type=checkbox]');
+        $.each(items, function(index, item) {
+            if ($(item).prop('checked')) {
+                res += $(item).val() + ',';
             }
-        }
+        });
+
         if (res.length > 0) {
             res = res.substr(0, res.lastIndexOf(','));
         }
