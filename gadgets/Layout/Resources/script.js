@@ -111,7 +111,7 @@ function deleteElement(itemId)
  */
 function initUI()
 {
-    $.loadScript('libraries/js/jquery-ui.js', function() {
+    $.loadScript('libraries/jquery/jquery-ui.js', function() {
         $(".layout-section").sortable({
             revert: true,
             opacity: 0.75,
