@@ -16,6 +16,9 @@ class VisitCounter_Installer extends Jaws_Gadget_Installer
      * @var     array
      * @access  private
      */
+    // @FIXME: Use Double Braces for 'custom_text' Default Value.
+    // @FIXME: According to MDN (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/font)
+    //  Font Tag Was Deprecated in HTML4.01 and Obsoleted in HTML5.
     var $_RegKeys = array(
         array('timeout', '600'),
         array('type', 'impressions'),

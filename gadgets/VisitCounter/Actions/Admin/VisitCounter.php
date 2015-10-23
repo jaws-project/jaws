@@ -7,7 +7,7 @@
  * @author     Jorge A Gallegos <kad@gulags.org.mx>
  * @author     Jon Wood <jon@jellybob.co.uk>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2004-2014 Jaws Development Group
+ * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_Action
@@ -87,7 +87,7 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_Action
             $mode->AddOption(_t('VISITCOUNTER_MODE_TEXT'), 'text');
             $mode->AddOption(_t('VISITCOUNTER_MODE_IMAGE'), 'image');
             $mode->SetDefault($mode_reg);
-            $mode->SetId('custom');
+            $mode->SetId('mode');
             $fieldset_config->Add($mode);
 
             $custom_reg = stripslashes($this->gadget->registry->fetch('custom_text'));
@@ -99,7 +99,7 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_Action
             $config_form->Add($fieldset_config);
             $submit_config =& Piwi::CreateWidget('Button', 'saveproperties',
                                                  _t('VISITCOUNTER_UPDATE_PROPS'), STOCK_SAVE);
-            $submit_config->AddEvent(ON_CLICK, 'javascript:updateProperties(this.form);');
+            $submit_config->AddEvent(ON_CLICK, 'javascript:updateProperties($(this.form));');
             $config_form->Add($submit_config);
 
             //$tpl->SetVariable('menubar', $this->menubar(''));

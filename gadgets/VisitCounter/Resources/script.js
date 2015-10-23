@@ -5,18 +5,19 @@
  * @package    VisitCounter
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2014 Jaws Development Group
+ * @copyright  2005-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
+
 /**
  * Use async mode, create Callback
  */
 var VisitCounterCallback = { 
     CleanEntries: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('visitcounter_datagrid')[0].setCurrentPage(0);
-            $('visitcounter_datagrid')[0].rowsSize = 0;
-            $('visitcounter_datagrid')[0].updatePageCounter();
+            $('#visitcounter_datagrid')[0].setCurrentPage(0);
+            $('#visitcounter_datagrid')[0].rowsSize = 0;
+            $('#visitcounter_datagrid')[0].updatePageCounter();
             getDG();
             updateStats();
         }
@@ -25,9 +26,9 @@ var VisitCounterCallback = {
     
     ResetCounter: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('visitcounter_datagrid')[0].setCurrentPage(0);
-            $('visitcounter_datagrid')[0].rowsSize = 0;
-            $('visitcounter_datagrid')[0].updatePageCounter();
+            $('#visitcounter_datagrid')[0].setCurrentPage(0);
+            $('#visitcounter_datagrid')[0].rowsSize = 0;
+            $('#visitcounter_datagrid')[0].updatePageCounter();
             getDG();
             updateStats();
         }
@@ -37,7 +38,7 @@ var VisitCounterCallback = {
     UpdateProperties: function(response) {
         VisitCounterAjax.showResponse(response);
     }
-}
+};
 
 /**
  * Reset counter
@@ -60,7 +61,7 @@ function cleanEntries()
  */
 function updateStats()
 {
-    $('#stats_from')).html(VisitCounterAjax.callSync('GetStartDate'));
+    $('#stats_from').html(VisitCounterAjax.callSync('GetStartDate'));
     $('#visitors').html(0);
     $('#impressions').html(0);
 }
@@ -70,15 +71,15 @@ function updateStats()
  */
 function updateProperties(form)
 {
-    var numDays    = form.elements['period'].value,
-        type       = form.elements['type'].value,
-        mode       = form.elements['mode'].value,
-        customText = form.elements['custom_text'].value,
-        counters   = [];
+    var numDays = form.find('#period').val(),
+        type = form.find('#type').val(),
+        mode = form.find('#mode').val(),
+        customText = form.find('#custom_text').val(),
+        counters = [];
 
-    form.getElements('input[name=c_kind[]]').each(function(input) {
-        if (input.checked) {
-            counters.push(input.value);
+    form.find("input[name='c_kind[]']").each(function () {
+        if ($(this).prop('checked')) {
+            counters.push($(this).val());
         }
     });
 

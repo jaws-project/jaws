@@ -5,16 +5,17 @@
  * @package    Weather
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2004-2014 Jaws Development Group
+ * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
+
 /**
  * Use async mode, create Callback
  */
 var WeatherCallback = {
     DeleteRegion: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('weather_datagrid')[0].deleteItem();          
+            $('#weather_datagrid')[0].deleteItem();
             getDG();
             stopAction();
         }
@@ -23,8 +24,8 @@ var WeatherCallback = {
     
     InsertRegion: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('weather_datagrid')[0].addItem();
-            $('weather_datagrid')[0].setCurrentPage(0);
+            $('#weather_datagrid')[0].addItem();
+            $('#weather_datagrid')[0].setCurrentPage(0);
             getDG();
             stopAction();
         }
@@ -42,8 +43,7 @@ var WeatherCallback = {
     UpdateProperties: function(response) {
         WeatherAjax.showResponse(response);
     }
-
-}
+};
 
 /**
  * Initiates Weather JS
@@ -63,7 +63,7 @@ function initWeather()
 function stopAction() 
 {
     if (selectedRow) {
-        $('weather_datagrid')[0].unselectRow(selectedRow);
+        $('#weather_datagrid')[0].unselectRow(selectedRow);
         selectedRow = null;
     }
     $('#id').val('');
@@ -79,9 +79,9 @@ function stopAction()
 function editRegion(rowElement, id)
 {
     if (selectedRow) {
-        $('weather_datagrid')[0].unselectRow(selectedRow);
+        $('#weather_datagrid')[0].unselectRow(selectedRow);
     }
-    $('weather_datagrid')[0].selectRow(rowElement);
+    $('#weather_datagrid')[0].selectRow(rowElement);
     selectedRow = rowElement;
 
     var geoPos = WeatherAjax.callSync('GetRegion', id);
@@ -99,9 +99,9 @@ function editRegion(rowElement, id)
  */
 function updateRegion()
 {
-    if (!$('title').val() ||
-        !$('latitude').val() ||
-        !$('longitude').val())
+    if (!$('#title').val() ||
+        !$('#latitude').val() ||
+        !$('#longitude').val())
     {
         alert(incompleteFields);
         return;
@@ -137,11 +137,11 @@ function updateRegion()
 function deleteRegion(rowElement, id)
 {
     stopAction();
-    $('weather_datagrid')[0].selectRow(rowElement);
+    $('#weather_datagrid')[0].selectRow(rowElement);
     if (confirm(confirmDelete)) {
         WeatherAjax.callAsync('DeleteRegion', id);
     } else {
-        $('weather_datagrid')[0].unselectRow(rowElement);
+        $('#weather_datagrid')[0].unselectRow(rowElement);
         selectedRow = null;
     }
 }
@@ -162,7 +162,7 @@ function updateProperties()
 }
 
 /**
- *  Calculates position of the element
+ * Calculates position of the element
  */
 function findElementPosition(element)
 {
@@ -194,7 +194,7 @@ function GetGeoPosition(mx, my, iw, ih, clat, clng)
 }
 
 /**
- *  Calculates coordinates of the clicked point and returns the appropriate map
+ * Calculates coordinates of the clicked point and returns the appropriate map
  */
 function getGoogleMap(ev, element)
 {
@@ -221,25 +221,25 @@ function getGoogleMap(ev, element)
                             posY,
                             element.width,
                             element.height,
-                            parseFloat($('latitude').value),
-                            parseFloat($('longitude').value));
+                            parseFloat($('#latitude').val()),
+                            parseFloat($('#longitude').val()));
     $('#latitude').val(geoPos[0]);
     $('#longitude').val(geoPos[1]);
     setGoogleMapImage();
 }
 
 /**
- *  Updates the map with new position
+ * Updates the map with new position
  */
 function setGoogleMapImage()
 {
-    $('gmap').src = base_script + '?gadget=Weather&action=GetGoogleMapImage' +
+    $('#gmap').src = base_script + '?gadget=Weather&action=GetGoogleMapImage' +
                     '&latitude=' + $('#latitude').val() + '&longitude=' + $('#longitude').val() +
                     '&zoom=' + ZoomLevel + '&size='  + ImageSize;
 }
 
 /**
- *  Zooms in/out on the map
+ * Zooms in/out on the map
  */
 function zoomMap(level)
 {
