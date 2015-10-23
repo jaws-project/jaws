@@ -59,15 +59,15 @@
 <script type="text/javascript">
     function toggleCheckboxes() {
         do_check = !do_check;
-        $$('.table-checkbox').each(function (el) {
-            el.checked = do_check;
+        $('.table-checkbox').each(function () {
+            $(this).prop('checked', do_check);
         });
     }
     var do_check = false;
 
     function doDGAction() {
         var action = document.getElementById("groups_actions_combo").value;
-        if(action=="") {
+        if(action == "") {
             return false;
         }
 
@@ -194,7 +194,7 @@
 <script type="text/javascript">
     function toggleCheckboxes(){
         do_check = !do_check;
-        $$("input[name='member_checkbox[]']").each(function(el) { el.checked = do_check; });
+        $("input[name='member_checkbox[]']").each(function() { $(this).prop('checked', do_check); });
     }
     var do_check = false;
 
