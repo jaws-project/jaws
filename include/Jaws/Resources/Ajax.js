@@ -711,21 +711,12 @@ function Jaws_Ajax_ServerError(error)
 /**
  * Hide response boxes - Fast Code
  */
-function hideResponseBox(name, timehide)
+function hideResponseBox(name, timeout)
 {
-    if (typeof(timehide) == 'undefined') {
-        timehide = '3000';
+    if (typeof(timeout) == 'undefined') {
+        timeout = '3000';
     }
-
-    setTimeout('hideResponseBoxCallback("' + name.id + '")', timehide);
-}
-
-/**
- * Hide response boxes - JS Action (callback)
- */
-function hideResponseBoxCallback(name)
-{
-    $(name).fade('out');
+    $('#'+name).fadeOut(timeout);
 }
 
 /**
