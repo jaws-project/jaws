@@ -6,11 +6,11 @@
     <h4>{{title}}</h4>
     <div><img id="cam{{id}}" alt="{{title}}" src="{{url}}" /></div>
     <script type="text/javascript">
-        setTimeout ("refresh_cam{{id}}()",({{refresh}}*1000));
+        setTimeout("refresh_cam{{id}}()",({{refresh}}*1000));
         function refresh_cam{{id}}() 
         {
-            document.cam{{id}}.src = "{{url}}?" + Math.random();
-            setTimeout ("refresh_cam{{id}}()",({{refresh}}*1000));
+            $('#cam'.concat({{id}})).attr('src', "{{url}}?" + Math.random());
+            setTimeout('refresh_cam{{id}}()', {{refresh}} * 1000);
         }
     </script>
     <!-- END item -->
