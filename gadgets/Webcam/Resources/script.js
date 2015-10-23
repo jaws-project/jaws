@@ -50,8 +50,8 @@ var WebcamCallback = {
  */
 function cleanForm(form) 
 {
-    form[0].reset();
-    form.find('#action').val('AddWebcam');
+    form.reset();
+    form.elements['action'].value = 'AddWebcam';
 }
 
 /**
@@ -72,9 +72,9 @@ function updateForm(webcamInfo) {
  */
 function addWebcam(form)
 {
-    var webcamTitle   = form.find('#title').val(),
-        webcamUrl     = form.find('#url').val(),
-        webcamRefresh = form.find('#refresh').val();
+    var webcamTitle   = form.elements['title'].value,
+        webcamUrl     = form.elements['url'].value,
+        webcamRefresh = form.elements['refresh'].value;
 
     if (webcamTitle.blank()) {
         alert(incompleteWebcamFields);
@@ -94,10 +94,10 @@ function addWebcam(form)
  */
 function updateWebcam(form)
 {
-    var webcamId      = form.find('#id').val(),
-        webcamTitle   = form.find('#title').val(),
-        webcamUrl     = form.find('#url').val(),
-        webcamRefresh = form.find('#refresh').val();
+    var webcamId      = form.elements['id'].value,
+        webcamTitle   = form.elements['title'].value,
+        webcamUrl     = form.elements['url'].value,
+        webcamRefresh = form.elements['refresh'].value;
 
     WebcamAjax.callAsync('UpdateWebcam', [webcamId, webcamTitle, webcamUrl, webcamRefresh]);
     cleanForm(form);
@@ -108,7 +108,7 @@ function updateWebcam(form)
  */
 function submitForm(form)
 {
-    if (form.find('#action').val() == 'AddWebcam') {
+    if (form.elements['action'].value == 'AddWebcam') {
         addWebcam(form);
     } else {
         updateWebcam(form);
@@ -121,7 +121,7 @@ function submitForm(form)
 function deleteWebcam(id)
 {
     WebcamAjax.callAsync('DeleteWebcam', [id]);
-    cleanForm($('#webcam_form'));
+    cleanForm(document.getElementById('webcam_form'));
 }
 
 /**
@@ -137,7 +137,7 @@ function editWebcam(id)
  */
 function updateProperties(form)
 {
-    var limitRandom = form.find('#limit_random').val();
+    var limitRandom = form.elements['limit_random'].value;
     WebcamAjax.callAsync('UpdateProperties', [limitRandom]);
 }
 
