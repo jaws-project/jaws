@@ -99,7 +99,7 @@ class VisitCounter_Actions_Admin_VisitCounter extends Jaws_Gadget_Action
             $config_form->Add($fieldset_config);
             $submit_config =& Piwi::CreateWidget('Button', 'saveproperties',
                                                  _t('VISITCOUNTER_UPDATE_PROPS'), STOCK_SAVE);
-            $submit_config->AddEvent(ON_CLICK, 'javascript:updateProperties($(this.form));');
+            $submit_config->AddEvent(ON_CLICK, 'javascript:updateProperties(this.form);');
             $config_form->Add($submit_config);
 
             //$tpl->SetVariable('menubar', $this->menubar(''));
