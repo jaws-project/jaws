@@ -5,7 +5,7 @@
  * @package    UrlMapper
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2006-2014 Jaws Development Group
+ * @copyright  2006-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 /**
@@ -66,8 +66,8 @@ var UrlMapperCallback = {
     AddErrorMap: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopErrorMapAction();
-            $('errormaps_datagrid')[0].addItem();
-            $('errormaps_datagrid')[0].lastPage();
+            $('#errormaps_datagrid')[0].addItem();
+            $('#errormaps_datagrid')[0].lastPage();
             getDG('errormaps_datagrid');
         }
         UrlMapperAjax.showResponse(response);
@@ -79,7 +79,7 @@ var UrlMapperCallback = {
     DeleteErrorMaps: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopErrorMapAction();
-            getDG('errormaps_datagrid', $('errormaps_datagrid')[0].getCurrentPage(), true);
+            getDG('errormaps_datagrid', $('#errormaps_datagrid')[0].getCurrentPage(), true);
         }
         UrlMapperAjax.showResponse(response);
     },
@@ -90,7 +90,7 @@ var UrlMapperCallback = {
     DeleteErrorMapsFilters: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopErrorMapAction();
-            getDG('errormaps_datagrid', $('errormaps_datagrid')[0].getCurrentPage(), true);
+            getDG('errormaps_datagrid', $('#errormaps_datagrid')[0].getCurrentPage(), true);
         }
         UrlMapperAjax.showResponse(response);
     },
@@ -105,21 +105,21 @@ var UrlMapperCallback = {
         }
         UrlMapperAjax.showResponse(response);
     }
-}
+};
 
 /**
- * Build the 'big' alias combo 
+ * Build the 'big' alias combo
  */
 function rebuildAliasCombo()
 {
-    var combo = $('alias-combo');
+    var combo = $('#alias-combo')[0];
     while(combo.options.length != 0) {
         combo.options[0] = null;
     }
     var aliases = UrlMapperAjax.callSync('GetAliases');
     if (aliases != false) {
         var i =0;
-        aliases.each(function(value, index) {
+        $.each(aliases, function(index, value) {
             var op = new Option(' + ' + value['alias_url'], value['id']);
             if (i % 2 == 0) {
                 op.style.backgroundColor = evenColor;
@@ -186,10 +186,10 @@ function updateProperties(form)
 {
     UrlMapperAjax.callAsync(
         'UpdateSettings', [
-            form.elements['enabled'].value,
-            form.elements['use_aliases'].value,
-            form.elements['custom_precedence'].value,
-            form.elements['extension'].value
+            form['enabled'].value,
+            form['use_aliases'].value,
+            form['custom_precedence'].value,
+            form['extension'].value
         ]
     );
 }
@@ -215,7 +215,7 @@ function editErrorMap(element, emid)
 {
     selectedErrorMap = emid;
     $('#legend_title').html(editErrorMap_title);
-    selectDataGridRow(element.parentNode.parentNode);
+    selectDataGridRow($(element).parent().parent()[0]);
 
     var errorMapInfo = UrlMapperAjax.callSync('GetErrorMap', selectedErrorMap);
     $('#url').val(errorMapInfo['url']);
@@ -254,8 +254,8 @@ function editMap(element, mid)
  */
 function showActionMaps()
 {
-    if (!$('gadgets_combo').val() ||
-        !$('actions_combo').val())
+    if (!$('#gadgets_combo').val() ||
+        !$('#actions_combo').val())
     {
         return false;
     }
@@ -275,14 +275,14 @@ function showActionMaps()
  */
 function rebuildActionCombo()
 {
-    var combo = $('actions_combo');
-    var selectedGadget = $('gadgets_combo').value;
+    var combo = $('#actions_combo')[0];
+    var selectedGadget = $('#gadgets_combo').val();
     var actions = UrlMapperAjax.callSync('GetGadgetActions', selectedGadget);
 
     combo.options.length = 0;
     if (actions != false) {
         var i =0;
-        actions.each(function(text, index) {
+        $.each(actions, function(index, text) {
             var op = new Option(text, text);
             if (i % 2 == 0) {
                 op.style.backgroundColor = evenColor;
@@ -325,7 +325,7 @@ function enableMapEditingArea(status)
  */
 function changeCode()
 {
-    if ($('new_code').value == 410) {
+    if ($('#new_code').val() == 410) {
         $('#new_url').prop('disabled', true);
     } else {
         $('#new_url').prop('disabled', false);
@@ -351,7 +351,7 @@ function getErrorMaps(name, offset, reset)
     });
 
     if (reset) {
-        $(name)[0].setCurrentPage(0);
+        $('#' + name)[0].setCurrentPage(0);
         var total = UrlMapperAjax.callSync('GetErrorMapsCount', {
             'filters': filters
         });
@@ -371,9 +371,10 @@ function searchErrorMaps()
 /**
  * Executes an action on error maps
  */
-function errorMapsDGAction(combo)
+function errorMapsDGAction()
 {
-    var rows = $('errormaps_datagrid')[0].getSelectedRows();
+    var combo = $('#errormaps_actions_combo')[0],
+        rows = $('#errormaps_datagrid')[0].getSelectedRows();
 
     var filters = {
         'from_date' : $('#filter_from_date').val(),
@@ -432,7 +433,7 @@ function saveErrorMap()
  */
 function stopAction()
 {
-    $('#alias_id').val('-');     
+    $('#alias_id').val('-');
     $('#alias').val('');
     $('#custom_url').val('');
     $('#delete_button').css('visibility', 'hidden');

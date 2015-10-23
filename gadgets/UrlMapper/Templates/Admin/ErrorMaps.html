@@ -42,8 +42,8 @@
   var confirmErrorMapDelete = "{{confirmErrorMapDelete}}";
   var incompleteFieldsMsg   = "{{incompleteFieldsMsg}}";
   JawsDataGrid.name = 'errormaps_datagrid';
-  $('legend_title').innerHTML   = addErrorMap_title;
-  $('errormaps_datagrid').objectName = UrlMapperAjax;
+  $('#legend_title').html(addErrorMap_title);
+  $('#errormaps_datagrid')[0].objectName = UrlMapperAjax;
   initDataGrid('errormaps_datagrid', UrlMapperAjax, getErrorMaps);
 </script>
 <!-- END ErrorMaps -->

@@ -171,7 +171,7 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $tpl->SetVariable('actions_combo', $actions->Get());
 
         $btnExecute =& Piwi::CreateWidget('Button', 'executeErrorMapsAction', '', STOCK_YES);
-        $btnExecute->AddEvent(ON_CLICK, "javascript:errorMapsDGAction($('errormaps_actions_combo'));");
+        $btnExecute->AddEvent(ON_CLICK, "javascript:errorMapsDGAction();");
         $tpl->SetVariable('btn_execute', $btnExecute->Get());
 
         // url

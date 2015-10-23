@@ -35,8 +35,8 @@
   var editMap_title    = "{{editMap_title}}";
   var confirmMapDelete = "{{confirmMapDelete}}";
   JawsDataGrid.name = 'maps_datagrid';
-  $('legend_title').innerHTML   = addMap_title;
-  $('maps_datagrid').objectName = UrlMapperAjax;
+  $('#legend_title').html(addMap_title);
+  $('#maps_datagrid')[0].objectName = UrlMapperAjax;
   rebuildActionCombo();
 </script>
 <!-- END UrlMapper -->
