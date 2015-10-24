@@ -4,7 +4,7 @@
  * @category    Ajax
  * @package     Search
  * @author      Pablo Fischer <pablo@pablo.com.mx>
- * @copyright   2005-2014 Jaws Development Group
+ * @copyright   2005-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 /**
@@ -14,22 +14,22 @@ var SearchCallback = {
     SaveChanges: function(response) {
         SearchAjax.showResponse(response);
     }
-}
+};
 
 /**
  * Submit the button
  */
 function saveChanges(form)
 {
-    var useWith = form.elements['use_with'].value;
+    var useWith = form['use_with'].value;
     if (useWith == 'selected') {
-        var pattern = /^gadgets\[\]/;
-        var gadgets = [];
-        var option  = null;
-        var counter = 0;
-        for(i=0; i<form.elements.length; i++) {
-            if (pattern.test(form.elements[i].name)) {
-                option = form.elements[i];
+        var pattern = /^gadgets\[\]/,
+            gadgets = [],
+            option  = null,
+            counter = 0;
+        for(var i=0; i<form.elements.length; i++) {
+            if (pattern.test(form[i].name)) {
+                option = form[i];
                 if (option.checked) {
                     gadgets[counter] = option.value;
                     counter++;
