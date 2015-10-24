@@ -4,7 +4,7 @@
  * @category   Ajax
  * @package    Quotes
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2007-2014 Jaws Development Group
+ * @copyright  2007-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 /**
@@ -14,18 +14,18 @@ var QuotesCallback = {
     AddQuotesToGroup: function(response) {
         QuotesAjax.showResponse(response);
     }
-}
+};
 
 /**
  * Fills the quotes combo
  */
-function fillQuotesCombo() 
+function fillQuotesCombo()
 {
-    var box = $('quotes_combo');
+    var box = $('#quotes_combo')[0];
     box.options.length = 0;
-    var quotes = QuotesAjax.callSync('GetQuotes', [-1, $('group_filter').value]);
+    var quotes = QuotesAjax.callSync('GetQuotes', [-1, $('#group_filter').val()]);
     if (quotes.length > 0) {
-        quotes.each(function(value, index) {
+        $.each(quotes, function(index, value) {
             box.options[box.options.length] = new Option(value['title'].defilter(), value['id']);
         });
     }
@@ -35,7 +35,7 @@ function fillQuotesCombo()
 /**
  * Clean the form
  */
-function stopAction() 
+function stopAction()
 {
     switch(currentAction) {
     case 'Groups':
@@ -53,7 +53,7 @@ function stopAction()
         $('#btn_del').css('display', 'none');
         break;
     case 'GroupQuotes':
-        editGroup($('gid').value);
+        editGroup($('#gid').val());
         break;
     case 'Quotes':
         $('#id').val(0);
@@ -75,15 +75,15 @@ function stopAction()
  */
 function saveQuote()
 {
-    if (!$('title').val() ||
+    if (!$('#title').val() ||
         getEditorValue('quotation').blank() ||
-        $('gid').value == 0)
+        $('#gid').val() == 0)
     {
         alert(incompleteQuoteFields);
         return;
     }
 
-    if($('id').value==0) {
+    if($('#id').val() == 0) {
         var response = QuotesAjax.callSync(
             'InsertQuote', [
                 $('#title').val(),
@@ -97,14 +97,14 @@ function saveQuote()
         );
         if (response[0]['type'] == 'response_notice') {
             if ($('#group_filter').val() == -1 || $('#group_filter').val() == $('#gid').val()) {
-                var box = $('quotes_combo');
+                var box = $('#quotes_combo')[0];
                 box.options[box.options.length] = new Option(response[0]['data']['title'], response[0]['data']['id']);
             }
             stopAction();
         }
         QuotesAjax.showResponse(response);
     } else {
-        var box = $('quotes_combo');
+        var box = $('#quotes_combo')[0];
         var quoteIndex = box.selectedIndex;
         var response = QuotesAjax.callSync(
             'UpdateQuote', [
@@ -133,7 +133,7 @@ function deleteQuote()
 {
     var answer = confirm(confirmQuoteDelete);
     if (answer) {
-        var box = $('quotes_combo');
+        var box = $('#quotes_combo')[0];
         var quoteIndex = box.selectedIndex;
         var response = QuotesAjax.callSync('DeleteQuote', box.value);
         if (response[0]['type'] == 'response_notice') {
@@ -158,13 +158,13 @@ function editQuote(id)
     changeEditorValue('quotation', quoteInfo['quotation']);
     $('#gid').val(quoteInfo['gid']);
     if (quoteInfo['gid'] == 0) {
-        $('gid').prop('selectedIndex', -1);
+        $('#gid').prop('selectedIndex', -1);
     }
 
     $('#start_time').val((quoteInfo['start_time'] == null)? '': quoteInfo['start_time']);
     $('#stop_time').val((quoteInfo['stop_time'] == null)? '': quoteInfo['stop_time']);
-    $('#show_title').val(quoteInfo['show_title']);
-    $('#published').val(quoteInfo['published']);
+    $('#show_title')[0].value = quoteInfo['show_title'];
+    $('#published')[0].value = quoteInfo['published'];
 
     $('btn_del').css('display', 'inline');
 }
@@ -185,10 +185,10 @@ function editGroup(gid)
     $('#title').val(groupInfo['title'].defilter());
     $('#view_mode').val(groupInfo['view_mode']);
     $('#view_type').val(groupInfo['view_type']);
-    $('#show_title').val(groupInfo['show_title']);
     $('#limit_count').val(groupInfo['limit_count']);
-    $('#random').val(groupInfo['random']);
-    $('#published').val(groupInfo['published']);
+    $('#show_title')[0].value = groupInfo['show_title'];
+    $('#random')[0].value = groupInfo['random'];
+    $('#published')[0].value = groupInfo['published'];
 
     $('#add_quotes').css('display', 'inline');
     $('#btn_del').css('display', 'inline');
@@ -200,12 +200,12 @@ function editGroup(gid)
 function saveGroup()
 {
     if (currentAction == 'Groups') {
-        if (!$('title').val()) {
+        if (!$('#title').val()) {
             alert(incompleteGroupFields);
             return false;
         }
 
-        if($('gid').value==0) {
+        if($('#gid').val() == 0) {
             var response = QuotesAjax.callSync(
                 'InsertGroup', [
                     $('#title').val(),
@@ -218,14 +218,14 @@ function saveGroup()
                 ]
             );
             if (response[0]['type'] == 'response_notice') {
-                var box = $('groups_combo');
+                var box = $('#groups_combo')[0];
                 box.options[box.options.length] = new Option(response[0]['data']['title'], response[0]['data']['id']);
                 stopAction();
             }
             QuotesAjax.showResponse(response);
         } else {
-            var box = $('groups_combo');
-            var groupIndex = box.selectedIndex;
+            var box = $('#groups_combo')[0],
+                groupIndex = box.selectedIndex;
             var response = QuotesAjax.callSync(
                 'UpdateGroup', [
                     $('#gid').val(),
@@ -245,8 +245,8 @@ function saveGroup()
             QuotesAjax.showResponse(response);
         }
     } else {
-        var inputs  = $('#work_area input');
-        var keys    = new Array();
+        var inputs  = $('#work_area').find('input');
+        var keys    = [];
         var counter = 0;
         for (var i=0; i<inputs.length; i++) {
             if (inputs[i].name.indexOf('group_quotes') == -1) {
@@ -269,7 +269,7 @@ function deleteGroup()
 {
     var answer = confirm(confirmGroupDelete);
     if (answer) {
-        var box = $('groups_combo');
+        var box = $('#groups_combo')[0];
         var quoteIndex = box.selectedIndex;
         var response = QuotesAjax.callSync('DeleteGroup', box.value);
         if (response[0]['type'] == 'response_notice') {
@@ -298,21 +298,21 @@ function editGroupQuotes()
     $('#work_area').html(cacheGroupQuotesForm);
 
     currentAction = 'GroupQuotes';
-    var quotesList = QuotesAjax.callSync('GetQuotes', [-1, $('gid').value]);
-    var inputs  = $('#work_area input');
+    var quotesList = QuotesAjax.callSync('GetQuotes', [-1, $('#gid').val()]);
+    var inputs  = $('#work_area').find('input');
 
     if (quotesList) {
-        quotesList.each(function(value, index) {
+        $.each(quotesList, function(index, value) {
             for (var i=0; i<inputs.length; i++) {
                 if (inputs[i].name.indexOf('group_quotes') == -1) {
                     continue;
                 }
                 if (value['id'] == inputs[i].value) {
-                    inputs[i].checked= true;
+                    inputs[i].checked = true;
                     break
                 }
             }
-        });   
+        });
     }
 }
 
@@ -324,5 +324,5 @@ var cacheGroupForm = null;
 //Cache for saving the group quotes form template
 var cacheGroupQuotesForm = null;
 
-//Which action are we runing?
+//Which action are we running?
 var currentAction = null;
