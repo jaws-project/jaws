@@ -4,7 +4,7 @@
  * @category   Ajax
  * @package    Shoutbox
  * @author     Jonathan Hernandez <ion@gluch.org.mx>
- * @copyright  2005-2014 Jaws Development Group
+ * @copyright  2005-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 /**
@@ -15,7 +15,7 @@ var ShoutboxCallback = {
     UpdateProperties: function(response) {
         ShoutboxAjax.showResponse(response);
     }
-}
+};
 
 /**
  * Update the properties
@@ -23,9 +23,9 @@ var ShoutboxCallback = {
  */
 function updateProperties(form)
 {
-    var limitEntries = form.elements['limit_entries'].value;
-    var max_strlen   = form.elements['max_strlen'].value;
-    var authority    = form.elements['authority'].value;
+    var limitEntries = form['limit_entries'].value,
+        max_strlen = form['max_strlen'].value,
+        authority = form['authority'].value;
     ShoutboxAjax.callAsync('UpdateProperties', [limitEntries, max_strlen, authority]);
 }
 
