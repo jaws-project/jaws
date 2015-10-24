@@ -71,13 +71,13 @@ function updateStats()
  */
 function updateProperties(form)
 {
-    var numDays = form.find('#period').val(),
-        type = form.find('#type').val(),
-        mode = form.find('#mode').val(),
-        customText = form.find('#custom_text').val(),
+    var numDays = form.elements['period'].value,
+        type = form.elements['type'].value,
+        mode = form.elements['mode'].value,
+        customText = form.elements['custom_text'].value,
         counters = [];
 
-    form.find("input[name='c_kind[]']").each(function () {
+    $(form).find("input[name='c_kind[]']").each(function () {
         if ($(this).prop('checked')) {
             counters.push($(this).val());
         }
