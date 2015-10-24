@@ -716,7 +716,7 @@ function hideResponseBox(name, timeout)
     if (typeof(timeout) == 'undefined') {
         timeout = '3000';
     }
-    $('#'+name).fadeOut(timeout);
+    $(name).fadeOut(timeout);
 }
 
 /**

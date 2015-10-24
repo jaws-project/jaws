@@ -153,7 +153,11 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
 
         // Advanced Options
         $btnAdvanced =& Piwi::CreateWidget('Button', 'btn_advanced', _t('STATICPAGE_ADVANCED_OPTIONS'));
+<<<<<<< HEAD
         $btnAdvanced->AddEvent(ON_CLICK, "javascript:$('#advanced_options').show(); $(this).hide();");
+=======
+        $btnAdvanced->AddEvent(ON_CLICK, 'javascript:$(\'#advanced_options\').show(); this.hide();');
+>>>>>>> b8c8dd7bac0aeab911aaf15a283efb57ee6a207d
 
         $advBox =& Piwi::CreateWidget('VBox');
         $advBox->SetId('advanced_options');

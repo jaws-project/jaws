@@ -4,9 +4,10 @@
  * @category    Ajax
  * @package     Users
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2013-2014 Jaws Development Group
+ * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
+
 /**
  * Use async mode, create Callback
  */
@@ -18,8 +19,7 @@ var UsersCallback = {
     UpdatePreferences: function(response) {
         UsersAjax.showResponse(response);
     }
-
-}
+};
 
 /**
  * Update contacts

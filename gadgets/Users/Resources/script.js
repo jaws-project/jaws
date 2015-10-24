@@ -6,9 +6,10 @@
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @author     Mohsen Khahani <mkhahani@gmail.com>
- * @copyright  2004-2014 Jaws Development Group
+ * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
+
 /**
  * Use async mode, create Callback
  */
@@ -128,7 +129,7 @@ var UsersCallback = {
     SaveSettings: function(response) {
         UsersAjax.showResponse(response);
     }
-}
+};
 
 /**
  * On term key press, for compatibility Opera/IE with other browsers
@@ -326,7 +327,7 @@ function saveUser()
                 return;
             }
             var acls = [];
-            $.each($('#acl_form img[alt!=-1]'), function(index, aclTag) {
+            $.each($('#acl_form img[alt!="-1"]'), function(index, aclTag) {
                 var keys = $(aclTag).attr('id').split(':');
                 acls[index] = [keys[0], keys[1], $(aclTag).attr('alt')];
             });
@@ -710,7 +711,7 @@ function saveGroup()
                 return;
             }
             var acls = [];
-            $.each($('#acl_form img[alt!=-1]'), function(index, aclTag) {
+            $.each($('#acl_form img[alt!="-1"]'), function(index, aclTag) {
                 var keys = $(aclTag).attr('id').split(':');
                 acls[index] = [keys[0], keys[1], $(aclTag).attr('alt')];
             });
@@ -782,19 +783,19 @@ function updateMyAccount()
         return false;
     }
 
-    if ($('exponent')) {
+    if ($('#exponent')) {
         encryptedElement(
             $('#pass1')[0],
-            $('exponent').val(),
+            $('#exponent').val(),
             $('#modulus').val(),
             true,
             $('#length').val()
         );
-        $('#pass2').val() = $('#pass1').val();
+        $('#pass2').val($('#pass1').val());
     }
     UsersAjax.callAsync(
         'UpdateMyAccount',
-        {'uid': $('uid').val(),
+        {'uid': $('#uid').val(),
          'username': $('#username').val(),
          'password': $('#pass1').val(),
          'nickname': $('#nickname').val(),

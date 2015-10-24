@@ -202,8 +202,14 @@ function massiveDelete()
  */
 function updateSettings()
 {
+<<<<<<< HEAD
     var settings = [$('#default_page').val(), $('#multilanguage').val()];
     StaticPageAjax.callAsync('UpdateSettings', settings);
+=======
+    var defaultPage = $('#default_page').val(),
+        multiLang   = $('#multilanguage').val();
+    StaticPageAjax.callAsync('UpdateSettings', [defaultPage, multiLang]);
+>>>>>>> b8c8dd7bac0aeab911aaf15a283efb57ee6a207d
 }
 
 /**
@@ -266,7 +272,13 @@ function editGroup(rowElement, gid)
     $('#meta_keys').val(group['meta_keywords'].defilter());
     $('#meta_desc').val(group['meta_description'].defilter());
     $('#fast_url').val(group['fast_url']);
+<<<<<<< HEAD
     $('#visible').val(group['visible']);
+=======
+    // @FIXME: Actually Why We Didn't Used 'yes' or 'no' Instead of true or false (Boolean Type) as Routine?
+    $('#visible').val(String(group['visible']));
+    $('#title').focus();
+>>>>>>> b8c8dd7bac0aeab911aaf15a283efb57ee6a207d
 }
 
 /**
@@ -276,7 +288,11 @@ function saveGroup()
 {
     if (!$('#title').val()) {
         alert(incomplete_fields);
+<<<<<<< HEAD
         $('#title')[0].focus();
+=======
+        $('#title').focus();
+>>>>>>> b8c8dd7bac0aeab911aaf15a283efb57ee6a207d
         return false;
     }
 
@@ -324,10 +340,17 @@ function deleteGroup(rowElement, gid)
 function showSimpleResponse(response)
 {
     if (!autoDraftDone) {
+<<<<<<< HEAD
         var action = document.forms[0]['action'].value;
         if (action == 'AddPage' && response[0]['type'] == 'response_notice') {
             document.forms[0]['action'].value = 'SaveEditPage';
             document.forms[0]['id'].value = response[0]['data'];
+=======
+        var actioni = document.forms[0].elements['action'].value;
+        if (actioni == 'AddPage' && response[0]['type'] == 'response_notice') {
+            document.forms[0].elements['action'].value = 'SaveEditPage';
+            document.forms[0].elements['id'].value     = response[0]['data'];
+>>>>>>> b8c8dd7bac0aeab911aaf15a283efb57ee6a207d
         }
         autoDraftDone = true;
     }
@@ -347,7 +370,11 @@ function stopAction()
     $('#meta_desc').val('');
     $('#visible').val('true');
     unselectGridRow('groups_datagrid');
+<<<<<<< HEAD
     $('#title')[0].focus();
+=======
+    $('#title').focus();
+>>>>>>> b8c8dd7bac0aeab911aaf15a283efb57ee6a207d
 }
 
 var StaticPageAjax = new JawsAjax('StaticPage', StaticPageCallback);
