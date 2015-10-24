@@ -266,7 +266,7 @@ function editGroup(rowElement, gid)
     $('#meta_keys').val(group['meta_keywords'].defilter());
     $('#meta_desc').val(group['meta_description'].defilter());
     $('#fast_url').val(group['fast_url']);
-    $('#visible').val(group['visible']);
+    $('#visible')[0].value = group['visible'];
 }
 
 /**
