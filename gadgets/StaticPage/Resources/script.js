@@ -5,45 +5,45 @@
  * @package    StaticPage
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2014 Jaws Development Group
+ * @copyright  2005-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 
 /**
  * Use async mode, create Callback
  */
-var StaticPageCallback = { 
+var StaticPageCallback = {
     DeletePage: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getDG('pages_datagrid');
         }
         StaticPageAjax.showResponse(response);
-    }, 
+    },
 
     DeleteTranslation: function(response) {
         if (response[0]['type'] == 'response_notice') {
             getDG('pages_datagrid');
         }
         StaticPageAjax.showResponse(response);
-    }, 
-    
+    },
+
     MassiveDelete: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            var rows = $('pages_datagrid')[0].getSelectedRows();
+            var rows = $('#pages_datagrid')[0].getSelectedRows();
             if (rows.length > 0) {
                 for(var i=0; i<rows.length; i++) {
-                    $('pages_datagrid')[0].deleteItem();
+                    $('#pages_datagrid')[0].deleteItem();
                 }
             }
-            PiwiGrid.multiSelect($('pages_datagrid'));
+            PiwiGrid.multiSelect($('#pages_datagrid'));
             getDG('pages_datagrid');
         }
-        StaticPageAjax.showResponse(response);      
+        StaticPageAjax.showResponse(response);
     },
-    
+
     UpdateSettings: function(response) {
         StaticPageAjax.showResponse(response);
-    }, 
+    },
 
     AutoDraft: function(response) {
         showSimpleResponse(response);
@@ -52,8 +52,8 @@ var StaticPageCallback = {
     InsertGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('groups_datagrid')[0].addItem();
-            $('groups_datagrid')[0].setCurrentPage(0);
+            $('#groups_datagrid')[0].addItem();
+            $('#groups_datagrid')[0].setCurrentPage(0);
             getDG('groups_datagrid');
         }
         StaticPageAjax.showResponse(response);
@@ -70,7 +70,7 @@ var StaticPageCallback = {
     DeleteGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('groups_datagrid')[0].deleteItem();
+            $('#groups_datagrid')[0].deleteItem();
             getDG('groups_datagrid');
         }
         StaticPageAjax.showResponse(response);
@@ -89,14 +89,14 @@ function AutoDraft()
 {
     // FIXME: temporary disable auto draft
     return;
-    var title     = document.forms[0].elements['title'].value;
-    var group     = document.forms[0].elements['group_id'].value;
-    var fasturl   = document.forms[0].elements['fast_url'].value;
-    var language  = document.forms[0].elements['language'].value;
-    var published = document.forms[0].elements['published'].value;
-    var tags      = document.forms[0].elements['tags'].value;
-    var showtitle = document.forms[0].elements['show_title'].value;
-    var actioni   = document.forms[0].elements['action'].value;
+    var title     = document.forms[0]['title'].value;
+    var group     = document.forms[0]['group_id'].value;
+    var fasturl   = document.forms[0]['fast_url'].value;
+    var language  = document.forms[0]['language'].value;
+    var published = document.forms[0]['published'].value;
+    var tags      = document.forms[0]['tags'].value;
+    var showtitle = document.forms[0]['show_title'].value;
+    var actioni   = document.forms[0]['action'].value;
     var id        = '';
 
     switch (actioni) {
@@ -104,10 +104,10 @@ function AutoDraft()
             id = 'NEW';
             break;
         case 'SaveEditPage':
-            id = document.forms[0].elements['id'].value;
+            id = document.forms[0]['id'].value;
             break;
     }
-    var content   = getEditorValue('content');
+    var content = getEditorValue('content');
 
     StaticPageAjax.callAsync(
         'AutoDraft',
@@ -124,7 +124,7 @@ function AutoDraft()
  *
  * @see AutoDraft();
  */
-function startAutoDrafting() 
+function startAutoDrafting()
 {
     AutoDraft();
 }
@@ -135,17 +135,14 @@ function startAutoDrafting()
  */
 function parseText(form)
 {
-    var title   = form.elements['title'].value;
+    var title   = form['title'].value;
     var content = getEditorValue('content');
 
     content = StaticPageAjax.callSync('ParseText', content);
     $('#preview').css('display', 'table');
 
-    var titlePreview   = document.getElementById('previewTitle');
-    var contentPreview = document.getElementById('previewContent');
-
-    titlePreview.innerHTML   = title;
-    contentPreview.innerHTML = content;    
+    $('#previewTitle').html(title);
+    $('#previewContent').html(content);
 }
 
 /**
@@ -189,9 +186,9 @@ function deleteTranslation(id, redirect)
 /**
  * Can use massive delete?
  */
-function massiveDelete() 
+function massiveDelete()
 {
-    var rows = $('pages_datagrid')[0].getSelectedRows();
+    var rows = $('#pages_datagrid')[0].getSelectedRows();
     if (rows.length > 0) {
         var confirmation = confirm(confirmMassiveDelete);
         if (confirmation) {
@@ -205,9 +202,8 @@ function massiveDelete()
  */
 function updateSettings()
 {
-    var defaultPage = $('default_page').value;
-    var multiLang   = $('multilanguage').value;
-    StaticPageAjax.callAsync('UpdateSettings', [defaultPage, multiLang]);
+    var settings = [$('#default_page').val(), $('#multilanguage').val()];
+    StaticPageAjax.callAsync('UpdateSettings', settings);
 }
 
 /**
@@ -266,12 +262,11 @@ function editGroup(rowElement, gid)
     selectGridRow('groups_datagrid', rowElement.parentNode.parentNode);
     $('#legend_title').html(edit_group_title);
     var group = StaticPageAjax.callSync('GetGroup', selectedGroup);
-    $('#title').val(group['title'].defilter());
+    $('#title').val(group['title'].defilter())[0].focus();
     $('#meta_keys').val(group['meta_keywords'].defilter());
     $('#meta_desc').val(group['meta_description'].defilter());
     $('#fast_url').val(group['fast_url']);
     $('#visible').val(group['visible']);
-    $('title').focus();
 }
 
 /**
@@ -279,9 +274,9 @@ function editGroup(rowElement, gid)
  */
 function saveGroup()
 {
-    if (!$('title').val()) {
+    if (!$('#title').val()) {
         alert(incomplete_fields);
-        $('title').focus();
+        $('#title')[0].focus();
         return false;
     }
 
@@ -329,10 +324,10 @@ function deleteGroup(rowElement, gid)
 function showSimpleResponse(response)
 {
     if (!autoDraftDone) {
-        var actioni   = document.forms[0].elements['action'].value;
-        if (actioni == 'AddPage' && response[0]['type'] == 'response_notice') {
-            document.forms[0].elements['action'].value = 'SaveEditPage';
-            document.forms[0].elements['id'].value     = response[0]['data'];
+        var action = document.forms[0]['action'].value;
+        if (action == 'AddPage' && response[0]['type'] == 'response_notice') {
+            document.forms[0]['action'].value = 'SaveEditPage';
+            document.forms[0]['id'].value = response[0]['data'];
         }
         autoDraftDone = true;
     }
@@ -352,7 +347,7 @@ function stopAction()
     $('#meta_desc').val('');
     $('#visible').val('true');
     unselectGridRow('groups_datagrid');
-    $('title').focus();
+    $('#title')[0].focus();
 }
 
 var StaticPageAjax = new JawsAjax('StaticPage', StaticPageCallback);

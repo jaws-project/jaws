@@ -42,13 +42,13 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
 
         if ($this->gadget->GetPermission('ManageGroups')) {
             $menubar->AddOption('Groups', _t('STATICPAGE_GROUPS'),
-                                BASE_SCRIPT . '?gadget=StaticPage&amp;action=Groups', 
+                                BASE_SCRIPT . '?gadget=StaticPage&amp;action=Groups',
                                 'gadgets/StaticPage/Resources/images/groups.png');
         }
 
         if ($this->gadget->GetPermission('Properties')) {
             $menubar->AddOption('Properties', _t('GLOBAL_SETTINGS'),
-                                BASE_SCRIPT . '?gadget=StaticPage&amp;action=Properties', 
+                                BASE_SCRIPT . '?gadget=StaticPage&amp;action=Properties',
                                 'images/stock/properties.png');
         }
         $menubar->Activate($selected);
@@ -150,10 +150,10 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
         $languageCombo->SetDefault($language);
         $languageCombo->setTitle(_t('STATICPAGE_PAGE_LANGUAGE'));
         $vBox->Add($languageCombo);
-        
+
         // Advanced Options
         $btnAdvanced =& Piwi::CreateWidget('Button', 'btn_advanced', _t('STATICPAGE_ADVANCED_OPTIONS'));
-        $btnAdvanced->AddEvent(ON_CLICK, 'javascript:$(\'advanced_options\').show(); this.hide();');
+        $btnAdvanced->AddEvent(ON_CLICK, "javascript:$('#advanced_options').show(); $(this).hide();");
 
         $advBox =& Piwi::CreateWidget('VBox');
         $advBox->SetId('advanced_options');
