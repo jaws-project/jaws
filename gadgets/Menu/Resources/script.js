@@ -39,12 +39,12 @@ function changeMenuParent(pid) {
 }
 
 function AddNewMenuGroup(gid) {
-    var mainDiv = document.createElement('div');
-    var div =$('group_1').find('div')[0].cloneNode(true);
-    mainDiv.className = 'menu_groups';
-    mainDiv.id = "group_"+gid;
-    mainDiv.appendChild(div);
-    $('menus_trees').appendChild(mainDiv);
+    var mainDiv = $('<div></div>');
+    var div = $('group_1').find('div').clone(true);
+    mainDiv.addClass('menu_groups');
+    mainDiv.attr('id', "group_" + gid);
+    mainDiv.append(div);
+    $('menus_trees').append(mainDiv);
     var links = mainDiv.find('a');
     links[0].href = 'javascript: editGroup(' + gid + ');';
     links.html($('#title').val());
@@ -54,25 +54,27 @@ function AddNewMenuGroup(gid) {
 /**
  *
  */
-function AddNewMenuItem(gid, pid, mid, rank)
-{
-    var mainDiv = document.createElement('div');
-    var div =$('group_1').find('div')[0].cloneNode(true);
-    mainDiv.className = 'menu_levels';
-    mainDiv.id = "menu_"+mid;
-    mainDiv.appendChild(div);
+function AddNewMenuItem(gid, pid, mid, rank) {
+    var mainDiv = $('<div></div>');
+    var div = $('group_1').find('div').clone(true);
+    mainDiv.addClass('menu_levels');
+    mainDiv.attr('id', "menu_" + mid);
+    mainDiv.append(div);
+
     if (pid == 0) {
-        var parentNode = $('#group_'+gid);
+        var parentNode = $('#group_' + gid);
     } else {
-        var parentNode = $('#menu_'+pid);
+        var parentNode = $('#menu_' + pid);
     }
-    parentNode.appendChild(mainDiv);
+
+    parentNode.append(mainDiv);
     //set ranking
     var menu_elements = Array.from(parentNode.children('.menu_levels'));
-    var oldRank = menu_elements.indexOf($('#menu_'+mid));
+    var oldRank = menu_elements.indexOf($('#menu_' + mid));
     if (rank < oldRank) {
-        parentNode.insertBefore($('#menu_'+mid), menu_elements[rank - 1]);
+        parentNode.insertBefore($('#menu_' + mid), menu_elements[rank - 1]);
     }
+
     //--
     var links = mainDiv.find('a');
     links[0].href = 'javascript: editMenu(' + mid + ');';
@@ -81,7 +83,7 @@ function AddNewMenuItem(gid, pid, mid, rank)
     var images = mainDiv.find('img');
     images[0].src = menuImageSrc;
     // hide menu actions
-    mainDiv.find('div')[2].style.visibility = 'hidden';
+    mainDiv.find('div')[2].css('visibility' , 'hidden');
 }
 
 /**
@@ -401,7 +403,7 @@ function delMenus()
             cacheMenuForm = null;
             var response = MenuAjax.callSync('DeleteGroup', gid);
             if (response[0]['type'] == 'response_notice') {
-                Element.destroy($('#group_'+gid));
+                $('#group_' + gid).remove();
             }
             stopAction();
             MenuAjax.showResponse(response);
@@ -413,7 +415,7 @@ function delMenus()
         if (confirm(msg)) {
             var response = MenuAjax.callSync('DeleteMenu', mid);
             if (response[0]['type'] == 'response_notice') {
-                Element.destroy($('#menu_'+mid));
+                $('#menu_' + mid).remove();
             }
             stopAction();
             MenuAjax.showResponse(response);
@@ -478,7 +480,7 @@ function changeReferences() {
         if (cacheReferences[type][selIndex]['title2']) {
             $('#title').val(cacheReferences[type][selIndex]['title2']);
         } else {
-            $('#title').val($('#references').options[selIndex].text);
+            $('#title').val($('#references option').eq(selIndex).text());
         }
         if (cacheReferences[type][selIndex]['acl_key']) {
             aclInfo = cacheReferences[type][selIndex]['acl_key'] + ":" + cacheReferences[type][selIndex]['acl_subkey'];
@@ -502,7 +504,7 @@ function stopAction()
 
     var old_selected_menu = $('#menu_'+selectedMenu);
     if (selectedMenu && old_selected_menu) {
-        old_selected_menu.find('div')[0].style.backgroundColor = org_m_bg_color;
+        old_selected_menu.find('div').css('background-color', org_m_bg_color);
     }
 
     selectedMenu  = null;
