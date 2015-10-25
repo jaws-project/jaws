@@ -40,15 +40,15 @@ function changeMenuParent(pid) {
 
 function AddNewMenuGroup(gid) {
     var mainDiv = document.createElement('div');
-    var div =$('group_1').getElementsByTagName('div')[0].cloneNode(true);
+    var div =$('group_1').find('div')[0].cloneNode(true);
     mainDiv.className = 'menu_groups';
     mainDiv.id = "group_"+gid;
     mainDiv.appendChild(div);
     $('menus_trees').appendChild(mainDiv);
-    var links = mainDiv.getElementsByTagName('a');
-    links[0].href      = 'javascript: editGroup('+gid+');';
-    links[0].innerHTML = $('title').value;
-    links[1].href = 'javascript: addMenu('+gid+', 0);';
+    var links = mainDiv.find('a');
+    links[0].href = 'javascript: editGroup(' + gid + ');';
+    links.html($('#title').val());
+    links[1].href = 'javascript: addMenu(' + gid + ', 0);';
 }
 
 /**
@@ -57,31 +57,31 @@ function AddNewMenuGroup(gid) {
 function AddNewMenuItem(gid, pid, mid, rank)
 {
     var mainDiv = document.createElement('div');
-    var div =$('group_1').getElementsByTagName('div')[0].cloneNode(true);
+    var div =$('group_1').find('div')[0].cloneNode(true);
     mainDiv.className = 'menu_levels';
     mainDiv.id = "menu_"+mid;
     mainDiv.appendChild(div);
     if (pid == 0) {
-        var parentNode = $('group_'+gid);
+        var parentNode = $('#group_'+gid);
     } else {
-        var parentNode = $('menu_'+pid);
+        var parentNode = $('#menu_'+pid);
     }
     parentNode.appendChild(mainDiv);
     //set ranking
     var menu_elements = Array.from(parentNode.children('.menu_levels'));
-    var oldRank = menu_elements.indexOf($('menu_'+mid));
+    var oldRank = menu_elements.indexOf($('#menu_'+mid));
     if (rank < oldRank) {
-        parentNode.insertBefore($('menu_'+mid), menu_elements[rank - 1]);
+        parentNode.insertBefore($('#menu_'+mid), menu_elements[rank - 1]);
     }
     //--
-    var links = mainDiv.getElementsByTagName('a');
-    links[0].href      = 'javascript: editMenu('+mid+');';
-    links[0].innerHTML = $('title').value;
-    links[1].href = 'javascript: addMenu('+gid+', '+ mid +');';
-    var images = mainDiv.getElementsByTagName('img');
+    var links = mainDiv.find('a');
+    links[0].href = 'javascript: editMenu(' + mid + ');';
+    links.html($('#title').val());
+    links[1].href = 'javascript: addMenu(' + gid + ', ' + mid + ');';
+    var images = mainDiv.find('img');
     images[0].src = menuImageSrc;
     // hide menu actions
-    mainDiv.getElementsByTagName('div')[2].style.visibility = 'hidden';
+    mainDiv.find('div')[2].style.visibility = 'hidden';
 }
 
 /**
@@ -90,7 +90,7 @@ function AddNewMenuItem(gid, pid, mid, rank)
 function saveMenus()
 {
     if (currentAction == 'Groups') {
-        if (!$('title').val()) {
+        if (!$('#title').val()) {
             alert(incompleteFields);
             return false;
         }
@@ -120,7 +120,7 @@ function saveMenus()
             );
         }
     } else {
-        if (!$('title').val() || ($('#references').prop('selectedIndex') == -1)) {
+        if (!$('#title').val() || ($('#references').prop('selectedIndex') == -1)) {
             alert(incompleteFields);
             return false;
         }
@@ -277,12 +277,13 @@ function addMenu(gid, pid)
     currentAction = 'Menus';
 
     if (pid == 0) {
-        $('edit_area').getElementsByTagName('span')[0].innerHTML =
-            addMenuTitle + ' - ' + $('group_'+gid).getElementsByTagName('a')[0].innerHTML;
+        $('#edit_area').find('span').html(
+            addMenuTitle + ' - ' + $('#group_'+gid).find('a').html()
+        );
     } else {
-        $('edit_area').getElementsByTagName('span')[0].innerHTML =
-            addMenuTitle + ' - ' + $('group_'+gid).getElementsByTagName('a')[0].innerHTML +
-            ' - ' + $('menu_'+pid).getElementsByTagName('a')[0].innerHTML;
+        $('#edit_area').find('span').html(
+            addMenuTitle + ' - ' + $('#group_'+gid).find('a').html() +
+            ' - ' + $('#menu_'+pid).find('a').html());
     }
 
     selectedMenu = null;
@@ -395,12 +396,12 @@ function delMenus()
     if (currentAction == 'Groups') {
         var gid = selectedGroup;
         var msg = confirmGroupDelete;
-        msg = msg.substr(0,  msg.indexOf('%s%')) + $('group_'+gid).getElementsByTagName('a')[0].innerHTML + msg.substr(msg.indexOf('%s%')+3);
+        msg = msg.substr(0,  msg.indexOf('%s%')) + $('#group_'+gid).find('a').html() + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
             cacheMenuForm = null;
             var response = MenuAjax.callSync('DeleteGroup', gid);
             if (response[0]['type'] == 'response_notice') {
-                Element.destroy($('group_'+gid));
+                Element.destroy($('#group_'+gid));
             }
             stopAction();
             MenuAjax.showResponse(response);
@@ -408,11 +409,11 @@ function delMenus()
     } else {
         var mid = selectedMenu;
         var msg = confirmMenuDelete;
-        msg = msg.substr(0,  msg.indexOf('%s%')) + $('menu_'+mid).getElementsByTagName('a')[0].innerHTML + msg.substr(msg.indexOf('%s%')+3);
+        msg = msg.substr(0,  msg.indexOf('%s%')) + $('#menu_'+mid).find('a').html() + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
             var response = MenuAjax.callSync('DeleteMenu', mid);
             if (response[0]['type'] == 'response_notice') {
-                Element.destroy($('menu_'+mid));
+                Element.destroy($('#menu_'+mid));
             }
             stopAction();
             MenuAjax.showResponse(response);
@@ -477,7 +478,7 @@ function changeReferences() {
         if (cacheReferences[type][selIndex]['title2']) {
             $('#title').val(cacheReferences[type][selIndex]['title2']);
         } else {
-            $('#title').val($('references').options[selIndex].text);
+            $('#title').val($('#references').options[selIndex].text);
         }
         if (cacheReferences[type][selIndex]['acl_key']) {
             aclInfo = cacheReferences[type][selIndex]['acl_key'] + ":" + cacheReferences[type][selIndex]['acl_subkey'];
@@ -499,9 +500,9 @@ function stopAction()
     $('#btn_save').css('display', 'none');
     $('#btn_add').css('display', 'inline');
 
-    var old_selected_menu = $('menu_'+selectedMenu);
-    if (old_selected_menu) {
-        old_selected_menu.getElementsByTagName('div')[0].style.backgroundColor = org_m_bg_color;
+    var old_selected_menu = $('#menu_'+selectedMenu);
+    if (selectedMenu && old_selected_menu) {
+        old_selected_menu.find('div')[0].style.backgroundColor = org_m_bg_color;
     }
 
     selectedMenu  = null;
