@@ -5,7 +5,7 @@
  * @category    GadgetModel
  * @package     ServerTime
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2012-2014 Jaws Development Group
+ * @copyright   2012-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class ServerTime_Installer extends Jaws_Gadget_Installer
