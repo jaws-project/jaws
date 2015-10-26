@@ -6,7 +6,7 @@
  * @package    Components
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Helgi Þormar <dufuz@php.net>
- * @copyright  2004-2014 Jaws Development Group
+ * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Components_Actions_Admin_Default extends Jaws_Gadget_Action
