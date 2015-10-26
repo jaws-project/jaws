@@ -5,7 +5,7 @@
  * @category   GadgetHook
  * @package    Phoo
  * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2014 Jaws Development Group
+ * @copyright  2014-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Phoo_Hooks_Comments extends Jaws_Gadget_Hook
