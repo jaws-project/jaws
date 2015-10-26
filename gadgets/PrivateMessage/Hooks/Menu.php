@@ -5,7 +5,7 @@
  * @category    GadgetHook
  * @package     PrivateMessage
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2013-2014 Jaws Development Group
+ * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class PrivateMessage_Hooks_Menu extends Jaws_Gadget_Hook
