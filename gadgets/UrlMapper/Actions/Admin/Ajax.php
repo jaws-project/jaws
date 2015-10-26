@@ -6,7 +6,7 @@
  * @package    UrlMapper
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2006-2014 Jaws Development Group
+ * @copyright  2006-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
