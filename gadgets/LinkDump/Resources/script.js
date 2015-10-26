@@ -14,7 +14,7 @@
 var LinkDumpCallback = { 
     UpdateGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            $('group_'+$('gid').value).getElementsByTagName('a')[1].innerHTML = $('title').value;
+            $('#group_'+$('#gid').val()).find('a').eq(1).html($('#title').val());
             stopAction();
         }
         LinkDumpAjax.showResponse(response);
@@ -59,7 +59,7 @@ function saveLink()
             return false;
         }
 
-        lc = parseInt($('limit_count').value);
+        lc = parseInt($('#limit_count').val());
         $('#limit_count').val((lc < 1)? '1' : ((lc > max_limit_count)? max_limit_count : lc));
 
         cacheLinkForm = null;
@@ -98,7 +98,7 @@ function saveLink()
         }
         var tags = "";
         if($('tags')!=null) {
-            tags = $('tags').value;
+            tags = $('#tags').val();
         }
         if (selectedLink == null) {
             var response = LinkDumpAjax.callSync(
@@ -132,26 +132,26 @@ function saveLink()
                 ]
             );
             if (response[0]['type'] == 'response_notice') {
-                $('link_'+$('lid').value).getElementsByTagName('a')[0].innerHTML = $('title').value;
-                var new_parent = $('links_group_'+$('gid').value);
-                var old_parent = $('link_'+$('lid').value).parentNode;
-                var links_elements = new_parent.getElementsByTagName('div');
+                $('#link_'+$('#lid').val()).find('a').first().html($('#title').val());
+                var new_parent = $('#links_group_'+$('#gid').val());
+                var old_parent = $('#link_'+$('#lid').val()).parent();
+                var links_elements = new_parent.find('div');
                 if (old_parent != new_parent) {
-                    if ($('rank').value > (links_elements.length - 1)) {
-                        new_parent.appendChild($('link_'+$('lid').value));
+                    if ($('#rank').val() > (links_elements.length - 1)) {
+                        new_parent.append($('#link_'+$('#lid').val()));
                     } else {
-                        new_parent.insertBefore($('link_'+$('lid').value), links_elements[$('rank').value - 1]);
+                        new_parent.insertBefore($('#link_'+$('#lid').val()), links_elements[$('#rank').val() - 1]);
                     }
 
-                    if (old_parent.innerHTML.blank()) {
-                        old_parent.innerHTML = noLinkExists;
+                    if (old_parent.html() == "") {
+                        old_parent.html(noLinkExists);
                     }
                 } else {
-                    var oldRank = Array.from(links_elements).indexOf($('link_'+$('lid').value)) + 1;
-                    if ($('rank').value > oldRank) {
-                        new_parent.insertBefore($('link_'+$('lid').value), links_elements[$('rank').value]);
+                    var oldRank = links_elements.index($('#link_'+$('#lid').val())) + 1;
+                    if ($('#rank').val() > oldRank) {
+                        new_parent.insertBefore($('#link_'+$('#lid').val()), links_elements.eq($('#rank').val()));
                     } else {
-                        new_parent.insertBefore($('link_'+$('lid').value), links_elements[$('rank').value - 1]);
+                        new_parent.insertBefore($('#link_'+$('#lid').val()), links_elements.eq($('#rank').val() - 1));
                     }
                 }
                 stopAction();
@@ -163,12 +163,12 @@ function saveLink()
 
 function AddNewGroup(gid) {
     var mainDiv = document.createElement('div');
-    var cloneDiv =$('group_1').getElementsByTagName('div')[0].cloneNode(true);
+    var cloneDiv =$('#group_1').find('div').first().clone(true);
     mainDiv.className = 'links_group';
     mainDiv.id = "group_"+gid;
     mainDiv.appendChild(cloneDiv);
     $('links_tree').appendChild(mainDiv);
-    var links = mainDiv.getElementsByTagName('a');
+    var links = mainDiv.find('a');
     links[0].href      = 'javascript: listLinks('+gid+');';
     links[1].href = 'javascript: editGroup('+gid+');';
     links[1].innerHTML = $('title').value;
@@ -199,9 +199,9 @@ function AddNewLinkItem(gid, lid, rank)
     mainDiv.appendChild(img);
 
     //set ranking
-    var oldRank = Array.from(gLinksDiv.getElementsByTagName('div')).indexOf($('link_'+lid));
+    var oldRank = gLinksDiv.find('div').index($('#link_'+lid));
     if (rank < oldRank) {
-        gLinksDiv.insertBefore($('link_'+lid), gLinksDiv.getElementsByTagName('div')[rank -1]);
+        gLinksDiv.insertBefore($('#link_'+lid), gLinksDiv.find('div').eq(rank -1));
     }
     //--
 
@@ -216,20 +216,20 @@ function AddNewLinkItem(gid, lid, rank)
 
 function listLinks(gid, force_open)
 {
-    gNode = $('group_'+gid);
-    gFlagimage = gNode.getElementsByTagName('img')[0];
-    divSubList = $('links_group_'+gid);
+    gNode = $('#group_'+gid);
+    gFlagimage = gNode.find('img').first();
+    divSubList = $('#links_group_'+gid);
     if (divSubList.innerHTML == '') {
         var links_list = LinkDumpAjax.callSync('GetLinksList', gid);
-        if (!links_list.blank()) {
-            divSubList.innerHTML = links_list;
+        if (links_list !== "") {
+            divSubList.html(links_list);
         } else {
-            divSubList.innerHTML = noLinkExists;
+            divSubList.html(noLinkExists);
         }
         gFlagimage.src = linksListCloseImageSrc;
     } else {
         if (force_open == null) {
-            divSubList.innerHTML = '';
+            divSubList.html('');
             gFlagimage.src = linksListOpenImageSrc;
         }
     }
@@ -242,10 +242,10 @@ function setRanksCombo(pid, selected) {
     listLinks(pid, true);
     $('rank').options.length = 0;
 
-    var new_parentNode = $('links_group_'+pid);
-    var rank = new_parentNode.getElementsByTagName('div').length;
+    var new_parentNode = $('#links_group_'+pid);
+    var rank = new_parentNode.find('div').length;
 
-    if (($('lid').value < 1) || ($('link_'+$('lid').value).parentNode != new_parentNode)) {
+    if (($('#lid').val() < 1) || ($('#link_'+$('#lid').val()).parentNode != new_parentNode)) {
         rank = rank + 1;
     }
 
@@ -379,11 +379,11 @@ function editLink(element, lid)
     $('#url').val(linkInfo['url']);
     $('#fast_url').val(linkInfo['fast_url']);
     $('#description').val(linkInfo['description'].defilter());
-    if($('tags')!=null) {
+    if($('#tags').length) {
         $('#tags').val(linkInfo['tags']);
     }
     $('#clicks').val(linkInfo['clicks']);
-    setRanksCombo($('gid').value);
+    setRanksCombo($('#gid').val());
     $('#rank').val(linkInfo['rank']);
 }
 
@@ -395,12 +395,12 @@ function delLinks()
     if (currentAction == 'Groups') {
         var gid = selectedGroup;
         var msg = confirmGroupDelete;
-        msg = msg.substr(0,  msg.indexOf('%s%')) + $('group_'+gid).getElementsByTagName('a')[1].innerHTML + msg.substr(msg.indexOf('%s%')+3);
+        msg = msg.substr(0,  msg.indexOf('%s%')) + $('group_'+gid).find('a').eq(1).html() + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
             cacheMenuForm = null;
             var response = LinkDumpAjax.callSync('DeleteGroup', gid);
             if (response[0]['type'] == 'response_notice') {
-                Element.destroy($('group_'+gid));
+                $('#group_'+gid).remove();
             }
             stopAction();
             LinkDumpAjax.showResponse(response);
@@ -409,15 +409,15 @@ function delLinks()
         var lid = selectedLink;
         var msg = confirmLinkDelete;
         msg = msg.substr(0,  msg.indexOf('%s%'))+
-              $('link_'+lid).getElementsByTagName('a')[0].innerHTML+
+              $('link_'+lid).find('a').first().html()+
               msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
             var response = LinkDumpAjax.callSync('DeleteLink', [lid, $('#gid').val(), $('#rank').val()]);
             if (response[0]['type'] == 'response_notice') {
-                link_parent = $('link_'+lid).parentNode;
-                Element.destroy($('link_'+lid));
-                if (link_parent.innerHTML.blank()) {
-                    link_parent.innerHTML = noLinkExists;
+                link_parent = $('#link_'+lid).parent();
+                $('#link_'+lid).remove();
+                if (link_parent.html() == "") {
+                    link_parent.html(noLinkExists);
                 }
             }
             stopAction();
@@ -428,7 +428,7 @@ function delLinks()
 
 function upCount()
 {
-    var lc = parseInt($('limit_count').value);
+    var lc = parseInt($('#limit_count').val());
     lc = isNaN(lc)? 0 : lc;
     lc++;
     lc = (lc < 1)? 1 : ((lc > max_limit_count)? max_limit_count : lc);
@@ -437,7 +437,7 @@ function upCount()
 
 function downCount()
 {
-    var lc = parseInt($('limit_count').value);
+    var lc = parseInt($('#limit_count').val());
     lc = isNaN(lc)? 0 : lc;
     lc--;
     lc = (lc < 1)? 1 : ((lc > max_limit_count)? max_limit_count : lc);
