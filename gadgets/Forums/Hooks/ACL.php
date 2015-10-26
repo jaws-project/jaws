@@ -5,7 +5,7 @@
  * @category    GadgetHook
  * @package     Forums
  * @author      Hamid Reza Aboutalebi <hamid@aboutalebi.com>
- * @copyright   2013-2014 Jaws Development Group
+ * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Forums_Hooks_ACL extends Jaws_Gadget_Hook

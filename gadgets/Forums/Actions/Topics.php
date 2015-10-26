@@ -7,7 +7,7 @@
  * @author      Ali Fazelzadeh <afz@php.net>
  * @author      Hamid Reza Aboutalebi <abt_am@yahoo.com>
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2012-2014 Jaws Development Group
+ * @copyright   2012-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Forums_Actions_Topics extends Forums_Actions_Default
