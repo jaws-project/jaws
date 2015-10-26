@@ -5,7 +5,7 @@
  * @category    Gadget
  * @package     Directory
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013-2014 Jaws Development Group
+ * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Directory_Actions_Files extends Jaws_Gadget_Action
