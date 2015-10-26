@@ -5,7 +5,7 @@
  * @category    GadgetModel
  * @package     Tags
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2013-2014 Jaws Development Group
+ * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Tags_Model_Admin_Settings extends Jaws_Gadget_Model

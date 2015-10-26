@@ -5,7 +5,7 @@
  * @category   GadgetHook
  * @package    Tags
  * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2013-2014 Jaws Development Group
+ * @copyright  2013-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Tags_Hooks_Search extends Jaws_Gadget_Hook
