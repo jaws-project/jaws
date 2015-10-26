@@ -6,7 +6,7 @@
  * @package    Friend
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2004-2014 Jaws Development Group
+ * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Friends_Model_Admin_Friends extends Jaws_Gadget_Model
