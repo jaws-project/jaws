@@ -5,7 +5,7 @@
  * @category    Gadget
  * @package     Notepad
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013-2014 Jaws Development Group
+ * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 $GLOBALS['app']->Layout->AddHeadLink('gadgets/Notepad/Resources/site_style.css');
