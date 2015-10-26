@@ -28,10 +28,10 @@ var LinkDumpCallback = {
 function selectTreeRow(rowElement)
 {
     if (selectedRow) {
-        selectedRow.style.backgroundColor = selectedRowColor;
+        selectedRow.css('background-color', selectedRowColor);
     }
-    selectedRowColor = rowElement.style.backgroundColor;
-    rowElement.style.backgroundColor = '#eeeecc';
+    selectedRowColor = rowElement.css('background-color');
+    rowElement.css('background-color', '#eeeecc');
     selectedRow = rowElement;
 }
 
@@ -42,7 +42,7 @@ function selectTreeRow(rowElement)
 function unselectTreeRow()
 {
     if (selectedRow) {
-        selectedRow.style.backgroundColor = selectedRowColor;
+        selectedRow.css('background-color', selectedRowColor);
     }
     selectedRow = null;
     selectedRowColor = null;
@@ -54,7 +54,7 @@ function unselectTreeRow()
 function saveLink()
 {
     if (currentAction == 'Groups') {
-        if (!$('title').val()) {
+        if (!$('#title').val()) {
             alert(incompleteFields);
             return false;
         }
@@ -92,12 +92,12 @@ function saveLink()
             );
         }
     } else {
-        if (!$('title').val()) {
+        if (!$('#title').val()) {
             alert(incompleteFields);
             return false;
         }
         var tags = "";
-        if($('tags')!=null) {
+        if ($('#tags').length) {
             tags = $('#tags').val();
         }
         if (selectedLink == null) {
@@ -140,7 +140,7 @@ function saveLink()
                     if ($('#rank').val() > (links_elements.length - 1)) {
                         new_parent.append($('#link_'+$('#lid').val()));
                     } else {
-                        new_parent.insertBefore($('#link_'+$('#lid').val()), links_elements[$('#rank').val() - 1]);
+                        new_parent.insertBefore($('#link_'+$('#lid').val()), links_elements.eq($('#rank').val() - 1));
                     }
 
                     if (old_parent.html() == "") {
@@ -162,22 +162,18 @@ function saveLink()
 }
 
 function AddNewGroup(gid) {
-    var mainDiv = document.createElement('div');
-    var cloneDiv =$('#group_1').find('div').first().clone(true);
-    mainDiv.className = 'links_group';
-    mainDiv.id = "group_"+gid;
-    mainDiv.appendChild(cloneDiv);
-    $('links_tree').appendChild(mainDiv);
-    var links = mainDiv.find('a');
-    links[0].href      = 'javascript: listLinks('+gid+');';
-    links[1].href = 'javascript: editGroup('+gid+');';
-    links[1].innerHTML = $('title').value;
-    links[2].href = 'javascript: addLink('+gid+');';
-
-    var linksDiv = document.createElement('div');
-    linksDiv.className = 'links';
-    linksDiv.id = "links_group_"+gid;
-    mainDiv.appendChild(linksDiv);
+    $('#links_tree').append(
+        $('<div>').attr({'id': "group_"+gid, 'class': 'links_group'}).append(
+            $('#group_1').find('div').first().clone(true)
+        )
+    );
+    $("#group_"+gid).find('a')
+        .first().attr('href', 'javascript:listLinks('+gid+');')
+        .next().attr('href', 'javascript:editGroup('+gid+', 0);').html($('#title').val())
+        .next().attr('href', 'javascript:addLink('+gid+', 0);');
+    $("#group_"+gid).append(
+        $('<div>').attr({'id': "links_group_"+gid, 'class': 'links'})
+    );
 }
 
 /**
@@ -185,33 +181,27 @@ function AddNewGroup(gid) {
  */
 function AddNewLinkItem(gid, lid, rank)
 {
-    gLinksDiv = $('links_group_'+gid);
-    var mainDiv = document.createElement('div');
-    mainDiv.id = "link_"+lid;
-    if (gLinksDiv.innerHTML == noLinkExists) {
-        gLinksDiv.innerHTML = '';
-    }
-    gLinksDiv.appendChild(mainDiv);
 
-    var img = document.createElement('img');
-    img.className = 'icon';
-    img.src = linkImageSrc;
-    mainDiv.appendChild(img);
+    gLinksDiv = $('#links_group_'+gid);
+    if (gLinksDiv.html() == noLinkExists) {
+        gLinksDiv.html('');
+    }
+
+    var mainDiv = $('<div>').attr('id', "link_"+lid).append(
+        $('<img>').attr({'class': 'icon', 'src': linkImageSrc})
+    ).append(
+        $('<a>').attr('href', 'javascript:void(0);')
+            .html($('#title').val())
+            .on('click', function() {editLink(this, lid);})
+    );
+    gLinksDiv.append(mainDiv);
 
     //set ranking
-    var oldRank = gLinksDiv.find('div').index($('#link_'+lid));
+    var link_elements = gLinksDiv.find('div');
+    var oldRank = link_elements.index($('#link_'+lid));
     if (rank < oldRank) {
-        gLinksDiv.insertBefore($('#link_'+lid), gLinksDiv.find('div').eq(rank -1));
+        gLinksDiv.insertBefore($('#link_'+lid), link_elements.eq(rank -1));
     }
-    //--
-
-    var anchor = document.createElement('a');
-    anchor.setAttribute('href', 'javascript:void(0);') 
-    anchor.onclick = function() {
-                        editLink(this, lid);
-                     }
-    anchor.innerHTML = $('title').value;
-    mainDiv.appendChild(anchor);
 }
 
 function listLinks(gid, force_open)
@@ -219,18 +209,18 @@ function listLinks(gid, force_open)
     gNode = $('#group_'+gid);
     gFlagimage = gNode.find('img').first();
     divSubList = $('#links_group_'+gid);
-    if (divSubList.innerHTML == '') {
+    if (divSubList.html() == '') {
         var links_list = LinkDumpAjax.callSync('GetLinksList', gid);
         if (links_list !== "") {
             divSubList.html(links_list);
         } else {
             divSubList.html(noLinkExists);
         }
-        gFlagimage.src = linksListCloseImageSrc;
+        gFlagimage.attr('src', linksListCloseImageSrc);
     } else {
         if (force_open == null) {
             divSubList.html('');
-            gFlagimage.src = linksListOpenImageSrc;
+            gFlagimage.attr('src', linksListOpenImageSrc);
         }
     }
     if (force_open == null) {
@@ -240,17 +230,17 @@ function listLinks(gid, force_open)
 
 function setRanksCombo(pid, selected) {
     listLinks(pid, true);
-    $('rank').options.length = 0;
+    $('#rank').empty();
 
     var new_parentNode = $('#links_group_'+pid);
     var rank = new_parentNode.find('div').length;
 
-    if (($('#lid').val() < 1) || ($('#link_'+$('#lid').val()).parentNode != new_parentNode)) {
+    if (($('#lid').val() < 1) || !$('#link_'+$('#lid').val()).parent().is(new_parentNode)) {
         rank = rank + 1;
     }
 
     for(var i = 0; i < rank; i++) {
-        $('rank').options[i] = new Option(i+1, i+1);
+        $('#rank').append($('<option>').val(i+1).text(i+1));
     }
     if (selected == null) {
         $('#rank').val(rank);
@@ -318,7 +308,7 @@ function addLink(gid)
     $('#links_edit').html(cacheLinkForm);
 
     $('#gid').val(gid);
-    setRanksCombo($('gid').value);
+    setRanksCombo($('#gid').val());
 }
 
 /**
@@ -357,7 +347,7 @@ function editGroup(gid)
 function editLink(element, lid)
 {
     if (lid == 0) return;
-    selectTreeRow(element.parentNode);
+    selectTreeRow($(element).parent());
     if (cacheLinkForm == null) {
         cacheLinkForm = LinkDumpAjax.callSync('GetLinkUI');
     }
