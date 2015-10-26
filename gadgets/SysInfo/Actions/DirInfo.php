@@ -5,7 +5,7 @@
  * @category   Gadget
  * @package    SysInfo
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2008-2014 Jaws Development Group
+ * @copyright  2008-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class SysInfo_Actions_DirInfo extends Jaws_Gadget_Action
