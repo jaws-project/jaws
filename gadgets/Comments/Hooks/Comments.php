@@ -5,7 +5,7 @@
  * @category    GadgetHook
  * @package     Comments
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2014 Jaws Development Group
+ * @copyright   2014-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Comments_Hooks_Comments extends Jaws_Gadget_Hook
