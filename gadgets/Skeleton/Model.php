@@ -5,7 +5,7 @@
  * @category   GadgetModel
  * @package    Skeleton
  * @author     Jon Wood <jon@substance-it.co.uk>
- * @copyright  2004-2014 Jaws Development Group
+ * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Skeleton_Model extends Jaws_Gadget_Model

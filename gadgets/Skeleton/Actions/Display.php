@@ -5,7 +5,7 @@
  * @category    Gadget
  * @package     Skeleton
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2013-2014 Jaws Development Group
+ * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Skeleton_Actions_Display extends Jaws_Gadget_Action
