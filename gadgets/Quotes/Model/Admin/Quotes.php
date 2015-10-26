@@ -5,7 +5,7 @@
  * @category    GadgetModel
  * @package     Quotes
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2007-2014 Jaws Development Group
+ * @copyright   2007-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Quotes_Model_Admin_Quotes extends Jaws_Gadget_Model

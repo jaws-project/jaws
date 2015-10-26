@@ -5,7 +5,7 @@
  * @category   GadgetAdmin
  * @package    Quotes
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2007-2014 Jaws Development Group
+ * @copyright  2007-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
