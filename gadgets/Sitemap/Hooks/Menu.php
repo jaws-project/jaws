@@ -5,7 +5,7 @@
  * @category   GadgetHook
  * @package    Sitemap
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2007-2014 Jaws Development Group
+ * @copyright  2007-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Sitemap_Hooks_Menu extends Jaws_Gadget_Hook
