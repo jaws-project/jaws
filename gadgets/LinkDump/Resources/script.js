@@ -136,22 +136,21 @@ function saveLink()
                 var new_parent = $('#links_group_'+$('#gid').val());
                 var old_parent = $('#link_'+$('#lid').val()).parent();
                 var links_elements = new_parent.find('div');
-                if (old_parent != new_parent) {
-                    if ($('#rank').val() > (links_elements.length - 1)) {
+                if (old_parent.is(new_parent)) {
+                    if ($('#rank').val() == links_elements.length) {
+                        $('#link_'+$('#lid').val()).insertAfter(links_elements.eq($('#rank').val()-1));
+                    } else {
+                        $('#link_'+$('#lid').val()).insertBefore(links_elements.eq($('#rank').val()-1));
+                    }
+                } else {
+                    if ($('#rank').val() > (links_elements.length)) {
                         new_parent.append($('#link_'+$('#lid').val()));
                     } else {
-                        new_parent.insertBefore($('#link_'+$('#lid').val()), links_elements.eq($('#rank').val() - 1));
+                        $('#link_'+$('#lid').val()).insertBefore(links_elements.eq($('#rank').val() - 1));
                     }
 
                     if (old_parent.html() == "") {
                         old_parent.html(noLinkExists);
-                    }
-                } else {
-                    var oldRank = links_elements.index($('#link_'+$('#lid').val())) + 1;
-                    if ($('#rank').val() > oldRank) {
-                        new_parent.insertBefore($('#link_'+$('#lid').val()), links_elements.eq($('#rank').val()));
-                    } else {
-                        new_parent.insertBefore($('#link_'+$('#lid').val()), links_elements.eq($('#rank').val() - 1));
                     }
                 }
                 stopAction();
