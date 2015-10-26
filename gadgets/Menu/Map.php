@@ -5,7 +5,7 @@
  * @category    GadgetMaps
  * @package     Menu
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2012-2014 Jaws Development Group
+ * @copyright   2012-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 

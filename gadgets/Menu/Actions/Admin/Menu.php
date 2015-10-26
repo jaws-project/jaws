@@ -9,7 +9,7 @@
  * @author      Jon Wood <jon@substance-it.co.uk>
  * @author      Ali Fazelzadeh <afz@php.net>
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2004-2014 Jaws Development Group
+ * @copyright   2004-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
