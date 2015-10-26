@@ -5,7 +5,7 @@
  * @category    GadgetAdmin
  * @package     ControlPanel
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2013-2014 Jaws Development Group
+ * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class ControlPanel_Actions_Admin_JawsVersion extends Jaws_Gadget_Action

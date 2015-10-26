@@ -6,7 +6,7 @@
  * @package     ControlPanel
  * @author      Jonathan Hernandez <ion@suavizado.com>
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2004-2014 Jaws Development Group
+ * @copyright   2004-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
