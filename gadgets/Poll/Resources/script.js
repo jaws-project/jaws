@@ -5,7 +5,7 @@
  * @package    Poll
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2014 Jaws Development Group
+ * @copyright  2005-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 /**
@@ -15,8 +15,8 @@ var PollCallback = {
     InsertPoll: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('polls_datagrid')[0].addItem();
-            $('polls_datagrid')[0].setCurrentPage(0);
+            $('#polls_datagrid')[0].addItem();
+            $('#polls_datagrid')[0].setCurrentPage(0);
             getDG();
         }
         PollAjax.showResponse(response);
@@ -27,13 +27,13 @@ var PollCallback = {
             stopAction();
             getDG();
         }
-        showResponse(response);
+        PollAjax.showResponse(response);
     },
 
     DeletePoll: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('polls_datagrid')[0].deleteItem();
+            $('#polls_datagrid')[0].deleteItem();
             getDG();
         }
         PollAjax.showResponse(response);
@@ -49,8 +49,8 @@ var PollCallback = {
     InsertPollGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('pollgroups_datagrid')[0].addItem();
-            $('pollgroups_datagrid')[0].setCurrentPage(0);
+            $('#pollgroups_datagrid')[0].addItem();
+            $('#pollgroups_datagrid')[0].setCurrentPage(0);
             getDG();
         }
         PollAjax.showResponse(response);
@@ -67,7 +67,7 @@ var PollCallback = {
     DeletePollGroup: function(response) {
         if (response[0]['type'] == 'response_notice') {
             stopAction();
-            $('pollgroups_datagrid')[0].deleteItem();
+            $('#pollgroups_datagrid')[0].deleteItem();
             getDG();
         }
         PollAjax.showResponse(response);
@@ -77,7 +77,7 @@ var PollCallback = {
         stopAction();
         PollAjax.showResponse(response);
     }
-}
+};
 
 /**
  * Select DataGrid row
@@ -94,10 +94,10 @@ function selectDataGridRow(rowElement)
 }
 
 /**
- * Unselect DataGrid row
+ * Deselect DataGrid row
  *
  */
-function unselectDataGridRow()
+function deselectDataGridRow()
 {
     if (selectedRow) {
         selectedRow.style.backgroundColor = selectedRowColor;
@@ -123,32 +123,32 @@ function stopAction()
         $('#poll_type').val(0);
         $('#result_view').val(1);
         $('#visible').val(1);
-        unselectDataGridRow();
-        $('question').focus();
+        deselectDataGridRow();
+        $('#question')[0].focus();
         break;
     case 'PollAnswers':
         selectedPoll = null;
         currentAction = 'Polls';
         $('#legend_title').html(addPoll_title);
-        $('#p_work_area').html(cachePollForm);
+        $('#p_work_area')[0].innerHTML = cachePollForm;
         initDatePicker('start_time');
         initDatePicker('stop_time');
-        unselectDataGridRow();
+        deselectDataGridRow();
         break;
     case 'PollGroups':
         selectedPollGroup = null;
         $('#legend_title').html(addPollGroup_title);
         $('#title').val('');
         $('#visible').val(1);
-        unselectDataGridRow();
-        $('title').focus();
+        deselectDataGridRow();
+        $('#title')[0].focus();
         break;
     case 'PollGroupPolls':
         selectedPollGroup = null;
         currentAction = 'PollGroups';
         $('#legend_title').html(addPollGroup_title);
         $('#pg_work_area').html(cachePollGroupsForm);
-        unselectDataGridRow();
+        deselectDataGridRow();
         break;
     }
 }
@@ -162,7 +162,7 @@ function editPoll(element, pid)
     selectedPoll = pid;
     $('#legend_title').html(editPoll_title);
     if (cachePollForm != null) {
-        $('#p_work_area').html(cachePollForm);
+        $('#p_work_area')[0].innerHTML = cachePollForm;
         initDatePicker('start_time');
         initDatePicker('stop_time');
     }
@@ -206,12 +206,12 @@ function editPollAnswers(element, pid)
     var answers  = answersData['Answers'];
     $('#question').val(answersData['question'].defilter());
 
-    var box = $('answers_combo');
+    var box = $('#answers_combo')[0];
     box.length = 0;
     for(var i = 0; i < answers.length; i++) {
         box.options[i] = new Option(answers[i]['answer'].defilter(), answers[i]['id']);
     }
-    $('answer').focus();
+    $('#answer')[0].focus();
 }
 
 /**
@@ -220,20 +220,20 @@ function editPollAnswers(element, pid)
 function savePoll()
 {
     if (currentAction == 'PollAnswers') {
-        var box = $('answers_combo');
-        var answers = new Array();
+        var box = $('#answers_combo')[0];
+        var answers = [];
         if (box.length < 2) {
             alert(requiresTwoAnswers);
             return false;
         }
         for(var i = 0; i < box.length; i++) {
-            answers[i] = new Array();
+            answers[i] = [];
             answers[i]['id']     = box.options[i].value;
             answers[i]['answer'] = box.options[i].text;
         }
         PollAjax.callAsync('UpdatePollAnswers', [selectedPoll, answers]);
     } else {
-        if (!$('question').val()) {
+        if (!$('#question').val()) {
             alert(incompletePollsFields);
             return false;
         }
@@ -279,7 +279,7 @@ function deletePoll(element, pid)
     if (confirm(confirmPollDelete)) {
         PollAjax.callAsync('DeletePoll', pid);
     }
-    unselectDataGridRow();
+    deselectDataGridRow();
 }
 
 /**
@@ -287,8 +287,8 @@ function deletePoll(element, pid)
  */
 function keypressOnAnswer(event)
 {
-    keynum = (window.event)? event.keyCode : event.which;
-    if(keynum == '13') {
+    var keyCode = (window.event)? event.keyCode : event.which;
+    if (keyCode == '13') {
         addAnswer();
     }
 }
@@ -298,12 +298,11 @@ function keypressOnAnswer(event)
  */
 function addAnswer()
 {
-    var answer = $('answer').value;
-    $('#answer').val('');
-    $('answer').focus();
-    if (answer.blank()) return false;
+    var answer = $('#answer').val();
+    $('#answer').val('')[0].focus();
+    if (answer == '') return false;
 
-    var box = $('answers_combo');
+    var box = $('#answers_combo')[0];
     if (box.selectedIndex != -1) {
         box.options[box.selectedIndex].text = answer;
         box.selectedIndex = -1;
@@ -317,7 +316,7 @@ function addAnswer()
  */
 function delAnswer()
 {
-    var box = $('answers_combo');
+    var box = $('#answers_combo')[0];
     if (box.selectedIndex != -1) {
         box.options[box.selectedIndex] = null;
     }
@@ -329,13 +328,12 @@ function delAnswer()
  */
 function editAnswer()
 {
-    var box = $('answers_combo');
+    var box = $('#answers_combo')[0];
     if (box.selectedIndex == -1) return;
     var answer = box.options[box.selectedIndex].text;
     if (answer.blank()) return false;
 
-    $('#answer').val(answer);
-    $('answer').focus();
+    $('#answer').val(answer)[0].focus();
 }
 
 /**
@@ -343,10 +341,9 @@ function editAnswer()
  */
 function stopAnswer()
 {
-    var box = $('answers_combo');
-    $('#answer').val('');
+    var box = $('#answers_combo')[0];
+    $('#answer').val('')[0].focus();
     box.selectedIndex = -1;
-    $('answer').focus();
 }
 
 /**
@@ -354,7 +351,7 @@ function stopAnswer()
  */
 function upAnswer()
 {
-    var box = $('answers_combo');
+    var box = $('#answers_combo')[0];
     if (box.selectedIndex < 1) return;
     var tmpText  = box.options[box.selectedIndex - 1].text;
     var tmpValue = box.options[box.selectedIndex - 1].value;
@@ -362,7 +359,7 @@ function upAnswer()
     box.options[box.selectedIndex - 1].value = box.options[box.selectedIndex].value;
     box.options[box.selectedIndex].text  = tmpText;
     box.options[box.selectedIndex].value = tmpValue;
-    box.selectedIndex  = box.selectedIndex - 1;
+    box.selectedIndex = box.selectedIndex - 1;
 }
 
 /**
@@ -370,7 +367,7 @@ function upAnswer()
  */
 function downAnswer()
 {
-    var box = $('answers_combo');
+    var box = $('#answers_combo')[0];
     if (box.selectedIndex == -1) return;
     if (box.selectedIndex > box.length-2) return;
     var tmpText  = box.options[box.selectedIndex + 1].text;
@@ -402,7 +399,7 @@ function editPollGroup(element, gid)
 
     $('#gid').val(groupInfo['id']);
     $('#title').val(groupInfo['title'].defilter());
-    $('visible').selectedIndex = groupInfo['visible'];
+    $('#visible').prop('selectedIndex', groupInfo['visible']);
 }
 
 /**
@@ -430,14 +427,14 @@ function editPollGroupPolls(element, gid)
     $('#title').val(pollsData['title']);
     if ($('#pg_polls_combo').length) {
         var inputs  = $('#pg_polls_combo input');
-        pollsList.each(function(value, index) {
+        $.each(pollsList, function(index, value) {
             for (var i=0; i<inputs.length; i++) {
                 if (value['id'] == inputs[i].value) {
                     inputs[i].checked= true;
                     break
                 }
             }
-        });   
+        });
     }
 }
 
@@ -448,8 +445,8 @@ function savePollGroup()
 {
     if (currentAction == 'PollGroupPolls') {
         if ($('#pg_polls_combo').length) {
-            var inputs  = $('#pg_polls_combo input');
-            var keys    = new Array();
+            var inputs  = $('#pg_polls_combo').find('input');
+            var keys    = [];
             var counter = 0;
             for (var i=0; i<inputs.length; i++) {
                 if (inputs[i].checked) {
@@ -461,7 +458,7 @@ function savePollGroup()
 
         }
     } else {
-        if (!$('title').val()) {
+        if (!$('#title').val()) {
             alert(incompleteGroupsFields);
             return false;
         }
@@ -469,8 +466,8 @@ function savePollGroup()
         if (selectedPollGroup == null) {
             PollAjax.callAsync(
                 'InsertPollGroup', [
-                    $('title').val(),
-                    $('visible').val()
+                    $('#title').val(),
+                    $('#visible').val()
                 ]
             );
         } else {
@@ -495,12 +492,12 @@ function deletePollGroup(element, gid)
     if (confirm(confirmPollGroupDelete)) {
         PollAjax.callAsync('DeletePollGroup', gid)
     }
-    unselectDataGridRow();
+    deselectDataGridRow();
 }
 
 function getGroupPolls(gid)
 {
-    var box = $('grouppolls');
+    var box = $('#grouppolls')[0];
     box.length = 0;
     $('#result_area').html('');
     $('#legend_title').html('');
@@ -520,7 +517,7 @@ function getGroupPolls(gid)
 
 function showResult(pid)
 {
-    var box = $('grouppolls');
+    var box = $('#grouppolls')[0];
     $('#legend_title').html(box.options[box.selectedIndex].text);
     $('#result_area').html(PollAjax.callSync('PollResultsUI', pid));
 }
@@ -545,7 +542,7 @@ var cachePollGroupsForm = null;
 //Cache for saving the PollGroup-Polls template
 var cachePollGroupPollsForm = null;
 
-//Which action are we runing?
+//Which action are we running?
 var currentAction = null;
 
 //Which row selected in DataGrid

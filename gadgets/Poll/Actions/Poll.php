@@ -21,17 +21,17 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
     {
         $result = array();
         $pModel = $this->gadget->model->load('Poll');
-        $polls = $pModel->GetPolls();
+        $polls = $pModel->GetPolls(null, true);
         if (!Jaws_Error::isError($polls)) {
-            $ppollss = array();
+            $p = array();
             foreach ($polls as $poll) {
-                $ppollss[$poll['id']] = $poll['question'];
+                $p[$poll['id']] = $poll['question'];
             }
 
-            $ppollss = array('0' => _t('POLL_LAYOUT_LAST')) + $ppollss;
+            $p = array('0' => _t('POLL_LAYOUT_LAST')) + $p;
             $result[] = array(
                 'title' => _t('POLL_ACTION_POLL_TITLE'),
-                'value' => $ppollss
+                'value' => $p
             );
         }
 
@@ -54,7 +54,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
             $poll = $model->GetPoll($pid);
         }
 
-        if (Jaws_Error::IsError($poll) || empty($poll) || ($poll['visible'] == 0) || 
+        if (Jaws_Error::IsError($poll) || empty($poll) || ($poll['visible'] == 0) ||
             (!empty($poll['start_time']) && (Jaws_DB::getInstance()->date() < $poll['start_time'])) ||
             (!empty($poll['stop_time']) && (Jaws_DB::getInstance()->date() > $poll['stop_time'])))
         {

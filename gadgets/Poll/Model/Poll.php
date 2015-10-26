@@ -104,7 +104,10 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
         $table->select(
             'id', 'gid', 'question', 'select_type', 'poll_type',
             'result_view', 'start_time', 'stop_time', 'visible');
-        $table->where('visible', 1);
+
+        if ($onlyVisible) {
+            $table->where('visible', 1);
+        }
 
         if (!empty($gid)) {
             $table->and()->where('gid', $gid);
