@@ -6,7 +6,7 @@
  * @package    Policy
  * @author     Amir Mohammad Saied <amir@gluegadget.com>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2007-2014 Jaws Development Group
+ * @copyright  2007-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Policy_Model_Admin_AdvancedPolicies extends Jaws_Gadget_Model
