@@ -7,7 +7,7 @@ require_once JAWS_PATH . 'libraries/piwi/Widget/Bin/Bin.php';
  * @category   Widget
  * @package    Core
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2005-2014 Jaws Development Group
+ * @copyright  2005-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Widgets_ImageButton extends Bin

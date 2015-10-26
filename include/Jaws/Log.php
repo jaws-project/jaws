@@ -61,7 +61,7 @@ define('Jaws_LogDefaultOption', '');
  * @author     Ivan Chavero <imcsk8@gluch.org.mx>
  * @author     Jorge A Gallegos <kad@gulags.org>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2004-2014 Jaws Development Group
+ * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Log

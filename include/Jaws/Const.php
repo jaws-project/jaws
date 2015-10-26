@@ -5,7 +5,7 @@
  * @category   Application
  * @package    Core
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2010-2014 Jaws Development Group
+ * @copyright  2010-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 

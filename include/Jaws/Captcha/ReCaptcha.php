@@ -11,7 +11,7 @@ require_once JAWS_PATH . 'libraries/php/ReCaptcha.php';
  * @package     Core
  * @author      Jonathan Hernandez <ion@suavizado.com>
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2007-2014 Jaws Development Group
+ * @copyright   2007-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Captcha_ReCaptcha extends Jaws_Captcha

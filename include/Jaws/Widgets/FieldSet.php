@@ -7,7 +7,7 @@ require_once JAWS_PATH . 'libraries/piwi/Widget/Container/FieldSet.php';
  * @category   Widget
  * @package    Core
  * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
- * @copyright  2006-2014 Jaws Development Group
+ * @copyright  2006-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Widgets_FieldSet extends FieldSet
