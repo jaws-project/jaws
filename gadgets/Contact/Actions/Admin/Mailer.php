@@ -5,7 +5,7 @@
  * @category   GadgetAdmin
  * @package    Contact
  * @author     Mohsen Khahani <mkhahani@gmail.com>
- * @copyright  2006-2014 Jaws Development Group
+ * @copyright  2006-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default

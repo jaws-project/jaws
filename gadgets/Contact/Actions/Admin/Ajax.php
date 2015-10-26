@@ -7,7 +7,7 @@
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @author     Mohsen Khahani <mkhahani@gmail.com>
- * @copyright  2006-2014 Jaws Development Group
+ * @copyright  2006-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
