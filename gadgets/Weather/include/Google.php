@@ -3,7 +3,7 @@
  * Google_Weather
  *
  * @author       Ali Fazelzadeh <afz@php.net>
- * @copyright    2011-2014 Jaws Development Group
+ * @copyright    2011-2015 Jaws Development Group
  * @license      http://www.gnu.org/copyleft/lesser.html
  */
 class Google_Weather
