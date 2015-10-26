@@ -7,7 +7,7 @@
  * @author     Jorge A Gallegos <kad@gulags.org.mx>
  * @author     Jon Wood <jon@jellybob.co.uk>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2004-2014 Jaws Development Group
+ * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class VisitCounter_Model_Visitors extends Jaws_Gadget_Model
