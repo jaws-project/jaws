@@ -6,7 +6,7 @@ define('MIN_PHP_VERSION', '5.3.20');
  * @category   Application
  * @package    InstallStage
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2007-2014 Jaws Development Group
+ * @copyright  2007-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Installer_Requirements extends JawsInstallerStage

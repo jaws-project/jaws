@@ -7,7 +7,7 @@
  * @author     Jon Wood <jon@substance-it.co.uk>
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Helgi Þormar Þorbjörnsson <dufuz@php.net>
- * @copyright  2005-2014 Jaws Development Group
+ * @copyright  2005-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class JawsInstaller
