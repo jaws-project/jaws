@@ -5,7 +5,7 @@
  * @category   Plugin
  * @package    SmartBridge
  * @author     Amir Mohammad Saied <amirsaied@gmail.com>
- * @copyright  2004-2014 Jaws Development Group
+ * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class SmartBridge_Plugin extends Jaws_Plugin

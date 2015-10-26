@@ -5,7 +5,7 @@
  * @category   Plugin
  * @package    FindFriend
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright  2004-2014 Jaws Development Group
+ * @copyright  2004-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class FindFriend_Plugin extends Jaws_Plugin
