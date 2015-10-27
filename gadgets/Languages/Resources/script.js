@@ -85,8 +85,8 @@ function setButtonTitle(title)
     imgBtn = $('#btn_lang img').first();
     text = document.createTextNode(' ' + title);
     $('#btn_lang').html('');
-    $('#btn_lang').appendChild(imgBtn);
-    $('#btn_lang').appendChild(text);
+    $('#btn_lang').append(imgBtn);
+    $('#btn_lang').append(text);
 }
 
 /**
@@ -120,8 +120,8 @@ function change_lang_option()
         $('#btn_export').prop('disabled', false);
         $('#lang_code').prop('disabled', true);
         $('#component').prop('disabled', false);
-        $('#lang_code').val($('#lang').options[$('#lang').prop('selectedIndex')].value);
-        $('#lang_name').val($('#lang').options[$('#lang').prop('selectedIndex')].text);
+        $('#lang_code').val($('#lang :selected').val());
+        $('#lang_name').val($('#lang :selected').text());
         if ($('#btn_lang')) {
             setButtonTitle(save_language_title);
         } else {
