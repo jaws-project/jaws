@@ -40,8 +40,8 @@ function initNotepad()
  */
 function checkAll()
 {
-    var checked = $('chk_all').checked;
-    $('grid_notes').getElements('input').set('checked', checked);
+    var checked = $('#chk_all').prop('checked');
+    $('#grid_notes').find('input').prop('checked', checked);
 }
 
 /**
@@ -61,7 +61,7 @@ function checkAll()
  */
 function onSearchChange(value)
 {
-    $('btn_note_search_reset').style.display = (value === '')? 'none' : 'inline';
+    $('#btn_note_search_reset')[0].style.display = (value === '')? 'none' : 'inline';
 }
 
 /**
@@ -97,7 +97,9 @@ function deleteNote(id)
  */
 function deleteNotes()
 {
-    var id_set = $('grid_notes').getElements('input:checked').get('value');
+    var id_set = $('#grid_notes').find('input:checked').map(function () {
+        return this.value;
+    });
     if (id_set.length === 0) {
         return;
     }
@@ -111,8 +113,8 @@ function deleteNotes()
  */
 function initShare()
 {
-    $('sys_groups').selectedIndex = -1;
-    Array.each($('note_users').options, function(opt) {
+    $('#sys_groups').prop('selectedIndex', -1);
+    $.each($('#note_users')[0].options, function(opt) {
         sharedNoteUsers[opt.value] = opt.text;
     });
 }
@@ -122,22 +124,22 @@ function initShare()
  */
 function toggleUsers(gid)
 {
-    var container = $('sys_users').empty(),
+    var container = $('#sys_users').empty(),
         users = usersByGroup[gid];
     if (users === undefined) {
         users = NotepadAjax.callSync('GetUsers', {'gid':gid});
         usersByGroup[gid] = users;
     }
-    users.each(function (user) {
+    $.each(users, function (i, user) {
         if (user.id == UID) return;
-        var div = new Element('div'),
-            input = new Element('input', {type:'checkbox', id:'chk_'+user.id, value:user.id}),
-            label = new Element('label', {'for':'chk_'+user.id});
-        input.set('checked', (sharedNoteUsers[user.id] !== undefined));
-        input.addEvent('click', selectUser);
-        label.set('html', user.nickname + ' (' + user.username + ')');
-        div.adopt(input, label);
-        container.grab(div);
+        var div = $('<div>'),
+            input = $('<input>').prop({'type':'checkbox', id:'chk_'+user.id}).val(user.id),
+            label = $('<label>').prop({'for':'chk_'+user.id});
+        input.prop('checked', (sharedNoteUsers[user.id] !== undefined));
+        input.on('click', selectUser);
+        label.html(user.nickname + ' (' + user.username + ')');
+        div.append(input, label);
+        container.append(div);
     });
 }
 
@@ -147,7 +149,7 @@ function toggleUsers(gid)
 function selectUser()
 {
     if (this.checked) {
-        sharedNoteUsers[this.value] = this.getNext('label').get('html');
+        sharedNoteUsers[this.value] = $(this).next('label').html();
     } else {
         delete sharedNoteUsers[this.value];
     }
@@ -159,9 +161,9 @@ function selectUser()
  */
 function updateShareUsers()
 {
-    var list = $('note_users').empty();
-    Object.each(sharedNoteUsers, function(name, id) {
-        list.options[list.options.length] = new Option(name, id);
+    var list = $('#note_users').empty();
+    $.each(sharedNoteUsers, function(id, name) {
+        list.append($('<option>').val(id).html(name));
     });
 }
 
