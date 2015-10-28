@@ -154,6 +154,10 @@ function JawsAjax(gadget, callback, baseScript)
     };
 
     this.showResponse = function (response) {
+        if (Array.isArray(response)) {
+            // only show first response
+            response = response[0];
+        }
         $(this.msgBox).parent().css({'position': 'absolute', 'display': 'block'});
         $(this.msgBox).html(response.text).attr('class', response.type);
         $(this.msgBox).fadeIn().delay(4000).fadeOut(1000, function() {$(this).removeClass();});
