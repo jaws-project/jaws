@@ -7,6 +7,7 @@
  * @copyright  2010-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
+
 /**
  * Use async mode, create Callback
  */
@@ -42,7 +43,6 @@ var FileBrowserCallback = {
         }
         FileBrowserAjax.showResponse(response);
     }
-
 };
 
 /**
@@ -60,7 +60,7 @@ function selectDataGridRow(rowElement)
 
 /**
  * Unselect DataGrid row
-  */
+ */
 function unselectDataGridRow()
 {
     if (selectedRow) {
@@ -75,37 +75,38 @@ function unselectDataGridRow()
  */
 function switchTab(tab, hideTabs)
 {
-    var fileDiv = $('f_work_area');
-    var dirDiv  = $('d_work_area');
-    var fileTab = $('fileTab');
-    var dirTab  = $('dirTab');
+    var fileDiv = $('#f_work_area'),
+        dirDiv  = $('#d_work_area'),
+        fileTab = $('#fileTab'),
+        dirTab  = $('#dirTab');
 
     if (tab == 'file') {
-        fileTab.className     = 'current';
-        fileTab.style.display = 'inline';
-        dirTab.className      = '';
+        fileTab.addClass('current');
+        fileTab.css('display', 'inline');
+        dirTab.removeClass();
         if (hideTabs) {
-            dirTab.style.display = 'none';
+            dirTab.css('display', 'none');
         } else {
-            dirTab.style.display = 'inline';
+            dirTab.css('display', 'inline');
         }
-        fileDiv.style.display = 'block';
-        dirDiv.style.display  = 'none';
+        fileDiv.css('display', 'block');
+        dirDiv.css('display', 'none');
     } else if (tab == 'dir') {
-        fileTab.className     = '';
+        fileTab.removeClass();
         if (hideTabs) {
-            fileTab.style.display = 'none';
+            fileTab.css('display', 'none');
         } else {
-            fileTab.style.display = 'inline';
+            fileTab.css('display', 'inline');
         }
-        dirTab.className      = 'current';
-        dirTab.style.display = 'inline';
-        fileDiv.style.display = 'none';
-        dirDiv.style.display  = 'block';
+        dirTab.addClass('current');
+        dirTab.css('display', 'inline');
+        fileDiv.css('display', 'none');
+        dirDiv.css('display', 'block');
     }
 }
 
 /**
+ *
  */
 function uploadswitch(checked)
 {
@@ -147,7 +148,7 @@ function editFile(element, fname)
     $('#file_description').val('');
     $('#file_fast_url').val('');
     selectDataGridRow(element.parentNode.parentNode);
-    $('upload_switch').checked = false;
+    $('upload_switch').prop('checked', false);
     uploadswitch(false);
     switchTab('file');
     $('#upload_switch').prop('disabled', false);
@@ -165,14 +166,14 @@ function editFile(element, fname)
  */
 function saveFile()
 {
-    if (!$('uploadfile').val() && 
-        !$('filename').val())
+    if (!$('#uploadfile').val() &&
+        !$('#filename').val())
     {
         alert(incompleteFields);
         return false;
     }
-    if ($('upload_switch').checked && 
-       $('uploadfile').val())
+    if ($('#upload_switch').prop('checked') &&
+       $('#uploadfile').val())
     {
         document.fb_form.submit();
     } else {
@@ -225,7 +226,7 @@ function editDir(element, dirname)
  */
 function saveDir()
 {
-    if (!$('dirname').val()) {
+    if (!$('#dirname').val()) {
         alert(incompleteFields);
         return false;
     }
@@ -272,12 +273,11 @@ function getFiles(name, offset, reset)
 
 /**
  * Clean the form
- *
  */
 function stopAction(tab) 
 {
     unselectDataGridRow();
-    $('upload_switch').checked = true;
+    $('#upload_switch').prop('checked', true);
     uploadswitch(true);
     $('#upload_switch').prop('disabled', true);
     switchTab(tab);
