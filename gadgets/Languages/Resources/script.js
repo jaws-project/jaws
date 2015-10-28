@@ -54,8 +54,8 @@ function changeColorOfTranslatedTerms()
 {
     var strings_elements = $('#tbl_strings textarea');
     for(var i = 0; i < strings_elements.length; i++) {
-        if (strings_elements[i].value != "") {
-            strings_elements[i].parentNode.parentNode.getElementsByTagName('span')[0].style.color="#000";
+        if (jQuery(strings_elements[i]).val() != "") {
+            jQuery(strings_elements[i]).parent().parent().find('span').eq(0).css('color', "#000");
         }
     }
 }
@@ -68,10 +68,10 @@ function filterTranslated()
     if ($('#tbl_strings')) {
         var strings_elements = $('#tbl_strings textarea');
         for(var i = 0; i < strings_elements.length; i++) {
-            if ($('#checkbox_filter').checked && strings_elements[i].value != "") {
-                strings_elements[i].parentNode.parentNode.style.display = 'none';
+            if ($('#checkbox_filter').prop('checked') && jQuery(strings_elements[i]).val() != "") {
+                jQuery(strings_elements[i]).parent().parent().css('display', 'none');
             } else {
-                strings_elements[i].parentNode.parentNode.style.display = 'inline';
+                jQuery(strings_elements[i]).parent().parent().css('display', 'inline');
             }
         }
     }
