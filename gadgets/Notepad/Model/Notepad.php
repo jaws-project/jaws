@@ -83,7 +83,6 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
             $table->closeWhere('content', $query, 'like');
         }
 
-        $table->orderBy('createtime desc', 'title asc');
         return $table->fetchOne();
     }
 
