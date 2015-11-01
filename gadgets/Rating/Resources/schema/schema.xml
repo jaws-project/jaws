@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+    <name><variable>database</variable></name>
+
+    <table>
+        <name><variable>table_prefix</variable>rating</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>gadget</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
+                <name>action</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
+                <name>reference</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>item</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>rates_total</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>rates_sum</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>rates_mean</name>
+                <type>decimal</type>
+                <length>5,2</length>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>insert_time</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <field>
+                <name>update_time</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <field>
+                <name>restricted</name>
+                <type>boolean</type>
+                <default>false</default>
+            </field>
+
+            <field>
+                <name>allowed</name>
+                <type>boolean</type>
+                <default>true</default>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>rating_gari</name>
+                <unique>true</unique>
+
+                <field>
+                    <name>gadget</name>
+                </field>
+                <field>
+                    <name>action</name>
+                </field>
+                <field>
+                    <name>reference</name>
+                </field>
+                <field>
+                    <name>item</name>
+                </field>
+            </index>
+
+        </declaration>
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>rating_details</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>rid</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+            </field>
+
+            <field>
+                <name>uip</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>rate</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>rating_details_ruip</name>
+                <unique>true</unique>
+
+                <field>
+                    <name>rid</name>
+                </field>
+
+                <field>
+                    <name>uip</name>
+                </field>
+            </index>
+
+        </declaration>
+    </table>
+
+</database>
