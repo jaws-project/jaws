@@ -189,11 +189,12 @@ function fileSelect(e)
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'A') {
         return;
     }
+
     var ws = $('#file_arena');
     ws.find('tr').removeClass('selected');
     ws.find('input').prop('checked', false);
-    this.addClass('selected');
-    this.find('input').prop('checked', true);
+    $(this).addClass('selected');
+    $(this).find('input').prop('checked', true);
     idSet = getSelected();
     updateActions();
     $('#form').html('');
@@ -204,14 +205,14 @@ function fileSelect(e)
  */
 function fileCheck()
 {
-    if (this.checked) {
-        this.getParent('tr').addClass('selected');
+    if (!$(this).prop('checked')) {
+        $(this).parents('tr:first').addClass('selected');
     } else {
-        this.getParent('tr').removeClass('selected');
+        $(this).parents('tr:first').removeClass('selected');
     }
     idSet = getSelected();
     updateActions();
-    $('#form').innerHTML = '';
+    $('#form').html('');
 }
 
 /**
@@ -232,9 +233,15 @@ function checkAll(checked)
 /**
  * Fetches ID set of selected files/directories
  */
-function getSelected()
-{
-    return $('#file_arena').find('input:checked').val();
+function getSelected() {
+    var checkedList = $('#file_arena').find('input:checkbox:checked'),
+        values = [];
+
+    $(checkedList).each(function () {
+        values.push($(this).val());
+    });
+
+    return values;
 }
 
 /**
@@ -247,7 +254,8 @@ function fileOpen(id)
         if (file.foreign) {
             id = file.reference;
         }
-        location.assign(file.url);
+        // @FIXME: It causes browser goes to another directory page! (it happens after page loaded)
+        //window.location.assign(file.url);
     } else {
         if (file.ext === 'txt') {
             openMedia(id, 'text');
@@ -419,7 +427,7 @@ function move() {
     form.html(tree);
     form.find('a').on('click', function () {
         $('#form').find('a').removeClass('selected');
-        this.className = 'selected';
+        $(this).addClass('selected');
     });
 }
 
@@ -428,8 +436,8 @@ function move() {
  */
 function submitMove() {
     var tree = $('#dir_tree'),
-        selected = tree.find('a.selected'),
-        target = selected.id.substr(5, selected.id.length - 5);
+        selected = tree.find('a.selected')[0],
+        target = $(selected).attr('id').substring(5, $(selected).attr('id').length);
     DirectoryAjax.callAsync('Move', {'id_set':idSet.join(','), 'target':target});
 }
 
@@ -456,7 +464,7 @@ function newDirectory()
     }
     $('#form').html(cachedForms.editDir);
     $('#frm_dir').find('input[name=title]').focus();
-    $('#frm_dir').parent().val(currentDir);
+    $('#frm_dir').find('[name=parent]').val(currentDir);
 }
 
 /**
@@ -488,7 +496,7 @@ function newFile()
     $('#form').html(cachedForms.editFile);
     $('#tr_file').hide();
     $('#frm_upload').show();
-    $('#frm_file').parent().val(currentDir);
+    $('#frm_file').find('[name=parent]').val(currentDir);
     $('#frm_file').find('[name=title]').focus();
 }
 
