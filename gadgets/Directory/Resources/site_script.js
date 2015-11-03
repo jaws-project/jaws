@@ -149,15 +149,15 @@ function displayFiles(files)
     // Creates a file element from raw data
     function getFileElement(data)
     {
-        var html = substitute(fileTemplate, data);
-            tr = $(html).find('*');
-        tr.on('click', fileSelect);
-        tr.on('dblclick', fileOpen(data.id));
-        tr.find('input').on('click', fileCheck);
-        return tr;
+        var html = $($.parseHTML(substitute(fileTemplate, data)));
+        html.find('td')
+            .on('click', fileSelect)
+            .on('dblclick', function() { fileOpen(data.id); });
+        html.find('input').on('click', fileCheck);
+        return html;
     }
 
-    var ws = $('#file_arena').empty().show('table-row-group');
+    var ws = $('#file_arena').empty().css('display', 'table-row-group');
     fileById = {};
     filesCount = files.length;
     files.forEach(function (file) {
@@ -169,7 +169,7 @@ function displayFiles(files)
         if (!file.is_dir) {
             file.url = 'javascript:fileOpen(' + file.id + ');';
         }
-        // @TODO: I don't sure about how to clone an object in jQuery, so I followed this solution:
+        // @TODO: not sure how to clone an object in jQuery, so this is a workaround:
         // http://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-an-object
         fileById[file.id] = $.extend(true, {}, file);
 
@@ -186,18 +186,21 @@ function displayFiles(files)
  */
 function fileSelect(e)
 {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'A') {
+    if (this.tagName === 'INPUT' || this.tagName === 'A') {
         return;
     }
 
-    var ws = $('#file_arena');
-    ws.find('tr').removeClass('selected');
-    ws.find('input').prop('checked', false);
-    $(this).addClass('selected');
-    $(this).find('input').prop('checked', true);
+    $('#file_arena')
+        .find('tr').removeClass('selected')
+        .find('input').prop('checked', false);
+
+    $(this)
+        .parent().addClass('selected')
+        .find('input').prop('checked', true);
+
     idSet = getSelected();
     updateActions();
-    $('#form').html('');
+    $('#form').empty();
 }
 
 /**
@@ -220,11 +223,12 @@ function fileCheck()
  */
 function checkAll(checked)
 {
-    $('#file_arena').find('input').prop('checked', checked);
+    var fileArena = $('#file_arena');
+    fileArena.find('input').prop('checked', checked);
     if (checked) {
-        $('#file_arena').find('tr').addClass('selected');
+        fileArena.find('tr').addClass('selected');
     } else {
-        $('#file_arena').find('tr').removeClass('selected');
+        fileArena.find('tr').removeClass('selected');
     }
     idSet = getSelected();
     updateActions();
@@ -254,8 +258,7 @@ function fileOpen(id)
         if (file.foreign) {
             id = file.reference;
         }
-        // @FIXME: It causes browser goes to another directory page! (it happens after page loaded)
-        //window.location.assign(file.url);
+        window.location.assign(file.url);
     } else {
         if (file.ext === 'txt') {
             openMedia(id, 'text');
@@ -277,7 +280,7 @@ function fileOpen(id)
 function openMedia(id, type)
 {
     var tpl = DirectoryAjax.callSync('PlayMedia', {'id':id, 'type':type});
-    $('#form').innerHTML = tpl;
+    $('#form').html(tpl);
 }
 
 /**
@@ -363,7 +366,7 @@ function props()
     if (!data.users) {
         var users = DirectoryAjax.callSync('GetFileUsers', {id:id}),
             id_set = [];
-        users.each(function (user) {
+        $.each(users, function (i, user) {
             id_set.push(user.username);
         });
         data.users = id_set.join(', ');
@@ -509,7 +512,7 @@ function editFile(id)
         cachedForms.editFile = DirectoryAjax.callSync('FileForm', {mode:'edit'});
     }
     $('#form').html(cachedForms.editFile);
-    var form = $('#frm_file'),
+    var form = $('#frm_file')[0],
         file = fileById[id];
     if (file.foreign) {
         $('#frm_upload').remove();
@@ -599,7 +602,7 @@ function showFileURL(url)
         link.href = url;
         link.show();
         span.addClass('public');
-        $('#btn_unpublic').show('inline');
+        $('#btn_unpublic').css('display', 'inline');
         $('#btn_public').hide();
     } else {
         link.hide();
@@ -621,7 +624,7 @@ function setFilename(filename, url)
         link.attr('href', url);
     }
     $('#filelink').append(link);
-    $('#filelink').append(imgDeleteFile);
+    //$('#filelink').append(imgDeleteFile);
     $('#tr_file').show();
     $('#frm_upload').hide();
 }
@@ -671,14 +674,14 @@ function share()
 
     var users = DirectoryAjax.callSync('GetFileUsers', {'id':id});
     sharedFileUsers = {};
-    users.each(function (user) {
+    $.each(users, function (i, user) {
         sharedFileUsers[user.id] = user.username;
     });
     updateShareUsers();
 
     // Public link
     var file = fileById[id];
-    $('#public_ui').style.display = file.is_dir? 'none' : '';
+    $('#public_ui').css('display', file.is_dir? 'none' : '');
     if (file['public'] && !file.dl_url) {
         file.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:id});
     }
@@ -696,7 +699,7 @@ function toggleUsers(gid)
     if (usersByGroup[gid] === undefined) {
         usersByGroup[gid] = DirectoryAjax.callSync('GetUsers', {'gid':gid});
     }
-    usersByGroup[gid].each(function (user) {
+    $.each(usersByGroup[gid], function(i, user) {
         if (user.id == UID) return;
 
         var div = $('<div>'),
@@ -710,7 +713,7 @@ function toggleUsers(gid)
         input.prop('checked', (sharedFileUsers[user.id] !== undefined));
         input.on('click', selectUser);
         label.html(user.nickname + ' (' + user.username + ')');
-        div.adopt(input, label);
+        div.append(input, label);
         container.append(div);
     });
 }
@@ -734,7 +737,7 @@ function selectUser()
 function updateShareUsers()
 {
     var list = $('#share_users').empty();
-    Object.each(sharedFileUsers, function(name, id) {
+    $.each(sharedFileUsers, function(id, name) {
         list.options[list.options.length] = new Option(name, id);
     });
 }
@@ -745,8 +748,8 @@ function updateShareUsers()
 function submitShare()
 {
     var users = [];
-    Array.each($('#share_users').options, function(opt) {
-        users.push($(opt).val());
+    $.each($('#share_users').find('options'), function(opt) {
+        users.push(opt.value);
     });
     DirectoryAjax.callAsync(
         'UpdateFileUsers',
@@ -777,7 +780,7 @@ function performSearch()
  */
 function advancedSearch(self)
 {
-    $('#advanced_search').show('table');
+    $('#advanced_search').css('display', 'table');
     self.hide();
 }
 
