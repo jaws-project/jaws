@@ -7,6 +7,7 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
+
 /**
  * Use async mode, create Callback
  */
@@ -77,10 +78,10 @@ var DirectoryCallback = {
 
     Search: function(response) {
         if (response.type === 'response_notice') {
-            $('dir_pathbar').hide();
-            $('dir_searchbar').show();
-            $('btn_search_close').show();
-            $('search_res').innerHTML = ' > ' + response.text;
+            $('#dir_pathbar').hide();
+            $('#dir_searchbar').show();
+            $('#btn_search_close').show();
+            $('#search_res').html(' > ' + response.text);
             displayFiles(response.data);
         } else {
             DirectoryAjax.showResponse(response);
@@ -93,18 +94,25 @@ var DirectoryCallback = {
  */
 function initDirectory()
 {
-    imgDeleteFile = new Element('img', {src:imgDeleteFile});
-    imgDeleteFile.addEvent('click', removeFile);
-    fileTemplate = $('file_arena').get('html');
+    var imgDeleteFileObj = $('<img>');
+
+    imgDeleteFileObj.attr('src', imgDeleteFile);
+    imgDeleteFileObj.on('click', removeFile);
+
+    imgDeleteFile = imgDeleteFileObj;
+
+    fileTemplate = $('#file_arena').html();
 
     // Builds icons map (ext => icon)
-    Object.each(fileTypes, function (values, type) {
-        values.each(function (ext) {
-            if (!iconByExt[ext]) {
-                iconByExt[ext] = type;
-            }
-        });
-    });
+    for (var type in fileTypes) {
+        if (fileTypes.hasOwnProperty(type)) {
+            fileTypes[type].forEach(function (ext) {
+                if (!iconByExt[ext]) {
+                    iconByExt[ext] = type;
+                }
+            });
+        }
+    }
     iconByExt.folder = 'folder';
 
     updateFiles(currentDir);
@@ -118,18 +126,19 @@ function updateFiles(parent)
     if (parent === undefined) {
         parent = currentDir;
     }
-    var shared = ($('file_filter').value === 'shared')? true : null,
-        foreign = ($('file_filter').value === 'foreign')? true : null,
-        files = DirectoryAjax.callSync('GetFiles', 
+    var shared = ($('#file_filter').val() === 'shared')? true : null,
+        foreign = ($('#file_filter').val() === 'foreign')? true : null,
+        files = DirectoryAjax.callSync('GetFiles',
             {'id':parent, 'shared':shared, 'foreign':foreign});
+
     if (files[0] && files[0].user != UID) {
-        $('dir_path').innerHTML = ' > ' + files[0].username;
+        $('#dir_path').html(' > ' + files[0].username);
     } else {
         updatePath();
     }
     displayFiles(files);
-    $('dir_pathbar').show();
-    $('dir_searchbar').hide();
+    $('#dir_pathbar').show();
+    $('#dir_searchbar').hide();
 }
 
 /**
@@ -140,18 +149,18 @@ function displayFiles(files)
     // Creates a file element from raw data
     function getFileElement(data)
     {
-        var html = fileTemplate.substitute(data),
-            tr = Elements.from(html)[0];
-        tr.addEvent('click', fileSelect);
-        tr.addEvent('dblclick', fileOpen.pass(data.id));
-        tr.getElement('input').addEvent('click', fileCheck);
-        return tr;
+        var html = $($.parseHTML(substitute(fileTemplate, data)));
+        html.find('td')
+            .on('click', fileSelect)
+            .on('dblclick', function() { fileOpen(data.id); });
+        html.find('input').on('click', fileCheck);
+        return html;
     }
 
-    var ws = $('file_arena').empty().show('table-row-group');
+    var ws = $('#file_arena').empty().css('display', 'table-row-group');
     fileById = {};
     filesCount = files.length;
-    files.each(function (file) {
+    files.forEach(function (file) {
         file.ext = file.is_dir? 'folder' : file.filename.split('.').pop();
         file.type = iconByExt[file.ext] || 'file-generic';
         file.icon = '<img src="' + icon_url + file.type + '.png" />';
@@ -160,12 +169,15 @@ function displayFiles(files)
         if (!file.is_dir) {
             file.url = 'javascript:fileOpen(' + file.id + ');';
         }
-        fileById[file.id] = Object.clone(file);
+        // @TODO: not sure how to clone an object in jQuery, so this is a workaround:
+        // http://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-an-object
+        fileById[file.id] = $.extend(true, {}, file);
+
         file.filename = (file.filename === null)? '' : file.filename;
         file.shared = file.shared? 'shared' : '';
         file.foreign = file.foreign? 'foreign' : '';
         file['public'] = file['public']? 'public' : '';
-        ws.grab(getFileElement(file));
+        ws.append(getFileElement(file));
     });
 }
 
@@ -174,17 +186,21 @@ function displayFiles(files)
  */
 function fileSelect(e)
 {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'A') {
+    if (this.tagName === 'INPUT' || this.tagName === 'A') {
         return;
     }
-    var ws = $('file_arena');
-    ws.getElements('tr').removeClass('selected');
-    ws.getElements('input').set('checked', false);
-    this.addClass('selected');
-    this.getElement('input').set('checked', true);
+
+    $('#file_arena')
+        .find('tr').removeClass('selected')
+        .find('input').prop('checked', false);
+
+    $(this)
+        .parent().addClass('selected')
+        .find('input').prop('checked', true);
+
     idSet = getSelected();
     updateActions();
-    $('form').innerHTML = '';
+    $('#form').empty();
 }
 
 /**
@@ -192,14 +208,14 @@ function fileSelect(e)
  */
 function fileCheck()
 {
-    if (this.checked) {
-        this.getParent('tr').addClass('selected');
+    if (!$(this).prop('checked')) {
+        $(this).parents('tr:first').addClass('selected');
     } else {
-        this.getParent('tr').removeClass('selected');
+        $(this).parents('tr:first').removeClass('selected');
     }
     idSet = getSelected();
     updateActions();
-    $('form').innerHTML = '';
+    $('#form').html('');
 }
 
 /**
@@ -207,11 +223,12 @@ function fileCheck()
  */
 function checkAll(checked)
 {
-    $('file_arena').getElements('input').set('checked', checked);
+    var fileArena = $('#file_arena');
+    fileArena.find('input').prop('checked', checked);
     if (checked) {
-        $('file_arena').getElements('tr').addClass('selected');
+        fileArena.find('tr').addClass('selected');
     } else {
-        $('file_arena').getElements('tr').removeClass('selected');
+        fileArena.find('tr').removeClass('selected');
     }
     idSet = getSelected();
     updateActions();
@@ -220,9 +237,15 @@ function checkAll(checked)
 /**
  * Fetches ID set of selected files/directories
  */
-function getSelected()
-{
-    return $('file_arena').getElements('input:checked').get('value');
+function getSelected() {
+    var checkedList = $('#file_arena').find('input:checkbox:checked'),
+        values = [];
+
+    $(checkedList).each(function () {
+        values.push($(this).val());
+    });
+
+    return values;
 }
 
 /**
@@ -235,7 +258,7 @@ function fileOpen(id)
         if (file.foreign) {
             id = file.reference;
         }
-        location.assign(file.url);
+        window.location.assign(file.url);
     } else {
         if (file.ext === 'txt') {
             openMedia(id, 'text');
@@ -257,7 +280,7 @@ function fileOpen(id)
 function openMedia(id, type)
 {
     var tpl = DirectoryAjax.callSync('PlayMedia', {'id':id, 'type':type});
-    $('form').innerHTML = tpl;
+    $('#form').html(tpl);
 }
 
 /**
@@ -286,16 +309,16 @@ function downloadFile()
 function updatePath()
 {
     var pathArr = DirectoryAjax.callSync('GetPath', {'id':currentDir}),
-        path = $('dir_path').set('html', '');
-    pathArr.reverse().each(function (dir, i) {
-        path.appendText(' > ');
+        path = $('#dir_path').html('');
+    (pathArr.reverse()).forEach(function (dir, i) {
+        path.append(' > ');
         if (i === pathArr.length - 1) {
-            path.appendText(dir.title);
+            path.append(dir.title);
         } else {
-            var link = new Element('a');
-            link.set('html', dir.title);
-            link.set('href', dir.url);
-            path.grab(link);
+            var link = $('<a>');
+            link.html(dir.title);
+            link.attr('href', dir.url);
+            path.append(link);
         }
     });
 }
@@ -305,29 +328,29 @@ function updatePath()
  */
 function updateActions()
 {
-    $('file_actions').getElements('img').addClass('disabled');
-    $('btn_new_file').removeClass('disabled');
-    $('btn_new_dir').removeClass('disabled');
+    $('#file_actions').find('img').addClass('disabled');
+    $('#btn_new_file').removeClass('disabled');
+    $('#btn_new_dir').removeClass('disabled');
     if (idSet.length === 0) {
         return;
     }
 
-    $('btn_delete').removeClass('disabled');
-    $('btn_move').removeClass('disabled');
+    $('#btn_delete').removeClass('disabled');
+    $('#btn_move').removeClass('disabled');
     if (idSet.length === 1) {
         var selId = idSet[0];
         if (fileById[selId].foreign) {
-            $('btn_share').addClass('disabled');
+            $('#btn_share').addClass('disabled');
         } else {
-            $('btn_share').removeClass('disabled');
+            $('#btn_share').removeClass('disabled');
         }
         if (fileById[selId].is_dir) {
-            $('btn_dl').addClass('disabled');
+            $('#btn_dl').addClass('disabled');
         } else {
-            $('btn_dl').removeClass('disabled');
+            $('#btn_dl').removeClass('disabled');
         }
-        $('btn_props').removeClass('disabled');
-        $('btn_edit').removeClass('disabled');
+        $('#btn_props').removeClass('disabled');
+        $('#btn_edit').removeClass('disabled');
     }
 }
 
@@ -343,7 +366,7 @@ function props()
     if (!data.users) {
         var users = DirectoryAjax.callSync('GetFileUsers', {id:id}),
             id_set = [];
-        users.each(function (user) {
+        $.each(users, function (i, user) {
             id_set.push(user.username);
         });
         data.users = id_set.join(', ');
@@ -361,12 +384,12 @@ function props()
         }
         cachedForms.viewFile = form;
     }
-    $('form').set('html', form.substitute(data));
+    $('#form').html(substitute(form, data));
     if (data['public'] && !data.dl_url) {
         data.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:id});
     }
     if (data.dl_url) {
-        var link = $('public_url');
+        var link = $('#public_url');
         link.innerHTML = site_url + data.dl_url;
         link.href = data.dl_url;
         link.show();
@@ -403,11 +426,11 @@ function del()
 function move() {
     if (idSet.length === 0) return;
     var tree = DirectoryAjax.callSync('GetTree', {'id_set':idSet.join(',')}),
-        form = $('form');
-    form.set('html', tree);
-    form.getElements('a').addEvent('click', function () {
-        $('form').getElements('a').removeClass('selected');
-        this.className = 'selected';
+        form = $('#form');
+    form.html(tree);
+    form.find('a').on('click', function () {
+        $('#form').find('a').removeClass('selected');
+        $(this).addClass('selected');
     });
 }
 
@@ -415,9 +438,9 @@ function move() {
  * Performs moving file/directory
  */
 function submitMove() {
-    var tree = $('dir_tree'),
-        selected = tree.getElement('a.selected'),
-        target = selected.id.substr(5, selected.id.length - 5);
+    var tree = $('#dir_tree'),
+        selected = tree.find('a.selected')[0],
+        target = $(selected).attr('id').substring(5, $(selected).attr('id').length);
     DirectoryAjax.callAsync('Move', {'id_set':idSet.join(','), 'target':target});
 }
 
@@ -427,9 +450,9 @@ function submitMove() {
 function cancel()
 {
     idSet = [];
-    $('form').set('html', '');
-    $('file_arena').getElements('.selected').removeClass('selected');
-    $('file_arena').getElements('input').set('checked', false);
+    $('#form').html('');
+    $('#file_arena').find('.selected').removeClass('selected');
+    $('#file_arena').find('input').prop('checked', false);
     updateActions();
 }
 
@@ -442,9 +465,9 @@ function newDirectory()
     if (!cachedForms.editDir) {
         cachedForms.editDir = DirectoryAjax.callSync('DirectoryForm', {mode:'edit'});
     }
-    $('form').set('html', cachedForms.editDir);
-    $('frm_dir').title.focus();
-    $('frm_dir').parent.value = currentDir;
+    $('#form').html(cachedForms.editDir);
+    $('#frm_dir').find('input[name=title]').focus();
+    $('#frm_dir').find('[name=parent]').val(currentDir);
 }
 
 /**
@@ -455,13 +478,13 @@ function editDirectory(id)
     if (!cachedForms.editDir) {
         cachedForms.editDir = DirectoryAjax.callSync('DirectoryForm', {mode:'edit'});
     }
-    $('form').set('html', cachedForms.editDir);
+    $('#form').html(cachedForms.editDir);
     var data = fileById[id],
-        form = $('frm_dir');
-    form.id.value = id;
-    form.title.value = data.title;
-    form.description.value = data.description;
-    form.parent.value = data.parent;
+        form = $('#frm_dir');
+    form.find('[name=id]').val(id);
+    form.find('[name=title]').val(data.title);
+    form.find('[name=description]').val(data.description);
+    form.find('[name=parent]').val(data.parent);
 }
 
 /**
@@ -473,11 +496,11 @@ function newFile()
     if (!cachedForms.editFile) {
         cachedForms.editFile = DirectoryAjax.callSync('FileForm', {mode:'edit'});
     }
-    $('form').set('html', cachedForms.editFile);
-    $('tr_file').hide();
-    $('frm_upload').show();
-    $('frm_file').parent.value = currentDir;
-    $('frm_file').title.focus();
+    $('#form').html(cachedForms.editFile);
+    $('#tr_file').hide();
+    $('#frm_upload').show();
+    $('#frm_file').find('[name=parent]').val(currentDir);
+    $('#frm_file').find('[name=title]').focus();
 }
 
 /**
@@ -488,17 +511,17 @@ function editFile(id)
     if (!cachedForms.editFile) {
         cachedForms.editFile = DirectoryAjax.callSync('FileForm', {mode:'edit'});
     }
-    $('form').set('html', cachedForms.editFile);
-    var form = $('frm_file'),
+    $('#form').html(cachedForms.editFile);
+    var form = $('#frm_file')[0],
         file = fileById[id];
     if (file.foreign) {
-        $('frm_upload').remove();
-        $('parent').remove();
-        $('filename').remove();
-        $('filetype').remove();
-        $('filesize').remove();
-        $('tr_file').remove();
-        $('tr_url').remove();
+        $('#frm_upload').remove();
+        $('#parent').remove();
+        $('#filename').remove();
+        $('#filetype').remove();
+        $('#filesize').remove();
+        $('#tr_file').remove();
+        $('#tr_url').remove();
     } else {
         form.url.value = file.url;
         form.parent.value = file.parent;
@@ -511,10 +534,10 @@ function editFile(id)
                 fileById[id].dl_url = url;
             }
             setFilename(file.filename, url);
-            $('filename').value = ':nochange:';
+            $('#filename').val(':nochange:');
         } else {
-            $('tr_file').hide();
-            $('frm_upload').show();
+            $('#tr_file').hide();
+            $('#frm_upload').show();
         }
     }
     form.action.value = 'UpdateFile';
@@ -527,10 +550,12 @@ function editFile(id)
  * Uploads file on the server
  */
 function uploadFile() {
-    var iframe = new Element('iframe', {id:'ifrm_upload'});
-    document.body.grab(iframe);
-    $('btn_ok').set('disabled', true);
-    $('frm_upload').submit();
+    var iframe = $('<iframe>');
+    iframe.attr('id', 'ifrm_upload');
+    iframe.attr('name', 'ifrm_upload');
+    $('body').append(iframe);
+    $('#btn_ok').attr('disabled', true);
+    $('#frm_upload').submit();
 }
 
 /**
@@ -539,19 +564,19 @@ function uploadFile() {
 function onUpload(response) {
     if (response.type === 'error') {
         alert(response.message);
-        $('frm_upload').reset();
+        $('#frm_upload').reset();
     } else {
         var filename = encodeURIComponent(response.filename);
         setFilename(filename, '');
-        $('filename').value = filename;
-        $('filetype').value = response.filetype;
-        $('filesize').value = response.filesize;
-        if ($('frm_file').title.value === '') {
-            $('frm_file').title.value = filename;
+        $('#filename').val(filename);
+        $('#filetype').val(response.filetype);
+        $('#filesize').val(response.filesize);
+        if ($('#frm_file').find('[name=title]').val() === '') {
+            $('#frm_file').find('[name=title]').val(filename);
         }
     }
-    $('ifrm_upload').destroy();
-    $('btn_ok').set('disabled', false);
+    $('#ifrm_upload').remove();
+    $('#btn_ok').attr('disabled', false);
 }
 
 /**
@@ -570,20 +595,20 @@ function publishFile(published)
  */
 function showFileURL(url)
 {
-    var link = $('public_url'),
-        span = $('file_' + idSet[0]).getElement('span');
+    var link = $('#public_url'),
+        span = $('#file_' + idSet[0]).find('span');
     if (url !== '') {
         link.innerHTML = site_url + url;
         link.href = url;
         link.show();
         span.addClass('public');
-        $('btn_unpublic').show('inline');
-        $('btn_public').hide();
+        $('#btn_unpublic').css('display', 'inline');
+        $('#btn_public').hide();
     } else {
         link.hide();
         span.removeClass('public');
-        $('btn_public').show();
-        $('btn_unpublic').hide();
+        $('#btn_public').show();
+        $('#btn_unpublic').hide();
     }
 }
 
@@ -592,14 +617,16 @@ function showFileURL(url)
  */
 function setFilename(filename, url)
 {
-    var link = new Element('a', {'html':filename});
+    var link = $('<a>');
+
+    link.html(filename);
     if (url !== '') {
-        link.href = url;
+        link.attr('href', url);
     }
-    $('filelink').grab(link);
-    $('filelink').grab(imgDeleteFile);
-    $('tr_file').show();
-    $('frm_upload').hide();
+    $('#filelink').append(link);
+    //$('#filelink').append(imgDeleteFile);
+    $('#tr_file').show();
+    $('#frm_upload').hide();
 }
 
 /**
@@ -607,11 +634,11 @@ function setFilename(filename, url)
  */
 function removeFile()
 {
-    $('filename').value = '';
-    $('filelink').set('html', '');
-    $('frm_upload').reset();
-    $('tr_file').hide();
-    $('frm_upload').show();
+    $('#filename').val('');
+    $('#filelink').html('');
+    $('#frm_upload').reset();
+    $('#tr_file').hide();
+    $('#frm_upload').show();
 }
 
 /**
@@ -642,19 +669,19 @@ function share()
     if (!cachedForms.share) {
         cachedForms.share = DirectoryAjax.callSync('ShareForm');
     }
-    $('form').set('html', cachedForms.share);
-    $('groups').selectedIndex = -1;
+    $('#form').html(cachedForms.share);
+    $('#groups').selectedIndex = -1;
 
     var users = DirectoryAjax.callSync('GetFileUsers', {'id':id});
     sharedFileUsers = {};
-    users.each(function (user) {
+    $.each(users, function (i, user) {
         sharedFileUsers[user.id] = user.username;
     });
     updateShareUsers();
 
     // Public link
     var file = fileById[id];
-    $('public_ui').style.display = file.is_dir? 'none' : '';
+    $('#public_ui').css('display', file.is_dir? 'none' : '');
     if (file['public'] && !file.dl_url) {
         file.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:id});
     }
@@ -668,20 +695,26 @@ function share()
  */
 function toggleUsers(gid)
 {
-    var container = $('users').empty();
+    var container = $('#users').empty();
     if (usersByGroup[gid] === undefined) {
         usersByGroup[gid] = DirectoryAjax.callSync('GetUsers', {'gid':gid});
     }
-    usersByGroup[gid].each(function (user) {
+    $.each(usersByGroup[gid], function(i, user) {
         if (user.id == UID) return;
-        var div = new Element('div'),
-            input = new Element('input', {type:'checkbox', id:'chk_'+user.id, value:user.id}),
-            label = new Element('label', {'for':'chk_'+user.id});
-        input.set('checked', (sharedFileUsers[user.id] !== undefined));
-        input.addEvent('click', selectUser);
-        label.set('html', user.nickname + ' (' + user.username + ')');
-        div.adopt(input, label);
-        container.grab(div);
+
+        var div = $('<div>'),
+            input = $('<input>').attr({
+                type: 'checkbox',
+                id: 'chk_' + user.id,
+                value: user.id
+            }),
+            label = $('<label>').attr({'for': 'chk_' + user.id});
+
+        input.prop('checked', (sharedFileUsers[user.id] !== undefined));
+        input.on('click', selectUser);
+        label.html(user.nickname + ' (' + user.username + ')');
+        div.append(input, label);
+        container.append(div);
     });
 }
 
@@ -703,8 +736,8 @@ function selectUser()
  */
 function updateShareUsers()
 {
-    var list = $('share_users').empty();
-    Object.each(sharedFileUsers, function(name, id) {
+    var list = $('#share_users').empty();
+    $.each(sharedFileUsers, function(id, name) {
         list.options[list.options.length] = new Option(name, id);
     });
 }
@@ -715,7 +748,7 @@ function updateShareUsers()
 function submitShare()
 {
     var users = [];
-    Array.each($('share_users').options, function(opt) {
+    $.each($('#share_users').find('options'), function(opt) {
         users.push(opt.value);
     });
     DirectoryAjax.callAsync(
@@ -729,7 +762,7 @@ function submitShare()
  */
 function onSearchChange(input)
 {
-    $('btn_search_close').style.display = (input.value === '')? 'none' : 'inline';
+    $('#btn_search_close').css('display',(input.value === '') ? 'none' : 'inline');
 }
 
 /**
@@ -747,7 +780,7 @@ function performSearch()
  */
 function advancedSearch(self)
 {
-    $('advanced_search').show('table');
+    $('#advanced_search').css('display', 'table');
     self.hide();
 }
 
@@ -756,9 +789,9 @@ function advancedSearch(self)
  */
 function closeSearch()
 {
-    $('btn_search_close').hide();
-    $('advanced_search').hide();
-    $('file_search').value = '';
+    $('#btn_search_close').hide();
+    $('#advanced_search').hide();
+    $('#file_search').val('');
     updateFiles();
 }
 
@@ -778,6 +811,20 @@ function formatSize(size, precision)
     } while (size > 1024);
 
     return Math.max(size, 1).toFixed(precision) + byteUnits[i];
+}
+
+/**
+ * Substitute Method (jQuery Doesn't Have, Unlike MooTools)
+ * http://stackoverflow.com/questions/2621170/has-any-method-like-substitute-of-mootools-in-jquery
+ *
+ * @param str
+ * @param sub
+ * @returns {*}
+ */
+function substitute(str, sub) {
+    return str.replace(/\{(.+?)\}/g, function($0, $1) {
+        return $1 in sub ? sub[$1] : $0;
+    });
 }
 
 var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
