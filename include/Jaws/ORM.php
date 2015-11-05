@@ -862,6 +862,15 @@ class Jaws_ORM
                 $sql = substr_replace($sql, '', -2, 1);
                 $sql.= $this->_build_where();
                 $result = $this->jawsdb->dbc->exec($sql);
+                if (!MDB2::isError($result) && ($this->_query_command == 'upsert')) {
+                    // upsert: return record primary key same as insert
+                    if (!empty($this->_pk_field)) {
+                        $sql = 'select '. $this->quoteIdentifier($this->_pk_field). "\n";
+                        $sql.= 'from '. $this->_tablesIdentifier. "\n";
+                        $sql.= $this->_build_where();
+                        $result = $this->jawsdb->dbc->queryone($sql);
+                    }
+                }
                 break;
 
             // insert multiple rows
