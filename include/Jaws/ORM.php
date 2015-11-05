@@ -203,6 +203,14 @@ class Jaws_ORM
     static private $auto_rollback_on_error = true;
 
     /**
+     * Auto log on error
+     *
+     * @var     bool
+     * @access  private
+     */
+    static private $auto_log_on_error = true;
+
+    /**
      * Constructor
      *
      * @access  public
@@ -778,15 +786,17 @@ class Jaws_ORM
                 $result = $this->jawsdb->dbc->queryRow($sql, $this->_types);
         }
 
-        $this->reset();
         if (MDB2::isError($result)) {
             // auto rollback
             if (self::$in_transaction && self::$auto_rollback_on_error) {
                 $this->rollback();
             }
 
-            $GLOBALS['log']->Log($error_level, $result->getUserInfo(), 2);
-            return Jaws_Error::raiseError(
+            if (self::$auto_log_on_error) {
+                $GLOBALS['log']->Log($error_level, $result->getUserInfo(), 2);
+            }
+
+            $result = Jaws_Error::raiseError(
                 $result->getMessage(),
                 $result->getCode(),
                 $error_level,
@@ -794,6 +804,7 @@ class Jaws_ORM
             );
         }
 
+        $this->reset();
         return $result;
     }
 
@@ -814,6 +825,31 @@ class Jaws_ORM
                 $result = $this->jawsdb->dbc->exec($sql);
                 break;
 
+            // insert a rows
+            case 'insert':
+            case 'upsert':
+                $values  = '';
+                $columns = '';
+                $sql = 'insert into '. $this->_tablesIdentifier;
+                foreach ($this->_values as $column => $value) {
+                    $values .= ', '. $this->quoteValue($value);
+                    $columns.= ', '. $this->quoteIdentifier($column);
+                }
+                $sql.= "\n(". trim($columns, ', '). ")\nvalues(". trim($values, ', '). ")\n";
+                $result = $this->jawsdb->dbc->exec($sql);
+                if (!MDB2::isError($result)) {
+                    if (!empty($result) && !empty($this->_pk_field)) {
+                        $result = $this->jawsdb->dbc->lastInsertID(
+                            $this->_tbl_prefix. $this->_table,
+                            $this->_pk_field
+                        );
+                    }
+                    break;
+                } elseif (($this->_query_command != 'upsert') || (MDB2_ERROR_CONSTRAINT != $result->getCode())) {
+                    break;
+                }
+                // going to update case
+
             case 'update':
                 $sql = 'update '. $this->_tablesIdentifier. " set\n";
                 foreach ($this->_values as $column => $value) {
@@ -826,25 +862,6 @@ class Jaws_ORM
                 $sql = substr_replace($sql, '', -2, 1);
                 $sql.= $this->_build_where();
                 $result = $this->jawsdb->dbc->exec($sql);
-                break;
-
-            // insert a rows
-            case 'insert':
-                $values  = '';
-                $columns = '';
-                $sql = 'insert into '. $this->_tablesIdentifier;
-                foreach ($this->_values as $column => $value) {
-                    $values .= ', '. $this->quoteValue($value);
-                    $columns.= ', '. $this->quoteIdentifier($column);
-                }
-                $sql.= "\n(". trim($columns, ', '). ")\nvalues(". trim($values, ', '). ")\n";
-                $result = $this->jawsdb->dbc->exec($sql);
-                if (!MDB2::isError($result) && !empty($result) && !empty($this->_pk_field)) {
-                    $result = $this->jawsdb->dbc->lastInsertID(
-                        $this->_tbl_prefix. $this->_table,
-                        $this->_pk_field
-                    );
-                }
                 break;
 
             // insert multiple rows
@@ -905,15 +922,17 @@ class Jaws_ORM
                 // trigger an error
         }
 
-        $this->reset();
         if (MDB2::isError($result)) {
             // auto rollback
             if (self::$in_transaction && self::$auto_rollback_on_error) {
                 $this->rollback();
             }
 
-            $GLOBALS['log']->Log($error_level, $result->getUserInfo(), 1);
-            return Jaws_Error::raiseError(
+            if (self::$auto_log_on_error) {
+                $GLOBALS['log']->Log($error_level, $result->getUserInfo(), 1);
+            }
+
+            $result = Jaws_Error::raiseError(
                 $result->getMessage(),
                 $result->getCode(),
                 $error_level,
@@ -921,6 +940,7 @@ class Jaws_ORM
             );
         }
 
+        $this->reset();
         return $result;
     }
 
@@ -994,6 +1014,7 @@ class Jaws_ORM
 
             case 'insert':
             case 'update':
+            case 'upsert':
                 $this->_values = $params[0];
             case 'delete':
                 $this->_query_command = $method;
@@ -1039,7 +1060,7 @@ class Jaws_ORM
      * Reset internal variables
      *
      * @access  public
-     * @return  voide
+     * @return  void
      */
     function reset()
     {
