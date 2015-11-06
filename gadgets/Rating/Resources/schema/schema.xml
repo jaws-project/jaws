@@ -50,10 +50,15 @@
             </field>
 
             <field>
-                <name>rates_mean</name>
-                <type>decimal</type>
-                <length>5,2</length>
-                <default>0</default>
+                <name>restricted</name>
+                <type>boolean</type>
+                <default>false</default>
+            </field>
+
+            <field>
+                <name>allowed</name>
+                <type>boolean</type>
+                <default>true</default>
             </field>
 
             <field>
@@ -66,18 +71,6 @@
                 <name>update_time</name>
                 <type>integer</type>
                 <length>8</length>
-            </field>
-
-            <field>
-                <name>restricted</name>
-                <type>boolean</type>
-                <default>false</default>
-            </field>
-
-            <field>
-                <name>allowed</name>
-                <type>boolean</type>
-                <default>true</default>
             </field>
 
             <index>
@@ -120,8 +113,9 @@
 
             <field>
                 <name>uip</name>
-                <type>integer</type>
-                <default>0</default>
+                <type>text</type>
+                <length>16</length>
+                <default></default>
             </field>
 
             <field>
