@@ -179,12 +179,21 @@ class Jaws_ORM
     var $alias = '';
 
     /**
+     * separators/splitters query string 
+     *
+     * @var     array
+     * @access  private
+     */
+    private $separators = array(' ', '(', ')', ',', '+', '-', '/', '*', '?', '<', '>', '<>');
+    private $regexp_separators = '@([\s\(\)\,\+\-\/\*\?\<\>\<\>])@';
+
+    /**
      * Not quoted by quoteIdentifier
      *
      * @var     array
      * @access  private
      */
-    var $reserved_words = array(',', '+', '-', '/', '*', '?', '<', '>', '<>', 'as', 'desc', 'asc');
+    private $reserved_words = array('as', 'desc', 'asc');
 
     /**
      * Determine if there is an open transaction
@@ -270,9 +279,9 @@ class Jaws_ORM
     function quoteIdentifier($column, $prefix_aliased = false)
     {
         $prev_is_as = false;
-        $parts = array_filter(array_map('trim', explode(' ', $column)));
+        $parts = preg_split($this->regexp_separators, $column, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
         foreach ($parts as $idx => $column) {
-            if (in_array($column, $this->reserved_words)) {
+            if (in_array($column, $this->separators) || in_array($column, $this->reserved_words)) {
                 $prev_is_as = $column == 'as'? true : false;
                 continue;
             }
@@ -282,6 +291,9 @@ class Jaws_ORM
                 $column = str_replace(']',  $this->_identifier_quoting['end'],   $column);
             } else {
                 // auto quote identifier if bracket not found
+                if (isset($parts[$idx + 1]) && $parts[$idx + 1] == '(') {
+                    continue;
+                }
                 if (false !== $dotted_column = strpos($column, '.')) {
                     $column = str_replace(
                         '.',
@@ -290,32 +302,18 @@ class Jaws_ORM
                     );
                 }
 
-                if (false !== $open_parenthesis = strpos($column, '(')) {
-                    $column = str_replace(
-                        '(',
-                        '('. $this->_identifier_quoting['start']. ($dotted_column? $this->_tbl_prefix : ''),
-                        $column
-                    );
-
-                    $column = str_replace(
-                        ')',
-                        $this->_identifier_quoting['end']. ')',
-                        $column
-                    );
-                } else {
-                    if (($prev_is_as && $prefix_aliased) || $dotted_column) {
-                        $prev_is_as  = false;
-                        $column = $this->_tbl_prefix. $column;
-                    }
-
-                    $column = $this->_identifier_quoting['start']. $column. $this->_identifier_quoting['end'];
+                if (($prev_is_as && $prefix_aliased) || $dotted_column) {
+                    $prev_is_as  = false;
+                    $column = $this->_tbl_prefix. $column;
                 }
+
+                $column = $this->_identifier_quoting['start']. $column. $this->_identifier_quoting['end'];
             }
 
             $parts[$idx] = $column;
         }
 
-        return implode(' ', $parts);
+        return implode('', $parts);
     }
 
     /**
