@@ -139,9 +139,12 @@ function JawsAjax(gadget, callback, baseScript)
         if (reqOptions.done) {
             reqOptions.done(response);
         }
-        var reqMethod = this.callback[reqOptions.action];
-        if (reqMethod) {
-            reqMethod(response);
+
+        if (this.callback) {
+            var reqMethod = this.callback[reqOptions.action];
+            if (reqMethod) {
+                reqMethod(response);
+            }
         }
     };
 
