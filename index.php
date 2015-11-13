@@ -103,10 +103,13 @@ $GLOBALS['app']->RunAutoload();
 if (empty($ReqError)) {
     $ReqResult = '';
     if (!empty($objAction)) {
+        // set in main request
+        $GLOBALS['app']->inMainRequest = true;
         $ReqResult = $objAction->Execute($ReqAction);
         if (Jaws_Error::isError($ReqResult)) {
             $ReqResult = $ReqResult->GetMessage();
         }
+        $GLOBALS['app']->inMainRequest = false;
 
         // we must check type of action after execute, because gadget can change it at runtime
         $IsReqActionStandAlone = $objAction->IsStandAlone($ReqAction);

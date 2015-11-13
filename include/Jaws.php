@@ -35,6 +35,13 @@ class Jaws
     var $mainAction = '';
 
     /**
+     * Main request is running?
+     * @var     bool
+     * @access  public
+     */
+    var $inMainRequest = false;
+
+    /**
      * The requested gadget
      * @var     string
      * @access  public
