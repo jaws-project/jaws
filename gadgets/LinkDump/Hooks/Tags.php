@@ -14,18 +14,19 @@ class LinkDump_Hooks_Tags extends Jaws_Gadget_Hook
      * Returns an array with the results of a tag content
      *
      * @access  public
-     * @param   array  $tag_items  Tag items
-     * @return  array  An array of entries that matches a certain pattern
+     * @param   string  $action     Action name
+     * @param   array   $references Array of References
+     * @return  array   An array of entries that matches a certain pattern
      */
-    function Execute($tag_items)
+    function Execute($action, $references)
     {
-        if(!is_array($tag_items) || empty($tag_items)) {
-            return;
+        if(empty($action) || !is_array($references) ||empty($references)) {
+            return false;
         }
 
         $table = Jaws_ORM::getInstance()->table('linkdump_links');
         $table->select('id:integer', 'title', 'description', 'updatetime');
-        $result = $table->where('id', $tag_items['link'], 'in')->fetchAll();
+        $result = $table->where('id', $references, 'in')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return array();
         }
@@ -40,7 +41,7 @@ class LinkDump_Hooks_Tags extends Jaws_Gadget_Hook
             $link['image']   = 'gadgets/LinkDump/Resources/images/logo.png';
             $link['snippet'] = $r['description'];
             $link['date']    = $date->ToISO($r['updatetime']);
-            $links[] = $link;
+            $links[$r['id']] = $link;
         }
 
         return $links;
