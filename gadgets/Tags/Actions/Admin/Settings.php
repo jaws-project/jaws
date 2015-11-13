@@ -4,9 +4,6 @@
  *
  * @category   GadgetAdmin
  * @package    Tags
- * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2013-2015 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Tags_Actions_Admin_Settings extends Tags_Actions_Admin_Default
 {

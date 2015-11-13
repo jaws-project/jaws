@@ -4,9 +4,6 @@
  *
  * @category    GadgetModel
  * @package     Tags
- * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2013-2015 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Tags_Model_Tags extends Jaws_Gadget_Model
 {
@@ -99,7 +96,7 @@ class Tags_Model_Tags extends Jaws_Gadget_Model
     {
         return Jaws_ORM::getInstance()
             ->table('tags_references')
-            ->select('tags.name', 'tags.title')
+            ->select('tags.id:integer', 'tags.name', 'tags.title')
             ->join('tags', 'tags.id', 'tags_references.tag')
             ->where('tags_references.user', (int)$user)
             ->and()->where('gadget', $gadget)
@@ -128,6 +125,29 @@ class Tags_Model_Tags extends Jaws_Gadget_Model
         }
 
         return $gadgets;
+    }
+
+    /**
+     * Get similarity by tags
+     *
+     * @access  public
+     * @param   array   $tags       Array of tags id
+     * @param   string  $gadget     Gadget name
+     * @param   int     $user       Just show user's tags
+     * @return  mixed   An array on success and Jaws_Error in case of errors
+     */
+    function GetSimilartyTags($tags, $gadget = '', $user = 0)
+    {
+        $table = Jaws_ORM::getInstance()->table('tags_references');
+        $table->select('gadget', 'action', 'reference:integer', 'count(id) as howmany:integer');
+        $table->where('published', true);
+        $table->and()->where('user', (int)$user);
+        $table->and()->where('tag', $tags, 'in');
+        if (!empty($gadget)) {
+            $table->and()->where('gadget', $gadget);
+        }
+        $table->groupBy('gadget', 'action', 'reference');
+        return $table->orderBy('howmany desc')->fetchAll();
     }
 
 }

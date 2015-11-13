@@ -4,14 +4,16 @@
  *
  * @category    GadgetActions
  * @package     Tags
- * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2013-2015 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/lesser.html
  */
 
 /**
  * Index actions
  */
+$actions['TagsSimilarity'] = array(
+    'layout' => true,
+    'parametric' => true,
+    'file'   => 'Tags',
+);
 $actions['TagCloud'] = array(
     'layout' => true,
     'parametric' => true,

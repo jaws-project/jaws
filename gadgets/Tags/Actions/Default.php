@@ -4,9 +4,6 @@
  *
  * @category    Gadget
  * @package     Tags
- * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2013-2015 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Tags_Actions_Default extends Jaws_Gadget_Action
 {

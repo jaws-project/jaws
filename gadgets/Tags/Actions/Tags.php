@@ -4,12 +4,17 @@
  *
  * @category   Gadget
  * @package    Tags
- * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2012-2015 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Tags_Actions_Tags extends Tags_Actions_Default
 {
+    /**
+     * Tags of main request
+     *
+     * @var     array
+     * @access  private
+     */
+    static private $mainRequestTags = array();
+
     /**
      * Get then TagsCloud action params
      *
@@ -139,6 +144,11 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         }
 
         if (!empty($tags)) {
+            // store tags of main request for later use
+            if ($GLOBALS['app']->inMainRequest) {
+                self::$mainRequestTags = array_column($tags, 'id');
+            }
+
             $tpl->SetBlock("$tpl_base_block/tags");
             $tpl->SetVariable('lbl_tags', _t('GLOBAL_TAGS'));
             foreach($tags as $tag) {
@@ -229,7 +239,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         }
 
         // call gadget hook
-        foreach ($gadgetReferences as $gadget => $references) {
+        foreach ($gadgetReferences as $gadget => $action_references) {
             // load gadget
             $objGadget = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($objGadget)) {
@@ -242,37 +252,163 @@ class Tags_Actions_Tags extends Tags_Actions_Default
                 continue;
             }
 
-            // call execute method
-            $result = $objHook->Execute($references);
-            if (!Jaws_Error::IsError($result) && !empty($result)) {
-                $tpl->SetBlock('tags/gadget');
-                $tpl->SetVariable('gadget_result', _t('SEARCH_RESULTS_IN_GADGETS',
-                    count($result),
-                    'TEST',
-                    $objGadget->title));
-                $tpl->ParseBlock('tags/gadget');
-                foreach ($result as $reference) {
-                    $tpl->SetBlock('tag/tag_item');
-                    $tpl->SetVariable('title',  $reference['title']);
-                    $tpl->SetVariable('url',    $reference['url']);
-                    $tpl->SetVariable('target', (@$reference['outer'])? '_blank' : '_self');
-                    $tpl->SetVariable('image',  $reference['image']);
-                    if (!isset($reference['parse_text']) || $reference['parse_text']) {
-                        $reference['snippet'] = $this->gadget->ParseText($reference['snippet'], $gadget);
-                    }
-                    if (!isset($reference['strip_tags']) || $reference['strip_tags']) {
-                        $reference['snippet'] = strip_tags($reference['snippet']);
-                    }
-                    $reference['snippet'] = Jaws_UTF8::substr($reference['snippet'], 0, $max_result_len);
+            foreach ($action_references as $action => $references) {
+                // call execute method
+                $result = $objHook->Execute($action, $references);
+                if (!Jaws_Error::IsError($result) && !empty($result)) {
+                    $tpl->SetBlock('tags/gadget');
+                    $tpl->SetVariable('gadget_result', _t('SEARCH_RESULTS_IN_GADGETS',
+                        count($result),
+                        'TEST',
+                        $objGadget->title));
+                    $tpl->ParseBlock('tags/gadget');
+                    foreach ($result as $reference) {
+                        $tpl->SetBlock('tag/tag_item');
+                        $tpl->SetVariable('title',  $reference['title']);
+                        $tpl->SetVariable('url',    $reference['url']);
+                        $tpl->SetVariable('target', (@$reference['outer'])? '_blank' : '_self');
+                        $tpl->SetVariable('image',  $reference['image']);
+                        if (!isset($reference['parse_text']) || $reference['parse_text']) {
+                            $reference['snippet'] = $this->gadget->ParseText($reference['snippet'], $gadget);
+                        }
+                        if (!isset($reference['strip_tags']) || $reference['strip_tags']) {
+                            $reference['snippet'] = strip_tags($reference['snippet']);
+                        }
+                        $reference['snippet'] = Jaws_UTF8::substr($reference['snippet'], 0, $max_result_len);
 
-                    $tpl->SetVariable('snippet', $reference['snippet']);
-                    $tpl->SetVariable('date', $objDate->Format($reference['date']));
-                    $tpl->ParseBlock('tag/tag_item');
+                        $tpl->SetVariable('snippet', $reference['snippet']);
+                        $tpl->SetVariable('date', $objDate->Format($reference['date']));
+                        $tpl->ParseBlock('tag/tag_item');
+                    }
                 }
+
             }
         }
 
         $tpl->ParseBlock('tag');
+        return $tpl->Get();
+    }
+
+    /**
+     * Get then TagsSimilarity action params
+     *
+     * @access  public
+     * @return  array list of the TagsSimilarity action params
+     */
+    function TagsSimilarityLayoutParams()
+    {
+        $result = array();
+        $model = $this->gadget->model->load('Tags');
+        $gadgets = $model->GetTagableGadgets();
+        array_unshift($gadgets, _t('GLOBAL_ALL'));
+        $result[] = array(
+            'title' => _t('TAGS_GADGET'),
+            'value' => $gadgets
+        );
+
+        $result[] = array(
+            'title' => _t('TAGS_SHOW_TAGS'),
+            'value' => array(
+                0 => _t('TAGS_GLOBAL_TAGS'),
+                1 => _t('TAGS_USER_TAGS'),
+            )
+        );
+
+        return $result;
+    }
+
+    /**
+     * Displays entries by tags similarity
+     *
+     * @access  public
+     * @param   string  $gadget Gadget name
+     * @param   int     $user   Only show user tags?
+     * @return  string  XHTML template content
+     */
+    function TagsSimilarity($gadget, $user)
+    {
+        if (empty(self::$mainRequestTags)) {
+            return false;
+        }
+
+        $model = $this->gadget->model->load('Tags');
+        $references = $model->GetSimilartyTags(self::$mainRequestTags, $gadget, $user);
+        if (Jaws_Error::IsError($references) || empty($references)) {
+            return false;
+        }
+
+        $gadgetReferences = array();
+        // grouping references by gadget for one time call hook per gadget
+        foreach ($references as $reference) {
+            $gadgetReferences[$reference['gadget']][$reference['action']][] = $reference['reference'];
+        }
+
+        // call gadget hook
+        foreach ($gadgetReferences as $gadget => $actions) {
+            // load gadget
+            $objGadget = Jaws_Gadget::getInstance($gadget);
+            if (Jaws_Error::IsError($objGadget)) {
+                continue;
+            }
+
+            // load hook
+            $objHook = $objGadget->hook->load('Tags');
+            if (Jaws_Error::IsError($objHook)) {
+                continue;
+            }
+
+            // communicate with gadget Tags hook 
+            foreach ($actions as $action => $action_references) {
+                // call execute method
+                $result = $objHook->Execute($action, $action_references);
+                if (!Jaws_Error::IsError($result) && !empty($result)) {
+                    $gadgetReferences[$gadget][$action] = $result;
+                } else {
+                    $gadgetReferences[$gadget][$action] = array();
+                }
+            }
+        }
+
+        $objDate = Jaws_Date::getInstance();
+        $max_result_len = (int)$this->gadget->registry->fetch('max_result_len');
+        if (empty($max_result_len)) {
+            $max_result_len = 500;
+        }
+
+        $tpl = $this->gadget->template->load('Similarity.html');
+        $tpl->SetBlock('similarity');
+        $tpl->SetVariable('title', _t('TAGS_SIMILARITY', $gadget));
+
+        // provide return result
+        foreach ($references as $reference) {
+            if (!array_key_exists(
+                $reference['reference'],
+                $gadgetReferences[$reference['gadget']][$reference['action']]
+                )
+            ) {
+                continue;
+            }
+
+            $reference = $gadgetReferences[$reference['gadget']][$reference['action']][$reference['reference']];
+            $tpl->SetBlock('similarity/reference');
+            $tpl->SetVariable('title',  $reference['title']);
+            $tpl->SetVariable('url',    $reference['url']);
+            $tpl->SetVariable('target', (@$reference['outer'])? '_blank' : '_self');
+            $tpl->SetVariable('image',  $reference['image']);
+            if (!isset($reference['parse_text']) || $reference['parse_text']) {
+                $reference['snippet'] = $this->gadget->ParseText($reference['snippet'], $gadget);
+            }
+            if (!isset($reference['strip_tags']) || $reference['strip_tags']) {
+                $reference['snippet'] = strip_tags($reference['snippet']);
+            }
+            $reference['snippet'] = Jaws_UTF8::substr($reference['snippet'], 0, $max_result_len);
+
+            $tpl->SetVariable('snippet', $reference['snippet']);
+            $tpl->SetVariable('date', $objDate->Format($reference['date']));
+            $tpl->ParseBlock('similarity/reference');
+        }
+
+        $tpl->ParseBlock('similarity');
         return $tpl->Get();
     }
 
