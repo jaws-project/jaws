@@ -14,19 +14,20 @@ class StaticPage_Hooks_Tags extends Jaws_Gadget_Hook
      * Returns an array with the results of a tag content
      *
      * @access  public
-     * @param   array  $tag_items  Tag items
-     * @return  array  An array of entries that matches a certain pattern
+     * @param   string  $action     Action name
+     * @param   array   $references Array of References
+     * @return  array   An array of entries that matches a certain pattern
      */
-    function Execute($tag_items)
+    function Execute($action, $references)
     {
-        if(!is_array($tag_items) || empty($tag_items)) {
-            return;
+        if(empty($action) || !is_array($references) ||empty($references)) {
+            return false;
         }
 
         $sptTable = Jaws_ORM::getInstance()->table('static_pages_translation');
         $sptTable->select('page_id:integer', 'group_id', 'title', 'content', 'language', 'fast_url', 'static_pages_translation.updated');
         $sptTable->join('static_pages', 'static_pages.page_id', 'static_pages_translation.base_id');
-        $result = $sptTable->where('translation_id', $tag_items['page'], 'in')->fetchAll();
+        $result = $sptTable->where('translation_id', $references, 'in')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return array();
         }
@@ -49,8 +50,7 @@ class StaticPage_Hooks_Tags extends Jaws_Gadget_Hook
             $page['snippet'] = $p['content'];
             $page['date']    = $date->ToISO($p['updated']);
 
-            $stamp           = str_replace(array('-', ':', ' '), '', $p['updated']);
-            $pages[$stamp]   = $page;
+            $pages[$p['page_id']] = $page;
         }
 
         return $pages;
