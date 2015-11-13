@@ -8,7 +8,15 @@
 class Tags_Actions_Tags extends Tags_Actions_Default
 {
     /**
-     * Tags of main request
+     * Main request reference
+     *
+     * @var     array
+     * @access  private
+     */
+    static private $mainRequestReference = array();
+
+    /**
+     * Main request tags
      *
      * @var     array
      * @access  private
@@ -146,6 +154,11 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         if (!empty($tags)) {
             // store tags of main request for later use
             if ($GLOBALS['app']->inMainRequest) {
+                self::$mainRequestReference = array(
+                    'gadget' => $gadget,
+                    'action' => $action,
+                    'reference' => $reference
+                );
                 self::$mainRequestTags = array_column($tags, 'id');
             }
 
@@ -338,8 +351,15 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         }
 
         $gadgetReferences = array();
-        // grouping references by gadget for one time call hook per gadget
+        // grouping references by gadget/action for one time call hook per gadget
         foreach ($references as $reference) {
+            if ($reference['gadget'] == self::$mainRequestReference['gadget'] &&
+                $reference['action'] == self::$mainRequestReference['action'] &&
+                $reference['reference'] == self::$mainRequestReference['reference']
+             ) {
+                continue;
+            }
+
             $gadgetReferences[$reference['gadget']][$reference['action']][] = $reference['reference'];
         }
 
