@@ -423,4 +423,17 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         return $result;
     }
 
+
+    /**
+     * Delete all gadget tags
+     *
+     * @access  public
+     * @param   string  $gadget     gadget name
+     * @return  mixed   True or Jaws_Error on failure
+     */
+    function DeleteGadgetTags($gadget)
+    {
+        return Jaws_ORM::getInstance()->table('tags_references')->delete()->where('gadget', $gadget)->exec();
+    }
+
 }

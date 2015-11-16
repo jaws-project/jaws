@@ -43,6 +43,9 @@ class Tags_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
+        // Add listener for remove tags items related to this gadget
+        $this->gadget->event->insert('UninstallGadget');
+
         return true;
     }
 
@@ -79,6 +82,11 @@ class Tags_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
+        if (version_compare($old, '1.1.0', '<')) {
+            // Add listener for remove/publish menu items related to given gadget
+            $this->gadget->event->insert('UninstallGadget');
+        }
+
         return true;
     }
 

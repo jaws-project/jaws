@@ -401,7 +401,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
 
         // provide return result
         foreach ($references as $reference) {
-            if (!array_key_exists(
+            if (!@array_key_exists(
                 $reference['reference'],
                 $gadgetReferences[$reference['gadget']][$reference['action']]
                 )
