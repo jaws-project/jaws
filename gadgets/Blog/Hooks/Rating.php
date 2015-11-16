@@ -1,17 +1,15 @@
 <?php
 /**
- * Blog - Tags gadget hook
+ * Blog - Rating gadget hook
  *
  * @category    GadgetHook
  * @package     Blog
- * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Hooks_Tags extends Jaws_Gadget_Hook
+class Blog_Hooks_Rating extends Jaws_Gadget_Hook
 {
     /**
-     * Returns an array with the results of a tag content
+     * Returns an array with the results of a rating content
      *
      * @access  public
      * @param   string  $action     Action name

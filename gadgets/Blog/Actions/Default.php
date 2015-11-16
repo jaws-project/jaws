@@ -287,6 +287,11 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
             $tagsHTML->loadReferenceTags('Blog', 'post', $entry['id'], $tpl, 'single_view/entry');
         }
 
+        // Show Rating
+        if (Jaws_Gadget::IsGadgetInstalled('Rating')) {
+            $ratingHTML = Jaws_Gadget::getInstance('Rating')->action->load('Rating');
+            $ratingHTML->loadReferenceRating('Blog', 'post', $entry['id'], 0, $tpl, 'single_view/entry');
+        }
 
         $tpl->ParseBlock("$tpl_base_block/entry");
         return $tpl->Get();
