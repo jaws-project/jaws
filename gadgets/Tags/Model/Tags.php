@@ -134,9 +134,10 @@ class Tags_Model_Tags extends Jaws_Gadget_Model
      * @param   array   $tags       Array of tags id
      * @param   string  $gadget     Gadget name
      * @param   int     $user       Just show user's tags
+     * @param   int     $limit      Limit result count
      * @return  mixed   An array on success and Jaws_Error in case of errors
      */
-    function GetSimilartyTags($tags, $gadget = '', $user = 0)
+    function GetSimilartyTags($tags, $gadget = '', $user = 0, $limit = 10)
     {
         $table = Jaws_ORM::getInstance()->table('tags_references');
         $table->select('gadget', 'action', 'reference:integer', 'count(id) as howmany:integer');
@@ -147,7 +148,7 @@ class Tags_Model_Tags extends Jaws_Gadget_Model
             $table->and()->where('gadget', $gadget);
         }
         $table->groupBy('gadget', 'action', 'reference');
-        return $table->orderBy('howmany desc')->fetchAll();
+        return $table->orderBy('howmany desc')->limit($limit)->fetchAll();
     }
 
 }
