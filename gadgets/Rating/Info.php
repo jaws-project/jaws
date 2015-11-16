@@ -21,7 +21,7 @@ class Rating_Info extends Jaws_Gadget
      * @var    boolean
      * @access  private
      */
-    var $_IsCore = true;
+    var $_IsCore = false;
 
     /**
      * Default front-end action name

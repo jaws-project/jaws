@@ -13,3 +13,9 @@ $actions['PostRating'] = array(
     'standalone' => true,
     'file' => 'Rating',
 );
+
+$actions['MostRatted'] = array(
+    'layout' => true,
+    'parametric' => true,
+    'file'   => 'Rating',
+);
