@@ -25,6 +25,14 @@ class CheckButtons extends Bin
     var $_options;
 
     /**
+     * Is multiple
+     * @var    boolean $_multiple
+     * @access private
+     * @see setMultiple()
+     */
+    var $_multiple;
+
+    /**
      * Direction of the check buttons
      *
      * @var    array   $_direction
@@ -56,6 +64,7 @@ class CheckButtons extends Bin
         $this->_direction = $direction;
         $this->_title     = $title;
         $this->_options   = array();
+        $this->_multiple  = true;
 
         if ($this->_direction != 'horizontal' && $this->_direction != 'vertical') {
             $this->_direction = 'horizontal';
@@ -140,6 +149,17 @@ class CheckButtons extends Bin
     }
 
     /**
+     * Set multiple flag
+     *
+     * @param   boolean $flag
+     * @access  public
+     */
+    function setMultiple($flag)
+    {
+        $this->_multiple = $flag;
+    }
+
+    /**
      * Build the piwiXML data.
      *
      * @access    public
@@ -208,7 +228,9 @@ class CheckButtons extends Bin
         }
 
         $baseName = $this->_name;
-        $this->_name .= "[]";
+        if ($this->_multiple) {
+            $this->_name .= "[]";
+        }
 
         foreach ($this->_options as $value => $option) {
             $item = '<input type="checkbox"';
