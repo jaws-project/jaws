@@ -823,9 +823,24 @@ class Jaws_ORM
                 $result = $this->jawsdb->dbc->exec($sql);
                 break;
 
+            case 'upsert':
+                $sql = 'select '. $this->quoteIdentifier($this->_pk_field). "\n";
+                $sql.= 'from '. $this->_tablesIdentifier. "\n";
+                $sql.= $this->_build_where();
+                $result = $this->jawsdb->dbc->queryone($sql);
+                if (!MDB2::isError($result)) {
+                    $upsert_result = $result;
+                    if (empty($result)) {
+                        goto insert;
+                    } else {
+                        goto update;
+                    }
+                }
+                break;
+
             // insert a rows
             case 'insert':
-            case 'upsert':
+                insert:
                 $values  = '';
                 $columns = '';
                 $sql = 'insert into '. $this->_tablesIdentifier;
@@ -842,13 +857,11 @@ class Jaws_ORM
                             $this->_pk_field
                         );
                     }
-                    break;
-                } elseif (($this->_query_command != 'upsert') || (MDB2_ERROR_CONSTRAINT != $result->getCode())) {
-                    break;
                 }
-                // going to update case
+                break;
 
             case 'update':
+                update:
                 $sql = 'update '. $this->_tablesIdentifier. " set\n";
                 foreach ($this->_values as $column => $value) {
                     $value  = $this->quoteValue($value);
@@ -862,12 +875,7 @@ class Jaws_ORM
                 $result = $this->jawsdb->dbc->exec($sql);
                 if (!MDB2::isError($result) && ($this->_query_command == 'upsert')) {
                     // upsert: return record primary key same as insert
-                    if (!empty($this->_pk_field)) {
-                        $sql = 'select '. $this->quoteIdentifier($this->_pk_field). "\n";
-                        $sql.= 'from '. $this->_tablesIdentifier. "\n";
-                        $sql.= $this->_build_where();
-                        $result = $this->jawsdb->dbc->queryone($sql);
-                    }
+                    $result = $upsert_result;
                 }
                 break;
 
