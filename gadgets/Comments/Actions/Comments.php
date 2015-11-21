@@ -234,6 +234,12 @@ class Comments_Actions_Comments extends Comments_Actions_Default
                     $entry['msg_txt']
                 );
 
+                // Show like rating
+                if (Jaws_Gadget::IsGadgetInstalled('Rating')) {
+                    $ratingHTML = Jaws_Gadget::getInstance('Rating')->action->load('RatingTypes');
+                    $ratingHTML->loadReferenceLike('Comments', 'comment', $entry['id'], 0, $tpl, 'comments/entry');
+                }
+
                 if (Jaws_UTF8::strlen($entry['msg_txt']) >= $max_size) {
                     $tpl->SetBlock($block . '/entry/read_more');
                     $tpl->SetVariable('read_more', _t('COMMENTS_READ_MORE'));
