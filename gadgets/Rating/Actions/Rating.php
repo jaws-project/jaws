@@ -43,9 +43,13 @@ class Rating_Actions_Rating extends Jaws_Gadget_Action
             return false;
         }
 
+        $rateableGadgets = $model->GetRateableGadgets();
         $gadgetReferences = array();
         // grouping references by gadget/action for one time call hook per gadget
         foreach ($references as $reference) {
+            if (!array_key_exists($reference['gadget'], $rateableGadgets)) {
+                continue;
+            }
             $gadgetReferences[$reference['gadget']][$reference['action']][] = $reference['reference'];
         }
 
@@ -87,7 +91,7 @@ class Rating_Actions_Rating extends Jaws_Gadget_Action
 
         // provide return result
         foreach ($references as $reference) {
-            if (!array_key_exists(
+            if (!@array_key_exists(
                 $reference['reference'],
                 $gadgetReferences[$reference['gadget']][$reference['action']]
                 )
@@ -120,61 +124,6 @@ class Rating_Actions_Rating extends Jaws_Gadget_Action
 
 
     /**
-     * Get reference rating
-     *
-     * @access  public
-     * @param   string  $gadget         Gadget name
-     * @param   string  $action         Action name
-     * @param   int     $reference      Reference ID
-     * @param   int     $item           Item number
-     * @param   object  $tpl            Jaws_Template object
-     * @param   string  $tpl_base_block Template block name
-     * @return  void
-     */
-    function loadReferenceRating($gadget, $action, $reference, $item, &$tpl, $tpl_base_block)
-    {
-        $rModel = $this->gadget->model->load('Rating');
-        // get rating statistics
-        $rating = $rModel->GetRating($gadget, $action, $reference, $item);
-        if (Jaws_Error::IsError($rating)) {
-            return $rating;
-        } elseif (empty($rating)) {
-            $rating = array(
-                'rates_count' => 0,
-                'rates_sum'   => 0,
-                'rates_avg'   => 0,
-            );
-        }
-
-        // get user last rating
-        $usrRating = $rModel->GetUserRating($gadget, $action, $reference, $item);
-        if (Jaws_Error::IsError($rating)) {
-            return $usrRating;
-        }
-
-        $tpl->SetBlock("$tpl_base_block/rating");
-        $tpl->SetVariable('gadget', $gadget);
-        $tpl->SetVariable('action', $action);
-        $tpl->SetVariable('reference', $reference);
-        $tpl->SetVariable('item', $item);
-        $tpl->SetVariable('rates_count', $rating['rates_count']);
-        $tpl->SetVariable('rates_sum', $rating['rates_sum']);
-        $tpl->SetVariable('rates_avg', $rating['rates_avg']);
-        for ($i = 1; $i <= 5; $i++) {
-            $tpl->SetBlock("$tpl_base_block/rating/item");
-            $tpl->SetVariable('value', $i);
-            if ($i == $usrRating) {
-                $tpl->SetBlock("$tpl_base_block/rating/item/checked");
-                $tpl->ParseBlock("$tpl_base_block/rating/item/checked");
-            }
-            $tpl->SetVariable('checked', '');
-            $tpl->ParseBlock("$tpl_base_block/rating/item");
-        }
-        $tpl->ParseBlock("$tpl_base_block/rating");
-    }
-
-
-    /**
      * Updates rating
      *
      * @access  public
@@ -186,6 +135,10 @@ class Rating_Actions_Rating extends Jaws_Gadget_Action
             array('requested_gadget', 'requested_action', 'reference', 'item', 'rate'),
             'post'
         );
+
+        if (!in_array((int)$post['rate'], range(0, 5))) {
+            return Jaws_Error::raiseError('Out of range!', __FUNCTION__);
+        }
 
         $rModel = Jaws_Gadget::getInstance('Rating')->model->load('Rating');
         // update user rate
