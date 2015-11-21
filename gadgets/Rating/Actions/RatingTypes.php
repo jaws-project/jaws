@@ -85,7 +85,7 @@ class Rating_Actions_RatingTypes extends Jaws_Gadget_Action
             return $rating;
         } elseif (empty($rating)) {
             $rating = array(
-                'rates_sum' => 0,
+                'rates_count' => 0,
             );
         }
 
@@ -102,7 +102,7 @@ class Rating_Actions_RatingTypes extends Jaws_Gadget_Action
         $tpl->SetVariable('action', $action);
         $tpl->SetVariable('reference', $reference);
         $tpl->SetVariable('item', $item);
-        $tpl->SetVariable('rates_sum', (int)$rating['rates_sum']);
+        $tpl->SetVariable('rates_count', (int)$rating['rates_count']);
         if ($usrRating) {
             $tpl->SetBlock("$tpl_base_block/like/checked");
             $tpl->ParseBlock("$tpl_base_block/like/checked");
