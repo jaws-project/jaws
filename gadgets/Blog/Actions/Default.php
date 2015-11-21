@@ -289,7 +289,7 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
 
         // Show Rating
         if (Jaws_Gadget::IsGadgetInstalled('Rating')) {
-            $ratingHTML = Jaws_Gadget::getInstance('Rating')->action->load('Rating');
+            $ratingHTML = Jaws_Gadget::getInstance('Rating')->action->load('RatingTypes');
             $ratingHTML->loadReferenceRating('Blog', 'post', $entry['id'], 0, $tpl, 'single_view/entry');
         }
 
