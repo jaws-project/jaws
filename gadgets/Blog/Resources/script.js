@@ -15,59 +15,59 @@ var BlogCallback = {
 
     DeleteEntries: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            var rows = $('posts_datagrid')[0].getSelectedRows();
+            var rows = $('#posts_datagrid')[0].getSelectedRows();
             if (rows.length > 0) {
                 for(var i=0; i<rows.length; i++) {
-                    $('posts_datagrid')[0].deleteItem();
+                    $('#posts_datagrid')[0].deleteItem();
                 }
             }
-            PiwiGrid.multiSelect($('posts_datagrid'));
-            var limit = $('posts_datagrid')[0].getCurrentPage();
+            PiwiGrid.multiSelect($('#posts_datagrid')[0]);
+            var limit = $('#posts_datagrid')[0].getCurrentPage();
             var formData = getDataOfLEForm();
             updatePostsDatagrid(formData['category'],
                                 formData['status'], formData['search'], 0, true);
         } else {
-            PiwiGrid.multiSelect($('posts_datagrid'));
+            PiwiGrid.multiSelect($('#posts_datagrid')[0]);
         }
         BlogAjax.showResponse(response);
     },
 
     ChangeEntryStatus: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            PiwiGrid.multiSelect($('posts_datagrid'));
+            PiwiGrid.multiSelect($('#posts_datagrid')[0]);
             resetLEForm();
             var formData = getDataOfLEForm();
             updatePostsDatagrid(formData['category'],
                                 formData['status'], formData['search'], 0, true);
         } else {
-            PiwiGrid.multiSelect($('posts_datagrid'));
+            PiwiGrid.multiSelect($('#posts_datagrid')[0]);
         }
         BlogAjax.showResponse(response);
     },
 
     DeleteTrackbacks: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            var rows = $('trackbacks_datagrid')[0].getSelectedRows();
+            var rows = $('#trackbacks_datagrid')[0].getSelectedRows();
             if (rows.length > 0) {
                 for(var i=0; i<rows.length; i++) {
-                    $('trackbacks_datagrid')[0].deleteItem();
+                    $('#trackbacks_datagrid')[0].deleteItem();
                 }
             }
-            PiwiGrid.multiSelect($('trackbacks_datagrid'));
-            var limit = $('trackbacks_datagrid')[0].getCurrentPage();
+            PiwiGrid.multiSelect($('#trackbacks_datagrid')[0]);
+            var limit = $('#trackbacks_datagrid')[0].getCurrentPage();
             var formData = getDataOfLTBForm();
             updateTrackbacksDatagrid(limit, formData['filter'],
                                    formData['search'], formData['status'],
                                    true);
         } else {
-            PiwiGrid.multiSelect($('trackbacks_datagrid'));
+            PiwiGrid.multiSelect($('#trackbacks_datagrid')[0]);
         }
         BlogAjax.showResponse(response);
     },
 
     TrackbackMarkAs: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            PiwiGrid.multiSelect($('trackbacks_datagrid'));
+            PiwiGrid.multiSelect($('#trackbacks_datagrid')[0]);
             resetLTBForm();
             var formData = getDataOfLTBForm();
             updateTrackbacksDatagrid(0,
@@ -76,7 +76,7 @@ var BlogCallback = {
                                    formData['status'],
                                    true);
         } else {
-            PiwiGrid.multiSelect($('trackbacks_datagrid'));
+            PiwiGrid.multiSelect($('#trackbacks_datagrid')[0]);
         }
         BlogAjax.showResponse(response);
     },
@@ -250,9 +250,9 @@ function updatePostsDatagrid(cat, status, search, limit, resetCounter)
     resetGrid('posts_datagrid', result);
     if (resetCounter) {
         var size = BlogAjax.callSync('SizeOfSearch', [cat, status, search]);
-        $('posts_datagrid')[0].rowsSize = size;
-        $('posts_datagrid')[0].setCurrentPage(0);
-        $('posts_datagrid')[0].updatePageCounter();
+        $('#posts_datagrid')[0].rowsSize = size;
+        $('#posts_datagrid')[0].setCurrentPage(0);
+        $('#posts_datagrid')[0].updatePageCounter();
     }
 }
 
@@ -261,10 +261,10 @@ function updatePostsDatagrid(cat, status, search, limit, resetCounter)
  */
 function getData(limit)
 {
-    switch($('action').value) {
+    switch($('#action').val()) {
     case 'ListEntries':
         if (limit == undefined) {
-            limit = $('posts_datagrid')[0].getCurrentPage();
+            limit = $('#posts_datagrid')[0].getCurrentPage();
         }
         var formData = getDataOfLEForm();
         updatePostsDatagrid(formData['category'],
@@ -273,14 +273,14 @@ function getData(limit)
         break;
     case 'ManageComments':
         if (limit == undefined) {
-            limit = $('comments_datagrid')[0].getCurrentPage();
+            limit = $('#comments_datagrid')[0].getCurrentPage();
         }
         var formData = getDataOfLCForm();
         updateCommentsDatagrid(limit, formData['search'], formData['status'], false);
         break;
     case 'ManageTrackbacks':
         if (limit == undefined) {
-            limit = $('trackbacks_datagrid')[0].getCurrentPage();
+            limit = $('#trackbacks_datagrid')[0].getCurrentPage();
         }
         var formData = getDataOfLTBForm();
         updateTrackbacksDatagrid(limit, formData['filter'],
@@ -295,21 +295,21 @@ function getData(limit)
  */
 function firstValues()
 {
-    switch($('action').value) {
+    switch($('#action').val()) {
     case 'ListEntries':
-        var firstValues = $('posts_datagrid')[0].getFirstPagerValues();
+        var firstValues = $('#posts_datagrid')[0].getFirstPagerValues();
         getData(firstValues);
-        $('posts_datagrid')[0].firstPage();
+        $('#posts_datagrid')[0].firstPage();
         break;
     case 'ManageComments':
-        var firstValues = $('comments_datagrid')[0].getFirstPagerValues();
+        var firstValues = $('#comments_datagrid')[0].getFirstPagerValues();
         getData(firstValues);
-        $('comments_datagrid')[0].firstPage();
+        $('#comments_datagrid')[0].firstPage();
         break;
     case 'ManageTrackbacks':
-        var firstValues = $('trackbacks_datagrid')[0].getFirstPagerValues();
+        var firstValues = $('#trackbacks_datagrid')[0].getFirstPagerValues();
         getData(firstValues);
-        $('trackbacks_datagrid')[0].firstPage();
+        $('#trackbacks_datagrid')[0].firstPage();
         break;
     }
 }
@@ -319,21 +319,21 @@ function firstValues()
  */
 function previousValues()
 {
-    switch($('action').value) {
+    switch($('#action').val()) {
     case 'ListEntries':
-        var previousValues = $('posts_datagrid')[0].getPreviousPagerValues();
+        var previousValues = $('#posts_datagrid')[0].getPreviousPagerValues();
         getData(previousValues);
-        $('posts_datagrid')[0].previousPage();
+        $('#posts_datagrid')[0].previousPage();
         break;
     case 'ManageComments':
-        var previousValues = $('comments_datagrid')[0].getPreviousPagerValues();
+        var previousValues = $('#comments_datagrid')[0].getPreviousPagerValues();
         getData(previousValues);
-        $('comments_datagrid')[0].previousPage();
+        $('#comments_datagrid')[0].previousPage();
         break;
     case 'ManageTrackbacks':
-        var previousValues = $('trackbacks_datagrid')[0].getPreviousPagerValues();
+        var previousValues = $('#trackbacks_datagrid')[0].getPreviousPagerValues();
         getData(previousValues);
-        $('trackbacks_datagrid')[0].previousPage();
+        $('#trackbacks_datagrid')[0].previousPage();
         break;
     }
 }
@@ -343,21 +343,21 @@ function previousValues()
  */
 function nextValues()
 {
-    switch($('action').value) {
+    switch($('#action').val()) {
     case 'ListEntries':
-        var nextValues = $('posts_datagrid')[0].getNextPagerValues();
+        var nextValues = $('#posts_datagrid')[0].getNextPagerValues();
         getData(nextValues);
-        $('posts_datagrid')[0].nextPage();
+        $('#posts_datagrid')[0].nextPage();
         break;
     case 'ManageComments':
-        var nextValues = $('comments_datagrid')[0].getNextPagerValues();
+        var nextValues = $('#comments_datagrid')[0].getNextPagerValues();
         getData(nextValues);
-        $('comments_datagrid')[0].nextPage();
+        $('#comments_datagrid')[0].nextPage();
         break;
     case 'ManageTrackbacks':
-        var nextValues = $('trackbacks_datagrid')[0].getNextPagerValues();
+        var nextValues = $('#trackbacks_datagrid')[0].getNextPagerValues();
         getData(nextValues);
-        $('trackbacks_datagrid')[0].nextPage();
+        $('#trackbacks_datagrid')[0].nextPage();
         break;
     }
 }
@@ -367,21 +367,21 @@ function nextValues()
  */
 function lastValues()
 {
-    switch($('action').value) {
+    switch($('#action').val()) {
     case 'ListEntries':
-        var lastValues = $('posts_datagrid')[0].getLastPagerValues();
+        var lastValues = $('#posts_datagrid')[0].getLastPagerValues();
         getData(lastValues);
-        $('posts_datagrid')[0].lastPage();
+        $('#posts_datagrid')[0].lastPage();
         break;
     case 'ManageComments':
-        var lastValues = $('comments_datagrid')[0].getLastPagerValues();
+        var lastValues = $('#comments_datagrid')[0].getLastPagerValues();
         getData(lastValues);
-        $('comments_datagrid')[0].lastPage();
+        $('#comments_datagrid')[0].lastPage();
         break;
     case 'ManageTrackbacks':
-        var lastValues = $('trackbacks_datagrid')[0].getLastPagerValues();
+        var lastValues = $('#trackbacks_datagrid')[0].getLastPagerValues();
         getData(lastValues);
-        $('trackbacks_datagrid')[0].lastPage();
+        $('#trackbacks_datagrid')[0].lastPage();
         break;
     }
 }
@@ -396,9 +396,9 @@ function updateTrackbacksDatagrid(limit, filter, search, status, resetCounter)
     resetGrid('trackbacks_datagrid', result);
     if (resetCounter) {
         var size = BlogAjax.callSync('SizeOfTrackbacksSearch', [filter, search, status]);
-        $('trackbacks_datagrid')[0].rowsSize    = size;
-        $('trackbacks_datagrid')[0].setCurrentPage(0);
-        $('trackbacks_datagrid')[0].updatePageCounter();
+        $('#trackbacks_datagrid')[0].rowsSize    = size;
+        $('#trackbacks_datagrid')[0].setCurrentPage(0);
+        $('#trackbacks_datagrid')[0].updatePageCounter();
     }
 }
 
@@ -419,7 +419,7 @@ function trackbackDelete(row_id)
  */
 function trackbackDGAction(combo)
 {
-    var rows = $('trackbacks_datagrid')[0].getSelectedRows();
+    var rows = $('#trackbacks_datagrid')[0].getSelectedRows();
     var selectedRows = false;
     if (rows.length > 0) {
         selectedRows = true;
@@ -444,7 +444,7 @@ function trackbackDGAction(combo)
  */
 function entryDGAction(combo)
 {
-    var rows = $('posts_datagrid')[0].getSelectedRows();
+    var rows = $('#posts_datagrid')[0].getSelectedRows();
     var selectedRows = false;
     if (rows.length > 0) {
         selectedRows = true;
@@ -538,7 +538,7 @@ function resetCategoryCombo()
  */
 function saveCategory(form)
 {
-    if (!$('name').val())
+    if (!$('#name').val())
     {
         alert(incompleteCategoryFields);
         return false;
@@ -604,28 +604,28 @@ function newCategory()
  */
 function startAutoDrafting()
 {
-    var title          = $('title').value;
-    var fasturl        = $('fasturl').value;
-    var meta_keywords  = $('meta_keywords').value;
-    var meta_desc      = $('meta_desc').value;
-    var allow_comments = $('allow_comments').checked;
+    var title          = $('#title').val();
+    var fasturl        = $('#fasturl').val();
+    var meta_keywords  = $('#meta_keywords').val();
+    var meta_desc      = $('#meta_desc').val();
+    var allow_comments = $('#allow_comments').prop('checked');
     var trackbacks     = '';
-    if ($('trackback_to')) {
-        trackbacks = $('trackback_to').value;
+    if ($('#trackback_to').length) {
+        trackbacks = $('#trackback_to').val();
     }
-    var published      = $('published').value;
+    var published      = $('#published').val();
     var summary        = getEditorValue('summary_block');
     var content        = getEditorValue('text_block');
     var tags           = '';
-    if ($('tags') != null) {
-        tags = $('tags').value;
+    if ($('#tags').length) {
+        tags = $('#tags').val();
     }
 
     if (!title.blank() && (!summary.blank() || !content.blank()))
     {
         var timestamp = null;
-        if ($('edit_timestamp').checked) {
-            timestamp = $('pubdate').value;
+        if ($('#edit_timestamp').prop('checked')) {
+            timestamp = $('#pubdate').val();
         }
 
         var categoriesNode = $('#categories input');
@@ -639,14 +639,14 @@ function startAutoDrafting()
         }
 
         var id = '';
-        var actioni = $('action').value;
+        var actioni = $('#action').val();
 
         switch (actioni) {
             case 'SaveNewEntry':
                 id = 'NEW';
                 break;
             case 'SaveEditEntry':
-                id = $('id').value;
+                id = $('#id').val();
                 break;
         }
 
@@ -667,7 +667,7 @@ function startAutoDrafting()
 function showSimpleResponse(reponse)
 {
     if (!autoDraftDone) {
-        var actioni   = $('action').value;
+        var actioni   = $('#action').val();
         if (actioni == 'SaveNewEntry' && reponse[0]['type'] == 'response_notice') {
             $('#published').val('0');
             $('#id').val(reponse[0]['data']);
