@@ -823,6 +823,16 @@ class Jaws_ORM
                 $result = $this->jawsdb->dbc->exec($sql);
                 break;
 
+            case 'igsert':
+                $sql = 'select '. $this->quoteIdentifier($this->_pk_field). "\n";
+                $sql.= 'from '. $this->_tablesIdentifier. "\n";
+                $sql.= $this->_build_where();
+                $result = $this->jawsdb->dbc->queryone($sql);
+                if (!MDB2::isError($result) && empty($result)) {
+                    goto insert;
+                }
+                break;
+
             case 'upsert':
                 $sql = 'select '. $this->quoteIdentifier($this->_pk_field). "\n";
                 $sql.= 'from '. $this->_tablesIdentifier. "\n";
@@ -1028,6 +1038,7 @@ class Jaws_ORM
                 return $this;
 
             case 'insert':
+            case 'igsert':
             case 'update':
             case 'upsert':
                 $this->_values = $params[0];
