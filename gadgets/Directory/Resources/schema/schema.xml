@@ -23,13 +23,6 @@
         <name>user</name>
         <type>integer</type>
         <notnull>true</notnull>
-        <description>file owner but not necessarily the creator</description>
-      </field>
-
-      <field>
-        <name>is_dir</name>
-        <type>boolean</type>
-        <default>false</default>
       </field>
 
       <field>
@@ -44,7 +37,13 @@
       </field>
 
       <field>
-        <name>filename</name>
+        <name>host_filename</name>
+        <type>text</type>
+        <length>128</length>
+      </field>
+
+      <field>
+        <name>user_filename</name>
         <type>text</type>
         <length>128</length>
       </field>
@@ -62,35 +61,20 @@
       </field>
 
       <field>
-        <name>url</name>
-        <type>text</type>
-        <length>255</length>
-      </field>
-
-      <field>
-        <name>shared</name>
+        <name>is_dir</name>
         <type>boolean</type>
         <default>false</default>
       </field>
 
       <field>
-        <name>public</name>
+        <name>hidden</name>
         <type>boolean</type>
         <default>false</default>
-        <description>whether file is accessible publicly</description>
       </field>
 
       <field>
-        <name>owner</name>
+        <name>hits</name>
         <type>integer</type>
-        <notnull>true</notnull>
-        <description>the creator of the file, may be equal to user</description>
-      </field>
-
-      <field>
-        <name>reference</name>
-        <type>integer</type>
-        <description>reference to original file that is shared</description>
       </field>
 
       <field>
@@ -109,13 +93,7 @@
         <name><variable>table_prefix</variable>directory_title_idx</name>
         <unique>true</unique>
         <field>
-          <name>title</name>
-        </field>
-        <field>
-          <name>parent</name>
-        </field>
-        <field>
-          <name>user</name>
+          <name>host_filename</name>
         </field>
       </index>
 
