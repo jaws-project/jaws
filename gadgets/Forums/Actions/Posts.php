@@ -59,6 +59,13 @@ class Forums_Actions_Posts extends Forums_Actions_Default
         $tpl->SetVariable('title', $topic['subject']);
         $tpl->SetVariable('url', $this->gadget->urlMap('Posts', array('fid' => $rqst['fid'], 'tid' => $rqst['tid'])));
 
+        // display subscription if installed
+        if (Jaws_Gadget::IsGadgetInstalled('Subscription')) {
+            $sHTML = Jaws_Gadget::getInstance('Subscription')->action->load('Subscription');
+            $tpl->SetVariable('subscription', $sHTML->ShowSubscription('Blog', 'topic', $rqst['tid']));
+        }
+
+
         // date format
         $date_format = $this->gadget->registry->fetch('date_format');
         $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
@@ -616,6 +623,7 @@ class Forums_Actions_Posts extends Forums_Actions_Default
                 $GLOBALS['app']->Session->GetAttribute('user'),
                 $post['tid'],
                 $post['fid'],
+                $post['message'],
                 $post['message'],
                 $post['attachments']
             );

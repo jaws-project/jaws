@@ -206,10 +206,9 @@ class Forums_Model_Topics extends Jaws_Gadget_Model
             return $tid;
         }
 
-        $pid = 0;
         $pModel = $this->gadget->model->load('Posts');
         if (!Jaws_Error::IsError($pModel)) {
-            $pid = $pModel->InsertPost($uid, $tid, $data['fid'], $message, $attachment, true);
+            $pid = $pModel->InsertPost($uid, $tid, $data['fid'], $subject, $message, $attachment, true);
             if (Jaws_Error::IsError($pid)) {
                 return $pid;
             }

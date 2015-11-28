@@ -124,12 +124,13 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
      * @param   int     $uid                User's ID
      * @param   int     $tid                Topic ID
      * @param   int     $fid                Forum ID
+     * @param   string  $subject            Post subject
      * @param   string  $message            Post content
      * @param   mixed   $attachments        Post attachments
      * @param   bool    $new_topic  Is this first post of topic?
      * @return  mixed   Post ID on successfully or Jaws_Error on failure
      */
-    function InsertPost($uid, $tid, $fid, $message, $attachments = null, $new_topic = false)
+    function InsertPost($uid, $tid, $fid, $subject, $message, $attachments = null, $new_topic = false)
     {
         if (!$this->gadget->GetPermission('ForumPublic', $fid)) {
             return Jaws_Error::raiseError(_t('GLOBAL_ERROR_ACCESS_DENIED'), 403, JAWS_ERROR_NOTICE);
@@ -167,6 +168,35 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
                 return $result;
             }
         }
+
+        // shout subscription event
+        // [topic] action
+        $subscriptionParams = array(
+            'action' => 'topic',
+            'reference' => $tid,
+            'summary' => $subject,
+            'text' => $message
+        );
+        $this->gadget->event->shout('Subscription', $subscriptionParams);
+
+        // [forum] action
+        $subscriptionParams = array(
+            'action' => 'forum',
+            'reference' => $fid,
+            'summary' => $subject,
+            'text' => $message
+        );
+        $this->gadget->event->shout('Subscription', $subscriptionParams);
+
+        // [group] action
+        $gid = $fModel->GetForumGroup($fid);
+        $subscriptionParams = array(
+            'action' => 'group',
+            'reference' => $gid,
+            'summary' => $subject,
+            'text' => $message
+        );
+        $this->gadget->event->shout('Subscription', $subscriptionParams);
 
         return $pid;
     }

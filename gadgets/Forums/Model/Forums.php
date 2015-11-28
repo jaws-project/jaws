@@ -41,6 +41,18 @@ class Forums_Model_Forums extends Jaws_Gadget_Model
     }
 
     /**
+     * Returns array of forum properties
+     *
+     * @access  public
+     * @param   int     $fid    forum ID
+     * @return  mixed   group Id or Jaws_Error on error
+     */
+    function GetForumGroup($fid)
+    {
+        return Jaws_ORM::getInstance()->table('forums')->select('gid:integer')->where('id', $fid)->fetchOne();
+    }
+
+    /**
      * Returns a list of  forums at a request level
      *
      * @access  public
