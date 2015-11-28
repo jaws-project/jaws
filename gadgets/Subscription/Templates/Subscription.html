@@ -1,0 +1,85 @@
+<!-- BEGIN subscription -->
+<div class="gadget_header">
+  <h3>{{title}}</h3>
+</div>
+<div class="gadget_container">
+    <div class="gadget_response">
+        <div id="subscription_subscription_response" class="{{type}}">{{text}}</div>
+    </div>
+    <form name="subscription" action="{{base_script}}" method="post" onsubmit="return updateSubscription();">
+        <input type="hidden" name="gadget" value="Subscription" />
+        <input type="hidden" name="action" value="UpdateSubscription" />
+
+        <div class="gadget_content content">
+            <!-- BEGIN gadget -->
+            <fieldset>
+              <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
+                <span>{{gadget_title}}</span>
+              </legend>
+                <div>
+                  <!-- BEGIN item -->
+                  <fieldset>
+                    <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
+                      <span>
+                        <input type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
+                        <label for="{{item_id}}">{{title}}</label>
+                      </span>
+                    </legend>
+                      <div>
+
+                      <!-- BEGIN subItem -->
+                      <ul>
+                          <li>
+                              <input type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
+                              <label for="{{item_id}}">{{title}}</label>
+                          </li>
+                      </ul>
+                      <!-- END subItem -->
+                      </div>
+                  </fieldset>
+                  <!-- END item -->
+                </div>
+
+            <!-- BEGIN no_subscription -->{{no_subscription}}<!-- END no_subscription -->
+            </fieldset>
+            <!-- END gadget -->
+
+            <!-- BEGIN email -->
+            <label for="email">{{lbl_email}}:</label>
+            <input type="text" id="email" name="email" value="{{email}}">
+            <!-- END email -->
+
+        </div>
+        <div class="gadget_actions actions"><button type="submit" value="{{update}}">{{update}}</button></div>
+    </form>
+</div>
+
+<div class="gadget_footer"></div>
+<!-- END subscription -->
+
+
+<!-- BEGIN inline -->
+<div class="gadget_header">
+    <h3>{{title}}</h3>
+</div>
+
+<div class="gadget_container">
+<form name="subscriptionForm" method="post" action="{{base_script}}">
+    <input type="hidden" name="gadget" value="Subscription"/>
+    <input type="hidden" name="action" value="UpdateGadgetSubscription"/>
+
+    <input type="hidden" name="subscription_gadget" value="{{gadget}}"/>
+    <input type="hidden" name="subscription_action" value="{{action}}"/>
+    <input type="hidden" name="reference" value="{{reference}}"/>
+
+    <!-- BEGIN email -->
+    <input type="email" name="email">
+    <!-- END email -->
+
+    <input type="checkbox" name="subscribe" id="subscribe" value="1" {{checked}}>
+    <label for="subscribe">{{lbl_subscription}}</label>
+
+    <button class="button" type="submit">{{lbl_save}}</button>
+</form>
+</div>
+<!-- END inline -->
