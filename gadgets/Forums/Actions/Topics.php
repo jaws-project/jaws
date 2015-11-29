@@ -63,6 +63,12 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         $tpl->SetVariable('lbl_views', _t('FORUMS_VIEWS'));
         $tpl->SetVariable('lbl_lastpost', _t('FORUMS_LASTPOST'));
 
+        // display subscription if installed
+        if (Jaws_Gadget::IsGadgetInstalled('Subscription')) {
+            $sHTML = Jaws_Gadget::getInstance('Subscription')->action->load('Subscription');
+            $tpl->SetVariable('subscription', $sHTML->ShowSubscription('Forums', 'forum', $rqst['fid']));
+        }
+
         // date format
         $date_format = $this->gadget->registry->fetch('date_format');
         $date_format = empty($date_format)? 'DN d MN Y' : $date_format;

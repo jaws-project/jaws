@@ -24,6 +24,7 @@ class Forums_Hooks_Subscription extends Jaws_Gadget_Hook
             if (count($groups) > 0) {
                 foreach ($groups as $group) {
                     $item = array();
+                    $item['selectable'] = false;
                     $item['action'] = 'group';
                     $item['id'] = $group['id'];
                     $item['title'] = _t('FORUMS_GROUP') . ' ' . $group['title'];
