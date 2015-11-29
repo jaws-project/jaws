@@ -14,13 +14,14 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
      * Grabs notification and sends it out via available drivers
      *
      * @access  public
-     * @params  string  $shouter    The shouting gadget
-     * @params  array   $params     [user, group, title, summary, description, priority, send]
+     * @param   string  $shouter    The shouting gadget
+     * @param   array   $params     [user, group, title, summary, description, priority, send]
+     * @return  bool
      */
     function Execute($shouter, $params)
     {
         if (isset($params['send']) && $params['send'] === false) {
-            return;
+            return false;
         }
 
         $users = array();
@@ -31,14 +32,30 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                 $users = $group_users;
             }
         }
+
+        if (isset($params['emails']) && !empty($params['emails'])) {
+//            $user = $jUser->GetUser($params['user'], true, false, true);
+//            if (!Jaws_Error::IsError($user) && !empty($user)) {
+//                $users[] = $user;
+//            }
+        }
+
         if (isset($params['user']) && !empty($params['user'])) {
             $user = $jUser->GetUser($params['user'], true, false, true);
             if (!Jaws_Error::IsError($user) && !empty($user)) {
                 $users[] = $user;
             }
         }
+
+        if (isset($params['users']) && !empty($params['users'])) {
+            $user = $jUser->GetUser($params['user'], true, false, true);
+            if (!Jaws_Error::IsError($user) && !empty($user)) {
+                $users[] = $user;
+            }
+        }
+
         if (empty($users)) {
-            return;
+            return false;
         }
 
         if (!isset($params['summary'])) {
