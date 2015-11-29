@@ -24,7 +24,7 @@
                           <!-- BEGIN checkbox -->
                         <input type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
                           <!-- END checkbox -->
-                        <label for="{{item_id}}">{{title}}</label>
+                        <label for="{{id}}"><a href="{{url}}">{{title}}</a></label>
                       </span>
                     </legend>
                       <div>
@@ -33,7 +33,7 @@
                       <ul>
                           <li>
                               <input type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
-                              <label for="{{item_id}}">{{title}}</label>
+                              <label for="{{id}}"><a href="{{url}}">{{title}}</a></label>
                           </li>
                       </ul>
                       <!-- END subItem -->
@@ -72,16 +72,14 @@
 
     <input type="hidden" name="subscription_gadget" value="{{gadget}}"/>
     <input type="hidden" name="subscription_action" value="{{action}}"/>
-    <input type="hidden" name="reference" value="{{reference}}"/>
+    <input type="hidden" name="subscription_reference" value="{{reference}}"/>
+    <input type="hidden" name="is_subscribe" value="{{is_subscribe}}"/>
 
     <!-- BEGIN email -->
     <input type="email" name="email">
     <!-- END email -->
 
-    <input type="checkbox" name="subscribe" id="subscribe" value="1" {{checked}}>
-    <label for="subscribe">{{lbl_subscription}}</label>
-
-    <button class="button" type="submit">{{lbl_save}}</button>
+    <button class="button" type="submit">{{lbl_action_type}}</button>
 </form>
 </div>
 <!-- END inline -->

@@ -13,6 +13,7 @@ class Subscription_Events_Subscription extends Jaws_Gadget_Event
      * @access  public
      * @param   string  $shouter    The shouting gadget
      * @param   array   $params     [user, group, title, summary, description, priority, send]
+     * @return  bool|void
      */
     function Execute($shouter, $params)
     {
@@ -22,8 +23,11 @@ class Subscription_Events_Subscription extends Jaws_Gadget_Event
 
         $sModel = $this->gadget->model->load('Subscription');
         $usersSubscriptions = $sModel->GetUsersSubscriptions($shouter, $params['action'], $params['reference']);
-        if (Jaws_Error::IsError($usersSubscriptions) || count($usersSubscriptions) < 1) {
-            return;
+        if (Jaws_Error::IsError($usersSubscriptions)) {
+            return $usersSubscriptions;
+        }
+        if (!empty($usersSubscriptions)) {
+            return false;
         }
 
         $users = array();
@@ -39,7 +43,7 @@ class Subscription_Events_Subscription extends Jaws_Gadget_Event
         $params = array();
         $params['title'] = _t('SUBSCRIPTION_NOTIFICATION_TITLE');
         $params['summary'] = $params['summary'];
-        $params['description'] = $params['text'];
+        $params['description'] = $params['description'];
         $params['users'] = $users;
         $params['emails'] = $emails;
         $this->gadget->event->shout('Notify', $params);

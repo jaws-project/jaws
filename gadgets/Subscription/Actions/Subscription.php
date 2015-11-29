@@ -81,19 +81,17 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
 
             $tpl->SetVariable('gadget_title',  $title);
 
-            // fetch level 0 (root) items
-            $rootItems = $objHook->Execute(0);
+            // fetch subscription items
+            $items = $objHook->Execute();
 
-            // fetch level 1 items
-            $levelOneItems = $objHook->Execute(1);
-
-            foreach ($rootItems as $item) {
+            foreach ($items as $item) {
                 $tpl->SetBlock('subscription/gadget/item');
                 $tpl->SetVariable('title', $item['title']);
+                $tpl->SetVariable('url', $item['url']);
 
                 // display checkbox?
                 if(!isset($item['selectable']) || (isset($item['selectable']) && $item['selectable']==true ) ) {
-                    $checkboxName = $gadget . '_' . $item['action'] . '_' . $item['id'];
+                    $checkboxName = $gadget . '_' . $item['action'] . '_' . $item['reference'];
                     $tpl->SetVariable('id', $checkboxName);
 
                     // check selected item
@@ -104,14 +102,13 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
                     }
                 }
 
-                if (!empty($levelOneItems) &&
-                    isset($levelOneItems[$item['id']]) &&
-                    count($levelOneItems[$item['id']]) > 0) {
-                    foreach ($levelOneItems[$item['id']] as $subItem) {
+                if (!empty($item['sub_items'])) {
+                    foreach ($item['sub_items'] as $subItem) {
                         $tpl->SetBlock('subscription/gadget/item/subItem');
-                        $checkboxName = $gadget . '_' . $subItem['action'] . '_' . $subItem['id'];
+                        $checkboxName = $gadget . '_' . $subItem['action'] . '_' . $subItem['reference'];
                         $tpl->SetVariable('id', $checkboxName);
                         $tpl->SetVariable('title', $subItem['title']);
+                        $tpl->SetVariable('url', $subItem['url']);
 
                         // check selected item
                         if(in_array($checkboxName, $selectedItems)) {
@@ -127,9 +124,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
                 $tpl->ParseBlock('subscription/gadget/item');
             }
 
-
             $tpl->ParseBlock('subscription/gadget');
-
         }
 
         $tpl->ParseBlock('subscription');
@@ -200,9 +195,11 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
         $isSubscribed = $sModel->GetUserSubscription($currentUser, null, $gadget, $action, $reference);
 
         if ($isSubscribed) {
-            $tpl->SetVariable('checked', 'checked');
+            $tpl->SetVariable('is_subscribe', '0');
+            $tpl->SetVariable('lbl_action_type', _t('SUBSCRIPTION_ACTION_UNSUBSCRIBE'));
         } else {
-            $tpl->SetVariable('checked', '');
+            $tpl->SetVariable('is_subscribe', '1');
+            $tpl->SetVariable('lbl_action_type', _t('SUBSCRIPTION_ACTION_SUBSCRIBE'));
         }
 
         $tpl->ParseBlock('inline');
@@ -220,7 +217,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
     {
         $post  = jaws()->request->fetch(
             array(
-                'email', 'subscription_gadget', 'subscription_action', 'reference', 'subscribe'
+                'email', 'subscription_gadget', 'subscription_action', 'subscription_reference', 'is_subscribe'
             ),
             'post'
         );
@@ -232,8 +229,8 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
             $email,
             $post['subscription_gadget'],
             $post['subscription_action'],
-            $post['reference'],
-            $post['subscribe']
+            $post['subscription_reference'],
+            $post['is_subscribe']
         );
 
         if (Jaws_Error::IsError($result)) {
