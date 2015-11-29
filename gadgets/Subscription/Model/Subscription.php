@@ -33,12 +33,12 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
      * Update user subscription
      *
      * @access  public
-     * @param   int     $uid            User ID
+     * @param   int     $user           User ID
      * @param   string  $email          User Email
      * @param   array   $selectedItems  Selected item's for subscription
      * @return  bool    True or  error
      */
-    function UpdateSubscription($uid, $email, $selectedItems)
+    function UpdateSubscription($user, $email, $selectedItems)
     {
         if (empty($selectedItems)) {
             return false;
@@ -54,7 +54,7 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
             $gadget = $itemData['0'];
             $action = $itemData['1'];
             $reference = (int)$itemData['2'];
-            $references[] = array($uid, $email, $gadget, $action, $reference, time());
+            $references[] = array($user, $email, $gadget, $action, $reference, time());
             $gadgetActions[$gadget][$action] = $action;
         }
 
@@ -76,7 +76,7 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
         // insert user subscription data to DB
         $table = $objORM->table('subscription');
         $result = $table->insertAll(
-            array('uid', 'email', 'gadget', 'action', 'reference', 'insert_time'),
+            array('user', 'email', 'gadget', 'action', 'reference', 'insert_time'),
             $references
         )->exec();
 
@@ -94,7 +94,7 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
      * Update user's gadget subscription
      *
      * @access  public
-     * @param   int         $uid            User ID
+     * @param   int         $user           User ID
      * @param   string      $email          User Email
      * @param   string      $gadget         Gadget name
      * @param   string      $action         Action name
@@ -102,14 +102,14 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
      * @param   bool        $isSubscribe    Subscribe to this?
      * @return  bool        True or error
      */
-    function UpdateGadgetSubscription($uid, $email, $gadget, $action, $reference, $isSubscribe)
+    function UpdateGadgetSubscription($user, $email, $gadget, $action, $reference, $isSubscribe)
     {
-        if(empty($uid) && empty($email)) {
+        if(empty($user) && empty($email)) {
             return false;
         }
 
         // delete old user gadget-action subscription
-        $res = $this->RemoveGadgetSubscription($uid, $email, $gadget, $action, $reference);
+        $res = $this->RemoveGadgetSubscription($user, $email, $gadget, $action, $reference);
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
@@ -120,7 +120,7 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
 
         return Jaws_ORM::getInstance()->table('subscription')->insert(
             array(
-                'uid' => $uid,
+                'user' => $user,
                 'email' => $email,
                 'gadget' => $gadget,
                 'action' => $action,
@@ -134,16 +134,16 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
      * Remove user gadget subscription
      *
      * @access  public
-     * @param   int         $uid            User ID
+     * @param   int         $user           User ID
      * @param   string      $email          User Email
      * @param   string      $gadget         Gadget name
      * @param   string      $action         Action name
      * @param   int         $reference      Reference Id
      * @return bool True or error
      */
-    function RemoveGadgetSubscription($uid, $email, $gadget, $action, $reference)
+    function RemoveGadgetSubscription($user, $email, $gadget, $action, $reference)
     {
-        if(empty($uid) && empty($email)) {
+        if(empty($user) && empty($email)) {
             return false;
         }
 
@@ -152,8 +152,8 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
             ->and()->where('action', $action)
             ->and()->where('reference', $reference);
 
-        if (!empty($uid)) {
-            $table->and()->where('uid', $uid);
+        if (!empty($user)) {
+            $table->and()->where('user', $user);
         } else if (!empty($email)) {
             $table->and()->where('email', $email);
         }
@@ -166,19 +166,19 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
      * Get user subscribe to the item?
      *
      * @access  public
-     * @param   int         $uid            User ID
+     * @param   int         $user           User ID
      * @param   string      $email          User Email
      * @param   string      $gadget         Gadget name
      * @param   string      $action         Action name
      * @param   int         $reference      Reference Id
      * @return  bool        True or error
      */
-    function GetUserSubscription($uid, $email, $gadget, $action, $reference)
+    function GetUserSubscription($user, $email, $gadget, $action, $reference)
     {
         $table = Jaws_ORM::getInstance()->table('subscription');
         $table->select('count(id):integer');
-        if (!empty($uid)) {
-            $table->where('uid', (int)$uid);
+        if (!empty($user)) {
+            $table->where('user', (int)$user);
         } else {
             $table->where('email', $email);
         }
@@ -199,16 +199,16 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
      * Get user all subscriptions
      *
      * @access  public
-     * @param   int         $uid        User ID
+     * @param   int         $user       User ID
      * @param   string      $email      User Email
      * @return  bool        True or error
      */
-    function GetUserSubscriptions($uid, $email)
+    function GetUserSubscriptions($user, $email)
     {
         $table = Jaws_ORM::getInstance()->table('subscription');
         $table->select('gadget', 'action', 'reference');
-        if (!empty($uid)) {
-            $table->where('uid', (int)$uid);
+        if (!empty($user)) {
+            $table->where('user', (int)$user);
         } else {
             $table->where('email', $email);
         }
@@ -228,7 +228,7 @@ class Subscription_Model_Subscription extends Jaws_Gadget_Model
     function GetUsersSubscriptions($gadget, $action, $reference)
     {
         $sTable = Jaws_ORM::getInstance()->table('subscription');
-        return $sTable->select('uid:integer', 'email')
+        return $sTable->select('user:integer', 'email')
             ->where('gadget', $gadget)->and()
             ->where('action', $action)->and()
             ->where('reference', $reference)

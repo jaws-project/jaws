@@ -29,8 +29,8 @@ class Subscription_Events_Subscription extends Jaws_Gadget_Event
         $users = array();
         $emails = array();
         foreach ($usersSubscriptions as $row) {
-            if (!empty($row['uid'])) {
-                $users[] = $row['uid'];
+            if (!empty($row['user'])) {
+                $users[] = $row['user'];
             } else if (!empty($row['email'])) {
                 $emails[] = $row['email'];
             }

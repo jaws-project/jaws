@@ -89,16 +89,19 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
 
             foreach ($rootItems as $item) {
                 $tpl->SetBlock('subscription/gadget/item');
-
-                $checkboxName = $gadget . '_' . $item['action'] . '_' . $item['id'];
-                $tpl->SetVariable('id', $checkboxName);
                 $tpl->SetVariable('title', $item['title']);
 
-                // check selected item
-                if(in_array($checkboxName, $selectedItems)) {
-                    $tpl->SetVariable('checked', 'checked');
-                } else {
-                    $tpl->SetVariable('checked', '');
+                // display checkbox?
+                if(!isset($item['selectable']) || (isset($item['selectable']) && $item['selectable']==true ) ) {
+                    $checkboxName = $gadget . '_' . $item['action'] . '_' . $item['id'];
+                    $tpl->SetVariable('id', $checkboxName);
+
+                    // check selected item
+                    if (in_array($checkboxName, $selectedItems)) {
+                        $tpl->SetVariable('checked', 'checked');
+                    } else {
+                        $tpl->SetVariable('checked', '');
+                    }
                 }
 
                 if (!empty($levelOneItems) &&
