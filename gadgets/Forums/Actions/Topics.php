@@ -66,7 +66,7 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         // display subscription if installed
         if (Jaws_Gadget::IsGadgetInstalled('Subscription')) {
             $sHTML = Jaws_Gadget::getInstance('Subscription')->action->load('Subscription');
-            $tpl->SetVariable('subscription', $sHTML->ShowSubscription('Forums', 'forum', $rqst['fid']));
+            $tpl->SetVariable('subscription', $sHTML->ShowSubscription('Forums', 'Forum', $rqst['fid']));
         }
 
         // date format

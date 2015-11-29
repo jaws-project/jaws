@@ -169,32 +169,33 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             }
         }
 
+        //FIXME: add shoutAll method in core for increase performance
         // shout subscription event
         // [topic] action
         $subscriptionParams = array(
-            'action' => 'topic',
+            'action' => 'Topic',
             'reference' => $tid,
             'summary' => $subject,
-            'text' => $message
+            'description' => $message
         );
         $this->gadget->event->shout('Subscription', $subscriptionParams);
 
         // [forum] action
         $subscriptionParams = array(
-            'action' => 'forum',
+            'action' => 'Forum',
             'reference' => $fid,
             'summary' => $subject,
-            'text' => $message
+            'description' => $message
         );
         $this->gadget->event->shout('Subscription', $subscriptionParams);
 
         // [group] action
         $gid = $fModel->GetForumGroup($fid);
         $subscriptionParams = array(
-            'action' => 'group',
+            'action' => 'Group',
             'reference' => $gid,
             'summary' => $subject,
-            'text' => $message
+            'description' => $message
         );
         $this->gadget->event->shout('Subscription', $subscriptionParams);
 
