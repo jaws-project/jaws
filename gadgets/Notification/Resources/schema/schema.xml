@@ -26,18 +26,6 @@
             </field>
 
             <field>
-                <name>url</name>
-                <type>text</type>
-                <length>2048</length>
-            </field>
-
-            <field>
-                <name>unsubscribe_url</name>
-                <type>text</type>
-                <length>2048</length>
-            </field>
-
-            <field>
                 <name>title</name>
                 <type>text</type>
                 <length>64</length>

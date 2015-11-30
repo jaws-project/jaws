@@ -72,36 +72,17 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
 
         // generate notification array
         $notifications = array();
-        foreach($users as $user) {
-            $notifications['email'] = $user['email'];
-            $notifications['mobile_number'] = $user['mobile_number'];
-            $notifications['url'] = $params['url'];
-            $notifications['unsubscribe_url'] = $params['unsubscribe_url'];
-            $notifications['title'] = strip_tags($params['title']);
-            $notifications['summary'] = strip_tags($params['summary']);
-            $notifications['description'] = $params['description'];
+        foreach ($users as $user) {
+            $notifications[] = array(
+                'email' => $user['email'],
+                'mobile_number' => $user['mobile_number'],
+                'title' => strip_tags($params['title']),
+                'summary' => strip_tags($params['summary']),
+                'description' => $params['description']
+            );
         }
 
         $model = $this->gadget->model->load('Notification');
         return $model->InsertNotifications($notifications);
-        
-        
-/*
-          if (!isset($params['summary'])) {
-            $params['summary'] = '';
-        }
-
-        $drivers = glob(JAWS_PATH . 'include/Jaws/Notification/*.php');
-        foreach ($drivers as $driver) {
-            $driver = basename($driver, '.php');
-            $options = unserialize($this->gadget->registry->fetch($driver . '_options'));
-            $driverObj = Jaws_Notification::getInstance($driver, $options);
-            $driverObj->notify(
-                $users,
-                strip_tags($params['title']),
-                strip_tags($params['summary']),
-                $params['description']
-            );
-        }*/
     }
 }

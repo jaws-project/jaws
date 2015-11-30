@@ -5,7 +5,7 @@
  * @category    GadgetModel
  * @package     Notification
  */
-class Subscription_Model_Notification extends Jaws_Gadget_Model
+class Notification_Model_Notification extends Jaws_Gadget_Model
 {
     /**
      * Insert notifications to db
@@ -24,8 +24,6 @@ class Subscription_Model_Notification extends Jaws_Gadget_Model
             $notificationsItems[] = array(
                 'email' => $row['email'],
                 'mobile_number' => $row['mobile_number'],
-                'url' => $row['url'],
-                'unsubscribe_url' => $row['unsubscribe_url'],
                 'title' => $row['title'],
                 'summary' => $row['summary'],
                 'description' => $row['description'],
@@ -34,10 +32,9 @@ class Subscription_Model_Notification extends Jaws_Gadget_Model
         }
 
         return Jaws_ORM::getInstance()->table('notification')
-            ->insertinsertAll(
-                array('email', 'mobile_number', 'url', 'unsubscribe_url',
-                    'title', 'summary', 'description', 'insert_time'),
-                $notificationsItems)
+            ->insertAll(
+                        array('email', 'mobile_number', 'title', 'summary', 'description', 'insert_time'),
+                        $notificationsItems)
             ->exec();
     }
 }

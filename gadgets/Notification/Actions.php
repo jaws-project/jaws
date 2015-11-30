@@ -7,6 +7,14 @@
  */
 
 /**
+ * Index actions
+ */
+$actions['SendNotifications'] = array(
+    'standalone' => true,
+    'file' => 'Notification',
+);
+
+/**
  * Admin actions
  */
 $admin_actions['Settings'] = array(
