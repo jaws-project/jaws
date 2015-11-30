@@ -4,9 +4,6 @@
  *
  * @category    GadgetModel
  * @package     Notification
- * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2014-2015 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Notification_Installer extends Jaws_Gadget_Installer
 {
@@ -26,6 +23,11 @@ class Notification_Installer extends Jaws_Gadget_Installer
      */
     function Install()
     {
+        $result = $this->installSchema('schema.xml');
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
         $this->gadget->event->insert('Notify');
 
         return true;

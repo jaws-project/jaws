@@ -4,9 +4,6 @@
  *
  * @category    Gadget
  * @package     Notification
- * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2014-2015 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Notification_Events_Notify extends Jaws_Gadget_Event
 {
@@ -34,10 +31,19 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         }
 
         if (isset($params['emails']) && !empty($params['emails'])) {
-//            $user = $jUser->GetUser($params['user'], true, false, true);
-//            if (!Jaws_Error::IsError($user) && !empty($user)) {
-//                $users[] = $user;
-//            }
+            foreach ($params['emails'] as $email) {
+                if (!empty($email)) {
+                    $users[] = array('email' => $email);
+                }
+            }
+        }
+
+        if (isset($params['mobiles']) && !empty($params['mobiles'])) {
+            foreach ($params['mobiles'] as $mobile) {
+                if (!empty($mobile)) {
+                    $users[] = array('mobile_number' => $mobile);
+                }
+            }
         }
 
         if (isset($params['user']) && !empty($params['user'])) {
@@ -47,18 +53,41 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
             }
         }
 
+        // FIXME: increase performance for getting users data
         if (isset($params['users']) && !empty($params['users'])) {
-            $user = $jUser->GetUser($params['user'], true, false, true);
-            if (!Jaws_Error::IsError($user) && !empty($user)) {
-                $users[] = $user;
+            foreach ($params['users'] as $userId) {
+                if (!empty($userId)) {
+                    $user = $jUser->GetUser($userId, true, false, true);
+                    if (!Jaws_Error::IsError($user) && !empty($user)) {
+                        $users[] = $user;
+                    }
+                }
             }
         }
+
 
         if (empty($users)) {
             return false;
         }
 
-        if (!isset($params['summary'])) {
+        // generate notification array
+        $notifications = array();
+        foreach($users as $user) {
+            $notifications['email'] = $user['email'];
+            $notifications['mobile_number'] = $user['mobile_number'];
+            $notifications['url'] = $params['url'];
+            $notifications['unsubscribe_url'] = $params['unsubscribe_url'];
+            $notifications['title'] = strip_tags($params['title']);
+            $notifications['summary'] = strip_tags($params['summary']);
+            $notifications['description'] = $params['description'];
+        }
+
+        $model = $this->gadget->model->load('Notification');
+        return $model->InsertNotifications($notifications);
+        
+        
+/*
+          if (!isset($params['summary'])) {
             $params['summary'] = '';
         }
 
@@ -73,6 +102,6 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                 strip_tags($params['summary']),
                 $params['description']
             );
-        }
+        }*/
     }
 }

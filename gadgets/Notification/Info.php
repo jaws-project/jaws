@@ -4,9 +4,6 @@
  *
  * @category    GadgetInfo
  * @package     Notification
- * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2014-2015 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Notification_Info extends Jaws_Gadget
 {

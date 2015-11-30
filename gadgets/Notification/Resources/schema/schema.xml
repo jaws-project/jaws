@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+    <name><variable>database</variable></name>
+
+    <table>
+        <name><variable>table_prefix</variable>notification</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>email</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
+            <field>
+                <name>mobile_number</name>
+                <type>text</type>
+                <length>24</length>
+            </field>
+
+            <field>
+                <name>url</name>
+                <type>text</type>
+                <length>2048</length>
+            </field>
+
+            <field>
+                <name>unsubscribe_url</name>
+                <type>text</type>
+                <length>2048</length>
+            </field>
+
+            <field>
+                <name>title</name>
+                <type>text</type>
+                <length>64</length>
+            </field>
+
+            <field>
+                <name>summary</name>
+                <type>text</type>
+                <length>512</length>
+            </field>
+
+            <field>
+                <name>description</name>
+                <type>text</type>
+            </field>
+
+            <field>
+                <name>insert_time</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+        </declaration>
+    </table>
+
+</database>
