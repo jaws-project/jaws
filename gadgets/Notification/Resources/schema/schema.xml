@@ -3,7 +3,7 @@
     <name><variable>database</variable></name>
 
     <table>
-        <name><variable>table_prefix</variable>notification</name>
+        <name><variable>table_prefix</variable>notification_email</name>
         <declaration>
 
             <field>
@@ -14,15 +14,15 @@
             </field>
 
             <field>
-                <name>email</name>
-                <type>text</type>
-                <length>128</length>
+                <name>key</name>
+                <type>integer</type>
+                <length>8</length>
             </field>
 
             <field>
-                <name>mobile_number</name>
+                <name>contact_value</name>
                 <type>text</type>
-                <length>24</length>
+                <length>128</length>
             </field>
 
             <field>
@@ -43,7 +43,57 @@
             </field>
 
             <field>
-                <name>insert_time</name>
+                <name>publish_time</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+        </declaration>
+    </table>
+
+
+    <table>
+        <name><variable>table_prefix</variable>notification_mobile</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>key</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <field>
+                <name>contact_value</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
+            <field>
+                <name>title</name>
+                <type>text</type>
+                <length>64</length>
+            </field>
+
+            <field>
+                <name>summary</name>
+                <type>text</type>
+                <length>512</length>
+            </field>
+
+            <field>
+                <name>description</name>
+                <type>text</type>
+            </field>
+
+            <field>
+                <name>publish_time</name>
                 <type>integer</type>
                 <length>8</length>
             </field>

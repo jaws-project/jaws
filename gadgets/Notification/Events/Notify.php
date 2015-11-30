@@ -65,24 +65,44 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
             }
         }
 
-
         if (empty($users)) {
             return false;
         }
 
+        $key = crc32($params['gadget'] . $params['action'] . $params['reference']);
+        $publishTime = empty($params['publish_time']) ? time() : $params['publish_time'];
+
         // generate notification array
-        $notifications = array();
+        $notificationsEmails = array();
+        $notificationsMobiles = array();
         foreach ($users as $user) {
-            $notifications[] = array(
-                'email' => $user['email'],
-                'mobile_number' => $user['mobile_number'],
-                'title' => strip_tags($params['title']),
-                'summary' => strip_tags($params['summary']),
-                'description' => $params['description']
-            );
+            if(!empty($user['email'])) {
+                $notificationsEmails[] = array(
+                    'key' => $key,
+                    'contact_value' => $user['email'],
+                    'title' => strip_tags($params['title']),
+                    'summary' => strip_tags($params['summary']),
+                    'description' => $params['description'],
+                    'publish_time' => $publishTime
+                );
+            }
+            if(!empty($user['mobile_number'])) {
+                $notificationsMobiles[] = array(
+                    'key' => $key,
+                    'mobile_number' => $user['mobile_number'],
+                    'title' => strip_tags($params['title']),
+                    'summary' => strip_tags($params['summary']),
+                    'description' => $params['description'],
+                    'publish_time' => $publishTime
+                );
+            }
         }
 
         $model = $this->gadget->model->load('Notification');
-        return $model->InsertNotifications($notifications);
+        $res = $model->InsertNotifications('email', $notificationsEmails);
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+        return $model->InsertNotifications('mobile', $notificationsMobiles);
     }
 }

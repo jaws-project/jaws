@@ -11,30 +11,37 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * Insert notifications to db
      *
      * @access  public
+     * @param   string      $contactType      Contact type (email, mobile, ...)
      * @param   array       $notifications    Notifications
      * @return  bool        True or error
      */
-    function InsertNotifications($notifications)
+    function InsertNotifications($contactType, $notifications)
     {
-        if (empty($notifications)) {
+        if (empty($contactType) || empty($notifications)) {
             return false;
         }
 
         foreach ($notifications as $row) {
             $notificationsItems[] = array(
-                'email' => $row['email'],
-                'mobile_number' => $row['mobile_number'],
+                'key' => $row['key'],
+                'contact_value' => $row['contact_value'],
                 'title' => $row['title'],
                 'summary' => $row['summary'],
                 'description' => $row['description'],
-                'insert_time' => time(),
+                'publish_time' => $row['publish_time'],
             );
         }
 
-        return Jaws_ORM::getInstance()->table('notification')
-            ->insertAll(
-                        array('email', 'mobile_number', 'title', 'summary', 'description', 'insert_time'),
-                        $notificationsItems)
-            ->exec();
+        if ($contactType == 'email') {
+            $table = Jaws_ORM::getInstance()->table('notification_email');
+        } else if ($contactType == 'mobile') {
+            $table = Jaws_ORM::getInstance()->table('notification_mobile');
+        } else {
+            return new Jaws_Error(_t('NOTIFICATION_INVALID_CONTACT_TYPE'));
+        }
+
+        return $table->insertAll(
+                        array('key', 'contact_value', 'title', 'summary', 'description', 'publish_time'),
+                        $notificationsItems)->exec();
     }
 }

@@ -8,6 +8,20 @@
 class Notification_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        array('processing', 'false'),
+        array('last_update', '0'),
+        array('email_pop_count', '100'),
+        array('mobile_pop_count', '50'),
+        array('configuration', ''), // array(gadget_name=>(0,1, driver_name))
+    );
+
+    /**
      * Default ACL value of the gadget frontend
      *
      * @var     bool
@@ -42,7 +56,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         $tables = array(
-            'notification',
+            'notification_email', 'notification_mobile'
         );
         foreach ($tables as $table) {
             $result = Jaws_DB::getInstance()->dropTable($table);
