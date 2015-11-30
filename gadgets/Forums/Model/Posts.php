@@ -176,7 +176,8 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             'action' => 'Topic',
             'reference' => $tid,
             'summary' => $subject,
-            'description' => $message
+            'description' => $message,
+            'url' => $this->gadget->urlMap('Posts', array('fid' => $fid, 'tid'=>$tid))
         );
         $this->gadget->event->shout('Subscription', $subscriptionParams);
 
@@ -185,7 +186,8 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             'action' => 'Forum',
             'reference' => $fid,
             'summary' => $subject,
-            'description' => $message
+            'description' => $this->gadget->urlMap('Topics', array('fid' => $fid)),
+            'url' => $this->gadget->urlMap('Posts', array('fid' => $fid, 'tid'=>$tid))
         );
         $this->gadget->event->shout('Subscription', $subscriptionParams);
 
@@ -195,7 +197,8 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             'action' => 'Group',
             'reference' => $gid,
             'summary' => $subject,
-            'description' => $message
+            'description' => $message,
+            'url' => $this->gadget->urlMap('Posts', array('fid' => $fid, 'tid'=>$tid))
         );
         $this->gadget->event->shout('Subscription', $subscriptionParams);
 
