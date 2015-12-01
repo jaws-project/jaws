@@ -21,3 +21,7 @@ $admin_actions['Settings'] = array(
     'normal' => true,
     'file' => 'Settings',
 );
+$admin_actions['SaveSettings'] = array(
+    'standalone' => true,
+    'file' => 'Settings',
+);

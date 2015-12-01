@@ -16,6 +16,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
     var $_RegKeys = array(
         array('processing', 'false'),
         array('last_update', '0'),
+        array('queue_max_time', '1800'), // maximum time to execution an queue (seconds)
         array('email_pop_count', '100'),
         array('mobile_pop_count', '50'),
         array('configuration', ''), // array(gadget_name=>(0,1, driver_name))
@@ -28,6 +29,16 @@ class Notification_Installer extends Jaws_Gadget_Installer
      * @access  protected
      */
     var $default_acl = true;
+
+    /**
+     * Gadget ACLs
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_ACLKeys = array(
+        'Settings',
+    );
 
     /**
      * Installs the gadget

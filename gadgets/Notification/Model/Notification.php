@@ -7,6 +7,29 @@
  */
 class Notification_Model_Notification extends Jaws_Gadget_Model
 {
+
+    /**
+     * Update users subscriptions
+     *
+     * @access  public
+     * @param   string  $contactType        Notification type (email, mobile, ...)
+     * @param   int     $limit              Pop limitation count
+     * @return bool True or error
+     */
+    function GetNotifications($contactType, $limit)
+    {
+        if ($contactType == Notification_Info::NOTIFICATION_TYPE_EMAIL) {
+            $nTable = Jaws_ORM::getInstance()->table('notification_email');
+        } else if ($contactType == Notification_Info::NOTIFICATION_TYPE_MOBILE) {
+            $nTable = Jaws_ORM::getInstance()->table('notification_mobile');
+        } else {
+            return new Jaws_Error(_t('NOTIFICATION_INVALID_CONTACT_TYPE'));
+        }
+
+        return $nTable->select('*')->limit($limit)->fetchAll();
+    }
+
+
     /**
      * Insert notifications to db
      *
@@ -32,9 +55,9 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             );
         }
 
-        if ($contactType == 'email') {
+        if ($contactType == Notification_Info::NOTIFICATION_TYPE_EMAIL) {
             $table = Jaws_ORM::getInstance()->table('notification_email');
-        } else if ($contactType == 'mobile') {
+        } else if ($contactType == Notification_Info::NOTIFICATION_TYPE_MOBILE) {
             $table = Jaws_ORM::getInstance()->table('notification_mobile');
         } else {
             return new Jaws_Error(_t('NOTIFICATION_INVALID_CONTACT_TYPE'));

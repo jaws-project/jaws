@@ -69,7 +69,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
             return false;
         }
 
-        $key = crc32($params['gadget'] . $params['action'] . $params['reference']);
+//        $key = crc32($params['gadget'] . $params['action'] . $params['reference']);
         $publishTime = empty($params['publish_time']) ? time() : $params['publish_time'];
 
         // generate notification array
@@ -78,7 +78,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         foreach ($users as $user) {
             if(!empty($user['email'])) {
                 $notificationsEmails[] = array(
-                    'key' => $key,
+                    'key' => $params['key'],
                     'contact_value' => $user['email'],
                     'title' => strip_tags($params['title']),
                     'summary' => strip_tags($params['summary']),
@@ -88,7 +88,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
             }
             if(!empty($user['mobile_number'])) {
                 $notificationsMobiles[] = array(
-                    'key' => $key,
+                    'key' => $params['key'],
                     'mobile_number' => $user['mobile_number'],
                     'title' => strip_tags($params['title']),
                     'summary' => strip_tags($params['summary']),
@@ -99,10 +99,16 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         }
 
         $model = $this->gadget->model->load('Notification');
-        $res = $model->InsertNotifications('email', $notificationsEmails);
-        if (Jaws_Error::IsError($res)) {
-            return $res;
+        if (!empty($notificationsEmails)) {
+            $res = $model->InsertNotifications(Notification_Info::NOTIFICATION_TYPE_EMAIL, $notificationsEmails);
+            if (Jaws_Error::IsError($res)) {
+                return $res;
+            }
         }
-        return $model->InsertNotifications('mobile', $notificationsMobiles);
+        if (!empty($notificationsMobiles)) {
+            return $model->InsertNotifications(Notification_Info::NOTIFICATION_TYPE_MOBILE, $notificationsMobiles);
+        }
+
+        return false;
     }
 }
