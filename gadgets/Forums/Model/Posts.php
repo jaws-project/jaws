@@ -170,11 +170,15 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         }
 
         //FIXME: add shoutAll method in core for increase performance
-        // shout subscription event
+        // shout subscriptions event
+
+        $key = mt_rand(10000000, 99999999);
+
         // [topic] action
         $subscriptionParams = array(
             'action' => 'Topic',
             'reference' => $tid,
+            'key' => $key,
             'summary' => $subject,
             'description' => $message,
             'url' => $this->gadget->urlMap('Posts', array('fid' => $fid, 'tid'=>$tid), true)
@@ -185,6 +189,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $subscriptionParams = array(
             'action' => 'Forum',
             'reference' => $fid,
+            'key' => $key,
             'summary' => $subject,
             'description' => $message,
             'url' => $this->gadget->urlMap('Posts', array('fid' => $fid, 'tid'=>$tid), true)
@@ -196,6 +201,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         $subscriptionParams = array(
             'action' => 'Group',
             'reference' => $gid,
+            'key' => $key,
             'summary' => $subject,
             'description' => $message,
             'url' => $this->gadget->urlMap('Posts', array('fid' => $fid, 'tid'=>$tid), true)
