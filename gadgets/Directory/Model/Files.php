@@ -14,68 +14,52 @@ class Directory_Model_Files extends Jaws_Gadget_Model
      * Fetches list of files including shared files
      *
      * @access  public
-     * @param   int     $parent  Restricts results to a specified node
+     * @param   int     $params  Query params
      * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($parent = null, $user = null, $shared = null, $foreign = null,
-        $is_dir = null, $query = null, $type = null, $size = null, $date = null)
+    function GetFiles($params)
     {
-        $access = ($user === null)? null : $this->CheckAccess($parent, $user);
-        if ($access === false) {
-            return array();
-        }
-
         $table = Jaws_ORM::getInstance()->table('directory as dir');
-        $table->select('dir.id', 'parent', 'user', 'is_dir:boolean', 'title',
-            'description', 'filename', 'filetype', 'filesize', 'dir.url', 'shared:boolean',
-            'dir.public:boolean', 'owner', 'reference', 'createtime', 'updatetime', 'users.username');
-        $table->join('users', 'owner', 'users.id');
+        $table->select('dir.id', 'parent', 'user', 'is_dir:boolean', 'hidden:boolean',
+            'title', 'description', 'user_filename', 'filetype', 'filesize',
+            'hits', 'createtime', 'updatetime');
 
-        if ($parent !== null){
-            $table->where('parent', $parent)->and();
+        if (isset($params['parent'])) {
+            $table->where('parent', $params['parent'])->and();
         }
 
-        if ($access !== true && $user !== null){
-            $table->where('user', $user)->and();
+        if (isset($params['hidden'])) {
+            $table->where('hidden', $params['hidden'])->and();
         }
 
-        if ($shared !== null){
-            $table->where('shared', $shared)->and();
+        if (isset($params['is_dir'])) {
+            $table->where('is_dir', $params['is_dir'])->and();
         }
 
-        if ($foreign !== null){
-            $flag = $foreign? '<>' : '=';
-            $table->where('user', $table->expr('owner'), $flag)->and();
+        if (isset($params['type'])) {
+            $table->where('filetype', '%' . $params['type'] . '%', 'like')->and();
         }
 
-        if ($is_dir !== null){
-            $table->where('is_dir', $is_dir)->and();
-        }
-
-        if ($type !== null){
-            $table->where('filetype', "%$type%", 'like')->and();
-        }
-
-        if ($size !== null){
-            if (!empty($size[0])) {
-                $table->where('filesize', $size[0] * 1024, '>=')->and();
+        if (isset($params['size'])) {
+            if (!empty($params['size'][0])) {
+                $table->where('filesize', $params['size'][0] * 1024, '>=')->and();
             }
-            if (!empty($size[1])) {
-                $table->where('filesize', $size[1] * 1024, '<=')->and();
+            if (!empty($params['size'][1])) {
+                $table->where('filesize', $params['size'][1] * 1024, '<=')->and();
             }
         }
 
-        if ($date !== null){
-            if (!empty($date[0])) {
-                $table->where('createtime', $date[0], '>=')->and();
+        if (isset($params['date'])){
+            if (!empty($params['date'][0])) {
+                $table->where('createtime', $params['date'][0], '>=')->and();
             }
-            if (!empty($date[1])) {
-                $table->where('createtime', $date[1], '<=')->and();
+            if (!empty($params['date'][1])) {
+                $table->where('createtime', $params['date'][1], '<=')->and();
             }
         }
 
-        if ($query !== null){
-            $query = "%$query%";
+        if (isset($params['query'])){
+            $query = '%' . $params['query'] . '%';
             $table->openWhere('title', $query, 'like')->or();
             $table->where('description', $query, 'like')->or();
             $table->closeWhere('filename', $query, 'like');
@@ -94,47 +78,10 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     function GetFile($id)
     {
         $table = Jaws_ORM::getInstance()->table('directory as dir');
-        $table->select('id', 'parent', 'user', 'is_dir:boolean', 'title',
-            'description', 'filename', 'filetype', 'filesize', 'url', 'shared:boolean',
-            'public:boolean', 'owner', 'reference', 'createtime', 'updatetime');
+        $table->select('id', 'parent', 'user', 'title', 'description',
+            'host_filename', 'user_filename', 'filetype', 'filesize',
+            'is_dir:boolean', 'hidden:boolean', 'createtime', 'updatetime');
         return $table->where('dir.id', $id)->fetchRow();
-    }
-
-    /**
-     * Checks user access to files including shared files
-     *
-     * @access  public
-     * @param   int     $id  File ID
-     * @return  bool    True or false
-     */
-    function CheckAccess($id, $user)
-    {
-        if (empty($id)) {
-            return null;
-        } else {
-            $table = Jaws_ORM::getInstance()->table('directory');
-            $table->select('user:integer', 'parent:integer');
-            $file = $table->where('id', $id)->fetchRow();
-            if ($file['user'] == $user) {
-                return true;
-            }
-        }
-
-        // Check for shared files
-        $table = Jaws_ORM::getInstance()->table('directory');
-        $table->select('count(id):integer');
-        $table->where('user', $user)->and();
-        $table->where('reference', $id);
-        $count = $table->fetchOne();
-        if ($count > 0) {
-            return true;
-        }
-
-        if ($file['parent'] !== 0) {
-            return $this->CheckAccess($file['parent'], $user);
-        }
-
-        return false;
     }
 
     /**
@@ -198,7 +145,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     function Delete($data)
     {
         if ($data['is_dir']) {
-            $files = $this->GetFiles($data['id'], $data['user']);
+            $files = $this->GetFiles(array('parent' => $data['id']));
             if (Jaws_Error::IsError($files)) {
                 return false;
             }
@@ -210,7 +157,6 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         // Delete file/folder and related shortcuts
         $table = Jaws_ORM::getInstance()->table('directory');
         $table->delete()->where('id', $data['id']);
-        $table->or()->where('reference', $data['id']);
         $res = $table->exec();
         if (Jaws_Error::IsError($res)) {
             return false;

@@ -33,12 +33,9 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
             $tpl->SetVariable('lbl_filename', _t('DIRECTORY_FILE_FILENAME'));
             $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
             $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
-            $tpl->SetVariable('lbl_owner', _t('DIRECTORY_FILE_OWNER'));
             $tpl->SetVariable('lbl_bytes', _t('DIRECTORY_BYTES'));
-            $tpl->SetVariable('lbl_shared', _t('DIRECTORY_SHARED_FOR'));
             $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
             $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
-            $tpl->SetVariable('lbl_public', _t('DIRECTORY_FILE_PUBLIC_URL'));
             $tpl->SetVariable('title', '{title}');
             $tpl->SetVariable('desc', '{description}');
             $tpl->SetVariable('filename', '{filename}');
@@ -48,7 +45,6 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
             $tpl->SetVariable('filesize', '{filesize}');
             $tpl->SetVariable('username', '{username}');
             $tpl->SetVariable('url', '{url}');
-            $tpl->SetVariable('users', '{users}');
             $tpl->SetVariable('createtime', '{createtime}');
             $tpl->SetVariable('updatetime', '{updatetime}');
             $tpl->SetVariable('created', '{created}');
@@ -88,7 +84,6 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
                 }
             }
 
-            $data['user'] = $data['owner'] = $user;
             $data['is_dir'] = false;
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
@@ -237,54 +232,6 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
     }
 
     /**
-     * Makes file public/unpublic
-     *
-     * @access  public
-     * @return  array   Response array
-     */
-    function PublishFile()
-    {
-        try {
-            $id = (int)jaws()->request->fetch('id');
-            $model = $this->gadget->model->load('Files');
-
-            // Validate file
-            $file = $model->GetFile($id);
-            if (Jaws_Error::IsError($file) || $file['is_dir']) {
-                throw new Exception(_t('DIRECTORY_ERROR_FILE_UPDATE'));
-            }
-
-            // Validate user
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            if ($file['user'] != $user) {
-                throw new Exception(_t('DIRECTORY_ERROR_FILE_UPDATE'));
-            }
-
-            $public = jaws()->request->fetch('public');
-            if ($public === null) {
-                throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
-            }
-            $public = (bool)$public;
-
-            // Update record
-            $model = $this->gadget->model->load('Files');
-            $res = $model->Update($id, array('public' => $public));
-            if (Jaws_Error::IsError($res)) {
-                throw new Exception(_t('DIRECTORY_ERROR_FILE_UPDATE'));
-            }
-            $dl_url = $public? $this->GetDownloadURL($id, false) : '';
-        } catch (Exception $e) {
-            return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
-        }
-
-        return $GLOBALS['app']->Session->GetResponse(
-            _t('DIRECTORY_NOTICE_FILE_UPDATED'),
-            RESPONSE_NOTICE,
-            $dl_url
-        );
-    }
-
-    /**
      * Generates file download URL
      *
      * @access  public
@@ -411,16 +358,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(404);
         }
 
-        // Validate user
-        if (!$file['public']) {
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            $access = $model->CheckAccess($id, $user);
-            if ($access !== true) {
-                return Jaws_HTTPError::Get(403);
-            }
-        }
-
-        // Check for file existance
+        // Check for file existence
         $uid = ($file['id'] == $file['reference'])? $file['user'] : $file['owner'];
         $filename = $GLOBALS['app']->getDataURL("directory/$uid/") . $file['filename'];
         if (!file_exists($filename)) {

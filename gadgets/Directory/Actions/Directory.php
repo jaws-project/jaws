@@ -54,14 +54,12 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         $dir_id = (int)jaws()->request->fetch('dirid');
         $tpl->SetVariable('currentDir', $dir_id);
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $tpl->SetVariable('UID', $user);
+        $tpl->SetVariable('UID', (int)$GLOBALS['app']->Session->GetAttribute('user'));
         $tpl->SetVariable('home_title', _t('DIRECTORY_HOME'));
         $tpl->SetVariable('home_url', $this->gadget->urlMap('Directory'));
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
         $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
-        $tpl->SetVariable('lbl_username', _t('DIRECTORY_FILE_OWNER'));
         $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
         $tpl->SetVariable('lbl_date', _t('DIRECTORY_FILE_DATE'));
@@ -106,12 +104,8 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('icon', '{icon}');
         $tpl->SetVariable('type', '{type}');
         $tpl->SetVariable('size', '{size}');
-        $tpl->SetVariable('username', '{username}');
         $tpl->SetVariable('created', '{created}');
         $tpl->SetVariable('modified', '{modified}');
-        $tpl->SetVariable('shared', '{shared}');
-        $tpl->SetVariable('foreign', '{foreign}');
-        $tpl->SetVariable('public', '{public}');
         $tpl->ParseBlock('workspace/fileTemplate');
 
         $tpl->ParseBlock('workspace');
@@ -126,10 +120,10 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      */
     function GetFiles()
     {
-        $data = jaws()->request->fetch(array('id', 'shared', 'foreign'));
+        $data = jaws()->request->fetch(array('parent'));
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Files');
-        $files = $model->GetFiles($data['id'], $user, $data['shared'], $data['foreign'], null);
+        $files = $model->GetFiles($data);
         if (Jaws_Error::IsError($files)){
             return array();
         }
@@ -155,11 +149,6 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     {
         $id = jaws()->request->fetch('id');
         $model = $this->gadget->model->load('Files');
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $access = $model->CheckAccess($id, $user);
-        if ($access !== true) {
-            return array();
-        }
         $file = $model->GetFile($id);
         if (Jaws_Error::IsError($file)) {
             return array();
@@ -167,17 +156,6 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $objDate = Jaws_Date::getInstance();
         $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
         $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
-
-        // Shared for
-        $model = $this->gadget->model->load('Share');
-        $users = $model->GetFileUsers($id);
-        if (!Jaws_Error::IsError($users)) {
-            $uid_set = array();
-            foreach ($users as $user) {
-                $uid_set[] = $user['username'];
-            }
-            $file['users'] = implode(', ', $uid_set);
-        }
 
         return $file;
     }
@@ -232,14 +210,14 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     {
         $model = $this->gadget->model->load('Files');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $dirs = $model->GetFiles($root, $user, null, null, true);
+        $dirs = $model->GetFiles(array('parent' => $root, 'is_dir' => true));
         if (Jaws_Error::IsError($dirs)) {
             return;
         }
         if (!empty($dirs)) {
             $tree .= '<ul>';
             foreach ($dirs as $dir) {
-                if (in_array($dir['id'], $exclude) || $dir['user'] !== $dir['owner']) {
+                if (in_array($dir['id'], $exclude)) {
                     continue;
                 }
                 $tree .= "<li><a id='node_{$dir['id']}'>{$dir['title']}</a>";
@@ -273,7 +251,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         foreach ($id_set as $id) {
             // Validate file & user
             $file = $model->GetFile($id);
-            if (Jaws_Error::IsError($file) || $file['user'] != $user) {
+            if (Jaws_Error::IsError($file)) {
                 $fault = true;
                 continue;
             }
@@ -284,7 +262,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
                 $fault = true;
             }
         }
-        
+
         if ($fault === true) {
             return $GLOBALS['app']->Session->GetResponse(
                 _t('DIRECTORY_WARNING_DELETE'),
@@ -340,13 +318,6 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             // Validate file
             $file = $model->GetFile($id);
             if (Jaws_Error::IsError($file)) {
-                $fault = true;
-                continue;
-            }
-
-            // Validate user
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            if ($file['user'] != $user) {
                 $fault = true;
                 continue;
             }

@@ -77,10 +77,6 @@ $actions['DeleteFile'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
-$actions['PublishFile'] = array(
-    'standalone' => true,
-    'file' => 'Files'
-);
 $actions['UploadFile'] = array(
     'standalone' => true,
     'file' => 'Files'
@@ -100,20 +96,4 @@ $actions['GetDownloadURL'] = array(
 $actions['PlayMedia'] = array(
     'standalone' => true,
     'file' => 'Files'
-);
-$actions['ShareForm'] = array(
-    'standalone' => true,
-    'file' => 'Share'
-);
-$actions['GetUsers'] = array(
-    'standalone' => true,
-    'file' => 'Share'
-);
-$actions['GetFileUsers'] = array(
-    'standalone' => true,
-    'file' => 'Share'
-);
-$actions['UpdateFileUsers'] = array(
-    'standalone' => true,
-    'file' => 'Share'
 );

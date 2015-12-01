@@ -60,22 +60,6 @@ var DirectoryCallback = {
         DirectoryAjax.showResponse(response);
     },
 
-    PublishFile: function(response) {
-        if (response.type === 'response_notice') {
-            fileById[idSet[0]]['public'] = response.data;
-            showFileURL(response.data);
-        }
-        DirectoryAjax.showResponse(response);
-    },
-
-    UpdateFileUsers: function(response) {
-        if (response.type === 'response_notice') {
-            cancel();
-            updateFiles(currentDir);
-        }
-        DirectoryAjax.showResponse(response);
-    },
-
     Search: function(response) {
         if (response.type === 'response_notice') {
             $('#dir_pathbar').hide();
@@ -116,6 +100,7 @@ function initDirectory()
     iconByExt.folder = 'folder';
 
     updateFiles(currentDir);
+    updateActions();
 }
 
 /**
@@ -126,19 +111,12 @@ function updateFiles(parent)
     if (parent === undefined) {
         parent = currentDir;
     }
-    var shared = ($('#file_filter').val() === 'shared')? true : null,
-        foreign = ($('#file_filter').val() === 'foreign')? true : null,
-        files = DirectoryAjax.callSync('GetFiles',
-            {'id':parent, 'shared':shared, 'foreign':foreign});
+    var files = DirectoryAjax.callSync('GetFiles', {'parent':parent});
 
-    if (files[0] && files[0].user != UID) {
-        $('#dir_path').html(' > ' + files[0].username);
-    } else {
-        updatePath();
-    }
+    $('#dir_searchbar').hide();
+    updatePath();
     displayFiles(files);
     $('#dir_pathbar').show();
-    $('#dir_searchbar').hide();
 }
 
 /**
@@ -153,7 +131,9 @@ function displayFiles(files)
         html.find('td')
             .on('click', fileSelect)
             .on('dblclick', function() { fileOpen(data.id); });
-        html.find('input').on('click', fileCheck);
+        if (data.hidden) {
+            $(html[1]).addClass('is-hidden');
+        }
         return html;
     }
 
@@ -165,7 +145,6 @@ function displayFiles(files)
         file.type = iconByExt[file.ext] || 'file-generic';
         file.icon = '<img src="' + icon_url + file.type + '.png" />';
         file.size = formatSize(file.filesize, 0);
-        file.foreign = (file.user !== file.owner);
         if (!file.is_dir) {
             file.url = 'javascript:fileOpen(' + file.id + ');';
         }
@@ -186,17 +165,24 @@ function displayFiles(files)
  */
 function fileSelect(e)
 {
-    if (this.tagName === 'INPUT' || this.tagName === 'A') {
+    if (e.target.tagName === 'A') {
         return;
     }
 
-    $('#file_arena')
-        .find('tr').removeClass('selected')
-        .find('input').prop('checked', false);
-
-    $(this)
-        .parent().addClass('selected')
-        .find('input').prop('checked', true);
+    var input = $(this).parent().find('input');
+    if (e.target.tagName === 'INPUT') {
+        if (input.prop('checked')) {
+            $(this).parent().addClass('selected');
+        } else {
+            $(this).parent().removeClass('selected');
+        }
+    } else {
+        $('#file_arena')
+            .find('tr').removeClass('selected')
+            .find('input').prop('checked', false);
+        input.prop('checked', !input.prop('checked'));
+        $(this).parent().addClass('selected');
+    }
 
     idSet = getSelected();
     updateActions();
@@ -288,11 +274,14 @@ function openMedia(id, type)
  */
 function downloadFile()
 {
-    if (idSet === null) return;
+    if (idSet.length === 0) return;
     var id = idSet[0],
         file = fileById[id];
     if (!file) {
         file = fileById[id] = DirectoryAjax.callSync('GetFile', {'id':id});
+    }
+    if (file.is_dir) {
+        return;
     }
     if (!file.dl_url) {
         fileById[id].dl_url = DirectoryAjax.callSync(
@@ -363,14 +352,6 @@ function props()
     var id = idSet[0],
         data = fileById[idSet],
         form;
-    if (!data.users) {
-        var users = DirectoryAjax.callSync('GetFileUsers', {id:id}),
-            id_set = [];
-        $.each(users, function (i, user) {
-            id_set.push(user.username);
-        });
-        data.users = id_set.join(', ');
-    }
     if (data.is_dir) {
         form = cachedForms.viewDir;
         if (!form) {
@@ -385,9 +366,6 @@ function props()
         cachedForms.viewFile = form;
     }
     $('#form').html(substitute(form, data));
-    if (data['public'] && !data.dl_url) {
-        data.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:id});
-    }
     if (data.dl_url) {
         var link = $('#public_url');
         link.innerHTML = site_url + data.dl_url;
@@ -485,6 +463,7 @@ function editDirectory(id)
     form.find('[name=title]').val(data.title);
     form.find('[name=description]').val(data.description);
     form.find('[name=parent]').val(data.parent);
+    form.find('[name=hidden]').prop('checked', data.hidden);
 }
 
 /**
@@ -580,17 +559,6 @@ function onUpload(response) {
 }
 
 /**
- * Sets file (not)to be available publicly
- */
-function publishFile(published)
-{
-    DirectoryAjax.callAsync('PublishFile', {
-        'id':idSet[0],
-        'public':published
-    });
-}
-
-/**
  * Shows/Hides file URL
  */
 function showFileURL(url)
@@ -660,37 +628,6 @@ function submitFile()
 }
 
 /**
- * Brings the share UI up
- */
-function share()
-{
-    var id = idSet[0];
-    if (!id) return;
-    if (!cachedForms.share) {
-        cachedForms.share = DirectoryAjax.callSync('ShareForm');
-    }
-    $('#form').html(cachedForms.share);
-    $('#groups').selectedIndex = -1;
-
-    var users = DirectoryAjax.callSync('GetFileUsers', {'id':id});
-    sharedFileUsers = {};
-    $.each(users, function (i, user) {
-        sharedFileUsers[user.id] = user.username;
-    });
-    updateShareUsers();
-
-    // Public link
-    var file = fileById[id];
-    $('#public_ui').css('display', file.is_dir? 'none' : '');
-    if (file['public'] && !file.dl_url) {
-        file.dl_url = DirectoryAjax.callSync('GetDownloadURL', {id:id});
-    }
-    if (file.dl_url) {
-        showFileURL(file.dl_url);
-    }
-}
-
-/**
  * Fetches and displays users of selected group
  */
 function toggleUsers(gid)
@@ -729,32 +666,6 @@ function selectUser()
         delete sharedFileUsers[this.value];
     }
     updateShareUsers();
-}
-
-/**
- * Updates list of file users
- */
-function updateShareUsers()
-{
-    var list = $('#share_users').empty();
-    $.each(sharedFileUsers, function(id, name) {
-        list.options[list.options.length] = new Option(name, id);
-    });
-}
-
-/**
- * Submits share data
- */
-function submitShare()
-{
-    var users = [];
-    $.each($('#share_users').find('options'), function(opt) {
-        users.push(opt.value);
-    });
-    DirectoryAjax.callAsync(
-        'UpdateFileUsers',
-        {'id':idSet.join(','), 'users':users.join(',')}
-    );
 }
 
 /**
@@ -831,7 +742,6 @@ var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
     fileById = {},
     iconByExt = {},
     usersByGroup = {},
-    sharedFileUsers = {},
     cachedForms = {},
     filesCount = 0,
     fileTemplate = '',

@@ -8,6 +8,12 @@
 width:100%;
 font:11px tahoma;
 }
+.files-table tr.is-hidden td{
+opacity: 0.4;
+}
+.files-table tr.is-hidden td.file-check{
+opacity: 1;
+}
 .files-table td{
 cursor:default;
 white-space:nowrap;
@@ -15,6 +21,7 @@ white-space:nowrap;
 .files-table tr.selected td{
 background-color:#7299c4;
 color:white;
+opacity: 1;
 }
 .files-table .file-icon{
 position:relative;

@@ -11,7 +11,7 @@
     </a>
     <span id="dir_path"></span>
   </div>
-  <div id="dir_searchbar">
+  <div id="dir_searchbar" class="hidden">
     <img src="gadgets/Directory/Resources/images/search.png" />
     <span id="search_res"></span>
   </div>
@@ -22,9 +22,6 @@
     <img id="btn_edit" src="{{img_edit}}" alt="{{lbl_edit}}" title="{{lbl_edit}}" onclick="edit()" />
     <img id="btn_move" src="{{img_move}}" alt="{{lbl_move}}" title="{{lbl_move}}" onclick="move()" />
     <img id="btn_delete" src="{{img_delete}}" alt="{{lbl_delete}}" title="{{lbl_delete}}" onclick="del()" />
-    <!-- BEGIN share -->
-    <img id="btn_share" src="{{img_share}}" alt="{{lbl_share}}" title="{{lbl_share}}" onclick="share()" />
-    <!-- END share -->
     <img id="btn_dl" src="{{img_dl}}" alt="{{lbl_dl}}" title="{{lbl_dl}}" onclick="downloadFile()" />
   </div>
   <div id="frm_search">
@@ -73,7 +70,6 @@
       <th colspan="2">{{lbl_title}}</th>
       <th>{{lbl_created}}</th>
       <th>{{lbl_modified}}</th>
-      <th>{{lbl_username}}</th>
       <th>{{lbl_size}}</th>
     </tr></thead>
     <tbody id="file_arena" style="display:none;">
@@ -84,7 +80,6 @@
         <td class="file-title"><a href="{{url}}">{{title}}</a></td>
         <td class="file-created">{{created}}</td>
         <td class="file-modified">{{modified}}</td>
-        <td class="file-owner">{{username}}</td>
         <td class="file-size">{{size}}</td>
       </tr>
       <!-- END fileTemplate -->

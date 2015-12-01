@@ -28,11 +28,6 @@ $maps[] = array(
     array('id' => '[[:digit:]]+')
 );
 $maps[] = array(
-    'GetFileUsers',
-    'directory/file/{id}/users',
-    array('id' => '[[:digit:]]+')
-);
-$maps[] = array(
     'DownloadFile',
     'directory/file/{id}/download',
     array('id' => '[[:digit:]]+')
@@ -74,8 +69,3 @@ $maps[] = array(
     'directory/form/directory[/{mode}]',
     array('mode' => '[[:alnum:]]+')
 );
-$maps[] = array(
-    'ShareForm',
-    'directory/form/share'
-);
-
