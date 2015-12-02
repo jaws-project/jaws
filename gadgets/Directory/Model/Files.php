@@ -21,7 +21,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('directory as dir');
         $table->select('dir.id', 'parent', 'user', 'is_dir:boolean', 'hidden:boolean',
-            'title', 'description', 'user_filename', 'filetype', 'filesize',
+            'title', 'description', 'user_filename', 'host_filename', 'filetype', 'filesize',
             'hits', 'createtime', 'updatetime');
 
         if (isset($params['parent'])) {
@@ -62,7 +62,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
             $query = '%' . $params['query'] . '%';
             $table->openWhere('title', $query, 'like')->or();
             $table->where('description', $query, 'like')->or();
-            $table->closeWhere('filename', $query, 'like');
+            $table->closeWhere('user_filename', $query, 'like');
         }
 
         return $table->orderBy('is_dir desc', 'title asc')->fetchAll();
@@ -164,7 +164,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
 
         // Delete from disk
         if (!$data['is_dir']) {
-            $filename = $GLOBALS['app']->getDataURL('directory/' . $data['user'] . '/' . $data['filename']);
+            $filename = $GLOBALS['app']->getDataURL('directory/' . $data['host_filename']);
             if (file_exists($filename)) {
                 if (!Jaws_Utils::delete($filename)) {
                     return false;
@@ -188,19 +188,5 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('directory');
         $table->update(array('parent' => $parent));
         return $table->where('id', $id)->exec();
-    }
-
-    /**
-     * Updates shortcuts
-     *
-     * @access  public
-     * @param   int     $ref    File reference ID
-     * @param   array   $data   File data
-     * @return  mixed   Query result
-     */
-    function UpdateShortcuts($ref, $data)
-    {
-        $table = Jaws_ORM::getInstance()->table('directory');
-        return $table->update($data)->where('reference', $ref)->exec();
     }
 }

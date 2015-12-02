@@ -70,7 +70,7 @@ class Directory_Actions_Directories extends Jaws_Gadget_Action
 
             $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
             $data['is_dir'] = true;
-            $data['hidden'] = isset($data['hidden'])? true : false;
+            $data['hidden'] = $data['hidden']? true : false;
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
             $result = $model->Insert($data);
@@ -113,7 +113,7 @@ class Directory_Actions_Directories extends Jaws_Gadget_Action
 
             // Update directory
             $data['updatetime'] = time();
-            $data['hidden'] = isset($data['hidden'])? true : false;
+            $data['hidden'] = $data['hidden']? true : false;
             $result = $model->Update($id, $data);
             if (Jaws_Error::IsError($result)) {
                 throw new Exception(_t('DIRECTORY_ERROR_DIR_UPDATE'));

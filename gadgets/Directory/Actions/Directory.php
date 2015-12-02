@@ -26,9 +26,6 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('title', $this->gadget->title);
         $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('lbl_adv_search', _t('DIRECTORY_ADVANCED_SEARCH'));
-        $tpl->SetVariable('lbl_all_files', _t('DIRECTORY_FILTER_ALL_FILES'));
-        $tpl->SetVariable('lbl_shared_files', _t('DIRECTORY_FILTER_SHARED_FILES'));
-        $tpl->SetVariable('lbl_foreign_files', _t('DIRECTORY_FILTER_FOREIGN_FILES'));
         $tpl->SetVariable('lbl_new_dir', _t('DIRECTORY_NEW_DIR'));
         $tpl->SetVariable('lbl_new_file', _t('DIRECTORY_NEW_FILE'));
         $tpl->SetVariable('lbl_props', _t('DIRECTORY_PROPERTIES'));
@@ -44,13 +41,6 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('img_delete', STOCK_DELETE);
         $tpl->SetVariable('img_move', STOCK_RIGHT);
         $tpl->SetVariable('img_dl', STOCK_SAVE);
-
-        if ($this->gadget->GetPermission('ShareFile')) {
-            $tpl->SetBlock('workspace/share');
-            $tpl->SetVariable('lbl_share', _t('DIRECTORY_SHARE'));
-            $tpl->SetVariable('img_share', 'gadgets/Directory/Resources/images/share.png');
-            $tpl->ParseBlock('workspace/share');
-        }
 
         $dir_id = (int)jaws()->request->fetch('dirid');
         $tpl->SetVariable('currentDir', $dir_id);
@@ -363,7 +353,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     }
 
     /**
-     * Searches among files and directories for passed query
+     * Searches among files and directories by passed query
      *
      * @access  public
      * @return  array   Response array
@@ -372,10 +362,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     {
         $data = jaws()->request->fetch(array('id', 'file_filter', 'file_search',
             'file_type', 'file_size', 'start_date', 'end_date'));
-        $shared = ($data['file_filter'] === 'shared')? true : null;
-        $foreign = ($data['file_filter'] === 'foreign')? true : null;
-        $type = empty($data['file_type'])? null : $data['file_type'];
-        $size = ($data['file_size'] == '0')? null : explode(',', $data['file_size']);
+
         $jdate = Jaws_Date::getInstance();
         $start_date = $end_date = '';
         if (!empty($data['start_date'])) {
@@ -387,10 +374,15 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $end_date = $GLOBALS['app']->UserTime2UTC($end_date['timestamp']);
         }
         $date = array($start_date, $end_date);
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+
         $model = $this->gadget->model->load('Files');
-        $files = $model->GetFiles($data['id'], $user, $shared, $foreign,
-            null, $data['file_search'], $type, $size, $date);
+        $params = array();
+        $params['parent'] = $data['id'];
+        $params['query'] = $data['file_search'];
+        $params['type'] = empty($data['file_type'])? null : $data['file_type'];
+        $params['size'] = ($data['file_size'] == '0')? null : explode(',', $data['file_size']);
+        $params['date'] = $date;
+        $files = $model->GetFiles($params);
         if (Jaws_Error::IsError($files)){
             return $GLOBALS['app']->Session->GetResponse($files->getMessage(), RESPONSE_ERROR);
         }

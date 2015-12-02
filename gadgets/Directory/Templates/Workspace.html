@@ -24,13 +24,7 @@
     <img id="btn_delete" src="{{img_delete}}" alt="{{lbl_delete}}" title="{{lbl_delete}}" onclick="del()" />
     <img id="btn_dl" src="{{img_dl}}" alt="{{lbl_dl}}" title="{{lbl_dl}}" onclick="downloadFile()" />
   </div>
-  <div id="frm_search">
-    <select id="file_filter" name="file_filter" onchange="updateFiles()">
-      <option value="all">{{lbl_all_files}}</option>
-      <option value="shared">{{lbl_shared_files}}</option>
-      <option value="foreign">{{lbl_foreign_files}}</option>
-    </select>
-    <input id="file_search" name="file_search" onchange="onSearchChange(this)" onkeyup="onSearchChange(this)" class="large">
+  <form id="frm_search">
     <table id="advanced_search" style="display:none;">
       <tr><th>{{lbl_type}}:</th>
         <td>
@@ -60,10 +54,11 @@
         <td>{{start_date}}{{end_date}}</td>
       </tr>
     </table>
-    <button onclick="performSearch()">{{lbl_search}}</button>
-    <button onclick="advancedSearch(this)">{{lbl_adv_search}}</button>
-    <button id="btn_search_close" onclick="closeSearch()">x</button>
-  </div>
+    <input id="file_search" name="file_search" onchange="onSearchChange(this)" onkeyup="onSearchChange(this)" class="large">
+    <button type="button" id="btn_search_close" onclick="closeSearch()">x</button>
+    <button type="button" onclick="performSearch()">{{lbl_search}}</button>
+    <button type="button" onclick="advancedSearch(this)">{{lbl_adv_search}}</button>
+  </form>
   <table class="files-table">
     <thead><tr>
       <th><input type="checkbox" id="chk_all_files" onchange="checkAll(this.checked)"></th>

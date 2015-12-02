@@ -4,12 +4,13 @@
     <table>
       <tr><th>{{lbl_title}}:</th><td>{{title}}</td></tr>
       <tr><th>{{lbl_desc}}:</th><td>{{desc}}</td></tr>
-      <tr><th>{{lbl_filename}}:</th><td>{{filename}}</td></tr>
+      <tr><th>{{lbl_filename}}:</th><td>{{user_filename}}</td></tr>
       <tr><th>{{lbl_type}}:</th><td title="{{filetype}}">{{type}}</td></tr>
       <tr><th>{{lbl_size}}:</th><td class="file-size">{{size}} ({{filesize}} {{lbl_bytes}})</td></tr>
-      <tr><th>{{lbl_url}}:</th><td>{{url}}</td></tr>
+      <tr><th>{{lbl_hidden}}:</th><td>{{hidden}}</td></tr>
       <tr><th>{{lbl_created}}:</th><td title="{{createtime}}">{{created}}</td></tr>
       <tr><th>{{lbl_modified}}:</th><td title="{{updatetime}}">{{modified}}</td></tr>
+      <tr><th>{{lbl_url}}:</th><td>{{url}}</td></tr>
     </table>
   </fieldset>
   <div class="gadget_actions actions">
@@ -33,14 +34,15 @@
   <form id="frm_file">
     <input type="hidden" name="id" />
     <input type="hidden" name="parent" id="parent" value="0" />
-    <input type="hidden" name="filename" id="filename" />
+    <input type="hidden" name="user_filename" id="user_filename" />
+    <input type="hidden" name="host_filename" id="host_filename" />
     <input type="hidden" name="filetype" id="filetype" />
     <input type="hidden" name="filesize" id="filesize" />
     <table>
       <tr id="tr_file"><th>{{lbl_file}}:</th><td id="filelink"></td></tr>
       <tr><th>{{lbl_title}}:</th><td><input name="title" /></td></tr>
       <tr><th>{{lbl_desc}}:</th><td><input name="description" /></td></tr>
-      <tr id="tr_url"><th>{{lbl_url}}:</th><td><input name="url" value="" /></td></tr>
+      <tr><th>{{lbl_hidden}}:</th><td><input type="checkbox" name="hidden" /></td></tr>
     </table>
   </form>
 </fieldset>

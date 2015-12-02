@@ -79,12 +79,10 @@ var DirectoryCallback = {
 function initDirectory()
 {
     var imgDeleteFileObj = $('<img>');
-
     imgDeleteFileObj.attr('src', imgDeleteFile);
     imgDeleteFileObj.on('click', removeFile);
 
     imgDeleteFile = imgDeleteFileObj;
-
     fileTemplate = $('#file_arena').html();
 
     // Builds icons map (ext => icon)
@@ -111,11 +109,10 @@ function updateFiles(parent)
     if (parent === undefined) {
         parent = currentDir;
     }
-    var files = DirectoryAjax.callSync('GetFiles', {'parent':parent});
+    DirectoryAjax.callAsync('GetFiles', {'parent':parent}, displayFiles);
 
-    $('#dir_searchbar').hide();
     updatePath();
-    displayFiles(files);
+    $('#dir_searchbar').hide();
     $('#dir_pathbar').show();
 }
 
@@ -141,7 +138,7 @@ function displayFiles(files)
     fileById = {};
     filesCount = files.length;
     files.forEach(function (file) {
-        file.ext = file.is_dir? 'folder' : file.filename.split('.').pop();
+        file.ext = file.is_dir? 'folder' : file.host_filename.split('.').pop();
         file.type = iconByExt[file.ext] || 'file-generic';
         file.icon = '<img src="' + icon_url + file.type + '.png" />';
         file.size = formatSize(file.filesize, 0);
@@ -152,7 +149,7 @@ function displayFiles(files)
         // http://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-an-object
         fileById[file.id] = $.extend(true, {}, file);
 
-        file.filename = (file.filename === null)? '' : file.filename;
+        file.host_filename = (file.host_filename === null)? '' : file.host_filename;
         file.shared = file.shared? 'shared' : '';
         file.foreign = file.foreign? 'foreign' : '';
         file['public'] = file['public']? 'public' : '';
@@ -241,9 +238,6 @@ function fileOpen(id)
 {
     var file = fileById[id];
     if (file.is_dir) {
-        if (file.foreign) {
-            id = file.reference;
-        }
         window.location.assign(file.url);
     } else {
         if (file.ext === 'txt') {
@@ -265,8 +259,10 @@ function fileOpen(id)
  */
 function openMedia(id, type)
 {
-    var tpl = DirectoryAjax.callSync('PlayMedia', {'id':id, 'type':type});
-    $('#form').html(tpl);
+    DirectoryAjax.callAsync('PlayMedia', {'id':id, 'type':type}, function(tpl) {
+        console.log(tpl);
+        $('#form').html(tpl);
+    });
 }
 
 /**
@@ -297,18 +293,19 @@ function downloadFile()
  */
 function updatePath()
 {
-    var pathArr = DirectoryAjax.callSync('GetPath', {'id':currentDir}),
-        path = $('#dir_path').html('');
-    (pathArr.reverse()).forEach(function (dir, i) {
-        path.append(' > ');
-        if (i === pathArr.length - 1) {
-            path.append(dir.title);
-        } else {
-            var link = $('<a>');
-            link.html(dir.title);
-            link.attr('href', dir.url);
-            path.append(link);
-        }
+    var path = $('#dir_path').html('');
+    DirectoryAjax.callAsync('GetPath', {'id':currentDir}, function(pathArr) {
+        pathArr.reverse().forEach(function (dir, i) {
+            path.append(' > ');
+            if (i === pathArr.length - 1) {
+                path.append(dir.title);
+            } else {
+                var link = $('<a>');
+                link.html(dir.title);
+                link.attr('href', dir.url);
+                path.append(link);
+            }
+        });
     });
 }
 
@@ -493,36 +490,23 @@ function editFile(id)
     $('#form').html(cachedForms.editFile);
     var form = $('#frm_file')[0],
         file = fileById[id];
-    if (file.foreign) {
-        $('#frm_upload').remove();
-        $('#parent').remove();
-        $('#filename').remove();
-        $('#filetype').remove();
-        $('#filesize').remove();
-        $('#tr_file').remove();
-        $('#tr_url').remove();
+    form.parent.value = file.parent;
+    form.filetype.value = file.filetype;
+    form.filesize.value = file.filesize;
+    form.user_filename.value = file.user_filename;
+    form.host_filename.value = file.host_filename;
+    if (file.user_filename) {
+        setFilename(file.user_filename);
+        $('#host_filename').val(':nochange:');
     } else {
-        form.url.value = file.url;
-        form.parent.value = file.parent;
-        form.filetype.value = file.filetype;
-        form.filesize.value = file.filesize;
-        if (file.filename) {
-            var url = file.dl_url;
-            if (!url) {
-                url = DirectoryAjax.callSync('GetDownloadURL', {id:id});
-                fileById[id].dl_url = url;
-            }
-            setFilename(file.filename, url);
-            $('#filename').val(':nochange:');
-        } else {
-            $('#tr_file').hide();
-            $('#frm_upload').show();
-        }
+        $('#tr_file').hide();
+        $('#frm_upload').show();
     }
     form.action.value = 'UpdateFile';
     form.id.value = id;
     form.title.value = file.title;
     form.description.value = file.description;
+    form.hidden.checked = file.hidden;
 }
 
 /**
@@ -545,39 +529,18 @@ function onUpload(response) {
         alert(response.message);
         $('#frm_upload').reset();
     } else {
-        var filename = encodeURIComponent(response.filename);
-        setFilename(filename, '');
-        $('#filename').val(filename);
+        var hostFilename = encodeURIComponent(response.host_filename);
+        setFilename(hostFilename, '');
+        $('#user_filename').val(response.user_filename);
+        $('#host_filename').val(hostFilename);
         $('#filetype').val(response.filetype);
         $('#filesize').val(response.filesize);
         if ($('#frm_file').find('[name=title]').val() === '') {
-            $('#frm_file').find('[name=title]').val(filename);
+            $('#frm_file').find('[name=title]').val(response.user_filename.replace(/\.[^/.]+$/, ''));
         }
     }
     $('#ifrm_upload').remove();
     $('#btn_ok').attr('disabled', false);
-}
-
-/**
- * Shows/Hides file URL
- */
-function showFileURL(url)
-{
-    var link = $('#public_url'),
-        span = $('#file_' + idSet[0]).find('span');
-    if (url !== '') {
-        link.innerHTML = site_url + url;
-        link.href = url;
-        link.show();
-        span.addClass('public');
-        $('#btn_unpublic').css('display', 'inline');
-        $('#btn_public').hide();
-    } else {
-        link.hide();
-        span.removeClass('public');
-        $('#btn_public').show();
-        $('#btn_unpublic').hide();
-    }
 }
 
 /**
@@ -691,8 +654,8 @@ function performSearch()
  */
 function advancedSearch(self)
 {
+    $(self).hide();
     $('#advanced_search').css('display', 'table');
-    self.hide();
 }
 
 /**
@@ -701,7 +664,6 @@ function advancedSearch(self)
 function closeSearch()
 {
     $('#btn_search_close').hide();
-    $('#advanced_search').hide();
     $('#file_search').val('');
     updateFiles();
 }
