@@ -18,7 +18,7 @@ class Subscription_Events_Subscription extends Jaws_Gadget_Event
     function Execute($shouter, $params)
     {
         if (empty($params['action']) || empty($params['reference'])) {
-            return;
+            return false;
         }
 
         $sModel = $this->gadget->model->load('Subscription');
@@ -26,7 +26,7 @@ class Subscription_Events_Subscription extends Jaws_Gadget_Event
         if (Jaws_Error::IsError($usersSubscriptions)) {
             return $usersSubscriptions;
         }
-        if (!empty($usersSubscriptions)) {
+        if (empty($usersSubscriptions)) {
             return false;
         }
 
@@ -40,10 +40,10 @@ class Subscription_Events_Subscription extends Jaws_Gadget_Event
             }
         }
 
-        $params = array();
         $params['title'] = _t('SUBSCRIPTION_NOTIFICATION_TITLE');
         $params['summary'] = $params['summary'];
         $params['description'] = $params['description'];
+        $params['gadget'] = $shouter;
         $params['users'] = $users;
         $params['emails'] = $emails;
         $this->gadget->event->shout('Notify', $params);
