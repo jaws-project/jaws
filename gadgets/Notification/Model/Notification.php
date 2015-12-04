@@ -7,7 +7,6 @@
  */
 class Notification_Model_Notification extends Jaws_Gadget_Model
 {
-
     /**
      * Update users subscriptions
      *
@@ -23,7 +22,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         } else if ($contactType == Notification_Info::NOTIFICATION_TYPE_MOBILE) {
             $nTable = Jaws_ORM::getInstance()->table('notification_mobile');
         } else {
-            return new Jaws_Error(_t('NOTIFICATION_INVALID_CONTACT_TYPE'));
+            return new Jaws_Error(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
         }
 
         return $nTable->select('*')->limit($limit)->fetchAll();
@@ -60,11 +59,41 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         } else if ($contactType == Notification_Info::NOTIFICATION_TYPE_MOBILE) {
             $table = Jaws_ORM::getInstance()->table('notification_mobile');
         } else {
-            return new Jaws_Error(_t('NOTIFICATION_INVALID_CONTACT_TYPE'));
+            return new Jaws_Error(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
         }
 
         return $table->insertAll(
                         array('key', 'contact_value', 'title', 'summary', 'description', 'publish_time'),
                         $notificationsItems)->exec();
+    }
+
+
+    /**
+     * Delete notifications
+     *
+     * @access  public
+     * @param   int     $key            Notification key
+     * @return  bool    True or error
+     */
+    function DeleteNotifications($key)
+    {
+        if (empty($contactType) || empty($notifications)) {
+            return false;
+        }
+        $objORM = Jaws_ORM::getInstance();
+
+        $table = $objORM->table('notification_email');
+        $res = $table->delete()->where('key', $key)->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        $table = $objORM->table('notification_mobile');
+        $res = $table->delete()->where('key', $key)->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        return true;
     }
 }

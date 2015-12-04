@@ -14,11 +14,15 @@ var NotificationCallback = {
 };
 
 /**
- * Submit the button
+ * save gadget settings
  */
-function saveChanges(form)
-{
-    NotificationAjax.callAsync('SaveSettings', gadgets);
+function saveSettings(form) {
+    NotificationAjax.callAsync(
+        'SaveSettings',
+        {
+            'gadgets_drivers': $.unserialize($('#gadgets_drivers select').serialize())
+        }
+    );
 }
 
 var NotificationAjax = new JawsAjax('Notification', NotificationCallback);

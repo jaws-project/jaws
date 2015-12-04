@@ -21,6 +21,15 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
             return false;
         }
 
+        $model = $this->gadget->model->load('Notification');
+        $gadget = empty($params['gadget']) ? $shouter : $params['gadget'];
+
+        // detect if publish_time = 0 then must delete the notifications
+        if ($params['publish_time'] < 0) {
+            return $model->DeleteNotifications($params['key']);
+        }
+        $publishTime = empty($params['publish_time']) ? time() : $params['publish_time'];
+
         $users = array();
         $jUser = new Jaws_User;
         if (isset($params['group']) && !empty($params['group'])) {
@@ -69,42 +78,56 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
             return false;
         }
 
-//        $key = crc32($params['gadget'] . $params['action'] . $params['reference']);
-        $publishTime = empty($params['publish_time']) ? time() : $params['publish_time'];
+        // get gadget driver settings
+        $configuration = unserialize($this->gadget->registry->fetch('configuration'));
 
-        // generate notification array
         $notificationsEmails = array();
         $notificationsMobiles = array();
+
+        // notification for this gadget was disabled
+        if ($configuration[$gadget] == 0) {
+            return false;
+        }
+
         foreach ($users as $user) {
-            if(!empty($user['email'])) {
-                $notificationsEmails[] = array(
-                    'key' => $params['key'],
-                    'contact_value' => $user['email'],
-                    'title' => strip_tags($params['title']),
-                    'summary' => strip_tags($params['summary']),
-                    'description' => $params['description'],
-                    'publish_time' => $publishTime
-                );
+            // generate email array
+            if ($configuration[$gadget] == 1 ||
+                $configuration[$gadget] == 'Mail') {
+                if (!empty($user['email'])) {
+                    $notificationsEmails[] = array(
+                        'key' => $params['key'],
+                        'contact_value' => $user['email'],
+                        'title' => strip_tags($params['title']),
+                        'summary' => strip_tags($params['summary']),
+                        'description' => $params['description'],
+                        'publish_time' => $publishTime
+                    );
+                }
             }
-            if(!empty($user['mobile_number'])) {
-                $notificationsMobiles[] = array(
-                    'key' => $params['key'],
-                    'mobile_number' => $user['mobile_number'],
-                    'title' => strip_tags($params['title']),
-                    'summary' => strip_tags($params['summary']),
-                    'description' => $params['description'],
-                    'publish_time' => $publishTime
-                );
+
+            // generate mobile array
+            if ($configuration[$gadget] == 1 ||
+                $configuration[$gadget] == 'Mobile') {
+                if (!empty($user['mobile_number'])) {
+                    $notificationsMobiles[] = array(
+                        'key' => $params['key'],
+                        'mobile_number' => $user['mobile_number'],
+                        'title' => strip_tags($params['title']),
+                        'summary' => strip_tags($params['summary']),
+                        'description' => $params['description'],
+                        'publish_time' => $publishTime
+                    );
+                }
             }
         }
 
-        $model = $this->gadget->model->load('Notification');
         if (!empty($notificationsEmails)) {
             $res = $model->InsertNotifications(Notification_Info::NOTIFICATION_TYPE_EMAIL, $notificationsEmails);
             if (Jaws_Error::IsError($res)) {
                 return $res;
             }
         }
+
         if (!empty($notificationsMobiles)) {
             return $model->InsertNotifications(Notification_Info::NOTIFICATION_TYPE_MOBILE, $notificationsMobiles);
         }

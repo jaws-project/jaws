@@ -1,0 +1,7 @@
+#gadgets_drivers table tr td:first-child {
+    width: 150px;
+}
+#settings .description {
+    height: 70px;
+    font-weight: bold;
+}
