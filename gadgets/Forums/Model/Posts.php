@@ -171,8 +171,8 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
 
         //FIXME: add shoutAll method in core for increase performance
         // shout subscriptions event
-
-        $key = mt_rand(10000000, 99999999);
+        // generate a key for reference (prevent duplicated shout & solve publish_time problem)
+        $key = crc32('post' . $pid);
 
         // [topic] action
         $subscriptionParams = array(
@@ -284,6 +284,20 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
+
+        $key = crc32('post' . $pid);
+        // remove subscriptions
+        // [topic] action
+        $subscriptionParams = array(
+            'action' => 'Topic',
+            'reference' => $tid,
+            'key' => $key,
+            'publish_time' => -1, // remove subscription
+            'summary' => '',
+            'description' => '',
+            'url' => ''
+        );
+        $this->gadget->event->shout('Subscription', $subscriptionParams);
 
         return true;
     }
