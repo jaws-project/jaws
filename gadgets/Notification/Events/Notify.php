@@ -26,7 +26,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
 
         // detect if publish_time = 0 then must delete the notifications
         if ($params['publish_time'] < 0) {
-            return $model->DeleteNotifications($params['key']);
+            return $model->DeleteNotificationsByKey($params['key']);
         }
         $publishTime = empty($params['publish_time']) ? time() : $params['publish_time'];
 
@@ -111,7 +111,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                 if (!empty($user['mobile_number'])) {
                     $notificationsMobiles[] = array(
                         'key' => $params['key'],
-                        'mobile_number' => $user['mobile_number'],
+                        'contact_value' => $user['mobile_number'],
                         'title' => strip_tags($params['title']),
                         'summary' => strip_tags($params['summary']),
                         'description' => $params['description'],

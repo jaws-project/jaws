@@ -47,11 +47,27 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
             $driver = basename($driver, '.php');
             $options = unserialize($this->gadget->registry->fetch($driver . '_options'));
             $driverObj = Jaws_Notification::getInstance($driver, $options);
-            if ($options['type'] == Notification_Info::NOTIFICATION_TYPE_EMAIL) {
+            if (!empty($emailItems) && $options['type'] == Notification_Info::NOTIFICATION_TYPE_EMAIL) {
                 $driverObj->notify($emailItems);
-            } else if ($options['type'] == Notification_Info::NOTIFICATION_TYPE_MOBILE) {
+            } else if (!empty($mobileItems) && $options['type'] == Notification_Info::NOTIFICATION_TYPE_MOBILE) {
                 $driverObj->notify($mobileItems);
             }
+        }
+
+        // FIXME : we can increase the performance
+        if (!empty($emailItems)) {
+            $itemsId = array();
+            foreach ($emailItems as $item) {
+                $itemsId[] = $item['id'];
+            }
+            $model->DeleteNotificationsById('email', $itemsId);
+        }
+        if (!empty($mobileItems)) {
+            $itemsId = array();
+            foreach ($mobileItems as $item) {
+                $itemsId[] = $item['id'];
+            }
+            $model->DeleteNotificationsById('mobile', $itemsId);
         }
 
         // finish procession

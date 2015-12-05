@@ -25,7 +25,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             return new Jaws_Error(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
         }
 
-        return $nTable->select('*')->limit($limit)->fetchAll();
+        return $nTable->select('*')->limit($limit)->where('publish_time', time(), '>=')->fetchAll();
     }
 
 
@@ -43,17 +43,6 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             return false;
         }
 
-        foreach ($notifications as $row) {
-            $notificationsItems[] = array(
-                'key' => $row['key'],
-                'contact_value' => $row['contact_value'],
-                'title' => $row['title'],
-                'summary' => $row['summary'],
-                'description' => $row['description'],
-                'publish_time' => $row['publish_time'],
-            );
-        }
-
         if ($contactType == Notification_Info::NOTIFICATION_TYPE_EMAIL) {
             $table = Jaws_ORM::getInstance()->table('notification_email');
         } else if ($contactType == Notification_Info::NOTIFICATION_TYPE_MOBILE) {
@@ -62,22 +51,45 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             return new Jaws_Error(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
         }
 
-        return $table->insertAll(
+        foreach ($notifications as $row) {
+            // FIXME : increase performance by adding upsertAll method in core
+            $res = $table
+                ->upsert($row)
+                ->and()->where('key', $row['key'])
+                ->and()->where('contact_value', $row['contact_value'])
+                ->exec();
+            if (Jaws_Error::IsError($res)) {
+                return $res;
+            }
+/*            $notificationsItems[] = array(
+                'key' => $row['key'],
+                'contact_value' => $row['contact_value'],
+                'title' => $row['title'],
+                'summary' => $row['summary'],
+                'description' => $row['description'],
+                'publish_time' => $row['publish_time'],
+            );*/
+        }
+
+        return true;
+
+/*        return $table->insertAll(
                         array('key', 'contact_value', 'title', 'summary', 'description', 'publish_time'),
-                        $notificationsItems)->exec();
+                        $notificationsItems)->exec();*/
+
     }
 
 
     /**
-     * Delete notifications
+     * Delete notifications by key
      *
      * @access  public
      * @param   int     $key            Notification key
      * @return  bool    True or error
      */
-    function DeleteNotifications($key)
+    function DeleteNotificationsByKey($key)
     {
-        if (empty($contactType) || empty($notifications)) {
+        if (empty($key)) {
             return false;
         }
         $objORM = Jaws_ORM::getInstance();
@@ -95,5 +107,31 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         }
 
         return true;
+    }
+
+
+    /**
+     * Delete notifications by id
+     *
+     * @access  public
+     * @param   string  $contactType    Contact type (email, mobile, ...)
+     * @param   array   $ids            Notifications Id
+     * @return  bool    True or error
+     */
+    function DeleteNotificationsById($contactType, $ids)
+    {
+        if (empty($contactType) || empty($ids)) {
+            return false;
+        }
+
+        if ($contactType == Notification_Info::NOTIFICATION_TYPE_EMAIL) {
+            $table = Jaws_ORM::getInstance()->table('notification_email');
+        } else if ($contactType == Notification_Info::NOTIFICATION_TYPE_MOBILE) {
+            $table = Jaws_ORM::getInstance()->table('notification_mobile');
+        } else {
+            return new Jaws_Error(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
+        }
+
+        return $table->delete()->where('id', $ids, 'in')->exec();
     }
 }
