@@ -182,6 +182,27 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             }
         }
 
+        //FIXME: add shoutAll method in core for increase performance
+        // shout subscriptions event
+        // generate a key for reference - shout subscription
+        $key = crc32('Post' . $max);
+
+        if (is_array($categories) && count($categories) > 0) {
+            foreach ($categories as $category) {
+                // [Category] action
+                $subscriptionParams = array(
+                    'action' => 'Category',
+                    'reference' => $category,
+                    'key' => $key,
+                    'summary' => $title,
+                    'publish_time' => strtotime($params['publishtime']),
+                    'description' => $content,
+                    'url' => $this->gadget->urlMap('SingleView', array('id' => $max), true)
+                );
+                $this->gadget->event->shout('Subscription', $subscriptionParams);
+            }
+        }
+
         return $max;
     }
 
@@ -349,6 +370,27 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             }
         }
 
+        //FIXME: add shoutAll method in core for increase performance
+        // shout subscriptions event
+        // generate a key for reference - shout subscription
+        $key = crc32('Post' . $post_id);
+
+        if (is_array($categories) && count($categories) > 0) {
+            foreach ($categories as $category) {
+                // [Category] action
+                $subscriptionParams = array(
+                    'action' => 'Category',
+                    'reference' => $category,
+                    'key' => $key,
+                    'summary' => $title,
+                    'publish_time' => strtotime($params['publishtime']),
+                    'description' => $content,
+                    'url' => $this->gadget->urlMap('SingleView', array('id' => $post_id), true)
+                );
+                $this->gadget->event->shout('Subscription', $subscriptionParams);
+            }
+        }
+
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ENTRY_UPDATED'), RESPONSE_NOTICE);
         return $post_id;
     }
@@ -408,6 +450,24 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_ERROR_TAGS_NOT_DELETED'), RESPONSE_ERROR);
                 return $res;
+            }
+        }
+
+        //FIXME: add shoutAll method in core for increase performance
+        // shout subscriptions event - delete old notifications!
+        // generate a key for reference - shout subscription
+        $key = crc32('Post' . $post_id);
+
+        if (is_array($e['categories']) && count($e['categories']) > 0) {
+            foreach ($e['categories'] as $category) {
+                // [Category] action
+                $subscriptionParams = array(
+                    'action' => 'Category',
+                    'reference' => $category['id'],
+                    'key' => $key,
+                    'publish_time' => -1 // remove subscription
+                );
+                $this->gadget->event->shout('Subscription', $subscriptionParams);
             }
         }
 

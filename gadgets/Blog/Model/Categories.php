@@ -16,7 +16,8 @@ class Blog_Model_Categories extends Jaws_Gadget_Model
      * Get categories
      *
      * @access  public
-     * @return  mixed   A list of categories and Jaws_Error on error
+     * @param   bool    $onlyAccessible     return only accessible category
+     * @return mixed A list of categories and Jaws_Error on error
      */
     function GetCategories($onlyAccessible = true)
     {
