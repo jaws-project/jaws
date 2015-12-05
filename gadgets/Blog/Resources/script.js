@@ -525,12 +525,16 @@ function resetCategoryCombo()
 {
     var categories = BlogAjax.callSync('GetCategories');
     $('#category_id').html('');
-    categories.each(function (item, key){
-        var newoption = new Option(item['name'], item['id']);
-        $('category_id').add(newoption);
-        $('#category_id > option:even').addClass('piwi_option_odd');
-        $('#category_id > option:odd').addClass('piwi_option_even');
+
+    $.each(categories, function(key, value) {
+        $('#category_id')
+            .append($("<option></option>")
+                .attr("value",value['id'])
+                .text(value['name']));
     });
+
+    $('#category_id > option:even').addClass('piwi_option_odd');
+    $('#category_id > option:odd').addClass('piwi_option_even');
 }
 
 /**
@@ -708,7 +712,7 @@ function toggleUpdate(checked)
  * Stops doing a certain action
  */
 function stopAction() {
-    ('#legend_title').html(addCategory_title);
+    $('#legend_title').html(addCategory_title);
     $('#btn_delete').css('display', 'none');
     selectedCategory = null;
 
