@@ -292,10 +292,7 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
             'action' => 'Topic',
             'reference' => $tid,
             'key' => $key,
-            'publish_time' => -1, // remove subscription
-            'summary' => '',
-            'description' => '',
-            'url' => ''
+            'publish_time' => -1 // remove subscription
         );
         $this->gadget->event->shout('Subscription', $subscriptionParams);
 
