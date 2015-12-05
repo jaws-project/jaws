@@ -90,7 +90,9 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
                 $tpl->SetVariable('url', $item['url']);
 
                 // display checkbox?
-                if(!isset($item['selectable']) || (isset($item['selectable']) && $item['selectable']==true ) ) {
+                if (!isset($item['selectable']) || (isset($item['selectable']) && $item['selectable'] == true)) {
+                    $tpl->SetBlock('subscription/gadget/item/checkbox');
+
                     $checkboxName = $gadget . '_' . $item['action'] . '_' . $item['reference'];
                     $tpl->SetVariable('id', $checkboxName);
 
@@ -100,6 +102,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
                     } else {
                         $tpl->SetVariable('checked', '');
                     }
+                    $tpl->ParseBlock('subscription/gadget/item/checkbox');
                 }
 
                 if (!empty($item['sub_items'])) {
@@ -144,8 +147,8 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
         $email = $post['email'];
         $selectedItems = $post['subscriptionItems'];
         if(empty($selectedItems)) {
-            $selectedItems = empty(jaws()->request->fetch('subscriptionItems', 'post')) ?
-                null : array(jaws()->request->fetch('subscriptionItems', 'post')) ;
+            $subscriptionItems = jaws()->request->fetch('subscriptionItems', 'post');
+            $selectedItems = empty($subscriptionItems) ? null : array($subscriptionItems) ;
 
             if(empty($selectedItems)) {
                 $GLOBALS['app']->Session->PushResponse(
