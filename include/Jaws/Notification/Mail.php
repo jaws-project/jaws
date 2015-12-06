@@ -10,6 +10,8 @@
  */
 class Jaws_Notification_Mail
 {
+    const DRIVER_TYPE = 'email';
+
     /**
      * Store mail object instance
      * @var     array
