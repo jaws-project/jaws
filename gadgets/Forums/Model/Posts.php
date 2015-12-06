@@ -296,6 +296,25 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
         );
         $this->gadget->event->shout('Subscription', $subscriptionParams);
 
+        // [forum] action
+        $subscriptionParams = array(
+            'action' => 'Forum',
+            'reference' => $fid,
+            'key' => $key,
+            'publish_time' => -1 // remove subscription
+        );
+        $this->gadget->event->shout('Subscription', $subscriptionParams);
+
+        // [group] action
+        $gid = $fModel->GetForumGroup($fid);
+        $subscriptionParams = array(
+            'action' => 'Group',
+            'reference' => $gid,
+            'key' => $key,
+            'publish_time' => -1 // remove subscription
+        );
+        $this->gadget->event->shout('Subscription', $subscriptionParams);
+
         return true;
     }
 
