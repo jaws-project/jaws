@@ -35,7 +35,7 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
         }
 
         $mobileLimit = (int)$this->gadget->registry->fetch('mobile_pop_count');
-        $mobileItems = $model->GetNotifications(Notification_Info::NOTIFICATION_TYPE_MOBILE, $mobileLimit);
+        $mobileItems = $model->GetNotifications(Notification_Info::NOTIFICATION_TYPE_SMS, $mobileLimit);
         if (Jaws_Error::IsError($mobileItems)) {
             $this->gadget->registry->update('processing', 'false');
             return $mobileItems;
@@ -47,27 +47,29 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
             $driver = basename($driver, '.php');
             $options = unserialize($this->gadget->registry->fetch($driver . '_options'));
             $driverObj = Jaws_Notification::getInstance($driver, $options);
-            if (!empty($emailItems) && $options['type'] == Notification_Info::NOTIFICATION_TYPE_EMAIL) {
-                $driverObj->notify($emailItems);
-            } else if (!empty($mobileItems) && $options['type'] == Notification_Info::NOTIFICATION_TYPE_MOBILE) {
-                $driverObj->notify($mobileItems);
+            if (!empty($emailItems) && $driverObj::DRIVER_TYPE == Notification_Info::NOTIFICATION_TYPE_EMAIL) {
+                $res = $driverObj->notify($emailItems);
+                // delete notification
+                // FIXME : we can increase the performance
+                if (!Jaws_Error::IsError($res)) {
+                    $itemsId = array();
+                    foreach ($emailItems as $item) {
+                        $itemsId[] = $item['id'];
+                    }
+                    $model->DeleteNotificationsById('email', $itemsId);
+                }
+            } else if (!empty($mobileItems) && $driverObj::DRIVER_TYPE == Notification_Info::NOTIFICATION_TYPE_SMS) {
+                $res = $driverObj->notify($mobileItems);
+                // delete notification
+                // FIXME : we can increase the performance
+                if (!Jaws_Error::IsError($res)) {
+                    $itemsId = array();
+                    foreach ($mobileItems as $item) {
+                        $itemsId[] = $item['id'];
+                    }
+                    $model->DeleteNotificationsById('mobile', $itemsId);
+                }
             }
-        }
-
-        // FIXME : we can increase the performance
-        if (!empty($emailItems)) {
-            $itemsId = array();
-            foreach ($emailItems as $item) {
-                $itemsId[] = $item['id'];
-            }
-            $model->DeleteNotificationsById('email', $itemsId);
-        }
-        if (!empty($mobileItems)) {
-            $itemsId = array();
-            foreach ($mobileItems as $item) {
-                $itemsId[] = $item['id'];
-            }
-            $model->DeleteNotificationsById('mobile', $itemsId);
         }
 
         // finish procession

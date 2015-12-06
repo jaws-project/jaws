@@ -129,7 +129,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         }
 
         if (!empty($notificationsMobiles)) {
-            return $model->InsertNotifications(Notification_Info::NOTIFICATION_TYPE_MOBILE, $notificationsMobiles);
+            return $model->InsertNotifications(Notification_Info::NOTIFICATION_TYPE_SMS, $notificationsMobiles);
         }
 
         return false;

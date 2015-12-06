@@ -19,13 +19,13 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
     {
         if ($contactType == Notification_Info::NOTIFICATION_TYPE_EMAIL) {
             $nTable = Jaws_ORM::getInstance()->table('notification_email');
-        } else if ($contactType == Notification_Info::NOTIFICATION_TYPE_MOBILE) {
+        } else if ($contactType == Notification_Info::NOTIFICATION_TYPE_SMS) {
             $nTable = Jaws_ORM::getInstance()->table('notification_mobile');
         } else {
             return new Jaws_Error(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
         }
 
-        return $nTable->select('*')->limit($limit)->where('publish_time', time(), '>=')->fetchAll();
+        return $nTable->select('*')->limit($limit)->where('publish_time', time(), '<=')->fetchAll();
     }
 
 
@@ -45,7 +45,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
 
         if ($contactType == Notification_Info::NOTIFICATION_TYPE_EMAIL) {
             $table = Jaws_ORM::getInstance()->table('notification_email');
-        } else if ($contactType == Notification_Info::NOTIFICATION_TYPE_MOBILE) {
+        } else if ($contactType == Notification_Info::NOTIFICATION_TYPE_SMS) {
             $table = Jaws_ORM::getInstance()->table('notification_mobile');
         } else {
             return new Jaws_Error(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
@@ -126,7 +126,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
 
         if ($contactType == Notification_Info::NOTIFICATION_TYPE_EMAIL) {
             $table = Jaws_ORM::getInstance()->table('notification_email');
-        } else if ($contactType == Notification_Info::NOTIFICATION_TYPE_MOBILE) {
+        } else if ($contactType == Notification_Info::NOTIFICATION_TYPE_SMS) {
             $table = Jaws_ORM::getInstance()->table('notification_mobile');
         } else {
             return new Jaws_Error(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
