@@ -8,7 +8,7 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Directory_Model_Files extends Jaws_Gadget_Model
+class Directory_Model_Admin_Files extends Jaws_Gadget_Model
 {
     /**
      * Fetches list of files including shared files
@@ -58,7 +58,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
             }
         }
 
-        if (isset($params['query'])){
+        if (isset($params['query']) && !empty($params['query'])){
             $query = '%' . $params['query'] . '%';
             $table->openWhere('title', $query, 'like')->or();
             $table->where('description', $query, 'like')->or();
@@ -101,7 +101,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
             $path[] = array(
                 'id' => $parent['id'],
                 'title' => $parent['title'],
-                'url' => $this->gadget->urlMap('Directory', array('dirid' => $parent['id']))
+                'url' => BASE_SCRIPT . '?gadget=Directory&action=Directory&dirid=' . $parent['id']
             );
             $this->GetPath($parent['parent'], $path);
         }

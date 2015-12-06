@@ -8,7 +8,7 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Directory_Actions_Files extends Jaws_Gadget_Action
+class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
 {
     /**
      * Builds the file management form
@@ -20,7 +20,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
     {
         $mode = jaws()->request->fetch('mode');
         if ($mode === null) $mode = 'view';
-        $tpl = $this->gadget->template->load('File.html');
+        $tpl = $this->gadget->template->loadAdmin('File.html');
         $tpl->SetBlock($mode);
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
@@ -72,7 +72,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
             }
 
-            $model = $this->gadget->model->load('Files');
+            $model = $this->gadget->model->loadAdmin('Files');
 
             // Validate parent
             if ($data['parent'] != 0) {
@@ -155,7 +155,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
 
-            $model = $this->gadget->model->load('Files');
+            $model = $this->gadget->model->loadAdmin('Files');
 
             // Validate file
             $id = (int)$data['id'];
@@ -203,7 +203,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
             unset($data['user']);
             $data['updatetime'] = time();
             $data['hidden'] = $data['hidden']? true : false;
-            $model = $this->gadget->model->load('Files');
+            $model = $this->gadget->model->loadAdmin('Files');
             $res = $model->Update($id, $data);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception(_t('DIRECTORY_ERROR_FILE_UPDATE'));
@@ -227,7 +227,8 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
         $id = ($id !== null)? $id : (int)jaws()->request->fetch('id');
         $open = ($open !== null)? $open : (bool)jaws()->request->fetch('open');
         $action = $open? 'OpenFile' : 'DownloadFile';
-        return $this->gadget->urlMap($action, array('id' => $id));
+//        return $this->gadget->urlMap($action, array('id' => $id));
+        return BASE_SCRIPT . "?gadget=Directory&action=$action&id=" . $id;
     }
 
     /**
@@ -238,7 +239,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
      */
     function GetFileContent($id)
     {
-        $model = $this->gadget->model->load('Files');
+        $model = $this->gadget->model->loadAdmin('Files');
         $file = $model->GetFile($id);
         if (Jaws_Error::IsError($file) || empty($file) || empty($file['host_filename'])) {
             return;
@@ -261,7 +262,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
         $id = (int)jaws()->request->fetch('id');
         $type = jaws()->request->fetch('type');
 
-        $tpl = $this->gadget->template->load('Media.html');
+        $tpl = $this->gadget->template->loadAdmin('Media.html');
         $tpl->SetBlock($type);
         if ($type === 'text') {
             $tpl->SetVariable('text', $this->GetFileContent($id));
@@ -332,7 +333,7 @@ class Directory_Actions_Files extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(500);
         }
         $id = (int)$id;
-        $model = $this->gadget->model->load('Files');
+        $model = $this->gadget->model->loadAdmin('Files');
 
         // Validate file
         $file = $model->GetFile($id);

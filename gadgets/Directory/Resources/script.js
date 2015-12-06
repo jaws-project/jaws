@@ -249,7 +249,7 @@ function fileOpen(id)
         } else if (['webm', 'mp4', 'ogg'].indexOf(file.ext) !== -1) {
             openMedia(id, 'video');
         } else {
-            downloadFile();
+            downloadFile(id);
         }
     }
 }
@@ -260,7 +260,6 @@ function fileOpen(id)
 function openMedia(id, type)
 {
     DirectoryAjax.callAsync('PlayMedia', {'id':id, 'type':type}, function(tpl) {
-        console.log(tpl);
         $('#form').html(tpl);
     });
 }
@@ -268,24 +267,29 @@ function openMedia(id, type)
 /**
  * Downloads the file
  */
-function downloadFile()
+function downloadFile(id)
 {
-    if (idSet.length === 0) return;
-    var id = idSet[0],
-        file = fileById[id];
+    if (id == 'undefined') {
+        if (idSet.length === 0) return;
+        id = idSet[0];
+    }
+    var file = fileById[id];
     if (!file) {
-        file = fileById[id] = DirectoryAjax.callSync('GetFile', {'id':id});
+        DirectoryAjax.callAsync('GetFile', {'id':id}, function(response) {
+            file = fileById[id] = response;
+        });
     }
     if (file.is_dir) {
         return;
     }
-    if (!file.dl_url) {
-        fileById[id].dl_url = DirectoryAjax.callSync(
-            'GetDownloadURL',
-            {'id':id}
-        );
+    if (file.dl_url) {
+        window.location.assign(file.dl_url);
+    } else {
+        DirectoryAjax.callAsync('GetDownloadURL', {'id':id}, function(resposne) {
+            fileById[id].dl_url = resposne;
+            window.location.assign(resposne);
+        });
     }
-    window.location.assign(fileById[id].dl_url);
 }
 
 /**
@@ -317,6 +321,7 @@ function updateActions()
     $('#file_actions').find('img').addClass('disabled');
     $('#btn_new_file').removeClass('disabled');
     $('#btn_new_dir').removeClass('disabled');
+    $('#btn_search').removeClass('disabled');
     if (idSet.length === 0) {
         return;
     }
@@ -647,6 +652,14 @@ function performSearch()
     var query = $.unserialize($('#frm_search').serialize());
     query.id = currentDir;
     DirectoryAjax.callAsync('Search', query);
+}
+
+/**
+ * Shows/Hides search UI
+ */
+function toggleSearch()
+{
+    $('#frm_search').toggle();
 }
 
 /**

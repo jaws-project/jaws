@@ -1,3 +1,27 @@
+table{
+    width:100%;
+    border-spacing:1px;
+}
+table thead,table tfoot{
+    padding:0px;
+    color:#325994;
+    line-height:140%;
+    background:#eee;
+}
+table th{
+    padding:2px 4px;
+    text-align:left;
+    font-weight:bold;
+    border:1px solid #ccc;
+    border-radius:2px 2px 0 0;
+}
+table tr:nth-child(even){
+    background:#ebf1f3;
+}
+table td{
+    padding:2px 4px;
+}
+
 .directory fieldset {border:1px solid silver; margin:0; padding:10px;}
 .directory fieldset input:not([type=checkbox]) {width:100%;}
 .directory fieldset table {width:100%}
@@ -38,26 +62,6 @@ overflow:hidden;
 .files-table .file-size{
 text-align:right;
 }
-.file-sharing{
-position:absolute;
-left:26px;
-width:16px;
-height:32px;
-background-position:left top;
-background-repeat:no-repeat;
-}
-.file-sharing.shared{
-background-image:url(../Resources/images/shared.png);
-}
-.file-sharing.foreign{
-background-image:url(../Resources/images/users.png);
-}
-.file-sharing.public{
-background-image:url(../Resources/images/link.png);
-}
-.file-sharing.shared.public{
-background:url(../Resources/images/shared.png) no-repeat left top, url(../Resources/images/link.png) no-repeat left 70%;
-}
 
 .file-info table{
 width:100%;
@@ -90,6 +94,7 @@ vertical-align:middle;
 
 #file_actions{
 float:right;
+color:silver;
 }
 #file_actions img{
 vertical-align:middle;
@@ -101,6 +106,12 @@ filter: gray; /* IE6-9 */
 opacity:0.5;
 }
 
+#frm_dir th, #frm_file th{
+width:1%;
+}
+#frm_dir input:not([type=checkbox]), #frm_file input:not([type=checkbox]){
+width:100%;
+}
 #frm_search{
 clear:both;
 }

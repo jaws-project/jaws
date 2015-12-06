@@ -8,7 +8,7 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Directory_Model_Statistics extends Jaws_Gadget_Model
+class Directory_Model_Admin_Statistics extends Jaws_Gadget_Model
 {
     /**
      * Fetches statistics

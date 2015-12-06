@@ -8,7 +8,7 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Directory_Actions_Directory extends Jaws_Gadget_Action
+class Directory_Actions_Admin_Directory extends Jaws_Gadget_Action
 {
     /**
      * Builds file management UI
@@ -18,12 +18,11 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      */
     function Directory()
     {
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/Resources/site_style.css');
-        $this->AjaxMe('site_script.js');
-        $tpl = $this->gadget->template->load('Workspace.html');
+        $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/Resources/style.css');
+        $this->AjaxMe('script.js');
+        $tpl = $this->gadget->template->loadAdmin('Workspace.html');
         $tpl->SetBlock('workspace');
 
-        $tpl->SetVariable('title', $this->gadget->title);
         $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('lbl_adv_search', _t('DIRECTORY_ADVANCED_SEARCH'));
         $tpl->SetVariable('lbl_new_dir', _t('DIRECTORY_NEW_DIR'));
@@ -41,12 +40,13 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('img_delete', STOCK_DELETE);
         $tpl->SetVariable('img_move', STOCK_RIGHT);
         $tpl->SetVariable('img_dl', STOCK_SAVE);
+        $tpl->SetVariable('img_search', STOCK_SEARCH);
 
         $dir_id = (int)jaws()->request->fetch('dirid');
         $tpl->SetVariable('currentDir', $dir_id);
         $tpl->SetVariable('UID', (int)$GLOBALS['app']->Session->GetAttribute('user'));
         $tpl->SetVariable('home_title', _t('DIRECTORY_HOME'));
-        $tpl->SetVariable('home_url', $this->gadget->urlMap('Directory'));
+        $tpl->SetVariable('home_url', BASE_SCRIPT . '?gadget=Directory');
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
         $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
@@ -112,7 +112,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     {
         $data = jaws()->request->fetch(array('parent'));
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $model = $this->gadget->model->load('Files');
+        $model = $this->gadget->model->loadAdmin('Files');
         $files = $model->GetFiles($data);
         if (Jaws_Error::IsError($files)){
             return array();
@@ -120,7 +120,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $objDate = Jaws_Date::getInstance();
         foreach ($files as &$file) {
             if ($file['is_dir']) {
-                $file['url'] = $this->gadget->urlMap('Directory', array('dirid' => $file['id']));
+                $file['url'] = BASE_SCRIPT . '?gadget=Directory&action=Directory&dirid=' . $file['id'];
             }
             $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
@@ -138,7 +138,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     function GetFile()
     {
         $id = jaws()->request->fetch('id');
-        $model = $this->gadget->model->load('Files');
+        $model = $this->gadget->model->loadAdmin('Files');
         $file = $model->GetFile($id);
         if (Jaws_Error::IsError($file)) {
             return array();
@@ -160,7 +160,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     {
         $id = jaws()->request->fetch('id');
         $path = array();
-        $model = $this->gadget->model->load('Files');
+        $model = $this->gadget->model->loadAdmin('Files');
         $model->GetPath($id, $path);
         return $path;
     }
@@ -178,7 +178,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $exclude = empty($exclude)? array() : explode(',', $exclude);
         $this->BuildTree(0, $exclude, $tree);
 
-        $tpl = $this->gadget->template->load('Move.html');
+        $tpl = $this->gadget->template->loadAdmin('Move.html');
         $tpl->SetBlock('tree');
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
@@ -198,7 +198,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      */
     function BuildTree($root = 0, $exclude = array(), &$tree)
     {
-        $model = $this->gadget->model->load('Files');
+        $model = $this->gadget->model->loadAdmin('Files');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $dirs = $model->GetFiles(array('parent' => $root, 'is_dir' => true));
         if (Jaws_Error::IsError($dirs)) {
@@ -235,7 +235,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             );
         }
 
-        $model = $this->gadget->model->load('Files');
+        $model = $this->gadget->model->loadAdmin('Files');
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $fault = false;
         foreach ($id_set as $id) {
@@ -284,7 +284,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         $id_set = explode(',', $data['id_set']);
         $target = (int)$data['target'];
-        $model = $this->gadget->model->load('Files');
+        $model = $this->gadget->model->loadAdmin('Files');
 
         // Validate target
         if ($target !== 0) {
@@ -375,7 +375,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
         $date = array($start_date, $end_date);
 
-        $model = $this->gadget->model->load('Files');
+        $model = $this->gadget->model->loadAdmin('Files');
         $params = array();
         $params['parent'] = $data['id'];
         $params['query'] = $data['file_search'];
@@ -390,7 +390,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $objDate = Jaws_Date::getInstance();
         foreach ($files as &$file) {
             if ($file['is_dir']) {
-                $file['url'] = $this->gadget->urlMap('Directory', array('dirid' => $file['id']));
+                $file['url'] = BASE_SCRIPT . '?gadget=Directory&action=Directory&dirid=' . $file['id'];
             }
             $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');

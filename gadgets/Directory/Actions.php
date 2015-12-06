@@ -1,6 +1,6 @@
 <?php
 /**
- * Notepad Actions file
+ * Directory Actions file
  *
  * @category    GadgetActions
  * @package     Directory
@@ -12,88 +12,92 @@
 /**
  * Index actions
  */
-$actions['Directory'] = array(
+
+/**
+ * Admin actions
+ */
+$admin_actions['Directory'] = array(
     'normal' => true,
     'layout' => true,
     'file' => 'Directory'
 );
-$actions['Statistics'] = array(
+$admin_actions['Statistics'] = array(
     'layout' => true,
     'file' => 'Statistics'
 );
-$actions['GetFiles'] = array(
+$admin_actions['GetFiles'] = array(
     'standalone' => true,
     'file' => 'Directory'
 );
-$actions['GetFile'] = array(
+$admin_actions['GetFile'] = array(
     'standalone' => true,
     'file' => 'Directory'
 );
-$actions['GetPath'] = array(
+$admin_actions['GetPath'] = array(
     'standalone' => true,
     'file' => 'Directory'
 );
-$actions['GetTree'] = array(
+$admin_actions['GetTree'] = array(
     'standalone' => true,
     'file' => 'Directory'
 );
-$actions['Move'] = array(
+$admin_actions['Move'] = array(
     'standalone' => true,
     'file' => 'Directory'
 );
-$actions['Delete'] = array(
+$admin_actions['Delete'] = array(
     'standalone' => true,
     'file' => 'Directory'
 );
-$actions['Search'] = array(
+$admin_actions['Search'] = array(
     'standalone' => true,
     'file' => 'Directory'
 );
-$actions['DirectoryForm'] = array(
+$admin_actions['DirectoryForm'] = array(
     'standalone' => true,
     'file' => 'Directories'
 );
-$actions['CreateDirectory'] = array(
+$admin_actions['CreateDirectory'] = array(
     'standalone' => true,
     'file' => 'Directories'
 );
-$actions['UpdateDirectory'] = array(
+$admin_actions['UpdateDirectory'] = array(
     'standalone' => true,
     'file' => 'Directories'
 );
-$actions['FileForm'] = array(
+$admin_actions['FileForm'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
-$actions['CreateFile'] = array(
+$admin_actions['CreateFile'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
-$actions['UpdateFile'] = array(
+$admin_actions['UpdateFile'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
-$actions['DeleteFile'] = array(
+$admin_actions['DeleteFile'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
-$actions['UploadFile'] = array(
+$admin_actions['UploadFile'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
-$actions['DownloadFile'] = array(
+$admin_actions['DownloadFile'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
-$actions['OpenFile'] = array(
+$admin_actions['OpenFile'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
-$actions['GetDownloadURL'] = array(
+$admin_actions['GetDownloadURL'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
-$actions['PlayMedia'] = array(
+$admin_actions['PlayMedia'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
