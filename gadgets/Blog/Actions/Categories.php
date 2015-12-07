@@ -133,6 +133,13 @@ class Blog_Actions_Categories extends Blog_Actions_Default
                     $this->gadget->urlMap('ShowAtomCategory', array('id' => $cid))
                 );
                 $tpl->SetVariable('howmany', $e['howmany']);
+
+                // display subscription if installed
+                if (Jaws_Gadget::IsGadgetInstalled('Subscription')) {
+                    $sHTML = Jaws_Gadget::getInstance('Subscription')->action->load('Subscription');
+                    $tpl->SetVariable('subscription', $sHTML->ShowSubscription('Blog', 'Category', $e['id']));
+                }
+
                 $tpl->ParseBlock('categories_list/item');
             }
         }
