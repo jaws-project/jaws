@@ -15,7 +15,7 @@ class Notification_Hooks_Autoload extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-            $this->AddVisitor();
+            $this->SendNotifications();
     }
 
     /**
@@ -24,9 +24,9 @@ class Notification_Hooks_Autoload extends Jaws_Gadget_Hook
      * @access  public
      * @return  void
      */
-    function AddVisitor()
+    function SendNotifications()
     {
-        $gadget = $this->gadget->action->load('Notifications');
+        $gadget = $this->gadget->action->load('Notification');
         return $gadget->SendNotifications();
     }
 

@@ -24,11 +24,12 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         $model = $this->gadget->model->load('Notification');
         $gadget = empty($params['gadget']) ? $shouter : $params['gadget'];
 
+        $params['publish_time'] = !isset($params['publish_time']) ? time() : $params['publish_time'];
+
         // detect if publish_time = 0 then must delete the notifications
         if ($params['publish_time'] < 0) {
             return $model->DeleteNotificationsByKey($params['key']);
         }
-        $publishTime = empty($params['publish_time']) ? time() : $params['publish_time'];
 
         $users = array();
         $jUser = new Jaws_User;
@@ -100,7 +101,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                         'title' => strip_tags($params['title']),
                         'summary' => strip_tags($params['summary']),
                         'description' => $params['description'],
-                        'publish_time' => $publishTime
+                        'publish_time' => $params['publish_time']
                     );
                 }
             }
@@ -115,7 +116,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                         'title' => strip_tags($params['title']),
                         'summary' => strip_tags($params['summary']),
                         'description' => $params['description'],
-                        'publish_time' => $publishTime
+                        'publish_time' => $params['publish_time']
                     );
                 }
             }
