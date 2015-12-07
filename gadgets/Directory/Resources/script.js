@@ -150,9 +150,6 @@ function displayFiles(files)
         fileById[file.id] = $.extend(true, {}, file);
 
         file.host_filename = (file.host_filename === null)? '' : file.host_filename;
-        file.shared = file.shared? 'shared' : '';
-        file.foreign = file.foreign? 'foreign' : '';
-        file['public'] = file['public']? 'public' : '';
         ws.append(getFileElement(file));
     });
 }
@@ -327,11 +324,6 @@ function updateActions()
     $('#btn_move').removeClass('disabled');
     if (idSet.length === 1) {
         var selId = idSet[0];
-        if (fileById[selId].foreign) {
-            $('#btn_share').addClass('disabled');
-        } else {
-            $('#btn_share').removeClass('disabled');
-        }
         if (fileById[selId].is_dir) {
             $('#btn_dl').addClass('disabled');
         } else {
@@ -365,12 +357,6 @@ function props()
         cachedForms.viewFile = form;
     }
     $('#form').html(substitute(form, data));
-    if (data.dl_url) {
-        var link = $('#public_url');
-        link.innerHTML = site_url + data.dl_url;
-        link.href = data.dl_url;
-        link.show();
-    }
 }
 
 /**
@@ -590,47 +576,6 @@ function submitFile()
 {
     var action = (idSet.length === 0)? 'CreateFile' : 'UpdateFile';
     DirectoryAjax.callAsync(action, $.unserialize($('#frm_file').serialize()));
-}
-
-/**
- * Fetches and displays users of selected group
- */
-function toggleUsers(gid)
-{
-    var container = $('#users').empty();
-    if (usersByGroup[gid] === undefined) {
-        usersByGroup[gid] = DirectoryAjax.callSync('GetUsers', {'gid':gid});
-    }
-    $.each(usersByGroup[gid], function(i, user) {
-        if (user.id == UID) return;
-
-        var div = $('<div>'),
-            input = $('<input>').attr({
-                type: 'checkbox',
-                id: 'chk_' + user.id,
-                value: user.id
-            }),
-            label = $('<label>').attr({'for': 'chk_' + user.id});
-
-        input.prop('checked', (sharedFileUsers[user.id] !== undefined));
-        input.on('click', selectUser);
-        label.html(user.nickname + ' (' + user.username + ')');
-        div.append(input, label);
-        container.append(div);
-    });
-}
-
-/**
- * Adds/removes user to/from shares
- */
-function selectUser()
-{
-    if (this.checked) {
-        sharedFileUsers[this.value] = this.getNext('label').get('html');
-    } else {
-        delete sharedFileUsers[this.value];
-    }
-    updateShareUsers();
 }
 
 /**

@@ -166,7 +166,6 @@ margin:5px 0;
   border:1px solid silver; margin:0; padding:10px;
   max-height:150px; overflow-y:auto; line-height:1.5;
 }
-#share_users {width:100%; height:100px;}
 #users input {margin-right:3px; vertical-align:middle;}
 #users label {font-weight:bold; vertical-align:middle;}
 

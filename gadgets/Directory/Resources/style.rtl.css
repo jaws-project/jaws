@@ -34,26 +34,6 @@ overflow:hidden;
 .file-size{
 text-align:right;
 }
-.file-sharing{
-position:absolute;
-right:22px;
-width:16px;
-height:32px;
-background-position:left top;
-background-repeat:no-repeat;
-}
-.file-sharing.shared{
-background-image:url(../Resources/images/shared.png);
-}
-.file-sharing.foreign{
-background-image:url(../Resources/images/users.png);
-}
-.file-sharing.public{
-background-image:url(../Resources/images/link.png);
-}
-.file-sharing.shared.public{
-background:url(../Resources/images/shared.png) no-repeat left top, url(../Resources/images/link.png) no-repeat left 70%;
-}
 
 .file-info table{
 width:100%;
@@ -151,7 +131,6 @@ margin:5px 0;
   border:1px solid silver; margin:0; padding:10px;
   max-height:150px; overflow-y:auto; line-height:1.5;
 }
-#share_users {width:100%; height:100px;}
 #users input {margin-left:3px; vertical-align:middle;}
 #users label {font-weight:bold; vertical-align:middle;}
 

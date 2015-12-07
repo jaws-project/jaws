@@ -11,7 +11,7 @@
 class Directory_Model_Admin_Files extends Jaws_Gadget_Model
 {
     /**
-     * Fetches list of files including shared files
+     * Fetches list of files
      *
      * @access  public
      * @param   int     $params  Query params
