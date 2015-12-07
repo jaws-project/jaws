@@ -1,6 +1,6 @@
 <?php
 /**
- * SMS notification class
+ * Mobile notification class
  *
  * @category    Notification
  * @package     Core
