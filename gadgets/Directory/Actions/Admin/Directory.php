@@ -137,7 +137,7 @@ class Directory_Actions_Admin_Directory extends Jaws_Gadget_Action
      */
     function GetFile()
     {
-        $id = jaws()->request->fetch('id');
+        $id = jaws()->request->fetch('id', 'post');
         $model = $this->gadget->model->loadAdmin('Files');
         $file = $model->GetFile($id);
         if (Jaws_Error::IsError($file)) {

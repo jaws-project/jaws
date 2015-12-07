@@ -269,15 +269,12 @@ function openMedia(id, type)
  */
 function downloadFile(id)
 {
-    if (id == 'undefined') {
-        if (idSet.length === 0) return;
-        id = idSet[0];
+    if (id == undefined) {
+        id = getSelected()[0];
     }
     var file = fileById[id];
     if (!file) {
-        DirectoryAjax.callAsync('GetFile', {'id':id}, function(response) {
-            file = fileById[id] = response;
-        });
+        file = fileById[id] = DirectoryAjax.callSync('GetFile', {'id':id});
     }
     if (file.is_dir) {
         return;
