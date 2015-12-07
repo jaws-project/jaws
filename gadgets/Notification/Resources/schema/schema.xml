@@ -3,26 +3,13 @@
     <name><variable>database</variable></name>
 
     <table>
-        <name><variable>table_prefix</variable>notification_email</name>
+        <name><variable>table_prefix</variable>notification_messages</name>
         <declaration>
-
             <field>
                 <name>id</name>
                 <type>integer</type>
                 <notnull>true</notnull>
                 <autoincrement>true</autoincrement>
-            </field>
-
-            <field>
-                <name>key</name>
-                <type>integer</type>
-                <length>8</length>
-            </field>
-
-            <field>
-                <name>contact_value</name>
-                <type>text</type>
-                <length>128</length>
             </field>
 
             <field>
@@ -42,11 +29,50 @@
                 <type>text</type>
             </field>
 
+        </declaration>
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>notification_email</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>message</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>key</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <field>
+                <name>value</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
             <field>
                 <name>publish_time</name>
                 <type>integer</type>
                 <length>8</length>
             </field>
+
+            <index>
+                <name><variable>table_prefix</variable>notification_e_msg</name>
+                <field>
+                    <name>message</name>
+                </field>
+            </index>
 
         </declaration>
     </table>
@@ -64,32 +90,21 @@
             </field>
 
             <field>
+                <name>message</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
                 <name>key</name>
                 <type>integer</type>
                 <length>8</length>
             </field>
 
             <field>
-                <name>contact_value</name>
+                <name>value</name>
                 <type>text</type>
                 <length>128</length>
-            </field>
-
-            <field>
-                <name>title</name>
-                <type>text</type>
-                <length>64</length>
-            </field>
-
-            <field>
-                <name>summary</name>
-                <type>text</type>
-                <length>512</length>
-            </field>
-
-            <field>
-                <name>description</name>
-                <type>text</type>
             </field>
 
             <field>
@@ -97,6 +112,13 @@
                 <type>integer</type>
                 <length>8</length>
             </field>
+
+            <index>
+                <name><variable>table_prefix</variable>notification_m_msg</name>
+                <field>
+                    <name>message</name>
+                </field>
+            </index>
 
         </declaration>
     </table>

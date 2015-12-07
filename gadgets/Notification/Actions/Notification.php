@@ -7,7 +7,6 @@
  */
 class Notification_Actions_Notification extends Jaws_Gadget_Action
 {
-
     /**
      * Send notifications in queue
      *
@@ -35,7 +34,7 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
         }
 
         $mobileLimit = (int)$this->gadget->registry->fetch('mobile_pop_count');
-        $mobileItems = $model->GetNotifications(Notification_Info::NOTIFICATION_TYPE_SMS, $mobileLimit);
+        $mobileItems = $model->GetNotifications(Notification_Info::NOTIFICATION_TYPE_MOBILE, $mobileLimit);
         if (Jaws_Error::IsError($mobileItems)) {
             $this->gadget->registry->update('processing', 'false');
             return $mobileItems;
@@ -47,8 +46,13 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
             $driver = basename($driver, '.php');
             $options = unserialize($this->gadget->registry->fetch($driver . '_options'));
             $driverObj = Jaws_Notification::getInstance($driver, $options);
-            if (!empty($emailItems) && $driverObj::DRIVER_TYPE == Notification_Info::NOTIFICATION_TYPE_EMAIL) {
-                $res = $driverObj->notify($emailItems);
+            if (!empty($emailItems) && $driver == 'Mail') {
+                $emailItemsChunk = $this->GroupSameMessages($emailItems);
+                foreach ($emailItemsChunk as $messageId => $emails) {
+                    $message = $model->GetNotificationMessage($messageId);
+                    $res = $driverObj->notify($emails, $message['title'], $message['summary'], $message['description']);
+                }
+
                 // delete notification
                 // FIXME : we can increase the performance
                 if (!Jaws_Error::IsError($res)) {
@@ -56,10 +60,15 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
                     foreach ($emailItems as $item) {
                         $itemsId[] = $item['id'];
                     }
-                    $model->DeleteNotificationsById('email', $itemsId);
+                    $model->DeleteNotificationsById(Notification_Info::NOTIFICATION_TYPE_EMAIL, $itemsId);
                 }
-            } else if (!empty($mobileItems) && $driverObj::DRIVER_TYPE == Notification_Info::NOTIFICATION_TYPE_SMS) {
-                $res = $driverObj->notify($mobileItems);
+            } else if (!empty($mobileItems) && $driver == 'Mobile') {
+                $mobileItemsChunk = $this->GroupSameMessages($mobileItems);
+                foreach ($mobileItemsChunk as $messageId => $mobiles) {
+                    $message = $model->GetNotificationMessage($messageId);
+                    $res = $driverObj->notify($mobiles, $message['title'], $message['summary'], $message['description']);
+                }
+
                 // delete notification
                 // FIXME : we can increase the performance
                 if (!Jaws_Error::IsError($res)) {
@@ -67,7 +76,7 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
                     foreach ($mobileItems as $item) {
                         $itemsId[] = $item['id'];
                     }
-                    $model->DeleteNotificationsById('mobile', $itemsId);
+                    $model->DeleteNotificationsById(Notification_Info::NOTIFICATION_TYPE_MOBILE, $itemsId);
                 }
             }
         }
@@ -75,5 +84,31 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
         // finish procession
         $this->gadget->registry->update('processing', 'false');
         return true;
+    }
+
+
+    /**
+     * Group same messages
+     *
+     * @access  public
+     * @param   array       $items    Notification items
+     * @return bool
+     */
+    function GroupSameMessages($items)
+    {
+        if (empty($items)) {
+            return array();
+        }
+
+        $messageRecipients = array();
+        $lastMessageId = 0;
+        foreach ($items as $item) {
+            if ($lastMessageId != $item['message']) {
+                $lastMessageId = $item['message'];
+            }
+            $messageRecipients[$lastMessageId][] = $item['value'];
+        }
+
+        return $messageRecipients;
     }
 }

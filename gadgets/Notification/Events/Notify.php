@@ -86,51 +86,49 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         $notificationsMobiles = array();
 
         // notification for this gadget was disabled
-        if ($configuration[$gadget] == 0) {
+        if (isset($configuration[$gadget]) && $configuration[$gadget] == 0) {
             return false;
         }
 
         foreach ($users as $user) {
             // generate email array
-            if ($configuration[$gadget] == 1 ||
+            if (!isset($configuration[$gadget]) ||
+                $configuration[$gadget] == 1 ||
                 $configuration[$gadget] == 'Mail') {
                 if (!empty($user['email'])) {
                     $notificationsEmails[] = array(
                         'key' => $params['key'],
-                        'contact_value' => $user['email'],
-                        'title' => strip_tags($params['title']),
-                        'summary' => strip_tags($params['summary']),
-                        'description' => $params['description'],
+                        'value' => $user['email'],
                         'publish_time' => $params['publish_time']
                     );
                 }
             }
 
             // generate mobile array
-            if ($configuration[$gadget] == 1 ||
+            if (!isset($configuration[$gadget]) ||
+                $configuration[$gadget] == 1 ||
                 $configuration[$gadget] == 'Mobile') {
                 if (!empty($user['mobile_number'])) {
                     $notificationsMobiles[] = array(
                         'key' => $params['key'],
-                        'contact_value' => $user['mobile_number'],
-                        'title' => strip_tags($params['title']),
-                        'summary' => strip_tags($params['summary']),
-                        'description' => $params['description'],
+                        'value' => $user['mobile_number'],
                         'publish_time' => $params['publish_time']
                     );
                 }
             }
         }
 
-        if (!empty($notificationsEmails)) {
-            $res = $model->InsertNotifications(Notification_Info::NOTIFICATION_TYPE_EMAIL, $notificationsEmails);
+        if (!empty($notificationsEmails) || !empty($notificationsMobiles)) {
+            $res = $model->InsertNotifications(
+                array('emails' => $notificationsEmails, 'mobiles' => $notificationsMobiles),
+                strip_tags($params['title']),
+                strip_tags($params['summary']),
+                $params['description']
+            );
             if (Jaws_Error::IsError($res)) {
                 return $res;
             }
-        }
-
-        if (!empty($notificationsMobiles)) {
-            return $model->InsertNotifications(Notification_Info::NOTIFICATION_TYPE_SMS, $notificationsMobiles);
+            return true;
         }
 
         return false;

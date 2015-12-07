@@ -67,7 +67,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         $tables = array(
-            'notification_email', 'notification_mobile'
+            'notification_email', 'notification_mobile', 'notification_messages'
         );
         foreach ($tables as $table) {
             $result = Jaws_DB::getInstance()->dropTable($table);
