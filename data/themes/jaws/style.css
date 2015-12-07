@@ -751,3 +751,11 @@ background-color:#d3d3d3;
 color:#0000ff;
 cursor:pointer;
 }
+
+/* Subscription */
+.subscription ul{
+list-style-type : none;
+}
+.subscription .subscription_items{
+margin-left: 15px;
+}
