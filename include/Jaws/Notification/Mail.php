@@ -10,8 +10,6 @@
  */
 class Jaws_Notification_Mail
 {
-    const DRIVER_TYPE = 'email';
-
     /**
      * Store mail object instance
      * @var     array
@@ -32,8 +30,7 @@ class Jaws_Notification_Mail
      * constructor
      *
      * @access  public
-     * @param   array   $options    Associated options array
-     * @return  void
+     * @param   array $options Associated options array
      */
     public function __construct($options)
     {
@@ -54,18 +51,18 @@ class Jaws_Notification_Mail
      * Sends notify to user
      *
      * @access  public
-     * @param   array   $users      Users properties associated array
+     * @param   array   $emails     Recipients email
      * @param   string  $title      Notification title
      * @param   string  $summary    Notification summary
      * @param   string  $content    Notification content
      * @return  mixed   Jaws_Error on failure
      */
-    function notify($users, $title, $summary, $content)
+    function notify($emails, $title, $summary, $content)
     {
         $this->object->reset();
         $this->object->SetFrom();
-        foreach ($users as $user) {
-            $this->object->AddRecipient($user['email']);
+        foreach ($emails as $email) {
+            $this->object->AddRecipient($email);
         }
         $this->object->SetSubject($title);
 

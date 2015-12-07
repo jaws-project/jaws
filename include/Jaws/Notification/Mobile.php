@@ -8,10 +8,8 @@
  * @copyright   2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Notification_SMS
+class Jaws_Notification_Mobile
 {
-    const DRIVER_TYPE = 'sms';
-
     /**
      * Store mail object instance
      * @var     array
@@ -43,13 +41,13 @@ class Jaws_Notification_SMS
      * Sends notify to user
      *
      * @access  public
-     * @param   array   $users      Users properties associated array
+     * @param   array   $mobiles    Recipients mobile numbers
      * @param   string  $title      Notification title
      * @param   string  $summary    Notification summary
      * @param   string  $content    Notification content
      * @return  mixed   Jaws_Error on failure
      */
-    function notify($users, $title, $summary, $content)
+    function notify($mobiles, $title, $summary, $content)
     {
     }
 
