@@ -50,9 +50,11 @@ class Directory_Actions_Admin_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
         $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
+        $tpl->SetVariable('lbl_term', _t('DIRECTORY_FILE_TERM'));
         $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
-        $tpl->SetVariable('lbl_date', _t('DIRECTORY_FILE_DATE'));
+        $tpl->SetVariable('lbl_start_date', _t('DIRECTORY_FILE_START_DATE'));
+        $tpl->SetVariable('lbl_end_date', _t('DIRECTORY_FILE_END_DATE'));
         $tpl->SetVariable('alertShortQuery', _t('DIRECTORY_ERROR_SHORT_QUERY'));
         $tpl->SetVariable('confirmDelete', _t('DIRECTORY_CONFIRM_DELETE'));
         $tpl->SetVariable('confirmFileDelete', _t('DIRECTORY_CONFIRM_FILE_DELETE'));

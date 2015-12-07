@@ -123,11 +123,8 @@ vertical-align:top;
 #frm_search #btn_search_close{
 display:none;
 }
-#frm_search #file_search{
+#frm_search input, #frm_search select {
 width:180px;
-}
-#advanced_search select {
-width:130px;
 }
 
 #dir_tree{

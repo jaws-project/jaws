@@ -25,8 +25,16 @@
     <img id="btn_search" src="{{img_search}}" alt="{{lbl_search}}" title="{{lbl_search}}" onclick="toggleSearch()" />
   </div>
   <form id="frm_search" style="display:none;">
-    <table id="advanced_search" style="display:none;">
-      <tr><th>{{lbl_type}}:</th>
+    <table>
+      <tr>
+        <th>{{lbl_term}}:</th>
+        <td>
+          <input id="file_search" name="file_search" onchange="onSearchChange(this)" onkeyup="onSearchChange(this)">
+          <button type="button" id="btn_search_close" onclick="closeSearch()">x</button>
+        </td>
+      </tr>
+      <tr>
+        <th>{{lbl_type}}:</th>
         <td>
           <select name="file_type">
             <option value=""></option>
@@ -36,8 +44,10 @@
             <option value="image">application</option>
           </select>
         </td>
+        <th>{{lbl_start_date}}:</th><td>{{start_date}}</td>
       </tr>
-      <tr><th>{{lbl_size}}:</th>
+      <tr>
+        <th>{{lbl_size}}:</th>
         <td>
           <select name="file_size">
             <option value="0"></option>
@@ -49,15 +59,9 @@
             <option value="131072,">&gt; 128 MB</option>
           </select>
         </td>
-      </tr>
-      <tr><th>{{lbl_date}}:</th>
-        <td>{{start_date}}{{end_date}}</td>
+        <th>{{lbl_end_date}}:</th><td>{{end_date}}</td>
       </tr>
     </table>
-    <input id="file_search" name="file_search" onchange="onSearchChange(this)" onkeyup="onSearchChange(this)" class="large">
-    <button type="button" id="btn_search_close" onclick="closeSearch()">x</button>
-    <button type="button" onclick="performSearch()">{{lbl_search}}</button>
-    <button type="button" onclick="advancedSearch(this)">{{lbl_adv_search}}</button>
   </form>
   <table class="files-table">
     <thead><tr>

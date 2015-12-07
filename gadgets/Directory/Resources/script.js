@@ -97,6 +97,9 @@ function initDirectory()
     }
     iconByExt.folder = 'folder';
 
+    $('#frm_search select, #file_search').change(performSearch);
+    $('#start_date, #end_date').on('keypress', performSearch);
+
     updateFiles(currentDir);
     updateActions();
 }
@@ -602,15 +605,6 @@ function performSearch()
 function toggleSearch()
 {
     $('#frm_search').toggle();
-}
-
-/**
- * Displays advanced search UI
- */
-function advancedSearch(self)
-{
-    $(self).hide();
-    $('#advanced_search').css('display', 'table');
 }
 
 /**
