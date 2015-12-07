@@ -106,6 +106,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
                 }
 
                 if (!empty($item['sub_items'])) {
+                    $tpl->SetVariable('collapse', 'collapse');
                     foreach ($item['sub_items'] as $subItem) {
                         $tpl->SetBlock('subscription/gadget/item/subItem');
                         $checkboxName = $gadget . '_' . $subItem['action'] . '_' . $subItem['reference'];

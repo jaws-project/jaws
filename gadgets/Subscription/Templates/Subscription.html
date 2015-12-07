@@ -16,10 +16,10 @@
               <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
                 <span>{{gadget_title}}</span>
               </legend>
-                <div>
+                <div class="subscription_items">
                   <!-- BEGIN item -->
                   <fieldset>
-                    <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
+                    <legend class="{{collapse}}" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
                       <span>
                           <!-- BEGIN checkbox -->
                         <input type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
@@ -27,7 +27,7 @@
                         <label for="{{id}}"><a href="{{url}}">{{title}}</a></label>
                       </span>
                     </legend>
-                      <div>
+                      <div class="subscription_items">
 
                       <!-- BEGIN subItem -->
                       <ul>
@@ -65,7 +65,7 @@
     <h3>{{title}}</h3>
 </div>
 
-<div class="gadget_container">
+<div class="gadget_subscription">
 <form name="subscriptionForm" method="post" action="{{base_script}}">
     <input type="hidden" name="gadget" value="Subscription"/>
     <input type="hidden" name="action" value="UpdateGadgetSubscription"/>
