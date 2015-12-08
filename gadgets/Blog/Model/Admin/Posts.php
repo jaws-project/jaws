@@ -383,7 +383,7 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
                     'reference' => $category,
                     'key' => $key,
                     'summary' => $title,
-                    'publish_time' => strtotime($params['publishtime']),
+                    'publish_time' => isset($params['publishtime'])? strtotime($params['publishtime']) : time(),
                     'description' => $content,
                     'url' => $this->gadget->urlMap('SingleView', array('id' => $post_id), true)
                 );
