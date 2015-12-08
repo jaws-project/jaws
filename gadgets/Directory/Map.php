@@ -10,62 +10,16 @@
  */
 $maps[] = array(
     'Directory',
-    'directory[/{dirid}]',
-    array('dirid' => '[[:digit:]]+')
-);
-$maps[] = array(
-    'GetFiles',
-    'directory/files/{id}[/shared/{shared}][/foreign/{foreign}]',
+    'directory[/{id}][/page/{page}][/order/{order}]',
     array(
         'id' => '[[:digit:]]+',
-        'shared' => '[[:digit:]]+',
-        'foreign' => '[[:digit:]]+'
+        'page' => '[[:digit:]]+',
+        'order' => '[[:alnum:]]+',
     )
 );
 $maps[] = array(
-    'GetFile',
-    'directory/file/{id}',
-    array('id' => '[[:digit:]]+')
-);
-$maps[] = array(
-    'DownloadFile',
-    'directory/file/{id}/download',
-    array('id' => '[[:digit:]]+')
-);
-$maps[] = array(
-    'OpenFile',
-    'directory/file/{id}/open[.{ext}]',
-    array(
-        'id' => '[[:digit:]]+',
-        'ext' => '[[:alnum:]]+'
-    ),
+    'Download',
+    'directory/download/{id}[.{ext}]',
+    array('id' => '[[:digit:]]+'),
     ''
-);
-$maps[] = array(
-    'GetPath',
-    'directory/path/{id}',
-    array('id' => '[[:digit:]]+')
-);
-$maps[] = array(
-    'GetTree',
-    'directory/tree[/{id}]',
-    array('id' => '[[:digit:]]+')
-);
-$maps[] = array(
-    'Move',
-    'directory/move/{id}/target/{target}',
-    array(
-        'id' => '[[:digit:]]+',
-        'target' => '[[:digit:]]+'
-    )
-);
-$maps[] = array(
-    'FileForm',
-    'directory/form/file[/{mode}]',
-    array('mode' => '[[:alnum:]]+')
-);
-$maps[] = array(
-    'DirectoryForm',
-    'directory/form/directory[/{mode}]',
-    array('mode' => '[[:alnum:]]+')
 );

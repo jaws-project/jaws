@@ -102,6 +102,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 'id' => $parent['id'],
                 'title' => $parent['title'],
                 'url' => BASE_SCRIPT . '?gadget=Directory&action=Directory&dirid=' . $parent['id']
+                // TODO: move the url to action file
             );
             $this->GetPath($parent['parent'], $path);
         }

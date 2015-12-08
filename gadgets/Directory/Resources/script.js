@@ -244,7 +244,7 @@ function fileOpen(id)
             openMedia(id, 'text');
         } else if (['jpg', 'jpeg', 'png', 'gif', 'svg'].indexOf(file.ext) !== -1) {
             openMedia(id, 'image');
-        } else if (['wav', 'mp3', 'ogg'].indexOf(file.ext) !== -1) {
+        } else if (['wav', 'mp3'].indexOf(file.ext) !== -1) {
             openMedia(id, 'audio');
         } else if (['webm', 'mp4', 'ogg'].indexOf(file.ext) !== -1) {
             openMedia(id, 'video');

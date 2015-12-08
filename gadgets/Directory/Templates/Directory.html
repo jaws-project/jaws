@@ -1,0 +1,53 @@
+<!-- BEGIN directory -->
+<div class="gadget_header"><h3>{{title}}</h3></div>
+<div class="gadget_container directory">
+  <div>
+    <a href="{{root_url}}" title="{{root}}">
+      <img src="gadgets/Directory/Resources/images/home.png" alt="root"/>
+    </a>
+    <span>{{path}}</span>
+  </div>
+  <div class="gadget_content content">
+    {{content}}
+  </div>
+</div>
+<div class="gadget_footer"></div>
+<!-- END directory -->
+
+<!-- BEGIN files -->
+<table class="file-list">
+  <thead><tr>
+    <th colspan="2">{{lbl_title}}</th>
+    <th>{{lbl_created}}</th>
+    <th>{{lbl_modified}}</th>
+    <th>{{lbl_type}}</th>
+    <th>{{lbl_size}}</th>
+  </tr></thead>
+  <tbody class="file">
+  <!-- BEGIN file -->
+  <tr id="file_{{id}}" title="{{description}}">
+    <td class="file-title"><a href="{{url}}"><img src="{{icon}}" alt="{{title}}" /></a></td>
+    <td class="file-title"><a href="{{url}}">{{title}}</a></td>
+    <td class="file-created">{{created}}</td>
+    <td class="file-modified">{{modified}}</td>
+    <td class="file-type">{{type}}</td>
+    <td class="file-size">{{size}}</td>
+  </tr>
+  <!-- END file -->
+  </tbody>
+</table>
+<!-- END files -->
+
+<!-- BEGIN file -->
+<table class="file-info">
+  <tr><th width="1">{{lbl_title}}:</th><td>{{title}}</td></tr>
+  <tr><th>{{lbl_desc}}:</th><td>{{description}}</td></tr>
+  <tr><th>{{lbl_filename}}:</th><td>{{user_filename}}</td></tr>
+  <tr><th>{{lbl_type}}:</th><td title="{{filetype}}">{{type}}</td></tr>
+  <tr><th>{{lbl_size}}:</th><td class="file-size">{{size}} ({{filesize}} {{lbl_bytes}})</td></tr>
+  <tr><th>{{lbl_created}}:</th><td title="{{createtime}}">{{created}}</td></tr>
+  <tr><th>{{lbl_modified}}:</th><td title="{{updatetime}}">{{modified}}</td></tr>
+  <tr><th>{{lbl_download}}:</th><td><a href="{{download}}"><img src="images/stock/bottom.png" alt="download" /></a></td></tr>
+  <tr><td colspan="2"><p>{{preview}}</p></td></tr>
+</table>
+<!-- END file -->
