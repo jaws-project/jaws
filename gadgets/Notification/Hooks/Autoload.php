@@ -15,7 +15,10 @@ class Notification_Hooks_Autoload extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-            $this->SendNotifications();
+        $this->SendNotifications();
+
+        $model = $this->gadget->model->load('Notification');
+        $model->DeleteOrphanedMessages();
     }
 
     /**

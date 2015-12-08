@@ -106,7 +106,7 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
             if ($lastMessageId != $item['message']) {
                 $lastMessageId = $item['message'];
             }
-            $messageRecipients[$lastMessageId][] = $item['value'];
+            $messageRecipients[$lastMessageId][] = $item['contact'];
         }
 
         return $messageRecipients;

@@ -81,7 +81,6 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
 
         // get gadget driver settings
         $configuration = unserialize($this->gadget->registry->fetch('configuration'));
-
         $notificationsEmails = array();
         $notificationsMobiles = array();
 
@@ -97,8 +96,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                 $configuration[$gadget] == 'Mail') {
                 if (!empty($user['email'])) {
                     $notificationsEmails[] = array(
-                        'key' => $params['key'],
-                        'value' => $user['email'],
+                        'contact' => $user['email'],
                         'publish_time' => $params['publish_time']
                     );
                 }
@@ -110,8 +108,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                 $configuration[$gadget] == 'Mobile') {
                 if (!empty($user['mobile_number'])) {
                     $notificationsMobiles[] = array(
-                        'key' => $params['key'],
-                        'value' => $user['mobile_number'],
+                        'contact' => $user['mobile_number'],
                         'publish_time' => $params['publish_time']
                     );
                 }
@@ -121,6 +118,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         if (!empty($notificationsEmails) || !empty($notificationsMobiles)) {
             $res = $model->InsertNotifications(
                 array('emails' => $notificationsEmails, 'mobiles' => $notificationsMobiles),
+                $params['key'],
                 strip_tags($params['title']),
                 strip_tags($params['summary']),
                 $params['description']

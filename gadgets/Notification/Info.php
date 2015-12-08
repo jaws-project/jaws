@@ -22,6 +22,14 @@ class Notification_Info extends Jaws_Gadget
     var $version = '1.0.0';
 
     /**
+     * Is this gadget core gadget?
+     *
+     * @var    boolean
+     * @access  private
+     */
+    var $_IsCore = true;
+
+    /**
      * Default back-end action name
      *
      * @var     string

@@ -25,7 +25,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             return new Jaws_Error(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
         }
 
-        return $nTable->select(array('id', 'message', 'value'))
+        return $nTable->select(array('id', 'message', 'contact'))
             ->limit($limit)
             ->where('publish_time', time(), '<=')
             ->orderBy('publish_time, message asc')->fetchAll();
@@ -52,12 +52,13 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   array       $notifications      Notifications items (for example array('emails'=>array(...))
+     * @param   int         $key                Notifications key
      * @param   string      $title              Title
      * @param   string      $summary            Summary
      * @param   string      $description        Description
      * @return  bool        True or error
      */
-    function InsertNotifications($notifications, $title, $summary, $description)
+    function InsertNotifications($notifications, $key, $title, $summary, $description)
     {
         if (empty($notifications) || (empty($notifications['emails']) && empty($notifications['mobiles']))) {
             return false;
@@ -65,9 +66,10 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
 
         $objORM = Jaws_ORM::getInstance()->beginTransaction();
         $mTable = $objORM->table('notification_messages');
-        $messageId = $mTable->insert(
-            array('title' => $title, 'summary' => $summary, 'description' => $description)
-        )->exec();
+        $messageId = $mTable->upsert(
+            array('key' => $key, 'title' => $title, 'summary' => $summary, 'description' => $description))
+            ->and()->where('key', $key)
+            ->exec();
 
         if (Jaws_Error::IsError($messageId)) {
             return $messageId;
@@ -81,8 +83,8 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 $row['message'] = $messageId;
                 $res = $table
                     ->upsert($row)
-                    ->and()->where('key', $row['key'])
-                    ->and()->where('value', $row['value'])
+                    ->and()->where('message', $row['message'])
+                    ->and()->where('contact', $row['contact'])
                     ->exec();
                 if (Jaws_Error::IsError($res)) {
                     return $res;
@@ -98,8 +100,8 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 $row['message'] = $messageId;
                 $res = $table
                     ->upsert($row)
-                    ->and()->where('key', $row['key'])
-                    ->and()->where('value', $row['value'])
+                    ->and()->where('message', $row['message'])
+                    ->and()->where('contact', $row['contact'])
                     ->exec();
                 if (Jaws_Error::IsError($res)) {
                     return $res;
@@ -126,20 +128,39 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         if (empty($key)) {
             return false;
         }
-        $objORM = Jaws_ORM::getInstance();
+        $objORM = Jaws_ORM::getInstance()->beginTransaction();
 
+        $messageId = $objORM->table('notification_messages')->select('id:integer')->where('key', $key)->fetchOne();
+        if (Jaws_Error::IsError($messageId)) {
+            return $messageId;
+        }
+        if (empty($messageId)) {
+            return false;
+        }
+
+        // delete email records
         $table = $objORM->table('notification_email');
-        $res = $table->delete()->where('key', $key)->exec();
+        $res = $table->delete()->where('message', $messageId)->exec();
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
 
+        // delete mobile records
         $table = $objORM->table('notification_mobile');
-        $res = $table->delete()->where('key', $key)->exec();
+        $res = $table->delete()->where('message', $messageId)->exec();
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
 
+        // delete message
+        $table = $objORM->table('notification_messages');
+        $res = $table->delete()->where('id', $messageId)->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+
+        // commit Transaction
+        $objORM->commit();
         return true;
     }
 
@@ -167,5 +188,21 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         }
 
         return $table->delete()->where('id', $ids, 'in')->exec();
+    }
+
+
+    /**
+     * Delete orphaned messages
+     *
+     * @access  public
+     * @return  bool    True or error
+     */
+    function DeleteOrphanedMessages()
+    {
+        $table = Jaws_ORM::getInstance()->table('notification_messages');
+        $eTable = Jaws_ORM::getInstance()->table('notification_email')->select('message')->distinct();
+        $mTable = Jaws_ORM::getInstance()->table('notification_mobile')->select('message')->distinct();
+
+        return $table->delete()->where('id', $eTable, 'not in')->and()->where('id', $mTable, 'not in')->exec();
     }
 }

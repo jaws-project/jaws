@@ -13,6 +13,12 @@
             </field>
 
             <field>
+                <name>key</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <field>
                 <name>title</name>
                 <type>text</type>
                 <length>64</length>
@@ -28,6 +34,15 @@
                 <name>description</name>
                 <type>text</type>
             </field>
+
+            <index>
+                <name><variable>table_prefix</variable>notification_k</name>
+                <unique>true</unique>
+
+                <field>
+                    <name>key</name>
+                </field>
+            </index>
 
         </declaration>
     </table>
@@ -50,13 +65,7 @@
             </field>
 
             <field>
-                <name>key</name>
-                <type>integer</type>
-                <length>8</length>
-            </field>
-
-            <field>
-                <name>value</name>
+                <name>contact</name>
                 <type>text</type>
                 <length>128</length>
             </field>
@@ -73,6 +82,19 @@
                     <name>message</name>
                 </field>
             </index>
+
+            <index>
+                <name><variable>table_prefix</variable>notification_mc</name>
+                <unique>true</unique>
+
+                <field>
+                    <name>message</name>
+                </field>
+                <field>
+                    <name>contact</name>
+                </field>
+            </index>
+
 
         </declaration>
     </table>
@@ -96,13 +118,7 @@
             </field>
 
             <field>
-                <name>key</name>
-                <type>integer</type>
-                <length>8</length>
-            </field>
-
-            <field>
-                <name>value</name>
+                <name>contact</name>
                 <type>text</type>
                 <length>128</length>
             </field>
