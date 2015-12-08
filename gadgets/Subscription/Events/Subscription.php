@@ -32,11 +32,16 @@ class Subscription_Events_Subscription extends Jaws_Gadget_Event
 
         $users = array();
         $emails = array();
+        $mobiles = array();
         foreach ($usersSubscriptions as $row) {
             if (!empty($row['user'])) {
                 $users[] = $row['user'];
-            } else if (!empty($row['email'])) {
+            }
+            if (!empty($row['email'])) {
                 $emails[] = $row['email'];
+            }
+            if (!empty($row['mobile_number'])) {
+                $mobiles[] = $row['mobile_number'];
             }
         }
 
@@ -46,6 +51,7 @@ class Subscription_Events_Subscription extends Jaws_Gadget_Event
         $params['gadget'] = $shouter;
         $params['users'] = $users;
         $params['emails'] = $emails;
+        $params['mobiles'] = $mobiles;
         $this->gadget->event->shout('Notify', $params);
     }
 }

@@ -24,13 +24,15 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
         $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
         $response = $GLOBALS['app']->Session->PopResponse('Subscription.Subscription');
         $email = '';
+        $mobile = '';
         $selectedItems = array();
         if (isset($response['data'])) {
             $email = $response['data']['email'];
+            $mobile = $response['data']['mobile'];
             $selectedItems = $response['data']['subscriptionItems'];
         } else {
             if (!empty($currentUser)) {
-                $userSubscriptions = $sModel->GetUserSubscriptions($currentUser, null);
+                $userSubscriptions = $sModel->GetUserSubscriptions($currentUser);
                 if (count($userSubscriptions) > 0) {
                     foreach ($userSubscriptions as $item) {
                         $selectedItems[] = $item['gadget'] . '_' . $item['action'] . '_' . $item['reference'];
@@ -52,8 +54,12 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
             $tpl->SetVariable('email', $email);
             $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
             $tpl->ParseBlock('subscription/email');
-        }
 
+            $tpl->SetBlock('subscription/mobile');
+            $tpl->SetVariable('mobile', $mobile);
+            $tpl->SetVariable('lbl_mobile', _t('SUBSCRIPTION_MOBILE_NUMBER'));
+            $tpl->ParseBlock('subscription/mobile');
+        }
 
         // get subscription gadgets list
         $gadgets = $sModel->GetSubscriptionGadgets();
@@ -144,8 +150,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
      */
     function UpdateSubscription()
     {
-        $post = jaws()->request->fetch(array('email', 'subscriptionItems:array'), 'post');
-        $email = $post['email'];
+        $post = jaws()->request->fetch(array('email', 'mobile', 'subscriptionItems:array'), 'post');
         $selectedItems = $post['subscriptionItems'];
         if(empty($selectedItems)) {
             $subscriptionItems = jaws()->request->fetch('subscriptionItems', 'post');
@@ -165,7 +170,8 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
        $sModel = $this->gadget->model->load('Subscription');
         $result = $sModel->UpdateSubscription(
             $GLOBALS['app']->Session->GetAttribute('user'),
-            $email,
+            $post['email'],
+            $post['mobile'],
             $selectedItems
         );
         if (Jaws_Error::IsError($result)) {
@@ -209,7 +215,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
         // check user current subscription
         $sModel = $this->gadget->model->load('Subscription');
         $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
-        $isSubscribed = $sModel->GetUserSubscription($currentUser, null, $gadget, $action, $reference);
+        $isSubscribed = $sModel->GetUserSubscription($currentUser, null, null, $gadget, $action, $reference);
 
         if ($isSubscribed) {
             $tpl->SetVariable('is_subscribe', '0');
@@ -217,6 +223,14 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
         } else {
             $tpl->SetVariable('is_subscribe', '1');
             $tpl->SetVariable('lbl_action_type', _t('SUBSCRIPTION_ACTION_SUBSCRIBE'));
+        }
+
+        if (empty($currentUser)) {
+            $tpl->SetBlock('subscription/email');
+            $tpl->ParseBlock('subscription/email');
+
+            $tpl->SetBlock('subscription/mobile');
+            $tpl->ParseBlock('subscription/mobile');
         }
 
         $tpl->ParseBlock('inline');
@@ -234,16 +248,17 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
     {
         $post  = jaws()->request->fetch(
             array(
-                'email', 'subscription_gadget', 'subscription_action', 'subscription_reference', 'is_subscribe'
+                'email', 'mobile', 'subscription_gadget', 'subscription_action',
+                'subscription_reference', 'is_subscribe'
             ),
             'post'
         );
-        $email = $post['email'];
 
         $sModel = $this->gadget->model->load('Subscription');
         $result = $sModel->UpdateGadgetSubscription(
             $GLOBALS['app']->Session->GetAttribute('user'),
-            $email,
+            $post['email'],
+            $post['mobile'],
             $post['subscription_gadget'],
             $post['subscription_action'],
             $post['subscription_reference'],

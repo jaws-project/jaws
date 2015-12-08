@@ -26,6 +26,12 @@
             </field>
 
             <field>
+                <name>mobile_number</name>
+                <type>text</type>
+                <length>24</length>
+            </field>
+
+            <field>
                 <name>gadget</name>
                 <type>text</type>
                 <length>32</length>
@@ -67,6 +73,15 @@
                 </field>
                 <field>
                     <name>reference</name>
+                </field>
+                <field>
+                    <name>user</name>
+                </field>
+                <field>
+                    <name>email</name>
+                </field>
+                <field>
+                    <name>mobile_number</name>
                 </field>
             </index>
 
