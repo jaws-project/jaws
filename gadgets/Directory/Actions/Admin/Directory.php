@@ -51,6 +51,7 @@ class Directory_Actions_Admin_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
         $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
         $tpl->SetVariable('lbl_term', _t('DIRECTORY_FILE_TERM'));
+        $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
         $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
         $tpl->SetVariable('lbl_start_date', _t('DIRECTORY_FILE_START_DATE'));
@@ -126,6 +127,14 @@ class Directory_Actions_Admin_Directory extends Jaws_Gadget_Action
             }
             $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
+
+            // Fetch tags
+            $file['tags'] = array();
+            if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+                $tModel = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
+                $tags = $tModel->GetReferenceTags('Directory', 'file', $file['id']);
+                $file['tags'] = implode(', ', array_filter($tags));
+            }
         }
 
         return $files;
@@ -241,7 +250,7 @@ class Directory_Actions_Admin_Directory extends Jaws_Gadget_Action
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $fault = false;
         foreach ($id_set as $id) {
-            // Validate file & user
+            // Validate file
             $file = $model->GetFile($id);
             if (Jaws_Error::IsError($file)) {
                 $fault = true;
@@ -252,6 +261,12 @@ class Directory_Actions_Admin_Directory extends Jaws_Gadget_Action
             $res = $model->Delete($file);
             if (Jaws_Error::IsError($res)) {
                 $fault = true;
+            }
+
+            // Delete tags
+            if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+                $tModel = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
+                $tModel->DeleteReferenceTags('Directory', 'file', $id);
             }
         }
 

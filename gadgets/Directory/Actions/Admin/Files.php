@@ -24,6 +24,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         $tpl->SetBlock($mode);
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
+        $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
         $tpl->SetVariable('lbl_hidden', _t('DIRECTORY_FILE_HIDDEN'));
         $tpl->SetVariable('lbl_url', _t('DIRECTORY_FILE_URL'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
@@ -39,6 +40,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
             $tpl->SetVariable('title', '{title}');
             $tpl->SetVariable('desc', '{description}');
+            $tpl->SetVariable('tags', '{tags}');
             $tpl->SetVariable('user_filename', '{user_filename}');
             $tpl->SetVariable('hidden', '{hidden}');
             $tpl->SetVariable('type', '{type}');
@@ -123,11 +125,21 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             // Insert record
             unset($data['filename']);
             $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            $res = $model->Insert($data);
-            if (Jaws_Error::IsError($res)) {
+            $id = $model->Insert($data);
+            if (Jaws_Error::IsError($id)) {
                 // TODO: delete uploaded file
                 throw new Exception(_t('DIRECTORY_ERROR_FILE_CREATE'));
             }
+
+            // Insert Tags
+            if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+                $tags = jaws()->request->fetch('tags');
+                if (!empty($tags)) {
+                    $tModel = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
+                    $tModel->InsertReferenceTags('Directory', 'file', $id, !$data['hidden'], time(), $tags);
+                }
+            }
+
         } catch (Exception $e) {
             return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
         }
@@ -207,6 +219,13 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             $res = $model->Update($id, $data);
             if (Jaws_Error::IsError($res)) {
                 throw new Exception(_t('DIRECTORY_ERROR_FILE_UPDATE'));
+            }
+
+            // Update Tags
+            if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+                $tags = jaws()->request->fetch('tags');
+                $tModel = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
+                $tModel->UpdateReferenceTags('Directory', 'file', $id, !$data['hidden'], time(), $tags);
             }
 
         } catch (Exception $e) {

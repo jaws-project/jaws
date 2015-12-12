@@ -133,6 +133,12 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable($key, $value);
         }
 
+        // display tags
+        if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
+            $tagsHTML = Jaws_Gadget::getInstance('Tags')->action->load('Tags');
+            $tagsHTML->loadReferenceTags('Directory', 'file', $file['id'], $tpl, 'file');
+        }
+
         // display file
         $fileInfo = pathinfo($file['host_filename']);
         if (isset($fileInfo['extension'])) {
@@ -148,7 +154,6 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
                 $type = 'video';
             }
             if ($type != '') {
-                $action = $this->gadget->action->load('File');
                 $tpl->SetVariable('preview', $this->PlayMedia($file, $type));
             }
         }

@@ -497,6 +497,7 @@ function editFile(id)
     form.id.value = id;
     form.title.value = file.title;
     form.description.value = file.description;
+    form.tags.value = file.tags;
     form.hidden.checked = file.hidden;
 }
 
