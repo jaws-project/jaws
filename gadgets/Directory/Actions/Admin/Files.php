@@ -47,7 +47,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             $tpl->SetVariable('filetype', '{filetype}');
             $tpl->SetVariable('size', '{size}');
             $tpl->SetVariable('filesize', '{filesize}');
-            $tpl->SetVariable('url', '{url}');
+            $tpl->SetVariable('link', '{link}');
             $tpl->SetVariable('createtime', '{createtime}');
             $tpl->SetVariable('updatetime', '{updatetime}');
             $tpl->SetVariable('created', '{created}');
@@ -241,13 +241,12 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
      * @access  public
      * @return  string  Related URL
      */
-    function GetDownloadURL($id = null, $open = null)
+    function GetDownloadURL($id = null)
     {
-        $id = ($id !== null)? $id : (int)jaws()->request->fetch('id');
-        $open = ($open !== null)? $open : (bool)jaws()->request->fetch('open');
-        $action = $open? 'OpenFile' : 'DownloadFile';
-//        return $this->gadget->urlMap($action, array('id' => $id));
-        return BASE_SCRIPT . "?gadget=Directory&action=$action&id=" . $id;
+        if ($id === null) {
+            $id = (int)jaws()->request->fetch('id');
+        }
+        return $this->gadget->urlMap('Download', array('id' => $id), true);
     }
 
     /**
@@ -286,7 +285,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         if ($type === 'text') {
             $tpl->SetVariable('text', $this->GetFileContent($id));
         } else {
-            $tpl->SetVariable('url', $this->GetDownloadURL($id, true));
+            $tpl->SetVariable('url', $this->GetDownloadURL($id));
         }
         $tpl->ParseBlock($type);
 
@@ -315,65 +314,5 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
 
         $response = Jaws_UTF8::json_encode($response);
         return "<script>parent.onUpload($response);</script>";
-    }
-
-    /**
-     * Downloads file (not force)
-     *
-     * @access  public
-     * @return  mixed   File data or Jaws_Error
-     */
-    function OpenFile()
-    {
-        return $this->Download(true);
-    }
-
-    /**
-     * Downloads file (force download)
-     *
-     * @access  public
-     * @return  mixed   File data or Jaws_Error
-     */
-    function DownloadFile()
-    {
-        return $this->Download(false);
-    }
-
-    /**
-     * Downloads file (stream)
-     *
-     * @access  public
-     * @return  mixed   File data or Jaws_Error
-     */
-    function Download($open = true)
-    {
-        $id = jaws()->request->fetch('id');
-        if (is_null($id)) {
-            return Jaws_HTTPError::Get(500);
-        }
-        $id = (int)$id;
-        $model = $this->gadget->model->loadAdmin('Files');
-
-        // Validate file
-        $file = $model->GetFile($id);
-        if (Jaws_Error::IsError($file)) {
-            return Jaws_HTTPError::Get(500);
-        }
-        if (empty($file) || empty($file['user_filename'])) {
-            return Jaws_HTTPError::Get(404);
-        }
-
-        // Check for file existence
-        $filename = $GLOBALS['app']->getDataURL("directory/") . $file['host_filename'];
-        if (!file_exists($filename)) {
-            return Jaws_HTTPError::Get(404);
-        }
-
-        // Stream file
-        if (!Jaws_Utils::Download($filename, $file['user_filename'], $file['filetype'], $open)) {
-            return Jaws_HTTPError::Get(500);
-        }
-
-        return true;
     }
 }

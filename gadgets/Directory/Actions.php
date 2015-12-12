@@ -94,14 +94,6 @@ $admin_actions['UploadFile'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
-$admin_actions['DownloadFile'] = array(
-    'standalone' => true,
-    'file' => 'Files'
-);
-$admin_actions['OpenFile'] = array(
-    'standalone' => true,
-    'file' => 'Files'
-);
 $admin_actions['GetDownloadURL'] = array(
     'standalone' => true,
     'file' => 'Files'

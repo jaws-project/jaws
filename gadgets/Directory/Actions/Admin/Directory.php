@@ -124,6 +124,8 @@ class Directory_Actions_Admin_Directory extends Jaws_Gadget_Action
         foreach ($files as &$file) {
             if ($file['is_dir']) {
                 $file['url'] = BASE_SCRIPT . '?gadget=Directory&action=Directory&dirid=' . $file['id'];
+            } else {
+                $file['link'] = $this->gadget->urlMap('Directory', array('id' => $file['id']), true);
             }
             $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
