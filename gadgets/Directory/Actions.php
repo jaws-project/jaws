@@ -17,15 +17,6 @@ $actions['Directory'] = array(
     'layout' => true,
     'file' => 'Directory'
 );
-$actions['ListFiles'] = array(
-    'normal' => true,
-    'layout' => true,
-    'file' => 'Directory'
-);
-$actions['ViewFile'] = array(
-    'normal' => true,
-    'file' => 'Directory'
-);
 $actions['Download'] = array(
     'standalone' => true,
     'file' => 'Directory'
