@@ -176,6 +176,12 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             }
         }
 
+        // Show like rating
+        if (Jaws_Gadget::IsGadgetInstalled('Rating')) {
+            $ratingHTML = Jaws_Gadget::getInstance('Rating')->action->load('RatingTypes');
+            $ratingHTML->loadReferenceLike('Directory', 'File', $file['id'], 0, $tpl, 'file');
+        }
+
         $tpl->ParseBlock('file');
         return $tpl->Get();
     }
