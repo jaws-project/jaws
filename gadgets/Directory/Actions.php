@@ -102,3 +102,7 @@ $admin_actions['PlayMedia'] = array(
     'standalone' => true,
     'file' => 'Files'
 );
+$admin_actions['ManageComments'] = array(
+    'normal' => true,
+    'file' => 'Comments',
+);

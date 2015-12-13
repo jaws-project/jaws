@@ -1,24 +1,24 @@
-table{
+.directory table{
     width:100%;
     border-spacing:1px;
 }
-table thead,table tfoot{
+.directory table thead,table tfoot{
     padding:0px;
     color:#325994;
     line-height:140%;
     background:#eee;
 }
-table th{
+.directory table th{
     padding:2px 4px;
     text-align:left;
     font-weight:bold;
     border:1px solid #ccc;
     border-radius:2px 2px 0 0;
 }
-table tr:nth-child(even){
+.directory table tr:nth-child(even){
     background:#ebf1f3;
 }
-table td{
+.directory table td{
     padding:2px 4px;
 }
 

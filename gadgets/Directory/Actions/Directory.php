@@ -89,11 +89,11 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             if ($file['is_dir']) {
                 $tpl->SetVariable('icon', $iconUrl . 'folder.png');
             } else {
-                if (!empty($file['filetype'])) {
-                    $tpl->SetVariable('icon', $iconUrl . $file['type']);
-                } else {
+//                if (!empty($file['filetype'])) {
+//                    $tpl->SetVariable('icon', $iconUrl . $file['filetype'] . '.png');
+//                } else {
                     $tpl->SetVariable('icon', $iconUrl . 'file-generic.png');
-                }
+//                }
             }
             $tpl->ParseBlock('files/file');
         }
@@ -155,6 +155,24 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             }
             if ($type != '') {
                 $tpl->SetVariable('preview', $this->PlayMedia($file, $type));
+            }
+        }
+
+        // display comments/comment-form
+        if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
+            $allow_comments = $this->gadget->registry->fetch('allow_comments', 'Comments');
+
+            $cHTML = Jaws_Gadget::getInstance('Comments')->action->load('Comments');
+            $tpl->SetVariable('comments', $cHTML->ShowComments('Directory', 'File', $file['id'],
+                array('action' => 'Directory', 'params' => array('id' => $file['id']))));
+
+            if ($allow_comments == 'true') {
+                $redirect_to = $this->gadget->urlMap('Directory', array('id' => $file['id']));
+                $tpl->SetVariable('comment-form', $cHTML->ShowCommentsForm('Directory', 'File', $file['id'], $redirect_to));
+            } elseif ($allow_comments == 'restricted') {
+                $login_url = $GLOBALS['app']->Map->GetURLFor('Users', 'LoginBox');
+                $register_url = $GLOBALS['app']->Map->GetURLFor('Users', 'Registration');
+                $tpl->SetVariable('comment-form', _t('COMMENTS_COMMENTS_RESTRICTED', $login_url, $register_url));
             }
         }
 

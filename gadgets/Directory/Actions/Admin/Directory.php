@@ -8,7 +8,7 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Directory_Actions_Admin_Directory extends Jaws_Gadget_Action
+class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
 {
     /**
      * Builds file management UI
@@ -22,6 +22,8 @@ class Directory_Actions_Admin_Directory extends Jaws_Gadget_Action
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('Workspace.html');
         $tpl->SetBlock('workspace');
+
+        $tpl->SetVariable('menubar', $this->MenuBar('Directory'));
 
         $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('lbl_adv_search', _t('DIRECTORY_ADVANCED_SEARCH'));

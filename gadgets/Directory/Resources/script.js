@@ -142,8 +142,8 @@ function displayFiles(files)
     filesCount = files.length;
     files.forEach(function (file) {
         file.ext = file.is_dir? 'folder' : file.host_filename.split('.').pop();
-        file.type = iconByExt[file.ext] || 'file-generic';
-        file.icon = '<img src="' + icon_url + file.type + '.png" />';
+        file.type = file.filetype || '-';
+        file.icon = '<img src="' + icon_url + (iconByExt[file.ext] || 'file-generic') + '.png" />';
         file.size = formatSize(file.filesize, 0);
         if (!file.is_dir) {
             file.url = 'javascript:fileOpen(' + file.id + ');';
