@@ -75,6 +75,14 @@ class Jaws_ORM
     var $_values = array();
 
     /**
+     * Upsert columns/values pairs used for update part
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_extras = array();
+
+    /**
      * Where conditions list
      *
      * @var     array
@@ -843,6 +851,7 @@ class Jaws_ORM
                     if (empty($result)) {
                         goto insert;
                     } else {
+                        $this->_values = array_merge($this->_values, $this->_extras);
                         goto update;
                     }
                 }
@@ -1042,6 +1051,7 @@ class Jaws_ORM
             case 'update':
             case 'upsert':
                 $this->_values = $params[0];
+                $this->_extras = isset($params[1])? $params[1] : array();
             case 'delete':
                 $this->_query_command = $method;
                 return $this;
@@ -1094,6 +1104,7 @@ class Jaws_ORM
         $this->_columns  = array();
         $this->_types    = array();
         $this->_values   = array();
+        $this->_extras   = array();
         $this->_where    = array();
         $this->_joins    = array();
         $this->_groupBy  = array();
