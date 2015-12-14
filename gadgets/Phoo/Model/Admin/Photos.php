@@ -229,6 +229,11 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
             }
         }
 
+        // shout SiteActivity event
+        $saParams = array();
+        $saParams['action'] = 'Photo';
+        $this->gadget->event->shout('SiteActivity', $saParams);
+
         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_PHOTO_ADDED'), RESPONSE_NOTICE);
         return $result;
     }
