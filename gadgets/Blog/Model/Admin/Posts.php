@@ -203,6 +203,11 @@ class Blog_Model_Admin_Posts extends Jaws_Gadget_Model
             }
         }
 
+        // shout SiteActivity event
+        $saParams = array();
+        $saParams['action'] = 'Post';
+        $this->gadget->event->shout('SiteActivity', $saParams);
+
         return $max;
     }
 
