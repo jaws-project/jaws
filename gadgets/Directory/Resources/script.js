@@ -449,9 +449,9 @@ function editDirectory(id)
         form = $('#frm_dir');
     form.find('[name=id]').val(id);
     form.find('[name=title]').val(data.title);
-    form.find('[name=description]').val(data.description);
     form.find('[name=parent]').val(data.parent);
     form.find('[name=hidden]').prop('checked', data.hidden);
+    changeEditorValue('description', data.description);
 }
 
 /**
@@ -496,9 +496,9 @@ function editFile(id)
     form.action.value = 'UpdateFile';
     form.id.value = id;
     form.title.value = file.title;
-    form.description.value = file.description;
     form.tags.value = file.tags;
     form.hidden.checked = file.hidden;
+    changeEditorValue('description', file.description);
 }
 
 /**
@@ -569,8 +569,10 @@ function removeFile()
  */
 function submitDirectory()
 {
-    var action = (idSet.length === 0)? 'CreateDirectory' : 'UpdateDirectory';
-    DirectoryAjax.callAsync(action, $.unserialize($('#frm_dir').serialize()));
+    var action = (idSet.length === 0)? 'CreateDirectory' : 'UpdateDirectory',
+        data = $.unserialize($('#frm_dir').serialize());
+    data.description = getEditorValue('description');
+    DirectoryAjax.callAsync(action, data);
 }
 
 /**
@@ -578,8 +580,10 @@ function submitDirectory()
  */
 function submitFile()
 {
-    var action = (idSet.length === 0)? 'CreateFile' : 'UpdateFile';
-    DirectoryAjax.callAsync(action, $.unserialize($('#frm_file').serialize()));
+    var action = (idSet.length === 0)? 'CreateFile' : 'UpdateFile',
+        data = $.unserialize($('#frm_file').serialize());
+    data.description = getEditorValue('description');
+    DirectoryAjax.callAsync(action, data);
 }
 
 /**

@@ -29,6 +29,9 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_url', _t('DIRECTORY_FILE_URL'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         if ($mode === 'edit') {
+            $editor =& $GLOBALS['app']->LoadEditor('Directory', 'description');
+            $editor->TextArea->SetStyle('width:100%; height:60px;');
+            $tpl->SetVariable('description', $editor->get());
             $tpl->SetVariable('lbl_file', _t('DIRECTORY_FILE'));
             $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         } else {

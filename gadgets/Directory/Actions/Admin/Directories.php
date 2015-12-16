@@ -20,6 +20,7 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
     {
         $mode = jaws()->request->fetch('mode');
         if ($mode === null) $mode = 'view';
+
         $tpl = $this->gadget->template->loadAdmin('Directory.html');
         $tpl->SetBlock($mode);
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
@@ -27,7 +28,12 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_hidden', _t('DIRECTORY_FILE_HIDDEN'));
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        if ($mode === 'view') {
+
+        if ($mode === 'edit') {
+            $editor =& $GLOBALS['app']->LoadEditor('Directory', 'description');
+            $editor->TextArea->SetStyle('width:100%; height:60px;');
+            $tpl->SetVariable('description', $editor->get());
+        } else {
             $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
             $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
             $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
