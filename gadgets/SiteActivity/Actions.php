@@ -26,11 +26,23 @@ $actions['SendData'] = array(
 /**
  * Admin actions
  */
-$admin_actions['Settings'] = array(
+$admin_actions['SiteActivity'] = array(
     'normal' => true,
-    'file' => 'Settings',
+    'file' => 'SiteActivity',
 );
-$admin_actions['SaveSettings'] = array(
+$admin_actions['GetSiteActivities'] = array(
     'standalone' => true,
-    'file' => 'Settings',
+    'file' => 'SiteActivity',
+);
+$admin_actions['GetSiteActivitiesCount'] = array(
+    'standalone' => true,
+    'file' => 'SiteActivity',
+);
+$admin_actions['DeleteSiteActivities'] = array(
+    'standalone' => true,
+    'file' => 'SiteActivity',
+);
+$admin_actions['DeleteAllSiteActivities'] = array(
+    'standalone' => true,
+    'file' => 'SiteActivity',
 );

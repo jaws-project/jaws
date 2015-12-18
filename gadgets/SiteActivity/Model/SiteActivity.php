@@ -11,27 +11,125 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
      * Get site activities
      *
      * @access  public
-     * @param   string      $domain     Domain name ( if pass empty use currnet domain)
-     * @param   integer     $date       Statistics day (UNIX timestamp)
+     * @param   array   $filters
+     * @param   bool    $limit
+     * @param   int     $offset
+     * @param   string  $order
      * @return bool True or error
      */
-    function GetSiteActivities($domain = '0', $date = null)
+    function GetSiteActivities($filters = null, $limit = false, $offset = null, $order = 'gadget,action asc')
     {
         $today = getdate();
         $date = empty($date) ? mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']) : $date;
 
-        $table = Jaws_ORM::getInstance()->table('sa_activity')
-            ->select(array('id:integer', 'domain', 'gadget', 'action', 'date:integer', 'hits:integer'))
+        $saTable = Jaws_ORM::getInstance()->table('sa_activity')
+            ->select('id:integer', 'domain', 'gadget', 'action', 'date:integer', 'hits:integer')
             ->where('sync', false)
             ->and()->where('date', $date);
-        if ($domain === '0') {
-            $table->and()->where('domain', '', 'is null');
-        } else {
-            $table->and()->where('domain', $domain);
+
+        if (!empty($filters) && count($filters) > 0) {
+            // from_date
+            if (isset($filters['from_date']) && !empty($filters['from_date'])) {
+                if (!is_numeric($filters['from_date'])) {
+                    $objDate = Jaws_Date::getInstance();
+                    $filters['from_date'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['from_date']), 'U')
+                    );
+                }
+                $saTable->and()->where('date', $filters['from_date'], '>=');
+            }
+            // to_date
+            if (isset($filters['to_date']) && !empty($filters['to_date'])) {
+                if (!is_numeric($filters['to_date'])) {
+                    $objDate = Jaws_Date::getInstance();
+                    $filters['to_date'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['to_date']), 'U')
+                    );
+                }
+                $saTable->and()->where('date', $filters['to_date'], '<=');
+            }
+            // gadget
+            if (isset($filters['gadget']) && !empty($filters['gadget'])) {
+                $saTable->and()->where('gadget', $filters['gadget']);
+            }
+            // domain
+            if (isset($filters['domain']) && !empty($filters['domain'])) {
+                if ($filters['domain'] === '-1') {
+                    $saTable->and()->where('domain', '', 'is null');
+                } else {
+                    $saTable->and()->where('domain', $filters['domain']);
+                }
+            }
         }
-        return $table->orderBy('gadget,action asc')->fetchAll();
+
+        return $saTable->limit((int)$limit, $offset)->orderBy($order)->fetchAll();
     }
 
+    /**
+     * Get site activities count
+     *
+     * @access  public
+     * @param   array   $filters
+     * @return bool True or error
+     */
+    function GetSiteActivitiesCount($filters = null)
+    {
+        $today = getdate();
+        $date = empty($date) ? mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']) : $date;
+
+        $saTable = Jaws_ORM::getInstance()->table('sa_activity')
+            ->select('count(id):integer')
+            ->and()->where('date', $date);
+
+        if (!empty($filters) && count($filters) > 0) {
+            // from_date
+            if (isset($filters['from_date']) && !empty($filters['from_date'])) {
+                if (!is_numeric($filters['from_date'])) {
+                    $objDate = Jaws_Date::getInstance();
+                    $filters['from_date'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['from_date']), 'U')
+                    );
+                }
+                $saTable->and()->where('date', $filters['from_date'], '>=');
+            }
+            // to_date
+            if (isset($filters['to_date']) && !empty($filters['to_date'])) {
+                if (!is_numeric($filters['to_date'])) {
+                    $objDate = Jaws_Date::getInstance();
+                    $filters['to_date'] = $GLOBALS['app']->UserTime2UTC(
+                        (int)$objDate->ToBaseDate(preg_split('/[- :]/', $filters['to_date']), 'U')
+                    );
+                }
+                $saTable->and()->where('date', $filters['to_date'], '<=');
+            }
+            // gadget
+            if (isset($filters['gadget']) && !empty($filters['gadget'])) {
+                $saTable->and()->where('gadget', $filters['gadget']);
+            }
+            // domain
+            if (isset($filters['domain']) && !empty($filters['domain'])) {
+                if ($filters['domain'] === '-1') {
+                    $saTable->and()->where('domain', '', 'is null');
+                } else {
+                    $saTable->and()->where('domain', $filters['domain']);
+                }
+            }
+        }
+
+        return $saTable->fetchOne();
+    }
+
+    /**
+     * Get all domain list
+     *
+     * @access  public
+     * @return bool True or error
+     */
+    function GetAllDomains()
+    {
+        return Jaws_ORM::getInstance()->table('sa_activity')
+            ->select('domain')->groupBy('domain')->fetchColumn();
+    }
 
     /**
      * Update site activity sync status
@@ -48,7 +146,6 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
             ->where('id', $ids, 'in')->exec();
     }
 
-
     /**
      * Insert SiteActivity to db
      *
@@ -63,16 +160,16 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
         }
 
         $today = getdate();
-        $time = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']);
+        $todayTime = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']);
 
         $saTable = Jaws_ORM::getInstance()->table('sa_activity');
         $data['sync'] = false;
         $data['update_time'] = time();
-        $data['date'] = $time;
+        $data['date'] = $todayTime;
         $data['hits'] = $saTable->expr('hits + ?', $data['hits']);
         $data['update_time'] = time();
         $res = $saTable->upsert($data)
-            ->where('date', $time)
+            ->where('date', $todayTime)
             ->and()->where('gadget', $data['gadget'])
             ->and()->where('action', $data['action'])
             ->exec();
@@ -81,5 +178,26 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
         }
 
         return true;
+    }
+
+    /**
+     * Gets list of SiteActivity support gadgets
+     *
+     * @access  public
+     * @return  array   List of subscription supportgadgets
+     */
+    function GetSiteActivityGadgets()
+    {
+        $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
+        $gadgets = $cmpModel->GetGadgetsList(null, true, true);
+        foreach ($gadgets as $gadget => $info) {
+            if (is_file(JAWS_PATH . "gadgets/$gadget/Hooks/SiteActivity.php")) {
+                $gadgets[$gadget] = $info['title'];
+                continue;
+            }
+            unset($gadgets[$gadget]);
+        }
+
+        return $gadgets;
     }
 }

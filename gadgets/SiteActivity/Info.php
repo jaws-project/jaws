@@ -29,6 +29,6 @@ class SiteActivity_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_admin_action = 'Settings';
+    var $default_admin_action = 'SiteActivity';
 
 }

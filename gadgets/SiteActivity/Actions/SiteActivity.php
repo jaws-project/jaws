@@ -22,9 +22,15 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
         $this->SetTitle(_t('SITEACTIVITY_ACTIONS_SITEACTIVITY'));
 
         $model = $this->gadget->model->load('SiteActivity');
-        $activities = $model->GetSiteActivities();
-        if (!Jaws_Error::isError($activities) && !empty($activities)) {
 
+        $filters = array();
+        $today = getdate();
+        $todayTime = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']);
+        $filters['domain'] = '-1'; // fetch just own domain data
+        $filters['from_date'] = $todayTime; // fetch today data
+        $activities = $model->GetSiteActivities($filters);
+
+        if (!Jaws_Error::isError($activities) && !empty($activities)) {
             $gadgetsActivities = array();
             $gadget = '';
             foreach ($activities as $activity) {
@@ -33,10 +39,11 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
                 }
                 $gadgetsActivities[$gadget][$activity['action']] = $activity['hits'];
             }
+        }
 
-            foreach ($gadgetsActivities as $gadget => $actionHits) {
-                $tpl->SetBlock('SiteActivity/gadget');
-
+        $saGadgets = $model->GetSiteActivityGadgets();
+        if(count($saGadgets)>0) {
+            foreach ($saGadgets as $gadget => $gTitle) {
                 // load gadget
                 $objGadget = Jaws_Gadget::getInstance($gadget);
                 if (Jaws_Error::IsError($objGadget)) {
@@ -47,25 +54,26 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
                 if (Jaws_Error::IsError($objHook)) {
                     continue;
                 }
-
                 // fetch gadget activity's action items
                 $actions = $objHook->Execute();
 
+                $tpl->SetBlock('SiteActivity/gadget');
+
                 $tpl->SetVariable('gadget_title', $objGadget->name);
-                foreach ($actionHits as $action => $hits) {
+                foreach ($actions as $actionName => $actionTitle) {
                     $tpl->SetBlock('SiteActivity/gadget/action');
-                    $tpl->SetVariable('action', $actions[$action]);
+                    $tpl->SetVariable('action', $actionTitle);
+                    $hits = isset($gadgetsActivities[$gadget][$actionName]) ?
+                        $gadgetsActivities[$gadget][$actionName] : 0;
                     $tpl->SetVariable('hits', $hits);
                     $tpl->ParseBlock('SiteActivity/gadget/action');
 
                 }
                 $tpl->ParseBlock('SiteActivity/gadget');
             }
-        }
-
-        if (empty($activities)) {
+        } else {
             $tpl->SetBlock('SiteActivity/no_activity');
-            $tpl->SetVariable('no_activity', _t('SITEACTIVITY_ACTIONS_NOT_FIND_GADGET'));
+            $tpl->SetVariable('no_activity', _t('SITEACTIVITY_ACTIONS_NOT_FIND_ACTIVITY'));
             $tpl->ParseBlock('SiteActivity/no_activity');
         }
 
@@ -103,11 +111,6 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
         foreach ($activities as $activity) {
             $activityIds[] = $activity['id'];
         }
-
-//        $data = array('data'=> json_encode(array('name'=>'mojtaba', 'age'=>31)));
-//        $data = array('0'=> json_encode(array('name'=>'mojtaba', 'age'=>31)));
-//        $data = array(json_encode(array('name'=>'mojtaba', 'age'=>31)));
-        $data = array('name'=>'mojtaba', 'age'=>31);
 
         // post data to parent site
         $parentURL = $this->gadget->registry->fetch('parent_url');
