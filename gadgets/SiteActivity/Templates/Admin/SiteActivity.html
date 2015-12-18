@@ -1,0 +1,33 @@
+<!-- BEGIN SiteActivity -->
+<div class="gadget_menubar">{{menubar}}</div>
+<div id="main">
+<table width="100%">
+  <tr>
+    <td id="l_datagrid" valign="top">
+        <table id="sa_filter">
+            <tr>
+                <td class="filter_label"><label for="filter_from_date">{{lbl_filter_from_date}}:</label></td><td>{{filter_from_date}}</td>
+                <td class="filter_label"><label for="filter_gadget">{{lbl_filter_gadget}}:</label></td><td>{{filter_gadget}}</td>
+                <td class="filter_label"></td><td></td>
+            </tr>
+            <tr>
+                <td class="filter_label"><label for="filter_to_date">{{lbl_filter_to_date}}:</label></td><td>{{filter_to_date}}</td>
+                <td class="filter_label"><label for="filter_domain">{{lbl_filter_domain}}:</label></td><td>{{filter_domain}}</td>
+                <td class="filter_label"><label for="order_type">{{lbl_order_type}}:</label></td><td>{{order_type}}</td>
+            </tr>
+        </table>
+
+        {{datagrid}}
+        <div class="buttons">{{actions_combo}}{{btn_execute}}</div>
+    </td>
+  </tr>
+  <tr>
+    <td class="buttons" colspan="2">{{btn_cancel}}</td>
+  </tr>
+</table>
+<script type="text/javascript">
+    var confirmSiteActivityDelete = "{{confirmSiteActivityDelete}}";
+    initDataGrid('sa_datagrid', SiteActivityAjax, getSiteActivities);
+</script>
+</div>
+<!-- END SiteActivity -->
