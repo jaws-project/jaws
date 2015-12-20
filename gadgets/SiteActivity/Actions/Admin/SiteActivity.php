@@ -5,7 +5,7 @@
  * @category    GadgetAdmin
  * @package     SiteActivity
  */
-class SiteActivity_Actions_Admin_siteActivity extends SiteActivity_Actions_Admin_Default
+class SiteActivity_Actions_Admin_SiteActivity extends SiteActivity_Actions_Admin_Default
 {
     /**
      *

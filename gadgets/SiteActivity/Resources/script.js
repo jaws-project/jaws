@@ -25,17 +25,6 @@ var SiteActivityCallback = {
 };
 
 /**
- * On term key press, for compatibility Opera/IE with other browsers
- */
-function OnTermKeypress(element, event)
-{
-    if (event.keyCode == 13) {
-        element.blur();
-        element.focus();
-    }
-}
-
-/**
  * Get site activities
  *
  */
