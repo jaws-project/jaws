@@ -1,0 +1,17 @@
+#subscription_filter{
+    height:70px;
+    text-align:left;
+    padding-bottom:4px;
+    width: 100%;
+}
+#subscription_filter input,#subscription_filter select{
+    width:130px;
+    white-space:nowrap;
+    margin:0 10px 4px 0;
+}
+#subscription_filter table td{
+    padding:2px;
+}
+#subscription_filter .filter_label{
+    width:70px;
+}

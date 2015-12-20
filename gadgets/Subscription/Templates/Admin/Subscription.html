@@ -1,0 +1,31 @@
+<!-- BEGIN Subscription -->
+<div class="gadget_menubar">{{menubar}}</div>
+<div id="main">
+<table width="100%">
+  <tr>
+    <td id="l_datagrid" valign="top">
+        <table id="subscription_filter">
+            <tr>
+                <td class="filter_label"><label for="filter_user">{{lbl_filter_user}}:</label></td><td>{{filter_user}}</td>
+                <td class="filter_label"><label for="filter_email">{{lbl_filter_email}}:</label></td><td>{{filter_email}}</td>
+            </tr>
+            <tr>
+                <td class="filter_label"><label for="filter_gadget">{{lbl_filter_gadget}}:</label></td><td>{{filter_gadget}}</td>
+                <td class="filter_label"><label for="order_type">{{lbl_order_type}}:</label></td><td>{{order_type}}</td>
+            </tr>
+        </table>
+
+        {{datagrid}}
+        <div class="buttons">{{actions_combo}}{{btn_execute}}</div>
+    </td>
+  </tr>
+  <tr>
+    <td class="buttons" colspan="2">{{btn_cancel}}</td>
+  </tr>
+</table>
+<script type="text/javascript">
+    var confirmSubscriptionDelete = "{{confirmSubscriptionDelete}}";
+    initDataGrid('subscription_datagrid', SubscriptionAjax, getSubscriptions);
+</script>
+</div>
+<!-- END Subscription -->
