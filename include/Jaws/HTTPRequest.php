@@ -21,7 +21,7 @@ class Jaws_HTTPRequest
      * @access  public
      * @var     string   $user_agent    User Agent
      */
-    var $user_agent = 'Jaws HTTPRequest class (http://jaws-project.com)';
+    var $user_agent = 'Jaws HTTPRequest (http://jaws-project.com)';
 
     /**
      * @access  public
@@ -98,6 +98,36 @@ class Jaws_HTTPRequest
             $httpRequest->addPostData($key, urlencode($data));
         }
 
+        $result = $httpRequest->sendRequest();
+        if (PEAR::isError($result)) {
+            return Jaws_Error::raiseError(
+                $result->getMessage(),
+                $result->getCode(),
+                $this->default_error_level,
+                1
+            );
+        }
+
+        $response = $httpRequest->getResponseBody();
+        return $httpRequest->getResponseCode();
+    }
+
+    /**
+     * Raw posts data to the URL
+     *
+     * @access  public
+     * @param   string  $url        URL address
+     * @param   string  $data       Raw data
+     * @param   string  $response   Response body
+     * @return  mixed   Response code on success, otherwise Jaws_Error
+     */
+    function rawPostData($url, $data = '', &$response)
+    {
+        $httpRequest = new HTTP_Request($url, $this->options);
+        $httpRequest->addHeader('User-Agent', $this->user_agent);
+        $httpRequest->setMethod(HTTP_REQUEST_METHOD_POST);
+        // set post data
+        $httpRequest->setBody($data);
         $result = $httpRequest->sendRequest();
         if (PEAR::isError($result)) {
             return Jaws_Error::raiseError(
