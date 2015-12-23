@@ -36,7 +36,7 @@ class Blog_Hooks_Tags extends Jaws_Gadget_Hook
         foreach ($result as $r) {
             $post = array();
             $post['title']   = $r['title'];
-            $post['url']     = $this->gadget->urlMap('ViewPage', array('page' => $r['fast_url']));
+            $post['url']     = $this->gadget->urlMap('SingleView', array('id' => $r['fast_url']));
             $post['outer']   = false;
             $post['image']   = 'gadgets/Blog/Resources/images/logo.png';
             $post['snippet'] = $r['summary'];
