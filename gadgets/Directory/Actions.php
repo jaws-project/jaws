@@ -17,6 +17,10 @@ $actions['Directory'] = array(
     'layout' => true,
     'file' => 'Directory'
 );
+$actions['Pagination'] = array(
+    'standalone' => true,
+    'file' => 'Pagination'
+);
 $actions['Download'] = array(
     'standalone' => true,
     'file' => 'Directory'

@@ -36,6 +36,7 @@
   <!-- END file -->
   </tbody>
 </table>
+{{pagination}}
 <!-- END files -->
 
 <!-- BEGIN file -->
@@ -55,3 +56,13 @@
 {{comments}}
 {{comment-form}}
 <!-- END file -->
+
+<!-- BEGIN pagination -->
+<div class="gadget_paginator">
+  <!-- BEGIN first --><span><a href="{{url}}">{{first}}</a></span><!-- END first -->
+  <!-- BEGIN prev --><span><a href="{{url}}">{{previous}}</a></span><!-- END prev -->
+  <!-- BEGIN page --><span>{{link}}</span><!-- END page -->
+  <!-- BEGIN next --><span><a href="{{url}}">{{next}}</a></span><!-- END next -->
+  <!-- BEGIN last --><span><a href="{{url}}">{{last}}</a></span><!-- END last -->
+</div>
+<!-- END pagination -->

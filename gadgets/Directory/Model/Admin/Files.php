@@ -17,12 +17,16 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
      * @param   int     $params  Query params
      * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($params)
+    function GetFiles($params, $count = false)
     {
-        $table = Jaws_ORM::getInstance()->table('directory as dir');
-        $table->select('dir.id', 'parent', 'user', 'is_dir:boolean', 'hidden:boolean',
-            'title', 'description', 'user_filename', 'host_filename', 'filetype', 'filesize',
-            'hits', 'createtime', 'updatetime');
+        $table = Jaws_ORM::getInstance()->table('directory');
+        if ($count) {
+            $table->select('count(id):integer');
+        } else {
+            $table->select('id', 'parent', 'user', 'is_dir:boolean', 'hidden:boolean',
+                'title', 'description', 'user_filename', 'host_filename', 'filetype', 'filesize',
+                'hits', 'createtime', 'updatetime');
+        }
 
         if (isset($params['parent'])) {
             $table->where('parent', $params['parent'])->and();
@@ -65,7 +69,12 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
             $table->closeWhere('user_filename', $query, 'like');
         }
 
-        return $table->orderBy('is_dir desc', 'title asc')->fetchAll();
+        if (!$count && isset($params['limit']) && $params['limit'] > 0) {
+            $table->limit($params['limit'], $params['offset']);
+            $table->orderBy('is_dir desc', 'title asc');
+        }
+
+        return $count? $table->fetchOne() : $table->fetchAll();
     }
 
     /**
@@ -77,11 +86,11 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
      */
     function GetFile($id)
     {
-        $table = Jaws_ORM::getInstance()->table('directory as dir');
+        $table = Jaws_ORM::getInstance()->table('directory');
         $table->select('id', 'parent', 'user', 'title', 'description',
             'host_filename', 'user_filename', 'filetype', 'filesize',
             'is_dir:boolean', 'hidden:boolean', 'createtime', 'updatetime');
-        return $table->where('dir.id', $id)->fetchRow();
+        return $table->where('id', $id)->fetchRow();
     }
 
     /**

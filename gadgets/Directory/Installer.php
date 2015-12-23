@@ -11,6 +11,16 @@
 class Directory_Installer extends Jaws_Gadget_Installer
 {
     /**
+     * Gadget Registry keys
+     *
+     * @var     array
+     * @access  private
+     */
+    var $_RegKeys = array(
+        array('items_per_page', '12'),
+    );
+
+    /**
      * Gadget ACLs
      *
      * @var     array

@@ -53,14 +53,22 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      */
     function ListFiles($parent = 0)
     {
+        $params = jaws()->request->fetch(array('page'), 'get');
+        $page = (int)$params['page'];
+        $params['limit'] = (int)$this->gadget->registry->fetch('items_per_page');
+        $params['offset'] = ($page == 0)? 0 : $params['limit'] * ($page - 1);
+        $params['parent'] = $parent;
+        $params['hidden'] = false;
+
         $model = $this->gadget->model->loadAdmin('Files');
-        $files = $model->GetFiles(array('parent' => $parent));
+        $files = $model->GetFiles($params);
         if (Jaws_Error::IsError($files)){
             return '';
         }
         if (empty($files)){
             return _t('DIRECTORY_INFO_NO_FILES');
         }
+        $count = $model->GetFiles($params, true);
 
         $tpl = $this->gadget->template->load('Directory.html');
         $tpl->SetBlock('files');
@@ -96,6 +104,16 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 //                }
             }
             $tpl->ParseBlock('files/file');
+        }
+
+        // Pagination
+        if ($tpl->VariableExists('pagination') && $params['limit'] > 0) {
+            $action = $this->gadget->action->load('Pagination');
+            $args = array();
+            if ($parent > 0) {
+                $args['id'] = $parent;
+            }
+            $tpl->setVariable('pagination', $action->Pagination($page, $params['limit'], $count, 'Directory', $args));
         }
 
         $tpl->ParseBlock('files');
