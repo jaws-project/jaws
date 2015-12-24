@@ -100,6 +100,8 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
         $this->gadget->registry->update('last_update', time());
         $this->gadget->registry->update('processing', 'true');
 
+        $filters = array();
+        $filters['sync'] = false;
         $model = $this->gadget->model->load('SiteActivity');
         $activities = $model->GetSiteActivities();
         if (Jaws_Error::IsError($activities)) {
@@ -112,10 +114,15 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
             $activityIds[] = $activity['id'];
         }
 
-        // post data to parent site
-        $parentURL = $this->gadget->registry->fetch('parent_url');
+        // Post activities data to parent site
+        $hostName = $_SERVER['HTTP_HOST'];
+        $hostNameArray = explode('.', $hostName);
+        array_shift($hostNameArray);
+        $parentURL = 'http://' . implode('.', $hostNameArray) . '/index.php/SiteActivity/ReceiveData';
+
         $httpRequest = new Jaws_HTTPRequest();
-        $result = $httpRequest->post($parentURL, $data, $retData);
+        $data = json_encode(array('domain' => $hostName, 'data' => $activities));
+        $result = $httpRequest->rawPostData($parentURL, $data, $retData);
         if (Jaws_Error::IsError($result) || $result != 200) {
             $this->gadget->registry->update('processing', 'false');
             return false;
@@ -138,14 +145,26 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
      */
     function ReceiveData()
     {
-//        $post = jaws()->request->fetch(array('data:array'), 'post');
-        $data = jaws()->request->fetchAll('post');
-        return var_export($data, true);
+//        $data = jaws()->request->fetchAll('post');
+        $data = file_get_contents('php://input');
+        $data = json_decode($data);
+        $clientDomain = $data->domain;
+        $activities = $data->data;
+
+        $saData = array();
+        foreach ($activities as $activity) {
+            $domain = empty($activity->domain) ? $clientDomain : $activity->domain;
+            $saData[] = array(
+                'domain' => $domain,
+                'gadget' => $activity->gadget,
+                'action' => $activity->action,
+                'date' => $activity->date,
+                'hits' => $activity->hits,
+            );
+        }
 
         // insert activity data
         $model = $this->gadget->model->load('SiteActivity');
-        $model->InsertSiteActivity($data);
-
-
+        $model->InsertSiteActivities($saData);
     }
 }

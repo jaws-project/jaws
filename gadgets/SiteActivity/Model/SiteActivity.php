@@ -19,13 +19,8 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
      */
     function GetSiteActivities($filters = null, $limit = false, $offset = null, $order = 'gadget,action asc')
     {
-        $today = getdate();
-        $date = empty($date) ? mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']) : $date;
-
         $saTable = Jaws_ORM::getInstance()->table('sa_activity')
-            ->select('id:integer', 'domain', 'gadget', 'action', 'date:integer', 'hits:integer')
-            ->where('sync', false)
-            ->and()->where('date', $date);
+            ->select('id:integer', 'domain', 'gadget', 'action', 'date:integer', 'hits:integer');
 
         if (!empty($filters) && count($filters) > 0) {
             // from_date
@@ -59,6 +54,10 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
                 } else {
                     $saTable->and()->where('domain', $filters['domain']);
                 }
+            }
+            // sync
+            if (isset($filters['sync'])) {
+                $saTable->and()->where('sync', (bool)$filters['sync']);
             }
         }
 
@@ -74,12 +73,8 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
      */
     function GetSiteActivitiesCount($filters = null)
     {
-        $today = getdate();
-        $date = empty($date) ? mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']) : $date;
-
         $saTable = Jaws_ORM::getInstance()->table('sa_activity')
-            ->select('count(id):integer')
-            ->and()->where('date', $date);
+            ->select('count(id):integer');
 
         if (!empty($filters) && count($filters) > 0) {
             // from_date
@@ -113,6 +108,10 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
                 } else {
                     $saTable->and()->where('domain', $filters['domain']);
                 }
+            }
+            // sync
+            if (isset($filters['sync'])) {
+                $saTable->and()->where('sync', (bool)$filters['sync']);
             }
         }
 
@@ -142,7 +141,7 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
     function UpdateSiteActivitySync($ids, $sync)
     {
         return Jaws_ORM::getInstance()->table('sa_activity')
-            ->update(array('sync'=> $sync))
+            ->update(array('sync'=> (bool)$sync))
             ->where('id', $ids, 'in')->exec();
     }
 
@@ -177,6 +176,40 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
             return $res;
         }
 
+        return true;
+    }
+
+    /**
+     * Insert SiteActivities to db
+     *
+     * @access  public
+     * @param   array       $activities      Array of site activity data (gadget, action , hits, ...)
+     * @return  bool        True or error
+     */
+    function InsertSiteActivities($activities)
+    {
+        if (empty($activities)) {
+            return false;
+        }
+
+        // FIXME : increase performance by adding upsertAll method in core
+        $objORM = Jaws_ORM::getInstance()->beginTransaction();
+        foreach($activities as $activity) {
+            $saTable = $objORM->table('sa_activity');
+            $activity['sync'] = false;
+            $res = $saTable->upsert($activity)
+                ->where('date', $activity['date'])
+                ->and()->where('gadget', $activity['gadget'])
+                ->and()->where('action', $activity['action'])
+                ->and()->where('domain', $activity['domain'])
+                ->exec();
+            if (Jaws_Error::IsError($res)) {
+                return $res;
+            }
+        }
+
+        //Commit Transaction
+        $objORM->commit();
         return true;
     }
 

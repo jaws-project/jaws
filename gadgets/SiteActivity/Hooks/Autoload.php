@@ -15,7 +15,7 @@ class SiteActivity_Hooks_Autoload extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-//        $this->SendSiteActivity();
+        $this->SendData();
     }
 
     /**
@@ -24,10 +24,10 @@ class SiteActivity_Hooks_Autoload extends Jaws_Gadget_Hook
      * @access  public
      * @return  void
      */
-    function SendSiteActivity()
+    function SendData()
     {
         $gadget = $this->gadget->action->load('SiteActivity');
-        return $gadget->SendSiteActivitys();
+        return $gadget->SendData();
     }
 
 }

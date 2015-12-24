@@ -16,7 +16,7 @@ class SiteActivity_Installer extends Jaws_Gadget_Installer
     var $_RegKeys = array(
         array('processing', 'false'),
         array('last_update', '0'),
-        array('queue_max_time', '1800'), // maximum time to execution an queue (seconds)
+        array('queue_max_time', '60'), // maximum time to execution an queue (seconds)
         array('sharing_activity', 'true'),
     );
 
