@@ -65,7 +65,7 @@ class SiteActivity_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         $tables = array(
-            'site_activity'
+            'sa_activity'
         );
         foreach ($tables as $table) {
             $result = Jaws_DB::getInstance()->dropTable($table);

@@ -165,9 +165,9 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
         $data['sync'] = false;
         $data['update_time'] = time();
         $data['date'] = $todayTime;
-        $data['hits'] = $saTable->expr('hits + ?', $data['hits']);
+        $data['hits'] = $data['hits'];
         $data['update_time'] = time();
-        $res = $saTable->upsert($data)
+        $res = $saTable->upsert($data, array('hits' => $saTable->expr('hits + ?', $data['hits'])))
             ->where('date', $todayTime)
             ->and()->where('gadget', $data['gadget'])
             ->and()->where('action', $data['action'])

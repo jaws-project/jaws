@@ -59,7 +59,7 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
 
                 $tpl->SetBlock('SiteActivity/gadget');
 
-                $tpl->SetVariable('gadget_title', $objGadget->name);
+                $tpl->SetVariable('gadget_title', $objGadget->title);
                 foreach ($actions as $actionName => $actionTitle) {
                     $tpl->SetBlock('SiteActivity/gadget/action');
                     $tpl->SetVariable('action', $actionTitle);
