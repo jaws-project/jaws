@@ -58,7 +58,7 @@ class Jaws_Gadget_Installer
      * Loads the Installer class object
      *
      * @access  public
-     * @return  pbject  Installer class object
+     * @return  object  Installer class object
      */
     public function &load()
     {
