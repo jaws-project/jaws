@@ -160,7 +160,7 @@ class Jaws_Gadget_Installer
         if (method_exists($installer, 'Install')) {
             $result = $installer->Install($input_schema, $input_variables);
             if (Jaws_Error::IsError($result)) {
-                // removeing gadget registry keys
+                // removing gadget registry keys
                 $GLOBALS['app']->Registry->delete($this->gadget->name);
                 return $result;
             }
@@ -239,21 +239,21 @@ class Jaws_Gadget_Installer
             }
         }
 
-        // removeing gadget from installed gadgets list
+        // removing gadget from installed gadgets list
         $installed_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_installed_items');
         $installed_gadgets = str_replace(",{$this->gadget->name},", ',', $installed_gadgets);
         $GLOBALS['app']->Registry->update('gadgets_installed_items', $installed_gadgets);
 
-        // removeing gadget from autoload gadgets list
+        // removing gadget from autoload gadgets list
         $autoload_gadgets = $GLOBALS['app']->Registry->fetch('gadgets_autoload_items');
         $autoload_gadgets = str_replace(",{$this->gadget->name},", ',', $autoload_gadgets);
         $GLOBALS['app']->Registry->update('gadgets_autoload_items', $autoload_gadgets);
 
-        // removeing gadget listeners
+        // removing gadget listeners
         $this->gadget->event->delete();
-        // removeing gadget ACL keys
+        // removing gadget ACL keys
         $GLOBALS['app']->ACL->delete($this->gadget->name);
-        // removeing gadget registry keys
+        // removing gadget registry keys
         $GLOBALS['app']->Registry->delete($this->gadget->name);
 
         // end uninstall gadget event
