@@ -23,6 +23,7 @@ class Blog_Hooks_Subscription extends Jaws_Gadget_Hook
         if (count($categories) > 0) {
             foreach ($categories as $category) {
                 $item = array();
+                $item['selectable'] = true;
                 $item['action'] = 'Category';
                 $item['reference'] = $category['id'];
                 $item['title'] = _t('BLOG_CATEGORY', $category['name']);
