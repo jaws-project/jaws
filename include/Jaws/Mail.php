@@ -322,7 +322,7 @@ class Jaws_Mail
         $headers  = $this->mail_mime->headers($this->headers);
         $res = $mail->send($this->recipient, $headers, $realbody);
         if (PEAR::isError($res)) {
-            return Jaws_Error::raiseError($res->getMessage(), __FUNCTION__);
+            return Jaws_Error::raiseError($res->getMessage(), __FUNCTION__, JAWS_ERROR_NOTICE);
         }
 
         return true;
