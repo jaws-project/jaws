@@ -26,6 +26,9 @@ class Jaws_ORM
      */
     var $_tbl_prefix = '';
 
+    var $_dbDriver  = '';
+    var $_dbVersion = '';
+
     /**
      * The DB identifier quoting characters
      *
@@ -236,6 +239,8 @@ class Jaws_ORM
     function __construct($db_instance)
     {
         $this->jawsdb = Jaws_DB::getInstance($db_instance);
+        $this->_dbDriver   = $this->jawsdb->getDriver();
+        $this->_dbVersion  = $this->jawsdb->getDBVersion();
         $this->_tbl_prefix = $this->jawsdb->GetPrefix();
         $this->_identifier_quoting = $this->jawsdb->dbc->identifier_quoting;
     }
@@ -468,7 +473,13 @@ class Jaws_ORM
                 break;
 
             default:
-                $value  = $this->quoteValue($value);
+                if ($this->_dbDriver == 'oci8' && $value === '') {
+                    // oracle automatically convert empty string to null !!!
+                    $value = '';
+                    $opt   = 'is null';
+                } else {
+                    $value  = $this->quoteValue($value);
+                }
         }
 
         // quote column identifier
@@ -906,11 +917,9 @@ class Jaws_ORM
                 $sql.= "\n(". implode(', ', array_map(array($this, 'quoteIdentifier'), $this->_columns)). ")";
                 // build insert values list
                 $vsql = '';
-                $dbDriver  = $this->jawsdb->getDriver();
-                $dbVersion = $this->jawsdb->getDBVersion();
                 foreach ($this->_values as $values) {
                     $values_str = implode(', ', array_map(array($this, 'quoteValue'), array_values($values)));
-                    switch ($dbDriver) {
+                    switch ($this->_dbDriver) {
                         case 'oci8':
                             $vsql.= (empty($vsql)? '' : "\n UNION ALL"). "\n SELECT $values_str FROM DUAL";
                             break;
@@ -920,7 +929,7 @@ class Jaws_ORM
                             break;
 
                         case 'pgsql':
-                            if (version_compare($dbVersion, '8.2.0', '>=')) {
+                            if (version_compare($this->_dbVersion, '8.2.0', '>=')) {
                                 $vsql.= (empty($vsql)? "\n VALUES" : ","). "\n ($values_str)";
                             } else {
                                 $vsql[] = " VALUES ($values_str)";
