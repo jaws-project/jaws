@@ -919,6 +919,12 @@ class Jaws_User
             }
         }
 
+        // Let everyone know a user has been updated
+        $res = $GLOBALS['app']->Listener->Shout('Users', 'UpdateUser', $id);
+        if (Jaws_Error::IsError($res)) {
+            return false;
+        }
+
         return true;
     }
 
@@ -946,6 +952,12 @@ class Jaws_User
         $result = $usersTable->update($cData)->where('id', $id)->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
+        }
+
+        // Let everyone know a user has been updated
+        $res = $GLOBALS['app']->Listener->Shout('Users', 'UpdateUser', $id);
+        if (Jaws_Error::IsError($res)) {
+            return false;
         }
 
         return true;
