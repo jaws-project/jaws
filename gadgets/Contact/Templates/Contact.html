@@ -3,53 +3,53 @@
 <div class="gadget_container">
   <div class="gadget_response"><div class="{{type}}">{{text}}</div></div>
   <form name="contact" action="{{base_script}}" method="post" enctype="multipart/form-data">
-  <input type="hidden" name="gadget" value="Contact" />
-  <input type="hidden" name="action" value="Send" />
+  <input class="form-control" type="hidden" name="gadget" value="Contact" />
+  <input class="form-control" type="hidden" name="action" value="Send" />
   <div class="gadget_content content">
     <div class="contact_comments">{{comments}}</div>
   <!-- BEGIN name -->
       <div><label>{{lbl_name}}:</label>
-         <input name="name" class="large name" type="text" value="{{name}}" />
+         <input class="form-control" name="name" class="large name" type="text" value="{{name}}" />
       </div>
   <!-- END name -->
   <!-- BEGIN email -->
       <div><label>{{lbl_email}}:</label>
-         <input name="email" class="large email ltr" type="text" value="{{email}}" />
+         <input class="form-control" name="email" class="large email ltr" type="text" value="{{email}}" />
       </div>
   <!-- END email -->
   <!-- BEGIN company -->
       <div><label>{{lbl_company}}:</label>
-         <input name="company" class="large name" type="text" value="{{company}}" />
+         <input class="form-control" name="company" class="large name" type="text" value="{{company}}" />
       </div>
   <!-- END company -->
   <!-- BEGIN url -->
       <div><label>{{lbl_url}}:</label>
-         <input name="url" class="large url ltr" type="text" value="{{url}}" />
+         <input class="form-control" name="url" class="large url ltr" type="text" value="{{url}}" />
       </div>
   <!-- END url -->
   <!-- BEGIN tel -->
       <div><label>{{lbl_tel}}:</label>
-         <input name="tel" class="large tel ltr" type="text" value="{{tel}}" />
+         <input class="form-control" name="tel" class="large tel ltr" type="text" value="{{tel}}" />
       </div>
   <!-- END tel -->
   <!-- BEGIN fax -->
       <div><label>{{lbl_fax}}:</label>
-         <input name="fax" class="large tel ltr" type="text" value="{{fax}}" />
+         <input class="form-control" name="fax" class="large tel ltr" type="text" value="{{fax}}" />
       </div>
   <!-- END fax -->
   <!-- BEGIN mobile -->
       <div><label>{{lbl_mobile}}:</label>
-         <input name="mobile" class="large tel ltr" type="text" value="{{mobile}}" />
+         <input class="form-control" name="mobile" class="large tel ltr" type="text" value="{{mobile}}" />
       </div>
   <!-- END mobile -->
   <!-- BEGIN address -->
       <div><label>{{lbl_address}}:</label>
-         <input name="address" class="large address" type="text" value="{{address}}" />
+         <input class="form-control" name="address" class="large address" type="text" value="{{address}}" />
       </div>
   <!-- END address -->
   <!-- BEGIN recipient -->
       <div><label>{{lbl_recipient}}:</label>
-          <select name="recipient" class="large">
+          <select class="form-control" name="recipient" class="large">
           <!-- BEGIN item -->
           <option value="{{recipient_id}}" {{selected}}>{{recipient_name}}</option>
           <!-- END item -->
@@ -58,16 +58,16 @@
   <!-- END recipient -->
   <!-- BEGIN subject -->
       <div><label>{{lbl_subject}}:</label>
-         <input name="subject" class="x-large" type="text" value="{{subject}}" /></div>
+         <input class="form-control" name="subject" class="x-large" type="text" value="{{subject}}" /></div>
   <!-- END subject -->
   <!-- BEGIN message -->
       <div><label>{{lbl_message}}:</label>
-         <textarea name="message" class="x-large" rows="6">{{message}}</textarea>
+         <textarea class="form-control" name="message" class="x-large" rows="6">{{message}}</textarea>
       </div>
   <!-- END message -->
   <!-- BEGIN attachment -->
       <div><label>{{lbl_attachment}}:</label>
-         <input name="attachment" type="file" /></div>
+         <input class="form-control" name="attachment" type="file" /></div>
   <!-- END attachment -->
   <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
   </div>
