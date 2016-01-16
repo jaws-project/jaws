@@ -10,10 +10,10 @@
   </div>
 
   <form id="compose" name="compose" action="{{base_script}}" method="post" enctype="multipart/form-data">
-      <input type="hidden" value="15000000" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE">
-      <input type="hidden" name="gadget" value="PrivateMessage"/>
-      <input type="hidden" name="action" value="SendMessage"/>
-      <input type="hidden" name="id" id="id" value="{{id}}"/>
+      <input class="form-control" type="hidden" value="15000000" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE">
+      <input class="form-control" type="hidden" name="gadget" value="PrivateMessage"/>
+      <input class="form-control" type="hidden" name="action" value="SendMessage"/>
+      <input class="form-control" type="hidden" name="id" id="id" value="{{id}}"/>
 
       <!-- BEGIN parent_message -->
       <div class="parent-message">
@@ -31,7 +31,7 @@
           <label for="recipient_users"><b>{{lbl_recipient_users}}:</b></label>
           <div class="recipient_users">
               <div>
-                  <select multiple="multiple" id="recipient_users" name="recipient_users" ondblclick="removeUserFromList()">
+                  <select class="form-control" multiple="multiple" id="recipient_users" name="recipient_users" ondblclick="removeUserFromList()">
                       <!-- BEGIN user -->
                       <option value="{{value}}">{{title}}</option>
                       <!-- END user -->
@@ -39,7 +39,7 @@
               </div>
 
               <div id="userBox" class="ajaxResultBox">
-                  <input type="text" id="userSearch" name="userSearch" onkeyup="searchUsersStart(this.value)" class="large">
+                  <input class="form-control" type="text" id="userSearch" name="userSearch" onkeyup="searchUsersStart(this.value)" class="large">
                   <div id="userSearchResult"></div>
               </div>
 
@@ -60,7 +60,7 @@
 
           <div>
               <label for="subject"><b>{{lbl_subject}}:</b></label>
-              <input name="subject" id="subject" type="text" value="{{subject}}" class="x-large"/>
+              <input class="form-control" name="subject" id="subject" type="text" value="{{subject}}" class="x-large"/>
           </div>
 
           <div>
@@ -72,9 +72,9 @@
 
   <form id="frm_file" name="frm_file" method="post" target="ifrm_upload" action="{{requested_url}}"
         enctype="multipart/form-data" onsubmit="return true">
-      <input type="hidden" name="gadget" value="PrivateMessage"/>
-      <input type="hidden" name="action" value="UploadFile"/>
-      <input type="hidden" name="attachment_number" id="attachment_number" value="1"/>
+      <input class="form-control" type="hidden" name="gadget" value="PrivateMessage"/>
+      <input class="form-control" type="hidden" name="action" value="UploadFile"/>
+      <input class="form-control" type="hidden" name="attachment_number" id="attachment_number" value="1"/>
       <fieldset>
           <legend id="legend_attachments" toggle-status="min">
               <span>
@@ -88,9 +88,9 @@
   </form>
 
   <div class="gadget_actions actions">
-      <a href="{{back_url}}" class="button" id="btn_back">{{lbl_back}}</a>
-      <a class="button" href="javascript:sendMessage(true)" id="btn_save_draft">{{lbl_save_draft}}</a>
-      <a class="button" href="javascript:sendMessage(false)" id="btn_send">{{lbl_send}}</a>
+      <a class="btn btn-default" href="{{back_url}}" id="btn_back">{{lbl_back}}</a>
+      <a class="btn btn-default" href="javascript:sendMessage(true)" id="btn_save_draft">{{lbl_save_draft}}</a>
+      <a class="btn btn-default" href="javascript:sendMessage(false)" id="btn_send">{{lbl_send}}</a>
   </div>
 </div>
 <div class="gadget_footer"></div>
@@ -131,8 +131,7 @@
 <!-- BEGIN attachments -->
 <!-- BEGIN file -->
 <div>
-    <input type="checkbox" name="selected_files[]" id="chk_file_{{file_id}}" value="{{file_id}}"
-           checked>
+    <input type="checkbox" name="selected_files[]" id="chk_file_{{file_id}}" value="{{file_id}}" checked>
     <a href="{{file_download_link}}">{{file_name}}</a> ({{lbl_file_size}}: {{file_size}})
 </div>
 <!-- END file -->
@@ -149,7 +148,7 @@
                                                                                      alt="Remove"
                                                                                      src="images/stock/cancel.png"></a>
     </div>
-    <input type="file" onchange="uploadFile();" id="attachment1" name="attachment1" size="1"
+    <input class="form-control" type="file" onchange="uploadFile();" id="attachment1" name="attachment1" size="1"
            style="display: block;" class="file">
 
                 <span id="attachment_addentry2">
