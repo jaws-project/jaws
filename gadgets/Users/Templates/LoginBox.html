@@ -11,24 +11,24 @@
                                                                  this.length.value);"
         <!-- END onsubmit -->
         method="post">
-  <input type="hidden" name="gadget" value="Users" />
-  <input type="hidden" name="action" value="Login" />
-  <input type="hidden" name="referrer" value="{{referrer}}" />
+  <input class="form-control" type="hidden" name="gadget" value="Users" />
+  <input class="form-control" type="hidden" name="action" value="Login" />
+  <input class="form-control" type="hidden" name="referrer" value="{{referrer}}" />
   <!-- BEGIN encryption -->
-  <input type="hidden" name="length" value="{{length}}" />
-  <input type="hidden" name="modulus" value="{{modulus}}" />
-  <input type="hidden" name="exponent" value="{{exponent}}" />
+  <input class="form-control" type="hidden" name="length" value="{{length}}" />
+  <input class="form-control" type="hidden" name="modulus" value="{{modulus}}" />
+  <input class="form-control" type="hidden" name="exponent" value="{{exponent}}" />
   <!-- END encryption -->
   <div class="gadget_content content">
     <div><label for="login_username">{{lbl_username}}:</label>
-       <input name="username" class="x-large username ltr" id="login_username" type="text" value="{{username}}" />
+       <input class="form-control" name="username" class="x-large username ltr" id="login_username" type="text" value="{{username}}" />
     </div>
     <div><label for="login_password">{{lbl_password}}:</label>
-       <input name="password" class="x-large password ltr" id="login_password" type="password" autocomplete="off" value="" />
+       <input class="form-control" name="password" class="x-large password ltr" id="login_password" type="password" autocomplete="off" value="" />
     </div>
     <!-- BEGIN authtype -->
     <div><label for="authtype">{{lbl_authtype}}:</label>
-      <select name="authtype" id="authtype">
+      <select class="form-control" name="authtype" id="authtype">
       <!-- BEGIN item -->
       <option value="{{method}}" {{selected}}>{{method}}</option>
       <!-- END item -->
@@ -56,7 +56,7 @@
     <!-- END usecrypt -->
   </div>
   <div class="gadget_actions actions">
-    <button type="submit" value="{{login}}">{{login}}</button>
+    <button class="btn btn-primary" type="submit" value="{{login}}">{{login}}</button>
     <div>{{forgot-password}}</div>
     <div>{{user-register}}</div>
   </div>
