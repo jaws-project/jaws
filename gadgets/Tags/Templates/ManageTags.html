@@ -7,13 +7,13 @@
   <div class="gadget_response"><div id="simple_response" class="{{type}}">{{text}}</div></div>
 
   <form name="tags" id="tags" action="{{requested_url}}" method="post">
-      <input type="hidden" name="gadget" value="Tags"/>
-      <input type="hidden" name="action" value="ManageTags"/>
-      <input type="hidden" name="new_tag_name" value=""/>
+      <input class="form-control" type="hidden" name="gadget" value="Tags"/>
+      <input class="form-control" type="hidden" name="action" value="ManageTags"/>
+      <input class="form-control" type="hidden" name="new_tag_name" value=""/>
 
       <div class="filters">
           <label for="gadgets_filter">{{lbl_gadgets}}: </label>
-          <select id="gadgets_filter" name="gadgets_filter">
+          <select class="form-control" id="gadgets_filter" name="gadgets_filter">
               <option
               value="">{{lbl_all}}</option>
               <option
@@ -21,15 +21,15 @@
               <option {{selected}} value="{{name}}">{{title}}</option>
               <!-- END gadget -->
           </select>
-          <input type="text" id="term" name="term" size="20" value="{{txt_term}}" class="large">
+          <input class="form-control" type="text" id="term" name="term" size="20" value="{{txt_term}}" class="large">
 
-          <button value="{{filter}}" id="filter_button" name="filter_button"
+          <button class="btn btn-primary" value="{{filter}}" id="filter_button" name="filter_button"
                   type="submit"><img src="{{icon_filter}}" alt="{{filter}}"/>&nbsp;{{filter}}
           </button>
       </div>
 
       <div class="gadget_content content">
-          <table>
+          <table class="table table-hover table-bordered">
               <thead>
               <tr>
                   <th><input type="checkbox" onclick="toggleCheckboxes();"></th>
@@ -58,7 +58,7 @@
               <tr>
                   <td colspan="5">
                       {{lbl_page_item}}
-                      <select id="page_item" name="page_item" onchange="this.form.submit();">
+                      <select class="form-control" id="page_item" name="page_item" onchange="this.form.submit();">
                           <option {{opt_page_item_10}} value="10">10</option>
                           <option {{opt_page_item_20}} value="20">20</option>
                           <option {{opt_page_item_50}} value="50">50</option>
@@ -72,13 +72,13 @@
 
           <div class="gadget_actions actions">
               <label for="tags_actions_combo">{{lbl_actions}}:&nbsp;</label>
-              <select title="{{lbl_actions}}" id="tags_actions_combo" name="tags_actions_combo">
+              <select class="form-control" title="{{lbl_actions}}" id="tags_actions_combo" name="tags_actions_combo">
                   <option value="">{{lbl_no_action}}</option>
                   <option value="delete">{{lbl_delete}}</option>
                   <option value="merge">{{lbl_merge}}</option>
               </select>
 
-              <button value="{{lbl_actions}}" id="action_button" name="action_button"
+              <button class="btn" value="{{lbl_actions}}" id="action_button" name="action_button"
                       onclick="javascript: return doDGAction();" ><img src="{{icon_ok}}" alt="{{lbl_actions}}"/>
               </button>
           </div>
@@ -127,25 +127,25 @@
 </div>
 <div class="gadget_container">
   <form name="groups" id="groups" action="{{base_script}}" method="post">
-      <input type="hidden" name="gadget" value="Tags"/>
-      <input type="hidden" name="action" value="UpdateTag"/>
-      <input type="hidden" name="tid" value="{{tid}}"/>
+      <input class="form-control" type="hidden" name="gadget" value="Tags"/>
+      <input class="form-control" type="hidden" name="action" value="UpdateTag"/>
+      <input class="form-control" type="hidden" name="tid" value="{{tid}}"/>
 
       <div class="gadget_content content">
           <fieldset>
               <div><label for="name">{{lbl_name}}:</label>
-                  <input name="name" id="name" value="{{name}}" type="text"/>
+                  <input class="form-control" name="name" id="name" value="{{name}}" type="text"/>
               </div>
               <div><label for="title">{{lbl_title}}:</label>
-                  <input name="title" id="title" value="{{tag_title}}" type="text"/>
+                  <input class="form-control" name="title" id="title" value="{{tag_title}}" type="text"/>
               </div>
               <div><label for="description">{{lbl_description}}:</label>
-                  <textarea name="description" id="description" cols="45" rows="4" class="x-large">{{description}}</textarea>
+                  <textarea class="form-control" class="form-control" name="description" id="description" cols="45" rows="4" class="x-large">{{description}}</textarea>
               </div>
           </fieldset>
       </div>
       <div class="gadget_actions actions">
-          <button type="submit" value="{{save}}">{{save}}</button>
+          <button class="btn btn-primary" type="submit" value="{{save}}">{{save}}</button>
       </div>
   </form>
 </div>
