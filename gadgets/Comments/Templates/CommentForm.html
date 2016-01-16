@@ -4,34 +4,34 @@
   <div class="gadget_container">
     <div class="gadget_response"><div class="{{type}}"><a id="{{bookmark}}"></a>{{text}}</div></div>
     <form action="{{base_script}}" method="post">
-        <input type="hidden" name="gadget" value="Comments"/>
-        <input type="hidden" name="action" value="PostMessage"/>
-        <input type="hidden" name="requested_gadget" value="{{gadget}}"/>
-        <input type="hidden" name="requested_action" value="{{action}}"/>
-        <input type="hidden" name="reference" value="{{reference}}"/>
-        <input type="hidden" name="redirect_to" value="{{redirect_to}}"/>
+        <input class="form-control" type="hidden" name="gadget" value="Comments"/>
+        <input class="form-control" type="hidden" name="action" value="PostMessage"/>
+        <input class="form-control" type="hidden" name="requested_gadget" value="{{gadget}}"/>
+        <input class="form-control" type="hidden" name="requested_action" value="{{action}}"/>
+        <input class="form-control" type="hidden" name="reference" value="{{reference}}"/>
+        <input class="form-control" type="hidden" name="redirect_to" value="{{redirect_to}}"/>
 
         <div class="gadget_content">
             <!-- BEGIN info-box -->
             <div><label for="name_comments{{rand}}">{{name}}:</label>
-                <input name="name" class="large name" id="name_comments{{rand}}" type="text" maxlength="20" value="{{namevalue}}"/>
+                <input class="form-control" name="name" class="large name" id="name_comments{{rand}}" type="text" maxlength="20" value="{{namevalue}}"/>
             </div>
 
             <div><label for="email_comments{{rand}}">{{email}}:</label>
-                <input name="email" class="large email ltr" id="email_comments{{rand}}" type="text" value="{{emailvalue}}"/>
+                <input class="form-control" name="email" class="large email ltr" id="email_comments{{rand}}" type="text" value="{{emailvalue}}"/>
             </div>
 
             <div><label for="url_comments{{rand}}">{{url}}:</label>
-                <input name="url" class="large url ltr" id="url_comments{{rand}}" type="text" maxlength="100" value="{{urlvalue}}" />
+                <input class="form-control" name="url" class="large url ltr" id="url_comments{{rand}}" type="text" maxlength="100" value="{{urlvalue}}" />
             </div>
             <!-- END info-box -->
 
             <div class="hidden"><label for="comment_url2">{{url2}}:</label>
-                <input name="url2" id="comment_url2" value="{{url2_value}}" type="text" />
+                <input class="form-control" name="url2" id="comment_url2" value="{{url2_value}}" type="text" />
             </div>
             <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
             <div><label for="message{{rand}}">{{lbl_message}}:</label>
-                <textarea id="message{{rand}}" class="x-large" rows="7" name="message">{{message}}</textarea>
+                <textarea class="form-control" id="message{{rand}}" class="x-large" rows="7" name="message">{{message}}</textarea>
             </div>
             <div>
                 <input name="is_private" id="private_comments{{rand}}" type="checkbox" value="1" />
@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="gadget_actions actions">
-            <button type="submit" name="submit" value="{{send}}">{{send}}</button>
+            <button class="btn btn-primary" type="submit" name="submit" value="{{send}}">{{send}}</button>
         </div>
     </form>
 
