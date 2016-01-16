@@ -2,11 +2,11 @@
 <div class="gadget_header"><div class="gadget_title"><h3>{{title}}</h3></div></div>
 <div class="gadget_container">
   <form name="search_form" method="get" action="{{base_script}}">
-  <input type="hidden" name="gadget" value="Search" />
-  <input type="hidden" name="action" value="Results" />
+  <input class="form-control" type="hidden" name="gadget" value="Search" />
+  <input class="form-control" type="hidden" name="action" value="Results" />
   <div class="gadget_content content">
-    <input type="text" name="all" class="large" value="{{all}}" title="{{ttl_all}}" placeholder="{{search}}">
-    <button type="submit" value="search">{{search}}</button>
+    <input class="form-control" type="text" name="all" class="large" value="{{all}}" title="{{ttl_all}}" placeholder="{{search}}">
+    <button class="btn btn-primary" type="submit" value="search">{{search}}</button>
   </div>
   </form> 
 </div>
@@ -16,16 +16,16 @@
 <div class="gadget_header"><div class="gadget_title"><h3>{{title}}</h3></div></div>
 <div class="gadget_container">
   <form name="search_form" method="get" action="{{base_script}}">
-  <input type="hidden" name="gadget" value="Search" />
-  <input type="hidden" name="action" value="Results" />
+  <input class="form-control" type="hidden" name="gadget" value="Search" />
+  <input class="form-control" type="hidden" name="action" value="Results" />
   <div class="gadget_content content">
     <div>
       <label>{{lbl_all}}:</label>
-      <input type="text" name="all" class="large" value="{{all}}" title="{{ttl_all}}">
+      <input class="form-control" type="text" name="all" class="large" value="{{all}}" title="{{ttl_all}}">
     </div>
     <div>
       <label>{{lbl_search_in}}:</label>
-      <select name="gadgets" class="large">
+      <select class="form-control" name="gadgets" class="large">
       <!-- BEGIN gadget -->
       <option value="{{gadget}}" {{selected}}>{{title}}</option>
       <!-- END gadget -->
@@ -33,7 +33,7 @@
     </div>
   </div>
   <div class="gadget_actions actions">
-    <button type="submit" value="search">{{search}}</button>
+    <button class="btn btn-primary" type="submit" value="search">{{search}}</button>
   </div>
   </form> 
 </div>
@@ -43,8 +43,8 @@
 <div class="gadget_header"><div class="gadget_title"><h3>{{title}}</h3></div></div>
 <div class="gadget_container">
   <form name="search_form" method="get" action="{{base_script}}">
-  <input type="hidden" name="gadget" value="Search" />
-  <input type="hidden" name="action" value="Results" />
+  <input class="form-control" type="hidden" name="gadget" value="Search" />
+  <input class="form-control" type="hidden" name="action" value="Results" />
   <div class="gadget_content content">
     <fieldset>
       <legend><span>{{lbl_word_filter}}</span></legend>
