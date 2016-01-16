@@ -14,11 +14,11 @@
     <div id="forums_editpost_response" class="{{type}}">{{text}}</div>
   </div>
   <form name="editpost" action="{{requested_url}}" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="gadget" value="Forums" />
-    <input type="hidden" name="action" value="UpdatePost" />
-    <input type="hidden" name="fid" value="{{fid}}" />
-    <input type="hidden" name="tid" value="{{tid}}" />
-    <input type="hidden" name="pid" value="{{pid}}" />
+    <input class="form-control" type="hidden" name="gadget" value="Forums" />
+    <input class="form-control" type="hidden" name="action" value="UpdatePost" />
+    <input class="form-control" type="hidden" name="fid" value="{{fid}}" />
+    <input class="form-control" type="hidden" name="tid" value="{{tid}}" />
+    <input class="form-control" type="hidden" name="pid" value="{{pid}}" />
     <div class="gadget_content content">
       <!-- BEGIN post_meta -->
       <div class="post_meta">
@@ -41,13 +41,13 @@
         <label>{{lbl_attachment}}:</label>
         <div id="attachments">
           <div id="attachment_model" style="display: none;">
-            <input type="file" name="attachment[]" multiple class="file"/>
+            <input class="form-control" type="file" name="attachment[]" multiple class="file"/>
             <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{{lbl_remove_attachment}}">{{lbl_remove_attachment}}</a>
           </div>
           <!-- BEGIN current_attachment -->
           <div id="p_attach{{aid}}">
-            <input type="hidden" name="current_attachments[]" value="{{aid}}" />
-            <input type="text" name="current_attachments_filename" value="{{lbl_filename}}" disabled="disabled" class="large ltr"/>
+            <input class="form-control" type="hidden" name="current_attachments[]" value="{{aid}}" />
+            <input class="form-control" type="text" name="current_attachments_filename" value="{{lbl_filename}}" disabled="disabled" class="large ltr"/>
             <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{{lbl_remove_attachment}}">{{lbl_remove_attachment}}</a>
           </div>
           <!-- END current_attachment -->
@@ -70,9 +70,9 @@
       <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
     </div>
     <div class="gadget_actions actions">
-      <button type="button" name="cancel" onclick="window.location='{{topic_url}}'">{{btn_cancel_title}}</button>
-      <button type="button" name="preview" onclick="this.form.elements['action'].value='EditPost'; this.form.submit();">{{btn_preview_title}}</button>
-      <button type="submit" name="update">{{btn_update_title}}</button>
+      <button class="btn" type="button" name="cancel" onclick="window.location='{{topic_url}}'">{{btn_cancel_title}}</button>
+      <button class="btn" type="button" name="preview" onclick="this.form.elements['action'].value='EditPost'; this.form.submit();">{{btn_preview_title}}</button>
+      <button class="btn btn-primary" type="submit" name="update">{{btn_update_title}}</button>
     </div>
   </form>
 </div>
