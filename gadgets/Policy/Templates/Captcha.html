@@ -1,29 +1,29 @@
 <!-- BEGIN image_captcha -->
 <div class="captcha captcha_image">
-  <input type="hidden" name="captcha_key" id="captcha_key_{{key}}" value="{{key}}" />
+  <input class="form-control" type="hidden" name="captcha_key" id="captcha_key_{{key}}" value="{{key}}" />
   <label for="entry_value_{{key}}">{{lbl_captcha}}:</label>
   <div class="captcha_value">
     <img id="captcha_image_{{key}}" class="captcha" alt="" width="128" height="48" title="{{captcha_title}}" src="{{url}}" />
-    <button type="button" onclick="javascript:document.getElementById('captcha_image_{{key}}').src = '{{url}}?'+ new Date().getTime();">
+    <button class="btn" type="button" onclick="javascript:document.getElementById('captcha_image_{{key}}').src = '{{url}}?'+ new Date().getTime();">
       <img alt="reload" src="images/stock/reload.png"/>
     </button>
   </div>
   <div>
     <label>{{description}}:</label>
-    <input type="text" name="entry_value" id="entry_value_{{key}}" title="{{entry_title}}" dir="ltr" value="" autocomplete="off" class="large ltr"/>
+    <input class="form-control" type="text" name="entry_value" id="entry_value_{{key}}" title="{{entry_title}}" dir="ltr" value="" autocomplete="off" class="large ltr"/>
   </div>
 </div>
 <!-- END image_captcha -->
 <!-- BEGIN text_captcha -->
 <div class="captcha captcha_text">
-  <input type="hidden" name="captcha_key" id="captcha_key_{{key}}" value="{{key}}" />
+  <input class="form-control" type="hidden" name="captcha_key" id="captcha_key_{{key}}" value="{{key}}" />
   <label for="entry_value_{{key}}">{{lbl_captcha}}:</label>
   <div class="captcha_value">
     <strong title="{{captcha_title}}" dir="ltr">{{captcha_text}}</strong>
   </div>
   <div>
     <label>{{description}}:</label>
-    <input type="text" name="entry_value" id="entry_value_{{key}}" title="{{entry_title}}" dir="ltr" value="" autocomplete="off" />
+    <input class="form-control" type="text" name="entry_value" id="entry_value_{{key}}" title="{{entry_title}}" dir="ltr" value="" autocomplete="off" />
   </div>
 </div>
 <!-- END text_captcha -->
