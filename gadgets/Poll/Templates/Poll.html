@@ -6,9 +6,9 @@
     <h4>{{question}}</h4>
     <!-- BEGIN voting -->
     <form action="{{base_script}}" name="poll_form_{{pid}}" method="post">
-    <input type="hidden" name="gadget" value="Poll" />
-    <input type="hidden" name="action" value="Vote" />
-    <input type="hidden" name="pid" value="{{pid}}" />
+    <input class="form-control" type="hidden" name="gadget" value="Poll" />
+    <input class="form-control" type="hidden" name="action" value="Vote" />
+    <input class="form-control" type="hidden" name="pid" value="{{pid}}" />
     <!-- BEGIN answer -->
     <div class="poll_answer">
       {{input}}<label for="poll_answer_input_{{aid}}">{{answer}}</label>
