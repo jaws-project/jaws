@@ -10,25 +10,25 @@
   <div class="gadget_content content">
     <div class="addressbook_group">
       <form name="addressbook_bonding" action="{{base_script}}" method="post" enctype="multipart/form-data" id="addressbook_bonding">
-      <input type="hidden" name="gadget" value="AddressBook" />
-      <input type="hidden" name="action" value="BondAddress" />
-      <input type="hidden" name="group" value="{{group}}" />
+      <input class="form-control" type="hidden" name="gadget" value="AddressBook" />
+      <input class="form-control" type="hidden" name="action" value="BondAddress" />
+      <input class="form-control" type="hidden" name="group" value="{{group}}" />
         {{lbl_address}}: 
-        <select id="addressbook_group" name="address" style="width: 150px;" >
+        <select class="form-control" id="addressbook_group" name="address" style="width: 150px;" >
           <!-- BEGIN address_item -->
           <option value="{{aid}}">{{address_name}}</option>
           <!-- END address_item -->
         </select>
-        <button onclick="AddAddressToGroup();" value="" id="BtnAddAddressToGroup" name="BtnAddAddressToGroup" type="button">
+        <button class="btn" onclick="AddAddressToGroup();" value="" id="BtnAddAddressToGroup" name="BtnAddAddressToGroup" type="button">
           <img alt="" src="{{add_icon}}">
         </button>
       </form>  
     </div>
     <form name="addressbook_unbonding" action="{{base_script}}" method="post" enctype="multipart/form-data" id="addressbook_unbonding">
-    <input type="hidden" name="gadget" value="AddressBook" />
-    <input type="hidden" name="action" value="UnbondAddress" />
-    <input type="hidden" name="group" value="{{group}}" />
-        <table>
+    <input class="form-control" type="hidden" name="gadget" value="AddressBook" />
+    <input class="form-control" type="hidden" name="action" value="UnbondAddress" />
+    <input class="form-control" type="hidden" name="group" value="{{group}}" />
+        <table class="table table-hover table-bordered">
          <thead>
           <tr>
             <th style="width: 15px;"><input type="checkbox" id="chk_all_rows" onchange="toggleCheckboxes(this.checked)" /></th>
@@ -47,13 +47,13 @@
 
         <div class="gadget_actions actions">
             <div style="float: left;">
-              <select id="addressbook_gaction" name="actions" style="width: 150px;" >
+              <select class="form-control" id="addressbook_gaction" name="actions" style="width: 150px;" >
                 <option value="">{{lbl_no_action}}</option>
                 <option value="UnbondAddress">{{lbl_delete}}</option>
               </select>
-              <button value="" id="BtnExAction" name="BtnExAction" type="submit"><img alt="" src="{{icon_ok}}"></button>
+              <button class="btn btn-primary" value="" id="BtnExAction" name="BtnExAction" type="submit"><img alt="" src="{{icon_ok}}"></button>
             </div>
-            <a class="button" href="{{edit_group_link}}" title="{{edit_group}}" >{{edit_group}}</a>
+            <a class="btn btn-default" href="{{edit_group_link}}" title="{{edit_group}}" >{{edit_group}}</a>
         </div>
     </form>
   </div>

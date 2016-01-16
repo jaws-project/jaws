@@ -7,16 +7,16 @@
   <div class="gadget_response"><div class="{{type}}">{{text}}</div></div>
   <div class="gadget_content content">
     <form name="import_vcard" action="{{base_script}}" method="post" enctype="multipart/form-data" id="import_vcard">
-      <input type="hidden" name="gadget" value="AddressBook" />
-      <input type="hidden" name="action" value="VCardImportFile" />
+      <input class="form-control" type="hidden" name="gadget" value="AddressBook" />
+      <input class="form-control" type="hidden" name="action" value="VCardImportFile" />
       <div>
         <p>{{upload_vcard_file_desc}}</p>
-        <input type="file" name="vcard_file" id="vcard_file" class="file">
+        <input class="form-control" type="file" name="vcard_file" id="vcard_file" class="file">
       </div>
       <div class="gadget_actions actions">
-          <button value="{{lbl_save}}" id="btn_import_vcard" name="btn_import_vcard" type="submit">{{lbl_save}}</button>
+          <button class="btn btn-primary" value="{{lbl_save}}" id="btn_import_vcard" name="btn_import_vcard" type="submit">{{lbl_save}}</button>
           <!-- BEGIN actions -->
-          <a class="button" href="{{action_url}}" title="{{action_lbl}}">{{action_lbl}}</a>
+          <a class="btn btn-default" href="{{action_url}}" title="{{action_lbl}}">{{action_lbl}}</a>
           <!-- END actions -->
       </div>
     </form>

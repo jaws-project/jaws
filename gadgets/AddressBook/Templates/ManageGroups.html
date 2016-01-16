@@ -10,8 +10,8 @@
   <div class="gadget_content content">
     <div class="addressbook_list_search"></div>
     <form name="AddressBookAction" action="{{base_script}}" method="post" >
-    <input type="hidden" name="gadget" value="AddressBook" />
-        <table>
+    <input class="form-control" type="hidden" name="gadget" value="AddressBook" />
+        <table class="table table-hover table-bordered">
          <thead>
           <tr>
             <th style="width: 15px;"><input type="checkbox" id="chk_all_rows" onchange="toggleCheckboxes(this.checked)" /></th>
@@ -30,14 +30,14 @@
 
         <div class="gadget_actions actions">
             <div style="float: left;">
-              <select id="addressbook_gaction" name="action" style="width: 150px;" >
+              <select class="form-control" id="addressbook_gaction" name="action" style="width: 150px;" >
                 <option value="ManageGroups">{{lbl_no_action}}</option>
                 <option value="DeleteGroup">{{lbl_delete}}</option>
               </select>
-              <button value="" id="BtnExAction" name="BtnExAction" type="submit"><img alt="" src="{{icon_ok}}"></button>
+              <button class="btn btn-primary" value="" id="BtnExAction" name="BtnExAction" type="submit"><img alt="" src="{{icon_ok}}"></button>
             </div>
             <!-- BEGIN actions -->
-            <a class="button" href="{{add_group_link}}" title="{{add_group}}" >{{add_group}}</a>
+            <a class="btn btn-default" href="{{add_group_link}}" title="{{add_group}}" >{{add_group}}</a>
             <!-- END actions -->
         </div>
     </form>
