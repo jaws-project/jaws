@@ -6,11 +6,11 @@
   </div>
   <div class="gadget_content content">
     <form id="frm_search" action="{{base_script}}" method="post">
-      <input type="hidden" name="gadget" value="Notepad" />
-      <input type="hidden" name="action" value="Search" />
+      <input class="form-control" type="hidden" name="gadget" value="Notepad" />
+      <input class="form-control" type="hidden" name="action" value="Search" />
       {{filter}} {{query}} {{btn_search}} {{btn_reset}}
     </form>
-    <table>
+    <table class="table table-hover table-bordered">
       <thead><tr>
         <th><input type="checkbox" id="chk_all" onchange="checkAll()"/></th>
         <th class="note-title">{{lbl_title}}</th>
@@ -32,8 +32,8 @@
     </table>
     <!-- INCLUDE PageNavigation.html -->
     <div class="gadget_actions actions">
-      <button onclick="location.href='{{url_new}}'">{{lbl_new_note}}</button>
-      <button id="btn_del_note" onclick="deleteNotes()">{{lbl_del_note}}</button>
+      <button class="btn" onclick="location.href='{{url_new}}'">{{lbl_new_note}}</button>
+      <button class="btn" id="btn_del_note" onclick="deleteNotes()">{{lbl_del_note}}</button>
     </div>
   </div>
 </div>
