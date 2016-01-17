@@ -50,11 +50,23 @@ class Blog_Actions_Archive extends Blog_Actions_Default
                 $tpl->SetVariable('date-year',      $year);
                 $tpl->SetVariable('date-time',      $date->Format($entry['publishtime'], 'g:ia'));
                 $tpl->SetVariable('title', $entry['title']);
-                if (empty($entry['comments'])) {
-                    $tpl->SetVariable('comments', _t('BLOG_NO_COMMENT'));
-                } else {
-                    $tpl->SetVariable('comments', _t('BLOG_HAS_N_COMMENTS', $entry['comments']));
+
+
+                $comments = _t('BLOG_NO_COMMENT');
+                if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
+                    $cModel = Jaws_Gadget::getInstance('Comments')->model->load('Comments');
+                    $commentsCount = $cModel->GetCommentsCount(
+                        'Blog',
+                        'Post',
+                        $entry['id'],
+                        '',
+                        Comments_Info::COMMENTS_STATUS_APPROVED);
+
+                    if (!empty($commentsCount)) {
+                        $comments = _t('BLOG_HAS_N_COMMENTS', $entry['comments']);
+                    }
                 }
+                $tpl->SetVariable('comments', $comments);
 
                 $id = !empty($entry['fast_url']) ? $entry['fast_url'] : $entry['id'];
                 $url = $this->gadget->urlMap('SingleView', array('id' => $id));

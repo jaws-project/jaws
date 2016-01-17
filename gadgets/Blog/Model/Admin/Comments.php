@@ -13,20 +13,6 @@
 class Blog_Model_Admin_Comments extends Jaws_Gadget_Model
 {
     /**
-     * Update a post comments count
-     *
-     * @access  public
-     * @param   int     $id              Post id.
-     * @param   int     $commentCount    How Many comment
-     * @return  mixed   True on Success or Jaws_Error on failure
-     */
-    function UpdatePostCommentsCount($id, $commentCount)
-    {
-        $blogTable = Jaws_ORM::getInstance()->table('blog');
-        return $blogTable->update(array('comments'=>$commentCount))->where('id', $id)->exec();
-    }
-
-    /**
      * Delete all comments in a given entry
      *
      * @access  public

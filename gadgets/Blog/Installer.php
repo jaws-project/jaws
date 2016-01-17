@@ -97,9 +97,6 @@ class Blog_Installer extends Jaws_Gadget_Installer
             }
         }
 
-        // Install listener for update comment
-        $this->gadget->event->insert('UpdateComment');
-
         $this->gadget->acl->insert('CategoryAccess', 1, true);
         $this->gadget->acl->insert('CategoryManage', 1, true);
         return true;

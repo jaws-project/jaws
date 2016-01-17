@@ -141,7 +141,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
     {
         $now = Jaws_DB::getInstance()->date();
         $blogTable = Jaws_ORM::getInstance()->table('blog');
-        $blogTable->select('id:integer', 'publishtime', 'updatetime', 'title', 'fast_url', 'comments', 'categories');
+        $blogTable->select('id:integer', 'publishtime', 'updatetime', 'title', 'fast_url', 'categories');
         $blogTable->where('published', true)->and()->where('publishtime', $now, '<=')->orderBy('publishtime desc');
         $result = $blogTable->fetchAll();
         if (Jaws_Error::IsError($result)) {

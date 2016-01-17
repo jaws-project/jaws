@@ -264,7 +264,23 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
             $tpl->ParseBlock("$tpl_base_block/entry/category");
         }
 
-        if ($entry['comments'] != 0 ||
+        $commentsCount = 0;
+        $comments = _t('BLOG_NO_COMMENT');
+        if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
+            $cModel = Jaws_Gadget::getInstance('Comments')->model->load('Comments');
+            $commentsCount = $cModel->GetCommentsCount(
+                'Blog',
+                'Post',
+                $entry['id'],
+                '',
+                Comments_Info::COMMENTS_STATUS_APPROVED);
+
+            if (!empty($commentsCount)) {
+                $comments = _t('BLOG_HAS_N_COMMENTS', $entry['comments']);
+            }
+        }
+
+        if ($commentsCount != 0 ||
             ($entry['allow_comments'] === true &&
              $this->gadget->registry->fetch('allow_comments') == 'true' &&
              $this->gadget->registry->fetch('allow_comments', 'Comments') != 'false'))
@@ -272,12 +288,9 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
             $tpl_block = $show_summary? 'comment-link' : 'comments-statistic';
             $tpl->SetBlock("$tpl_base_block/entry/$tpl_block");
             $tpl->SetVariable('url', $perm_url);
-            if ($show_summary && empty($entry['comments'])) {
-                $tpl->SetVariable('text_comments', _t('BLOG_NO_COMMENT'));
-            } else {
-                $tpl->SetVariable('text_comments', _t('BLOG_HAS_N_COMMENTS', $entry['comments']));
-            }
-            $tpl->SetVariable('num_comments', $entry['comments']);
+
+            $tpl->SetVariable('text_comments', $comments);
+            $tpl->SetVariable('num_comments', $commentsCount);
             $tpl->ParseBlock("$tpl_base_block/entry/$tpl_block");
         }
 
