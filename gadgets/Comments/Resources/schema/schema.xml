@@ -41,7 +41,7 @@
             <field>
                 <name>restricted</name>
                 <type>boolean</type>
-                <default>f alse</default>
+                <default>false</default>
             </field>
 
             <field>
