@@ -19,21 +19,12 @@ class Comments_Model_DeleteComments extends Jaws_Gadget_Model
      */
     function Delete($id)
     {
-        $cTable = Jaws_ORM::getInstance()->table('comments');
+        $cTable = Jaws_ORM::getInstance()->table('comments_details');
         $cTable->select('gadget', 'reference:integer', 'action');
         $commentInfo = $cTable->where('id', $id)->fetchRow();
 
         $commentTable = Jaws_ORM::getInstance()->table('comments');
-        $res = $commentTable->delete()->where('id', $id)->exec();
-
-        if (!Jaws_Error::IsError($res)) {
-            $this->gadget->event->shout(
-                'UpdateComment',
-                array($commentInfo['gadget'], $commentInfo['action'], $commentInfo['reference'])
-            );
-        }
-
-        return $res;
+        return $commentTable->delete()->where('id', $id)->exec();
     }
 
     /**

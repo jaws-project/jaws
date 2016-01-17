@@ -201,12 +201,12 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
             $entry->SetSummary($content, 'html');
             $entry->SetContent($content, 'html');
             $entry->SetAuthor($c['name'], $commentAtom->Link->HRef, $c['email']);
-            $entry->SetPublished($objDate->ToISO($c['createtime']));
-            $entry->SetUpdated($objDate->ToISO($c['createtime']));
+            $entry->SetPublished($objDate->ToISO($c['insert_time']));
+            $entry->SetUpdated($objDate->ToISO($c['insert_time']));
 
             $commentAtom->AddEntry($entry);
             if (!isset($last_modified)) {
-                $last_modified = $c['createtime'];
+                $last_modified = $c['insert_time'];
             }
         }
         if (isset($last_modified)) {

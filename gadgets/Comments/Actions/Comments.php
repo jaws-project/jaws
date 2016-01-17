@@ -226,8 +226,8 @@ class Comments_Actions_Comments extends Comments_Actions_Default
                         80
                     )
                 );
-                $tpl->SetVariable('insert_time', $objDate->Format($entry['createtime']));
-                $tpl->SetVariable('insert_time_iso', $objDate->ToISO($entry['createtime']));
+                $tpl->SetVariable('insert_time', $objDate->Format($entry['insert_time']));
+                $tpl->SetVariable('insert_time_iso', $objDate->ToISO($entry['insert_time']));
                 $tpl->SetVariable('message', $this->gadget->ParseText($entry['msg_txt'], 'Comments', 'index'));
                 $tpl->SetVariable('message_abbr', (Jaws_UTF8::strlen($entry['msg_txt']) >= $max_size)?
                     Jaws_UTF8::substr($entry['msg_txt'], 0, $max_size).'...' :
@@ -443,8 +443,8 @@ class Comments_Actions_Comments extends Comments_Actions_Default
                         80
                     )
                 );
-                $tpl->SetVariable('insert_time', $objDate->Format($entry['createtime']));
-                $tpl->SetVariable('insert_time_iso', $objDate->ToISO($entry['createtime']));
+                $tpl->SetVariable('insert_time', $objDate->Format($entry['insert_time']));
+                $tpl->SetVariable('insert_time_iso', $objDate->ToISO($entry['insert_time']));
                 $tpl->SetVariable('message', Jaws_String::AutoParagraph($entry['msg_txt']));
 
                 $tpl->ParseBlock('comments/entry');
@@ -556,10 +556,9 @@ class Comments_Actions_Comments extends Comments_Actions_Default
             Jaws_Header::Referrer();
         }
 
-        $res = $this->gadget->model->load('EditComments')->insertComment(
-            $post['requested_gadget'], $post['reference'], $post['requested_action'], $post['name'],
-            $post['email'], $post['url'], $post['message'], $_SERVER['REMOTE_ADDR'],
-            $permalink, $status, $post['is_private']
+        $res = $this->gadget->model->load('EditComments')->InsertComment(
+            $post['requested_gadget'], $post['requested_action'], $post['reference'], $post['name'],
+            $post['email'], $post['url'], $post['message'], $permalink, $status, $post['is_private']
         );
         if (Jaws_Error::isError($res)) {
             $GLOBALS['app']->Session->PushResponse(
@@ -655,7 +654,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
             $ObjMail->AddRecipient($email);
             $ObjMail->AddRecipient('', 'cc');
         }
-        $ObjMail->SetSubject(_t_lang('COMMENTS_YOU_GET_REPLY'));
+        $ObjMail->SetSubject(_t_lang($site_language, 'COMMENTS_YOU_GET_REPLY'));
         $ObjMail->SetBody($template, 'html');
         return $ObjMail->send();
     }

@@ -41,7 +41,7 @@
             <field>
                 <name>restricted</name>
                 <type>boolean</type>
-                <default>false</default>
+                <default>f alse</default>
             </field>
 
             <field>
@@ -63,20 +63,8 @@
             </field>
 
             <index>
-                <name><variable>table_prefix</variable>comments_gas</name>
-                <field>
-                    <name>gadget</name>
-                </field>
-                <field>
-                    <name>action</name>
-                </field>
-                <field>
-                    <name>status</name>
-                </field>
-            </index>
-
-            <index>
                 <name><variable>table_prefix</variable>comments_gar</name>
+                <unique>true</unique>
                 <field>
                     <name>gadget</name>
                 </field>
@@ -87,14 +75,6 @@
                     <name>reference</name>
                 </field>
             </index>
-
-            <index>
-                <name><variable>table_prefix</variable>comments_mk</name>
-                <field>
-                    <name>msg_key</name>
-                </field>
-            </index>
-
         </declaration>
     </table>
 
@@ -151,9 +131,9 @@
             </field>
 
             <field>
-                <name>msg_key</name>
-                <type>text</type>
-                <length>32</length>
+                <name>hash</name>
+                <type>integer</type>
+                <length>8</length>
             </field>
 
             <field>
@@ -179,10 +159,30 @@
                 <length>8</length>
             </field>
 
+            <field>
+                <name>update_time</name>
+                <type>integer</type>
+                <length>8</length>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>comments_user</name>
+                <field>
+                    <name>user</name>
+                </field>
+            </index>
+
             <index>
                 <name><variable>table_prefix</variable>comments_mk</name>
                 <field>
-                    <name>msg_key</name>
+                    <name>hash</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>comments_cid</name>
+                <field>
+                    <name>cid</name>
                 </field>
             </index>
 

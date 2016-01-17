@@ -86,6 +86,7 @@ function stopCommentAction()
     $('#gadget').val('');
     $('#comment_ip').html('');
     $('#insert_time').html('');
+    $('#reference_url').html('');
     $('#name').val('');
     $('#email').val('');
     $('#url').val('');
@@ -185,22 +186,20 @@ function commentDelete(id)
 function commentDGAction(combo)
 {
     var rows = $('#comments_datagrid')[0].getSelectedRows();
-    var selectedRows = false;
-    if (rows.length > 0) {
-        selectedRows = true;
+    if (rows.length < 1) {
+        return;
     }
 
-     if (combo.value == 'delete') {
-        if (selectedRows) {
-            var confirmation = confirm(confirmCommentDelete);
-            if (confirmation) {
-                CommentsAjax.callAsync('DeleteComments', rows);
-            }
+    if (combo.val() == 'delete') {
+        var confirmation = confirm(confirmCommentDelete);
+        if (confirmation) {
+            CommentsAjax.callAsync('DeleteComments', rows);
         }
-    } else if (combo.value != '') {
-        if (selectedRows) {
-            CommentsAjax.callAsync('MarkAs', [$('#gadget').val(), rows, combo.val()]);
-        }
+    } else if (combo.val() != '') {
+        CommentsAjax.callAsync('MarkAs', {
+            'ids': rows,
+            'status': combo.val()
+        });
     }
 }
 

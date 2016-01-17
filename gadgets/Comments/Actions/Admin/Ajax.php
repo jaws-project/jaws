@@ -54,7 +54,7 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         $date = Jaws_Date::getInstance();
-        $comment['insert_time'] = $date->Format($comment['createtime'], 'Y-m-d H:i:s');
+        $comment['insert_time'] = $date->Format($comment['insert_time'], 'Y-m-d H:i:s');
 
         $comment['reference_title'] = '';
         $comment['reference_url'] = '';
@@ -83,7 +83,7 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($gadget, $id, $name, $email, $url, $message, $reply, $status, $sendEmail) = jaws()->request->fetchAll('post');
         // TODO: Fill permalink In New Versions, Please!!
         $cModel = $this->gadget->model->load('EditComments');
-        $res = $cModel->updateComment($gadget, $id, $name, $email, $url, $message, $reply, '', $status);
+        $res = $cModel->UpdateComment($gadget, $id, $name, $email, $url, $message, $reply, '', $status);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -135,9 +135,9 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function MarkAs()
     {
         $this->gadget->CheckPermission('ManageComments');
-        @list($gadget, $ids, $status) = jaws()->request->fetch(array('0', '1:array', '2'), 'post');
+        $post = jaws()->request->fetch(array('ids:array', 'status'), 'post');
         $cModel = $this->gadget->model->load('EditComments');
-        $res = $cModel->MarkAs($gadget, $ids, $status);
+        $res = $cModel->MarkAs($post['ids'], $post['status']);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {

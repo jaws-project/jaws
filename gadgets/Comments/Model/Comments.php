@@ -20,13 +20,14 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
      */
     function GetComment($id)
     {
-        $commentsTable = Jaws_ORM::getInstance()->table('comments');
+        $commentsTable = Jaws_ORM::getInstance()->table('comments_details');
         $commentsTable->select(
-            'id:integer', 'reference:integer', 'action', 'gadget', 'reply', 'replier',
-            'name', 'email', 'url', 'ip', 'msg_txt', 'status', 'createtime'
+            'comments_details.id:integer', 'gadget', 'action', 'reference:integer', 'reply', 'replier',
+            'name', 'email', 'url', 'uip', 'msg_txt', 'status', 'comments_details.insert_time'
         );
+        $commentsTable->join('comments', 'comments.id', 'comments_details.cid');
 
-        return $commentsTable->where('id', $id)->fetchRow();
+        return $commentsTable->where('comments_details.id', $id)->fetchRow();
     }
 
     /**
@@ -49,48 +50,50 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
     {
         $commentsTable = Jaws_ORM::getInstance()->table('comments');
         $commentsTable->select(
-            'comments.id:integer', 'gadget', 'action', 'reference:integer', 'user', 'reply', 'replier',
-            'comments.name', 'comments.email', 'comments.url', 'ip', 'msg_txt', 'comments.status:integer',
-            'createtime', 'users.username', 'users.nickname', 'users.email as user_email', 'users.avatar',
-            'users.registered_date as user_registered_date', 'users.url as user_url',
-            'replier.nickname as replier_nickname','replier.username as replier_username'
+            'comments_details.id:integer', 'gadget', 'action', 'reference:integer', 'user', 'reply', 'replier',
+            'comments_details.name', 'comments_details.email', 'comments_details.url', 'uip', 'msg_txt',
+            'comments_details.status:integer', 'comments_details.insert_time', 'users.username', 'users.nickname',
+            'users.email as user_email', 'users.avatar', 'users.registered_date as user_registered_date',
+            'users.url as user_url', 'replier.nickname as replier_nickname','replier.username as replier_username',
+            'comments.comments_count'
         );
 
-        $commentsTable->join('users', 'users.id', 'comments.user', 'left');
-        $commentsTable->join('users as replier', 'replier.id', 'comments.replier', 'left');
+        $commentsTable->join('comments_details', 'comments_details.cid', 'comments.id');
+        $commentsTable->join('users', 'users.id', 'comments_details.user', 'left');
+        $commentsTable->join('users as replier', 'replier.id', 'comments_details.replier', 'left');
 
         if (!empty($gadget)) {
-            $commentsTable->where('gadget', $gadget);
+            $commentsTable->where('comments.gadget', $gadget);
         }
         if(!empty($action)) {
-            $commentsTable->and()->where('action', $action);
+            $commentsTable->and()->where('comments.action', $action);
         }
         if(!empty($reference)) {
-            $commentsTable->and()->where('reference', (int)$reference);
+            $commentsTable->and()->where('comments.reference', (int)$reference);
         }
         if(!empty($user)) {
-            $commentsTable->and()->where('user', (int)$user);
+            $commentsTable->and()->where('comments_details.user', (int)$user);
         }
 
         if (!empty($status)) {
             if (is_array($status)) {
-                $commentsTable->and()->where('comments.status', $status, 'in');
+                $commentsTable->and()->where('comments_details.status', $status, 'in');
             } else {
-                $commentsTable->and()->where('comments.status', $status);
+                $commentsTable->and()->where('comments_details.status', $status);
             }
         }
 
         if (!empty($term)) {
-            $commentsTable->and()->openWhere('reference', $term);
-            $commentsTable->or()->where('comments.name', '%'.$term.'%', 'like');
-            $commentsTable->or()->where('comments.email', '%'.$term.'%', 'like');
-            $commentsTable->or()->where('comments.url', '%'.$term.'%', 'like');
-            $commentsTable->or()->closeWhere('msg_txt', '%'.$term.'%', 'like');
+            $commentsTable->and()->openWhere('comments.reference', $term);
+            $commentsTable->or()->where('comments_details.name', '%'.$term.'%', 'like');
+            $commentsTable->or()->where('comments_details.email', '%'.$term.'%', 'like');
+            $commentsTable->or()->where('comments_details.url', '%'.$term.'%', 'like');
+            $commentsTable->or()->closeWhere('comments_details.msg_txt', '%'.$term.'%', 'like');
         }
 
         $orders = array(
-            1 => 'createtime asc',
-            2 => 'createtime desc',
+            1 => 'comments_details.insert_time asc',
+            2 => 'comments_details.insert_time desc',
         );
         $orderBy = isset($orders[$orderBy])? $orderBy : (int)$this->gadget->registry->fetch('order_type');
         $orderBy = $orders[$orderBy];
@@ -111,9 +114,10 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
      */
     function GetCommentsCount($gadget = '', $action = '', $reference = '', $term = '', $status = array(), $user = null)
     {
-        $commentsTable = Jaws_ORM::getInstance()->table('comments');
-        $commentsTable->select('count(comments.id)');
+        $commentsTable = Jaws_ORM::getInstance()->table('comments_details');
+        $commentsTable->select('count(comments_details.id):integer');
 
+        $commentsTable->join('comments', 'comments.id', 'comments_details.cid');
         if (!empty($gadget)) {
             $commentsTable->where('gadget', $gadget);
         }
@@ -129,18 +133,18 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
 
         if (!empty($status)) {
             if (is_array($status)) {
-                $commentsTable->and()->where('comments.status', $status, 'in');
+                $commentsTable->and()->where('status', $status, 'in');
             } else {
-                $commentsTable->and()->where('comments.status', $status);
+                $commentsTable->and()->where('status', $status);
             }
         }
 
         if (!empty($term)) {
             $commentsTable->and()->openWhere('reference', $term);
-            $commentsTable->or()->where('comments.name', '%'.$term.'%', 'like');
-            $commentsTable->or()->where('comments.email', '%'.$term.'%', 'like');
-            $commentsTable->or()->where('comments.url', '%'.$term.'%', 'like');
-            $commentsTable->or()->closeWhere('msg_txt', '%'.$term.'%', 'like');
+            $commentsTable->or()->where('name', '%' . $term . '%', 'like');
+            $commentsTable->or()->where('email', '%' . $term . '%', 'like');
+            $commentsTable->or()->where('url', '%' . $term . '%', 'like');
+            $commentsTable->or()->closeWhere('msg_txt', '%' . $term . '%', 'like');
         }
 
         return $commentsTable->fetchOne();
