@@ -94,8 +94,91 @@ class Comments_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        // Registry key
-        $this->gadget->registry->insert('order_type', '1');
+        if (version_compare($old, '1.1.0', '<')) {
+            // Registry key
+            $this->gadget->registry->insert('order_type', '1');
+        }
+
+        if (version_compare($old, '1.2.0', '<')) {
+            $result = $this->installSchema('1.2.0.xml', '', '1.1.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            // fetch all old comments records
+            $oldTable = Jaws_ORM::getInstance()->table('old_comments');
+            $oldTable->select(
+                'gadget', 'action', 'reference:integer', 'user:integer', 'name', 'email', 'url', 'ip',
+                'msg_txt', 'reply', 'replier:integer', 'createtime', 'status:integer'
+            );
+            $comments = $oldTable->orderBy('gadget', 'action', 'reference')->fetchAll();
+            if (Jaws_Error::IsError($comments)) {
+                return $comments;
+            }
+
+            // preparing to insert comments records to new tables
+            $newTable1 = Jaws_ORM::getInstance()->table('comments2');
+            $newTable2 = Jaws_ORM::getInstance()->table('comments_details');
+
+            //Start Transaction
+            $newTable1->beginTransaction();
+            foreach ($comments as $comment) {
+                $ctime = strtotime($comment['createtime']);
+                //insert/update master record of comment
+                $gar = $newTable1->upsert(
+                    array(
+                        'gadget'     => $comment['gadget'],
+                        'action'     => $comment['action'],
+                        'reference'  => $comment['reference'],
+                        'comments_count' => 0,
+                        'restricted'  => false,
+                        'allowed'     => true,
+                        'insert_time' => $ctime,
+                        'update_time' => $ctime
+                    ),
+                    array(
+                        'comments_count' => $newTable1->expr('comments_count + ?', 1)
+                    )
+                )->exec();
+                if (Jaws_Error::IsError($gar)) {
+                    return $gar;
+                }
+
+                // insert detail of comment
+                $result = $newTable2->insert(
+                    array(
+                        'cid'   => $gar,
+                        'user'  => $comment['user'],
+                        'name'  => $comment['name'],
+                        'email' => $comment['email'],
+                        'url'   => $comment['url'],
+                        'uip'   => bin2hex(inet_pton($comment['ip'])),
+                        'msg_txt' => $comment['msg_txt'],
+                        'hash'    => crc32($comment['msg_txt']),
+                        'reply'   => $comment['reply'],
+                        'replier' => $comment['replier'],
+                        'status'  => $comment['status'],
+                        'insert_time' => $ctime,
+                        'update_time' => $ctime
+                    )
+                )->exec();
+                if (Jaws_Error::IsError($result)) {
+                    return $result;
+                }
+            }
+
+            //Commit Transaction
+            $newTable1->commit();
+
+        }
+
+        if (version_compare($old, '1.3.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '1.2.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
         return true;
     }
 
