@@ -133,8 +133,7 @@ class Comments_Installer extends Jaws_Gadget_Installer
                         'comments_count' => 0,
                         'restricted'  => false,
                         'allowed'     => true,
-                        'insert_time' => $ctime,
-                        'update_time' => $ctime
+                        'last_update' => $ctime
                     ),
                     array(
                         'comments_count' => $newTable1->expr('comments_count + ?', 1)

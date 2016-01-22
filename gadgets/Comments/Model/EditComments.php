@@ -79,40 +79,57 @@ class Comments_Model_EditComments extends Jaws_Gadget_Model
         }
 
         $objORM = Jaws_ORM::getInstance();
-        $objORM->beginTransaction();
-
-        // insert comment
-        $cData = array();
-        $cData['gadget']        = $gadget;
-        $cData['action']        = $action;
-        $cData['reference']     = $reference;
-        $cData['insert_time']   = time();
-        $cTable = $objORM->table('comments');
-        $cid = $cTable->insert($cData)->exec();
-        if (Jaws_Error::IsError($cid)) {
-            return $cid;
+        // find master comment id
+        $gar = $objORM->table('comments')
+            ->select('id:integer')
+            ->where('gadget', $gadget)->and()
+            ->where('action', $action)->and()
+            ->where('reference', $reference)
+            ->fetchOne();
+        if (Jaws_Error::IsError($gar)) {
+            return $gar;
         }
 
-        // insert comment's details
-        $uip = bin2hex(inet_pton($_SERVER['REMOTE_ADDR']));
-        $cData = array();
-        $cData['cid']           = $cid;
-        $cData['user']          = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $cData['name']          = $name;
-        $cData['email']         = $email;
-        $cData['url']           = $url;
-        $cData['uip']           = $uip;
-        $cData['msg_txt']       = $message;
-        $cData['hash']          = $messageHash;
-        $cData['status']        = (int)$status;
-        $cData['insert_time']   = time();
+        // begin transaction
+        $objORM->beginTransaction();
 
-        $commentsTable = $objORM->table('comments_details');
-        $res = $commentsTable->insert($cData)->exec();
+        // insert comment's details
+        $ret = $objORM->table('comments_details')->insert(
+            array(
+                'cid'         => $gar,
+                'user'        => (int)$GLOBALS['app']->Session->GetAttribute('user'),
+                'name'        => $name,
+                'email'       => $email,
+                'url'         => $url,
+                'uip'         => bin2hex(inet_pton($_SERVER['REMOTE_ADDR'])),
+                'msg_txt'     => $message,
+                'hash'        => $messageHash,
+                'status'      => (int)$status,
+                'insert_time' => time()
+            )
+        )->exec();
+        if (Jaws_Error::IsError($ret)) {
+            return $ret;
+        }
+
+        // update comments count
+        $res = $objORM->table('comments')->update(
+            array(
+                'comments_count' => Jaws_ORM::getInstance()->table('comments_details')
+                    ->select('count(id)')->where('cid', $gar),
+                'last_update' => time()
+            )
+        )->where('gadget', $gadget)->and()
+        ->where('action', $action)->and()
+        ->where('reference', $reference)
+        ->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
 
         //commit transaction
         $objORM->commit();
-        return $res;
+        return $ret;
     }
 
     /**

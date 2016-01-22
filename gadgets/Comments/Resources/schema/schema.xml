@@ -52,13 +52,7 @@
             </field>
 
             <field>
-                <name>insert_time</name>
-                <type>integer</type>
-                <length>8</length>
-            </field>
-
-            <field>
-                <name>update_time</name>
+                <name>last_update</name>
                 <type>integer</type>
                 <length>8</length>
             </field>
