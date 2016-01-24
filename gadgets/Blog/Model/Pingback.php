@@ -43,7 +43,7 @@ class Blog_Model_Pingback extends Jaws_Gadget_Model
         $ip    = $_SERVER['REMOTE_ADDR'];
 
         $status = $this->gadget->registry->fetch('comment_status');
-        $cModel = Jaws_Gadget::getInstance('Comments')->model->load('EditComments');
+        $cModel = Jaws_Gadget::getInstance('Comments')->model->loadAdmin('Comments');
         $res = $cModel->insertComment(
             $this->gadget->name, $postID, 'Pingback', $name, $email, $sourceURI,
             $content, $ip, $permalink, $status
