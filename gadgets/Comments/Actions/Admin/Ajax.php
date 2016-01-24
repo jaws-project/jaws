@@ -82,7 +82,7 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('ManageComments');
         @list($gadget, $id, $name, $email, $url, $message, $reply, $status, $sendEmail) = jaws()->request->fetchAll('post');
         // TODO: Fill permalink In New Versions, Please!!
-        $cModel = $this->gadget->model->load('EditComments');
+        $cModel = $this->gadget->model->loadAdmin('Comments');
         $res = $cModel->UpdateComment($gadget, $id, $name, $email, $url, $message, $reply, '', $status);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
@@ -115,7 +115,7 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageComments');
         $ids = jaws()->request->fetchAll('post');
-        $cModel = $this->gadget->model->load('DeleteComments');
+        $cModel = $this->gadget->model->loadAdmin('Comments');
         $res = $cModel->DeleteMassiveComment($ids);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
@@ -136,7 +136,7 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageComments');
         $post = jaws()->request->fetch(array('ids:array', 'status'), 'post');
-        $cModel = $this->gadget->model->load('EditComments');
+        $cModel = $this->gadget->model->loadAdmin('Comments');
         $res = $cModel->MarkAs($post['ids'], $post['status']);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
@@ -156,9 +156,9 @@ class Comments_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function SaveSettings()
     {
         $this->gadget->CheckPermission('Settings');
-        @list($allowComments, $allowDuplicate, $defaultStatus, $orderType) = jaws()->request->fetchAll('post');
+        @list($allowComments, $defaultStatus, $orderType) = jaws()->request->fetchAll('post');
         $cModel = $this->gadget->model->loadAdmin('Settings');
-        $res = $cModel->SaveSettings($allowComments, $allowDuplicate, $defaultStatus, $orderType);
+        $res = $cModel->SaveSettings($allowComments, $defaultStatus, $orderType);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {

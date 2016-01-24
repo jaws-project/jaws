@@ -298,23 +298,35 @@
             </field>
 
             <index>
-                <name><variable>table_prefix</variable>comments_user</name>
-                <field>
-                    <name>user</name>
-                </field>
-            </index>
-
-            <index>
-                <name><variable>table_prefix</variable>comments_hash</name>
-                <field>
-                    <name>hash</name>
-                </field>
-            </index>
-
-            <index>
                 <name><variable>table_prefix</variable>comments_cid</name>
                 <field>
                     <name>cid</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>comments_us</name>
+                <field>
+                    <name>user</name>
+                </field>
+
+                <field>
+                    <name>status</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>comments_cuh</name>
+                <field>
+                    <name>cid</name>
+                </field>
+
+                <field>
+                    <name>user</name>
+                </field>
+
+                <field>
+                    <name>hash</name>
                 </field>
             </index>
 

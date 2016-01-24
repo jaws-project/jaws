@@ -18,7 +18,6 @@ class Comments_Installer extends Jaws_Gadget_Installer
      */
     var $_RegKeys = array(
         array('order_type', '1'),
-        array('allow_duplicate', 'no'),
         array('allow_comments', 'true'),
         array('comments_per_page', '10'),
         array('recent_comment_limit', '10'),
@@ -176,6 +175,9 @@ class Comments_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+
+            // Registry
+            $this->gadget->registry->delete('allow_duplicate');
         }
 
         return true;

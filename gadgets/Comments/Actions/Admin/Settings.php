@@ -33,14 +33,6 @@ class Comments_Actions_Admin_Settings extends Comments_Actions_Admin_Default
         $tpl->SetVariable('lbl_allow_comments', _t('COMMENTS_ALLOW_COMMENTS'));
         $tpl->SetVariable('allow_comments', $comments->Get());
 
-        //Allow duplicate
-        $allowDuplicate =& Piwi::CreateWidget('Combo', 'allow_duplicate');
-        $allowDuplicate->AddOption(_t('GLOBAL_YES'), 'yes');
-        $allowDuplicate->AddOption(_t('GLOBAL_NO'), 'no');
-        $allowDuplicate->SetDefault($this->gadget->registry->fetch('allow_duplicate'));
-        $tpl->SetVariable('lbl_allow_duplicate', _t('COMMENTS_ANTISPAM_ALLOWDUPLICATE'));
-        $tpl->SetVariable('allow_duplicate', $allowDuplicate->Get());
-
         // comment default status
         $status =& Piwi::CreateWidget('Combo', 'default_comment_status');
         $status->setID('default_comment_status');

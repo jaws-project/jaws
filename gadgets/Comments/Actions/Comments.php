@@ -556,7 +556,7 @@ class Comments_Actions_Comments extends Comments_Actions_Default
             Jaws_Header::Referrer();
         }
 
-        $res = $this->gadget->model->load('EditComments')->InsertComment(
+        $res = $this->gadget->model->loadAdmin('Comments')->InsertComment(
             $post['requested_gadget'], $post['requested_action'], $post['reference'], $post['name'],
             $post['email'], $post['url'], $post['message'], $permalink, $status, $post['is_private']
         );

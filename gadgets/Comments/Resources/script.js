@@ -219,7 +219,6 @@ function SaveSettings()
     CommentsAjax.callAsync(
         'SaveSettings', [
             $('#allow_comments').val(),
-            $('#allow_duplicate').val(),
             $('#default_comment_status').val(),
             $('#order_type').val()
         ]

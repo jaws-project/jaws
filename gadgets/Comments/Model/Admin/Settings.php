@@ -16,15 +16,13 @@ class Comments_Model_Admin_Settings extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   string  $allowComments  Allow comments?
-     * @param   string  $allowDuplicate Allow duplicated comments?
      * @param   int     $defaultStatus  Default comment status
      * @param   int     $orderType      Order type
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function SaveSettings($allowComments, $allowDuplicate, $defaultStatus, $orderType)
+    function SaveSettings($allowComments, $defaultStatus, $orderType)
     {
         $res = $this->gadget->registry->update('allow_comments', $allowComments);
-        $res = $res && $this->gadget->registry->update('allow_duplicate', $allowDuplicate);
         $res = $res && $this->gadget->registry->update('default_comment_status', $defaultStatus);
         $res = $res && $this->gadget->registry->update('order_type', $orderType);
         if ($res === false) {
