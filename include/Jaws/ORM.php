@@ -150,6 +150,14 @@ class Jaws_ORM
     var $_table = '';
 
     /**
+     * Table alias
+     *
+     * @var     string
+     * @access  private
+     */
+    var $_alias = '';
+
+    /**
      * Table primary key name
      *
      * @var     string
@@ -164,6 +172,14 @@ class Jaws_ORM
      * @access  private
      */
     var $_tablesIdentifier = '';
+
+    /**
+     * Table alias identifier
+     *
+     * @var     string
+     * @access  private
+     */
+    var $_tableAliasIdentifier = '';
 
     /**
      * SQL command name(insert/update/delete)
@@ -269,16 +285,18 @@ class Jaws_ORM
     function table($table, $alias = '', $pk_field = 'id')
     {
         $this->_table = $table;
+        $this->_alias = $alias;
         $this->_pk_field = $pk_field;
 
-        $alias = empty($alias)? '': (' as '. $this->quoteIdentifier($this->_tbl_prefix.$alias));
+        $this->_tableAliasIdentifier = empty($alias)? '': $this->quoteIdentifier($alias);
+        $alias_str = empty($alias)? '': (' as '. $this->_tableAliasIdentifier);
         if (is_object($table)) {
             $table_quoted = '('. $table->get(). ')';
         } else {
             $table_quoted = $this->quoteIdentifier($this->_tbl_prefix. $table, true);
         }
 
-        $this->_tablesIdentifier = $table_quoted. $alias;
+        $this->_tablesIdentifier = $table_quoted. $alias_str;
         return $this;
     }
 
@@ -836,8 +854,9 @@ class Jaws_ORM
     {
         switch ($this->_query_command) {
             case 'delete':
-                $sql = "delete\n";
+                $sql = 'delete '.$this->_tableAliasIdentifier. "\n";
                 $sql.= 'from '. $this->_tablesIdentifier. "\n";
+                $sql.= $this->_build_join();
                 $sql.= $this->_build_where();
                 $result = $this->jawsdb->dbc->exec($sql);
                 break;
