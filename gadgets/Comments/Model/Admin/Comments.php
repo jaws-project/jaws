@@ -81,21 +81,18 @@ class Comments_Model_Admin_Comments extends Jaws_Gadget_Model
         $objORM = Jaws_ORM::getInstance();
         // find comment reference id
         $commentReference = $objORM->table('comments')
-            ->select('id:integer')
+            ->igsert(array(
+                'gadget'      => $gadget,
+                'action'      => $action,
+                'reference'   => $reference,
+                'last_update' => time(),
+            ))
             ->where('gadget', $gadget)->and()
             ->where('action', $action)->and()
             ->where('reference', $reference)
-            ->fetchOne();
+            ->exec();
         if (Jaws_Error::IsError($commentReference)) {
             return $commentReference;
-        }
-
-        if (empty($commentReference)) {
-            return Jaws_Error::raiseError(
-                _t('COMMENTS_REFERENCE_NOTFOUND'),
-                __FUNCTION__,
-                JAWS_ERROR_NOTICE
-            );
         }
 
         // check duplicated message
@@ -125,7 +122,7 @@ class Comments_Model_Admin_Comments extends Jaws_Gadget_Model
                 'url'         => $url,
                 'uip'         => bin2hex(inet_pton($_SERVER['REMOTE_ADDR'])),
                 'msg_txt'     => $message,
-                'hash'        => $messageHash,
+                'hash'        => $hash,
                 'status'      => (int)$status,
                 'insert_time' => time()
             )
