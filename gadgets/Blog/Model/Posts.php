@@ -29,8 +29,8 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
             'blog.id:integer', 'username', 'email', 'nickname', 'blog.title', 'blog.fast_url',
-            'summary', 'text', 'blog.publishtime', 'blog.updatetime', 'comments:integer',
-            'clicks:integer', 'allow_comments:boolean', 'image'
+            'summary', 'text', 'blog.publishtime', 'blog.updatetime', 'clicks:integer',
+            'allow_comments:boolean', 'image'
         );
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
 
@@ -205,8 +205,8 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
             'blog.id:integer', 'user_id:integer', 'username', 'users.nickname', 'title', 'summary',
-            'text', 'fast_url', 'blog.publishtime', 'blog.updatetime', 'comments:integer',
-            'clicks:integer', 'allow_comments:boolean', 'published:boolean', 'categories', 'image'
+            'text', 'fast_url', 'blog.publishtime', 'blog.updatetime', 'clicks:integer',
+            'allow_comments:boolean', 'published:boolean', 'categories', 'image'
         );
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
 
@@ -299,7 +299,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable->select(
             'blog.id:integer', 'blog.user_id:integer', 'username', 'email', 'nickname', 'blog.title', 'summary',
             'text', 'fast_url', 'meta_keywords', 'meta_description', 'trackbacks', 'published:boolean', 'image',
-            'blog.publishtime', 'blog.updatetime', 'comments:integer', 'clicks:integer', 'allow_comments:boolean'
+            'blog.publishtime', 'blog.updatetime', 'clicks:integer', 'allow_comments:boolean'
         )->join('users', 'blog.user_id', 'users.id', 'left');
 
         if (is_numeric($id)) {
@@ -377,8 +377,8 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
             'blog.id:integer', 'username', 'email', 'nickname', 'blog.title', 'blog.fast_url', 'summary',
-            'text', 'users.nickname as name', 'blog.publishtime', 'blog.updatetime', 'comments:integer',
-            'clicks:integer', 'allow_comments:boolean', 'blog.user_id:integer'
+            'text', 'users.nickname as name', 'blog.publishtime', 'blog.updatetime', 'clicks:integer',
+            'allow_comments:boolean', 'blog.user_id:integer'
         )->join('users', 'blog.user_id', 'users.id', 'left');
 
         $result = $blogTable->orderBy('blog.publishtime desc')->limit($limit)->fetchAll();
@@ -639,7 +639,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable->limit($this->gadget->registry->fetch('popular_limit'), 0);
         $blogTable->select(
             'blog.id:integer', 'blog.user_id:integer', 'blog.title', 'blog.fast_url', 'summary',
-            'text', 'clicks:integer', 'comments:integer', 'allow_comments', 'username', 'nickname',
+            'text', 'clicks:integer', 'allow_comments', 'username', 'nickname',
             'blog.publishtime:timestamp', 'blog.updatetime:timestamp', 'categories', 'image'
         );
         $blogTable->join('users', 'blog.user_id', 'users.id', 'left');
@@ -779,7 +779,7 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
         $blogTable = Jaws_ORM::getInstance()->table('blog');
         $blogTable->select(
             'id:integer', 'title', 'fast_url', 'summary', 'text',
-            'publishtime', 'updatetime', 'comments:integer', 'clicks:integer',
+            'publishtime', 'updatetime', 'clicks:integer',
             'allow_comments:boolean', 'user_id', 'categories', 'published'
         );
 

@@ -273,10 +273,10 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
                 'Post',
                 $entry['id'],
                 '',
-                Comments_Info::COMMENTS_STATUS_APPROVED);
-
+                Comments_Info::COMMENTS_STATUS_APPROVED
+            );
             if (!empty($commentsCount)) {
-                $comments = _t('BLOG_HAS_N_COMMENTS', $entry['comments']);
+                $comments = _t('BLOG_HAS_N_COMMENTS', $commentsCount);
             }
         }
 
