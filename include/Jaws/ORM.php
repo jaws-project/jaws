@@ -163,7 +163,7 @@ class Jaws_ORM
      * @var     string
      * @access  private
      */
-    var $_pk_field;
+    var $_pk_field = '';
 
     /**
      * Table(s) quoted/aliased identifier
@@ -1129,6 +1129,7 @@ class Jaws_ORM
     function reset()
     {
         $this->_distinct = '';
+        $this->_pk_field = '';
         $this->_columns  = array();
         $this->_types    = array();
         $this->_values   = array();
