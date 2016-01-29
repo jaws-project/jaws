@@ -84,7 +84,7 @@
         var src = getImagePath(filename, size);
         switch (editor) {
             case 'TinyMCE':
-                top.tinymce.activeEditor.windowManager.getParams().oninsert(src, title);
+                top.tinymce.activeEditor.windowManager.getParams().oninsert(src, title, desc);
                 top.tinyMCE.activeEditor.windowManager.close();
                 break;
             case 'CKEditor':
