@@ -55,10 +55,10 @@
     var confirmFileDelete = "{{confirmFileDelete}}";
     var confirmDirDelete  = "{{confirmDirDelete}}";
 
-function selectFile(url, title, editor) {
+function selectFile(url, title, desc, editor) {
     switch (editor) {
         case 'TinyMCE':
-            top.tinymce.activeEditor.windowManager.getParams().oninsert(url, title);
+            top.tinymce.activeEditor.windowManager.getParams().oninsert(url, title, desc);
             top.tinyMCE.activeEditor.windowManager.close();
             break;
         case 'CKEditor':

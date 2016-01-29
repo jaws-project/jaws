@@ -347,9 +347,10 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
                         $fid = empty($file['fast_url'])? $file['id'] : Jaws_XSS::filter($file['fast_url']);
                         $furl = $this->gadget->urlMap('Download', array('id' => $fid));
                     }
+
                     $link =& Piwi::CreateWidget('Link',
                         $file['filename'],
-                        "javascript:selectFile('$furl', '{$file['title']}', '$editor')");
+                        "javascript:selectFile('$furl', '{$file['title']}', '{$file['filename']}', '$editor')");
                     $tpl->SetVariable('file_name', $link->Get());
 
                     if ($this->gadget->GetPermission('ManageFiles')) {
