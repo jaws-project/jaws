@@ -1,11 +1,11 @@
 <!-- BEGIN tinymce_backend -->
 <script type="text/javascript">
-    function jaws_filebrowser_callback(field_name, url, type, win)
+    function jaws_file_picker_callback(callback, value, meta)
     {
-        var browser = (type === 'image')? '{{ibrowser}}' : '{{fbrowser}}';
+        var browser = (meta.filetype === 'image')? '{{ibrowser}}' : '{{fbrowser}}';
         if (browser != '') {
             tinyMCE.activeEditor.windowManager.open({
-                    file: browser,
+                    url: browser,
                     title: 'Jaws File Browser',
                     width: 640,
                     height: 480,
@@ -14,10 +14,19 @@
                     inline: 'yes',
                     close_previous: 'no'
                 }, {
-                    oninsert: function(source, description) {
-                        var elements = win.document.getElements('input.mce-textbox');
-                        elements[0].value = source;
-                        elements[1].value = description;
+                    oninsert: function(url, title, desc, height, width) {
+                        switch (meta.filetype) {
+                            case 'image':
+                                callback(url, {'alt': title});
+                                break;
+
+                            case 'file':
+                                callback(url, {'title': title, 'text': desc});
+                                break;
+
+                            default:
+                                callback(url, {'text': title, 'title': title, 'alt': desc});
+                        }
                     }
                 }
             );
@@ -52,9 +61,14 @@
         force_br_newlines:  false,
         remove_linebreaks:  true,
         nowrap:             false,
+        automatic_uploads:  false,
         convert_newlines_to_brs: false,
         apply_source_formatting: true,
-        file_browser_callback: jaws_filebrowser_callback,
+    file_browser_callback: function(field_name, url, type, win) { 
+        win.document.getElementById(field_name).value = 'my browser value'; 
+    },
+        file_picker_types: 'file image media',
+        file_picker_callback: jaws_file_picker_callback,
         content_css: 'gadgets/ControlPanel/Resources/tinymce{{.dir}}.css',
         extended_valid_elements: '{{valid_elements}}',
         invalid_elements: '{{invalid_elements}}',
@@ -92,6 +106,7 @@
         force_br_newlines:  false,
         remove_linebreaks:  true,
         nowrap:             false,
+        automatic_uploads:  false,
         convert_newlines_to_brs: false,
         apply_source_formatting: true,
         content_css: 'gadgets/ControlPanel/Resources/tinymce{{.dir}}.css',
