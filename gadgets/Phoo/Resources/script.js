@@ -55,10 +55,10 @@ function ImportImages()
 
 function updatePhoto()
 {
-    var id             = $('image').value;
-    var title          = $('title').value;
-    var allow_comments = $('allow_comments').checked;
-    var published      = $('published').value;
+    var id             = $('#image').val();
+    var title          = $('#title').val();
+    var allow_comments = $('#allow_comments').prop('checked');
+    var published      = $('#published').val();
     var description    = getEditorValue('description');
 
     var albumsNode  = $('#album-checkboxes input');
@@ -94,7 +94,7 @@ function addEntry(title)
  */
 function saveGroup()
 {
-    if (!$('name').val()) {
+    if (!$('#name').val()) {
         alert(incompleteGroupFields);
         return false;
     }
@@ -106,17 +106,17 @@ function saveGroup()
         'description': $('#description').val()
     };
 
-    if($('gid').value==0) {
+    if($('#gid').value==0) {
         var response = PhooAjax.callSync('AddGroup', groupData);
         if (response[0]['type'] == 'response_notice') {
-            var box = $('groups_combo');
+            var box = $('#groups_combo');
             box.options[box.options.length] = new Option($('#name').val(), response[0]['text']['id']);
             response[0]['text'] = response[0]['text']['message'];
             stopAction();
         }
         PhooAjax.showResponse(response);
     } else {
-        var box = $('groups_combo');
+        var box = $('#groups_combo');
         var groupIndex = box.selectedIndex;
         var response = PhooAjax.callSync('UpdateGroup',
                             {'id': $('#gid').val(), data: groupData});
@@ -152,7 +152,7 @@ function deleteGroup()
 {
     var answer = confirm(confirmGroupDelete);
     if (answer) {
-        var box = $('groups_combo');
+        var box = $('#groups_combo');
         var quoteIndex = box.selectedIndex;
         var response = PhooAjax.callSync('DeleteGroup', {'id': $('gid').value});
         if (response[0]['type'] == 'response_notice') {
@@ -185,7 +185,7 @@ function stopAction()
 function filterAlbums(gid)
 {
     var response = PhooAjax.callSync('GetAlbums', {'gid': gid});
-    var select = $('albums_list');
+    var select = $('#albums_list');
     select.options.length = 0;
     for (var i=0; i<response.length; i++) {
         select.options[select.options.length] = new Option(response[i]['name'], response[i]['id']);
