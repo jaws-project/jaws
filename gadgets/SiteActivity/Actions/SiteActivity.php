@@ -116,9 +116,14 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
 
         // Post activities data to parent site
         $hostName = $_SERVER['HTTP_HOST'];
-        $hostNameArray = explode('.', $hostName);
-        array_shift($hostNameArray);
-        $parentURL = 'http://' . implode('.', $hostNameArray) . '/index.php/SiteActivity/ReceiveData';
+//        $hostNameArray = explode('.', $hostName);
+//        array_shift($hostNameArray);
+//        $parentURL = 'http://' . implode('.', $hostNameArray) . '/index.php/SiteActivity/ReceiveData';
+        $parentURL = $this->gadget->registry->fetch('parent_url');
+        if (empty($parentURL)) {
+            $this->gadget->registry->update('processing', 'false');
+            return false;
+        }
 
         $httpRequest = new Jaws_HTTPRequest();
         $data = json_encode(array('domain' => $hostName, 'data' => $activities));
