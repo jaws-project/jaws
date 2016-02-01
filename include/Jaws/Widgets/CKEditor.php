@@ -285,6 +285,12 @@ class Jaws_Widgets_CKEditor extends Container
             $tpl->SetVariable('filebrowserImageBrowseUrl', BASE_SCRIPT. '?gadget=Phoo&action=BrowsePhoo');
             $tpl->ParseBlock("$block/phoo");
         }
+        // Directory
+        if (Jaws_Gadget::IsGadgetInstalled('Directory')) {
+            $tpl->SetBlock("$block/directory");
+            $tpl->SetVariable('filebrowserFlashBrowseUrl', BASE_SCRIPT. '?gadget=Directory&action=Browse');
+            $tpl->ParseBlock("$block/directory");
+        }
 
         $tpl->ParseBlock($block);
         $this->_XHTML.= $tpl->Get();

@@ -16,14 +16,37 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      * @access  public
      * @return  string  XHTML UI
      */
-    function Directory()
+    function Directory($standalone = false)
     {
         $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/Resources/style.css');
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('Workspace.html');
         $tpl->SetBlock('workspace');
 
-        $tpl->SetVariable('menubar', $this->MenuBar('Directory'));
+        if ($standalone) {
+            $tpl->SetVariable('standalone', 'standalone');
+            $tpl->SetVariable('currentAction', 'Browse');
+            $tpl->SetVariable('home_url', BASE_SCRIPT . '?gadget=Directory&action=Browse');
+            
+            $tpl->SetBlock('workspace/standalone');
+            $tpl->ParseBlock('workspace/standalone');
+            
+            $editor = $GLOBALS['app']->GetEditor();
+            if ($editor === 'TinyMCE') {
+            } elseif ($editor === 'CKEditor') {
+                $getParams = jaws()->request->fetch(array('CKEditor', 'CKEditorFuncNum', 'langCode'), 'get');
+                $extraParams = '&amp;CKEditor=' . $getParams['CKEditor'] .
+                               '&amp;CKEditorFuncNum=' . $getParams['CKEditorFuncNum'] .
+                               '&amp;langCode=' . $getParams['langCode'];
+
+                $ckFuncIndex = jaws()->request->fetch('CKEditorFuncNum', 'get');
+                $tpl->SetVariable('ckFuncIndex', $ckFuncIndex);
+            }
+        } else {
+            $tpl->SetVariable('menubar', $this->MenuBar('Directory'));
+            $tpl->SetVariable('currentAction', 'Directory');
+            $tpl->SetVariable('home_url', BASE_SCRIPT . '?gadget=Directory');
+        }
 
         $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('lbl_adv_search', _t('DIRECTORY_ADVANCED_SEARCH'));
@@ -44,11 +67,10 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $tpl->SetVariable('img_dl', STOCK_SAVE);
         $tpl->SetVariable('img_search', STOCK_SEARCH);
 
-        $dir_id = (int)jaws()->request->fetch('dirid');
+        $dir_id = (int)jaws()->request->fetch('id');
         $tpl->SetVariable('currentDir', $dir_id);
         $tpl->SetVariable('UID', (int)$GLOBALS['app']->Session->GetAttribute('user'));
         $tpl->SetVariable('home_title', _t('DIRECTORY_HOME'));
-        $tpl->SetVariable('home_url', BASE_SCRIPT . '?gadget=Directory');
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
         $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
@@ -108,6 +130,17 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
     }
 
     /**
+     * Browse for files and directories
+     *
+     * @access  public
+     * @return  string  HTML content
+     */
+    function Browse()
+    {
+        return $this->Directory($standalone = true);
+    }
+
+    /**
      * Fetches list of files
      *
      * @access  public
@@ -123,9 +156,10 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             return array();
         }
         $objDate = Jaws_Date::getInstance();
+        $action = jaws()->request->fetch('curr_action');
         foreach ($files as &$file) {
             if ($file['is_dir']) {
-                $file['url'] = BASE_SCRIPT . '?gadget=Directory&action=Directory&dirid=' . $file['id'];
+                $file['url'] = BASE_SCRIPT . "?gadget=Directory&action=$action&id=" . $file['id'];
             } else {
                 $file['link'] = $this->gadget->urlMap('Directory', array('id' => $file['id']), true);
             }
@@ -173,10 +207,14 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      */
     function GetPath()
     {
+        $action = jaws()->request->fetch('curr_action');
         $id = jaws()->request->fetch('id');
         $path = array();
         $model = $this->gadget->model->loadAdmin('Files');
         $model->GetPath($id, $path);
+        foreach($path as &$p) {
+            $p['url'] = BASE_SCRIPT . "?gadget=Directory&action=$action&id=" . $p['id'];
+        }
         return $path;
     }
 
@@ -411,7 +449,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $objDate = Jaws_Date::getInstance();
         foreach ($files as &$file) {
             if ($file['is_dir']) {
-                $file['url'] = BASE_SCRIPT . '?gadget=Directory&action=Directory&dirid=' . $file['id'];
+                $file['url'] = BASE_SCRIPT . '?gadget=Directory&action=Directory&id=' . $file['id'];
             }
             $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');

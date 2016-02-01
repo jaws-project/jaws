@@ -112,7 +112,7 @@ function updateFiles(parent)
     if (parent === undefined) {
         parent = currentDir;
     }
-    DirectoryAjax.callAsync('GetFiles', {'parent':parent}, displayFiles);
+    DirectoryAjax.callAsync('GetFiles', {'curr_action':currentAction, 'parent':parent}, displayFiles);
 
     updatePath();
     $('#dir_searchbar').hide();
@@ -259,8 +259,30 @@ function fileOpen(id)
  */
 function openMedia(id, type)
 {
-    DirectoryAjax.callAsync('PlayMedia', {'id':id, 'type':type}, function(tpl) {
-        $('#form').html(tpl);
+    var action, params;
+    if (currentAction == 'Directory' || (opener && opener.the_textarea)) {
+        action = 'PlayMedia';
+        params = {'id':id, 'type':type};
+    } else {
+        action = 'GetDownloadURL';
+        params = {'id':id};
+    }
+    DirectoryAjax.callAsync(action, params, function(response) {
+        if (currentAction == 'Directory') {
+            $('#form').html(response);
+            return;
+        }
+
+        if (top.tinymce) {
+            top.tinymce.activeEditor.windowManager.getParams().oninsert(response);
+            top.tinyMCE.activeEditor.windowManager.close();
+        } else if (opener.CKEDITOR) {
+            window.opener.CKEDITOR.tools.callFunction(ckFuncIndex, response);
+            close();
+        } else if (opener.the_textarea) {
+            opener.insertTags(opener.the_textarea, response, '', '');
+            close();
+        }
     });
 }
 
@@ -295,7 +317,7 @@ function downloadFile(id)
 function updatePath()
 {
     var path = $('#dir_path').html('');
-    DirectoryAjax.callAsync('GetPath', {'id':currentDir}, function(pathArr) {
+    DirectoryAjax.callAsync('GetPath', {'curr_action':currentAction, 'id':currentDir}, function(pathArr) {
         pathArr.reverse().forEach(function (dir, i) {
             path.append(' > ');
             if (i === pathArr.length - 1) {

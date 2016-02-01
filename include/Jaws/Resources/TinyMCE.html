@@ -2,7 +2,18 @@
 <script type="text/javascript">
     function jaws_file_picker_callback(callback, value, meta)
     {
-        var browser = (meta.filetype === 'image')? '{{ibrowser}}' : '{{fbrowser}}';
+        var browser = '';
+        switch (meta.filetype) {
+            case 'media':
+                browser = '{{mbrowser}}';
+                break;
+            case 'image':
+                browser = '{{ibrowser}}';
+                break;
+            case 'file':
+                browser = '{{fbrowser}}';
+                break;
+        }
         if (browser != '') {
             tinyMCE.activeEditor.windowManager.open({
                     url: browser,
@@ -16,6 +27,10 @@
                 }, {
                     oninsert: function(url, title, desc, height, width) {
                         switch (meta.filetype) {
+                            case 'media':
+                                callback(url, {});
+                                break;
+
                             case 'image':
                                 callback(url, {'alt': title});
                                 break;
@@ -64,9 +79,6 @@
         automatic_uploads:  false,
         convert_newlines_to_brs: false,
         apply_source_formatting: true,
-    file_browser_callback: function(field_name, url, type, win) { 
-        win.document.getElementById(field_name).value = 'my browser value'; 
-    },
         file_picker_types: 'file image media',
         file_picker_callback: jaws_file_picker_callback,
         content_css: 'gadgets/ControlPanel/Resources/tinymce{{.dir}}.css',

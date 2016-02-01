@@ -187,6 +187,11 @@ class Jaws_Widgets_TinyMCE extends Container
             $fbrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=FileBrowser&action=BrowseFile';
         }
 
+        $mbrowser = '';
+        if (Jaws_Gadget::IsGadgetInstalled('Directory')) {
+            $mbrowser = $GLOBALS['app']->getSiteURL(). '/'. BASE_SCRIPT. '?gadget=Directory&action=Browse';
+        }
+
         if (JAWS_SCRIPT == 'admin') {
             $plugins = str_replace(',bbcode,', ',', $plugins);
             $block = 'tinymce_backend';
@@ -200,6 +205,7 @@ class Jaws_Widgets_TinyMCE extends Container
 
         $tpl->SetVariable('ibrowser', $ibrowser);
         $tpl->SetVariable('fbrowser', $fbrowser);
+        $tpl->SetVariable('mbrowser', !empty($mbrowser)? $mbrowser : $fbrowser);
         $tpl->SetVariable('mode',     $this->_Mode);
         $tpl->SetVariable('lang',     $lang);
         $tpl->SetVariable('theme',    $this->_Theme);

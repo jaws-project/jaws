@@ -56,6 +56,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             $tpl->SetVariable('created', '{created}');
             $tpl->SetVariable('modified', '{modified}');
         }
+        
         $tpl->ParseBlock($mode);
         return $tpl->Get();
     }
