@@ -30,6 +30,12 @@ class Jaws_HTTPRequest
     var $default_error_level = JAWS_ERROR_ERROR;
 
     /**
+     * @access  private
+     * @var     object  $httpRequest    instance of PEAR HTTP_Request
+     */
+    var $httpRequest;
+
+    /**
      * Constructor
      *
      * @access  protected
@@ -50,6 +56,7 @@ class Jaws_HTTPRequest
 
         // merge default and passed options
         $this->options = array_merge($this->options, $options);
+        $this->httpRequest = new HTTP_Request();
     }
 
     /**
@@ -62,9 +69,9 @@ class Jaws_HTTPRequest
      */
     function get($url, &$response)
     {
-        $httpRequest = new HTTP_Request($url, $this->options);
-        $httpRequest->addHeader('User-Agent', $this->user_agent);
-        $httpRequest->setMethod(HTTP_REQUEST_METHOD_GET);
+        $this->httpRequest->reset($url, $this->options);
+        $this->httpRequest->addHeader('User-Agent', $this->user_agent);
+        $this->httpRequest->setMethod(HTTP_REQUEST_METHOD_GET);
         $result = $httpRequest->sendRequest();
         if (PEAR::isError($result)) {
             return Jaws_Error::raiseError(
@@ -75,8 +82,8 @@ class Jaws_HTTPRequest
             );
         }
 
-        $response = $httpRequest->getResponseBody();
-        return $httpRequest->getResponseCode();
+        $response = $this->httpRequest->getResponseBody();
+        return $this->httpRequest->getResponseCode();
     }
 
     /**
@@ -90,15 +97,15 @@ class Jaws_HTTPRequest
      */
     function post($url, $params = array(), &$response)
     {
-        $httpRequest = new HTTP_Request($url, $this->options);
-        $httpRequest->addHeader('User-Agent', $this->user_agent);
-        $httpRequest->setMethod(HTTP_REQUEST_METHOD_POST);
+        $this->httpRequest->reset($url, $this->options);
+        $this->httpRequest->addHeader('User-Agent', $this->user_agent);
+        $this->httpRequest->setMethod(HTTP_REQUEST_METHOD_POST);
         // add post data
         foreach($params as $key => $data) {
             $httpRequest->addPostData($key, urlencode($data));
         }
 
-        $result = $httpRequest->sendRequest();
+        $result = $this->httpRequest->sendRequest();
         if (PEAR::isError($result)) {
             return Jaws_Error::raiseError(
                 $result->getMessage(),
@@ -108,8 +115,8 @@ class Jaws_HTTPRequest
             );
         }
 
-        $response = $httpRequest->getResponseBody();
-        return $httpRequest->getResponseCode();
+        $response = $this->httpRequest->getResponseBody();
+        return $this->httpRequest->getResponseCode();
     }
 
     /**
@@ -123,12 +130,12 @@ class Jaws_HTTPRequest
      */
     function rawPostData($url, $data = '', &$response)
     {
-        $httpRequest = new HTTP_Request($url, $this->options);
-        $httpRequest->addHeader('User-Agent', $this->user_agent);
-        $httpRequest->setMethod(HTTP_REQUEST_METHOD_POST);
+        $this->httpRequest->reset($url, $this->options);
+        $this->httpRequest->addHeader('User-Agent', $this->user_agent);
+        $this->httpRequest->setMethod(HTTP_REQUEST_METHOD_POST);
         // set post data
-        $httpRequest->setBody($data);
-        $result = $httpRequest->sendRequest();
+        $this->httpRequest->setBody($data);
+        $result = $this->httpRequest->sendRequest();
         if (PEAR::isError($result)) {
             return Jaws_Error::raiseError(
                 $result->getMessage(),
@@ -138,8 +145,20 @@ class Jaws_HTTPRequest
             );
         }
 
-        $response = $httpRequest->getResponseBody();
-        return $httpRequest->getResponseCode();
+        $response = $this->httpRequest->getResponseBody();
+        return $this->httpRequest->getResponseCode();
+    }
+
+    /**
+     * Adds a request header
+     *
+     * @access public
+     * @param string     Header name
+     * @param string     Header value
+     */
+    function addHeader($name, $value)
+    {
+        $this->httpRequest->addHeader($name, $value);
     }
 
 }
