@@ -48,12 +48,8 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
                 $saTable->and()->where('gadget', $filters['gadget']);
             }
             // domain
-            if (isset($filters['domain']) && !empty($filters['domain'])) {
-                if ($filters['domain'] === '-1') {
-                    $saTable->and()->where('domain', '', 'is null');
-                } else {
-                    $saTable->and()->where('domain', $filters['domain']);
-                }
+            if ($filters['domain'] != '-1') {
+                $saTable->and()->where('domain', $filters['domain']);
             }
             // sync
             if (isset($filters['sync'])) {
@@ -102,12 +98,8 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
                 $saTable->and()->where('gadget', $filters['gadget']);
             }
             // domain
-            if (isset($filters['domain']) && !empty($filters['domain'])) {
-                if ($filters['domain'] === '-1') {
-                    $saTable->and()->where('domain', '', 'is null');
-                } else {
-                    $saTable->and()->where('domain', $filters['domain']);
-                }
+            if ($filters['domain'] != '-1') {
+                $saTable->and()->where('domain', $filters['domain']);
             }
             // sync
             if (isset($filters['sync'])) {
@@ -163,14 +155,16 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
 
         $saTable = Jaws_ORM::getInstance()->table('sa_activity');
         $data['sync'] = false;
+        $data['domain'] = '';
         $data['update_time'] = time();
         $data['date'] = $todayTime;
         $data['hits'] = $data['hits'];
         $data['update_time'] = time();
         $res = $saTable->upsert($data, array('hits' => $saTable->expr('hits + ?', $data['hits'])))
-            ->where('date', $todayTime)
+            ->where('domain', $data['domain'])
             ->and()->where('gadget', $data['gadget'])
             ->and()->where('action', $data['action'])
+            ->and()->where('date', $data['date'])
             ->exec();
         if (Jaws_Error::IsError($res)) {
             return $res;

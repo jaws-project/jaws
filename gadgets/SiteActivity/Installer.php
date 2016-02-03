@@ -18,7 +18,7 @@ class SiteActivity_Installer extends Jaws_Gadget_Installer
         array('last_update', '0'),
         array('queue_max_time', '60'), // maximum time to execution an queue (seconds)
         array('sharing_activity', 'true'),
-        array('parent_url', ''),
+        array('parent', ''),
     );
 
     /**

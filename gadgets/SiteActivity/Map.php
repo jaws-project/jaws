@@ -6,3 +6,5 @@
  * @package    SiteActivity
  */
 $maps[] = array('SiteActivity', 'site/activity');
+$maps[] = array('GetData', 'site/get');
+$maps[] = array('PostData', 'site/post');

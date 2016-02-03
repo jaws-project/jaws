@@ -26,7 +26,7 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
         $filters = array();
         $today = getdate();
         $todayTime = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']);
-        $filters['domain'] = '-1'; // fetch just own domain data
+        $filters['domain'] = ''; // fetch just own domain data
         $filters['from_date'] = $todayTime; // fetch today data
         $activities = $model->GetSiteActivities($filters);
 
@@ -88,8 +88,18 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
      * @access  public
      * @return  boolean
      */
-    function SendData()
+    function PostData()
     {
+        // Post activities data to parent site
+        $hostName = $_SERVER['HTTP_HOST'];
+//        $hostNameArray = explode('.', $hostName);
+//        array_shift($hostNameArray);
+//        $parentURL = 'http://' . implode('.', $hostNameArray) . '/index.php/SiteActivity/ReceiveData';
+        $parent = $this->gadget->registry->fetch('parent');
+        if (empty($parent)) {
+            return false;
+        }
+
         $processing = $this->gadget->registry->fetch('processing');
         $lastUpdate = (int)$this->gadget->registry->fetch('last_update');
         $queueMaxTime = (int)$this->gadget->registry->fetch('queue_max_time');
@@ -114,20 +124,10 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
             $activityIds[] = $activity['id'];
         }
 
-        // Post activities data to parent site
-        $hostName = $_SERVER['HTTP_HOST'];
-//        $hostNameArray = explode('.', $hostName);
-//        array_shift($hostNameArray);
-//        $parentURL = 'http://' . implode('.', $hostNameArray) . '/index.php/SiteActivity/ReceiveData';
-        $parentURL = $this->gadget->registry->fetch('parent_url');
-        if (empty($parentURL)) {
-            $this->gadget->registry->update('processing', 'false');
-            return false;
-        }
-
         $httpRequest = new Jaws_HTTPRequest();
         $data = json_encode(array('domain' => $hostName, 'data' => $activities));
-        $result = $httpRequest->rawPostData($parentURL, $data, $retData);
+        $httpRequest->addHeader('content_type', 'application/json');
+        $result = $httpRequest->rawPostData("http://$parent/site/get", $data, $retData);
         if (Jaws_Error::IsError($result) || $result != 200) {
             $this->gadget->registry->update('processing', 'false');
             return false;
@@ -148,10 +148,12 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
      * @access  public
      * @return bool
      */
-    function ReceiveData()
+    function GetData()
     {
-//        $data = jaws()->request->fetchAll('post');
+        //$data = jaws()->request->fetchAll('post');
+        //$data = jaws()->request->fetch(array('domain', 'data:array'), 'post');
         $data = file_get_contents('php://input');
+        //_log_var_dump($data);
         $data = json_decode($data);
         $clientDomain = $data->domain;
         $activities = $data->data;

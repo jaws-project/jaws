@@ -15,19 +15,8 @@ class SiteActivity_Hooks_Autoload extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $this->SendData();
-    }
-
-    /**
-     * Send notifications
-     *
-     * @access  public
-     * @return  void
-     */
-    function SendData()
-    {
         $gadget = $this->gadget->action->load('SiteActivity');
-        return $gadget->SendData();
+        return $gadget->PostData();
     }
 
 }

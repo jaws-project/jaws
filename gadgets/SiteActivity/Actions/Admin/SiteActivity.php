@@ -59,16 +59,16 @@ class SiteActivity_Actions_Admin_SiteActivity extends SiteActivity_Actions_Admin
         // Domains
         $allDomains = $model->GetAllDomains();
         $domainCombo =& Piwi::CreateWidget('Combo', 'filter_domain');
-        $domainCombo->AddOption(_t('GLOBAL_ALL'), 0, false);
+        $domainCombo->AddOption(_t('GLOBAL_ALL'), -1, false);
         foreach ($allDomains as $domain) {
             if (empty($domain)) {
-                $domainCombo->AddOption(_t('SITEACTIVITY_MY_DOMAIN'), '-1', false);
+                $domainCombo->AddOption(_t('SITEACTIVITY_MY_DOMAIN'), '', false);
             } else {
                 $domainCombo->AddOption($domain, $domain, false);
             }
         }
         $domainCombo->AddEvent(ON_CHANGE, "javascript:searchSiteActivity();");
-        $domainCombo->SetDefault(0);
+        $domainCombo->SetDefault('');
         $tpl->SetVariable('filter_domain', $domainCombo->Get());
         $tpl->SetVariable('lbl_filter_domain', _t('SITEACTIVITY_DOMAIN'));
 

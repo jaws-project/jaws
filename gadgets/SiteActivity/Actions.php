@@ -14,11 +14,11 @@ $actions['SiteActivity'] = array(
     'layout' => true,
     'file' => 'SiteActivity',
 );
-$actions['ReceiveData'] = array(
+$actions['GetData'] = array(
     'standalone' => true,
     'file' => 'SiteActivity',
 );
-$actions['SendData'] = array(
+$actions['PostData'] = array(
     'standalone' => true,
     'file' => 'SiteActivity',
 );
