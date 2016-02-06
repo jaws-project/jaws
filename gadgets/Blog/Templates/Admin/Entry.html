@@ -100,9 +100,9 @@
    * Removes the image
    */
   function removeImage() {
-      $('image_file').value = '';
-      $('deleteImage').value = 'true';
-      $('blog_image').src = 'gadgets/Blog/Resources/images/no-image.gif?' + (new Date()).getTime();
+      $('#image_file').value = '';
+      $('#deleteImage').value = 'true';
+      $('#blog_image').prop('src', 'gadgets/Blog/Resources/images/no-image.gif?' + (new Date()).getTime());
   }
 
 </script>
