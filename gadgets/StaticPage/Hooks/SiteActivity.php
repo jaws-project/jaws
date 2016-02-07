@@ -19,7 +19,7 @@ class StaticPage_Hooks_SiteActivity extends Jaws_Gadget_Hook
     function Execute()
     {
         $items = array();
-        $items['StaticPage'] = _t('STATICPAGE_SITEACTIVITY_ACTION_PAGE');
+        $items['Page'] = _t('STATICPAGE_SITEACTIVITY_ACTION_PAGE');
 
         return $items;
     }
