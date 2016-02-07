@@ -55,6 +55,9 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
             return new Jaws_Error(_t('STATICPAGE_ERROR_PAGE_NOT_ADDED'));
         }
 
+        // shout SiteActivity event
+        $this->gadget->event->shout('SiteActivity', array('action'=>'Page'));
+
         $GLOBALS['app']->Session->PushLastResponse(_t('STATICPAGE_PAGE_CREATED'), RESPONSE_NOTICE);
         return $base_id;
     }
