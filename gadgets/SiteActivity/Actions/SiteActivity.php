@@ -92,9 +92,6 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
     {
         // Post activities data to parent site
         $hostName = $_SERVER['HTTP_HOST'];
-//        $hostNameArray = explode('.', $hostName);
-//        array_shift($hostNameArray);
-//        $parentURL = 'http://' . implode('.', $hostNameArray) . '/index.php/SiteActivity/ReceiveData';
         $parent = $this->gadget->registry->fetch('parent');
         if (empty($parent)) {
             return false;
@@ -125,8 +122,8 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
         }
 
         $httpRequest = new Jaws_HTTPRequest();
-        $data = json_encode(array('domain' => $hostName, 'data' => $activities));
         $httpRequest->addHeader('content_type', 'application/json');
+        $data = json_encode(array('domain' => $hostName, 'data' => $activities));
         $result = $httpRequest->rawPostData("http://$parent/site/get", $data, $retData);
         if (Jaws_Error::IsError($result) || $result != 200) {
             $this->gadget->registry->update('processing', 'false');
