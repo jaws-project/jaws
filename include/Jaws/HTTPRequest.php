@@ -72,7 +72,7 @@ class Jaws_HTTPRequest
         $this->httpRequest->reset($url, $this->options);
         $this->httpRequest->addHeader('User-Agent', $this->user_agent);
         $this->httpRequest->setMethod(HTTP_REQUEST_METHOD_GET);
-        $result = $httpRequest->sendRequest();
+        $result = $this->httpRequest->sendRequest();
         if (PEAR::isError($result)) {
             return Jaws_Error::raiseError(
                 $result->getMessage(),
