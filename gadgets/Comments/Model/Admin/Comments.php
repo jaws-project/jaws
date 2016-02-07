@@ -100,7 +100,7 @@ class Comments_Model_Admin_Comments extends Jaws_Gadget_Model
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $duplicated = $this->IsMessageDuplicated($commentReference, $user, $hash);
         if (Jaws_Error::IsError($duplicated)) {
-            return $dupl;
+            return $duplicated;
         } elseif ($duplicated) {
             return Jaws_Error::raiseError(
                 _t('COMMENTS_SPAM_POSSIBLE_DUPLICATE_MESSAGE'),
@@ -146,6 +146,10 @@ class Comments_Model_Admin_Comments extends Jaws_Gadget_Model
 
         //commit transaction
         $objORM->commit();
+
+        // shout SiteActivity event
+        $this->gadget->event->shout('SiteActivity', array('action'=>'NewComment'));
+
         return $ret;
     }
 
