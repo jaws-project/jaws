@@ -302,9 +302,11 @@ class Jaws_DB
      * @return  mixed a result handle or MDB2_OK on success, a MDB2 error on failure
      * @access  public
      */
-    function query($sql, $params = array(), $error_level = JAWS_ERROR_ERROR)
+    function query($sql, $params = array(), $error_level = JAWS_ERROR_ERROR, $sqlParse = true)
     {
-        $sql = $this->sqlParse($sql, $params);
+        if ($sqlParse) {
+            $sql = $this->sqlParse($sql, $params);
+        }
         $result = $this->dbc->exec($sql);
         if (MDB2::isError($result)) {
             $GLOBALS['log']->Log($error_level, $result->getUserInfo(), 2);
