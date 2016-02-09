@@ -609,7 +609,6 @@ class Jaws_Layout
                 $GLOBALS['app']->requestedAction  = $action;
                 $GLOBALS['app']->requestedSection = $section;
                 $GLOBALS['app']->requestedActionMode = ACTION_MODE_LAYOUT;
-                fff
                 if (is_null($params)) {
                     $output = $goGadget->$action();
                 } else {
