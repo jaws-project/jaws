@@ -88,6 +88,9 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('pipelining', 'false'),
         array('smtp_user', ''),
         array('smtp_pass', ''),
+        array('master', ''),
+        array('holder', ''),
+        array('parent', ''),
     );
 
     /**
@@ -264,6 +267,9 @@ class Settings_Installer extends Jaws_Gadget_Installer
             }
 
             $this->gadget->registry->insert('theme_variables', '', true);
+            $this->gadget->registry->insert('master', '');
+            $this->gadget->registry->insert('holder', '');
+            $this->gadget->registry->insert('parent', '');
         }
 
         return true;
