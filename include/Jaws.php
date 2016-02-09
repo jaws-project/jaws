@@ -56,6 +56,13 @@ class Jaws
     var $requestedAction = '';
 
     /**
+     * The section requested in
+     * @var     string
+     * @access  public
+     */
+    var $requestedSection = '';
+
+    /**
      * The requested action mode
      * @var     string
      * @access  public

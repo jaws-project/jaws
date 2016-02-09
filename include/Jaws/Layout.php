@@ -542,7 +542,8 @@ class Jaws_Layout
                                 $item['gadget'],
                                 $item['gadget_action'],
                                 $item['action_params'],
-                                $item['action_filename']
+                                $item['action_filename'],
+                                $item['section']
                             );
                         }
                     }
@@ -582,7 +583,7 @@ class Jaws_Layout
      * @param   string  $action  Action to execute
      * @param   mixed   $params  Action's params
      */
-    function PutGadget($gadget, $action, $params = null, $filename = '')
+    function PutGadget($gadget, $action, $params = null, $filename = '', $section = '')
     {
         $output = '';
         $enabled = Jaws_Gadget::IsGadgetEnabled($gadget);
@@ -604,9 +605,11 @@ class Jaws_Layout
         $goGadget = Jaws_Gadget::getInstance($gadget)->action->load($filename);
         if (!Jaws_Error::isError($goGadget)) {
             if (method_exists($goGadget, $action)) {
-                $GLOBALS['app']->requestedGadget = $gadget;
-                $GLOBALS['app']->requestedAction = $action;
+                $GLOBALS['app']->requestedGadget  = $gadget;
+                $GLOBALS['app']->requestedAction  = $action;
+                $GLOBALS['app']->requestedSection = $section;
                 $GLOBALS['app']->requestedActionMode = ACTION_MODE_LAYOUT;
+                fff
                 if (is_null($params)) {
                     $output = $goGadget->$action();
                 } else {
