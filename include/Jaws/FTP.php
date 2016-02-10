@@ -357,7 +357,7 @@ class Jaws_FTP
      * Copy directories/files recursively
      *
      * @access  public
-       @param   string  $sourcede       Path to the source file or directory
+       @param   string  $source         Path to the source file or directory
        @param   bool    $self_include   Include top directory level
      * @return  void
      */
