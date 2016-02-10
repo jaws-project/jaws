@@ -24,8 +24,6 @@ class Skeleton_Actions_Admin_Display extends Jaws_Gadget_Action
      */
     function Display()
     {
-        $objServer = Jaws_WebSocket_Server::getInstance('0.0.0.0', 3434);
-        $objServer->open(array($this, 'getData'));
         return _t('SKELETON_ADMIN_MESSAGE');
     }
 
