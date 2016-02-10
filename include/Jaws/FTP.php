@@ -123,7 +123,7 @@ class Jaws_FTP
     {
         $res = $this->_ftp->disconnect();
         if (PEAR::isError($res)) {
-            return new Jaws_Error('Error while disconnecting from server '.$this->_hostname.'.'
+            return new Jaws_Error('Error while disconnecting from server '.$this->_hostname,
                                   __FUNCTION__);
         }
 
@@ -351,6 +351,50 @@ class Jaws_FTP
     {
         $this->_passive = false;
         $this->_ftp->setActive();
+    }
+
+    /**
+     * Copy directories/files recursively
+     *
+     * @access  public
+       @param   string  $sourcede       Path to the source file or directory
+       @param   bool    $self_include   Include top directory level
+     * @return  void
+     */
+    function copy($source, $self_include = true)
+    {
+        if (is_dir($source)) {
+            if (false !== $hDir = @opendir($source)) {
+                if ($self_include) {
+                    $result = $this->mkdir(basename($source), true);
+                    if (Jaws_Error::IsError($result)) {
+                        return $result;
+                    }
+                }
+                $this->cd(basename($source));
+
+                while(false !== ($file = @readdir($hDir))) {
+                    if($file == '.' || $file == '..') {
+                        continue;
+                    }
+
+                    $result = $this->copy($source. DIRECTORY_SEPARATOR . $file);
+                    if (Jaws_Error::IsError($result)) {
+                        return $result;
+                    }
+                }
+
+                $this->cd('..');
+                closedir($hDir);
+            }
+        } else {
+            $result = $this->put($source, basename($source), true);
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
+        return $result;
     }
 
 }
