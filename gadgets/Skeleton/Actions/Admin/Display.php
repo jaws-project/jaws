@@ -10,12 +10,6 @@
  */
 class Skeleton_Actions_Admin_Display extends Jaws_Gadget_Action
 {
-    var $objServer = null;
-
-    function getData($keySock, $buffer) {
-        $this->objServer->sendAll($buffer);
-    }
-
     /**
      * Displays no admin action
      *
