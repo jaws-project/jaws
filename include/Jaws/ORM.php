@@ -1129,7 +1129,6 @@ class Jaws_ORM
     function reset()
     {
         $this->_distinct = '';
-        $this->_pk_field = '';
         $this->_columns  = array();
         $this->_types    = array();
         $this->_values   = array();
