@@ -9,7 +9,7 @@
 /**
  * Index actions
  */
-$actions['TagsSimilarity'] = array(
+$actions['Similarity'] = array(
     'layout' => true,
     'parametric' => true,
     'file'   => 'Tags',

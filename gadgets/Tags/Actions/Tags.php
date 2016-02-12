@@ -303,12 +303,12 @@ class Tags_Actions_Tags extends Tags_Actions_Default
     }
 
     /**
-     * Get then TagsSimilarity action params
+     * Get then Similarity action params
      *
      * @access  public
-     * @return  array list of the TagsSimilarity action params
+     * @return  array list of the Similarity action params
      */
-    function TagsSimilarityLayoutParams()
+    function SimilarityLayoutParams()
     {
         $result = array();
         $model = $this->gadget->model->load('Tags');
@@ -338,7 +338,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
      * @param   int     $user   Only show user tags?
      * @return  string  XHTML template content
      */
-    function TagsSimilarity($gadget, $user)
+    function Similarity($gadget, $user)
     {
         if (empty(self::$mainRequestTags)) {
             return false;
