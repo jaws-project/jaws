@@ -8,18 +8,12 @@
  *
  * PHP versions 4 and 5
  *
- * LICENSE: This source file is subject to version 3.0 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
- *
  * @category  Networking
  * @package   FTP
  * @author    Tobias Schlitt <toby@php.net>
  * @author    Jorrit Schippers <jschippers@php.net>
  * @copyright 1997-2008 The PHP Group
- * @license   http://www.php.net/license/3_0.txt PHP License 3.0
+ * @license   BSD http://www.opensource.org/licenses/bsd-license.php
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/Net_FTP
  * @since     File available since Release 0.0.1
@@ -531,6 +525,16 @@ define('NET_FTP_ERR_ILLEGALMAPVALUE', -38);
 define('NET_FTP_ERR_BADOPTIONS', -39);
 
 /**
+ * Error code indicating that SSL connection is not supported as either the
+ * ftp module or OpenSSL support is not statically built into php.
+ *
+ * @since 1.4a2
+ * @name NET_FTP_ERR_NOSSL
+ * @see Net_FTP::setSsl()
+ */
+define('NET_FTP_ERR_NOSSL', -40);
+
+/**
  * Class for comfortable FTP-communication
  *
  * This class provides comfortable communication with FTP-servers. You may do
@@ -544,7 +548,7 @@ define('NET_FTP_ERR_BADOPTIONS', -39);
  * @author    Jorrit Schippers <jschippers@php.net>
  * @copyright 1997-2008 The PHP Group
  * @license   http://www.php.net/license/3_0.txt PHP License 3.0
- * @version   Release: 1.4.0a3
+ * @version   Release: @package_version@
  * @link      http://pear.php.net/package/Net_FTP
  * @since     0.0.1
  * @access    public
@@ -582,6 +586,16 @@ class Net_FTP extends PEAR
      * @var     string
      */
     var $_password;
+
+    /**
+     * Determine whether to connect through secure SSL connection or not
+     *
+     * Is null when it hasn't been explicitly set
+     *
+     * @access  private
+     * @var     bool
+     */
+    var $_ssl;
 
     /**
      * Determine whether to use passive-mode (true) or active-mode (false)
@@ -624,13 +638,12 @@ class Net_FTP extends PEAR
     /**
      * Saves file-extensions for ascii- and binary-mode
      *
-     * The array contains 2 sub-arrays ("ascii" and "binary"), which both contain
-     * file-extensions without the "." (".php" = "php").
+     * The array is built like this: 'php' => FTP_ASCII, 'png' => FTP_BINARY
      *
      * @access  private
      * @var     array
      */
-    var $_file_extensions;
+    var $_file_extensions = array();
 
     /**
      * ls match
@@ -704,8 +717,6 @@ class Net_FTP extends PEAR
             $this->setPort($port);
         }
         $this->_timeout                     = $timeout;
-        $this->_file_extensions[FTP_ASCII]  = array();
-        $this->_file_extensions[FTP_BINARY] = array();
         
         $this->_ls_match = array(
             'unix'    => array(
@@ -740,12 +751,13 @@ class Net_FTP extends PEAR
      *
      * @param string $host (optional) The Hostname
      * @param int    $port (optional) The Port
+     * @param bool   $ssl  (optional) Whether to connect through secure SSL connection
      *
      * @access public
      * @return mixed True on success, otherwise PEAR::Error
      * @see NET_FTP_ERR_CONNECT_FAILED
      */
-    function connect($host = null, $port = null)
+    function connect($host = null, $port = null, $ssl = null)
     {
         $this->_matcher = null;
         if (isset($host)) {
@@ -754,8 +766,16 @@ class Net_FTP extends PEAR
         if (isset($port)) {
             $this->setPort($port);
         }
-        $handle = @ftp_connect($this->getHostname(), $this->getPort(),
-                               $this->_timeout);
+        if (isset($ssl) && is_bool($ssl) && $ssl) {
+            $this->setSsl();
+        }
+        if ($this->getSsl()) {
+            $handle = @ftp_ssl_connect($this->getHostname(), $this->getPort(),
+                                       $this->_timeout);
+        } else {
+            $handle = @ftp_connect($this->getHostname(), $this->getPort(),
+                                   $this->_timeout);
+        }
         if (!$handle) {
             $this->_handle = false;
             return $this->raiseError("Connection to host failed",
@@ -1072,6 +1092,10 @@ class Net_FTP extends PEAR
             $dir_list = array();
             $mode     = NET_FTP_DIRS_ONLY;
             $dir_list = $this->ls($remote_path, $mode);
+            if (PEAR::isError($dir_list)) {
+                return $dir_list;
+            }
+
             foreach ($dir_list as $dir_entry) {
                 if ($dir_entry['name'] == '.' || $dir_entry['name'] == '..') {
                     continue;
@@ -1097,6 +1121,10 @@ class Net_FTP extends PEAR
             $file_list = array();
             $mode      = NET_FTP_FILES_ONLY;
             $file_list = $this->ls($remote_path, $mode);
+    
+            if (PEAR::isError($file_list)) {
+                return $file_list;
+            }
 
             foreach ($file_list as $file_entry) {
 
@@ -1515,7 +1543,11 @@ class Net_FTP extends PEAR
      * @param bool   $overwrite   (optional) Whether to overwrite existing files
      *                            (true) or not (false, standard).
      * @param int    $mode        (optional) The transfermode (either FTP_ASCII or
-     * FTP_BINARY).
+     *                            FTP_BINARY).
+     * @param array  $excluded_paths (optional) List of remote files or directories to
+     *                               exclude from the transfer. All files and 
+     *                               directories must be stated as absolute paths.
+     *                               Note: You must include a trailing slash on directory names.
      *
      * @access public
      * @return mixed True on succes, otherwise PEAR::Error
@@ -1525,7 +1557,7 @@ class Net_FTP extends PEAR
      * NET_FTP_ERR_CREATELOCALDIR_FAILED
      */
     function getRecursive($remote_path, $local_path, $overwrite = false,
-                          $mode = null)
+                          $mode = null, $excluded_paths = array())
     {
         $remote_path = $this->_constructPath($remote_path);
         if ($this->_checkRemoteDir($remote_path) !== true) {
@@ -1555,10 +1587,14 @@ class Net_FTP extends PEAR
             if ($dir_entry['name'] != '.' && $dir_entry['name'] != '..') {
                 $remote_path_new = $remote_path.$dir_entry["name"]."/";
                 $local_path_new  = $local_path.$dir_entry["name"]."/";
-                $result          = $this->getRecursive($remote_path_new,
+
+                // Check whether the directory should be excluded
+                if (!in_array($remote_path_new, $excluded_paths)) {
+                    $result = $this->getRecursive($remote_path_new,
                                    $local_path_new, $overwrite, $mode);
-                if ($this->isError($result)) {
-                    return $result;
+                    if ($this->isError($result)) {
+                        return $result;
+                    }
                 }
             }
         }
@@ -1570,10 +1606,14 @@ class Net_FTP extends PEAR
         foreach ($file_list as $file_entry) {
             $remote_file = $remote_path.$file_entry["name"];
             $local_file  = $local_path.$file_entry["name"];
-            $result      = $this->get($remote_file, $local_file, $overwrite, $mode);
-            if ($this->isError($result) &&
-                $result->getCode() != NET_FTP_ERR_OVERWRITELOCALFILE_FORBIDDEN) {
-                return $result;
+
+            // Check whether the file should be excluded
+            if (!in_array($remote_file, $excluded_paths)) {
+                $result = $this->get($remote_file, $local_file, $overwrite, $mode);
+                if ($this->isError($result) &&
+                    $result->getCode() != NET_FTP_ERR_OVERWRITELOCALFILE_FORBIDDEN) {
+                    return $result;
+                }
             }
         }
         return true;
@@ -1595,12 +1635,17 @@ class Net_FTP extends PEAR
      * the extension is not inside the mode-directory, it will get your default
      * mode.
      *
-     * @param string $local_path  The path to download to
-     * @param string $remote_path The path to download
-     * @param bool   $overwrite   (optional) Whether to overwrite existing files
-     *                            (true) or not (false, standard).
-     * @param int    $mode        (optional) The transfermode (either FTP_ASCII or
-     *                            FTP_BINARY).
+     * @param string $local_path     The path to download to
+     * @param string $remote_path    The path to download
+     * @param bool   $overwrite      (optional) Whether to overwrite existing files
+     *                               (true) or not (false, standard).
+     * @param int    $mode           (optional) The transfermode (either FTP_ASCII or
+     *                               FTP_BINARY).
+     * @param array  $excluded_paths (optional) List of local files or directories to
+     *                               exclude from the transfer. All files and 
+     *                               directories must be stated as absolute paths.
+     *                               Note: You must include a trailing slash on 
+     *                               directory names.
      *
      * @access public
      * @return mixed True on succes, otherwise PEAR::Error
@@ -1610,7 +1655,7 @@ class Net_FTP extends PEAR
      *      NET_FTP_ERR_REMOTEPATHNODIR
      */
     function putRecursive($local_path, $remote_path, $overwrite = false,
-                          $mode = null)
+                          $mode = null, $excluded_paths = array())
     {
         $remote_path = $this->_constructPath($remote_path);
         if (!file_exists($local_path) || !is_dir($local_path)) {
@@ -1637,19 +1682,28 @@ class Net_FTP extends PEAR
             // local directories do not have arrays as entry
             $remote_path_new = $remote_path.$dir_entry."/";
             $local_path_new  = $local_path.$dir_entry."/";
-            $result          = $this->putRecursive($local_path_new,
-                               $remote_path_new, $overwrite, $mode);
-            if ($this->isError($result)) {
-                return $result;
+
+            // Check whether the directory should be excluded
+            if (!in_array($local_path_new, $excluded_paths)) {
+                $result          = $this->putRecursive($local_path_new,
+                                   $remote_path_new, $overwrite, $mode,
+                                   $excluded_paths);
+                if ($this->isError($result)) {
+                    return $result;
+                }
             }
         }
 
         foreach ($dir_list["files"] as $file_entry) {
             $remote_file = $remote_path.$file_entry;
             $local_file  = $local_path.$file_entry;
-            $result      = $this->put($local_file, $remote_file, $overwrite, $mode);
-            if ($this->isError($result)) {
-                return $result;
+
+            // Check whether the file should be excluded
+            if (!in_array($local_file, $excluded_paths)) {
+                $result = $this->put($local_file, $remote_file, $overwrite, $mode);
+                if ($this->isError($result)) {
+                    return $result;
+                }
             }
         }
         return true;
@@ -1716,6 +1770,22 @@ class Net_FTP extends PEAR
                              NET_FTP_ERR_PORTLESSZERO);
         }
         $this->_port = $port;
+        return true;
+    }
+
+    /**
+     * Set to connect through secure SSL connection
+     *
+     * @access public
+     * @return bool True on success, otherwise PEAR::Error
+     */
+    function setSsl()
+    {
+        if (!function_exists('ftp_ssl_connect')) {
+            return PEAR::raiseError('SSL connection not supported. Function ftp_ssl_connect does not exist.',
+                   NET_FTP_ERR_NOSSL);
+        }
+        $this->_ssl = true;
         return true;
     }
 
@@ -1954,6 +2024,17 @@ class Net_FTP extends PEAR
     }
 
     /**
+     * Returns whether to connect through secure SSL connection
+     *
+     * @access public
+     * @return bool True if with SSL, false if without SSL
+     */
+    function getSsl()
+    {
+        return $this->_ssl;
+    }
+
+    /**
      * Returns the username
      *
      * @access public
@@ -2183,7 +2264,7 @@ class Net_FTP extends PEAR
         }
         $res = $this->cd($path);
         $this->cd($pwd);
-        
+
         return $this->isError($res, NET_FTP_ERR_DIRCHANGE_FAILED) === false; 
     }
 
@@ -2259,6 +2340,10 @@ class Net_FTP extends PEAR
                                      NET_FTP_ERR_REMOTEPATHNODIR);
         }
         $file_list = $this->_lsFiles($dir);
+        if (PEAR::isError($file_list)) {
+            return $file_list;
+        }
+        
         foreach ($file_list as $file) {
             $file = $dir.$file["name"];
             $res  = $this->rm($file);
@@ -2266,7 +2351,12 @@ class Net_FTP extends PEAR
                 return $res;
             }
         }
+        
         $dir_list = $this->_lsDirs($dir);
+        if (PEAR::isError($dir_list)) {
+            return $dir_list;
+        }
+        
         foreach ($dir_list as $new_dir) {
             if ($new_dir["name"] == '.' || $new_dir["name"] == '..') {
                 continue;
