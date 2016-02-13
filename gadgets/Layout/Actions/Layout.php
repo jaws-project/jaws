@@ -89,10 +89,14 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $fakeLayout->AddScriptLink('gadgets/Layout/Resources/script.js');
 
         $layoutContent = $fakeLayout->_Template->Blocks['layout']->Content;
+        // remove script tag
+        $layoutContent = preg_replace('@<script[^>]*>.*</script>@sim', '', $layoutContent);
+
         $layoutContent = preg_replace(
             '$<body([^>]*)>$i',
             '<body\1>' . $working_box . $msg_box . $this->LayoutBar($theme, $theme_locality, $user, $index_layout),
-            $layoutContent);
+            $layoutContent
+        );
         $layoutContent = preg_replace('$</body([^>]*)>$i', $dragdrop . '</body\1>', $layoutContent);
         $fakeLayout->_Template->Blocks['layout']->Content = $layoutContent;
 
@@ -193,7 +197,9 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
             $fakeLayout->_Template->SetVariable(
                 'ELEMENT', '<div id="layout_'.$name.'" class="layout-section" title="'.
-                $name.'">'.$js_section_array.$t_item->Get().'</div>');
+                $name.'">'.$js_section_array.$t_item->Get().'</div>'.
+                '<div class="layout-section-controls"></div>'
+            );
 
             $fakeLayout->_Template->ParseBlock('layout/'.$name);
             $t_item->Blocks['item']->Parsed = '';
