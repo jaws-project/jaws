@@ -721,7 +721,7 @@ class Net_FTP extends PEAR
         $this->_ls_match = array(
             'unix'    => array(
                 'pattern' => '/(?:(d)|.)([rwxts-]{9})\s+(\w+)\s+([\w\d-()?.]+)\s+'.
-                             '([\w\d-()?.]+)\s+(\w+)\s+(\S+\s+\S+\s+\S+)\s+(.+)/',
+                             '([\w\d-()?.]+)\s+(\w+)\s+(\S+\s+\S+\s+\S+)\s+(.+)/i',
                 'map'     => array(
                     'is_dir'        => 1,
                     'rights'        => 2,
