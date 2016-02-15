@@ -144,7 +144,7 @@ overflow-y:auto;
 margin:5px 0;
 }
 
-#filelink img {vertical-align:middle; margin:0 5px;}
+#file_link img {vertical-align:middle; margin:0 5px;}
 #frm_file th, #frm_upload th {width:75px;}
 #ifrm_upload {display:none;}
 

@@ -5,11 +5,11 @@
       <tr><th>{{lbl_title}}:</th><td>{{title}}</td></tr>
       <tr><th>{{lbl_desc}}:</th><td>{{desc}}</td></tr>
       <tr><th>{{lbl_filename}}:</th><td>{{user_filename}}</td></tr>
-      <tr><th>{{lbl_type}}:</th><td title="{{filetype}}">{{type}}</td></tr>
-      <tr><th>{{lbl_size}}:</th><td class="file-size">{{size}} ({{filesize}} {{lbl_bytes}})</td></tr>
+      <tr><th>{{lbl_type}}:</th><td title="{{mime_type}}">{{type}}</td></tr>
+      <tr><th>{{lbl_size}}:</th><td class="file-size">{{size}} ({{file_size}} {{lbl_bytes}})</td></tr>
       <tr><th>{{lbl_hidden}}:</th><td>{{hidden}}</td></tr>
-      <tr><th>{{lbl_created}}:</th><td title="{{createtime}}">{{created}}</td></tr>
-      <tr><th>{{lbl_modified}}:</th><td title="{{updatetime}}">{{modified}}</td></tr>
+      <tr><th>{{lbl_created}}:</th><td title="{{create_time}}">{{created}}</td></tr>
+      <tr><th>{{lbl_modified}}:</th><td title="{{update_time}}">{{modified}}</td></tr>
       <tr><th>{{lbl_tags}}:</th><td>{{tags}}</td></tr>
       <tr><th>{{lbl_url}}:</th><td><a href="{{link}}">{{link}}</a></td></tr>
     </table>
@@ -37,10 +37,11 @@
     <input type="hidden" name="parent" id="parent" value="0" />
     <input type="hidden" name="user_filename" id="user_filename" />
     <input type="hidden" name="host_filename" id="host_filename" />
-    <input type="hidden" name="filetype" id="filetype" />
-    <input type="hidden" name="filesize" id="filesize" />
+    <input type="hidden" name="mime_type" id="mime_type" />
+    <input type="hidden" name="file_size" id="file_size" />
+    <input type="hidden" name="file_type" id="file_type" />
     <table>
-      <tr id="tr_file"><th>{{lbl_file}}:</th><td id="filelink"></td></tr>
+      <tr id="tr_file"><th>{{lbl_file}}:</th><td id="file_link"></td></tr>
       <tr><th>{{lbl_title}}:</th><td><input name="title" /></td></tr>
       <tr><th>{{lbl_desc}}:</th><td>{{description}}</td></tr>
       <tr><th>{{lbl_tags}}:</th><td><input name="tags" placeholder="tag1, tag2, ..." /></td></tr>

@@ -49,13 +49,20 @@
       </field>
 
       <field>
-        <name>filetype</name>
+        <name>mime_type</name>
         <type>text</type>
         <length>128</length>
       </field>
 
       <field>
-        <name>filesize</name>
+        <name>file_type</name>
+        <type>integer</type>
+        <length>1</length>
+        <description>0:unknown 1:text 2:image 3:audio 4:video 5:archive</description>
+      </field>
+
+      <field>
+        <name>file_size</name>
         <type>integer</type>
         <length>8</length>
       </field>
@@ -78,13 +85,13 @@
       </field>
 
       <field>
-        <name>createtime</name>
+        <name>create_time</name>
         <type>integer</type>
         <length>8</length>
       </field>
 
       <field>
-        <name>updatetime</name>
+        <name>update_time</name>
         <type>integer</type>
         <length>8</length>
       </field>

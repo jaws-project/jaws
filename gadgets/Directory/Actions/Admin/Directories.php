@@ -41,8 +41,8 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             $tpl->SetVariable('desc', '{description}');
             $tpl->SetVariable('type', '{type}');
             $tpl->SetVariable('hidden', '{hidden}');
-            $tpl->SetVariable('createtime', '{createtime}');
-            $tpl->SetVariable('updatetime', '{updatetime}');
+            $tpl->SetVariable('create_time', '{create_time}');
+            $tpl->SetVariable('update_time', '{update_time}');
             $tpl->SetVariable('created', '{created}');
             $tpl->SetVariable('modified', '{modified}');
         }
@@ -118,7 +118,7 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             }
 
             // Update directory
-            $data['updatetime'] = time();
+            $data['update_time'] = time();
             $data['hidden'] = $data['hidden']? true : false;
             $result = $model->Update($id, $data);
             if (Jaws_Error::IsError($result)) {

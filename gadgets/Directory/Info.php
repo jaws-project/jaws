@@ -10,6 +10,13 @@
  */
 class Directory_Info extends Jaws_Gadget
 {
+    const FILE_TYPE_UNKNOWN = 0;
+    const FILE_TYPE_TEXT    = 1;
+    const FILE_TYPE_IMAGE   = 2;
+    const FILE_TYPE_AUDIO   = 3;
+    const FILE_TYPE_VIDEO   = 4;
+    const FILE_TYPE_ARCHIVE = 5;
+
     /**
      * Default ACL value of frontend gadget access
      *

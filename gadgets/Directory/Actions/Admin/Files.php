@@ -11,6 +11,32 @@
 class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
 {
     /**
+     * Determines file type according to the file extension
+     */
+    function getFileType($filename)
+    {
+        $fileExt = pathinfo($filename, PATHINFO_EXTENSION);
+        if (empty($fileExt)) {
+            return Directory_Info::FILE_TYPE_UNKNOWN;
+        }
+        $FileTypes = array(
+            Directory_Info::FILE_TYPE_TEXT    => array('txt', 'doc', 'xml', 'html', 'htm', 'css', 'js', 'php', 'sh'),
+            Directory_Info::FILE_TYPE_IMAGE   => array('gif', 'png', 'jpg', 'jpeg', 'raw', 'bmp', 'tiff', 'svg'),
+            Directory_Info::FILE_TYPE_AUDIO   => array('wav', 'mp3', 'm4v', 'ogg'),
+            Directory_Info::FILE_TYPE_VIDEO   => array('mpg', 'mpeg', 'avi', 'wma', 'rm', 'asf', 'flv', 'mov', 'mp4'),
+            Directory_Info::FILE_TYPE_ARCHIVE => array('zip', 'rar', 'tar', 'gz', 'tgz', 'bz2', '7z', '7zip')
+        );
+        foreach ($FileTypes as $type => $exts) {
+            foreach ($exts as $ext) {
+                if ($fileExt == $ext) {
+                    return $type;
+                }
+            }
+        }
+        return Directory_Info::FILE_TYPE_UNKNOWN;
+    }
+
+    /**
      * Builds the file management form
      *
      * @access  public
@@ -47,16 +73,16 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             $tpl->SetVariable('user_filename', '{user_filename}');
             $tpl->SetVariable('hidden', '{hidden}');
             $tpl->SetVariable('type', '{type}');
-            $tpl->SetVariable('filetype', '{filetype}');
+            $tpl->SetVariable('mime_type', '{mime_type}');
             $tpl->SetVariable('size', '{size}');
-            $tpl->SetVariable('filesize', '{filesize}');
+            $tpl->SetVariable('file_size', '{file_size}');
             $tpl->SetVariable('link', '{link}');
-            $tpl->SetVariable('createtime', '{createtime}');
-            $tpl->SetVariable('updatetime', '{updatetime}');
+            $tpl->SetVariable('create_time', '{create_time}');
+            $tpl->SetVariable('update_time', '{update_time}');
             $tpl->SetVariable('created', '{created}');
             $tpl->SetVariable('modified', '{modified}');
         }
-        
+
         $tpl->ParseBlock($mode);
         return $tpl->Get();
     }
@@ -72,7 +98,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         try {
             $data = jaws()->request->fetch(
                 array('title', 'description', 'parent', 'hidden',
-                    'user_filename', 'host_filename', 'filetype', 'filesize')
+                    'user_filename', 'host_filename', 'mime_type', 'file_size')
             );
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
@@ -106,8 +132,8 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             } else if ($res !== false) {
                 $data['host_filename'] = $res['file'][0]['host_filename'];
                 $data['user_filename'] = $res['file'][0]['user_filename'];
-                $data['filetype'] = $res['file'][0]['host_filetype'];
-                $data['filesize'] = $res['file'][0]['host_filesize'];
+                $data['mime_type'] = $res['file'][0]['host_filetype'];
+                $data['file_size'] = $res['file'][0]['host_filesize'];
             } else { // file has been uploaded before
                 if (empty($data['host_filename'])) {
                     throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
@@ -129,6 +155,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             // Insert record
             unset($data['filename']);
             $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $data['file_type'] = $this->getFileType($data['user_filename']);
             $id = $model->Insert($data);
             if (Jaws_Error::IsError($id)) {
                 // TODO: delete uploaded file
@@ -163,7 +190,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             // Validate data
             $data = jaws()->request->fetch(
                 array('id', 'title', 'description', 'parent', 'hidden',
-                    'user_filename', 'host_filename', 'filetype', 'filesize')
+                    'user_filename', 'host_filename', 'mime_type', 'file_size')
             );
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
@@ -193,8 +220,8 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             } else if ($res !== false) {
                 $data['host_filename'] = $res['file'][0]['host_filename'];
                 $data['user_filename'] = $res['file'][0]['user_filename'];
-                $data['filetype'] = $res['file'][0]['host_filetype'];
-                $data['filesize'] = $res['file'][0]['host_filesize'];
+                $data['mime_type'] = $res['file'][0]['host_filetype'];
+                $data['file_size'] = $res['file'][0]['host_filesize'];
             } else {
                 if ($data['host_filename'] === ':nochange:') {
                     unset($data['host_filename']);
@@ -217,8 +244,9 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
 
             // Update file in database
             unset($data['user']);
-            $data['updatetime'] = time();
+            $data['update_time'] = time();
             $data['hidden'] = $data['hidden']? true : false;
+            $data['file_type'] = $this->getFileType($data['user_filename']);
             $model = $this->gadget->model->loadAdmin('Files');
             $res = $model->Update($id, $data);
             if (Jaws_Error::IsError($res)) {
@@ -312,8 +340,8 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             $response = array('type' => 'notice',
                               'user_filename' => $res['file'][0]['user_filename'],
                               'host_filename' => $res['file'][0]['host_filename'],
-                              'filetype' => $res['file'][0]['host_filetype'],
-                              'filesize' => $res['file'][0]['host_filesize']);
+                              'mime_type' => $res['file'][0]['host_filetype'],
+                              'file_size' => $res['file'][0]['host_filesize']);
         }
 
         $response = Jaws_UTF8::json_encode($response);

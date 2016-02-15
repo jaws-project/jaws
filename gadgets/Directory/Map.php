@@ -10,10 +10,11 @@
  */
 $maps[] = array(
     'Directory',
-    'directory[/{id}][/page/{page}][/order/{order}]',
+    'directory[/{id}][/type/{type}][/page/{page}][/order/{order}]',
     array(
         'id' => '[[:digit:]]+',
         'page' => '[[:digit:]]+',
+        'type' => '[[:digit:],]+',
         'order' => '[[:alnum:]]+',
     )
 );

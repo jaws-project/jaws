@@ -15,6 +15,7 @@
 $actions['Directory'] = array(
     'normal' => true,
     'layout' => true,
+    'parametric' => true,
     'file' => 'Directory'
 );
 $actions['Pagination'] = array(
