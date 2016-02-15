@@ -177,7 +177,7 @@ class Jaws_FTP
     }
 
     /**
-     * Show's you the actual path on the server
+     * Shows you the actual path on the server
      *
      * @access  public
      * @return  mixed        The actual path or Jaws_Error
@@ -370,8 +370,9 @@ class Jaws_FTP
                     if (Jaws_Error::IsError($result)) {
                         return $result;
                     }
+
+                    $this->cd(basename($source));
                 }
-                $this->cd(basename($source));
 
                 while(false !== ($file = @readdir($hDir))) {
                     if($file == '.' || $file == '..') {
