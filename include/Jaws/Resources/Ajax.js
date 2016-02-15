@@ -65,7 +65,7 @@ function JawsAjax(gadget, callback, baseScript)
 {
     this.gadget = gadget;
     this.callback = callback;
-    this.loadingMessage = '...';
+    this.loadingMessage = '';
     var reqValues = $('meta[name=application-name]').attr('content').split(':');
     this.mainRequest = {'base': reqValues[0], 'gadget': reqValues[1], 'action': reqValues[2]};
     this.baseScript  = (baseScript === undefined)? this.mainRequest['base'] : baseScript;
@@ -178,7 +178,12 @@ function JawsAjax(gadget, callback, baseScript)
     this.showLoading = function (show) {
         if ($(this.msgBox)) {
             if (show) {
-                $(this.msgBox).html(this.loadingMessage).attr('class', 'response_loading');
+                if (this.loadingMessage) {
+                    loadingMessage = this.loadingMessage;
+                } else {
+                    loadingMessage = default_loading_message === undefined? '...' : default_loading_message;
+                }
+                $(this.msgBox).html(loadingMessage).attr('class', 'response_loading');
                 $(this.msgBox).fadeIn();
             } else {
                 $(this.msgBox).removeClass();
