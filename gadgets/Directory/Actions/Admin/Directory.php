@@ -57,6 +57,21 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('lbl_move', _t('DIRECTORY_MOVE'));
         $tpl->SetVariable('lbl_dl', _t('DIRECTORY_DOWNLOAD'));
+        $tpl->SetVariable('lbl_folder', _t('DIRECTORY_FILE_TYPE_FOLDER'));
+        $tpl->SetVariable('lbl_text', _t('DIRECTORY_FILE_TYPE_TEXT'));
+        $tpl->SetVariable('lbl_image', _t('DIRECTORY_FILE_TYPE_IMAGE'));
+        $tpl->SetVariable('lbl_audio', _t('DIRECTORY_FILE_TYPE_AUDIO'));
+        $tpl->SetVariable('lbl_video', _t('DIRECTORY_FILE_TYPE_VIDEO'));
+        $tpl->SetVariable('lbl_archive', _t('DIRECTORY_FILE_TYPE_ARCHIVE'));
+        $tpl->SetVariable('lbl_other', _t('DIRECTORY_FILE_TYPE_OTHER'));
+
+        $tpl->SetVariable('type_folder', -1);
+        $tpl->SetVariable('type_text', Directory_Info::FILE_TYPE_TEXT);
+        $tpl->SetVariable('type_image', Directory_Info::FILE_TYPE_IMAGE);
+        $tpl->SetVariable('type_audio', Directory_Info::FILE_TYPE_AUDIO);
+        $tpl->SetVariable('type_video', Directory_Info::FILE_TYPE_VIDEO);
+        $tpl->SetVariable('type_archive', Directory_Info::FILE_TYPE_ARCHIVE);
+        $tpl->SetVariable('type_other', Directory_Info::FILE_TYPE_UNKNOWN);
 
         $tpl->SetVariable('img_new_dir', STOCK_DIRECTORY_NEW);
         $tpl->SetVariable('img_new_file', STOCK_NEW);
@@ -438,8 +453,14 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $params = array();
         $params['parent'] = $data['id'];
         $params['query'] = $data['file_search'];
-        $params['type'] = empty($data['file_type'])? null : $data['file_type'];
-        $params['size'] = ($data['file_size'] == '0')? null : explode(',', $data['file_size']);
+        if ($data['file_type'] !== '') {
+            if ($data['file_type'] == '-1') {
+                $params['is_dir'] = true;
+            } else {
+                $params['file_type'] = $data['file_type'];
+            }
+        }
+        $params['file_size'] = ($data['file_size'] == '0')? null : explode(',', $data['file_size']);
         $params['date'] = $date;
         $files = $model->GetFiles($params);
         if (Jaws_Error::IsError($files)){

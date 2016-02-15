@@ -85,18 +85,6 @@ function initDirectory()
     imgDeleteFile = imgDeleteFileObj;
     fileTemplate = $('#file_arena').html();
 
-    // Builds icons map (ext => icon)
-    for (var type in fileTypes) {
-        if (fileTypes.hasOwnProperty(type)) {
-            fileTypes[type].forEach(function (ext) {
-                if (!iconByExt[ext]) {
-                    iconByExt[ext] = type;
-                }
-            });
-        }
-    }
-    iconByExt.folder = 'folder';
-
     $('#frm_search select, #file_search').change(performSearch);
     $('#start_date, #end_date').on('keypress', performSearch);
 
@@ -143,7 +131,7 @@ function displayFiles(files)
     files.forEach(function (file) {
         file.ext = file.is_dir? 'folder' : file.host_filename.split('.').pop();
         file.type = file.mime_type || '-';
-        file.icon = '<img src="' + icon_url + (iconByExt[file.ext] || 'file-generic') + '.png" />';
+        file.icon = '<img src="' + icon_url + (FileIcons[file.file_type] || 'file-generic') + '.png" />';
         file.size = formatSize(file.file_size, 0);
         if (!file.is_dir) {
             file.url = 'javascript:fileOpen(' + file.id + ');';
@@ -568,8 +556,8 @@ function setFilename(filename, url)
     if (url !== '') {
         link.attr('href', url);
     }
-    $('#filelink').append(link);
-    //$('#filelink').append(imgDeleteFile);
+    $('#file_link').append(link);
+    //$('#file_link').append(imgDeleteFile);
     $('#tr_file').show();
     $('#frm_upload').hide();
 }
@@ -580,7 +568,7 @@ function setFilename(filename, url)
 function removeFile()
 {
     $('#filename').val('');
-    $('#filelink').html('');
+    $('#file_link').html('');
     $('#frm_upload').reset();
     $('#tr_file').hide();
     $('#frm_upload').show();
@@ -678,7 +666,6 @@ function substitute(str, sub) {
 
 var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
     fileById = {},
-    iconByExt = {},
     usersByGroup = {},
     cachedForms = {},
     filesCount = 0,
@@ -687,30 +674,12 @@ var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
     wsClickEvent = null,
     idSet = [];
 
-var fileTypes = {
-    'font-generic' : ['ttf', 'otf', 'fon', 'pfa', 'afm', 'pfb'],
-    'audio-generic' : ['mp3', 'wav', 'aac', 'flac', 'ogg', 'wma', 'cda', 'voc', 'midi', 'ac3', 'bonk', 'mod'],
-    'image-generic' : ['gif', 'png', 'jpg', 'jpeg', 'raw', 'bmp', 'tiff', 'svg'],
-    'package-generic' : ['tar', 'tar.gz', 'tgz', 'zip', 'gzip', 'rar', 'rpm', 'deb', 'iso', 'bz2', 'bak', 'gz'],
-    'video-generic' : ['mpg', 'mpeg', 'avi', 'wma', 'rm', 'asf', 'flv', 'mov', 'mp4'],
-    'help-contents' : ['hlp', 'chm', 'manual', 'man'],
-    'text-generic' : ['txt', ''],
-    'text-html' : ['html', 'htm', 'mht'],
-    'text-java' : ['jsp', 'java', 'jar'],
-    'text-python' : ['py'],
-    'text-script' : ['sh', 'pl', 'asp', 'c', 'css', 'htaccess'],
-    'office-document-template' : ['stw', 'ott'],
-    'office-document' : ['doc', 'docx', 'sxw', 'odt', 'rtf', 'sdw'],
-    'office-presentation-template' : ['pot', 'otp', 'sti'],
-    'office-presentation' : ['ppt', 'odp', 'sxi'],
-    'office-spreadsheet-template' : ['xlt', 'ots', 'stc'],
-    'office-spreadsheet' : ['xls', 'ods', 'sxc', 'sdc'],
-    'office-drawing-template' : [],
-    'office-drawing' : ['sxd', 'sda', 'sdd', 'odg'],
-    'application-executable' : ['exe'],
-    'application-php' : ['php', 'phps'],
-    'application-rss+xml' : ['xml', 'rss', 'atom', 'rdf'],
-    'application-pdf' : ['pdf'],
-    'application-flash' : ['swf'],
-    'application-ruby' : ['rb']
-};
+var FileIcons = {
+    null : 'folder',
+    0 : 'file-generic',
+    1 : 'text-generic',
+    2 : 'image-generic',
+    3 : 'audio-generic',
+    4 : 'video-generic',
+    5 : 'package-generic'
+}

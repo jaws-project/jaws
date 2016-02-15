@@ -36,10 +36,13 @@
         <td>
           <select name="file_type">
             <option value=""></option>
-            <option value="text">text</option>
-            <option value="image">image</option>
-            <option value="image">video</option>
-            <option value="image">application</option>
+            <option value="{{type_folder}}">{{lbl_folder}}</option>
+            <option value="{{type_text}}">{{lbl_text}}</option>
+            <option value="{{type_image}}">{{lbl_image}}</option>
+            <option value="{{type_audio}}">{{lbl_audio}}</option>
+            <option value="{{type_video}}">{{lbl_video}}</option>
+            <option value="{{type_archive}}">{{lbl_archive}}</option>
+            <option value="{{type_other}}">{{lbl_other}}</option>
           </select>
         </td>
         <th>{{lbl_start_date}}:</th><td>{{start_date}}</td>

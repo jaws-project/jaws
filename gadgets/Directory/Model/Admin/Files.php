@@ -24,8 +24,8 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
             $table->select('count(id):integer');
         } else {
             $table->select('id', 'parent', 'user', 'is_dir:boolean', 'hidden:boolean',
-                'title', 'description', 'user_filename', 'host_filename', 'mime_type', 'file_size',
-                'hits', 'create_time', 'update_time');
+                'title', 'description', 'user_filename', 'host_filename', 'mime_type',
+                'file_type', 'file_size', 'hits', 'create_time', 'update_time');
         }
 
         if (isset($params['parent'])) {
@@ -40,16 +40,16 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
             $table->where('is_dir', $params['is_dir'])->and();
         }
 
-        if (isset($params['type'])) {
-            $table->where('mime_type', '%' . $params['type'] . '%', 'like')->and();
+        if (isset($params['file_type'])) {
+            $table->where('file_type', $params['file_type'])->and();
         }
 
-        if (isset($params['size'])) {
+        if (isset($params['file_size'])) {
             if (!empty($params['size'][0])) {
-                $table->where('file_size', $params['size'][0] * 1024, '>=')->and();
+                $table->where('file_size', $params['file_size'][0] * 1024, '>=')->and();
             }
             if (!empty($params['size'][1])) {
-                $table->where('file_size', $params['size'][1] * 1024, '<=')->and();
+                $table->where('file_size', $params['file_size'][1] * 1024, '<=')->and();
             }
         }
 
@@ -88,7 +88,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('directory');
         $table->select('id', 'parent', 'user', 'title', 'description',
-            'host_filename', 'user_filename', 'mime_type', 'file_size',
+            'host_filename', 'user_filename', 'mime_type', 'file_type', 'file_size',
             'is_dir:boolean', 'hidden:boolean', 'create_time', 'update_time');
         return $table->where('id', $id)->fetchRow();
     }

@@ -11,19 +11,39 @@
 class Directory_Actions_Directory extends Jaws_Gadget_Action
 {
     /**
+     * Get Display action params
+     *
+     * @access  public
+     * @return  array list of Display action params
+     */
+    function DirectoryLayoutParams()
+    {
+        $types = array(
+            -1 => _t('DIRECTORY_FILE_TYPE_ALL'),
+            Directory_Info::FILE_TYPE_TEXT    => _t('DIRECTORY_FILE_TYPE_TEXT'),
+            Directory_Info::FILE_TYPE_IMAGE   => _t('DIRECTORY_FILE_TYPE_IMAGE'),
+            Directory_Info::FILE_TYPE_AUDIO   => _t('DIRECTORY_FILE_TYPE_AUDIO'),
+            Directory_Info::FILE_TYPE_VIDEO   => _t('DIRECTORY_FILE_TYPE_VIDEO'),
+            Directory_Info::FILE_TYPE_ARCHIVE => _t('DIRECTORY_FILE_TYPE_ARCHIVE'),
+        );
+        return array(array('title' => _t('DIRECTORY_FILE_TYPE'), 'value' => $types));
+    }
+
+    /**
      * Builds directory and file navigation UI
      *
+     * @param   int     $type   File type (for normal action = null)
      * @access  public
      * @return  string  XHTML UI
      */
-    function Directory()
+    function Directory($type = null)
     {
         $tpl = $this->gadget->template->load('Directory.html');
         $tpl->SetBlock('directory');
 
-        $id = (int)jaws()->request->fetch('id');
+        $id = ($type == null)? (int)jaws()->request->fetch('id') : 0;
         if ($id == 0) {
-            $tpl->SetVariable('content', $this->ListFiles());
+            $tpl->SetVariable('content', $this->ListFiles(0, $type));
         } else {
             $model = $this->gadget->model->loadAdmin('Files');
             $file = $model->GetFile($id);
@@ -32,7 +52,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
                 return Jaws_HTTPError::Get(404);
             }
             if ($file['is_dir']) {
-                $tpl->SetVariable('content', $this->ListFiles($id));
+                $tpl->SetVariable('content', $this->ListFiles($id, $type));
             } else {
                 $tpl->SetVariable('content', $this->ViewFile($file));
             }
@@ -51,10 +71,22 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      * @access  public
      * @return  string  HTML content
      */
-    function ListFiles($parent = 0)
+    function ListFiles($parent = 0, $type = null)
     {
-        $params = jaws()->request->fetch(array('page'), 'get');
-        $page = (int)$params['page'];
+        $isLayoutAction = false;
+        if ($type == null) { // normal action
+            $params = jaws()->request->fetch(array('type', 'page'), 'get');
+            $page = (int)$params['page'];
+            if ($params['type'] !== '') {
+                $params['file_type'] = $params['type'];
+            }
+            unset($params['type']);
+        } else {
+            $isLayoutAction = true;
+            $page = 0;
+            $params = array();
+            $params['file_type'] = ($type == -1)? null : $type;
+        }
         $params['limit'] = (int)$this->gadget->registry->fetch('items_per_page');
         $params['offset'] = ($page == 0)? 0 : $params['limit'] * ($page - 1);
         $params['parent'] = $parent;
@@ -81,9 +113,16 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         $tpl->SetVariable('site_url', $GLOBALS['app']->getSiteURL('/'));
         $theme = $GLOBALS['app']->GetTheme();
-        $iconUrl = is_dir($theme['url'] . 'mimetypes')?
-            $theme['url'] . 'mimetypes/' : 'images/mimetypes/';
-
+        $iconUrl = is_dir($theme['url'] . 'mimetypes')? $theme['url'] . 'mimetypes/' : 'images/mimetypes/';
+        $icons = array(
+            null => 'folder',
+            0 => 'file-generic',
+            1 => 'text-generic',
+            2 => 'image-generic',
+            3 => 'audio-generic',
+            4 => 'video-generic',
+            5 => 'package-generic'
+        );
         $objDate = Jaws_Date::getInstance();
         foreach ($files as $file) {
             $url = $this->gadget->urlMap('Directory', array('id' => $file['id']));
@@ -94,20 +133,12 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('size', Jaws_Utils::FormatSize($file['file_size']));
             $tpl->SetVariable('created', $objDate->Format($file['create_time'], 'n/j/Y g:i a'));
             $tpl->SetVariable('modified', $objDate->Format($file['update_time'], 'n/j/Y g:i a'));
-            if ($file['is_dir']) {
-                $tpl->SetVariable('icon', $iconUrl . 'folder.png');
-            } else {
-//                if (!empty($file['mime_type'])) {
-//                    $tpl->SetVariable('icon', $iconUrl . $file['mime_type'] . '.png');
-//                } else {
-                    $tpl->SetVariable('icon', $iconUrl . 'file-generic.png');
-//                }
-            }
+            $tpl->SetVariable('icon', $iconUrl . $icons[$file['file_type']] . '.png');
             $tpl->ParseBlock('files/file');
         }
 
         // Pagination
-        if ($tpl->VariableExists('pagination') && $params['limit'] > 0) {
+        if (!$isLayoutAction && $tpl->VariableExists('pagination') && $params['limit'] > 0) {
             $action = $this->gadget->action->load('Pagination');
             $args = array();
             if ($parent > 0) {
