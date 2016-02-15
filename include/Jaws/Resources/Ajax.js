@@ -103,7 +103,6 @@ function JawsAjax(gadget, callback, baseScript)
         options.success = this.onSuccess.bind(this, options);
         options.error = this.onError.bind(this, options);
         options.complete = this.onComplete.bind(this, options);
-        
         $.ajax(options);
     };
 
@@ -130,22 +129,12 @@ function JawsAjax(gadget, callback, baseScript)
     };
 
     this.onSend = function () {
-        // TODO: start loading..
+        // start show loading indicator
+        this.showLoading(true);
     };
 
     this.onSuccess = function (reqOptions, data, textStatus, jqXHR) {
-        response = eval('(' + jqXHR.responseText + ')');
-        // call inline user define function
-        if (reqOptions.done) {
-            reqOptions.done(response);
-        }
-
-        if (this.callback) {
-            var reqMethod = this.callback[reqOptions.action];
-            if (reqMethod) {
-                reqMethod(response);
-            }
-        }
+        // ----
     };
 
     this.onError = function (reqOptions, jqXHR, textStatus, errorThrown) {
@@ -153,23 +142,42 @@ function JawsAjax(gadget, callback, baseScript)
     };
 
     this.onComplete = function (reqOptions, jqXHR, textStatus) {
-        // TODO: stop loading..
+        // hide loading
+        this.showLoading(false);
+
+        response = eval('(' + jqXHR.responseText + ')');
+        // call inline user define function
+        if (reqOptions.done) {
+            reqOptions.done(response, jqXHR.status);
+        }
+
+        if (this.callback) {
+            var reqMethod = this.callback[reqOptions.action];
+            if (reqMethod) {
+                reqMethod(response, jqXHR.status);
+            }
+        }
     };
 
+    /*
+     * show response message
+     */
     this.showResponse = function (response) {
         if (Array.isArray(response)) {
             // only show first response
             response = response[0];
         }
-        $(this.msgBox).parent().css({'position': 'absolute', 'display': 'block'});
+
         $(this.msgBox).html(response.text).attr('class', response.type);
         $(this.msgBox).fadeIn().delay(4000).fadeOut(1000, function() {$(this).removeClass();});
     };
 
+    /*
+     * show loading indicator
+     */
     this.showLoading = function (show) {
         if ($(this.msgBox)) {
             if (show) {
-                $(this.msgBox).parent().css({'position': 'absolute', 'display': 'block'});
                 $(this.msgBox).html(this.loadingMessage).attr('class', 'response_loading');
                 $(this.msgBox).fadeIn();
             } else {
