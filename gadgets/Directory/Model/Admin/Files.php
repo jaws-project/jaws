@@ -24,8 +24,8 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
             $table->select('count(id):integer');
         } else {
             $table->select('id', 'parent', 'user', 'is_dir:boolean', 'hidden:boolean',
-                'title', 'description', 'user_filename', 'host_filename', 'filetype', 'filesize',
-                'hits', 'createtime', 'updatetime');
+                'title', 'description', 'user_filename', 'host_filename', 'mime_type', 'file_size',
+                'hits', 'create_time', 'update_time');
         }
 
         if (isset($params['parent'])) {
@@ -41,24 +41,24 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
         }
 
         if (isset($params['type'])) {
-            $table->where('filetype', '%' . $params['type'] . '%', 'like')->and();
+            $table->where('mime_type', '%' . $params['type'] . '%', 'like')->and();
         }
 
         if (isset($params['size'])) {
             if (!empty($params['size'][0])) {
-                $table->where('filesize', $params['size'][0] * 1024, '>=')->and();
+                $table->where('file_size', $params['size'][0] * 1024, '>=')->and();
             }
             if (!empty($params['size'][1])) {
-                $table->where('filesize', $params['size'][1] * 1024, '<=')->and();
+                $table->where('file_size', $params['size'][1] * 1024, '<=')->and();
             }
         }
 
         if (isset($params['date'])){
             if (!empty($params['date'][0])) {
-                $table->where('createtime', $params['date'][0], '>=')->and();
+                $table->where('create_time', $params['date'][0], '>=')->and();
             }
             if (!empty($params['date'][1])) {
-                $table->where('createtime', $params['date'][1], '<=')->and();
+                $table->where('create_time', $params['date'][1], '<=')->and();
             }
         }
 
@@ -88,8 +88,8 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('directory');
         $table->select('id', 'parent', 'user', 'title', 'description',
-            'host_filename', 'user_filename', 'filetype', 'filesize',
-            'is_dir:boolean', 'hidden:boolean', 'createtime', 'updatetime');
+            'host_filename', 'user_filename', 'mime_type', 'file_size',
+            'is_dir:boolean', 'hidden:boolean', 'create_time', 'update_time');
         return $table->where('id', $id)->fetchRow();
     }
 
@@ -124,7 +124,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
      */
     function Insert($data)
     {
-        $data['createtime'] = $data['updatetime'] = time();
+        $data['create_time'] = $data['update_time'] = time();
         $table = Jaws_ORM::getInstance()->table('directory');
         return $table->insert($data)->exec();
     }

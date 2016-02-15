@@ -90,15 +90,15 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetBlock('files/file');
             $tpl->SetVariable('url', $url);
             $tpl->SetVariable('title', $file['title']);
-            $tpl->SetVariable('type', empty($file['filetype'])? '-' : $file['filetype']);
-            $tpl->SetVariable('size', Jaws_Utils::FormatSize($file['filesize']));
-            $tpl->SetVariable('created', $objDate->Format($file['createtime'], 'n/j/Y g:i a'));
-            $tpl->SetVariable('modified', $objDate->Format($file['updatetime'], 'n/j/Y g:i a'));
+            $tpl->SetVariable('type', empty($file['mime_type'])? '-' : $file['mime_type']);
+            $tpl->SetVariable('size', Jaws_Utils::FormatSize($file['file_size']));
+            $tpl->SetVariable('created', $objDate->Format($file['create_time'], 'n/j/Y g:i a'));
+            $tpl->SetVariable('modified', $objDate->Format($file['update_time'], 'n/j/Y g:i a'));
             if ($file['is_dir']) {
                 $tpl->SetVariable('icon', $iconUrl . 'folder.png');
             } else {
-//                if (!empty($file['filetype'])) {
-//                    $tpl->SetVariable('icon', $iconUrl . $file['filetype'] . '.png');
+//                if (!empty($file['mime_type'])) {
+//                    $tpl->SetVariable('icon', $iconUrl . $file['mime_type'] . '.png');
 //                } else {
                     $tpl->SetVariable('icon', $iconUrl . 'file-generic.png');
 //                }
@@ -142,10 +142,10 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_download', _t('DIRECTORY_DOWNLOAD'));
 
         $objDate = Jaws_Date::getInstance();
-        $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
-        $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
-        $file['type'] = empty($file['filetype'])? '-' : $file['filetype'];
-        $file['size'] = Jaws_Utils::FormatSize($file['filesize']);
+        $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
+        $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
+        $file['type'] = empty($file['mime_type'])? '-' : $file['mime_type'];
+        $file['size'] = Jaws_Utils::FormatSize($file['file_size']);
         $file['download'] = $this->gadget->urlMap('Download', array('id' => $file['id']));
         foreach ($file as $key => $value) {
             $tpl->SetVariable($key, $value);
@@ -279,7 +279,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
 
         // Stream file
-        if (!Jaws_Utils::Download($filename, $file['user_filename'], $file['filetype'])) {
+        if (!Jaws_Utils::Download($filename, $file['user_filename'], $file['mime_type'])) {
             return Jaws_HTTPError::Get(500);
         }
 

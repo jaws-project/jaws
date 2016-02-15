@@ -27,10 +27,10 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             $tpl->SetVariable('standalone', 'standalone');
             $tpl->SetVariable('currentAction', 'Browse');
             $tpl->SetVariable('home_url', BASE_SCRIPT . '?gadget=Directory&action=Browse');
-            
+
             $tpl->SetBlock('workspace/standalone');
             $tpl->ParseBlock('workspace/standalone');
-            
+
             $editor = $GLOBALS['app']->GetEditor();
             if ($editor === 'TinyMCE') {
             } elseif ($editor === 'CKEditor') {
@@ -163,8 +163,8 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             } else {
                 $file['link'] = $this->gadget->urlMap('Directory', array('id' => $file['id']), true);
             }
-            $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
-            $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
+            $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
+            $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
 
             // Fetch tags
             $file['tags'] = array();
@@ -193,8 +193,8 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             return array();
         }
         $objDate = Jaws_Date::getInstance();
-        $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
-        $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
+        $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
+        $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
 
         return $file;
     }
@@ -451,8 +451,8 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             if ($file['is_dir']) {
                 $file['url'] = BASE_SCRIPT . '?gadget=Directory&action=Directory&id=' . $file['id'];
             }
-            $file['created'] = $objDate->Format($file['createtime'], 'n/j/Y g:i a');
-            $file['modified'] = $objDate->Format($file['updatetime'], 'n/j/Y g:i a');
+            $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
+            $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
         }
 
         return $GLOBALS['app']->Session->GetResponse(

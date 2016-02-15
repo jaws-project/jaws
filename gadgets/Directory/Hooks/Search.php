@@ -31,7 +31,7 @@ class Directory_Hooks_Search extends Jaws_Gadget_Hook
     {
         $sql = '
             SELECT
-               [id], [title], [description], [user_filename], [updatetime]
+               [id], [title], [description], [user_filename], [update_time]
             FROM [[directory]]
             WHERE
                 [hidden] = {hidden}
@@ -56,8 +56,8 @@ class Directory_Hooks_Search extends Jaws_Gadget_Hook
             $file['url']     = $this->gadget->urlMap('Directory', array('id'  => $p['id']));
             $file['image']   = 'gadgets/Directory/Resources/images/logo.png';
             $file['snippet'] = $p['description'];
-            $file['date']    = $p['updatetime'];
-            $stamp           = $p['updatetime'];
+            $file['date']    = $p['update_time'];
+            $stamp           = $p['update_time'];
             $files[$stamp]   = $file;
         }
 

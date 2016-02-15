@@ -142,9 +142,9 @@ function displayFiles(files)
     filesCount = files.length;
     files.forEach(function (file) {
         file.ext = file.is_dir? 'folder' : file.host_filename.split('.').pop();
-        file.type = file.filetype || '-';
+        file.type = file.mime_type || '-';
         file.icon = '<img src="' + icon_url + (iconByExt[file.ext] || 'file-generic') + '.png" />';
-        file.size = formatSize(file.filesize, 0);
+        file.size = formatSize(file.file_size, 0);
         if (!file.is_dir) {
             file.url = 'javascript:fileOpen(' + file.id + ');';
         }
@@ -504,8 +504,8 @@ function editFile(id)
     var form = $('#frm_file')[0],
         file = fileById[id];
     form.parent.value = file.parent;
-    form.filetype.value = file.filetype;
-    form.filesize.value = file.filesize;
+    form.mime_type.value = file.mime_type;
+    form.file_size.value = file.file_size;
     form.user_filename.value = file.user_filename;
     form.host_filename.value = file.host_filename;
     if (file.user_filename) {
@@ -547,8 +547,8 @@ function onUpload(response) {
         setFilename(hostFilename, '');
         $('#user_filename').val(response.user_filename);
         $('#host_filename').val(hostFilename);
-        $('#filetype').val(response.filetype);
-        $('#filesize').val(response.filesize);
+        $('#mime_type').val(response.mime_type);
+        $('#file_size').val(response.file_size);
         if ($('#frm_file').find('[name=title]').val() === '') {
             $('#frm_file').find('[name=title]').val(response.user_filename.replace(/\.[^/.]+$/, ''));
         }
