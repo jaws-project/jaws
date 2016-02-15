@@ -41,7 +41,8 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
         }
 
         if (isset($params['file_type'])) {
-            $table->where('file_type', $params['file_type'])->and();
+            $types = explode(',', $params['file_type']);
+            $table->where('file_type', $types, 'in')->and();
         }
 
         if (isset($params['file_size'])) {

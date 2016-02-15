@@ -14,7 +14,7 @@ $maps[] = array(
     array(
         'id' => '[[:digit:]]+',
         'page' => '[[:digit:]]+',
-        'type' => '[[:digit:]]+',
+        'type' => '[[:digit:],]+',
         'order' => '[[:alnum:]]+',
     )
 );
