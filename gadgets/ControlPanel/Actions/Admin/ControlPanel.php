@@ -136,6 +136,8 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
 
         $last_checking = unserialize($this->gadget->registry->fetch('update_last_checking'));
         $do_checking = (time() - $last_checking['time']) > 86400;
+        // lesser do checking if need check
+        $do_checking = $do_checking && (mt_rand(1, 5) == mt_rand(1, 5));
         $tpl->SetBlock('versionbox');
         $tpl->SetVariable('do_checking', (int)$do_checking);
         $tpl->SetVariable('jaws_version', JAWS_VERSION);
