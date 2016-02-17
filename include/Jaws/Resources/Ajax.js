@@ -186,7 +186,7 @@ function JawsAjax(gadget, callback, baseScript)
                 $(this.msgBox).html(loadingMessage).attr('class', 'response_loading');
                 $(this.msgBox).fadeIn();
             } else {
-                $(this.msgBox).removeClass();
+                $(this.msgBox).fadeOut(0, function() {$(this).removeClass();});
             }
         }
     };
