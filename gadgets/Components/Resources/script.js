@@ -81,10 +81,10 @@ var ComponentsCallback = {
 
     UpdatePluginUsage: function (response) {
         if (response[0]['type'] == 'response_notice') {
-            usageCache = $('plugin_usage').clone(true, true);
+            usageCache = $('#plugin_usage').clone(true, true);
             if (regCache) {
                 regCache = null;
-                $('component_registry').remove();
+                $('#component_registry').remove();
             }
         }
         ComponentsAjax.showResponse(response);
@@ -93,10 +93,10 @@ var ComponentsCallback = {
     UpdateRegistry: function (response) {
         if (response[0]['type'] == 'response_notice') {
             regChanges = {};
-            regCache = $('component_registry').clone(true, true);
+            regCache = $('#component_registry').clone(true, true);
             if (usageCache) {
                 usageCache = null;
-                $('plugin_usage').remove();
+                $('#plugin_usage').remove();
             }
         }
         ComponentsAjax.showResponse(response);
@@ -105,7 +105,7 @@ var ComponentsCallback = {
     UpdateACL: function (response) {
         if (response[0]['type'] == 'response_notice') {
             aclChanges = {};
-            aclCache = $('component_acl').clone(true, true);
+            aclCache = $('#component_acl').clone(true, true);
         }
         ComponentsAjax.showResponse(response);
     }
@@ -414,6 +414,7 @@ function componentRegistry(reset)
     $('#summary').hide();
     $('#component').show();
     regEl.show();
+    regEl.next('.actions').show();
 }
 
 /**
@@ -425,8 +426,7 @@ function componentACL(reset)
         var table = $('<table>'),
             res = ComponentsAjax.callSync('GetACL', [selectedComponent, pluginsMode]),
             div = $('<div>').html(res.ui);
-        aclCache = div.first('div');
-        $('#component_form').append(div.first('div'));
+        $('#component_form').append(div.find('div'));
         $.each(res.acls, function(i, acl) {
             var key_unique = acl.key_name + ':' + acl.key_subkey,
                 label = $('<label>').html(acl.key_desc).attr('for', key_unique),
@@ -453,6 +453,7 @@ function componentACL(reset)
     $('#summary').hide();
     $('#component').show();
     aclEl.show();
+    aclEl.next('.actions').show();
 }
 
 /**
