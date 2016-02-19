@@ -349,7 +349,7 @@ function terminate(&$data = null, $status_code = 200, $next_location = '', $sync
                 $GLOBALS['app']->Session->update();
             }
 
-            echo Jaws_UTF8::json_encode($data);
+            echo json_encode($data);
             break;
 
         case 'gzip':
