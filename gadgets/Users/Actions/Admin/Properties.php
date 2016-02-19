@@ -35,7 +35,7 @@ class Users_Actions_Admin_Properties extends Users_Actions_Admin_Default
             $authtype->AddOption($method, $method);
         }
         $authtype->SetDefault($this->gadget->registry->fetch('authtype'));
-        $authtype->SetEnabled($this->gadget->CheckPermission('ManageAuthenticationMethod'));
+        $authtype->SetEnabled($this->gadget->GetPermission('ManageAuthenticationMethod'));
 
         $anonRegister =& Piwi::CreateWidget('Combo', 'anon_register');
         $anonRegister->SetTitle(_t('USERS_PROPERTIES_ANON_REGISTER'));
