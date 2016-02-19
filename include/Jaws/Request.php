@@ -153,7 +153,7 @@ class Jaws_Request
         // support json encoded posted data
         if (false !== strpos($_SERVER['CONTENT_TYPE'], 'application/json')) {
             $json = file_get_contents('php://input');
-            $this->data['post'] = Jaws_UTF8::json_decode($json);
+            $this->data['post'] = json_decode($json, true);
         } else {
             $this->data['post'] = $_POST;
         }
@@ -357,7 +357,7 @@ class Jaws_Request
         $type = strtok(':');
 
         if (isset($this->data[$method][$key])) {
-            $value = $json_decode? Jaws_UTF8::json_decode($this->data[$method][$key]) : $this->data[$method][$key];
+            $value = $json_decode? json_decode($this->data[$method][$key]) : $this->data[$method][$key];
             // try unserialize value
             if (false !== $tvalue = @unserialize($value)) {
                 $value = $tvalue;
