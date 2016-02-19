@@ -897,7 +897,7 @@ class Jaws_Utils
                         'download'  => 0,
                     );
                     if (file_exists(JAWS_BASE_THEMES. $tname. '/example.png')) {
-                        $themes[1][$tname]['image'] = $GLOBALS['app']->getThemeURL("$tname/example.png");
+                        $themes[1][$tname]['image'] = $GLOBALS['app']->getThemeURL("$tname/example.png", true, true);
                     }
 
                     $iniFile = JAWS_BASE_THEMES. $tname. '/Info.ini';
