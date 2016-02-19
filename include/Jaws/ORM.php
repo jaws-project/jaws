@@ -102,6 +102,14 @@ class Jaws_ORM
     var $_joins = array();
 
     /**
+     * Using statement
+     *
+     * @var     string
+     * @access  private
+     */
+    var $_using = '';
+
+    /**
      * Group By columns list
      *
      * @var     array
@@ -297,6 +305,28 @@ class Jaws_ORM
         }
 
         $this->_tablesIdentifier = $table_quoted. $alias_str;
+        return $this;
+    }
+
+    /**
+     * Using SQL command
+     *
+     * @access  public
+     * @param   mixed   $table      Table name
+     * @param   string  $alias      Table alias in query
+     * @return  object  Jaws_ORM object
+     */
+    function using($table, $alias = '')
+    {
+        $alias = empty($alias)? '': $this->quoteIdentifier($alias);
+        $alias_str = empty($alias)? '': (' as '. $alias);
+        if (is_object($table)) {
+            $table_quoted = '('. $table->get(). ')';
+        } else {
+            $table_quoted = $this->quoteIdentifier($this->_tbl_prefix. $table, true);
+        }
+
+        $this->_using = $table_quoted. $alias_str;
         return $this;
     }
 
@@ -704,6 +734,17 @@ class Jaws_ORM
     }
 
     /**
+     * Builds using string
+     *
+     * @access  private
+     * @return  string  Using string
+     */
+    private function _build_using()
+    {
+        return empty($this->_using)? '' : "using {$this->_using}\n";
+    }
+
+    /**
      * Builds where string
      *
      * @access  private
@@ -854,9 +895,9 @@ class Jaws_ORM
     {
         switch ($this->_query_command) {
             case 'delete':
-                $sql = 'delete '.$this->_tableAliasIdentifier. "\n";
+                $sql = "delete\n";
                 $sql.= 'from '. $this->_tablesIdentifier. "\n";
-                $sql.= $this->_build_join();
+                $sql.= $this->_build_using();
                 $sql.= $this->_build_where();
                 $result = $this->jawsdb->dbc->exec($sql);
                 break;
@@ -1135,6 +1176,7 @@ class Jaws_ORM
         $this->_extras   = array();
         $this->_where    = array();
         $this->_joins    = array();
+        $this->_using    = '';
         $this->_groupBy  = array();
         $this->_having   = array();
         $this->_orderBy  = array();
