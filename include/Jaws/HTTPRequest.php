@@ -25,6 +25,12 @@ class Jaws_HTTPRequest
 
     /**
      * @access  public
+     * @var     string   $content_type  Request content-type
+     */
+    var $content_type = '';
+
+    /**
+     * @access  public
      * @var     integer $default_error_level    Default error logging level
      */
     var $default_error_level = JAWS_ERROR_ERROR;
@@ -99,6 +105,7 @@ class Jaws_HTTPRequest
     {
         $this->httpRequest->reset($url, $this->options);
         $this->httpRequest->addHeader('User-Agent', $this->user_agent);
+        $this->httpRequest->addHeader('Content-Type', $this->content_type);
         $this->httpRequest->setMethod(HTTP_REQUEST_METHOD_POST);
         // add post data
         foreach($params as $key => $data) {
@@ -132,6 +139,7 @@ class Jaws_HTTPRequest
     {
         $this->httpRequest->reset($url, $this->options);
         $this->httpRequest->addHeader('User-Agent', $this->user_agent);
+        $this->httpRequest->addHeader('Content-Type', $this->content_type);
         $this->httpRequest->setMethod(HTTP_REQUEST_METHOD_POST);
         // set post data
         $this->httpRequest->setBody($data);
@@ -147,18 +155,6 @@ class Jaws_HTTPRequest
 
         $response = $this->httpRequest->getResponseBody();
         return $this->httpRequest->getResponseCode();
-    }
-
-    /**
-     * Adds a request header
-     *
-     * @access public
-     * @param string     Header name
-     * @param string     Header value
-     */
-    function addHeader($name, $value)
-    {
-        $this->httpRequest->addHeader($name, $value);
     }
 
 }
