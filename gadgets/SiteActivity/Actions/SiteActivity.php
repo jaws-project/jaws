@@ -100,7 +100,7 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
         $processing = $this->gadget->registry->fetch('processing');
         $lastUpdate = (int)$this->gadget->registry->fetch('last_update');
         $queueMaxTime = (int)$this->gadget->registry->fetch('queue_max_time');
-        if ($processing == 'true' && $lastUpdate + $queueMaxTime < time()) {
+        if ($processing == 'true' && ($lastUpdate + $queueMaxTime) > time()) {
             return false;
         }
 
@@ -111,7 +111,7 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
         $filters['sync'] = false;
         $model = $this->gadget->model->load('SiteActivity');
         $activities = $model->GetSiteActivities();
-        if (Jaws_Error::IsError($activities)) {
+        if (Jaws_Error::IsError($activities) || empty($activities)) {
             $this->gadget->registry->update('processing', 'false');
             return $activities;
         }
@@ -122,8 +122,8 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
         }
 
         $httpRequest = new Jaws_HTTPRequest();
-        $httpRequest->addHeader('content_type', 'application/json');
-        $data = json_encode(array('domain' => $hostName, 'data' => $activities));
+        $httpRequest->content_type = 'application/json';
+        $data = json_encode(array('domain' => $hostName, 'activities' => $activities));
         $result = $httpRequest->rawPostData("http://$parent/site/get", $data, $retData);
         if (Jaws_Error::IsError($result) || $result != 200) {
             $this->gadget->registry->update('processing', 'false');
@@ -147,23 +147,18 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
      */
     function GetData()
     {
-        //$data = jaws()->request->fetchAll('post');
-        //$data = jaws()->request->fetch(array('domain', 'data:array'), 'post');
-        $data = file_get_contents('php://input');
-        //_log_var_dump($data);
-        $data = json_decode($data);
-        $clientDomain = $data->domain;
-        $activities = $data->data;
+        $data = jaws()->request->fetch(array('domain', 'activities:array'), 'post');
+        $clientDomain = $data['domain'];
 
         $saData = array();
-        foreach ($activities as $activity) {
-            $domain = empty($activity->domain) ? $clientDomain : $activity->domain;
+        foreach ($data['activities'] as $activity) {
+            $domain = empty($activity['domain']) ? $clientDomain : $activity['domain'];
             $saData[] = array(
                 'domain' => $domain,
-                'gadget' => $activity->gadget,
-                'action' => $activity->action,
-                'date' => $activity->date,
-                'hits' => $activity->hits,
+                'gadget' => $activity['gadget'],
+                'action' => $activity['action'],
+                'date' => $activity['date'],
+                'hits' => $activity['hits'],
             );
         }
 
@@ -171,4 +166,5 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('SiteActivity');
         $model->InsertSiteActivities($saData);
     }
+
 }
