@@ -319,12 +319,14 @@ class Comments_Model_Admin_Comments extends Jaws_Gadget_Model
         $objORM->beginTransaction();
 
         // delete comments in slave table
-        $objORM->table('comments_details', 'cs')
+        $objORM->table('comments_details')
             ->delete()
-            ->join('comments as cm', 'cs.cid', 'cm.id')
-            ->where('cm.gadget', $gadget);
+            ->using('comments')
+            ->where('comments_details.cid', $objORM->expr('comments.id'))
+            ->and()
+            ->where('comments.gadget', $gadget);
         if (!empty($reference)) {
-            $objORM->and()->where('cm.reference', (int)$reference);
+            $objORM->and()->where('comments.reference', (int)$reference);
         }
         $ret = $objORM->exec();
         if (Jaws_Error::IsError($ret)) {
