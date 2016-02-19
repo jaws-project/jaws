@@ -245,7 +245,8 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             }
 
             // fetch current layout user
-            $layout_user = $GLOBALS['app']->Session->GetAttribute('layout');
+            $layout_user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
+            $logged_user = (int)$GLOBALS['app']->Session->GetAttribute('user');
             // Layout/Dashboard manager
             if (empty($layout_user)) {
                 // global site layout
@@ -254,7 +255,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                     $tpl->SetVariable('layout', _t('LAYOUT_TITLE'));
                     $tpl->SetVariable(
                         'layout_url',
-                        $this->gadget->urlMap('Layout', array('user' => $layout_user), false, 'Layout')
+                        $this->gadget->urlMap('Layout', array('user' => 0), false, 'Layout')
                     );
                     $tpl->ParseBlock('UserLinks/layout');
                 }
@@ -265,7 +266,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                     $tpl->SetVariable('layout', _t('LAYOUT_TITLE'));
                     $tpl->SetVariable(
                         'layout_url',
-                        $this->gadget->urlMap('Layout', array('user' => $layout_user), false, 'Layout')
+                        $this->gadget->urlMap('Layout', array('user' => $logged_user), false, 'Layout')
                     );
                     $tpl->ParseBlock('UserLinks/layout');
                 }
@@ -276,13 +277,17 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                 $tpl->SetBlock('UserLinks/dashboard');
                 if (empty($layout_user)) {
                     $tpl->SetVariable('dashboard', _t('USERS_DASHBOARD_USER'));
+                    $tpl->SetVariable(
+                        'dashboard_url',
+                        $this->gadget->urlMap('Dashboard', array('user' => $logged_user), false, 'Layout')
+                    );
                 } else {
                     $tpl->SetVariable('dashboard', _t('USERS_DASHBOARD_GLOBAL'));
+                    $tpl->SetVariable(
+                        'dashboard_url',
+                        $this->gadget->urlMap('Dashboard', array('user' => 0), false, 'Layout')
+                    );
                 }
-                $tpl->SetVariable(
-                    'dashboard_url',
-                    $this->gadget->urlMap('Dashboard', array(), false, 'Layout')
-                );
                 $tpl->ParseBlock('UserLinks/dashboard');
             }
 
