@@ -1096,37 +1096,47 @@ class Jaws_User
     function DeleteUser($id)
     {
         $objORM = Jaws_ORM::getInstance();
+        $user = $this->GetUser((int)$id, true, false, true, false);
+        if (Jaws_Error::IsError($user) || empty($user)) {
+            return false;
+        }
 
         //Start Transaction
         $objORM->beginTransaction();
 
-        $result = $objORM->delete()->table('users')->where('id', $id)->exec();
+        $result = $objORM->delete()->table('users')->where('id', $user['id'])->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
 
-        $result = $objORM->delete()->table('groups')->where('owner', $id)->exec();
+        $result = $objORM->delete()->table('groups')->where('owner', $user['id'])->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
 
-        $result = $objORM->delete()->table('users_groups')->where('user_id', $id)->exec();
+        $result = $objORM->delete()->table('users_groups')->where('user_id', $user['id'])->exec();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
 
         // Registry
-        $GLOBALS['app']->Registry->deleteByUser($id);
+        if (!$GLOBALS['app']->Registry->deleteByUser($user['id'])) {
+            return false;
+        }
         // ACL
-        $GLOBALS['app']->ACL->deleteByUser($id);
+        if (!$GLOBALS['app']->ACL->deleteByUser($user['id'])) {
+            return false;
+        }
         // Session
-        $GLOBALS['app']->Session->DeleteUserSessions($id);
+        if (!$GLOBALS['app']->Session->DeleteUserSessions($user['id'])) {
+            return false;
+        }
 
         //Commit Transaction
         $objORM->commit();
 
         // Let everyone know that a user has been deleted
-        $res = $GLOBALS['app']->Listener->Shout('Users', 'DeleteUser', $id);
+        $res = $GLOBALS['app']->Listener->Shout('Users', 'DeleteUser', $user);
         if (Jaws_Error::IsError($res)) {
             // nothing
         }
