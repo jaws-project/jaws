@@ -669,12 +669,6 @@ class Jaws_User
             return false;
         }
 
-        // shout SiteActivity event
-        $res = $GLOBALS['app']->Listener->Shout('Users', 'SiteActivity', array('action'=>'AddUser'));
-        if (Jaws_Error::IsError($res)) {
-            return false;
-        }
-
         return $result;
     }
 
