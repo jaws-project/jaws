@@ -32,7 +32,7 @@
     <div class="clearfix"></div>
     <!-- BEGIN warning --><div id="warning-wrapper"><div class="warning">{{warning}}</div></div><!-- END warning -->
   </div>
-  <div class="clearfix" style="margin-bottom: 8px;"></div>
+  <div class="clearfix" style="margin-bottom:20px;"></div>
 
   <div id="container" class="clearfix">
     <div id="main-section" class="clearfix">
@@ -48,20 +48,6 @@
       <!-- END cptitle -->
       <div class="gadget_response">
         <div id="{{main_gadget}}_{{main_action}}_response" class="{{type}}">{{text}}</div>
-      </div>
-      <div id="msgbox-wrapper">
-        <!-- BEGIN msgbox -->
-        <div id="msgbox_{{msg-id}}" class="{{type}}">{{text}}</div>
-        <script type="text/javascript">
-          var msgbox = $('msgbox_{{msg-id}}');
-          if ((msgbox.className != 'response_error') &&
-              (msgbox.className != 'response_warning') &&
-              (window.hideResponseBox)
-          ) {
-            hideResponseBox(msgbox);
-          }
-        </script>
-        <!-- END msgbox -->
       </div>
       <!-- BEGIN main -->{{ELEMENT}}<!-- END main -->
     </div>
