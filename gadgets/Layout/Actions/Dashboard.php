@@ -22,8 +22,10 @@ class Layout_Actions_Dashboard extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        //$user = jaws()->request->fetch('user');
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $user = (int)jaws()->request->fetch('user');
+        if ($user != 0 && ($user != (int)$GLOBALS['app']->Session->GetAttribute('user'))) {
+            $user = 0;
+        }
 
         $layoutModel = $this->gadget->model->load('Layout');
         $layoutModel->DashboardSwitch($user);

@@ -31,6 +31,9 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         @list($rqst['theme'], $rqst['locality']) = explode(',', $rqst['theme']);
         $default_theme = unserialize($this->gadget->registry->fetchByUser('theme', 'Settings', $user));
 
+        $layoutModel = $this->gadget->model->load('Layout');
+        $layoutModel->DashboardSwitch($user);
+
         if (empty($rqst['theme']) ||
             ($rqst['locality'] == $default_theme['locality'] && $rqst['theme'] == $default_theme['name'])
         ) {

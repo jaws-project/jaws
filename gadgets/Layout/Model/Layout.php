@@ -87,8 +87,7 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
             }
         }
 
-        $layout_user = (int)$GLOBALS['app']->Session->GetAttribute('layout');
-        $GLOBALS['app']->Session->SetAttribute('layout', empty($layout_user)? $user : 0);
+        $GLOBALS['app']->Session->SetAttribute('layout', $user);
         return true;
     }
 
