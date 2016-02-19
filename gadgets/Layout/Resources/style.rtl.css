@@ -39,6 +39,44 @@ height:13px;
 cursor:pointer;
 background:#3465A4 url(../../ControlPanel/Resources/images/dlg_close.png) no-repeat left 2px;
 }
+/* ----- NOTIFICATIONS ----- */
+.gadget_response{
+top:2;
+left:0;
+right:0;
+width:100%;
+position:absolute;
+text-align:center;
+}
+.gadget_response div{
+display:none;
+font-weight:bold;
+line-height:150%;
+border-radius:2px;
+padding:2px 22px;
+background-repeat:no-repeat;
+background-position:right center;
+}
+.response_loading{
+border:1px solid #579;
+display:inline-block !important;
+background:#ace url("../../../images/loading.svg");
+}
+.response_notice{
+border:1px solid #9db029;
+display:inline-block !important;
+background:#e6f0a5 url("../../../images/stock/info-small.png");
+}
+.response_warning{
+border:1px solid #fce94f;
+display:inline-block !important;
+background:#fdf4a7 url("../../../images/stock/warning-small.png");
+}
+.response_error{
+border:1px solid #cc0000;
+display:inline-block !important;
+background:#fabfbf url("../../../images/stock/error-small.png");
+}
 /* ----- LAYOUT MGMT STYLE ------ */
 #msgbox-wrapper{
 text-align:center;

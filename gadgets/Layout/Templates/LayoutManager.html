@@ -5,22 +5,11 @@
     var loading_message = default_loading_message;
 </script>
 <!-- END working_notification -->
-<!-- BEGIN msgbox-wrapper -->
-<div id="msgbox-wrapper">
-  <!-- BEGIN msgbox -->
-  <div id="msgbox_{{msg-id}}" class="{{type}}">{{text}}</div>
-  <script type="text/javascript">
-    var msgbox = $('#msgbox_{{msg-id}}');
-    if ((msgbox.attr('class') != 'response_error') &&
-        (msgbox.attr('class') != 'response_warning') &&
-        (window.hideResponseBox)
-    ) {
-        hideResponseBox('msgbox_{{msg-id}}');
-    }
-  </script>
-  <!-- END msgbox -->
+<!-- BEGIN response -->
+<div class="gadget_response">
+  <div id="{{main_gadget}}_{{main_action}}_response" class="{{type}}">{{text}}</div>
 </div>
-<!-- END msgbox-wrapper -->
+<!-- END response -->
 <!-- BEGIN item -->
 <div class="item" id="item_{{item_id}}" title="{{description}}" style="text-decoration: {{item_status}};">
     <div class="item_icon"><img src="{{icon}}" width="48" alt="icon"/></div>

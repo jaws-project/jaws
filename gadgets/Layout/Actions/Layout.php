@@ -57,19 +57,14 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $working_box = $t_item->ParseBlock('working_notification');
         $t_item->Blocks['working_notification']->Parsed = '';
 
-        $t_item->SetBlock('msgbox-wrapper');
+        $t_item->SetBlock('response');
         $responses = $GLOBALS['app']->Session->PopLastResponse();
         if ($responses) {
-            foreach ($responses as $msg_id => $response) {
-                $t_item->SetBlock('msgbox-wrapper/msgbox');
-                $t_item->SetVariable('text', $response['text']);
-                $t_item->SetVariable('type', $response['type']);
-                $t_item->SetVariable('msg-id', $msg_id);
-                $t_item->ParseBlock('msgbox-wrapper/msgbox');
-            }
+            $t_item->SetVariable('text', $responses[0]['text']);
+            $t_item->SetVariable('type', $responses[0]['type']);
         }
-        $msg_box = $t_item->ParseBlock('msgbox-wrapper');
-        $t_item->Blocks['msgbox-wrapper']->Parsed = '';
+        $response_box = $t_item->ParseBlock('response');
+        $t_item->Blocks['response']->Parsed = '';
 
         $t_item->SetBlock('drag_drop');
         $t_item->SetVariable('empty_section',    _t('LAYOUT_SECTION_EMPTY'));
@@ -94,7 +89,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         $layoutContent = preg_replace(
             '$<body([^>]*)>$i',
-            '<body\1>' . $working_box . $msg_box . $this->LayoutBar($theme, $theme_locality, $user, $index_layout),
+            '<body\1>' . $working_box . $response_box . $this->LayoutBar($theme, $theme_locality, $user, $index_layout),
             $layoutContent
         );
         $layoutContent = preg_replace('$</body([^>]*)>$i', $dragdrop . '</body\1>', $layoutContent);
