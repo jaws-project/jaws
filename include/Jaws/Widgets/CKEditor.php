@@ -257,7 +257,7 @@ class Jaws_Widgets_CKEditor extends Container
         $tpl->SetVariable('theme', $this->_Theme);
         $tpl->SetVariable('readOnly', $this->_IsEnabled? 'false' : 'true');
         $tpl->SetVariable('resize_enabled', $this->_IsResizable? 'true' : 'false');
-        $tpl->SetVariable('toolbar', Jaws_UTF8::json_encode($this->toolbars));
+        $tpl->SetVariable('toolbar', json_encode($this->toolbars));
         if(!empty($extraPlugins)) {
             $tpl->SetBlock("$block/extra");
             $tpl->SetVariable('extraPlugins', implode(',', $extraPlugins));
