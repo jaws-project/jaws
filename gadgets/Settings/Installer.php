@@ -101,6 +101,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
      */
     var $_ACLKeys = array(
         'BasicSettings',
+        'ManageSiteStatus'
         'AdvancedSettings',
         'MetaSettings',
         'MailSettings',
@@ -266,10 +267,13 @@ class Settings_Installer extends Jaws_Gadget_Installer
                 }
             }
 
+            // registry keys
             $this->gadget->registry->insert('theme_variables', '', true);
             $this->gadget->registry->insert('master', '');
             $this->gadget->registry->insert('holder', '');
             $this->gadget->registry->insert('parent', '');
+            // ACL keys
+            $this->gadget->acl->insert('ManageSiteStatus');
         }
 
         return true;

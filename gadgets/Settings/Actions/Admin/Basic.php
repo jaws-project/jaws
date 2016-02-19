@@ -39,6 +39,7 @@ class Settings_Actions_Admin_Basic extends Settings_Actions_Admin_Default
         $site_status->AddOption(_t('GLOBAL_DISABLED'), 'disabled');
         $site_status->AddOption(_t('GLOBAL_ENABLED'), 'enabled');
         $site_status->SetDefault($this->gadget->registry->fetch('site_status'));
+        $site_status->SetEnabled($this->gadget->GetPermission('ManageSiteStatus'));
         $tpl->SetVariable('field-name', 'site_status');
         $tpl->SetVariable('label', _t('SETTINGS_SITE_STATUS'));
         $tpl->SetVariable('field', $site_status->Get());

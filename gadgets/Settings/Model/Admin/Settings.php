@@ -110,8 +110,12 @@ class Settings_Model_Admin_Settings extends Jaws_Gadget_Model
      */
     function SaveBasicSettings($settings)
     {
-        $basicKeys = array('site_status', 'site_name', 'site_slogan', 'site_language',
-            'admin_language', 'main_gadget', 'site_email', 'site_comment');
+        $basicKeys = array('site_name', 'site_slogan', 'site_language',
+            'admin_language', 'main_gadget', 'site_email', 'site_comment'
+        );
+        if ($this->gadget->GetPermission('ManageSiteStatus')) {
+            $basicKeys[] = 'site_status';
+        }
 
         foreach ($settings as $settingKey => $settingValue) {
             if (!in_array($settingKey, $basicKeys)) {
