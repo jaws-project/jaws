@@ -30,19 +30,19 @@ $admin_actions['Activities'] = array(
     'normal' => true,
     'file' => 'Activities',
 );
-$admin_actions['GetSiteActivities'] = array(
+$admin_actions['GetActivities'] = array(
     'standalone' => true,
     'file' => 'Activities',
 );
-$admin_actions['GetSiteActivitiesCount'] = array(
+$admin_actions['GetActivitiesCount'] = array(
     'standalone' => true,
     'file' => 'Activities',
 );
-$admin_actions['DeleteSiteActivities'] = array(
+$admin_actions['DeleteActivities'] = array(
     'standalone' => true,
     'file' => 'Activities',
 );
-$admin_actions['DeleteAllSiteActivities'] = array(
+$admin_actions['DeleteAllActivities'] = array(
     'standalone' => true,
     'file' => 'Activities',
 );

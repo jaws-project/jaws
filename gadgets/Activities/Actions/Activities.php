@@ -28,7 +28,7 @@ class Activities_Actions_Activities extends Jaws_Gadget_Action
         $todayTime = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']);
         $filters['domain'] = ''; // fetch just own domain data
         $filters['from_date'] = $todayTime; // fetch today data
-        $activities = $model->GetSiteActivities($filters);
+        $activities = $model->GetActivities($filters);
 
         if (!Jaws_Error::isError($activities) && !empty($activities)) {
             $gadgetsActivities = array();
@@ -110,7 +110,7 @@ class Activities_Actions_Activities extends Jaws_Gadget_Action
         $filters = array();
         $filters['sync'] = false;
         $model = $this->gadget->model->load('Activities');
-        $activities = $model->GetSiteActivities();
+        $activities = $model->GetActivities();
         if (Jaws_Error::IsError($activities) || empty($activities)) {
             $this->gadget->registry->update('processing', 'false');
             return $activities;
@@ -124,7 +124,7 @@ class Activities_Actions_Activities extends Jaws_Gadget_Action
         $httpRequest = new Jaws_HTTPRequest();
         $httpRequest->content_type = 'application/json';
         $data = json_encode(array('domain' => $hostName, 'activities' => $activities));
-        $result = $httpRequest->rawPostData("http://$parent/site/get", $data, $retData);
+        $result = $httpRequest->rawPostData("http://$parent/activities/get", $data, $retData);
         if (Jaws_Error::IsError($result) || $result != 200) {
             $this->gadget->registry->update('processing', 'false');
             return false;

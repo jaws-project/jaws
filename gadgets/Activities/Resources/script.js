@@ -8,14 +8,14 @@
  * Use async mode, create Callback
  */
 var ActivitiesCallback = {
-    DeleteSiteActivities: function(response) {
+    DeleteActivities: function(response) {
         if (response['type'] == 'response_notice') {
             unselectGridRow('datagrid');
             getDG('datagrid', $('#datagrid')[0].getCurrentPage(), true);
         }
         ActivitiesAjax.showResponse(response);
     },
-    DeleteAllSiteActivities: function(response) {
+    DeleteAllActivities: function(response) {
         if (response['type'] == 'response_notice') {
             unselectGridRow('datagrid');
             getDG('datagrid', $('#datagrid')[0].getCurrentPage(), true);
@@ -25,10 +25,10 @@ var ActivitiesCallback = {
 };
 
 /**
- * Get site activities
+ * Get activities
  *
  */
-function getSiteActivities(name, offset, reset)
+function getActivities(name, offset, reset)
 {
     var filters = {
         'from_date' : $('#from_date').val(),
@@ -37,14 +37,14 @@ function getSiteActivities(name, offset, reset)
         'domain'    : $('#filter_domain').val()
     };
 
-    var result = ActivitiesAjax.callSync('GetSiteActivities', {
+    var result = ActivitiesAjax.callSync('GetActivities', {
         'offset': offset,
         'order': $('#order_type').val(),
         'filters': filters
     });
 
     if (reset) {
-        var total = ActivitiesAjax.callSync('GetSiteActivitiesCount', {
+        var total = ActivitiesAjax.callSync('GetActivitiesCount', {
             'filters': filters
         });
     }
@@ -52,7 +52,7 @@ function getSiteActivities(name, offset, reset)
 }
 
 /**
- * Executes an action on site activities
+ * Executes an action on activities
  */
 function activityDGAction(combo)
 {
@@ -64,17 +64,17 @@ function activityDGAction(combo)
         }
         var confirmation = confirm(confirmActivitiesDelete);
         if (confirmation) {
-            ActivitiesAjax.callAsync('DeleteSiteActivities', rows);
+            ActivitiesAjax.callAsync('DeleteActivities', rows);
         }
     } else if (combo.val() == 'deleteAll') {
         var confirmation = confirm(confirmActivitiesDelete);
         if (confirmation) {
-            ActivitiesAjax.callAsync('DeleteAllSiteActivities');
+            ActivitiesAjax.callAsync('DeleteAllActivities');
         }
     }}
 
 /**
- * Search site activities
+ * Search activities
  */
 function searchActivities()
 {

@@ -8,7 +8,7 @@
 class Activities_Model_Activities extends Jaws_Gadget_Model
 {
     /**
-     * Get site activities
+     * Get activities
      *
      * @access  public
      * @param   array   $filters
@@ -17,7 +17,7 @@ class Activities_Model_Activities extends Jaws_Gadget_Model
      * @param   string  $order
      * @return bool True or error
      */
-    function GetSiteActivities($filters = null, $limit = false, $offset = null, $order = 'gadget,action asc')
+    function GetActivities($filters = null, $limit = false, $offset = null, $order = 'gadget,action asc')
     {
         $saTable = Jaws_ORM::getInstance()->table('activities')
             ->select('id:integer', 'domain', 'gadget', 'action', 'date:integer', 'hits:integer');
@@ -61,13 +61,13 @@ class Activities_Model_Activities extends Jaws_Gadget_Model
     }
 
     /**
-     * Get site activities count
+     * Get activities count
      *
      * @access  public
      * @param   array   $filters
      * @return bool True or error
      */
-    function GetSiteActivitiesCount($filters = null)
+    function GetActivitiesCount($filters = null)
     {
         $saTable = Jaws_ORM::getInstance()->table('activities')
             ->select('count(id):integer');
@@ -123,7 +123,7 @@ class Activities_Model_Activities extends Jaws_Gadget_Model
     }
 
     /**
-     * Update site activity sync status
+     * Update activity sync status
      *
      * @access  public
      * @param   array   $ids    Activity Ids
@@ -141,7 +141,7 @@ class Activities_Model_Activities extends Jaws_Gadget_Model
      * Insert Activities to db
      *
      * @access  public
-     * @param   array       $data      Site activity data (gadget, action , hits, ...)
+     * @param   array       $data      Activity data (gadget, action , hits, ...)
      * @return  bool        True or error
      */
     function InsertActivities($data)
@@ -174,13 +174,13 @@ class Activities_Model_Activities extends Jaws_Gadget_Model
     }
 
     /**
-     * Insert SiteActivities to db
+     * Insert Activities to db
      *
      * @access  public
-     * @param   array       $activities      Array of site activity data (gadget, action , hits, ...)
+     * @param   array       $activities      Array of activities data (gadget, action , hits, ...)
      * @return  bool        True or error
      */
-    function InsertSiteActivities($activities)
+    function InsertActivities($activities)
     {
         if (empty($activities)) {
             return false;

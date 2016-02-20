@@ -154,13 +154,13 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
      * @access  public
      * @return  string  XHTML template content
      */
-    function GetSiteActivities()
+    function GetActivities()
     {
         $post = jaws()->request->fetch(array('offset', 'order', 'filters:array'), 'post');
         $filters = $post['filters'];
 
         $model = $this->gadget->model->load('Activities');
-        $activities = $model->GetSiteActivities($filters, 15, $post['offset'], $post['order']);
+        $activities = $model->GetActivities($filters, 15, $post['offset'], $post['order']);
         if (Jaws_Error::IsError($activities)) {
             return array();
         }
@@ -191,16 +191,16 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
     }
 
     /**
-     * Get site activities count
+     * Get activities count
      *
      * @access  public
-     * @return  int     Total of site activities
+     * @return  int     Total of activities
      */
-    function GetSiteActivitiesCount()
+    function GetActivitiesCount()
     {
         $filters = jaws()->request->fetch('filters:array', 'post');
         $model = $this->gadget->model->load('Activities');
-        return $model->GetSiteActivitiesCount($filters);
+        return $model->GetActivitiesCount($filters);
     }
 
     /**
@@ -223,16 +223,16 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
     }
 
     /**
-     * Delete all site activity
+     * Delete all activity
      *
      * @access  public
      * @return  string  XHTML template content
      */
-    function DeleteAllSiteActivities()
+    function DeleteAllActivities()
     {
         $this->gadget->CheckPermission('DeleteActivities');
         $model = $this->gadget->model->loadAdmin('Activities');
-        $res = $model->DeleteAllSiteActivities();
+        $res = $model->DeleteAllActivities();
         if (Jaws_Error::IsError($res) || $res === false) {
             return $GLOBALS['app']->Session->GetResponse(_t('ACTIVITIES_ERROR_CANT_DELETE_ACTIVITIES'), RESPONSE_ERROR);
         } else {

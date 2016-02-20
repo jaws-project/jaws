@@ -8,24 +8,24 @@
 class Activities_Model_Admin_Activities extends Jaws_Gadget_Model
 {
     /**
-     * Delete site activities
+     * Delete activities
      *
      * @access  public
      * @param   array   $ids    Activity Ids
      * @return bool True or error
      */
-    function DeleteSiteActivities($ids)
+    function DeleteActivities($ids)
     {
         return Jaws_ORM::getInstance()->table('activities')->delete()->where('id', $ids, 'in')->exec();
     }
 
     /**
-     * Delete all site activities
+     * Delete all activities
      *
      * @access  public
      * @return bool True or error
      */
-    function DeleteAllSiteActivities()
+    function DeleteAllActivities()
     {
         return Jaws_ORM::getInstance()->table('activities')->delete()->exec();
     }

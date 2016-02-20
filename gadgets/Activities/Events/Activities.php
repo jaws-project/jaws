@@ -8,7 +8,7 @@
 class Activities_Events_Activities extends Jaws_Gadget_Event
 {
     /**
-     * Grabs site activities and save to DB
+     * Grabs activities and save to DB
      *
      * @access  public
      * @param   string  $shouter    The shouting gadget
