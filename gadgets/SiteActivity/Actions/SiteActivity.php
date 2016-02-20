@@ -92,7 +92,7 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
     {
         // Post activities data to parent site
         $hostName = $_SERVER['HTTP_HOST'];
-        $parent = $this->gadget->registry->fetch('parent');
+        $parent = $this->gadget->registry->fetch('parent', 'Settings');
         if (empty($parent)) {
             return false;
         }

@@ -3,7 +3,7 @@
     <name><variable>database</variable></name>
 
     <table>
-        <name><variable>table_prefix</variable>sa_activity</name>
+        <name><variable>table_prefix</variable>activities</name>
         <declaration>
             <field>
                 <name>id</name>
@@ -55,7 +55,7 @@
             </field>
 
             <index>
-                <name><variable>table_prefix</variable>site_activity_sgad</name>
+                <name><variable>table_prefix</variable>activities_dgad</name>
                 <unique>true</unique>
 
                 <field>

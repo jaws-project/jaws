@@ -19,7 +19,7 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
      */
     function GetSiteActivities($filters = null, $limit = false, $offset = null, $order = 'gadget,action asc')
     {
-        $saTable = Jaws_ORM::getInstance()->table('sa_activity')
+        $saTable = Jaws_ORM::getInstance()->table('activities')
             ->select('id:integer', 'domain', 'gadget', 'action', 'date:integer', 'hits:integer');
 
         if (!empty($filters) && count($filters) > 0) {
@@ -69,7 +69,7 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
      */
     function GetSiteActivitiesCount($filters = null)
     {
-        $saTable = Jaws_ORM::getInstance()->table('sa_activity')
+        $saTable = Jaws_ORM::getInstance()->table('activities')
             ->select('count(id):integer');
 
         if (!empty($filters) && count($filters) > 0) {
@@ -118,7 +118,7 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
      */
     function GetAllDomains()
     {
-        return Jaws_ORM::getInstance()->table('sa_activity')
+        return Jaws_ORM::getInstance()->table('activities')
             ->select('domain')->groupBy('domain')->fetchColumn();
     }
 
@@ -132,7 +132,7 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
      */
     function UpdateSiteActivitySync($ids, $sync)
     {
-        return Jaws_ORM::getInstance()->table('sa_activity')
+        return Jaws_ORM::getInstance()->table('activities')
             ->update(array('sync'=> (bool)$sync))
             ->where('id', $ids, 'in')->exec();
     }
@@ -153,7 +153,7 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
         $today = getdate();
         $todayTime = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']);
 
-        $saTable = Jaws_ORM::getInstance()->table('sa_activity');
+        $saTable = Jaws_ORM::getInstance()->table('activities');
         $data['sync'] = false;
         $data['domain'] = '';
         $data['update_time'] = time();
@@ -189,7 +189,7 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
         // FIXME : increase performance by adding upsertAll method in core
         $objORM = Jaws_ORM::getInstance()->beginTransaction();
         foreach($activities as $activity) {
-            $saTable = $objORM->table('sa_activity');
+            $saTable = $objORM->table('activities');
             $activity['sync'] = false;
             $res = $saTable->upsert($activity)
                 ->where('date', $activity['date'])

@@ -18,7 +18,6 @@ class SiteActivity_Installer extends Jaws_Gadget_Installer
         array('last_update', '0'),
         array('queue_max_time', '600'), // maximum time to execution an queue (seconds)
         array('sharing_activity', 'true'),
-        array('parent', ''),
     );
 
     /**
@@ -66,7 +65,7 @@ class SiteActivity_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         $tables = array(
-            'sa_activity'
+            'activities'
         );
         foreach ($tables as $table) {
             $result = Jaws_DB::getInstance()->dropTable($table);

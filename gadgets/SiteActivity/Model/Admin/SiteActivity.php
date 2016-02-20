@@ -16,7 +16,7 @@ class SiteActivity_Model_Admin_SiteActivity extends Jaws_Gadget_Model
      */
     function DeleteSiteActivities($ids)
     {
-        return Jaws_ORM::getInstance()->table('sa_activity')->delete()->where('id', $ids, 'in')->exec();
+        return Jaws_ORM::getInstance()->table('activities')->delete()->where('id', $ids, 'in')->exec();
     }
 
     /**
@@ -27,6 +27,6 @@ class SiteActivity_Model_Admin_SiteActivity extends Jaws_Gadget_Model
      */
     function DeleteAllSiteActivities()
     {
-        return Jaws_ORM::getInstance()->table('sa_activity')->delete()->exec();
+        return Jaws_ORM::getInstance()->table('activities')->delete()->exec();
     }
 }
