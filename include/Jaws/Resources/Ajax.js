@@ -181,7 +181,7 @@ function JawsAjax(gadget, callback, baseScript)
                 if (this.loadingMessage) {
                     loadingMessage = this.loadingMessage;
                 } else {
-                    loadingMessage = default_loading_message === undefined? '...' : default_loading_message;
+                    loadingMessage = (typeof default_loading_message === 'undefined')? '...' : default_loading_message;
                 }
                 $(this.msgBox).html(loadingMessage).attr('class', 'response_loading');
                 $(this.msgBox).fadeIn();
