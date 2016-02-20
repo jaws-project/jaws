@@ -1,26 +1,26 @@
 /**
- * SiteActivity Javascript actions
+ * Activities Javascript actions
  *
  * @category    Ajax
- * @package     SiteActivity
+ * @package     Activities
  */
 /**
  * Use async mode, create Callback
  */
-var SiteActivityCallback = {
+var ActivitiesCallback = {
     DeleteSiteActivities: function(response) {
         if (response['type'] == 'response_notice') {
-            unselectGridRow('sa_datagrid');
-            getDG('sa_datagrid', $('#sa_datagrid')[0].getCurrentPage(), true);
+            unselectGridRow('datagrid');
+            getDG('datagrid', $('#datagrid')[0].getCurrentPage(), true);
         }
-        SiteActivityAjax.showResponse(response);
+        ActivitiesAjax.showResponse(response);
     },
     DeleteAllSiteActivities: function(response) {
         if (response['type'] == 'response_notice') {
-            unselectGridRow('sa_datagrid');
-            getDG('sa_datagrid', $('#sa_datagrid')[0].getCurrentPage(), true);
+            unselectGridRow('datagrid');
+            getDG('datagrid', $('#datagrid')[0].getCurrentPage(), true);
         }
-        SiteActivityAjax.showResponse(response);
+        ActivitiesAjax.showResponse(response);
     }
 };
 
@@ -37,14 +37,14 @@ function getSiteActivities(name, offset, reset)
         'domain'    : $('#filter_domain').val()
     };
 
-    var result = SiteActivityAjax.callSync('GetSiteActivities', {
+    var result = ActivitiesAjax.callSync('GetSiteActivities', {
         'offset': offset,
         'order': $('#order_type').val(),
         'filters': filters
     });
 
     if (reset) {
-        var total = SiteActivityAjax.callSync('GetSiteActivitiesCount', {
+        var total = ActivitiesAjax.callSync('GetSiteActivitiesCount', {
             'filters': filters
         });
     }
@@ -54,31 +54,31 @@ function getSiteActivities(name, offset, reset)
 /**
  * Executes an action on site activities
  */
-function siteActivityDGAction(combo)
+function activityDGAction(combo)
 {
-    var rows = $('#sa_datagrid')[0].getSelectedRows();
+    var rows = $('#datagrid')[0].getSelectedRows();
 
     if (combo.val() == 'delete') {
         if (rows.length < 1) {
             return;
         }
-        var confirmation = confirm(confirmSiteActivityDelete);
+        var confirmation = confirm(confirmActivitiesDelete);
         if (confirmation) {
-            SiteActivityAjax.callAsync('DeleteSiteActivities', rows);
+            ActivitiesAjax.callAsync('DeleteSiteActivities', rows);
         }
     } else if (combo.val() == 'deleteAll') {
-        var confirmation = confirm(confirmSiteActivityDelete);
+        var confirmation = confirm(confirmActivitiesDelete);
         if (confirmation) {
-            SiteActivityAjax.callAsync('DeleteAllSiteActivities');
+            ActivitiesAjax.callAsync('DeleteAllSiteActivities');
         }
     }}
 
 /**
  * Search site activities
  */
-function searchSiteActivity()
+function searchActivities()
 {
-    getSiteActivities('sa_datagrid', 0, true);
+    getActivities('datagrid', 0, true);
 }
 
-var SiteActivityAjax = new JawsAjax('SiteActivity', SiteActivityCallback);
+var ActivitiesAjax = new JawsAjax('Activities', ActivitiesCallback);

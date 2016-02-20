@@ -1,11 +1,11 @@
 <?php
 /**
- * SiteActivity Gadget
+ * Activities Gadget
  *
  * @category    Gadget
  * @package     Subscription
  */
-class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
+class Activities_Actions_Activities extends Jaws_Gadget_Action
 {
     /**
      * Send data to parent site
@@ -13,15 +13,15 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
      * @access  public
      * @return  boolean
      */
-    function SiteActivity()
+    function Activities()
     {
         // Load the template
-        $tpl = $this->gadget->template->load('SiteActivity.html');
-        $tpl->SetBlock('SiteActivity');
-        $tpl->SetVariable('title', _t('SITEACTIVITY_ACTIONS_SITEACTIVITY'));
-        $this->SetTitle(_t('SITEACTIVITY_ACTIONS_SITEACTIVITY'));
+        $tpl = $this->gadget->template->load('Activities.html');
+        $tpl->SetBlock('Activities');
+        $tpl->SetVariable('title', _t('ACTIVITIES_ACTIONS_ACTIVITIES'));
+        $this->SetTitle(_t('ACTIVITIES_ACTIONS_ACTIVITIES'));
 
-        $model = $this->gadget->model->load('SiteActivity');
+        $model = $this->gadget->model->load('Activities');
 
         $filters = array();
         $today = getdate();
@@ -41,7 +41,7 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
             }
         }
 
-        $saGadgets = $model->GetSiteActivityGadgets();
+        $saGadgets = $model->GetActivitiesGadgets();
         if(count($saGadgets)>0) {
             foreach ($saGadgets as $gadget => $gTitle) {
                 // load gadget
@@ -50,34 +50,34 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
                     continue;
                 }
                 // load hook
-                $objHook = $objGadget->hook->load('SiteActivity');
+                $objHook = $objGadget->hook->load('Activities');
                 if (Jaws_Error::IsError($objHook)) {
                     continue;
                 }
                 // fetch gadget activity's action items
                 $actions = $objHook->Execute();
 
-                $tpl->SetBlock('SiteActivity/gadget');
+                $tpl->SetBlock('Activities/gadget');
 
                 $tpl->SetVariable('gadget_title', $objGadget->title);
                 foreach ($actions as $actionName => $actionTitle) {
-                    $tpl->SetBlock('SiteActivity/gadget/action');
+                    $tpl->SetBlock('Activities/gadget/action');
                     $tpl->SetVariable('action', $actionTitle);
                     $hits = isset($gadgetsActivities[$gadget][$actionName]) ?
                         $gadgetsActivities[$gadget][$actionName] : 0;
                     $tpl->SetVariable('hits', $hits);
-                    $tpl->ParseBlock('SiteActivity/gadget/action');
+                    $tpl->ParseBlock('Activities/gadget/action');
 
                 }
-                $tpl->ParseBlock('SiteActivity/gadget');
+                $tpl->ParseBlock('Activities/gadget');
             }
         } else {
-            $tpl->SetBlock('SiteActivity/no_activity');
-            $tpl->SetVariable('no_activity', _t('SITEACTIVITY_ACTIONS_NOT_FIND_ACTIVITY'));
-            $tpl->ParseBlock('SiteActivity/no_activity');
+            $tpl->SetBlock('Activities/no_activity');
+            $tpl->SetVariable('no_activity', _t('ACTIVITIES_ACTIONS_NOT_FIND_ACTIVITY'));
+            $tpl->ParseBlock('Activities/no_activity');
         }
 
-        $tpl->ParseBlock('SiteActivity');
+        $tpl->ParseBlock('Activities');
         return $tpl->Get();
 
     }
@@ -109,7 +109,7 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
 
         $filters = array();
         $filters['sync'] = false;
-        $model = $this->gadget->model->load('SiteActivity');
+        $model = $this->gadget->model->load('Activities');
         $activities = $model->GetSiteActivities();
         if (Jaws_Error::IsError($activities) || empty($activities)) {
             $this->gadget->registry->update('processing', 'false');
@@ -131,7 +131,7 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
         }
 
         // update sync status
-        $model->UpdateSiteActivitySync($activityIds, true);
+        $model->UpdateActivitiesSync($activityIds, true);
 
         // finish procession
         $this->gadget->registry->update('processing', 'false');
@@ -163,7 +163,7 @@ class SiteActivity_Actions_SiteActivity extends Jaws_Gadget_Action
         }
 
         // insert activity data
-        $model = $this->gadget->model->load('SiteActivity');
+        $model = $this->gadget->model->load('Activities');
         $model->InsertSiteActivities($saData);
     }
 

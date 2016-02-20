@@ -1,11 +1,11 @@
 <?php
 /**
- * SiteActivity Installer
+ * Activities Installer
  *
  * @category    GadgetModel
- * @package     SiteActivity
+ * @package     Activities
  */
-class SiteActivity_Installer extends Jaws_Gadget_Installer
+class Activities_Installer extends Jaws_Gadget_Installer
 {
     /**
      * Gadget Registry keys
@@ -35,7 +35,7 @@ class SiteActivity_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_ACLKeys = array(
-        'DeleteSiteActivity',
+        'DeleteActivities',
     );
 
     /**
@@ -51,7 +51,7 @@ class SiteActivity_Installer extends Jaws_Gadget_Installer
             return $result;
         }
 
-        $this->gadget->event->insert('SiteActivity');
+        $this->gadget->event->insert('Activities');
 
         return true;
     }

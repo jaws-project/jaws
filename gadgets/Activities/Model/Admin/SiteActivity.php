@@ -1,11 +1,11 @@
 <?php
 /**
- * SiteActivity Model
+ * Activities Model
  *
  * @category    GadgetModel
- * @package     SiteActivity
+ * @package     Activities
  */
-class SiteActivity_Model_Admin_SiteActivity extends Jaws_Gadget_Model
+class Activities_Model_Admin_Activities extends Jaws_Gadget_Model
 {
     /**
      * Delete site activities

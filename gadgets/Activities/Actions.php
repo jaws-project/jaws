@@ -1,48 +1,48 @@
 <?php
 /**
- * SiteActivity Actions
+ * Activities Actions
  *
  * @category    GadgetActions
- * @package     SiteActivity
+ * @package     Activities
  */
 
 /**
  * Index actions
  */
-$actions['SiteActivity'] = array(
+$actions['Activities'] = array(
     'normal' => true,
     'layout' => true,
-    'file' => 'SiteActivity',
+    'file' => 'Activities',
 );
 $actions['GetData'] = array(
     'standalone' => true,
-    'file' => 'SiteActivity',
+    'file' => 'Activities',
 );
 $actions['PostData'] = array(
     'standalone' => true,
-    'file' => 'SiteActivity',
+    'file' => 'Activities',
 );
 
 /**
  * Admin actions
  */
-$admin_actions['SiteActivity'] = array(
+$admin_actions['Activities'] = array(
     'normal' => true,
-    'file' => 'SiteActivity',
+    'file' => 'Activities',
 );
 $admin_actions['GetSiteActivities'] = array(
     'standalone' => true,
-    'file' => 'SiteActivity',
+    'file' => 'Activities',
 );
 $admin_actions['GetSiteActivitiesCount'] = array(
     'standalone' => true,
-    'file' => 'SiteActivity',
+    'file' => 'Activities',
 );
 $admin_actions['DeleteSiteActivities'] = array(
     'standalone' => true,
-    'file' => 'SiteActivity',
+    'file' => 'Activities',
 );
 $admin_actions['DeleteAllSiteActivities'] = array(
     'standalone' => true,
-    'file' => 'SiteActivity',
+    'file' => 'Activities',
 );

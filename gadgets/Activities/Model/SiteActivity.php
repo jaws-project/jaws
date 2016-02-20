@@ -1,11 +1,11 @@
 <?php
 /**
- * SiteActivity Model
+ * Activities Model
  *
  * @category    GadgetModel
- * @package     SiteActivity
+ * @package     Activities
  */
-class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
+class Activities_Model_Activities extends Jaws_Gadget_Model
 {
     /**
      * Get site activities
@@ -130,7 +130,7 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
      * @param   bool    $sync   Sync status
      * @return bool True or error
      */
-    function UpdateSiteActivitySync($ids, $sync)
+    function UpdateActivitiesSync($ids, $sync)
     {
         return Jaws_ORM::getInstance()->table('activities')
             ->update(array('sync'=> (bool)$sync))
@@ -138,13 +138,13 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
     }
 
     /**
-     * Insert SiteActivity to db
+     * Insert Activities to db
      *
      * @access  public
      * @param   array       $data      Site activity data (gadget, action , hits, ...)
      * @return  bool        True or error
      */
-    function InsertSiteActivity($data)
+    function InsertActivities($data)
     {
         if (empty($data)) {
             return false;
@@ -208,17 +208,17 @@ class SiteActivity_Model_SiteActivity extends Jaws_Gadget_Model
     }
 
     /**
-     * Gets list of SiteActivity support gadgets
+     * Gets list of Activities support gadgets
      *
      * @access  public
      * @return  array   List of subscription supportgadgets
      */
-    function GetSiteActivityGadgets()
+    function GetActivitiesGadgets()
     {
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $cmpModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget => $info) {
-            if (is_file(JAWS_PATH . "gadgets/$gadget/Hooks/SiteActivity.php")) {
+            if (is_file(JAWS_PATH . "gadgets/$gadget/Hooks/Activities.php")) {
                 $gadgets[$gadget] = $info['title'];
                 continue;
             }

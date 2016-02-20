@@ -1,11 +1,11 @@
 <?php
 /**
- * SiteActivity event
+ * Activities event
  *
  * @category    Gadget
- * @package     SiteActivity
+ * @package     Activities
  */
-class SiteActivity_Events_SiteActivity extends Jaws_Gadget_Event
+class Activities_Events_Activities extends Jaws_Gadget_Event
 {
     /**
      * Grabs site activities and save to DB
@@ -21,10 +21,10 @@ class SiteActivity_Events_SiteActivity extends Jaws_Gadget_Event
             return false;
         }
 
-        $model = $this->gadget->model->load('SiteActivity');
+        $model = $this->gadget->model->load('Activities');
         $params['hits'] = !isset($params['hits']) ? 1 : $params['hits'];
 
-        $res = $model->InsertSiteActivity(
+        $res = $model->InsertActivities(
             array(
                 'gadget' => $shouter,
                 'action' => $params['action'],

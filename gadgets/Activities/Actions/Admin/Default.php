@@ -1,11 +1,11 @@
 <?php
 /**
- * SiteActivity Core Gadget
+ * Activities Core Gadget
  *
  * @category    Gadget
- * @package     SiteActivity
+ * @package     Activities
  */
-class SiteActivity_Actions_Admin_Default extends Jaws_Gadget_Action
+class Activities_Actions_Admin_Default extends Jaws_Gadget_Action
 {
     /**
      * Prepares the comments menubar
@@ -16,16 +16,16 @@ class SiteActivity_Actions_Admin_Default extends Jaws_Gadget_Action
      */
     function MenuBar($action)
     {
-        $actions = array('SiteActivity');
+        $actions = array('Activities');
         if (!in_array($action, $actions)) {
-            $action = 'SiteActivity';
+            $action = 'Activities';
         }
 
         $menubar = new Jaws_Widgets_Menubar();
         $menubar->AddOption(
-            'SiteActivity',
-            _t('SITEACTIVITY_SITEACTIVITY'),
-            BASE_SCRIPT . '?gadget=SiteActivity&amp;action=SiteActivity',
+            'Activities',
+            _t('ACTIVITIES_ACTIVITIES'),
+            BASE_SCRIPT . '?gadget=Activities&amp;action=Activities',
             STOCK_PREFERENCES);
 
         $menubar->Activate($action);

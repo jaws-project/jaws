@@ -1,10 +1,10 @@
 <?php
 /**
- * SiteActivity URL maps
+ * Activities URL maps
  *
  * @category   GadgetMaps
- * @package    SiteActivity
+ * @package    Activities
  */
-$maps[] = array('SiteActivity', 'site/activity');
-$maps[] = array('GetData', 'site/get');
-$maps[] = array('PostData', 'site/post');
+$maps[] = array('Activities', 'activities');
+$maps[] = array('GetData', 'activities/get');
+$maps[] = array('PostData', 'activities/post');

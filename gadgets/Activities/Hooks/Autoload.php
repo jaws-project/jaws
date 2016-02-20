@@ -1,11 +1,11 @@
 <?php
 /**
- * SiteActivity Gadget - Autoload
+ * Activities Gadget - Autoload
  *
  * @category   GadgetAutoload
- * @package    SiteActivity
+ * @package    Activities
  */
-class SiteActivity_Hooks_Autoload extends Jaws_Gadget_Hook
+class Activities_Hooks_Autoload extends Jaws_Gadget_Hook
 {
     /**
      * Autoload function
@@ -15,7 +15,7 @@ class SiteActivity_Hooks_Autoload extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $gadget = $this->gadget->action->load('SiteActivity');
+        $gadget = $this->gadget->action->load('Activities');
         return $gadget->PostData();
     }
 

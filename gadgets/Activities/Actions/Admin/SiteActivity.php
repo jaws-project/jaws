@@ -1,27 +1,27 @@
 <?php
 /**
- * SiteActivity Core Gadget Admin
+ * Activities Core Gadget Admin
  *
  * @category    GadgetAdmin
- * @package     SiteActivity
+ * @package     Activities
  */
-class SiteActivity_Actions_Admin_SiteActivity extends SiteActivity_Actions_Admin_Default
+class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Default
 {
     /**
      *
      * @access  public
      * @return  string HTML content with menu and menu items
      */
-    function SiteActivity()
+    function Activities()
     {
         $this->AjaxMe('script.js');
-        $tpl = $this->gadget->template->loadAdmin('SiteActivity.html');
-        $tpl->SetBlock('SiteActivity');
+        $tpl = $this->gadget->template->loadAdmin('Activities.html');
+        $tpl->SetBlock('Activities');
 
-        $model = $this->gadget->model->load('SiteActivity');
+        $model = $this->gadget->model->load('Activities');
 
         //Menu bar
-        $tpl->SetVariable('menubar', $this->MenuBar('SiteActivity'));
+        $tpl->SetVariable('menubar', $this->MenuBar('Activities'));
 
         // From Date Filter
         $fromDate =& Piwi::CreateWidget('DatePicker', 'from_date', '');
@@ -29,9 +29,9 @@ class SiteActivity_Actions_Admin_SiteActivity extends SiteActivity_Actions_Admin
         $fromDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $fromDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $fromDate->setDateFormat('%Y-%m-%d');
-        $fromDate->AddEvent(ON_CHANGE, "javascript:searchSiteActivity();");
+        $fromDate->AddEvent(ON_CHANGE, "javascript:searchActivities();");
         $tpl->SetVariable('filter_from_date', $fromDate->Get());
-        $tpl->SetVariable('lbl_filter_from_date', _t('SITEACTIVITY_FROM_DATE'));
+        $tpl->SetVariable('lbl_filter_from_date', _t('ACTIVITIES_FROM_DATE'));
 
         // To Date Filter
         $toDate =& Piwi::CreateWidget('DatePicker', 'to_date', '');
@@ -39,19 +39,19 @@ class SiteActivity_Actions_Admin_SiteActivity extends SiteActivity_Actions_Admin
         $toDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $toDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $toDate->setDateFormat('%Y-%m-%d');
-        $toDate->AddEvent(ON_CHANGE, "javascript:searchSiteActivity();");
+        $toDate->AddEvent(ON_CHANGE, "javascript:searchActivities();");
         $tpl->SetVariable('filter_to_date', $toDate->Get());
-        $tpl->SetVariable('lbl_filter_to_date', _t('SITEACTIVITY_TO_DATE'));
+        $tpl->SetVariable('lbl_filter_to_date', _t('ACTIVITIES_TO_DATE'));
 
         // Gadgets Filter
-        $gadgets = $model->GetSiteActivityGadgets();
+        $gadgets = $model->GetActivitiesGadgets();
 
         $gadgetsCombo =& Piwi::CreateWidget('Combo', 'filter_gadget');
         $gadgetsCombo->AddOption(_t('GLOBAL_ALL'), "", false);
         foreach ($gadgets as $name=>$title) {
             $gadgetsCombo->AddOption($title, $name);
         }
-        $gadgetsCombo->AddEvent(ON_CHANGE, "javascript:searchSiteActivity();");
+        $gadgetsCombo->AddEvent(ON_CHANGE, "javascript:searchActivities();");
         $gadgetsCombo->SetDefault(-1);
         $tpl->SetVariable('filter_gadget', $gadgetsCombo->Get());
         $tpl->SetVariable('lbl_filter_gadget', _t('GLOBAL_GADGETS'));
@@ -62,43 +62,43 @@ class SiteActivity_Actions_Admin_SiteActivity extends SiteActivity_Actions_Admin
         $domainCombo->AddOption(_t('GLOBAL_ALL'), -1, false);
         foreach ($allDomains as $domain) {
             if (empty($domain)) {
-                $domainCombo->AddOption(_t('SITEACTIVITY_MY_DOMAIN'), '', false);
+                $domainCombo->AddOption(_t('ACTIVITIES_MY_DOMAIN'), '', false);
             } else {
                 $domainCombo->AddOption($domain, $domain, false);
             }
         }
-        $domainCombo->AddEvent(ON_CHANGE, "javascript:searchSiteActivity();");
+        $domainCombo->AddEvent(ON_CHANGE, "javascript:searchActivities();");
         $domainCombo->SetDefault('');
         $tpl->SetVariable('filter_domain', $domainCombo->Get());
-        $tpl->SetVariable('lbl_filter_domain', _t('SITEACTIVITY_DOMAIN'));
+        $tpl->SetVariable('lbl_filter_domain', _t('ACTIVITIES_DOMAIN'));
 
         // Order
         $orderType =& Piwi::CreateWidget('Combo', 'order_type');
         $orderType->AddOption(_t('GLOBAL_DATE'). ' &darr;', 'date');
         $orderType->AddOption(_t('GLOBAL_DATE'). ' &uarr;', 'date desc');
-        $orderType->AddOption(_t('SITEACTIVITY_HITS'). ' &darr;', 'hits');
-        $orderType->AddOption(_t('SITEACTIVITY_HITS'). ' &uarr;', 'hits desc');
-        $orderType->AddEvent(ON_CHANGE, "javascript:searchSiteActivity();");
+        $orderType->AddOption(_t('ACTIVITIES_HITS'). ' &darr;', 'hits');
+        $orderType->AddOption(_t('ACTIVITIES_HITS'). ' &uarr;', 'hits desc');
+        $orderType->AddEvent(ON_CHANGE, "javascript:searchActivities();");
         $orderType->SetDefault(-1);
         $tpl->SetVariable('order_type', $orderType->Get());
-        $tpl->SetVariable('lbl_order_type', _t('SITEACTIVITY_ORDER_TYPE'));
+        $tpl->SetVariable('lbl_order_type', _t('ACTIVITIES_ORDER_TYPE'));
 
         //DataGrid
-        $tpl->SetVariable('datagrid', $this->SiteActivityDataGrid());
+        $tpl->SetVariable('datagrid', $this->ActivitiesDataGrid());
 
         // Actions
         $actions =& Piwi::CreateWidget('Combo', 'sa_actions');
         $actions->SetID('sa_actions_combo');
         $actions->SetTitle(_t('GLOBAL_ACTIONS'));
         $actions->AddOption('&nbsp;', '');
-        if ($this->gadget->GetPermission('DeleteSiteActivity')) {
+        if ($this->gadget->GetPermission('DeleteActivities')) {
             $actions->AddOption(_t('GLOBAL_DELETE'), 'delete');
-            $actions->AddOption(_t('SITEACTIVITY_DELETE_ALL'), 'deleteAll');
+            $actions->AddOption(_t('ACTIVITIES_DELETE_ALL'), 'deleteAll');
         }
         $tpl->SetVariable('actions_combo', $actions->Get());
 
-        $btnExecute =& Piwi::CreateWidget('Button', 'executeSiteActivityAction', '', STOCK_YES);
-        $btnExecute->AddEvent(ON_CLICK, "javascript:siteActivityDGAction($('#sa_actions_combo'));");
+        $btnExecute =& Piwi::CreateWidget('Button', 'executeActivitiesAction', '', STOCK_YES);
+        $btnExecute->AddEvent(ON_CLICK, "javascript:activitiesDGAction($('#sa_actions_combo'));");
         $tpl->SetVariable('btn_execute', $btnExecute->Get());
 
 
@@ -107,26 +107,26 @@ class SiteActivity_Actions_Admin_SiteActivity extends SiteActivity_Actions_Admin
         $btnCancel->SetStyle('display:none;');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $tpl->SetVariable('confirmSiteActivityDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $tpl->SetVariable('confirmActivitiesDelete', _t('GLOBAL_CONFIRM_DELETE'));
 
-        $tpl->ParseBlock('SiteActivity');
+        $tpl->ParseBlock('Activities');
         return $tpl->Get();
     }
 
     /**
-     * Builds SiteActivity datagrid
+     * Builds Activities datagrid
      *
      * @access  public
      * @return  string  XHTML datagrid
      */
-    function SiteActivityDataGrid()
+    function ActivitiesDataGrid()
     {
         $grid =& Piwi::CreateWidget('DataGrid', array());
         $grid->SetID('sa_datagrid');
         $grid->useMultipleSelection();
         $grid->pageBy(15);
 
-        $column1 = Piwi::CreateWidget('Column', _t('SITEACTIVITY_DOMAIN'), null, false);
+        $column1 = Piwi::CreateWidget('Column', _t('ACTIVITIES_DOMAIN'), null, false);
         $column1->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column1);
 
@@ -137,7 +137,7 @@ class SiteActivity_Actions_Admin_SiteActivity extends SiteActivity_Actions_Admin
         $column3->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column3);
 
-        $column4 = Piwi::CreateWidget('Column', _t('SITEACTIVITY_HITS'), null, false);
+        $column4 = Piwi::CreateWidget('Column', _t('ACTIVITIES_HITS'), null, false);
         $column4->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column4);
 
@@ -149,7 +149,7 @@ class SiteActivity_Actions_Admin_SiteActivity extends SiteActivity_Actions_Admin
     }
 
     /**
-     * Return list of SiteActivity data for use in datagrid
+     * Return list of Activities data for use in datagrid
      *
      * @access  public
      * @return  string  XHTML template content
@@ -159,7 +159,7 @@ class SiteActivity_Actions_Admin_SiteActivity extends SiteActivity_Actions_Admin
         $post = jaws()->request->fetch(array('offset', 'order', 'filters:array'), 'post');
         $filters = $post['filters'];
 
-        $model = $this->gadget->model->load('SiteActivity');
+        $model = $this->gadget->model->load('Activities');
         $activities = $model->GetSiteActivities($filters, 15, $post['offset'], $post['order']);
         if (Jaws_Error::IsError($activities)) {
             return array();
@@ -199,26 +199,26 @@ class SiteActivity_Actions_Admin_SiteActivity extends SiteActivity_Actions_Admin
     function GetSiteActivitiesCount()
     {
         $filters = jaws()->request->fetch('filters:array', 'post');
-        $model = $this->gadget->model->load('SiteActivity');
+        $model = $this->gadget->model->load('Activities');
         return $model->GetSiteActivitiesCount($filters);
     }
 
     /**
-     * Delete site activity
+     * Delete activity
      *
      * @access  public
      * @return  string  XHTML template content
      */
-    function DeleteSiteActivities()
+    function DeleteActivities()
     {
-        $this->gadget->CheckPermission('DeleteSiteActivity');
-        $siteActivityID = jaws()->request->fetchAll();
-        $model = $this->gadget->model->loadAdmin('SiteActivity');
-        $res = $model->DeleteSiteActivities($siteActivityID);
+        $this->gadget->CheckPermission('DeleteActivities');
+        $activity = jaws()->request->fetchAll();
+        $model = $this->gadget->model->loadAdmin('Activities');
+        $res = $model->DeleteActivities($activity);
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('SITEACTIVITY_ERROR_CANT_DELETE_ACTIVITIES'), RESPONSE_ERROR);
+            return $GLOBALS['app']->Session->GetResponse(_t('ACTIVITIES_ERROR_CANT_DELETE_ACTIVITIES'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('SITEACTIVITY_SITEACTIVITY_DELETED'), RESPONSE_NOTICE);
+            return $GLOBALS['app']->Session->GetResponse(_t('ACTIVITIES_ACTIVITIES_DELETED'), RESPONSE_NOTICE);
         }
     }
 
@@ -230,13 +230,13 @@ class SiteActivity_Actions_Admin_SiteActivity extends SiteActivity_Actions_Admin
      */
     function DeleteAllSiteActivities()
     {
-        $this->gadget->CheckPermission('DeleteSiteActivity');
-        $model = $this->gadget->model->loadAdmin('SiteActivity');
+        $this->gadget->CheckPermission('DeleteActivities');
+        $model = $this->gadget->model->loadAdmin('Activities');
         $res = $model->DeleteAllSiteActivities();
         if (Jaws_Error::IsError($res) || $res === false) {
-            return $GLOBALS['app']->Session->GetResponse(_t('SITEACTIVITY_ERROR_CANT_DELETE_ACTIVITIES'), RESPONSE_ERROR);
+            return $GLOBALS['app']->Session->GetResponse(_t('ACTIVITIES_ERROR_CANT_DELETE_ACTIVITIES'), RESPONSE_ERROR);
         } else {
-            return $GLOBALS['app']->Session->GetResponse(_t('SITEACTIVITY_SITEACTIVITY_DELETED'), RESPONSE_NOTICE);
+            return $GLOBALS['app']->Session->GetResponse(_t('ACTIVITIES_ACTIVITIES_DELETED'), RESPONSE_NOTICE);
         }
     }
 

@@ -1,11 +1,11 @@
 <?php
 /**
- * SiteActivity Gadget
+ * Activities Gadget
  *
  * @category    GadgetInfo
- * @package     SiteActivity
+ * @package     Activities
  */
-class SiteActivity_Info extends Jaws_Gadget
+class Activities_Info extends Jaws_Gadget
 {
     /**
      * Gadget version
@@ -21,7 +21,7 @@ class SiteActivity_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_action = 'SiteActivity';
+    var $default_action = 'Activities';
 
     /**
      * Default back-end action name
@@ -29,6 +29,6 @@ class SiteActivity_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_admin_action = 'SiteActivity';
+    var $default_admin_action = 'Activities';
 
 }
