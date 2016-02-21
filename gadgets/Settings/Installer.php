@@ -101,7 +101,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
      */
     var $_ACLKeys = array(
         'BasicSettings',
-        'ManageSiteStatus'
+        'ManageSiteStatus',
         'AdvancedSettings',
         'MetaSettings',
         'MailSettings',
