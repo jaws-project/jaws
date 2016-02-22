@@ -169,6 +169,18 @@ class Jaws_Error
     }
 
     /**
+     * Overloading __get magic method
+     *
+     * @access  private
+     * @param   string  $property   Property name
+     * @return  object  Jaws_Error object
+     */
+    function __get($property)
+    {
+        return $this;
+    }
+
+    /**
      * Overloading magic method
      *
      * @access  private
