@@ -199,6 +199,9 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
     function GetGadgetLayoutActions($g, $associated_by_action = false)
     {
         $actions = Jaws_Gadget::getInstance($g)->action->fetchAll('index');
+        if (Jaws_Error::IsError($actions)) {
+            return array();
+        }
         foreach ($actions as $key => $action) {
             if (!isset($action['layout']) || empty($action['layout'])) {
                 unset($actions[$key]);
