@@ -13,7 +13,7 @@ class Activities_Events_Activities extends Jaws_Gadget_Event
      * @access  public
      * @param   string  $shouter    The shouting gadget
      * @param   array   $params     [user, group, title, summary, description, priority, send]
-     * @return  bool
+     * @return  mixed   Activity ID or Jaws_Error on failure
      */
     function Execute($shouter, $params)
     {
@@ -24,18 +24,13 @@ class Activities_Events_Activities extends Jaws_Gadget_Event
         $model = $this->gadget->model->load('Activities');
         $params['hits'] = !isset($params['hits']) ? 1 : $params['hits'];
 
-        $res = $model->InsertActivities(
+        return $model->InsertActivity(
             array(
                 'gadget' => $shouter,
                 'action' => $params['action'],
                 'hits' => $params['hits']
             )
         );
-        if (Jaws_Error::IsError($res)) {
-            return $res;
-        }
-        return true;
-
-        return false;
     }
+
 }

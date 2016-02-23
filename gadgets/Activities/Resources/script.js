@@ -54,7 +54,7 @@ function getActivities(name, offset, reset)
 /**
  * Executes an action on activities
  */
-function activityDGAction(combo)
+function activitiesDGAction(combo)
 {
     var rows = $('#datagrid')[0].getSelectedRows();
 

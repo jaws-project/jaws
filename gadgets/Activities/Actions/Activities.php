@@ -41,24 +41,21 @@ class Activities_Actions_Activities extends Jaws_Gadget_Action
             }
         }
 
-        $saGadgets = $model->GetActivitiesGadgets();
-        if(count($saGadgets)>0) {
-            foreach ($saGadgets as $gadget => $gTitle) {
+        $gadgets = $model->GetHookedGadgets();
+        if(count($gadgets)>0) {
+            foreach ($gadgets as $gadget => $gTitle) {
                 // load gadget
                 $objGadget = Jaws_Gadget::getInstance($gadget);
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
                 }
-                // load hook
-                $objHook = $objGadget->hook->load('Activities');
-                if (Jaws_Error::IsError($objHook)) {
+                // load hook & execute hook
+                $actions = $objGadget->hook->load('Activities')->Execute();
+                if (Jaws_Error::IsError($actions)) {
                     continue;
                 }
-                // fetch gadget activity's action items
-                $actions = $objHook->Execute();
 
                 $tpl->SetBlock('Activities/gadget');
-
                 $tpl->SetVariable('gadget_title', $objGadget->title);
                 foreach ($actions as $actionName => $actionTitle) {
                     $tpl->SetBlock('Activities/gadget/action');
@@ -138,12 +135,11 @@ class Activities_Actions_Activities extends Jaws_Gadget_Action
         return $retData;
     }
 
-
     /**
      * Receive data from sub site
      *
      * @access  public
-     * @return bool
+     * @return  mixed   Jaws_Error on failure
      */
     function GetData()
     {
@@ -162,9 +158,9 @@ class Activities_Actions_Activities extends Jaws_Gadget_Action
             );
         }
 
-        // insert activity data
+        // insert activities data
         $model = $this->gadget->model->load('Activities');
-        $model->InsertSiteActivities($saData);
+        return $model->InsertActivities($saData);
     }
 
 }

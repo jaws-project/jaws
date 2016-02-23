@@ -44,11 +44,10 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $tpl->SetVariable('lbl_filter_to_date', _t('ACTIVITIES_TO_DATE'));
 
         // Gadgets Filter
-        $gadgets = $model->GetActivitiesGadgets();
-
         $gadgetsCombo =& Piwi::CreateWidget('Combo', 'filter_gadget');
         $gadgetsCombo->AddOption(_t('GLOBAL_ALL'), "", false);
-        foreach ($gadgets as $name=>$title) {
+        $gadgets = $model->GetHookedGadgets();
+        foreach ($gadgets as $name => $title) {
             $gadgetsCombo->AddOption($title, $name);
         }
         $gadgetsCombo->AddEvent(ON_CHANGE, "javascript:searchActivities();");
@@ -122,7 +121,7 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
     function ActivitiesDataGrid()
     {
         $grid =& Piwi::CreateWidget('DataGrid', array());
-        $grid->SetID('sa_datagrid');
+        $grid->SetID('datagrid');
         $grid->useMultipleSelection();
         $grid->pageBy(15);
 

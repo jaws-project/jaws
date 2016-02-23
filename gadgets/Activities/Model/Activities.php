@@ -128,7 +128,7 @@ class Activities_Model_Activities extends Jaws_Gadget_Model
      * @access  public
      * @param   array   $ids    Activity Ids
      * @param   bool    $sync   Sync status
-     * @return bool True or error
+     * @return  mixed   Integer or Jaws_Error on failure
      */
     function UpdateActivitiesSync($ids, $sync)
     {
@@ -138,47 +138,40 @@ class Activities_Model_Activities extends Jaws_Gadget_Model
     }
 
     /**
-     * Insert Activities to db
+     * Inserts an activity to db
      *
      * @access  public
-     * @param   array       $data      Activity data (gadget, action , hits, ...)
-     * @return  bool        True or error
+     * @param   array   $data   Activity data (gadget, action , hits, ...)
+     * @return  mixed   True or Jaws_Error on failure
      */
-    function InsertActivities($data)
+    function InsertActivity($data)
     {
         if (empty($data)) {
             return false;
         }
 
-        $today = getdate();
-        $todayTime = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']);
+        $now = getdate();
+        $todayTime = mktime(0, 0, 0, $now['mon'], $now['mday'], $now['year']);
 
-        $saTable = Jaws_ORM::getInstance()->table('activities');
-        $data['sync'] = false;
+        $objORM = Jaws_ORM::getInstance()->table('activities');
         $data['domain'] = '';
-        $data['update_time'] = time();
         $data['date'] = $todayTime;
         $data['hits'] = $data['hits'];
-        $data['update_time'] = time();
-        $res = $saTable->upsert($data, array('hits' => $saTable->expr('hits + ?', $data['hits'])))
+        $data['update_time'] = $now[0];
+        return $objORM->upsert($data, array('hits' => $objORM->expr('hits + ?', $data['hits'])))
             ->where('domain', $data['domain'])
             ->and()->where('gadget', $data['gadget'])
             ->and()->where('action', $data['action'])
             ->and()->where('date', $data['date'])
             ->exec();
-        if (Jaws_Error::IsError($res)) {
-            return $res;
-        }
-
-        return true;
     }
 
     /**
-     * Insert Activities to db
+     * Inserts mass activities to db
      *
      * @access  public
-     * @param   array       $activities      Array of activities data (gadget, action , hits, ...)
-     * @return  bool        True or error
+     * @param   array   $activities     Array of activities data (gadget, action , hits, ...)
+     * @return  bool    True or Jaws_Error on failure
      */
     function InsertActivities($activities)
     {
@@ -188,14 +181,13 @@ class Activities_Model_Activities extends Jaws_Gadget_Model
 
         // FIXME : increase performance by adding upsertAll method in core
         $objORM = Jaws_ORM::getInstance()->beginTransaction();
+        $objORM->table('activities');
         foreach($activities as $activity) {
-            $saTable = $objORM->table('activities');
-            $activity['sync'] = false;
             $res = $saTable->upsert($activity)
-                ->where('date', $activity['date'])
+                ->where('domain', $activity['domain'])
                 ->and()->where('gadget', $activity['gadget'])
                 ->and()->where('action', $activity['action'])
-                ->and()->where('domain', $activity['domain'])
+                ->and()->where('date', $activity['date'])
                 ->exec();
             if (Jaws_Error::IsError($res)) {
                 return $res;
@@ -208,23 +200,24 @@ class Activities_Model_Activities extends Jaws_Gadget_Model
     }
 
     /**
-     * Gets list of Activities support gadgets
+     * Gets list of hooked gadgets by Activities
      *
      * @access  public
-     * @return  array   List of subscription supportgadgets
+     * @return  array   List of gadgets
      */
-    function GetActivitiesGadgets()
+    function GetHookedGadgets()
     {
+        $result = array();
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $cmpModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget => $info) {
-            if (is_file(JAWS_PATH . "gadgets/$gadget/Hooks/Activities.php")) {
-                $gadgets[$gadget] = $info['title'];
-                continue;
+            if (file_exists(JAWS_PATH . "gadgets/$gadget/Hooks/Activities.php")) {
+                $result[$gadget] = $info['title'];
             }
-            unset($gadgets[$gadget]);
+            
         }
 
-        return $gadgets;
+        return $result;
     }
+
 }
