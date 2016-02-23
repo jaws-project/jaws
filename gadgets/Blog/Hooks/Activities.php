@@ -1,6 +1,6 @@
 <?php
 /**
- * Blog - SiteActivity hook
+ * Blog - Activities hook
  *
  * @category    GadgetHook
  * @package     Blog
@@ -8,7 +8,7 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Hooks_SiteActivity extends Jaws_Gadget_Hook
+class Blog_Hooks_Activities extends Jaws_Gadget_Hook
 {
     /**
      * Defines translate statements of Site activity
@@ -19,7 +19,7 @@ class Blog_Hooks_SiteActivity extends Jaws_Gadget_Hook
     function Execute()
     {
         $items = array();
-        $items['Post'] = _t('BLOG_SITEACTIVITY_ACTION_POST');
+        $items['Post'] = _t('BLOG_ACTIVITIES_ACTION_POST');
 
         return $items;
     }
