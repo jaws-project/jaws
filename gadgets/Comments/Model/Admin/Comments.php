@@ -147,8 +147,8 @@ class Comments_Model_Admin_Comments extends Jaws_Gadget_Model
         //commit transaction
         $objORM->commit();
 
-        // shout SiteActivity event
-        $this->gadget->event->shout('SiteActivity', array('action'=>'NewComment'));
+        // shout Activities event
+        $this->gadget->event->shout('Activities', array('action' => 'NewComment'));
 
         return $ret;
     }

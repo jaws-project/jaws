@@ -53,8 +53,8 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
             return new Jaws_Error(_t('POLL_ERROR_POLL_NOT_ADDED'));
         }
 
-        // shout SiteActivity event
-        $this->gadget->event->shout('SiteActivity', array('action'=>'Poll'));
+        // shout Activity event
+        $this->gadget->event->shout('Activities', array('action'=>'Poll'));
 
         $GLOBALS['app']->Session->PushLastResponse(_t('POLL_POLLS_ADDED'), RESPONSE_NOTICE);
         return true;

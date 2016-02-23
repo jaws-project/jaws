@@ -229,10 +229,10 @@ class Phoo_Model_Admin_Photos extends Phoo_Model
             }
         }
 
-        // shout SiteActivity event
+        // shout Activities event
         $saParams = array();
         $saParams['action'] = 'Photo';
-        $this->gadget->event->shout('SiteActivity', $saParams);
+        $this->gadget->event->shout('Activities', $saParams);
 
         $GLOBALS['app']->Session->PushLastResponse(_t('PHOO_PHOTO_ADDED'), RESPONSE_NOTICE);
         return $result;

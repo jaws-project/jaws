@@ -1,6 +1,6 @@
 <?php
 /**
- * Comments - SiteActivity hook
+ * Users - Activities hook
  *
  * @category    GadgetHook
  * @package     Users
@@ -8,7 +8,7 @@
  * @copyright   2008-2016 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Comments_Hooks_SiteActivity extends Jaws_Gadget_Hook
+class Users_Hooks_Activities extends Jaws_Gadget_Hook
 {
     /**
      * Defines translate statements of Site activity
@@ -19,7 +19,7 @@ class Comments_Hooks_SiteActivity extends Jaws_Gadget_Hook
     function Execute()
     {
         $items = array();
-        $items['NewComment'] = _t('COMMENTS_SITEACTIVITY_ACTION_NEWCOMMENTS');
+        $items['AddUser'] = _t('USERS_ACTIVITIES_ACTION_ADDUSER');
 
         return $items;
     }

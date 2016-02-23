@@ -1,14 +1,14 @@
 <?php
 /**
- * StaticPage - SiteActivity hook
+ * Poll - Activities hook
  *
  * @category    GadgetHook
- * @package     StaticPage
+ * @package     Poll
  * @author      Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
  * @copyright   2008-2016 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class StaticPage_Hooks_SiteActivity extends Jaws_Gadget_Hook
+class Poll_Hooks_Activities extends Jaws_Gadget_Hook
 {
     /**
      * Defines translate statements of Site activity
@@ -19,7 +19,7 @@ class StaticPage_Hooks_SiteActivity extends Jaws_Gadget_Hook
     function Execute()
     {
         $items = array();
-        $items['Page'] = _t('STATICPAGE_SITEACTIVITY_ACTION_PAGE');
+        $items['Poll'] = _t('POLL_ACTIVITIES_ACTION_POLL');
 
         return $items;
     }

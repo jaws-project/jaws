@@ -1,6 +1,6 @@
 <?php
 /**
- * Phoo - SiteActivity hook
+ * Phoo - Activities hook
  *
  * @category    GadgetHook
  * @package     Blog
@@ -8,7 +8,7 @@
  * @copyright   2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Phoo_Hooks_SiteActivity extends Jaws_Gadget_Hook
+class Phoo_Hooks_Activities extends Jaws_Gadget_Hook
 {
     /**
      * Defines translate statements of Site activity
@@ -19,7 +19,7 @@ class Phoo_Hooks_SiteActivity extends Jaws_Gadget_Hook
     function Execute()
     {
         $items = array();
-        $items['Photo'] = _t('PHOO_SITEACTIVITY_ACTION_PHOTO');
+        $items['Photo'] = _t('PHOO_ACTIVITIES_ACTION_PHOTO');
 
         return $items;
     }
