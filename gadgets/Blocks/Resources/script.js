@@ -80,21 +80,21 @@ function updateBlock()
         newBlock();
     } else {
         $('#block_id').prop('disabled', true);
-        id       = $('hidden_id').value;
-        title    = $('block_title').value;
+        id       = $('#hidden_id').val();
+        title    = $('#block_title').val();
         contents = getEditorValue('block_contents');
-        if (title.blank() || contents.blank())
+        if (!title || !contents)
         {
             alert(incompleteBlockFields);
             return false;
         }
 
-        displayTitle = document.getElementsByName('display_title[]').item(0).checked;
+        displayTitle = $('#display_title_true').prop('checked');
         // Call function
         loading_message = updatingMessage;
         BlocksAjax.callAsync('UpdateBlock', [id, title, contents, displayTitle]);
         // Update Combo
-        var combo = $('block_id');
+        var combo = $('#block_id')[0];
         combo.options[combo.selectedIndex].text = title;
         $('#block_id').prop('disabled', false);
     }
@@ -116,61 +116,53 @@ function deleteBlock()
  */
 function switchTab(c, title)
 {
-    var editDiv    = $('edit');
-    var previewDiv = $('preview');
-    var editTab    = $('editTab');
     if (title) {
-        editTab.innerHTML = title;
+        $('#editTab').html(title);
     } else {
-        var editTitle = editTab.innerHTML;
+        var editTitle = $('#editTab').html();
     }
-    var previewTab    = $('previewTab');
-    var previewButton = $('previewButton');
-    var saveButton    = $('saveButton');
-    var cancelButton  = $('cancelButton');
-    var delButton     = $('delButton');
 
     if (c == 'edit') {
         if (currentMode == 'new') {
             if (aclAddBlock) {
-                saveButton.onclick = function() {
+                $('#saveButton').click(function() {
                     newBlock();
-                }
+                });
             } else {
-                if (saveButton) {
-                    saveButton.style.display = 'none';
+                if ($('#saveButton').length) {
+                    $('#saveButton').css('display', 'none');
                 }
             }
 
             if (aclDeleteBlock) {
-                delButton.style.display = 'none';
+                $('#delButton').css('display', 'none');
             }
 
-            cancelButton.style.display = 'inline';
+            $('#cancelButton').css('display', 'inline');
         } else {
             if (aclEditBlock) {
-                saveButton.onclick = function() {
+                $('#saveButton').click(function() {
                     updateBlock();
-                }
+                });
             } else {
-                saveButton.style.display = 'none';
+                $('#saveButton').css('display', 'none');
             }
 
             if (aclDeleteBlock) {
-                delButton.style.display = 'inline';
+                $('#delButton').css('display', 'inline');
             }
 
-            cancelButton.style.display = 'none';
+            $('#cancelButton').css('display', 'none');
         }
-        editTab.className        = 'current';
-        previewTab.className     = '';
-        editDiv.style.display    = 'block';
-        previewDiv.style.display = 'none';
+        $('#editTab').addClass("current");
+        $('#previewTab').removeClass();
+        $('#edit').css('display', 'block');
+        $('#preview').css('display', 'none');
     } else if (c == 'preview') {
-        editTab.className        = '';
-        previewTab.className     = 'current';
-        editDiv.style.display    = 'none';
-        previewDiv.style.display = 'block';
+        $('#editTab').removeClass();
+        $("#previewTab").addClass("current");
+        $('#edit').css('display', 'none');
+        $('#preview').css('display', 'block');
     }
 }
 
@@ -224,18 +216,17 @@ function createNewBlock(title)
  */
 function newBlock()
 {
-    title = $('block_title').value;
     contents = getEditorValue('block_contents');
-    if (title.blank() || contents.blank())
+    if (!$('#block_title').val() || !contents)
     {
         alert(incompleteBlockFields);
         return false;
     }
 
-    displayTitle = document.getElementsByName('display_title[]').item(0).checked;
+    displayTitle = $('#display_title_true').prop('checked');
     // Call function
     loading_message = savingMessage;
-    BlocksAjax.callAsync('NewBlock', [title, contents, displayTitle]);
+    BlocksAjax.callAsync('NewBlock', [$('#block_title').val(), contents, displayTitle]);
 }
 
 /**
@@ -243,7 +234,7 @@ function newBlock()
  */
 function afterNewBlock(id)
 {
-    combo = $('block_id');
+    combo = $('#block_id')[0];
     combo.disabled = false;
     combo.options[combo.length] = new Option($('#block_title').val(), id);
     combo.options[combo.length - 1].selected = true;
