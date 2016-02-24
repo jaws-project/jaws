@@ -45,7 +45,7 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
 
         // Editor
         $editor =& $GLOBALS['app']->LoadEditor('Notepad', 'content', $note['content']);
-        $editor->setID('');
+        $editor->setID('content');
         $tpl->SetVariable('note_content', $editor->Get());
 
         // Actions
