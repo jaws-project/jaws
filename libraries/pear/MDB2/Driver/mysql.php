@@ -260,6 +260,7 @@ class MDB2_Driver_mysql extends MDB2_Driver_Common
                     1360 => MDB2_ERROR_NOT_FOUND,
                     1363 => MDB2_ERROR_NOT_FOUND,
                     1365 => MDB2_ERROR_DIVZERO,
+                    1396 => MDB2_ERROR_NOSUCHUSER,
                     1451 => MDB2_ERROR_CONSTRAINT,
                     1452 => MDB2_ERROR_CONSTRAINT,
                     1542 => MDB2_ERROR_CANNOT_DROP,

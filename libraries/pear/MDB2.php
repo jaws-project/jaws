@@ -102,6 +102,7 @@ define('MDB2_ERROR_LOADMODULE',         -34);
 define('MDB2_ERROR_INSUFFICIENT_DATA',  -35);
 define('MDB2_ERROR_NO_PERMISSION',      -36);
 define('MDB2_ERROR_DISCONNECT_FAILED',  -37);
+define('MDB2_ERROR_NOSUCHUSER',         -38);
 
 // }}}
 // {{{ Verbose constants
