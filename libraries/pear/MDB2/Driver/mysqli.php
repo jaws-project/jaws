@@ -298,6 +298,13 @@ class MDB2_Driver_mysqli extends MDB2_Driver_Common
             }
             if (isset($ecode_map[$native_code])) {
                 $error = $ecode_map[$native_code];
+                switch ($native_code) {
+                    case 1396:
+                        if (preg_match('/Operation CREATE USER failed for/i', $native_msg)) {
+                            $error = MDB2_ERROR_ALREADY_EXISTS;
+                        }
+                        break;
+                }
             }
         }
         return array($error, $native_code, $native_msg);

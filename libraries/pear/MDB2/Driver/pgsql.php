@@ -146,6 +146,8 @@ class MDB2_Driver_pgsql extends MDB2_Driver_Common
                     => MDB2_ERROR_ALREADY_EXISTS,
                 '/relation .* already exists/i'
                     => MDB2_ERROR_ALREADY_EXISTS,
+                '/role .* already exists/i'
+                    => MDB2_ERROR_ALREADY_EXISTS,
                 '/(divide|division) by zero$/i'
                     => MDB2_ERROR_DIVZERO,
                 '/pg_atoi: error in .*: can\'t parse /i'
