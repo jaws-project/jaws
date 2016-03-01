@@ -183,7 +183,7 @@ class Activities_Model_Activities extends Jaws_Gadget_Model
         $objORM = Jaws_ORM::getInstance()->beginTransaction();
         $objORM->table('activities');
         foreach($activities as $activity) {
-            $res = $saTable->upsert($activity)
+            $res = $objORM->upsert($activity)
                 ->where('domain', $activity['domain'])
                 ->and()->where('gadget', $activity['gadget'])
                 ->and()->where('action', $activity['action'])
