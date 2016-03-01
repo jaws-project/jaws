@@ -16,7 +16,7 @@ class Jaws_FTP
      * @access  private
      * @var     string
      */
-    private $_hostname;
+    private $_host;
 
     /**
      * The port for ftp-connection (standard is 21)
@@ -69,20 +69,50 @@ class Jaws_FTP
     /**
      * Constructor
      *
-     * @access  public
+     * @access  private
      * @return  void
      */
-    function Jaws_FTP()
+    private function __construct($options = array())
     {
-        $this->_hostname = $GLOBALS['app']->Registry->fetch('ftp_host', 'Settings');
-        $this->_port     = $GLOBALS['app']->Registry->fetch('ftp_port', 'Settings');
-        $this->_passive  = $GLOBALS['app']->Registry->fetch('ftp_mode', 'Settings') == 'passive';
-        $this->_username = $GLOBALS['app']->Registry->fetch('ftp_user', 'Settings');
-        $this->_password = $GLOBALS['app']->Registry->fetch('ftp_pass', 'Settings');
-        $this->_root     = $GLOBALS['app']->Registry->fetch('ftp_root', 'Settings');
-
         require_once PEAR_PATH. 'Net/FTP.php';
         $this->_ftp = new Net_FTP();
+
+        $this->_host     = isset($options['host'])? $options['host'] : '';
+        $this->_port     = isset($options['port'])? $options['port'] : 21;
+        $this->_passive  = isset($options['passive'])? $options['passive'] : true;
+        $this->_username = isset($options['username'])? $options['username'] : '';
+        $this->_password = isset($options['password'])? $options['password'] : '';
+        $this->_root     = isset($options['root'])? $options['root'] : '';
+    }
+
+    /**
+     * Get a Jaws_FTP instance
+     *
+     * @access  public
+     * @param   string $instance    Jaws_FTP instance name
+     * @param   array  $options     FTP connection options
+     * @return  object Jaws_DB instance
+     */
+    static function getInstance($instance = 'default', $options = array())
+    {
+        static $instances;
+        if (!isset($instances)) {
+            $instances = array();
+        }
+        if (!isset($instances[$instance])) {
+            if ($instance == 'default') {
+                $defaultOptions = $GLOBALS['app']->Registry->fetchAll('Settings');
+                $options['host']     = $defaultOptions['ftp_host'];
+                $options['port']     = $defaultOptions['ftp_port'];
+                $options['passive']  = $defaultOptions['ftp_mode'] == 'passive';
+                $options['username'] = $defaultOptions['ftp_user'];
+                $options['password'] = $defaultOptions['ftp_pass'];
+                $options['root']     = $defaultOptions['ftp_root'];
+            }
+            $instances[$instance] = new Jaws_FTP($options);
+        }
+
+        return $instances[$instance];
     }
 
     /**
@@ -96,17 +126,17 @@ class Jaws_FTP
     function connect($host = null, $port = null)
     {
         if (isset($host)) {
-            $this->_hostname = $host;
+            $this->_host = $host;
         }
         if (isset($port)) {
             $this->_port = $port;
         }
 
-        $this->_ftp->setHostname($this->_hostname);
+        $this->_ftp->setHostname($this->_host);
         $this->_ftp->setPort($this->_port);
         $res = $this->_ftp->connect();
         if (PEAR::isError($res)) {
-            return new Jaws_Error('Error while connecting to server '.$this->_hostname.' on '.$this->_port.'.',
+            return new Jaws_Error('Error while connecting to server '.$this->_host.' on '.$this->_port.'.',
                                   __FUNCTION__);
         }
 
@@ -123,7 +153,7 @@ class Jaws_FTP
     {
         $res = $this->_ftp->disconnect();
         if (PEAR::isError($res)) {
-            return new Jaws_Error('Error while disconnecting from server '.$this->_hostname,
+            return new Jaws_Error('Error while disconnecting from server '.$this->_host,
                                   __FUNCTION__);
         }
 
