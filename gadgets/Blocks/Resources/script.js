@@ -26,10 +26,10 @@ var BlocksCallback = {
 
     DeleteBlock: function(response) {
         // Remove item from block combo
-        var combo = $('block_id');
+        var combo = $('#block_id')[0];
         var auxStyle = combo.options[combo.selectedIndex].style.backgroundColor;
         selIndex = combo.selectedIndex;
-        combo.options[selIndex].dispose();
+        combo.options[selIndex] = null;
         // Set option styles...
         for (i = selIndex; i <= combo.length - 1; i++) {
             aux = combo.options[i].style.backgroundColor;
@@ -105,7 +105,7 @@ function updateBlock()
  */
 function deleteBlock()
 {
-    id = $('hidden_id').value;
+    id = $('#hidden_id').val();
     $('#block_id').prop('disabled', true);
     loading_message = deletingMessage;
     BlocksAjax.callAsync('DeleteBlock', id);
@@ -124,11 +124,7 @@ function switchTab(c, title)
 
     if (c == 'edit') {
         if (currentMode == 'new') {
-            if (aclAddBlock) {
-                $('#saveButton').click(function() {
-                    newBlock();
-                });
-            } else {
+            if (!aclAddBlock) {
                 if ($('#saveButton').length) {
                     $('#saveButton').css('display', 'none');
                 }
@@ -140,11 +136,7 @@ function switchTab(c, title)
 
             $('#cancelButton').css('display', 'inline');
         } else {
-            if (aclEditBlock) {
-                $('#saveButton').click(function() {
-                    updateBlock();
-                });
-            } else {
+            if (!aclEditBlock) {
                 $('#saveButton').css('display', 'none');
             }
 
@@ -203,9 +195,9 @@ function createNewBlock(title)
 {
     currentMode = 'new';
     switchTab('edit', title);
-    combo = $('block_id');
+    combo = $('#block_id')[0];
     combo.disabled = true;
-    blockTitle = $('block_title');
+    blockTitle = $('#block_title')[0];
     blockTitle.value = '';
     blockTitle.focus();
     changeEditorValue('block_contents', '');
@@ -246,9 +238,9 @@ function afterNewBlock(id)
  */
 function returnToEdit()
 {
-    combo      = $('block_id');
-    b          = $('newButton');
-    blockTitle = $('block_title');
+    combo      = $('#block_id');
+    b          = $('#newButton');
+    blockTitle = $('#block_title');
 
     if (combo.length > 0) {
 
@@ -278,7 +270,7 @@ function returnToEdit()
  */
 function getFirst()
 {
-    combo = $('block_id');
+    combo = $('#block_id')[0];
     if (combo.length > 0) {
         combo.options[0].selected = true;
         edit(combo.options[0].value);
