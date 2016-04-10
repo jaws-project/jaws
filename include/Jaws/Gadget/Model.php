@@ -242,4 +242,47 @@ class Jaws_Gadget_Model
         return $fast_url. '-'. $result;
     }
 
+    /**
+     * it starts looking for a 'valid' meta_title using the 'foobar-[1...n]' schema.
+     *
+     * @access  protected
+     * @param   string     $meta_title     Meta title
+     * @return  string     Correct fast URL
+     */
+    public function GetMetaTitleURL($meta_title)
+    {
+        if (is_numeric($meta_title)) {
+            $meta_title = '-' . $meta_title . '-';
+        }
+
+        $meta_title = Jaws_UTF8::trim(Jaws_XSS::defilter($meta_title));
+        $meta_title = preg_replace(
+            array('#[^\p{L}[:digit:]_\.\-\s]#u', '#[\s_\-]#u', '#\-\+#u'),
+            array('', '-', '-'),
+            Jaws_UTF8::strtolower($meta_title)
+        );
+        $fast_url = Jaws_UTF8::substr($meta_title, 0, 90);
+
+        return $meta_title;
+    }
+
+    /**
+     * Get Id from meta title URL
+     *
+     * @access  public
+     * @param   string  $metaTitleURL
+     * @return  int     True or Redirect URL
+     */
+    function GetIdFromMetaTitleURL($metaTitleURL)
+    {
+        if (empty($metaTitleURL)) {
+            return 0;
+        }
+        if (is_numeric($metaTitleURL)) {
+            return (int)$metaTitleURL;
+        }
+        $items = explode('-', $metaTitleURL);
+        return (is_array($items) && count($items) > 0) ? (int)$items[0] : 0;
+    }
+
 }
