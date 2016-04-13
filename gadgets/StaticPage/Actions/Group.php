@@ -108,6 +108,7 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
             $tpl->ParseBlock('group_pages/item');
         }
 
+        // parsing read-more block if required
         if (!empty($limit) &&
             count($pages) >= $limit &&
             $GLOBALS['app']->requestedActionMode == ACTION_MODE_LAYOUT
