@@ -112,17 +112,17 @@ class StaticPage_Actions_Group extends Jaws_Gadget_Action
             count($pages) >= $limit &&
             $GLOBALS['app']->requestedActionMode == ACTION_MODE_LAYOUT
         ) {
-            $tpl->SetBlock('group_pages/read-more');
-            $tpl->SetVariable(
-                'url',
-                $this->gadget->urlMap(
-                    'GroupPages',
-                    array(
-                        'gid'   => empty($group['fast_url'])? $group['id'] : $group['fast_url'],
-                        'order' => $orderBy
-                    )
-                )
+            $urlParam = array(
+                'gid'   => empty($group['fast_url'])? $group['id'] : $group['fast_url'],
+                'order' => $orderBy
             );
+            // prevent duplicate content via two different url
+            if ($orderBy == 1) {
+                unset($urlParam['order']);
+            }
+
+            $tpl->SetBlock('group_pages/read-more');
+            $tpl->SetVariable('url', $this->gadget->urlMap('GroupPages',$urlParam));
             $tpl->SetVariable('read_more', _t('STATICPAGE_GROUP_PAGES_LIST', $group['title']));
             $tpl->ParseBlock('group_pages/read-more');
         }
