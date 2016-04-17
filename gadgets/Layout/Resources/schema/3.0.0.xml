@@ -19,22 +19,16 @@
         </field>
 
         <field>
-            <name>title</name>
-            <type>text</type>
-            <length>128</length>
-        </field>
-
-        <field>
-            <name>layout</name>
-            <type>text</type>
-            <length>32</length>
-            <default>Layout</default>
+            <name>index</name>
+            <type>boolean</type>
+            <default>false</default>
         </field>
 
         <field>
             <name>section</name>
             <type>text</type>
             <length>32</length>
+            <notnull>true</notnull>
             <default>main</default>
         </field>
 
@@ -45,29 +39,29 @@
         </field>
 
         <field>
-            <name>action</name>
+            <name>gadget_action</name>
             <type>text</type>
             <length>32</length>
         </field>
 
         <field>
-            <name>params</name>
+            <name>action_params</name>
             <type>text</type>
         </field>
 
         <field>
-            <name>filename</name>
+            <name>action_filename</name>
             <type>text</type>
             <length>32</length>
         </field>
 
         <field>
-            <name>when</name>
+            <name>display_when</name>
             <type>text</type>
         </field>
 
         <field>
-            <name>position</name>
+            <name>layout_position</name>
             <type>integer</type>
         </field>
 
@@ -85,13 +79,13 @@
         </index>
 
         <index>
-            <name><variable>table_prefix</variable>layout_user_layout</name>
+            <name><variable>table_prefix</variable>layout_user_index</name>
             <field>
                 <name>user</name>
             </field>
 
             <field>
-                <name>layout</name>
+                <name>index</name>
             </field>
 
             <field>

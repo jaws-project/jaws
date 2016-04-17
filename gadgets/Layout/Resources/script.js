@@ -96,7 +96,7 @@ function deleteElement(itemId)
         LayoutAjax.callAsync(
             'DeleteElement', [
                 itemId,
-                $('#index_layout').val(),
+                $('#layout').val(),
                 section,
                 position + 1,
                 $('#user').val()
@@ -132,7 +132,7 @@ function initUI()
                     LayoutAjax.callAsync(
                         'MoveElement', [
                             ui.item.attr('id').replace('item_', ''),      // item id
-                            $('#index_layout').val(),                     // index or default layout
+                            $('#layout').val(),                           // layout name
                             $.data(ui.item[0], 'old_section'),            // old section name
                             parseInt($.data(ui.item[0], 'old_position')), // position in old section
                             new_section,                                  // new section name
@@ -240,7 +240,7 @@ function addGadgetToLayout(gadget, action, params)
     params = (params == null)? null : params.split(',');
     LayoutAjax.callAsync(
         'AddGadget',
-        [gadget, action, params, $('#index_layout').val(), $('#user').val()]
+        [gadget, action, params, $('#layout').val(), $('#user').val()]
     );
 }
 

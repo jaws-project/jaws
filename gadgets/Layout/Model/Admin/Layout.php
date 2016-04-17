@@ -15,20 +15,20 @@ class Layout_Model_Admin_Layout extends Jaws_Gadget_Model
      * Update the gadget layout action name/file
      *
      * @access  public
-     * @param   string  $gadget             Gadget name
-     * @param   string  $old_action         Old action name
-     * @param   string  $gadget_action      New action name
-     * @param   string  $action_filename    New action file
+     * @param   string  $gadget     Gadget name
+     * @param   string  $old_action Old action name
+     * @param   string  $action     New action name
+     * @param   string  $filename   New action file
      * @return  bool    Returns true if updated without problems, otherwise returns false
      */
-    function EditGadgetLayoutAction($gadget, $old_action, $gadget_action, $action_filename = '')
+    function EditGadgetLayoutAction($gadget, $old_action, $action, $filename = '')
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->update(array(
-            'gadget_action'   => $gadget_action,
-            'action_filename' => $action_filename
+            'action'   => $action,
+            'filename' => $filename
         ));
-        $lyTable->where('gadget', $gadget)->and()->where('gadget_action', $old_action);
+        $lyTable->where('gadget', $gadget)->and()->where('action', $old_action);
         return $lyTable->exec();
     }
 
@@ -36,20 +36,20 @@ class Layout_Model_Admin_Layout extends Jaws_Gadget_Model
      * Get the gadgets that are in a section
      *
      * @access  public
-     * @param   bool    $index      Elements in index layout
+     * @param   string  $layout     Layout name
      * @param   string  $section    Section to search
      * @return  array   Returns an array of gadgets that are in a section and false on error
      */
-    function GetGadgetsInSection($index, $section, $user = 0)
+    function GetGadgetsInSection($layout, $section, $user = 0)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
-        $lyTable->select('id', 'gadget', 'gadget_action', 'display_when', 'layout_position', 'published')
+        $lyTable->select('id', 'gadget', 'action', 'when', 'position', 'published')
             ->where('user', (int)$user)
             ->and()
-            ->where('index', (bool)$index)
+            ->where('layout', $layout)
             ->and()
             ->where('section', $section);
-        return $lyTable->orderBy('layout_position')->fetchAll();
+        return $lyTable->orderBy('position')->fetchAll();
     }
 
     /**
@@ -70,20 +70,20 @@ class Layout_Model_Admin_Layout extends Jaws_Gadget_Model
      * Edit layout's element action
      *
      * @access  public
-     * @param   int     $item            Item ID
-     * @params  string  $gadget_action   Action's name
-     * @param   string  $action_params   Action's params
-     * @param   string  $action_filename Filename that contant action method
-     * @param   int     $user            (Optional) User's ID
+     * @param   int     $item       Item ID
+     * @params  string  $action     Action's name
+     * @param   string  $params     Action's params
+     * @param   string  $filename   Filename that contant action method
+     * @param   int     $user       (Optional) User's ID
      * @return  array   Response
      */
-    function UpdateElementAction($item, $gadget_action, $action_params, $action_filename, $user = 0)
+    function UpdateElementAction($item, $action, $params, $filename, $user = 0)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->update(array(
-            'gadget_action'   => $gadget_action,
-            'action_params'   => serialize($action_params),
-            'action_filename' => (string)$action_filename
+            'action'   => $action,
+            'params'   => serialize($params),
+            'filename' => (string)$filename
         ));
         return $lyTable->where('id', $item)->and()->where('user', (int)$user)->exec();
     }

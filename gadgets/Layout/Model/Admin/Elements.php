@@ -15,24 +15,26 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      * Add a new element to the layout
      *
      * @access  public
-     * @param   bool    $index           Index layout
-     * @param   string  $section         The section where it should appear
-     * @param   string  $gadget          Gadget name
-     * @param   string  $action          A ction name
-     * @param   string  $action_params   Action's params
-     * @param   string  $action_filename Filename that contant action method
-     * @param   string  $pos             (Optional) Element position
-     * @param   int     $user            (Optional) User's ID
+     * @param   string  $layout     Layout name
+     * @param   string  $title      Element title
+     * @param   string  $section    The section where it should appear
+     * @param   string  $gadget     Gadget name
+     * @param   string  $action     Action name
+     * @param   string  $params     Action's params
+     * @param   string  $filename   Filename that include action method
+     * @param   string  $pos        (Optional) Element position
+     * @param   int     $user       (Optional) User's ID
      * @return  bool    Returns true if gadget was added without problems, if not, returns false
      */
-    function NewElement($index, $section, $gadget, $action, $action_params, $action_filename, $pos = '', $user = 0)
-    {
+    function NewElement($layout, $title, $section,
+        $gadget, $action, $params, $filename, $pos = '', $user = 0
+    ) {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         if (empty($pos)) {
-            $pos = $lyTable->select('max(layout_position)')
+            $pos = $lyTable->select('max(position)')
                 ->where('user', $user)
                 ->and()
-                ->where('index', (bool)$index)
+                ->where('layout', $layout)
                 ->and()
                 ->where('section', $section)
                 ->fetchOne();
@@ -43,16 +45,17 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
         }
 
         $lyTable->insert(array(
-            'user'            => $user,
-            'index'           => (bool)$index,
-            'section'         => $section,
-            'gadget'          => $gadget,
-            'gadget_action'   => $action,
-            'action_params'   => serialize($action_params),
-            'action_filename' =>  empty($action_filename)? '' : $action_filename,
-            'display_when'    => '*',
-            'layout_position' => $pos,
-            'published'       => true
+            'user'      => $user,
+            'layout'    => $layout,
+            'title'     => $title,
+            'section'   => $section,
+            'gadget'    => $gadget,
+            'action'    => $action,
+            'params'    => serialize($params),
+            'filename'  =>  empty($filename)? '' : $filename,
+            'when'      => '*',
+            'position'  => $pos,
+            'published' => true
         ));
 
         return $lyTable->exec();
@@ -63,13 +66,13 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $id         Element ID
-     * @param   bool    $index      Index layout
+     * @param   string  $layout     Layout name
      * @param   string  $section    Section name
      * @param   int     $position   Position of item in section
      * @param   int     $user       (Optional) User's ID
      * @return  bool    Returns true if element was removed otherwise it returns Jaws_Error
      */
-    function DeleteElement($id, $index, $section, $position, $user = 0)
+    function DeleteElement($id, $layout, $section, $position, $user = 0)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         // begin transaction
@@ -80,14 +83,14 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
             return $result;
         }
 
-        $result = $lyTable->update(array('layout_position'=>$lyTable->expr('layout_position - ?', 1)))
+        $result = $lyTable->update(array('position'=>$lyTable->expr('position - ?', 1)))
             ->where('user', (int)$user)
             ->and()
-            ->where('index', (bool)$index)
+            ->where('layout', $layout)
             ->and()
             ->where('section', $section)
             ->and()
-            ->where('layout_position', (int)$position, '>=')
+            ->where('position', (int)$position, '>=')
             ->exec();
         if (Jaws_Error::IsError($result)) {
             $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
@@ -104,7 +107,7 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $item           Item ID
-     * @param   bool    $index          Index layout
+     * @param   string  $layout         Layout name
      * @param   string  $old_section    Old section name
      * @param   int     $old_position   Position of item in old section
      * @param   string  $new_section    Old section name
@@ -112,38 +115,38 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      * @param   int     $user           (Optional) User's ID
      * @return  mixed   True on success or Jaws_Error on failure
      */
-    function MoveElement($item, $index, $old_section, $old_position, $new_section, $new_position, $user = 0)
+    function MoveElement($item, $layout, $old_section, $old_position, $new_section, $new_position, $user = 0)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         // begin transaction
         $lyTable->beginTransaction();
         if ($old_section == $new_section) {
             if ($old_position > $new_position) {
-                $lyTable->update(array('layout_position' => $lyTable->expr('layout_position + ?', 1)));
+                $lyTable->update(array('position' => $lyTable->expr('position + ?', 1)));
                 $lyTable->where('section', $old_section)->and();
-                $lyTable->where('layout_position', array($new_position, $old_position), 'between');
+                $lyTable->where('position', array($new_position, $old_position), 'between');
             } else {
-                $lyTable->update(array('layout_position' => $lyTable->expr('layout_position - ?', 1)));
+                $lyTable->update(array('position' => $lyTable->expr('position - ?', 1)));
                 $lyTable->where('section', $old_section)->and();
-                $lyTable->where('layout_position', array($old_position, $new_position), 'between');
+                $lyTable->where('position', array($old_position, $new_position), 'between');
             }
         } else {
-            $lyTable->update(array('layout_position' => $lyTable->expr('layout_position + ?', 1)));
-            $lyTable->where('user', (int)$user)->and()->where('index', (bool)$index);
+            $lyTable->update(array('position' => $lyTable->expr('position + ?', 1)));
+            $lyTable->where('user', (int)$user)->and()->where('layout', $layout);
             $lyTable->and()->where('section', $new_section)->and();
-            $lyTable->where('layout_position', $new_position, '>=');
+            $lyTable->where('position', $new_position, '>=');
             $result = $lyTable->exec();
             if (Jaws_Error::IsError($result)) {
                 $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
                 return $result;
             }
 
-            $lyTable->update(array('layout_position' => $lyTable->expr('layout_position - ?', 1)));
+            $lyTable->update(array('position' => $lyTable->expr('position - ?', 1)));
             $lyTable->where('section', $old_section)->and();
-            $lyTable->where('layout_position', $old_position, '>');
+            $lyTable->where('position', $old_position, '>');
         }
 
-        $result = $lyTable->and()->where('user', (int)$user)->and()->where('index', (bool)$index)->exec();
+        $result = $lyTable->and()->where('user', (int)$user)->and()->where('layout', $layout)->exec();
         if (Jaws_Error::IsError($result)) {
             $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
             return $result;
@@ -151,13 +154,13 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
 
         $lyTable->update(array(
             'section' => $new_section,
-            'layout_position' => $new_position
+            'position' => $new_position
         ));
         $result = $lyTable->where('id', (int)$item)
             ->and()
             ->where('user', (int)$user)
             ->and()
-            ->where('index', (bool)$index)
+            ->where('layout', $layout)
             ->exec();
         if (Jaws_Error::IsError($result)) {
             $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
@@ -174,14 +177,14 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $item   Item ID
-     * @param   string  $dw     Display in these gadgets
+     * @param   string  $when   Display in these gadgets
      * @param   int     $user   (Optional) User's ID
      * @return  array   Response
      */
-    function UpdateDisplayWhen($item, $dw, $user = 0)
+    function UpdateDisplayWhen($item, $when, $user = 0)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
-        return $lyTable->update(array('display_when' => $dw))
+        return $lyTable->update(array('when' => $when))
             ->where('id', $item)
             ->and()
             ->where('user', (int)$user)
@@ -239,8 +242,8 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->select(
-            'id', 'gadget', 'gadget_action', 'action_params', 'action_filename',
-            'display_when', 'layout_position', 'section', 'published'
+            'id', 'gadget', 'action', 'params', 'filename',
+            'when', 'position', 'section', 'published'
         );
         return $lyTable->where('id', $id)->and()->where('user', (int)$user)->fetchRow();
     }

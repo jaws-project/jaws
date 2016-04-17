@@ -20,13 +20,13 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
      */
     function MoveElement()
     {
-        @list($item, $index_layout, $old_section, $old_position,
+        @list($item, $layout, $old_section, $old_position,
             $new_section, $new_position, $user
         ) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Elements');
         $result = $model->MoveElement(
             $item,
-            $index_layout,
+            $layout,
             $old_section,
             (int)$old_position,
             $new_section,
@@ -50,9 +50,9 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
      */
     function DeleteElement()
     {
-        @list($item, $index_layout, $section, $position, $user) = jaws()->request->fetchAll('post');
+        @list($item, $layout, $section, $position, $user) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Elements');
-        $result = $model->DeleteElement($item, $index_layout, $section, $position, $user);
+        $result = $model->DeleteElement($item, $layout, $section, $position, $user);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
         } else {
@@ -85,7 +85,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
     {
         $res = array();
         $id = false;
-        @list($gadget, $action, $params, $index_layout, $user) = jaws()->request->fetchAll('post');
+        @list($gadget, $action, $params, $layout, $user) = jaws()->request->fetchAll('post');
         $params = jaws()->request->fetch('2:array', 'post');
         $model = $this->gadget->model->loadAdmin('Elements');
         $actions = $model->GetGadgetLayoutActions($gadget, true);
@@ -96,7 +96,8 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
                 ($user == $loggedUser && $GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard'))
             ) {
                 $id = $model->NewElement(
-                    $index_layout,
+                    $layout,
+                    null,
                     'main',
                     $gadget,
                     $action,

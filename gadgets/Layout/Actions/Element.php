@@ -148,7 +148,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
                 $tpl->SetVariable('name',   $action['name']);
                 $tpl->SetVariable('action', $action['action']);
                 $tpl->SetVariable('desc',   $action['desc']);
-                $action_selected = $layoutElement['gadget_action'] == $action['action'];
+                $action_selected = $layoutElement['action'] == $action['action'];
                 if($action_selected) {
                     $tpl->SetVariable('action_checked', 'checked="checked"');
                 } else {
@@ -156,7 +156,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
                 }
 
                 if (!empty($action['params'])) {
-                    $action_params = unserialize($layoutElement['action_params']);
+                    $action_params = unserialize($layoutElement['params']);
                     foreach ($action['params'] as $pIndex => $param) {
                         $tpl->SetBlock('template/gadget_action/action_param');
                         $param_name = "action_{$aIndex}_param_{$pIndex}";

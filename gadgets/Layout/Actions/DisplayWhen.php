@@ -50,11 +50,11 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         $tpl->SetVariable('.dir', $dir);
         $tpl->SetVariable('.browser', $brow);
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('display_when', _t('LAYOUT_DISPLAY'));
+        $tpl->SetVariable('lbl_when', _t('LAYOUT_DISPLAY'));
 
         $layoutElement = $model->GetElement($rqst['id'], $user);
         if (is_array($layoutElement) && !empty($layoutElement)) {
-            $dw_value = $layoutElement['display_when'];
+            $dw_value = $layoutElement['when'];
         }
 
         $displayCombo =& Piwi::CreateWidget('Combo', 'display_in');

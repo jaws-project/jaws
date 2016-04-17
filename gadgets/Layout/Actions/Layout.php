@@ -18,7 +18,8 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      */
     function Layout()
     {
-        $rqst = jaws()->request->fetch(array('user', 'theme', 'index_layout'));
+        $rqst = jaws()->request->fetch(array('user', 'theme', 'layout'));
+        $layout = empty($rqst['layout'])? 'Layout' : $rqst['layout'];
         // dashboard_user
         if (empty($rqst['user']) && $this->gadget->GetPermission('ManageLayout')) {
             $user = 0;
@@ -47,9 +48,6 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
             $theme_locality = $default_theme['locality'];
         }
         $GLOBALS['app']->SetTheme($theme, $theme_locality);
-
-        // index_layout
-        $index_layout = (bool)$rqst['index_layout'];
 
         $lModel = $this->gadget->model->loadAdmin('Layout');
         $eModel = $this->gadget->model->loadAdmin('Elements');
@@ -83,7 +81,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $GLOBALS['app']->InstanceLayout();
 
         $fakeLayout = new Jaws_Layout();
-        $fakeLayout->Load('', $index_layout? 'index.html' : 'layout.html');
+        $fakeLayout->Load('', "$layout.html");
         $fakeLayout->AddScriptLink('gadgets/Layout/Resources/script.js');
 
         $layoutContent = $fakeLayout->_Template->Blocks['layout']->Content;
@@ -92,7 +90,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         $layoutContent = preg_replace(
             '$<body([^>]*)>$i',
-            '<body\1>' . $working_box . $response_box . $this->LayoutBar($theme, $theme_locality, $user, $index_layout),
+            '<body\1>'. $working_box. $response_box. $this->LayoutBar($theme, $theme_locality, $user, $layout),
             $layoutContent
         );
         $layoutContent = preg_replace('$</body([^>]*)>$i', $dragdrop . '</body\1>', $layoutContent);
@@ -119,7 +117,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
             $fakeLayout->_Template->SetBlock('layout/'.$name);
             $js_section_array = '<script type="text/javascript">items[\''.$name.'\'] = new Array(); sections.push(\''.$name.'\');</script>';
-            $gadgets = $lModel->GetGadgetsInSection($index_layout, $name, $user);
+            $gadgets = $lModel->GetGadgetsInSection($layout, $name, $user);
             if (!is_array($gadgets)) {
                 continue;
             }
@@ -130,13 +128,13 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                     $t_item->SetVariable('section_id', $name);
                     $t_item->SetVariable('item_id', $gadget['id']);
                     $t_item->SetVariable('user', $user);
-                    $t_item->SetVariable('pos', $gadget['layout_position']);
+                    $t_item->SetVariable('pos', $gadget['position']);
                     $t_item->SetVariable('gadget', _t('LAYOUT_REQUESTED_GADGET'));
                     $t_item->SetVariable('action', '&nbsp;');
                     $t_item->SetVariable('icon', 'gadgets/Layout/Resources/images/requested-gadget.png');
                     $t_item->SetVariable('description', _t('LAYOUT_REQUESTED_GADGET_DESC'));
-                    $t_item->SetVariable('lbl_display_when', _t('LAYOUT_DISPLAY_IN'));
-                    $t_item->SetVariable('display_when', _t('GLOBAL_ALWAYS'));
+                    $t_item->SetVariable('lbl_when', _t('LAYOUT_DISPLAY_IN'));
+                    $t_item->SetVariable('when', _t('GLOBAL_ALWAYS'));
                     $t_item->SetVariable('void_link', 'return;');
                     $t_item->SetVariable('section_name', $name);
                     $t_item->SetVariable('delete', 'void(0);');
@@ -148,7 +146,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                     $controls = '';
                     $t_item->SetBlock('item');
                     $t_item->SetVariable('section_id', $name);
-                    $t_item->SetVariable('pos', $gadget['layout_position']);
+                    $t_item->SetVariable('pos', $gadget['position']);
                     $t_item->SetVariable('item_id', $gadget['id']);
                     $t_item->SetVariable('base_script_url', $GLOBALS['app']->getSiteURL('/'.BASE_SCRIPT));
                     $t_item->SetVariable('icon', Jaws::CheckImage('gadgets/'.$gadget['gadget'].'/Resources/images/logo.png'));
@@ -160,34 +158,34 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                     $t_item->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
 
                     $actions = $eModel->GetGadgetLayoutActions($gadget['gadget'], true);
-                    if (isset($actions[$gadget['gadget_action']]) &&
+                    if (isset($actions[$gadget['action']]) &&
                         Jaws_Gadget::IsGadgetEnabled($gadget['gadget'])
                     ) {
                         $t_item->SetVariable('gadget', _t(strtoupper($gadget['gadget']).'_TITLE'));
-                        if (isset($actions[$gadget['gadget_action']]['name'])) {
-                            $t_item->SetVariable('action', $actions[$gadget['gadget_action']]['name']);
+                        if (isset($actions[$gadget['action']]['name'])) {
+                            $t_item->SetVariable('action', $actions[$gadget['action']]['name']);
                         } else {
-                            $t_item->SetVariable('action', $gadget['gadget_action']);
+                            $t_item->SetVariable('action', $gadget['action']);
                         }
-                        $t_item->SetVariable('description', $actions[$gadget['gadget_action']]['desc']);
+                        $t_item->SetVariable('description', $actions[$gadget['action']]['desc']);
                         $t_item->SetVariable('item_status', 'none');
                     } else {
                         $t_item->SetVariable('gadget', $gadget['gadget']);
-                        $t_item->SetVariable('action', $gadget['gadget_action']);
-                        $t_item->SetVariable('description', $gadget['gadget_action']);
+                        $t_item->SetVariable('action', $gadget['action']);
+                        $t_item->SetVariable('description', $gadget['action']);
                         $t_item->SetVariable('item_status', 'line-through');
                     }
                     unset($actions);
 
                     $t_item->SetVariable('controls', $controls);
                     $t_item->SetVariable('void_link', '');
-                    $t_item->SetVariable('lbl_display_when', _t('LAYOUT_DISPLAY_IN'));
-                    if ($gadget['display_when'] == '*') {
-                        $t_item->SetVariable('display_when', _t('GLOBAL_ALWAYS'));
-                    } elseif (empty($gadget['display_when'])) {
-                        $t_item->SetVariable('display_when', _t('LAYOUT_NEVER'));
+                    $t_item->SetVariable('lbl_when', _t('LAYOUT_DISPLAY_IN'));
+                    if ($gadget['when'] == '*') {
+                        $t_item->SetVariable('when', _t('GLOBAL_ALWAYS'));
+                    } elseif (empty($gadget['when'])) {
+                        $t_item->SetVariable('when', _t('LAYOUT_NEVER'));
                     } else {
-                        $t_item->SetVariable('display_when', str_replace(',', ', ', $gadget['display_when']));
+                        $t_item->SetVariable('when', str_replace(',', ', ', $gadget['when']));
                     }
                     $t_item->ParseBlock('item');
                 }
@@ -210,7 +208,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      * Layout controls bar 
      *
      */
-    function LayoutBar($theme_name, $theme_locality, $user = 0, $index_layout = false)
+    function LayoutBar($theme_name, $theme_locality, $user = 0, $layout = 'Layout')
     {
         $tpl = $this->gadget->template->load('LayoutControls.html');
         $tpl->SetBlock('controls');
@@ -264,13 +262,13 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         // layouts
         $tpl->SetVariable('lbl_layout', _t('LAYOUT_LAYOUT'));
-        $layouts =& Piwi::CreateWidget('Combo', 'index_layout');
-        $layouts->setID('index_layout');
-        $layouts->AddOption(_t('LAYOUT_LAYOUT_DEFAULT'), 0);
+        $layouts =& Piwi::CreateWidget('Combo', 'layout');
+        $layouts->setID('layout');
+        $layouts->AddOption(_t('LAYOUT_LAYOUT_DEFAULT'), 'Layout');
         if (isset($themes[$theme_locality][$theme_name]) && $themes[$theme_locality][$theme_name]['index']) {
-            $layouts->AddOption(_t('LAYOUT_LAYOUT_INDEX'), 1);
+            $layouts->AddOption(_t('LAYOUT_LAYOUT_INDEX'), 'Index');
         }
-        $layouts->SetDefault((int)$index_layout);
+        $layouts->SetDefault($layout);
         $layouts->AddEvent(ON_CHANGE, "layoutControlsSubmit(this);");
         $tpl->SetVariable('layouts_combo', $layouts->Get());
 
@@ -319,29 +317,30 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         // Verify blocks/Reassign gadgets
         $model = $this->gadget->model->loadAdmin('Sections');
-        // default layout
-        $sections = $model->GetLayoutSections($user, false);
-        foreach ($sections as $section) {
-            if (!isset($tpl->Blocks['layout']->InnerBlock[$section])) {
-                $model->MoveSection(false, $section, 'main', $user);
-            }
+        $layouts = $model->GetLayoutLayouts($user);
+        if (Jaws_Error::IsError($layouts)) {
+            $GLOBALS['app']->Session->PushLastResponse($layouts->getMessage(), RESPONSE_ERROR);
+            return false;
         }
 
-        // index layout
-        if (!file_exists($layout_path. '/index.html')) {
-            $model->DeleteUserLayouts($user, true);
-        } else {
-            $tpl = $this->gadget->template->load("$layout_path/index.html");
-            $sections = $model->GetLayoutSections($user, true);
-            foreach ($sections as $section) {
-                if (isset($tpl->Blocks['layout']->InnerBlock[$section])) {
-                    $model->MoveSection(true, $section, $section, $user);
-                } else {
-                    $model->MoveSection(true, $section, 'main', $user);
+        foreach ($layouts as $layout) {
+            if (!file_exists($layout_path. "/$layout.html")) {
+                $model->DeleteLayouts($layout);
+            } else {
+                $tpl = $this->gadget->template->load("$layout_path/$layout.html");
+                $sections = $model->GetLayoutSections($layout);
+                if (Jaws_Error::IsError($sections)) {
+                    $GLOBALS['app']->Session->PushLastResponse($sections->getMessage(), RESPONSE_ERROR);
+                    return false;
+                }
+
+                foreach ($sections as $section) {
+                    if (!isset($tpl->Blocks['layout']->InnerBlock[$section])) {
+                        $model->MoveSection($layout, $section, 'main');
+                    }
                 }
             }
         }
-        
 
         $this->gadget->registry->updateByUser(
             'theme',

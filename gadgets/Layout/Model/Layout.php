@@ -16,34 +16,34 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $user       User's ID
-     * @param   bool    $index      Elements in index layout
+     * @param   bool    $layout     Layout name
      * @param   bool    $published  Publish status
      * @return  array   Returns an array with the layout items or Jaws_Error on failure
      */
-    function GetLayoutItems($user = 0, $index = false, $published = null)
+    function GetLayoutItems($user = 0, $layout = 'Layout', $published = null)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->select(
-            'id', 'gadget', 'gadget_action', 'action_params',
-            'action_filename', 'display_when', 'section', 'layout_position'
+            'id', 'title', 'gadget', 'action', 'params',
+            'filename', 'when', 'section', 'position'
         );
-        $lyTable->where('user', (int)$user)->and()->where('index', (bool)$index);
+        $lyTable->where('user', (int)$user)->and()->where('layout', $layout);
         if (!is_null($published)) {
             $lyTable->and()->where('published', (bool)$published);
         }
-        $items = $lyTable->orderBy('layout_position asc')->fetchAll();
-        if (!Jaws_Error::isError($items) && $index) {
+        $items = $lyTable->orderBy('position asc')->fetchAll();
+        if (!Jaws_Error::isError($items) && ($layout != 'Layout')) {
             array_unshift(
                 $items,
                 array(
-                    'id'              => null,
-                    'gadget'          => '[REQUESTEDGADGET]',
-                    'gadget_action'   => '[REQUESTEDACTION]',
-                    'action_params'   => '',
-                    'action_filename' => '',
-                    'display_when'    => '*',
-                    'section'         => 'main',
-                    'layout_position' => 0,
+                    'id'       => null,
+                    'gadget'   => '[REQUESTEDGADGET]',
+                    'action'   => '[REQUESTEDACTION]',
+                    'params'   => '',
+                    'filename' => '',
+                    'when'     => '*',
+                    'section'  => 'main',
+                    'position' => 0,
                 )
             );
         }
@@ -70,7 +70,17 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
                 ->fetchOne();
             if (!Jaws_Error::IsError($exists) && empty($exists)) {
                 $elModel = $this->gadget->model->loadAdmin('Elements');
-                $elModel->NewElement(false, 'main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1, $user);
+                $elModel->NewElement(
+                    'Layout',
+                    null,
+                    'main',
+                    '[REQUESTEDGADGET]',
+                    '[REQUESTEDACTION]',
+                    null,
+                    '',
+                    1,
+                    $user
+                );
             }
 
             // Users/LoginBox
@@ -79,11 +89,21 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
                 ->and()
                 ->where('gadget', 'Users')
                 ->and()
-                ->where('gadget_action', 'LoginBox')
+                ->where('action', 'LoginBox')
                 ->fetchOne();
             if (!Jaws_Error::IsError($exists) && empty($exists)) {
                 $elModel = $this->gadget->model->loadAdmin('Elements');
-                $elModel->NewElement(false, 'main', 'Users', 'LoginBox', null, 'Login', 2, $user);
+                $elModel->NewElement(
+                    'Layout',
+                    null,
+                    'main',
+                    'Users',
+                    'LoginBox',
+                    null,
+                    'Login',
+                    2,
+                    $user
+                );
             }
         }
 

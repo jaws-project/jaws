@@ -49,8 +49,12 @@ class Layout_Installer extends Jaws_Gadget_Installer
         $elementModel = $this->gadget->model->loadAdmin('Elements');
         $result = $layoutModel->GetLayoutItems();
         if (!Jaws_Error::IsError($result) && empty($result)) {
-            $elementModel->NewElement(false, 'main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1);
-            $elementModel->NewElement(false, 'bar1', 'Users', 'LoginBox', null, 'Login', 1);
+            $elementModel->NewElement(
+                'Layout', null, 'main', '[REQUESTEDGADGET]', '[REQUESTEDACTION]', null, '', 1
+            );
+            $elementModel->NewElement(
+                'Layout', null, 'bar1', 'Users', 'LoginBox', null, 'Login', 1
+            );
         }
 
         if (!empty($input_schema)) {
@@ -90,7 +94,21 @@ class Layout_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '3.0.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '2.0.0.xml');
+            $result = $this->installSchema('3.0.0.xml', '', '2.0.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
+        if (version_compare($old, '3.1.0', '<')) {
+            $result = $this->installSchema('3.1.0.xml', '', '3.0.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
+        if (version_compare($old, '4.0.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '3.1.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }

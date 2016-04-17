@@ -19,6 +19,12 @@
         </field>
 
         <field>
+            <name>index</name>
+            <type>boolean</type>
+            <default>false</default>
+        </field>
+
+        <field>
             <name>title</name>
             <type>text</type>
             <length>128</length>
@@ -46,28 +52,33 @@
 
         <field>
             <name>action</name>
+            <was>gadget_action</was>
             <type>text</type>
             <length>32</length>
         </field>
 
         <field>
             <name>params</name>
+            <was>action_params</was>
             <type>text</type>
         </field>
 
         <field>
             <name>filename</name>
+            <was>action_filename</was>
             <type>text</type>
             <length>32</length>
         </field>
 
         <field>
             <name>when</name>
+            <was>display_when</was>
             <type>text</type>
         </field>
 
         <field>
             <name>position</name>
+            <was>layout_position</was>
             <type>integer</type>
         </field>
 
