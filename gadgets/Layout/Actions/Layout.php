@@ -264,10 +264,24 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_layout', _t('LAYOUT_LAYOUT'));
         $layouts =& Piwi::CreateWidget('Combo', 'layout');
         $layouts->setID('layout');
-        $layouts->AddOption(_t('LAYOUT_LAYOUT_DEFAULT'), 'Layout');
-        if (isset($themes[$theme_locality][$theme_name]) && $themes[$theme_locality][$theme_name]['index']) {
-            $layouts->AddOption(_t('LAYOUT_LAYOUT_INDEX'), 'Index');
+        if (isset($themes[$theme_locality][$theme_name])) {
+            $theme_layouts = array_flip(
+                array_map(
+                    'basename',
+                    glob(($theme_locality? JAWS_BASE_THEMES : JAWS_THEMES). $theme_name. '/*.html')
+                )
+            );
+            $layouts->AddOption(_t('LAYOUT_LAYOUT_DEFAULT'), 'Layout');
+            if (isset($theme_layouts['Index.html'])) {
+                $layouts->AddOption(_t('LAYOUT_LAYOUT_INDEX'), 'Index');
+            }
+            unset($theme_layouts['Layout.html'], $theme_layouts['Index.html']);
+            foreach ($theme_layouts as $theme_layout => $temp) {
+                $theme_layout = basename($theme_layout, '.html');
+                $layouts->AddOption($theme_layout, $theme_layout);
+            }
         }
+        
         $layouts->SetDefault($layout);
         $layouts->AddEvent(ON_CHANGE, "layoutControlsSubmit(this);");
         $tpl->SetVariable('layouts_combo', $layouts->Get());
