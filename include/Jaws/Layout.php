@@ -77,12 +77,12 @@ class Jaws_Layout
     var $_Languages = array();
 
     /**
-     * Index layout
+     * Layout name
      *
      * @access  private
-     * @var     bool
+     * @var     string
      */
-    private $IndexLayout = false;
+    private $layout = 'Layout';
 
     /**
      * Site attributes
@@ -160,9 +160,25 @@ class Jaws_Layout
             }
 
             $layout_path = $theme['path'];
-            $this->IndexLayout = $GLOBALS['app']->mainIndex && $theme['index'];
             if (empty($layout_file)) {
-                $layout_file = $this->IndexLayout? 'index.html' : 'layout.html';
+                if ($GLOBALS['app']->mainIndex) {
+                    if (@is_file($layout_path. 'Index.html')) {
+                        $layout_file = 'Index.html';
+                    } else {
+                        $layout_file = 'Layout.html';
+                    }
+                } else {
+                    $gadget = $GLOBALS['app']->mainGadget;
+                    $action = $GLOBALS['app']->mainAction;
+                    if (@is_file($layout_path. "$gadget.$action.html")) {
+                        $layout_file = "$gadget.$action.html";
+                    } elseif (@is_file($layout_path. "$gadget.html")) {
+                        $layout_file = "$gadget.html";
+                    } else {
+                        $layout_file = 'Layout.html';
+                    }
+                }
+                $this->layout = basename($layout_file, '.html');
             }
         }
 
@@ -446,7 +462,7 @@ class Jaws_Layout
 
             return $layoutModel->GetLayoutItems(
                 $GLOBALS['app']->Session->GetAttribute('layout'),
-                $this->IndexLayout? 'Index' : 'Layout',
+                $this->layout,
                 true
             );
         }
