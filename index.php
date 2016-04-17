@@ -95,7 +95,6 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
 $GLOBALS['app']->mainIndex = $IsIndex;
 // Init layout...
 $GLOBALS['app']->InstanceLayout();
-$GLOBALS['app']->Layout->Load();
 
 // Run auto-load methods before standalone actions too
 $GLOBALS['app']->RunAutoload();
@@ -119,6 +118,7 @@ if (empty($ReqError)) {
 }
 
 if (!$IsReqActionStandAlone) {
+    $GLOBALS['app']->Layout->Load();
     $GLOBALS['app']->Layout->Populate($ReqResult, $AccessToWebsiteDenied);
     $ReqResult = $GLOBALS['app']->Layout->Get();
 }
