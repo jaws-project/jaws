@@ -446,19 +446,19 @@ class Jaws_Layout
 
             return $layoutModel->GetLayoutItems(
                 $GLOBALS['app']->Session->GetAttribute('layout'),
-                $this->IndexLayout,
+                $this->IndexLayout? 'Index' : 'Layout',
                 true
             );
         }
 
         $items = array();
         $items[] = array(
-            'id'              => null,
-            'gadget'          => '[REQUESTEDGADGET]',
-            'gadget_action'   => '[REQUESTEDACTION]',
-            'display_when'    => '*',
-            'section'         => 'main',
-            'layout_position' => 0
+            'id'       => null,
+            'gadget'   => '[REQUESTEDGADGET]',
+            'action'   => '[REQUESTEDACTION]',
+            'when'     => '*',
+            'section'  => 'main',
+            'position' => 0
         );
         return $items;
     }
@@ -469,10 +469,10 @@ class Jaws_Layout
      * @access  public
      * @return  bool
      */
-    function IsDisplayable($gadget, $action, $display_when, $index)
+    function IsDisplayable($gadget, $action, $when, $index)
     {
-        $displayWhen = array_filter(explode(',', $display_when));
-        if ($display_when == '*' || ($index && in_array('index', $displayWhen))) {
+        $displayWhen = array_filter(explode(',', $when));
+        if ($when == '*' || ($index && in_array('index', $displayWhen))) {
             return true;
         }
 
@@ -522,22 +522,22 @@ class Jaws_Layout
                         );
                     }
                     $item['gadget'] = $GLOBALS['app']->mainGadget;
-                    $item['gadget_action'] = $GLOBALS['app']->mainAction;
-                    $item['action_params'] = array();
+                    $item['action'] = $GLOBALS['app']->mainAction;
+                    $item['params'] = array();
                     $content = $req_result;
                 } elseif (!$onlyMainAction) {
                     if ($this->IsDisplayable($GLOBALS['app']->mainGadget,
                                              $GLOBALS['app']->mainAction,
-                                             $item['display_when'],
+                                             $item['when'],
                                              $GLOBALS['app']->mainIndex))
                     {
                         if ($GLOBALS['app']->Session->GetPermission($item['gadget'], $default_acl)) {
-                            $item['action_params'] = unserialize($item['action_params']);
+                            $item['params'] = unserialize($item['params']);
                             $content = $this->PutGadget(
                                 $item['gadget'],
-                                $item['gadget_action'],
-                                $item['action_params'],
-                                $item['action_filename'],
+                                $item['action'],
+                                $item['params'],
+                                $item['filename'],
                                 $item['section']
                             );
                         }
@@ -548,16 +548,16 @@ class Jaws_Layout
                     // set gadget,action and first parameter for more customizable view
                     $this->_Template->SetVariable('gadget', strtolower($item['gadget']));
                     $this->_Template->SetVariable(
-                      'gadget_action',
-                      strtolower($item['gadget']. '_'. $item['gadget_action'])
+                      'action',
+                      strtolower($item['gadget']. '_'. $item['action'])
                     );
-                    if (!empty($item['action_params'])) {
+                    if (!empty($item['params'])) {
                       $this->_Template->SetVariable(
                         'gadget_action_params',
-                        strtolower($item['gadget']. '_'. $item['gadget_action']. '_'. $item['action_params'][0]));
+                        strtolower($item['gadget']. '_'. $item['action']. '_'. $item['params'][0]));
                     }
                     // set position in section
-                    $this->_Template->SetVariable('position', $item['layout_position']);
+                    $this->_Template->SetVariable('position', $item['position']);
                     // set action content
                     $this->_Template->SetVariable('ELEMENT', $content."\n");
                 }
