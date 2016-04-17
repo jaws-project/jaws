@@ -295,15 +295,14 @@ class Jaws
             $theme['name'] = $this->theme['name'];
             $theme['locality'] = $this->theme['locality'];
             $theme['path'] = JAWS_THEMES. $this->theme['name'] . '/';
-            if (!is_file($theme['path']. 'layout.html')) {
+            if (!is_file($theme['path']. 'Layout.html')) {
                 $theme['url']    = $this->getThemeURL($this->theme['name'] . '/', $rel_url, true);
                 $theme['path']   = JAWS_BASE_THEMES. $this->theme['name'] . '/';
-                $theme['exists'] = @is_file($theme['path']. 'layout.html');
+                $theme['exists'] = @is_file($theme['path']. 'Layout.html');
             } else {
                 $theme['url']    = $this->getThemeURL($this->theme['name'] . '/', $rel_url);
                 $theme['exists'] = true;
             }
-            $theme['index']  = @is_file($theme['path']. 'index.html');
         }
 
         return $theme;
