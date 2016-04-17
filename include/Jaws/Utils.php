@@ -852,7 +852,6 @@ class Jaws_Utils
             $lThemes = array_flip(array_filter($lThemes));
             foreach($lThemes as $tname => $key) {
                 $themes[0][$tname] = array(
-                    'index' => @is_file(JAWS_THEMES. $tname. '/index.html'),
                     'name'  => $tname,
                     'title' => $tname,
                     'desc'  => '',
@@ -884,7 +883,6 @@ class Jaws_Utils
                 $rThemes = array_flip(array_filter($rThemes));
                 foreach($rThemes as $tname => $key) {
                     $themes[1][$tname] = array(
-                        'index' => @is_file(JAWS_BASE_THEMES. $tname. '/index.html'),
                         'name'  => $tname,
                         'title' => $tname,
                         'desc'  => '',
