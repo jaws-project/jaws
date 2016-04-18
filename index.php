@@ -64,15 +64,19 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
                 $ReqError = '403';
             }
 
-            // set requested gadget
+            $ReqAction = empty($ReqAction)? $objAction->gadget->default_action : $ReqAction;
+            // set requested gadget/action
             $GLOBALS['app']->mainGadget = $ReqGadget;
+            $GLOBALS['app']->mainAction = $ReqAction;
         } else {
             $ReqError = '404';
+            $ReqGadget = null;
+            $ReqAction = null;
         }
     }
 
     // if action not a global action and site is protected, so request redirected to login page
-    if ($AccessToWebsiteDenied && (empty($ReqGadget) || !$objAction->getAttribute($ReqAction, 'global'))) {
+    if ($AccessToWebsiteDenied && (empty($objAction) || !$objAction->getAttribute($ReqAction, 'global'))) {
         $ReqGadget = 'Users';
         $ReqAction = 'LoginBox';
         $objAction = Jaws_Gadget::getInstance($ReqGadget)->action->load();
@@ -83,6 +87,7 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
         $ReqError = '';
         // set requested gadget
         $GLOBALS['app']->mainGadget = $ReqGadget;
+        $GLOBALS['app']->mainAction = $ReqAction;
 
     }
 } else {
@@ -95,6 +100,7 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
 $GLOBALS['app']->mainIndex = $IsIndex;
 // Init layout...
 $GLOBALS['app']->InstanceLayout();
+$GLOBALS['app']->Layout->Load();
 
 // Run auto-load methods before standalone actions too
 $GLOBALS['app']->RunAutoload();
@@ -118,7 +124,6 @@ if (empty($ReqError)) {
 }
 
 if (!$IsReqActionStandAlone) {
-    $GLOBALS['app']->Layout->Load();
     $GLOBALS['app']->Layout->Populate($ReqResult, $AccessToWebsiteDenied);
     $ReqResult = $GLOBALS['app']->Layout->Get();
 }

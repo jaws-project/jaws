@@ -246,13 +246,6 @@ class Jaws_Gadget_Action
      */
     public function Execute(&$action)
     {
-        if (empty($action)) {
-            $action = (JAWS_SCRIPT == 'index')? $this->gadget->default_action : $this->gadget->default_admin_action;
-        }
-
-        // set requested action
-        $GLOBALS['app']->mainAction = $action;
-
         if (false === $action) {
             return Jaws_Error::raiseError(_t('GLOBAL_ACTION_NO_DEFAULT'), __FUNCTION__);
         }

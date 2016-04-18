@@ -109,13 +109,16 @@ $GLOBALS['app']->Session->CheckPermission('ControlPanel', 'default_admin');
 
 if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
     $GLOBALS['app']->Session->CheckPermission($ReqGadget, 'default_admin');
-    $goGadget = Jaws_Gadget::getInstance($ReqGadget)->action->loadAdmin();
-    if (Jaws_Error::IsError($goGadget)) {
+    $objAction = Jaws_Gadget::getInstance($ReqGadget)->action->loadAdmin();
+    if (Jaws_Error::IsError($objAction)) {
         Jaws_Error::Fatal("Error loading gadget: $ReqGadget");
     }
 
-    // set requested gadget
+    $ReqAction = empty($ReqAction)? $objAction->gadget->default_admin_action : $ReqAction;
+    // set requested gadget/action
     $GLOBALS['app']->mainGadget = $ReqGadget;
+    $GLOBALS['app']->mainAction = $ReqAction;
+
     // Init layout
     $GLOBALS['app']->InstanceLayout();
 
@@ -123,19 +126,19 @@ if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
     if (!$GLOBALS['app']->Session->extraCheck()) {
         $ReqResult = Jaws_HTTPError::Get(403);
     } else {
-        $ReqResult = $goGadget->Execute($ReqAction);
+        $ReqResult = $objAction->Execute($ReqAction);
         if (Jaws_Error::IsError($ReqResult)) {
             Jaws_Error::Fatal($ReqResult->getMessage());
         }
     }
 
-    $IsReqActionStandAlone = $goGadget->IsStandAloneAdmin($ReqAction);
+    $IsReqActionStandAlone = $objAction->IsStandAloneAdmin($ReqAction);
     if (!$IsReqActionStandAlone) {
         // Load ControlPanel header
         $GLOBALS['app']->Layout->LoadControlPanelHead();
         $GLOBALS['app']->Layout->Populate($ReqResult);
         $GLOBALS['app']->Layout->AddHeadLink(
-            'gadgets/'.$ReqGadget.'/Resources/style.css?'.$goGadget->gadget->version,
+            'gadgets/'.$ReqGadget.'/Resources/style.css?'.$objAction->gadget->version,
             'stylesheet',
             'text/css'
         );
