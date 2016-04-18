@@ -73,7 +73,7 @@ class Layout_Model_Admin_Sections extends Layout_Model_Layout
     function DeleteLayout($layout, $user = 0)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
-        $lyTable->delete()-where('layout', $layout);
+        $lyTable->delete()->where('layout', $layout);
         if (!empty($user)) {
             $lyTable->and()->where('user', (int)$user);
         }
