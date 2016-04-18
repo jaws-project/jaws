@@ -21,7 +21,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('http_auth', 'false'),
         array('realm', 'Jaws Control Panel'),
         array('key', ''),
-        array('theme', 'N;', true),
+        array('theme', 'N;'),
         array('theme_variables', '', true),
         array('date_format', 'd MN Y', true),
         array('calendar', 'Gregorian', true),
@@ -274,6 +274,22 @@ class Settings_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('parent', '');
             // ACL keys
             $this->gadget->acl->insert('ManageSiteStatus');
+        }
+
+        if (version_compare($old, '1.3.0', '<')) {
+            $this->gadget->registry->update('theme', null, false);
+            $result = Jaws_ORM::getInstance()
+                ->table('registry')
+                ->delete()
+                ->where('component', 'Settings')
+                ->and()
+                ->where('key_name', 'theme')
+                ->and()
+                ->where('user', 0, '<>')
+                ->exec();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         return true;
