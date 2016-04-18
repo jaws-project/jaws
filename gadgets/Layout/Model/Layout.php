@@ -15,7 +15,7 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
      * Get the layout items
      *
      * @access  public
-     * @param   bool    $layout     Layout name
+     * @param   string  $layout     Layout name
      * @param   bool    $published  Publish status
      * @return  array   Returns an array with the layout items or Jaws_Error on failure
      */
@@ -35,81 +35,58 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
         if (!is_null($published)) {
             $lyTable->and()->where('published', (bool)$published);
         }
-        $items = $lyTable->orderBy('position asc')->fetchAll();
-        if (!Jaws_Error::isError($items) && ($layout != 'Layout')) {
-            array_unshift(
-                $items,
-                array(
-                    'id'       => null,
-                    'gadget'   => '[REQUESTEDGADGET]',
-                    'action'   => '[REQUESTEDACTION]',
-                    'params'   => '',
-                    'filename' => '',
-                    'when'     => '*',
-                    'section'  => 'main',
-                    'position' => 0,
-                )
-            );
-        }
 
-        return $items;
+        return $lyTable->orderBy('position asc')->fetchAll();
     }
 
     /**
-     * Switch between layouts
+     * Initialize a layout
      *
      * @access  public
-     * @param   int     $user   User's ID
-     * @return  void
+     * @param   string  $layout Layout name
+     * @return  mixed   Return true or Jaws_Error on failure
      */
-    function DashboardSwitch($user = 0)
+    function InitialLayout($layout = 'Layout')
     {
-        $lyTable = Jaws_ORM::getInstance()->table('layout');
-        if (!empty($user)) {
-            // REQUESTEDGADGET/REQUESTEDACTION
-            $exists = $lyTable->select('count(id)')
-                ->where('user', (int)$user)
-                ->and()
-                ->where('gadget', '[REQUESTEDGADGET]')
-                ->fetchOne();
-            if (!Jaws_Error::IsError($exists) && empty($exists)) {
-                $elModel = $this->gadget->model->loadAdmin('Elements');
-                $elModel->NewElement(
-                    'Index.Dashboard',
-                    null,
-                    'main',
-                    '[REQUESTEDGADGET]',
-                    '[REQUESTEDACTION]',
-                    null,
-                    '',
-                    1
-                );
-            }
-
-            // Users/LoginBox
-            $exists = $lyTable->select('count(id)')
-                ->where('user', (int)$user)
-                ->and()
-                ->where('gadget', 'Users')
-                ->and()
-                ->where('action', 'LoginBox')
-                ->fetchOne();
-            if (!Jaws_Error::IsError($exists) && empty($exists)) {
-                $elModel = $this->gadget->model->loadAdmin('Elements');
-                $elModel->NewElement(
-                    'Index.Dashboard',
-                    null,
-                    'main',
-                    'Users',
-                    'LoginBox',
-                    null,
-                    'Login',
-                    2
-                );
-            }
+        $user = 0;
+        if ($layout == 'Index.Dashboard') {
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         }
 
-        $GLOBALS['app']->Session->SetAttribute('layout', $user);
+        // REQUESTEDGADGET/REQUESTEDACTION
+        $lyTable = Jaws_ORM::getInstance()->table('layout');
+        $exists = $lyTable->select('count(id)')
+            ->where('layout', $layout)
+            ->and()
+            ->where('user', $user)
+            ->and()
+            ->where('gadget', '[REQUESTEDGADGET]')
+            ->fetchOne();
+        if (Jaws_Error::IsError($exists)) {
+            return $exists;
+        }
+
+        if (empty($exists)) {
+            $elModel = $this->gadget->model->loadAdmin('Elements');
+            $elModel->NewElement(
+                $layout,
+                null,
+                'main',
+                '[REQUESTEDGADGET]',
+                '[REQUESTEDACTION]',
+                null,
+                '',
+                1
+            );
+        }
+
+        if ($layout == 'Index.Dashboard') {
+            $GLOBALS['app']->Session->SetAttribute(
+                'layout',
+                $GLOBALS['app']->Session->GetAttribute('layout')? 0 : $user
+            );
+        }
+
         return true;
     }
 

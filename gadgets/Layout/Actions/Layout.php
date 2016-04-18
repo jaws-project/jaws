@@ -47,6 +47,11 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         }
         $GLOBALS['app']->SetTheme($theme, $theme_locality);
 
+        $result = $this->gadget->model->load('Layout')->InitialLayout($layout);
+        if (Jaws_Error::IsError($result)) {
+            // do nothing!
+        }
+
         $lModel = $this->gadget->model->loadAdmin('Layout');
         $eModel = $this->gadget->model->loadAdmin('Elements');
 

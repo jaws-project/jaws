@@ -105,6 +105,16 @@ class Layout_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+
+            $lyTable = Jaws_ORM::getInstance()->table('layout');
+            $result = $lyTable->update(array('layout' => 'Index.Dashboard'))->where('user', 0, '<>')->exec();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+            $result = $lyTable->update(array('layout' => 'Index'))->where('index', true)->exec();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         if (version_compare($old, '4.0.0', '<')) {
