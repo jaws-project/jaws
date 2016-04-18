@@ -21,7 +21,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
     function MoveElement()
     {
         @list($item, $layout, $old_section, $old_position,
-            $new_section, $new_position, $user
+            $new_section, $new_position
         ) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Elements');
         $result = $model->MoveElement(
@@ -30,8 +30,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             $old_section,
             (int)$old_position,
             $new_section,
-            (int)$new_position,
-            $user
+            (int)$new_position
         );
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
@@ -50,9 +49,9 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
      */
     function DeleteElement()
     {
-        @list($item, $layout, $section, $position, $user) = jaws()->request->fetchAll('post');
+        @list($item, $layout, $section, $position) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Elements');
-        $result = $model->DeleteElement($item, $layout, $section, $position, $user);
+        $result = $model->DeleteElement($item, $layout, $section, $position);
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushLastResponse($result->getMessage(), RESPONSE_ERROR);
         } else {
@@ -103,8 +102,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
                     $action,
                     $params,
                     $actions[$action]['file'],
-                    '',
-                    $user
+                    ''
                 );
                 $id = Jaws_Error::IsError($id)? false : $id;
             }

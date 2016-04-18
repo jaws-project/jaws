@@ -98,8 +98,7 @@ function deleteElement(itemId)
                 itemId,
                 $('#layout').val(),
                 section,
-                position + 1,
-                $('#user').val()
+                position + 1
             ]
         );
         $(".layout-section").sortable('refresh');
@@ -136,8 +135,7 @@ function initUI()
                             $.data(ui.item[0], 'old_section'),            // old section name
                             parseInt($.data(ui.item[0], 'old_position')), // position in old section
                             new_section,                                  // new section name
-                            new_position,                                 // position in new section
-                            $('#user').val()                              // dashboard of user or global layout
+                            new_position                                  // position in new section
                         ]
                     );
                 }
@@ -271,7 +269,7 @@ function saveElementAction(lid, gadget, action, params, title, desc)
     $('#ea' + lid).parent().parent().attr('title', desc);
     LayoutAjax.callAsync(
         'UpdateElementAction',
-        [lid, gadget, action, params, $('#user').val()]
+        [lid, $('#layout').val(), gadget, action, params]
     );
 }
 
@@ -279,7 +277,7 @@ function saveElementAction(lid, gadget, action, params, title, desc)
  * Update display when 
  */
 function saveChangeDW(itemId, dw) {
-    LayoutAjax.callAsync('UpdateDisplayWhen', [itemId, dw, $('#user').val()]);
+    LayoutAjax.callAsync('UpdateDisplayWhen', [itemId, $('#layout').val(), dw]);
     if (dw == '*') {
         $('#dw' + itemId).html(displayAlways);
     } else if (dw.blank()) {

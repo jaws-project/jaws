@@ -19,13 +19,14 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
      */
     function AddLayoutElement()
     {
-        $user = jaws()->request->fetch('user', 'get');
-        // dashboard_user
-        if (empty($user) && $this->gadget->GetPermission('ManageLayout')) {
-            $user = 0;
-        } else {
+        $layout = jaws()->request->fetch('layout', 'get');
+        $layout = empty($layout)? 'Layout' : $layout;
+
+        // check permissions
+        if ($layout == 'Index.Dashboard') {
             $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        } else {
+            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageLayout');
         }
 
         $tpl = $this->gadget->template->load('AddGadget.html');
@@ -220,21 +221,20 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
     function UpdateElementAction() 
     {
         $res = false;
-        @list($item, $gadget, $action, $params, $user) = jaws()->request->fetchAll('post');
-        $params = jaws()->request->fetch('3:array', 'post');
-        // dashboard_user
-        if (empty($user) && $this->gadget->GetPermission('ManageLayout')) {
-            $user = 0;
-        } else {
+        @list($item, $layout, $gadget, $action, $params) = jaws()->request->fetchAll('post');
+        $params = jaws()->request->fetch('4:array', 'post');
+        // check permissions
+        if ($layout == 'Index.Dashboard') {
             $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        } else {
+            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageLayout');
         }
 
         $eModel = $this->gadget->model->loadAdmin('Elements');
         $lModel = $this->gadget->model->loadAdmin('Layout');
         $actions = $eModel->GetGadgetLayoutActions($gadget, true);
         if (isset($actions[$action])) {
-            $res = $lModel->UpdateElementAction($item, $action, $params, $actions[$action]['file'], $user);
+            $res = $lModel->UpdateElementAction($item, $layout, $action, $params, $actions[$action]['file']);
             $res = Jaws_Error::IsError($res)? false : true;
         }
         if ($res === false) {

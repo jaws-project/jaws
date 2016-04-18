@@ -8,5 +8,5 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-$maps[] = array('Layout', 'layout[/{user}]');
+$maps[] = array('Layout', 'layout[/{layout}][/theme/{theme}]');
 $maps[] = array('Dashboard', 'dashboard[/{user}]');

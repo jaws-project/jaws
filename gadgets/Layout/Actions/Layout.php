@@ -18,14 +18,16 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      */
     function Layout()
     {
-        $rqst = jaws()->request->fetch(array('user', 'theme', 'layout'));
+        $rqst = jaws()->request->fetch(array('theme', 'layout'));
         $layout = empty($rqst['layout'])? 'Layout' : $rqst['layout'];
-        // dashboard_user
-        if (empty($rqst['user']) && $this->gadget->GetPermission('ManageLayout')) {
-            $user = 0;
-        } else {
+
+        // check permissions
+        if ($layout == 'Index.Dashboard') {
             $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
             $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        } else {
+            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageLayout');
+            $user = 0;
         }
 
         // theme
@@ -117,7 +119,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
             $fakeLayout->_Template->SetBlock('layout/'.$name);
             $js_section_array = '<script type="text/javascript">items[\''.$name.'\'] = new Array(); sections.push(\''.$name.'\');</script>';
-            $gadgets = $lModel->GetGadgetsInSection($layout, $name, $user);
+            $gadgets = $lModel->GetGadgetsInSection($layout, $name);
             if (!is_array($gadgets)) {
                 continue;
             }
@@ -213,6 +215,14 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('LayoutControls.html');
         $tpl->SetBlock('controls');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
+        $tpl->SetVariable(
+            'layout_layout_url',
+            $this->gadget->urlMap('Layout', array('layout' => '~layout~'))
+        );
+        $tpl->SetVariable(
+            'layout_theme_url',
+            $this->gadget->urlMap('Layout', array('layout' => '~layout~', 'theme' => '~theme~'))
+        );
         $tpl->SetVariable('cp-title', _t('GLOBAL_CONTROLPANEL'));
         $tpl->SetVariable('cp-title-separator', _t('GLOBAL_CONTROLPANEL_TITLE_SEPARATOR'));
         if ($this->gadget->GetPermission('default_admin', '', false, 'ControlPanel')) {
@@ -224,23 +234,6 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $tpl->SetVariable('icon-gadget', 'gadgets/Layout/Resources/images/logo.png');
         $tpl->SetVariable('title-gadget', 'Layout');
         $tpl->SetVariable('layout-url', $this->gadget->urlMap('Layout', array()));
-
-        // dashboards
-        $tpl->SetVariable('lbl_dashboard', _t('LAYOUT_DASHBOARD'));
-        $dashboards =& Piwi::CreateWidget('Combo', 'user');
-        $dashboards->setID('user');
-        if ($this->gadget->GetPermission('ManageLayout')) {
-            $dashboards->AddOption(_t('LAYOUT_DASHBOARD_GLOBAL'), 0);
-        }
-        if ($GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard')) {
-            $dashboards->AddOption(
-                _t('LAYOUT_DASHBOARD_USER'),
-                (int)$GLOBALS['app']->Session->GetAttribute('user')
-            );
-        }
-        $dashboards->SetDefault($user);
-        $dashboards->AddEvent(ON_CHANGE, "layoutControlsSubmit(this);");
-        $tpl->SetVariable('dashboards_combo', $dashboards->Get());
 
         // themes
         $tpl->SetVariable('lbl_theme', _t('LAYOUT_THEME'));
@@ -271,24 +264,38 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                     glob(($theme_locality? JAWS_BASE_THEMES : JAWS_THEMES). $theme_name. '/*.html')
                 )
             );
+            // default layout
             $layouts->AddOption(_t('LAYOUT_LAYOUT_DEFAULT'), 'Layout');
+            // index layout
             if (isset($theme_layouts['Index.html'])) {
                 $layouts->AddOption(_t('LAYOUT_LAYOUT_INDEX'), 'Index');
             }
-            unset($theme_layouts['Layout.html'], $theme_layouts['Index.html']);
+            // dashboard layout available if user has permission for use it
+            if ($GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard') &&
+                isset($theme_layouts['Index.Dashboard.html'])
+            ) {
+                $layouts->AddOption(_t('LAYOUT_DASHBOARD'), 'Index.Dashboard');
+            }
+            // unset pre-added layouts
+            unset(
+                $theme_layouts['Layout.html'],
+                $theme_layouts['Index.html'],
+                $theme_layouts['Index.Dashboard.html']
+            );
+            // loop for add other layouts
             foreach ($theme_layouts as $theme_layout => $temp) {
                 $theme_layout = basename($theme_layout, '.html');
                 $layouts->AddOption($theme_layout, $theme_layout);
             }
         }
-        
+
         $layouts->SetDefault($layout);
         $layouts->AddEvent(ON_CHANGE, "layoutControlsSubmit(this);");
         $tpl->SetVariable('layouts_combo', $layouts->Get());
 
         $add =& Piwi::CreateWidget('Button', 'add', _t('LAYOUT_NEW'), STOCK_ADD);
         $url = $GLOBALS['app']->getSiteURL('/').
-            BASE_SCRIPT. '?gadget=Layout&amp;action=AddLayoutElement&amp;user='. $user;
+            BASE_SCRIPT. '?gadget=Layout&amp;action=AddLayoutElement&amp;layout='. $layout;
         $add->AddEvent(ON_CLICK, "addGadget('".$url."', '"._t('LAYOUT_NEW')."');");
         $tpl->SetVariable('add_gadget', $add->Get());
 
@@ -331,7 +338,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         // Verify blocks/Reassign gadgets
         $model = $this->gadget->model->loadAdmin('Sections');
-        $layouts = $model->GetLayoutLayouts($user);
+        $layouts = $model->GetLayouts();
         if (Jaws_Error::IsError($layouts)) {
             $GLOBALS['app']->Session->PushLastResponse($layouts->getMessage(), RESPONSE_ERROR);
             return false;
@@ -339,7 +346,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         foreach ($layouts as $layout) {
             if (!file_exists($layout_path. "/$layout.html")) {
-                $model->DeleteLayouts($layout);
+                $model->DeleteLayout($layout);
             } else {
                 $tpl = $this->gadget->template->load("$layout_path/$layout.html");
                 $sections = $model->GetLayoutSections($layout);

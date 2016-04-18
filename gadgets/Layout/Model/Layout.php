@@ -15,13 +15,17 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
      * Get the layout items
      *
      * @access  public
-     * @param   int     $user       User's ID
      * @param   bool    $layout     Layout name
      * @param   bool    $published  Publish status
      * @return  array   Returns an array with the layout items or Jaws_Error on failure
      */
-    function GetLayoutItems($user = 0, $layout = 'Layout', $published = null)
+    function GetLayoutItems($layout = 'Layout', $published = null)
     {
+        $user = 0;
+        if ($layout == 'Index.Dashboard') {
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        }
+
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->select(
             'id', 'title', 'gadget', 'action', 'params',
@@ -71,15 +75,14 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
             if (!Jaws_Error::IsError($exists) && empty($exists)) {
                 $elModel = $this->gadget->model->loadAdmin('Elements');
                 $elModel->NewElement(
-                    'Layout',
+                    'Index.Dashboard',
                     null,
                     'main',
                     '[REQUESTEDGADGET]',
                     '[REQUESTEDACTION]',
                     null,
                     '',
-                    1,
-                    $user
+                    1
                 );
             }
 
@@ -94,15 +97,14 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
             if (!Jaws_Error::IsError($exists) && empty($exists)) {
                 $elModel = $this->gadget->model->loadAdmin('Elements');
                 $elModel->NewElement(
-                    'Layout',
+                    'Index.Dashboard',
                     null,
                     'main',
                     'Users',
                     'LoginBox',
                     null,
                     'Login',
-                    2,
-                    $user
+                    2
                 );
             }
         }

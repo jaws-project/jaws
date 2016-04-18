@@ -40,8 +40,13 @@ class Layout_Model_Admin_Layout extends Jaws_Gadget_Model
      * @param   string  $section    Section to search
      * @return  array   Returns an array of gadgets that are in a section and false on error
      */
-    function GetGadgetsInSection($layout, $section, $user = 0)
+    function GetGadgetsInSection($layout, $section)
     {
+        $user = 0;
+        if ($layout == 'Index.Dashboard') {
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        }
+
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->select('id', 'gadget', 'action', 'when', 'position', 'published')
             ->where('user', (int)$user)
@@ -65,20 +70,24 @@ class Layout_Model_Admin_Layout extends Jaws_Gadget_Model
         return $lyTable->delete()->where('gadget', $gadget)->exec();
     }
 
-
     /**
      * Edit layout's element action
      *
      * @access  public
      * @param   int     $item       Item ID
+     * @param   string  $layout     Layout name
      * @params  string  $action     Action's name
      * @param   string  $params     Action's params
-     * @param   string  $filename   Filename that contant action method
-     * @param   int     $user       (Optional) User's ID
+     * @param   string  $filename   Filename that include action method
      * @return  array   Response
      */
-    function UpdateElementAction($item, $action, $params, $filename, $user = 0)
+    function UpdateElementAction($item, $layout, $action, $params, $filename)
     {
+        $user = 0;
+        if ($layout == 'Index.Dashboard') {
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        }
+
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->update(array(
             'action'   => $action,

@@ -99,17 +99,16 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
      */
     function UpdateDisplayWhen() 
     {
-        @list($item, $dw, $user) = jaws()->request->fetchAll('post');
-        // dashboard_user
-        if (empty($user) && $this->gadget->GetPermission('ManageLayout')) {
-            $user = 0;
-        } else {
+        @list($item, $layout, $dw) = jaws()->request->fetchAll('post');
+        // check permissions
+        if ($layout == 'Index.Dashboard') {
             $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        } else {
+            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageLayout');
         }
 
         $model = $this->gadget->model->loadAdmin('Elements');
-        $res = $model->UpdateDisplayWhen($item, $dw, $user);
+        $res = $model->UpdateDisplayWhen($item, $layout, $dw);
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_CHANGE_WHEN'), RESPONSE_ERROR);
         } else {
