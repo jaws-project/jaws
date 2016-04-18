@@ -7,10 +7,9 @@
         var layout_theme_url  = '{{layout_theme_url}}';
         if (sender.id != 'theme') {
             window.location = layout_layout_url.replace('~layout~', $('#layout').val());
-            return;
+        } else {
+            window.location = layout_theme_url.replace('~theme~', $('#theme').val());
         }
-        layout_theme_url = layout_theme_url.replace('~layout~', $('#layout').val());
-        window.location = layout_theme_url.replace('~theme~', $('#theme').val());
     }
     </script>
     <table style="width: 100%;border-collapse:collapse; border-spacing: 0;">

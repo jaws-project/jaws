@@ -252,10 +252,9 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $id     Element ID
-     * @param   int     $user   (Optional) User's ID
      * @return  array   Returns an array with the properties of an element and false on error
      */
-    function GetElement($id, $user = 0)
+    function GetElement($id)
     {
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->select(
@@ -263,7 +262,6 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
             'when', 'position', 'section', 'published'
         );
         return $lyTable->where('id', $id)->fetchRow();
-        //return $lyTable->where('id', $id)->and()->where('user', (int)$user)->fetchRow();
     }
 
 }

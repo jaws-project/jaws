@@ -19,21 +19,14 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
      */
     function DisplayWhen()
     {
-        $rqst = jaws()->request->fetch(array('id', 'user'), 'get');
-        // dashboard_user
-        if (empty($rqst['user']) && $this->gadget->GetPermission('ManageLayout')) {
-            $user = 0;
-        } else {
-            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        }
+        $rqst = jaws()->request->fetch(array('id', 'layout'), 'get');
+        $layout = empty($rqst['layout'])? 'Layout' : $rqst['layout'];
 
-        // fetch current layout user
-        $layout_user = $GLOBALS['app']->Session->GetAttribute('layout');
-        if (empty($layout_user)) {
-            $this->gadget->CheckPermission('ManageLayout');
-        } else {
+        // check permissions
+        if ($layout == 'Index.Dashboard') {
             $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
+        } else {
+            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageLayout');
         }
 
         $model = $this->gadget->model->loadAdmin('Elements');
@@ -52,7 +45,7 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('lbl_when', _t('LAYOUT_DISPLAY'));
 
-        $layoutElement = $model->GetElement($rqst['id'], $user);
+        $layoutElement = $model->GetElement($rqst['id']);
         if (is_array($layoutElement) && !empty($layoutElement)) {
             $dw_value = $layoutElement['when'];
         }

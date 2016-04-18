@@ -32,20 +32,16 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         // theme
         @list($rqst['theme'], $rqst['locality']) = explode(',', $rqst['theme']);
-        $default_theme = unserialize($this->gadget->registry->fetchByUser('theme', 'Settings', $user));
-
-        $layoutModel = $this->gadget->model->load('Layout');
-        $layoutModel->DashboardSwitch($user);
-
+        $default_theme = unserialize($this->gadget->registry->fetch('theme', 'Settings'));
         if (empty($rqst['theme']) ||
             ($rqst['locality'] == $default_theme['locality'] && $rqst['theme'] == $default_theme['name'])
         ) {
             $theme = $default_theme['name'];
-            $theme_locality = $default_theme['locality'];
+            $theme_locality = (int)$default_theme['locality'];
         } else {
             $this->gadget->CheckPermission('ManageThemes');
-            $this->UpdateTheme($rqst['theme'], $rqst['locality'], $user);
-            $default_theme = unserialize($this->gadget->registry->fetchByUser('theme', 'Settings', $user));
+            $this->UpdateTheme($rqst['theme'], $rqst['locality']);
+            $default_theme = unserialize($this->gadget->registry->fetch('theme', 'Settings'));
             $theme = $default_theme['name'];
             $theme_locality = $default_theme['locality'];
         }
@@ -92,7 +88,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         $layoutContent = preg_replace(
             '$<body([^>]*)>$i',
-            '<body\1>'. $working_box. $response_box. $this->LayoutBar($theme, $theme_locality, $user, $layout),
+            '<body\1>'. $working_box. $response_box. $this->LayoutBar($theme, $theme_locality, $layout),
             $layoutContent
         );
         $layoutContent = preg_replace('$</body([^>]*)>$i', $dragdrop . '</body\1>', $layoutContent);
@@ -129,7 +125,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                     $t_item->SetBlock('item');
                     $t_item->SetVariable('section_id', $name);
                     $t_item->SetVariable('item_id', $gadget['id']);
-                    $t_item->SetVariable('user', $user);
+                    $t_item->SetVariable('layout', $layout);
                     $t_item->SetVariable('pos', $gadget['position']);
                     $t_item->SetVariable('gadget', _t('LAYOUT_REQUESTED_GADGET'));
                     $t_item->SetVariable('action', '&nbsp;');
@@ -210,7 +206,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      * Layout controls bar 
      *
      */
-    function LayoutBar($theme_name, $theme_locality, $user = 0, $layout = 'Layout')
+    function LayoutBar($theme_name, $theme_locality, $layout = 'Layout')
     {
         $tpl = $this->gadget->template->load('LayoutControls.html');
         $tpl->SetBlock('controls');
@@ -221,7 +217,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         );
         $tpl->SetVariable(
             'layout_theme_url',
-            $this->gadget->urlMap('Layout', array('layout' => '~layout~', 'theme' => '~theme~'))
+            $this->gadget->urlMap('Layout', array('theme' => '~theme~'))
         );
         $tpl->SetVariable('cp-title', _t('GLOBAL_CONTROLPANEL'));
         $tpl->SetVariable('cp-title-separator', _t('GLOBAL_CONTROLPANEL_TITLE_SEPARATOR'));
@@ -316,7 +312,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
      *
      *
      */
-    function UpdateTheme($theme, $theme_locality, $user)
+    function UpdateTheme($theme, $theme_locality)
     {
         $theme = preg_replace('/[^[:alnum:]_\-]/', '', $theme);
         $layout_path = ($theme_locality == 0? JAWS_THEMES : JAWS_BASE_THEMES). $theme;
@@ -363,11 +359,11 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
             }
         }
 
-        $this->gadget->registry->updateByUser(
+        $this->gadget->registry->update(
             'theme',
             serialize(array('name' => $theme, 'locality' => $theme_locality)),
-            'Settings',
-            $user
+            null,
+            'Settings'
         );
         $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_THEME_CHANGED'), RESPONSE_NOTICE);
     }

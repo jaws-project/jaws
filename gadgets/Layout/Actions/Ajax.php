@@ -84,16 +84,14 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
     {
         $res = array();
         $id = false;
-        @list($gadget, $action, $params, $layout, $user) = jaws()->request->fetchAll('post');
+        @list($gadget, $action, $params, $layout) = jaws()->request->fetchAll('post');
         $params = jaws()->request->fetch('2:array', 'post');
         $model = $this->gadget->model->loadAdmin('Elements');
         $actions = $model->GetGadgetLayoutActions($gadget, true);
         if (isset($actions[$action])) {
-            $user = (int)$user;
-            $loggedUser = (int)$GLOBALS['app']->Session->GetAttribute('user');
-            if (($user == 0 && $this->gadget->GetPermission('ManageLayout')) ||
-                ($user == $loggedUser && $GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard'))
-            ) {
+            // check permissions
+            $layoutACL = ($layout == 'Index.Dashboard')? 'ManageDashboard' : 'ManageLayout';
+            if ($GLOBALS['app']->Session->GetPermission('Users', $layoutACL)) {
                 $id = $model->NewElement(
                     $layout,
                     null,
@@ -112,7 +110,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_ELEMENT_ADDED'), RESPONSE_ERROR);
             $res['success'] = false;
         } else {
-            $el = $model->GetElement($id, $user);
+            $el = $model->GetElement($id);
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ELEMENT_ADDED'), RESPONSE_NOTICE);
             $info = Jaws_Gadget::getInstance($gadget);
             $el['tname'] = $info->title;
@@ -125,7 +123,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             }
 
             $el['eaid'] = 'ea'.$id;
-            $url_ea = BASE_SCRIPT. '?gadget=Layout&action=ElementAction&id='.$id.'&user='.$user;
+            $url_ea = BASE_SCRIPT. '?gadget=Layout&action=ElementAction&id='.$id.'&layout='.$layout;
             $el['eaonclick'] = "elementAction('$url_ea');";
             unset($info);
             $el['icon']      = 'gadgets/'.$gadget.'/Resources/images/logo.png';
@@ -135,7 +133,7 @@ class Layout_Actions_Ajax extends Jaws_Gadget_Action
             $el['dwtitle']   = _t('LAYOUT_CHANGE_DW');
             $el['dwdisplay'] = _t('LAYOUT_DISPLAY_IN') . ': ';
             $el['dwid'] = 'dw'.$id;
-            $url_dw = BASE_SCRIPT. '?gadget=Layout&action=DisplayWhen&id='.$id.'&user='.$user;
+            $url_dw = BASE_SCRIPT. '?gadget=Layout&action=DisplayWhen&id='.$id.'&layout='.$layout;
             $el['dwonclick'] = "displayWhen('$url_dw');";
             $res = $el;
             $res['success'] = true;

@@ -238,7 +238,7 @@ function addGadgetToLayout(gadget, action, params)
     params = (params == null)? null : params.split(',');
     LayoutAjax.callAsync(
         'AddGadget',
-        [gadget, action, params, $('#layout').val(), $('#user').val()]
+        [gadget, action, params, $('#layout').val()]
     );
 }
 

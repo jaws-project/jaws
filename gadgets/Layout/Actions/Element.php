@@ -97,17 +97,18 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
      */
     function ElementAction()
     {
-        $rqst = jaws()->request->fetch(array('id', 'user'), 'get');
-        // dashboard_user
-        if (empty($rqst['user']) && $this->gadget->GetPermission('ManageLayout')) {
-            $user = 0;
-        } else {
+        $rqst = jaws()->request->fetch(array('id', 'layout'), 'get');
+        $layout = empty($rqst['layout'])? 'Layout' : $rqst['layout'];
+
+        // check permissions
+        if ($layout == 'Index.Dashboard') {
             $GLOBALS['app']->Session->CheckPermission('Users', 'ManageDashboard');
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        } else {
+            $GLOBALS['app']->Session->CheckPermission('Users', 'ManageLayout');
         }
 
         $model = $this->gadget->model->loadAdmin('Elements');
-        $layoutElement = $model->GetElement($rqst['id'], $user);
+        $layoutElement = $model->GetElement($rqst['id']);
         if (!$layoutElement || !isset($layoutElement['id'])) {
             return false;
         }
