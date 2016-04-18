@@ -162,7 +162,12 @@ class Jaws_Layout
             $layout_path = $theme['path'];
             if (empty($layout_file)) {
                 if ($GLOBALS['app']->mainIndex) {
-                    if (@is_file($layout_path. 'Index.html')) {
+                    if ($GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard') &&
+                        $GLOBALS['app']->Session->GetAttribute('layout') &&
+                        @is_file($layout_path. 'Index.Dashboard.html')
+                    ) {
+                        $layout_file = 'Index.Dashboard.html';
+                    } elseif (@is_file($layout_path. 'Index.html')) {
                         $layout_file = 'Index.html';
                     } else {
                         $layout_file = 'Layout.html';
@@ -460,11 +465,7 @@ class Jaws_Layout
                 Jaws_Error::Fatal("Can't load layout model");
             }
 
-            return $layoutModel->GetLayoutItems(
-                $GLOBALS['app']->Session->GetAttribute('layout'),
-                $this->layout,
-                true
-            );
+            return $layoutModel->GetLayoutItems($this->layout, true);
         }
 
         $items = array();
