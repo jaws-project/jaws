@@ -209,7 +209,7 @@ class Jaws
             $user   = $this->Session->GetAttribute('user');
             $layout = $this->Session->GetAttribute('layout');
             $this->_Preferences = array(
-                'theme'    => unserialize($this->Registry->fetchByUser($layout, 'theme',    'Settings')),
+                'theme'    => unserialize($this->Registry->fetch('theme', 'Settings')),
                 'editor'   => $this->Registry->fetchByUser($user,   'editor',   'Settings'),
                 'timezone' => $this->Registry->fetchByUser($user,   'timezone', 'Settings'),
                 'calendar' => $this->Registry->fetchByUser($layout, 'calendar', 'Settings'),
