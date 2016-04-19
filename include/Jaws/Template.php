@@ -40,6 +40,7 @@ class Jaws_Template
     var $globalVariables = array();
 
     var $theme = null;
+    var $layout = '';
     var $rawStore = null;
     var $loadFromTheme = false;
     var $loadRTLDirection = null;
@@ -72,7 +73,9 @@ class Jaws_Template
 
         if ($loadGlobalVariables) {
             $this->loadFromTheme = $loadFromTheme;
-            $this->theme = $GLOBALS['app']->GetTheme();
+            $this->theme  = $GLOBALS['app']->GetTheme();
+            $layout = $GLOBALS['app']->Layout->GetLayoutName(). '/';
+            $this->layout = @is_dir($this->theme['path'] . $layout)? $layout : '';
             $browser = $GLOBALS['app']->GetBrowserFlag();
 
             $this->globalVariables['theme_url']   = $this->theme['url'];
@@ -113,8 +116,10 @@ class Jaws_Template
         $fileName = substr($fname, 0, -strlen($fileExtn));
 
         // load from theme
-        if ($this->loadFromTheme && file_exists($this->theme['path']. $filePath. '/'. $fname)) {
-            $filePath = $this->theme['path']. $filePath;
+        if ($this->loadFromTheme) {
+            if (file_exists($this->theme['path']. $this->layout. $filePath. '/'. $fname)) {
+                $filePath = $this->theme['path']. $this->layout. $filePath;
+            }
         }
 
         $prefix  = '';

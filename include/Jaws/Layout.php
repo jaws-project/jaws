@@ -330,6 +330,17 @@ class Jaws_Layout
     }
 
     /**
+     * Gets current layout name
+     *
+     * @access  public
+     * @return  string  Layout name
+     */
+    function GetLayoutName()
+    {
+        return $this->layout;
+    }
+
+    /**
      * Changes the site-title with something else
      *
      * @access  public
