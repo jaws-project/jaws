@@ -837,7 +837,7 @@ class Jaws_Utils
              */
             function is_vaild_theme(&$item, $key, $path)
             {
-                if (!file_exists($path . $item . DIRECTORY_SEPARATOR. 'layout.html')) {
+                if (!file_exists($path . $item . DIRECTORY_SEPARATOR. 'Layout.html')) {
                     $item = '';
                 }
                 return true;
