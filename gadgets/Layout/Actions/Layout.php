@@ -321,7 +321,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
     {
         $theme = preg_replace('/[^[:alnum:]_\-]/', '', $theme);
         $layout_path = ($theme_locality == 0? JAWS_THEMES : JAWS_BASE_THEMES). $theme;
-        $tpl = $this->gadget->template->load("$layout_path/layout.html");
+        $tpl = $this->gadget->template->load("$layout_path/Layout.html");
 
         // Validate theme
         if (!isset($tpl->Blocks['layout'])) {
