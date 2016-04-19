@@ -576,7 +576,7 @@ class Jaws_Layout
                     // set gadget,action and first parameter for more customizable view
                     $this->_Template->SetVariable('gadget', strtolower($item['gadget']));
                     $this->_Template->SetVariable(
-                      'action',
+                      'gadget_action',
                       strtolower($item['gadget']. '_'. $item['action'])
                     );
                     if (!empty($item['params'])) {
