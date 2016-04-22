@@ -44,7 +44,9 @@ var LayoutCallback = {
             );
             dItem.append(
                 $('<div>').attr('class', 'item-delete').append(
-                    $('<a>').attr('href', 'javascript:void(0);').on('click', response['delete']).append(
+                    $('<a>').attr('href', 'javascript:void(0);').click(
+                        function() {deleteElement(response['id']);}
+                    ).append(
                         $('<img>').attr('src', response['deleteimg'])
                     )
                 )
@@ -57,19 +59,25 @@ var LayoutCallback = {
                     $('<a>').attr({
                         'id': response['eaid'],
                         'name': response['eaid'],
-                        'href': 'javascript:void(0);',
-                        'title': response['tactiondesc']
-                    }).on('click', response['eaonclick'])
+                        'href': 'javascript:void(0);'
+                    }).text(
+                        response['taction']
+                    ).click(function() {elementAction(response['eaonclick']);})
                 )
             );
             dItem.append(
-                $('<div>').attr('class', 'item-dw').text(response['dwalways']).append(
+                $('<div>').attr('class', 'item-dw').append(
+                    /*$('label').text(response['dwdisplay'])*/
+                    response['dwdisplay']
+                ).append(
                     $('<a>').attr({
                         'id': response['dwid'],
                         'name': response['dwid'],
                         'href': 'javascript:void(0);',
                         'title': response['dwtitle']
-                    }).on('click', response['dwonclick'])
+                    }).text(
+                        response['dwalways']
+                    ).click(function(){displayWhen(response['dwonclick']);})
                 )
             );
 
