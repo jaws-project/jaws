@@ -484,6 +484,8 @@ class Jaws_Layout
             'id'       => null,
             'gadget'   => '[REQUESTEDGADGET]',
             'action'   => '[REQUESTEDACTION]',
+            'params'   => '',
+            'filename' => '',
             'when'     => '*',
             'section'  => 'main',
             'position' => 0
