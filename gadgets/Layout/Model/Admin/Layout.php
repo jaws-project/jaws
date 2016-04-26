@@ -42,14 +42,14 @@ class Layout_Model_Admin_Layout extends Jaws_Gadget_Model
      */
     function GetGadgetsInSection($layout, $section)
     {
-        $user = 0;
-        if ($layout == 'Index.Dashboard') {
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        }
-
+        $user = ($layout == 'Index.Dashboard')? $this->gadget->user : 0;
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->select('id', 'gadget', 'action', 'when', 'position', 'published')
             ->where('user', (int)$user)
+            ->and()
+            ->where('theme', $this->gadget->theme)
+            ->and()
+            ->where('locality', $this->gadget->locality)
             ->and()
             ->where('layout', $layout)
             ->and()
@@ -83,18 +83,21 @@ class Layout_Model_Admin_Layout extends Jaws_Gadget_Model
      */
     function UpdateElementAction($item, $layout, $action, $params, $filename)
     {
-        $user = 0;
-        if ($layout == 'Index.Dashboard') {
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        }
-
+        $user = ($layout == 'Index.Dashboard')? $this->gadget->user : 0;
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->update(array(
             'action'   => $action,
             'params'   => serialize($params),
             'filename' => (string)$filename
         ));
-        return $lyTable->where('id', $item)->and()->where('user', (int)$user)->exec();
+        return $lyTable->where('id', $item)
+            ->and()
+            ->where('user', $user)
+            ->and()
+            ->where('theme', $this->gadget->theme)
+            ->and()
+            ->where('locality', $this->gadget->locality)
+            ->exec();
     }
 
     /**

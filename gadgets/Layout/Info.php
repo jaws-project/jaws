@@ -43,4 +43,44 @@ class Layout_Info extends Jaws_Gadget
      */
     var $default_admin_action = 'Layout';
 
+    /**
+     * Logged user ID(readonly)
+     *
+     * @var     int
+     * @access  public
+     */
+    public $user = 0; // readonly
+
+    /**
+     * Loaded theme name(readonly)
+     *
+     * @var     string
+     * @access  public
+     */
+    public $theme = 0; // readonly
+
+    /**
+     * Locality of loaded theme(readonly)
+     *
+     * @var     int
+     * @access  public
+     */
+    public $locality = 0; // readonly
+
+    /**
+     * Constructor
+     *
+     * @access  protected
+     * @param   string  $gadget Gadget's name(filesystem name)
+     * @return  void
+     */
+    protected function __construct($gadget)
+    {
+        parent::__construct($gadget);
+        $this->user     = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $default_theme  = unserialize($GLOBALS['app']->Registry->fetch('theme', 'Settings'));
+        $this->theme    =  $default_theme['name'];
+        $this->locality = (int)$default_theme['locality'];
+    }
+
 }

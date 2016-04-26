@@ -122,6 +122,17 @@ class Layout_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+
+            $lyTable = Jaws_ORM::getInstance()->table('layout');
+            $result = $lyTable->update(
+                array(
+                    'theme'    => $this->gadget->theme,
+                    'locality' => $this->gadget->locality
+                )
+            )->exec();
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         return true;

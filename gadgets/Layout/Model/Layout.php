@@ -21,22 +21,42 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
      */
     function GetLayoutItems($layout = 'Layout', $published = null)
     {
-        $user = 0;
-        if ($layout == 'Index.Dashboard') {
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        }
-
+        $user = ($layout == 'Index.Dashboard')? $this->gadget->user : 0;
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->select(
             'id', 'title', 'gadget', 'action', 'params',
             'filename', 'when', 'section', 'position'
         );
-        $lyTable->where('user', (int)$user)->and()->where('layout', $layout);
+        $lyTable->where('user', $user)
+            ->and()
+            ->where('theme', $this->gadget->theme)
+            ->and()
+            ->where('locality', $this->gadget->locality)
+            ->and()
+            ->where('layout', $layout);
         if (!is_null($published)) {
             $lyTable->and()->where('published', (bool)$published);
         }
+        $elements = $lyTable->orderBy('position asc')->fetchAll();
+        if (Jaws_Error::IsError($elements)) {
+            return $elements;
+        }
 
-        return $lyTable->orderBy('position asc')->fetchAll();
+        if (empty($elements)) {
+            $elements   = array();
+            $elements[] = array(
+                'id'       => null,
+                'gadget'   => '[REQUESTEDGADGET]',
+                'action'   => '[REQUESTEDACTION]',
+                'params'   => '',
+                'filename' => '',
+                'when'     => '*',
+                'section'  => 'main',
+                'position' => 0,
+            );
+        }
+
+        return $elements;
     }
 
     /**
@@ -48,17 +68,17 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
      */
     function InitialLayout($layout = 'Layout')
     {
-        $user = 0;
-        if ($layout == 'Index.Dashboard') {
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        }
-
+        $user = ($layout == 'Index.Dashboard')? $this->gadget->user : 0;
         // REQUESTEDGADGET/REQUESTEDACTION
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $exists = $lyTable->select('count(id)')
-            ->where('layout', $layout)
-            ->and()
             ->where('user', $user)
+            ->and()
+            ->where('theme', $this->gadget->theme)
+            ->and()
+            ->where('locality', $this->gadget->locality)
+            ->and()
+            ->where('layout', $layout)
             ->and()
             ->where('gadget', '[REQUESTEDGADGET]')
             ->fetchOne();

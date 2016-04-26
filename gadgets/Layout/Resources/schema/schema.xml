@@ -25,6 +25,18 @@
         </field>
 
         <field>
+            <name>theme</name>
+            <type>text</type>
+            <length>32</length>
+        </field>
+
+        <field>
+            <name>locality</name>
+            <type>integer</type>
+            <length>1</length>
+        </field>
+
+        <field>
             <name>layout</name>
             <type>text</type>
             <length>32</length>
@@ -88,6 +100,14 @@
             <name><variable>table_prefix</variable>layout_user_layout</name>
             <field>
                 <name>user</name>
+            </field>
+
+            <field>
+                <name>theme</name>
+            </field>
+
+            <field>
+                <name>locality</name>
             </field>
 
             <field>

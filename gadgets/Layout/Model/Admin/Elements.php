@@ -28,15 +28,15 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
     function NewElement($layout, $title, $section,
         $gadget, $action, $params, $filename, $pos = ''
     ) {
-        $user = 0;
-        if ($layout == 'Index.Dashboard') {
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        }
-
+        $user = ($layout == 'Index.Dashboard')? $this->gadget->user : 0;
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         if (empty($pos)) {
             $pos = $lyTable->select('max(position)')
                 ->where('user', $user)
+                ->and()
+                ->where('theme', $this->gadget->theme)
+                ->and()
+                ->where('locality', $this->gadget->locality)
                 ->and()
                 ->where('layout', $layout)
                 ->and()
@@ -50,6 +50,8 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
 
         $lyTable->insert(array(
             'user'      => $user,
+            'theme'     => $this->gadget->theme,
+            'locality'  => $this->gadget->locality,
             'layout'    => $layout,
             'title'     => $title,
             'section'   => $section,
@@ -77,22 +79,22 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      */
     function DeleteElement($id, $layout, $section, $position)
     {
-        $user = 0;
-        if ($layout == 'Index.Dashboard') {
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        }
-
+        $user = ($layout == 'Index.Dashboard')? $this->gadget->user : 0;
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         // begin transaction
         $lyTable->beginTransaction();
-        $result = $lyTable->delete()->where('id', $id)->and()->where('user', (int)$user)->exec();
+        $result = $lyTable->delete()->where('id', $id)->and()->where('user', $user)->exec();
         if (Jaws_Error::IsError($result)) {
             $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_DELETED'));
             return $result;
         }
 
         $result = $lyTable->update(array('position'=>$lyTable->expr('position - ?', 1)))
-            ->where('user', (int)$user)
+            ->where('user', $user)
+            ->and()
+            ->where('theme', $this->gadget->theme)
+            ->and()
+            ->where('locality', $this->gadget->locality)
             ->and()
             ->where('layout', $layout)
             ->and()
@@ -124,11 +126,7 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      */
     function MoveElement($item, $layout, $old_section, $old_position, $new_section, $new_position)
     {
-        $user = 0;
-        if ($layout == 'Index.Dashboard') {
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        }
-
+        $user = ($layout == 'Index.Dashboard')? $this->gadget->user : 0;
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         // begin transaction
         $lyTable->beginTransaction();
@@ -144,7 +142,13 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
             }
         } else {
             $lyTable->update(array('position' => $lyTable->expr('position + ?', 1)));
-            $lyTable->where('user', (int)$user)->and()->where('layout', $layout);
+            $lyTable->where('user', $user)
+                ->and()
+                ->where('theme', $this->gadget->theme)
+                ->and()
+                ->where('locality', $this->gadget->locality)
+                ->and()
+                ->where('layout', $layout);
             $lyTable->and()->where('section', $new_section)->and();
             $lyTable->where('position', $new_position, '>=');
             $result = $lyTable->exec();
@@ -158,7 +162,14 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
             $lyTable->where('position', $old_position, '>');
         }
 
-        $result = $lyTable->and()->where('user', (int)$user)->and()->where('layout', $layout)->exec();
+        $result = $lyTable->and()->where('user', $user)
+            ->and()
+            ->where('theme', $this->gadget->theme)
+            ->and()
+            ->where('locality', $this->gadget->locality)
+            ->and()
+            ->where('layout', $layout)
+            ->exec();
         if (Jaws_Error::IsError($result)) {
             $result->setMessage(_t('LAYOUT_ERROR_ELEMENT_MOVED'));
             return $result;
@@ -170,7 +181,11 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
         ));
         $result = $lyTable->where('id', (int)$item)
             ->and()
-            ->where('user', (int)$user)
+            ->where('user', $user)
+            ->and()
+            ->where('theme', $this->gadget->theme)
+            ->and()
+            ->where('locality', $this->gadget->locality)
             ->and()
             ->where('layout', $layout)
             ->exec();
@@ -195,16 +210,16 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
      */
     function UpdateDisplayWhen($item, $layout, $when)
     {
-        $user = 0;
-        if ($layout == 'Index.Dashboard') {
-            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        }
-
+        $user = ($layout == 'Index.Dashboard')? $this->gadget->user : 0;
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         return $lyTable->update(array('when' => $when))
             ->where('id', $item)
             ->and()
-            ->where('user', (int)$user)
+            ->where('user', $user)
+            ->and()
+            ->where('theme', $this->gadget->theme)
+            ->and()
+            ->where('locality', $this->gadget->locality)
             ->exec();
     }
 

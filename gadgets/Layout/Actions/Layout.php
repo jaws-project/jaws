@@ -41,9 +41,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         } else {
             $this->gadget->CheckPermission('ManageThemes');
             $this->UpdateTheme($rqst['theme'], $rqst['locality']);
-            $default_theme = unserialize($this->gadget->registry->fetch('theme', 'Settings'));
-            $theme = $default_theme['name'];
-            $theme_locality = $default_theme['locality'];
+            Jaws_Header::Location($this->gadget->urlMap('Layout'));
         }
         $GLOBALS['app']->SetTheme($theme, $theme_locality);
 
@@ -335,33 +333,6 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         if (!isset($tpl->Blocks['layout']->InnerBlock['main'])) {
             $GLOBALS['app']->Session->PushLastResponse(_t('LAYOUT_ERROR_NO_BLOCK', $theme, 'main'), RESPONSE_ERROR);
             return false;
-        }
-
-        // Verify blocks/Reassign gadgets
-        $model = $this->gadget->model->loadAdmin('Sections');
-        $layouts = $model->GetLayouts();
-        if (Jaws_Error::IsError($layouts)) {
-            $GLOBALS['app']->Session->PushLastResponse($layouts->getMessage(), RESPONSE_ERROR);
-            return false;
-        }
-
-        foreach ($layouts as $layout) {
-            if (!file_exists($layout_path. "/$layout.html")) {
-                $model->DeleteLayout($layout);
-            } else {
-                $tpl = $this->gadget->template->load("$layout_path/$layout.html");
-                $sections = $model->GetLayoutSections($layout);
-                if (Jaws_Error::IsError($sections)) {
-                    $GLOBALS['app']->Session->PushLastResponse($sections->getMessage(), RESPONSE_ERROR);
-                    return false;
-                }
-
-                foreach ($sections as $section) {
-                    if (!isset($tpl->Blocks['layout']->InnerBlock[$section])) {
-                        $model->MoveSection($layout, $section, 'main');
-                    }
-                }
-            }
         }
 
         $this->gadget->registry->update(
