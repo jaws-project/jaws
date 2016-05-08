@@ -358,6 +358,8 @@ class Jaws_URLMapping
                 foreach ($params as $key => $value) {
                     if (!is_null($value)) {
                         $value = implode('/', array_map('rawurlencode', explode('/', $value)));
+                        // prevent encode comma
+                        $value = str_replace('%2C', ',', $value);
                         $url = str_replace('{' . $key . '}', $value, $url);
                     }
                 }
