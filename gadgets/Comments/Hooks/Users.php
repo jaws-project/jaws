@@ -1,6 +1,6 @@
 <?php
 /**
- * Comments gadget hook
+ * Comments user's activities hook
  *
  * @category    GadgetHook
  * @package     Comments
@@ -8,7 +8,7 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Comments_Hooks_Activity extends Jaws_Gadget_Hook
+class Comments_Hooks_Users extends Jaws_Gadget_Hook
 {
     /**
      * Returns Comments array
