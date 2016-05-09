@@ -1,11 +1,11 @@
 <?php
 /**
- * AddressBook gadget hook
+ * AddressBook user's activities hook
  *
  * @category    GadgetHook
  * @package     AddressBook
  */
-class AddressBook_Hooks_Activity extends Jaws_Gadget_Hook
+class AddressBook_Hooks_Users extends Jaws_Gadget_Hook
 {
     /**
      * Returns public AddressBooks array
