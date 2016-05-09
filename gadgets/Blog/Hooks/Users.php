@@ -8,7 +8,7 @@
  * @copyright  2013-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Blog_Hooks_Activity extends Jaws_Gadget_Hook
+class Blog_Hooks_Users extends Jaws_Gadget_Hook
 {
     /**
      * Returns user's activity array
