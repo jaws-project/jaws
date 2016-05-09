@@ -239,7 +239,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets  = $cmpModel->GetGadgetsList(null, true, true);
         foreach ($gadgets as $gadget => $gInfo) {
-            if (!file_exists($gDir . $gadget. '/Hooks/Activity.php')) {
+            if (!file_exists($gDir . $gadget. '/Hooks/Users.php')) {
                 continue;
             }
 
@@ -247,7 +247,7 @@ class Users_Actions_Profile extends Users_Actions_Default
             if (Jaws_Error::IsError($objGadget)) {
                 continue;
             }
-            $objHook = $objGadget->hook->load('Activity');
+            $objHook = $objGadget->hook->load('Users');
             if (Jaws_Error::IsError($objHook)) {
                 continue;
             }
