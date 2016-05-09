@@ -1,13 +1,13 @@
 <?php
 /**
- * Forums gadget hook
+ * Forums user's activities hook
  *
  * @category    GadgetHook
  * @package     Forums
  * @author      Hamid Reza Aboutalebi <hamid@aboutalebi.com>
  * @copyright   2013-2015 Jaws Development Group
  */
-class Forums_Hooks_Activity extends Jaws_Gadget_Hook
+class Forums_Hooks_Users extends Jaws_Gadget_Hook
 {
     /**
      * Returns public Forums array
