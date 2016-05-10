@@ -261,7 +261,11 @@ class Users_Actions_Profile extends Users_Actions_Default
             $tpl->SetVariable('gadget', _t('USERS_USER_ACTIVITIES_IN_GADGET', $gInfo['title']));
             foreach ($activities as $activity) {
                 $tpl->SetBlock('profile/activity/gadget/item');
-                $tpl->SetVariable('count', $activity['count']);
+                if ($activity['count'] !== false || !is_null($activity['count'])) {
+                    $tpl->SetBlock('profile/activity/gadget/item/count');
+                    $tpl->SetVariable('count', $activity['count']);
+                    $tpl->ParseBlock('profile/activity/gadget/item/count');
+                }
                 $tpl->SetVariable('title', $activity['title']);
                 $tpl->SetVariable('url',   $activity['url']);
                 $tpl->ParseBlock('profile/activity/gadget/item');
