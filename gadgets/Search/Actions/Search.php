@@ -46,9 +46,11 @@ class Search_Actions_Search extends Jaws_Gadget_Action
             array_push($searchableGadgets, _t('GLOBAL_ALL'));
 
             foreach ($searchableGadgets as $gadget) {
-                $info = Jaws_Gadget::getInstance($gadget);
-                if (Jaws_Error::IsError($info)) {
-                    continue;
+                if ($gadget != _t('GLOBAL_ALL')) {
+                    $info = Jaws_Gadget::getInstance($gadget);
+                    if (Jaws_Error::IsError($info)) {
+                        continue;
+                    }
                 }
 
                 $tpl->SetBlock("$block/gadget");
