@@ -161,8 +161,7 @@ class Jaws_Session
                     $existSessions = $this->GetUserSessions($result['id'], true);
                 }
 
-                if (empty($existSessions) || $result['concurrents'] > $existSessions)
-                {
+                if (empty($existSessions) || $result['concurrents'] > $existSessions) {
                     // remove login trying count from session
                     $this->DeleteAttribute('bad_login_count');
                     // create session & cookie
@@ -171,6 +170,17 @@ class Jaws_Session
                     $GLOBALS['app']->Listener->Shout('Session', 'Log', array('Users', 'Login', JAWS_NOTICE));
                     // let everyone know a user has been logged
                     $GLOBALS['app']->Listener->Shout('Session', 'LoginUser', $this->_Attributes);
+                    // check password age
+                    $expPasswordTime = time() - 3600 * (int)$GLOBALS['app']->Registry->fetch('password_max_age', 'Policy');
+                    if ((int)$result['last_password_update'] <= $expPasswordTime) {
+                        $this->PushResponse(
+                            _t('GLOBAL_ERROR_PASSWORD_EXPIRED'),
+                            'Users.Account.Response',
+                            RESPONSE_WARNING
+                        );
+                        Jaws_Header::Location(jaws()->Map->GetURLFor('Users', 'Account'));
+                    }
+
                     return $result;
                 } else {
                     // login conflict event logging
@@ -242,14 +252,29 @@ class Jaws_Session
         $session = $this->GetSession((int)$sid);
         if (is_array($session)) {
             $checksum = md5($session['user'] . $session['data']);
-            $expTime = time() - 60 * (int) $GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy');
 
             $this->_SessionID  = $session['sid'];
             $this->_Attributes = unserialize($session['data']);
             $this->SetAttribute('sid', $this->_SessionID, true);
             $this->referrer    = $session['referrer'];
 
+            // salt & checksum
+            if (($salt !== $this->GetAttribute('salt')) || ($checksum !== $session['checksum'])) {
+                $GLOBALS['app']->Session->Logout();
+                $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Previous session salt has been changed');
+                return false;
+            }
+
+            // browser agent
+            $agent = substr(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
+            if ($agent !== $session['agent']) {
+                $GLOBALS['app']->Session->Logout();
+                $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Previous session agent has been changed');
+                return false;
+            }
+
             // check session longevity
+            $expTime = time() - 60 * (int) $GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy');
             if ($session['updatetime'] < ($expTime - $session['longevity'])) {
                 $GLOBALS['app']->Session->Logout();
                 $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Previous session has expired');
@@ -287,19 +312,15 @@ class Jaws_Session
                 }
             }
 
-            // browser agent
-            $agent = substr(Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']), 0, 252);
-            if ($agent !== $session['agent']) {
-                $GLOBALS['app']->Session->Logout();
-                $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Previous session agent has been changed');
-                return false;
-            }
-
-            // salt & checksum
-            if (($salt !== $this->GetAttribute('salt')) || ($checksum !== $session['checksum'])) {
-                $GLOBALS['app']->Session->Logout();
-                $GLOBALS['log']->Log(JAWS_LOG_NOTICE, 'Previous session salt has been changed');
-                return false;
+            // last password updated time
+            $expPasswordTime = time() - 3600 * (int)$GLOBALS['app']->Registry->fetch('password_max_age', 'Policy');
+            $last_password_updated_time = (int)$this->GetAttribute('last_password_update');
+            if ($last_password_updated_time <= $expPasswordTime) {
+                define('RESTRICTED_SESSION',  true);
+                $GLOBALS['log']->Log(
+                    JAWS_LOG_NOTICE,
+                    'This password is expired, session switched to restricted mode.'
+                );
             }
 
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session was OK');
@@ -334,6 +355,7 @@ class Jaws_Session
             $info['email']      = '';
             $info['url']        = '';
             $info['avatar']     = '';
+            $info['last_password_update'] = 0;
         }
 
         $this->_Attributes = array();
@@ -359,6 +381,7 @@ class Jaws_Session
         $this->SetAttribute('email',      $info['email']);
         $this->SetAttribute('url',        $info['url']);
         $this->SetAttribute('avatar',     $info['avatar']);
+        $this->SetAttribute('last_password_update', $info['last_password_update']);
 
         if (empty($this->_SessionID)) {
             $this->_SessionID = $this->insert();
@@ -422,6 +445,8 @@ class Jaws_Session
         $this->SetAttribute('email',       '');
         $this->SetAttribute('url',         '');
         $this->SetAttribute('avatar',      '');
+        $this->SetAttribute('last_password_update', 0);
+
         $this->_SessionID = $sid;
         return true;
     }
