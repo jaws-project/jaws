@@ -835,11 +835,16 @@ class Jaws_User
             $GLOBALS['app']->Session->SetAttribute('username', $uData['username']);
             $GLOBALS['app']->Session->SetAttribute('nickname', $uData['nickname']);
             $GLOBALS['app']->Session->SetAttribute('email',    $uData['email']);
+            // update user's avatar in current session
             if (isset($uData['avatar'])) {
                 $GLOBALS['app']->Session->SetAttribute(
                     'avatar',
                     $this->GetAvatar($uData['avatar'], $uData['email'], 48, $uData['last_update'])
                 );
+            }
+            // update last password update time in current session
+            if (isset($uData['last_password_update'])) {
+                $GLOBALS['app']->Session->SetAttribute('last_password_update', $uData['last_password_update']);
             }
         }
 
