@@ -129,6 +129,13 @@ class Users_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->delete('anon_repetitive_email');
         }
 
+        if (version_compare($old, '2.2.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '2.1.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
         return true;
     }
 

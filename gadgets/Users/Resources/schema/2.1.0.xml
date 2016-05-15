@@ -141,7 +141,7 @@
             <name>public</name>
             <type>boolean</type>
             <default>false</default>
-            <description>profile information accessible for anonymous</description>
+            <description>profile information accessible for anonymouse</description>
         </field>
 
         <field>
@@ -219,8 +219,7 @@
         </field>
 
         <field>
-            <name>last_password_update</name>
-            <was>password_changed_date</was>
+            <name>password_changed_date</name>
             <type>integer</type>
             <length>16</length>
             <default>0</default>
