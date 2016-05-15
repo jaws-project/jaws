@@ -276,6 +276,13 @@ class Jaws_Gadget_Action
             return $objAction;
         }
 
+        if (!method_exists($objAction, $action)) {
+            return Jaws_Error::raiseError(
+                'Action '.$this->gadget->name.'::'.$action. ' does not exist.',
+                __FUNCTION__
+            );
+        }
+
         $GLOBALS['app']->requestedGadget  = $this->gadget->name;
         $GLOBALS['app']->requestedAction  = $action;
         $GLOBALS['app']->requestedSection = '';
