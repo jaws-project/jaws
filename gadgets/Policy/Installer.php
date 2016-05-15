@@ -33,8 +33,8 @@ class Policy_Installer extends Jaws_Gadget_Installer
         array('crypt_key_age', '86400'),
         array('crypt_key_start_date', '0'),
         array('password_bad_count', '7'),
-        array('password_lockedout_time', '60'),      // per second
-        array('password_max_age', '0'),              // per day  0 = resistant
+        array('password_lockedout_time', '60'),    // per second
+        array('password_max_age', '0'),            // per hours 0 = resistant
         array('password_min_length', '0'),
         array('password_complexity', 'no'),
         array('login_captcha_status', '3'),
@@ -42,7 +42,7 @@ class Policy_Installer extends Jaws_Gadget_Installer
         array('xss_parsing_level', 'paranoid'),
         array('max_active_sessions', '0'),         // 0 for unlimited
         array('session_idle_timeout', '30'),       // per minute
-        array('session_remember_timeout', '720'),  // hours = 1 month
+        array('session_remember_timeout', '720'),  // per hours 720 = 1 month
     );
 
     /**
