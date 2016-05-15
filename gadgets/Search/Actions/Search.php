@@ -43,19 +43,22 @@ class Search_Actions_Search extends Jaws_Gadget_Action
             $gadgetList = $model->GetSearchableGadgets();
             $gSearchable = $this->gadget->registry->fetch('searchable_gadgets');
             $searchableGadgets = ($gSearchable=='*')? array_keys($gadgetList) : explode(', ', $gSearchable);
-            array_push($searchableGadgets, _t('GLOBAL_ALL'));
+            array_unshift($searchableGadgets, '*');
 
             foreach ($searchableGadgets as $gadget) {
-                if ($gadget != _t('GLOBAL_ALL')) {
-                    $info = Jaws_Gadget::getInstance($gadget);
-                    if (Jaws_Error::IsError($info)) {
+                if ($gadget == '*') {
+                    $title = _t('GLOBAL_ALL');
+                } else {
+                    $gInfo = Jaws_Gadget::getInstance($gadget);
+                    if (Jaws_Error::IsError($gInfo)) {
                         continue;
                     }
+                    $title = $gInfo->title;
                 }
 
                 $tpl->SetBlock("$block/gadget");
                 $tpl->SetVariable('gadget', $gadget);
-                $tpl->SetVariable('title', $info->title);
+                $tpl->SetVariable('title', $title);
                 $tpl->SetVariable('selected', ($post['gadgets'] == $gadget)? 'selected="selected"' : '');
                 $tpl->ParseBlock("$block/gadget");
             }
