@@ -201,14 +201,16 @@ function getOnlineUsers(name, offset, reset)
         'GetOnlineUsers', {
             'offset': offset,
             'active': $('#filter_active').val(),
-            'logged': $('#filter_logged').val()
+            'logged': $('#filter_logged').val(),
+            'session_type': $('#filter_session_type').val()
         }
     );
     if (reset) {
         var total = UsersAjax.callSync(
             'GetOnlineUsersCount', {
                 'active': $('#filter_active').val(),
-                'logged': $('#filter_logged').val()
+                'logged': $('#filter_logged').val(),
+                'session_type': $('#filter_session_type').val()
             }
         );
     }
