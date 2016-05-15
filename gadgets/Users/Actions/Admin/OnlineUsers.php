@@ -34,9 +34,12 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_IP'), false, null);
         $column4->SetStyle('width:100px;');
         $datagrid->AddColumn($column4);
-        $column5 = Piwi::CreateWidget('Column', _t('USERS_ONLINE_LAST_ACTIVETIME'), false, null);
-        $column5->SetStyle('width:128px;');
+        $column5 = Piwi::CreateWidget('Column', _t('USERS_ONLINE_SESSION_TYPE'), false, null);
+        $column5->SetStyle('width:100px;');
         $datagrid->AddColumn($column5);
+        $column6 = Piwi::CreateWidget('Column', _t('USERS_ONLINE_LAST_ACTIVETIME'), false, null);
+        $column6->SetStyle('width:128px;');
+        $datagrid->AddColumn($column6);
         $datagrid->SetStyle('margin-top: 0px; width: 100%;');
 
         return $datagrid->Get();
@@ -78,6 +81,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
             $usrData['nickname'] = $session['nickname'];
             $usrData['superadmin'] = $session['superadmin']? _t('GLOBAL_YES') : _t('GLOBAL_NO');
             $usrData['ip'] = "<abbr title='{$session['agent']}'>". long2ip($session['ip']). "</abbr>";
+            $usrData['type'] = $session['type'];
             if ($session['online']) {
                 $usrData['last_activetime'] = "<label class='lastactive' title='"._t('USERS_ONLINE_ACTIVE')."'>".
                     $objDate->Format($session['updatetime'], 'Y-m-d H:i')."</label>";
