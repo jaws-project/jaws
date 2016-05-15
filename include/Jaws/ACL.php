@@ -431,8 +431,14 @@ class Jaws_ACL
             }
         }
 
+        // don't check permissions for administrators
         if ($is_super_admin === true) {
             return 0xff;
+        }
+
+        // session in restricted mode, only users permission will be checked
+        if (defined('RESTRICTED_SESSION') && !in_array($gadget, array('Users', 'ControlPanel'))) {
+            return 0;
         }
 
         // 1. Check for user permission
