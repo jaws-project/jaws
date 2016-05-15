@@ -820,11 +820,12 @@ class Jaws_Session
      * @param   bool    $active Active session
      * @param   bool    $logged Logged user's session
                 (null: all sessions, true: logged users's sessions, false: anonymous sessions)
+     * @param   string  $type   Session type
      * @param   int     $limit
      * @param   int     $offset
      * @return  mixed   Sessions attributes if successfully, otherwise Jaws_Error
      */
-    function GetSessions($active = true, $logged = null, $limit = 0, $offset = null)
+    function GetSessions($active = true, $logged = null, $type = null, $limit = 0, $offset = null)
     {
         // remove expired session
         $this->DeleteExpiredSessions();
@@ -846,6 +847,9 @@ class Jaws_Session
             $sessTable->and()->where('user', '0', '<>');
         } elseif ($logged === false) {
             $sessTable->and()->where('user', '0');
+        }
+        if (!empty($type)) {
+            $sessTable->and()->where('type', $type);
         }
         $sessions = $sessTable->orderBy('updatetime desc')->limit($limit, $offset)->fetchAll();
         if (Jaws_Error::isError($sessions)) {
@@ -876,9 +880,10 @@ class Jaws_Session
      * @param   bool    $active Active session
      * @param   bool    $logged Logged user's session
                 (null: all sessions, true: logged users's sessions, false: anonymous sessions)
+     * @param   string  $type   Session type
      * @return  mixed   Active sessions count if successfully, otherwise Jaws_Error
      */
-    function GetSessionsCount($active = true, $logged = null)
+    function GetSessionsCount($active = true, $logged = null, $type = null)
     {
         $idle_timeout = (int)$GLOBALS['app']->Registry->fetch('session_idle_timeout', 'Policy');
         $onlinetime = time() - ($idle_timeout * 60);
@@ -894,6 +899,9 @@ class Jaws_Session
             $sessTable->and()->where('user', '0', '<>');
         } elseif ($logged === false) {
             $sessTable->and()->where('user', '0');
+        }
+        if (!empty($type)) {
+            $sessTable->and()->where('type', $type);
         }
 
         $result = $sessTable->fetchOne();

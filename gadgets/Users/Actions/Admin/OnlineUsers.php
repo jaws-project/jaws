@@ -34,9 +34,12 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_IP'), false, null);
         $column4->SetStyle('width:100px;');
         $datagrid->AddColumn($column4);
-        $column5 = Piwi::CreateWidget('Column', _t('USERS_ONLINE_LAST_ACTIVETIME'), false, null);
-        $column5->SetStyle('width:128px;');
+        $column5 = Piwi::CreateWidget('Column', _t('USERS_ONLINE_SESSION_TYPE'), false, null);
+        $column5->SetStyle('width:100px;');
         $datagrid->AddColumn($column5);
+        $column6 = Piwi::CreateWidget('Column', _t('USERS_ONLINE_LAST_ACTIVETIME'), false, null);
+        $column6->SetStyle('width:128px;');
+        $datagrid->AddColumn($column6);
         $datagrid->SetStyle('margin-top: 0px; width: 100%;');
 
         return $datagrid->Get();
@@ -50,12 +53,14 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
      */
     function GetOnlineUsers()
     {
-        $filters = jaws()->request->fetch(array('active', 'logged', 'offset'), 'post');
+        $filters = jaws()->request->fetch(array('active', 'logged', 'session_type', 'offset'), 'post');
         $filters['active'] = ($filters['active'] == '-1')? null : (bool)$filters['active'];
         $filters['logged'] = ($filters['logged'] == '-1')? null : (bool)$filters['logged'];
+        $filters['type'] = ($filters['session_type'] == '-1')? null : $filters['session_type'];
         $filters['offset'] = (int)$filters['offset'];
 
-        $sessions = $GLOBALS['app']->Session->GetSessions($filters['active'], $filters['logged'], 50, $filters['offset']);
+        $sessions = $GLOBALS['app']->Session->GetSessions(
+            $filters['active'], $filters['logged'], $filters['type'], 50, $filters['offset']);
         if (Jaws_Error::IsError($sessions)) {
             return array();
         }
@@ -78,6 +83,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
             $usrData['nickname'] = $session['nickname'];
             $usrData['superadmin'] = $session['superadmin']? _t('GLOBAL_YES') : _t('GLOBAL_NO');
             $usrData['ip'] = "<abbr title='{$session['agent']}'>". long2ip($session['ip']). "</abbr>";
+            $usrData['type'] = $session['type'];
             if ($session['online']) {
                 $usrData['last_activetime'] = "<label class='lastactive' title='"._t('USERS_ONLINE_ACTIVE')."'>".
                     $objDate->Format($session['updatetime'], 'Y-m-d H:i')."</label>";
@@ -103,7 +109,9 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $filters = jaws()->request->fetchAll('post');
         $filters['active'] = ($filters['active'] == '-1')? null : (bool)$filters['active'];
         $filters['logged'] = ($filters['logged'] == '-1')? null : (bool)$filters['logged'];
-        $sessionsCount = $GLOBALS['app']->Session->GetSessionsCount($filters['active'], $filters['logged']);
+        $filters['type'] = ($filters['session_type'] == '-1')? null : $filters['session_type'];
+        $sessionsCount = $GLOBALS['app']->Session->GetSessionsCount(
+            $filters['active'], $filters['logged'], $filters['type']);
         if (Jaws_Error::IsError($sessionsCount)) {
             return array();
         }
@@ -148,6 +156,21 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $tpl->SetVariable('filter_logged', $logged->Get());
         $tpl->SetVariable('lbl_filter_logged', _t('USERS_ONLINE_FILTER_MEMBERSHIP'));
 
+        // Session type
+        $logged =& Piwi::CreateWidget('Combo', 'session_type');
+        $logged->setID('filter_session_type');
+        $logged->AddOption(_t('GLOBAL_ALL'), -1, false);
+        $sessionTypes = $this->GetSessionTypes();
+        if (count($sessionTypes) > 0) {
+            foreach ($sessionTypes as $type) {
+                $logged->AddOption($type, $type);
+            }
+        }
+        $logged->AddEvent(ON_CHANGE, "javascript:searchOnlineUsers();");
+        $logged->SetDefault(-1);
+        $tpl->SetVariable('filter_session_type', $logged->Get());
+        $tpl->SetVariable('lbl_filter_session_type', _t('USERS_ONLINE_SESSION_TYPE'));
+
         // Datagrid
         $tpl->SetVariable('online_users_datagrid', $this->OnlineUsersDataGrid());
 
@@ -171,6 +194,26 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $tpl->ParseBlock('OnlineUsers');
 
         return $tpl->Get();
+    }
+
+    /**
+     * Get Session Types
+     *
+     * @access  public
+     * @return  array Array with the session type names.
+     */
+    function GetSessionTypes()
+    {
+        $result = array();
+        $path = JAWS_PATH. 'include/Jaws/Session/';
+        $adr = scandir($path);
+        foreach ($adr as $file) {
+            if (substr($file, -4) == '.php') {
+                $result[$file] = substr($file, 0, -4);
+            }
+        }
+        sort($result);
+        return $result;
     }
 
 }
