@@ -171,14 +171,17 @@ class Jaws_Session
                     // let everyone know a user has been logged
                     $GLOBALS['app']->Listener->Shout('Session', 'LoginUser', $this->_Attributes);
                     // check password age
-                    $expPasswordTime = time() - 3600 * (int)$GLOBALS['app']->Registry->fetch('password_max_age', 'Policy');
-                    if ((int)$result['last_password_update'] <= $expPasswordTime) {
-                        $this->PushResponse(
-                            _t('GLOBAL_ERROR_PASSWORD_EXPIRED'),
-                            'Users.Account.Response',
-                            RESPONSE_WARNING
-                        );
-                        Jaws_Header::Location(jaws()->Map->GetURLFor('Users', 'Account'));
+                    $password_max_age = (int)$GLOBALS['app']->Registry->fetch('password_max_age', 'Policy');
+                    if ($password_max_age > 0) {
+                        $expPasswordTime = time() - 3600 * $password_max_age;
+                        if ((int)$result['last_password_update'] <= $expPasswordTime) {
+                            $this->PushResponse(
+                                _t('GLOBAL_ERROR_PASSWORD_EXPIRED'),
+                                'Users.Account.Response',
+                                RESPONSE_WARNING
+                            );
+                            Jaws_Header::Location(jaws()->Map->GetURLFor('Users', 'Account'));
+                        }
                     }
 
                     return $result;
@@ -313,14 +316,17 @@ class Jaws_Session
             }
 
             // last password updated time
-            $expPasswordTime = time() - 3600 * (int)$GLOBALS['app']->Registry->fetch('password_max_age', 'Policy');
-            $last_password_updated_time = (int)$this->GetAttribute('last_password_update');
-            if ($last_password_updated_time <= $expPasswordTime) {
-                define('RESTRICTED_SESSION',  true);
-                $GLOBALS['log']->Log(
-                    JAWS_LOG_NOTICE,
-                    'This password is expired, session switched to restricted mode.'
-                );
+            $password_max_age = (int)$GLOBALS['app']->Registry->fetch('password_max_age', 'Policy');
+            if ($password_max_age > 0) {
+                $expPasswordTime = time() - 3600 * $password_max_age;
+                $last_password_updated_time = (int)$this->GetAttribute('last_password_update');
+                if ($last_password_updated_time <= $expPasswordTime) {
+                    define('RESTRICTED_SESSION',  true);
+                    $GLOBALS['log']->Log(
+                        JAWS_LOG_NOTICE,
+                        'This password is expired, session switched to restricted mode.'
+                    );
+                }
             }
 
             $GLOBALS['log']->Log(JAWS_LOG_DEBUG, 'Session was OK');
