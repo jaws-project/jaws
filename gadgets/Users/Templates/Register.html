@@ -9,14 +9,14 @@
     <fieldset>
       <legend><span>{{lbl_account_info}}</span></legend>
       <div><label for="register_username">{{lbl_username}}:</label>
-        <input class="form-control" name="username" class="large username ltr" id="register_username" maxlength="80" value="{{username}}" type="text" />
+        <input class="form-control" name="username" class="large username ltr" id="register_username" maxlength="80" value="{{username}}" type="text" required />
         <span><small>{{validusernames}}</small></span>
       </div>
       <div><label for="register_email">{{lbl_email}}:</label>
-        <input class="form-control" name="email" class="large email ltr" id="register_email" value="{{email}}" type="text" />
+        <input class="form-control" name="email" class="large email ltr" id="register_email" value="{{email}}" type="text" required />
       </div>
       <div><label for="register_nickname">{{lbl_nickname}}:</label>
-        <input class="form-control" name="nickname" class="large name" id="register_nickname" value="{{nickname}}" type="text" />
+        <input class="form-control" name="nickname" class="large name" id="register_nickname" value="{{nickname}}" type="text" required />
       </div>
       <div><label for="register_password">{{lbl_password}}:</label>
         <input class="form-control" name="password" class="large password ltr" id="register_password" type="password" value="" />
