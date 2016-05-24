@@ -535,6 +535,7 @@ class Jaws_Gadget
             case 'action':
             case 'request':
             case 'template':
+            case 'session':
             case 'registry':
             case 'installer':
             case 'translate':
