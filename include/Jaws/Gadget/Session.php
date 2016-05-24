@@ -55,7 +55,8 @@ class Jaws_Gadget_Session
      */
     function insert($name, $value, $trashed = false)
     {
-        return $this->update($name, $value, $trashed);
+        $gadget = empty($gadget)? $this->gadget->name : $gadget;
+        return $GLOBALS['app']->Session->SetAttribute("$gadget.Attributes.$name", $value, $trashed);
     }
 
     /**
