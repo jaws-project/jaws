@@ -77,7 +77,7 @@ class Layout_Info extends Jaws_Gadget
     protected function __construct($gadget)
     {
         parent::__construct($gadget);
-        if (isset($GLOBALS['app'])) {
+        if (isset($GLOBALS['app']) && isset($GLOBALS['app']->Session)) {
             $this->user     = (int)$GLOBALS['app']->Session->GetAttribute('user');
             $default_theme  = unserialize($GLOBALS['app']->Registry->fetch('theme', 'Settings'));
             $this->theme    =  $default_theme['name'];
