@@ -87,7 +87,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         $layoutContent = $fakeLayout->_Template->Blocks['layout']->Content;
         // remove script tag
-        $layoutContent = preg_replace('@<script[^>]*>.*</script>@sim', '', $layoutContent);
+        $layoutContent = preg_replace('@<script[^>]*>.*?</script>@sim', '', $layoutContent);
 
         $layoutContent = preg_replace(
             '$<body([^>]*)>$i',
