@@ -153,21 +153,22 @@ class Jaws_Layout
         $this->AddScriptLink('libraries/jquery/jquery.js?'. JAWS_VERSION);
         $this->AddScriptLink('include/Jaws/Resources/Ajax.js?'. JAWS_VERSION);
 
+        $loadFromTheme = false;
         if (empty($layout_path)) {
             $theme = $GLOBALS['app']->GetTheme();
             if (!$theme['exists']) {
                 Jaws_Error::Fatal('Theme '. $theme['name']. ' doesn\'t exists.');
             }
 
-            $layout_path = $theme['path'];
+            $loadFromTheme = true;
             if (empty($layout_file)) {
                 if ($GLOBALS['app']->mainIndex) {
                     if ($GLOBALS['app']->Session->GetPermission('Users', 'ManageDashboard') &&
                         $GLOBALS['app']->Session->GetAttribute('layout') &&
-                        @is_file($layout_path. 'Index.Dashboard.html')
+                        @is_file($theme['path']. 'Index.Dashboard.html')
                     ) {
                         $layout_file = 'Index.Dashboard.html';
-                    } elseif (@is_file($layout_path. 'Index.html')) {
+                    } elseif (@is_file($theme['path']. 'Index.html')) {
                         $layout_file = 'Index.html';
                     } else {
                         $layout_file = 'Layout.html';
@@ -175,9 +176,9 @@ class Jaws_Layout
                 } else {
                     $gadget = $GLOBALS['app']->mainGadget;
                     $action = $GLOBALS['app']->mainAction;
-                    if (@is_file($layout_path. "$gadget.$action.html")) {
+                    if (@is_file($theme['path']. "$gadget.$action.html")) {
                         $layout_file = "$gadget.$action.html";
-                    } elseif (@is_file($layout_path. "$gadget.html")) {
+                    } elseif (@is_file($theme['path']. "$gadget.html")) {
                         $layout_file = "$gadget.html";
                     } else {
                         $layout_file = 'Layout.html';
@@ -187,7 +188,7 @@ class Jaws_Layout
             }
         }
 
-        $this->_Template = new Jaws_Template();
+        $this->_Template = new Jaws_Template($loadFromTheme);
         $this->_Template->Load($layout_file, $layout_path);
         $this->_Template->SetBlock('layout');
 
