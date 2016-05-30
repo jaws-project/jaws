@@ -120,7 +120,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             $data['description'] = Jaws_XSS::defilter($data['description']);
 
             // Upload file
-            $path = $GLOBALS['app']->getDataURL('directory');
+            $path = JAWS_DATA . 'directory';
             if (!is_dir($path)) {
                 if (!Jaws_Utils::mkdir($path)) {
                     throw new Exception('DIRECTORY_ERROR_FILE_UPLOAD');
@@ -208,7 +208,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             }
 
             // Upload file
-            $path = $GLOBALS['app']->getDataURL('directory');
+            $path = JAWS_DATA . 'directory';
             if (!is_dir($path)) {
                 if (!Jaws_Utils::mkdir($path, 2)) {
                     throw new Exception('DIRECTORY_ERROR_FILE_UPLOAD');
@@ -294,7 +294,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         if (Jaws_Error::IsError($file) || empty($file) || empty($file['host_filename'])) {
             return;
         }
-        $filename = $GLOBALS['app']->getDataURL('directory/') . $file['host_filename'];
+        $filename = JAWS_DATA . 'directory/' . $file['host_filename'];
         if (!file_exists($filename)) {
             return;
         }
