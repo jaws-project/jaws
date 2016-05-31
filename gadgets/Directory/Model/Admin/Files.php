@@ -173,7 +173,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
 
         // Delete from disk
         if (!$data['is_dir']) {
-            $filename = $GLOBALS['app']->getDataURL('directory/' . $data['host_filename']);
+            $filename = JAWS_DATA . 'directory/' . $data['host_filename'];
             if (file_exists($filename)) {
                 if (!Jaws_Utils::delete($filename)) {
                     return false;

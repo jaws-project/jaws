@@ -267,7 +267,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->loadAdmin('Media.html');
         $tpl->SetBlock($type);
         if ($type === 'text') {
-            $filename = $GLOBALS['app']->getDataURL('directory/') . $file['host_filename'];
+            $filename = JAWS_DATA . 'directory/' . $file['host_filename'];
             if (file_exists($filename)) {
                 $tpl->SetVariable('text', file_get_contents($filename));
             }
@@ -304,7 +304,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
 
         // Check for file existence
-        $filename = $GLOBALS['app']->getDataURL("directory/") . $file['host_filename'];
+        $filename = JAWS_DATA . 'directory/' . $file['host_filename'];
         if (!file_exists($filename)) {
             return Jaws_HTTPError::Get(404);
         }
