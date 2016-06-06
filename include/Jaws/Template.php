@@ -115,12 +115,14 @@ class Jaws_Template
         $fileExtn = strrchr($fname, '.');
         $fileName = substr($fname, 0, -strlen($fileExtn));
 
-        // load from theme
-        $layout = empty($filePath)? '' : $this->layout;
-        if ($this->loadFromTheme && file_exists($this->theme['path']. $layout. $filePath. '/'. $fname)) {
-            $filePath = $this->theme['path']. $layout. $filePath;
-        } else {
-            $filePath = JAWS_PATH . $filePath;
+        // load from theme?
+        if ($this->loadFromTheme) {
+            $layout = empty($filePath)? '' : $this->layout;
+            if (file_exists($this->theme['path']. $layout. $filePath. '/'. $fname)) {
+                $filePath = $this->theme['path']. $layout. $filePath;
+            } else {
+                $filePath = JAWS_PATH . $filePath;
+            }
         }
 
         $prefix  = '';
