@@ -397,7 +397,7 @@ class Tags_Actions_Tags extends Tags_Actions_Default
 
         $tpl = $this->gadget->template->load('Similarity.html');
         $tpl->SetBlock('similarity');
-        $tpl->SetVariable('title', _t('TAGS_SIMILARITY', $gadget));
+        $tpl->SetVariable('title', _t('TAGS_SIMILARITY', $objGadget->title));
 
         // provide return result
         foreach ($references as $reference) {
