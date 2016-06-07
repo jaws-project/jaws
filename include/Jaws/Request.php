@@ -93,12 +93,14 @@ class Jaws_Request
      * @access  private
      */
     private $func_type_check = array(
-        '0'      => 'is_scalar',
-        'int'    => 'is_numeric',
-        'float'  => 'is_float',
-        'string' => 'is_string',
-        'array'  => 'is_array',
-        'bool'   => 'is_bool',
+        '0'       => 'is_scalar',
+        'int'     => 'is_numeric',
+        'integer' => 'is_numeric',
+        'float'   => 'is_float',
+        'string'  => 'is_string',
+        'array'   => 'is_array',
+        'bool'    => 'is_bool',
+        'boolean' => 'is_bool',
     );
 
     /**
