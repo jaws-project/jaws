@@ -253,7 +253,9 @@ class Jaws_Gadget_Action
         if (!$this->IsValidAction($action)) {
             return Jaws_Error::raiseError(
                 'Invalid action '.$this->gadget->name.'::'.$action,
-                __FUNCTION__
+                __FUNCTION__,
+                JAWS_ERROR_ERROR,
+                1
             );
         }
 
