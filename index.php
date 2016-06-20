@@ -77,6 +77,7 @@ if (empty($ReqError) && $GLOBALS['app']->Map->Parse()) {
 
     // if action not a global action and site is protected, so request redirected to login page
     if ($AccessToWebsiteDenied && (empty($objAction) || !$objAction->getAttribute($ReqAction, 'global'))) {
+        $IsIndex = false;
         $ReqGadget = 'Users';
         $ReqAction = 'LoginBox';
         $objAction = Jaws_Gadget::getInstance($ReqGadget)->action->load();
