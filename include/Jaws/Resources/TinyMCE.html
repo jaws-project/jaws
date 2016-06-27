@@ -1,91 +1,93 @@
 <!-- BEGIN tinymce_backend -->
 <script type="text/javascript">
-    function jaws_file_picker_callback(callback, value, meta)
-    {
-        var browser = '';
-        switch (meta.filetype) {
-            case 'media':
-                browser = '{{mbrowser}}';
-                break;
-            case 'image':
-                browser = '{{ibrowser}}';
-                break;
-            case 'file':
-                browser = '{{fbrowser}}';
-                break;
-        }
-        if (browser != '') {
-            tinyMCE.activeEditor.windowManager.open({
-                    url: browser,
-                    title: 'Jaws File Browser',
-                    width: 640,
-                    height: 480,
-                    resizable: 'yes',
-                    scrollbars: 'yes',
-                    inline: 'yes',
-                    close_previous: 'no'
-                }, {
-                    oninsert: function(url, title, desc, height, width) {
-                        switch (meta.filetype) {
-                            case 'media':
-                                callback(url, {});
-                                break;
+    $.loadScript('libraries/tinymce/tinymce.min.js', function() {
+        function jaws_file_picker_callback(callback, value, meta)
+        {
+            var browser = '';
+            switch (meta.filetype) {
+                case 'media':
+                    browser = '{{mbrowser}}';
+                    break;
+                case 'image':
+                    browser = '{{ibrowser}}';
+                    break;
+                case 'file':
+                    browser = '{{fbrowser}}';
+                    break;
+            }
+            if (browser != '') {
+                tinyMCE.activeEditor.windowManager.open({
+                        url: browser,
+                        title: 'Jaws File Browser',
+                        width: 640,
+                        height: 480,
+                        resizable: 'yes',
+                        scrollbars: 'yes',
+                        inline: 'yes',
+                        close_previous: 'no'
+                    }, {
+                        oninsert: function(url, title, desc, height, width) {
+                            switch (meta.filetype) {
+                                case 'media':
+                                    callback(url, {});
+                                    break;
 
-                            case 'image':
-                                callback(url, {'alt': title});
-                                break;
+                                case 'image':
+                                    callback(url, {'alt': title});
+                                    break;
 
-                            case 'file':
-                                callback(url, {'title': title, 'text': desc});
-                                break;
+                                case 'file':
+                                    callback(url, {'title': title, 'text': desc});
+                                    break;
 
-                            default:
-                                callback(url, {'text': title, 'title': title, 'alt': desc});
+                                default:
+                                    callback(url, {'text': title, 'title': title, 'alt': desc});
+                            }
                         }
                     }
-                }
-            );
+                );
+            }
+            return false;
         }
-        return false;
-    }
 
-    tinyMCE.init({
-        mode:     '{{mode}}',
-        language: '{{lang}}',
-        theme:    '{{theme}}',
-        plugins:  '{{plugins}}',
-        <!-- BEGIN toolbar -->
-        toolbar{{key}}: '{{toolbar}}',
-        <!-- END toolbar -->
-        toolbar{{key}}: '',
-        toolbar_items_size: 'small',
-        template_external_list_url: 'libraries/tinymce/templates.js',
-        theme_{{theme}}_toolbar_location: 'top',
-        theme_{{theme}}_toolbar_align:    'center',
-        theme_{{theme}}_path_location:    'bottom',
-        theme_{{theme}}_resizing: true,
-        theme_{{theme}}_resize_horizontal: false,
-        browsers:           '{{browsers}}',
-        directionality:     '{{dir}}',
-        tab_focus:          ':prev,:next',
-        dialog_type:        'window',
-        entity_encoding:    'raw',
-        relative_urls:      true,
-        remove_script_host: false,
-        force_p_newlines:   true,
-        force_br_newlines:  false,
-        remove_linebreaks:  true,
-        nowrap:             false,
-        automatic_uploads:  false,
-        convert_newlines_to_brs: false,
-        apply_source_formatting: true,
-        file_picker_types: 'file image media',
-        file_picker_callback: jaws_file_picker_callback,
-        content_css: 'gadgets/ControlPanel/Resources/tinymce{{.dir}}.css',
-        extended_valid_elements: '{{valid_elements}}',
-        invalid_elements: '{{invalid_elements}}',
-        editor_selector:  '{{class}}',
-        document_base_url: '{{base_url}}'
+        tinyMCE.init({
+            mode:     '{{mode}}',
+            language: '{{lang}}',
+            theme:    '{{theme}}',
+            plugins:  '{{plugins}}',
+            <!-- BEGIN toolbar -->
+            toolbar{{key}}: '{{toolbar}}',
+            <!-- END toolbar -->
+            toolbar{{key}}: '',
+            toolbar_items_size: 'small',
+            template_external_list_url: 'libraries/tinymce/templates.js',
+            theme_{{theme}}_toolbar_location: 'top',
+            theme_{{theme}}_toolbar_align:    'center',
+            theme_{{theme}}_path_location:    'bottom',
+            theme_{{theme}}_resizing: true,
+            theme_{{theme}}_resize_horizontal: false,
+            browsers:           '{{browsers}}',
+            directionality:     '{{dir}}',
+            tab_focus:          ':prev,:next',
+            dialog_type:        'window',
+            entity_encoding:    'raw',
+            relative_urls:      true,
+            remove_script_host: false,
+            force_p_newlines:   true,
+            force_br_newlines:  false,
+            remove_linebreaks:  true,
+            nowrap:             false,
+            automatic_uploads:  false,
+            convert_newlines_to_brs: false,
+            apply_source_formatting: true,
+            file_picker_types: 'file image media',
+            file_picker_callback: jaws_file_picker_callback,
+            content_css: 'gadgets/ControlPanel/Resources/tinymce{{.dir}}.css',
+            extended_valid_elements: '{{valid_elements}}',
+            invalid_elements: '{{invalid_elements}}',
+            editor_selector:  '{{class}}',
+            document_base_url: '{{base_url}}'
+        });
     });
 </script>
 <!-- END tinymce_backend -->

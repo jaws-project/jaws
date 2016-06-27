@@ -240,7 +240,6 @@ class Jaws_Widgets_CKEditor extends Container
             }
         }
 
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/ckeditor/ckeditor.js');
         $tpl = new Jaws_Template();
         $tpl->Load('CKEditor.html', 'include/Jaws/Resources');
         $block = (JAWS_SCRIPT == 'admin')? 'ckeditor_backend' : 'ckeditor_frontend';

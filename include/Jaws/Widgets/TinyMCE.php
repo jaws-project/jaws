@@ -198,7 +198,7 @@ class Jaws_Widgets_TinyMCE extends Container
         } else {
             $block = 'tinymce_frontend';
         }
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/tinymce/tinymce.min.js');
+
         $tpl = new Jaws_Template();
         $tpl->Load('TinyMCE.html', 'include/Jaws/Resources');
         $tpl->SetBlock($block);
