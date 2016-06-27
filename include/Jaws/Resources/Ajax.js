@@ -47,7 +47,7 @@ jQuery.extend({
             $(this).off('load readystatechange');
             loadedScripts[path] = true;
             fn();
-        }).on('errot', function() {
+        }).on('error', function() {
             //on error
         }).prop('async', true).attr('src', path);
     }
