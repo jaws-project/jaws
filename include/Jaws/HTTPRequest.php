@@ -109,7 +109,7 @@ class Jaws_HTTPRequest
         $this->httpRequest->setMethod(HTTP_REQUEST_METHOD_POST);
         // add post data
         foreach($params as $key => $data) {
-            $httpRequest->addPostData($key, urlencode($data));
+            $this->httpRequest->addPostData($key, urlencode($data));
         }
 
         $result = $this->httpRequest->sendRequest();
