@@ -106,8 +106,9 @@ class Tags_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateTag()
     {
         $this->gadget->CheckPermission('ManageTags');
-        @list($id, $data) = jaws()->request->fetchAll('post');
-        $data = jaws()->request->fetch('1:array', 'post');
+        $data = jaws()->request->fetchAll('post');
+        $id = $data['id'];
+        unset($data['id']);
         $tModel = $this->gadget->model->loadAdmin('Tags');
         $res = $tModel->UpdateTag($id, $data);
         if (Jaws_Error::IsError($res)) {

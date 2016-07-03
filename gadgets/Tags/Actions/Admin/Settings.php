@@ -23,8 +23,7 @@ class Tags_Actions_Admin_Settings extends Tags_Actions_Admin_Default
         // view tag result limit
         $limit = (int)$this->gadget->registry->fetch('tag_results_limit');
         $limitCombo =& Piwi::CreateWidget('Combo', 'tag_results_limit');
-        $limitCombo->setContainerClass('oneline');
-        $limitCombo->SetTitle(_t('BLOG_LAST_ENTRIES_LIMIT'));
+        $limitCombo->SetTitle(_t('TAGS_DISPLAY_RESULTS_LIMIT'));
         $limitCombo->AddOption(5, 5);
         $limitCombo->AddOption(10, 10);
         $limitCombo->AddOption(15, 15);

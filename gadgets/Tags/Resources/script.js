@@ -131,7 +131,7 @@ function updateTag()
     } else {
         TagsAjax.callAsync(
             'UpdateTag', {
-                0: $('#id').val(),
+                'id': $('#id').val(),
                 'name':$('#name').val(),
                 'title':$('#title').val(),
                 'description':$('#description').val(),
