@@ -233,9 +233,9 @@ function getGoogleMap(ev, element)
  */
 function setGoogleMapImage()
 {
-    $('#gmap').src = base_script + '?gadget=Weather&action=GetGoogleMapImage' +
+    $('#gmap').prop('src', base_script + '?gadget=Weather&action=GetGoogleMapImage' +
                     '&latitude=' + $('#latitude').val() + '&longitude=' + $('#longitude').val() +
-                    '&zoom=' + ZoomLevel + '&size='  + ImageSize;
+                    '&zoom=' + ZoomLevel + '&size='  + ImageSize);
 }
 
 /**
