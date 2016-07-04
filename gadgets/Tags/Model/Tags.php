@@ -8,6 +8,25 @@
 class Tags_Model_Tags extends Jaws_Gadget_Model
 {
     /**
+     * Get a tag info
+     *
+     * @access  public
+     * @param   string  $name   Tag name
+     * @return  mixed   Array of Tag info or Jaws_Error on failure
+     */
+    function GetTagByName($name)
+    {
+        $table = Jaws_ORM::getInstance()->table('tags');
+        $table->select('id', 'name', 'user:integer', 'title', 'description', 'meta_keywords', 'meta_description');
+        $result = $table->where('name', $name)->fetchRow();
+        if (Jaws_Error::IsError($result)) {
+            return new Jaws_Error($result->getMessage());
+        }
+
+        return $result;
+    }
+
+    /**
      * Generates a tag cloud
      *
      * @access  public

@@ -206,6 +206,8 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         }
 
         $tagsModel = $this->gadget->model->load('Tags');
+        $tagInfo = $tagsModel->GetTagByName($tag);
+
         // Fetch tag references count(for paging)
         $referencesCount = $tagsModel->GetTagsCount($gadget, $tag, $user);
         $references = array();
@@ -226,6 +228,9 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         $tpl = $this->gadget->template->load('Tag.html');
         $tpl->SetBlock('tag');
         $tpl->SetVariable('title', _t('TAGS_VIEW_TAG', $tag));
+        $this->SetTitle(_t('TAGS_VIEW_TAG', $tag));
+        $this->AddToMetaKeywords($tagInfo['meta_keywords']);
+        $this->SetDescription($tagInfo['meta_description']);
 
         // page navigation
         $this->GetPagesNavigation(
