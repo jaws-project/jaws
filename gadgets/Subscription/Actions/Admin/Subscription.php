@@ -118,11 +118,11 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
         $column3->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column3);
 
-        $column4 = Piwi::CreateWidget('Column', _t('GLOBAL_GADGETS'), null, false);
+        $column4 = Piwi::CreateWidget('Column', _t('SUBSCRIPTION_GADGET'), null, false);
         $column4->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column4);
 
-        $column5 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column5 = Piwi::CreateWidget('Column', _t('SUBSCRIPTION_ACTION'), null, false);
         $column5->SetStyle('width:96px; white-space:nowrap;');
         $grid->AddColumn($column5);
 

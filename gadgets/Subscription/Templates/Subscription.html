@@ -13,13 +13,13 @@
         <div class="gadget_content content">
             <!-- BEGIN gadget -->
             <fieldset>
-              <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
+              <legend class="collapse" onclick="toggleLegend(this);">
                 <span>{{gadget_title}}</span>
               </legend>
                 <div class="subscription_items">
                   <!-- BEGIN item -->
                   <fieldset>
-                    <legend class="{{collapse}}" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
+                    <legend class="{{collapse}}" onclick="toggleLegend(this);">
                       <span>
                           <!-- BEGIN checkbox -->
                         <input type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
@@ -62,6 +62,14 @@
 </div>
 
 <div class="gadget_footer"></div>
+
+<script type="text/javascript">
+    function toggleLegend(elem) {
+        if (elem.className != '') {
+            elem.className = elem.className == 'collapse' ? 'uncollapse' : 'collapse';
+        }
+    }
+</script>
 <!-- END subscription -->
 
 
