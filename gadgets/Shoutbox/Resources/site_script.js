@@ -19,5 +19,5 @@ function GetComments()
 }
 
 var ShoutboxAjax = new JawsAjax('Shoutbox');
-ShoutboxAjax.setMessageBox('shoutbox_comments_response');
+// ShoutboxAjax.setMessageBox('shoutbox_comments_response');
 setInterval(GetComments, 30*1000);
