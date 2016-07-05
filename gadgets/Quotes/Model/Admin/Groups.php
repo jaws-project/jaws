@@ -141,7 +141,7 @@ class Quotes_Model_Admin_Groups extends Jaws_Gadget_Model
             return false;
         }
 
-        $GLOBALS['app']->Session->PushLastResponse(_t('QUOTES_GROUPS_DELETED', $gid), RESPONSE_NOTICE);
+        $GLOBALS['app']->Session->PushLastResponse(_t('QUOTES_GROUPS_DELETED', $group[0]['title']), RESPONSE_NOTICE);
 
         return true;
     }
