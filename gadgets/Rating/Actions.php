@@ -19,3 +19,11 @@ $actions['MostRatted'] = array(
     'parametric' => true,
     'file'   => 'Rating',
 );
+
+/**
+ * Admin actions
+ */
+$admin_actions['Rating'] = array(
+    'normal' => true,
+    'file'   => 'Rating',
+);
