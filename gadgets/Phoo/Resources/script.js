@@ -48,7 +48,7 @@ function ImportImages()
         if (currentIndex == howmany) {
             $('#nofm').html(finished_message);
             $('#indicator').attr('src', ok_image);
-            $('#warning').fade('out');
+            $('#warning').hide('slow');
         }
     }
 }
@@ -106,22 +106,22 @@ function saveGroup()
         'description': $('#description').val()
     };
 
-    if($('#gid').value==0) {
+    if ($('#gid').val() == 0) {
         var response = PhooAjax.callSync('AddGroup', groupData);
         if (response[0]['type'] == 'response_notice') {
-            var box = $('#groups_combo');
-            box.options[box.options.length] = new Option($('#name').val(), response[0]['text']['id']);
+            $('#groups_combo')
+                .append($("<option></option>")
+                    .attr("value",response[0]['text']['id'])
+                    .text($('#name').val()));
             response[0]['text'] = response[0]['text']['message'];
             stopAction();
         }
         PhooAjax.showResponse(response);
     } else {
-        var box = $('#groups_combo');
-        var groupIndex = box.selectedIndex;
         var response = PhooAjax.callSync('UpdateGroup',
                             {'id': $('#gid').val(), data: groupData});
         if (response[0]['type'] == 'response_notice') {
-            box.options[groupIndex].text = $('#name').val();
+            $('#groups_combo').find('option:selected').text($('#name').val());
             stopAction();
         }
         PhooAjax.showResponse(response);
@@ -154,9 +154,9 @@ function deleteGroup()
     if (answer) {
         var box = $('#groups_combo');
         var quoteIndex = box.selectedIndex;
-        var response = PhooAjax.callSync('DeleteGroup', {'id': $('gid').value});
+        var response = PhooAjax.callSync('DeleteGroup', {'id': $('#gid').val()});
         if (response[0]['type'] == 'response_notice') {
-            box.options[quoteIndex] = null;
+            $('#groups_combo').find('option:selected').remove();
             stopAction();
         }
         PhooAjax.showResponse(response);

@@ -26,7 +26,6 @@ class Phoo_Actions_Admin_Groups extends Phoo_Actions_Admin_Default
         // Header
         $tpl->SetVariable('menubar', $this->MenuBar('Groups'));
 
-
         // Meta keywords
         $name =& Piwi::CreateWidget('Entry', 'name', '');
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
