@@ -63,21 +63,26 @@ function AddNewMenuItem(gid, pid, mid, rank)
     } else {
         var parentNode = $('#menu_'+pid);
     }
-    parentNode.append(mainDiv);
 
     //set ranking
     var menu_elements = parentNode.children('.menu_levels');
-    var oldRank = menu_elements.index($('#menu_'+mid));
+    // var oldRank = menu_elements.index($('#menu_'+mid));
+    var oldRank = $('#group_1').children('.menu_levels').size();
+
+    console.info(menu_elements);
+    console.log(rank);
+    console.log(oldRank);
     if (rank < oldRank) {
-        parentNode.insertBefore($('#menu_'+mid), menu_elements.eq(rank - 1));
+        mainDiv.insertBefore(menu_elements.eq(rank - 1));
+    } else {
+        parentNode.append(mainDiv);
     }
+
     //--
-    $("#menu_"+mid).find('a')
-        .first().attr('href', 'javascript: editMenu('+mid+');').text($('#title').val())
-        .next().attr('href', 'javascript: addMenu('+gid+', '+ mid +');');
-    $("#menu_"+mid).find('img').first().attr('src', menuImageSrc);
-    // hide menu actions
-    $("#menu_"+mid).find('div').eq(2).css('visibility', 'hidden');
+    $("#menu_" + mid + ' .title').find('a').attr('href', 'javascript: editMenu(' + mid + ');').text($('#title').val());
+    $("#menu_" + mid + ' .menu_actions').find('a').attr('href', 'javascript: addMenu(' + gid + ', ' + mid + ');');
+    // // hide menu actions
+    $("#menu_" + mid).find('div').eq(2).css('visibility', 'hidden');
 }
 
 /**
