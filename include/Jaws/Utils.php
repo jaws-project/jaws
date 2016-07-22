@@ -191,7 +191,7 @@ class Jaws_Utils
                 }
                 return Jaws_Utils::delete($tmpdir);
             } else {
-                if (false === $file = @fopen($pat, 'r+')) {
+                if (false === $file = @fopen($path, 'r+')) {
                     return false;
                 }
                 return fclose($file);
