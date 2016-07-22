@@ -34,3 +34,10 @@ height:18px;
 padding:4px 0px;
 vertical-align:top;
 }
+#settings label{
+    width:130px;
+    display: inline-block;
+}
+#settings select{
+    width:100px;
+}
