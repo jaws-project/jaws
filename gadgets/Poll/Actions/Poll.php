@@ -48,6 +48,10 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
     function Poll($pid = 0)
     {
         $model = $this->gadget->model->load('Poll');
+        if(empty($pid)) {
+            $pid = (int)jaws()->request->fetch('id', 'get');
+        }
+
         if (empty($pid)) {
             $poll = $model->GetLastPoll();
         } else {
