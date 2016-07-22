@@ -77,9 +77,9 @@ function updateTerm()
     if (currentMode == 'new') {
         newTerm();
     } else {
-        id       = $('hidden_id').value;
-        term     = $('term_title').value;
-        fast_url = $('fast_url').value;
+        id       = $('#hidden_id').val();
+        term     = $('#term_title').val();
+        fast_url = $('#fast_url').val();
         contents = getEditorValue('term_contents');
         if (term.blank() || contents.blank())
         {
@@ -101,9 +101,8 @@ function updateTerm()
  */
 function deleteTerm()
 {
-    id = document.getElementById('term_id').value;
     loading_message = deletingMessage;
-    GlossaryAjax.callAsync('DeleteTerm', id);
+    GlossaryAjax.callAsync('DeleteTerm', $('#term_id').val());
 }
 
 /**
@@ -111,19 +110,19 @@ function deleteTerm()
  */
 function switchTab(c, title)
 {
-    var editDiv    = document.getElementById('edit');
-    var previewDiv = document.getElementById('preview');
-    var editTab    = document.getElementById('editTab');
+    var editDiv    = $('#edit');
+    var previewDiv = $('#preview');
+    var editTab    = $('#editTab');
     if (title) {
-        editTab.innerHTML = title;
+        editTab.html(title);
     } else {
-        var editTitle = editTab.innerHTML;
+        var editTitle = editTab.html();
     }
-    var previewTab    = $('previewTab');
-    var previewButton = $('previewButton');
-    var saveButton    = $('saveButton');
-    var cancelButton  = $('cancelButton');
-    var delButton     = $('delButton');
+    var previewTab    = $('#previewTab');
+    var previewButton = $('#previewButton');
+    var saveButton    = $('#saveButton');
+    var cancelButton  = $('#cancelButton');
+    var delButton     = $('#delButton');
 
     if (c == 'edit') {
         if (currentMode == 'new') {
@@ -133,39 +132,39 @@ function switchTab(c, title)
                 }
             } else {
                 if (saveButton) {
-                    saveButton.style.display = 'none';
+                    saveButton.hide();
                 }
             }
 
             if (aclDeleteTerm) {
-                delButton.style.display = 'none';
+                delButton.hide();
             }
 
-            cancelButton.style.display = 'inline';
+            cancelButton.show();
         } else {
             if (aclEditTerm) {
                 saveButton.onclick = function() {
                     updateTerm();
                 }
             } else {
-                saveButton.style.display = 'none';
+                saveButton.hide();
             }
 
             if (aclDeleteTerm) {
-                delButton.style.display = 'inline';
+                delButton.show();
             }
 
-            cancelButton.style.display = 'none';
+            cancelButton.hide();
         }
         editTab.className        = 'current';
         previewTab.className     = '';
-        editDiv.style.display    = 'block';
-        previewDiv.style.display = 'none';
+        editDiv.show();
+        previewDiv.hide();
     } else if (c == 'preview') {
         editTab.className = '';
         previewTab.className     = 'current';
-        editDiv.style.display    = 'none';
-        previewDiv.style.display = 'block';
+        editDiv.hide();
+        previewDiv.show();
     }
 }
 
@@ -206,7 +205,7 @@ function createNewTerm(title)
     switchTab('edit', title);
     $('#term_id').prop('disabled', true);
     $('#term_title').val('');
-    $('term_title').focus();
+    $('#term_title').focus();
     $('#fast_url').val('');
     changeEditorValue('term_contents', '');   
 }
@@ -216,8 +215,8 @@ function createNewTerm(title)
  */
 function newTerm()
 {
-    term     = $('term_title').value;
-    fast_url = $('fast_url').value;
+    term     = $('#term_title').val();
+    fast_url = $('#fast_url').val();
     contents = getEditorValue('term_contents');
     if (term.blank() || contents.blank())
     {
@@ -234,7 +233,7 @@ function newTerm()
  */
 function afterNewTerm(id)
 {
-    combo = $('term_id');
+    combo = document.getElementById('term_id');
     combo.disabled = false;
     combo.options[combo.length] = new Option($('#term_title').val(), id);
     combo.options[combo.length - 1].selected = true;
@@ -252,7 +251,7 @@ function returnToEdit()
 
     if (combo.length > 0) {
         if (previousID == 'NEW') {
-            termTitle.value = '';
+            termTitle.val('');
             termTitle.focus();
             changeEditorValue('term_contents', '');
             b.disabled = true;
@@ -277,10 +276,10 @@ function returnToEdit()
  */
 function getFirst()
 {
-    combo = $('term_id');
+    combo = $('#term_id');
     if (combo.length > 0) {
-        combo.options[0].selected = true;
-        edit(combo.options[0].value);
+        combo.val($("#term_id option:first").val());
+        edit($("#term_id option:first").val());
     } else {
         createNewTerm('');
     }
