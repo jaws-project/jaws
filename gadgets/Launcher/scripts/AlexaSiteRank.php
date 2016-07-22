@@ -78,7 +78,7 @@ class AlexaRank
         $rdata = $this->getURL("http://data.alexa.com/data?cli=10&url=". urlencode($url));
         if (!empty($rdata)) {
             $xmlData = simplexml_load_string($rdata, 'SimpleXMLElement', LIBXML_NOERROR);
-            if ($xmlData) {
+            if ($xmlData && isset($xmlData->SD[0])) {
                 $nodeAttributes = $xmlData->SD[0]->POPULARITY->attributes();
                 $ranks['Popularity'] = (string)$nodeAttributes['TEXT'];
                 $nodeAttributes = $xmlData->SD[0]->RANK->attributes();
