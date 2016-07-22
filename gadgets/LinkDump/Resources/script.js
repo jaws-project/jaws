@@ -193,13 +193,16 @@ function AddNewLinkItem(gid, lid, rank)
             .html($('#title').val())
             .on('click', function() {editLink(this, lid);})
     );
-    gLinksDiv.append(mainDiv);
 
     //set ranking
     var link_elements = gLinksDiv.find('div');
-    var oldRank = link_elements.index($('#link_'+lid));
+    var oldRank = link_elements.size();
+    console.log(link_elements);
+    console.log(oldRank);
     if (rank < oldRank) {
-        gLinksDiv.insertBefore($('#link_'+lid), link_elements.eq(rank -1));
+        mainDiv.insertBefore(link_elements.eq(rank -1));
+    } else {
+        gLinksDiv.append(mainDiv);
     }
 }
 
