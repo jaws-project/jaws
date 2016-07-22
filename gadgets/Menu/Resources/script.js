@@ -54,31 +54,26 @@ function AddNewMenuGroup(gid) {
  */
 function AddNewMenuItem(gid, pid, mid, rank)
 {
-    var mainDiv = $('<div>').attr({'id': "menu_"+mid, 'class': 'menu_levels'}).append(
-        $('#group_1').find('div').first().clone(true).css('background-color', '#f7f7f7')
-    );
-
     if (pid == 0) {
         var parentNode = $('#group_'+gid);
     } else {
         var parentNode = $('#menu_'+pid);
     }
 
+    var mainDiv = $('<div>').attr({'id': "menu_"+mid, 'class': 'menu_levels'}).append(
+        parentNode.find('div').first().clone(true).css('background-color', '#f7f7f7')
+    );
+
     //set ranking
     var menu_elements = parentNode.children('.menu_levels');
-    // var oldRank = menu_elements.index($('#menu_'+mid));
-    var oldRank = $('#group_1').children('.menu_levels').size();
-
-    console.info(menu_elements);
-    console.log(rank);
-    console.log(oldRank);
+    var oldRank = parentNode.children('.menu_levels').size();
     if (rank < oldRank) {
         mainDiv.insertBefore(menu_elements.eq(rank - 1));
     } else {
         parentNode.append(mainDiv);
     }
 
-    //--
+    $("#menu_" + mid + ' .title').find('img').attr('src', 'gadgets/Menu/Resources/images/menu-item.png');
     $("#menu_" + mid + ' .title').find('a').attr('href', 'javascript: editMenu(' + mid + ');').text($('#title').val());
     $("#menu_" + mid + ' .menu_actions').find('a').attr('href', 'javascript: addMenu(' + gid + ', ' + mid + ');');
     // // hide menu actions
