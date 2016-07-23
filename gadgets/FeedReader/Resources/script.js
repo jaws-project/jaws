@@ -117,13 +117,13 @@ function updateFeed()
 {
     if (!$('#title').val() ||
         !$('#url').val() ||
-        !isValidURL($.trim($('#url').val()))
+        !isValidURL($.trim($('#url').val())))
     {
         alert(incompleteFeedFields);
         return;
     }
 
-    if($('id').value==0) {
+    if($('#id').val()==0) {
             FeedReaderAjax.callAsync(
                 'InsertFeed', [
                     $('#title').val(),
