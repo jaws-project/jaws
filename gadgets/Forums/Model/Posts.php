@@ -23,9 +23,9 @@ class Forums_Model_Posts extends Jaws_Gadget_Model
     function GetPost($pid, $tid = null, $fid = null)
     {
         $table = Jaws_ORM::getInstance()->table('forums_posts');
-        $table->select('
-                forums_posts.id:integer', 'forums_posts.uid:integer', 'tid:integer', 'message', 'forums_posts.insert_time:integer',
-                'attachments',
+        $table->select(
+                'forums_posts.id:integer', 'forums_posts.uid:integer', 'tid:integer', 'message',
+                'forums_posts.insert_time:integer', 'attachments',
                 'update_uid:integer', 'update_reason', 'update_time:integer', 'forums_posts.status:integer',
                 'forums_topics.fid:integer', 'forums_topics.subject', 'forums_topics.locked as topic_locked:boolean',
                 'first_post_id as topic_first_post_id:integer', 'first_post_time as topic_first_post_time:integer',

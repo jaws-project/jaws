@@ -67,13 +67,19 @@ function AddNewForumGroup(gid) {
  */
 function AddNewForumItem(gid, fid, order)
 {
-    $('#group_'+gid).append(
-        $('<div>').attr({'id': "forum_"+fid, 'class': 'forums_group_item'}).append(
-            $('<img>').attr({'src': forumImageSrc, 'class': 'icon'}),
-            $('<a>').attr({'href': 'javascript:editForum(this, '+fid+');', 'class': 'icon'}).html($('#title').val())
-        )
-    );
+    var parentNode = $('#group_'+gid);
+    var forum_elements = parentNode.children('.forums_group_item');
 
+    var oldOrder = forum_elements.size();
+    var mainDiv = $('<div>').attr({'id': "forum_" + fid, 'class': 'forums_group_item'}).append(
+        $('<img>').attr({'src': forumImageSrc, 'class': 'icon'}),
+        $('<a>').attr({'href': 'javascript:editForum(this, ' + fid + ');', 'class': 'icon'}).html($('#title').val())
+    );
+    if (order < oldOrder) {
+        mainDiv.insertBefore(forum_elements.eq(order - 1));
+    } else {
+        parentNode.append(mainDiv);
+    }
 }
 
 /**
