@@ -23,7 +23,7 @@ var ContactCallback = {
 
     UpdateReply: function(response) {
         if (response[0]['type'] == 'response_notice') {
-            selectedRow.find('label').css('font-weight', 'normal');
+            $(selectedRow).find('label').css('font-weight', 'normal');
             stopAction();
         }
         ContactAjax.showResponse(response);
