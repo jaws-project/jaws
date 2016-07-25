@@ -65,7 +65,7 @@ class Blog_Model_Summary extends Jaws_Gadget_Model
                 $summary['Comments'][] = array(
                     'id'         => $r['id'],
                     'name'       => $r['name'],
-                    'createtime' => $r['createtime']
+                    'insert_time' => $r['insert_time']
                 );
             }
         }
