@@ -19,7 +19,7 @@ var EmblemsCallback = {
     DeleteEmblem: function(response) {
         EmblemsAjax.showResponse(response);
         if (response[0]['type'] == 'response_notice') {
-            $('emblems_datagrid')[0].deleteItem();                                  
+            $('#emblems_datagrid')[0].deleteItem();
             getDG();
         }
     }
@@ -30,11 +30,11 @@ var EmblemsCallback = {
  */
 function updateEmblem(id, el)
 {
-    var row = el.getParent('tr'),
-        select = row.getElement('select'),
-        inputs = row.getElements('input'),
+    var row = $(el).parent().parent(),
+        select = $(row).find('select'),
+        inputs = $(row).find('input'),
         data = {
-            type: select.value,
+            type: select.val(),
             title: inputs[0].value,
             url: inputs[1].value,
             published: inputs[2].checked
