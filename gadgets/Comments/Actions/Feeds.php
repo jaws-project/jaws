@@ -134,7 +134,7 @@ class Comments_Actions_Feeds extends Comments_Actions_Default
     {
         $max_title_size = 80;
         $cModel = $this->gadget->model->load('Comments');
-        $comments = $cModel->GetComments($gadget, $action, $reference);
+        $comments = $cModel->GetComments($gadget, $action, $reference, '', array(Comments_Info::COMMENTS_STATUS_APPROVED));
         if (Jaws_Error::IsError($comments)) {
             return new Jaws_Error(_t('COMMENTS_ERROR_GETTING_COMMENTS_ATOMSTRUCT'));
         }
