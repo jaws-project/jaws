@@ -80,7 +80,7 @@ class Jaws_Date_Gregorian extends Jaws_Date
             @list($year, $month, $day, $hour, $minute, $second) = func_get_arg(0);
             $date = mktime((int)$hour, (int)$minute, (int)$second, (int)$month, (int)$day, (int)$year);
         } elseif (func_num_args() > 1) {
-            $date = mktime((int)$hour, (int)$minute, (int)$second, (int)month, (int)$day, (int)$year);
+            $date = mktime((int)$hour, (int)$minute, (int)$second, (int)$month, (int)$day, (int)$year);
         } else { // unix timestamp
             $date = (int)$year;
         }
