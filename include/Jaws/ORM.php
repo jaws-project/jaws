@@ -11,12 +11,33 @@
 class Jaws_ORM
 {
     /**
+     * Default fetch mode
+     */
+    const FETCHMODE_DEFAULT = MDB2_FETCHMODE_DEFAULT;
+    /**
+     * Column data indexed by numbers, ordered from 0 and up
+     */
+    const FETCHMODE_ORDERED = MDB2_FETCHMODE_ORDERED;
+    /**
+     * Column data indexed by column names
+     */
+    const FETCHMODE_ASSOC   = MDB2_FETCHMODE_ASSOC;
+    /**
+     * Column data as object properties
+     */
+    const FETCHMODE_OBJECT  = MDB2_FETCHMODE_OBJECT;
+    /**
+     * For multi-dimensional results: flipped column name, and row number
+     */
+    const FETCHMODE_FLIPPED = MDB2_FETCHMODE_FLIPPED;
+
+    /**
      * Jaws_DB  object
      *
      * @var     object
      * @access  public
      */
-    var $jawsdb;
+    public $jawsdb;
 
     /**
      * The DB prefix for tables
@@ -24,10 +45,10 @@ class Jaws_ORM
      * @var     string
      * @access  private
      */
-    var $_tbl_prefix = '';
+    private $_tbl_prefix = '';
 
-    var $_dbDriver  = '';
-    var $_dbVersion = '';
+    private $_dbDriver  = '';
+    private $_dbVersion = '';
 
     /**
      * The DB identifier quoting characters
@@ -35,7 +56,15 @@ class Jaws_ORM
      * @var     array
      * @access  private
      */
-    var $_identifier_quoting = array();
+    private $_identifier_quoting = array();
+
+    /**
+     * Data fetch mode(FETCHMODE_DEFAULT, FETCHMODE_ORDERED, ...)
+     *
+     * @var     int
+     * @access  private
+     */
+    private $_fetchmode = self::FETCHMODE_DEFAULT;
 
     /**
      * Select distinct statement
@@ -43,7 +72,7 @@ class Jaws_ORM
      * @var     string
      * @access  private
      */
-    var $_distinct = '';
+    private $_distinct = '';
 
     /**
      * Select columns list
@@ -51,7 +80,7 @@ class Jaws_ORM
      * @var     array
      * @access  private
      */
-    var $_columns = array();
+    private $_columns = array();
 
     /**
      * Select columns types list
@@ -59,7 +88,7 @@ class Jaws_ORM
      * @var     array
      * @access  private
      */
-    var $_types = array();
+    private $_types = array();
 
     /**
      * Types passed to select?
@@ -67,7 +96,7 @@ class Jaws_ORM
      * @var     bool
      * @access  private
      */
-    var $_passed_types = false;
+    private $_passed_types = false;
 
     /**
      * Insert/Update columns/values pairs
@@ -75,7 +104,7 @@ class Jaws_ORM
      * @var     array
      * @access  private
      */
-    var $_values = array();
+    private $_values = array();
 
     /**
      * Upsert columns/values pairs used for update part
@@ -83,7 +112,7 @@ class Jaws_ORM
      * @var     array
      * @access  private
      */
-    var $_extras = array();
+    private $_extras = array();
 
     /**
      * Where conditions list
@@ -91,7 +120,7 @@ class Jaws_ORM
      * @var     array
      * @access  private
      */
-    var $_where = array();
+    private $_where = array();
 
     /**
      * Join options
@@ -99,7 +128,7 @@ class Jaws_ORM
      * @var     array
      * @access  private
      */
-    var $_joins = array();
+    private $_joins = array();
 
     /**
      * Using statement
@@ -107,7 +136,7 @@ class Jaws_ORM
      * @var     string
      * @access  private
      */
-    var $_using = '';
+    private $_using = '';
 
     /**
      * Group By columns list
@@ -115,7 +144,7 @@ class Jaws_ORM
      * @var     array
      * @access  private
      */
-    var $_groupBy = array();
+    private $_groupBy = array();
 
     /**
      * Having conditions list
@@ -123,7 +152,7 @@ class Jaws_ORM
      * @var     array
      * @access  private
      */
-    var $_having = array();
+    private $_having = array();
 
     /**
      * Order By columns list
@@ -131,7 +160,7 @@ class Jaws_ORM
      * @var     array
      * @access  private
      */
-    var $_orderBy = array();
+    private $_orderBy = array();
 
     /**
      * Number of rows to select
@@ -139,7 +168,7 @@ class Jaws_ORM
      * @var     int
      * @access  private
      */
-    var $_limit  = null;
+    private $_limit  = null;
 
     /**
      * First row to select
@@ -147,7 +176,7 @@ class Jaws_ORM
      * @var     int
      * @access  private
      */
-    var $_offset = null;
+    private $_offset = null;
 
     /**
      * Table name
@@ -155,7 +184,7 @@ class Jaws_ORM
      * @var     string
      * @access  private
      */
-    var $_table = '';
+    private $_table = '';
 
     /**
      * Table alias
@@ -163,7 +192,7 @@ class Jaws_ORM
      * @var     string
      * @access  private
      */
-    var $_alias = '';
+    private $_alias = '';
 
     /**
      * Table primary key name
@@ -171,7 +200,7 @@ class Jaws_ORM
      * @var     string
      * @access  private
      */
-    var $_pk_field = '';
+    private $_pk_field = '';
 
     /**
      * Table(s) quoted/aliased identifier
@@ -179,7 +208,7 @@ class Jaws_ORM
      * @var     string
      * @access  private
      */
-    var $_tablesIdentifier = '';
+    private $_tablesIdentifier = '';
 
     /**
      * Table alias identifier
@@ -187,7 +216,7 @@ class Jaws_ORM
      * @var     string
      * @access  private
      */
-    var $_tableAliasIdentifier = '';
+    private $_tableAliasIdentifier = '';
 
     /**
      * SQL command name(insert/update/delete)
@@ -195,7 +224,7 @@ class Jaws_ORM
      * @var     string
      * @access  private
      */
-    var $_query_command = '';
+    private $_query_command = '';
 
     /**
      * return type of nested select
@@ -203,7 +232,7 @@ class Jaws_ORM
      * @var     string
      * @access  public
      */
-    var $type = '';
+    public $type = '';
 
     /**
      * Alias name of nested select
@@ -211,7 +240,7 @@ class Jaws_ORM
      * @var     string
      * @access  public
      */
-    var $alias = '';
+    public $alias = '';
 
     /**
      * separators/splitters query string 
@@ -279,6 +308,19 @@ class Jaws_ORM
     static function getInstance($db_instance = 'default')
     {
         return new Jaws_ORM($db_instance);
+    }
+
+    /**
+     * Sets column fetch mode
+     *
+     * @access  public
+     * @param   int     $fetchmode  Column fetch mode(FETCHMODE_DEFAULT, FETCHMODE_ORDERED, ...)
+     * @return  object  returns the instance
+     */
+    function fetchmode($fetchmode)
+    {
+        $this->_fetchmode = $fetchmode;
+        return $this;
     }
 
     /**
@@ -813,7 +855,7 @@ class Jaws_ORM
      *
      * @access  public
      * @param   string  $result_type    Result type (all/row/col/one)
-     * @param   mixed   $argument        Extra parameters
+     * @param   mixed   $argument       Extra parameters
      * @param   int     $error_level    Sets this error level if errors occurred
      * @return  mixed   Fetched data or Jaws_Error on failure
      */
@@ -855,7 +897,7 @@ class Jaws_ORM
                         break;
                     }
                 }
-                $result = $this->jawsdb->dbc->queryAll($sql, $this->_types);
+                $result = $this->jawsdb->dbc->queryAll($sql, $this->_types, $this->_fetchmode);
                 break;
 
             default:
