@@ -23,7 +23,7 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
     {
         $model = $this->gadget->model->loadAdmin('Feed');
 
-        $sites = $model->GetFeeds(false, 12, $offset);
+        $sites = $model->GetFeeds(false, 0, 12, $offset);
         if (Jaws_Error::IsError($sites)) {
             return array();
         }

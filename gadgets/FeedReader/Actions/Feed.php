@@ -35,6 +35,15 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
             );
         }
 
+        $result[] = array(
+            'title' => _t('FEEDREADER_SHOW_FEEDS'),
+            'value' => array(
+                0 => _t('FEEDREADER_GLOBAL_FEEDS'),
+                1 => _t('FEEDREADER_USER_FEEDS'),
+            )
+        );
+
+
         return $result;
     }
 
@@ -43,14 +52,16 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
      *
      * @access  public
      * @param   int     $id     Feed site ID
+     * @param   int     $user   Only show user's feeds?
      * @return  string  XHTML content with all titles and links of feed sites
      */
-    function DisplayFeeds($id = 0)
+    function DisplayFeeds($id = 0, $user = 0)
     {
         if(empty($id)) {
             $id = $this->gadget->registry->fetch('default_feed');
         }
 
+        $user = empty($user)? 0 : (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Feed');
         $site = $model->GetFeed($id);
         if (Jaws_Error::IsError($site) || empty($site) || $site['visible'] == 0) {

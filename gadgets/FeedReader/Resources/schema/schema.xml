@@ -16,6 +16,13 @@
         </field>
 
         <field>
+            <name>user</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <default>0</default>
+        </field>
+
+        <field>
             <name>title</name>
             <type>text</type>
             <length>255</length>
