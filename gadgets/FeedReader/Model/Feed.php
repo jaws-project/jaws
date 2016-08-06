@@ -26,7 +26,7 @@ class FeedReader_Model_Feed extends Jaws_Gadget_Model
     {
         $objORM = Jaws_ORM::getInstance()->table('feeds');
         $objORM->select(
-            'id:integer', 'title', 'url', 'cache_time', 'view_type:integer',
+            'id:integer', 'user:integer', 'title', 'url', 'cache_time', 'view_type:integer',
             'count_entry:integer', 'title_view:integer', 'visible:integer'
         );
         $objORM->limit($limit, $offset);
@@ -53,7 +53,7 @@ class FeedReader_Model_Feed extends Jaws_Gadget_Model
     {
         $objORM = Jaws_ORM::getInstance()->table('feeds');
         $objORM->select(
-            'id:integer', 'title', 'url', 'cache_time', 'view_type:integer',
+            'id:integer', 'user:integer', 'title', 'url', 'cache_time', 'view_type:integer',
             'count_entry:integer', 'title_view:integer', 'visible:integer'
         );
         return $objORM->where('id', (int)$id)->fetchRow();

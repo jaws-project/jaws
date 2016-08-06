@@ -67,90 +67,26 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
      */
     function DisplayFeeds($user = 0)
     {
-        if(empty($id)) {
-            $id = $this->gadget->registry->fetch('default_feed');
-        }
-
         $user = empty($user)? 0 : (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->load('Feed');
-        $site = $model->GetFeed($id);
-        if (Jaws_Error::IsError($site) || empty($site) || $site['visible'] == 0) {
+        $feeds = $model->GetFeeds(true, $user);
+        if (Jaws_Error::IsError($feeds)) {
             return false;
         }
 
-        $tpl = $this->gadget->template->load('FeedReader.html');
-        $tpl->SetBlock('feedreader');
+        $tpl = $this->gadget->template->load('FeedReaders.html');
+        $tpl->SetBlock('feedreaders');
 
-        require_once JAWS_PATH . 'gadgets/FeedReader/include/XML_Feed.php';
-        $parser = new XML_Feed();
-        $parser->cache_time = $site['cache_time'];
-        $options = array();
-        $timeout = (int)$this->gadget->registry->fetch('connection_timeout', 'Settings');
-        $options['timeout'] = $timeout;
-        if ($this->gadget->registry->fetch('proxy_enabled', 'Settings') == 'true') {
-            if ($this->gadget->registry->fetch('proxy_auth', 'Settings') == 'true') {
-                $options['proxy_user'] = $this->gadget->registry->fetch('proxy_user', 'Settings');
-                $options['proxy_pass'] = $this->gadget->registry->fetch('proxy_pass', 'Settings');
-            }
-            $options['proxy_host'] = $this->gadget->registry->fetch('proxy_host', 'Settings');
-            $options['proxy_port'] = $this->gadget->registry->fetch('proxy_port', 'Settings');
-        }
-        $parser->setParams($options);
-
-        if (Jaws_Utils::is_writable(JAWS_DATA.'feedcache')) {
-            $parser->cache_dir = JAWS_DATA . 'feedcache';
-        }
-
-        $res = $parser->fetch(Jaws_XSS::defilter($site['url']));
-        if (PEAR::isError($res)) {
-            $GLOBALS['log']->Log(JAWS_LOG_ERROR, '['.$this->gadget->title.']: ',
-                _t('FEEDREADER_ERROR_CANT_FETCH', Jaws_XSS::refilter($site['url'])), '');
-        }
-
-        if (!isset($parser->feed)) {
-            return false;
-        }
-
-        $block = ($site['view_type']==0)? 'simple' : 'marquee';
-        $tpl->SetBlock("feedreader/$block");
-        $tpl->SetVariable('title', _t('FEEDREADER_ACTION_TITLE'));
-
-        switch ($site['title_view']) {
-            case 1:
-                $tpl->SetVariable('feed_title', Jaws_XSS::refilter($parser->feed['channel']['title']));
-                $tpl->SetVariable('feed_link',
-                    Jaws_XSS::refilter(
-                        isset($parser->feed['channel']['link']) ? $parser->feed['channel']['link'] : ''
-                    )
-                );
-                break;
-            case 2:
-                $tpl->SetVariable('feed_title', Jaws_XSS::refilter($site['title']));
-                $tpl->SetVariable('feed_link',
-                    Jaws_XSS::refilter(
-                        isset($parser->feed['channel']['link']) ? $parser->feed['channel']['link'] : ''
-                    )
-                );
-                break;
-            default:
-        }
-        $tpl->SetVariable('marquee_direction', (($site['view_type']==2)? 'down' :
-            (($site['view_type']==3)? 'left' :
-                (($site['view_type']==4)? 'right' : 'up'))));
-        if (isset($parser->feed['items'])) {
-            foreach($parser->feed['items'] as $index => $item) {
-                $tpl->SetBlock("feedreader/$block/item");
-                $tpl->SetVariable('title', Jaws_XSS::refilter($item['title']));
-                $tpl->SetVariable('href', isset($item['link'])? Jaws_XSS::refilter($item['link']) : '');
-                $tpl->ParseBlock("feedreader/$block/item");
-                if (($site['count_entry'] > 0) && ($site['count_entry'] <= ($index + 1))) {
-                    break;
-                }
+        if (count($feeds) > 0) {
+            foreach ($feeds as $feed) {
+                $tpl->SetBlock("feedreaders/feed");
+                $tpl->SetVariable('url', $this->gadget->urlMap('GetFeed', array('id' => $feed['id'])));
+                $tpl->SetVariable('title', $feed['title']);
+                $tpl->ParseBlock('feedreaders/feed');
             }
         }
 
-        $tpl->ParseBlock("feedreader/$block");
-        $tpl->ParseBlock('feedreader');
+        $tpl->ParseBlock('feedreaders');
         return $tpl->Get();
     }
 
@@ -171,6 +107,13 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $site = $model->GetFeed($id);
         if (Jaws_Error::IsError($site) || empty($site) || $site['visible'] == 0) {
             return false;
+        }
+
+        // check user permissions
+        if (!empty($site['user'])) {
+            if ($site['user'] != $GLOBALS['app']->Session->GetAttribute('user')) {
+                return Jaws_HTTPError::Get(403);
+            }
         }
 
         $tpl = $this->gadget->template->load('FeedReader.html');
@@ -307,6 +250,6 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $id = jaws()->request->fetch('id', 'get');
 
         $layoutGadget = $this->gadget->action->load('Feed');
-        return $layoutGadget->DisplayFeeds($id);
+        return $layoutGadget->DisplayFeed($id);
     }
 }
