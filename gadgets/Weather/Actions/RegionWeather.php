@@ -137,6 +137,26 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
     }
 
     /**
+     * Get AllRegionsWeather action params
+     *
+     * @access  public
+     * @return  array   list of AllRegionsWeather action params
+     */
+    function AllRegionsWeatherLayoutParams()
+    {
+        $result = array();
+        $result[] = array(
+            'title' => _t('WEATHER_REGIONS'),
+            'value' => array(
+                0 => _t('WEATHER_GLOBAL_REGIONS'),
+                1 => _t('WEATHER_USER_REGIONS'),
+            )
+        );
+
+        return $result;
+    }
+
+    /**
      * Displays the weather for all regions
      *
      * @access  public

@@ -22,6 +22,7 @@ $actions['RegionWeather'] = array(
 $actions['AllRegionsWeather'] = array(
     'normal' => true,
     'layout' => true,
+    'parametric' => true,
     'file' => 'RegionWeather',
 );
 
