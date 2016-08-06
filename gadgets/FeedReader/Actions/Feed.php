@@ -29,9 +29,9 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
             )
         );
 
-
         return $result;
     }
+
     /**
      * Get Display action params
      *
