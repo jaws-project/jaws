@@ -13,6 +13,11 @@
 /**
  * Index actions
  */
+$actions['DisplayFeed'] = array(
+    'layout' => true,
+    'parametric' => true,
+    'file'   => 'Feed'
+);
 $actions['DisplayFeeds'] = array(
     'layout' => true,
     'parametric' => true,
