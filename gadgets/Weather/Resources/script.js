@@ -54,7 +54,7 @@ function initWeather()
     $('#latitude').val('51.30');
     $('#longitude').val('00.08');
     initDataGrid('weather_datagrid', WeatherAjax);
-    setGoogleMapImage();
+    showMyLocation();
 }
 
 /**
@@ -253,6 +253,29 @@ function zoomMap(level)
     }
 
     setGoogleMapImage();
+}
+
+/**
+ * Show user's current location
+ */
+
+function showMyLocation() {
+    if (!navigator.geolocation) {
+        return false;
+    }
+
+    function success(position) {
+        $('#latitude').val(position.coords.latitude);
+        $('#longitude').val(position.coords.longitude);
+        ZoomLevel = 10;
+        setGoogleMapImage();
+    };
+
+    function error() {
+        return false;
+    };
+
+    navigator.geolocation.getCurrentPosition(success, error);
 }
 
 var WeatherAjax = new JawsAjax('Weather', WeatherCallback);

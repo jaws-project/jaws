@@ -14,3 +14,7 @@ $maps[] = array(
     'weather/{id}',
     array('id' =>  '[\p{L}[:digit:]\-_\.]+',)
 );
+$maps[] = array(
+    'UserRegionsList',
+    'weather/user/regions',
+);

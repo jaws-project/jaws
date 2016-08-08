@@ -25,6 +25,14 @@ $actions['AllRegionsWeather'] = array(
     'parametric' => true,
     'file' => 'RegionWeather',
 );
+$actions['UserRegionsList'] = array(
+    'normal' => true,
+    'file' => 'RegionWeather',
+);
+$actions['GetUserRegions'] = array(
+    'standalone' => true,
+    'file' => 'RegionWeather',
+);
 
 /**
  * Admin actions

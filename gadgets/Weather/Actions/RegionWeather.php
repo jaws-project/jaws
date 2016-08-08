@@ -23,7 +23,7 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
     {
         $result = array();
         $wModel = $this->gadget->model->load('Regions');
-        $regions = $wModel->GetRegions();
+        $regions = $wModel->GetRegions(true, 0);
         if (!Jaws_Error::isError($regions)) {
             $pregions = array();
             foreach ($regions as $region) {
@@ -60,6 +60,13 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         $region = $model->GetRegion($region);
         if (Jaws_Error::IsError($region) || empty($region)) {
             return false;
+        }
+
+        // check user permissions
+        if (!empty($region['user'])) {
+            if ($region['user'] != $GLOBALS['app']->Session->GetAttribute('user')) {
+                return Jaws_HTTPError::Get(403);
+            }
         }
 
         $tpl = $this->gadget->template->load('Weather.html');
@@ -160,16 +167,19 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
      * Displays the weather for all regions
      *
      * @access  public
+     * @param   int     $user  $user = 0 => global regions, otherwise display current user regions
      * @return  string  XHTML content
      */
-    function AllRegionsWeather()
+    function AllRegionsWeather($user = 0)
     {
         $tpl = $this->gadget->template->load('AllWeather.html');
         $tpl->SetBlock('weather');
         $tpl->SetVariable('title', _t('WEATHER_ALL_REGIONS'));
 
         $model = $this->gadget->model->load('Regions');
-        $regions = $model->GetRegions();
+
+        $user = empty($user)? 0 : (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $regions = $model->GetRegions(true, $user);
         if (!Jaws_Error::isError($regions)) {
             $options = array();
             $options['timeout'] = (int)$this->gadget->registry->fetch('connection_timeout', 'Settings');
@@ -214,5 +224,44 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
 
         $tpl->ParseBlock('weather');
         return $tpl->Get();
+    }
+
+    /**
+     * Displays the UI for managing user's regions
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function UserRegionsList()
+    {
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/w2ui/w2ui.js');
+        $GLOBALS['app']->Layout->AddHeadLink('libraries/w2ui/w2ui.css');
+        $this->AjaxMe('index.js');
+
+        $tpl = $this->gadget->template->load('UserRegions.html');
+        $tpl->SetBlock('UserRegions');
+        $tpl->SetVariable('title', _t('WEATHER_ALL_REGIONS'));
+        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
+
+        $user = empty($user)? 0 : (int)$GLOBALS['app']->Session->GetAttribute('user');
+
+        $tpl->ParseBlock('UserRegions');
+        return $tpl->Get();
+    }
+
+    /**
+     * Return user's regions
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function GetUserRegions()
+    {
+        $model = $this->gadget->model->load('Regions');
+
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $regions = $model->GetRegions(true, $user);
+        return $regions;
     }
 }

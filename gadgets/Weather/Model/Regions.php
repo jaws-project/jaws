@@ -23,7 +23,7 @@ class Weather_Model_Regions extends Jaws_Gadget_Model
     function GetRegion($id)
     {
         $weatherTable = Jaws_ORM::getInstance()->table('weather');
-        $weatherTable->select('id:integer', 'title', 'fast_url', 'latitude:float', 'longitude:float',
+        $weatherTable->select('id:integer', 'user:integer', 'title', 'fast_url', 'latitude:float', 'longitude:float',
             'published:boolean');
 
         if (is_numeric($id)) {
@@ -45,11 +45,12 @@ class Weather_Model_Regions extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   bool    $published  Published status
+     * @param   int     $user       User id
      * @param   int     $limit      Data limit
      * @param   int     $offset     Data offset
      * @return  mixed   Array of regions or Jaws_Error on failure
      */
-    function GetRegions($published = null, $limit = false, $offset = null)
+    function GetRegions($published = null, $user = null, $limit = false, $offset = null)
     {
         $weatherTable = Jaws_ORM::getInstance()->table('weather');
         $weatherTable->select('id:integer', 'title', 'fast_url', 'latitude:float', 'longitude:float',
@@ -57,6 +58,10 @@ class Weather_Model_Regions extends Jaws_Gadget_Model
 
         if (!is_null($published)) {
             $weatherTable->where('published', $published);
+        }
+
+        if (!is_null($user)) {
+            $weatherTable->and()->where('user', $user);
         }
 
         $result = $weatherTable->limit($limit, $offset)->orderBy('id asc')->fetchAll();

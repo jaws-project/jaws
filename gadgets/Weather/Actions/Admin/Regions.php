@@ -111,7 +111,7 @@ class Weather_Actions_Admin_Regions extends Weather_Actions_Admin_Default
     function GetRegions($offset = null)
     {
         $model = $this->gadget->model->load('Regions');
-        $regions = $model->GetRegions(null, 10, $offset);
+        $regions = $model->GetRegions(null, 0, 10, $offset);
         if (Jaws_Error::IsError($regions)) {
             return array();
         }
