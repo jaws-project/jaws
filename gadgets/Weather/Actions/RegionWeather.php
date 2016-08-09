@@ -234,7 +234,12 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
      */
     function UserRegionsList()
     {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
         $GLOBALS['app']->Layout->AddScriptLink('libraries/w2ui/w2ui.js');
+//        $GLOBALS['app']->Layout->AddHeadLink('libraries/w2ui/w2ui.rtl.css');
         $GLOBALS['app']->Layout->AddHeadLink('libraries/w2ui/w2ui.css');
         $this->AjaxMe('index.js');
 
@@ -251,17 +256,64 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
     }
 
     /**
-     * Return user's regions
+     * Return user's regions list
      *
      * @access  public
      * @return  string  XHTML content
      */
     function GetUserRegions()
     {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
         $model = $this->gadget->model->load('Regions');
 
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $regions = $model->GetRegions(true, $user);
-        return $regions;
+        $total = $model->GetRegionsCount(true, $user);
+
+        return $GLOBALS['app']->Session->GetResponse(
+            '',
+            RESPONSE_NOTICE,
+            array(
+                'total'   => $total,
+                'records' => $regions
+            )
+        );
+    }
+
+    /**
+     * Delete user's regions
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function DeleteUserRegions()
+    {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $ids = $this->gadget->request->fetch('ids:array', 'post');
+
+        $model = $this->gadget->model->load('Regions');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $res = $model->DeleteUserRegions($user, $ids);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return $GLOBALS['app']->Session->GetResponse(_t('WEATHER_ERROR_REGION_NOT_DELETED'), RESPONSE_ERROR);
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(_t('WEATHER_REGION_DELETED'), RESPONSE_NOTICE);
+        }
+
+
+//        return $GLOBALS['app']->Session->GetResponse(
+//            '',
+//            RESPONSE_NOTICE,
+//            array(
+//                'total'   => $total,
+//                'records' => $regions
+//            )
+//        );
     }
 }

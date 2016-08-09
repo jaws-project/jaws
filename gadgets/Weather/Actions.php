@@ -33,6 +33,10 @@ $actions['GetUserRegions'] = array(
     'standalone' => true,
     'file' => 'RegionWeather',
 );
+$actions['DeleteUserRegions'] = array(
+    'standalone' => true,
+    'file' => 'RegionWeather',
+);
 
 /**
  * Admin actions

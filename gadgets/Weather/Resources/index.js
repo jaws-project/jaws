@@ -119,21 +119,6 @@ function updateMailbox()
     }
 }
 
-/**
- * Send mail
- */
-function domainSendMail()
-{
-    WeatherAjax.callAsync(
-        'DomainSendMail', {
-            'did' : $('#did').val(),
-            'all': $('#grid_regions-grid_check_all').prop('checked')? 1 : 0,
-            'ids': $('#grid_regions-grid_check_all').prop('checked')? [] : w2ui['regions-grid'].getSelection(),
-            'subject': $('#w2ui-popup form input[name=subject]').val(),
-            'body': $('#w2ui-popup form textarea[name=body]').val()
-        }
-    );
-}
 
 /**
  * stop Action
@@ -169,12 +154,16 @@ $(document).ready(function() {
         method: 'POST',
         url: {
             get    : WeatherAjax.baseURL + 'GetUserRegions',
-            remove : WeatherAjax.baseURL + 'DeleteRegions'
+            remove : WeatherAjax.baseURL + 'DeleteUserRegions'
         },
         show: {
             toolbar: true,
             footer: true,
             selectColumn: true,
+            toolbarAdd: true,
+            toolbarDelete: true,
+            toolbarSave: true,
+            toolbarEdit: true
         },
         recid: 'id',
         columns: [
@@ -184,12 +173,6 @@ $(document).ready(function() {
         onRequest: function(event) {
             switch (event.postData.cmd) {
                 case 'get':
-                    event.postData = {
-                        'did':    $('#did').val(),
-                        'term':   event.postData.search? event.postData.search[0].value : '',
-                        'limit':  event.postData.limit,
-                        'offset': event.postData.offset
-                    };
                     break;
 
                 case 'delete':

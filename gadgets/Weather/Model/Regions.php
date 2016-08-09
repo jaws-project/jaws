@@ -71,4 +71,42 @@ class Weather_Model_Regions extends Jaws_Gadget_Model
 
         return $result;
     }
+
+    /**
+     * Gets total count of regions
+     *
+     * @access  public
+     * @param   bool    $published  Published status
+     * @param   int     $user       User id
+     * @return  mixed   Total of regions or Jaws_Error on failure
+     */
+    function GetRegionsCount($published = null, $user = null)
+    {
+        $weatherTable = Jaws_ORM::getInstance()->table('weather');
+        $weatherTable->select('count(id):integer');
+
+        if (!is_null($published)) {
+            $weatherTable->where('published', $published);
+        }
+
+        if (!is_null($user)) {
+            $weatherTable->and()->where('user', $user);
+        }
+
+        return $weatherTable->fetchOne();
+    }
+
+    /**
+     * Delete user's regions
+     *
+     * @access  public
+     * @param   int     $user       User id
+     * @param   array   $ids        Region's ids
+     * @return  mixed   True or Jaws_Error on failure
+     */
+    function DeleteUserRegions($user, $ids)
+    {
+        $weatherTable = Jaws_ORM::getInstance()->table('weather');
+        return $weatherTable->delete()->where('user', $user)->and()->where('id', $ids, 'in')->exec();
+    }
 }
