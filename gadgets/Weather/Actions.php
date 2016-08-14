@@ -37,6 +37,14 @@ $actions['DeleteUserRegions'] = array(
     'standalone' => true,
     'file' => 'RegionWeather',
 );
+$actions['GetRegion'] = array(
+    'standalone' => true,
+    'file' => 'RegionWeather',
+);
+$actions['GetGoogleMapImage'] = array(
+    'standalone' => true,
+    'file' => 'GoogleMap',
+);
 
 /**
  * Admin actions
@@ -48,10 +56,6 @@ $admin_actions['Regions'] = array(
 $admin_actions['Properties'] = array(
     'normal' => true,
     'file' => 'Properties',
-);
-$admin_actions['GetGoogleMapImage'] = array(
-    'standalone' => true,
-    'file' => 'GoogleMap',
 );
 $admin_actions['GetRegion'] = array(
     'standalone' => true,

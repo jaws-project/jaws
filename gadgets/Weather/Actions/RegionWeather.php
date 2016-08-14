@@ -246,10 +246,18 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('UserRegions.html');
         $tpl->SetBlock('UserRegions');
         $tpl->SetVariable('title', _t('WEATHER_ALL_REGIONS'));
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
-
-        $user = empty($user)? 0 : (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $tpl->SetVariable('lbl_geo_position', _t('WEATHER_GEOPOSITION'));
+        $tpl->SetVariable('lbl_fast_url', _t('WEATHER_FASTURL'));
+        $tpl->SetVariable('lbl_latitude', _t('WEATHER_LATITUDE'));
+        $tpl->SetVariable('lbl_longitude', _t('WEATHER_LONGITUDE'));
+        $tpl->SetVariable('lbl_published', _t('WEATHER_PUBLISHED'));
+        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
+        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
+        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
 
         $tpl->ParseBlock('UserRegions');
         return $tpl->Get();
@@ -268,7 +276,6 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         }
 
         $model = $this->gadget->model->load('Regions');
-
         $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $regions = $model->GetRegions(true, $user);
         $total = $model->GetRegionsCount(true, $user);
@@ -281,6 +288,19 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
                 'records' => $regions
             )
         );
+    }
+
+    /**
+     * Return user's region info
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function GetRegion()
+    {
+        $id = $this->gadget->request->fetch('id', 'post');
+        $model = $this->gadget->model->load('Regions');
+        return $model->GetRegion($id);
     }
 
     /**

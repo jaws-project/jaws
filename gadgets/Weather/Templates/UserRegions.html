@@ -2,14 +2,55 @@
 <div class="gadget_header"><div class="gadget_title"><h3>{{title}}</h3></div></div>
 <div class="gadget_container">
   <div class="gadget_content content">
-    <div id="region_workarea"></div>
+
+    <div id="region_workarea" style="display: none; width: 650px; height: 400px; overflow: auto">
+      <div rel="body">
+        <div style="padding: 10px; font-size: 11px; line-height: 150%;">
+          <div id="gmap_box">
+            <img id="gmap" onclick="javascript:getGoogleMap(event, this)" src="gadgets/Weather/Resources/images/gmap.png" title="{{map_title}}" />
+            <div id="zoom_box">
+              <a href="javascript:zoomMap(-1)"><img alt="-" src="gadgets/Weather/Resources/images/zoomout.png" /></a>
+              <a href="javascript:zoomMap(+1)"><img alt="+" src="gadgets/Weather/Resources/images/zoomin.png" /></a>
+            </div>
+          </div>
+
+          <table id="geo_position" cellpadding="0" cellspacing="2">
+            <tr><td><label for="title">{{lbl_title}}:</label></td><td><input type="text" id="title"></td></tr>
+            <tr><td><label for="fast_url">{{lbl_fast_url}}:</label></td><td><input type="text" id="fast_url"></td></tr>
+            <tr><td><label for="latitude">{{lbl_latitude}}:</label></td><td><input type="text" id="latitude" class="ltr"></td></tr>
+            <tr><td><label for="longitude">{{lbl_longitude}}:</label></td><td><input type="text" id="longitude" class="ltr"></td></tr>
+            <tr><td><label for="published">{{lbl_published}}:</label></td><td>
+              <select name="published" id="published">
+                <option value="1">{{lbl_yes}}</option>
+                <option value="0">{{lbl_no}}</option>
+              </select>
+
+            </td></tr>
+          </table>
+        </div>
+      </div>
+      <div rel="buttons">
+        <button class="btn" onclick="javascript:updateRegion()">{{lbl_save}}</button>
+        <button class="btn" onclick="javascript:w2popup.close();">{{lbl_cancel}}</button>
+      </div>
+    </div>
+
+
     <div id="regions-grid" style="width: 100%; height: 400px;"></div>
   </div>
 </div>
 <div class="gadget_footer"></div>
 
+<style>
+  #zoom_box{
+    float: right;
+  }
+</style>
+
 <script type="text/javascript">
+  var base_script = "{{base_script}}";
   var lbl_title = "{{lbl_title}}";
   var lbl_edit = "{{lbl_edit}}";
+  var lbl_geo_position = "{{lbl_geo_position}}";
 </script>
 <!-- END UserRegions -->
