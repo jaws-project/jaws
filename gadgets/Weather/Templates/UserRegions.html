@@ -14,24 +14,26 @@
             </div>
           </div>
 
-          <table id="geo_position" cellpadding="0" cellspacing="2">
-            <tr><td><label for="title">{{lbl_title}}:</label></td><td><input type="text" id="title"></td></tr>
-            <tr><td><label for="fast_url">{{lbl_fast_url}}:</label></td><td><input type="text" id="fast_url"></td></tr>
-            <tr><td><label for="latitude">{{lbl_latitude}}:</label></td><td><input type="text" id="latitude" class="ltr"></td></tr>
-            <tr><td><label for="longitude">{{lbl_longitude}}:</label></td><td><input type="text" id="longitude" class="ltr"></td></tr>
-            <tr><td><label for="published">{{lbl_published}}:</label></td><td>
-              <select name="published" id="published">
-                <option value="1">{{lbl_yes}}</option>
-                <option value="0">{{lbl_no}}</option>
-              </select>
+          <form action="#" name="region">
+            <table id="geo_position" cellpadding="0" cellspacing="2">
+              <tr><td><label for="title">{{lbl_title}}:</label></td><td><input type="text" id="title" name="title"></td></tr>
+              <tr><td><label for="fast_url">{{lbl_fast_url}}:</label></td><td><input type="text" id="fast_url" name="fast_url"></td></tr>
+              <tr><td><label for="latitude">{{lbl_latitude}}:</label></td><td><input type="text" id="latitude" name="latitude" class="ltr"></td></tr>
+              <tr><td><label for="longitude">{{lbl_longitude}}:</label></td><td><input type="text" id="longitude" name="longitude" class="ltr"></td></tr>
+              <tr><td><label for="published">{{lbl_published}}:</label></td><td>
+                <select name="published" id="published">
+                  <option value="1">{{lbl_yes}}</option>
+                  <option value="0">{{lbl_no}}</option>
+                </select>
 
-            </td></tr>
+              </td></tr>
           </table>
+          </form>
         </div>
       </div>
       <div rel="buttons">
         <button class="btn" onclick="javascript:updateRegion()">{{lbl_save}}</button>
-        <button class="btn" onclick="javascript:w2popup.close();">{{lbl_cancel}}</button>
+        <button class="btn" onclick="javascript:stopAction();">{{lbl_cancel}}</button>
       </div>
     </div>
 
@@ -50,7 +52,9 @@
 <script type="text/javascript">
   var base_script = "{{base_script}}";
   var lbl_title = "{{lbl_title}}";
+  var lbl_add = "{{lbl_add}}";
   var lbl_edit = "{{lbl_edit}}";
+  var lbl_published = "{{lbl_published}}";
   var lbl_geo_position = "{{lbl_geo_position}}";
 </script>
 <!-- END UserRegions -->

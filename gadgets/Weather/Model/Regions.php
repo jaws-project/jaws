@@ -97,6 +97,40 @@ class Weather_Model_Regions extends Jaws_Gadget_Model
     }
 
     /**
+     * Update user's region
+     *
+     * @access  public
+     * @param   array   $data        Region's ids
+     * @return  mixed   True or Jaws_Error on failure
+     */
+    function InsertUserRegion($data)
+    {
+        $fast_url = empty($data['fast_url']) ? $data['title'] : $data['fast_url'];
+        $fast_url = $this->GetRealFastUrl($fast_url, 'weather');
+        $data['fast_url'] = $fast_url;
+        $data['latitude']  = (float) $data['latitude'];
+        $data['longitude'] = (float) $data['longitude'];
+
+        $weatherTable = Jaws_ORM::getInstance()->table('weather');
+        return $weatherTable->insert($data)->exec();
+    }
+
+    /**
+     * Update user's region
+     *
+     * @access  public
+     * @param   int     $id          Region id
+     * @param   array   $data        Region's ids
+     * @param   int     $user        User id
+     * @return  mixed   True or Jaws_Error on failure
+     */
+    function UpdateUserRegion($id, $data, $user)
+    {
+        $weatherTable = Jaws_ORM::getInstance()->table('weather');
+        return $weatherTable->update($data)->where('user', $user)->and()->where('id', $id)->exec();
+    }
+
+    /**
      * Delete user's regions
      *
      * @access  public

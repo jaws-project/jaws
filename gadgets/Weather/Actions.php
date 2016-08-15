@@ -45,6 +45,14 @@ $actions['GetGoogleMapImage'] = array(
     'standalone' => true,
     'file' => 'GoogleMap',
 );
+$actions['InsertRegion'] = array(
+    'standalone' => true,
+    'file' => 'RegionWeather',
+);
+$actions['UpdateRegion'] = array(
+    'standalone' => true,
+    'file' => 'RegionWeather',
+);
 
 /**
  * Admin actions
