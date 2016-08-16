@@ -126,6 +126,9 @@ class Weather_Model_Regions extends Jaws_Gadget_Model
      */
     function UpdateUserRegion($id, $data, $user)
     {
+        $data['latitude']  = (float) $data['latitude'];
+        $data['longitude'] = (float) $data['longitude'];
+
         $weatherTable = Jaws_ORM::getInstance()->table('weather');
         return $weatherTable->update($data)->where('user', $user)->and()->where('id', $id)->exec();
     }

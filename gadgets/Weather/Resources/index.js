@@ -255,7 +255,6 @@ $(document).ready(function() {
             selectColumn: true,
             toolbarAdd: true,
             toolbarDelete: true,
-            toolbarSave: true,
             toolbarEdit: true
         },
         recid: 'id',
