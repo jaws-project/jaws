@@ -273,7 +273,6 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('UserFeeds.html');
         $tpl->SetBlock('UserFeeds');
         $tpl->SetVariable('title', _t('FEEDREADER_USER_FEEDS'));
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
         $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
