@@ -252,4 +252,180 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $layoutGadget = $this->gadget->action->load('Feed');
         return $layoutGadget->DisplayFeed($id);
     }
+
+    /**
+     * Displays an UI for managing user's feeds
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function UserFeedsList()
+    {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/w2ui/w2ui.js');
+//        $GLOBALS['app']->Layout->AddHeadLink('libraries/w2ui/w2ui.rtl.css');
+        $GLOBALS['app']->Layout->AddHeadLink('libraries/w2ui/w2ui.css');
+        $this->AjaxMe('index.js');
+
+        $tpl = $this->gadget->template->load('UserFeeds.html');
+        $tpl->SetBlock('UserFeeds');
+        $tpl->SetVariable('title', _t('FEEDREADER_USER_FEEDS'));
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
+        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
+        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
+        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+
+        $tpl->SetVariable('lbl_cache_time', _t('FEEDREADER_CACHE_TIME'));
+        $tpl->SetVariable('lbl_disable', _t('GLOBAL_DISABLE'));
+        $tpl->SetVariable('lbl_minutes_10', _t('GLOBAL_DATE_MINUTES', 10));
+        $tpl->SetVariable('lbl_minutes_30', _t('GLOBAL_DATE_MINUTES', 30));
+        $tpl->SetVariable('lbl_hours_1', _t('GLOBAL_DATE_HOURS', 1));
+        $tpl->SetVariable('lbl_hours_5', _t('GLOBAL_DATE_HOURS', 5));
+        $tpl->SetVariable('lbl_hours_10', _t('GLOBAL_DATE_HOURS', 10));
+        $tpl->SetVariable('lbl_days_1', _t('GLOBAL_DATE_DAYS', 1));
+        $tpl->SetVariable('lbl_weeks_1', _t('GLOBAL_DATE_WEEKS', 1));
+
+        $tpl->SetVariable('lbl_view_type', _t('FEEDREADER_VIEW_TYPE'));
+        $tpl->SetVariable('lbl_view_type_simple', _t('FEEDREADER_VIEW_TYPE_SIMPLE'));
+        $tpl->SetVariable('lbl_view_type_up', _t('FEEDREADER_VIEW_TYPE_MARQUEE_UP'));
+        $tpl->SetVariable('lbl_view_type_down', _t('FEEDREADER_VIEW_TYPE_MARQUEE_DOWN'));
+        $tpl->SetVariable('lbl_view_type_left', _t('FEEDREADER_VIEW_TYPE_MARQUEE_LEFT'));
+        $tpl->SetVariable('lbl_view_type_right', _t('FEEDREADER_VIEW_TYPE_MARQUEE_RIGHT'));
+
+        $tpl->SetVariable('lbl_title_view', _t('FEEDREADER_TITLE_VIEW'));
+        $tpl->SetVariable('lbl_title_view_disable', _t('FEEDREADER_TITLE_VIEW_DISABLE'));
+        $tpl->SetVariable('lbl_title_view_internal', _t('FEEDREADER_TITLE_VIEW_INTERNAL'));
+        $tpl->SetVariable('lbl_title_view_external', _t('FEEDREADER_TITLE_VIEW_EXTERNAL'));
+
+        $tpl->SetVariable('lbl_count_entry', _t('FEEDREADER_SITE_COUNT_ENTRY'));
+        $tpl->SetVariable('lbl_visible', _t('GLOBAL_VISIBLE'));
+        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
+        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
+
+        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
+        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+
+        $tpl->ParseBlock('UserFeeds');
+        return $tpl->Get();
+    }
+
+    /**
+     * Return user's feeds list
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function GetUserFeeds()
+    {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $model = $this->gadget->model->load('Feed');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $feeds = $model->GetFeeds(false, $user);
+        $total = $model->GetFeedsCount(false, $user);
+
+        foreach ($feeds as $key => $feed) {
+            $feed['visible'] = ($feed['visible']) ? _t('GLOBAL_YES') : _t('GLOBAL_NO');
+            $feeds[$key] = $feed;
+        }
+        return $GLOBALS['app']->Session->GetResponse(
+            '',
+            RESPONSE_NOTICE,
+            array(
+                'total' => $total,
+                'records' => $feeds
+            )
+        );
+    }
+
+    /**
+     * Return user's feed info
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function GetUserFeed()
+    {
+        $id = $this->gadget->request->fetch('id', 'post');
+        $model = $this->gadget->model->load('Feed');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        return $model->GetFeed($id, $user);
+    }
+
+    /**
+     * Insert user's feed
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function InsertFeed()
+    {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $data = $this->gadget->request->fetch('data:array', 'post');
+        $model = $this->gadget->model->load('Feed');
+        $data['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $res = $model->InsertUserFeed($data);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return $GLOBALS['app']->Session->GetResponse(_t('FEEDREADER_ERROR_SITE_NOT_ADDED'), RESPONSE_ERROR);
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(_t('FEEDREADER_SITE_ADDED'), RESPONSE_NOTICE);
+        }
+    }
+
+    /**
+     * Update user's feed
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function UpdateFeed()
+    {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
+        $model = $this->gadget->model->load('Feed');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $res = $model->UpdateUserFeed($post['id'], $post['data'], $user);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return $GLOBALS['app']->Session->GetResponse(_t('FEEDREADER_ERROR_PROPERTIES_NOT_UPDATED'), RESPONSE_ERROR);
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(_t('FEEDREADER_SITE_UPDATED'), RESPONSE_NOTICE);
+        }
+    }
+
+    /**
+     * Delete user's feeds
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function DeleteUserFeeds()
+    {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $ids = $this->gadget->request->fetch('ids:array', 'post');
+
+        $model = $this->gadget->model->load('Feed');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $res = $model->DeleteUserFeeds($user, $ids);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return $GLOBALS['app']->Session->GetResponse(_t('FEEDREADER_ERROR_SITE_NOT_DELETED'), RESPONSE_ERROR);
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(_t('FEEDREADER_SITE_DELETED'), RESPONSE_NOTICE);
+        }
+    }
+
 }

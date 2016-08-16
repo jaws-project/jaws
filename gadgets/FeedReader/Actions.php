@@ -28,6 +28,31 @@ $actions['GetFeed'] = array(
     'file'   => 'Feed'
 );
 
+$actions['UserFeedsList'] = array(
+    'normal' => true,
+    'file' => 'Feed',
+);
+$actions['GetUserFeeds'] = array(
+    'standalone' => true,
+    'file' => 'Feed',
+);
+$actions['DeleteUserFeeds'] = array(
+    'standalone' => true,
+    'file' => 'Feed',
+);
+$actions['GetUserFeed'] = array(
+    'standalone' => true,
+    'file' => 'Feed',
+);
+$actions['InsertFeed'] = array(
+    'standalone' => true,
+    'file' => 'Feed',
+);
+$actions['UpdateFeed'] = array(
+    'standalone' => true,
+    'file' => 'Feed',
+);
+
 /**
  * Admin actions
  */
