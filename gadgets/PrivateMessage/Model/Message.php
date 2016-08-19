@@ -425,7 +425,9 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                     // send notification on new private message
                     if (!$is_notification) {
                         $params = array();
+                        $params['key'] = crc32('PrivateMessage' . $senderMessageId);
                         $params['title'] = _t('PRIVATEMESSAGE_NEW_MESSAGE_NOTIFICATION_TITLE');
+                        $params['summary'] = _t('PRIVATEMESSAGE_NEW_MESSAGE_NOTIFICATION');
                         $params['description'] = _t('PRIVATEMESSAGE_NEW_MESSAGE_NOTIFICATION_DESC', $data['subject']);
                         $params['user'] = (int)$recipient_user;
                         $this->gadget->event->shout('Notify', $params);
