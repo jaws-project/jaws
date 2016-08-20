@@ -59,6 +59,33 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
     }
 
     /**
+     * Get Display user feed action params
+     *
+     * @access  public
+     * @return  array list of Display action params
+     */
+    function DisplayUserFeedLayoutParams()
+    {
+        $result = array();
+        $rModel = $this->gadget->model->load('Feed');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $sites = $rModel->GetFeeds(true, $user);
+        if (!Jaws_Error::isError($sites)) {
+            $psites = array();
+            foreach ($sites as $site) {
+                $psites[$site['id']] = $site['title'];
+            }
+
+            $result[] = array(
+                'title' => _t('FEEDREADER_FEED'),
+                'value' => $psites
+            );
+        }
+
+        return $result;
+    }
+
+    /**
      * Displays titles of the feed sites
      *
      * @access  public
@@ -111,7 +138,7 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
 
         // check user permissions
         if (!empty($site['user'])) {
-            if ($site['user'] != $GLOBALS['app']->Session->GetAttribute('user')) {
+            if ($site['user'] != (int)$GLOBALS['app']->Session->GetAttribute('user')) {
                 return Jaws_HTTPError::Get(403);
             }
         }
@@ -190,6 +217,18 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         $tpl->ParseBlock("feedreader/$block");
         $tpl->ParseBlock('feedreader');
         return $tpl->Get();
+    }
+
+    /**
+     * Displays titles of the feed sites
+     *
+     * @access  public
+     * @param   int     $id     Feed site ID
+     * @return  string  XHTML content with all titles and links of feed sites
+     */
+    function DisplayUserFeed($id = 0)
+    {
+        return $this->DisplayFeed($id);
     }
 
     /**

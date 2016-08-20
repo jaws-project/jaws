@@ -13,12 +13,17 @@
 /**
  * Index actions
  */
+$actions['DisplayFeeds'] = array(
+    'layout' => true,
+    'parametric' => true,
+    'file'   => 'Feed'
+);
 $actions['DisplayFeed'] = array(
     'layout' => true,
     'parametric' => true,
     'file'   => 'Feed'
 );
-$actions['DisplayFeeds'] = array(
+$actions['DisplayUserFeed'] = array(
     'layout' => true,
     'parametric' => true,
     'file'   => 'Feed'
