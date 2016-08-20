@@ -13,13 +13,19 @@
 /**
  * Index actions
  */
+$actions['AllRegionsWeather'] = array(
+    'normal' => true,
+    'layout' => true,
+    'parametric' => true,
+    'file' => 'RegionWeather',
+);
 $actions['RegionWeather'] = array(
     'normal' => true,
     'layout' => true,
     'parametric' => true,
     'file' => 'RegionWeather',
 );
-$actions['AllRegionsWeather'] = array(
+$actions['UserRegionWeather'] = array(
     'normal' => true,
     'layout' => true,
     'parametric' => true,

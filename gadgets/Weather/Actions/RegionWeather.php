@@ -40,6 +40,33 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
     }
 
     /**
+     * Get UserRegionWeather action params
+     *
+     * @access  public
+     * @return  array   list of RegionWeather action params
+     */
+    function UserRegionWeatherLayoutParams()
+    {
+        $result = array();
+        $wModel = $this->gadget->model->load('Regions');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $regions = $wModel->GetRegions(true, $user);
+        if (!Jaws_Error::isError($regions)) {
+            $pregions = array();
+            foreach ($regions as $region) {
+                $pregions[$region['id']] = $region['title'];
+            }
+
+            $result[] = array(
+                'title' => _t('WEATHER_ACTIONS_REGIONWEATHER'),
+                'value' => $pregions
+            );
+        }
+
+        return $result;
+    }
+
+    /**
      * Displays the weather of a specific region
      *
      * @access  public
@@ -141,6 +168,19 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
 
         $tpl->ParseBlock('weather');
         return $tpl->Get();
+    }
+
+    /**
+     * Displays the weather of a specific region for user
+     *
+     * @access  public
+     * @param   int      $region     Region ID
+     * @param   bool     $forecast   Whether displays forecast or not
+     * @return  string   XHTML content
+     */
+    function UserRegionWeather($region = null, $forecast = false)
+    {
+        $this->RegionWeather($region, $forecast);
     }
 
     /**

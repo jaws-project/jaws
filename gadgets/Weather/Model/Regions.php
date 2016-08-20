@@ -50,7 +50,7 @@ class Weather_Model_Regions extends Jaws_Gadget_Model
      * @param   int     $offset     Data offset
      * @return  mixed   Array of regions or Jaws_Error on failure
      */
-    function GetRegions($published = null, $user = null, $limit = false, $offset = null)
+    function GetRegions($published = null, $user = 0, $limit = false, $offset = null)
     {
         $weatherTable = Jaws_ORM::getInstance()->table('weather');
         $weatherTable->select('id:integer', 'title', 'fast_url', 'latitude:float', 'longitude:float',
@@ -60,9 +60,7 @@ class Weather_Model_Regions extends Jaws_Gadget_Model
             $weatherTable->where('published', $published);
         }
 
-        if (!is_null($user)) {
-            $weatherTable->and()->where('user', $user);
-        }
+        $weatherTable->and()->where('user', $user);
 
         $result = $weatherTable->limit($limit, $offset)->orderBy('id asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
@@ -80,7 +78,7 @@ class Weather_Model_Regions extends Jaws_Gadget_Model
      * @param   int     $user       User id
      * @return  mixed   Total of regions or Jaws_Error on failure
      */
-    function GetRegionsCount($published = null, $user = null)
+    function GetRegionsCount($published = null, $user = 0)
     {
         $weatherTable = Jaws_ORM::getInstance()->table('weather');
         $weatherTable->select('count(id):integer');
@@ -89,9 +87,7 @@ class Weather_Model_Regions extends Jaws_Gadget_Model
             $weatherTable->where('published', $published);
         }
 
-        if (!is_null($user)) {
-            $weatherTable->and()->where('user', $user);
-        }
+        $weatherTable->and()->where('user', $user);
 
         return $weatherTable->fetchOne();
     }
