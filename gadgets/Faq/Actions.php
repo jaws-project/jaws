@@ -32,22 +32,26 @@ $actions['ListCategories'] = array(
 /**
  * Admin actions
  */
-$admin_actions['ManageQuestions'] = array(
+$admin_actions['Questions'] = array(
     'normal' => true,
     'file' => 'Question',
 );
-$admin_actions['NewQuestion'] = array(
+$admin_actions['GetQuestions'] = array(
     'normal' => true,
     'file' => 'Question',
 );
-$admin_actions['EditQuestion'] = array(
-    'normal' => true,
-    'file' => 'Question',
-);
-$admin_actions['UpdateQuestion'] = array(
-    'normal' => true,
-    'file' => 'Question',
-);
+//$admin_actions['NewQuestion'] = array(
+//    'normal' => true,
+//    'file' => 'Question',
+//);
+//$admin_actions['EditQuestion'] = array(
+//    'normal' => true,
+//    'file' => 'Question',
+//);
+//$admin_actions['UpdateQuestion'] = array(
+//    'normal' => true,
+//    'file' => 'Question',
+//);
 $admin_actions['NewCategory'] = array(
     'normal' => true,
     'file' => 'Category',

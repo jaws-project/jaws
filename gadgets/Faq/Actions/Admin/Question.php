@@ -13,64 +13,191 @@
 class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
 {
     /**
-     * Creates the datagrid of a category
+     * Displays faq list of questions(admin mode)
      *
-     * @access   public
-     * @param    int     $cat           Category
-     * @param    array   $questions     Array of questions so that we can skip fetching those here
-     * @return   string  XHTML template of datagrid
+     * @access  public
+     * @return  string  XHTML template content
      */
-    function DataGrid($cat, $questions = null)
+    function Questions()
     {
-        $model = $this->gadget->model->load('Question');
-        if ($questions === null) {
-            $questions = $model->GetQuestions($cat);
-            $questions = array_shift($questions);
-            if (isset($questions['questions'])) {
-                $questions = $questions['questions'];
-            } else {
-                $questions = array();
-            }
-        }
+        $this->AjaxMe('script.js');
 
-        if (Jaws_Error::IsError($questions) || empty($questions)) {
-            return '';
-        }
+        $tpl = $this->gadget->template->loadAdmin('Questions.html');
+        $tpl->SetBlock('Questions');
 
-        $grid =& Piwi::CreateWidget('DataGrid', $questions, null);
-        $grid->SetStyle('width: 100%;');
-        $colPos =& Piwi::CreateWidget('Column', '#', 'position', false);
-        $colPos->SetStyle('text-align: center;');
-        $grid->AddColumn($colPos);
+        //Menu bar
+        $tpl->SetVariable('menubar', $this->MenuBar('Questions'));
 
-        $grid->AddColumn(Piwi::CreateWidget('Column', _t('FAQ_QUESTION'), 'question', false, 'String', true,
-            BASE_SCRIPT . '?gadget=Faq&amp;action=EditQuestion&amp;id={id}'));
-        if ($this->gadget->GetPermission('EditQuestion')) {
-            $grid->AddColumn(Piwi::CreateWidget('ActionColumn', _t('GLOBAL_EDIT'),
-                BASE_SCRIPT . "?gadget=Faq&amp;action=EditQuestion&amp;".
-                "id={id}&amp;category={$cat}", STOCK_EDIT));
+        //Category filter
+        $bCategory =& Piwi::CreateWidget('Combo', 'category_filter');
+        $bCategory->setStyle('min-width:150px;');
+        $bCategory->AddEvent(ON_CHANGE, "getQuestionsDataGrid('questions_datagrid', 0, true)");
+        $bCategory->AddOption('&nbsp;', 0);
+        $model = $this->gadget->model->load('Category');
+        $categories = $model->GetCategories();
+        foreach($categories as $category) {
+            $bCategory->AddOption($category['category'], $category['id']);
         }
-        $grid->AddColumn(Piwi::CreateWidget(
-                'ActionColumn',
-                _t('FAQ_MOVEUP'),
-                "javascript:moveQuestion({category}, {id}, {position}, -1); return false;",
-                STOCK_UP)
-        );
-        $grid->AddColumn(Piwi::CreateWidget(
-                'ActionColumn',
-                _t('FAQ_MOVEDOWN'),
-                "javascript:moveQuestion({category}, {id}, {position}, 1); return false;",
-                STOCK_DOWN)
-        );
-        if ($this->gadget->GetPermission('DeleteQuestion')) {
-            $grid->AddColumn(Piwi::CreateWidget('ActionColumn', _t('GLOBAL_DELETE'),
-                "javascript:if (confirm('"._t('FAQ_CONFIRM_DELETE_QUESTION').
-                "')) deleteQuestion('{id}', '{category}'); return false;",
-                STOCK_DELETE));
+        $tpl->SetVariable('category_filter', $bCategory->Get());
+        $tpl->SetVariable('lbl_category', _t('FAQ_CATEGORY'));
+
+        $tpl->SetVariable('grid', $this->QuestionsDatagrid());
+        $tpl->SetVariable('question_ui', $this->QuestionUI());
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
+
+        $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave->AddEvent(ON_CLICK, "javascript:saveQuestion();");
+        $tpl->SetVariable('btn_save', $btnSave->Get());
+
+        $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel->AddEvent(ON_CLICK, "javascript:stopAction();");
+        $tpl->SetVariable('btn_cancel', $btnCancel->Get());
+
+        $tpl->SetVariable('incompleteQuestionFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $tpl->SetVariable('confirmQuestionDelete',    _t('FAQ_CONFIRM_DELETE_QUESTION'));
+        $tpl->SetVariable('legend_title',             _t('FAQ_ADD_QUESTION'));
+        $tpl->SetVariable('addQuestion_title',        _t('FAQ_ADD_QUESTION'));
+        $tpl->SetVariable('editQuestion_title',       _t('FAQ_ADD_QUESTION'));
+
+        $tpl->ParseBlock('Questions');
+        return $tpl->Get();
+    }
+
+    /**
+     * Show a form to edit a given question
+     *
+     * @access  public
+     * @return  string XHTML template content
+     */
+    function QuestionUI()
+    {
+        $tpl = $this->gadget->template->loadAdmin('Questions.html');
+        $tpl->SetBlock('QuestionInfo');
+
+        //question
+        $questionEntry =& Piwi::CreateWidget('Entry', 'question', '');
+        $tpl->SetVariable('lbl_question', _t('FAQ_QUESTION'));
+        $tpl->SetVariable('question', $questionEntry->Get());
+
+        //answer
+        $answerText =& Piwi::CreateWidget('TextArea', 'answer','');
+        $answerText->SetRows(8);
+        $tpl->SetVariable('lbl_answer', _t('FAQ_ANSWER'));
+        $tpl->SetVariable('answer', $answerText->Get());
+
+        //category
+        $category_combo =& Piwi::CreateWidget('Combo', 'category');
+        $category_combo->SetID('category');
+        $model = $this->gadget->model->load('Category');
+        $categories = $model->GetCategories();
+        foreach($categories as $category) {
+            $category_combo->AddOption($category['category'], $category['id']);
         }
+        $tpl->SetVariable('lbl_category', _t('FAQ_CATEGORY'));
+        $tpl->SetVariable('category', $category_combo->Get());
+
+        //fast url
+        $fast_url =& Piwi::CreateWidget('Entry', 'fast_url', '');
+        $fast_url->SetID('fast_url');
+        $fast_url->SetStyle('width: 256px;');
+        $tpl->SetVariable('lbl_fast_url', _t('FAQ_FASTURL'));
+        $tpl->SetVariable('fast_url', $fast_url->Get());
+
+        // meta_keywords
+        $entry =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
+        $tpl->SetVariable('lbl_meta_keywords', _t('GLOBAL_META_KEYWORDS'));
+        $tpl->SetVariable('meta_keywords', $entry->Get());
+
+        // meta_description
+        $entry =& Piwi::CreateWidget('Entry', 'meta_description', '');
+        $tpl->SetVariable('lbl_meta_description', _t('GLOBAL_META_DESCRIPTION'));
+        $tpl->SetVariable('meta_description', $entry->Get());
+
+        //published
+        $published =& Piwi::CreateWidget('Combo', 'published');
+        $published->SetID('published');
+        $published->AddOption(_t('GLOBAL_NO'),  0);
+        $published->AddOption(_t('GLOBAL_YES'), 1);
+        $published->SetDefault('1');
+        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('published', $published->Get());
+
+        //faq_position
+        $position =& Piwi::CreateWidget('Combo', 'position');
+        $position->SetID('position');
+        $position->setStyle('width: 128px;');
+        $tpl->SetVariable('lbl_position', _t('FAQ_POSITION'));
+        $tpl->SetVariable('position', $position->Get());
+
+        $tpl->ParseBlock('QuestionInfo');
+        return $tpl->Get();
+    }
+
+    /**
+     * Build the datagrid of questions
+     *
+     * @access  public
+     * @return  string  XHTML template of Datagrid
+     */
+    function QuestionsDatagrid()
+    {
+        $model = $this->gadget->model->load();
+        $total = $model->TotalOfData('faq');
+        $grid =& Piwi::CreateWidget('DataGrid', array());
+        $grid->SetID('questions_datagrid');
+        $grid->TotalRows($total);
+        $grid->pageBy(18);
+        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'), null, false);
+        $grid->AddColumn($column1);
+        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column2->SetStyle('width: 60px; white-space:nowrap;');
+        $grid->AddColumn($column2);
+        $grid->SetStyle('margin-top: 0px; width: 100%;');
 
         return $grid->Get();
     }
+
+    /**
+     * Prepares the data (an array) of questions
+     *
+     * @access  public
+     * @return  array   Data
+     */
+    function GetQuestions()
+    {
+        $post = jaws()->request->fetch(array('offset', 'category'), 'post');
+        $model = $this->gadget->model->load('Question');
+        $questions = $model->GetQuestions($post['category'], false, $post['offset']);
+        if (Jaws_Error::IsError($questions)) {
+            return array();
+        }
+
+        $newData = array();
+        foreach($questions as $question) {
+            $questionData = array();
+            $questionData['question'] = $question['question'];
+            $actions = '';
+            if ($this->gadget->GetPermission('EditQuestion')) {
+                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                    "javascript:editQuestion(this, '".$question['id']."');",
+                    STOCK_EDIT);
+                $actions.= $link->Get().'&nbsp;';
+            }
+            if ($this->gadget->GetPermission('DeleteQuestion')) {
+                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                    "javascript:deleteQuestion(this, '" . $question['id'] . "');",
+                    STOCK_DELETE);
+                $actions .= $link->Get() . '&nbsp;';
+            }
+            $questionData['actions'] = $actions;
+            $newData[] = $questionData;
+        }
+        return $newData;
+    }
+
+
+
+
 
     /**
      * Displays faq list of questions(admin mode)
@@ -78,7 +205,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
      * @access  public
      * @return  string  XHTML template content
      */
-    function ManageQuestions()
+    function QuestionsOLD()
     {
         $this->AjaxMe('script.js');
         $GLOBALS['app']->Layout->AddScriptLink('libraries/mootools/more.js');
@@ -167,7 +294,6 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
 
         return $manageTpl->Get();
     }
-
 
     /**
      * Edit a Question

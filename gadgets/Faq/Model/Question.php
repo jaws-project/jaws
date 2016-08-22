@@ -18,9 +18,11 @@ class Faq_Model_Question extends Jaws_Gadget_Model
      * @access  public
      * @param   int     $category   Just questions from this category(optional)
      * @param   bool    $justactive
+     * @param   int     $limit
+     * @param   int     $offset
      * @return  mixed   Returns an array of questions and Jaws_Error on error
      */
-    function GetQuestions($category = null, $justactive = false)
+    function GetQuestions($category = null, $justactive = false, $limit = 0, $offset = null)
     {
         $faqCategoryTable = Jaws_ORM::getInstance()->table('faq_category');
         $faqCategoryTable->select(
@@ -43,6 +45,7 @@ class Faq_Model_Question extends Jaws_Gadget_Model
         if ($justactive) {
             $faqCategoryTable->and()->where('published', true);
         }
+        $faqCategoryTable->limit($limit, $offset);
         $result = $faqCategoryTable->orderBy('faq_category.category_position', 'faq.faq_position')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage());
