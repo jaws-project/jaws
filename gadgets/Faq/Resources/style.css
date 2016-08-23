@@ -38,7 +38,7 @@ text-align:left;
 width:95%;
 }
 #q_datagrid{
-    width:470px;
+    width:600px;
     vertical-align: top;
 }
 .top-align{
@@ -48,6 +48,9 @@ width:95%;
     width: 100%;
 }
 #q_work_area{
-    width:488px;
+    width:400px;
     padding:4px;
+}
+#q_work_area input, #q_work_area select {
+    width : 220px
 }

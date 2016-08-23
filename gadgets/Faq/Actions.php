@@ -37,9 +37,22 @@ $admin_actions['Questions'] = array(
     'file' => 'Question',
 );
 $admin_actions['GetQuestions'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Question',
 );
+$admin_actions['GetQuestionsCount'] = array(
+    'standalone' => true,
+    'file' => 'Question',
+);
+$admin_actions['InsertQuestion'] = array(
+    'standalone' => true,
+    'file' => 'Question',
+);
+$admin_actions['UpdateQuestion'] = array(
+    'standalone' => true,
+    'file' => 'Question',
+);
+
 //$admin_actions['NewQuestion'] = array(
 //    'normal' => true,
 //    'file' => 'Question',
@@ -48,14 +61,6 @@ $admin_actions['GetQuestions'] = array(
 //    'normal' => true,
 //    'file' => 'Question',
 //);
-//$admin_actions['UpdateQuestion'] = array(
-//    'normal' => true,
-//    'file' => 'Question',
-//);
-$admin_actions['NewCategory'] = array(
-    'normal' => true,
-    'file' => 'Category',
-);
 $admin_actions['EditCategory'] = array(
     'normal' => true,
     'file' => 'Category',

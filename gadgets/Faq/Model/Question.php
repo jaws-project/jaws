@@ -88,15 +88,27 @@ class Faq_Model_Question extends Jaws_Gadget_Model
      * Get the list of questions
      *
      * @access  public
+     * @param   array       $filters   Filters
+     * @param   bool|int    $limit     Count of logs to be returned
+     * @param   int         $offset    Offset of data array
      * @return  mixed   Returns an array of questions and Jaws_Error on error
      */
-    function GetAllQuestions()
+    function GetAllQuestions($filters = array(), $limit = false, $offset = null)
     {
         $faqTable = Jaws_ORM::getInstance()->table('faq');
         $faqTable->select(
             'id:integer', 'question', 'fast_url', 'category:integer', 'updatetime'
         );
-        $faqTable->and()->where('published', true);
+        $faqTable->limit((int)$limit, $offset);
+
+        if (count($filters) > 0) {
+            if (isset($filters['published'])) {
+                $faqTable->and()->where('published', (bool)$filters['published']);
+            }
+            if (!empty($filters['category'])) {
+                $faqTable->and()->where('category', (int)$filters['category']);
+            }
+        }
 
         return $faqTable->fetchAll();
     }

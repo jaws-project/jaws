@@ -99,7 +99,6 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         //fast url
         $fast_url =& Piwi::CreateWidget('Entry', 'fast_url', '');
         $fast_url->SetID('fast_url');
-        $fast_url->SetStyle('width: 256px;');
         $tpl->SetVariable('lbl_fast_url', _t('FAQ_FASTURL'));
         $tpl->SetVariable('fast_url', $fast_url->Get());
 
@@ -121,13 +120,6 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $published->SetDefault('1');
         $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
         $tpl->SetVariable('published', $published->Get());
-
-        //faq_position
-        $position =& Piwi::CreateWidget('Combo', 'position');
-        $position->SetID('position');
-        $position->setStyle('width: 128px;');
-        $tpl->SetVariable('lbl_position', _t('FAQ_POSITION'));
-        $tpl->SetVariable('position', $position->Get());
 
         $tpl->ParseBlock('QuestionInfo');
         return $tpl->Get();
@@ -157,6 +149,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         return $grid->Get();
     }
 
+
     /**
      * Prepares the data (an array) of questions
      *
@@ -166,8 +159,9 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
     function GetQuestions()
     {
         $post = jaws()->request->fetch(array('offset', 'category'), 'post');
+        $filters = array('category' => $post['category']);
         $model = $this->gadget->model->load('Question');
-        $questions = $model->GetQuestions($post['category'], false, $post['offset']);
+        $questions = $model->GetAllQuestions($filters, 15, $post['offset']);
         if (Jaws_Error::IsError($questions)) {
             return array();
         }
@@ -195,6 +189,57 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         return $newData;
     }
 
+    /**
+     * Get questions count
+     *
+     * @access  public
+     * @return  int     Total of logs
+     */
+    function GetQuestionsCount()
+    {
+        $category = jaws()->request->fetch('category', 'post');
+        $model = $this->gadget->model->loadAdmin('Question');
+        return $model->GetQuestionsCount($category);
+    }
+
+
+    /**
+     * Insert new question
+     *
+     * @access  public
+     * @return  boolean
+     */
+    function InsertQuestion()
+    {
+        $this->gadget->CheckPermission('AddQuestion');
+        $data = jaws()->request->fetch('data:array', 'post');
+        $model = $this->gadget->model->loadAdmin('Question');
+        $res = $model->InsertQuestion($data);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_QUESTION_NOT_ADDED'), RESPONSE_ERROR);
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_QUESTION_ADDED'), RESPONSE_NOTICE);
+        }
+    }
+
+    /**
+     * Update a question
+     *
+     * @access  public
+     * @return  boolean
+     */
+    function UpdateQuestion()
+    {
+        $this->gadget->CheckPermission('EditQuestion');
+        $post = jaws()->request->fetch(array('id', 'data:array'), 'post');
+        $model = $this->gadget->model->loadAdmin('Question');
+        $res = $model->UpdateQuestion($post['id'], $post['data']);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_QUESTION_NOT_UPDATED'), RESPONSE_ERROR);
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_QUESTION_UPDATED'), RESPONSE_NOTICE);
+        }
+    }
 
 
 
@@ -369,7 +414,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $fasturl = isset($q) ? $q['fast_url'] : '';
         $qfasturl =& Piwi::CreateWidget('Entry', 'fast_url', $fasturl);
         $qfasturl->SetTitle(_t('FAQ_FASTURL'));
-        $qfasturl->SetStyle('direction: ltr; width: 500px;');
+        $qfasturl->SetStyle('direction: ltr;');
         $qbox->PackStart($qfasturl);
 
         $answer = isset($q) ? $q['answer'] : '';
@@ -430,25 +475,6 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         Jaws_Header::Location(BASE_SCRIPT . '?gadget=Faq&category=' . $post['category']);
     }
 
-
-    /**
-     * New question
-     *
-     * @access  public
-     */
-    function UpdateQuestion()
-    {
-        $this->gadget->CheckPermission('EditQuestion');
-        $model = $this->gadget->model->loadAdmin('Question');
-
-        $post    = jaws()->request->fetch(array('id', 'question', 'fast_url', 'category', 'status'), 'post');
-        $post['answer'] = jaws()->request->fetch('answer', 'post', 'strip_crlf');
-
-        $model->UpdateQuestion($post['id'], $post['question'], $post['fast_url'],
-            $post['answer'], $post['category'], ($post['status'] == 'yes'));
-
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Faq&category=' . $post['category']);
-    }
 
     /**
      * Delete question

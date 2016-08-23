@@ -31,40 +31,24 @@ class Faq_Model_Admin_Question extends Faq_Model_Question
     }
 
     /**
-     * Add a new Question
+     * Insert a new Question
      *
      * @access  public
-     * @param   string  $question   The question
-     * @param   string  $fast_url   Fast URL
-     * @param   string  $answer     The answer of the question
-     * @param   int     $category   Category id
-     * @param   bool    $active     Question status
+     * @param   array   $data     Question data
      * @return  mixed   True if question is succesfully added, Jaws_Error if not
      */
-    function AddQuestion($question, $fast_url, $answer, $category, $active)
+    function InsertQuestion($data)
     {
-        $fast_url = empty($fast_url) ? $question : $fast_url;
-        $fast_url = $this->GetRealFastUrl($fast_url, 'faq');
+        $fast_url = empty($data['fast_url']) ? $data['question'] : $data['fast_url'];
+        $data['fast_url'] = $this->GetRealFastUrl($fast_url, 'faq');
 
         $now = Jaws_DB::getInstance()->date();
-        $params['question']     = $question;
-        $params['fast_url']     = $fast_url;
-        $params['answer']       = $answer;
-        $params['category']     = $category;
-        $params['published']    = $active;
-        $params['faq_position'] = $this->GetMaxQuestionPosition($category) + 1;
-        $params['createtime']   = $now;
-        $params['updatetime']   = $now;
+        $data['faq_position'] = $this->GetMaxQuestionPosition($data['category']) + 1;
+        $data['createtime']   = $now;
+        $data['updatetime']   = $now;
 
         $faqTable = Jaws_ORM::getInstance()->table('faq');
-        $result = $faqTable->insert($params)->exec();
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_ADDED'));
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_QUESTION_ADDED'), RESPONSE_NOTICE);
-        return true;
+        return $faqTable->insert($data)->exec();
     }
 
     /**
@@ -72,34 +56,17 @@ class Faq_Model_Admin_Question extends Faq_Model_Question
      *
      * @access  public
      * @param   string  $id         Number of the question
-     * @param   string  $question   The question
-     * @param   string  $fast_url   Fast URL
-     * @param   string  $answer     The answer of the question
-     * @param   int     $category   Category id
-     * @param   bool    $active     Question status
+     * @param   array   $data     Question data
      * @return  mixed   True if question is succesfully updated, Jaws_Error if not
      */
-    function UpdateQuestion($id, $question, $fast_url, $answer, $category, $active)
+    function UpdateQuestion($id, $data)
     {
-        $fast_url = empty($fast_url) ? $question : $fast_url;
-        $fast_url = $this->GetRealFastUrl($fast_url, 'faq', false);
-
-        $params['question']     = $question;
-        $params['fast_url']     = $fast_url;
-        $params['answer']       = $answer;
-        $params['category']     = $category;
-        $params['published']    = $active;
-        $params['updatetime']   = Jaws_DB::getInstance()->date();
+        $fast_url = empty($data['fast_url']) ? $data['question'] : $data['fast_url'];
+        $data['fast_url'] = $this->GetRealFastUrl($fast_url, 'faq');
+        $data['updatetime']   = Jaws_DB::getInstance()->date();
 
         $faqTable = Jaws_ORM::getInstance()->table('faq');
-        $result = $faqTable->update($params)->where('id', $id)->exec();
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_QUESTION_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FAQ_ERROR_QUESTION_NOT_UPDATED'));
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_QUESTION_UPDATED'), RESPONSE_NOTICE);
-        return true;
+        return $faqTable->update($data)->where('id', $id)->exec();
     }
 
 
@@ -187,4 +154,24 @@ class Faq_Model_Admin_Question extends Faq_Model_Question
         $faqTable->commit();
         return true;
     }
+
+    /**
+     * Get the list of questions
+     *
+     * @access  public
+     * @param   int         $category  Category id
+     * @return  mixed   Returns an array of questions and Jaws_Error on error
+     */
+    function GetQuestionsCount($category = null)
+    {
+        $faqTable = Jaws_ORM::getInstance()->table('faq');
+        $faqTable->select('count(id):integer');
+
+        if(!empty($category)) {
+            $faqTable->and()->where('category', $category);
+        }
+
+        return $faqTable->fetchOne();
+    }
+
 }
