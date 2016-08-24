@@ -44,6 +44,10 @@ $admin_actions['GetQuestionsCount'] = array(
     'standalone' => true,
     'file' => 'Question',
 );
+$admin_actions['GetQuestion'] = array(
+    'standalone' => true,
+    'file' => 'Question',
+);
 $admin_actions['InsertQuestion'] = array(
     'standalone' => true,
     'file' => 'Question',
@@ -52,15 +56,15 @@ $admin_actions['UpdateQuestion'] = array(
     'standalone' => true,
     'file' => 'Question',
 );
+$admin_actions['DeleteQuestion'] = array(
+    'standalone' => true,
+    'file' => 'Question',
+);
 
-//$admin_actions['NewQuestion'] = array(
-//    'normal' => true,
-//    'file' => 'Question',
-//);
-//$admin_actions['EditQuestion'] = array(
-//    'normal' => true,
-//    'file' => 'Question',
-//);
+$admin_actions['NewCategory'] = array(
+    'normal' => true,
+    'file' => 'Category',
+);
 $admin_actions['EditCategory'] = array(
     'normal' => true,
     'file' => 'Category',
@@ -70,10 +74,6 @@ $admin_actions['UpdateCategory'] = array(
     'file' => 'Category',
 );
 $admin_actions['DeleteCategory'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['DeleteQuestion'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );

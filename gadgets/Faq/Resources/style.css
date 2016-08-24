@@ -54,3 +54,6 @@ width:95%;
 #q_work_area input, #q_work_area select {
     width : 220px
 }
+#q_work_area #question {
+    width: 100%;
+}

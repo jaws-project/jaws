@@ -125,8 +125,8 @@ class Faq_Model_Question extends Jaws_Gadget_Model
         $faqTable = Jaws_ORM::getInstance()->table('faq');
         $faqTable->select(
             'faq.id:integer', 'question', 'faq.fast_url', 'answer', 'faq.category as category_id:integer',
-            'published:boolean', 'faq.faq_position:integer', 'faq_category.category', 'faq.createtime',
-            'faq.updatetime');
+            'published:boolean', 'faq.faq_position:integer', 'faq_category.category', 'faq.category as category_id',
+            'faq.createtime', 'faq.updatetime');
         $faqTable->join('faq_category', 'faq.category', 'faq_category.id', 'left');
 
         if (is_numeric($id)) {
