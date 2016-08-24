@@ -91,13 +91,14 @@ class Faq_Model_Question extends Jaws_Gadget_Model
      * @param   array       $filters   Filters
      * @param   bool|int    $limit     Count of logs to be returned
      * @param   int         $offset    Offset of data array
+     * @param   string      $order     Order by
      * @return  mixed   Returns an array of questions and Jaws_Error on error
      */
-    function GetAllQuestions($filters = array(), $limit = false, $offset = null)
+    function GetAllQuestions($filters = array(), $limit = false, $offset = null, $order = 'category asc, faq_position asc')
     {
         $faqTable = Jaws_ORM::getInstance()->table('faq');
         $faqTable->select(
-            'id:integer', 'question', 'fast_url', 'category:integer', 'updatetime'
+            'id:integer', 'question', 'fast_url', 'category:integer', 'faq_position:integer', 'updatetime'
         );
         $faqTable->limit((int)$limit, $offset);
 
@@ -110,6 +111,7 @@ class Faq_Model_Question extends Jaws_Gadget_Model
             }
         }
 
+        $faqTable->orderBy($order);
         return $faqTable->fetchAll();
     }
 

@@ -13,114 +13,248 @@
 class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
 {
     /**
-     * Edit a category
+     * Builds the administration UI for categories
      *
      * @access  public
-     * @return  string  XHTML Category form content
+     * @return  string  XHTML content
      */
-    function EditCategory()
+    function Categories()
     {
         $this->gadget->CheckPermission('ManageCategories');
         $this->AjaxMe('script.js');
 
-        $category = jaws()->request->fetch('category', 'get');
-        if (!is_null($category)) {
-            $model = $this->gadget->model->loadAdmin('Category');
-            $cat = $model->GetCategory($category);
-        }
+        $tpl = $this->gadget->template->loadAdmin('Categories.html');
+        $tpl->SetBlock('Categories');
 
-        $tpl = $this->gadget->template->loadAdmin('Faq.html');
-        $tpl->SetBlock('edit_category');
-        $tpl->SetVariable('menubar', $this->MenuBar('AddNewCategory'));
+        // Menu bar
+        $tpl->SetVariable('menubar', $this->MenuBar('Categories'));
 
-        //Add Faq Form
-        $faqform =& Piwi::CreateWidget('Form', BASE_SCRIPT, 'post');
-        $faqform->SetStyle('width: 100%;');
-        $faqform->Add(Piwi::CreateWidget('HiddenEntry', 'gadget', 'Faq'));
-        if (isset($cat)) {
-            $faqform->Add(Piwi::CreateWidget('HiddenEntry', 'id', $category));
-            $faqform->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'UpdateCategory'));
-        } else {
-            $faqform->Add(Piwi::CreateWidget('HiddenEntry', 'action', 'NewCategory'));
-        }
+        // Grid
+        $tpl->SetVariable('grid', $this->CategoriesDataGrid());
 
-        $catbox =& Piwi::CreateWidget('VBox');
-        $catTitle = isset($cat) ? $cat['category'] : '';
-        $catentry =& Piwi::CreateWidget('Entry', 'category', $catTitle);
-        $catentry->SetTitle(_t('FAQ_CATEGORY'));
-        $catentry->SetStyle('width: 500px;');
-        $catbox->PackStart($catentry);
+        $entry =& Piwi::CreateWidget('Entry', 'title', '');
+        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE').':');
+        $tpl->SetVariable('title', $entry->Get());
 
-        $fasturl = isset($cat) ? $cat['fast_url'] : '';
-        $cfasturl =& Piwi::CreateWidget('Entry', 'fast_url', $fasturl);
-        $cfasturl->SetTitle(_t('FAQ_FASTURL'));
-        $cfasturl->SetStyle('direction: ltr; width: 500px;');
-        $catbox->PackStart($cfasturl);
+        $entry =& Piwi::CreateWidget('Entry', 'fast_url', '');
+        $entry->SetStyle('direction:ltr;');
+        $tpl->SetVariable('lbl_fast_url', _t('FAQ_FASTURL').':');
+        $tpl->SetVariable('fast_url', $entry->Get());
 
-        $desc = isset($cat) ? $cat['description'] : '';
-        $editor =& $GLOBALS['app']->LoadEditor('Faq', 'description', $desc, false, _t('GLOBAL_DESCRIPTION'));
-        $editor->TextArea->SetStyle('width: 100%;');
-        $editor->TextArea->SetRows(8);
+        $entry =& Piwi::CreateWidget('Entry', 'meta_keywords', '');
+        $tpl->SetVariable('lbl_meta_keys', _t('GLOBAL_META_KEYWORDS').':');
+        $tpl->SetVariable('meta_keys', $entry->Get());
 
-        $faqform->Add($catbox);
-        $faqform->Add($editor);
-        if (isset($cat)) {
-            $submit =& Piwi::CreateWidget('Button', 'updcat', _t('FAQ_UPDATE_CATEGORY'), STOCK_SAVE);
-        } else {
-            $submit =& Piwi::CreateWidget('Button', 'newcat', _t('FAQ_ADD_CATEGORY'), STOCK_SAVE);
-        }
-        $submit->SetSubmit();
-        $cancel =& Piwi::CreateWidget('Button', 'cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
-        $cancel->AddEvent(ON_CLICK, "javascript:window.location = '".BASE_SCRIPT.'?gadget=Faq'."';");
-        $preview =& Piwi::CreateWidget('Button', 'previewButton', _t('GLOBAL_PREVIEW'), STOCK_PRINT_PREVIEW);
-        $preview->AddEvent(ON_CLICK, 'javascript:parseCategoryText(this.form);');
+        $entry =& Piwi::CreateWidget('Entry', 'meta_description', '');
+        $tpl->SetVariable('lbl_meta_desc', _t('GLOBAL_META_DESCRIPTION').':');
+        $tpl->SetVariable('meta_desc', $entry->Get());
 
-        $buttonbox =& Piwi::CreateWidget('HBox');
-        $buttonbox->SetStyle(_t('GLOBAL_LANG_DIRECTION')=='rtl'?'float: left;' : 'float: right;');
-        $buttonbox->PackStart($preview);
-        $buttonbox->PackStart($cancel);
-        $buttonbox->PackStart($submit);
-        $faqform->Add($buttonbox);
-        $tpl->SetVariable('form', $faqform->Get());
+        $description =& Piwi::CreateWidget('TextArea', 'description', '');
+        $description->SetID('description');
+        $description->SetRows(6);
+        $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
+        $tpl->SetVariable('description', $description->Get());
 
-        $tpl->ParseBlock('edit_category');
+        $btnSave =& Piwi::CreateWidget('Button','btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
+        $btnSave->AddEvent(ON_CLICK, 'javascript:saveCategory();');
+        $tpl->SetVariable('btn_save', $btnSave->Get());
+
+        $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
+        $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
+        $tpl->SetVariable('btn_cancel', $btnCancel->Get());
+
+        $tpl->SetVariable('legend_title',            _t('FAQ_ADD_CATEGORY'));
+        $tpl->SetVariable('add_category_title',      _t('FAQ_ADD_CATEGORY'));
+        $tpl->SetVariable('edit_category_title',     _t('FAQ_EDIT_CATEGORY'));
+        $tpl->SetVariable('confirm_category_delete', _t('FAQ_CONFIRM_DELETE_CATEGORY'));
+        $tpl->SetVariable('incomplete_fields',       _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+
+        $tpl->ParseBlock('Categories');
         return $tpl->Get();
     }
 
     /**
-     * New category
+     * Builds the categories data grid
      *
      * @access  public
+     * @return  string  XHTML datagrid
      */
-    function NewCategory()
+    function CategoriesDataGrid()
     {
-        $this->gadget->CheckPermission('ManageCategories');
-        $model = $this->gadget->model->loadAdmin('Category');
+        $grid =& Piwi::CreateWidget('DataGrid', array());
+        $grid->SetID('categories_datagrid');
+        //$grid->TotalRows(25);
+        $grid->pageBy(10);
+        $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'), null, false);
+        $column1->SetStyle('white-space:nowrap;');
+        $grid->AddColumn($column1);
 
-        $post    = jaws()->request->fetch(array('category', 'fast_url'), 'post');
-        $post['description'] = jaws()->request->fetch('description', 'post', 'strip_crlf');
+        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
+        $column2->SetStyle('width:80px;');
+        $grid->AddColumn($column2);
+        $grid->SetStyle('margin-top: 0px; width: 100%;');
 
-        $id = $model->AddCategory($post['category'], $post['fast_url'], $post['description']);
-
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Faq&category=' . $id);
+        return $grid->Get();
     }
 
     /**
-     * Update category
+     * Prepares data for categories data grid
      *
      * @access  public
+     * @return  array   Grid data
+     */
+    function GetCategories()
+    {
+        $model = $this->gadget->model->load('Category');
+
+        $categories = $model->GetCategories();
+        if (Jaws_Error::IsError($categories)) {
+            return array();
+        }
+        $result = array();
+        foreach ($categories as $category) {
+            if (!$this->gadget->GetPermission('AccessCategory', $category['id'])) {
+                continue;
+            }
+            $categoryData = array();
+
+            $categoryData['title']  = $category['category'];
+
+            $actions = '';
+            if ($this->gadget->GetPermission('ManageCategories')) {
+                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_EDIT'),
+                    "javascript:editCategory(this, '".$category['id']."');",
+                    STOCK_EDIT);
+                $actions.= $link->Get().'&nbsp;';
+
+                $link =& Piwi::CreateWidget('Link', _t('FAQ_MOVEUP'),
+                    "javascript:moveCategory(" . $category['id'] . "," . $category['category_position'] . ", -1);",
+                    STOCK_UP);
+                $actions .= $link->Get() . '&nbsp;';
+
+                $link =& Piwi::CreateWidget('Link', _t('FAQ_MOVEDOWN'),
+                    "javascript:moveCategory(" . $category['id'] . "," . $category['category_position'] . ", 1);",
+                    STOCK_DOWN);
+                $actions .= $link->Get() . '&nbsp;';
+
+                $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
+                    "javascript:deleteCategory(this, '".$category['id']."');",
+                    STOCK_DELETE);
+                $actions.= $link->Get().'&nbsp;';
+            }
+            $categoryData['actions'] = $actions;
+            $result[] = $categoryData;
+        }
+
+        return $result;
+    }
+
+
+    /**
+     * Gets the category data
+     *
+     * @access  public
+     * @return  array   Category information
+     */
+    function GetCategory()
+    {
+        $id = (int)jaws()->request->fetch('id', 'post');
+        $model = $this->gadget->model->load('Category');
+        $category = $model->GetCategory($id);
+        if (Jaws_Error::IsError($category)) {
+            return false;
+        }
+
+        return $category;
+    }
+
+    /**
+     * Gets the category data for grid
+     *
+     * @access  public
+     * @return  string  XHTML grid data
+     */
+    function GetCategoriesGrid()
+    {
+        $this->gadget->CheckPermission('ManageCategories');
+        @list($offset) = jaws()->request->fetchAll('post');
+        $gadget = $this->gadget->action->loadAdmin('Category');
+
+        return $gadget->GetCategoriesGrid($offset);
+    }
+
+    /**
+     * Adds a new category
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function InsertCategory()
+    {
+        $this->gadget->CheckPermission('ManageCategories');
+        $data = jaws()->request->fetch('data:array', 'post');
+        $model = $this->gadget->model->loadAdmin('Category');
+        $res = $model->InsertCategory($data);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_CATEGORY_ADDED'), RESPONSE_NOTICE);
+        }
+    }
+
+    /**
+     * Updates the category
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
      */
     function UpdateCategory()
     {
         $this->gadget->CheckPermission('ManageCategories');
+        $post = jaws()->request->fetch(array('id', 'data:array'), 'post');
         $model = $this->gadget->model->loadAdmin('Category');
-
-        $post    = jaws()->request->fetch(array('id', 'category', 'fast_url'), 'post');
-        $post['description'] = jaws()->request->fetch('description', 'post', 'strip_crlf');
-
-        $model->UpdateCategory($post['id'], $post['category'], $post['fast_url'], $post['description']);
-
-        Jaws_Header::Location(BASE_SCRIPT . '?gadget=Faq&category='. $post['id']);
+        $res = $model->UpdateCategory($post['id'], $post['data']);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'), RESPONSE_ERROR);
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_CATEGORY_UPDATED'), RESPONSE_NOTICE);
+        }
     }
 
+    /**
+     * Deletes the category
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function DeleteCategory()
+    {
+        $this->gadget->CheckPermission('ManageCategories');
+        $id = (int)jaws()->request->fetch('id', 'post');
+        $model = $this->gadget->model->loadAdmin('Category');
+        $res = $model->DeleteCategory($id);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_CATEGORY_NOT_DELETED'), RESPONSE_ERROR);
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_CATEGORY_DELETED'), RESPONSE_NOTICE);
+        }
+    }
+
+    /**
+     * Move a category
+     *
+     * @access   public
+     * @return   array  Response array (notice or error)
+     */
+    function MoveCategory()
+    {
+        $post = jaws()->request->fetch(array('id', 'old_pos', 'new_pos'), 'post');
+        $model = $this->gadget->model->loadAdmin('Category');
+        $result = $model->MoveCategory($post['id'], $post['old_pos'], $post['new_pos']);
+        if (Jaws_Error::IsError($result)) {
+            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_CATEGORY_NOT_MOVED'), RESPONSE_ERROR);
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_CATEGORY_MOVED'), RESPONSE_NOTICE);
+        }
+    }
 }

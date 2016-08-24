@@ -57,7 +57,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $tpl->SetVariable('confirmQuestionDelete',    _t('FAQ_CONFIRM_DELETE_QUESTION'));
         $tpl->SetVariable('legend_title',             _t('FAQ_ADD_QUESTION'));
         $tpl->SetVariable('addQuestion_title',        _t('FAQ_ADD_QUESTION'));
-        $tpl->SetVariable('editQuestion_title',       _t('FAQ_ADD_QUESTION'));
+        $tpl->SetVariable('editQuestion_title',       _t('FAQ_EDIT_QUESTION'));
 
         $tpl->ParseBlock('Questions');
         return $tpl->Get();
@@ -145,7 +145,7 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'), null, false);
         $grid->AddColumn($column1);
         $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
-        $column2->SetStyle('width: 60px; white-space:nowrap;');
+        $column2->SetStyle('width: 80px; white-space:nowrap;');
         $grid->AddColumn($column2);
         $grid->SetStyle('margin-top: 0px; width: 100%;');
 
@@ -178,6 +178,16 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
                     "javascript:editQuestion(this, '".$question['id']."');",
                     STOCK_EDIT);
                 $actions.= $link->Get().'&nbsp;';
+
+                $link =& Piwi::CreateWidget('Link', _t('FAQ_MOVEUP'),
+                    "javascript:moveQuestion(" . $question['category'] . "," . $question['id'] . "," . $question['faq_position'] . ", -1);",
+                    STOCK_UP);
+                $actions .= $link->Get() . '&nbsp;';
+
+                $link =& Piwi::CreateWidget('Link', _t('FAQ_MOVEDOWN'),
+                    "javascript:moveQuestion(" . $question['category'] . "," . $question['id'] . "," . $question['faq_position'] . ", 1);",
+                    STOCK_DOWN);
+                $actions .= $link->Get() . '&nbsp;';
             }
             if ($this->gadget->GetPermission('DeleteQuestion')) {
                 $link =& Piwi::CreateWidget('Link', _t('GLOBAL_DELETE'),
@@ -274,6 +284,23 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         } else {
             return $GLOBALS['app']->Session->GetResponse(_t('FAQ_QUESTION_DELETED'), RESPONSE_NOTICE);
         }
+    }
 
+    /**
+     * Move a question
+     *
+     * @access   public
+     * @return   array  Response array (notice or error)
+     */
+    function MoveQuestion()
+    {
+        $post = jaws()->request->fetch(array('category', 'id', 'position', 'direction'), 'post');
+        $model = $this->gadget->model->loadAdmin('Question');
+        $result = $model->MoveQuestion($post['category'], $post['id'], $post['position'], $post['direction']);
+        if (Jaws_Error::IsError($result)) {
+            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_ERROR_QUESTION_NOT_MOVED'), RESPONSE_ERROR);
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(_t('FAQ_QUESTION_MOVED'), RESPONSE_NOTICE);
+        }
     }
 }

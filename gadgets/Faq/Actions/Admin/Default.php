@@ -21,7 +21,7 @@ class Faq_Actions_Admin_Default extends Jaws_Gadget_Action
      */
     function MenuBar($selected)
     {
-        $actions = array('Questions', 'AddNewCategory');
+        $actions = array('Questions', 'Categories');
 
         if (!in_array($selected, $actions)) {
             $selected = 'Questions';
@@ -32,8 +32,9 @@ class Faq_Actions_Admin_Default extends Jaws_Gadget_Action
                             BASE_SCRIPT . '?gadget=Faq&amp;action=Questions', STOCK_DOCUMENTS);
 
         if ($this->gadget->GetPermission('ManageCategories')) {
-            $menubar->AddOption('AddNewCategory', _t('FAQ_ADD_CATEGORY'),
-                                BASE_SCRIPT . '?gadget=Faq&amp;action=EditCategory', STOCK_NEW);
+            $menubar->AddOption('Categories', _t('FAQ_CATEGORIES'),
+                                BASE_SCRIPT . '?gadget=Faq&amp;action=Categories',
+                                'gadgets/Faq/Resources/images/categories.png');
         }
 
         $menubar->Activate($selected);

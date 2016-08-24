@@ -38,7 +38,7 @@ text-align:left;
 width:95%;
 }
 #q_datagrid{
-    width:600px;
+    width:450px;
     vertical-align: top;
 }
 .top-align{
@@ -48,7 +48,7 @@ width:95%;
     width: 100%;
 }
 #q_work_area{
-    width:400px;
+    width:500px;
     padding:4px;
 }
 #q_work_area input, #q_work_area select {
@@ -56,4 +56,15 @@ width:95%;
 }
 #q_work_area #question {
     width: 100%;
+}
+#categories_datagrid {
+    vertical-align: top;
+    width:650px;
+}
+#category_ui {
+    padding:4px;
+    width:400px;
+}
+#category_ui input, #category_ui select , #category_ui textarea {
+    width : 220px
 }
