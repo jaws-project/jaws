@@ -107,12 +107,12 @@
 
     function ChangeToggleIcon(obj)
     {
-        if ($(obj).data('toggle-status') == 'min') {
+        if ($(obj).attr('toggle-status') == 'min') {
             $(obj).find("img").attr('src', toggleMin);
-            $(obj).data('toggle-status', 'max');
+            $(obj).attr('toggle-status', 'max');
         } else {
             $(obj).find("img").attr('src', toggleMax);
-            $(obj).data('toggle-status', 'min');
+            $(obj).attr('toggle-status', 'min');
         }
     }
 
