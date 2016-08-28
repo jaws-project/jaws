@@ -212,51 +212,51 @@
   var loadImageUrl = "{{loadImageUrl}}";
   var baseSiteUrl = "{{baseSiteUrl}}";
 
-  remain = $('removeTelButton').parentNode.parentNode.getElementsByTagName('div').length;
+  remain = $('#removeTelButton').parent().parent().find('div').length;
   if (remain == 1) {
-      $('removeTelButton').style.display = 'none';
+      $('removeTelButton').hide();
   }
 
-  remain = $('removeEmailButton').parentNode.parentNode.getElementsByTagName('div').length;
+  remain = $('#removeEmailButton').parent().parent().find('div').length;
   if (remain == 1) {
-      $('removeEmailButton').style.display = 'none';
+      $('removeEmailButton').hide();
   }
 
-  remain = $('removeAdrButton').parentNode.parentNode.getElementsByTagName('div').length;
+  remain = $('#removeAdrButton').parent().parent().find('div').length;
   if (remain == 1) {
-      $('removeAdrButton').style.display = 'none';
+      $('removeAdrButton').hide();
   }
 
-  remain = $('removeUrlButton').parentNode.parentNode.getElementsByTagName('div').length;
+  remain = $('#removeUrlButton').parent().parent().find('div').length;
   if (remain == 1) {
-      $('removeUrlButton').style.display = 'none';
+      $('#removeUrlButton').hide();
   }
 
   ReloadToggle();
-  window.addEvent('domready', function() {
+  $( document ).ready(function() {
 
-    $('legend_tel').addEvent('click', function(){
-      $('tel_p').toggle();
+    $('#legend_tel').click(function() {
+      $('#tel_p').toggle();
       ChangeToggleIcon(this);
     });
-    $('legend_email').addEvent('click', function(){
-      $('email_p').toggle();
+    $('#legend_email').click(function() {
+      $('#email_p').toggle();
       ChangeToggleIcon(this);
     });
-    $('legend_adr').addEvent('click', function(){
-      $('adr_p').toggle();
+    $('#legend_adr').click(function() {
+      $('#adr_p').toggle();
       ChangeToggleIcon(this);
     });
-    $('legend_groups').addEvent('click', function(){
-      $('group_p').toggle();
+    $('#legend_groups').click(function() {
+      $('#group_p').toggle();
       ChangeToggleIcon(this);
     });
-    $('legend_urls').addEvent('click', function(){
-      $('url_p').toggle();
+    $('#legend_urls').click(function() {
+      $('#url_p').toggle();
       ChangeToggleIcon(this);
     });
-    $('legend_other').addEvent('click', function(){
-      $('other_p').toggle();
+    $('#legend_other').click(function() {
+      $('#other_p').toggle();
       ChangeToggleIcon(this);
     });
 
