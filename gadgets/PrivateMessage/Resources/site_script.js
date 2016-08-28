@@ -77,7 +77,7 @@ function toggleDisableForm(disabled) {
  * Uploads the attachment file
  */
 function uploadFile() {
-    $("#compose").append('<iframe id="' + 'ifrm_upload' + '" name=" ' + 'ifrm_upload' +  ' "></iframe>');
+    $("#compose").append($('<iframe></iframe>').attr({'id': 'ifrm_upload', 'name':'ifrm_upload'}));
     $('#attachment_number').val(lastAttachment);
     $('#attachment' + lastAttachment).hide();
     $('#attach_loading').show();
@@ -99,11 +99,11 @@ function onUpload(response) {
         $('#file_link' + lastAttachment).html(response.file_info.title);
         $('#file_size' + lastAttachment).html(response.file_info.filesize_format);
         $('#btn_attach' + lastAttachment).show();
-        $('#attachment' + lastAttachment).dispose();
+        $('#attachment' + lastAttachment).remove();
         addFileEntry();
     }
     $('#attach_loading').hide();
-    $('#ifrm_upload').destroy();
+    $('#ifrm_upload').remove();
 }
 
 /**
