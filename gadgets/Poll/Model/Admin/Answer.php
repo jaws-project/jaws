@@ -16,16 +16,16 @@ class Poll_Model_Admin_Answer extends Poll_Model_Group
      *
      * @access  public
      * @param   int     $pid        Poll's ID
-     * @param   string  $answer     Answer
-     * @param   string  $rank
+     * @param   string  $title      Answer
+     * @param   string  $order
      * @return  mixed   True if the answer was created and Jaws_Error on error
      */
-    function InsertAnswer($pid, $answer, $rank)
+    function InsertAnswer($pid, $title, $order)
     {
         $data = array();
-        $data['pid'] = $pid;
-        $data['answer'] = $answer;
-        $data['rank'] = (int)$rank;
+        $data['poll'] = $pid;
+        $data['title'] = $title;
+        $data['order'] = (int)$order;
 
         $table = Jaws_ORM::getInstance()->table('poll_answers');
         $result = $table->insert($data)->exec();
@@ -41,15 +41,15 @@ class Poll_Model_Admin_Answer extends Poll_Model_Group
      *
      * @access  public
      * @param   string  $aid        Answer's Question
-     * @param   int     $answer     Answer's ID
-     * @param   string  $rank
+     * @param   int     $title      title
+     * @param   string  $order
      * @return  mixed   True if the answer was updated and Jaws_Error on error
      */
-    function UpdateAnswer($aid, $answer, $rank)
+    function UpdateAnswer($aid, $title, $order)
     {
         $data = array();
-        $data['answer'] = $answer;
-        $data['rank'] = (int)$rank;
+        $data['title'] = $title;
+        $data['order'] = (int)$order;
 
         $table = Jaws_ORM::getInstance()->table('poll_answers');
         $result = $table->update($data)->where('id', $aid)->exec();

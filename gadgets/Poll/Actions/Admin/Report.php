@@ -78,7 +78,7 @@ class Poll_Actions_Admin_Report extends Poll_Actions_Admin_Default
 
             foreach($answers as $answer) {
                 $tpl->SetBlock('PollResults/answer');
-                $tpl->SetVariable('answer', $answer['answer']);
+                $tpl->SetVariable('title', $answer['title']);
                 $percent = (($total_votes==0)? 0 : floor(($answer['votes']/$total_votes)*100));
                 $tpl->SetVariable('percent', _t('POLL_REPORTS_PERCENT', $percent));
                 $tpl->SetVariable('image_width', floor($percent*1.5));

@@ -44,24 +44,24 @@ class Poll_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * Insert a Poll
      *
      * @access   public
-     * @internal param  string  $question       poll question
+     * @internal param  string  $title          poll title
      * @internal param  int     $gid            group ID
      * @internal param  string  $start_time     poll start date time
      * @internal param  string  $stop_time      poll stop date time
-     * @internal param  string  $select_type
-     * @internal param  string  $poll_type
-     * @internal param  string  $result_view
-     * @internal param  bool    $visible        is visible
+     * @internal param  string  $type
+     * @internal param  string  $restriction
+     * @internal param  string  $result
+     * @internal param  bool    $published
      * @return   array  Response array (notice or error)
      */
     function InsertPoll()
     {
         $this->gadget->CheckPermission('ManagePolls');
-        @list($question, $gid, $start_time, $stop_time, $select_type,
-              $poll_type, $result_view, $visible
+        @list($title, $gid, $start_time, $stop_time, $type,
+              $restriction, $result, $published
         ) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Poll');
-        $model->InsertPoll($question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible);
+        $model->InsertPoll($title, $gid, $start_time, $stop_time, $type, $restriction, $result, $published);
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -71,24 +71,24 @@ class Poll_Actions_Admin_Ajax extends Jaws_Gadget_Action
      *
      * @access   public
      * @internal param  int     $pid            poll ID
-     * @internal param  string  $question       poll question
+     * @internal param  string  $title          poll title
      * @internal param  int     $gid            group ID
      * @internal param  string  $start_time     poll start date time
      * @internal param  string  $stop_time      poll stop date time
-     * @internal param  string  $select_type
-     * @internal param  string  $poll_type
-     * @internal param  string  $result_view
-     * @internal param  bool    $visible        is visible
+     * @internal param  string  $type
+     * @internal param  string  $restriction
+     * @internal param  string  $result
+     * @internal param  bool    $published
      * @return   array  Response array (notice or error)
      */
     function UpdatePoll()
     {
         $this->gadget->CheckPermission('ManagePolls');
-        @list($pid, $question, $gid, $start_time, $stop_time,
-             $select_type, $poll_type, $result_view, $visible
+        @list($pid, $title, $gid, $start_time, $stop_time,
+             $type, $restriction, $result, $published
         ) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Poll');
-        $model->UpdatePoll($pid, $question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible);
+        $model->UpdatePoll($pid, $title, $gid, $start_time, $stop_time, $type, $restriction, $result, $published);
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -143,7 +143,7 @@ class Poll_Actions_Admin_Ajax extends Jaws_Gadget_Action
             return false;
         }
 
-        return array('question'=>$poll['question'], 'Answers'=>$answers);
+        return array('title'=>$poll['title'], 'Answers'=>$answers);
     }
 
     /**
@@ -189,15 +189,15 @@ class Poll_Actions_Admin_Ajax extends Jaws_Gadget_Action
      *
      * @access   public
      * @internal param  string  $title      group title
-     * @internal param  bool    $visible    is visible
+     * @internal param  bool    $published  published
      * @return   array  response array
      */
     function InsertPollGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($title, $visible) = jaws()->request->fetchAll('post');
+        @list($title, $published) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Group');
-        $model->InsertPollGroup($title, $visible);
+        $model->InsertPollGroup($title, $published);
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -208,15 +208,15 @@ class Poll_Actions_Admin_Ajax extends Jaws_Gadget_Action
      * @access   public
      * @internal param  int     $gid        group ID
      * @internal param  string  $title      group title
-     * @internal param  bool    $visible    is visible
+     * @internal param  bool    $published  published
      * @return   array  response array
      */
     function UpdatePollGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        @list($gid, $title, $visible) = jaws()->request->fetchAll('post');
+        @list($gid, $title, $published) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Group');
-        $model->UpdatePollGroup($gid, $title, $visible);
+        $model->UpdatePollGroup($gid, $title, $published);
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }

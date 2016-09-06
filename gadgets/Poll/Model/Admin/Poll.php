@@ -15,36 +15,37 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
      * Insert a Poll
      *
      * @access  public
-     * @param   string  $question       poll question
+     * @param   string  $title          poll title
      * @param   int     $gid            group ID
      * @param   string  $start_time     start date time
      * @param   string  $stop_time      stop date time
-     * @param   string  $select_type
-     * @param   string  $poll_type
-     * @param   string  $result_view
-     * @param   bool    $visible
+     * @param   string  $type
+     * @param   string  $restriction
+     * @param   string  $result
+     * @param   bool    $published
      * @return  mixed   Response array (notice or error) or Jaws_Error on failure
      */
-    function InsertPoll($question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible)
+    function InsertPoll($title, $gid, $start_time, $stop_time, $type, $restriction, $result, $published)
     {
         $date = Jaws_Date::getInstance();
         $pollData = array();
-        $pollData['question'] = $question;
-        $pollData['gid'] = $gid;
+        $pollData['title'] = $title;
+        $pollData['group'] = $gid;
         $pollData['start_time'] = null;
         $pollData['stop_time'] = null;
         if (!empty($start_time)) {
             $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
-            $pollData['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
+            $pollData['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time);
         }
         if (!empty($stop_time)) {
-            $stop_time  = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
-            $pollData['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
+            $stop_time = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
+            $pollData['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time);
         }
-        $pollData['select_type'] = $select_type;
-        $pollData['poll_type'] = $poll_type;
-        $pollData['result_view'] = $result_view;
-        $pollData['visible'] = $visible;
+
+        $pollData['type'] = $type;
+        $pollData['restriction'] = $restriction;
+        $pollData['result'] = $result;
+        $pollData['published'] = $published;
 
         $table = Jaws_ORM::getInstance()->table('poll');
         $result = $table->insert($pollData)->exec();
@@ -61,40 +62,40 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
     }
 
     /**
-     * Updates the question of a poll
+     * Updates the title of a poll
      *
      * @access  public
-     * @param   int     $pid        Poll's ID
-     * @param   string  $question   Poll's Question
-     * @param   int     $gid        group ID
+     * @param   int     $pid            Poll's ID
+     * @param   string  $title          Poll's title
+     * @param   int     $gid            group ID
      * @param   string  $start_time     start date time
      * @param   string  $stop_time      stop date time
-     * @param   string  $select_type
-     * @param   string  $poll_type
-     * @param   string  $result_view
-     * @param   bool    $visible
+     * @param   string  $type
+     * @param   string  $restriction
+     * @param   string  $result
+     * @param   bool    $published
      * @return  mixed   True if the poll was updated and Jaws_Error on error
      */
-    function UpdatePoll($pid, $question, $gid, $start_time, $stop_time, $select_type, $poll_type, $result_view, $visible)
+    function UpdatePoll($pid, $title, $gid, $start_time, $stop_time, $type, $restriction, $result, $published)
     {
         $date = Jaws_Date::getInstance();
         $pollData = array();
-        $pollData['question'] = $question;
-        $pollData['gid'] = $gid;
+        $pollData['title'] = $title;
+        $pollData['group'] = $gid;
         $pollData['start_time'] = null;
         $pollData['stop_time'] = null;
         if (!empty($start_time)) {
             $start_time = $date->ToBaseDate(preg_split('/[- :]/', $start_time), 'Y-m-d H:i:s');
-            $pollData['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time,  'Y-m-d H:i:s');
+            $pollData['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time);
         }
         if (!empty($stop_time)) {
             $stop_time  = $date->ToBaseDate(preg_split('/[- :]/', $stop_time), 'Y-m-d H:i:s');
-            $pollData['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time,   'Y-m-d H:i:s');
+            $pollData['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time);
         }
-        $pollData['select_type'] = $select_type;
-        $pollData['poll_type'] = $poll_type;
-        $pollData['result_view'] = $result_view;
-        $pollData['visible'] = $visible;
+        $pollData['type'] = $type;
+        $pollData['restriction'] = $restriction;
+        $pollData['result'] = $result;
+        $pollData['published'] = $published;
 
         $table = Jaws_ORM::getInstance()->table('poll');
         $result = $table->update($pollData)->where('id', (int)$pid)->exec();
@@ -124,7 +125,7 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         }
 
         $table = Jaws_ORM::getInstance()->table('poll_answers');
-        $res = $table->delete()->where('pid', $pid)->exec();
+        $res = $table->delete()->where('poll', $pid)->exec();
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
             return new Jaws_Error(_t('POLL_ERROR_EXCEPTION_ANSWER_NOT_DELETED'));
@@ -146,7 +147,7 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
     {
         $AllPolls = $this->GetPolls();
         foreach ($AllPolls as $poll) {
-            if ($poll['gid'] == $gid) {
+            if ($poll['group'] == $gid) {
                 if (!in_array($poll['id'], $polls)) {
                     $this->UpdateGroupsOfPolls($poll['id'], -1, 0);
                 }
@@ -172,11 +173,11 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
     function UpdateGroupsOfPolls($pid, $gid, $new_gid)
     {
         $table = Jaws_ORM::getInstance()->table('poll');
-        $table->update(array('gid' => $new_gid));
+        $table->update(array('group' => $new_gid));
         if (($pid != -1) && ($gid != -1)) {
-            $table->where('id', $pid)->and()->where('gid', $gid);
+            $table->where('id', $pid)->and()->where('group', $gid);
         } elseif ($gid != -1) {
-            $table->where('gid', $gid);
+            $table->where('group', $gid);
         } elseif ($pid != -1) {
             $table->where('id', $pid);
         }
@@ -228,13 +229,13 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
                 }
             }
             if ($found) {
-                $res = $model->UpdateAnswer($newAnswer['id'], $newAnswer['answer'], $index);
+                $res = $model->UpdateAnswer($newAnswer['id'], $newAnswer['title'], $index);
                 if (Jaws_Error::IsError($res)) {
                     $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ERROR_ANSWER_NOT_UPDATED'), RESPONSE_ERROR);
                     return false;
                 }
             } else {
-                $res = $model->InsertAnswer($pid, $newAnswer['answer'], $index);
+                $res = $model->InsertAnswer($pid, $newAnswer['title'], $index);
                 if (Jaws_Error::IsError($res)) {
                     $GLOBALS['app']->Session->PushLastResponse(_t('POLL_ERROR_ANSWER_NOT_ADDED'), RESPONSE_ERROR);
                     return false;

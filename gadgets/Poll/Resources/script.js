@@ -115,16 +115,16 @@ function stopAction()
     case 'Polls':
         selectedPoll = null;
         $('#legend_title').html(addPoll_title);
-        $('#question').val('');
+        $('#title').val('');
         $('#gid').prop('selectedIndex', 0);
         $('#start_time').val('');
         $('#stop_time').val('');
-        $('#select_type').val(0);
-        $('#poll_type').val(0);
-        $('#result_view').val(1);
-        $('#visible').val(1);
+        $('#type').val(0);
+        $('#restriction').val(0);
+        $('#result').val(1);
+        $('#published').val(1);
         deselectDataGridRow();
-        $('#question')[0].focus();
+        $('#title')[0].focus();
         break;
     case 'PollAnswers':
         selectedPoll = null;
@@ -139,7 +139,7 @@ function stopAction()
         selectedPollGroup = null;
         $('#legend_title').html(addPollGroup_title);
         $('#title').val('');
-        $('#visible').val(1);
+        $('#published').val(1);
         deselectDataGridRow();
         $('#title')[0].focus();
         break;
@@ -171,16 +171,16 @@ function editPoll(element, pid)
 
     var pollInfo = PollAjax.callSync('GetPoll', selectedPoll);
 
-    $('#question').val(pollInfo['question'].defilter());
-    $('#gid').val(pollInfo['gid']);
+    $('#title').val(pollInfo['title'].defilter());
+    $('#gid').val(pollInfo['group']);
     if (pollInfo['start_time'] == null) pollInfo['start_time'] = '';
     if (pollInfo['stop_time']  == null) pollInfo['stop_time']  = '';
     $('#start_time').val(pollInfo['start_time']);
     $('#stop_time').val(pollInfo['stop_time']);
-    $('#select_type').val(pollInfo['select_type']);
-    $('#poll_type').val(pollInfo['poll_type']);
-    $('#result_view').val(pollInfo['result_view']);
-    $('#visible').val(pollInfo['visible']);
+    $('#type').val(pollInfo['type']);
+    $('#restriction').val(pollInfo['restriction']);
+    $('#result').val(pollInfo['result']);
+    $('#published').val(pollInfo['published'] ? 1 : 0);
 }
 
 /**
@@ -204,12 +204,12 @@ function editPollAnswers(element, pid)
     $('#p_work_area').html(cachePollAnswersForm);
     var answersData = PollAjax.callSync('GetPollAnswers', selectedPoll);
     var answers  = answersData['Answers'];
-    $('#question').val(answersData['question'].defilter());
+    $('#title').val(answersData['title'].defilter());
 
     var box = $('#answers_combo')[0];
     box.length = 0;
     for(var i = 0; i < answers.length; i++) {
-        box.options[i] = new Option(answers[i]['answer'].defilter(), answers[i]['id']);
+        box.options[i] = new Option(answers[i]['title'].defilter(), answers[i]['id']);
     }
     $('#answer')[0].focus();
 }
@@ -229,11 +229,11 @@ function savePoll()
         for(var i = 0; i < box.length; i++) {
             answers[i] = [];
             answers[i]['id']     = box.options[i].value;
-            answers[i]['answer'] = box.options[i].text;
+            answers[i]['title'] = box.options[i].text;
         }
         PollAjax.callAsync('UpdatePollAnswers', [selectedPoll, answers]);
     } else {
-        if (!$('#question').val()) {
+        if (!$('#title').val()) {
             alert(incompletePollsFields);
             return false;
         }
@@ -241,28 +241,28 @@ function savePoll()
         if (selectedPoll == null) {
             PollAjax.callAsync(
                 'InsertPoll', [
-                    $('#question').val(),
+                    $('#title').val(),
                     $('#gid').val(),
                     $('#start_time').val(),
                     $('#stop_time').val(),
-                    $('#select_type').val(),
-                    $('#poll_type').val(),
-                    $('#result_view').val(),
-                    $('#visible').val()
+                    $('#type').val(),
+                    $('#restriction').val(),
+                    $('#result').val(),
+                    $('#published').val()
                 ]
             );
         } else {
             PollAjax.callAsync(
                 'UpdatePoll', [
                     selectedPoll,
-                    $('#question').val(),
+                    $('#title').val(),
                     $('#gid').val(),
                     $('#start_time').val(),
                     $('#stop_time').val(),
-                    $('#select_type').val(),
-                    $('#poll_type').val(),
-                    $('#result_view').val(),
-                    $('#visible').val()
+                    $('#type').val(),
+                    $('#restriction').val(),
+                    $('#result').val(),
+                    $('#published').val()
                 ]
             );
         }
@@ -399,7 +399,7 @@ function editPollGroup(element, gid)
 
     $('#gid').val(groupInfo['id']);
     $('#title').val(groupInfo['title'].defilter());
-    $('#visible').prop('selectedIndex', groupInfo['visible']);
+    $('#published').prop('selectedIndex', groupInfo['published']);
 }
 
 /**
@@ -467,7 +467,7 @@ function savePollGroup()
             PollAjax.callAsync(
                 'InsertPollGroup', [
                     $('#title').val(),
-                    $('#visible').val()
+                    $('#published').val()
                 ]
             );
         } else {
@@ -475,7 +475,7 @@ function savePollGroup()
                 'UpdatePollGroup', [
                     selectedPollGroup,
                     $('#title').val(),
-                    $('#visible').val()
+                    $('#published').val()
                 ]
             );
         }
@@ -504,7 +504,7 @@ function getGroupPolls(gid)
     if (gid == 0) return;
     var polls = PollAjax.callSync('GetGroupPolls', gid);
     for(var i = 0; i < polls.length; i++) {
-        var op = new Option(polls[i]['question'], polls[i]['id']);
+        var op = new Option(polls[i]['title'], polls[i]['id']);
         if (i % 2 == 0) {
             op.style.backgroundColor = evenColor;
         } else {

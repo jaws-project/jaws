@@ -12,7 +12,7 @@
             <value>General</value>
         </field>
         <field>
-            <name>visible</name>
+            <name>published</name>
             <value>1</value>
         </field>
     </insert>

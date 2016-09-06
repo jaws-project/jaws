@@ -22,7 +22,7 @@ class Poll_Model_Group extends Jaws_Gadget_Model
     function GetPollGroup($gid)
     {
         $table = Jaws_ORM::getInstance()->table('poll_groups');
-        $table->select('id', 'title', 'visible')->where('id', $gid);
+        $table->select('id:integer', 'title', 'published:boolean')->where('id', $gid);
         $result = $table->fetchRow();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage());
@@ -49,7 +49,7 @@ class Poll_Model_Group extends Jaws_Gadget_Model
         }
 
         $table = Jaws_ORM::getInstance()->table('poll_groups');
-        $table->select('id', 'title', 'visible')->orderBy('id asc');
+        $table->select('id:integer', 'title', 'published:boolean')->orderBy('id asc');
         $result = $table->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage());

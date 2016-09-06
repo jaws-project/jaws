@@ -16,10 +16,10 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
      *
      * @access  public
      * @param    string  $title      group title
-     * @param    bool    $visible    is visible
+     * @param    bool    $published  published
      * @return   bool    True on Success or False Failure
      */
-    function InsertPollGroup($title, $visible)
+    function InsertPollGroup($title, $published)
     {
         $table = Jaws_ORM::getInstance()->table('poll_groups');
         $count = $table->select('COUNT([id])')->where('title', $title)->fetchOne();
@@ -35,7 +35,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
 
         $data = array();
         $data['title']   = $title;
-        $data['visible'] = $visible;
+        $data['published'] = $published;
         $table->reset();
         $result = $table->insert($data)->exec();
         if (Jaws_Error::IsError($result)) {
@@ -53,13 +53,13 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
      * @access  public
      * @param    int     $gid        group ID
      * @param    string  $title      group title
-     * @param    bool    $visible    is visible
+     * @param    bool    $published  published
      * @return   mixed   True on Success, Jaws_Error or False on Failure
      */
-    function UpdatePollGroup($gid, $title, $visible)
+    function UpdatePollGroup($gid, $title, $published)
     {
         $table = Jaws_ORM::getInstance()->table('poll_groups');
-        $count = $table->select('COUNT([id])')
+        $gc = $table->select('COUNT([id])')
             ->where('id', $gid, '!=')->and()
             ->where('title', $title)->fetchOne();
         if (Jaws_Error::IsError($gc)) {
@@ -74,7 +74,7 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
 
         $data = array();
         $data['title'] = $title;
-        $data['visible'] = $visible;
+        $data['published'] = $published;
         $table->reset();
         $result = $table->update($data)->where('id', $gid)->exec();
         if (Jaws_Error::IsError($result)) {
@@ -124,6 +124,4 @@ class Poll_Model_Admin_Group extends Poll_Model_Group
         $GLOBALS['app']->Session->PushLastResponse(_t('POLL_GROUPS_DELETED', $gid), RESPONSE_NOTICE);
         return true;
     }
-
-
 }

@@ -29,11 +29,11 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
         $newData = array();
         foreach($groups as $group) {
             $groupData = array();
-            $groupData['question'] = $group['title'];
-            if ($group['visible'] == 1) {
-                $groupData['visible'] = _t('GLOBAL_YES');
+            $groupData['title'] = $group['title'];
+            if ($group['published'] == true) {
+                $groupData['published'] = _t('GLOBAL_YES');
             } else {
-                $groupData['visible'] = _t('GLOBAL_NO');
+                $groupData['published'] = _t('GLOBAL_NO');
             }
             $actions = '';
             if ($this->gadget->GetPermission('ManageGroups')) {
@@ -74,7 +74,7 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
         $grid->pageBy(12);
         $column1 = Piwi::CreateWidget('Column', _t('GLOBAL_TITLE'), null, false);
         $grid->AddColumn($column1);
-        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_VISIBLE'), null, false);
+        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_PUBLISHED'), null, false);
         $column2->SetStyle('width:56px; white-space:nowrap;');
         $grid->AddColumn($column2);
         $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
@@ -137,13 +137,13 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
         $tpl->SetVariable('title', $title->Get());
 
-        $visible =& Piwi::CreateWidget('Combo', 'visible');
-        $visible->SetID('visible');
-        $visible->AddOption(_t('GLOBAL_NO'),  0);
-        $visible->AddOption(_t('GLOBAL_YES'), 1);
-        $visible->SetDefault(1);
-        $tpl->SetVariable('lbl_visible', _t('GLOBAL_VISIBLE'));
-        $tpl->SetVariable('visible', $visible->Get());
+        $published =& Piwi::CreateWidget('Combo', 'published');
+        $published->SetID('published');
+        $published->AddOption(_t('GLOBAL_NO'),  0);
+        $published->AddOption(_t('GLOBAL_YES'), 1);
+        $published->SetDefault(1);
+        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('published', $published->Get());
 
         $tpl->ParseBlock('PollGroupUI');
 
@@ -170,7 +170,7 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
         $polls = $model->GetPolls();
         $pollsCombo =& Piwi::CreateWidget('CheckButtons', 'pg_polls_combo');
         foreach ($polls as $poll) {
-            $pollsCombo->AddOption($poll['question'], $poll['id']);
+            $pollsCombo->AddOption($poll['title'], $poll['id']);
         }
         $pollsCombo->SetColumns(1);
         $tpl->SetVariable('pg_polls_combo', $pollsCombo->Get());

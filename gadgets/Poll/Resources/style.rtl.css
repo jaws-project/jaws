@@ -7,7 +7,7 @@ vertical-align:top;
 #p_work_area label{
 width:90px;
 }
-#question,#gid,#title{
+#title,#gid,#title{
 width:256px;
 }
 #answer,#answers_combo{
@@ -16,10 +16,10 @@ width:230px;
 #start_time,#stop_time{
 width:140px;
 }
-#select_type,#poll_type{
+#type,#restriction{
 width:140px;
 }
-#result_view,#visible{
+#result,#published{
 width:60px;
 }
 #poll_box,#answers_box{

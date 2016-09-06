@@ -29,12 +29,11 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $newData = array();
         foreach($polls as $poll) {
             $pollData = array();
-            $pollData['question'] = $poll['question'];
-            if ($poll['visible'] == 1) {
-                $pollData['visible'] = _t('GLOBAL_YES');
-
+            $pollData['title'] = $poll['title'];
+            if ($poll['published'] == true) {
+                $pollData['published'] = _t('GLOBAL_YES');
             } else {
-                $pollData['visible'] = _t('GLOBAL_NO');
+                $pollData['published'] = _t('GLOBAL_NO');
             }
             $actions = '';
             if ($this->gadget->GetPermission('ManagePolls')) {
@@ -75,7 +74,7 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $grid->pageBy(12);
         $column1 = Piwi::CreateWidget('Column', _t('POLL_POLLS_QUESTION'), null, false);
         $grid->AddColumn($column1);
-        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_VISIBLE'), null, false);
+        $column2 = Piwi::CreateWidget('Column', _t('GLOBAL_PUBLISHED'), null, false);
         $column2->SetStyle('width:56px; white-space:nowrap;');
         $grid->AddColumn($column2);
         $column3 = Piwi::CreateWidget('Column', _t('GLOBAL_ACTIONS'), null, false);
@@ -135,9 +134,9 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $tpl = $this->gadget->template->loadAdmin('Polls.html');
         $tpl->SetBlock('PollUI');
 
-        $question =& Piwi::CreateWidget('Entry', 'question', '');
-        $tpl->SetVariable('lbl_question', _t('POLL_POLLS_QUESTION'));
-        $tpl->SetVariable('question', $question->Get());
+        $title =& Piwi::CreateWidget('Entry', 'title', '');
+        $tpl->SetVariable('lbl_title', _t('POLL_POLLS_QUESTION'));
+        $tpl->SetVariable('title', $title->Get());
 
         $groupCombo =& Piwi::CreateWidget('Combo', 'gid');
         $groupCombo->SetID('gid');
@@ -149,27 +148,27 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $tpl->SetVariable('lbl_gid', _t('POLL_GROUPS'));
         $tpl->SetVariable('gid', $groupCombo->Get());
 
-        $selectType =& Piwi::CreateWidget('Combo', 'select_type');
-        $selectType->SetID('select_type');
-        $selectType->AddOption(_t('POLL_POLLS_SELECT_SINGLE'), 0);
-        $selectType->AddOption(_t('POLL_POLLS_SELECT_MULTI'),  1);
-        $tpl->SetVariable('lbl_select_type', _t('POLL_POLLS_SELECT_TYPE'));
-        $tpl->SetVariable('select_type', $selectType->Get());
+        $type =& Piwi::CreateWidget('Combo', 'type');
+        $type->SetID('type');
+        $type->AddOption(_t('POLL_POLLS_SELECT_SINGLE'), 0);
+        $type->AddOption(_t('POLL_POLLS_SELECT_MULTI'),  1);
+        $tpl->SetVariable('lbl_type', _t('POLL_POLLS_TYPE'));
+        $tpl->SetVariable('type', $type->Get());
 
-        $pollMode =& Piwi::CreateWidget('Combo', 'poll_type');
-        $pollMode->SetID('poll_type');
-        $pollMode->AddOption(_t('POLL_POLLS_TYPE_COOKIE'), 0);
-        $pollMode->AddOption(_t('POLL_POLLS_TYPE_FREE'),   1);
-        $tpl->SetVariable('lbl_poll_type', _t('POLL_POLLS_TYPE'));
-        $tpl->SetVariable('poll_type', $pollMode->Get());
+        $pollMode =& Piwi::CreateWidget('Combo', 'restriction');
+        $pollMode->SetID('restriction');
+        $pollMode->AddOption(_t('POLL_POLLS_RESTRICTION_COOKIE'), 0);
+        $pollMode->AddOption(_t('POLL_POLLS_RESTRICTION_FREE'),   1);
+        $tpl->SetVariable('lbl_restriction', _t('POLL_POLLS_RESTRICTION'));
+        $tpl->SetVariable('restriction', $pollMode->Get());
 
-        $resultView =& Piwi::CreateWidget('Combo', 'result_view');
-        $resultView->SetID('result_view');
+        $resultView =& Piwi::CreateWidget('Combo', 'result');
+        $resultView->SetID('result');
         $resultView->AddOption(_t('GLOBAL_NO'),  0);
         $resultView->AddOption(_t('GLOBAL_YES'), 1);
         $resultView->SetDefault(1);
-        $tpl->SetVariable('lbl_result_view', _t('POLL_POLLS_RESULT_VIEW'));
-        $tpl->SetVariable('result_view', $resultView->Get());
+        $tpl->SetVariable('lbl_result', _t('POLL_POLLS_RESULT_VIEW'));
+        $tpl->SetVariable('result', $resultView->Get());
 
         $startTime =& Piwi::CreateWidget('DatePicker', 'start_time', '');
         $startTime->SetId('start_time');
@@ -191,13 +190,13 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $tpl->SetVariable('lbl_stop_time', _t('GLOBAL_STOP_TIME'));
         $tpl->SetVariable('stop_time', $stopTime->Get());
 
-        $visible =& Piwi::CreateWidget('Combo', 'visible');
-        $visible->SetID('visible');
-        $visible->AddOption(_t('GLOBAL_NO'),  0);
-        $visible->AddOption(_t('GLOBAL_YES'), 1);
-        $visible->SetDefault(1);
-        $tpl->SetVariable('lbl_visible', _t('GLOBAL_VISIBLE'));
-        $tpl->SetVariable('visible', $visible->Get());
+        $published =& Piwi::CreateWidget('Combo', 'published');
+        $published->SetID('published');
+        $published->AddOption(_t('GLOBAL_NO'),  0);
+        $published->AddOption(_t('GLOBAL_YES'), 1);
+        $published->SetDefault(1);
+        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('published', $published->Get());
 
         $tpl->ParseBlock('PollUI');
 
@@ -215,10 +214,10 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $tpl = $this->gadget->template->loadAdmin('Polls.html');
         $tpl->SetBlock('PollAnswersUI');
 
-        $question =& Piwi::CreateWidget('Entry', 'question', '');
-        $question->SetEnabled(false);
-        $tpl->SetVariable('lbl_question', _t('POLL_POLLS_QUESTION'));
-        $tpl->SetVariable('question', $question->Get());
+        $title =& Piwi::CreateWidget('Entry', 'title', '');
+        $title->SetEnabled(false);
+        $tpl->SetVariable('lbl_title', _t('POLL_POLLS_QUESTION'));
+        $tpl->SetVariable('title', $title->Get());
 
         $answer =& Piwi::CreateWidget('Entry', 'answer', '');
         $answer->AddEvent(ON_KPRESS, 'javascript:keypressOnAnswer(event);');

@@ -23,7 +23,7 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('poll_answers');
         $table->update(array('votes' => $table->expr('votes + ?', 1)));
-        $result = $table->where('id', $aid)->and()->where('pid', $pid)->exec();
+        $result = $table->where('id', $aid)->and()->where('poll', $pid)->exec();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('POLL_ERROR_VOTE_NOT_ADDED'));
         }
@@ -41,8 +41,8 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
     function GetPollAnswers($pid)
     {
         $table = Jaws_ORM::getInstance()->table('poll_answers');
-        $table->select('id', 'answer', 'rank', 'votes');
-        $result = $table->where('pid', $pid)->orderBy('rank asc')->fetchAll();
+        $table->select('id:integer', 'title', 'order:integer', 'votes');
+        $result = $table->where('poll', $pid)->orderBy('order asc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage());
         }
@@ -54,37 +54,37 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
      * Get Poll data
      *
      * @access  public
-     * @param   int     $pid    poll ID
+     * @param   int     $id    poll ID
      * @return  mixed   An array of poll properties and Jaws_Error on error
      */
-    function GetPoll($pid)
+    function GetPoll($id)
     {
         $table = Jaws_ORM::getInstance()->table('poll');
         $table->select(
-            'id', 'gid', 'question', 'select_type', 'poll_type',
-            'result_view', 'start_time', 'stop_time', 'visible');
-        return $table->where('id', $pid)->fetchRow();
+            'id:integer', 'group:integer', 'title', 'type:integer', 'restriction:integer',
+            'result:integer', 'start_time:integer', 'stop_time:integer', 'published:boolean');
+        return $table->where('id', $id)->fetchRow();
     }
 
     /**
-     * Gets the last visible poll
+     * Gets the last published poll
      *
      * @access  public
-     * @return  mixed   An array with the last visible and returns Jaws_Error or false on error
+     * @return  mixed   An array with the last published and returns Jaws_Error or false on error
      */
     function GetLastPoll()
     {
-        $now = Jaws_DB::getInstance()->date();
+        $now = time();
         $table = Jaws_ORM::getInstance()->table('poll');
         $table->select(
-                    'id', 'gid', 'question', 'select_type', 'poll_type',
-                    'result_view', 'start_time', 'stop_time', 'visible');
+                    'id:integer', 'group:integer', 'title', 'type:integer', 'restriction:integer',
+                    'result:integer', 'start_time:integer', 'stop_time:integer', 'published:boolean');
 
-        $table->where('visible', 1)->and();
+        $table->where('published', true)->and();
         $table->openWhere()->where('start_time', '', 'is null')->or();
-        $table->where('start_time', $now, '>=')->closeWhere()->and();
+        $table->where('start_time', $now, '<=')->closeWhere()->and();
         $table->openWhere()->where('stop_time', '', 'is null')->or();
-        $table->where('stop_time', $now, '<=')->closeWhere();
+        $table->where('stop_time', $now, '>=')->closeWhere();
         return $table->orderBy('id')->fetchRow();
     }
 
@@ -92,25 +92,25 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
      * Get the list of polls
      *
      * @access  public
-     * @param   int     $gid            group ID
-     * @param   bool    $onlyVisible    only show visible polls
+     * @param   int     $group          group ID
+     * @param   bool    $onlyPublished  only show published polls
      * @param   int     $limit          limit polls
      * @param   int     $offset         offset data by
      * @return  mixed   An array of available polls and Jaws_Error on error
      */
-    function GetPolls($gid = null, $onlyVisible = false, $limit = 0, $offset = null)
+    function GetPolls($group = null, $onlyPublished = false, $limit = 0, $offset = null)
     {
         $table = Jaws_ORM::getInstance()->table('poll');
         $table->select(
-            'id', 'gid', 'question', 'select_type', 'poll_type',
-            'result_view', 'start_time', 'stop_time', 'visible');
+            'id', 'group', 'title', 'type:integer', 'restriction:integer',
+            'result:integer', 'start_time:integer', 'stop_time:integer', 'published:integer');
 
-        if ($onlyVisible) {
-            $table->where('visible', 1);
+        if ($onlyPublished) {
+            $table->where('published', true);
         }
 
-        if (!empty($gid)) {
-            $table->and()->where('gid', $gid);
+        if (!empty($group)) {
+            $table->and()->where('group', $group);
         }
 
         if (!empty($limit)) {

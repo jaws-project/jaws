@@ -15,35 +15,35 @@
         </field>
 
         <field>
-            <name>gid</name>
+            <name>group</name>
             <type>integer</type>
             <notnull>true</notnull>
             <default>0</default>
         </field>
 
         <field>
-            <name>question</name>
+            <name>title</name>
             <type>text</type>
             <length>128</length>
             <notnull>true</notnull>
         </field>
 
         <field>
-            <name>select_type</name>
+            <name>type</name>
             <type>integer</type>
             <length>1</length>
             <default>0</default>
         </field>
 
         <field>
-            <name>poll_type</name>
+            <name>restriction</name>
             <type>integer</type>
             <length>1</length>
             <default>0</default>
         </field>
 
         <field>
-            <name>result_view</name>
+            <name>result</name>
             <type>integer</type>
             <length>1</length>
             <default>0</default>
@@ -51,19 +51,22 @@
 
         <field>
             <name>start_time</name>
-            <type>timestamp</type>
+            <type>integer</type>
+            <length>8</length>
+            <default>0</default>
         </field>
 
         <field>
             <name>stop_time</name>
-            <type>timestamp</type>
+            <type>integer</type>
+            <length>8</length>
+            <default>0</default>
         </field>
 
         <field>
-            <name>visible</name>
-            <type>integer</type>
-            <length>1</length>
-            <default>0</default>
+            <name>published</name>
+            <type>boolean</type>
+            <default>false</default>
         </field>
 
     </declaration>
@@ -81,21 +84,21 @@
         </field>
 
         <field>
-            <name>pid</name>
+            <name>poll</name>
             <type>integer</type>
             <notnull>true</notnull>
             <default>0</default>
         </field>
 
         <field>
-            <name>answer</name>
+            <name>title</name>
             <type>text</type>
             <length>128</length>
             <notnull>true</notnull>
         </field>
 
         <field>
-            <name>rank</name>
+            <name>order</name>
             <type>integer</type>
             <notnull>true</notnull>
             <default>0</default>
@@ -130,10 +133,9 @@
         </field>
 
         <field>
-            <name>visible</name>
-            <type>integer</type>
-            <length>1</length>
-            <default>0</default>
+            <name>published</name>
+            <type>boolean</type>
+            <default>false</default>
         </field>
 
     </declaration>
