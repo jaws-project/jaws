@@ -114,7 +114,65 @@
   </declaration>
  </table>
 
- <table>
+    <table>
+        <name><variable>table_prefix</variable>poll_results</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>poll</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+            </field>
+
+            <field>
+                <name>answer</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+            </field>
+
+            <field>
+                <name>vote</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+            </field>
+
+            <field>
+                <name>ip</name>
+                <type>text</type>
+                <length>24</length>
+            </field>
+
+            <field>
+                <name>user</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>session</name>
+                <type>text</type>
+                <length>128</length>
+                <notnull>true</notnull>
+            </field>
+
+            <field>
+                <name>insert_time</name>
+                <type>integer</type>
+                <length>8</length>
+                <default>0</default>
+            </field>
+
+        </declaration>
+    </table>
+
+    <table>
     <name><variable>table_prefix</variable>poll_groups</name>
     <declaration>
 

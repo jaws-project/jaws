@@ -157,8 +157,10 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
 
         $pollMode =& Piwi::CreateWidget('Combo', 'restriction');
         $pollMode->SetID('restriction');
-        $pollMode->AddOption(_t('POLL_POLLS_RESTRICTION_COOKIE'), 0);
-        $pollMode->AddOption(_t('POLL_POLLS_RESTRICTION_FREE'),   1);
+        $pollMode->AddOption(_t('POLL_RESTRICTION_TYPE_IP'), Poll_Info::POLL_RESTRICTION_TYPE_IP);
+        $pollMode->AddOption(_t('POLL_RESTRICTION_TYPE_USER'), Poll_Info::POLL_RESTRICTION_TYPE_USER);
+        $pollMode->AddOption(_t('POLL_RESTRICTION_TYPE_SESSION'), Poll_Info::POLL_RESTRICTION_TYPE_SESSION);
+        $pollMode->AddOption(_t('POLL_RESTRICTION_TYPE_FREE'), Poll_Info::POLL_RESTRICTION_TYPE_FREE);
         $tpl->SetVariable('lbl_restriction', _t('POLL_POLLS_RESTRICTION'));
         $tpl->SetVariable('restriction', $pollMode->Get());
 
