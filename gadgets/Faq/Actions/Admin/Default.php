@@ -21,24 +21,20 @@ class Faq_Actions_Admin_Default extends Jaws_Gadget_Action
      */
     function MenuBar($selected)
     {
-        $actions = array('ManageQuestions', 'AddNewQuestion', 'AddNewCategory');
+        $actions = array('Questions', 'Categories');
 
         if (!in_array($selected, $actions)) {
-            $selected = 'ManageQuestions';
+            $selected = 'Questions';
         }
 
         $menubar = new Jaws_Widgets_Menubar();
-        $menubar->AddOption('ManageQuestions', _t('FAQ_LIST'),
-                            BASE_SCRIPT . '?gadget=Faq&amp;action=ManageQuestions', STOCK_DOCUMENTS);
-
-        if ($this->gadget->GetPermission('AddNewQuestion')) {
-            $menubar->AddOption('AddNewQuestion', _t('FAQ_ADD_QUESTION'),
-                                BASE_SCRIPT . '?gadget=Faq&amp;action=EditQuestion', STOCK_NEW);
-        }
+        $menubar->AddOption('Questions', _t('FAQ_LIST'),
+                            BASE_SCRIPT . '?gadget=Faq&amp;action=Questions', STOCK_DOCUMENTS);
 
         if ($this->gadget->GetPermission('ManageCategories')) {
-            $menubar->AddOption('AddNewCategory', _t('FAQ_ADD_CATEGORY'),
-                                BASE_SCRIPT . '?gadget=Faq&amp;action=EditCategory', STOCK_NEW);
+            $menubar->AddOption('Categories', _t('FAQ_CATEGORIES'),
+                                BASE_SCRIPT . '?gadget=Faq&amp;action=Categories',
+                                'gadgets/Faq/Resources/images/categories.png');
         }
 
         $menubar->Activate($selected);

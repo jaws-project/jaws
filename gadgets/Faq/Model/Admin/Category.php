@@ -33,36 +33,18 @@ class Faq_Model_Admin_Category extends Faq_Model_Category
      * Add a category
      *
      * @access  public
-     * @param   string  $category     Category name
-     * @param   string  $fast_url     Fast URL
-     * @param   string  $description  Category description
+     * @param   array   $data   Category data
      * @return  mixed   True if success, Jaws_Error otherwise
      */
-    function AddCategory($category, $fast_url, $description)
+    function InsertCategory($data)
     {
-        $fast_url = empty($fast_url) ? $category : $fast_url;
-        $fast_url = $this->GetRealFastUrl($fast_url, 'faq_category');
-
-        $params['category']             = $category;
-        $params['fast_url']             = $fast_url;
-        $params['description']          = $description;
-        $params['category_position']    = $this->GetMaxCategoryPosition() + 1;
-        $params['updatetime']           = Jaws_DB::getInstance()->date();
+        $fast_url = empty($data['fast_url']) ? $data['category'] : $data['fast_url'];
+        $data['fast_url'] = $this->GetRealFastUrl($fast_url, 'faq_category');
+        $data['category_position']    = $this->GetMaxCategoryPosition() + 1;
+        $data['updatetime']           = Jaws_DB::getInstance()->date();
 
         $table = Jaws_ORM::getInstance()->table('faq_category');
-        $cid = $table->insert($params)->exec();
-        if (Jaws_Error::IsError($cid)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'));
-        }
-
-        if (empty($cid)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_ADDED'));
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_CATEGORY_ADDED'), RESPONSE_NOTICE);
-        return $cid;
+        return $table->insert($data)->exec();
     }
 
     /**
@@ -70,30 +52,17 @@ class Faq_Model_Admin_Category extends Faq_Model_Category
      *
      * @access  public
      * @param   int     $id           Category ID
-     * @param   string  $category     Category name
-     * @param   string  $fast_url     Fast URL
-     * @param   string  $description  Category description
-     * @return  mixed   True if category is succesfully updated, Jaws_Error if not
+     * @param   array   $data         Category data
+     * @return  mixed   True if category is success updated, Jaws_Error if not
      */
-    function UpdateCategory($id, $category, $fast_url, $description)
+    function UpdateCategory($id, $data)
     {
-        $fast_url = empty($fast_url) ? $category : $fast_url;
-        $fast_url = $this->GetRealFastUrl($fast_url, 'faq_category', false);
-
-        $params['category']    = $category;
-        $params['fast_url']    = $fast_url;
-        $params['description'] = $description;
-        $params['updatetime']  = Jaws_DB::getInstance()->date();
+        $fast_url = empty($data['fast_url']) ? $data['category'] : $data['fast_url'];
+        $data['fast_url'] = $this->GetRealFastUrl($fast_url, 'faq_category');
+        $data['updatetime']  = Jaws_DB::getInstance()->date();
 
         $table = Jaws_ORM::getInstance()->table('faq_category');
-        $result = $table->update($params)->where('id', $id)->exec();
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'), RESPONSE_ERROR);
-            return new Jaws_Error(_t('FAQ_ERROR_CATEGORY_NOT_UPDATED'));
-        }
-
-        $GLOBALS['app']->Session->PushLastResponse(_t('FAQ_CATEGORY_UPDATED'), RESPONSE_NOTICE);
-        return true;
+        return $table->update($data)->where('id', $id)->exec();
     }
 
     /**

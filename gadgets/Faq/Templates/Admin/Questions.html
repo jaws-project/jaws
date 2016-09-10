@@ -1,0 +1,56 @@
+<!-- BEGIN Questions -->
+<div class="gadget_menubar">{{menubar}}</div>
+<table class="main">
+  <tr>
+    <td id="q_datagrid" rowspan="2">
+      <div style="text-align: right; padding-bottom: 5px;">
+        <label for="category_filter">{{lbl_category}}:</label>{{category_filter}}
+      </div>
+      {{grid}}
+    </td>
+    <td class="top-align" style="padding: 0 4px 0 4px;">
+      <form id="question_info" name="question_info" method="post" action="{{base_script}}"
+            enctype="multipart/form-data" onsubmit="return submit_question()">
+      <input type="hidden" name="gadget" value="Question" />
+      <input type="hidden" name="action" value="UploadQuestion" />
+      <input type="hidden" name="bid" id="bid" value="0" />
+      <fieldset>
+        <legend><span id="legend_title">{{legend_title}}</span></legend>
+        <div id="q_work_area">{{question_ui}}</div>
+      </fieldset>
+      </form>
+    </td>
+  </tr>
+  <tr>
+    <td class="buttons">{{btn_cancel}} {{btn_save}}</td>
+  </tr>
+</table>
+<script type="text/javascript">
+  $('#bgroup_filter').prop('selectedIndex', 0);
+  var incompleteQuestionFields = "{{incompleteQuestionFields}}";
+  var confirmQuestionDelete    = "{{confirmQuestionDelete}}";
+  var addQuestion_title        = "{{addQuestion_title}}";
+  var editQuestion_title       = "{{editQuestion_title}}";
+  var textTemplate           = "{{textTemplate}}";
+  var imageTemplate          = "{{imageTemplate}}";
+  var flashTemplate          = "{{flashTemplate}}";
+
+  currentAction = 'Questions';
+  stopAction();
+  initDataGrid('questions_datagrid', FaqAjax, getQuestionsDataGrid);
+</script>
+<!-- END Questions -->
+
+<!-- BEGIN QuestionInfo -->
+<table id="question_box">
+  <tr><td colspan="2"><label for="question">{{lbl_question}}:</label></td></tr>
+  <tr><td colspan="2">{{question}}</td></tr>
+  <tr><td colspan="2">{{answer}}</td></tr>
+  <tr><td><label for="category">{{lbl_category}}:</label></td><td>{{category}}</td></tr>
+  <tr><td><label for="fast_url">{{lbl_fast_url}}:</label></td><td>{{fast_url}}</td></tr>
+  <tr><td><label for="meta_keywords">{{lbl_meta_keywords}}:</label></td><td>{{meta_keywords}}</td></tr>
+  <tr><td><label for="meta_description">{{lbl_meta_description}}:</label></td><td>{{meta_description}}</td></tr>
+  <tr><td><label for="published">{{lbl_published}}:</label></td><td>{{published}}</td></tr>
+  </tr>
+</table>
+<!-- END QuestionInfo -->

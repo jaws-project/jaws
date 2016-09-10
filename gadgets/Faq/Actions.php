@@ -32,55 +32,63 @@ $actions['ListCategories'] = array(
 /**
  * Admin actions
  */
-$admin_actions['ManageQuestions'] = array(
+$admin_actions['Questions'] = array(
     'normal' => true,
     'file' => 'Question',
 );
-$admin_actions['NewQuestion'] = array(
-    'normal' => true,
+$admin_actions['GetQuestions'] = array(
+    'standalone' => true,
     'file' => 'Question',
 );
-$admin_actions['EditQuestion'] = array(
-    'normal' => true,
+$admin_actions['GetQuestionsCount'] = array(
+    'standalone' => true,
+    'file' => 'Question',
+);
+$admin_actions['GetQuestion'] = array(
+    'standalone' => true,
+    'file' => 'Question',
+);
+$admin_actions['InsertQuestion'] = array(
+    'standalone' => true,
     'file' => 'Question',
 );
 $admin_actions['UpdateQuestion'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Question',
 );
-$admin_actions['NewCategory'] = array(
+$admin_actions['DeleteQuestion'] = array(
+    'standalone' => true,
+    'file' => 'Question',
+);
+$admin_actions['MoveQuestion'] = array(
+    'standalone' => true,
+    'file' => 'Question',
+);
+$admin_actions['Categories'] = array(
     'normal' => true,
     'file' => 'Category',
 );
-$admin_actions['EditCategory'] = array(
-    'normal' => true,
+$admin_actions['GetCategories'] = array(
+    'standalone' => true,
+    'file' => 'Category',
+);
+$admin_actions['GetCategory'] = array(
+    'standalone' => true,
+    'file' => 'Category',
+);
+$admin_actions['InsertCategory'] = array(
+    'standalone' => true,
     'file' => 'Category',
 );
 $admin_actions['UpdateCategory'] = array(
-    'normal' => true,
+    'standalone' => true,
     'file' => 'Category',
 );
 $admin_actions['DeleteCategory'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['DeleteQuestion'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['MoveQuestion'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Category',
 );
 $admin_actions['MoveCategory'] = array(
     'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['ParseText'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);
-$admin_actions['GetCategoryGrid'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
+    'file' => 'Category',
 );

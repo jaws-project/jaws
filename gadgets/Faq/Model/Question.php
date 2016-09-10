@@ -18,9 +18,11 @@ class Faq_Model_Question extends Jaws_Gadget_Model
      * @access  public
      * @param   int     $category   Just questions from this category(optional)
      * @param   bool    $justactive
+     * @param   int     $limit
+     * @param   int     $offset
      * @return  mixed   Returns an array of questions and Jaws_Error on error
      */
-    function GetQuestions($category = null, $justactive = false)
+    function GetQuestions($category = null, $justactive = false, $limit = 0, $offset = null)
     {
         $faqCategoryTable = Jaws_ORM::getInstance()->table('faq_category');
         $faqCategoryTable->select(
@@ -43,6 +45,7 @@ class Faq_Model_Question extends Jaws_Gadget_Model
         if ($justactive) {
             $faqCategoryTable->and()->where('published', true);
         }
+        $faqCategoryTable->limit($limit, $offset);
         $result = $faqCategoryTable->orderBy('faq_category.category_position', 'faq.faq_position')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error($result->getMessage());
@@ -85,16 +88,30 @@ class Faq_Model_Question extends Jaws_Gadget_Model
      * Get the list of questions
      *
      * @access  public
+     * @param   array       $filters   Filters
+     * @param   bool|int    $limit     Count of logs to be returned
+     * @param   int         $offset    Offset of data array
+     * @param   string      $order     Order by
      * @return  mixed   Returns an array of questions and Jaws_Error on error
      */
-    function GetAllQuestions()
+    function GetAllQuestions($filters = array(), $limit = false, $offset = null, $order = 'category asc, faq_position asc')
     {
         $faqTable = Jaws_ORM::getInstance()->table('faq');
         $faqTable->select(
-            'id:integer', 'question', 'fast_url', 'category:integer', 'updatetime'
+            'id:integer', 'question', 'fast_url', 'category:integer', 'faq_position:integer', 'updatetime'
         );
-        $faqTable->and()->where('published', true);
+        $faqTable->limit((int)$limit, $offset);
 
+        if (count($filters) > 0) {
+            if (isset($filters['published'])) {
+                $faqTable->and()->where('published', (bool)$filters['published']);
+            }
+            if (!empty($filters['category'])) {
+                $faqTable->and()->where('category', (int)$filters['category']);
+            }
+        }
+
+        $faqTable->orderBy($order);
         return $faqTable->fetchAll();
     }
 
@@ -110,8 +127,8 @@ class Faq_Model_Question extends Jaws_Gadget_Model
         $faqTable = Jaws_ORM::getInstance()->table('faq');
         $faqTable->select(
             'faq.id:integer', 'question', 'faq.fast_url', 'answer', 'faq.category as category_id:integer',
-            'published:boolean', 'faq.faq_position:integer', 'faq_category.category', 'faq.createtime',
-            'faq.updatetime');
+            'published:boolean', 'faq.faq_position:integer', 'faq_category.category', 'faq.category as category_id',
+            'faq.createtime', 'faq.updatetime');
         $faqTable->join('faq_category', 'faq.category', 'faq_category.id', 'left');
 
         if (is_numeric($id)) {

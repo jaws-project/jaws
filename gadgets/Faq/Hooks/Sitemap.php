@@ -54,7 +54,7 @@ class Faq_Hooks_Sitemap extends Jaws_Gadget_Hook
 
             if ($data_type == 2) {
                 $pModel = $this->gadget->model->load('Question');
-                $questions  = $pModel->GetAllQuestions();
+                $questions = $pModel->GetAllQuestions(array('published' => true));
                 if (Jaws_Error::IsError($questions)) {
                     return $questions;
                 }
