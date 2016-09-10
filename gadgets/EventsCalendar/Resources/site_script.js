@@ -40,29 +40,30 @@ function initEvents()
  */
 function switchRepeatUI(type)
 {
-    $('event_day').hide();
-    $('event_wday').hide();
-    $('event_month').hide();
+    var $day = $('#event_day').hide(),
+        $wday = $('#event_wday').hide(),
+        $month = $('#event_month').hide();
+
     switch (type) {
         case '1':
-            $('event_day').value = 0;
-            $('event_wday').value = 0;
-            $('event_month').value = 0;
+            $day.val(0);
+            $wday.val(0);
+            $month.val(0);
             break;
         case '2':
-            $('event_wday').show('inline');
-            $('event_day').value = 0;
-            $('event_month').value = 0;
+            $wday.show('inline');
+            $day.val(0);
+            $month.val(0);
             break;
         case '3':
-            $('event_day').show('inline');
-            $('event_wday').value = 0;
-            $('event_month').value = 0;
+            $day.show('inline');
+            $wday.val(0);
+            $month.val(0);
             break;
         case '4':
-            $('event_day').show('inline');
-            $('event_month').show('inline');
-            $('event_wday').value = 0;
+            $day.show('inline');
+            $month.show('inline');
+            $wday.val(0);
             break;
     }
 }
@@ -72,8 +73,7 @@ function switchRepeatUI(type)
  */
 function checkAll()
 {
-    var checked = $('chk_all').checked;
-    $('grid_events').getElements('input').set('checked', checked);
+    $('#grid_events').find('input').prop('checked', $('#chk_all').prop('checked'));
 }
 
 /**
@@ -126,10 +126,13 @@ function deleteEvent(id)
  */
 function deleteEvents()
 {
-    var id_set = $('grid_events').getElements('input:checked').get('value');
+    var id_set = $('#grid_events').find('input:checked');
     if (id_set.length === 0) {
         return;
     }
+    id_set = $.map(id_set, function(input) {
+        return input.value;
+    });
     if (confirm(confirmDelete)) {
         ECAjax.callAsync('DeleteEvent', {id_set:id_set.join(',')});
     }
@@ -140,10 +143,11 @@ function deleteEvents()
  */
 function initShare()
 {
-    $('sys_groups').selectedIndex = -1;
-    Array.each($('event_users').options, function(opt) {
-        sharedEventUsers[opt.value] = opt.text;
-    });
+    $('#sys_groups').get(0).selectedIndex = -1;
+    var $users = $('#event_users').get(0);
+    for (var i = 0; i < $users.options; i++) {
+        sharedEventUsers[$users[i].value] = $users[i].text;
+    }
 }
 
 /**
@@ -151,22 +155,23 @@ function initShare()
  */
 function toggleUsers(gid)
 {
-    var container = $('sys_users').empty(),
+    var container = $('#sys_users').empty(),
         users = usersByGroup[gid];
     if (users === undefined) {
         users = ECAjax.callSync('GetUsers', {'gid':gid});
         usersByGroup[gid] = users;
     }
-    users.each(function (user) {
+    console.log(users);
+    $.each(users, function (i, user) {
         if (user.id == UID) return;
-        var div = new Element('div'),
-            input = new Element('input', {type:'checkbox', id:'chk_'+user.id, value:user.id}),
-            label = new Element('label', {'for':'chk_'+user.id});
-        input.set('checked', (sharedEventUsers[user.id] !== undefined));
-        input.addEvent('click', selectUser);
-        label.set('html', user.nickname + ' (' + user.username + ')');
-        div.adopt(input, label);
-        container.grab(div);
+        var $div = $('<div>'),
+            $input = $('<input>', {type: 'checkbox', id: 'chk_' + user.id, value: user.id}),
+            $label = $('<label>', {'for': 'chk_' + user.id});
+        $input.prop('checked', (sharedEventUsers[user.id] !== undefined));
+        $input.click(selectUser);
+        $label.html(user.nickname + ' (' + user.username + ')');
+        $div.append($input, $label);
+        container.append($div);
     });
 }
 
@@ -176,7 +181,7 @@ function toggleUsers(gid)
 function selectUser()
 {
     if (this.checked) {
-        sharedEventUsers[this.value] = this.getNext('label').get('html');
+        sharedEventUsers[this.value] = $(this).next('label').html();
     } else {
         delete sharedEventUsers[this.value];
     }
@@ -188,8 +193,8 @@ function selectUser()
  */
 function updateShareUsers()
 {
-    var list = $('event_users').empty();
-    Object.each(sharedEventUsers, function(name, id) {
+    var list = $('#event_users').empty().get(0);
+    $.each(sharedEventUsers, function(id, name) {
         list.options[list.options.length] = new Option(name, id);
     });
 }
@@ -201,7 +206,7 @@ function submitShare(id)
 {
     ECAjax.callAsync(
         'UpdateShare',
-        {'id':id, 'users':Object.keys(sharedEventUsers).join(',')}
+        {'id':id, 'users': Object.keys(sharedEventUsers).join(',')}
     );
 }
 
