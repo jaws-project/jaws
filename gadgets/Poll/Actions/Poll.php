@@ -74,12 +74,27 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
         }
 
         $tpl->SetVariable('title', $poll['title']);
-        $votable = ($poll['restriction'] == 1) || (!$GLOBALS['app']->Session->GetCookie('poll_'.$poll['id']));
-        if ($votable || $poll['result']) {
+
+        $allowVote = false;
+        switch ($poll['restriction']) {
+            case Poll_Info::POLL_RESTRICTION_TYPE_IP:
+                break;
+            case Poll_Info::POLL_RESTRICTION_TYPE_USER:
+                break;
+            case Poll_Info::POLL_RESTRICTION_TYPE_SESSION:
+                $allowVote = !$GLOBALS['app']->Session->GetCookie('poll_'.$poll['id']);
+                break;
+            case Poll_Info::POLL_RESTRICTION_TYPE_FREE:
+                $allowVote = true;
+                break;
+        }
+
+//        $votable = ($poll['restriction'] == 1) || (!$GLOBALS['app']->Session->GetCookie('poll_'.$poll['id']));
+        if ($allowVote || $poll['result']) {
             //print the answers or results
             $answers = $model->GetPollAnswers($poll['id']);
             if (!Jaws_Error::IsError($answers)) {
-                $block = $votable? 'voting' : 'result';
+                $block = $allowVote? 'voting' : 'result';
                 $tpl->SetBlock("poll/{$block}");
                 $tpl->SetVariable('pid', $poll['id']);
                 $total_votes = array_sum(array_map(create_function('$row','return $row["votes"];'), $answers));
@@ -107,7 +122,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                 $tpl->SetVariable('total_votes', $total_votes);
                 $tpl->SetVariable('lbl_total_votes', _t('POLL_REPORTS_TOTAL_VOTES'));
 
-                if ($votable) {
+                if ($allowVote) {
                     $btnVote =& Piwi::CreateWidget('Button', 'btn_vote', _t('POLL_VOTE'));
                     $btnVote->SetSubmit();
                     $tpl->SetVariable('btn_vote', $btnVote->Get());
@@ -123,7 +138,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
             }
         }
 
-        if (!$votable) {
+        if (!$allowVote) {
             $tpl->SetVariable('already_message', _t('POLL_ALREADY_VOTED'));
         }
 
