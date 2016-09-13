@@ -164,13 +164,13 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $tpl->SetVariable('lbl_restriction', _t('POLL_POLLS_RESTRICTION'));
         $tpl->SetVariable('restriction', $pollMode->Get());
 
-        $resultView =& Piwi::CreateWidget('Combo', 'result');
-        $resultView->SetID('result');
+        $resultView =& Piwi::CreateWidget('Combo', 'result_view');
+        $resultView->SetID('result_view');
         $resultView->AddOption(_t('GLOBAL_NO'),  0);
         $resultView->AddOption(_t('GLOBAL_YES'), 1);
         $resultView->SetDefault(1);
-        $tpl->SetVariable('lbl_result', _t('POLL_POLLS_RESULT_VIEW'));
-        $tpl->SetVariable('result', $resultView->Get());
+        $tpl->SetVariable('lbl_result_view', _t('POLL_POLLS_RESULT_VIEW'));
+        $tpl->SetVariable('result_view', $resultView->Get());
 
         $startTime =& Piwi::CreateWidget('DatePicker', 'start_time', '');
         $startTime->SetId('start_time');

@@ -15,19 +15,50 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
      * Add a new vote to the poll's answer
      *
      * @access  public
-     * @param   int     $pid    Poll's ID
-     * @param   int     $aid    Answer's ID
+     * @param   int     $pid        Poll's ID
+     * @param   array   $answers    Answer's IDs
      * @return  mixed   True if the poll answer was incremented and Jaws_Error on error
      */
-    function AddAnswerVote($pid, $aid)
+    function AddAnswerVotes($pid, $answers)
     {
-        $table = Jaws_ORM::getInstance()->table('poll_answers');
-        $table->update(array('votes' => $table->expr('votes + ?', 1)));
-        $result = $table->where('id', $aid)->and()->where('poll', $pid)->exec();
+        $objORM = Jaws_ORM::getInstance();
+        // begin transaction
+        $objORM->beginTransaction();
+
+        // insert user votes
+        $data = array(
+            'poll' => $pid,
+            'votes' => implode(',', $answers),
+            'ip' => $_SERVER['REMOTE_ADDR'],
+            'user' => $GLOBALS['app']->Session->GetAttribute('user'),
+            'session' => '',
+            'insert_time' => time(),
+        );
+        $pResults = $objORM->table('poll_results')
+        ->insert($data)->exec();
+        if(Jaws_Error::IsError($pResults)) {
+            return new Jaws_Error(_t('POLL_ERROR_VOTE_NOT_ADDED'));
+        }
+
+        // update total_votes
+        $table = $objORM->table('poll');
+        $result = $table->update(array('total_votes' => $table->expr('total_votes + ?', 1)))->where('id', $pid)->exec();
         if (Jaws_Error::IsError($result)) {
             return new Jaws_Error(_t('POLL_ERROR_VOTE_NOT_ADDED'));
         }
 
+        // update poll_answers votes
+        foreach ($answers as $aid) {
+            $table = $objORM->table('poll_answers');
+            $table->update(array('votes' => $table->expr('votes + ?', 1)));
+            $result = $table->where('id', $aid)->and()->where('poll', $pid)->exec();
+            if (Jaws_Error::IsError($result)) {
+                return new Jaws_Error(_t('POLL_ERROR_VOTE_NOT_ADDED'));
+            }
+        }
+
+        //commit transaction
+        $objORM->commit();
         return true;
     }
 
@@ -61,9 +92,75 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('poll');
         $table->select(
-            'id:integer', 'group:integer', 'title', 'type:integer', 'restriction:integer',
-            'result:integer', 'start_time:integer', 'stop_time:integer', 'published:boolean');
+            'id:integer', 'group:integer', 'title', 'type:integer', 'restriction:integer', 'total_votes:integer',
+            'result_view:boolean', 'start_time:integer', 'stop_time:integer', 'published:boolean');
         return $table->where('id', $id)->fetchRow();
+    }
+
+    /**
+     * Check user allow vote for IP
+     *
+     * @access  public
+     * @param   int     $id    poll id
+     * @param   string  $ip    IP address
+     * @return  bool    True or False
+     */
+    function CheckAllowVoteForIP($id, $ip)
+    {
+        $table = Jaws_ORM::getInstance()->table('poll_results');
+        $res = $table->select('count(id):integer')
+            ->where('poll', (int)$id)
+            ->and()->where('ip', $ip)
+            ->fetchOne();
+
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+        return ($res > 0) ? false : true;
+    }
+
+    /**
+     * Check user allow vote for User
+     *
+     * @access  public
+     * @param   int     $id    poll id
+     * @param   string  $user    User id
+     * @return  bool    True or False
+     */
+    function CheckAllowVoteForUser($id, $user)
+    {
+        $table = Jaws_ORM::getInstance()->table('poll_results');
+        $res = $table->select('count(id):integer')
+            ->where('poll', (int)$id)
+            ->and()->where('user', (int)$user)
+            ->fetchOne();
+
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+        return ($res > 0) ? false : true;
+    }
+
+    /**
+     * Check user allow vote for session
+     *
+     * @access  public
+     * @param   int     $id         poll id
+     * @param   string  $session    Session str
+     * @return  bool    True or False
+     */
+    function CheckAllowVoteForSession($id, $session)
+    {
+        $table = Jaws_ORM::getInstance()->table('poll_results');
+        $res = $table->select('count(id):integer')
+            ->where('poll', (int)$id)
+            ->and()->where('session', $session)
+            ->fetchOne();
+
+        if (Jaws_Error::IsError($res)) {
+            return $res;
+        }
+        return ($res > 0) ? false : true;
     }
 
     /**
@@ -77,8 +174,8 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
         $now = time();
         $table = Jaws_ORM::getInstance()->table('poll');
         $table->select(
-                    'id:integer', 'group:integer', 'title', 'type:integer', 'restriction:integer',
-                    'result:integer', 'start_time:integer', 'stop_time:integer', 'published:boolean');
+                    'id:integer', 'group:integer', 'title', 'type:integer', 'restriction:integer', 'total_votes:integer',
+                    'result_view:boolean', 'start_time:integer', 'stop_time:integer', 'published:boolean');
 
         $table->where('published', true)->and();
         $table->openWhere()->where('start_time', '', 'is null')->or();
@@ -102,8 +199,8 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
     {
         $table = Jaws_ORM::getInstance()->table('poll');
         $table->select(
-            'id', 'group', 'title', 'type:integer', 'restriction:integer',
-            'result:integer', 'start_time:integer', 'stop_time:integer', 'published:integer');
+            'id', 'group', 'title', 'type:integer', 'restriction:integer', 'total_votes:integer',
+            'result_view:boolean', 'start_time:integer', 'stop_time:integer', 'published:integer');
 
         if ($onlyPublished) {
             $table->where('published', true);

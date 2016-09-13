@@ -121,7 +121,7 @@ function stopAction()
         $('#stop_time').val('');
         $('#type').val(0);
         $('#restriction').val(0);
-        $('#result').val(1);
+        $('#result_view').val(1);
         $('#published').val(1);
         deselectDataGridRow();
         $('#title')[0].focus();
@@ -179,8 +179,9 @@ function editPoll(element, pid)
     $('#stop_time').val(pollInfo['stop_time']);
     $('#type').val(pollInfo['type']);
     $('#restriction').val(pollInfo['restriction']);
-    $('#result').val(pollInfo['result']);
+    $('#result_view').val(pollInfo['result_view'] ? 1 : 0);
     $('#published').val(pollInfo['published'] ? 1 : 0);
+    console.log(pollInfo);
 }
 
 /**
@@ -247,7 +248,7 @@ function savePoll()
                     $('#stop_time').val(),
                     $('#type').val(),
                     $('#restriction').val(),
-                    $('#result').val(),
+                    $('#result_view').val(),
                     $('#published').val()
                 ]
             );
@@ -261,7 +262,7 @@ function savePoll()
                     $('#stop_time').val(),
                     $('#type').val(),
                     $('#restriction').val(),
-                    $('#result').val(),
+                    $('#result_view').val(),
                     $('#published').val()
                 ]
             );

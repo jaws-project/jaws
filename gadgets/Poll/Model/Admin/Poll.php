@@ -21,11 +21,11 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
      * @param   string  $stop_time      stop date time
      * @param   string  $type
      * @param   string  $restriction
-     * @param   string  $result
+     * @param   string  $result_view
      * @param   bool    $published
      * @return  mixed   Response array (notice or error) or Jaws_Error on failure
      */
-    function InsertPoll($title, $gid, $start_time, $stop_time, $type, $restriction, $result, $published)
+    function InsertPoll($title, $gid, $start_time, $stop_time, $type, $restriction, $result_view, $published)
     {
         $date = Jaws_Date::getInstance();
         $pollData = array();
@@ -44,7 +44,7 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
 
         $pollData['type'] = $type;
         $pollData['restriction'] = $restriction;
-        $pollData['result'] = $result;
+        $pollData['result_view'] = $result_view;
         $pollData['published'] = $published;
 
         $table = Jaws_ORM::getInstance()->table('poll');
@@ -72,11 +72,11 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
      * @param   string  $stop_time      stop date time
      * @param   string  $type
      * @param   string  $restriction
-     * @param   string  $result
+     * @param   string  $result_view
      * @param   bool    $published
      * @return  mixed   True if the poll was updated and Jaws_Error on error
      */
-    function UpdatePoll($pid, $title, $gid, $start_time, $stop_time, $type, $restriction, $result, $published)
+    function UpdatePoll($pid, $title, $gid, $start_time, $stop_time, $type, $restriction, $result_view, $published)
     {
         $date = Jaws_Date::getInstance();
         $pollData = array();
@@ -94,7 +94,7 @@ class Poll_Model_Admin_Poll extends Poll_Model_Poll
         }
         $pollData['type'] = $type;
         $pollData['restriction'] = $restriction;
-        $pollData['result'] = $result;
+        $pollData['result_view'] = $result_view;
         $pollData['published'] = $published;
 
         $table = Jaws_ORM::getInstance()->table('poll');
