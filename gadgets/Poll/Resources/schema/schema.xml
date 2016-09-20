@@ -157,9 +157,8 @@
 
             <field>
                 <name>session</name>
-                <type>text</type>
-                <length>128</length>
-                <notnull>true</notnull>
+                <type>integer</type>
+                <default>0</default>
             </field>
 
             <field>
