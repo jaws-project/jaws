@@ -86,8 +86,8 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                 $allowVote = $model->CheckAllowVoteForUser($poll['id'], $currentUser);
                 break;
             case Poll_Info::POLL_RESTRICTION_TYPE_SESSION:
-                $session = $GLOBALS['app']->Session->GetCookie('poll_' . $poll['id']);
-                $allowVote = $model->CheckAllowVoteForUser($poll['id'], $session);
+                $session = $GLOBALS['app']->Session->GetAttribute('sid');
+                $allowVote = $model->CheckAllowVoteForSession($poll['id'], $session);
                 break;
             case Poll_Info::POLL_RESTRICTION_TYPE_FREE:
                 $allowVote = true;
@@ -241,8 +241,8 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                     $allowVote = $model->CheckAllowVoteForUser($poll['id'], $currentUser);
                     break;
                 case Poll_Info::POLL_RESTRICTION_TYPE_SESSION:
-                    $session = $GLOBALS['app']->Session->GetCookie('poll_' . $poll['id']);
-                    $allowVote = $model->CheckAllowVoteForUser($poll['id'], $session);
+                    $session = $GLOBALS['app']->Session->GetAttribute('sid');
+                    $allowVote = $model->CheckAllowVoteForSession($poll['id'], $session);
                     break;
                 case Poll_Info::POLL_RESTRICTION_TYPE_FREE:
                     $allowVote = true;

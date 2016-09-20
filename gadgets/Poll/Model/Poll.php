@@ -31,7 +31,7 @@ class Poll_Model_Poll extends Jaws_Gadget_Model
             'votes' => implode(',', $answers),
             'ip' => $_SERVER['REMOTE_ADDR'],
             'user' => $GLOBALS['app']->Session->GetAttribute('user'),
-            'session' => '',
+            'session' => $GLOBALS['app']->Session->GetAttribute('sid'),
             'insert_time' => time(),
         );
         $pResults = $objORM->table('poll_results')
