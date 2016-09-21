@@ -32,11 +32,10 @@ $actions['Download'] = array(
  */
 $admin_actions['Directory'] = array(
     'normal' => true,
-    'layout' => true,
     'file' => 'Directory'
 );
 $admin_actions['Statistics'] = array(
-    'layout' => true,
+    'normal' => true,
     'file' => 'Statistics'
 );
 $admin_actions['Browse'] = array(

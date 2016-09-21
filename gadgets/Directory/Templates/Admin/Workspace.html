@@ -30,6 +30,16 @@
           <input id="file_search" name="file_search" onchange="onSearchChange(this)" onkeyup="onSearchChange(this)">
           <button type="button" id="btn_search_close" onclick="closeSearch()">x</button>
         </td>
+
+        <th>{{lbl_published}}:</th>
+        <td>
+          <select name="file_published">
+            <option value=""></option>
+            <option value="1">{{lbl_yes}}</option>
+            <option value="0">{{lbl_no}}</option>
+          </select>
+        </td>
+
       </tr>
       <tr>
         <th>{{lbl_type}}:</th>

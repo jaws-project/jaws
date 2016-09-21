@@ -18,32 +18,49 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      */
     function DirectoryLayoutParams()
     {
-        $types = array(
-            -1 => _t('DIRECTORY_FILE_TYPE_ALL'),
-            Directory_Info::FILE_TYPE_TEXT    => _t('DIRECTORY_FILE_TYPE_TEXT'),
-            Directory_Info::FILE_TYPE_IMAGE   => _t('DIRECTORY_FILE_TYPE_IMAGE'),
-            Directory_Info::FILE_TYPE_AUDIO   => _t('DIRECTORY_FILE_TYPE_AUDIO'),
-            Directory_Info::FILE_TYPE_VIDEO   => _t('DIRECTORY_FILE_TYPE_VIDEO'),
-            Directory_Info::FILE_TYPE_ARCHIVE => _t('DIRECTORY_FILE_TYPE_ARCHIVE'),
+        $result[] = array('title' => _t('DIRECTORY_FILE_TYPE'), 'value' =>
+            array(
+                -1 => _t('DIRECTORY_FILE_TYPE_ALL'),
+                Directory_Info::FILE_TYPE_TEXT    => _t('DIRECTORY_FILE_TYPE_TEXT'),
+                Directory_Info::FILE_TYPE_IMAGE   => _t('DIRECTORY_FILE_TYPE_IMAGE'),
+                Directory_Info::FILE_TYPE_AUDIO   => _t('DIRECTORY_FILE_TYPE_AUDIO'),
+                Directory_Info::FILE_TYPE_VIDEO   => _t('DIRECTORY_FILE_TYPE_VIDEO'),
+                Directory_Info::FILE_TYPE_ARCHIVE => _t('DIRECTORY_FILE_TYPE_ARCHIVE'),
+            ));
+
+        $result[] = array(
+            'title' => _t('GLOBAL_ORDERBY'),
+            'value' => array(
+                1 => _t('GLOBAL_CREATETIME') . ' &uarr;',
+                2 => _t('GLOBAL_CREATETIME') . ' &darr;',
+            )
         );
-        return array(array('title' => _t('DIRECTORY_FILE_TYPE'), 'value' => $types));
+
+        $result[] = array(
+            'title' => _t('GLOBAL_COUNT'),
+            'value' =>  $this->gadget->registry->fetch('files_limit')
+        );
+
+        return $result;
     }
 
     /**
      * Builds directory and file navigation UI
      *
-     * @param   int     $type   File type (for normal action = null)
+     * @param   int     $type       File type (for normal action = null)
+     * @param   int     $orderBy    Order by
+     * @param   int     $limit      Forms limit
      * @access  public
      * @return  string  XHTML UI
      */
-    function Directory($type = null)
+    function Directory($type = null, $orderBy = 0, $limit = 0)
     {
         $tpl = $this->gadget->template->load('Directory.html');
         $tpl->SetBlock('directory');
 
         $id = ($type == null)? (int)jaws()->request->fetch('id') : 0;
         if ($id == 0) {
-            $tpl->SetVariable('content', $this->ListFiles(0, $type));
+            $tpl->SetVariable('content', $this->ListFiles(0, $type, $orderBy, $limit));
         } else {
             $model = $this->gadget->model->loadAdmin('Files');
             $file = $model->GetFile($id);
@@ -69,9 +86,13 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      * Fetches and displays list of dirs/files
      *
      * @access  public
-     * @return  string  HTML content
+     * @param   int     $parent
+     * @param   null    $type
+     * @param   int     $orderBy    Order by
+     * @param   int     $limit      Forms limit
+     * @return string HTML content
      */
-    function ListFiles($parent = 0, $type = null)
+    function ListFiles($parent = 0, $type = null, $orderBy = 0, $limit = 0)
     {
         $isLayoutAction = false;
         if ($type == null) { // normal action
@@ -87,20 +108,21 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $params = array();
             $params['file_type'] = ($type == -1)? null : $type;
         }
-        $params['limit'] = (int)$this->gadget->registry->fetch('items_per_page');
+        $params['limit'] = ($limit > 0) ? $limit : (int)$this->gadget->registry->fetch('items_per_page');
         $params['offset'] = ($page == 0)? 0 : $params['limit'] * ($page - 1);
         $params['parent'] = $parent;
         $params['hidden'] = false;
+        $params['published'] = true;
 
         $model = $this->gadget->model->loadAdmin('Files');
-        $files = $model->GetFiles($params);
-        if (Jaws_Error::IsError($files)){
+        $files = $model->GetFiles($params, false, $orderBy);
+        if (Jaws_Error::IsError($files)) {
             return '';
         }
-        if (empty($files)){
+        if (empty($files)) {
             return _t('DIRECTORY_INFO_NO_FILES');
         }
-        $count = $model->GetFiles($params, true);
+        $count = $model->GetFiles($params, true, $orderBy);
 
         $tpl = $this->gadget->template->load('Directory.html');
         $tpl->SetBlock('files');

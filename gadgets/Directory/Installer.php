@@ -18,6 +18,8 @@ class Directory_Installer extends Jaws_Gadget_Installer
      */
     var $_RegKeys = array(
         array('items_per_page', '12'),
+        array('files_limit', '20'),
+        array('order_type', '1'),
     );
 
     /**
