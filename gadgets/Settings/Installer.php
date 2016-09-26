@@ -61,7 +61,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('cookie_version', '0.4'),
         array('cookie_session', 'false'),
         array('cookie_secure', 'false'),
-        array('cookie_httponly', 'false'),
+        array('cookie_httponly', 'true'),
         array('ftp_enabled', 'false'),
         array('ftp_host', '127.0.0.1'),
         array('ftp_port', '21'),
