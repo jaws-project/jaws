@@ -23,7 +23,8 @@ class Jaws_Utils
      * @access  private
      */
     private static $deny_formats = array(
-        'php','php3','php4','php5','php6','phtml','pl','py','cgi','pcgi','pcgi5','pcgi4','htaccess'
+        'php', 'phpt', 'phtml', 'php3', 'php4', 'php5', 'php6',
+        'pl', 'py', 'cgi', 'pcgi', 'pcgi5', 'pcgi4', 'htaccess', 'htpasswd'
     );
 
     /**
