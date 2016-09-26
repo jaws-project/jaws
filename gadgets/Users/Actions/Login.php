@@ -387,7 +387,11 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             Jaws_Header::Location($login_url);
         }
 
-        Jaws_Header::Location(hex2bin($post['referrer']));
+        $referrer = parse_url(hex2bin($post['referrer']));
+        $referrer = (array_key_exists('path', $referrer)? $referrer['path'] : '') . 
+                    (array_key_exists('query', $referrer)? "?{$referrer['query']}" : '') . 
+                    (array_key_exists('fragment', $referrer)? "#{$referrer['fragment']}" : '');
+        Jaws_Header::Location($referrer);
     }
 
     /**
