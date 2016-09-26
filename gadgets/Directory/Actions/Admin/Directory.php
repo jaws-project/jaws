@@ -92,6 +92,9 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $tpl->SetVariable('lbl_term', _t('DIRECTORY_FILE_TERM'));
         $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
         $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
+        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
+        $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
+        $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
         $tpl->SetVariable('lbl_start_date', _t('DIRECTORY_FILE_START_DATE'));
         $tpl->SetVariable('lbl_end_date', _t('DIRECTORY_FILE_END_DATE'));
@@ -434,7 +437,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      */
     function Search()
     {
-        $data = jaws()->request->fetch(array('id', 'file_filter', 'file_search',
+        $data = jaws()->request->fetch(array('id', 'file_filter', 'file_search', 'file_published',
             'file_type', 'file_size', 'start_date', 'end_date'));
 
         $jdate = Jaws_Date::getInstance();
@@ -462,6 +465,10 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         }
         $params['file_size'] = ($data['file_size'] == '0')? null : explode(',', $data['file_size']);
         $params['date'] = $date;
+        if ($data['file_published'] != '') {
+            $params['published'] = ($data['file_published'] == '1') ? true : false;
+        }
+
         $files = $model->GetFiles($params);
         if (Jaws_Error::IsError($files)){
             return $GLOBALS['app']->Session->GetResponse($files->getMessage(), RESPONSE_ERROR);

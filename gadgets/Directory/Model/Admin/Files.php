@@ -14,10 +14,11 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
      * Fetches list of files
      *
      * @access  public
-     * @param   int     $params  Query params
+     * @param   int     $params     Query params
+     * @param   int     $orderBy    Order by
      * @return  array   Array of files or Jaws_Error on error
      */
-    function GetFiles($params, $count = false)
+    function GetFiles($params, $count = false, $orderBy = 1)
     {
         $table = Jaws_ORM::getInstance()->table('directory');
         if ($count) {
@@ -54,6 +55,10 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
             }
         }
 
+        if (isset($params['published'])) {
+            $table->where('published', $params['published'])->and();
+        }
+
         if (isset($params['date'])){
             if (!empty($params['date'][0])) {
                 $table->where('create_time', $params['date'][0], '>=')->and();
@@ -72,7 +77,16 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
 
         if (!$count && isset($params['limit']) && $params['limit'] > 0) {
             $table->limit($params['limit'], $params['offset']);
-            $table->orderBy('is_dir desc', 'title asc');
+//            $table->orderBy('is_dir desc', 'title asc');
+        }
+
+        if (!$count && (int)$orderBy > 0) {
+            $orders = array(
+                1 => 'create_time asc',
+                2 => 'create_time desc',
+            );
+            $orderBy = isset($orders[$orderBy]) ? $orderBy : (int)$this->gadget->registry->fetch('order_type');
+            $table->orderBy($orders[$orderBy]);
         }
 
         return $count? $table->fetchOne() : $table->fetchAll();

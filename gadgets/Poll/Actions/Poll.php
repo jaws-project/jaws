@@ -74,15 +74,35 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
         }
 
         $tpl->SetVariable('title', $poll['title']);
-        $votable = ($poll['restriction'] == 1) || (!$GLOBALS['app']->Session->GetCookie('poll_'.$poll['id']));
-        if ($votable || $poll['result']) {
+
+        $allowVote = false;
+        switch ($poll['restriction']) {
+            case Poll_Info::POLL_RESTRICTION_TYPE_IP:
+                $ip = $_SERVER['REMOTE_ADDR'];
+                $allowVote = $model->CheckAllowVoteForIP($poll['id'], $ip);
+                break;
+            case Poll_Info::POLL_RESTRICTION_TYPE_USER:
+                $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
+                $allowVote = $model->CheckAllowVoteForUser($poll['id'], $currentUser);
+                break;
+            case Poll_Info::POLL_RESTRICTION_TYPE_SESSION:
+                $session = $GLOBALS['app']->Session->GetAttribute('sid');
+                $allowVote = $model->CheckAllowVoteForSession($poll['id'], $session);
+                break;
+            case Poll_Info::POLL_RESTRICTION_TYPE_FREE:
+                $allowVote = true;
+                break;
+        }
+
+//        $votable = ($poll['restriction'] == 1) || (!$GLOBALS['app']->Session->GetCookie('poll_'.$poll['id']));
+        if ($allowVote || $poll['result_view']) {
             //print the answers or results
             $answers = $model->GetPollAnswers($poll['id']);
             if (!Jaws_Error::IsError($answers)) {
-                $block = $votable? 'voting' : 'result';
+                $block = $allowVote? 'voting' : 'result';
                 $tpl->SetBlock("poll/{$block}");
                 $tpl->SetVariable('pid', $poll['id']);
-                $total_votes = array_sum(array_map(create_function('$row','return $row["votes"];'), $answers));
+                $total_votes = $poll['total_votes'];
                 foreach ($answers as $answer) {
                     $tpl->SetBlock("poll/{$block}/answer");
                     $tpl->SetVariable('aid', $answer['id']);
@@ -107,13 +127,13 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                 $tpl->SetVariable('total_votes', $total_votes);
                 $tpl->SetVariable('lbl_total_votes', _t('POLL_REPORTS_TOTAL_VOTES'));
 
-                if ($votable) {
+                if ($allowVote) {
                     $btnVote =& Piwi::CreateWidget('Button', 'btn_vote', _t('POLL_VOTE'));
                     $btnVote->SetSubmit();
                     $tpl->SetVariable('btn_vote', $btnVote->Get());
                 }
 
-                if ($poll['result']) {
+                if ($poll['result_view']) {
                     $link = $this->gadget->urlMap('ViewResult', array('id' => $poll['id']));
                     $viewRes =& Piwi::CreateWidget('Link', _t('POLL_REPORTS_RESULTS'), $link);
                     $tpl->SetVariable('result_link', $viewRes->Get());
@@ -123,11 +143,11 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
             }
         }
 
-        if (!$votable) {
+        if (!$allowVote) {
             $tpl->SetVariable('already_message', _t('POLL_ALREADY_VOTED'));
         }
 
-        if (!$poll['result']) {
+        if (!$poll['result_view']) {
             $tpl->SetVariable('disabled_message', _t('POLL_RESULT_DISABLED'));
         }
 
@@ -210,19 +230,41 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Poll');
         $poll = $model->GetPoll((int)$post['pid']);
         if (!Jaws_Error::IsError($poll) && !empty($poll)) {
-            if ((($poll['restriction'] == 1) || (!$GLOBALS['app']->Session->GetCookie('poll_' . $poll['id']))) &&
-                is_array($post['answers']) && count($post['answers']) > 0
-            ) {
-                $GLOBALS['app']->Session->SetCookie('poll_'.$poll['id'], 'voted',
-                    (int) $this->gadget->registry->fetch('cookie_period')*24*60);
-                foreach ($post['answers'] as $aid) {
-                    $model->AddAnswerVote($poll['id'], (int)$aid);
-                }
+            $allowVote = false;
+            switch ($poll['restriction']) {
+                case Poll_Info::POLL_RESTRICTION_TYPE_IP:
+                    $ip = $_SERVER['REMOTE_ADDR'];
+                    $allowVote = $model->CheckAllowVoteForIP($poll['id'], $ip);
+                    break;
+                case Poll_Info::POLL_RESTRICTION_TYPE_USER:
+                    $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
+                    $allowVote = $model->CheckAllowVoteForUser($poll['id'], $currentUser);
+                    break;
+                case Poll_Info::POLL_RESTRICTION_TYPE_SESSION:
+                    $session = $GLOBALS['app']->Session->GetAttribute('sid');
+                    $allowVote = $model->CheckAllowVoteForSession($poll['id'], $session);
+                    break;
+                case Poll_Info::POLL_RESTRICTION_TYPE_FREE:
+                    $allowVote = true;
+                    break;
             }
-        }
 
-        $GLOBALS['app']->Session->PushSimpleResponse(_t('POLL_THANKS'), 'Poll');
-        Jaws_Header::Referrer();
+
+            if ($allowVote && is_array($post['answers']) && count($post['answers']) > 0) {
+                $GLOBALS['app']->Session->SetCookie('poll_' . $poll['id'], 'voted',
+                    (int)$this->gadget->registry->fetch('cookie_period') * 24 * 60);
+                $res = $model->AddAnswerVotes($poll['id'], $post['answers']);
+            }
+
+            if (Jaws_Error::IsError($res)) {
+                $GLOBALS['app']->Session->PushSimpleResponse($res->getMessage(), 'Poll');
+            } else {
+                $GLOBALS['app']->Session->PushSimpleResponse(_t('POLL_THANKS'), 'Poll');
+            }
+            Jaws_Header::Referrer();
+
+
+        }
     }
 
     /**
@@ -237,7 +279,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
 
         $model = $this->gadget->model->load('Poll');
         $poll = $model->GetPoll($pid);
-        if (Jaws_Error::IsError($poll) || empty($poll) || ($poll['result'] == 0)) {
+        if (Jaws_Error::IsError($poll) || empty($poll) || ($poll['result_view'] == false)) {
             return false;
         }
 

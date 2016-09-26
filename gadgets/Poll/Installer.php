@@ -63,7 +63,8 @@ class Poll_Installer extends Jaws_Gadget_Installer
     {
         $tables = array('poll',
                         'poll_groups',
-                        'poll_answers');
+                        'poll_answers',
+                        'poll_results');
         foreach ($tables as $table) {
             $result = Jaws_DB::getInstance()->dropTable($table);
             if (Jaws_Error::IsError($result)) {
