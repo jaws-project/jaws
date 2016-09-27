@@ -52,6 +52,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
         $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
         $tpl->SetVariable('lbl_hidden', _t('DIRECTORY_FILE_HIDDEN'));
+        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
         $tpl->SetVariable('lbl_url', _t('DIRECTORY_FILE_URL'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         if ($mode === 'edit') {
@@ -97,7 +98,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
     {
         try {
             $data = jaws()->request->fetch(
-                array('title', 'description', 'parent', 'hidden',
+                array('title', 'description', 'parent', 'hidden', 'published',
                     'user_filename', 'host_filename', 'mime_type', 'file_size')
             );
             if (empty($data['title'])) {
@@ -116,6 +117,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
 
             $data['is_dir'] = false;
             $data['hidden'] = $data['hidden']? true : false;
+            $data['published'] = $data['published']? true : false;
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
 
@@ -192,7 +194,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         try {
             // Validate data
             $data = jaws()->request->fetch(
-                array('id', 'title', 'description', 'parent', 'hidden',
+                array('id', 'title', 'description', 'parent', 'hidden', 'published',
                     'user_filename', 'host_filename', 'mime_type', 'file_size')
             );
             if (empty($data['title'])) {
@@ -249,6 +251,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             unset($data['user']);
             $data['update_time'] = time();
             $data['hidden'] = $data['hidden']? true : false;
+            $data['published'] = $data['published']? true : false;
             $data['file_type'] = $this->getFileType($data['user_filename']);
             $model = $this->gadget->model->loadAdmin('Files');
             $res = $model->Update($id, $data);

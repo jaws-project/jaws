@@ -461,6 +461,7 @@ function editDirectory(id)
     form.find('[name=title]').val(data.title);
     form.find('[name=parent]').val(data.parent);
     form.find('[name=hidden]').prop('checked', data.hidden);
+    form.find('[name=published]').prop('checked', data.published);
     changeEditorValue('description', data.description);
 }
 
@@ -508,6 +509,7 @@ function editFile(id)
     form.title.value = file.title;
     form.tags.value = file.tags;
     form.hidden.checked = file.hidden;
+    form.published.checked = file.published;
     changeEditorValue('description', file.description);
 }
 
