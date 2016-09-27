@@ -83,6 +83,10 @@ class Directory_Actions_Admin_Directories extends Jaws_Gadget_Action
             if (Jaws_Error::IsError($result)) {
                 throw new Exception(_t('DIRECTORY_ERROR_DIR_CREATE'));
             }
+
+            // shout Activities event
+            $this->gadget->event->shout('Activities', array('action'=>'Folder'));
+
         } catch (Exception $e) {
             return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
         }

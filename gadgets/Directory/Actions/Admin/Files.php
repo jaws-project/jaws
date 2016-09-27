@@ -171,6 +171,9 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
                 }
             }
 
+            // shout Activities event
+            $this->gadget->event->shout('Activities', array('action'=>'File'));
+
         } catch (Exception $e) {
             return $GLOBALS['app']->Session->GetResponse($e->getMessage(), RESPONSE_ERROR);
         }

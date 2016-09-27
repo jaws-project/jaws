@@ -114,7 +114,12 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $params['hidden'] = false;
         $params['published'] = true;
 
-        $model = $this->gadget->model->loadAdmin('Files');
+        $user = jaws()->request->fetch('user', 'get');
+        if (!empty($user)) {
+            $params['user'] = $user;
+        }
+
+        $model = $this->gadget->model->load('Files');
         $files = $model->GetFiles($params, false, $orderBy);
         if (Jaws_Error::IsError($files)) {
             return '';
@@ -252,6 +257,12 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $ratingHTML = Jaws_Gadget::getInstance('Rating')->action->load('RatingTypes');
             $ratingHTML->loadReferenceLike('Directory', 'File', $file['id'], 0, $tpl, 'file');
         }
+
+        // display subscription if installed
+//        if (Jaws_Gadget::IsGadgetInstalled('Subscription')) {
+//            $sHTML = Jaws_Gadget::getInstance('Subscription')->action->load('Subscription');
+//            $tpl->SetVariable('subscription', $sHTML->ShowSubscription('Directory', 'Folder', $e['id']));
+//        }
 
         $tpl->ParseBlock('file');
         return $tpl->Get();
