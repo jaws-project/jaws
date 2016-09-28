@@ -137,6 +137,9 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
         $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
+        $tpl->SetVariable('lbl_start_date', _t('DIRECTORY_FILE_START_DATE'));
+        $tpl->SetVariable('lbl_end_date', _t('DIRECTORY_FILE_END_DATE'));
+        $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
 
         $tpl->SetVariable('site_url', $GLOBALS['app']->getSiteURL('/'));
         $theme = $GLOBALS['app']->GetTheme();

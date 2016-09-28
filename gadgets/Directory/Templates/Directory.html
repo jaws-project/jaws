@@ -15,6 +15,43 @@
 <!-- END directory -->
 
 <!-- BEGIN files -->
+<form name="search-file" method="post" action="{{base_script}}">
+  <input type="hidden" name="gadget" value="Directory" />
+  <input type="hidden" name="action" value="Directory" />
+<table id="logs_filter">
+  <tr>
+    <td class="filter_label"><label for="file_type">{{lbl_type}}:</label></td><td>
+    <select name="file_type">
+      <option value=""></option>
+      <option value="{{type_folder}}">{{lbl_folder}}</option>
+      <option value="{{type_text}}">{{lbl_text}}</option>
+      <option value="{{type_image}}">{{lbl_image}}</option>
+      <option value="{{type_audio}}">{{lbl_audio}}</option>
+      <option value="{{type_video}}">{{lbl_video}}</option>
+      <option value="{{type_archive}}">{{lbl_archive}}</option>
+      <option value="{{type_other}}">{{lbl_other}}</option>
+    </select>
+  </td>
+    <td class="filter_label"><label for="file_size">{{lbl_size}}:</label></td><td>
+    <select name="file_size">
+      <option value="0"></option>
+      <option value="0,10">0 - 10 KB</option>
+      <option value="10,100">10 - 100 KB</option>
+      <option value="100,1024">100 KB - 1 MB</option>
+      <option value="1024,16384">1 MB - 16 MB</option>
+      <option value="16384,131072">16 MB - 128 MB</option>
+      <option value="131072,">&gt; 128 MB</option>
+    </select>
+  </td>
+  </tr>
+  <tr>
+    <td class="filter_label"><label for="start_date">{{lbl_start_date}}:</label></td><td>{{start_date}}</td>
+    <td class="filter_label"><label for="end_date">{{lbl_end_date}}:</label></td><td>{{end_date}}</td>
+  </tr>
+</table>
+<button name="search" class="btn">{{lbl_search}}</button>
+</form>
+
 <table class="file-list">
   <thead><tr>
     <th colspan="2">{{lbl_title}}</th>
