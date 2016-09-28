@@ -141,6 +141,44 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_end_date', _t('DIRECTORY_FILE_END_DATE'));
         $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
 
+        $tpl->SetVariable('lbl_folder', _t('DIRECTORY_FILE_TYPE_FOLDER'));
+        $tpl->SetVariable('lbl_text', _t('DIRECTORY_FILE_TYPE_TEXT'));
+        $tpl->SetVariable('lbl_image', _t('DIRECTORY_FILE_TYPE_IMAGE'));
+        $tpl->SetVariable('lbl_audio', _t('DIRECTORY_FILE_TYPE_AUDIO'));
+        $tpl->SetVariable('lbl_video', _t('DIRECTORY_FILE_TYPE_VIDEO'));
+        $tpl->SetVariable('lbl_archive', _t('DIRECTORY_FILE_TYPE_ARCHIVE'));
+        $tpl->SetVariable('lbl_other', _t('DIRECTORY_FILE_TYPE_OTHER'));
+
+        $tpl->SetVariable('type_folder', -1);
+        $tpl->SetVariable('type_text', Directory_Info::FILE_TYPE_TEXT);
+        $tpl->SetVariable('type_image', Directory_Info::FILE_TYPE_IMAGE);
+        $tpl->SetVariable('type_audio', Directory_Info::FILE_TYPE_AUDIO);
+        $tpl->SetVariable('type_video', Directory_Info::FILE_TYPE_VIDEO);
+        $tpl->SetVariable('type_archive', Directory_Info::FILE_TYPE_ARCHIVE);
+        $tpl->SetVariable('type_other', Directory_Info::FILE_TYPE_UNKNOWN);
+
+        // Start date
+        $cal_type = $this->gadget->registry->fetch('calendar', 'Settings');
+        $cal_lang = $this->gadget->registry->fetch('site_language', 'Settings');
+        $datePicker =& Piwi::CreateWidget('DatePicker', 'start_date');
+        $datePicker->showTimePicker(true);
+        $datePicker->setCalType($cal_type);
+        $datePicker->setLanguageCode($cal_lang);
+        $datePicker->setDateFormat('%Y-%m-%d');
+        $datePicker->setStyle('width:80px');
+        $tpl->SetVariable('start_date', $datePicker->Get());
+
+        // End date
+        $datePicker =& Piwi::CreateWidget('DatePicker', 'end_date');
+        $datePicker->showTimePicker(true);
+        $datePicker->setDateFormat('%Y-%m-%d');
+        $datePicker->SetIncludeCSS(false);
+        $datePicker->SetIncludeJS(false);
+        $datePicker->setCalType($cal_type);
+        $datePicker->setLanguageCode($cal_lang);
+        $datePicker->setStyle('width:80px');
+        $tpl->SetVariable('end_date', $datePicker->Get());
+
         $tpl->SetVariable('site_url', $GLOBALS['app']->getSiteURL('/'));
         $theme = $GLOBALS['app']->GetTheme();
         $iconUrl = is_dir($theme['url'] . 'mimetypes')? $theme['url'] . 'mimetypes/' : 'images/mimetypes/';
