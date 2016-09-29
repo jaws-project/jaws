@@ -26,6 +26,10 @@ $actions['Download'] = array(
     'standalone' => true,
     'file' => 'Directory'
 );
+$actions['UploadFile'] = array(
+    'normal' => true,
+    'file' => 'File'
+);
 
 /**
  * Admin actions

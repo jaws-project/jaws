@@ -47,10 +47,10 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
         }
 
         if (isset($params['file_size'])) {
-            if (!empty($params['size'][0])) {
+            if (!empty($params['file_size'][0])) {
                 $table->where('file_size', $params['file_size'][0] * 1024, '>=')->and();
             }
-            if (!empty($params['size'][1])) {
+            if (!empty($params['file_size'][1])) {
                 $table->where('file_size', $params['file_size'][1] * 1024, '<=')->and();
             }
         }

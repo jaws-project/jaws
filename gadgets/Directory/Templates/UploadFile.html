@@ -1,0 +1,52 @@
+<!-- BEGIN uploadUI -->
+<div class="gadget_header">
+    <h3><a href="{{url}}">{{title}}</a></h3>
+</div>
+<div class="gadget_container">
+    <div class="gadget_content content">
+        <div class="gadget_response">
+            <div id="formbuilder_response" class="{{type}}">{{text}}</div>
+        </div>
+
+        <!-- BEGIN formUI -->
+        <form name="contact" action="{{base_script}}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="gadget" value="Directory"/>
+            <input type="hidden" name="action" value="UploadFileStep2"/>
+
+            <div class="form-description">
+                {{description}}
+            </div>
+            <div class="forms-wrapper">
+                <!-- BEGIN field -->
+                <div class="field">
+                    <!-- BEGIN label -->
+                    <label for="{{field_id}}">{{label}} :</label>
+                    <!-- END label -->
+                    {{fieldEntry}}
+                    {{postfix}}
+                </div>
+                <!-- END field -->
+
+            </div>
+
+            <div class="gadget_categories">
+                {{lbl_category}} :
+                <ul>
+                    <!-- BEGIN category -->
+                    <li><a href="{{url}}">{{title}}</a></li>
+                    <!-- END category -->
+                </ul>
+            </div>
+
+            <!-- INCLUDE ReferenceTags.html gadgets/Tags/Templates -->
+
+            <div class="gadget_actions actions">
+                <button type="submit">{{lbl_save_form}}</button>
+            </div>
+        </form>
+        <!-- END formUI -->
+
+    </div>
+
+</div>
+<!-- END uploadUI -->

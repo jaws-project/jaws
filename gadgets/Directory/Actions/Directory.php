@@ -94,6 +94,10 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
      */
     function ListFiles($parent = 0, $type = null, $orderBy = 0, $limit = 0)
     {
+        $filters = jaws()->request->fetch(
+            array('filter_file_type', 'filter_file_size', 'filter_start_date', 'filter_end_date', 'filter_order'),
+            'post');
+
         $isLayoutAction = false;
         if ($type == null) { // normal action
             $params = jaws()->request->fetch(array('type', 'page'), 'get');
@@ -119,27 +123,39 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $params['user'] = $user;
         }
 
-        $model = $this->gadget->model->load('Files');
-        $files = $model->GetFiles($params, false, $orderBy);
-        if (Jaws_Error::IsError($files)) {
-            return '';
+        // check filters
+        if ($filters['filter_file_type'] != '' && (int)$filters['filter_file_type'] >= 0) {
+            $params['file_type'] = (int)$filters['filter_file_type'];
         }
-        if (empty($files)) {
-            return _t('DIRECTORY_INFO_NO_FILES');
+        if (!empty($filters['filter_file_size'])) {
+            $params['file_size'] = ($filters['filter_file_size'] == '0')? null : explode(',', $filters['filter_file_size']);
         }
-        $count = $model->GetFiles($params, true, $orderBy);
+
+        $jdate = Jaws_Date::getInstance();
+        $start_date = $end_date = '';
+        if (!empty($filters['filter_start_date'])) {
+            $start_date = $jdate->ToBaseDate(preg_split('/[- :]/', $filters['filter_start_date']));
+            $start_date = $GLOBALS['app']->UserTime2UTC($start_date['timestamp']);
+        }
+        if (!empty($data['filter_end_date'])) {
+            $end_date = $jdate->ToBaseDate(preg_split('/[- :]/', $filters['filter_end_date'] . ' 23:59:59'));
+            $end_date = $GLOBALS['app']->UserTime2UTC($end_date['timestamp']);
+        }
+        $params['date'] = array($start_date, $end_date);
+        if (!empty($filters['filter_order'])) {
+            $orderBy = (int)$filters['filter_order'];
+        }
 
         $tpl = $this->gadget->template->load('Directory.html');
-        $tpl->SetBlock('files');
+        $tpl->SetBlock('filters');
 
-        $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
-        $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
-        $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
         $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
         $tpl->SetVariable('lbl_start_date', _t('DIRECTORY_FILE_START_DATE'));
         $tpl->SetVariable('lbl_end_date', _t('DIRECTORY_FILE_END_DATE'));
         $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
+        $tpl->SetVariable('lbl_order', _t('GLOBAL_ORDERBY'));
+        $tpl->SetVariable('lbl_create_time', _t('GLOBAL_CREATETIME'));
 
         $tpl->SetVariable('lbl_folder', _t('DIRECTORY_FILE_TYPE_FOLDER'));
         $tpl->SetVariable('lbl_text', _t('DIRECTORY_FILE_TYPE_TEXT'));
@@ -149,18 +165,55 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_archive', _t('DIRECTORY_FILE_TYPE_ARCHIVE'));
         $tpl->SetVariable('lbl_other', _t('DIRECTORY_FILE_TYPE_OTHER'));
 
-        $tpl->SetVariable('type_folder', -1);
-        $tpl->SetVariable('type_text', Directory_Info::FILE_TYPE_TEXT);
-        $tpl->SetVariable('type_image', Directory_Info::FILE_TYPE_IMAGE);
-        $tpl->SetVariable('type_audio', Directory_Info::FILE_TYPE_AUDIO);
-        $tpl->SetVariable('type_video', Directory_Info::FILE_TYPE_VIDEO);
-        $tpl->SetVariable('type_archive', Directory_Info::FILE_TYPE_ARCHIVE);
-        $tpl->SetVariable('type_other', Directory_Info::FILE_TYPE_UNKNOWN);
+        // file type
+        $fileTypes = array();
+        $fileTypes[] = array('id' => -1, 'title' => _t('GLOBAL_ALL'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_TEXT, 'title' => _t('DIRECTORY_FILE_TYPE_TEXT'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_IMAGE, 'title' => _t('DIRECTORY_FILE_TYPE_IMAGE'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_AUDIO, 'title' => _t('DIRECTORY_FILE_TYPE_AUDIO'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_VIDEO, 'title' => _t('DIRECTORY_FILE_TYPE_VIDEO'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_ARCHIVE, 'title' => _t('DIRECTORY_FILE_TYPE_ARCHIVE'));
+        $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_UNKNOWN, 'title' => _t('DIRECTORY_FILE_TYPE_OTHER'));
+        foreach($fileTypes as $fileType) {
+            $tpl->SetBlock('filters/file_type');
+            $tpl->SetVariable('value', $fileType['id']);
+            $tpl->SetVariable('title', $fileType['title']);
+
+            $tpl->SetVariable('selected', '');
+            if ($filters['filter_file_type'] === null && $fileType['id'] == -1) {
+                $tpl->SetVariable('selected', 'selected');
+
+            } else if ($filters['filter_file_type'] !== null && $filters['filter_file_type'] == $fileType['id']) {
+                $tpl->SetVariable('selected', 'selected');
+            }
+            $tpl->ParseBlock('filters/file_type');
+        }
+
+        // file size
+        $fileSizes = array();
+        $fileSizes[] = array('id' => '0', 'title' => _t('GLOBAL_ALL'));
+        $fileSizes[] = array('id' => '0,10', 'title' => '0 - 10 KB');
+        $fileSizes[] = array('id' => '10,100', 'title' => '10 - 100 KB');
+        $fileSizes[] = array('id' => '100,1024', 'title' => '100 KB - 1 MB');
+        $fileSizes[] = array('id' => '1024,16384', 'title' => '1 MB - 16 MB');
+        $fileSizes[] = array('id' => '16384,131072', 'title' => '16 MB - 128 MB');
+        $fileSizes[] = array('id' => '131072,', 'title' => '>> 128 MB');
+        foreach($fileSizes as $fileSize) {
+            $tpl->SetBlock('filters/file_size');
+            $tpl->SetVariable('value', $fileSize['id']);
+            $tpl->SetVariable('title', $fileSize['title']);
+
+            $tpl->SetVariable('selected', '');
+            if ($filters['filter_file_size'] == $fileSize['id']) {
+                $tpl->SetVariable('selected', 'selected');
+            }
+            $tpl->ParseBlock('filters/file_size');
+        }
 
         // Start date
         $cal_type = $this->gadget->registry->fetch('calendar', 'Settings');
         $cal_lang = $this->gadget->registry->fetch('site_language', 'Settings');
-        $datePicker =& Piwi::CreateWidget('DatePicker', 'start_date');
+        $datePicker =& Piwi::CreateWidget('DatePicker', 'filter_start_date', $filters['filter_start_date']);
         $datePicker->showTimePicker(true);
         $datePicker->setCalType($cal_type);
         $datePicker->setLanguageCode($cal_lang);
@@ -169,7 +222,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $tpl->SetVariable('start_date', $datePicker->Get());
 
         // End date
-        $datePicker =& Piwi::CreateWidget('DatePicker', 'end_date');
+        $datePicker =& Piwi::CreateWidget('DatePicker', 'filter_end_date', $filters['filter_end_date']);
         $datePicker->showTimePicker(true);
         $datePicker->setDateFormat('%Y-%m-%d');
         $datePicker->SetIncludeCSS(false);
@@ -178,6 +231,30 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $datePicker->setLanguageCode($cal_lang);
         $datePicker->setStyle('width:80px');
         $tpl->SetVariable('end_date', $datePicker->Get());
+
+        $tpl->SetVariable('order_selected_' . $orderBy, 'selected');
+        $tpl->ParseBlock('filters');
+
+
+        $model = $this->gadget->model->load('Files');
+        $files = $model->GetFiles($params, false, $orderBy);
+        if (Jaws_Error::IsError($files)) {
+            return '';
+        }
+        if (empty($files)) {
+            $tpl->SetBlock('message');
+            $tpl->SetVariable('msg', _t('DIRECTORY_INFO_NO_FILES'));
+            $tpl->ParseBlock('message');
+            return $tpl->Get();
+        }
+        $count = $model->GetFiles($params, true, $orderBy);
+
+        $tpl->SetBlock('files');
+        $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
+        $tpl->SetVariable('lbl_created', _t('DIRECTORY_FILE_CREATED'));
+        $tpl->SetVariable('lbl_modified', _t('DIRECTORY_FILE_MODIFIED'));
+        $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
+        $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
 
         $tpl->SetVariable('site_url', $GLOBALS['app']->getSiteURL('/'));
         $theme = $GLOBALS['app']->GetTheme();
