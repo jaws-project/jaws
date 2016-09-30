@@ -26,8 +26,16 @@ $actions['Download'] = array(
     'standalone' => true,
     'file' => 'Directory'
 );
-$actions['UploadFile'] = array(
+$actions['UploadFileUI'] = array(
     'normal' => true,
+    'file' => 'File'
+);
+$actions['UploadFile'] = array(
+    'standalone' => true,
+    'file' => 'File'
+);
+$actions['CreateFile'] = array(
+    'standalone' => true,
     'file' => 'File'
 );
 

@@ -98,4 +98,36 @@ class Directory_Model_Files extends Jaws_Gadget_Model
 
         return $count? $table->fetchOne() : $table->fetchAll();
     }
+
+    /**
+     * Fetches data of a file or directory
+     *
+     * @access  public
+     * @param   int     $id  File ID
+     * @return  mixed   Array of file data or Jaws_Error on error
+     */
+    function GetFile($id)
+    {
+        $table = Jaws_ORM::getInstance()->table('directory');
+        $table->select('id', 'parent', 'user', 'title', 'description',
+            'host_filename', 'user_filename', 'mime_type', 'file_type', 'file_size',
+            'is_dir:boolean', 'hidden:boolean', 'create_time', 'update_time');
+        return $table->where('id', $id)->fetchRow();
+    }
+
+    /**
+     * Inserts a new file/directory
+     *
+     * @access  public
+     * @param   array   $data    File data
+     * @return  mixed   Query result
+     */
+    function InsertFile($data)
+    {
+        $data['create_time'] = $data['update_time'] = time();
+        $data['published'] = false;
+        $table = Jaws_ORM::getInstance()->table('directory');
+        return $table->insert($data)->exec();
+    }
+
 }

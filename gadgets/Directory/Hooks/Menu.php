@@ -18,7 +18,7 @@ class Directory_Hooks_Menu extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $urls[] = array('url' => $this->gadget->urlMap('UploadFile'), 'title' => _t('DIRECTORY_UPLOAD_FILE'));
+        $urls[] = array('url' => $this->gadget->urlMap('UploadFileUI'), 'title' => _t('DIRECTORY_UPLOAD_FILE'));
 
         $urls[] = array('url' => $this->gadget->urlMap('Directory'),
                         'title' => $this->gadget->title);
