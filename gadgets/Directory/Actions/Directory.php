@@ -62,7 +62,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         if ($id == 0) {
             $tpl->SetVariable('content', $this->ListFiles(0, $type, $orderBy, $limit));
         } else {
-            $model = $this->gadget->model->loadAdmin('Files');
+            $model = $this->gadget->model->load('Files');
             $file = $model->GetFile($id);
             if (Jaws_Error::IsError($file) || empty($file)) {
                 require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
@@ -76,6 +76,13 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('root', _t('DIRECTORY_HOME'));
             $tpl->SetVariable('root_url', $this->gadget->urlMap('Directory'));
             $tpl->SetVariable('path', $this->GetPath($id));
+        }
+
+        $tpl->SetVariable('upload', _t('DIRECTORY_UPLOAD_FILE'));
+        if ($id > 0) {
+            $tpl->SetVariable('upload_url', $this->gadget->urlMap('UploadFileUI', array('parent' => $id)));
+        } else {
+            $tpl->SetVariable('upload_url', $this->gadget->urlMap('UploadFileUI'));
         }
 
         $tpl->ParseBlock('directory');
@@ -279,6 +286,8 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('created', $objDate->Format($file['create_time'], 'n/j/Y g:i a'));
             $tpl->SetVariable('modified', $objDate->Format($file['update_time'], 'n/j/Y g:i a'));
             $tpl->SetVariable('icon', $iconUrl . $icons[$file['file_type']] . '.png');
+            $tpl->SetVariable('thumbnail', $model->GetThumbnailURL($file['host_filename']));
+
             $tpl->ParseBlock('files/file');
         }
 
@@ -352,6 +361,10 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             }
         }
 
+        // display thumbnail
+        $model = $this->gadget->model->load('Files');
+        $tpl->SetVariable('thumbnail', $model->GetThumbnailURL($file['host_filename']));
+
         // display comments/comment-form
         if (Jaws_Gadget::IsGadgetInstalled('Comments')) {
             $allow_comments = $this->gadget->registry->fetch('allow_comments', 'Comments');
@@ -396,7 +409,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     {
         $path = '';
         $pathArr = array();
-        $model = $this->gadget->model->loadAdmin('Files');
+        $model = $this->gadget->model->load('Files');
         $model->GetPath($id, $pathArr);
         foreach(array_reverse($pathArr) as $i => $p) {
             $url = $this->gadget->urlMap('Directory', array('id' => $p['id']));
@@ -443,7 +456,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(500);
         }
         $id = (int)$id;
-        $model = $this->gadget->model->loadAdmin('Files');
+        $model = $this->gadget->model->load('Files');
 
         // Validate file
         $file = $model->GetFile($id);

@@ -54,6 +54,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_hidden', _t('DIRECTORY_FILE_HIDDEN'));
         $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
         $tpl->SetVariable('lbl_url', _t('DIRECTORY_FILE_URL'));
+        $tpl->SetVariable('lbl_thumbnail', _t('DIRECTORY_THUMBNAIL'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         if ($mode === 'edit') {
             $editor =& $GLOBALS['app']->LoadEditor('Directory', 'description');
@@ -99,7 +100,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         try {
             $data = jaws()->request->fetch(
                 array('title', 'description', 'parent', 'hidden', 'published',
-                    'user_filename', 'host_filename', 'mime_type', 'file_size')
+                    'user_filename', 'host_filename', 'mime_type', 'file_size', 'thumbnailPath')
             );
             if (empty($data['title'])) {
                 throw new Exception(_t('DIRECTORY_ERROR_INCOMPLETE_DATA'));
@@ -151,6 +152,37 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
                     } else {
                         throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
                     }
+
+                    // move thumbnail file from temp to data folder
+                    $thumbnailTempFilename = Jaws_Utils::upload_tmp_dir(). '/' . $data['thumbnailPath'];
+                    if (!empty($data['thumbnailPath']) && file_exists($thumbnailTempFilename)) {
+
+                        $pathInfo = pathinfo($data['host_filename']);
+                        $originalFilename = $pathInfo['filename'];
+                        $thumbnailFinalFilename = $originalFilename . '.thumbnail.png';
+
+                        // Save resize thumbnail file
+                        $thumbSize = $this->gadget->registry->fetch('thumbnail_size');
+                        $thumbSize = empty($thumbSize) ? '128x128' : $thumbSize;
+                        $thumbSize = explode('x', $thumbSize);
+
+                        $objImage = Jaws_Image::factory();
+                        if (Jaws_Error::IsError($objImage)) {
+                            return Jaws_Error::raiseError($objImage->getMessage());
+                        }
+                        $objImage->load($thumbnailTempFilename);
+                        $objImage->resize($thumbSize[0], $thumbSize[1]);
+                        $res = $objImage->save($path . '/' . $thumbnailFinalFilename, 'png');
+                        $objImage->free();
+                        if (Jaws_Error::IsError($res)) {
+                            return $res;
+                        }
+                        Jaws_Utils::delete($thumbnailTempFilename);
+                        unset($data['thumbnailPath']);
+                    } else {
+                        throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
+                    }
+
                 }
             }
 
@@ -338,6 +370,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
      */
     function UploadFile()
     {
+        $type = jaws()->request->fetch('type', 'post');
         $res = Jaws_Utils::UploadFiles($_FILES, Jaws_Utils::upload_tmp_dir(), '', null);
         if (Jaws_Error::IsError($res)) {
             $response = array('type' => 'error',
@@ -347,7 +380,8 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
                               'user_filename' => $res['file'][0]['user_filename'],
                               'host_filename' => $res['file'][0]['host_filename'],
                               'mime_type' => $res['file'][0]['host_filetype'],
-                              'file_size' => $res['file'][0]['host_filesize']);
+                              'file_size' => $res['file'][0]['host_filesize'],
+                              'upload_type' => $type);
         }
 
         $response = Jaws_UTF8::json_encode($response);

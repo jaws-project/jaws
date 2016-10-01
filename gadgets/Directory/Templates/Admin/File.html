@@ -26,12 +26,25 @@
         method="post" enctype="multipart/form-data" onsubmit="return true">
     <input type="hidden" name="gadget" value="Directory" />
     <input type="hidden" name="action" value="UploadFile" />
+    <input type="hidden" name="type" value="file" />
     <table>
       <tr><th>{{lbl_file}}:</th><td>
         <input type="file" id="file" name="file" onchange="uploadFile()" class="file" />
       </td></tr>
     </table>
   </form>
+  <form id="frm_thumbnail_upload" action="{{base_script}}" target="ifrm_upload"
+        method="post" enctype="multipart/form-data" onsubmit="return true;">
+    <input type="hidden" name="gadget" value="Directory" />
+    <input type="hidden" name="action" value="UploadFile" />
+    <input type="hidden" name="type" value="thumbnail" />
+    <table>
+      <tr><th>{{lbl_thumbnail}}:</th><td>
+        <input type="file" name="file" onchange="uploadThumbnailFile()" class="file" />
+      </td></tr>
+    </table>
+  </form>
+
   <form id="frm_file">
     <input type="hidden" name="id" />
     <input type="hidden" name="parent" id="parent" value="0" />
@@ -42,6 +55,7 @@
     <input type="hidden" name="file_type" id="file_type" />
     <table>
       <tr id="tr_file"><th>{{lbl_file}}:</th><td id="file_link"></td></tr>
+      <tr id="tr_thumbnail"><th>{{lbl_thumbnail}}:</th><td><img id="thumbnail"  src="{{thumbnail}}" alt=""></td></tr>
       <tr><th>{{lbl_title}}:</th><td><input name="title" /></td></tr>
       <tr><th>{{lbl_desc}}:</th><td>{{description}}</td></tr>
       <tr><th>{{lbl_tags}}:</th><td><input name="tags" placeholder="tag1, tag2, ..." /></td></tr>

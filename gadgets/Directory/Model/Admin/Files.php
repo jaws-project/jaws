@@ -24,7 +24,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
         if ($count) {
             $table->select('count(id):integer');
         } else {
-            $table->select('id', 'parent', 'user', 'is_dir:boolean', 'hidden:boolean',
+            $table->select('id', 'parent', 'user', 'is_dir:boolean', 'hidden:boolean','published:boolean',
                 'title', 'description', 'user_filename', 'host_filename', 'mime_type',
                 'file_type', 'file_size', 'hits', 'create_time', 'update_time');
         }
@@ -128,6 +128,21 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
             );
             $this->GetPath($parent['parent'], $path);
         }
+    }
+
+    /**
+     * Generate Thumbnail URL from filename
+     */
+    function GetThumbnailURL($filename)
+    {
+        $thumbnailURL = '';
+        $fileInfo = pathinfo($filename);
+
+        $thumbnailPath = JAWS_DATA . 'directory/' . $fileInfo['filename'] . '.thumbnail.png';
+        if (file_exists($thumbnailPath)) {
+            $thumbnailURL = $GLOBALS['app']->getDataURL('directory/' . $fileInfo['filename'] . '.thumbnail.png');
+        }
+        return $thumbnailURL;
     }
 
     /**

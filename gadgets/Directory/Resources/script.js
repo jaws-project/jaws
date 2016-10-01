@@ -132,6 +132,7 @@ function displayFiles(files)
         file.ext = file.is_dir? 'folder' : file.host_filename.split('.').pop();
         file.type = file.mime_type || '-';
         file.icon = '<img src="' + icon_url + (FileIcons[file.file_type] || 'file-generic') + '.png" />';
+        file.thumbnail = file.thumbnail;
         file.size = formatSize(file.file_size, 0);
         if (!file.is_dir) {
             file.url = 'javascript:fileOpen(' + file.id + ');';
@@ -476,6 +477,7 @@ function newFile()
     }
     $('#form').html(cachedForms.editFile);
     $('#tr_file').hide();
+    $('#tr_thumbnail').hide();
     $('#frm_upload').show();
     $('#frm_file').find('[name=parent]').val(currentDir);
     $('#frm_file').find('[name=title]').focus();
@@ -502,6 +504,7 @@ function editFile(id)
         $('#host_filename').val(':nochange:');
     } else {
         $('#tr_file').hide();
+        $('#tr_thumbnail').hide();
         $('#frm_upload').show();
     }
     form.action.value = 'UpdateFile';
@@ -510,6 +513,8 @@ function editFile(id)
     form.tags.value = file.tags;
     form.hidden.checked = file.hidden;
     form.published.checked = file.published;
+    // form.thumbnail.src = file.thumbnail;
+    $('#frm_file #thumbnail').prop('src', file.thumbnail);
     changeEditorValue('description', file.description);
 }
 
@@ -526,21 +531,42 @@ function uploadFile() {
 }
 
 /**
+ * Uploads thumbnail file on the server
+ */
+function uploadThumbnailFile() {
+    var iframe = $('<iframe>');
+    iframe.attr('id', 'ifrm_upload');
+    iframe.attr('name', 'ifrm_upload');
+    $('body').append(iframe);
+    $('#btn_ok').attr('disabled', true);
+    $('#frm_thumbnail_upload').submit();
+}
+
+/**
  * Applies uploaded file into the form
  */
 function onUpload(response) {
+    console.log(response);
     if (response.type === 'error') {
         alert(response.message);
-        $('#frm_upload').reset();
+        if(response.upload_type=='file') {
+            $('#frm_upload').reset();
+        } else {
+            $('#frm_thumbnail_upload').reset();
+        }
     } else {
         var hostFilename = encodeURIComponent(response.host_filename);
-        setFilename(hostFilename, '');
-        $('#user_filename').val(response.user_filename);
-        $('#host_filename').val(hostFilename);
-        $('#mime_type').val(response.mime_type);
-        $('#file_size').val(response.file_size);
-        if ($('#frm_file').find('[name=title]').val() === '') {
-            $('#frm_file').find('[name=title]').val(response.user_filename.replace(/\.[^/.]+$/, ''));
+        if (response.upload_type == 'file') {
+            setFilename(hostFilename, '');
+            $('#user_filename').val(response.user_filename);
+            $('#host_filename').val(hostFilename);
+            $('#mime_type').val(response.mime_type);
+            $('#file_size').val(response.file_size);
+            if ($('#frm_file').find('[name=title]').val() === '') {
+                $('#frm_file').find('[name=title]').val(response.user_filename.replace(/\.[^/.]+$/, ''));
+            }
+        } else {
+            uploadedThumbnailPath = hostFilename;
         }
     }
     $('#ifrm_upload').remove();
@@ -595,6 +621,8 @@ function submitFile()
     var action = (idSet.length === 0)? 'CreateFile' : 'UpdateFile',
         data = $.unserialize($('#frm_file').serialize());
     data.description = getEditorValue('description');
+    data.thumbnailPath = uploadedThumbnailPath;
+
     DirectoryAjax.callAsync(action, data);
 }
 
@@ -674,6 +702,7 @@ var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback),
     fileTemplate = '',
     statusTemplate = '',
     wsClickEvent = null,
+    uploadedThumbnailPath = null,
     idSet = [];
 
 var FileIcons = {

@@ -30,17 +30,34 @@ function uploadFile() {
 }
 
 /**
+ * Uploads thumbnail file on the server
+ */
+function uploadThumbnailFile() {
+    var iframe = $('<iframe>');
+    iframe.attr('id', 'ifrm_upload');
+    iframe.attr('name', 'ifrm_upload');
+    $('body').append(iframe);
+    $('#btn_ok').attr('disabled', true);
+    $('#frm_thumbnail_upload').submit();
+}
+
+/**
  * Submits file data to create or update
  */
 function submitFile()
 {
     var action = (fileId === 0)? 'CreateFile' : 'UpdateFile';
 
-    uploadedFileInfo.parent = 0;
+    uploadedFileInfo.parent = parentId;
     uploadedFileInfo.description = getEditorValue('description');
     uploadedFileInfo.title = $('#frm_file #title').val();
     uploadedFileInfo.tags = $('#frm_file #tags').val();
-    uploadedFileInfo.hidden = $('#frm_file #hidden').val();
+    uploadedFileInfo.hidden = $('#frm_file #hidden').prop('checked');
+    uploadedFileInfo.thumbnailPath = uploadedThumbnailPath;
+    if ($('#frm_file #published').prop('checked') != undefined) {
+        uploadedFileInfo.published = $('#frm_file #published').prop('checked');
+    }
+
 
     DirectoryAjax.callAsync(action, uploadedFileInfo);
 }
@@ -51,17 +68,25 @@ function submitFile()
 function onUpload(response) {
     if (response.type === 'error') {
         alert(response.message);
-        $('#frm_upload').reset();
+        if(response.upload_type=='file') {
+            $('#frm_upload').reset();
+        } else {
+            $('#frm_thumbnail_upload').reset();
+        }
     } else {
         var hostFilename = encodeURIComponent(response.host_filename);
-        setFilename(hostFilename, '');
-        uploadedFileInfo = {};
-        uploadedFileInfo.user_filename = response.user_filename;
-        uploadedFileInfo.host_filename = hostFilename;
-        uploadedFileInfo.mime_type = response.mime_type;
-        uploadedFileInfo.file_size = response.file_size;
-        if ($('#frm_file').find('[name=title]').val() === '') {
-            $('#frm_file').find('[name=title]').val(response.user_filename.replace(/\.[^/.]+$/, ''));
+        if(response.upload_type == 'file') {
+            setFilename(hostFilename, '');
+            uploadedFileInfo = {};
+            uploadedFileInfo.user_filename = response.user_filename;
+            uploadedFileInfo.host_filename = hostFilename;
+            uploadedFileInfo.mime_type = response.mime_type;
+            uploadedFileInfo.file_size = response.file_size;
+            if ($('#frm_file').find('[name=title]').val() === '') {
+                $('#frm_file').find('[name=title]').val(response.user_filename.replace(/\.[^/.]+$/, ''));
+            }
+        } else {
+            uploadedThumbnailPath = hostFilename;
         }
     }
     $('#ifrm_upload').remove();
@@ -86,4 +111,4 @@ function setFilename(filename, url)
 }
 
 var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback, 'index.php');
-var uploadedFileInfo = {};
+var uploadedFileInfo = {}, uploadedThumbnailPath = "";

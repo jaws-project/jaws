@@ -20,6 +20,7 @@ class Directory_Installer extends Jaws_Gadget_Installer
         array('items_per_page', '12'),
         array('files_limit', '20'),
         array('order_type', '1'),
+        array('thumbnail_size', '128x128'),
     );
 
     /**
@@ -30,6 +31,7 @@ class Directory_Installer extends Jaws_Gadget_Installer
      */
     var $_ACLKeys = array(
         'ManageComments',
+        'PublishFiles',
     );
 
     /**

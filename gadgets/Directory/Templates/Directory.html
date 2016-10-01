@@ -7,6 +7,11 @@
     </a>
     <span>{{path}}</span>
   </div>
+  <div>
+    <a href="{{upload_url}}" title="{{upload}}">
+      <img src="gadgets/Directory/Resources/images/new-file.png" alt="upload"/>
+    </a>
+  </div>
   <div class="gadget_content content">
     {{content}}
   </div>
@@ -86,7 +91,7 @@
 
 <!-- BEGIN file -->
 <table class="file-info">
-  <tr><th width="1">{{lbl_title}}:</th><td>{{title}}</td></tr>
+  <tr><th width="1">{{lbl_title}}:</th><td><img src="{{thumbnail}}" alt="">{{title}}</td></tr>
   <tr><th>{{lbl_desc}}:</th><td>{{description}}</td></tr>
   <tr><th>{{lbl_filename}}:</th><td>{{user_filename}}</td></tr>
   <tr><th>{{lbl_type}}:</th><td title="{{mime_type}}">{{type}}</td></tr>

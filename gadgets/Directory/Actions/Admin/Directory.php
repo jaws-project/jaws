@@ -139,6 +139,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $tpl->SetVariable('icon', '{icon}');
         $tpl->SetVariable('type', '{type}');
         $tpl->SetVariable('size', '{size}');
+        $tpl->SetVariable('published', '{published}');
         $tpl->SetVariable('created', '{created}');
         $tpl->SetVariable('modified', '{modified}');
         $tpl->ParseBlock('workspace/fileTemplate');
@@ -181,8 +182,10 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             } else {
                 $file['link'] = $this->gadget->urlMap('Directory', array('id' => $file['id']), true);
             }
+            $file['published'] = $file['published'] ? _t('GLOBAL_YES'): _t('GLOBAL_NO');
             $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
+            $file['thumbnail'] = $model->GetThumbnailURL($file['host_filename']);
 
             // Fetch tags
             $file['tags'] = array();

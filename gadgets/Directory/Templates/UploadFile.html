@@ -3,9 +3,16 @@
     <h3><a href="{{url}}">{{title}}</a></h3>
 </div>
 <div class="gadget_container">
+    <div>
+        <a href="{{root_url}}" title="{{root}}">
+            <img src="gadgets/Directory/Resources/images/home.png" alt="root"/>
+        </a>
+        <span>{{path}}</span>
+    </div>
+
     <div class="gadget_content content">
         <div class="gadget_response">
-            <div id="formbuilder_response" class="{{type}}">{{text}}</div>
+            <div id="directory_response" class="{{type}}">{{text}}</div>
         </div>
 
         <fieldset>
@@ -13,9 +20,21 @@
                   method="post" enctype="multipart/form-data" onsubmit="return true;">
                 <input type="hidden" name="gadget" value="Directory" />
                 <input type="hidden" name="action" value="UploadFile" />
+                <input type="hidden" name="type" value="file" />
                 <table>
                     <tr><th>{{lbl_file}}:</th><td>
-                        <input type="file" id="file" name="file" onchange="uploadFile()" class="file" />
+                        <input type="file" name="file" onchange="uploadFile()" class="file" />
+                    </td></tr>
+                </table>
+            </form>
+            <form id="frm_thumbnail_upload" action="{{base_script}}" target="ifrm_upload"
+                  method="post" enctype="multipart/form-data" onsubmit="return true;">
+                <input type="hidden" name="gadget" value="Directory" />
+                <input type="hidden" name="action" value="UploadFile" />
+                <input type="hidden" name="type" value="thumbnail" />
+                <table>
+                    <tr><th>{{lbl_thumbnail}}:</th><td>
+                        <input type="file" name="file" onchange="uploadThumbnailFile()" class="file" />
                     </td></tr>
                 </table>
             </form>
@@ -24,10 +43,15 @@
                 <input type="hidden" name="parent" id="parent" value="0" />
                 <table>
                     <tr id="tr_file"><th>{{lbl_file}}:</th><td id="file_link"></td></tr>
+                    <tr id="tr_thumbnail"><th>{{lbl_thumbnail}}:</th><td id="thumbnail_link"></td></tr>
                     <tr><th>{{lbl_title}}:</th><td><input name="title" id="title" style="width: 100%" /></td></tr>
                     <tr><th>{{lbl_desc}}:</th><td>{{description}}</td></tr>
                     <tr><th>{{lbl_tags}}:</th><td><input name="tags" id="tags" placeholder="tag1, tag2, ..." /></td></tr>
                     <tr><th>{{lbl_hidden}}:</th><td><input type="checkbox" id="hidden" name="hidden" /></td></tr>
+
+                    <!-- BEGIN published -->
+                    <tr><th>{{lbl_published}}:</th><td><input type="checkbox" id="published" name="published" /></td></tr>
+                    <!-- END published -->
                 </table>
             </form>
         </fieldset>
@@ -42,6 +66,7 @@
 
 <script type="text/javascript">
     var fileId = 0;
+    var parentId = {{parentId}};
     $(document).ready(function() {
         $('#tr_file').hide();
         $('#frm_upload').show();

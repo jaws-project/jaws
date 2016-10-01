@@ -125,9 +125,45 @@ class Directory_Model_Files extends Jaws_Gadget_Model
     function InsertFile($data)
     {
         $data['create_time'] = $data['update_time'] = time();
-        $data['published'] = false;
         $table = Jaws_ORM::getInstance()->table('directory');
         return $table->insert($data)->exec();
     }
 
+
+    /**
+     * Fetches path of a file/directory
+     *
+     * @access  public
+     * @param   int     $id     File ID
+     * @param   array   $path   Directory hierarchy
+     * @return  void
+     */
+    function GetPath($id, &$path)
+    {
+        $table = Jaws_ORM::getInstance()->table('directory');
+        $table->select('id', 'parent', 'title');
+        $parent = $table->where('id', $id)->fetchRow();
+        if (!empty($parent)) {
+            $path[] = array(
+                'id' => $parent['id'],
+                'title' => $parent['title']
+            );
+            $this->GetPath($parent['parent'], $path);
+        }
+    }
+
+    /**
+     * Generate Thumbnail URL from filename
+     */
+    function GetThumbnailURL($filename)
+    {
+        $thumbnailURL = '';
+        $fileInfo = pathinfo($filename);
+
+        $thumbnailPath = JAWS_DATA . 'directory/' . $fileInfo['filename'] . '.thumbnail.png';
+        if (file_exists($thumbnailPath)) {
+            $thumbnailURL = $GLOBALS['app']->getDataURL('directory/' . $fileInfo['filename'] . '.thumbnail.png');
+        }
+        return $thumbnailURL;
+    }
 }

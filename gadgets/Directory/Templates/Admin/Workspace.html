@@ -78,6 +78,7 @@
     <thead><tr>
       <th><input type="checkbox" id="chk_all_files" onchange="checkAll(this.checked)"></th>
       <th colspan="2">{{lbl_title}}</th>
+      <th>{{lbl_published}}</th>
       <th>{{lbl_created}}</th>
       <th>{{lbl_modified}}</th>
       <th>{{lbl_size}}</th>
@@ -88,6 +89,7 @@
         <td class="file-check"><input type="checkbox" value="{{id}}"></td>
         <td class="file-icon">{{icon}}<span class="file-sharing"></span></td>
         <td class="file-title"><a href="{{url}}">{{title}}</a></td>
+        <td class="file-published">{{published}}</td>
         <td class="file-created">{{created}}</td>
         <td class="file-modified">{{modified}}</td>
         <td class="file-size">{{size}}</td>
