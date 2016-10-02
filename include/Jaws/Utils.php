@@ -537,7 +537,7 @@ class Jaws_Utils
                 // remove deny_formats extension, even double extension
                 $host_filename = implode(
                     '.',
-                    array_diff(array_filter(explode('.', $host_filename)), self::$deny_formats)
+                    array_diff(explode('.', $host_filename), self::$deny_formats)
                 );
 
                 $fileinfo = pathinfo($host_filename);
