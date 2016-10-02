@@ -11,11 +11,31 @@
 var DirectoryCallback = {
     CreateFile: function(response) {
         if (response.type === 'response_notice') {
-            cancel();
+            stopAction();
         }
         DirectoryAjax.showResponse(response);
     }
 };
+
+/**
+ * stop Action
+ */
+function stopAction()
+{
+    uploadedFileInfo = {};
+    uploadedThumbnailPath = null;
+    changeEditorValue('description', '');
+    $('#frm_upload')[0].reset()
+    $('#frm_thumbnail_upload')[0].reset()
+    $('#frm_upload').show();
+    $('#tr_file').hide();
+    $('#frm_file #file_link').html('');
+    $('#frm_file #title').val('');
+    $('#frm_file #tags').val('');
+    $('#frm_file #hidden').prop('checked', '');
+    $('#frm_file #published').prop('checked', '');
+
+}
 
 /**
  * Uploads file on the server

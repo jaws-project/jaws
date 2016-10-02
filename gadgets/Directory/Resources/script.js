@@ -546,7 +546,6 @@ function uploadThumbnailFile() {
  * Applies uploaded file into the form
  */
 function onUpload(response) {
-    console.log(response);
     if (response.type === 'error') {
         alert(response.message);
         if(response.upload_type=='file') {
