@@ -132,7 +132,7 @@ function JawsAjax(gadget, callback, baseScript)
      * Performs asynchronous file upload
      *
      * @param   {string}    action      Jaws action name
-     * @param   {file}      file        Thr file to be uploaded
+     * @param   {file}      file        File object to be uploaded
      * @param   {function}  done        Success callback function
      * @param   {function}  progress    Progress callback function
      * @return  {boolean}
@@ -155,7 +155,7 @@ function JawsAjax(gadget, callback, baseScript)
             xhr: function() {
                 // handle the upload progress
                 var xhr = $.ajaxSettings.xhr();
-                if (xhr.upload){
+                if (xhr.upload) {
                     xhr.upload.addEventListener('progress', progress, false);
                     return xhr;
                 }
