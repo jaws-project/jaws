@@ -1,5 +1,5 @@
 <?php
-require_once PEAR_PATH. 'HTTP/Request.php';
+require_once PEAR_PATH. 'HTTP/Request2.php';
 /**
  * Class that deals like a wrapper between Jaws and pear/HTTP_Request
  *
@@ -52,9 +52,11 @@ class Jaws_HTTPRequest
     {
         $this->options['timeout'] = (int)$GLOBALS['app']->Registry->fetch('connection_timeout', 'Settings');
         if ($GLOBALS['app']->Registry->fetch('proxy_enabled', 'Settings') == 'true') {
+            $this->options['proxy_type'] = 'http';
+            $this->options['proxy_auth_scheme'] = HTTP_Request2::AUTH_BASIC;
             if ($GLOBALS['app']->Registry->fetch('proxy_auth', 'Settings') == 'true') {
                 $this->options['proxy_user'] = $GLOBALS['app']->Registry->fetch('proxy_user', 'Settings');
-                $this->options['proxy_pass'] = $GLOBALS['app']->Registry->fetch('proxy_pass', 'Settings');
+                $this->options['proxy_password'] = $GLOBALS['app']->Registry->fetch('proxy_pass', 'Settings');
             }
             $this->options['proxy_host'] = $GLOBALS['app']->Registry->fetch('proxy_host', 'Settings');
             $this->options['proxy_port'] = $GLOBALS['app']->Registry->fetch('proxy_port', 'Settings');
@@ -62,7 +64,7 @@ class Jaws_HTTPRequest
 
         // merge default and passed options
         $this->options = array_merge($this->options, $options);
-        $this->httpRequest = new HTTP_Request();
+        $this->httpRequest = new HTTP_Request2();
     }
 
     /**
@@ -75,21 +77,21 @@ class Jaws_HTTPRequest
      */
     function get($url, &$response)
     {
-        $this->httpRequest->reset($url, $this->options);
-        $this->httpRequest->addHeader('User-Agent', $this->user_agent);
-        $this->httpRequest->setMethod(HTTP_REQUEST_METHOD_GET);
-        $result = $this->httpRequest->sendRequest();
-        if (PEAR::isError($result)) {
+        $this->httpRequest->setConfig($this->options)->setUrl($url);
+        $this->httpRequest->setHeader('User-Agent', $this->user_agent);
+        $this->httpRequest->setMethod(HTTP_Request2::METHOD_GET);
+        try {
+            $result = $this->httpRequest->send();
+            $response = $result->getBody();
+            return $result->getStatus();
+        } catch (Exception $error) {
             return Jaws_Error::raiseError(
-                $result->getMessage(),
-                $result->getCode(),
+                $error->getMessage(),
+                $error->getCode(),
                 $this->default_error_level,
                 1
             );
         }
-
-        $response = $this->httpRequest->getResponseBody();
-        return $this->httpRequest->getResponseCode();
     }
 
     /**
@@ -103,27 +105,27 @@ class Jaws_HTTPRequest
      */
     function post($url, $params = array(), &$response)
     {
-        $this->httpRequest->reset($url, $this->options);
-        $this->httpRequest->addHeader('User-Agent', $this->user_agent);
-        $this->httpRequest->addHeader('Content-Type', $this->content_type);
-        $this->httpRequest->setMethod(HTTP_REQUEST_METHOD_POST);
+        $this->httpRequest->setConfig($this->options)->setUrl($url);
+        $this->httpRequest->setHeader('User-Agent', $this->user_agent);
+        $this->httpRequest->setHeader('Content-Type', $this->content_type);
+        $this->httpRequest->setMethod(HTTP_Request2::METHOD_POST);
         // add post data
         foreach($params as $key => $data) {
-            $this->httpRequest->addPostData($key, urlencode($data));
+            $this->httpRequest->addPostParameter($key, urlencode($data));
         }
 
-        $result = $this->httpRequest->sendRequest();
-        if (PEAR::isError($result)) {
+        try {
+            $result = $this->httpRequest->send();
+            $response = $result->getBody();
+            return $result->getStatus();
+        } catch (Exception $error) {
             return Jaws_Error::raiseError(
-                $result->getMessage(),
-                $result->getCode(),
+                $error->getMessage(),
+                $error->getCode(),
                 $this->default_error_level,
                 1
             );
         }
-
-        $response = $this->httpRequest->getResponseBody();
-        return $this->httpRequest->getResponseCode();
     }
 
     /**
@@ -137,24 +139,24 @@ class Jaws_HTTPRequest
      */
     function rawPostData($url, $data = '', &$response)
     {
-        $this->httpRequest->reset($url, $this->options);
-        $this->httpRequest->addHeader('User-Agent', $this->user_agent);
-        $this->httpRequest->addHeader('Content-Type', $this->content_type);
-        $this->httpRequest->setMethod(HTTP_REQUEST_METHOD_POST);
+        $this->httpRequest->setConfig($this->options)->setUrl($url);
+        $this->httpRequest->setHeader('User-Agent', $this->user_agent);
+        $this->httpRequest->setHeader('Content-Type', $this->content_type);
+        $this->httpRequest->setMethod(HTTP_Request2::METHOD_POST);
         // set post data
         $this->httpRequest->setBody($data);
-        $result = $this->httpRequest->sendRequest();
-        if (PEAR::isError($result)) {
+        try {
+            $result = $this->httpRequest->send();
+            $response = $result->getBody();
+            return $result->getStatus();
+        } catch (Exception $error) {
             return Jaws_Error::raiseError(
-                $result->getMessage(),
-                $result->getCode(),
+                $error->getMessage(),
+                $error->getCode(),
                 $this->default_error_level,
                 1
             );
         }
-
-        $response = $this->httpRequest->getResponseBody();
-        return $this->httpRequest->getResponseCode();
     }
 
 }
