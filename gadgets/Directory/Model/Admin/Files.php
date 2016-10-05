@@ -208,6 +208,15 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                     return false;
                 }
             }
+
+            // delete thumbnail file
+            $fileInfo = pathinfo($filename);
+            $thumbnailPath = JAWS_DATA . 'directory/' . $fileInfo['filename'] . '.thumbnail.png';
+            if (file_exists($thumbnailPath)) {
+                if (!Jaws_Utils::delete($thumbnailPath)) {
+                    return false;
+                }
+            }
         }
 
         return true;

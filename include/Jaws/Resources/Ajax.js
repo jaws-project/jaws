@@ -128,6 +128,46 @@ function JawsAjax(gadget, callback, baseScript)
         return eval('(' + result.responseText + ')');
     };
 
+    /**
+     * Performs asynchronous file upload
+     *
+     * @param   {string}    action      Jaws action name
+     * @param   {file}      file        File object to be uploaded
+     * @param   {function}  done        Success callback function
+     * @param   {function}  progress    Progress callback function
+     * @return  {boolean}
+     */
+    this.uploadFile = function (action, file, done, progress) {
+        var fd = new FormData();
+        fd.append('file', file);
+        var options = {
+            async: true,
+            type: 'POST',
+            data: fd,
+            dataType: 'text',
+            url: this.baseURL + action,
+            action: action,
+            timeout: 10 * 60 * 1000, /* 10 minutes */
+            contentType: false,
+            processData: false,
+            cache: false,
+            done: done,
+            xhr: function() {
+                // handle the upload progress
+                var xhr = $.ajaxSettings.xhr();
+                if (xhr.upload) {
+                    xhr.upload.addEventListener('progress', progress, false);
+                    return xhr;
+                }
+            }
+        };
+        options.beforeSend = this.onSend.bind(this, options);
+        options.success = this.onSuccess.bind(this, options);
+        options.error = this.onError.bind(this, options);
+        options.complete = this.onComplete.bind(this, options);
+        return $.ajax(options);
+    };
+
     this.onSend = function () {
         // start show loading indicator
         this.showLoading(true);

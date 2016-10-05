@@ -12,7 +12,7 @@
 
     <div class="gadget_content content">
         <div class="gadget_response">
-            <div id="directory_response" class="{{type}}">{{text}}</div>
+            <div id="directory_uploadfileui_response" class="{{type}}">{{text}}</div>
         </div>
 
         <fieldset>
@@ -43,7 +43,7 @@
                 <input type="hidden" name="parent" id="parent" value="0" />
                 <table>
                     <tr id="tr_file"><th>{{lbl_file}}:</th><td id="file_link"></td></tr>
-                    <tr id="tr_thumbnail"><th>{{lbl_thumbnail}}:</th><td id="thumbnail_link"></td></tr>
+                    <tr id="tr_thumbnail"><th>{{lbl_thumbnail}}:</th><td><img src="" id="thumbnail_image" alt=""></td></tr>
                     <tr><th>{{lbl_title}}:</th><td><input name="title" id="title" style="width: 100%" /></td></tr>
                     <tr><th>{{lbl_desc}}:</th><td>{{description}}</td></tr>
                     <tr><th>{{lbl_tags}}:</th><td><input name="tags" id="tags" placeholder="tag1, tag2, ..." /></td></tr>
@@ -69,6 +69,7 @@
     var parentId = {{parentId}};
     $(document).ready(function() {
         $('#tr_file').hide();
+        $('#tr_thumbnail').hide();
         $('#frm_upload').show();
     });
 
