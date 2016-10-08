@@ -428,9 +428,9 @@ class Jaws_User
 
         if (!empty($term)) {
             $term = Jaws_UTF8::strtolower($term);
-            $usersTable->and()->openWhere('lower(username)', '%'.$term.'%', 'like');
-            $usersTable->or()->where('lower(nickname)',      '%'.$term.'%', 'like');
-            $usersTable->or()->closeWhere('lower(email)',    '%'.$term.'%', 'like');
+            $usersTable->and()->openWhere('lower(username)', $term, 'like');
+            $usersTable->or()->where('lower(nickname)',      $term, 'like');
+            $usersTable->or()->closeWhere('lower(email)',    $term, 'like');
         }
 
         $usersTable->orderBy('users.'.$orderBy);

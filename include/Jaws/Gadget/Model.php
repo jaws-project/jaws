@@ -139,7 +139,7 @@ class Jaws_Gadget_Model
         return $tblReg->select('component')
             ->where('key_name', 'requirement')
             ->and()
-            ->where('key_value', '%,'. $this->gadget->name. ',%', 'like')
+            ->where('key_value', ','. $this->gadget->name. ',', 'like')
             ->fetchColumn();
     }
 
@@ -156,7 +156,7 @@ class Jaws_Gadget_Model
         $result = $tblReg->select('component')
             ->openWhere('key_name', 'requirement')->or()->closeWhere('key_name', 'recommended')
             ->and()
-            ->where('key_value', '%,'. $this->gadget->name. ',%', 'like')
+            ->where('key_value', ','. $this->gadget->name. ',', 'like')
             ->fetchColumn();
         return Jaws_Error::IsError($result)? $result : array_unique($result);
     }
@@ -234,7 +234,7 @@ class Jaws_Gadget_Model
         }
 
         $tblReg = Jaws_ORM::getInstance()->table($table);
-        $result = $tblReg->select("count($field)")->where($field, $fast_url.'%', 'like')->fetchOne();
+        $result = $tblReg->select("count($field)")->where($field, array('$%', $fast_url), 'like')->fetchOne();
         if (Jaws_Error::IsError($result) || empty($result)) {
             return $fast_url;
         }
