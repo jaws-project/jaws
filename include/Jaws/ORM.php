@@ -554,7 +554,17 @@ class Jaws_ORM
 
             case 'like':
             case 'not like':
-                $value  = $this->quoteValue($value);
+                if (is_array($value)) {
+                    $value = $this->quoteValue(
+                        Jaws_UTF8::str_replace(
+                            '$',
+                            $this->jawsdb->dbc->escapePattern($value[1]),
+                            $value[0]
+                        )
+                    );
+                } else {
+                    $value = $this->quoteValue('%' . $this->jawsdb->dbc->escapePattern($value) . '%');
+                }
                 break;
 
             case 'is null':
@@ -1153,6 +1163,10 @@ class Jaws_ORM
             case 'or':
             case 'and':
                 if (!empty($this->_where)) {
+                    if (in_array(end($this->_where), array(' and ', ' or '))) {
+                        array_pop($this->_where);
+                    }
+
                     $this->_where[] = " $method ";
                 }
                 return $this;
