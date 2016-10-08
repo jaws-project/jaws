@@ -69,10 +69,9 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
         }
 
         if (isset($params['query']) && !empty($params['query'])){
-            $query = '%' . $params['query'] . '%';
-            $table->openWhere('title', $query, 'like')->or();
-            $table->where('description', $query, 'like')->or();
-            $table->closeWhere('user_filename', $query, 'like');
+            $table->openWhere('title', $params['query'], 'like')->or();
+            $table->where('description', $params['query'], 'like')->or();
+            $table->closeWhere('user_filename', $params['query'], 'like');
         }
 
         if (!$count && isset($params['limit']) && $params['limit'] > 0) {
