@@ -38,16 +38,16 @@ class AddressBook_Model_AddressBook extends Jaws_Gadget_Model
 
         if (!empty($term)) {
             $term = Jaws_UTF8::strtolower($term);
-            $adrTable->and()->openWhere('lower(name)',   '%'.$term.'%', 'like');
-            $adrTable->or()->where('lower(nickname)',    '%'.$term.'%', 'like');
-            $adrTable->or()->where('lower(title)',       '%'.$term.'%', 'like');
-            $adrTable->or()->where('lower(tel_home)',    '%'.$term.'%', 'like');
-            $adrTable->or()->where('lower(tel_work)',    '%'.$term.'%', 'like');
-            $adrTable->or()->where('lower(tel_other)',   '%'.$term.'%', 'like');
-            $adrTable->or()->where('lower(email_home)',  '%'.$term.'%', 'like');
-            $adrTable->or()->where('lower(email_work)',  '%'.$term.'%', 'like');
-            $adrTable->or()->where('lower(email_other)', '%'.$term.'%', 'like');
-            $adrTable->or()->closeWhere('lower(notes)',  '%'.$term.'%', 'like');
+            $adrTable->and()->openWhere('lower(name)',   $term, 'like');
+            $adrTable->or()->where('lower(nickname)',    $term, 'like');
+            $adrTable->or()->where('lower(title)',       $term, 'like');
+            $adrTable->or()->where('lower(tel_home)',    $term, 'like');
+            $adrTable->or()->where('lower(tel_work)',    $term, 'like');
+            $adrTable->or()->where('lower(tel_other)',   $term, 'like');
+            $adrTable->or()->where('lower(email_home)',  $term, 'like');
+            $adrTable->or()->where('lower(email_work)',  $term, 'like');
+            $adrTable->or()->where('lower(email_other)', $term, 'like');
+            $adrTable->or()->closeWhere('lower(notes)',  $term, 'like');
         }
 
         return $adrTable->fetchAll();
