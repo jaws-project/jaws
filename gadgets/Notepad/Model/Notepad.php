@@ -40,7 +40,6 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
         }
 
         if ($query !== null){
-            $query = "%$query%";
             $table->openWhere('title', $query, 'like')->or();
             $table->closeWhere('content', $query, 'like');
         }
@@ -78,7 +77,6 @@ class Notepad_Model_Notepad extends Jaws_Gadget_Model
         }
 
         if ($query !== null){
-            $query = "%$query%";
             $table->openWhere('title', $query, 'like')->or();
             $table->closeWhere('content', $query, 'like');
         }
