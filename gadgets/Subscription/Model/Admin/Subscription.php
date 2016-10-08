@@ -32,7 +32,7 @@ class Subscription_Model_Admin_Subscription extends Jaws_Gadget_Model
             }
             // email
             if (isset($filters['email']) && !empty($filters['email'])) {
-                $sTable->and()->where('subscription.email', '%' . $filters['email'] . '%', 'like');
+                $sTable->and()->where('subscription.email', $filters['email'], 'like');
             }
             // gadget
             if (isset($filters['gadget']) && !empty($filters['gadget'])) {
@@ -59,7 +59,7 @@ class Subscription_Model_Admin_Subscription extends Jaws_Gadget_Model
             }
             // email
             if (isset($filters['email']) && !empty($filters['email'])) {
-                $sTable->and()->where('subscription.email', '%' . $filters['email'] . '%', 'like');
+                $sTable->and()->where('subscription.email', $filters['email'], 'like');
             }
             // gadget
             if (isset($filters['gadget']) && !empty($filters['gadget'])) {

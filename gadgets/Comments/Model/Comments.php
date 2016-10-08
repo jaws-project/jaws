@@ -85,10 +85,10 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
 
         if (!empty($term)) {
             $commentsTable->and()->openWhere('comments.reference', $term);
-            $commentsTable->or()->where('comments_details.name', '%'.$term.'%', 'like');
-            $commentsTable->or()->where('comments_details.email', '%'.$term.'%', 'like');
-            $commentsTable->or()->where('comments_details.url', '%'.$term.'%', 'like');
-            $commentsTable->or()->closeWhere('comments_details.msg_txt', '%'.$term.'%', 'like');
+            $commentsTable->or()->where('comments_details.name', $term, 'like');
+            $commentsTable->or()->where('comments_details.email', $term, 'like');
+            $commentsTable->or()->where('comments_details.url', $term, 'like');
+            $commentsTable->or()->closeWhere('comments_details.msg_txt', $term, 'like');
         }
 
         $orders = array(
@@ -141,10 +141,10 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
 
         if (!empty($term)) {
             $commentsTable->and()->openWhere('reference', $term);
-            $commentsTable->or()->where('name', '%' . $term . '%', 'like');
-            $commentsTable->or()->where('email', '%' . $term . '%', 'like');
-            $commentsTable->or()->where('url', '%' . $term . '%', 'like');
-            $commentsTable->or()->closeWhere('msg_txt', '%' . $term . '%', 'like');
+            $commentsTable->or()->where('name', $term, 'like');
+            $commentsTable->or()->where('email', $term, 'like');
+            $commentsTable->or()->where('url', $term, 'like');
+            $commentsTable->or()->closeWhere('msg_txt', $term, 'like');
         }
 
         return $commentsTable->fetchOne();

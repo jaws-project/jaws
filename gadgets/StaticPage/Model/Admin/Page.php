@@ -240,14 +240,13 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         $spgTable->where('sp.base_language', array('spt.language', 'expr'));
 
         if (trim($search) != '') {
-            $searchdata = explode(' ', $search);
+            $searchdata = array_filter(array_map('trim', explode(' ', $search)));
 
             /**
              * This query needs more work, not use $v straight, should be
              * like rest of the param stuff.
              */
             foreach ($searchdata as $v) {
-                $v = '%'.trim($v).'%';
                 $spgTable->and()->openWhere();
                 $spgTable->where('spt.title', $v, 'like')->or()->where('spt.content', $v, 'like');
                 $spgTable->closeWhere();

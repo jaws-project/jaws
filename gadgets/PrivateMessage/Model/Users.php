@@ -25,8 +25,8 @@ class PrivateMessage_Model_Users extends Jaws_Gadget_Model
         $term = Jaws_UTF8::strtolower($term);
         $groupsTable->where('enabled', true);
 
-        $groupsTable->and()->openWhere('lower(name)', '%'.$term.'%', 'like');
-        $groupsTable->or()->closeWhere('lower(title)','%'.$term.'%', 'like');
+        $groupsTable->and()->openWhere('lower(name)', $term, 'like');
+        $groupsTable->or()->closeWhere('lower(title)',$term, 'like');
 
         $groupsTable->orderBy('name');
         return $groupsTable->fetchAll();

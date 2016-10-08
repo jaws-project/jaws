@@ -356,8 +356,8 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table->where('tags.user', (int)$user);
         if (!empty($filters) && count($filters) > 0) {
             if (array_key_exists('name', $filters) && !empty($filters['name'])) {
-                $table->and()->openWhere('name', '%' . $filters['name'] . '%', 'like')->or();
-                $table->closeWhere('title', '%' . $filters['name'] . '%', 'like');
+                $table->and()->openWhere('name', $filters['name'], 'like')->or();
+                $table->closeWhere('title', $filters['name'], 'like');
             }
             if (array_key_exists('gadget', $filters) && !empty($filters['gadget'])) {
                 $table->and()->where('gadget', $filters['gadget']);
@@ -387,8 +387,8 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         $table->where('tags.user', (int)$user);
         if (!empty($filters) && count($filters) > 0) {
             if (array_key_exists('name', $filters) && !empty($filters['name'])) {
-                $table->and()->openWhere('name', '%' . $filters['name'] . '%', 'like')->or();
-                $table->closeWhere('title', '%' . $filters['name'] . '%', 'like');
+                $table->and()->openWhere('name', $filters['name'], 'like')->or();
+                $table->closeWhere('title', $filters['name'], 'like');
             }
             if (array_key_exists('gadget', $filters) && !empty($filters['gadget'])) {
                 $table->and()->where('gadget', $filters['gadget']);

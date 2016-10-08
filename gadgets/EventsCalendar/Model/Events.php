@@ -40,7 +40,6 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
         }
 
         if ($query !== null){
-            $query = "%$query%";
             $table->openWhere('subject', $query, 'like')->or();
             $table->where('location', $query, 'like')->or();
             $table->closeWhere('description', $query, 'like')->and();
@@ -92,7 +91,6 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
         }
 
        if ($query !== null){
-            $query = "%$query%";
             $table->openWhere('subject', $query, 'like')->or();
             $table->where('location', $query, 'like')->or();
             $table->closeWhere('description', $query, 'like')->and();

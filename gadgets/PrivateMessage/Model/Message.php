@@ -575,7 +575,6 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                 }
             }
             if (isset($filters['term']) && !empty($filters['term'])) {
-                $filters['term'] = '%' . $filters['term'] . '%';
                 $table->and()->openWhere('pm_messages.subject', $filters['term'], 'like')->or();
                 $table->closeWhere('pm_messages.body', $filters['term'], 'like');
             }
@@ -643,7 +642,6 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                 }
             }
             if (isset($filters['term']) && !empty($filters['term'])) {
-                $filters['term'] = '%' . $filters['term'] . '%';
                 $table->and()->openWhere('pm_messages.subject', $filters['term'], 'like')->or();
                 $table->closeWhere('pm_messages.body', $filters['term'], 'like');
             }

@@ -112,7 +112,7 @@ class Phoo_Model extends Jaws_Gadget_Model
 //        if (!empty($words)) {
 //            $words = explode(' ', $words);
 //            foreach ($words as $word) {
-//                $table->where('phoo_image.title', "%$word%", 'like');
+//                $table->where('phoo_image.title', $word, 'like');
 //            }
 //        }
 //
