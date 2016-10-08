@@ -721,13 +721,12 @@ class Blog_Model_Posts extends Jaws_Gadget_Model
             $blogTable->join('blog_entrycat', 'blog.id', 'blog_entrycat.entry_id');
         }
         if (trim($match) != '') {
-            $searchdata = explode(' ', $match);
+            $searchdata = array_filter(array_map('trim', explode(' ', $match)));
             /**
              * This query needs more work, not use $v straight, should be
              * like rest of the param stuff.
              */
             foreach ($searchdata as $v) {
-                $str = '%'.trim($v).'%';
                 $blogTable->and()->openWhere()->where('blog.title', $str, 'like')->or();
                 $blogTable->where('summary', $str, 'like')->or()->where('text', $str, 'like')->closeWhere();
             }

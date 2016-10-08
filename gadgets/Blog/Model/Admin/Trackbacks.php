@@ -142,11 +142,11 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
     function GetFilteredTrackbacks($filterMode, $filterData, $status, $limit)
     {
         if (
-            $filterMode != 'postid' &&
-            $filterMode != 'status' &&
-            $filterMode != 'ip'
+            $filterMode == 'postid' ||
+            $filterMode == 'status' ||
+            $filterMode == 'ip'
         ) {
-            $filterData = '%'.$filterData.'%';
+            $filterData = array('$', $filterData);
         }
 
         $table = Jaws_ORM::getInstance()->table('blog_trackback');
@@ -273,11 +273,11 @@ class Blog_Model_Admin_Trackbacks extends Jaws_Gadget_Model
     function HowManyFilteredTrackbacks($filterMode, $filterData, $status, $limit)
     {
         if (
-            $filterMode != 'postid' &&
-            $filterMode != 'status' &&
-            $filterMode != 'ip'
+            $filterMode == 'postid' ||
+            $filterMode == 'status' ||
+            $filterMode == 'ip'
         ) {
-            $filterData = '%'.$filterData.'%';
+            $filterData = array('$', $filterData);
         }
 
         $table = Jaws_ORM::getInstance()->table('blog_trackback');
