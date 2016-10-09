@@ -18,29 +18,24 @@ class Glossary_Hooks_Search extends Jaws_Gadget_Hook
      */
     function GetOptions() {
         return array(
-                    array('[term]', '[description]'),
-                    );
+            'glossary' => array('term', 'description'),
+        );
     }
 
     /**
      * Returns an array with the results of a search
      *
      * @access  public
-     * @param   string  $pSql  Prepared search (WHERE) SQL
-     * @return  mixed   An array of entries that matches a certain pattern or False on error
+     * @param   string  $table  Table name
+     * @param   object  $objORM Jaws_ORM instance object
+     * @return  array   An array of entries that matches a certain pattern
      */
-    function Execute($pSql = '')
+    function Execute($table, &$objORM)
     {
-        $sql = '
-            SELECT
-                [id], [term], [description], [createtime]
-            FROM [[glossary]]
-            ';
-
-        $sql .= ' WHERE ' . $pSql;
-        $sql .= " ORDER BY [createtime] desc";
-
-        $result = Jaws_DB::getInstance()->queryAll($sql);
+        $objORM->table('glossary');
+        $objORM->select('id', 'term', 'description', 'createtime');
+        $objORM->loadWhere('search.terms');
+        $result = $objORM->orderBy('createtime desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
