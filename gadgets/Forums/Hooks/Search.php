@@ -18,44 +18,32 @@ class Forums_Hooks_Search extends Jaws_Gadget_Hook
      */
     function GetOptions() {
         return array(
-            array('fp.[message]'),
+            'forums_posts' => array('fp.message'),
         );
     }
+
 
     /**
      * Returns an array with the results of a search
      *
      * @access  public
-     * @param   string  $pSql  Prepared search (WHERE) SQL
+     * @param   string  $table  Table name
+     * @param   object  $objORM Jaws_ORM instance object
      * @return  array   An array of entries that matches a certain pattern
      */
-    function Execute($pSql = '')
+    function Execute($table, &$objORM)
     {
-        $sql = '
-            SELECT
-                fp.[id], fp.[tid], ft.[fid],
-                ft.[subject], fp.[message], fp.[insert_time],
-                (
-                    SELECT
-                        COUNT(fpc.[id])
-                    FROM
-                        [[forums_posts]] as fpc
-                    WHERE
-                        fpc.[tid] = fp.[tid] AND fpc.[id] <= fp.[id]
-                ) as post_number
-            FROM
-                [[forums_posts]] as fp
-            LEFT JOIN
-                [[forums_topics]] as ft ON fp.[tid] = ft.[id]
-            ';
+        $postNumber = Jaws_ORM::getInstance()->table('forums_posts', 'fpc');
+        $postNumber->select('count(fpc.id):integer')->where('fpc.tid', array('fp.tid', 'expr'))
+            ->and()->where('fpc.id', array('fp.id', 'expr'), '<=');
+        $postNumber->alias('post_number');
 
-        $sql .= ' WHERE ' . $pSql;
-        $sql .= '
-            ORDER BY fp.[insert_time] desc';
-
-        $result = Jaws_DB::getInstance()->queryAll($sql);
+        $objORM->table('forums_posts', 'fp');
+        $objORM->select('fp.id', 'fp.tid', 'ft.fid', 'ft.subject', 'fp.message', 'fp.insert_time', $postNumber);
+        $objORM->join('forums_topics as ft', 'fp.tid', 'ft.id', 'left');
+        $result = $objORM->loadWhere('search.terms')->orderBy('fp.insert_time desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return array();
+            return false;
         }
 
         $objDate = Jaws_Date::getInstance();
