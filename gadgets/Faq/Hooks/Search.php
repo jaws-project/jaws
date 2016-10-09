@@ -18,38 +18,27 @@ class Faq_Hooks_Search extends Jaws_Gadget_Hook
      */
     function GetOptions() {
         return array(
-                    array('[question]', '[answer]'),
-                    );
+            'faq' => array('question', 'answer'),
+        );
     }
 
     /**
      * Returns an array with the results of a search
      *
      * @access  public
-     * @param   string  $pSql   Prepared search (WHERE) SQL
+     * @param   string  $table  Table name
+     * @param   object  $objORM Jaws_ORM instance object
      * @return  array   An array of entries that matches a certain pattern
      */
-    function Execute($pSql = '')
+    function Execute($table, &$objORM)
     {
-        $params = array('active' => true);
-
-        $sql = '
-            SELECT
-                [category],
-                [question],
-                [answer],
-                [faq_position],
-                [updatetime]
-            FROM [[faq]]
-            WHERE [published] = {active}
-            ';
-
-        $sql .= ' AND ' . $pSql;
-        $sql .= ' ORDER BY [createtime] desc';
-
-        $result = Jaws_DB::getInstance()->queryAll($sql, $params);
+        $objORM->table('faq');
+        $objORM->select('category', 'question', 'answer', 'faq_position', 'updatetime');
+        $objORM->where('published', true);
+        $objORM->and()->loadWhere('search.terms');
+        $result = $objORM->orderBy('createtime desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return array();
+            return false;
         }
 
         $questions  = array();
