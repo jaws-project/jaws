@@ -18,47 +18,33 @@ class Blog_Hooks_Search extends Jaws_Gadget_Hook
      */
     function GetOptions() {
         return array(
-                    array('[title]', '[summary]', '[text]'),
-                    );
+            'blog' => array('title', 'summary', 'text'),
+        );
     }
 
     /**
      * Returns an array with the results of a search
      *
      * @access  public
-     * @param   string  $pSql   Prepared search (WHERE) SQL
+     * @param   string  $table  Table name
+     * @param   object  $objORM Jaws_ORM instance object
      * @return  array   An array of entries that matches a certain pattern
      */
-    function Execute($pSql = '')
+    function Execute($table, &$objORM)
     {
-        $params = array('published' => true);
-
-        $sql = '
-            SELECT
-                [id],
-                [title],
-                [fast_url],
-                [summary],
-                [text],
-                [categories],
-                [createtime],
-                [updatetime]
-            FROM [[blog]]
-            WHERE
-                [published] = {published}
-              AND
-                [createtime] <= {now}
-            ';
-
-        $sql .= ' AND ' . $pSql;
-        $sql .= ' ORDER BY [createtime] desc';
-
-        $params['now']       = Jaws_DB::getInstance()->date();
-        $params['published'] = true;
-
-        $result = Jaws_DB::getInstance()->queryAll($sql, $params);
+        $objORM->table('blog');
+        $objORM->select(
+            'id', 'title', 'fast_url', 'summary', 'text', 'categories', 'image', 'createtime', 'updatetime'
+        );
+        $result = $objORM->where('published', true)
+            ->and()
+            ->where('createtime', Jaws_DB::getInstance()->date(), '<=')
+            ->and()
+            ->loadWhere('search.terms')
+            ->orderBy('createtime desc')
+            ->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return array();
+            return false;
         }
 
         $date = Jaws_Date::getInstance();
@@ -82,13 +68,16 @@ class Blog_Hooks_Search extends Jaws_Gadget_Hook
                 $url = $this->gadget->urlMap('SingleView', array('id' => $r['fast_url']));
             }
             $entry['url'] = $url;
-            //FIXME: Will be great if we can get the first image in "text"
-            $entry['image'] = 'gadgets/Blog/Resources/images/logo.png';
+            if (empty($r['image'])) {
+                $entry['image'] = 'gadgets/Blog/Resources/images/logo.png';
+            } else {
+                $entry['image'] = $GLOBALS['app']->getDataURL(). 'blog/images/'. $r['image'];
+            }
+
             $entry['snippet'] = empty($r['summary'])? $r['text'] : $r['summary'];
             $entry['date']    = $date->ToISO($r['createtime']);
 
-            $stamp = str_replace(array('-', ':', ' '), '', $r['createtime']);
-            $entries[$stamp] = $entry;
+            $entries[] = $entry;
         }
 
         return $entries;
