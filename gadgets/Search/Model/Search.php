@@ -62,7 +62,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
             foreach($searchFields as $table => $fields) {
                 $objORM = Jaws_ORM::getInstance();
                 foreach($options as $option => $words) {
-                    if (empty($words)) {
+                    if (empty($words) || !is_array($words)) {
                         continue;
                     }
 
@@ -75,7 +75,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
                             foreach($words as $word) {
                                 $objORM->openWhere();
                                 foreach($fields as $fidx => $field) {
-                                    $objORM->where($field, array('%$%', $word), 'not like')->and();
+                                    $objORM->where("lower($field)", array('%$%', $word), 'not like')->and();
                                 }
                                 $objORM->closeWhere()->and();
                             }
@@ -86,7 +86,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
                             foreach($words as $word) {
                                 $objORM->openWhere();
                                 foreach($fields as $fidx => $field) {
-                                    $objORM->where($field, array('%$%', $word), 'like')->or();
+                                    $objORM->where("lower($field)", array('%$%', $word), 'like')->or();
                                 }
                                 $objORM->closeWhere()->and();
                             }
@@ -96,7 +96,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
                             foreach($words as $word) {
                                 $objORM->openWhere();
                                 foreach($fields as $fidx => $field) {
-                                    $objORM->where($field, array('%$%', $word), 'like')->or();
+                                    $objORM->where("lower($field)", array('%$%', $word), 'like')->or();
                                 }
                                 $objORM->closeWhere()->or();
                             }
@@ -105,6 +105,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
                     }
                 }
 
+                $objORM->saveWhere('search.terms');
                 $gResult = $objHook->Execute($table, $objORM);
                 if (Jaws_Error::IsError($gResult) || empty($gResult)) {
                     continue;
