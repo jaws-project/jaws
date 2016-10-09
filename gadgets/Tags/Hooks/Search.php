@@ -35,7 +35,7 @@ class Tags_Hooks_Search extends Jaws_Gadget_Hook
         if ($GLOBALS['app']->Session->Logged()) {
             $objORM->or()->where('user', (int)$GLOBALS['app']->Session->GetAttribute('user'));
         }
-        $objORM->closeWhere();
+        $objORM->closeWhere()->and()->loadWhere('search.terms');
         $result = $objORM->orderBy('id')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return false;
