@@ -18,41 +18,34 @@ class PrivateMessage_Hooks_Search extends Jaws_Gadget_Hook
      */
     function GetOptions() {
         return array(
-                    array('[subject]', '[body]'),
-                    );
+            'pm_messages' => array('subject', 'body'),
+        );
     }
 
     /**
      * Returns an array with the results of a search
      *
      * @access  public
-     * @param   string  $pSql   Prepared search(WHERE) SQL
+     * @param   string  $table  Table name
+     * @param   object  $objORM Jaws_ORM instance object
      * @return  array   An array of entries that matches a certain pattern
      */
-    function Execute($pSql = '')
+    function Execute($table, &$objORM)
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             return array();
         }
 
-        $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $params = array();
-        $params['user'] = $user;
-
-        $sql = '
-            SELECT
-               [id], [from], [folder], [subject], [body], [insert_time]
-            FROM [[pm_messages]]
-            WHERE
-                (([from] = {user} and [to] = 0) OR ([to] = {user}))
-            ';
-
-        $sql .= ' AND ' . $pSql;
-        $sql .= ' ORDER BY [insert_time] desc';
-
-        $result = Jaws_DB::getInstance()->queryAll($sql, $params);
+        $objORM->table('pm_messages');
+        $objORM->select('id', 'from', 'folder', 'subject', 'body', 'insert_time');
+        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $objORM->openWhere()->openWhere('from', $user);
+        $objORM->and()->where('to', 0);
+        $objORM->closeWhere()->or()->where('to', $user);
+        $objORM->closeWhere()->and()->loadWhere('search.terms');
+        $result = $objORM->orderBy('id')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return array();
+            return false;
         }
 
         $messages = array();
