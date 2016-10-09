@@ -123,6 +123,14 @@ class Jaws_ORM
     private $_where = array();
 
     /**
+     * Saved where conditions list
+     *
+     * @var     array
+     * @access  private
+     */
+    private $_savedWhere = array();
+
+    /**
      * Join options
      *
      * @var     array
@@ -523,6 +531,33 @@ class Jaws_ORM
         $target = $this->quoteIdentifier($target);
 
         $this->_joins[] = "$join join $table on $source $opt $target";
+        return $this;
+    }
+
+    /**
+     * save where conditions for later using
+     *
+     * @access  public
+     * @param   string  $name   Name of saved where conditions
+     * @return  object  Jaws_ORM object
+     */
+    function saveWhere($name)
+    {
+        $this->_savedWhere[$name] = $this->_where;
+        $this->_where = array();
+        return $this;
+    }
+
+    /**
+     * load where conditions
+     *
+     * @access  public
+     * @param   string  $name   Name of saved where conditions
+     * @return  object  Jaws_ORM object
+     */
+    function loadWhere($name)
+    {
+        $this->_where = array_merge($this->_where, $this->_savedWhere[$name]);
         return $this;
     }
 
@@ -1225,19 +1260,20 @@ class Jaws_ORM
      */
     function reset()
     {
-        $this->_distinct = '';
-        $this->_columns  = array();
-        $this->_types    = array();
-        $this->_values   = array();
-        $this->_extras   = array();
-        $this->_where    = array();
-        $this->_joins    = array();
-        $this->_using    = '';
-        $this->_groupBy  = array();
-        $this->_having   = array();
-        $this->_orderBy  = array();
-        $this->_limit    = null;
-        $this->_offset   = null;
+        $this->_distinct   = '';
+        $this->_columns    = array();
+        $this->_types      = array();
+        $this->_values     = array();
+        $this->_extras     = array();
+        $this->_where      = array();
+        $this->_savedWhere = array();
+        $this->_joins      = array();
+        $this->_using      = '';
+        $this->_groupBy    = array();
+        $this->_having     = array();
+        $this->_orderBy    = array();
+        $this->_limit      = null;
+        $this->_offset     = null;
         $this->_passed_types  = false;
         $this->_query_command = '';
     }
