@@ -18,108 +18,79 @@ class Phoo_Hooks_Search extends Jaws_Gadget_Hook
      */
     function GetOptions() {
         return array(
-                    array('[name]', '[description]'),
-                    array('pi.[title]', 'pi.[description]'),
-                    );
+            'phoo_album' => array('name', 'description'),
+            'phoo_image' => array('pi.title', 'pi.description'),
+        );
     }
 
     /**
      * Returns an array with the results of a search
      *
      * @access  public
-     * @param   array   $pSql Prepared search (WHERE) SQL
+     * @param   string  $table  Table name
+     * @param   object  $objORM Jaws_ORM instance object
      * @return  array   An array of entries that matches a certain pattern
      */
-    function Execute($pSql = array())
+    function Execute($table, &$objORM)
     {
-        $orderType = $GLOBALS['app']->Registry->fetch('albums_order_type', 'Phoo');
-        if (!in_array($orderType, array('createtime desc',
-                                        'createtime',
-                                        'name desc',
-                                        'name',
-                                        'id desc',
-                                        'id', )))
-        {
-            $orderType = 'name';
-        }
-        
-        $params = array();
-        $params['published'] = true;
-
-        // Process Albums
-        $sql = '
-            SELECT
-                [id],
-                [name],
-                [description],
-                [createtime]
-            FROM [[phoo_album]] pa
-            WHERE [published] = {published}
-            ';
-
-        $sql .= ' AND ' . $pSql[0];
-        $sql .= ' ORDER BY pa.['.$orderType .']';
-
-        $result = Jaws_DB::getInstance()->queryAll($sql, $params);
-        if (Jaws_Error::isError($result)) {
-            return array();
-        }
-
         $entries = array();
         $date = Jaws_Date::getInstance();
-        foreach ($result as $r) {
-            $entry = array();
-            $entry['title']   = $r['name'];
-            $entry['url']     = $this->gadget->urlMap('ViewAlbum', array('id' => $r['id']));
-            $entry['image']   = 'gadgets/Phoo/Resources/images/logo.png';
-            $entry['snippet'] = $r['description'];
-            $entry['date']    = $date->ToISO($r['createtime']);
-            $stamp            = str_replace(array('-', ':', ' '), '', $r['createtime']);
-            $entries[$stamp]  = $entry;
-        }
 
-        // Process Images
-        $sql = '
-            SELECT
-                pi.[id],
-                pi.[filename],
-                pi.[title],
-                pi.[description],
-                pi.[createtime],
-                [phoo_album_id]
-            FROM [[phoo_image]] pi
-            LEFT JOIN [[phoo_image_album]] pia ON pia.[phoo_image_id] = pi.[id]
-            LEFT JOIN [[phoo_album]] pa ON pa.[id] = pia.[phoo_album_id]
-            WHERE
-                pi.[published] = {published}
-              AND
-                pa.[published] = {published}
-            ';
+        if ($table == 'phoo_album') {
+            $objORM->table('phoo_album');
+            $objORM->select('id', 'name', 'description', 'createtime');
+            $result = $objORM->where('published', true)
+                ->and()
+                ->loadWhere('search.terms')
+                ->orderBy('createtime desc')
+                ->fetchAll();
+            if (Jaws_Error::IsError($result)) {
+                return false;
+            }
 
-        $sql .= ' AND ' . $pSql[1];
-        $sql .= ' ORDER BY pi.[createtime] desc';
+            foreach ($result as $r) {
+                $entry = array();
+                $entry['title']   = $r['name'];
+                $entry['url']     = $this->gadget->urlMap('ViewAlbum', array('id' => $r['id']));
+                $entry['image']   = 'gadgets/Phoo/Resources/images/logo.png';
+                $entry['snippet'] = $r['description'];
+                $entry['date']    = $date->ToISO($r['createtime']);
+                $entries[] = $entry;
+            }
 
-        $result = Jaws_DB::getInstance()->queryAll($sql, $params);
-        if (Jaws_Error::isError($result)) {
-            return array();
-        }
-
-        include_once JAWS_PATH . 'include/Jaws/Image.php';
-        foreach ($result as $r) {
-            $entry = array();
-            $entry['title'] = $r['title'];
-            $entry['url']   = $this->gadget->urlMap(
-                'ViewImage',
-                array('albumid' => $r['phoo_album_id'], 'id' => $r['id'])
+        } else {
+            $objORM->table('phoo_image', 'pi');
+            $objORM->select(
+                'pi.id', 'pi.filename', 'pi.title', 'pi.description', 'pi.createtime', 'pia.phoo_album_id'
             );
-            $path = substr($r['filename'], 0, strrpos($r['filename'], '/'));
-            $file = basename($r['filename']);
+            $objORM->join('phoo_image_album as pia', 'pia.phoo_image_id', 'pi.id', 'left');
+            $objORM->join('phoo_album as pa', 'pa.id', 'pia.phoo_album_id', 'left');
+            $result = $objORM->where('pi.published', true)
+                ->and()
+                ->where('pa.published', true)
+                ->and()
+                ->loadWhere('search.terms')
+                ->orderBy('pi.createtime desc')
+                ->fetchAll();
+            if (Jaws_Error::IsError($result)) {
+                return false;
+            }
 
-            $entry['image']   = $GLOBALS['app']->getDataURL("phoo/$path/thumb/$file");
-            $entry['snippet'] = $r['description'];
-            $entry['date']    = $date->ToISO($r['createtime']);
-            $stamp            = str_replace(array('-', ':', ' '), '', $r['createtime']);
-            $entries[$stamp]  = $entry;
+            foreach ($result as $r) {
+                $entry = array();
+                $entry['title'] = $r['title'];
+                $entry['url']   = $this->gadget->urlMap(
+                    'ViewImage',
+                    array('albumid' => $r['phoo_album_id'], 'id' => $r['id'])
+                );
+                $path = substr($r['filename'], 0, strrpos($r['filename'], '/'));
+                $file = basename($r['filename']);
+
+                $entry['image']   = $GLOBALS['app']->getDataURL("phoo/$path/thumb/$file");
+                $entry['snippet'] = $r['description'];
+                $entry['date']    = $date->ToISO($r['createtime']);
+                $entries[]  = $entry;
+            }
         }
 
         return $entries;
