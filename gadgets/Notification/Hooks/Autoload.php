@@ -15,7 +15,8 @@ class Notification_Hooks_Autoload extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $this->SendNotifications();
+        // this action must be call by time-based job scheduler
+        //$this->SendNotifications();
 
         // Delete orphaned messages
         if (mt_rand(1, 32) == mt_rand(1, 32)) {
