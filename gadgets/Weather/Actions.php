@@ -95,3 +95,7 @@ $admin_actions['getData'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
+$admin_actions['GetGoogleMapImage'] = array(
+    'standalone' => true,
+    'file' => 'GoogleMap',
+);
