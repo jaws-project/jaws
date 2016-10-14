@@ -18,43 +18,32 @@ class StaticPage_Hooks_Search extends Jaws_Gadget_Hook
      */
     function GetOptions() {
         return array(
-                    array('spt.[content]', 'spt.[title]'),
-                    );
+            'static_pages_translation' => array('static_pages_translation.content', 'static_pages_translation.title'),
+        );
     }
 
     /**
      * Returns an array with the results of a search
      *
      * @access  public
-     * @param   string  $pSql   Prepared search(WHERE) SQL
+     * @param   string  $table  Table name
+     * @param   object  $objORM Jaws_ORM instance object
      * @return  array   An array of entries that matches a certain pattern
      */
-    function Execute($pSql = '')
+    function Execute($table, &$objORM)
     {
-        $params = array();
-        $params['visible']   = true;
-        $params['published'] = true;
-
-        $sql = '
-            SELECT
-               sp.[page_id], sp.[group_id], sp.[fast_url], spg.[fast_url] as spg_fast_url,
-               spt.[title], spt.[content], spt.[language], spt.[updated]
-            FROM [[static_pages]] sp
-            LEFT JOIN [[static_pages_translation]] spt ON sp.[page_id] = spt.[base_id]
-            LEFT JOIN [[static_pages_groups]] spg ON sp.[group_id] = spg.[id]
-            WHERE
-                spg.[visible]   = {visible}
-              AND
-                spt.[published] = {published}
-            ';
-
-        $sql .= ' AND ' . $pSql;
-        $sql .= ' ORDER BY sp.[page_id] desc';
-
-        $types = array('integer', 'integer', 'text', 'text', 'text', 'text', 'text', 'timestamp');
-        $result = Jaws_DB::getInstance()->queryAll($sql, $params, $types);
+        $objORM->table('static_pages');
+        $objORM->select('static_pages.page_id', 'static_pages.group_id', 'static_pages.fast_url',
+            'static_pages_groups.fast_url as spg_fast_url', 'static_pages_translation.title',
+            'static_pages_translation.content', 'static_pages_translation.language', 'static_pages_translation.updated');
+        $objORM->join('static_pages_translation', 'static_pages.page_id', 'static_pages_translation.base_id', 'left');
+        $objORM->join('static_pages_groups', 'static_pages.group_id', 'static_pages_groups.id', 'left');
+        $objORM->where('static_pages_groups.visible', true);
+        $objORM->and()->where('static_pages_translation.published', true);
+        $objORM->and()->loadWhere('search.terms');
+        $result = $objORM->orderBy('id')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return array();
+            return false;
         }
 
         $date  = Jaws_Date::getInstance();

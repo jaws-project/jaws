@@ -17,38 +17,30 @@ class Directory_Hooks_Search extends Jaws_Gadget_Hook
      * @return  array   List of search fields
      */
     function GetOptions() {
-        return array(array('[title]', '[description]', '[user_filename]'));
+        return array(
+            'directory' => array('title', 'description', 'user_filename'),
+        );
     }
 
     /**
      * Returns an array with the results of a search
      *
      * @access  public
-     * @param   string  $pSql   Prepared search(WHERE) SQL
+     * @param   string  $table  Table name
+     * @param   object  $objORM Jaws_ORM instance object
      * @return  array   An array of entries that matches a certain pattern
      */
-    function Execute($pSql = '')
+    function Execute($table, &$objORM)
     {
-        $sql = '
-            SELECT
-               [id], [title], [description], [user_filename], [update_time]
-            FROM [[directory]]
-            WHERE
-                [hidden] = {hidden}
-            ';
-
-        $sql .= ' AND ' . $pSql;
-        $sql .= ' ORDER BY id desc';
-
-        $params = array();
-        $params['hidden'] = false;
-        $types = array('text', 'text', 'text', 'integer');
-        $result = Jaws_DB::getInstance()->queryAll($sql, $params, $types);
+        $objORM->table('directory');
+        $objORM->select('id', 'title', 'description', 'user_filename', 'update_time:integer');
+        $objORM->where('hidden', false);
+        $objORM->and()->loadWhere('search.terms');
+        $result = $objORM->orderBy('id desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
-            return array();
+            return false;
         }
 
-        $date  = Jaws_Date::getInstance();
         $files = array();
         foreach ($result as $p) {
             $file = array();

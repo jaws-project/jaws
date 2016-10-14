@@ -18,7 +18,7 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
      */
     function GetOptions() {
         return array(
-            array('[title]', '[description]'),
+            'filebrowser' => array('title', 'description'),
         );
     }
 
@@ -26,10 +26,11 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
      * Returns an array with the results of a search
      *
      * @access  public
-     * @param   string  $pSql  Prepared search (WHERE) SQL
+     * @param   string  $table  Table name
+     * @param   object  $objORM Jaws_ORM instance object
      * @return  array   An array of entries that matches a certain pattern
      */
-    function Execute($pSql = '')
+    function Execute($table, &$objORM)
     {
         if (!$this->gadget->GetPermission('OutputAccess')) {
             return array();
@@ -39,19 +40,12 @@ class FileBrowser_Hooks_Search extends Jaws_Gadget_Hook
             return array();
         }
 
-        // TODO: must be converted to Jaws_ORM
-        $sql = '
-            SELECT
-                [id], [filename], [title], [description], [fast_url], [path], [updatetime]
-            FROM [[filebrowser]]
-            ';
-
-        $sql .= ' WHERE ' . $pSql;
-        $sql .= ' ORDER BY [updatetime] desc';
-
-        $files = Jaws_DB::getInstance()->queryAll($sql);
+        $objORM->table('filebrowser');
+        $objORM->select('id', 'filename', 'title', 'description', 'fast_url', 'path', 'updatetime');
+        $objORM->loadWhere('search.terms');
+        $files = $objORM->orderBy('updatetime desc')->fetchAll();
         if (Jaws_Error::IsError($files)) {
-            return array();
+            return false;
         }
 
         $fModel = $this->gadget->model->load('Files');
