@@ -42,111 +42,82 @@ class Search_Model_Search extends Jaws_Gadget_Model
             $gadgets = array($options['gadgets']);
         }
 
-        if (is_array($gadgets) && count($gadgets) > 0) {
-            Jaws_DB::getInstance()->dbc->loadModule('Function', null, true);
-            foreach ($gadgets as $gadget) {
-                $gadget = trim($gadget);
-                if ($gadget == 'Search' || empty($gadget)) {
-                    continue;
-                }
-
-                $objGadget = Jaws_Gadget::getInstance($gadget);
-                if (Jaws_Error::IsError($objGadget)) {
-                    continue;
-                }
-                $objHook = $objGadget->hook->load('Search');
-                if (Jaws_Error::IsError($objHook)) {
-                    continue;
-                }
-
-                $result[$gadget] = array();
-                $searchFields = $objHook->GetOptions();
-                if (empty($searchFields)) {
-                    continue;
-                }
-
-                $params = array();
-                $i = 0;
-                $preparedSQLs = array();
-                foreach($searchFields as $fields) {
-                    $preparedSQL  = '';
-                    foreach($options as $option => $words) {
-                        $sqlFields = '';
-                        if (is_array($words)) {
-                            $words = array_map('trim', $words);
-                            $words = array_filter($words , 'trim');
-                            foreach($words as $widx => $word) {
-                                $word = Jaws_UTF8::trim($word);
-                                switch($option) {
-                                    case 'exclude':
-                                        foreach($fields as $fidx => $field) {
-                                            $sqlFields .= ' '.Jaws_DB::getInstance()->dbc->datatype->matchPattern(
-                                                array(1 => '%', $word, '%'),
-                                                'NOT ILIKE',
-                                                $field);
-                                            if ($fidx != count($fields) -1)
-                                                $sqlFields .= ' AND';
-                                        }
-                                        if ($widx !=  count($words) -1)
-                                            $sqlFields .= ' AND';
-                                        break;
-                                    case 'all':
-                                    case 'exact':
-                                        foreach($fields as $fidx => $field) {
-                                            if ($fidx == 0) $sqlFields .= '(';
-                                            $sqlFields .= ' '.Jaws_DB::getInstance()->dbc->datatype->matchPattern(
-                                                array(1 => '%', $word, '%'),
-                                                'ILIKE',
-                                                $field);
-                                            if ($fidx == count($fields) -1)
-                                                $sqlFields .= ')';
-                                            else
-                                                $sqlFields .= ' OR';
-                                        }
-                                        if ($widx !=  count($words) -1)
-                                            $sqlFields .= ' AND';
-                                        break;
-                                    case 'least':
-                                        foreach($fields as $fidx => $field) {
-                                            $sqlFields .= ' '.Jaws_DB::getInstance()->dbc->datatype->matchPattern(
-                                                array(1 => '%', $word, '%'),
-                                                'ILIKE',
-                                                $field);
-                                            if ($fidx != count($fields) -1)
-                                                $sqlFields .= ' OR';
-                                        }
-                                        if ($widx !=  count($words) -1)
-                                            $sqlFields .= ' OR';
-                                        break;
-                                }
-
-                                $i++;
-                            }
-
-                            if (!empty($sqlFields)) {
-                                $preparedSQL.= empty($preparedSQL)? $sqlFields : ' AND ('.$sqlFields.')';
-                            }
-                        }
-                    }
-                    $preparedSQLs[] = Jaws_DB::getInstance()->sqlParse($preparedSQL, $params);
-                }
-
-                if (is_array($preparedSQLs) && count($preparedSQLs) == 1) {
-                    $preparedSQLs = $preparedSQLs[0];
-                }
-
-                $gResult = $objHook->Execute($preparedSQLs);
-                if (!Jaws_Error::IsError($gResult) || !$gResult) {
-                    if (is_array($gResult) && !empty($gResult)) {
-                        $result[$gadget] = $gResult;
-                        $result['_totalItems'] += count($gResult);
-                    } else {
-                        unset($result[$gadget]);
-                    }
-                }
+        foreach ($gadgets as $gadget) {
+            $gadget = trim($gadget);
+            if ($gadget == 'Search' || empty($gadget)) {
+                continue;
             }
 
-            reset($result);
+            $objHook = Jaws_Gadget::getInstance($gadget)->hook->load('Search');
+            if (Jaws_Error::IsError($objHook)) {
+                continue;
+            }
+
+            $searchFields = $objHook->GetOptions();
+            if (empty($searchFields)) {
+                continue;
+            }
+
+            $result[$gadget] = array();
+            foreach($searchFields as $table => $fields) {
+                $objORM = Jaws_ORM::getInstance();
+                foreach($options as $option => $words) {
+                    if (empty($words) || !is_array($words)) {
+                        continue;
+                    }
+
+                    $words = array_filter(array_map('trim', $words));
+                    if (empty($words)) {
+                        continue;
+                    }
+                    switch($option) {
+                        case 'exclude':
+                            foreach($words as $word) {
+                                $objORM->openWhere();
+                                foreach($fields as $fidx => $field) {
+                                    $objORM->where("lower($field)", array('%$%', $word), 'not like')->and();
+                                }
+                                $objORM->closeWhere()->and();
+                            }
+                            break;
+
+                        case 'all':
+                        case 'exact':
+                            foreach($words as $word) {
+                                $objORM->openWhere();
+                                foreach($fields as $fidx => $field) {
+                                    $objORM->where("lower($field)", array('%$%', $word), 'like')->or();
+                                }
+                                $objORM->closeWhere()->and();
+                            }
+                            break;
+
+                        case 'least':
+                            foreach($words as $word) {
+                                $objORM->openWhere();
+                                foreach($fields as $fidx => $field) {
+                                    $objORM->where("lower($field)", array('%$%', $word), 'like')->or();
+                                }
+                                $objORM->closeWhere()->or();
+                            }
+                            $objORM->and();
+                            break;
+                    }
+                }
+
+                $objORM->saveWhere('search.terms');
+                $gResult = $objHook->Execute($table, $objORM);
+                if (Jaws_Error::IsError($gResult) || empty($gResult)) {
+                    continue;
+                }
+                $result[$gadget] = array_merge($result[$gadget], $gResult);
+                $result['_totalItems'] += count($gResult);
+            }
+
+            if (empty($result[$gadget])) {
+                unset($result[$gadget]);
+            }
+
         }
 
         return $result;
