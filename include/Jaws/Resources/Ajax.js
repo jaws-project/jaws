@@ -209,7 +209,7 @@ function JawsAjax(gadget, callback, baseScript)
         }
 
         $(this.msgBox).html(response.text).attr('class', response.type);
-        $(this.msgBox).fadeIn().delay(4000).fadeOut(1000, function() {$(this).removeClass();});
+        $(this.msgBox).stop(true, true).fadeIn().delay(4000).fadeOut(1000, function() {$(this).removeClass();});
     };
 
     /*
@@ -224,7 +224,7 @@ function JawsAjax(gadget, callback, baseScript)
                     loadingMessage = (typeof default_loading_message === 'undefined')? '...' : default_loading_message;
                 }
                 $(this.msgBox).html(loadingMessage).attr('class', 'response_loading');
-                $(this.msgBox).fadeIn();
+                $(this.msgBox).stop(true, true).fadeIn();
             } else {
                 $(this.msgBox).fadeOut(0, function() {$(this).removeClass();});
             }
