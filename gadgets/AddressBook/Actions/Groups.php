@@ -73,7 +73,7 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
             return $groupItems->getMessage(); // TODO: Show intelligible message
         }
 
-        $this->SetTitle(_t('ADDRESSBOOK_NAME'));
+        $this->SetTitle(_t('ADDRESSBOOK_TITLE'));
         $tpl = $this->gadget->template->load('ManageGroups.html');
 
         $tpl->SetBlock("groups");
