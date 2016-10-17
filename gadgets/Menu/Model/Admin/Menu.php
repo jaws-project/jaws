@@ -4,12 +4,6 @@
  *
  * @category    GadgetModel
  * @package     Menu
- * @author      Jonathan Hernandez <ion@suavizado.com>
- * @author      Pablo Fischer <pablo@pablo.com.mx>
- * @author      Jon Wood <jon@substance-it.co.uk>
- * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2004-2015 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
 {
@@ -29,13 +23,14 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      * @param    string  $image
      * @return   bool    True on success or False on failure
      */
-    function InsertMenu($pid, $gid, $type, $acl, $title, $url, $url_target, $rank, $published, $image)
+    function InsertMenu($pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $rank, $published, $image)
     {
         $mData['pid']        = $pid;
         $mData['gid']        = $gid;
         $mData['menu_type']  = $type;
         $mData['title']      = $title;
         $mData['url']        = $url;
+        $mData['variable']   = (bool)$variable;
         $mData['url_target'] = $url_target;
         $mData['rank']       = $rank;
         $mData['published']  = (bool)$published;
@@ -90,7 +85,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      * @param    string  $image
      * @return   bool    True on success or False on failure
      */
-    function UpdateMenu($mid, $pid, $gid, $type, $acl, $title, $url, $url_target, $rank, $published, $image)
+    function UpdateMenu($mid, $pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $rank, $published, $image)
     {
         $model = $this->gadget->model->load('Menu');
         $oldMenu = $model->GetMenu($mid);
@@ -104,6 +99,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         $mData['menu_type']  = $type;
         $mData['title']      = $title;
         $mData['url']        = $url;
+        $mData['variable']   = (bool)$variable;
         $mData['url_target'] = $url_target;
         $mData['rank']       = $rank;
         $mData['published']  = (bool)$published;

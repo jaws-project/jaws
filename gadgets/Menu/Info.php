@@ -4,10 +4,6 @@
  *
  * @category    GadgetInfo
  * @package     Menu
- * @author      Jonathan Hernandez <ion@suavizado.com>
- * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2004-2015 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Menu_Info extends Jaws_Gadget
 {
@@ -17,7 +13,7 @@ class Menu_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '1.1.0';
+    var $version = '1.2.0';
 
     /**
      * Default front-end action name
