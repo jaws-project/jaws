@@ -122,11 +122,19 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
 
                 $params = array();
                 $url = unserialize($menus[$i]['url']);
-                foreach ($url['variables'] as $var => $val) {
-                    $params[$var] = $objGadget->session->fetch($val);
-                    if (is_null($params[$var])) {
-                        continue 2;
+                foreach ($url['params'] as $param => $str) {
+                    if (!preg_match_all('@\{([[:alnum:]]+)\}@iu', $str, $vars, PREG_SET_ORDER)) {
+                        continue;
                     }
+
+                    foreach ($vars as $var) {
+                        $val = $objGadget->session->fetch($var[1]);
+                        if (is_null($val)) {
+                            continue 3;
+                        }
+                        $str = str_replace('{' . $var[1] . '}', $val, $str);
+                    }
+                    $params[$param] = $str;
                 }
 
                 $menus[$i]['url'] = $objGadget->urlMap($url['action'], $params);
