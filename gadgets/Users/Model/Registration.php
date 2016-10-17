@@ -112,7 +112,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
 
                     default:
                         $tpl->SetVariable('message', _t('USERS_REGISTER_RANDOM_MAIL_MSG'));
-                        
+
                 }
 
                 $tpl->SetBlock('Notification/Password');
@@ -249,6 +249,10 @@ class Users_Model_Registration extends Jaws_Gadget_Model
      */
     function SendRecoveryKey($user_email)
     {
+        if (empty($user_email)) {
+            return new Jaws_Error(_t('USERS_REGISTER_EMAIL_NOT_VALID'), $user_email);
+        }
+
         $userModel = new Jaws_User;
         $uInfos = $userModel->GetUserInfoByEmail($user_email);
         if (Jaws_Error::IsError($uInfos)) {
@@ -256,7 +260,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
         }
 
         if (empty($uInfos)) {
-            return new Jaws_Error(_t('USERS_USER_NOT_EXIST'));                
+            return new Jaws_Error(_t('USERS_USER_NOT_EXIST'));
         }
 
         foreach($uInfos as $info) {
@@ -292,7 +296,7 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             $tpl->SetVariable('site-url', $site_url);
             $tpl->ParseBlock('RecoverPassword');
 
-            $message = $tpl->Get();            
+            $message = $tpl->Get();
             $subject = _t('USERS_FORGOT_REMEMBER', $site_name);
 
             $mail = Jaws_Mail::getInstance();

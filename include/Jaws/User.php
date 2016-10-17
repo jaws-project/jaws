@@ -287,7 +287,7 @@ class Jaws_User
     {
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select('id:integer', 'username', 'nickname', 'email', 'superadmin:boolean', 'status:integer');
-        $usersTable->where('lower(email)', $email);
+        $usersTable->where('lower(email)', strtolower($email));
         return $usersTable->fetchAll();
     }
 
@@ -484,7 +484,7 @@ class Jaws_User
      * Get a list of all groups
      *
      * @access  public
-     * @param   int     $owner      The owner of group 
+     * @param   int     $owner      The owner of group
      * @param   bool    $enabled    enabled groups?(null for both)
      * @param   string  $orderBy    field to order by
      * @param   int     $limit
@@ -513,7 +513,7 @@ class Jaws_User
      * Get count of groups
      *
      * @access  public
-     * @param   int     $owner      The owner of group 
+     * @param   int     $owner      The owner of group
      * @param   bool    $enabled    enabled groups?(null for both)
      * @return  int     Returns groups count
      */
@@ -974,7 +974,7 @@ class Jaws_User
      *
      * @access  public
      * @param   array   $gData  Group information data
-     * @param   int     $owner  The owner of group 
+     * @param   int     $owner  The owner of group
      * @return  bool    Returns true if group  was sucessfully added, false if not
      */
     function AddGroup($gData, $owner = 0)
@@ -1027,7 +1027,7 @@ class Jaws_User
      * @access  public
      * @param   int     $id     Group ID
      * @param   array   $gData  Group information data
-     * @param   int     $owner  The owner of group 
+     * @param   int     $owner  The owner of group
      * @return  bool    Returns true if group was sucessfully updated, false if not
      */
     function UpdateGroup($id, $gData, $owner = 0)
