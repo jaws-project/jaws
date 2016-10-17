@@ -62,12 +62,6 @@
         </field>
 
         <field>
-            <name>variable</name>
-            <type>boolean</type>
-            <default>false</default>
-        </field>
-
-        <field>
             <name>url_target</name>
             <type>integer</type>
             <length>1</length>
