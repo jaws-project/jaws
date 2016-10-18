@@ -278,9 +278,10 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
+        $dir = _t_lang($this->gadget->registry->fetch('site_language', 'Settings'), 'GLOBAL_LANG_DIRECTION');
+        $dir = ($dir == 'rtl') ? '.rtl' : '';
         $GLOBALS['app']->Layout->AddScriptLink('libraries/w2ui/w2ui.js');
-//        $GLOBALS['app']->Layout->AddHeadLink('libraries/w2ui/w2ui.rtl.css');
-        $GLOBALS['app']->Layout->AddHeadLink('libraries/w2ui/w2ui.css');
+        $GLOBALS['app']->Layout->AddHeadLink("libraries/w2ui/w2ui$dir.css");
         $this->AjaxMe('index.js');
 
         $tpl = $this->gadget->template->load('UserRegions.html');
