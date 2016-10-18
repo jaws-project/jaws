@@ -4,10 +4,6 @@
  *
  * @category    Gadget
  * @package     Menu
- * @author      Pablo Fischer <pablo@pablo.com.mx>
- * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2004-2015 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Menu_Actions_Menu extends Jaws_Gadget_Action
 {
@@ -115,6 +111,33 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
                 )
             ) {
                 continue;
+            }
+
+            // check variable menu
+            if ($menus[$i]['variable']) {
+                $objGadget = Jaws_Gadget::getInstance($menus[$i]['menu_type']);
+                if (Jaws_Error::IsError($objGadget)) {
+                    continue;
+                }
+
+                $params = array();
+                $url = unserialize($menus[$i]['url']);
+                foreach ($url['params'] as $param => $str) {
+                    if (!preg_match_all('@\{([[:alnum:]]+)\}@iu', $str, $vars, PREG_SET_ORDER)) {
+                        continue;
+                    }
+
+                    foreach ($vars as $var) {
+                        $val = $objGadget->session->fetch($var[1]);
+                        if (is_null($val)) {
+                            continue 3;
+                        }
+                        $str = str_replace('{' . $var[1] . '}', $val, $str);
+                    }
+                    $params[$param] = $str;
+                }
+
+                $menus[$i]['url'] = $objGadget->urlMap($url['action'], $params);
             }
 
             $level++;

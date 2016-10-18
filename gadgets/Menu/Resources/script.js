@@ -3,12 +3,6 @@
  *
  * @category    Ajax
  * @package     Menu
- * @author      Jonathan Hernandez <ion@gluch.org.mx>
- * @author      Pablo Fischer <pablo@pablo.com.mx>
- * @author      Ali Fazelzadeh <afz@php.net>
- * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2005-2015 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/lesser.html
  */
 /**
  * Use async mode, create Callback
@@ -128,7 +122,8 @@ function saveMenus()
                     $('#type').val(),
                     aclInfo,
                     $('#title').val(),
-                    encodeURI($('#url').val()),
+                    $('#url').val(),
+                    $('#variable').val(),
                     $('#url_target').val(),
                     $('#rank').val(),
                     $('#published').val(),
@@ -151,7 +146,8 @@ function saveMenus()
                     $('#type').val(),
                     aclInfo,
                     $('#title').val(),
-                    encodeURI($('#url').val()),
+                    $('#url').val(),
+                    $('#variable').val(),
                     $('#url_target').val(),
                     $('#rank').val(),
                     $('#published').val(),
@@ -354,7 +350,9 @@ function editMenu(mid)
     $('#gid').val(menuInfo['gid']);
     $('#type').val(menuInfo['menu_type']);
     $('#title').val(menuInfo['title'].defilter());
-    $('#url').val(decodeURI(menuInfo['url']));
+    $('#url').val(menuInfo['url']);
+    $('#url').prop('disabled', menuInfo['variable']);
+    $('#variable').val(menuInfo['variable']? 1 : 0);
     $('#url_target').val(menuInfo['url_target']);
     aclInfo = menuInfo['acl_key_name'] + ':' + menuInfo['acl_key_subkey'];
 
@@ -449,6 +447,7 @@ function getReferences(type)
         $('#references').append($('<option>').val(link['url']).text(link['title']));
         cacheReferences[type][i] = new Array();
         cacheReferences[type][i]['url']   = link['url'];
+        cacheReferences[type][i]['variable'] = link['variable']? 1 : 0;
         cacheReferences[type][i]['title'] = link['title'];
         if (link['title2']) {
             cacheReferences[type][i]['title2'] = link['title2'];
@@ -475,9 +474,9 @@ function changeReferences() {
         }
     }
 
-    if ($('#references').val() != '') {
-        $('#url').val(decodeURI($('#references').val()));
-    }
+    $('#variable').val(cacheReferences[type][selIndex]['variable']);
+    $('#url').val($('#references').val());
+    $('#url').prop('disabled', cacheReferences[type][selIndex]['variable']);
 }
 
 /**

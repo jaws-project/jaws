@@ -4,11 +4,6 @@
  *
  * @category    Ajax
  * @package     Menu
- * @author      Pablo Fischer <pablo@pablo.com.mx>
- * @author      Jon Wood <jon@substance-it.co.uk>
- * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2005-2015 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
@@ -81,12 +76,16 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         @list($mid) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->load('Menu');
-        $menuInfo = $model->GetMenu($mid);
-        if (Jaws_Error::IsError($menuInfo)) {
+        $menu = $model->GetMenu($mid);
+        if (Jaws_Error::IsError($menu)) {
             return false; //we need to handle errors on ajax
         }
 
-        return $menuInfo;
+        if (!$menu['variable']) {
+            $menu['url'] = rawurldecode($menu['url']);
+        }
+
+        return $menu;
     }
 
     /**
@@ -114,11 +113,23 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function InsertMenu()
     {
         $this->gadget->CheckPermission('ManageMenus');
-        @list($pid, $gid, $type, $acl, $title, $url, $url_target,
+        @list($pid, $gid, $type, $acl, $title, $url, $variable, $url_target,
             $rank, $published, $image
         ) = jaws()->request->fetchAll('post');
+
+        if (is_null($url)) {
+            $url = serialize(jaws()->request->fetch('5:array', 'post'));
+        } else {
+            $url = implode('/', array_map('rawurlencode', explode('/', $url)));
+            // prevent encode comma
+            $url = str_replace('%2C', ',', $url);
+        }
+
         $model = $this->gadget->model->loadAdmin('Menu');
-        $model->InsertMenu($pid, $gid, $type, $acl, $title, $url, $url_target, $rank, (bool)$published, $image);
+        $model->InsertMenu(
+            $pid, $gid, $type, $acl, $title, $url,
+            $variable, $url_target, $rank, (bool)$published, $image
+        );
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -148,13 +159,22 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateMenu()
     {
         $this->gadget->CheckPermission('ManageMenus');
-        @list($mid, $pid, $gid, $type, $acl, $title, $url, $url_target,
+        @list($mid, $pid, $gid, $type, $acl, $title, $url, $variable, $url_target,
             $rank, $published, $image
         ) = jaws()->request->fetchAll('post');
+
+        if (is_null($url)) {
+            $url = serialize(jaws()->request->fetch('6:array', 'post'));
+        } else {
+            $url = implode('/', array_map('rawurlencode', explode('/', $url)));
+            // prevent encode comma
+            $url = str_replace('%2C', ',', $url);
+        }
+
         $model = $this->gadget->model->loadAdmin('Menu');
         $model->UpdateMenu(
             $mid, $pid, $gid, $type, $acl, $title,
-            $url, $url_target, $rank, (bool)$published, $image
+            $url, $variable, $url_target, $rank, (bool)$published, $image
         );
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -249,9 +269,18 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             if (Jaws_Gadget::IsGadgetUpdated($request)) {
                 $objGadget = Jaws_Gadget::getInstance($request);
                 if (!Jaws_Error::IsError($objGadget)) {
-                    $objHook = $objGadget->hook->load('Menu');
-                    if (!Jaws_Error::IsError($objHook)) {
-                        return $objHook->Execute();
+                    $links = $objGadget->hook->load('Menu')->Execute();
+                    if (!Jaws_Error::IsError($links)) {
+                        foreach ($links as $key => $link) {
+                            if (is_array($link['url'])) {
+                                $links[$key]['variable'] = true;
+                                $links[$key]['url'] = serialize($link['url']);
+                            } else {
+                                $links[$key]['url'] = rawurldecode($link['url']);
+                            }
+                        }
+
+                        return $links;
                     }
                 }
             }

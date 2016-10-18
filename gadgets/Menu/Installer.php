@@ -4,9 +4,6 @@
  *
  * @category    GadgetModel
  * @package     Menu
- * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2012-2015 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Menu_Installer extends Jaws_Gadget_Installer
 {
@@ -121,7 +118,7 @@ class Menu_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.1.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '1.0.0.xml');
+            $result = $this->installSchema('1.1.0.xml', '', '1.0.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -131,6 +128,13 @@ class Menu_Installer extends Jaws_Gadget_Installer
             $groups = $gModel->GetGroups();
             foreach ($groups as $group) {
                 $this->gadget->acl->insert('GroupAccess', $group['id'], true);
+            }
+        }
+
+        if (version_compare($old, '1.2.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '1.1.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
             }
         }
 

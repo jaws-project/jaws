@@ -1,5 +1,5 @@
 .addressbook_image {float: right;}
-#addressbook_nickname {width: 410px;}
+#addressbook_nickname {width: 410px; float: left}
 #addressbook_firstname {width: 190px;}
 #addressbook_lastname {width: 205px;}
 #addTelButton, #addEmailButton, #addAdrButton, #addUrlButton,
