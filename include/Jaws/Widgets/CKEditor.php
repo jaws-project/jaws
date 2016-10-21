@@ -304,13 +304,7 @@ class Jaws_Widgets_CKEditor extends Container
      */
     function setID($id)
     {
-        static $containerID;
-        if (!isset($containerID)) {
-            parent::setID($id);
-            $containerID = $this->getID();
-        } else {
-            $this->TextArea->setID($id);
-        }
+        $this->TextArea->setID($id);
     }
 
     /**

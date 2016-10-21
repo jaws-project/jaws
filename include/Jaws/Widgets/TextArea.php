@@ -107,13 +107,7 @@ class Jaws_Widgets_TextArea extends Container
      */
     function SetID($id)
     {
-        static $containerID;
-        if (!isset($containerID)) {
-            parent::setID($id);
-            $containerID = $this->getID();
-        } else {
-            $this->TextArea->setID($id);
-        }
+        $this->TextArea->setID($id);
     }
 
     /**

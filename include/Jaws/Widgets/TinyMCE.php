@@ -244,13 +244,7 @@ class Jaws_Widgets_TinyMCE extends Container
      */
     function setID($id)
     {
-        static $containerID;
-        if (!isset($containerID)) {
-            parent::setID($id);
-            $containerID = $this->getID();
-        } else {
-            $this->TextArea->setID($id);
-        }
+        $this->TextArea->setID($id);
     }
 
     /**
