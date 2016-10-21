@@ -338,7 +338,11 @@ function changeEditorValue(name, value)
             editor.setData(value);
         }
     } else {
-        $('#'+name)[0].value = value;
+        if ($('#'+name)[0]) {
+            $('#'+name)[0].value = value
+        } else {
+            $('textarea[name='+name+']')[0].value = value;
+        }
     }
 }
 
@@ -359,7 +363,7 @@ function getEditorValue(name)
         }
     }
 
-    return $('#'+name)[0].value;
+    return $('#'+name)[0]? $('#'+name)[0].value : $('textarea[name='+name+']')[0].value;
 }
 
 /**
