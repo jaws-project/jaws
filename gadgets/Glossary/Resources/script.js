@@ -65,7 +65,7 @@ function fillEditorEntries(term_data)
     $('#hidden_id').val(term_data['id']);
     $('#term_title').val(term_data['term'].defilter());
     $('#fast_url').val(term_data['fast_url']);
-    changeEditorValue('term_contents', term_data['description']);
+    setEditorValue('#term_contents', term_data['description']);
     currentMode = 'edit';
 }
 
@@ -80,7 +80,7 @@ function updateTerm()
         id       = $('#hidden_id').val();
         term     = $('#term_title').val();
         fast_url = $('#fast_url').val();
-        contents = getEditorValue('term_contents');
+        contents = getEditorValue('#term_contents');
         if (term.blank() || contents.blank())
         {
             alert(incompleteGlossaryFields);
@@ -188,7 +188,7 @@ function edit(id)
 function preview()
 {
     switchTab('preview');
-    var term_contents = getEditorValue('term_contents');
+    var term_contents = getEditorValue('#term_contents');
     $('#preview_title').html($('#term_title').val());
 
     // Use this if you want to use plugins
@@ -207,7 +207,7 @@ function createNewTerm(title)
     $('#term_title').val('');
     $('#term_title').focus();
     $('#fast_url').val('');
-    changeEditorValue('term_contents', '');   
+    setEditorValue('#term_contents', '');   
 }
 
 /**
@@ -217,7 +217,7 @@ function newTerm()
 {
     term     = $('#term_title').val();
     fast_url = $('#fast_url').val();
-    contents = getEditorValue('term_contents');
+    contents = getEditorValue('#term_contents');
     if (term.blank() || contents.blank())
     {
         alert(incompleteGlossaryFields);
@@ -253,7 +253,7 @@ function returnToEdit()
         if (previousID == 'NEW') {
             termTitle.val('');
             termTitle.focus();
-            changeEditorValue('term_contents', '');
+            setEditorValue('#term_contents', '');
             b.disabled = true;
             combo.disabled = true;
         } else {
