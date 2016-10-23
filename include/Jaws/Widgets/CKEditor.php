@@ -197,7 +197,7 @@ class Jaws_Widgets_CKEditor extends Container
         }
 
         $this->TextArea =& Piwi::CreateWidget('TextArea', $this->_Name, $this->_Value);
-        $this->TextArea->setClass($name);
+        $this->setClass($name);
         $this->TextArea->setID($this->_Name);
         $this->TextArea->setName($this->_Name);
         $this->_Label =& Piwi::CreateWidget('Label', $label, $this->TextArea);
@@ -244,8 +244,8 @@ class Jaws_Widgets_CKEditor extends Container
         $tpl->Load('CKEditor.html', 'include/Jaws/Resources');
         $block = (JAWS_SCRIPT == 'admin')? 'ckeditor_backend' : 'ckeditor_frontend';
         $tpl->SetBlock($block);
-
-        $tpl->SetVariable('name', $this->_Name);
+        $id = $this->TextArea->getID();
+        $tpl->SetVariable('name', empty($id)? "textarea[name={$this->_Name}]" : "textarea#$id");
         $tpl->SetVariable('baseUrl', Jaws_Utils::getBaseURL('/', true));
         $tpl->SetVariable('contentsLangDirection', $this->_Direction);
         $tpl->SetVariable('language', $this->_Language);
@@ -304,13 +304,7 @@ class Jaws_Widgets_CKEditor extends Container
      */
     function setID($id)
     {
-        static $containerID;
-        if (!isset($containerID)) {
-            parent::setID($id);
-            $containerID = $this->getID();
-        } else {
-            $this->TextArea->setID($id);
-        }
+        $this->TextArea->setID($id);
     }
 
     /**

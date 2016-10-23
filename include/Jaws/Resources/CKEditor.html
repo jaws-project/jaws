@@ -1,74 +1,68 @@
 <!-- BEGIN ckeditor_backend -->
 <script type="text/javascript">
     $.loadScript('libraries/ckeditor/ckeditor.js', function() {
-        CKEDITOR.config.entities = false;
-        CKEDITOR.replace(
-            '{{name}}', {
-                'baseUrl': '{{baseUrl}}',
-                'contentsLangDirection': '{{contentsLangDirection}}',
-                'language': '{{language}}',
-                'AutoDetectLanguage': {{AutoDetectLanguage}},
-                'height': '{{height}}',
-                'width': '{{width}}',
-                'skin': '{{skin}}',
-                'theme': '{{theme}}',
-                'readOnly': {{readOnly}},
-                'resize_enabled': {{resize_enabled}},
-                'toolbar': {{toolbar}},
-                <!-- BEGIN extra -->
-                'extraPlugins': '{{extraPlugins}}',
-                <!-- END extra -->
-                'removePlugins': 'bbcode,{{removePlugins}}',
-                'autoParagraph': {{autoParagraph}},
-                'contentsCss': '{{baseUrl}}{{contentsCss}}',
-                <!-- BEGIN filebrowser -->
-                'filebrowserBrowseUrl': '{{filebrowserBrowseUrl}}',
-                'filebrowserFlashBrowseUrl': '{{filebrowserFlashBrowseUrl}}',
-                <!-- END filebrowser -->
-                <!-- BEGIN phoo -->
-                'filebrowserImageBrowseUrl': '{{filebrowserImageBrowseUrl}}',
-                <!-- END phoo -->
-                <!-- BEGIN directory -->
-                'filebrowserFlashBrowseUrl': '{{filebrowserFlashBrowseUrl}}',
-                <!-- END directory -->
-                'indentUnit': 'em',
-                'indentOffset': '1',
-            }
-        );
+        $('{{name}}').ckeditor({
+            'baseUrl': '{{baseUrl}}',
+            'contentsLangDirection': '{{contentsLangDirection}}',
+            'language': '{{language}}',
+            'AutoDetectLanguage': {{AutoDetectLanguage}},
+            'height': '{{height}}',
+            'width': '{{width}}',
+            'skin': '{{skin}}',
+            'theme': '{{theme}}',
+            'readOnly': {{readOnly}},
+            'resize_enabled': {{resize_enabled}},
+            'toolbar': {{toolbar}},
+            <!-- BEGIN extra -->
+            'extraPlugins': '{{extraPlugins}}',
+            <!-- END extra -->
+            'removePlugins': 'bbcode,{{removePlugins}}',
+            'autoParagraph': {{autoParagraph}},
+            'contentsCss': '{{baseUrl}}{{contentsCss}}',
+            <!-- BEGIN filebrowser -->
+            'filebrowserBrowseUrl': '{{filebrowserBrowseUrl}}',
+            'filebrowserFlashBrowseUrl': '{{filebrowserFlashBrowseUrl}}',
+            <!-- END filebrowser -->
+            <!-- BEGIN phoo -->
+            'filebrowserImageBrowseUrl': '{{filebrowserImageBrowseUrl}}',
+            <!-- END phoo -->
+            <!-- BEGIN directory -->
+            'filebrowserFlashBrowseUrl': '{{filebrowserFlashBrowseUrl}}',
+            <!-- END directory -->
+            'indentUnit': 'em',
+            'indentOffset': '1',
+        });
     });
 </script>
 <!-- END ckeditor_backend -->
 <!-- BEGIN ckeditor_frontend -->
 <script type="text/javascript">
     $.loadScript('libraries/ckeditor/ckeditor.js', function() {
-        CKEDITOR.config.entities = false;
-        CKEDITOR.replace(
-            '{{name}}', {
-                'baseUrl': '{{baseUrl}}',
-                'contentsLangDirection': '{{contentsLangDirection}}',
-                'language': '{{language}}',
-                'AutoDetectLanguage': {{AutoDetectLanguage}},
-                'height': '{{height}}',
-                'width': '{{width}}',
-                'skin': '{{skin}}',
-                'theme': '{{theme}}',
-                'readOnly': {{readOnly}},
-                'resize_enabled': {{resize_enabled}},
-                'toolbar': {{toolbar}},
-                <!-- BEGIN extra -->
-                'extraPlugins': '{{extraPlugins}}',
-                <!-- END extra -->
-                'removePlugins': '{{removePlugins}}',
-                'autoParagraph': {{autoParagraph}},
-                'contentsCss': '{{baseUrl}}{{contentsCss}}',
-                <!-- BEGIN filebrowser -->
-                'filebrowserBrowseUrl': '{{filebrowserBrowseUrl}}',
-                'filebrowserFlashBrowseUrl': '{{filebrowserFlashBrowseUrl}}',
-                <!-- END filebrowser -->
-                'indentUnit': 'em',
-                'indentOffset': '1',
-            }
-        );
+        $('{{name}}').ckeditor({
+            'baseUrl': '{{baseUrl}}',
+            'contentsLangDirection': '{{contentsLangDirection}}',
+            'language': '{{language}}',
+            'AutoDetectLanguage': {{AutoDetectLanguage}},
+            'height': '{{height}}',
+            'width': '{{width}}',
+            'skin': '{{skin}}',
+            'theme': '{{theme}}',
+            'readOnly': {{readOnly}},
+            'resize_enabled': {{resize_enabled}},
+            'toolbar': {{toolbar}},
+            <!-- BEGIN extra -->
+            'extraPlugins': '{{extraPlugins}}',
+            <!-- END extra -->
+            'removePlugins': '{{removePlugins}}',
+            'autoParagraph': {{autoParagraph}},
+            'contentsCss': '{{baseUrl}}{{contentsCss}}',
+            <!-- BEGIN filebrowser -->
+            'filebrowserBrowseUrl': '{{filebrowserBrowseUrl}}',
+            'filebrowserFlashBrowseUrl': '{{filebrowserFlashBrowseUrl}}',
+            <!-- END filebrowser -->
+            'indentUnit': 'em',
+            'indentOffset': '1',
+        });
     });
 </script>
 <!-- END ckeditor_frontend -->

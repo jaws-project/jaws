@@ -50,8 +50,7 @@
             return false;
         }
 
-        tinyMCE.init({
-            mode:     '{{mode}}',
+        $("{{selector}}").tinymce({
             language: '{{lang}}',
             theme:    '{{theme}}',
             plugins:  '{{plugins}}',
@@ -85,7 +84,6 @@
             content_css: 'gadgets/ControlPanel/Resources/tinymce{{.dir}}.css',
             extended_valid_elements: '{{valid_elements}}',
             invalid_elements: '{{invalid_elements}}',
-            editor_selector:  '{{class}}',
             document_base_url: '{{base_url}}'
         });
     });
@@ -94,8 +92,7 @@
 <!-- BEGIN tinymce_frontend -->
 <script type="text/javascript">
     $.loadScript('libraries/tinymce/tinymce.min.js', function() {
-        tinyMCE.init({
-            mode:     '{{mode}}',
+        $("{{selector}}").tinymce({
             language: '{{lang}}',
             theme:    '{{theme}}',
             plugins:  '{{plugins}}',
@@ -127,7 +124,6 @@
             content_css: 'gadgets/ControlPanel/Resources/tinymce{{.dir}}.css',
             extended_valid_elements: '{{valid_elements}}',
             invalid_elements: '{{invalid_elements}}',
-            editor_selector:  '{{class}}',
             document_base_url: '{{base_url}}',
             menubar: false
         });
