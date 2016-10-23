@@ -43,13 +43,20 @@ jQuery.extend({
             return;
         }
 
-        $('<script>').appendTo('head').on('load readystatechange', function() {
-            $(this).off('load readystatechange');
-            loadedScripts[path] = true;
-            fn();
-        }).on('error', function() {
-            //on error
-        }).prop('async', true).attr('src', path);
+        loadingScript = $('head script[src="'+path+'"]');
+        if (loadingScript.length) {
+            loadingScript.on('load readystatechange', function() {
+                fn();
+            });
+        } else {
+            $('<script>').appendTo('head').on('load readystatechange', function() {
+                $(this).off('load readystatechange');
+                loadedScripts[path] = true;
+                fn();
+            }).on('error', function() {
+                //on error
+            }).prop('async', true).attr('src', path);
+        }
     }
 })(jQuery);
 
