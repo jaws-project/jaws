@@ -162,7 +162,7 @@ function sendMessage(isDraft) {
             'recipient_users':recipient_users,
             'recipient_groups':recipient_groups,
             'subject':$('#subject').val(),
-            'body':getEditorValue('body'),
+            'body':getEditorValue('#body'),
             'attachments':attachments
         }
     );
