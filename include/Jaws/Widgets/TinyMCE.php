@@ -60,13 +60,6 @@ class Jaws_Widgets_TinyMCE extends Container
     /**
      * @access  private
      * @var     string
-     * @see     http://wiki.moxiecode.com/index.php/TinyMCE:Configuration/mode
-     */
-    var $_Mode = 'textareas';
-
-    /**
-     * @access  private
-     * @var     string
      */
     var $_Theme = 'modern';
 
@@ -206,7 +199,6 @@ class Jaws_Widgets_TinyMCE extends Container
         $tpl->SetVariable('ibrowser', $ibrowser);
         $tpl->SetVariable('fbrowser', $fbrowser);
         $tpl->SetVariable('mbrowser', !empty($mbrowser)? $mbrowser : $fbrowser);
-        $tpl->SetVariable('mode',     $this->_Mode);
         $tpl->SetVariable('lang',     $lang);
         $tpl->SetVariable('theme',    $this->_Theme);
         $tpl->SetVariable('plugins',  $plugins);
@@ -228,7 +220,8 @@ class Jaws_Widgets_TinyMCE extends Container
         $tpl->SetVariable('dir',      _t('GLOBAL_LANG_DIRECTION'));
         $tpl->SetVariable('valid_elements',   $this->_ExtendedValidElements);
         $tpl->SetVariable('invalid_elements', $this->_InvalidElements);
-        $tpl->SetVariable('class', $this->_Class);
+        $id = $this->TextArea->getID();
+        $tpl->SetVariable('selector', empty($id)? "textarea[name={$this->_Name}]" : "textarea#$id");
 
         $tpl->ParseBlock($block);
         $this->_XHTML.= $tpl->Get();

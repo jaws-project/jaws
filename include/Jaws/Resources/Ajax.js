@@ -324,33 +324,30 @@ function paintCombo(combo, oddColor, evenColor)
 }
 
 /**
- * Change the value of the editor/textarea
+ * Set the value of the editor/textarea
  */
-function changeEditorValue(name, value)
+function setEditorValue(name, value)
 {
-    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true;
+    var editor;
     var usingCKE = typeof CKEDITOR == 'undefined' ? false : true;
     if (usingMCE) {
-        var editor = tinyMCE.get(name);
+        editor = $(name).tinymce();
         if (editor) {
             editor.setContent(value);
-         } else {
-            $('#'+name)[0].value = value;
-         }
-    } else if (usingCKE) {
-        var editor = CKEDITOR.instances[name];
-        if (editor.status == 'unloaded') {
-            $('#'+name)[0].value = value;
-        } else {
-            editor.setData(value);
-        }
-    } else {
-        if ($('#'+name)[0]) {
-            $('#'+name)[0].value = value
-        } else {
-            $('textarea[name='+name+']')[0].value = value;
+            return;
         }
     }
+
+    var usingMCE = typeof tinyMCE  == 'undefined' ? false : true;
+    if (usingCKE) {
+        editor = $(name).ckeditorGet();
+        if (editor.status != 'unloaded') {
+            editor.setData(value);
+            return;
+        }
+    }
+
+    $(name).val(value);
 }
 
 /**
@@ -358,19 +355,24 @@ function changeEditorValue(name, value)
  */
 function getEditorValue(name)
 {
+    var editor;
     var usingMCE = typeof tinyMCE  == 'undefined' ? false : true;
-    var usingCKE = typeof CKEDITOR == 'undefined' ? false : true;
     if (usingMCE) {
-        var editor = tinyMCE.get(name);
-        return editor.getContent();
-    } else if (usingCKE) {
-        var editor = CKEDITOR.instances[name];
+        editor = $(name).tinymce();
+        if (editor) {
+            return editor.getContent();
+        }
+    }
+
+    var usingCKE = typeof CKEDITOR == 'undefined' ? false : true;
+    if (usingCKE) {
+        editor = $(name).ckeditorGet();
         if (editor.status != 'unloaded') {
             return editor.getData();
         }
     }
 
-    return $('#'+name)[0]? $('#'+name)[0].value : $('textarea[name='+name+']')[0].value;
+    return $(name).val();
 }
 
 /**
