@@ -463,7 +463,7 @@ function editDirectory(id)
     form.find('[name=parent]').val(data.parent);
     form.find('[name=hidden]').prop('checked', data.hidden);
     form.find('[name=published]').prop('checked', data.published);
-    changeEditorValue('description', data.description);
+    setEditorValue('#description', data.description);
 }
 
 /**
@@ -515,7 +515,7 @@ function editFile(id)
     form.published.checked = file.published;
     // form.thumbnail.src = file.thumbnail;
     $('#frm_file #thumbnail').prop('src', file.thumbnail);
-    changeEditorValue('description', file.description);
+    setEditorValue('#description', file.description);
 }
 
 /**
@@ -608,7 +608,7 @@ function submitDirectory()
 {
     var action = (idSet.length === 0)? 'CreateDirectory' : 'UpdateDirectory',
         data = $.unserialize($('#frm_dir').serialize());
-    data.description = getEditorValue('description');
+    data.description = getEditorValue('#description');
     DirectoryAjax.callAsync(action, data);
 }
 
@@ -619,7 +619,7 @@ function submitFile()
 {
     var action = (idSet.length === 0)? 'CreateFile' : 'UpdateFile',
         data = $.unserialize($('#frm_file').serialize());
-    data.description = getEditorValue('description');
+    data.description = getEditorValue('#description');
     data.thumbnailPath = uploadedThumbnailPath;
 
     DirectoryAjax.callAsync(action, data);

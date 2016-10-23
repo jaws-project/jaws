@@ -24,7 +24,7 @@ function stopAction()
 {
     uploadedFileInfo = {};
     uploadedThumbnailPath = null;
-    changeEditorValue('description', '');
+    setEditorValue('#description', '');
     $('#frm_upload')[0].reset()
     $('#frm_thumbnail_upload')[0].reset()
     $('#frm_upload').show();
@@ -69,7 +69,7 @@ function submitFile()
     var action = (fileId === 0)? 'CreateFile' : 'UpdateFile';
 
     uploadedFileInfo.parent = parentId;
-    uploadedFileInfo.description = getEditorValue('description');
+    uploadedFileInfo.description = getEditorValue('#description');
     uploadedFileInfo.title = $('#frm_file #title').val();
     uploadedFileInfo.tags = $('#frm_file #tags').val();
     uploadedFileInfo.hidden = $('#frm_file #hidden').prop('checked');
