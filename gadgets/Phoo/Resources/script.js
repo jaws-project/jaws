@@ -59,7 +59,7 @@ function updatePhoto()
     var title          = $('#title').val();
     var allow_comments = $('#allow_comments').prop('checked');
     var published      = $('#published').val();
-    var description    = getEditorValue('description');
+    var description    = getEditorValue('#description');
 
     var albumsNode  = $('#album-checkboxes input');
     var albums      = new Array();

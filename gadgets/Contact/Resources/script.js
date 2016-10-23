@@ -384,7 +384,7 @@ function updateProperties()
             $('#use_antispam').val(),
             $('#email_format').val(),
             $('#enable_attachment').val(),
-            getEditorValue('comments')
+            getEditorValue('#comments')
         ]
     );
 }
@@ -524,7 +524,7 @@ function removeAttachment() {
  */
 function previewMessage()
 {
-    var preview  = ContactAjax.callSync('GetMessagePreview', getEditorValue('message')),
+    var preview  = ContactAjax.callSync('GetMessagePreview', getEditorValue('#message')),
         width    = 750,
         height   = 500,
         left     = ($(document).width() - width) / 2,
@@ -569,7 +569,7 @@ function sendEmail()
         return;
     }
 
-    var body = getEditorValue('message');
+    var body = getEditorValue('#message');
     if (body == '') {
         alert(incompleteMailerFields);
         $('#message')[0].focus();

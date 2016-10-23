@@ -206,7 +206,7 @@ function getDataOfLTBForm()
 function parseText(form)
 {
     var title   = form.elements['title'].value;
-    var content = getEditorValue('text_block');
+    var content = getEditorValue('#text_block');
     content = BlogAjax.callSync('ParseText', content);
 
     var preview = document.getElementById('preview');
@@ -618,8 +618,8 @@ function startAutoDrafting()
         trackbacks = $('#trackback_to').val();
     }
     var published      = $('#published').val();
-    var summary        = getEditorValue('summary_block');
-    var content        = getEditorValue('text_block');
+    var summary        = getEditorValue('#summary_block');
+    var content        = getEditorValue('#text_block');
     var tags           = '';
     if ($('#tags').length) {
         tags = $('#tags').val();

@@ -63,7 +63,7 @@ function stopAction()
         $('#gid').prop('selectedIndex', $('#group_filter').prop('selectedIndex') - 1);
         $('#start_time').val('');
         $('#stop_time').val('');
-        changeEditorValue('quotation', '');
+        setEditorValue('#quotation', '');
         $('#quotes_combo').prop('selectedIndex', -1);
         $('#btn_del').css('display', 'none');
         break;
@@ -76,7 +76,7 @@ function stopAction()
 function saveQuote()
 {
     if (!$('#title').val() ||
-        getEditorValue('quotation').blank() ||
+        getEditorValue('#quotation').blank() ||
         $('#gid').val() == 0)
     {
         alert(incompleteQuoteFields);
@@ -87,7 +87,7 @@ function saveQuote()
         var response = QuotesAjax.callSync(
             'InsertQuote', [
                 $('#title').val(),
-                getEditorValue('quotation'),
+                getEditorValue('#quotation'),
                 $('#gid').val(),
                 $('#start_time').val(),
                 $('#stop_time').val(),
@@ -110,7 +110,7 @@ function saveQuote()
             'UpdateQuote', [
                 $('#id').val(),
                 $('#title').val(),
-                getEditorValue('quotation'),
+                getEditorValue('#quotation'),
                 $('#gid').val(),
                 $('#start_time').val(),
                 $('#stop_time').val(),
@@ -155,7 +155,7 @@ function editQuote(id)
     currentAction = 'Quotes';
     $('#id').val(quoteInfo['id']);
     $('#title').val(quoteInfo['title'].defilter());
-    changeEditorValue('quotation', quoteInfo['quotation']);
+    setEditorValue('#quotation', quoteInfo['quotation']);
     $('#gid').val(quoteInfo['gid']);
     if (quoteInfo['gid'] == 0) {
         $('#gid').prop('selectedIndex', -1);
