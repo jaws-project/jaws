@@ -398,7 +398,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $GLOBALS['app']->Session->PushLastResponse(_t('USERS_GROUPS_UPDATED_USERS'),
                                                        RESPONSE_NOTICE);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(),
+            $GLOBALS['app']->Session->PushLastResponse($oldGroups->GetMessage(),
                                                        RESPONSE_ERROR);
         }
 
