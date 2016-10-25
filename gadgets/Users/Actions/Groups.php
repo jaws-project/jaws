@@ -28,7 +28,7 @@ class Users_Actions_Groups extends Users_Actions_Default
             );
         }
 
-        $this->gadget->CheckPermission('ManageUserGroups');
+        $this->gadget->CheckPermission('ManageFriends');
         $this->AjaxMe('index.js');
         $response = $GLOBALS['app']->Session->PopResponse('Users.Groups');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
@@ -92,7 +92,7 @@ class Users_Actions_Groups extends Users_Actions_Default
             );
         }
 
-        $this->gadget->CheckPermission('ManageUserGroups');
+        $this->gadget->CheckPermission('ManageFriends');
         $this->AjaxMe('index.js');
 
         // Load the template
@@ -156,7 +156,7 @@ class Users_Actions_Groups extends Users_Actions_Default
      */
     function AddGroup()
     {
-        $this->gadget->CheckPermission('ManageUserGroups');
+        $this->gadget->CheckPermission('ManageFriends');
 
         $post = jaws()->request->fetch(array('gid', 'name', 'title', 'description'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
@@ -195,7 +195,7 @@ class Users_Actions_Groups extends Users_Actions_Default
      */
     function DeleteGroups()
     {
-        $this->gadget->CheckPermission('ManageUserGroups');
+        $this->gadget->CheckPermission('ManageFriends');
 
         $ids = jaws()->request->fetch('group_checkbox:array', 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
@@ -236,7 +236,7 @@ class Users_Actions_Groups extends Users_Actions_Default
      */
     function AddUserToGroup()
     {
-        $this->gadget->CheckPermission('ManageUserGroups');
+        $this->gadget->CheckPermission('ManageFriends');
 
         $post = jaws()->request->fetch(array('gid', 'users'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
@@ -268,7 +268,7 @@ class Users_Actions_Groups extends Users_Actions_Default
      */
     function RemoveUserFromGroup()
     {
-        $this->gadget->CheckPermission('ManageUserGroups');
+        $this->gadget->CheckPermission('ManageFriends');
 
         $post = jaws()->request->fetch(array('gid', 'member_checkbox:array'), 'post');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
@@ -317,7 +317,7 @@ class Users_Actions_Groups extends Users_Actions_Default
             );
         }
 
-        $this->gadget->CheckPermission('ManageUserGroups');
+        $this->gadget->CheckPermission('ManageFriends');
 
         $gid = (int) jaws()->request->fetch('gid', 'get');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
@@ -400,7 +400,7 @@ class Users_Actions_Groups extends Users_Actions_Default
      */
     function UpdateGroup()
     {
-        $this->gadget->CheckPermission('ManageUserGroups');
+        $this->gadget->CheckPermission('ManageFriends');
 
         $post = jaws()->request->fetch(array('gid', 'name', 'title', 'description', 'enabled'), 'post');
         $selected_members = jaws()->request->fetch('members:array', 'post');
