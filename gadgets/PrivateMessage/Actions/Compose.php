@@ -24,7 +24,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
 
         $this->gadget->CheckPermission('SendMessage');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
-        $this->AjaxMe('site_script.js');
+        $this->AjaxMe('index.js');
         $data = jaws()->request->fetch(array('id', 'user', 'reply', 'users:array'));
         $id = $data['id'];
 
@@ -192,6 +192,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             $bGroups =& Piwi::CreateWidget('Combo', 'recipient_groups');
             $bGroups->SetID('recipient_groups');
             $bGroups->setMultiple(true);
+            $bGroups->AddEvent(ON_DCLICK, "unselectUserGroup()");
             $groups = $userModel->GetGroups($user, true);
             foreach ($groups as $group) {
                 $bGroups->AddOption($group['title'], $group['id']);

@@ -235,7 +235,11 @@ function addUserToList(userId, title) {
  * Remove selected user from recipient list
  */
 function removeUserFromList() {
-    $('#recipient_users').options[$('#recipient_users').selectedIndex] = null;
+    $("#recipient_users option:selected").remove();
+}
+
+function unselectUserGroup () {
+    $("#recipient_groups option:selected").prop("selected", false);
 }
 
 var PrivateMessageAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback);
