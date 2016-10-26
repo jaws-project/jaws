@@ -22,7 +22,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
             return Jaws_HTTPError::Get(401);
         }
 
-        $this->AjaxMe('site_script.js');
+        $this->AjaxMe('index.js');
         $date_format = $this->gadget->registry->fetch('date_format');
         $tpl = $this->gadget->template->load('Messages.html');
         $tpl->SetBlock('messages');
