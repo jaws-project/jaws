@@ -8,6 +8,14 @@
  * @copyright   2012-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
+$actions['Settings'] = array(
+    'normal' => true,
+    'file' => 'Settings',
+);
+$actions['UpdateSettings'] = array(
+    'standalone' => true,
+    'file' => 'Settings',
+);
 
 /**
  * Admin actions

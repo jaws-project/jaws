@@ -1,0 +1,93 @@
+<!-- BEGIN settings -->
+<div class="gadget_header">
+  <div class="gadget_title"><h3>{{title}}</h3></div>
+  <div class="gadget_menubar">{{menubar}}</div>
+  <div class="gadget_submenubar">{{submenubar}}</div>
+</div>
+<div class="gadget_container">
+  <div class="gadget_response">
+    <div id="settings_settings_response" class="{{type}}">{{text}}</div>
+  </div>
+  <form name="settings" action="{{base_script}}" method="post" onsubmit="return updateSettings();">
+  <input class="form-control" type="hidden" name="gadget" value="Settings" />
+  <input class="form-control" type="hidden" name="action" value="UpdateSettings" />
+  <div class="gadget_content content">
+    <fieldset>
+      <div><label for="site_status">{{lbl_site_status}}:</label>
+        <select class="form-control" name="site_status" id="site_status">
+          <option value="enabled" {{enabled_selected}}>{{lbl_enabled}}</option>
+          <option value="disabled" {{disabled_selected}}>{{lbl_disabled}}</option>
+        </select>
+      </div>
+
+        <div><label for="site_name">{{lbl_site_name}}:</label>
+          <input class="form-control" name="site_name" class="large" id="site_name" value="{{site_name}}" type="text" />
+        </div>
+
+        <div><label for="site_slogan">{{lbl_site_slogan}}:</label>
+          <input class="form-control" name="site_slogan" class="large" id="site_slogan" value="{{site_slogan}}" type="text" />
+        </div>
+
+      <div><label for="site_language">{{lbl_site_language}}:</label>
+        <select class="form-control" name="site_language" id="site_language">
+          <!-- BEGIN site_language -->
+          <option value="{{value}}" <!-- BEGIN selected -->selected="selected"<!-- END selected -->>{{title}}</option>
+          <!-- END site_language -->
+        </select>
+      </div>
+
+      <div><label for="main_gadget">{{lbl_main_gadget}}:</label>
+        <select class="form-control" name="main_gadget" id="main_gadget">
+          <!-- BEGIN main_gadget -->
+          <option value="{{value}}" <!-- BEGIN selected -->selected="selected"<!-- END selected -->>{{title}}</option>
+          <!-- END main_gadget -->
+        </select>
+      </div>
+
+      <div><label for="site_email">{{lbl_site_email}}:</label>
+        <input class="form-control" name="site_email" class="large" id="site_email" value="{{site_email}}" type="text" />
+      </div>
+
+      <div><label for="site_comment">{{lbl_site_comment}}:</label>
+        <textarea name="site_comment" id="site_comment" cols="30" rows="8" class="form-control">{{site_comment}}</textarea>
+      </div>
+
+      <div><label for="date_format">{{lbl_date_format}}:</label>
+        <select class="form-control" name="date_format" id="date_format">
+          <!-- BEGIN date_format -->
+          <option value="{{value}}" <!-- BEGIN selected -->selected="selected"<!-- END selected -->>{{title}}</option>
+          <!-- END date_format -->
+        </select>
+      </div>
+
+      <div><label for="calendar">{{lbl_calendar}}:</label>
+        <select class="form-control" name="calendar" id="calendar">
+          <!-- BEGIN calendar -->
+          <option value="{{value}}" <!-- BEGIN selected -->selected="selected"<!-- END selected -->>{{title}}</option>
+          <!-- END calendar -->
+        </select>
+      </div>
+
+      <div><label for="editor">{{lbl_editor}}:</label>
+        <select class="form-control" name="editor" id="editor">
+          <!-- BEGIN editor -->
+          <option value="{{value}}" <!-- BEGIN selected -->selected="selected"<!-- END selected -->>{{title}}</option>
+          <!-- END editor -->
+        </select>
+      </div>
+
+      <div><label for="timezone">{{lbl_timezone}}:</label>
+        <select class="form-control" name="timezone" id="timezone">
+          <!-- BEGIN timezone -->
+          <option value="{{value}}" <!-- BEGIN selected -->selected="selected"<!-- END selected -->>{{title}}</option>
+          <!-- END timezone -->
+        </select>
+      </div>
+
+    </fieldset>
+  </div>
+  <div class="gadget_actions actions"><button class="btn btn-primary" type="submit" value="{{update}}">{{update}}</button></div>
+  </form>
+</div>
+<div class="gadget_footer"></div>
+<!-- END settings -->
