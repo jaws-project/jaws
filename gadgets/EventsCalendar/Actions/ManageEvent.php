@@ -168,7 +168,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Reminder (in minutes)
         $combo =& Piwi::CreateWidget('Combo', 'reminder');
         $combo->SetId('event_reminder');
-        $intervals = array(0, 1, 5, 10, 15, 30, 60, 120, 180, 240, 300, 
+        $intervals = array(0, 1, 5, 10, 15, 30, 60, 120, 180, 240, 300,
             360, 420, 480, 540, 600, 660, 720, 1440, 2880, 10080, 43200);
         foreach ($intervals as $i) {
             $combo->AddOption(_t('EVENTSCALENDAR_EVENT_REMINDER_' . $i), $i);
@@ -222,7 +222,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Actions
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('url_back', $GLOBALS['app']->GetSiteURL('/') . 
+        $tpl->SetVariable('url_back', $GLOBALS['app']->GetSiteURL('/') .
             $this->gadget->urlMap('ManageEvents'));
 
         $tpl->ParseBlock('form');
@@ -412,5 +412,5 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             _t('EVENTSCALENDAR_NOTICE_EVENTS_DELETED');
         $GLOBALS['app']->Session->PushResponse($msg, 'Events.Response');
         return $GLOBALS['app']->Session->GetResponse($msg);
-    }    
+    }
 }

@@ -34,14 +34,14 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $action = $this->gadget->action->load('Menubar');
         $tpl->SetVariable('menubar', $action->Menubar('ManageEvents'));
 
-        // Ckeck for response
+        // Check for response
         $response = $GLOBALS['app']->Session->PopResponse('Events.Response');
         if ($response) {
             $tpl->SetVariable('text', $response['text']);
             $tpl->SetVariable('type', $response['type']);
         }
 
-        // Ckeck for search query
+        // Check for search query
         $params = $GLOBALS['app']->Session->PopSimpleResponse('Events.Search');
         $query = isset($params['query'])? $params['query'] : null;
         $start = isset($params['start'])? $params['start'] : null;

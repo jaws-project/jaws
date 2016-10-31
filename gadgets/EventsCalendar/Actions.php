@@ -10,6 +10,26 @@
  */
 
 /**
+ * Admin actions
+ */
+$admin_actions['PublicEvents'] = array(
+    'normal' => true,
+    'file' => 'EventsCalendar'
+);
+$admin_actions['UserEvents'] = array(
+    'normal' => true,
+    'file' => 'EventsCalendar'
+);
+$admin_actions['GetEvents'] = array(
+    'standalone' => true,
+    'file' => 'EventsCalendar'
+);
+$admin_actions['GetEvent'] = array(
+    'standalone' => true,
+    'file' => 'EventsCalendar'
+);
+
+/**
  * Index actions
  */
 $actions['ManageEvents'] = array(

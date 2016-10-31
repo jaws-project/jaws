@@ -27,7 +27,7 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
         $table->join('users', 'owner', 'users.id');
 
         if ($user !== null){
-            $table->where('ec_users.user', $user)->and();
+            $table->where('event.user', $user)->and();
         }
 
         if ($shared === true){
