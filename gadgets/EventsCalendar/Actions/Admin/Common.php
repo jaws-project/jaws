@@ -24,7 +24,7 @@ class EventsCalendar_Actions_Admin_Common extends Jaws_Gadget_Action
             $action = 'PublicEvents';
         }
 
-        $baseUrl = BASE_SCRIPT . '?gadget=EventsCalendar&amp;action=PublicEvents';
+        $baseUrl = BASE_SCRIPT . '?gadget=EventsCalendar&amp;action=';
         $menuImage = 'gadgets/EventsCalendar/Resources/images/calendar.png';
         $menubar = new Jaws_Widgets_Menubar();
 

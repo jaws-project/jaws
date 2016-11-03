@@ -49,7 +49,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $tpl->SetBlock('ec');
 
         // Menubar
-        $tpl->SetVariable('menubar', $this->MenuBar('PublicEvents'));
+        $tpl->SetVariable('menubar', $this->MenuBar(($mode == 'public')? 'PublicEvents' : 'UserEvents'));
 
         // Event Form
         $tpl->SetVariable('form', $this->EventForm());
@@ -100,28 +100,41 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
         $tpl->SetVariable('errorIncompleteData', _t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'));
 
+        // description
+        $text =& $GLOBALS['app']->LoadEditor('EventsCalendar', 'description');
+        $text->setId('');
+        $text->setClass('form-control');
+        $text->SetWidth('100%');
+        $text->TextArea->SetStyle('width:100%;');
+        $text->TextArea->SetRows(15);
+        $tpl->SetVariable('description', $text->Get());
+
         // Start date
-        $cal_type = $this->gadget->registry->fetch('calendar', 'Settings');
-        $cal_lang = $this->gadget->registry->fetch('site_language', 'Settings');
-        $datePicker =& Piwi::createWidget('DatePicker', 'start_date');
-        $datePicker->SetId('event_start_date');
-        $datePicker->showTimePicker(true);
-        $datePicker->setCalType($cal_type);
-        $datePicker->setLanguageCode($cal_lang);
-        $datePicker->setDateFormat('%Y-%m-%d');
-        $tpl->SetVariable('start_date', $datePicker->Get());
+//        $cal_type = $this->gadget->registry->fetch('calendar', 'Settings');
+//        $cal_lang = $this->gadget->registry->fetch('site_language', 'Settings');
+//        $datePicker =& Piwi::createWidget('DatePicker', 'start_date');
+//        $datePicker->SetId('');
+//        $datePicker->showTimePicker(true);
+//        $datePicker->setCalType($cal_type);
+//        $datePicker->setLanguageCode($cal_lang);
+//        $datePicker->setDateFormat('%Y-%m-%d');
+//        $datePicker->SetIncludeCSS(false);
+//        $datePicker->SetIncludeJS(false);
+//        $tpl->SetVariable('start_date', $datePicker->Get());
         $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
+        $tpl->SetVariable('lbl_from', _t('EVENTSCALENDAR_FROM'));
+        $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
 
         // Stop date
-        $datePicker =& Piwi::createWidget('DatePicker', 'stop_date');
-        $datePicker->SetId('event_stop_date');
-        $datePicker->showTimePicker(true);
-        $datePicker->setDateFormat('%Y-%m-%d');
-        $datePicker->SetIncludeCSS(false);
-        $datePicker->SetIncludeJS(false);
-        $datePicker->setCalType($cal_type);
-        $datePicker->setLanguageCode($cal_lang);
-        $tpl->SetVariable('stop_date', $datePicker->Get());
+//        $datePicker =& Piwi::createWidget('DatePicker', 'stop_date');
+//        $datePicker->SetId('');
+//        $datePicker->showTimePicker(true);
+//        $datePicker->setDateFormat('%Y-%m-%d');
+//        $datePicker->SetIncludeCSS(false);
+//        $datePicker->SetIncludeJS(false);
+//        $datePicker->setCalType($cal_type);
+//        $datePicker->setLanguageCode($cal_lang);
+//        $tpl->SetVariable('stop_date', $datePicker->Get());
 
         // Start/Stop time
         $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
@@ -131,7 +144,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
 
         // Type
         $combo =& Piwi::createWidget('Combo', 'type');
-        $combo->SetId('event_type');
+        $combo->SetId('');
         for ($i = 1; $i <= 5; $i++) {
             $combo->AddOption(_t('EVENTSCALENDAR_EVENT_TYPE_' . $i), $i);
         }
@@ -140,7 +153,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
 
         // Priority
         $combo =& Piwi::createWidget('Combo', 'priority');
-        $combo->SetId('event_priority');
+        $combo->SetId('');
         for ($i = 0; $i <= 2; $i++) {
             $combo->AddOption(_t('EVENTSCALENDAR_EVENT_PRIORITY_' . $i), $i);
         }
@@ -149,7 +162,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
 
         // Reminder (in minutes)
         $combo =& Piwi::createWidget('Combo', 'reminder');
-        $combo->SetId('event_reminder');
+        $combo->SetId('');
         $intervals = array(0, 1, 5, 10, 15, 30, 60, 120, 180, 240, 300,
             360, 420, 480, 540, 600, 660, 720, 1440, 2880, 10080, 43200);
         foreach ($intervals as $i) {
@@ -160,7 +173,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
 
         // Recurrence
         $combo =& Piwi::createWidget('Combo', 'recurrence');
-        $combo->SetId('event_recurrence');
+        $combo->SetId('');
         for ($i = 0; $i <= 4; $i++) {
             $combo->AddOption(_t("EVENTSCALENDAR_EVENT_RECURRENCE_$i"), $i);
         }
@@ -171,7 +184,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
 
         // Day
         $combo =& Piwi::createWidget('Combo', 'day');
-        $combo->SetId('event_day');
+        $combo->SetId('');
         for ($i = 1; $i <= 31; $i++) {
             $combo->AddOption($i, $i);
         }
@@ -180,7 +193,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
 
         // Week Day
         $combo =& Piwi::createWidget('Combo', 'wday');
-        $combo->SetId('event_wday');
+        $combo->SetId('');
         for ($i = 1; $i <= 7; $i++) {
             $combo->AddOption($jDate->DayString($i-1), $i);
         }
@@ -189,7 +202,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
 
         // Month
         $combo =& Piwi::createWidget('Combo', 'month');
-        $combo->SetId('event_month');
+        $combo->SetId('');
         for ($i = 1; $i <= 12; $i++) {
             $combo->AddOption($jDate->MonthString($i), $i);
         }

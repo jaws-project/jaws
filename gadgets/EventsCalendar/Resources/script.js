@@ -38,6 +38,12 @@ var SelectedEvent = null;
  */
 function initEventsCalendar() {
     CONST = jQuery.parseJSON(CONST);
+
+    w2utils.settings.dataType = 'JSON';
+    // TODO: detect language
+    w2utils.locale('libraries/w2ui/fa-pe.json');
+
+    initForm();
     initDatagrid('#events_datagrid');
 }
 
@@ -151,6 +157,27 @@ function initDatagrid(targetEl) {
     });
 }
 
+function initForm() {
+    $('#dlg_event').w2form({
+        name   : 'myForm',
+        fields : [
+            {name: 'subject', type: 'text', required: true},
+            {name: 'location', type: 'text', required: true},
+            {name: 'start_date', type: 'date', format: 'yyyy.m.d', required: true},
+            {name: 'stop_date', type: 'date', format: 'yyyy.m.d', required: true},
+            {name: 'description', type: 'text'}
+        ],
+        actions: {
+            reset: function () {
+                this.clear();
+            },
+            save: function () {
+                this.save();
+            }
+        }
+    });
+}
+
 function getEvent(id) {
     SelectedEvent = id;
     w2ui['datagrid'].lock('', true);
@@ -158,5 +185,5 @@ function getEvent(id) {
 }
 
 function editEvent(event) {
-    $('#dlg_event').w2popup();
+    $('.dlg-event').w2popup();
 }
