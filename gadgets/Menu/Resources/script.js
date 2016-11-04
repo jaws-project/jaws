@@ -354,7 +354,11 @@ function editMenu(mid)
     $('#url').prop('disabled', menuInfo['variable']);
     $('#variable').val(menuInfo['variable']? 1 : 0);
     $('#url_target').val(menuInfo['url_target']);
-    aclInfo = menuInfo['acl_key_name'] + ':' + menuInfo['acl_key_subkey'];
+    if (menuInfo['acl_key_name']) {
+        aclInfo = menuInfo['acl_key_name'] + ':' + ((menuInfo['acl_key_subkey']=== null)? '' : menuInfo['acl_key_subkey']);
+    } else {
+        aclInfo = null;
+    }
 
     setRanksCombo($('#gid').val(), $('#pid').val());
     $('#rank').val(menuInfo['rank']);
@@ -452,8 +456,10 @@ function getReferences(type)
         if (link['title2']) {
             cacheReferences[type][i]['title2'] = link['title2'];
         }
-        cacheReferences[type][i]['acl_key'] = link['acl_key'];
-        cacheReferences[type][i]['acl_subkey'] = link['acl_subkey'];
+        if (link['acl_key']) {
+            cacheReferences[type][i]['acl_key'] = link['acl_key'];
+            cacheReferences[type][i]['acl_subkey'] = link['acl_subkey'];
+        }
     });
 }
 
