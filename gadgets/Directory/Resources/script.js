@@ -131,8 +131,14 @@ function displayFiles(files)
     files.forEach(function (file) {
         file.ext = file.is_dir? 'folder' : file.host_filename.split('.').pop();
         file.type = file.mime_type || '-';
-        file.icon = '<img src="' + icon_url + (FileIcons[file.file_type] || 'file-generic') + '.png" />';
-        file.thumbnail = file.thumbnail;
+        if (file.thumbnail != "") {
+            file.icon = '<img src="' + file.thumbnail + '"/>';
+        } else {
+            file.icon = '<img src="' + icon_url + (FileIcons[file.file_type] || 'file-generic') + '.png" />';
+        }
+
+        // file.icon = '<img src="' + icon_url + (FileIcons[file.file_type] || 'file-generic') + '.png" />';
+        // file.thumbnail = '<img src="' + file.thumbnail + '"/>';
         file.size = formatSize(file.file_size, 0);
         if (!file.is_dir) {
             file.url = 'javascript:fileOpen(' + file.id + ');';
@@ -513,9 +519,9 @@ function editFile(id)
     form.tags.value = file.tags;
     form.hidden.checked = file.hidden;
     form.published.checked = file.published;
-    // form.thumbnail.src = file.thumbnail;
     $('#frm_file #thumbnail').prop('src', file.thumbnail);
     setEditorValue('#description', file.description);
+    console.log(file);
 }
 
 /**

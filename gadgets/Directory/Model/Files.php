@@ -50,7 +50,8 @@ class Directory_Model_Files extends Jaws_Gadget_Model
 
         if (isset($params['file_type'])) {
             $types = explode(',', $params['file_type']);
-            $table->where('file_type', $types, 'in')->and();
+            $table->openWhere('file_type', $types, 'in')->or()->where('file_type', '', 'is null')
+                ->closeWhere()->and();
         }
 
         if (isset($params['file_size'])) {

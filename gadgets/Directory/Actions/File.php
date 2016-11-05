@@ -205,10 +205,8 @@ class Directory_Actions_File extends Jaws_Gadget_Action
                             return $res;
                         }
                         Jaws_Utils::delete($thumbnailTempFilename);
-                        unset($data['thumbnailPath']);
-                    } else {
-                        throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
                     }
+                    unset($data['thumbnailPath']);
                 }
             }
 

@@ -137,9 +137,10 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $tpl->SetVariable('title', '{title}');
         $tpl->SetVariable('description', '{description}');
         $tpl->SetVariable('icon', '{icon}');
+        $tpl->SetVariable('thumbnail', '{thumbnail}');
         $tpl->SetVariable('type', '{type}');
         $tpl->SetVariable('size', '{size}');
-        $tpl->SetVariable('published', '{published}');
+        $tpl->SetVariable('published_str', '{published_str}');
         $tpl->SetVariable('created', '{created}');
         $tpl->SetVariable('modified', '{modified}');
         $tpl->ParseBlock('workspace/fileTemplate');
@@ -168,7 +169,6 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
     function GetFiles()
     {
         $data = jaws()->request->fetch(array('parent'));
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $model = $this->gadget->model->loadAdmin('Files');
         $files = $model->GetFiles($data);
         if (Jaws_Error::IsError($files)){
@@ -182,7 +182,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             } else {
                 $file['link'] = $this->gadget->urlMap('Directory', array('id' => $file['id']), true);
             }
-            $file['published'] = $file['published'] ? _t('GLOBAL_YES'): _t('GLOBAL_NO');
+            $file['published_str'] = $file['published'] ? _t('GLOBAL_YES'): _t('GLOBAL_NO');
             $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
             $file['thumbnail'] = $model->GetThumbnailURL($file['host_filename']);

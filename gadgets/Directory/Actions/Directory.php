@@ -102,7 +102,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     function ListFiles($parent = 0, $type = null, $orderBy = 0, $limit = 0)
     {
         $filters = jaws()->request->fetch(
-            array('filter_file_type', 'filter_file_size', 'filter_start_date', 'filter_end_date', 'filter_order'),
+            array('filter_file_type', 'filter_file_size', 'filter_from_date', 'filter_to_date', 'filter_order'),
             'post');
 
         $isLayoutAction = false;
@@ -139,16 +139,16 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
 
         $jdate = Jaws_Date::getInstance();
-        $start_date = $end_date = '';
-        if (!empty($filters['filter_start_date'])) {
-            $start_date = $jdate->ToBaseDate(preg_split('/[- :]/', $filters['filter_start_date']));
-            $start_date = $GLOBALS['app']->UserTime2UTC($start_date['timestamp']);
+        $from_date = $to_date = '';
+        if (!empty($filters['filter_from_date'])) {
+            $from_date = $jdate->ToBaseDate(preg_split('/[- :]/', $filters['filter_from_date']));
+            $from_date = $GLOBALS['app']->UserTime2UTC($from_date['timestamp']);
         }
-        if (!empty($data['filter_end_date'])) {
-            $end_date = $jdate->ToBaseDate(preg_split('/[- :]/', $filters['filter_end_date'] . ' 23:59:59'));
-            $end_date = $GLOBALS['app']->UserTime2UTC($end_date['timestamp']);
+        if (!empty($filters['filter_to_date'])) {
+            $to_date = $jdate->ToBaseDate(preg_split('/[- :]/', $filters['filter_to_date'] . ' 23:59:59'));
+            $to_date = $GLOBALS['app']->UserTime2UTC($to_date['timestamp']);
         }
-        $params['date'] = array($start_date, $end_date);
+        $params['date'] = array($from_date, $to_date);
         if (!empty($filters['filter_order'])) {
             $orderBy = (int)$filters['filter_order'];
         }
@@ -158,8 +158,8 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
-        $tpl->SetVariable('lbl_start_date', _t('DIRECTORY_FILE_START_DATE'));
-        $tpl->SetVariable('lbl_end_date', _t('DIRECTORY_FILE_END_DATE'));
+        $tpl->SetVariable('lbl_from_date', _t('DIRECTORY_FILE_FROM_DATE'));
+        $tpl->SetVariable('lbl_to_date', _t('DIRECTORY_FILE_TO_DATE'));
         $tpl->SetVariable('lbl_search', _t('GLOBAL_SEARCH'));
         $tpl->SetVariable('lbl_order', _t('GLOBAL_ORDERBY'));
         $tpl->SetVariable('lbl_create_time', _t('GLOBAL_CREATETIME'));
@@ -220,16 +220,16 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         // Start date
         $cal_type = $this->gadget->registry->fetch('calendar', 'Settings');
         $cal_lang = $this->gadget->registry->fetch('site_language', 'Settings');
-        $datePicker =& Piwi::CreateWidget('DatePicker', 'filter_start_date', $filters['filter_start_date']);
+        $datePicker =& Piwi::CreateWidget('DatePicker', 'filter_from_date', $filters['filter_from_date']);
         $datePicker->showTimePicker(true);
         $datePicker->setCalType($cal_type);
         $datePicker->setLanguageCode($cal_lang);
         $datePicker->setDateFormat('%Y-%m-%d');
         $datePicker->setStyle('width:80px');
-        $tpl->SetVariable('start_date', $datePicker->Get());
+        $tpl->SetVariable('from_date', $datePicker->Get());
 
         // End date
-        $datePicker =& Piwi::CreateWidget('DatePicker', 'filter_end_date', $filters['filter_end_date']);
+        $datePicker =& Piwi::CreateWidget('DatePicker', 'filter_to_date', $filters['filter_to_date']);
         $datePicker->showTimePicker(true);
         $datePicker->setDateFormat('%Y-%m-%d');
         $datePicker->SetIncludeCSS(false);
@@ -237,7 +237,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $datePicker->setCalType($cal_type);
         $datePicker->setLanguageCode($cal_lang);
         $datePicker->setStyle('width:80px');
-        $tpl->SetVariable('end_date', $datePicker->Get());
+        $tpl->SetVariable('to_date', $datePicker->Get());
 
         $tpl->SetVariable('order_selected_' . $orderBy, 'selected');
         $tpl->ParseBlock('filters');
@@ -285,8 +285,13 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('size', Jaws_Utils::FormatSize($file['file_size']));
             $tpl->SetVariable('created', $objDate->Format($file['create_time'], 'n/j/Y g:i a'));
             $tpl->SetVariable('modified', $objDate->Format($file['update_time'], 'n/j/Y g:i a'));
-            $tpl->SetVariable('icon', $iconUrl . $icons[$file['file_type']] . '.png');
-            $tpl->SetVariable('thumbnail', $model->GetThumbnailURL($file['host_filename']));
+
+            $thumbnailURL = $model->GetThumbnailURL($file['host_filename']);
+            if (!empty($thumbnailURL)) {
+                $tpl->SetVariable('icon', $model->GetThumbnailURL($file['host_filename']));
+            } else {
+                $tpl->SetVariable('icon', $iconUrl . $icons[$file['file_type']] . '.png');
+            }
 
             $tpl->ParseBlock('files/file');
         }

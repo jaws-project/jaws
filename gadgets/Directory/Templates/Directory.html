@@ -20,7 +20,7 @@
 <!-- END directory -->
 
 <!-- BEGIN filters -->
-<form name="search-file" method="post" action="{{base_script}}">
+<form name="search-file" method="post" action="{{requested_url}}">
   <input type="hidden" name="gadget" value="Directory" />
   <input type="hidden" name="action" value="Directory" />
   <table id="logs_filter">
@@ -45,8 +45,8 @@
 
     </tr>
     <tr>
-      <td class="filter_label"><label for="filter_start_date">{{lbl_start_date}}:</label></td><td>{{start_date}}</td>
-      <td class="filter_label"><label for="filter_end_date">{{lbl_end_date}}:</label></td><td>{{end_date}}</td>
+      <td class="filter_label"><label for="filter_from_date">{{lbl_from_date}}:</label></td><td>{{from_date}}</td>
+      <td class="filter_label"><label for="filter_to_date">{{lbl_to_date}}:</label></td><td>{{to_date}}</td>
     </tr>
 
     <tr>

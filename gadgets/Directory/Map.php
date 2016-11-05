@@ -21,7 +21,7 @@ $maps[] = array(
 );
 $maps[] = array(
     'UploadFileUI',
-    'directory/upload/[/{parent}]',
+    'directory/upload[/{parent}]',
     array(
         'parent' => '[[:digit:]]+',
     )
