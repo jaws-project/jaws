@@ -96,8 +96,8 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
         $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
         $tpl->SetVariable('lbl_size', _t('DIRECTORY_FILE_SIZE'));
-        $tpl->SetVariable('lbl_start_date', _t('DIRECTORY_FILE_START_DATE'));
-        $tpl->SetVariable('lbl_end_date', _t('DIRECTORY_FILE_END_DATE'));
+        $tpl->SetVariable('lbl_start_date', _t('DIRECTORY_FILE_FROM_DATE'));
+        $tpl->SetVariable('lbl_end_date', _t('DIRECTORY_FILE_TO_DATE'));
         $tpl->SetVariable('alertShortQuery', _t('DIRECTORY_ERROR_SHORT_QUERY'));
         $tpl->SetVariable('confirmDelete', _t('DIRECTORY_CONFIRM_DELETE'));
         $tpl->SetVariable('confirmFileDelete', _t('DIRECTORY_CONFIRM_FILE_DELETE'));

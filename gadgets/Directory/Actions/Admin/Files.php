@@ -156,7 +156,6 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
                     // move thumbnail file from temp to data folder
                     $thumbnailTempFilename = Jaws_Utils::upload_tmp_dir(). '/' . $data['thumbnailPath'];
                     if (!empty($data['thumbnailPath']) && file_exists($thumbnailTempFilename)) {
-
                         $pathInfo = pathinfo($data['host_filename']);
                         $originalFilename = $pathInfo['filename'];
                         $thumbnailFinalFilename = $originalFilename . '.thumbnail.png';
@@ -178,11 +177,8 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
                             return $res;
                         }
                         Jaws_Utils::delete($thumbnailTempFilename);
-                        unset($data['thumbnailPath']);
-                    } else {
-                        throw new Exception(_t('DIRECTORY_ERROR_FILE_UPLOAD'));
                     }
-
+                    unset($data['thumbnailPath']);
                 }
             }
 
