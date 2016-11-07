@@ -455,7 +455,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         }
         $date = array($start_date, $end_date);
 
-        $model = $this->gadget->model->loadAdmin('Files');
+        $model = $this->gadget->model->load('Files');
         $params = array();
         $params['parent'] = $data['id'];
         $params['query'] = $data['file_search'];
@@ -466,7 +466,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
                 $params['file_type'] = $data['file_type'];
             }
         }
-        $params['file_size'] = ($data['file_size'] == '0')? null : explode(',', $data['file_size']);
+        $params['file_size'] = ($data['file_size'] == '0') ? null : explode(',', $data['file_size']);
         $params['date'] = $date;
         if ($data['file_published'] != '') {
             $params['published'] = ($data['file_published'] == '1') ? true : false;
@@ -482,8 +482,11 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             if ($file['is_dir']) {
                 $file['url'] = BASE_SCRIPT . '?gadget=Directory&action=Directory&id=' . $file['id'];
             }
+            $file['published_str'] = $file['published'] ? _t('GLOBAL_YES'): _t('GLOBAL_NO');
             $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
+            $file['thumbnail'] = $model->GetThumbnailURL($file['host_filename']);
+
         }
 
         return $GLOBALS['app']->Session->GetResponse(

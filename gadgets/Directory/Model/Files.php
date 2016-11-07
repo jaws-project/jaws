@@ -24,7 +24,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
             $table->select('directory.id:integer', 'directory.parent:integer', 'directory.user:integer',
                 'is_dir:boolean', 'directory.hidden:boolean', 'directory.title', 'directory.description',
                 'user_filename', 'host_filename', 'mime_type', 'file_type', 'file_size', 'directory.hits',
-                'directory.create_time:integer', 'directory.update_time:integer');
+                'directory.published:boolean', 'directory.create_time:integer', 'directory.update_time:integer');
         }
 
         if (isset($params['user']) && !empty($params['user'])) {
@@ -48,7 +48,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
             $table->where('is_dir', $params['is_dir'])->and();
         }
 
-        if (isset($params['file_type'])) {
+        if (!empty($params['file_type'])) {
             $types = explode(',', $params['file_type']);
             $table->openWhere('file_type', $types, 'in')->or()->where('file_type', '', 'is null')
                 ->closeWhere()->and();

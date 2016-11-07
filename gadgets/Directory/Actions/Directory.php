@@ -20,12 +20,14 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     {
         $result[] = array('title' => _t('DIRECTORY_FILE_TYPE'), 'value' =>
             array(
-                -1 => _t('DIRECTORY_FILE_TYPE_ALL'),
+                0 => _t('GLOBAL_ALL'),
+                -1 => _t('DIRECTORY_FILE_TYPE_FOLDER'),
                 Directory_Info::FILE_TYPE_TEXT    => _t('DIRECTORY_FILE_TYPE_TEXT'),
                 Directory_Info::FILE_TYPE_IMAGE   => _t('DIRECTORY_FILE_TYPE_IMAGE'),
                 Directory_Info::FILE_TYPE_AUDIO   => _t('DIRECTORY_FILE_TYPE_AUDIO'),
                 Directory_Info::FILE_TYPE_VIDEO   => _t('DIRECTORY_FILE_TYPE_VIDEO'),
                 Directory_Info::FILE_TYPE_ARCHIVE => _t('DIRECTORY_FILE_TYPE_ARCHIVE'),
+                Directory_Info::FILE_TYPE_UNKNOWN => _t('DIRECTORY_FILE_TYPE_OTHER'),
             ));
 
         $result[] = array(
@@ -57,6 +59,9 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
     {
         $tpl = $this->gadget->template->load('Directory.html');
         $tpl->SetBlock('directory');
+
+        $this->SetTitle(_t('DIRECTORY_ACTIONS_DIRECTORY'));
+        $tpl->SetVariable('gadget_title', _t('DIRECTORY_ACTIONS_DIRECTORY'));
 
         $id = ($type == null)? (int)jaws()->request->fetch('id') : 0;
         if ($id == 0) {
@@ -106,19 +111,26 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             'post');
 
         $isLayoutAction = false;
-        if ($type == null) { // normal action
-            $params = jaws()->request->fetch(array('type', 'page'), 'get');
-            $page = (int)$params['page'];
-            if ($params['type'] !== '') {
-                $params['file_type'] = $params['type'];
-            }
-            unset($params['type']);
-        } else {
+        // Layout action
+        if($GLOBALS['app']->requestedActionMode == ACTION_MODE_LAYOUT) {
             $isLayoutAction = true;
             $page = 0;
             $params = array();
-            $params['file_type'] = ($type == -1)? null : $type;
+
+            if ($type == '-1') {
+                $params['is_dir'] = true;
+            } else {
+                $params['file_type'] = $type;
+            }
+        } else {
+            $params = jaws()->request->fetch(array('type', 'page'), 'get');
+            $page = (int)$params['page'];
+            if ($params['type'] !== null) {
+                $params['file_type'] = $params['type'];
+            }
+            unset($params['type']);
         }
+
         $params['limit'] = ($limit > 0) ? $limit : (int)$this->gadget->registry->fetch('items_per_page');
         $params['offset'] = ($page == 0)? 0 : $params['limit'] * ($page - 1);
         $params['parent'] = $parent;
@@ -131,11 +143,16 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
 
         // check filters
-        if ($filters['filter_file_type'] != '' && (int)$filters['filter_file_type'] >= 0) {
-            $params['file_type'] = (int)$filters['filter_file_type'];
+        if (!empty($filters['filter_file_type']) && empty($type)) {
+            if ($filters['filter_file_type'] == '-1') {
+                $params['is_dir'] = true;
+            } else {
+                $params['file_type'] = $filters['filter_file_type'];
+            }
         }
         if (!empty($filters['filter_file_size'])) {
-            $params['file_size'] = ($filters['filter_file_size'] == '0')? null : explode(',', $filters['filter_file_size']);
+            $params['file_size'] = ($filters['filter_file_size'] == '0') ?
+                null : explode(',', $filters['filter_file_size']);
         }
 
         $jdate = Jaws_Date::getInstance();
@@ -174,23 +191,23 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         // file type
         $fileTypes = array();
-        $fileTypes[] = array('id' => -1, 'title' => _t('GLOBAL_ALL'));
+        $fileTypes[] = array('id' => 0, 'title' => _t('GLOBAL_ALL'));
+        $fileTypes[] = array('id' => -1, 'title' => _t('DIRECTORY_FILE_TYPE_FOLDER'));
         $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_TEXT, 'title' => _t('DIRECTORY_FILE_TYPE_TEXT'));
         $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_IMAGE, 'title' => _t('DIRECTORY_FILE_TYPE_IMAGE'));
         $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_AUDIO, 'title' => _t('DIRECTORY_FILE_TYPE_AUDIO'));
         $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_VIDEO, 'title' => _t('DIRECTORY_FILE_TYPE_VIDEO'));
         $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_ARCHIVE, 'title' => _t('DIRECTORY_FILE_TYPE_ARCHIVE'));
         $fileTypes[] = array('id' => Directory_Info::FILE_TYPE_UNKNOWN, 'title' => _t('DIRECTORY_FILE_TYPE_OTHER'));
-        foreach($fileTypes as $fileType) {
+        foreach ($fileTypes as $fileType) {
             $tpl->SetBlock('filters/file_type');
             $tpl->SetVariable('value', $fileType['id']);
             $tpl->SetVariable('title', $fileType['title']);
 
             $tpl->SetVariable('selected', '');
-            if ($filters['filter_file_type'] === null && $fileType['id'] == -1) {
+            if ($fileType['id'] == -1 && isset($params['is_dir']) && $params['is_dir'] == true) {
                 $tpl->SetVariable('selected', 'selected');
-
-            } else if ($filters['filter_file_type'] !== null && $filters['filter_file_type'] == $fileType['id']) {
+            } else if (isset($params['file_type']) && $params['file_type'] == $fileType['id']) {
                 $tpl->SetVariable('selected', 'selected');
             }
             $tpl->ParseBlock('filters/file_type');

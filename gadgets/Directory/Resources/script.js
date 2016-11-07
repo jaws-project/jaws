@@ -131,7 +131,7 @@ function displayFiles(files)
     files.forEach(function (file) {
         file.ext = file.is_dir? 'folder' : file.host_filename.split('.').pop();
         file.type = file.mime_type || '-';
-        if (file.thumbnail != "") {
+        if (file.thumbnail != "" && file.thumbnail != undefined) {
             file.icon = '<img src="' + file.thumbnail + '"/>';
         } else {
             file.icon = '<img src="' + icon_url + (FileIcons[file.file_type] || 'file-generic') + '.png" />';
