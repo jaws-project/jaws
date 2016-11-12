@@ -1,0 +1,194 @@
+<!-- BEGIN Groups -->
+<div class="gadget_header">
+  <div class="gadget_title"><h3>{{gadget_title}}</h3></div>
+  <div class="gadget_menubar">{{menubar}}</div>
+  <div class="gadget_submenubar">{{submenubar}}</div>
+</div>
+<div class="gadget_container">
+  <div class="gadget_response">
+    <div id="users_managegroups_response" class="{{type}}">{{text}}</div>
+  </div>
+
+  <div class="gadget_content content">
+
+    <div id="group_workarea" style="display: none; width: 650px; height: 400px; overflow: auto">
+      <div rel="body">
+        <div style="padding: 10px; font-size: 11px; line-height: 150%;">
+          <form action="#" name="group">
+            <table cellpadding="0" cellspacing="2">
+              <tr><td><label for="name">{{lbl_name}}:</label></td><td><input type="text" id="name" name="name"></td></tr>
+              <tr><td><label for="title">{{lbl_title}}:</label></td><td><input type="text" id="title" name="title"></td></tr>
+              <tr><td><label for="description">{{lbl_description}}:</label></td><td>
+                <textarea name="description" id="description" cols="30" rows="6"></textarea>
+              </td></tr>
+              <tr><td><label for="enabled">{{lbl_enabled}}:</label></td><td>
+                  <select name="enabled" id="enabled">
+                    <option value="0">{{lbl_no}}</option>
+                    <option value="1">{{lbl_yes}}</option>
+                  </select>
+                </td>
+              </tr>
+              </select>
+              </td></tr>
+
+            </table>
+          </form>
+        </div>
+      </div>
+      <div rel="buttons">
+        <button class="btn" onclick="javascript:saveGroup()">{{lbl_save}}</button>
+        <button class="btn" onclick="javascript:stopAction();">{{lbl_cancel}}</button>
+      </div>
+    </div>
+
+    <div id="group_users_workarea" style="display: none; width: 650px; height: 400px; overflow: auto">
+      <div rel="body">
+        <div style="padding: 10px; font-size: 11px; line-height: 150%;">
+          <form action="#" name="group_users">
+            <table>
+              <tbody>
+              <!-- BEGIN user -->
+              <tr>
+                <td>
+                  <input name="group_users[]" id="user_{{id}}" value="{{id}}" type="checkbox">
+                  <label for="user_{{id}}">{{title}}</label>
+                </td>
+              </tr>
+              <!-- END user -->
+              </tbody>
+            </table>
+          </form>
+        </div>
+      </div>
+      <div rel="buttons">
+        <button class="btn" onclick="javascript:saveGroup()">{{lbl_save}}</button>
+        <button class="btn" onclick="javascript:stopAction();">{{lbl_cancel}}</button>
+      </div>
+    </div>
+
+
+    <div id="groups-grid" style="width: 100%; height: 300px;"></div>
+  </div>
+</div>
+<div class="gadget_footer"></div>
+
+<script type="text/javascript">
+  var lbl_title = "{{lbl_title}}";
+  var lbl_name = "{{lbl_name}}";
+  var addGroup_title = "{{addGroup_title}}";
+  var editGroup_title = "{{editGroup_title}}";
+  var editGroupUsers_title = "{{editGroupUsers_title}}";
+  var incompleteGroupFields = "{{incompleteGroupFields}}";
+  var currentAction = "Group";
+
+  $(document).ready(function() {
+    initiateGroupsDG();
+  });
+
+
+  /**
+   * initiate groups datagrid
+   */
+  function initiateGroupsDG() {
+    $('#groups-grid').w2grid({
+      name: 'groups-grid',
+      header: '{{grid_header}}',
+      method: 'POST',
+      url: {
+        get    : UsersAjax.baseURL + 'GetGroups',
+        remove : UsersAjax.baseURL + 'DeleteGlobalGroup'
+      },
+      show: {
+        toolbar: true,
+        toolbarInput: false,
+        toolbarSearch: false,
+        toolbarAdd: true,
+        toolbarDelete: true,
+        toolbarEdit: true,
+        header: true,
+        footer: true
+      },
+      recid: 'id',
+      multiSelect : false,
+      columns: [
+        { field: 'title',        caption: lbl_title,  size: '50%' },
+        { field: 'name',        caption: lbl_name,  size: '50%' },
+      ],
+      menu: [
+        { id: 'userGroups', text: '{{editGroupUsers_title}}', img: 'w2ui-icon-pencil' },
+      ],
+      records: [],
+      onRequest: function(event) {
+        switch (event.postData.cmd) {
+          case 'get':
+            break;
+
+          case 'delete':
+            event.postData = {
+              'ids':  event.postData.selected,
+            };
+            break;
+
+          case 'save':
+            break;
+
+        }
+
+      },
+      onLoad: function(event) {
+        event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
+        if (event.xhr.responseText.type != 'response_notice') {
+          event.xhr.responseText.message = event.xhr.responseText.text;
+          event.xhr.responseText.status = "error";
+        } else {
+          event.xhr.responseText = event.xhr.responseText.data;
+        }
+      },
+      onDelete: function(event) {
+        if (event.xhr) {
+          event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
+          if (event.xhr.responseText.type != 'response_notice') {
+            event.xhr.responseText.message = event.xhr.responseText.text;
+            event.xhr.responseText.status = "error";
+          } else {
+            this.reload();
+            event.xhr.responseText = event.xhr.responseText.data;
+          }
+        }
+      },
+      toolbar: {
+        items: [
+          { type: 'button', id: 'user-groups-btn', caption: '{{editGroupUsers_title}}', img: 'w2ui-icon-pencil', disabled:true }
+        ],
+        onClick: function (target, data) {
+          if (target == 'w2ui-add') {
+            addGroup();
+          } else if (target == 'w2ui-edit') {
+            editGroup(w2ui['groups-grid'].getSelection()[0]);
+          } else if (target == 'user-groups-btn') {
+            editGroupUsers(w2ui['groups-grid'].getSelection()[0]);
+          }
+        }
+      },
+      onDblClick: function(event) {
+        editGroup(event.recid)
+      },
+      onSelect: function(event) {
+        this.toolbar.enable('user-groups-btn');
+      },
+      onUnselect: function(event) {
+        this.toolbar.disable('user-groups-btn');
+      },
+      onMenuClick: function(event) {
+        switch (event.menuItem.id) {
+          case 'userGroups':
+            editGroupUsers(event.recid);
+            break;
+        }
+      },
+    });
+  }
+
+
+</script>
+<!-- END Groups -->

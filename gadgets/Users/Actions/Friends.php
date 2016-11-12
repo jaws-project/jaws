@@ -9,15 +9,15 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Users_Actions_Groups extends Users_Actions_Default
+class Users_Actions_Friends extends Users_Actions_Default
 {
     /**
-     * Prepares a form for manage user's groups
+     * Prepares a form for manage user's friends groups
      *
      * @access  public
      * @return  string  XHTML template of a form
      */
-    function Groups()
+    function FriendsGroups()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             Jaws_Header::Location(
@@ -36,7 +36,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $groups = $jUser->GetGroups($user);
 
         // Load the template
-        $tpl = $this->gadget->template->load('Groups.html');
+        $tpl = $this->gadget->template->load('Friends.html');
         $tpl->SetBlock('groups');
 
         if (!empty($response)) {
@@ -44,9 +44,9 @@ class Users_Actions_Groups extends Users_Actions_Default
             $tpl->SetVariable('text', $response['text']);
         }
 
-        $tpl->SetVariable('title', _t('USERS_GROUPS'));
-        $tpl->SetVariable('menubar', $this->MenuBar('Groups'));
-        $tpl->SetVariable('submenubar', $this->SubMenuBar('Groups', array('Groups', 'AddGroup')));
+        $tpl->SetVariable('title', _t('USERS_FRIENDS'));
+        $tpl->SetVariable('menubar', $this->MenuBar('FriendsGroups'));
+        $tpl->SetVariable('submenubar', $this->SubMenuBar('FriendsGroups', array('FriendsGroups', 'AddFriendsGroup')));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
@@ -55,7 +55,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         foreach ($groups as $group) {
             $tpl->SetBlock('groups/group');
             $tpl->SetVariable('id', $group['id']);
-            $tpl->SetVariable('url', $this->gadget->urlMap('ManageGroup', array('gid' => $group['id'])));
+            $tpl->SetVariable('url', $this->gadget->urlMap('ManageFriendsGroup', array('gid' => $group['id'])));
             $tpl->SetVariable('name', $group['name']);
             $tpl->SetVariable('title', $group['title']);
             $tpl->ParseBlock('groups/group');
@@ -68,20 +68,20 @@ class Users_Actions_Groups extends Users_Actions_Default
         $tpl->SetVariable('icon_filter', STOCK_SEARCH);
         $tpl->SetVariable('icon_ok', STOCK_OK);
         $tpl->SetVariable('lbl_add_group', _t('USERS_ADD_GROUP'));
-        $tpl->SetVariable('url_add_group', $this->gadget->urlMap('UserGroupUI'));
+        $tpl->SetVariable('url_add_group', $this->gadget->urlMap('FriendsGroupUI'));
 
         $tpl->ParseBlock('groups');
         return $tpl->Get();
     }
 
     /**
-     * User's group UI
+     * User's friends group UI
      *
      * @access  public
      * @param   int     $gid  Exiting group ID for editing
      * @return  string  XHTML template of a form
      */
-    function UserGroupUI($gid = null)
+    function FriendsGroupUI($gid = null)
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             Jaws_Header::Location(
@@ -96,7 +96,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $this->AjaxMe('index.js');
 
         // Load the template
-        $tpl = $this->gadget->template->load('Groups.html');
+        $tpl = $this->gadget->template->load('Friends.html');
         $tpl->SetBlock('add_group');
 
         // edit an user group
@@ -115,13 +115,13 @@ class Users_Actions_Groups extends Users_Actions_Default
             $tpl->SetVariable('title', _t('USERS_ADD_GROUP'));
             $tpl->SetVariable(
                 'submenubar',
-                $this->SubMenuBar('AddGroup', array('Groups', 'AddGroup'))
+                $this->SubMenuBar('AddFriendsGroup', array('FriendsGroups', 'AddFriendsGroup'))
             );
         } else {
             $tpl->SetVariable('title', _t('USERS_EDIT_GROUP'));
             $tpl->SetVariable(
                 'submenubar',
-                $this->SubMenuBar('EditGroup', array('Members', 'EditGroup'), array('gid' => $gid))
+                $this->SubMenuBar('EditFriendsGroup', array('Friends', 'EditFriendsGroup'), array('gid' => $gid))
             );
         }
 
@@ -137,15 +137,15 @@ class Users_Actions_Groups extends Users_Actions_Default
     }
 
     /**
-     * Edit user's group
+     * Edit friends group
      *
      * @access  public
      * @return  string  XHTML template of a form
      */
-    function EditUserGroup()
+    function EditFriendsGroup()
     {
         $gid = jaws()->request->fetch('gid', 'get');
-        return $this->UserGroupUI($gid);
+        return $this->FriendsGroupUI($gid);
     }
 
     /**
@@ -154,7 +154,7 @@ class Users_Actions_Groups extends Users_Actions_Default
      * @access  public
      * @return  void
      */
-    function AddGroup()
+    function AddFriendsGroup()
     {
         $this->gadget->CheckPermission('ManageFriends');
 
@@ -184,7 +184,7 @@ class Users_Actions_Groups extends Users_Actions_Default
                 RESPONSE_NOTICE
             );
         }
-        Jaws_Header::Location($this->gadget->urlMap('Groups'));
+        Jaws_Header::Location($this->gadget->urlMap('FriendsGroups'));
     }
 
     /**
@@ -193,7 +193,7 @@ class Users_Actions_Groups extends Users_Actions_Default
      * @access  public
      * @return  void
      */
-    function DeleteGroups()
+    function DeleteFriendsGroups()
     {
         $this->gadget->CheckPermission('ManageFriends');
 
@@ -224,7 +224,7 @@ class Users_Actions_Groups extends Users_Actions_Default
             }
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('Groups'));
+        Jaws_Header::Location($this->gadget->urlMap('FriendsGroups'));
     }
 
 
@@ -234,7 +234,7 @@ class Users_Actions_Groups extends Users_Actions_Default
      * @access  public
      * @return  void
      */
-    function AddUserToGroup()
+    function AddFriend()
     {
         $this->gadget->CheckPermission('ManageFriends');
 
@@ -257,16 +257,16 @@ class Users_Actions_Groups extends Users_Actions_Default
                 RESPONSE_ERROR
             );
         }
-        Jaws_Header::Location($this->gadget->urlMap('ManageGroup', array('gid' => $post['gid'])));
+        Jaws_Header::Location($this->gadget->urlMap('ManageFriendsGroup', array('gid' => $post['gid'])));
     }
 
     /**
-     * Remove users from a group
+     * Deletes friend
      *
      * @access  public
      * @return  void
      */
-    function RemoveUserFromGroup()
+    function DeleteFriend()
     {
         $this->gadget->CheckPermission('ManageFriends');
 
@@ -296,16 +296,16 @@ class Users_Actions_Groups extends Users_Actions_Default
             }
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('ManageGroup', array('gid' => $post['gid'])));
+        Jaws_Header::Location($this->gadget->urlMap('ManageFriendsGroup', array('gid' => $post['gid'])));
     }
 
     /**
-     * Manage group
+     * Manage friends group
      *
      * @access  public
      * @return  string  XHTML template of a form
      */
-    function ManageGroup()
+    function ManageFriendsGroup()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             Jaws_Header::Location(
@@ -322,7 +322,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $user = $GLOBALS['app']->Session->GetAttribute('user');
 
         // Load the template
-        $tpl = $this->gadget->template->load('Groups.html');
+        $tpl = $this->gadget->template->load('Friends.html');
         $tpl->SetBlock('manage_group');
 
         $jUser = new Jaws_User;
@@ -338,7 +338,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $tpl->SetVariable('menubar', $this->MenuBar('Groups'));
         $tpl->SetVariable(
             'submenubar',
-            $this->SubMenuBar('Members', array('Members', 'EditGroup'), array('gid' => $gid))
+            $this->SubMenuBar('Friends', array('Friends', 'EditFriendsGroup'), array('gid' => $gid))
         );
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('lbl_actions', _t('GLOBAL_ACTIONS'));
@@ -347,7 +347,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $tpl->SetVariable('icon_ok', STOCK_OK);
         $tpl->SetVariable('gid', $gid);
         $tpl->SetVariable('lbl_edit_group', _t('USERS_EDIT_GROUP'));
-        $tpl->SetVariable('url_edit_group', $this->gadget->urlMap('EditUserGroup', array('gid' => $gid)));
+        $tpl->SetVariable('url_edit_group', $this->gadget->urlMap('EditFriendsGroup', array('gid' => $gid)));
 
         $members = $jUser->GetUsers($gid);
         $tpl->SetVariable('lbl_members', _t('USERS_GROUPS_MEMBERS'));
@@ -392,12 +392,12 @@ class Users_Actions_Groups extends Users_Actions_Default
 
 
     /**
-     * Update a user's group
+     * Update a friends group
      *
      * @access  public
      * @return  void
      */
-    function UpdateGroup()
+    function UpdateFriendsGroup()
     {
         $this->gadget->CheckPermission('ManageFriends');
 
@@ -443,7 +443,7 @@ class Users_Actions_Groups extends Users_Actions_Default
                 RESPONSE_NOTICE
             );
         }
-        Jaws_Header::Location($this->gadget->urlMap('Groups'));
+        Jaws_Header::Location($this->gadget->urlMap('FriendsGroups'));
     }
 
 }

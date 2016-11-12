@@ -67,7 +67,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
      */
     function MenuBar($selected)
     {
-        $actions = array('Profile', 'Groups');
+        $actions = array('Profile', 'FriendsGroups');
         if (!in_array($selected, $actions)) {
             $selected = 'Profile';
         }
@@ -81,9 +81,9 @@ class Users_Actions_Default extends Jaws_Gadget_Action
 
         if ($this->gadget->GetPermission('ManageFriends')) {
             $menubar->AddOption(
-                'Groups',
-                _t('USERS_USER_GROUPS'),
-                $this->gadget->urlMap('Groups'),
+                'FriendsGroups',
+                _t('USERS_FRIENDS'),
+                $this->gadget->urlMap('FriendsGroups'),
                 'gadgets/Users/Resources/images/groups_mini.png'
             );
         }
@@ -104,7 +104,7 @@ class Users_Actions_Default extends Jaws_Gadget_Action
     function SubMenuBar($selected, $actions, $params = null)
     {
         $default_actions = array(
-            'Profile', 'Members', 'EditGroup', 'AddGroup', 'Account', 'Personal', 'Preferences', 'Contacts'
+            'Profile', 'Friends', 'EditGroup', 'AddGroup', 'Account', 'Personal', 'Preferences', 'Contacts'
         );
         if (!in_array($selected, $default_actions)) {
             $action_selected = 'Profile';
@@ -122,32 +122,32 @@ class Users_Actions_Default extends Jaws_Gadget_Action
             );
         }
 
-        if (in_array('Groups', $actions)) {
+        if (in_array('FriendsGroups', $actions)) {
             $menubar->AddOption(
-                'Groups',
+                'FriendsGroups',
                 _t('USERS_USER_GROUPS'),
-                $this->gadget->urlMap('Groups')
+                $this->gadget->urlMap('FriendsGroups')
             );
         }
 
-        if (in_array('AddGroup', $actions)) {
-            $menubar->AddOption('AddGroup', _t('USERS_ADD_GROUP'),
-                $this->gadget->urlMap('UserGroupUI'), STOCK_ADD);
+        if (in_array('AddFriendsGroup', $actions)) {
+            $menubar->AddOption('AddFriendsGroup', _t('USERS_ADD_GROUP'),
+                $this->gadget->urlMap('FriendsGroupUI'), STOCK_ADD);
         }
 
-        if (in_array('Members', $actions)) {
+        if (in_array('Friends', $actions)) {
             $menubar->AddOption(
-                'Members',
+                'Friends',
                 _t('USERS_GROUPS_MEMBERS'),
-                $this->gadget->urlMap('ManageGroup', $params)
+                $this->gadget->urlMap('ManageFriendsGroup', $params)
             );
         }
 
         if (in_array('EditGroup', $actions)) {
             $menubar->AddOption(
-                'EditGroup',
+                'EditFriendsGroup',
                 _t('USERS_EDIT_GROUP'),
-                $this->gadget->urlMap('EditUserGroup', $params)
+                $this->gadget->urlMap('EditFriendsGroup', $params)
             );
         }
 
@@ -198,5 +198,43 @@ class Users_Actions_Default extends Jaws_Gadget_Action
         $menubar->Activate($selected);
         return $menubar->Get();
     }
+
+    /**
+     * Displays menu bar according to selected action
+     *
+     * @access  public
+     * @param   string  $selected   selected action
+     * @return  string  XHTML template content
+     */
+    function AdminMenuBar($selected)
+    {
+        $actions = array('Users', 'ManageGroups');
+        if (!in_array($selected, $actions)) {
+            $selected = 'Users';
+        }
+
+        $menubar = new Jaws_Widgets_Menubar();
+        if ($this->gadget->GetPermission('ManageUsers')) {
+            $menubar->AddOption(
+                'Users',
+                _t('USERS_USERS'),
+                $this->gadget->urlMap('Users'),
+                'gadgets/Users/Resources/images/users_mini.png'
+            );
+        }
+
+        if ($this->gadget->GetPermission('ManageGroups')) {
+            $menubar->AddOption(
+                'ManageGroups',
+                _t('USERS_USERS_GROUPS'),
+                $this->gadget->urlMap('ManageGroups'),
+                'gadgets/Users/Resources/images/groups_mini.png'
+            );
+        }
+
+        $menubar->Activate($selected);
+        return $menubar->Get();
+    }
+
 
 }

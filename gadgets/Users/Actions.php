@@ -131,47 +131,122 @@ $actions['UpdateContacts'] = array(
     'internal' => true,
     'file' => 'Contacts',
 );
-$actions['Groups'] = array(
+$actions['FriendsGroups'] = array(
     'normal' => true,
-    'file' => 'Groups',
+    'file' => 'Friends',
 );
-$actions['DeleteGroups'] = array(
+$actions['DeleteFriendsGroups'] = array(
     'standalone' => true,
     'internal' => true,
-    'file' => 'Groups',
+    'file' => 'Friends',
 );
-$actions['AddUserToGroup'] = array(
+$actions['AddFriend'] = array(
     'standalone' => true,
     'internal' => true,
-    'file' => 'Groups',
+    'file' => 'Friends',
 );
-$actions['RemoveUserFromGroup'] = array(
+$actions['DeleteFriend'] = array(
     'standalone' => true,
     'internal' => true,
-    'file' => 'Groups',
+    'file' => 'Friends',
 );
-$actions['UserGroupUI'] = array(
+$actions['FriendsGroupUI'] = array(
     'normal' => true,
-    'file' => 'Groups',
+    'file' => 'Friends',
 );
-$actions['EditUserGroup'] = array(
+$actions['EditFriendsGroup'] = array(
     'normal' => true,
-    'file' => 'Groups',
+    'file' => 'Friends',
 );
-$actions['AddGroup'] = array(
-    'normal' => true,
-    'internal' => true,
-    'file' => 'Groups',
-);
-$actions['ManageGroup'] = array(
-    'normal' => true,
-    'file' => 'Groups',
-);
-$actions['UpdateGroup'] = array(
+$actions['AddFriendsGroup'] = array(
     'normal' => true,
     'internal' => true,
-    'file' => 'Groups',
+    'file' => 'Friends',
 );
+$actions['ManageFriendsGroup'] = array(
+    'normal' => true,
+    'file' => 'Friends',
+);
+$actions['UpdateFriendsGroup'] = array(
+    'normal' => true,
+    'internal' => true,
+    'file' => 'Friends',
+);
+
+$actions['Users'] = array(
+    'normal' => true,
+    'file' => 'Users',
+);
+$actions['GetUsers'] = array(
+    'standalone' => true,
+    'file' => 'Users',
+);
+$actions['GetUser'] = array(
+    'standalone' => true,
+    'file' => 'Users',
+);
+$actions['AddUser'] = array(
+    'standalone' => true,
+    'file' => 'Users',
+    'loglevel' => JAWS_NOTICE,
+);
+$actions['UpdateUser'] = array(
+    'standalone' => true,
+    'file' => 'Users',
+    'loglevel' => JAWS_NOTICE,
+);
+$actions['DeleteUser'] = array(
+    'standalone' => true,
+    'file' => 'Users',
+    'loglevel' => JAWS_WARNING,
+);
+$actions['GetUserGroups'] = array(
+    'standalone' => true,
+    'file' => 'Users',
+);
+$actions['AddUserToGroups'] = array(
+    'standalone' => true,
+    'file' => 'Users',
+    'loglevel' => JAWS_NOTICE,
+);
+
+$actions['ManageGroups'] = array(
+    'normal' => true,
+    'file' => 'ManageGroups',
+);
+$actions['GetGroups'] = array(
+    'standalone' => true,
+    'file' => 'ManageGroups',
+);
+$actions['GetGroup'] = array(
+    'standalone' => true,
+    'file' => 'ManageGroups',
+);
+$actions['AddGlobalGroup'] = array(
+    'standalone' => true,
+    'file' => 'ManageGroups',
+    'loglevel' => JAWS_NOTICE,
+);
+$actions['UpdateGlobalGroup'] = array(
+    'standalone' => true,
+    'file' => 'ManageGroups',
+    'loglevel' => JAWS_NOTICE,
+);
+$actions['DeleteGlobalGroup'] = array(
+    'standalone' => true,
+    'file' => 'ManageGroups',
+    'loglevel' => JAWS_NOTICE,
+);
+$actions['GetGroupUsers'] = array(
+    'standalone' => true,
+    'file' => 'ManageGroups',
+);
+$actions['AddUsersToGroup'] = array(
+    'standalone' => true,
+    'file' => 'ManageGroups',
+    'loglevel' => JAWS_NOTICE,
+);
+
 
 /**
  * Admin actions

@@ -1,0 +1,232 @@
+<!-- BEGIN Users -->
+<div class="gadget_header">
+  <div class="gadget_title"><h3>{{gadget_title}}</h3></div>
+  <div class="gadget_menubar">{{menubar}}</div>
+  <div class="gadget_submenubar">{{submenubar}}</div>
+</div>
+<div class="gadget_container">
+  <div class="gadget_response">
+    <div id="users_users_response" class="{{type}}">{{text}}</div>
+  </div>
+
+  <div class="gadget_content content">
+
+    <div id="user_workarea" style="display: none; width: 650px; height: 400px; overflow: auto">
+      <div rel="body">
+        <div style="padding: 10px; font-size: 11px; line-height: 150%;">
+          <form action="#" name="user">
+            <!-- BEGIN encryption -->{{length}}{{modulus}}{{exponent}}<!-- END encryption -->
+            <input type="hidden" name="prev_status" id="prev_status" value="0" />
+
+            <table cellpadding="0" cellspacing="2">
+              <tr><td><label for="username">{{lbl_username}}:</label></td><td><input type="text" id="username" name="username"></td></tr>
+              <tr><td><label for="nickname">{{lbl_nickname}}:</label></td><td><input type="text" id="nickname" name="nickname"></td></tr>
+              <tr><td><label for="email">{{lbl_email}}:</label></td><td><input type="text" id="email" name="email"></td></tr>
+              <tr><td><label for="superadmin">{{lbl_superadmin}}:</label></td><td>
+                <select name="superadmin" id="superadmin">
+                  <option value="0">{{lbl_no}}</option>
+                  <option value="1">{{lbl_yes}}</option>
+                </select>
+              </td></tr>
+              <tr><td><label for="pass1">{{lbl_pass1}}:</label></td><td><input type="password" id="pass1" name="pass1"></td></tr>
+              <tr><td><label for="pass2">{{lbl_pass2}}:</label></td><td><input type="password" id="pass2" name="pass2"></td></tr>
+              <tr><td><label for="concurrents">{{lbl_concurrents}}:</label></td><td><input type="text" id="concurrents" name="concurrents"></td></tr>
+              <tr><td><label for="expiry_date">{{lbl_expiry_date}}:</label></td><td><input type="text" id="expiry_date" name="expiry_date"></td></tr>
+              <tr><td><label for="superadmin">{{lbl_status}}:</label></td><td>
+                <select name="status" id="status">
+                  <!-- BEGIN status -->
+                  <option value="{{value}}">{{title}}</option>
+                  <!-- END status -->
+                </select>
+              </td></tr>
+
+            </table>
+          </form>
+        </div>
+      </div>
+      <div rel="buttons">
+        <button class="btn" onclick="javascript:saveUser()">{{lbl_save}}</button>
+        <button class="btn" onclick="javascript:stopAction();">{{lbl_cancel}}</button>
+      </div>
+    </div>
+
+
+    <div id="user_groups_workarea" style="display: none; width: 650px; height: 400px; overflow: auto">
+      <div rel="body">
+        <div style="padding: 10px; font-size: 11px; line-height: 150%;">
+          <form action="#" name="user_groups">
+            <table>
+              <tbody>
+              <!-- BEGIN group -->
+              <tr>
+                <td>
+                  <input name="user_groups[]" id="group_{{id}}" value="{{id}}" type="checkbox">
+                  <label for="group_{{id}}">{{title}}</label>
+                </td>
+              </tr>
+              <!-- END group -->
+              </tbody>
+            </table>
+          </form>
+        </div>
+      </div>
+      <div rel="buttons">
+        <button class="btn" onclick="javascript:saveUser()">{{lbl_save}}</button>
+        <button class="btn" onclick="javascript:stopAction();">{{lbl_cancel}}</button>
+      </div>
+    </div>
+
+
+    <div id="users-grid" style="width: 100%; height: 300px;"></div>
+  </div>
+</div>
+<div class="gadget_footer"></div>
+
+<script type="text/javascript">
+  var lbl_nickname = "{{lbl_nickname}}";
+  var lbl_username = "{{lbl_username}}";
+  var addUser_title = "{{addUser_title}}";
+  var editUser_title = "{{editUser_title}}";
+  var editUserGroups_title = "{{editUserGroups_title}}";
+  var incompleteUserFields = "{{incompleteUserFields}}";
+  var wrongPassword = "{{wrongPassword}}";
+  var currentAction = "UserAccount";
+
+  $(document).ready(function() {
+    initiateUsersDG();
+  });
+
+
+  /**
+   * initiate users datagrid
+   */
+  function initiateUsersDG() {
+    $('#users-grid').w2grid({
+      name: 'users-grid',
+      header: '{{grid_header}}',
+      method: 'POST',
+      url: {
+        get    : UsersAjax.baseURL + 'GetUsers',
+        remove : UsersAjax.baseURL + 'DeleteUser'
+      },
+      show: {
+        toolbar: true,
+        searchAll: false,
+        toolbarInput: false,
+        toolbarSearch: true,
+        toolbarAdd: true,
+        toolbarDelete: true,
+        toolbarEdit: true,
+        header: true,
+        footer: true
+      },
+      recid: 'id',
+      multiSearch: true,
+      multiSelect : false,
+      columns: [
+        {field: 'nickname', caption: lbl_nickname, size: '50%', sortable: true},
+        {field: 'username', caption: lbl_username, size: '50%', sortable: true},
+      ],
+      menu: [
+        { id: 'userGroups', text: '{{lbl_userGroups}}', img: 'w2ui-icon-pencil' },
+      ],
+      searches : [
+        { field: 'group', caption: '{{lbl_filter_group}}', operator : 'is', type: 'list',
+//          options: {items: {'1': 'vitali@gmail.com', '2':'jim@gmail.com'}}},
+            options: {items: {
+            <!-- BEGIN filterGroup -->
+            '{{value}}':'{{title}}',
+            <!-- END filterGroup -->
+            }}},
+
+        { field: 'type', caption: '{{lbl_filter_type}}', type: 'list',
+            options: {items: {
+            <!-- BEGIN filterType -->
+            '{{value}}':'{{title}}',
+            <!-- END filterType -->
+            }}},
+
+        { field: 'status', caption: '{{lbl_filter_status}}', type: 'list',
+            options: {items: {
+            <!-- BEGIN filterStatus -->
+            '{{value}}':'{{title}}',
+            <!-- END filterStatus -->
+            }}},
+
+        {field: 'term', caption: '{{lbl_filter_term}}', operator : 'contains', type: 'text'},
+      ],
+      records: [],
+      onRequest: function(event) {
+        switch (event.postData.cmd) {
+          case 'get':
+            break;
+
+          case 'delete':
+            event.postData = {
+              'ids':  event.postData.selected,
+            };
+            break;
+
+          case 'save':
+            break;
+
+        }
+
+      },
+      onLoad: function(event) {
+        event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
+        if (event.xhr.responseText.type != 'response_notice') {
+          event.xhr.responseText.message = event.xhr.responseText.text;
+          event.xhr.responseText.status = "error";
+        } else {
+          event.xhr.responseText = event.xhr.responseText.data;
+        }
+      },
+      onDelete: function(event) {
+        if (event.xhr) {
+          event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
+          if (event.xhr.responseText.type != 'response_notice') {
+            event.xhr.responseText.message = event.xhr.responseText.text;
+            event.xhr.responseText.status = "error";
+          } else {
+            this.reload();
+            event.xhr.responseText = event.xhr.responseText.data;
+          }
+        }
+      },
+      toolbar: {
+        items: [
+          { type: 'button', id: 'user-groups-btn', caption: '{{lbl_userGroups}}', img: 'w2ui-icon-pencil', disabled:true }
+        ],
+        onClick: function (target, data) {
+          if (target == 'w2ui-add') {
+            addUser();
+          } else if (target == 'w2ui-edit') {
+            editUser(w2ui['users-grid'].getSelection()[0]);
+          } else if (target == 'user-groups-btn') {
+            editUserGroups(w2ui['users-grid'].getSelection()[0]);
+          }
+        }
+      },
+      onDblClick: function(event) {
+        editUser(event.recid)
+      },
+      onSelect: function(event) {
+        this.toolbar.enable('user-groups-btn');
+      },
+      onUnselect: function(event) {
+        this.toolbar.disable('user-groups-btn');
+      },
+      onMenuClick: function(event) {
+        switch (event.menuItem.id) {
+          case 'userGroups':
+            editUserGroups(event.recid);
+            break;
+        }
+      },
+    });
+  }
+
+
+</script>
+<!-- END Users -->

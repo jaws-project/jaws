@@ -10,7 +10,7 @@
   </div>
   <form name="groups" id="groups" action="{{requested_url}}" method="post">
     <input class="form-control" type="hidden" name="gadget" value="Users"/>
-    <input class="form-control" type="hidden" name="action" value="Groups"/>
+    <input class="form-control" type="hidden" name="action" value="FriendsGroups"/>
     <input class="form-control" type="hidden" name="status" value=""/>
   <div class="gadget_content content">
       <table class="table table-hover table-bordered">
@@ -95,7 +95,7 @@
 <div class="gadget_container">
   <form name="groups" id="groups" action="{{base_script}}" method="post">
       <input class="form-control" type="hidden" name="gadget" value="Users"/>
-      <input class="form-control" type="hidden" name="action" value="AddGroup"/>
+      <input class="form-control" type="hidden" name="action" value="AddFriendsGroup"/>
       <input class="form-control" type="hidden" name="gid" value="{{gid}}"/>
 
       <div class="gadget_content content">
@@ -131,7 +131,7 @@
   </div>
   <form name="group_members" id="group_members" action="{{base_script}}" method="post">
       <input class="form-control" type="hidden" name="gadget" value="Users"/>
-      <input class="form-control" type="hidden" name="action" value="AddUserToGroup"/>
+      <input class="form-control" type="hidden" name="action" value="AddFriend"/>
       <input class="form-control" type="hidden" name="gid" value="{{gid}}"/>
 
       <div class="gadget_content content">
@@ -201,7 +201,7 @@
     function doDGAction() {
         var action = document.getElementById("member_actions_combo").value;
         if(action == 'delete') {
-            document.group_members.action.value = 'RemoveUserFromGroup';
+            document.group_members.action.value = 'DeleteFriend';
         } else {
             return false;
         }

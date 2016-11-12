@@ -239,8 +239,8 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             // manage friends
             if ($this->gadget->GetPermission('ManageFriends')) {
                 $tpl->SetBlock('UserLinks/groups');
-                $tpl->SetVariable('user_groups', _t('USERS_MANAGE_GROUPS'));
-                $tpl->SetVariable('groups_url', $this->gadget->urlMap('Groups'));
+                $tpl->SetVariable('user_groups', _t('USERS_FRIENDS'));
+                $tpl->SetVariable('groups_url', $this->gadget->urlMap('FriendsGroups'));
                 $tpl->ParseBlock('UserLinks/groups');
             }
 
