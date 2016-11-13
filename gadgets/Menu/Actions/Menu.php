@@ -100,7 +100,6 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
         $len = count($menus);
         static $level = -1;
         for ($i = 0; $i < $len; $i++) {
-
             // check ACL
             if ($menus[$i]['menu_type'] != 'url' &&
                 !empty($menus[$i]['acl_key_name']) &&
@@ -141,6 +140,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             }
 
             $level++;
+            $menus[$i]['url'] = $menus[$i]['url']?: 'javascript:void(0);';
             $tpl->SetVariable('level', $level);
             $tpl->SetBlock('levels/menu_item');
             $tpl->SetVariable('mid', $menus[$i]['id']);

@@ -260,9 +260,9 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         @list($request) = jaws()->request->fetchAll('post');
         if ($request == 'url') {
-            $urls[] = array('url'   => '',
+            $urls[] = array('url'   => '/',
                             'title' => _t('MENU_REFERENCES_FREE_LINK'));
-            $urls[] = array('url'   => 'javascript:void(0);',
+            $urls[] = array('url'   => '',
                             'title' => _t('MENU_REFERENCES_NO_LINK'));
             return $urls;
         } else {

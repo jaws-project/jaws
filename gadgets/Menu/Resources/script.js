@@ -351,7 +351,7 @@ function editMenu(mid)
     $('#type').val(menuInfo['menu_type']);
     $('#title').val(menuInfo['title'].defilter());
     $('#url').val(menuInfo['url']);
-    $('#url').prop('disabled', menuInfo['variable']);
+    $('#url').prop('disabled', menuInfo['variable'] || !menuInfo['url']);
     $('#variable').val(menuInfo['variable']? 1 : 0);
     $('#url_target').val(menuInfo['url_target']);
     if (menuInfo['acl_key_name']) {
@@ -482,7 +482,7 @@ function changeReferences() {
 
     $('#variable').val(cacheReferences[type][selIndex]['variable']);
     $('#url').val($('#references').val());
-    $('#url').prop('disabled', cacheReferences[type][selIndex]['variable']);
+    $('#url').prop('disabled', cacheReferences[type][selIndex]['variable'] || !cacheReferences[type][selIndex]['url']);
 }
 
 /**
