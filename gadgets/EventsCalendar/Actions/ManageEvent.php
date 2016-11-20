@@ -184,7 +184,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             $combo->AddOption(_t("EVENTSCALENDAR_EVENT_RECURRENCE_$i"), $i);
         }
         $combo->SetDefault($event['recurrence']);
-        $combo->AddEvent(ON_CHANGE, 'switchRepeatUI(this.value)');
+        $combo->AddEvent(ON_CHANGE, 'updateRepeatUI(this.value)');
         $tpl->SetVariable('recurrence', $combo->Get());
         $tpl->SetVariable('recurrence_value', $event['recurrence']);
         $tpl->SetVariable('lbl_recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE'));
@@ -233,7 +233,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
      * Creates a new event
      *
      * @access  public
-     * @return  array   Response array
+     * @return  void
      */
     function CreateEvent()
     {
@@ -251,7 +251,6 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             Jaws_Header::Referrer();
         }
 
-        $jdate = Jaws_Date::getInstance();
         $event['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
         if (empty($event['stop_date'])) {
             $event['stop_date'] = $event['start_date'];
@@ -286,7 +285,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
      * Updates event
      *
      * @access  public
-     * @return  array   Response array
+     * @return  void
      */
     function UpdateEvent()
     {

@@ -14,11 +14,11 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
      * Fetches data of passed event
      *
      * @access  public
-     * @param   int     $id     Event ID
-     * @param   int     $user   User ID
+     * @param   int     $eventId    Event ID
+     * @param   int     $userId     User ID
      * @return  mixed   Query result
      */
-    function GetEvent($id, $user = null)
+    function GetEvent($eventId, $userId = null)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as events');
         $table->select('events.id', 'subject', 'location', 'description', 
@@ -27,27 +27,28 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
             'createtime', 'updatetime', 'nickname', 'username', 'ec_users.user', 'owner');
         $table->join('ec_users', 'events.id', 'event');
         $table->join('users', 'owner', 'users.id');
-        $table->where('events.id', $id);
-        if ($user !== null){
-            $table->and()->where('ec_users.user', $user);
+        $table->where('events.id', $eventId);
+        if ($userId !== null){
+            $table->and()->where('ec_users.user', $userId);
         }
 
         return $table->fetchRow();
     }
 
     /**
-     * Checks the user of passed events
+     * Checks the user of specified events
      *
      * @access  public
-     * @param   int     $parent  Restricts results to a specified event
+     * @param   array   $idSet      Set of event IDs
+     * @param   int     $userId     User ID
      * @return  array   Query result
      */
-    function CheckEvents($id_set, $user)
+    function CheckEvents($idSet, $userId)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events');
         $table->select('id');
-        $table->where('id', $id_set, 'in')->and();
-        $table->where('user', $user);
+        $table->where('id', $idSet, 'in')->and();
+        $table->where('user', $userId);
         return $table->fetchColumn();
     }
 
@@ -60,15 +61,15 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
      */
     function InsertEvent($event)
     {
-        $jdate = Jaws_Date::getInstance();
+        $jDate = Jaws_Date::getInstance();
 
-        $start_time = $jdate->ToBaseDate(
+        $start_time = $jDate->ToBaseDate(
             preg_split('/[- :]/', $event['start_date'] . ' ' . $event['start_time'])
         );
         $event['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time['timestamp']);
         unset($event['start_date']);
 
-        $stop_time = $jdate->ToBaseDate(
+        $stop_time = $jDate->ToBaseDate(
             preg_split('/[- :]/', $event['stop_date'] . ' ' . $event['stop_time'])
         );
         $event['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time['timestamp']);
@@ -103,28 +104,31 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         }
 
         $table->commit();
+
+        return $id;
     }
 
     /**
      * Updates event
      *
      * @access  public
-     * @param   int     $id     Event ID
-     * @param   array   $event   Event event
+     * @param   int     $id         Event ID
+     * @param   array   $event      Event data
+     * @param   array   $oldEvent   Old Event data
      * @return  mixed   Query result
      */
-    function UpdateEvent($id, $event, $old_event)
+    function UpdateEvent($id, $event, $oldEvent)
     {
-        $jdate = Jaws_Date::getInstance();
+        $jDate = Jaws_Date::getInstance();
         $startArr = preg_split('/[- :]/', $event['start_date'] . ' ' . $event['start_time']);
 
-        $start_time = $jdate->ToBaseDate(
+        $start_time = $jDate->ToBaseDate(
             preg_split('/[- :]/', $event['start_date'] . ' ' . $event['start_time'])
         );
         $event['start_time'] = $GLOBALS['app']->UserTime2UTC($start_time['timestamp']);
         unset($event['start_date']);
 
-        $stop_time = $jdate->ToBaseDate(
+        $stop_time = $jDate->ToBaseDate(
             preg_split('/[- :]/', $event['stop_date'] . ' ' . $event['stop_time'])
         );
         $event['stop_time'] = $GLOBALS['app']->UserTime2UTC($stop_time['timestamp']);
@@ -142,12 +146,12 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         }
 
         // create recurrences
-        if ($event['start_time'] != $old_event['start_time'] ||
-            $event['stop_time'] != $old_event['stop_time'] ||
-            $event['recurrence'] != $old_event['recurrence'] ||
-            $event['month'] != $old_event['month'] ||
-            $event['wday'] != $old_event['wday'] ||
-            $event['day'] != $old_event['day'])
+        if ($event['start_time'] != $oldEvent['start_time'] ||
+            $event['stop_time'] != $oldEvent['stop_time'] ||
+            $event['recurrence'] != $oldEvent['recurrence'] ||
+            $event['month'] != $oldEvent['month'] ||
+            $event['wday'] != $oldEvent['wday'] ||
+            $event['day'] != $oldEvent['day'])
         {
             $res = $this->DeleteRecurrences($id);
             if (Jaws_Error::IsError($res)) {
@@ -159,49 +163,50 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
             }
         }
 
-        $table->commit();
+        return $table->commit();
     }
 
     /**
      * Deletes event(s)
      *
      * @access  public
-     * @param   array   $id_set  Set of event IDs
+     * @param   array   $idSet  Set of event IDs
      * @return  mixed   Query result
      */
-    function Delete($id_set)
+    function Delete($idSet)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events');
-        $res = $table->delete()->where('id', $id_set, 'in')->exec();
+        $res = $table->delete()->where('id', $idSet, 'in')->exec();
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
 
         // Delete recurrences
         $table = Jaws_ORM::getInstance()->table('ec_recurrences');
-        $res = $table->delete()->where('event', $id_set, 'in')->exec();
+        $res = $table->delete()->where('event', $idSet, 'in')->exec();
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
 
         // Delete shares
         $table = Jaws_ORM::getInstance()->table('ec_users');
-        return $table->delete()->where('event', $id_set, 'in')->exec();
+        return $table->delete()->where('event', $idSet, 'in')->exec();
     }
 
     /**
      * Inserts event recurrences
      *
      * @access  public
-     * @param   array   $data   Event data
+     * @param   int     $eventId    Event ID
+     * @param   array   $event      Event data
      * @return  mixed   Query result
      */
-    function InsertRecurrences($event_id, $event)
+    function InsertRecurrences($eventId, $event)
     {
         $recArr = array();
-        $jdate = Jaws_Date::getInstance();
-        $start_info = $jdate->GetDateInfo($event['start_time']);
-        $stop_info = $jdate->GetDateInfo($event['stop_time']);
+        $jDate = Jaws_Date::getInstance();
+        $start_info = $jDate->GetDateInfo($event['start_time']);
+        $stop_info = $jDate->GetDateInfo($event['stop_time']);
         if ($event['recurrence'] == 0) {
             $recArr[] = $event['start_time'];
         } else {
@@ -216,7 +221,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
                     break;
                 case 2: // weekly
                     $step = 7 * 24 * 60 * 60;
-                    // calculate first ocurrence
+                    // calculate first occurrence
                     $diff = $event['wday'] - $start_info['wday'] - 1;
                     if ($diff < 0) {
                         $diff += 7;
@@ -235,7 +240,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
                     $endMonth = ($stop_info['year'] - $start_info['year']) * 12 + $stop_info['mon'];
                     for ($i = (int)$start_info['mon']; $i <= $endMonth; $i++) {
                         $startArr[1] = $i;
-                        $time = $jdate->ToBaseDate($startArr);
+                        $time = $jDate->ToBaseDate($startArr);
                         $iso = $GLOBALS['app']->UserTime2UTC($time['timestamp']);
                         if ($iso < $event['stop_time']) {
                             $recArr[] = $iso;
@@ -247,7 +252,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
                     $startArr[2] = $event['day'];
                     for ($i = $start_info['year']; $i <= $stop_info['year']; $i++) {
                         $startArr[0] = $i;
-                        $time = $jdate->ToBaseDate($startArr);
+                        $time = $jDate->ToBaseDate($startArr);
                         $iso = $GLOBALS['app']->UserTime2UTC($time['timestamp']);
                         if ($iso < $event['stop_time']) {
                             $recArr[] = $iso;
@@ -264,7 +269,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         $data = array();
         foreach ($recArr as $rec) {
             $data[] = array(
-                'event' => $event_id,
+                'event' => $eventId,
                 'start_time' => $rec,
                 'stop_time' => $rec + $duration
             );
@@ -277,25 +282,25 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
             return $res;
         }
 
-        $table->commit();
+        return $table->commit();
     }
 
     /**
      * Deletes event recurrences
      *
      * @access  public
-     * @param   array   $data   Event data
+     * @param   int     $eventId    Event ID
      * @return  mixed   Query result
      */
-    function DeleteRecurrences($event_id)
+    function DeleteRecurrences($eventId)
     {
         $table = Jaws_ORM::getInstance()->table('ec_recurrences');
         $table->beginTransaction();
-        $res = $table->delete()->where('event', $event_id)->exec();
+        $res = $table->delete()->where('event', $eventId)->exec();
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
 
-        $table->commit();
+        return $table->commit();
     }
 }

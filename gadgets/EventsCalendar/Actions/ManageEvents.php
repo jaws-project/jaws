@@ -8,7 +8,6 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/site_style.css');
 class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
 {
     /**
@@ -19,6 +18,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
      */
     function ManageEvents()
     {
+        $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/site_style.css');
         $this->AjaxMe('site_script.js');
         $tpl = $this->gadget->template->load('ManageEvents.html');
         $tpl->SetBlock('events');

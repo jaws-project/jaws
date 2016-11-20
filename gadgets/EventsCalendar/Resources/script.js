@@ -19,13 +19,32 @@ var EventsCalendarCallback = {
         }
     },
     GetEvent: function(response) {
-        console.log(response);
         if (response.id) {
             w2ui['datagrid'].unlock();
             editEvent(response);
         } else {
             EventsCalendarAjax.showResponse(response);
         }
+    },
+    CreateEvent: function(response) {
+        if (response.type && response.type === 'response_notice') {
+            w2popup.close();
+            w2ui['datagrid'].reload();
+        }
+        EventsCalendarAjax.showResponse(response);
+    },
+    UpdateEvent: function(response) {
+        if (response.type && response.type === 'response_notice') {
+            w2popup.close();
+            w2ui['datagrid'].reload();
+        }
+        EventsCalendarAjax.showResponse(response);
+    },
+    DeleteEvent: function(response) {
+        if (response.type && response.type === 'response_notice') {
+            w2ui['datagrid'].reload();
+        }
+        EventsCalendarAjax.showResponse(response);
     }
 };
 
@@ -43,7 +62,6 @@ function initEventsCalendar() {
     // TODO: detect language
     w2utils.locale('libraries/w2ui/fa-pe.json');
 
-    initForm();
     initDatagrid('#events_datagrid');
 }
 
@@ -51,6 +69,16 @@ function initEventsCalendar() {
  * Prepares events datagrid
  */
 function initDatagrid(targetEl) {
+    var components = {
+        toolbar: true,
+        footer: true,
+        selectColumn: true
+    };
+    if (CONST['mode'] === 'public') {
+        components.toolbarAdd = true;
+        components.toolbarEdit = true;
+        components.toolbarDelete = true;
+    }
     $(targetEl).w2grid({
         name: 'datagrid',
         recid: 'id',
@@ -58,20 +86,19 @@ function initDatagrid(targetEl) {
         // limit: CONST.rowsPerPage,
         // toolbar: MessagesToolbar,
         // multiSelect: ACL.ManageMessages? true : false,
-        // multiSearch: true,
-        // searches: [
-        //     {field: 'subject', caption: CONST.subject, type: 'text'},
-        //     {field: 'from', caption: CONST.from, type: 'text'},
-        //     {field: 'to', caption: CONST.to, type: 'text'},
-        //     {field: 'body', caption: CONST.body, type: 'text'},
-        //     {field: 'date', caption: CONST.date, type: 'date'}
-        // ],
+        multiSearch: true,
+        searches: [
+            {field: 'subject', caption: CONST.subject, type: 'text'},
+            {field: 'location', caption: CONST.location, type: 'text'},
+            {field: 'description', caption: CONST.description, type: 'text'},
+            {field: 'shared', caption: CONST.shared, type: 'list', options: {items: {1: CONST.yes, 0: CONST.no}}},
+            {field: 'type', caption: CONST.type, type: 'list', options: {items: CONST.types}},
+            {field: 'priority', caption: CONST.priority, type: 'list', options: {items: CONST.priorities}},
+            {field: 'date', caption: CONST.date, type: 'date'},
+            {field: 'time', caption: CONST.time, type: 'time'}
+        ],
         url: {get: EventsCalendarAjax.baseURL + 'GetEvents'},
-        show: {
-            toolbar: true,
-            footer: true,
-            selectColumn: true
-        },
+        show: components,
         columns: [
             {
                 field: 'subject', caption: CONST.subject, size: '40%', sortable: true, render: function (record) {
@@ -98,18 +125,8 @@ function initDatagrid(targetEl) {
         onRequest: function (event) {
             switch (event.postData.cmd) {
                 case 'get':
-                    event.postData.user = (CONST['mode'] == 'public')? 0 : null;
+                    event.postData.user = (CONST['mode'] === 'public')? 0 : CONST['user'];
                     break;
-
-                case 'delete':
-                    // event.postData = {
-                    //     'ids': event.postData.selected
-                    // };
-                    break;
-
-                case 'save':
-                    break;
-
             }
         },
         onLoad: function (event) {
@@ -120,61 +137,35 @@ function initDatagrid(targetEl) {
             }
         },
         onSearch: function (event) {
-            if (event.searchField == 'all') {
-                event.searchData = [{
-                    field: 'text',
-                    value: event.searchValue
-                }];
+            console.log(event);
+            if (event.searchField === 'all') {
+                event.searchData = [{all: event.searchValue}];
             }
         },
-        onSelect: function (event) {
-            // FIXME: w2grid.getSelection() does not work properly without delay
-            setTimeout(function () {
-                // updateMessagesToolbar();
-            }, 0);
+        onAdd: function (event) {
+            newEvent();
         },
-        onUnselect: function (event) {
-            setTimeout(function () {
-                updateMessagesToolbar();
-            }, 0);
-        },
-        onClick: function (event) {
-            console.log(event.recid);
+        onEdit: function (event) {
             getEvent(event.recid);
-            event.preventDefault(); // prevent 'onSelect' event
         },
         onDelete: function (event) {
-            if (event.xhr) {
-                event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
-                if (event.xhr.responseText.type != 'response_notice') {
-                    event.xhr.responseText.message = event.xhr.responseText.text;
-                    event.xhr.responseText.status = 'error';
-                } else {
-                    event.xhr.responseText = event.xhr.responseText.data;
-                }
+            if (event.force) {
+                EventsCalendarAjax.callAsync('DeleteEvent', {events: w2ui['datagrid'].getSelection()});
             }
         }
     });
 }
 
-function initForm() {
-    $('#dlg_event').w2form({
-        name   : 'myForm',
-        fields : [
+function initForm($form) {
+    $form.w2form({
+        name: 'frm_event',
+        fields: [
             {name: 'subject', type: 'text', required: true},
             {name: 'location', type: 'text', required: true},
             {name: 'start_date', type: 'date', format: 'yyyy.m.d', required: true},
             {name: 'stop_date', type: 'date', format: 'yyyy.m.d', required: true},
             {name: 'description', type: 'text'}
-        ],
-        actions: {
-            reset: function () {
-                this.clear();
-            },
-            save: function () {
-                this.save();
-            }
-        }
+        ]
     });
 }
 
@@ -184,6 +175,85 @@ function getEvent(id) {
     EventsCalendarAjax.callAsync('GetEvent', {event_id: id});
 }
 
-function editEvent(event) {
-    $('.dlg-event').w2popup();
+function newEvent() {
+    SelectedEvent = null;
+    $('.w2ui-form').w2popup({
+        title: CONST.newEvent
+    });
+    initForm($('#w2ui-popup').find('form'));
+    w2ui['frm_event'].clear();
+    updateRepeatUI();
 }
+
+function editEvent(data) {
+    $('.w2ui-form').w2popup({
+        title: CONST['editEvent'],
+        modal: true
+    });
+    var $form = $('#w2ui-popup').find('form'),
+        form = $form.get(0);
+    initForm($form);
+    for (var field in data) {
+        if (data.hasOwnProperty(field) && form[field]) {
+            form[field].value = data[field];
+        }
+    }
+    $form.find('select[name=recurrence]').trigger('change');
+
+    // disable form for user events
+    if (CONST['mode'] === 'user') {
+        $form.find('input, select, textarea').attr('disabled', true);
+        $form.find('.w2ui-buttons').hide();
+    }
+}
+
+function fromAction(button) {
+    switch (button) {
+        case 'cancel':
+            w2popup.close();
+            break;
+
+        case 'save':
+            var $form = $('#w2ui-popup').find('form'),
+                data = $.unserialize($form.serialize()),
+                action = (data.id === '')? 'CreateEvent' : 'UpdateEvent';
+            // console.log($form, data);
+            EventsCalendarAjax.callAsync(action, data);
+            break;
+    }
+}
+
+/**
+ * Updates event repeat UI
+ */
+function updateRepeatUI(type)
+{
+    var $form = $('#w2ui-popup').find('form'),
+        $day = $('select[name=day]').hide(),
+        $wday = $('select[name=wday]').hide(),
+        $month = $('select[name=month]').hide();
+
+    switch (type) {
+        case '1':
+            $day.val(0);
+            $wday.val(0);
+            $month.val(0);
+            break;
+        case '2':
+            $wday.show('inline');
+            $day.val(0);
+            $month.val(0);
+            break;
+        case '3':
+            $day.show('inline');
+            $wday.val(0);
+            $month.val(0);
+            break;
+        case '4':
+            $day.show('inline');
+            $month.show('inline');
+            $wday.val(0);
+            break;
+    }
+}
+

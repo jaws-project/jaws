@@ -38,7 +38,7 @@ function initEvents()
 /**
  * Updates event repeat UI
  */
-function switchRepeatUI(type)
+function updateRepeatUI(type)
 {
     var $day = $('#event_day').hide(),
         $wday = $('#event_wday').hide(),

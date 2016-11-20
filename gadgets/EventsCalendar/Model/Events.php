@@ -14,51 +14,88 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
      * Fetches list of events
      *
      * @access  public
-     * @param   int     $user   User ID
+     * @param   array   $params     Search query
      * @return  array   Query result
      */
-    function GetEvents($user = null, $query = null, $shared = null, $foreign = null,
-        $start = null, $stop = null, $limit = 0, $offset = null)
+//    function GetEvents($user = null, $query = null, $shared = null, $foreign = null,
+//        $start = null, $stop = null, $limit = 0, $offset = null)
+//    {
+    function GetEvents($params)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as event');
         $table->select('event.id', 'event.user', 'subject', 'location', 'description',
-            'start_time', 'stop_time', 'shared', 'nickname', 'username');
+            'start_time', 'stop_time', 'shared:boolean', 'nickname', 'username');
         $table->join('ec_users', 'event.id', 'event');
         $table->join('users', 'owner', 'users.id');
 
-        if ($user !== null){
-            $table->where('event.user', $user)->and();
+        if ($params['user'] !== null){
+            $table->where('event.user', $params['user'])->and();
         }
 
-        if ($shared === true){
+        if (isset($params['shared']) && $params['shared'] === true){
             $table->where('shared', true)->and();
-            $table->where('event.user', $user)->and();
+            $table->where('event.user', $params['user'])->and();
         }
 
-        if ($foreign === true){
-            $table->where('ec_users.owner', $user, '<>')->and();
+        if (isset($params['foreign']) && $params['foreign'] === true){
+            $table->where('ec_users.owner', $params['user'], '<>')->and();
         }
 
-        if ($query !== null){
-            $table->openWhere('subject', $query, 'like')->or();
-            $table->where('location', $query, 'like')->or();
-            $table->closeWhere('description', $query, 'like')->and();
+        $search = $params['search'];
+        if (!empty($search)){
+//            _log_var_dump($search);
+            foreach ($search as $s) {
+                if (isset($s['all'])) {
+                    $table->openWhere('subject', $s['all'], 'like')->or();
+                    $table->where('location', $s['all'], 'like')->or();
+                    $table->closeWhere('description', $s['all'], 'like')->and();
+                    break;
+                } else {
+                    switch ($s['field']) {
+                        case 'subject':
+                        case 'location':
+                        case 'description':
+                            $table->where($s['field'], $s['value'], 'like')->and();
+                            break;
+
+                        case 'shared':
+                            $table->where($s['field'], $s['value'])->and();
+                            break;
+
+                        case 'type':
+                        case 'priority':
+                            $table->where($s['field'], $s['value'])->and();
+                            break;
+
+                        case 'date':
+                        case 'time':
+                            // TODO: implement search by date/time
+                            break;
+                    }
+                }
+            }
         }
 
-        $jdate = Jaws_Date::getInstance();
+        $jDate = Jaws_Date::getInstance();
         if (!empty($start)){
-            $start = $jdate->ToBaseDate(preg_split('/[- :]/', $start), 'Y-m-d');
+            $start = $jDate->ToBaseDate(preg_split('/[- :]/', $start), 'Y-m-d');
             $start = $GLOBALS['app']->UserTime2UTC($start);
             $table->where('stop_time', $start, '>')->and();
         }
         if (!empty($stop)){
-            $stop = $jdate->ToBaseDate(preg_split('/[- :]/', $stop), 'Y-m-d');
+            $stop = $jDate->ToBaseDate(preg_split('/[- :]/', $stop), 'Y-m-d');
             $stop = $GLOBALS['app']->UserTime2UTC($stop);
             $table->where('start_time', $stop, '<');
         }
 
-        $table->limit($limit, $offset);
-        $table->orderBy('id desc', 'subject asc');
+        $table->limit($params['limit'], $params['offset']);
+
+        $orderBy = 'id desc';
+        if (!empty($params['sort'])){
+            $orderBy = $params['sort'][0]['field'] . ' ' . $params['sort'][0]['direction'];
+        }
+        $table->orderBy($orderBy, 'subject asc');
+
         return $table->fetchAll();
     }
 

@@ -28,6 +28,18 @@ $admin_actions['GetEvent'] = array(
     'standalone' => true,
     'file' => 'EventsCalendar'
 );
+$admin_actions['CreateEvent'] = array(
+    'standalone' => true,
+    'file' => 'ManageEvent'
+);
+$admin_actions['UpdateEvent'] = array(
+    'standalone' => true,
+    'file' => 'ManageEvent'
+);
+$admin_actions['DeleteEvent'] = array(
+    'standalone' => true,
+    'file' => 'ManageEvent'
+);
 
 /**
  * Index actions

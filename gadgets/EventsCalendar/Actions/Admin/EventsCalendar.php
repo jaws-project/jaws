@@ -56,12 +56,30 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
 
         // Constants
         $const = array();
-        $const['script'] = BASE_SCRIPT;
         $const['mode'] = $mode;
+        $const['script'] = BASE_SCRIPT;
+        $const['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $const['subject'] = _t('EVENTSCALENDAR_EVENT_SUBJECT');
+        $const['location'] = _t('EVENTSCALENDAR_EVENT_LOCATION');
+        $const['description'] = _t('EVENTSCALENDAR_EVENT_DESC');
+        $const['type'] = _t('EVENTSCALENDAR_EVENT_TYPE');
+        $const['priority'] = _t('EVENTSCALENDAR_EVENT_PRIORITY');
+        $const['shared'] = _t('EVENTSCALENDAR_SHARED');
         $const['date'] = _t('EVENTSCALENDAR_DATE');
         $const['time'] = _t('EVENTSCALENDAR_TIME');
         $const['shared'] = _t('EVENTSCALENDAR_SHARED');
+        $const['newEvent'] = _t('EVENTSCALENDAR_NEW_EVENT');
+        $const['editEvent'] = _t('EVENTSCALENDAR_EDIT_EVENT');
+        $const['yes'] = _t('GLOBAL_YES');
+        $const['no'] = _t('GLOBAL_NO');
+        $const['types'] = array();
+        for ($i = 1; $i <= 5; $i++) {
+            $const['types'][$i] = _t('EVENTSCALENDAR_EVENT_TYPE_' . $i);
+        }
+        $const['priorities'] = array();
+        for ($i = 0; $i <= 2; $i++) {
+            $const['priorities'][$i] = _t('EVENTSCALENDAR_EVENT_PRIORITY_' . $i);
+        }
         $tpl->SetVariable('CONST', json_encode($const));
 
         $tpl->ParseBlock('ec');
@@ -72,18 +90,13 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
      * Builds form for creating a new event
      *
      * @access  public
-     * @return  string  XHTML form
+     * @param   int  $id    Event ID
+     * @return  string XHTML form
      */
     function EventForm($id = null)
     {
         $tpl = $this->gadget->template->loadAdmin('EventForm.html');
         $tpl->SetBlock('form');
-
-        $jDate = Jaws_Date::getInstance();
-//        $tpl->SetVariable('id', $event['id']);
-//        $tpl->SetVariable('subject', $event['subject']);
-//        $tpl->SetVariable('location', $event['location']);
-//        $tpl->SetVariable('description', $event['description']);
 
         if (empty($id)) {
             $tpl->SetVariable('title', _t('EVENTSCALENDAR_NEW_EVENT'));
@@ -104,9 +117,9 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $text =& $GLOBALS['app']->LoadEditor('EventsCalendar', 'description');
         $text->setId('');
         $text->setClass('form-control');
-        $text->SetWidth('100%');
-        $text->TextArea->SetStyle('width:100%;');
-        $text->TextArea->SetRows(15);
+        $text->SetWidth('85%');
+        $text->TextArea->SetStyle('width:85%;');
+        $text->TextArea->SetRows(5);
         $tpl->SetVariable('description', $text->Get());
 
         // Start date
@@ -177,9 +190,8 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         for ($i = 0; $i <= 4; $i++) {
             $combo->AddOption(_t("EVENTSCALENDAR_EVENT_RECURRENCE_$i"), $i);
         }
-        $combo->AddEvent(ON_CHANGE, 'switchRepeatUI(this.value)');
+        $combo->AddEvent(ON_CHANGE, 'updateRepeatUI(this.value)');
         $tpl->SetVariable('recurrence', $combo->Get());
-//        $tpl->SetVariable('recurrence_value', $event['recurrence']);
         $tpl->SetVariable('lbl_recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE'));
 
         // Day
@@ -192,6 +204,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
 
         // Week Day
+        $jDate = Jaws_Date::getInstance();
         $combo =& Piwi::createWidget('Combo', 'wday');
         $combo->SetId('');
         for ($i = 1; $i <= 7; $i++) {
@@ -212,8 +225,6 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         // Actions
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
-        $tpl->SetVariable('url_back', $GLOBALS['app']->GetSiteURL('/') .
-            $this->gadget->urlMap('ManageEvents'));
 
         $tpl->ParseBlock('form');
         return $tpl->Get();
@@ -227,25 +238,26 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
      */
     function GetEvents()
     {
-        $post = $this->gadget->request->fetchAll('post');
+        $post = $this->gadget->request->fetch(array('user', 'limit', 'offset', 'search:array', 'sort:array'), 'post');
 //        _log_var_dump($post);
-        $post['user'] = 0;
+//        $post['user'] = 0;
 //        $page = !empty($page)? (int)$page : 1;
 //        $limit = (int)$this->gadget->registry->fetch('events_limit');
 
         // Fetch events
         $model = $this->gadget->model->load('Events');
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+//        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
 //        $count = $model->GetNumberOfEvents($user, $query, $shared, $foreign, $start, $stop);
 //        $events = $model->GetEvents($user, $query, $shared, $foreign,
 //            $start, $stop, $limit, ($page - 1) * $limit);
-        $count = $model->GetNumberOfEvents($post['user']);
-        $events = $model->GetEvents($post['user']);
+//        $count = $model->GetNumberOfEvents($post['user']);
+        $events = $model->GetEvents($post);
 //        _log_var_dump($events);
         if (Jaws_Error::IsError($events)){
             return $GLOBALS['app']->Session->GetResponse(_t('EVENTSCALENDAR_ERROR_REQUEST_FAILED'), RESPONSE_ERROR);
         }
 
+        // prepare data
         $jDate = Jaws_Date::getInstance();
         foreach ($events as &$event) {
             $start_date = $jDate->Format($event['start_time'], 'Y/m/d');
@@ -259,33 +271,36 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
                 $jDate->Format($event['stop_time'], 'H:i');
 
             $event['shared'] = $event['shared']? _t('EVENTSCALENDAR_SHARED') : '';
-
-//            $url = $this->gadget->urlMap('ViewEvent', array('id' => $event['id']));
         }
+
         return $events;
     }
 
     /**
-     * Displays an event
+     * Fetches the event
      *
      * @access  public
-     * @return  string  XHTML UI
+     * @return  array   Event data
      */
     function GetEvent()
     {
         $id = $this->gadget->request->fetch('event_id:int', 'post');
         $model = $this->gadget->model->load('Event');
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $event = $model->GetEvent($id, $user);
+//        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+//        $event = $model->GetEvent($id, $user);
+        $event = $model->GetEvent($id);
+//        _log_var_dump($event);
         if (Jaws_Error::IsError($event) || empty($event)) {
             return $GLOBALS['app']->Session->GetResponse(_t('EVENTSCALENDAR_ERROR_REQUEST_FAILED'), RESPONSE_ERROR);
         }
 
-//        $jDate = Jaws_Date::getInstance();
-//        $event['start_date'] = $jDate->Format($event['start_date'], 'H:i');
-//        $event['stop_date'] = $jDate->Format($event['stop_date'], 'H:i');
-//        $event['start_time'] = $jDate->Format($event['start_time'], 'Y-m-d');
-//        $event['stop_time'] = $jDate->Format($event['stop_time'], 'Y-m-d');
+        $jDate = Jaws_Date::getInstance();
+        $event['start_date'] = $jDate->Format($event['start_time'], 'Y-m-d');
+        $event['start_time'] = $jDate->Format($event['start_time'], 'H:i');
+        $event['stop_date']  = $jDate->Format($event['stop_time'], 'Y-m-d');
+        $event['stop_time']  = $jDate->Format($event['stop_time'], 'H:i');
+
+        $event['reminder']  = $event['reminder'] / 60;
 
         return $event;
     }

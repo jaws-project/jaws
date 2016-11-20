@@ -1,3 +1,13 @@
+form[name=frm_event] {
+    margin-top: 15px;
+}
 #events_datagrid {
     height: 500px;
+}
+#w2ui-popup [disabled] {
+    color: black;
+    background-color: white;
+}
+.w2ui-popup .w2ui-popup-body {
+    padding: 7px 7px 7px 7px;
 }
