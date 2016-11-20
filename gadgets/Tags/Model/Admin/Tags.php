@@ -37,8 +37,9 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
         }
 
         if (!is_array($tags)) {
-            $tags = array_filter(array_map('Jaws_UTF8::trim', explode(',', $tags)));
+            $tags = array_filter(array_map('Jaws_UTF8::trim', preg_split('/,|;|،/u', $tags)));
         }
+
         $to_be_added_tags = array_diff($tags, $oldTags);
         $res = $this->InsertReferenceTags(
             $gadget, $action, $reference, $published,
@@ -73,42 +74,36 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
     function InsertReferenceTags($gadget, $action, $reference, $published, $update_time, $tags, $user = 0)
     {
         if (!is_array($tags)) {
-            $tags = array_filter(array_map('Jaws_UTF8::trim', explode(',', $tags)));
+            $tags = array_filter(array_map('Jaws_UTF8::trim', preg_split('/,|;|،/u', $tags)));
         }
         if (empty($tags)) {
             return true;
         }
 
         $references = array();
-        $table = Jaws_ORM::getInstance()->table('tags');
+        $objORM = Jaws_ORM::getInstance()->table('tags');
         foreach($tags as $tag){
-            $tagId = $table->select('id:integer')
-                ->where('name', $tag)
+            $tagName = $this->GetRealFastUrl($tag, null, false);
+            $tagId = $objORM->igsert(
+                    array(
+                        'name' => $tagName,
+                        'title' => $tag,
+                        'user' => (int)$user
+                    )
+                )->where('name', $tagName)
                 ->and()
                 ->where('user', (int)$user)
-                ->fetchOne();
-            if (!Jaws_Error::IsError($tagId)) {
-                if (empty($tagId)) {
-                    $tagId = $this->AddTag(array('name' => $tag, 'title' => $tag), $user);
-                    if (Jaws_Error::IsError($tagId)) {
-                        continue;
-                    }
-                }
-                $systemTags[$tag] = $tagId;
+                ->exec();
+            if (Jaws_Error::IsError($tagId)) {
+                return $tagId;
             }
             $references[] = array($user, $gadget , $action, $reference, $tagId, time(), $published, $update_time);
         }
 
-        $table = Jaws_ORM::getInstance()->table('tags_references');
-        $res = $table->insertAll(
+        return $objORM->table('tags_references')->insertAll(
             array('user', 'gadget', 'action', 'reference', 'tag', 'insert_time', 'published', 'update_time'),
             $references
         )->exec();
-        if (Jaws_Error::IsError($res)) {
-            return new Jaws_Error($res->getMessage());
-        }
-
-        return $res;
     }
 
     /**
@@ -126,7 +121,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
     {
         if (!is_null($tags)) {
             if (!is_array($tags)) {
-                $tags = array_filter(array_map('Jaws_UTF8::trim', explode(',', $tags)));
+                $tags = array_filter(array_map('Jaws_UTF8::trim', preg_split('/,|;|،/u', $tags)));
             }
             if (empty($tags)) {
                 return false;
@@ -264,7 +259,7 @@ class Tags_Model_Admin_Tags extends Jaws_Gadget_Model
             return $result;
         }
 
-        // Delete duplocate resource tags
+        // Delete duplicate resource tags
         $objInternal = Jaws_ORM::getInstance()->table('tags_references')
             ->select('min(id)')
             ->where('user', (int)$user)
