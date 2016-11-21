@@ -275,6 +275,10 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
             );
         }
 
+        if (empty($data)) {
+            return true;
+        }
+
         $table = Jaws_ORM::getInstance()->table('ec_recurrences');
         $table->beginTransaction();
         $res = $table->insertAll(array('event', 'start_time', 'stop_time'), $data)->exec();

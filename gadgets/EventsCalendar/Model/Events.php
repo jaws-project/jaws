@@ -43,7 +43,6 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
 
         $search = $params['search'];
         if (!empty($search)){
-//            _log_var_dump($search);
             foreach ($search as $s) {
                 if (isset($s['all'])) {
                     $table->openWhere('subject', $s['all'], 'like')->or();

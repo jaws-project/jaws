@@ -8,7 +8,6 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/site_style.css');
 class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
 {
     /**
@@ -42,6 +41,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
      */
     function EventForm($id = null)
     {
+        $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/site_style.css');
         $this->AjaxMe('site_script.js');
         $tpl = $this->gadget->template->load('EventForm.html');
         $tpl->SetBlock('form');
@@ -58,7 +58,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             $event = $response['data'];
         }
 
-        $jdate = Jaws_Date::getInstance();
+        $jDate = Jaws_Date::getInstance();
         if (!isset($event) || empty($event)) {
             if (!empty($id)) {
                 $model = $this->gadget->model->load('Event');
@@ -71,11 +71,11 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
                     return;
                 }
                 $start = $event['start_time'];
-                $event['start_date'] = $jdate->Format($start, 'Y-m-d');
-                $event['start_time'] = $jdate->Format($start, 'H:i');
+                $event['start_date'] = $jDate->Format($start, 'Y-m-d');
+                $event['start_time'] = $jDate->Format($start, 'H:i');
                 $stop = $event['stop_time'];
-                $event['stop_date'] = $jdate->Format($stop, 'Y-m-d');
-                $event['stop_time'] = $jdate->Format($stop, 'H:i');
+                $event['stop_date'] = $jDate->Format($stop, 'Y-m-d');
+                $event['stop_time'] = $jDate->Format($stop, 'H:i');
                 $event['reminder'] /= 60;
             } else {
                 $event = array();
@@ -203,7 +203,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $combo =& Piwi::CreateWidget('Combo', 'wday');
         $combo->SetId('event_wday');
         for ($i = 1; $i <= 7; $i++) {
-            $combo->AddOption($jdate->DayString($i-1), $i);
+            $combo->AddOption($jDate->DayString($i-1), $i);
         }
         $combo->SetDefault($event['wday']);
         $tpl->SetVariable('wday', $combo->Get());
@@ -213,7 +213,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $combo =& Piwi::CreateWidget('Combo', 'month');
         $combo->SetId('event_month');
         for ($i = 1; $i <= 12; $i++) {
-            $combo->AddOption($jdate->MonthString($i), $i);
+            $combo->AddOption($jDate->MonthString($i), $i);
         }
         $combo->SetDefault($event['month']);
         $tpl->SetVariable('month', $combo->Get());

@@ -30,21 +30,27 @@ var EventsCalendarCallback = {
         if (response.type && response.type === 'response_notice') {
             w2popup.close();
             w2ui['datagrid'].reload();
+            EventsCalendarAjax.showResponse(response);
+        } else {
+            EventsCalendarAjax.showResponse(response, $('.gadget_response > div'));
         }
-        EventsCalendarAjax.showResponse(response);
     },
     UpdateEvent: function(response) {
         if (response.type && response.type === 'response_notice') {
             w2popup.close();
             w2ui['datagrid'].reload();
+            EventsCalendarAjax.showResponse(response);
+        } else {
+            EventsCalendarAjax.showResponse(response, $('.gadget_response > div'));
         }
-        EventsCalendarAjax.showResponse(response);
     },
     DeleteEvent: function(response) {
         if (response.type && response.type === 'response_notice') {
             w2ui['datagrid'].reload();
+            EventsCalendarAjax.showResponse(response);
+        } else {
+            EventsCalendarAjax.showResponse(response, $('.gadget_response > div'));
         }
-        EventsCalendarAjax.showResponse(response);
     }
 };
 
@@ -60,7 +66,8 @@ function initEventsCalendar() {
 
     w2utils.settings.dataType = 'JSON';
     // TODO: detect language
-    w2utils.locale('libraries/w2ui/fa-pe.json');
+    // w2utils.locale('libraries/w2ui/fa-pe.json');
+    w2utils.settings.dateFormat = 'yyyy-m-d';
 
     initDatagrid('#events_datagrid');
 }
@@ -72,7 +79,7 @@ function initDatagrid(targetEl) {
     var components = {
         toolbar: true,
         footer: true,
-        selectColumn: true
+        selectColumn: (CONST['mode'] === 'public')
     };
     if (CONST['mode'] === 'public') {
         components.toolbarAdd = true;
@@ -85,8 +92,16 @@ function initDatagrid(targetEl) {
         method: 'POST',
         // limit: CONST.rowsPerPage,
         // toolbar: MessagesToolbar,
-        // multiSelect: ACL.ManageMessages? true : false,
+        multiSelect: true,
         multiSearch: true,
+        url: {get: EventsCalendarAjax.baseURL + 'GetEvents'},
+        show: components,
+        columns: [
+            {field: 'subject', caption: CONST.subject, size: '40%', sortable: true},
+            {field: 'start_time', caption: CONST.from, size: '15%', sortable: true},
+            {field: 'stop_time', caption: CONST.to, size: '15%', sortable: true},
+            {field: 'shared', caption: CONST.shared, size: '15%', sortable: true}
+        ],
         searches: [
             {field: 'subject', caption: CONST.subject, type: 'text'},
             {field: 'location', caption: CONST.location, type: 'text'},
@@ -96,30 +111,6 @@ function initDatagrid(targetEl) {
             {field: 'priority', caption: CONST.priority, type: 'list', options: {items: CONST.priorities}},
             {field: 'date', caption: CONST.date, type: 'date'},
             {field: 'time', caption: CONST.time, type: 'time'}
-        ],
-        url: {get: EventsCalendarAjax.baseURL + 'GetEvents'},
-        show: components,
-        columns: [
-            {
-                field: 'subject', caption: CONST.subject, size: '40%', sortable: true, render: function (record) {
-                var isSeen = (typeof record.seen != 'undefined' && record.seen);
-                return isSeen ? record.subject : '<strong>' + record.subject + '</strong>';
-            }},
-            {
-                field: 'date', caption: CONST.date, size: '15%', sortable: true, render: function (record) {
-                var isSeen = (typeof record.seen != 'undefined' && record.seen);
-                return isSeen ? record.date : '<strong>' + record.date + '</strong>';
-            }},
-            {
-                field: 'time', caption: CONST.time, size: '15%', sortable: true, render: function (record) {
-                var isSeen = (typeof record.seen != 'undefined' && record.seen);
-                return isSeen ? record.time : '<strong>' + record.time + '</strong>';
-            }},
-            {
-                field: 'shared', caption: CONST.shared, size: '15%', sortable: true, render: function (record) {
-                var isSeen = (typeof record.seen != 'undefined' && record.seen);
-                return isSeen ? record.shared : '<strong>' + record.shared + '</strong>';
-            }}
         ],
         records: [],
         onRequest: function (event) {
@@ -142,6 +133,9 @@ function initDatagrid(targetEl) {
                 event.searchData = [{all: event.searchValue}];
             }
         },
+        onDblClick: function (event) {
+            getEvent(event.recid);
+        },
         onAdd: function (event) {
             newEvent();
         },
@@ -157,6 +151,9 @@ function initDatagrid(targetEl) {
 }
 
 function initForm($form) {
+    if (w2ui['frm_event']) {
+        w2ui['frm_event'].destroy();
+    }
     $form.w2form({
         name: 'frm_event',
         fields: [
@@ -187,7 +184,7 @@ function newEvent() {
 
 function editEvent(data) {
     $('.w2ui-form').w2popup({
-        title: CONST['editEvent'],
+        title: (CONST['mode'] === 'public')? CONST['editEvent'] : CONST['viewEvent'],
         modal: true
     });
     var $form = $('#w2ui-popup').find('form'),
@@ -235,24 +232,24 @@ function updateRepeatUI(type)
 
     switch (type) {
         case '1':
-            $day.val(0);
-            $wday.val(0);
-            $month.val(0);
+            $day.val(1);
+            $wday.val(1);
+            $month.val(1);
             break;
         case '2':
             $wday.show('inline');
-            $day.val(0);
-            $month.val(0);
+            $day.val(1);
+            $month.val(1);
             break;
         case '3':
             $day.show('inline');
-            $wday.val(0);
-            $month.val(0);
+            $wday.val(1);
+            $month.val(1);
             break;
         case '4':
             $day.show('inline');
             $month.show('inline');
-            $wday.val(0);
+            $wday.val(1);
             break;
     }
 }
