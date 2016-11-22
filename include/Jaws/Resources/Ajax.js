@@ -209,14 +209,15 @@ function JawsAjax(gadget, callback, baseScript)
     /*
      * show response message
      */
-    this.showResponse = function (response) {
+    this.showResponse = function (response, element) {
         if (Array.isArray(response)) {
             // only show first response
             response = response[0];
         }
 
-        $(this.msgBox).html(response.text).attr('class', response.type);
-        $(this.msgBox).stop(true, true).fadeIn().delay(4000).fadeOut(1000, function() {$(this).removeClass();});
+        element = element || $(this.msgBox);
+        element.html(response.text).attr('class', response.type);
+        element.stop(true, true).fadeIn().delay(4000).fadeOut(1000, function() {$(this).removeClass();});
     };
 
     /*

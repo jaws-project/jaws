@@ -67,8 +67,11 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $const['shared'] = _t('EVENTSCALENDAR_SHARED');
         $const['date'] = _t('EVENTSCALENDAR_DATE');
         $const['time'] = _t('EVENTSCALENDAR_TIME');
+        $const['from'] = _t('EVENTSCALENDAR_FROM');
+        $const['to'] = _t('EVENTSCALENDAR_TO');
         $const['shared'] = _t('EVENTSCALENDAR_SHARED');
         $const['newEvent'] = _t('EVENTSCALENDAR_NEW_EVENT');
+        $const['viewEvent'] = _t('EVENTSCALENDAR_VIEW_EVENT');
         $const['editEvent'] = _t('EVENTSCALENDAR_EDIT_EVENT');
         $const['yes'] = _t('GLOBAL_YES');
         $const['no'] = _t('GLOBAL_NO');
@@ -210,6 +213,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         for ($i = 1; $i <= 7; $i++) {
             $combo->AddOption($jDate->DayString($i-1), $i);
         }
+        $combo->setDefault(1);
         $tpl->SetVariable('wday', $combo->Get());
         $tpl->SetVariable('lbl_wday', _t('EVENTSCALENDAR_WEEK_DAY'));
 
@@ -219,6 +223,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         for ($i = 1; $i <= 12; $i++) {
             $combo->AddOption($jDate->MonthString($i), $i);
         }
+        $combo->setDefault(1);
         $tpl->SetVariable('month', $combo->Get());
         $tpl->SetVariable('lbl_month', _t('EVENTSCALENDAR_MONTH'));
 
@@ -260,17 +265,19 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         // prepare data
         $jDate = Jaws_Date::getInstance();
         foreach ($events as &$event) {
-            $start_date = $jDate->Format($event['start_time'], 'Y/m/d');
-            $stop_date = $jDate->Format($event['stop_time'], 'Y/m/d');
-            $event['date'] = ($event['start_time'] == $event['stop_time'])?
-                $start_date : $start_date . _t('EVENTSCALENDAR_TO') . $stop_date;
-
-            $start_time = $jDate->Format($event['start_time'], 'H:i');
-            $event['time'] = ($event['start_time'] == $event['stop_time'])?
-                $start_time : $start_time . _t('EVENTSCALENDAR_TO') .
-                $jDate->Format($event['stop_time'], 'H:i');
+//            $start_date = $jDate->Format($event['start_time'], 'Y/m/d');
+//            $stop_date = $jDate->Format($event['stop_time'], 'Y/m/d');
+//            $event['date'] = ($event['start_time'] == $event['stop_time'])?
+//                $start_date : $start_date . _t('EVENTSCALENDAR_TO') . $stop_date;
+//
+//            $start_time = $jDate->Format($event['start_time'], 'H:i');
+//            $event['time'] = ($event['start_time'] == $event['stop_time'])?
+//                $start_time : $start_time . _t('EVENTSCALENDAR_TO') .
+//                $jDate->Format($event['stop_time'], 'H:i');
 
             $event['shared'] = $event['shared']? _t('EVENTSCALENDAR_SHARED') : '';
+            $event['start_time'] = $jDate->Format($event['start_time'], 'Y/m/d H:i');
+            $event['stop_time'] = $jDate->Format($event['stop_time'], 'Y/m/d H:i');
         }
 
         return $events;
