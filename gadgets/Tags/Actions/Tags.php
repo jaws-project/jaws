@@ -339,18 +339,18 @@ class Tags_Actions_Tags extends Tags_Actions_Default
      * Displays entries by tags similarity
      *
      * @access  public
-     * @param   string  $gadget Gadget name
-     * @param   int     $user   Only show user tags?
+     * @param   string  $reqGadget  Gadget name
+     * @param   int     $user       Only show user tags?
      * @return  string  XHTML template content
      */
-    function Similarity($gadget, $user)
+    function Similarity($reqGadget, $user)
     {
         if (empty(self::$mainRequestTags)) {
             return false;
         }
 
         $model = $this->gadget->model->load('Tags');
-        $references = $model->GetSimilartyTags(self::$mainRequestTags, $gadget, $user);
+        $references = $model->GetSimilartyTags(self::$mainRequestTags, $reqGadget, $user);
         if (Jaws_Error::IsError($references) || empty($references)) {
             return false;
         }
@@ -402,7 +402,13 @@ class Tags_Actions_Tags extends Tags_Actions_Default
 
         $tpl = $this->gadget->template->load('Similarity.html');
         $tpl->SetBlock('similarity');
-        $tpl->SetVariable('title', _t('TAGS_SIMILARITY', $objGadget->title));
+        $tpl->SetVariable('title', _t('TAGS_SIMILARITY'));
+        if (!empty($reqGadget)) {
+            $objGadget = Jaws_Gadget::getInstance($reqGadget);
+            if (!Jaws_Error::IsError($objGadget)) {
+                $tpl->SetVariable('title', _t('TAGS_SIMILARITY_IN', $objGadget->title));
+            }
+        }
 
         // provide return result
         foreach ($references as $reference) {
