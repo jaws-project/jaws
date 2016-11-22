@@ -5,7 +5,7 @@
  * @category    GadgetMaps
  * @package     EventsCalendar
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013-2015 Jaws Development Group
+ * @copyright   2013-2016 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -13,9 +13,7 @@
 $maps[] = array(
     'ManageEvents',
     'events/manage[/page/{page}]',
-    array(
-        'page' => '[[:digit:]]+'
-    )
+    array('page' => '[[:digit:]]+')
 );
 $maps[] = array(
     'NewEvent',
@@ -40,26 +38,71 @@ $maps[] = array(
 );
 $maps[] = array(
     'ViewYear',
-    'events[/{year}]',
-    array('year' => '\d{4}')
+    'events[/user/{user}][/{year}]',
+    array(
+        'user' => '[[:digit:]]+',
+        'year' => '\d{4}'
+    )
 );
 $maps[] = array(
     'ViewMonth',
-    'events/{year}/{month}',
-    array('year'  => '\d{4}',
-          'month' => '[01]?\d')
+    'events[/user/{user}]/{year}/{month}',
+    array(
+        'user' => '[[:digit:]]+',
+        'year'  => '\d{4}',
+        'month' => '[01]?\d'
+    )
 );
 $maps[] = array(
     'ViewDay',
-    'events/{year}/{month}/{day}',
-    array('year'  => '\d{4}',
-          'month' => '[01]?\d',
-          'day'   => '[0-3]?\d')
+    'events[/user/{user}]/{year}/{month}/{day}',
+    array(
+        'user' => '[[:digit:]]+',
+        'year'  => '\d{4}',
+        'month' => '[01]?\d',
+        'day'   => '[0-3]?\d'
+    )
 );
 $maps[] = array(
     'ViewWeek',
-    'events/{year}/{month}/{day}/week',
-    array('year'  => '\d{4}',
-          'month' => '[01]?\d',
-          'day'   => '[0-3]?\d')
+    'events[/user/{user}]/{year}/{month}/{day}/week',
+    array(
+        'user' => '[[:digit:]]+',
+        'year'  => '\d{4}',
+        'month' => '[01]?\d',
+        'day'   => '[0-3]?\d'
+    )
+);
+
+// Public Calendar
+$maps[] = array(
+    'PublicViewYear',
+    'events/public[/{year}]',
+    array('year' => '\d{4}')
+);
+$maps[] = array(
+    'PublicViewMonth',
+    'events/public/{year}/{month}',
+    array(
+        'year'  => '\d{4}',
+        'month' => '[01]?\d'
+    )
+);
+$maps[] = array(
+    'PublicViewDay',
+    'events/public/{year}/{month}/{day}',
+    array(
+        'year'  => '\d{4}',
+        'month' => '[01]?\d',
+        'day'   => '[0-3]?\d'
+    )
+);
+$maps[] = array(
+    'PublicViewWeek',
+    'events/public/{year}/{month}/{day}/week',
+    array(
+        'year'  => '\d{4}',
+        'month' => '[01]?\d',
+        'day'   => '[0-3]?\d'
+    )
 );
