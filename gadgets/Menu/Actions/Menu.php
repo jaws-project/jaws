@@ -100,16 +100,22 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
         $len = count($menus);
         static $level = -1;
         for ($i = 0; $i < $len; $i++) {
-            // check ACL
-            if ($menus[$i]['menu_type'] != 'url' &&
-                !empty($menus[$i]['acl_key_name']) &&
-                !$GLOBALS['app']->Session->GetPermission(
-                    $menus[$i]['menu_type'],
-                    $menus[$i]['acl_key_name'],
-                    $menus[$i]['acl_key_subkey']
-                )
-            ) {
-                continue;
+            // check default ACL
+            if ($menus[$i]['menu_type'] != 'url') {
+                if (!$GLOBALS['app']->Session->GetPermission($menus[$i]['menu_type'], 'default')) {
+                    continue;
+                }
+
+                // check ACL
+                if (!empty($menus[$i]['acl_key_name']) &&
+                    !$GLOBALS['app']->Session->GetPermission(
+                        $menus[$i]['menu_type'],
+                        $menus[$i]['acl_key_name'],
+                        $menus[$i]['acl_key_subkey']
+                    )
+                ) {
+                    continue;
+                }
             }
 
             // check variable menu
