@@ -178,7 +178,7 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
                 $tpl->SetVariable('row_count', $rows);
                 $tpl->SetVariable('height', $rows*18);
                 $tpl->SetVariable('field', $k);
-                $tpl->SetVariable('to', str_replace('"', '&quot;', $v[$langTo]));
+                $tpl->SetVariable('to', str_replace(array('"', '\n'), array('&quot;', "\n"), $v[$langTo]));
                 $tpl->ParseBlock('LangStrings/item');
             }
         }
