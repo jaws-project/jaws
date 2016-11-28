@@ -14,12 +14,16 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
      * Builds year view UI
      *
      * @access  public
+     * @param   int     $user   User ID or 0
+     *
      * @return  string  XHTML UI
      */
-    function ViewYear()
+    function ViewYear($user = null)
     {
         // Validate user
-        $user = (int)jaws()->request->fetch('user:int', 'get');
+        if ($user === null) {
+            $user = (int)jaws()->request->fetch('user:int', 'get');
+        }
         if ($user > 0 && $user !== (int)$GLOBALS['app']->Session->GetAttribute('user')) {
             require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
             return Jaws_HTTPError::Get(403);

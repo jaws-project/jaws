@@ -117,3 +117,8 @@ $actions['Reminder'] = array(
     'layout' => true,
     'file' => 'Reminder'
 );
+$actions['Calendar'] = array(
+    'layout' => true,
+    'parametric' => true,
+    'file' => 'Calendar'
+);
