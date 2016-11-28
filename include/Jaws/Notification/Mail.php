@@ -24,7 +24,7 @@ class Jaws_Notification_Mail
      * @access  protected
      * @var     int
      */
-    protected $type = Jaws_Notification::SMS_DRIVER;
+    protected $type = Jaws_Notification::EML_DRIVER;
 
     /**
      * Store mail object instance
