@@ -5,7 +5,7 @@
  * @category    GadgetModel
  * @package     EventsCalendar
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013-2015 Jaws Development Group
+ * @copyright   2013-2016 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class EventsCalendar_Model_Event extends Jaws_Gadget_Model
@@ -21,14 +21,22 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
     function GetEvent($eventId, $userId = null)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as events');
-        $table->select('events.id', 'subject', 'location', 'description', 
-            'start_time', 'stop_time', 'recurrence',
-            'month', 'day', 'wday', 'type', 'priority', 'reminder', 'shared', 
-            'createtime', 'updatetime', 'nickname', 'username', 'ec_users.user', 'owner');
-        $table->join('ec_users', 'events.id', 'event');
-        $table->join('users', 'owner', 'users.id');
+        if (empty($userId)) {
+            $table->select('events.id', 'subject', 'location', 'description',
+                'start_time', 'stop_time', 'recurrence', 'month', 'day', 'wday',
+                'events.public:boolean', 'type', 'priority', 'reminder', 'shared:boolean',
+                'createtime', 'updatetime', 'ec_users.user', 'owner');
+            $table->join('ec_users', 'events.id', 'event');
+        } else {
+            $table->select('events.id', 'subject', 'location', 'description',
+                'start_time', 'stop_time', 'recurrence', 'month', 'day', 'wday',
+                'events.public:boolean', 'type', 'priority', 'reminder', 'shared',
+                'createtime', 'updatetime', 'nickname', 'username', 'ec_users.user', 'owner');
+            $table->join('ec_users', 'events.id', 'event');
+            $table->join('users', 'owner', 'users.id');
+        }
         $table->where('events.id', $eventId);
-        if ($userId !== null){
+        if (!empty($userId)){
             $table->and()->where('ec_users.user', $userId);
         }
 
@@ -36,7 +44,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
     }
 
     /**
-     * Checks the user of specified events
+     * Checks the user of the specified events
      *
      * @access  public
      * @param   array   $idSet      Set of event IDs
@@ -77,6 +85,8 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
 
         $event['createtime'] = $event['updatetime'] = time();
         $event['reminder'] *= 60;
+        $owner = $event['owner'];
+        unset($event['owner']);
 
         $table = Jaws_ORM::getInstance()->table('ec_events');
         $table->beginTransaction();
@@ -89,7 +99,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         $data = array(
             'event' => $id,
             'user' => $event['user'],
-            'owner' => (int)$GLOBALS['app']->Session->GetAttribute('user')
+            'owner' => $owner,
         );
         $table = Jaws_ORM::getInstance()->table('ec_users');
         $res = $table->insert($data)->exec();
@@ -138,6 +148,8 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         $event['reminder'] *= 60;
 
         // update event
+        unset($event['user']);
+        unset($event['owner']);
         $table = Jaws_ORM::getInstance()->table('ec_events');
         $table->beginTransaction();
         $res = $table->update($event)->where('id', $id)->exec();
@@ -265,7 +277,10 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         $time1 = $start_info['hours'] * 3600 + $start_info['minutes'] * 60;
         $time2 = $stop_info['hours'] * 3600 + $start_info['minutes'] * 60;
         $duration = $time2 - $time1;
-        
+        if ($duration < 0) {
+            $duration += 24 * 3600;
+        }
+
         $data = array();
         foreach ($recArr as $rec) {
             $data[] = array(

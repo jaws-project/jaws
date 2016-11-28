@@ -16,16 +16,16 @@ class EventsCalendar_Actions_Pager extends Jaws_Gadget_Action
      * @access  public
      * @param   object  $tpl
      * @param   string  $base_block
-     * @param   int     $page       page number
+     * @param   int     $page       Page number
      * @param   int     $page_size  Entries count per page
      * @param   int     $total      Total entries count
      * @param   string  $total_string
      * @param   string  $action     Action name
      * @param   array   $params     Action params array
-     * @return  string  XHTML template content
+     * @return  void
      */
     function GetPagesNavigation(&$tpl, $base_block, $page, $page_size, $total,
-                                $total_string, $action, $params = array())
+        $total_string, $action, $params = array())
     {
         $pager = $this->GetNumberedPagesNavigation($page, $page_size, $total);
         if (count($pager) > 0) {

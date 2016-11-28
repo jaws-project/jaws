@@ -79,14 +79,18 @@ function checkAll()
 /**
  * Submits search
  */
-/*function searchEvents(form)
+function resetSearch(form)
 {
-    if (form.query.value.length < 2) {
-        alert(errorShortQuery);
-        return;
-    }
+    console.log(form);
+    form.public.value = -1;
+    form.shared.value = -1;
+    form.type.value = -1;
+    form.priority.value = -1;
+    form.term.value = '';
+    form.start.value = '';
+    form.stop.value = '';
     form.submit();
-}*/
+}
 
 /**
  * Submits event
@@ -126,15 +130,15 @@ function deleteEvent(id)
  */
 function deleteEvents()
 {
-    var id_set = $('#grid_events').find('input:checked');
-    if (id_set.length === 0) {
+    var idSet = $('#grid_events').find('input:checked');
+    if (idSet.length === 0) {
         return;
     }
-    id_set = $.map(id_set, function(input) {
+    idSet = $.map(idSet, function(input) {
         return input.value;
     });
     if (confirm(confirmDelete)) {
-        ECAjax.callAsync('DeleteEvent', {id_set:id_set.join(',')});
+        ECAjax.callAsync('DeleteEvent', {id_set:idSet.join(',')});
     }
 }
 

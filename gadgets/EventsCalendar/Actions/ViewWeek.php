@@ -5,10 +5,9 @@
  * @category    Gadget
  * @package     EventsCalendar
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013-2015 Jaws Development Group
+ * @copyright   2013-2016 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/site_style.css');
 class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
 {
     /**
@@ -19,12 +18,21 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
      */
     function ViewWeek()
     {
+        // Validate user
+        $user = (int)jaws()->request->fetch('user:int', 'get');
+        if ($user > 0 && $user !== (int)$GLOBALS['app']->Session->GetAttribute('user')) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
+
+        $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/index.css');
+
         $data = jaws()->request->fetch(array('year', 'month', 'day'), 'get');
         $year = (int)$data['year'];
         $month = (int)$data['month'];
         $day = (int)$data['day'];
 
-        $this->AjaxMe('site_script.js');
+        $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('ViewWeek.html');
         $tpl->SetBlock('week');
 
@@ -35,46 +43,59 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         $action = $this->gadget->action->load('Menubar');
         $tpl->SetVariable('menubar', $action->Menubar('Events'));
 
-        $jdate = Jaws_Date::getInstance();
-
-        // Previous week
-        $info = $jdate->GetDateInfo($year, $month, $day - 7);
-        $prev_url = $this->gadget->urlMap('ViewWeek', array(
-            'year' => $info['year'],
-            'month' => $info['mon'],
-            'day' => $info['mday']
-        ));
-        $tpl->SetVariable('prev_url', $prev_url);
-        $tpl->SetVariable('prev', _t('EVENTSCALENDAR_PREV_WEEK'));
+        $jDate = Jaws_Date::getInstance();
 
         // Next week
-        $info = $jdate->GetDateInfo($year, $month, $day + 7);
-        $next_url = $this->gadget->urlMap('ViewWeek', array(
-            'year' => $info['year'],
-            'month' => $info['mon'],
-            'day' => $info['mday']
-        ));
-        $tpl->SetVariable('next_url', $next_url);
+        $info = $jDate->GetDateInfo($year, $month, $day + 7);
+        $nextUrl = $user?
+            $this->gadget->urlMap('ViewWeek', array(
+                'user' => $user,
+                'year' => $info['year'],
+                'month' => $info['mon'],
+                'day' => $info['mday']
+            )) :
+            $this->gadget->urlMap('ViewWeek', array(
+                'year' => $info['year'],
+                'month' => $info['mon'],
+                'day' => $info['mday']
+            ));
+        $tpl->SetVariable('next_url', $nextUrl);
         $tpl->SetVariable('next', _t('EVENTSCALENDAR_NEXT_WEEK'));
 
-        $todayInfo = $jdate->GetDateInfo($year, $month, $day);
+        // Previous week
+        $info = $jDate->GetDateInfo($year, $month, $day - 7);
+        $prevUrl = $user?
+            $this->gadget->urlMap('ViewWeek', array(
+                'user' => $user,
+                'year' => $info['year'],
+                'month' => $info['mon'],
+                'day' => $info['mday']
+            )) :
+            $this->gadget->urlMap('ViewWeek', array(
+                'year' => $info['year'],
+                'month' => $info['mon'],
+                'day' => $info['mday']
+            ));
+        $tpl->SetVariable('prev_url', $prevUrl);
+        $tpl->SetVariable('prev', _t('EVENTSCALENDAR_PREV_WEEK'));
+
+        $todayInfo = $jDate->GetDateInfo($year, $month, $day);
         $startDay = $day - $todayInfo['wday'];
         $stopDay = $startDay + 6;
 
         // This week
-        $start = $jdate->ToBaseDate($year, $month, $startDay);
+        $start = $jDate->ToBaseDate($year, $month, $startDay);
         $start = $GLOBALS['app']->UserTime2UTC($start['timestamp']);
-        $stop = $jdate->ToBaseDate($year, $month, $stopDay, 23, 59, 59);
+        $stop = $jDate->ToBaseDate($year, $month, $stopDay, 23, 59, 59);
         $stop = $GLOBALS['app']->UserTime2UTC($stop['timestamp']);
-        $from = $jdate->Format($start, 'Y MN d');
-        $to = $jdate->Format($stop, 'Y MN d');
+        $from = $jDate->Format($start, 'Y MN d');
+        $to = $jDate->Format($stop, 'Y MN d');
         $current = $from . ' - ' . $to;
         $this->SetTitle($current . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
         $tpl->SetVariable('title', $current);
 
         // Fetch events
         $model = $this->gadget->model->load('Calendar');
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $events = $model->GetEvents($user, null, null, $start, $stop);
         if (Jaws_Error::IsError($events)){
             $events = array();
@@ -98,17 +119,24 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
 
         // Display events
         for ($i = 1; $i <= 7; $i++) {
-            $info = $jdate->GetDateInfo($year, $month, $startDay + $i - 1);
+            $info = $jDate->GetDateInfo($year, $month, $startDay + $i - 1);
             $tpl->SetBlock('week/day');
-            $day_url = $this->gadget->urlMap('ViewDay', array(
-                'year' => $year,
-                'month' => $month,
-                'day' => $info['mday']
-            ));
-            $tpl->SetVariable('day_url', $day_url);
+            $dayUrl = $user?
+                $this->gadget->urlMap('ViewDay', array(
+                    'user' => $user,
+                    'year' => $year,
+                    'month' => $month,
+                    'day' => $info['mday']
+                )) :
+                $this->gadget->urlMap('ViewDay', array(
+                    'year' => $year,
+                    'month' => $month,
+                    'day' => $info['mday']
+                ));
+            $tpl->SetVariable('day_url', $dayUrl);
             $tpl->SetVariable('day', $info['mday'] . ' ' . $info['weekday']);
-            foreach ($eventsByDay[$i] as $event_id) {
-                $e = $eventsById[$event_id];
+            foreach ($eventsByDay[$i] as $eventId) {
+                $e = $eventsById[$eventId];
                 $tpl->SetBlock('week/day/event');
 
                 $tpl->SetVariable('event', $e['subject']);
@@ -120,7 +148,10 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
                     $tpl->SetVariable('priority', '');
                 }
 
-                $url = $this->gadget->urlMap('ViewEvent', array('id' => $event_id));
+                $url = $this->gadget->urlMap('ViewEvent', $user?
+                    array('user' => $user, 'event' => $eventId) :
+                    array('event' => $eventId)
+                );
                 $tpl->SetVariable('event_url', $url);
 
                 if ($e['shared']) {

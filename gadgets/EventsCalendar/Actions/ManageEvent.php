@@ -5,7 +5,7 @@
  * @category    Gadget
  * @package     EventsCalendar
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013-2015 Jaws Development Group
+ * @copyright   2013-2016 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
@@ -29,7 +29,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
      */
     function EditEvent()
     {
-        $id = (int)jaws()->request->fetch('id', 'get');
+        $id = (int)jaws()->request->fetch('event', 'get');
         return $this->EventForm($id);
     }
 
@@ -37,12 +37,13 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
      * Builds form for creating a new event
      *
      * @access  public
-     * @return  string  XHTML form
+     * @param   int     $id     Event ID
+     * @return string XHTML form
      */
-    function EventForm($id = null)
+    function EventForm($id = 0)
     {
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/site_style.css');
-        $this->AjaxMe('site_script.js');
+        $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/index.css');
+        $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('EventForm.html');
         $tpl->SetBlock('form');
 
@@ -91,12 +92,13 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
                 $event['month'] = 0;
                 $event['day'] = 0;
                 $event['wday'] = 0;
+                $event['public'] = 0;
                 $event['type'] = 1;
                 $event['priority'] = 0;
                 $event['reminder'] = 0;
             }
         }
-        $tpl->SetVariable('id', $event['id']);
+        $tpl->SetVariable('id', isset($event['id'])? $event['id'] : 0);
         $tpl->SetVariable('subject', $event['subject']);
         $tpl->SetVariable('location', $event['location']);
         $tpl->SetVariable('description', $event['description']);
@@ -144,6 +146,15 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('error_time_value', _t('EVENTSCALENDAR_ERROR_INVALID_TIME_FORMAT'));
         $tpl->SetVariable('start_time', $event['start_time']);
         $tpl->SetVariable('stop_time', $event['stop_time']);
+
+        // Public
+        $combo =& Piwi::CreateWidget('Combo', 'public');
+        $combo->SetId('event_type');
+        $combo->AddOption(_t('GLOBAL_YES'), 1);
+        $combo->AddOption(_t('GLOBAL_NO'), 0);
+        $combo->SetDefault($event['public']? 1 : 0);
+        $tpl->SetVariable('public', $combo->Get());
+        $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
 
         // Type
         $combo =& Piwi::CreateWidget('Combo', 'type');
@@ -223,7 +234,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         $tpl->SetVariable('url_back', $GLOBALS['app']->GetSiteURL('/') .
-            $this->gadget->urlMap('ManageEvents'));
+            $this->gadget->urlMap('ManageEvents', array('user' => $GLOBALS['app']->Session->GetAttribute('user'))));
 
         $tpl->ParseBlock('form');
         return $tpl->Get();
@@ -238,7 +249,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
     function CreateEvent()
     {
         $event = jaws()->request->fetch(array('subject', 'location',
-            'description', 'type', 'priority', 'reminder',
+            'description', 'public', 'type', 'priority', 'reminder',
             'recurrence', 'month', 'day', 'wday',
             'start_date', 'stop_date', 'start_time', 'stop_time'), 'post');
         if (empty($event['subject']) || empty($event['start_date'])) {
@@ -251,7 +262,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             Jaws_Header::Referrer();
         }
 
-        $event['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $event['owner'] = $event['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
         if (empty($event['stop_date'])) {
             $event['stop_date'] = $event['start_date'];
         }
@@ -278,7 +289,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             _t('EVENTSCALENDAR_NOTICE_EVENT_CREATED'),
             'Events.Response'
         );
-        Jaws_Header::Location($this->gadget->urlMap('ManageEvents'));
+        Jaws_Header::Location($this->gadget->urlMap('ManageEvents', array('user' => $event['user'])));
     }
 
     /**
@@ -290,7 +301,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
     function UpdateEvent()
     {
         $data = jaws()->request->fetch(array('id', 'subject', 'location',
-            'description', 'type', 'priority', 'reminder',
+            'description', 'public', 'type', 'priority', 'reminder',
             'recurrence', 'month', 'day', 'wday',
             'start_date', 'stop_date', 'start_time', 'stop_time'), 'post');
         if (empty($data['subject']) || empty($data['start_date'])) {
@@ -350,7 +361,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
             _t('EVENTSCALENDAR_NOTICE_EVENT_UPDATED'),
             'Events.Response'
         );
-        Jaws_Header::Location($this->gadget->urlMap('ManageEvents'));
+        Jaws_Header::Location($this->gadget->urlMap('ManageEvents', array('user' => $data['user'])));
     }
 
     /**

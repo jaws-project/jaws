@@ -5,10 +5,9 @@
  * @category    Gadget
  * @package     EventsCalendar
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013-2015 Jaws Development Group
+ * @copyright   2013-2016 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/site_style.css');
 class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
 {
     /**
@@ -19,18 +18,28 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
      */
     function ViewEvent()
     {
-        $id = (int)jaws()->request->fetch('id', 'get');
-        $model = $this->gadget->model->load('Event');
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $event = $model->GetEvent($id, $user);
-        if (Jaws_Error::IsError($event) ||
-            empty($event) ||
-            $event['user'] != $user)
-        {
-            return;
+        // Validate user
+        $user = (int)jaws()->request->fetch('user:int', 'get');
+        if ($user > 0 && $user !== (int)$GLOBALS['app']->Session->GetAttribute('user')) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
         }
 
-        $jdate = Jaws_Date::getInstance();
+        $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/index.css');
+
+        $eventId = (int)jaws()->request->fetch('event', 'get');
+        $model = $this->gadget->model->load('Event');
+        $event = $model->GetEvent($eventId, $user);
+        if (Jaws_Error::IsError($event)) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(500);
+        }
+        if (empty($event) || $event['user'] != $user) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(404);
+        }
+
+        $jDate = Jaws_Date::getInstance();
         $tpl = $this->gadget->template->load('ViewEvent.html');
         $tpl->SetBlock('event');
 
@@ -52,13 +61,13 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
 
         // Start Date/Time
         $start = $event['start_time'];
-        $tpl->SetVariable('start_date', $jdate->Format($start, 'Y-m-d'));
-        $tpl->SetVariable('start_time', $jdate->Format($start, 'H:i'));
+        $tpl->SetVariable('start_date', $jDate->Format($start, 'Y-m-d'));
+        $tpl->SetVariable('start_time', $jDate->Format($start, 'H:i'));
 
         // Stop Date/Time
         $stop = $event['stop_time'];
-        $tpl->SetVariable('stop_date', $jdate->Format($stop, 'Y-m-d'));
-        $tpl->SetVariable('stop_time', $jdate->Format($stop, 'H:i'));
+        $tpl->SetVariable('stop_date', $jDate->Format($stop, 'Y-m-d'));
+        $tpl->SetVariable('stop_time', $jDate->Format($stop, 'H:i'));
 
         $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
         $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
@@ -76,34 +85,41 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_reminder', _t('EVENTSCALENDAR_EVENT_REMINDER'));
 
         // Recurrences
+        $value = '';
         switch ($event['recurrence']) {
             case '0':
             case '1':
                 $value = '';
                 break;
             case '2':
-                $value = ' - ' . $jdate->DayString($event['wday']);
+                $value = ' - ' . $jDate->DayString($event['wday']);
                 break;
             case '3':
                 $value = ' - ' . $event['day'] . ' ' . _t('EVENTSCALENDAR_EVENT_RECURRENCE_EVERY_MONTH');
                 break;
             case '4':
-                $value = ' - ' . $event['day'] . ' ' . $jdate->MonthString($event['month']);
+                $value = ' - ' . $event['day'] . ' ' . $jDate->MonthString($event['month']);
                 break;
         }
         $tpl->SetVariable('recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE_'.$event['recurrence']));
         $tpl->SetVariable('rec_value', $value);
         $tpl->SetVariable('lbl_recurrence', _t('EVENTSCALENDAR_EVENT_RECURRENCE'));
 
+        // Public
+        $tpl->SetVariable('public', $event['public']? _t('GLOBAL_YES') : _t('GLOBAL_NO'));
+        $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
+
         // Shared
         $tpl->SetVariable('shared', $event['shared']? _t('GLOBAL_YES') : _t('GLOBAL_NO'));
         $tpl->SetVariable('lbl_shared', _t('EVENTSCALENDAR_SHARED'));
 
         // Actions
-        $site_url = $GLOBALS['app']->GetSiteURL('/');
-        $tpl->SetVariable('url_edit', $site_url . $this->gadget->urlMap('EditEvent', array('id' => $id)));
+        $siteUrl = $GLOBALS['app']->GetSiteURL('/');
+        $tpl->SetVariable('url_edit', $siteUrl . $this->gadget->urlMap('EditEvent',
+                array('user' => $user, 'event' => $eventId)));
         $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
-        $tpl->SetVariable('url_share', $site_url . $this->gadget->urlMap('ShareEvent', array('id' => $id)));
+        $tpl->SetVariable('url_share', $siteUrl . $this->gadget->urlMap('ShareEvent',
+                array('user' => $user, 'event' => $eventId)));
         $tpl->SetVariable('lbl_share', _t('EVENTSCALENDAR_SHARE'));
 
         $tpl->ParseBlock('event');
