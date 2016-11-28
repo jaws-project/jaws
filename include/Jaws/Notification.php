@@ -11,6 +11,28 @@
 class Jaws_Notification
 {
     /**
+     * Drivers notification type
+     */
+    const EML_DRIVER = 0;
+    const SMS_DRIVER = 1;
+
+    /**
+     * Driver title
+     *
+     * @access  protected
+     * @var     string
+     */
+    protected $title;
+
+    /**
+     * Driver type
+     *
+     * @access  protected
+     * @var     int
+     */
+    protected $type;
+
+    /**
      * Driver configuration options
      *
      * @access  protected
@@ -43,6 +65,15 @@ class Jaws_Notification
         }
         
         return $instances[$driver];
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 
 
