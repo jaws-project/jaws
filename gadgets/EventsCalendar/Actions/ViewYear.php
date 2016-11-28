@@ -15,7 +15,6 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
      *
      * @access  public
      * @param   int     $user   User ID or 0
-     *
      * @return  string  XHTML UI
      */
     function ViewYear($user = null)

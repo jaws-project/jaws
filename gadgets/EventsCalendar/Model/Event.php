@@ -130,7 +130,6 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
     function UpdateEvent($id, $event, $oldEvent)
     {
         $jDate = Jaws_Date::getInstance();
-        $startArr = preg_split('/[- :]/', $event['start_date'] . ' ' . $event['start_time']);
 
         $start_time = $jDate->ToBaseDate(
             preg_split('/[- :]/', $event['start_date'] . ' ' . $event['start_time'])

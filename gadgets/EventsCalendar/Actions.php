@@ -122,3 +122,7 @@ $actions['Calendar'] = array(
     'parametric' => true,
     'file' => 'Calendar'
 );
+$actions['Today'] = array(
+    'layout' => true,
+    'file' => 'Today'
+);

@@ -33,12 +33,13 @@ class EventsCalendar_Actions_Calendar extends Jaws_Gadget_Action
      * Displays public or user events
      *
      * @access  public
-     * @return  string  XHTML UI
+     * @param   string  $param  Calendar type [public|user]
+     * @return string XHTML UI
      */
     function Calendar($param)
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            return;
+            return '';
         }
 
         $param = ($param === 'public')? 0 : (int)$GLOBALS['app']->Session->GetAttribute('user');

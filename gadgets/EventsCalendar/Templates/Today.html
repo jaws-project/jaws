@@ -1,0 +1,33 @@
+<!-- BEGIN today -->
+<div class="gadget_header">
+  <div class="gadget_title">
+    <h3>{{today}}</h3>
+  </div>
+  <div class="gadget_menubar">{{menubar}}</div>
+</div>
+<div class="gadget_container">
+  <div class="gadget_content content">
+    <table class="table table-hover table-bordered">
+      <thead><tr>
+        <th>{{lbl_subject}}</th>
+        <th>{{lbl_type}}</th>
+        <th>{{lbl_location}}</th>
+        <th>{{lbl_priority}}</th>
+        <th>{{lbl_date}}</th>
+      </tr></thead>
+      <tbody>
+        <!-- BEGIN event -->
+        <tr>
+          <td><a href="{{event_url}}">{{subject}}</a></td>
+          <td>{{type}}</td>
+          <td>{{location}}</td>
+          <td>{{priority}}</td>
+          <td>{{date}}</td>
+        </tr>
+        <!-- END event -->
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="gadget_footer"></div>
+<!-- END today -->
