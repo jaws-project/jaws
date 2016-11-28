@@ -4,9 +4,6 @@
  *
  * @category    GadgetAdmin
  * @package     Directory
- * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2015 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Directory_Actions_Admin_Common extends Jaws_Gadget_Action
 {

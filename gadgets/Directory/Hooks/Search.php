@@ -4,9 +4,6 @@
  *
  * @category    GadgetHook
  * @package     Directory
- * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2015 Jaws Development Group
- * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Directory_Hooks_Search extends Jaws_Gadget_Hook
 {
