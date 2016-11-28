@@ -122,11 +122,11 @@ function init()
     buildComponentList();
     $('#tabs').find('li').on('click', switchTab);
     $('#components').find('h3').each(function(i) {
-        // FIXME: does not remember last state
+        $(this).on('click', toggleCollapse);
         if (ComponentsStorage[Number(pluginsMode)].fetch(i)) {
             $(this).trigger('click');
         }
-    }).on('click', toggleCollapse);
+    });
     updateSummary();
 }
 
@@ -235,7 +235,7 @@ function toggleCollapse()
 {
     $(this).toggleClass('collapsed');
     ComponentsStorage[Number(pluginsMode)].update(
-        $('#components').find('h3').index(),
+        $('#components').find('h3').index($(this)),
         $(this).attr('class')
     );
     $(this).next('ul').toggle();
