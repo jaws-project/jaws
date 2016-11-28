@@ -12,7 +12,6 @@
  */
 class StaticPage_Model_Admin_Group extends StaticPage_Model_Group
 {
-
     /**
      * Creates a new group
      *
@@ -42,7 +41,7 @@ class StaticPage_Model_Admin_Group extends StaticPage_Model_Group
         }
 
         $this->gadget->acl->insert('AccessGroup', $res, true);
-        $this->gadget->acl->insert('ManageGroup', $res, true);
+        $this->gadget->acl->insert('ManageGroup', $res, false);
         return true;
     }
 
