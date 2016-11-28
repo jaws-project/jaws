@@ -45,7 +45,7 @@ class Blog_Model_Admin_Categories extends Jaws_Gadget_Model
         }
 
         $this->gadget->acl->insert('CategoryAccess', $result, true);
-        $this->gadget->acl->insert('CategoryManage', $result, true);
+        $this->gadget->acl->insert('CategoryManage', $result, false);
         $GLOBALS['app']->Session->PushLastResponse(_t('BLOG_CATEGORY_ADDED'), RESPONSE_NOTICE);
         return true;
     }
