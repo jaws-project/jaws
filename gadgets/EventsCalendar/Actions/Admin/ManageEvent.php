@@ -20,13 +20,14 @@ class EventsCalendar_Actions_Admin_ManageEvent extends Jaws_Gadget_Action
     function CreateEvent()
     {
         $post = $this->gadget->request->fetch(array('subject', 'location', 'description',
-            'start_date', 'stop_date', 'start_time', 'stop_time', 'type', 'priority', 'reminder',
-            'recurrence', 'month', 'day', 'wday'), 'post');
+            'start_date', 'stop_date', 'start_time', 'stop_time', 'type',
+            'priority', 'reminder', 'recurrence', 'month', 'day', 'wday'), 'post');
         if (empty($post['subject']) || empty($post['start_date'])) {
             return $GLOBALS['app']->Session->GetResponse(_t('EVENTSCALENDAR_ERROR_INCOMPLETE_DATA'), RESPONSE_ERROR);
         }
 
-        $post['user'] = 0;
+        $post['public'] = true;
+        $post['owner'] = $post['user'] = 0;
         if (empty($post['stop_date'])) {
             $post['stop_date'] = $post['start_date'];
         }
@@ -71,11 +72,8 @@ class EventsCalendar_Actions_Admin_ManageEvent extends Jaws_Gadget_Action
         }
 
         // Verify owner
-//        if ($event['owner'] != $user) {
-//            return $GLOBALS['app']->Session->GetResponse(_t('EVENTSCALENDAR_ERROR_NO_PERMISSION'), RESPONSE_ERROR);
-//        }
-
-        $post['user'] = 0;
+        $post['public'] = true;
+        $post['owner'] = $post['user'] = 0;
         if (empty($post['stop_date'])) {
             $post['stop_date'] = $post['start_date'];
         }

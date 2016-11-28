@@ -8,7 +8,7 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/site_style.css');
+$GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/index.css');
 class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
 {
     /**
@@ -31,7 +31,7 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
             return;
         }
 
-        $this->AjaxMe('site_script.js');
+        $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('ShareEvent.html');
         $tpl->SetBlock('share');
         $tpl->SetVariable('title', _t('EVENTSCALENDAR_SHARE'));

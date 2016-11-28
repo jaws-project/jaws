@@ -11,3 +11,6 @@ form[name=frm_event] {
 .popup_response {
     margin-top: 3px;
 }
+#w2ui-overlay-datagrid-searchOverlay .operator {
+    display: none;
+}

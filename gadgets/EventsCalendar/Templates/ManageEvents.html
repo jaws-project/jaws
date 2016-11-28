@@ -11,14 +11,23 @@
     <form id="frm_search" action="{{base_script}}" method="post">
       <input class="form-control" type="hidden" name="gadget" value="EventsCalendar" />
       <input class="form-control" type="hidden" name="action" value="Search" />
-      {{filter}} {{lbl_from}}{{start}} {{lbl_to}}{{stop}} {{query}} {{btn_search}} {{btn_reset}}
-    </form>
+      <table>
+        <tr><th>{{lbl_public}}</th><td>{{public}}</td></tr>
+        <tr><th>{{lbl_shared}}</th><td>{{shared}}</td></tr>
+        <tr><th>{{lbl_type}}</th><td>{{type}}</td></tr>
+        <tr><th>{{lbl_priority}}</th><td>{{priority}}</td></tr>
+        <tr><th>{{lbl_term}}</th><td>{{term}}</td></tr>
+        <tr><th>{{lbl_date}}</th><td>{{start}} - {{stop}}</td></tr>
+      </table>
+      <div>{{btn_search}} {{btn_reset}}</div>
+    </form><br>
     <table class="table table-hover table-bordered">
       <thead><tr>
         <th class="th-check"><input type="checkbox" id="chk_all" onchange="checkAll()"/></th>
         <th class="event-subject">{{lbl_subject}}</th>
         <th>{{lbl_date}}</th>
         <th>{{lbl_time}}</th>
+        <th>{{lbl_public}}</th>
         <th>{{lbl_shared}}</th>
         <th>{{lbl_owner}}</th>
       </tr></thead>
@@ -29,6 +38,7 @@
           <td><a href="{{url}}">{{subject}}</a></td>
           <td>{{date}}</td>
           <td>{{time}}</td>
+          <td>{{public}}</td>
           <td>{{shared}}</td>
           <td class="event-owner" title="{{username}}">{{nickname}}</td>
         </tr>

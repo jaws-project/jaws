@@ -17,7 +17,7 @@ class EventsCalendar_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_RegKeys = array(
-        array('events_limit', '10'),
+        array('events_limit', '50'),
     );
 
     /**
@@ -75,6 +75,13 @@ class EventsCalendar_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
+        if (version_compare($old, '1.1.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '1.0.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
         return true;
     }
 }

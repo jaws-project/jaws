@@ -5,10 +5,9 @@
  * @category    Gadget
  * @package     EventsCalendar
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013-2015 Jaws Development Group
+ * @copyright   2013-2016 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/site_style.css');
 class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
 {
     /**
@@ -19,11 +18,20 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
      */
     function ViewMonth()
     {
-        $data = jaws()->request->fetch(array('year', 'month'), 'get');
-        $year = (int)$data['year'];
-        $month = (int)$data['month'];
+        // Validate user
+        $user = (int)jaws()->request->fetch('user:int', 'get');
+        if ($user > 0 && $user !== (int)$GLOBALS['app']->Session->GetAttribute('user')) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(403);
+        }
 
-        $this->AjaxMe('site_script.js');
+        $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/index.css');
+
+        $get = jaws()->request->fetch(array('year', 'month'), 'get');
+        $year = (int)$get['year'];
+        $month = (int)$get['month'];
+
+        $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('ViewMonth.html');
         $tpl->SetBlock('month');
 
@@ -34,43 +42,28 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_day', _t('EVENTSCALENDAR_DAY'));
         $tpl->SetVariable('lbl_events', _t('EVENTSCALENDAR_EVENTS'));
 
-        $jdate = Jaws_Date::getInstance();
-        $daysInMonth = $jdate->monthDays($year, $month);
-        $start = $jdate->ToBaseDate($year, $month, 1);
+        $jDate = Jaws_Date::getInstance();
+        $daysInMonth = $jDate->monthDays($year, $month);
+        $start = $jDate->ToBaseDate($year, $month, 1);
         $start = $GLOBALS['app']->UserTime2UTC($start['timestamp']);
-        $stop = $jdate->ToBaseDate($year, $month, $daysInMonth, 23, 59, 59);
+        $stop = $jDate->ToBaseDate($year, $month, $daysInMonth, 23, 59, 59);
         $stop = $GLOBALS['app']->UserTime2UTC($stop['timestamp']);
 
         // Current month
-        $info = $jdate->GetDateInfo($year, $month, 1);
+        $info = $jDate->GetDateInfo($year, $month, 1);
         $tpl->SetVariable('year', $info['year']);
         $tpl->SetVariable('month', $info['month']);
-        $tpl->SetVariable('year_url',
+        $tpl->SetVariable('year_url', $user?
+            $this->gadget->urlMap('ViewYear', array('user' => $user, 'year' => $info['year'])) :
             $this->gadget->urlMap('ViewYear', array('year' => $info['year'])));
 
-        $current = $jdate->Format($start, 'Y MN');
+        $current = $jDate->Format($start, 'Y MN');
         $tpl->SetVariable('title', $current);
         $this->SetTitle($current . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
 
-        // Previous month
-        $prev = $jdate->ToBaseDate($year, $month - 1, 1);
-        $prev = $jdate->Format($prev['timestamp'], 'Y MN');
-        $tpl->SetVariable('prev', $prev);
-        $prevYear = $year;
-        $prevMonth = $month - 1;
-        if ($prevMonth === 0) {
-            $prevMonth = 12;
-            $prevYear--;
-        }
-        $prevURL = $this->gadget->urlMap('ViewMonth', array(
-            'year' => $prevYear,
-            'month' => $prevMonth
-        ));
-        $tpl->SetVariable('prev_url', $prevURL);
-
         // Next month
-        $next = $jdate->ToBaseDate($year, $month + 1, 1);
-        $next = $jdate->Format($next['timestamp'], 'Y MN');
+        $next = $jDate->ToBaseDate($year, $month + 1, 1);
+        $next = $jDate->Format($next['timestamp'], 'Y MN');
         $tpl->SetVariable('next', $next);
         $nextYear = $year;
         $nextMonth = $month + 1;
@@ -78,15 +71,28 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
             $nextMonth = 1;
             $nextYear++;
         }
-        $nextURL = $this->gadget->urlMap('ViewMonth', array(
-            'year' => $nextYear,
-            'month' => $nextMonth
-        ));
+        $nextURL = $user?
+            $this->gadget->urlMap('ViewMonth', array('user' => $user, 'year' => $nextYear, 'month' => $nextMonth)) :
+            $this->gadget->urlMap('ViewMonth', array('year' => $nextYear, 'month' => $nextMonth));
         $tpl->SetVariable('next_url', $nextURL);
+
+        // Previous month
+        $prev = $jDate->ToBaseDate($year, $month - 1, 1);
+        $prev = $jDate->Format($prev['timestamp'], 'Y MN');
+        $tpl->SetVariable('prev', $prev);
+        $prevYear = $year;
+        $prevMonth = $month - 1;
+        if ($prevMonth === 0) {
+            $prevMonth = 12;
+            $prevYear--;
+        }
+        $prevURL = $user?
+            $this->gadget->urlMap('ViewMonth', array('user' => $user, 'year' => $prevYear, 'month' => $prevMonth)) :
+            $this->gadget->urlMap('ViewMonth', array('year' => $prevYear, 'month' => $prevMonth));
+        $tpl->SetVariable('prev_url', $prevURL);
 
         // Fetch events
         $model = $this->gadget->model->load('Calendar');
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
         $events = $model->GetEvents($user, null, null, $start, $stop);
         if (Jaws_Error::IsError($events)){
             $events = array();
@@ -110,18 +116,16 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
 
         // Display events
         for ($i = 1; $i <= $daysInMonth; $i++) {
-            $date = $jdate->ToBaseDate($year, $month, $i);
-            $weekDay = $jdate->Format($date['timestamp'], 'DN');
+            $date = $jDate->ToBaseDate($year, $month, $i);
+            $weekDay = $jDate->Format($date['timestamp'], 'DN');
             $tpl->SetBlock('month/day');
-            $day_url = $this->gadget->urlMap('ViewDay', array(
-                'year' => $year,
-                'month' => $month,
-                'day' => $i
-            ));
-            $tpl->SetVariable('day_url', $day_url);
+            $dayUrl = $user?
+                $this->gadget->urlMap('ViewDay', array('user' => $user, 'year' => $year, 'month' => $month, 'day' => $i)) :
+                $this->gadget->urlMap('ViewDay', array('year' => $year, 'month' => $month, 'day' => $i));
+            $tpl->SetVariable('day_url', $dayUrl);
             $tpl->SetVariable('day', $i . ' ' . $weekDay);
-            foreach ($eventsByDay[$i] as $event_id) {
-                $e = $eventsById[$event_id];
+            foreach ($eventsByDay[$i] as $eventId) {
+                $e = $eventsById[$eventId];
                 $tpl->SetBlock('month/day/event');
 
                 $tpl->SetVariable('event', $e['subject']);
@@ -133,7 +137,9 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
                     $tpl->SetVariable('priority', '');
                 }
 
-                $url = $this->gadget->urlMap('ViewEvent', array('id' => $event_id));
+                $url = $user?
+                    $this->gadget->urlMap('ViewEvent', array('user' => $user, 'event' => $eventId)) :
+                    $this->gadget->urlMap('ViewEvent', array('event' => $eventId));
                 $tpl->SetVariable('event_url', $url);
 
                 if ($e['shared']) {

@@ -55,12 +55,6 @@
       </field>
 
       <field>
-        <name>public</name>
-        <type>boolean</type>
-        <default>false</default>
-      </field>
-
-      <field>
         <name>shared</name>
         <type>boolean</type>
         <default>false</default>

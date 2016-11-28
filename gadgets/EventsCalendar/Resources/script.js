@@ -90,8 +90,7 @@ function initDatagrid(targetEl) {
         name: 'datagrid',
         recid: 'id',
         method: 'POST',
-        // limit: CONST.rowsPerPage,
-        // toolbar: MessagesToolbar,
+        limit: CONST.eventsLimit,
         multiSelect: true,
         multiSearch: true,
         url: {get: EventsCalendarAjax.baseURL + 'GetEvents'},
@@ -109,8 +108,7 @@ function initDatagrid(targetEl) {
             {field: 'shared', caption: CONST.shared, type: 'list', options: {items: {1: CONST.yes, 0: CONST.no}}},
             {field: 'type', caption: CONST.type, type: 'list', options: {items: CONST.types}},
             {field: 'priority', caption: CONST.priority, type: 'list', options: {items: CONST.priorities}},
-            {field: 'date', caption: CONST.date, type: 'date'},
-            {field: 'time', caption: CONST.time, type: 'time'}
+            {field: 'date', caption: CONST.date, type: 'date'}
         ],
         records: [],
         onRequest: function (event) {
@@ -127,10 +125,18 @@ function initDatagrid(targetEl) {
                 event.xhr.responseText.status = 'error';
             }
         },
+        onToolbar: function (event) {
+            if (event.target === 'w2ui-search-advanced') {
+                // set date operator to 'between'
+                setTimeout(function() {
+                    $('#grid_datagrid_operator_6').val('between');
+                    $('#grid_datagrid_range_6').css('display', '');
+                }, 100);
+            }
+        },
         onSearch: function (event) {
-            console.log(event);
             if (event.searchField === 'all') {
-                event.searchData = [{all: event.searchValue}];
+                event.searchData = [{term: event.searchValue}];
             }
         },
         onDblClick: function (event) {
@@ -195,6 +201,7 @@ function editEvent(data) {
             form[field].value = data[field];
         }
     }
+    form['public'].value = data['public']? 1 : 0;
     $form.find('select[name=recurrence]').trigger('change');
 
     // disable form for user events

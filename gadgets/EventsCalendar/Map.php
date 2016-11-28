@@ -9,55 +9,28 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 
-// Management
+// Public Calendar
 $maps[] = array(
-    'ManageEvents',
-    'events/manage[/page/{page}]',
-    array('page' => '[[:digit:]]+')
-);
-$maps[] = array(
-    'NewEvent',
-    'events/manage/new'
-);
-$maps[] = array(
-    'EditEvent',
-    'events/manage/edit/{id}',
-    array('id' => '[[:digit:]]+')
-);
-$maps[] = array(
-    'ShareEvent',
-    'events/manage/share/{id}',
-    array('id' => '[[:digit:]]+')
-);
-
-// Calendar
-$maps[] = array(
-    'ViewEvent',
-    'events/view/{id}',
-    array('id' => '[[:digit:]]+')
+    'ViewYear',
+    'events[/public][/calendar]',
 );
 $maps[] = array(
     'ViewYear',
-    'events[/user/{user}][/{year}]',
-    array(
-        'user' => '[[:digit:]]+',
-        'year' => '\d{4}'
-    )
+    'events/public/calendar[/{year}]',
+    array('year' => '\d{4}')
 );
 $maps[] = array(
     'ViewMonth',
-    'events[/user/{user}]/{year}/{month}',
+    'events/public/calendar/{year}/{month}',
     array(
-        'user' => '[[:digit:]]+',
         'year'  => '\d{4}',
         'month' => '[01]?\d'
     )
 );
 $maps[] = array(
     'ViewDay',
-    'events[/user/{user}]/{year}/{month}/{day}',
+    'events/public/calendar/{year}/{month}/{day}',
     array(
-        'user' => '[[:digit:]]+',
         'year'  => '\d{4}',
         'month' => '[01]?\d',
         'day'   => '[0-3]?\d'
@@ -65,44 +38,93 @@ $maps[] = array(
 );
 $maps[] = array(
     'ViewWeek',
-    'events[/user/{user}]/{year}/{month}/{day}/week',
+    'events/public/calendar/{year}/{month}/{day}/week',
     array(
-        'user' => '[[:digit:]]+',
         'year'  => '\d{4}',
         'month' => '[01]?\d',
         'day'   => '[0-3]?\d'
     )
 );
-
-// Public Calendar
 $maps[] = array(
-    'PublicViewYear',
-    'events/public[/{year}]',
-    array('year' => '\d{4}')
+    'ViewEvent',
+    'events/public/{event}',
+    array('event' => '[[:digit:]]+')
+);
+
+// User Calendar
+$maps[] = array(
+    'ViewYear',
+    'events[/{user}][/calendar]',
+    array(
+        'user' => '[[:digit:]]+',
+    )
 );
 $maps[] = array(
-    'PublicViewMonth',
-    'events/public/{year}/{month}',
+    'ViewYear',
+    'events/{user}/calendar[/{year}]',
     array(
-        'year'  => '\d{4}',
+        'user' => '[[:digit:]]+',
+        'year' => '\d{4}'
+    )
+);
+$maps[] = array(
+    'ViewMonth',
+    'events/{user}/calendar/{year}/{month}',
+    array(
+        'user' => '[[:digit:]]+',
+        'year' => '\d{4}',
         'month' => '[01]?\d'
     )
 );
 $maps[] = array(
-    'PublicViewDay',
-    'events/public/{year}/{month}/{day}',
+    'ViewDay',
+    'events/{user}/calendar/{year}/{month}/{day}',
     array(
-        'year'  => '\d{4}',
+        'user' => '[[:digit:]]+',
+        'year' => '\d{4}',
         'month' => '[01]?\d',
-        'day'   => '[0-3]?\d'
+        'day' => '[0-3]?\d'
     )
 );
 $maps[] = array(
-    'PublicViewWeek',
-    'events/public/{year}/{month}/{day}/week',
+    'ViewWeek',
+    'events/{user}/calendar/{year}/{month}/{day}/week',
     array(
-        'year'  => '\d{4}',
+        'user' => '[[:digit:]]+',
+        'year' => '\d{4}',
         'month' => '[01]?\d',
-        'day'   => '[0-3]?\d'
+        'day' => '[0-3]?\d'
     )
 );
+
+// Management
+$maps[] = array(
+    'ManageEvents',
+    'events/{user}/manage[/page/{page}]',
+    array('page' => '[[:digit:]]+')
+);
+$maps[] = array(
+    'ViewEvent',
+    'events/{user}/{event}',
+    array(
+        'user' => '[[:digit:]]+',
+        'event' => '[[:digit:]]+'
+    )
+);
+$maps[] = array(
+    'EditEvent',
+    'events/{user}/{event}/edit',
+    array(
+        'user' => '[[:digit:]]+',
+        'event' => '[[:digit:]]+'
+    )
+);
+$maps[] = array(
+    'ShareEvent',
+    'events/{user}/{event}/share',
+    array(
+        'user' => '[[:digit:]]+',
+        'event' => '[[:digit:]]+'
+    )
+);
+

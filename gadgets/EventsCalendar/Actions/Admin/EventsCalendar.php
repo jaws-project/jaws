@@ -41,7 +41,6 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
      */
     function EventsCalendar($mode = 'public')
     {
-//        $GLOBALS['app']->Layout->AddHeadLink('gadgets/Mailbox/Resources/font-awesome/css/font-awesome.min.css');
         $this->AjaxMe('script.js');
         $GLOBALS['app']->Layout->AddHeadLink('libraries/w2ui/w2ui.css');
         $GLOBALS['app']->Layout->AddScriptLink('libraries/w2ui/w2ui.js');
@@ -59,6 +58,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $const['mode'] = $mode;
         $const['script'] = BASE_SCRIPT;
         $const['user'] = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        $const['eventsLimit'] = $this->gadget->registry->fetch('events_limit');
         $const['subject'] = _t('EVENTSCALENDAR_EVENT_SUBJECT');
         $const['location'] = _t('EVENTSCALENDAR_EVENT_LOCATION');
         $const['description'] = _t('EVENTSCALENDAR_EVENT_DESC');
@@ -125,38 +125,14 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $text->TextArea->SetRows(5);
         $tpl->SetVariable('description', $text->Get());
 
-        // Start date
-//        $cal_type = $this->gadget->registry->fetch('calendar', 'Settings');
-//        $cal_lang = $this->gadget->registry->fetch('site_language', 'Settings');
-//        $datePicker =& Piwi::createWidget('DatePicker', 'start_date');
-//        $datePicker->SetId('');
-//        $datePicker->showTimePicker(true);
-//        $datePicker->setCalType($cal_type);
-//        $datePicker->setLanguageCode($cal_lang);
-//        $datePicker->setDateFormat('%Y-%m-%d');
-//        $datePicker->SetIncludeCSS(false);
-//        $datePicker->SetIncludeJS(false);
-//        $tpl->SetVariable('start_date', $datePicker->Get());
+        // Start/Stop date
         $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
         $tpl->SetVariable('lbl_from', _t('EVENTSCALENDAR_FROM'));
         $tpl->SetVariable('lbl_to', _t('EVENTSCALENDAR_TO'));
 
-        // Stop date
-//        $datePicker =& Piwi::createWidget('DatePicker', 'stop_date');
-//        $datePicker->SetId('');
-//        $datePicker->showTimePicker(true);
-//        $datePicker->setDateFormat('%Y-%m-%d');
-//        $datePicker->SetIncludeCSS(false);
-//        $datePicker->SetIncludeJS(false);
-//        $datePicker->setCalType($cal_type);
-//        $datePicker->setLanguageCode($cal_lang);
-//        $tpl->SetVariable('stop_date', $datePicker->Get());
-
         // Start/Stop time
         $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
         $tpl->SetVariable('error_time_value', _t('EVENTSCALENDAR_ERROR_INVALID_TIME_FORMAT'));
-//        $tpl->SetVariable('start_time', $event['start_time']);
-//        $tpl->SetVariable('stop_time', $event['stop_time']);
 
         // Type
         $combo =& Piwi::createWidget('Combo', 'type');
@@ -166,6 +142,16 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         }
         $tpl->SetVariable('type', $combo->Get());
         $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
+
+        // Public
+        $combo =& Piwi::createWidget('Combo', 'public');
+        $combo->SetId('');
+        $combo->AddOption(_t('GLOBAL_YES'), 1);
+        $combo->AddOption(_t('GLOBAL_NO'), 0);
+        $combo->SetDefault(0);
+        $combo->SetEnabled(false);
+        $tpl->SetVariable('public', $combo->Get());
+        $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
 
         // Priority
         $combo =& Piwi::createWidget('Combo', 'priority');
@@ -244,20 +230,10 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
     function GetEvents()
     {
         $post = $this->gadget->request->fetch(array('user', 'limit', 'offset', 'search:array', 'sort:array'), 'post');
-//        _log_var_dump($post);
-//        $post['user'] = 0;
-//        $page = !empty($page)? (int)$page : 1;
-//        $limit = (int)$this->gadget->registry->fetch('events_limit');
 
         // Fetch events
-        $model = $this->gadget->model->load('Events');
-//        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-//        $count = $model->GetNumberOfEvents($user, $query, $shared, $foreign, $start, $stop);
-//        $events = $model->GetEvents($user, $query, $shared, $foreign,
-//            $start, $stop, $limit, ($page - 1) * $limit);
-//        $count = $model->GetNumberOfEvents($post['user']);
+        $model = $this->gadget->model->loadAdmin('Events');
         $events = $model->GetEvents($post);
-//        _log_var_dump($events);
         if (Jaws_Error::IsError($events)){
             return $GLOBALS['app']->Session->GetResponse(_t('EVENTSCALENDAR_ERROR_REQUEST_FAILED'), RESPONSE_ERROR);
         }
@@ -265,16 +241,6 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         // prepare data
         $jDate = Jaws_Date::getInstance();
         foreach ($events as &$event) {
-//            $start_date = $jDate->Format($event['start_time'], 'Y/m/d');
-//            $stop_date = $jDate->Format($event['stop_time'], 'Y/m/d');
-//            $event['date'] = ($event['start_time'] == $event['stop_time'])?
-//                $start_date : $start_date . _t('EVENTSCALENDAR_TO') . $stop_date;
-//
-//            $start_time = $jDate->Format($event['start_time'], 'H:i');
-//            $event['time'] = ($event['start_time'] == $event['stop_time'])?
-//                $start_time : $start_time . _t('EVENTSCALENDAR_TO') .
-//                $jDate->Format($event['stop_time'], 'H:i');
-
             $event['shared'] = $event['shared']? _t('EVENTSCALENDAR_SHARED') : '';
             $event['start_time'] = $jDate->Format($event['start_time'], 'Y/m/d H:i');
             $event['stop_time'] = $jDate->Format($event['stop_time'], 'Y/m/d H:i');
@@ -293,10 +259,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
     {
         $id = $this->gadget->request->fetch('event_id:int', 'post');
         $model = $this->gadget->model->load('Event');
-//        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-//        $event = $model->GetEvent($id, $user);
         $event = $model->GetEvent($id);
-//        _log_var_dump($event);
         if (Jaws_Error::IsError($event) || empty($event)) {
             return $GLOBALS['app']->Session->GetResponse(_t('EVENTSCALENDAR_ERROR_REQUEST_FAILED'), RESPONSE_ERROR);
         }
