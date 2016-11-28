@@ -11,6 +11,22 @@
 class Jaws_Notification_Mail
 {
     /**
+     * Driver title
+     *
+     * @access  protected
+     * @var     string
+     */
+    protected $title = 'Jaws Mailer';
+
+    /**
+     * Driver type
+     *
+     * @access  protected
+     * @var     int
+     */
+    protected $type = Jaws_Notification::EML_DRIVER;
+
+    /**
      * Store mail object instance
      * @var     array
      * @access  private
