@@ -27,8 +27,7 @@ class EventsCalendar_Model_Admin_Events extends Jaws_Gadget_Model
                 $table->join('ec_users', 'event.id', 'event');
             } else {
                 $table->select('count(event.id)');
-                $table->join('ec_users', 'event.id', 'event');
-                $table->join('users', 'owner', 'users.id');
+                $table->join('users', 'user', 'users.id');
             }
         } else {
             if ($params['user'] === 0) {
@@ -38,11 +37,13 @@ class EventsCalendar_Model_Admin_Events extends Jaws_Gadget_Model
             } else {
                 $table->select('event.id', 'event.user', 'subject', 'location', 'description',
                     'start_time', 'stop_time', 'event.public:boolean', 'shared:boolean', 'nickname', 'username');
-                $table->join('ec_users', 'event.id', 'event');
-                $table->join('users', 'owner', 'users.id');
+                $table->join('users', 'user', 'users.id');
             }
         }
-        $table->where('event.user', $params['user'])->and();
+
+        if (isset($params['user'])) {
+            $table->where('event.user', $params['user'])->and();
+        }
 
         $jDate = Jaws_Date::getInstance();
         $search = $params['search'];

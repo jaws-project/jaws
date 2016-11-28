@@ -74,40 +74,43 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Events');
         $count = $model->GetEvents($params, true);
         $events = $model->GetEvents($params);
-        if (!Jaws_Error::IsError($events)){
-            $jDate = Jaws_Date::getInstance();
-            foreach ($events as $event) {
-                $tpl->SetBlock('events/event');
-                $tpl->SetVariable('id', $event['id']);
-                $tpl->SetVariable('subject', $event['subject']);
-                $tpl->SetVariable('public', $event['public']? _t('EVENTSCALENDAR_EVENT_PUBLIC') : '');
+        if (Jaws_Error::IsError($events)) {
+            require_once JAWS_PATH . 'include/Jaws/HTTPError.php';
+            return Jaws_HTTPError::Get(500);
+        }
 
-                $startDate = $jDate->Format($event['start_time'], 'Y/m/d');
-                $stopDate = $jDate->Format($event['stop_time'], 'Y/m/d');
-                $date = ($startDate == $stopDate)? $startDate :
-                    $startDate . _t('EVENTSCALENDAR_TO') . $stopDate;
-                $tpl->SetVariable('date', $date);
+        $jDate = Jaws_Date::getInstance();
+        foreach ($events as $event) {
+            $tpl->SetBlock('events/event');
+            $tpl->SetVariable('id', $event['id']);
+            $tpl->SetVariable('subject', $event['subject']);
+            $tpl->SetVariable('public', $event['public']? _t('EVENTSCALENDAR_EVENT_PUBLIC') : '');
 
-                $start_time = $jDate->Format($event['start_time'], 'H:i');
-                $time = ($event['start_time'] == $event['stop_time'])?
-                    $start_time : $start_time . _t('EVENTSCALENDAR_TO') .
-                    $jDate->Format($event['stop_time'], 'H:i');
-                $tpl->SetVariable('time', $time);
+            $startDate = $jDate->Format($event['start_time'], 'Y/m/d');
+            $stopDate = $jDate->Format($event['stop_time'], 'Y/m/d');
+            $date = ($startDate == $stopDate)? $startDate :
+                $startDate . _t('EVENTSCALENDAR_TO') . $stopDate;
+            $tpl->SetVariable('date', $date);
 
-                $url = $this->gadget->urlMap('ViewEvent', array('user' => $user, 'event' => $event['id']));
-                $tpl->SetVariable('url', $url);
+            $start_time = $jDate->Format($event['start_time'], 'H:i');
+            $time = ($event['start_time'] == $event['stop_time'])?
+                $start_time : $start_time . _t('EVENTSCALENDAR_TO') .
+                $jDate->Format($event['stop_time'], 'H:i');
+            $tpl->SetVariable('time', $time);
 
-                if ($event['user'] != $user) {
-                    $tpl->SetVariable('shared', '');
-                    $tpl->SetVariable('nickname', $event['nickname']);
-                    $tpl->SetVariable('username', $event['username']);
-                } else {
-                    $tpl->SetVariable('shared', $event['shared']? _t('EVENTSCALENDAR_SHARED') : '');
-                    $tpl->SetVariable('nickname', '');
-                    $tpl->SetVariable('username', '');
-                }
-                $tpl->ParseBlock('events/event');
+            $url = $this->gadget->urlMap('ViewEvent', array('user' => $user, 'event' => $event['id']));
+            $tpl->SetVariable('url', $url);
+
+            if ($event['user'] != $user) {
+                $tpl->SetVariable('shared', '');
+                $tpl->SetVariable('nickname', $event['nickname']);
+                $tpl->SetVariable('username', $event['username']);
+            } else {
+                $tpl->SetVariable('shared', $event['shared']? _t('EVENTSCALENDAR_SHARED') : '');
+                $tpl->SetVariable('nickname', '');
+                $tpl->SetVariable('username', '');
             }
+            $tpl->ParseBlock('events/event');
         }
 
         // Search

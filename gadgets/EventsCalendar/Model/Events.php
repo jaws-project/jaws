@@ -42,7 +42,7 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
                 $table->join('users', 'owner', 'users.id');
             }
         }
-        $table->where('event.user', $params['user'])->and();
+        $table->where('ec_users.user', $params['user'])->and();
 
         $jDate = Jaws_Date::getInstance();
         $search = $params['search'];
