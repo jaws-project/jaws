@@ -80,6 +80,12 @@
       </field>
 
       <field>
+        <name>public</name>
+        <type>boolean</type>
+        <default>true</default>
+      </field>
+
+      <field>
         <name>published</name>
         <type>boolean</type>
         <default>false</default>
