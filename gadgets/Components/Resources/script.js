@@ -434,8 +434,8 @@ function componentACL(reset)
                 input = $('<input>').attr({
                     'id': key_unique,
                     'type': 'checkbox',
-                    'checked': acl.key_value
-                }).val(acl.key_value),
+                    'value': 1,
+                }).prop('checked', acl.key_value),
                 td = $('<td>').append(input),
                 tr = $('<tr>').append(td, th);
             input.on('change', onValueChange);
