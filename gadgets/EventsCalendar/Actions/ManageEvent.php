@@ -69,7 +69,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
                     empty($event) ||
                     $event['owner'] != $user)
                 {
-                    return;
+                    return '';
                 }
                 $start = $event['start_time'];
                 $event['start_date'] = $jDate->Format($start, 'Y-m-d');

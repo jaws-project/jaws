@@ -141,7 +141,7 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
                 }
 
                 $url = $user?
-                    $this->gadget->urlMap('ViewEvent', array('user' => $user, 'id' => $eventId)) :
+                    $this->gadget->urlMap('ViewEvent', array('user' => $user, 'event' => $eventId)) :
                     $this->gadget->urlMap('ViewEvent', array('event' => $eventId));
                 $tpl->SetVariable('event_url', $url);
 

@@ -165,7 +165,6 @@ function toggleUsers(gid)
         users = ECAjax.callSync('GetUsers', {'gid':gid});
         usersByGroup[gid] = users;
     }
-    console.log(users);
     $.each(users, function (i, user) {
         if (user.id == UID) return;
         var $div = $('<div>'),
