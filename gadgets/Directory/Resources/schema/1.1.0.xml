@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+  <name><variable>database</variable></name>
+
+  <table>
+    <name><variable>table_prefix</variable>directory</name>
+    <declaration>
+
+      <field>
+        <name>id</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+        <autoincrement>true</autoincrement>
+      </field>
+
+      <field>
+        <name>parent</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+      </field>
+
+      <field>
+        <name>user</name>
+        <type>integer</type>
+        <notnull>true</notnull>
+      </field>
+
+      <field>
+        <name>title</name>
+        <type>text</type>
+        <length>128</length>
+      </field>
+
+      <field>
+        <name>description</name>
+        <type>text</type>
+      </field>
+
+      <field>
+        <name>host_filename</name>
+        <type>text</type>
+        <length>128</length>
+      </field>
+
+      <field>
+        <name>user_filename</name>
+        <type>text</type>
+        <length>128</length>
+      </field>
+
+      <field>
+        <name>mime_type</name>
+        <type>text</type>
+        <length>128</length>
+      </field>
+
+      <field>
+        <name>file_type</name>
+        <type>integer</type>
+        <length>1</length>
+        <description>0:unknown 1:text 2:image 3:audio 4:video 5:archive</description>
+      </field>
+
+      <field>
+        <name>file_size</name>
+        <type>integer</type>
+        <length>8</length>
+      </field>
+
+      <field>
+        <name>is_dir</name>
+        <type>boolean</type>
+        <default>false</default>
+      </field>
+
+      <field>
+        <name>hidden</name>
+        <type>boolean</type>
+        <default>false</default>
+      </field>
+
+      <field>
+        <name>published</name>
+        <type>boolean</type>
+        <default>false</default>
+      </field>
+
+      <field>
+        <name>hits</name>
+        <type>integer</type>
+      </field>
+
+      <field>
+        <name>create_time</name>
+        <type>integer</type>
+        <length>8</length>
+      </field>
+
+      <field>
+        <name>update_time</name>
+        <type>integer</type>
+        <length>8</length>
+      </field>
+
+      <index>
+        <name><variable>table_prefix</variable>directory_title_idx</name>
+        <unique>true</unique>
+        <field>
+          <name>host_filename</name>
+        </field>
+      </index>
+
+    </declaration>
+  </table>
+
+</database>
