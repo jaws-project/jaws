@@ -37,6 +37,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_ACLKeys = array(
+        'NotificationDrivers',
         'Settings',
     );
 
@@ -67,7 +68,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
     function Uninstall()
     {
         $tables = array(
-            'notification_email', 'notification_mobile', 'notification_messages'
+            'notification_email', 'notification_mobile', 'notification_messages', 'notification_driver'
         );
         foreach ($tables as $table) {
             $result = Jaws_DB::getInstance()->dropTable($table);

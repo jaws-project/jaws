@@ -1,0 +1,45 @@
+<!-- BEGIN drivers -->
+<div class="gadget_menubar">{{menubar}}</div>
+<div id="main" align="left">
+    <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td valign="top" align="left">
+                <div id="datagrid">{{datagrid}}</div>
+            </td>
+            <td id="driver_work_area">
+                <fieldset id="driver_form">
+                    <legend><span id="legend_title">{{legend_title}}</span></legend>
+                    <div>
+                        <table id="driver_box" style="width: 100%">
+                            <tr><th><label for="title">{{lbl_title}}:</label></th><td>{{title}}</td></tr>
+                            <tr><th><label for="enabled">{{lbl_enabled}}:</label></th><td>{{enabled}}</td></tr>
+                        </table>
+                    </div>
+                </fieldset>
+
+                <fieldset id="driver_settings_ui" style="display:none">
+                    <legend><span>{{driver_settings_title}}</span></legend>
+                    <div id="driver_settings_area">{{driver_settings_ui}}</div>
+                </fieldset>
+
+            </td>
+        </tr>
+        <tr><td class="buttons" colspan="2">{{btn_cancel}}{{btn_save}}</td></tr>
+    </table>
+</div>
+<script type="text/javascript">
+    var currentAction = "NotificationDrivers",
+            base_script = "{{base_script}}",
+            confirmDelete = "{{confirmDelete}}",
+            incompleteFields = "{{incompleteFields}}";
+    initDataGrid('notification_drivers_datagrid', NotificationAjax, getNotificationDrivers);
+
+</script>
+<!-- END drivers -->
+<!-- BEGIN DriverSettingsUI -->
+<table style="width: 100%">
+    <!-- BEGIN field -->
+    <tr><td><label for="{{name}}">{{lbl_var}}:</label></td><td>{{var}}</td></tr>
+    <!-- END field -->
+</table>
+<!-- END DriverSettingsUI -->
