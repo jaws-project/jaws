@@ -139,4 +139,44 @@
         </declaration>
     </table>
 
+    <table>
+        <name><variable>table_prefix</variable>notification_driver</name>
+        <declaration>
+
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>name</name>
+                <type>text</type>
+                <notnull>true</notnull>
+                <length>45</length>
+            </field>
+
+            <field>
+                <name>title</name>
+                <type>text</type>
+                <notnull>true</notnull>
+                <length>64</length>
+            </field>
+
+            <field>
+                <name>enabled</name>
+                <type>boolean</type>
+                <default>true</default>
+            </field>
+
+            <field>
+                <name>options</name>
+                <type>text</type>
+            </field>
+
+        </declaration>
+    </table>
+
+
 </database>

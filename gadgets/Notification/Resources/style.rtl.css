@@ -1,3 +1,11 @@
+#driver_work_area {
+    width: 380px;
+    vertical-align: top;
+    padding-right: 5px;
+}
+#driver_settings_ui{
+    margin-top: 10px;
+}
 #gadgets_drivers table tr td:first-child {
     width: 150px;
 }
