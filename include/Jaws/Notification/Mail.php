@@ -8,7 +8,7 @@
  * @copyright   2014-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Notification_Mail
+class Jaws_Notification_Mail extends Jaws_Notification
 {
     /**
      * Driver title

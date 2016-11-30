@@ -69,6 +69,18 @@ class Jaws_Notification
 
 
     /**
+     * Get options list
+     *
+     * @access  public
+     * @return  mixed   Jaws_Error on failure
+     */
+    function getDriverOptions()
+    {
+        return array();
+    }
+
+
+    /**
      * @return string
      */
     public function getTitle()
