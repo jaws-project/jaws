@@ -17,19 +17,19 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      */
     function GetNotifications($contactType, $limit)
     {
-        $nTable = Jaws_ORM::getInstance();
+        $objORM = Jaws_ORM::getInstance();
         switch ($contactType) {
             case Jaws_Notification::EML_DRIVER:
-                $nTable = $nTable->table('notification_email');
+                $objORM = $objORM->table('notification_email');
                 break;
             case Jaws_Notification::SMS_DRIVER:
-                $nTable = $nTable->table('notification_mobile');
+                $objORM = $objORM->table('notification_mobile');
                 break;
             default:
                 return Jaws_Error::raiseError(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
         }
 
-        return $nTable->select(array('id', 'message', 'contact'))
+        return $objORM->select('id:integer', 'message', 'contact')
             ->limit($limit)
             ->where('publish_time', time(), '<=')
             ->orderBy('publish_time, message asc')->fetchAll();
@@ -46,7 +46,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
     function GetNotificationMessage($id)
     {
         return Jaws_ORM::getInstance()->table('notification_messages')
-            ->select(array('title', 'summary', 'description'))
+            ->select('title', 'summary', 'description')
             ->where('id', $id)->fetchRow();
     }
 
@@ -179,19 +179,23 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      */
     function DeleteNotificationsById($contactType, $ids)
     {
-        if (empty($contactType) || empty($ids)) {
-            return false;
+        if (empty($ids)) {
+            return true;
         }
 
-        if ($contactType == Notification_Info::NOTIFICATION_TYPE_EMAIL) {
-            $table = Jaws_ORM::getInstance()->table('notification_email');
-        } else if ($contactType == Notification_Info::NOTIFICATION_TYPE_MOBILE) {
-            $table = Jaws_ORM::getInstance()->table('notification_mobile');
-        } else {
-            return new Jaws_Error(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
+        $objORM = Jaws_ORM::getInstance();
+        switch ($contactType) {
+            case Jaws_Notification::EML_DRIVER:
+                $objORM = $objORM->table('notification_email');
+                break;
+            case Jaws_Notification::SMS_DRIVER:
+                $objORM = $objORM->table('notification_mobile');
+                break;
+            default:
+                return Jaws_Error::raiseError(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
         }
 
-        return $table->delete()->where('id', $ids, 'in')->exec();
+        return $objORM->delete()->where('id', $ids, 'in')->exec();
     }
 
 
@@ -203,10 +207,15 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      */
     function DeleteOrphanedMessages()
     {
-        $table = Jaws_ORM::getInstance()->table('notification_messages');
-        $eTable = Jaws_ORM::getInstance()->table('notification_email')->select('message')->distinct();
-        $mTable = Jaws_ORM::getInstance()->table('notification_mobile')->select('message')->distinct();
+        $msgTable = Jaws_ORM::getInstance()->table('notification_messages');
+        $emlTable = Jaws_ORM::getInstance()->table('notification_email')->select('message')->distinct();
+        $smsTable = Jaws_ORM::getInstance()->table('notification_mobile')->select('message')->distinct();
 
-        return $table->delete()->where('id', $eTable, 'not in')->and()->where('id', $mTable, 'not in')->exec();
+        return $msgTable->delete()
+            ->where('id', $emlTable, 'not in')
+            ->and()
+            ->where('id', $smsTable, 'not in')
+            ->exec();
     }
+
 }

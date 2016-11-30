@@ -27,18 +27,22 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
 
         $model = $this->gadget->model->load('Notification');
         $emailLimit = (int)$this->gadget->registry->fetch('email_pop_count');
-        $emailItems = $model->GetNotifications(Jaws_Notification::EML_DRIVER, $emailLimit);
-        if (Jaws_Error::IsError($emailItems)) {
+        // fetches email notification
+        $result = $model->GetNotifications(Jaws_Notification::EML_DRIVER, $emailLimit);
+        if (Jaws_Error::IsError($result)) {
             $this->gadget->registry->update('processing', 'false');
-            return $emailItems;
+            return $result;
         }
+        $messages[Jaws_Notification::EML_DRIVER] = $this->GroupByMessages($result);
 
         $mobileLimit = (int)$this->gadget->registry->fetch('mobile_pop_count');
-        $mobileItems = $model->GetNotifications(Jaws_Notification::SMS_DRIVER, $mobileLimit);
-        if (Jaws_Error::IsError($mobileItems)) {
+        // fetches SMS notification
+        $result = $model->GetNotifications(Jaws_Notification::SMS_DRIVER, $mobileLimit);
+        if (Jaws_Error::IsError($result)) {
             $this->gadget->registry->update('processing', 'false');
-            return $mobileItems;
+            return $result;
         }
+        $messages[Jaws_Notification::SMS_DRIVER] = $this->GroupByMessages($result);
 
         // send notification to drivers
         $objDModel = $this->gadget->model->load('Drivers');
@@ -46,42 +50,20 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
         foreach ($drivers as $driver) {
             $driver = basename($driver, '.php');
             $objDriver = $objDModel->LoadNotificationDriver($driver);
-            if (!empty($emailItems) && $objDriver->getType() == Jaws_Notification::EML_DRIVER) {
-                $emailItemsChunk = $this->GroupSameMessages($emailItems);
-                foreach ($emailItemsChunk as $messageId => $emails) {
-                    $message = $model->GetNotificationMessage($messageId);
-                    $res = $objDriver->notify($emails, $message['title'], $message['summary'], $message['description']);
-                }
-
-                // delete notification
-                // FIXME : we can increase the performance
-                if (!Jaws_Error::IsError($res)) {
-                    $itemsId = array();
-                    foreach ($emailItems as $item) {
-                        $itemsId[] = $item['id'];
-                    }
-                    $model->DeleteNotificationsById(Notification_Info::NOTIFICATION_TYPE_EMAIL, $itemsId);
-                }
-            } else if (!empty($mobileItems) && $objDriver->getType() == Jaws_Notification::SMS_DRIVER) {
-                $mobileItemsChunk = $this->GroupSameMessages($mobileItems);
-                foreach ($mobileItemsChunk as $messageId => $mobiles) {
-                    $message = $model->GetNotificationMessage($messageId);
+            $dType = $objDriver->getType();
+            if (!empty($messages[$dType])) {
+                foreach ($messages[$dType]['grouped'] as $message => $contacts) {
+                    $message = $model->GetNotificationMessage($message);
                     $res = $objDriver->notify(
-                        $mobiles,
+                        $contacts,
                         $message['title'],
                         $message['summary'],
                         $message['description']
                     );
                 }
-
-                // delete notification
-                // FIXME : we can increase the performance
                 if (!Jaws_Error::IsError($res)) {
-                    $itemsId = array();
-                    foreach ($mobileItems as $item) {
-                        $itemsId[] = $item['id'];
-                    }
-                    $model->DeleteNotificationsById(Notification_Info::NOTIFICATION_TYPE_MOBILE, $itemsId);
+                    // delete notification
+                    $model->DeleteNotificationsById($dType, $messages[$dType]['ids']);
                 }
             }
         }
@@ -93,27 +75,28 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
 
 
     /**
-     * Group same messages
+     * Group messages by message id
      *
      * @access  public
-     * @param   array       $items    Notification items
-     * @return bool
+     * @param   array   $messages   Notification messages
+     * @return  array   Grouped Messages
      */
-    function GroupSameMessages($items)
+    function GroupByMessages($messages)
     {
-        if (empty($items)) {
-            return array();
-        }
-
-        $messageRecipients = array();
-        $lastMessageId = 0;
-        foreach ($items as $item) {
-            if ($lastMessageId != $item['message']) {
-                $lastMessageId = $item['message'];
+        $lastMessage = 0;
+        $idsMessages = array();
+        $groupedMessages = array();
+        foreach ($messages as $message) {
+            if ($lastMessage != $message['message']) {
+                $lastMessage = $message['message'];
             }
-            $messageRecipients[$lastMessageId][] = $item['contact'];
+            $idsMessages[] = $message['id'];
+            $groupedMessages[$lastMessage][] = $message['contact'];
         }
 
-        return $messageRecipients;
+        return array(
+            'grouped' => $groupedMessages,
+            'ids' => $idsMessages
+        );
     }
 }

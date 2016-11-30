@@ -1,5 +1,4 @@
 <?php
-require_once JAWS_PATH . 'gadgets/Notification/Model/Drivers.php';
 /**
  * Notification Model Admin
  *
