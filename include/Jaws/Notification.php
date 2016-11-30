@@ -88,6 +88,14 @@ class Jaws_Notification
         return $this->title;
     }
 
+    /**
+     * @return integer
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
 
     /**
      * Sends notify to user
