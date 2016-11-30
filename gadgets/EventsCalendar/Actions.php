@@ -112,15 +112,16 @@ $actions['ViewDay'] = array(
     'normal' => true,
     'file' => 'ViewDay'
 );
-$actions['Reminder'] = array(
-    'normal' => true,
-    'layout' => true,
-    'file' => 'Reminder'
-);
 $actions['Calendar'] = array(
     'layout' => true,
     'parametric' => true,
     'file' => 'Calendar'
+);
+$actions['Reminder'] = array(
+    'normal' => true,
+    'layout' => true,
+    'parametric' => true,
+    'file' => 'Reminder'
 );
 $actions['Today'] = array(
     'layout' => true,

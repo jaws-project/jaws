@@ -5,13 +5,28 @@
 </div>
 <div class="gadget_container">
   <div class="gadget_content content">
-    <!-- BEGIN event -->
-    <div class="type_{{type}} {{priority}}">
-      <a href="{{event_url}}">{{event}}</a>
-      <!-- BEGIN owner -->({{owner}})<!-- END owner -->
-      {{datetime}}
-    </div>
-    <!-- END event -->
+    <table class="table table-hover table-bordered">
+      <thead><tr>
+        <th>{{lbl_subject}}</th>
+        <th>{{lbl_type}}</th>
+        <th>{{lbl_location}}</th>
+        <th>{{lbl_priority}}</th>
+        <th>{{lbl_date}}</th>
+        <th>{{lbl_owner}}</th>
+      </tr></thead>
+      <tbody>
+      <!-- BEGIN event -->
+      <tr>
+        <td><a href="{{event_url}}">{{subject}}</a></td>
+        <td>{{type}}</td>
+        <td>{{location}}</td>
+        <td>{{priority}}</td>
+        <td>{{date}}</td>
+        <td>{{owner}}</td>
+      </tr>
+      <!-- END event -->
+      </tbody>
+    </table>
   </div>
 </div>
 <div class="gadget_footer"></div>
