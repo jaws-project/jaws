@@ -8,12 +8,6 @@
 class Notification_Info extends Jaws_Gadget
 {
     /**
-     * Constants
-     */
-    const NOTIFICATION_TYPE_EMAIL = 'email';
-    const NOTIFICATION_TYPE_MOBILE = 'mobile';
-
-    /**
      * Gadget version
      *
      * @var     string
@@ -35,6 +29,6 @@ class Notification_Info extends Jaws_Gadget
      * @var     string
      * @access  protected
      */
-    var $default_admin_action = 'Settings';
+    var $default_admin_action = 'NotificationDrivers';
 
 }

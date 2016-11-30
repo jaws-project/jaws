@@ -17,13 +17,13 @@ class Notification_Installer extends Jaws_Gadget_Installer
         array('processing', 'false'),
         array('last_update', '0'),
         array('queue_max_time', '1800'), // maximum time to execution an queue (seconds)
-        array('email_pop_count', '100'),
-        array('mobile_pop_count', '50'),
+        array('eml_fetch_limit', '100'),
+        array('sms_fetch_limit', '100'),
         array('configuration', ''), // array(gadget_name=>(0,1, driver_name))
     );
 
     /**
-     * Default ACL value of the gadget frontend
+     * Default ACL value of the gadget front-end
      *
      * @var     bool
      * @access  protected
@@ -55,7 +55,6 @@ class Notification_Installer extends Jaws_Gadget_Installer
         }
 
         $this->gadget->event->insert('Notify');
-
         return true;
     }
 
@@ -96,6 +95,12 @@ class Notification_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+
+            // registry keys
+            $this->gadget->registry->delete('email_pop_count');
+            $this->gadget->registry->delete('mobile_pop_count');
+            $this->gadget->registry->insert('eml_fetch_limit', '100');
+            $this->gadget->registry->insert('sms_fetch_limit', '100');
         }
 
         return true;

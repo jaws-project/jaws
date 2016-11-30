@@ -26,18 +26,18 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
         $this->gadget->registry->update('processing', 'true');
 
         $model = $this->gadget->model->load('Notification');
-        $emailLimit = (int)$this->gadget->registry->fetch('email_pop_count');
+        $emlLimit = (int)$this->gadget->registry->fetch('eml_fetch_limit');
         // fetches email notification
-        $result = $model->GetNotifications(Jaws_Notification::EML_DRIVER, $emailLimit);
+        $result = $model->GetNotifications(Jaws_Notification::EML_DRIVER, $emlLimit);
         if (Jaws_Error::IsError($result)) {
             $this->gadget->registry->update('processing', 'false');
             return $result;
         }
         $messages[Jaws_Notification::EML_DRIVER] = $this->GroupByMessages($result);
 
-        $mobileLimit = (int)$this->gadget->registry->fetch('mobile_pop_count');
+        $smsLimit = (int)$this->gadget->registry->fetch('eml_fetch_limit');
         // fetches SMS notification
-        $result = $model->GetNotifications(Jaws_Notification::SMS_DRIVER, $mobileLimit);
+        $result = $model->GetNotifications(Jaws_Notification::SMS_DRIVER, $smsLimit);
         if (Jaws_Error::IsError($result)) {
             $this->gadget->registry->update('processing', 'false');
             return $result;
