@@ -91,10 +91,9 @@ class Notification_Model_Drivers extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   string  $dName       driver name
-     * @param   int     $invoiceId   invoice id
      * @return  mixed   Array of associated data of a basket or Jaws_Error on failure
      */
-    public function LoadNotificationDriver($dName, $invoiceId = null)
+    public function LoadNotificationDriver($dName)
     {
         $driverInfo = $this->GetNotificationDriver($dName);
         if (Jaws_Error::IsError($driverInfo)) {

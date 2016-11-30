@@ -27,30 +27,30 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
 
         $model = $this->gadget->model->load('Notification');
         $emailLimit = (int)$this->gadget->registry->fetch('email_pop_count');
-        $emailItems = $model->GetNotifications(Notification_Info::NOTIFICATION_TYPE_EMAIL, $emailLimit);
+        $emailItems = $model->GetNotifications(Jaws_Notification::EML_DRIVER, $emailLimit);
         if (Jaws_Error::IsError($emailItems)) {
             $this->gadget->registry->update('processing', 'false');
             return $emailItems;
         }
 
         $mobileLimit = (int)$this->gadget->registry->fetch('mobile_pop_count');
-        $mobileItems = $model->GetNotifications(Notification_Info::NOTIFICATION_TYPE_MOBILE, $mobileLimit);
+        $mobileItems = $model->GetNotifications(Jaws_Notification::SMS_DRIVER, $mobileLimit);
         if (Jaws_Error::IsError($mobileItems)) {
             $this->gadget->registry->update('processing', 'false');
             return $mobileItems;
         }
 
         // send notification to drivers
+        $objDModel = $this->gadget->model->load('Drivers');
         $drivers = glob(JAWS_PATH . 'include/Jaws/Notification/*.php');
         foreach ($drivers as $driver) {
             $driver = basename($driver, '.php');
-            $options = unserialize($this->gadget->registry->fetch($driver . '_options'));
-            $driverObj = Jaws_Notification::getInstance($driver, $options);
-            if (!empty($emailItems) && $driver == 'Mail') {
+            $objDriver = $objDModel->LoadNotificationDriver($driver);
+            if (!empty($emailItems) && $objDriver->getType() == Jaws_Notification::EML_DRIVER) {
                 $emailItemsChunk = $this->GroupSameMessages($emailItems);
                 foreach ($emailItemsChunk as $messageId => $emails) {
                     $message = $model->GetNotificationMessage($messageId);
-                    $res = $driverObj->notify($emails, $message['title'], $message['summary'], $message['description']);
+                    $res = $objDriver->notify($emails, $message['title'], $message['summary'], $message['description']);
                 }
 
                 // delete notification
@@ -62,11 +62,16 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
                     }
                     $model->DeleteNotificationsById(Notification_Info::NOTIFICATION_TYPE_EMAIL, $itemsId);
                 }
-            } else if (!empty($mobileItems) && $driver == 'Mobile') {
+            } else if (!empty($mobileItems) && $objDriver->getType() == Jaws_Notification::SMS_DRIVER) {
                 $mobileItemsChunk = $this->GroupSameMessages($mobileItems);
                 foreach ($mobileItemsChunk as $messageId => $mobiles) {
                     $message = $model->GetNotificationMessage($messageId);
-                    $res = $driverObj->notify($mobiles, $message['title'], $message['summary'], $message['description']);
+                    $res = $objDriver->notify(
+                        $mobiles,
+                        $message['title'],
+                        $message['summary'],
+                        $message['description']
+                    );
                 }
 
                 // delete notification

@@ -17,12 +17,16 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      */
     function GetNotifications($contactType, $limit)
     {
-        if ($contactType == Notification_Info::NOTIFICATION_TYPE_EMAIL) {
-            $nTable = Jaws_ORM::getInstance()->table('notification_email');
-        } else if ($contactType == Notification_Info::NOTIFICATION_TYPE_MOBILE) {
-            $nTable = Jaws_ORM::getInstance()->table('notification_mobile');
-        } else {
-            return new Jaws_Error(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
+        $nTable = Jaws_ORM::getInstance();
+        switch ($contactType) {
+            case Jaws_Notification::EML_DRIVER:
+                $nTable = $nTable->table('notification_email');
+                break;
+            case Jaws_Notification::SMS_DRIVER:
+                $nTable = $nTable->table('notification_mobile');
+                break;
+            default:
+                return Jaws_Error::raiseError(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
         }
 
         return $nTable->select(array('id', 'message', 'contact'))
