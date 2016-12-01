@@ -10,7 +10,7 @@
 }
 .directory table th{
     padding:2px 4px;
-    text-align:left;
+    text-align:right;
     font-weight:bold;
     border:1px solid #ccc;
     border-radius:2px 2px 0 0;
@@ -50,10 +50,13 @@ position:relative;
 width:32px;
 }
 .file-title{
-width:100%;
+width:40%;
 cursor:default;
 word-break:break-all;
 overflow:hidden;
+}
+.file-owner{
+width:16%;
 }
 .file-size{
 text-align:right;

@@ -21,9 +21,12 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
         if ($count) {
             $table->select('count(id):integer');
         } else {
-            $table->select('id', 'parent', 'user', 'is_dir:boolean', 'hidden:boolean','published:boolean',
-                'title', 'description', 'user_filename', 'host_filename', 'mime_type',
-                'file_type', 'file_size', 'hits', 'create_time', 'update_time');
+            $table->select('directory.id', 'directory.parent', 'user', 'users.username', 'users.nickname',
+                'is_dir:boolean', 'hidden:boolean', 'directory.published:boolean',
+                'directory.title', 'directory.description', 'user_filename', 'host_filename', 'mime_type',
+                'file_type', 'file_size', 'hits', 'directory.create_time', 'directory.update_time'
+            );
+            $table->join('users', 'directory.user', 'users.id', 'left');
         }
 
         if (isset($params['parent'])) {

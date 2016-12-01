@@ -15,7 +15,6 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      */
     function Directory($standalone = false)
     {
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/Resources/style.css');
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('Workspace.html');
         $tpl->SetBlock('workspace');
@@ -89,6 +88,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $tpl->SetVariable('lbl_term', _t('DIRECTORY_FILE_TERM'));
         $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
         $tpl->SetVariable('lbl_type', _t('DIRECTORY_FILE_TYPE'));
+        $tpl->SetVariable('lbl_owner', _t('DIRECTORY_FILE_OWNER'));
         $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
         $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
         $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
@@ -137,6 +137,8 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $tpl->SetVariable('thumbnail', '{thumbnail}');
         $tpl->SetVariable('type', '{type}');
         $tpl->SetVariable('size', '{size}');
+        $tpl->SetVariable('nickname', '{nickname}');
+        $tpl->SetVariable('userlink', '{userlink}');
         $tpl->SetVariable('published_str', '{published_str}');
         $tpl->SetVariable('created', '{created}');
         $tpl->SetVariable('modified', '{modified}');
@@ -179,6 +181,11 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             } else {
                 $file['link'] = $this->gadget->urlMap('Directory', array('id' => $file['id']), true);
             }
+            $file['userlink'] = $GLOBALS['app']->Map->GetURLFor(
+                'Users',
+                'Profile',
+                array('user' => $file['username'])
+            );
             $file['published_str'] = $file['published'] ? _t('GLOBAL_YES'): _t('GLOBAL_NO');
             $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
             $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');

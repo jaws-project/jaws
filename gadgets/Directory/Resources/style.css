@@ -54,10 +54,13 @@ position:relative;
 width:32px;
 }
 .files-table .file-title{
-width:100%;
+width:40%;
 cursor:default;
 word-break:break-all;
 overflow:hidden;
+}
+.files-table .file-owner{
+width:16%;
 }
 .files-table .file-size{
 text-align:right;
