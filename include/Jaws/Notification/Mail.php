@@ -94,6 +94,7 @@ class Jaws_Notification_Mail extends Jaws_Notification
         $tpl->SetVariable('site-author',    $this->attributes['site_author']);
         $tpl->SetVariable('site-license',   $this->attributes['site_license']);
         $tpl->SetVariable('site-copyright', $this->attributes['site_copyright']);
+        $tpl->SetVariable('summary', $summary);
         $tpl->SetVariable('content', $content);
         $tpl->ParseBlock('notification');
         $this->object->SetBody($tpl->Get());
