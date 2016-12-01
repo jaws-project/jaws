@@ -5,7 +5,7 @@
  * @category    GadgetHook
  * @package     EventsCalendar
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013-2015 Jaws Development Group
+ * @copyright   2013-2016 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class EventsCalendar_Hooks_Menu extends Jaws_Gadget_Hook
@@ -19,9 +19,7 @@ class EventsCalendar_Hooks_Menu extends Jaws_Gadget_Hook
     function Execute()
     {
         $urls[] = array('url' => $this->gadget->urlMap('ViewYear'),
-                        'title' => _t('EVENTSCALENDAR_EVENTS'));
-        $urls[] = array('url' => $this->gadget->urlMap('ManageEvents'),
-                        'title' => _t('EVENTSCALENDAR_EVENTS_MANAGE'));
+                        'title' => _t('EVENTSCALENDAR_PUBLIC_EVENTS'));
         return $urls;
     }
 }

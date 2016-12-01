@@ -11,7 +11,7 @@
 class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
 {
     /**
-     * Gets Calendar action params
+     * Gets Reminder action params
      *
      * @access  public
      * @return  array   List of Calendar action params
@@ -20,7 +20,7 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
     {
         return array(
             array(
-                'title' => _t('EVENTSCALENDAR_ACTIONS_REMINDER'),
+                'title' => _t('EVENTSCALENDAR_EVENTS'),
                 'value' => array(
                     'user' => _t('EVENTSCALENDAR_USER_EVENTS'),
                     'public' => _t('EVENTSCALENDAR_PUBLIC_EVENTS')

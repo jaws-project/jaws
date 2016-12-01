@@ -11,13 +11,37 @@
 class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
 {
     /**
+     * Gets Today action params
+     *
+     * @access  public
+     * @return  array   List of Today action params
+     */
+    function TodayLayoutParams()
+    {
+        return array(
+            array(
+                'title' => _t('EVENTSCALENDAR_EVENTS'),
+                'value' => array(
+                    'user' => _t('EVENTSCALENDAR_USER_EVENTS'),
+                    'public' => _t('EVENTSCALENDAR_PUBLIC_EVENTS')
+                )
+            ),
+        );
+    }
+
+    /**
      * Displays today events
      *
      * @access  public
-     * @return string XHTML UI
+     * @param   string  $user   Reminder type [public|user]
+     * @return  string XHTML UI
      */
-    function Today()
+    function Today($user)
     {
+        if ($user === 'user' && !$GLOBALS['app']->Session->Logged()) {
+            return '';
+        }
+
         $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/index.css');
         $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('Today.html');
@@ -37,6 +61,11 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
 
         $this->SetTitle($today . ' - ' . _t('EVENTSCALENDAR_EVENTS'));
         $tpl->SetVariable('today', $today);
+        if ($user === 'public') {
+            $tpl->SetVariable('title', _t('EVENTSCALENDAR_PUBLIC_EVENTS'));
+        } else {
+            $tpl->SetVariable('title', _t('EVENTSCALENDAR_USER_EVENTS'));
+        }
         $tpl->SetVariable('lbl_subject', _t('EVENTSCALENDAR_EVENT_SUBJECT'));
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
         $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
@@ -49,9 +78,13 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
         $dayStart = $GLOBALS['app']->UserTime2UTC($dayStart['timestamp']);
         $dayEnd = $jDate->ToBaseDate($info['year'], $info['mon'], $info['mday'], 23, 59, 59);
         $dayEnd = $GLOBALS['app']->UserTime2UTC($dayEnd['timestamp']);
-        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-        $model = $this->gadget->model->load('Calendar');
-        $events = $model->GetTodayEvents($user, $dayStart, $dayEnd);
+        $model = $this->gadget->model->load('Today');
+        if ($user === 'public') {
+            $events = $model->GetPublicEvents($dayStart, $dayEnd);
+        } else {
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+            $events = $model->GetUserEvents($user, $dayStart, $dayEnd);
+        }
         if (Jaws_Error::IsError($events)){
             $events = array();
         }
@@ -68,10 +101,6 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
             $startHour = $jDate->Format($event['start_time'], 'H:i');
             $stopHour = $jDate->Format($event['stop_time'], 'H:i');
             $tpl->SetVariable('date', $startHour . ' - ' . $stopHour);
-
-            if ($event['shared']) {
-                // TODO: display owner's name
-            }
 
             $url = $user?
                 $this->gadget->urlMap('ViewEvent', array('user' => $user, 'event' => $event['id'])) :
