@@ -118,12 +118,12 @@ $actions['Calendar'] = array(
     'file' => 'Calendar'
 );
 $actions['Reminder'] = array(
-    'normal' => true,
     'layout' => true,
     'parametric' => true,
     'file' => 'Reminder'
 );
 $actions['Today'] = array(
     'layout' => true,
+    'parametric' => true,
     'file' => 'Today'
 );
