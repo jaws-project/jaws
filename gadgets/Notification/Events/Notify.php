@@ -89,30 +89,18 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
             return false;
         }
 
-        foreach ($users as $user) {
-            // generate email array
-            if (!isset($configuration[$gadget]) ||
-                $configuration[$gadget] == 1 ||
-                $configuration[$gadget] == 'Mail') {
-                if (!empty($user['email'])) {
-                    $notificationsEmails[] = array(
-                        'contact' => $user['email'],
-                        'publish_time' => $params['publish_time']
-                    );
-                }
-            }
+        // generate email array
+        if (!isset($configuration[$gadget]) ||
+            $configuration[$gadget] == 1 ||
+            $configuration[$gadget] == 'Mail') {
+            $notificationsEmails = array_filter(array_column($users, 'email'));
+        }
 
-            // generate mobile array
-            if (!isset($configuration[$gadget]) ||
-                $configuration[$gadget] == 1 ||
-                $configuration[$gadget] == 'Mobile') {
-                if (!empty($user['mobile_number'])) {
-                    $notificationsMobiles[] = array(
-                        'contact' => $user['mobile_number'],
-                        'publish_time' => $params['publish_time']
-                    );
-                }
-            }
+        // generate mobile array
+        if (!isset($configuration[$gadget]) ||
+            $configuration[$gadget] == 1 ||
+            $configuration[$gadget] == 'Mobile') {
+            $notificationsMobiles = array_filter(array_column($users, 'mobile_number'));
         }
 
         if (!empty($notificationsEmails) || !empty($notificationsMobiles)) {
@@ -121,7 +109,8 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                 $params['key'],
                 strip_tags($params['title']),
                 strip_tags($params['summary']),
-                $params['description']
+                $params['description'],
+                $params['publish_time']
             );
             if (Jaws_Error::IsError($res)) {
                 return $res;

@@ -29,7 +29,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 return Jaws_Error::raiseError(_t('NOTIFICATION_ERROR_INVALID_CONTACT_TYPE'));
         }
 
-        return $objORM->select('id:integer', 'message', 'contact')
+        return $objORM->select('id:integer', 'message', 'contact', 'publish_time:integer')
             ->limit($limit)
             ->where('publish_time', time(), '<=')
             ->orderBy('publish_time, message asc')->fetchAll();
@@ -60,9 +60,10 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * @param   string      $title              Title
      * @param   string      $summary            Summary
      * @param   string      $description        Description
+     * @param   integer     $publish_time       Publish timestamps
      * @return  bool        True or error
      */
-    function InsertNotifications($notifications, $key, $title, $summary, $description)
+    function InsertNotifications($notifications, $key, $title, $summary, $description, $publish_time)
     {
         if (empty($notifications) || (empty($notifications['emails']) && empty($notifications['mobiles']))) {
             return false;
@@ -71,24 +72,29 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         $objORM = Jaws_ORM::getInstance()->beginTransaction();
         $mTable = $objORM->table('notification_messages');
         $messageId = $mTable->upsert(
-            array('key' => $key, 'title' => $title, 'summary' => $summary, 'description' => $description))
-            ->and()->where('key', $key)
-            ->exec();
-
+            array(
+                'key' => $key,
+                'title' => $title,
+                'summary' => $summary,
+                'description' => $description
+            )
+        )->and()->where('key', $key)->exec();
         if (Jaws_Error::IsError($messageId)) {
             return $messageId;
         }
 
         // insert email items
         if (!empty($notifications['emails'])) {
-            $table = $objORM->table('notification_email');
-            foreach ($notifications['emails'] as $row) {
+            $objORM = $objORM->table('notification_email');
+            foreach ($notifications['emails'] as $email) {
                 // FIXME : increase performance by adding upsertAll method in core
-                $row['message'] = $messageId;
-                $res = $table
-                    ->upsert($row)
-                    ->and()->where('message', $row['message'])
-                    ->and()->where('contact', $row['contact'])
+                $res = $objORM->upsert(
+                        array('message' => $messageId, 'contact' => $email, 'publish_time' => $publish_time)
+                    )
+                    ->and()
+                    ->where('message', $messageId)
+                    ->and()
+                    ->where('contact', $email)
                     ->exec();
                 if (Jaws_Error::IsError($res)) {
                     return $res;
@@ -98,14 +104,17 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
 
         // insert mobile items
         if(!empty($notifications['mobiles'])) {
-            $table = $objORM->table('notification_mobile');
-            foreach ($notifications['mobiles'] as $row) {
+            $objORM = $objORM->table('notification_mobile');
+            foreach ($notifications['mobiles'] as $mobile) {
                 // FIXME : increase performance by adding upsertAll method in core
                 $row['message'] = $messageId;
-                $res = $table
-                    ->upsert($row)
-                    ->and()->where('message', $row['message'])
-                    ->and()->where('contact', $row['contact'])
+                $res = $objORM->upsert(
+                        array('message' => $messageId, 'contact' => $mobile, 'publish_time' => $publish_time)
+                    )
+                    ->and()
+                    ->where('message', $messageId)
+                    ->and()
+                    ->where('contact', $mobile)
                     ->exec();
                 if (Jaws_Error::IsError($res)) {
                     return $res;

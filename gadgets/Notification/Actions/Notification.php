@@ -52,13 +52,14 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
             $objDriver = $objDModel->LoadNotificationDriver($driver);
             $dType = $objDriver->getType();
             if (!empty($messages[$dType])) {
-                foreach ($messages[$dType]['grouped'] as $message => $contacts) {
-                    $message = $model->GetNotificationMessage($message);
+                foreach ($messages[$dType]['grouped'] as $msgid => $msgContacts) {
+                    $message = $model->GetNotificationMessage($msgid);
                     $res = $objDriver->notify(
-                        $contacts,
+                        $msgContacts['contacts'],
                         $message['title'],
                         $message['summary'],
-                        $message['description']
+                        $message['description'],
+                        $msgContacts['publish_time']
                     );
                 }
                 if (!Jaws_Error::IsError($res)) {
@@ -89,9 +90,10 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
         foreach ($messages as $message) {
             if ($lastMessage != $message['message']) {
                 $lastMessage = $message['message'];
+                $groupedMessages[$lastMessage]['publish_time'] = $message['publish_time'];
             }
             $idsMessages[] = $message['id'];
-            $groupedMessages[$lastMessage][] = $message['contact'];
+            $groupedMessages[$lastMessage]['contacts'][] = $message['contact'];
         }
 
         return array(
