@@ -91,7 +91,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
     function Upgrade($old, $new)
     {
         if (version_compare($old, '1.1.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '1.0.0.xml');
+            $result = $this->installSchema('1.1.0.xml', '', '1.0.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -101,6 +101,13 @@ class Notification_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->delete('mobile_pop_count');
             $this->gadget->registry->insert('eml_fetch_limit', '100');
             $this->gadget->registry->insert('sms_fetch_limit', '100');
+        }
+
+        if (version_compare($old, '1.2.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '1.1.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
         }
 
         return true;
