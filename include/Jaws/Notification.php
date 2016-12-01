@@ -40,6 +40,33 @@ class Jaws_Notification
      */
     protected $options;
 
+    /**
+     * Site attributes
+     *
+     * @access  private
+     * @var     array
+     */
+    protected $attributes = array();
+
+    /**
+     * constructor
+     *
+     * @access  public
+     * @param   array $options Associated options array
+     */
+    protected function __construct($options = array())
+    {
+        // fetch all registry keys related to site attributes
+        $this->attributes = $GLOBALS['app']->Registry->fetchAll('Settings', false);
+        Jaws_Translate::getInstance()->LoadTranslation(
+            'Global',
+            JAWS_COMPONENT_OTHERS,
+            $this->attributes['site_language']
+        );
+        $this->attributes['site_url']       = $GLOBALS['app']->GetSiteURL('/');
+        $this->attributes['site_direction'] = _t_lang($this->attributes['site_language'], 'GLOBAL_LANG_DIRECTION');
+    }
+
 
     /**
      * An interface for available drivers
@@ -101,13 +128,14 @@ class Jaws_Notification
      * Sends notify to user
      *
      * @access  public
-     * @param   array   $users          Users properties associated array
-     * @param   string  $title          Notification title
-     * @param   string  $summary        Notification summary
-     * @param   string  $description    Notification description
+     * @param   array   $contacts   Contacts array
+     * @param   string  $title      Notification title
+     * @param   string  $summary    Notification summary
+     * @param   string  $content    Notification content
+     * @param   integer $time   Time of notify(timestamps)
      * @return  mixed   Jaws_Error on failure
      */
-    function notify($users, $title, $summary, $description)
+    function notify($contacts, $title, $summary, $content, $time)
     {
         return Jaws_Error::raiseError('notify() method not supported by this driver.', __CLASS__);
     }

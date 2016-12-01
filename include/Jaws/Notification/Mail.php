@@ -34,32 +34,15 @@ class Jaws_Notification_Mail extends Jaws_Notification
     private $object;
 
     /**
-     * Site attributes
-     *
-     * @access  private
-     * @var     array
-     */
-    private $attributes = array();
-
-
-    /**
      * constructor
      *
-     * @access  public
+     * @access  protected
      * @param   array $options Associated options array
      */
-    public function __construct($options)
+    protected function __construct($options = array())
     {
+        parent::__construct();
         $this->object = Jaws_Mail::getInstance('notification');
-        // fetch all registry keys related to site attributes
-        $this->attributes = $GLOBALS['app']->Registry->fetchAll('Settings', false);
-        Jaws_Translate::getInstance()->LoadTranslation(
-            'Global',
-            JAWS_COMPONENT_OTHERS,
-            $this->attributes['site_language']
-        );
-        $this->attributes['site_url']       = $GLOBALS['app']->GetSiteURL('/');
-        $this->attributes['site_direction'] = _t_lang($this->attributes['site_language'], 'GLOBAL_LANG_DIRECTION');
     }
 
 
@@ -67,17 +50,18 @@ class Jaws_Notification_Mail extends Jaws_Notification
      * Sends notify to user
      *
      * @access  public
-     * @param   array   $emails     Recipients email
+     * @param   array   $contacts   Contacts array
      * @param   string  $title      Notification title
      * @param   string  $summary    Notification summary
      * @param   string  $content    Notification content
+     * @param   integer $time       Time of notify(timestamps)
      * @return  mixed   Jaws_Error on failure
      */
-    function notify($emails, $title, $summary, $content)
+    function notify($contacts, $title, $summary, $content, $time)
     {
         $this->object->reset();
         $this->object->SetFrom();
-        foreach ($emails as $email) {
+        foreach ($contacts as $email) {
             $this->object->AddRecipient($email);
         }
         $this->object->SetSubject($title);
@@ -86,6 +70,7 @@ class Jaws_Notification_Mail extends Jaws_Notification
         $tpl->loadRTLDirection = $this->attributes['site_direction'] == 'rtl';
         $tpl->Load('Notification.html', 'include/Jaws/Resources');
         $tpl->SetBlock('notification');
+        $tpl->SetBlock('notification/eml');
         $tpl->SetVariable('site-url',       $this->attributes['site_url']);
         $tpl->SetVariable('site-direction', $this->attributes['site_direction']);
         $tpl->SetVariable('site-name',      $this->attributes['site_name']);
@@ -94,8 +79,11 @@ class Jaws_Notification_Mail extends Jaws_Notification
         $tpl->SetVariable('site-author',    $this->attributes['site_author']);
         $tpl->SetVariable('site-license',   $this->attributes['site_license']);
         $tpl->SetVariable('site-copyright', $this->attributes['site_copyright']);
+        $tpl->SetVariable('title', $title);
         $tpl->SetVariable('summary', $summary);
         $tpl->SetVariable('content', $content);
+        $tpl->SetVariablesArray(Jaws_Date::getInstance()->GetDateInfo($time));
+        $tpl->ParseBlock('notification/eml');
         $tpl->ParseBlock('notification');
         $this->object->SetBody($tpl->Get());
         unset($tpl);
