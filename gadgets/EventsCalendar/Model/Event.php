@@ -147,6 +147,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         $event['reminder'] *= 60;
 
         // update event
+        $user = $event['user'];
         unset($event['user']);
         unset($event['owner']);
         $table = Jaws_ORM::getInstance()->table('ec_events');
@@ -155,6 +156,8 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
+        // we need the user for sending notifications
+        $event['user'] = $user;
 
         // create recurrences
         if ($event['start_time'] != $oldEvent['start_time'] ||
@@ -193,11 +196,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         }
 
         // Delete recurrences
-        $table = Jaws_ORM::getInstance()->table('ec_recurrences');
-        $res = $table->delete()->where('event', $idSet, 'in')->exec();
-        if (Jaws_Error::IsError($res)) {
-            return $res;
-        }
+        $this->DeleteRecurrences($idSet);
 
         // Delete shares
         $table = Jaws_ORM::getInstance()->table('ec_users');
@@ -216,8 +215,8 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
     {
         $recArr = array();
         $jDate = Jaws_Date::getInstance();
-        $start_info = $jDate->GetDateInfo($event['start_time']);
-        $stop_info = $jDate->GetDateInfo($event['stop_time']);
+        $startInfo = $jDate->GetDateInfo($event['start_time']);
+        $stopInfo = $jDate->GetDateInfo($event['stop_time']);
         if ($event['recurrence'] == 0) {
             $recArr[] = $event['start_time'];
         } else {
@@ -233,7 +232,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
                 case 2: // weekly
                     $step = 7 * 24 * 60 * 60;
                     // calculate first occurrence
-                    $diff = $event['wday'] - $start_info['wday'] - 1;
+                    $diff = $event['wday'] - $startInfo['wday'] - 1;
                     if ($diff < 0) {
                         $diff += 7;
                     }
@@ -248,8 +247,8 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
                     break;
                 case 3: // monthly
                     $startArr[2] = $event['day'];
-                    $endMonth = ($stop_info['year'] - $start_info['year']) * 12 + $stop_info['mon'];
-                    for ($i = (int)$start_info['mon']; $i <= $endMonth; $i++) {
+                    $endMonth = ($stopInfo['year'] - $startInfo['year']) * 12 + $stopInfo['mon'];
+                    for ($i = (int)$startInfo['mon']; $i <= $endMonth; $i++) {
                         $startArr[1] = $i;
                         $time = $jDate->ToBaseDate($startArr);
                         $iso = $GLOBALS['app']->UserTime2UTC($time['timestamp']);
@@ -261,7 +260,7 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
                 case 4: // yearly
                     $startArr[1] = $event['month'];
                     $startArr[2] = $event['day'];
-                    for ($i = $start_info['year']; $i <= $stop_info['year']; $i++) {
+                    for ($i = $startInfo['year']; $i <= $stopInfo['year']; $i++) {
                         $startArr[0] = $i;
                         $time = $jDate->ToBaseDate($startArr);
                         $iso = $GLOBALS['app']->UserTime2UTC($time['timestamp']);
@@ -273,8 +272,8 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
             }
         }
 
-        $time1 = $start_info['hours'] * 3600 + $start_info['minutes'] * 60;
-        $time2 = $stop_info['hours'] * 3600 + $start_info['minutes'] * 60;
+        $time1 = $startInfo['hours'] * 3600 + $startInfo['minutes'] * 60;
+        $time2 = $stopInfo['hours'] * 3600 + $startInfo['minutes'] * 60;
         $duration = $time2 - $time1;
         if ($duration < 0) {
             $duration += 24 * 3600;
@@ -299,26 +298,100 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
+        $table->commit();
 
-        return $table->commit();
+        // remind subscribed user(s)
+        $recs = $this->GetRecurrences($eventId);
+        foreach ($recs as $rec) {
+            $notify = array(
+                'id' => $rec['id'],
+                'key' => crc32('Event' . $rec['id']),
+                'subject' => $event['subject'],
+                'description' => $event['description'],
+                'time' => $rec['start_time'] - $event['reminder'],
+                'url' => $event['user'] ?
+                    $this->gadget->urlMap('ViewEvent', array('event' => $eventId, 'user' => $event['user']), true) :
+                    $this->gadget->urlMap('ViewEvent', array('event' => $eventId), true)
+            );
+            $this->Notify($notify);
+        }
+
+        return true;
     }
 
     /**
      * Deletes event recurrences
      *
      * @access  public
-     * @param   int     $eventId    Event ID
+     * @param   mixed   $eventId    Event ID or array of event IDs
      * @return  mixed   Query result
      */
     function DeleteRecurrences($eventId)
     {
+        // delete pending notifications
+        $recs = $this->GetRecurrences($eventId);
+        foreach ($recs as $rec) {
+            $notify = array(
+                'id' => $rec['id'],
+                'key' => crc32('Event' . $rec['id']),
+                'subject' => 'removing event',
+                'description' => '',
+                'time' => -1,
+                'url' => ''
+            );
+            $this->Notify($notify);
+        }
+
+        // delete recurrences
         $table = Jaws_ORM::getInstance()->table('ec_recurrences');
         $table->beginTransaction();
-        $res = $table->delete()->where('event', $eventId)->exec();
+        if (is_array($eventId)) {
+            $res = $table->delete()->where('event', $eventId, 'in')->exec();
+        } else {
+            $res = $table->delete()->where('event', $eventId)->exec();
+        }
         if (Jaws_Error::IsError($res)) {
             return $res;
         }
 
         return $table->commit();
+    }
+
+    /**
+     * Fetches recurrences the specified event
+     *
+     * @access  public
+     * @param   mixed   $eventId    Event ID or array of event IDs
+     * @return  mixed   Query result
+     */
+    function GetRecurrences($eventId)
+    {
+        $table = Jaws_ORM::getInstance()->table('ec_recurrences');
+        $table->select('id', 'start_time');
+        if (is_array($eventId)) {
+            return $table->where('event', $eventId, 'in')->fetchAll();
+        } else {
+            return $table->where('event', $eventId)->fetchAll();
+        }
+    }
+
+    /**
+     * Reminds subscribed user(s) for a specific event
+     *
+     * @access  public
+     * @param   array   $event   The event to notify for
+     */
+    function Notify($event)
+    {
+        $subscriptionParams = array(
+            'action' => 'ViewYear',
+            'reference' => $event['id'],
+            'key' => $event['key'],
+            'summary' => $event['subject'],
+            'description' => $event['description'],
+            'publish_time' => ($event['time'] == -1)? -1 : strtotime($event['time']),
+            'url' => $event['url']
+        );
+        $this->gadget->event->shout('Subscription', $subscriptionParams);
     }
 }

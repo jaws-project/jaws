@@ -65,9 +65,10 @@ function initEventsCalendar() {
     CONST = jQuery.parseJSON(CONST);
 
     w2utils.settings.dataType = 'JSON';
-    // TODO: detect language
-    // w2utils.locale('libraries/w2ui/fa-pe.json');
     w2utils.settings.dateFormat = 'yyyy-m-d';
+    if (CONST.calendar === 'Jalali') {
+        w2utils.locale('libraries/w2ui/fa-pe.json');
+    }
 
     initDatagrid('#events_datagrid');
 }
