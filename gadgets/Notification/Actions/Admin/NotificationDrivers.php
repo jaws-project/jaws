@@ -24,7 +24,7 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
         $tpl->SetVariable('menubar', $this->MenuBar('NotificationDrivers'));
         $tpl->SetVariable('title', $this->gadget->title);
         $tpl->SetVariable('datagrid', $this->NotificationDriversDataGrid());
-        $tpl->SetVariable('legend_title', _t('PAYMENT_DRIVER_DETAILS'));
+        $tpl->SetVariable('legend_title', _t('NOTIFICATION_DRIVER_DETAILS'));
         $tpl->SetVariable('driver_settings_title', _t('GLOBAL_SETTINGS'));
 
         $title =& Piwi::CreateWidget('Entry', 'title', '');
@@ -47,7 +47,7 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('incompleteFields', _t('PAYMENT_INCOMPLETE_FIELDS'));
+        $tpl->SetVariable('incompleteFields', _t('NOTIFICATION_INCOMPLETE_FIELDS'));
 
         $tpl->ParseBlock('drivers');
         return $tpl->Get();
@@ -120,7 +120,7 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
             }
 
             if ($installed == false) {
-                $posData['status'] = _t('PAYMENT_NOT_INSTALLED');
+                $posData['status'] = _t('NOTIFICATION_NOT_INSTALLED');
             } else if ($driver['status'] == true) {
                 $posData['status'] = _t('GLOBAL_ENABLED');
             } else {
@@ -131,7 +131,7 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
             if ($this->gadget->GetPermission('NotificationDrivers')) {
 
                 if ($installed === true) {
-                    $link =& Piwi::CreateWidget('Link', _t('PAYMENT_UNINSTALL'),
+                    $link =& Piwi::CreateWidget('Link', _t('NOTIFICATION_UNINSTALL'),
                         "javascript: uninstallDriver(this, '" . $driver['id'] . "');",
                         STOCK_CANCEL);
                     $actions .= $link->Get() . '&nbsp;';
@@ -140,7 +140,7 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
                         STOCK_EDIT);
                     $actions .= $link->Get() . '&nbsp;';
                 } else {
-                    $link =& Piwi::CreateWidget('Link', _t('PAYMENT_INSTALL'),
+                    $link =& Piwi::CreateWidget('Link', _t('NOTIFICATION_INSTALL'),
                         "javascript: installDriver(this, '" . $driver['name'] . "');",
                         STOCK_OK);
                     $actions .= $link->Get() . '&nbsp;';
@@ -190,7 +190,7 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PAYMENT_DRIVER_UPDATED'), RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(_t('NOTIFICATION_DRIVER_UPDATED'), RESPONSE_NOTICE);
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -212,7 +212,7 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PAYMENT_DRIVER_INSTALLED'), RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(_t('NOTIFICATION_DRIVER_INSTALLED'), RESPONSE_NOTICE);
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -234,7 +234,7 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
         if (Jaws_Error::IsError($res)) {
             $GLOBALS['app']->Session->PushLastResponse($res->GetMessage(), RESPONSE_ERROR);
         } else {
-            $GLOBALS['app']->Session->PushLastResponse(_t('PAYMENT_DRIVER_UNINSTALLED'), RESPONSE_NOTICE);
+            $GLOBALS['app']->Session->PushLastResponse(_t('NOTIFICATION_DRIVER_UNINSTALLED'), RESPONSE_NOTICE);
         }
 
         return $GLOBALS['app']->Session->PopLastResponse();
