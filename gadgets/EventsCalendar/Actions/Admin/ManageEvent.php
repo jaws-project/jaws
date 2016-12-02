@@ -102,38 +102,12 @@ class EventsCalendar_Actions_Admin_ManageEvent extends Jaws_Gadget_Action
             return $GLOBALS['app']->Session->GetResponse(_t('EVENTSCALENDAR_ERROR_EVENT_DELETE'), RESPONSE_ERROR);
         }
 
-        // Verify events & user
-//        $model = $this->gadget->model->load('Event');
-//        $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
-//        $verified_events = $model->CheckEvents($events, $user);
-//        if (Jaws_Error::IsError($verified_events)) {
-//            return $GLOBALS['app']->Session->GetResponse(
-//                _t('EVENTSCALENDAR_ERROR_EVENT_DELETE'),
-//                RESPONSE_ERROR
-//            );
-//        }
-
-        // No events are verified
-//        if (empty($verified_events)) {
-//            return $GLOBALS['app']->Session->GetResponse(
-//                _t('EVENTSCALENDAR_ERROR_NO_PERMISSION'),
-//                RESPONSE_ERROR
-//            );
-//        }
-
         // Delete events
         $model = $this->gadget->model->load('Event');
-        $res = $model->Delete($events);
+        $res = $model->DeleteEvents($events);
         if (Jaws_Error::IsError($res)) {
             return $GLOBALS['app']->Session->GetResponse(_t('EVENTSCALENDAR_ERROR_EVENT_DELETE'), RESPONSE_ERROR);
         }
-
-//        if (count($events) !== count($verified_events)) {
-//            $msg = _t('EVENTSCALENDAR_WARNING_DELETE_EVENTS_FAILED');
-//            // FIXME: we are creating response twice
-//            $GLOBALS['app']->Session->PushResponse($msg, 'Events.Response', RESPONSE_WARNING);
-//            return $GLOBALS['app']->Session->GetResponse($msg, RESPONSE_WARNING);
-//        }
 
         $msg = (count($events) === 1)?
             _t('EVENTSCALENDAR_NOTICE_EVENT_DELETED') :

@@ -18,7 +18,7 @@ class EventsCalendar_Model_Reminder extends Jaws_Gadget_Model
      * @param   int     $time   Current timestamp
      * @return  array   Query result
      */
-    function GetEvents($user = null, $time)
+    function GetUserEvents($user = null, $time)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events as events');
         $table->select('events.id', 'subject', 'type', 'priority',

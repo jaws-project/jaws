@@ -112,6 +112,10 @@ $actions['ViewDay'] = array(
     'normal' => true,
     'file' => 'ViewDay'
 );
+
+/**
+ * Layout actions
+ */
 $actions['Calendar'] = array(
     'layout' => true,
     'parametric' => true,

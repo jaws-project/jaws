@@ -178,13 +178,13 @@ class EventsCalendar_Model_Event extends Jaws_Gadget_Model
     }
 
     /**
-     * Deletes event(s)
+     * Deletes events
      *
      * @access  public
      * @param   array   $idSet  Set of event IDs
      * @return  mixed   Query result
      */
-    function Delete($idSet)
+    function DeleteEvents($idSet)
     {
         $table = Jaws_ORM::getInstance()->table('ec_events');
         $res = $table->delete()->where('id', $idSet, 'in')->exec();

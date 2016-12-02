@@ -5,7 +5,7 @@
  * @category    GadgetModel
  * @package     EventsCalendar
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2013-2016 Jaws Development Group
+ * @copyright   2016 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class EventsCalendar_Model_Admin_Events extends Jaws_Gadget_Model
@@ -104,54 +104,5 @@ class EventsCalendar_Model_Admin_Events extends Jaws_Gadget_Model
         }
 
         return $count? $table->fetchOne() : $table->fetchAll();
-    }
-
-    /**
-     * Fetches number of total events
-     *
-     * @access  public
-     * @param   int     $user   User ID
-     * @return  array   Query result
-     */
-    function GetNumberOfEvents($user = null, $query = null,
-        $shared = null, $foreign = null, $start = null, $stop = null)
-    {
-        $table = Jaws_ORM::getInstance()->table('ec_events as event');
-        $table->select('count(event.id)');
-        $table->join('ec_users', 'event.id', 'event');
-        $table->join('users', 'owner', 'users.id');
-
-        if ($user !== null){
-            $table->where('ec_users.user', $user)->and();
-        }
-
-        if ($shared === true){
-            $table->where('shared', true)->and();
-            $table->where('event.user', $user)->and();
-        }
-
-        if ($foreign === true){
-            $table->where('ec_users.owner', $user, '<>')->and();
-        }
-
-       if ($query !== null){
-            $table->openWhere('subject', $query, 'like')->or();
-            $table->where('location', $query, 'like')->or();
-            $table->closeWhere('description', $query, 'like')->and();
-        }
-
-        $jdate = Jaws_Date::getInstance();
-        if (!empty($start)){
-            $start = $jdate->ToBaseDate(preg_split('/[- :]/', $start), 'Y-m-d');
-            $start = $GLOBALS['app']->UserTime2UTC($start);
-            $table->where('stop_time', $start, '>')->and();
-        }
-        if (!empty($stop)){
-            $stop = $jdate->ToBaseDate(preg_split('/[- :]/', $stop), 'Y-m-d');
-            $stop = $GLOBALS['app']->UserTime2UTC($stop);
-            $table->where('start_time', $stop, '<');
-        }
-
-        return $table->fetchOne();
     }
 }
