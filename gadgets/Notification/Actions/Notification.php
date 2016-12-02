@@ -52,7 +52,7 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
             $objDriver = $objDModel->LoadNotificationDriver($driver);
             $dType = $objDriver->getType();
             if (!empty($messages[$dType])) {
-                foreach ($messages[$dType]['grouped'] as $msgid => $msgContacts) {
+                foreach ($messages[$dType] as $msgid => $msgContacts) {
                     $message = $model->GetNotificationMessage($msgid);
                     $res = $objDriver->notify(
                         $msgContacts['contacts'],
@@ -61,11 +61,12 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
                         $message['description'],
                         $msgContacts['publish_time']
                     );
+                    if (!Jaws_Error::IsError($res)) {
+                        // delete notification
+                        $model->DeleteNotificationsById($dType, $msgContacts['ids']);
+                    }
                 }
-                if (!Jaws_Error::IsError($res)) {
-                    // delete notification
-                    $model->DeleteNotificationsById($dType, $messages[$dType]['ids']);
-                }
+
             }
         }
 
@@ -85,20 +86,16 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
     function GroupByMessages($messages)
     {
         $lastMessage = 0;
-        $idsMessages = array();
         $groupedMessages = array();
         foreach ($messages as $message) {
             if ($lastMessage != $message['message']) {
                 $lastMessage = $message['message'];
                 $groupedMessages[$lastMessage]['publish_time'] = $message['publish_time'];
             }
-            $idsMessages[] = $message['id'];
+            $groupedMessages[$lastMessage]['ids'][] = $message['id'];
             $groupedMessages[$lastMessage]['contacts'][] = $message['contact'];
         }
 
-        return array(
-            'grouped' => $groupedMessages,
-            'ids' => $idsMessages
-        );
+        return $groupedMessages;
     }
 }
