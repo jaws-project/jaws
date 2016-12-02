@@ -65,10 +65,10 @@ function initEventsCalendar() {
     CONST = jQuery.parseJSON(CONST);
 
     w2utils.settings.dataType = 'JSON';
-    w2utils.settings.dateFormat = 'yyyy-m-d';
     if (CONST.calendar === 'Jalali') {
         w2utils.locale('libraries/w2ui/fa-pe.json');
     }
+    w2utils.settings.dateFormat = 'yyyy-m-d';
 
     initDatagrid('#events_datagrid');
 }
@@ -166,8 +166,8 @@ function initForm($form) {
         fields: [
             {name: 'subject', type: 'text', required: true},
             {name: 'location', type: 'text', required: true},
-            {name: 'start_date', type: 'date', format: 'yyyy.m.d', required: true},
-            {name: 'stop_date', type: 'date', format: 'yyyy.m.d', required: true},
+            {name: 'start_date', type: 'date', format: 'yyyy-m-d', required: true},
+            {name: 'stop_date', type: 'date', format: 'yyyy-m-d', required: true},
             {name: 'description', type: 'text'}
         ]
     });
