@@ -166,8 +166,8 @@ function initForm($form) {
         fields: [
             {name: 'subject', type: 'text', required: true},
             {name: 'location', type: 'text', required: true},
-            {name: 'start_date', type: 'date', format: 'yyyy.m.d', required: true},
-            {name: 'stop_date', type: 'date', format: 'yyyy.m.d', required: true},
+            {name: 'start_date', type: 'date', format: 'yyyy-m-d', required: true},
+            {name: 'stop_date', type: 'date', format: 'yyyy-m-d', required: true},
             {name: 'description', type: 'text'}
         ]
     });
