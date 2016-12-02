@@ -20,12 +20,36 @@ class Directory_Hooks_Sitemap extends Jaws_Gadget_Hook
     {
         $result = array();
         if ($data_type == 0 || $data_type == 1) {
-            $result[] = array('id' => Directory_Info::FILE_TYPE_TEXT, 'title' => _t('DIRECTORY_FILE_TYPE_TEXT'));
-            $result[] = array('id' => Directory_Info::FILE_TYPE_IMAGE, 'title' => _t('DIRECTORY_FILE_TYPE_IMAGE'));
-            $result[] = array('id' => Directory_Info::FILE_TYPE_AUDIO, 'title' => _t('DIRECTORY_FILE_TYPE_AUDIO'));
-            $result[] = array('id' => Directory_Info::FILE_TYPE_VIDEO, 'title' => _t('DIRECTORY_FILE_TYPE_VIDEO'));
-            $result[] = array('id' => Directory_Info::FILE_TYPE_ARCHIVE, 'title' => _t('DIRECTORY_FILE_TYPE_ARCHIVE'));
-            $result[] = array('id' => Directory_Info::FILE_TYPE_UNKNOWN, 'title' => _t('DIRECTORY_FILE_TYPE_OTHER'));
+            $result[] = array(
+                'id' => Directory_Info::FILE_TYPE_TEXT,
+                'title' => _t('DIRECTORY_FILE_TYPE_TEXT'),
+                'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_TEXT), true)
+            );
+            $result[] = array(
+                'id' => Directory_Info::FILE_TYPE_IMAGE,
+                'title' => _t('DIRECTORY_FILE_TYPE_IMAGE'),
+                'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_IMAGE), true)
+            );
+            $result[] = array(
+                'id' => Directory_Info::FILE_TYPE_AUDIO,
+                'title' => _t('DIRECTORY_FILE_TYPE_AUDIO'),
+                'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_AUDIO), true)
+            );
+            $result[] = array(
+                'id' => Directory_Info::FILE_TYPE_VIDEO,
+                'title' => _t('DIRECTORY_FILE_TYPE_VIDEO'),
+                'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_VIDEO), true)
+            );
+            $result[] = array(
+                'id' => Directory_Info::FILE_TYPE_ARCHIVE,
+                'title' => _t('DIRECTORY_FILE_TYPE_ARCHIVE'),
+                'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_ARCHIVE), true)
+            );
+            $result[] = array(
+                'id' => Directory_Info::FILE_TYPE_UNKNOWN,
+                'title' => _t('DIRECTORY_FILE_TYPE_OTHER'),
+                'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_UNKNOWN), true)
+            );
         }
 
         if ($data_type == 2) {
