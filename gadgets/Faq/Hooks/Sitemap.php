@@ -39,7 +39,7 @@ class Faq_Hooks_Sitemap extends Jaws_Gadget_Hook
             }
 
             foreach ($categories as $category) {
-                $result[] = array(
+                $result['levels'][] = array(
                     'id'     => $category['id'],
                     'title'  => $category['category'],
                 );
@@ -52,7 +52,7 @@ class Faq_Hooks_Sitemap extends Jaws_Gadget_Hook
             }
             foreach ($categories as $category) {
                 $cat = empty($category['fast_url']) ? $category['id'] : $category['fast_url'];
-                $result[] = array(
+                $result['levels'][] = array(
                     'id'     => $category['id'],
                     'parent' => $category['id'],
                     'title'  => $category['category'],
@@ -69,7 +69,7 @@ class Faq_Hooks_Sitemap extends Jaws_Gadget_Hook
                 }
                 foreach ($questions as $question) {
                     $entry = empty($question['fast_url']) ? $question['id'] : $question['fast_url'];
-                    $result[] = array(
+                    $result['items'][] = array(
                         'id'        => $question['id'],
                         'parent'    => $question['category'],
                         'title'     => $question['question'],
