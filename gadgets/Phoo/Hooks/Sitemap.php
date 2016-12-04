@@ -21,7 +21,16 @@ class Phoo_Hooks_Sitemap extends Jaws_Gadget_Hook
      */
     function Execute($data_type = 0, $updated_time = 0)
     {
-        $result = array();
+        $result = array(
+            '/' => array(
+                'id'     => 0,
+                'parent' => 0,
+                'title'  => _t('PHOO_TITLE'),
+                'url'    => $this->gadget->urlMap('AlbumList', array(), true)
+            ),
+            'levels' => array(),
+            'items'  => array()
+        );
         if ($data_type == 0) {
             $gModel = $this->gadget->model->load('Groups');
             $groups = $gModel->GetGroups(true);
@@ -30,7 +39,7 @@ class Phoo_Hooks_Sitemap extends Jaws_Gadget_Hook
             }
 
             foreach ($groups as $group) {
-                $result[] = array(
+                $result['levels'][] = array(
                     'id'     => $group['id'],
                     'title'  => $group['name'],
                 );
@@ -43,7 +52,7 @@ class Phoo_Hooks_Sitemap extends Jaws_Gadget_Hook
             }
             foreach ($groups as $group) {
                 $entry = empty($group['fast_url']) ? $group['id'] : $group['fast_url'];
-                $result[] = array(
+                $result['levels'][] = array(
                     'id'     => $group['id'],
                     'parent' => $group['id'],
                     'title'  => $group['name'],
@@ -60,7 +69,7 @@ class Phoo_Hooks_Sitemap extends Jaws_Gadget_Hook
                 }
                 foreach ($albums as $album) {
                     $entry = empty($album['fast_url']) ? $album['id'] : $album['fast_url'];
-                    $result[] = array(
+                    $result['items'][] = array(
                         'id'        => $album['id'],
                         'parent'    => null,
                         'title'     => $album['name'],
