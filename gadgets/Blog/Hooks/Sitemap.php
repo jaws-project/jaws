@@ -21,7 +21,16 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
      */
     function Execute($data_type = 0, $updated_time = 0)
     {
-        $result = array();
+        $result = array(
+            '/' => array(
+                'id'     => 0,
+                'parent' => 0,
+                'title'  => _t('BLOG_TITLE'),
+                'url'    => $this->gadget->urlMap('DefaultAction', array(), true)
+            ),
+            'levels' => array(),
+            'items'  => array()
+        );
         if ($data_type == 0) {
             $cModel = $this->gadget->model->load('Categories');
             $categories = $cModel->GetCategories();
@@ -30,7 +39,7 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
             }
 
             foreach ($categories as $category) {
-                $result[] = array(
+                $result['levels'][] = array(
                     'id'     => $category['id'],
                     'title'  => $category['name'],
                 );
@@ -41,9 +50,10 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
             if (Jaws_Error::IsError($categories)) {
                 return $categories;
             }
+            $result['levels'] = array();
             foreach ($categories as $category) {
                 $cat = empty($category['fast_url']) ? $category['id'] : $category['fast_url'];
-                $result[] = array(
+                $result['levels'][] = array(
                     'id'     => $category['id'],
                     'parent' => $category['id'],
                     'title'  => $category['name'],
@@ -53,6 +63,7 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
             }
 
             if($data_type==2) {
+                $result['items'] = array();
                 $pModel = $this->gadget->model->load('Posts');
                 $posts  = $pModel->GetPosts(array('published' => true, 'stop_time' => Jaws_DB::getInstance()->date()));
                 if (Jaws_Error::IsError($posts)) {
@@ -61,7 +72,7 @@ class Blog_Hooks_Sitemap extends Jaws_Gadget_Hook
                 foreach ($posts as $post) {
                     $entry = empty($post['fast_url']) ? $post['id'] : $post['fast_url'];
                     $categories = explode(",", $post['categories']);
-                    $result[] = array(
+                    $result['items'][] = array(
                         'id'    => $post['id'],
                         'parent' => $categories[0],
                         'title' => $post['title'],
