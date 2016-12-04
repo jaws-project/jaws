@@ -130,14 +130,14 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         if (Jaws_Error::IsError($allItems) || empty($allItems)) {
             return '';
         }
+        $allItems = array_merge(array($allItems['/']), $allItems['levels'], $allItems['items']);
 
         $allCategories = $objHook->Execute(1);
         $gadgetCategory = $this->GetGadgetCategoryProperties($gadget);
         $finalCategory = array();
         // Detect all gadget's categories properties(priority | frequency | status)
-        foreach($allCategories as $cat) {
+        foreach($allCategories['levels'] as $cat) {
             $property = array();
-
             if (isset($gadgetCategory[$cat['id']]['priority'])) {
                 $property['priority'] = $gadgetCategory[$cat['id']]['priority'];
             }

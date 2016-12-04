@@ -61,13 +61,9 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_Action
                 }
             }
 
-            $allCategories = $items;
             $gadgetCategory = $model->GetGadgetCategoryProperties($gadget['name']);
-            if(empty($allCategories) || count($allCategories)<1) {
-                continue;
-            }
             // Detect all gadget's categories status
-            foreach($allCategories as $cat) {
+            foreach($items['levels'] as $cat) {
                 $status = null;
                 if (isset($gadgetCategory[$cat['id']]['status'])) {
                     $status = $gadgetCategory[$cat['id']]['status'];
@@ -82,8 +78,8 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_Action
             }
 
             $tpl->SetBlock('sitemap/item');
-
             $tpl->SetVariable('title', $gadget['title']);
+            $tpl->SetVariable('url',   $items['/']['url']);
             $tpl->SetVariable('childs', $this->GetNextLevel($gadget['name'], $finalCategory, $items));
             $tpl->ParseBlock('sitemap/item');
         }
@@ -105,10 +101,9 @@ class Sitemap_Actions_Sitemap extends Jaws_Gadget_Action
     function GetNextLevel($gadget, $itemsStatus, &$items)
     {
         $tpl = $this->gadget->template->load('Sitemap.html');
-
-        if (count($items) > 0) {
+        if (count($items['levels']) > 0) {
             $tpl->SetBlock('branch');
-            foreach ($items as $item) {
+            foreach ($items['levels'] as $item) {
                 // check item display status
                 if ($itemsStatus[$item['id']]['status'] != Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_BOTH &&
                     $itemsStatus[$item['id']]['status'] != Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_USER_SIDE ) {

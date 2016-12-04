@@ -114,7 +114,7 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
             return '';
         }
 
-        foreach ($gResult as $category) {
+        foreach ($gResult['levels'] as $category) {
             $tpl->SetBlock('sitemap/category_list');
             $tpl->SetVariable('cid', 'category_'.$category['id']);
             $tpl->SetVariable('icon', 'gadgets/Sitemap/Resources/images/logo.mini.png');
