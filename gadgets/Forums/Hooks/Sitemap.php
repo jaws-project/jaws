@@ -21,7 +21,16 @@ class Forums_Hooks_Sitemap extends Jaws_Gadget_Hook
      */
     function Execute($data_type = 0, $updated_time = 0)
     {
-        $result = array();
+        $result = array(
+            '/' => array(
+                'id'     => 0,
+                'parent' => 0,
+                'title'  => _t('FORUMS_TITLE'),
+                'url'    => $this->gadget->urlMap('Forums', array(), true)
+            ),
+            'levels' => array(),
+            'items'  => array()
+        );
         if ($data_type == 0) {
             $gModel = $this->gadget->model->load('Groups');
             $groups = $gModel->GetGroups(true);
@@ -30,7 +39,7 @@ class Forums_Hooks_Sitemap extends Jaws_Gadget_Hook
             }
 
             foreach ($groups as $group) {
-                $result[] = array(
+                $result['levels'][] = array(
                     'id'     => $group['id'],
                     'title'  => $group['title'],
                 );
@@ -42,7 +51,7 @@ class Forums_Hooks_Sitemap extends Jaws_Gadget_Hook
                 return $groups;
             }
             foreach ($groups as $group) {
-                $result[] = array(
+                $result['levels'][] = array(
                     'id'     => $group['id'],
                     'parent' => $group['id'],
                     'title'  => $group['title'],
@@ -59,7 +68,7 @@ class Forums_Hooks_Sitemap extends Jaws_Gadget_Hook
                     return $forums;
                 }
                 foreach ($forums as $forum) {
-                    $result[] = array(
+                    $result['items'][] = array(
                         'id'        => $forum['id'],
                         'parent'    => $forum['gid'],
                         'title'     => $forum['title'],
@@ -70,7 +79,7 @@ class Forums_Hooks_Sitemap extends Jaws_Gadget_Hook
                     // Get all published topics
                     $topics = $tModel->GetTopics($forum['id'], true);
                     foreach ($topics as $topic) {
-                        $result[] = array(
+                        $result['items'][] = array(
                             'id'        => $topic['id'],
                             'parent'    => $forum['gid'],
                             'title'     => $topic['subject'],
