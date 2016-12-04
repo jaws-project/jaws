@@ -21,7 +21,16 @@ class Quotes_Hooks_Sitemap extends Jaws_Gadget_Hook
      */
     function Execute($data_type = 0, $updated_time = 0)
     {
-        $result = array();
+        $result = array(
+            '/' => array(
+                'id'     => 0,
+                'parent' => 0,
+                'title'  => _t('QUOTES_TITLE'),
+                'url'    => $this->gadget->urlMap('RecentQuotes', array(), true)
+            ),
+            'levels' => array(),
+            'items'  => array()
+        );
         if ($data_type == 0) {
             $gModel = $this->gadget->model->load('Groups');
             $categories = $gModel->GetGroups();
@@ -30,7 +39,7 @@ class Quotes_Hooks_Sitemap extends Jaws_Gadget_Hook
             }
 
             foreach ($categories as $category) {
-                $result[] = array(
+                $result['levels'][] = array(
                     'id'     => $category['id'],
                     'title'  => $category['title'],
                 );
@@ -43,7 +52,7 @@ class Quotes_Hooks_Sitemap extends Jaws_Gadget_Hook
             }
             foreach ($categories as $category) {
                 $cat = $category['id'];
-                $result[] = array(
+                $result['levels'][] = array(
                     'id'     => $category['id'],
                     'parent' => $category['id'],
                     'title'  => $category['title'],
@@ -60,12 +69,12 @@ class Quotes_Hooks_Sitemap extends Jaws_Gadget_Hook
                 }
                 foreach ($pages as $page) {
                     $entry = empty($page['fast_url']) ? $page['id'] : $page['fast_url'];
-                    $result[] = array(
-                        'id'        => $page['id'],
-                        'parent'    => $page['gid'],
-                        'title'     => $page['title'],
-                        'lastmod'   => $page['updatetime'],
-                        'url'       => $this->gadget->urlMap('ViewQuote', array('id' => $entry), true),
+                    $result['items'][] = array(
+                        'id'      => $page['id'],
+                        'parent'  => $page['gid'],
+                        'title'   => $page['title'],
+                        'lastmod' => $page['updatetime'],
+                        'url'     => $this->gadget->urlMap('ViewQuote', array('id' => $entry), true),
                     );
                 }
             }
