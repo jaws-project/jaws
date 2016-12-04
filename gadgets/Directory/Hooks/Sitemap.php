@@ -18,34 +18,43 @@ class Directory_Hooks_Sitemap extends Jaws_Gadget_Hook
      */
     function Execute($data_type = 0, $updated_time = 0)
     {
-        $result = array();
+        $result = array(
+            '/' => array(
+                'id'     => 0,
+                'parent' => 0,
+                'title'  => _t('DIRECTORY_TITLE'),
+                'url'    => $this->gadget->urlMap('Directory', array(), true)
+            ),
+            'levels' => array(),
+            'items'  => array()
+        );
         if ($data_type == 0 || $data_type == 1) {
-            $result[] = array(
+            $result['levels'][] = array(
                 'id' => Directory_Info::FILE_TYPE_TEXT,
                 'title' => _t('DIRECTORY_FILE_TYPE_TEXT'),
                 'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_TEXT), true)
             );
-            $result[] = array(
+            $result['levels'][] = array(
                 'id' => Directory_Info::FILE_TYPE_IMAGE,
                 'title' => _t('DIRECTORY_FILE_TYPE_IMAGE'),
                 'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_IMAGE), true)
             );
-            $result[] = array(
+            $result['levels'][] = array(
                 'id' => Directory_Info::FILE_TYPE_AUDIO,
                 'title' => _t('DIRECTORY_FILE_TYPE_AUDIO'),
                 'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_AUDIO), true)
             );
-            $result[] = array(
+            $result['levels'][] = array(
                 'id' => Directory_Info::FILE_TYPE_VIDEO,
                 'title' => _t('DIRECTORY_FILE_TYPE_VIDEO'),
                 'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_VIDEO), true)
             );
-            $result[] = array(
+            $result['levels'][] = array(
                 'id' => Directory_Info::FILE_TYPE_ARCHIVE,
                 'title' => _t('DIRECTORY_FILE_TYPE_ARCHIVE'),
                 'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_ARCHIVE), true)
             );
-            $result[] = array(
+            $result['levels'][] = array(
                 'id' => Directory_Info::FILE_TYPE_UNKNOWN,
                 'title' => _t('DIRECTORY_FILE_TYPE_OTHER'),
                 'url' => $this->gadget->urlMap('Directory', array('type' => Directory_Info::FILE_TYPE_UNKNOWN), true)
@@ -59,7 +68,7 @@ class Directory_Hooks_Sitemap extends Jaws_Gadget_Hook
                 return $files;
             }
             foreach ($files as $file) {
-                $result[] = array(
+                $result['items'][] = array(
                     'id' => $file['id'],
                     'parent' => $file['file_type'],
                     'title' => $file['title'],
