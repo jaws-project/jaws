@@ -21,7 +21,16 @@ class StaticPage_Hooks_Sitemap extends Jaws_Gadget_Hook
      */
     function Execute($data_type = 0, $updated_time = 0)
     {
-        $result = array();
+        $result = array(
+            '/' => array(
+                'id'     => 0,
+                'parent' => 0,
+                'title'  => _t('STATICPAGE_TITLE'),
+                'url'    => $this->gadget->urlMap('GroupsList', array(), true)
+            ),
+            'levels' => array(),
+            'items'  => array()
+        );
         if ($data_type == 0) {
             $gModel = $this->gadget->model->load('Group');
             $categories = $gModel->GetGroups(true);
@@ -30,7 +39,7 @@ class StaticPage_Hooks_Sitemap extends Jaws_Gadget_Hook
             }
 
             foreach ($categories as $category) {
-                $result[] = array(
+                $result['levels'][] = array(
                     'id'     => $category['id'],
                     'title'  => $category['title'],
                 );
@@ -43,7 +52,7 @@ class StaticPage_Hooks_Sitemap extends Jaws_Gadget_Hook
             }
             foreach ($categories as $category) {
                 $cat = empty($category['fast_url']) ? $category['id'] : $category['fast_url'];
-                $result[] = array(
+                $result['levels'][] = array(
                     'id'     => $category['id'],
                     'parent' => $category['id'],
                     'title'  => $category['title'],
@@ -60,7 +69,7 @@ class StaticPage_Hooks_Sitemap extends Jaws_Gadget_Hook
                 }
                 foreach ($pages as $page) {
                     $entry = empty($page['fast_url']) ? $page['id'] : $page['fast_url'];
-                    $result[] = array(
+                    $result['items'][] = array(
                         'id'        => $page['base_id'],
                         'parent'    => $page['group_id'],
                         'title'     => $page['title'],
