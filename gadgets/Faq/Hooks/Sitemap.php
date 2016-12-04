@@ -21,7 +21,16 @@ class Faq_Hooks_Sitemap extends Jaws_Gadget_Hook
      */
     function Execute($data_type = 0, $updated_time = 0)
     {
-        $result = array();
+        $result = array(
+            '/' => array(
+                'id'     => 0,
+                'parent' => 0,
+                'title'  => _t('FAQ_TITLE'),
+                'url'    => $this->gadget->urlMap('View', array(), true)
+            ),
+            'levels' => array(),
+            'items'  => array()
+        );
         if ($data_type == 0) {
             $gModel = $this->gadget->model->load('Category');
             $categories = $gModel->GetCategories();
