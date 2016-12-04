@@ -78,16 +78,16 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
                 }
 
                 $gadgetsList[$index] = array(
-                        'section'     => $section,
-                        'name'        => $gadget,
-                        'title'       => $objGadget->title,
-                        'core_gadget' => $objGadget->_IsCore,
-                        'description' => $objGadget->description,
-                        'version'     => $objGadget->version,
-                        'installed'   => (bool)$gInstalled,
-                        'updated'     => (bool)$gUpdated,
-                        'disabled'    => strpos($disabled_gadgets, ",$gadget,") !==false,
-                        'has_html'    => $objGadget->default_action? true : false,
+                    'section'     => $section,
+                    'name'        => $gadget,
+                    'title'       => $objGadget->title,
+                    'core_gadget' => $objGadget->_IsCore,
+                    'description' => $objGadget->description,
+                    'version'     => $objGadget->version,
+                    'installed'   => (bool)$gInstalled,
+                    'updated'     => (bool)$gUpdated,
+                    'disabled'    => strpos($disabled_gadgets, ",$gadget,") !==false,
+                    'has_html'    => $objGadget->default_action? true : false,
                 );
             }
 
