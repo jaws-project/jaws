@@ -286,7 +286,7 @@ class Jaws_Layout
 
         $this->_Template->SetVariable('my-account', $uAccoun->Get());
         $this->_Template->SetVariable('logout', _t('GLOBAL_LOGOUT'));
-        $this->_Template->SetVariable('logout-url', $GLOBALS['app']->Map->GetURLFor('Users', 'Logout'));
+        $this->_Template->SetVariable('logout-url', BASE_SCRIPT . '?gadget=Users&amp;action=Logout');
         $this->_Template->ParseBlock('layout/login-info');
 
         // Set the header items for each gadget and the response box
