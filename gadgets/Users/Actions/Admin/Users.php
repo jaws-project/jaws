@@ -531,4 +531,17 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         return $tpl->Get();
     }
 
+    /**
+     * Logout user
+     *
+     * @access  public
+     * @return  void
+     */
+    function Logout()
+    {
+        $GLOBALS['app']->Session->Logout();
+        $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
+        Jaws_Header::Location($admin_script?: 'admin.php');
+    }
+
 }

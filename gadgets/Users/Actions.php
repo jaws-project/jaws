@@ -259,6 +259,10 @@ $admin_actions['MyAccount'] = array(
     'normal' => true,
     'file' => 'MyAccount',
 );
+$admin_actions['Logout'] = array(
+    'normal' => true,
+    'file' => 'Users',
+);
 $admin_actions['Groups'] = array(
     'normal' => true,
     'file' => 'Groups',

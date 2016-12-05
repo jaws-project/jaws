@@ -403,7 +403,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     function Logout()
     {
         $GLOBALS['app']->Session->Logout();
-        Jaws_Header::Referrer();
+        Jaws_Header::Location();
     }
 
 }
