@@ -12,7 +12,7 @@
 class Users_Actions_Registration extends Jaws_Gadget_Action
 {
     /**
-     * Tells the user the registation process is done
+     * Tells the user the registration process is done
      *
      * @access  public
      * @return  string  XHTML content
@@ -249,7 +249,7 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
     function ReplaceUserEmail()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            return Jaws_HTTPError::Get(403);
+            return Jaws_HTTPError::Get(401);
         }
 
         $this->gadget->CheckPermission('EditUserEmail');

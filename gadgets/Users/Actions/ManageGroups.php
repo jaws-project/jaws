@@ -73,7 +73,7 @@ class Users_Actions_ManageGroups extends Users_Actions_Default
     function GetGroups()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
-            return Jaws_HTTPError::Get(403);
+            return Jaws_HTTPError::Get(401);
         }
         $this->gadget->CheckPermission('ManageGroups');
         $post = jaws()->request->fetch(
