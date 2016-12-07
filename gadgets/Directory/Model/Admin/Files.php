@@ -32,20 +32,19 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
         if (isset($params['parent'])) {
             $table->where('parent', $params['parent'])->and();
         }
-
         if (isset($params['hidden'])) {
             $table->where('hidden', $params['hidden'])->and();
         }
-
+        if (isset($params['public'])) {
+            $table->where('public', $params['public'])->and();
+        }
         if (isset($params['is_dir'])) {
             $table->where('is_dir', $params['is_dir'])->and();
         }
-
         if (isset($params['file_type'])) {
             $types = explode(',', $params['file_type']);
             $table->where('file_type', $types, 'in')->and();
         }
-
         if (isset($params['file_size'])) {
             if (!empty($params['file_size'][0])) {
                 $table->where('file_size', $params['file_size'][0] * 1024, '>=')->and();
@@ -54,11 +53,9 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 $table->where('file_size', $params['file_size'][1] * 1024, '<=')->and();
             }
         }
-
         if (isset($params['published'])) {
             $table->where('published', $params['published'])->and();
         }
-
         if (isset($params['date'])){
             if (!empty($params['date'][0])) {
                 $table->where('create_time', $params['date'][0], '>=')->and();
@@ -67,18 +64,15 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
                 $table->where('create_time', $params['date'][1], '<=')->and();
             }
         }
-
         if (isset($params['query']) && !empty($params['query'])){
             $table->openWhere('title', $params['query'], 'like')->or();
             $table->where('description', $params['query'], 'like')->or();
             $table->closeWhere('user_filename', $params['query'], 'like');
         }
-
         if (!$count && isset($params['limit']) && $params['limit'] > 0) {
             $table->limit($params['limit'], $params['offset']);
 //            $table->orderBy('is_dir desc', 'title asc');
         }
-
         if (!$count && (int)$orderBy > 0) {
             $orders = array(
                 1 => 'create_time asc',
@@ -103,7 +97,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('directory');
         $table->select('id', 'parent', 'user', 'title', 'description',
             'host_filename', 'user_filename', 'mime_type', 'file_type', 'file_size',
-            'is_dir:boolean', 'hidden:boolean', 'create_time', 'update_time');
+            'is_dir:boolean', 'hidden:boolean', 'public:boolean', 'create_time', 'update_time');
         return $table->where('id', $id)->fetchRow();
     }
 

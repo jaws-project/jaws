@@ -21,10 +21,13 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         if ($count) {
             $table->select('count(directory.id):integer');
         } else {
-            $table->select('directory.id:integer', 'directory.parent:integer', 'directory.user:integer',
-                'is_dir:boolean', 'directory.hidden:boolean', 'directory.title', 'directory.description',
+            $table->select(
+                'directory.id:integer', 'directory.parent:integer', 'directory.user:integer',
+                'is_dir:boolean', 'directory.hidden:boolean', 'directory.public:boolean',
+                'directory.title', 'directory.description',
                 'user_filename', 'host_filename', 'mime_type', 'file_type', 'file_size', 'directory.hits',
-                'directory.published:boolean', 'directory.create_time:integer', 'directory.update_time:integer');
+                'directory.published:boolean', 'directory.create_time:integer', 'directory.update_time:integer'
+            );
         }
 
         if (isset($params['user']) && !empty($params['user'])) {
@@ -39,21 +42,20 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         if (isset($params['parent'])) {
             $table->where('parent', $params['parent'])->and();
         }
-
         if (isset($params['hidden'])) {
             $table->where('hidden', $params['hidden'])->and();
         }
-
+        if (isset($params['public'])) {
+            $table->where('public', $params['public'])->and();
+        }
         if (isset($params['is_dir'])) {
             $table->where('is_dir', $params['is_dir'])->and();
         }
-
         if (!empty($params['file_type'])) {
             $types = explode(',', $params['file_type']);
             $table->openWhere('file_type', $types, 'in')->or()->where('file_type', '', 'is null')
                 ->closeWhere()->and();
         }
-
         if (isset($params['file_size'])) {
             if (!empty($params['file_size'][0])) {
                 $table->where('file_size', $params['file_size'][0] * 1024, '>=')->and();
@@ -62,11 +64,9 @@ class Directory_Model_Files extends Jaws_Gadget_Model
                 $table->where('file_size', $params['file_size'][1] * 1024, '<=')->and();
             }
         }
-
         if (isset($params['published'])) {
             $table->where('published', $params['published'])->and();
         }
-
         if (isset($params['date'])){
             if (!empty($params['date'][0])) {
                 $table->where('create_time', $params['date'][0], '>=')->and();
@@ -111,7 +111,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('directory');
         $table->select('id', 'parent', 'user', 'title', 'description',
             'host_filename', 'user_filename', 'mime_type', 'file_type', 'file_size',
-            'is_dir:boolean', 'hidden:boolean', 'create_time', 'update_time');
+            'is_dir:boolean', 'hidden:boolean', 'public:boolean', 'create_time', 'update_time');
         return $table->where('id', $id)->fetchRow();
     }
 

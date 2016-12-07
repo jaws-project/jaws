@@ -20,12 +20,12 @@ class Directory_Model_Admin_Statistics extends Jaws_Gadget_Model
         $result = array();
 
         // Total
-        $table->select('count(id):integer');
+        $table->select('count(id):integer')->where('public', true);
         $result['total'] = $table->fetchOne();
 
         // Directories
         $table->reset();
-        $table->select('count(id):integer');
+        $table->select('count(id):integer')->where('public', true);
         $table->where('is_dir', true);
         $result['dirs'] = $table->fetchOne();
 
