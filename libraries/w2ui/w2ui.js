@@ -51,9 +51,10 @@ var w2utils = (function ($) {
             "decimalSymbol"     : ".",
             "shortmonths"       : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
             "fullmonths"        : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-            "shortdays"         : ["M", "T", "W", "T", "F", "S", "S"],
-            "fulldays"          : ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-            "weekStarts"        : "M",        // can be "M" for Monday or "S" for Sunday
+            "shortdays"         : ["S", "M", "T", "W", "T", "F", "S"],
+            "fulldays"          : ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            "weekStarts"        : 1,          // 0 for Sunday, 1 for Monday, 2 for Tuesday, and so on
+            "calendar"          : "gregorian",
             "dataType"          : 'HTTPJSON', // can be HTTP, HTTPJSON, RESTFULL, RESTFULLJSON, JSON (case sensitive)
             "phrases"           : {},         // empty object for english phrases
             "dateStartYear"     : 1950,       // start year for date-picker
@@ -66,6 +67,7 @@ var w2utils = (function ($) {
         isHex           : isHex,
         isAlphaNumeric  : isAlphaNumeric,
         isEmail         : isEmail,
+        dateCalendar    : dateCalendar,
         isDate          : isDate,
         isTime          : isTime,
         isDateTime      : isDateTime,
@@ -155,6 +157,142 @@ var w2utils = (function ($) {
     function isEmail (val) {
         var email = /^[a-zA-Z0-9._%-+]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
         return email.test(val);
+    }
+
+    function dateCalendar() {
+        switch (w2utils.settings.calendar) {
+            case 'jalali':
+                return new dateJalali(arguments);
+                break;
+
+            default:
+                // gregorian
+                return new dateGregorian(arguments);
+        }
+    }
+
+    function dateGregorian(args) {
+        this.gdate;
+        var gMonthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        if (args.length) {
+            this.gdate = new Date(Array.from(args).join());
+        } else {
+            this.gdate = new Date();
+        }
+        // check is given date in a leap year
+        var year = parseInt(this.gdate.getFullYear());
+        this.isLeapYear = ((year%4) == 0 && ((year%100) != 0 || (year%400) == 0));
+
+        this.getFullYear = function() {
+            return this.gdate.getFullYear();
+        }
+
+        this.getMonth = function() {
+            return this.gdate.getMonth();
+        }
+
+        this.getDate = function() {
+            return this.gdate.getDate();
+        }
+
+        this.getDay = function() {
+            var weekDay = this.gdate.getDay();
+            return (7 - w2utils.settings.weekStarts + weekDay) % 7;
+        }
+
+        this.getMonthDays = function(month) {
+            return (this.isLeapYear && month == 2)? 29 : gMonthDays[month-1];
+        }
+    }
+
+    function dateJalali(args) {
+        var leapYears = [1, 5, 9, 13, 17, 22, 26, 30];
+        var gMonthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        var jMonthDays = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
+
+        if (args.length) {
+            var jYear  = args[0];
+            var jMonth = args[1] - 1;
+            var jDay   = args[2];
+            // calculating Jalali calendar total days
+            var ym = Math.floor(jMonth/12);
+            var month = (jMonth + 1) - ym*12;
+            var year  = jYear + ym - 1;
+            var leap_days = Math.floor(year/33)*8 + Math.floor((year%33)/4);
+
+            var day_number =  365*year + leap_days;
+            for (var i=0; i < (month-1); ++i) {
+                day_number += jMonthDays[i];
+            }
+            day_number = day_number + jDay;
+            var jWeekDay = (day_number + 4) % 7;
+        } else {
+            var date = new Date();
+            var year  = parseInt(date.getFullYear());
+            var month = parseInt(Number(date.getMonth()) + 1);
+            var day   = parseInt(date.getDate());
+
+            year = year - 1600 - 1;
+            var day_number =  365*year + Math.floor(year/4) - Math.floor(year/100) + Math.floor(year/400);
+            year++;
+            for (var i=0; i < (month-1); ++i) {
+                day_number += gMonthDays[i];
+            }
+            if (month > 2 && ((year%4) == 0 && ((year%100) != 0 || (year%400) == 0))) {
+                day_number++;
+            }
+
+            var jDay = day_number + day - 79;
+            var jWeekDay = (jDay + 3) % 7;
+
+            var jYear = Math.floor(jDay/12053)*33; // 12053 = 33*365 + 8
+            jDay %= 12053;
+            jYear = 979 + jYear + Math.floor((jDay - 1) / 1461)*4; // 1461 = 4*365 + 1
+            jDay  = (jDay - 1) % 1461 + 1;
+
+            jYear++;
+            var isLeap = leapYears.indexOf((jYear % 33)) > -1;
+            while (jDay > (365 + isLeap)) {
+                jDay = jDay - (365 + isLeap);
+                jYear++;
+                isLeap = leapYears.indexOf((jYear % 33)) > -1;
+            }
+
+            var jMonth = 0;
+            while (jDay > jMonthDays[jMonth] + ((jMonth==11)? isLeap : 0))
+            {
+                jDay -= jMonthDays[jMonth];
+                jMonth++;
+            }
+        }
+
+        this.jYear  = jYear;
+        this.jMonth = jMonth;
+        this.jDay   = jDay;
+        this.jWeekDay = jWeekDay;
+
+        // check is given date in a leap year
+        this.isLeapYear = leapYears.indexOf((this.jYear % 33)) > -1;
+
+        this.getFullYear = function() {
+            return this.jYear;
+        }
+
+        this.getMonth = function() {
+            return this.jMonth;
+        }
+
+        this.getDate = function() {
+            return this.jDay;
+        }
+
+        this.getDay = function() {
+            return (7 - w2utils.settings.weekStarts + this.jWeekDay) % 7;
+        }
+
+        this.getMonthDays = function(month) {
+            return (this.isLeapYear && month == 12)? 30 : jMonthDays[month-1];
+        }
     }
 
     function isDate (val, format, retDate) {
@@ -5492,12 +5630,8 @@ w2utils.event = {
             $.extend(params, this.postData);
             $.extend(params, add_params);
             // event before
-            if (cmd == 'get') {
-                var edata = this.trigger({ phase: 'before', type: 'request', target: this.name, url: url, postData: params, httpHeaders: this.httpHeaders });
-                if (edata.isCancelled === true) { if (typeof callBack == 'function') callBack({ status: 'error', message: 'Request aborted.' }); return; }
-            } else {
-                var edata = { url: url, postData: params, httpHeaders: this.httpHeaders };
-            }
+            var edata = this.trigger({ phase: 'before', type: 'request', target: this.name, url: url, postData: params, httpHeaders: this.httpHeaders });
+            if (edata.isCancelled === true) { if (typeof callBack == 'function') callBack({ status: 'error', message: 'Request aborted.' }); return; }
             // call server to get data
             var obj = this;
             if (this.last.xhr_offset === 0) {
@@ -5583,10 +5717,8 @@ w2utils.event = {
                     // event after
                     obj.trigger($.extend(edata2, { phase: 'after' }));
                 });
-            if (cmd == 'get') {
-                // event after
-                this.trigger($.extend(edata, { phase: 'after' }));
-            }
+            // event after
+            this.trigger($.extend(edata, { phase: 'after' }));
         },
 
         requestComplete: function(status, cmd, callBack) {
@@ -17798,15 +17930,14 @@ var w2prompt = function (label, title, callBack) {
         },
 
         getMonthHTML: function (month, year, selected) {
-            var td          = new Date();
+            var td          = w2utils.dateCalendar();
             var months      = w2utils.settings.fullmonths;
-            var daysCount   = ['31', '28', '31', '30', '31', '30', '31', '31', '30', '31', '30', '31'];
             var today       = td.getFullYear() + '/' + (Number(td.getMonth()) + 1) + '/' + td.getDate();
             var days        = w2utils.settings.fulldays.slice();    // creates copy of the array
             var sdays       = w2utils.settings.shortdays.slice();   // creates copy of the array
-            if (w2utils.settings.weekStarts != 'M') {
-                days.unshift(days.pop());
-                sdays.unshift(sdays.pop());
+            for (var i=0; i < w2utils.settings.weekStarts; i++) {
+                days.push(days.shift());
+                sdays.push(sdays.shift());
             }
             var options = this.options;
             if (options == null) options = {};
@@ -17815,12 +17946,12 @@ var w2prompt = function (label, title, callBack) {
             month = w2utils.isInt(month) ? parseInt(month) : td.getMonth() + 1;
             if (month > 12) { month -= 12; year++; }
             if (month < 1 || month === 0)  { month += 12; year--; }
-            if (year/4 == Math.floor(year/4)) { daysCount[1] = '29'; } else { daysCount[1] = '28'; }
             options.current = month + '/' + year;
 
             // start with the required date
-            td = new Date(year, month-1, 1);
+            td = w2utils.dateCalendar(year, month, 1);
             var weekDay = td.getDay();
+
             var dayTitle = '';
             for (var i = 0; i < sdays.length; i++) dayTitle += '<td title="'+ days[i] +'">' + sdays[i] + '</td>';
 
@@ -17835,27 +17966,21 @@ var w2prompt = function (label, title, callBack) {
                 '    <tr>';
 
             var day = 1;
-            if (w2utils.settings.weekStarts != 'M') weekDay++;
             if(this.type === 'datetime') {
                 var dt_sel = w2utils.isDateTime(selected, options.format, true);
                 selected = w2utils.formatDate(dt_sel, w2utils.settings.dateFormat);
             }
             for (var ci = 1; ci < 43; ci++) {
-                if (weekDay === 0 && ci == 1) {
-                    for (var ti = 0; ti < 6; ti++) html += '<td class="w2ui-day-empty">&#160;</td>';
-                    ci += 6;
-                } else {
-                    if (ci < weekDay || day > daysCount[month-1]) {
-                        html += '<td class="w2ui-day-empty">&#160;</td>';
-                        if ((ci) % 7 === 0) html += '</tr><tr>';
-                        continue;
-                    }
+                if (ci <= weekDay || day > td.getMonthDays(month)) {
+                    html += '<td class="w2ui-day-empty">&#160;</td>';
+                    if ((ci) % 7 === 0) html += '</tr><tr>';
+                    continue;
                 }
                 var dt  = year + '/' + month + '/' + day;
-                var DT  = new Date(dt);
+                wDay =  (weekDay + day - 1) % 7;
                 var className = '';
-                if (DT.getDay() === 6) className  = ' w2ui-saturday';
-                if (DT.getDay() === 0) className  = ' w2ui-sunday';
+                if (wDay === 5) className  = ' w2ui-saturday';
+                if (wDay === 6) className  = ' w2ui-sunday';
                 if (dt == today) className += ' w2ui-today';
 
                 var dspDay  = day;
@@ -17877,10 +18002,10 @@ var w2prompt = function (label, title, callBack) {
                     col     = 'color: ' + tmp[1] + ';';
                 }
                 html += '<td class="'+ (this.inRange(tmp_dt, true) ? 'w2ui-date ' + (tmp_dt_fmt == selected ? 'w2ui-date-selected' : '') : 'w2ui-blocked') + className + '" '+
-                        '   style="'+ col + bgcol + '" date="'+ tmp_dt +'" data-date="'+ DT +'">'+
+                        '   style="'+ col + bgcol + '" date="'+ tmp_dt +'">'+
                             dspDay +
                         '</td>';
-                if (ci % 7 === 0 || (weekDay === 0 && ci == 1)) html += '</tr><tr>';
+                if (ci % 7 === 0) html += '</tr><tr>';
                 day++;
             }
             html += '</tr></tbody></table>';
