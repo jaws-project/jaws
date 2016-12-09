@@ -41,7 +41,7 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
 
         // Menubar
         $action = $this->gadget->action->load('Menubar');
-        $tpl->SetVariable('menubar', $action->Menubar('Events'));
+        $tpl->SetVariable('menubar', $action->Menubar('Events', $user));
 
         $jDate = Jaws_Date::getInstance();
 

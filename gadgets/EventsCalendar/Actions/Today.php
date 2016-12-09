@@ -70,7 +70,7 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_location', _t('EVENTSCALENDAR_EVENT_LOCATION'));
         $tpl->SetVariable('lbl_type', _t('EVENTSCALENDAR_EVENT_TYPE'));
         $tpl->SetVariable('lbl_priority', _t('EVENTSCALENDAR_EVENT_PRIORITY'));
-        $tpl->SetVariable('lbl_date', _t('EVENTSCALENDAR_DATE'));
+        $tpl->SetVariable('lbl_time', _t('EVENTSCALENDAR_TIME'));
 
         // Fetch events
         $info = $jDate->GetDateInfo($now);
@@ -100,7 +100,7 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
 
             $startHour = $jDate->Format($event['start_time'], 'H:i');
             $stopHour = $jDate->Format($event['stop_time'], 'H:i');
-            $tpl->SetVariable('date', $startHour . ' - ' . $stopHour);
+            $tpl->SetVariable('time', $startHour . ' - ' . $stopHour);
 
             $url = $user?
                 $this->gadget->urlMap('ViewEvent', array('user' => $user, 'event' => $event['id'])) :

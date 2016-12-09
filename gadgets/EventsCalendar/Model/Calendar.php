@@ -30,6 +30,7 @@ class EventsCalendar_Model_Calendar extends Jaws_Gadget_Model
             $table->where('ec_users.owner', 0)->and();
         } else {
             // fetch user events plus public events of other users
+            $table->where('ec_users.owner', 0, '!=')->and();
             $table->openWhere('ec_users.user', $user)->or();
             $table->closeWhere('events.public', true)->and();
         }
@@ -73,6 +74,7 @@ class EventsCalendar_Model_Calendar extends Jaws_Gadget_Model
                 $table->where('ec_users.owner', 0)->and();
             } else {
                 // fetch user events plus public events of other users
+                $table->where('ec_users.owner', 0, '!=')->and();
                 $table->openWhere('ec_users.user', $user)->or();
                 $table->closeWhere('events.public', true)->and();
             }

@@ -149,7 +149,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $combo->SetId('');
         $combo->AddOption(_t('GLOBAL_YES'), 1);
         $combo->AddOption(_t('GLOBAL_NO'), 0);
-        $combo->SetDefault(0);
+        $combo->SetDefault(1);
         $combo->SetEnabled(false);
         $tpl->SetVariable('public', $combo->Get());
         $tpl->SetVariable('lbl_public', _t('EVENTSCALENDAR_EVENT_PUBLIC'));
