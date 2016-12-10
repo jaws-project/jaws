@@ -45,8 +45,8 @@ class EventsCalendar_Model_Events extends Jaws_Gadget_Model
         $table->where('ec_users.user', $params['user'])->and();
 
         $jDate = Jaws_Date::getInstance();
-        $search = $params['search'];
-        if (!empty($search)){
+        if (isset($params['search']) && !empty($params['search'])) {
+            $search = $params['search'];
             foreach ($search as $key => $value) {
                 switch ($key) {
                     case 'term':

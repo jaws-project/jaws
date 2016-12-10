@@ -92,7 +92,7 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
                 $value = '';
                 break;
             case '2':
-                $value = ' - ' . $jDate->DayString($event['wday']);
+                $value = ' - ' . $jDate->DayString($event['wday'] - 1);
                 break;
             case '3':
                 $value = ' - ' . $event['day'] . ' ' . _t('EVENTSCALENDAR_EVENT_RECURRENCE_EVERY_MONTH');
