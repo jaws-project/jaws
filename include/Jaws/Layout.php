@@ -36,12 +36,15 @@ class Jaws_Layout
     var $_HeadLink = array();
 
     /**
-     * Array that will have the JS links
+     * Array that will have the forward/deferred load JS links
      *
      * @var     array
      * @access  private
      */
-    var $_ScriptLink = array();
+    private $linkScripts = array(
+        0 => array(),
+        1 => array()
+    );
 
     /**
      * Array that will contain other info/text
@@ -150,8 +153,8 @@ class Jaws_Layout
             }
         }
 
-        $this->AddScriptLink('libraries/jquery/jquery.js?'. JAWS_VERSION);
-        $this->AddScriptLink('include/Jaws/Resources/Ajax.js?'. JAWS_VERSION);
+        $this->AddScriptLink('libraries/jquery/jquery.js?'. JAWS_VERSION, false);
+        $this->AddScriptLink('include/Jaws/Resources/Ajax.js?'. JAWS_VERSION, false);
 
         $loadFromTheme = false;
         if (empty($layout_path)) {
@@ -228,8 +231,8 @@ class Jaws_Layout
      */
     function LoadControlPanelHead()
     {
-        $this->AddScriptLink('libraries/jquery/jquery.js?'. JAWS_VERSION);
-        $this->AddScriptLink('include/Jaws/Resources/Ajax.js?'. JAWS_VERSION);
+        $this->AddScriptLink('libraries/jquery/jquery.js?'. JAWS_VERSION, false);
+        $this->AddScriptLink('include/Jaws/Resources/Ajax.js?'. JAWS_VERSION, false);
         $this->AddHeadLink(
             'gadgets/ControlPanel/Resources/style.css?'. JAWS_VERSION,
             'stylesheet',
@@ -666,7 +669,8 @@ class Jaws_Layout
         // if not passed array of head links
         $headLinks = array_key_exists('rel', $headLinks)? array($headLinks) : $headLinks;
         // if not passed array of head scripts
-        $headScripts = array_key_exists('href', $headScripts)? array($headScripts) : $headScripts;
+        //$headScripts = array_key_exists('href', $headScripts)? array($headScripts) : $headScripts;
+        $headScripts = array_merge($headScripts[0], $headScripts[1]);
 
         // meta
         foreach ($headMeta as $meta) {
@@ -733,7 +737,7 @@ class Jaws_Layout
         );
         $headContent = $this->GetHeaderContent(
             $this->_HeadLink,
-            $this->_ScriptLink,
+            $this->linkScripts,
             $this->_HeadMeta,
             $this->_HeadOther
         );
@@ -831,20 +835,19 @@ class Jaws_Layout
      * Add a Javascript source
      *
      * @access  public
-     * @param   string  $href   The path for the source.
-     * @param   bool    $standanlone for use in static load
-     * @param   string  $type   The mime type.
+     * @param   string  $href       The path for the source
+     * @param   bool    $deferred   Deferred load script
+     * @param   string  $type       The mime type
      * @return  array   array include head script information
      */
-    function AddScriptLink($href, $type = 'text/javascript')
+    function AddScriptLink($href, $deferred = true, $type = 'text/javascript')
     {
-        $sLink = array(
+        $script = array(
             'href' => $href,
             'type' => $type,
         );
-
-        $this->_ScriptLink[md5($href)] = $sLink;
-        return $sLink;
+        $this->linkScripts[(int)$deferred][md5($href)] = $script;
+        return $script;
     }
 
     /**
