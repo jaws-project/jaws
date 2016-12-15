@@ -160,11 +160,13 @@ class Users_Actions_Profile extends Users_Actions_Default
         $tpl = $this->gadget->template->load('Profile.html');
         $tpl->SetBlock('profile');
         $tpl->SetVariable('title',  _t('USERS_PROFILE_INFO'));
-        $tpl->SetVariable('menubar', $this->MenuBar('Profile'));
-        $tpl->SetVariable(
-            'submenubar',
-            $this->SubMenuBar('Profile', array('Profile', 'Account', 'Personal', 'Preferences', 'Contacts'))
-        );
+        if ($user['id'] == $GLOBALS['app']->Session->GetAttribute('user')) {
+            $tpl->SetVariable('menubar', $this->MenuBar('Profile'));
+            $tpl->SetVariable(
+                'submenubar',
+                $this->SubMenuBar('Profile', array('Profile', 'Account', 'Personal', 'Preferences', 'Contacts'))
+            );
+        }
         $tpl->SetVariable('avatar', $user['avatar']);
         // username
         $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
