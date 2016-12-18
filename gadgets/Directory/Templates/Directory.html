@@ -31,7 +31,7 @@
     <tr>
       <td class="filter_label"><label for="filter_file_type">{{lbl_type}}:</label></td>
       <td>
-        <select name="filter_file_type" id="filter_file_type">
+        <select class="form-control" name="filter_file_type" id="filter_file_type">
           <!-- BEGIN file_type -->
           <option value="{{value}}" {{selected}}>{{title}}</option>
           <!-- END file_type -->
@@ -40,7 +40,7 @@
 
       <td class="filter_label"><label for="filter_file_size">{{lbl_size}}:</label></td>
       <td>
-        <select name="filter_file_size" id="filter_file_size">
+        <select class="form-control" name="filter_file_size" id="filter_file_size">
           <!-- BEGIN file_size -->
           <option value="{{value}}" {{selected}}>{{title}}</option>
           <!-- END file_size -->
@@ -56,7 +56,7 @@
     <tr>
       <td class="filter_label"><label for="filter_order">{{lbl_order}}:</label></td>
       <td>
-        <select name="filter_order" id="filter_order">
+        <select class="form-control" name="filter_order" id="filter_order">
           <option value="2" {{order_selected_2}}>{{lbl_create_time}} &darr;</option>
           <option value="1" {{order_selected_1}}>{{lbl_create_time}} &uarr;</option>
         </select>

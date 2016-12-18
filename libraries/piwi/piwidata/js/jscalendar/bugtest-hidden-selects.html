@@ -86,7 +86,7 @@ function isDisabled(date) {
 <br>
 <br><b>Visible &lt;select&gt;, hides and unhides as expected</b>
 <br>
-<select name="foo" multiple>
+<select class="form-control" name="foo" multiple>
 <option value="1">can use the functions date.getFullYear() -- returns</option>
 <option value="2">4 digit number, date.getMonth() -- returns the month</option>
 <option value="3">heavy calculations here.  However, beware that this</option>
@@ -95,7 +95,7 @@ function isDisabled(date) {
 <p>
 <br><b>Hidden &lt;select&gt;, it should stay hidden (but doesn't)</b>
 <br>
-<select name="foo2" multiple style="visibility: hidden">
+<select class="form-control" name="foo2" multiple style="visibility: hidden">
 <option value="1">this should</option>
 <option value="2">remain hidden right?</option>
 </select>
