@@ -23,7 +23,7 @@
     </form><br>
     <table class="table table-hover table-bordered">
       <thead><tr>
-        <th class="th-check"><input type="checkbox" id="chk_all" onchange="checkAll()"/></th>
+        <th class="th-check"><input class="form-check-input" type="checkbox" id="chk_all" onchange="checkAll()"/></th>
         <th class="event-subject">{{lbl_subject}}</th>
         <th>{{lbl_date}}</th>
         <th>{{lbl_time}}</th>
@@ -34,7 +34,7 @@
       <tbody id="grid_events">
         <!-- BEGIN event -->
         <tr id="event_{{id}}">
-          <td><input type="checkbox" value="{{id}}"/></td>
+          <td><input class="form-check-input" type="checkbox" value="{{id}}"/></td>
           <td><a href="{{url}}">{{subject}}</a></td>
           <td>{{date}}</td>
           <td>{{time}}</td>

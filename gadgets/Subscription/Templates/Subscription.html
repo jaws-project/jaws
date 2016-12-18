@@ -22,7 +22,7 @@
                     <legend class="{{collapse}}" onclick="toggleLegend(this);">
                       <span>
                           <!-- BEGIN checkbox -->
-                        <input type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
+                        <input class="form-check-input" type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
                           <!-- END checkbox -->
                         <label for="{{id}}"><a href="{{url}}">{{title}}</a></label>
                       </span>
@@ -32,7 +32,7 @@
                       <!-- BEGIN subItem -->
                       <ul>
                           <li>
-                              <input type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
+                              <input class="form-check-input" type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
                               <label for="{{id}}"><a href="{{url}}">{{title}}</a></label>
                           </li>
                       </ul>

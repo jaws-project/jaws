@@ -21,7 +21,7 @@
         </colgroup>
         <thead>
         <tr>
-          <th><input type="checkbox" onclick="toggleCheckboxes();"></th>
+          <th><input class="form-check-input" type="checkbox" onclick="toggleCheckboxes();"></th>
           <th>{{lbl_name}}</th>
           <th>{{lbl_title}}</th>
         </tr>
@@ -30,7 +30,7 @@
         <tbody>
         <!-- BEGIN group -->
         <tr>
-          <td><input type="checkbox" name="group_checkbox[]" value="{{id}}"></td>
+          <td><input class="form-check-input" type="checkbox" name="group_checkbox[]" value="{{id}}"></td>
           <td><a href="{{url}}" title="{{name}}">{{name}}</a></td>
           <td>{{title}}</td>
         </tr>
@@ -143,7 +143,7 @@
             </colgroup>
               <thead>
               <tr>
-                  <th><input type="checkbox" onclick="toggleCheckboxes();"></th>
+                  <th><input class="form-check-input" type="checkbox" onclick="toggleCheckboxes();"></th>
                   <th>{{lbl_username}}</th>
                   <th>{{lbl_nickname}}</th>
               </tr>
@@ -152,7 +152,7 @@
               <tbody>
               <!-- BEGIN member -->
               <tr>
-                  <td><input type="checkbox" name="member_checkbox[]" value="{{id}}"></td>
+                  <td><input class="form-check-input" type="checkbox" name="member_checkbox[]" value="{{id}}"></td>
                   <td><a href="{{user_url}}">{{username}}</a></td>
                   <td>{{nickname}}</td>
               </tr>

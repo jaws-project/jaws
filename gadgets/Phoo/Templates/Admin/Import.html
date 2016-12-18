@@ -12,7 +12,7 @@
 <!-- BEGIN item -->
 <div class="import_image_list" style="width: 200px; height: 160px; display: block; margin: 5px; text-align: center; vertical-align: bottom;">
 <img src="{{thumb}}" alt="{{filename}}" title="{{filename}}" style="max-height: 120px;" id="img_{{counter}}" /><br/>
-<input type="checkbox" name="images[]" id="chk_{{counter}}" checked="checked" onclick="toggleChk(this, {{counter}})" value="{{filename}}"/>
+<input class="form-check-input" type="checkbox" name="images[]" id="chk_{{counter}}" checked="checked" onclick="toggleChk(this, {{counter}})" value="{{filename}}"/>
 <input type="text" value="{{filename}}" name="{{entryname}}" id="entry_{{counter}}" style="width: 100px;"/>
 </div>
 <!-- END item -->

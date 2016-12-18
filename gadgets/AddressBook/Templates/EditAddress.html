@@ -175,7 +175,7 @@
         <fieldset>
           <legend><span>{{public_title}}</span></legend>
           <div>
-            <input type="checkbox" name="public" id="addressbook_public"
+            <input class="form-check-input" type="checkbox" name="public" id="addressbook_public"
                 <!-- BEGIN selected -->checked="checked"<!-- END selected -->
                 value="true" />
             <label for="addressbook_public">{{lbl_public}}</label>
@@ -188,7 +188,7 @@
           <div id="group_p">
           <!-- BEGIN group -->
             <div>
-              <input type="checkbox" name="groups[]" id="group_{{gid}}"
+              <input class="form-check-input" type="checkbox" name="groups[]" id="group_{{gid}}"
                     <!-- BEGIN selected_group -->checked="checked"<!-- END selected_group -->
                     value="{{gid}}" />
               <label for="group_{{gid}}">{{lbl_group}}</label>

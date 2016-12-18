@@ -76,7 +76,7 @@
   </form>
   <table class="files-table">
     <thead><tr>
-      <th><input type="checkbox" id="chk_all_files" onchange="checkAll(this.checked)"></th>
+      <th><input class="form-check-input" type="checkbox" id="chk_all_files" onchange="checkAll(this.checked)"></th>
       <th colspan="2">{{lbl_title}}</th>
       <th>{{lbl_owner}}</th>
       <th>{{lbl_published}}</th>
@@ -87,7 +87,7 @@
     <tbody id="file_arena" style="display:none;">
       <!-- BEGIN fileTemplate -->
       <tr id="file_{{id}}" title="{{description}}">
-        <td class="file-check"><input type="checkbox" value="{{id}}"></td>
+        <td class="file-check"><input class="form-check-input" type="checkbox" value="{{id}}"></td>
         <td class="file-icon">{{icon}}<span class="file-sharing"></span></td>
         <td class="file-title"><a href="{{url}}">{{title}}</a></td>
         <td class="file-owner"><a href="{{userlink}}">{{nickname}}</a></td>

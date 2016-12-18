@@ -6,12 +6,12 @@
 <div>
  <form method="post">
   <label style="display: block;">
-    <input type="checkbox" name="secure" id="secure" {{checked_secure}} value="true"/>
+    <input class="form-check-input" type="checkbox" name="secure" id="secure" {{checked_secure}} value="true"/>
     {{rsa_security}}
   </label>
   <div class="buttons">
     <label>
-      <input type="checkbox" name="customize" id="customize" {{checked_customize}} value="true"/>
+      <input class="form-check-input" type="checkbox" name="customize" id="customize" {{checked_customize}} value="true"/>
       {{custom_installation}}
     </label>
     <input type="submit" name="Authentication_next" value="{{next}} &gt;" />
