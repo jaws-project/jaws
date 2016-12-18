@@ -36,15 +36,15 @@
           </div>
       </fieldset>
       <div class="gadget_actions actions">
-        <button onclick="javascript:deleteGroup();" style="display: none;" value="{{delete}}" id="btn_delete" name="btn_delete" type="button">
+        <button class="btn btn" type="button" onclick="javascript:deleteGroup();" style="display: none;" value="{{delete}}" id="btn_delete" name="btn_delete">
             <img height="16" width="16" id="btn_delete_stockimage" alt="" src="{{delete_icon}}">
             &nbsp;{{delete}}
         </button>
-        <button onclick="javascript:stopAction();" style="display: inline;" value="{{cancel}}" id="btn_cancel" name="btn_cancel" type="button">
+        <button class="btn" type="button" onclick="javascript:stopAction();" style="display: inline;" value="{{cancel}}" id="btn_cancel" name="btn_cancel">
             <img height="16" width="16" id="btn_cancel_stockimage" alt="" src="{{cancel_icon}}">
             &nbsp;{{cancel}}
         </button>
-        <button onclick="javascript:saveGroup();" style="display: inline;" value="{{save}}" id="btn_save" name="btn_save" type="button">
+        <button class="btn btn-primary" type="button" onclick="javascript:saveGroup();" style="display: inline;" value="{{save}}" id="btn_save" name="btn_save">
             <img height="16" width="16" id="btn_save_stockimage" alt="" src="{{save_icon}}">
             &nbsp;{{save}}
         </button>

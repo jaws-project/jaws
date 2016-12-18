@@ -75,8 +75,12 @@
     </div>
   </div>
   <div class="w2ui-buttons">
-    <input type="button" class="btn" value="{{lbl_cancel}}" name="cancel" onclick="fromAction(this.name)"/>
-    <input type="button" class="btn btn-green" value="{{lbl_ok}}" name="save" onclick="fromAction(this.name)"/>
+    <button type="button" class="btn" name="cancel" onclick="fromAction(this.name)">
+    {{lbl_cancel}}
+    </button>
+    <button type="button" class="btn btn-primary" name="save" onclick="fromAction(this.name)">
+    {{lbl_ok}}
+    </button>
   </div>
 </form>
 <!-- END form -->
