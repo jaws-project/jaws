@@ -175,7 +175,7 @@ class TextArea extends Bin
      */
     function buildXHTML()
     {
-        $this->_XHTML  = '<textarea';
+        $this->_XHTML  = '<textarea class="form-control"';
         if (!empty($this->_rows)) {
             $this->_XHTML .= " rows='{$this->_rows}'";
         }

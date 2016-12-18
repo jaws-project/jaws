@@ -174,7 +174,7 @@ class RadioButtons extends Bin
         $this->_name .= "[]";
 
         foreach ($this->_options as $value => $option) {
-            $item = '<input type="radio"';
+            $item = '<input class="form-check-input" type="radio"';
 
             $this->_id = $option->getID();
             if (empty($this->_id)) {

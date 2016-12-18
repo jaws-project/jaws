@@ -257,8 +257,7 @@ class Combo extends Bin
      */
     function buildXHTML()
     {
-        $this->_XHTML = "<select";
-
+        $this->_XHTML = '<select class="form-control"';
         $this->_XHTML .= $this->buildBasicXHTML();
         $this->_XHTML .= $this->buildJSEvents();
 

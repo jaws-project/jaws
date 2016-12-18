@@ -281,9 +281,7 @@ class ComboGroup extends Bin
     function buildXHTML()
     {
         if (count($this->_groups) > 0) {
-
-            $this->_XHTML = "<select";
-
+            $this->_XHTML = '<select class="form-control"';
             $this->_XHTML.= $this->buildBasicXHTML();
             $this->_XHTML.= $this->buildJSEvents();
 

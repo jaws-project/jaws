@@ -233,7 +233,7 @@ class CheckButtons extends Bin
         }
 
         foreach ($this->_options as $value => $option) {
-            $item = '<input type="checkbox"';
+            $item = '<input class="form-check-input" type="checkbox"';
 
             $this->_id = $option->getID();
             if (empty($this->_id)) {

@@ -164,23 +164,22 @@ class Entry extends Bin
      */
     function buildXHTML()
     {
-        $this->_XHTML = "<input";
-
+        $this->_XHTML = '<input';
         if ($this->_type == 'password') {
-            $this->_XHTML .= " type=\"password\"";
+            $this->_XHTML .= ' class="form-control" type="password"';
         } elseif ($this->_type == 'hidden') {
-            $this->_XHTML .= " type=\"hidden\"";
+            $this->_XHTML .= ' type="hidden"';
         } elseif ($this->_type == 'file') {
-            $this->_XHTML .= " type=\"file\"";
+            $this->_XHTML .= ' class="form-control-file" type="file"';
         } else {
-            $this->_XHTML .= " type=\"text\"";
+            $this->_XHTML .= ' class="form-control" type="text"';
             if ($this->_isReadOnly) {
-                $this->_XHTML .= " readonly=\"readonly\"";
+                $this->_XHTML .= ' readonly="readonly"';
             }
         }
 
         if (!$this->_isEnabled) {
-            $this->_XHTML .= " disabled=\"disabled\"";
+            $this->_XHTML .= ' disabled="disabled"';
         }
 
         if (!empty($this->_size)) {
@@ -194,7 +193,7 @@ class Entry extends Bin
         $this->_XHTML .= $this->buildBasicXHTML();
         $this->_XHTML .= $this->buildJSEvents();
 
-        $this->_XHTML.= " />";
+        $this->_XHTML.= ' />';
     }
 
 }
