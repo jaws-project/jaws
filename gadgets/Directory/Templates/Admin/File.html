@@ -29,7 +29,7 @@
     <input type="hidden" name="type" value="file" />
     <table>
       <tr><th>{{lbl_file}}:</th><td>
-        <input type="file" id="file" name="file" onchange="uploadFile()" class="file" />
+        <input class="form-control-file" type="file" id="file" name="file" onchange="uploadFile()" class="file" />
       </td></tr>
     </table>
   </form>
@@ -40,7 +40,7 @@
     <input type="hidden" name="type" value="thumbnail" />
     <table>
       <tr><th>{{lbl_thumbnail}}:</th><td>
-        <input type="file" name="file" onchange="uploadThumbnailFile()" class="file" />
+        <input class="form-control-file" type="file" name="file" onchange="uploadThumbnailFile()" class="file" />
       </td></tr>
     </table>
   </form>
