@@ -4,7 +4,7 @@
   <div class="gadget_menubar">{{menubar}}</div>
 </div>
 <div class="gadget_container">
-  <div class="gadget_response"><div class="{{type}}">{{text}}</div></div>
+  <div class="gadget_response"><div class="alert {{type}}" role="alert">{{text}}</div></div>
   <div class="gadget_content content">
     <form name="import_vcard" action="{{base_script}}" method="post" enctype="multipart/form-data" id="import_vcard">
       <input class="form-control" type="hidden" name="gadget" value="AddressBook" />

@@ -1,7 +1,7 @@
 <!-- BEGIN contact -->
 <div class="gadget_header"><div class="gadget_title"><h3>{{title}}</h3></div></div>
 <div class="gadget_container">
-  <div class="gadget_response"><div class="{{type}}">{{text}}</div></div>
+  <div class="gadget_response"><div class="alert {{type}}" role="alert">{{text}}</div></div>
   <form name="contact" action="{{base_script}}" method="post" enctype="multipart/form-data">
   <input class="form-control" type="hidden" name="gadget" value="Contact" />
   <input class="form-control" type="hidden" name="action" value="Send" />

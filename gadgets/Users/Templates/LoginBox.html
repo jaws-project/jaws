@@ -1,7 +1,7 @@
 <!-- BEGIN LoginBox -->
 <div class="gadget_header"><div class="gadget_title"><h3>{{title}}</h3></div></div>
 <div class="gadget_container">
-  <div class="gadget_response"><div class="{{type}}">{{text}}</div></div>
+  <div class="gadget_response"><div class="alert {{type}}" role="alert">{{text}}</div></div>
   <form name="loginBox"
         action="{{base_script}}"
         <!-- BEGIN onsubmit --> onsubmit="return encryptedElement(this.password,

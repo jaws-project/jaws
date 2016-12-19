@@ -5,7 +5,7 @@
   <div class="gadget_submenubar">{{submenubar}}</div>
 </div>
 <div class="gadget_container">
-  <div class="gadget_response"><div class="{{type}}">{{text}}</div></div>
+  <div class="gadget_response"><div class="alert {{type}}" role="alert">{{text}}</div></div>
   <form name="personalbox" action="{{base_script}}" method="post" enctype="multipart/form-data">
   <input class="form-control" type="hidden" name="gadget" value="Users" />
   <input class="form-control" type="hidden" name="action" value="UpdatePersonal" />
