@@ -29,25 +29,36 @@
           </div>
 
           <label for="recipient_users"><b>{{lbl_recipient_users}}:</b></label>
+          <div id="userBox" class="ajaxResultBox">
+              <input class="form-control" type="text" id="userSearch" name="userSearch" onkeyup="searchUsersStart(this.value)" class="large">
+              <div id="userSearchResult"></div>
+          </div>
+
           <div class="recipient_users">
               <div>
-                  <select class="form-control" multiple="multiple" id="recipient_users" name="recipient_users" ondblclick="removeUserFromList()">
+                  <select class="form-control" multiple="multiple" id="recipient_users" name="recipient_users">
                       <!-- BEGIN user -->
                       <option value="{{value}}">{{title}}</option>
                       <!-- END user -->
                   </select>
-              </div>
 
-              <div id="userBox" class="ajaxResultBox">
-                  <input class="form-control" type="text" id="userSearch" name="userSearch" onkeyup="searchUsersStart(this.value)" class="large">
-                  <div id="userSearchResult"></div>
+                  <button class="btn" type="button" name="btn_del" id="btn_del" onclick="javascript:removeUserFromList();">
+                      <img src="{{delete-icon}}" alt="{{lbl_remove_from_list}}" id="" width="16" height="16">
+                  </button>
               </div>
 
           </div>
 
-          <div class="recipient_groups_area">
-              <label for="recipient_groups"><b>{{lbl_recipient_groups}}:</b></label>
-              {{recipient_groups_opt}}
+          <div class="recipient_friends_area">
+              <label for="recipient_friends"><b>{{lbl_recipient_friends}}:</b></label>
+              <div>
+              <!-- BEGIN friend -->
+              <label for="friend_{{value}}" class="label label-default">{{title}}
+                  <input type="checkbox" name="friends" value="{{value}}" id="friend_{{value}}"
+                         title="{{title}}" class="form-control" >
+              </label>
+              <!-- END friend -->
+              </div>
           </div>
           <!-- END recipients -->
 

@@ -61,7 +61,7 @@
             </field>
 
             <field>
-                <name>recipient_groups</name>
+                <name>recipient_friends</name>
                 <type>text</type>
                 <length>255</length>
             </field>

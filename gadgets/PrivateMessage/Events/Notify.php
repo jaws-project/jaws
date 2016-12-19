@@ -30,7 +30,7 @@ class PrivateMessage_Events_Notify extends Jaws_Gadget_Event
         $message['read'] = false;
         $message['recipient_users'] = isset($params['user'])? $params['user'] : '';
         if (isset($params['group'])) {
-            $message['recipient_groups'] = $params['group'];
+            $message['recipient_friends'] = $params['group'];
         }
 
         $model = $this->gadget->model->load('Message');

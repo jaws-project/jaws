@@ -25,7 +25,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $columns = array(
             'pm_messages.id:integer', 'pm_messages.subject', 'pm_messages.body', 'from:integer', 'to:integer',
             'users.nickname as from_nickname', 'users.username as from_username', 'users.avatar', 'users.email',
-            'pm_messages.insert_time', 'pm_messages.folder:integer', 'recipient_users', 'recipient_groups',
+            'pm_messages.insert_time', 'pm_messages.folder:integer', 'recipient_users', 'recipient_friends',
             'pm_messages.read:boolean');
 /*        if($getRecipients) {
             $columns[] = 'pm_recipients.recipient:integer';
@@ -48,7 +48,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         // fetch recipients info
         if ($getRecipients && !empty($message)) {
             $usersId = (empty($message['recipient_users'])) ? '' : explode(',', $message['recipient_users']);
-            $groupsId = (empty($message['recipient_groups'])) ? '' : explode(',', $message['recipient_groups']);
+            $groupsId = (empty($message['recipient_friends'])) ? '' : explode(',', $message['recipient_friends']);
 
             $users = '';
             $groups = '';
@@ -330,12 +330,12 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
                 $recipient_users = explode(",", $messageData['recipient_users']);
             }
         }
-        if (!empty($messageData['recipient_groups'])) {
-            $recipient_groups = explode(",", $messageData['recipient_groups']);
+        if (!empty($messageData['recipient_friends'])) {
+            $recipient_friends = explode(",", $messageData['recipient_friends']);
             $table = $table->table('users_groups');
             $table->select('user_id:integer');
             $table->join('groups', 'groups.id', 'users_groups.group_id');
-            $table->where('group_id', $recipient_groups, 'in');
+            $table->where('group_id', $recipient_friends, 'in');
             $group_users = $table->and()->where('groups.owner', $user)->fetchColumn();
             if (!empty($group_users) && count($group_users) > 0) {
                 $recipient_users = array_merge($recipient_users, $group_users);
@@ -366,7 +366,7 @@ class PrivateMessage_Model_Message extends Jaws_Gadget_Model
         $data['body']             = $messageData['body'];
         $data['attachments']      = isset($messageData['attachments'])? count($messageData['attachments']) : 0;
         $data['recipient_users']  = $messageData['recipient_users'];
-        $data['recipient_groups'] = isset($messageData['recipient_groups'])? $messageData['recipient_groups'] : null;
+        $data['recipient_friends']= isset($messageData['recipient_friends'])? $messageData['recipient_friends'] : null;
         $data['update_time']      = time();
 
         // Detect notification, draft or publish?

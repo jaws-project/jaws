@@ -19,55 +19,75 @@ class PrivateMessage_Actions_Default extends Jaws_Gadget_Action
      */
     function MenuBar($action_selected)
     {
-        $actions = array('Notifications', 'Inbox', 'Outbox', 'Draft', 'Archived', 'Compose');
-        if (!in_array($action_selected, $actions)) {
-            $action_selected = 'Notifications';
+        $tpl = $this->gadget->template->load('Menubar.html');
+        $tpl->SetBlock('menubar');
+
+        $actions = array(
+            'Notifications' => array(
+                'title' => _t('PRIVATEMESSAGE_NOTIFICATIONS'),
+                'icon' => 'gadgets/PrivateMessage/Resources/images/notify.png',
+                'url' => $this->gadget->urlMap(
+                    'Messages',
+                    array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS))
+            ),
+            'Inbox' => array(
+                'title' => _t('PRIVATEMESSAGE_INBOX'),
+                'icon' => 'gadgets/PrivateMessage/Resources/images/inbox.png',
+                'url' => $this->gadget->urlMap(
+                    'Messages',
+                    array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX))
+            ),
+            'Outbox' => array(
+                'title' => _t('PRIVATEMESSAGE_OUTBOX'),
+                'icon' => 'gadgets/PrivateMessage/Resources/images/outbox.png',
+                'url' => $this->gadget->urlMap(
+                    'Messages',
+                    array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX))
+            ),
+            'Draft' => array(
+                'title' => _t('PRIVATEMESSAGE_DRAFT'),
+                'icon' => 'gadgets/PrivateMessage/Resources/images/draft.png',
+                'url' => $this->gadget->urlMap(
+                    'Messages',
+                    array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT))
+            ),
+            'Archived' => array(
+                'title' => _t('PRIVATEMESSAGE_ARCHIVED'),
+                'icon' => 'gadgets/PrivateMessage/Resources/images/archive.png',
+                'url' => $this->gadget->urlMap(
+                    'Messages',
+                    array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED))
+            ),
+            'Trash' => array(
+                'title' => _t('PRIVATEMESSAGE_TRASH'),
+                'icon' => 'gadgets/PrivateMessage/Resources/images/trash.png',
+                'url' => $this->gadget->urlMap(
+                    'Messages',
+                    array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_TRASH))
+            ),
+            'Compose' => array(
+                'title' => _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'),
+                'icon' => 'gadgets/PrivateMessage/Resources/images/compose.png',
+                'url' => $this->gadget->urlMap('Compose')
+            ),
+        );
+
+        foreach ($actions as $action => $data) {
+            $tpl->SetBlock('menubar/item');
+            $tpl->SetVariable('action', $action);
+            $tpl->SetVariable('title', $data['title']);
+            $tpl->SetVariable('icon', $data['icon']);
+            $tpl->SetVariable('url', $data['url']);
+            $tpl->SetVariable('selected', '');
+            if ($action_selected == $action) {
+                $tpl->SetVariable('selected', 'selected');
+            }
+            $tpl->ParseBlock('menubar/item');
+
         }
 
-        $menubar = new Jaws_Widgets_Menubar();
-
-        $menubar->AddOption('Notifications', _t('PRIVATEMESSAGE_NOTIFICATIONS'),
-            $this->gadget->urlMap(
-                'Messages',
-                array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_NOTIFICATIONS)),
-                'gadgets/PrivateMessage/Resources/images/notify.png');
-
-        $menubar->AddOption('Inbox', _t('PRIVATEMESSAGE_INBOX'),
-            $this->gadget->urlMap(
-                'Messages',
-                array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX)),
-                'gadgets/PrivateMessage/Resources/images/inbox.png');
-
-        $menubar->AddOption('Outbox', _t('PRIVATEMESSAGE_OUTBOX'),
-            $this->gadget->urlMap(
-                'Messages',
-                array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX)),
-                'gadgets/PrivateMessage/Resources/images/outbox.png');
-
-        $menubar->AddOption('Draft', _t('PRIVATEMESSAGE_DRAFT'),
-            $this->gadget->urlMap(
-                'Messages',
-                array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT)),
-                'gadgets/PrivateMessage/Resources/images/draft.png');
-
-        $menubar->AddOption('Archive', _t('PRIVATEMESSAGE_ARCHIVED'),
-            $this->gadget->urlMap(
-                'Messages',
-                array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_ARCHIVED)),
-                'gadgets/PrivateMessage/Resources/images/archive.png');
-
-        $menubar->AddOption('Trash', _t('PRIVATEMESSAGE_TRASH'),
-            $this->gadget->urlMap(
-                'Messages',
-                array('folder' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_TRASH)),
-                'gadgets/PrivateMessage/Resources/images/trash.png');
-
-        $menubar->AddOption('Compose',_t('PRIVATEMESSAGE_COMPOSE_MESSAGE'),
-            $this->gadget->urlMap('Compose'), 'gadgets/PrivateMessage/Resources/images/compose.png');
-
-        $menubar->Activate($action_selected);
-
-        return $menubar->Get();
+        $tpl->ParseBlock('menubar');
+        return $tpl->Get();
     }
 
     /**

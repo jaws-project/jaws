@@ -38,7 +38,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
 
         $body_value = "";
         $recipient_users = array();
-        $recipient_groups = array();
+        $recipient_friends = array();
         $show_recipient = true;
         // draft or reply
         if (!empty($id)) {
@@ -60,7 +60,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
                 $tpl->SetVariable('id', $id);
                 $recipient_users = array_map('intval', explode(',', $message['recipient_users']));
-                $recipient_groups = array_map('intval', explode(',', $message['recipient_groups']));
+                $recipient_friends = array_map('intval', explode(',', $message['recipient_friends']));
                 $body_value = $message['body'];
                 $tpl->SetVariable('subject', $message['subject']);
                 $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
@@ -177,6 +177,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             $tpl->SetBlock('compose/recipients');
             $tpl->SetVariable('lbl_recipient', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENTS'));
             $tpl->SetVariable('lbl_recipient_users', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_USERS'));
+            $tpl->SetVariable('delete-icon', STOCK_DELETE);
 
             if (!empty($recipient_users)) {
                 foreach ($recipient_users as $userId) {
@@ -188,18 +189,17 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 }
             }
 
-            // Group List
-            $bGroups =& Piwi::CreateWidget('Combo', 'recipient_groups');
-            $bGroups->SetID('recipient_groups');
-            $bGroups->setMultiple(true);
-            $bGroups->AddEvent(ON_DCLICK, "unselectUserGroup()");
+            // Friends List
             $groups = $userModel->GetGroups($user, true);
-            foreach ($groups as $group) {
-                $bGroups->AddOption($group['title'], $group['id']);
+            if (!Jaws_Error::IsError($groups) && count($groups) > 0) {
+                foreach ($groups as $group) {
+                    $tpl->SetBlock('compose/recipients/friend');
+                    $tpl->SetVariable('value', $group['id']);
+                    $tpl->SetVariable('title', $group['title']);
+                    $tpl->ParseBlock('compose/recipients/friend');
+                }
             }
-            $bGroups->setDefault($recipient_groups);
-            $tpl->SetVariable('lbl_recipient_groups', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS'));
-            $tpl->SetVariable('recipient_groups_opt', $bGroups->Get());
+            $tpl->SetVariable('lbl_recipient_friends', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_FRIENDS'));
             $tpl->ParseBlock('compose/recipients');
         } else {
             $tpl->SetBlock('compose/recipient');
@@ -305,7 +305,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
 
         $post = jaws()->request->fetch(
             array(
-                'id', 'recipient_users', 'recipient_groups', 'folder',
+                'id', 'recipient_users', 'recipient_friends', 'folder',
                 'subject', 'body', 'attachments:array', 'is_draft:bool'
             ),
             'post'

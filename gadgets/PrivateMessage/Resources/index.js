@@ -132,7 +132,7 @@ function sendMessage(isDraft) {
     // detect pre load users or groups list
     if (recipient_user == "" || recipient_user.length == 0) {
         var recipient_users_array = new Array();
-        var recipient_groups_array = new Array();
+        var recipient_friends_array = new Array();
 
         $("#recipient_users > option").each(function () {
             if (this.value.length > 0) {
@@ -140,27 +140,26 @@ function sendMessage(isDraft) {
             }
         });
 
-        $("#recipient_groups > option").each(function () {
+        $("input[type=checkbox][name=friends]:checked").each(function () {
             if (this.value!="") {
-                recipient_groups_array.push(this.value);
+                recipient_friends_array.push(this.value);
             }
         });
 
         var recipient_users = recipient_users_array.join(',');
-        var recipient_groups = recipient_groups_array.join(',');
+        var recipient_friends = recipient_friends_array.join(',');
     } else {
         var recipient_users = recipient_user;
-        var recipient_groups = "";
+        var recipient_friends = "";
     }
 
     var attachments = uploadedFiles.concat(getSelectedAttachments());
-    //console.log($('#subject').val());
     PrivateMessageAjax.callAsync(
         'SendMessage', {
             'id': $('#id').val(),
             'is_draft':isDraft,
             'recipient_users':recipient_users,
-            'recipient_groups':recipient_groups,
+            'recipient_friends':recipient_friends,
             'subject':$('#subject').val(),
             'body':getEditorValue('#body'),
             'attachments':attachments
@@ -239,7 +238,7 @@ function removeUserFromList() {
 }
 
 function unselectUserGroup () {
-    $("#recipient_groups option:selected").prop("selected", false);
+    $("#recipient_friends option:selected").prop("selected", false);
 }
 
 var PrivateMessageAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback);
