@@ -13,14 +13,14 @@
  */
 var LogsCallback = {
     DeleteLogs: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             unselectGridRow('logs_datagrid');
             getDG('logs_datagrid', $('#logs_datagrid')[0].getCurrentPage(), true);
         }
         LogsAjax.showResponse(response);
     },
     DeleteLogsUseFilters: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             unselectGridRow('logs_datagrid');
             getDG('logs_datagrid', $('#logs_datagrid')[0].getCurrentPage(), true);
         }

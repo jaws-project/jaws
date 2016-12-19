@@ -9,7 +9,7 @@
  */
 var SubscriptionCallback = {
     DeleteSubscriptions: function(response) {
-        if (response['type'] == 'response_notice') {
+        if (response['type'] == 'alert-success') {
             unselectGridRow('subscription_datagrid');
             getDG('subscription_datagrid', $('#subscription_datagrid')[0].getCurrentPage(), true);
         }

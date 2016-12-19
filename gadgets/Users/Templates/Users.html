@@ -175,7 +175,7 @@
       },
       onLoad: function(event) {
         event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
-        if (event.xhr.responseText.type != 'response_notice') {
+        if (event.xhr.responseText.type != 'alert-success') {
           event.xhr.responseText.message = event.xhr.responseText.text;
           event.xhr.responseText.status = "error";
         } else {
@@ -185,7 +185,7 @@
       onDelete: function(event) {
         if (event.xhr) {
           event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
-          if (event.xhr.responseText.type != 'response_notice') {
+          if (event.xhr.responseText.type != 'alert-success') {
             event.xhr.responseText.message = event.xhr.responseText.text;
             event.xhr.responseText.status = "error";
           } else {

@@ -13,7 +13,7 @@
 var TmsCallback = {
     sharetheme: function(response) {
         var optionSelected = $('#themes_combo').find('option:selected');
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             optionSelected.addClass('isshared');
             $('#unshare_button').css('display', 'block');
             $('#share_button').css('display', 'none');
@@ -27,7 +27,7 @@ var TmsCallback = {
 
     unsharetheme: function(response) {
         var optionSelected = $('#themes_combo').find('option:selected');
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             optionSelected.addClass('isnotshared');
             $('#unshare_button').css('display', 'none');
             $('#share_button').css('display', 'block');
@@ -40,7 +40,7 @@ var TmsCallback = {
     },
 
     installtheme: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#themes_combo').val(selectedTheme);
             editTheme(selectedTheme);
         }
@@ -48,13 +48,13 @@ var TmsCallback = {
     },
 
     uninstalltheme: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
         }
         TmsAjax.showResponse(response);
     },
 
     newrepository: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#repositories_datagrid')[0].addItem();
             $('#repositories_datagrid')[0].setCurrentPage(0);
         }
@@ -63,7 +63,7 @@ var TmsCallback = {
     },
 
     deleterepository: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#repositories_datagrid')[0].deleteItem();
         }
         TmsAjax.showResponse(response);
@@ -80,7 +80,7 @@ var TmsCallback = {
     },
 
     DeleteTheme: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#themes_combo').find('option:selected').remove();
             cleanWorkingArea(true);
         }

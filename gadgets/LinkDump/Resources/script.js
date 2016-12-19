@@ -13,7 +13,7 @@
  */
 var LinkDumpCallback = { 
     UpdateGroup: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#group_'+$('#gid').val()).find('a').eq(1).html($('#title').val());
             stopAction();
         }
@@ -73,7 +73,7 @@ function saveLink()
                     $('#order_type').val()
                 ]
             );
-            if (response[0]['type'] == 'response_notice') {
+            if (response[0]['type'] == 'alert-success') {
                 var gid = response[0]['data'];
                 AddNewGroup(gid);
                 stopAction();
@@ -112,7 +112,7 @@ function saveLink()
                     $('#rank').val()
                 ]
             );
-            if (response[0]['type'] == 'response_notice') {
+            if (response[0]['type'] == 'alert-success') {
                 var lid = response[0]['data'];
                 AddNewLinkItem($('#gid').val(), lid, $('#rank').val());
                 stopAction();
@@ -131,7 +131,7 @@ function saveLink()
                     $('#rank').val()
                 ]
             );
-            if (response[0]['type'] == 'response_notice') {
+            if (response[0]['type'] == 'alert-success') {
                 $('#link_'+$('#lid').val()).find('a').first().html($('#title').val());
                 var new_parent = $('#links_group_'+$('#gid').val());
                 var old_parent = $('#link_'+$('#lid').val()).parent();
@@ -391,7 +391,7 @@ function delLinks()
         if (confirm(msg)) {
             cacheMenuForm = null;
             var response = LinkDumpAjax.callSync('DeleteGroup', gid);
-            if (response[0]['type'] == 'response_notice') {
+            if (response[0]['type'] == 'alert-success') {
                 $('#group_'+gid).remove();
             }
             stopAction();
@@ -405,7 +405,7 @@ function delLinks()
               msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
             var response = LinkDumpAjax.callSync('DeleteLink', [lid, $('#gid').val(), $('#rank').val()]);
-            if (response[0]['type'] == 'response_notice') {
+            if (response[0]['type'] == 'alert-success') {
                 link_parent = $('#link_'+lid).parent();
                 $('#link_'+lid).remove();
                 if (link_parent.html() == "") {

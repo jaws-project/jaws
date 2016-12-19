@@ -14,7 +14,7 @@
  */
 var WeatherCallback = {
     DeleteRegion: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#weather_datagrid')[0].deleteItem();
             getDG();
             stopAction();
@@ -23,7 +23,7 @@ var WeatherCallback = {
     },
     
     InsertRegion: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#weather_datagrid')[0].addItem();
             $('#weather_datagrid')[0].setCurrentPage(0);
             getDG();
@@ -33,7 +33,7 @@ var WeatherCallback = {
     },
 
     UpdateRegion: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             getDG();
             stopAction();
         }

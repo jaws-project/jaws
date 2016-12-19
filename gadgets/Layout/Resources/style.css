@@ -62,17 +62,17 @@ border:1px solid #579;
 display:inline-block !important;
 background:#ace url("../../../images/loading.svg");
 }
-.response_notice{
+.alert-success{
 border:1px solid #9db029;
 display:inline-block !important;
 background:#e6f0a5 url("../../../images/stock/info-small.png");
 }
-.response_warning{
+.alert-warning{
 border:1px solid #fce94f;
 display:inline-block !important;
 background:#fdf4a7 url("../../../images/stock/warning-small.png");
 }
-.response_error{
+.alert-danger{
 border:1px solid #cc0000;
 display:inline-block !important;
 background:#fabfbf url("../../../images/stock/error-small.png");
@@ -89,7 +89,7 @@ right:0;
 font-family:"Lucida Grande", Myriad, "Andale Sans", "Luxi Sans", "Bitstream Vera Sans", Tahoma, "Toga Sans", Helvetica, Arial, sans-serif;
 z-index:100;
 }
-.response_error,.response_warning,.response_notice,.working-message{
+.alert-danger,.alert-warning,.alert-success,.working-message{
 color:#000;
 font-weight:bold;
 display:inline;
@@ -99,17 +99,17 @@ padding-right:8px;
 background-repeat:no-repeat;
 background-position:2px 0px;
 }
-.response_notice{
+.alert-success{
 border:1px solid #9db029;
 background-color:#e6f0a5;
 background-image:url("../../../images/stock/info-small.png");
 }
-.response_warning{
+.alert-warning{
 border:1px solid #fce94f;
 background-color:#fdf4a7;
 background-image:url("../../../images/stock/warning-small.png");
 }
-.response_error{
+.alert-danger{
 border:1px solid #cc0000;
 background-color:#fabfbf;
 background-image:url("../../../images/stock/error-small.png");

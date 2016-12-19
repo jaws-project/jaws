@@ -13,7 +13,7 @@
 var ForumsCallback = {
 
     UpdateGroup: function(response) {
-        if (response['type'] == 'response_notice') {
+        if (response['type'] == 'alert-success') {
             $('#group_'+$('#gid').val()).find('a').first().html($('#title').val());
             stopAction();
         }
@@ -105,7 +105,7 @@ function saveForums()
                     $('#published').val()
                 ]
             );
-            if (response['type'] == 'response_notice') {
+            if (response['type'] == 'alert-success') {
                 AddNewForumGroup(response['data']);
                 stopAction();
             }
@@ -136,7 +136,7 @@ function saveForums()
                     $('#published').val()
                 ]
             );
-            if (response['type'] == 'response_notice') {
+            if (response['type'] == 'alert-success') {
                 AddNewForumItem($('#gid').val(), response['data'], $('#order').val());
                 stopAction();
             }
@@ -154,7 +154,7 @@ function saveForums()
                     $('#published').val()
                 ]
             );
-            if (response['type'] == 'response_notice') {
+            if (response['type'] == 'alert-success') {
                 $('#forum_'+$('#fid').val()).find('a').first().html($('#title').val());
                 var new_parentNode = $('#group_'+$('#gid').val());
                 if ($('#forum_'+$('#fid').val()).parent().is(new_parentNode)) {
@@ -310,7 +310,7 @@ function delForums()
         if (confirm(msg)) {
             cacheForumForm = null;
             var response = ForumsAjax.callSync('DeleteGroup', gid);
-            if (response['type'] == 'response_notice') {
+            if (response['type'] == 'alert-success') {
                 Element.destroy($('#group_'+gid));
                 stopAction();
             }
@@ -324,7 +324,7 @@ function delForums()
               msg.substr(msg.indexOf('%s%') + 3);
         if (confirm(msg)) {
             var response = ForumsAjax.callSync('DeleteForum', fid);
-            if (response['type'] == 'response_notice') {
+            if (response['type'] == 'alert-success') {
                 Element.destroy($('#forum_'+fid));
                 stopAction();
             }

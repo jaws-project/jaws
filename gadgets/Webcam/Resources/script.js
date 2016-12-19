@@ -13,7 +13,7 @@
  */
 var WebcamCallback = {
     NewWebcam: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#webcam_datagrid')[0].addItem();
             $('#webcam_datagrid')[0].setCurrentPage(0);
             getDG();
@@ -22,7 +22,7 @@ var WebcamCallback = {
     },
 
     DeleteWebcam: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#webcam_datagrid')[0].deleteItem();
             getDG();
         }
@@ -30,7 +30,7 @@ var WebcamCallback = {
     },
     
     UpdateWebcam: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             getDG();
         }
         WebcamAjax.showResponse(response);

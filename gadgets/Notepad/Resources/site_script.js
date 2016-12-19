@@ -12,7 +12,7 @@
  */
 var NotepadCallback = {
     DeleteNote: function(response) {
-        if (response.type === 'response_error') {
+        if (response.type === 'alert-danger') {
             NotepadAjax.showResponse(response);
         } else {
             window.location = notepad_url;
@@ -20,7 +20,7 @@ var NotepadCallback = {
     },
 
     UpdateShare: function(response) {
-        if (response.type === 'response_error') {
+        if (response.type === 'alert-danger') {
             NotepadAjax.showResponse(response);
         } else {
             window.location = notepad_url;

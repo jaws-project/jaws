@@ -258,17 +258,17 @@ line-height:150%;
 border-radius:2px;
 padding:1px 20px 0;
 }
-.response_notice{
+.alert-success{
 border:1px solid #795;
 display:inline-block !important;
 background:#dea url("../../../images/stock/notice.png") no-repeat 2px;
 }
-.response_warning{
+.alert-warning{
 border:1px solid #dd5;
 display:inline-block !important;
 background:#ffb url("../../../images/stock/warning.png") no-repeat 2px;
 }
-.response_error{
+.alert-danger{
 border:1px solid #c00;
 display:inline-block !important;
 background:#fbb url("../../../images/stock/error.png") no-repeat 2px;

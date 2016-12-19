@@ -12,7 +12,7 @@
  */
 var ECCallback = {
     DeleteEvent: function(response) {
-        if (response.type === 'response_error') {
+        if (response.type === 'alert-danger') {
             ECAjax.showResponse(response);
         } else {
             location.assign(events_url);
@@ -20,7 +20,7 @@ var ECCallback = {
     },
 
     UpdateShare: function(response) {
-        if (response.type === 'response_error') {
+        if (response.type === 'alert-danger') {
             ECAjax.showResponse(response);
         } else {
             location.assign(events_url);

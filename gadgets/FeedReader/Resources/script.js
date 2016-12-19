@@ -13,7 +13,7 @@
  */
 var FeedReaderCallback = { 
     DeleteFeed: function(response) {
-        if (response['type'] == 'response_notice') {
+        if (response['type'] == 'alert-success') {
             stopAction();
             $('#feedsites_datagrid')[0].deleteItem();          
             getDG();
@@ -22,7 +22,7 @@ var FeedReaderCallback = {
     },
     
     InsertFeed: function(response) {
-        if (response['type'] == 'response_notice') {
+        if (response['type'] == 'alert-success') {
             $('#feedsites_datagrid')[0].addItem();
             $('#feedsites_datagrid')[0].setCurrentPage(0);
             getDG();
@@ -32,7 +32,7 @@ var FeedReaderCallback = {
     },
 
     UpdateFeed: function(response) {
-        if (response['type'] == 'response_notice') {
+        if (response['type'] == 'alert-success') {
             getDG();
         }
         stopAction();

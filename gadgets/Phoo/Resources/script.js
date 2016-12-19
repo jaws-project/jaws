@@ -108,7 +108,7 @@ function saveGroup()
 
     if ($('#gid').val() == 0) {
         var response = PhooAjax.callSync('AddGroup', groupData);
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#groups_combo')
                 .append($("<option></option>")
                     .attr("value",response[0]['text']['id'])
@@ -120,7 +120,7 @@ function saveGroup()
     } else {
         var response = PhooAjax.callSync('UpdateGroup',
                             {'id': $('#gid').val(), data: groupData});
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#groups_combo').find('option:selected').text($('#name').val());
             stopAction();
         }
@@ -155,7 +155,7 @@ function deleteGroup()
         var box = $('#groups_combo');
         var quoteIndex = box.selectedIndex;
         var response = PhooAjax.callSync('DeleteGroup', {'id': $('#gid').val()});
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#groups_combo').find('option:selected').remove();
             stopAction();
         }

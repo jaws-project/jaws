@@ -14,7 +14,7 @@
 var GlossaryCallback = {
 
     NewTerm: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             afterNewTerm(response['id']);
         }
         GlossaryAjax.showResponse(response);
@@ -43,7 +43,7 @@ var GlossaryCallback = {
                 selIndex = 0;
                 combo.options[selIndex].selected = true;
             }
-            if (response[0]['type'] == 'response_notice') {
+            if (response[0]['type'] == 'alert-success') {
                 edit(combo.options[selIndex].value);
             }
         } else {

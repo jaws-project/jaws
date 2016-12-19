@@ -13,7 +13,7 @@
  */
 var PollCallback = {
     InsertPoll: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             $('#polls_datagrid')[0].addItem();
             $('#polls_datagrid')[0].setCurrentPage(0);
@@ -23,7 +23,7 @@ var PollCallback = {
     },
 
     UpdatePoll: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             getDG();
         }
@@ -31,7 +31,7 @@ var PollCallback = {
     },
 
     DeletePoll: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             $('#polls_datagrid')[0].deleteItem();
             getDG();
@@ -40,14 +40,14 @@ var PollCallback = {
     },
 
     UpdatePollAnswers: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
         }
         PollAjax.showResponse(response);
     },
 
     InsertPollGroup: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             $('#pollgroups_datagrid')[0].addItem();
             $('#pollgroups_datagrid')[0].setCurrentPage(0);
@@ -57,7 +57,7 @@ var PollCallback = {
     },
 
     UpdatePollGroup: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             getDG();
         }
@@ -65,7 +65,7 @@ var PollCallback = {
     },
 
     DeletePollGroup: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             $('#pollgroups_datagrid')[0].deleteItem();
             getDG();

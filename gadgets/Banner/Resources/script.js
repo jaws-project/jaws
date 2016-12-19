@@ -9,7 +9,7 @@
  */
 var BannerCallback = {
     InsertBanner: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             $('#banners_datagrid')[0].addItem();
             $('#banners_datagrid')[0].setCurrentPage(0);
@@ -19,7 +19,7 @@ var BannerCallback = {
     },
 
     UpdateBanner: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             getDG('banners_datagrid');
         }
@@ -27,7 +27,7 @@ var BannerCallback = {
     },
 
     DeleteBanner: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             $('#banners_datagrid')[0].deleteItem();
             getDG('banners_datagrid');
@@ -36,21 +36,21 @@ var BannerCallback = {
     },
 
     ResetViews: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             getDG('reports_datagrid');
         }
         BannerAjax.showResponse(response);
     },
 
     ResetClicks: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             getDG('reports_datagrid');
         }
         BannerAjax.showResponse(response);
     },
 
     InsertGroup: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             getGroups();
             stopAction();
         }
@@ -58,7 +58,7 @@ var BannerCallback = {
     },
 
     UpdateGroup: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             getGroups();
             stopAction();
         }
@@ -66,7 +66,7 @@ var BannerCallback = {
     },
 
     DeleteGroup: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             getGroups();
             stopAction();
         }

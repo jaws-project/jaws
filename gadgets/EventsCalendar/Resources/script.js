@@ -13,7 +13,7 @@
  */
 var EventsCalendarCallback = {
     GetEvents: function(response) {
-        if (response.type && response.type !== 'response_notice') {
+        if (response.type && response.type !== 'alert-success') {
             EventsCalendarAjax.showResponse(response);
         } else {
         }
@@ -27,7 +27,7 @@ var EventsCalendarCallback = {
         }
     },
     CreateEvent: function(response) {
-        if (response.type && response.type === 'response_notice') {
+        if (response.type && response.type === 'alert-success') {
             w2popup.close();
             w2ui['datagrid'].reload();
             EventsCalendarAjax.showResponse(response);
@@ -36,7 +36,7 @@ var EventsCalendarCallback = {
         }
     },
     UpdateEvent: function(response) {
-        if (response.type && response.type === 'response_notice') {
+        if (response.type && response.type === 'alert-success') {
             w2popup.close();
             w2ui['datagrid'].reload();
             EventsCalendarAjax.showResponse(response);
@@ -45,7 +45,7 @@ var EventsCalendarCallback = {
         }
     },
     DeleteEvent: function(response) {
-        if (response.type && response.type === 'response_notice') {
+        if (response.type && response.type === 'alert-success') {
             w2ui['datagrid'].reload();
             EventsCalendarAjax.showResponse(response);
         } else {

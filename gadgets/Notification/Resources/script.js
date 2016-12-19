@@ -9,7 +9,7 @@
  */
 var NotificationCallback = {
     InstallNotificationDriver: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             getDG('notification_drivers_datagrid', $('#notification_drivers_datagrid')[0].getCurrentPage(), true);
             stopAction();
         }
@@ -17,14 +17,14 @@ var NotificationCallback = {
 
     },
     UninstallNotificationDriver: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             getDG('notification_drivers_datagrid', $('#notification_drivers_datagrid')[0].getCurrentPage(), true);
             stopAction();
         }
         NotificationAjax.showResponse(response);
     },
     UpdateNotificationDriver: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             getDG('notification_drivers_datagrid', $('#notification_drivers_datagrid')[0].getCurrentPage(), true);
             stopAction();
         }

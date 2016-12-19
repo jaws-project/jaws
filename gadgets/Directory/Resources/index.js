@@ -10,7 +10,7 @@
  */
 var DirectoryCallback = {
     CreateFile: function(response) {
-        if (response.type === 'response_notice') {
+        if (response.type === 'alert-success') {
             stopAction();
         }
         DirectoryAjax.showResponse(response);

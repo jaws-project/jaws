@@ -10,7 +10,7 @@
 var MenuCallback = {
 
     UpdateGroup: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#group_'+$('#gid').val()).find('a').first().html($('#title').val());
             stopAction();
         }
@@ -93,7 +93,7 @@ function saveMenus()
                     $('#published').val()
                 ]
             );
-            if (response[0]['type'] == 'response_notice') {
+            if (response[0]['type'] == 'alert-success') {
                 var gid = response[0]['data'];
                 AddNewMenuGroup(gid);
                 stopAction();
@@ -130,7 +130,7 @@ function saveMenus()
                     $('#imagename').val()
                 ]
             );
-            if (response[0]['type'] == 'response_notice') {
+            if (response[0]['type'] == 'alert-success') {
                 var mid = response[0]['text'].substr(0, response[0]['text'].indexOf('%%'));
                 response[0]['text'] = response[0]['text'].substr(response[0]['text'].indexOf('%%')+2);
                 AddNewMenuItem($('#gid').val(), $('#pid').val(), mid, $('#rank').val());
@@ -154,7 +154,7 @@ function saveMenus()
                     $('#imagename').val()
                 ]
             );
-            if (response[0]['type'] == 'response_notice') {
+            if (response[0]['type'] == 'alert-success') {
                 $('#menu_'+$('#mid').val()).find('a').first().html($('#title').val());
                 if ($('#pid').val() == 0) {
                     var new_parentNode = $('#group_'+$('#gid').val());
@@ -392,7 +392,7 @@ function delMenus()
         if (confirm(msg)) {
             cacheMenuForm = null;
             var response = MenuAjax.callSync('DeleteGroup', gid);
-            if (response[0]['type'] == 'response_notice') {
+            if (response[0]['type'] == 'alert-success') {
                 $('#group_'+gid).remove();
             }
             stopAction();
@@ -404,7 +404,7 @@ function delMenus()
         msg = msg.substr(0,  msg.indexOf('%s%')) + $('#menu_'+mid).find('a').first().html() + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
             var response = MenuAjax.callSync('DeleteMenu', mid);
-            if (response[0]['type'] == 'response_notice') {
+            if (response[0]['type'] == 'alert-success') {
                 $('#menu_'+mid).remove();
             }
             stopAction();

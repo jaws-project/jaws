@@ -14,21 +14,21 @@
  */
 var StaticPageCallback = {
     DeletePage: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             getDG('pages_datagrid');
         }
         StaticPageAjax.showResponse(response);
     },
 
     DeleteTranslation: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             getDG('pages_datagrid');
         }
         StaticPageAjax.showResponse(response);
     },
 
     MassiveDelete: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             var rows = $('#pages_datagrid')[0].getSelectedRows();
             if (rows.length > 0) {
                 for(var i=0; i<rows.length; i++) {
@@ -50,7 +50,7 @@ var StaticPageCallback = {
     },
 
     InsertGroup: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             $('#groups_datagrid')[0].addItem();
             $('#groups_datagrid')[0].setCurrentPage(0);
@@ -60,7 +60,7 @@ var StaticPageCallback = {
     },
 
     UpdateGroup: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             getDG('groups_datagrid');
         }
@@ -68,7 +68,7 @@ var StaticPageCallback = {
     },
 
     DeleteGroup: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             $('#groups_datagrid')[0].deleteItem();
             getDG('groups_datagrid');
@@ -155,7 +155,7 @@ function deletePage(id, redirect)
         if (redirect) {
             var response = StaticPageAjax.callSync('DeletePage', id);
             StaticPageAjax.showResponse(response);
-            if (response[0]['type'] == 'response_notice') {
+            if (response[0]['type'] == 'alert-success') {
                 window.location= base_script + '?gadget=StaticPage';
             }
         } else {
@@ -174,7 +174,7 @@ function deleteTranslation(id, redirect)
         if (redirect) {
             var response = StaticPageAjax.callSync('DeleteTranslation', id);
             StaticPageAjax.showResponse(response);
-            if (response[0]['type'] == 'response_notice') {
+            if (response[0]['type'] == 'alert-success') {
                 window.location= base_script + '?gadget=StaticPage';
             }
         } else {
@@ -325,7 +325,7 @@ function showSimpleResponse(response)
 {
     if (!autoDraftDone) {
         var action = document.forms[0]['action'].value;
-        if (action == 'AddPage' && response[0]['type'] == 'response_notice') {
+        if (action == 'AddPage' && response[0]['type'] == 'alert-success') {
             document.forms[0]['action'].value = 'SaveEditPage';
             document.forms[0]['id'].value = response[0]['data'];
         }

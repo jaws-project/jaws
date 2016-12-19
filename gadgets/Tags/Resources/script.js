@@ -9,7 +9,7 @@
  */
 var TagsCallback = {
     AddTag: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopTagAction();
             $('#tags_datagrid')[0].addItem();
             getDG('tags_datagrid');
@@ -18,7 +18,7 @@ var TagsCallback = {
     },
 
     UpdateTag: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopTagAction();
             getDG('tags_datagrid');
         }
@@ -26,7 +26,7 @@ var TagsCallback = {
     },
 
     DeleteTags: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopTagAction();
             getDG('tags_datagrid', $('#tags_datagrid')[0].getCurrentPage(), true);
         }
@@ -34,7 +34,7 @@ var TagsCallback = {
     },
 
     MergeTags: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopTagAction();
             getDG('tags_datagrid', $('#tags_datagrid')[0].getCurrentPage(), true);
         }

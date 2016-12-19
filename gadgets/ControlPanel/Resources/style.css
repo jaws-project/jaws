@@ -764,17 +764,17 @@ border:1px solid #579;
 display:inline-block !important;
 background:#ace url("../../../images/loading.svg");
 }
-.response_notice{
+.alert-success{
 border:1px solid #9db029;
 display:inline-block !important;
 background:#e6f0a5 url("../../../images/stock/info-small.png");
 }
-.response_warning{
+.alert-warning{
 border:1px solid #fce94f;
 display:inline-block !important;
 background:#fdf4a7 url("../../../images/stock/warning-small.png");
 }
-.response_error{
+.alert-danger{
 border:1px solid #cc0000;
 display:inline-block !important;
 background:#fabfbf url("../../../images/stock/error-small.png");

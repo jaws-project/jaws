@@ -16,7 +16,7 @@ var UrlMapperCallback = {
      * Updates a map
      */
     UpdateMap: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             enableMapEditingArea(false);
             showActionMaps();
         }
@@ -34,7 +34,7 @@ var UrlMapperCallback = {
      * Adds a new alias
      */
     AddAlias: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             rebuildAliasCombo();
         }
         UrlMapperAjax.showResponse(response);
@@ -44,7 +44,7 @@ var UrlMapperCallback = {
      * Updates a new alias
      */
     UpdateAlias: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             rebuildAliasCombo();
         }
         UrlMapperAjax.showResponse(response);
@@ -54,7 +54,7 @@ var UrlMapperCallback = {
      * Deletes a new alias
      */
     DeleteAlias: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             rebuildAliasCombo();
         }
         UrlMapperAjax.showResponse(response);
@@ -64,7 +64,7 @@ var UrlMapperCallback = {
      * Add a new error map
      */
     AddErrorMap: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopErrorMapAction();
             $('#errormaps_datagrid')[0].addItem();
             $('#errormaps_datagrid')[0].lastPage();
@@ -77,7 +77,7 @@ var UrlMapperCallback = {
      * delete an  error map
      */
     DeleteErrorMaps: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopErrorMapAction();
             getDG('errormaps_datagrid', $('#errormaps_datagrid')[0].getCurrentPage(), true);
         }
@@ -88,7 +88,7 @@ var UrlMapperCallback = {
      * delete error maps using filters
      */
     DeleteErrorMapsFilters: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopErrorMapAction();
             getDG('errormaps_datagrid', $('#errormaps_datagrid')[0].getCurrentPage(), true);
         }
@@ -99,7 +99,7 @@ var UrlMapperCallback = {
      * update an  error map
      */
     UpdateErrorMap: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopErrorMapAction();
             getDG('errormaps_datagrid');
         }

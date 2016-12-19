@@ -10,7 +10,7 @@
  */
 var DirectoryCallback = {
     CreateDirectory: function(response) {
-        if (response.type === 'response_notice') {
+        if (response.type === 'alert-success') {
             cancel();
             updateFiles(currentDir);
         }
@@ -18,7 +18,7 @@ var DirectoryCallback = {
     },
 
     UpdateDirectory: function(response) {
-        if (response.type === 'response_notice') {
+        if (response.type === 'alert-success') {
             cancel();
             updateFiles(currentDir);
         }
@@ -26,7 +26,7 @@ var DirectoryCallback = {
     },
 
     CreateFile: function(response) {
-        if (response.type === 'response_notice') {
+        if (response.type === 'alert-success') {
             cancel();
             updateFiles(currentDir);
         }
@@ -34,7 +34,7 @@ var DirectoryCallback = {
     },
 
     UpdateFile: function(response) {
-        if (response.type === 'response_notice') {
+        if (response.type === 'alert-success') {
             cancel();
             updateFiles(currentDir);
         }
@@ -42,7 +42,7 @@ var DirectoryCallback = {
     },
 
     Delete: function(response) {
-        if (response.type === 'response_notice') {
+        if (response.type === 'alert-success') {
             cancel();
             updateFiles(currentDir);
         }
@@ -50,7 +50,7 @@ var DirectoryCallback = {
     },
 
     Move: function(response) {
-        if (response.type === 'response_notice') {
+        if (response.type === 'alert-success') {
             cancel();
             updateFiles(currentDir);
         }
@@ -58,7 +58,7 @@ var DirectoryCallback = {
     },
 
     Search: function(response) {
-        if (response.type === 'response_notice') {
+        if (response.type === 'alert-success') {
             $('#dir_pathbar').hide();
             $('#dir_searchbar').show();
             $('#btn_search_close').show();

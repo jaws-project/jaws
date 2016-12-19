@@ -14,7 +14,7 @@
  */
 var CommentsCallback = {
     UpdateComment: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopCommentAction();
             getDG('comments_datagrid', $('#comments_datagrid')[0].getCurrentPage(), true);
         }
@@ -22,7 +22,7 @@ var CommentsCallback = {
     },
 
     DeleteComments: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopCommentAction();
             getDG('comments_datagrid', $('#comments_datagrid')[0].getCurrentPage(), true);
         }
@@ -30,7 +30,7 @@ var CommentsCallback = {
     },
 
     MarkAs: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopCommentAction();
             getDG('comments_datagrid', $('#comments_datagrid')[0].getCurrentPage(), true);
         }

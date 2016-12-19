@@ -14,7 +14,7 @@
  */
 var VisitCounterCallback = { 
     CleanEntries: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#visitcounter_datagrid')[0].setCurrentPage(0);
             $('#visitcounter_datagrid')[0].rowsSize = 0;
             $('#visitcounter_datagrid')[0].updatePageCounter();
@@ -25,7 +25,7 @@ var VisitCounterCallback = {
     },
     
     ResetCounter: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#visitcounter_datagrid')[0].setCurrentPage(0);
             $('#visitcounter_datagrid')[0].rowsSize = 0;
             $('#visitcounter_datagrid')[0].updatePageCounter();

@@ -21,7 +21,7 @@ var UsersCallback = {
     },
 
     AddUser: function (response) {
-        if (response.type == 'response_notice') {
+        if (response.type == 'alert-success') {
             w2popup.close();
             w2ui['users-grid'].reload();
             stopAction();
@@ -29,7 +29,7 @@ var UsersCallback = {
         UsersAjax.showResponse(response);
     },
     UpdateUser: function (response) {
-        if (response.type == 'response_notice') {
+        if (response.type == 'alert-success') {
             w2popup.close();
             w2ui['users-grid'].reload();
             stopAction();
@@ -37,13 +37,13 @@ var UsersCallback = {
         UsersAjax.showResponse(response);
     },
     AddUserToGroups: function (response) {
-        if (response.type == 'response_notice') {
+        if (response.type == 'alert-success') {
             stopAction();
         }
         UsersAjax.showResponse(response);
     },
     AddGlobalGroup: function (response) {
-        if (response.type == 'response_notice') {
+        if (response.type == 'alert-success') {
             w2popup.close();
             w2ui['groups-grid'].reload();
             stopAction();
@@ -51,7 +51,7 @@ var UsersCallback = {
         UsersAjax.showResponse(response);
     },
     UpdateGlobalGroup: function (response) {
-        if (response.type == 'response_notice') {
+        if (response.type == 'alert-success') {
             w2popup.close();
             w2ui['groups-grid'].reload();
             stopAction();
@@ -59,7 +59,7 @@ var UsersCallback = {
         UsersAjax.showResponse(response);
     },
     AddUsersToGroup: function (response) {
-        if (response.type == 'response_notice') {
+        if (response.type == 'alert-success') {
             stopAction();
         }
         UsersAjax.showResponse(response);

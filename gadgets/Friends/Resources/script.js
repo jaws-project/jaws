@@ -12,7 +12,7 @@
  */
 var FriendsCallback = { 
     NewFriend: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('friends_datagrid')[0].addItem();
             $('friends_datagrid')[0].setCurrentPage(0);
         }
@@ -21,7 +21,7 @@ var FriendsCallback = {
     },
 
     DeleteFriend: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('friends_datagrid')[0].deleteItem();          
         }
         FriendsAjax.showResponse(response);

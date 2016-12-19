@@ -9,7 +9,7 @@
  */
 var PrivateMessageCallback = {
     SendMessage: function (response) {
-        if (response.type == 'response_notice') {
+        if (response.type == 'alert-success') {
             if (response.data && response.data.is_draft) {
                 $('#id').val(response.data.message_id);
                 resetAttachments(response.data.message_id);

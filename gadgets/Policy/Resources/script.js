@@ -13,7 +13,7 @@
  */
 var PolicyCallback = {
     AddIPRange: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#blocked_ips_datagrid')[0].addItem();
             $('#blocked_ips_datagrid')[0].setCurrentPage(0);
             getDG();
@@ -23,7 +23,7 @@ var PolicyCallback = {
     },
 
     EditIPRange: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             getDG();
         }
@@ -31,7 +31,7 @@ var PolicyCallback = {
     },
 
     DeleteIPRange: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#blocked_ips_datagrid')[0].deleteItem();
             getDG();
         }
@@ -39,7 +39,7 @@ var PolicyCallback = {
     },
 
     AddAgent: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#blocked_agents_datagrid')[0].addItem();
             $('#blocked_agents_datagrid')[0].setCurrentPage(0);
             getDG();
@@ -49,7 +49,7 @@ var PolicyCallback = {
     },
 
     EditAgent: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             getDG();
         }
@@ -57,7 +57,7 @@ var PolicyCallback = {
     },
 
     DeleteAgent: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#blocked_agents_datagrid')[0].deleteItem();
             getDG();
         }

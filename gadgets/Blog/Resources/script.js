@@ -14,7 +14,7 @@
 var BlogCallback = {
 
     DeleteEntries: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             var rows = $('#posts_datagrid')[0].getSelectedRows();
             if (rows.length > 0) {
                 for(var i=0; i<rows.length; i++) {
@@ -33,7 +33,7 @@ var BlogCallback = {
     },
 
     ChangeEntryStatus: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             PiwiGrid.multiSelect($('#posts_datagrid')[0]);
             resetLEForm();
             var formData = getDataOfLEForm();
@@ -46,7 +46,7 @@ var BlogCallback = {
     },
 
     DeleteTrackbacks: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             var rows = $('#trackbacks_datagrid')[0].getSelectedRows();
             if (rows.length > 0) {
                 for(var i=0; i<rows.length; i++) {
@@ -66,7 +66,7 @@ var BlogCallback = {
     },
 
     TrackbackMarkAs: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             PiwiGrid.multiSelect($('#trackbacks_datagrid')[0]);
             resetLTBForm();
             var formData = getDataOfLTBForm();
@@ -91,7 +91,7 @@ var BlogCallback = {
 
     AddCategory2: function(response) {
         BlogAjax.showResponse(response);
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             resetCategoryCombo();
         }
@@ -99,7 +99,7 @@ var BlogCallback = {
 
     UpdateCategory2: function(response) {
         BlogAjax.showResponse(response);
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             resetCategoryCombo();
         }
@@ -107,7 +107,7 @@ var BlogCallback = {
 
     DeleteCategory2: function(response) {
         BlogAjax.showResponse(response);
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             stopAction();
             resetCategoryCombo();
         }
@@ -672,7 +672,7 @@ function showSimpleResponse(reponse)
 {
     if (!autoDraftDone) {
         var actioni   = $('#action').val();
-        if (actioni == 'SaveNewEntry' && reponse[0]['type'] == 'response_notice') {
+        if (actioni == 'SaveNewEntry' && reponse[0]['type'] == 'alert-success') {
             $('#published').val('0');
             $('#id').val(reponse[0]['data']);
             $('#action').val('SaveEditEntry');

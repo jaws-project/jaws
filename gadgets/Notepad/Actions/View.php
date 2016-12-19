@@ -30,7 +30,7 @@ class Notepad_Actions_View extends Jaws_Gadget_Action
         $note = $model->GetNote($id, $user);
         if (Jaws_Error::IsError($note) || empty($note)) {
             $tpl->SetVariable('text', _t('NOTEPAD_ERROR_RETRIEVING_DATA'));
-            $tpl->SetVariable('type', 'response_error');
+            $tpl->SetVariable('type', 'alert-danger');
         }
 
         $tpl->SetVariable('title', $note['title']);

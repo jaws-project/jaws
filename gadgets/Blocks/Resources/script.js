@@ -14,7 +14,7 @@
 var BlocksCallback = {
 
     NewBlock: function(response) {
-        if (response['type'] == 'response_notice') {
+        if (response['type'] == 'alert-success') {
             afterNewBlock(response['data']);
         }
         BlocksAjax.showResponse(response);
@@ -44,7 +44,7 @@ var BlocksCallback = {
                 selIndex = 0;
                 combo.options[selIndex].selected = true;
             }
-            if (response[0]['type'] == 'response_notice') {
+            if (response[0]['type'] == 'alert-success') {
                 edit(combo.options[selIndex].value);
             }
         } else {

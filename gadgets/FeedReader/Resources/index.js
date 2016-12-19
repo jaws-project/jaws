@@ -11,7 +11,7 @@
  */
 var FeedReaderCallback = {
     InsertFeed: function (response) {
-        if (response['type'] == 'response_notice') {
+        if (response['type'] == 'alert-success') {
             w2popup.close();
             w2ui['feeds-grid'].reload();
             stopAction();
@@ -19,7 +19,7 @@ var FeedReaderCallback = {
         FeedReaderAjax.showResponse(response);
     },
     UpdateFeed: function (response) {
-        if (response['type'] == 'response_notice') {
+        if (response['type'] == 'alert-success') {
             w2popup.close();
             w2ui['feeds-grid'].reload();
             stopAction();
@@ -162,7 +162,7 @@ $(document).ready(function() {
         },
         onLoad: function(event) {
             event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
-            if (event.xhr.responseText.type != 'response_notice') {
+            if (event.xhr.responseText.type != 'alert-success') {
                 event.xhr.responseText.message = event.xhr.responseText.text;
                 event.xhr.responseText.status = "error";
             } else {
@@ -172,7 +172,7 @@ $(document).ready(function() {
         onDelete: function(event) {
             if (event.xhr) {
                 event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
-                if (event.xhr.responseText.type != 'response_notice') {
+                if (event.xhr.responseText.type != 'alert-success') {
                     event.xhr.responseText.message = event.xhr.responseText.text;
                     event.xhr.responseText.status = "error";
                 } else {

@@ -2,15 +2,15 @@
 /**
  * Responses warning
  */
-define('RESPONSE_WARNING', 'response_warning');
+define('RESPONSE_WARNING', 'alert-warning');
 /**
  * Responses error
  */
-define('RESPONSE_ERROR',   'response_error');
+define('RESPONSE_ERROR',   'alert-danger');
 /**
  * Responses notice
  */
-define('RESPONSE_NOTICE',  'response_notice');
+define('RESPONSE_NOTICE',  'alert-success');
 /**
  *
  */

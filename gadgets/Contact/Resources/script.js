@@ -14,7 +14,7 @@
  */
 var ContactCallback = {
     UpdateContact: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             getDG('contacts_datagrid');
             stopAction();
         }
@@ -22,7 +22,7 @@ var ContactCallback = {
     },
 
     UpdateReply: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $(selectedRow).find('label').css('font-weight', 'normal');
             stopAction();
         }
@@ -30,7 +30,7 @@ var ContactCallback = {
     },
 
     DeleteRecipient: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#recipient_datagrid')[0].deleteItem();
             getDG();
             stopAction();
@@ -39,7 +39,7 @@ var ContactCallback = {
     },
 
     InsertRecipient: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#recipient_datagrid')[0].addItem();
             $('#recipient_datagrid')[0].setCurrentPage(0);
             getDG();
@@ -49,7 +49,7 @@ var ContactCallback = {
     },
 
     UpdateRecipient: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             getDG();
             stopAction();
         }
@@ -61,7 +61,7 @@ var ContactCallback = {
     },
 
     DeleteContact: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             $('#contacts_datagrid')[0].deleteItem();
             getDG('contacts_datagrid');
             stopAction();
@@ -70,7 +70,7 @@ var ContactCallback = {
     },
 
     SendEmail: function(response) {
-        if (response[0]['type'] == 'response_notice') {
+        if (response[0]['type'] == 'alert-success') {
             newEmail();
         }
         ContactAjax.showResponse(response);
