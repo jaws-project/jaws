@@ -110,8 +110,8 @@ class Users_Actions_Personal extends Users_Actions_Default
         $tpl->SetVariable('interests',     $personal['interests']);
 
         if (!empty($response)) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
         }
 
         $tpl->ParseBlock('personal');

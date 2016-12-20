@@ -32,8 +32,8 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_Action
         // Ckeck for response
         $response = $GLOBALS['app']->Session->PopResponse('Notepad.Response');
         if ($response) {
-            $tpl->SetVariable('text', $response['text']);
-            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
         }
 
         // Fetch url params

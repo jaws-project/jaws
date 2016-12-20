@@ -80,8 +80,8 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
         $tpl->SetVariable('title', _t('ADDRESSBOOK_GROUP_TITLE'));
         $response = $GLOBALS['app']->Session->PopResponse('AddressBook.Groups');
         if (!empty($response)) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
         }
 
         $this->AjaxMe('site_script.js');
@@ -135,8 +135,8 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
         $tpl->SetVariable('top_title', _t('ADDRESSBOOK_GROUP_ADD_NEW_TITLE'));
         $response = $GLOBALS['app']->Session->PopResponse('AddressBook.Groups');
         if (!empty($response)) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
         }
 
         $tpl->SetVariable('gid', 0);
@@ -197,8 +197,8 @@ class AddressBook_Actions_Groups extends AddressBook_Actions_Default
         $tpl->SetVariable('top_title', _t('ADDRESSBOOK_GROUP_EDIT_TITLE'));
         $response = $GLOBALS['app']->Session->PopResponse('AddressBook.Groups');
         if (!empty($response)) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
         }
 
         $tpl->SetVariable('gid', $info['id']);

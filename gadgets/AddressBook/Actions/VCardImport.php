@@ -29,8 +29,8 @@ class AddressBook_Actions_VCardImport extends AddressBook_Actions_Default
         $tpl->SetVariable('lbl_save', _t('ADDRESSBOOK_IMPORT_VCART'));
         $response = $GLOBALS['app']->Session->PopResponse('AddressBook.Import');
         if (!empty($response)) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
         }
 
         $tpl->SetVariable('menubar', $this->MenuBar(''));

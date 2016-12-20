@@ -149,8 +149,8 @@ class Settings_Actions_Settings extends Jaws_Gadget_Action
         }
 
         if (!empty($response)) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
         }
 
         $tpl->ParseBlock('settings');

@@ -72,8 +72,8 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
 
         $response = $GLOBALS['app']->Session->PopResponse('Poll.Vote');
         if (!empty($response)) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
         }
 
         $allowVote = false;

@@ -38,8 +38,8 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         $tpl = $this->gadget->template->load('ManageTags.html');
         $tpl->SetBlock('tags');
         if ($response = $GLOBALS['app']->Session->PopResponse('Tags.ManageTags')) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
         }
 
         // Menubar

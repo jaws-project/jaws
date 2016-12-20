@@ -282,8 +282,8 @@ class Forums_Actions_Topics extends Forums_Actions_Default
         $rqst['notification'] = true;
         // response
         if ($response = $GLOBALS['app']->Session->PopResponse('UpdateTopic')) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
             $topic['subject'] = $response['data']['subject'];
             $topic['message'] = $response['data']['message'];
             $topic['update_reason'] =  $response['data']['update_reason'];
@@ -671,8 +671,8 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
             // error response
             if ($response = $GLOBALS['app']->Session->PopResponse('Forums.DeleteTopic')) {
-                $tpl->SetVariable('type', $response['type']);
-                $tpl->SetVariable('text', $response['text']);
+                $tpl->SetVariable('response_type', $response['type']);
+                $tpl->SetVariable('response_text', $response['text']);
             }
 
             // date format

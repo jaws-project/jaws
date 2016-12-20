@@ -55,8 +55,8 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         // Check for response
         $response = $GLOBALS['app']->Session->PopResponse('Events.Response');
         if ($response) {
-            $tpl->SetVariable('text', $response['text']);
-            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
         }
 
         // Check for search query

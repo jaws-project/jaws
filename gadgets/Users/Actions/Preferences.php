@@ -104,8 +104,8 @@ class Users_Actions_Preferences extends Users_Actions_Default
         }
 
         if ($response = $GLOBALS['app']->Session->PopResponse('Users.Preferences')) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
         }
 
         $tpl->ParseBlock('preferences');

@@ -40,8 +40,8 @@ class Users_Actions_Groups extends Users_Actions_Default
         $tpl->SetBlock('groups');
 
         if (!empty($response)) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
         }
 
         $tpl->SetVariable('title', _t('USERS_GROUPS'));
@@ -330,8 +330,8 @@ class Users_Actions_Groups extends Users_Actions_Default
 
         $response = $GLOBALS['app']->Session->PopResponse('Users.GroupMember');
         if (!empty($response)) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
         }
 
         $tpl->SetVariable('title', _t('USERS_MANAGE_GROUPS', $group['title']));

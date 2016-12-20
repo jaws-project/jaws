@@ -457,8 +457,8 @@ class Forums_Actions_Posts extends Forums_Actions_Default
 
         $rqst['notification'] = true;
         if ($response = $GLOBALS['app']->Session->PopResponse('UpdatePost')) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
             $post['message'] = $response['data']['message'];
             $rqst['notification'] = $response['data']['notification'];
         }
@@ -815,8 +815,8 @@ class Forums_Actions_Posts extends Forums_Actions_Default
 
             // error response
             if ($response = $GLOBALS['app']->Session->PopResponse('Forums.DeletePost')) {
-                $tpl->SetVariable('type', $response['type']);
-                $tpl->SetVariable('text', $response['text']);
+                $tpl->SetVariable('response_type', $response['type']);
+                $tpl->SetVariable('response_text', $response['text']);
             }
 
             // date format

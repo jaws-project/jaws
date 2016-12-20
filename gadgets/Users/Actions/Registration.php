@@ -181,8 +181,8 @@ class Users_Actions_Registration extends Jaws_Gadget_Action
         $mPolicy->loadCaptcha($tpl, 'register');
 
         if (!empty($response)) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
         }
 
         $tpl->ParseBlock('register');

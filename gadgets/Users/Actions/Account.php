@@ -73,8 +73,8 @@ class Users_Actions_Account extends Users_Actions_Default
         $avatar->SetID('avatar');
         $account['avatar'] = $avatar->Get();
 
-        $account['type'] = $response['type'];
-        $account['text'] = $response['text'];
+        $account['response_type'] = $response['type'];
+        $account['response_text'] = $response['text'];
 
         // Load the template
         $tpl = $this->gadget->template->load('Account.html');

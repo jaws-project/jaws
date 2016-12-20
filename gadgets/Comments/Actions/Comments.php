@@ -118,8 +118,8 @@ class Comments_Actions_Comments extends Comments_Actions_Default
         $tpl->SetVariable('bookmark', $gadget. '_'. $action);
         $response = $GLOBALS['app']->Session->PopResponse('Comments');
         if (!empty($response)) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
         }
 
         $tpl->ParseBlock('comment_form');

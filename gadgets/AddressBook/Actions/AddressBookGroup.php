@@ -36,8 +36,8 @@ class AddressBook_Actions_AddressBookGroup extends AddressBook_Actions_Default
 
         $response = $GLOBALS['app']->Session->PopResponse('AddressBook.AdrGroups');
         if (!empty($response)) {
-            $tpl->SetVariable('type', $response['type']);
-            $tpl->SetVariable('text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
         }
 
         $gModel = $this->gadget->model->load('Groups');

@@ -27,8 +27,8 @@ class Notepad_Actions_Create extends Jaws_Gadget_Action
         $note = array();
         $response = $GLOBALS['app']->Session->PopResponse('Notepad.Response');
         if ($response) {
-            $tpl->SetVariable('text', $response['text']);
-            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('note_title', $response['data']['title']);
             $note['content'] = $response['data']['content'];
         } else {

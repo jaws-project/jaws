@@ -54,8 +54,8 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
         // Response
         $response = $GLOBALS['app']->Session->PopResponse('Events.Response');
         if ($response) {
-            $tpl->SetVariable('resp_text', $response['text']);
-            $tpl->SetVariable('resp_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
+            $tpl->SetVariable('response_type', $response['type']);
             $event = $response['data'];
         }
 
