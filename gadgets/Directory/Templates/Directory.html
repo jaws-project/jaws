@@ -27,7 +27,7 @@
 <form name="search-file" method="post" action="{{requested_url}}">
   <input type="hidden" name="gadget" value="Directory" />
   <input type="hidden" name="action" value="Directory" />
-  <table id="logs_filter">
+  <table id="table logs_filter">
     <tr>
       <td class="filter_label"><label for="filter_file_type">{{lbl_type}}:</label></td>
       <td>
@@ -69,7 +69,7 @@
 <!-- END filters -->
 
 <!-- BEGIN files -->
-<table class="file-list">
+<table class="table file-list">
   <thead><tr>
     <th colspan="2">{{lbl_title}}</th>
     <th>{{lbl_created}}</th>
@@ -94,7 +94,7 @@
 <!-- END files -->
 
 <!-- BEGIN file -->
-<table class="file-info">
+<table class="table file-info">
   <tr><th width="1">{{lbl_title}}:</th><td><img src="{{thumbnail}}" alt="">{{title}}</td></tr>
   <tr><th>{{lbl_desc}}:</th><td>{{description}}</td></tr>
   <tr><th>{{lbl_filename}}:</th><td>{{user_filename}}</td></tr>

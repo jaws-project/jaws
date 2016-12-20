@@ -21,7 +21,7 @@
                 <input type="hidden" name="gadget" value="Directory" />
                 <input type="hidden" name="action" value="UploadFile" />
                 <input type="hidden" name="type" value="file" />
-                <table>
+                <table class="table">
                     <tr><th>{{lbl_file}}:</th><td>
                         <input class="form-control-file" type="file" name="file" onchange="uploadFile()" class="file" />
                     </td></tr>
@@ -32,7 +32,7 @@
                 <input type="hidden" name="gadget" value="Directory" />
                 <input type="hidden" name="action" value="UploadFile" />
                 <input type="hidden" name="type" value="thumbnail" />
-                <table>
+                <table class="table">
                     <tr><th>{{lbl_thumbnail}}:</th><td>
                         <input class="form-control-file" type="file" name="file" onchange="uploadThumbnailFile()" class="file" />
                     </td></tr>
@@ -41,7 +41,7 @@
             <form id="frm_file">
                 <input type="hidden" name="id" />
                 <input type="hidden" name="parent" id="parent" value="0" />
-                <table>
+                <table class="table">
                     <tr id="tr_file"><th>{{lbl_file}}:</th><td id="file_link"></td></tr>
                     <tr id="tr_thumbnail"><th>{{lbl_thumbnail}}:</th><td><img src="" id="thumbnail_image" alt=""></td></tr>
                     <tr><th>{{lbl_title}}:</th><td><input name="title" id="title" style="width: 100%" /></td></tr>
