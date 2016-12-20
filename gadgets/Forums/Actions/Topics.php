@@ -615,9 +615,9 @@ class Forums_Actions_Topics extends Forums_Actions_Default
 
                 $result = $tModel->DeleteTopic($topic['id'], $topic['fid']);
                 if (Jaws_Error::IsError($result)) {
-                    $GLOBALS['app']->Session->PushSimpleResponse(
+                    $GLOBALS['app']->Session->PushResponse(
                         _t('FORUMS_TOPICS_DELETE_ERROR'),
-                        'DeleteTopic'
+                        'Forums.DeleteTopic'
                     );
                     // redirect to referrer page
                     Jaws_Header::Referrer();
@@ -670,8 +670,9 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             $tpl->SetVariable('title', _t('FORUMS_TOPICS_DELETE_TITLE'));
 
             // error response
-            if ($response = $GLOBALS['app']->Session->PopSimpleResponse('DeleteTopic')) {
-                $tpl->SetVariable('msg', $response);
+            if ($response = $GLOBALS['app']->Session->PopResponse('Forums.DeleteTopic')) {
+                $tpl->SetVariable('type', $response['type']);
+                $tpl->SetVariable('text', $response['text']);
             }
 
             // date format

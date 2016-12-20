@@ -763,9 +763,9 @@ class Forums_Actions_Posts extends Forums_Actions_Default
                     $post['fid']
                 );
                 if (Jaws_Error::IsError($result)) {
-                    $GLOBALS['app']->Session->PushSimpleResponse(
+                    $GLOBALS['app']->Session->PushResponse(
                         _t('FORUMS_POSTS_DELETE_ERROR'),
-                        'DeletePost'
+                        'Forums.DeletePost'
                     );
                     // redirect to referrer page
                     Jaws_Header::Referrer();
@@ -814,8 +814,9 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             $tpl->SetVariable('title', _t('FORUMS_POSTS_DELETE_TITLE'));
 
             // error response
-            if ($response = $GLOBALS['app']->Session->PopSimpleResponse('DeletePost')) {
-                $tpl->SetVariable('msg', $response);
+            if ($response = $GLOBALS['app']->Session->PopResponse('Forums.DeletePost')) {
+                $tpl->SetVariable('type', $response['type']);
+                $tpl->SetVariable('text', $response['text']);
             }
 
             // date format
