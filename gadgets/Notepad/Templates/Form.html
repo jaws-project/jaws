@@ -8,9 +8,9 @@
   </div>
   <div class="gadget_content content">
     <form id="frm_note" name="frm_note" action="{{base_script}}" method="post">
-      <input class="form-control" type="hidden" name="gadget" value="Notepad" />
-      <input class="form-control" type="hidden" name="action" value="{{form_action}}" />
-      <input class="form-control" type="hidden" name="id" value="{{id}}" />
+      <input type="hidden" name="gadget" value="Notepad" />
+      <input type="hidden" name="action" value="{{form_action}}" />
+      <input type="hidden" name="id" value="{{id}}" />
       <div><label for="note_title">{{lbl_title}}:</label></div>
       <div><input class="form-control" id="note_title" name="title" value="{{note_title}}" class="x-large"/></div>
       <div><label for="note_content">{{lbl_content}}:</label></div>

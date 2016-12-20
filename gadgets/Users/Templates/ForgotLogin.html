@@ -7,8 +7,8 @@
     <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
   <form name="forgotBox" action="{{base_script}}" method="post">
-  <input class="form-control" type="hidden" name="gadget" value="Users" />
-  <input class="form-control" type="hidden" name="action" value="SendRecoverKey" />
+  <input type="hidden" name="gadget" value="Users" />
+  <input type="hidden" name="action" value="SendRecoverKey" />
   <div class="gadget_content content">
     <fieldset>
       <p>{{info}}</p>

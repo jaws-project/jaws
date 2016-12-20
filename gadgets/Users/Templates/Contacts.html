@@ -9,8 +9,8 @@
     <div id="users_contacts_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
   <form name="contacts" action="{{base_script}}" method="post" onsubmit="return updateContacts();">
-  <input class="form-control" type="hidden" name="gadget" value="Users" />
-  <input class="form-control" type="hidden" name="action" value="UpdateContacts" />
+  <input type="hidden" name="gadget" value="Users" />
+  <input type="hidden" name="action" value="UpdateContacts" />
   <div class="gadget_content content">
     <fieldset>
       <div class="user_avatar">{{avatar}}</div>

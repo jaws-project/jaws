@@ -1,6 +1,6 @@
 <!-- BEGIN image_captcha -->
 <div class="captcha captcha_image">
-  <input class="form-control" type="hidden" name="captcha_key" id="captcha_key_{{key}}" value="{{key}}" />
+  <input type="hidden" name="captcha_key" id="captcha_key_{{key}}" value="{{key}}" />
   <label for="entry_value_{{key}}">{{lbl_captcha}}:</label>
   <div class="captcha_value">
     <img id="captcha_image_{{key}}" class="captcha" alt="" width="128" height="48" title="{{captcha_title}}" src="{{url}}" />
@@ -16,7 +16,7 @@
 <!-- END image_captcha -->
 <!-- BEGIN text_captcha -->
 <div class="captcha captcha_text">
-  <input class="form-control" type="hidden" name="captcha_key" id="captcha_key_{{key}}" value="{{key}}" />
+  <input type="hidden" name="captcha_key" id="captcha_key_{{key}}" value="{{key}}" />
   <label for="entry_value_{{key}}">{{lbl_captcha}}:</label>
   <div class="captcha_value">
     <strong title="{{captcha_title}}" dir="ltr">{{captcha_text}}</strong>

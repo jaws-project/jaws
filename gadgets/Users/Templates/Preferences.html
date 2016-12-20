@@ -11,9 +11,9 @@
   <div class="gadget_content content">
     <!-- BEGIN gadget -->
     <form name="preferencesBox" action="{{base_script}}" method="post" onsubmit="return updatePreferences(this);">
-      <input class="form-control" type="hidden" name="gadget" value="Users" />
-      <input class="form-control" type="hidden" name="action" value="UpdatePreferences" />
-      <input class="form-control" type="hidden" name="component" value="{{component}}" />
+      <input type="hidden" name="gadget" value="Users" />
+      <input type="hidden" name="action" value="UpdatePreferences" />
+      <input type="hidden" name="component" value="{{component}}" />
       <fieldset>
         <legend class="collapse" onclick="this.className= this.className=='collapse'? 'uncollapse' : 'collapse';">
           <span>{{lbl_component}}</span>

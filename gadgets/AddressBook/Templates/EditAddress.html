@@ -13,8 +13,8 @@
         <form id="frm_person_image" name="frm_person_image" method="post"
             target="ifrm_upload" action="{{base_script}}"
             enctype="multipart/form-data" onsubmit="return true">
-          <input class="form-control" type="hidden" name="gadget" value="AddressBook" />
-          <input class="form-control" type="hidden" name="action" value="UploadImage" />
+          <input type="hidden" name="gadget" value="AddressBook" />
+          <input type="hidden" name="action" value="UploadImage" />
           <div class="actions" style="margin: 0 auto; position: relative; width: 55px;">
             <button class="btn" id="btn_upload" name="btn_upload" type="button">
               <img height="16" width="16" id="btn_upload_stockimage" alt="" src="{{upload_icon}}">
@@ -29,11 +29,11 @@
         </form>
       </div>
       <form name="addressbook" action="{{base_script}}" method="post" enctype="multipart/form-data" id="edit_addressbook">
-      <input class="form-control" type="hidden" name="gadget" value="AddressBook" />
-      <input class="form-control" type="hidden" name="action" value="{{action}}" />
-      <input class="form-control" type="hidden" name="id" value="{{id}}" />
-      <input class="form-control" type="hidden" name="image" id="image" value="" />
-      <input class="form-control" type="hidden" name="last_refreh_user_link" id="last_refreh_user_link" value="-1" />
+      <input type="hidden" name="gadget" value="AddressBook" />
+      <input type="hidden" name="action" value="{{action}}" />
+      <input type="hidden" name="id" value="{{id}}" />
+      <input type="hidden" name="image" id="image" value="" />
+      <input type="hidden" name="last_refreh_user_link" id="last_refreh_user_link" value="-1" />
           <div style="float: left; width: 410px;">
            <div style="float: left;">
             <label for="addressbook_user_link" style="display: block;" >{{lbl_user_link}}:</label>
@@ -65,9 +65,9 @@
             <label for="addressbook_firstname" >{{lbl_firstname}}:</label>
             <input class="form-control" id="addressbook_firstname" name="name[1]" type="text" value="{{name1}}" class="large"/>
            </div>
-          <input class="form-control" type="hidden" name="name[2]" value="" />
-          <input class="form-control" type="hidden" name="name[3]" value="" />
-          <input class="form-control" type="hidden" name="name[4]" value="" />
+          <input type="hidden" name="name[2]" value="" />
+          <input type="hidden" name="name[3]" value="" />
+          <input type="hidden" name="name[4]" value="" />
           </div>
           <div>
             <label for="addressbook_nickname" >{{lbl_nickname}}:</label>

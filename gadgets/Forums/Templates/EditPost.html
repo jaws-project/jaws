@@ -14,11 +14,11 @@
     <div id="forums_editpost_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
   <form name="editpost" action="{{requested_url}}" method="post" enctype="multipart/form-data">
-    <input class="form-control" type="hidden" name="gadget" value="Forums" />
-    <input class="form-control" type="hidden" name="action" value="UpdatePost" />
-    <input class="form-control" type="hidden" name="fid" value="{{fid}}" />
-    <input class="form-control" type="hidden" name="tid" value="{{tid}}" />
-    <input class="form-control" type="hidden" name="pid" value="{{pid}}" />
+    <input type="hidden" name="gadget" value="Forums" />
+    <input type="hidden" name="action" value="UpdatePost" />
+    <input type="hidden" name="fid" value="{{fid}}" />
+    <input type="hidden" name="tid" value="{{tid}}" />
+    <input type="hidden" name="pid" value="{{pid}}" />
     <div class="gadget_content content">
       <!-- BEGIN post_meta -->
       <div class="post_meta">
@@ -46,7 +46,7 @@
           </div>
           <!-- BEGIN current_attachment -->
           <div id="p_attach{{aid}}">
-            <input class="form-control" type="hidden" name="current_attachments[]" value="{{aid}}" />
+            <input type="hidden" name="current_attachments[]" value="{{aid}}" />
             <input class="form-control" type="text" name="current_attachments_filename" value="{{lbl_filename}}" disabled="disabled" class="large ltr"/>
             <a href="javascript:void(0);" onclick="removeAttachment(this);" title="{{lbl_remove_attachment}}">{{lbl_remove_attachment}}</a>
           </div>

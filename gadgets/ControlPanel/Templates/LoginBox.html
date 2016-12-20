@@ -36,13 +36,13 @@
             onsubmit="return encryptedElement(this.password, this.exponent.value, this.modulus.value, this.elements['usecrypt'].checked, this.length.value);"
             <!-- END onsubmit -->
             method="post">
-      <input class="form-control" type="hidden" name="gadget" value="ControlPanel" />
-      <input class="form-control" type="hidden" name="action" value="Login" />
-      <input class="form-control" type="hidden" name="redirect_to" value="{{redirect_to}}" />
+      <input type="hidden" name="gadget" value="ControlPanel" />
+      <input type="hidden" name="action" value="Login" />
+      <input type="hidden" name="redirect_to" value="{{redirect_to}}" />
       <!-- BEGIN encryption -->
-      <input class="form-control" type="hidden" name="length" value="{{length}}" />
-      <input class="form-control" type="hidden" name="modulus" value="{{modulus}}" />
-      <input class="form-control" type="hidden" name="exponent" value="{{exponent}}" />
+      <input type="hidden" name="length" value="{{length}}" />
+      <input type="hidden" name="modulus" value="{{modulus}}" />
+      <input type="hidden" name="exponent" value="{{exponent}}" />
       <!-- END encryption -->
       <fieldset id="loginbox">
         <legend><span>{{legend_title}}</span></legend>

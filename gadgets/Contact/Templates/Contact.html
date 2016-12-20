@@ -7,8 +7,8 @@
     <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
   <form name="contact" action="{{base_script}}" method="post" enctype="multipart/form-data">
-  <input class="form-control" type="hidden" name="gadget" value="Contact" />
-  <input class="form-control" type="hidden" name="action" value="Send" />
+  <input type="hidden" name="gadget" value="Contact" />
+  <input type="hidden" name="action" value="Send" />
   <div class="gadget_content content">
     <div class="contact_comments">{{comments}}</div>
   <!-- BEGIN name -->

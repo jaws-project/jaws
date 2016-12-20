@@ -15,13 +15,13 @@
                                                                  this.length.value);"
         <!-- END onsubmit -->
         method="post">
-  <input class="form-control" type="hidden" name="gadget" value="Users" />
-  <input class="form-control" type="hidden" name="action" value="Login" />
-  <input class="form-control" type="hidden" name="referrer" value="{{referrer}}" />
+  <input type="hidden" name="gadget" value="Users" />
+  <input type="hidden" name="action" value="Login" />
+  <input type="hidden" name="referrer" value="{{referrer}}" />
   <!-- BEGIN encryption -->
-  <input class="form-control" type="hidden" name="length" value="{{length}}" />
-  <input class="form-control" type="hidden" name="modulus" value="{{modulus}}" />
-  <input class="form-control" type="hidden" name="exponent" value="{{exponent}}" />
+  <input type="hidden" name="length" value="{{length}}" />
+  <input type="hidden" name="modulus" value="{{modulus}}" />
+  <input type="hidden" name="exponent" value="{{exponent}}" />
   <!-- END encryption -->
   <div class="gadget_content content">
     <div><label for="login_username">{{lbl_username}}:</label>

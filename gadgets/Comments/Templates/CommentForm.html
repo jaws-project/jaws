@@ -11,12 +11,12 @@
       </div>
     </div>
     <form action="{{base_script}}" method="post">
-        <input class="form-control" type="hidden" name="gadget" value="Comments"/>
-        <input class="form-control" type="hidden" name="action" value="PostMessage"/>
-        <input class="form-control" type="hidden" name="requested_gadget" value="{{gadget}}"/>
-        <input class="form-control" type="hidden" name="requested_action" value="{{action}}"/>
-        <input class="form-control" type="hidden" name="reference" value="{{reference}}"/>
-        <input class="form-control" type="hidden" name="redirect_to" value="{{redirect_to}}"/>
+        <input type="hidden" name="gadget" value="Comments"/>
+        <input type="hidden" name="action" value="PostMessage"/>
+        <input type="hidden" name="requested_gadget" value="{{gadget}}"/>
+        <input type="hidden" name="requested_action" value="{{action}}"/>
+        <input type="hidden" name="reference" value="{{reference}}"/>
+        <input type="hidden" name="redirect_to" value="{{redirect_to}}"/>
 
         <div class="gadget_content">
             <!-- BEGIN info-box -->

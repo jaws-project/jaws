@@ -7,8 +7,8 @@
         <div id="subscription_subscription_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
     </div>
     <form name="subscription" action="{{base_script}}" method="post" onsubmit="return updateSubscription();">
-        <input class="form-control" type="hidden" name="gadget" value="Subscription" />
-        <input class="form-control" type="hidden" name="action" value="UpdateSubscription" />
+        <input type="hidden" name="gadget" value="Subscription" />
+        <input type="hidden" name="action" value="UpdateSubscription" />
 
         <div class="gadget_content content">
             <!-- BEGIN gadget -->
@@ -80,13 +80,13 @@
 
 <div class="gadget_subscription">
 <form name="subscriptionForm" method="post" action="{{base_script}}">
-    <input class="form-control" type="hidden" name="gadget" value="Subscription"/>
-    <input class="form-control" type="hidden" name="action" value="UpdateGadgetSubscription"/>
+    <input type="hidden" name="gadget" value="Subscription"/>
+    <input type="hidden" name="action" value="UpdateGadgetSubscription"/>
 
-    <input class="form-control" type="hidden" name="subscription_gadget" value="{{gadget}}"/>
-    <input class="form-control" type="hidden" name="subscription_action" value="{{action}}"/>
-    <input class="form-control" type="hidden" name="subscription_reference" value="{{reference}}"/>
-    <input class="form-control" type="hidden" name="is_subscribe" value="{{is_subscribe}}"/>
+    <input type="hidden" name="subscription_gadget" value="{{gadget}}"/>
+    <input type="hidden" name="subscription_action" value="{{action}}"/>
+    <input type="hidden" name="subscription_reference" value="{{reference}}"/>
+    <input type="hidden" name="is_subscribe" value="{{is_subscribe}}"/>
 
     <!-- BEGIN email -->
     <input class="form-control" type="email" name="email">

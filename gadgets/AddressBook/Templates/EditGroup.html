@@ -8,9 +8,9 @@
     <div id="addressbook_managegroups_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
   <form name="addressbook_group" action="{{base_script}}" method="post" enctype="multipart/form-data">
-  <input class="form-control" type="hidden" name="gadget" value="AddressBook" />
-  <input class="form-control" type="hidden" name="action" value="{{action}}" />
-  <input class="form-control" type="hidden" name="gid" value="{{gid}}" />
+  <input type="hidden" name="gadget" value="AddressBook" />
+  <input type="hidden" name="action" value="{{action}}" />
+  <input type="hidden" name="gid" value="{{gid}}" />
   <div class="gadget_content content">
       <div><label>{{lbl_name}}:</label>
          <input class="form-control" name="name" type="text" value="{{name}}" class="large"/>
