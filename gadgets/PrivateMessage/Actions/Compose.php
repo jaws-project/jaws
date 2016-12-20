@@ -196,6 +196,11 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                     $tpl->SetBlock('compose/recipients/friend');
                     $tpl->SetVariable('value', $group['id']);
                     $tpl->SetVariable('title', $group['title']);
+
+                    $tpl->SetVariable('checked', '');
+                    if (in_array($group['id'], $recipient_friends)) {
+                        $tpl->SetVariable('checked', 'checked');
+                    }
                     $tpl->ParseBlock('compose/recipients/friend');
                 }
             }
