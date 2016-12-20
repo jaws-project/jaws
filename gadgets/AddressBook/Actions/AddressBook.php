@@ -150,8 +150,9 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
 
         $tpl->SetBlock("address");
         $tpl->SetVariable('top_title', _t('ADDRESSBOOK_ITEMS_ADD_NEW_TITLE'));
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
-            $tpl->SetVariable('msg', $response);
+        if ($response = $GLOBALS['app']->Session->PopResponse('AddressBook.InsertAddress')) {
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
         }
 
         $tpl->SetVariable('id', 0);
@@ -275,8 +276,9 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
         $tpl = $this->gadget->template->load('EditAddress.html');
         $tpl->SetBlock("address");
         $tpl->SetVariable('top_title', _t('ADDRESSBOOK_ITEMS_EDIT_TITLE'));
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('AddressBook')) {
-            $tpl->SetVariable('msg', $response);
+        if ($response = $GLOBALS['app']->Session->PopResponse('AddressBook.UpdateAddress')) {
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
         }
 
         $tpl->SetVariable('id', $info['id']);
@@ -538,9 +540,12 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
         $post['url'] = implode('\n', $urls);
 
         $adrID = $model->InsertAddress($post);
-
         if (Jaws_Error::IsError($adrID)) {
-            $GLOBALS['app']->Session->PushResponse($adrID->getMessage(), 'AddressBook', RESPONSE_ERROR);
+            $GLOBALS['app']->Session->PushResponse(
+                $adrID->getMessage(),
+                'AddressBook.InsertAddress',
+                RESPONSE_ERROR
+            );
             Jaws_Header::Referrer();
         } else {
             if (is_array($groupIDs) && count($groupIDs) > 0) {
@@ -550,7 +555,10 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
                 }
             }
 
-            $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_NEW_ADDRESS_SAVED'), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse(
+                _t('ADDRESSBOOK_RESULT_NEW_ADDRESS_SAVED'),
+                'AddressBook.InsertAddress'
+            );
             Jaws_Header::Location($this->gadget->urlMap('AddressBook'));
         }
     }
@@ -677,9 +685,12 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
         $post['url'] = implode('\n', $urls);
 
         $result = $model->UpdateAddress($id, $post);
-
         if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse($result->getMessage(), 'AddressBook', RESPONSE_ERROR);
+            $GLOBALS['app']->Session->PushResponse(
+                $result->getMessage(),
+                'AddressBook.UpdateAddress',
+                RESPONSE_ERROR
+            );
             Jaws_Header::Referrer();
         } else {
             $agModel = $this->gadget->model->load('AddressBookGroup');
@@ -690,7 +701,10 @@ class AddressBook_Actions_AddressBook extends AddressBook_Actions_Default
                 }
             }
 
-            $GLOBALS['app']->Session->PushResponse(_t('ADDRESSBOOK_RESULT_EDIT_ADDRESS_SAVED'), 'AddressBook');
+            $GLOBALS['app']->Session->PushResponse(
+                _t('ADDRESSBOOK_RESULT_EDIT_ADDRESS_SAVED'),
+                'AddressBook.UpdateAddress'
+            );
             $link = $this->gadget->urlMap('AddressBook');
             Jaws_Header::Location($link);
         }
