@@ -181,7 +181,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
 
             if (!empty($recipient_users)) {
                 foreach ($recipient_users as $userId) {
-                    $user_info = $userModel->GetUser($userId, true);
+                    $user_info = $userModel->GetUser((int)$userId, true);
                     $tpl->SetBlock('compose/recipients/user');
                     $tpl->SetVariable('title', $user_info['nickname']);
                     $tpl->SetVariable('value', $user_info['id']);
@@ -196,6 +196,11 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                     $tpl->SetBlock('compose/recipients/friend');
                     $tpl->SetVariable('value', $group['id']);
                     $tpl->SetVariable('title', $group['title']);
+
+                    $tpl->SetVariable('checked', '');
+                    if (in_array($group['id'], $recipient_friends)) {
+                        $tpl->SetVariable('checked', 'checked');
+                    }
                     $tpl->ParseBlock('compose/recipients/friend');
                 }
             }

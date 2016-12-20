@@ -710,20 +710,17 @@ width:100%;
 width:84%;
 }
 #userSearch{
-background:url("/gadgets/PrivateMessage/Resources/images/search.png") 98% no-repeat;
+background:url("../../../gadgets/PrivateMessage/Resources/images/search.png") 98% no-repeat;
 }
-.recipient_users > div:nth-child(1) {
-width:48%;
-padding-right:2%;
-float:left;
+.recipient_users > select {
+width:90%;
+float: left;
+height: 120px;
 }
-.recipient_users > div:nth-child(2) {
-width:48%;
-padding-right:2%;
-float:right;
-position:relative;
+.recipient_users > button {
+float: right;
 }
-.recipient_groups_area {
+.recipient_friends_area {
 width:48%;
 }
 #userSearchResult {
@@ -734,7 +731,7 @@ float:left;
 width:80%;
 }
 #userSearchResult .delete {
-background:url("/gadgets/PrivateMessage/Resources/images/close-mini.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+background:url("../../../gadgets/PrivateMessage/Resources/images/close-mini.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
 height:15px;
 position:absolute;
 right:-7px;

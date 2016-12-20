@@ -35,18 +35,15 @@
           </div>
 
           <div class="recipient_users">
-              <div>
-                  <select class="form-control" multiple="multiple" id="recipient_users" name="recipient_users">
-                      <!-- BEGIN user -->
-                      <option value="{{value}}">{{title}}</option>
-                      <!-- END user -->
-                  </select>
+              <select class="form-control" multiple="multiple" id="recipient_users" name="recipient_users">
+                  <!-- BEGIN user -->
+                  <option value="{{value}}">{{title}}</option>
+                  <!-- END user -->
+              </select>
 
-                  <button class="btn" type="button" name="btn_del" id="btn_del" onclick="javascript:removeUserFromList();">
-                      <img src="{{delete-icon}}" alt="{{lbl_remove_from_list}}" id="" width="16" height="16">
-                  </button>
-              </div>
-
+              <button class="btn" type="button" name="btn_del" id="btn_del" onclick="javascript:removeUserFromList();">
+                  <img src="{{delete-icon}}" alt="{{lbl_remove_from_list}}" id="" width="16" height="16">
+              </button>
           </div>
 
           <div class="recipient_friends_area">
@@ -55,7 +52,7 @@
               <!-- BEGIN friend -->
               <label for="friend_{{value}}" class="label label-default">{{title}}
                   <input type="checkbox" name="friends" value="{{value}}" id="friend_{{value}}"
-                         title="{{title}}" class="form-control" >
+                         title="{{title}}" class="form-control" {{checked}}>
               </label>
               <!-- END friend -->
               </div>
