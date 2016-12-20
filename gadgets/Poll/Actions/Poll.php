@@ -67,13 +67,14 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('Poll.html');
         $tpl->SetBlock('poll');
-        $tpl->SetVariable('title', _t('POLL_ACTION_POLL_TITLE'));
-
-        if ($response = $GLOBALS['app']->Session->PopSimpleResponse('Poll')) {
-            $tpl->SetVariable('msg', $response);
-        }
-
+        //$tpl->SetVariable('title', _t('POLL_ACTION_POLL_TITLE'));
         $tpl->SetVariable('title', $poll['title']);
+
+        $response = $GLOBALS['app']->Session->PopResponse('Poll.Vote');
+        if (!empty($response)) {
+            $tpl->SetVariable('type', $response['type']);
+            $tpl->SetVariable('text', $response['text']);
+        }
 
         $allowVote = false;
         switch ($poll['restriction']) {
@@ -108,15 +109,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                     $tpl->SetVariable('aid', $answer['id']);
                     $tpl->SetVariable('order', $answer['order']+1);
                     $tpl->SetVariable('title', $answer['title']);
-                    if ($poll['type'] == 1) {
-                        $rb = '<input type="checkbox" name="answers[]" id="poll_answer_input_'.
-                              $answer['id'].'" value="' .$answer['id']. '"/>';
-                    } else {
-                        $rb = '<input type="radio" name="answers[]" id="poll_answer_input_'.
-                              $answer['id'].'" value="' .$answer['id']. '"/>';
-                    }
-
-                    $tpl->SetVariable('input', $rb);
+                    $tpl->SetVariable('type', $poll['type'] == 1? 'checkbox' : 'radio');
                     $tpl->SetVariable('votes', $answer['votes']);
                     $percent = ($total_votes==0)? 0 : floor(($answer['votes']/$total_votes)*100);
                     $tpl->SetVariable('percent', $percent);
@@ -255,15 +248,19 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
                     (int)$this->gadget->registry->fetch('cookie_period') * 24 * 60);
                 $res = $model->AddAnswerVotes($poll['id'], $post['answers']);
             }
-
             if (Jaws_Error::IsError($res)) {
-                $GLOBALS['app']->Session->PushSimpleResponse($res->getMessage(), 'Poll');
+                $GLOBALS['app']->Session->PushResponse(
+                    $res->GetMessage(),
+                    'Poll.Vote',
+                    RESPONSE_ERROR
+                );
             } else {
-                $GLOBALS['app']->Session->PushSimpleResponse(_t('POLL_THANKS'), 'Poll');
+                $GLOBALS['app']->Session->PushResponse(
+                    _t('POLL_THANKS'),
+                    'Poll.Vote'
+                );
             }
             Jaws_Header::Referrer();
-
-
         }
     }
 
