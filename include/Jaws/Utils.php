@@ -523,7 +523,9 @@ class Jaws_Utils
                 if (isset($file['error']) && !empty($file['error']) && $file['error'] != 4) {
                     return Jaws_Error::raiseError(
                         _t('GLOBAL_ERROR_UPLOAD_'.$file['error']),
-                        __FUNCTION__
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE,
+                        1
                     );
                 }
 
@@ -543,9 +545,11 @@ class Jaws_Utils
                 $fileinfo = pathinfo($host_filename);
                 if (isset($fileinfo['extension'])) {
                     if (!empty($allow_formats) && !in_array($fileinfo['extension'], $allow_formats)) {
-                        return new Jaws_Error(
+                        return Jaws_Error::raiseError(
                             _t('GLOBAL_ERROR_UPLOAD_INVALID_FORMAT', $host_filename),
-                            __FUNCTION__
+                            __FUNCTION__,
+                            JAWS_ERROR_NOTICE,
+                            1
                         );
                     }
                     $fileinfo['extension'] = '.'. $fileinfo['extension'];
@@ -562,8 +566,12 @@ class Jaws_Utils
                 $uploadfile = $dest . $host_filename;
                 if (is_uploaded_file($file['tmp_name'])) {
                     if (!move_uploaded_file($file['tmp_name'], $uploadfile)) {
-                        return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD', $host_filename),
-                                              __FUNCTION__);
+                        return Jaws_Error::raiseError(
+                            _t('GLOBAL_ERROR_UPLOAD', $host_filename),
+                            __FUNCTION__,
+                            JAWS_ERROR_NOTICE,
+                            1
+                        );
                     }
                 } else {
                     // On windows-systems we can't rename a file to an existing destination,
@@ -575,9 +583,11 @@ class Jaws_Utils
                         @rename($file['tmp_name'], $uploadfile):
                         @copy($file['tmp_name'], $uploadfile);
                     if (!$res) {
-                        return new Jaws_Error(
+                        return Jaws_Error::raiseError(
                             _t('GLOBAL_ERROR_UPLOAD', $host_filename),
-                            __FUNCTION__
+                            __FUNCTION__,
+                            JAWS_ERROR_NOTICE,
+                            1
                         );
                     }
                 }
@@ -585,8 +595,12 @@ class Jaws_Utils
                 // Check if the file has been altered or is corrupted
                 if (filesize($uploadfile) != $file['size']) {
                     @unlink($uploadfile);
-                    return new Jaws_Error(_t('GLOBAL_ERROR_UPLOAD_CORRUPTED', $host_filename),
-                                             __FUNCTION__);
+                    return Jaws_Error::raiseError(
+                        _t('GLOBAL_ERROR_UPLOAD_CORRUPTED', $host_filename),
+                        __FUNCTION__,
+                        JAWS_ERROR_NOTICE,
+                        1
+                    );
                 }
 
                 Jaws_Utils::chmod($uploadfile);
