@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>database</variable></name>
+
+ <table>
+    <name><variable>table_prefix</variable>users</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>domain</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>username</name>
+            <type>text</type>
+            <length>32</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>password</name>
+            <type>text</type>
+            <length>128</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>password_verify_key</name>
+            <type>text</type>
+            <length>48</length>
+        </field>
+
+        <field>
+            <name>superadmin</name>
+            <type>boolean</type>
+            <default>false</default>
+        </field>
+
+        <field>
+            <name>nickname</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>email</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>new_email</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>email_verify_key</name>
+            <type>text</type>
+            <length>48</length>
+        </field>
+
+        <field>
+            <name>avatar</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>fname</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>lname</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>gender</name>
+            <type>integer</type>
+            <length>1</length>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>ssn</name>
+            <type>text</type>
+            <length>24</length>
+        </field>
+
+        <field>
+            <name>dob</name>
+            <type>timestamp</type>
+        </field>
+
+        <field>
+            <name>pgpkey</name>
+            <type>text</type>
+        </field>
+
+        <field>
+            <name>url</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>about</name>
+            <type>text</type>
+        </field>
+
+        <field>
+            <name>experiences</name>
+            <type>text</type>
+        </field>
+
+        <field>
+            <name>occupations</name>
+            <type>text</type>
+        </field>
+
+        <field>
+            <name>interests</name>
+            <type>text</type>
+        </field>
+
+        <field>
+            <name>public</name>
+            <type>boolean</type>
+            <default>false</default>
+            <description>profile information accessible for anonymous</description>
+        </field>
+
+        <field>
+            <name>privacy</name>
+            <type>boolean</type>
+            <default>true</default>
+        </field>
+
+        <field>
+            <name>agreement</name>
+            <type>boolean</type>
+            <default>false</default>
+        </field>
+
+        <field>
+            <name>signature</name>
+            <type>text</type>
+            <length>255</length>
+        </field>
+
+        <field>
+            <name>country</name>
+            <type>text</type>
+            <length>3</length>
+        </field>
+
+        <field>
+            <name>city</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>address</name>
+            <type>text</type>
+            <length>255</length>
+        </field>
+
+        <field>
+            <name>postal_code</name>
+            <type>text</type>
+            <length>24</length>
+        </field>
+
+        <field>
+            <name>phone_number</name>
+            <type>text</type>
+            <length>24</length>
+        </field>
+
+        <field>
+            <name>mobile_number</name>
+            <type>text</type>
+            <length>24</length>
+        </field>
+
+        <field>
+            <name>fax_number</name>
+            <type>text</type>
+            <length>24</length>
+        </field>
+
+        <field>
+            <name>bad_password_count</name>
+            <type>integer</type>
+            <length>2</length>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>concurrents</name>
+            <type>integer</type>
+            <length>2</length>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>last_password_update</name>
+            <was>password_changed_date</was>
+            <type>integer</type>
+            <length>16</length>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>last_access</name>
+            <type>integer</type>
+            <length>16</length>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>logon_hours</name>
+            <type>text</type>
+            <length>42</length>
+            <default>FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</default>
+        </field>
+
+        <field>
+            <name>expiry_date</name>
+            <type>integer</type>
+            <length>16</length>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>registered_date</name>
+            <type>integer</type>
+            <length>16</length>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>internal_domain</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>internal_email</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>internal_maildir</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>internal_mailquota</name>
+            <type>integer</type>
+        </field>
+
+        <field>
+            <name>internal_ftpdir</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>internal_ftpquota</name>
+            <type>integer</type>
+        </field>
+
+        <field>
+            <name>status</name>
+            <type>integer</type>
+            <length>1</length>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>last_update</name>
+            <type>integer</type>
+            <length>16</length>
+            <default>0</default>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>users_domain_username</name>
+            <unique>true</unique>
+            <field>
+                <name>domain</name>
+            </field>
+            <field>
+                <name>username</name>
+            </field>
+        </index>
+
+        <index>
+            <name><variable>table_prefix</variable>users_email</name>
+            <field>
+                <name>email</name>
+            </field>
+        </index>
+
+        <index>
+            <name><variable>table_prefix</variable>users_internal_domain</name>
+            <field>
+                <name>internal_domain</name>
+            </field>
+        </index>
+
+        <index>
+            <name><variable>table_prefix</variable>users_internal_email</name>
+            <field>
+                <name>internal_email</name>
+            </field>
+        </index>
+
+    </declaration>
+ </table>
+
+ <table>
+    <name><variable>table_prefix</variable>groups</name>
+    <declaration>
+
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>owner</name>
+            <type>integer</type>
+            <default>0</default>
+        </field>
+
+        <field>
+            <name>name</name>
+            <type>text</type>
+            <length>32</length>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>title</name>
+            <type>text</type>
+            <length>128</length>
+        </field>
+
+        <field>
+            <name>description</name>
+            <type>text</type>
+        </field>
+
+        <field>
+            <name>removable</name>
+            <type>boolean</type>
+            <default>true</default>
+        </field>
+
+        <field>
+            <name>enabled</name>
+            <type>boolean</type>
+            <default>true</default>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>groups_name</name>
+            <unique>true</unique>
+            <field>
+                <name>name</name>
+            </field>
+        </index>
+
+    </declaration>
+ </table>
+
+ <table>
+    <name><variable>table_prefix</variable>users_groups</name>
+    <declaration>
+        <field>
+            <name>id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+            <autoincrement>true</autoincrement>
+        </field>
+
+        <field>
+            <name>user_id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+        </field>
+
+        <field>
+            <name>group_id</name>
+            <type>integer</type>
+            <notnull>true</notnull>
+        </field>
+
+        <index>
+            <name><variable>table_prefix</variable>users_groups_ui</name>
+            <field>
+                <name>user_id</name>
+            </field>
+        </index>
+
+        <index>
+            <name><variable>table_prefix</variable>users_groups_gi</name>
+            <field>
+                <name>group_id</name>
+            </field>
+        </index>
+
+    </declaration>
+ </table>
+
+</database>

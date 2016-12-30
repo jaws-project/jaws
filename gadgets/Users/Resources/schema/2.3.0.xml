@@ -180,6 +180,36 @@
             </field>
 
             <field>
+                <name>address</name>
+                <type>text</type>
+                <length>255</length>
+            </field>
+
+            <field>
+                <name>postal_code</name>
+                <type>text</type>
+                <length>24</length>
+            </field>
+
+            <field>
+                <name>phone_number</name>
+                <type>text</type>
+                <length>24</length>
+            </field>
+
+            <field>
+                <name>mobile_number</name>
+                <type>text</type>
+                <length>24</length>
+            </field>
+
+            <field>
+                <name>fax_number</name>
+                <type>text</type>
+                <length>24</length>
+            </field>
+
+            <field>
                 <name>bad_password_count</name>
                 <type>integer</type>
                 <length>2</length>

@@ -130,7 +130,69 @@ class Users_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '2.2.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '2.1.0.xml');
+            $result = $this->installSchema('2.2.0.xml', '', '2.1.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
+        if (version_compare($old, '2.3.0', '<')) {
+            $result = $this->installSchema('2.3.0.xml', '', '2.2.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            $objUsers = jaws()->loadObject('Jaws_User', 'Users');
+            if (Jaws_Error::IsError($objUsers)) {
+                return $objUsers;
+            }
+
+            $tblUsers = Jaws_ORM::getInstance()->table('users');
+            $users = $tblUsers->select(
+                'id:integer', 'email', 'url', 'nickname', 'fname', 'lname', 'avatar',
+                'address', 'postal_code', 'phone_number', 'mobile_number', 'fax_number'
+            )->orderBy('id')->fetchAll();
+            if (Jaws_Error::IsError($users)) {
+                return $users;
+            }
+
+            $tblUsers->beginTransaction();
+            $tblContacts = Jaws_ORM::getInstance()->table('users_contacts');
+            foreach ($users as $user) {
+                $result = $tblContacts->insert(
+                    array(
+                        'owner'   => $user['id'],
+                        'name'    => $user['nickname'],
+                        'image'   => $user['avatar'],
+                        'note'    => '',
+                        'tel'     => json_encode(array('home' => $user['phone_number'])),
+                        'fax'     => json_encode(array('home' => $user['fax_number'])),
+                        'mobile'  => json_encode(array('home' => $user['mobile_number'])),
+                        'url'     => json_encode(array('home' => $user['url'])),
+                        'email'   => json_encode(array('home' => $user['email'])),
+                        'address' => json_encode(array(
+                            'home' => array(
+                                'location' => $user['address'],
+                                'postcode' => $user['postal_code']
+                            )
+                        )),
+                    )
+                )->exec();
+                if (Jaws_Error::IsError($result)) {
+                    return $result;
+                }
+                // link inserted contact to default user contact
+                $result = $tblUsers->update(array('contact' => (int)$result))->where('id', $user['id'])->exec();
+                if (Jaws_Error::IsError($result)) {
+                    return $result;
+                }
+            }
+
+            $tblUsers->commit();
+        }
+
+        if (version_compare($old, '2.4.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '2.3.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
