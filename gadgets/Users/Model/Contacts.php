@@ -4,9 +4,6 @@
  *
  * @category   GadgetModel
  * @package    Users
- * @author     Mojtaba Ebrahimi <ebrahimi@zehneziba.ir>
- * @copyright  2013-2015 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Users_Model_Contacts extends Jaws_Gadget_Model
 {

@@ -4,9 +4,6 @@
  *
  * @category   GadgetModel
  * @package    Users
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2013-2015 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Users_Model_Country extends Jaws_Gadget_Model
 {

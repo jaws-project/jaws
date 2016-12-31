@@ -4,10 +4,6 @@
  *
  * @category   Ajax
  * @package    Users
- * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright  2005-2015 Jaws Development Group
- * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
 {
