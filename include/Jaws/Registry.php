@@ -322,6 +322,10 @@ class Jaws_Registry
      */
     function delete($component, $key_name = '')
     {
+        if (empty($component)) {
+            return false;
+        }
+
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         $tblReg->delete()->where('component', $component);
         if (!empty($key_name)) {
@@ -351,6 +355,10 @@ class Jaws_Registry
      */
     function deleteByUser($user, $component = '')
     {
+        if ((int)$user == 0) {
+            return false;
+        }
+
         $tblACL = Jaws_ORM::getInstance()->table('registry');
         $tblACL->delete()->where('user', (int)$user);
         if (!empty($component)) {
