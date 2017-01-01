@@ -169,6 +169,24 @@
             </field>
 
             <field>
+                <name>country</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>province</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>city</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
                 <name>bad_password_count</name>
                 <type>integer</type>
                 <length>2</length>
@@ -449,18 +467,6 @@
             <field>
                 <name>email</name>
                 <type>text</type>
-            </field>
-
-            <field>
-                <name>country</name>
-                <type>text</type>
-                <length>3</length>
-            </field>
-
-            <field>
-                <name>city</name>
-                <type>text</type>
-                <length>128</length>
             </field>
 
             <field>
