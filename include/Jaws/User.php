@@ -195,10 +195,10 @@ class Jaws_User
      */
     function GetUser($user, $account = true, $personal = false, $contacts = false, $password = false)
     {
-        $columns = array('id:integer', 'avatar');
+        $columns = array('users.id:integer', 'avatar');
         // account information
         if ($account) {
-            $columns = array_merge($columns, array('username', 'nickname', 'email', 'superadmin:boolean',
+            $columns = array_merge($columns, array('username', 'nickname', 'users.email', 'superadmin:boolean',
                 'concurrents', 'logon_hours', 'expiry_date', 'registered_date', 'status:integer',
                 'last_update', 'bad_password_count', 'last_access',)
             );
@@ -209,21 +209,26 @@ class Jaws_User
         }
 
         if ($personal) {
-            $columns = array_merge($columns, array('fname', 'lname', 'gender', 'ssn', 'dob', 'url',
+            $columns = array_merge($columns, array('fname', 'lname', 'gender', 'ssn', 'dob',
                 'public:boolean', 'privacy:boolean', 'signature', 'about', 'experiences', 'occupations',
                 'interests',)
             );
         }
 
         if ($contacts) {
-            $columns = array_merge($columns, array('country', 'city', 'address', 'postal_code', 'phone_number',
-                'mobile_number', 'fax_number'));
+            $columns = array_merge(
+                $columns,
+                array('country', 'city', 'users.mobile', 'uc.address', 'uc.tel', 'uc.fax')
+            );
         }
 
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select($columns);
+        if ($contacts) {
+            $usersTable->join('users_contacts as uc', 'uc.id', 'users.contact', 'left');
+        }
         if (is_int($user)) {
-            $usersTable->where('id', $user);
+            $usersTable->where('users.id', $user);
         } else {
              $usersTable->where('lower(username)', Jaws_UTF8::strtolower($user));
         }
@@ -947,7 +952,7 @@ class Jaws_User
         // unset invalid keys
         $invalids = array_diff(
             array_keys($cData),
-            array('country', 'city', 'address', 'postal_code', 'phone_number', 'mobile_number', 'fax_number')
+            array('country', 'city', 'tel', 'mobile', 'fax', 'address')
         );
         foreach ($invalids as $invalid) {
             unset($cData[$invalid]);
