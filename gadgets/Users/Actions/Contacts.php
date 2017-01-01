@@ -68,23 +68,6 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $avatar->SetID('avatar');
         $tpl->SetVariable('avatar', $avatar->Get());
 
-        // countries list
-        $ObjCountry = $this->gadget->model->load('Country');
-        $countries = $ObjCountry->GetCountries();
-        if (!Jaws_Error::IsError($Countries)) {
-            array_unshift($countries, _t('USERS_ADVANCED_OPTS_NOT_YET'));
-            foreach($countries as $code => $name) {
-                $tpl->SetBlock('contacts/country');
-                $tpl->SetVariable('code', $code);
-                $tpl->SetVariable('name', $name);
-                if ($contacts['country'] === $code) {
-                    $tpl->SetBlock('contacts/country/selected');
-                    $tpl->ParseBlock('contacts/country/selected');
-                }
-                $tpl->ParseBlock('contacts/country');
-            }
-        }
-
         if (!empty($response)) {
             $tpl->SetVariable('response_type', $response['type']);
             $tpl->SetVariable('response_text', $response['text']);
