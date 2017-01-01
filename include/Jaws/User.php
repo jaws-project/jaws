@@ -198,9 +198,9 @@ class Jaws_User
         $columns = array('users.id:integer', 'avatar');
         // account information
         if ($account) {
-            $columns = array_merge($columns, array('username', 'nickname', 'users.email', 'superadmin:boolean',
-                'concurrents', 'logon_hours', 'expiry_date', 'registered_date', 'status:integer',
-                'last_update', 'bad_password_count', 'last_access',)
+            $columns = array_merge($columns, array('username', 'nickname', 'users.email', 'users.mobile',
+                'superadmin:boolean', 'concurrents', 'logon_hours', 'expiry_date', 'registered_date',
+                'status:integer', 'last_update', 'bad_password_count', 'last_access',)
             );
         }
 
@@ -215,18 +215,8 @@ class Jaws_User
             );
         }
 
-        if ($contacts) {
-            $columns = array_merge(
-                $columns,
-                array('country', 'city', 'users.mobile', 'uc.address', 'uc.tel', 'uc.fax')
-            );
-        }
-
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select($columns);
-        if ($contacts) {
-            $usersTable->join('users_contacts as uc', 'uc.id', 'users.contact', 'left');
-        }
         if (is_int($user)) {
             $usersTable->where('users.id', $user);
         } else {
@@ -263,15 +253,10 @@ class Jaws_User
         }
 
         if ($personal) {
-            $columns = array_merge($columns, array('fname', 'lname', 'gender', 'ssn', 'dob', 'url',
+            $columns = array_merge($columns, array('fname', 'lname', 'gender', 'ssn', 'dob',
                 'public:boolean', 'privacy:boolean', 'signature', 'about', 'experiences', 'occupations',
                 'interests',)
             );
-        }
-
-        if ($contacts) {
-            $columns = array_merge($columns, array('country', 'city', 'address', 'postal_code', 'phone_number',
-                'mobile_number', 'fax_number'));
         }
 
         $usersTable = Jaws_ORM::getInstance()->table('users');
@@ -876,7 +861,7 @@ class Jaws_User
         $invalids = array_diff(
             array_keys($pData),
             array('fname', 'lname', 'gender', 'ssn', 'dob',
-                'url', 'signature', 'about', 'experiences',
+                'signature', 'about', 'experiences',
                 'occupations', 'interests', 'avatar', 'privacy',
             )
         );
@@ -940,27 +925,33 @@ class Jaws_User
     }
 
     /**
-     * Update contacts information of a user such as country, city, address, postal_code, etc..
+     * Update contacts information of a user such as address, tel, mobile, fax, etc..
      *
      * @access  public
-     * @param   int     $id     User's ID
-     * @param   array   $cData  Contacts information data
+     * @param   int     $uid    User's ID
+     * @param   int     $cid    Contact ID
+     * @param   array   $data   Contacts information data
      * @return  bool    Returns true on success, false on failure
      */
-    function UpdateContacts($id, $cData)
+    function UpdateContacts($uid, $cid, $data)
     {
         // unset invalid keys
         $invalids = array_diff(
             array_keys($cData),
-            array('country', 'city', 'tel', 'mobile', 'fax', 'address')
+            array('tel', 'mobile', 'fax', 'url', 'address')
         );
         foreach ($invalids as $invalid) {
             unset($cData[$invalid]);
         }
 
-        $cData['last_update'] = time();
-        $usersTable = Jaws_ORM::getInstance()->table('users');
-        $result = $usersTable->update($cData)->where('id', $id)->exec();
+        //$cData['last_update'] = time();
+        $result = Jaws_ORM::getInstance()
+            ->table('users_contacts')
+            ->update($data)
+            ->where('id', $cid)
+            ->and()
+            ->where('owner', $uid)
+            ->exec();
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
@@ -980,7 +971,7 @@ class Jaws_User
      * @access  public
      * @param   array   $gData  Group information data
      * @param   int     $owner  The owner of group
-     * @return  bool    Returns true if group  was sucessfully added, false if not
+     * @return  bool    Returns true if group  was successfully added, false if not
      */
     function AddGroup($gData, $owner = 0)
     {
