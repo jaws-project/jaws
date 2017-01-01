@@ -163,18 +163,6 @@
             </field>
 
             <field>
-                <name>country</name>
-                <type>text</type>
-                <length>3</length>
-            </field>
-
-            <field>
-                <name>city</name>
-                <type>text</type>
-                <length>128</length>
-            </field>
-
-            <field>
                 <name>contact</name>
                 <type>integer</type>
                 <default>0</default>
@@ -461,6 +449,18 @@
             <field>
                 <name>email</name>
                 <type>text</type>
+            </field>
+
+            <field>
+                <name>country</name>
+                <type>text</type>
+                <length>3</length>
+            </field>
+
+            <field>
+                <name>city</name>
+                <type>text</type>
+                <length>128</length>
             </field>
 
             <field>
