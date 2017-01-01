@@ -195,7 +195,7 @@ class Jaws_User
      */
     function GetUser($user, $account = true, $personal = false, $contacts = false, $password = false)
     {
-        $columns = array('users.id:integer', 'avatar');
+        $columns = array('users.id:integer', 'contact:integer', 'avatar');
         // account information
         if ($account) {
             $columns = array_merge($columns, array('username', 'nickname', 'users.email', 'users.mobile',
@@ -220,10 +220,31 @@ class Jaws_User
         if (is_int($user)) {
             $usersTable->where('users.id', $user);
         } else {
-             $usersTable->where('lower(username)', Jaws_UTF8::strtolower($user));
+            $usersTable->where('lower(username)', Jaws_UTF8::strtolower($user));
         }
 
         return $usersTable->fetchRow();
+    }
+
+    /**
+     * Get the contact information of an user by the username or ID
+     *
+     * @access  public
+     * @param   mixed   $user   The username or ID
+     * @return  mixed   Returns an array with the contact information of the user or Jaws_Error
+     */
+    function GetUserContact($user)
+    {
+        $objORM = Jaws_ORM::getInstance()
+            ->table('users_contacts', 'uc')
+            ->select('uc.id:integer', 'uc.owner:integer', 'uc.tel', 'uc.mobile', 'uc.fax', 'uc.url', 'uc.address')
+            ->join('users', 'users.contact', 'uc.id');
+        if (is_int($user)) {
+            $objORM->where('users.id', $user);
+        } else {
+            $objORM->where('lower(username)', Jaws_UTF8::strtolower($user));
+        }
+        return $objORM->fetchRow();
     }
 
     /**
@@ -929,6 +950,39 @@ class Jaws_User
      *
      * @access  public
      * @param   int     $uid    User's ID
+     * @param   array   $data   Contacts information data
+     * @return  bool    Returns true on success, false on failure
+     */
+    function UpdateContact($uid, $data)
+    {
+        // unset invalid keys
+        $invalids = array_diff(
+            array_keys($data),
+            array('tel', 'mobile', 'fax', 'url', 'address')
+        );
+        foreach ($invalids as $invalid) {
+            unset($data[$invalid]);
+        }
+
+        $user = $this->GetUser($uid);
+        if (Jaws_Error::IsError($user) || empty($user)) {
+            return false;
+        }
+
+        $data['owner'] = $user['id'];
+        $objORM = Jaws_ORM::getInstance()->table('users_contacts');
+        return $objORM->upsert($data)
+            ->where('owner', $uid)
+            ->and()
+            ->where('id', $user['contact'])
+            ->exec();
+    }
+
+    /**
+     * Update contacts information of a user such as address, tel, mobile, fax, etc..
+     *
+     * @access  public
+     * @param   int     $uid    User's ID
      * @param   int     $cid    Contact ID
      * @param   array   $data   Contacts information data
      * @return  bool    Returns true on success, false on failure
@@ -937,32 +991,21 @@ class Jaws_User
     {
         // unset invalid keys
         $invalids = array_diff(
-            array_keys($cData),
+            array_keys($data),
             array('tel', 'mobile', 'fax', 'url', 'address')
         );
         foreach ($invalids as $invalid) {
-            unset($cData[$invalid]);
+            unset($data[$invalid]);
         }
 
-        //$cData['last_update'] = time();
-        $result = Jaws_ORM::getInstance()
+        $data['owner'] = $uid;
+        return Jaws_ORM::getInstance()
             ->table('users_contacts')
             ->update($data)
             ->where('id', $cid)
             ->and()
             ->where('owner', $uid)
             ->exec();
-        if (Jaws_Error::IsError($result)) {
-            return $result;
-        }
-
-        // Let everyone know a user has been updated
-        $res = $GLOBALS['app']->Listener->Shout('Users', 'UpdateUser', $id);
-        if (Jaws_Error::IsError($res)) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
