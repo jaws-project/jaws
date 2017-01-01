@@ -118,12 +118,6 @@
             </field>
 
             <field>
-                <name>url</name>
-                <type>text</type>
-                <length>128</length>
-            </field>
-
-            <field>
                 <name>about</name>
                 <type>text</type>
             </field>
