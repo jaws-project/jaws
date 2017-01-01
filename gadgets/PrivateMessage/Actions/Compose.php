@@ -22,6 +22,11 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             return Jaws_HTTPError::Get(401);
         }
 
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/bootstrap/js/bootstrap.min.js');
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/fuelux/js/fuelux.min.js');
+        $GLOBALS['app']->Layout->AddHeadLink("libraries/bootstrap/css/bootstrap.min.css");
+        $GLOBALS['app']->Layout->AddHeadLink("libraries/fuelux/css/fuelux.min.css");
+
         $this->gadget->CheckPermission('SendMessage');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $this->AjaxMe('index.js');
