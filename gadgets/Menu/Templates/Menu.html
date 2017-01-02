@@ -27,20 +27,36 @@
 
 <!-- BEGIN mainmenu -->
 <ul class="nav navbar-nav">
-<!-- BEGIN item -->
-  <li class="{{class}}">
-    <a href="{{url}}" target="{{target}}">{{image}}<span>{{title}}</span></a>{{submenu}}
+  <!-- BEGIN complex -->
+  <li class="dropdown {{class}}">
+    <a class="dropdown-toggle" href="{{url}}" target="{{target}}" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+      {{image}}<span>{{title}}</span> <span class="caret"></span>
+    </a>
+    {{submenu}}
   </li>
-  <!-- END item -->
+  <!-- END complex -->
+  <!-- BEGIN simple -->
+  <li class="{{class}}">
+    <a href="{{url}}" target="{{target}}">{{image}}<span>{{title}}</span></a>
+  </li>
+  <!-- END simple -->
 </ul>
 <!-- END mainmenu -->
 
 <!-- BEGIN submenu -->
 <ul class="dropdown-menu">
-<!-- BEGIN item -->
-  <li class="{{class}}">
-    <a href="{{url}}" target="{{target}}">{{image}}<span>{{title}}</span></a>{{submenu}}
+  <!-- BEGIN complex -->
+  <li class="dropdown {{class}}">
+    <a class="dropdown-toggle" href="{{url}}" target="{{target}}" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+      {{image}}<span>{{title}}</span> <span class="caret"></span>
+    </a>
+    {{submenu}}
   </li>
-  <!-- END item -->
+  <!-- END complex -->
+  <!-- BEGIN simple -->
+  <li class="{{class}}">
+    <a href="{{url}}" target="{{target}}">{{image}}<span>{{title}}</span></a>
+  </li>
+  <!-- END simple -->
 </ul>
 <!-- END submenu -->

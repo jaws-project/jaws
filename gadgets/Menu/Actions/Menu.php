@@ -147,9 +147,13 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             }
 
             $level++;
+            //get sub level menus
+            $subLevel = $this->GetNextLevel($model, $tpl_str, $gid, $menus[$i]['id']);
+            $subBlock = empty($subLevel)? 'simple' : 'complex';
+            $tpl->SetBlock("$block/$subBlock");
+
             $menus[$i]['url'] = $menus[$i]['url']?: 'javascript:void(0);';
             $tpl->SetVariable('level', $level);
-            $tpl->SetBlock("$block/item");
             $tpl->SetVariable('mid', $menus[$i]['id']);
             $tpl->SetVariable('title', $menus[$i]['title']);
             $tpl->SetVariable('url', $menus[$i]['url']);
@@ -166,8 +170,6 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
 
             //menu selected?
             $selected = str_replace(BASE_SCRIPT, '', urldecode($menus[$i]['url'])) == $this->_ReqURL;
-            //get sub level menus
-            $subLevel = $this->GetNextLevel($model, $tpl_str, $gid, $menus[$i]['id']);
 
             $className = '';
             if ($i == 0) {
@@ -179,13 +181,10 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             if ($selected) {
                 $className.= ' active';
             }
-            if (!empty($subLevel)) {
-                $className.= ' dropdown';
-            }
             $tpl->SetVariable('class', trim($className));
 
             $tpl->SetVariable('submenu', $subLevel);
-            $tpl->ParseBlock("$block/item");
+            $tpl->ParseBlock("$block/$subBlock");
             $level--;
         }
 
