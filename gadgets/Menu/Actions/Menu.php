@@ -61,12 +61,10 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
         $this->_ReqURL = str_replace(BASE_SCRIPT, '', $this->_ReqURL);
 
         $tpl = $this->gadget->template->load('Menu.html', array('rawStore' => true));
-        $tpl->SetBlock('levels');
-
-        $tpl_str = $tpl->GetRawBlockContent();
-
+        $tpl_str = $tpl->GetContent();
         $tpl->SetBlock('menu');
         $tpl->SetVariable('gid', $group['id']);
+        $tpl->SetVariable('home', _t('MENU_HOME'));
         $tpl->SetVariable('menus_tree', $this->GetNextLevel($mModel, $tpl_str, $group['id'], 0));
         if ($group['title_view'] == 1) {
             $tpl->SetBlock("menu/group_title");
@@ -82,7 +80,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
      * Displays the next level of parent menu
      *
      * @access  public
-     * @param   object  $model      Jaws_Model reference
+     * @param   object  $model      Jaws_Model object
      * @param   string  $tpl_str    XHTML template content passed by reference
      * @param   int     $gid        Group ID
      * @param   int     $pid
@@ -91,11 +89,14 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
     function GetNextLevel(&$model, &$tpl_str, $gid, $pid)
     {
         $menus = $model->GetLevelsMenus($pid, $gid, true);
-        if (Jaws_Error::IsError($menus) || empty($menus)) return '';
+        if (Jaws_Error::IsError($menus) || empty($menus)) {
+            return '';
+        }
 
         $tpl = new Jaws_Template();
         $tpl->LoadFromString($tpl_str);
-        $tpl->SetBlock('levels');
+        $block = empty($pid)? 'mainmenu' : 'submenu';
+        $tpl->SetBlock("$block");
 
         $len = count($menus);
         static $level = -1;
@@ -148,7 +149,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             $level++;
             $menus[$i]['url'] = $menus[$i]['url']?: 'javascript:void(0);';
             $tpl->SetVariable('level', $level);
-            $tpl->SetBlock('levels/menu_item');
+            $tpl->SetBlock("$block/item");
             $tpl->SetVariable('mid', $menus[$i]['id']);
             $tpl->SetVariable('title', $menus[$i]['title']);
             $tpl->SetVariable('url', $menus[$i]['url']);
@@ -168,29 +169,27 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             //get sub level menus
             $subLevel = $this->GetNextLevel($model, $tpl_str, $gid, $menus[$i]['id']);
 
+            $className = '';
             if ($i == 0) {
-                $tpl->SetBlock('levels/menu_item/first');
-                $tpl->ParseBlock('levels/menu_item/first');
+                $className.= ' menu_first';
             }
             if ($i == $len - 1) {
-                $tpl->SetBlock('levels/menu_item/last');
-                $tpl->ParseBlock('levels/menu_item/last');
+                $className.= ' menu_last';
             }
             if ($selected) {
-                $tpl->SetBlock('levels/menu_item/current');
-                $tpl->ParseBlock('levels/menu_item/current');
+                $className.= ' active';
             }
             if (!empty($subLevel)) {
-                $tpl->SetBlock('levels/menu_item/super');
-                $tpl->ParseBlock('levels/menu_item/super');
+                $className.= ' dropdown';
             }
+            $tpl->SetVariable('class', trim($className));
 
-            $tpl->SetVariable('sub_menu', $subLevel);
-            $tpl->ParseBlock('levels/menu_item');
+            $tpl->SetVariable('submenu', $subLevel);
+            $tpl->ParseBlock("$block/item");
             $level--;
         }
 
-        $tpl->ParseBlock('levels');
+        $tpl->ParseBlock("$block");
         return $tpl->Get();
     }
 
