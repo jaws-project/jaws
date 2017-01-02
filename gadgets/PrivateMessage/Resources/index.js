@@ -134,6 +134,13 @@ function sendMessage(isDraft) {
         var recipient_users_array = new Array();
         var recipient_friends_array = new Array();
 
+        var users = $('#recipientUsers').pillbox('items');
+        if (users.length > 0) {
+            $.each(users, function (key, user) {
+                recipient_users_array.push(user.value);
+            });
+        }
+
         $("#recipient_users > option").each(function () {
             if (this.value.length > 0) {
                 recipient_users_array.push(this.value);
