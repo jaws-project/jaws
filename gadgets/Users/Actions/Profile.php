@@ -20,6 +20,7 @@ class Users_Actions_Profile extends Users_Actions_Default
         $users = $usrModel->GetUsers(false, true);
         if (!Jaws_Error::IsError($users)) {
             $pusers = array();
+            $pusers[0] = _t('USERS_LOGGED_USER');
             foreach ($users as $user) {
                 $pusers[$user['username']] = $user['nickname'];
             }
@@ -42,6 +43,13 @@ class Users_Actions_Profile extends Users_Actions_Default
      */
     function AboutUser($user)
     {
+        if (empty($user)) {
+            if (!$GLOBALS['app']->Session->Logged()) {
+                return false;
+            }
+            $user = (int)$GLOBALS['app']->Session->GetAttribute('user');
+        }
+
         $usrModel = new Jaws_User;
         $user = $usrModel->GetUser($user, true, true);
         if (Jaws_Error::IsError($user) || empty($user)) {
