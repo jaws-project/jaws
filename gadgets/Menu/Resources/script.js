@@ -29,7 +29,7 @@ function changeMenuGroup(gid, mid) {
 }
 
 function changeMenuParent(pid) {
-    setRanksCombo($('#gid').val(), pid);
+    setOrderCombo($('#gid').val(), pid);
 }
 
 function AddNewMenuGroup(gid) {
@@ -46,7 +46,7 @@ function AddNewMenuGroup(gid) {
 /**
  *
  */
-function AddNewMenuItem(gid, pid, mid, rank)
+function AddNewMenuItem(gid, pid, mid, order)
 {
     if (pid == 0) {
         var parentNode = $('#group_'+gid);
@@ -58,11 +58,11 @@ function AddNewMenuItem(gid, pid, mid, rank)
         parentNode.find('div').first().clone(true).css('background-color', '#f7f7f7')
     );
 
-    //set ranking
+    //set order
     var menu_elements = parentNode.children('.menu_levels');
-    var oldRank = parentNode.children('.menu_levels').size();
-    if (rank < oldRank) {
-        mainDiv.insertBefore(menu_elements.eq(rank - 1));
+    var oldOrder = parentNode.children('.menu_levels').size();
+    if (order < oldOrder) {
+        mainDiv.insertBefore(menu_elements.eq(order - 1));
     } else {
         parentNode.append(mainDiv);
     }
@@ -125,7 +125,7 @@ function saveMenus()
                     $('#url').val(),
                     $('#variable').val(),
                     $('#url_target').val(),
-                    $('#rank').val(),
+                    $('#order').val(),
                     $('#logged').val(),
                     $('#published').val(),
                     $('#imagename').val()
@@ -134,7 +134,7 @@ function saveMenus()
             if (response[0]['type'] == 'alert-success') {
                 var mid = response[0]['text'].substr(0, response[0]['text'].indexOf('%%'));
                 response[0]['text'] = response[0]['text'].substr(response[0]['text'].indexOf('%%')+2);
-                AddNewMenuItem($('#gid').val(), $('#pid').val(), mid, $('#rank').val());
+                AddNewMenuItem($('#gid').val(), $('#pid').val(), mid, $('#order').val());
                 stopAction();
             }
             MenuAjax.showResponse(response);
@@ -150,7 +150,7 @@ function saveMenus()
                     $('#url').val(),
                     $('#variable').val(),
                     $('#url_target').val(),
-                    $('#rank').val(),
+                    $('#order').val(),
                     $('#logged').val(),
                     $('#published').val(),
                     $('#imagename').val()
@@ -166,17 +166,17 @@ function saveMenus()
 
                 var menu_elements = new_parentNode.children('.menu_levels');
                 if ($('#menu_'+$('#mid').val()).parent().is(new_parentNode)) {
-                    var oldRank = menu_elements.index($('#menu_'+$('#mid').val())) + 1;
-                    if ($('#rank').val() == menu_elements.length) {
-                        $('#menu_'+$('#mid').val()).insertAfter(menu_elements.eq($('#rank').val()-1));
+                    var oldOrder = menu_elements.index($('#menu_'+$('#mid').val())) + 1;
+                    if ($('#order').val() == menu_elements.length) {
+                        $('#menu_'+$('#mid').val()).insertAfter(menu_elements.eq($('#order').val()-1));
                     } else {
-                        $('#menu_'+$('#mid').val()).insertBefore(menu_elements.eq($('#rank').val()-1));
+                        $('#menu_'+$('#mid').val()).insertBefore(menu_elements.eq($('#order').val()-1));
                     }
                 } else {
-                    if ($('#rank').val() > (menu_elements.length)) {
+                    if ($('#order').val() > (menu_elements.length)) {
                         new_parentNode.append($('#menu_'+$('#mid').val()));
                     } else {
-                        $('#menu_'+$('#mid').val()).insertBefore(menu_elements.eq($('#rank').val()-1));
+                        $('#menu_'+$('#mid').val()).insertBefore(menu_elements.eq($('#order').val()-1));
                     }
                 }
                 stopAction();
@@ -186,26 +186,26 @@ function saveMenus()
     }
 }
 
-function setRanksCombo(gid, pid, selected) {
-    $('#rank').empty();
+function setOrderCombo(gid, pid, selected) {
+    $('#order').empty();
     if (pid == 0) {
         var new_parentNode = $('#group_'+gid);
     } else {
         var new_parentNode = $('#menu_'+pid);
     }
-    var rank = new_parentNode.children('.menu_levels').length;
+    var order = new_parentNode.children('.menu_levels').length;
 
     if (($('#mid').val() < 1) || !$('#menu_'+$('#mid').val()).parent().is(new_parentNode)) {
-        rank = rank + 1;
+        order = order + 1;
     }
 
-    for(var i = 0; i < rank; i++) {
-        $('#rank').append($('<option>').val(i+1).text(i+1));
+    for(var i = 0; i < order; i++) {
+        $('#order').append($('<option>').val(i+1).text(i+1));
     }
     if (selected == null) {
-        $('#rank').val(rank);
+        $('#order').val(order);
     } else {
-        $('#rank').val(selected);
+        $('#order').val(selected);
     }
 }
 
@@ -282,7 +282,7 @@ function addMenu(gid, pid)
     $('#gid').val(gid);
     getParentMenus(gid, 0);
     $('#pid').val(pid);
-    setRanksCombo(gid, pid);
+    setOrderCombo(gid, pid);
 
     getReferences($('#type').val());
     $('#references').prop('selectedIndex', -1);
@@ -362,8 +362,8 @@ function editMenu(mid)
         aclInfo = null;
     }
 
-    setRanksCombo($('#gid').val(), $('#pid').val());
-    $('#rank').val(menuInfo['rank']);
+    setOrderCombo($('#gid').val(), $('#pid').val());
+    $('#order').val(menuInfo['order']);
 
     $('#logged').val(Number(menuInfo['logged']));
     $('#published').val(Number(menuInfo['published']));

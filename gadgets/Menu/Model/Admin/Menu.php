@@ -19,11 +19,13 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      * @param    string  $url
      * @param    string  $url_target
      * @param    string  $order
+     * @param    bool    $logged        Only for logged user
      * @param    bool    $published     Published status
      * @param    string  $image
      * @return   bool    True on success or False on failure
      */
-    function InsertMenu($pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $order, $published, $image)
+    function InsertMenu($pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $order,
+        $logged, $published, $image)
     {
         $mData['pid']        = $pid;
         $mData['gid']        = $gid;
@@ -32,7 +34,8 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         $mData['url']        = $url;
         $mData['variable']   = (bool)$variable;
         $mData['url_target'] = $url_target;
-        $mData['order']       = $order;
+        $mData['order']      = $order;
+        $mData['logged']     = (bool)$logged;
         $mData['published']  = (bool)$published;
         if (empty($image)) {
             $mData['image']  = null;
@@ -81,11 +84,13 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      * @param    string  $url
      * @param    string  $url_target
      * @param    string  $order
+     * @param    bool    $logged        Only for logged user
      * @param    bool    $published     Published status
      * @param    string  $image
      * @return   bool    True on success or False on failure
      */
-    function UpdateMenu($mid, $pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $order, $published, $image)
+    function UpdateMenu($mid, $pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $order,
+        $logged, $published, $image)
     {
         $model = $this->gadget->model->load('Menu');
         $oldMenu = $model->GetMenu($mid);
@@ -101,7 +106,8 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         $mData['url']        = $url;
         $mData['variable']   = (bool)$variable;
         $mData['url_target'] = $url_target;
-        $mData['order']       = $order;
+        $mData['order']      = $order;
+        $mData['logged']     = (bool)$logged;
         $mData['published']  = (bool)$published;
         if ($image !== 'true') {
             if (empty($image)) {
