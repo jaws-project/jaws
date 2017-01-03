@@ -428,9 +428,14 @@
             </field>
 
             <field>
+                <name>title</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
+            <field>
                 <name>name</name>
                 <type>text</type>
-                <length>255</length>
             </field>
 
             <field>
