@@ -23,7 +23,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         }
 
         $GLOBALS['app']->Layout->AddScriptLink('libraries/bootstrap/js/bootstrap.min.js');
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/fuelux/js/fuelux.min.js');
+        $GLOBALS['app']->Layout->AddScriptLink('libraries/fuelux/js/fuelux.js');
         $GLOBALS['app']->Layout->AddHeadLink("libraries/bootstrap/css/bootstrap.min.css");
         $GLOBALS['app']->Layout->AddHeadLink("libraries/fuelux/css/fuelux.min.css");
 

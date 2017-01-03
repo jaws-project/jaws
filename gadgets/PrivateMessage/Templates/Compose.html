@@ -28,10 +28,11 @@
               <b>{{lbl_recipient}}:</b>
           </div>
 
-          <!--<label for="recipient_users"><b>{{lbl_recipient_users}}:</b></label>-->
+          <script type="text/javascript">
+              var recipientUsersInitiate = [<!-- BEGIN user -->{ text: '{{title}}', value: '{{value}}'},<!-- END user -->];
+          </script>
 
-
-          <label for="recipient_users" class="control-label">{{lbl_recipient_users}}:</label>
+          <label for="recipientUsers" class="control-label">{{lbl_recipient_users}}:</label>
           <div class="pillbox" id="recipientUsers">
               <ul class="clearfix pill-group">
                   <li class="pillbox-input-wrap btn-group">
@@ -44,50 +45,7 @@
                   </li>
               </ul>
           </div>
-          <input type="hidden" name="groups" tabindex=0>
 
-
-          <!--
-                    <div class="pillbox" id="recipientUsers">
-                        <ul class="clearfix pill-group">
-                            <li class="btn btn-default pill" data-value="foo">
-                                <span>Item Title</span>
-                                <span class="glyphicon glyphicon-close">
-                  <span class="sr-only">Remove</span>
-                </span>
-                            </li>
-                            <li class="pillbox-input-wrap btn-group">
-                                <a class="pillbox-more">and <span class="pillbox-more-count"></span> more...</a>
-                                <input type="text" class="form-control dropdown-toggle pillbox-add-item" placeholder="add item">
-                                <button type="button" class="dropdown-toggle sr-only">
-                                    <span class="caret"></span>
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <ul class="suggest dropdown-menu" role="menu" data-toggle="dropdown" data-flip="auto"></ul>
-                            </li>
-                        </ul>
-                    </div>-->
-
-
-<!--
-          <div id="userBox" class="ajaxResultBox">
-              <input class="form-control" type="text" id="userSearch" name="userSearch" onkeyup="searchUsersStart(this.value)" class="large">
-              <div id="userSearchResult"></div>
-          </div>
-
-          <div class="recipient_users">
-              <select class="form-control" multiple="multiple" id="recipient_users" name="recipient_users">
-                  &lt;!&ndash; BEGIN user &ndash;&gt;
-                  <option value="{{value}}">{{title}}</option>
-                  &lt;!&ndash; END user &ndash;&gt;
-              </select>
-
-              <button class="btn" type="button" name="btn_del" id="btn_del" onclick="javascript:removeUserFromList();">
-                  <img src="{{delete-icon}}" alt="{{lbl_remove_from_list}}" id="" width="16" height="16">
-              </button>
-          </div>
-
--->
           <div class="recipient_friends_area">
               <label for="recipient_friends"><b>{{lbl_recipient_friends}}:</b></label>
               <div>
@@ -171,21 +129,43 @@
         // initiate pillbox
         $('#recipientUsers').pillbox({
             onKeyDown: function (inputData, callback) {
-                callback({
-                    data: [
-                        {
-                            text: Math.random(),
-                            value: 'num1'
-                        },
-                        {
-                            text: Math.random(),
-                            value: 'num2'
+                var term = inputData.value;
+                var users = '';
+                if (term != '') {
+                    var users = PrivateMessageAjax.callSync('GetUsers', {'term': inputData.value});
+                }
+                if (users.length > 1) {
+                    var data = [];
+                    var tmpItem;
+                    $.each(users, function (key, user) {
+                        data.push({text: user.nickname, value: user.id});
+                    });
+
+                    callback({
+                        data: data
+                    });
+                }
+            },
+            // prevent duplicated item
+            onAdd: function (data, callback) {
+                var items = $('#recipientUsers').pillbox('items');
+                var duplicated = false;
+
+                if (items.length > 0) {
+                    $.each(items, function (key, item) {
+                        if (data.value == item.value) {
+                            duplicated = true;
+                            return false;
                         }
-                    ]
-                });
+                    });
+                }
+                if (!duplicated) {
+                    callback(data);
+                }
             }
         });
 
+        $('#recipientUsers').pillbox('addItems', 1, recipientUsersInitiate);
 
         $( "#legend_attachments" ).click(function() {
             $('#attachment_area').toggle();
@@ -193,9 +173,7 @@
         });
     });
 </script>
-
 <!-- END compose -->
-
 
 <!-- BEGIN attachments -->
 <!-- BEGIN file -->
