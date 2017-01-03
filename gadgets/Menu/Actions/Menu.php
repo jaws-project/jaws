@@ -98,9 +98,15 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
         $block = empty($pid)? 'mainmenu' : 'submenu';
         $tpl->SetBlock("$block");
 
+        $logged = $GLOBALS['app']->Session->Logged();
         $len = count($menus);
         static $level = -1;
         for ($i = 0; $i < $len; $i++) {
+            // check menu viewable only for logged user?
+            if ($menus[$i]['logged'] && !$logged) {
+                continue;
+            }
+
             // check default ACL
             if ($menus[$i]['menu_type'] != 'url') {
                 if (!$GLOBALS['app']->Session->GetPermission($menus[$i]['menu_type'], 'default')) {

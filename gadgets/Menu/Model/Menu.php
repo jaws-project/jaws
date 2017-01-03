@@ -20,7 +20,7 @@ class Menu_Model_Menu extends Jaws_Gadget_Model
         $menusTable->select(
             'id:integer', 'pid:integer', 'gid:integer', 'menu_type', 'title', 'url', 'variable:boolean',
             'url_target:integer', 'rank:integer', 'published:boolean', 'image:boolean',
-            'acl_key_name', 'acl_key_subkey'
+            'acl_key_name', 'acl_key_subkey', 'logged:boolean'
         );
         return $menusTable->where('id', $mid)->fetchRow();
     }
@@ -40,7 +40,8 @@ class Menu_Model_Menu extends Jaws_Gadget_Model
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $menusTable->select(
             'id:integer', 'gid:integer', 'menu_type', 'acl_key_name', 'acl_key_subkey', 'title',
-            'url', 'variable:boolean', 'url_target:integer', 'published:boolean', 'image:boolean'
+            'url', 'variable:boolean', 'url_target:integer', 'logged:boolean', 'published:boolean',
+            'image:boolean'
         );
         $menusTable->where('pid', $pid);
 
