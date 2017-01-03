@@ -160,7 +160,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
             return false;
         }
 
-        $tpl = $this->gadget->template->load('RecentPosts.html');
+        $tpl = $this->gadget->template->load(empty($cat)? 'RecentPosts.html' : 'RecentCategoryPosts.html');
         $tpl->SetBlock('recent_posts');
         $tpl->SetVariable('cat',   empty($cat)? '0' : $cat);
         $tpl->SetVariable('title', $title);
