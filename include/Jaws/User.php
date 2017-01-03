@@ -421,7 +421,7 @@ class Jaws_User
 
         $usersTable = Jaws_ORM::getInstance()->table('users');
         $usersTable->select(
-            'users.id:integer', 'username', 'email', 'url', 'nickname', 'fname', 'lname',
+            'users.id:integer', 'username', 'email', 'nickname', 'fname', 'lname',
             'superadmin:boolean', 'users.status:integer'
         );
         if ($group !== false) {
