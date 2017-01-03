@@ -126,6 +126,7 @@ function saveMenus()
                     $('#variable').val(),
                     $('#url_target').val(),
                     $('#rank').val(),
+                    $('#logged').val(),
                     $('#published').val(),
                     $('#imagename').val()
                 ]
@@ -150,6 +151,7 @@ function saveMenus()
                     $('#variable').val(),
                     $('#url_target').val(),
                     $('#rank').val(),
+                    $('#logged').val(),
                     $('#published').val(),
                     $('#imagename').val()
                 ]
@@ -363,6 +365,7 @@ function editMenu(mid)
     setRanksCombo($('#gid').val(), $('#pid').val());
     $('#rank').val(menuInfo['rank']);
 
+    $('#logged').val(Number(menuInfo['logged']));
     $('#published').val(Number(menuInfo['published']));
     getReferences($('#type').val());
     $('#references').val(menuInfo['url']);

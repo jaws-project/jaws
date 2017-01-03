@@ -114,7 +114,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageMenus');
         @list($pid, $gid, $type, $acl, $title, $url, $variable, $url_target,
-            $rank, $published, $image
+            $order, $logged, $published, $image
         ) = jaws()->request->fetchAll('post');
 
         if (is_null($url)) {
@@ -128,7 +128,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Menu');
         $model->InsertMenu(
             $pid, $gid, $type, $acl, $title, $url,
-            $variable, $url_target, $rank, (bool)$published, $image
+            $variable, $url_target, $order, (bool)$logged, (bool)$published, $image
         );
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -160,7 +160,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageMenus');
         @list($mid, $pid, $gid, $type, $acl, $title, $url, $variable, $url_target,
-            $rank, $published, $image
+            $order, $logged, $published, $image
         ) = jaws()->request->fetchAll('post');
 
         if (is_null($url)) {
@@ -174,7 +174,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Menu');
         $model->UpdateMenu(
             $mid, $pid, $gid, $type, $acl, $title,
-            $url, $variable, $url_target, $rank, (bool)$published, $image
+            $url, $variable, $url_target, $order, (bool)$logged, (bool)$published, $image
         );
 
         return $GLOBALS['app']->Session->PopLastResponse();
@@ -233,7 +233,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     }
 
     /**
-     * function for change gid, pid and rank of menus
+     * function for change gid, pid and order of menus
      *
      * @access  public
      * @return  array   Response array (notice or error)
@@ -242,10 +242,10 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ManageMenus');
         @list($mid, $new_gid, $old_gid, $new_pid, $old_pid,
-            $new_rank, $old_rank
+            $new_order, $old_order
         ) = jaws()->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Menu');
-        $model->MoveMenu($mid, $new_gid, $old_gid, $new_pid, $old_pid, $new_rank, $old_rank);
+        $model->MoveMenu($mid, $new_gid, $old_gid, $new_pid, $old_pid, $new_order, $old_order);
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }

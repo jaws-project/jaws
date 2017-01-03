@@ -248,11 +248,20 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_url_target', _t('MENU_TARGET'));
         $tpl->SetVariable('url_target', $targetType->Get());
 
-        $rank =& Piwi::CreateWidget('Combo', 'rank');
-        $rank->SetID('rank');
-        $rank->setStyle('width: 128px;');
-        $tpl->SetVariable('lbl_rank', _t('MENU_RANK'));
-        $tpl->SetVariable('rank', $rank->Get());
+        $order =& Piwi::CreateWidget('Combo', 'order');
+        $order->SetID('order');
+        $order->setStyle('width: 128px;');
+        $tpl->SetVariable('lbl_order', _t('MENU_ORDER'));
+        $tpl->SetVariable('order', $order->Get());
+
+        $tpl->SetVariable('lbl_logged', _t('MENU_LOGGED'));
+        $logged =& Piwi::CreateWidget('Combo', 'logged');
+        $logged->SetID('logged');
+        $logged->SetStyle('width: 128px;');
+        $logged->AddOption(_t('GLOBAL_NO'),  0);
+        $logged->AddOption(_t('GLOBAL_YES'), 1);
+        $logged->SetDefault(0);
+        $tpl->SetVariable('logged', $logged->Get());
 
         $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
         $published =& Piwi::CreateWidget('Combo', 'published');

@@ -19,9 +19,9 @@ class Menu_Model_Group extends Jaws_Gadget_Model
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
         $mgroupsTable->select(
             'id:integer', 'title', 'title_view:integer', 'view_type:integer',
-            'rank:integer', 'published:boolean'
+            'order:integer', 'published:boolean'
         );
-        $mgroupsTable->orderBy('rank desc');
+        $mgroupsTable->orderBy('order desc');
         if(empty($gid)) {
             $result = $mgroupsTable->fetchAll();
         } else {

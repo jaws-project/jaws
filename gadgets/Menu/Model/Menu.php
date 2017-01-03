@@ -19,7 +19,7 @@ class Menu_Model_Menu extends Jaws_Gadget_Model
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $menusTable->select(
             'id:integer', 'pid:integer', 'gid:integer', 'menu_type', 'title', 'url', 'variable:boolean',
-            'url_target:integer', 'rank:integer', 'published:boolean', 'image:boolean',
+            'url_target:integer', 'order:integer', 'published:boolean', 'image:boolean',
             'acl_key_name', 'acl_key_subkey', 'logged:boolean'
         );
         return $menusTable->where('id', $mid)->fetchRow();
@@ -53,7 +53,7 @@ class Menu_Model_Menu extends Jaws_Gadget_Model
             $menusTable->and()->where('published', $published);
         }
 
-        return $menusTable->orderBy('rank asc')->fetchAll();
+        return $menusTable->orderBy('order asc')->fetchAll();
     }
 
     /**
@@ -92,9 +92,9 @@ class Menu_Model_Menu extends Jaws_Gadget_Model
         $mgroupsTable = Jaws_ORM::getInstance()->table('menus_groups');
         $mgroupsTable->select(
             'id:integer', 'title', 'title_view:integer', 'view_type:integer',
-            'rank:integer', 'published:boolean'
+            'order:integer', 'published:boolean'
         );
-        $mgroupsTable->orderBy('rank desc');
+        $mgroupsTable->orderBy('order desc');
         if(empty($gid)) {
             $result = $mgroupsTable->fetchAll();
         } else {

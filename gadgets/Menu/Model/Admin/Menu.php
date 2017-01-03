@@ -18,12 +18,12 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      * @param    string  $title
      * @param    string  $url
      * @param    string  $url_target
-     * @param    string  $rank
+     * @param    string  $order
      * @param    bool    $published     Published status
      * @param    string  $image
      * @return   bool    True on success or False on failure
      */
-    function InsertMenu($pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $rank, $published, $image)
+    function InsertMenu($pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $order, $published, $image)
     {
         $mData['pid']        = $pid;
         $mData['gid']        = $gid;
@@ -32,7 +32,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         $mData['url']        = $url;
         $mData['variable']   = (bool)$variable;
         $mData['url_target'] = $url_target;
-        $mData['rank']       = $rank;
+        $mData['order']       = $order;
         $mData['published']  = (bool)$published;
         if (empty($image)) {
             $mData['image']  = null;
@@ -62,7 +62,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             Jaws_Utils::Delete($filename);
         }
 
-        $this->MoveMenu($mid, $gid, $gid, $pid, $pid, $rank, null);
+        $this->MoveMenu($mid, $gid, $gid, $pid, $pid, $order, null);
         $GLOBALS['app']->Session->PushLastResponse($mid.'%%' . _t('MENU_NOTICE_MENU_CREATED'), RESPONSE_NOTICE);
 
         return true;
@@ -80,12 +80,12 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      * @param    string  $title
      * @param    string  $url
      * @param    string  $url_target
-     * @param    string  $rank
+     * @param    string  $order
      * @param    bool    $published     Published status
      * @param    string  $image
      * @return   bool    True on success or False on failure
      */
-    function UpdateMenu($mid, $pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $rank, $published, $image)
+    function UpdateMenu($mid, $pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $order, $published, $image)
     {
         $model = $this->gadget->model->load('Menu');
         $oldMenu = $model->GetMenu($mid);
@@ -101,7 +101,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         $mData['url']        = $url;
         $mData['variable']   = (bool)$variable;
         $mData['url_target'] = $url_target;
-        $mData['rank']       = $rank;
+        $mData['order']       = $order;
         $mData['published']  = (bool)$published;
         if ($image !== 'true') {
             if (empty($image)) {
@@ -134,7 +134,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             Jaws_Utils::Delete($filename);
         }
 
-        $this->MoveMenu($mid, $gid, $oldMenu['gid'], $pid, $oldMenu['pid'], $rank, $oldMenu['rank']);
+        $this->MoveMenu($mid, $gid, $oldMenu['gid'], $pid, $oldMenu['pid'], $order, $oldMenu['order']);
         $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_MENU_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
@@ -169,7 +169,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
                 }
             }
 
-            $this->MoveMenu($mid, $menu['gid'], $menu['gid'], $menu['pid'], $menu['pid'], 0xfff, $menu['rank']);
+            $this->MoveMenu($mid, $menu['gid'], $menu['gid'], $menu['pid'], $menu['pid'], 0xfff, $menu['order']);
             $res = $menusTable->delete()->where('id', $mid)->exec();
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -220,7 +220,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
     }
 
     /**
-     * function for change gid, pid and rank of menus
+     * function for change gid, pid and order of menus
      *
      * @access  public
      * @param   int     $mid        menu ID
@@ -228,11 +228,11 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      * @param   int     $old_gid    old group ID
      * @param   int     $new_pid
      * @param   int     $old_pid
-     * @param   string  $new_rank
-     * @param   string  $old_rank
+     * @param   string  $new_order
+     * @param   string  $old_order
      * @return  bool    True on success or False on failure
      */
-    function MoveMenu($mid, $new_gid, $old_gid, $new_pid, $old_pid, $new_rank, $old_rank)
+    function MoveMenu($mid, $new_gid, $old_gid, $new_pid, $old_pid, $new_order, $old_order)
     {
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         if ($new_gid != $old_gid) {
@@ -255,9 +255,9 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             // resort menu items in old_pid
             $res = $menusTable->update(
                 array(
-                    'rank' => $menusTable->expr('rank - ?', 1)
+                    'order' => $menusTable->expr('order - ?', 1)
                 )
-            )->where('pid', $old_pid)->and()->where('gid', $old_gid)->and()->where('rank', $old_rank, '>')->exec();
+            )->where('pid', $old_pid)->and()->where('gid', $old_gid)->and()->where('order', $old_order, '>')->exec();
 
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
@@ -267,45 +267,45 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             // resort menu items in new_pid
             $menusTable->update(
                 array(
-                    'rank' => $menusTable->expr('rank + ?', 1)
+                    'order' => $menusTable->expr('order + ?', 1)
                 )
             )->where('id', $mid, '<>')->and()->where('gid', $new_gid)->and()->where('pid', $new_pid);
-            $res = $menusTable->and()->where('rank', $new_rank, '>=')->exec();
+            $res = $menusTable->and()->where('order', $new_order, '>=')->exec();
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
-        } elseif (empty($old_rank)) {
+        } elseif (empty($old_order)) {
             $menusTable->update(
                 array(
-                    'rank' => $menusTable->expr('rank + ?', 1)
+                    'order' => $menusTable->expr('order + ?', 1)
                 )
             )->where('id', $mid, '<>')->and()->where('gid', $new_gid)->and()->where('pid', $new_pid);
-            $res = $menusTable->and()->where('rank', $new_rank, '>=')->exec();
+            $res = $menusTable->and()->where('order', $new_order, '>=')->exec();
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
-        } elseif ($new_rank > $old_rank) {
+        } elseif ($new_order > $old_order) {
             // resort menu items in new_pid
             $menusTable->update(
                 array(
-                    'rank' => $menusTable->expr('rank - ?', 1)
+                    'order' => $menusTable->expr('order - ?', 1)
                 )
             )->where('id', $mid, '<>')->and()->where('gid', $new_gid)->and()->where('pid', $new_pid);
-            $res = $menusTable->and()->where('rank', $old_rank, '>')->and()->where('rank', $new_rank, '<=')->exec();
+            $res = $menusTable->and()->where('order', $old_order, '>')->and()->where('order', $new_order, '<=')->exec();
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;
             }
-        } elseif ($new_rank < $old_rank) {
+        } elseif ($new_order < $old_order) {
             // resort menu items in new_pid
             $menusTable->update(
                 array(
-                    'rank' => $menusTable->expr('rank + ?', 1)
+                    'order' => $menusTable->expr('order + ?', 1)
                 )
             )->where('id', $mid, '<>')->and()->where('gid', $new_gid)->and()->where('pid', $new_pid);
-            $res = $menusTable->and()->where('rank', $new_rank, '>=')->and()->where('rank', $old_rank, '<')->exec();
+            $res = $menusTable->and()->where('order', $new_order, '>=')->and()->where('order', $old_order, '<')->exec();
             if (Jaws_Error::IsError($res)) {
                 $GLOBALS['app']->Session->PushLastResponse(_t('GLOBAL_ERROR_QUERY_FAILED'), RESPONSE_ERROR);
                 return false;

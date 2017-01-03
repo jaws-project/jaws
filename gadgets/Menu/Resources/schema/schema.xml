@@ -75,7 +75,8 @@
         </field>
 
         <field>
-            <name>rank</name>
+            <name>order</name>
+            <was>rank</was>
             <type>integer</type>
             <notnull>true</notnull>
             <default>0</default>
@@ -141,7 +142,8 @@
         </field>
 
         <field>
-            <name>rank</name>
+            <name>order</name>
+            <was>rank</was>
             <type>integer</type>
             <notnull>true</notnull>
             <default>0</default>
