@@ -49,13 +49,20 @@ class Users_Actions_Contacts extends Users_Actions_Default
             $this->SubMenuBar('Contacts', array('Account', 'Personal', 'Preferences', 'Contacts'))
         );
 
-        $tpl->SetVariable('lbl_country', _t('USERS_CONTACTS_COUNTRY'));
-        $tpl->SetVariable('lbl_city', _t('USERS_CONTACTS_CITY'));
+        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_home', _t('USERS_CONTACTS_HOME'));
+        $tpl->SetVariable('lbl_work', _t('USERS_CONTACTS_WORK'));
+        $tpl->SetVariable('lbl_other', _t('USERS_CONTACTS_OTHER'));
+        $tpl->SetVariable('lbl_tel', _t('USERS_CONTACTS_PHONE_NUMBER'));
+        $tpl->SetVariable('lbl_fax', _t('USERS_CONTACTS_FAX_NUMBER'));
+        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_email', _t('USERS_CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_address', _t('USERS_CONTACTS_ADDRESS'));
+        $tpl->SetVariable('lbl_note', _t('USERS_CONTACTS_ADDRESS'));
         $tpl->SetVariable('lbl_postal_code', _t('USERS_CONTACTS_POSTAL_CODE'));
-        $tpl->SetVariable('lbl_phone_number', _t('USERS_CONTACTS_PHONE_NUMBER'));
-        $tpl->SetVariable('lbl_mobile_number', _t('USERS_CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('lbl_fax_number', _t('USERS_CONTACTS_FAX_NUMBER'));
+        $tpl->SetVariable('img_add', STOCK_ADD);
+        $tpl->SetVariable('img_del', STOCK_REMOVE);
         $tpl->SetVariablesArray($contacts);
 
         if (empty($contacts['avatar'])) {
