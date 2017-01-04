@@ -154,6 +154,7 @@ class Jaws_Layout
         }
 
         $this->AddScriptLink('libraries/jquery/jquery.js?'. JAWS_VERSION, false);
+        $this->AddScriptLink('libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?'. JAWS_VERSION, false);
         $this->AddScriptLink('include/Jaws/Resources/Ajax.js?'. JAWS_VERSION, false);
 
         $loadFromTheme = false;
