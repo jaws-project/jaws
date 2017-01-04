@@ -348,4 +348,101 @@
 
     </table>
 
+    <table>
+        <name><variable>table_prefix</variable>provinces</name>
+        <declaration>
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>title</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
+            <field>
+                <name>country</name>
+                <type>integer</type>
+                <default>0</default>
+            </field>
+
+            <field>
+                <name>order</name>
+                <type>integer</type>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>provinces_country</name>
+                <field>
+                    <name>code</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>provinces_order</name>
+                <field>
+                    <name>order</name>
+                </field>
+            </index>
+        </declaration>
+    </table>
+
+    <table>
+        <name><variable>table_prefix</variable>cities</name>
+        <declaration>
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>true</autoincrement>
+            </field>
+
+            <field>
+                <name>province</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+            </field>
+
+            <field>
+                <name>title</name>
+                <type>text</type>
+                <length>128</length>
+            </field>
+
+            <field>
+                <name>position</name>
+                <type>text</type>
+                <length>16</length>
+            </field>
+
+            <field>
+                <name>around</name>
+                <type>text</type>
+            </field>
+
+            <field>
+                <name>order</name>
+                <type>integer</type>
+            </field>
+
+            <index>
+                <name><variable>table_prefix</variable>cities_province</name>
+                <field>
+                    <name>province</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>cities_order</name>
+                <field>
+                    <name>order</name>
+                </field>
+            </index>
+        </declaration>
+    </table>
+
 </database>
