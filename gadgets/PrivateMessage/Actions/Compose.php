@@ -22,11 +22,6 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
             return Jaws_HTTPError::Get(401);
         }
 
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/bootstrap/js/bootstrap.min.js');
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/fuelux/js/fuelux.js');
-        $GLOBALS['app']->Layout->AddHeadLink("libraries/bootstrap/css/bootstrap.min.css");
-        $GLOBALS['app']->Layout->AddHeadLink("libraries/fuelux/css/fuelux.min.css");
-
         $this->gadget->CheckPermission('SendMessage');
         $user = $GLOBALS['app']->Session->GetAttribute('user');
         $this->AjaxMe('index.js');
@@ -43,7 +38,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
 
         $body_value = "";
         $recipient_users = array();
-        $recipient_friends = array();
+        $recipient_groups = array();
         $show_recipient = true;
         // draft or reply
         if (!empty($id)) {
@@ -65,7 +60,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                 $tpl->SetVariable('title', _t('PRIVATEMESSAGE_COMPOSE_MESSAGE'));
                 $tpl->SetVariable('id', $id);
                 $recipient_users = array_map('intval', explode(',', $message['recipient_users']));
-                $recipient_friends = array_map('intval', explode(',', $message['recipient_friends']));
+                $recipient_groups = array_map('intval', explode(',', $message['recipient_groups']));
                 $body_value = $message['body'];
                 $tpl->SetVariable('subject', $message['subject']);
                 $tpl->SetVariable('lbl_attachments', _t('PRIVATEMESSAGE_MESSAGE_ATTACHMENTS'));
@@ -203,13 +198,13 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
                     $tpl->SetVariable('title', $group['title']);
 
                     $tpl->SetVariable('checked', '');
-                    if (in_array($group['id'], $recipient_friends)) {
+                    if (in_array($group['id'], $recipient_groups)) {
                         $tpl->SetVariable('checked', 'checked');
                     }
                     $tpl->ParseBlock('compose/recipients/friend');
                 }
             }
-            $tpl->SetVariable('lbl_recipient_friends', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_FRIENDS'));
+            $tpl->SetVariable('lbl_recipient_groups', _t('PRIVATEMESSAGE_MESSAGE_RECIPIENT_GROUPS'));
             $tpl->ParseBlock('compose/recipients');
         } else {
             $tpl->SetBlock('compose/recipient');
@@ -315,7 +310,7 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
 
         $post = jaws()->request->fetch(
             array(
-                'id', 'recipient_users', 'recipient_friends', 'folder',
+                'id', 'recipient_users', 'recipient_groups', 'folder',
                 'subject', 'body', 'attachments:array', 'is_draft:bool'
             ),
             'post'

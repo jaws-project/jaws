@@ -132,7 +132,7 @@ function sendMessage(isDraft) {
     // detect pre load users or groups list
     if (recipient_user == "" || recipient_user.length == 0) {
         var recipient_users_array = new Array();
-        var recipient_friends_array = new Array();
+        var recipient_groups_array = new Array();
 
         var users = $('#recipientUsers').pillbox('items');
         if (users.length > 0) {
@@ -149,15 +149,15 @@ function sendMessage(isDraft) {
 
         $("input[type=checkbox][name=friends]:checked").each(function () {
             if (this.value!="") {
-                recipient_friends_array.push(this.value);
+                recipient_groups_array.push(this.value);
             }
         });
 
         var recipient_users = recipient_users_array.join(',');
-        var recipient_friends = recipient_friends_array.join(',');
+        var recipient_groups = recipient_groups_array.join(',');
     } else {
         var recipient_users = recipient_user;
-        var recipient_friends = "";
+        var recipient_groups = "";
     }
 
     var attachments = uploadedFiles.concat(getSelectedAttachments());
@@ -166,7 +166,7 @@ function sendMessage(isDraft) {
             'id': $('#id').val(),
             'is_draft':isDraft,
             'recipient_users':recipient_users,
-            'recipient_friends':recipient_friends,
+            'recipient_groups':recipient_groups,
             'subject':$('#subject').val(),
             'body':getEditorValue('#body'),
             'attachments':attachments
@@ -245,7 +245,7 @@ function removeUserFromList() {
 }
 
 function unselectUserGroup () {
-    $("#recipient_friends option:selected").prop("selected", false);
+    $("#recipient_groups option:selected").prop("selected", false);
 }
 
 var PrivateMessageAjax = new JawsAjax('PrivateMessage', PrivateMessageCallback);
