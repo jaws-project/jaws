@@ -71,7 +71,9 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
     function GetMenuLevel(&$model, &$tpl_str, $gid, $pid)
     {
         $menus = $model->GetLevelsMenus($pid, $gid);
-        if (Jaws_Error::IsError($menus) || empty($menus)) return '';
+        if (Jaws_Error::IsError($menus) || empty($menus)) {
+            return '';
+        }
 
         $tpl = new Jaws_Template();
         $tpl->LoadFromString($tpl_str);

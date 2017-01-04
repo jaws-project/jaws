@@ -50,7 +50,6 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
      */
     function Menu($gid = 0)
     {
-        $mModel = $this->gadget->model->load('Menu');
         $gModel = $this->gadget->model->load('Group');
         $group = $gModel->GetGroups($gid);
         if (Jaws_Error::IsError($group) || empty($group) || !$group['published']) {
@@ -65,7 +64,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
         $tpl->SetBlock('menu');
         $tpl->SetVariable('gid', $group['id']);
         $tpl->SetVariable('home', _t('MENU_HOME'));
-        $tpl->SetVariable('menus_tree', $this->GetNextLevel($mModel, $tpl_str, $group['id'], 0));
+        $tpl->SetVariable('menus_tree', $this->GetNextLevel($tpl_str, $group['id'], 0, -1));
         if ($group['title_view'] == 1) {
             $tpl->SetBlock("menu/group_title");
             $tpl->SetVariable('title', $group['title']);
@@ -80,15 +79,16 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
      * Displays the next level of parent menu
      *
      * @access  public
-     * @param   object  $model      Jaws_Model object
      * @param   string  $tpl_str    XHTML template content passed by reference
      * @param   int     $gid        Group ID
-     * @param   int     $pid
+     * @param   int     $pid        Parent Menu
+     * @param   int     $level      Menu level
      * @return  string  XHTML template content with sub menu items
      */
-    function GetNextLevel(&$model, &$tpl_str, $gid, $pid)
+    function GetNextLevel(&$tpl_str, $gid, $pid, $level)
     {
-        $menus = $model->GetLevelsMenus($pid, $gid, true);
+        $level++;
+        $menus = $this->gadget->model->load('Menu')->GetLevelsMenus($pid, $gid, true);
         if (Jaws_Error::IsError($menus) || empty($menus)) {
             return '';
         }
@@ -98,27 +98,26 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
         $block = empty($pid)? 'mainmenu' : 'submenu';
         $tpl->SetBlock("$block");
 
-        $logged = $GLOBALS['app']->Session->Logged();
         $len = count($menus);
-        static $level = -1;
-        for ($i = 0; $i < $len; $i++) {
+        $logged = $GLOBALS['app']->Session->Logged();
+        foreach ($menus as $i => $menu) {
             // check menu viewable only for logged user?
-            if ($menus[$i]['logged'] && !$logged) {
+            if ($menu['logged'] && !$logged) {
                 continue;
             }
 
             // check default ACL
-            if ($menus[$i]['menu_type'] != 'url') {
-                if (!$GLOBALS['app']->Session->GetPermission($menus[$i]['menu_type'], 'default')) {
+            if ($menu['menu_type'] != 'url') {
+                if (!$GLOBALS['app']->Session->GetPermission($menu['menu_type'], 'default')) {
                     continue;
                 }
 
                 // check ACL
-                if (!empty($menus[$i]['acl_key_name']) &&
+                if (!empty($menu['acl_key_name']) &&
                     !$GLOBALS['app']->Session->GetPermission(
-                        $menus[$i]['menu_type'],
-                        $menus[$i]['acl_key_name'],
-                        $menus[$i]['acl_key_subkey']
+                        $menu['menu_type'],
+                        $menu['acl_key_name'],
+                        $menu['acl_key_subkey']
                     )
                 ) {
                     continue;
@@ -126,14 +125,14 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             }
 
             // check variable menu
-            if ($menus[$i]['variable']) {
-                $objGadget = Jaws_Gadget::getInstance($menus[$i]['menu_type']);
+            if ($menu['variable']) {
+                $objGadget = Jaws_Gadget::getInstance($menu['menu_type']);
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
                 }
 
                 $params = array();
-                $url = unserialize($menus[$i]['url']);
+                $url = unserialize($menu['url']);
                 foreach ($url['params'] as $param => $str) {
                     if (!preg_match_all('@\{([[:alnum:]]+)\}@iu', $str, $vars, PREG_SET_ORDER)) {
                         continue;
@@ -149,25 +148,25 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
                     $params[$param] = $str;
                 }
 
-                $menus[$i]['url'] = $objGadget->urlMap($url['action'], $params);
+                $menu['url'] = $objGadget->urlMap($url['action'], $params);
             }
 
-            $level++;
             //get sub level menus
-            $subLevel = $this->GetNextLevel($model, $tpl_str, $gid, $menus[$i]['id']);
-            $subBlock = empty($subLevel)? 'simple' : 'complex';
-            $tpl->SetBlock("$block/$subBlock");
+            $submenu = $this->GetNextLevel($tpl_str, $gid, $menu['id'], $level);
+            $innerBlock = empty($submenu)? 'simple' : 'complex';
+            $tpl->SetBlock("$block/items");
+            $tpl->SetBlock("$block/items/$innerBlock");
 
-            $menus[$i]['url'] = $menus[$i]['url']?: 'javascript:void(0);';
+            $menu['url'] = $menu['url']?: 'javascript:void(0);';
             $tpl->SetVariable('level', $level);
-            $tpl->SetVariable('mid', $menus[$i]['id']);
-            $tpl->SetVariable('title', $menus[$i]['title']);
-            $tpl->SetVariable('url', $menus[$i]['url']);
-            $tpl->SetVariable('target', ($menus[$i]['url_target']==0)? '_self': '_blank');
+            $tpl->SetVariable('mid', $menu['id']);
+            $tpl->SetVariable('title', $menu['title']);
+            $tpl->SetVariable('url', $menu['url']);
+            $tpl->SetVariable('target', ($menu['url_target']==0)? '_self': '_blank');
 
-            if (!empty($menus[$i]['image'])) {
-                $src = $this->gadget->urlMap('LoadImage', array('id' => $menus[$i]['id']));
-                $image =& Piwi::CreateWidget('Image', $src, $menus[$i]['title']);
+            if (!empty($menu['image'])) {
+                $src = $this->gadget->urlMap('LoadImage', array('id' => $menu['id']));
+                $image =& Piwi::CreateWidget('Image', $src, $menu['title']);
                 $image->SetID('');
                 $tpl->SetVariable('image', $image->get());
             } else {
@@ -175,7 +174,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             }
 
             //menu selected?
-            $selected = str_replace(BASE_SCRIPT, '', urldecode($menus[$i]['url'])) == $this->_ReqURL;
+            $selected = str_replace(BASE_SCRIPT, '', urldecode($menu['url'])) == $this->_ReqURL;
 
             $className = '';
             if ($i == 0) {
@@ -189,9 +188,9 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             }
             $tpl->SetVariable('class', trim($className));
 
-            $tpl->SetVariable('submenu', $subLevel);
-            $tpl->ParseBlock("$block/$subBlock");
-            $level--;
+            $tpl->SetVariable('submenu', $submenu);
+            $tpl->ParseBlock("$block/items/$innerBlock");
+            $tpl->ParseBlock("$block/items");
         }
 
         $tpl->ParseBlock("$block");
