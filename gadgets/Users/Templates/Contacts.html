@@ -102,9 +102,27 @@
       <!--<div><label for="postal_code">{{lbl_postal_code}}:</label>-->
         <!--<input class="form-control" name="postal_code" class="large ltr" id="postal_code" value="{{postal_code}}" type="text" />-->
       <!--</div>-->
+
+      <div><label for="province">{{lbl_province}}:</label>
+        <input type="text" id="province" name="province" class="form-control" value="{{province}}">
+      </div>
+
+      <div><label for="city">{{lbl_city}}:</label>
+        <input type="text" id="city" name="city" class="form-control" value="{{city}}">
+      </div>
+
       <div><label for="address">{{lbl_address}}:</label>
         <textarea class="form-control" name="address" class="large address" id="address" cols="45" rows="4">{{address}}</textarea>
       </div>
+
+      <div><label for="postal_code">{{lbl_postal_code}}:</label>
+        <input type="text" id="postal_code" name="postal_code" class="form-control" value="{{postal_code}}">
+      </div>
+
+      <div><label for="note">{{lbl_note}}:</label>
+        <textarea class="form-control" name="note" class="large note" id="note" cols="45" rows="4">{{note}}</textarea>
+      </div>
+
     </fieldset>
   </div>
   <div class="gadget_actions actions"><button class="btn btn-primary" type="submit" value="{{update}}">{{update}}</button></div>

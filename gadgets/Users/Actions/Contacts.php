@@ -58,9 +58,11 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
         $tpl->SetVariable('lbl_email', _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('lbl_province', _t('GLOBAL_PROVINCE'));
+        $tpl->SetVariable('lbl_city', _t('GLOBAL_CITY'));
         $tpl->SetVariable('lbl_address', _t('USERS_CONTACTS_ADDRESS'));
-        $tpl->SetVariable('lbl_note', _t('USERS_CONTACTS_ADDRESS'));
         $tpl->SetVariable('lbl_postal_code', _t('USERS_CONTACTS_POSTAL_CODE'));
+        $tpl->SetVariable('lbl_note', _t('USERS_CONTACTS_NOTE'));
         $tpl->SetVariable('img_add', STOCK_ADD);
         $tpl->SetVariable('img_del', STOCK_REMOVE);
         $tpl->SetVariablesArray($contacts);
