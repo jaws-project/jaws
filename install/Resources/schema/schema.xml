@@ -378,7 +378,7 @@
             <index>
                 <name><variable>table_prefix</variable>provinces_country</name>
                 <field>
-                    <name>code</name>
+                    <name>country</name>
                 </field>
             </index>
 
