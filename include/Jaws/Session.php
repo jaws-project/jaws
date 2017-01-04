@@ -359,7 +359,6 @@ class Jaws_Session
             $info['expiry_date'] = 0;
             $info['concurrents'] = 0;
             $info['email']      = '';
-            $info['url']        = '';
             $info['avatar']     = '';
             $info['last_password_update'] = 0;
         }
@@ -385,7 +384,6 @@ class Jaws_Session
         //profile
         $this->SetAttribute('nickname',   $info['nickname']);
         $this->SetAttribute('email',      $info['email']);
-        $this->SetAttribute('url',        $info['url']);
         $this->SetAttribute('avatar',     $info['avatar']);
         $this->SetAttribute('last_password_update', $info['last_password_update']);
 
@@ -449,7 +447,6 @@ class Jaws_Session
         $this->SetAttribute('layout',      0);
         $this->SetAttribute('nickname',    '');
         $this->SetAttribute('email',       '');
-        $this->SetAttribute('url',         '');
         $this->SetAttribute('avatar',      '');
         $this->SetAttribute('last_password_update', 0);
 
