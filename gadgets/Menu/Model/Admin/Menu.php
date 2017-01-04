@@ -34,7 +34,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         $mData['url']        = $url;
         $mData['variable']   = (bool)$variable;
         $mData['url_target'] = $url_target;
-        $mData['order']      = $order;
+        $mData['order']      = (int)$order;
         $mData['logged']     = (bool)$logged;
         $mData['published']  = (bool)$published;
         if (empty($image)) {
