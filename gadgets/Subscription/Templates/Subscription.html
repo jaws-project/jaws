@@ -20,21 +20,23 @@
                   <!-- BEGIN item -->
                   <fieldset>
                     <legend class="{{collapse}}" onclick="toggleLegend(this);">
-                      <span>
+                      <label class="form-check-label" for="{{id}}" >
                           <!-- BEGIN checkbox -->
-                        <input class="form-check-input" type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
+                          <input class="form-check-input" type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
                           <!-- END checkbox -->
-                        <label for="{{id}}"><a href="{{url}}">{{title}}</a></label>
-                      </span>
+                          <a href="{{url}}">{{title}}</a>
+                      </label>
                     </legend>
                       <div class="subscription_items">
 
                       <!-- BEGIN subItem -->
                       <ul>
-                          <li>
-                              <input class="form-check-input" type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
-                              <label for="{{id}}"><a href="{{url}}">{{title}}</a></label>
-                          </li>
+                        <li>
+                          <label class="form-check-label" for="{{id}}">
+                            <input class="form-check-input" type="checkbox" name="subscriptionItems" id="{{id}}" value="{{id}}" {{checked}}>
+                             <a href="{{url}}">{{title}}</a>
+                          </label>
+                        </li>
                       </ul>
                       <!-- END subItem -->
                       </div>

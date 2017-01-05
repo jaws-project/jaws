@@ -60,8 +60,10 @@
               <!-- BEGIN group -->
               <tr>
                 <td>
-                  <input class="form-check-input" name="user_groups[]" id="group_{{id}}" value="{{id}}" type="checkbox">
-                  <label for="group_{{id}}">{{title}}</label>
+                  <label class="form-check-label" for="group_{{id}}">
+                    <input class="form-check-input" name="user_groups[]" id="group_{{id}}" value="{{id}}" type="checkbox">
+                    {{title}}
+                  </label>
                 </td>
               </tr>
               <!-- END group -->

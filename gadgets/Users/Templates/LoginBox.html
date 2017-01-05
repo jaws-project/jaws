@@ -41,21 +41,27 @@
     <!-- END authtype -->
     <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
     <!-- BEGIN remember -->
-    <div><input class="form-check-input" type="checkbox"
-              name="remember"
-              id="login_remember"
-              <!-- BEGIN selected -->checked="checked"<!-- END selected -->
-              value="true" />
-       <label for="login_remember">{{lbl_remember}}</label>
+    <div>
+      <label class="form-check-label" for="login_remember">
+        <input class="form-check-input" type="checkbox"
+               name="remember"
+               id="login_remember"
+               <!-- BEGIN selected -->checked="checked"<!-- END selected -->
+               value="true" />
+        {{lbl_remember}}
+      </label>
     </div>
     <!-- END remember -->
     <!-- BEGIN usecrypt -->
-    <div><input class="form-check-input" type="checkbox"
-              name="usecrypt"
-              id="login_usecrypt"
-              <!-- BEGIN selected --> checked="checked"<!-- END selected -->
-              value="true" />
-       <label for="login_usecrypt">{{lbl_usecrypt}}</label>
+    <div>
+      <label class="form-check-label" for="login_usecrypt">
+        <input class="form-check-input" type="checkbox"
+               name="usecrypt"
+               id="login_usecrypt"
+               <!-- BEGIN selected --> checked="checked"<!-- END selected -->
+               value="true" />
+        {{lbl_usecrypt}}
+      </label>
     </div>
     <!-- END usecrypt -->
   </div>

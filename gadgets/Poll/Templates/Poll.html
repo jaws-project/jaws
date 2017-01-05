@@ -15,8 +15,10 @@
     <input type="hidden" name="pid" value="{{pid}}" />
     <!-- BEGIN answer -->
     <div class="poll_answer">
-      <input class="form-check-input" type="{{type}}" name="answers[]" id="poll_answer_input_{{aid}}" value="{{aid}}"/>
-      <label for="poll_answer_input_{{aid}}">{{title}}</label>
+      <label class="form-check-label" for="poll_answer_input_{{aid}}">
+        <input class="form-check-input" type="{{type}}" name="answers[]" id="poll_answer_input_{{aid}}" value="{{aid}}"/>
+        {{title}}
+      </label>
     </div>
     <!-- END answer -->
     <div class="gadget_actions actions">{{result_link}} {{btn_vote}}</div>

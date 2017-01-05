@@ -50,8 +50,10 @@
               <!-- BEGIN user -->
               <tr>
                 <td>
-                  <input class="form-check-input" name="group_users[]" id="user_{{id}}" value="{{id}}" type="checkbox">
-                  <label for="user_{{id}}">{{title}}</label>
+                  <label class="form-check-label" for="user_{{id}}">
+                    <input class="form-check-input" name="group_users[]" id="user_{{id}}" value="{{id}}" type="checkbox">
+                    {{title}}
+                  </label>
                 </td>
               </tr>
               <!-- END user -->

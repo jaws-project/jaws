@@ -88,8 +88,10 @@
       <!-- END update_reason -->
       <!-- BEGIN notification -->
       <div>
-        <input class="form-check-input" type="checkbox" id="notification" name="notification" value="1" <!-- BEGIN checked -->checked="checked" <!-- END checked -->/>
-        <label for="notification">{{lbl_send_notification}}</label>
+        <label class="form-check-label" for="notification">
+          <input class="form-check-input" type="checkbox" id="notification" name="notification" value="1" <!-- BEGIN checked -->checked="checked" <!-- END checked -->/>
+          {{lbl_send_notification}}
+        </label>
       </div>
       <!-- END notification -->
       <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->

@@ -51,8 +51,10 @@
     <!-- END no_action -->
     <!-- BEGIN gadget_action -->
       <li id="action_{{action}}">
-        <input class="form-check-input" type="radio" name="action" id="action_{{aindex}}" {{action_checked}} value="{{action}}"/>
-        <label for="action_{{aindex}}">{{name}}</label>
+        <label class="form-check-label" for="action_{{aindex}}">
+          <input class="form-check-input" type="radio" name="action" id="action_{{aindex}}" {{action_checked}} value="{{action}}"/>
+          {{name}}
+        </label>
         <span>{{desc}}</span>
         <!-- BEGIN action_param -->
         <div class="action_param"><label for="action_{{aindex}}_param_{{pindex}}">{{ptitle}}</label>{{param}}</div>

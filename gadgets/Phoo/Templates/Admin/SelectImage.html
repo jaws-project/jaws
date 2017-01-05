@@ -46,8 +46,10 @@
                   <tr>
                     <td>&nbsp;</td>
                     <td>
-                      <input class="form-check-input" type="checkbox" id="s_linked" name="s_linked" value="Yes" onClick="javascript: this.form.linked.value = this.form.s_linked.checked;">
-                      <label for="s_linked">{{include_link}}</label>
+                      <label class="form-check-label" for="s_linked">
+                        <input class="form-check-input" type="checkbox" id="s_linked" name="s_linked" value="Yes" onClick="javascript: this.form.linked.value = this.form.s_linked.checked;">
+                        {{include_link}}
+                      </label>
                     </td>
                   </tr>
                   <!-- END linked -->

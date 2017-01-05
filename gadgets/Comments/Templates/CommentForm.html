@@ -41,8 +41,10 @@
                 <textarea class="form-control" id="message{{rand}}" class="x-large" rows="7" name="message">{{message}}</textarea>
             </div>
             <div>
+              <label class="form-check-label" for="private_comments{{rand}}">
                 <input class="form-check-input" name="is_private" id="private_comments{{rand}}" type="checkbox" value="1" />
-                <label for="private_comments{{rand}}">{{private}}</label>
+                {{private}}
+              </label>
             </div>
         </div>
         <div class="gadget_actions actions">
