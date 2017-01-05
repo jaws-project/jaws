@@ -54,7 +54,7 @@ class Comments_Model_Comments extends Jaws_Gadget_Model
             'comments_details.name', 'comments_details.email', 'comments_details.url', 'uip', 'msg_txt',
             'comments_details.status:integer', 'comments_details.insert_time', 'users.username', 'users.nickname',
             'users.email as user_email', 'users.avatar', 'users.registered_date as user_registered_date',
-            'users.url as user_url', 'replier.nickname as replier_nickname','replier.username as replier_username',
+            'replier.nickname as replier_nickname','replier.username as replier_username',
             'comments.comments_count'
         );
 
