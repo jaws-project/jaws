@@ -463,6 +463,9 @@ function getReferences(type)
             cacheReferences[type][i]['acl_key'] = link['acl_key'];
             cacheReferences[type][i]['acl_subkey'] = link['acl_subkey'];
         }
+        if (link['logged']) {
+            cacheReferences[type][i]['logged'] = true;
+        }
     });
 }
 
@@ -480,6 +483,11 @@ function changeReferences() {
         }
         if (cacheReferences[type][selIndex]['acl_key']) {
             aclInfo = cacheReferences[type][selIndex]['acl_key'] + ":" + cacheReferences[type][selIndex]['acl_subkey'];
+        }
+        if (cacheReferences[type][selIndex]['logged']) {
+            $('#logged').val(Number(cacheReferences[type][selIndex]['logged']));
+        } else {
+            $('#logged').val(0);
         }
     }
 
