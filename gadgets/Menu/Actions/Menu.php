@@ -101,13 +101,22 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
         $len = count($menus);
         $logged = $GLOBALS['app']->Session->Logged();
         foreach ($menus as $i => $menu) {
-            // check menu viewable only for logged user?
-            if ($menu['logged'] && !$logged) {
+            // is menu viewable?
+            if ($menu['status'] == 0) {
                 continue;
+            }
+            if ($menu['status'] != 1) {
+                if ($logged xor $menu['status'] == Menu_Info::STATUS_LOGGED_IN) {
+                    continue;
+                }
             }
 
             // check default ACL
             if ($menu['menu_type'] != 'url') {
+                if (!Jaws_Gadget::IsGadgetInstalled($menu['menu_type'])) {
+                    continue;
+                }
+
                 if (!$GLOBALS['app']->Session->GetPermission($menu['menu_type'], 'default')) {
                     continue;
                 }

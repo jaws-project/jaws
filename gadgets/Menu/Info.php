@@ -7,13 +7,16 @@
  */
 class Menu_Info extends Jaws_Gadget
 {
+    const STATUS_ANONYMOUS = 2;
+    const STATUS_LOGGED_IN = 3;
+
     /**
      * Gadget version
      *
      * @var     string
      * @access  private
      */
-    var $version = '1.3.0';
+    var $version = '1.5.0';
 
     /**
      * Default front-end action name

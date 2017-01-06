@@ -18,7 +18,8 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
         $urls = array();
         $urls[] = array(
             'url'   => $this->gadget->urlMap('LoginBox'),
-            'title' => _t('USERS_LOGIN_TITLE')
+            'title' => _t('USERS_LOGIN_TITLE'),
+            'status' => Menu_Info::STATUS_ANONYMOUS
         );
 
 /*
@@ -51,7 +52,7 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
         $urls[] = array(
             'url'    => $this->gadget->urlMap('Logout'),
             'title'  => _t('GLOBAL_LOGOUT'),
-            'logged' => true,
+            'status' => Menu_Info::STATUS_LOGGED_IN,
         );
         return $urls;
     }

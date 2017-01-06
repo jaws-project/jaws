@@ -11,21 +11,19 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      * Inserta a new menu
      *
      * @access  public
-     * @param    int     $pid
-     * @param    int     $gid           Group ID
-     * @param    string  $type
-     * @param    string  $acl
-     * @param    string  $title
-     * @param    string  $url
-     * @param    string  $url_target
-     * @param    string  $order
-     * @param    bool    $logged        Only for logged user
-     * @param    bool    $published     Published status
-     * @param    string  $image
-     * @return   bool    True on success or False on failure
+     * @param   int     $pid
+     * @param   int     $gid            Group ID
+     * @param   string  $type
+     * @param   string  $acl
+     * @param   string  $title
+     * @param   string  $url
+     * @param   string  $url_target
+     * @param   string  $order
+     * @param   int     $status         Menu status
+     * @param   string  $image
+     * @return  bool    True on success or False on failure
      */
-    function InsertMenu($pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $order,
-        $logged, $published, $image)
+    function InsertMenu($pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $order, $status, $image)
     {
         $mData['pid']        = $pid;
         $mData['gid']        = $gid;
@@ -35,8 +33,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         $mData['variable']   = (bool)$variable;
         $mData['url_target'] = $url_target;
         $mData['order']      = (int)$order;
-        $mData['logged']     = (bool)$logged;
-        $mData['published']  = (bool)$published;
+        $mData['status']     = (int)$status;
         if (empty($image)) {
             $mData['image']  = null;
         } else {
@@ -75,22 +72,20 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      * Updates the menu
      *
      * @access  public
-     * @param    int     $mid        menu ID
-     * @param    int     $pid
-     * @param    int     $gid        group ID
-     * @param    string  $type
-     * @param    string  $acl
-     * @param    string  $title
-     * @param    string  $url
-     * @param    string  $url_target
-     * @param    string  $order
-     * @param    bool    $logged        Only for logged user
-     * @param    bool    $published     Published status
-     * @param    string  $image
-     * @return   bool    True on success or False on failure
+     * @param   int     $mid        menu ID
+     * @param   int     $pid
+     * @param   int     $gid        group ID
+     * @param   string  $type
+     * @param   string  $acl
+     * @param   string  $title
+     * @param   string  $url
+     * @param   string  $url_target
+     * @param   string  $order
+     * @param   int     $status     Menu status
+     * @param   string  $image
+     * @return  bool   True on success or False on failure
      */
-    function UpdateMenu($mid, $pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $order,
-        $logged, $published, $image)
+    function UpdateMenu($mid, $pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $order, $status, $image)
     {
         $model = $this->gadget->model->load('Menu');
         $oldMenu = $model->GetMenu($mid);
@@ -107,8 +102,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         $mData['variable']   = (bool)$variable;
         $mData['url_target'] = $url_target;
         $mData['order']      = $order;
-        $mData['logged']     = (bool)$logged;
-        $mData['published']  = (bool)$published;
+        $mData['status']     = (int)$status;
         if ($image !== 'true') {
             if (empty($image)) {
                 $mData['image'] = null;
@@ -184,21 +178,6 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         }
 
         return true;
-    }
-
-    /**
-     * Update publish status of all menu related the gadget
-     *
-     * @access  public
-     * @param   string  $gadget     Gadget name
-     * @param   bool    $published  Publish status
-     * @return  bool    True if query was successful and Jaws_Error on error
-     */
-    function PublishGadgetMenus($gadget, $published)
-    {
-        $menusTable = Jaws_ORM::getInstance()->table('menus');
-        $res = $menusTable->update(array('published'=>(bool)$published))->where('menu_type', $gadget)->exec();
-        return $res;
     }
 
     /**

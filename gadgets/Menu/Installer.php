@@ -57,8 +57,6 @@ class Menu_Installer extends Jaws_Gadget_Installer
 
         // Add listener for remove/publish menu items related to given gadget
         $this->gadget->event->insert('UninstallGadget');
-        $this->gadget->event->insert('EnableGadget');
-        $this->gadget->event->insert('DisableGadget');
 
         // Add dynamic ACL for menu group
         $this->gadget->acl->insert('GroupAccess', 1, true);
@@ -139,10 +137,41 @@ class Menu_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.3.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '1.2.0.xml');
+            $result = $this->installSchema('1.3.0.xml', '', '1.2.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        if (version_compare($old, '1.4.0', '<')) {
+            $result = $this->installSchema('1.4.0.xml', '', '1.3.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+            $objORM = Jaws_ORM::getInstance()->table('menus');
+            $menus = $objORM->select('id:integer', 'published:boolean')->fetchAll();
+            if (Jaws_Error::IsError($menus)) {
+                return $menus;
+            }
+            $objORM->beginTransaction();
+            foreach ($menus as $menu) {
+                $result = $objORM->update(array('status' => (int)$menu['published']))->where('id', $menu['id'])->exec();
+                if (Jaws_Error::IsError($result)) {
+                    return $result;
+                }
+            }
+            $objORM->commit();
+        }
+
+        if (version_compare($old, '1.5.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '1.4.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            // not longer need listen on enable/disable gadgets
+            $this->gadget->event->delete('EnableGadget');
+            $this->gadget->event->delete('DisableGadget');
         }
 
         return true;

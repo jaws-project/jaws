@@ -76,6 +76,7 @@
 
         <field>
             <name>order</name>
+            <was>rank</was>
             <type>integer</type>
             <notnull>true</notnull>
             <default>0</default>
@@ -87,9 +88,15 @@
         </field>
 
         <field>
-            <name>status</name>
-            <type>integer</type>
-            <default>1</default>
+            <name>logged</name>
+            <type>boolean</type>
+            <default>false</default>
+        </field>
+
+        <field>
+            <name>published</name>
+            <type>boolean</type>
+            <default>true</default>
         </field>
 
         <index>
@@ -136,6 +143,7 @@
 
         <field>
             <name>order</name>
+            <was>rank</was>
             <type>integer</type>
             <notnull>true</notnull>
             <default>0</default>
