@@ -7,6 +7,9 @@
  */
 class Menu_Info extends Jaws_Gadget
 {
+    const STATUS_ANONYMOUS = 2;
+    const STATUS_LOGGED_IN = 3;
+
     /**
      * Gadget version
      *

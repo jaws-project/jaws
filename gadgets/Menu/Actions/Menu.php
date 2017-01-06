@@ -106,7 +106,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
                 continue;
             }
             if ($menu['status'] != 1) {
-                if ($logged xor $menu['status'] == 3) {
+                if ($logged xor $menu['status'] == Menu_Info::STATUS_LOGGED_IN) {
                     continue;
                 }
             }
