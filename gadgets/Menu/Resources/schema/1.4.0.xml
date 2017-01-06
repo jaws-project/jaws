@@ -87,6 +87,12 @@
         </field>
 
         <field>
+            <name>published</name>
+            <type>boolean</type>
+            <default>true</default>
+        </field>
+
+        <field>
             <name>status</name>
             <type>integer</type>
             <default>1</default>

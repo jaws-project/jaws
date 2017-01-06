@@ -256,23 +256,16 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_order', _t('MENU_ORDER'));
         $tpl->SetVariable('order', $order->Get());
 
-        $tpl->SetVariable('lbl_logged', _t('MENU_LOGGED'));
-        $logged =& Piwi::CreateWidget('Combo', 'logged');
-        $logged->SetID('logged');
-        $logged->SetStyle('width: 128px;');
-        $logged->AddOption(_t('GLOBAL_NO'),  0);
-        $logged->AddOption(_t('GLOBAL_YES'), 1);
-        $logged->SetDefault(0);
-        $tpl->SetVariable('logged', $logged->Get());
-
-        $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
-        $published =& Piwi::CreateWidget('Combo', 'published');
-        $published->SetID('published');
-        $published->SetStyle('width: 128px;');
-        $published->AddOption(_t('GLOBAL_NO'),  0);
-        $published->AddOption(_t('GLOBAL_YES'), 1);
-        $published->SetDefault(1);
-        $tpl->SetVariable('published', $published->Get());
+        $tpl->SetVariable('lbl_status', _t('GLOBAL_STATUS'));
+        $status =& Piwi::CreateWidget('Combo', 'status');
+        $status->SetID('status');
+        $status->SetStyle('width: 128px;');
+        $status->AddOption(_t('GLOBAL_DISABLED'),  0);
+        $status->AddOption(_t('GLOBAL_PUBLISHED'), 1);
+        $status->AddOption(_t('MENU_ANONYMOUS'),   2);
+        $status->AddOption(_t('MENU_RESTRICTED'),  3);
+        $status->SetDefault(1);
+        $tpl->SetVariable('status', $status->Get());
 
         $entry =& Piwi::CreateWidget('FileEntry', 'upload_image', '');
         $entry->SetID('upload_image');

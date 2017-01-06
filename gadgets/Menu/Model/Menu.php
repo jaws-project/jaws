@@ -19,8 +19,8 @@ class Menu_Model_Menu extends Jaws_Gadget_Model
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $menusTable->select(
             'id:integer', 'pid:integer', 'gid:integer', 'menu_type', 'title', 'url', 'variable:boolean',
-            'url_target:integer', 'order:integer', 'published:boolean', 'image:boolean',
-            'acl_key_name', 'acl_key_subkey', 'logged:boolean'
+            'url_target:integer', 'order:integer', 'status:integer', 'image:boolean',
+            'acl_key_name', 'acl_key_subkey'
         );
         return $menusTable->where('id', $mid)->fetchRow();
     }
@@ -30,17 +30,17 @@ class Menu_Model_Menu extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   int     $pid
-     * @param   int     $gid        Group ID
-     * @param   bool    $published  published status
+     * @param   int     $gid    Group ID
+     * @param   int     $status Menu status
      * @return  mixed   Array with all the available menus and Jaws_Error on error
      */
-    function GetLevelsMenus($pid, $gid = null, $published = null)
+    function GetLevelsMenus($pid, $gid = null, $status = null)
     {
         // using boolean type for blob to check it empty or not
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $menusTable->select(
             'id:integer', 'gid:integer', 'menu_type', 'acl_key_name', 'acl_key_subkey', 'title',
-            'url', 'variable:boolean', 'url_target:integer', 'logged:boolean', 'published:boolean',
+            'url', 'variable:boolean', 'url_target:integer', 'status:integer',
             'image:boolean'
         );
         $menusTable->where('pid', $pid);
@@ -49,8 +49,8 @@ class Menu_Model_Menu extends Jaws_Gadget_Model
             $menusTable->and()->where('gid', $gid);
         }
 
-        if (!is_null($published)) {
-            $menusTable->and()->where('published', $published);
+        if (!empty($status)) {
+            $menusTable->and()->where('status', 0, '>');
         }
 
         return $menusTable->orderBy('order asc')->fetchAll();

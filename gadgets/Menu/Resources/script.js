@@ -126,8 +126,7 @@ function saveMenus()
                     $('#variable').val(),
                     $('#url_target').val(),
                     $('#order').val(),
-                    $('#logged').val(),
-                    $('#published').val(),
+                    $('#status').val(),
                     $('#imagename').val()
                 ]
             );
@@ -151,8 +150,7 @@ function saveMenus()
                     $('#variable').val(),
                     $('#url_target').val(),
                     $('#order').val(),
-                    $('#logged').val(),
-                    $('#published').val(),
+                    $('#status').val(),
                     $('#imagename').val()
                 ]
             );
@@ -364,9 +362,7 @@ function editMenu(mid)
 
     setOrderCombo($('#gid').val(), $('#pid').val());
     $('#order').val(menuInfo['order']);
-
-    $('#logged').val(Number(menuInfo['logged']));
-    $('#published').val(Number(menuInfo['published']));
+    $('#status').val(menuInfo['status']);
     getReferences($('#type').val());
     $('#references').val(menuInfo['url']);
     if ($('#type').val() == 'url' && $('#references').prop('selectedIndex') == -1) {
@@ -463,8 +459,8 @@ function getReferences(type)
             cacheReferences[type][i]['acl_key'] = link['acl_key'];
             cacheReferences[type][i]['acl_subkey'] = link['acl_subkey'];
         }
-        if (link['logged']) {
-            cacheReferences[type][i]['logged'] = true;
+        if (link['status']) {
+            cacheReferences[type][i]['status'] = link['status'];
         }
     });
 }
@@ -484,10 +480,10 @@ function changeReferences() {
         if (cacheReferences[type][selIndex]['acl_key']) {
             aclInfo = cacheReferences[type][selIndex]['acl_key'] + ":" + cacheReferences[type][selIndex]['acl_subkey'];
         }
-        if (cacheReferences[type][selIndex]['logged']) {
-            $('#logged').val(Number(cacheReferences[type][selIndex]['logged']));
+        if (cacheReferences[type][selIndex]['status']) {
+            $('#status').val(cacheReferences[type][selIndex]['status']);
         } else {
-            $('#logged').val(0);
+            $('#status').val(1);
         }
     }
 
