@@ -118,19 +118,24 @@ $actions['UpdatePreferences'] = array(
     'internal' => true,
     'file' => 'Preferences',
 );
+$actions['Contact'] = array(
+    'normal' => true,
+    'file' => 'Contact',
+);
+$actions['GetCities'] = array(
+    'standalone' => true,
+    'file' => 'Contact',
+);
+$actions['UpdateContact'] = array(
+    'standalone' => true,
+    'internal' => true,
+    'file' => 'Contact',
+);
 $actions['Contacts'] = array(
     'normal' => true,
     'file' => 'Contacts',
 );
-$actions['GetCities'] = array(
-    'standalone' => true,
-    'file' => 'Contacts',
-);
-$actions['UpdateContacts'] = array(
-    'standalone' => true,
-    'internal' => true,
-    'file' => 'Contacts',
-);
+
 $actions['FriendsGroups'] = array(
     'normal' => true,
     'file' => 'Friends',

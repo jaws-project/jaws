@@ -5,15 +5,15 @@
  * @category    Gadget
  * @package     Users
  */
-class Users_Actions_Contacts extends Users_Actions_Default
+class Users_Actions_Contact extends Users_Actions_Default
 {
     /**
-     * Prepares a simple form to update user's contacts information (country, city, ...)
+     * Prepares a simple form to update user's contact information (country, city, ...)
      *
      * @access  public
      * @return  string  XHTML template of a form
      */
-    function Contacts()
+    function Contact()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             Jaws_Header::Location(
@@ -23,22 +23,20 @@ class Users_Actions_Contacts extends Users_Actions_Default
                 )
             );
         }
-//        $GLOBALS['app']->Layout->AddScriptLink('libraries/URLDownloader/libraries/gibberish-aes.js');
-//        $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/Resources/style.css');
 
         $this->gadget->CheckPermission('EditUserContacts');
         $this->AjaxMe('index.js');
-        $response = $GLOBALS['app']->Session->PopResponse('Users.Contacts');
+        $response = $GLOBALS['app']->Session->PopResponse('Users.Contact');
         if (!isset($response['data'])) {
             $jUser = new Jaws_User;
-            $contacts = $jUser->GetUserContact($GLOBALS['app']->Session->GetAttribute('user'));
+            $contact = $jUser->GetUserContact($GLOBALS['app']->Session->GetAttribute('user'));
         } else {
-            $contacts = $response['data'];
+            $contact = $response['data'];
         }
 
         // Load the template
-        $tpl = $this->gadget->template->load('Contacts.html');
-        $tpl->SetBlock('contacts');
+        $tpl = $this->gadget->template->load('Contact.html');
+        $tpl->SetBlock('contact');
 
         $tpl->SetVariable('gadget_title', _t('USERS_CONTACTS_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
@@ -48,7 +46,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('menubar', $this->MenuBar('Account'));
         $tpl->SetVariable(
             'submenubar',
-            $this->SubMenuBar('Contacts', array('Account', 'Personal', 'Preferences', 'Contact', 'Contacts'))
+            $this->SubMenuBar('Contact', array('Account', 'Personal', 'Preferences', 'Contact', 'Contacts'))
         );
 
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
@@ -66,7 +64,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('lbl_note', _t('USERS_CONTACTS_NOTE'));
         $tpl->SetVariable('img_add', STOCK_ADD);
         $tpl->SetVariable('img_del', STOCK_REMOVE);
-        $tpl->SetVariablesArray($contacts);
+        $tpl->SetVariablesArray($contact);
 
         // province
         $model = $this->gadget->model->load('Contacts');
@@ -74,39 +72,39 @@ class Users_Actions_Contacts extends Users_Actions_Default
         if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
             array_unshift($provinces, array('id' => 0, 'title' => ''));
             foreach ($provinces as $province) {
-                $tpl->SetBlock('contacts/province');
+                $tpl->SetBlock('contact/province');
                 $tpl->SetVariable('value', $province['id']);
                 $tpl->SetVariable('title', $province['title']);
                 $tpl->SetVariable('selected', '');
-                if (isset($contacts['province']) && $contacts['province'] == $province['id']) {
+                if (isset($contact['province']) && $contact['province'] == $province['id']) {
                     $tpl->SetVariable('selected', 'selected');
                 }
-                $tpl->ParseBlock('contacts/province');
+                $tpl->ParseBlock('contact/province');
             }
         }
 
         // city
-        if (!empty($contacts['province'])) {
-            $cities = $model->GetCities($contacts['province']);
+        if (!empty($contact['province'])) {
+            $cities = $model->GetCities($contact['province']);
             if (!Jaws_Error::IsError($cities) && count($cities) > 0) {
                 foreach ($cities as $city) {
-                    $tpl->SetBlock('contacts/city');
+                    $tpl->SetBlock('contact/city');
                     $tpl->SetVariable('value', $city['id']);
                     $tpl->SetVariable('title', $city['title']);
                     $tpl->SetVariable('selected', '');
-                    if (isset($contacts['city']) && $contacts['city'] == $city['id']) {
+                    if (isset($contact['city']) && $contact['city'] == $city['id']) {
                         $tpl->SetVariable('selected', 'selected');
                     }
-                    $tpl->ParseBlock('contacts/city');
+                    $tpl->ParseBlock('contact/city');
                 }
             }
         }
 
-        if (empty($contacts['avatar'])) {
+        if (empty($contact['avatar'])) {
             $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
         } else {
-            $user_current_avatar = $GLOBALS['app']->getDataURL() . "avatar/" . $contacts['avatar'];
-            $user_current_avatar .= !empty($contacts['last_update']) ? "?" . $contacts['last_update'] . "" : '';
+            $user_current_avatar = $GLOBALS['app']->getDataURL() . "avatar/" . $contact['avatar'];
+            $user_current_avatar .= !empty($contact['last_update']) ? "?" . $contact['last_update'] . "" : '';
         }
         $avatar =& Piwi::CreateWidget('Image', $user_current_avatar);
         $avatar->SetID('avatar');
@@ -117,17 +115,17 @@ class Users_Actions_Contacts extends Users_Actions_Default
             $tpl->SetVariable('response_text', $response['text']);
         }
 
-        $tpl->ParseBlock('contacts');
+        $tpl->ParseBlock('contact');
         return $tpl->Get();
     }
 
     /**
-     * Updates user contacts information
+     * Updates user contact information
      *
      * @access  public
      * @return  void
      */
-    function UpdateContacts()
+    function UpdateContact()
     {
         if (!$GLOBALS['app']->Session->Logged()) {
             Jaws_Header::Location(
@@ -167,7 +165,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
             );
         }
 
-        Jaws_Header::Location($this->gadget->urlMap('Contacts'), 'Users.Contacts');
+        Jaws_Header::Location($this->gadget->urlMap('Contact'), 'Users.Contact');
     }
 
     /**
