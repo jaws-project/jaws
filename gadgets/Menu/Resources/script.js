@@ -120,11 +120,11 @@ function saveMenus()
                     $('#pid').val(),
                     $('#gid').val(),
                     $('#type').val(),
-                    menuPermission,
+                    $('#permission').val(),
                     $('#title').val(),
                     $('#url').val(),
                     $('#variables').val(),
-                    $('#url_target').val(),
+                    $('#target').val(),
                     $('#order').val(),
                     $('#status').val(),
                     $('#imagename').val()
@@ -144,11 +144,11 @@ function saveMenus()
                     $('#pid').val(),
                     $('#gid').val(),
                     $('#type').val(),
-                    menuPermission,
+                    $('#permission').val(),
                     $('#title').val(),
                     $('#url').val(),
                     $('#variables').val(),
-                    $('#url_target').val(),
+                    $('#target').val(),
                     $('#order').val(),
                     $('#status').val(),
                     $('#imagename').val()
@@ -353,13 +353,8 @@ function editMenu(mid)
     $('#url').val(menuInfo['url']);
     $('#url').prop('disabled', menuInfo['variables'] || !menuInfo['url']);
     $('#variables').val(menuInfo['variables']);
-    $('#url_target').val(menuInfo['url_target']);
-    if (menuInfo['acl_key_name']) {
-        menuPermission = menuInfo['acl_key_name'] + ':' + ((menuInfo['acl_key_subkey']=== null)? '' : menuInfo['acl_key_subkey']);
-    } else {
-        menuPermission = null;
-    }
-
+    $('#target').val(menuInfo['target']);
+    $('#permission').val(menuInfo['permission']);
     setOrderCombo($('#gid').val(), $('#pid').val());
     $('#order').val(menuInfo['order']);
     $('#status').val(menuInfo['status']);
@@ -455,10 +450,8 @@ function getReferences(type)
         if (link['title2']) {
             cachedMenus[type][i]['title2'] = link['title2'];
         }
-        if (link['acl_key']) {
-            cachedMenus[type][i]['acl_key'] = link['acl_key'];
-            cachedMenus[type][i]['acl_subkey'] = link['acl_subkey'];
-        }
+        
+        cachedMenus[type][i]['permission'] = link['permission']? link['permission'] : '';
         if (link['status']) {
             cachedMenus[type][i]['status'] = link['status'];
         }
@@ -477,9 +470,6 @@ function changeReferences() {
         } else {
             $('#title').val($("#references option").eq(selIndex).text());
         }
-        if (cachedMenus[type][selIndex]['acl_key']) {
-            menuPermission = cachedMenus[type][selIndex]['acl_key'] + ":" + cachedMenus[type][selIndex]['acl_subkey'];
-        }
         if (cachedMenus[type][selIndex]['status']) {
             $('#status').val(cachedMenus[type][selIndex]['status']);
         } else {
@@ -488,6 +478,7 @@ function changeReferences() {
     }
 
     $('#variables').val(cachedMenus[type][selIndex]['variables']);
+    $('#permission').val(cachedMenus[type][selIndex]['permission']);
     $('#url').val($('#references').val());
     $('#url').prop('disabled', cachedMenus[type][selIndex]['variables'] || !cachedMenus[type][selIndex]['url']);
 }
@@ -509,7 +500,6 @@ function stopAction()
 
     selectedMenu  = null;
     selectedGroup = null;
-    menuPermission = null;
     currentAction = null;
     $('#menus_edit').html('');
     $('#edit_area span').first().html('');
@@ -568,4 +558,3 @@ var m_bg_color = null;
 var org_m_bg_color = null;
 
 var cachedMenus = new Array();
-var menuPermission = null;

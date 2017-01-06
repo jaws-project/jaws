@@ -34,16 +34,8 @@
         </field>
 
         <field>
-            <name>acl_key_name</name>
+            <name>permission</name>
             <type>text</type>
-            <length>32</length>
-        </field>
-
-        <field>
-            <name>acl_key_subkey</name>
-            <type>text</type>
-            <length>32</length>
-            <default></default>
         </field>
 
         <field>
@@ -64,7 +56,8 @@
         </field>
 
         <field>
-            <name>url_target</name>
+            <name>target</name>
+            <was>url_target</was>
             <type>integer</type>
             <length>1</length>
             <default>0</default>

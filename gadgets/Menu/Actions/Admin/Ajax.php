@@ -113,7 +113,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function InsertMenu()
     {
         $this->gadget->CheckPermission('ManageMenus');
-        @list($pid, $gid, $type, $acl, $title, $url, $variables, $url_target,
+        @list($pid, $gid, $type, $permission, $title, $url, $variables, $target,
             $order, $status, $image
         ) = jaws()->request->fetchAll('post');
 
@@ -125,6 +125,9 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $url = str_replace('%2C', ',', $url);
         }
 
+        if (is_null($permission)) {
+            $permission = serialize(jaws()->request->fetch('3:array', 'post'));
+        }
         if (is_null($variables)) {
             $variables = serialize(jaws()->request->fetch('6:array', 'post'));
         }
@@ -133,11 +136,11 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             'pid'        => $pid,
             'gid'        => $gid,
             'type'       => $type,
-            'acl'        => $acl,
+            'permission' => $permission,
             'title'      => $title,
             'url'        => $url,
             'variables'  => $variables,
-            'url_target' => $url_target,
+            'target'     => $target,
             'order'      => $order, 
             'status'     => (int)$status,
             'image'      => $image
@@ -173,7 +176,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateMenu()
     {
         $this->gadget->CheckPermission('ManageMenus');
-        @list($mid, $pid, $gid, $type, $acl, $title, $url, $variables, $url_target,
+        @list($mid, $pid, $gid, $type, $permission, $title, $url, $variables, $target,
             $order, $status, $image
         ) = jaws()->request->fetchAll('post');
 
@@ -185,19 +188,22 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $url = str_replace('%2C', ',', $url);
         }
 
+        if (is_null($permission)) {
+            $permission = serialize(jaws()->request->fetch('4:array', 'post'));
+        }
         if (is_null($variables)) {
-            $variables = serialize(jaws()->request->fetch('7:array', 'post'));
+            $variables  = serialize(jaws()->request->fetch('7:array', 'post'));
         }
 
         $mData = array(
             'pid'        => $pid,
             'gid'        => $gid,
             'type'       => $type,
-            'acl'        => $acl,
+            'permission' => $permission,
             'title'      => $title,
             'url'        => $url,
             'variables'  => $variables,
-            'url_target' => $url_target,
+            'target'     => $target,
             'order'      => $order, 
             'status'     => (int)$status,
             'image'      => $image
@@ -305,9 +311,13 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
                             } else {
                                 $links[$key]['url'] = rawurldecode($link['url']);
                             }
-
+                            // serialize variables
                             if (isset($link['variables'])) {
                                 $links[$key]['variables'] = serialize($link['variables']);
+                            }
+                            // serialize permission
+                            if (isset($link['permission'])) {
+                                $links[$key]['permission'] = serialize($link['permission']);
                             }
                         }
 
@@ -318,38 +328,6 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         return array();
-    }
-
-    /**
-     * Returns ACL keys of the component and user/group
-     *
-     * @access  public
-     * @return  array   Array of default ACLs and the user/group ACLs
-     */
-    function GetACLKeys()
-    {
-        $this->gadget->CheckPermission('ManageMenus');
-
-        $comp = jaws()->request->fetch('comp', 'post');
-        // fetch default ACLs
-        $default_acls = array();
-        $result = $GLOBALS['app']->ACL->fetchAll($comp);
-        if (!empty($result)) {
-            // set ACL keys description
-            $info = Jaws_Gadget::getInstance($comp);
-            foreach ($result as $key_name => $acl) {
-                foreach ($acl as $subkey => $value) {
-                    $default_acls[] = array(
-                        'key_name'   => $key_name,
-                        'key_subkey' => $subkey,
-                        'key_value'  => $value,
-                        'key_desc'   => $info->acl->description($key_name, $subkey),
-                    );
-                }
-            }
-        }
-
-        return $default_acls;
     }
 
 }

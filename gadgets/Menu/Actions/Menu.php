@@ -121,15 +121,24 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
                     continue;
                 }
 
-                // check ACL
-                if (!empty($menu['acl_key_name']) &&
-                    !$GLOBALS['app']->Session->GetPermission(
-                        $menu['type'],
-                        $menu['acl_key_name'],
-                        $menu['acl_key_subkey']
-                    )
-                ) {
-                    continue;
+                // check permission
+                if (!empty($menu['permission'])) {
+                    $permission = unserialize($menu['permission']);
+                    if (isset($permission['gadget'])) {
+                        if (!$GLOBALS['app']->Session->GetPermission($permission['gadget'], 'default')) {
+                            continue;
+                        }
+                    } else {
+                        $permission['gadget'] = $menu['type'];
+                    }
+
+                    if (!$GLOBALS['app']->Session->GetPermission(
+                        $permission['gadget'],
+                        $permission['key'],
+                        $permission['subkey']
+                    )) {
+                        continue;
+                    }
                 }
             }
 
@@ -176,7 +185,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             $tpl->SetVariable('mid', $menu['id']);
             $tpl->SetVariable('title', $menu['title']);
             $tpl->SetVariable('url', $menu['url']);
-            $tpl->SetVariable('target', ($menu['url_target']==0)? '_self': '_blank');
+            $tpl->SetVariable('target', ($menu['target']==0)? '_self': '_blank');
 
             if (!empty($menu['image'])) {
                 $src = $this->gadget->urlMap('LoadImage', array('id' => $menu['id']));

@@ -26,14 +26,6 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             $mData['image'] = array('File://' . $filename, 'blob');
         }
 
-        // ACL
-        if (!empty($mData['acl'])) {
-            $aclInfo = explode(':', $mData['acl']);
-            $mData['acl_key_name'] = $aclInfo[0];
-            $mData['acl_key_subkey'] = $aclInfo[1];
-        }
-        unset($mData['acl']);
-
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $mid = $menusTable->insert($mData)->exec();
 
@@ -82,17 +74,6 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
         } else {
             unset($mData['image']);
         }
-
-        // ACL
-        if (!empty($mData['acl'])) {
-            $aclInfo = explode(':', $mData['acl']);
-            $mData['acl_key_name'] = $aclInfo[0];
-            $mData['acl_key_subkey'] = $aclInfo[1];
-        } else {
-            $mData['acl_key_name'] = null;
-            $mData['acl_key_subkey'] = null;
-        }
-        unset($mData['acl']);
 
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $res = $menusTable->update($mData)->where('id', $mid)->exec();

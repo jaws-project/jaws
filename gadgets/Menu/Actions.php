@@ -90,7 +90,3 @@ $admin_actions['GetPublicURList'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
-$admin_actions['GetACLKeys'] = array(
-    'standalone' => true,
-    'file' => 'Ajax',
-);

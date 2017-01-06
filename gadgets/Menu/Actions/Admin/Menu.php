@@ -242,13 +242,13 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $urlEntry->SetStyle('direction: ltr;width: 256px;');
         $tpl->SetVariable('url', $urlEntry->Get());
 
-        $targetType =& Piwi::CreateWidget('Combo', 'url_target');
-        $targetType->SetID('url_target');
-        $targetType->setStyle('width: 128px;');
-        $targetType->AddOption(_t('MENU_TARGET_SELF'),  0);
-        $targetType->AddOption(_t('MENU_TARGET_BLANK'), 1);
-        $tpl->SetVariable('lbl_url_target', _t('MENU_TARGET'));
-        $tpl->SetVariable('url_target', $targetType->Get());
+        $target =& Piwi::CreateWidget('Combo', 'target');
+        $target->SetID('target');
+        $target->setStyle('width: 128px;');
+        $target->AddOption(_t('MENU_TARGET_SELF'),  0);
+        $target->AddOption(_t('MENU_TARGET_BLANK'), 1);
+        $tpl->SetVariable('lbl_target', _t('MENU_TARGET'));
+        $tpl->SetVariable('target', $target->Get());
 
         $order =& Piwi::CreateWidget('Combo', 'order');
         $order->SetID('order');
