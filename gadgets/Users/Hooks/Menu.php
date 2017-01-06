@@ -32,8 +32,10 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
         $urls[] = array(
             'url'        => $this->gadget->urlMap('FriendsGroups'),
             'title'      => _t('USERS_FRIENDS'),
-            'acl_key'    => 'ManageFriends',
-            'acl_subkey' => ''
+            'permission' => array(
+                'key'    => 'ManageFriends',
+                'subkey' => ''
+            )
         );
 
 /*
@@ -45,8 +47,10 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
         $urls[] = array(
             'url'        => $this->gadget->urlMap('Dashboard', array('user' => 0), false, 'Layout'),
             'title'      => _t('USERS_DASHBOARD_GLOBAL'),
-            'acl_key'    => 'AccessDashboard',
-            'acl_subkey' => ''
+            'permission' => array(
+                'key'    => 'AccessDashboard',
+                'subkey' => ''
+            )
         );
 
         $urls[] = array(
