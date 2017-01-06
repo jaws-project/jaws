@@ -112,19 +112,19 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             }
 
             // check default ACL
-            if ($menu['menu_type'] != 'url') {
-                if (!Jaws_Gadget::IsGadgetInstalled($menu['menu_type'])) {
+            if ($menu['type'] != 'url') {
+                if (!Jaws_Gadget::IsGadgetInstalled($menu['type'])) {
                     continue;
                 }
 
-                if (!$GLOBALS['app']->Session->GetPermission($menu['menu_type'], 'default')) {
+                if (!$GLOBALS['app']->Session->GetPermission($menu['type'], 'default')) {
                     continue;
                 }
 
                 // check ACL
                 if (!empty($menu['acl_key_name']) &&
                     !$GLOBALS['app']->Session->GetPermission(
-                        $menu['menu_type'],
+                        $menu['type'],
                         $menu['acl_key_name'],
                         $menu['acl_key_subkey']
                     )
@@ -133,31 +133,36 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
                 }
             }
 
-            // check variable menu
-            if ($menu['variable']) {
-                $objGadget = Jaws_Gadget::getInstance($menu['menu_type']);
+            // replace menu variables
+            if (!empty($menu['variables'])) {
+                $objGadget = Jaws_Gadget::getInstance($menu['type']);
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
                 }
 
                 $params = array();
-                $url = unserialize($menu['url']);
-                foreach ($url['params'] as $param => $str) {
-                    if (!preg_match_all('@\{([[:alnum:]]+)\}@iu', $str, $vars, PREG_SET_ORDER)) {
-                        continue;
+                $vars = unserialize($menu['variables']);
+                $url  = unserialize($menu['url']);
+                foreach ($vars as $var => $val) {
+                    $val = $GLOBALS['app']->Session->GetAttribute($val);
+                    if (is_null($val)) {
+                        continue 2;
                     }
-
-                    foreach ($vars as $var) {
-                        $val = $objGadget->session->fetch($var[1]);
-                        if (is_null($val)) {
-                            continue 3;
-                        }
-                        $str = str_replace('{' . $var[1] . '}', $val, $str);
+                    // set url variables
+                    foreach ($url['params'] as $param => $str) {
+                        $params[$param] = Jaws_UTF8::str_replace('{' . $var . '}', $val, $str);
                     }
-                    $params[$param] = $str;
+                    // set title variables
+                    $menu['title'] = Jaws_UTF8::str_replace('{' . $var . '}', $val, $menu['title']);
                 }
 
-                $menu['url'] = $objGadget->urlMap($url['action'], $params);
+                // generate url map
+                $menu['url'] = $objGadget->urlMap(
+                    $url['action'],
+                    $params,
+                    false,
+                    isset($url['gadget'])? $url['gadget'] : ''
+                );
             }
 
             //get sub level menus

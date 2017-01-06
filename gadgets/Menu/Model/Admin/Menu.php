@@ -11,44 +11,28 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      * Inserta a new menu
      *
      * @access  public
-     * @param   int     $pid
-     * @param   int     $gid            Group ID
-     * @param   string  $type
-     * @param   string  $acl
-     * @param   string  $title
-     * @param   string  $url
-     * @param   string  $url_target
-     * @param   string  $order
-     * @param   int     $status         Menu status
-     * @param   string  $image
+     * @param   array   $mData  Menu data attributes
      * @return  bool    True on success or False on failure
      */
-    function InsertMenu($pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $order, $status, $image)
+    function InsertMenu($mData)
     {
-        $mData['pid']        = $pid;
-        $mData['gid']        = $gid;
-        $mData['menu_type']  = $type;
-        $mData['title']      = $title;
-        $mData['url']        = $url;
-        $mData['variable']   = (bool)$variable;
-        $mData['url_target'] = $url_target;
-        $mData['order']      = (int)$order;
-        $mData['status']     = (int)$status;
-        if (empty($image)) {
+        $mData['order']  = (int)$mData['order'];
+        $mData['status'] = (int)$mData['status'];
+        if (empty($mData['image'])) {
             $mData['image']  = null;
         } else {
-            $image = preg_replace("/[^[:alnum:]_\.\-]*/i", "", $image);
+            $image = preg_replace("/[^[:alnum:]_\.\-]*/i", "", $mData['image']);
             $filename = Jaws_Utils::upload_tmp_dir(). '/'. $image;
-            $mData['image']  = array('File://' . $filename, 'blob');
+            $mData['image'] = array('File://' . $filename, 'blob');
         }
 
         // ACL
-        if (!empty($acl)) {
-            $aclInfo = explode(':', $acl);
-
+        if (!empty($mData['acl'])) {
+            $aclInfo = explode(':', $mData['acl']);
             $mData['acl_key_name'] = $aclInfo[0];
             $mData['acl_key_subkey'] = $aclInfo[1];
         }
+        unset($mData['acl']);
 
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $mid = $menusTable->insert($mData)->exec();
@@ -62,7 +46,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             Jaws_Utils::Delete($filename);
         }
 
-        $this->MoveMenu($mid, $gid, $gid, $pid, $pid, $order, null);
+        $this->MoveMenu($mid, $mData['gid'], $mData['gid'], $mData['pid'], $mData['pid'], $mData['order'], null);
         $GLOBALS['app']->Session->PushLastResponse($mid.'%%' . _t('MENU_NOTICE_MENU_CREATED'), RESPONSE_NOTICE);
 
         return true;
@@ -72,20 +56,11 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
      * Updates the menu
      *
      * @access  public
-     * @param   int     $mid        menu ID
-     * @param   int     $pid
-     * @param   int     $gid        group ID
-     * @param   string  $type
-     * @param   string  $acl
-     * @param   string  $title
-     * @param   string  $url
-     * @param   string  $url_target
-     * @param   string  $order
-     * @param   int     $status     Menu status
-     * @param   string  $image
-     * @return  bool   True on success or False on failure
+     * @param   int     $mid    Menu ID
+     * @param   array   $mData  Menu data attributes
+     * @return  bool    True on success or False on failure
      */
-    function UpdateMenu($mid, $pid, $gid, $type, $acl, $title, $url, $variable, $url_target, $order, $status, $image)
+    function UpdateMenu($mid, $mData)
     {
         $model = $this->gadget->model->load('Menu');
         $oldMenu = $model->GetMenu($mid);
@@ -94,34 +69,30 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             return false;
         }
 
-        $mData['pid']        = $pid;
-        $mData['gid']        = $gid;
-        $mData['menu_type']  = $type;
-        $mData['title']      = $title;
-        $mData['url']        = $url;
-        $mData['variable']   = (bool)$variable;
-        $mData['url_target'] = $url_target;
-        $mData['order']      = $order;
-        $mData['status']     = (int)$status;
-        if ($image !== 'true') {
-            if (empty($image)) {
+        $mData['order']  = (int)$mData['order'];
+        $mData['status'] = (int)$mData['status'];
+        if ($mData['image'] !== 'true') {
+            if (empty($mData['image'])) {
                 $mData['image'] = null;
             } else {
-                $image = preg_replace("/[^[:alnum:]_\.\-]*/i", "", $image);
+                $image = preg_replace("/[^[:alnum:]_\.\-]*/i", "", $mData['image']);
                 $filename = Jaws_Utils::upload_tmp_dir(). '/'. $image;
                 $mData['image'] = array('File://' . $filename, 'blob');
             }
+        } else {
+            unset($mData['image']);
         }
 
         // ACL
-        if (!empty($acl)) {
-            $aclInfo = explode(':', $acl);
+        if (!empty($mData['acl'])) {
+            $aclInfo = explode(':', $mData['acl']);
             $mData['acl_key_name'] = $aclInfo[0];
             $mData['acl_key_subkey'] = $aclInfo[1];
         } else {
             $mData['acl_key_name'] = null;
             $mData['acl_key_subkey'] = null;
         }
+        unset($mData['acl']);
 
         $menusTable = Jaws_ORM::getInstance()->table('menus');
         $res = $menusTable->update($mData)->where('id', $mid)->exec();
@@ -134,7 +105,15 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
             Jaws_Utils::Delete($filename);
         }
 
-        $this->MoveMenu($mid, $gid, $oldMenu['gid'], $pid, $oldMenu['pid'], $order, $oldMenu['order']);
+        $this->MoveMenu(
+            $mid,
+            $mData['gid'],
+            $oldMenu['gid'],
+            $mData['pid'],
+            $oldMenu['pid'],
+            $mData['order'],
+            $oldMenu['order']
+        );
         $GLOBALS['app']->Session->PushLastResponse(_t('MENU_NOTICE_MENU_UPDATED'), RESPONSE_NOTICE);
         return true;
     }
@@ -190,7 +169,7 @@ class Menu_Model_Admin_Menu extends Jaws_Gadget_Model
     function DeleteGadgetMenus($gadget)
     {
         $menusTable = Jaws_ORM::getInstance()->table('menus');
-        $mids = $menusTable->select('id')->where('menu_type', $gadget)->fetchAll();
+        $mids = $menusTable->select('id')->where('type', $gadget)->fetchAll();
         if (Jaws_Error::IsError($mids)) {
             return false;
         }

@@ -120,10 +120,10 @@ function saveMenus()
                     $('#pid').val(),
                     $('#gid').val(),
                     $('#type').val(),
-                    aclInfo,
+                    menuPermission,
                     $('#title').val(),
                     $('#url').val(),
-                    $('#variable').val(),
+                    $('#variables').val(),
                     $('#url_target').val(),
                     $('#order').val(),
                     $('#status').val(),
@@ -144,10 +144,10 @@ function saveMenus()
                     $('#pid').val(),
                     $('#gid').val(),
                     $('#type').val(),
-                    aclInfo,
+                    menuPermission,
                     $('#title').val(),
                     $('#url').val(),
-                    $('#variable').val(),
+                    $('#variables').val(),
                     $('#url_target').val(),
                     $('#order').val(),
                     $('#status').val(),
@@ -348,16 +348,16 @@ function editMenu(mid)
     $('#mid').val(menuInfo['id']);
     $('#pid').val(menuInfo['pid']);
     $('#gid').val(menuInfo['gid']);
-    $('#type').val(menuInfo['menu_type']);
+    $('#type').val(menuInfo['type']);
     $('#title').val(menuInfo['title'].defilter());
     $('#url').val(menuInfo['url']);
-    $('#url').prop('disabled', menuInfo['variable'] || !menuInfo['url']);
-    $('#variable').val(menuInfo['variable']? 1 : 0);
+    $('#url').prop('disabled', menuInfo['variables'] || !menuInfo['url']);
+    $('#variables').val(menuInfo['variables']);
     $('#url_target').val(menuInfo['url_target']);
     if (menuInfo['acl_key_name']) {
-        aclInfo = menuInfo['acl_key_name'] + ':' + ((menuInfo['acl_key_subkey']=== null)? '' : menuInfo['acl_key_subkey']);
+        menuPermission = menuInfo['acl_key_name'] + ':' + ((menuInfo['acl_key_subkey']=== null)? '' : menuInfo['acl_key_subkey']);
     } else {
-        aclInfo = null;
+        menuPermission = null;
     }
 
     setOrderCombo($('#gid').val(), $('#pid').val());
@@ -436,31 +436,31 @@ function changeType(type) {
  */
 function getReferences(type)
 {
-    if (cacheReferences[type]) {
+    if (cachedMenus[type]) {
         $('#references').empty();
-        for(var i = 0; i < cacheReferences[type].length; i++) {
-            $('#references').append($('<option>').val(cacheReferences[type][i]['url']).text(cacheReferences[type][i]['title']));
+        for(var i = 0; i < cachedMenus[type].length; i++) {
+            $('#references').append($('<option>').val(cachedMenus[type][i]['url']).text(cachedMenus[type][i]['title']));
         }
         return;
     }
     var links = MenuAjax.callSync('GetPublicURList', type);
-    cacheReferences[type] = new Array();
+    cachedMenus[type] = new Array();
     $('#references').empty();
     $.each(links, function(i, link) {
         $('#references').append($('<option>').val(link['url']).text(link['title']));
-        cacheReferences[type][i] = new Array();
-        cacheReferences[type][i]['url']   = link['url'];
-        cacheReferences[type][i]['variable'] = link['variable']? 1 : 0;
-        cacheReferences[type][i]['title'] = link['title'];
+        cachedMenus[type][i] = new Array();
+        cachedMenus[type][i]['url']   = link['url'];
+        cachedMenus[type][i]['variables'] = link['variables']? link['variables'] : '';
+        cachedMenus[type][i]['title'] = link['title'];
         if (link['title2']) {
-            cacheReferences[type][i]['title2'] = link['title2'];
+            cachedMenus[type][i]['title2'] = link['title2'];
         }
         if (link['acl_key']) {
-            cacheReferences[type][i]['acl_key'] = link['acl_key'];
-            cacheReferences[type][i]['acl_subkey'] = link['acl_subkey'];
+            cachedMenus[type][i]['acl_key'] = link['acl_key'];
+            cachedMenus[type][i]['acl_subkey'] = link['acl_subkey'];
         }
         if (link['status']) {
-            cacheReferences[type][i]['status'] = link['status'];
+            cachedMenus[type][i]['status'] = link['status'];
         }
     });
 }
@@ -472,24 +472,24 @@ function changeReferences() {
     var type = $('#type').val();
     var selIndex = $('#references').prop('selectedIndex');
     if (type != 'url') {
-        if (cacheReferences[type][selIndex]['title2']) {
-            $('#title').val(cacheReferences[type][selIndex]['title2']);
+        if (cachedMenus[type][selIndex]['title2']) {
+            $('#title').val(cachedMenus[type][selIndex]['title2']);
         } else {
             $('#title').val($("#references option").eq(selIndex).text());
         }
-        if (cacheReferences[type][selIndex]['acl_key']) {
-            aclInfo = cacheReferences[type][selIndex]['acl_key'] + ":" + cacheReferences[type][selIndex]['acl_subkey'];
+        if (cachedMenus[type][selIndex]['acl_key']) {
+            menuPermission = cachedMenus[type][selIndex]['acl_key'] + ":" + cachedMenus[type][selIndex]['acl_subkey'];
         }
-        if (cacheReferences[type][selIndex]['status']) {
-            $('#status').val(cacheReferences[type][selIndex]['status']);
+        if (cachedMenus[type][selIndex]['status']) {
+            $('#status').val(cachedMenus[type][selIndex]['status']);
         } else {
             $('#status').val(1);
         }
     }
 
-    $('#variable').val(cacheReferences[type][selIndex]['variable']);
+    $('#variables').val(cachedMenus[type][selIndex]['variables']);
     $('#url').val($('#references').val());
-    $('#url').prop('disabled', cacheReferences[type][selIndex]['variable'] || !cacheReferences[type][selIndex]['url']);
+    $('#url').prop('disabled', cachedMenus[type][selIndex]['variables'] || !cachedMenus[type][selIndex]['url']);
 }
 
 /**
@@ -509,7 +509,7 @@ function stopAction()
 
     selectedMenu  = null;
     selectedGroup = null;
-    aclInfo = null;
+    menuPermission = null;
     currentAction = null;
     $('#menus_edit').html('');
     $('#edit_area span').first().html('');
@@ -567,6 +567,5 @@ var cacheMenuForm = null;
 var m_bg_color = null;
 var org_m_bg_color = null;
 
-var cacheReferences = new Array();
-
-var aclInfo = null;
+var cachedMenus = new Array();
+var menuPermission = null;

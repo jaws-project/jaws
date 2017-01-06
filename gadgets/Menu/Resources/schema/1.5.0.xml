@@ -17,19 +17,21 @@
         <field>
             <name>pid</name>
             <type>integer</type>
+            <notnull>true</notnull>
             <default>0</default>
         </field>
 
         <field>
             <name>gid</name>
             <type>integer</type>
+            <notnull>true</notnull>
         </field>
 
         <field>
-            <name>type</name>
-            <was>menu_type</was>
+            <name>menu_type</name>
             <type>text</type>
             <length>32</length>
+            <notnull>true</notnull>
             <default>url</default>
         </field>
 
@@ -50,6 +52,7 @@
             <name>title</name>
             <type>text</type>
             <length>128</length>
+            <notnull>true</notnull>
         </field>
 
         <field>
@@ -59,8 +62,9 @@
         </field>
 
         <field>
-            <name>variables</name>
-            <type>text</type>
+            <name>variable</name>
+            <type>boolean</type>
+            <default>false</default>
         </field>
 
         <field>
@@ -73,6 +77,7 @@
         <field>
             <name>order</name>
             <type>integer</type>
+            <notnull>true</notnull>
             <default>0</default>
         </field>
 

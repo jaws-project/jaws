@@ -81,7 +81,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             return false; //we need to handle errors on ajax
         }
 
-        if (!$menu['variable']) {
+        if (!$menu['variables']) {
             $menu['url'] = rawurldecode($menu['url']);
         }
 
@@ -113,7 +113,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function InsertMenu()
     {
         $this->gadget->CheckPermission('ManageMenus');
-        @list($pid, $gid, $type, $acl, $title, $url, $variable, $url_target,
+        @list($pid, $gid, $type, $acl, $title, $url, $variables, $url_target,
             $order, $status, $image
         ) = jaws()->request->fetchAll('post');
 
@@ -125,11 +125,25 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $url = str_replace('%2C', ',', $url);
         }
 
-        $model = $this->gadget->model->loadAdmin('Menu');
-        $model->InsertMenu(
-            $pid, $gid, $type, $acl, $title, $url,
-            $variable, $url_target, $order, (int)$status, $image
+        if (is_null($variables)) {
+            $variables = serialize(jaws()->request->fetch('6:array', 'post'));
+        }
+
+        $mData = array(
+            'pid'        => $pid,
+            'gid'        => $gid,
+            'type'       => $type,
+            'acl'        => $acl,
+            'title'      => $title,
+            'url'        => $url,
+            'variables'  => $variables,
+            'url_target' => $url_target,
+            'order'      => $order, 
+            'status'     => (int)$status,
+            'image'      => $image
         );
+        $model = $this->gadget->model->loadAdmin('Menu');
+        $model->InsertMenu($mData);
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -159,7 +173,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateMenu()
     {
         $this->gadget->CheckPermission('ManageMenus');
-        @list($mid, $pid, $gid, $type, $acl, $title, $url, $variable, $url_target,
+        @list($mid, $pid, $gid, $type, $acl, $title, $url, $variables, $url_target,
             $order, $status, $image
         ) = jaws()->request->fetchAll('post');
 
@@ -171,11 +185,25 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $url = str_replace('%2C', ',', $url);
         }
 
-        $model = $this->gadget->model->loadAdmin('Menu');
-        $model->UpdateMenu(
-            $mid, $pid, $gid, $type, $acl, $title,
-            $url, $variable, $url_target, $order, (int)$status, $image
+        if (is_null($variables)) {
+            $variables = serialize(jaws()->request->fetch('7:array', 'post'));
+        }
+
+        $mData = array(
+            'pid'        => $pid,
+            'gid'        => $gid,
+            'type'       => $type,
+            'acl'        => $acl,
+            'title'      => $title,
+            'url'        => $url,
+            'variables'  => $variables,
+            'url_target' => $url_target,
+            'order'      => $order, 
+            'status'     => (int)$status,
+            'image'      => $image
         );
+        $model = $this->gadget->model->loadAdmin('Menu');
+        $model->UpdateMenu($mid, $mData);
 
         return $GLOBALS['app']->Session->PopLastResponse();
     }
@@ -273,10 +301,13 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
                     if (!Jaws_Error::IsError($links)) {
                         foreach ($links as $key => $link) {
                             if (is_array($link['url'])) {
-                                $links[$key]['variable'] = true;
                                 $links[$key]['url'] = serialize($link['url']);
                             } else {
                                 $links[$key]['url'] = rawurldecode($link['url']);
+                            }
+
+                            if (isset($link['variables'])) {
+                                $links[$key]['variables'] = serialize($link['variables']);
                             }
                         }
 

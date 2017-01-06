@@ -164,7 +164,7 @@ class Menu_Installer extends Jaws_Gadget_Installer
         }
 
         if (version_compare($old, '1.5.0', '<')) {
-            $result = $this->installSchema('schema.xml', '', '1.4.0.xml');
+            $result = $this->installSchema('1.5.0.xml', '', '1.4.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
@@ -172,6 +172,14 @@ class Menu_Installer extends Jaws_Gadget_Installer
             // not longer need listen on enable/disable gadgets
             $this->gadget->event->delete('EnableGadget');
             $this->gadget->event->delete('DisableGadget');
+        }
+
+        if (version_compare($old, '1.6.0', '<')) {
+            $result = $this->installSchema('schema.xml', '', '1.5.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
         }
 
         return true;
