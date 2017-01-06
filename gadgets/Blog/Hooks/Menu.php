@@ -37,35 +37,36 @@ class Blog_Hooks_Menu extends Jaws_Gadget_Hook
         $cModel      = $this->gadget->model->load('Categories');
         $categories = $cModel->GetCategories();
         if (!Jaws_Error::IsError($categories)) {
-            $max_size = 32;
             foreach ($categories as $cat) {
                 $url = $this->gadget->urlMap(
                     'ShowCategory',
                     array('id' => empty($cat['fast_url'])? $cat['id'] : $cat['fast_url'])
                 );
-                $items[] = array('url'   => $url,
-                                 'title' => (Jaws_UTF8::strlen($cat['name']) > $max_size)?
-                                             Jaws_UTF8::substr($cat['name'], 0, $max_size) . '...' :
-                                             $cat['name'],
-                                 'acl_key' => 'CategoryAccess',
-                                 'acl_subkey' => $cat['id']);
+                $items[] = array(
+                    'url'   => $url,
+                    'title' => $cat['name'],
+                    'permission' => array(
+                        'key' => 'CategoryAccess',
+                        'subkey' => $cat['id']
+                    )
+                );
             }
         }
 
         $entries = $pModel->GetEntries('');
         if (!Jaws_Error::IsError($entries)) {
-            $max_size = 32;
             foreach ($entries as $entry) {
                 $url = $this->gadget->urlMap(
                     'SingleView',
                     array('id' => empty($entry['fast_url'])? $entry['id'] : $entry['fast_url'])
                 );
-                $items[] = array('url'   => $url,
-                                 'title' => (Jaws_UTF8::strlen($entry['title']) > $max_size)?
-                                             Jaws_UTF8::substr($entry['title'], 0, $max_size) . '...' :
-                                             $entry['title']);
+                $items[] = array(
+                    'url'   => $url,
+                    'title' => $entry['title']
+                );
             }
         }
+
         return $items;
     }
 }
