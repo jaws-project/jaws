@@ -368,16 +368,11 @@ function saveUser()
 
         case 'UserContacts':
             UsersAjax.callAsync(
-                'UpdateContacts', [
-                    $('#uid').val(),
-                    $('#country').val(),
-                    $('#city').val(),
-                    $('#address').val(),
-                    $('#postal_code').val(),
-                    $('#phone_number').val(),
-                    $('#mobile_number').val(),
-                    $('#fax_number').val()
-                ]
+                'UpdateContacts',
+                {
+                    'uid': $('#uid').val(),
+                    'data': $.unserialize($('form[name=contacts]').serialize())
+                }
             );
             break;
     }
@@ -572,14 +567,28 @@ function editContacts(rowElement, uid)
     $('#workarea').html(cachedContactsForm);
     selectGridRow('users_datagrid', rowElement.parentNode.parentNode);
 
-    var uInfo = UsersAjax.callSync('GetUser', [uid, false, false, true]);
-    $('#country').val(uInfo['country']);
-    $('#city').val(uInfo['city']);
-    $('#address').val(uInfo['address']);
-    $('#postal_code').val(uInfo['postal_code']);
-    $('#phone_number').val(uInfo['phone_number']);
-    $('#mobile_number').val(uInfo['mobile_number']);
-    $('#fax_number').val(uInfo['fax_number']);
+    var cInfo = UsersAjax.callSync('GetUserContact', {'uid': uid});
+    if (cInfo) {
+        changeProvince(cInfo['province'])
+
+        $('#contact-form input, #contact-form select, #contact-form textarea').each(
+            function () {
+                $(this).val(cInfo[$(this).attr('name')]);
+            }
+        );
+    }
+}
+
+/**
+ * change province combo
+ */
+function changeProvince(province)
+{
+    var cities = UsersAjax.callSync('GetCities', {'province': province});
+    $('#city').html('');
+    $.each(cities, function (index, city) {
+        $("#city").append('<option value="' + city.id + '">' + city.title + '</option>');
+    });
 }
 
 /**

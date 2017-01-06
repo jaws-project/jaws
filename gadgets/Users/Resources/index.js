@@ -98,11 +98,10 @@ function stopAction() {
  */
 function updateContacts()
 {
-    var result = UsersAjax.callAsync(
+    UsersAjax.callAsync(
         'UpdateContacts',
         $.unserialize($('form[name=contacts]').serialize())
     );
-    return false;
 }
 
 /**
@@ -414,6 +413,18 @@ function saveGroup()
 
     }
 
+}
+
+/**
+ * change province combo
+ */
+function changeProvince(province)
+{
+    var cities = UsersAjax.callSync('GetCities', {'province': province});
+    $('#city').html('');
+    $.each(cities, function (index, city) {
+        $("#city").append('<option value="' + city.id + '">' + city.title + '</option>');
+    });
 }
 
 /**

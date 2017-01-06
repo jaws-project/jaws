@@ -1,6 +1,6 @@
 <!-- BEGIN contacts -->
 <div class="gadget_header">
-  <div class="gadget_title"><h2>{{title}}</h2></div>
+  <div class="gadget_title"><h2>{{gadget_title}}</h2></div>
   <div class="gadget_menubar">{{menubar}}</div>
   <div class="gadget_submenubar">{{submenubar}}</div>
 </div>
@@ -16,12 +16,12 @@
       <div class="user_avatar">{{avatar}}</div>
 
       <div><label for="title">{{lbl_title}}:</label>
-        <input class="form-control" name="title" class="large ltr" id="title" value="{{contact_title}}" type="text" />
+        <input class="form-control" name="title" class="large ltr" id="title" value="{{title}}" type="text" />
       </div>
 
       <fieldset>
         <legend id="legend_tel" toggle-status="min" >
-          <span><img src="{{img_add}}" alt="toggle maximize" /> {{lbl_tel}}</span>
+          <span><img src="{{img_add}}" alt="toggle maximize" />{{lbl_tel}}</span>
         </legend>
         <table>
           <tr>
@@ -99,16 +99,20 @@
         </table>
       </fieldset>
 
-      <!--<div><label for="postal_code">{{lbl_postal_code}}:</label>-->
-        <!--<input class="form-control" name="postal_code" class="large ltr" id="postal_code" value="{{postal_code}}" type="text" />-->
-      <!--</div>-->
-
       <div><label for="province">{{lbl_province}}:</label>
-        <input type="text" id="province" name="province" class="form-control" value="{{province}}">
+        <select name="province" id="province" onchange="javascript:changeProvince(this.value);">
+          <!-- BEGIN province -->
+          <option value="{{value}}" {{selected}}>{{title}}</option>
+          <!-- END province -->
+        </select>
       </div>
 
       <div><label for="city">{{lbl_city}}:</label>
-        <input type="text" id="city" name="city" class="form-control" value="{{city}}">
+        <select name="city" id="city">
+          <!-- BEGIN city -->
+          <option value="{{value}}" {{selected}}>{{title}}</option>
+          <!-- END city -->
+        </select>
       </div>
 
       <div><label for="address">{{lbl_address}}:</label>

@@ -69,6 +69,19 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
     }
 
     /**
+     * Gets a user contact info
+     *
+     * @access  public
+     * @return  array   Users list
+     */
+    function GetUserContact()
+    {
+        $uid = (int)jaws()->request->fetch('uid', 'post');
+        $jUser = new Jaws_User;
+        return $jUser->GetUserContact($uid);
+    }
+
+    /**
      * Gets list of users according to the given criteria
      *
      * @access  public
@@ -702,20 +715,24 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function UpdateContacts()
     {
-        @list($uid, $country, $city, $address, $postalCode, $phoneNumber,
-            $mobileNumber, $faxNumber
-        ) = jaws()->request->fetchAll('post');
-        $res = $this->_UserModel->UpdateContacts(
-            $uid,
+        $post = jaws()->request->fetch(array('uid', 'data:array'), 'post');
+        // unset invalid keys
+        $invalids = array_diff(
+            array_keys($post['data']),
             array(
-                'country' => $country,
-                'city'    => $city,
-                'address'   => $address,
-                'postal_code' => $postalCode,
-                'phone_number' => $phoneNumber,
-                'mobile_number' => $mobileNumber,
-                'fax_number' => $faxNumber
+                'title', 'tel_home', 'tel_work', 'tel_other', 'fax_home', 'fax_work', 'fax_other',
+                'mobile_home', 'mobile_work', 'mobile_other', 'url_home', 'url_work', 'url_other',
+                'province', 'city', 'address', 'postal_code', 'note'
             )
+        );
+        foreach ($invalids as $invalid) {
+            unset($post['data'][$invalid]);
+        }
+
+        $uModel = $this->gadget->model->load('Contacts');
+        $res = $uModel->UpdateContacts(
+            (int)$post['uid'],
+            $post['data']
         );
         if ($res === false) {
             $GLOBALS['app']->Session->PushLastResponse(_t('USERS_USERS_NOT_CONTACTINFO_UPDATED'),
@@ -870,6 +887,29 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         return $users;
+    }
+
+    /**
+     * Get cities
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function GetCities()
+    {
+        $province = jaws()->request->fetch('province', 'post');
+        if (empty($province)) {
+            $provinces = jaws()->request->fetch('provinces:array', 'post');
+        } else {
+            $provinces = array($province);
+        }
+        $model = $this->gadget->model->load('Contacts');
+        $res = $model->GetCities($provinces);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return array();
+        } else {
+            return $res;
+        }
     }
 
 }
