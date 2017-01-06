@@ -237,14 +237,49 @@ class Jaws_User
     {
         $objORM = Jaws_ORM::getInstance()
             ->table('users_contacts', 'uc')
-            ->select('uc.id:integer', 'uc.owner:integer', 'uc.tel', 'uc.mobile', 'uc.fax', 'uc.url', 'uc.address')
+            ->select('uc.id:integer', 'uc.owner:integer', 'uc.title', 'uc.tel', 'uc.mobile', 'uc.fax',
+                     'uc.url', 'uc.address', 'uc.note')
             ->join('users', 'users.contact', 'uc.id');
         if (is_int($user)) {
             $objORM->where('users.id', $user);
         } else {
             $objORM->where('lower(username)', Jaws_UTF8::strtolower($user));
         }
-        return $objORM->fetchRow();
+        $contact = $objORM->fetchRow();
+
+        if (!empty($contact) && !Jaws_Error::IsError($contact)) {
+            $tel = json_decode($contact['tel'], true);
+            $contact['tel_home'] = $tel['home'];
+            $contact['tel_work'] = $tel['work'];
+            $contact['tel_other'] = $tel['other'];
+            unset($contact['tel']);
+
+            $fax = json_decode($contact['fax'], true);
+            $contact['fax_home'] = $fax['home'];
+            $contact['fax_work'] = $fax['work'];
+            $contact['fax_other'] = $fax['other'];
+            unset($contact['fax']);
+
+            $mobile = json_decode($contact['mobile'], true);
+            $contact['mobile_home'] = $mobile['home'];
+            $contact['mobile_work'] = $mobile['work'];
+            $contact['mobile_other'] = $mobile['other'];
+            unset($contact['mobile']);
+
+            $url = json_decode($contact['url'], true);
+            $contact['url_home'] = $url['home'];
+            $contact['url_work'] = $url['work'];
+            $contact['url_other'] = $url['other'];
+            unset($contact['url']);
+
+            $address = json_decode($contact['address'], true);
+            $contact['province'] = $address['province'];
+            $contact['city'] = $address['city'];
+            $contact['address'] = $address['address'];
+            $contact['postal_code'] = $address['postal_code'];
+        }
+
+        return $contact;
     }
 
     /**
@@ -946,7 +981,7 @@ class Jaws_User
     }
 
     /**
-     * Update contacts information of a user such as address, tel, mobile, fax, etc..
+     * Update default contact information of current user such as address, tel, mobile, fax, etc..
      *
      * @access  public
      * @param   int     $uid    User's ID
@@ -958,7 +993,7 @@ class Jaws_User
         // unset invalid keys
         $invalids = array_diff(
             array_keys($data),
-            array('tel', 'mobile', 'fax', 'url', 'address')
+            array('title', 'name', 'image', 'note', 'tel', 'mobile', 'fax', 'url', 'address', 'province', 'city')
         );
         foreach ($invalids as $invalid) {
             unset($data[$invalid]);
@@ -969,13 +1004,31 @@ class Jaws_User
             return false;
         }
 
+        // begin transaction
+        $objORM = Jaws_ORM::getInstance()->beginTransaction();
+        $objORM->table('users_contacts');
         $data['owner'] = $user['id'];
-        $objORM = Jaws_ORM::getInstance()->table('users_contacts');
-        return $objORM->upsert($data)
+        $contactId = $objORM->upsert($data)
             ->where('owner', $uid)
             ->and()
             ->where('id', $user['contact'])
             ->exec();
+        if (Jaws_Error::IsError($contactId)) {
+            return $contactId;
+        }
+
+        if (empty($user['contact'])) {
+            // set user's contact id
+            $usersTable = Jaws_ORM::getInstance()->table('users');
+            $res = $usersTable->update(array('contact' => $contactId))->where('id', (int)$uid)->exec();
+            if (Jaws_Error::IsError($res)) {
+                return $res;
+            }
+        }
+
+        // commit transaction
+        $objORM->commit();
+        return $contactId;
     }
 
     /**
@@ -992,7 +1045,7 @@ class Jaws_User
         // unset invalid keys
         $invalids = array_diff(
             array_keys($data),
-            array('tel', 'mobile', 'fax', 'url', 'address')
+            array('title', 'name', 'image', 'note', 'tel', 'mobile', 'fax', 'url', 'address', 'province', 'city')
         );
         foreach ($invalids as $invalid) {
             unset($data[$invalid]);
