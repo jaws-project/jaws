@@ -473,55 +473,36 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $tpl = $this->gadget->template->loadAdmin('Contacts.html');
         $tpl->SetBlock('contacts');
 
-        $country =& Piwi::CreateWidget('Combo', 'country');
-        $country->SetID('country');
-        $country->AddOption(_t('USERS_ADVANCED_OPTS_NOT_YET'), '0');
-        $objCountry = $this->gadget->model->load('Country');
-        $countries = $objCountry->GetCountries();
-        foreach($countries as $code => $name) {
-            $country->AddOption($name, $code);
-        }
-        $country->SetDefault('0');
-        $tpl->SetVariable('lbl_country', _t('USERS_CONTACTS_COUNTRY'));
-        $tpl->SetVariable('country', $country->Get());
-
-        // city
-        $city =& Piwi::CreateWidget('Entry', 'city', '');
-        $city->SetID('city');
-        $tpl->SetVariable('lbl_city', _t('USERS_CONTACTS_CITY'));
-        $tpl->SetVariable('city', $city->Get());
-
-        // address
-        $address =& Piwi::CreateWidget('TextArea', 'address', '');
-        $address->SetID('address');
-        $address->SetRows(4);
-        $address->SetColumns(34);
+        $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_home', _t('USERS_CONTACTS_HOME'));
+        $tpl->SetVariable('lbl_work', _t('USERS_CONTACTS_WORK'));
+        $tpl->SetVariable('lbl_other', _t('USERS_CONTACTS_OTHER'));
+        $tpl->SetVariable('lbl_tel', _t('USERS_CONTACTS_PHONE_NUMBER'));
+        $tpl->SetVariable('lbl_fax', _t('USERS_CONTACTS_FAX_NUMBER'));
+        $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
+        $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_province', _t('GLOBAL_PROVINCE'));
+        $tpl->SetVariable('lbl_city', _t('GLOBAL_CITY'));
         $tpl->SetVariable('lbl_address', _t('USERS_CONTACTS_ADDRESS'));
-        $tpl->SetVariable('address', $address->Get());
-
-        // postal_code
-        $postalCode =& Piwi::CreateWidget('Entry', 'postal_code', '');
-        $postalCode->SetID('postal_code');
         $tpl->SetVariable('lbl_postal_code', _t('USERS_CONTACTS_POSTAL_CODE'));
-        $tpl->SetVariable('postal_code', $postalCode->Get());
+        $tpl->SetVariable('lbl_note', _t('USERS_CONTACTS_NOTE'));
 
-        // phone_number
-        $phoneNumber =& Piwi::CreateWidget('Entry', 'phone_number', '');
-        $phoneNumber->SetID('phone_number');
-        $tpl->SetVariable('lbl_phone_number', _t('USERS_CONTACTS_PHONE_NUMBER'));
-        $tpl->SetVariable('phone_number', $phoneNumber->Get());
-
-        // mobile_number
-        $mobileNumber =& Piwi::CreateWidget('Entry', 'mobile_number', '');
-        $mobileNumber->SetID('mobile_number');
-        $tpl->SetVariable('lbl_mobile_number', _t('USERS_CONTACTS_MOBILE_NUMBER'));
-        $tpl->SetVariable('mobile_number', $mobileNumber->Get());
-
-        // fax_number
-        $faxNumber =& Piwi::CreateWidget('Entry', 'fax_number', '');
-        $faxNumber->SetID('fax_number');
-        $tpl->SetVariable('lbl_fax_number', _t('USERS_CONTACTS_FAX_NUMBER'));
-        $tpl->SetVariable('fax_number', $faxNumber->Get());
+        // province
+        $model = $this->gadget->model->load('Contacts');
+        $provinces = $model->GetProvinces();
+        if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
+            array_unshift($provinces, array('id' => 0, 'title' => ''));
+            foreach ($provinces as $province) {
+                $tpl->SetBlock('contacts/province');
+                $tpl->SetVariable('value', $province['id']);
+                $tpl->SetVariable('title', $province['title']);
+                $tpl->SetVariable('selected', '');
+                if (isset($contacts['province']) && $contacts['province'] == $province['id']) {
+                    $tpl->SetVariable('selected', 'selected');
+                }
+                $tpl->ParseBlock('contacts/province');
+            }
+        }
 
         $tpl->ParseBlock('contacts');
         return $tpl->Get();

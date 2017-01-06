@@ -29,7 +29,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $response = $GLOBALS['app']->Session->PopResponse('Users.Contacts');
         if (!isset($response['data'])) {
             $jUser = new Jaws_User;
-            $contacts = $jUser->GetUser($GLOBALS['app']->Session->GetAttribute('user'), false, false, true);
+            $contacts = $jUser->GetUserContact($GLOBALS['app']->Session->GetAttribute('user'));
         } else {
             $contacts = $response['data'];
         }
@@ -38,7 +38,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl = $this->gadget->template->load('Contacts.html');
         $tpl->SetBlock('contacts');
 
-        $tpl->SetVariable('title', _t('USERS_CONTACTS_INFO'));
+        $tpl->SetVariable('gadget_title', _t('USERS_CONTACTS_INFO'));
         $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('update', _t('USERS_USERS_ACCOUNT_UPDATE'));
 
@@ -57,7 +57,6 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('lbl_fax', _t('USERS_CONTACTS_FAX_NUMBER'));
         $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
-        $tpl->SetVariable('lbl_email', _t('USERS_CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_province', _t('GLOBAL_PROVINCE'));
         $tpl->SetVariable('lbl_city', _t('GLOBAL_CITY'));
         $tpl->SetVariable('lbl_address', _t('USERS_CONTACTS_ADDRESS'));
@@ -66,6 +65,40 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('img_add', STOCK_ADD);
         $tpl->SetVariable('img_del', STOCK_REMOVE);
         $tpl->SetVariablesArray($contacts);
+
+        // province
+        $model = $this->gadget->model->load('Contacts');
+        $provinces = $model->GetProvinces();
+        if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
+            array_unshift($provinces, array('id' => 0, 'title' => ''));
+            foreach ($provinces as $province) {
+                $tpl->SetBlock('contacts/province');
+                $tpl->SetVariable('value', $province['id']);
+                $tpl->SetVariable('title', $province['title']);
+                $tpl->SetVariable('selected', '');
+                if (isset($contacts['province']) && $contacts['province'] == $province['id']) {
+                    $tpl->SetVariable('selected', 'selected');
+                }
+                $tpl->ParseBlock('contacts/province');
+            }
+        }
+
+        // city
+        if (!empty($contacts['province'])) {
+            $cities = $model->GetCities($contacts['province']);
+            if (!Jaws_Error::IsError($cities) && count($cities) > 0) {
+                foreach ($cities as $city) {
+                    $tpl->SetBlock('contacts/city');
+                    $tpl->SetVariable('value', $city['id']);
+                    $tpl->SetVariable('title', $city['title']);
+                    $tpl->SetVariable('selected', '');
+                    if (isset($contacts['city']) && $contacts['city'] == $city['id']) {
+                        $tpl->SetVariable('selected', 'selected');
+                    }
+                    $tpl->ParseBlock('contacts/city');
+                }
+            }
+        }
 
         if (empty($contacts['avatar'])) {
             $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
@@ -106,8 +139,9 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $this->gadget->CheckPermission('EditUserContacts');
         $post = jaws()->request->fetch(
             array(
-                'country', 'city', 'address', 'postal_code', 'phone_number',
-                'mobile_number', 'fax_number'
+                'title', 'tel_home', 'tel_work', 'tel_other', 'fax_home', 'fax_work', 'fax_other',
+                'mobile_home', 'mobile_work', 'mobile_other', 'url_home', 'url_work', 'url_other',
+                'province', 'city', 'address', 'postal_code', 'note'
             ),
             'post'
         );
@@ -115,13 +149,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $uModel = $this->gadget->model->load('Contacts');
         $result = $uModel->UpdateContacts(
             $GLOBALS['app']->Session->GetAttribute('user'),
-            $post['country'],
-            $post['city'],
-            $post['address'],
-            $post['postal_code'],
-            $post['phone_number'],
-            $post['mobile_number'],
-            $post['fax_number']
+            $post
         );
         if (Jaws_Error::IsError($result)) {
             $GLOBALS['app']->Session->PushResponse(
@@ -138,6 +166,29 @@ class Users_Actions_Contacts extends Users_Actions_Default
         }
 
         Jaws_Header::Location($this->gadget->urlMap('Contacts'), 'Users.Contacts');
+    }
+
+    /**
+     * Get cities
+     *
+     * @access  public
+     * @return  array   Response array (notice or error)
+     */
+    function GetCities()
+    {
+        $province = jaws()->request->fetch('province', 'post');
+        if (empty($province)) {
+            $provinces = jaws()->request->fetch('provinces:array', 'post');
+        } else {
+            $provinces = array($province);
+        }
+        $model = $this->gadget->model->load('Contacts');
+        $res = $model->GetCities($provinces);
+        if (Jaws_Error::IsError($res) || $res === false) {
+            return array();
+        } else {
+            return $res;
+        }
     }
 
 }

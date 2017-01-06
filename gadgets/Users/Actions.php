@@ -122,6 +122,10 @@ $actions['Contacts'] = array(
     'normal' => true,
     'file' => 'Contacts',
 );
+$actions['GetCities'] = array(
+    'standalone' => true,
+    'file' => 'Contacts',
+);
 $actions['UpdateContacts'] = array(
     'standalone' => true,
     'internal' => true,
@@ -283,6 +287,10 @@ $admin_actions['GetUser'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
+$admin_actions['GetUserContact'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
 $admin_actions['GetUsers'] = array(
     'standalone' => true,
     'file' => 'Ajax',
@@ -426,6 +434,10 @@ $admin_actions['GroupUsersUI'] = array(
     'file' => 'Ajax',
 );
 $admin_actions['GetGroupUsers'] = array(
+    'standalone' => true,
+    'file' => 'Ajax',
+);
+$admin_actions['GetCities'] = array(
     'standalone' => true,
     'file' => 'Ajax',
 );
