@@ -20,8 +20,10 @@ class ControlPanel_Hooks_Menu extends Jaws_Gadget_Hook
         $urls[] = array(
             'url'   => empty($admin_script)? 'admin.php' : $admin_script,
             'title' => _t('USERS_CONTROLPANEL'),
-            'acl_key'    => 'default_admin',
-            'acl_subkey' => ''
+            'permission' => array(
+                'key'    => 'default_admin',
+                'subkey' => ''
+            )
         );
 
         return $urls;
