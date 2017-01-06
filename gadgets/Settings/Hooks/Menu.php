@@ -20,8 +20,10 @@ class Settings_Hooks_Menu extends Jaws_Gadget_Hook
         $urls[] = array(
             'url'        => $this->gadget->urlMap('Settings'),
             'title'      => _t('SETTINGS_TITLE'),
-            'acl_key'    => 'BasicSettings',
-            'acl_subkey' => '',
+            'permission' => array(
+                'key'    => 'BasicSettings',
+                'subkey' => ''
+            )
         );
 
         return $urls;
