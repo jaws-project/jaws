@@ -1,6 +1,6 @@
 <!-- BEGIN poll -->
 <div class="gadget_header">
-  <div class="gadget_title"><h2>{{title}}</h2></div>
+  <div class="gadget_title"><h2>{{gadget_title}}</h2></div>
 </div>
 <div class="gadget_container">
   <div class="gadget_response">
@@ -29,7 +29,11 @@
       <!-- BEGIN answer -->
       <li class="poll_answer_result poll_answer_{{order}}">
         <label>{{title}}</label>
-        <div style="width: {{percent}}%;">{{txt_percent}}({{votes}})</div>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{percent}}%;">
+            {{txt_percent}}({{votes}})
+          </div>
+        </div>
       </li>
       <!-- END answer -->
       <li class="poll_total_votes">
@@ -37,6 +41,9 @@
       </li>
     </ul>
     <!-- END result -->
+  </div>
+  <div class="gadget_response">
+    <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
   <div class="poll_message alert-warning" role="alert">{{already_message}}</div>
   <div class="poll_message alert-warning" role="alert">{{disabled_message}}</div>
