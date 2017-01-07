@@ -1,10 +1,12 @@
 <!-- BEGIN entry-navigation  -->
-<div class="gadget_navigator">
-<!-- BEGIN previous -->
-    <div class="prev"><a href="{{url}}">&laquo; {{title}}</a></div>
-<!-- END previous -->
-<!-- BEGIN next -->
-    <div class="next"><a href="{{url}}">{{title}} &raquo;</a></div>
-<!-- END next -->
-</div>
+<nav class="gadget_navigator" aria-label="Post navigation">
+  <ul class="pager">
+    <!-- BEGIN previous -->
+    <li class="previous"><a href="{{url}}"><span aria-hidden="true">&laquo;</span> {{title}}</a></li>
+    <!-- END previous -->
+    <!-- BEGIN next -->
+    <li class="next"><a href="{{url}}">{{title}} <span aria-hidden="true">&raquo;</span></a></li>
+    <!-- END next -->
+  </ul>
+</nav>
 <!-- END entry-navigation -->
