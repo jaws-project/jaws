@@ -66,7 +66,9 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('lbl_note', _t('USERS_CONTACTS_NOTE'));
         $tpl->SetVariable('img_add', STOCK_ADD);
         $tpl->SetVariable('img_del', STOCK_REMOVE);
-        $tpl->SetVariablesArray($contacts);
+        if (!empty($contact)) {
+            $tpl->SetVariablesArray($contact);
+        }
 
         // province
         $model = $this->gadget->model->load('Contacts');

@@ -182,3 +182,7 @@ font-weight:normal;
 #main table{
 margin:0 auto;
 }
+form#contact-form {
+overflow-y: scroll;
+height: 400px;
+}
