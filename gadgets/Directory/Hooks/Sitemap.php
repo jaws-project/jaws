@@ -63,7 +63,7 @@ class Directory_Hooks_Sitemap extends Jaws_Gadget_Hook
 
         if ($data_type == 2) {
             $fModel = $this->gadget->model->loadAdmin('Files');
-            $files = $fModel->GetFiles(array('hidden' => false, 'published' => true));
+            $files = $fModel->GetFiles(array('published' => true));
             if (Jaws_Error::IsError($files)) {
                 return $files;
             }

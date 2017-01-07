@@ -67,7 +67,7 @@ class Poll_Actions_Poll extends Jaws_Gadget_Action
 
         $tpl = $this->gadget->template->load('Poll.html');
         $tpl->SetBlock('poll');
-        //$tpl->SetVariable('title', _t('POLL_ACTION_POLL_TITLE'));
+        $tpl->SetVariable('gadget_title', _t('POLL_ACTION_POLL_TITLE'));
         $tpl->SetVariable('title', $poll['title']);
 
         $response = $GLOBALS['app']->Session->PopResponse('Poll.Vote');

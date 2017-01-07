@@ -32,7 +32,6 @@ function stopAction()
     $('#frm_file #file_link').html('');
     $('#frm_file #title').val('');
     $('#frm_file #tags').val('');
-    $('#frm_file #hidden').prop('checked', '');
     $('#frm_file #published').prop('checked', '');
 
 }
@@ -72,7 +71,6 @@ function submitFile()
     uploadedFileInfo.description = getEditorValue('#description');
     uploadedFileInfo.title = $('#frm_file #title').val();
     uploadedFileInfo.tags = $('#frm_file #tags').val();
-    uploadedFileInfo.hidden = $('#frm_file #hidden').prop('checked');
     uploadedFileInfo.thumbnailPath = uploadedThumbnailPath;
     if ($('#frm_file #published').prop('checked') != undefined) {
         uploadedFileInfo.published = $('#frm_file #published').prop('checked');

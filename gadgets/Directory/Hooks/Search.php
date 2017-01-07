@@ -31,8 +31,7 @@ class Directory_Hooks_Search extends Jaws_Gadget_Hook
     {
         $objORM->table('directory');
         $objORM->select('id', 'title', 'description', 'user_filename', 'update_time:integer');
-        $objORM->where('hidden', false);
-        $objORM->and()->loadWhere('search.terms');
+        $objORM->loadWhere('search.terms');
         $result = $objORM->orderBy('id desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return false;

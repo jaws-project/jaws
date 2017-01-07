@@ -116,9 +116,6 @@ function displayFiles(files)
         html.find('td')
             .on('click', fileSelect)
             .on('dblclick', function() { fileOpen(data.id); });
-        if (data.hidden) {
-            $(html[1]).addClass('is-hidden');
-        }
         return html;
     }
 
@@ -464,7 +461,6 @@ function editDirectory(id)
     form.find('[name=id]').val(id);
     form.find('[name=title]').val(data.title);
     form.find('[name=parent]').val(data.parent);
-    form.find('[name=hidden]').prop('checked', data.hidden);
     form.find('[name=published]').prop('checked', data.published);
     setEditorValue('#description', data.description);
 }
@@ -514,7 +510,6 @@ function editFile(id)
     form.id.value = id;
     form.title.value = file.title;
     form.tags.value = file.tags;
-    form.hidden.checked = file.hidden;
     form.published.checked = file.published;
     $('#frm_file #thumbnail').prop('src', file.thumbnail);
     setEditorValue('#description', file.description);
