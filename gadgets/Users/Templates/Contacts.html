@@ -9,6 +9,260 @@
     <div id="users_contacts_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
 
+
+  <div class="repeater" id="productsRepeater" data-staticheight="500">
+    <div class="repeater-header">
+      <div class="repeater-header-left">
+        <div class="repeater-search">
+          <div class="search disabled input-group">
+            <input type="search" class="form-control input-sm" placeholder="Search">
+            <span class="input-group-btn">
+              <button class="btn btn-default btn-sm" type="button">
+                  <span class="glyphicon glyphicon-search"></span>
+                  <span class="sr-only">Search</span>
+              </button>
+          </span>
+          </div>
+        </div>
+      </div>
+      <div class="repeater-header-right">
+        <!--<div class="btn-group selectlist disabled repeater-filters">-->
+        <!--<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">-->
+        <!--<span class="selected-label">?</span>-->
+        <!--<span class="caret"></span>-->
+        <!--<span class="sr-only">Toggle Filters</span>-->
+        <!--</button>-->
+        <!--<ul class="dropdown-menu pull-right" role="menu">-->
+        <!--<li data-value="all" data-selected="true" data-property="all"><a href="#">All Items</a></li>-->
+        <!--<li class="divider"></li>-->
+        <!--<li data-value="1" data-property="status"><a href="#">Enabled</a></li>-->
+        <!--<li data-value="0" data-property="status"><a href="#">Disabled</a></li>-->
+        <!--</ul>-->
+        <!--<input class="hidden hidden-field" name="filterSelection" readonly="readonly" aria-hidden="true" type="text">-->
+        <!--</div>-->
+        <!--<button type="button" class="btn btn-success btn-sm" id="btn_add" onclick="addServer()">-->
+        <!--<span class="glyphicon glyphicon-plus"></span> Add-->
+        <!--</button>-->
+      </div>
+    </div>
+    <div class="repeater-viewport">
+      <div class="repeater-canvas"></div>
+      <div class="loader repeater-loader"></div>
+    </div>
+    <div class="repeater-footer">
+      <div class="repeater-footer-left">
+        <div class="repeater-itemization">
+          <span><span class="repeater-start"></span> {{to}} <span class="repeater-end"></span> {{of}} <span class="repeater-count"></span> {{items}}</span>
+          <div class="btn-group selectlist dropup" data-resize="auto">
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+              <span class="selected-label">?</span>
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li data-value="10" data-selected="true"><a href="#">10</a></li>
+              <li data-value="25"><a href="#">25</a></li>
+              <li data-value="50"><a href="#">50</a></li>
+            </ul>
+            <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
+          </div>
+          <span>{{per_page}}</span>
+        </div>
+      </div>
+      <div class="repeater-footer-right">
+        <div class="repeater-pagination">
+          <button type="button" class="btn btn-default btn-sm repeater-prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous Page</span>
+          </button>
+          <label class="page-label" id="myPageLabel"></label>
+          <div class="repeater-primaryPaging active">
+            <div class="input-group input-append dropdown combobox dropup">
+              <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right"></ul>
+              </div>
+            </div>
+          </div>
+          <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+          <button type="button" class="btn btn-default btn-sm repeater-next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next Page</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 <div class="gadget_footer"></div>
+
+<script type="text/javascript">
+    var confirmDelete = "{{confirmDelete}}";
+
+    // Define the data to be displayed in the repeater.
+    function productsDataSource(options, callback) {
+
+        // define the columns for the grid
+        var columns = [
+            {
+                'label': '{{lbl_title}}',      // column header label
+                'property': 'title',   // the JSON property you are binding to
+                'sortable': true      // is the column sortable?
+            },
+            {
+                'label': '{{lbl_input_count}}',
+                'property': 'input_count',
+                'sortable': true
+            },
+            {
+                'label': '{{lbl_output_count}}',
+                'property': 'output_count',
+                'sortable': true
+            },
+            {
+                'label': '{{lbl_price}}',
+                'property': 'price',
+                'sortable': false
+            },
+            {
+                'label': '{{lbl_status}}',
+                'property': 'status',
+                'sortable': true
+            }
+        ];
+
+        // set options
+        var pageIndex = options.pageIndex;
+        var pageSize = options.pageSize;
+        var options = {
+            'pageIndex': pageIndex,
+            'pageSize': pageSize,
+            'sortDirection': options.sortDirection,
+            'sortBy': options.sortProperty,
+            'filterBy': options.filter.value || '',
+            'searchBy': options.search || ''
+        };
+
+
+        console.log(options);
+        var rows = UsersAjax.callSync('GetContacts', options);
+        console.info(rows);
+
+        var items = rows.records;
+        var totalItems = rows.total;
+        var totalPages = Math.ceil(totalItems / pageSize);
+        var startIndex = (pageIndex * pageSize) + 1;
+        var endIndex = (startIndex + pageSize) - 1;
+
+        if(endIndex > items.length) {
+            endIndex = items.length;
+        }
+
+        // configure datasource
+        var dataSource = {
+            'page':    pageIndex,
+            'pages':   totalPages,
+            'count':   totalItems,
+            'start':   startIndex,
+            'end':     endIndex,
+            'columns': columns,
+            'items':   items
+        };
+
+        // pass the datasource back to the repeater
+        callback(dataSource);
+    }
+
+
+    var list_actions = {
+        width: 50,
+        items: [
+            {
+                name: 'view',
+                html: '<span class="glyphicon glyphicon-eye-open"></span> {{lbl_view}}',
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    var editURL = "{{view_url}}";
+                    window.location.replace(editURL.replace('__PRODUCTID__', helpers.rowData.id));
+                    callback();
+                }
+            },
+            {
+                name: 'edit',
+                html: '<span class="glyphicon glyphicon-pencil"></span> {{lbl_edit}}',
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    var editURL = "{{edit_url}}";
+                    window.location.replace(editURL.replace('__PRODUCTID__', helpers.rowData.id));
+                    callback();
+                }
+
+            },
+            {
+                name: 'editAttributes',
+                html: '<span class="glyphicon glyphicon-list"></span> {{lbl_edit_attributes}}',
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    var attrURL = "{{product_attribute_url}}";
+                    window.location.replace(attrURL.replace('__PRODUCTID__', helpers.rowData.id));
+                    callback();
+                }
+
+            },
+            {
+                name: 'productInventory',
+                html: '<span class="glyphicon glyphicon-import"></span> {{lbl_product_inventory}}',
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    var importExportURL = "{{product_inventory_url}}";
+                    window.location.replace(importExportURL.replace('__PRODUCTID__', helpers.rowData.id));
+                    callback();
+                }
+
+            },
+            {
+                name: 'delete',
+                html: '<span class="glyphicon glyphicon-trash"></span> {{lbl_delete}}',
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    console.log(helpers);
+
+                    // detect multi select
+                    var ids = new Array();
+                    if (helpers.length > 1) {
+                        helpers.forEach(function(entry) {
+                            console.log(entry);
+                            ids.push(entry.rowData.id);
+                        });
+
+                    } else {
+                        ids.push(helpers.rowData.id);
+                    }
+
+                    deleteProducts(ids);
+                    callback();
+                }
+            }
+        ]
+    };
+
+    $(document).ready(function () {
+        // initialize the repeater
+        var repeater = $('#productsRepeater');
+        repeater.repeater({
+            // setup your custom datasource to handle data retrieval;
+            // responsible for any paging, sorting, filtering, searching logic
+            dataSource: productsDataSource,
+            staticHeight: 600,
+            list_actions: list_actions,
+            list_selectable: 'multi'
+        });
+    });
+</script>
+
 <!-- END contacts -->

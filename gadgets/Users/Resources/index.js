@@ -430,11 +430,21 @@ function changeProvince(province)
 /**
  * Initiates gadget
  */
-$(document).ready(function() {
-    // set w2ui default configuration
-    w2utils.settings.dataType = 'JSON';
-    // load Persian translation
-    w2utils.locale('libraries/w2ui/fa-pe.json');
+$(document).ready(function () {
+
+    try{
+        if (w2utils !== undefined && w2utils !== null) {
+            // set w2ui default configuration
+            w2utils.settings.dataType = 'JSON';
+            // load Persian translation
+            w2utils.locale('libraries/w2ui/fa-pe.json');
+        }
+    }
+    catch(e) {
+        if(e.name == "ReferenceError") {
+            console.log('w2utils is not defined!');
+        }
+    }
 });
 
 var UsersAjax = new JawsAjax('Users', UsersCallback);

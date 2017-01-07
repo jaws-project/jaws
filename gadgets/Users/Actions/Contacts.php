@@ -66,9 +66,6 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('lbl_note', _t('USERS_CONTACTS_NOTE'));
         $tpl->SetVariable('img_add', STOCK_ADD);
         $tpl->SetVariable('img_del', STOCK_REMOVE);
-        if (!empty($contact)) {
-            $tpl->SetVariablesArray($contact);
-        }
 
         // province
         $model = $this->gadget->model->load('Contacts');
@@ -104,23 +101,49 @@ class Users_Actions_Contacts extends Users_Actions_Default
             }
         }
 
-        if (empty($contacts['avatar'])) {
-            $user_current_avatar = $GLOBALS['app']->getSiteURL('/gadgets/Users/Resources/images/photo128px.png');
-        } else {
-            $user_current_avatar = $GLOBALS['app']->getDataURL() . "avatar/" . $contacts['avatar'];
-            $user_current_avatar .= !empty($contacts['last_update']) ? "?" . $contacts['last_update'] . "" : '';
-        }
-        $avatar =& Piwi::CreateWidget('Image', $user_current_avatar);
-        $avatar->SetID('avatar');
-        $tpl->SetVariable('avatar', $avatar->Get());
-
-        if (!empty($response)) {
-            $tpl->SetVariable('response_type', $response['type']);
-            $tpl->SetVariable('response_text', $response['text']);
-        }
-
         $tpl->ParseBlock('contacts');
         return $tpl->Get();
+    }
+
+
+    /**
+     * Get contacts list
+     *
+     * @access  public
+     * @return  JSON
+     */
+    function GetContacts()
+    {
+        if (!$GLOBALS['app']->Session->Logged()) {
+            return Jaws_HTTPError::Get(401);
+        }
+
+        $post = jaws()->request->fetch(
+            array('filters:array', 'limit', 'offset', 'searchLogic', 'search:array', 'sort:array'),
+            'post'
+        );
+
+        $jUser = new Jaws_User;
+        $contacts = $jUser->GetUserContacts($GLOBALS['app']->Session->GetAttribute('user'));
+
+        $date = Jaws_Date::getInstance();
+        foreach($contacts as $key=>$contact) {
+            $contact['recid'] = $contact['id'];
+            $contact['insert_time'] = $date->Format($contact['insert_time']);
+            $contact['price'] = number_format($contact['price']);
+            $contacts[$key] = $contact;
+        }
+
+//        $contactsCount = $model->GetProductsCount($filters);
+        $contactsCount = count($contacts);
+
+        $response = array(
+            'status' => 'success',
+            'total' => $contactsCount,
+            'records' => $contacts
+        );
+
+        return $response;
     }
 
     /**

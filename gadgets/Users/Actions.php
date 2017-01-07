@@ -135,6 +135,10 @@ $actions['Contacts'] = array(
     'normal' => true,
     'file' => 'Contacts',
 );
+$actions['GetContacts'] = array(
+    'standalone' => true,
+    'file' => 'Contacts',
+);
 
 $actions['FriendsGroups'] = array(
     'normal' => true,
