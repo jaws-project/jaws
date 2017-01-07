@@ -74,6 +74,12 @@
       </field>
 
       <field>
+        <name>hidden</name>
+        <type>boolean</type>
+        <default>false</default>
+      </field>
+
+      <field>
         <name>public</name>
         <type>boolean</type>
         <default>true</default>

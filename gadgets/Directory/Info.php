@@ -15,7 +15,7 @@ class Directory_Info extends Jaws_Gadget
     const FILE_TYPE_ARCHIVE = 6;
 
     /**
-     * Default ACL value of frontend gadget access
+     * Default ACL value of front-end gadget access
      *
      * @var     bool
      * @access  protected
@@ -28,7 +28,7 @@ class Directory_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '1.2.0';
+    var $version = '1.3.0';
 
     /**
      * Recommended gadgets

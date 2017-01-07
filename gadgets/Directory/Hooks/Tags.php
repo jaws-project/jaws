@@ -23,7 +23,7 @@ class Directory_Hooks_Tags extends Jaws_Gadget_Hook
 
         $table = Jaws_ORM::getInstance()->table('directory');
         $table->select('id:integer', 'title', 'description', 'update_time');
-        $result = $table->where('hidden', false)->and()->where('id', $references, 'in')->fetchAll();
+        $result = $table->where('id', $references, 'in')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return array();
         }

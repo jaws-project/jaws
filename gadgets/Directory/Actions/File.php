@@ -34,7 +34,6 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
         $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
-        $tpl->SetVariable('lbl_hidden', _t('DIRECTORY_FILE_HIDDEN'));
         $tpl->SetVariable('lbl_url', _t('DIRECTORY_FILE_URL'));
         $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
@@ -124,7 +123,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
 
         try {
             $data = jaws()->request->fetch(
-                array('parent', 'title', 'description', 'parent', 'hidden', 'published',
+                array('parent', 'title', 'description', 'parent', 'published',
                     'user_filename', 'host_filename', 'mime_type', 'file_size', 'thumbnailPath')
             );
             if (empty($data['title'])) {
@@ -225,7 +224,7 @@ class Directory_Actions_File extends Jaws_Gadget_Action
                 $tags = jaws()->request->fetch('tags');
                 if (!empty($tags)) {
                     $tModel = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
-                    $tModel->InsertReferenceTags('Directory', 'file', $id, !$data['hidden'], time(), $tags);
+                    $tModel->InsertReferenceTags('Directory', 'file', $id, $data['published'], time(), $tags);
                 }
             }
 

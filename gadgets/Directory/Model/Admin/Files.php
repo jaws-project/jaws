@@ -22,7 +22,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
             $table->select('count(id):integer');
         } else {
             $table->select('directory.id', 'directory.parent', 'user', 'users.username', 'users.nickname',
-                'is_dir:boolean', 'hidden:boolean', 'directory.published:boolean',
+                'is_dir:boolean', 'directory.published:boolean',
                 'directory.title', 'directory.description', 'user_filename', 'host_filename', 'mime_type',
                 'file_type', 'file_size', 'hits', 'directory.create_time', 'directory.update_time'
             );
@@ -31,9 +31,6 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
 
         if (isset($params['parent'])) {
             $table->where('parent', $params['parent'])->and();
-        }
-        if (isset($params['hidden'])) {
-            $table->where('hidden', $params['hidden'])->and();
         }
         if (isset($params['public'])) {
             $table->where('public', $params['public'])->and();
@@ -97,7 +94,7 @@ class Directory_Model_Admin_Files extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('directory');
         $table->select('id', 'parent', 'user', 'title', 'description',
             'host_filename', 'user_filename', 'mime_type', 'file_type', 'file_size',
-            'is_dir:boolean', 'hidden:boolean', 'public:boolean', 'create_time', 'update_time');
+            'is_dir:boolean', 'public:boolean', 'create_time', 'update_time');
         return $table->where('id', $id)->fetchRow();
     }
 

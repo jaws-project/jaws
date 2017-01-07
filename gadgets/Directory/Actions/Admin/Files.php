@@ -48,7 +48,6 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_title', _t('DIRECTORY_FILE_TITLE'));
         $tpl->SetVariable('lbl_desc', _t('DIRECTORY_FILE_DESC'));
         $tpl->SetVariable('lbl_tags', _t('DIRECTORY_FILE_TAGS'));
-        $tpl->SetVariable('lbl_hidden', _t('DIRECTORY_FILE_HIDDEN'));
         $tpl->SetVariable('lbl_published', _t('GLOBAL_PUBLISHED'));
         $tpl->SetVariable('lbl_url', _t('DIRECTORY_FILE_URL'));
         $tpl->SetVariable('lbl_thumbnail', _t('DIRECTORY_THUMBNAIL'));
@@ -70,7 +69,6 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             $tpl->SetVariable('desc', '{description}');
             $tpl->SetVariable('tags', '{tags}');
             $tpl->SetVariable('user_filename', '{user_filename}');
-            $tpl->SetVariable('hidden', '{hidden}');
             $tpl->SetVariable('type', '{type}');
             $tpl->SetVariable('mime_type', '{mime_type}');
             $tpl->SetVariable('size', '{size}');
@@ -96,7 +94,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
     {
         try {
             $data = jaws()->request->fetch(
-                array('title', 'description', 'parent', 'hidden', 'published',
+                array('title', 'description', 'parent', 'published',
                     'user_filename', 'host_filename', 'mime_type', 'file_size', 'thumbnailPath')
             );
             if (empty($data['title'])) {
@@ -114,7 +112,6 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             }
 
             $data['is_dir'] = false;
-            $data['hidden'] = $data['hidden']? true : false;
             $data['published'] = $data['published']? true : false;
             $data['title'] = Jaws_XSS::defilter($data['title']);
             $data['description'] = Jaws_XSS::defilter($data['description']);
@@ -194,7 +191,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
                 $tags = jaws()->request->fetch('tags');
                 if (!empty($tags)) {
                     $tModel = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
-                    $tModel->InsertReferenceTags('Directory', 'file', $id, !$data['hidden'], time(), $tags);
+                    $tModel->InsertReferenceTags('Directory', 'file', $id, $data['published'], time(), $tags);
                 }
             }
 
@@ -219,7 +216,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
         try {
             // Validate data
             $data = jaws()->request->fetch(
-                array('id', 'title', 'description', 'parent', 'hidden', 'published',
+                array('id', 'title', 'description', 'parent', 'published',
                     'user_filename', 'host_filename', 'mime_type', 'file_size')
             );
             if (empty($data['title'])) {
@@ -275,7 +272,6 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             // Update file in database
             unset($data['user']);
             $data['update_time'] = time();
-            $data['hidden'] = $data['hidden']? true : false;
             $data['published'] = $data['published']? true : false;
             $data['file_type'] = $this->getFileType($data['user_filename']);
             $model = $this->gadget->model->loadAdmin('Files');
@@ -288,7 +284,7 @@ class Directory_Actions_Admin_Files extends Jaws_Gadget_Action
             if (Jaws_Gadget::IsGadgetInstalled('Tags')) {
                 $tags = jaws()->request->fetch('tags');
                 $tModel = Jaws_Gadget::getInstance('Tags')->model->loadAdmin('Tags');
-                $tModel->UpdateReferenceTags('Directory', 'file', $id, !$data['hidden'], time(), $tags);
+                $tModel->UpdateReferenceTags('Directory', 'file', $id, $data['published'], time(), $tags);
             }
 
         } catch (Exception $e) {

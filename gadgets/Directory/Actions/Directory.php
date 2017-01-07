@@ -131,7 +131,6 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $params['limit'] = ($limit > 0) ? $limit : (int)$this->gadget->registry->fetch('items_per_page');
         $params['offset'] = ($page == 0)? 0 : $params['limit'] * ($page - 1);
         $params['parent'] = $parent;
-        $params['hidden'] = false;
         $params['published'] = true;
 
         $user = jaws()->request->fetch('user', 'get');

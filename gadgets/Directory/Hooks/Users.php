@@ -19,7 +19,7 @@ class Directory_Hooks_Users extends Jaws_Gadget_Hook
     {
         $entity = array();
         $model = $this->gadget->model->load('Files');
-        $filesCount = $model->GetFiles(array('user' => $uid, 'hidden' => false, 'published' => true), true);
+        $filesCount = $model->GetFiles(array('user' => $uid, 'published' => true), true);
 
         if ($filesCount > 0) {
             $entity[0]['title'] = _t('DIRECTORY_FILE_AND_FOLDER');

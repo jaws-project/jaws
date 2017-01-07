@@ -23,7 +23,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         } else {
             $table->select(
                 'directory.id:integer', 'directory.parent:integer', 'directory.user:integer',
-                'is_dir:boolean', 'directory.hidden:boolean', 'directory.public:boolean',
+                'is_dir:boolean', 'directory.public:boolean',
                 'directory.title', 'directory.description',
                 'user_filename', 'host_filename', 'mime_type', 'file_type', 'file_size', 'directory.hits',
                 'directory.published:boolean', 'directory.create_time:integer', 'directory.update_time:integer'
@@ -41,9 +41,6 @@ class Directory_Model_Files extends Jaws_Gadget_Model
 
         if (isset($params['parent'])) {
             $table->where('parent', $params['parent'])->and();
-        }
-        if (isset($params['hidden'])) {
-            $table->where('hidden', $params['hidden'])->and();
         }
         if (isset($params['public'])) {
             $table->where('public', $params['public'])->and();
@@ -111,7 +108,7 @@ class Directory_Model_Files extends Jaws_Gadget_Model
         $table = Jaws_ORM::getInstance()->table('directory');
         $table->select('id', 'parent', 'user', 'title', 'description',
             'host_filename', 'user_filename', 'mime_type', 'file_type', 'file_size',
-            'is_dir:boolean', 'hidden:boolean', 'public:boolean', 'create_time', 'update_time');
+            'is_dir:boolean', 'public:boolean', 'create_time', 'update_time');
         return $table->where('id', $id)->fetchRow();
     }
 
