@@ -22,12 +22,17 @@ class Users_Hooks_Menu extends Jaws_Gadget_Hook
             'status' => Menu_Info::STATUS_ANONYMOUS
         );
 
-/*
+
         $urls[] = array(
-            'url'   => $this->gadget->urlMap('Profile', array('user' => $uInfo['username'])),
-            'title' => _t('USERS_PROFILE')
+            'url' => array(
+                'action' => 'Profile',
+                'params' => array('user' => '{user}')
+            ),
+            'title' => _t('USERS_PROFILE'),
+            'variables' => array(
+                'user'  => 'username'
+            )
         );
-*/
 
         $urls[] = array(
             'url'        => $this->gadget->urlMap('FriendsGroups'),
