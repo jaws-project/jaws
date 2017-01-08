@@ -49,7 +49,7 @@ class Directory_Actions_Pagination extends Jaws_Gadget_Action
             $url = $this->gadget->urlMap($action, $params);
             $tpl->SetBlock('pagination/prev');
             $tpl->SetVariable('url', $url);
-            $tpl->SetVariable('previous', $pagePrev);
+            $tpl->SetVariable('prev', $pagePrev);
             $tpl->ParseBlock('pagination/prev');
         }
 
@@ -79,22 +79,23 @@ class Directory_Actions_Pagination extends Jaws_Gadget_Action
         $end = ($page + $range >= $pagesCount)? $pagesCount : $page + $range;
         for ($i = $start; $i <= $end; $i++) {
             $num = Jaws_Gadget::ParseText($i, 'Directory', false);
-            $tpl->SetBlock('pagination/page');
-            if ($i == $page || ($page == 0 && $i == 1)) {
-                $tpl->SetVariable('link', "<span>$num</span>");
-                $tpl->SetVariable('current', 'current');
+            if ($i == 1) {
+                unset($params['page']);
             } else {
-                if ($i == 1) {
-                    unset($params['page']);
-                } else {
-                    $params['page'] = $i;
-                }
-                $url = $this->gadget->urlMap($action, $params);
-                $link =& Piwi::CreateWidget('Link', $num, $url);
-                $tpl->SetVariable('link', $link->Get());
-                $tpl->SetVariable('current', '');
+                $params['page'] = $i;
             }
-            $tpl->ParseBlock('pagination/page');
+            $url = $this->gadget->urlMap($action, $params);
+            if ($i == $page || ($page == 0 && $i == 1)) {
+                $tpl->SetBlock('pagination/current');
+                $tpl->SetVariable('url', $url);
+                $tpl->SetVariable('page', $num);
+                $tpl->ParseBlock('pagination/current');
+            } else {
+                $tpl->SetBlock('pagination/page');
+                $tpl->SetVariable('url', $url);
+                $tpl->SetVariable('page', $num);
+                $tpl->ParseBlock('pagination/page');
+            }
         }
 
         $tpl->ParseBlock('pagination');

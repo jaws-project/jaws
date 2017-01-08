@@ -112,13 +112,36 @@
 <!-- END file -->
 
 <!-- BEGIN pagination -->
-<div class="gadget_paginator">
-  <!-- BEGIN first --><span><a href="{{url}}">{{first}}</a></span><!-- END first -->
-  <!-- BEGIN prev --><span><a href="{{url}}">{{previous}}</a></span><!-- END prev -->
-  <!-- BEGIN page --><span>{{link}}</span><!-- END page -->
-  <!-- BEGIN next --><span><a href="{{url}}">{{next}}</a></span><!-- END next -->
-  <!-- BEGIN last --><span><a href="{{url}}">{{last}}</a></span><!-- END last -->
-</div>
+<nav class="gadget_paginator" aria-label="Page navigation">
+  <ul class="pagination">
+  <!-- BEGIN first -->
+    <li><a href="{{url}}">{{first}}</a></li>
+  <!-- END first -->
+  <!-- BEGIN prev -->
+    <li>
+      <a href="{{url}}" aria-label="Previous">
+        <span aria-hidden="true">{{prev}}</span>
+      </a>
+    </li>
+  <!-- END prev -->
+  <!-- BEGIN current -->
+   <li class="active"><a href="{{url}}">{{page}}</a></li>
+  <!-- END current -->
+  <!-- BEGIN page -->
+    <li><a href="{{url}}">{{page}}</a></li>
+  <!-- END page -->
+  <!-- BEGIN next -->
+    <li>
+      <a href="{{url}}" aria-label="Next">
+        <span aria-hidden="true">{{next}}</span>
+      </a>
+    </li>
+  <!-- END next -->
+  <!-- BEGIN last -->
+    <li><a href="{{url}}">{{last}}</a></li>
+  <!-- END last -->
+  </ul>
+</nav>
 <!-- END pagination -->
 
 <!-- BEGIN message -->
