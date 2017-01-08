@@ -231,20 +231,29 @@ class Jaws_User
      *
      * @access  public
      * @param   mixed   $user   The username or ID
+     * @param   mixed   $cid    The contact or ID
      * @return  mixed   Returns an array with the contact information of the user or Jaws_Error
      */
-    function GetUserContact($user)
+    function GetUserContact($user, $cid = 0)
     {
         $objORM = Jaws_ORM::getInstance()
             ->table('users_contacts', 'uc')
             ->select('uc.id:integer', 'uc.owner:integer', 'uc.title', 'uc.tel', 'uc.mobile', 'uc.fax',
-                     'uc.url', 'uc.address', 'uc.note')
-            ->join('users', 'users.contact', 'uc.id');
-        if (is_int($user)) {
-            $objORM->where('users.id', $user);
+                     'uc.url', 'uc.address', 'uc.note');
+
+        if (!empty($cid)) {
+            $objORM->where('uc.owner', $user);
+            $objORM->and()->where('uc.id', $cid);
         } else {
-            $objORM->where('lower(username)', Jaws_UTF8::strtolower($user));
+            $objORM->join('users', 'users.contact', 'uc.id');
+
+            if (is_int($user)) {
+                $objORM->where('uc.owner', $user);
+            } else {
+                $objORM->where('lower(username)', Jaws_UTF8::strtolower($user));
+            }
         }
+
         $contact = $objORM->fetchRow();
 
         if (!empty($contact) && !Jaws_Error::IsError($contact)) {
@@ -280,6 +289,60 @@ class Jaws_User
         }
 
         return $contact;
+    }
+
+    /**
+     * Get user's contact list
+     *
+     * @access  public
+     * @param   int     $user   The User ID
+     * @param   int     $limit  Count of posts to be returned
+     * @param   int     $offset Offset of data array
+     * @return  mixed   Returns an array with the contact information of the user or Jaws_Error
+     */
+    function GetUserContacts($user, $limit = 0, $offset = null)
+    {
+        $objORM = Jaws_ORM::getInstance()
+            ->table('users_contacts', 'uc')
+            ->select('uc.id:integer', 'uc.owner:integer', 'uc.title', 'uc.tel', 'uc.mobile', 'uc.fax',
+                     'uc.url', 'uc.address', 'uc.note')
+            ->join('users', 'users.contact', 'uc.owner')
+            ->where('users.id', $user)
+            ->limit($limit, $offset);
+        return $objORM->fetchAll();
+    }
+
+    /**
+     * Get user's contact list
+     *
+     * @access  public
+     * @param   int     $user   The User ID
+     * @param   array   $ids    Contacts id
+     * @return  mixed   Returns an array with the contact information of the user or Jaws_Error
+     */
+    function DeleteUserContacts($user, $ids)
+    {
+        return Jaws_ORM::getInstance()->table('users_contacts')
+            ->delete()
+            ->where('owner', $user)
+            ->and()->where('id', $ids, 'in')
+            ->exec();
+    }
+
+    /**
+     * Get user's contact count
+     *
+     * @access  public
+     * @param   int     $user   The User ID
+     * @return  mixed   Returns an array with the contact information of the user or Jaws_Error
+     */
+    function GetUserContactsCount($user)
+    {
+        $objORM = Jaws_ORM::getInstance()
+            ->table('users_contacts')
+            ->select('count(id):integer')
+            ->where('owner', $user);
+        return $objORM->fetchOne();
     }
 
     /**
@@ -1054,7 +1117,7 @@ class Jaws_User
         $data['owner'] = $uid;
         return Jaws_ORM::getInstance()
             ->table('users_contacts')
-            ->update($data)
+            ->upsert($data)
             ->where('id', $cid)
             ->and()
             ->where('owner', $uid)

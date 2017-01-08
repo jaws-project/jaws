@@ -10,7 +10,7 @@
   </div>
 
 
-  <div class="repeater" id="productsRepeater" data-staticheight="500">
+  <div class="repeater" id="contractsGrid" data-staticheight="500">
     <div class="repeater-header">
       <div class="repeater-header-left">
         <div class="repeater-search">
@@ -26,23 +26,9 @@
         </div>
       </div>
       <div class="repeater-header-right">
-        <!--<div class="btn-group selectlist disabled repeater-filters">-->
-        <!--<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">-->
-        <!--<span class="selected-label">?</span>-->
-        <!--<span class="caret"></span>-->
-        <!--<span class="sr-only">Toggle Filters</span>-->
-        <!--</button>-->
-        <!--<ul class="dropdown-menu pull-right" role="menu">-->
-        <!--<li data-value="all" data-selected="true" data-property="all"><a href="#">All Items</a></li>-->
-        <!--<li class="divider"></li>-->
-        <!--<li data-value="1" data-property="status"><a href="#">Enabled</a></li>-->
-        <!--<li data-value="0" data-property="status"><a href="#">Disabled</a></li>-->
-        <!--</ul>-->
-        <!--<input class="hidden hidden-field" name="filterSelection" readonly="readonly" aria-hidden="true" type="text">-->
-        <!--</div>-->
-        <!--<button type="button" class="btn btn-success btn-sm" id="btn_add" onclick="addServer()">-->
-        <!--<span class="glyphicon glyphicon-plus"></span> Add-->
-        <!--</button>-->
+        <button type="button" class="btn btn-success btn-m" data-toggle="modal" data-target="#contactModal">
+          <span class="glyphicon glyphicon-plus"></span> {{lbl_add}}
+        </button>
       </div>
     </div>
     <div class="repeater-viewport">
@@ -99,13 +85,189 @@
   </div>
 
 </div>
+
+
+
+<!-- Contact Modal -->
+<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="contactModalLabel">{{lbl_addContact}}</h4>
+      </div>
+      <div class="modal-body">
+
+
+        <form action="#" id="contacts-form">
+        <div><label for="title">{{lbl_title}}:</label>
+          <input class="form-control" name="title" class="large ltr" id="title" value="{{title}}" type="text" />
+        </div>
+
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingTel">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTel" aria-expanded="true" aria-controls="collapseTel">
+                  {{lbl_tel}}
+                </a>
+              </h4>
+            </div>
+            <div id="collapseTel" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <table>
+                  <tr>
+                    <td>{{lbl_home}}:</td>
+                    <td><input type="text" class="form-control" name="tel_home" id="tel_home" value="{{tel_home}}"></td>
+                  </tr>
+                  <tr>
+                    <td>{{lbl_work}}:</td>
+                    <td><input type="text" class="form-control" name="tel_work" id="tel_work" value="{{tel_work}}"></td>
+                  </tr>
+                  <tr>
+                    <td>{{lbl_other}}:</td>
+                    <td><input type="text" class="form-control" name="tel_other" id="tel_other" value="{{tel_other}}"></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingFax">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFax" aria-expanded="false" aria-controls="collapseFax">
+                  {{lbl_fax}}
+                </a>
+              </h4>
+            </div>
+            <div id="collapseFax" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <table>
+                  <tr>
+                    <td>{{lbl_home}}:</td>
+                    <td><input type="text" class="form-control" name="fax_home" id="fax_home" value="{{fax_home}}"></td>
+                  </tr>
+                  <tr>
+                    <td>{{lbl_work}}:</td>
+                    <td><input type="text" class="form-control" name="fax_work" id="fax_work" value="{{fax_work}}"></td>
+                  </tr>
+                  <tr>
+                    <td>{{lbl_other}}:</td>
+                    <td><input type="text" class="form-control" name="fax_other" id="fax_other" value="{{fax_other}}"></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingMobile">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMobile" aria-expanded="false" aria-controls="collapseMobile">
+                  {{lbl_mobile}}
+                </a>
+              </h4>
+            </div>
+            <div id="collapseMobile" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <table>
+                  <tr>
+                    <td>{{lbl_home}}:</td>
+                    <td><input type="text" class="form-control" name="mobile_home" id="mobile_home" value="{{mobile_home}}"></td>
+                  </tr>
+                  <tr>
+                    <td>{{lbl_work}}:</td>
+                    <td><input type="text" class="form-control" name="mobile_work" id="mobile_work" value="{{mobile_work}}"></td>
+                  </tr>
+                  <tr>
+                    <td>{{lbl_other}}:</td>
+                    <td><input type="text" class="form-control" name="mobile_other" id="mobile_other" value="{{mobile_other}}"></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingURL">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseURL" aria-expanded="false" aria-controls="collapseURL">
+                  {{lbl_url}}
+                </a>
+              </h4>
+            </div>
+            <div id="collapseURL" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <table>
+                  <tr>
+                    <td>{{lbl_home}}:</td>
+                    <td><input type="text" class="form-control" name="url_home" id="url_home" value="{{url_home}}"></td>
+                  </tr>
+                  <tr>
+                    <td>{{lbl_work}}:</td>
+                    <td><input type="text" class="form-control" name="url_work" id="url_work" value="{{url_work}}"></td>
+                  </tr>
+                  <tr>
+                    <td>{{lbl_other}}:</td>
+                    <td><input type="text" class="form-control" name="url_other" id="url_other" value="{{url_other}}"></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div><label for="province">{{lbl_province}}:</label>
+          <select name="province" id="province" class="form-control" onchange="javascript:changeProvince(this.value);">
+            <!-- BEGIN province -->
+            <option value="{{value}}" {{selected}}>{{title}}</option>
+            <!-- END province -->
+          </select>
+        </div>
+
+        <div><label for="city">{{lbl_city}}:</label>
+          <select name="city" id="city" class="form-control">
+            <!-- BEGIN city -->
+            <option value="{{value}}" {{selected}}>{{title}}</option>
+            <!-- END city -->
+          </select>
+        </div>
+
+        <div><label for="address">{{lbl_address}}:</label>
+          <textarea class="form-control" name="address" class="large address" id="address" cols="45" rows="3">{{address}}</textarea>
+        </div>
+
+        <div><label for="postal_code">{{lbl_postal_code}}:</label>
+          <input type="text" id="postal_code" name="postal_code" class="form-control" value="{{postal_code}}">
+        </div>
+
+        <div><label for="note">{{lbl_note}}:</label>
+          <textarea class="form-control" name="note" class="large note" id="note" cols="45" rows="2">{{note}}</textarea>
+        </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">{{lbl_cancel}}</button>
+        <button type="button" class="btn btn-primary" onclick="javascript:saveContact()">{{lbl_save}}</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="gadget_footer"></div>
 
 <script type="text/javascript">
+  var currentAction = "UserContacts";
     var confirmDelete = "{{confirmDelete}}";
+    var lbl_addContact = "{{lbl_addContact}}";
+    var lbl_editContact = "{{lbl_editContact}}";
+    var selectedContact = 0;
 
     // Define the data to be displayed in the repeater.
-    function productsDataSource(options, callback) {
+    function contactsDataSource(options, callback) {
 
         // define the columns for the grid
         var columns = [
@@ -113,26 +275,6 @@
                 'label': '{{lbl_title}}',      // column header label
                 'property': 'title',   // the JSON property you are binding to
                 'sortable': true      // is the column sortable?
-            },
-            {
-                'label': '{{lbl_input_count}}',
-                'property': 'input_count',
-                'sortable': true
-            },
-            {
-                'label': '{{lbl_output_count}}',
-                'property': 'output_count',
-                'sortable': true
-            },
-            {
-                'label': '{{lbl_price}}',
-                'property': 'price',
-                'sortable': false
-            },
-            {
-                'label': '{{lbl_status}}',
-                'property': 'status',
-                'sortable': true
             }
         ];
 
@@ -148,10 +290,7 @@
             'searchBy': options.search || ''
         };
 
-
-        console.log(options);
         var rows = UsersAjax.callSync('GetContacts', options);
-        console.info(rows);
 
         var items = rows.records;
         var totalItems = rows.total;
@@ -183,44 +322,11 @@
         width: 50,
         items: [
             {
-                name: 'view',
-                html: '<span class="glyphicon glyphicon-eye-open"></span> {{lbl_view}}',
-                clickAction: function (helpers, callback, e) {
-                    e.preventDefault();
-                    var editURL = "{{view_url}}";
-                    window.location.replace(editURL.replace('__PRODUCTID__', helpers.rowData.id));
-                    callback();
-                }
-            },
-            {
                 name: 'edit',
                 html: '<span class="glyphicon glyphicon-pencil"></span> {{lbl_edit}}',
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
-                    var editURL = "{{edit_url}}";
-                    window.location.replace(editURL.replace('__PRODUCTID__', helpers.rowData.id));
-                    callback();
-                }
-
-            },
-            {
-                name: 'editAttributes',
-                html: '<span class="glyphicon glyphicon-list"></span> {{lbl_edit_attributes}}',
-                clickAction: function (helpers, callback, e) {
-                    e.preventDefault();
-                    var attrURL = "{{product_attribute_url}}";
-                    window.location.replace(attrURL.replace('__PRODUCTID__', helpers.rowData.id));
-                    callback();
-                }
-
-            },
-            {
-                name: 'productInventory',
-                html: '<span class="glyphicon glyphicon-import"></span> {{lbl_product_inventory}}',
-                clickAction: function (helpers, callback, e) {
-                    e.preventDefault();
-                    var importExportURL = "{{product_inventory_url}}";
-                    window.location.replace(importExportURL.replace('__PRODUCTID__', helpers.rowData.id));
+                    editContact(helpers.rowData.id);
                     callback();
                 }
 
@@ -230,13 +336,11 @@
                 html: '<span class="glyphicon glyphicon-trash"></span> {{lbl_delete}}',
                 clickAction: function (helpers, callback, e) {
                     e.preventDefault();
-                    console.log(helpers);
 
                     // detect multi select
                     var ids = new Array();
                     if (helpers.length > 1) {
                         helpers.forEach(function(entry) {
-                            console.log(entry);
                             ids.push(entry.rowData.id);
                         });
 
@@ -244,7 +348,7 @@
                         ids.push(helpers.rowData.id);
                     }
 
-                    deleteProducts(ids);
+                    deleteContacts(ids);
                     callback();
                 }
             }
@@ -253,15 +357,19 @@
 
     $(document).ready(function () {
         // initialize the repeater
-        var repeater = $('#productsRepeater');
+        var repeater = $('#contractsGrid');
         repeater.repeater({
             // setup your custom datasource to handle data retrieval;
             // responsible for any paging, sorting, filtering, searching logic
-            dataSource: productsDataSource,
+            dataSource: contactsDataSource,
             staticHeight: 600,
             list_actions: list_actions,
             list_selectable: 'multi'
         });
+
+        $('#contactModal').on('hidden.bs.modal', function (e) {
+            stopAction();
+        })
     });
 </script>
 

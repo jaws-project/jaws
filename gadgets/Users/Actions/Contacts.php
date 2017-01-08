@@ -23,9 +23,6 @@ class Users_Actions_Contacts extends Users_Actions_Default
                 )
             );
         }
-//        $GLOBALS['app']->Layout->AddScriptLink('libraries/URLDownloader/libraries/gibberish-aes.js');
-//        $GLOBALS['app']->Layout->AddHeadLink('gadgets/Directory/Resources/style.css');
-
         $this->gadget->CheckPermission('EditUserContacts');
         $this->AjaxMe('index.js');
         $response = $GLOBALS['app']->Session->PopResponse('Users.Contacts');
@@ -64,8 +61,14 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('lbl_address', _t('USERS_CONTACTS_ADDRESS'));
         $tpl->SetVariable('lbl_postal_code', _t('USERS_CONTACTS_POSTAL_CODE'));
         $tpl->SetVariable('lbl_note', _t('USERS_CONTACTS_NOTE'));
-        $tpl->SetVariable('img_add', STOCK_ADD);
-        $tpl->SetVariable('img_del', STOCK_REMOVE);
+        $tpl->SetVariable('lbl_addContact', _t('USERS_CONTACTS_ADD'));
+        $tpl->SetVariable('lbl_editContact', _t('USERS_CONTACTS_EDIT'));
+        $tpl->SetVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
+        $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
+        $tpl->SetVariable('lbl_edit', _t('GLOBAL_EDIT'));
+        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('lbl_save', _t('GLOBAL_SAVE'));
+        $tpl->SetVariable('lbl_cancel', _t('GLOBAL_CANCEL'));
 
         // province
         $model = $this->gadget->model->load('Contacts');
@@ -107,6 +110,21 @@ class Users_Actions_Contacts extends Users_Actions_Default
 
 
     /**
+     * Get contact
+     *
+     * @access  public
+     * @return  JSON
+     */
+    function GetContact()
+    {
+        $this->gadget->CheckPermission('EditUserContacts');
+        $id = (int)jaws()->request->fetch('id', 'post');
+
+        $jUser = new Jaws_User;
+        return $jUser->GetUserContact($GLOBALS['app']->Session->GetAttribute('user'), $id);
+    }
+
+    /**
      * Get contacts list
      *
      * @access  public
@@ -114,28 +132,21 @@ class Users_Actions_Contacts extends Users_Actions_Default
      */
     function GetContacts()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
-            return Jaws_HTTPError::Get(401);
-        }
-
+        $this->gadget->CheckPermission('EditUserContacts');
         $post = jaws()->request->fetch(
             array('filters:array', 'limit', 'offset', 'searchLogic', 'search:array', 'sort:array'),
             'post'
         );
 
+        $currentUser = $GLOBALS['app']->Session->GetAttribute('user');
         $jUser = new Jaws_User;
-        $contacts = $jUser->GetUserContacts($GLOBALS['app']->Session->GetAttribute('user'));
+        $contacts = $jUser->GetUserContacts($currentUser, $post['limit'], $post['offset']);
 
-        $date = Jaws_Date::getInstance();
         foreach($contacts as $key=>$contact) {
             $contact['recid'] = $contact['id'];
-            $contact['insert_time'] = $date->Format($contact['insert_time']);
-            $contact['price'] = number_format($contact['price']);
             $contacts[$key] = $contact;
         }
-
-//        $contactsCount = $model->GetProductsCount($filters);
-        $contactsCount = count($contacts);
+        $contactsCount = $jUser->GetUserContactsCount($currentUser);
 
         $response = array(
             'status' => 'success',
@@ -147,52 +158,65 @@ class Users_Actions_Contacts extends Users_Actions_Default
     }
 
     /**
-     * Updates user contacts information
+     * Save a contact information
      *
      * @access  public
      * @return  void
      */
-    function UpdateContacts()
+    function SaveContact()
     {
-        if (!$GLOBALS['app']->Session->Logged()) {
-            Jaws_Header::Location(
-                $this->gadget->urlMap(
-                    'LoginBox',
-                    array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
-                )
-            );
-        }
-
         $this->gadget->CheckPermission('EditUserContacts');
-        $post = jaws()->request->fetch(
+
+        $post = jaws()->request->fetch(array('cid', 'data:array'), 'post');
+        // unset invalid keys
+        $invalids = array_diff(
+            array_keys($post['data']),
             array(
                 'title', 'tel_home', 'tel_work', 'tel_other', 'fax_home', 'fax_work', 'fax_other',
                 'mobile_home', 'mobile_work', 'mobile_other', 'url_home', 'url_work', 'url_other',
                 'province', 'city', 'address', 'postal_code', 'note'
-            ),
-            'post'
+            )
         );
-
-        $uModel = $this->gadget->model->load('Contacts');
-        $result = $uModel->UpdateContacts(
-            $GLOBALS['app']->Session->GetAttribute('user'),
-            $post
-        );
-        if (Jaws_Error::IsError($result)) {
-            $GLOBALS['app']->Session->PushResponse(
-                $result->GetMessage(),
-                'Users.Contacts',
-                RESPONSE_ERROR,
-                $post
-            );
-        } else {
-            $GLOBALS['app']->Session->PushResponse(
-                _t('USERS_USERS_CONTACTINFO_UPDATED'),
-                'Users.Contacts'
-            );
+        foreach ($invalids as $invalid) {
+            unset($post['data'][$invalid]);
         }
+        $post['data']['province'] = isset($post['data']['province']) ? $post['data']['province'] : 0;
+        $post['data']['city'] = isset($post['data']['city']) ? $post['data']['city'] : 0;
 
-        Jaws_Header::Location($this->gadget->urlMap('Contacts'), 'Users.Contacts');
+        $cModel = $this->gadget->model->load('Contacts');
+        $result = $cModel->UpdateContacts(
+            $GLOBALS['app']->Session->GetAttribute('user'),
+            $post['cid'],
+            $post['data']
+        );
+        if (Jaws_Error::isError($result)) {
+            return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(_t('USERS_USERS_CONTACTINFO_UPDATED'), RESPONSE_NOTICE);
+        }
+    }
+
+    /**
+     * Delete contact(s)
+     *
+     * @access  public
+     * @return  void
+     */
+    function DeleteContacts()
+    {
+        $this->gadget->CheckPermission('EditUserContacts');
+
+        $ids = jaws()->request->fetch('ids:array', 'post');
+        $jUser = new Jaws_User;
+        $result = $jUser->DeleteUserContacts(
+            $GLOBALS['app']->Session->GetAttribute('user'),
+            $ids
+        );
+        if (Jaws_Error::isError($result)) {
+            return $GLOBALS['app']->Session->GetResponse($result->GetMessage(), RESPONSE_ERROR);
+        } else {
+            return $GLOBALS['app']->Session->GetResponse(_t('USERS_USERS_CONTACTINFO_DELETED'), RESPONSE_NOTICE);
+        }
     }
 
     /**

@@ -9,11 +9,24 @@
  * Use async mode, create Callback
  */
 var UsersCallback = {
-    UpdateContacts: function(response) {
+    UpdateContact: function (response) {
         UsersAjax.showResponse(response);
     },
 
-    UpdatePreferences: function(response) {
+    SaveContact: function (response) {
+        if (response.type == 'alert-success') {
+            stopAction();
+        }
+        UsersAjax.showResponse(response);
+    },
+    DeleteContacts: function (response) {
+        if (response.type == 'alert-success') {
+            stopAction();
+        }
+        UsersAjax.showResponse(response);
+    },
+
+    UpdatePreferences: function (response) {
         UsersAjax.showResponse(response);
     },
 
@@ -90,18 +103,69 @@ function stopAction() {
             w2popup.close();
             $('form[name="group_users"]')[0].reset();
             break;
+        case 'UserContacts':
+            selectedContact = 0;
+            $('#contactModal').modal('hide');
+            $('form#contacts-form').reset();
+            $('#contractsGrid').repeater('render');
+            break;
     }
 }
 
 /**
  * Update contacts
  */
-function updateContacts()
+function updateContact()
 {
     UsersAjax.callAsync(
-        'UpdateContacts',
+        'UpdateContact',
         $.unserialize($('form[name=contacts]').serialize())
     );
+}
+
+/**
+ * Add or update the contact
+ */
+function saveContact()
+{
+    UsersAjax.callAsync(
+        'SaveContact', {
+            cid: selectedContact,
+            data: $.unserialize($('form#contacts-form').serialize())
+        }
+    );
+}
+
+/**
+ * Delete contacts
+ */
+function deleteContacts(ids)
+{
+    var confirmation = confirm(confirmDelete);
+    if (confirmation) {
+        UsersAjax.callAsync('DeleteContacts', {'ids': ids});
+    }
+}
+
+/**
+ * Edit a contacts info
+ */
+function editContact(cid)
+{
+    selectedContact = cid;
+    $('#contactModalLabel').html(lbl_editContact);
+    var cInfo = UsersAjax.callSync('GetContact', {'id': selectedContact});
+    if (cInfo) {
+        changeProvince(cInfo['province'])
+
+        $('#contacts-form input, #contacts-form select, #contacts-form textarea').each(
+            function () {
+                $(this).val(cInfo[$(this).attr('name')]);
+            }
+        );
+
+        $('#contactModal').modal('show');
+    }
 }
 
 /**
