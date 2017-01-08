@@ -149,7 +149,7 @@ class Users_Actions_Contact extends Users_Actions_Default
         );
 
         $uModel = $this->gadget->model->load('Contacts');
-        $result = $uModel->UpdateContacts(
+        $result = $uModel->UpdateContact(
             $GLOBALS['app']->Session->GetAttribute('user'),
             $post
         );

@@ -730,7 +730,7 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         }
 
         $uModel = $this->gadget->model->load('Contacts');
-        $res = $uModel->UpdateContacts(
+        $res = $uModel->UpdateContact(
             (int)$post['uid'],
             $post['data']
         );

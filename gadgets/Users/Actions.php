@@ -131,6 +131,21 @@ $actions['UpdateContact'] = array(
     'internal' => true,
     'file' => 'Contact',
 );
+$actions['GetContact'] = array(
+    'standalone' => true,
+    'internal' => true,
+    'file' => 'Contacts',
+);
+$actions['SaveContact'] = array(
+    'standalone' => true,
+    'internal' => true,
+    'file' => 'Contacts',
+);
+$actions['DeleteContacts'] = array(
+    'standalone' => true,
+    'internal' => true,
+    'file' => 'Contacts',
+);
 $actions['Contacts'] = array(
     'normal' => true,
     'file' => 'Contacts',
