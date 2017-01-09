@@ -91,7 +91,10 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         if ($tpl->VariableExists('navigation')) {
             $total = $model->GetNumberOfPages($cat);
             $limit = $this->gadget->registry->fetch('last_entries_limit');
-            $tpl->SetVariable('navigation', $this->GetNumberedPageNavigation($page, $limit, $total, 'ViewPage'));
+            $tpl->SetVariable(
+                'navigation',
+                $this->gadget->action->load('Navigation')->pagination($page, $limit, $total, 'ViewPage')
+            );
         }
         $tpl->ParseBlock('view');
         return $tpl->Get();
