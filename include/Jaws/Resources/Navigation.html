@@ -1,0 +1,55 @@
+<!-- BEGIN pager -->
+<nav aria-label="Pager">
+  <ul class="pager">
+    <!-- BEGIN previous -->
+    <li class="previous"><a href="{{url}}"><span aria-hidden="true">&larr;</span> {{title}}</a></li>
+    <!-- END previous -->
+    <!-- BEGIN next -->
+    <li class="next"><a href="{{url}}">{{title}} <span aria-hidden="true">&rarr;</span></a></li>
+    <!-- END next -->
+  </ul>
+</nav>
+<!-- END pager -->
+
+<!-- BEGIN pagination -->
+<nav class="gadget_pagination" aria-label="Page navigation">
+  <ul class="pagination">
+    <!-- BEGIN page -->
+    <!-- BEGIN previous -->
+    <li>
+      <a href="{{url}}" aria-label="Previous">
+        <span aria-hidden="true">{{lbl}}</span>
+      </a>
+    </li>
+    <!-- END previous -->
+    <!-- BEGIN start -->
+    <li class="disabled">
+      <a href="#" aria-label="Previous"><span aria-hidden="true">{{lbl}}</span></a>
+    </li>
+    <!-- END start -->
+    <!-- BEGIN number -->
+      <li><a href="{{url}}">{{lbl}}</a></li>
+    <!-- END number -->
+    <!-- BEGIN current -->
+      <li class="active"><a href="{{url}}">{{lbl}}</a></li>
+    <!-- END current -->
+    <!-- BEGIN separator -->
+      <li class="disabled"><a href="#">...</a></li>
+    <!-- END separator -->
+    <!-- BEGIN next -->
+    <li>
+      <a href="{{url}}" aria-label="Next">
+        <span aria-hidden="true">{{lbl}}</span>
+      </a>
+    </li>
+    <!-- END next -->
+    <!-- BEGIN stop -->
+    <li class="disabled">
+      <a href="#" aria-label="Next"><span aria-hidden="true">{{lbl}}</span></a>
+    </li>
+    <!-- END stop -->
+    <!-- END page -->
+  </ul>
+  <span class="total">{{total}}</span>
+</nav>
+<!-- END pagination -->

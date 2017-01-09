@@ -55,9 +55,12 @@ class Jaws_Gadget_Action
         if (!isset($this->gadget->objects['Actions'][$filename])) {
             $classname = $this->gadget->name. "_Actions_$filename";
             $file = JAWS_PATH. 'gadgets/'. $this->gadget->name. "/Actions/$filename.php";
-
             if (!file_exists($file)) {
-                return Jaws_Error::raiseError("File [$file] not exists!", __FUNCTION__);
+                $classname = "Jaws_Gadget_Actions_$filename";
+                $file = JAWS_PATH. "include/Jaws/Gadget/Actions/$filename.php";
+                if (!file_exists($file)) {
+                    return Jaws_Error::raiseError("Actions filename [$filename] not exists!", __FUNCTION__);
+                }
             }
 
             include_once($file);
