@@ -36,23 +36,25 @@ class Jaws_Gadget_Actions_Navigation
      * Get navigate pagination
      *
      * @access  public
-     * @param   int     $page       page number
-     * @param   int     $page_size
-     * @param   int     $total
-     * @param   string  $action     action
-     * @param   array   $params     params array
+     * @param   object  $tpl        (Optional) Jaws Template object
+     * @param   int     $current    Current page number
+     * @param   int     $ipp        Item per page
+     * @param   int     $total      Total items
+     * @param   string  $action     Gadget action name
+     * @param   array   $params     Action params array
      * @return  string  XHTML template content
      */
-    function pagination($page, $page_size, $total, $action, $params = array())
+    function pagination(&$tpl, $current, $ipp, $total, $action, $params = array())
     {
-        $pager = $this->GetPagerNumbered($page, $page_size, $total);
-        var_dump($pager);
+        $pager = $this->GetPagerNumbered($current, $ipp, $total);
         if (empty($pager)) {
             return '';
         }
 
-        $tpl = new Jaws_Template();
-        $tpl->Load('Navigation.html', 'include/Jaws/Resources');
+        if (empty($tpl)) {
+            $tpl = new Jaws_Template();
+            $tpl->Load('Navigation.html', 'include/Jaws/Resources');
+        }
         $tpl->SetBlock('pagination');
         //$tpl->SetVariable('total', _t('GLOBAL_PAGINATION_COUNT', $pager['total']));
 
