@@ -54,54 +54,57 @@ class Jaws_Gadget_Actions_Navigation
         if (empty($tpl)) {
             $tpl = new Jaws_Template();
             $tpl->Load('Navigation.html', 'include/Jaws/Resources');
+            $block = '';
+        } else {
+            $block = $tpl->GetCurrentBlockPath();
         }
-        $tpl->SetBlock('pagination');
+        $tpl->SetBlock("$block/pagination");
         //$tpl->SetVariable('total', _t('GLOBAL_PAGINATION_COUNT', $pager['total']));
 
         foreach ($pager as $k => $v) {
-            $tpl->SetBlock('pagination/page');
+            $tpl->SetBlock("$block/pagination/page");
             $params['page'] = $v;
             $pageURL = $this->gadget->urlMap($action, $params);
             if ($k == 'next') {
                 if ($v) {
-                    $tpl->SetBlock('pagination/page/next');
+                    $tpl->SetBlock("$block/pagination/page/next");
                     $tpl->SetVariable('lbl', _t('GLOBAL_PAGINATION_NEXT'));
                     $tpl->SetVariable('url', $pageURL);
-                    $tpl->ParseBlock('pagination/page/next');
+                    $tpl->ParseBlock("$block/pagination/page/next");
                 } else {
-                    $tpl->SetBlock('pagination/page/stop');
+                    $tpl->SetBlock("$block/pagination/page/stop");
                     $tpl->SetVariable('lbl', _t('GLOBAL_PAGINATION_NEXT'));
-                    $tpl->ParseBlock('pagination/page/stop');
+                    $tpl->ParseBlock("$block/pagination/page/stop");
                 }
             } elseif ($k == 'previous') {
                 if ($v) {
-                    $tpl->SetBlock('pagination/page/previous');
+                    $tpl->SetBlock("$block/pagination/page/previous");
                     $tpl->SetVariable('lbl', _t('GLOBAL_PAGINATION_PREVIOUS'));
                     $tpl->SetVariable('url', $pageURL);
-                    $tpl->ParseBlock('pagination/page/previous');
+                    $tpl->ParseBlock("$block/pagination/page/previous");
                 } else {
-                    $tpl->SetBlock('pagination/page/start');
+                    $tpl->SetBlock("$block/pagination/page/start");
                     $tpl->SetVariable('lbl', _t('GLOBAL_PAGINATION_PREVIOUS'));
-                    $tpl->ParseBlock('pagination/page/start');
+                    $tpl->ParseBlock("$block/pagination/page/start");
                 }
             } elseif ($k == 'separator1' || $k == 'separator2') {
-                $tpl->SetBlock('pagination/page/separator');
-                $tpl->ParseBlock('pagination/page/separator');
+                $tpl->SetBlock("$block/pagination/page/separator");
+                $tpl->ParseBlock("$block/pagination/page/separator");
             } elseif ($k == 'current') {
-                $tpl->SetBlock('pagination/page/current');
+                $tpl->SetBlock("$block/pagination/page/current");
                 $tpl->SetVariable('lbl', $v);
                 $tpl->SetVariable('url', $pageURL);
-                $tpl->ParseBlock('pagination/page/current');
+                $tpl->ParseBlock("$block/pagination/page/current");
             } elseif ($k != 'total' && $k != 'next' && $k != 'previous') {
-                $tpl->SetBlock('pagination/page/number');
+                $tpl->SetBlock("$block/pagination/page/number");
                 $tpl->SetVariable('lbl', $v);
                 $tpl->SetVariable('url', $pageURL);
-                $tpl->ParseBlock('pagination/page/number');
+                $tpl->ParseBlock("$block/pagination/page/number");
             }
-            $tpl->ParseBlock('pagination/page');
+            $tpl->ParseBlock("$block/pagination/page");
         }
 
-        $tpl->ParseBlock('pagination');
+        $tpl->ParseBlock("$block/pagination");
         return $tpl->Get();
     }
 
