@@ -114,16 +114,15 @@ class Tags_Actions_ManageTags extends Tags_Actions_Default
         if(!empty($post['term'])) {
             $params['term'] = $post['term'];
         }
-        // page navigation
-        $this->GetPagesNavigation(
+        // pagination
+        $this->gadget->action->load('Navigation')->pagination(
             $tpl,
-            'tags',
             $page,
             $limit,
             $tagsTotal,
-            _t('TAGS_TAG_COUNT', $tagsTotal),
             'ManageTags',
-            $params
+            $params,
+            _t('TAGS_TAG_COUNT', $tagsTotal)
         );
 
         $tpl->ParseBlock('tags');

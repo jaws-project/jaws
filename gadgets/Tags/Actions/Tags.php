@@ -232,16 +232,15 @@ class Tags_Actions_Tags extends Tags_Actions_Default
         $this->AddToMetaKeywords($tagInfo['meta_keywords']);
         $this->SetDescription($tagInfo['meta_description']);
 
-        // page navigation
-        $this->GetPagesNavigation(
+        // pagination
+        $this->gadget->action->load('Navigation')->pagination(
             $tpl,
-            'tag',
             $page,
             $limit,
             $referencesCount,
-            _t('TAGS_TAG_ITEM_COUNT', $referencesCount),
             'ViewTag',
-            array('tag'=>$tag)
+            array('tag'=>$tag),
+            _t('TAGS_TAG_ITEM_COUNT', $referencesCount)
         );
 
         if (count($references) > 2) {
