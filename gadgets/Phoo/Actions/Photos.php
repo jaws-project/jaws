@@ -66,7 +66,10 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
                             continue;
                         }
                         $tpl->SetBlock('ViewAlbumPage/photos/item');
-                        $url = $this->gadget->urlMap('ViewImage', array('id' => $image['id'], 'albumid' => $image['albumid']));
+                        $url = $this->gadget->urlMap(
+                            'ViewImage',
+                            array('id' => $image['id'], 'albumid' => $image['albumid'])
+                        );
                         $tpl->SetVariable('url',      $url);
                         $tpl->SetVariable('thumb',    $GLOBALS['app']->getDataURL('phoo/' . $image['thumb']));
                         $tpl->SetVariable('medium',   $GLOBALS['app']->getDataURL('phoo/' . $image['medium']));
@@ -82,60 +85,18 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             }
             $tpl->ParseBlock('ViewAlbumPage/photos');
 
-            // Pager
-            $pager = $aModel->GetAlbumPagerNumbered($id, $page);
-
-            if (count($pager) > 0) {
-                $tpl->SetBlock('ViewAlbumPage/pager');
-                $tpl->SetVariable('total', _t('PHOO_PHOTOS_COUNT', $pager['total']));
-
-                $pager_view = '';
-                foreach ($pager as $k => $v) {
-                    $tpl->SetBlock('ViewAlbumPage/pager/item');
-                    if ($k == 'next') {
-                        if ($v) {
-                            $tpl->SetBlock('ViewAlbumPage/pager/item/next');
-                            $tpl->SetVariable('lbl_next', _t('PHOO_NEXT'));
-                            $url = $this->gadget->urlMap('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
-                            $tpl->SetVariable('url_next', $url);
-                            $tpl->ParseBlock('ViewAlbumPage/pager/item/next');
-                        } else {
-                            $tpl->SetBlock('ViewAlbumPage/pager/item/no_next');
-                            $tpl->SetVariable('lbl_next', _t('PHOO_NEXT'));
-                            $tpl->ParseBlock('ViewAlbumPage/pager/item/no_next');
-                        }
-                    } elseif ($k == 'previous') {
-                        if ($v) {
-                            $tpl->SetBlock('ViewAlbumPage/pager/item/previous');
-                            $tpl->SetVariable('lbl_previous', _t('PHOO_PREVIOUS'));
-                            $url = $this->gadget->urlMap('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
-                            $tpl->SetVariable('url_previous', $url);
-                            $tpl->ParseBlock('ViewAlbumPage/pager/item/previous');
-                        } else {
-                            $tpl->SetBlock('ViewAlbumPage/pager/item/no_previous');
-                            $tpl->SetVariable('lbl_previous', _t('PHOO_PREVIOUS'));
-                            $tpl->ParseBlock('ViewAlbumPage/pager/item/no_previous');
-                        }
-                    } elseif ($k == 'separator1' || $k == 'separator2') {
-                        $tpl->SetBlock('ViewAlbumPage/pager/item/page_separator');
-                        $tpl->ParseBlock('ViewAlbumPage/pager/item/page_separator');
-                    } elseif ($k == 'current') {
-                        $tpl->SetBlock('ViewAlbumPage/pager/item/page_current');
-                        $url = $this->gadget->urlMap('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
-                        $tpl->SetVariable('lbl_page', $v);
-                        $tpl->SetVariable('url_page', $url);
-                        $tpl->ParseBlock('ViewAlbumPage/pager/item/page_current');
-                    } elseif ($k != 'total' && $k != 'next' && $k != 'previous') {
-                        $tpl->SetBlock('ViewAlbumPage/pager/item/page_number');
-                        $url = $this->gadget->urlMap('ViewAlbumPage', array('id' => $image['albumid'], 'page' => $v));
-                        $tpl->SetVariable('lbl_page', $v);
-                        $tpl->SetVariable('url_page', $url);
-                        $tpl->ParseBlock('ViewAlbumPage/pager/item/page_number');
-                    }
-                    $tpl->ParseBlock('ViewAlbumPage/pager/item');
-                }
-                $tpl->ParseBlock('ViewAlbumPage/pager');
-            }
+            $total = $aModel->GetAlbumCount($id);
+            $limit = $this->gadget->registry->fetch('thumbnail_limit');
+            // pagination
+            $this->gadget->action->load('Navigation')->pagination(
+                $tpl,
+                $page,
+                $limit,
+                $total,
+                'ViewAlbumPage',
+                array('id' => $image['albumid']),
+                _t('PHOO_PHOTOS_COUNT', $total)
+            );
         } else {
             return Jaws_HTTPError::Get(404);
         }
