@@ -11,8 +11,8 @@
 <div class="gadget_container">
   <div class="gadget_content content">
     <!-- BEGIN post -->
-    <div id="p{{post_id}}" class="forum_post">
-      <div class="post_profile">
+    <div id="p{{post_id}}" class="forum_post row">
+      <div class="post_profile col-md-3">
         <ul>
           <li><a href="{{user_url}}" title="{{username}}">{{nickname}}</a></li>
           <li><img src="{{avatar}}" alt="{{username}}" title="{{nickname}}" /></li>
@@ -20,12 +20,24 @@
           <li>{{registered_date_lbl}}: <span>{{registered_date}}</span></li>
         </ul>
       </div>
-      <div class="post_body">
-        <div class="post_meta">
-          <a href="{{requested_url}}#p{{post_id}}">#{{post_number}}</a>
-          {{postedby_lbl}}: <a href="{{user_url}}" title="{{username}}">{{nickname}}</a>
-          &raquo; <abbr title="{{insert_time_iso}}">{{insert_time}}</abbr>
+      <div class="post_body col-md-9">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="post_meta">
+              <a href="{{requested_url}}#p{{post_id}}">#{{post_number}}</a>
+              {{postedby_lbl}}: <a href="{{user_url}}" title="{{username}}">{{nickname}}</a>
+              &raquo; <abbr title="{{insert_time_iso}}">{{insert_time}}</abbr>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="post_actions">
+              <!-- BEGIN action -->
+              <a href="{{action_url}}" title="{{action_title}}">{{action_lbl}}</a>
+              <!-- END action -->
+            </div>
+          </div>
         </div>
+
         <div class="post_content">{{message}}</div>
         <!-- BEGIN attachment -->
         <div class="post_attachment">
@@ -38,15 +50,10 @@
           {{updatedby_lbl}}: <a href="{{user_url}}" title="{{username}}">{{nickname}}</a>
           &raquo; <abbr title="{{update_time_iso}}">{{update_time}}</abbr>
           <!-- BEGIN reason -->
-          <div><label>{{lbl_update_reason}}:</label> <span>{{update_reason}}</span></div>
+          <div class="update_reason"><label>{{lbl_update_reason}}:</label> <span>{{update_reason}}</span></div>
           <!-- END reason -->
         </div>
         <!-- END update -->
-      </div>
-      <div class="post_actions">
-        <!-- BEGIN action -->
-        <a href="{{action_url}}" title="{{action_title}}">{{action_lbl}}</a>
-        <!-- END action -->
       </div>
     </div>
     <hr style="clear: both; visibility: hidden;"/>
