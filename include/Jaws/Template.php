@@ -456,6 +456,7 @@ class Jaws_Template
     function ParseBlock($blockString = '', $ignore = false)
     {
         $result = '';
+        $blockString = trim($blockString, '/');
         $block = &$this->GetBlockObject($blockString);
         if (isset($block->Content)) {
             $result = $block->Content;
@@ -539,6 +540,7 @@ class Jaws_Template
      */
     function SetBlock($pathString, $init = true)
     {
+        $pathString = trim($pathString, '/');
         $this->CurrentBlock = &$this->GetBlockObject($pathString);
         if ($init === true) {
             $this->InitializeSubBlock($this->CurrentBlock);
