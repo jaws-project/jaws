@@ -9,7 +9,7 @@
  * @copyright   2012-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Actions_Posts extends Forums_Actions_Default
+class Forums_Actions_Posts extends Jaws_Gadget_Action
 {
     /**
      * Display topic posts
@@ -261,16 +261,15 @@ class Forums_Actions_Posts extends Forums_Actions_Default
             $tpl->ParseBlock('posts/post');
         } // foreach posts
 
-        // page navigation
-        $this->GetPagesNavigation(
+        // Pagination
+        $this->gadget->action->load('Navigation')->pagination(
             $tpl,
-            'posts',
             $page,
             $limit,
             $topic['replies'],
-            _t('FORUMS_POSTS_COUNT', $topic['replies']),
             'Posts',
-            array('fid' => $topic['fid'], 'tid' => $topic['id'])
+            array('fid' => $topic['fid'], 'tid' => $topic['id']),
+            _t('FORUMS_POSTS_COUNT', $topic['replies'])
         );
 
         // check permission to add new post

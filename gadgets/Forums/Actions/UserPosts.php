@@ -8,7 +8,7 @@
  * @copyright  2012-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Actions_UserPosts extends Forums_Actions_Default
+class Forums_Actions_UserPosts extends Jaws_Gadget_Action
 {
     /**
      * Displays list of user's posts ordered by date
@@ -84,16 +84,15 @@ class Forums_Actions_UserPosts extends Forums_Actions_Default
             }
 
             $post_counts = $pModel->GetUserPostsCount($user['id']);
-            // page navigation
-            $this->GetPagesNavigation(
+            // Pagination
+            $this->gadget->action->load('Navigation')->pagination(
                 $tpl,
-                'userposts',
                 $page,
                 $posts_limit,
                 $post_counts,
-                _t('FORUMS_POSTS_COUNT', $post_counts),
                 'UserPosts',
-                array('user' => $user['username'])
+                array('user' => $user['username']),
+                _t('FORUMS_POSTS_COUNT', $post_counts)
             );
 
             $tpl->ParseBlock('userposts');

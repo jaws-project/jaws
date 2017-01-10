@@ -9,7 +9,7 @@
  * @copyright   2012-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Actions_Attachment extends Forums_Actions_Default
+class Forums_Actions_Attachment extends Jaws_Gadget_Action
 {
     /**
      * Download post attachment

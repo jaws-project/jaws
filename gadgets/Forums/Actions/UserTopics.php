@@ -8,7 +8,7 @@
  * @copyright  2012-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Actions_UserTopics extends Forums_Actions_Default
+class Forums_Actions_UserTopics extends Jaws_Gadget_Action
 {
     /**
      * Displays list of user's posts ordered by date
@@ -106,16 +106,15 @@ class Forums_Actions_UserTopics extends Forums_Actions_Default
             }
 
             $topicCounts = $tModel->GetUserTopicCount($user['id']);
-            // page navigation
-            $this->GetPagesNavigation(
+            // Pagination
+            $this->gadget->action->load('Navigation')->pagination(
                 $tpl,
-                'topics',
                 $page,
                 $limit,
                 $topicCounts,
-                _t('FORUMS_POSTS_COUNT', $topicCounts),
                 'UserTopics',
-                array('user' => $user['username'])
+                array('user' => $user['username']),
+                _t('FORUMS_POSTS_COUNT', $topicCounts)
             );
 
             $tpl->ParseBlock('topics');

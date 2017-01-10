@@ -10,7 +10,7 @@
  * @copyright   2012-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Forums_Actions_Topics extends Forums_Actions_Default
+class Forums_Actions_Topics extends Jaws_Gadget_Action
 {
     /**
      * Display forum topics
@@ -124,16 +124,15 @@ class Forums_Actions_Topics extends Forums_Actions_Default
             $tpl->ParseBlock('topics/topic');
         }
 
-        // page navigation
-        $this->GetPagesNavigation(
+        // Pagination
+        $this->gadget->action->load('Navigation')->pagination(
             $tpl,
-            'topics',
             $page,
             $limit,
             $forum['topics'],
-            _t('FORUMS_TOPICS_COUNT', $forum['topics']),
             'Topics',
-            array('fid' => $forum['id'])
+            array('fid' => $forum['id']),
+            _t('FORUMS_TOPICS_COUNT', $forum['topics'])
         );
 
         if ($GLOBALS['app']->Session->Logged() && $this->gadget->GetPermission('AddTopic')) {
