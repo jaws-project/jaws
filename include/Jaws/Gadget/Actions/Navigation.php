@@ -54,7 +54,7 @@ class Jaws_Gadget_Actions_Navigation
         $tpl = new Jaws_Template();
         $tpl->Load('Navigation.html', 'include/Jaws/Resources');
         $tpl->SetBlock('pagination');
-        $tpl->SetVariable('total', _t('GLOBAL_PAGINATION_COUNT', $pager['total']));
+        //$tpl->SetVariable('total', _t('GLOBAL_PAGINATION_COUNT', $pager['total']));
 
         foreach ($pager as $k => $v) {
             $tpl->SetBlock('pagination/page');
