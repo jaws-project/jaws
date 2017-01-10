@@ -202,16 +202,13 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $tpl->SetVariable('events_url', $eventsUrl);
 
         // Pagination
-        $action = $this->gadget->action->load('Pager');
-        $action->GetPagesNavigation(
+        $this->gadget->action->load('Navigation')->pagination(
             $tpl,
-            'events',
             $page,
             $params['limit'],
             $count,
-            _t('EVENTSCALENDAR_EVENTS_COUNT', $count),
             'ManageEvents',
-            array('user' => $user, 'page' => $page)
+            array('user' => $user)
         );
 
         $tpl->ParseBlock('events');
