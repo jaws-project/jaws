@@ -179,9 +179,6 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
             unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
         } else {
             $uData['status'] = (int)$uData['status'];
-            if (!$GLOBALS['app']->Session->IsSuperAdmin()) {
-                unset($uData['status'], $uData['superadmin'], $uData['expiry_date']);
-            }
         }
 
         $res = $this->_UserModel->UpdateUser($uid, $uData);
