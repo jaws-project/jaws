@@ -41,13 +41,13 @@ class Entry extends Bin
     var $_type;
 
     /**
-     * Gives autocomplete
+     * HTML autocomplete attribute
      *
      * @var      string $_autocomplete
      * @access   private
-     * @see      SetAutocomplete ()
+     * @see      setAutoComplete()
      */
-    var $_autocomplete;
+    var $_autocomplete = '';
     
     /**
      * Public constructor
@@ -96,17 +96,6 @@ class Entry extends Bin
         $this->_isReadOnly = $status;
     }
     
-    /**
-     * Set autocomplete entry
-     *
-     * @param   boolean Entry type
-     * @access  public
-     */
-    function setAutocomplete($status = true)
-    {     
-        $this->_autocomplete = $status;
-    }
-
     /*
      * Set the type of the entry
      *
@@ -121,7 +110,18 @@ class Entry extends Bin
             $this->_type = 'any';
         }
     }
-    
+
+    /*
+     * Set HTML autocomplete attribute
+     *
+     * @param   string  $state
+     * @access  public
+     */
+    function setAutoComplete($state)
+    {
+        $this->_autocomplete = $state? 'on' : 'off';
+    }
+
     /**
      * Build the piwiXML data.
      *
@@ -188,6 +188,10 @@ class Entry extends Bin
 
         if (!empty($this->_maxLength) && is_numeric($this->_maxLength)) {
             $this->_XHTML .= " maxlength=\"".$this->_maxLength."\"";
+        }
+
+        if (!empty($this->_autocomplete)) {
+        $this->_XHTML .= " autocomplete='{$this->_autocomplete}'";
         }
 
         $this->_XHTML .= $this->buildBasicXHTML();
