@@ -15,10 +15,6 @@ $actions['Directory'] = array(
     'parametric' => true,
     'file' => 'Directory'
 );
-$actions['Pagination'] = array(
-    'standalone' => true,
-    'file' => 'Pagination'
-);
 $actions['Download'] = array(
     'standalone' => true,
     'file' => 'Directory'

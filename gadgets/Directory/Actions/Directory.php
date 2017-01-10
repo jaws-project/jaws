@@ -310,13 +310,19 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
 
         // Pagination
-        if (!$isLayoutAction && $tpl->VariableExists('pagination') && $params['limit'] > 0) {
-            $action = $this->gadget->action->load('Pagination');
+        if (!$isLayoutAction && $params['limit'] > 0) {
             $args = array();
             if ($parent > 0) {
                 $args['id'] = $parent;
             }
-            $tpl->setVariable('pagination', $action->Pagination($page, $params['limit'], $count, 'Directory', $args));
+            $this->gadget->action->load('Navigation')->pagination(
+                $tpl,
+                $page,
+                $params['limit'],
+                $count,
+                'Directory',
+                $args
+            );
         }
 
         $tpl->ParseBlock('files');
