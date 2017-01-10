@@ -46,7 +46,7 @@ class Jaws_Gadget_Actions_Navigation
      * @param   string  $gadget     Gadget name
      * @return  string  XHTML template content
      */
-    function pagination(&$tpl, $current, $ipp, $total, $action, $params = array(), $label, $gadget)
+    function pagination(&$tpl, $current, $ipp, $total, $action, $params = array(), $label = '', $gadget = '')
     {
         $pager = $this->GetPagerNumbered($current, $ipp, $total);
         if (empty($pager)) {
