@@ -20,6 +20,7 @@ class Jaws_TemplateBlock
     var $Parsed = '';
     var $Vars = array();
     var $InnerBlock = array();
+    var $Path = '';
 }
 
 /**
@@ -199,19 +200,21 @@ class Jaws_Template
     /**
      * Return the sub-blocks structure for a given block
      *
-     * @param   $contentString Block string
+     * @param   $content    Block string
+     * @param   $path       Block path
      * @access  public
      */
-    function GetBlocks($contentString)
+    function GetBlocks($content, $path = '')
     {
         $blocks = array();
-        if (preg_match_all($this->BlockRegExp, $contentString, $regs, PREG_SET_ORDER))  {
+        if (preg_match_all($this->BlockRegExp, $content, $regs, PREG_SET_ORDER)) {
             foreach ($regs as $key => $match) {
                 $wblock = new Jaws_TemplateBlock();
                 $wblock->Name = $match[1];
+                $wblock->Path = (empty($path)? '' : "$path/") . $match[1];
                 $wblock->Content    = $match[3];
                 $wblock->RawContent = $this->rawStore? $match[3] : null;
-                $wblock->InnerBlock = $this->GetBlocks($wblock->Content);
+                $wblock->InnerBlock = $this->GetBlocks($wblock->Content, $wblock->Path);
                 foreach ($wblock->InnerBlock as $k => $iblock) {
                     $pattern = '@<!--\s+begin\s+'.$iblock->Name.'\s+([^>]*)-->(.*)<!--\s+end\s+'.$iblock->Name.'\s+-->@sim';
                     $wblock->Content = preg_replace($pattern, '##'.$iblock->Name.'##' , $wblock->Content);
@@ -374,6 +377,17 @@ class Jaws_Template
             }
         }
         return $result;
+    }
+
+    /**
+     * Returns the path of the current block
+     *
+     * @access  public
+     * @return  string  Path
+     */
+    function GetCurrentBlockPath()
+    {
+        return is_null($this->CurrentBlock)? '' : $this->CurrentBlock->Path;
     }
 
     /**
