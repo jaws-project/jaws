@@ -42,9 +42,11 @@ class Jaws_Gadget_Actions_Navigation
      * @param   int     $total      Total items
      * @param   string  $action     Gadget action name
      * @param   array   $params     Action params array
+     * @param   string  $label      Total label
+     * @param   string  $gadget     Gadget name
      * @return  string  XHTML template content
      */
-    function pagination(&$tpl, $current, $ipp, $total, $action, $params = array())
+    function pagination(&$tpl, $current, $ipp, $total, $action, $params = array(), $label, $gadget)
     {
         $pager = $this->GetPagerNumbered($current, $ipp, $total);
         if (empty($pager)) {
@@ -64,7 +66,7 @@ class Jaws_Gadget_Actions_Navigation
         foreach ($pager as $k => $v) {
             $tpl->SetBlock("$block/pagination/page");
             $params['page'] = $v;
-            $pageURL = $this->gadget->urlMap($action, $params);
+            $pageURL = $this->gadget->urlMap($action, $params, false, $gadget);
             if ($k == 'next') {
                 if ($v) {
                     $tpl->SetBlock("$block/pagination/page/next");
