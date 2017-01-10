@@ -8,7 +8,7 @@
  * @copyright  2012-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Comments_Actions_Feeds extends Comments_Actions_Default
+class Comments_Actions_Feeds extends Jaws_Gadget_Action
 {
     /**
      * Displays an Atom feed for blog most recent comments

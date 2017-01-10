@@ -8,7 +8,7 @@
  * @copyright  2012-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Comments_Actions_RecentComments extends Comments_Actions_Default
+class Comments_Actions_RecentComments extends Jaws_Gadget_Action
 {
     /**
      * Get RecentComments action params

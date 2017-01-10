@@ -8,7 +8,7 @@
  * @copyright  2012-2015 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-class Comments_Actions_Comments extends Comments_Actions_Default
+class Comments_Actions_Comments extends Jaws_Gadget_Action
 {
     /**
      * Displays GuestBook
@@ -320,17 +320,16 @@ class Comments_Actions_Comments extends Comments_Actions_Default
 
         if (!$compactView) {
             $pagination_data['params']['order'] = $orderBy;
-            // page navigation
-            $this->GetPagesNavigation(
+            // pagination
+            $this->gadget->action->load('Navigation')->pagination(
                 $tpl,
-                'comments',
                 $page,
                 $perPage,
                 $comments_count,
-                _t('COMMENTS_COMMENTS_COUNT', $comments_count),
-                $gadget,
                 $pagination_data['action'],
-                $pagination_data['params']
+                $pagination_data['params'],
+                _t('COMMENTS_COMMENTS_COUNT', $comments_count),
+                $gadget
             );
 
             // feeds actions
@@ -451,17 +450,15 @@ class Comments_Actions_Comments extends Comments_Actions_Default
             }
         }
 
-        // page navigation
-        $this->GetPagesNavigation(
+        // pagination
+        $this->gadget->action->load('Navigation')->pagination(
             $tpl,
-            'comments',
             $page,
             $perPage,
             $comments_count,
-            _t('COMMENTS_COMMENTS_COUNT', $comments_count),
             'Comments',
-            array('perpage'=>$perPage,
-                  'order'=>$orderBy )
+            array('perpage'=>$perPage, 'order'=>$orderBy),
+            _t('COMMENTS_COMMENTS_COUNT', $comments_count)
         );
 
         $tpl->ParseBlock('comments');
