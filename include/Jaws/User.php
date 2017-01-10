@@ -899,6 +899,18 @@ class Jaws_User
             return false;
         }
 
+        if (isset($GLOBALS['app']->Session) && !$GLOBALS['app']->Session->IsSuperAdmin()) {
+            unset($uData['superadmin']);
+            // non-superadmin user can't change properties of superadmin users
+            if ($user['superadmin']) {
+                return Jaws_Error::raiseError(
+                    _t('GLOBAL_ERROR_ACCESS_DENIED'),
+                    __FUNCTION__,
+                    JAWS_ERROR_NOTICE
+                );
+            }
+        }
+
         // set new avatar name if username changed
         if (($uData['username'] !== $user['username']) && !empty($user['avatar'])) {
             $fileinfo = pathinfo($user['avatar']);
