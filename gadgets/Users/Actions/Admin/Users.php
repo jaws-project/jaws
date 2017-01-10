@@ -300,12 +300,14 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         // pass1
         $pass1 =& Piwi::CreateWidget('PasswordEntry', 'pass1');
         $pass1->SetID('pass1');
+        $pass1->setAutoComplete(false);
         $tpl->SetVariable('lbl_pass1', _t('USERS_USERS_PASSWORD'));
         $tpl->SetVariable('pass1', $pass1->Get());
 
         // pass2
         $pass2 =& Piwi::CreateWidget('PasswordEntry', 'pass2');
         $pass2->SetID('pass2');
+        $pass2->setAutoComplete(false);
         $tpl->SetVariable('lbl_pass2', _t('USERS_USERS_PASSWORD_VERIFY'));
         $tpl->SetVariable('pass2', $pass2->Get());
 
