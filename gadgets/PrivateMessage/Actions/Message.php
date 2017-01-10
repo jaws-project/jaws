@@ -259,16 +259,15 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
             $params['page_item'] = $post['page_item'];
         }
 
-        // page navigation
-        $this->GetPagesNavigation(
+        // Pagination
+        $this->gadget->action->load('Navigation')->pagination(
             $tpl,
-            'messages',
             $page,
             $limit,
             $msgTotal,
-            _t('PRIVATEMESSAGE_MESSAGE_COUNT', $msgTotal),
             'Messages',
-            $params
+            $params,
+            _t('PRIVATEMESSAGE_MESSAGE_COUNT', $msgTotal)
         );
 
         $tpl->ParseBlock('messages');
