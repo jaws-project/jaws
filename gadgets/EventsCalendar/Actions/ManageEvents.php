@@ -208,7 +208,8 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
             $params['limit'],
             $count,
             'ManageEvents',
-            array('user' => $user)
+            array('user' => $user),
+            _t('EVENTSCALENDAR_EVENTS_COUNT', $count)
         );
 
         $tpl->ParseBlock('events');
