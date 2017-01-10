@@ -72,21 +72,25 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
             $this->SetTitle($title);
             $tpl->SetVariable('title', $title);
 
-            if ($tpl->VariableExists('page_navigation')) {
-                $total  = $dpModel->GetDateNumberOfPages($min_date, $max_date);
-                $limit  = $this->gadget->registry->fetch('last_entries_limit');
-
-                $params = array('year'  => $year,
-                                'month' => $month,
-                                'day'   => $day,
-                               );
-                foreach (array_keys($params, '') as $e) {
-                    unset($params[$e]);
-                }
-
-                $tpl->SetVariable('page_navigation',
-                                  $this->GetNumberedPageNavigation($page, $limit, $total, 'ViewDatePage', $params));
+            $total  = $dpModel->GetDateNumberOfPages($min_date, $max_date);
+            $limit  = $this->gadget->registry->fetch('last_entries_limit');
+            $params = array(
+                'year'  => $year,
+                'month' => $month,
+                'day'   => $day,
+            );
+            foreach (array_keys($params, '') as $e) {
+                unset($params[$e]);
             }
+            // pagination
+            $this->gadget->action->load('Navigation')->pagination(
+                $tpl,
+                $page,
+                $limit,
+                $total,
+                'ViewDatePage',
+                $params
+            );
 
             if ($tpl->VariableExists('date_navigation')) {
                 $tpl->SetVariable('date_navigation', $this->GetDateNavigation($year, $month, $day));

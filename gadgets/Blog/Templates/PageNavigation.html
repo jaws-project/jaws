@@ -11,46 +11,4 @@
   </ul>
 </nav>
 <!-- END simple-navigation -->
-
-<!-- BEGIN numbered-navigation -->
-<nav aria-label="Page navigation">
-  <ul class="pagination">
-    <!-- BEGIN item -->
-    <!-- BEGIN previous -->
-    <li>
-      <a href="{{url_previous}}" aria-label="Previous">
-        <span aria-hidden="true">{{lbl_previous}}</span>
-      </a>
-    </li>
-    <!-- END previous -->
-    <!-- BEGIN no_previous -->
-    <li class="disabled">
-      <a href="#" aria-label="Previous"><span aria-hidden="true">{{lbl_previous}}</span></a>
-    </li>
-    <!-- END no_previous -->
-    <!-- BEGIN page_number -->
-      <li><a href="{{url_page}}">{{lbl_page}}</a></li>
-    <!-- END page_number -->
-    <!-- BEGIN page_current -->
-      <li class="active"><a href="{{url_page}}">{{lbl_page}}</a></li>
-    <!-- END page_current -->
-    <!-- BEGIN page_separator -->
-      <li class="disabled"><a href="#">...</a></li>
-    <!-- END page_separator -->
-    <!-- BEGIN next -->
-    <li>
-      <a href="{{url_next}}" aria-label="Next">
-        <span aria-hidden="true">{{lbl_next}}</span>
-      </a>
-    </li>
-    <!-- END next -->
-    <!-- BEGIN no_next -->
-    <li class="disabled">
-      <a href="#" aria-label="Next"><span aria-hidden="true">{{lbl_next}}</span></a>
-    </li>
-    <!-- END no_next -->
-    <!-- END item -->
-  </ul>
-</nav>
-<!-- END numbered-navigation -->
 <!-- END pager -->

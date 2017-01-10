@@ -79,9 +79,13 @@ class Blog_Actions_Categories extends Blog_Actions_Default
         $total  = $cModel->GetCategoryNumberOfPages($catInfo['id']);
         $limit  = $this->gadget->registry->fetch('last_entries_limit');
         $params = array('id'  => $cat);
-        $tpl->SetVariable(
-            'navigation',
-            $this->GetNumberedPageNavigation($page, $limit, $total, 'ShowCategory', $params)
+        $this->gadget->action->load('Navigation')->pagination(
+            $tpl,
+            $page,
+            $limit,
+            $total,
+            'ShowCategory',
+            $params
         );
         $entries = $pModel->GetEntriesByCategory($catInfo['id'], $page);
         if (!Jaws_Error::IsError($entries)) {
