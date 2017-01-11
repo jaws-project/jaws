@@ -238,8 +238,8 @@ class Jaws_User
     {
         $objORM = Jaws_ORM::getInstance()
             ->table('users_contacts', 'uc')
-            ->select('uc.id:integer', 'uc.owner:integer', 'uc.title', 'uc.tel', 'uc.mobile', 'uc.fax',
-                     'uc.url', 'uc.address', 'uc.note');
+            ->select('uc.id:integer', 'uc.owner:integer', 'uc.title', 'uc.name', 'uc.tel', 'uc.mobile', 'uc.fax',
+                     'uc.url', 'uc.email', 'uc.address', 'uc.note');
 
         if (!empty($cid)) {
             $objORM->where('uc.owner', $user);
@@ -281,11 +281,27 @@ class Jaws_User
             $contact['url_other'] = $url['other'];
             unset($contact['url']);
 
+            $email = json_decode($contact['email'], true);
+            $contact['email_home'] = $email['home'];
+            $contact['email_work'] = $email['work'];
+            $contact['email_other'] = $email['other'];
+            unset($contact['email']);
+
             $address = json_decode($contact['address'], true);
-            $contact['province'] = $address['province'];
-            $contact['city'] = $address['city'];
-            $contact['address'] = $address['address'];
-            $contact['postal_code'] = $address['postal_code'];
+            $contact['province_home'] = $address['home']['province'];
+            $contact['city_home'] = $address['home']['city'];
+            $contact['address_home'] = $address['home']['address'];
+            $contact['postal_code_home'] = $address['home']['postal_code'];
+            $contact['province_work'] = $address['work']['province'];
+            $contact['city_work'] = $address['work']['city'];
+            $contact['address_work'] = $address['work']['address'];
+            $contact['postal_code_work'] = $address['work']['postal_code'];
+            $contact['province_other'] = $address['other']['province'];
+            $contact['city_other'] = $address['other']['city'];
+            $contact['address_other'] = $address['other']['address'];
+            $contact['postal_code_other'] = $address['other']['postal_code'];
+            unset($contact['address']);
+
         }
 
         return $contact;
@@ -304,9 +320,9 @@ class Jaws_User
     {
         $objORM = Jaws_ORM::getInstance()
             ->table('users_contacts', 'uc')
-            ->select('uc.id:integer', 'uc.owner:integer', 'uc.title', 'uc.tel', 'uc.mobile', 'uc.fax',
-                     'uc.url', 'uc.address', 'uc.note')
-            ->join('users', 'users.contact', 'uc.owner')
+            ->select('uc.id:integer', 'uc.owner:integer', 'uc.title', 'uc.name', 'uc.tel', 'uc.mobile', 'uc.fax',
+                     'uc.url', 'uc.email', 'uc.address', 'uc.note')
+            ->join('users', 'users.id', 'uc.owner')
             ->where('users.id', $user)
             ->limit($limit, $offset);
         return $objORM->fetchAll();
@@ -1068,7 +1084,7 @@ class Jaws_User
         // unset invalid keys
         $invalids = array_diff(
             array_keys($data),
-            array('title', 'name', 'image', 'note', 'tel', 'mobile', 'fax', 'url', 'address', 'province', 'city')
+            array('title', 'name', 'image', 'note', 'tel', 'mobile', 'fax', 'url', 'email', 'address')
         );
         foreach ($invalids as $invalid) {
             unset($data[$invalid]);
@@ -1092,13 +1108,11 @@ class Jaws_User
             return $contactId;
         }
 
-        if (empty($user['contact'])) {
-            // set user's contact id
-            $usersTable = Jaws_ORM::getInstance()->table('users');
-            $res = $usersTable->update(array('contact' => $contactId))->where('id', (int)$uid)->exec();
-            if (Jaws_Error::IsError($res)) {
-                return $res;
-            }
+        // set user's contact id
+        $usersTable = Jaws_ORM::getInstance()->table('users');
+        $res = $usersTable->update(array('contact' => $contactId))->where('id', (int)$uid)->exec();
+        if (Jaws_Error::IsError($res)) {
+            return $res;
         }
 
         // commit transaction
@@ -1120,7 +1134,7 @@ class Jaws_User
         // unset invalid keys
         $invalids = array_diff(
             array_keys($data),
-            array('title', 'name', 'image', 'note', 'tel', 'mobile', 'fax', 'url', 'address', 'province', 'city')
+            array('title', 'name', 'image', 'note', 'tel', 'mobile', 'fax', 'url', 'email', 'address')
         );
         foreach ($invalids as $invalid) {
             unset($data[$invalid]);
