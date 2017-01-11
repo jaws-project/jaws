@@ -39,6 +39,7 @@ var UsersCallback = {
     },
 
     UpdateContacts: function(response) {
+        console.log(response);
         if (response[0]['type'] == 'alert-success') {
             stopUserAction();
         }
@@ -569,7 +570,9 @@ function editContacts(rowElement, uid)
 
     var cInfo = UsersAjax.callSync('GetUserContact', {'uid': uid});
     if (cInfo) {
-        changeProvince(cInfo['province'])
+        changeProvince(cInfo['province_home'], 'city_home');
+        changeProvince(cInfo['province_work'], 'city_work');
+        changeProvince(cInfo['province_other'], 'city_other');
 
         $('#contact-form input, #contact-form select, #contact-form textarea').each(
             function () {
@@ -582,12 +585,12 @@ function editContacts(rowElement, uid)
 /**
  * change province combo
  */
-function changeProvince(province)
+function changeProvince(province, cityElement)
 {
     var cities = UsersAjax.callSync('GetCities', {'province': province});
-    $('#city').html('');
+    $('#' + cityElement ).html('');
     $.each(cities, function (index, city) {
-        $("#city").append('<option value="' + city.id + '">' + city.title + '</option>');
+        $("#" + cityElement).append('<option value="' + city.id + '">' + city.title + '</option>');
     });
 }
 

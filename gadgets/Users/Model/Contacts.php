@@ -19,6 +19,7 @@ class Users_Model_Contacts extends Jaws_Gadget_Model
     {
         $contactData = array();
         $contactData['title'] = $data['title'];
+        $contactData['name'] = $data['name'];
         $contactData['note'] = $data['note'];
         $contactData['tel'] = json_encode(
             array('home' => $data['tel_home'], 'work' => $data['tel_work'], 'other' => $data['tel_other'])
@@ -32,9 +33,30 @@ class Users_Model_Contacts extends Jaws_Gadget_Model
         $contactData['url'] = json_encode(
             array('home' => $data['url_home'], 'work' => $data['url_work'], 'other' => $data['url_other'])
         );
+        $contactData['email'] = json_encode(
+            array('home' => $data['email_home'], 'work' => $data['email_work'], 'other' => $data['email_other'])
+        );
         $contactData['address'] = json_encode(
-            array('province' => $data['province'], 'city' => $data['city'],
-                'address' => $data['address'], 'postal_code' => $data['postal_code'])
+            array(
+                'home' =>
+                    array(
+                        'province' => isset($data['province_home']) ? $data['province_home'] : 0,
+                        'city' => isset($data['city_home']) ? $data['city_home'] : 0,
+                        'address' => $data['address_home'],
+                        'postal_code' => $data['postal_code_home']),
+                'work' =>
+                    array(
+                        'province' => isset($data['province_work']) ? $data['province_work'] : 0,
+                        'city' => isset($data['city_work']) ? $data['city_work'] : 0,
+                        'address' => $data['address_work'],
+                        'postal_code' => $data['postal_code_work']),
+                'other' =>
+                    array(
+                        'province' => isset($data['province_other']) ? $data['province_other'] : 0,
+                        'city' => isset($data['city_other']) ? $data['city_other'] : 0,
+                        'address' => $data['address_other'],
+                        'postal_code' => $data['postal_code_other']),
+            )
         );
 
         $jUser = new Jaws_User;
@@ -60,6 +82,7 @@ class Users_Model_Contacts extends Jaws_Gadget_Model
     {
         $contactData = array();
         $contactData['title'] = $data['title'];
+        $contactData['name'] = $data['name'];
         $contactData['note'] = $data['note'];
         $contactData['tel'] = json_encode(
             array('home' => $data['tel_home'], 'work' => $data['tel_work'], 'other' => $data['tel_other'])
@@ -73,9 +96,30 @@ class Users_Model_Contacts extends Jaws_Gadget_Model
         $contactData['url'] = json_encode(
             array('home' => $data['url_home'], 'work' => $data['url_work'], 'other' => $data['url_other'])
         );
+        $contactData['email'] = json_encode(
+            array('home' => $data['email_home'], 'work' => $data['email_work'], 'other' => $data['email_other'])
+        );
         $contactData['address'] = json_encode(
-            array('province' => $data['province'], 'city' => $data['city'],
-                'address' => $data['address'], 'postal_code' => $data['postal_code'])
+            array(
+                'home' =>
+                    array(
+                        'province' => isset($data['province_home']) ? $data['province_home'] : 0,
+                        'city' => isset($data['city_home']) ? $data['city_home'] : 0,
+                        'address' => $data['address_home'],
+                        'postal_code' => $data['postal_code_home']),
+                'work' =>
+                    array(
+                        'province' => isset($data['province_work']) ? $data['province_work'] : 0,
+                        'city' => isset($data['city_work']) ? $data['city_work'] : 0,
+                        'address' => $data['address_work'],
+                        'postal_code' => $data['postal_code_work']),
+                'other' =>
+                    array(
+                        'province' => isset($data['province_other']) ? $data['province_other'] : 0,
+                        'city' => isset($data['city_other']) ? $data['city_other'] : 0,
+                        'address' => $data['address_other'],
+                        'postal_code' => $data['postal_code_other']),
+            )
         );
 
         $jUser = new Jaws_User;

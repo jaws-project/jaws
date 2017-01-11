@@ -49,6 +49,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         );
 
         $tpl->SetVariable('lbl_title', _t('GLOBAL_TITLE'));
+        $tpl->SetVariable('lbl_name', _t('GLOBAL_NAME'));
         $tpl->SetVariable('lbl_home', _t('USERS_CONTACTS_HOME'));
         $tpl->SetVariable('lbl_work', _t('USERS_CONTACTS_WORK'));
         $tpl->SetVariable('lbl_other', _t('USERS_CONTACTS_OTHER'));
@@ -56,6 +57,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $tpl->SetVariable('lbl_fax', _t('USERS_CONTACTS_FAX_NUMBER'));
         $tpl->SetVariable('lbl_mobile', _t('USERS_CONTACTS_MOBILE_NUMBER'));
         $tpl->SetVariable('lbl_url', _t('GLOBAL_URL'));
+        $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
         $tpl->SetVariable('lbl_province', _t('GLOBAL_PROVINCE'));
         $tpl->SetVariable('lbl_city', _t('GLOBAL_CITY'));
         $tpl->SetVariable('lbl_address', _t('USERS_CONTACTS_ADDRESS'));
@@ -76,14 +78,32 @@ class Users_Actions_Contacts extends Users_Actions_Default
         if (!Jaws_Error::IsError($provinces) && count($provinces) > 0) {
             array_unshift($provinces, array('id' => 0, 'title' => ''));
             foreach ($provinces as $province) {
-                $tpl->SetBlock('contacts/province');
+                $tpl->SetBlock('contacts/province_home');
                 $tpl->SetVariable('value', $province['id']);
                 $tpl->SetVariable('title', $province['title']);
                 $tpl->SetVariable('selected', '');
-                if (isset($contacts['province']) && $contacts['province'] == $province['id']) {
+                if (isset($contacts['province_home']) && $contacts['province_home'] == $province['id']) {
                     $tpl->SetVariable('selected', 'selected');
                 }
-                $tpl->ParseBlock('contacts/province');
+                $tpl->ParseBlock('contacts/province_home');
+
+                $tpl->SetBlock('contacts/province_work');
+                $tpl->SetVariable('value', $province['id']);
+                $tpl->SetVariable('title', $province['title']);
+                $tpl->SetVariable('selected', '');
+                if (isset($contacts['province_work']) && $contacts['province_work'] == $province['id']) {
+                    $tpl->SetVariable('selected', 'selected');
+                }
+                $tpl->ParseBlock('contacts/province_work');
+
+                $tpl->SetBlock('contacts/province_other');
+                $tpl->SetVariable('value', $province['id']);
+                $tpl->SetVariable('title', $province['title']);
+                $tpl->SetVariable('selected', '');
+                if (isset($contacts['province_other']) && $contacts['province_other'] == $province['id']) {
+                    $tpl->SetVariable('selected', 'selected');
+                }
+                $tpl->ParseBlock('contacts/province_other');
             }
         }
 
@@ -172,16 +192,18 @@ class Users_Actions_Contacts extends Users_Actions_Default
         $invalids = array_diff(
             array_keys($post['data']),
             array(
-                'title', 'tel_home', 'tel_work', 'tel_other', 'fax_home', 'fax_work', 'fax_other',
+                'title', 'name', 'tel_home', 'tel_work', 'tel_other', 'fax_home', 'fax_work', 'fax_other',
                 'mobile_home', 'mobile_work', 'mobile_other', 'url_home', 'url_work', 'url_other',
-                'province', 'city', 'address', 'postal_code', 'note'
+                'email_home', 'email_work', 'email_other',
+                'province_home', 'city_home', 'address_home', 'postal_code_home',
+                'province_work', 'city_work', 'address_work', 'postal_code_work',
+                'province_other', 'city_other', 'address_other', 'postal_code_other',
+                'note'
             )
         );
         foreach ($invalids as $invalid) {
             unset($post['data'][$invalid]);
         }
-        $post['data']['province'] = isset($post['data']['province']) ? $post['data']['province'] : 0;
-        $post['data']['city'] = isset($post['data']['city']) ? $post['data']['city'] : 0;
 
         $cModel = $this->gadget->model->load('Contacts');
         $result = $cModel->UpdateContacts(

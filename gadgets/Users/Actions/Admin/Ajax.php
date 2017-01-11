@@ -717,9 +717,13 @@ class Users_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $invalids = array_diff(
             array_keys($post['data']),
             array(
-                'title', 'tel_home', 'tel_work', 'tel_other', 'fax_home', 'fax_work', 'fax_other',
+                'title', 'name', 'tel_home', 'tel_work', 'tel_other', 'fax_home', 'fax_work', 'fax_other',
                 'mobile_home', 'mobile_work', 'mobile_other', 'url_home', 'url_work', 'url_other',
-                'province', 'city', 'address', 'postal_code', 'note'
+                'email_home', 'email_work', 'email_other',
+                'province_home', 'city_home', 'address_home', 'postal_code_home',
+                'province_work', 'city_work', 'address_work', 'postal_code_work',
+                'province_other', 'city_other', 'address_other', 'postal_code_other',
+                'note'
             )
         );
         foreach ($invalids as $invalid) {

@@ -104,6 +104,10 @@
           <input class="form-control" name="title" class="large ltr" id="title" value="{{title}}" type="text" />
         </div>
 
+        <div><label for="name">{{lbl_name}}:</label>
+          <input class="form-control" name="name" class="large ltr" id="name" value="{{name}}" type="text" />
+        </div>
+
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
           <div class="panel panel-default">
@@ -218,30 +222,152 @@
             </div>
           </div>
 
-        </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingEmail">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEmail" aria-expanded="false" aria-controls="collapseEmail">
+                  {{lbl_email}}
+                </a>
+              </h4>
+            </div>
+            <div id="collapseEmail" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <table>
+                  <tr>
+                    <td>{{lbl_home}}:</td>
+                    <td><input type="text" class="form-control" name="email_home" id="email_home" value="{{email_home}}"></td>
+                  </tr>
+                  <tr>
+                    <td>{{lbl_work}}:</td>
+                    <td><input type="text" class="form-control" name="email_work" id="email_work" value="{{email_work}}"></td>
+                  </tr>
+                  <tr>
+                    <td>{{lbl_other}}:</td>
+                    <td><input type="text" class="form-control" name="email_other" id="email_other" value="{{email_other}}"></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
 
-        <div><label for="province">{{lbl_province}}:</label>
-          <select name="province" id="province" class="form-control" onchange="javascript:changeProvince(this.value);">
-            <!-- BEGIN province -->
-            <option value="{{value}}" {{selected}}>{{title}}</option>
-            <!-- END province -->
-          </select>
-        </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingAddress">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAddress"
+                   aria-expanded="false" aria-controls="collapseAddress">
+                  {{lbl_address}}
+                </a>
+              </h4>
+            </div>
+            <div id="collapseAddress" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <table>
+                  <tr>
+                    <td>{{lbl_home}}:</td>
+                    <td>
 
-        <div><label for="city">{{lbl_city}}:</label>
-          <select name="city" id="city" class="form-control">
-            <!-- BEGIN city -->
-            <option value="{{value}}" {{selected}}>{{title}}</option>
-            <!-- END city -->
-          </select>
-        </div>
+                      <div><label for="province_home">{{lbl_province}}:</label>
+                        <select name="province_home" id="province_home" class="form-control"
+                                onchange="javascript:changeProvince(this.value, 'city_home');">
+                          <!-- BEGIN province_home -->
+                          <option value="{{value}}" {{selected}}>{{title}}</option>
+                          <!-- END province_home -->
+                        </select>
+                      </div>
 
-        <div><label for="address">{{lbl_address}}:</label>
-          <textarea class="form-control" name="address" class="large address" id="address" cols="45" rows="3">{{address}}</textarea>
-        </div>
+                      <div><label for="city_home">{{lbl_city}}:</label>
+                        <select name="city_home" id="city_home" class="form-control">
+                          <!-- BEGIN city_home -->
+                          <option value="{{value}}" {{selected}}>{{title}}</option>
+                          <!-- END city_home -->
+                        </select>
+                      </div>
 
-        <div><label for="postal_code">{{lbl_postal_code}}:</label>
-          <input type="text" id="postal_code" name="postal_code" class="form-control" value="{{postal_code}}">
+                      <div><label for="address_home">{{lbl_address}}:</label>
+                        <textarea class="form-control address" name="address_home"  id="address_home"
+                                  cols="45" rows="4">{{address_home}}</textarea>
+                      </div>
+
+                      <div><label for="postal_code_home">{{lbl_postal_code}}:</label>
+                        <input type="text" id="postal_code_home" name="postal_code_home"
+                               class="form-control" value="{{postal_code_home}}">
+                      </div>
+
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>{{lbl_work}}:</td>
+                    <td>
+
+                      <div><label for="province_work">{{lbl_province}}:</label>
+                        <select name="province_work" id="province_work" class="form-control"
+                                onchange="javascript:changeProvince(this.value, 'city_work');">
+                          <!-- BEGIN province_work -->
+                          <option value="{{value}}" {{selected}}>{{title}}</option>
+                          <!-- END province_work -->
+                        </select>
+                      </div>
+
+                      <div><label for="city_work">{{lbl_city}}:</label>
+                        <select name="city_work" id="city_work" class="form-control">
+                          <!-- BEGIN city_work -->
+                          <option value="{{value}}" {{selected}}>{{title}}</option>
+                          <!-- END city_work -->
+                        </select>
+                      </div>
+
+                      <div><label for="address_work">{{lbl_address}}:</label>
+                        <textarea class="form-control address" name="address_work"  id="address_work"
+                                  cols="45" rows="4">{{address_work}}</textarea>
+                      </div>
+
+                      <div><label for="postal_code_work">{{lbl_postal_code}}:</label>
+                        <input type="text" id="postal_code_work" name="postal_code_work"
+                               class="form-control" value="{{postal_code_work}}">
+                      </div>
+
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>{{lbl_other}}:</td>
+                    <td>
+
+                      <div><label for="province_other">{{lbl_province}}:</label>
+                        <select name="province_other" id="province_other" class="form-control"
+                                onchange="javascript:changeProvince(this.value, 'city_other');">
+                          <!-- BEGIN province_other -->
+                          <option value="{{value}}" {{selected}}>{{title}}</option>
+                          <!-- END province_other -->
+                        </select>
+                      </div>
+
+                      <div><label for="city_other">{{lbl_city}}:</label>
+                        <select name="city_other" id="city_other" class="form-control">
+                          <!-- BEGIN city_other -->
+                          <option value="{{value}}" {{selected}}>{{title}}</option>
+                          <!-- END city_other -->
+                        </select>
+                      </div>
+
+                      <div><label for="address_other">{{lbl_address}}:</label>
+                        <textarea class="form-control address" name="address_other"  id="address_other"
+                                  cols="45" rows="4">{{address_other}}</textarea>
+                      </div>
+
+                      <div><label for="postal_code_other">{{lbl_postal_code}}:</label>
+                        <input type="text" id="postal_code_other" name="postal_code_other"
+                               class="form-control" value="{{postal_code_other}}">
+                      </div>
+
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         <div><label for="note">{{lbl_note}}:</label>

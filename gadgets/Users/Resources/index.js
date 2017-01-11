@@ -106,7 +106,7 @@ function stopAction() {
         case 'UserContacts':
             selectedContact = 0;
             $('#contactModal').modal('hide');
-            $('form#contacts-form').reset();
+            $('form#contacts-form')[0].reset();
             $('#contractsGrid').repeater('render');
             break;
     }
@@ -482,12 +482,12 @@ function saveGroup()
 /**
  * change province combo
  */
-function changeProvince(province)
+function changeProvince(province, cityElement)
 {
     var cities = UsersAjax.callSync('GetCities', {'province': province});
-    $('#city').html('');
+    $('#' + cityElement ).html('');
     $.each(cities, function (index, city) {
-        $("#city").append('<option value="' + city.id + '">' + city.title + '</option>');
+        $("#" + cityElement).append('<option value="' + city.id + '">' + city.title + '</option>');
     });
 }
 
