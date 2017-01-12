@@ -11,7 +11,8 @@
   <meta name="viewport" content="width=device-width, maximum-scale=2.0, initial-scale=1.0"/>
   <link rel="stylesheet" type="text/css" href="libraries/bootstrap.fuelux/css/bootstrap.fuelux{{.dir}}.min.css" />
   <link rel="stylesheet" type="text/css" href="{{theme_url}}style{{.dir}}.css" media="screen" />
-  <!-- BEGIN head -->{{ELEMENT}}<!-- END head -->
+  <!-- BEGIN metas -->{{elements}}<!-- END metas -->
+  <!-- BEGIN links -->{{elements}}<!-- END links -->
 </head>
 <body id="main_gadget_{{main_gadget}}"  class="fuelux">
 
@@ -61,7 +62,9 @@
       {{site-copyright}} Powered by <a href="http://jaws-project.com" rel="external">Jaws Project</a>
     </div>
   </div>
-
+  <!-- BEGIN scripts -->
+  {{elements}}
+  <!-- END scripts -->
 </body>
 </html>
 <!-- END layout -->
