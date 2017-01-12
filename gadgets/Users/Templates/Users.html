@@ -11,75 +11,195 @@
 
   <div class="gadget_content content">
 
-    <div id="user_workarea" style="display: none; width: 650px; height: 400px; overflow: auto">
-      <div rel="body">
-        <div style="padding: 10px; font-size: 11px; line-height: 150%;">
-          <form action="#" name="user">
-            <!-- BEGIN encryption -->{{length}}{{modulus}}{{exponent}}<!-- END encryption -->
-            <input type="hidden" name="prev_status" id="prev_status" value="0" />
-
-            <table class="table" cellpadding="0" cellspacing="2">
-              <tr><td><label for="username">{{lbl_username}}:</label></td><td><input type="text" id="username" name="username"></td></tr>
-              <tr><td><label for="nickname">{{lbl_nickname}}:</label></td><td><input type="text" id="nickname" name="nickname"></td></tr>
-              <tr><td><label for="email">{{lbl_email}}:</label></td><td><input type="text" id="email" name="email"></td></tr>
-              <tr><td><label for="superadmin">{{lbl_superadmin}}:</label></td><td>
-                <select class="form-control" name="superadmin" id="superadmin">
-                  <option value="0">{{lbl_no}}</option>
-                  <option value="1">{{lbl_yes}}</option>
-                </select>
-              </td></tr>
-              <tr><td><label for="pass1">{{lbl_pass1}}:</label></td><td><input type="password" id="pass1" name="pass1"></td></tr>
-              <tr><td><label for="pass2">{{lbl_pass2}}:</label></td><td><input type="password" id="pass2" name="pass2"></td></tr>
-              <tr><td><label for="concurrents">{{lbl_concurrents}}:</label></td><td><input type="text" id="concurrents" name="concurrents"></td></tr>
-              <tr><td><label for="expiry_date">{{lbl_expiry_date}}:</label></td><td><input type="text" id="expiry_date" name="expiry_date"></td></tr>
-              <tr><td><label for="superadmin">{{lbl_status}}:</label></td><td>
-                <select class="form-control" name="status" id="status">
-                  <!-- BEGIN status -->
+    <div class="repeater" id="usersGrid" data-staticheight="300">
+      <div class="repeater-header">
+        <div class="repeater-header-left">
+          <table class="datagrid-filters">
+            <tr>
+              <td><label>{{lbl_filter_group}}:</label></td>
+              <td>
+                <select name="filter_group" id="filter_group" class="form-control">
+                  <!-- BEGIN filterGroup -->
                   <option value="{{value}}">{{title}}</option>
-                  <!-- END status -->
+                  <!-- END filterGroup -->
                 </select>
-              </td></tr>
+              </td>
 
-            </table>
-          </form>
+              <td><label>{{lbl_filter_type}}:</label></td><td>{{filter_type}}</td>
+              <td>
+                <select name="filter_type" id="filter_type" class="form-control">
+                  <!-- BEGIN filterType -->
+                  <option value="{{value}}">{{title}}</option>
+                  <!-- END filterType -->
+                </select>
+              </td>
+            </tr>
+
+            <tr>
+              <td><label>{{lbl_filter_status}}:</label></td>
+              <td>
+                <select name="filter_status" id="filter_status" class="form-control">
+                  <!-- BEGIN filterStatus -->
+                  <option value="{{value}}">{{title}}</option>
+                  <!-- END filterStatus -->
+                </select>
+              </td>
+
+              <td><label>{{lbl_filter_term}}:</label></td><td>{{filter_term}}</td>
+              <td>
+                <input type="text" id="filter_term" name="filter_term" class="form-control">
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="repeater-header-right">
+          <button type="button" class="btn btn-success btn-m" data-toggle="modal" data-target="#userModal">
+            <span class="glyphicon glyphicon-plus"></span> {{lbl_add}}
+          </button>
         </div>
       </div>
-      <div rel="buttons">
-        <button class="btn btn-primary" onclick="javascript:saveUser()">{{lbl_save}}</button>
-        <button class="btn" onclick="javascript:stopAction();">{{lbl_cancel}}</button>
+      <div class="repeater-viewport">
+        <div class="repeater-canvas"></div>
+        <div class="loader repeater-loader"></div>
+      </div>
+      <div class="repeater-footer">
+        <div class="repeater-footer-left">
+          <div class="repeater-itemization">
+            <span><span class="repeater-start"></span> {{lbl_to}} <span class="repeater-end"></span> {{lbl_of}} <span class="repeater-count"></span> {{lbl_items}}</span>
+            <div class="btn-group selectlist dropup" data-resize="auto">
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                <span class="selected-label">?</span>
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li data-value="10" data-selected="true"><a href="#">10</a></li>
+                <li data-value="25"><a href="#">25</a></li>
+                <li data-value="50"><a href="#">50</a></li>
+              </ul>
+              <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
+            </div>
+            <span>{{per_page}}</span>
+          </div>
+        </div>
+        <div class="repeater-footer-right">
+          <div class="repeater-pagination">
+            <button type="button" class="btn btn-default btn-sm repeater-prev">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+              <span class="sr-only">Previous Page</span>
+            </button>
+            <label class="page-label" id="myPageLabel"></label>
+            <div class="repeater-primaryPaging active">
+              <div class="input-group input-append dropdown combobox dropup">
+                <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right"></ul>
+                </div>
+              </div>
+            </div>
+            <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+            <button type="button" class="btn btn-default btn-sm repeater-next">
+              <span class="glyphicon glyphicon-chevron-right"></span>
+              <span class="sr-only">Next Page</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="userModalLabel">{{addUser_title}}</h4>
+          </div>
+          <div class="modal-body">
+            <form action="#" name="users-form" id="users-form">
+              <!-- BEGIN encryption -->{{length}}{{modulus}}{{exponent}}<!-- END encryption -->
+              <input type="hidden" name="prev_status" id="prev_status" value="0" />
+
+              <table class="table" cellpadding="0" cellspacing="2">
+                <tr><td><label for="username">{{lbl_username}}:</label></td><td><input type="text" id="username" name="username"></td></tr>
+                <tr><td><label for="nickname">{{lbl_nickname}}:</label></td><td><input type="text" id="nickname" name="nickname"></td></tr>
+                <tr><td><label for="email">{{lbl_email}}:</label></td><td><input type="text" id="email" name="email"></td></tr>
+                <tr><td><label for="superadmin">{{lbl_superadmin}}:</label></td><td>
+                  <select class="form-control" name="superadmin" id="superadmin">
+                    <option value="0">{{lbl_no}}</option>
+                    <option value="1">{{lbl_yes}}</option>
+                  </select>
+                </td></tr>
+                <tr><td><label for="pass1">{{lbl_pass1}}:</label></td><td><input type="password" id="pass1" name="pass1"></td></tr>
+                <tr><td><label for="pass2">{{lbl_pass2}}:</label></td><td><input type="password" id="pass2" name="pass2"></td></tr>
+                <tr><td><label for="concurrents">{{lbl_concurrents}}:</label></td><td><input type="text" id="concurrents" name="concurrents"></td></tr>
+                <tr><td><label for="expiry_date">{{lbl_expiry_date}}:</label></td><td><input type="text" id="expiry_date" name="expiry_date"></td></tr>
+                <tr><td><label for="superadmin">{{lbl_status}}:</label></td><td>
+                  <select class="form-control" name="status" id="status">
+                    <!-- BEGIN status -->
+                    <option value="{{value}}">{{title}}</option>
+                    <!-- END status -->
+                  </select>
+                </td></tr>
+
+              </table>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">
+              {{lbl_cancel}}
+            </button>
+            <button type="button" class="btn btn-primary" onclick="javascript:saveUser()">{{lbl_save}}</button>
+          </div>
+        </div>
       </div>
     </div>
 
 
-    <div id="user_groups_workarea" style="display: none; width: 650px; height: 400px; overflow: auto">
-      <div rel="body">
-        <div style="padding: 10px; font-size: 11px; line-height: 150%;">
-          <form action="#" name="user_groups">
-            <table class="table">
-              <tbody>
-              <!-- BEGIN group -->
-              <tr>
-                <td>
-                  <label class="form-check-label" for="group_{{id}}">
-                    <input class="form-check-input" name="user_groups[]" id="group_{{id}}" value="{{id}}" type="checkbox">
-                    {{title}}
-                  </label>
-                </td>
-              </tr>
-              <!-- END group -->
-              </tbody>
-            </table>
-          </form>
+    <div class="modal fade" id="userGroupsModal" tabindex="-1" role="dialog" aria-labelledby="userGroupsModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="userGroupsModalLabel">{{addUser_title}}</h4>
+          </div>
+          <div class="modal-body">
+            <div style="padding: 10px; font-size: 11px; line-height: 150%;">
+              <form action="#" name="users-groups-form" id="users-groups-form">
+                <table class="table">
+                  <tbody>
+                  <!-- BEGIN group -->
+                  <tr>
+                    <td>
+                      <label class="form-check-label" for="group_{{id}}">
+                        <input class="form-check-input" name="user_groups[]" id="group_{{id}}" value="{{id}}" type="checkbox">
+                        {{title}}
+                      </label>
+                    </td>
+                  </tr>
+                  <!-- END group -->
+                  </tbody>
+                </table>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">
+              {{lbl_cancel}}
+            </button>
+            <button type="button" class="btn btn-primary" onclick="javascript:saveUser()">{{lbl_save}}</button>
+          </div>
         </div>
-      </div>
-      <div rel="buttons">
-        <button class="btn btn-primary" onclick="javascript:saveUser()">{{lbl_save}}</button>
-        <button class="btn" onclick="javascript:stopAction();">{{lbl_cancel}}</button>
       </div>
     </div>
 
 
-    <div id="users-grid" style="width: 100%; height: 300px;"></div>
   </div>
 </div>
 <div class="gadget_footer"></div>
@@ -89,146 +209,11 @@
   var lbl_username = "{{lbl_username}}";
   var addUser_title = "{{addUser_title}}";
   var editUser_title = "{{editUser_title}}";
+  var deleteUser_title = "{{deleteUser_title}}";
   var editUserGroups_title = "{{editUserGroups_title}}";
   var incompleteUserFields = "{{incompleteUserFields}}";
   var wrongPassword = "{{wrongPassword}}";
+  var confirmDelete  = "{{confirmDelete}}";
   var currentAction = "UserAccount";
-
-  $(document).ready(function() {
-    initiateUsersDG();
-  });
-
-
-  /**
-   * initiate users datagrid
-   */
-  function initiateUsersDG() {
-    $('#users-grid').w2grid({
-      name: 'users-grid',
-      header: '{{grid_header}}',
-      method: 'POST',
-      url: {
-        get    : UsersAjax.baseURL + 'GetUsers',
-        remove : UsersAjax.baseURL + 'DeleteUser'
-      },
-      show: {
-        toolbar: true,
-        searchAll: false,
-        toolbarInput: false,
-        toolbarSearch: true,
-        toolbarAdd: true,
-        toolbarDelete: true,
-        toolbarEdit: true,
-        header: true,
-        footer: true
-      },
-      recid: 'id',
-      multiSearch: true,
-      multiSelect : false,
-      columns: [
-        {field: 'nickname', caption: lbl_nickname, size: '50%', sortable: true},
-        {field: 'username', caption: lbl_username, size: '50%', sortable: true},
-      ],
-      menu: [
-        { id: 'userGroups', text: '{{lbl_userGroups}}', img: 'w2ui-icon-pencil' },
-      ],
-      searches : [
-        { field: 'group', caption: '{{lbl_filter_group}}', operator : 'is', type: 'list',
-//          options: {items: {'1': 'vitali@gmail.com', '2':'jim@gmail.com'}}},
-            options: {items: {
-            <!-- BEGIN filterGroup -->
-            '{{value}}':'{{title}}',
-            <!-- END filterGroup -->
-            }}},
-
-        { field: 'type', caption: '{{lbl_filter_type}}', type: 'list',
-            options: {items: {
-            <!-- BEGIN filterType -->
-            '{{value}}':'{{title}}',
-            <!-- END filterType -->
-            }}},
-
-        { field: 'status', caption: '{{lbl_filter_status}}', type: 'list',
-            options: {items: {
-            <!-- BEGIN filterStatus -->
-            '{{value}}':'{{title}}',
-            <!-- END filterStatus -->
-            }}},
-
-        {field: 'term', caption: '{{lbl_filter_term}}', operator : 'contains', type: 'text'},
-      ],
-      records: [],
-      onRequest: function(event) {
-        switch (event.postData.cmd) {
-          case 'get':
-            break;
-
-          case 'delete':
-            event.postData = {
-              'ids':  event.postData.selected,
-            };
-            break;
-
-          case 'save':
-            break;
-
-        }
-
-      },
-      onLoad: function(event) {
-        event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
-        if (event.xhr.responseText.type != 'alert-success') {
-          event.xhr.responseText.message = event.xhr.responseText.text;
-          event.xhr.responseText.status = "error";
-        } else {
-          event.xhr.responseText = event.xhr.responseText.data;
-        }
-      },
-      onDelete: function(event) {
-        if (event.xhr) {
-          event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
-          if (event.xhr.responseText.type != 'alert-success') {
-            event.xhr.responseText.message = event.xhr.responseText.text;
-            event.xhr.responseText.status = "error";
-          } else {
-            this.reload();
-            event.xhr.responseText = event.xhr.responseText.data;
-          }
-        }
-      },
-      toolbar: {
-        items: [
-          { type: 'button', id: 'user-groups-btn', caption: '{{lbl_userGroups}}', img: 'w2ui-icon-pencil', disabled:true }
-        ],
-        onClick: function (target, data) {
-          if (target == 'w2ui-add') {
-            addUser();
-          } else if (target == 'w2ui-edit') {
-            editUser(w2ui['users-grid'].getSelection()[0]);
-          } else if (target == 'user-groups-btn') {
-            editUserGroups(w2ui['users-grid'].getSelection()[0]);
-          }
-        }
-      },
-      onDblClick: function(event) {
-        editUser(event.recid)
-      },
-      onSelect: function(event) {
-        this.toolbar.enable('user-groups-btn');
-      },
-      onUnselect: function(event) {
-        this.toolbar.disable('user-groups-btn');
-      },
-      onMenuClick: function(event) {
-        switch (event.menuItem.id) {
-          case 'userGroups':
-            editUserGroups(event.recid);
-            break;
-        }
-      },
-    });
-  }
-
-
 </script>
 <!-- END Users -->

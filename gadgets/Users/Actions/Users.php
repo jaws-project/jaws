@@ -16,9 +16,6 @@ class Users_Actions_Users extends Users_Actions_Default
     function Users()
     {
         $this->gadget->CheckPermission('ManageUsers');
-        $dir = _t_lang($this->gadget->registry->fetch('site_language', 'Settings'), 'GLOBAL_LANG_DIRECTION');
-        $dir = ($dir == 'rtl') ? '.rtl' : '';
-        $GLOBALS['app']->Layout->addScript('libraries/w2ui/w2ui.js');
         $this->AjaxMe('index.js');
 
         $tpl = $this->gadget->template->load('Users.html');
@@ -46,7 +43,6 @@ class Users_Actions_Users extends Users_Actions_Default
             $tpl->ParseBlock('Users/encryption');
         }
 
-        $tpl->SetVariable('grid_header', _t('USERS_USERS'));
         $tpl->SetVariable('lbl_nickname', _t('USERS_USERS_NICKNAME'));
         $tpl->SetVariable('lbl_username', _t('USERS_USERS_USERNAME'));
         $tpl->SetVariable('lbl_email', _t('GLOBAL_EMAIL'));
@@ -74,12 +70,19 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
         $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
+        $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
+        $tpl->SetVariable('lbl_of', _t('GLOBAL_OF'));
+        $tpl->SetVariable('lbl_to', _t('GLOBAL_TO'));
+        $tpl->SetVariable('lbl_items', _t('GLOBAL_ITEMS'));
+
         $tpl->SetVariable('addUser_title', _t('USERS_USERS_ADD'));
         $tpl->SetVariable('editUser_title', _t('USERS_USERS_EDIT'));
+        $tpl->SetVariable('deleteUser_title', _t('USERS_USERS_DELETE'));
         $tpl->SetVariable('editUserGroups_title', _t('USERS_USERS_GROUPS'));
         $tpl->SetVariable('incompleteUserFields', _t('USERS_MYACCOUNT_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('wrongPassword',        _t('USERS_MYACCOUNT_PASSWORDS_DONT_MATCH'));
-        $tpl->SetVariable('lbl_userGroups',        _t('USERS_USERS_GROUPS'));
+        $tpl->SetVariable('wrongPassword', _t('USERS_MYACCOUNT_PASSWORDS_DONT_MATCH'));
+        $tpl->SetVariable('lbl_userGroups', _t('USERS_USERS_GROUPS'));
+        $tpl->SetVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
 
         // Groups
         $uModel = new Jaws_User();
@@ -99,6 +102,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl->SetVariable('lbl_filter_status', _t('GLOBAL_STATUS'));
         $tpl->SetVariable('lbl_filter_term', _t('USERS_USERS_SEARCH_TERM'));
         if (!Jaws_Error::IsError($groups)) {
+            array_unshift($groups, array('id' => 0, 'title' => _t('GLOBAL_ALL')));
             foreach ($groups as $group) {
                 $tpl->SetBlock('Users/filterGroup');
                 $tpl->SetVariable('value', $group['id']);
@@ -108,8 +112,9 @@ class Users_Actions_Users extends Users_Actions_Default
         }
 
         $filterTypes = array(
+            0 => _t('GLOBAL_ALL'),
             1 => _t('USERS_USERS_TYPE_SUPERADMIN'),
-            0 => _t('USERS_USERS_TYPE_NORMAL'),
+            2 => _t('USERS_USERS_TYPE_NORMAL'),
         );
         foreach ($filterTypes as $key => $type) {
             $tpl->SetBlock('Users/filterType');
@@ -119,6 +124,7 @@ class Users_Actions_Users extends Users_Actions_Default
         }
 
         $filterTypes = array(
+            -1 => _t('GLOBAL_ALL'),
             0 => _t('USERS_USERS_STATUS_0'),
             1 => _t('USERS_USERS_STATUS_1'),
             2 => _t('USERS_USERS_STATUS_2'),
@@ -148,28 +154,21 @@ class Users_Actions_Users extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageUsers');
 
         $post = jaws()->request->fetch(
-            array('limit', 'offset', 'search:array', 'sort:array'),
+            array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
             'post'
         );
 
-        // change w2ui search format to jaws filters
-        $filters = array();
-        if (isset($post['search']) && is_array($post['search']) && count($post['search'] > 0)) {
-            foreach ($post['search'] as $sItem) {
-                $filters[$sItem['field']] = $sItem['value'];
-            }
-        }
         $orderBy = 'nickname';
         if (isset($post['sort'])) {
             $orderBy = trim($post['sort'][0]['field'] . ' ' . $post['sort'][0]['direction']);
         }
 
-        $group = isset($filters['group']) ? $filters['group'] : false;
-        $status = isset($filters['status']) ? $filters['status'] : null;
-        $term = isset($filters['term']) ? $filters['term'] : null;
+        $group = !empty($post['filters']['group']) ? $post['filters']['group'] : false;
+        $status = isset($post['filters']['status']) && $post['filters']['status'] >= 0 ? $post['filters']['status'] : null;
+        $term = !empty($post['filters']['term']) ? $post['filters']['term'] : null;
         $superadmin = null;
-        if (isset($filters['type'])) {
-            if ($filters['type'] == 1) {
+        if (!empty($post['filters']['type'])) {
+            if ($post['filters']['type'] == 1) {
                 $superadmin = true;
             } else {
                 $superadmin = false;
@@ -183,13 +182,10 @@ class Users_Actions_Users extends Users_Actions_Default
         }
         $total = $uModel->GetUsersCount($group, $superadmin, $status, $term);
 
-        return $GLOBALS['app']->Session->GetResponse(
-            '',
-            RESPONSE_NOTICE,
-            array(
-                'total'   => $total,
-                'records' => $users
-            )
+        return array(
+            'status' => 'success',
+            'total' => $total,
+            'records' => $users
         );
     }
 
@@ -318,9 +314,7 @@ class Users_Actions_Users extends Users_Actions_Default
     function DeleteUser()
     {
         $this->gadget->CheckPermission('ManageUsers');
-//        $ids = $this->gadget->request->fetch('ids:array', 'post');
-        $post = json_decode(htmlspecialchars_decode(jaws()->request->fetch('request', 'post')), true);
-        $uid = $post['ids'][0];
+        $uid = $this->gadget->request->fetch('id', 'post');
 
         $uModel = new Jaws_User();
         $profile = $uModel->GetUser((int)$uid);

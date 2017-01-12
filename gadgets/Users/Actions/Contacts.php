@@ -168,13 +168,11 @@ class Users_Actions_Contacts extends Users_Actions_Default
         }
         $contactsCount = $jUser->GetUserContactsCount($currentUser);
 
-        $response = array(
+        return array(
             'status' => 'success',
             'total' => $contactsCount,
             'records' => $contacts
         );
-
-        return $response;
     }
 
     /**
