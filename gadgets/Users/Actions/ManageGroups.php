@@ -18,8 +18,8 @@ class Users_Actions_ManageGroups extends Users_Actions_Default
         $this->gadget->CheckPermission('ManageGroups');
         $dir = _t_lang($this->gadget->registry->fetch('site_language', 'Settings'), 'GLOBAL_LANG_DIRECTION');
         $dir = ($dir == 'rtl') ? '.rtl' : '';
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/w2ui/w2ui.js');
-        $GLOBALS['app']->Layout->AddHeadLink("libraries/w2ui/w2ui$dir.css");
+        $GLOBALS['app']->Layout->addScript('libraries/w2ui/w2ui.js');
+        $GLOBALS['app']->Layout->addLink("libraries/w2ui/w2ui$dir.css");
         $this->AjaxMe('index.js');
 
         $tpl = $this->gadget->template->load('ManageGroups.html');

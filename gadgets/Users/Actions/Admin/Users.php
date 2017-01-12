@@ -130,19 +130,15 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
         $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
         if ($calType != 'gregorian') {
-            $GLOBALS['app']->Layout->AddScriptLink("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
         }
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/piwi/piwidata/js/jscalendar/calendar.js');
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
-        $GLOBALS['app']->Layout->AddScriptLink("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
-        $GLOBALS['app']->Layout->AddHeadLink(
-            'libraries/piwi/piwidata/js/jscalendar/calendar-blue.css',
-            'stylesheet',
-            'text/css'
-        );
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
         // RSA encryption
         if ($this->gadget->registry->fetch('crypt_enabled', 'Policy') == 'true') {
-            $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js');
+            $GLOBALS['app']->Layout->addScript('libraries/js/rsa.lib.js');
         }
 
         $this->AjaxMe('script.js');

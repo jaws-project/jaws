@@ -116,7 +116,7 @@ class Users_Actions_Login extends Jaws_Gadget_Action
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
-            $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js');
+            $GLOBALS['app']->Layout->addScript('libraries/js/rsa.lib.js');
             $tpl->SetBlock('LoginBox/onsubmit');
             $tpl->ParseBlock('LoginBox/onsubmit');
             $tpl->SetBlock('LoginBox/encryption');
