@@ -23,20 +23,9 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
         // Load ControlPanel header
         //$GLOBALS['app']->Layout->LoadControlPanelHead();
         $GLOBALS['app']->Layout->Populate($ReqResult);
-        $GLOBALS['app']->Layout->addLink(
-            array(
-                'href' => 'gadgets/ControlPanel/Resources/style.css?'.JAWS_VERSION,
-                'type' => 'text/css',
-                'rel'  => 'stylesheet'
-            )
-        );
-        $GLOBALS['app']->Layout->addLink(
-            array(
-                'href' => 'gadgets/'.$ReqGadget.'/Resources/style.css?'.$ReqGadgetVersion,
-                'type' => 'text/css',
-                'rel'  => 'stylesheet'
-            )
-        );
+        $GLOBALS['app']->Layout->addLink('gadgets/ControlPanel/Resources/style.css?'.JAWS_VERSION);
+        $GLOBALS['app']->Layout->addLink('gadgets/'.$ReqGadget.'/Resources/style.css?'.$ReqGadgetVersion);
+
         $tpl = $GLOBALS['app']->Layout->_Template;
         $tpl->SetBlock('layout/login-info', false);
         $tpl->SetVariable('logged-in-as', _t('CONTROLPANEL_LOGGED_IN_AS'));
