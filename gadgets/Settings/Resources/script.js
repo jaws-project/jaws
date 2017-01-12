@@ -156,4 +156,10 @@ function changeMailer()
     }
 }
 
+$(document).ready(function() {
+  if ($('#mailer').length) {
+    changeMailer();
+  }
+});
+
 var SettingsAjax = new JawsAjax('Settings', SettingsCallback);
