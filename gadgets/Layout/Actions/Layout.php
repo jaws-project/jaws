@@ -99,17 +99,8 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         $fakeLayout->_Template->SetVariable('site-title', $this->gadget->registry->fetch('site_name', 'Settings'));
 
-        $fakeLayout->AddHeadLink(
-            PIWI_URL. 'piwidata/css/default.css',
-            'stylesheet',
-            'text/css',
-            'default'
-        );
-        $fakeLayout->AddHeadLink(
-            'gadgets/Layout/Resources/style.css',
-            'stylesheet',
-            'text/css'
-        );
+        $fakeLayout->addLink(PIWI_URL. 'piwidata/css/default.css');
+        $fakeLayout->addLink('gadgets/Layout/Resources/style.css');
 
         foreach ($fakeLayout->_Template->Blocks['layout']->InnerBlock as $name => $data) {
             if ($name == 'head') {
