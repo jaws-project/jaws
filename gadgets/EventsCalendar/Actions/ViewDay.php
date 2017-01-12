@@ -25,7 +25,7 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/index.css');
+        $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
 
         $get = jaws()->request->fetch(array('year', 'month', 'day'), 'get');
         $year = (int)$get['year'];

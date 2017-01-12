@@ -42,7 +42,7 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
             return '';
         }
 
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/index.css');
+        $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
         $tpl = $this->gadget->template->load('Reminder.html');
         $tpl->SetBlock('reminder');
 

@@ -28,7 +28,7 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/index.css');
+        $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
 
         $jDate = Jaws_Date::getInstance();
         $year = (int)jaws()->request->fetch('year:int', 'get');

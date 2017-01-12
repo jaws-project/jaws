@@ -25,7 +25,7 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/index.css');
+        $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
 
         $eventId = (int)jaws()->request->fetch('event', 'get');
         $model = $this->gadget->model->load('Event');

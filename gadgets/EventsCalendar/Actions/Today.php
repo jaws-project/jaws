@@ -42,7 +42,7 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
             return '';
         }
 
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/index.css');
+        $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
         $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('Today.html');
         $tpl->SetBlock('today');
