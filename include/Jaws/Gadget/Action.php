@@ -150,16 +150,14 @@ class Jaws_Gadget_Action
      * Ajax the gadget adding the basic script links to build the interface
      *
      * @access  protected
-     * @param   string  $file       Optional The gadget can require a special JS file,
-     *                              it should be located under gadgets/$gadget/Resources/$file
+     * @param   string  $file   Optional The gadget can require a special JS file,
+     *                          it should be located under gadgets/$gadget/Resources/$file
      * @return  void
      */
     public function AjaxMe($file = '')
     {
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/jquery/jquery.js?'.JAWS_VERSION);
-        $GLOBALS['app']->Layout->AddScriptLink('include/Jaws/Resources/Ajax.js?'.JAWS_VERSION);
         if (!empty($file)) {
-            $GLOBALS['app']->Layout->AddScriptLink(
+            $GLOBALS['app']->Layout->addScript(
                 'gadgets/'.$this->gadget->name.'/Resources/'. $file.'?'.$this->gadget->version
             );
         }
