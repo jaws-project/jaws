@@ -134,16 +134,10 @@ if (Jaws_Gadget::IsGadgetEnabled($ReqGadget)) {
 
     $IsReqActionStandAlone = $objAction->IsStandAloneAdmin($ReqAction);
     if (!$IsReqActionStandAlone) {
-        // Load ControlPanel header
-        $GLOBALS['app']->Layout->LoadControlPanelHead();
-        $GLOBALS['app']->Layout->Populate($ReqResult);
-        $GLOBALS['app']->Layout->AddHeadLink(
-            'gadgets/'.$ReqGadget.'/Resources/style.css?'.$objAction->gadget->version,
-            'stylesheet',
-            'text/css'
-        );
-        $GLOBALS['app']->Layout->LoadControlPanel($ReqGadget);
-        $ReqResult = $GLOBALS['app']->Layout->Get();
+        $ReqResult = Jaws_Gadget::getInstance('ControlPanel')
+            ->action
+            ->loadAdmin('ControlPanel')
+            ->Layout($ReqGadget, $ReqResult, $objAction->gadget->version);
     }
 
     terminate($ReqResult);
