@@ -40,7 +40,7 @@ class Rating_Actions_RatingTypes extends Jaws_Gadget_Action
             return $usrRating;
         }
 
-        $GLOBALS['app']->Layout->AddScriptLink('gadgets/Rating/Resources/index.js');
+        $GLOBALS['app']->Layout->addScript('gadgets/Rating/Resources/index.js');
         $tpl->SetBlock("$tpl_base_block/rating");
         $tpl->SetVariable('lbl_rating', _t('RATING_RATING'));
         $tpl->SetVariable('gadget', $gadget);
@@ -95,7 +95,7 @@ class Rating_Actions_RatingTypes extends Jaws_Gadget_Action
             return $usrRating;
         }
 
-        $GLOBALS['app']->Layout->AddScriptLink('gadgets/Rating/Resources/index.js');
+        $GLOBALS['app']->Layout->addScript('gadgets/Rating/Resources/index.js');
         $tpl->SetBlock("$tpl_base_block/like");
         $tpl->SetVariable('lbl_like', _t('RATING_LIKE'));
         $tpl->SetVariable('gadget', $gadget);
