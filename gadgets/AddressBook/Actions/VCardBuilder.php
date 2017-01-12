@@ -5,7 +5,7 @@
  * @category   GadgetAdmin
  * @package    AddressBook
  */
-$GLOBALS['app']->Layout->AddHeadLink('gadgets/AddressBook/Resources/site_style.css');
+$GLOBALS['app']->Layout->addLink('gadgets/AddressBook/Resources/site_style.css');
 class AddressBook_Actions_VCardBuilder extends AddressBook_Actions_Default
 {
     /**
