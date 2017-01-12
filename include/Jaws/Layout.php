@@ -20,40 +20,16 @@ class Jaws_Layout
     var $_Template;
 
     /**
-     * Array that will have the meta tags
+     * Array that will have the meta/links/scripts tags
      *
-     * @var     array
+     * @var     array   $extraTags
      * @access  private
      */
-    var $_HeadMeta = array();
-
-    /**
-     * Array that will have the links meta tags
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_HeadLink = array();
-
-    /**
-     * Array that will have the forward/deferred load JS links
-     *
-     * @var     array
-     * @access  private
-     */
-    private $linkScripts = array(
-        0 => array(),
-        1 => array()
+    private $extraTags = array(
+        'metas'   => array('tag' => 'meta',   'single' => true,  'elements' => array()),
+        'links'   => array('tag' => 'link',   'single' => true,  'elements' => array()),
+        'scripts' => array('tag' => 'script', 'single' => false, 'elements' => array()),
     );
-
-    /**
-     * Array that will contain other info/text
-     * that has to go into the <head> part
-     *
-     * @var     array
-     * @access  private
-     */
-    var $_HeadOther = array();
 
     /**
      * Page title
@@ -109,6 +85,7 @@ class Jaws_Layout
             'Jaws_UTF8::trim',
             array_filter(explode(',', $this->attributes['site_keywords']))
         );
+        $this->attributes['admin_script'] = $this->attributes['admin_script'] ?: 'admin.php';
 
         // set default site language
         $this->_Languages[] = $GLOBALS['app']->GetLanguage();
@@ -134,28 +111,18 @@ class Jaws_Layout
 
         $favicon = $this->attributes['site_favicon'];
         if (!empty($favicon)) {
-            switch (pathinfo(basename($favicon), PATHINFO_EXTENSION) ) {
-                case 'svg':
-                    $this->AddHeadLink($favicon, 'icon', 'image/svg');
-                    break;
-
-                case 'png':
-                    $this->AddHeadLink($favicon, 'icon', 'image/png');
-                    break;
-
-                case 'ico':
-                    $this->AddHeadLink($favicon, 'icon', 'image/vnd.microsoft.icon');
-                    break;
-
-                case 'gif':
-                    $this->AddHeadLink($favicon, 'icon', 'image/gif');
-                    break;
+            $mimes = array(
+                'svg' => 'image/svg',
+                'png' => 'image/png',
+                'ico' => 'image/vnd.microsoft.icon',
+                'gif' => 'image/gif',
+                'jpg' => 'image/jpeg'
+            );
+            $ext = pathinfo(basename($favicon), PATHINFO_EXTENSION);
+            if (isset($mimes[$ext])) {
+                $this->addLink(array('href' => $favicon, 'type' => $mimes[$ext], 'rel' => 'icon'));
             }
         }
-
-        $this->AddScriptLink('libraries/jquery/jquery.js?'. JAWS_VERSION, false);
-        $this->AddScriptLink('libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?'. JAWS_VERSION, false);
-        $this->AddScriptLink('include/Jaws/Resources/Ajax.js?'. JAWS_VERSION, false);
 
         $loadFromTheme = false;
         if (empty($layout_path)) {
@@ -208,6 +175,7 @@ class Jaws_Layout
         $this->_Template->SetVariable('.browser', $browser);
         $this->_Template->SetVariable('site-url', $base_url);
         $this->_Template->SetVariable('site-direction', $direction);
+        $this->_Template->SetVariable('admin-script',   $this->attributes['admin_script']);
         $this->_Template->SetVariable('site-name',      $this->attributes['site_name']);
         $this->_Template->SetVariable('site-slogan',    $this->attributes['site_slogan']);
         $this->_Template->SetVariable('site-comment',   $this->attributes['site_comment']);
@@ -217,121 +185,17 @@ class Jaws_Layout
         $cMetas = @unserialize($this->attributes['site_custom_meta']);
         if (!empty($cMetas)) {
             foreach ($cMetas as $cMeta) {
-                $this->AddHeadMeta($cMeta[0], $cMeta[1]);
+                $this->addMeta(
+                    array(
+                        'name'    => $cMeta[0],
+                        'content' => $cMeta[1]
+                    )
+                );
             }
         }
 
         $this->_Template->SetVariable('encoding', 'utf-8');
         $this->_Template->SetVariable('loading-message', _t('GLOBAL_LOADING'));
-    }
-
-    /**
-     * Loads the template for head of control panel
-     *
-     * @access  public
-     */
-    function LoadControlPanelHead()
-    {
-        $this->AddScriptLink('libraries/jquery/jquery.js?'. JAWS_VERSION, false);
-        $this->AddScriptLink('include/Jaws/Resources/Ajax.js?'. JAWS_VERSION, false);
-        $this->AddHeadLink(
-            'gadgets/ControlPanel/Resources/style.css?'. JAWS_VERSION,
-            'stylesheet',
-            'text/css'
-        );
-
-        $favicon = $this->attributes['site_favicon'];
-        if (!empty($favicon)) {
-            $this->AddHeadLink($favicon, 'icon', 'image/png');
-        }
-
-        $this->_Template = new Jaws_Template();
-        $this->_Template->Load('Layout.html', 'gadgets/ControlPanel/Templates');
-        $this->_Template->SetBlock('layout');
-
-        $base_url = $GLOBALS['app']->GetSiteURL('/');
-        $this->_Template->SetVariable('BASE_URL', $base_url);
-        $this->_Template->SetVariable('skip_to_content', _t('GLOBAL_SKIP_TO_CONTENT'));
-        $this->_Template->SetVariable('admin_script', BASE_SCRIPT);
-        $this->_Template->SetVariable('site-name',      $this->attributes['site_name']);
-        $this->_Template->SetVariable('site-slogan',    $this->attributes['site_slogan']);
-        $this->_Template->SetVariable('site-copyright', $this->attributes['site_copyright']);
-        $this->_Template->SetVariable('control-panel', _t('GLOBAL_CONTROLPANEL'));
-        $this->_Template->SetVariable('loading-message', _t('GLOBAL_LOADING'));
-        $this->_Template->SetVariable('navigate-away-message', _t('CONTROLPANEL_UNSAVED_CHANGES'));
-        $this->_Template->SetVariable('encoding', 'utf-8');
-    }
-
-    /**
-     * Loads the template for controlpanel
-     *
-     * @param   string  $gadget Gadget name
-     * @access  public
-     */
-    function LoadControlPanel($gadget)
-    {
-        $this->_Template->SetBlock('layout/login-info', false);
-        $this->_Template->SetVariable('logged-in-as', _t('CONTROLPANEL_LOGGED_IN_AS'));
-        $uInfo = $GLOBALS['app']->Session->GetAttributes('username', 'nickname', 'avatar', 'email');
-        $this->_Template->SetVariable('username', $uInfo['username']);
-        $this->_Template->SetVariable('nickname', $uInfo['nickname']);
-        $this->_Template->SetVariable('email',    $uInfo['email']);
-        $this->_Template->SetVariable('avatar',   $uInfo['avatar']);
-        $this->_Template->SetVariable('site-url', $GLOBALS['app']->GetSiteURL());
-        $this->_Template->SetVariable('view-site', _t('GLOBAL_VIEW_SITE'));
-
-        if ($GLOBALS['app']->Session->GetPermission('Users', 'default_admin, EditAccountInformation')) {
-            $uAccoun =& Piwi::CreateWidget('Link',
-                                           $uInfo['nickname'],
-                                           BASE_SCRIPT . '?gadget=Users&amp;action=MyAccount');
-        } else {
-            $uAccoun =& Piwi::CreateWidget('Label', $uInfo['nickname']);
-        }
-
-        $this->_Template->SetVariable('my-account', $uAccoun->Get());
-        $this->_Template->SetVariable('logout', _t('GLOBAL_LOGOUT'));
-        $this->_Template->SetVariable('logout-url', BASE_SCRIPT . '?gadget=Users&amp;action=Logout');
-        $this->_Template->ParseBlock('layout/login-info');
-
-        // Set the header items for each gadget and the response box
-        if (isset($gadget) && ($gadget != 'ControlPanel')){
-            $gInfo  = Jaws_Gadget::getInstance($gadget);
-            $docurl = null;
-            if (!Jaws_Error::isError($gInfo)) {
-                $docurl = $gInfo->GetDoc();
-            }
-            $gname = _t(strtoupper($gadget) . '_TITLE');
-            $this->_Template->SetBlock('layout/cptitle');
-            $this->_Template->SetVariable('admin_script', BASE_SCRIPT);
-            $this->_Template->SetVariable('cp-title', _t('GLOBAL_CONTROLPANEL'));
-            $this->_Template->SetVariable('cp-title-separator', _t('GLOBAL_CONTROLPANEL_TITLE_SEPARATOR'));
-            $this->_Template->SetVariable('title-name', $gname);
-            $this->_Template->SetVariable('icon-gadget', 'gadgets/'.$gadget.'/Resources/images/logo.png');
-            $this->_Template->SetVariable('title-gadget', $gadget);
-            
-            // help icon
-            if (!empty($docurl) && !is_null($docurl)) {
-                $this->_Template->SetBlock('layout/cptitle/documentation');
-                $this->_Template->SetVariable('src', 'gadgets/ControlPanel/Resources/images/help.png');
-                $this->_Template->SetVariable('alt', _t('GLOBAL_HELP'));
-                $this->_Template->SetVariable('url', $docurl);
-                $this->_Template->ParseBlock('layout/cptitle/documentation');
-            }
-
-            $this->_Template->ParseBlock('layout/cptitle');
-        }
-
-        if ($this->attributes['site_status'] == 'disabled') {
-            $this->_Template->SetBlock('layout/warning');
-            $this->_Template->SetVariable('warning', _t('GLOBAL_WARNING_OFFLINE'));
-            $this->_Template->ParseBlock('layout/warning');
-        }
-
-        $responses = $GLOBALS['app']->Session->PopLastResponse();
-        if ($responses) {
-            $this->_Template->SetVariable('text', $responses[0]['text']);
-            $this->_Template->SetVariable('type', $responses[0]['type']);
-        }
     }
 
     /**
@@ -652,63 +516,6 @@ class Jaws_Layout
     }
 
     /**
-     * Get the HTML code of the head content.
-     *
-     * @access  public
-     */
-    function GetHeaderContent(&$headLinks, &$headScripts, &$headMeta, &$headOther)
-    {
-        $headContent = '';
-        // if not passed array of head links
-        $headLinks = array_key_exists('rel', $headLinks)? array($headLinks) : $headLinks;
-        // if not passed array of head scripts
-        //$headScripts = array_key_exists('href', $headScripts)? array($headScripts) : $headScripts;
-        $headScripts = array_merge($headScripts[0], $headScripts[1]);
-
-        // meta
-        foreach ($headMeta as $meta) {
-            if ($meta['use_http_equiv']) {
-                $meta_add = 'http-equiv="' . $meta['use_http_equiv'] . '"';
-            } else {
-                $meta_add = 'name="' . $meta['name'] . '"';
-            }
-
-            $headContent.= '<meta ' . $meta_add . ' content="' . $meta['content'] . '" />' . "\n";
-        }
-
-        // link
-        foreach ($headLinks as $link) {
-            $title = '';
-            $headContent.= '<link rel="' . $link['rel'] . '"';
-            if (!empty($link['media'])) {
-                $headContent.= ' media="' . $link['media'] . '"';
-            }
-            if (!empty($link['type'])) {
-                $headContent.= ' type="' . $link['type'] . '"';
-            }
-            if (!empty($link['href'])) {
-                $headContent.= ' href="' . $link['href'] . '"';
-            }
-            if (!empty($link['title'])) {
-                $headContent.= ' title="' . $link['title'] . '"';
-            }
-            $headContent.= ' />' . "\n";
-        }
-
-        //script
-        foreach ($headScripts as $link) {
-            $headContent.= '<script type="' . $link['type'] . '" src="' . $link['href'] . '"></script>' . "\n";
-        }
-
-        // other
-        foreach ($headOther as $element) {
-            $headContent .= $element . "\n";
-        }
-
-        return $headContent;
-    }
-
-    /**
      * Shows the HTML of the Layout.
      *
      * @access  public
@@ -719,26 +526,55 @@ class Jaws_Layout
         header('Content-Type: text/html; charset=utf-8');
         header('Cache-Control: no-cache, must-revalidate');
         header('Pragma: no-cache');
-        $this->AddHeadMeta('generator', 'Jaws Project (http://jaws-project.com)');
+        $this->addMeta(
+            array(
+                'name'    => 'generator',
+                'content' => 'Jaws Project (http://jaws-project.com)'
+            )
+        );
         $use_rewrite = $GLOBALS['app']->Registry->fetch('map_use_rewrite', 'UrlMapper') == 'true';
         $use_rewrite = $use_rewrite && (JAWS_SCRIPT == 'index');
-        $this->AddHeadMeta(
-            'application-name',
-            ($use_rewrite? '' : BASE_SCRIPT).':'.
-            $GLOBALS['app']->mainGadget.':'.
-            $GLOBALS['app']->mainAction
+        $this->addMeta(
+            array(
+                'name'    => 'application-name',
+                'content' => ($use_rewrite? '' : BASE_SCRIPT). ':'.
+                    $GLOBALS['app']->mainGadget. ':'. $GLOBALS['app']->mainAction
+            )
         );
-        $headContent = $this->GetHeaderContent(
-            $this->_HeadLink,
-            $this->linkScripts,
-            $this->_HeadMeta,
-            $this->_HeadOther
+        // add mandatory javascript links
+        array_unshift(
+            $this->extraTags['scripts']['elements'],
+            array(
+                'src' => 'libraries/jquery/jquery.js?'. JAWS_VERSION,
+                'type' => 'text/javascript'
+            ),
+            array(
+                'src' => 'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?'. JAWS_VERSION,
+                'type' => 'text/javascript'
+            ),
+            array(
+                'src' => 'include/Jaws/Resources/Ajax.js?'. JAWS_VERSION,
+                'type' => 'text/javascript'
+            )
         );
 
-        if (!empty($headContent)) {
-            $this->_Template->SetBlock('layout/head');
-            $this->_Template->SetVariable('ELEMENT', $headContent);
-            $this->_Template->ParseBlock('layout/head');
+        // add meta/link/script tags
+        foreach ($this->extraTags as $block => $items) {
+            if ($this->_Template->BlockExists("layout/$block")) {
+                $tagsStr = '';
+                foreach ($items['elements'] as $item) {
+                    $tagsStr.= "\n  <{$items['tag']} ";
+                    foreach ($item as $attr => $value) {
+                        $tagsStr.= "$attr=\"$value\" ";
+                    }
+                    $tagsStr.= '>' . ($items['single']? '' : "</{$items['tag']}>");
+                }
+                if (!empty($tagsStr)) {
+                    $this->_Template->SetBlock("layout/$block");
+                    $this->_Template->SetVariable('elements', $tagsStr);
+                    $this->_Template->ParseBlock("layout/$block");
+                }
+            }
         }
 
         if (JAWS_SCRIPT == 'index') {
@@ -766,94 +602,42 @@ class Jaws_Layout
     }
 
     /**
-     * Add a meta tag
+     * Overloading magic method
      *
-     * @access  public
-     * @param   string  $name           Key of the meta tag
-     * @param   string  $content        Value of the key
-     * @param   bool    $use_http_equiv Use the equiv of HTTP
+     * @access  private
+     * @param   string  $method  Method name
+     * @param   string  $params  Method parameters
+     * @return  mixed   True otherwise Jaws_Error
      */
-    function AddHeadMeta($name, $content, $use_http_equiv = false)
+    function __call($method, $params)
     {
-        $this->_HeadMeta[$name]['name']    = $name;
-        $this->_HeadMeta[$name]['content'] = $content;
-        $this->_HeadMeta[$name]['use_http_equiv'] = $use_http_equiv;
-    }
+        switch ($method) {
+            case 'addMeta':
+                $this->extraTags['metas']['elements'][] = $params[0];
+                break;
 
-    /**
-     * Add a HeadLink
-     *
-     * @access  public
-     * @param   string  $link  The HREF
-     * @param   string  $rel   The REL that will be associated
-     * @param   string  $type  Type of HeadLink
-     * @param   string  $title Title of the HeadLink
-     * @param   string  $media Media type, screen, print or such
-     * @return  array   array include head link information
-     */
-    function AddHeadLink($link, $rel = 'stylesheet', $type = 'text/css', $title = '', $media = '')
-    {
-        $version = '';
-        $hashedLink = md5($link);
-        if (!isset($this->_HeadLink[$hashedLink])) {
-            if ($rel == 'stylesheet') {
-                $link = ltrim($link);
-                $fileName = basename($link);
-                $filePath = substr($link , 0, - strlen($fileName));
-                $version  = strstr($fileName, '?');
-                $fileName = substr($fileName, 0, strlen($fileName)-strlen($version));
-                $fileExtn = strrchr($fileName, '.');
-                $fileName = substr($fileName, 0, -strlen($fileExtn));
+            case 'addLink':
+                $this->extraTags['links']['elements'][md5($params[0]['href'])] = $params[0];
+                break;
 
-                $prefix = (_t('GLOBAL_LANG_DIRECTION') == 'rtl')? '.rtl' : '';
-                $link = $filePath. $fileName. $prefix. $fileExtn;
-                if (!empty($prefix) && !@file_exists($link)) {
-                    $link = $filePath . $fileName . $fileExtn;
+            case 'addScript':
+                if (is_string($params[0])) {
+                    $params[0] = array(
+                        'src'  => $params[0],
+                        'type' => 'text/javascript'
+                    );
                 }
-            }
+                $this->extraTags['scripts']['elements'][md5($params[0]['src'])] = $params[0];
+                break;
 
-            $this->_HeadLink[$hashedLink] = array(
-                'href'  => $link.$version,
-                'rel'   => $rel,
-                'type'  => $type,
-                'title' => $title,
-                'media' => $media,
-            );
+            default:
+                return Jaws_Error::raiseError(
+                    "Call to undefined method Jaws_Layout::$method",
+                    __FUNCTION__,
+                    JAWS_ERROR_ERROR,
+                    1
+                );
         }
-
-        return $this->_HeadLink[$hashedLink];
-    }
-
-    /**
-     * Add a Javascript source
-     *
-     * @access  public
-     * @param   string  $href       The path for the source
-     * @param   bool    $deferred   Deferred load script
-     * @param   string  $type       The mime type
-     * @return  array   array include head script information
-     */
-    function AddScriptLink($href, $deferred = true, $type = 'text/javascript')
-    {
-        $script = array(
-            'href' => $href,
-            'type' => $type,
-        );
-        $this->linkScripts[(int)$deferred][md5($href)] = $script;
-        return $script;
-    }
-
-    /**
-     * Add other info to the head tag
-     *
-     * @access  public
-     * @param   string  $text Text to add.
-     * @return  null
-     * @since   0.6
-     */
-    function addHeadOther($text)
-    {
-        $this->_HeadOther[] = $text;
     }
 
 }
