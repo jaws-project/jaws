@@ -18,7 +18,7 @@ class Notepad_Actions_View extends Jaws_Gadget_Action
      */
     function ViewNote($id = null)
     {
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/Notepad/Resources/site_style.css');
+        $GLOBALS['app']->Layout->addLink('gadgets/Notepad/Resources/site_style.css');
         $tpl = $this->gadget->template->load('View.html');
         $tpl->SetBlock('note');
 

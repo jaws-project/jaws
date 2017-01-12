@@ -8,7 +8,7 @@
  * @copyright   2013-2015 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-$GLOBALS['app']->Layout->AddHeadLink('gadgets/Notepad/Resources/site_style.css');
+$GLOBALS['app']->Layout->addLink('gadgets/Notepad/Resources/site_style.css');
 class Notepad_Actions_Open extends Jaws_Gadget_Action
 {
     /**
