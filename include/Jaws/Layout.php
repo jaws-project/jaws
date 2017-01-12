@@ -72,6 +72,14 @@ class Jaws_Layout
     private $attributes = array();
 
     /**
+     * JavaScript variables
+     *
+     * @access  private
+     * @var     array
+     */
+    private $variables = array();
+
+    /**
      * Initializes the Layout
      *
      * @access  public
@@ -516,6 +524,39 @@ class Jaws_Layout
     }
 
     /**
+     * Set a layout variable
+     *
+     * @access  public
+     * @param   string  $component  Component name
+     * @param   string  $name       Variable name
+     * @param   string  $value      Variable value
+     * @return  void
+     */
+    function SetVariable($component, $name, $value)
+    {
+        $this->variables[$component][$name] = $value;
+    }
+
+    /**
+     * Preparing initialize script
+     *
+     * @access  public
+     * @return  string  Initialize script
+     */
+    function initializeScript()
+    {
+        $result = "    var jaws = {gadgets: {}};\n";
+        foreach ($this->variables as $gadget => $variables) {
+            $objStr = '';
+            foreach ($variables as $name => $value) {
+                $objStr.= "      '$name': '$value',\n";
+            }
+            $result.= "    jaws.gadgets.$gadget = {\n$objStr    };\n";
+        }
+        return $result;
+    }
+
+    /**
      * Shows the HTML of the Layout.
      *
      * @access  public
@@ -545,16 +586,20 @@ class Jaws_Layout
         array_unshift(
             $this->extraTags['scripts']['elements'],
             array(
-                'src' => 'libraries/jquery/jquery.js?'. JAWS_VERSION,
+                'src'  => 'libraries/jquery/jquery.js?'. JAWS_VERSION,
                 'type' => 'text/javascript'
             ),
             array(
-                'src' => 'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?'. JAWS_VERSION,
+                'src'  => 'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?'. JAWS_VERSION,
                 'type' => 'text/javascript'
             ),
             array(
-                'src' => 'include/Jaws/Resources/Ajax.js?'. JAWS_VERSION,
+                'src'  => 'include/Jaws/Resources/Ajax.js?'. JAWS_VERSION,
                 'type' => 'text/javascript'
+            ),
+            array(
+                'type' => 'text/javascript',
+                'text' => $this->initializeScript()
             )
         );
 
@@ -563,11 +608,22 @@ class Jaws_Layout
             if ($this->_Template->BlockExists("layout/$block")) {
                 $tagsStr = '';
                 foreach ($items['elements'] as $item) {
+                    $inner = '';
                     $tagsStr.= "\n  <{$items['tag']} ";
                     foreach ($item as $attr => $value) {
+                        if ($attr == 'text') {
+                            $inner = $value;
+                            continue;
+                        }
                         $tagsStr.= "$attr=\"$value\" ";
                     }
-                    $tagsStr.= '>' . ($items['single']? '' : "</{$items['tag']}>");
+                    $tagsStr.= '>';
+                    if (!$items['single']) {
+                        if (!empty($inner)) {
+                            $tagsStr.= "\n{$inner}\n  ";
+                        }
+                        $tagsStr.= "</{$items['tag']}>";
+                    }
                 }
                 if (!empty($tagsStr)) {
                     $this->_Template->SetBlock("layout/$block");
