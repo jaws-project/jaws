@@ -19,15 +19,11 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
      */
     function Quotes()
     {
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/piwi/piwidata/js/jscalendar/calendar.js');
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
-        $GLOBALS['app']->Layout->AddScriptLink('libraries/piwi/piwidata/js/jscalendar/lang/calendar-en.js');
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/lang/calendar-en.js');
         $this->AjaxMe('script.js');
-        $GLOBALS['app']->Layout->AddHeadLink(
-            'libraries/piwi/piwidata/js/jscalendar/calendar-blue.css',
-            'stylesheet',
-            'text/css'
-        );
+        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
 
         $tpl = $this->gadget->template->loadAdmin('Quotes.html');
         $tpl->SetBlock('quotes');
