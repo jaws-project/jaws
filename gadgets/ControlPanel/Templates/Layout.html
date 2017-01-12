@@ -5,7 +5,8 @@
   <base href="{{base_url}}" />
   <title>{{site-name}}: {{control-panel}}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <!-- BEGIN head -->{{ELEMENT}}<!-- END head -->
+  <!-- BEGIN metas -->{{elements}}<!-- END metas -->
+  <!-- BEGIN links -->{{elements}}<!-- END links -->
 </head>
 <body id="requested_gadget_{{requested_gadget}}">
   <div id="working_notification"></div>
@@ -16,7 +17,7 @@
 
   <div id="header">
     <div id="site-info">
-      <h1><a href="{{admin_script}}">{{site-name}}: {{control-panel}}</a></h1>
+      <h1><a href="{{admin-script}}">{{site-name}}: {{control-panel}}</a></h1>
       <p>{{site-slogan}}</p>
     </div>
     <div id="login-info">
@@ -39,7 +40,7 @@
       <!-- BEGIN cptitle -->
       <div id="control-panel-title">
         <img alt="{{title-gadget}}" style="vertical-align: middle;" src="{{icon-gadget}}" />
-        <a href="{{admin_script}}">{{cp-title}}</a> {{cp-title-separator}} <a href="{{admin_script}}?gadget={{title-gadget}}">{{title-name}}</a>
+        <a href="{{admin-script}}">{{cp-title}}</a> {{cp-title-separator}} <a href="{{admin-script}}?gadget={{title-gadget}}">{{title-name}}</a>
         <span id="cpsubtitle"></span>
         <!-- BEGIN documentation -->
         <a href="{{url}}" target="_blank"><img src="{{src}}" width="16" alt="{{alt}}" title="{{alt}}"/></a>
@@ -57,7 +58,9 @@
       <p>Powered by the <a href="http://jaws-project.com" rel="external">Jaws Project</a></p>
     </div>
   </div>
-
+  <!-- BEGIN scripts -->
+  {{elements}}
+  <!-- END scripts -->
 </body>
 </html>
 <!-- END layout -->

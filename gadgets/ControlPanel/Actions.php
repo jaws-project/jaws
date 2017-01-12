@@ -12,6 +12,10 @@
 /**
  * Admin actions
  */
+$admin_actions['Layout'] = array(
+    'normal' => true,
+    'file' => 'ControlPanel',
+);
 $admin_actions['DefaultAction'] = array(
     'normal' => true,
     'file' => 'ControlPanel',

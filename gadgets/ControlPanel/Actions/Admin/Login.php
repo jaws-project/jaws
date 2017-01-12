@@ -23,8 +23,7 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
         // Init layout
         $GLOBALS['app']->Layout->Load('gadgets/ControlPanel/Templates', 'LoginBox.html');
         $ltpl =& $GLOBALS['app']->Layout->_Template;
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/ControlPanel/Resources/style.css?'. $this->gadget->version);
-        $ltpl->SetVariable('admin_script', BASE_SCRIPT);
+        $ltpl->SetVariable('admin-script', BASE_SCRIPT);
         $ltpl->SetVariable('control-panel', _t('GLOBAL_CONTROLPANEL'));
 
         $reqpost = jaws()->request->fetch(array('username', 'authtype', 'remember', 'usecrypt', 'redirect_to'), 'post');
@@ -40,7 +39,7 @@ class ControlPanel_Actions_Admin_Login extends Jaws_Gadget_Action
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
-            $GLOBALS['app']->Layout->AddScriptLink('libraries/js/rsa.lib.js');
+            $GLOBALS['app']->Layout->addScript('libraries/js/rsa.lib.js');
             $ltpl->SetBlock('layout/onsubmit');
             $ltpl->ParseBlock('layout/onsubmit');
             $ltpl->SetBlock('layout/encryption');

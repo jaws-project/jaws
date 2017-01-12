@@ -5,20 +5,14 @@
   <title>{{site-name}}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <base href="{{BASE_URL}}" />
-<!-- BEGIN head -->{{ELEMENT}}<!-- END head -->
   <link rel="icon" type="image/png" href="images/jaws.png" />
-
-  <script type="text/javascript">
-  function focusOnLoad(focusObject)
-  {
-    document.getElementById('username').focus();
-    document.getElementById('username').select();
-  }
-  </script>
+  <!-- BEGIN metas -->{{elements}}<!-- END metas -->
+  <link href="gadgets/ControlPanel/Resources/style.css?1.2.0" type="text/css" rel="stylesheet" >
+  <!-- BEGIN links -->{{elements}}<!-- END links -->
  </head>
  <body onload="javascript:focusOnLoad()">
   <div id="header">
-   <h1><a href="{{admin_script}}">{{site-name}}: {{control-panel}}</a></h1>
+   <h1><a href="{{admin-script}}">{{site-name}}: {{control-panel}}</a></h1>
    <p>{{site-slogan}}</p>
   </div>
   <hr />
@@ -105,6 +99,15 @@
     <p>Powered by the <a href="http://jaws-project.com" rel="external">Jaws Project</a></p>
    </div>
   </div>
+  <!-- BEGIN scripts -->
+  {{elements}}
+  <!-- END scripts -->
+  <script type="text/javascript">
+    function focusOnLoad(focusObject) {
+      document.getElementById('username').focus();
+      document.getElementById('username').select();
+    }
+  </script>
  </body>
 </html>
 <!-- END layout -->
