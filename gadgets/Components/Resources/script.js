@@ -607,6 +607,10 @@ function usageCheckAll(el)
     }
 }
 
+$(document).ready(function() {
+    init();
+});
+
 /**
  * Variables
  */
