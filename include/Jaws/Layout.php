@@ -617,6 +617,13 @@ class Jaws_Layout
                 break;
 
             case 'addLink':
+                if (is_string($params[0])) {
+                    $params[0] = array(
+                        'href' => $params[0],
+                        'type' => 'text/css',
+                        'rel'  => 'stylesheet'
+                    );
+                }
                 $this->extraTags['links']['elements'][md5($params[0]['href'])] = $params[0];
                 break;
 
