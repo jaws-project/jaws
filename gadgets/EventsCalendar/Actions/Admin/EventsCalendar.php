@@ -42,7 +42,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
     function EventsCalendar($mode = 'public')
     {
         $this->AjaxMe('script.js');
-        $GLOBALS['app']->Layout->AddHeadLink('libraries/w2ui/w2ui.css');
+        $GLOBALS['app']->Layout->addLink('libraries/w2ui/w2ui.css');
         $GLOBALS['app']->Layout->addScript('libraries/w2ui/w2ui.js');
         $tpl = $this->gadget->template->loadAdmin('Events.html');
         $tpl->SetBlock('ec');

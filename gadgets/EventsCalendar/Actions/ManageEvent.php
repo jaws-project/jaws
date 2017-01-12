@@ -42,7 +42,7 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
      */
     function EventForm($id = 0)
     {
-        $GLOBALS['app']->Layout->AddHeadLink('gadgets/EventsCalendar/Resources/index.css');
+        $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
         $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('EventForm.html');
         $tpl->SetBlock('form');
