@@ -83,7 +83,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         $fakeLayout = new Jaws_Layout();
         $fakeLayout->Load('', "$layout.html");
-        $fakeLayout->AddScriptLink('gadgets/Layout/Resources/script.js');
+        $fakeLayout->addScript('gadgets/Layout/Resources/script.js');
 
         $layoutContent = $fakeLayout->_Template->Blocks['layout']->Content;
         // remove script tag
