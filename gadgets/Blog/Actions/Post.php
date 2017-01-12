@@ -20,17 +20,23 @@ class Blog_Actions_Post extends Blog_Actions_Default
      */
     function LastPost()
     {
-        $GLOBALS['app']->Layout->AddHeadLink(
-            $this->gadget->urlMap('Atom'),
-            'alternate',
-            'application/atom+xml',
-            'Atom - All');
-        $GLOBALS['app']->Layout->AddHeadLink(
-            $this->gadget->urlMap('RSS'),
-            'alternate',
-            'application/rss+xml',
-            'RSS 2.0 - All'
+        $GLOBALS['app']->Layout->addLink(
+            array(
+                'href'  => $this->gadget->urlMap('Atom'),
+                'type'  => 'application/atom+xml',
+                'rel'   => 'alternate',
+                'title' => 'Atom - All'
+            )
         );
+        $GLOBALS['app']->Layout->addLink(
+            array(
+                'href'  => $this->gadget->urlMap('RSS'),
+                'type'  => 'application/rss+xml',
+                'rel'   => 'alternate',
+                'title' => 'RSS 2.0 - All'
+            )
+        );
+
         $model = $this->gadget->model->load('Posts');
         $id = $model->GetLatestPublishedEntryID();
         if (!Jaws_Error::IsError($id) && !empty($id)) {

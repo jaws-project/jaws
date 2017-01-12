@@ -26,17 +26,21 @@ class Blog_Actions_Posts extends Blog_Actions_Default
             $page = 1;
         }
 
-        $GLOBALS['app']->Layout->AddHeadLink(
-            $this->gadget->urlMap('Atom'),
-            'alternate',
-            'application/atom+xml',
-            'Atom - All'
+        $GLOBALS['app']->Layout->addLink(
+            array(
+                'href'  => $this->gadget->urlMap('Atom'),
+                'type'  => 'application/atom+xml',
+                'rel'   => 'alternate',
+                'title' => 'Atom - All'
+            )
         );
-        $GLOBALS['app']->Layout->AddHeadLink(
-            $this->gadget->urlMap('RSS'),
-            'alternate',
-            'application/rss+xml',
-            'RSS 2.0 - All'
+        $GLOBALS['app']->Layout->addLink(
+            array(
+                'href'  => $this->gadget->urlMap('RSS'),
+                'type'  => 'application/rss+xml',
+                'rel'   => 'alternate',
+                'title' => 'RSS 2.0 - All'
+            )
         );
         /**
          * This will be supported in next Blog version - Bookmarks for each categorie

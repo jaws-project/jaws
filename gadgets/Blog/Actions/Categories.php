@@ -57,17 +57,21 @@ class Blog_Actions_Categories extends Blog_Actions_Default
         $name = $catInfo['name'];
         $tpl = $this->gadget->template->load('CategoryPosts.html');
 
-        $GLOBALS['app']->Layout->AddHeadLink(
-            $this->gadget->urlMap('ShowAtomCategory', array('id' => $cat)),
-            'alternate',
-            'application/atom+xml',
-            'Atom - '. $name
+        $GLOBALS['app']->Layout->addLink(
+            array(
+                'href'  => $this->gadget->urlMap('ShowAtomCategory', array('id' => $cat)),
+                'type'  => 'application/atom+xml',
+                'rel'   => 'alternate',
+                'title' => 'Atom - '. $name
+            )
         );
-        $GLOBALS['app']->Layout->AddHeadLink(
-            $this->gadget->urlMap('ShowRSSCategory', array('id' => $cat)),
-            'alternate',
-            'application/rss+xml',
-            'RSS 2.0 - '. $name
+        $GLOBALS['app']->Layout->addLink(
+            array(
+                'href'  => $this->gadget->urlMap('ShowRSSCategory', array('id' => $cat)),
+                'type'  => 'application/rss+xml',
+                'rel'   => 'alternate',
+                'title' => 'RSS 2.0 - '. $name
+            )
         );
 
         $this->SetTitle($name);
