@@ -533,9 +533,10 @@ class Jaws_Gadget
             case 'event':
             case 'model':
             case 'action':
+            case 'layout':
             case 'request':
-            case 'template':
             case 'session':
+            case 'template':
             case 'registry':
             case 'installer':
             case 'translate':

@@ -529,12 +529,39 @@ class Jaws_Layout
      * @access  public
      * @param   string  $component  Component name
      * @param   string  $name       Variable name
+     * @param   int     $type       Jaws components type(0: JAWS_COMPONENT_OTHERS, 1: JAWS_COMPONENT_GADGET, ...)
      * @param   string  $value      Variable value
      * @return  void
      */
-    function SetVariable($component, $name, $value)
+    function SetVariable($component, $type, $name, $value)
     {
-        $this->variables[$component][$name] = $value;
+        switch (gettype($value)) {
+            case 'boolean':
+                $value = $value? 'true' : 'false';
+                break;
+
+            case 'integer':
+            case 'double':
+                // do nothing
+                break;
+
+            case 'string':
+                $value = "'$value'";
+                break;
+
+            case 'array':
+                $value =  '$.parseJSON(\''.json_encode($value).'\')';
+                break;
+
+            case 'NULL':
+                $value = 'null';
+                break;
+
+            default:
+                return;
+        }
+
+        $this->variables[$type][$component][$name] = $value;
     }
 
     /**
@@ -545,13 +572,26 @@ class Jaws_Layout
      */
     function initializeScript()
     {
-        $result = "    var jaws = {gadgets: {}};\n";
-        foreach ($this->variables as $gadget => $variables) {
-            $objStr = '';
-            foreach ($variables as $name => $value) {
-                $objStr.= "      '$name': '$value',\n";
+        $result = "\tvar jaws = {};\n";
+        foreach ($this->variables as $type => $variables) {
+            switch ($type) {
+                case 1:
+                    $objComponentStr = 'jaws.gadgets';
+                    break;
+                case 2:
+                    $objComponentStr = 'jaws.plugins';
+                    break;
+                default:
+                    $objComponentStr = 'jaws.core';
             }
-            $result.= "    jaws.gadgets.$gadget = {\n$objStr    };\n";
+            $result.= "\t$objComponentStr = {};\n";
+            foreach ($variables as $component => $items) {
+                $objStr = '';
+                foreach ($items as $name => $value) {
+                    $objStr.= "\t  '$name': $value,\n";
+                }
+                $result.= "\t$objComponentStr.$component = {\n$objStr\t};\n";
+            }
         }
         return $result;
     }
