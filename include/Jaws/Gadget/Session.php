@@ -38,7 +38,7 @@ class Jaws_Gadget_Session
      * @param   string  $gadget (Optional) Gadget name
      * @return  mixed   Returns value of the attribute or Null if not exist
      */
-    function fetch($name)
+    function fetch($name, $gadget = '')
     {
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return $GLOBALS['app']->Session->GetAttribute("$gadget.Attributes.$name");
@@ -55,7 +55,7 @@ class Jaws_Gadget_Session
      */
     function insert($name, $value, $trashed = false)
     {
-        $gadget = empty($gadget)? $this->gadget->name : $gadget;
+        $gadget = $this->gadget->name;
         return $GLOBALS['app']->Session->SetAttribute("$gadget.Attributes.$name", $value, $trashed);
     }
 
@@ -70,7 +70,7 @@ class Jaws_Gadget_Session
      */
     function update($name, $value, $trashed = false)
     {
-        $gadget = empty($gadget)? $this->gadget->name : $gadget;
+        $gadget = $this->gadget->name;
         return $GLOBALS['app']->Session->SetAttribute("$gadget.Attributes.$name", $value, $trashed);
     }
 
@@ -84,7 +84,7 @@ class Jaws_Gadget_Session
      */
     function delete($name, $trashed = false)
     {
-        $gadget = empty($gadget)? $this->gadget->name : $gadget;
+        $gadget = $this->gadget->name;
         return $GLOBALS['app']->Session->DeleteAttribute("$gadget.Attributes.$name", $trashed);
     }
 
