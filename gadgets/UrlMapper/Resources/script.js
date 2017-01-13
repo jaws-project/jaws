@@ -214,7 +214,7 @@ function saveMap()
 function editErrorMap(element, emid)
 {
     selectedErrorMap = emid;
-    $('#legend_title').html(editErrorMap_title);
+    $('#legend_title').html(jaws.gadgets.UrlMapper.editErrorMap_title);
     selectDataGridRow($(element).parent().parent()[0]);
 
     var errorMapInfo = UrlMapperAjax.callSync('GetErrorMap', selectedErrorMap);
@@ -234,7 +234,7 @@ function editMap(element, mid)
     enableMapEditingArea(true);
 
     selectedMap = mid;
-    $('#legend_title').html(editMap_title);
+    $('#legend_title').html(jaws.gadgets.UrlMapper.editMap_title);
     selectDataGridRow(element.parentNode.parentNode);
 
     var mapInfo = UrlMapperAjax.callSync('GetMap', selectedMap);
@@ -317,6 +317,7 @@ function enableMapEditingArea(status)
         $('#custom_map_route').prop('disabled', true);
         $('#btn_save').prop('disabled', true);
         $('#btn_cancel').prop('disabled', true);
+        $('#legend_title').html(jaws.gadgets.UrlMapper.addMap_title);
     }
 }
 
@@ -383,7 +384,7 @@ function errorMapsDGAction()
         'new_code'  : $('#filter_new_code').val()
     };
 
-    var confirmation = confirm(confirmErrorMapDelete);
+    var confirmation = confirm(jaws.gadgets.UrlMapper.confirmErrorMapDelete);
 
     if (combo.value == 'delete') {
         if (rows.length < 1) {
@@ -445,7 +446,7 @@ function stopAction()
  */
 function stopErrorMapAction()
 {
-    $('#legend_title').html(addErrorMap_title);
+    $('#legend_title').html(jaws.gadgets.UrlMapper.addErrorMap_title);
     $('#btn_cancel').css('visibility', 'hidden');
     unselectDataGridRow();
     selectedErrorMap = null;
@@ -483,6 +484,30 @@ function unselectDataGridRow()
     selectedRow = null;
     selectedRowColor = null;
 }
+
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'Maps':
+            JawsDataGrid.name = 'maps_datagrid';
+            $('#legend_title').html(jaws.gadgets.UrlMapper.addMap_title);
+            $('#maps_datagrid')[0].objectName = UrlMapperAjax;
+            rebuildActionCombo();
+            break;
+
+        case 'Aliases':
+            $('#alias_id').val('-');
+            $('#custom_url').val('');
+            $('#alias').val('');
+            break;
+
+        case 'ErrorMaps':
+            JawsDataGrid.name = 'errormaps_datagrid';
+            $('#legend_title').html(jaws.gadgets.UrlMapper.addErrorMap_title);
+            $('#errormaps_datagrid')[0].objectName = UrlMapperAjax;
+            initDataGrid('errormaps_datagrid', UrlMapperAjax, getErrorMaps);
+            break;
+    }
+});
 
 var UrlMapperAjax = new JawsAjax('UrlMapper', UrlMapperCallback);
 

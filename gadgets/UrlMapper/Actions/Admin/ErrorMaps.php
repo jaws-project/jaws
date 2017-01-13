@@ -228,10 +228,10 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
         $btnSave->AddEvent(ON_CLICK, "javascript:saveErrorMap();");
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $tpl->SetVariable('addErrorMap_title',     _t('URLMAPPER_ERRORMAPS_ADD_TITLE'));
-        $tpl->SetVariable('editErrorMap_title',    _t('URLMAPPER_ERRORMAPS_EDIT_TITLE'));
-        $tpl->SetVariable('confirmErrorMapDelete', _t('URLMAPPER_ERRORMAPS_CONFIRM_DELETE'));
-        $tpl->SetVariable('incompleteFieldsMsg',   _t('URLMAPPER_ERRORMAPS_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('addErrorMap_title', _t('URLMAPPER_ERRORMAPS_ADD_TITLE'));
+        $this->gadget->layout->setVariable('editErrorMap_title', _t('URLMAPPER_ERRORMAPS_EDIT_TITLE'));
+        $this->gadget->layout->setVariable('confirmErrorMapDelete', _t('URLMAPPER_ERRORMAPS_CONFIRM_DELETE'));
+        $this->gadget->layout->setVariable('incompleteFieldsMsg', _t('URLMAPPER_ERRORMAPS_INCOMPLETE_FIELDS'));
 
         $tpl->ParseBlock('ErrorMaps');
         return $tpl->Get();
