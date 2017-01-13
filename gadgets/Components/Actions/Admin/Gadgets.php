@@ -22,6 +22,13 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageGadgets');
         $this->AjaxMe('script.js');
 
+        $this->gadget->layout->setVariable('lbl_update', _t('COMPONENTS_UPDATE'));
+        $this->gadget->layout->setVariable('lbl_enable', _t('COMPONENTS_ENABLE'));
+        $this->gadget->layout->setVariable('lbl_install', _t('COMPONENTS_INSTALL'));
+        $this->gadget->layout->setVariable('lbl_uninstall', _t('COMPONENTS_UNINSTALL'));
+        $this->gadget->layout->setVariable('confirmUninstallGadget', _t('COMPONENTS_GADGETS_CONFIRM_UNINSTALL'));
+        $this->gadget->layout->setVariable('confirmDisableGadget', _t('COMPONENTS_GADGETS_CONFIRM_DISABLE'));
+
         $tpl = $this->gadget->template->loadAdmin('Gadgets.html');
         $tpl->SetBlock('components');
 
@@ -36,15 +43,9 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
         $tpl->SetVariable('installed_desc', _t('COMPONENTS_GADGETS_INSTALLED_DESC'));
         $tpl->SetVariable('lbl_core', _t('COMPONENTS_GADGETS_CORE'));
         $tpl->SetVariable('core_desc', _t('COMPONENTS_GADGETS_CORE_DESC'));
-        $tpl->SetVariable('lbl_update', _t('COMPONENTS_UPDATE'));
-        $tpl->SetVariable('lbl_enable', _t('COMPONENTS_ENABLE'));
-        $tpl->SetVariable('lbl_install', _t('COMPONENTS_INSTALL'));
-        $tpl->SetVariable('lbl_uninstall', _t('COMPONENTS_UNINSTALL'));
         $tpl->SetVariable('lbl_info', _t('COMPONENTS_INFO'));
         $tpl->SetVariable('lbl_registry', _t('COMPONENTS_REGISTRY'));
         $tpl->SetVariable('lbl_acl', _t('COMPONENTS_ACL'));
-        $tpl->SetVariable('confirmDisableGadget', _t('COMPONENTS_GADGETS_CONFIRM_DISABLE'));
-        $tpl->SetVariable('confirmUninstallGadget', _t('COMPONENTS_GADGETS_CONFIRM_UNINSTALL'));
 
         $button =& Piwi::CreateWidget('Button', 'btn_close', 'X ');
         $button->AddEvent(ON_CLICK, 'javascript:closeUI();');

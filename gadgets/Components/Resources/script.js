@@ -475,13 +475,13 @@ function setupComponent()
             break;
         case 'installed':
             if (pluginsMode) {
-                if (confirm(confirmUninstallPlugin)) {
+                if (confirm(jaws.gadgets.Components.confirmUninstallPlugin)) {
                     ComponentsAjax.callAsync('UninstallPlugin', selectedComponent);
                 }
             } else {
                 if (comp.disabled) {
                     ComponentsAjax.callAsync('EnableGadget', selectedComponent);
-                } else if (confirm(confirmUninstallGadget)) {
+                } else if (confirm(jaws.gadgets.Components.confirmUninstallGadget)) {
                     ComponentsAjax.callAsync('UninstallGadget2', selectedComponent);
                 }
             }
@@ -502,7 +502,7 @@ function enableGadget()
  */
 function disableGadget()
 {
-    if (confirm(confirmDisableGadget)) {
+    if (confirm(jaws.gadgets.Components.confirmDisableGadget)) {
         ComponentsAjax.callAsync('DisableGadget', selectedComponent);
     }
 }
@@ -608,6 +608,26 @@ function usageCheckAll(el)
 }
 
 $(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'Gadgets':
+            actions = {
+                outdated: jaws.gadgets.Components.lbl_update,
+                disabled: jaws.gadgets.Components.lbl_enable,
+                installed: jaws.gadgets.Components.lbl_uninstall,
+                notinstalled: jaws.gadgets.Components.lbl_install
+            };
+            pluginsMode = false;
+            break;
+
+        case 'Plugins':
+            actions = {
+                installed: jaws.gadgets.Components.lbl_uninstall,
+                notinstalled: jaws.gadgets.Components.lbl_install
+            };
+            pluginsMode = true;
+            break;
+    }
+
     init();
 });
 
@@ -616,6 +636,8 @@ $(document).ready(function() {
  */
 var ComponentsStorage = [new JawsStorage('Gadgets'), new JawsStorage('Plugins')];
 var ComponentsAjax = new JawsAjax('Components', ComponentsCallback),
+    actions = {},
+    pluginsMode = false,
     selectedComponent = null,
     components = {},
     regChanges = {},

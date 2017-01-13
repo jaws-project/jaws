@@ -22,6 +22,10 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
         $this->gadget->CheckPermission('ManagePlugins');
         $this->AjaxMe('script.js');
 
+        $this->gadget->layout->setVariable('lbl_uninstall', _t('COMPONENTS_UNINSTALL'));
+        $this->gadget->layout->setVariable('lbl_install', _t('COMPONENTS_INSTALL'));
+        $this->gadget->layout->setVariable('confirmUninstallPlugin', _t('COMPONENTS_PLUGINS_CONFIRM_UNINSTALL'));
+
         $tpl = $this->gadget->template->loadAdmin('Plugins.html');
         $tpl->SetBlock('components');
 
@@ -32,13 +36,10 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
         $tpl->SetVariable('installed_desc', _t('COMPONENTS_PLUGINS_INSTALLED_DESC'));
         $tpl->SetVariable('lbl_notinstalled', _t('COMPONENTS_PLUGINS_NOTINSTALLED'));
         $tpl->SetVariable('notinstalled_desc', _t('COMPONENTS_PLUGINS_NOTINSTALLED_DESC'));
-        $tpl->SetVariable('lbl_install', _t('COMPONENTS_INSTALL'));
-        $tpl->SetVariable('lbl_uninstall', _t('COMPONENTS_UNINSTALL'));
         $tpl->SetVariable('lbl_info', _t('COMPONENTS_INFO'));
         $tpl->SetVariable('lbl_usage', _t('COMPONENTS_PLUGINS_USAGE'));
         $tpl->SetVariable('lbl_registry', _t('COMPONENTS_REGISTRY'));
         $tpl->SetVariable('lbl_acl', _t('COMPONENTS_ACL'));
-        $tpl->SetVariable('confirmUninstallPlugin', _t('COMPONENTS_PLUGINS_CONFIRM_UNINSTALL'));
 
         $button =& Piwi::CreateWidget('Button', 'btn_close', 'X ');
         $button->AddEvent(ON_CLICK, 'javascript:closeUI();');
