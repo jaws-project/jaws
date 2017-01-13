@@ -56,12 +56,17 @@ var UsersCallback = {
     },
     AddGlobalGroup: function (response) {
         if (response.type == 'alert-success') {
-            w2popup.close();
-            w2ui['groups-grid'].reload();
             stopAction();
         }
         UsersAjax.showResponse(response);
     },
+    DeleteGlobalGroup: function (response) {
+        if (response.type == 'alert-success') {
+            stopAction();
+        }
+        UsersAjax.showResponse(response);
+    },
+
     UpdateGlobalGroup: function (response) {
         if (response.type == 'alert-success') {
             w2popup.close();
@@ -96,13 +101,14 @@ function stopAction() {
             break;
         case 'Group':
             selectedGroup = null;
-            w2popup.close();
-            $('form[name="group"]')[0].reset();
+            $('form#groups-form')[0].reset();
+            $('#groupsModal').modal('hide');
+            $('#groupsGrid').repeater('render');
             break;
         case 'GroupUsers':
             selectedGroup = null;
-            w2popup.close();
-            $('form[name="group_users"]')[0].reset();
+            $('#groupUsersModal').modal('hide');
+            $('form#group-users-form')[0].reset();
             break;
         case 'UserContacts':
             selectedContact = 0;
@@ -234,38 +240,24 @@ function editGroup(id)
     currentAction = "Group";
     selectedGroup = id;
     var gInfo = UsersAjax.callSync('GetGroup', {'id': selectedGroup});
-
-    $('#group_workarea').w2popup({
-        title: editGroup_title,
-        modal: true,
-        width: 350,
-        height: 350,
-        onOpen: function (event) {
-            event.onComplete = function () {
-                if (gInfo) {
-                    $('#w2ui-popup form input, #w2ui-popup form select, #w2ui-popup form textarea').each(
-                        function () {
-                            // select element
-                            if ($(this).is('select')) {
-                                if (gInfo[$(this).attr('name')] === true) {
-                                    $(this).val('1');
-                                } else if (gInfo[$(this).attr('name')] === false) {
-                                    $(this).val('0');
-                                } else {
-                                    $(this).val(gInfo[$(this).attr('name')]);
-                                }
-                            } else {
-                                $(this).val(gInfo[$(this).attr('name')]);
-                            }
-                        }
-                    );
+    if (gInfo) {
+        $('#groups-form input, #groups-form select, #groups-form textarea').each(
+            function () {
+                if ($(this).is('select')) {
+                    if (gInfo[$(this).attr('name')] === true) {
+                        $(this).val('1');
+                    } else if (gInfo[$(this).attr('name')] === false) {
+                        $(this).val('0');
+                    } else {
+                        $(this).val(gInfo[$(this).attr('name')]);
+                    }
+                } else {
+                    $(this).val(gInfo[$(this).attr('name')]);
                 }
-            };
-        },
-        onClose : function (event) {
-            $('form[name="group"]')[0].reset();
-        }
-    });
+            }
+        );
+        $('#groupsModal').modal('show');
+    }
 }
 
 /**
@@ -296,27 +288,14 @@ function editGroupUsers(id)
     currentAction = "GroupUsers";
     selectedGroup = id;
     var gUsers = UsersAjax.callSync('GetGroupUsers', {'gid': selectedGroup});
-
-    $('#group_users_workarea').w2popup({
-        title: editGroupUsers_title,
-        modal: true,
-        width: 250,
-        height: 400,
-        onOpen: function (event) {
-            event.onComplete = function () {
-                if (gUsers) {
-                    $.each(gUsers, function(index, user) {
-                        if ($('#w2ui-popup #user_' + user['id']).length) {
-                            $('#w2ui-popup #user_' + user['id']).prop('checked', true);
-                        }
-                    });
-                }
-            };
-        },
-        onClose : function (event) {
-            $('form[name="group_users"]')[0].reset();
-        }
-    });
+    if (gUsers) {
+        $.each(gUsers, function(index, user) {
+            if ($('#group-users-form #user_' + user['id']).length) {
+                $('#group-users-form #user_' + user['id']).prop('checked', true);
+            }
+        });
+        $('#groupUsersModal').modal('show');
+    }
 }
 
 /**
@@ -401,30 +380,27 @@ function saveGroup()
 {
     switch (currentAction) {
         case 'Group':
-            if (!$('#w2ui-popup #name').val() || !$('#w2ui-popup #title').val()) {
+            if (!$('#groups-form #name').val() || !$('#groups-form #title').val()) {
                 alert(incompleteGroupFields);
                 return false;
             }
-
             if (selectedGroup == null) {
-                var formData = $.unserialize($('#w2ui-popup input,select,textarea').serialize());
+                var formData = $.unserialize($('#groups-form input,#groups-form select,#groups-form textarea').serialize());
                 UsersAjax.callAsync('AddGlobalGroup', {'data': formData});
             } else {
-                var formData = $.unserialize($('#w2ui-popup input,select,textarea').serialize());
+                var formData = $.unserialize($('#groups-form input,#groups-form select,#groups-form textarea').serialize());
                 UsersAjax.callAsync('UpdateGlobalGroup', {'id': selectedGroup, 'data': formData});
             }
-
             break;
 
         case 'GroupUsers':
-            var inputs  = $('#w2ui-popup input');
-            var keys    = new Array();
+            var inputs = $('#group-users-form input');
+            var keys = new Array();
             var counter = 0;
             for (var i = 0; i < inputs.length; i++) {
                 if (inputs[i].name.indexOf('group_users') == -1) {
                     continue;
                 }
-
                 if (inputs[i].checked) {
                     keys[counter] = inputs[i].value;
                     counter++;
@@ -460,7 +436,19 @@ function deleteUser(id)
     }
 }
 
-// Define the data to be displayed in the repeater.
+/**
+ * Delete a global group
+ */
+function deleteGroup(id)
+{
+    if (confirm(confirmDelete)) {
+        UsersAjax.callAsync('DeleteGlobalGroup', {'id': id});
+    }
+}
+
+/**
+ * Define the data to be displayed in the users datagrid
+ */
 function usersDataSource(options, callback) {
 
     // define the columns for the grid
@@ -495,8 +483,6 @@ function usersDataSource(options, callback) {
     };
 
     var rows = UsersAjax.callSync('GetUsers', options);
-    console.info(rows);
-
     var items = rows.records;
     var totalItems = rows.total;
     var totalPages = Math.ceil(totalItems / pageSize);
@@ -522,45 +508,44 @@ function usersDataSource(options, callback) {
     callback(dataSource);
 }
 
-
-var list_actions = {
-    width: 50,
-    items: [
-        {
-            name: 'editUser',
-            html: '<span class="glyphicon glyphicon-pencil"></span> ' + editUser_title,
-            clickAction: function (helpers, callback, e) {
-                e.preventDefault();
-                editUser(helpers.rowData.id);
-                callback();
-            }
-
-        },
-        {
-            name: 'delete',
-            html: '<span class="glyphicon glyphicon-trash"></span> ' + deleteUser_title,
-            clickAction: function (helpers, callback, e) {
-                e.preventDefault();
-                deleteUser(helpers.rowData.id);
-                callback();
-            }
-        },
-        {
-            name: 'userGroup',
-            html: '<span class="glyphicon glyphicon-user"></span> ' + editUserGroups_title,
-            clickAction: function (helpers, callback, e) {
-                e.preventDefault();
-                editUserGroups(helpers.rowData.id);
-                callback();
-            }
-        }
-    ]
-};
-
 /**
  * initiate users datagrid
  */
 function initiateUsersDG() {
+    var list_actions = {
+        width: 50,
+        items: [
+            {
+                name: 'editUser',
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + editUser_title,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    editUser(helpers.rowData.id);
+                    callback();
+                }
+
+            },
+            {
+                name: 'delete',
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + deleteUser_title,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    deleteUser(helpers.rowData.id);
+                    callback();
+                }
+            },
+            {
+                name: 'userGroup',
+                html: '<span class="glyphicon glyphicon-user"></span> ' + editUserGroups_title,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    editUserGroups(helpers.rowData.id);
+                    callback();
+                }
+            }
+        ]
+    };
+
     // initialize the repeater
     var repeater = $('#usersGrid');
     repeater.repeater({
@@ -572,15 +557,7 @@ function initiateUsersDG() {
         list_selectable: 'multi'
     });
 
-    $('#userModal').on('hidden.bs.modal', function (e) {
-        $('form#users-form')[0].reset();
-    });
-}
-
-/**
- * initiate users datagrid filters
- */
-function initiateUsersDGFilters() {
+    // monitor required events
     $( ".datagrid-filters select" ).change(function() {
         $('#usersGrid').repeater('render');
     });
@@ -589,14 +566,130 @@ function initiateUsersDGFilters() {
             $('#usersGrid').repeater('render');
         }
     });
+    $('#userModal').on('hidden.bs.modal', function (e) {
+        $('form#users-form')[0].reset();
+    });
+}
+
+/**
+ * Define the data to be displayed in the groups datagrid
+ */
+function groupsDataSource(options, callback) {
+
+    // define the columns for the grid
+    var columns = [
+        {
+            'label': lbl_title,
+            'property': 'title',
+            'sortable': true
+        },
+        {
+            'label': lbl_name,
+            'property': 'name',
+            'sortable': true
+        }
+    ];
+
+    // set options
+    var pageIndex = options.pageIndex;
+    var pageSize = options.pageSize;
+    var filters = {
+        group: $('#filter_group').val(),
+        type: $('#filter_type').val(),
+        status: $('#filter_status').val(),
+        term: $('#filter_term').val()
+    };
+
+    var rows = UsersAjax.callSync('GetGroups');
+    var items = rows.records;
+    var totalItems = rows.total;
+    var totalPages = Math.ceil(totalItems / pageSize);
+    var startIndex = (pageIndex * pageSize) + 1;
+    var endIndex = (startIndex + pageSize) - 1;
+
+    if(endIndex > items.length) {
+        endIndex = items.length;
+    }
+
+    // configure datasource
+    var dataSource = {
+        'page':    pageIndex,
+        'pages':   totalPages,
+        'count':   totalItems,
+        'start':   startIndex,
+        'end':     endIndex,
+        'columns': columns,
+        'items':   items
+    };
+
+    // pass the datasource back to the repeater
+    callback(dataSource);
+}
+
+/**
+ * initiate groups datagrid
+ */
+function initiateGroupsDG() {
+    var list_actions = {
+        width: 50,
+        items: [
+            {
+                name: 'editUser',
+                html: '<span class="glyphicon glyphicon-pencil"></span> ' + editGroup_title,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    editGroup(helpers.rowData.id);
+                    callback();
+                }
+
+            },
+            {
+                name: 'delete',
+                html: '<span class="glyphicon glyphicon-trash"></span> ' + lbl_delete,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    deleteGroup(helpers.rowData.id);
+                    callback();
+                }
+            },
+            {
+                name: 'userGroup',
+                html: '<span class="glyphicon glyphicon-user"></span> ' + editGroupUsers_title,
+                clickAction: function (helpers, callback, e) {
+                    e.preventDefault();
+                    editGroupUsers(helpers.rowData.id);
+                    callback();
+                }
+            }
+        ]
+    };
+
+    // initialize the repeater
+    var repeater = $('#groupsGrid');
+    repeater.repeater({
+        // setup your custom datasource to handle data retrieval;
+        // responsible for any paging, sorting, filtering, searching logic
+        dataSource: groupsDataSource,
+        staticHeight: 600,
+        list_actions: list_actions,
+        list_selectable: 'multi'
+    });
+
+    // monitor required events
+    $('#groupsModal').on('hidden.bs.modal', function (e) {
+        $('form#groups-form')[0].reset();
+    });
 }
 
 /**
  * Initiates gadget
  */
 $(document).ready(function () {
-    initiateUsersDG();
-    initiateUsersDGFilters();
+    if (currentAction == 'UserAccount') {
+        initiateUsersDG();
+    } else if (currentAction == 'Group') {
+        initiateGroupsDG();
+    }
 });
 
 var UsersAjax = new JawsAjax('Users', UsersCallback);

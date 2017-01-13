@@ -40,12 +40,14 @@ class Users_Actions_ManageGroups extends Users_Actions_Default
         $tpl->SetVariable('lbl_ok', _t('GLOBAL_OK'));
         $tpl->SetVariable('lbl_yes', _t('GLOBAL_YES'));
         $tpl->SetVariable('lbl_no', _t('GLOBAL_NO'));
+        $tpl->SetVariable('lbl_delete', _t('GLOBAL_DELETE'));
+        $tpl->SetVariable('lbl_add', _t('GLOBAL_ADD'));
 
         $tpl->SetVariable('addGroup_title', _t('USERS_GROUPS_ADD'));
         $tpl->SetVariable('editGroup_title', _t('USERS_GROUPS_EDIT'));
         $tpl->SetVariable('editGroupUsers_title', _t('USERS_GROUPS_MEMBERS'));
         $tpl->SetVariable('incompleteGroupFields', _t('USERS_GROUPS_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmGroupDelete', _t('USERS_GROUPS_CONFIRM_DELETE'));
+        $tpl->SetVariable('confirmDelete', _t('GLOBAL_CONFIRM_DELETE'));
 
         // Users
         $uModel = new Jaws_User();
@@ -77,7 +79,7 @@ class Users_Actions_ManageGroups extends Users_Actions_Default
         }
         $this->gadget->CheckPermission('ManageGroups');
         $post = jaws()->request->fetch(
-            array('limit', 'offset', 'search:array', 'sort:array'),
+            array('offset', 'limit', 'sortDirection', 'sortBy', 'filters:array'),
             'post'
         );
 
@@ -88,13 +90,10 @@ class Users_Actions_ManageGroups extends Users_Actions_Default
         }
         $total = $uModel->GetGroupsCount(0, null);
 
-        return $GLOBALS['app']->Session->GetResponse(
-            '',
-            RESPONSE_NOTICE,
-            array(
-                'total'   => $total,
-                'records' => $groups
-            )
+        return array(
+            'status' => 'success',
+            'total' => $total,
+            'records' => $groups
         );
     }
 
@@ -171,9 +170,7 @@ class Users_Actions_ManageGroups extends Users_Actions_Default
     function DeleteGlobalGroup()
     {
         $this->gadget->CheckPermission('ManageGroups');
-        $post = json_decode(htmlspecialchars_decode(jaws()->request->fetch('request', 'post')), true);
-        $gid = $post['ids'][0];
-
+        $gid = (int)jaws()->request->fetch('id', 'post');
         $uModel = new Jaws_User();
         $groupinfo = $uModel->GetGroup((int)$gid);
         if (!$uModel->DeleteGroup($gid)) {

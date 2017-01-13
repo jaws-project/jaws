@@ -11,65 +11,151 @@
 
   <div class="gadget_content content">
 
-    <div id="group_workarea" style="display: none; width: 650px; height: 400px; overflow: auto">
-      <div rel="body">
-        <div style="padding: 10px; font-size: 11px; line-height: 150%;">
-          <form action="#" name="group">
-            <table class="table" cellpadding="0" cellspacing="2">
-              <tr><td><label for="name">{{lbl_name}}:</label></td><td><input type="text" id="name" name="name"></td></tr>
-              <tr><td><label for="title">{{lbl_title}}:</label></td><td><input type="text" id="title" name="title"></td></tr>
-              <tr><td><label for="description">{{lbl_description}}:</label></td><td>
-                <textarea class="form-control" name="description" id="description" cols="30" rows="6"></textarea>
-              </td></tr>
-              <tr><td><label for="enabled">{{lbl_enabled}}:</label></td><td>
-                  <select class="form-control" name="enabled" id="enabled">
-                    <option value="0">{{lbl_no}}</option>
-                    <option value="1">{{lbl_yes}}</option>
+    <div class="repeater" id="groupsGrid" data-staticheight="300">
+      <div class="repeater-header">
+        <div class="repeater-header-left">
+        </div>
+
+        <div class="repeater-header-right">
+          <button type="button" class="btn btn-success btn-m" data-toggle="modal" data-target="#groupsModal">
+            <span class="glyphicon glyphicon-plus"></span> {{lbl_add}}
+          </button>
+        </div>
+      </div>
+      <div class="repeater-viewport">
+        <div class="repeater-canvas"></div>
+        <div class="loader repeater-loader"></div>
+      </div>
+      <div class="repeater-footer">
+        <div class="repeater-footer-left">
+          <div class="repeater-itemization">
+            <span><span class="repeater-start"></span> {{lbl_to}} <span class="repeater-end"></span> {{lbl_of}} <span class="repeater-count"></span> {{lbl_items}}</span>
+            <div class="btn-group selectlist dropup" data-resize="auto">
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                <span class="selected-label">?</span>
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li data-value="10" data-selected="true"><a href="#">10</a></li>
+                <li data-value="25"><a href="#">25</a></li>
+                <li data-value="50"><a href="#">50</a></li>
+              </ul>
+              <input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
+            </div>
+            <span>{{per_page}}</span>
+          </div>
+        </div>
+        <div class="repeater-footer-right">
+          <div class="repeater-pagination">
+            <button type="button" class="btn btn-default btn-sm repeater-prev">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+              <span class="sr-only">Previous Page</span>
+            </button>
+            <label class="page-label" id="myPageLabel"></label>
+            <div class="repeater-primaryPaging active">
+              <div class="input-group input-append dropdown combobox dropup">
+                <input type="text" class="form-control input-sm" aria-labelledby="myPageLabel">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right"></ul>
+                </div>
+              </div>
+            </div>
+            <input type="text" class="form-control input-sm repeater-secondaryPaging" aria-labelledby="myPageLabel">
+            <button type="button" class="btn btn-default btn-sm repeater-next">
+              <span class="glyphicon glyphicon-chevron-right"></span>
+              <span class="sr-only">Next Page</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="groupsModal" tabindex="-1" role="dialog" aria-labelledby="groupsModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="groupsModalLabel">{{addUser_title}}</h4>
+          </div>
+          <div class="modal-body">
+            <div style="padding: 10px; font-size: 11px; line-height: 150%;">
+
+              <form action="#" name="groups-form" id="groups-form">
+                <table class="table" cellpadding="0" cellspacing="2">
+                  <tr><td><label for="name">{{lbl_name}}:</label></td><td><input type="text" id="name" name="name"></td></tr>
+                  <tr><td><label for="title">{{lbl_title}}:</label></td><td><input type="text" id="title" name="title"></td></tr>
+                  <tr><td><label for="description">{{lbl_description}}:</label></td><td>
+                    <textarea class="form-control" name="description" id="description" cols="30" rows="6"></textarea>
+                  </td></tr>
+                  <tr><td><label for="enabled">{{lbl_enabled}}:</label></td><td>
+                    <select class="form-control" name="enabled" id="enabled">
+                      <option value="0">{{lbl_no}}</option>
+                      <option value="1">{{lbl_yes}}</option>
+                    </select>
+                  </td>
+                  </tr>
                   </select>
-                </td>
-              </tr>
-              </select>
-              </td></tr>
+                  </td></tr>
 
-            </table>
-          </form>
+                </table>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">
+              {{lbl_cancel}}
+            </button>
+            <button type="button" class="btn btn-primary" onclick="javascript:saveGroup()">{{lbl_save}}</button>
+          </div>
         </div>
-      </div>
-      <div rel="buttons">
-        <button class="btn" onclick="javascript:saveGroup()">{{lbl_save}}</button>
-        <button class="btn" onclick="javascript:stopAction();">{{lbl_cancel}}</button>
       </div>
     </div>
 
-    <div id="group_users_workarea" style="display: none; width: 650px; height: 400px; overflow: auto">
-      <div rel="body">
-        <div style="padding: 10px; font-size: 11px; line-height: 150%;">
-          <form action="#" name="group_users">
-            <table class="table">
-              <tbody>
-              <!-- BEGIN user -->
-              <tr>
-                <td>
-                  <label class="form-check-label" for="user_{{id}}">
-                    <input class="form-check-input" name="group_users[]" id="user_{{id}}" value="{{id}}" type="checkbox">
-                    {{title}}
-                  </label>
-                </td>
-              </tr>
-              <!-- END user -->
-              </tbody>
-            </table>
-          </form>
+    <div class="modal fade" id="groupUsersModal" tabindex="-1" role="dialog" aria-labelledby="groupUsersModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="groupUsersModalLabel">{{addUser_title}}</h4>
+          </div>
+          <div class="modal-body">
+            <div style="padding: 10px; font-size: 11px; line-height: 150%;">
+
+              <form action="#" name="group-users-form" id="group-users-form">
+                <table class="table">
+                  <tbody>
+                  <!-- BEGIN user -->
+                  <tr>
+                    <td>
+                      <label class="form-check-label" for="user_{{id}}">
+                        <input class="form-check-input" name="group_users[]" id="user_{{id}}" value="{{id}}" type="checkbox">
+                        {{title}}
+                      </label>
+                    </td>
+                  </tr>
+                  <!-- END user -->
+                  </tbody>
+                </table>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">
+              {{lbl_cancel}}
+            </button>
+            <button type="button" class="btn btn-primary" onclick="javascript:saveGroup()">{{lbl_save}}</button>
+          </div>
         </div>
-      </div>
-      <div rel="buttons">
-        <button class="btn" onclick="javascript:saveGroup()">{{lbl_save}}</button>
-        <button class="btn" onclick="javascript:stopAction();">{{lbl_cancel}}</button>
       </div>
     </div>
 
-
-    <div id="groups-grid" style="width: 100%; height: 300px;"></div>
   </div>
 </div>
 <div class="gadget_footer"></div>
@@ -77,120 +163,13 @@
 <script type="text/javascript">
   var lbl_title = "{{lbl_title}}";
   var lbl_name = "{{lbl_name}}";
+  var lbl_add = "{{lbl_add}}";
+  var lbl_delete = "{{lbl_delete}}";
   var addGroup_title = "{{addGroup_title}}";
   var editGroup_title = "{{editGroup_title}}";
   var editGroupUsers_title = "{{editGroupUsers_title}}";
   var incompleteGroupFields = "{{incompleteGroupFields}}";
+  var confirmDelete  = "{{confirmDelete}}";
   var currentAction = "Group";
-
-  $(document).ready(function() {
-    initiateGroupsDG();
-  });
-
-
-  /**
-   * initiate groups datagrid
-   */
-  function initiateGroupsDG() {
-    $('#groups-grid').w2grid({
-      name: 'groups-grid',
-      header: '{{grid_header}}',
-      method: 'POST',
-      url: {
-        get    : UsersAjax.baseURL + 'GetGroups',
-        remove : UsersAjax.baseURL + 'DeleteGlobalGroup'
-      },
-      show: {
-        toolbar: true,
-        toolbarInput: false,
-        toolbarSearch: false,
-        toolbarAdd: true,
-        toolbarDelete: true,
-        toolbarEdit: true,
-        header: true,
-        footer: true
-      },
-      recid: 'id',
-      multiSelect : false,
-      columns: [
-        { field: 'title',        caption: lbl_title,  size: '50%' },
-        { field: 'name',        caption: lbl_name,  size: '50%' },
-      ],
-      menu: [
-        { id: 'userGroups', text: '{{editGroupUsers_title}}', img: 'w2ui-icon-pencil' },
-      ],
-      records: [],
-      onRequest: function(event) {
-        switch (event.postData.cmd) {
-          case 'get':
-            break;
-
-          case 'delete':
-            event.postData = {
-              'ids':  event.postData.selected,
-            };
-            break;
-
-          case 'save':
-            break;
-
-        }
-
-      },
-      onLoad: function(event) {
-        event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
-        if (event.xhr.responseText.type != 'alert-success') {
-          event.xhr.responseText.message = event.xhr.responseText.text;
-          event.xhr.responseText.status = "error";
-        } else {
-          event.xhr.responseText = event.xhr.responseText.data;
-        }
-      },
-      onDelete: function(event) {
-        if (event.xhr) {
-          event.xhr.responseText = eval('(' + event.xhr.responseText + ')');
-          if (event.xhr.responseText.type != 'alert-success') {
-            event.xhr.responseText.message = event.xhr.responseText.text;
-            event.xhr.responseText.status = "error";
-          } else {
-            this.reload();
-            event.xhr.responseText = event.xhr.responseText.data;
-          }
-        }
-      },
-      toolbar: {
-        items: [
-          { type: 'button', id: 'user-groups-btn', caption: '{{editGroupUsers_title}}', img: 'w2ui-icon-pencil', disabled:true }
-        ],
-        onClick: function (target, data) {
-          if (target == 'w2ui-add') {
-            addGroup();
-          } else if (target == 'w2ui-edit') {
-            editGroup(w2ui['groups-grid'].getSelection()[0]);
-          } else if (target == 'user-groups-btn') {
-            editGroupUsers(w2ui['groups-grid'].getSelection()[0]);
-          }
-        }
-      },
-      onDblClick: function(event) {
-        editGroup(event.recid)
-      },
-      onSelect: function(event) {
-        this.toolbar.enable('user-groups-btn');
-      },
-      onUnselect: function(event) {
-        this.toolbar.disable('user-groups-btn');
-      },
-      onMenuClick: function(event) {
-        switch (event.menuItem.id) {
-          case 'userGroups':
-            editGroupUsers(event.recid);
-            break;
-        }
-      },
-    });
-  }
-
-
 </script>
 <!-- END Groups -->
