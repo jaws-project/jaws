@@ -34,14 +34,14 @@ class Jaws_Gadget_Layout
      * Gets a layout variable
      *
      * @access  public
-     * @param   string  $name   Key name
-     * @param   string  $gadget (Optional) Gadget name
+     * @param   string  $name       Key name
+     * @param   string  $component  (Optional) Component name
      * @return  mixed   Returns value of the attribute or Null if not exist
      */
-    function getVariable($name, $gadget = '')
+    function getVariable($name, $component = '')
     {
-        $gadget = empty($gadget)? $this->gadget->name : $gadget;
-        return $GLOBALS['app']->Layout->fetchVariable($gadget, JAWS_COMPONENT_GADGET, $name);
+        $component = empty($component)? $this->gadget->name : $component;
+        return $GLOBALS['app']->Layout->fetchVariable($name, $component);
     }
 
     /**
@@ -51,13 +51,12 @@ class Jaws_Gadget_Layout
      * @param   string  $name       Layout variable name
      * @param   string  $value      Layout variable value
      * @param   string  $component  (Optional) Component name
-     * @param   int     $type       (Optional) Component type
      * @return  void
      */
-    function setVariable($name, $value, $component = '', $type = JAWS_COMPONENT_GADGET)
+    function setVariable($name, $value, $component = '')
     {
         $component = empty($component)? $this->gadget->name : $component;
-        return $GLOBALS['app']->Layout->setVariable($component, $type, $name, $value);
+        return $GLOBALS['app']->Layout->setVariable($name, $value, $component);
     }
 
     /**
@@ -70,7 +69,7 @@ class Jaws_Gadget_Layout
     function deleteVariable($name)
     {
         $component = $this->gadget->name;
-        return $GLOBALS['app']->Layout->deleteVariable($component, JAWS_COMPONENT_GADGET, $name);
+        return $GLOBALS['app']->Layout->deleteVariable($name, $component);
     }
 
 }

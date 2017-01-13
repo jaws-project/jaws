@@ -97,6 +97,8 @@ class Jaws_Layout
 
         // set default site language
         $this->_Languages[] = $GLOBALS['app']->GetLanguage();
+        $this->SetVariable('mainGadget', $GLOBALS['app']->mainGadget);
+        $this->SetVariable('mainAction', $GLOBALS['app']->mainAction);
     }
 
     /**
@@ -527,13 +529,12 @@ class Jaws_Layout
      * Set a layout variable
      *
      * @access  public
-     * @param   string  $component  Component name
      * @param   string  $name       Variable name
-     * @param   int     $type       Jaws components type(0: JAWS_COMPONENT_OTHERS, 1: JAWS_COMPONENT_GADGET, ...)
      * @param   string  $value      Variable value
+     * @param   string  $component  Component name
      * @return  void
      */
-    function SetVariable($component, $type, $name, $value)
+    function SetVariable($name, $value, $component = '')
     {
         switch (gettype($value)) {
             case 'boolean':
@@ -546,7 +547,7 @@ class Jaws_Layout
                 break;
 
             case 'string':
-                $value = "'$value'";
+                $value = "\"$value\"";
                 break;
 
             case 'array':
@@ -561,7 +562,7 @@ class Jaws_Layout
                 return;
         }
 
-        $this->variables[$type][$component][$name] = $value;
+        $this->variables[$component][$name] = $value;
     }
 
     /**
@@ -572,27 +573,22 @@ class Jaws_Layout
      */
     function initializeScript()
     {
-        $result = "\tvar jaws = {};\n";
-        foreach ($this->variables as $type => $variables) {
-            switch ($type) {
-                case 1:
-                    $objComponentStr = 'jaws.gadgets';
-                    break;
-                case 2:
-                    $objComponentStr = 'jaws.plugins';
-                    break;
-                default:
-                    $objComponentStr = 'jaws.core';
+        $result = "\tjaws = {};\n";
+        $result.= "\tjaws.gadgets = {};\n";
+        foreach ($this->variables as $component => $variables) {
+            if (empty($component)) {
+                $jsObj = 'jaws.core';
+            } else {
+                $jsObj = "jaws.gadgets.$component";
             }
-            $result.= "\t$objComponentStr = {};\n";
-            foreach ($variables as $component => $items) {
-                $objStr = '';
-                foreach ($items as $name => $value) {
-                    $objStr.= "\t  '$name': $value,\n";
-                }
-                $result.= "\t$objComponentStr.$component = {\n$objStr\t};\n";
+
+            $tmpStr = '';
+            foreach ($variables as $name => $value) {
+                $tmpStr.= "\t  '$name': $value,\n";
             }
+            $result.= "\t$jsObj = {\n$tmpStr\t};\n";
         }
+
         return $result;
     }
 
