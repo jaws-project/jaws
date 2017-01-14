@@ -83,7 +83,7 @@ function updateTerm()
         contents = getEditorValue('#term_contents');
         if (term.blank() || contents.blank())
         {
-            alert(incompleteGlossaryFields);
+            alert(jaws.gadgets.Glossary.incompleteGlossaryFields);
             return false;
         }
 
@@ -91,7 +91,7 @@ function updateTerm()
         var combo = document.getElementById('term_id');
         combo.options[combo.selectedIndex].text = term;
         // Call function
-        loading_message = updatingMessage;
+        loading_message = jaws.gadgets.Glossary.updatingMessage;
         GlossaryAjax.callAsync('UpdateTerm', [id, term, fast_url, contents]);
     }
 }
@@ -101,7 +101,7 @@ function updateTerm()
  */
 function deleteTerm()
 {
-    loading_message = deletingMessage;
+    loading_message = jaws.gadgets.Glossary.deletingMessage;
     GlossaryAjax.callAsync('DeleteTerm', $('#term_id').val());
 }
 
@@ -126,7 +126,7 @@ function switchTab(c, title)
 
     if (c == 'edit') {
         if (currentMode == 'new') {
-            if (aclAddTerm) {
+            if (jaws.gadgets.Glossary.aclAddTerm) {
                 saveButton.onclick = function() {
                     newTerm();
                 }
@@ -136,13 +136,13 @@ function switchTab(c, title)
                 }
             }
 
-            if (aclDeleteTerm) {
+            if (jaws.gadgets.Glossary.aclDeleteTerm) {
                 delButton.hide();
             }
 
             cancelButton.show();
         } else {
-            if (aclEditTerm) {
+            if (jaws.gadgets.Glossary.aclEditTerm) {
                 saveButton.onclick = function() {
                     updateTerm();
                 }
@@ -150,7 +150,7 @@ function switchTab(c, title)
                 saveButton.hide();
             }
 
-            if (aclDeleteTerm) {
+            if (jaws.gadgets.Glossary.aclDeleteTerm) {
                 delButton.show();
             }
 
@@ -175,7 +175,7 @@ function edit(id)
 {
     previousID  = id;
     currentMode = 'edit';
-    loading_message = retrievingMessage;
+    loading_message = jaws.gadgets.Glossary.retrievingMessage;
     var termData = GlossaryAjax.callSync('GetTerm', id);
     fillEditorEntries(termData);
     editTitle  = termData['term'];
@@ -220,11 +220,11 @@ function newTerm()
     contents = getEditorValue('#term_contents');
     if (term.blank() || contents.blank())
     {
-        alert(incompleteGlossaryFields);
+        alert(jaws.gadgets.Glossary.incompleteGlossaryFields);
         return false;
     }
 
-    loading_message = savingMessage;
+    loading_message = jaws.gadgets.Glossary.savingMessage;
     GlossaryAjax.callAsync('NewTerm', [term, fast_url, contents]);
 }
 
@@ -257,7 +257,7 @@ function returnToEdit()
             b.disabled = true;
             combo.disabled = true;
         } else {
-            loading_message = retrievingMessage;
+            loading_message = jaws.gadgets.Glossary.retrievingMessage;
             var termData = GlossaryAjax.callSync('GetTerm', previousID);
             fillEditorEntries(termData);
             b.disabled = false;
@@ -284,6 +284,10 @@ function getFirst()
         createNewTerm('');
     }
 }
+
+$(document).ready(function() {
+    getFirst();
+});
 
 var GlossaryAjax = new JawsAjax('Glossary', GlossaryCallback);
 

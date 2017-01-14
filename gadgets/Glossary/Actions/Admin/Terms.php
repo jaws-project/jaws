@@ -105,17 +105,17 @@ class Glossary_Actions_Admin_Terms extends Jaws_Gadget_Action
         $tpl->SetVariable('edit_button', $edit->Get());
 
         // Messages
-        $tpl->SetVariable('incompleteGlossaryFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('retrieving_message',       _t('GLOSSARY_MSGRETRIEVING'));
-        $tpl->SetVariable('updating_message',         _t('GLOSSARY_MSGUPDATING'));
-        $tpl->SetVariable('deleting_message',         _t('GLOSSARY_MSGDELETING'));
-        $tpl->SetVariable('saving_message',           _t('GLOSSARY_MSGSAVING'));
-        $tpl->SetVariable('sending_message',          _t('GLOSSARY_MSGSENDING'));
+        $this->gadget->layout->setVariable('incompleteGlossaryFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('retrieving_message',       _t('GLOSSARY_MSGRETRIEVING'));
+        $this->gadget->layout->setVariable('updating_message',         _t('GLOSSARY_MSGUPDATING'));
+        $this->gadget->layout->setVariable('deleting_message',         _t('GLOSSARY_MSGDELETING'));
+        $this->gadget->layout->setVariable('saving_message',           _t('GLOSSARY_MSGSAVING'));
+        $this->gadget->layout->setVariable('sending_message',          _t('GLOSSARY_MSGSENDING'));
 
         // Acl
-        $tpl->SetVariable('acl_add', $this->gadget->GetPermission('AddTerm') ? 'true' : 'false');
-        $tpl->SetVariable('acl_edit', $this->gadget->GetPermission('EditTerm') ? 'true' : 'false');
-        $tpl->SetVariable('acl_delete', $this->gadget->GetPermission('DeleteTerm') ? 'true' : 'false');
+        $this->gadget->layout->setVariable('aclAddTerm', $this->gadget->GetPermission('AddTerm') ? 'true' : 'false');
+        $this->gadget->layout->setVariable('aclEditTerm', $this->gadget->GetPermission('EditTerm') ? 'true' : 'false');
+        $this->gadget->layout->setVariable('aclDeleteTerm', $this->gadget->GetPermission('DeleteTerm') ? 'true' : 'false');
 
         $tpl->ParseBlock('Glossary');
         return $tpl->Get();
