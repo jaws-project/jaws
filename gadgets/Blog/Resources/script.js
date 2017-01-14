@@ -408,7 +408,7 @@ function updateTrackbacksDatagrid(limit, filter, search, status, resetCounter)
  */
 function trackbackDelete(row_id)
 {
-    var confirmation = confirm(deleteConfirm);
+    var confirmation = confirm(jaws.gadgets.Blog.deleteConfirm);
     if (confirmation) {
         BlogAjax.callAsync('DeleteTrackbacks', row_id);
     }
@@ -427,7 +427,7 @@ function trackbackDGAction(combo)
 
      if (combo.value == 'delete') {
         if (selectedRows) {
-            var confirmation = confirm(deleteConfirm);
+            var confirmation = confirm(jaws.gadgets.Blog.deleteConfirm);
             if (confirmation) {
                 BlogAjax.callAsync('DeleteTrackbacks', rows);
             }
@@ -452,7 +452,7 @@ function entryDGAction(combo)
 
      if (combo.value == 'delete') {
         if (selectedRows) {
-            var confirmation = confirm(deleteConfirm);
+            var confirmation = confirm(jaws.gadgets.Blog.deleteConfirm);
             if (confirmation) {
                 BlogAjax.callAsync('DeleteEntries', rows);
             }
@@ -498,7 +498,7 @@ function editCategory(id)
     if (id == 0) return;
     selectedCategory = id;
 
-    $('#legend_title').html(editCategory_title);
+    $('#legend_title').html(jaws.gadgets.Blog.editCategory_title);
     $('#btn_delete').css('display', 'inline');
     var category = BlogAjax.callSync('GetCategory', id);
 
@@ -544,7 +544,7 @@ function saveCategory(form)
 {
     if (!$('#name').val())
     {
-        alert(incompleteCategoryFields);
+        alert(jaws.gadgets.Blog.incompleteCategoryFields);
         return false;
     }
 
@@ -587,7 +587,7 @@ function fillCatInfoForm(content)
  */
 function deleteCategory()
 {
-    if (confirm(deleteMessage)) {
+    if (confirm(jaws.gadgets.Blog.deleteMessage)) {
         BlogAjax.callAsync('DeleteCategory2', selectedCategory);
     }
 }
@@ -708,11 +708,41 @@ function toggleUpdate(checked)
     }
 }
 
+function updateEditorsText(entryForm) {
+    if (entryForm.elements['title'].value == '') {
+        alert('{{missing_title}}');
+        entryForm.elements['title'].focus();
+        return false;
+    }
+
+    $('#summary_block').val(getEditorValue('#summary_block'));
+    $('#text_block').val(getEditorValue('#text_block'));
+    return true;
+}
+
+/**
+ * Removes the image
+ */
+function removeImage() {
+    $('#image_file').val('');
+    $('#deleteImage').val('true');
+    $('#blog_image').prop('src', 'gadgets/Blog/Resources/images/no-image.gif?' + (new Date()).getTime());
+}
+
+function previewImage(fileElement) {
+    $('deleteImage').value = 'false';
+    var fReader = new FileReader();
+    fReader.readAsDataURL(fileElement.files[0]);
+    fReader.onload = function (event) {
+        document.getElementById('blog_image').src = event.target.result;
+    }
+}
+
 /**
  * Stops doing a certain action
  */
 function stopAction() {
-    $('#legend_title').html(addCategory_title);
+    $('#legend_title').html(jaws.gadgets.Blog.addCategory_title);
     $('#btn_delete').css('display', 'none');
     selectedCategory = null;
 
@@ -724,6 +754,27 @@ function stopAction() {
     $('#meta_desc').val('');
     $('#description').val('');
 }
+
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'NewEntry':
+            toggleUpdate(false);
+            setTimeout('startAutoDrafting();', 120000);
+            break;
+
+        case 'ListEntries':
+            getData();
+            break;
+
+        case 'ManageTrackbacks':
+            getData();
+            break;
+
+        case 'ManageCategories':
+            $('#legend_title').innerHTML = jaws.gadgets.Blog.addCategory_title;
+            break;
+    }
+});
 
 var BlogAjax = new JawsAjax('Blog', BlogCallback);
 

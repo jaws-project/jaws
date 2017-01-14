@@ -6,19 +6,6 @@
  </div>
 </div>
 <div id="main">
-  <script type="text/javascript">
-    function updateEditorsText(entryForm) {
-        if (entryForm.elements['title'].value == '') {
-            alert('{{missing_title}}');
-            entryForm.elements['title'].focus(); 
-            return false;
-        }
-
-        $('#summary_block').val(getEditorValue('#summary_block'));
-        $('#text_block').val(getEditorValue('#text_block'));
-        return true;
-    }
-  </script>
   <form name="edit_entry" method="post" action="{{base_script}}" enctype="multipart/form-data" onsubmit="return updateEditorsText(this);">
    <input id="action" type="hidden" name="action" value="Save{{action}}" />
    <input type="hidden" name="gadget" value="Blog" />
@@ -83,27 +70,4 @@
    <div class="buttons">{{preview_button}} {{save_button}}</div>
   </form>
 </div>
-<script type="text/javascript">
-  toggleUpdate(false);
-  setTimeout('startAutoDrafting();', 120000);
-
-  function previewImage(fileElement) {
-      $('deleteImage').value = 'false';
-      var fReader = new FileReader();
-      fReader.readAsDataURL(fileElement.files[0]);
-      fReader.onload = function (event) {
-          document.getElementById('blog_image').src = event.target.result;
-      }
-  }
-
-  /**
-   * Removes the image
-   */
-  function removeImage() {
-      $('#image_file').val('');
-      $('#deleteImage').val('true');
-      $('#blog_image').prop('src', 'gadgets/Blog/Resources/images/no-image.gif?' + (new Date()).getTime());
-  }
-
-</script>
 <!-- END edit_entry -->

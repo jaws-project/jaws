@@ -46,7 +46,7 @@ class Blog_Actions_Admin_Trackbacks extends Blog_Actions_Admin_Default
 
         $tpl->SetVariable('trackbacks_where', _t('BLOG_TRACKBACK_WHERE'));
         $tpl->SetVariable('status_label', _t('GLOBAL_STATUS'));
-        $tpl->SetVariable('deleteConfirm', _t('BLOG_DELETE_MASSIVE_TRACKBACKS'));
+        $this->gadget->layout->setVariable('deleteConfirm', _t('BLOG_DELETE_MASSIVE_TRACKBACKS'));
 
         //Status
         $statusData = '';
