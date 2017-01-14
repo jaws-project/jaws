@@ -16,11 +16,12 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
     function NotificationDrivers()
     {
         $this->gadget->CheckPermission('NotificationDrivers');
+        $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('incompleteFields', _t('NOTIFICATION_INCOMPLETE_FIELDS'));
 
         $tpl = $this->gadget->template->loadAdmin('NotificationDrivers.html');
         $tpl->SetBlock('drivers');
 
-        $this->AjaxMe('script.js');
         $tpl->SetVariable('menubar', $this->MenuBar('NotificationDrivers'));
         $tpl->SetVariable('title', $this->gadget->title);
         $tpl->SetVariable('datagrid', $this->NotificationDriversDataGrid());
@@ -45,9 +46,6 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
         $btnSave =& Piwi::CreateWidget('Button', 'btn_save', _t('GLOBAL_SAVE'), STOCK_SAVE);
         $btnSave->AddEvent(ON_CLICK, 'updateNotificationDriver();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
-
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('incompleteFields', _t('NOTIFICATION_INCOMPLETE_FIELDS'));
 
         $tpl->ParseBlock('drivers');
         return $tpl->Get();

@@ -102,7 +102,7 @@ function editNotificationDriver(rowElement, id) {
  */
 function updateNotificationDriver() {
     if ($('#title').val().blank() || selectedDriver == null) {
-        alert(incompleteFields);
+        alert(jaws.gadgets.Notification.incompleteFields);
         return;
     }
 
@@ -122,6 +122,18 @@ function saveSettings(form) {
         }
     );
 }
+
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'NotificationDrivers':
+            currentAction = 'NotificationDrivers';
+            initDataGrid('notification_drivers_datagrid', NotificationAjax, getNotificationDrivers);
+            break;
+
+        case 'Settings':
+            break;
+    }
+});
 
 var NotificationAjax = new JawsAjax('Notification', NotificationCallback);
 var selectedDriver = null,
