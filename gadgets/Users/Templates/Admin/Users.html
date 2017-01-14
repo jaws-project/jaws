@@ -29,26 +29,4 @@
   </tr>
   <tr><td class="buttons" colspan="2">{{cancel}}{{save}}</td></tr>
 </table>
-<script type="text/javascript">
-  var noGroup               = "{{noGroup}}";
-  var wrongPassword         = "{{wrongPassword}}";
-  var incompleteUserFields  = "{{incompleteUserFields}}";
-  var confirmUserDelete     = "{{confirmUserDelete}}";
-  var addUser_title         = "{{addUser_title}}";
-  var editUser_title        = "{{editUser_title}}";
-  var editACL_title         = "{{editACL_title}}";
-  var editUserGroups_title  = "{{editUserGroups_title}}";
-  var editPersonal_title    = "{{editPersonal_title}}";
-  var editContacts_title    = "{{editContacts_title}}";
-  var currentAction         = 'UserAccount';
-  var cachedUserForm        = $('#workarea').html();
-  var base_script           = "{{base_script}}";
-  $('#filter_term').val('');
-  $('#filter_group').prop('selectedIndex', 0);
-  $('#filter_type').prop('selectedIndex', 0);
-  $('#filter_status').prop('selectedIndex', 0);
-  $('#order_type').prop('selectedIndex', 0);
-  stopUserAction();
-  initDataGrid('users_datagrid', UsersAjax, getUsers);
-</script>
 <!-- END Users -->

@@ -125,6 +125,10 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageOnlineUsers');
         $this->AjaxMe('script.js');
+        // set default value of javascript variables
+        $this->gadget->layout->setVariable('confirmThrowout',   _t('USERS_ONLINE_CONFIRM_THROWOUT'));
+        $this->gadget->layout->setVariable('confirmBlockIP',    _t('USERS_ONLINE_CONFIRM_BLOCKIP'));
+        $this->gadget->layout->setVariable('confirmBlockAgent', _t('USERS_ONLINE_CONFIRM_BLOCKAGENT'));
 
         $tpl = $this->gadget->template->loadAdmin('OnlineUsers.html');
         $tpl->SetBlock('OnlineUsers');
@@ -184,11 +188,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
         $btnExecute->AddEvent(ON_CLICK, "javascript:onlineUsersDGAction($('#online_users_actions'));");
         $tpl->SetVariable('btn_execute', $btnExecute->Get());
 
-        $tpl->SetVariable('confirmThrowout',   _t('USERS_ONLINE_CONFIRM_THROWOUT'));
-        $tpl->SetVariable('confirmBlockIP',    _t('USERS_ONLINE_CONFIRM_BLOCKIP'));
-        $tpl->SetVariable('confirmBlockAgent', _t('USERS_ONLINE_CONFIRM_BLOCKAGENT'));
         $tpl->ParseBlock('OnlineUsers');
-
         return $tpl->Get();
     }
 

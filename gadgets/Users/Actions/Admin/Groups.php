@@ -107,6 +107,13 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
+        // set default value of javascript variables
+        $this->gadget->layout->setVariable('addGroup_title', _t('USERS_GROUPS_ADD'));
+        $this->gadget->layout->setVariable('editGroup_title', _t('USERS_GROUPS_EDIT'));
+        $this->gadget->layout->setVariable('editACL_title', _t('USERS_ACLS'));
+        $this->gadget->layout->setVariable('editGroupUsers_title', _t('USERS_GROUPS_MEMBERS'));
+        $this->gadget->layout->setVariable('incompleteGroupFields', _t('USERS_GROUPS_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('confirmGroupDelete', _t('USERS_GROUPS_CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->loadAdmin('Groups.html');
         $tpl->SetBlock('Groups');
@@ -128,13 +135,6 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
                                       STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, "javascript:stopGroupAction();");
         $tpl->SetVariable('cancel', $cancel->Get());
-
-        $tpl->SetVariable('addGroup_title', _t('USERS_GROUPS_ADD'));
-        $tpl->SetVariable('editGroup_title', _t('USERS_GROUPS_EDIT'));
-        $tpl->SetVariable('editACL_title', _t('USERS_ACLS'));
-        $tpl->SetVariable('editGroupUsers_title', _t('USERS_GROUPS_MEMBERS'));
-        $tpl->SetVariable('incompleteGroupFields', _t('USERS_GROUPS_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmGroupDelete', _t('USERS_GROUPS_CONFIRM_DELETE'));
         $tpl->ParseBlock('Groups');
 
         return $tpl->Get();

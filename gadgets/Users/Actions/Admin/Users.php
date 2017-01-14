@@ -142,6 +142,18 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         }
 
         $this->AjaxMe('script.js');
+        // set default value of javascript variables
+        $this->gadget->layout->setVariable('addUser_title', _t('USERS_USERS_ADD'));
+        $this->gadget->layout->setVariable('editUser_title', _t('USERS_USERS_EDIT'));
+        $this->gadget->layout->setVariable('editACL_title', _t('USERS_ACLS'));
+        $this->gadget->layout->setVariable('editUserGroups_title', _t('USERS_USERS_GROUPS'));
+        $this->gadget->layout->setVariable('editPersonal_title', _t('USERS_PERSONAL'));
+        $this->gadget->layout->setVariable('editContacts_title', _t('USERS_CONTACTS'));
+        $this->gadget->layout->setVariable('noGroup', _t('USERS_GROUPS_NOGROUP'));
+        $this->gadget->layout->setVariable('confirmUserDelete', _t('USERS_USER_CONFIRM_DELETE'));
+        $this->gadget->layout->setVariable('wrongPassword', _t('USERS_USERS_PASSWORDS_DONT_MATCH'));
+        $this->gadget->layout->setVariable('incompleteUserFields', _t('USERS_USERS_INCOMPLETE_FIELDS'));
+
         $tpl = $this->gadget->template->loadAdmin('Users.html');
         $tpl->SetBlock('Users');
 
@@ -219,18 +231,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
                                       STOCK_CANCEL);
         $cancel->AddEvent(ON_CLICK, "javascript:stopUserAction();");
         $tpl->SetVariable('cancel', $cancel->Get());
-
-        $tpl->SetVariable('addUser_title', _t('USERS_USERS_ADD'));
-        $tpl->SetVariable('editUser_title', _t('USERS_USERS_EDIT'));
-        $tpl->SetVariable('editACL_title', _t('USERS_ACLS'));
-        $tpl->SetVariable('editUserGroups_title', _t('USERS_USERS_GROUPS'));
-        $tpl->SetVariable('editPersonal_title', _t('USERS_PERSONAL'));
-        $tpl->SetVariable('editContacts_title', _t('USERS_CONTACTS'));
-        $tpl->SetVariable('noGroup', _t('USERS_GROUPS_NOGROUP'));
-        $tpl->SetVariable('wrongPassword', _t('USERS_USERS_PASSWORDS_DONT_MATCH'));
-        $tpl->SetVariable('incompleteUserFields', _t('USERS_USERS_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('selectUser', _t('USERS_USERS_SELECT_A_USER'));
-        $tpl->SetVariable('confirmUserDelete', _t('USERS_USER_CONFIRM_DELETE'));
         $tpl->SetVariable('confirmResetACL', _t('USERS_RESET_ACL_CONFIRM'));
         $tpl->ParseBlock('Users');
 
