@@ -71,15 +71,16 @@ class Forums_Actions_Admin_Forums extends Jaws_Gadget_Action
         $tpl->SetVariable('cancel', $cancel_btn->Get());
 
         $tpl->SetVariable('forum_tree_title', _t('FORUMS_TREE_TITLE'));
-        $tpl->SetVariable('addGroupTitle',   _t('FORUMS_GROUP_NEW'));
-        $tpl->SetVariable('editGroupTitle',  _t('FORUMS_GROUP_EDIT'));
-        $tpl->SetVariable('addForumTitle',   _t('FORUMS_FORUM_NEW'));
-        $tpl->SetVariable('editForumTitle',  _t('FORUMS_FORUM_EDIT'));
-        $tpl->SetVariable('delForumTitle',   _t('FORUMS_FORUM_DELETE'));
-        $tpl->SetVariable('forumImageSrc',    'gadgets/Forums/Resources/images/menu-item.png');
-        $tpl->SetVariable('incompleteFields',   _t('FORUMS_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmForumDelete', _t('FORUMS_CONFIRM_DELETE_FORUM'));
-        $tpl->SetVariable('confirmGroupDelete', _t('FORUMS_CONFIRM_DELETE_GROUP'));
+
+        $this->gadget->layout->setVariable('addGroupTitle',   _t('FORUMS_GROUP_NEW'));
+        $this->gadget->layout->setVariable('editGroupTitle',  _t('FORUMS_GROUP_EDIT'));
+        $this->gadget->layout->setVariable('addForumTitle',   _t('FORUMS_FORUM_NEW'));
+        $this->gadget->layout->setVariable('editForumTitle',  _t('FORUMS_FORUM_EDIT'));
+        $this->gadget->layout->setVariable('delForumTitle',   _t('FORUMS_FORUM_DELETE'));
+        $this->gadget->layout->setVariable('forumImageSrc',    'gadgets/Forums/Resources/images/menu-item.png');
+        $this->gadget->layout->setVariable('incompleteFields',   _t('FORUMS_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('confirmForumDelete', _t('FORUMS_CONFIRM_DELETE_FORUM'));
+        $this->gadget->layout->setVariable('confirmGroupDelete', _t('FORUMS_CONFIRM_DELETE_GROUP'));
 
         $tpl->ParseBlock('forums');
         return $tpl->Get();
