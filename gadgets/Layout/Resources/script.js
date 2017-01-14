@@ -82,7 +82,6 @@ var LayoutCallback = {
             );
 
             $('#layout_main').append(dItem);
-            items['main']['item_' + response['id']] = true;
             $(".layout-section").sortable('refresh');
         }
         LayoutAjax.showResponse(response, false);
@@ -98,7 +97,7 @@ function deleteElement(itemId)
         section  = itemDiv.parent().attr('id').replace('layout_', ''),
         position = itemDiv.parent().children('div').index(itemDiv);
 
-    var answer = confirm(confirmDelete);
+    var answer = confirm(jaws.gadgets.Layout.confirmDelete);
     if (answer) {
         itemDiv.fadeOut(500, function() {$(this).remove();})
         LayoutAjax.callAsync(
@@ -160,25 +159,25 @@ function addGadget(url, title)
 
 function elementAction(url)
 {
-    showDialogBox('actions_dialog', actionsTitle, url, 435, 555);
+    showDialogBox('actions_dialog', jaws.gadgets.Layout.actionsTitle, url, 435, 555);
 }
 
 function displayWhen(url)
 {
-    showDialogBox('dw_dialog', displayWhenTitle, url, 300, 250);
+    showDialogBox('dw_dialog', jaws.gadgets.Layout.displayWhenTitle, url, 300, 250);
 }
 
 var prevGadget = '';
-function selectGadget(g)
+function selectGadget(doc, g)
 {
-    $('#gadget').val(g);
+    $(doc).find('#gadget').val(g);
 
     // Remove all actions 
-    $('#actions-list').empty();
-    if ($('#' + prevGadget).length) {
-        $('#' + prevGadget).attr('class', 'gadget-item');
+    $(doc).find('#actions-list').empty();
+    if (prevGadget) {
+        $(doc).find('#' + prevGadget).attr('class', 'gadget-item');
     }
-    $('#' + g).attr('class', 'gadget-item gadget-selected');
+    $(doc).find('#' + g).attr('class', 'gadget-item gadget-selected');
     var actions = LayoutAjax.callSync('GetGadgetActions', g);
     if (actions.length > 0) {
         $.each(actions, function(actionIndex, item) {
@@ -232,10 +231,12 @@ function selectGadget(g)
                     li.append(divElement);
                 });
             }
-            $('#actions-list').append(li);
+            $(doc).find('#actions-list').append(li);
         });
     } else {
-        $('<li>').attr('class', 'action-msg').html(noActionsMsg).appendTo($('#actions-list'));
+        $('<li>').attr('class', 'action-msg')
+            .html(parent.parent.jaws.gadgets.Layout.noActionsMsg)
+            .appendTo($(doc).find('#actions-list'));
     }
     prevGadget = g;
 }
@@ -287,20 +288,122 @@ function saveElementAction(lid, gadget, action, params, title, desc)
 function saveChangeDW(itemId, dw) {
     LayoutAjax.callAsync('UpdateDisplayWhen', [itemId, $('#layout').val(), dw]);
     if (dw == '*') {
-        $('#dw' + itemId).html(displayAlways);
+        $('#dw' + itemId).html(jaws.gadgets.Layout.displayAlways);
     } else if (dw.blank()) {
-        $('#dw' + itemId).html(displayNever);
+        $('#dw' + itemId).html(jaws.gadgets.Layout.displayNever);
     } else {
         $('#dw' + itemId).html(dw.replace(/,/g, ', '));
     }
     hideDialogBox('dw_dialog');
 }
 
+/**
+ *
+ */
+function layoutControlsSubmit(sender) {
+    var layout_layout_url = jaws.gadgets.Layout.layout_layout_url;
+    var layout_theme_url  = jaws.gadgets.Layout.layout_theme_url;
+    if (sender.id != 'theme') {
+        window.location = layout_layout_url.replace('~layout~', $('#layout').val());
+    } else {
+        window.location = layout_theme_url.replace('~theme~', $('#theme').val());
+    }
+}
+
+/**
+ *
+ */
+function addGetAction(doc) {
+    var gadget = $(doc).find('#gadget').val();
+    var action = $(doc).find('#form_actions_list input[type="radio"][name="action"]:checked');
+    if (action.length == 0) {
+        alert('!!!!!!!!!!');
+        return;
+    }
+
+    var params = null;
+    var paramElemets = $(doc).find('#action_'+action.val()).find('select,input:not([type=radio])');
+    if (paramElemets.length > 0) {
+        params = new Array();
+        $.each(paramElemets, function(index, elParam) {
+            if (elParam.type == 'checkbox') {
+                params[index] = Number(elParam.checked);
+            } else {
+                params[index] = elParam.value;
+            }
+        });
+        params = params.join();
+    }
+
+    parent.parent.addGadgetToLayout(gadget, action.val(), params);
+}
+
+/**
+ *
+ */
+function editGetAction(doc, lid, gadget) {
+    var action = $(doc).find('#form_actions_list input[type="radio"][name="action"]:checked');
+    if (action.length == 0) {
+        alert('!!!!!!!!!!');
+        return;
+    }
+
+    title = $(doc).find('#action_'+action.val()).children('label').first().html();
+    desc = $(doc).find('#action_'+action.val()).children('span').first().html();
+
+    var params = null;
+    var paramElemets = $(doc).find('#action_'+action.val()).find('select,input:not([type=radio])');
+    if (paramElemets.length > 0) {
+        params = new Array();
+        $.each(paramElemets, function(index, elParam) {
+            if (elParam.type == 'checkbox') {
+                params[index] = Number(elParam.checked);
+            } else {
+                params[index] = elParam.value;
+            }
+        });
+        params = params.join();
+    }
+
+    parent.parent.saveElementAction(lid, gadget, action.val(), params, title, desc);
+}
+
+/**
+ *
+ */
+function showGadgets (doc) {
+    $(doc).find('#selected_gadgets').toggle();
+}
+
+/**
+ *
+ */
+function getSelectedGadgets(doc) {
+    if ($(doc).find('#display_in').val() == 'always') {
+        return '*';
+    } else {
+        var res = '';
+        var selectedItems = $(doc).find('#selected_gadgets input[type=checkbox]');
+        $.each(selectedItems, function(index, item) {
+            if ($(item).prop('checked')) {
+                res += $(item).val() + ',';
+            }
+        });
+
+        if (res.length > 0) {
+            res = res.substr(0, res.lastIndexOf(','));
+        }
+        return res;
+    }
+}
+
+$(document).ready(function() {
+    initUI();
+});
+
 var LayoutAjax = new JawsAjax('Layout', LayoutCallback);
 
-var items = new Array();
 var newdrags = new Array();
-var sections = new Array();
 
 var previousMode = null;
 var itemTmp = null;
@@ -309,8 +412,6 @@ var itemActions = new Array();
 var actionStep  = 1;
 
 var currentAction = new Array();
-
-var sections = new Array();
 
 var objects = new Array();
 objects['sort'] = new Array();

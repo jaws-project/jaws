@@ -45,9 +45,8 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
 
         $tpl->SetVariable('gadgets', _t('LAYOUT_GADGETS'));
         $tpl->SetVariable('actions', _t('LAYOUT_ACTIONS'));
-        $tpl->SetVariable('no_actions_msg', _t('LAYOUT_NO_GADGET_ACTIONS'));
         $addButton =& Piwi::CreateWidget('Button', 'add',_t('LAYOUT_NEW'), STOCK_ADD);
-        $addButton->AddEvent(ON_CLICK, "getAction();");
+        $addButton->AddEvent(ON_CLICK, "parent.parent.addGetAction(document);");
         $tpl->SetVariable('add_button', $addButton->Get());
 
         $section = jaws()->request->fetch('section', 'post');
@@ -70,10 +69,6 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
         reset($gadget_list);
         $first = current($gadget_list);
         $tpl->SetVariable('first', $first['name']);
-
-        $tpl->SetBlock('template/working_notification');
-        $tpl->SetVariable('loading-message', _t('GLOBAL_LOADING'));
-        $tpl->ParseBlock('template/working_notification');
 
         foreach ($gadget_list as $gadget) {
             $tpl->SetBlock('template/gadget');
@@ -138,7 +133,7 @@ class Layout_Actions_Element extends Jaws_Gadget_Action
         $tpl->SetVariable('gadget_description', $gInfo->description);
 
         $btnSave =& Piwi::CreateWidget('Button', 'ok',_t('GLOBAL_SAVE'), STOCK_SAVE);
-        $btnSave->AddEvent(ON_CLICK, "getAction('{$id}', '{$layoutElement['gadget']}');");
+        $btnSave->AddEvent(ON_CLICK, "parent.parent.editGetAction(document, '{$id}', '{$layoutElement['gadget']}');");
         $tpl->SetVariable('save', $btnSave->Get());
 
         $actionsList =& Piwi::CreateWidget('RadioButtons', 'action_field', 'vertical');

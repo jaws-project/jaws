@@ -1,17 +1,6 @@
 <!-- BEGIN controls -->
 <div id="layout-controls">
   <div id="layout-controls-items">
-    <script type="text/javascript">
-    function layoutControlsSubmit(sender) {
-        var layout_layout_url = '{{layout_layout_url}}';
-        var layout_theme_url  = '{{layout_theme_url}}';
-        if (sender.id != 'theme') {
-            window.location = layout_layout_url.replace('~layout~', $('#layout').val());
-        } else {
-            window.location = layout_theme_url.replace('~theme~', $('#theme').val());
-        }
-    }
-    </script>
     <table style="width: 100%;border-collapse:collapse; border-spacing: 0;">
       <tr>
         <td>

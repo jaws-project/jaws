@@ -55,7 +55,6 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
         $t_item = $this->gadget->template->load('LayoutManager.html');
         $t_item->SetBlock('working_notification');
-        $t_item->SetVariable('loading-message', _t('GLOBAL_LOADING'));
         $working_box = $t_item->ParseBlock('working_notification');
         $t_item->Blocks['working_notification']->Parsed = '';
 
@@ -84,6 +83,24 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $fakeLayout = new Jaws_Layout();
         $fakeLayout->Load('', "$layout.html");
         $fakeLayout->addScript('gadgets/Layout/Resources/script.js');
+        // set default value of javascript variables
+        $fakeLayout->SetVariable(
+            'layout_layout_url',
+            $this->gadget->urlMap('Layout', array('layout' => '~layout~')),
+            'Layout'
+        );
+        $fakeLayout->SetVariable(
+            'layout_theme_url',
+            $this->gadget->urlMap('Layout', array('theme' => '~theme~')),
+            'Layout'
+        );
+        $fakeLayout->SetVariable('noActionsMsg', _t('LAYOUT_NO_GADGET_ACTIONS'), 'Layout');
+        $fakeLayout->SetVariable('noItemsMsg', _t('LAYOUT_SECTION_EMPTY'), 'Layout');
+        $fakeLayout->SetVariable('displayAlways', _t('LAYOUT_ALWAYS'), 'Layout');
+        $fakeLayout->SetVariable('displayNever', _t('LAYOUT_NEVER'), 'Layout');
+        $fakeLayout->SetVariable('actionsTitle', _t('LAYOUT_ACTIONS'), 'Layout');
+        $fakeLayout->SetVariable('displayWhenTitle', _t('LAYOUT_CHANGE_DW'), 'Layout');
+        $fakeLayout->SetVariable('confirmDelete', _t('LAYOUT_CONFIRM_DELETE'), 'Layout');
 
         $layoutContent = $fakeLayout->_Template->Blocks['layout']->Content;
         // remove script tag
@@ -108,7 +125,6 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
             }
 
             $fakeLayout->_Template->SetBlock('layout/'.$name);
-            $js_section_array = '<script type="text/javascript">items[\''.$name.'\'] = new Array(); sections.push(\''.$name.'\');</script>';
             $gadgets = $lModel->GetGadgetsInSection($layout, $name);
             if (!is_array($gadgets)) {
                 continue;
@@ -185,7 +201,7 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
 
             $fakeLayout->_Template->SetVariable(
                 'ELEMENT', '<div id="layout_'.$name.'" class="layout-section" title="'.
-                $name.'">'.$js_section_array.$t_item->Get().'</div>'.
+                $name.'">'.$t_item->Get().'</div>'.
                 '<div class="layout-section-controls"></div>'
             );
 
@@ -205,14 +221,6 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('LayoutControls.html');
         $tpl->SetBlock('controls');
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable(
-            'layout_layout_url',
-            $this->gadget->urlMap('Layout', array('layout' => '~layout~'))
-        );
-        $tpl->SetVariable(
-            'layout_theme_url',
-            $this->gadget->urlMap('Layout', array('theme' => '~theme~'))
-        );
         $tpl->SetVariable('cp-title', _t('GLOBAL_CONTROLPANEL'));
         $tpl->SetVariable('cp-title-separator', _t('GLOBAL_CONTROLPANEL_TITLE_SEPARATOR'));
         if ($this->gadget->GetPermission('default_admin', '', false, 'ControlPanel')) {

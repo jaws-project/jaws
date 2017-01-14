@@ -803,7 +803,7 @@ function hideResponseBox(name, timeout)
 function showWorkingNotification(msg)
 {
     if (!msg) {
-        msg = default_loading_message;
+        msg = jaws.core.loadingMessage;
     }
     $('#working_notification').html(msg);
     $('#working_notification').css('visibility', 'visible');
