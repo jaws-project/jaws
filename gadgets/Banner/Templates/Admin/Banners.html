@@ -25,21 +25,6 @@
     <td class="buttons">{{btn_cancel}} {{btn_save}}</td>
   </tr>
 </table>
-<script type="text/javascript">
-  $('#bgroup_filter').prop('selectedIndex', 0);
-  initDataGrid('banners_datagrid', BannerAjax, getBannersDataGrid);
-  var incompleteBannerFields = "{{incompleteBannerFields}}";
-  var confirmBannerDelete    = "{{confirmBannerDelete}}";
-  var addBanner_title        = "{{addBanner_title}}";
-  var editBanner_title       = "{{editBanner_title}}";
-  var textTemplate           = "{{textTemplate}}";
-  var imageTemplate          = "{{imageTemplate}}";
-  var flashTemplate          = "{{flashTemplate}}";
-  var defaultTemplate        = "";
-
-  currentAction = 'Banners';
-  stopAction();
-</script>
 <!-- END Banners -->
 <!-- BEGIN BannerInfo -->
 <table id="banner_box">

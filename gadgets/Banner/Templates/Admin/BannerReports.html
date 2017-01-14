@@ -4,10 +4,4 @@
         <label for="bgroup_filter">{{lbl_bgroup}}:</label>{{bgroup_filter}}
       </div>
 {{datagrid}}
-<script type="text/javascript">
-  $('#bgroup_filter').selectedIndex = 0;
-  initDataGrid('reports_datagrid', BannerAjax, getBannersDataGrid);
-  var confirmResetBannerViews  = "{{confirmResetBannerViews}}";
-  var confirmResetBannerClicks = "{{confirmResetBannerClicks}}";
-</script>
 <!-- END Reports -->

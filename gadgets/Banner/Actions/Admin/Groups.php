@@ -61,8 +61,8 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
             $comboGroups->AddOption($group['title'], $group['id']);
         }
         $tpl->SetVariable('combo_groups', $comboGroups->Get());
-        $tpl->SetVariable('incompleteGroupFields', _t('BANNER_BANNERS_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmGroupDelete', _t('BANNER_GROUPS_CONFIRM_DELETE'));
+        $this->gadget->layout->setVariable('incompleteGroupFields', _t('BANNER_BANNERS_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('confirmGroupDelete', _t('BANNER_GROUPS_CONFIRM_DELETE'));
         $tpl->ParseBlock('Groups');
 
         return $tpl->Get();

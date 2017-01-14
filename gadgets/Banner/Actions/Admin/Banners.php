@@ -49,6 +49,8 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('Banners'));
 
+        $tpl->SetVariable('legend_title', _t('BANNER_BANNERS_ADD'));
+
         //Group filter
         $bGroup =& Piwi::CreateWidget('Combo', 'bgroup_filter');
         $bGroup->setStyle('min-width:150px;');
@@ -74,15 +76,14 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $btnCancel->AddEvent(ON_CLICK, "javascript:stopAction();");
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $tpl->SetVariable('incompleteBannerFields', _t('BANNER_BANNERS_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmBannerDelete',    _t('BANNER_BANNERS_CONFIRM_DELETE'));
-        $tpl->SetVariable('legend_title',           _t('BANNER_BANNERS_ADD'));
-        $tpl->SetVariable('addBanner_title',        _t('BANNER_BANNERS_ADD'));
-        $tpl->SetVariable('editBanner_title',       _t('BANNER_BANNERS_EDIT'));
+        $this->gadget->layout->setVariable('incompleteBannerFields', _t('BANNER_BANNERS_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('confirmBannerDelete',    _t('BANNER_BANNERS_CONFIRM_DELETE'));
+        $this->gadget->layout->setVariable('addBanner_title',        _t('BANNER_BANNERS_ADD'));
+        $this->gadget->layout->setVariable('editBanner_title',       _t('BANNER_BANNERS_EDIT'));
 
-        $tpl->SetVariable('textTemplate',  $text_banner);
-        $tpl->SetVariable('imageTemplate', $image_banner);
-        $tpl->SetVariable('flashTemplate', $flash_banner);
+        $this->gadget->layout->setVariable('textTemplate',  $text_banner);
+        $this->gadget->layout->setVariable('imageTemplate', $image_banner);
+        $this->gadget->layout->setVariable('flashTemplate', $flash_banner);
 
         $tpl->ParseBlock('Banners');
         return $tpl->Get();
@@ -145,17 +146,17 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
 
         $btnText =& Piwi::CreateWidget('Button','btn_text', '', 'gadgets/Banner/Resources/images/text.png');
         $btnText->SetTitle(_t('BANNER_BANNERS_BANNERTYPE_TEXT'));
-        $btnText->AddEvent(ON_CLICK, 'javascript:setTemplate(textTemplate);');
+        $btnText->AddEvent(ON_CLICK, 'javascript:setTemplate(jaws.gadgets.Banner.textTemplate);');
         $tpl->SetVariable('btn_text', $btnText->Get());
 
         $btnImage =& Piwi::CreateWidget('Button','btn_image', '', 'gadgets/Banner/Resources/images/image.png');
         $btnImage->SetTitle(_t('BANNER_BANNERS_BANNERTYPE_IMAGE'));
-        $btnImage->AddEvent(ON_CLICK, 'javascript:setTemplate(imageTemplate);');
+        $btnImage->AddEvent(ON_CLICK, 'javascript:setTemplate(jaws.gadgets.Banner.imageTemplate);');
         $tpl->SetVariable('btn_image', $btnImage->Get());
 
         $btnFlash =& Piwi::CreateWidget('Button','btn_flash', '', 'gadgets/Banner/Resources/images/flash.png');
         $btnFlash->SetTitle(_t('BANNER_BANNERS_BANNERTYPE_FLASH'));
-        $btnFlash->AddEvent(ON_CLICK, 'javascript:setTemplate(flashTemplate);');
+        $btnFlash->AddEvent(ON_CLICK, 'javascript:setTemplate(jaws.gadgets.Banner.flashTemplate);');
         $tpl->SetVariable('btn_flash', $btnFlash->Get());
 
         $btnReset =& Piwi::CreateWidget('Button','btn_reset', '', STOCK_UNDO);

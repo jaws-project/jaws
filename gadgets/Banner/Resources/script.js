@@ -195,7 +195,7 @@ function saveBanner()
         !$('#template').val() ||
         $('#gid').val() == 0)
     {
-        alert(incompleteBannerFields);
+        alert(jaws.gadgets.Banner.incompleteBannerFields);
         return false;
     }
 
@@ -255,7 +255,7 @@ function saveGroup()
         BannerAjax.callAsync('AddBannersToGroup', [selectedGroup, keys]);
     } else {
         if (!$('#title').val()) {
-            alert(incompleteGroupFields);
+            alert(jaws.gadgets.Banner.incompleteGroupFields);
             return false;
         }
 
@@ -293,7 +293,7 @@ function deleteBanner(element, bid)
 {
     stopAction();
     selectDataGridRow(element.parentNode.parentNode);
-    var answer = confirm(confirmBannerDelete);
+    var answer = confirm(jaws.gadgets.Banner.confirmBannerDelete);
     if (answer) {
         BannerAjax.callAsync('DeleteBanner', bid);
     }
@@ -305,7 +305,7 @@ function deleteBanner(element, bid)
  */
 function resetViews(bid)
 {
-    var answer = confirm(confirmResetBannerViews);
+    var answer = confirm(jaws.gadgets.Banner.confirmResetBannerViews);
     if (answer) {
         BannerAjax.callAsync('ResetViews', bid);
     }
@@ -316,7 +316,7 @@ function resetViews(bid)
  */
 function resetClicks(bid)
 {
-    var answer = confirm(confirmResetBannerClicks);
+    var answer = confirm(jaws.gadgets.Banner.confirmResetBannerClicks);
     if (answer) {
         BannerAjax.callAsync('ResetClicks', bid);
     }
@@ -327,7 +327,7 @@ function resetClicks(bid)
  */
 function deleteGroup()
 {
-    var answer = confirm(confirmGroupDelete);
+    var answer = confirm(jaws.gadgets.Banner.confirmGroupDelete);
     if (answer) {
         BannerAjax.callAsync('DeleteGroup', selectedGroup);
     }
@@ -358,7 +358,7 @@ function editBanner(element, bid)
 {
     if (bid == 0) return;
     currentAction = 'Banners';
-    $('#legend_title').html(editBanner_title);
+    $('#legend_title').html(jaws.gadgets.Banner.editBanner_title);
 
     selectDataGridRow(element.parentNode.parentNode);
 
@@ -494,7 +494,7 @@ function stopAction()
 {
     switch(currentAction) {
     case 'Banners':
-        $('#legend_title').html(addBanner_title);
+        $('#legend_title').html(jaws.gadgets.Banner.addBanner_title);
         defaultTemplate = '';
         $('#bid').val(0);
         $('#title').val('');
@@ -567,6 +567,25 @@ function editGroupBanners()
     }
 }
 
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'Banners':
+            currentAction = 'Banners';
+            $('#bgroup_filter').prop('selectedIndex', 0);
+            initDataGrid('banners_datagrid', BannerAjax, getBannersDataGrid);
+            break;
+
+        case 'Groups':
+            $('#groups_combo').selectedIndex = -1;
+            break;
+
+        case 'Reports':
+            $('#bgroup_filter').selectedIndex = 0;
+            initDataGrid('reports_datagrid', BannerAjax, getBannersDataGrid);
+            break;
+    }
+});
+
 var BannerAjax = new JawsAjax('Banner', BannerCallback);
 
 // can for submit?
@@ -591,3 +610,5 @@ var currentAction = null;
 //Which row selected in DataGrid
 var selectedRow = null;
 var selectedRowColor = null;
+
+var defaultTemplate        = "";
