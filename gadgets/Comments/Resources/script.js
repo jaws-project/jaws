@@ -173,7 +173,7 @@ function updateComment(sendEmail) {
 function commentDelete(id)
 {
     stopCommentAction();
-    if (confirm(confirmCommentDelete)) {
+    if (confirm(jaws.gadgets.Comments.confirmCommentDelete)) {
         CommentsAjax.callAsync('DeleteComments', new Array(id));
     }
     unselectGridRow('comments_datagrid');
@@ -191,7 +191,7 @@ function commentDGAction(combo)
     }
 
     if (combo.val() == 'delete') {
-        var confirmation = confirm(confirmCommentDelete);
+        var confirmation = confirm(jaws.gadgets.Comments.confirmCommentDelete);
         if (confirmation) {
             CommentsAjax.callAsync('DeleteComments', rows);
         }
@@ -224,6 +224,18 @@ function SaveSettings()
         ]
     );
 }
+
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'Comments':
+            $('gadgets_filter').selectedIndex = 0;
+            initDataGrid('comments_datagrid', CommentsAjax, getCommentsDataGrid);
+            break;
+
+        case 'Settings':
+            break;
+    }
+});
 
 var CommentsAjax = new JawsAjax('Comments', CommentsCallback),
     selectedRow = null,

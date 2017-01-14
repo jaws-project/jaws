@@ -21,6 +21,8 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
     function Comments($req_gadget = '', $menubar = '')
     {
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('confirmCommentDelete', _t('COMMENTS_CONFIRM_DELETE'));
+
         $tpl = $this->gadget->template->loadAdmin('Comments.html');
         $tpl->SetBlock('Comments');
         //Menu bar
@@ -113,10 +115,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
             $tpl->SetVariable('btn_reply', $btnReply->Get());
         }
 
-        $tpl->SetVariable('incompleteCommentsFields', _t('COMMENTS_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmCommentDelete',    _t('COMMENTS_CONFIRM_DELETE'));
-        $tpl->SetVariable('legend_title',            _t('COMMENTS_EDIT_MESSAGE_DETAILS'));
-        $tpl->SetVariable('messageDetail_title',     _t('COMMENTS_EDIT_MESSAGE_DETAILS'));
+        $tpl->SetVariable('legend_title', _t('COMMENTS_EDIT_MESSAGE_DETAILS'));
 
         $tpl->ParseBlock('Comments');
         return $tpl->Get();
