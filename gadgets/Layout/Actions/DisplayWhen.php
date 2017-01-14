@@ -61,7 +61,7 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
             $displayCombo->SetDefault('selected');
             $tpl->SetVariable('selected_display', 'block');
         }
-        $displayCombo->AddEvent(ON_CHANGE, "showGadgets();");
+        $displayCombo->AddEvent(ON_CHANGE, "parent.parent.showGadgets(document);");
         $tpl->SetVariable('display_in_combo', $displayCombo->Get());
 
         // Display in list
@@ -77,7 +77,10 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
         $tpl->SetVariable('selected_gadgets', $gadget_field->Get());
 
         $saveButton =& Piwi::CreateWidget('Button', 'ok',_t('GLOBAL_SAVE'), STOCK_SAVE);
-        $saveButton->AddEvent(ON_CLICK, "parent.parent.saveChangeDW(".$layoutElement['id'].", getSelectedGadgets());");
+        $saveButton->AddEvent(
+            ON_CLICK,
+            "parent.parent.saveChangeDW(".$layoutElement['id'].", parent.parent.getSelectedGadgets(document));"
+        );
         $tpl->SetVariable('save', $saveButton->Get());
 
         $tpl->ParseBlock('template');

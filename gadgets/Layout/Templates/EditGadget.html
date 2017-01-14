@@ -7,34 +7,6 @@
 <link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style{{.dir}}.css" />
 <link rel="stylesheet" media="screen" type="text/css" href="gadgets/Layout/Resources/style2{{.dir}}.css" />
 <script type="text/javascript" src="libraries/jquery/jquery.js"></script>
-<script type="text/javascript">
-  function getAction(lid, gadget) {
-    var action = $('#form_actions_list input[type="radio"][name="action"]:checked');
-    if (action.length == 0) {
-        alert('!!!!!!!!!!');
-        return;
-    }
-
-    title = $('#action_'+action.val()).children('label').first().html();
-    desc = $('#action_'+action.val()).children('span').first().html();
-
-    var params = null;
-    var paramElemets = $('#action_'+action.val()).find('select,input:not([type=radio])');
-    if (paramElemets.length > 0) {
-        params = new Array();
-        $.each(paramElemets, function(index, elParam) {
-            if (elParam.type == 'checkbox') {
-                params[index] = Number(elParam.checked);
-            } else {
-                params[index] = elParam.value;
-            }
-        });
-        params = params.join();
-    }
-
-    parent.parent.saveElementAction(lid, gadget, action.val(), params, title, desc);
-  }
-</script>
 </head>
 <body>
 <div id="g-info">
