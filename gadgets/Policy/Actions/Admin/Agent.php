@@ -85,6 +85,8 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('AgentBlocking');
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('incompleteFields',   _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('confirmAgentDelete', _t('POLICY_RESPONSE_CONFIRM_DELETE_AGENT'));
 
         $tpl = $this->gadget->template->loadAdmin('AgentBlocking.html');
         $tpl->SetBlock('agentblocking');
@@ -125,9 +127,6 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
             $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
             $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
             $tpl->SetVariable('btn_cancel', $btnCancel->Get());
-
-            $tpl->SetVariable('incompleteFields',   _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
-            $tpl->SetVariable('confirmAgentDelete', _t('POLICY_RESPONSE_CONFIRM_DELETE_AGENT'));
         }
 
         $tpl->ParseBlock('agentblocking');

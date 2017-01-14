@@ -127,7 +127,7 @@ function toggleCaptcha(field)
 function saveIPRange()
 {
     if (!$('#from_ipaddress').val()) {
-        alert(incompleteFields);
+        alert(jaws.gadgets.Policy.incompleteFields);
         return false;
     }
 
@@ -174,7 +174,7 @@ function deleteIPRange(element, id)
 {
     stopAction();
     selectDataGridRow($(element).parent().parent()[0]);
-    var answer = confirm(confirmIPRangeDelete);
+    var answer = confirm(jaws.gadgets.Policy.confirmIPRangeDelete);
     if (answer) {
         PolicyAjax.callAsync('DeleteIPRange', id);
     }
@@ -187,7 +187,7 @@ function deleteIPRange(element, id)
 function saveAgent()
 {
     if (!$('#agent').val()) {
-        alert(incompleteFields);
+        alert(jaws.gadgets.Policy.incompleteFields);
         return false;
     }
 
@@ -223,7 +223,7 @@ function deleteAgent(element, id)
 {
     stopAction();
     selectDataGridRow($(element).parent().parent()[0]);
-    var answer = confirm(confirmAgentDelete);
+    var answer = confirm(jaws.gadgets.Policy.confirmAgentDelete);
     if (answer) {
         PolicyAjax.callAsync('DeleteAgent', id);
     }
@@ -361,6 +361,32 @@ function stopAction()
             break;
     }
 }
+
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'IPBlocking':
+            currentAction = 'IPBlocking';
+            initDataGrid('blocked_ips_datagrid', PolicyAjax);
+            break;
+
+        case 'AgentBlocking':
+            currentAction = 'AgentBlocking';
+            initDataGrid('blocked_agents_datagrid', PolicyAjax);
+            break;
+
+        case 'Encryption':
+            currentAction = 'Encryption';
+            break;
+
+        case 'AntiSpam':
+            currentAction = 'AntiSpam';
+            break;
+
+        case 'AdvancedPolicies':
+            currentAction = 'AdvancedPolicies';
+            break;
+    }
+});
 
 var PolicyAjax = new JawsAjax('Policy', PolicyCallback);
 

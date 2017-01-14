@@ -88,6 +88,8 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('IPBlocking');
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('incompleteFields',     _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('confirmIPRangeDelete', _t('POLICY_RESPONSE_CONFIRM_DELETE_IP'));
 
         $tpl = $this->gadget->template->loadAdmin('IPBlocking.html');
         $tpl->SetBlock('ipblocking');
@@ -133,9 +135,6 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
             $btnCancel =& Piwi::CreateWidget('Button', 'btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
             $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
             $tpl->SetVariable('btn_cancel', $btnCancel->Get());
-
-            $tpl->SetVariable('incompleteFields',     _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
-            $tpl->SetVariable('confirmIPRangeDelete', _t('POLICY_RESPONSE_CONFIRM_DELETE_IP'));
         }
 
         $tpl->ParseBlock('ipblocking');
