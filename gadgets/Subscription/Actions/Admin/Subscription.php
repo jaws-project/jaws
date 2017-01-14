@@ -15,10 +15,10 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
     function Subscription()
     {
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('confirmSubscriptionDelete', _t('GLOBAL_CONFIRM_DELETE'));
+
         $tpl = $this->gadget->template->loadAdmin('Subscription.html');
         $tpl->SetBlock('Subscription');
-
-        $model = $this->gadget->model->load('Subscription');
 
         //Menu bar
         $tpl->SetVariable('menubar', $this->MenuBar('Subscription'));
@@ -45,7 +45,7 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
         $tpl->SetVariable('lbl_filter_email', _t('GLOBAL_EMAIL'));
 
         // Gadgets Filter
-        $gadgets = $model->GetSubscriptionGadgets();
+        $gadgets = $this->gadget->model->load('Subscription')->GetSubscriptionGadgets();
         $gadgetsCombo =& Piwi::CreateWidget('Combo', 'filter_gadget');
         $gadgetsCombo->AddOption(_t('GLOBAL_ALL'), "", false);
         foreach ($gadgets as $name=>$title) {
@@ -87,8 +87,6 @@ class Subscription_Actions_Admin_Subscription extends Subscription_Actions_Admin
         $btnCancel->AddEvent(ON_CLICK, 'stopAction();');
         $btnCancel->SetStyle('display:none;');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
-
-        $tpl->SetVariable('confirmSubscriptionDelete', _t('GLOBAL_CONFIRM_DELETE'));
 
         $tpl->ParseBlock('Subscription');
         return $tpl->Get();

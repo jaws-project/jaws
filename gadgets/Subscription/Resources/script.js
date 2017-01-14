@@ -65,7 +65,7 @@ function subscriptionDGAction(combo)
         if (rows.length < 1) {
             return;
         }
-        var confirmation = confirm(confirmSubscriptionDelete);
+        var confirmation = confirm(jaws.gadgets.Subscription.confirmSubscriptionDelete);
         if (confirmation) {
             SubscriptionAjax.callAsync('DeleteSubscriptions', rows);
         }
@@ -79,5 +79,14 @@ function searchSubscription()
 {
     getSubscriptions('subscription_datagrid', 0, true);
 }
+
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'Subscription':
+            initDataGrid('subscription_datagrid', SubscriptionAjax, getSubscriptions);
+            break;
+
+    }
+});
 
 var SubscriptionAjax = new JawsAjax('Subscription', SubscriptionCallback);
