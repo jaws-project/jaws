@@ -31,6 +31,7 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         $path = jaws()->request->fetch('path', 'get');
         $path = empty($path)? '/' : $path;
         $tpl->SetVariable('path', $path);
+        $this->gadget->layout->setVariable('path', $path);
 
         $tpl->SetVariable('lbl_location', _t('FILEBROWSER_LOCATION'));
         $tpl->SetVariable('location_link', $this->GetLocation($path));
@@ -53,9 +54,9 @@ class FileBrowser_Actions_Admin_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('dui',  $dHTML->GetDirectoryUI());
         $tpl->SetVariable('grid', $this->Datagrid($path));
 
-        $tpl->SetVariable('incompleteFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmFileDelete', _t('FILEBROWSER_CONFIRM_DELETE_FILE'));
-        $tpl->SetVariable('confirmDirDelete',  _t('FILEBROWSER_CONFIRM_DELETE_DIR'));
+        $this->gadget->layout->setVariable('incompleteFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('confirmFileDelete', _t('FILEBROWSER_CONFIRM_DELETE_FILE'));
+        $this->gadget->layout->setVariable('confirmDirDelete',  _t('FILEBROWSER_CONFIRM_DELETE_DIR'));
 
         $tpl->ParseBlock('filebrowser');
         return $tpl->Get();

@@ -169,7 +169,7 @@ function saveFile()
     if (!$('#uploadfile').val() &&
         !$('#filename').val())
     {
-        alert(incompleteFields);
+        alert(jaws.gadgets.FileBrowser.incompleteFields);
         return false;
     }
     if ($('#upload_switch').prop('checked') &&
@@ -195,7 +195,7 @@ function saveFile()
  */
 function delFile(element, file)
 {
-    if (confirm(confirmFileDelete)) {
+    if (confirm(jaws.gadgets.FileBrowser.confirmFileDelete)) {
         FileBrowserAjax.callAsync('DeleteFile2', [$('#path').val(), file]);
     }
 }
@@ -227,7 +227,7 @@ function editDir(element, dirname)
 function saveDir()
 {
     if (!$('#dirname').val()) {
-        alert(incompleteFields);
+        alert(jaws.gadgets.FileBrowser.incompleteFields);
         return false;
     }
 
@@ -248,7 +248,7 @@ function saveDir()
  */
 function delDir(element, dir)
 {
-    if (confirm(confirmDirDelete)) {
+    if (confirm(jaws.gadgets.FileBrowser.confirmDirDelete)) {
         FileBrowserAjax.callAsync('DeleteDir2', [$('#path').val(), dir]);
     }
     
@@ -294,6 +294,12 @@ function stopAction(tab)
     $('#dir_description').val('');
     $('#dir_fast_url').val('');
 }
+
+$(document).ready(function () {
+    $('#path').val(jaws.gadgets.FileBrowser.path);
+    stopAction('file');
+    initDataGrid('fb_datagrid', FileBrowserAjax, 'getFiles');
+});
 
 var FileBrowserAjax = new JawsAjax('FileBrowser', FileBrowserCallback);
 
