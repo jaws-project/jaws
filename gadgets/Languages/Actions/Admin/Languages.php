@@ -19,6 +19,9 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
     function Languages()
     {
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('confirmSaveData',     _t('LANGUAGES_SAVEDATA'));
+        $this->gadget->layout->setVariable('add_language_title',  _t('LANGUAGES_LANGUAGE_ADD'));
+        $this->gadget->layout->setVariable('save_language_title', _t('LANGUAGES_LANGUAGE_SAVE'));
 
         $tpl = $this->gadget->template->loadAdmin('Languages.html');
         $tpl->SetBlock('Languages');
@@ -27,7 +30,6 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
         $tpl->SetVariable('settings',   _t('LANGUAGES_SETTINGS'));
         $tpl->SetVariable('from',       _t('GLOBAL_FROM'));
         $tpl->SetVariable('to',         _t('GLOBAL_TO'));
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $btnExport =& Piwi::CreateWidget('Button','btn_export',
                                          _t('LANGUAGES_LANGUAGE_EXPORT'), STOCK_DOWN);
@@ -49,10 +51,6 @@ class Languages_Actions_Admin_Languages extends Jaws_Gadget_Action
             $tpl->SetVariable('btn_lang', $btnLang->Get());
         }
         $tpl->ParseBlock('Languages/properties');
-
-        $tpl->SetVariable('confirmSaveData',     _t('LANGUAGES_SAVEDATA'));
-        $tpl->SetVariable('add_language_title',  _t('LANGUAGES_LANGUAGE_ADD'));
-        $tpl->SetVariable('save_language_title', _t('LANGUAGES_LANGUAGE_SAVE'));
 
         // Langs
         $use_data_lang = $this->gadget->registry->fetch('use_data_lang') == 'true';

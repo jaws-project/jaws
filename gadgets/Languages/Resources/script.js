@@ -95,7 +95,7 @@ function setButtonTitle(title)
 function change_lang_option()
 {
     if (LangDataChanged) {
-        var answer = confirm(confirmSaveData);
+        var answer = confirm(jaws.gadgets.Languages.confirmSaveData);
         if (answer) {
             save_lang_data();
         }
@@ -109,7 +109,7 @@ function change_lang_option()
         $('#lang_code').val('');
         $('#lang_name').val('');
         if ($('#btn_lang')) {
-            setButtonTitle(add_language_title);
+            setButtonTitle(jaws.gadgets.Languages.add_language_title);
         } else {
             $('#lang_name').prop('disabled', true);
         }
@@ -123,7 +123,7 @@ function change_lang_option()
         $('#lang_code').val($('#lang :selected').val());
         $('#lang_name').val($('#lang :selected').text());
         if ($('#btn_lang')) {
-            setButtonTitle(save_language_title);
+            setButtonTitle(jaws.gadgets.Languages.save_language_title);
         } else {
             $('#lang_name').prop('disabled', true);
         }
@@ -191,6 +191,16 @@ function export_lang()
 {
     window.location= LanguagesAjax.baseScript + '?gadget=Languages&action=Export&lang=' + $('#lang').val();
 }
+
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'Languages':
+            change_lang_option();
+            $('component').selectedIndex = -1;
+            break;
+
+    }
+});
 
 var LanguagesAjax = new JawsAjax('Languages', LanguagesCallback);
 
