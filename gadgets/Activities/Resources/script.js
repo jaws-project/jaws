@@ -62,12 +62,12 @@ function activitiesDGAction(combo)
         if (rows.length < 1) {
             return;
         }
-        var confirmation = confirm(confirmActivitiesDelete);
+        var confirmation = confirm(jaws.gadgets.Activities.confirmActivitiesDelete);
         if (confirmation) {
             ActivitiesAjax.callAsync('DeleteActivities', rows);
         }
     } else if (combo.val() == 'deleteAll') {
-        var confirmation = confirm(confirmActivitiesDelete);
+        var confirmation = confirm(jaws.gadgets.Activities.confirmActivitiesDelete);
         if (confirmation) {
             ActivitiesAjax.callAsync('DeleteAllActivities');
         }
@@ -80,5 +80,9 @@ function searchActivities()
 {
     getActivities('datagrid', 0, true);
 }
+
+$(document).ready(function() {
+    initDataGrid('datagrid', ActivitiesAjax, getActivities);
+});
 
 var ActivitiesAjax = new JawsAjax('Activities', ActivitiesCallback);
