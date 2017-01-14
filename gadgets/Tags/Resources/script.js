@@ -220,7 +220,7 @@ function saveSettings()
 $(document).ready(function() {
     switch (jaws.core.mainAction) {
         case 'Tags':
-            $('gadgets_filter').selectedIndex = 0;
+            $('#gadgets_filter').selectedIndex = 0;
             initDataGrid('tags_datagrid', TagsAjax, getTagsDataGrid);
             break;
 
