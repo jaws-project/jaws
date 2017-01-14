@@ -47,9 +47,14 @@ function updateEmblem(id, el)
  */
 function deleteEmblem(id)
 {
-    if (confirm(confirmDelete)) {
+    if (confirm(jaws.gadgets.Emblems.confirmDelete)) {
         EmblemsAjax.callAsync('DeleteEmblem', id);
     }
 }
+
+$(document).ready(function() {
+    initDataGrid('emblems_datagrid', EmblemsAjax);
+
+});
 
 var EmblemsAjax = new JawsAjax('Emblems', EmblemsCallback);
