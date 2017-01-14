@@ -91,17 +91,17 @@ function logsDGAction(combo)
             return;
         }
 
-        var confirmation = confirm(confirmLogsDelete);
+        var confirmation = confirm(jaws.gadgets.Logs.confirmLogsDelete);
         if (confirmation) {
             LogsAjax.callAsync('DeleteLogs', rows);
         }
     } else if (combo.val() == 'deleteAll') {
-        var confirmation = confirm(confirmLogsDelete);
+        var confirmation = confirm(jaws.gadgets.Logs.confirmLogsDelete);
         if (confirmation) {
             LogsAjax.callAsync('DeleteLogsUseFilters', {'filters':null});
         }
     } else if (combo.val() == 'deleteFiltered') {
-        var confirmation = confirm(confirmLogsDelete);
+        var confirmation = confirm(jaws.gadgets.Logs.confirmLogsDelete);
         if (confirmation) {
             LogsAjax.callAsync('DeleteLogsUseFilters', {'filters':filters});
         }
@@ -159,6 +159,18 @@ function saveSettings()
         }
     );
 }
+
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'Logs':
+            $('gadgets_filter').selectedIndex = 0;
+            initDataGrid('logs_datagrid', LogsAjax, getLogs);
+            break;
+
+        case 'Settings':
+            break;
+    }
+});
 
 var LogsAjax = new JawsAjax('Logs', LogsCallback);
 cacheContactForm = null;

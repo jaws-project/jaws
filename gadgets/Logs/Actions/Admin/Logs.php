@@ -19,6 +19,8 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     function Logs()
     {
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('confirmLogsDelete', _t('LOGS_CONFIRM_DELETE'));
+
         $tpl = $this->gadget->template->loadAdmin('Logs.html');
         $tpl->SetBlock('Logs');
 
@@ -127,8 +129,6 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
         $btnCancel->AddEvent(ON_CLICK, 'stopAction();');
         $btnCancel->SetStyle('display:none;');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
-
-        $tpl->SetVariable('confirmLogsDelete', _t('LOGS_CONFIRM_DELETE'));
         $tpl->SetVariable('legend_title',     _t('LOGS_LOG_DETAILS'));
 
         $tpl->ParseBlock('Logs');
