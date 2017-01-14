@@ -590,6 +590,8 @@ function initDataGrid(name, objectName, dataFunc)
                 JawsDataGrid.getLastValues();
         };
 
+        $('#'+name)[0].onLoadingData = showWorkingNotification;
+        $('#'+name)[0].onLoadedData = hideWorkingNotification;
         getDG();
     } else {
         $('#'+name)[0].dataFunc = dataFunc;
@@ -618,6 +620,8 @@ function initDataGrid(name, objectName, dataFunc)
             $('#'+name)[0].lastPage();
         };
 
+        $('#'+name)[0].onLoadingData = showWorkingNotification;
+        $('#'+name)[0].onLoadedData = hideWorkingNotification;
         getDG(name);
     }
 }

@@ -167,8 +167,6 @@ class Jaws_Gadget_Action
             'DATAGRID_PAGER_PREVACTION'  => 'javascript: previousValues(); return false;',
             'DATAGRID_PAGER_NEXTACTION'  => 'javascript: nextValues(); return false;',
             'DATAGRID_PAGER_LASTACTION'  => 'javascript: lastValues(); return false;',
-            'DATAGRID_DATA_ONLOADING'    => 'showWorkingNotification;',
-            'DATAGRID_DATA_ONLOADED'     => 'hideWorkingNotification;',
         );
         Piwi::addExtraConf($config);
     }
