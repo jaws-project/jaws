@@ -229,7 +229,7 @@ function JawsAjax(gadget, callback, baseScript)
                 if (this.loadingMessage) {
                     loadingMessage = this.loadingMessage;
                 } else {
-                    loadingMessage = (typeof default_loading_message === 'undefined')? '...' : default_loading_message;
+                    loadingMessage = jaws.core.loadingMessage || '...';
                 }
                 $(this.msgBox).html(loadingMessage).attr('class', 'response_loading');
                 $(this.msgBox).stop(true, true).fadeIn();

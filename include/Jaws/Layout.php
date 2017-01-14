@@ -99,6 +99,7 @@ class Jaws_Layout
         $this->_Languages[] = $GLOBALS['app']->GetLanguage();
         $this->SetVariable('mainGadget', $GLOBALS['app']->mainGadget);
         $this->SetVariable('mainAction', $GLOBALS['app']->mainAction);
+        $this->SetVariable('loadingMessage', _t('GLOBAL_LOADING'));
     }
 
     /**
@@ -205,7 +206,6 @@ class Jaws_Layout
         }
 
         $this->_Template->SetVariable('encoding', 'utf-8');
-        $this->_Template->SetVariable('loading-message', _t('GLOBAL_LOADING'));
     }
 
     /**
