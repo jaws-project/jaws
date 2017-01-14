@@ -25,20 +25,6 @@
     <td class="buttons">{{btn_cancel}} {{btn_save}}</td>
   </tr>
 </table>
-<script type="text/javascript">
-  $('#bgroup_filter').prop('selectedIndex', 0);
-  var incompleteQuestionFields = "{{incompleteQuestionFields}}";
-  var confirmQuestionDelete    = "{{confirmQuestionDelete}}";
-  var addQuestion_title        = "{{addQuestion_title}}";
-  var editQuestion_title       = "{{editQuestion_title}}";
-  var textTemplate           = "{{textTemplate}}";
-  var imageTemplate          = "{{imageTemplate}}";
-  var flashTemplate          = "{{flashTemplate}}";
-
-  currentAction = 'Questions';
-  stopAction();
-  initDataGrid('questions_datagrid', FaqAjax, getQuestionsDataGrid);
-</script>
 <!-- END Questions -->
 
 <!-- BEGIN QuestionInfo -->

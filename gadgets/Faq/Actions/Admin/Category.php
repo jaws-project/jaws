@@ -63,11 +63,12 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
         $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $tpl->SetVariable('legend_title',            _t('FAQ_ADD_CATEGORY'));
-        $tpl->SetVariable('add_category_title',      _t('FAQ_ADD_CATEGORY'));
-        $tpl->SetVariable('edit_category_title',     _t('FAQ_EDIT_CATEGORY'));
-        $tpl->SetVariable('confirm_category_delete', _t('FAQ_CONFIRM_DELETE_CATEGORY'));
-        $tpl->SetVariable('incomplete_fields',       _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $tpl->SetVariable('legend_title',          _t('FAQ_ADD_CATEGORY'));
+
+        $this->gadget->layout->setVariable('addCategory_title',     _t('FAQ_ADD_CATEGORY'));
+        $this->gadget->layout->setVariable('editCategory_title',    _t('FAQ_EDIT_CATEGORY'));
+        $this->gadget->layout->setVariable('confirmCategoryDelete', _t('FAQ_CONFIRM_DELETE_CATEGORY'));
+        $this->gadget->layout->setVariable('incomplete_fields',     _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
 
         $tpl->ParseBlock('Categories');
         return $tpl->Get();
