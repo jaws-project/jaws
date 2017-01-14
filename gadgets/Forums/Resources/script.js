@@ -25,11 +25,12 @@ var ForumsCallback = {
  * Select Tree row
  *
  */
-function selectTreeRow(rowElement)
+function selectTreeRow(fid)
 {
     if (selectedRow) {
         selectedRow.style.backgroundColor = selectedRowColor;
     }
+    rowElement = $('#forum_' + fid).get(0);
     selectedRowColor = rowElement.style.backgroundColor;
     rowElement.style.backgroundColor = '#eec';
     selectedRow = rowElement;
@@ -272,7 +273,7 @@ function editGroup(gid)
 function editForum(element, fid)
 {
     if (fid == 0) return;
-    selectTreeRow(element.parentNode);
+    selectTreeRow(fid);
     if (cacheForumForm == null) {
         cacheForumForm = ForumsAjax.callSync('GetForumUI');
     }
@@ -311,9 +312,9 @@ function delForums()
             cacheForumForm = null;
             var response = ForumsAjax.callSync('DeleteGroup', gid);
             if (response['type'] == 'alert-success') {
-                Element.destroy($('#group_'+gid));
-                stopAction();
+                $('#group_'+gid).remove();
             }
+            stopAction();
             ForumsAjax.showResponse(response);
         }
     } else {
@@ -325,9 +326,9 @@ function delForums()
         if (confirm(msg)) {
             var response = ForumsAjax.callSync('DeleteForum', fid);
             if (response['type'] == 'alert-success') {
-                Element.destroy($('#forum_'+fid));
-                stopAction();
+                $('#forum_'+fid).remove();
             }
+            stopAction();
             ForumsAjax.showResponse(response);
         }
     }
