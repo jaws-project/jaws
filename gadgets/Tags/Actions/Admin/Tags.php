@@ -18,6 +18,11 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
     function Tags($gadget='', $url='')
     {
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('incompleteTagFields',   _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('confirmTagDelete',      _t('TAGS_CONFIRM_DELETE'));
+        $this->gadget->layout->setVariable('selectMoreThanOneTags', _t('TAGS_SELECT_MORE_THAN_ONE_TAG_FOR_MERGE'));
+        $this->gadget->layout->setVariable('addTagTitle',           _t('TAGS_ADD_TAG'));
+        $this->gadget->layout->setVariable('editTagTitle',          _t('TAGS_EDIT_TAG'));
 
         $tpl = $this->gadget->template->loadAdmin('Tags.html');
         $tpl->SetBlock('tags');
@@ -96,13 +101,6 @@ class Tags_Actions_Admin_Tags extends Tags_Actions_Admin_Default
             $btnSave->AddEvent(ON_CLICK, "updateTag();");
             $tpl->SetVariable('btn_save', $btnSave->Get());
         }
-
-        $tpl->SetVariable('incompleteTagFields',    _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmTagDelete',       _t('TAGS_CONFIRM_DELETE'));
-        $tpl->SetVariable('selectMoreThanOneTags',  _t('TAGS_SELECT_MORE_THAN_ONE_TAG_FOR_MERGE'));
-        $tpl->SetVariable('legend_title',           _t('TAGS_ADD_TAG'));
-        $tpl->SetVariable('editTagTitle',           _t('TAGS_EDIT_TAG'));
-        $tpl->SetVariable('tagDetail_title',        _t('TAGS_EDIT_TAG'));
 
         $tpl->ParseBlock('tags');
         return $tpl->Get();

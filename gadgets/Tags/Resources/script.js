@@ -84,7 +84,7 @@ function stopTagAction()
     $('#meta_description').val('');
     $('#btn_cancel').css('display', 'none');
     $('#name').prop('disabled', false);
-    $('#legend_title').html(addNewTagTitle);
+    $('#legend_title').html(jaws.gadgets.Tags.addTagTitle);
 
     unselectGridRow('tags_datagrid');
     $('#name').focus();
@@ -105,7 +105,7 @@ function editTag(rowElement, id)
     $('#meta_keywords').val(tag['meta_keywords']);
     $('#meta_description').val(tag['meta_description']);
     $('#btn_cancel').css('display', 'inline');
-    $('#legend_title').html(editTagTitle);
+    $('#legend_title').html(jaws.gadgets.Tags.editTagTitle);
 }
 
 /**
@@ -114,7 +114,7 @@ function editTag(rowElement, id)
 function updateTag()
 {
     if (!$('#name').val()) {
-        alert(incompleteTafFields);
+        alert(jaws.gadgets.Tags.incompleteTagFields);
         return false;
     }
 
@@ -149,7 +149,7 @@ function updateTag()
 function deleteTag(id)
 {
     stopTagAction();
-    if (confirm(confirmTagDelete)) {
+    if (confirm(jaws.gadgets.Tags.confirmTagDelete)) {
         TagsAjax.callAsync('DeleteTags', new Array(id));
     }
     unselectGridRow('tags_datagrid');
@@ -167,13 +167,13 @@ function tagsDGAction(combo)
     }
 
     if (combo.val() == 'delete') {
-        var confirmation = confirm(confirmTagDelete);
+        var confirmation = confirm(jaws.gadgets.Tags.confirmTagDelete);
         if (confirmation) {
             TagsAjax.callAsync('DeleteTags', rows);
         }
     } else if (combo.val() == 'merge') {
         if(rows.length<2) {
-            alert(selectMoreThanOneTags);
+            alert(jaws.gadgets.Tags.selectMoreThanOneTags);
             return;
         }
         var newName = prompt("Please enter new tag name:");
@@ -216,6 +216,18 @@ function saveSettings()
 {
     TagsAjax.callAsync('SaveSettings', $('#tag_results_limit').val());
 }
+
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'Tags':
+            $('gadgets_filter').selectedIndex = 0;
+            initDataGrid('tags_datagrid', TagsAjax, getTagsDataGrid);
+            break;
+
+        case 'Properties':
+            break;
+    }
+});
 
 var TagsAjax = new JawsAjax('Tags', TagsCallback),
     selectedRow = null,
