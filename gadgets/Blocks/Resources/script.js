@@ -85,13 +85,13 @@ function updateBlock()
         contents = getEditorValue('#block_contents');
         if (!title || !contents)
         {
-            alert(incompleteBlockFields);
+            alert(jaws.gadgets.Blocks.incompleteBlockFields);
             return false;
         }
 
         displayTitle = $('#display_title_true').prop('checked');
         // Call function
-        loading_message = updatingMessage;
+        loading_message = jaws.gadgets.Blocks.updatingMessage;
         BlocksAjax.callAsync('UpdateBlock', [id, title, contents, displayTitle]);
         // Update Combo
         var combo = $('#block_id')[0];
@@ -107,7 +107,7 @@ function deleteBlock()
 {
     id = $('#hidden_id').val();
     $('#block_id').prop('disabled', true);
-    loading_message = deletingMessage;
+    loading_message = jaws.gadgets.Blocks.deletingMessage;
     BlocksAjax.callAsync('DeleteBlock', id);
 }
 
@@ -124,23 +124,23 @@ function switchTab(c, title)
 
     if (c == 'edit') {
         if (currentMode == 'new') {
-            if (!aclAddBlock) {
+            if (!jaws.gadgets.Blocks.aclAddBlock) {
                 if ($('#saveButton').length) {
                     $('#saveButton').css('display', 'none');
                 }
             }
 
-            if (aclDeleteBlock) {
+            if (jaws.gadgets.Blocks.aclDeleteBlock) {
                 $('#delButton').css('display', 'none');
             }
 
             $('#cancelButton').css('display', 'inline');
         } else {
-            if (!aclEditBlock) {
+            if (!jaws.gadgets.Blocks.aclEditBlock) {
                 $('#saveButton').css('display', 'none');
             }
 
-            if (aclDeleteBlock) {
+            if (jaws.gadgets.Blocks.aclDeleteBlock) {
                 $('#delButton').css('display', 'inline');
             }
 
@@ -166,7 +166,7 @@ function edit(id)
     previousID  = id;
     currentMode = 'edit';
     $('#block_id').prop('disabled', false);
-    loading_message = retrievingMessage;
+    loading_message = jaws.gadgets.Blocks.retrievingMessage;
     var block = BlocksAjax.callSync('GetBlock', id);
     fillEditorEntries(block);
     $('#block_id_txt').html(id);
@@ -211,13 +211,13 @@ function newBlock()
     contents = getEditorValue('#block_contents');
     if (!$('#block_title').val() || !contents)
     {
-        alert(incompleteBlockFields);
+        alert(jaws.gadgets.Blocks.incompleteBlockFields);
         return false;
     }
 
     displayTitle = $('#display_title_true').prop('checked');
     // Call function
-    loading_message = savingMessage;
+    loading_message = jaws.gadgets.Blocks.savingMessage;
     BlocksAjax.callAsync('NewBlock', [$('#block_title').val(), contents, displayTitle]);
 }
 
@@ -251,7 +251,7 @@ function returnToEdit()
             b.disabled = true;
             combo.disabled = true;
         } else {
-            loading_message = retrievingMessage;
+            loading_message = jaws.gadgets.Blocks.retrievingMessage;
             var block = BlocksAjax.callSync('GetBlock', previousID);
             fillEditorEntries(block);
             b.disabled = false;
@@ -278,6 +278,10 @@ function getFirst()
         createNewBlock();
     }
 }
+
+$(document).ready(function() {
+    getFirst();
+});
 
 var BlocksAjax = new JawsAjax('Blocks', BlocksCallback),
     currentMode = 'edit',

@@ -106,17 +106,17 @@ class Blocks_Actions_Admin_Blocks extends Jaws_Gadget_Action
         $tpl->SetVariable('edit_button', $edit->Get());
 
         // Messages
-        $tpl->SetVariable('incompleteBlockFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('retrieving_message',    _t('BLOCKS_MSGRETRIEVING'));
-        $tpl->SetVariable('updating_message',      _t('BLOCKS_MSGUPDATING'));
-        $tpl->SetVariable('deleting_message',      _t('BLOCKS_MSGDELETING'));
-        $tpl->SetVariable('saving_message',        _t('BLOCKS_MSGSAVING'));
-        $tpl->SetVariable('sending_message',       _t('BLOCKS_MSGSENDING'));
+        $this->gadget->layout->setVariable('incompleteBlockFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('retrievingMessage',    _t('BLOCKS_MSGRETRIEVING'));
+        $this->gadget->layout->setVariable('updatingMessage',      _t('BLOCKS_MSGUPDATING'));
+        $this->gadget->layout->setVariable('deletingMessage',      _t('BLOCKS_MSGDELETING'));
+        $this->gadget->layout->setVariable('savingMessage',        _t('BLOCKS_MSGSAVING'));
+        $this->gadget->layout->setVariable('sendingMessage',       _t('BLOCKS_MSGSENDING'));
 
         // Acl
-        $tpl->SetVariable('acl_add', $this->gadget->GetPermission('AddBlock')?'true':'false');
-        $tpl->SetVariable('acl_edit', $this->gadget->GetPermission('EditBlock')?'true':'false');
-        $tpl->SetVariable('acl_delete', $this->gadget->GetPermission('DeleteBlock')?'true':'false');
+        $this->gadget->layout->setVariable('aclAddBlock', $this->gadget->GetPermission('AddBlock')?'true':'false');
+        $this->gadget->layout->setVariable('aclEditBlock', $this->gadget->GetPermission('EditBlock')?'true':'false');
+        $this->gadget->layout->setVariable('aclDeleteBlock', $this->gadget->GetPermission('DeleteBlock')?'true':'false');
 
         $tpl->ParseBlock('blocks');
         return $tpl->Get();
