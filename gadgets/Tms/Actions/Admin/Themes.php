@@ -41,13 +41,10 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
     function Themes()
     {
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('confirmDeleteTheme', _t('TMS_THEMES_DELETE_CONFIRM'));
 
         $tpl = $this->gadget->template->loadAdmin('Themes.html');
         $tpl->SetBlock('Tms');
-
-        $tpl->SetVariable('confirmUninstallTheme', _t('TMS_THEMES_UNINSTALL_CONFIRM'));
-        $tpl->SetVariable('confirmDeleteTheme', _t('TMS_THEMES_DELETE_CONFIRM'));
-        $tpl->SetVariable('noAvailableData', _t('TMS_THEMES_NOTHING'));
 
         $themesCombo =& Piwi::CreateWidget('ComboGroup', 'themes_combo');
         $themesCombo->SetID('themes_combo');

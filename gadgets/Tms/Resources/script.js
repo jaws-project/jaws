@@ -138,7 +138,7 @@ function deleteTheme()
     if (selectedTheme == '') {
         return false;
     }
-    if (!confirm(confirmDeleteTheme)) {
+    if (!confirm(jaws.gadgets.Tms.confirmDeleteTheme)) {
         return false;
     }
 
@@ -260,6 +260,15 @@ function saveSettings()
 {
     TmsAjax.callAsync('savesettings', $('#share_themes').val());
 }
+
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'Themes':
+            $('#themes_combo').prop('selectedIndex', -1);
+            break;
+
+    }
+});
 
 var TmsAjax = new JawsAjax('Tms', TmsCallback),
     selectedTheme = null,
