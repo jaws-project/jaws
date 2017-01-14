@@ -170,7 +170,7 @@ function stopAction()
 function editContact(element, id)
 {
     currentAction = 'Contacts';
-    $('#legend_title').html(messageDetail_title);
+    $('#legend_title').html(jaws.gadgets.Contact.messageDetail_title);
     if (cacheContactForm != null) {
         $('#c_work_area').html(cacheContactForm);
     }
@@ -196,7 +196,7 @@ function editContact(element, id)
     $('#btn_cancel').css('display', 'inline');
 
     if (contact['attachment']) {
-        $('#attachment').attr('href', dataURL + contact['attachment']);
+        $('#attachment').attr('href', jaws.gadgets.Contact.dataURL + contact['attachment']);
         $('#attachment').html(contact['attachment']);
         $('#tr_attachment').show();
     } else {
@@ -221,7 +221,7 @@ function editReply(element, id)
     currentAction = 'Reply';
 
     selectedContact = id;
-    $('#legend_title').html(contactReply_title);
+    $('#legend_title').html(jaws.gadgets.Contact.contactReply_title);
     $('#c_work_area').html(cacheReplyForm);
     var replyData = ContactAjax.callSync('GetReply', selectedContact);
     $('#id').val(replyData['id']);
@@ -281,7 +281,7 @@ function deleteContact(element, id)
 {
     stopAction();
     selectDataGridRow($(element).parent().parent());
-    if (confirm(confirmContactDelete)) {
+    if (confirm(jaws.gadgets.Contact.confirmContactDelete)) {
         ContactAjax.callAsync('DeleteContact', id);
     }
     unselectDataGridRow();
@@ -328,7 +328,7 @@ function updateRecipient()
     if (!$('#name').val() ||
         !$('#email').val() ||
         !isValidEmail($('#email')[0].value.trim())) {
-        alert(incompleteRecipientFields);
+        alert(jaws.gadgets.Contact.incompleteRecipientFields);
         return;
     }
 
@@ -367,7 +367,7 @@ function deleteRecipient(element, id)
 {
     stopAction();
     selectDataGridRow($(element).parent().parent());
-    if (confirm(confirmRecipientDelete)) {
+    if (confirm(jaws.gadgets.Contact.confirmRecipientDelete)) {
         ContactAjax.callAsync('DeleteRecipient', id);
     }
     unselectDataGridRow();
@@ -422,7 +422,7 @@ function updateUsers(group)
         group = false;
     }
     var users = ContactAjax.callSync('GetUsers', group);
-    $('#users').empty().append($('<option>').html(lblAllGroupUsers).val(0));
+    $('#users').empty().append($('<option>').html(jaws.gadgets.Contact.lblAllGroupUsers).val(0));
     $.each(users, function(i, user) {
         $('#users').append($('<option>').html(user['nickname']).val(user['id']));
     });
@@ -541,7 +541,7 @@ function sendEmail()
 {
     if ($('#options_1').prop('checked')) {
         if ($('#users')[0].options.length <= 1) {
-            alert(groupHasNoUser);
+            alert(jaws.gadgets.Contact.groupHasNoUser);
             $('#groups')[0].focus();
             return;
         }
@@ -554,7 +554,7 @@ function sendEmail()
             !$('#cc').val() &&
             !$('#bcc').val())
         {
-            alert(incompleteMailerFields);
+            alert(jaws.gadgets.Contact.incompleteMailerFields);
             $('#to').focus();
             return;
         }
@@ -564,14 +564,14 @@ function sendEmail()
     }
 
     if (!$('#subject').val()) {
-        alert(incompleteMailerFields);
+        alert(jaws.gadgets.Contact.incompleteMailerFields);
         $('#subject')[0].focus();
         return;
     }
 
     var body = getEditorValue('#message');
     if (body == '') {
-        alert(incompleteMailerFields);
+        alert(jaws.gadgets.Contact.incompleteMailerFields);
         $('#message')[0].focus();
         return;
     }
@@ -581,6 +581,28 @@ function sendEmail()
         [target, $('#subject').val(), body, $('#filename').val()]
     );
 }
+
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'Contacts':
+            currentAction = 'Contacts';
+            $('#recipient_filter')[0].selectedIndex = 0;
+            initDataGrid('contacts_datagrid', ContactAjax, getContacts);
+            break;
+
+        case 'Recipients':
+            currentAction = 'Recipients';
+            initDataGrid('recipient_datagrid', ContactAjax);
+            break;
+
+        case 'Mailer':
+            newEmail();
+            $('#options_1').prop('checked', true);
+            switchEmailTarget(1);
+            break;
+    }
+});
+
 
 var ContactAjax = new JawsAjax('Contact', ContactCallback),
     cacheContactForm = null,

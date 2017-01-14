@@ -152,9 +152,9 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
         $button->AddEvent(ON_CLICK, 'sendEmail();');
         $tpl->SetVariable('btn_send', $button->Get());
 
-        $tpl->SetVariable('lblAllGroupUsers', _t('CONTACT_MAILER_ALL_GROUP_USERS'));
-        $tpl->SetVariable('groupHasNoUser', _t('CONTACT_ERROR_GROUP_HAS_NO_USER'));
-        $tpl->SetVariable('incompleteMailerFields', _t('CONTACT_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('lblAllGroupUsers', _t('CONTACT_MAILER_ALL_GROUP_USERS'));
+        $this->gadget->layout->setVariable('groupHasNoUser', _t('CONTACT_ERROR_GROUP_HAS_NO_USER'));
+        $this->gadget->layout->setVariable('incompleteMailerFields', _t('CONTACT_INCOMPLETE_FIELDS'));
 
         $tpl->ParseBlock('mailer');
         return $tpl->Get();
