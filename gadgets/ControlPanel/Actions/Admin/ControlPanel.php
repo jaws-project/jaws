@@ -87,8 +87,8 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
 
         $responses = $GLOBALS['app']->Session->PopLastResponse();
         if ($responses) {
-            $tpl->SetVariable('text', $responses[0]['text']);
-            $tpl->SetVariable('type', $responses[0]['type']);
+            $tpl->SetVariable('response_text', $responses[0]['text']);
+            $tpl->SetVariable('response_type', $responses[0]['type']);
         }
 
         return $GLOBALS['app']->Layout->Get();
