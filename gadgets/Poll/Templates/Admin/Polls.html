@@ -11,18 +11,6 @@
     <div class="buttons">{{btn_cancel}}{{btn_save}}</div>
   </td>
 </tr></table>
-<script type="text/javascript">
-  var currentAction = 'Polls',
-      requiresTwoAnswers = "{{requiresTwoAnswers}}",
-      incompletePollsFields = "{{incompletePollsFields}}",
-      confirmPollDelete = "{{confirmPollDelete}}",
-      addPoll_title = "{{addPoll_title}}",
-      editPoll_title = "{{editPoll_title}}",
-      editAnswers_title = "{{editAnswers_title}}";
-
-  initDataGrid('polls_datagrid', PollAjax);
-  stopAction();
-</script>
 <!-- END Polls -->
 <!-- BEGIN PollUI -->
 <table id="poll_box">

@@ -94,6 +94,13 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManagePolls');
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('incompletePollsFields', _t('POLL_POLLS_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('requiresTwoAnswers',    _t('POLL_ERROR_REQUIRES_TWO_ANSWERS'));
+        $this->gadget->layout->setVariable('confirmPollDelete',     _t('POLL_POLLS_CONFIRM_DELETE'));
+        $this->gadget->layout->setVariable('addPoll_title',         _t('POLL_POLLS_ADD_TITLE'));
+        $this->gadget->layout->setVariable('editPoll_title',        _t('POLL_POLLS_EDIT_TITLE'));
+        $this->gadget->layout->setVariable('editAnswers_title',     _t('POLL_POLLS_ANSWERS_TITLE'));
+        $this->gadget->layout->setVariable('legend_title',          _t('POLL_POLLS_ADD_TITLE'));
 
         $tpl = $this->gadget->template->loadAdmin('Polls.html');
         $tpl->SetBlock('Polls');
@@ -110,14 +117,6 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
         $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
-
-        $tpl->SetVariable('incompletePollsFields', _t('POLL_POLLS_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('requiresTwoAnswers',    _t('POLL_ERROR_REQUIRES_TWO_ANSWERS'));
-        $tpl->SetVariable('confirmPollDelete',     _t('POLL_POLLS_CONFIRM_DELETE'));
-        $tpl->SetVariable('addPoll_title',         _t('POLL_POLLS_ADD_TITLE'));
-        $tpl->SetVariable('editPoll_title',        _t('POLL_POLLS_EDIT_TITLE'));
-        $tpl->SetVariable('editAnswers_title',     _t('POLL_POLLS_ANSWERS_TITLE'));
-        $tpl->SetVariable('legend_title',          _t('POLL_POLLS_ADD_TITLE'));
 
         $tpl->ParseBlock('Polls');
         return $tpl->Get();

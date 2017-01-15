@@ -94,6 +94,11 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('incompleteGroupsFields',   _t('POLL_POLLS_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('confirmPollGroupDelete',   _t('POLL_GROUPS_CONFIRM_DELETE'));
+        $this->gadget->layout->setVariable('addPollGroup_title',       _t('POLL_GROUPS_ADD_TITLE'));
+        $this->gadget->layout->setVariable('editPollGroup_title',      _t('POLL_GROUPS_EDIT_TITLE'));
+        $this->gadget->layout->setVariable('editPollGroupPolls_title', _t('POLL_GROUPS_POLLS_TITLE'));
 
         $tpl = $this->gadget->template->loadAdmin('PollGroups.html');
         $tpl->SetBlock('PollGroups');
@@ -110,12 +115,6 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
         $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
-
-        $tpl->SetVariable('incompleteGroupsFields',   _t('POLL_POLLS_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmPollGroupDelete',   _t('POLL_GROUPS_CONFIRM_DELETE'));
-        $tpl->SetVariable('addPollGroup_title',       _t('POLL_GROUPS_ADD_TITLE'));
-        $tpl->SetVariable('editPollGroup_title',      _t('POLL_GROUPS_EDIT_TITLE'));
-        $tpl->SetVariable('editPollGroupPolls_title', _t('POLL_GROUPS_POLLS_TITLE'));
         $tpl->SetVariable('legend_title',             _t('POLL_GROUPS_ADD_TITLE'));
 
         $tpl->ParseBlock('PollGroups');
