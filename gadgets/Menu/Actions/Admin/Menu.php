@@ -16,6 +16,15 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
     function Menu()
     {
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('addMenuTitle', _t('MENU_ADD_MENU'));
+        $this->gadget->layout->setVariable('editMenuTitle', _t('MENU_EDIT_MENU'));
+        $this->gadget->layout->setVariable('addGroupTitle', _t('MENU_ADD_GROUP'));
+        $this->gadget->layout->setVariable('editGroupTitle', _t('MENU_EDIT_GROUP'));
+        $this->gadget->layout->setVariable('incompleteFields', _t('MENU_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('confirmGroupDelete', _t('MENU_CONFIRM_DELETE_GROUP'));
+        $this->gadget->layout->setVariable('confirmMenuDelete', _t('MENU_CONFIRM_DELETE_MENU'));
+        $this->gadget->layout->setVariable('base_script', BASE_SCRIPT);
+
         $tpl = $this->gadget->template->loadAdmin('Menu.html');
         $tpl->SetBlock('menus');
         $tpl->SetBlock('menus/menus_base');
@@ -42,16 +51,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
 
         $tpl->SetVariable('menu_tree_image', 'gadgets/Menu/Resources/images/menu-item.png');
         $tpl->SetVariable('menu_tree_title', _t('MENU_TREE_TITLE'));
-        $tpl->SetVariable('addMenuTitle',    _t('MENU_ADD_MENU'));
-        $tpl->SetVariable('editMenuTitle',   _t('MENU_EDIT_MENU'));
-        $tpl->SetVariable('delMenuTitle',    _t('MENU_DELETE_MENU'));
-        $tpl->SetVariable('addGroupTitle',   _t('MENU_ADD_GROUP'));
-        $tpl->SetVariable('editGroupTitle',  _t('MENU_EDIT_GROUP'));
-        $tpl->SetVariable('delGroupTitle',   _t('MENU_DELETE_GROUP'));
-        $tpl->SetVariable('menuImageSrc',    'gadgets/Menu/Resources/images/menu-item.png');
-        $tpl->SetVariable('incompleteFields',   _t('MENU_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmDeleteGroup', _t('MENU_CONFIRM_DELETE_GROUP'));
-        $tpl->SetVariable('confirmDeleteMenu',  _t('MENU_CONFIRM_DELETE_MENU'));
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $tpl->ParseBlock('menus/menus_base');
         $tpl->ParseBlock('menus');
