@@ -47,20 +47,19 @@ class LinkDump_Actions_Admin_LinkDump extends Jaws_Gadget_Action
 
         $tpl->SetVariable('links_tree_image', 'gadgets/LinkDump/Resources/images/logo.mini.png');
         $tpl->SetVariable('links_tree_title', _t('LINKDUMP_LINKS_TITLE'));
-        $tpl->SetVariable('addLinkTitle',     _t('LINKDUMP_LINKS_ADD'));
-        $tpl->SetVariable('editLinkTitle',    _t('LINKDUMP_LINKS_EDIT'));
-        $tpl->SetVariable('delLinkTitle',     _t('LINKDUMP_LINKS_DELETE'));
-        $tpl->SetVariable('addGroupTitle',    _t('LINKDUMP_GROUPS_ADD'));
-        $tpl->SetVariable('editGroupTitle',   _t('LINKDUMP_GROUPS_EDIT'));
-        $tpl->SetVariable('delGroupTitle',    _t('LINKDUMP_GROUPS_DELETE'));
-        $tpl->SetVariable('linkImageSrc',     'gadgets/LinkDump/Resources/images/logo.mini.png');
-        $tpl->SetVariable('linksListOpenImageSrc',  STOCK_ADD);
-        $tpl->SetVariable('linksListCloseImageSrc', STOCK_REMOVE);
-        $tpl->SetVariable('noLinkExists',       _t('LINKDUMP_LINKS_NOEXISTS'));
-        $tpl->SetVariable('incompleteFields',   _t('LINKDUMP_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmDeleteGroup', _t('LINKDUMP_GROUPS_DELETE_CONFIRM'));
-        $tpl->SetVariable('confirmDeleteLink',  _t('LINKDUMP_LINKS_DELETE_CONFIRM'));
-        $tpl->SetVariable('max_limit_count', $this->gadget->registry->fetch('max_limit_count'));
+
+        $this->gadget->layout->setVariable('max_limit_count', $this->gadget->registry->fetch('max_limit_count'));
+        $this->gadget->layout->setVariable('addLinkTitle',     _t('LINKDUMP_LINKS_ADD'));
+        $this->gadget->layout->setVariable('editLinkTitle',    _t('LINKDUMP_LINKS_EDIT'));
+        $this->gadget->layout->setVariable('addGroupTitle',    _t('LINKDUMP_GROUPS_ADD'));
+        $this->gadget->layout->setVariable('editGroupTitle',   _t('LINKDUMP_GROUPS_EDIT'));
+        $this->gadget->layout->setVariable('linkImageSrc',     'gadgets/LinkDump/Resources/images/logo.mini.png');
+        $this->gadget->layout->setVariable('linksListCloseImageSrc', STOCK_REMOVE);
+        $this->gadget->layout->setVariable('linksListOpenImageSrc',  STOCK_ADD);
+        $this->gadget->layout->setVariable('incompleteFields',   _t('LINKDUMP_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('confirmGroupDelete', _t('LINKDUMP_GROUPS_DELETE_CONFIRM'));
+        $this->gadget->layout->setVariable('confirmLinkDelete',  _t('LINKDUMP_LINKS_DELETE_CONFIRM'));
+        $this->gadget->layout->setVariable('noLinkExists',       _t('LINKDUMP_LINKS_NOEXISTS'));
 
         $tpl->ParseBlock('linkdump/links_base');
         $tpl->ParseBlock('linkdump');
