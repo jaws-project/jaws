@@ -24,6 +24,9 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
      */
     function NewAlbum()
     {
+        $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('base_script', BASE_SCRIPT);
+
         $this->gadget->CheckPermission('ManageAlbums');
 
         $action      = jaws()->request->fetch('action', 'get');
@@ -35,6 +38,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $tpl->SetVariable('menubar', $this->MenuBar(isset($action) ? $action : ''));
 
         $tpl->SetVariable('action', 'SaveNewAlbum');
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $name =& Piwi::CreateWidget('Entry', 'name');
         $name->SetStyle('width: 100%;');
@@ -150,6 +154,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageAlbums');
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('base_script', BASE_SCRIPT);
         $model = $this->gadget->model->load('Albums');
 
         $get = jaws()->request->fetch(array('action', 'album'), 'get');

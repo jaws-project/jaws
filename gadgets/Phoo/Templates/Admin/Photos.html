@@ -8,15 +8,6 @@
 <!-- END noalbums -->
 
 <!-- BEGIN photos -->
-  <script type="text/javascript">
-  function selectAllAlbums()
-  {
-    c = document.getElementById('albums_list');
-    for (i = c.options.length - 1; i >= 0; i--) {
-        c.options[i].selected = true;
-    }
-  }
-  </script>
   <form name="AdminPhotos" action="{{base_action}}" method="post">
     <input type="hidden" name="gadget" value="Phoo" />
     <input type="hidden" name="action" value="AdminPhotos" />

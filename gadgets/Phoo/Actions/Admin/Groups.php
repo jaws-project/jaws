@@ -20,6 +20,11 @@ class Phoo_Actions_Admin_Groups extends Phoo_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('Groups');
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('addGroupTitle', _t('PHOO_GROUPS_ADD_GROUP'));
+        $this->gadget->layout->setVariable('editGroupTitle', _t('PHOO_GROUPS_EDIT_GROUP'));
+        $this->gadget->layout->setVariable('confirmGroupDelete', _t('PHOO_GROUPS_CONFIRM_DELETE'));
+        $this->gadget->layout->setVariable('incompleteGroupFields', _t('PHOO_GROUPS_INCOMPLETE_GROUP_FIELDS'));
+
         $tpl = $this->gadget->template->loadAdmin('Groups.html');
         $tpl->SetBlock('groups');
 
@@ -59,10 +64,6 @@ class Phoo_Actions_Admin_Groups extends Phoo_Actions_Admin_Default
         $tpl->SetVariable('lbl_description', _t('GLOBAL_DESCRIPTION'));
         $tpl->SetVariable('description', $entry->Get());
 
-        $tpl->SetVariable('addGroupTitle', _t('PHOO_GROUPS_ADD_GROUP'));
-        $tpl->SetVariable('editGroupTitle', _t('PHOO_GROUPS_EDIT_GROUP'));
-        $tpl->SetVariable('confirmGroupDelete', _t('PHOO_GROUPS_CONFIRM_DELETE'));
-        $tpl->SetVariable('incompleteGroupFields', _t('PHOO_GROUPS_INCOMPLETE_GROUP_FIELDS'));
         $tpl->SetVariable('delete', _t('GLOBAL_DELETE'));
         $tpl->SetVariable('cancel', _t('GLOBAL_CANCEL'));
         $tpl->SetVariable('save', _t('GLOBAL_SAVE'));

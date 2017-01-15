@@ -24,7 +24,7 @@ var PhooCallback = {
 
 function gotoLocation(album)
 {
-    window.location= base_script + '&album=' + album;
+    window.location= jaws.gadgets.Phoo.base_script + '?gadget=Phoo&album=' + album;
 }
 
 /**
@@ -95,7 +95,7 @@ function addEntry(title)
 function saveGroup()
 {
     if (!$('#name').val()) {
-        alert(incompleteGroupFields);
+        alert(jaws.gadgets.Phoo.incompleteGroupFields);
         return false;
     }
     var groupData = {
@@ -142,7 +142,7 @@ function editGroup(id)
     $('#meta_description').val(groupInfo['meta_description'].defilter());
     $('#description').val(groupInfo['description'].defilter());
     $('#btn_delete').css('display', 'inline');
-    $('#legend_title').html(editGroupTitle);
+    $('#legend_title').html(jaws.gadgets.Phoo.editGroupTitle);
 }
 
 /**
@@ -150,7 +150,7 @@ function editGroup(id)
  */
 function deleteGroup()
 {
-    var answer = confirm(confirmGroupDelete);
+    var answer = confirm(jaws.gadgets.Phoo.confirmGroupDelete);
     if (answer) {
         var box = $('#groups_combo');
         var quoteIndex = box.selectedIndex;
@@ -176,7 +176,7 @@ function stopAction()
     $('#description').val('');
     $('#groups_combo').prop('selectedIndex', -1);
     $('#btn_delete').css('display', 'none');
-    $('#legend_title').html(addGroupTitle);
+    $('#legend_title').html(jaws.gadgets.Phoo.addGroupTitle);
 }
 
 /**
@@ -189,6 +189,35 @@ function filterAlbums(gid)
     select.options.length = 0;
     for (var i=0; i<response.length; i++) {
         select.options[select.options.length] = new Option(response[i]['name'], response[i]['id']);
+    }
+}
+
+function selectAllAlbums()
+{
+    c = document.getElementById('albums_list');
+    for (i = c.options.length - 1; i >= 0; i--) {
+        c.options[i].selected = true;
+    }
+}
+
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'Groups':
+            $('#legend_title').html(jaws.gadgets.Phoo.addGroupTitle);
+            break;
+
+        case 'Properties':
+            break;
+    }
+});
+
+function toggleChk(el, id) {
+    if (el.checked) {
+        document.getElementById('entry_' + id).disabled = false;
+        document.getElementById('img_' + id).setAttribute('style', 'filter:alpha(opacity=100);-moz-opacity:1;opacity:1;');
+    } else {
+        document.getElementById('entry_' + id).disabled = true;
+        document.getElementById('img_' + id).setAttribute('style', 'filter:alpha(opacity=50);-moz-opacity:.50;opacity:.50;');
     }
 }
 
