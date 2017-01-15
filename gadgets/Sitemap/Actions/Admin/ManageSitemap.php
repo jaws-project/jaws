@@ -21,6 +21,13 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
     function ManageSitemap()
     {
         $this->AjaxMe('script.js');
+        // set default value of javascript variables
+        $this->gadget->layout->setVariable('editCategoryTitle',  _t('SITEMAP_CATEGORY_EDIT'));
+        $this->gadget->layout->setVariable('editGadgetTitle',    _t('SITEMAP_GADGET_EDIT'));
+        $this->gadget->layout->setVariable('sitemapListOpenImageSrc',  STOCK_ADD);
+        $this->gadget->layout->setVariable('sitemapListCloseImageSrc', STOCK_REMOVE);
+        $this->gadget->layout->setVariable('noCategoryExists', _t('SITEMAP_CATEGORY_NOEXISTS'));
+
         $tpl = $this->gadget->template->loadAdmin('Sitemap.html');
         $tpl->SetBlock('sitemap');
 
@@ -41,13 +48,6 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
 
         $tpl->SetVariable('sitemap_tree_image', 'gadgets/Sitemap/Resources/images/logo.mini.png');
         $tpl->SetVariable('sitemap_tree_title', _t('SITEMAP_TREE_TITLE'));
-        $tpl->SetVariable('editCategoryTitle',  _t('SITEMAP_CATEGORY_EDIT'));
-        $tpl->SetVariable('editGadgetTitle',    _t('SITEMAP_GADGET_EDIT'));
-        $tpl->SetVariable('sitemapImageSrc',       'gadgets/Sitemap/Resources/images/logo.mini.png');
-        $tpl->SetVariable('sitemapListOpenImageSrc',  STOCK_ADD);
-        $tpl->SetVariable('sitemapListCloseImageSrc', STOCK_REMOVE);
-        $tpl->SetVariable('noCategoryExists',       _t('SITEMAP_CATEGORY_NOEXISTS'));
-        $tpl->SetVariable('incompleteFields',   _t('SITEMAP_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('ping_icon', STOCK_RESET);
         $tpl->SetVariable('js_ping_func', "pingSearchEngines()");
         $tpl->SetVariable('ping_title', _t('SITEMAP_PING_SEARCHENGINES'));
