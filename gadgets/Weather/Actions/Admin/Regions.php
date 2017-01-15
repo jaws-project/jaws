@@ -23,6 +23,9 @@ class Weather_Actions_Admin_Regions extends Weather_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageRegions');
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('base_script', BASE_SCRIPT);
+        $this->gadget->layout->setVariable('confirmDelete', _t('WEATHER_CONFIRM_DELETE'));
+        $this->gadget->layout->setVariable('incompleteFields', _t('WEATHER_INCOMPLETE_FIELDS'));
 
         $tpl = $this->gadget->template->loadAdmin('Weather.html');
         $tpl->SetBlock('Weather');
@@ -66,9 +69,6 @@ class Weather_Actions_Admin_Regions extends Weather_Actions_Admin_Default
         $btnSave->AddEvent(ON_CLICK, 'updateRegion();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('confirmDelete', _t('WEATHER_CONFIRM_DELETE'));
-        $tpl->SetVariable('incompleteFields', _t('WEATHER_INCOMPLETE_FIELDS'));
         $tpl->SetVariable('default_latitude',
             $this->gadget->registry->fetch('latitude'));
         $tpl->SetVariable('default_longitude',

@@ -34,7 +34,7 @@ class Weather_Actions_GoogleMap extends Jaws_Gadget_Action
         header("Pragma: public");
 
         $httpRequest = new Jaws_HTTPRequest();
-        $result = $httpRequest->get($gMapURL, $data);
+        $result = $httpRequest->get($gMapURL, $data);st->rawPostData(
         if (Jaws_Error::IsError($result) || $result != 200) {
             $data = @file_get_contents('gadgets/Weather/Resources/images/gmap.png');
             header("Expires: 0");
