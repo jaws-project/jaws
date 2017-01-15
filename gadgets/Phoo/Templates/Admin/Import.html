@@ -16,17 +16,6 @@
 <input type="text" value="{{filename}}" name="{{entryname}}" id="entry_{{counter}}" style="width: 100px;"/>
 </div>
 <!-- END item -->
-<script type="text/javascript">
-function toggleChk(el, id) {
-    if (el.checked) {
-        document.getElementById('entry_' + id).disabled = false;
-        document.getElementById('img_' + id).setAttribute('style', 'filter:alpha(opacity=100);-moz-opacity:1;opacity:1;');
-    } else {
-        document.getElementById('entry_' + id).disabled = true;
-        document.getElementById('img_' + id).setAttribute('style', 'filter:alpha(opacity=50);-moz-opacity:.50;opacity:.50;');
-    }
-}
-</script>
 <div class="clearfix"></div>
 <div align="center" class="clearfix" style="padding: 10px; border: 1px solid #d3d7cf; background-color: #fafafa;">
 {{import_message}} {{albums_combo}} {{import_button}}
