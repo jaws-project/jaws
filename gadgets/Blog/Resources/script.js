@@ -771,7 +771,7 @@ $(document).ready(function() {
             break;
 
         case 'ManageCategories':
-            $('#legend_title').innerHTML = jaws.gadgets.Blog.addCategory_title;
+            $('#legend_title').html(jaws.gadgets.Blog.addCategory_title);
             break;
     }
 });
