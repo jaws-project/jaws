@@ -97,6 +97,7 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
     function ManageWebcams()
     {
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('incompleteWebcamFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
 
         $tpl = $this->gadget->template->loadAdmin('Webcam.html');
         $tpl->SetBlock('webcam');
@@ -177,7 +178,6 @@ class Webcam_Actions_Admin_Webcam extends Jaws_Gadget_Action
             $tpl->SetVariable('config_form', $config_form->Get());
         }
 
-        $tpl->SetVariable('incompleteWebcamFields', _t('GLOBAL_ERROR_INCOMPLETE_FIELDS'));
         $tpl->ParseBlock('webcam');
 
         return $tpl->Get();

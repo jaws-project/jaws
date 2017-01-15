@@ -77,7 +77,7 @@ function addWebcam(form)
         webcamRefresh = form.elements['refresh'].value;
 
     if (webcamTitle.blank()) {
-        alert(incompleteWebcamFields);
+        alert(jaws.gadgets.Webcam.incompleteWebcamFields);
         return false;
     }
 
@@ -140,5 +140,9 @@ function updateProperties(form)
     var limitRandom = form.elements['limit_random'].value;
     WebcamAjax.callAsync('UpdateProperties', [limitRandom]);
 }
+
+$(document).ready(function() {
+    initDataGrid('webcam_datagrid', WebcamAjax);
+});
 
 var WebcamAjax = new JawsAjax('Webcam', WebcamCallback);
