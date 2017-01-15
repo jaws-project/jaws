@@ -19,6 +19,8 @@ class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
     function QuoteGroups()
     {
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('incompleteGroupFields', _t('QUOTES_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('confirmGroupDelete', _t('QUOTES_CONFIRM_DELETE_GROUP'));
 
         $tpl = $this->gadget->template->loadAdmin('Quotes.html');
         $tpl->SetBlock('quotes');
@@ -98,9 +100,6 @@ class Quotes_Actions_Admin_Groups extends Quotes_Actions_Admin_Default
         $deleteGroup->AddEvent(ON_CLICK, "javascript:deleteGroup();");
         $deleteGroup->SetStyle('display:none;');
         $tpl->SetVariable('btn_del', $deleteGroup->Get());
-
-        $tpl->SetVariable('incompleteGroupFields', _t('QUOTES_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmGroupDelete', _t('QUOTES_CONFIRM_DELETE_GROUP'));
 
         $tpl->ParseBlock('quotes/groups_section');
         $tpl->ParseBlock('quotes');

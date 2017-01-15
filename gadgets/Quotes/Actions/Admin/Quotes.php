@@ -24,6 +24,8 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/lang/calendar-en.js');
         $this->AjaxMe('script.js');
         $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+        $this->gadget->layout->setVariable('incompleteQuoteFields', _t('QUOTES_INCOMPLETE_FIELDS'));
+        $this->gadget->layout->setVariable('confirmQuoteDelete', _t('QUOTES_CONFIRM_DELETE_QUOTE'));
 
         $tpl = $this->gadget->template->loadAdmin('Quotes.html');
         $tpl->SetBlock('quotes');
@@ -126,8 +128,6 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
         $cancelAction->AddEvent(ON_CLICK, "javascript:stopAction();");
         $tpl->SetVariable('btn_cancel', $cancelAction->Get());
 
-        $tpl->SetVariable('incompleteQuoteFields', _t('QUOTES_INCOMPLETE_FIELDS'));
-        $tpl->SetVariable('confirmQuoteDelete', _t('QUOTES_CONFIRM_DELETE_QUOTE'));
         $tpl->ParseBlock('quotes/quotes_section');
         $tpl->ParseBlock('quotes');
         return $tpl->Get();

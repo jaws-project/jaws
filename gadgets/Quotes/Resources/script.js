@@ -79,7 +79,7 @@ function saveQuote()
         getEditorValue('#quotation').blank() ||
         $('#gid').val() == 0)
     {
-        alert(incompleteQuoteFields);
+        alert(jaws.gadgets.Quotes.incompleteQuoteFields);
         return;
     }
 
@@ -131,7 +131,7 @@ function saveQuote()
  */
 function deleteQuote()
 {
-    var answer = confirm(confirmQuoteDelete);
+    var answer = confirm(jaws.gadgets.Quotes.confirmQuoteDelete);
     if (answer) {
         var box = $('#quotes_combo')[0];
         var quoteIndex = box.selectedIndex;
@@ -166,7 +166,7 @@ function editQuote(id)
     $('#show_title')[0].value = quoteInfo['show_title'];
     $('#published')[0].value = quoteInfo['published'];
 
-    $('btn_del').css('display', 'inline');
+    $('#btn_del').css('display', 'inline');
 }
 
 /**
@@ -201,7 +201,7 @@ function saveGroup()
 {
     if (currentAction == 'Groups') {
         if (!$('#title').val()) {
-            alert(incompleteGroupFields);
+            alert(jaws.gadgets.Quotes.incompleteGroupFields);
             return false;
         }
 
@@ -267,7 +267,7 @@ function saveGroup()
  */
 function deleteGroup()
 {
-    var answer = confirm(confirmGroupDelete);
+    var answer = confirm(jaws.gadgets.Quotes.confirmGroupDelete);
     if (answer) {
         var box = $('#groups_combo')[0];
         var quoteIndex = box.selectedIndex;
@@ -315,6 +315,20 @@ function editGroupQuotes()
         });
     }
 }
+
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'Quotes':
+            currentAction = 'Quotes';
+            $('#group_filter').prop('selectedIndex', 0);
+            stopAction();
+            break;
+        case 'QuoteGroups':
+            currentAction = 'Groups';
+            stopAction();
+            break;
+    }
+});
 
 var QuotesAjax = new JawsAjax('Quotes', QuotesCallback);
 

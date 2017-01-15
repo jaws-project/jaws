@@ -20,13 +20,6 @@
     </td>
 </tr></table>
 <div class="buttons">{{btn_cancel}}{{btn_del}}{{btn_save}}</div>
-<script type="text/javascript">
-  var currentAction = 'Quotes',
-      incompleteQuoteFields = "{{incompleteQuoteFields}}",
-      confirmQuoteDelete = "{{confirmQuoteDelete}}";
-  $('#group_filter').prop('selectedIndex', 0);
-  stopAction();
-</script>
 <!-- END quotes_section -->
 <!-- BEGIN groups_section -->
 <table id="quotes_groups">
@@ -49,12 +42,6 @@
   </tr>
 </table>
 <div class="buttons">{{btn_cancel}}{{btn_del}}{{add_quotes}}{{btn_save}}</div>
-<script type="text/javascript">
-  var currentAction = 'Groups',
-      incompleteGroupFields = "{{incompleteGroupFields}}",
-      confirmGroupDelete = "{{confirmGroupDelete}}";
-  stopAction();
-</script>
 <!-- END groups_section -->
 <!-- BEGIN quotes_groups_ui_section -->
 <div id="group_quotes_title">{{title}}</div>
