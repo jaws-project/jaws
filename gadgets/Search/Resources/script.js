@@ -42,4 +42,8 @@ function saveChanges(form)
     SearchAjax.callAsync('SaveChanges', gadgets);
 }
 
+function show_gadgets () {
+    $('#selected_gadgets').toggle();
+}
+
 var SearchAjax = new JawsAjax('Search', SearchCallback);
