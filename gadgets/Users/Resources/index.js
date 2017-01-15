@@ -69,8 +69,6 @@ var UsersCallback = {
 
     UpdateGlobalGroup: function (response) {
         if (response.type == 'alert-success') {
-            w2popup.close();
-            w2ui['groups-grid'].reload();
             stopAction();
         }
         UsersAjax.showResponse(response);
