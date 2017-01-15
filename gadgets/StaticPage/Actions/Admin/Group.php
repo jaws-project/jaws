@@ -23,6 +23,11 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
+        // set default value of javascript variables
+        $this->gadget->layout->setVariable('add_group_title',      _t('STATICPAGE_GROUP_ADD'));
+        $this->gadget->layout->setVariable('edit_group_title',     _t('STATICPAGE_GROUP_EDIT'));
+        $this->gadget->layout->setVariable('confirm_group_delete', _t('STATICPAGE_GROUP_CONFIRM_DELETE'));
+        $this->gadget->layout->setVariable('incomplete_fields',    _t('STATICPAGE_GROUP_INCOMPLETE_FIELDS'));
 
         $tpl = $this->gadget->template->loadAdmin('Groups.html');
         $tpl->SetBlock('Groups');
@@ -64,12 +69,7 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
         $btnCancel =& Piwi::CreateWidget('Button','btn_cancel', _t('GLOBAL_CANCEL'), STOCK_CANCEL);
         $btnCancel->AddEvent(ON_CLICK, 'javascript:stopAction();');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
-
         $tpl->SetVariable('legend_title',         _t('STATICPAGE_GROUP_ADD'));
-        $tpl->SetVariable('add_group_title',      _t('STATICPAGE_GROUP_ADD'));
-        $tpl->SetVariable('edit_group_title',     _t('STATICPAGE_GROUP_EDIT'));
-        $tpl->SetVariable('confirm_group_delete', _t('STATICPAGE_GROUP_CONFIRM_DELETE'));
-        $tpl->SetVariable('incomplete_fields',    _t('STATICPAGE_GROUP_INCOMPLETE_FIELDS'));
 
         $tpl->ParseBlock('Groups');
         return $tpl->Get();

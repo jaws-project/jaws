@@ -80,6 +80,8 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
                         $published, $show_title, $language, $id, $gid, $action, $mode = 'base')
     {
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('confirmPageDelete', _t('GLOBAL_CONFIRM_DELETE', _t('STATICPAGE_PAGE')));
+
         $tpl = $this->gadget->template->loadAdmin('StaticPage.html');
         $tpl->SetBlock('pageform');
 
@@ -240,7 +242,6 @@ class StaticPage_Actions_Admin_Default extends Jaws_Gadget_Action
 
         $tpl->setVariable('preview_header', _t('GLOBAL_PREVIEW'));
         $tpl->SetVariable('form', $pageform->Get());
-        $tpl->SetVariable('confirmPageDelete', _t('GLOBAL_CONFIRM_DELETE', _t('STATICPAGE_PAGE')));
 
         $tpl->ParseBlock('pageform');
         return $tpl->Get();

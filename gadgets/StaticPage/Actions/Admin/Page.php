@@ -131,6 +131,8 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
     function ManagePages()
     {
         $this->AjaxMe('script.js');
+        $this->gadget->layout->setVariable('confirmPageDelete', _t('GLOBAL_CONFIRM_DELETE', _t('STATICPAGE_PAGE')));
+        $this->gadget->layout->setVariable('confirmMassiveDelete', _t('STATICPAGE_CONFIRM_MASIVE_DELETE_PAGE'));
 
         $tpl = $this->gadget->template->loadAdmin('StaticPage.html');
         $tpl->SetBlock('static_page');
@@ -149,8 +151,6 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
         $toolBar->Add($deleteAll);
 
         $tpl->SetVariable('tools', $toolBar->Get());
-        $tpl->SetVariable('confirmPageDelete',    _t('GLOBAL_CONFIRM_DELETE', _t('STATICPAGE_PAGE')));
-        $tpl->SetVariable('confirmMassiveDelete', _t('STATICPAGE_CONFIRM_MASIVE_DELETE_PAGE'));
 
         // Language filter
         $language = '';
