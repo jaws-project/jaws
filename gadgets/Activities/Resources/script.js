@@ -82,6 +82,8 @@ function searchActivities()
 }
 
 $(document).ready(function() {
+    initDatePicker('from_date');
+    initDatePicker('to_date');
     initDataGrid('datagrid', ActivitiesAjax, getActivities);
 });
 
