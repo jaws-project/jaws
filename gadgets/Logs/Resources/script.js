@@ -164,6 +164,8 @@ $(document).ready(function() {
     switch (jaws.core.mainAction) {
         case 'Logs':
             $('#gadgets_filter').selectedIndex = 0;
+            initDatePicker('from_date');
+            initDatePicker('to_date');
             initDataGrid('logs_datagrid', LogsAjax, getLogs);
             break;
 
