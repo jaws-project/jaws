@@ -687,13 +687,16 @@ function createImageLink(imgSrc, link, text, space)
  */
 function initDatePicker(name)
 {
-    dpTable = $('#' + name + '_table')[0];
-    var script = dpTable.nextSibling;
-    var newScript = document.createElement('script');
-    newScript.type = "text/javascript";
-    newScript.text = script.text;
-    $(script).remove();
-    dpTable.parentNode.appendChild(newScript);
+    Calendar.setup({
+        inputField: name,
+        ifFormat: $('#'+name).data('format'),
+        dateType: $('#'+name).data('cal'),
+        button: name+'_button',
+        singleClick: true,
+        weekNumbers: false,
+        showsTime: true,
+        multiple: false
+    });
 }
 
 /**
