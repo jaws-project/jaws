@@ -54,15 +54,11 @@ var EventsCalendarCallback = {
     }
 };
 
-var EventsCalendarAjax = new JawsAjax('EventsCalendar', EventsCalendarCallback);
-var Datagrid = null;
-var SelectedEvent = null;
-
 /**
  * Initiates events calendar
  */
 function initEventsCalendar() {
-    CONST = jQuery.parseJSON(CONST);
+    CONST = jQuery.parseJSON(jaws.gadgets.EventsCalendar.CONST);
 
     w2utils.settings.dataType = 'JSON';
     if (CONST.calendar === 'Jalali') {
@@ -262,3 +258,10 @@ function updateRepeatUI(type)
     }
 }
 
+$(document).ready(function () {
+    initEventsCalendar();
+});
+
+var EventsCalendarAjax = new JawsAjax('EventsCalendar', EventsCalendarCallback);
+var Datagrid = null;
+var SelectedEvent = null;
