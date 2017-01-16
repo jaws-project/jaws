@@ -5,12 +5,14 @@
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 html {
+  direction: rtl;
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
 }
 body {
   margin: 0;
+  direction: rtl;
 }
 article,
 aside,
@@ -451,13 +453,13 @@ th {
   content: "\e051";
 }
 .glyphicon-align-left:before {
-  content: "\e052";
+  content: "\e054";
 }
 .glyphicon-align-center:before {
   content: "\e053";
 }
 .glyphicon-align-right:before {
-  content: "\e054";
+  content: "\e052";
 }
 .glyphicon-align-justify:before {
   content: "\e055";
@@ -466,10 +468,10 @@ th {
   content: "\e056";
 }
 .glyphicon-indent-left:before {
-  content: "\e057";
+  content: "\e058";
 }
 .glyphicon-indent-right:before {
-  content: "\e058";
+  content: "\e057";
 }
 .glyphicon-facetime-video:before {
   content: "\e059";
@@ -529,10 +531,10 @@ th {
   content: "\e078";
 }
 .glyphicon-chevron-left:before {
-  content: "\e079";
+  content: "\e080";
 }
 .glyphicon-chevron-right:before {
-  content: "\e080";
+  content: "\e079";
 }
 .glyphicon-plus-sign:before {
   content: "\e081";
@@ -565,10 +567,10 @@ th {
   content: "\e090";
 }
 .glyphicon-arrow-left:before {
-  content: "\e091";
+  content: "\e092";
 }
 .glyphicon-arrow-right:before {
-  content: "\e092";
+  content: "\e091";
 }
 .glyphicon-arrow-up:before {
   content: "\e093";
@@ -664,10 +666,10 @@ th {
   content: "\e126";
 }
 .glyphicon-hand-right:before {
-  content: "\e127";
+  content: "\e128";
 }
 .glyphicon-hand-left:before {
-  content: "\e128";
+  content: "\e127";
 }
 .glyphicon-hand-up:before {
   content: "\e129";
@@ -676,10 +678,10 @@ th {
   content: "\e130";
 }
 .glyphicon-circle-arrow-right:before {
-  content: "\e131";
+  content: "\e132";
 }
 .glyphicon-circle-arrow-left:before {
-  content: "\e132";
+  content: "\e131";
 }
 .glyphicon-circle-arrow-up:before {
   content: "\e133";
@@ -1024,19 +1026,19 @@ th {
   content: "\e246";
 }
 .glyphicon-object-align-left:before {
-  content: "\e247";
+  content: "\e249";
 }
 .glyphicon-object-align-vertical:before {
   content: "\e248";
 }
 .glyphicon-object-align-right:before {
-  content: "\e249";
+  content: "\e247";
 }
 .glyphicon-triangle-right:before {
-  content: "\e250";
+  content: "\e251";
 }
 .glyphicon-triangle-left:before {
-  content: "\e251";
+  content: "\e250";
 }
 .glyphicon-triangle-bottom:before {
   content: "\e252";
@@ -1054,10 +1056,10 @@ th {
   content: "\e256";
 }
 .glyphicon-menu-left:before {
-  content: "\e257";
+  content: "\e258";
 }
 .glyphicon-menu-right:before {
-  content: "\e258";
+  content: "\e257";
 }
 .glyphicon-menu-down:before {
   content: "\e259";
@@ -1077,12 +1079,11 @@ th {
           box-sizing: border-box;
 }
 html {
-  direction: rtl;
   font-size: 10px;
+
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  direction: rtl;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
