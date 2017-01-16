@@ -125,6 +125,8 @@ function stopAction()
         $('#published').val(1);
         deselectDataGridRow();
         $('#title')[0].focus();
+        initDatePicker('start_time');
+        initDatePicker('stop_time');
         break;
     case 'PollAnswers':
         selectedPoll = null;
