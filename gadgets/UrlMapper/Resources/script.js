@@ -504,6 +504,8 @@ $(document).ready(function() {
             JawsDataGrid.name = 'errormaps_datagrid';
             $('#legend_title').html(jaws.gadgets.UrlMapper.addErrorMap_title);
             $('#errormaps_datagrid')[0].objectName = UrlMapperAjax;
+            initDatePicker('filter_from_date');
+            initDatePicker('filter_to_date');
             initDataGrid('errormaps_datagrid', UrlMapperAjax, getErrorMaps);
             break;
     }
