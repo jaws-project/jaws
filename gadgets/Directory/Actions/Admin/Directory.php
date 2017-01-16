@@ -15,6 +15,16 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
      */
     function Directory($standalone = false)
     {
+        $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
+        $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
+        if ($calType != 'gregorian') {
+            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+        }
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('Workspace.html');
         $tpl->SetBlock('workspace');
@@ -109,7 +119,6 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $cal_type = $this->gadget->registry->fetch('calendar', 'Settings');
         $cal_lang = $this->gadget->registry->fetch('site_language', 'Settings');
         $datePicker =& Piwi::CreateWidget('DatePicker', 'start_date');
-        $datePicker->showTimePicker(true);
         $datePicker->setCalType($cal_type);
         $datePicker->setLanguageCode($cal_lang);
         $datePicker->setDateFormat('%Y-%m-%d');
@@ -118,10 +127,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
 
         // End date
         $datePicker =& Piwi::CreateWidget('DatePicker', 'end_date');
-        $datePicker->showTimePicker(true);
         $datePicker->setDateFormat('%Y-%m-%d');
-        $datePicker->SetIncludeCSS(false);
-        $datePicker->SetIncludeJS(false);
         $datePicker->setCalType($cal_type);
         $datePicker->setLanguageCode($cal_lang);
         $datePicker->setStyle('width:80px');

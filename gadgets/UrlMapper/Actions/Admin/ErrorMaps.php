@@ -97,6 +97,16 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
      */
     function ErrorMaps()
     {
+        $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
+        $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
+        if ($calType != 'gregorian') {
+            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+        }
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+
         $this->AjaxMe('script.js');
         $tpl = $this->gadget->template->loadAdmin('ErrorMaps.html');
         $tpl->SetBlock('ErrorMaps');
@@ -108,7 +118,6 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
 
         // From Date Filter
         $fromDate =& Piwi::CreateWidget('DatePicker', 'filter_from_date', '');
-        $fromDate->showTimePicker(true);
         $fromDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $fromDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $fromDate->setDateFormat('%Y-%m-%d %H:%M:%S');
@@ -118,7 +127,6 @@ class UrlMapper_Actions_Admin_ErrorMaps extends UrlMapper_Actions_Admin_Default
 
         // To Date Filter
         $toDate =& Piwi::CreateWidget('DatePicker', 'filter_to_date', '');
-        $toDate->showTimePicker(true);
         $toDate->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $toDate->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $toDate->setDateFormat('%Y-%m-%d %H:%M:%S');

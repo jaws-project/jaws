@@ -166,6 +166,16 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $orderBy = (int)$filters['filter_order'];
         }
 
+        $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
+        $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
+        if ($calType != 'gregorian') {
+            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+        }
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+
         $tpl = $this->gadget->template->load('Directory.html');
         $tpl->SetBlock('filters');
 
@@ -234,7 +244,6 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $cal_type = $this->gadget->registry->fetch('calendar', 'Settings');
         $cal_lang = $this->gadget->registry->fetch('site_language', 'Settings');
         $datePicker =& Piwi::CreateWidget('DatePicker', 'filter_from_date', $filters['filter_from_date']);
-        $datePicker->showTimePicker(true);
         $datePicker->setCalType($cal_type);
         $datePicker->setLanguageCode($cal_lang);
         $datePicker->setDateFormat('%Y-%m-%d');
@@ -243,10 +252,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
 
         // End date
         $datePicker =& Piwi::CreateWidget('DatePicker', 'filter_to_date', $filters['filter_to_date']);
-        $datePicker->showTimePicker(true);
         $datePicker->setDateFormat('%Y-%m-%d');
-        $datePicker->SetIncludeCSS(false);
-        $datePicker->SetIncludeJS(false);
         $datePicker->setCalType($cal_type);
         $datePicker->setLanguageCode($cal_lang);
         $datePicker->setStyle('width:80px');

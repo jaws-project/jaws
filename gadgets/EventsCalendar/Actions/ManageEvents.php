@@ -35,6 +35,16 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
+        $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
+        $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
+        if ($calType != 'gregorian') {
+            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+        }
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+
         $GLOBALS['app']->Layout->addLink('gadgets/EventsCalendar/Resources/index.css');
         $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('ManageEvents.html');
@@ -163,7 +173,6 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $calLang = $this->gadget->registry->fetch('site_language', 'Settings');
         $datePicker =& Piwi::CreateWidget('DatePicker', 'start', @$params['search']['start']);
         $datePicker->SetId('event_start_date');
-        $datePicker->showTimePicker(true);
         $datePicker->setCalType($calType);
         $datePicker->setLanguageCode($calLang);
         $datePicker->setDateFormat('%Y-%m-%d');
@@ -171,10 +180,7 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
 
         $datePicker =& Piwi::CreateWidget('DatePicker', 'stop', @$params['search']['stop']);
         $datePicker->SetId('event_stop_date');
-        $datePicker->showTimePicker(true);
         $datePicker->setDateFormat('%Y-%m-%d');
-        $datePicker->SetIncludeCSS(false);
-        $datePicker->SetIncludeJS(false);
         $datePicker->setCalType($calType);
         $datePicker->setLanguageCode($calLang);
         $tpl->SetVariable('stop', $datePicker->Get());

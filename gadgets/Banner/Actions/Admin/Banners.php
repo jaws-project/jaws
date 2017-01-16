@@ -16,6 +16,17 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
     function Banners()
     {
         $this->gadget->CheckPermission('ManageBanners');
+
+        $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
+        $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
+        if ($calType != 'gregorian') {
+            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+        }
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
+        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
+        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
+        $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+
         $this->AjaxMe('script.js');
 
         $tpl = $this->gadget->template->loadAdmin('Banners.html');
@@ -178,7 +189,6 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
 
         $startTime =& Piwi::CreateWidget('DatePicker', 'start_time', '');
         $startTime->SetId('start_time');
-        $startTime->showTimePicker(true);
         $startTime->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $startTime->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $startTime->setDateFormat('%Y-%m-%d %H:%M:%S');
@@ -187,10 +197,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
 
         $stopTime =& Piwi::CreateWidget('DatePicker', 'stop_time', '');
         $stopTime->SetId('stop_time');
-        $stopTime->showTimePicker(true);
         $stopTime->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $stopTime->SetIncludeCSS(false);
-        $stopTime->SetIncludeJS(false);
         $stopTime->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $stopTime->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $tpl->SetVariable('lbl_stop_time', _t('GLOBAL_STOP_TIME'));

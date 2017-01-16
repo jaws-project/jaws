@@ -76,7 +76,6 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
 
         // start time
         $startTime =& Piwi::CreateWidget('DatePicker', 'start_time', '');
-        $startTime->showTimePicker(true);
         $startTime->setDateFormat('%Y-%m-%d %H:%M:%S');
         $startTime->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $startTime->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
@@ -85,10 +84,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
 
         // stop time
         $stopTime =& Piwi::CreateWidget('DatePicker', 'stop_time', '');
-        $stopTime->showTimePicker(true);
         $stopTime->setDateFormat('%Y-%m-%d %H:%M:%S');
-        $stopTime->SetIncludeCSS(false);
-        $stopTime->SetIncludeJS(false);
         $stopTime->setLanguageCode($this->gadget->registry->fetch('admin_language', 'Settings'));
         $stopTime->setCalType($this->gadget->registry->fetch('calendar', 'Settings'));
         $tpl->SetVariable('lbl_stop_time', _t('GLOBAL_STOP_TIME'));
