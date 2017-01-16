@@ -298,6 +298,7 @@ class DatePicker extends Bin
     function setCalType($cal)
     {
         $this->_calType = strtolower($cal);
+        $this->_entry->setData('cal', strtolower($cal));
     }
 
     /**
@@ -344,6 +345,7 @@ class DatePicker extends Bin
     function setDateFormat($format)
     {
         $this->_dateFormat = $format;
+        $this->_entry->setData('format', $format);
     }
 
     /**
@@ -575,7 +577,7 @@ class DatePicker extends Bin
     function buildXHTML()
     {
         $this->_buildXHTML();
-
+/*
         if ($this->_includeCSS) {
             $theme = PIWI_URL . 'piwidata/js/jscalendar/calendar-' . $this->_theme . '.css';
             $this->addFile($theme);
@@ -686,7 +688,7 @@ class DatePicker extends Bin
         }
         $this->_XHTML .= "});\n";
         $this->_XHTML .= "</script>\n";
-
+*/
     }
 
 }
