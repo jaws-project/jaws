@@ -66,6 +66,8 @@ function stopAction()
         setEditorValue('#quotation', '');
         $('#quotes_combo').prop('selectedIndex', -1);
         $('#btn_del').css('display', 'none');
+        initDatePicker('start_time');
+        initDatePicker('stop_time');
         break;
     }
 }

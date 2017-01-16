@@ -19,11 +19,17 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
      */
     function Quotes()
     {
+        $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
+        $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));
+        if ($calType != 'gregorian') {
+            $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/$calType.js");
+        }
         $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar.js');
         $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
-        $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/lang/calendar-en.js');
-        $this->AjaxMe('script.js');
+        $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
         $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+
+        $this->AjaxMe('script.js');
         $this->gadget->layout->setVariable('incompleteQuoteFields', _t('QUOTES_INCOMPLETE_FIELDS'));
         $this->gadget->layout->setVariable('confirmQuoteDelete', _t('QUOTES_CONFIRM_DELETE_QUOTE'));
 
