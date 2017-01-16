@@ -35,6 +35,16 @@ class Bin extends Widget
     var $_accessKey;
 
     /**
+     *
+     * Data attribute for the widget
+     *
+     * @var    array $_data
+     * @access private
+     * @see    setData()
+     */
+    var $_data = array();
+
+    /**
      * JS events
      *
      * @var    array  $_rvents;
@@ -170,6 +180,18 @@ class Bin extends Widget
     }
 
     /**
+     * Set data attributes
+     *
+     * @access    public
+     * @param     string name
+     * @param     string value
+     */
+    function setData($name, $value)
+    {
+        $this->_data[$name] = $value;
+    }
+
+    /**
      * Get the direction of the box
      * @return string Direction of the box
      */
@@ -205,6 +227,10 @@ class Bin extends Widget
             $xhtml.= " accesskey=\"".$this->_accessKey."\"";
         }
         $xhtml.= parent::buildBasicXHTML();
+
+        foreach ($this->_data as $name => $value) {
+            $xhtml.= " data-{$name}=\"{$value}\"";
+        }
 
         return $xhtml;
     }
