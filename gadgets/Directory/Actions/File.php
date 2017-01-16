@@ -21,6 +21,9 @@ class Directory_Actions_File extends Jaws_Gadget_Action
 
         $parent = (int)jaws()->request->fetch('parent');
         $this->AjaxMe('index.js');
+        //
+        $this->gadget->layout->setVariable('parentId', $parent);
+
         $tpl = $this->gadget->template->load('UploadFile.html');
         $tpl->SetBlock('uploadUI');
 

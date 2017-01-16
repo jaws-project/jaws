@@ -175,6 +175,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         $GLOBALS['app']->Layout->addScript('libraries/piwi/piwidata/js/jscalendar/calendar-setup.js');
         $GLOBALS['app']->Layout->addScript("libraries/piwi/piwidata/js/jscalendar/lang/calendar-$calLang.js");
         $GLOBALS['app']->Layout->addLink('libraries/piwi/piwidata/js/jscalendar/calendar-blue.css');
+        $this->AjaxMe('index.js');
 
         $tpl = $this->gadget->template->load('Directory.html');
         $tpl->SetBlock('filters');

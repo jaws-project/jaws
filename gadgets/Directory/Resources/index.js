@@ -67,7 +67,7 @@ function submitFile()
 {
     var action = (fileId === 0)? 'CreateFile' : 'UpdateFile';
 
-    uploadedFileInfo.parent = parentId;
+    uploadedFileInfo.parent = jaws.gadgets.Directory.parentId;
     uploadedFileInfo.description = getEditorValue('#description');
     uploadedFileInfo.title = $('#frm_file #title').val();
     uploadedFileInfo.tags = $('#frm_file #tags').val();
@@ -128,5 +128,22 @@ function setFilename(filename, url)
     $('#frm_upload').hide();
 }
 
+$(document).ready(function() {
+    switch (jaws.core.mainAction) {
+        case 'Directory':
+            initDatePicker('filter_from_date');
+            initDatePicker('filter_to_date');
+            break;
+
+        case 'UploadFileUI':
+            $('#tr_file').hide();
+            $('#tr_thumbnail').hide();
+            $('#frm_upload').show();
+            break;
+
+    }
+});
+
 var DirectoryAjax = new JawsAjax('Directory', DirectoryCallback, 'index.php');
 var uploadedFileInfo = {}, uploadedThumbnailPath = "";
+var fileId = 0;
