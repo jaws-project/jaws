@@ -757,8 +757,10 @@ function stopAction() {
 
 $(document).ready(function() {
     switch (jaws.core.mainAction) {
+        case 'EditEntry':
         case 'NewEntry':
             toggleUpdate(false);
+            initDatePicker('pubdate');
             setTimeout('startAutoDrafting();', 120000);
             break;
 
