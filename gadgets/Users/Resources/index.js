@@ -790,18 +790,6 @@ $(document).ready(function() {
             break;
     }
 });
-/*
-
-/!**
- * Initiates gadget
- *!/
-$(document).ready(function () {
-    if (currentAction == 'UserAccount') {
-    } else if (currentAction == 'Group') {
-        initiateGroupsDG();
-    }
-});
-*/
 
 var UsersAjax = new JawsAjax('Users', UsersCallback);
 var SettingsInUsersAjax = new JawsAjax('Settings');
