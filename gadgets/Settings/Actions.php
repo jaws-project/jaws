@@ -16,6 +16,10 @@ $actions['UpdateSettings'] = array(
     'standalone' => true,
     'file' => 'Settings',
 );
+$actions['GetCities'] = array(
+    'standalone' => true,
+    'file'   => 'Zone',
+);
 
 /**
  * Admin actions
@@ -73,4 +77,8 @@ $admin_actions['UpdateProxySettings'] = array(
     'standalone' => true,
     'file' => 'Ajax',
     'loglevel' => JAWS_NOTICE,
+);
+$admin_actions['GetCities'] = array(
+    'standalone' => true,
+    'file'   => 'Zone',
 );
